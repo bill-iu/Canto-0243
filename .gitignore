@@ -1,0 +1,26 @@
+# 虛擬環境
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# 資料庫
+*.db
+*.sqlite3
+
+# 環境變數
+.env
+
+# 日誌與臨時檔案
+*.log
+data/raw/
+data/processed/
+
+# IDE 設定
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Mac 垃圾檔案
+.DS_Store
