@@ -8,8 +8,11 @@ __pycache__/
 *.db
 *.sqlite3
 
-# 環境變數
+# 環境變數檔案
 .env
+.env.local
+.env.prod
+.env.*
 
 # 日誌與臨時檔案
 *.log

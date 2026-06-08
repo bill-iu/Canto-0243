@@ -61,14 +61,19 @@ def search_words(
 
     q = q.strip()
 
-    # ==================== 1. 等號韻搜尋（傳統 + 位置指定聲母） ====================
+     # ==================== 1. 等號韻搜尋（最終版） ====================
     if "=" in q:
+        import re
+        import json
+
         match = re.match(r'^(\d*)(=)?([\u4e00-\u9fa5]+)?(=)?(\d*)$', q)
         if not match:
             return []
 
         left_code = match.group(1) or ""
+        left_equal = bool(match.group(2))
         target_str = match.group(3) or ""
+        right_equal = bool(match.group(4))
         right_code = match.group(5) or ""
 
         full_code = left_code + right_code
@@ -79,6 +84,7 @@ def search_words(
 
         target = db.query(Word).filter(Word.char == target_str).first()
         if not target:
+            print(f"目標 '{target_str}' 不存在")
             return []
 
         try:
@@ -87,20 +93,30 @@ def search_words(
         except:
             return []
 
-        target_length = len(full_code) or 1
-        is_position_mode = bool(left_code or right_code)
-        match_position = max(0, len(left_code) - 1) if is_position_mode else 0
+        target_length = len(target_str)
 
         query = db.query(Word)
         if full_code:
             variants = get_code_variants(full_code, mode)
             query = query.filter(Word.code.in_(variants))
 
+        # === 正確的長度計算 ===
+        expected_length = len(left_code) + len(right_code)
+        if expected_length == 0:
+            expected_length = target_length
+
         candidates = query.filter(
-            Word.char.op('REGEXP')(rf'^[\u4e00-\u9fa5]{{{target_length}}}$')
+            Word.char.op('REGEXP')(rf'^[\u4e00-\u9fa5]{{{expected_length}}}$')
         ).order_by(Word.char).all()
 
-        print(f"候選詞數量: {len(candidates)} | 位置模式: {is_position_mode} | 匹配位置: {match_position}")
+        print(f"候選詞數量: {len(candidates)} | 預期長度: {expected_length}")
+
+        # === 嚴格區分左右 ===
+        # 漢字在左邊（right_equal=True）→ 韻母匹配
+        # 漢字在右邊（left_equal=True）→ 聲母匹配
+        is_rhyme_match = right_equal
+
+        print(f"匹配模式: {'【韻母完整序列】' if is_rhyme_match else '【聲母完整序列】'} | 目標長度: {target_length}")
 
         filtered = []
         for word in candidates:
@@ -108,19 +124,24 @@ def search_words(
                 word_initials = json.loads(word.initials) if word.initials else []
                 word_finals = json.loads(word.finals) if word.finals else []
 
-                if is_position_mode:
-                    # 位置指定聲母模式
-                    if (match_position < len(word_initials) and 
-                        len(target_initials) > 0 and
-                        target_initials[0] == word_initials[match_position]):
+                if is_rhyme_match:
+                    # 韻母匹配（前 target_length 個位置）
+                    match_ok = True
+                    for i in range(target_length):
+                        if i < len(target_finals) and i < len(word_finals):
+                            if target_finals[i] and target_finals[i] != word_finals[i]:
+                                match_ok = False
+                                break
+                    if match_ok:
                         filtered.append(word)
                 else:
-                    # 傳統等號韻：完整序列匹配（韻母優先）
+                    # 聲母匹配（前 target_length 個位置）
                     match_ok = True
-                    for i in range(min(len(target_finals), len(word_finals))):
-                        if target_finals[i] and target_finals[i] != word_finals[i]:
-                            match_ok = False
-                            break
+                    for i in range(target_length):
+                        if i < len(target_initials) and i < len(word_initials):
+                            if target_initials[i] and target_initials[i] != word_initials[i]:
+                                match_ok = False
+                                break
                     if match_ok:
                         filtered.append(word)
             except:
