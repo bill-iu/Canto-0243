@@ -1,17 +1,6 @@
 # 0243 歌詞搜尋工具 - 專案總覽
 
-**專案名稱**：0243 Lyrics Search Tool  
-**開發者**：Bill IU  
-**開始日期**：2026 年  
-**當前狀態**：核心功能已基本完成
-
-**以下是為你的專案撰寫的完整專案文件：**
-
----
-
-# 0243 歌詞搜尋工具 - 專案總覽
-
-**版本日期**：2026-06-08  
+**版本日期**：2026-06-09  
 **開發者**：Wizgo  
 **目標**：建立一個支援 0243 碼 + 粵語押韻 + 多模式（m1/m2）的高效歌詞填詞搜尋工具
 
@@ -21,97 +10,125 @@
 
 ```
 0243_lyrics_tool/
-├── main.py                      # FastAPI 入口
-├── import_data.py               # 統一資料匯入工具（推薦使用）
-├── utils.py                     # 核心工具函式（get_0243_code, split_jyutping, get_code_variants）
-├── jyutping_table.py            # 聲母韻母對照表
-├── add_jyutping_to_0243.py     # 0243 字典 + 韻母字典合併工具
-├── convert_wordslist.py         # wordslist.json 格式轉換
-├── start.sh                     # 啟動腳本
+├── main.py
+├── init_db.py                  # 初始化資料庫
+├── reset_db.py                 # 重置資料庫（開發用）
+├── import_data.py              # 統一資料匯入工具
+├── utils.py                    # 核心工具函式
+├── jyutping_table.py
+├── start.sh
 │
 ├── app/
-│   ├── __init__.py
-│   ├── database.py              # SQLite 連接 + Session
+│   ├── database.py             # 支援 SQLite / PostgreSQL + dotenv
 │   ├── models/
-│   │   └── word.py              # Word 資料模型
+│   │   └── word.py
 │   ├── schemas/
-│   │   └── word_schema.py       # Pydantic 模型
+│   │   └── word_schema.py
 │   └── routers/
-│       └── word.py              # 所有搜尋 API
+│       └── word.py             # 搜尋 API（含等號韻 + 位置指定）
 │
-├── data/raw/                    # 原始與中繼 JSON
-│   ├── kaifangcidian_clean.json
-│   ├── cccanto_clean.json
-│   ├── wordslist_clean.json
-│   ├── merged_0243_with_jyutping.json   ← 目前主力資料
-│   └── 0243_dict_1to5digits.json
+├── data/raw/                   # 原始資料（已忽略上傳）
 │
-├── lyrics.db                    # SQLite 資料庫（主資料）
-└── venv/
+├── lyrics.db                   # SQLite 資料庫
+├── .env                        # 本地環境變數（已忽略）
+├── .env.example
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
 ## 2. 已經達成的功能
 
-- [x] **FastAPI + SQLAlchemy 基礎架構**（含自動重載）
+- [x] **FastAPI + SQLAlchemy 架構**（支援 SQLite 與 PostgreSQL 切換）
 - [x] **多來源資料統一匯入**（kaifangcidian、cccanto、wordslist、merged_0243）
-- [x] **Word 模型**（char, code, jyutping, initials, finals, tones）
-- [x] **精準 0243 code 生成**（支援多音節）
+- [x] **完整 Word 模型**（包含 `initials`、`finals`、`tones` JSON 欄位）
 - [x] **聲母 / 韻母 / 聲調自動拆分**
 - [x] **m1 / m2 模式切換**（獨立於搜尋邏輯）
-- [x] **等號韻搜尋**（`香港=` / `=香港人`）—— 整詞序列完全匹配（韻母或聲母）
-- [x] **普通尾字押韻搜尋**（`23就`）
-- [x] **同一詞語不同 code 並存**（例如「央行」同時有 30 和 39）
-- [x] **分頁 + 排序**
-- [x] **資料清理與去重機制**
+- [x] **等號韻搜尋**（支援位置指定聲母匹配，如 `2=我3`、`23=我`）
+- [x] **位置指定混合搜尋**（如 `2香3`、`23我`，可指定位置押韻）
+- [x] **傳統等號韻**（如 `香港=` 完整序列匹配）
+- [x] **同一詞語不同 code 並存**（如「央行」同時支援 code 30 與 39）
+- [x] **資料庫初始化與重置工具**（`init_db.py` / `reset_db.py`）
+- [x] **環境變數管理**（`.env` + `python-dotenv`）
+- [x] **分頁、排序與錯誤處理**
 
 ---
 
-## 3. 正在進行 / 最近優化
+## 3. 正在進行 / 最近更新
 
-- [ ] **m1/m2 在所有搜尋中的穩定應用**（已基本完成）
-- [ ] **等號韻的穩定性測試與微調**
-- [ ] **前端簡單介面**（HTML + JavaScript 搜尋頁）
+- [x] 等號韻的位置指定聲母匹配邏輯修正
+- [x] `reset_db.py` 重置資料庫腳本
+- [x] `init_db.py` 初始化資料庫腳本
+- [x] `app/database.py` 重構（同時支援 SQLite 與 PostgreSQL）
+- [ ] 前端搜尋介面開發
+- [ ] PostgreSQL 正式部署與資料匯入教學
 
 ---
 
 ## 4. 有待開發的功能與任務（優先順序）
 
-### **高優先**
-1. **前端搜尋頁面**（HTML + JS）—— 支援即時搜尋、模式切換（m1/m2）、歷史記錄
-2. **API 文件與錯誤處理優化**（Swagger 更友好）
-3. **更多資料來源整合**（dict.db、其他粵語字典）
-4. **多字押韻支援**（不僅限最後一個字，可指定第 N 個字押韻）
+### 高優先
+1. **前端搜尋頁面**（HTML + JavaScript）
+2. **PostgreSQL 部署教學**（含免費資料庫申請與資料匯入）
+3. **多位置押韻支援**（可同時指定多個位置押韻）
+4. **API 文件優化**（更完整的 Swagger 說明）
 
-### **中優先**
-5. **進階搜尋**：
-   - 聲母 + 韻母混合匹配
-   - 模糊音近搜尋
-   - 長度限制（幾個字的詞）
-6. **統計功能**（某 code 有多少詞、某韻母出現頻率）
-7. **匯出功能**（JSON / CSV / 歌詞格式）
+### 中優先
+5. 進階搜尋功能（聲母 + 韻母混合、模糊音近搜尋）
+6. 統計功能（某 code / 某韻母出現頻率）
+7. 匯出功能（JSON / CSV）
 
-### **低優先 / 未來**
-8. **用戶系統**（收藏、歷史、自訂詞庫）
-9. **AI 填詞建議**（結合 Suno 或其他工具）
-10. **PostgreSQL 生產環境部署**
-11. **效能優化**（索引、快取、大資料量分頁）
+### 低優先 / 未來
+8. 使用者系統（收藏、歷史紀錄）
+9. AI 填詞建議整合
+10. 效能優化（索引、快取）
 
 ---
 
-## 5. 使用說明（快速參考）
+## 5. 快速使用說明
 
 ```bash
-# 啟動
+# 啟動專案
 ./start.sh
 # 或
 python main.py
 
-# 主要 API
+# 主要搜尋 API 範例
 GET /words/search/?q=23就&mode=m2
-GET /words/search/?q=39香港=&mode=m1
-GET /words/search/?code=3340&limit=50
+GET /words/search/?q=2=我3&mode=m1
+GET /words/search/?q=23=我&mode=m1
+GET /words/search/?q=香港=
+```
+
+### 初始化 / 重置資料庫
+
+```bash
+# 初始化資料表
+python init_db.py
+
+# 重置資料庫（會清空所有資料）
+python reset_db.py
+```
+
+---
+
+## 6. 環境設定
+
+1. 複製環境變數範例：
+   ```bash
+   cp .env.example .env
+   ```
+2. 修改 `.env` 中的 `DATABASE_URL`（預設為 SQLite）
+3. 安裝依賴：
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+**目前狀態**：核心後端功能已完成，資料庫支援已準備就緒，正準備進行前端開發與 PostgreSQL 部署教學。
+
 ```
 
 ---
