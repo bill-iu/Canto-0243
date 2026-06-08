@@ -3,23 +3,21 @@
 
 echo "🚀 正在啟動 0243 押韻字典..."
 
-# 1. 檢查並啟動虛擬環境
+# 進入虛擬環境
 if [ -d "venv" ]; then
-    echo "✅ 找到虛擬環境，正在啟用..."
-    source venv/Scripts/activate  # Windows Git Bash
+    source venv/Scripts/activate
+    echo "✅ 已進入虛擬環境 (venv)"
 else
     echo "⚠️  虛擬環境不存在，正在建立..."
     python -m venv venv
     source venv/Scripts/activate
-    pip install fastapi uvicorn sqlalchemy pydantic python-multipart pycantonese pyjyutping
+    pip install fastapi uvicorn sqlalchemy pydantic python-multipart
 fi
 
-# 2. 安裝/更新依賴
-echo "📦 安裝依賴套件..."
+# 安裝依賴
 pip install -q fastapi uvicorn sqlalchemy pydantic python-multipart
 
-# 3. 啟動後端（背景執行）
-echo "🌐 正在啟動後端伺服器..."
+echo "🌐 正在啟動後端..."
 python main.py &
 
 # 等待後端啟動
