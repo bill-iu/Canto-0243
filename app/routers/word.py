@@ -148,7 +148,7 @@ def search_words(
                 continue
 
         print(f"等號韻最終找到 {len(filtered)} 筆結果")
-        return filtered[offset:offset + limit]
+        return filtered[offset:offset + limit]  
 
     # ==================== 2. 位置指定混合搜尋（純數字+漢字，匹配韻母） ====================
     hybrid_match = re.match(r'^(\d+)([\u4e00-\u9fa5]+)(\d*)$', q)

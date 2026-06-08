@@ -26,4 +26,4 @@ data/processed/
 *.swo
 
 # Mac 垃圾檔案
-.DS_Store
+.DS_Storebackup/
