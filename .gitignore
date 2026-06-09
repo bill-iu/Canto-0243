@@ -4,8 +4,10 @@ __pycache__/
 *.pyc
 *.pyo
 
-# 資料庫
+# 資料庫與備份
 *.db
+*.backup
+backup/
 *.sqlite3
 
 # 環境變數檔案
@@ -26,4 +28,4 @@ data/processed/
 *.swo
 
 # Mac 垃圾檔案
-.DS_Storebackup/
+.DS_Store

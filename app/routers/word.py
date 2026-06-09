@@ -49,6 +49,7 @@ def search_words(
 ):
     import re
     import json
+    from sqlalchemy import func
 
     if not q:
         query = db.query(Word)
@@ -57,34 +58,36 @@ def search_words(
             query = query.filter(Word.code.in_(variants))
         if char:
             query = query.filter(Word.char == char)
-        return query.order_by(Word.char).offset(offset).limit(limit).all()
+        results = query.order_by(Word.char).offset(offset).limit(limit).all()
+        # 去重（以 id 為主）
+        seen = set()
+        unique = []
+        for w in results:
+            if w.id not in seen:
+                seen.add(w.id)
+                unique.append(w)
+        return unique
 
     q = q.strip()
 
-     # ==================== 1. 等號韻搜尋（最終版） ====================
+     # ==================== 等號韻搜尋（已修正重複問題版） ====================
     if "=" in q:
-        import re
-        import json
-
         match = re.match(r'^(\d*)(=)?([\u4e00-\u9fa5]+)?(=)?(\d*)$', q)
         if not match:
             return []
 
         left_code = match.group(1) or ""
-        left_equal = bool(match.group(2))
         target_str = match.group(3) or ""
-        right_equal = bool(match.group(4))
         right_code = match.group(5) or ""
+        right_equal = bool(match.group(4))
 
         full_code = left_code + right_code
-        print(f"等號韻: {q} → code={full_code} | 目標={target_str}")
 
         if not target_str:
             return []
 
         target = db.query(Word).filter(Word.char == target_str).first()
         if not target:
-            print(f"目標 '{target_str}' 不存在")
             return []
 
         try:
@@ -94,30 +97,38 @@ def search_words(
             return []
 
         target_length = len(target_str)
+        expected_length = len(left_code) + len(right_code) or target_length
 
         query = db.query(Word)
         if full_code:
             variants = get_code_variants(full_code, mode)
             query = query.filter(Word.code.in_(variants))
 
-        # === 正確的長度計算 ===
-        expected_length = len(left_code) + len(right_code)
-        if expected_length == 0:
-            expected_length = target_length
-
-        candidates = query.filter(
-            Word.char.op('REGEXP')(rf'^[\u4e00-\u9fa5]{{{expected_length}}}$')
-        ).order_by(Word.char).all()
-
-        print(f"候選詞數量: {len(candidates)} | 預期長度: {expected_length}")
-
-        # === 嚴格區分左右 ===
-        # 漢字在左邊（right_equal=True）→ 韻母匹配
-        # 漢字在右邊（left_equal=True）→ 聲母匹配
+        query = query.filter(func.length(Word.char) == expected_length)
         is_rhyme_match = right_equal
+        start_pos = max(0, len(left_code) - target_length)
 
-        print(f"匹配模式: {'【韻母完整序列】' if is_rhyme_match else '【聲母完整序列】'} | 目標長度: {target_length}")
+        if start_pos == 0 and target_length == expected_length:
+            if is_rhyme_match:
+                target_json = json.dumps(target_finals)
+                query = query.filter(Word.finals == target_json)
+            else:
+                target_json = json.dumps(target_initials)
+                query = query.filter(Word.initials == target_json)
 
+            results = query.order_by(Word.char).offset(offset).limit(limit).all()
+
+            # === 使用 char 去重，解決同字不同 code 的重複問題 ===
+            seen = set()
+            unique_results = []
+            for word in results:
+                if word.char not in seen:
+                    seen.add(word.char)
+                    unique_results.append(word)
+            return unique_results
+
+        # 複雜情況走 Python 迴圈（也建議加上 char 去重）
+        candidates = query.order_by(Word.char).all()
         filtered = []
         for word in candidates:
             try:
@@ -125,21 +136,21 @@ def search_words(
                 word_finals = json.loads(word.finals) if word.finals else []
 
                 if is_rhyme_match:
-                    # 韻母匹配（前 target_length 個位置）
                     match_ok = True
                     for i in range(target_length):
-                        if i < len(target_finals) and i < len(word_finals):
-                            if target_finals[i] and target_finals[i] != word_finals[i]:
+                        pos = start_pos + i
+                        if pos < len(word_finals) and i < len(target_finals):
+                            if target_finals[i] and target_finals[i] != word_finals[pos]:
                                 match_ok = False
                                 break
                     if match_ok:
                         filtered.append(word)
                 else:
-                    # 聲母匹配（前 target_length 個位置）
                     match_ok = True
                     for i in range(target_length):
-                        if i < len(target_initials) and i < len(word_initials):
-                            if target_initials[i] and target_initials[i] != word_initials[i]:
+                        pos = start_pos + i
+                        if pos < len(word_initials) and i < len(target_initials):
+                            if target_initials[i] and target_initials[i] != word_initials[pos]:
                                 match_ok = False
                                 break
                     if match_ok:
@@ -147,10 +158,16 @@ def search_words(
             except:
                 continue
 
-        print(f"等號韻最終找到 {len(filtered)} 筆結果")
-        return filtered[offset:offset + limit]  
-
-    # ==================== 2. 位置指定混合搜尋（純數字+漢字，匹配韻母） ====================
+        # Python 迴圈結果也做 char 去重
+        seen = set()
+        unique_filtered = []
+        for word in filtered[offset:offset + limit]:
+            if word.char not in seen:
+                seen.add(word.char)
+                unique_filtered.append(word)
+        return unique_filtered
+        
+    # ==================== 2. 位置指定混合搜尋 ====================
     hybrid_match = re.match(r'^(\d+)([\u4e00-\u9fa5]+)(\d*)$', q)
     if hybrid_match:
         num_prefix = hybrid_match.group(1)
@@ -158,28 +175,25 @@ def search_words(
         num_suffix = hybrid_match.group(3)
 
         full_code = num_prefix + num_suffix
-        print(f"位置指定混合搜尋: {q} → code={full_code} | 參考字={ref_chars}")
+        ref_pos = max(0, len(num_prefix) - 1)
 
         variants = get_code_variants(full_code, mode)
         query = db.query(Word).filter(Word.code.in_(variants))
-        candidates = query.order_by(Word.char).all()
+        query = query.filter(func.length(Word.char) == len(full_code))
 
-        # 位置計算：漢字出現在第幾個位置
-        ref_pos = max(0, len(num_prefix) - 1)
+        candidates = query.order_by(Word.char).all()
 
         target_finals = [None] * len(full_code)
         for i, c in enumerate(ref_chars):
             pos = ref_pos + i
             if 0 <= pos < len(full_code):
-                target = db.query(Word).filter(Word.char == c).first()
-                if target and target.finals:
+                t = db.query(Word).filter(Word.char == c).first()
+                if t and t.finals:
                     try:
-                        fl = json.loads(target.finals)
+                        fl = json.loads(t.finals)
                         target_finals[pos] = fl[0] if fl else None
                     except:
                         pass
-
-        print(f"目標位置韻母: {target_finals}")
 
         filtered = []
         for word in candidates:
@@ -190,28 +204,28 @@ def search_words(
                 if len(word_finals) != len(full_code):
                     continue
 
-                match = True
-                for i, target_final in enumerate(target_finals):
-                    if target_final is None:
+                match_ok = True
+                for i, tf in enumerate(target_finals):
+                    if tf is None:
                         continue
-                    if i >= len(word_finals) or word_finals[i] != target_final:
-                        match = False
+                    if i >= len(word_finals) or word_finals[i] != tf:
+                        match_ok = False
                         break
-                if match:
+                if match_ok:
                     filtered.append(word)
             except:
                 continue
 
-        print(f"位置指定混合搜尋找到 {len(filtered)} 筆結果")
         return filtered[offset:offset + limit]
 
     # ==================== 3. 純數字 ====================
     if q.isdigit():
         variants = get_code_variants(q, mode)
         query = db.query(Word).filter(Word.code.in_(variants))
+        query = query.filter(func.length(Word.char) == len(q))
         return query.order_by(Word.char).offset(offset).limit(limit).all()
 
-    # 4. 純漢字
+    # ==================== 4. 純漢字 ====================
     if re.match(r'^[\u4e00-\u9fa5]+$', q):
         return db.query(Word).filter(Word.char == q).all()
 

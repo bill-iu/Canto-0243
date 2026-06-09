@@ -1,30 +1,160 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>0243 離線押韻字典 - 1.0</title>
   <style>
-    body {font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333;}
-    .header {background: white; padding: 12px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; position: sticky; top: 0; z-index: 100;}
-    .menu-btn {font-size: 28px; cursor: pointer; margin-right: 15px; color: #555;}
-    .logo {font-size: 26px; font-weight: bold; color: #d4380d;}
-    .sidebar {position: fixed; left: -280px; top: 0; bottom: 0; width: 280px; background: white; box-shadow: 4px 0 12px rgba(0,0,0,0.2); transition: left 0.3s ease; z-index: 200; padding: 20px 0; overflow-y: auto;}
-    .sidebar.open {left: 0;}
-    .sidebar-item {padding: 12px 25px; cursor: pointer; font-size: 16px;}
-    .sidebar-item:hover {background: #f8f8f8;}
-    .main-content {padding: 20px; max-width: 1100px; margin: auto;}
-    .mode-btn {padding: 12px 32px; margin: 0 10px; border: 2px solid #ddd; background: white; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500; min-width: 190px;}
-    .mode-btn.active {background: #d4380d; color: white; border-color: #d4380d;}
-    input {width:100%; padding:16px; font-size:20px; border:2px solid #ddd; border-radius:8px; margin-bottom:15px;}
-    button {padding:14px 32px; background:#d4380d; color:white; border:none; border-radius:8px; cursor:pointer; font-size:16px;}
-    .results {display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; padding: 10px 0;}
-    .result-item {background: #fff; padding: 14px 10px; border: 1px solid #eee; border-radius: 8px; font-size: 16px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.05); transition: all 0.2s;}
-    .result-item:hover {transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,56,13,0.15);}
-    .info {text-align:center; color:#666; padding:60px 20px; font-size:18px;}
-    .stats {text-align:center; margin:10px 0; color:#666; font-size:15px;}
+    body {
+      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    .header {
+      background: white;
+      padding: 12px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .menu-btn {
+      font-size: 28px;
+      cursor: pointer;
+      margin-right: 15px;
+      color: #555;
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: #d4380d;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -280px;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: white;
+      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+      transition: left 0.3s ease;
+      z-index: 200;
+      padding: 20px 0;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-item {
+      padding: 12px 25px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .sidebar-item:hover {
+      background: #f8f8f8;
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .mode-btn {
+      padding: 12px 32px;
+      margin: 0 10px;
+      border: 2px solid #ddd;
+      background: white;
+      color: #333;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      min-width: 190px;
+      transition: all 0.2s ease;
+    }
+
+    .mode-btn.active {
+      background: #d4380d;
+      color: white;
+      border-color: #d4380d;
+    }
+
+    .mode-btn:not(.active):hover {
+      background: #fafafa;
+      border-color: #ccc;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px;
+      font-size: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 14px 32px;
+      background: #d4380d;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      padding: 10px 0;
+    }
+
+    .result-item {
+      background: #fff;
+      padding: 14px 10px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.2s;
+    }
+
+    .result-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(212, 56, 13, 0.15);
+    }
+
+    .info {
+      text-align: center;
+      color: #666;
+      padding: 60px 20px;
+      font-size: 18px;
+    }
+
+    .stats {
+      text-align: center;
+      margin: 10px 0;
+      color: #666;
+      font-size: 15px;
+    }
   </style>
 </head>
+
 <body>
   <div class="header">
     <span class="menu-btn" onclick="toggleSidebar()">☰</span>
@@ -36,7 +166,7 @@
     <div class="sidebar-item">🔍 數字搵詞</div>
     <div class="sidebar-item">📝 漢字搵詞</div>
     <div class="sidebar-item">🔗 等號韻搜尋</div>
-    
+
     <div style="margin-top:40px; padding:0 20px;">
       <div style="font-weight:bold; margin-bottom:12px; color:#555;">模式切換</div>
       <button id="btn-m1" class="mode-btn active" onclick="switchMode('m1')">模式1 - 0243</button>
@@ -45,8 +175,8 @@
   </div>
 
   <div class="main-content">
-    <input type="text" id="searchInput" placeholder="例如：23就、香港=、39香港=、大蛋糕=" autocomplete="off"
-           onkeyup="if(event.key === 'Enter') searchDict()">
+    <!-- 已移除 onkeyup，改由 JavaScript 統一處理 Enter -->
+    <input type="text" id="searchInput" placeholder="例如：23就、香港=、39香港=、大蛋糕=" autocomplete="off">
     <button onclick="searchDict()">🔍 搜尋</button>
 
     <div id="stats" class="stats"></div>
@@ -54,45 +184,78 @@
   </div>
 
   <script>
-    let currentMode = 'm1';
+    let currentMode = 'm2';
     let currentResults = [];
+    let currentOffset = 0;
+    let isSearching = false;
+    const PAGE_SIZE = 200;
 
-    async function searchDict() {
+    async function searchDict(isLoadMore = false) {
+      if (isSearching) return;
+      isSearching = true;
+
       const input = document.getElementById("searchInput").value.trim();
       const resultsDiv = document.getElementById("results");
       const statsDiv = document.getElementById("stats");
-      
-      resultsDiv.innerHTML = "";
-      statsDiv.textContent = "";
+
+      if (!isLoadMore) {
+        resultsDiv.innerHTML = "";
+        statsDiv.textContent = "";
+        currentResults = [];
+        currentOffset = 0;
+      }
 
       if (!input) {
         resultsDiv.innerHTML = `<p class="info">請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
+        isSearching = false;
         return;
       }
 
-      const url = `http://127.0.0.1:8000/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=200`;
+      const url = `http://127.0.0.1:8000/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error("後端錯誤");
         const data = await res.json();
 
-        currentResults = data;
-
-        statsDiv.textContent = `找到 ${data.length} 個結果（${currentMode} 模式）`;
-
-        if (data.length === 0) {
+        if (data.length === 0 && !isLoadMore) {
           resultsDiv.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
+          isSearching = false;
           return;
         }
 
-        resultsDiv.innerHTML = data.map(word => `
-          <div class="result-item" title="${word.jyutping || ''}">${word.char}</div>
-        `).join('');
+        currentResults = currentResults.concat(data);
+        currentOffset += data.length;
+
+        statsDiv.textContent = `找到 ${currentResults.length} 個結果（${currentMode} 模式）`;
+
+        const newHTML = data.map(word => `
+        <div class="result-item" title="${word.jyutping || ''}">${word.char}</div>
+      `).join('');
+        resultsDiv.insertAdjacentHTML('beforeend', newHTML);
+
+        toggleLoadMoreButton(data.length === PAGE_SIZE);
+
       } catch (e) {
         console.error(e);
-        resultsDiv.innerHTML = `<p class="info" style="color:red;">無法連接到後端<br>請確保 python main.py 正在運行</p>`;
+        resultsDiv.innerHTML = `<p class="info" style="color:red;">無法連接到後端</p>`;
       }
+
+      isSearching = false;
+    }
+
+    function toggleLoadMoreButton(show) {
+      let btn = document.getElementById("loadMoreBtn");
+      if (!btn) {
+        btn = document.createElement("button");
+        btn.id = "loadMoreBtn";
+        btn.textContent = "載入更多";
+        btn.style.margin = "20px auto";
+        btn.style.display = "block";
+        btn.onclick = () => searchDict(true);
+        document.getElementById("results").after(btn);
+      }
+      btn.style.display = show ? "block" : "none";
     }
 
     function switchMode(mode) {
@@ -107,13 +270,18 @@
       document.getElementById("sidebar").classList.toggle("open");
     }
 
-    document.getElementById("searchInput").addEventListener("keypress", (e) => {
-      if (e.key === "Enter") searchDict();
+    // 只保留這一個 Enter 鍵監聽（已加 preventDefault）
+    document.getElementById("searchInput").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchDict();
+      }
     });
 
-    window.onload = () => {
-      console.log("✅ 0243 前端已載入（frontend/index.html）");
+    window.onload = function () {
+      console.log("✅ 前端已載入（已修正重複結果問題）");
     };
   </script>
 </body>
+
 </html>
