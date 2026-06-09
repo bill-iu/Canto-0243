@@ -223,10 +223,15 @@ def search_words(
         variants = get_code_variants(q, mode)
         query = db.query(Word).filter(Word.code.in_(variants))
         query = query.filter(func.length(Word.char) == len(q))
-        return query.order_by(Word.char).offset(offset).limit(limit).all()
+        results = query.order_by(Word.char).offset(offset).limit(limit).all()
+        seen = set()
+        unique = [w for w in results if not (w.char in seen or seen.add(w.char))]
+        return unique
 
-    # ==================== 4. 純漢字 ====================
     if re.match(r'^[\u4e00-\u9fa5]+$', q):
-        return db.query(Word).filter(Word.char == q).all()
+        results = db.query(Word).filter(Word.char == q).all()
+        seen = set()
+        unique = [w for w in results if not (w.char in seen or seen.add(w.char))]
+        return unique
 
     return []
