@@ -1,14 +1,15 @@
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
+import os
+
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine
-from app.routers.word import router   # ← 直接引入，不要 as
+from app.routers.word import router
 
 app = FastAPI(title="0243 押韻字典")
 
-# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,20 +18,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 掛載前端
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
-
-# 註冊 Router（不要重複 prefix）
 app.include_router(router)
+
 
 @app.get("/")
 async def home():
     return {
         "status": "running",
         "frontend": "http://127.0.0.1:8000/frontend/index.html",
-        "api_test": "http://127.0.0.1:8000/words/search/?q=23"
+        "api_test": "http://127.0.0.1:8000/words/search/?q=23",
     }
+
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run(
+        "main:app",
+        host=os.getenv("HOST", "127.0.0.1"),
+        port=int(os.getenv("PORT", "8000")),
+        reload=os.getenv("ENV", "local").lower() != "prod",
+    )

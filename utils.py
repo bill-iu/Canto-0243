@@ -1,100 +1,72 @@
 import json
+from typing import List, Tuple
+
+TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "4", 6: "2"}
+VOWELS = "aeiou"
+M1_MAPPING = {"5": "4", "4": "5", "6": "2", "2": "6", "9": "3", "3": "9"}
+
 
 def get_0243_code(jyutping: str) -> str:
     """根據 jyutping 產生 0243 code"""
     if not jyutping:
         return ""
-    
-    TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "4", 6: "2"}
-    
+
     syllables = jyutping.strip().split()
-    code_parts = []
-    
-    for syl in syllables:
-        if syl and syl[-1].isdigit():
-            tone = int(syl[-1])
-            code_parts.append(TONE_MAP.get(tone, "?"))
-        else:
-            code_parts.append("?")
-    
-    return "".join(code_parts)
+    return "".join(TONE_MAP.get(int(syl[-1]), "?") if syl and syl[-1].isdigit() else "?" for syl in syllables)
 
 
-from jyutping_table import JYUTPING_TABLE, SPECIAL_CASES
+from jyutping_table import JYUTPING_TABLE, SPECIAL_CASES  # noqa: E402,F401
 
-def split_jyutping(jyutping: str):
+
+def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
     """將 jyutping 拆分成 initials, finals, tones 三個 list"""
-    if not jyutping or not isinstance(jyutping, str):
+    if not isinstance(jyutping, str) or not jyutping.strip():
         return "[]", "[]", "[]"
-    
-    syllables = jyutping.strip().split()
-    initials_list = []
-    finals_list = []
-    tones_list = []
-    
-    for syl in syllables:
-        # 提取聲調
+
+    initials_list: List[str] = []
+    finals_list: List[str] = []
+    tones_list: List[int] = []
+
+    for syllable_text in jyutping.strip().split():
         tone = None
-        final_start = len(syl)
-        for k in range(len(syl)-1, -1, -1):
-            if syl[k].isdigit():
-                tone = int(syl[k])
-                final_start = k
+        syllable = syllable_text
+        for index in range(len(syllable_text) - 1, -1, -1):
+            if syllable_text[index].isdigit():
+                tone = int(syllable_text[index])
+                syllable = syllable_text[:index]
                 break
-        
-        syllable = syl[:final_start]
-        
-        # 特殊處理 m / ng
-        if syllable == "m":
-            initials_list.append("m")
+
+        if syllable in {"m", "ng"}:
+            initials_list.append(syllable)
             finals_list.append("")
             tones_list.append(tone)
             continue
-        if syllable == "ng":
-            initials_list.append("ng")
-            finals_list.append("")
-            tones_list.append(tone)
-            continue
-        
-        # 普通規則：找第一個元音
-        vowels = 'aeiou'
-        split_pos = -1
-        for pos, char in enumerate(syllable):
-            if char in vowels:
-                split_pos = pos
-                break
-        
+
+        split_pos = next((pos for pos, char in enumerate(syllable) if char in VOWELS), -1)
         initial = syllable[:split_pos] if split_pos != -1 else syllable
         final = syllable[split_pos:] if split_pos != -1 else ""
-        
+
         initials_list.append(initial)
         finals_list.append(final)
         tones_list.append(tone)
-    
+
     return json.dumps(initials_list), json.dumps(finals_list), json.dumps(tones_list)
 
 
-def get_code_variants(code: str, mode: str = "m2") -> list:
+def get_code_variants(code: str, mode: str = "m2") -> List[str]:
     """生成 m1 / m2 的 code 等價變體"""
     if not code or not code.isdigit():
         return [code]
-    
+
     variants = {code}
-    
+
     if mode == "m1":
-        mapping = {'5': '4', '4': '5', '6': '2', '2': '6', '9': '3', '3': '9'}
-        
-        # 單一替換
-        current = code
-        for old, new in mapping.items():
-            if old in current:
-                variants.add(current.replace(old, new))
-        
-        # 逐位替換（生成更多組合）
-        for i in range(len(code)):
-            for old, new in mapping.items():
-                if code[i] == old:
-                    new_code = code[:i] + new + code[i+1:]
-                    variants.add(new_code)
-    
-    return sorted(list(variants))
+        for old, new in M1_MAPPING.items():
+            if old in code:
+                variants.add(code.replace(old, new))
+
+        for index, digit in enumerate(code):
+            if digit in M1_MAPPING:
+                variants.add(code[:index] + M1_MAPPING[digit] + code[index + 1:])
+
+    return sorted(variants)

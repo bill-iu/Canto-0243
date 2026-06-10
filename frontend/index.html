@@ -125,6 +125,7 @@
 
     .result-item {
       background: #fff;
+      color: #333;
       padding: 14px 10px;
       border: 1px solid #eee;
       border-radius: 8px;
@@ -132,6 +133,7 @@
       text-align: center;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       transition: all 0.2s;
+      cursor: pointer;
     }
 
     .result-item:hover {
@@ -190,6 +192,21 @@
     let isSearching = false;
     const PAGE_SIZE = 200;
 
+    function createResultButton(text, query, title = "") {
+      const item = document.createElement("button");
+      item.type = "button";
+      item.className = "result-item";
+      item.textContent = text;
+      item.title = title;
+      item.addEventListener("click", () => handleResultClick(query));
+      return item;
+    }
+
+    function handleResultClick(queryText) {
+      document.getElementById("searchInput").value = queryText;
+      searchDict();
+    }
+
     async function searchDict(isLoadMore = false) {
       if (isSearching) return;
       isSearching = true;
@@ -229,10 +246,11 @@
 
         statsDiv.textContent = `找到 ${currentResults.length} 個結果（${currentMode} 模式）`;
 
-        const newHTML = data.map(word => `
-        <div class="result-item" title="${word.jyutping || ''}">${word.char}</div>
-      `).join('');
-        resultsDiv.insertAdjacentHTML('beforeend', newHTML);
+        data.forEach(word => {
+          const displayText = word.display_text || word.char;
+          const queryText = word.query_text || word.char;
+          resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
+        });
 
         toggleLoadMoreButton(data.length === PAGE_SIZE);
 
