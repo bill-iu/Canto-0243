@@ -107,3 +107,19 @@ project-root/
   3. 前端加入 debounce 與 loading 狀態。
   4. 加入單元測試（pytest）涵蓋各種 `=` 語法情境。
   5. 針對大型詞庫進行實際基準測試，量化搜尋速度提升。
+
+---
+
+### **最近變更 (on-demand populate + tiered code/jyut sorting)**
+
+- 在 `app/routers/word.py` 的 `search_words` 與 `_build_character_search_results` 加入：
+  - **先測試資料庫**：對漢字 q (e.g. "遇到", "做到", "望到")，若 `words` 表無精確 `char` 匹配，則呼叫 `_ensure_word_in_db`。
+  - **pycantonese 注入**：使用 `pycantonese.characters_to_jyutping` 取 jyutping，計算 `get_0243_code`、 `split_jyutping` 得到 initials/finals/tones，insert 成 Word 並 commit。失敗時 fallback pyjyutping。成功會 log `[ensure] injected...`。
+  - **searching page sorting method**（同 tier 下）：
+    - 初始先輸出 target 的全部 codes（支援同一字多 code，如「到」的 4 與 9）+ 對應 jyut + target word。
+    - 後續 related 依 primary_rank 分 tier (0~4，與 similarity query 一致：substring > shared+rhyme > shared > rhyme > else)。
+    - 每 tier 內：**先顯示 code A / code B**（primary 優先，其餘 code 字串排序），**然後對應 jyutping**（該 code 在 tier 的 jyut），**然後該 code 的 tier 結果**；處理完 A/B 後其他 codes，依此類推到下一個 tier。
+    - 實際輸出為每個 code 緊接其 jyut(s) + words，避免大量 header 堆積，兼顧可讀性與需求。
+- 好處：搜尋「到」（code 9 相關）時，code 29 的「遇到/做到/望到」等若出現在對應 tier，現在會有對應的 code header + jyut header 引導其 words 出現；未收錄詞語首次搜尋即自動入庫。
+- 測試：手動驗證 ensure 注入路徑（新詞即時生成）、primary 多 code 收集、tier+code 分組結構（含 29 相關 header 出現與 words 歸位）。其他搜尋路徑（數字、jyut、= 等號）未動，維持相容。
+- 日期：本次對話實作。

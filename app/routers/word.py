@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
-from utils import get_0243_code, get_code_variants
+from utils import get_0243_code, get_code_variants, split_jyutping
+from collections import defaultdict
 
 router = APIRouter(prefix="/words", tags=["words"])
 
@@ -70,11 +71,21 @@ def _get_word_sort_code(word: Optional[Word]) -> str:
     return word.code or get_0243_code(word.jyutping or "") or ""
 
 
-def _build_similarity_query(db: Session, q: str, target_word: Optional[Word]):
-    if not target_word:
+def _get_primary_codes(words: Iterable[Word]) -> List[str]:
+    primary_codes = []
+    for word in words:
+        code_value = _get_word_sort_code(word)
+        if code_value and code_value not in primary_codes:
+            primary_codes.append(code_value)
+    return primary_codes
+
+
+def _build_similarity_query(db: Session, q: str, target_words: Optional[List[Word]]):
+    if not target_words:
         return db.query(Word).order_by(Word.char, Word.code, Word.jyutping)
 
-    target_code = _get_word_sort_code(target_word)
+    target_word = target_words[0]
+    target_codes = [code for code in _get_primary_codes(target_words) if code]
     target_finals_json = json.dumps(_load_json_list(target_word.finals))
 
     query = db.query(Word).filter(Word.char != q)
@@ -86,29 +97,34 @@ def _build_similarity_query(db: Session, q: str, target_word: Optional[Word]):
         shared_char_expr = literal(False)
 
     same_rhyme_expr = Word.finals == target_finals_json
-    same_code_expr = Word.code == target_code if target_code else literal(True)
+    same_code_expr = Word.code.in_(target_codes) if target_codes else literal(True)
+    query_substring_expr = func.instr(q, Word.char) > 0
     primary_rank = case(
-        ((shared_char_expr) & same_rhyme_expr, 0),
-        (same_rhyme_expr, 1),
-        else_=2,
+        (query_substring_expr, 0),
+        ((shared_char_expr) & same_rhyme_expr, 1),
+        (shared_char_expr, 2),
+        (same_rhyme_expr, 3),
+        else_=4,
     )
     same_code_rank = case((same_code_expr, 0), else_=1)
     return query.order_by(primary_rank, same_code_rank, Word.char, Word.code, Word.jyutping)
 
 
-def _build_character_search_results(q: str, words: List[Word], related_words: Optional[List[Word]] = None) -> List[dict]:
+def _build_character_search_results(q: str, words: List[Word], related_words: Optional[List[Word]] = None, primary_codes: Optional[List[str]] = None) -> List[dict]:
+    """建構 searching page 結果。
+    sorting method（同 tier 下）：
+      先顯示 code A 和 code B，然後對應的 jyutping A 和 jyutping B，
+      然後 code A 的 tier 結果，然後 code B 的 tier 結果，
+      然後下一個 tier，如此類推。
+    這裡以每個 code 的小節方式輸出（code header + 對應 jyut + 該 code 在此 tier 的 words），
+    並優先處理 primary codes (target 帶來的 A/B，例如 9 與 29 相關)。
+    """
     results: List[dict] = []
-    codes = []
-    jyutpings = []
+    if primary_codes is None:
+        primary_codes = _get_primary_codes(words)
 
-    for word in words:
-        code_value = word.code or get_0243_code(word.jyutping or "") or ""
-        if code_value and code_value not in codes:
-            codes.append(code_value)
-        if word.jyutping and word.jyutping not in jyutpings:
-            jyutpings.append(word.jyutping)
-
-    for code_value in codes:
+    # 初始 headers：來自 target 的 codes (支援多 code 如 4/9 給 "到") 與 jyutpings
+    for code_value in primary_codes:
         results.append({
             "char": code_value,
             "code": code_value or "",
@@ -119,7 +135,12 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
             "id": None,
         })
 
-    for jyutping_value in jyutpings:
+    target_jyutpings: List[str] = []
+    for word in words:
+        j = (word.jyutping or "").strip()
+        if j and j not in target_jyutpings:
+            target_jyutpings.append(j)
+    for jyutping_value in target_jyutpings:
         results.append({
             "char": jyutping_value,
             "code": "",
@@ -130,18 +151,153 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
             "id": None,
         })
 
-    seen_chars = set()
+    seen_chars: set[str] = set()
+    # 先輸出 target 詞本身
     for word in _deduplicate_words(words):
         if word.char not in seen_chars:
             seen_chars.add(word.char)
             results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
 
-    for word in related_words or []:
-        if word.char not in seen_chars:
-            seen_chars.add(word.char)
-            results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
+    related_words = related_words or []
+    if not related_words:
+        return results
+
+    # 將 related 依 tier (primary_rank) 分組
+    target_word = words[0] if words else None
+    target_finals_json = json.dumps(_load_json_list(target_word.finals)) if target_word else "[]"
+    q_chars = list(dict.fromkeys(q))
+
+    tier_groups: dict[int, list[Word]] = defaultdict(list)
+    for rw in related_words:
+        rw_finals_json = json.dumps(_load_json_list(rw.finals))
+        has_shared = any((ch in rw.char) for ch in q_chars if ch)
+        is_substr = bool(rw.char) and (rw.char in q)
+        is_same_rhyme = rw_finals_json == target_finals_json
+
+        if is_substr:
+            rank = 0
+        elif has_shared and is_same_rhyme:
+            rank = 1
+        elif has_shared:
+            rank = 2
+        elif is_same_rhyme:
+            rank = 3
+        else:
+            rank = 4
+
+        if rw.char not in seen_chars:
+            tier_groups[rank].append(rw)
+
+    # 每 tier：按 ordered code (primary A/B 優先) 逐 code 輸出：code header + 對應 jyut(s) + 該 code 的 words
+    for rank in sorted(tier_groups.keys()):
+        tier_ws = tier_groups[rank]
+        if not tier_ws:
+            continue
+
+        # 建 group
+        code_groups: dict[str, list[Word]] = defaultdict(list)
+        for w in tier_ws:
+            c = _get_word_sort_code(w)
+            code_groups[c].append(w)
+
+        # ordered: primary 裡在此 tier 有的先，然後其餘 code 字串排序
+        codes_in_tier = [c for c in primary_codes if code_groups.get(c)]
+        other_codes = sorted(c for c in code_groups.keys() if c not in primary_codes and code_groups.get(c))
+        ordered_codes = codes_in_tier + other_codes
+
+        for c in ordered_codes:
+            # 顯示 code (A 或 B)
+            results.append({
+                "char": c,
+                "code": c or "",
+                "jyutping": "",
+                "display_text": c,
+                "query_text": c,
+                "result_type": "code",
+                "id": None,
+            })
+            # 對應的 jyutping (此 code 在 tier 內的)
+            js_for_c: List[str] = []
+            for w in code_groups.get(c, []):
+                j = (w.jyutping or "").strip()
+                if j and j not in js_for_c:
+                    js_for_c.append(j)
+            for jval in js_for_c:
+                results.append({
+                    "char": jval,
+                    "code": "",
+                    "jyutping": jval or "",
+                    "display_text": jval,
+                    "query_text": jval,
+                    "result_type": "jyutping",
+                    "id": None,
+                })
+            # 然後此 code 在此 tier 的結果
+            for w in _deduplicate_words(code_groups.get(c, [])):
+                if w.char not in seen_chars:
+                    seen_chars.add(w.char)
+                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
     return results
+
+
+def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
+    """先測試資料庫有沒有該詞語(精確 char 匹配)。如果沒有且為漢字詞語，則使用 pycantonese 生成 jyutping，
+    計算 code 與 initials/finals/tones，注入資料庫後返回新 entry。支援 pyjyutping 作為 fallback。
+    """
+    if not text or not text.strip():
+        return []
+    text = text.strip()
+    existing = db.query(Word).filter(Word.char == text).all()
+    if existing:
+        return existing
+    # 是否包含漢字
+    if not re.search(r'[\u4e00-\u9fff]', text):
+        return []
+    jyut_str = ""
+    # 優先 pycantonese
+    try:
+        import pycantonese
+        jyut_list = pycantonese.characters_to_jyutping(text)
+        if jyut_list:
+            jyut_str = " ".join([item[1] for item in jyut_list if item and len(item) > 1 and item[1]])
+    except Exception as e:
+        print(f"[ensure] pycantonese error for {text}: {e}")
+    if not jyut_str:
+        # fallback
+        try:
+            from pyjyutping import jyutping as pyjy
+            cand = pyjy.convert(text)
+            if cand:
+                jyut_str = cand
+        except Exception:
+            pass
+    if not jyut_str:
+        return []
+    code_val = get_0243_code(jyut_str) or ""
+    try:
+        initials, finals, tones = split_jyutping(jyut_str)
+    except Exception:
+        initials = finals = tones = "[]"
+    db_word = Word(
+        char=text,
+        code=code_val,
+        jyutping=jyut_str,
+        initials=initials,
+        finals=finals,
+        tones=tones,
+        meaning=None,
+    )
+    db.add(db_word)
+    try:
+        db.commit()
+        db.refresh(db_word)
+        print(f"[ensure] injected into DB: '{text}' (code={code_val}, jyut={jyut_str})")
+        return [db_word]
+    except Exception as e:
+        db.rollback()
+        print(f"[ensure] DB insert failed for {text}: {e}")
+        return []
 
 
 @router.post("/", response_model=WordRead)
@@ -299,12 +455,21 @@ def search_words(
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
         return _deduplicate_words(results)
 
-    exact_matches = db.query(Word).filter(Word.char == q).all()
-    if exact_matches:
-        target_word = exact_matches[0]
-        related_results = _build_similarity_query(db, q, target_word).offset(offset).limit(limit).all()
+    # 對純漢字 q，先測試資料庫；若無則用 pycantonese 生成並注入
+    raw_targets: List[Word] = []
+    if re.search(r'[\u4e00-\u9fff]', q):
+        raw_targets = _ensure_word_in_db(db, q)
+    if not raw_targets:
+        raw_targets = db.query(Word).filter(Word.char == q).all()
+    target_words = _deduplicate_words(raw_targets)
+    # 使用 raw 以收集同字不同讀音的全部 code (例如 到 的 4 與 9)
+    primary_codes = _get_primary_codes(raw_targets) if raw_targets else []
+
+    if target_words:
+        related_results = _build_similarity_query(db, q, target_words).offset(offset).limit(limit).all()
         related_results = _deduplicate_words(related_results)
-        return _build_character_search_results(q, [target_word], related_results)[offset:offset + limit]
+        built = _build_character_search_results(q, target_words, related_results, primary_codes=primary_codes)
+        return built[offset:offset + limit]
 
     if re.search(r'[a-zA-Z]', q):
         results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")) .order_by(Word.char).all()
