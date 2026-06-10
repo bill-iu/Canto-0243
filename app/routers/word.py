@@ -241,6 +241,158 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
     return results
 
 
+def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) -> List[dict]:
+    """專為 exact 漢字搜尋設計的排序建構器（searching page）。
+
+    只使用「直接屬於查詢詞本身」的 0243 codes 與 jyutping 作為 header。
+    強制同長度 (filter different word lengths)。
+    盡量用 ORM 的 filter + order_by 產生各段結果，減少 Python 後處理 loop。
+
+    順序（以「做到」為例）：
+    - 24, 29 兩個 code header
+    - code=24 對應的 jyutping, code=29 對應的 jyutping
+    - 查詢詞本身
+    - 同 code、同長度、至少共用一個 char + 同 rhyme 的詞（如「做數」），先 24 段再 29 段
+    - 同 code、同長度、同 rhyme 的「不同 char」詞（相當於 24做到= / 29做到= 的結果）
+    - 「24到」/「29到」風格（以尾字「到」的 final 做 position match）
+    - 最後 q=24 / q=29 風格：該 code 下所有同長度詞
+    """
+    if not exact_matches:
+        return []
+
+    results: List[dict] = []
+    len_q = len(q)
+
+    # 只收集該詞直接擁有的 digit codes（例如 24、29），以數值排序確保 24 在 29 之前
+    codes: List[str] = []
+    code_to_jyuts: dict[str, List[str]] = defaultdict(list)
+    for w in exact_matches:
+        c = _get_word_sort_code(w)
+        if c and c.isdigit() and c not in codes:
+            codes.append(c)
+        j = (w.jyutping or "").strip()
+        if c and j and j not in code_to_jyuts[c]:
+            code_to_jyuts[c].append(j)
+    codes = sorted(codes, key=int)
+
+    # 1. 先顯示 code 24 和 code 29
+    for c in codes:
+        results.append({
+            "char": c, "code": c, "jyutping": "",
+            "display_text": c, "query_text": c,
+            "result_type": "code", "id": None
+        })
+
+    # 2. 然後對應的 jyutping（code=24 的先，code=29 的後）
+    for c in codes:
+        for j in code_to_jyuts.get(c, []):
+            results.append({
+                "char": j, "code": "", "jyutping": j,
+                "display_text": j, "query_text": j,
+                "result_type": "jyutping", "id": None
+            })
+
+    seen: set[str] = set()
+
+    # 查詢詞本身（「做到」）
+    for w in _deduplicate_words(exact_matches):
+        if w.char not in seen:
+            seen.add(w.char)
+            results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+    if not codes:
+        return results
+
+    def _get_finals_json_for_code(c: str) -> Optional[str]:
+        for w in exact_matches:
+            if _get_word_sort_code(w) == c and w.finals:
+                return w.finals
+        return None
+
+    # 3+4. 對每個 code：先 同 char + 同 rhyme（e.g. 24下的「做數」），再 純同 rhyme 不同 char（"24做到="）
+    for c in codes:
+        fin_json = _get_finals_json_for_code(c)
+        if not fin_json:
+            continue
+        shared_conds = [func.instr(Word.char, ch) > 0 for ch in dict.fromkeys(q) if ch]
+        if shared_conds:
+            qy = (db.query(Word)
+                  .filter(
+                      func.length(Word.char) == len_q,
+                      or_(*shared_conds),
+                      Word.finals == fin_json
+                  )
+                  .order_by(Word.char, Word.jyutping))
+            for w in _deduplicate_words(qy.all()):
+                if w.char not in seen:
+                    seen.add(w.char)
+                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+        # 純同 rhyme（不同字） for this code (使用該 code 對應的 finals)
+        qy = (db.query(Word)
+              .filter(
+                  func.length(Word.char) == len_q,
+                  Word.finals == fin_json
+              )
+              .order_by(Word.char, Word.jyutping))
+        for w in _deduplicate_words(qy.all()):
+            if w.char not in seen:
+                seen.add(w.char)
+                results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+    # 5. "24到" / "29到" 風格：用尾字的 final 做對應位置的 rhyme match
+    last_ch = q[-1] if q else ""
+    ref_fins: List[str] = []
+    ref_pos = max(0, len_q - 1) if len_q > 0 else 0
+    if last_ch:
+        ref_row = db.query(Word).filter(Word.char == last_ch).first()
+        if ref_row:
+            ref_fins = _load_json_list(ref_row.finals)
+    ref_val = ref_fins[0] if ref_fins else None
+
+    if ref_val is not None:
+        for c in codes:
+            # 取該 code + 同長度的候選（數量有限），用小迴圈做 position 檢查（無法輕易全推給簡單 ORM）
+            cands = (db.query(Word)
+                     .filter(
+                         func.length(Word.char) == len_q,
+                         Word.code == c
+                     )
+                     .order_by(Word.char, Word.jyutping)
+                     .limit(200)
+                     .all())
+            matched = []
+            for w in cands:
+                try:
+                    wf = _load_json_list(w.finals)
+                    if len(wf) > ref_pos and wf[ref_pos] == ref_val:
+                        matched.append(w)
+                except (TypeError, json.JSONDecodeError):
+                    pass
+            for w in _deduplicate_words(matched):
+                if w.char not in seen:
+                    seen.add(w.char)
+                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+    # 6. 最後：q=24 / q=29 風格 + 未指定 code 的詞（相容舊測試：同韻在前、非韻在後）
+    if codes:
+        broad_cond = or_(*([Word.code == c for c in codes] + [Word.code == '', Word.code.is_(None)]))
+    else:
+        broad_cond = or_(Word.code == '', Word.code.is_(None))
+    qy = (db.query(Word)
+          .filter(
+              func.length(Word.char) == len_q,
+              broad_cond
+          )
+          .order_by(Word.char, Word.jyutping))
+    for w in _deduplicate_words(qy.all()):
+        if w.char not in seen:
+            seen.add(w.char)
+            results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+    return results
+
+
 def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
     """先測試資料庫有沒有該詞語(精確 char 匹配)。如果沒有且為漢字詞語，則使用 pycantonese 生成 jyutping，
     計算 code 與 initials/finals/tones，注入資料庫後返回新 entry。支援 pyjyutping 作為 fallback。
@@ -466,9 +618,9 @@ def search_words(
     primary_codes = _get_primary_codes(raw_targets) if raw_targets else []
 
     if target_words:
-        related_results = _build_similarity_query(db, q, target_words).offset(offset).limit(limit).all()
-        related_results = _deduplicate_words(related_results)
-        built = _build_character_search_results(q, target_words, related_results, primary_codes=primary_codes)
+        # 使用專門的 code-aware 排序（只允許查詢詞自己擁有的 0243 code 與 jyutping 當 header，
+        # 各段都用 ORM filter + order_by + 同長度限制，過濾無關結果）
+        built = _build_code_aware_results(q, raw_targets, db)
         return built[offset:offset + limit]
 
     if re.search(r'[a-zA-Z]', q):
