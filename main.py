@@ -20,6 +20,18 @@ async def lifespan(app: FastAPI):
             ensure_length_column()
         except Exception:
             pass  # 失敗不影響啟動，有 fallback
+        # Warmup embedding in background to avoid load delay on first hanzi search
+        try:
+            import threading
+            from utils import get_text_embedding
+            def _warmup():
+                try:
+                    get_text_embedding("暖機")
+                except Exception:
+                    pass
+            threading.Thread(target=_warmup, daemon=True).start()
+        except Exception:
+            pass
     yield
 
 app = FastAPI(title="0243 押韻字典", lifespan=lifespan)

@@ -3,7 +3,7 @@ import re
 from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import and_, case, func, literal, or_
+from sqlalchemy import case, func, literal, or_
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal, contains_substring, IS_POSTGRES
@@ -13,17 +13,10 @@ from utils import get_0243_code, get_code_variants, split_jyutping, get_text_emb
 from collections import defaultdict
 
 def _length_filter(length: int):
+    """使用已回填的 Word.length（有 index），大幅加快 length 過濾查詢。
+    現在 length 已全 populate，無需 fallback。
     """
-    防禦性長度過濾。
-    優先使用已回填的 Word.length（有 index，很快）。
-    如果有 length 仍為 NULL 的舊資料，則退回 func.length(char) 確保查詢正確。
-    這樣即使 migration 因為 lock 還沒跑完，使用者也不會看到「完全沒結果」。
-    一旦 length 全部回填，就全部走快速 index 路徑。
-    """
-    return or_(
-        Word.length == length,
-        and_(Word.length.is_(None), func.length(Word.char) == length)
-    )
+    return Word.length == length
 
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -325,7 +318,12 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         return results
 
     # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
-    query_emb = get_text_embedding(q) if q else []
+    # 只在 model 已 preload (by warmup) 時才 load，避免第一次 hanzi search 延遲 model load
+    query_emb = []
+    if q:
+        if hasattr(get_text_embedding, "_model") and get_text_embedding._model is not None:
+            query_emb = get_text_embedding(q)
+        # else: skip for this search to keep fast; re-rank will be skipped until warmup done
 
     def _get_finals_json_for_code(c: str) -> Optional[str]:
         for w in exact_matches:
@@ -345,13 +343,15 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         qy = (db.query(Word)
               .filter(
                   _length_filter(len_q),
-                  Word.finals == fin_json
+                  Word.finals == fin_json,
+                  Word.code == c  # strict to this code, so all results have the target's codes
               )
               .order_by(Word.char, Word.jyutping)
               .limit(50))  # cap for instant
         candidates = _deduplicate_words(qy.all())
         shared_ws = [w for w in candidates if any(ch in w.char for ch in q_chars)]
-        pure_ws = [w for w in candidates if w not in shared_ws]  # or use set for seen later
+        shared_set = set(shared_ws)  # for fast lookup
+        pure_ws = [w for w in candidates if w not in shared_set]
 
         # shared (有共用字 + 同韻)
         for w in shared_ws:
@@ -394,7 +394,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                          Word.code == c
                      )
                      .order_by(Word.char, Word.jyutping)
-                     .limit(200)
+                     .limit(50)
                      .all())
             matched = []
             for w in cands:
@@ -409,9 +409,10 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                     seen.add(w.char)
                     results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
-    # 6. 最後：q=24 / q=29 風格 + 未指定 code 的詞（相容舊測試：同韻在前、非韻在後）
+    # 6. 最後：q=24 / q=29 風格（只同 code 的詞，移除未指定 code 以避免無關結果如 "0尊"）
+    # 當有 codes 時嚴格只取 target 的 codes；無 codes 時才包含未指定（相容舊行為）
     if codes:
-        broad_cond = or_(*([Word.code == c for c in codes] + [Word.code == '', Word.code.is_(None)]))
+        broad_cond = or_(*[Word.code == c for c in codes])
     else:
         broad_cond = or_(Word.code == '', Word.code.is_(None))
     qy = (db.query(Word)

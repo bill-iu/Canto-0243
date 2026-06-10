@@ -263,6 +263,23 @@ project-root/
   - 背景會繼續把 length 補完（之後速度更好）。
 - 日期：本次對話實作（本次重構徹底解決了「python main.py 一跑就 crash on reload」的長期痛點）。
 
+### 純漢字搜尋速度優化 + broad 結果正確性修復 (based on "事業" test)
+- **問題**：
+  - 輸入 "事業" (code=22) 速度仍 4s+ （需 <0.5s）。
+  - sorting 頭幾行 ok，但在 "什葉" 後出現 "0尊" 等與 code=22 完全無關的詞。
+  - 原因：broad section 的 broad_cond 包含 or (code in target_codes + code=='' or null)，導致拉進大量未指定 code 的詞（按 char 順序），污染結果；且 query 不夠選擇性（or empty 使 broad 幾乎變 length=2 全掃），加上之前 caps 仍偏高、查詢數多，造成延遲。
+- **修復**：
+  - broad_cond 改為：if codes: 只 or target codes（嚴格）；else 才包含 empty（相容舊）。
+  - 更新註解，明確說明 "只同 code 的詞，移除未指定 code 以避免無關結果"。
+  - 進一步降低 caps（rhyme candidates 50、broad 100）以確保 first page 資料量極小。
+  - 搭配之前 query 合併（1 query per code + python 拆 shared）、composite idx_length_code、length 全 populate（bg task 完成 268k 更新）、warmup，現在 broad 變成高度選擇性（只 code=22 length=2 的詞，index seek + 小 sort + limit 100），極快。
+- **效果預期**：
+  - "事業" 等純漢字只會出現 code=22 相關結果（無 "0尊" 等）。
+  - 速度：多 query 減為少量 + 極小 resultset（<100 rows 總處理），應 <0.5s（實測後續 timing 會 confirm）。
+  - 其他模式不受影響（pure digit 等本來就只用 code+length）。
+- 測試建議：重啟 server 後，搜 "事業"，檢查前 20 結果 code 都是 22，時間 <0.5s；頭幾行符合 tier 預期，之後無無關詞。
+- 日期：本次對話實作。
+
 - **其他調整**：
   - `requirements.txt` 新增 `alembic` 與 `sentence-transformers`。
   - 所有修改都盡量讓本地 SQLite 開發體驗不變（預設行為、測試、start.sh 都維持原狀）。
