@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
-from utils import get_code_variants
+from utils import get_0243_code, get_code_variants
 
 router = APIRouter(prefix="/words", tags=["words"])
 
@@ -49,6 +49,67 @@ def _apply_code_filter(query, code: Optional[str], mode: str):
         variants = get_code_variants(code, mode)
         query = query.filter(Word.code.in_(variants))
     return query
+
+
+def _serialize_word(word: Word, *, display_text: Optional[str] = None, query_text: Optional[str] = None, result_type: str = "word") -> dict:
+    code_value = word.code or get_0243_code(word.jyutping or "") or ""
+    return {
+        "char": word.char,
+        "code": code_value or "",
+        "jyutping": word.jyutping or "",
+        "display_text": display_text or word.char,
+        "query_text": query_text or word.char,
+        "result_type": result_type,
+        "id": getattr(word, "id", None),
+    }
+
+
+def _build_character_search_results(q: str, words: List[Word], related_words: Optional[List[Word]] = None) -> List[dict]:
+    results: List[dict] = []
+    codes = []
+    jyutpings = []
+
+    for word in words:
+        code_value = word.code or get_0243_code(word.jyutping or "") or ""
+        if code_value and code_value not in codes:
+            codes.append(code_value)
+        if word.jyutping and word.jyutping not in jyutpings:
+            jyutpings.append(word.jyutping)
+
+    for code_value in codes:
+        results.append({
+            "char": code_value,
+            "code": code_value or "",
+            "jyutping": "",
+            "display_text": code_value,
+            "query_text": code_value,
+            "result_type": "code",
+            "id": None,
+        })
+
+    for jyutping_value in jyutpings:
+        results.append({
+            "char": jyutping_value,
+            "code": "",
+            "jyutping": jyutping_value or "",
+            "display_text": f"jyutping: {jyutping_value}",
+            "query_text": jyutping_value,
+            "result_type": "jyutping",
+            "id": None,
+        })
+
+    seen_chars = set()
+    for word in _deduplicate_words(words):
+        if word.char not in seen_chars:
+            seen_chars.add(word.char)
+            results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
+
+    for word in related_words or []:
+        if word.char not in seen_chars:
+            seen_chars.add(word.char)
+            results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
+
+    return results
 
 
 @router.post("/", response_model=WordRead)
@@ -206,8 +267,20 @@ def search_words(
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
         return _deduplicate_words(results)
 
-    if re.match(r'^[一-龥]+$', q):
-        results = db.query(Word).filter(Word.char == q).all()
-        return _deduplicate_words(results)
+    exact_matches = db.query(Word).filter(Word.char == q).order_by(Word.char).all()
+    if exact_matches:
+        related_results = []
+        for word in exact_matches:
+            code_value = word.code or get_0243_code(word.jyutping or "") or ""
+            if code_value:
+                related_results.extend(
+                    db.query(Word).filter(Word.code == code_value).order_by(Word.char).all()
+                )
+        related_results = _deduplicate_words(related_results)
+        return _build_character_search_results(q, exact_matches, related_results)[offset:offset + limit]
+
+    if re.search(r'[a-zA-Z]', q):
+        results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")) .order_by(Word.char).all()
+        return _deduplicate_words(results)[offset:offset + limit]
 
     return []
