@@ -42,8 +42,34 @@ class CharacterDetailPayloadTests(unittest.TestCase):
 
             results = search_words(q="A仔", db=session, limit=20, offset=0)
 
-        self.assertTrue(any(item["char"] == "A仔" for item in results))
-        self.assertTrue(any(item["char"] == "B仔" for item in results))
+        word_results = [item for item in results if item["result_type"] == "word"]
+        self.assertTrue(any(item["char"] == "A仔" for item in word_results))
+        self.assertTrue(any(item["char"] == "B仔" for item in word_results))
+        self.assertEqual(word_results[0]["char"], "A仔")
+
+    def test_same_rhyme_words_rank_before_different_rhyme_words(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(char="做到", code="24", jyutping="zou6 dou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"d\"]"),
+                Word(char="做數", code="", jyutping="zou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"s\"]"),
+                Word(char="路數", code="", jyutping="lou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"l\", \"s\"]"),
+                Word(char="丈母", code="", jyutping="zoeng6 mou5", finals="[\"oeng\", \"ou\"]", initials="[\"z\", \"m\"]"),
+                Word(char="䀹嘢", code="", jyutping="gap6 je5", finals="[\"ap\", \"e\"]", initials="[\"g\", \"j\"]"),
+            ])
+            session.commit()
+
+            results = search_words(q="做到", db=session, limit=20, offset=0)
+            word_results = [item for item in results if item["result_type"] == "word"]
+
+        self.assertEqual(word_results[0]["char"], "做到")
+        self.assertEqual(word_results[1]["char"], "做數")
+        self.assertTrue(word_results.index(next(item for item in word_results if item["char"] == "做數")) < word_results.index(next(item for item in word_results if item["char"] == "路數")))
+        self.assertTrue(word_results.index(next(item for item in word_results if item["char"] == "路數")) < word_results.index(next(item for item in word_results if item["char"] == "丈母")))
+        self.assertTrue(word_results.index(next(item for item in word_results if item["char"] == "路數")) < word_results.index(next(item for item in word_results if item["char"] == "䀹嘢")))
 
 
 if __name__ == "__main__":

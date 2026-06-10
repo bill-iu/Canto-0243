@@ -3,7 +3,7 @@ import re
 from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import func
+from sqlalchemy import case, func, literal, or_
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
@@ -62,6 +62,38 @@ def _serialize_word(word: Word, *, display_text: Optional[str] = None, query_tex
         "result_type": result_type,
         "id": getattr(word, "id", None),
     }
+
+
+def _get_word_sort_code(word: Optional[Word]) -> str:
+    if not word:
+        return ""
+    return word.code or get_0243_code(word.jyutping or "") or ""
+
+
+def _build_similarity_query(db: Session, q: str, target_word: Optional[Word]):
+    if not target_word:
+        return db.query(Word).order_by(Word.char, Word.code, Word.jyutping)
+
+    target_code = _get_word_sort_code(target_word)
+    target_finals_json = json.dumps(_load_json_list(target_word.finals))
+
+    query = db.query(Word).filter(Word.char != q)
+
+    shared_char_conditions = [func.instr(Word.char, char) > 0 for char in dict.fromkeys(q) if char]
+    if shared_char_conditions:
+        shared_char_expr = or_(*shared_char_conditions)
+    else:
+        shared_char_expr = literal(False)
+
+    same_rhyme_expr = Word.finals == target_finals_json
+    same_code_expr = Word.code == target_code if target_code else literal(True)
+    primary_rank = case(
+        ((shared_char_expr) & same_rhyme_expr, 0),
+        (same_rhyme_expr, 1),
+        else_=2,
+    )
+    same_code_rank = case((same_code_expr, 0), else_=1)
+    return query.order_by(primary_rank, same_code_rank, Word.char, Word.code, Word.jyutping)
 
 
 def _build_character_search_results(q: str, words: List[Word], related_words: Optional[List[Word]] = None) -> List[dict]:
@@ -267,17 +299,12 @@ def search_words(
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
         return _deduplicate_words(results)
 
-    exact_matches = db.query(Word).filter(Word.char == q).order_by(Word.char).all()
+    exact_matches = db.query(Word).filter(Word.char == q).all()
     if exact_matches:
-        related_results = []
-        for word in exact_matches:
-            code_value = word.code or get_0243_code(word.jyutping or "") or ""
-            if code_value:
-                related_results.extend(
-                    db.query(Word).filter(Word.code == code_value).order_by(Word.char).all()
-                )
+        target_word = exact_matches[0]
+        related_results = _build_similarity_query(db, q, target_word).offset(offset).limit(limit).all()
         related_results = _deduplicate_words(related_results)
-        return _build_character_search_results(q, exact_matches, related_results)[offset:offset + limit]
+        return _build_character_search_results(q, [target_word], related_results)[offset:offset + limit]
 
     if re.search(r'[a-zA-Z]', q):
         results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")) .order_by(Word.char).all()

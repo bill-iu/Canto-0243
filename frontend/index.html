@@ -160,7 +160,7 @@
 <body>
   <div class="header">
     <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-    <span class="logo">0243 離線押韻字典</span>
+    <span class="logo" onclick="goHome()" style="cursor:pointer;">0243 離線押韻字典</span>
   </div>
 
   <div id="sidebar" class="sidebar">
@@ -178,7 +178,7 @@
 
   <div class="main-content">
     <!-- 已移除 onkeyup，改由 JavaScript 統一處理 Enter -->
-    <input type="text" id="searchInput" placeholder="例如：23就、香港=、39香港=、大蛋糕=" autocomplete="off">
+    <input type="text" id="searchInput" placeholder="0243/搵嘢" autocomplete="off">
     <button onclick="searchDict()">🔍 搜尋</button>
 
     <div id="stats" class="stats"></div>
@@ -190,7 +190,21 @@
     let currentResults = [];
     let currentOffset = 0;
     let isSearching = false;
+    let currentQuery = "";
     const PAGE_SIZE = 200;
+
+    function updateBrowserUrl(query = "", mode = currentMode, replace = false) {
+      const params = new URLSearchParams();
+      if (query) params.set('q', query);
+      if (mode) params.set('mode', mode);
+      const url = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
+      const state = { type: query ? 'search' : 'home', query, mode };
+      if (replace) {
+        window.history.replaceState(state, '', url);
+      } else {
+        window.history.pushState(state, '', url);
+      }
+    }
 
     function createResultButton(text, query, title = "") {
       const item = document.createElement("button");
@@ -207,7 +221,20 @@
       searchDict();
     }
 
-    async function searchDict(isLoadMore = false) {
+    function goHome() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("results").innerHTML = "";
+      document.getElementById("stats").textContent = "";
+      toggleLoadMoreButton(false);
+      currentQuery = "";
+      updateBrowserUrl('', currentMode, true);
+    }
+
+    function getModeLabel() {
+      return currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢';
+    }
+
+    async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
       isSearching = true;
 
@@ -223,10 +250,16 @@
       }
 
       if (!input) {
-        resultsDiv.innerHTML = `<p class="info">請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
+        resultsDiv.innerHTML = `<p class="info">${getModeLabel()}<br>請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
+        currentQuery = "";
         isSearching = false;
         return;
       }
+
+      if (!restoreFromHistory && !isLoadMore) {
+        updateBrowserUrl(input, currentMode);
+      }
+      currentQuery = input;
 
       const url = `http://127.0.0.1:8000/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
@@ -280,13 +313,54 @@
       currentMode = mode;
       document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(`btn-${mode}`).classList.add('active');
+      document.getElementById("searchInput").placeholder = getModeLabel();
       const input = document.getElementById("searchInput").value.trim();
-      if (input) searchDict();
+      if (input) {
+        updateBrowserUrl(input, currentMode, true);
+        searchDict();
+      } else {
+        updateBrowserUrl('', currentMode, true);
+      }
     }
 
     function toggleSidebar() {
       document.getElementById("sidebar").classList.toggle("open");
     }
+
+    window.addEventListener('popstate', function (event) {
+      const state = event.state || { type: 'home' };
+      if (state.type === 'search') {
+        document.getElementById("searchInput").value = state.query || "";
+        currentMode = state.mode || 'm1';
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`btn-${currentMode}`).classList.add('active');
+        document.getElementById("searchInput").placeholder = getModeLabel();
+        currentQuery = state.query || "";
+        searchDict(false, true);
+      } else {
+        goHome();
+      }
+    });
+
+    window.addEventListener('load', function () {
+      const params = new URLSearchParams(window.location.search);
+      const initialQuery = params.get('q') || '';
+      const initialMode = params.get('mode') || 'm1';
+      if (initialMode === 'm2') {
+        switchMode('m2');
+      } else {
+        currentMode = 'm1';
+        document.getElementById('btn-m1').classList.add('active');
+        document.getElementById('btn-m2').classList.remove('active');
+      }
+      document.getElementById('searchInput').placeholder = getModeLabel();
+      if (initialQuery) {
+        document.getElementById('searchInput').value = initialQuery;
+        searchDict();
+      } else {
+        updateBrowserUrl('', currentMode, true);
+      }
+    });
 
     // 只保留這一個 Enter 鍵監聽（已加 preventDefault）
     document.getElementById("searchInput").addEventListener("keypress", function (e) {
