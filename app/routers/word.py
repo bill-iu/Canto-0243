@@ -92,7 +92,7 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
             "char": jyutping_value,
             "code": "",
             "jyutping": jyutping_value or "",
-            "display_text": f"jyutping: {jyutping_value}",
+            "display_text": jyutping_value,
             "query_text": jyutping_value,
             "result_type": "jyutping",
             "id": None,

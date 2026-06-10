@@ -22,9 +22,9 @@ class CharacterDetailPayloadTests(unittest.TestCase):
         self.assertEqual(payload[0]["display_text"], "23")
         self.assertEqual(payload[0]["code"], "23")
         self.assertEqual(payload[0]["jyutping"], "")
-        self.assertEqual(payload[1]["display_text"], "jyutping: zi6")
+        self.assertEqual(payload[1]["display_text"], "zi6")
         self.assertEqual(payload[1]["code"], "")
-        self.assertEqual(payload[2]["display_text"], "jyutping: zi2")
+        self.assertEqual(payload[2]["display_text"], "zi2")
         self.assertTrue(any(item["display_text"] == "子" for item in payload))
         self.assertTrue(any(item["display_text"] == "自" for item in payload))
 
