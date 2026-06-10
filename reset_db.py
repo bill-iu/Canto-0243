@@ -1,7 +1,17 @@
-from app.database import Base, engine
+from app.database import Base, engine, IS_POSTGRES
 import sys
+import os
 
 def reset_database():
+    env = os.getenv("ENV", "local").lower()
+    is_prod = env == "prod" or IS_POSTGRES
+    if is_prod:
+        print("❌ 拒絕執行：偵測到正式環境 (ENV=prod 或 PostgreSQL)。")
+        print("   正式環境請使用 Alembic 管理 schema（alembic upgrade / downgrade），避免資料遺失。")
+        print("   如需強制，請設定 ALLOW_RESET_PROD=1 並重新確認。")
+        if os.getenv("ALLOW_RESET_PROD") != "1":
+            return
+
     print("⚠️  警告：即將刪除資料庫中所有資料表並重新建立！")
     confirm = input("確定要繼續嗎？(yes/no): ").strip().lower()
 

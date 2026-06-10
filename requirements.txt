@@ -5,3 +5,5 @@ pydantic
 python-multipart
 python-dotenv          # 這行很重要（支援 .env）
 psycopg2-binary        # PostgreSQL 支援
+alembic                # 正式 PostgreSQL 版本的 schema 遷移管理（取代 create_all/drop_all）
+sentence-transformers  # vector embedding 產生（semantic similarity 排序優化，同時支援 Postgres 與 SQLite）

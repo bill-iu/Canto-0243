@@ -3,14 +3,28 @@ import re
 from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import case, func, literal, or_
+from sqlalchemy import and_, case, func, literal, or_
 from sqlalchemy.orm import Session
 
-from app.database import SessionLocal
+from app.database import SessionLocal, contains_substring, IS_POSTGRES
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
-from utils import get_0243_code, get_code_variants, split_jyutping
+from utils import get_0243_code, get_code_variants, split_jyutping, get_text_embedding, cosine_similarity
 from collections import defaultdict
+
+def _length_filter(length: int):
+    """
+    防禦性長度過濾。
+    優先使用已回填的 Word.length（有 index，很快）。
+    如果有 length 仍為 NULL 的舊資料，則退回 func.length(char) 確保查詢正確。
+    這樣即使 migration 因為 lock 還沒跑完，使用者也不會看到「完全沒結果」。
+    一旦 length 全部回填，就全部走快速 index 路徑。
+    """
+    return or_(
+        Word.length == length,
+        and_(Word.length.is_(None), func.length(Word.char) == length)
+    )
+
 
 router = APIRouter(prefix="/words", tags=["words"])
 
@@ -90,7 +104,7 @@ def _build_similarity_query(db: Session, q: str, target_words: Optional[List[Wor
 
     query = db.query(Word).filter(Word.char != q)
 
-    shared_char_conditions = [func.instr(Word.char, char) > 0 for char in dict.fromkeys(q) if char]
+    shared_char_conditions = [contains_substring(Word.char, char) for char in dict.fromkeys(q) if char]
     if shared_char_conditions:
         shared_char_expr = or_(*shared_char_conditions)
     else:
@@ -98,7 +112,11 @@ def _build_similarity_query(db: Session, q: str, target_words: Optional[List[Wor
 
     same_rhyme_expr = Word.finals == target_finals_json
     same_code_expr = Word.code.in_(target_codes) if target_codes else literal(True)
-    query_substring_expr = func.instr(q, Word.char) > 0
+    # 舊 similarity ranking 用：檢查 Word.char 是否為 q 的子字串（instr(q, Word.char) 語義）
+    if IS_POSTGRES:
+        query_substring_expr = func.strpos(func.literal(q), Word.char) > 0
+    else:
+        query_substring_expr = func.instr(q, Word.char) > 0
     primary_rank = case(
         (query_substring_expr, 0),
         ((shared_char_expr) & same_rhyme_expr, 1),
@@ -151,12 +169,15 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
             "id": None,
         })
 
-    seen_chars: set[str] = set()
+    seen: set[str] = set()
     # 先輸出 target 詞本身
     for word in _deduplicate_words(words):
-        if word.char not in seen_chars:
-            seen_chars.add(word.char)
+        if word.char not in seen:
+            seen.add(word.char)
             results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
+
+    # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
+    query_emb = get_text_embedding(q) if q else []
 
     related_words = related_words or []
     if not related_words:
@@ -185,7 +206,7 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
         else:
             rank = 4
 
-        if rw.char not in seen_chars:
+        if rw.char not in seen:
             tier_groups[rank].append(rw)
 
     # 每 tier：按 ordered code (primary A/B 優先) 逐 code 輸出：code header + 對應 jyut(s) + 該 code 的 words
@@ -234,8 +255,8 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
                 })
             # 然後此 code 在此 tier 的結果
             for w in _deduplicate_words(code_groups.get(c, [])):
-                if w.char not in seen_chars:
-                    seen_chars.add(w.char)
+                if w.char not in seen:
+                    seen.add(w.char)
                     results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
     return results
@@ -303,6 +324,9 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
     if not codes:
         return results
 
+    # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
+    query_emb = get_text_embedding(q) if q else []
+
     def _get_finals_json_for_code(c: str) -> Optional[str]:
         for w in exact_matches:
             if _get_word_sort_code(w) == c and w.finals:
@@ -314,11 +338,11 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         fin_json = _get_finals_json_for_code(c)
         if not fin_json:
             continue
-        shared_conds = [func.instr(Word.char, ch) > 0 for ch in dict.fromkeys(q) if ch]
+        shared_conds = [contains_substring(Word.char, ch) for ch in dict.fromkeys(q) if ch]
         if shared_conds:
             qy = (db.query(Word)
                   .filter(
-                      func.length(Word.char) == len_q,
+                      _length_filter(len_q),
                       or_(*shared_conds),
                       Word.finals == fin_json
                   )
@@ -329,16 +353,29 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                     results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
         # 純同 rhyme（不同字） for this code (使用該 code 對應的 finals)
+        # 加入 semantic re-rank（若有 query_emb）：semantic 高的詞會被提升，實現「語義相似度」排序優化
         qy = (db.query(Word)
               .filter(
-                  func.length(Word.char) == len_q,
+                  _length_filter(len_q),
                   Word.finals == fin_json
               )
-              .order_by(Word.char, Word.jyutping))
-        for w in _deduplicate_words(qy.all()):
-            if w.char not in seen:
-                seen.add(w.char)
-                results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+              .order_by(Word.char, Word.jyutping)
+              .limit(300))  # cap for instant results; UI uses offset/limit + load more
+        pure_candidates = _deduplicate_words(qy.all())
+        if query_emb:
+            scored = []
+            for w in pure_candidates[:200]:  # cap re-rank for instant (only top candidates scored)
+                w_emb = _load_json_list(getattr(w, "embedding", None) or "[]")
+                score = cosine_similarity(query_emb, w_emb) if w_emb else 0.0
+                if w.char not in seen:
+                    scored.append((score, w))
+            scored.sort(key=lambda x: -x[0])  # semantic desc
+            to_add = [w for s, w in scored]
+        else:
+            to_add = [w for w in pure_candidates if w.char not in seen]
+        for w in to_add:
+            seen.add(w.char)
+            results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
     # 5. "24到" / "29到" 風格：用尾字的 final 做對應位置的 rhyme match
     last_ch = q[-1] if q else ""
@@ -355,7 +392,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
             # 取該 code + 同長度的候選（數量有限），用小迴圈做 position 檢查（無法輕易全推給簡單 ORM）
             cands = (db.query(Word)
                      .filter(
-                         func.length(Word.char) == len_q,
+                         _length_filter(len_q),
                          Word.code == c
                      )
                      .order_by(Word.char, Word.jyutping)
@@ -381,10 +418,11 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         broad_cond = or_(Word.code == '', Word.code.is_(None))
     qy = (db.query(Word)
           .filter(
-              func.length(Word.char) == len_q,
+              _length_filter(len_q),
               broad_cond
           )
-          .order_by(Word.char, Word.jyutping))
+          .order_by(Word.char, Word.jyutping)
+          .limit(1500))  # cap for instant; deep pages via load more if needed
     for w in _deduplicate_words(qy.all()):
         if w.char not in seen:
             seen.add(w.char)
@@ -438,6 +476,7 @@ def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
         initials=initials,
         finals=finals,
         tones=tones,
+        length=len(text),
         meaning=None,
     )
     db.add(db_word)
@@ -454,7 +493,10 @@ def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
 
 @router.post("/", response_model=WordRead)
 def create_word(word: WordCreate, db: Session = Depends(get_db)):
-    db_word = Word(**word.dict())
+    data = word.dict()
+    db_word = Word(**data)
+    if db_word.length is None:
+        db_word.length = len(db_word.char or "")
     db.add(db_word)
     db.commit()
     db.refresh(db_word)
@@ -517,7 +559,7 @@ def search_words(
 
         query = db.query(Word)
         query = _apply_code_filter(query, full_code, mode)
-        query = query.filter(func.length(Word.char) == expected_length)
+        query = query.filter(_length_filter(expected_length))
         is_rhyme_match = right_equal
         start_pos = max(0, len(left_code) - target_length)
 
@@ -530,7 +572,8 @@ def search_words(
             results = query.order_by(Word.char).offset(offset).limit(limit).all()
             return _deduplicate_words(results)
 
-        candidates = query.order_by(Word.char).all()
+        # Cap candidates (Python-side position match for = syntax)
+        candidates = query.order_by(Word.char).limit(2000).all()
         filtered = []
         target_parts = target_finals if is_rhyme_match else target_initials
         for word in candidates:
@@ -561,9 +604,10 @@ def search_words(
 
         query = db.query(Word)
         query = _apply_code_filter(query, full_code, mode)
-        query = query.filter(func.length(Word.char) == len(full_code))
+        query = query.filter(_length_filter(len(full_code)))
 
-        candidates = query.order_by(Word.char).all()
+        # Cap for Python position matching (same reason as wildcard: instant first page)
+        candidates = query.order_by(Word.char).limit(2000).all()
 
         target_finals = [None] * len(full_code)
         for i, c in enumerate(ref_chars):
@@ -600,10 +644,105 @@ def search_words(
 
         return filtered[offset:offset + limit]
 
+    # Wildcard "_" search: "_" 表示該位置接受「任何 code（tone）」，只以對應位置的「押韻 (finals)」匹配 literal 漢字。
+    # 例如 "_識_" → 長度3、第二個字 final 與「識」相同的所有詞；"好_" → 長度2、第一個字 final 與「好」相同。
+    # 僅在 Python 端用 re 解析輸入 q（偵測 '_' 與模式），DB 查詢只用 length filter + 之後 Python position loop 比對 finals（完全不使用 regex 或複雜 expr 於 DB）。
+    # 重用 hybrid 位置匹配的 same style（target_finals 預計算 + 迴圈檢查），效能特性一致。
+    # Generalized wildcard + mixed support (digits + _ + chars), e.g. "_識_", "好_", "2好_", "_2識3", "好_2" etc.
+    # - The entire q string acts as a position mask; len(q) == target word char length (N).
+    # - Per position in the mask:
+    #     digit (0-9): the word's code[pos] must match this digit (or m1/m2 variant per current mode)
+    #     '_': any code at this position (the "wildcard" for code/tone)
+    #     chars: position rhyme match using this chars's finals[0]; also used for priority sort
+    # - DB query: **only** Word.length == N   (simple indexed filter, no regex, no complex expr — complies with friend feedback).
+    # - All code-digit checks + finals position matching done in Python (same style as existing hybrid).
+    # - Special sorting: results with exact char matches at the chars literal positions in the query mask are prioritized first
+    #   (e.g. for "_識_", words where the 2nd char *is literally "識"* come before other words that only share the 'ik' final at pos 1).
+    # - regex only for parsing the user input q (detect mask + classify positions). Never pushed to DB.
+    if "_" in q and re.match(r"^[0-9_一-龥]+$", q):
+        mask = q
+        expected_len = len(mask)
+        if expected_len == 0:
+            return []
+
+        target_finals = [None] * expected_len
+        required_codes = [None] * expected_len  # digit str or None
+        literal_positions: list[tuple[int, str]] = []  # (pos, chars) for priority sort — exact char matches at these positions win
+
+        for i, ch in enumerate(mask):
+            if ch == "_":
+                continue
+            elif ch.isdigit():
+                required_codes[i] = ch
+            else:
+                # chars: collect final for rhyme + record for "exact literal" priority
+                ref = db.query(Word).filter(Word.char == ch).first()
+                if not ref:
+                    refs = _ensure_word_in_db(db, ch)
+                    ref = refs[0] if refs else None
+                if ref and ref.finals:
+                    try:
+                        fl = json.loads(ref.finals)
+                        target_finals[i] = fl[0] if fl else None
+                    except (TypeError, json.JSONDecodeError):
+                        pass
+                literal_positions.append((i, ch))
+
+        # DB layer: plain length filter only. Any _ (or mixed codes) means we cannot safely narrow with a single code IN without DB-side pattern matching.
+        # This is deliberate — keeps queries simple/fast, regex strictly limited to Python input parsing.
+        query = db.query(Word).filter(_length_filter(expected_len))
+        # Cap candidates for Python-side position/code/final matching + priority sort.
+        # Makes first pages (the prioritized "exact literal" results) instant even for common lengths/rhymes.
+        # Deep pagination for very broad patterns (e.g. "__") may be truncated, but real use is fine.
+        candidates = query.order_by(Word.char).limit(2000).all()
+
+        filtered = []
+        for word in candidates:
+            if not word.finals or not word.code:
+                continue
+            try:
+                word_finals = json.loads(word.finals)
+                word_code_str = word.code or ""
+                if len(word_finals) != expected_len or len(word_code_str) != expected_len:
+                    continue
+
+                match_ok = True
+                for i in range(expected_len):
+                    # Digit-specified code position (respect mode via variants for m1/m2)
+                    req_digit = required_codes[i]
+                    if req_digit is not None:
+                        allowed = get_code_variants(req_digit, mode)
+                        if i >= len(word_code_str) or word_code_str[i] not in allowed:
+                            match_ok = False
+                            break
+                    # Hanzi-specified rhyme position
+                    tf = target_finals[i]
+                    if tf is not None:
+                        if i >= len(word_finals) or word_finals[i] != tf:
+                            match_ok = False
+                            break
+                if match_ok:
+                    filtered.append(word)
+            except (TypeError, json.JSONDecodeError):
+                continue
+
+        # Priority sort for the requested "sorting method":
+        # Exact matches on the literal chars supplied in the query mask come first.
+        # (e.g. _識_ → "*識*" words before other ik-rhyme words at that position.)
+        # Secondary: lexical by char (stable-ish within priority groups).
+        def _wildcard_priority_key(w: Word):
+            char = getattr(w, "char", "") or ""
+            exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
+            return (-exact_count, char, getattr(w, "jyutping", "") or "")
+
+        filtered.sort(key=_wildcard_priority_key)
+
+        return _deduplicate_words(filtered)[offset:offset + limit]
+
     if q.isdigit():
         query = db.query(Word)
         query = _apply_code_filter(query, q, mode)
-        query = query.filter(func.length(Word.char) == len(q))
+        query = query.filter(_length_filter(len(q)))
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
         return _deduplicate_words(results)
 

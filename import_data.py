@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.models.word import Word
-from utils import split_jyutping
+from utils import split_jyutping, get_text_embedding
 
 
 def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]], batch_size: int = 5000):
@@ -45,6 +45,8 @@ def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]
                 initials=initials,
                 finals=finals,
                 tones=tones,
+                length=len(char),
+                embedding=get_text_embedding(char) or get_text_embedding(jyutping),
             )
         )
         existing.add(key)

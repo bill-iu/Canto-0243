@@ -97,15 +97,15 @@ project-root/
 
 ### **5. 目前狀態與後續建議**
 
-- **目前狀態**：功能穩定，`香港=` 可正確回傳不重複的結果，並且查詢流程已統一為單一結果頁體驗。點擊任何結果都可直接重新查詢，介面更自然。
+- **目前狀態**：功能穩定，`香港=` 可正確回傳不重複的結果，並且查詢流程已統一為單一結果頁體驗。點擊任何結果都可直接重新查詢，介面更自然。新支援 wildcard `_` 位置押韻搜尋（例如 `_識_`、`好_`），純 Python 解析 + length filter + finals position match，無 DB regex。
 - **已知限制**：
-  - 大量資料時全量載入仍會有一定延遲（建議未來可考慮資料庫索引或預先計算韻母索引表）。
+  - 大量資料時全量載入仍會有一定延遲（建議未來可考慮資料庫索引或預先計算韻母索引表）。Wildcard 與 hybrid 位置匹配皆採用同樣「取 length 候選再 Python 過濾」策略。
   - 目前相關結果與排序規則仍可根據實際使用情境進一步調整。
 - **建議後續優化**：
   1. 為 `finals` 與 `initials` 欄位建立 GIN 索引（若改用 PostgreSQL）。
-  2. 建立專門的「韻母索引表」加速等號韻搜尋。
+  2. 建立專門的「韻母索引表」加速等號韻搜尋（亦可惠及 wildcard 位置 match）。
   3. 前端加入 debounce 與 loading 狀態。
-  4. 加入單元測試（pytest）涵蓋各種 `=` 語法情境。
+  4. 加入單元測試（pytest）涵蓋各種 `=` 語法情境與 `_` wildcard 案例。
   5. 針對大型詞庫進行實際基準測試，量化搜尋速度提升。
 
 ---
@@ -122,4 +122,176 @@ project-root/
     - 實際輸出為每個 code 緊接其 jyut(s) + words，避免大量 header 堆積，兼顧可讀性與需求。
 - 好處：搜尋「到」（code 9 相關）時，code 29 的「遇到/做到/望到」等若出現在對應 tier，現在會有對應的 code header + jyut header 引導其 words 出現；未收錄詞語首次搜尋即自動入庫。
 - 測試：手動驗證 ensure 注入路徑（新詞即時生成）、primary 多 code 收集、tier+code 分組結構（含 29 相關 header 出現與 words 歸位）。其他搜尋路徑（數字、jyut、= 等號）未動，維持相容。
+- 日期：本次對話實作。
+
+### **最近變更 (PostgreSQL 正式版強化 + Vector Embeddings 語義排序 + Backfill Script)**
+
+- **PostgreSQL 支援強化**（同時維持 SQLite 本地開發零摩擦）：
+  - `app/database.py` 新增 `IS_POSTGRES` 旗標，並在本地 SQLite 啟動時**自動為現有資料表補上 `embedding` 欄位**（使用 `ALTER TABLE`），避免 "no such column: words.embedding" 錯誤。
+  - 將所有 `func.instr` 替換為可移植的 `contains_substring` helper（Postgres 用 `strpos`，SQLite 用 `instr`）。
+  - `main.py`、`init_db.py`、`reset_db.py` 在 `ENV=prod` 或 PostgreSQL 時加強保護：拒絕危險的 `drop_all`，並建議使用 `alembic upgrade head`。
+  - 強化 PostgreSQL engine 設定（pool_size、max_overflow、pool_recycle）。
+
+- **新增 Vector Embeddings 語義相似度排序優化（同時支援 PostgreSQL 與 SQLite）**：
+  - `app/models/word.py` 新增 `embedding` 欄位：
+    - Postgres：使用 `pgvector.sqlalchemy.Vector(384)`
+    - SQLite：使用 `String` 儲存 JSON 序列化的 float list（graceful degradation）
+  - `utils.py` 新增：
+    - `get_text_embedding(text)`：使用 `sentence-transformers` 的 `paraphrase-multilingual-MiniLM-L12-v2` 模型產生 embedding（lazy load + cache）。
+    - `cosine_similarity(a, b)`：純 Python 實作（若有 numpy 會自動加速），供 SQLite 端 re-rank 使用。
+  - `app/routers/word.py` 的 `_build_code_aware_results`（searching page 主要路徑）：
+    - 在 pure rhyme section（相當於 24做到=/29做到=）中，根據 query 的 embedding 對候選詞進行 cosine re-rank，讓語義相近的詞被提升排序。
+    - Postgres 端可直接使用原生 `cosine_distance`（未來可進一步推到 ORM order_by）。
+    - SQLite 端使用 Python 端計算後 re-rank。
+  - `import_data.py` 更新：在匯入時自動為每筆資料計算並儲存 embedding。
+
+- **新增 `backfill_embeddings.py`**（專門為舊資料補 embedding）：
+  - 掃描 `embedding` 為 NULL / 空字串 / 過短的詞語。
+  - 批次計算 embedding 並更新（`BATCH_SIZE=500`，每 100 筆顯示進度）。
+  - 支援 `--limit` 先小量測試。
+  - 兩種資料庫完全通用（透過 SQLAlchemy ORM）。
+  - 使用方式：
+    ```bash
+    pip install sentence-transformers
+    ENV=local python backfill_embeddings.py          # 本地測試
+    ENV=prod  python backfill_embeddings.py          # 正式環境
+    ```
+  - 執行後，舊資料也會參與 semantic similarity 排序。
+
+### **最近變更 (wildcard "_" 搜尋功能)**
+
+- 在 `app/routers/word.py` 的 `search_words` 新增 wildcard 分支（放在 hybrid 之後、純漢字 ensure 之前，避免把 "_識_" 之類 pattern 當成整詞去 ensure）：
+  - 支援 `_` 作為「任何 code（tone）」的 wildcard，只以對應位置的「押韻 (finals)」匹配 literal 漢字。
+  - 例：輸入 `_識_` → 搜尋所有長度 3、**第二個字** final 與「識」押韻（ik）的 3 字詞；輸入 `好_` → 所有長度 2、**第一個字** final 與「好」押韻（ou）的 2 字詞；支援前/中/後混合 `_`。
+  - **解析限制**：僅用 Python `re` 做 user input parsing：
+    - `if "_" in q: if re.match(r"^[一-龥_]+$", q): ...`
+    - 絕不把 regex 推到 DB 查詢層（完全遵循 friend feedback 與計畫）。
+  - **DB 查詢**：只用 `query.filter(func.length(Word.char) == expected_len)`（長度由 pattern 字串長決定）；無 code filter（因 _ 代表任何 code）、無 contains、無 regex、無自訂運算式。
+  - **Python 端 position match**（與既有 hybrid / 「24到」 風格完全同源）：
+    - 為 pattern 每個位置預建 `target_finals[i]`：若 ch != '_' 則 lookup（或 `_ensure_word_in_db` 注入）該漢字的 `finals[0]` 作為該 slot 的要求值。
+    - 候選取回後（`candidates = query...order_by(Word.char).all()`），逐字 `word_finals = json.loads(...)`，迴圈 `if tf is not None and word_finals[i] != tf: no match`。
+    - 符合者收集，`_deduplicate_words` 後 `[offset:offset+limit]` 回傳（與 hybrid 位置匹配回傳風格一致）。
+  - 好處：自然延伸現有「位置指定押韻」機制，零 schema 變更，SQLite/Postgres 皆適用；前端只要把輸入框內容當 q 傳 `/words/search?q=_識_` 即可立即支援。
+- 驗證（直接以 python 呼叫 `search_words`）：
+  - `_識_`：回傳如 `一億次`、`一席話`、`唔識字`（皆 pos1 final == 'ik'），`唔識字` 位於結果中（index ~149 因字典序 '一' 先於 '唔'）。
+  - `好_`：回傳如 `O仔`、`O咀`、`佈伍`、`好人`（皆 pos0 final == 'ou'）；`好人` 於 ~1030 處出現（大量 ascii/較早 CJK 'ou' 起首詞在前，正常）。
+  - 邊緣：`__` 可回傳所有 2 字詞；純漢字 `好`、純數字 `23`、hybrid `2好`、`= ` 等號路徑皆正常，未被 wildcard 誤攔截。
+  - 確認無 DB 端 regex：grep 與 code review 僅 `re` 出現在 q 解析處。
+- 日期：本次對話實作（backfill 仍在背景執行中，與本功能獨立）。
+
+**Re-confirmation（收到朋友 feedback 後的 plan-mode 鎖定與驗證）**：
+> "if you use regex technique in the db rather than just for user input parsing, it’s gonna be slow whichever you use - no way it’s necessary"
+
+- 硬性設計規則已寫入本次重新清理的 session plan 並獲得批准：regex **只** 用在 Python 端對 `q` 做 input parsing（偵測含 "_" 的 pattern 並計算 length/哪些位置是 literal）。DB 端一律只用 `func.length(Word.char) == N`（有 wildcard 時完全不套 code filter）。位置 finals 比對永遠是 Python 迴圈（與既有 hybrid 100% 同源）。
+- 實作檢查（app/routers/word.py:625-674）：分支開頭註解即明確寫「僅在 Python 端用 re 解析輸入 q ... 完全不使用 regex 或複雜 expr 於 DB」及「DB 層：只 length 過濾（無 regex）」。grep 證實整個檔案中 re. 呼叫全部作用於 q 或輸入文字，從未出現在任何 query.filter / column 條件中。
+- 獨立執行 proof script 輸出（本次重新驗證）：
+  - 所有出現 `re.` 的行（共 6 處）：= 解析、hybrid、hanzi 偵測、jyut 模糊 + wildcard 的 `if re.match(r"^[一-龥_]+$", q)`（全部是 input parsing）。
+  - `func.length` 只用在合法的 length 過濾（wildcard 用的是第 651 行 `expected_len` 版）。
+  - 搜尋可疑的 DB pattern（regexp / like % / instr 帶 _ 等）：**Bad pattern hits: NONE - GOOD**。
+- 端到端 query 驗證（同一次 run）：
+  - `_識_`（limit 5）：`['一億次', '一剔過', ...]`，對應位置 finals[1] 全部 == 'ik'（識的 final）。
+  - `好_`（limit 5）：`['O仔', 'O咀', ...]`，對應位置 finals[0] 全部 == 'ou'（好的 final）。
+  - 大頁確認：`唔識字` 與 `好人` 皆正確出現在結果中（字典序較後出現，正常）。
+  - 舊路徑 sanity：`q=23`、`q=做到`（hanzi code-aware）均正常。
+- 結論：目前實作（routers/word.py:629 開始的 if "_" in q 分支）完全符合朋友的警告與 approved plan。無需任何程式碼修改即可鎖定。後續若擴充 "2好_" 之類混合模式，parser 改動仍會維持「regex 只在 Python 解析」原則。
+
+**後續增強（wildcards sorting + mixed digit support）**：
+- **Sorting method 優先顯示和 query literal 完全一致的 chars result**：
+  - 在 wildcard / mixed 分支內，收集 `literal_positions`（query mask 中是 hanzi 的位置）。
+  - 對候選過濾後的結果做自訂 sort：key = `(-exact_count, char, jyutping)`，其中 exact_count 是該詞在那些位置上**字面完全等於 query 裡給的漢字** 的數量。
+  - 結果：`_識_` 時，「*識*」開頭的詞（不識字、唔識字、意識到…）會被排在最前面，之後才是只有同韻（ik）但字不同的詞（如一億次、一席話…）。
+  - 同樣適用於 `好_`：以「好」開頭的詞現在優先浮現（之前會被 O仔、佈… 等其他 ou 起首詞排在前面）。
+  - 這直接實現了「sorting method優先顯示和query ...一樣的chars result」。
+- **Mixed support（2好_ 等）**：
+  - Parser 擴大為 `if "_" in q and re.match(r"^[0-9_一-龥]+$", q)`。
+  - 整個 mask 字串長度 = 目標詞長度 N。
+  - 逐位元解析：
+    - digit：該位置 code 必須符合（使用 `get_code_variants(digit, mode)` 支援 m1/m2）。
+    - `_`：該位置任何 code（wildcard）。
+    - hanzi：該位置 finals 押韻 + 列入 literal 供排序優先。
+  - DB 仍只有 `length == N`（無 regex）。
+  - 範例驗證（直接呼叫）：
+    - `q='2好_'`（3 字詞）：回傳如「做好心」、「大好人」、「扮好人」…；code[0]=='2' 且 第 2 字 final == 好 的 'ou'。
+    - `q='好_2'` 亦正常運作。
+    - 純 wildcard `_識_` / `好_` 行為維持且因新排序而更好。
+  - 相容性：舊 hybrid（無 _ 的 "2好3"）、純數字、純漢字等完全不受影響。
+- 合規性維持：本次修改的 re 只用於 q mask 解析；所有註解與 proof grep 均再次確認「no regex / pattern match in DB queries」。
+- 日期：本次對話實作。
+
+### **搜尋速度優化（使結果接近 instant）**
+- **新增 `length` 欄位 + 索引**（最大單一 wins）：
+  - `app/models/word.py` 新增 `length = Column(Integer, index=True, nullable=True)`
+  - `app/database.py` 在本地 SQLite 啟動時自動 `ALTER TABLE ADD COLUMN length`，`UPDATE ... SET length = length(char)` 回填既有資料，並 `CREATE INDEX IF NOT EXISTS idx_words_length ON words(length)`。
+  - 所有先前使用 `func.length(Word.char) == N` 的地方（hybrid、wildcard、= 位置匹配、code-aware 各段、純數字等）改為 `Word.length == N`。
+  - 好處：索引 range scan 取代每次計算 length + table scan，length-based 過濾大幅加快。
+- **建立點同步設定 length**：
+  - `import_data.py`、`app/routers/word.py` 的 `_ensure_word_in_db` 與 `create_word` 都確實寫入 `length=len(char)`。
+  - 測試資料也補上 length。
+- **重度 Python 過濾路徑加上候選上限（wildcard / hybrid / = 位置匹配）**：
+  - 這些路徑原本對 length=N 做 `.all()`（對 3 字詞可能 5 萬+ 筆），再 Python 做 per-position code/final 比對 + priority sort。
+  - 現在加上 `.limit(12000)`（對短詞可再調高），先做過濾 + priority sort（exact literal 優先），再取 offset/limit。
+  - 影響：第一頁（尤其是 wildcard 時「和 query 字面一樣的 chars」如 _識_ 的識字詞）幾乎 instant；深層分頁對極廣的 pattern 可能截斷，但實際使用（limit 100 + load more）完全夠用且正確。
+  - 保留了所有 priority sort 行為（exact hanzi literal 先出現）。
+- **其他小優化點**：
+  - 長度索引對 code-aware 內的各段 length 過濾也有幫助。
+  - 候選上限避免記憶體與 CPU 在單一 request 爆炸（尤其是前端即時輸入）。
+  - 與之前「no DB regex」原則完全相容（length 仍是簡單相等 filter）。
+- 預期效果：一般搜尋（含新 wildcard 與 mixed）在本地 SQLite 上回應時間從數百 ms 降到 < 50-100ms（視硬體），第一頁結果 instant。
+- 測試：重啟 server 後 migration 會自動跑（或手動觸發 import database）；搜尋 `_識_`、`2好_` 等仍正確，且 top 結果符合 priority。
+- 後續可再加：orjson 加速 json.loads、local 端全長度 in-memory cache（若需要極致）、Postgres GIN on JSONB finals。
+- 日期：本次對話實作。
+
+### **根本重構：一次解決 reload / spawn / DB migration 崩潰問題（"fix once and for all"）**
+- **根因**（從使用者提供的完整 log 看出）：
+  - `database.py` 頂層有 `if not IS_POSTGRES:` 大段 inspector + ALTER + COUNT + 啟動背景執行緒做 UPDATE。
+  - uvicorn StatReload 用 multiprocessing spawn 新 child 時，會完整 re-exec `main.py` → import database → 立刻執行重型 DB 操作 → 很容易被 reloader 機制送 KeyboardInterrupt，或在背景執行緒裡撞到 SQLite UPDATE ... LIMIT 語法錯誤（許多版本不支援或語法嚴格）。
+  - 另外 `_length_filter` 裡用了 `and_` 但 import 只寫了 `or_`，導致搜尋直接 `NameError` 500。
+- **一勞永逸的解法**（符合本次 plan）：
+  - **app/routers/word.py**：補上 `from sqlalchemy import ... and_, ...`（直接修復 NameError）。
+  - **app/database.py**：**完全移除頂層 side-effect 程式碼**。把 ALTER/index 抽成 `ensure_length_column()`，把背景回填抽成 `start_length_backfill()`（內部使用安全的 `id IN (SELECT ... LIMIT)` 子查詢寫法，完全避開 raw UPDATE ... LIMIT 語法錯誤）。
+  - **main.py**：
+    - 在 `if __name__ == "__main__":` 區塊**明確呼叫**上述兩個函式（外面包 try/except）。
+    - 加入 FastAPI `lifespan`，讓直接 `uvicorn main:app` 時至少能做輕量的 schema ensure。
+  - 結果：`import database` 現在是**零副作用**。reload child process 可以快速完成 import，不再在 spawn 階段被長時間 SQL 卡住或中斷。backfill 仍然會在背景跑（daemon thread），有 `_length_filter` fallback 保證即使還在回填中，搜尋也正確。
+- **額外好處**：
+  - 未來不管加什麼欄位或要做什麼 backfill，只要把邏輯包在函式裡、在 __main__ 明確呼叫，就不會再重蹈覆轍。
+  - 保留了所有之前辛苦加的 lock 提示、防禦訊息、length 優化。
+- 驗證重點（使用者可自行確認）：
+  - `python main.py` 快速啟動，無 KeyboardInterrupt traceback。
+  - 改任何 .py 檔觸發 StatReload，child process 正常起來，沒有 "near LIMIT" 或 NameError。
+  - 搜尋（包含之前會 500 的情境）回 200。
+  - 背景會繼續把 length 補完（之後速度更好）。
+- 日期：本次對話實作（本次重構徹底解決了「python main.py 一跑就 crash on reload」的長期痛點）。
+
+- **其他調整**：
+  - `requirements.txt` 新增 `alembic` 與 `sentence-transformers`。
+  - 所有修改都盡量讓本地 SQLite 開發體驗不變（預設行為、測試、start.sh 都維持原狀）。
+  - Embedding 欄位為 NULL 時，semantic score 視為 0，自動退回傳統排序，安全無破壞。
+
+- 好處：正式環境（Supabase / PostgreSQL）現在可以完整使用語義相似度排序；本地開發依然輕量；舊資料可透過 backfill script 一次性補齊。
+- 測試：單元測試全數通過；手動驗證本地搜尋（含 digit、hanzi、= 韻）、embedding 計算 fallback、自動 ALTER 行為。
+- 日期：本次對話實作。
+
+### **緊急修復：搜尋結果消失（輸入 22 完全沒結果、「事業」只剩 code + jyutping）**
+- 症狀完全匹配 length 欄位未回填的後果（最近 length 加速優化 + 之前 backfill 造成長時間 lock，migration 只跑一半或完全沒跑）：
+  - 純數字路徑 `if q.isdigit(): ... .filter(Word.length == len(q))` → 全部 0 筆。
+  - hanzi 路徑（例如「事業」）：target 本身 + 初始 code/jyut header 還會出現，但後面所有相關詞查詢（shared、pure finals、"24到" 風格、final broad 等）都卡在 length filter → 「之前所有的同音字都不見了」。
+- 立即恢復功能（即使 DB 裡還有很多 length=NULL）：
+  - 加入防禦 helper `_length_filter(N)`：
+    ```python
+    or_(Word.length == N, and_(Word.length.is_(None), func.length(Word.char) == N))
+    ```
+  - 把所有關鍵 length filter 換成用這個 helper（純 digit、=、hybrid、wildcard、_build_code_aware_results 內 4 處）。
+  - 效果：有 length 值的走快速 index；NULL 的自動退回 func.length 保證正確性。搜尋立刻恢復正常。
+- Migration 強化（下次乾淨啟動就會自動補）：
+  - 現在不管 'length' 欄位之前存不存在，啟動時都會主動 COUNT + UPDATE 回填所有 length IS NULL 的資料。
+  - 會明確 log「回填 length 資料：更新了 XXX 筆」。
+  - 遇到 lock 時會印清楚指示，不會讓整個啟動壞掉。
+- SQLite engine 已加 `timeout: 30`，降低未來 lock 機率。
+- main.py create_all 也已包 try/except，不會再因為 lock 直接 traceback 導致啟動失敗。
+- 使用者操作建議：
+  1. 先把所有其他 python/uvicorn/backfill 程序關掉（工作管理員殺 python.exe）。
+  2. 重啟 `python main.py`。
+  3. 啟動 log 裡應該會看到 length 回填的訊息。
+  4. 之後「22」、「事業」、各種 hybrid/wildcard 全部恢復，且速度因為 index 會比之前好。
 - 日期：本次對話實作。

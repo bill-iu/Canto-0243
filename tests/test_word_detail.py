@@ -35,8 +35,8 @@ class CharacterDetailPayloadTests(unittest.TestCase):
 
         with TestingSession() as session:
             session.add_all([
-                Word(char="A仔", code="23", jyutping="aa1 zai2"),
-                Word(char="B仔", code="23", jyutping="bei2 zai2"),
+                Word(char="A仔", code="23", jyutping="aa1 zai2", length=2),
+                Word(char="B仔", code="23", jyutping="bei2 zai2", length=2),
             ])
             session.commit()
 
@@ -54,11 +54,11 @@ class CharacterDetailPayloadTests(unittest.TestCase):
 
         with TestingSession() as session:
             session.add_all([
-                Word(char="做到", code="24", jyutping="zou6 dou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"d\"]"),
-                Word(char="做數", code="", jyutping="zou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"s\"]"),
-                Word(char="路數", code="", jyutping="lou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"l\", \"s\"]"),
-                Word(char="丈母", code="", jyutping="zoeng6 mou5", finals="[\"oeng\", \"ou\"]", initials="[\"z\", \"m\"]"),
-                Word(char="䀹嘢", code="", jyutping="gap6 je5", finals="[\"ap\", \"e\"]", initials="[\"g\", \"j\"]"),
+                Word(char="做到", code="24", jyutping="zou6 dou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"d\"]", length=2),
+                Word(char="做數", code="", jyutping="zou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"z\", \"s\"]", length=2),
+                Word(char="路數", code="", jyutping="lou6 sou3", finals="[\"ou\", \"ou\"]", initials="[\"l\", \"s\"]", length=2),
+                Word(char="丈母", code="", jyutping="zoeng6 mou5", finals="[\"oeng\", \"ou\"]", initials="[\"z\", \"m\"]", length=2),
+                Word(char="䀹嘢", code="", jyutping="gap6 je5", finals="[\"ap\", \"e\"]", initials="[\"g\", \"j\"]", length=2),
             ])
             session.commit()
 
