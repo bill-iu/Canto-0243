@@ -348,7 +348,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                   Word.finals == fin_json
               )
               .order_by(Word.char, Word.jyutping)
-              .limit(100))  # cap for instant
+              .limit(50))  # cap for instant
         candidates = _deduplicate_words(qy.all())
         shared_ws = [w for w in candidates if any(ch in w.char for ch in q_chars)]
         pure_ws = [w for w in candidates if w not in shared_ws]  # or use set for seen later
@@ -420,7 +420,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
               broad_cond
           )
           .order_by(Word.char, Word.jyutping)
-          .limit(300))  # cap for instant; deep pages via load more if needed
+          .limit(100))  # cap for instant; deep pages via load more if needed
     for w in _deduplicate_words(qy.all()):
         if w.char not in seen:
             seen.add(w.char)
