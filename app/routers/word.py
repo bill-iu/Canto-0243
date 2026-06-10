@@ -1,7 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-import re
 import json
+import re
+from typing import Iterable, List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import func
+from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.models.word import Word
@@ -17,6 +20,35 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def _deduplicate_words(words: Iterable[Word]) -> List[Word]:
+    seen = set()
+    unique = []
+    for word in words:
+        if word.char not in seen:
+            seen.add(word.char)
+            unique.append(word)
+    return unique
+
+
+def _load_json_list(value: Optional[object]) -> List[object]:
+    if not value:
+        return []
+    if isinstance(value, list):
+        return value
+    try:
+        parsed = json.loads(value)
+        return parsed if isinstance(parsed, list) else []
+    except (TypeError, json.JSONDecodeError):
+        return []
+
+
+def _apply_code_filter(query, code: Optional[str], mode: str):
+    if code:
+        variants = get_code_variants(code, mode)
+        query = query.filter(Word.code.in_(variants))
+    return query
 
 
 @router.post("/", response_model=WordRead)
@@ -47,32 +79,18 @@ def search_words(
     offset: int = 0,
     db: Session = Depends(get_db)
 ):
-    import re
-    import json
-    from sqlalchemy import func
-
     if not q:
         query = db.query(Word)
-        if code:
-            variants = get_code_variants(code, mode)
-            query = query.filter(Word.code.in_(variants))
+        query = _apply_code_filter(query, code, mode)
         if char:
             query = query.filter(Word.char == char)
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        # 去重（以 id 為主）
-        seen = set()
-        unique = []
-        for w in results:
-            if w.id not in seen:
-                seen.add(w.id)
-                unique.append(w)
-        return unique
+        return _deduplicate_words(results)
 
     q = q.strip()
 
-     # ==================== 等號韻搜尋（已修正重複問題版） ====================
     if "=" in q:
-        match = re.match(r'^(\d*)(=)?([\u4e00-\u9fa5]+)?(=)?(\d*)$', q)
+        match = re.match(r'^(\d*)(=)?([一-龥]+)?(=)?(\d*)$', q)
         if not match:
             return []
 
@@ -90,85 +108,48 @@ def search_words(
         if not target:
             return []
 
-        try:
-            target_initials = json.loads(target.initials) if target.initials else []
-            target_finals = json.loads(target.finals) if target.finals else []
-        except:
-            return []
+        target_initials = _load_json_list(target.initials)
+        target_finals = _load_json_list(target.finals)
 
         target_length = len(target_str)
         expected_length = len(left_code) + len(right_code) or target_length
 
         query = db.query(Word)
-        if full_code:
-            variants = get_code_variants(full_code, mode)
-            query = query.filter(Word.code.in_(variants))
-
+        query = _apply_code_filter(query, full_code, mode)
         query = query.filter(func.length(Word.char) == expected_length)
         is_rhyme_match = right_equal
         start_pos = max(0, len(left_code) - target_length)
 
         if start_pos == 0 and target_length == expected_length:
-            if is_rhyme_match:
-                target_json = json.dumps(target_finals)
-                query = query.filter(Word.finals == target_json)
-            else:
-                target_json = json.dumps(target_initials)
-                query = query.filter(Word.initials == target_json)
+            target_parts = target_finals if is_rhyme_match else target_initials
+            target_json = json.dumps(target_parts)
+            compare_field = Word.finals if is_rhyme_match else Word.initials
+            query = query.filter(compare_field == target_json)
 
             results = query.order_by(Word.char).offset(offset).limit(limit).all()
+            return _deduplicate_words(results)
 
-            # === 使用 char 去重，解決同字不同 code 的重複問題 ===
-            seen = set()
-            unique_results = []
-            for word in results:
-                if word.char not in seen:
-                    seen.add(word.char)
-                    unique_results.append(word)
-            return unique_results
-
-        # 複雜情況走 Python 迴圈（也建議加上 char 去重）
         candidates = query.order_by(Word.char).all()
         filtered = []
+        target_parts = target_finals if is_rhyme_match else target_initials
         for word in candidates:
-            try:
-                word_initials = json.loads(word.initials) if word.initials else []
-                word_finals = json.loads(word.finals) if word.finals else []
-
-                if is_rhyme_match:
-                    match_ok = True
-                    for i in range(target_length):
-                        pos = start_pos + i
-                        if pos < len(word_finals) and i < len(target_finals):
-                            if target_finals[i] and target_finals[i] != word_finals[pos]:
-                                match_ok = False
-                                break
-                    if match_ok:
-                        filtered.append(word)
-                else:
-                    match_ok = True
-                    for i in range(target_length):
-                        pos = start_pos + i
-                        if pos < len(word_initials) and i < len(target_initials):
-                            if target_initials[i] and target_initials[i] != word_initials[pos]:
-                                match_ok = False
-                                break
-                    if match_ok:
-                        filtered.append(word)
-            except:
+            word_parts = _load_json_list(word.finals if is_rhyme_match else word.initials)
+            if not word_parts:
                 continue
 
-        # Python 迴圈結果也做 char 去重
-        seen = set()
-        unique_filtered = []
-        for word in filtered[offset:offset + limit]:
-            if word.char not in seen:
-                seen.add(word.char)
-                unique_filtered.append(word)
-        return unique_filtered
-        
-    # ==================== 2. 位置指定混合搜尋 ====================
-    hybrid_match = re.match(r'^(\d+)([\u4e00-\u9fa5]+)(\d*)$', q)
+            match_ok = True
+            for i in range(target_length):
+                pos = start_pos + i
+                if pos < len(word_parts) and i < len(target_parts):
+                    if target_parts[i] and target_parts[i] != word_parts[pos]:
+                        match_ok = False
+                        break
+            if match_ok:
+                filtered.append(word)
+
+        return _deduplicate_words(filtered[offset:offset + limit])
+
+    hybrid_match = re.match(r'^(\d+)([一-龥]+)(\d*)$', q)
     if hybrid_match:
         num_prefix = hybrid_match.group(1)
         ref_chars = hybrid_match.group(2)
@@ -177,8 +158,8 @@ def search_words(
         full_code = num_prefix + num_suffix
         ref_pos = max(0, len(num_prefix) - 1)
 
-        variants = get_code_variants(full_code, mode)
-        query = db.query(Word).filter(Word.code.in_(variants))
+        query = db.query(Word)
+        query = _apply_code_filter(query, full_code, mode)
         query = query.filter(func.length(Word.char) == len(full_code))
 
         candidates = query.order_by(Word.char).all()
@@ -192,7 +173,7 @@ def search_words(
                     try:
                         fl = json.loads(t.finals)
                         target_finals[pos] = fl[0] if fl else None
-                    except:
+                    except (TypeError, json.JSONDecodeError):
                         pass
 
         filtered = []
@@ -213,25 +194,20 @@ def search_words(
                         break
                 if match_ok:
                     filtered.append(word)
-            except:
+            except (TypeError, json.JSONDecodeError):
                 continue
 
         return filtered[offset:offset + limit]
 
-    # ==================== 3. 純數字 ====================
     if q.isdigit():
-        variants = get_code_variants(q, mode)
-        query = db.query(Word).filter(Word.code.in_(variants))
+        query = db.query(Word)
+        query = _apply_code_filter(query, q, mode)
         query = query.filter(func.length(Word.char) == len(q))
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        seen = set()
-        unique = [w for w in results if not (w.char in seen or seen.add(w.char))]
-        return unique
+        return _deduplicate_words(results)
 
-    if re.match(r'^[\u4e00-\u9fa5]+$', q):
+    if re.match(r'^[一-龥]+$', q):
         results = db.query(Word).filter(Word.char == q).all()
-        seen = set()
-        unique = [w for w in results if not (w.char in seen or seen.add(w.char))]
-        return unique
+        return _deduplicate_words(results)
 
     return []
