@@ -99,6 +99,121 @@ if __name__ == "__main__":
     except Exception:
         pass
 
+    # Preload full embedding matrix (for syn/ant vectorized top-k / low-sim) + static thesaurus indices.
+    # Done in explicit __main__ (same as length/embedding) so uvicorn --reload child processes stay clean.
+    # Safe if no embeddings or no data files (syn mode falls back gracefully).
+    try:
+        import threading
+        import numpy as np
+        from app.database import SessionLocal
+        from app.models.word import Word
+        from utils import (
+            load_json_list,
+            set_synonym_index,
+            load_cilin_index,
+            load_antonym_dict,
+            load_thesaurus_dicts,
+        )
+
+        def _preload_syn_index():
+            try:
+                db = SessionLocal()
+                try:
+                    rows = (
+                        db.query(Word.char, Word.embedding)
+                        .filter(Word.embedding.isnot(None))
+                        .filter(Word.embedding != "")
+                        .all()
+                    )
+                finally:
+                    db.close()
+
+                chars = []
+                vecs = []
+                for char, emb in rows:
+                    if not char:
+                        continue
+                    v = load_json_list(emb)
+                    if isinstance(v, list) and len(v) == 384:
+                        chars.append(char)
+                        vecs.append(v)
+
+                if not chars or not vecs:
+                    print("[main] Synonym index preload: no embeddings found (syn mode will use static-only fallback).")
+                    # Still attempt static loads
+                    try:
+                        load_cilin_index()
+                        load_antonym_dict()
+                        load_thesaurus_dicts()
+                    except Exception:
+                        pass
+                    return
+
+                mat = np.asarray(vecs, dtype=np.float32)
+                # Row-normalize (so dot == cosine)
+                norms = np.linalg.norm(mat, axis=1, keepdims=True)
+                norms[norms == 0] = 1.0
+                mat = mat / norms
+
+                set_synonym_index(chars, mat)
+
+                # Static curated (non-fatal if files absent)
+                try:
+                    load_cilin_index()
+                    load_antonym_dict()
+                    load_thesaurus_dicts()
+                except Exception:
+                    pass
+
+                print(f"[main] Synonym/antonym index preloaded: {len(chars)} entries (matrix ready for instant syn mode).")
+            except Exception as e:
+                print(f"[main] Synonym index preload failed (syn mode falls back to static/emb-per-query): {e}")
+
+        threading.Thread(target=_preload_syn_index, daemon=True).start()
+    except Exception:
+        pass
+
+    # Preload short-word metadata cache (for instant mask/hybrid/"門0"/"好23"/wildcard paths).
+    # Query minimal columns, pre-parse JSON finals etc ONCE at startup (no per-request json.loads).
+    # Uses populate (not full query inside utils) to stay consistent with _preload_syn_index and avoid import cycles.
+    # New words injected by _ensure are synced via update_word_in_cache so they participate without restart.
+    # Fallback in router: if buckets empty, still does the old DB path (correctness first).
+    try:
+        import threading
+        from app.database import SessionLocal
+        from app.models.word import Word
+        from utils import populate_word_cache_from_rows, get_word_cache_stats
+
+        def _preload_word_cache():
+            try:
+                db = SessionLocal()
+                try:
+                    # Only need fields used by mask/hybrid position matching + priority + display.
+                    # length is already populated (or backfill running); we take what we have.
+                    rows = (
+                        db.query(
+                            Word.char,
+                            Word.code,
+                            Word.jyutping,
+                            Word.finals,
+                            Word.initials,
+                            Word.length,
+                        )
+                        .all()
+                    )
+                finally:
+                    db.close()
+
+                n = populate_word_cache_from_rows(rows)
+                stats = get_word_cache_stats()
+                print(f"[main] Word meta cache preloaded: {n} entries (lengths={stats['lengths'][:8]}... total_meta={stats['meta_size']}). Mask/hybrid now use pre-parsed in-mem (instant).")
+            except Exception as e:
+                print(f"[main] Word meta cache preload failed (mask/hybrid fall back to DB .all() + json per row): {e}")
+
+        threading.Thread(target=_preload_word_cache, daemon=True).start()
+    except Exception:
+        pass
+
     uvicorn.run(
         "main:app",
         host=os.getenv("HOST", "127.0.0.1"),

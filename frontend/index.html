@@ -154,6 +154,32 @@
       color: #666;
       font-size: 15px;
     }
+
+    /* Synonym / Antonym two-column layout (no scores, pure word buttons) */
+    .syn-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .syn-section {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+    .syn-section h4 {
+      margin: 4px 8px 8px;
+      font-size: 15px;
+      color: #d4380d;
+      border-bottom: 1px solid #f0f0f0;
+      padding-bottom: 4px;
+    }
+    .syn-section .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
+      padding: 0;
+    }
   </style>
 </head>
 
@@ -173,6 +199,7 @@
       <div style="font-weight:bold; margin-bottom:12px; color:#555;">模式切換</div>
       <button id="btn-m1" class="mode-btn active" onclick="switchMode('m1')">模式1 - 0243</button>
       <button id="btn-m2" class="mode-btn" onclick="switchMode('m2')">模式2 - 02493</button>
+      <button id="btn-syn" class="mode-btn" onclick="switchMode('syn')">近義/反義詞查找</button>
     </div>
   </div>
 
@@ -192,6 +219,9 @@
     let isSearching = false;
     let currentQuery = "";
     const PAGE_SIZE = 200;
+    // Simple client cache for instant repeat queries (keyed by mode:q:offset). Cleared naturally on navigation/reload.
+    // Huge win for clicking results (which re-searches) and mode flips on same input.
+    const searchCache = new Map();
 
     function updateBrowserUrl(query = "", mode = currentMode, replace = false) {
       const params = new URLSearchParams();
@@ -221,6 +251,30 @@
       searchDict();
     }
 
+    function createSynSection(title, items) {
+      const section = document.createElement('div');
+      section.className = 'syn-section';
+      const h = document.createElement('h4');
+      h.textContent = title + (items.length ? ` (${items.length})` : '');
+      section.appendChild(h);
+      const grid = document.createElement('div');
+      grid.className = 'results';
+      items.forEach(w => {
+        const char = (w && typeof w === 'object') ? (w.char || w) : w;
+        const btn = createResultButton(char, char);  // no score, no jyut title for syn
+        grid.appendChild(btn);
+      });
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.textContent = '（無）';
+        empty.style.color = '#999';
+        empty.style.fontSize = '13px';
+        grid.appendChild(empty);
+      }
+      section.appendChild(grid);
+      return section;
+    }
+
     function goHome() {
       document.getElementById("searchInput").value = "";
       document.getElementById("results").innerHTML = "";
@@ -231,6 +285,7 @@
     }
 
     function getModeLabel() {
+      if (currentMode === 'syn') return '近義/反義詞查找';
       return currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢';
     }
 
@@ -247,6 +302,8 @@
         statsDiv.textContent = "";
         currentResults = [];
         currentOffset = 0;
+        // Default to normal results grid; syn mode will override below if needed.
+        resultsDiv.className = 'results';
       }
 
       if (!input) {
@@ -261,12 +318,53 @@
       }
       currentQuery = input;
 
+      const cacheKey = `${currentMode}:${input}:${currentOffset}`;
+      if (!isLoadMore && searchCache.has(cacheKey)) {
+        // Instant path: no fetch, no network, pure render from prior result (common for result clicks + mode flips).
+        const data = searchCache.get(cacheKey);
+        // fall through to the render logic below by faking the response shape
+        await Promise.resolve(); // keep async shape
+        // (we duplicate minimal render to avoid big refactor; results are already validated on first fetch)
+        if (currentMode === 'syn') {
+          resultsDiv.innerHTML = '';
+          resultsDiv.className = 'syn-container';
+          const syns = data.filter(r => r.relation === 'syn');
+          const ants = data.filter(r => r.relation === 'ant');
+          resultsDiv.appendChild(createSynSection('近義詞', syns));
+          resultsDiv.appendChild(createSynSection('反義詞', ants));
+          statsDiv.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
+          toggleLoadMoreButton(false);
+        } else {
+          resultsDiv.className = 'results';
+          statsDiv.textContent = `找到 ${currentResults.length + data.length} 個結果（${currentMode} 模式）`;
+          data.forEach(word => {
+            const displayText = word.display_text || word.char;
+            const queryText = word.query_text || word.char;
+            resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
+          });
+          toggleLoadMoreButton(data.length === PAGE_SIZE);
+        }
+        currentResults = currentResults.concat(data);
+        currentOffset += data.length;
+        isSearching = false;
+        return;
+      }
+
       const url = `http://127.0.0.1:8000/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error("後端錯誤");
         const data = await res.json();
+
+        if (!isLoadMore) {
+          searchCache.set(cacheKey, data);  // store for instant future hits (same q/mode/offset)
+          // naive LRU-ish: if too big drop oldest (keeps memory tiny)
+          if (searchCache.size > 64) {
+            const firstKey = searchCache.keys().next().value;
+            searchCache.delete(firstKey);
+          }
+        }
 
         if (data.length === 0 && !isLoadMore) {
           resultsDiv.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
@@ -277,15 +375,28 @@
         currentResults = currentResults.concat(data);
         currentOffset += data.length;
 
-        statsDiv.textContent = `找到 ${currentResults.length} 個結果（${currentMode} 模式）`;
+        if (currentMode === 'syn') {
+          // Two-column no-score layout for 近義/反義
+          resultsDiv.innerHTML = '';
+          resultsDiv.className = 'syn-container';
+          const syns = data.filter(r => r.relation === 'syn');
+          const ants = data.filter(r => r.relation === 'ant');
+          resultsDiv.appendChild(createSynSection('近義詞', syns));
+          resultsDiv.appendChild(createSynSection('反義詞', ants));
+          statsDiv.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
+          toggleLoadMoreButton(false);  // syn 模式通常不需 load more（k 小）
+        } else {
+          resultsDiv.className = 'results';
+          statsDiv.textContent = `找到 ${currentResults.length} 個結果（${currentMode} 模式）`;
 
-        data.forEach(word => {
-          const displayText = word.display_text || word.char;
-          const queryText = word.query_text || word.char;
-          resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
-        });
+          data.forEach(word => {
+            const displayText = word.display_text || word.char;
+            const queryText = word.query_text || word.char;
+            resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
+          });
 
-        toggleLoadMoreButton(data.length === PAGE_SIZE);
+          toggleLoadMoreButton(data.length === PAGE_SIZE);
+        }
 
       } catch (e) {
         console.error(e);
@@ -312,7 +423,8 @@
     function switchMode(mode) {
       currentMode = mode;
       document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`btn-${mode}`).classList.add('active');
+      const btnEl = document.getElementById(`btn-${mode}`);
+      if (btnEl) btnEl.classList.add('active');
       document.getElementById("searchInput").placeholder = getModeLabel();
       const input = document.getElementById("searchInput").value.trim();
       if (input) {
@@ -332,8 +444,9 @@
       if (state.type === 'search') {
         document.getElementById("searchInput").value = state.query || "";
         currentMode = state.mode || 'm1';
-        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(`btn-${currentMode}`).classList.add('active');
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        const activeBtn = document.getElementById(`btn-${currentMode}`);
+        if (activeBtn) activeBtn.classList.add('active');
         document.getElementById("searchInput").placeholder = getModeLabel();
         currentQuery = state.query || "";
         searchDict(false, true);
@@ -346,12 +459,15 @@
       const params = new URLSearchParams(window.location.search);
       const initialQuery = params.get('q') || '';
       const initialMode = params.get('mode') || 'm1';
-      if (initialMode === 'm2') {
-        switchMode('m2');
+      if (initialMode === 'm2' || initialMode === 'syn') {
+        switchMode(initialMode);
       } else {
         currentMode = 'm1';
         document.getElementById('btn-m1').classList.add('active');
-        document.getElementById('btn-m2').classList.remove('active');
+        const b2 = document.getElementById('btn-m2');
+        if (b2) b2.classList.remove('active');
+        const bs = document.getElementById('btn-syn');
+        if (bs) bs.classList.remove('active');
       }
       document.getElementById('searchInput').placeholder = getModeLabel();
       if (initialQuery) {

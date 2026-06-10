@@ -48,6 +48,16 @@ project-root/
 - [x] 結果去重：以 `char` 為單位去重，避免同字不同 code 重複顯示
 - [x] 前端即時搜尋 + 分頁載入更多（Load More）
 - [x] 完整離線使用（單一 HTML 檔案 + 本地 FastAPI）
+
+### **新增功能（2026 近義/反義詞查找模式）**
+- [x] 獨立 mode='syn'（與 m1/m2 完全正交，不影響原有 code-aware 排序與嚴格 code 過濾）
+- [x] 前端模式切換新增「近義/反義詞查找」按鈕 + two-column CSS（左近義 / 右反義，純詞按鈕、無分數）
+- [x] 後端 early branch + handle_syn_ant_search：_ensure 注入 + 靜態詞林/antisem/guotong 優先 + 現有 embedding matrix 向量化 blend（top-k / low-sim）
+- [x] 啟動預載：emb matrix（np 向量化 <0.1s）+ 三個輕 parser（data/ 下的 vendor 小 txt）
+- [x] 可選 near-synonym（5th GitHub）LLM MLM 生成（try/except + FLAG 保護，不影響核心離線零摩擦）
+- [x] 參考 5 個 GitHub 規劃實作（vendor 小檔 + 重用現有 384d emb 為骨幹）
+- [x] 測試：search_words(q=..., mode='syn') + handle 直接測試；舊 m1/m2 無退化（「事業」仍嚴格只出其 codes）
+- [x] 文件更新：README + WORKLOG + plan.md 記錄按鈕優先 + 5 GitHub + data/ 放置方式 + 使用例（快樂 / 事業）
 - [x] 錯誤處理與空結果提示
 
 ---

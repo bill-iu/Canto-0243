@@ -9,7 +9,19 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal, contains_substring, IS_POSTGRES
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
-from utils import get_0243_code, get_code_variants, split_jyutping, get_text_embedding, cosine_similarity
+from utils import (
+    get_0243_code,
+    get_code_variants,
+    split_jyutping,
+    get_text_embedding,
+    cosine_similarity,
+    load_json_list,
+    get_words_for_length,
+    get_char_meta,
+)
+
+# Back-compat alias for the many internal _load_json_list(...) calls throughout this file
+_load_json_list = load_json_list
 from collections import defaultdict
 
 def _length_filter(length: int):
@@ -34,22 +46,18 @@ def _deduplicate_words(words: Iterable[Word]) -> List[Word]:
     seen = set()
     unique = []
     for word in words:
-        if word.char not in seen:
-            seen.add(word.char)
+        if isinstance(word, dict):
+            c = word.get("char")
+        else:
+            c = getattr(word, "char", None)
+        if c and c not in seen:
+            seen.add(c)
             unique.append(word)
     return unique
 
 
-def _load_json_list(value: Optional[object]) -> List[object]:
-    if not value:
-        return []
-    if isinstance(value, list):
-        return value
-    try:
-        parsed = json.loads(value)
-        return parsed if isinstance(parsed, list) else []
-    except (TypeError, json.JSONDecodeError):
-        return []
+# _load_json_list moved to utils.py (public load_json_list) and aliased above for compat.
+# Old body removed to avoid duplication. All prior call sites continue to work via the alias.
 
 
 def _apply_code_filter(query, code: Optional[str], mode: str):
@@ -380,9 +388,20 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
     ref_fins: List[str] = []
     ref_pos = max(0, len_q - 1) if len_q > 0 else 0
     if last_ch:
-        ref_row = db.query(Word).filter(Word.char == last_ch).first()
-        if ref_row:
-            ref_fins = _load_json_list(ref_row.finals)
+        meta = get_char_meta(last_ch)
+        ref_row = None
+        if meta and meta.get("finals"):
+            ref_fins = meta.get("finals") or []
+        else:
+            ref_row = db.query(Word).filter(Word.char == last_ch).first()
+            if ref_row:
+                ref_fins = _load_json_list(ref_row.finals)
+            if ref_row:
+                try:
+                    from utils import update_word_in_cache
+                    update_word_in_cache(ref_row.char, getattr(ref_row, "code", ""), getattr(ref_row, "jyutping", ""), getattr(ref_row, "finals", None), getattr(ref_row, "initials", None), getattr(ref_row, "length", None))
+                except Exception:
+                    pass
     ref_val = ref_fins[0] if ref_fins else None
 
     if ref_val is not None:
@@ -483,6 +502,19 @@ def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
         db.commit()
         db.refresh(db_word)
         print(f"[ensure] injected into DB: '{text}' (code={code_val}, jyut={jyut_str})")
+        # Sync to mem cache immediately so subsequent mask/hybrid/"門0" etc see it without restart or full preload.
+        try:
+            from utils import update_word_in_cache
+            update_word_in_cache(
+                db_word.char,
+                db_word.code or "",
+                db_word.jyutping or "",
+                db_word.finals,
+                db_word.initials,
+                db_word.length,
+            )
+        except Exception:
+            pass
         return [db_word]
     except Exception as e:
         db.rollback()
@@ -530,6 +562,11 @@ def search_words(
         return _deduplicate_words(results)
 
     q = q.strip()
+
+    if mode == 'syn':
+        # Independent syn/ant mode: bypass all code/rhyme/hybrid/wildcard paths.
+        # Reuses _ensure + embedding + (preloaded) matrix + optional static thesaurus.
+        return handle_syn_ant_search(q, db)
 
     if "=" in q:
         match = re.match(r'^(\d*)(=)?([一-龥]+)?(=)?(\d*)$', q)
@@ -605,41 +642,66 @@ def search_words(
         query = _apply_code_filter(query, full_code, mode)
         query = query.filter(_length_filter(len(full_code)))
 
-        # Cap for Python position matching (same reason as wildcard: instant first page)
-        candidates = query.order_by(Word.char).limit(2000).all()
+        # Prefer cache for short full_code lengths (instant, pre-parsed); fallback with cap for correctness.
+        candidates = get_words_for_length(len(full_code))
+        used_cache = bool(candidates)
+        if not used_cache:
+            candidates = query.order_by(Word.char).limit(2000).all()
 
         target_finals = [None] * len(full_code)
         for i, c in enumerate(ref_chars):
             pos = ref_pos + i
             if 0 <= pos < len(full_code):
-                t = db.query(Word).filter(Word.char == c).first()
-                if t and t.finals:
+                meta = get_char_meta(c)
+                t = None
+                if meta and meta.get("finals"):
                     try:
-                        fl = json.loads(t.finals)
-                        target_finals[pos] = fl[0] if fl else None
-                    except (TypeError, json.JSONDecodeError):
+                        target_finals[pos] = (meta["finals"][0] if meta["finals"] else None)
+                    except Exception:
                         pass
+                else:
+                    t = db.query(Word).filter(Word.char == c).first()
+                    if t and t.finals:
+                        try:
+                            fl = json.loads(t.finals)
+                            target_finals[pos] = fl[0] if fl else None
+                        except (TypeError, json.JSONDecodeError):
+                            pass
+                    if t:
+                        try:
+                            from utils import update_word_in_cache
+                            update_word_in_cache(t.char, getattr(t, "code", ""), getattr(t, "jyutping", ""), getattr(t, "finals", None), getattr(t, "initials", None), getattr(t, "length", None))
+                        except Exception:
+                            pass
 
         filtered = []
         for word in candidates:
-            if not word.finals:
-                continue
-            try:
-                word_finals = json.loads(word.finals)
-                if len(word_finals) != len(full_code):
+            if used_cache:
+                if not word.get("finals"):
                     continue
-
-                match_ok = True
-                for i, tf in enumerate(target_finals):
-                    if tf is None:
-                        continue
-                    if i >= len(word_finals) or word_finals[i] != tf:
-                        match_ok = False
-                        break
-                if match_ok:
-                    filtered.append(word)
-            except (TypeError, json.JSONDecodeError):
+                try:
+                    word_finals = word.get("finals") or []
+                except Exception:
+                    continue
+            else:
+                if not word.finals:
+                    continue
+                try:
+                    word_finals = json.loads(word.finals)
+                except (TypeError, json.JSONDecodeError):
+                    continue
+            if len(word_finals) != len(full_code):
                 continue
+
+            match_ok = True
+            for i, tf in enumerate(target_finals):
+                if tf is None:
+                    continue
+                if i >= len(word_finals) or word_finals[i] != tf:
+                    match_ok = False
+                    break
+            if match_ok:
+                filtered.append(word)
 
         return filtered[offset:offset + limit]
 
@@ -658,7 +720,14 @@ def search_words(
     # - Special sorting: results with exact char matches at the chars literal positions in the query mask are prioritized first
     #   (e.g. for "_識_", words where the 2nd char *is literally "識"* come before other words that only share the 'ik' final at pos 1).
     # - regex only for parsing the user input q (detect mask + classify positions). Never pushed to DB.
-    if "_" in q and re.match(r"^[0-9_一-龥]+$", q):
+    # Support mixed hanzi+digit patterns (e.g. "門0", "好23") in addition to explicit _ wildcards.
+    # "門0" means: pos0 rhymes with 門 (use 門's final at that position), pos1 code[pos]== '0' (or m1/m2 variant).
+    # The generalized mask logic below already handles digits (for exact code pos), hanzi (for rhyme/pos final match),
+    # and _ (any at pos). We now enter it for any mixed hanzi+digit mask (no _ required).
+    is_potential_mask = bool(re.match(r"^[0-9_一-龥]+$", q))
+    contains_wild_or_digit = any(c == '_' or c.isdigit() for c in q)
+    contains_hanzi = any(not c.isdigit() and c != '_' for c in q)
+    if is_potential_mask and (contains_wild_or_digit and contains_hanzi or "_" in q):
         mask = q
         expected_len = len(mask)
         if expected_len == 0:
@@ -674,65 +743,104 @@ def search_words(
             elif ch.isdigit():
                 required_codes[i] = ch
             else:
-                # chars: collect final for rhyme + record for "exact literal" priority
-                ref = db.query(Word).filter(Word.char == ch).first()
-                if not ref:
-                    refs = _ensure_word_in_db(db, ch)
-                    ref = refs[0] if refs else None
-                if ref and ref.finals:
-                    try:
-                        fl = json.loads(ref.finals)
-                        target_finals[i] = fl[0] if fl else None
-                    except (TypeError, json.JSONDecodeError):
-                        pass
+                # chars: collect final for rhyme + record for "exact literal" priority.
+                # Use in-mem cache first (preloaded + pre-parsed) for instant; fallback to DB/ensure only on miss.
+                # After ensure, update cache so this new literal participates in future same-length masks instantly.
+                meta = get_char_meta(ch)
+                ref = None
+                if meta and meta.get("finals"):
+                    target_finals[i] = meta["finals"][0] if meta["finals"] else None
+                    ref = meta  # for append below
+                else:
+                    ref = db.query(Word).filter(Word.char == ch).first()
+                    if not ref:
+                        refs = _ensure_word_in_db(db, ch)
+                        ref = refs[0] if refs else None
+                    if ref and ref.finals:
+                        try:
+                            fl = json.loads(ref.finals)
+                            target_finals[i] = fl[0] if fl else None
+                        except (TypeError, json.JSONDecodeError):
+                            pass
+                    # Sync to cache for this + future queries (new hanzi from ensure now in mem for mask)
+                    if ref:
+                        try:
+                            from utils import update_word_in_cache
+                            update_word_in_cache(
+                                ref.char,
+                                getattr(ref, "code", "") or "",
+                                getattr(ref, "jyutping", "") or "",
+                                getattr(ref, "finals", None),
+                                getattr(ref, "initials", None),
+                                getattr(ref, "length", None),
+                            )
+                        except Exception:
+                            pass  # non-fatal; cache miss just means next time falls back again
                 literal_positions.append((i, ch))
 
-        # DB layer: plain length filter only. Any _ (or mixed codes) means we cannot safely narrow with a single code IN without DB-side pattern matching.
-        # This is deliberate — keeps queries simple/fast, regex strictly limited to Python input parsing.
-        query = db.query(Word).filter(_length_filter(expected_len))
-        # Cap candidates for Python-side position/code/final matching + priority sort.
-        # Makes first pages (the prioritized "exact literal" results) instant even for common lengths/rhymes.
-        # Deep pagination for very broad patterns (e.g. "__") may be truncated, but real use is fine.
-        candidates = query.order_by(Word.char).limit(2000).all()
+        # Prefer preloaded in-mem cache (populated at startup with pre-parsed finals; no json.loads, no full row materialization).
+        # This makes length=N broad filters for mask/hybrid/"門0" etc. instant even for N=2 with 10k+ entries.
+        # If cache empty (preload not done yet, or test :memory: DB), fallback to the original DB path (correctness preserved).
+        candidates = get_words_for_length(expected_len)
+        used_cache = bool(candidates)
+        if not used_cache:
+            # DB layer: plain length filter only. Any _ (or mixed codes) means we cannot safely narrow...
+            # (kept verbatim for fallback path + comments explaining why no cap)
+            query = db.query(Word).filter(_length_filter(expected_len))
+            candidates = query.order_by(Word.char).all()
 
         filtered = []
         for word in candidates:
-            if not word.finals or not word.code:
-                continue
-            try:
-                word_finals = json.loads(word.finals)
-                word_code_str = word.code or ""
-                if len(word_finals) != expected_len or len(word_code_str) != expected_len:
+            if used_cache:
+                # dict entries from cache: already pre-parsed, no json, direct access
+                if not word.get("finals") or not word.get("code"):
                     continue
-
-                match_ok = True
-                for i in range(expected_len):
-                    # Digit-specified code position (respect mode via variants for m1/m2)
-                    req_digit = required_codes[i]
-                    if req_digit is not None:
-                        allowed = get_code_variants(req_digit, mode)
-                        if i >= len(word_code_str) or word_code_str[i] not in allowed:
-                            match_ok = False
-                            break
-                    # Hanzi-specified rhyme position
-                    tf = target_finals[i]
-                    if tf is not None:
-                        if i >= len(word_finals) or word_finals[i] != tf:
-                            match_ok = False
-                            break
-                if match_ok:
-                    filtered.append(word)
-            except (TypeError, json.JSONDecodeError):
+                word_finals = word.get("finals") or []
+                word_code_str = word.get("code") or ""
+                # For return we keep the dict (dedup supports it); downstream only needs .char or ["char"]
+            else:
+                if not word.finals or not word.code:
+                    continue
+                try:
+                    word_finals = json.loads(word.finals)
+                except (TypeError, json.JSONDecodeError):
+                    continue
+                word_code_str = word.code or ""
+            if len(word_finals) != expected_len or len(word_code_str) != expected_len:
                 continue
+
+            match_ok = True
+            for i in range(expected_len):
+                # Digit-specified code position (respect mode via variants for m1/m2)
+                req_digit = required_codes[i]
+                if req_digit is not None:
+                    allowed = get_code_variants(req_digit, mode)
+                    if i >= len(word_code_str) or word_code_str[i] not in allowed:
+                        match_ok = False
+                        break
+                # Hanzi-specified rhyme position
+                tf = target_finals[i]
+                if tf is not None:
+                    if i >= len(word_finals) or word_finals[i] != tf:
+                        match_ok = False
+                        break
+            if match_ok:
+                filtered.append(word)
 
         # Priority sort for the requested "sorting method":
         # Exact matches on the literal chars supplied in the query mask come first.
         # (e.g. _識_ → "*識*" words before other ik-rhyme words at that position.)
         # Secondary: lexical by char (stable-ish within priority groups).
-        def _wildcard_priority_key(w: Word):
-            char = getattr(w, "char", "") or ""
+        # Supports both ORM Word (fallback) and dict (cache path).
+        def _wildcard_priority_key(w):
+            if isinstance(w, dict):
+                char = w.get("char", "") or ""
+                jy = w.get("jyutping", "") or ""
+            else:
+                char = getattr(w, "char", "") or ""
+                jy = getattr(w, "jyutping", "") or ""
             exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
-            return (-exact_count, char, getattr(w, "jyutping", "") or "")
+            return (-exact_count, char, jy)
 
         filtered.sort(key=_wildcard_priority_key)
 
@@ -762,7 +870,159 @@ def search_words(
         return built[offset:offset + limit]
 
     if re.search(r'[a-zA-Z]', q):
-        results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")) .order_by(Word.char).all()
+        # Cap to keep instant even for broad jyut fragments (rare path); slice after.
+        results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")).order_by(Word.char).limit(500).all()
         return _deduplicate_words(results)[offset:offset + limit]
 
     return []
+
+
+# ==================== Independent 近義/反義詞查找 (mode='syn') ====================
+# Early branched from search_words. Pure hanzi focus. No code/length/final logic.
+# Blend: static vendor (cilin high-quality groups + antisem/guotong clean tables) + our preloaded emb matrix (vectorized).
+# Optional: near-synonym package (try/except) for LLM MLM generation when installed & cached.
+# Returns items compatible with WordRead (char+code+jyutping required by the endpoint response_model)
+# plus the extra "relation" field that the syn-mode frontend uses to split columns.
+# code/jyutping are empty for syn results (not relevant in this mode).
+# Always fast after preload (<0.1s matrix @); _ensure ensures new query words get embedding.
+
+def _syn_result(char: str, relation: str) -> dict:
+    """Helper to produce a dict that satisfies the endpoint's WordRead response model
+    while carrying the 'relation' flag the syn frontend relies on.
+    code/jyutping are meaningless for syn results so left empty.
+    """
+    return {
+        "char": char,
+        "code": "",
+        "jyutping": "",
+        "display_text": char,
+        "query_text": char,
+        "result_type": "syn",
+        "relation": relation,
+    }
+
+
+def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
+    if not q or not re.search(r'[\u4e00-\u9fff]', q):
+        return []
+    q = q.strip()
+
+    # Ensure the query word exists (and has embedding) so it participates in matrix / future clicks
+    _ensure_word_in_db(db, q)
+
+    q_emb = get_text_embedding(q)
+    if not q_emb:
+        # Fallback: at least echo the query as syn (no ants)
+        return [_syn_result(q, "syn")]
+
+    # Static thesaurus first (curated, high precision when data present)
+    try:
+        from utils import get_synonyms, get_antonyms, get_synonym_index
+        static_syns = get_synonyms(q)[:12]
+        static_ants = get_antonyms(q)[:8]
+    except Exception:
+        static_syns = []
+        static_ants = []
+
+    chars, emb_mat = get_synonym_index()
+    if not chars or emb_mat is None or len(chars) == 0:
+        # Pure static or minimal echo
+        out = []
+        seen = set()
+        for w in static_syns:
+            if w not in seen:
+                seen.add(w)
+                out.append(_syn_result(w, "syn"))
+        for w in static_ants:
+            if w not in seen:
+                seen.add(w)
+                out.append(_syn_result(w, "ant"))
+        if not out:
+            out = [_syn_result(q, "syn")]
+        return out
+
+    import numpy as np
+    qv = np.asarray(q_emb, dtype=np.float32)
+    # emb_mat rows are already normalized (by preload); qv from get_text_embedding is also normalized
+    sims = emb_mat @ qv   # (N,)
+
+    k = 12
+    syn_thresh = 0.55
+    ant_k = 8
+    ant_max = 0.28
+
+    # Near synonyms: high sim, exclude self, prefer static then vector
+    order = np.argsort(sims)[::-1]
+    vec_syns = []
+    for idx in order:
+        if len(vec_syns) >= k:
+            break
+        c = chars[idx]
+        if c == q:
+            continue
+        s = float(sims[idx])
+        if s >= syn_thresh:
+            vec_syns.append(c)
+
+    # Blend: static first (curated), then fill with high vec (dedup)
+    syns = []
+    seen = set()
+    for w in static_syns + vec_syns:
+        if w not in seen and w != q:
+            seen.add(w)
+            syns.append(_syn_result(w, "syn"))
+            if len(syns) >= k:
+                break
+
+    # Antonyms
+    ants = []
+    seen_ant = set()
+    for w in static_ants:
+        if w not in seen_ant and w != q:
+            seen_ant.add(w)
+            ants.append(_syn_result(w, "ant"))
+            if len(ants) >= ant_k:
+                break
+
+    # Vector low-sim as weak antonym fallback / supplement (only if few static)
+    if len(ants) < ant_k:
+        low_order = np.argsort(sims)
+        for idx in low_order:
+            if len(ants) >= ant_k:
+                break
+            c = chars[idx]
+            if c == q or c in seen_ant:
+                continue
+            s = float(sims[idx])
+            if s <= ant_max:
+                seen_ant.add(c)
+                ants.append(_syn_result(c, "ant"))
+
+    # Optional near-synonym (5th GitHub) — LLM MLM gen when available (heavy models, first-run HF download)
+    # Guarded: never blocks core path. If present and FLAG set, union a few more.
+    try:
+        import os
+        if os.environ.get("FLAG_MLM_ANTONYM") == "1":
+            from near_synonym import mlm_synonyms, mlm_antonyms  # type: ignore
+            for w in (mlm_synonyms(q) or [])[:6]:
+                ww = w[0] if isinstance(w, (list, tuple)) else w
+                if ww and ww != q and ww not in seen:
+                    seen.add(ww)
+                    syns.append(_syn_result(ww, "syn"))
+            for w in (mlm_antonyms(q) or [])[:4]:
+                ww = w[0] if isinstance(w, (list, tuple)) else w
+                if ww and ww != q and ww not in seen_ant:
+                    seen_ant.add(ww)
+                    ants.append(_syn_result(ww, "ant"))
+    except Exception:
+        pass  # silent — feature works without this package
+
+    # Final dedup + order (static/curated first already reflected)
+    out = []
+    seen_final = set()
+    for item in syns + ants:
+        c = item["char"]
+        if c not in seen_final:
+            seen_final.add(c)
+            out.append(item)
+    return out[: (k + ant_k)]
