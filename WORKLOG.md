@@ -1,0 +1,96 @@
+### **📋 0243 離線押韻字典 - Worklog**
+
+**專案名稱**：0243 離線押韻字典（Cantonese Rhyme Dictionary）  
+**開發時間**：2026 年 5 月下旬 ~ 6 月  
+**技術棧**：FastAPI + SQLAlchemy + SQLite + 純 HTML + JavaScript（離線優先）  
+**主要目標**：提供快速、精準的粵語押韻搜尋，支援傳統 0243 編碼與等號韻（`香港=`）搜尋模式。
+
+---
+
+### **1. 專案結構（Project Structure）**
+
+```
+project-root/
+├── app/
+│   ├── __init__.py
+│   ├── main.py                 # FastAPI 入口，掛載 router
+│   ├── database.py             # SQLAlchemy engine 與 Session
+│   ├── models/
+│   │   └── word.py             # Word ORM 模型
+│   ├── schemas/
+│   │   └── word.py             # Pydantic WordRead schema
+│   └── routers/
+│       └── word.py             # 核心搜尋邏輯（search_words）
+├── static/
+│   └── index.html              # 單頁前端（搜尋介面 + JS）
+├── data/
+│   └── words.db                # SQLite 資料庫（Word 表）
+├── WORKLOG.md                  # 本文件
+└── requirements.txt
+```
+
+**資料表結構（Word 模型主要欄位）**：
+- `id` (Primary Key)
+- `char` (漢字)
+- `code` (0243 / 02493 編碼)
+- `initials` (JSON 字串，聲母列表)
+- `finals` (JSON 字串，韻母列表)
+- `jyutping` (粵拼，可選)
+
+---
+
+### **2. 已達成的主要功能（Achieved Features）**
+
+- [x] 基礎搜尋：純數字（`23就`）、純漢字（`香港`）、混合位置指定（`39香港`）
+- [x] **等號韻搜尋**（核心功能）：`香港=`、`大蛋糕=` 等，找出相同韻母的詞
+- [x] 兩種模式切換：m1（0243）與 m2（02493）
+- [x] 高效能優化：`func.length()` 過濾 + 快速路徑（直接 JSON 比對）
+- [x] 結果去重：以 `char` 為單位去重，避免同字不同 code 重複顯示
+- [x] 前端即時搜尋 + 分頁載入更多（Load More）
+- [x] 完整離線使用（單一 HTML 檔案 + 本地 FastAPI）
+- [x] 錯誤處理與空結果提示
+
+---
+
+### **3. 開發歷程與重要修改記錄（Chronological Changes）**
+
+| 日期          | 修改內容                                                                 | 影響範圍          | 備註 |
+|---------------|--------------------------------------------------------------------------|-------------------|------|
+| 初期         | 建立基本 `search_words` 函數，支援純數字、純漢字、混合搜尋             | Backend           | 初始版本 |
+| 初期         | 新增 `=` 語法解析與等號韻比對邏輯（`target_finals` 比對）             | Backend           | 核心功能誕生 |
+| 中期         | 加入 `func.length(Word.char) == expected_length` 過濾                  | Backend           | 大幅提升速度 |
+| 中期         | 實作 **快速路徑**（`start_pos == 0` 時直接用 `Word.finals == target_json`） | Backend     | 選項 A 加速版 |
+| 中期         | 嘗試使用 `json.dumps(..., separators=(',', ':'))` 產生 compact JSON     | Backend           | 解決格式不一致 |
+| 中期         | 加入 `MAX_CANDIDATES = 10000` 限制候選資料                             | Backend           | 解決速度問題，但導致結果不完整 |
+| 中期         | 移除候選資料限制，改回全量載入 + Python 迴圈比對                       | Backend           | 結果正確但較慢 |
+| 後期         | 前端出現重複結果（388 vs 194）                                         | Frontend          | 發現雙重事件監聽 |
+| 後期         | 移除 `<input>` 的 `onkeyup` 內聯事件，改用 `addEventListener` + `preventDefault()` | Frontend | 解決雙重觸發 |
+| 後期         | 後端加入 `id` 去重，無效                                               | Backend           | 發現同字不同 code 問題 |
+| **最終**     | **改用 `char` 去重**（`seen = set()` + `if w.char not in seen`）       | Backend（等號韻分支） | **問題徹底解決** |
+| 最終         | 統一所有回傳路徑加入 `char` 去重邏輯                                   | Backend           | 結果穩定且乾淨 |
+
+---
+
+### **4. 曾經發生的 Bug 及解決方案（Bugs & Fixes）**
+
+| Bug 描述 | 發生情境 | 根本原因 | 解決方案 | 最終狀態 |
+|----------|----------|----------|----------|----------|
+| **結果數量不穩定**（有時 0、有時 94、有時 194、有時 388） | 等號韻搜尋 `香港=` | 1. JSON 格式不一致導致快速路徑失效<br>2. `order_by(char).limit()` 切掉後面結果 | 改用 `char` 去重 + 保留快速路徑 | ✅ 已解決 |
+| **前端重複顯示結果** | 按 Enter 後結果數量 double | `<input onkeyup>` + `addEventListener("keypress")` 同時觸發 | 移除內聯 `onkeyup`，加入 `e.preventDefault()` | ✅ 已解決 |
+| **快速路徑回傳 0 筆** | 使用 `Word.finals == target_json` | 資料庫內 JSON 字串與 `json.dumps()` 格式不完全相同 | 保留快速路徑，但後續用 `char` 去重作為保險 | ✅ 部分保留 + 去重 |
+| **載入更多後結果重複** | 使用 Load More 功能 | `currentResults` 未正確重置 + offset 累加錯誤 | 新搜尋時強制清空 `currentResults` 與 `currentOffset` | ✅ 已解決 |
+| **同一個漢字出現多次** | 等號韻搜尋 | 資料表存在「同字不同 code」但 finals 相同的紀錄 | 在所有回傳前加入以 `char` 去重的邏輯 | ✅ 已解決 |
+
+---
+
+### **5. 目前狀態與後續建議**
+
+- **目前狀態**：功能穩定，`香港=` 可正確回傳不重複的結果，速度可接受。
+- **已知限制**：
+  - 大量資料時全量載入仍會有一定延遲（建議未來可考慮資料庫索引或預先計算韻母索引表）。
+  - 目前去重只針對等號韻分支，其他搜尋模式尚未統一。
+- **建議後續優化**：
+  1. 為 `finals` 與 `initials` 欄位建立 GIN 索引（若改用 PostgreSQL）。
+  2. 建立專門的「韻母索引表」加速等號韻搜尋。
+  3. 前端加入 debounce 與 loading 狀態。
+  4. 加入單元測試（pytest）涵蓋各種 `=` 語法情境。
