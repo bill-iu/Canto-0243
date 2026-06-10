@@ -148,14 +148,12 @@ def start_length_backfill() -> None:
                             if not ids:
                                 break
 
-                            # 安全更新：逐一或小批，避免 IN tuple param 問題 (SQLite limit ~999, binding issue)
-                            updated = 0
-                            for iid in ids:
-                                res = bg_conn.execute(
-                                    text("UPDATE words SET length = length(char) WHERE id = :id"),
-                                    {"id": iid}
-                                )
-                                updated += res.rowcount or 0
+                            # 快速批量更新，使用字面 IN (ids 是信任的 int)，避免 param binding 限制和 ? 問題
+                            id_list = ','.join(str(i) for i in ids)
+                            res = bg_conn.execute(
+                                text(f"UPDATE words SET length = length(char) WHERE id IN ({id_list})")
+                            )
+                            updated = res.rowcount or 0
                             bg_conn.commit()
                             total_updated += updated
                             if total_updated % 10000 == 0:

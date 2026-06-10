@@ -334,45 +334,43 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         return None
 
     # 3+4. 對每個 code：先 同 char + 同 rhyme（e.g. 24下的「做數」），再 純同 rhyme 不同 char（"24做到="）
+    q_chars = list(dict.fromkeys(q))
     for c in codes:
         fin_json = _get_finals_json_for_code(c)
         if not fin_json:
             continue
-        shared_conds = [contains_substring(Word.char, ch) for ch in dict.fromkeys(q) if ch]
-        if shared_conds:
-            qy = (db.query(Word)
-                  .filter(
-                      _length_filter(len_q),
-                      or_(*shared_conds),
-                      Word.finals == fin_json
-                  )
-                  .order_by(Word.char, Word.jyutping))
-            for w in _deduplicate_words(qy.all()):
-                if w.char not in seen:
-                    seen.add(w.char)
-                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
 
-        # 純同 rhyme（不同字） for this code (使用該 code 對應的 finals)
-        # 加入 semantic re-rank（若有 query_emb）：semantic 高的詞會被提升，實現「語義相似度」排序優化
+        # 優化：只用一個 query 取 length + finals 候選（善用 index），然後 Python 拆 shared / pure
+        # 避免原本的 or_ contains 子句導致較慢的查詢計劃
         qy = (db.query(Word)
               .filter(
                   _length_filter(len_q),
                   Word.finals == fin_json
               )
               .order_by(Word.char, Word.jyutping)
-              .limit(300))  # cap for instant results; UI uses offset/limit + load more
-        pure_candidates = _deduplicate_words(qy.all())
+              .limit(100))  # cap for instant
+        candidates = _deduplicate_words(qy.all())
+        shared_ws = [w for w in candidates if any(ch in w.char for ch in q_chars)]
+        pure_ws = [w for w in candidates if w not in shared_ws]  # or use set for seen later
+
+        # shared (有共用字 + 同韻)
+        for w in shared_ws:
+            if w.char not in seen:
+                seen.add(w.char)
+                results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+
+        # 純同 rhyme（不同字）
         if query_emb:
             scored = []
-            for w in pure_candidates[:200]:  # cap re-rank for instant (only top candidates scored)
+            for w in pure_ws[:200]:  # cap re-rank
                 w_emb = _load_json_list(getattr(w, "embedding", None) or "[]")
                 score = cosine_similarity(query_emb, w_emb) if w_emb else 0.0
                 if w.char not in seen:
                     scored.append((score, w))
-            scored.sort(key=lambda x: -x[0])  # semantic desc
+            scored.sort(key=lambda x: -x[0])
             to_add = [w for s, w in scored]
         else:
-            to_add = [w for w in pure_candidates if w.char not in seen]
+            to_add = [w for w in pure_ws if w.char not in seen]
         for w in to_add:
             seen.add(w.char)
             results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
@@ -422,7 +420,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
               broad_cond
           )
           .order_by(Word.char, Word.jyutping)
-          .limit(1500))  # cap for instant; deep pages via load more if needed
+          .limit(300))  # cap for instant; deep pages via load more if needed
     for w in _deduplicate_words(qy.all()):
         if w.char not in seen:
             seen.add(w.char)
