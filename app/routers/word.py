@@ -36,6 +36,11 @@ from collections import defaultdict
 # (Review cleanup: explanatory mentions of "hanzi" in comments kept only for history; all logic paths use canto/chars.)
 
 WILDCARD_CHARS = frozenset("_?%")
+CODE_TAIL_MIDDLE = "\u00b7"  # ·
+
+CODE_TAIL_RE = re.compile(rf"^(\d+){re.escape(CODE_TAIL_MIDDLE)}(.+)$")
+AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
+SLOT_CHARS_RE = r"[0-9_?%]"
 
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
@@ -45,14 +50,360 @@ def _is_wildcard_char(ch: str) -> bool:
     return len(ch) == 1 and ch in WILDCARD_CHARS
 
 
+def _parse_mask_query(mask: str) -> tuple[int, list[Optional[str]], list[tuple[int, str]]]:
+    """Split mask into length, per-position code digits, and literal canto positions."""
+    expected_len = len(mask)
+    required_codes: list[Optional[str]] = [None] * expected_len
+    literal_positions: list[tuple[int, str]] = []
+    for idx, ch in enumerate(mask):
+        if _is_wildcard_char(ch):
+            continue
+        if ch.isdigit():
+            required_codes[idx] = ch
+            continue
+        literal_positions.append((idx, ch))
+    return expected_len, required_codes, literal_positions
+
+
+def _mask_char_glob_pattern(mask: str) -> str:
+    """Build SQLite GLOB for Word.char: wildcard/digit slots -> ?, literals unchanged."""
+    return "".join(
+        "?" if (_is_wildcard_char(ch) or ch.isdigit()) else ch
+        for ch in mask
+    )
+
+
+def _matches_mask_literal_chars(word_char: str, mask: str) -> bool:
+    """True when every non-wildcard, non-digit mask slot equals the word character."""
+    if len(word_char) != len(mask):
+        return False
+    for idx, ch in enumerate(mask):
+        if _is_wildcard_char(ch) or ch.isdigit():
+            continue
+        if word_char[idx] != ch:
+            return False
+    return True
+
+
 def _looks_like_mask_query(q: str) -> bool:
     """True when q uses position mask syntax (digits / canto / wildcards)."""
-    if not q or not re.match(r"^[0-9_?%一-龥]+$", q):
+    if not q or CODE_TAIL_MIDDLE in q or "@" in q:
+        return False
+    if _parse_rhyme_anchor_query(q):
+        return False
+    if not re.match(r"^[0-9_?%一-龥]+$", q):
         return False
     has_wild = any(_is_wildcard_char(c) for c in q)
     has_digit = any(c.isdigit() for c in q)
     has_canto = any(not c.isdigit() and not _is_wildcard_char(c) for c in q)
     return has_wild or (has_digit and has_canto)
+
+
+def _initial_options_for_char(ch: str, db) -> set[str]:
+    options: set[str] = set()
+    for meta in get_char_metas(ch):
+        initials = meta.get("initials") or []
+        if initials:
+            options.add(initials[0])
+    if options:
+        return options
+    rows = db.query(Word).filter(Word.char == ch).all()
+    if not rows:
+        rows = _ensure_word_in_db(db, ch)
+    for row in rows:
+        initials = _load_json_list(getattr(row, "initials", None))
+        if initials:
+            options.add(initials[0])
+        _sync_word_to_cache(row)
+    return options
+
+
+def _is_framed_equals_query(q: str) -> bool:
+    """Legacy framed equals: 香港=, 2=我3, 23就= — not query-level rhyme anchors."""
+    if CODE_TAIL_MIDDLE in q or "@" in q:
+        return False
+    match = re.match(r"^(\d*)(=)?([一-龥]+)(=)?(\d*)$", q)
+    if not match:
+        return False
+    target = match.group(3) or ""
+    if not target:
+        return False
+    left_code = match.group(1) or ""
+    right_code = match.group(5) or ""
+    right_equal = bool(match.group(4))
+    inner_equal = bool(match.group(2))
+    if right_equal and len(target) >= 2:
+        return True
+    if right_equal and left_code and len(target) == 1:
+        return True
+    if inner_equal and left_code and right_code:
+        return True
+    return False
+
+
+def _parse_rhyme_anchor_query(q: str) -> Optional[dict]:
+    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no ·)."""
+    if not q or CODE_TAIL_MIDDLE in q or "@" in q or _is_framed_equals_query(q):
+        return None
+
+    m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=$", q)
+    if m:
+        slots, anchor = m.group(1), m.group(2)
+        width = len(slots) + 1
+        return {
+            "constraint": "final",
+            "anchor_pos": width - 1,
+            "anchor": anchor,
+            "slots": slots,
+            "width": width,
+        }
+
+    m = re.match(rf"^([一-龥])=({SLOT_CHARS_RE}+)$", q)
+    if m:
+        anchor, slots = m.group(1), m.group(2)
+        width = len(slots) + 1
+        return {
+            "constraint": "final",
+            "anchor_pos": 0,
+            "anchor": anchor,
+            "slots": slots,
+            "width": width,
+        }
+
+    m = re.match(rf"^=([一-龥])({SLOT_CHARS_RE}+)$", q)
+    if m:
+        anchor, slots = m.group(1), m.group(2)
+        width = len(slots) + 1
+        return {
+            "constraint": "initial",
+            "anchor_pos": 0,
+            "anchor": anchor,
+            "slots": slots,
+            "width": width,
+        }
+
+    m = re.match(rf"^({SLOT_CHARS_RE}+)=([一-龥])$", q)
+    if m:
+        slots, anchor = m.group(1), m.group(2)
+        width = len(slots) + 1
+        return {
+            "constraint": "initial",
+            "anchor_pos": width - 1,
+            "anchor": anchor,
+            "slots": slots,
+            "width": width,
+        }
+    return None
+
+
+def _parse_code_tail_query(q: str) -> Optional[dict]:
+    if CODE_TAIL_MIDDLE not in q:
+        return None
+    m = CODE_TAIL_RE.match(q)
+    if not m:
+        return None
+    code_digits = m.group(1)
+    tail = m.group(2)
+    width = len(code_digits) + 1
+
+    m2 = re.match(r"^([一-龥])=$", tail)
+    if m2:
+        return {
+            "code_digits": code_digits,
+            "width": width,
+            "constraint": "final",
+            "anchor": m2.group(1),
+            "anchor_pos": width - 1,
+        }
+
+    m2 = re.match(r"^=([一-龥])$", tail)
+    if m2:
+        return {
+            "code_digits": code_digits,
+            "width": width,
+            "constraint": "initial",
+            "anchor": m2.group(1),
+            "anchor_pos": width - 1,
+        }
+
+    m2 = re.match(r"^([一-龥])$", tail)
+    if m2:
+        return {
+            "code_digits": code_digits,
+            "width": width,
+            "constraint": "literal",
+            "anchor": m2.group(1),
+            "anchor_pos": width - 1,
+        }
+    return None
+
+
+def _parse_at_tail_query(q: str) -> Optional[dict]:
+    m = AT_TAIL_RE.match(q)
+    if not m:
+        return None
+    return {
+        "code_digits": m.group(1),
+        "literal_char": m.group(2),
+        "width": len(m.group(1)),
+    }
+
+
+def _build_mask_from_slots(slots: str, width: int, anchor_pos: int) -> str:
+    """Build a literal-mask string with anchor position as wildcard."""
+    chars = ["?"] * width
+    if anchor_pos == 0:
+        for i, ch in enumerate(slots, start=1):
+            chars[i] = ch
+    else:
+        for i, ch in enumerate(slots):
+            chars[i] = ch
+    return "".join(chars)
+
+
+def _matches_phoneme_at_position(
+    word,
+    pos: int,
+    anchor: str,
+    *,
+    constraint: str,
+    db,
+) -> bool:
+    if constraint == "final":
+        options = _final_options_for_char(anchor, db)
+        parts = _get_word_parts(word, "finals")
+    else:
+        options = _initial_options_for_char(anchor, db)
+        parts = _get_word_parts(word, "initials")
+    if not options or pos >= len(parts):
+        return False
+    return parts[pos] in options
+
+
+def _filter_words_by_code_and_mask(
+    candidates: list,
+    *,
+    width: int,
+    code_digits: str,
+    mode: str,
+    mask: str,
+    db,
+    anchor_pos: Optional[int] = None,
+    anchor: Optional[str] = None,
+    constraint: Optional[str] = None,
+    literal_char: Optional[str] = None,
+) -> list:
+    required_codes: list[Optional[str]] = [None] * width
+    if code_digits:
+        for i, d in enumerate(code_digits):
+            required_codes[i] = d
+
+    filtered = []
+    for word in candidates:
+        word_char = _get_word_text(word)
+        if len(word_char) != width:
+            continue
+        if mask and not _matches_mask_literal_chars(word_char, mask):
+            continue
+        if literal_char is not None and word_char[-1] != literal_char:
+            continue
+        word_code_str = _get_word_sort_code(word)
+        word_finals = _get_word_parts(word, "finals")
+        if not word_code_str or not word_finals:
+            continue
+        if not _matches_code_positions(word_code_str, required_codes, mode):
+            continue
+        if anchor_pos is not None and anchor and constraint:
+            if not _matches_phoneme_at_position(
+                word, anchor_pos, anchor, constraint=constraint, db=db,
+            ):
+                continue
+        filtered.append(word)
+    return filtered
+
+
+def _get_length_candidates(db, width: int, mask: str):
+    candidates = get_words_for_length(width)
+    if candidates:
+        return [w for w in candidates if _matches_mask_literal_chars(_get_word_text(w), mask)], True
+    glob_pat = _mask_char_glob_pattern(mask)
+    query = db.query(Word).filter(
+        _length_filter(width),
+        Word.char.op("GLOB")(glob_pat),
+    )
+    return query.order_by(Word.char, Word.jyutping).all(), False
+
+
+def _handle_rhyme_anchor_query(parsed: dict, mode: str, limit: int, offset: int, db):
+    width = parsed["width"]
+    mask = _build_mask_from_slots(parsed["slots"], width, parsed["anchor_pos"])
+    candidates, _ = _get_length_candidates(db, width, mask)
+    filtered = _filter_words_by_code_and_mask(
+        candidates,
+        width=width,
+        code_digits="",
+        mode=mode,
+        mask=mask,
+        db=db,
+        anchor_pos=parsed["anchor_pos"],
+        anchor=parsed["anchor"],
+        constraint=parsed["constraint"],
+    )
+    filtered.sort(key=lambda w: (_get_word_text(w), _get_word_jyutping(w)))
+    return _serialize_page(filtered, offset, limit)
+
+
+def _handle_code_tail_query(parsed: dict, mode: str, limit: int, offset: int, db):
+    width = parsed["width"]
+    code_digits = parsed["code_digits"]
+    anchor_pos = parsed["anchor_pos"]
+    constraint = parsed["constraint"]
+    anchor = parsed["anchor"]
+
+    if constraint == "literal":
+        mask = _build_mask_from_slots("", width, anchor_pos)
+        mask = mask[:anchor_pos] + anchor
+        literal_char = anchor
+        phoneme = None
+    else:
+        mask = _build_mask_from_slots("", width, anchor_pos)
+        literal_char = None
+        phoneme = constraint
+
+    candidates, _ = _get_length_candidates(db, width, mask)
+    filtered = _filter_words_by_code_and_mask(
+        candidates,
+        width=width,
+        code_digits=code_digits,
+        mode=mode,
+        mask=mask,
+        db=db,
+        anchor_pos=anchor_pos if phoneme else None,
+        anchor=anchor if phoneme else None,
+        constraint=phoneme,
+        literal_char=literal_char,
+    )
+    filtered.sort(key=lambda w: (_get_word_text(w), _get_word_jyutping(w)))
+    return _serialize_page(filtered, offset, limit)
+
+
+def _handle_at_tail_query(parsed: dict, mode: str, limit: int, offset: int, db):
+    width = parsed["width"]
+    code_digits = parsed["code_digits"]
+    literal = parsed["literal_char"]
+    mask = "?" * (width - 1) + literal
+    candidates, _ = _get_length_candidates(db, width, mask)
+    filtered = _filter_words_by_code_and_mask(
+        candidates,
+        width=width,
+        code_digits=code_digits,
+        mode=mode,
+        mask=mask,
+        db=db,
+        literal_char=literal,
+    )
+    filtered.sort(key=lambda w: (_get_word_text(w), _get_word_jyutping(w)))
+    return _serialize_page(filtered, offset, limit)
 
 
 def _length_filter(length: int):
@@ -630,6 +981,30 @@ def _matches_final_options(word_finals: list, target_final_options: list[Optiona
     return True
 
 
+def _matches_hybrid_ref_chars(
+    word_char: str,
+    word_finals: list,
+    ref_chars: str,
+    start_pos: int,
+    target_final_options: list[Optional[set[str]]],
+) -> bool:
+    """Rhyme match at ref positions, or literal match (so 23就 includes 23@就 results)."""
+    width = len(target_final_options)
+    if len(word_char) != width or len(word_finals) != width:
+        return False
+    for i, ch in enumerate(ref_chars):
+        pos = start_pos + i
+        if pos < 0 or pos >= width:
+            return False
+        if word_char[pos] == ch:
+            continue
+        options = target_final_options[pos]
+        if options and word_finals[pos] in options:
+            continue
+        return False
+    return True
+
+
 def _mask_priority_key(word, literal_positions: list[tuple[int, str]]):
     char = _get_word_text(word)
     jyutping = _get_word_jyutping(word)
@@ -675,51 +1050,50 @@ def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, of
             word_code_str = word.code or ""
         if word_code_str not in allowed_full_codes:
             continue
-        if _matches_final_options(word_finals, target_final_options):
+        word_char = word.get("char") if used_cache else (word.char or "")
+        if _matches_hybrid_ref_chars(
+            word_char, word_finals, ref_chars, ref_pos, target_final_options,
+        ):
             filtered.append(word)
 
     return _paginate(_deduplicate_words(filtered), offset, limit)
 
 
 def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):
-    """Handle mixed mask queries: digits constrain code, chars constrain finals; `_`/`?`/`%` are wildcards."""
+    """Handle mask queries: literal canto chars match by position first, then code digits."""
     mask = q
-    expected_len = len(mask)
+    expected_len, required_codes, literal_positions = _parse_mask_query(mask)
     if expected_len == 0:
         return []
 
-    required_codes: list[Optional[str]] = [None] * expected_len
-    target_final_options: list[Optional[set[str]]] = [None] * expected_len
-    literal_positions: list[tuple[int, str]] = []
-
-    for idx, ch in enumerate(mask):
-        if _is_wildcard_char(ch):
-            continue
-        if ch.isdigit():
-            required_codes[idx] = ch
-            continue
-        options = _final_options_for_char(ch, db)
-        if options:
-            target_final_options[idx] = options
-        literal_positions.append((idx, ch))
-
+    glob_pat = _mask_char_glob_pattern(mask)
     candidates = get_words_for_length(expected_len)
     used_cache = bool(candidates)
-    if not used_cache:
-        code_filter = "".join(required_codes) if all(req is not None for req in required_codes) else None
-        candidates, used_cache = _get_candidates_for_length(
-            db, expected_len, code=code_filter, mode=mode, fallback_limit=3000,
+    if used_cache:
+        candidates = [
+            w for w in candidates
+            if _matches_mask_literal_chars(_get_word_text(w), mask)
+        ]
+    else:
+        query = db.query(Word).filter(
+            _length_filter(expected_len),
+            Word.char.op("GLOB")(glob_pat),
         )
+        code_filter = "".join(required_codes) if all(req is not None for req in required_codes) else None
+        if code_filter:
+            query = _apply_code_filter(query, code_filter, mode)
+        candidates = query.order_by(Word.char, Word.jyutping).all()
 
     filtered = []
     for word in candidates:
+        word_char = _get_word_text(word)
+        if not _matches_mask_literal_chars(word_char, mask):
+            continue
         word_code_str = _get_word_sort_code(word)
         word_finals = _get_word_parts(word, "finals")
         if not word_code_str or not word_finals:
             continue
         if not _matches_code_positions(word_code_str, required_codes, mode):
-            continue
-        if not _matches_final_options(word_finals, target_final_options):
             continue
         filtered.append(word)
 
@@ -921,11 +1295,23 @@ def search_words(
             return _handle_antonym_compound_syntax(relation_parsed, mode, limit, offset, db)
         return _handle_relation_lookup_syntax(relation_parsed, mode, limit, offset, db)
 
-    if "=" in q:
+    if _is_framed_equals_query(q):
         return _handle_equals_syntax(q, code, mode, limit, offset, db)
 
+    code_tail_parsed = _parse_code_tail_query(q)
+    if code_tail_parsed:
+        return _handle_code_tail_query(code_tail_parsed, mode, limit, offset, db)
+
+    at_tail_parsed = _parse_at_tail_query(q)
+    if at_tail_parsed:
+        return _handle_at_tail_query(at_tail_parsed, mode, limit, offset, db)
+
+    rhyme_anchor_parsed = _parse_rhyme_anchor_query(q)
+    if rhyme_anchor_parsed:
+        return _handle_rhyme_anchor_query(rhyme_anchor_parsed, mode, limit, offset, db)
+
     hybrid_match = re.match(r'^(\d+)([一-龥]+)(\d*)$', q)
-    if hybrid_match:
+    if hybrid_match and not hybrid_match.group(3):
         return _handle_hybrid_syntax(q, code, mode, limit, offset, db)
 
     if _looks_like_mask_query(q):

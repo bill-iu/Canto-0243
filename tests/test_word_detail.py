@@ -135,6 +135,53 @@ class CharacterDetailPayloadTests(unittest.TestCase):
         self.assertIn("門童", chars)
         self.assertNotIn("他人", chars)
 
+    def test_mask_wildcard_query_matches_middle_literal_char(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(id=30, char="你", code="0", jyutping="nei5", finals='["ei"]', initials='["n"]', length=1),
+                Word(id=31, char="問你好", code="000", jyutping="man6 nei5 hou2", finals='["an","ei","ou"]', initials='["m","n","h"]', length=3),
+                Word(id=32, char="香港人", code="390", jyutping="hoeng1 gong2 jan4", finals='["oeng","ong","an"]', initials='["h","g","j"]', length=3),
+            ])
+            session.commit()
+
+            results = search_words(q="?你?", mode="m1", db=session, limit=20, offset=0)
+            chars = [item["char"] for item in results]
+
+        self.assertIn("問你好", chars)
+        self.assertNotIn("香港人", chars)
+
+    def test_mask_wildcard_query_finds_late_alphabet_match(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(id=1, char="香", code="3", jyutping="hoeng1", finals='["oeng"]', initials='["h"]', length=1),
+                Word(id=2, char="香港人", code="390", jyutping="hoeng1 gong2 jan4", finals='["oeng","ong","an"]', initials='["h","g","j"]', length=3),
+            ])
+            # Pad with many earlier alphabet entries so a truncated fallback would miss 香港人.
+            for i in range(3500):
+                session.add(Word(
+                    id=10 + i,
+                    char=f"阿{i:04d}人",
+                    code="390",
+                    jyutping="aa1 jan4",
+                    finals='["aa","an"]',
+                    initials='["a","j"]',
+                    length=3,
+                ))
+            session.commit()
+
+            results = search_words(q="香??", mode="m1", db=session, limit=50, offset=0)
+            chars = [item["char"] for item in results]
+
+        self.assertIn("香港人", chars)
+
     def test_mask_wildcard_query_supports_underscore(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
@@ -373,6 +420,127 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertIn("做就", chars)
             self.assertNotIn("做得", chars)
             self.assertNotIn("好就", chars)
+
+            at_results = search_words(q="23@就", mode="m1", db=session, limit=20, offset=0)
+            at_chars = [
+                r["char"] if isinstance(r, dict) else getattr(r, "char", r) for r in at_results
+            ]
+            self.assertTrue(set(at_chars).issubset(set(chars)))
+
+    def test_hybrid_includes_literal_tail_even_with_wrong_finals(self):
+        with self._session() as session:
+            session.add(
+                Word(
+                    char="做就", code="23", jyutping="zou6 zau6",
+                    finals='["ou","ak"]', initials='["z","z"]', length=2,
+                ),
+            )
+            session.commit()
+            hybrid = search_words(q="23就", mode="m1", db=session, limit=20, offset=0)
+            at_tail = search_words(q="23@就", mode="m1", db=session, limit=20, offset=0)
+            hybrid_chars = [
+                r["char"] if isinstance(r, dict) else getattr(r, "char", r) for r in hybrid
+            ]
+            at_chars = [r["char"] for r in at_tail]
+            self.assertIn("做就", hybrid_chars)
+            self.assertEqual(at_chars, ["做就"])
+
+    def test_code_tail_and_at_tail_syntax(self):
+        mid = "\u00b7"
+        with self._session() as session:
+            session.add_all([
+                Word(
+                    char="做就就", code="232", jyutping="zou6 zau6 zau6",
+                    finals='["ou","au","au"]', initials='["z","z","z"]', length=3,
+                ),
+                Word(
+                    char="做就好", code="232", jyutping="zou6 zau6 hou2",
+                    finals='["ou","au","ou"]', initials='["z","z","h"]', length=3,
+                ),
+                Word(
+                    char="做得就", code="232", jyutping="zou6 dak1 zau6",
+                    finals='["ou","ak","au"]', initials='["z","d","z"]', length=3,
+                ),
+                Word(
+                    char="做數就", code="232", jyutping="zou6 sou3 zau6",
+                    finals='["ou","ou","au"]', initials='["z","s","z"]', length=3,
+                ),
+                Word(
+                    char="做就", code="23", jyutping="zou6 zau6",
+                    finals='["ou","au"]', initials='["z","z"]', length=2,
+                ),
+                Word(
+                    char="做得", code="23", jyutping="zou6 dak1",
+                    finals='["ou","ak"]', initials='["z","d"]', length=2,
+                ),
+            ])
+            session.commit()
+
+            literal = search_words(q=f"23{mid}就", mode="m1", db=session, limit=20, offset=0)
+            literal_chars = [r["char"] for r in literal]
+            self.assertIn("做就就", literal_chars)
+            self.assertIn("做得就", literal_chars)
+            self.assertNotIn("做就好", literal_chars)
+
+            final_tail = search_words(q=f"23{mid}就=", mode="m1", db=session, limit=20, offset=0)
+            final_chars = [r["char"] for r in final_tail]
+            self.assertIn("做得就", final_chars)
+            self.assertIn("做就就", final_chars)
+            self.assertNotIn("做就好", final_chars)
+
+            at_tail = search_words(q="23@就", mode="m1", db=session, limit=20, offset=0)
+            at_chars = [r["char"] for r in at_tail]
+            self.assertIn("做就", at_chars)
+            self.assertNotIn("做得", at_chars)
+
+            legacy_eq = search_words(q="23就=", mode="m1", db=session, limit=20, offset=0)
+            legacy_chars = [
+                r["char"] if isinstance(r, dict) else getattr(r, "char", r) for r in legacy_eq
+            ]
+            self.assertIn("做就", legacy_chars)
+            self.assertNotIn("做就就", legacy_chars)
+
+    def test_rhyme_anchor_syntax(self):
+        with self._session() as session:
+            session.add_all([
+                Word(
+                    char="香港", code="22", jyutping="hoeng1 gong2",
+                    finals='["oeng","ong"]', initials='["h","g"]', length=2,
+                ),
+                Word(
+                    char="香江", code="22", jyutping="hoeng1 gong1",
+                    finals='["oeng","ong"]', initials='["h","g"]', length=2,
+                ),
+                Word(
+                    char="香島", code="22", jyutping="hoeng1 dou2",
+                    finals='["oeng","ou"]', initials='["h","d"]', length=2,
+                ),
+                Word(
+                    char="做就", code="23", jyutping="zou6 zau6",
+                    finals='["ou","au"]', initials='["z","z"]', length=2,
+                ),
+                Word(
+                    char="做得", code="23", jyutping="zou6 dak1",
+                    finals='["ou","ak"]', initials='["z","d"]', length=2,
+                ),
+            ])
+            session.commit()
+
+            prefix_final = search_words(q="香=?", mode="m1", db=session, limit=20, offset=0)
+            pf_chars = [r["char"] for r in prefix_final]
+            self.assertIn("香港", pf_chars)
+            self.assertIn("香江", pf_chars)
+            self.assertIn("香島", pf_chars)
+
+            suffix_final = search_words(q="?就=", mode="m1", db=session, limit=20, offset=0)
+            sf_chars = [r["char"] for r in suffix_final]
+            self.assertIn("做就", sf_chars)
+            self.assertNotIn("做得", sf_chars)
+
+            suffix_initial = search_words(q="?=就", mode="m1", db=session, limit=20, offset=0)
+            si_chars = [r["char"] for r in suffix_initial]
+            self.assertIn("做就", si_chars)
+            self.assertNotIn("做得", si_chars)
 
     def test_pure_digit_syntax(self):
         with self._session() as session:

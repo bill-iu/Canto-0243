@@ -877,7 +877,7 @@
           <span class="mode-readout" id="modeReadout">目前模式：m1 · 0243</span>
         </div>
         <div class="search-row">
-          <input type="search" id="searchInput" name="q" placeholder="輸入 23就、香港=、!你、33!!你…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="searchHelp">
+          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23·就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="searchHelp">
           <div class="search-actions">
             <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -892,21 +892,25 @@
           </div>
         </div>
         <div class="syntax-rail" id="searchHelp" aria-label="常用搜尋例子">
-          <button class="example-button" type="button" data-query="23就" data-mode="m1">
-            <code translate="no">23就</code>
-            <span>0243 編碼查字</span>
+          <button class="example-button" type="button" data-query="香??" data-mode="m1">
+            <code translate="no">香??</code>
+            <span>字面位置</span>
+          </button>
+          <button class="example-button" type="button" data-query="23·就=" data-mode="m1">
+            <code translate="no">23·就=</code>
+            <span>3 字尾韻</span>
+          </button>
+          <button class="example-button" type="button" data-query="?=就" data-mode="m1">
+            <code translate="no">?=就</code>
+            <span>尾字聲母</span>
           </button>
           <button class="example-button" type="button" data-query="香港=" data-mode="m1">
             <code translate="no">香港=</code>
-            <span>同韻候選</span>
+            <span>整詞同韻</span>
           </button>
           <button class="example-button" type="button" data-query="!你" data-mode="m1">
             <code translate="no">!你</code>
-            <span>反義與鏡像近義</span>
-          </button>
-          <button class="example-button" type="button" data-query="33!!你" data-mode="m1">
-            <code translate="no">33!!你</code>
-            <span>反義複合詞 + 尾韻</span>
+            <span>反義鏡像</span>
           </button>
         </div>
       </form>
@@ -923,7 +927,7 @@
       <div class="guide-hero">
         <p class="eyebrow">Search manual</p>
         <h1 id="guideTitle" tabindex="-1">所有搜尋語法</h1>
-        <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。</p>
+        <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 在錨字<strong>後</strong> → 韻母；在錨字<strong>前</strong> → 聲母（query-level 與 <code translate="no">·</code> 延伸段相同）。</p>
         <div class="guide-actions">
           <button class="primary-button" id="backToSearchBtn" type="button">回到搜尋</button>
           <button class="ghost-button" type="button" data-query="!你" data-mode="m1">試 !你</button>
@@ -952,22 +956,64 @@
         </article>
 
         <article class="guide-card">
-          <h2>等號韻</h2>
-          <p>在字詞後加 <code translate="no">=</code>，查相同長度、同位置韻母的候選。</p>
+          <h2>字面位置</h2>
+          <p>漢字直接指定該位置的字面。用 <code translate="no">?</code>、<code translate="no">_</code> 或 <code translate="no">%</code> 表示不限位置。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>兩字同韻</span></button>
-            <button class="guide-example" type="button" data-query="大蛋糕=" data-mode="m1"><code translate="no">大蛋糕=</code><span>三字同韻</span></button>
-            <button class="guide-example" type="button" data-query="事業=" data-mode="m1"><code translate="no">事業=</code><span>保留節奏</span></button>
+            <button class="guide-example" type="button" data-query="香??" data-mode="m1"><code translate="no">香??</code><span>首字是香</span></button>
+            <button class="guide-example" type="button" data-query="?你?" data-mode="m1"><code translate="no">?你?</code><span>中間是你</span></button>
+            <button class="guide-example" type="button" data-query="23?就" data-mode="m1"><code translate="no">23?就</code><span>數字 + 字面尾</span></button>
           </div>
         </article>
 
         <article class="guide-card">
-          <h2>混合與萬用字元</h2>
-          <p>用數字、中文字、底線或片段混合描述候選。適合只知道其中幾個位置時使用。</p>
+          <h2>數字 + 尾字（2 字 vs 3 字）</h2>
+          <p>2 字尾韻用 legacy <code translate="no">23就</code>（已含尾字字面「就」的結果）；若只要字面尾字、排除同韻其他字，用 <code translate="no">23@就</code>。3 字第三位用 <code translate="no">·</code> 展開。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="23就" data-mode="m1"><code translate="no">23就</code><span>2 字尾韻</span></button>
+            <button class="guide-example" type="button" data-query="23@就" data-mode="m1"><code translate="no">23@就</code><span>2 字尾字就</span></button>
+            <button class="guide-example" type="button" data-query="23·就" data-mode="m1"><code translate="no">23·就</code><span>3 字第三字就</span></button>
+            <button class="guide-example" type="button" data-query="23·就=" data-mode="m1"><code translate="no">23·就=</code><span>3 字第三韻~就</span></button>
+            <button class="guide-example" type="button" data-query="23·=就" data-mode="m1"><code translate="no">23·=就</code><span>3 字第三聲~就</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>韻母錨點</h2>
+          <p>錨字緊貼 <code translate="no">=</code> 右側（<code translate="no">锚=</code>），該位置韻母與錨字相同。錨字本身不必出現在結果中。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="香=?" data-mode="m1"><code translate="no">香=?</code><span>首字韻~香</span></button>
+            <button class="guide-example" type="button" data-query="?就=" data-mode="m1"><code translate="no">?就=</code><span>尾字韻~就</span></button>
+            <button class="guide-example" type="button" data-query="??就=" data-mode="m1"><code translate="no">??就=</code><span>3 字尾韻~就</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>聲母錨點</h2>
+          <p>錨字緊貼 <code translate="no">=</code> 左側（<code translate="no">=锚</code>），該位置聲母與錨字相同。不可裸寫 <code translate="no">=就</code>，須寫 <code translate="no">?=就</code> 或 <code translate="no">23·=就</code>。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="=香?" data-mode="m1"><code translate="no">=香?</code><span>首字聲~香</span></button>
+            <button class="guide-example" type="button" data-query="?=就" data-mode="m1"><code translate="no">?=就</code><span>尾字聲~就</span></button>
+            <button class="guide-example" type="button" data-query="??=就" data-mode="m1"><code translate="no">??=就</code><span>3 字尾聲~就</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>Legacy 等號韻</h2>
+          <p>整詞同韻模板，或數字夾字（<code translate="no">2=我3</code>）。<code translate="no">23就=</code> 是 2 字尾韻，與 3 字的 <code translate="no">23·就=</code> 不同。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>兩字同韻</span></button>
+            <button class="guide-example" type="button" data-query="大蛋糕=" data-mode="m1"><code translate="no">大蛋糕=</code><span>三字同韻</span></button>
+            <button class="guide-example" type="button" data-query="30英皇=" data-mode="m1"><code translate="no">30英皇=</code><span>數字+同韻</span></button>
+            <button class="guide-example" type="button" data-query="23就=" data-mode="m1"><code translate="no">23就=</code><span>2 字 hybrid 尾韻</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>萬用字元</h2>
+          <p>用數字搭配萬用字元描述部分已知的位置。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="3_" data-mode="m1"><code translate="no">3_</code><span>指定首碼</span></button>
             <button class="guide-example" type="button" data-query="23?" data-mode="m1"><code translate="no">23?</code><span>萬用位置</span></button>
-            <button class="guide-example" type="button" data-query="23就" data-mode="m1"><code translate="no">23就</code><span>數字 + 尾字</span></button>
           </div>
         </article>
 
@@ -1031,7 +1077,7 @@
     }
 
     const MODE_META = {
-      m1: { label: "m1 · 0243", placeholder: "輸入 23就、香港=、!你、33!!你…" },
+      m1: { label: "m1 · 0243", placeholder: "輸入 香??、23·就=、?=就、香港=…" },
       m2: { label: "m2 · 02493", placeholder: "輸入 02493、詞語或粵拼片段…" },
       syn: { label: "syn · 近義 / 反義", placeholder: "輸入 開心、悲傷 或直接用 ~開心、!你…" },
     };
@@ -1307,7 +1353,7 @@
       }
 
       if (!input) {
-        $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">23就</code>、<code translate="no">香港=</code>、<code translate="no">!你</code> 或 <code translate="no">33!!你</code>。</p>';
+        $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">香??</code>、<code translate="no">23·就=</code>、<code translate="no">?=就</code> 或 <code translate="no">香港=</code>。</p>';
         currentQuery = "";
         updateShuffleButton();
         setButtonLoading(false);
