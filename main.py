@@ -20,7 +20,8 @@ async def lifespan(app: FastAPI):
             ensure_length_column()
         except Exception:
             pass  # 失敗不影響啟動，有 fallback
-        # Warmup embedding in background to avoid load delay on first hanzi search
+        # Warmup embedding in background (non-blocking now).
+        # The actual model load happens in a daemon thread; first requests get fast fallback.
         try:
             import threading
             from utils import get_text_embedding
@@ -85,16 +86,21 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"[main] length schema / backfill 啟動失敗（可忽略，搜尋有 fallback）：{e}")
 
-    # Warmup embedding model in background thread for instant first hanzi/click search (model load + encode is ~1-2s otherwise)
+    # Warmup embedding model in background thread.
+    # IMPORTANT: get_text_embedding is now non-blocking on first call.
+    # It immediately returns [] and starts a background thread to load the model.
+    # This means: the server is responsive instantly after "python main.py".
+    # Basic searches (code, digit, jyutping, canto without semantic, syn static) work right away.
+    # Vector semantic (re-rank + syn vector blend) becomes available after the model finishes loading (a few seconds).
+    # You will see "[embedding] ... 已就緒" in the console when it's ready.
     try:
         import threading
         from utils import get_text_embedding
         def _warmup_embedding():
             try:
-                get_text_embedding("暖機")
-                print("[main] Embedding model warmed up for instant semantic results.")
+                get_text_embedding("暖機")  # this call is now instant (just kicks the loader)
             except Exception:
-                pass  # non-fatal
+                pass
         threading.Thread(target=_warmup_embedding, daemon=True).start()
     except Exception:
         pass
@@ -189,7 +195,9 @@ if __name__ == "__main__":
                 db = SessionLocal()
                 try:
                     # Only need fields used by mask/hybrid position matching + priority + display.
-                    # length is already populated (or backfill running); we take what we have.
+                    # We intentionally limit to short words (lyrics-style patterns are almost always N<=8).
+                    # This makes preload much lighter + reduces SQLite lock contention risk at startup.
+                    # Long-word mask/hybrid cases (very rare) will transparently fall back to the DB path.
                     rows = (
                         db.query(
                             Word.char,
@@ -199,6 +207,7 @@ if __name__ == "__main__":
                             Word.initials,
                             Word.length,
                         )
+                        .filter(Word.length <= 10)
                         .all()
                     )
                 finally:

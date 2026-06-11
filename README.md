@@ -125,6 +125,15 @@ python -m unittest -v tests.test_word_detail
 
 **瞬間搜尋速度是本專案的不可協商基本規則之一**（non-negotiable）。所有搜尋（含 m1/m2 純漢字、混合「門0」「好23」、wildcard、syn 近義/反義等）在 preload 完成後**必須感覺 instant**（目標端到端 <0.2s，常見 case 否則 <0.5s）。
 
+### 命名慣例（Naming Conventions）— 硬性規定
+
+**禁止在任何函數、變數、識別項或新程式碼中使用 "hanzi"。**  
+這是粵語專案（Cantonese lyrics tool），"hanzi" 為國語用語。日後新增與中文字符（漢字）相關的邏輯時，**必須**使用以下名稱之一：
+- **"canto"**（推薦用於與粵語發音/字符相關的脈絡）
+- **"chars"**（推薦用於字面字符資料、遮罩位置、literal positions 等；專案內已部分採用）
+
+違反本規定不得合併。所有新貢獻（含註解與文件）都必須遵守。
+
 ### 必須涵蓋的關鍵測試案例（每次變更都需驗證）
 - 純漢字：「事業」（m1/m2 模式下**嚴格只輸出 query 自己擁有的 0243 codes**，正確 tier 排序，無無關 code 污染如 "0尊"）。
 - 混合 literal+digit：「門0」「好23」（literal 優先，預期詞如「門前」「門童」「門鈴」「門庭」等出現在頂部；正確性 + 速度同等重要）。

@@ -322,3 +322,39 @@ project-root/
   3. 啟動 log 裡應該會看到 length 回填的訊息。
   4. 之後「22」、「事業」、各種 hybrid/wildcard 全部恢復，且速度因為 index 會比之前好。
 - 日期：本次對話實作。
+
+### **術語標準化：移除所有 "hanzi" 改用 "canto"（或 "chars"） + 未來禁止規定**
+
+- **探索結果**：經全專案 grep + 讀取關鍵檔案，**沒有任何 `def` 函數名稱** 含有 "hanzi"。只有：
+  - 1 個執行期區域變數 `contains_hanzi`（位於 `app/routers/word.py` 的 `search_words` 廣義遮罩/混合分支，負責偵測 query mask 中是否含有非數字非 _ 的粵字，用於進入 `contains_canto` 邏輯）。
+  - 約 9-10 處英文註解 / docstring（"mixed hanzi+digit"、"Pure hanzi focus"、"new hanzi from ensure"、"literal hanzi in \"門0\"" 等）。
+- 所有歷史提及（WORKLOG.md 內）**完全保留**，不改寫過去紀錄。
+
+- **修改檔案與內容**（精準替換，僅生效來源）：
+  - `app/routers/word.py`（核心）：`contains_hanzi` → `contains_canto`（宣告 + 使用處）；更新 6 處相關註解（含 "canto+digit"、"Canto-specified"、"Pure canto focus" 等）。
+  - `utils.py`：更新 cache 區塊註解與 `update_word_in_cache` docstring。
+  - `main.py`：更新暖機區塊註解。
+  - `README.md`：在 Performance Rule 之後新增「命名慣例（Naming Conventions）」硬性小節，明確寫出禁止規定與推薦用語。
+  - `app/routers/word.py` 與 `utils.py`：加入規範標頭註解，提醒開發者。
+  - `WORKLOG.md`：本條目（以繁體中文撰寫，符合既有風格）。
+
+- **驗證執行（嚴格遵守 Performance Rule）**：
+  - 靜態檢查：使用 Python 掃描 + PowerShell Select-String，來源 *.py 中「邏輯用」的 "hanzi" 已完全清除（僅剩我們新增的「禁止使用 "hanzi"」規範說明文字，屬正確）。
+  - 自動測試：`python -m unittest -v tests.test_word_detail` 全數通過（4 tests OK），特別是 `test_search_words_for_mixed_character_query` 與快取遮罩測試直接覆蓋被更名的變數路徑。
+  - 功能驗證（直接呼叫）：
+    ```python
+    from app.routers.word import search_words
+    # ... db = SessionLocal()
+    for q in ["門0", "好23", "2好_", "_識_", "好_", "事業", "香港="]:
+        res = search_words(q=q, db=db, mode="m2", limit=5)
+    ```
+    所有案例均**無錯誤**、正常回傳結果列表（包含混合遮罩與純粵字路徑）。字面優先排序（literal priority）機制 intact。
+  - 結論：**功能完全不被影響**。僅變數名與描述性文字調整，分支條件與所有業務邏輯 100% 相同。
+
+- **日後硬性規定**（已同步寫入 README 與主要模組）：
+  > 禁止以後再建立名為 "hanzi" 的函數、變數或任何識別項。
+  > 必須改做 "canto" 或者 "chars"。
+  違反者不得合併。所有未來變更（含註解）都需遵守。
+
+- 日期：本次對話實作（已完成全部驗證與文件更新）。
+- 相關提交將提及本任務。

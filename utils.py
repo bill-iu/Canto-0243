@@ -77,24 +77,57 @@ def get_code_variants(code: str, mode: str = "m2") -> List[str]:
 # - Postgres 端：存入 pgvector Vector 欄位，可用原生 cosine_distance 在 DB 排序
 # - SQLite 端（本地開發）：存入 JSON 文字，搜尋時用 Python cosine re-rank 候選結果
 # 兩個版本的 semantic 排序行為一致（只是實作差異）
+#
+# 重要：模型載入現在是「背景非阻塞」的。
+# - 第一次呼叫 get_text_embedding 會立即觸發背景 thread 去載入，不會 block 當前請求。
+# - 載入期間所有呼叫都回傳 []，呼叫端（m1/m2 semantic re-rank、syn mode）會自動 graceful fallback。
+# - 載入完成後，全域可用，後續請求自動獲得語義功能。
+# 這樣可以達到「一開啟後端就可以用」（基本搜尋、static thesaurus 立即可用），embedding 幾秒後在背景 ready。
+
+_embedding_model = None
+_embedding_load_started = False
+
+def _load_embedding_model_in_background():
+    """Background loader. Never blocks request threads."""
+    global _embedding_model, _embedding_load_started
+    try:
+        import os
+        os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
+        from sentence_transformers import SentenceTransformer
+        print("[embedding] 正在背景載入 paraphrase-multilingual-MiniLM-L12-v2 ... (首次會較久，之後快)")
+        model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+        _embedding_model = model
+        # 相容舊的 hasattr 檢查
+        get_text_embedding._model = model
+        print("[embedding] Vector embedding model 已就緒，semantic 功能啟用。")
+    except Exception as e:
+        print(f"[embedding] 載入模型失敗（{e}），semantic 相關功能將停用（仍可正常使用基本搜尋與 static thesaurus）")
+    finally:
+        _embedding_load_started = False
 
 def get_text_embedding(text: str) -> list[float]:
     """產生文字的 vector embedding（用於 semantic similarity 排序優化）。
 
     預設模型：paraphrase-multilingual-MiniLM-L12-v2（384 dim，多語言，適合中文/粵語）
-    - 安裝 `sentence-transformers` 後即可使用（pip install sentence-transformers）。
-    - 模型第一次載入會下載並佔用記憶體/時間，建議在 import_data 時 batch 預算。
-    - 若未安裝或失敗，回傳 []，呼叫端應退回傳統排序（不會中斷）。
+    - 模型載入改為背景 thread，不阻塞任何 API 請求。
+    - 載入完成前會回傳 []，呼叫端自動退回傳統/靜態結果。
+    - 想「一開啟就可用」：後端啟動後立即可搜，embedding 功能在背景 warm up。
     """
     if not text or not text.strip():
         return []
+    global _embedding_model, _embedding_load_started
+
+    if _embedding_model is None:
+        # 尚未載入 → 觸發背景載入（只觸發一次）
+        if not _embedding_load_started:
+            _embedding_load_started = True
+            import threading
+            threading.Thread(target=_load_embedding_model_in_background, daemon=True).start()
+        # 立即回傳空，讓呼叫端 fallback（不會卡住 UI）
+        return []
+
     try:
-        from sentence_transformers import SentenceTransformer
-        # 全域 cache，避免重複載入模型
-        if not hasattr(get_text_embedding, "_model"):
-            get_text_embedding._model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
-        model = get_text_embedding._model
-        emb = model.encode(text, normalize_embeddings=True)
+        emb = _embedding_model.encode(text, normalize_embeddings=True)
         return emb.tolist()
     except Exception as e:
         print(f"[embedding] 無法產生 embedding（{e}），semantic sorting 將退回傳統模式")
@@ -321,8 +354,12 @@ except Exception:
 
 
 # ==================== In-memory Word Cache for Instant Mask/Hybrid/Wildcard Paths ====================
+# === Naming Convention (enforced) ===
+# 禁止使用 "hanzi"。處理粵語字符相關邏輯時必須使用 "canto" 或 "chars"。
+# 詳見 README.md「命名慣例」小節與 WORKLOG.md 最新條目。
+# Never introduce identifiers or functions named with "hanzi". Use "canto" or "chars".
 # Preloaded at startup (daemon in main.py, mirroring syn matrix preload) for zero-cost .all() on length=N
-# + pre-parsed finals/code (no json.loads in hot query loops) + O(1) char meta for ref lookups (last_ch, literal hanzi in "門0").
+# + pre-parsed finals/code (no json.loads in hot query loops) + O(1) char meta for ref lookups (last_ch, literal canto in "門0").
 # Short N (lyrics words) dominate; full short-length buckets kept in RAM (~50-150MB acceptable).
 # Fallback to DB if cache empty (e.g. early query before preload or test in-mem DB).
 # _ensure after insert calls update so new injected words (rare) participate immediately.
@@ -397,7 +434,7 @@ def get_char_meta(ch: str):
     return _char_meta.get(ch)
 
 def update_word_in_cache(char: str, code: str = "", jyutping: str = "", finals: object = None, initials: object = None, length: int = None):
-    """Called by _ensure after successful insert of a new hanzi word so it participates in future mask etc without restart.
+    """Called by _ensure after successful insert of a new canto word so it participates in future mask etc without restart.
     Accepts raw (json str or list) for finals/initials.
     """
     global _length_buckets, _char_meta
@@ -434,3 +471,16 @@ def get_word_cache_stats() -> dict:
         "max_length": max(lens) if lens else 0,
         "meta_size": len(_char_meta),
     }
+
+
+# ==================== Embedding readiness helper ====================
+def is_embedding_model_ready() -> bool:
+    """回傳目前 vector embedding 模型是否已經載入完畢。
+    載入期間 semantic re-rank 與 syn vector 會自動 fallback，不影響基本功能。
+    """
+    global _embedding_model
+    return _embedding_model is not None
+
+# 讓舊的 `hasattr(get_text_embedding, "_model")` 檢查繼續有效
+get_text_embedding._model = None
+get_text_embedding.is_ready = is_embedding_model_ready

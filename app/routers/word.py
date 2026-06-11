@@ -24,6 +24,11 @@ from utils import (
 _load_json_list = load_json_list
 from collections import defaultdict
 
+# === Naming Convention (enforced) ===
+# 禁止使用 "hanzi"。處理粵語字符相關邏輯時必須使用 "canto" 或 "chars"。
+# 詳見 README.md「命名慣例」小節與 WORKLOG.md 最新條目。
+# Never introduce identifiers or functions named with "hanzi". Use "canto" or "chars".
+
 def _length_filter(length: int):
     """使用已回填的 Word.length（有 index），大幅加快 length 過濾查詢。
     現在 length 已全 populate，無需 fallback。
@@ -326,12 +331,13 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         return results
 
     # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
-    # 只在 model 已 preload (by warmup) 時才 load，避免第一次 hanzi search 延遲 model load
+    # 現在模型載入是背景非阻塞的：第一次搜尋不會卡住，semantic re-rank 只在模型就緒後才啟用。
+    # 呼叫端自動 graceful fallback（傳統排序 / 靜態結果）。
     query_emb = []
     if q:
-        if hasattr(get_text_embedding, "_model") and get_text_embedding._model is not None:
+        if get_text_embedding.is_ready():
             query_emb = get_text_embedding(q)
-        # else: skip for this search to keep fast; re-rank will be skipped until warmup done
+        # else: model 還在背景載入中，這次搜尋跳過 semantic re-rank（完全不影響回應速度）
 
     def _get_finals_json_for_code(c: str) -> Optional[str]:
         for w in exact_matches:
@@ -720,14 +726,14 @@ def search_words(
     # - Special sorting: results with exact char matches at the chars literal positions in the query mask are prioritized first
     #   (e.g. for "_識_", words where the 2nd char *is literally "識"* come before other words that only share the 'ik' final at pos 1).
     # - regex only for parsing the user input q (detect mask + classify positions). Never pushed to DB.
-    # Support mixed hanzi+digit patterns (e.g. "門0", "好23") in addition to explicit _ wildcards.
+    # Support mixed canto+digit patterns (e.g. "門0", "好23") in addition to explicit _ wildcards.
     # "門0" means: pos0 rhymes with 門 (use 門's final at that position), pos1 code[pos]== '0' (or m1/m2 variant).
-    # The generalized mask logic below already handles digits (for exact code pos), hanzi (for rhyme/pos final match),
-    # and _ (any at pos). We now enter it for any mixed hanzi+digit mask (no _ required).
+    # The generalized mask logic below already handles digits (for exact code pos), canto (for rhyme/pos final match),
+    # and _ (any at pos). We now enter it for any mixed canto+digit mask (no _ required).
     is_potential_mask = bool(re.match(r"^[0-9_一-龥]+$", q))
     contains_wild_or_digit = any(c == '_' or c.isdigit() for c in q)
-    contains_hanzi = any(not c.isdigit() and c != '_' for c in q)
-    if is_potential_mask and (contains_wild_or_digit and contains_hanzi or "_" in q):
+    contains_canto = any(not c.isdigit() and c != '_' for c in q)
+    if is_potential_mask and (contains_wild_or_digit and contains_canto or "_" in q):
         mask = q
         expected_len = len(mask)
         if expected_len == 0:
@@ -762,7 +768,7 @@ def search_words(
                             target_finals[i] = fl[0] if fl else None
                         except (TypeError, json.JSONDecodeError):
                             pass
-                    # Sync to cache for this + future queries (new hanzi from ensure now in mem for mask)
+                    # Sync to cache for this + future queries (new canto from ensure now in mem for mask)
                     if ref:
                         try:
                             from utils import update_word_in_cache
@@ -818,7 +824,7 @@ def search_words(
                     if i >= len(word_code_str) or word_code_str[i] not in allowed:
                         match_ok = False
                         break
-                # Hanzi-specified rhyme position
+                # Canto-specified rhyme position
                 tf = target_finals[i]
                 if tf is not None:
                     if i >= len(word_finals) or word_finals[i] != tf:
@@ -878,7 +884,7 @@ def search_words(
 
 
 # ==================== Independent 近義/反義詞查找 (mode='syn') ====================
-# Early branched from search_words. Pure hanzi focus. No code/length/final logic.
+# Early branched from search_words. Pure canto focus. No code/length/final logic.
 # Blend: static vendor (cilin high-quality groups + antisem/guotong clean tables) + our preloaded emb matrix (vectorized).
 # Optional: near-synonym package (try/except) for LLM MLM generation when installed & cached.
 # Returns items compatible with WordRead (char+code+jyutping required by the endpoint response_model)
@@ -964,6 +970,16 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
         if s >= syn_thresh:
             vec_syns.append(c)
 
+    # If no high-sim matches above thresh (and no static data), fall back to top-N semantic
+    # neighbors anyway so the user sees useful suggestions instead of empty or only self.
+    if not vec_syns and not static_syns:
+        for idx in order:
+            if len(vec_syns) >= 8:
+                break
+            c = chars[idx]
+            if c != q:
+                vec_syns.append(c)
+
     # Blend: static first (curated), then fill with high vec (dedup)
     syns = []
     seen = set()
@@ -1025,4 +1041,12 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
         if c not in seen_final:
             seen_final.add(c)
             out.append(item)
+
+    # Safety: if matrix was available but no neighbors passed the similarity thresholds
+    # (common when no vendor thesaurus data/ and embedding similarities are moderate),
+    # still return at least the query itself so the UI shows something (consistent with
+    # the no-matrix fallback path). Without this, syn mode could return [] for every query.
+    if not out:
+        out = [_syn_result(q, "syn")]
+
     return out[: (k + ant_k)]
