@@ -570,121 +570,6 @@ def get_word(char: str, db: Session = Depends(get_db)):
     return word
 
 
-@router.get("/search", response_model=list[WordRead])
-@router.get("/search/", response_model=list[WordRead])
-# ============================================================
-# Extracted thin handlers (P1 refactor - "把search_words拆得更細")
-# These were pulled out of the monolithic search_words to improve SRP and readability.
-# All original logic, side effects (_ensure, cache updates), caps, dedup, and result ordering
-# are preserved exactly. The main search_words is now a much thinner dispatcher.
-# ============================================================
-
-def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):  # untyped db to avoid FastAPI treating it as a response field during module import
-    """處理 wildcard "_" + 混合數字+粵字遮罩（"門0", "好23", "_識_" 等）。
-    這是原 search_words 裡最長的單一分支，現在獨立出來讓主函式更薄。
-    """
-    mask = q
-    expected_len = len(mask)
-    if expected_len == 0:
-        return []
-
-    target_finals = [None] * expected_len
-    required_codes = [None] * expected_len
-    literal_positions: list[tuple[int, str]] = []
-
-    for i, ch in enumerate(mask):
-        if ch == "_":
-            continue
-        elif ch.isdigit():
-            required_codes[i] = ch
-        else:
-            meta = get_char_meta(ch)
-            ref = None
-            if meta and meta.get("finals"):
-                target_finals[i] = meta["finals"][0] if meta["finals"] else None
-                ref = meta
-            else:
-                ref = db.query(Word).filter(Word.char == ch).first()
-                if not ref:
-                    refs = _ensure_word_in_db(db, ch)
-                    ref = refs[0] if refs else None
-                if ref and ref.finals:
-                    try:
-                        fl = json.loads(ref.finals)
-                        target_finals[i] = fl[0] if fl else None
-                    except (TypeError, json.JSONDecodeError):
-                        pass
-                if ref:
-                    try:
-                        from utils import update_word_in_cache
-                        update_word_in_cache(
-                            ref.char,
-                            getattr(ref, "code", "") or "",
-                            getattr(ref, "jyutping", "") or "",
-                            getattr(ref, "finals", None),
-                            getattr(ref, "initials", None),
-                            getattr(ref, "length", None),
-                        )
-                    except Exception as e:
-                        print(f"[search] cache sync warning: {type(e).__name__}")
-                        pass
-            literal_positions.append((i, ch))
-
-    candidates = get_words_for_length(expected_len)
-    used_cache = bool(candidates)
-    if not used_cache:
-        query = db.query(Word).filter(_length_filter(expected_len))
-        candidates = query.order_by(Word.char).all()
-
-    filtered = []
-    for word in candidates:
-        if used_cache:
-            if not word.get("finals") or not word.get("code"):
-                continue
-            word_finals = word.get("finals") or []
-            word_code_str = word.get("code") or ""
-        else:
-            if not word.finals or not word.code:
-                continue
-            try:
-                word_finals = json.loads(word.finals)
-            except (TypeError, json.JSONDecodeError):
-                continue
-            word_code_str = word.code or ""
-        if len(word_finals) != expected_len or len(word_code_str) != expected_len:
-            continue
-
-        match_ok = True
-        for i in range(expected_len):
-            req_digit = required_codes[i]
-            if req_digit is not None:
-                allowed = get_code_variants(req_digit, mode)
-                if i >= len(word_code_str) or word_code_str[i] not in allowed:
-                    match_ok = False
-                    break
-            tf = target_finals[i]
-            if tf is not None:
-                if i >= len(word_finals) or word_finals[i] != tf:
-                    match_ok = False
-                    break
-        if match_ok:
-            filtered.append(word)
-
-    def _wildcard_priority_key(w):
-        if isinstance(w, dict):
-            char = w.get("char", "") or ""
-            jy = w.get("jyutping", "") or ""
-        else:
-            char = getattr(w, "char", "") or ""
-            jy = getattr(w, "jyutping", "") or ""
-        exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
-        return (-exact_count, char, jy)
-
-    filtered.sort(key=_wildcard_priority_key)
-
-    return _deduplicate_words(filtered)[offset:offset + limit]
-
-
 def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):  # untyped db to avoid FastAPI treating it as a response field during module import
     """處理「左碼=目標=右碼」等號韻語法。"""
     match = re.match(r'^(\d*)(=)?([一-龥]+)?(=)?(\d*)$', q)
@@ -865,11 +750,13 @@ def _handle_jyut_fragment_query(q: str, limit: int, offset: int, db: "Session") 
     return _deduplicate_words(results)[offset:offset + limit]
 
 
+@router.get("/search", response_model=list[WordRead])
+@router.get("/search/", response_model=list[WordRead])
 def search_words(
     q: str = None,
     code: str = None,
     char: str = None,
-    mode: str = "m2",
+    mode: str = "m1",   # 改為 m1 作為更合理的預設（許多用戶從 m1 開始）
     limit: int = 100,
     offset: int = 0,
     db: Session = Depends(get_db)
@@ -918,12 +805,12 @@ def search_words(
 
 # ==================== Independent 近義/反義詞查找 (mode='syn') ====================
 # Early branched from search_words. Pure canto focus. No code/length/final logic.
-# Blend: static vendor (cilin high-quality groups + antisem/guotong clean tables) + our preloaded emb matrix (vectorized).
-# Optional: near-synonym package (try/except) for LLM MLM generation when installed & cached.
+# Blend: precomputed WordRelation (from generate_relationships.py using static+optional-embed at ingest)
+# + static vendor thesaurus (cilin groups + antisem/guotong) loaded at startup (no ML at runtime).
 # Returns items compatible with WordRead (char+code+jyutping required by the endpoint response_model)
 # plus the extra "relation" field that the syn-mode frontend uses to split columns.
 # code/jyutping are empty for syn results (not relevant in this mode).
-# Always fast after preload (<0.1s matrix @); _ensure ensures new query words get embedding.
+# _ensure ensures the query word itself is in DB (for future relations). No runtime embedding.
 
 def _syn_result(char: str, relation: str) -> dict:
     """Helper to produce a dict that satisfies the endpoint's WordRead response model
@@ -951,6 +838,7 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
 
     # === 主要路徑：從預先計算的 word_relations 表讀取（純 SQL，無 ML）===
     # 這是朋友 feedback 要求的核心：ingest 時產生關係，runtime 用正常 SQL 查詢。
+    # 已優化為單次 JOIN，避免原 N+1（每個 relation 單獨 scalar 查 char）。
     rel_syns: List[str] = []
     rel_ants: List[str] = []
     try:
@@ -958,23 +846,20 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
         # 找出 q 對應的所有 word id（同一字可能有多個 code）
         word_ids = [w.id for w in db.query(WordModel.id).filter(WordModel.char == q).all()]
         if word_ids:
+            # JOIN 一次取回 relation_type + 目標 char
             rel_rows = (
-                db.query(WordRelation)
+                db.query(WordRelation.relation_type, WordModel.char)
+                .join(WordModel, WordRelation.related_id == WordModel.id)
                 .filter(WordRelation.word_id.in_(word_ids))
                 .filter(WordRelation.relation_type.in_(["syn", "ant"]))
                 .all()
             )
-            for r in rel_rows:
-                rel_char = (
-                    db.query(WordModel.char)
-                    .filter(WordModel.id == r.related_id)
-                    .scalar()
-                )
-                if rel_char and rel_char != q:
-                    if r.relation_type == "syn":
-                        rel_syns.append(rel_char)
+            for rtype, rchar in rel_rows:
+                if rchar and rchar != q:
+                    if rtype == "syn":
+                        rel_syns.append(rchar)
                     else:
-                        rel_ants.append(rel_char)
+                        rel_ants.append(rchar)
     except Exception as e:
         # 表格可能還沒建立或 DB 問題，graceful fallback
         print(f"[syn] 讀取 word_relations 失敗，將退回 static thesaurus：{e}")
@@ -987,6 +872,12 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
     except Exception:
         static_syns = []
         static_ants = []
+
+    # 診斷 log（重啟後端後在 console 會看到，方便確認 static 是否有正確載入 cilin/antisem）
+    try:
+        print(f"[syn] q={q!r} rel_syn={len(rel_syns)} rel_ant={len(rel_ants)} static_syn={len(static_syns)} static_ant={len(static_ants)}")
+    except Exception:
+        pass
 
     # 合併 relations + static（relations 優先或平等對待皆可，這裡平等 blend 後 dedup）
     syns: List[dict] = []
@@ -1012,117 +903,3 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
 
     # 完全沒有關係時的極簡 fallback
     return [_syn_result(q, "syn")]
-
-    # === 以下舊的 vector / embedding matrix 路徑已不再是 syn 的主要依賴 ===
-    # （保留註解以利未來擴充 semantic_related 或除錯）
-    #
-    # q_emb = get_text_embedding(q)
-    # if not q_emb:
-    #     return [_syn_result(q, "syn")]
-    #
-    # chars, emb_mat = get_synonym_index()
-    # if not chars or emb_mat is None ...
-    # （舊的 numpy cosine + blend 邏輯移到註解區）
-
-    # 舊程式碼（已停用為主路徑）：
-    # import numpy as np
-    # ...
-
-    k = 12
-    syn_thresh = 0.55
-    ant_k = 8
-    ant_max = 0.28
-
-    # Near synonyms: high sim, exclude self, prefer static then vector
-    order = np.argsort(sims)[::-1]
-    vec_syns = []
-    for idx in order:
-        if len(vec_syns) >= k:
-            break
-        c = chars[idx]
-        if c == q:
-            continue
-        s = float(sims[idx])
-        if s >= syn_thresh:
-            vec_syns.append(c)
-
-    # If no high-sim matches above thresh (and no static data), fall back to top-N semantic
-    # neighbors anyway so the user sees useful suggestions instead of empty or only self.
-    if not vec_syns and not static_syns:
-        for idx in order:
-            if len(vec_syns) >= 8:
-                break
-            c = chars[idx]
-            if c != q:
-                vec_syns.append(c)
-
-    # Blend: static first (curated), then fill with high vec (dedup)
-    syns = []
-    seen = set()
-    for w in static_syns + vec_syns:
-        if w not in seen and w != q:
-            seen.add(w)
-            syns.append(_syn_result(w, "syn"))
-            if len(syns) >= k:
-                break
-
-    # Antonyms
-    ants = []
-    seen_ant = set()
-    for w in static_ants:
-        if w not in seen_ant and w != q:
-            seen_ant.add(w)
-            ants.append(_syn_result(w, "ant"))
-            if len(ants) >= ant_k:
-                break
-
-    # Vector low-sim as weak antonym fallback / supplement (only if few static)
-    if len(ants) < ant_k:
-        low_order = np.argsort(sims)
-        for idx in low_order:
-            if len(ants) >= ant_k:
-                break
-            c = chars[idx]
-            if c == q or c in seen_ant:
-                continue
-            s = float(sims[idx])
-            if s <= ant_max:
-                seen_ant.add(c)
-                ants.append(_syn_result(c, "ant"))
-
-    # Optional near-synonym (5th GitHub) — LLM MLM gen when available (heavy models, first-run HF download)
-    # Guarded: never blocks core path. If present and FLAG set, union a few more.
-    try:
-        import os
-        if os.environ.get("FLAG_MLM_ANTONYM") == "1":
-            from near_synonym import mlm_synonyms, mlm_antonyms  # type: ignore
-            for w in (mlm_synonyms(q) or [])[:6]:
-                ww = w[0] if isinstance(w, (list, tuple)) else w
-                if ww and ww != q and ww not in seen:
-                    seen.add(ww)
-                    syns.append(_syn_result(ww, "syn"))
-            for w in (mlm_antonyms(q) or [])[:4]:
-                ww = w[0] if isinstance(w, (list, tuple)) else w
-                if ww and ww != q and ww not in seen_ant:
-                    seen_ant.add(ww)
-                    ants.append(_syn_result(ww, "ant"))
-    except Exception:
-        pass  # silent — feature works without this package
-
-    # Final dedup + order (static/curated first already reflected)
-    out = []
-    seen_final = set()
-    for item in syns + ants:
-        c = item["char"]
-        if c not in seen_final:
-            seen_final.add(c)
-            out.append(item)
-
-    # Safety: if matrix was available but no neighbors passed the similarity thresholds
-    # (common when no vendor thesaurus data/ and embedding similarities are moderate),
-    # still return at least the query itself so the UI shows something (consistent with
-    # the no-matrix fallback path). Without this, syn mode could return [] for every query.
-    if not out:
-        out = [_syn_result(q, "syn")]
-
-    return out[: (k + ant_k)]

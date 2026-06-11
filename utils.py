@@ -347,6 +347,12 @@ def load_antonym_dict(path: str = "data/antonym/antisem.txt") -> None:
             left, ants = parts[0], parts[1:]
         if left and ants:
             d[left] = ants
+            # make bidirectional for antonym pairs/lists
+            for ant in ants:
+                if ant not in d:
+                    d[ant] = []
+                if left not in d[ant]:
+                    d[ant].append(left)
     _ant_dict = d
 
 def load_thesaurus_dicts(syn_path: str = "data/thesaurus/dict_synonym.txt",
@@ -371,15 +377,24 @@ def load_thesaurus_dicts(syn_path: str = "data/thesaurus/dict_synonym.txt",
             line = line.strip()
             if not line or line.startswith("#"):
                 continue
-            # Accept "w1 w2", "w1——w2", "w1 w2 w3" etc.
-            parts = [x.strip() for x in line.replace("——", " ").replace("—", " ").split() if x.strip()]
+            # Robust guotong parse:
+            # - Handle "CODE= word1 word2 ..." for synonym groups (skip code part)
+            # - Normalize "A——B", "A—B", "A B" separators
+            # - For both syn and ant, make relations bidirectional (pairs and groups are mutual)
+            if "=" in line:
+                line = line.split("=", 1)[1]
+            parts = [x.strip() for x in line.replace("——", " ").replace("—", " ").replace("–", " ").split() if x.strip()]
             if len(parts) >= 2:
-                w = parts[0]
-                others = parts[1:]
                 if target is _syn_dict:
-                    _syn_dict.setdefault(w, []).extend(others)
+                    for w in parts:
+                        for other in parts:
+                            if other != w:
+                                _syn_dict.setdefault(w, []).append(other)
                 else:
-                    _ant_dict.setdefault(w, []).extend(others)
+                    for w in parts:
+                        for other in parts:
+                            if other != w:
+                                _ant_dict.setdefault(w, []).append(other)
     # Dedup
     for dd in (_syn_dict, _ant_dict):
         for k in list(dd.keys()):

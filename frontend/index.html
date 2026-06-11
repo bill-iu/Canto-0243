@@ -1,231 +1,385 @@
 <!DOCTYPE html>
 <html lang="zh-HK">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>0243 離線押韻字典 - 1.0</title>
+  <title>0243 押韻字典</title>
   <style>
+    :root {
+      --paper: #F8F4E8;
+      --ink: #1A2A3A;
+      --accent: #C13E2D;
+      --gold: #B8860B;
+      --text: #2C2C2C;
+      --muted: #6B6B6B;
+      --card: #FFFFFF;
+      --border: #E8E0D0;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f5f5f5;
-      color: #333;
+      background: var(--paper);
+      color: var(--text);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
     .header {
-      background: white;
-      padding: 12px 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background: var(--ink);
+      color: var(--paper);
+      padding: 14px 24px;
       display: flex;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
 
-    .menu-btn {
-      font-size: 28px;
-      cursor: pointer;
-      margin-right: 15px;
-      color: #555;
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .logo {
-      font-size: 26px;
-      font-weight: bold;
-      color: #d4380d;
-    }
-
-    .sidebar {
-      position: fixed;
-      left: -280px;
-      top: 0;
-      bottom: 0;
-      width: 280px;
-      background: white;
-      box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
-      transition: left 0.3s ease;
-      z-index: 200;
-      padding: 20px 0;
-      overflow-y: auto;
-    }
-
-    .sidebar.open {
-      left: 0;
-    }
-
-    .sidebar-item {
-      padding: 12px 25px;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo::before {
+      content: "韻";
+      font-size: 18px;
+      background: var(--accent);
+      color: white;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .main-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--ink);
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .search-row input {
+      flex: 1;
+      padding: 16px 20px;
+      font-size: 20px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(193, 62, 45, 0.1);
+    }
+
+    .search-row button {
+      padding: 0 28px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
       font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
     }
 
-    .sidebar-item:hover {
-      background: #f8f8f8;
+    .search-row button:hover {
+      background: #A32F24;
     }
 
-    .main-content {
-      padding: 20px;
-      max-width: 1100px;
-      margin: auto;
+    .search-row button:active {
+      transform: scale(0.98);
+    }
+
+    .modes {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
     }
 
     .mode-btn {
-      padding: 12px 32px;
-      margin: 0 10px;
-      border: 2px solid #ddd;
+      padding: 10px 20px;
       background: white;
-      color: #333;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
+      color: var(--ink);
+      border: 2px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
       font-weight: 500;
-      min-width: 190px;
-      transition: all 0.2s ease;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .mode-btn.active {
-      background: #d4380d;
+      background: var(--ink);
       color: white;
-      border-color: #d4380d;
+      border-color: var(--ink);
     }
 
-    .mode-btn:not(.active):hover {
-      background: #fafafa;
-      border-color: #ccc;
+    .mode-btn:hover:not(.active) {
+      border-color: var(--gold);
+      color: var(--gold);
     }
 
-    input {
-      width: 100%;
-      padding: 16px;
-      font-size: 20px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    button {
-      padding: 14px 32px;
-      background: #d4380d;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
+    .stats {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      min-height: 18px;
     }
 
     .results {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 12px;
-      padding: 10px 0;
+      grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+      gap: 10px;
     }
 
     .result-item {
-      background: #fff;
-      color: #333;
-      padding: 14px 10px;
-      border: 1px solid #eee;
+      background: var(--card);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 16px;
+      padding: 14px 10px;
+      font-size: 15px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      transition: all 0.2s;
       cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      line-height: 1.3;
     }
 
     .result-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(212, 56, 13, 0.15);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: var(--gold);
+    }
+
+    .result-item:active {
+      transform: scale(0.985);
     }
 
     .info {
       text-align: center;
-      color: #666;
-      padding: 60px 20px;
-      font-size: 18px;
-    }
-
-    .stats {
-      text-align: center;
-      margin: 10px 0;
-      color: #666;
+      color: var(--muted);
+      padding: 48px 20px;
       font-size: 15px;
+      line-height: 1.6;
     }
 
-    /* Synonym / Antonym two-column layout (no scores, pure word buttons) */
+    /* Syn / Ant two-column */
     .syn-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
+
     .syn-section {
-      background: #fff;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 8px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
     }
+
     .syn-section h4 {
-      margin: 4px 8px 8px;
-      font-size: 15px;
-      color: #d4380d;
-      border-bottom: 1px solid #f0f0f0;
-      padding-bottom: 4px;
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
+
     .syn-section .results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-      gap: 8px;
-      padding: 0;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 6px;
+    }
+
+    .syn-empty {
+      font-size: 13px;
+      color: #999;
+      padding: 8px 0;
+    }
+
+    .load-more {
+      display: block;
+      width: 100%;
+      margin: 24px auto 0;
+      padding: 12px;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .load-more:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    #loadMoreBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 24px;
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #loadMoreBtn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .main-wrap { padding: 24px 16px 60px; }
+      .search-row { flex-direction: column; }
+      .search-row button { padding: 14px; }
+      .syn-container { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 24px; }
+    }
+
+    /* Focus & a11y */
+    .result-item:focus-visible,
+    .mode-btn:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    input:focus-visible {
+      outline: none;
     }
   </style>
 </head>
-
 <body>
-  <div class="header">
-    <span class="menu-btn" onclick="toggleSidebar()">☰</span>
-    <span class="logo" onclick="goHome()" style="cursor:pointer;">0243 離線押韻字典</span>
-  </div>
-
-  <div id="sidebar" class="sidebar">
-    <div class="sidebar-item" onclick="toggleSidebar()">🏠 首頁</div>
-    <div class="sidebar-item">🔍 數字搵詞</div>
-    <div class="sidebar-item">📝 漢字搵詞</div>
-    <div class="sidebar-item">🔗 等號韻搜尋</div>
-
-    <div style="margin-top:40px; padding:0 20px;">
-      <div style="font-weight:bold; margin-bottom:12px; color:#555;">模式切換</div>
-      <button id="btn-m1" class="mode-btn active" onclick="switchMode('m1')">模式1 - 0243</button>
-      <button id="btn-m2" class="mode-btn" onclick="switchMode('m2')">模式2 - 02493</button>
-      <button id="btn-syn" class="mode-btn" onclick="switchMode('syn')">近義/反義詞查找</button>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo" onclick="goHome()">0243 押韻字典</div>
     </div>
-  </div>
+  </header>
 
-  <div class="main-content">
-    <!-- 已移除 onkeyup，改由 JavaScript 統一處理 Enter -->
-    <input type="text" id="searchInput" placeholder="0243/搵嘢" autocomplete="off">
-    <button onclick="searchDict()">🔍 搜尋</button>
+  <main class="main-wrap">
+    <div class="hero">
+      <h1>粵語填詞好幫手</h1>
+      <p>0243 / 02493 編碼 · 粵拼 · 等號韻 · 近義反義，一鍵即得</p>
+    </div>
 
-    <div id="stats" class="stats"></div>
-    <div id="results" class="results"></div>
-  </div>
+    <div class="search-row">
+      <input type="text" id="searchInput" placeholder="輸入 23就、香港=、事業…" autocomplete="off" aria-label="搜尋輸入">
+      <button id="searchBtn" onclick="searchDict()" aria-label="搜尋">搜尋</button>
+    </div>
+
+    <div class="modes" role="tablist" aria-label="搜尋模式">
+      <button class="mode-btn active" id="btn-m1" onclick="switchMode('m1')" role="tab" aria-selected="true">模式 1 · 0243</button>
+      <button class="mode-btn" id="btn-m2" onclick="switchMode('m2')" role="tab" aria-selected="false">模式 2 · 02493</button>
+      <button class="mode-btn" id="btn-syn" onclick="switchMode('syn')" role="tab" aria-selected="false">近義 / 反義詞</button>
+    </div>
+
+    <div id="stats" class="stats" aria-live="polite"></div>
+    <div id="results" class="results" aria-live="polite"></div>
+  </main>
 
   <script>
+    // === 雙擊 index.html 直接執行支援（保留 start.sh 流程） ===
+    if (location.protocol === 'file:') {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.innerHTML = `
+          <div style="position:fixed;inset:0;background:#F8F4E8;color:#1A2A3A;display:flex;align-items:center;justify-content:center;font-family:system-ui;z-index:99999;">
+            <div style="max-width:520px;text-align:center;padding:40px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+              <h2 style="margin:0 0 16px;font-size:26px;">0243 押韻字典</h2>
+              <p style="margin:0 0 20px;line-height:1.6;color:#555;">
+                您直接雙擊開啟了 <code>index.html</code>。<br>
+                本應用需要後端伺服器支援才能完整運作。
+              </p>
+              <div style="background:#fff3e0;border:1px solid #ffcc80;padding:12px 16px;border-radius:8px;margin:16px 0;font-size:14px;color:#e65100;">
+                請先執行 <strong>start.sh</strong> 啟動後端伺服器
+              </div>
+              <button onclick="window.open('http://127.0.0.1:8000/frontend/index.html', '_blank')"
+                      style="background:#C13E2D;color:white;border:none;padding:14px 36px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">
+                開啟應用程式
+              </button>
+              <p style="margin:20px 0 0;font-size:13px;color:#888;">
+                start.sh 會自動啟動伺服器並開啟正確頁面
+              </p>
+            </div>
+          </div>
+        `;
+      });
+      // 停止後續原本的應用程式碼執行
+      throw new Error('Direct file open - showing instruction only');
+    }
+
     let currentMode = 'm1';
     let currentResults = [];
     let currentOffset = 0;
     let isSearching = false;
     let currentQuery = "";
-    const PAGE_SIZE = 200;
+    const PAGE_SIZE = 160;
     const searchCache = new Map();
 
     const $ = {
       searchInput: document.getElementById("searchInput"),
       results: document.getElementById("results"),
       stats: document.getElementById("stats"),
-      sidebar: document.getElementById("sidebar"),
     };
 
     function updateBrowserUrl(query = "", mode = currentMode, replace = false) {
@@ -234,21 +388,19 @@
       if (mode) params.set('mode', mode);
       const url = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
       const state = { type: query ? 'search' : 'home', query, mode };
-      if (replace) {
-        window.history.replaceState(state, '', url);
-      } else {
-        window.history.pushState(state, '', url);
-      }
+      if (replace) window.history.replaceState(state, '', url);
+      else window.history.pushState(state, '', url);
     }
 
     function createResultButton(text, query, title = "") {
-      const item = document.createElement("button");
-      item.type = "button";
-      item.className = "result-item";
-      item.textContent = text;
-      item.title = title;
-      item.addEventListener("click", () => handleResultClick(query));
-      return item;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "result-item";
+      btn.textContent = text;
+      if (title) btn.title = title;
+      btn.addEventListener("click", () => handleResultClick(query));
+      btn.setAttribute("aria-label", `選擇 ${text}`);
+      return btn;
     }
 
     function handleResultClick(queryText) {
@@ -267,20 +419,19 @@
         const ants = data.filter(r => r.relation === 'ant');
         $.results.appendChild(createSynSection('近義詞', syns));
         $.results.appendChild(createSynSection('反義詞', ants));
-        $.stats.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
-        toggleLoadMoreButton(false);
+        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}`;
         return;
       }
 
       $.results.className = 'results';
       const frag = document.createDocumentFragment();
       data.forEach(word => {
-        const displayText = word.display_text || word.char;
-        const queryText = word.query_text || word.char;
-        frag.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
+        const display = word.display_text || word.char;
+        const qtext = word.query_text || word.char;
+        frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
       });
       $.results.appendChild(frag);
-      $.stats.textContent = `找到 ${currentResults.length + data.length} 個結果（${currentMode} 模式）`;
+      $.stats.textContent = `${currentResults.length + data.length} 個結果（${currentMode}）`;
       toggleLoadMoreButton(data.length === PAGE_SIZE);
     }
 
@@ -288,38 +439,47 @@
       const section = document.createElement('div');
       section.className = 'syn-section';
       const h = document.createElement('h4');
-      h.textContent = title + (items.length ? ` (${items.length})` : '');
+      h.textContent = title;
       section.appendChild(h);
       const grid = document.createElement('div');
       grid.className = 'results';
-      items.forEach(w => {
-        const char = (w && typeof w === 'object') ? (w.char || w) : w;
-        const btn = createResultButton(char, char);  // no score, no jyut title for syn
-        grid.appendChild(btn);
-      });
-      if (!items.length) {
+      if (items.length) {
+        items.forEach(w => {
+          const char = (w && typeof w === 'object') ? (w.char || w) : w;
+          grid.appendChild(createResultButton(char, char));
+        });
+      } else {
         const empty = document.createElement('div');
+        empty.className = 'syn-empty';
         empty.textContent = '（無）';
-        empty.style.color = '#999';
-        empty.style.fontSize = '13px';
         grid.appendChild(empty);
       }
       section.appendChild(grid);
       return section;
     }
 
+    function toggleLoadMoreButton(show) {
+      let btn = document.getElementById("loadMoreBtn");
+      if (!btn) {
+        btn = document.createElement("button");
+        btn.id = "loadMoreBtn";
+        btn.textContent = "載入更多";
+        btn.className = "load-more";
+        btn.style.margin = "20px auto";
+        btn.style.display = "block";
+        btn.onclick = () => searchDict(true);
+        $.results.after(btn);
+      }
+      btn.style.display = show ? "block" : "none";
+    }
+
     function goHome() {
       $.searchInput.value = "";
       $.results.innerHTML = "";
       $.stats.textContent = "";
-      toggleLoadMoreButton(false);
       currentQuery = "";
+      toggleLoadMoreButton(false);
       updateBrowserUrl('', currentMode, true);
-    }
-
-    function getModeLabel() {
-      if (currentMode === 'syn') return '近義/反義詞查找';
-      return currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢';
     }
 
     function finishSearchWithData(data, { append = false } = {}) {
@@ -331,6 +491,11 @@
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
       isSearching = true;
+      const btn = document.getElementById("searchBtn");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "搜尋中…";
+      }
 
       const input = $.searchInput.value.trim();
 
@@ -339,13 +504,15 @@
         $.stats.textContent = "";
         currentResults = [];
         currentOffset = 0;
-        $.results.className = 'results';
+        toggleLoadMoreButton(false);
       }
 
       if (!input) {
-        $.results.innerHTML = `<p class="info">${getModeLabel()}<br>請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
+        $.results.innerHTML = `<p class="info">請輸入，例如：<br>23就、香港=、事業、大蛋糕=</p>`;
         currentQuery = "";
         isSearching = false;
+        if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
+        toggleLoadMoreButton(false);
         return;
       }
 
@@ -357,13 +524,13 @@
       const cacheKey = `${currentMode}:${input}:${currentOffset}`;
       if (!isLoadMore && searchCache.has(cacheKey)) {
         const data = searchCache.get(cacheKey);
-        if (!Array.isArray(data)) {
-          searchCache.delete(cacheKey);
-        } else {
+        if (Array.isArray(data)) {
           finishSearchWithData(data, { append: isLoadMore });
           isSearching = false;
+          if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
           return;
         }
+        searchCache.delete(cacheKey);
       }
 
       const url = `/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
@@ -375,52 +542,35 @@
 
         if (!isLoadMore) {
           searchCache.set(cacheKey, data);
-          if (searchCache.size > 64) {
-            searchCache.delete(searchCache.keys().next().value);
-          }
+          if (searchCache.size > 50) searchCache.delete(searchCache.keys().next().value);
         }
 
         if (data.length === 0 && !isLoadMore) {
           $.results.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
           isSearching = false;
+          if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
+          toggleLoadMoreButton(false);
           return;
         }
 
         finishSearchWithData(data, { append: isLoadMore });
 
       } catch (e) {
-        console.error("Backend fetch failed:", e);
-        $.results.innerHTML = `
-          <p class="info" style="color:red;">
-            無法連接到後端<br>
-            <small>請確認後端已啟動 (python main.py 或 start.sh)，並查看終端機是否有錯誤訊息。</small>
-          </p>
-        `;
+        console.error(e);
+        $.results.innerHTML = `<p class="info" style="color:#C13E2D">無法連接到後端<br><small>請確認後端已啟動</small></p>`;
       }
 
       isSearching = false;
-    }
-
-    function toggleLoadMoreButton(show) {
-      let btn = document.getElementById("loadMoreBtn");
-      if (!btn) {
-        btn = document.createElement("button");
-        btn.id = "loadMoreBtn";
-        btn.textContent = "載入更多";
-        btn.style.margin = "20px auto";
-        btn.style.display = "block";
-        btn.onclick = () => searchDict(true);
-        $.results.after(btn);
-      }
-      btn.style.display = show ? "block" : "none";
+      if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
     }
 
     function switchMode(mode) {
       currentMode = mode;
-      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-      const btnEl = document.getElementById(`btn-${mode}`);
-      if (btnEl) btnEl.classList.add('active');
-      $.searchInput.placeholder = getModeLabel();
+      document.querySelectorAll('.mode-btn').forEach(b => {
+        b.classList.toggle('active', b.id === `btn-${mode}`);
+        b.setAttribute('aria-selected', b.id === `btn-${mode}`);
+      });
+      $.searchInput.placeholder = mode === 'syn' ? '輸入字詞查近義/反義' : (mode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
       const input = $.searchInput.value.trim();
       if (input) {
         updateBrowserUrl(input, currentMode, true);
@@ -430,19 +580,15 @@
       }
     }
 
-    function toggleSidebar() {
-      $.sidebar.classList.toggle("open");
-    }
-
     window.addEventListener('popstate', function (event) {
       const state = event.state || { type: 'home' };
       if (state.type === 'search') {
         $.searchInput.value = state.query || "";
         currentMode = state.mode || 'm1';
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        const activeBtn = document.getElementById(`btn-${currentMode}`);
-        if (activeBtn) activeBtn.classList.add('active');
-        $.searchInput.placeholder = getModeLabel();
+        const active = document.getElementById(`btn-${currentMode}`);
+        if (active) active.classList.add('active');
+        $.searchInput.placeholder = currentMode === 'syn' ? '輸入字詞查近義/反義' : (currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
         currentQuery = state.query || "";
         searchDict(false, true);
       } else {
@@ -459,21 +605,16 @@
 
     (function init() {
       const params = new URLSearchParams(window.location.search);
-      const initialQuery = params.get('q') || '';
-      const initialMode = params.get('mode') || 'm1';
-      if (initialMode === 'm2' || initialMode === 'syn') {
-        switchMode(initialMode);
-      } else {
+      const q = params.get('q') || '';
+      const mode = params.get('mode') || 'm1';
+      if (mode === 'm2' || mode === 'syn') switchMode(mode);
+      else {
         currentMode = 'm1';
         document.getElementById('btn-m1').classList.add('active');
-        const b2 = document.getElementById('btn-m2');
-        if (b2) b2.classList.remove('active');
-        const bs = document.getElementById('btn-syn');
-        if (bs) bs.classList.remove('active');
       }
-      $.searchInput.placeholder = getModeLabel();
-      if (initialQuery) {
-        $.searchInput.value = initialQuery;
+      $.searchInput.placeholder = currentMode === 'syn' ? '輸入字詞查近義/反義' : (currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
+      if (q) {
+        $.searchInput.value = q;
         searchDict();
       } else {
         updateBrowserUrl('', currentMode, true);
@@ -481,5 +622,4 @@
     })();
   </script>
 </body>
-
 </html>

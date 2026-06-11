@@ -18,6 +18,7 @@ class WordRead(WordBase):
     display_text: Optional[str] = None
     query_text: Optional[str] = None
     result_type: Optional[str] = None
+    relation: Optional[str] = None  # for syn mode responses (syn/ant); added to prevent stripping by response_model
 
     class Config:
         from_attributes = True
