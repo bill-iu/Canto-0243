@@ -42,7 +42,9 @@
 ├── data/
 │   ├── antonym/
 │   ├── cilin/
+│   │   └── new_cilin.txt   # 繁體詞林（fetch_cilin_data.py 產生）
 │   └── thesaurus/
+├── fetch_cilin_data.py
 ├── alembic/
 │   └── versions/
 ├── import_data.py
@@ -148,6 +150,19 @@ python -m unittest -v tests.test_syn_ant_ingest
   ```
 
 `generate_relationships.py` 會優先使用 high-precision static thesaurus（cilin / antisem / guotong），並可用 `--include-embedding` 明確啟用 embedding 輔助發現 `semantic_related`。產生的關係之後在 syn 模式（近義/反義查找）中會透過純 SQL 查詢。
+
+### 同義詞詞林（Cilin）資料準備
+
+`data/cilin/new_cilin.txt` 由 [liao961120/cilin](https://github.com/liao961120/cilin) 套件 API 匯出，使用 `Cilin(trad=True)` 確保繁體中文：
+
+```bash
+pip install -r requirements-dev.txt   # 含 cilin、opencc-python-reimplemented
+python fetch_cilin_data.py            # 寫入 data/cilin/new_cilin.txt（約 23k 行）
+python ingest_syn_ant.py normalize --source current_static
+python ingest_syn_ant.py build-relations
+```
+
+`build-relations` 對 SQLite 使用 `INSERT OR IGNORE ... SELECT JOIN` 批次寫入，避免大量 staging 資料觸發 variable limit。
 
 ### 近義/反義 Ingest v2（`ingest_syn_ant.py`）
 

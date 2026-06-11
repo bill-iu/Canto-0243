@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Index, ForeignKey, Float, BigInteger, UniqueConstraint
+from sqlalchemy import Column, Integer, String, Text, Index, ForeignKey, Float, BigInteger, UniqueConstraint, event
 from app.database import Base
 
 # 支援 vector embeddings（semantic similarity 排序優化）
@@ -103,6 +103,15 @@ class WordRelation(Base):
 # 額外複合索引（推薦用於 syn/ant 查詢）
 Index("idx_word_rel_word_type", WordRelation.word_id, WordRelation.relation_type)
 Index("idx_word_rel_related_type", WordRelation.related_id, WordRelation.relation_type)
+
+
+@event.listens_for(WordRelation, "before_insert")
+@event.listens_for(WordRelation, "before_update")
+def _canonicalize_word_relation(_mapper, _connection, target: WordRelation) -> None:
+    from ingest.relation_canonical import canonical_word_ids
+    w, r = canonical_word_ids(int(target.word_id), int(target.related_id))
+    target.word_id = w
+    target.related_id = r
 
 
 class SynAntEdge(Base):

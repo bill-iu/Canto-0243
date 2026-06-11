@@ -202,6 +202,49 @@ def contains_substring(column, substr: str):
     return func.instr(column, substr) > 0
 
 
+def ensure_word_relations_canonical_unique() -> None:
+    """Canonicalize (min word_id first) and enforce unique (word_id, related_id, relation_type)."""
+    if IS_POSTGRES:
+        return
+    try:
+        inspector = inspect(engine)
+        if "word_relations" not in inspector.get_table_names():
+            return
+        with engine.connect() as conn:
+            indexes = {
+                row[0]: row[1]
+                for row in conn.execute(text(
+                    "SELECT name, sql FROM sqlite_master WHERE type='index' AND tbl_name='word_relations'"
+                )).fetchall()
+            }
+            if "uq_word_relation" in indexes and "uq_word_relation_pair" not in indexes:
+                return
+            # Drop reverse-facing rows (keep lower id as word_id)
+            conn.execute(text("DELETE FROM word_relations WHERE word_id > related_id"))
+            conn.execute(text("""
+                DELETE FROM word_relations
+                WHERE id NOT IN (
+                    SELECT MIN(id) FROM word_relations
+                    GROUP BY word_id, related_id, relation_type
+                )
+            """))
+            conn.execute(text("DROP INDEX IF EXISTS uq_word_relation_pair"))
+            conn.execute(text("DROP INDEX IF EXISTS uq_word_relation"))
+            conn.execute(text("""
+                CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
+                ON word_relations (word_id, related_id, relation_type)
+            """))
+            conn.commit()
+            print("[DB] word_relations 已正規化為 (min_id, max_id, relation_type) 唯一。")
+    except Exception as e:
+        print(f"[DB] 更新 word_relations 唯一約束時發生錯誤：{type(e).__name__}: {e}")
+
+
+def ensure_word_relations_pair_unique() -> None:
+    """Deprecated alias — use ensure_word_relations_canonical_unique."""
+    ensure_word_relations_canonical_unique()
+
+
 def ensure_word_relations_table() -> None:
     """
     輕量 schema 確保：建立 word_relations 表（用來存放預先計算的 syn/ant/related 關係）。
@@ -240,8 +283,7 @@ def ensure_word_relations_table() -> None:
                         related_id INTEGER NOT NULL,
                         relation_type VARCHAR(16) NOT NULL,
                         score FLOAT,
-                        source VARCHAR(32),
-                        UNIQUE(word_id, related_id, relation_type)
+                        source VARCHAR(32)
                     )
                 """))
                 conn.execute(text("""
@@ -269,11 +311,8 @@ def ensure_word_relations_table() -> None:
                     CREATE INDEX IF NOT EXISTS idx_word_rel_related_type
                     ON word_relations (related_id, relation_type)
                 """))
-                conn.execute(text("""
-                    CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
-                    ON word_relations (word_id, related_id, relation_type)
-                """))
                 conn.commit()
+            ensure_word_relations_canonical_unique()
     except Exception as e:  # P1 fix: surface exception type
         err = str(e)
         if "database is locked" in err.lower() or "operationalerror" in err.lower():

@@ -17,6 +17,15 @@ sources:
     source_rank: 70
     attribution: Project bundled static thesaurus files
 
+  - id: cilin
+    type: cilin
+    parser: cilin_like
+    license: bundled
+    enabled_by_default: false
+    raw_path: data/cilin/new_cilin.txt
+    source_rank: 55
+    attribution: Cilin extended (Traditional Chinese via fetch_cilin_data.py)
+
   - id: cow
     type: wordnet
     parser: wordnet_synsets

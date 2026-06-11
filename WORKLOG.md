@@ -456,3 +456,33 @@ python -m unittest -v tests.test_utils tests.test_word_detail tests.test_syn_ant
 ```
 
 **本條目結束**。
+
+---
+
+## Cilin 繁體詞林匯入 — 2026-06-11
+
+**來源**：[liao961120/cilin](https://github.com/liao961120/cilin)，以 `Cilin(trad=True)` + OpenCC s2t 匯出至 `data/cilin/new_cilin.txt`。
+
+**流程**：
+
+```bash
+pip install -r requirements-dev.txt
+python fetch_cilin_data.py
+python ingest_syn_ant.py normalize --source current_static
+python ingest_syn_ant.py build-relations
+```
+
+**結果**（本地 SQLite 驗證）：
+
+- `new_cilin.txt`：23567 行、繁體（含 `舊曆`、`快樂`、`開心` 等）
+- `syn_ant_edges` staging：~118 萬 rows（current_static）
+- `word_relations`：~382 萬 rows（其中 ~382 萬 source=`cilin`）
+- `mode=syn` 查「快樂」可從 DB 回傳 100+ 條 cilin 近義詞
+
+**技術修正**：
+
+- `fetch_cilin_data.py`：OpenCC 相容 patch + 繁體 sample 驗證
+- `ingest/syn_ant_merge.py`：SQL bulk JOIN insert（SQLite `INSERT OR IGNORE` / Postgres `ON CONFLICT DO NOTHING`）
+- `tests/test_utils.py`：`test_bundled_cilin_file_traditional_and_loadable`
+
+**本條目結束**。

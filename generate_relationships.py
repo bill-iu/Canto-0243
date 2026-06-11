@@ -54,6 +54,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word, WordRelation
+from ingest.relation_canonical import canonical_relation_dict, relation_storage_key
 from utils import (
     get_synonyms,
     get_antonyms,
@@ -83,14 +84,15 @@ def load_all_chars(db: Session) -> List[str]:
 
 
 def insert_relations_batch(db: Session, relations: List[dict]):
-    """批次 insert，避免重複（以 word_id + related_id + relation_type 去重）。"""
+    """批次 insert，canonical 排序 + (word_id, related_id, relation_type) 去重。"""
     if not relations:
         return 0
 
     deduped = {}
     for rel in relations:
-        key = (rel["word_id"], rel["related_id"], rel["relation_type"])
-        deduped[key] = rel
+        canon = canonical_relation_dict(rel)
+        key = relation_storage_key(canon["word_id"], canon["related_id"], canon["relation_type"])
+        deduped[key] = canon
 
     keys = list(deduped.keys())
     existing = set()
@@ -146,9 +148,11 @@ def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optiona
         for s in syns:
             if s == ch or s not in char_to_id:
                 continue
+            rid = char_to_id[s]
+            w, r = (wid, rid) if wid <= rid else (rid, wid)
             rel = {
-                "word_id": wid,
-                "related_id": char_to_id[s],
+                "word_id": w,
+                "related_id": r,
                 "relation_type": "syn",
                 "score": None,
                 "source": "static_thesaurus",
@@ -164,9 +168,11 @@ def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optiona
         for a in ants:
             if a == ch or a not in char_to_id:
                 continue
+            rid = char_to_id[a]
+            w, r = (wid, rid) if wid <= rid else (rid, wid)
             rel = {
-                "word_id": wid,
-                "related_id": char_to_id[a],
+                "word_id": w,
+                "related_id": r,
                 "relation_type": "ant",
                 "score": None,
                 "source": "static_thesaurus",
@@ -265,9 +271,11 @@ def generate_from_embedding(db: Session, char_to_id: Dict[str, int], limit: Opti
             if s < 0.65:               # 保守 threshold（只加明顯相關的）
                 continue
 
+            rid = char_to_id[c2]
+            w, r = (wid, rid) if wid <= rid else (rid, wid)
             rel = {
-                "word_id": wid,
-                "related_id": char_to_id[c2],
+                "word_id": w,
+                "related_id": r,
                 "relation_type": "semantic_related",
                 "score": round(s, 4),
                 "source": "embedding_cosine",

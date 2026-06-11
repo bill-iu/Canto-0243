@@ -260,8 +260,8 @@ _ant_dict: dict = {}     # word -> list of antonyms (priority: ChineseAntiword a
 _syn_dict: dict = {}     # word -> list of synonyms (guotong thesaurus)
 
 def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:
-    """Parse Cilin V3 style: lines like 'Aa01A01 人民 民 国民 ...' (group code + space words).
-    Build bidirectional within-group links (exclude self).
+    """Parse Cilin leaf synonym groups: lines like 'Aa01A01= 人民 民 国民 ...'.
+    Category tag lines (A, Aa, Aa01) are ignored. Build bidirectional within-group links.
     """
     global _cilin_syns
     if not os.path.exists(path):
@@ -274,8 +274,12 @@ def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:
                 if not line or line.startswith("#"):
                     continue
                 parts = line.split()
-                if len(parts) >= 2:
-                    groups.append(parts[1:])  # skip code, take words
+                if len(parts) < 2:
+                    continue
+                code = parts[0]
+                if not code.endswith("=") or len(code) < 8:
+                    continue
+                groups.append(parts[1:])
     except UnicodeDecodeError:
         try:
             with open(path, "r", encoding="gbk") as f:
@@ -284,8 +288,12 @@ def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:
                     if not line or line.startswith("#"):
                         continue
                     parts = line.split()
-                    if len(parts) >= 2:
-                        groups.append(parts[1:])
+                    if len(parts) < 2:
+                        continue
+                    code = parts[0]
+                    if not code.endswith("=") or len(code) < 8:
+                        continue
+                    groups.append(parts[1:])
         except Exception:
             return
     except Exception:

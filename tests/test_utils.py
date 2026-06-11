@@ -55,5 +55,21 @@ class UtilsTests(unittest.TestCase):
             self.assertIn("前", get_antonyms("後"))
 
 
+    def test_bundled_cilin_file_traditional_and_loadable(self):
+        path = Path(__file__).resolve().parents[1] / "data" / "cilin" / "new_cilin.txt"
+        if not path.exists() or path.stat().st_size < 50_000:
+            self.skipTest("data/cilin/new_cilin.txt not populated; run fetch_cilin_data.py")
+        content = path.read_text(encoding="utf-8")
+        self.assertIn("舊曆", content)
+        self.assertIn("快樂", content)
+        self.assertNotIn("旧历", content)
+
+        from utils import get_cilin_synonyms
+        load_cilin_index(str(path))
+        syns = get_cilin_synonyms("快樂")
+        self.assertGreater(len(syns), 5)
+        self.assertIn("開心", syns)
+
+
 if __name__ == "__main__":
     unittest.main()

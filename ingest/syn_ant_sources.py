@@ -5,6 +5,12 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 
+from ingest.cilin_leaf import (
+    groups_to_syn_edges,
+    iter_cilin_leaf_line_chunks,
+    parse_leaf_group_line,
+    parse_leaf_groups,
+)
 from ingest.syn_ant_manifest import ROOT, resolve_source_path
 
 CJK_RE = re.compile(r"[\u4e00-\u9fff]")
@@ -42,22 +48,26 @@ def _read_lines(path: Path) -> List[str]:
     return []
 
 
+def parse_cilin_lines(lines: Iterable[str], source: str, source_rank: int = 55) -> List[dict]:
+    """Parse leaf Cilin synonym groups into undirected char-pair edges (n choose 2)."""
+    groups = parse_leaf_groups(list(lines))
+    return groups_to_syn_edges(groups, source, source_rank=source_rank)
+
+
+def iter_cilin_line_chunks(path: Path, chunk_size: int = 300) -> Iterator[List[str]]:
+    """Yield leaf synonym lines only, in fixed-size chunks."""
+    yield from iter_cilin_leaf_line_chunks(path, chunk_size=chunk_size)
+
+
 def parse_cilin_like(path: Path, source: str, source_rank: int = 55) -> List[dict]:
-    """Cilin / HIT style: CODE word1 word2 ..."""
-    edges: List[dict] = []
+    """Cilin leaf groups: CODE= word1 word2 ..."""
+    leaf_lines = []
     for line in _read_lines(path):
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        parts = line.split()
-        if len(parts) < 2:
-            continue
-        words = [p for p in parts[1:] if CJK_RE.search(p)]
-        for i, w in enumerate(words):
-            for other in words:
-                if other != w:
-                    edges.append(_edge(w, other, "syn", source, source_rank=source_rank, evidence={"group": parts[0]}))
-    return edges
+        parsed = parse_leaf_group_line(line)
+        if parsed:
+            code, words = parsed
+            leaf_lines.append(f"{code} {' '.join(words)}")
+    return parse_cilin_lines(leaf_lines, source, source_rank=source_rank)
 
 
 def parse_antonym_pairs(path: Path, source: str, source_rank: int = 55) -> List[dict]:

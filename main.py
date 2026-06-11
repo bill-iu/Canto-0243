@@ -73,10 +73,12 @@ if __name__ == "__main__":
                 ensure_length_column,
                 start_length_backfill,
                 ensure_word_relations_table,
+                ensure_word_relations_canonical_unique,
                 ensure_syn_ant_edges_table,
             )
             ensure_length_column()              # 輕量 length 欄位
             ensure_word_relations_table()       # 輕量 word_relations（syn/ant 關係表）
+            ensure_word_relations_canonical_unique()  # (word_id, related_id, relation_type) + min-id canonical
             ensure_syn_ant_edges_table()        # ingest v2 staging
             start_length_backfill()             # 重型 length backfill（daemon）
         except Exception as e:
