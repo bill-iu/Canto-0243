@@ -219,8 +219,8 @@ def generate_from_embedding(db: Session, char_to_id: Dict[str, int], limit: Opti
         try:
             emb = model.encode(ch, normalize_embeddings=True)
             embeddings[ch] = emb
-        except Exception as e:
-            print(f"    計算「{ch}」embedding 失敗: {e}")
+        except Exception as e:  # P1 fix
+            print(f"    計算「{ch}」embedding 失敗: {type(e).__name__}: {e}")
         if (i + 1) % 500 == 0:
             print(f"    已計算 {i+1}/{len(chars)} 個字的 embedding...")
 
@@ -287,8 +287,8 @@ def main():
         load_cilin_index()
         load_antonym_dict()
         load_thesaurus_dicts()
-    except Exception as e:
-        print(f"⚠️  載入 static thesaurus 時發生問題（將繼續以可用資料為主）：{e}")
+    except Exception as e:  # P1 fix: include exception type
+        print(f"⚠️  載入 static thesaurus 時發生問題（將繼續以可用資料為主）：{type(e).__name__}: {e}")
 
     db = SessionLocal()
     try:

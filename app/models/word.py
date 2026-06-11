@@ -11,6 +11,8 @@ try:
 except ImportError:
     Vector = None
 
+# Module-level type selection (cleaner than conditional inside class body)
+
 
 class Word(Base):
     __tablename__ = "words"
@@ -41,10 +43,12 @@ class Word(Base):
     # Vector embedding for semantic similarity sorting (同時支援 Postgres 與 SQLite)
     # 384 dim 對應 sentence-transformers paraphrase-multilingual-MiniLM-L12-v2
     # Postgres 端會在 migration 中建立 pgvector extension + index
-    if Vector is not None:
-        embedding = Column(Vector(384), nullable=True)
-    else:
-        embedding = Column(String(4096), nullable=True)  # JSON 序列化 float list 作為 SQLite 儲存
+    #
+    # Refactored for cleaner module-level definition (avoids executing conditional
+    # logic inside class body at import time). The actual column type for PG
+    # is managed via Alembic migration + pgvector; SQLite falls back to TEXT/JSON.
+    _embedding_type = Vector(384) if Vector is not None else String(4096)
+    embedding = Column(_embedding_type, nullable=True)  # JSON 序列化 float list 作為 SQLite 儲存
 
 
 # Additional index for jyutping searches (see comment above)

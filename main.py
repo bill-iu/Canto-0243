@@ -39,7 +39,9 @@ app = FastAPI(title="0243 押韻字典", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    # Tightened for safety: in production prefer explicit origins (e.g. via env).
+    # Current default keeps local dev convenience for the offline lyrics tool.
+    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

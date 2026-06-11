@@ -158,8 +158,8 @@ def get_text_embedding(text: str) -> list[float]:
     try:
         emb = _embedding_model.encode(text, normalize_embeddings=True)
         return emb.tolist()
-    except Exception as e:
-        print(f"[embedding] 無法產生 embedding（{e}）")
+    except Exception as e:  # P1 fix: include exception type for better diagnostics
+        print(f"[embedding] 無法產生 embedding（{type(e).__name__}: {e}）")
         return []
 
 def is_embedding_model_ready() -> bool:

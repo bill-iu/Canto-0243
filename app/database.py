@@ -160,6 +160,8 @@ def start_length_backfill() -> None:
                                 break
 
                             # 快速批量更新，使用字面 IN (ids 是信任的 int)，避免 param binding 限制和 ? 問題
+                            # P2 note: ids come from our own SELECT so trusted; still prefer parameterised
+                            # forms in new code. Kept for SQLite batch perf + compatibility.
                             id_list = ','.join(str(i) for i in ids)
                             res = bg_conn.execute(
                                 text(f"UPDATE words SET length = length(char) WHERE id IN ({id_list})")
@@ -262,10 +264,10 @@ def ensure_word_relations_table() -> None:
                     ON word_relations (related_id, relation_type)
                 """))
                 conn.commit()
-    except Exception as e:
+    except Exception as e:  # P1 fix: surface exception type
         err = str(e)
         if "database is locked" in err.lower() or "operationalerror" in err.lower():
             print("[DB] ⚠️  偵測到 database is locked，無法自動建立 word_relations。")
             print("     請關閉其他程序後重試，或手動建立表格。")
         else:
-            print(f"[DB] 嘗試建立 word_relations 表時發生錯誤（可忽略，若之後執行 generate script 即可）：{e}")
+            print(f"[DB] 嘗試建立 word_relations 表時發生錯誤（可忽略，若之後執行 generate script 即可）：{type(e).__name__}: {e}")
