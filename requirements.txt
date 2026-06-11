@@ -6,4 +6,9 @@ python-multipart
 python-dotenv          # 這行很重要（支援 .env）
 psycopg2-binary        # PostgreSQL 支援
 alembic                # 正式 PostgreSQL 版本的 schema 遷移管理（取代 create_all/drop_all）
-sentence-transformers  # vector embedding 產生（semantic similarity 排序優化，同時支援 Postgres 與 SQLite）
+
+# 注意：以下為 ingest / 資料準備專用重型依賴（ML）。
+# 一般使用者只需執行「pip install -r requirements.txt」即可啟動服務查詢。
+# 執行 import_data.py 或 generate_relationships.py 等 ingest script 時，
+# 請改用：pip install -r requirements-dev.txt
+# sentence-transformers  # 已移至 requirements-dev.txt（ingest only）

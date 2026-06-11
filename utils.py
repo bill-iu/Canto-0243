@@ -72,66 +72,124 @@ def get_code_variants(code: str, mode: str = "m2") -> List[str]:
     return sorted(variants)
 
 
-# ==================== Vector Embedding（語義相似度排序優化，同時支援 Postgres 與 SQLite） ====================
-# 使用 sentence-transformers 多語言模型產生 embedding
-# - Postgres 端：存入 pgvector Vector 欄位，可用原生 cosine_distance 在 DB 排序
-# - SQLite 端（本地開發）：存入 JSON 文字，搜尋時用 Python cosine re-rank 候選結果
-# 兩個版本的 semantic 排序行為一致（只是實作差異）
-#
-# 重要：模型載入現在是「背景非阻塞」的。
-# - 第一次呼叫 get_text_embedding 會立即觸發背景 thread 去載入，不會 block 當前請求。
-# - 載入期間所有呼叫都回傳 []，呼叫端（m1/m2 semantic re-rank、syn mode）會自動 graceful fallback。
-# - 載入完成後，全域可用，後續請求自動獲得語義功能。
-# 這樣可以達到「一開啟後端就可以用」（基本搜尋、static thesaurus 立即可用），embedding 幾秒後在背景 ready。
+# ==================== Vector Embedding（語義相似度排序優化， ingest-only） ====================
+# 重要 redesign（回應使用者要求「完全不載入 MiniLM 仍能使用功能」）：
+# - 在**正常 runtime**（只裝 requirements.txt）下，**永遠不會** 載入 paraphrase-multilingual-MiniLM-L12-v2。
+# - get_text_embedding 在沒有 sentence-transformers 的環境下會**安靜地** 永遠 return []，不會啟動任何背景 thread，也不會印任何載入訊息。
+# - 模型只會在明確的 ingest 腳本（generate_relationships.py，使用 requirements-dev.txt）中被載入，用來預先產生 word_relations 裡的 semantic_related 記錄。
+# - Syn mode 已經完全依賴 precomputed word_relations + static thesaurus，不再需要 runtime embedding。
+# - 任何剩餘的 semantic re-rank 路徑都必須先檢查 is_ready()，否則直接跳過。
 
 _embedding_model = None
 _embedding_load_started = False
+_embedding_available = None   # 三態：None=尚未檢查, True=可用, False=不可用（永久）
+
+# Hard guard: embedding model loading is ONLY permitted during explicit ingest
+# (generate_relationships.py). Normal server startup must never load it.
+_ingest_mode_embedding = False
+
+def _check_embedding_available():
+    """只在第一次真正需要時檢查一次 sentence-transformers 是否存在。
+    Even if the package is importable, we refuse to load the model unless
+    we are explicitly in ingest mode (set by generate_relationships.py).
+    """
+    global _embedding_available
+    if _embedding_available is not None:
+        return _embedding_available
+    if not _ingest_mode_embedding:
+        _embedding_available = False
+        return False
+    try:
+        import sentence_transformers  # noqa
+        _embedding_available = True
+    except ImportError:
+        _embedding_available = False
+    return _embedding_available
 
 def _load_embedding_model_in_background():
-    """Background loader. Never blocks request threads."""
+    """Background loader. 只在 ingest 情境下才會被呼叫。"""
     global _embedding_model, _embedding_load_started
     try:
         import os
         os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
         from sentence_transformers import SentenceTransformer
+        # 只有在 ingest 時才印這個訊息（正常 runtime 不應該走到這裡）
         print("[embedding] 正在背景載入 paraphrase-multilingual-MiniLM-L12-v2 ... (首次會較久，之後快)")
         model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
         _embedding_model = model
-        # 相容舊的 hasattr 檢查
         get_text_embedding._model = model
-        print("[embedding] Vector embedding model 已就緒，semantic 功能啟用。")
+        print("[embedding] Vector embedding model 已就緒（僅供 ingest 使用）。")
     except Exception as e:
-        print(f"[embedding] 載入模型失敗（{e}），semantic 相關功能將停用（仍可正常使用基本搜尋與 static thesaurus）")
+        print(f"[embedding] 載入模型失敗（{e}）")
     finally:
         _embedding_load_started = False
 
 def get_text_embedding(text: str) -> list[float]:
-    """產生文字的 vector embedding（用於 semantic similarity 排序優化）。
+    """
+    產生文字的 vector embedding。
 
-    預設模型：paraphrase-multilingual-MiniLM-L12-v2（384 dim，多語言，適合中文/粵語）
-    - 模型載入改為背景 thread，不阻塞任何 API 請求。
-    - 載入完成前會回傳 []，呼叫端自動退回傳統/靜態結果。
-    - 想「一開啟就可用」：後端啟動後立即可搜，embedding 功能在背景 warm up。
+    **Strict runtime policy (final redesign)**:
+    - This function will **NEVER** cause the MiniLM model to be loaded during normal
+      server startup (`python main.py`, uvicorn, etc.), even if sentence-transformers
+      is importable in the current Python environment.
+    - Model loading is **only** allowed when `_ingest_mode_embedding` is True
+      (set exclusively by generate_relationships.py before it needs embeddings).
+    - In all other cases it returns [] silently. No threads, no HF warnings,
+      no "正在背景載入" messages.
+    - Syn/ant and all core dictionary features are fully independent of this model
+      thanks to precomputed word_relations + static thesaurus.
     """
     if not text or not text.strip():
         return []
+
+    if not _check_embedding_available():
+        # Normal runtime or ingest not explicitly enabled: silent no-op.
+        return []
+
     global _embedding_model, _embedding_load_started
 
     if _embedding_model is None:
-        # 尚未載入 → 觸發背景載入（只觸發一次）
         if not _embedding_load_started:
             _embedding_load_started = True
             import threading
             threading.Thread(target=_load_embedding_model_in_background, daemon=True).start()
-        # 立即回傳空，讓呼叫端 fallback（不會卡住 UI）
         return []
 
     try:
         emb = _embedding_model.encode(text, normalize_embeddings=True)
         return emb.tolist()
     except Exception as e:
-        print(f"[embedding] 無法產生 embedding（{e}），semantic sorting 將退回傳統模式")
+        print(f"[embedding] 無法產生 embedding（{e}）")
         return []
+
+def is_embedding_model_ready() -> bool:
+    """回傳目前 vector embedding 模型是否已經載入完畢。
+    在純 runtime 環境下永遠回傳 False。
+    """
+    global _embedding_model
+    return _embedding_model is not None
+
+# 相容舊的 hasattr / is_ready 檢查
+get_text_embedding._model = None
+get_text_embedding.is_ready = is_embedding_model_ready
+
+
+def enable_embedding_model_for_ingest() -> None:
+    """
+    Call this **only** from ingest-time scripts (e.g. generate_relationships.py)
+    when you have installed the dev dependencies and explicitly want to load
+    the MiniLM model to compute fresh embeddings for relation discovery.
+
+    After calling this, subsequent calls to get_text_embedding() may load the model
+    (in a background thread) and you will see the loading message.
+
+    Normal server processes must never call this.
+    """
+    global _ingest_mode_embedding
+    _ingest_mode_embedding = True
+    # Proactively reduce HF noise for ingest runs
+    import os
+    os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
 
 def cosine_similarity(a: list[float], b: list[float]) -> float:
@@ -368,6 +426,7 @@ except Exception:
 
 _length_buckets: dict = {}   # int length -> list[dict] with pre-parsed 'finals':list, 'code':str etc.
 _char_meta: dict = {}        # char -> minimal dict for fast ref (finals list, code, length, jyutping)
+_bucket_char_index: dict = {}  # length -> {char: index in _length_buckets[length]}
 
 def populate_word_cache_from_rows(rows: list) -> int:
     """Populate from pre-fetched rows (caller does the SELECT to avoid cycles).
@@ -375,7 +434,7 @@ def populate_word_cache_from_rows(rows: list) -> int:
     Parses finals/initials ONCE here. Returns count of entries added.
     Safe to call multiple times (idempotent per char; later wins for updates).
     """
-    global _length_buckets, _char_meta
+    global _length_buckets, _char_meta, _bucket_char_index
     added = 0
     for r in rows or []:
         if isinstance(r, (list, tuple)):
@@ -413,12 +472,14 @@ def populate_word_cache_from_rows(rows: list) -> int:
             "initials": inits,
             "length": length,
         }
-        # bucket
-        _length_buckets.setdefault(length, [])
-        # avoid dups in bucket (by char)
-        if not any(e["char"] == char for e in _length_buckets[length]):
-            _length_buckets[length].append(entry)
-        # meta (latest wins)
+        # bucket (O(1) dedup via index map)
+        bucket = _length_buckets.setdefault(length, [])
+        idx_map = _bucket_char_index.setdefault(length, {})
+        if char in idx_map:
+            bucket[idx_map[char]] = entry
+        else:
+            idx_map[char] = len(bucket)
+            bucket.append(entry)
         _char_meta[char] = entry
         added += 1
     return added
@@ -437,7 +498,7 @@ def update_word_in_cache(char: str, code: str = "", jyutping: str = "", finals: 
     """Called by _ensure after successful insert of a new canto word so it participates in future mask etc without restart.
     Accepts raw (json str or list) for finals/initials.
     """
-    global _length_buckets, _char_meta
+    global _length_buckets, _char_meta, _bucket_char_index
     if not char:
         return
     f = load_json_list(finals)
@@ -451,14 +512,13 @@ def update_word_in_cache(char: str, code: str = "", jyutping: str = "", finals: 
         "initials": i,
         "length": ln,
     }
-    _length_buckets.setdefault(ln, [])
-    # replace or append
-    for idx, e in enumerate(_length_buckets[ln]):
-        if e["char"] == char:
-            _length_buckets[ln][idx] = entry
-            break
+    bucket = _length_buckets.setdefault(ln, [])
+    idx_map = _bucket_char_index.setdefault(ln, {})
+    if char in idx_map:
+        bucket[idx_map[char]] = entry
     else:
-        _length_buckets[ln].append(entry)
+        idx_map[char] = len(bucket)
+        bucket.append(entry)
     _char_meta[char] = entry
 
 def get_word_cache_stats() -> dict:

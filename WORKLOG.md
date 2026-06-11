@@ -357,4 +357,67 @@ project-root/
   違反者不得合併。所有未來變更（含註解）都需遵守。
 
 - 日期：本次對話實作（已完成全部驗證與文件更新）。
-- 相關提交將提及本任務。
+- 相關提交將提及本任務。### **依朋友 feedback 重構 ingest 與關係產生機制（dev-only ML + SQL 關係表）**
+
+**動機**：
+朋友指出：目前 `sentence-transformers`（連帶 torch 等重型套件）被放在 `requirements.txt`，導致一般使用者只要想跑服務查詢就必須安裝整個 ML stack。這與「離線輕量粵語押韻字典」的目標不符。
+
+需求重點：
+- Ingest 時（建立/更新 DB）的重型 package 必須只作為 dev dependency。
+- Maintainer 在資料準備階段執行重型計算，**預先生成 words 之間的同義/反義關係**，存進一般 SQL 表格。
+- 之後的 syn/ant 搜尋走純 SQL（正常 sql searches），不需要在 runtime 載入模型或做 vector 計算。
+- 請評估是否還有必要保留 `embedding` vector field，或建議明確的關係 schema。
+
+**採取的做法**（完全符合計畫）：
+
+1. **依賴隔離**：
+   - `requirements.txt` 移除 `sentence-transformers`（加說明）。
+   - 新增 `requirements-dev.txt`，內含 `sentence-transformers` + 相關（只有執行 ingest script 時才裝）。
+   - 文件明確區分「一般使用者用 requirements.txt」與「資料準備用 requirements-dev.txt」。
+
+2. **新 Schema**：
+   - 在 `app/models/word.py` 新增 `WordRelation` ORM：
+     - word_id, related_id, relation_type ('syn'/'ant'/'semantic_related'), score, source。
+   - 複合索引支援常見查詢 `(word_id, relation_type)` 與 `(related_id, relation_type)`。
+   - 保留既有 `embedding` 欄位（向後相容），但標註為 ingest-only / optional。
+
+3. **ingest 時產生關係**：
+   - 新增 `generate_relationships.py`（核心 script）：
+     - 優先使用既有的高品質 static thesaurus（cilin / antisem / guotong，純 stdlib，零 ML）。
+     - （選用）若安裝 dev deps，可用 embedding 輔助發現更多 `semantic_related`。
+     - 批次寫入 `word_relations` 表，標記 source 與 score，去重。
+   - `import_data.py` 移除強制 embedding 計算。
+   - `main.py` 啟動時呼叫 `ensure_word_relations_table()`（SQLite 自動建表 + 索引）。
+   - `backfill_embeddings.py` 文件更新為 dev-only。
+
+4. **Runtime 調整**：
+   - `app/routers/word.py` 的 `handle_syn_ant_search` 重構為：
+     - 主要路徑：SQL 查 `word_relations` + 仍然 union static thesaurus（品質優先）。
+     - 移除/弱化對 embedding matrix + numpy 的依賴。
+   - `main.py` preload 大幅簡化，只載入 static thesaurus（不再預設 preload 全量 embedding matrix）。
+   - `utils.py` 保留所有優秀的 static thesaurus loader 作為主要資產。
+
+5. **對 vector field 的建議**：
+   - 對「產生關係供正常 SQL 搜尋」這個目標，**不需要在 runtime 使用 vector**。
+   - Explicit relations 優點：品質可控（curated thesaurus 遠勝純 cosine）、可審計、可手動擴充、極輕量（無 ML dep）、查詢用索引極快且穩定。
+   - Vector 適合「模糊語意發現」，可在 ingest 時作為輔助工具產生 `semantic_related` 關係，但不應強制一般使用者承擔成本。
+   - 目前保留 `embedding` 欄位作為相容/實驗用途，文件已強調「一般部署不需要 sentence-transformers」。
+
+**驗證結果**（已執行）：
+- 純 runtime 環境（只裝 requirements.txt）：`import app.routers.word`、`handle_syn_ant_search`、`search_words` 全部成功，`sentence_transformers` 未被拉進 sys.modules。
+- `ensure_word_relations_table()` 可正確在 SQLite 自動建立表格與索引。
+- `generate_relationships.py` 可乾淨 import（即使 data/ vendor 檔案不完整也 graceful）。
+- 既有 `tests/test_word_detail.py` 中的 syn mode test 仍通過。
+- 功能上 syn 模式現在會優先走 SQL relations + static thesaurus，graceful fallback 保留。
+- 符合 Performance Rule 精神：syn 查詢仍應 instant，且結果品質至少不退化（static 為主，應該更好）。
+
+**後續建議**：
+- 實際執行 generate script 時，建議在有完整 data/ vendor 檔案的環境跑，以產生高品質關係。
+- 正式 PostgreSQL 環境建議補 Alembic migration 來管理 `word_relations` 表。
+- 若未來想提供「語意相關但非嚴格同反義」的發現，可讓 generate script 多產出 `semantic_related` 類型的關係。
+- 可考慮在 README 或另外的文件補充「完整資料準備流程」與 Docker multi-stage 範例（runtime stage 只裝 requirements.txt）。
+
+- 日期：本次對話實作（已完成核心隔離、重構、schema 與 script）。
+- 相關 commit 將記錄本次大規模 ingest/runtime 分離工作。
+
+**本條目結束**。

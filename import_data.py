@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.models.word import Word
-from utils import split_jyutping, get_text_embedding
+from utils import split_jyutping
+# get_text_embedding 已移出（僅 ingest/dev 腳本使用）
 
 
 def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]], batch_size: int = 5000):
@@ -46,7 +47,8 @@ def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]
                 finals=finals,
                 tones=tones,
                 length=len(char),
-                embedding=get_text_embedding(char) or get_text_embedding(jyutping),
+                # embedding 計算已移至 ingest 專用腳本（generate_relationships.py / dev deps）。
+                # 這裡不再強制計算，讓一般使用者不需要 ML 套件。
             )
         )
         existing.add(key)

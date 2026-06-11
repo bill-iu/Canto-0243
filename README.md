@@ -106,6 +106,34 @@ python -m unittest -v tests.test_word_detail
 
 ---
 
+### 資料準備與關係生成（Ingest / Dev-only）
+
+本專案已依照「使用者不該需要安裝整個 ML 套件」的原則進行調整：
+
+- **一般使用者 / 部署**：
+  ```bash
+  pip install -r requirements.txt
+  python main.py
+  ```
+  只會安裝輕量 runtime 依賴，**不需要** `sentence-transformers` / torch。
+
+- **資料準備 / 關係生成（maintainer 使用）**：
+  ```bash
+  pip install -r requirements-dev.txt
+  python generate_relationships.py          # 產生同義/反義/語意關係（存入 word_relations 表）
+  # 或
+  python import_data.py
+  python backfill_embeddings.py             # （選用，僅當還需要 embedding 欄位時）
+  ```
+
+`generate_relationships.py` 會優先使用高品質的 static thesaurus（cilin 等），並可選用 embedding 輔助發現更多關係。產生的關係之後在 syn 模式（近義/反義查找）中會透過純 SQL 查詢。
+
+詳細說明請參考 `generate_relationships.py` 檔案開頭的 docstring 與 `WORKLOG.md` 最新條目。
+
+如果使用 PostgreSQL 正式環境，建議為 `word_relations` 表加上正式的 Alembic migration。
+
+---
+
 ## 5. 環境設定
 
 1. 安裝依賴：

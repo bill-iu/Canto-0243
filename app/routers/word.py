@@ -13,8 +13,10 @@ from utils import (
     get_0243_code,
     get_code_variants,
     split_jyutping,
-    get_text_embedding,
-    cosine_similarity,
+    # get_text_embedding / cosine_similarity 已從頂層移除（redesign：避免任何意外觸發模型載入）。
+    # 如需在極少數遺留 semantic re-rank 路徑使用，請在函數內部做：
+    #   from utils import get_text_embedding, cosine_similarity
+    #   並先檢查 utils.get_text_embedding.is_ready()
     load_json_list,
     get_words_for_length,
     get_char_meta,
@@ -182,8 +184,17 @@ def _build_character_search_results(q: str, words: List[Word], related_words: Op
             seen.add(word.char)
             results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
 
-    # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
-    query_emb = get_text_embedding(q) if q else []
+    # 為 semantic similarity 排序準備 query embedding（redesign 後）
+    # 只有在 ingest 時預先產生並儲存到 word_relations / embedding 欄位的資料，
+    # 且模型已在該 ingest 過程中載入過，才會有值。
+    # 正常 runtime 啟動時絕不觸發 MiniLM 載入，query_emb 永遠為空（使用傳統排序）。
+    query_emb = []
+    try:
+        from utils import get_text_embedding
+        if get_text_embedding.is_ready():
+            query_emb = get_text_embedding(q) if q else []
+    except Exception:
+        pass
 
     related_words = related_words or []
     if not related_words:
@@ -330,14 +341,17 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
     if not codes:
         return results
 
-    # 為 semantic similarity 排序準備 query embedding（兩個版本都支援）
-    # 現在模型載入是背景非阻塞的：第一次搜尋不會卡住，semantic re-rank 只在模型就緒後才啟用。
-    # 呼叫端自動 graceful fallback（傳統排序 / 靜態結果）。
+    # 為 semantic similarity 排序準備 query embedding（redesign 後）
+    # 只有模型已經 ready（極少數情況，通常是 ingest 後手動啟用）才會有值。
+    # 正常 runtime 永遠不會觸發載入。
     query_emb = []
     if q:
-        if get_text_embedding.is_ready():
-            query_emb = get_text_embedding(q)
-        # else: model 還在背景載入中，這次搜尋跳過 semantic re-rank（完全不影響回應速度）
+        try:
+            from utils import get_text_embedding
+            if get_text_embedding.is_ready():
+                query_emb = get_text_embedding(q)
+        except Exception:
+            pass
 
     def _get_finals_json_for_code(c: str) -> Optional[str]:
         for w in exact_matches:
@@ -375,14 +389,18 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
 
         # 純同 rhyme（不同字）
         if query_emb:
-            scored = []
-            for w in pure_ws[:200]:  # cap re-rank
-                w_emb = _load_json_list(getattr(w, "embedding", None) or "[]")
-                score = cosine_similarity(query_emb, w_emb) if w_emb else 0.0
-                if w.char not in seen:
-                    scored.append((score, w))
-            scored.sort(key=lambda x: -x[0])
-            to_add = [w for s, w in scored]
+            try:
+                from utils import cosine_similarity
+                scored = []
+                for w in pure_ws[:200]:  # cap re-rank
+                    w_emb = _load_json_list(getattr(w, "embedding", None) or "[]")
+                    score = cosine_similarity(query_emb, w_emb) if w_emb else 0.0
+                    if w.char not in seen:
+                        scored.append((score, w))
+                scored.sort(key=lambda x: -x[0])
+                to_add = [w for s, w in scored]
+            except Exception:
+                to_add = [w for w in pure_ws if w.char not in seen]
         else:
             to_add = [w for w in pure_ws if w.char not in seen]
         for w in to_add:
@@ -913,44 +931,87 @@ def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
         return []
     q = q.strip()
 
-    # Ensure the query word exists (and has embedding) so it participates in matrix / future clicks
+    # 確保新詞存在（輕量，不強制 embedding）
     _ensure_word_in_db(db, q)
 
-    q_emb = get_text_embedding(q)
-    if not q_emb:
-        # Fallback: at least echo the query as syn (no ants)
-        return [_syn_result(q, "syn")]
-
-    # Static thesaurus first (curated, high precision when data present)
+    # === 主要路徑：從預先計算的 word_relations 表讀取（純 SQL，無 ML）===
+    # 這是朋友 feedback 要求的核心：ingest 時產生關係，runtime 用正常 SQL 查詢。
+    rel_syns: List[str] = []
+    rel_ants: List[str] = []
     try:
-        from utils import get_synonyms, get_antonyms, get_synonym_index
+        from app.models.word import WordRelation, Word as WordModel
+        # 找出 q 對應的所有 word id（同一字可能有多個 code）
+        word_ids = [w.id for w in db.query(WordModel.id).filter(WordModel.char == q).all()]
+        if word_ids:
+            rel_rows = (
+                db.query(WordRelation)
+                .filter(WordRelation.word_id.in_(word_ids))
+                .filter(WordRelation.relation_type.in_(["syn", "ant"]))
+                .all()
+            )
+            for r in rel_rows:
+                rel_char = (
+                    db.query(WordModel.char)
+                    .filter(WordModel.id == r.related_id)
+                    .scalar()
+                )
+                if rel_char and rel_char != q:
+                    if r.relation_type == "syn":
+                        rel_syns.append(rel_char)
+                    else:
+                        rel_ants.append(rel_char)
+    except Exception as e:
+        # 表格可能還沒建立或 DB 問題，graceful fallback
+        print(f"[syn] 讀取 word_relations 失敗，將退回 static thesaurus：{e}")
+
+    # Static thesaurus（curated，高品質，與 relations 互補）
+    try:
+        from utils import get_synonyms, get_antonyms
         static_syns = get_synonyms(q)[:12]
         static_ants = get_antonyms(q)[:8]
     except Exception:
         static_syns = []
         static_ants = []
 
-    chars, emb_mat = get_synonym_index()
-    if not chars or emb_mat is None or len(chars) == 0:
-        # Pure static or minimal echo
-        out = []
-        seen = set()
-        for w in static_syns:
-            if w not in seen:
-                seen.add(w)
-                out.append(_syn_result(w, "syn"))
-        for w in static_ants:
-            if w not in seen:
-                seen.add(w)
-                out.append(_syn_result(w, "ant"))
-        if not out:
-            out = [_syn_result(q, "syn")]
-        return out
+    # 合併 relations + static（relations 優先或平等對待皆可，這裡平等 blend 後 dedup）
+    syns: List[dict] = []
+    seen: Set[str] = set()
+    for w in rel_syns + static_syns:
+        if w and w not in seen and w != q:
+            seen.add(w)
+            syns.append(_syn_result(w, "syn"))
+            if len(syns) >= 12:
+                break
 
-    import numpy as np
-    qv = np.asarray(q_emb, dtype=np.float32)
-    # emb_mat rows are already normalized (by preload); qv from get_text_embedding is also normalized
-    sims = emb_mat @ qv   # (N,)
+    ants: List[dict] = []
+    seen_ant: Set[str] = set()
+    for w in rel_ants + static_ants:
+        if w and w not in seen_ant and w != q:
+            seen_ant.add(w)
+            ants.append(_syn_result(w, "ant"))
+            if len(ants) >= 8:
+                break
+
+    if syns or ants:
+        return syns + ants
+
+    # 完全沒有關係時的極簡 fallback
+    return [_syn_result(q, "syn")]
+
+    # === 以下舊的 vector / embedding matrix 路徑已不再是 syn 的主要依賴 ===
+    # （保留註解以利未來擴充 semantic_related 或除錯）
+    #
+    # q_emb = get_text_embedding(q)
+    # if not q_emb:
+    #     return [_syn_result(q, "syn")]
+    #
+    # chars, emb_mat = get_synonym_index()
+    # if not chars or emb_mat is None ...
+    # （舊的 numpy cosine + blend 邏輯移到註解區）
+
+    # 舊程式碼（已停用為主路徑）：
+    # import numpy as np
+    # ...
 
     k = 12
     syn_thresh = 0.55

@@ -80,110 +80,45 @@ if __name__ == "__main__":
     # 這樣 import database 時完全沒有副作用，StatReload 穩定。
     if (env != "prod" and not IS_POSTGRES) or os.getenv("FORCE_CREATE_ALL"):
         try:
-            from app.database import ensure_length_column, start_length_backfill
-            ensure_length_column()          # 輕量：只 ALTER + 建 index（如果需要）
-            start_length_backfill()         # 重型 backfill 會在 daemon thread 啟動，不阻塞 uvicorn.run
+            from app.database import (
+                ensure_length_column,
+                start_length_backfill,
+                ensure_word_relations_table,
+            )
+            ensure_length_column()              # 輕量 length 欄位
+            ensure_word_relations_table()       # 輕量 word_relations（syn/ant 關係表）
+            start_length_backfill()             # 重型 length backfill（daemon）
         except Exception as e:
-            print(f"[main] length schema / backfill 啟動失敗（可忽略，搜尋有 fallback）：{e}")
+            print(f"[main] schema ensure / length backfill 啟動失敗（可忽略）：{e}")
 
-    # Warmup embedding model in background thread.
-    # IMPORTANT: get_text_embedding is now non-blocking on first call.
-    # It immediately returns [] and starts a background thread to load the model.
-    # This means: the server is responsive instantly after "python main.py".
-    # Basic searches (code, digit, jyutping, canto without semantic, syn static) work right away.
-    # Vector semantic (re-rank + syn vector blend) becomes available after the model finishes loading (a few seconds).
-    # You will see "[embedding] ... 已就緒" in the console when it's ready.
+    # === Embedding model load completely disabled at runtime (redesign complete) ===
+    # Per user request and previous plan: the MiniLM model is ONLY loaded inside
+    # generate_relationships.py (ingest/dev-only script).
+    # Normal `python main.py` or uvicorn will NEVER trigger the background load
+    # or print the "[embedding] 正在背景載入 ..." message, even if sentence-transformers
+    # happens to be importable in the current environment.
+    #
+    # All syn/ant functionality now uses precomputed word_relations + static thesaurus.
+    # Semantic features (if any) must come from pre-generated data only.
+
+    # === Synonym/Antonym 預載（以 SQL relations + static thesaurus 為主）===
+    # 目標：一般使用者不需要 sentence-transformers / torch。
+    # 現在 syn/ant 主要來源是 word_relations 表（generate_relationships.py 在 ingest 時產生）+ static thesaurus。
+    # 舊的 embedding matrix preload 邏輯已完全移除，不再於 runtime 執行。
     try:
-        import threading
-        from utils import get_text_embedding
-        def _warmup_embedding():
-            try:
-                get_text_embedding("暖機")  # this call is now instant (just kicks the loader)
-            except Exception:
-                pass
-        threading.Thread(target=_warmup_embedding, daemon=True).start()
-    except Exception:
-        pass
-
-    # Preload full embedding matrix (for syn/ant vectorized top-k / low-sim) + static thesaurus indices.
-    # Done in explicit __main__ (same as length/embedding) so uvicorn --reload child processes stay clean.
-    # Safe if no embeddings or no data files (syn mode falls back gracefully).
-    try:
-        import threading
-        import numpy as np
-        from app.database import SessionLocal
-        from app.models.word import Word
-        from utils import (
-            load_json_list,
-            set_synonym_index,
-            load_cilin_index,
-            load_antonym_dict,
-            load_thesaurus_dicts,
-        )
-
-        def _preload_syn_index():
-            try:
-                db = SessionLocal()
-                try:
-                    rows = (
-                        db.query(Word.char, Word.embedding)
-                        .filter(Word.embedding.isnot(None))
-                        .filter(Word.embedding != "")
-                        .all()
-                    )
-                finally:
-                    db.close()
-
-                chars = []
-                vecs = []
-                for char, emb in rows:
-                    if not char:
-                        continue
-                    v = load_json_list(emb)
-                    if isinstance(v, list) and len(v) == 384:
-                        chars.append(char)
-                        vecs.append(v)
-
-                if not chars or not vecs:
-                    print("[main] Synonym index preload: no embeddings found (syn mode will use static-only fallback).")
-                    # Still attempt static loads
-                    try:
-                        load_cilin_index()
-                        load_antonym_dict()
-                        load_thesaurus_dicts()
-                    except Exception:
-                        pass
-                    return
-
-                mat = np.asarray(vecs, dtype=np.float32)
-                # Row-normalize (so dot == cosine)
-                norms = np.linalg.norm(mat, axis=1, keepdims=True)
-                norms[norms == 0] = 1.0
-                mat = mat / norms
-
-                set_synonym_index(chars, mat)
-
-                # Static curated (non-fatal if files absent)
-                try:
-                    load_cilin_index()
-                    load_antonym_dict()
-                    load_thesaurus_dicts()
-                except Exception:
-                    pass
-
-                print(f"[main] Synonym/antonym index preloaded: {len(chars)} entries (matrix ready for instant syn mode).")
-            except Exception as e:
-                print(f"[main] Synonym index preload failed (syn mode falls back to static/emb-per-query): {e}")
-
-        threading.Thread(target=_preload_syn_index, daemon=True).start()
-    except Exception:
-        pass
+        from utils import load_cilin_index, load_antonym_dict, load_thesaurus_dicts
+        load_cilin_index()
+        load_antonym_dict()
+        load_thesaurus_dicts()
+        print("[main] Static thesaurus (cilin / antonym / thesaurus) 已載入。")
+    except Exception as e:
+        print(f"[main] Static thesaurus preload 失敗（可忽略）：{e}")
 
     # Preload short-word metadata cache (for instant mask/hybrid/"門0"/"好23"/wildcard paths).
     # Query minimal columns, pre-parse JSON finals etc ONCE at startup (no per-request json.loads).
-    # Uses populate (not full query inside utils) to stay consistent with _preload_syn_index and avoid import cycles.
     # New words injected by _ensure are synced via update_word_in_cache so they participate without restart.
     # Fallback in router: if buckets empty, still does the old DB path (correctness first).
+    # Note: This is independent of the embedding model (which is ingest-only).
     try:
         import threading
         from app.database import SessionLocal

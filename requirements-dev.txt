@@ -1,0 +1,19 @@
+# requirements-dev.txt
+# 用於資料準備 / ingest 階段（包含重型 ML 套件）。
+# 這些套件**只**應該在執行 generate_relationships.py、backfill_embeddings.py、
+# 或需要即時計算 embedding 的 import 腳本時安裝。
+#
+# 一般使用者 / 部署環境請只執行：
+#   pip install -r requirements.txt
+#
+# 安裝方式：
+#   pip install -r requirements-dev.txt
+#
+# 如果想用 CPU-only torch（推薦大多數情況，避免裝完整 CUDA 版）：
+#   pip install -r requirements-dev.txt
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+sentence-transformers
+# torch 會被 sentence-transformers 拉進來。
+# 如需明確指定 CPU 版，可在上面額外執行 pip install torch --index-url ...
+numpy

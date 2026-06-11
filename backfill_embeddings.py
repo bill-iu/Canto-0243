@@ -20,11 +20,14 @@ Backfill Script for Word Embeddings (Semantic Similarity)
   3. 正式環境（Postgres）：
      ENV=prod python backfill_embeddings.py
 
-注意事項：
+注意事項（ingest / dev-only script）：
+  - 這個 script **只** 應該在安裝了 dev 依賴的環境執行：
+      pip install -r requirements-dev.txt
+  - 一般使用者只要 `pip install -r requirements.txt` 就能跑服務，**不需要** sentence-transformers。
   - 這個 script 會呼叫 sentence-transformers 模型，第一次執行會下載模型（約 400MB+），
     並且計算 embedding 會比較慢（尤其是 CPU）。
   - 建議在資料量大時分批執行，或在有 GPU 的機器上跑。
-  - 執行完後 semantic search 才會對舊資料也生效。
+  - 執行完後如果還在使用舊的 embedding 相關功能才會對舊資料生效。
   - 如果沒有安裝 sentence-transformers，script 會直接結束並提示。
 """
 
