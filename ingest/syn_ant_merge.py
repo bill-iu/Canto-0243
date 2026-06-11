@@ -11,7 +11,6 @@ from ingest.cilin_leaf import groups_to_word_id_pairs, parse_leaf_groups
 from ingest.relation_canonical import (
     canonical_relation_dict,
     canonical_word_ids,
-    _debug_log,
 )
 from app.database import IS_POSTGRES
 from app.models.word import Word, WordRelation, SynAntEdge
@@ -168,17 +167,7 @@ def _build_relations_sql_bulk(
 
     result = db.execute(sql, params)
     db.commit()
-    rowcount = result.rowcount if result.rowcount is not None and result.rowcount >= 0 else 0
-    # #region agent log
-    if staging_ids:
-        _debug_log(
-            "B",
-            "syn_ant_merge._build_relations_sql_bulk",
-            "batch merge",
-            {"staging_ids_len": len(staging_ids), "inserted": rowcount},
-        )
-    # #endregion
-    return rowcount
+    return result.rowcount if result.rowcount is not None and result.rowcount >= 0 else 0
 
 
 def build_word_relations_from_staging(

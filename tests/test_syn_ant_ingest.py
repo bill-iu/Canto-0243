@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation, SynAntEdge
-from app.services.syn_ant_service import search_syn_ant
+from app.services.syn_ant_service import search_syn_ant, _should_include_synonym, _sort_syn_pool, _final_score
 from ingest.syn_ant_merge import build_word_relations_from_staging, ingest_cilin_leaf_direct, persist_staging_edges
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.cilin_leaf import is_cilin_leaf_code, parse_leaf_group_line, parse_leaf_groups
@@ -90,6 +90,24 @@ class NormalizeMergeTests(unittest.TestCase):
 
 
 class RuntimeServiceTests(unittest.TestCase):
+    def test_syn_ranking_filters_single_char_and_prioritizes_same_length(self):
+        morphemes = {"快", "喜", "樂", "歡", "欣", "怡"}
+        pool = [
+            {"char": "快", "relation": "syn", "_sort": 32.0},
+            {"char": "開心", "relation": "syn", "_sort": 32.0},
+            {"char": "愉快", "relation": "syn", "_sort": 32.0},
+            {"char": "喜歡", "relation": "syn", "_sort": 32.0},
+            {"char": "高高興興", "relation": "syn", "_sort": 32.0},
+        ]
+        ranked = _sort_syn_pool("快樂", pool, morphemes)
+        chars = [x["char"] for x in ranked]
+        self.assertNotIn("快", chars)
+        self.assertEqual(chars[:2], ["開心", "愉快"])
+
+    def test_syn_ranking_helper_excludes_single_char_for_two_char_query(self):
+        self.assertFalse(_should_include_synonym("快樂", "快"))
+        self.assertTrue(_should_include_synonym("快樂", "開心"))
+
     def test_bidirectional_and_scoring(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
