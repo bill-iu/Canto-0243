@@ -17,3 +17,4 @@ sentence-transformers
 # torch 會被 sentence-transformers 拉進來。
 # 如需明確指定 CPU 版，可在上面額外執行 pip install torch --index-url ...
 numpy
+pyyaml

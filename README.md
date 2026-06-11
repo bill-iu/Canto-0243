@@ -21,7 +21,7 @@
 - [x] 顯示同碼 / 同韻相關結果，並改善排序與可讀性
 - [x] 將目前查詢狀態同步到瀏覽器 URL，支援返回／前進與分享
 - [x] 提供回歸測試，提升搜尋行為穩定性
-- [x] 新增獨立「近義/反義詞查找」模式（mode=syn）：前端按鈕 + 兩欄無分數 UI；後端靜態詞林/反義表 + 重用 embedding matrix 混合；可選 near-synonym LLM 生成；preload 即時響應；與 m1/m2 完全正交（不影響原有嚴格 code 過濾與排序）
+- [x] 新增獨立「近義/反義詞查找」模式（mode=syn）：前端按鈕 + 近義 / 反義 / 語意相關 UI；後端使用預先計算的 `word_relations` + static thesaurus fallback；embedding 僅限 ingest 階段，不會在 runtime 載入 ML 模型。
 
 ---
 
@@ -40,8 +40,23 @@
 ├── frontend/
 │   └── index.html
 ├── data/
-│   └── raw/
+│   ├── antonym/
+│   ├── cilin/
+│   └── thesaurus/
+├── alembic/
+│   └── versions/
 ├── import_data.py
+├── generate_relationships.py
+├── ingest_syn_ant.py
+├── ingest/
+│   ├── syn_ant_manifest.py
+│   ├── syn_ant_sources.py
+│   ├── syn_ant_normalize.py
+│   └── syn_ant_merge.py
+├── data/syn_ant/
+│   ├── sources.yaml
+│   ├── fixtures/
+│   └── raw/          # optional local-only raw files (.gitignore)
 ├── init_db.py
 ├── main.py
 ├── reset_db.py
@@ -102,6 +117,8 @@ python reset_db.py
 
 ```bash
 python -m unittest -v tests.test_word_detail
+python -m unittest -v tests.test_utils
+python -m unittest -v tests.test_syn_ant_ingest
 ```
 
 ---
@@ -121,16 +138,44 @@ python -m unittest -v tests.test_word_detail
   ```bash
   pip install -r requirements-dev.txt
   python generate_relationships.py          # 產生同義/反義/語意關係（存入 word_relations 表）
+  # 或（推薦 v2 可插拔 ingest）
+  python ingest_syn_ant.py report
+  python ingest_syn_ant.py normalize --source current_static
+  python ingest_syn_ant.py build-relations
   # 或
   python import_data.py
   python backfill_embeddings.py             # （選用，僅當還需要 embedding 欄位時）
   ```
 
-`generate_relationships.py` 會優先使用高品質的 static thesaurus（cilin 等），並可選用 embedding 輔助發現更多關係。產生的關係之後在 syn 模式（近義/反義查找）中會透過純 SQL 查詢。
+`generate_relationships.py` 會優先使用 high-precision static thesaurus（cilin / antisem / guotong），並可用 `--include-embedding` 明確啟用 embedding 輔助發現 `semantic_related`。產生的關係之後在 syn 模式（近義/反義查找）中會透過純 SQL 查詢。
+
+### 近義/反義 Ingest v2（`ingest_syn_ant.py`）
+
+授權分級 + 可插拔 parser + staging（`syn_ant_edges`）→ merge 到 `word_relations`：
+
+```bash
+pip install -r requirements-dev.txt   # 需要 pyyaml（manifest）
+python ingest_syn_ant.py report
+python ingest_syn_ant.py normalize --source current_static
+python ingest_syn_ant.py build-relations
+```
+
+可選第三方 raw 檔請放在 `data/syn_ant/raw/`（**勿 commit 授權不明詞庫**）。manifest 定義於 `data/syn_ant/sources.yaml`：
+
+| Source ID | 授權 | 預設啟用 | 說明 |
+|-----------|------|----------|------|
+| `current_static` | bundled | 是 | 專案內 cilin / antisem / guotong |
+| `cow` | CC-BY | 否 | Chinese Open Wordnet（本地放置） |
+| `relation_pairs` | research | 否 | TSV pairs fixture |
+| `hit_cilin` / `antisem_extended` | unclear | 否 | 僅 maintainer 本地匯入 |
 
 詳細說明請參考 `generate_relationships.py` 檔案開頭的 docstring 與 `WORKLOG.md` 最新條目。
 
-如果使用 PostgreSQL 正式環境，建議為 `word_relations` 表加上正式的 Alembic migration。
+如果使用 PostgreSQL 正式環境，請執行 Alembic migration 建立搜尋索引與 `word_relations` 表：
+
+```bash
+alembic upgrade head
+```
 
 ---
 
@@ -141,7 +186,7 @@ python -m unittest -v tests.test_word_detail
    pip install -r requirements.txt
    ```
 2. 如需使用自訂資料庫位址，可建立 `.env` 並設定 `DATABASE_URL`。
-3. 依賴安裝完成後即可啟動服務。
+3. 依賴安裝完成後即可啟動服務。`pycantonese` / `pyjyutping` 用於資料庫沒有該字詞時的自動粵拼注入；既有資料查詢不會依賴 ML 套件。
 
 ---
 

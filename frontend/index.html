@@ -220,7 +220,7 @@
     /* Syn / Ant two-column */
     .syn-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
     }
 
@@ -417,9 +417,14 @@
       if (currentMode === 'syn') {
         const syns = data.filter(r => r.relation === 'syn');
         const ants = data.filter(r => r.relation === 'ant');
+        const related = data.filter(r => r.relation === 'semantic_related');
         $.results.appendChild(createSynSection('近義詞', syns));
         $.results.appendChild(createSynSection('反義詞', ants));
-        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}`;
+        if (related.length) {
+          $.results.appendChild(createSynSection('語意相關', related));
+        }
+        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ''}`;
+        toggleLoadMoreButton(false);
         return;
       }
 
@@ -439,14 +444,16 @@
       const section = document.createElement('div');
       section.className = 'syn-section';
       const h = document.createElement('h4');
-      h.textContent = title;
+      h.textContent = `${title}${items.length ? ` (${items.length})` : ''}`;
       section.appendChild(h);
       const grid = document.createElement('div');
       grid.className = 'results';
       if (items.length) {
         items.forEach(w => {
           const char = (w && typeof w === 'object') ? (w.char || w) : w;
-          grid.appendChild(createResultButton(char, char));
+          const source = w && typeof w === 'object' && w.source ? `來源：${w.source}` : '';
+          const inDb = w && typeof w === 'object' && w.in_db === false ? '（外部詞庫）' : '';
+          grid.appendChild(createResultButton(char, char, [source, inDb].filter(Boolean).join(' · ')));
         });
       } else {
         const empty = document.createElement('div');

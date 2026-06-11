@@ -5,7 +5,7 @@ import re
 from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import case, func, literal, or_
+from sqlalchemy import and_, case, func, literal, or_
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal, contains_substring, IS_POSTGRES
@@ -22,6 +22,7 @@ from utils import (
     load_json_list,
     get_words_for_length,
     get_char_meta,
+    get_char_metas,
 )
 
 # Back-compat alias for the many internal _load_json_list(...) calls throughout this file
@@ -34,11 +35,29 @@ from collections import defaultdict
 # Never introduce identifiers or functions named with "hanzi". Use "canto" or "chars".
 # (Review cleanup: explanatory mentions of "hanzi" in comments kept only for history; all logic paths use canto/chars.)
 
+WILDCARD_CHARS = frozenset("_?%")
+
+
+def _is_wildcard_char(ch: str) -> bool:
+    return len(ch) == 1 and ch in WILDCARD_CHARS
+
+
+def _looks_like_mask_query(q: str) -> bool:
+    """True when q uses position mask syntax (digits / canto / wildcards)."""
+    if not q or not re.match(r"^[0-9_?%一-龥]+$", q):
+        return False
+    has_wild = any(_is_wildcard_char(c) for c in q)
+    has_digit = any(c.isdigit() for c in q)
+    has_canto = any(not c.isdigit() and not _is_wildcard_char(c) for c in q)
+    return has_wild or (has_digit and has_canto)
+
+
 def _length_filter(length: int):
-    """使用已回填的 Word.length（有 index），大幅加快 length 過濾查詢。
-    現在 length 已全 populate，無需 fallback。
-    """
-    return Word.length == length
+    """Prefer indexed Word.length, while keeping old / partially backfilled DBs correct."""
+    return or_(
+        Word.length == length,
+        and_(or_(Word.length.is_(None), Word.length == 0), func.length(Word.char) == length),
+    )
 
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -78,6 +97,20 @@ def _apply_code_filter(query, code: Optional[str], mode: str):
 
 
 def _serialize_word(word: Word, *, display_text: Optional[str] = None, query_text: Optional[str] = None, result_type: str = "word") -> dict:
+    if isinstance(word, dict):
+        char_value = word.get("char") or ""
+        jyutping_value = word.get("jyutping") or ""
+        code_value = word.get("code") or get_0243_code(jyutping_value) or ""
+        return {
+            "char": char_value,
+            "code": code_value or "",
+            "jyutping": jyutping_value,
+            "display_text": display_text or char_value,
+            "query_text": query_text or char_value,
+            "result_type": result_type,
+            "id": word.get("id"),
+        }
+
     code_value = word.code or get_0243_code(word.jyutping or "") or ""
     return {
         "char": word.char,
@@ -93,6 +126,8 @@ def _serialize_word(word: Word, *, display_text: Optional[str] = None, query_tex
 def _get_word_sort_code(word: Optional[Word]) -> str:
     if not word:
         return ""
+    if isinstance(word, dict):
+        return word.get("code") or get_0243_code(word.get("jyutping") or "") or ""
     return word.code or get_0243_code(word.jyutping or "") or ""
 
 
@@ -363,6 +398,27 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                 return w.finals
         return None
 
+    cached_candidates = [
+        w for w in get_words_for_length(len_q)
+        if _get_word_sort_code(w) in set(codes)
+    ]
+    if cached_candidates:
+        code_candidates = sorted(cached_candidates, key=lambda w: (_get_word_text(w), _get_word_jyutping(w)))
+    else:
+        code_candidates = (
+            db.query(Word)
+            .filter(
+                _length_filter(len_q),
+                Word.code.in_(codes),
+            )
+            .order_by(Word.char, Word.jyutping)
+            .limit(500)
+            .all()
+        )
+    candidates_by_code: dict[str, list] = defaultdict(list)
+    for candidate in code_candidates:
+        candidates_by_code[_get_word_sort_code(candidate)].append(candidate)
+
     # 3+4. 對每個 code：先 同 char + 同 rhyme（e.g. 24下的「做數」），再 純同 rhyme 不同 char（"24做到="）
     q_chars = list(dict.fromkeys(q))
     for c in codes:
@@ -370,26 +426,22 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
         if not fin_json:
             continue
 
-        # 優化：只用一個 query 取 length + finals 候選（善用 index），然後 Python 拆 shared / pure
-        # 避免原本的 or_ contains 子句導致較慢的查詢計劃
-        qy = (db.query(Word)
-              .filter(
-                  _length_filter(len_q),
-                  Word.finals == fin_json,
-                  Word.code == c  # strict to this code, so all results have the target's codes
-              )
-              .order_by(Word.char, Word.jyutping)
-              .limit(50))  # cap for instant
-        candidates = _deduplicate_words(qy.all())
-        shared_ws = [w for w in candidates if any(ch in w.char for ch in q_chars)]
-        shared_set = set(shared_ws)  # for fast lookup
-        pure_ws = [w for w in candidates if w not in shared_set]
+        target_finals = _load_json_list(fin_json)
+        candidates = [
+            w for w in candidates_by_code.get(c, [])
+            if _get_word_parts(w, "finals") == target_finals
+        ][:50]
+        candidates = _deduplicate_words(candidates)
+        shared_ws = [w for w in candidates if any(ch in _get_word_text(w) for ch in q_chars)]
+        shared_chars = {_get_word_text(w) for w in shared_ws}
+        pure_ws = [w for w in candidates if _get_word_text(w) not in shared_chars]
 
         # shared (有共用字 + 同韻)
         for w in shared_ws:
-            if w.char not in seen:
-                seen.add(w.char)
-                results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+            char_value = _get_word_text(w)
+            if char_value not in seen:
+                seen.add(char_value)
+                results.append(_serialize_word(w, display_text=char_value, query_text=char_value, result_type="word"))
 
         # 純同 rhyme（不同字）
         if query_emb:
@@ -399,17 +451,18 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                 for w in pure_ws[:200]:  # cap re-rank
                     w_emb = _load_json_list(getattr(w, "embedding", None) or "[]")
                     score = cosine_similarity(query_emb, w_emb) if w_emb else 0.0
-                    if w.char not in seen:
+                    if _get_word_text(w) not in seen:
                         scored.append((score, w))
                 scored.sort(key=lambda x: -x[0])
                 to_add = [w for s, w in scored]
             except Exception:
                 to_add = [w for w in pure_ws if w.char not in seen]
         else:
-            to_add = [w for w in pure_ws if w.char not in seen]
+            to_add = [w for w in pure_ws if _get_word_text(w) not in seen]
         for w in to_add:
-            seen.add(w.char)
-            results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+            char_value = _get_word_text(w)
+            seen.add(char_value)
+            results.append(_serialize_word(w, display_text=char_value, query_text=char_value, result_type="word"))
 
     # 5. "24到" / "29到" 風格：用尾字的 final 做對應位置的 rhyme match
     last_ch = q[-1] if q else ""
@@ -434,45 +487,27 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
 
     if ref_val is not None:
         for c in codes:
-            # 取該 code + 同長度的候選（數量有限），用小迴圈做 position 檢查（無法輕易全推給簡單 ORM）
-            cands = (db.query(Word)
-                     .filter(
-                         _length_filter(len_q),
-                         Word.code == c
-                     )
-                     .order_by(Word.char, Word.jyutping)
-                     .limit(50)
-                     .all())
             matched = []
-            for w in cands:
+            for w in candidates_by_code.get(c, [])[:50]:
                 try:
-                    wf = _load_json_list(w.finals)
+                    wf = _get_word_parts(w, "finals")
                     if len(wf) > ref_pos and wf[ref_pos] == ref_val:
                         matched.append(w)
                 except (TypeError, json.JSONDecodeError):
                     pass
             for w in _deduplicate_words(matched):
-                if w.char not in seen:
-                    seen.add(w.char)
-                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+                char_value = _get_word_text(w)
+                if char_value not in seen:
+                    seen.add(char_value)
+                    results.append(_serialize_word(w, display_text=char_value, query_text=char_value, result_type="word"))
 
     # 6. 最後：q=24 / q=29 風格（只同 code 的詞，移除未指定 code 以避免無關結果如 "0尊"）
     # 當有 codes 時嚴格只取 target 的 codes；無 codes 時才包含未指定（相容舊行為）
-    if codes:
-        broad_cond = or_(*[Word.code == c for c in codes])
-    else:
-        broad_cond = or_(Word.code == '', Word.code.is_(None))
-    qy = (db.query(Word)
-          .filter(
-              _length_filter(len_q),
-              broad_cond
-          )
-          .order_by(Word.char, Word.jyutping)
-          .limit(100))  # cap for instant; deep pages via load more if needed
-    for w in _deduplicate_words(qy.all()):
-        if w.char not in seen:
-            seen.add(w.char)
-            results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
+    for w in _deduplicate_words(code_candidates[:100]):
+        char_value = _get_word_text(w)
+        if char_value not in seen:
+            seen.add(char_value)
+            results.append(_serialize_word(w, display_text=char_value, query_text=char_value, result_type="word"))
 
     return results
 
@@ -631,6 +666,85 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
     return _deduplicate_words(filtered[offset:offset + limit])
 
 
+def _get_word_parts(word, field: str) -> list:
+    if isinstance(word, dict):
+        return word.get(field) or []
+    return _load_json_list(getattr(word, field, None))
+
+
+def _get_word_text(word) -> str:
+    if isinstance(word, dict):
+        return word.get("char") or ""
+    return getattr(word, "char", "") or ""
+
+
+def _get_word_jyutping(word) -> str:
+    if isinstance(word, dict):
+        return word.get("jyutping") or ""
+    return getattr(word, "jyutping", "") or ""
+
+
+def _final_options_for_char(ch: str, db) -> set[str]:
+    """Return possible first finals for a literal char, using cache before DB."""
+    options: set[str] = set()
+    for meta in get_char_metas(ch):
+        finals = meta.get("finals") or []
+        if finals:
+            options.add(finals[0])
+    if options:
+        return options
+
+    rows = db.query(Word).filter(Word.char == ch).all()
+    if not rows:
+        rows = _ensure_word_in_db(db, ch)
+    for row in rows:
+        finals = _load_json_list(getattr(row, "finals", None))
+        if finals:
+            options.add(finals[0])
+        try:
+            from utils import update_word_in_cache
+            update_word_in_cache(
+                row.char,
+                getattr(row, "code", "") or "",
+                getattr(row, "jyutping", "") or "",
+                getattr(row, "finals", None),
+                getattr(row, "initials", None),
+                getattr(row, "length", None),
+            )
+        except Exception:
+            pass
+    return options
+
+
+def _matches_code_positions(code_str: str, required_codes: list[Optional[str]], mode: str) -> bool:
+    if len(code_str) != len(required_codes):
+        return False
+    for idx, req_digit in enumerate(required_codes):
+        if req_digit is None:
+            continue
+        if code_str[idx] not in set(get_code_variants(req_digit, mode)):
+            return False
+    return True
+
+
+def _matches_final_options(word_finals: list, target_final_options: list[Optional[set[str]]]) -> bool:
+    if len(word_finals) != len(target_final_options):
+        return False
+    for idx, options in enumerate(target_final_options):
+        if not options:
+            continue
+        if idx >= len(word_finals) or word_finals[idx] not in options:
+            return False
+    return True
+
+
+def _mask_priority_key(word, literal_positions: list[tuple[int, str]]):
+    char = _get_word_text(word)
+    jyutping = _get_word_jyutping(word)
+    exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
+    return (-exact_count, char, jyutping)
+
+
 def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):  # untyped db to avoid FastAPI treating it as a response field during module import
     """處理 hybrid（數字前綴 + 粵字 + 數字後綴）語法。"""
     hybrid_match = re.match(r'^(\d+)([一-龥]+)(\d*)$', q)
@@ -653,62 +767,82 @@ def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, of
     if not used_cache:
         candidates = query.order_by(Word.char).limit(2000).all()
 
-    target_finals = [None] * len(full_code)
+    target_final_options: list[Optional[set[str]]] = [None] * len(full_code)
     for i, c in enumerate(ref_chars):
         pos = ref_pos + i
         if 0 <= pos < len(full_code):
-            meta = get_char_meta(c)
-            t = None
-            if meta and meta.get("finals"):
-                try:
-                    target_finals[pos] = (meta["finals"][0] if meta["finals"] else None)
-                except Exception:
-                    pass
-            else:
-                t = db.query(Word).filter(Word.char == c).first()
-                if t and t.finals:
-                    try:
-                        fl = json.loads(t.finals)
-                        target_finals[pos] = fl[0] if fl else None
-                    except (TypeError, json.JSONDecodeError):
-                        pass
-                if t:
-                    try:
-                        from utils import update_word_in_cache
-                        update_word_in_cache(t.char, getattr(t, "code", ""), getattr(t, "jyutping", ""), getattr(t, "finals", None), getattr(t, "initials", None), getattr(t, "length", None))
-                    except Exception:
-                        pass
+            options = _final_options_for_char(c, db)
+            if options:
+                target_final_options[pos] = options
 
     filtered = []
+    allowed_full_codes = set(get_code_variants(full_code, mode))
     for word in candidates:
         if used_cache:
-            if not word.get("finals"):
+            if not word.get("finals") or not word.get("code"):
                 continue
-            try:
-                word_finals = word.get("finals") or []
-            except Exception:
-                continue
+            word_finals = word.get("finals") or []
+            word_code_str = word.get("code") or ""
         else:
-            if not word.finals:
+            if not word.finals or not word.code:
                 continue
             try:
                 word_finals = json.loads(word.finals)
             except (TypeError, json.JSONDecodeError):
                 continue
-        if len(word_finals) != len(full_code):
+            word_code_str = word.code or ""
+        if word_code_str not in allowed_full_codes:
             continue
-
-        match_ok = True
-        for i, tf in enumerate(target_finals):
-            if tf is None:
-                continue
-            if i >= len(word_finals) or word_finals[i] != tf:
-                match_ok = False
-                break
-        if match_ok:
+        if _matches_final_options(word_finals, target_final_options):
             filtered.append(word)
 
-    return filtered[offset:offset + limit]
+    return _deduplicate_words(filtered)[offset:offset + limit]
+
+
+def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):
+    """Handle mixed mask queries: digits constrain code, chars constrain finals; `_`/`?`/`%` are wildcards."""
+    mask = q
+    expected_len = len(mask)
+    if expected_len == 0:
+        return []
+
+    required_codes: list[Optional[str]] = [None] * expected_len
+    target_final_options: list[Optional[set[str]]] = [None] * expected_len
+    literal_positions: list[tuple[int, str]] = []
+
+    for idx, ch in enumerate(mask):
+        if _is_wildcard_char(ch):
+            continue
+        if ch.isdigit():
+            required_codes[idx] = ch
+            continue
+        options = _final_options_for_char(ch, db)
+        if options:
+            target_final_options[idx] = options
+        literal_positions.append((idx, ch))
+
+    candidates = get_words_for_length(expected_len)
+    used_cache = bool(candidates)
+    if not used_cache:
+        query = db.query(Word).filter(_length_filter(expected_len))
+        if all(req is not None for req in required_codes):
+            query = _apply_code_filter(query, "".join(required_codes), mode)
+        candidates = query.order_by(Word.char, Word.jyutping).limit(3000).all()
+
+    filtered = []
+    for word in candidates:
+        word_code_str = _get_word_sort_code(word)
+        word_finals = _get_word_parts(word, "finals")
+        if not word_code_str or not word_finals:
+            continue
+        if not _matches_code_positions(word_code_str, required_codes, mode):
+            continue
+        if not _matches_final_options(word_finals, target_final_options):
+            continue
+        filtered.append(word)
+
+    filtered.sort(key=lambda item: _mask_priority_key(item, literal_positions))
+    return [_serialize_word(w) for w in _deduplicate_words(filtered)[offset:offset + limit]]
 
 
 def _handle_pure_digit_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db: "Session") -> List[dict]:
@@ -782,10 +916,7 @@ def search_words(
     if hybrid_match:
         return _handle_hybrid_syntax(q, code, mode, limit, offset, db)
 
-    is_potential_mask = bool(re.match(r"^[0-9_一-龥]+$", q))
-    contains_wild_or_digit = any(c == '_' or c.isdigit() for c in q)
-    contains_canto = any(not c.isdigit() and c != '_' for c in q)
-    if is_potential_mask and (contains_wild_or_digit and contains_canto or "_" in q):
+    if _looks_like_mask_query(q):
         return _handle_mask_wildcard_query(q, code, mode, limit, offset, db)
 
     if q.isdigit():
@@ -812,7 +943,7 @@ def search_words(
 # code/jyutping are empty for syn results (not relevant in this mode).
 # _ensure ensures the query word itself is in DB (for future relations). No runtime embedding.
 
-def _syn_result(char: str, relation: str) -> dict:
+def _syn_result(char: str, relation: str, source: Optional[str] = None, score: Optional[float] = None) -> dict:
     """Helper to produce a dict that satisfies the endpoint's WordRead response model
     while carrying the 'relation' flag the syn frontend relies on.
     code/jyutping are meaningless for syn results so left empty.
@@ -825,81 +956,15 @@ def _syn_result(char: str, relation: str) -> dict:
         "query_text": char,
         "result_type": "syn",
         "relation": relation,
+        "source": source,
+        "score": score,
     }
 
 
 def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
+    from app.services.syn_ant_service import search_syn_ant
     if not q or not re.search(r'[\u4e00-\u9fff]', q):
         return []
     q = q.strip()
-
-    # 確保新詞存在（輕量，不強制 embedding）
     _ensure_word_in_db(db, q)
-
-    # === 主要路徑：從預先計算的 word_relations 表讀取（純 SQL，無 ML）===
-    # 這是朋友 feedback 要求的核心：ingest 時產生關係，runtime 用正常 SQL 查詢。
-    # 已優化為單次 JOIN，避免原 N+1（每個 relation 單獨 scalar 查 char）。
-    rel_syns: List[str] = []
-    rel_ants: List[str] = []
-    try:
-        from app.models.word import WordRelation, Word as WordModel
-        # 找出 q 對應的所有 word id（同一字可能有多個 code）
-        word_ids = [w.id for w in db.query(WordModel.id).filter(WordModel.char == q).all()]
-        if word_ids:
-            # JOIN 一次取回 relation_type + 目標 char
-            rel_rows = (
-                db.query(WordRelation.relation_type, WordModel.char)
-                .join(WordModel, WordRelation.related_id == WordModel.id)
-                .filter(WordRelation.word_id.in_(word_ids))
-                .filter(WordRelation.relation_type.in_(["syn", "ant"]))
-                .all()
-            )
-            for rtype, rchar in rel_rows:
-                if rchar and rchar != q:
-                    if rtype == "syn":
-                        rel_syns.append(rchar)
-                    else:
-                        rel_ants.append(rchar)
-    except Exception as e:
-        # 表格可能還沒建立或 DB 問題，graceful fallback
-        print(f"[syn] 讀取 word_relations 失敗，將退回 static thesaurus：{e}")
-
-    # Static thesaurus（curated，高品質，與 relations 互補）
-    try:
-        from utils import get_synonyms, get_antonyms
-        static_syns = get_synonyms(q)[:12]
-        static_ants = get_antonyms(q)[:8]
-    except Exception:
-        static_syns = []
-        static_ants = []
-
-    # 診斷 log（重啟後端後在 console 會看到，方便確認 static 是否有正確載入 cilin/antisem）
-    try:
-        print(f"[syn] q={q!r} rel_syn={len(rel_syns)} rel_ant={len(rel_ants)} static_syn={len(static_syns)} static_ant={len(static_ants)}")
-    except Exception:
-        pass
-
-    # 合併 relations + static（relations 優先或平等對待皆可，這裡平等 blend 後 dedup）
-    syns: List[dict] = []
-    seen: Set[str] = set()
-    for w in rel_syns + static_syns:
-        if w and w not in seen and w != q:
-            seen.add(w)
-            syns.append(_syn_result(w, "syn"))
-            if len(syns) >= 12:
-                break
-
-    ants: List[dict] = []
-    seen_ant: Set[str] = set()
-    for w in rel_ants + static_ants:
-        if w and w not in seen_ant and w != q:
-            seen_ant.add(w)
-            ants.append(_syn_result(w, "ant"))
-            if len(ants) >= 8:
-                break
-
-    if syns or ants:
-        return syns + ants
-
-    # 完全沒有關係時的極簡 fallback
-    return [_syn_result(q, "syn")]
+    return search_syn_ant(db, q)

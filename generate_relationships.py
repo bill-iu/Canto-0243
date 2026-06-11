@@ -28,7 +28,7 @@ generate_relationships.py
 
   選項：
     python generate_relationships.py --limit 500     # 只處理前 500 個詞（測試用）
-    python generate_relationships.py --include-embedding   # 強制嘗試用 embedding 輔助（預設會嘗試）
+    python generate_relationships.py --include-embedding   # 明確啟用 embedding 輔助（預設不載入 ML）
 
 注意（redesign 後）：
   - **這是本專案中唯一合法載入 MiniLM / sentence-transformers 的地方**。
@@ -44,7 +44,7 @@ from pathlib import Path
 from typing import Dict, List, Set, Tuple, Optional
 
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from sqlalchemy import text, tuple_
 
 # Proactively reduce noise from HF Hub when loading the model during ingest.
 os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
@@ -57,9 +57,7 @@ from app.models.word import Word, WordRelation
 from utils import (
     get_synonyms,
     get_antonyms,
-    load_cilin_index,
-    load_antonym_dict,
-    load_thesaurus_dicts,
+    ensure_thesaurus_loaded,
 )
 
 
@@ -89,27 +87,33 @@ def insert_relations_batch(db: Session, relations: List[dict]):
     if not relations:
         return 0
 
-    inserted = 0
+    deduped = {}
     for rel in relations:
-        # 簡單去重檢查（生產環境可用 INSERT ... ON CONFLICT 或 unique constraint）
-        exists = db.query(WordRelation).filter(
-            WordRelation.word_id == rel["word_id"],
-            WordRelation.related_id == rel["related_id"],
-            WordRelation.relation_type == rel["relation_type"],
-        ).first()
-        if exists:
-            continue
+        key = (rel["word_id"], rel["related_id"], rel["relation_type"])
+        deduped[key] = rel
 
-        db.add(WordRelation(
+    keys = list(deduped.keys())
+    existing = set()
+    if keys:
+        existing = set(
+            db.query(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type)
+            .filter(tuple_(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type).in_(keys))
+            .all()
+        )
+
+    to_insert = [
+        WordRelation(
             word_id=rel["word_id"],
             related_id=rel["related_id"],
             relation_type=rel["relation_type"],
             score=rel.get("score"),
             source=rel.get("source"),
-        ))
-        inserted += 1
-
-    return inserted
+        )
+        for key, rel in deduped.items()
+        if key not in existing
+    ]
+    db.add_all(to_insert)
+    return len(to_insert)
 
 
 def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optional[int] = None) -> int:
@@ -125,6 +129,7 @@ def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optiona
 
     total_inserted = 0
     processed = 0
+    pending: List[dict] = []
 
     for ch in chars:
         processed += 1
@@ -148,7 +153,7 @@ def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optiona
                 "score": None,
                 "source": "static_thesaurus",
             }
-            total_inserted += insert_relations_batch(db, [rel])
+            pending.append(rel)
 
         # Antonyms
         try:
@@ -166,12 +171,15 @@ def generate_from_static(db: Session, char_to_id: Dict[str, int], limit: Optiona
                 "score": None,
                 "source": "static_thesaurus",
             }
-            total_inserted += insert_relations_batch(db, [rel])
+            pending.append(rel)
 
         if processed % PRINT_EVERY == 0:
+            total_inserted += insert_relations_batch(db, pending)
+            pending = []
             db.commit()
             print(f"  static 處理進度：{processed}/{len(chars)}，目前累計插入 {total_inserted} 筆關係...")
 
+    total_inserted += insert_relations_batch(db, pending)
     db.commit()
     print(f"✅ Static thesaurus 完成，累計插入 {total_inserted} 筆關係。")
     return total_inserted
@@ -276,7 +284,7 @@ def generate_from_embedding(db: Session, char_to_id: Dict[str, int], limit: Opti
     return total_added
 
 
-def main():
+def main(limit: Optional[int] = None, include_embedding: bool = False):
     print("🚀 啟動 generate_relationships.py（ingest 階段關係產生器）")
     print(f"資料庫類型: {'PostgreSQL' if IS_POSTGRES else 'SQLite'}")
     print(f"ENV: {os.getenv('ENV', 'local')}")
@@ -284,9 +292,7 @@ def main():
 
     # 自動載入 static thesaurus（輕量，無副作用）
     try:
-        load_cilin_index()
-        load_antonym_dict()
-        load_thesaurus_dicts()
+        ensure_thesaurus_loaded(force=True)
     except Exception as e:  # P1 fix: include exception type
         print(f"⚠️  載入 static thesaurus 時發生問題（將繼續以可用資料為主）：{type(e).__name__}: {e}")
 
@@ -296,11 +302,10 @@ def main():
         print(f"資料庫中共有 {len(char_to_id)} 個不同字元。")
 
         # 1. Static thesaurus（主要、高品質來源）
-        inserted_static = generate_from_static(db, char_to_id, limit=None)
+        inserted_static = generate_from_static(db, char_to_id, limit=limit)
 
-        # 2. （可選）Embedding 輔助
-        #    預設會嘗試；如果沒有 dev 套件會自動跳過。
-        inserted_emb = generate_from_embedding(db, char_to_id, limit=None)
+        # 2. （可選）Embedding 輔助。必須明確指定 --include-embedding。
+        inserted_emb = generate_from_embedding(db, char_to_id, limit=limit) if include_embedding else 0
 
         print("\n" + "=" * 60)
         print("🎉 關係生成完成！")
@@ -324,12 +329,14 @@ def main():
     print("\n提示：")
     print("  - 之後可重新執行本 script 來更新/補充關係（會自動去重）。")
     print("  - 一般使用者只要 `pip install -r requirements.txt` 就能使用這些關係，無需 ML 套件。")
+    print("  - 如需 v2 可插拔 ingest，請改用 `python ingest_syn_ant.py normalize` + `build-relations`。")
     print("  - 如需只處理部分資料測試：python generate_relationships.py --limit 200")
 
 
 if __name__ == "__main__":
-    # 簡單支援 --limit
+    # 簡單支援 --limit / --include-embedding
     limit = None
+    include_embedding = False
     if len(sys.argv) > 1:
         for arg in sys.argv[1:]:
             if arg.startswith("--limit="):
@@ -342,7 +349,7 @@ if __name__ == "__main__":
                     limit = int(sys.argv[sys.argv.index(arg) + 1])
                 except:
                     pass
+            elif arg == "--include-embedding":
+                include_embedding = True
 
-    # 目前 generate_from_static / embedding 內部還沒完全接 limit 參數，
-    # 這裡先保留介面，實際使用時可再加強。
-    main()
+    main(limit=limit, include_embedding=include_embedding)

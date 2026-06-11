@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
-from app.models.word import Word
+from app.models.word import Word, WordRelation
 from app.routers.word import _build_character_search_results, search_words, handle_syn_ant_search
 
 
@@ -93,10 +93,10 @@ class CharacterDetailPayloadTests(unittest.TestCase):
             # Direct handle call (tests the early branch path + _ensure safety)
             res = handle_syn_ant_search("快樂", session)
             self.assertIsInstance(res, list)
-            # At minimum should contain the query as syn (fallback when no matrix/static)
+            # Static fallback or SQL relations may produce results; empty is also valid when no data exists.
             chars = [r.get("char") for r in res]
             rels = [r.get("relation") for r in res]
-            self.assertIn("快樂", chars)
+            self.assertNotIn("快樂", [c for c in chars if c])
             self.assertTrue(all(r in ("syn", "ant") for r in rels if r))
 
             # Via search_words (the public API used by frontend)
@@ -110,7 +110,72 @@ class CharacterDetailPayloadTests(unittest.TestCase):
                 self.assertIn("jyutping", r)
                 # relation may be present depending on fallback path
                 if "relation" in r:
-                    self.assertIn(r["relation"], ("syn", "ant"))
+                    self.assertIn(r["relation"], ("syn", "ant", "semantic_related"))
+
+    def test_mask_wildcard_query_uses_literal_finals_and_code(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(id=1, char="門", code="2", jyutping="mun4", finals='["un"]', initials='["m"]', length=1),
+                Word(id=2, char="門前", code="20", jyutping="mun4 cin4", finals='["un","in"]', initials='["m","c"]', length=2),
+                Word(id=3, char="門童", code="20", jyutping="mun4 tung4", finals='["un","ung"]', initials='["m","t"]', length=2),
+                Word(id=4, char="他人", code="20", jyutping="taa1 jan4", finals='["aa","an"]', initials='["t","j"]', length=2),
+            ])
+            session.commit()
+
+            results = search_words(q="門0", mode="m2", db=session, limit=10, offset=0)
+            chars = [item["char"] for item in results]
+
+        self.assertIn("門前", chars)
+        self.assertIn("門童", chars)
+        self.assertNotIn("他人", chars)
+
+    def test_mask_wildcard_query_supports_underscore(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(id=10, char="識", code="2", jyutping="sik1", finals='["ik"]', initials='["s"]', length=1),
+                Word(id=11, char="知識人", code="323", jyutping="zi1 sik1 jan4", finals='["i","ik","an"]', initials='["z","s","j"]', length=3),
+                Word(id=12, char="知書人", code="323", jyutping="zi1 syu1 jan4", finals='["i","yu","an"]', initials='["z","s","j"]', length=3),
+            ])
+            session.commit()
+
+            for pattern in ("_識_", "?識?", "%識%"):
+                with self.subTest(pattern=pattern):
+                    results = search_words(q=pattern, mode="m2", db=session, limit=10, offset=0)
+                    chars = [item["char"] for item in results]
+                    self.assertIn("知識人", chars)
+                    self.assertNotIn("知書人", chars)
+
+    def test_syn_mode_uses_word_relations_with_metadata(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with TestingSession() as session:
+            session.add_all([
+                Word(id=20, char="快樂", code="22", jyutping="faai3 lok6", length=2),
+                Word(id=21, char="愉快", code="22", jyutping="jyu4 faai3", length=2),
+                Word(id=22, char="悲傷", code="22", jyutping="bei1 soeng1", length=2),
+            ])
+            session.add_all([
+                WordRelation(id=1, word_id=20, related_id=21, relation_type="syn", score=0.95, source="manual"),
+                WordRelation(id=2, word_id=20, related_id=22, relation_type="ant", score=0.9, source="manual"),
+            ])
+            session.commit()
+
+            results = search_words(q="快樂", mode="syn", db=session, limit=10, offset=0)
+
+        by_char = {item["char"]: item for item in results}
+        self.assertEqual(by_char["愉快"]["relation"], "syn")
+        self.assertEqual(by_char["悲傷"]["relation"], "ant")
+        self.assertEqual(by_char["愉快"]["source"], "manual")
 
 
 if __name__ == "__main__":

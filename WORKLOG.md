@@ -51,14 +51,23 @@ project-root/
 
 ### **新增功能（2026 近義/反義詞查找模式）**
 - [x] 獨立 mode='syn'（與 m1/m2 完全正交，不影響原有 code-aware 排序與嚴格 code 過濾）
-- [x] 前端模式切換新增「近義/反義詞查找」按鈕 + two-column CSS（左近義 / 右反義，純詞按鈕、無分數）
-- [x] 後端 early branch + handle_syn_ant_search：_ensure 注入 + 靜態詞林/antisem/guotong 優先 + 現有 embedding matrix 向量化 blend（top-k / low-sim）
-- [x] 啟動預載：emb matrix（np 向量化 <0.1s）+ 三個輕 parser（data/ 下的 vendor 小 txt）
-- [x] 可選 near-synonym（5th GitHub）LLM MLM 生成（try/except + FLAG 保護，不影響核心離線零摩擦）
-- [x] 參考 5 個 GitHub 規劃實作（vendor 小檔 + 重用現有 384d emb 為骨幹）
+- [x] 前端模式切換新增「近義/反義詞查找」按鈕 + 近義 / 反義 / 語意相關 UI，純詞按鈕、無分數
+- [x] 後端 early branch + handle_syn_ant_search：_ensure 注入 + 預先計算 `word_relations` 主路徑 + static thesaurus fallback
+- [x] Runtime 不載入 MiniLM / sentence-transformers；embedding 只在 `generate_relationships.py --include-embedding` ingest 階段產生 `semantic_related`
+- [x] 啟動只載入 static thesaurus 與 word metadata cache，不再 preload embedding matrix
 - [x] 測試：search_words(q=..., mode='syn') + handle 直接測試；舊 m1/m2 無退化（「事業」仍嚴格只出其 codes）
 - [x] 文件更新：README + WORKLOG + plan.md 記錄按鈕優先 + 5 GitHub + data/ 放置方式 + 使用例（快樂 / 事業）
 - [x] 錯誤處理與空結果提示
+
+### **整體優化落地（2026-06-11）**
+- [x] 補回 `_handle_mask_wildcard_query()`，涵蓋 `_識_`、`門0`、`好23` 等位置 mask 查詢。
+- [x] `_length_filter()` 加回舊 DB / 未完成 backfill 的防禦性 fallback，避免只因 `length` 欄位缺值而漏結果。
+- [x] 純粵字 code-aware 搜尋合併成同長度同 code 候選集合後分組排序，減少 per-code DB round-trip。
+- [x] Hybrid / wildcard cache 路徑加入 code 位置篩選，避免 cache 命中時只比 finals 而漏掉 code 約束。
+- [x] Word metadata cache 改為保留同一 `char` 的多個 `code` / `jyutping` entry，避免同字多音被覆寫。
+- [x] `word_relations` 加入唯一約束與索引；補上 Alembic migration 供 Postgres 正式環境使用。
+- [x] `generate_relationships.py` 改成 static 批次寫入，`--include-embedding` 才啟用 ML 輔助。
+- [x] 驗證：`python -m unittest -v tests.test_utils tests.test_word_detail` 全綠；`python test_frozen.py` 通過；`python -m compileall app utils.py main.py generate_relationships.py` 通過。
 
 ---
 
@@ -419,5 +428,31 @@ project-root/
 
 - 日期：本次對話實作（已完成核心隔離、重構、schema 與 script）。
 - 相關 commit 將記錄本次大規模 ingest/runtime 分離工作。
+
+**本條目結束**。
+
+---
+
+## Syn/Ant Data Redesign（Ingest v2 + Runtime Service）— 2026-06-11
+
+**目標**：授權分級 + 可插拔 parser + staging + merge → `word_relations`；runtime 純 SQL + source-aware scoring。
+
+**已完成**：
+
+1. **資料來源 manifest**：`data/syn_ant/sources.yaml`、`data/syn_ant/raw/.gitignore`、`ingest/syn_ant_manifest.py`
+2. **Ingest v2**：`ingest/syn_ant_sources.py`（cilin / wordnet / antonym / relation_pairs / current_static parsers）、`syn_ant_normalize.py`、`syn_ant_merge.py`、`ingest_syn_ant.py` CLI（`report` / `normalize` / `build-relations`）
+3. **Schema**：`SynAntEdge` staging 表 + `ensure_syn_ant_edges_table()`
+4. **Runtime**：`app/services/syn_ant_service.py`（雙向 relation 查詢、per-section cap、in_db scoring）；`handle_syn_ant_search` 改為 thin wrapper
+5. **測試**：`tests/test_syn_ant_ingest.py` + fixtures under `data/syn_ant/fixtures/`
+6. **文件**：README ingest v2 章節；`requirements-dev.txt` 加 `pyyaml`
+
+**驗證命令**：
+
+```bash
+python ingest_syn_ant.py report
+python ingest_syn_ant.py normalize --source current_static
+python ingest_syn_ant.py build-relations
+python -m unittest -v tests.test_utils tests.test_word_detail tests.test_syn_ant_ingest
+```
 
 **本條目結束**。

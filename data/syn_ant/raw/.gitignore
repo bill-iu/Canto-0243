@@ -1,0 +1,4 @@
+# Place optional third-party syn/ant raw files here.
+# Do NOT commit license-unclear or redistributable-restricted dictionaries.
+*
+!.gitignore

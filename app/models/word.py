@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Index, ForeignKey, Float, BigInteger
+from sqlalchemy import Column, Integer, String, Text, Index, ForeignKey, Float, BigInteger, UniqueConstraint
 from app.database import Base
 
 # 支援 vector embeddings（semantic similarity 排序優化）
@@ -12,6 +12,7 @@ except ImportError:
     Vector = None
 
 # Module-level type selection (cleaner than conditional inside class body)
+_id_type = BigInteger().with_variant(Integer, "sqlite")
 
 
 class Word(Base):
@@ -20,7 +21,7 @@ class Word(Base):
     # Primary key: BigInteger + identity recommended by Supabase Postgres Best Practices
     # for better index locality and to avoid fragmentation (vs serial or random UUID).
     # For SQLite ok; for Postgres use migration to set GENERATED ALWAYS AS IDENTITY.
-    id = Column(BigInteger, primary_key=True, index=True)
+    id = Column(_id_type, primary_key=True, index=True)
     char = Column(String(50), index=True)
     code = Column(String(20), index=True)
     jyutping = Column(String(100))
@@ -56,6 +57,8 @@ Index('idx_jyutping', Word.jyutping)
 
 # 可選：額外複合索引（效能更好）
 Index('idx_code_char', Word.code, Word.char)
+Index('idx_length_code_model', Word.length, Word.code)
+Index('idx_length_code_finals_model', Word.length, Word.code, Word.finals)
 
 
 # ============================================================
@@ -80,11 +83,14 @@ Index('idx_code_char', Word.code, Word.char)
 # 複合索引符合 query perf 最佳實踐（indexes on filter columns for relations）。
 class WordRelation(Base):
     __tablename__ = "word_relations"
+    __table_args__ = (
+        UniqueConstraint("word_id", "related_id", "relation_type", name="uq_word_relation"),
+    )
 
     # FKs to words.id (now BigInteger per best practices)
-    id = Column(BigInteger, primary_key=True)
-    word_id = Column(BigInteger, ForeignKey("words.id"), index=True, nullable=False)
-    related_id = Column(BigInteger, ForeignKey("words.id"), index=True, nullable=False)
+    id = Column(_id_type, primary_key=True)
+    word_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
+    related_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
 
     relation_type = Column(String(16), index=True, nullable=False)  # syn / ant / semantic_related
     score = Column(Float, nullable=True)                            # 可選信心分數（cosine 或人工）
@@ -97,3 +103,25 @@ class WordRelation(Base):
 # 額外複合索引（推薦用於 syn/ant 查詢）
 Index("idx_word_rel_word_type", WordRelation.word_id, WordRelation.relation_type)
 Index("idx_word_rel_related_type", WordRelation.related_id, WordRelation.relation_type)
+
+
+class SynAntEdge(Base):
+    """Staging table for syn/ant ingest v2 (normalized char-level edges before merge)."""
+
+    __tablename__ = "syn_ant_edges"
+
+    id = Column(_id_type, primary_key=True, autoincrement=True)
+    head_char = Column(String(50), index=True, nullable=False)
+    tail_char = Column(String(50), index=True, nullable=False)
+    relation_type = Column(String(16), index=True, nullable=False)
+    source = Column(String(64), nullable=True)
+    confidence = Column(Float, nullable=True)
+    source_rank = Column(Integer, nullable=True)
+    evidence = Column(Text, nullable=True)
+    license_tag = Column(String(32), nullable=True)
+    in_db_head = Column(Integer, nullable=True)  # SQLite bool as 0/1
+    in_db_tail = Column(Integer, nullable=True)
+
+
+Index("idx_syn_ant_head_type", SynAntEdge.head_char, SynAntEdge.relation_type)
+Index("idx_syn_ant_tail_type", SynAntEdge.tail_char, SynAntEdge.relation_type)

@@ -20,19 +20,6 @@ async def lifespan(app: FastAPI):
             ensure_length_column()
         except Exception:
             pass  # 失敗不影響啟動，有 fallback
-        # Warmup embedding in background (non-blocking now).
-        # The actual model load happens in a daemon thread; first requests get fast fallback.
-        try:
-            import threading
-            from utils import get_text_embedding
-            def _warmup():
-                try:
-                    get_text_embedding("暖機")
-                except Exception:
-                    pass
-            threading.Thread(target=_warmup, daemon=True).start()
-        except Exception:
-            pass
     yield
 
 app = FastAPI(title="0243 押韻字典", lifespan=lifespan)
@@ -86,9 +73,11 @@ if __name__ == "__main__":
                 ensure_length_column,
                 start_length_backfill,
                 ensure_word_relations_table,
+                ensure_syn_ant_edges_table,
             )
             ensure_length_column()              # 輕量 length 欄位
             ensure_word_relations_table()       # 輕量 word_relations（syn/ant 關係表）
+            ensure_syn_ant_edges_table()        # ingest v2 staging
             start_length_backfill()             # 重型 length backfill（daemon）
         except Exception as e:
             print(f"[main] schema ensure / length backfill 啟動失敗（可忽略）：{e}")
@@ -108,10 +97,8 @@ if __name__ == "__main__":
     # 現在 syn/ant 主要來源是 word_relations 表（generate_relationships.py 在 ingest 時產生）+ static thesaurus。
     # 舊的 embedding matrix preload 邏輯已完全移除，不再於 runtime 執行。
     try:
-        from utils import load_cilin_index, load_antonym_dict, load_thesaurus_dicts
-        load_cilin_index()
-        load_antonym_dict()
-        load_thesaurus_dicts()
+        from utils import ensure_thesaurus_loaded
+        ensure_thesaurus_loaded()
         print("[main] Static thesaurus (cilin / antonym / thesaurus) 已載入。")
     except Exception as e:
         print(f"[main] Static thesaurus preload 失敗（可忽略）：{e}")

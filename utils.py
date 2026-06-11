@@ -1,5 +1,5 @@
 import json
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "4", 6: "2"}
 VOWELS = "aeiou"
@@ -220,13 +220,9 @@ def cosine_similarity(a: list[float], b: list[float]) -> float:
 
 
 # ==================== Synonym / Antonym index & thesaurus (for mode='syn') ====================
-# Preloaded at startup (daemon in main.py) for instant <0.1s vectorized lookup + static curated data.
-# Reuses existing numpy + get_text_embedding model. Small vendor txts from the 4 GitHubs preferred.
-# near-synonym (5th) is optional and handled with try/except in the router handle.
+# Runtime uses static dictionaries + precomputed word_relations. Embedding helpers are ingest-only.
 
 import os
-import json
-from typing import List, Tuple, Optional
 
 # Public version of the old private _load_json_list (moved from routers/word.py for preload sharing)
 def load_json_list(value: Optional[object]) -> List[object]:
@@ -403,6 +399,7 @@ def load_thesaurus_dicts(syn_path: str = "data/thesaurus/dict_synonym.txt",
 def get_synonyms(q: str) -> List[str]:
     if not q:
         return []
+    ensure_thesaurus_loaded()
     s = set(get_cilin_synonyms(q))
     s.update(_syn_dict.get(q, []))
     if q in s:
@@ -412,18 +409,23 @@ def get_synonyms(q: str) -> List[str]:
 def get_antonyms(q: str) -> List[str]:
     if not q:
         return []
+    ensure_thesaurus_loaded()
     a = list(_ant_dict.get(q, []))  # priority antisem then thesaurus
     if q in a:
         a.remove(q)
     return a[:12]  # reasonable cap
 
-# Auto-attempt light loads at import time (non-fatal; full preload daemon will call again safely)
-try:
+_thesaurus_loaded = False
+
+def ensure_thesaurus_loaded(force: bool = False) -> None:
+    """Load static syn/ant dictionaries once per process."""
+    global _thesaurus_loaded
+    if _thesaurus_loaded and not force:
+        return
     load_cilin_index()
     load_antonym_dict()
     load_thesaurus_dicts()
-except Exception:
-    pass
+    _thesaurus_loaded = True
 
 
 # ==================== In-memory Word Cache for Instant Mask/Hybrid/Wildcard Paths ====================
@@ -440,8 +442,11 @@ except Exception:
 # Reuses load_json_list for parse-once at preload time.
 
 _length_buckets: dict = {}   # int length -> list[dict] with pre-parsed 'finals':list, 'code':str etc.
-_char_meta: dict = {}        # char -> minimal dict for fast ref (finals list, code, length, jyutping)
-_bucket_char_index: dict = {}  # length -> {char: index in _length_buckets[length]}
+_char_meta: dict = {}        # char -> list[dict], preserving multiple pronunciations/codes.
+_bucket_entry_index: dict = {}  # length -> {(char, code, jyutping): index}
+
+def _entry_key(entry: dict) -> tuple:
+    return (entry.get("char") or "", entry.get("code") or "", entry.get("jyutping") or "")
 
 def populate_word_cache_from_rows(rows: list) -> int:
     """Populate from pre-fetched rows (caller does the SELECT to avoid cycles).
@@ -449,7 +454,7 @@ def populate_word_cache_from_rows(rows: list) -> int:
     Parses finals/initials ONCE here. Returns count of entries added.
     Safe to call multiple times (idempotent per char; later wins for updates).
     """
-    global _length_buckets, _char_meta, _bucket_char_index
+    global _length_buckets, _char_meta, _bucket_entry_index
     added = 0
     for r in rows or []:
         if isinstance(r, (list, tuple)):
@@ -487,15 +492,22 @@ def populate_word_cache_from_rows(rows: list) -> int:
             "initials": inits,
             "length": length,
         }
-        # bucket (O(1) dedup via index map)
+        # bucket (O(1) dedup via index map), preserving same char with multiple readings.
         bucket = _length_buckets.setdefault(length, [])
-        idx_map = _bucket_char_index.setdefault(length, {})
-        if char in idx_map:
-            bucket[idx_map[char]] = entry
+        idx_map = _bucket_entry_index.setdefault(length, {})
+        key = _entry_key(entry)
+        if key in idx_map:
+            bucket[idx_map[key]] = entry
         else:
-            idx_map[char] = len(bucket)
+            idx_map[key] = len(bucket)
             bucket.append(entry)
-        _char_meta[char] = entry
+        metas = _char_meta.setdefault(char, [])
+        for idx, existing in enumerate(metas):
+            if _entry_key(existing) == key:
+                metas[idx] = entry
+                break
+        else:
+            metas.append(entry)
         added += 1
     return added
 
@@ -504,16 +516,23 @@ def get_words_for_length(n: int) -> list:
     return _length_buckets.get(int(n) if n else 0, []) or []
 
 def get_char_meta(ch: str):
-    """Fast lookup for a single char's pre-parsed finals/code etc. None if unknown (caller falls back to DB/ensure)."""
+    """Fast lookup for a single char's first pre-parsed reading. None if unknown."""
     if not ch:
         return None
-    return _char_meta.get(ch)
+    metas = _char_meta.get(ch) or []
+    return metas[0] if metas else None
+
+def get_char_metas(ch: str) -> list:
+    """Return all pre-parsed readings for a char, preserving multiple codes/jyutpings."""
+    if not ch:
+        return []
+    return list(_char_meta.get(ch) or [])
 
 def update_word_in_cache(char: str, code: str = "", jyutping: str = "", finals: object = None, initials: object = None, length: int = None):
     """Called by _ensure after successful insert of a new canto word so it participates in future mask etc without restart.
     Accepts raw (json str or list) for finals/initials.
     """
-    global _length_buckets, _char_meta, _bucket_char_index
+    global _length_buckets, _char_meta, _bucket_entry_index
     if not char:
         return
     f = load_json_list(finals)
@@ -528,13 +547,20 @@ def update_word_in_cache(char: str, code: str = "", jyutping: str = "", finals: 
         "length": ln,
     }
     bucket = _length_buckets.setdefault(ln, [])
-    idx_map = _bucket_char_index.setdefault(ln, {})
-    if char in idx_map:
-        bucket[idx_map[char]] = entry
+    idx_map = _bucket_entry_index.setdefault(ln, {})
+    key = _entry_key(entry)
+    if key in idx_map:
+        bucket[idx_map[key]] = entry
     else:
-        idx_map[char] = len(bucket)
+        idx_map[key] = len(bucket)
         bucket.append(entry)
-    _char_meta[char] = entry
+    metas = _char_meta.setdefault(char, [])
+    for idx, existing in enumerate(metas):
+        if _entry_key(existing) == key:
+            metas[idx] = entry
+            break
+    else:
+        metas.append(entry)
 
 def get_word_cache_stats() -> dict:
     """Debug/helper: sizes and max length present."""

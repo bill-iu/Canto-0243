@@ -101,6 +101,7 @@ def ensure_length_column() -> None:
             with engine.connect() as conn:
                 conn.execute(text("CREATE INDEX IF NOT EXISTS idx_words_length ON words(length)"))
                 conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code ON words(length, code)"))
+                conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code_finals ON words(length, code, finals)"))
                 conn.commit()
             if not column_existed:
                 print("[DB] length 相關 index 已確保。")
@@ -239,7 +240,8 @@ def ensure_word_relations_table() -> None:
                         related_id INTEGER NOT NULL,
                         relation_type VARCHAR(16) NOT NULL,
                         score FLOAT,
-                        source VARCHAR(32)
+                        source VARCHAR(32),
+                        UNIQUE(word_id, related_id, relation_type)
                     )
                 """))
                 conn.execute(text("""
@@ -249,6 +251,10 @@ def ensure_word_relations_table() -> None:
                 conn.execute(text("""
                     CREATE INDEX IF NOT EXISTS idx_word_rel_related_type
                     ON word_relations (related_id, relation_type)
+                """))
+                conn.execute(text("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
+                    ON word_relations (word_id, related_id, relation_type)
                 """))
                 conn.commit()
             print("[DB] 已為本地 SQLite 自動建立 word_relations 表與常用索引。")
@@ -263,6 +269,10 @@ def ensure_word_relations_table() -> None:
                     CREATE INDEX IF NOT EXISTS idx_word_rel_related_type
                     ON word_relations (related_id, relation_type)
                 """))
+                conn.execute(text("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
+                    ON word_relations (word_id, related_id, relation_type)
+                """))
                 conn.commit()
     except Exception as e:  # P1 fix: surface exception type
         err = str(e)
@@ -271,3 +281,44 @@ def ensure_word_relations_table() -> None:
             print("     請關閉其他程序後重試，或手動建立表格。")
         else:
             print(f"[DB] 嘗試建立 word_relations 表時發生錯誤（可忽略，若之後執行 generate script 即可）：{type(e).__name__}: {e}")
+
+
+def ensure_syn_ant_edges_table() -> None:
+    """Create syn_ant_edges staging table for ingest v2 (SQLite auto-create)."""
+    if IS_POSTGRES:
+        print("[DB] PostgreSQL 環境：syn_ant_edges 請透過 Alembic migration 管理。")
+        return
+
+    try:
+        inspector = inspect(engine)
+        if "words" not in inspector.get_table_names():
+            return
+        if "syn_ant_edges" not in inspector.get_table_names():
+            with engine.connect() as conn:
+                conn.execute(text("""
+                    CREATE TABLE IF NOT EXISTS syn_ant_edges (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        head_char VARCHAR(50) NOT NULL,
+                        tail_char VARCHAR(50) NOT NULL,
+                        relation_type VARCHAR(16) NOT NULL,
+                        source VARCHAR(64),
+                        confidence FLOAT,
+                        source_rank INTEGER,
+                        evidence TEXT,
+                        license_tag VARCHAR(32),
+                        in_db_head INTEGER,
+                        in_db_tail INTEGER
+                    )
+                """))
+                conn.execute(text("""
+                    CREATE INDEX IF NOT EXISTS idx_syn_ant_head_type
+                    ON syn_ant_edges (head_char, relation_type)
+                """))
+                conn.execute(text("""
+                    CREATE INDEX IF NOT EXISTS idx_syn_ant_tail_type
+                    ON syn_ant_edges (tail_char, relation_type)
+                """))
+                conn.commit()
+            print("[DB] 已為本地 SQLite 自動建立 syn_ant_edges staging 表。")
+    except Exception as e:
+        print(f"[DB] 建立 syn_ant_edges 表時發生錯誤：{type(e).__name__}: {e}")
