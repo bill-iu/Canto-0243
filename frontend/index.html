@@ -1285,9 +1285,9 @@
 
     function finishSearchWithData(data, { append = false } = {}) {
       const displayData = append ? currentResults.concat(data) : data;
-      renderSearchResults(displayData);
       currentResults = displayData;
       currentOffset += data.length;
+      renderSearchResults(displayData);
       toggleLoadMoreButton(data.length === PAGE_SIZE);
     }
 
