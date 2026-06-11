@@ -3,372 +3,1041 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F7F5EF">
   <title>0243 押韻字典</title>
   <style>
     :root {
-      --paper: #F8F4E8;
-      --ink: #1A2A3A;
-      --accent: #C13E2D;
-      --gold: #B8860B;
-      --text: #2C2C2C;
-      --muted: #6B6B6B;
-      --card: #FFFFFF;
-      --border: #E8E0D0;
+      color-scheme: light;
+      --bg: #F7F5EF;
+      --panel: #FFFFFF;
+      --ink: #161716;
+      --muted: #6F746D;
+      --line: #DDD8CC;
+      --accent: #8A5A20;
+      --accent-strong: #5F3E16;
+      --soft: #EEE9DE;
+      --danger: #A23B2A;
+      --shadow: 0 18px 44px rgba(22, 23, 22, 0.08);
+      --z-header: 20;
+      --z-menu: 30;
     }
 
     * { box-sizing: border-box; }
 
+    html {
+      background: var(--bg);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
       margin: 0;
-      padding: 0;
-      background: var(--paper);
-      color: var(--text);
-      font-family: "Noto Sans TC", "PingFang TC", "Microsoft YaHei", system-ui, sans-serif;
-      line-height: 1.5;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.55;
       -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: rgba(138, 90, 32, 0.18);
+      text-rendering: optimizeLegibility;
     }
 
-    .header {
-      background: var(--ink);
-      color: var(--paper);
-      padding: 14px 24px;
-      display: flex;
-      align-items: center;
+    button,
+    input {
+      font: inherit;
+      touch-action: manipulation;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    [hidden],
+    .is-hidden {
+      display: none !important;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      transform: translateY(-140%);
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: transform 120ms ease-out;
+    }
+
+    .skip-link:focus-visible {
+      transform: translateY(0);
+    }
+
+    .app-header {
       position: sticky;
       top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: var(--z-header);
+      background: rgba(247, 245, 239, 0.94);
+      border-bottom: 1px solid var(--line);
+      padding: calc(10px + env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 10px max(18px, env(safe-area-inset-left));
     }
 
-    .header-inner {
-      max-width: 1080px;
+    .app-bar {
+      max-width: 1120px;
       margin: 0 auto;
-      width: 100%;
       display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: space-between;
+      gap: 18px;
     }
 
-    .logo {
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+    .brand {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+      padding: 7px 0;
+      border: 0;
+      background: transparent;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      text-align: left;
     }
 
-    .logo::before {
-      content: "韻";
-      font-size: 18px;
-      background: var(--accent);
-      color: white;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 4px;
-      font-weight: 600;
+    .brand-mark {
+      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+      font-size: 27px;
+      line-height: 1;
+      color: var(--accent);
     }
 
-    .main-wrap {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .hero h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin: 0 0 8px;
-      color: var(--ink);
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
-    .search-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .search-row input {
-      flex: 1;
-      padding: 16px 20px;
-      font-size: 20px;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      background: white;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .search-row input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(193, 62, 45, 0.1);
-    }
-
-    .search-row button {
-      padding: 0 28px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 10px;
+    .brand-title {
       font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    .search-row button:hover {
-      background: #A32F24;
-    }
-
-    .search-row button:active {
-      transform: scale(0.98);
-    }
-
-    .modes {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .mode-btn {
-      padding: 10px 20px;
-      background: white;
-      color: var(--ink);
-      border: 2px solid var(--border);
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-weight: 650;
       white-space: nowrap;
     }
 
-    .mode-btn.active {
-      background: var(--ink);
-      color: white;
-      border-color: var(--ink);
+    .brand-subtitle {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 450;
+      margin-top: 1px;
     }
 
-    .mode-btn:hover:not(.active) {
-      border-color: var(--gold);
-      color: var(--gold);
+    .app-actions {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .menu-trigger,
+    .ghost-button,
+    .primary-button,
+    .example-button,
+    .result-item,
+    .load-more,
+    .mode-option {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      cursor: pointer;
+      transition:
+        border-color 140ms ease-out,
+        box-shadow 140ms ease-out,
+        color 140ms ease-out,
+        background-color 140ms ease-out,
+        transform 120ms ease-out,
+        opacity 140ms ease-out;
+    }
+
+    .menu-trigger,
+    .ghost-button {
+      min-height: 40px;
+      padding: 9px 14px;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .menu-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 148px;
+      justify-content: space-between;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .menu-chevron {
+      color: var(--accent);
+      font-size: 12px;
+      transition: transform 140ms ease-out;
+    }
+
+    .menu-trigger[aria-expanded="true"] .menu-chevron {
+      transform: rotate(180deg);
+    }
+
+    .ghost-button:hover,
+    .menu-trigger:hover,
+    .example-button:hover,
+    .load-more:hover,
+    .result-item:hover,
+    .mode-option:hover {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
+    }
+
+    .ghost-button:active,
+    .menu-trigger:active,
+    .example-button:active,
+    .load-more:active,
+    .result-item:active,
+    .mode-option:active,
+    .primary-button:active {
+      transform: translateY(1px);
+    }
+
+    .mode-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      z-index: var(--z-menu);
+      width: min(320px, calc(100vw - 28px));
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity 140ms ease-out, transform 140ms ease-out;
+    }
+
+    .mode-menu.is-open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .menu-group + .menu-group {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .menu-label {
+      margin: 3px 8px 8px;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .mode-option {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 44px;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      text-align: left;
+    }
+
+    .mode-option[aria-checked="true"] {
+      border-color: rgba(138, 90, 32, 0.48);
+      background: #F4EFE5;
+      color: var(--accent-strong);
+    }
+
+    .mode-name {
+      font-weight: 650;
+    }
+
+    .mode-help {
+      display: block;
+      margin-top: 1px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 450;
+    }
+
+    .mode-key {
+      color: var(--accent);
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .main-wrap {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 54px max(18px, env(safe-area-inset-right)) 86px max(18px, env(safe-area-inset-left));
+    }
+
+    .hero {
+      max-width: 760px;
+      margin: 0 0 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero h1,
+    .guide-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+      font-size: clamp(36px, 6vw, 74px);
+      font-weight: 600;
+      line-height: 0.98;
+      text-wrap: balance;
+    }
+
+    .hero p,
+    .guide-hero p,
+    .guide-card p,
+    .info {
+      color: var(--muted);
+      text-wrap: pretty;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 18px 0 0;
+      font-size: 16px;
+    }
+
+    .search-panel {
+      margin-top: 26px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 14px 34px rgba(22, 23, 22, 0.055);
+    }
+
+    .field-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-weight: 650;
+      color: var(--ink);
+    }
+
+    .mode-readout {
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+    }
+
+    .search-actions {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+    }
+
+    .icon-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      min-height: 58px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--muted);
+      cursor: pointer;
+      transition:
+        border-color 140ms ease-out,
+        box-shadow 140ms ease-out,
+        color 140ms ease-out,
+        background-color 140ms ease-out,
+        transform 120ms ease-out;
+    }
+
+    .icon-button:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
+    }
+
+    .icon-button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .icon-button:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+
+    .icon-button svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .search-row input {
+      width: 100%;
+      min-height: 58px;
+      padding: 14px 17px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--ink);
+      font-size: 20px;
+      box-shadow: inset 0 1px 0 rgba(22, 23, 22, 0.035);
+      transition: border-color 140ms ease-out, box-shadow 140ms ease-out;
+    }
+
+    .search-row input::placeholder {
+      color: #96988F;
+    }
+
+    .search-row input:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(138, 90, 32, 0.14);
+    }
+
+    .primary-button {
+      min-height: 58px;
+      padding: 0 24px;
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--panel);
+      font-weight: 650;
+    }
+
+    .primary-button:hover {
+      border-color: var(--accent-strong);
+      background: var(--accent-strong);
+      box-shadow: 0 10px 24px rgba(95, 62, 22, 0.18);
+    }
+
+    .primary-button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    .syntax-rail {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .example-button {
+      min-width: 0;
+      min-height: 42px;
+      padding: 9px 11px;
+      color: var(--ink);
+      font-size: 13px;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .example-button code,
+    .guide-example code {
+      color: var(--accent-strong);
+      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+      font-variant-numeric: tabular-nums;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .example-button span,
+    .guide-example span {
+      display: block;
+      min-width: 0;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      min-height: 24px;
+      margin: 28px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      font-variant-numeric: tabular-nums;
     }
 
     .stats {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 12px;
-      min-height: 18px;
+      min-width: 0;
     }
 
     .results {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+      gap: 9px;
+      content-visibility: auto;
+      contain-intrinsic-size: 600px;
     }
 
     .result-item {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 10px;
+      min-width: 0;
+      min-height: 50px;
+      padding: 12px 10px;
+      border-radius: 16px;
+      color: var(--ink);
       font-size: 15px;
+      line-height: 1.25;
       text-align: center;
-      cursor: pointer;
-      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+      overflow-wrap: anywhere;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 54px;
-      line-height: 1.3;
     }
 
     .result-item:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-color: var(--gold);
-    }
-
-    .result-item:active {
-      transform: scale(0.985);
     }
 
     .info {
-      text-align: center;
-      color: var(--muted);
-      padding: 48px 20px;
+      grid-column: 1 / -1;
+      padding: 44px 18px;
+      border: 1px dashed var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.5);
       font-size: 15px;
-      line-height: 1.6;
+      text-align: center;
     }
 
-    /* Syn / Ant two-column */
+    .info strong {
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .info-error {
+      color: var(--danger);
+    }
+
     .syn-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      content-visibility: auto;
+      contain-intrinsic-size: 720px;
     }
 
     .syn-section {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.76);
+      padding: 14px;
     }
 
-    .syn-section h4 {
-      margin: 0 0 10px;
+    .syn-section h2 {
+      margin: 0 0 12px;
+      color: var(--accent-strong);
       font-size: 14px;
-      font-weight: 600;
-      color: var(--accent);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-weight: 700;
+      text-wrap: balance;
     }
 
     .syn-section .results {
-      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
-      gap: 6px;
+      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+      gap: 7px;
     }
 
     .syn-empty {
+      color: var(--muted);
       font-size: 13px;
-      color: #999;
-      padding: 8px 0;
+      padding: 9px 2px;
     }
 
     .load-more {
       display: block;
-      width: 100%;
+      width: min(320px, 100%);
+      min-height: 46px;
       margin: 24px auto 0;
-      padding: 12px;
-      background: white;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 11px 18px;
       color: var(--ink);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .load-more:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    #loadMoreBtn {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 24px;
-      background: white;
-      border: 2px solid var(--border);
-      border-radius: 8px;
       font-size: 14px;
-      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .guide-view {
+      content-visibility: auto;
+      contain-intrinsic-size: 900px;
+    }
+
+    .guide-hero {
+      max-width: 780px;
+      margin-bottom: 28px;
+    }
+
+    .guide-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .guide-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .guide-card h2 {
+      margin: 0 0 8px;
+      font-size: 18px;
+      font-weight: 750;
+      text-wrap: balance;
+      scroll-margin-top: 92px;
+    }
+
+    .guide-card p {
+      margin: 0 0 14px;
+      font-size: 14px;
+    }
+
+    .guide-examples {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+
+    .guide-example {
+      min-width: 0;
+      min-height: 54px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel);
       cursor: pointer;
-      transition: all 0.2s;
-    }
-    #loadMoreBtn:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    /* Responsive */
-    @media (max-width: 640px) {
-      .main-wrap { padding: 24px 16px 60px; }
-      .search-row { flex-direction: column; }
-      .search-row button { padding: 14px; }
-      .syn-container { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 24px; }
+      text-align: left;
+      transition:
+        border-color 140ms ease-out,
+        box-shadow 140ms ease-out,
+        color 140ms ease-out,
+        transform 120ms ease-out;
     }
 
-    /* Focus & a11y */
-    .result-item:focus-visible,
-    .mode-btn:focus-visible,
-    button:focus-visible {
+    .guide-example:hover {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
+    }
+
+    .guide-example:active {
+      transform: translateY(1px);
+    }
+
+    .file-fallback {
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: var(--bg);
+    }
+
+    .file-card {
+      width: min(560px, 100%);
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .file-card h1 {
+      margin: 0 0 12px;
+      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+      font-size: 34px;
+      text-wrap: balance;
+    }
+
+    .file-card p {
+      color: var(--muted);
+      text-wrap: pretty;
+    }
+
+    .file-note {
+      margin: 18px 0;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #F4EFE5;
+      color: var(--accent-strong);
+      font-size: 14px;
+    }
+
+    :focus-visible {
       outline: 2px solid var(--accent);
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
-    input:focus-visible {
-      outline: none;
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 1ms !important;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app-bar {
+        align-items: flex-start;
+      }
+
+      .brand-subtitle,
+      .guide-top-link {
+        display: none;
+      }
+
+      .menu-trigger {
+        min-width: 124px;
+      }
+
+      .main-wrap {
+        padding-top: 36px;
+      }
+
+      .search-panel {
+        border-radius: 22px;
+        padding: 14px;
+      }
+
+      .field-label-row,
+      .status-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      .search-actions {
+        width: 100%;
+      }
+
+      .primary-button {
+        flex: 1;
+      }
+
+      .syntax-rail,
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1,
+      .guide-hero h1 {
+        font-size: clamp(34px, 12vw, 54px);
+      }
+    }
+
+    @media (max-width: 440px) {
+      .app-header {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .brand-title {
+        font-size: 14px;
+      }
+
+      .menu-trigger {
+        min-width: auto;
+        max-width: 132px;
+      }
+
+      .mode-trigger-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .results {
+        grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      }
     }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="header-inner">
-      <div class="logo" onclick="goHome()">0243 押韻字典</div>
+  <a class="skip-link" href="#searchInput">跳到搜尋</a>
+
+  <header class="app-header">
+    <div class="app-bar">
+      <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
+        <span class="brand-mark" aria-hidden="true">韻</span>
+        <span>
+          <span class="brand-title">0243 押韻字典</span>
+          <span class="brand-subtitle">粵語填詞查韻工作台</span>
+        </span>
+      </button>
+
+      <nav class="app-actions" aria-label="主要操作">
+        <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
+          <span class="mode-trigger-text" id="currentModeLabel">m1 · 0243</span>
+          <span class="menu-chevron" aria-hidden="true">▾</span>
+        </button>
+        <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
+
+        <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
+          <div class="menu-group" role="group" aria-label="搜尋模式">
+            <p class="menu-label">Search mode</p>
+            <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
+              <span>
+                <span class="mode-name">m1 · 0243</span>
+                <span class="mode-help">常用 0243 編碼與混合查詢</span>
+              </span>
+              <span class="mode-key">0243</span>
+            </button>
+            <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
+              <span>
+                <span class="mode-name">m2 · 02493</span>
+                <span class="mode-help">更細分的五鍵聲調邏輯</span>
+              </span>
+              <span class="mode-key">02493</span>
+            </button>
+            <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
+              <span>
+                <span class="mode-name">syn · 近義 / 反義</span>
+                <span class="mode-help">直接查詞義關係</span>
+              </span>
+              <span class="mode-key">~ / !</span>
+            </button>
+          </div>
+          <div class="menu-group" role="group" aria-label="教學">
+            <p class="menu-label">Guide</p>
+            <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
+              <span>
+                <span class="mode-name">搜尋教學</span>
+                <span class="mode-help">完整語法與例子</span>
+              </span>
+              <span class="mode-key">?</span>
+            </button>
+          </div>
+        </div>
+      </nav>
     </div>
   </header>
 
-  <main class="main-wrap">
-    <div class="hero">
-      <h1>粵語填詞好幫手</h1>
-      <p>0243 / 02493 編碼 · 粵拼 · 等號韻 · 近義反義，一鍵即得</p>
-    </div>
+  <main class="main-wrap" id="mainContent">
+    <section class="search-view" id="searchView" aria-labelledby="searchTitle">
+      <div class="hero">
+        <p class="eyebrow">0243 / 02493 / Jyutping / Relation syntax</p>
+        <h1 id="searchTitle">粵語填詞查韻工作台</h1>
+        <p>輸入字、詞、韻母、編碼或關係語法。結果可點擊回查，方便在寫詞時快速轉向下一個候選。</p>
+      </div>
 
-    <div class="search-row">
-      <input type="text" id="searchInput" placeholder="輸入 23就、香港=、事業…" autocomplete="off" aria-label="搜尋輸入">
-      <button id="searchBtn" onclick="searchDict()" aria-label="搜尋">搜尋</button>
-    </div>
+      <form class="search-panel" id="searchForm" role="search">
+        <div class="field-label-row">
+          <label class="field-label" for="searchInput">搜尋內容</label>
+          <span class="mode-readout" id="modeReadout">目前模式：m1 · 0243</span>
+        </div>
+        <div class="search-row">
+          <input type="search" id="searchInput" name="q" placeholder="輸入 23就、香港=、!你、33!!你…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="searchHelp">
+          <div class="search-actions">
+            <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 3h5v5"/>
+                <path d="M4 20L21 3"/>
+                <path d="M21 16v5h-5"/>
+                <path d="M15 15l6 6"/>
+                <path d="M4 4l5 5"/>
+              </svg>
+            </button>
+            <button class="primary-button" id="searchBtn" type="submit">搜尋</button>
+          </div>
+        </div>
+        <div class="syntax-rail" id="searchHelp" aria-label="常用搜尋例子">
+          <button class="example-button" type="button" data-query="23就" data-mode="m1">
+            <code translate="no">23就</code>
+            <span>0243 編碼查字</span>
+          </button>
+          <button class="example-button" type="button" data-query="香港=" data-mode="m1">
+            <code translate="no">香港=</code>
+            <span>同韻候選</span>
+          </button>
+          <button class="example-button" type="button" data-query="!你" data-mode="m1">
+            <code translate="no">!你</code>
+            <span>反義與鏡像近義</span>
+          </button>
+          <button class="example-button" type="button" data-query="33!!你" data-mode="m1">
+            <code translate="no">33!!你</code>
+            <span>反義複合詞 + 尾韻</span>
+          </button>
+        </div>
+      </form>
 
-    <div class="modes" role="tablist" aria-label="搜尋模式">
-      <button class="mode-btn active" id="btn-m1" onclick="switchMode('m1')" role="tab" aria-selected="true">模式 1 · 0243</button>
-      <button class="mode-btn" id="btn-m2" onclick="switchMode('m2')" role="tab" aria-selected="false">模式 2 · 02493</button>
-      <button class="mode-btn" id="btn-syn" onclick="switchMode('syn')" role="tab" aria-selected="false">近義 / 反義詞</button>
-    </div>
+      <div class="status-row">
+        <div id="stats" class="stats" aria-live="polite"></div>
+        <button class="ghost-button" id="inlineGuideBtn" type="button">查看完整教學</button>
+      </div>
 
-    <div id="stats" class="stats" aria-live="polite"></div>
-    <div id="results" class="results" aria-live="polite"></div>
+      <div id="results" class="results" aria-live="polite"></div>
+    </section>
+
+    <section class="guide-view is-hidden" id="guideView" aria-labelledby="guideTitle" hidden>
+      <div class="guide-hero">
+        <p class="eyebrow">Search manual</p>
+        <h1 id="guideTitle" tabindex="-1">所有搜尋語法</h1>
+        <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。</p>
+        <div class="guide-actions">
+          <button class="primary-button" id="backToSearchBtn" type="button">回到搜尋</button>
+          <button class="ghost-button" type="button" data-query="!你" data-mode="m1">試 !你</button>
+        </div>
+      </div>
+
+      <div class="guide-grid">
+        <article class="guide-card">
+          <h2>基本查詢</h2>
+          <p>輸入中文字、詞語、數字或粵拼片段。適合先粗略找候選，再點擊結果回查。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="就" data-mode="m1"><code translate="no">就</code><span>查單字</span></button>
+            <button class="guide-example" type="button" data-query="香港" data-mode="m1"><code translate="no">香港</code><span>查詞語</span></button>
+            <button class="guide-example" type="button" data-query="nei" data-mode="m1"><code translate="no">nei</code><span>粵拼片段</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>0243 / 02493 數字</h2>
+          <p><span translate="no">m1</span> 使用 0243；<span translate="no">m2</span> 使用 02493。純數字會列出符合該數字的候選。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="23" data-mode="m1"><code translate="no">23</code><span>m1 數字</span></button>
+            <button class="guide-example" type="button" data-query="33心" data-mode="m1"><code translate="no">33心</code><span>數字 + 字</span></button>
+            <button class="guide-example" type="button" data-query="02493" data-mode="m2"><code translate="no">02493</code><span>m2 數字</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>等號韻</h2>
+          <p>在字詞後加 <code translate="no">=</code>，查相同長度、同位置韻母的候選。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>兩字同韻</span></button>
+            <button class="guide-example" type="button" data-query="大蛋糕=" data-mode="m1"><code translate="no">大蛋糕=</code><span>三字同韻</span></button>
+            <button class="guide-example" type="button" data-query="事業=" data-mode="m1"><code translate="no">事業=</code><span>保留節奏</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>混合與萬用字元</h2>
+          <p>用數字、中文字、底線或片段混合描述候選。適合只知道其中幾個位置時使用。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="3_" data-mode="m1"><code translate="no">3_</code><span>指定首碼</span></button>
+            <button class="guide-example" type="button" data-query="23?" data-mode="m1"><code translate="no">23?</code><span>萬用位置</span></button>
+            <button class="guide-example" type="button" data-query="23就" data-mode="m1"><code translate="no">23就</code><span>數字 + 尾字</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>近義 / 反義</h2>
+          <p><code translate="no">~</code> 查近義，<code translate="no">!</code> 查反義。反義會把反義端點的近義也納入，例如 <code translate="no">!開心</code> 近似於 <code translate="no">~悲傷</code>。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="~開心" data-mode="m1"><code translate="no">~開心</code><span>近義候選</span></button>
+            <button class="guide-example" type="button" data-query="!你" data-mode="m1"><code translate="no">!你</code><span>反義鏡像</span></button>
+            <button class="guide-example" type="button" data-query="33!開心" data-mode="m1"><code translate="no">33!開心</code><span>反義 + 數字</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>反義複合詞</h2>
+          <p><code translate="no">!!</code> 會找兩個單字互為反義的二字詞；後面接一個字時，會限制尾字韻母。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="!!" data-mode="m1"><code translate="no">!!</code><span>如生死、是非</span></button>
+            <button class="guide-example" type="button" data-query="!!你" data-mode="m1"><code translate="no">!!你</code><span>尾字同韻</span></button>
+            <button class="guide-example" type="button" data-query="33!!你" data-mode="m1"><code translate="no">33!!你</code><span>數字 + 尾韻</span></button>
+          </div>
+        </article>
+      </div>
+    </section>
   </main>
 
   <script>
-    // === 雙擊 index.html 直接執行支援（保留 start.sh 流程） ===
-    if (location.protocol === 'file:') {
-      document.addEventListener('DOMContentLoaded', () => {
-        document.body.innerHTML = `
-          <div style="position:fixed;inset:0;background:#F8F4E8;color:#1A2A3A;display:flex;align-items:center;justify-content:center;font-family:system-ui;z-index:99999;">
-            <div style="max-width:520px;text-align:center;padding:40px;background:white;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
-              <h2 style="margin:0 0 16px;font-size:26px;">0243 押韻字典</h2>
-              <p style="margin:0 0 20px;line-height:1.6;color:#555;">
-                您直接雙擊開啟了 <code>index.html</code>。<br>
-                本應用需要後端伺服器支援才能完整運作。
-              </p>
-              <div style="background:#fff3e0;border:1px solid #ffcc80;padding:12px 16px;border-radius:8px;margin:16px 0;font-size:14px;color:#e65100;">
-                請先執行 <strong>start.sh</strong> 啟動後端伺服器
-              </div>
-              <button onclick="window.open('http://127.0.0.1:8000/frontend/index.html', '_blank')"
-                      style="background:#C13E2D;color:white;border:none;padding:14px 36px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;">
-                開啟應用程式
-              </button>
-              <p style="margin:20px 0 0;font-size:13px;color:#888;">
-                start.sh 會自動啟動伺服器並開啟正確頁面
-              </p>
-            </div>
-          </div>
-        `;
-      });
-      // 停止後續原本的應用程式碼執行
-      throw new Error('Direct file open - showing instruction only');
+    function showFileFallback() {
+      document.body.innerHTML = "";
+      const wrap = document.createElement("main");
+      wrap.className = "file-fallback";
+
+      const card = document.createElement("section");
+      card.className = "file-card";
+      card.setAttribute("aria-labelledby", "fileFallbackTitle");
+
+      const title = document.createElement("h1");
+      title.id = "fileFallbackTitle";
+      title.textContent = "0243 押韻字典";
+
+      const copy = document.createElement("p");
+      copy.textContent = "你直接開啟了 index.html。此工具需要後端伺服器支援，請先啟動本地服務。";
+
+      const note = document.createElement("div");
+      note.className = "file-note";
+      note.textContent = "請先執行 start.sh，再開啟應用程式。";
+
+      const link = document.createElement("a");
+      link.className = "primary-button";
+      link.href = "http://127.0.0.1:8000/frontend/index.html";
+      link.textContent = "開啟應用程式";
+
+      card.append(title, copy, note, link);
+      wrap.appendChild(card);
+      document.body.appendChild(wrap);
     }
 
-    let currentMode = 'm1';
+    if (location.protocol === "file:") {
+      document.addEventListener("DOMContentLoaded", showFileFallback);
+      throw new Error("Direct file open - showing instruction only");
+    }
+
+    const MODE_META = {
+      m1: { label: "m1 · 0243", placeholder: "輸入 23就、香港=、!你、33!!你…" },
+      m2: { label: "m2 · 02493", placeholder: "輸入 02493、詞語或粵拼片段…" },
+      syn: { label: "syn · 近義 / 反義", placeholder: "輸入 開心、悲傷 或直接用 ~開心、!你…" },
+    };
+
+    let currentMode = "m1";
+    let currentView = "search";
     let currentResults = [];
     let currentOffset = 0;
     let isSearching = false;
@@ -377,19 +1046,114 @@
     const searchCache = new Map();
 
     const $ = {
+      homeBtn: document.getElementById("homeBtn"),
+      guideTopBtn: document.getElementById("guideTopBtn"),
+      inlineGuideBtn: document.getElementById("inlineGuideBtn"),
+      guideMenuBtn: document.getElementById("guideMenuBtn"),
+      backToSearchBtn: document.getElementById("backToSearchBtn"),
+      modeMenuButton: document.getElementById("modeMenuButton"),
+      modeMenu: document.getElementById("modeMenu"),
+      currentModeLabel: document.getElementById("currentModeLabel"),
+      modeReadout: document.getElementById("modeReadout"),
+      searchView: document.getElementById("searchView"),
+      guideView: document.getElementById("guideView"),
+      searchForm: document.getElementById("searchForm"),
       searchInput: document.getElementById("searchInput"),
+      searchBtn: document.getElementById("searchBtn"),
+      shuffleBtn: document.getElementById("shuffleBtn"),
       results: document.getElementById("results"),
       stats: document.getElementById("stats"),
     };
 
-    function updateBrowserUrl(query = "", mode = currentMode, replace = false) {
+    function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
       const params = new URLSearchParams();
-      if (query) params.set('q', query);
-      if (mode) params.set('mode', mode);
-      const url = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
-      const state = { type: query ? 'search' : 'home', query, mode };
-      if (replace) window.history.replaceState(state, '', url);
-      else window.history.pushState(state, '', url);
+      if (query) params.set("q", query);
+      if (mode && mode !== "m1") params.set("mode", mode);
+      if (view && view !== "search") params.set("view", view);
+      const suffix = params.toString() ? `?${params.toString()}` : "";
+      const url = `${window.location.pathname}${suffix}`;
+      const state = { type: view, query, mode, view };
+      if (replace) window.history.replaceState(state, "", url);
+      else window.history.pushState(state, "", url);
+    }
+
+    function setButtonLoading(loading) {
+      isSearching = loading;
+      $.searchBtn.disabled = loading;
+      $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
+    }
+
+    function updateModeLabel() {
+      const meta = MODE_META[currentMode] || MODE_META.m1;
+      $.currentModeLabel.textContent = meta.label;
+      $.modeReadout.textContent = `目前模式：${meta.label}`;
+      $.searchInput.placeholder = meta.placeholder;
+      document.querySelectorAll("[data-mode]").forEach((btn) => {
+        if (!btn.classList.contains("mode-option")) return;
+        btn.setAttribute("aria-checked", btn.dataset.mode === currentMode ? "true" : "false");
+      });
+    }
+
+    function toggleMenu(open, { returnFocus = false } = {}) {
+      const nextOpen = typeof open === "boolean"
+        ? open
+        : $.modeMenuButton.getAttribute("aria-expanded") !== "true";
+      $.modeMenuButton.setAttribute("aria-expanded", String(nextOpen));
+      $.modeMenu.classList.toggle("is-open", nextOpen);
+      $.modeMenu.hidden = !nextOpen;
+      if (!nextOpen && returnFocus) $.modeMenuButton.focus();
+    }
+
+    function showSearch({ replace = false } = {}) {
+      currentView = "search";
+      $.guideView.hidden = true;
+      $.searchView.hidden = false;
+      $.guideView.classList.add("is-hidden");
+      $.searchView.classList.remove("is-hidden");
+      toggleLoadMoreButton(currentResults.length >= PAGE_SIZE);
+      updateShuffleButton();
+      updateBrowserUrl(currentQuery, currentMode, currentView, replace);
+    }
+
+    function showGuide({ replace = false } = {}) {
+      currentView = "guide";
+      $.searchView.hidden = true;
+      $.guideView.hidden = false;
+      $.searchView.classList.add("is-hidden");
+      $.guideView.classList.remove("is-hidden");
+      toggleLoadMoreButton(false);
+      updateShuffleButton();
+      toggleMenu(false);
+      updateBrowserUrl(currentQuery, currentMode, currentView, replace);
+      document.getElementById("guideTitle").focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function switchMode(mode, { runSearch = true, replace = true } = {}) {
+      if (!MODE_META[mode]) return;
+      currentMode = mode;
+      updateModeLabel();
+      toggleMenu(false);
+
+      const input = $.searchInput.value.trim();
+      if (input && currentView === "search" && runSearch) {
+        updateBrowserUrl(input, currentMode, currentView, replace);
+        searchDict(false, true);
+      } else {
+        updateBrowserUrl(input, currentMode, currentView, replace);
+      }
+    }
+
+    function runExample(query, mode = currentMode) {
+      switchMode(mode, { runSearch: false, replace: true });
+      currentView = "search";
+      $.guideView.hidden = true;
+      $.searchView.hidden = false;
+      $.guideView.classList.add("is-hidden");
+      $.searchView.classList.remove("is-hidden");
+      $.searchInput.value = query;
+      $.searchInput.focus();
+      searchDict(false);
     }
 
     function createResultButton(text, query, title = "") {
@@ -405,63 +1169,81 @@
 
     function handleResultClick(queryText) {
       $.searchInput.value = queryText;
+      showSearch({ replace: true });
       searchDict();
+    }
+
+    function updateShuffleButton() {
+      $.shuffleBtn.disabled = !currentResults.length || currentView !== "search";
+    }
+
+    function shuffleResults() {
+      if (!currentResults.length) return;
+      const shuffled = currentResults.slice();
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      currentResults = shuffled;
+      renderSearchResults(currentResults);
     }
 
     function renderSearchResults(data) {
       $.results.innerHTML = "";
-      $.results.className = currentMode === 'syn' ? 'syn-container' : 'results';
+      $.results.className = currentMode === "syn" ? "syn-container" : "results";
 
-      if (currentMode === 'syn') {
-        const syns = data.filter(r => r.relation === 'syn');
-        const ants = data.filter(r => r.relation === 'ant');
-        const related = data.filter(r => r.relation === 'semantic_related');
-        $.results.appendChild(createSynSection('近義詞', syns));
-        $.results.appendChild(createSynSection('反義詞', ants));
-        if (related.length) {
-          $.results.appendChild(createSynSection('語意相關', related));
-        }
-        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ''}（已載入 ${data.length}）`;
+      if (currentMode === "syn") {
+        const syns = data.filter((r) => r.relation === "syn");
+        const ants = data.filter((r) => r.relation === "ant");
+        const related = data.filter((r) => r.relation === "semantic_related");
+        $.results.appendChild(createSynSection("近義詞", syns));
+        $.results.appendChild(createSynSection("反義詞", ants));
+        if (related.length) $.results.appendChild(createSynSection("語意相關", related));
+        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ""}（已載入 ${data.length}）`;
+        updateShuffleButton();
         return;
       }
 
       const frag = document.createDocumentFragment();
       const seen = new Set();
       const deduped = [];
-      data.forEach(word => {
+      data.forEach((word) => {
         const ch = word.display_text || word.char;
         if (!ch || seen.has(ch)) return;
         seen.add(ch);
         deduped.push(word);
       });
-      deduped.forEach(word => {
+
+      deduped.forEach((word) => {
         const display = word.display_text || word.char;
         const qtext = word.query_text || word.char;
         frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
       });
       $.results.appendChild(frag);
-      $.stats.textContent = `${deduped.length} 個結果（${currentMode}）`;
+      $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].label}）`;
+      updateShuffleButton();
     }
 
     function createSynSection(title, items) {
-      const section = document.createElement('div');
-      section.className = 'syn-section';
-      const h = document.createElement('h4');
-      h.textContent = `${title}${items.length ? ` (${items.length})` : ''}`;
-      section.appendChild(h);
-      const grid = document.createElement('div');
-      grid.className = 'results';
+      const section = document.createElement("section");
+      section.className = "syn-section";
+      const heading = document.createElement("h2");
+      heading.textContent = `${title}${items.length ? ` (${items.length})` : ""}`;
+      section.appendChild(heading);
+
+      const grid = document.createElement("div");
+      grid.className = "results";
       if (items.length) {
-        items.forEach(w => {
-          const char = (w && typeof w === 'object') ? (w.char || w) : w;
-          const source = w && typeof w === 'object' && w.source ? `來源：${w.source}` : '';
-          const inDb = w && typeof w === 'object' && w.in_db === false ? '（外部詞庫）' : '';
-          grid.appendChild(createResultButton(char, char, [source, inDb].filter(Boolean).join(' · ')));
+        items.forEach((item) => {
+          const char = item && typeof item === "object" ? item.char || "" : String(item || "");
+          const source = item && typeof item === "object" && item.source ? `來源：${item.source}` : "";
+          const inDb = item && typeof item === "object" && item.in_db === false ? "外部詞庫" : "";
+          if (char) grid.appendChild(createResultButton(char, char, [source, inDb].filter(Boolean).join(" · ")));
         });
       } else {
-        const empty = document.createElement('div');
-        empty.className = 'syn-empty';
-        empty.textContent = '（無）';
+        const empty = document.createElement("p");
+        empty.className = "syn-empty";
+        empty.textContent = "無可用結果";
         grid.appendChild(empty);
       }
       section.appendChild(grid);
@@ -473,23 +1255,32 @@
       if (!btn) {
         btn = document.createElement("button");
         btn.id = "loadMoreBtn";
+        btn.type = "button";
         btn.textContent = "載入更多";
         btn.className = "load-more";
-        btn.style.margin = "20px auto";
-        btn.style.display = "block";
-        btn.onclick = () => searchDict(true);
+        btn.addEventListener("click", () => searchDict(true));
         $.results.after(btn);
       }
-      btn.style.display = show ? "block" : "none";
+      btn.hidden = !show || currentView !== "search";
     }
 
     function goHome() {
+      currentView = "search";
+      $.guideView.hidden = true;
+      $.searchView.hidden = false;
+      $.guideView.classList.add("is-hidden");
+      $.searchView.classList.remove("is-hidden");
       $.searchInput.value = "";
       $.results.innerHTML = "";
+      $.results.className = "results";
       $.stats.textContent = "";
       currentQuery = "";
+      currentResults = [];
+      currentOffset = 0;
       toggleLoadMoreButton(false);
-      updateBrowserUrl('', currentMode, true);
+      updateShuffleButton();
+      updateBrowserUrl("", currentMode, "search", true);
+      $.searchInput.focus();
     }
 
     function finishSearchWithData(data, { append = false } = {}) {
@@ -502,12 +1293,8 @@
 
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
-      isSearching = true;
-      const btn = document.getElementById("searchBtn");
-      if (btn) {
-        btn.disabled = true;
-        btn.textContent = "搜尋中…";
-      }
+      showSearch({ replace: true });
+      setButtonLoading(true);
 
       const input = $.searchInput.value.trim();
 
@@ -520,26 +1307,22 @@
       }
 
       if (!input) {
-        $.results.innerHTML = `<p class="info">請輸入，例如：<br>23就、香港=、事業、大蛋糕=</p>`;
+        $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">23就</code>、<code translate="no">香港=</code>、<code translate="no">!你</code> 或 <code translate="no">33!!你</code>。</p>';
         currentQuery = "";
-        isSearching = false;
-        if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
-        toggleLoadMoreButton(false);
+        updateShuffleButton();
+        setButtonLoading(false);
         return;
       }
 
-      if (!restoreFromHistory && !isLoadMore) {
-        updateBrowserUrl(input, currentMode);
-      }
+      if (!restoreFromHistory && !isLoadMore) updateBrowserUrl(input, currentMode, "search");
       currentQuery = input;
 
       const cacheKey = `${currentMode}:${input}:${currentOffset}`;
       if (!isLoadMore && searchCache.has(cacheKey)) {
-        const data = searchCache.get(cacheKey);
-        if (Array.isArray(data)) {
-          finishSearchWithData(data, { append: isLoadMore });
-          isSearching = false;
-          if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
+        const cached = searchCache.get(cacheKey);
+        if (Array.isArray(cached)) {
+          finishSearchWithData(cached, { append: false });
+          setButtonLoading(false);
           return;
         }
         searchCache.delete(cacheKey);
@@ -549,7 +1332,7 @@
 
       try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("後端錯誤");
+        if (!res.ok) throw new Error("後端回應失敗");
         const data = await res.json();
 
         if (!isLoadMore) {
@@ -558,78 +1341,122 @@
         }
 
         if (data.length === 0 && !isLoadMore) {
-          $.results.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
-          isSearching = false;
-          if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
+          $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
+          updateShuffleButton();
+          setButtonLoading(false);
           toggleLoadMoreButton(false);
           return;
         }
 
         finishSearchWithData(data, { append: isLoadMore });
-
-      } catch (e) {
-        console.error(e);
-        $.results.innerHTML = `<p class="info" style="color:#C13E2D">無法連接到後端<br><small>請確認後端已啟動</small></p>`;
+      } catch (error) {
+        console.error(error);
+        $.results.innerHTML = '<p class="info info-error"><strong>無法連接到後端。</strong><br>請確認伺服器已啟動，然後再次搜尋。</p>';
+        updateShuffleButton();
+        toggleLoadMoreButton(false);
       }
 
-      isSearching = false;
-      if (btn) { btn.disabled = false; btn.textContent = "搜尋"; }
+      setButtonLoading(false);
     }
 
-    function switchMode(mode) {
-      currentMode = mode;
-      document.querySelectorAll('.mode-btn').forEach(b => {
-        b.classList.toggle('active', b.id === `btn-${mode}`);
-        b.setAttribute('aria-selected', b.id === `btn-${mode}`);
-      });
-      $.searchInput.placeholder = mode === 'syn' ? '輸入字詞查近義/反義' : (mode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
-      const input = $.searchInput.value.trim();
-      if (input) {
-        updateBrowserUrl(input, currentMode, true);
-        searchDict();
-      } else {
-        updateBrowserUrl('', currentMode, true);
-      }
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
     }
 
-    window.addEventListener('popstate', function (event) {
-      const state = event.state || { type: 'home' };
-      if (state.type === 'search') {
-        $.searchInput.value = state.query || "";
-        currentMode = state.mode || 'm1';
-        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-        const active = document.getElementById(`btn-${currentMode}`);
-        if (active) active.classList.add('active');
-        $.searchInput.placeholder = currentMode === 'syn' ? '輸入字詞查近義/反義' : (currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
-        currentQuery = state.query || "";
-        searchDict(false, true);
-      } else {
-        goHome();
+    $.searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      searchDict();
+    });
+
+    $.shuffleBtn.addEventListener("click", shuffleResults);
+
+    $.homeBtn.addEventListener("click", goHome);
+    $.modeMenuButton.addEventListener("click", () => toggleMenu());
+    $.guideTopBtn.addEventListener("click", () => showGuide());
+    $.guideMenuBtn.addEventListener("click", () => showGuide());
+    $.inlineGuideBtn.addEventListener("click", () => showGuide());
+    $.backToSearchBtn.addEventListener("click", () => {
+      showSearch();
+      $.searchInput.focus();
+    });
+
+    document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
+      btn.addEventListener("click", () => switchMode(btn.dataset.mode));
+    });
+
+    document.querySelectorAll("[data-query]").forEach((btn) => {
+      btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || currentMode));
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!$.modeMenu.contains(event.target) && !$.modeMenuButton.contains(event.target)) {
+        toggleMenu(false);
       }
     });
 
-    $.searchInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        searchDict();
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") toggleMenu(false, { returnFocus: true });
+    });
+
+    window.addEventListener("popstate", (event) => {
+      const state = event.state || {};
+      currentMode = MODE_META[state.mode] ? state.mode : "m1";
+      updateModeLabel();
+      $.searchInput.value = state.query || "";
+      currentQuery = state.query || "";
+      if (state.view === "guide") {
+        currentView = "guide";
+        $.searchView.hidden = true;
+        $.guideView.hidden = false;
+        $.searchView.classList.add("is-hidden");
+        $.guideView.classList.remove("is-hidden");
+        toggleLoadMoreButton(false);
+      } else {
+        currentView = "search";
+        $.guideView.hidden = true;
+        $.searchView.hidden = false;
+        $.guideView.classList.add("is-hidden");
+        $.searchView.classList.remove("is-hidden");
+        if (currentQuery) searchDict(false, true);
+        else {
+          $.results.innerHTML = "";
+          $.results.className = "results";
+          $.stats.textContent = "";
+          currentResults = [];
+          currentOffset = 0;
+          toggleLoadMoreButton(false);
+          updateShuffleButton();
+        }
       }
     });
 
     (function init() {
+      $.modeMenu.hidden = true;
       const params = new URLSearchParams(window.location.search);
-      const q = params.get('q') || '';
-      const mode = params.get('mode') || 'm1';
-      if (mode === 'm2' || mode === 'syn') switchMode(mode);
-      else {
-        currentMode = 'm1';
-        document.getElementById('btn-m1').classList.add('active');
-      }
-      $.searchInput.placeholder = currentMode === 'syn' ? '輸入字詞查近義/反義' : (currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢');
-      if (q) {
-        $.searchInput.value = q;
-        searchDict();
+      const q = params.get("q") || "";
+      const mode = params.get("mode") || "m1";
+      const view = params.get("view") || "search";
+      currentMode = MODE_META[mode] ? mode : "m1";
+      currentView = view === "guide" ? "guide" : "search";
+      currentQuery = q;
+      $.searchInput.value = q;
+      updateModeLabel();
+
+      if (currentView === "guide") {
+        $.searchView.hidden = true;
+        $.guideView.hidden = false;
+        $.searchView.classList.add("is-hidden");
+        $.guideView.classList.remove("is-hidden");
+        updateBrowserUrl(q, currentMode, currentView, true);
       } else {
-        updateBrowserUrl('', currentMode, true);
+        $.guideView.hidden = true;
+        $.searchView.hidden = false;
+        $.guideView.classList.add("is-hidden");
+        $.searchView.classList.remove("is-hidden");
+        updateBrowserUrl(q, currentMode, currentView, true);
+        if (q) searchDict(false, true);
       }
     })();
   </script>

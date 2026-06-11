@@ -10,6 +10,9 @@ from app.models.word import Word, WordRelation
 
 DEFAULT_PAGE_SIZE = 160
 
+# Derived ant rows — do not treat as expansion seeds at runtime (avoids O(n²) re-expansion).
+DERIVED_ANT_SOURCES = frozenset({"ant_syn_mirror", "ant_cilin_exanded"})
+
 # High-quality synonyms to surface first for common lyric lookup queries.
 QUERY_SYNONYM_PRIORITY: Dict[str, List[str]] = {
     "快樂": ["開心", "愉快", "高興", "歡樂", "快活", "喜悅", "稱快"],
@@ -81,9 +84,16 @@ def _should_include_synonym(query: str, candidate: str) -> bool:
     return True
 
 
-def _should_include_antonym(query: str, candidate: str) -> bool:
-    """Same length/morpheme rules as synonyms for antonym candidates."""
-    return _should_include_synonym(query, candidate)
+def _merge_relation_pools(db_pool: List[dict], static_pool: List[dict]) -> Dict[str, dict]:
+    merged: Dict[str, dict] = {}
+    for item in db_pool + static_pool:
+        ch = item.get("char") or ""
+        if not ch:
+            continue
+        prev = merged.get(ch)
+        if prev is None or item.get("_sort", 99) < prev.get("_sort", 99):
+            merged[ch] = item
+    return merged
 
 
 def _morpheme_chars_from_word_lists(*word_lists: List[str]) -> Set[str]:
@@ -232,7 +242,7 @@ def _sort_syn_pool(query: str, pool: List[dict], morpheme_chars: Optional[Set[st
 
 
 def _sort_ant_pool(query: str, pool: List[dict], morpheme_chars: Optional[Set[str]] = None) -> List[dict]:
-    filtered = [i for i in pool if _should_include_antonym(query, i.get("char") or "")]
+    filtered = [i for i in pool if _should_include_synonym(query, i.get("char") or "")]
     filtered.sort(key=lambda x: _ant_relevance_key(query, x, morpheme_chars))
     return filtered
 
@@ -392,27 +402,11 @@ def search_syn_ant(
             for w in static_words
         ]
         if relation == "syn":
-            merged: Dict[str, dict] = {}
-            for item in db_pool + static_pool:
-                ch = item.get("char") or ""
-                if not ch:
-                    continue
-                prev = merged.get(ch)
-                if prev is None or item.get("_sort", 99) < prev.get("_sort", 99):
-                    merged[ch] = item
             effective_morphemes = morpheme_chars if len(q) >= 2 else set()
-            pool = _sort_syn_pool(q, list(merged.values()), effective_morphemes)
+            pool = _sort_syn_pool(q, list(_merge_relation_pools(db_pool, static_pool).values()), effective_morphemes)
         elif relation == "ant":
-            merged = {}
-            for item in db_pool + static_pool:
-                ch = item.get("char") or ""
-                if not ch:
-                    continue
-                prev = merged.get(ch)
-                if prev is None or item.get("_sort", 99) < prev.get("_sort", 99):
-                    merged[ch] = item
             effective_morphemes = morpheme_chars if len(q) >= 2 else set()
-            pool = _sort_ant_pool(q, list(merged.values()), effective_morphemes)
+            pool = _sort_ant_pool(q, list(_merge_relation_pools(db_pool, static_pool).values()), effective_morphemes)
         else:
             pool = db_pool + static_pool
             pool.sort(key=lambda x: (x.get("_sort", 99), x.get("char") or ""))
@@ -456,12 +450,55 @@ def search_syn_ant(
     return combined[offset : offset + limit]
 
 
+def _expand_antonyms_via_syn_endpoints(
+    db: Session,
+    query: str,
+    direct_ants: List[str],
+    *,
+    include_static: bool = True,
+) -> List[str]:
+    """Append synonyms of each antonym endpoint (same as ~endpoint), ranked after direct ants.
+
+    Mirrors ingest ``expand_antonyms_via_cilin_synonyms``: if 你 ant 我 and 我 syn 吾,
+    then ``!你`` should also surface 吾.
+    """
+    if not direct_ants:
+        return []
+
+    expanded: List[str] = []
+    seen: Set[str] = {query.strip()}
+
+    for ant_char in direct_ants:
+        if not ant_char or ant_char in seen:
+            continue
+        seen.add(ant_char)
+        expanded.append(ant_char)
+
+    for ant_char in direct_ants:
+        if not ant_char:
+            continue
+        syn_chars = search_relation_chars(
+            db,
+            ant_char,
+            "syn",
+            include_static=include_static,
+        )
+        for syn_char in syn_chars:
+            if not syn_char or syn_char in seen:
+                continue
+            seen.add(syn_char)
+            expanded.append(syn_char)
+
+    return expanded
+
+
 def search_relation_chars(
     db: Session,
     query: str,
     relation_type: str,
     *,
     include_static: bool = True,
+    expand_ant_via_syn: bool = True,
 ) -> List[str]:
     """Return ranked related chars for one relation type (syn or ant)."""
     if relation_type not in ("syn", "ant"):
@@ -476,7 +513,40 @@ def search_relation_chars(
         offset=0,
         include_static=include_static,
     )
-    return [r["char"] for r in all_results if r.get("relation") == relation_type and r.get("char")]
+    direct = [r["char"] for r in all_results if r.get("relation") == relation_type and r.get("char")]
+    if relation_type == "ant" and expand_ant_via_syn:
+        seed_chars: List[str] = []
+        derived_chars: List[str] = []
+        seen_seed: Set[str] = set()
+        for r in all_results:
+            if r.get("relation") != "ant":
+                continue
+            ch = r.get("char") or ""
+            if not ch or ch == q or ch in seen_seed:
+                continue
+            seen_seed.add(ch)
+            src = r.get("source") or ""
+            if src in DERIVED_ANT_SOURCES:
+                derived_chars.append(ch)
+            else:
+                seed_chars.append(ch)
+
+        expanded = _expand_antonyms_via_syn_endpoints(
+            db,
+            q,
+            seed_chars,
+            include_static=include_static,
+        )
+        if not derived_chars:
+            return expanded
+        out = list(expanded)
+        seen = set(out)
+        for ch in derived_chars:
+            if ch not in seen:
+                seen.add(ch)
+                out.append(ch)
+        return out
+    return direct
 
 
 def build_char_antonym_pairs(db: Session) -> Set[Tuple[str, str]]:

@@ -515,6 +515,189 @@ def expand_antonyms_via_cilin_synonyms(
     return stats
 
 
+ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
+
+
+def _build_char_syn_adjacency(
+    db: Session,
+    *,
+    include_static: bool = True,
+) -> Dict[str, Set[str]]:
+    """Bidirectional synonym neighbors keyed by char (word_relations syn + optional static)."""
+    from sqlalchemy.orm import aliased
+
+    adj: Dict[str, Set[str]] = {}
+    w1 = aliased(Word)
+    w2 = aliased(Word)
+    for a, b in (
+        db.query(w1.char, w2.char)
+        .join(WordRelation, WordRelation.word_id == w1.id)
+        .join(w2, WordRelation.related_id == w2.id)
+        .filter(WordRelation.relation_type == "syn")
+        .all()
+    ):
+        if not a or not b or a == b:
+            continue
+        adj.setdefault(a, set()).add(b)
+        adj.setdefault(b, set()).add(a)
+
+    if include_static:
+        try:
+            from utils import ensure_thesaurus_loaded, get_synonyms
+
+            ensure_thesaurus_loaded()
+            db_chars = get_db_char_set(db)
+            for ch in db_chars:
+                for syn in get_synonyms(ch):
+                    if not syn or syn == ch or syn not in db_chars:
+                        continue
+                    adj.setdefault(ch, set()).add(syn)
+                    adj.setdefault(syn, set()).add(ch)
+        except Exception:
+            pass
+
+    return adj
+
+
+def _collect_direct_ant_oriented_pairs(
+    db: Session,
+    *,
+    exclude_sources: Optional[Set[str]] = None,
+) -> Set[Tuple[str, str]]:
+    """(head_char, ant_endpoint_char) for each non-mirror ant relation, both orientations."""
+    from sqlalchemy.orm import aliased
+
+    exclude_sources = exclude_sources or set()
+    w1 = aliased(Word)
+    w2 = aliased(Word)
+    q = (
+        db.query(w1.char, w2.char, WordRelation.source)
+        .join(WordRelation, WordRelation.word_id == w1.id)
+        .join(w2, WordRelation.related_id == w2.id)
+        .filter(WordRelation.relation_type == "ant")
+    )
+    oriented: Set[Tuple[str, str]] = set()
+    for a, b, src in q.all():
+        if not a or not b or a == b:
+            continue
+        if src in exclude_sources:
+            continue
+        oriented.add((a, b))
+        oriented.add((b, a))
+    return oriented
+
+
+def collect_ant_mirror_char_pairs(
+    db: Session,
+    *,
+    include_static: bool = True,
+    exclude_sources: Optional[Set[str]] = None,
+) -> Set[Tuple[str, str]]:
+    """Char pairs (head, tail) matching runtime ``!head`` expansion: ant endpoints + their syns.
+
+    Example: if 開心 ant 悲傷 and 悲傷 syn 傷心, yields (開心, 悲傷) and (開心, 傷心).
+    Conceptually ``!開心`` mirrors ``~悲傷`` for the expanded portion.
+    """
+    exclude_sources = exclude_sources or {ANT_SYN_MIRROR_SOURCE}
+    syn_adj = _build_char_syn_adjacency(db, include_static=include_static)
+    seeds = _collect_direct_ant_oriented_pairs(db, exclude_sources=exclude_sources)
+    pairs: Set[Tuple[str, str]] = set()
+    for head, endpoint in seeds:
+        if head == endpoint:
+            continue
+        pairs.add((head, endpoint))
+        for syn_char in syn_adj.get(endpoint, set()):
+            if syn_char and syn_char != head:
+                pairs.add((head, syn_char))
+    return pairs
+
+
+def expand_antonyms_via_syn_endpoints(
+    db: Session,
+    *,
+    source: str = ANT_SYN_MIRROR_SOURCE,
+    confidence: float = 0.72,
+    dedupe_existing: bool = True,
+    include_static: bool = True,
+    batch_size: int = INSERT_BATCH,
+) -> dict:
+    """Persist ``!query`` results as ant word_relations via ant-endpoint synonym expansion.
+
+    Uses direct ant seeds (excluding prior mirror rows), then adds one hop through
+    synonym neighbors of each ant endpoint — same logic as runtime ``!`` search.
+    """
+    source = (source or ANT_SYN_MIRROR_SOURCE)[:32]
+    stats = {
+        "ant_seed_orientations": 0,
+        "mirror_char_pairs": 0,
+        "candidate_pairs": 0,
+        "inserted": 0,
+        "skipped_existing": 0,
+        "skipped_no_char_id": 0,
+        "skipped_self": 0,
+    }
+
+    char_to_id = get_char_to_primary_id(db)
+    seeds = _collect_direct_ant_oriented_pairs(db, exclude_sources={source})
+    stats["ant_seed_orientations"] = len(seeds)
+    if not seeds:
+        return stats
+
+    mirror_pairs = collect_ant_mirror_char_pairs(
+        db,
+        include_static=include_static,
+        exclude_sources={source},
+    )
+    stats["mirror_char_pairs"] = len(mirror_pairs)
+
+    candidates: Dict[Tuple[int, int, str], dict] = {}
+    for head_char, tail_char in mirror_pairs:
+        if head_char == tail_char:
+            stats["skipped_self"] += 1
+            continue
+        head_id = char_to_id.get(head_char)
+        tail_id = char_to_id.get(tail_char)
+        if not head_id or not tail_id:
+            stats["skipped_no_char_id"] += 1
+            continue
+        w, r = canonical_word_ids(head_id, tail_id)
+        if w == r:
+            stats["skipped_self"] += 1
+            continue
+        key = (w, r, "ant")
+        candidates[key] = {
+            "word_id": w,
+            "related_id": r,
+            "relation_type": "ant",
+            "score": confidence,
+            "source": source,
+        }
+
+    stats["candidate_pairs"] = len(candidates)
+    if not candidates:
+        return stats
+
+    pending = list(candidates.values())
+    if dedupe_existing:
+        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
+        existing: Set[Tuple] = set()
+        for i in range(0, len(keys), SQL_IN_BATCH):
+            existing.update(_fetch_existing_keys(db, keys[i:i + SQL_IN_BATCH]))
+        before = len(pending)
+        pending = [
+            c for c in pending
+            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
+        ]
+        stats["skipped_existing"] = before - len(pending)
+
+    if pending:
+        for i in range(0, len(pending), batch_size):
+            chunk = pending[i:i + batch_size]
+            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
+
+    return stats
+
+
 def staging_report(db: Session) -> str:
     total = db.query(SynAntEdge).count()
     by_source: Dict[str, int] = {}

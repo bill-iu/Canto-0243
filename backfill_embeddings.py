@@ -5,32 +5,20 @@ Backfill Script for Word Embeddings (Semantic Similarity)
 用途：
   為資料庫中「已經存在但 embedding 欄位為空」的詞語，補上 vector embedding。
 
-  這是因為：
-  - 新增 embedding 欄位後，新匯入的資料（透過 import_data.py）會自動計算 embedding。
-  - 但舊資料（lyrics.db 或 Postgres 裡的歷史資料）embedding 欄位是 NULL，
-    導致 semantic similarity 排序無法對這些舊資料生效（score 會是 0）。
+本地 SQLite 主 DB 瘦身後，embedding 預設不再寫入 lyrics.db。
+需明確 opt-in：
+  ALLOW_MAIN_DB_EMBEDDINGS=1 python backfill_embeddings.py --write-main-db
+  或僅匯出旁路備份：
+  python backfill_embeddings.py --export-sidecar backup/lyrics_embeddings_new.jsonl.gz
 
-使用方式：
-  1. 先安裝依賴（如果還沒裝）：
-     pip install sentence-transformers
-
-  2. 確保你的環境變數正確（本地 SQLite 通常不用動）：
-     ENV=local python backfill_embeddings.py
-
-  3. 正式環境（Postgres）：
-     ENV=prod python backfill_embeddings.py
-
-注意事項（ingest / dev-only script）：
-  - 這個 script **只** 應該在安裝了 dev 依賴的環境執行：
-      pip install -r requirements-dev.txt
-  - 一般使用者只要 `pip install -r requirements.txt` 就能跑服務，**不需要** sentence-transformers。
-  - 這個 script 會呼叫 sentence-transformers 模型，第一次執行會下載模型（約 400MB+），
-    並且計算 embedding 會比較慢（尤其是 CPU）。
-  - 建議在資料量大時分批執行，或在有 GPU 的機器上跑。
-  - 執行完後如果還在使用舊的 embedding 相關功能才會對舊資料生效。
-  - 如果沒有安裝 sentence-transformers，script 會直接結束並提示。
+Postgres 正式環境不受 --write-main-db 限制（仍可直接 backfill）。
 """
 
+from __future__ import annotations
+
+import argparse
+import gzip
+import json
 import os
 import sys
 from typing import Optional
@@ -38,29 +26,95 @@ from typing import Optional
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, func
 
-# 讓我們能 import 專案內的東西
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word
-from utils import get_text_embedding
+from utils import enable_embedding_model_for_ingest, get_text_embedding
 
 
-BATCH_SIZE = 500          # 每處理多少筆就 commit 一次，避免記憶體爆炸
-PRINT_EVERY = 100         # 每處理多少筆印一次進度
+BATCH_SIZE = 500
+PRINT_EVERY = 100
 
 
-def backfill_embeddings(db: Session, limit: Optional[int] = None):
+def _sqlite_main_db_write_allowed(write_main_db: bool) -> bool:
+    if IS_POSTGRES:
+        return True
+    if write_main_db:
+        return True
+    if os.getenv("ALLOW_MAIN_DB_EMBEDDINGS", "").strip() in ("1", "true", "yes"):
+        return True
+    return False
+
+
+def export_embeddings_sidecar(
+    db: Session,
+    sidecar_path: str,
+    *,
+    batch_size: int = 2000,
+) -> int:
+    """Append/update sidecar JSONL.gz with id + embedding for rows that have embeddings."""
+    from pathlib import Path
+
+    path = Path(sidecar_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    count = 0
+    offset = 0
+
+    with gzip.open(path, "wt", encoding="utf-8") as out:
+        while True:
+            batch = (
+                db.query(Word.id, Word.embedding)
+                .filter(Word.embedding.isnot(None), func.length(Word.embedding) > 10)
+                .order_by(Word.id)
+                .offset(offset)
+                .limit(batch_size)
+                .all()
+            )
+            if not batch:
+                break
+            for wid, emb in batch:
+                out.write(
+                    json.dumps({"id": int(wid), "embedding": emb}, ensure_ascii=False)
+                    + "\n"
+                )
+                count += 1
+            offset += len(batch)
+    return count
+
+
+def backfill_embeddings(
+    db: Session,
+    limit: Optional[int] = None,
+    *,
+    write_main_db: bool = False,
+    sidecar_path: Optional[str] = None,
+):
     """
     找出 embedding 為空或 NULL 的詞，補上 embedding。
+    SQLite 預設寫入主 DB 需 --write-main-db 或 ALLOW_MAIN_DB_EMBEDDINGS=1。
     """
+    if sidecar_path:
+        print(f"📦 匯出現 至旁路備份: {sidecar_path}")
+        n = export_embeddings_sidecar(db, sidecar_path)
+        print(f"✅ 已匯出 {n} 筆 embedding 至 sidecar。")
+        return
+
+    if not _sqlite_main_db_write_allowed(write_main_db):
+        print("❌ 本地 SQLite 預設不寫入主 DB embedding（主 DB 已瘦身）。")
+        print("   若要寫回 lyrics.db，請使用：")
+        print("     ALLOW_MAIN_DB_EMBEDDINGS=1 python backfill_embeddings.py --write-main-db")
+        print("   或只匯出旁路備份：")
+        print("     python backfill_embeddings.py --export-sidecar backup/lyrics_embeddings.jsonl.gz")
+        return
+
     print("🔍 正在查詢需要 backfill embedding 的詞語...")
 
     query = db.query(Word).filter(
         or_(
             Word.embedding.is_(None),
             Word.embedding == "",
-            func.length(Word.embedding) < 10,   # 太短的也視為沒資料
+            func.length(Word.embedding) < 10,
         )
     )
 
@@ -77,8 +131,6 @@ def backfill_embeddings(db: Session, limit: Optional[int] = None):
     processed = 0
     updated = 0
     skipped = 0
-
-    # 用 offset + limit 方式批次處理，比較穩（尤其是 SQLite）
     offset = 0
 
     while True:
@@ -102,8 +154,6 @@ def backfill_embeddings(db: Session, limit: Optional[int] = None):
 
         for word in batch:
             processed += 1
-
-            # 優先用 char，其次用 jyutping
             text_for_embed = word.char or word.jyutping or ""
             if not text_for_embed.strip():
                 skipped += 1
@@ -113,11 +163,8 @@ def backfill_embeddings(db: Session, limit: Optional[int] = None):
                 emb = get_text_embedding(text_for_embed)
                 if emb:
                     if IS_POSTGRES:
-                        # pgvector accepts list directly
                         word.embedding = emb
                     else:
-                        # SQLite String column: store as JSON string
-                        import json
                         word.embedding = json.dumps(emb)
                     updated += 1
                 else:
@@ -127,9 +174,11 @@ def backfill_embeddings(db: Session, limit: Optional[int] = None):
                 skipped += 1
 
             if processed % PRINT_EVERY == 0:
-                print(f"  已處理 {processed}/{total_to_process} 筆... (更新 {updated}, 跳過 {skipped})")
+                print(
+                    f"  已處理 {processed}/{total_to_process} 筆... "
+                    f"(更新 {updated}, 跳過 {skipped})"
+                )
 
-        # 批次 commit
         db.commit()
         offset += len(batch)
 
@@ -145,46 +194,66 @@ def backfill_embeddings(db: Session, limit: Optional[int] = None):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Backfill word embeddings (dev/ingest)")
+    parser.add_argument(
+        "--write-main-db",
+        action="store_true",
+        help="Write embeddings into main lyrics.db (SQLite requires ALLOW_MAIN_DB_EMBEDDINGS=1)",
+    )
+    parser.add_argument(
+        "--export-sidecar",
+        metavar="PATH",
+        help="Export existing embeddings to gzip JSONL sidecar instead of backfill",
+    )
+    parser.add_argument("--limit", type=int, default=None, help="Max rows to backfill")
+    args = parser.parse_args()
+
     print("🚀 啟動 Embedding Backfill Script")
     print(f"資料庫類型: {'PostgreSQL' if IS_POSTGRES else 'SQLite'}")
     print(f"ENV: {os.getenv('ENV', 'local')}")
     print()
 
-    # 檢查 sentence-transformers 是否可用
+    if args.export_sidecar:
+        db = SessionLocal()
+        try:
+            export_embeddings_sidecar(db, args.export_sidecar)
+        finally:
+            db.close()
+        return
+
     try:
         from sentence_transformers import SentenceTransformer  # noqa: F401
     except ImportError:
         print("❌ 錯誤：沒有安裝 sentence-transformers")
-        print("請先執行：")
         print("    pip install sentence-transformers")
-        print()
-        print("安裝完成後再重新執行本 script。")
         sys.exit(1)
 
-    # 壓制長時間 backfill 時常見的 HF Hub unauthenticated warning（無害，純粹噪音）
-    # 避免 PowerShell 把 stderr 當成錯誤導致整體 exit code 看起來是 1
     try:
         import warnings
+
         warnings.filterwarnings(
             "ignore",
-            message=".*You are sending unauthenticated requests to the HF Hub.*"
+            message=".*You are sending unauthenticated requests to the HF Hub.*",
         )
-        import os
         os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
     except Exception:
         pass
 
+    enable_embedding_model_for_ingest()
+
     db = SessionLocal()
     try:
-        # 你可以傳 limit=100 來先小量測試
-        backfill_embeddings(db, limit=None)
+        backfill_embeddings(
+            db,
+            limit=args.limit,
+            write_main_db=args.write_main_db,
+            sidecar_path=args.export_sidecar,
+        )
     finally:
         db.close()
 
     print("\n提示：")
-    print("  - 如果想只處理前 200 筆測試，可以改成：")
-    print("      backfill_embeddings(db, limit=200)")
-    print("  - 正式環境建議在背景或有 GPU 的機器上執行。")
+    print("  SQLite 主 DB 預設不寫入 embedding；使用 --write-main-db + ALLOW_MAIN_DB_EMBEDDINGS=1 才會寫回。")
 
 
 if __name__ == "__main__":

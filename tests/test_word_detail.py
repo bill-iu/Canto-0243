@@ -1,32 +1,34 @@
 import unittest
-from types import SimpleNamespace
+import json
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation
-from app.routers.word import _build_character_search_results, search_words, handle_syn_ant_search
+from app.routers.word import search_words, handle_syn_ant_search
 
 
 class CharacterDetailPayloadTests(unittest.TestCase):
     def test_build_character_search_results(self):
-        words = [
-            SimpleNamespace(char="字", code="23", jyutping="zi6"),
-            SimpleNamespace(char="子", code="23", jyutping="zi2"),
-            SimpleNamespace(char="自", code="23", jyutping="zi6"),
-        ]
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        TestingSession = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with TestingSession() as session:
+            session.add_all([
+                Word(char="字", code="23", jyutping="zi6", length=1),
+                Word(char="子", code="23", jyutping="zi2", length=1),
+                Word(char="自", code="23", jyutping="zi6", length=1),
+            ])
+            session.commit()
+            payload = search_words(q="字", db=session, limit=20, offset=0)
 
-        payload = _build_character_search_results("字", words)
-
+        self.assertEqual(payload[0]["result_type"], "code")
         self.assertEqual(payload[0]["display_text"], "23")
-        self.assertEqual(payload[0]["code"], "23")
-        self.assertEqual(payload[0]["jyutping"], "")
+        self.assertEqual(payload[1]["result_type"], "jyutping")
         self.assertEqual(payload[1]["display_text"], "zi6")
-        self.assertEqual(payload[1]["code"], "")
-        self.assertEqual(payload[2]["display_text"], "zi2")
-        self.assertTrue(any(item["display_text"] == "子" for item in payload))
-        self.assertTrue(any(item["display_text"] == "自" for item in payload))
+        word_chars = [item["char"] for item in payload if item.get("result_type") == "word"]
+        self.assertEqual(word_chars[0], "字")
 
     def test_search_words_for_mixed_character_query(self):
         engine = create_engine("sqlite:///:memory:")
@@ -220,6 +222,36 @@ class RelationSyntaxTests(unittest.TestCase):
             chars = [r["char"] for r in results]
             self.assertEqual(chars, ["傷心"])
 
+    def test_bang_antonym_expands_via_synonym_endpoints(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as session:
+            session.add_all([
+                Word(id=10, char="你", code="2", jyutping="nei5", length=1),
+                Word(id=11, char="我", code="2", jyutping="ngo5", length=1),
+                Word(id=12, char="吾", code="2", jyutping="ng4", length=1),
+                Word(id=13, char="俺", code="2", jyutping="am2", length=1),
+            ])
+            session.add_all([
+                WordRelation(word_id=10, related_id=11, relation_type="ant", source="compound_ant"),
+                WordRelation(word_id=11, related_id=12, relation_type="syn", source="cilin"),
+                WordRelation(word_id=11, related_id=13, relation_type="syn", source="cilin"),
+            ])
+            session.commit()
+
+            results = search_words(q="!你", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] for r in results]
+            self.assertEqual(chars[0], "我")
+            self.assertIn("吾", chars)
+            self.assertIn("俺", chars)
+            self.assertNotIn("你", chars)
+
+            syn_of_wo = search_words(q="~我", mode="m1", db=session, limit=20, offset=0)
+            syn_chars = [r["char"] for r in syn_of_wo]
+            for ch in syn_chars:
+                self.assertIn(ch, chars)
+
     def test_code_prefixed_relation_syntax_filters_length_and_code(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
@@ -286,6 +318,102 @@ class RelationSyntaxTests(unittest.TestCase):
             code_rhyme_results = search_words(q="33!!你", mode="m1", db=session, limit=50, offset=0)
             code_rhyme_chars = [r["char"] for r in code_rhyme_results]
             self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
+
+
+class SearchSyntaxTests(unittest.TestCase):
+    """Regression tests for equals, hybrid, digit, jyutping, and strict per-code search paths."""
+
+    def _session(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        return sessionmaker(bind=engine, autoflush=False, autocommit=False)()
+
+    def test_equals_rhyme_syntax(self):
+        with self._session() as session:
+            shared_finals = json.dumps(["oeng", "ong"])
+            session.add_all([
+                Word(
+                    char="香港", code="22", jyutping="hoeng1 gong2",
+                    finals=shared_finals, initials='["h","g"]', length=2,
+                ),
+                Word(
+                    char="香江", code="22", jyutping="hoeng1 gong1",
+                    finals=shared_finals, initials='["h","g"]', length=2,
+                ),
+                Word(
+                    char="香島", code="22", jyutping="hoeng1 dou2",
+                    finals=json.dumps(["oeng", "ou"]), initials='["h","d"]', length=2,
+                ),
+            ])
+            session.commit()
+            results = search_words(q="香港=", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
+            self.assertIn("香江", chars)
+            self.assertNotIn("香島", chars)
+
+    def test_hybrid_syntax(self):
+        with self._session() as session:
+            session.add_all([
+                Word(
+                    char="做就", code="23", jyutping="zou6 zau6",
+                    finals='["ou","au"]', initials='["z","z"]', length=2,
+                ),
+                Word(
+                    char="做得", code="23", jyutping="zou6 dak1",
+                    finals='["ou","ak"]', initials='["z","d"]', length=2,
+                ),
+                Word(
+                    char="好就", code="24", jyutping="hou2 zau6",
+                    finals='["ou","au"]', initials='["h","z"]', length=2,
+                ),
+            ])
+            session.commit()
+            results = search_words(q="23就", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] if isinstance(r, dict) else getattr(r, "char", r) for r in results]
+            self.assertIn("做就", chars)
+            self.assertNotIn("做得", chars)
+            self.assertNotIn("好就", chars)
+
+    def test_pure_digit_syntax(self):
+        with self._session() as session:
+            session.add_all([
+                Word(char="好人", code="23", jyutping="hou2 jan4", length=2),
+                Word(char="好字", code="23", jyutping="hou2 zi6", length=2),
+                Word(char="壞人", code="24", jyutping="waai6 jan4", length=2),
+            ])
+            session.commit()
+            results = search_words(q="23", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
+            self.assertCountEqual(chars, ["好人", "好字"])
+
+    def test_jyutping_fragment_syntax(self):
+        with self._session() as session:
+            session.add_all([
+                Word(char="做到", code="24", jyutping="zou6 dou3", length=2),
+                Word(char="做數", code="24", jyutping="zou6 sou3", length=2),
+                Word(char="路數", code="24", jyutping="lou6 sou3", length=2),
+            ])
+            session.commit()
+            results = search_words(q="zou6", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
+            self.assertIn("做到", chars)
+            self.assertIn("做數", chars)
+            self.assertNotIn("路數", chars)
+
+    def test_strict_per_code_headers_for_multi_code_word(self):
+        with self._session() as session:
+            session.add_all([
+                Word(char="事業", code="22", jyutping="si6 jip6", finals='["i","ip"]', length=2),
+                Word(char="事業", code="29", jyutping="si6 jip6", finals='["i","ip"]', length=2),
+                Word(char="視野", code="22", jyutping="si6 je5", finals='["i","e"]', length=2),
+            ])
+            session.commit()
+            results = search_words(q="事業", mode="m1", db=session, limit=50, offset=0)
+            code_headers = [r["display_text"] for r in results if r.get("result_type") == "code"]
+            self.assertEqual(code_headers, ["22", "29"])
+            word_chars = [r["char"] for r in results if r.get("result_type") == "word"]
+            self.assertIn("事業", word_chars)
+            self.assertNotIn("24", code_headers)
 
 
 if __name__ == "__main__":

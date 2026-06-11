@@ -8,6 +8,7 @@ Commands:
   build-relations                 Merge staging -> word_relations
   ingest-cilin                    Ingest Cilin leaf synonym groups (default: direct + dedupe)
   expand-antonyms-cilin           Expand antonyms via Cilin synonym neighbors of ant endpoints
+  expand-antonyms-mirror          Persist !query results: ant endpoints + ~endpoint syns (ant_syn_mirror)
   ingest-compound-ant             Seed single-char ant pairs from 0243 compound antonym list
 
 Examples:
@@ -33,6 +34,7 @@ from ingest.syn_ant_merge import (
     build_word_relations_from_staging,
     clear_word_relations_source,
     expand_antonyms_via_cilin_synonyms,
+    expand_antonyms_via_syn_endpoints,
     get_db_char_set,
     ingest_cilin_leaf_direct,
     persist_staging_edges,
@@ -195,6 +197,25 @@ def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_expand_antonyms_mirror(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    source_id = (args.source or "ant_syn_mirror")[:32]
+    with SessionLocal() as db:
+        if args.replace_relations:
+            removed = clear_word_relations_source(db, source_id)
+            print(f"Cleared {removed} existing word_relations with source={source_id!r}")
+        stats = expand_antonyms_via_syn_endpoints(
+            db,
+            source=source_id,
+            confidence=args.confidence,
+            dedupe_existing=args.dedupe_existing,
+            include_static=not args.no_static,
+            batch_size=args.batch_size,
+        )
+        print("expand-antonyms-mirror stats:", stats)
+    return 0
+
+
 def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
     ensure_word_relations_table()
     path = Path(args.list_path) if args.list_path else None
@@ -267,6 +288,24 @@ def main() -> int:
     )
     p_expand.set_defaults(replace_relations=True)
 
+    p_mirror = sub.add_parser(
+        "expand-antonyms-mirror",
+        help="Persist !query ant expansion (~endpoint syns) into word_relations",
+    )
+    p_mirror.add_argument("--source", default="ant_syn_mirror", help="Source tag for mirror ant relations")
+    p_mirror.add_argument("--confidence", type=float, default=0.72, help="Score for mirror ant relations")
+    p_mirror.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_mirror.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
+    p_mirror.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_mirror.add_argument("--no-static", dest="no_static", action="store_true", help="Only use DB syn, not static thesaurus")
+    p_mirror.add_argument(
+        "--no-replace-relations",
+        dest="replace_relations",
+        action="store_false",
+        help="Keep existing mirror ant rows (default: clear source first)",
+    )
+    p_mirror.set_defaults(replace_relations=True)
+
     p_compound = sub.add_parser(
         "ingest-compound-ant",
         help="Seed single-char ant pairs from 0243 compound antonym list",
@@ -298,6 +337,8 @@ def main() -> int:
         return cmd_ingest_cilin(args)
     if args.command == "expand-antonyms-cilin":
         return cmd_expand_antonyms_cilin(args)
+    if args.command == "expand-antonyms-mirror":
+        return cmd_expand_antonyms_mirror(args)
     if args.command == "ingest-compound-ant":
         return cmd_ingest_compound_ant(args)
     return 1

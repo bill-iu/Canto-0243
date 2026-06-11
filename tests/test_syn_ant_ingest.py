@@ -8,14 +8,21 @@ from app.database import Base
 from app.models.word import Word, WordRelation, SynAntEdge
 from app.services.syn_ant_service import (
     search_syn_ant,
+    search_relation_chars,
     _should_include_synonym,
-    _should_include_antonym,
     _sort_syn_pool,
     _sort_ant_pool,
     _final_score,
 )
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
-from ingest.syn_ant_merge import build_word_relations_from_staging, ingest_cilin_leaf_direct, persist_staging_edges, expand_antonyms_via_cilin_synonyms
+from ingest.syn_ant_merge import (
+    build_word_relations_from_staging,
+    ingest_cilin_leaf_direct,
+    persist_staging_edges,
+    expand_antonyms_via_cilin_synonyms,
+    expand_antonyms_via_syn_endpoints,
+    collect_ant_mirror_char_pairs,
+)
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.cilin_leaf import (
     groups_to_syn_edges,
@@ -153,8 +160,8 @@ class RuntimeServiceTests(unittest.TestCase):
         self.assertEqual(chars[:3], ["悲傷", "傷心", "難過"])
 
     def test_ant_ranking_helper_excludes_single_char_for_two_char_query(self):
-        self.assertFalse(_should_include_antonym("快樂", "悲"))
-        self.assertTrue(_should_include_antonym("快樂", "悲傷"))
+        self.assertFalse(_should_include_synonym("快樂", "悲"))
+        self.assertTrue(_should_include_synonym("快樂", "悲傷"))
 
     def test_syn_ranking_helper_excludes_single_char_for_two_char_query(self):
         self.assertFalse(_should_include_synonym("快樂", "快"))
@@ -369,6 +376,62 @@ class AntCilinExpansionTests(unittest.TestCase):
             self.assertEqual(count1, count2)
             self.assertGreater(stats1["inserted"], 0)
             self.assertEqual(stats2["inserted"], 0)
+
+
+class AntSynMirrorTests(unittest.TestCase):
+    def _seed_db(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        return Session
+
+    def test_expand_antonyms_mirror_matches_tilde_endpoint(self):
+        Session = self._seed_db()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="開心", code="33", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="33", jyutping="", length=2),
+                Word(id=3, char="傷心", code="33", jyutping="", length=2),
+                Word(id=4, char="難過", code="33", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="test"))
+            db.add_all([
+                WordRelation(word_id=2, related_id=3, relation_type="syn", source="cilin"),
+                WordRelation(word_id=2, related_id=4, relation_type="syn", source="cilin"),
+            ])
+            db.commit()
+
+            stats = expand_antonyms_via_syn_endpoints(db, source="ant_syn_mirror", include_static=False)
+            self.assertGreater(stats["inserted"], 0)
+
+            bang_chars = search_relation_chars(
+                db, "開心", "ant", include_static=False, expand_ant_via_syn=False,
+            )
+            tilde_endpoint = search_relation_chars(
+                db, "悲傷", "syn", include_static=False, expand_ant_via_syn=False,
+            )
+            self.assertIn("悲傷", bang_chars)
+            for ch in tilde_endpoint:
+                self.assertIn(ch, bang_chars)
+            self.assertIn("傷心", bang_chars)
+            self.assertIn("難過", bang_chars)
+
+    def test_collect_mirror_pairs_dedupes(self):
+        Session = self._seed_db()
+        with Session() as db:
+            db.add_all([
+                Word(id=10, char="你", code="2", jyutping="", length=1),
+                Word(id=11, char="我", code="2", jyutping="", length=1),
+                Word(id=12, char="吾", code="2", jyutping="", length=1),
+            ])
+            db.add(WordRelation(word_id=10, related_id=11, relation_type="ant", source="compound_ant"))
+            db.add(WordRelation(word_id=11, related_id=12, relation_type="syn", source="cilin"))
+            db.commit()
+
+            pairs = collect_ant_mirror_char_pairs(db, include_static=False)
+            self.assertIn(("你", "我"), pairs)
+            self.assertIn(("你", "吾"), pairs)
+            self.assertIn(("我", "你"), pairs)
 
 
 class CompoundAntIngestTests(unittest.TestCase):

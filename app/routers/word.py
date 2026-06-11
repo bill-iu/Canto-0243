@@ -5,10 +5,10 @@ import re
 from typing import Iterable, List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import and_, case, func, literal, or_
+from sqlalchemy import and_, func, or_
 from sqlalchemy.orm import Session
 
-from app.database import SessionLocal, contains_substring, IS_POSTGRES
+from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from utils import (
@@ -88,6 +88,79 @@ def _deduplicate_words(words: Iterable[Word]) -> List[Word]:
     return unique
 
 
+def _paginate(items: List, offset: int, limit: int) -> List:
+    if offset < 0:
+        offset = 0
+    return items[offset:offset + limit]
+
+
+def _serialize_page(words: Iterable, offset: int, limit: int, **serialize_kw) -> List[dict]:
+    page = _paginate(_deduplicate_words(words), offset, limit)
+    return [_serialize_word(w, **serialize_kw) for w in page]
+
+
+def _sync_word_to_cache(row) -> None:
+    try:
+        from utils import update_word_in_cache
+        update_word_in_cache(
+            row.char,
+            getattr(row, "code", "") or "",
+            getattr(row, "jyutping", "") or "",
+            getattr(row, "finals", None),
+            getattr(row, "initials", None),
+            getattr(row, "length", None),
+        )
+    except Exception:
+        pass
+
+
+def _try_query_embedding(q: str) -> list:
+    if not q:
+        return []
+    try:
+        from utils import get_text_embedding
+        if get_text_embedding.is_ready():
+            return get_text_embedding(q)
+    except Exception:
+        pass
+    return []
+
+
+def _append_code_jyutping_headers(
+    results: List[dict],
+    codes: List[str],
+    *,
+    code_to_jyuts: Optional[dict] = None,
+) -> None:
+    code_to_jyuts = code_to_jyuts or {}
+    for code_value in codes:
+        results.append({
+            "char": code_value,
+            "code": code_value or "",
+            "jyutping": "",
+            "display_text": code_value,
+            "query_text": code_value,
+            "result_type": "code",
+            "id": None,
+        })
+    seen_jyuts: set[str] = set()
+    for code_value in codes:
+        for jyutping_value in code_to_jyuts.get(code_value, []):
+            j = (jyutping_value or "").strip()
+            if not j or j in seen_jyuts:
+                continue
+            seen_jyuts.add(j)
+            results.append({
+                "char": j,
+                "code": "",
+                "jyutping": j or "",
+                "display_text": j,
+                "query_text": j,
+                "result_type": "jyutping",
+                "id": None,
+            })
+
+
 # _load_json_list moved to utils.py (public load_json_list) and aliased above for compat.
 # Old body removed to avoid duplication. All prior call sites continue to work via the alias.
 
@@ -143,184 +216,6 @@ def _get_primary_codes(words: Iterable[Word]) -> List[str]:
     return primary_codes
 
 
-def _build_similarity_query(db: Session, q: str, target_words: Optional[List[Word]]):
-    if not target_words:
-        return db.query(Word).order_by(Word.char, Word.code, Word.jyutping)
-
-    target_word = target_words[0]
-    target_codes = [code for code in _get_primary_codes(target_words) if code]
-    target_finals_json = json.dumps(_load_json_list(target_word.finals))
-
-    query = db.query(Word).filter(Word.char != q)
-
-    shared_char_conditions = [contains_substring(Word.char, char) for char in dict.fromkeys(q) if char]
-    if shared_char_conditions:
-        shared_char_expr = or_(*shared_char_conditions)
-    else:
-        shared_char_expr = literal(False)
-
-    same_rhyme_expr = Word.finals == target_finals_json
-    same_code_expr = Word.code.in_(target_codes) if target_codes else literal(True)
-    # 舊 similarity ranking 用：檢查 Word.char 是否為 q 的子字串（instr(q, Word.char) 語義）
-    if IS_POSTGRES:
-        query_substring_expr = func.strpos(func.literal(q), Word.char) > 0
-    else:
-        query_substring_expr = func.instr(q, Word.char) > 0
-    primary_rank = case(
-        (query_substring_expr, 0),
-        ((shared_char_expr) & same_rhyme_expr, 1),
-        (shared_char_expr, 2),
-        (same_rhyme_expr, 3),
-        else_=4,
-    )
-    same_code_rank = case((same_code_expr, 0), else_=1)
-    return query.order_by(primary_rank, same_code_rank, Word.char, Word.code, Word.jyutping)
-
-
-def _build_character_search_results(q: str, words: List[Word], related_words: Optional[List[Word]] = None, primary_codes: Optional[List[str]] = None) -> List[dict]:
-    """建構 searching page 結果。
-    sorting method（同 tier 下）：
-      先顯示 code A 和 code B，然後對應的 jyutping A 和 jyutping B，
-      然後 code A 的 tier 結果，然後 code B 的 tier 結果，
-      然後下一個 tier，如此類推。
-    這裡以每個 code 的小節方式輸出（code header + 對應 jyut + 該 code 在此 tier 的 words），
-    並優先處理 primary codes (target 帶來的 A/B，例如 9 與 29 相關)。
-    """
-    results: List[dict] = []
-    if primary_codes is None:
-        primary_codes = _get_primary_codes(words)
-
-    # 初始 headers：來自 target 的 codes (支援多 code 如 4/9 給 "到") 與 jyutpings
-    for code_value in primary_codes:
-        results.append({
-            "char": code_value,
-            "code": code_value or "",
-            "jyutping": "",
-            "display_text": code_value,
-            "query_text": code_value,
-            "result_type": "code",
-            "id": None,
-        })
-
-    target_jyutpings: List[str] = []
-    for word in words:
-        j = (word.jyutping or "").strip()
-        if j and j not in target_jyutpings:
-            target_jyutpings.append(j)
-    for jyutping_value in target_jyutpings:
-        results.append({
-            "char": jyutping_value,
-            "code": "",
-            "jyutping": jyutping_value or "",
-            "display_text": jyutping_value,
-            "query_text": jyutping_value,
-            "result_type": "jyutping",
-            "id": None,
-        })
-
-    seen: set[str] = set()
-    # 先輸出 target 詞本身
-    for word in _deduplicate_words(words):
-        if word.char not in seen:
-            seen.add(word.char)
-            results.append(_serialize_word(word, display_text=word.char, query_text=word.char, result_type="word"))
-
-    # 為 semantic similarity 排序準備 query embedding（redesign 後）
-    # 只有在 ingest 時預先產生並儲存到 word_relations / embedding 欄位的資料，
-    # 且模型已在該 ingest 過程中載入過，才會有值。
-    # 正常 runtime 啟動時絕不觸發 MiniLM 載入，query_emb 永遠為空（使用傳統排序）。
-    query_emb = []
-    try:
-        from utils import get_text_embedding
-        if get_text_embedding.is_ready():
-            query_emb = get_text_embedding(q) if q else []
-    except Exception as e:  # P1 fix: at least surface the error type instead of silent swallow
-        print(f"[search] get_text_embedding failed (non-fatal): {type(e).__name__}")
-        pass
-
-    related_words = related_words or []
-    if not related_words:
-        return results
-
-    # 將 related 依 tier (primary_rank) 分組
-    target_word = words[0] if words else None
-    target_finals_json = json.dumps(_load_json_list(target_word.finals)) if target_word else "[]"
-    q_chars = list(dict.fromkeys(q))
-
-    tier_groups: dict[int, list[Word]] = defaultdict(list)
-    for rw in related_words:
-        rw_finals_json = json.dumps(_load_json_list(rw.finals))
-        has_shared = any((ch in rw.char) for ch in q_chars if ch)
-        is_substr = bool(rw.char) and (rw.char in q)
-        is_same_rhyme = rw_finals_json == target_finals_json
-
-        if is_substr:
-            rank = 0
-        elif has_shared and is_same_rhyme:
-            rank = 1
-        elif has_shared:
-            rank = 2
-        elif is_same_rhyme:
-            rank = 3
-        else:
-            rank = 4
-
-        if rw.char not in seen:
-            tier_groups[rank].append(rw)
-
-    # 每 tier：按 ordered code (primary A/B 優先) 逐 code 輸出：code header + 對應 jyut(s) + 該 code 的 words
-    for rank in sorted(tier_groups.keys()):
-        tier_ws = tier_groups[rank]
-        if not tier_ws:
-            continue
-
-        # 建 group
-        code_groups: dict[str, list[Word]] = defaultdict(list)
-        for w in tier_ws:
-            c = _get_word_sort_code(w)
-            code_groups[c].append(w)
-
-        # ordered: primary 裡在此 tier 有的先，然後其餘 code 字串排序
-        codes_in_tier = [c for c in primary_codes if code_groups.get(c)]
-        other_codes = sorted(c for c in code_groups.keys() if c not in primary_codes and code_groups.get(c))
-        ordered_codes = codes_in_tier + other_codes
-
-        for c in ordered_codes:
-            # 顯示 code (A 或 B)
-            results.append({
-                "char": c,
-                "code": c or "",
-                "jyutping": "",
-                "display_text": c,
-                "query_text": c,
-                "result_type": "code",
-                "id": None,
-            })
-            # 對應的 jyutping (此 code 在 tier 內的)
-            js_for_c: List[str] = []
-            for w in code_groups.get(c, []):
-                j = (w.jyutping or "").strip()
-                if j and j not in js_for_c:
-                    js_for_c.append(j)
-            for jval in js_for_c:
-                results.append({
-                    "char": jval,
-                    "code": "",
-                    "jyutping": jval or "",
-                    "display_text": jval,
-                    "query_text": jval,
-                    "result_type": "jyutping",
-                    "id": None,
-                })
-            # 然後此 code 在此 tier 的結果
-            for w in _deduplicate_words(code_groups.get(c, [])):
-                if w.char not in seen:
-                    seen.add(w.char)
-                    results.append(_serialize_word(w, display_text=w.char, query_text=w.char, result_type="word"))
-
-    return results
-
-
 def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) -> List[dict]:
     """專為 exact 漢字搜尋設計的排序建構器（searching page）。
 
@@ -355,22 +250,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
             code_to_jyuts[c].append(j)
     codes = sorted(codes, key=int)
 
-    # 1. 先顯示 code 24 和 code 29
-    for c in codes:
-        results.append({
-            "char": c, "code": c, "jyutping": "",
-            "display_text": c, "query_text": c,
-            "result_type": "code", "id": None
-        })
-
-    # 2. 然後對應的 jyutping（code=24 的先，code=29 的後）
-    for c in codes:
-        for j in code_to_jyuts.get(c, []):
-            results.append({
-                "char": j, "code": "", "jyutping": j,
-                "display_text": j, "query_text": j,
-                "result_type": "jyutping", "id": None
-            })
+    _append_code_jyutping_headers(results, codes, code_to_jyuts=code_to_jyuts)
 
     seen: set[str] = set()
 
@@ -386,14 +266,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
     # 為 semantic similarity 排序準備 query embedding（redesign 後）
     # 只有模型已經 ready（極少數情況，通常是 ingest 後手動啟用）才會有值。
     # 正常 runtime 永遠不會觸發載入。
-    query_emb = []
-    if q:
-        try:
-            from utils import get_text_embedding
-            if get_text_embedding.is_ready():
-                query_emb = get_text_embedding(q)
-        except Exception:
-            pass
+    query_emb = _try_query_embedding(q)
 
     def _get_finals_json_for_code(c: str) -> Optional[str]:
         for w in exact_matches:
@@ -482,8 +355,7 @@ def _build_code_aware_results(q: str, exact_matches: List[Word], db: Session) ->
                 ref_fins = _load_json_list(ref_row.finals)
             if ref_row:
                 try:
-                    from utils import update_word_in_cache
-                    update_word_in_cache(ref_row.char, getattr(ref_row, "code", ""), getattr(ref_row, "jyutping", ""), getattr(ref_row, "finals", None), getattr(ref_row, "initials", None), getattr(ref_row, "length", None))
+                    _sync_word_to_cache(ref_row)
                 except Exception:
                     pass
     ref_val = ref_fins[0] if ref_fins else None
@@ -568,19 +440,7 @@ def _ensure_word_in_db(db: Session, text: str) -> List[Word]:
         db.commit()
         db.refresh(db_word)
         print(f"[ensure] injected into DB: '{text}' (code={code_val}, jyut={jyut_str})")
-        # Sync to mem cache immediately so subsequent mask/hybrid/"門0" etc see it without restart or full preload.
-        try:
-            from utils import update_word_in_cache
-            update_word_in_cache(
-                db_word.char,
-                db_word.code or "",
-                db_word.jyutping or "",
-                db_word.finals,
-                db_word.initials,
-                db_word.length,
-            )
-        except Exception:
-            pass
+        _sync_word_to_cache(db_word)
         return [db_word]
     except Exception as e:  # P1 fix: keep message but ensure type is visible
         db.rollback()
@@ -666,7 +526,7 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
         if match_ok:
             filtered.append(word)
 
-    return _deduplicate_words(filtered[offset:offset + limit])
+    return _paginate(_deduplicate_words(filtered), offset, limit)
 
 
 def _get_word_parts(word, field: str) -> list:
@@ -704,19 +564,48 @@ def _final_options_for_char(ch: str, db) -> set[str]:
         finals = _load_json_list(getattr(row, "finals", None))
         if finals:
             options.add(finals[0])
-        try:
-            from utils import update_word_in_cache
-            update_word_in_cache(
-                row.char,
-                getattr(row, "code", "") or "",
-                getattr(row, "jyutping", "") or "",
-                getattr(row, "finals", None),
-                getattr(row, "initials", None),
-                getattr(row, "length", None),
-            )
-        except Exception:
-            pass
+        _sync_word_to_cache(row)
     return options
+
+
+def _get_candidates_for_length(
+    db: Session,
+    length: int,
+    *,
+    code: Optional[str] = None,
+    mode: str = "m1",
+    fallback_limit: int = 2000,
+):
+    candidates = get_words_for_length(length)
+    if candidates:
+        return candidates, True
+    query = db.query(Word).filter(_length_filter(length))
+    if code:
+        query = _apply_code_filter(query, code, mode)
+    return query.order_by(Word.char, Word.jyutping).limit(fallback_limit).all(), False
+
+
+def _build_final_options_at_positions(
+    ref_chars: str,
+    start_pos: int,
+    width: int,
+    db,
+) -> list[Optional[set[str]]]:
+    target_final_options: list[Optional[set[str]]] = [None] * width
+    for i, ch in enumerate(ref_chars):
+        pos = start_pos + i
+        if 0 <= pos < width:
+            options = _final_options_for_char(ch, db)
+            if options:
+                target_final_options[pos] = options
+    return target_final_options
+
+
+def _word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
+    if not final_options:
+        return True
+    word_finals = _get_word_parts(word, "finals")
+    return len(word_finals) >= 2 and word_finals[-1] in final_options
 
 
 def _matches_code_positions(code_str: str, required_codes: list[Optional[str]], mode: str) -> bool:
@@ -761,22 +650,12 @@ def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, of
     full_code = num_prefix + num_suffix
     ref_pos = max(0, len(num_prefix) - 1)
 
-    query = db.query(Word)
-    query = _apply_code_filter(query, full_code, mode)
-    query = query.filter(_length_filter(len(full_code)))
-
-    candidates = get_words_for_length(len(full_code))
-    used_cache = bool(candidates)
-    if not used_cache:
-        candidates = query.order_by(Word.char).limit(2000).all()
-
-    target_final_options: list[Optional[set[str]]] = [None] * len(full_code)
-    for i, c in enumerate(ref_chars):
-        pos = ref_pos + i
-        if 0 <= pos < len(full_code):
-            options = _final_options_for_char(c, db)
-            if options:
-                target_final_options[pos] = options
+    candidates, used_cache = _get_candidates_for_length(
+        db, len(full_code), code=full_code, mode=mode,
+    )
+    target_final_options = _build_final_options_at_positions(
+        ref_chars, ref_pos, len(full_code), db,
+    )
 
     filtered = []
     allowed_full_codes = set(get_code_variants(full_code, mode))
@@ -799,7 +678,7 @@ def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, of
         if _matches_final_options(word_finals, target_final_options):
             filtered.append(word)
 
-    return _deduplicate_words(filtered)[offset:offset + limit]
+    return _paginate(_deduplicate_words(filtered), offset, limit)
 
 
 def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):
@@ -827,10 +706,10 @@ def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: i
     candidates = get_words_for_length(expected_len)
     used_cache = bool(candidates)
     if not used_cache:
-        query = db.query(Word).filter(_length_filter(expected_len))
-        if all(req is not None for req in required_codes):
-            query = _apply_code_filter(query, "".join(required_codes), mode)
-        candidates = query.order_by(Word.char, Word.jyutping).limit(3000).all()
+        code_filter = "".join(required_codes) if all(req is not None for req in required_codes) else None
+        candidates, used_cache = _get_candidates_for_length(
+            db, expected_len, code=code_filter, mode=mode, fallback_limit=3000,
+        )
 
     filtered = []
     for word in candidates:
@@ -845,7 +724,7 @@ def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: i
         filtered.append(word)
 
     filtered.sort(key=lambda item: _mask_priority_key(item, literal_positions))
-    return [_serialize_word(w) for w in _deduplicate_words(filtered)[offset:offset + limit]]
+    return _serialize_page(filtered, offset, limit)
 
 
 def _handle_pure_digit_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db: "Session") -> List[dict]:
@@ -875,7 +754,7 @@ def _handle_pure_canto_query(q: str, code: Optional[str], mode: str, limit: int,
         # 使用專門的 code-aware 排序（只允許查詢詞自己擁有的 0243 code 與 jyutping 當 header，
         # 各段都用 ORM filter + order_by + 同長度限制，過濾無關結果）
         built = _build_code_aware_results(q, raw_targets, db)
-        return built[offset:offset + limit]
+        return _paginate(built, offset, limit)
 
     return []
 
@@ -884,7 +763,7 @@ def _handle_jyut_fragment_query(q: str, limit: int, offset: int, db: "Session") 
     """處理粵拼片段查詢（含字母的）。"""
     # Cap to keep instant even for broad jyut fragments (rare path); slice after.
     results = db.query(Word).filter(Word.jyutping.ilike(f"%{q}%")).order_by(Word.char).limit(500).all()
-    return _deduplicate_words(results)[offset:offset + limit]
+    return _paginate(_deduplicate_words(results), offset, limit)
 
 
 def _parse_relation_syntax(q: str) -> Optional[dict]:
@@ -933,8 +812,7 @@ def _words_for_relation_chars(
 
     words = query.all()
     words.sort(key=lambda w: (char_order.get(w.char or "", 10**9), w.code or "", w.jyutping or ""))
-    page = words[offset:offset + limit]
-    return [_serialize_word(w, result_type="word") for w in page]
+    return _serialize_page(words, offset, limit, result_type="word")
 
 
 def _handle_relation_lookup_syntax(
@@ -1002,17 +880,14 @@ def _handle_antonym_compound_syntax(
             continue
         if (ch[0], ch[1]) not in ant_pairs and (ch[1], ch[0]) not in ant_pairs:
             continue
-        if last_final_options:
-            word_finals = _get_word_parts(word, "finals")
-            if len(word_finals) < 2 or word_finals[-1] not in last_final_options:
-                continue
+        if not _word_matches_last_final(word, last_final_options):
+            continue
         if ch in seen_chars:
             continue
         seen_chars.add(ch)
         results.append(word)
 
-    page = _deduplicate_words(results)[offset:offset + limit]
-    return [_serialize_word(w, result_type="word") for w in page]
+    return _serialize_page(results, offset, limit, result_type="word")
 
 
 @router.get("/search", response_model=list[WordRead])
@@ -1079,23 +954,6 @@ def search_words(
 # plus the extra "relation" field that the syn-mode frontend uses to split columns.
 # code/jyutping are empty for syn results (not relevant in this mode).
 # _ensure ensures the query word itself is in DB (for future relations). No runtime embedding.
-
-def _syn_result(char: str, relation: str, source: Optional[str] = None, score: Optional[float] = None) -> dict:
-    """Helper to produce a dict that satisfies the endpoint's WordRead response model
-    while carrying the 'relation' flag the syn frontend relies on.
-    code/jyutping are meaningless for syn results so left empty.
-    """
-    return {
-        "char": char,
-        "code": "",
-        "jyutping": "",
-        "display_text": char,
-        "query_text": char,
-        "result_type": "syn",
-        "relation": relation,
-        "source": source,
-        "score": score,
-    }
 
 
 def handle_syn_ant_search(
