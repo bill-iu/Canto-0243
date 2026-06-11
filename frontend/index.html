@@ -219,9 +219,14 @@
     let isSearching = false;
     let currentQuery = "";
     const PAGE_SIZE = 200;
-    // Simple client cache for instant repeat queries (keyed by mode:q:offset). Cleared naturally on navigation/reload.
-    // Huge win for clicking results (which re-searches) and mode flips on same input.
     const searchCache = new Map();
+
+    const $ = {
+      searchInput: document.getElementById("searchInput"),
+      results: document.getElementById("results"),
+      stats: document.getElementById("stats"),
+      sidebar: document.getElementById("sidebar"),
+    };
 
     function updateBrowserUrl(query = "", mode = currentMode, replace = false) {
       const params = new URLSearchParams();
@@ -247,8 +252,36 @@
     }
 
     function handleResultClick(queryText) {
-      document.getElementById("searchInput").value = queryText;
+      $.searchInput.value = queryText;
       searchDict();
+    }
+
+    function renderSearchResults(data, { append = false } = {}) {
+      if (!append) {
+        $.results.innerHTML = "";
+        $.results.className = currentMode === 'syn' ? 'syn-container' : 'results';
+      }
+
+      if (currentMode === 'syn') {
+        const syns = data.filter(r => r.relation === 'syn');
+        const ants = data.filter(r => r.relation === 'ant');
+        $.results.appendChild(createSynSection('近義詞', syns));
+        $.results.appendChild(createSynSection('反義詞', ants));
+        $.stats.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
+        toggleLoadMoreButton(false);
+        return;
+      }
+
+      $.results.className = 'results';
+      const frag = document.createDocumentFragment();
+      data.forEach(word => {
+        const displayText = word.display_text || word.char;
+        const queryText = word.query_text || word.char;
+        frag.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
+      });
+      $.results.appendChild(frag);
+      $.stats.textContent = `找到 ${currentResults.length + data.length} 個結果（${currentMode} 模式）`;
+      toggleLoadMoreButton(data.length === PAGE_SIZE);
     }
 
     function createSynSection(title, items) {
@@ -276,9 +309,9 @@
     }
 
     function goHome() {
-      document.getElementById("searchInput").value = "";
-      document.getElementById("results").innerHTML = "";
-      document.getElementById("stats").textContent = "";
+      $.searchInput.value = "";
+      $.results.innerHTML = "";
+      $.stats.textContent = "";
       toggleLoadMoreButton(false);
       currentQuery = "";
       updateBrowserUrl('', currentMode, true);
@@ -289,25 +322,28 @@
       return currentMode === 'm2' ? '02493/搵嘢' : '0243/搵嘢';
     }
 
+    function finishSearchWithData(data, { append = false } = {}) {
+      renderSearchResults(data, { append });
+      currentResults = currentResults.concat(data);
+      currentOffset += data.length;
+    }
+
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
       isSearching = true;
 
-      const input = document.getElementById("searchInput").value.trim();
-      const resultsDiv = document.getElementById("results");
-      const statsDiv = document.getElementById("stats");
+      const input = $.searchInput.value.trim();
 
       if (!isLoadMore) {
-        resultsDiv.innerHTML = "";
-        statsDiv.textContent = "";
+        $.results.innerHTML = "";
+        $.stats.textContent = "";
         currentResults = [];
         currentOffset = 0;
-        // Default to normal results grid; syn mode will override below if needed.
-        resultsDiv.className = 'results';
+        $.results.className = 'results';
       }
 
       if (!input) {
-        resultsDiv.innerHTML = `<p class="info">${getModeLabel()}<br>請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
+        $.results.innerHTML = `<p class="info">${getModeLabel()}<br>請輸入搜尋內容，例如：<br>23就、香港=、39香港=、大蛋糕=</p>`;
         currentQuery = "";
         isSearching = false;
         return;
@@ -320,37 +356,17 @@
 
       const cacheKey = `${currentMode}:${input}:${currentOffset}`;
       if (!isLoadMore && searchCache.has(cacheKey)) {
-        // Instant path: no fetch, no network, pure render from prior result (common for result clicks + mode flips).
         const data = searchCache.get(cacheKey);
-        // fall through to the render logic below by faking the response shape
-        await Promise.resolve(); // keep async shape
-        // (we duplicate minimal render to avoid big refactor; results are already validated on first fetch)
-        if (currentMode === 'syn') {
-          resultsDiv.innerHTML = '';
-          resultsDiv.className = 'syn-container';
-          const syns = data.filter(r => r.relation === 'syn');
-          const ants = data.filter(r => r.relation === 'ant');
-          resultsDiv.appendChild(createSynSection('近義詞', syns));
-          resultsDiv.appendChild(createSynSection('反義詞', ants));
-          statsDiv.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
-          toggleLoadMoreButton(false);
+        if (!Array.isArray(data)) {
+          searchCache.delete(cacheKey);
         } else {
-          resultsDiv.className = 'results';
-          statsDiv.textContent = `找到 ${currentResults.length + data.length} 個結果（${currentMode} 模式）`;
-          data.forEach(word => {
-            const displayText = word.display_text || word.char;
-            const queryText = word.query_text || word.char;
-            resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
-          });
-          toggleLoadMoreButton(data.length === PAGE_SIZE);
+          finishSearchWithData(data, { append: isLoadMore });
+          isSearching = false;
+          return;
         }
-        currentResults = currentResults.concat(data);
-        currentOffset += data.length;
-        isSearching = false;
-        return;
       }
 
-      const url = `http://127.0.0.1:8000/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
+      const url = `/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
 
       try {
         const res = await fetch(url);
@@ -358,49 +374,28 @@
         const data = await res.json();
 
         if (!isLoadMore) {
-          searchCache.set(cacheKey, data);  // store for instant future hits (same q/mode/offset)
-          // naive LRU-ish: if too big drop oldest (keeps memory tiny)
+          searchCache.set(cacheKey, data);
           if (searchCache.size > 64) {
-            const firstKey = searchCache.keys().next().value;
-            searchCache.delete(firstKey);
+            searchCache.delete(searchCache.keys().next().value);
           }
         }
 
         if (data.length === 0 && !isLoadMore) {
-          resultsDiv.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
+          $.results.innerHTML = `<p class="info">找不到符合「${input}」的結果</p>`;
           isSearching = false;
           return;
         }
 
-        currentResults = currentResults.concat(data);
-        currentOffset += data.length;
-
-        if (currentMode === 'syn') {
-          // Two-column no-score layout for 近義/反義
-          resultsDiv.innerHTML = '';
-          resultsDiv.className = 'syn-container';
-          const syns = data.filter(r => r.relation === 'syn');
-          const ants = data.filter(r => r.relation === 'ant');
-          resultsDiv.appendChild(createSynSection('近義詞', syns));
-          resultsDiv.appendChild(createSynSection('反義詞', ants));
-          statsDiv.textContent = `近義/反義詞查找（近義 ${syns.length} / 反義 ${ants.length}）`;
-          toggleLoadMoreButton(false);  // syn 模式通常不需 load more（k 小）
-        } else {
-          resultsDiv.className = 'results';
-          statsDiv.textContent = `找到 ${currentResults.length} 個結果（${currentMode} 模式）`;
-
-          data.forEach(word => {
-            const displayText = word.display_text || word.char;
-            const queryText = word.query_text || word.char;
-            resultsDiv.appendChild(createResultButton(displayText, queryText, word.jyutping || ""));
-          });
-
-          toggleLoadMoreButton(data.length === PAGE_SIZE);
-        }
+        finishSearchWithData(data, { append: isLoadMore });
 
       } catch (e) {
-        console.error(e);
-        resultsDiv.innerHTML = `<p class="info" style="color:red;">無法連接到後端</p>`;
+        console.error("Backend fetch failed:", e);
+        $.results.innerHTML = `
+          <p class="info" style="color:red;">
+            無法連接到後端<br>
+            <small>請確認後端已啟動 (python main.py 或 start.sh)，並查看終端機是否有錯誤訊息。</small>
+          </p>
+        `;
       }
 
       isSearching = false;
@@ -415,7 +410,7 @@
         btn.style.margin = "20px auto";
         btn.style.display = "block";
         btn.onclick = () => searchDict(true);
-        document.getElementById("results").after(btn);
+        $.results.after(btn);
       }
       btn.style.display = show ? "block" : "none";
     }
@@ -425,8 +420,8 @@
       document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
       const btnEl = document.getElementById(`btn-${mode}`);
       if (btnEl) btnEl.classList.add('active');
-      document.getElementById("searchInput").placeholder = getModeLabel();
-      const input = document.getElementById("searchInput").value.trim();
+      $.searchInput.placeholder = getModeLabel();
+      const input = $.searchInput.value.trim();
       if (input) {
         updateBrowserUrl(input, currentMode, true);
         searchDict();
@@ -436,18 +431,18 @@
     }
 
     function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("open");
+      $.sidebar.classList.toggle("open");
     }
 
     window.addEventListener('popstate', function (event) {
       const state = event.state || { type: 'home' };
       if (state.type === 'search') {
-        document.getElementById("searchInput").value = state.query || "";
+        $.searchInput.value = state.query || "";
         currentMode = state.mode || 'm1';
         document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
         const activeBtn = document.getElementById(`btn-${currentMode}`);
         if (activeBtn) activeBtn.classList.add('active');
-        document.getElementById("searchInput").placeholder = getModeLabel();
+        $.searchInput.placeholder = getModeLabel();
         currentQuery = state.query || "";
         searchDict(false, true);
       } else {
@@ -455,7 +450,14 @@
       }
     });
 
-    window.addEventListener('load', function () {
+    $.searchInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        searchDict();
+      }
+    });
+
+    (function init() {
       const params = new URLSearchParams(window.location.search);
       const initialQuery = params.get('q') || '';
       const initialMode = params.get('mode') || 'm1';
@@ -469,26 +471,14 @@
         const bs = document.getElementById('btn-syn');
         if (bs) bs.classList.remove('active');
       }
-      document.getElementById('searchInput').placeholder = getModeLabel();
+      $.searchInput.placeholder = getModeLabel();
       if (initialQuery) {
-        document.getElementById('searchInput').value = initialQuery;
+        $.searchInput.value = initialQuery;
         searchDict();
       } else {
         updateBrowserUrl('', currentMode, true);
       }
-    });
-
-    // 只保留這一個 Enter 鍵監聽（已加 preventDefault）
-    document.getElementById("searchInput").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        searchDict();
-      }
-    });
-
-    window.onload = function () {
-      console.log("✅ 前端已載入（已修正重複結果問題）");
-    };
+    })();
   </script>
 </body>
 
