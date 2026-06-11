@@ -170,12 +170,122 @@ class CharacterDetailPayloadTests(unittest.TestCase):
             ])
             session.commit()
 
-            results = search_words(q="快樂", mode="syn", db=session, limit=10, offset=0)
+            results = search_words(q="快樂", mode="syn", db=session, limit=200, offset=0)
 
         by_char = {item["char"]: item for item in results}
         self.assertEqual(by_char["愉快"]["relation"], "syn")
         self.assertEqual(by_char["悲傷"]["relation"], "ant")
         self.assertEqual(by_char["愉快"]["source"], "manual")
+
+
+class RelationSyntaxTests(unittest.TestCase):
+    def _seed(self, session):
+        session.add_all([
+            Word(id=1, char="開心", code="33", jyutping="hoi1 sam1", length=2),
+            Word(id=2, char="愉快", code="33", jyutping="jyu4 faai3", length=2),
+            Word(id=3, char="高興", code="44", jyutping="gou1 hing3", length=2),
+            Word(id=4, char="傷心", code="33", jyutping="soeng1 sam1", length=2),
+            Word(id=5, char="生死", code="33", jyutping="saang1 sei2", finals='["aang","ei"]', length=2),
+            Word(id=6, char="是非", code="33", jyutping="si6 fei1", finals='["i","ei"]', length=2),
+            Word(id=7, char="動靜", code="44", jyutping="dung6 zing6", finals='["ung","ing"]', length=2),
+        ])
+        session.add_all([
+            WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"),
+            WordRelation(word_id=1, related_id=3, relation_type="syn", source="test"),
+            WordRelation(word_id=1, related_id=4, relation_type="ant", source="test"),
+            WordRelation(word_id=5, related_id=6, relation_type="ant", source="test"),
+        ])
+        session.commit()
+
+    def test_tilde_synonym_syntax(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as session:
+            self._seed(session)
+            results = search_words(q="~開心", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] for r in results]
+            self.assertIn("愉快", chars)
+            self.assertIn("高興", chars)
+            self.assertNotIn("開心", chars)
+            self.assertNotIn("傷心", chars)
+
+    def test_bang_antonym_syntax(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as session:
+            self._seed(session)
+            results = search_words(q="!開心", mode="m1", db=session, limit=20, offset=0)
+            chars = [r["char"] for r in results]
+            self.assertEqual(chars, ["傷心"])
+
+    def test_code_prefixed_relation_syntax_filters_length_and_code(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as session:
+            self._seed(session)
+            syn_results = search_words(q="33~開心", mode="m1", db=session, limit=20, offset=0)
+            syn_chars = [r["char"] for r in syn_results]
+            self.assertEqual(syn_chars, ["愉快"])
+            ant_results = search_words(q="33!開心", mode="m1", db=session, limit=20, offset=0)
+            ant_chars = [r["char"] for r in ant_results]
+            self.assertEqual(ant_chars, ["傷心"])
+
+    def test_double_bang_compound_antonym_syntax(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as session:
+            self._seed(session)
+            session.add(WordRelation(word_id=5, related_id=7, relation_type="ant", source="char_pair"))
+            session.add(WordRelation(word_id=1, related_id=5, relation_type="ant", source="char_pair"))
+            session.commit()
+            # 生-死 ant via char lookup: add explicit single-char ant pairs through words
+            session.add_all([
+                Word(id=10, char="生", code="3", jyutping="saang1", finals='["aang"]', length=1),
+                Word(id=11, char="死", code="3", jyutping="sei2", finals='["ei"]', length=1),
+                Word(id=12, char="是", code="3", jyutping="si6", finals='["i"]', length=1),
+                Word(id=13, char="非", code="3", jyutping="fei1", finals='["ei"]', length=1),
+                Word(id=14, char="動", code="4", jyutping="dung6", finals='["ung"]', length=1),
+                Word(id=15, char="靜", code="4", jyutping="zing6", finals='["ing"]', length=1),
+                Word(id=18, char="你", code="2", jyutping="nei5", finals='["ei"]', length=1),
+            ])
+            session.add_all([
+                Word(id=16, char="真", code="3", jyutping="zan1", length=1),
+                Word(id=17, char="假", code="3", jyutping="gaa2", length=1),
+            ])
+            session.add_all([
+                WordRelation(word_id=10, related_id=11, relation_type="ant", source="char_pair"),
+                WordRelation(word_id=12, related_id=13, relation_type="ant", source="char_pair"),
+                WordRelation(word_id=14, related_id=15, relation_type="ant", source="ant_pair"),
+                WordRelation(word_id=16, related_id=17, relation_type="ant", source="char_pair"),
+            ])
+            session.commit()
+
+            all_results = search_words(q="!!", mode="m1", db=session, limit=50, offset=0)
+            all_chars = [r["char"] for r in all_results]
+            self.assertIn("生死", all_chars)
+            self.assertIn("是非", all_chars)
+            self.assertIn("動靜", all_chars)
+            self.assertNotIn("真假", all_chars)
+
+            code_results = search_words(q="33!!", mode="m1", db=session, limit=50, offset=0)
+            code_chars = [r["char"] for r in code_results]
+            self.assertIn("生死", code_chars)
+            self.assertIn("是非", code_chars)
+            self.assertNotIn("動靜", code_chars)
+
+            rhyme_results = search_words(q="!!你", mode="m1", db=session, limit=50, offset=0)
+            rhyme_chars = [r["char"] for r in rhyme_results]
+            self.assertIn("生死", rhyme_chars)
+            self.assertIn("是非", rhyme_chars)
+            self.assertNotIn("動靜", rhyme_chars)
+
+            code_rhyme_results = search_words(q="33!!你", mode="m1", db=session, limit=50, offset=0)
+            code_rhyme_chars = [r["char"] for r in code_rhyme_results]
+            self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
 
 
 if __name__ == "__main__":

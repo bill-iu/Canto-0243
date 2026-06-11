@@ -95,6 +95,8 @@ class WordRelation(Base):
     relation_type = Column(String(16), index=True, nullable=False)  # syn / ant / semantic_related
     score = Column(Float, nullable=True)                            # 可選信心分數（cosine 或人工）
     source = Column(String(32), nullable=True)                      # cilin / antisem / embedding_cosine ...
+    # Cilin hierarchy codes (JSON array): ["A", "Aa", "Aa01", "Aa01A", "Aa01A01="] for later sort/rank
+    group_codes = Column(Text, nullable=True)
 
     # 常見查詢會用 (word_id, relation_type) 與 (related_id, relation_type)
     # 建議在 ensure 階段建立複合索引

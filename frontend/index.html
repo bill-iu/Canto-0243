@@ -408,11 +408,9 @@
       searchDict();
     }
 
-    function renderSearchResults(data, { append = false } = {}) {
-      if (!append) {
-        $.results.innerHTML = "";
-        $.results.className = currentMode === 'syn' ? 'syn-container' : 'results';
-      }
+    function renderSearchResults(data) {
+      $.results.innerHTML = "";
+      $.results.className = currentMode === 'syn' ? 'syn-container' : 'results';
 
       if (currentMode === 'syn') {
         const syns = data.filter(r => r.relation === 'syn');
@@ -423,21 +421,26 @@
         if (related.length) {
           $.results.appendChild(createSynSection('語意相關', related));
         }
-        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ''}`;
-        toggleLoadMoreButton(false);
+        $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ''}（已載入 ${data.length}）`;
         return;
       }
 
-      $.results.className = 'results';
       const frag = document.createDocumentFragment();
+      const seen = new Set();
+      const deduped = [];
       data.forEach(word => {
+        const ch = word.display_text || word.char;
+        if (!ch || seen.has(ch)) return;
+        seen.add(ch);
+        deduped.push(word);
+      });
+      deduped.forEach(word => {
         const display = word.display_text || word.char;
         const qtext = word.query_text || word.char;
         frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
       });
       $.results.appendChild(frag);
-      $.stats.textContent = `${currentResults.length + data.length} 個結果（${currentMode}）`;
-      toggleLoadMoreButton(data.length === PAGE_SIZE);
+      $.stats.textContent = `${deduped.length} 個結果（${currentMode}）`;
     }
 
     function createSynSection(title, items) {
@@ -490,9 +493,11 @@
     }
 
     function finishSearchWithData(data, { append = false } = {}) {
-      renderSearchResults(data, { append });
-      currentResults = currentResults.concat(data);
+      const displayData = append ? currentResults.concat(data) : data;
+      renderSearchResults(displayData);
+      currentResults = displayData;
       currentOffset += data.length;
+      toggleLoadMoreButton(data.length === PAGE_SIZE);
     }
 
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {

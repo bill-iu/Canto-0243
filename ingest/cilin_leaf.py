@@ -35,6 +35,29 @@ def is_cilin_leaf_code(code: str) -> bool:
     return bool(CILIN_LEAF_CODE_RE.match(code or ""))
 
 
+def leaf_code_to_hierarchy_codes(leaf_code: str) -> List[str]:
+    """Expand a level-5 leaf code into all ancestor group codes (A → Aa → … → leaf).
+
+    Example: ``Aa01A01=`` → ``["A", "Aa", "Aa01", "Aa01A", "Aa01A01="]``.
+    Non-leaf or malformed codes are returned as a single-element list when possible.
+    """
+    code = (leaf_code or "").strip()
+    if not code:
+        return []
+    m = re.match(r"^([A-Z])([a-z])(\d{2})([A-Z])(\d{2})=$", code)
+    if not m:
+        return [code]
+    a, b, d, e, f = m.groups()
+    return [a, a + b, a + b + d, a + b + d + e, a + b + d + e + f + "="]
+
+
+def hierarchy_codes_json(leaf_code: str) -> str:
+    """JSON array string of all group codes for a leaf synonym group."""
+    import json
+
+    return json.dumps(leaf_code_to_hierarchy_codes(leaf_code), ensure_ascii=False)
+
+
 def export_leaf_lines_from_api(trad: bool = True) -> List[str]:
     """Export sorted leaf synonym groups via Cilin(trad=True) API."""
     patch_opencc_for_cilin()
@@ -94,6 +117,7 @@ def groups_to_syn_edges(
     edges: List[dict] = []
     seen: Set[Tuple[str, str]] = set()
     for code, words in groups:
+        codes = leaf_code_to_hierarchy_codes(code)
         for w, other in itertools.combinations(words, 2):
             head, tail = canonical_char_pair(w, other)
             key = (head, tail)
@@ -107,7 +131,7 @@ def groups_to_syn_edges(
                 "source": source,
                 "confidence": confidence,
                 "source_rank": source_rank,
-                "evidence": {"group": code},
+                "evidence": {"group": code, "group_codes": codes},
                 "license_tag": source,
             })
     return edges
@@ -161,5 +185,6 @@ def groups_to_word_id_pairs(
                 "relation_type": "syn",
                 "score": 0.85,
                 "source": "cilin",
+                "group_codes": hierarchy_codes_json(code),
             })
     return out

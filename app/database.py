@@ -245,6 +245,25 @@ def ensure_word_relations_pair_unique() -> None:
     ensure_word_relations_canonical_unique()
 
 
+def ensure_word_relations_group_codes_column() -> None:
+    """Add group_codes column to word_relations (Cilin hierarchy for sort). Idempotent."""
+    if IS_POSTGRES:
+        return
+    try:
+        inspector = inspect(engine)
+        if "word_relations" not in inspector.get_table_names():
+            return
+        cols = {c["name"] for c in inspector.get_columns("word_relations")}
+        if "group_codes" in cols:
+            return
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TABLE word_relations ADD COLUMN group_codes TEXT"))
+            conn.commit()
+        print("[DB] 已為 word_relations 新增 group_codes 欄位（Cilin 階層 codes）。")
+    except Exception as e:
+        print(f"[DB] 新增 word_relations.group_codes 欄位時發生錯誤（可忽略）：{type(e).__name__}: {e}")
+
+
 def ensure_word_relations_table() -> None:
     """
     輕量 schema 確保：建立 word_relations 表（用來存放預先計算的 syn/ant/related 關係）。
@@ -283,7 +302,8 @@ def ensure_word_relations_table() -> None:
                         related_id INTEGER NOT NULL,
                         relation_type VARCHAR(16) NOT NULL,
                         score FLOAT,
-                        source VARCHAR(32)
+                        source VARCHAR(32),
+                        group_codes TEXT
                     )
                 """))
                 conn.execute(text("""
@@ -313,6 +333,7 @@ def ensure_word_relations_table() -> None:
                 """))
                 conn.commit()
             ensure_word_relations_canonical_unique()
+            ensure_word_relations_group_codes_column()
     except Exception as e:  # P1 fix: surface exception type
         err = str(e)
         if "database is locked" in err.lower() or "operationalerror" in err.lower():

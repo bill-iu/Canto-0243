@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify word_relations canonical storage (debug session c269d0)."""
+"""Verify word_relations canonical storage."""
 from __future__ import annotations
 
 import json
@@ -12,7 +12,6 @@ from sqlalchemy import text
 
 from app.database import SessionLocal, ensure_word_relations_canonical_unique
 from app.models.word import WordRelation
-from ingest.relation_canonical import _debug_log
 
 
 def main() -> int:
@@ -44,7 +43,6 @@ def main() -> int:
         "bidirectional_pairs": bidirectional,
         "triple_duplicate_groups": triple_dupes,
     }
-    _debug_log("A", "scripts/verify_word_relations_canonical.py", "verification", data, run_id="verify")
     print(json.dumps(data, ensure_ascii=False, indent=2))
     return 0 if non_canonical == 0 and bidirectional == 0 and triple_dupes == 0 else 1
 

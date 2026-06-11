@@ -7,10 +7,13 @@ Commands:
   normalize [--source ID ...]     Parse sources -> normalize -> syn_ant_edges staging
   build-relations                 Merge staging -> word_relations
   ingest-cilin                    Ingest Cilin leaf synonym groups (default: direct + dedupe)
+  expand-antonyms-cilin           Expand antonyms via Cilin synonym neighbors of ant endpoints
+  ingest-compound-ant             Seed single-char ant pairs from 0243 compound antonym list
 
 Examples:
   python ingest_syn_ant.py report
   python ingest_syn_ant.py ingest-cilin --direct --dedupe-existing --chunk-size 300
+  python ingest_syn_ant.py expand-antonyms-cilin
   python ingest_syn_ant.py ingest-cilin --source-path C:/Users/User/Desktop/new_cilin.txt --staging
 """
 
@@ -29,12 +32,13 @@ from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_sour
 from ingest.syn_ant_merge import (
     build_word_relations_from_staging,
     clear_word_relations_source,
+    expand_antonyms_via_cilin_synonyms,
     get_db_char_set,
     ingest_cilin_leaf_direct,
     persist_staging_edges,
     staging_report,
 )
-from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
+from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
 from ingest.syn_ant_sources import iter_cilin_line_chunks, parse_cilin_lines, parse_sources
 
 
@@ -172,6 +176,49 @@ def cmd_ingest_cilin(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    source_id = (args.source or "ant_cilin_exanded")[:32]
+    with SessionLocal() as db:
+        if args.replace_relations:
+            removed = clear_word_relations_source(db, source_id)
+            print(f"Cleared {removed} existing word_relations with source={source_id!r}")
+        stats = expand_antonyms_via_cilin_synonyms(
+            db,
+            source=source_id,
+            cilin_syn_source=args.cilin_syn_source,
+            confidence=args.confidence,
+            dedupe_existing=args.dedupe_existing,
+            batch_size=args.batch_size,
+        )
+        print("expand-antonyms-cilin stats:", stats)
+    return 0
+
+
+def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    path = Path(args.list_path) if args.list_path else None
+    compounds = load_compound_antonyms(path)
+    print(f"Loaded {len(compounds)} unique compound antonyms from {path or 'default list'}")
+    source_id = (args.source or "compound_ant")[:32]
+    with SessionLocal() as db:
+        stats = ingest_compound_ant_char_pairs(
+            db,
+            compounds,
+            source=source_id,
+            confidence=args.confidence,
+            dedupe_existing=args.dedupe_existing,
+            replace_source=args.replace_relations,
+        )
+        matched = stats.get("matched_chars") or []
+        print("ingest-compound-ant stats:", {k: v for k, v in stats.items() if k != "matched_chars"})
+        if matched:
+            preview = ", ".join(matched[:20])
+            suffix = f" ... (+{len(matched) - 20})" if len(matched) > 20 else ""
+            print(f"matched_in_db sample: {preview}{suffix}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Syn/Ant ingest v2")
     parser.add_argument("--manifest", default=None, help="Path to sources.yaml")
@@ -201,9 +248,44 @@ def main() -> int:
         "--no-replace-relations",
         dest="replace_relations",
         action="store_false",
-        help="Keep existing word_relations with source=cilin",
+        help="Keep existing word_relations with source=cilin (default: clear cilin rows first)",
     )
-    p_cilin.set_defaults(replace_relations=False)
+    p_cilin.set_defaults(replace_relations=True)
+
+    p_expand = sub.add_parser("expand-antonyms-cilin", help="Expand antonyms via Cilin synonym neighbors")
+    p_expand.add_argument("--source", default="ant_cilin_exanded", help="Source tag for derived ant relations")
+    p_expand.add_argument("--cilin-syn-source", default="cilin", help="Cilin synonym source to expand from")
+    p_expand.add_argument("--confidence", type=float, default=0.75, help="Score for derived ant relations")
+    p_expand.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_expand.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
+    p_expand.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_expand.add_argument(
+        "--no-replace-relations",
+        dest="replace_relations",
+        action="store_false",
+        help="Keep existing derived ant rows (default: clear source first)",
+    )
+    p_expand.set_defaults(replace_relations=True)
+
+    p_compound = sub.add_parser(
+        "ingest-compound-ant",
+        help="Seed single-char ant pairs from 0243 compound antonym list",
+    )
+    p_compound.add_argument(
+        "--list-path",
+        help="Override compound antonyms list (default: data/syn_ant/compound_antonyms.txt)",
+    )
+    p_compound.add_argument("--source", default="compound_ant", help="Source tag for inserted ant relations")
+    p_compound.add_argument("--confidence", type=float, default=0.9, help="Score for compound ant relations")
+    p_compound.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
+    p_compound.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_compound.add_argument(
+        "--no-replace-relations",
+        dest="replace_relations",
+        action="store_false",
+        help="Keep existing compound_ant rows (default: clear source first)",
+    )
+    p_compound.set_defaults(replace_relations=True)
 
     args = parser.parse_args()
     if args.command == "report":
@@ -214,6 +296,10 @@ def main() -> int:
         return cmd_build_relations(args)
     if args.command == "ingest-cilin":
         return cmd_ingest_cilin(args)
+    if args.command == "expand-antonyms-cilin":
+        return cmd_expand_antonyms_cilin(args)
+    if args.command == "ingest-compound-ant":
+        return cmd_ingest_compound_ant(args)
     return 1
 
 

@@ -37,6 +37,9 @@ from collections import defaultdict
 
 WILDCARD_CHARS = frozenset("_?%")
 
+RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
+COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
+
 
 def _is_wildcard_char(ch: str) -> bool:
     return len(ch) == 1 and ch in WILDCARD_CHARS
@@ -884,6 +887,134 @@ def _handle_jyut_fragment_query(q: str, limit: int, offset: int, db: "Session") 
     return _deduplicate_words(results)[offset:offset + limit]
 
 
+def _parse_relation_syntax(q: str) -> Optional[dict]:
+    """Parse 0243 relation syntax: ~syn, !ant, !! compound, optional digit code prefix."""
+    compound = COMPOUND_ANT_RE.match(q)
+    if compound:
+        prefix = compound.group(1) or ""
+        rhyme_char = compound.group(2) or None
+        return {
+            "kind": "compound_ant",
+            "code_prefix": prefix or None,
+            "rhyme_char": rhyme_char,
+        }
+
+    lookup = RELATION_LOOKUP_RE.match(q)
+    if lookup:
+        prefix = lookup.group(1) or ""
+        op = lookup.group(2)
+        word = lookup.group(3)
+        return {
+            "kind": "syn" if op == "~" else "ant",
+            "code_prefix": prefix or None,
+            "word": word,
+        }
+    return None
+
+
+def _words_for_relation_chars(
+    db: Session,
+    ranked_chars: List[str],
+    *,
+    code_prefix: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+) -> List[dict]:
+    """Map ranked relation chars to Word rows, optionally filtered by 0243 code prefix."""
+    if not ranked_chars:
+        return []
+
+    char_order = {ch: idx for idx, ch in enumerate(dict.fromkeys(ranked_chars))}
+    query = db.query(Word).filter(Word.char.in_(list(char_order.keys())))
+    if code_prefix:
+        variants = get_code_variants(code_prefix, mode)
+        query = query.filter(Word.code.in_(variants), _length_filter(len(code_prefix)))
+
+    words = query.all()
+    words.sort(key=lambda w: (char_order.get(w.char or "", 10**9), w.code or "", w.jyutping or ""))
+    page = words[offset:offset + limit]
+    return [_serialize_word(w, result_type="word") for w in page]
+
+
+def _handle_relation_lookup_syntax(
+    parsed: dict,
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Session,
+) -> List[dict]:
+    from app.services.syn_ant_service import search_relation_chars
+
+    word = parsed["word"]
+    relation_type = parsed["kind"]
+    _ensure_word_in_db(db, word)
+    ranked_chars = search_relation_chars(db, word, relation_type)
+    return _words_for_relation_chars(
+        db,
+        ranked_chars,
+        code_prefix=parsed.get("code_prefix"),
+        mode=mode,
+        limit=limit,
+        offset=offset,
+    )
+
+
+def _handle_antonym_compound_syntax(
+    parsed: dict,
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Session,
+) -> List[dict]:
+    from app.services.syn_ant_service import build_char_antonym_pairs
+
+    ant_pairs = build_char_antonym_pairs(db)
+    if not ant_pairs:
+        return []
+
+    candidates: set[str] = set()
+    for a, b in ant_pairs:
+        if len(a) == 1 and len(b) == 1:
+            candidates.add(a + b)
+            candidates.add(b + a)
+    if not candidates:
+        return []
+
+    query = db.query(Word).filter(Word.char.in_(list(candidates)), _length_filter(2))
+    code_prefix = parsed.get("code_prefix")
+    if code_prefix:
+        variants = get_code_variants(code_prefix, mode)
+        query = query.filter(Word.code.in_(variants))
+
+    last_final_options: Optional[set[str]] = None
+    rhyme_char = parsed.get("rhyme_char")
+    if rhyme_char:
+        last_final_options = _final_options_for_char(rhyme_char, db)
+        if not last_final_options:
+            return []
+
+    results: List[Word] = []
+    seen_chars: set[str] = set()
+    for word in query.order_by(Word.char, Word.code, Word.jyutping).all():
+        ch = word.char or ""
+        if len(ch) != 2:
+            continue
+        if (ch[0], ch[1]) not in ant_pairs and (ch[1], ch[0]) not in ant_pairs:
+            continue
+        if last_final_options:
+            word_finals = _get_word_parts(word, "finals")
+            if len(word_finals) < 2 or word_finals[-1] not in last_final_options:
+                continue
+        if ch in seen_chars:
+            continue
+        seen_chars.add(ch)
+        results.append(word)
+
+    page = _deduplicate_words(results)[offset:offset + limit]
+    return [_serialize_word(w, result_type="word") for w in page]
+
+
 @router.get("/search", response_model=list[WordRead])
 @router.get("/search/", response_model=list[WordRead])
 def search_words(
@@ -907,7 +1038,13 @@ def search_words(
 
     if mode == 'syn':
         # Independent syn/ant mode: bypass all code/rhyme/hybrid/wildcard paths.
-        return handle_syn_ant_search(q, db)
+        return handle_syn_ant_search(q, db, limit=limit, offset=offset)
+
+    relation_parsed = _parse_relation_syntax(q)
+    if relation_parsed:
+        if relation_parsed["kind"] == "compound_ant":
+            return _handle_antonym_compound_syntax(relation_parsed, mode, limit, offset, db)
+        return _handle_relation_lookup_syntax(relation_parsed, mode, limit, offset, db)
 
     if "=" in q:
         return _handle_equals_syntax(q, code, mode, limit, offset, db)
@@ -961,10 +1098,16 @@ def _syn_result(char: str, relation: str, source: Optional[str] = None, score: O
     }
 
 
-def handle_syn_ant_search(q: str, db: "Session") -> list[dict]:
+def handle_syn_ant_search(
+    q: str,
+    db: "Session",
+    *,
+    limit: int = 160,
+    offset: int = 0,
+) -> list[dict]:
     from app.services.syn_ant_service import search_syn_ant
     if not q or not re.search(r'[\u4e00-\u9fff]', q):
         return []
     q = q.strip()
     _ensure_word_in_db(db, q)
-    return search_syn_ant(db, q)
+    return search_syn_ant(db, q, limit=limit, offset=offset)

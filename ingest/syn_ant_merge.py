@@ -20,6 +20,27 @@ SQL_IN_BATCH = 300
 INSERT_BATCH = 300
 
 
+def _group_codes_from_staging_evidence(evidence_raw: Optional[str]) -> Optional[str]:
+    """Extract group_codes JSON from staging evidence, or derive from leaf group code."""
+    from ingest.cilin_leaf import hierarchy_codes_json
+
+    if not evidence_raw:
+        return None
+    try:
+        data = json.loads(evidence_raw)
+    except (json.JSONDecodeError, TypeError):
+        return None
+    if not isinstance(data, dict):
+        return None
+    codes = data.get("group_codes")
+    if isinstance(codes, list) and codes:
+        return json.dumps(codes, ensure_ascii=False)
+    leaf = data.get("group")
+    if isinstance(leaf, str) and leaf:
+        return hierarchy_codes_json(leaf)
+    return None
+
+
 def get_db_char_set(db: Session) -> Set[str]:
     rows = db.query(Word.char).distinct().all()
     return {r[0] for r in rows if r[0]}
@@ -100,6 +121,7 @@ def _insert_relations(db: Session, relations: List[WordRelation]) -> int:
                     "relation_type": r.relation_type,
                     "score": r.score,
                     "source": r.source,
+                    "group_codes": r.group_codes,
                 }
                 if r.id is not None:
                     d["id"] = r.id
@@ -138,11 +160,12 @@ def _build_relations_sql_bulk(
 
     if IS_POSTGRES:
         sql = text(f"""
-            INSERT INTO word_relations (word_id, related_id, relation_type, score, source)
+            INSERT INTO word_relations (word_id, related_id, relation_type, score, source, group_codes)
             SELECT DISTINCT
                 CASE WHEN w1.id < w2.id THEN w1.id ELSE w2.id END,
                 CASE WHEN w1.id < w2.id THEN w2.id ELSE w1.id END,
-                e.relation_type, e.confidence, LEFT(e.source, 32)
+                e.relation_type, e.confidence, LEFT(e.source, 32),
+                (e.evidence::json->'group_codes')::text
             FROM syn_ant_edges e
             INNER JOIN words w1 ON w1.char = e.head_char
             INNER JOIN words w2 ON w2.char = e.tail_char
@@ -151,11 +174,12 @@ def _build_relations_sql_bulk(
         """)
     else:
         sql = text(f"""
-            INSERT OR IGNORE INTO word_relations (word_id, related_id, relation_type, score, source)
+            INSERT OR IGNORE INTO word_relations (word_id, related_id, relation_type, score, source, group_codes)
             SELECT DISTINCT
                 CASE WHEN w1.id < w2.id THEN w1.id ELSE w2.id END,
                 CASE WHEN w1.id < w2.id THEN w2.id ELSE w1.id END,
-                e.relation_type, e.confidence, substr(e.source, 1, 32)
+                e.relation_type, e.confidence, substr(e.source, 1, 32),
+                json_extract(e.evidence, '$.group_codes')
             FROM syn_ant_edges e
             INNER JOIN words w1 ON w1.char = e.head_char
             INNER JOIN words w2 ON w2.char = e.tail_char
@@ -282,6 +306,7 @@ def build_word_relations_from_staging(
                         "relation_type": row.relation_type,
                         "score": row.confidence,
                         "source": (row.source or "")[:32],
+                        "group_codes": _group_codes_from_staging_evidence(row.evidence),
                     }
 
         if not pending:
@@ -366,6 +391,128 @@ def clear_word_relations_source(db: Session, source: str) -> int:
     n = db.query(WordRelation).filter(WordRelation.source == source).delete()
     db.commit()
     return n
+
+
+def _build_cilin_syn_adjacency(db: Session, *, cilin_syn_source: str = "cilin") -> Dict[int, Set[int]]:
+    """Bidirectional Cilin synonym neighbors keyed by word id."""
+    syn_neighbors: Dict[int, Set[int]] = {}
+    rows = (
+        db.query(WordRelation.word_id, WordRelation.related_id)
+        .filter(
+            WordRelation.relation_type == "syn",
+            WordRelation.source == cilin_syn_source,
+        )
+        .all()
+    )
+    for w, r in rows:
+        syn_neighbors.setdefault(int(w), set()).add(int(r))
+        syn_neighbors.setdefault(int(r), set()).add(int(w))
+    return syn_neighbors
+
+
+def expand_antonyms_via_cilin_synonyms(
+    db: Session,
+    *,
+    source: str = "ant_cilin_exanded",
+    cilin_syn_source: str = "cilin",
+    confidence: float = 0.75,
+    dedupe_existing: bool = True,
+    batch_size: int = INSERT_BATCH,
+) -> dict:
+    """Expand ant relations using Cilin synonym neighbors of each antonym endpoint.
+
+    Example: if 快樂 ant 悲傷 and 悲傷 syn 傷心/難過 (cilin), insert 快樂 ant 傷心/難過.
+    Processes all existing ant seeds; dedupes by canonical (word_id, related_id, ant).
+    """
+    source = (source or "ant_cilin_exanded")[:32]
+    stats = {
+        "ant_seeds": 0,
+        "candidate_pairs": 0,
+        "inserted": 0,
+        "skipped_existing": 0,
+        "skipped_self": 0,
+        "skipped_no_syn": 0,
+    }
+
+    syn_neighbors = _build_cilin_syn_adjacency(db, cilin_syn_source=cilin_syn_source)
+    if not syn_neighbors:
+        return stats
+
+    ant_rows = (
+        db.query(WordRelation.word_id, WordRelation.related_id)
+        .filter(WordRelation.relation_type == "ant")
+        .all()
+    )
+    stats["ant_seeds"] = len(ant_rows)
+    if not ant_rows:
+        return stats
+
+    candidates: Dict[Tuple[int, int, str], dict] = {}
+    for word_id, related_id in ant_rows:
+        a, b = int(word_id), int(related_id)
+        syns_b = syn_neighbors.get(b)
+        syns_a = syn_neighbors.get(a)
+        if not syns_b and not syns_a:
+            stats["skipped_no_syn"] += 1
+            continue
+        if syns_b:
+            for syn_id in syns_b:
+                if syn_id == a:
+                    stats["skipped_self"] += 1
+                    continue
+                w, r = canonical_word_ids(a, syn_id)
+                if w == r:
+                    stats["skipped_self"] += 1
+                    continue
+                key = (w, r, "ant")
+                candidates[key] = {
+                    "word_id": w,
+                    "related_id": r,
+                    "relation_type": "ant",
+                    "score": confidence,
+                    "source": source,
+                }
+        if syns_a:
+            for syn_id in syns_a:
+                if syn_id == b:
+                    stats["skipped_self"] += 1
+                    continue
+                w, r = canonical_word_ids(syn_id, b)
+                if w == r:
+                    stats["skipped_self"] += 1
+                    continue
+                key = (w, r, "ant")
+                candidates[key] = {
+                    "word_id": w,
+                    "related_id": r,
+                    "relation_type": "ant",
+                    "score": confidence,
+                    "source": source,
+                }
+
+    stats["candidate_pairs"] = len(candidates)
+    if not candidates:
+        return stats
+
+    pending = list(candidates.values())
+    if dedupe_existing:
+        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
+        existing: Set[Tuple] = set()
+        for i in range(0, len(keys), SQL_IN_BATCH):
+            existing.update(_fetch_existing_keys(db, keys[i:i + SQL_IN_BATCH]))
+        before = len(pending)
+        pending = [
+            c for c in pending
+            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
+        ]
+        stats["skipped_existing"] = before - len(pending)
+
+    if pending:
+        for i in range(0, len(pending), batch_size):
+            chunk = pending[i:i + batch_size]
+            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
+
+    return stats
 
 
 def staging_report(db: Session) -> str:
