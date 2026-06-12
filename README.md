@@ -215,6 +215,10 @@ python -m unittest tests.test_syn_ant_ingest tests.test_utils -v
 
 preload 完成後，常見查詢端到端目標 **< 0.2s**（否則 **< 0.5s**）。**不得**為加速而改變結果集或排序語意。變更前後須比對關鍵 case 並更新 [`WORKLOG.md`](WORKLOG.md)。
 
+```bash
+python scripts/enforce_bench.py   # 本地 lyrics.db：關鍵查詢 latency + 前 5 筆 dump
+```
+
 ### 命名
 
 **禁止**在新程式碼使用 `hanzi`。與字面／粵語字符相關請用 **`canto`** 或 **`chars`**。
