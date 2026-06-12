@@ -2,16 +2,15 @@ import unittest
 import tempfile
 from pathlib import Path
 
-from utils import (
-    get_0243_code,
-    get_code_variants,
-    split_jyutping,
-    get_synonyms,
+from app.thesaurus.static_index import (
     get_antonyms,
-    load_cilin_index,
+    get_cilin_synonyms,
+    get_synonyms,
     load_antonym_dict,
+    load_cilin_index,
     load_thesaurus_dicts,
 )
+from app.utils.jyutping_codec import get_0243_code, get_code_variants, split_jyutping
 
 
 class UtilsTests(unittest.TestCase):
@@ -54,7 +53,6 @@ class UtilsTests(unittest.TestCase):
             self.assertIn("後", get_antonyms("前"))
             self.assertIn("前", get_antonyms("後"))
 
-
     def test_bundled_cilin_file_traditional_and_loadable(self):
         path = Path(__file__).resolve().parents[1] / "data" / "cilin" / "new_cilin.txt"
         if not path.exists() or path.stat().st_size < 50_000:
@@ -64,7 +62,6 @@ class UtilsTests(unittest.TestCase):
         self.assertIn("快樂", content)
         self.assertNotIn("旧历", content)
 
-        from utils import get_cilin_synonyms
         load_cilin_index(str(path))
         syns = get_cilin_synonyms("快樂")
         self.assertGreater(len(syns), 5)

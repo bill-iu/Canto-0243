@@ -55,10 +55,10 @@ sys.path.insert(0, str(REPO_ROOT))
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word, WordRelation
 from ingest.relation_canonical import canonical_relation_dict, relation_storage_key
-from utils import (
-    get_synonyms,
-    get_antonyms,
+from app.thesaurus.static_index import (
     ensure_thesaurus_loaded,
+    get_antonyms,
+    get_synonyms,
 )
 
 
@@ -206,7 +206,7 @@ def generate_from_embedding(db: Session, char_to_id: Dict[str, int], limit: Opti
     # Explicitly unlock model loading for this run only.
     # This must be done before any import or call that could trigger the loader.
     try:
-        from utils import enable_embedding_model_for_ingest
+        from app.utils.embedding import enable_embedding_model_for_ingest
         enable_embedding_model_for_ingest()
     except Exception:
         pass

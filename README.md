@@ -157,7 +157,7 @@ GET /words/search/?q=快樂&mode=syn
 │   ├── ingest/             # import_data
 │   └── legacy/             # generate_relationships · backfill_embeddings
 ├── tests/
-├── main.py · start.sh · utils.py
+├── main.py · start.sh
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md
 └── requirements.txt · requirements-dev.txt · requirements-postgres.txt
 ```

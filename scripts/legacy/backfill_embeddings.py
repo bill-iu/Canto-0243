@@ -32,7 +32,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word
-from utils import enable_embedding_model_for_ingest, get_text_embedding
+from app.utils.embedding import enable_embedding_model_for_ingest, get_text_embedding
 
 
 BATCH_SIZE = 500

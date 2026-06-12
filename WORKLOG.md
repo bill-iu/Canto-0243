@@ -74,7 +74,7 @@
 
 - `syn_ant_service.fetch_relations` + `ThesaurusPort`；刪 `syn_ant_thesaurus_adapter`
 - `relation_graph` / repo 分層
-- `app/` 改 `app.utils.*`；根 `utils.py` deprecated（ingest 腳本仍用）
+- `app/` 使用 `app.utils.*` / `app.thesaurus.static_index`；根目錄 `utils.py` 已刪
 - `database.py` → `app/db/{connection,bootstrap,dialect}`
 
 ### 2026-06-12 — P0 等號 + 詞庫 P1–P4
@@ -169,12 +169,18 @@
 - `PositionMatchEngine.match` → `filter_candidates_by_match_spec`（原生吃 `MatchSpec.slots`）
 - 測試：105 unittest OK；+`HybridCodeQuery` / `filter_candidates_by_match_spec` 門0 case
 
-**最後更新**：2026-06-13（根目錄腳本搬至 scripts/ + ingest CLI）
+**最後更新**：2026-06-13（刪除根目錄 utils.py facade）
+
+### 2026-06-13 — 刪除根目錄 utils.py
+
+- ingest / scripts / tests 改 import `app.utils.*` · `app.thesaurus.static_index`
+- 刪 `utils.py`；portable build 不再 copy
+- 108 unittest OK
 
 ### 2026-06-13 — 根目錄整理（grill B + D）
 
 - 刪死碼：`jyutping_table.py`、`add_jyutping_to_0243.py`、`convert_guodict.py`
 - 搬 `scripts/fetch/`、`scripts/db/`、`scripts/ingest/`、`scripts/legacy/`
 - `ingest_syn_ant.py` → `ingest/cli.py`；入口 `python -m ingest`
-- 根目錄保留：產品入口 + `WORKLOG.md` + `skills-lock.json` + `utils.py`（deprecated facade）
+- 根目錄保留：產品入口 + `WORKLOG.md` + `skills-lock.json`
 - README 路徑全更新；108 unittest OK

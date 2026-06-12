@@ -1,5 +1,5 @@
-"""Application utilities (canonical import path for ``app/`` code).
+"""Application utilities (canonical import path).
 
 Submodules: ``jyutping_codec``, ``json_helpers``, ``word_cache``, ``embedding``.
-Project-root ``utils`` is a deprecated facade for ingest scripts only.
+Thesaurus helpers live in ``app.thesaurus.static_index``.
 """

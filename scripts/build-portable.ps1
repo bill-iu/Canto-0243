@@ -30,7 +30,7 @@ Copy-Tree (Join-Path $Root "frontend") (Join-Path $OutDir "frontend")
 Copy-Tree (Join-Path $Root "data") (Join-Path $OutDir "data")
 Copy-Tree (Join-Path $Root "portable") $OutDir
 
-foreach ($f in @("main.py", "utils.py", "jyutping_table.py", "requirements.txt")) {
+foreach ($f in @("main.py", "requirements.txt")) {
     Copy-Item (Join-Path $Root $f) (Join-Path $OutDir $f) -Force
 }
 

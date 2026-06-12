@@ -32,7 +32,7 @@ copy_tree "$ROOT/frontend" "$OUT_DIR/frontend"
 copy_tree "$ROOT/data" "$OUT_DIR/data"
 copy_tree "$ROOT/portable" "$OUT_DIR"
 
-for f in main.py utils.py requirements.txt; do
+for f in main.py requirements.txt; do
   cp -f "$ROOT/$f" "$OUT_DIR/$f"
 done
 

@@ -144,15 +144,13 @@ def parse_relation_pairs(path: Path, source: str, source_rank: int = 60) -> List
 
 
 def parse_current_static(src: Dict[str, Any]) -> List[dict]:
-    """Emit edges from bundled static thesaurus via utils loaders."""
-    from utils import (
-        load_cilin_index,
-        load_antonym_dict,
-        load_thesaurus_dicts,
+    """Emit edges from bundled static thesaurus via static_index loaders."""
+    from app.thesaurus.static_index import (
         get_cilin_synonyms,
-        _cilin_syns,
-        _syn_dict,
-        _ant_dict,
+        get_internal_dicts,
+        load_antonym_dict,
+        load_cilin_index,
+        load_thesaurus_dicts,
     )
 
     paths = src.get("paths") or {}
@@ -167,6 +165,7 @@ def parse_current_static(src: Dict[str, Any]) -> List[dict]:
             str(ROOT / paths.get("thesaurus_ant", "data/thesaurus/dict_antonym.txt")),
         )
 
+    _cilin_syns, _syn_dict, _ant_dict = get_internal_dicts()
     edges: List[dict] = []
     seen_words = set(_cilin_syns.keys()) | set(_syn_dict.keys()) | set(_ant_dict.keys())
     for w in seen_words:

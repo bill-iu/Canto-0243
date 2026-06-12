@@ -543,7 +543,7 @@ def _build_char_syn_adjacency(
 
     if include_static:
         try:
-            from utils import ensure_thesaurus_loaded, get_synonyms
+            from app.thesaurus.static_index import ensure_thesaurus_loaded, get_synonyms
 
             ensure_thesaurus_loaded()
             db_chars = get_db_char_set(db)

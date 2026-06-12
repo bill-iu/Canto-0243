@@ -12,7 +12,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from app.database import SessionLocal
 from app.models.word import Word
-from utils import split_jyutping
+from app.utils.jyutping_codec import split_jyutping
 
 
 def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]], batch_size: int = 5000):
