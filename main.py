@@ -98,6 +98,14 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"[main] Static thesaurus preload 失敗（可忽略）：{e}")
 
+    try:
+        from app.lexicon.static_index import ensure_lexicon_loaded
+
+        ensure_lexicon_loaded()
+        print("[main] Static 0243 lexicon (data/raw/clean) 已載入。")
+    except Exception as e:
+        print(f"[main] Lexicon preload 失敗（可忽略）：{e}")
+
     # Preload short-word metadata cache (for instant mask/hybrid/"門0"/"好23"/wildcard paths).
     # Query minimal columns, pre-parse JSON finals etc ONCE at startup (no per-request json.loads).
     # New words injected by _ensure are synced via update_word_in_cache so they participate without restart.

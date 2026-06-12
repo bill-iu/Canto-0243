@@ -125,3 +125,11 @@ def get_word_cache_stats() -> dict:
         "max_length": max(lens) if lens else 0,
         "meta_size": len(_char_meta),
     }
+
+
+def reset_word_cache_for_tests() -> None:
+    """Clear in-memory cache (tests only)."""
+    global _length_buckets, _char_meta, _bucket_entry_index
+    _length_buckets = {}
+    _char_meta = {}
+    _bucket_entry_index = {}

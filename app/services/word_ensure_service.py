@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import re
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
+from app.lexicon.static_index import LexiconEntry
 from app.models.word import Word
+from app.services.lexicon_port import LexiconPort, default_lexicon_port
 from app.utils.jyutping_codec import get_0243_code, split_jyutping
 from app.utils.word_cache import update_word_in_cache
 
@@ -24,39 +26,12 @@ def sync_word_to_cache(row) -> None:
         pass
 
 
-def ensure_word_in_db(db: Session, text: str) -> List[Word]:
-    if not text or not text.strip():
-        return []
-    text = text.strip()
-    existing = db.query(Word).filter(Word.char == text).all()
-    if existing:
-        return existing
-    if not re.search(r"[\u4e00-\u9fff]", text):
-        return []
-    jyut_str = ""
-    try:
-        import pycantonese
-        jyut_list = pycantonese.characters_to_jyutping(text)
-        if jyut_list:
-            jyut_str = " ".join([item[1] for item in jyut_list if item and len(item) > 1 and item[1]])
-    except Exception as e:
-        print(f"[ensure] pycantonese error for {text}: {e}")
-    if not jyut_str:
-        try:
-            from pyjyutping import jyutping as pyjy
-            cand = pyjy.convert(text)
-            if cand:
-                jyut_str = cand
-        except Exception:
-            pass
-    if not jyut_str:
-        return []
-    code_val = get_0243_code(jyut_str) or ""
+def _word_from_entry(text: str, jyut_str: str, code_val: str) -> Word:
     try:
         initials, finals, tones = split_jyutping(jyut_str)
     except Exception:
         initials = finals = tones = "[]"
-    db_word = Word(
+    return Word(
         char=text,
         code=code_val,
         jyutping=jyut_str,
@@ -66,6 +41,62 @@ def ensure_word_in_db(db: Session, text: str) -> List[Word]:
         length=len(text),
         meaning=None,
     )
+
+
+def _inject_lexicon_entries(db: Session, text: str, entries: List[LexiconEntry]) -> List[Word]:
+    added_any = False
+    for ent in entries:
+        if not ent.jyutping or not ent.code:
+            continue
+        exists = (
+            db.query(Word)
+            .filter(Word.char == text, Word.code == ent.code)
+            .first()
+        )
+        if exists:
+            continue
+        db_word = _word_from_entry(text, ent.jyutping, ent.code)
+        db.add(db_word)
+        added_any = True
+    if not added_any:
+        return db.query(Word).filter(Word.char == text).all()
+    try:
+        db.commit()
+        rows = db.query(Word).filter(Word.char == text).all()
+        for row in rows:
+            sync_word_to_cache(row)
+        print(f"[ensure] injected from lexicon: '{text}' ({len(rows)} row(s))")
+        return rows
+    except Exception as e:
+        db.rollback()
+        print(f"[ensure] lexicon DB insert failed for {text}: {type(e).__name__}: {e}")
+        return []
+
+
+def _inject_single_char_guess(db: Session, text: str) -> List[Word]:
+    """Transition path for len=1 until P2 (rime char.csv)."""
+    jyut_str = ""
+    try:
+        import pycantonese
+
+        jyut_list = pycantonese.characters_to_jyutping(text)
+        if jyut_list:
+            jyut_str = " ".join([item[1] for item in jyut_list if item and len(item) > 1 and item[1]])
+    except Exception as e:
+        print(f"[ensure] pycantonese error for {text}: {e}")
+    if not jyut_str:
+        try:
+            from pyjyutping import jyutping as pyjy
+
+            cand = pyjy.convert(text)
+            if cand:
+                jyut_str = cand
+        except Exception:
+            pass
+    if not jyut_str:
+        return []
+    code_val = get_0243_code(jyut_str) or ""
+    db_word = _word_from_entry(text, jyut_str, code_val)
     db.add(db_word)
     try:
         db.commit()
@@ -77,3 +108,28 @@ def ensure_word_in_db(db: Session, text: str) -> List[Word]:
         db.rollback()
         print(f"[ensure] DB insert failed for {text}: {type(e).__name__}: {e}")
         return []
+
+
+def ensure_word_in_db(
+    db: Session,
+    text: str,
+    *,
+    lexicon: Optional[LexiconPort] = None,
+) -> List[Word]:
+    if not text or not text.strip():
+        return []
+    text = text.strip()
+    existing = db.query(Word).filter(Word.char == text).all()
+    if existing:
+        return existing
+    if not re.search(r"[\u4e00-\u9fff]", text):
+        return []
+
+    if len(text) >= 2:
+        port = lexicon or default_lexicon_port()
+        entries = port.get_entries(text)
+        if not entries:
+            return []
+        return _inject_lexicon_entries(db, text, entries)
+
+    return _inject_single_char_guess(db, text)

@@ -230,7 +230,7 @@ alembic upgrade head
 
 | 機制 | 說明 |
 |------|------|
-| `_ensure` + pycantonese | 查詢字面不在 DB 時，**過渡期**以 pycantonese / pyjyutping 猜讀並注入；**P1 起**多字將改為僅詞庫命中才可注入（見 `CONTEXT.md`）。 |
+| `_ensure` + pycantonese | 查詢字面不在 DB 時：**單字**仍用 pycantonese 過渡猜讀；**多字（len≥2）** 僅 `Static0243Lexicon`（`data/raw/clean`）命中才可注入（P1）。 |
 
 #### 計畫中（尚未 ingest，P2+）
 
