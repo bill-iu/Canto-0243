@@ -23,8 +23,8 @@
 | `words` | char / jyutping / code / length / finals / embedding(optional) |
 | `word_relations` | syn \| ant \| semantic_related；BigInt FK + 複合索引 |
 | `app/services/query_engine.py` | parse + registry dispatch |
-| `app/services/position_match.py` | MatchSpec / PositionMatchEngine / 位置比對 |
-| `app/services/equals_query_handler.py` | 等號 framed 查詢（獨立於 engine） |
+| `app/services/match_spec_factory.py` | ParsedQuery → MatchSpec 正規化工廠 |
+| `app/services/position_match.py` | MatchSpec / PositionMatchEngine / 位置比對（含等號／碼夾等號） |
 | `app/services/essay_sort.py` | 統一搜尋結果排序（純漢字 → essay → curated → pron_rank） |
 | `app/services/word_lookup_executor.py` | 純數字／粵拼片段／字面 lookup |
 | `app/lexicon/essay_index.py` | Essay 語料 → 記憶體詞頻 dict（不寫 DB） |

@@ -117,10 +117,10 @@ GET /words/search/?q=快樂&mode=syn
 
 | 模組 | 職責 |
 |------|------|
+| `app/services/match_spec_factory.py` | ParsedQuery → MatchSpec 正規化工廠 |
 | `app/services/query_engine.py` | 查詢分派 |
 | `app/services/essay_sort.py` | 統一搜尋結果排序 key |
-| `app/services/position_match.py` | 位置型比對（mask、hybrid、韻錨） |
-| `app/services/equals_query_handler.py` | 等號 framed 查詢 |
+| `app/services/position_match.py` | 位置型比對 + 等號／碼夾等號查詢 |
 | `app/services/word_lookup_executor.py` | 純數字／粵拼片段／字面 lookup |
 | `app/services/code_aware_ranker.py` | 純漢字查詢的分段 header + 同韻 tier |
 | `app/services/lexicon_port.py` | 詞庫埠（收錄門檻 + 讀音） |
@@ -221,7 +221,7 @@ cilin／guotong／antisem 同時作 runtime static thesaurus fallback。
 
 ## 測試
 
-目前 **117** 個 unittest（含 `test_search_sort` 排序 tier 與整合 tracer）。
+目前 **151** 個 unittest（含 `test_match_spec_factory` 候選 1 TDD、`test_search_sort`）。
 
 ```bash
 python -m unittest discover -s tests -q

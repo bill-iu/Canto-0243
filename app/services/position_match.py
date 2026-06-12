@@ -25,6 +25,8 @@ PositionMatchEngine（Phase 2.1 起步）
 
 from __future__ import annotations
 
+import json
+import re
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal, Optional, Protocol, Sequence, Union
 
@@ -92,6 +94,13 @@ class MatchSpec:
 
     # 為 mask 等
     mask: str = ""
+
+    # 等號查詢／碼夾等號查詢（CONTEXT § 等號查詢、碼夾等號查詢）
+    ref_literal: str = ""
+    ref_start_pos: int = 0
+    ref_dimension: Literal["initial", "final"] = "final"
+    phoneme_anchor_only: bool = False
+    whole_word_phoneme_match: bool = False
 
     # 未來可擴充的政策（排序、去重策略等）
     extra: dict[str, Any] = field(default_factory=dict)
@@ -303,6 +312,48 @@ class PositionMatchEngine:
         # Standard path: apply MatchSpec slot constraints via deep filter
         return filter_candidates_by_match_spec(candidates, spec, mode, db)
 
+    def match_equals(self, spec: MatchSpec, db: Any, mode: str = "m1") -> list[Any]:
+        """等號查詢／碼夾等號查詢：參考字讀音在 engine 內 resolve。"""
+        from app.services.word_ensure_service import ensure_word_in_db
+        from app.utils.json_helpers import load_json_list
+
+        if not spec.ref_literal:
+            return []
+
+        target_rows = db.query(Word).filter(Word.char == spec.ref_literal).all()
+        if not target_rows:
+            target_rows = ensure_word_in_db(db, spec.ref_literal)
+        target = target_rows[0] if target_rows else None
+        if not target:
+            return []
+
+        is_final = spec.ref_dimension == "final"
+        target_parts = load_json_list(target.finals if is_final else target.initials)
+        full_code = spec.code_prefix or ""
+
+        query = db.query(Word)
+        query = apply_code_filter(query, full_code, mode)
+        query = query.filter(length_filter(spec.width))
+
+        if spec.whole_word_phoneme_match:
+            target_json = json.dumps(target_parts)
+            compare_field = Word.finals if is_final else Word.initials
+            return query.filter(compare_field == target_json).all()
+
+        candidates = query.limit(2000).all()
+        return [
+            word
+            for word in candidates
+            if matches_equals_phoneme_span(
+                word,
+                target_parts,
+                spec.ref_start_pos,
+                phoneme_anchor_only=spec.phoneme_anchor_only,
+                ref_literal=spec.ref_literal,
+                dimension=spec.ref_dimension,
+            )
+        ]
+
 
 _DEFAULT_ENGINE = PositionMatchEngine()
 
@@ -331,6 +382,71 @@ def run_position_query(
     key = sort_key or default_word_sort_key
     filtered.sort(key=key)
     return serialize_page(filtered, offset, limit)
+
+
+def build_equals_match_spec(q: str) -> Optional[MatchSpec]:
+    """查詢字串 → 等號 MatchSpec（純函式，無 DB）。語意見 CONTEXT § 碼夾等號查詢。"""
+    match = re.match(r"^(\d*)(=)?([一-龥]+)?(=)?(\d*)$", q)
+    if not match:
+        return None
+    target_str = match.group(3) or ""
+    if not target_str:
+        return None
+
+    left_code = match.group(1) or ""
+    right_code = match.group(5) or ""
+    right_equal = bool(match.group(4))
+    target_length = len(target_str)
+    expected_length = len(left_code) + len(right_code) or target_length
+    start_pos = max(0, len(left_code) - target_length)
+    full_code = left_code + right_code
+
+    return MatchSpec(
+        width=expected_length,
+        code_prefix=full_code if full_code else None,
+        ref_literal=target_str,
+        ref_start_pos=start_pos,
+        ref_dimension="final" if right_equal else "initial",
+        phoneme_anchor_only=bool(left_code and right_code),
+        whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
+    )
+
+
+def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> list:
+    """等號查詢統一入口：spec 建構 → engine → 排序 → 序列化。"""
+    from app.services.essay_sort import sort_words
+    from app.services.word_serializer import deduplicate_words, serialize_page
+
+    spec = build_equals_match_spec(q)
+    if spec is None:
+        return []
+    filtered = _DEFAULT_ENGINE.match_equals(spec, db, mode)
+    return serialize_page(sort_words(deduplicate_words(filtered)), offset, limit)
+
+
+def matches_equals_phoneme_span(
+    word,
+    ref_parts: list,
+    start_pos: int,
+    *,
+    phoneme_anchor_only: bool,
+    ref_literal: str,
+    dimension: str,
+) -> bool:
+    """碼夾等號 span：參考詞 JSON 逐格精確比對（非 options OR）。"""
+    char_text = get_word_text(word)
+    if not phoneme_anchor_only and ref_literal and ref_literal not in char_text:
+        return False
+    field = "finals" if dimension == "final" else "initials"
+    word_parts = get_word_parts(word, field)
+    if not word_parts:
+        return False
+    for i in range(len(ref_parts)):
+        pos = start_pos + i
+        if pos < len(word_parts) and i < len(ref_parts):
+            if ref_parts[i] and ref_parts[i] != word_parts[pos]:
+                return False
+    return True
 
 
 # -----------------------------------------------------------------------------
@@ -526,6 +642,9 @@ __all__ = [
     "MaskWildcardCandidateSource",
     "CompoundAntCandidateSource",
     "run_position_query",
+    "run_equals_query",
+    "build_equals_match_spec",
+    "matches_equals_phoneme_span",
     "PositionMatchEngine",
     "build_match_spec_from_parsed",
     "matches_code_positions",

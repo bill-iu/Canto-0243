@@ -75,23 +75,11 @@ class CompoundAntQuery:
         return QueryKind.COMPOUND_ANT
 
     def to_match_spec(self) -> "MatchSpec":
-        """Normalize !! compound-ant query to PositionMatchEngine MatchSpec (C3).
+        from app.services.match_spec_factory import build_match_spec
 
-        - width fixed at 2 (ant pair compounds are 2-char)
-        - code_prefix applied as global filter (via source or spec)
-        - rhyme_char (if present) → final_anchor on the *last* char of the compound (pos 1)
-        """
-        from app.services.position_match import MatchSpec, SlotConstraint
-
-        spec = MatchSpec(width=2, code_prefix=self.code_prefix)
-        if self.rhyme_char:
-            spec.slots.append(
-                SlotConstraint(
-                    pos=1,  # last position in 2-char result
-                    kind="final_anchor",
-                    value=self.rhyme_char,
-                )
-            )
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid compound ant query: {self!r}")
         return spec
 
 
@@ -113,6 +101,14 @@ class EqualsQuery:
     def kind(self) -> QueryKind:
         return QueryKind.EQUALS
 
+    def to_match_spec(self) -> "MatchSpec":
+        from app.services.match_spec_factory import build_match_spec
+
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid equals query: {self.raw_q!r}")
+        return spec
+
 
 @dataclass(frozen=True)
 class CodeTailQuery:
@@ -129,23 +125,12 @@ class CodeTailQuery:
     def to_handler_dict(self) -> dict:
         return asdict(self)
 
-    def to_match_spec(self) -> 'MatchSpec':
-        """Normalize this code-tail parsed query to engine MatchSpec (Phase 2.3).
-        Encapsulates literal vs phoneme anchor logic and mask construction.
-        """
-        from app.services.position_match import MatchSpec, SlotConstraint
-        from app.services.word_query_parser import build_mask_from_slots
-        spec = MatchSpec(width=self.width, code_prefix=self.code_digits)
-        if self.constraint == "literal":
-            m = build_mask_from_slots("", self.width, self.anchor_pos)
-            m = m[:self.anchor_pos] + self.anchor
-            spec.mask = m
-            spec.slots.append(SlotConstraint(pos=self.anchor_pos, kind="literal_char", value=self.anchor))
-        else:
-            kind = "final_anchor" if self.constraint == "final" else "initial_anchor"
-            spec.slots.append(SlotConstraint(pos=self.anchor_pos, kind=kind, value=self.anchor))
-            m = build_mask_from_slots("", self.width, self.anchor_pos)
-            spec.mask = m
+    def to_match_spec(self) -> "MatchSpec":
+        from app.services.match_spec_factory import build_match_spec
+
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid code tail query: {self!r}")
         return spec
 
 
@@ -162,12 +147,12 @@ class LiteralRefQuery:
     def to_handler_dict(self) -> dict:
         return asdict(self)
 
-    def to_match_spec(self) -> 'MatchSpec':
-        """Normalize this literal-ref (at-tail) parsed query to engine MatchSpec (Phase 2.3)."""
-        from app.services.position_match import MatchSpec, SlotConstraint
-        spec = MatchSpec(width=self.width, code_prefix=self.code_digits)
-        spec.slots.append(SlotConstraint(pos=self.width-1, kind="literal_char", value=self.literal_char))
-        spec.mask = "?" * (self.width - 1) + self.literal_char
+    def to_match_spec(self) -> "MatchSpec":
+        from app.services.match_spec_factory import build_match_spec
+
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid literal ref query: {self!r}")
         return spec
 
 
@@ -186,18 +171,12 @@ class RhymeAnchorQuery:
     def to_handler_dict(self) -> dict:
         return asdict(self)
 
-    def to_match_spec(self) -> 'MatchSpec':
-        """Normalize this rhyme-anchor parsed query to engine MatchSpec (Phase 2.3)."""
-        from app.services.position_match import MatchSpec, SlotConstraint
-        from app.services.word_query_parser import build_mask_from_slots
-        spec = MatchSpec(width=self.width)
-        kind = "final_anchor" if self.constraint == "final" else "initial_anchor"
-        spec.slots.append(SlotConstraint(
-            pos=self.anchor_pos,
-            kind=kind,
-            value=self.anchor
-        ))
-        spec.mask = build_mask_from_slots(self.slots, self.width, self.anchor_pos)
+    def to_match_spec(self) -> "MatchSpec":
+        from app.services.match_spec_factory import build_match_spec
+
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid rhyme anchor query: {self!r}")
         return spec
 
 
@@ -210,22 +189,12 @@ class HybridCodeQuery:
         return QueryKind.HYBRID_CODE
 
     def to_match_spec(self) -> "MatchSpec":
-        """Normalize hybrid code query (e.g. 23就) to MatchSpec."""
-        from app.services.position_match import MatchSpec
+        from app.services.match_spec_factory import build_match_spec
 
-        hybrid_match = _HYBRID_CODE_RE.match(self.raw_q)
-        if not hybrid_match:
-            return MatchSpec(width=0)
-        num_prefix = hybrid_match.group(1)
-        ref_chars = hybrid_match.group(2)
-        num_suffix = hybrid_match.group(3)
-        full_code = num_prefix + num_suffix
-        return MatchSpec(
-            width=len(full_code),
-            code_prefix=full_code,
-            hybrid_ref_chars=ref_chars,
-            hybrid_ref_pos=max(0, len(num_prefix) - 1),
-        )
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid hybrid code query: {self.raw_q!r}")
+        return spec
 
 
 @dataclass(frozen=True)
@@ -236,21 +205,12 @@ class MaskQuery:
     def kind(self) -> QueryKind:
         return QueryKind.MASK
 
-    def to_match_spec(self) -> 'MatchSpec':
-        """Normalize 缺字查詢 to MatchSpec (Phase 2.6)."""
-        from app.services.position_match import MatchSpec, SlotConstraint
-        from app.services.word_query_parser import parse_mask_query
+    def to_match_spec(self) -> "MatchSpec":
+        from app.services.match_spec_factory import build_match_spec
 
-        expected_len, _, literal_positions = parse_mask_query(self.raw_q)
-        spec = MatchSpec(
-            width=expected_len,
-            literal_priority=True,
-            mask=self.raw_q,
-        )
-        for i, ch in enumerate(self.raw_q):
-            if ch.isdigit():
-                spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=ch))
-        spec.extra["literal_positions"] = literal_positions
+        spec = build_match_spec(self)
+        if spec is None:
+            raise ValueError(f"invalid mask query: {self.raw_q!r}")
         return spec
 
 
@@ -306,81 +266,58 @@ ParsedQuery = Union[
     UnmatchedQuery,
 ]
 
-_HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
+from app.services.match_spec_factory import HYBRID_CODE_RE, build_match_spec
 
 
-def _dispatch_code_tail(parsed: CodeTailQuery, mode: str, limit: int, offset: int, db: Session) -> list:
-    spec = parsed.to_match_spec()
-    from app.services.position_match import LengthMaskCandidateSource, run_position_query
-
-    return run_position_query(
-        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
-    )
-
-
-def _dispatch_literal_ref(parsed: LiteralRefQuery, mode: str, limit: int, offset: int, db: Session) -> list:
-    spec = parsed.to_match_spec()
-    from app.services.position_match import LengthMaskCandidateSource, run_position_query
-
-    return run_position_query(
-        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
-    )
-
-
-def _dispatch_rhyme_anchor(parsed: RhymeAnchorQuery, mode: str, limit: int, offset: int, db: Session) -> list:
-    spec = parsed.to_match_spec()
-    from app.services.position_match import LengthMaskCandidateSource, run_position_query
-
-    return run_position_query(
-        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
-    )
-
-
-def _dispatch_hybrid_code(
-    parsed: HybridCodeQuery,
-    mode: str,
-    limit: int,
-    offset: int,
-    db: Session,
-) -> list:
-    spec = parsed.to_match_spec()
-    if spec.width == 0:
-        return []
-    from app.services.position_match import LengthCodeCandidateSource, run_position_query
-
-    return run_position_query(
-        spec,
-        db,
-        mode,
-        limit,
-        offset,
-        source=LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode),
-    )
-
-
-def _dispatch_hybrid_q(q: str, mode: str, limit: int, offset: int, db: Session) -> list:
-    return _dispatch_hybrid_code(HybridCodeQuery(raw_q=q), mode, limit, offset, db)
-
-
-def _dispatch_mask_wildcard(
-    parsed: MaskQuery,
+def _dispatch_position_query(
+    parsed: ParsedQuery,
     code: Optional[str],
     mode: str,
     limit: int,
     offset: int,
     db: Session,
 ) -> list:
-    from app.services.position_match import MaskWildcardCandidateSource, mask_priority_key, run_position_query
+    """Unified position-type dispatch: build_match_spec -> source -> run_position_query."""
+    from app.services.position_match import (
+        LengthCodeCandidateSource,
+        LengthMaskCandidateSource,
+        MaskWildcardCandidateSource,
+        mask_priority_key,
+        run_equals_query,
+        run_position_query,
+    )
 
-    spec = parsed.to_match_spec()
-    if spec.width == 0:
+    if isinstance(parsed, HybridTailEqualsAliasQuery):
+        return _dispatch_position_query(
+            HybridCodeQuery(raw_q=parsed.hybrid_q), code, mode, limit, offset, db
+        )
+
+    if isinstance(parsed, EqualsQuery):
+        return run_equals_query(parsed.raw_q, db, mode, limit, offset)
+
+    spec = build_match_spec(parsed)
+    if spec is None or spec.width == 0:
         return []
-    if code:
-        spec.code_prefix = code
-    literal_positions = spec.extra.get("literal_positions", [])
-    source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
-    sort_key = lambda w: mask_priority_key(w, literal_positions)
-    return run_position_query(spec, db, mode, limit, offset, source=source, sort_key=sort_key)
+
+    if isinstance(parsed, MaskQuery):
+        if code:
+            spec.code_prefix = code
+        literal_positions = spec.extra.get("literal_positions", [])
+        source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
+        sort_key = lambda w: mask_priority_key(w, literal_positions)
+        return run_position_query(
+            spec, db, mode, limit, offset, source=source, sort_key=sort_key
+        )
+
+    if isinstance(parsed, HybridCodeQuery):
+        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
+        return run_position_query(spec, db, mode, limit, offset, source=source)
+
+    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery, RhymeAnchorQuery)):
+        source = LengthMaskCandidateSource(db, spec.mask)
+        return run_position_query(spec, db, mode, limit, offset, source=source)
+
+    return []
 
 
 def parse_query(q: str) -> ParsedQuery:
@@ -416,7 +353,7 @@ def parse_query(q: str) -> ParsedQuery:
     if rhyme_anchor_parsed:
         return RhymeAnchorQuery(**rhyme_anchor_parsed)
 
-    hybrid_match = _HYBRID_CODE_RE.match(q)
+    hybrid_match = HYBRID_CODE_RE.match(q)
     if hybrid_match and not hybrid_match.group(3):
         return HybridCodeQuery(raw_q=q)
 
@@ -475,7 +412,6 @@ class QueryEngine:
         return sort_words(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
 
     def _dispatch(self, parsed: ParsedQuery, q: str, ctx: SearchContext) -> list:
-        from app.services.equals_query_handler import handle_equals_syntax
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
         from app.services.compound_ant_executor import CompoundAntExecutor
@@ -499,13 +435,13 @@ class QueryEngine:
                 p, mode=m, limit=l, offset=o
             ),
             CompoundAntQuery: lambda p, c, m, l, o, d: compound_ant_executor.compound_ant_page(p, mode=m, limit=l, offset=o),
-            CodeTailQuery: lambda p, c, m, l, o, d: _dispatch_code_tail(p, m, l, o, d),
-            LiteralRefQuery: lambda p, c, m, l, o, d: _dispatch_literal_ref(p, m, l, o, d),
-            RhymeAnchorQuery: lambda p, c, m, l, o, d: _dispatch_rhyme_anchor(p, m, l, o, d),
-            MaskQuery: lambda p, c, m, l, o, d: _dispatch_mask_wildcard(p, c, m, l, o, d),
-            HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: _dispatch_hybrid_q(p.hybrid_q, m, l, o, d),
-            EqualsQuery: lambda p, c, m, l, o, d: handle_equals_syntax(p.raw_q, c, m, l, o, d),
-            HybridCodeQuery: lambda p, c, m, l, o, d: _dispatch_hybrid_code(p, m, l, o, d),
+            CodeTailQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            LiteralRefQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            RhymeAnchorQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            MaskQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            EqualsQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
+            HybridCodeQuery: lambda p, c, m, l, o, d: _dispatch_position_query(p, c, m, l, o, d),
             WordLookupQuery: lambda p, c, m, l, o, d: lookup_executor.lookup(p.raw_q, c, m, l, o),
             JyutpingFragmentQuery: lambda p, c, m, l, o, d: lookup_executor.jyut_fragment(p.raw_q, l, o),
         }
