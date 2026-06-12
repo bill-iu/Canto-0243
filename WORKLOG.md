@@ -230,3 +230,37 @@
 3. 其他 backlog：guotong 註冊 sources.yaml、triage labels、portable 重打包。
 
 此段完全依照 Cursor Handoff Note + README §7 Enforcement 流程撰寫。所有 parse 順序決策與 golden tests 均來自本次移交。
+
+**Phase 2.1 起步（2026-06-12）**：PositionMatchEngine 骨架 + 第一個共用 helper 搬移
+
+依據已核准的 Phase 2 計畫（QueryEngine 深化 C1 + PositionMatchEngine 合併）執行第一步。
+
+**完成項目**：
+- 新增 `app/services/position_match.py`（Phase 2.1 骨架）
+  - 定義 `SlotConstraint`、`MatchSpec`、`CandidateSource`（Protocol）、`PositionMatchEngine`（含 match stub）、`build_match_spec_from_parsed`。
+  - 加入第一個從 mask_search 搬移的純工具函式：`matches_code_positions`（多個位置型 handle 共用的 per-position 0243 code 比對邏輯）。
+- 更新 `app/services/mask_search.py`：
+  - 新增 `from app.services.position_match import matches_code_positions`。
+  - 刪除本地重複定義，改由新模組提供實作（所有呼叫站點字面與行為完全不變）。
+- 這是純內部重構／去重，**無任何可觀察的行為或效能改變**。
+
+**驗證與 Enforcement（README §7）**：
+- 測試：
+  ```
+  python -m unittest tests.test_query_parser tests.test_word_detail tests.test_utils tests.test_syn_ant_ingest -q
+  ```
+  **結果**：Ran 75 tests in 3.277s — **OK**（與 C1 Phase 1 手交時的完整套件一致，零退化）。
+- 由於只是改變函式定義位置，所有使用 `matches_code_positions` 的路徑（mask wildcard、code-tail、rhyme-anchor、at-tail、hybrid 等）繼續得到完全相同的計算結果與排序。
+- 關鍵案例覆蓋：`test_word_detail.py` 中的大量 mask、hybrid、code-tail、framed、literal priority 測試均通過（這些測試直接或間接經過該函式）。
+- 效能影響：無（純 import 來源改變，無額外計算或 I/O）。
+- 命名與文件：全程遵守「禁止 hanzi，使用 canto / chars」；新模組文件以繁體中文說明 Phase 2 目標。
+
+**後續（依核准計畫）**：
+- 繼續 Phase 2.1 其他 helper 搬移（filter_words_by_code_and_mask、get_length_candidates、matches_phoneme*、build_final_options*、matches_hybrid_ref_chars、mask_priority_key 等）。
+- 為 PositionMatchEngine 補充隔離單元測試。
+- 當核心過濾邏輯搬完後，把 mask_search.py 的五個 handle_* 改寫為薄層（只負責把 Parsed* 轉 MatchSpec 並呼叫 engine）。
+- 每次實質變更都重複執行完整 README §7 流程（計時、結果比對、測試、WORKLOG）。
+- 之後依序進入 Phase 2.2（QueryEngine registry 內聚）與 Phase 2.3（正規化 MatchSpec）。
+
+此段完全依照核准計畫 + README §7 Enforcement 流程撰寫。無行為回歸。
+

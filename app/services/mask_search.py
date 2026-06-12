@@ -15,6 +15,9 @@ from app.services.word_query_parser import (
     matches_mask_literal_chars,
     parse_mask_query,
 )
+
+# Phase 2.1：從 position_match 統一取得位置匹配工具（避免重複）
+from app.services.position_match import matches_code_positions
 from app.services.word_serializer import (
     get_word_jyutping,
     get_word_parts,
@@ -208,15 +211,8 @@ def word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
     return len(word_finals) >= 2 and word_finals[-1] in final_options
 
 
-def matches_code_positions(code_str: str, required_codes: list[Optional[str]], mode: str) -> bool:
-    if len(code_str) != len(required_codes):
-        return False
-    for idx, req_digit in enumerate(required_codes):
-        if req_digit is None:
-            continue
-        if code_str[idx] not in set(get_code_variants(req_digit, mode)):
-            return False
-    return True
+# matches_code_positions 已搬移至 app/services/position_match.py（Phase 2.1）
+# 此處保留 import 以維持呼叫站點不變（由 position_match 提供實作）。
 
 
 def matches_final_options(word_finals: list, target_final_options: list[Optional[set[str]]]) -> bool:
