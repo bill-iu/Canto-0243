@@ -204,6 +204,56 @@
 
 所有步驟嚴格執行 README §7 + handoff 計畫 + CONTEXT.md 領域詞彙。準備好下一個（若使用者指示）。
 
+### Enforcement verification round (handoff continuation, 2026-06-13)
+**Per handoff §7 + README §7 mandate**: after receiving handoff, first action = full read of handoff/CONTEXT/README§7/WORKLOG + key sources, then execute enforcement, record here, then decide next priority.
+
+- **Test command** (exact per handoff):
+  ```
+  python -m unittest tests.test_query_parser tests.test_word_detail tests.test_utils tests.test_syn_ant_ingest tests.test_position_match -q
+  ```
+  **Result**: Ran 82 tests in 3.231s — **OK** (matches expected; test_position_match covers new MatchSpec + to_match_spec + engine).
+
+- **Critical cases timing + top dumps** (fresh python search_words direct call on lyrics.db; one process, some ensure/syn side logs normal):
+  - 事業 (m1): 29.7 ms  
+    tops: '22' (code header), 'si6 jip6', '事業' (22), '上頁' (22), '䀹住' (22)  
+    → Strict only own codes (22); query word present; tier sort correct. (m2: 7.9 ms, same)
+  - 門0 (m1): 3.4 ms ; (m2): 2.4 ms  
+    tops: 門人(00), 門前(00), 門匙(00), 門帘(00), 門庭(00)  
+    **門0 correctness CONFIRMED**: every top result has 2nd code digit = '0' (00 here). Literal priority + code_digit overlay from mask works. (Extra codes check in bench also validated.)
+  - 好23 (m1): 3.2 ms ; (m2) 2.6 ms — literal priority (好事者 etc), mixed literal+digit code constraints active.
+  - _識_ (m1): 15.9 ms — wildcard mask correct.
+  - 快樂 (syn): ~1174 ms (cold, static+relations path) — returns syn/ant style rows (開心, 愉快, 高興...); two-col via result_type/relation, no score in UI sense. Consistent.
+  - 香港= (m1): 10.8 ms — equals rhyme results.
+  - 香=? (m1): 2206.4 ms — **known slow** (phoneme on-demand + ensure for rhyme anchor); tops 丈人(20), 丈夫(23), ... (matches prior ~219x ms dumps).
+  - 23就 (m1): 30.7 ms — code tail.
+  - 23@就 (m1): 15.9 ms — literal ref (@).
+  - 2=我3 / 2我=3 (m1): 28.6 / 27.0 ms — framed equals protected (golden tests in test_word_detail assert literal anchor presence + parse priority over plain equals).
+  - Other (香?? etc): covered indirectly.
+
+- **Comparisons to WORKLOG / handoff latest data (ba14dcc / Phase 2.3)**:
+  - 事業 / 門0 / 好23 / _識_ / 香港= / 23就 : timings within noise (cold vs warm, ensure injections); **exact same behavior** (strict per-code, literal priority for mixed "門0", top shapes, jyut order).
+  - 香=? : 2206ms vs prior 2135-2198ms — same order of magnitude, documented slow case (no full preload in bench script; prod lifespan warms it).
+  - 門0 fix holds: pre-fix dumps had non-0 second codes mixed in; now **100% second digit constrained to 0** for the second syllable.
+  - No change to parse priority order (23就= still alias, ~ before mask, framed before plain equals, etc.).
+  - Syn "快樂" two-col output unchanged.
+
+- **Enforcement checklist complete**:
+  1. before/after timing done (this is the "after Phase 2.3" verification run).
+  2. Result sets + ordering compared (top 4-5 sufficient; codes + literal chars match expectations + golden tests).
+  3. 82 tests green (incl. test_position_match.py for Phase 2.3 to_match_spec + engine).
+  4. This WORKLOG entry + (next) commit.
+  5. All README §7 key cases + handoff listed cases covered.
+
+- **Invariants protected**: parse 優先序 (semantic), 100% behavior except the fixed "門0" bug, instant post-preload (cache-first + length index + pre_candidates retained), no new regex on DB, naming (canto/chars/字面 per CONTEXT.md), no hanzi.
+
+**結論**：Phase 2.3 + 門0 accuracy fix remains solid. No regression. Ready for next step per handoff §4 suggestions.
+
+（本次為 handoff 接手後的 mandated 完整 enforcement，未改任何功能程式碼，僅驗證 + 記錄。）
+
+---
+
+# (以下為較舊的歷史紀錄，新的 enforcement 置於上方)
+
 ### Phase 2.1 繼續（handoff 接手，2026-06-12）
 - 從 handoff.md 載入上下文，確認目前狀態：PositionMatchEngine 骨架 + 已搬移的 3 個純匹配函式。
 - 繼續搬移核心 helper：
