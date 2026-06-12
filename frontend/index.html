@@ -795,7 +795,7 @@
 
       <nav class="app-actions" aria-label="主要操作">
         <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
-          <span class="mode-trigger-text" id="currentModeLabel">m1 · 0243</span>
+          <span class="mode-trigger-text" id="currentModeLabel">鬆 · 0243</span>
           <span class="menu-chevron" aria-hidden="true">▾</span>
         </button>
         <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
@@ -805,21 +805,21 @@
             <p class="menu-label">Search mode</p>
             <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
               <span>
-                <span class="mode-name">m1 · 0243</span>
+                <span class="mode-name">鬆 · 0243</span>
                 <span class="mode-help">常用 0243 編碼與混合查詢</span>
               </span>
               <span class="mode-key">0243</span>
             </button>
             <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
               <span>
-                <span class="mode-name">m2 · 02493</span>
+                <span class="mode-name">緊 · 02493</span>
                 <span class="mode-help">更細分的五鍵聲調邏輯</span>
               </span>
               <span class="mode-key">02493</span>
             </button>
             <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
               <span>
-                <span class="mode-name">syn · 近義 / 反義</span>
+                <span class="mode-name">查 · 近義 / 反義</span>
                 <span class="mode-help">直接查詞義關係</span>
               </span>
               <span class="mode-key">~ / !</span>
@@ -851,7 +851,7 @@
       <form class="search-panel" id="searchForm" role="search">
         <div class="field-label-row">
           <label class="field-label" for="searchInput">搜尋內容</label>
-          <span class="mode-readout" id="modeReadout">目前模式：m1 · 0243</span>
+          <span class="mode-readout" id="modeReadout">目前模式：鬆 · 0243</span>
         </div>
         <div class="search-row">
           <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search">
@@ -902,10 +902,10 @@
 
         <article class="guide-card">
           <h2>0243 / 02493 數字</h2>
-          <p><span translate="no">m1</span> 使用 0243；<span translate="no">m2</span> 使用 02493。純數字會列出符合該數字的候選。</p>
+          <p><span translate="no">鬆</span> 使用 0243；<span translate="no">緊</span> 使用 02493。純數字會列出符合該數字的候選。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="23" data-mode="m1"><code translate="no">23</code><span>找同音字</span></button>
-            <button class="guide-example" type="button" data-query="93" data-mode="m2"><code translate="no">93</code><span>m2 增加數字9</span></button>
+            <button class="guide-example" type="button" data-query="93" data-mode="m2"><code translate="no">93</code><span>緊 增加數字9</span></button>
           </div>
         </article>
 
@@ -1043,9 +1043,9 @@
     const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
     const MODE_META = {
-      m1: { label: "m1 · 0243", placeholder: "搵嘢：0243/打字" },
-      m2: { label: "m2 · 02493", placeholder: "搵嘢：02493/打字" },
-      syn: { label: "syn · 近義 / 反義", placeholder: "打字搵同義/反義" },
+      m1: { label: "鬆 · 0243", placeholder: "搵嘢：0243/打字" },
+      m2: { label: "緊 · 02493", placeholder: "搵嘢：02493/打字" },
+      syn: { label: "查 · 近義 / 反義", placeholder: "打字搵同義/反義" },
     };
 
     function applyAppTitle(portable = false) {
