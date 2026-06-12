@@ -14,6 +14,7 @@ import re
 from typing import List, Optional
 
 from app.models.word import Word
+from app.services.essay_sort import sort_words
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import (
@@ -76,10 +77,10 @@ class EqualsQueryHandler:
             compare_field = Word.finals if is_rhyme_match else Word.initials
             query = query.filter(compare_field == target_json)
 
-            results = query.order_by(Word.char).offset(offset).limit(limit).all()
-            return serialize_page(deduplicate_words(results), offset, limit)
+            results = query.all()
+            return serialize_page(sort_words(deduplicate_words(results)), offset, limit)
 
-        candidates = query.order_by(Word.char).limit(2000).all()
+        candidates = query.limit(2000).all()
         filtered = []
         target_parts = target_finals if is_rhyme_match else target_initials
         # Code 夾住錨點（2=我3 / 2我=3）：「我」為聲母/韻母錨，不要求結果含字面錨字。
@@ -101,7 +102,7 @@ class EqualsQueryHandler:
             if match_ok:
                 filtered.append(word)
 
-        return serialize_page(deduplicate_words(filtered), offset, limit)
+        return serialize_page(sort_words(deduplicate_words(filtered)), offset, limit)
 
 
 def handle_equals_syntax(

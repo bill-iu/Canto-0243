@@ -1,13 +1,14 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.word_db_filters import apply_code_filter
-from app.services.query_engine import search_words
+from app.services.essay_sort import sort_words
+from app.services.query_engine import get_last_search_total, search_words
 from app.services.word_serializer import deduplicate_words
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -36,6 +37,7 @@ def create_word(word: WordCreate, db: Session = Depends(get_db)):
 @router.get("/search", response_model=list[WordRead])
 @router.get("/search/", response_model=list[WordRead])
 def search_words_endpoint(
+    response: Response,
     q: str = None,
     code: str = None,
     char: str = None,
@@ -49,9 +51,13 @@ def search_words_endpoint(
         query = apply_code_filter(query, code, mode)
         if char:
             query = query.filter(Word.char == char)
-        results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        return deduplicate_words(results)
-    return search_words(q=q, code=code, char=char, mode=mode, limit=limit, offset=offset, db=db)
+        results = query.all()
+        return sort_words(deduplicate_words(results))[offset : offset + limit]
+    results = search_words(q=q, code=code, char=char, mode=mode, limit=limit, offset=offset, db=db)
+    total = get_last_search_total()
+    if total is not None:
+        response.headers["X-Search-Total"] = str(total)
+    return results
 
 
 @router.get("/{char}", response_model=WordRead)

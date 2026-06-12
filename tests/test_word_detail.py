@@ -344,12 +344,17 @@ class RelationSyntaxTests(unittest.TestCase):
             ])
             session.commit()
 
+            # 下令：DB 有詞但不在 curated compound_antonyms.txt → !! 不應回傳
+            session.add(Word(id=19, char="下令", code="29", jyutping="haa6 ling6", finals='["aa","ing"]', length=2))
+            session.commit()
+
             all_results = search_words(q="!!", mode="m1", db=session, limit=50, offset=0)
             all_chars = [r["char"] for r in all_results]
             self.assertIn("生死", all_chars)
             self.assertIn("是非", all_chars)
             self.assertIn("動靜", all_chars)
             self.assertNotIn("真假", all_chars)
+            self.assertNotIn("下令", all_chars)
 
             code_results = search_words(q="33!!", mode="m1", db=session, limit=50, offset=0)
             code_chars = [r["char"] for r in code_results]
@@ -682,6 +687,35 @@ class SearchSyntaxTests(unittest.TestCase):
             results = search_words(q="23", mode="m1", db=session, limit=20, offset=0)
             chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
             self.assertCountEqual(chars, ["好人", "好字"])
+
+    def test_pure_digit_ranks_common_words_before_mixed_char(self):
+        with self._session() as session:
+            session.add_all([
+                Word(char="A片", code="33", jyutping="e1 pin3", length=2),
+                Word(char="開心", code="33", jyutping="hoi1 sam1", length=2),
+                Word(char="先生", code="33", jyutping="sin1 saang1", length=2),
+            ])
+            session.commit()
+            results = search_words(q="33", mode="m1", db=session, limit=10, offset=0)
+            chars = [r["char"] for r in results]
+            self.assertEqual(chars[0], "開心")
+            self.assertIn("先生", chars)
+            self.assertNotIn("A片", chars[:2])
+
+    def test_pure_digit_exposes_total_count(self):
+        from app.services.query_engine import get_last_search_total
+
+        with self._session() as session:
+            session.add_all([
+                Word(char=f"詞{i}", code="33", jyutping="ci4 zi6", length=2)
+                for i in range(5)
+            ])
+            session.commit()
+            search_words(q="33", mode="m1", db=session, limit=2, offset=0)
+            self.assertEqual(get_last_search_total(), 5)
+            page2 = search_words(q="33", mode="m1", db=session, limit=2, offset=2)
+            self.assertEqual(len(page2), 2)
+            self.assertEqual(get_last_search_total(), 5)
 
     def test_jyutping_fragment_syntax(self):
         with self._session() as session:

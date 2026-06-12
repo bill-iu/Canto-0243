@@ -13,6 +13,7 @@ from typing import List, Literal, Optional, Union
 from sqlalchemy.orm import Session
 
 from app.models.word import Word
+from app.services.essay_sort import sort_words
 from app.services.word_db_filters import apply_code_filter
 from app.services.word_query_parser import (
     hybrid_query_from_tail_equals,
@@ -443,6 +444,7 @@ class SearchContext:
     limit: int
     offset: int
     db: Session
+    total: Optional[int] = None
 
 
 class QueryEngine:
@@ -469,8 +471,8 @@ class QueryEngine:
         query = apply_code_filter(query, ctx.code, ctx.mode)
         if ctx.char:
             query = query.filter(Word.char == ctx.char)
-        results = query.order_by(Word.char).offset(ctx.offset).limit(ctx.limit).all()
-        return deduplicate_words(results)
+        results = query.all()
+        return sort_words(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
 
     def _dispatch(self, parsed: ParsedQuery, q: str, ctx: SearchContext) -> list:
         from app.services.equals_query_handler import handle_equals_syntax
@@ -487,6 +489,11 @@ class QueryEngine:
         lookup_executor = WordLookupExecutor(db)
         compound_ant_executor = CompoundAntExecutor(db)
 
+        if isinstance(parsed, DigitCodeQuery):
+            items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
+            ctx.total = total
+            return items
+
         handler_registry = {
             RelationLookupQuery: lambda p, c, m, l, o, d: relation_executor.relation_lookup_page(
                 p, mode=m, limit=l, offset=o
@@ -495,7 +502,6 @@ class QueryEngine:
             CodeTailQuery: lambda p, c, m, l, o, d: _dispatch_code_tail(p, m, l, o, d),
             LiteralRefQuery: lambda p, c, m, l, o, d: _dispatch_literal_ref(p, m, l, o, d),
             RhymeAnchorQuery: lambda p, c, m, l, o, d: _dispatch_rhyme_anchor(p, m, l, o, d),
-            DigitCodeQuery: lambda p, c, m, l, o, d: lookup_executor.pure_digit(p.raw_q, c, m, l, o),
             MaskQuery: lambda p, c, m, l, o, d: _dispatch_mask_wildcard(p, c, m, l, o, d),
             HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: _dispatch_hybrid_q(p.hybrid_q, m, l, o, d),
             EqualsQuery: lambda p, c, m, l, o, d: handle_equals_syntax(p.raw_q, c, m, l, o, d),
@@ -512,10 +518,19 @@ class QueryEngine:
 
 
 _default_engine = QueryEngine()
+_last_search_total: Optional[int] = None
 
 
 def execute_search(ctx: SearchContext) -> list:
-    return _default_engine.execute(ctx)
+    global _last_search_total
+    _last_search_total = None
+    results = _default_engine.execute(ctx)
+    _last_search_total = ctx.total
+    return results
+
+
+def get_last_search_total() -> Optional[int]:
+    return _last_search_total
 
 
 def search_words(

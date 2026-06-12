@@ -1061,6 +1061,7 @@
     let currentOffset = 0;
     let isSearching = false;
     let currentQuery = "";
+    let searchTotal = null;
     const PAGE_SIZE = 160;
     const searchCache = new Map();
 
@@ -1240,6 +1241,11 @@
       });
       $.results.appendChild(frag);
       $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].label}）`;
+      if (searchTotal != null && searchTotal > deduped.length) {
+        $.stats.textContent = `已載入 ${deduped.length} / ${searchTotal} 個結果（${MODE_META[currentMode].label}）`;
+      } else if (searchTotal != null) {
+        $.stats.textContent = `${searchTotal} 個結果（${MODE_META[currentMode].label}）`;
+      }
       updateShuffleButton();
     }
 
@@ -1296,18 +1302,21 @@
       currentQuery = "";
       currentResults = [];
       currentOffset = 0;
+      searchTotal = null;
       toggleLoadMoreButton(false);
       updateShuffleButton();
       updateBrowserUrl("", currentMode, "search", true);
       $.searchInput.focus();
     }
 
-    function finishSearchWithData(data, { append = false } = {}) {
+    function finishSearchWithData(data, { append = false, total = null } = {}) {
       const displayData = append ? currentResults.concat(data) : data;
       currentResults = displayData;
       currentOffset += data.length;
+      if (!append && total != null) searchTotal = total;
       renderSearchResults(displayData);
-      toggleLoadMoreButton(data.length === PAGE_SIZE);
+      const hasMore = (searchTotal != null && displayData.length < searchTotal) || data.length === PAGE_SIZE;
+      toggleLoadMoreButton(hasMore);
     }
 
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
@@ -1322,6 +1331,7 @@
         $.stats.textContent = "";
         currentResults = [];
         currentOffset = 0;
+        searchTotal = null;
         toggleLoadMoreButton(false);
       }
 
@@ -1344,6 +1354,11 @@
           setButtonLoading(false);
           return;
         }
+        if (cached && Array.isArray(cached.data)) {
+          finishSearchWithData(cached.data, { append: false, total: cached.total });
+          setButtonLoading(false);
+          return;
+        }
         searchCache.delete(cacheKey);
       }
 
@@ -1353,9 +1368,11 @@
         const res = await fetch(url);
         if (!res.ok) throw new Error("後端回應失敗");
         const data = await res.json();
+        const totalHeader = res.headers.get("X-Search-Total");
+        const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
 
         if (!isLoadMore) {
-          searchCache.set(cacheKey, data);
+          searchCache.set(cacheKey, { data, total });
           if (searchCache.size > 50) searchCache.delete(searchCache.keys().next().value);
         }
 
@@ -1367,7 +1384,7 @@
           return;
         }
 
-        finishSearchWithData(data, { append: isLoadMore });
+        finishSearchWithData(data, { append: isLoadMore, total: isLoadMore ? null : total });
       } catch (error) {
         console.error(error);
         $.results.innerHTML = '<p class="info info-error"><strong>無法連接到後端。</strong><br>請確認伺服器已啟動，然後再次搜尋。</p>';

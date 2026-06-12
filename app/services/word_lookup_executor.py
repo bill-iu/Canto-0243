@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.code_aware_ranker import build_code_aware_results
+from app.services.essay_sort import default_word_sort_key, sort_words
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import (
@@ -24,6 +25,14 @@ class WordLookupExecutor:
     def __init__(self, db: Session):
         self._db = db
 
+    def _sorted_pure_digit_words(self, q: str, mode: str) -> List[Word]:
+        query = self._db.query(Word)
+        query = apply_code_filter(query, q, mode)
+        query = query.filter(length_filter(len(q)))
+        words = deduplicate_words(query.all())
+        words.sort(key=default_word_sort_key)
+        return words
+
     def pure_digit(
         self,
         q: str,
@@ -31,12 +40,10 @@ class WordLookupExecutor:
         mode: str,
         limit: int,
         offset: int,
-    ) -> List[dict]:
-        query = self._db.query(Word)
-        query = apply_code_filter(query, q, mode)
-        query = query.filter(length_filter(len(q)))
-        results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        return [serialize_word(w) for w in deduplicate_words(results)]
+    ) -> tuple[List[dict], int]:
+        words = self._sorted_pure_digit_words(q, mode)
+        page = paginate(words, offset, limit)
+        return [serialize_word(w) for w in page], len(words)
 
     def pure_canto(
         self,
@@ -61,11 +68,12 @@ class WordLookupExecutor:
         results = (
             self._db.query(Word)
             .filter(Word.jyutping.ilike(f"%{q}%"))
-            .order_by(Word.char)
             .limit(500)
             .all()
         )
-        return paginate(deduplicate_words(results), offset, limit)
+        ordered = sort_words(deduplicate_words(results))
+        page = paginate(ordered, offset, limit)
+        return [serialize_word(w) for w in page]
 
     def lookup(
         self,

@@ -25,7 +25,10 @@
 | `app/services/query_engine.py` | parse + registry dispatch |
 | `app/services/position_match.py` | MatchSpec / PositionMatchEngine / 位置比對 |
 | `app/services/equals_query_handler.py` | 等號 framed 查詢（獨立於 engine） |
-| `app/services/lexicon_port.py` | 詞庫埠；P0–P4 完成 |
+| `app/services/essay_sort.py` | 統一搜尋結果排序（純漢字 → essay → curated → pron_rank） |
+| `app/services/word_lookup_executor.py` | 純數字／粵拼片段／字面 lookup |
+| `app/lexicon/essay_index.py` | Essay 語料 → 記憶體詞頻 dict（不寫 DB） |
+| `app/services/lexicon_port.py` | 詞庫埠（收錄門檻 + 讀音） |
 | `app/db/*` | connection · bootstrap · dialect；`database.py` facade |
 | ingest | `scripts/ingest/import_data.py` · `python -m ingest` · `scripts/legacy/generate_relationships.py` |
 
@@ -79,8 +82,8 @@
 
 ### 2026-06-12 — P0 等號 + 詞庫 P1–P4
 
-- **P0**：`start_pos = len(left_code) - target_length`（`23=你4` 錨 pos 1）；`CONTEXT.md` 語意
-- **P1–P4**：LexiconPort · rime `char.csv` 單字 ensure · essay 頻次 · curated + pron_rank 排序 ✅
+- **P0**：`start_pos = len(left_code) - target_length`（`23=你4` 錨 pos 1）；語意見 `CONTEXT.md` § 碼夾等號查詢
+- **P1–P4**：詞庫埠 · rime 單字 ensure · essay 詞頻 · curated + pron_rank 排序 ✅
 
 ### 2026-06-12 — PostgreSQL 凍結
 
@@ -105,14 +108,17 @@
 
 ---
 
-## 現況（2026-06-12）
+## 現況（2026-06-13）
 
 - Syn/ant：DB relations + static thesaurus；runtime 無 torch
-- 詞庫：LexiconPort P0–P4 完成；詳見 `CONTEXT.md`
+- 詞庫：詞庫埠 + rime 單字 + essay 記憶體詞頻 + curated；詳見 `CONTEXT.md`
+- 排序：扁平結果統一 `essay_sort`；tier 純漢字 → essay → curated → pron_rank；貼近 0243 常用度、非逐詞快照
+- Essay：`data/essay/essay-cantonese.txt` 隨 repo（[rime-cantonese](https://github.com/rime/rime-cantonese)）；**不** ingest 詞頻表
 - DB：SQLite 產品路徑；PG 凍結
-- 測試：~88+ unittest；enforce_bench 覆蓋關鍵 latency
+- 測試：117 unittest；`test_search_sort` 覆蓋排序 tier + 四條整合 tracer
+- 純數字：essay 排序 + `X-Search-Total` + 前端「已載入 N / total」
 
-**限制**：超大結果集仍靠 length 過濾後 Python；full relations 需 ingest
+**限制**：超大結果集（如 `33`）仍 Python 排序後分頁；full relations 需 ingest
 
 **待辦（非阻塞）**：guotong 註冊 `sources.yaml`；高頻 pair 預算 relations
 
@@ -184,3 +190,27 @@
 - `ingest_syn_ant.py` → `ingest/cli.py`；入口 `python -m ingest`
 - 根目錄保留：產品入口 + `WORKLOG.md` + `skills-lock.json`
 - README 路徑全更新；108 unittest OK
+
+### 2026-06-13 — 搜尋排序統一 + `!!` curated + CONTEXT 整理
+
+**Grill 決策（排序／essay）**
+
+- 扁平詞條清單共用排序信號；tier：**純漢字 → essay → curated → pron_rank**
+- Essay 詞頻：記憶體 dict，**不** ingest DB（Q7-A）
+- 不維護 0243 逐詞快照；embedding **不**取代 essay 詞頻
+- Essay 語料納入 repo（來源 [rime-cantonese](https://github.com/rime/rime-cantonese)）
+
+**實作**
+
+- 新／強化 `app/services/essay_sort.py`：`default_word_sort_key` + `sort_words`
+- 統一排序：`pure_digit`、`equals_query_handler`、`jyut_fragment`、無 `q` code 篩選（原 `Word.char` 序）
+- 純數字：`X-Search-Total` header；前端 `已載入 N / total` + 載入更多
+- `!!`：僅 `compound_antonyms.txt` ∩ DB（刪 ant pair 展開污染）
+- 新 `tests/test_search_sort.py`（tier unit + `33`／`門0`／`香港=`／`mun4` 整合）
+- **`CONTEXT.md` 重寫**：導覽表、碼夾等號查詢獨立詞、移除 P0–P4 路線圖與實作名
+
+**驗證**：117 unittest OK
+
+---
+
+**最後更新**：2026-06-13（README／WORKLOG 與 CONTEXT 同步）
