@@ -46,6 +46,12 @@ print(f"[DB] 使用資料庫: {DATABASE_URL.split('://')[0]}")
 IS_POSTGRES = DATABASE_URL.startswith("postgresql")
 
 if IS_POSTGRES:
+    print(
+        "[DB] ⚠️  PostgreSQL 路徑已凍結：無整合測試、schema 變更僅保證 SQLite。"
+        " 自行承擔；套件見 requirements-postgres.txt，詳見 README § 部署與資料庫。"
+    )
+
+if IS_POSTGRES:
     engine = create_engine(
         DATABASE_URL,
         pool_pre_ping=True,
