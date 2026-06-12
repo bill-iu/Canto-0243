@@ -36,7 +36,7 @@ from collections import defaultdict
 # (Review cleanup: explanatory mentions of "hanzi" in comments kept only for history; all logic paths use canto/chars.)
 
 WILDCARD_CHARS = frozenset("_?%")
-CODE_TAIL_MIDDLE = "\u00b7"  # ·
+CODE_TAIL_MIDDLE = "&"
 
 CODE_TAIL_RE = re.compile(rf"^(\d+){re.escape(CODE_TAIL_MIDDLE)}(.+)$")
 AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
@@ -142,7 +142,7 @@ def _is_framed_equals_query(q: str) -> bool:
 
 
 def _parse_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no ·)."""
+    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no &)."""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q or _is_framed_equals_query(q):
         return None
 
@@ -1284,6 +1284,7 @@ def search_words(
         return _deduplicate_words(results)
 
     q = q.strip()
+    q = q.replace("\u00b7", CODE_TAIL_MIDDLE)  # legacy middle-dot alias
 
     if mode == 'syn':
         # Independent syn/ant mode: bypass all code/rhyme/hybrid/wildcard paths.

@@ -446,7 +446,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertEqual(at_chars, ["做就"])
 
     def test_code_tail_and_at_tail_syntax(self):
-        mid = "\u00b7"
+        mid = "&"
         with self._session() as session:
             session.add_all([
                 Word(
