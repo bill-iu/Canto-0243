@@ -31,7 +31,14 @@ from typing import Any, Callable, Literal, Optional, Protocol, Sequence, Union
 # Imports needed for the moved filter logic (kept minimal to avoid cycles)
 from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
 from app.services.word_query_parser import matches_mask_literal_chars
-from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text
+from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text, get_word_jyutping
+
+# For candidate acquisition (moved from mask_search)
+from utils import get_words_for_length
+from app.services.word_db_filters import apply_code_filter, length_filter
+
+# Needed by the moved candidate helpers
+from app.models.word import Word
 
 
 # -----------------------------------------------------------------------------
@@ -77,6 +84,9 @@ class MatchSpec:
     # 預留給 hybrid 等特殊語意
     hybrid_ref_chars: Optional[str] = None
     hybrid_ref_pos: Optional[int] = None
+
+    # 為 mask 等
+    mask: str = ""
 
     # 未來可擴充的政策（排序、去重策略等）
     extra: dict[str, Any] = field(default_factory=dict)
@@ -132,22 +142,76 @@ class PositionMatchEngine:
         *,
         limit: Optional[int] = None,
         offset: int = 0,
+        pre_candidates: Optional[list] = None,
     ) -> list[Any]:
         """
         根據 MatchSpec 從來源取得候選並套用位置約束。
 
-        目前為 stub，後續實作會：
-        1. 呼叫 source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
-        2. 依 spec.slots 進行逐位置過濾（literal、code、phoneme anchor）
-        3. 套用 literal_priority 等排序政策
-        4. 回傳經過 serialize 前的候選列表（由呼叫者負責後續 serialize_page）
+        使用已搬移的 helpers 實作基本過濾。
+        支援當前 thin handlers 使用的 spec 欄位。
         """
-        # Phase 2.1 骨架：尚未實作邏輯
-        # 呼叫端（未來的 handle_* 薄層）仍會走舊程式碼，直到我們逐步遷移。
-        raise NotImplementedError(
-            "PositionMatchEngine.match 尚未實作（Phase 2.1 骨架階段）。"
-            " 請先完成 helper 搬移與薄層更新，再啟用此入口。"
+        if pre_candidates is not None:
+            candidates = pre_candidates
+        elif source is None:
+            candidates, _ = get_candidates_for_length(db, spec.width, code=spec.code_prefix, mode=mode)
+        else:
+            candidates, _ = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
+
+        # Hybrid special case (centralized matching using migrated helper)
+        if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
+            target_final_options = build_final_options_at_positions(
+                spec.hybrid_ref_chars, spec.hybrid_ref_pos, spec.width, db
+            )
+            filtered = []
+            from utils import get_code_variants
+            allowed_full_codes = set(get_code_variants(spec.code_prefix or "", mode)) if spec.code_prefix else set()
+            for word in candidates:
+                word_code_str = get_word_sort_code(word)
+                if spec.code_prefix and word_code_str not in allowed_full_codes:
+                    continue
+                word_finals = get_word_parts(word, "finals")
+                word_char = get_word_text(word)
+                if matches_hybrid_ref_chars(
+                    word_char, word_finals, spec.hybrid_ref_chars, spec.hybrid_ref_pos, target_final_options
+                ):
+                    filtered.append(word)
+            return filtered
+
+        # Reconstruct params from spec for the core filter
+        code_digits = spec.code_prefix or ""
+        mask = spec.mask or ""
+        anchor_pos = None
+        anchor = None
+        constraint = None
+        literal_char = None
+        for slot in spec.slots:
+            if slot.kind == "code_digit":
+                # code digit constraints (including those from mask like "門0") are also overlaid inside
+                # filter_words_by_code_and_mask using the mask string (and can be collected from slots here in future).
+                pass
+            if slot.kind == "literal_char":
+                literal_char = slot.value
+            if slot.kind in ("final_anchor", "initial_anchor"):
+                anchor_pos = slot.pos
+                anchor = slot.value
+                constraint = "final" if slot.kind == "final_anchor" else "initial"
+
+        filtered = filter_words_by_code_and_mask(
+            candidates,
+            width=spec.width,
+            code_digits=code_digits,
+            mode=mode,
+            mask=mask,
+            db=db,
+            anchor_pos=anchor_pos,
+            anchor=anchor,
+            constraint=constraint,
+            literal_char=literal_char,
+            slots=spec.slots,
         )
+
+        # Note: sorting and serialize left to caller for now (as per docstring)
+        return filtered  # caller does serialize_page which handles offset/limit and sort if needed.
 
 
 # -----------------------------------------------------------------------------
@@ -159,11 +223,35 @@ def build_match_spec_from_parsed(parsed: dict) -> MatchSpec:
     從現有 parser 產生的 dict（或 ParsedQuery.to_handler_dict()）建構 MatchSpec。
 
     這是從舊 dict 世界過渡到新抽象的橋樑函式。
-    實作會在 Phase 2.1 後續逐步補完。
+    目前支援 rhyme_anchor / code_tail / at_tail 等常見位置型 parsed。
     """
-    # 骨架階段先回傳空 spec，實際轉換邏輯待 helper 搬移時補上
     width = parsed.get("width", 0) or 0
-    return MatchSpec(width=width)
+    spec = MatchSpec(width=width)
+
+    # 設定全域 code_prefix 如果有
+    if "code_digits" in parsed and parsed["code_digits"]:
+        spec.code_prefix = parsed["code_digits"]
+
+    # rhyme anchor / 參考字錨點
+    if "anchor_pos" in parsed and "anchor" in parsed and "constraint" in parsed:
+        kind = "final_anchor" if parsed["constraint"] == "final" else "initial_anchor"
+        spec.slots.append(SlotConstraint(
+            pos=parsed["anchor_pos"],
+            kind=kind,
+            value=parsed["anchor"]
+        ))
+
+    # literal char (e.g. at_tail)
+    if "literal_char" in parsed and parsed["literal_char"]:
+        # 對於 at_tail，通常是尾部 literal
+        # 這裡簡化為在對應位置加 literal_char 約束（實際由 handler 計算位置）
+        # 為了相容，先不加，留給後續完整實作
+        pass
+
+    # 其他如 mask literal 會在後續 MatchSpec 擴充中處理
+    # 目前先支援 anchor 類，確保 handler 能開始使用 spec
+
+    return spec
 
 
 # 預留未來擴充的 registry 或 factory
@@ -227,6 +315,7 @@ def filter_words_by_code_and_mask(
     anchor: Optional[str] = None,
     constraint: Optional[str] = None,
     literal_char: Optional[str] = None,
+    slots: Optional[list] = None,  # Phase 2 support for code_digit slots (e.g. from mask normalization)
 ) -> list:
     """
     核心位置過濾器：同時套用長度、mask literal、特定 code 數字、以及可選的 phoneme anchor / literal_char 約束。
@@ -238,6 +327,21 @@ def filter_words_by_code_and_mask(
     if code_digits:
         for i, d in enumerate(code_digits):
             required_codes[i] = d
+
+    # Support code digits embedded in the mask itself (e.g. "門0" means pos0 literal "門" + pos1 code_digit "0";
+    # "好23" etc.). These are code constraints, not char literals (handled separately by matches_mask_literal_chars).
+    # This fixes inaccurate results for mixed literal+digit masks.
+    if mask:
+        for i, ch in enumerate(mask):
+            if i < width and ch.isdigit():
+                required_codes[i] = ch
+
+    # Also honor explicit code_digit slots (populated e.g. by mask handler for "門0" style;
+    # this makes the SlotConstraint model drive code constraints too).
+    if slots:
+        for slot in slots:
+            if getattr(slot, 'kind', None) == "code_digit" and slot.pos < width and slot.value is not None:
+                required_codes[slot.pos] = str(slot.value)
 
     filtered = []
     for word in candidates:
@@ -272,4 +376,131 @@ __all__ = [
     "matches_code_positions",
     "matches_phoneme_at_position",
     "filter_words_by_code_and_mask",
+    "get_length_candidates",
+    "get_candidates_for_length",
+    "build_final_options_at_positions",
+    "word_matches_last_final",
+    "matches_final_options",
+    "matches_hybrid_ref_chars",
+    "mask_priority_key",
 ]
+
+
+# -----------------------------------------------------------------------------
+# 候選取得工具（Phase 2.1 繼續搬移）
+# 原本散落在 mask_search.py，現在集中管理。
+# 保留原有行為（cache-first + DB fallback）。
+# -----------------------------------------------------------------------------
+
+def get_length_candidates(db, width: int, mask: str):
+    """
+    取得指定長度的候選詞，並對 cache 命中者先做 mask literal 預過濾。
+    用於 rhyme-anchor、code-tail、at-tail 等需要 mask 的情境。
+    """
+    candidates = get_words_for_length(width)
+    if candidates:
+        return [w for w in candidates if matches_mask_literal_chars(get_word_text(w), mask)], True
+    # 延遲 import 避免循環
+    from app.services.word_query_parser import mask_char_glob_pattern as _mask_glob
+    glob_pat = _mask_glob(mask)
+    query = db.query(Word).filter(
+        length_filter(width),
+        Word.char.op("GLOB")(glob_pat),
+    )
+    return query.order_by(Word.char, Word.jyutping).all(), False
+
+
+def get_candidates_for_length(
+    db: Any,
+    length: int,
+    *,
+    code: Optional[str] = None,
+    mode: str = "m1",
+    fallback_limit: int = 2000,
+):
+    """
+    通用長度候選取得（無 mask 預過濾）。
+    用於 hybrid 等情境。
+    """
+    candidates = get_words_for_length(length)
+    if candidates:
+        return candidates, True
+    query = db.query(Word).filter(length_filter(length))
+    if code:
+        query = apply_code_filter(query, code, mode)
+    return query.order_by(Word.char, Word.jyutping).limit(fallback_limit).all(), False
+
+
+# -----------------------------------------------------------------------------
+# 其餘位置匹配核心 helper（Phase 2.1 繼續搬移）
+# 從 mask_search.py 抽取，集中管理，行為完全等價。
+# 後續將用於 PositionMatchEngine 內部實作。
+# -----------------------------------------------------------------------------
+
+def build_final_options_at_positions(
+    ref_chars: str,
+    start_pos: int,
+    width: int,
+    db,
+) -> list[Optional[set[str]]]:
+    """為參考字串的每個位置建立可能的 final 選項集合。"""
+    target_final_options: list[Optional[set[str]]] = [None] * width
+    for i, ch in enumerate(ref_chars):
+        pos = start_pos + i
+        if 0 <= pos < width:
+            options = final_options_for_char(ch, db)
+            if options:
+                target_final_options[pos] = options
+    return target_final_options
+
+
+def word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
+    """檢查詞的最後一個音節的 final 是否在允許選項中。"""
+    if not final_options:
+        return True
+    word_finals = get_word_parts(word, "finals")
+    return len(word_finals) >= 2 and word_finals[-1] in final_options
+
+
+def matches_final_options(word_finals: list, target_final_options: list[Optional[set[str]]]) -> bool:
+    """檢查詞的 finals list 是否滿足所有位置的 target options。"""
+    if len(word_finals) != len(target_final_options):
+        return False
+    for idx, options in enumerate(target_final_options):
+        if not options:
+            continue
+        if idx >= len(word_finals) or word_finals[idx] not in options:
+            return False
+    return True
+
+
+def matches_hybrid_ref_chars(
+    word_char: str,
+    word_finals: list,
+    ref_chars: str,
+    start_pos: int,
+    target_final_options: list[Optional[set[str]]],
+) -> bool:
+    """Rhyme match at ref positions, or literal match (so 23就 includes 23@就 results)."""
+    width = len(target_final_options)
+    if len(word_char) != width or len(word_finals) != width:
+        return False
+    for i, ch in enumerate(ref_chars):
+        pos = start_pos + i
+        if pos < 0 or pos >= width:
+            return False
+        if word_char[pos] == ch:
+            continue
+        options = target_final_options[pos]
+        if options and word_finals[pos] in options:
+            continue
+        return False
+    return True
+
+
+def mask_priority_key(word, literal_positions: list[tuple[int, str]]):
+    """排序 key：literal 匹配數量優先（越多越好，負數排序）。"""
+    char = get_word_text(word)
+    jyutping = get_word_jyutping(word)
+    exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
+    return (-exact_count, char, jyutping)
