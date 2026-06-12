@@ -33,14 +33,6 @@ def create_word(word: WordCreate, db: Session = Depends(get_db)):
     return db_word
 
 
-@router.get("/{char}", response_model=WordRead)
-def get_word(char: str, db: Session = Depends(get_db)):
-    word = db.query(Word).filter(Word.char == char).first()
-    if word is None:
-        raise HTTPException(status_code=404, detail="字詞未找到")
-    return word
-
-
 @router.get("/search", response_model=list[WordRead])
 @router.get("/search/", response_model=list[WordRead])
 def search_words_endpoint(
@@ -60,6 +52,14 @@ def search_words_endpoint(
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
         return deduplicate_words(results)
     return search_words(q=q, code=code, char=char, mode=mode, limit=limit, offset=offset, db=db)
+
+
+@router.get("/{char}", response_model=WordRead)
+def get_word(char: str, db: Session = Depends(get_db)):
+    word = db.query(Word).filter(Word.char == char).first()
+    if word is None:
+        raise HTTPException(status_code=404, detail="字詞未找到")
+    return word
 
 
 __all__ = ["router", "get_db", "search_words", "handle_syn_ant_search"]

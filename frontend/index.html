@@ -788,7 +788,7 @@
       <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
         <span class="brand-mark" aria-hidden="true">韻</span>
         <span>
-          <span class="brand-title">0243 押韻字典</span>
+          <span class="brand-title" id="brandTitle">0243 押韻字典</span>
           <span class="brand-subtitle">粵語填詞查韻工作台</span>
         </span>
       </button>
@@ -1039,11 +1039,21 @@
       throw new Error("Direct file open - showing instruction only");
     }
 
+    const APP_TITLE_BASE = "0243 押韻字典";
+    const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
+
     const MODE_META = {
       m1: { label: "m1 · 0243", placeholder: "搵嘢：0243/打字" },
       m2: { label: "m2 · 02493", placeholder: "搵嘢：02493/打字" },
       syn: { label: "syn · 近義 / 反義", placeholder: "打字搵同義/反義" },
     };
+
+    function applyAppTitle(portable = false) {
+      const title = portable ? `${APP_TITLE_BASE}${APP_TITLE_PORTABLE_SUFFIX}` : APP_TITLE_BASE;
+      document.title = title;
+      const brandTitle = document.getElementById("brandTitle");
+      if (brandTitle) brandTitle.textContent = title;
+    }
 
     let currentMode = "m1";
     let currentView = "search";
@@ -1442,6 +1452,11 @@
     });
 
     (function init() {
+      fetch("/")
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => applyAppTitle(Boolean(data && data.portable)))
+        .catch(() => {});
+
       $.modeMenu.hidden = true;
       const params = new URLSearchParams(window.location.search);
       const q = params.get("q") || "";

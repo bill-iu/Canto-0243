@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from dotenv import load_dotenv
@@ -16,12 +18,33 @@ print(f"[ENV] 目前環境: {ENV.upper()} | 載入設定檔: {env_file}")
 # 載入對應的 .env 檔案
 load_dotenv(env_file)
 
+# portable / 開發環境：相對路徑一律相對於專案根目錄（main.py 所在目錄），不依賴 cwd。
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def resolve_sqlite_database_url(url: str) -> str:
+    """將 sqlite:///./lyrics.db 解析為專案根目錄下的絕對路徑（避免 macOS Finder 啟動時 cwd 錯誤）。"""
+    if not url or not url.startswith("sqlite"):
+        return url
+    prefix = "sqlite:///"
+    if not url.startswith(prefix):
+        return url
+    raw = url[len(prefix) :]
+    if raw.startswith("/") or (len(raw) > 1 and raw[1] == ":"):
+        return url
+    rel = raw[2:] if raw.startswith("./") else raw
+    abs_path = (PROJECT_ROOT / rel).resolve()
+    return f"{prefix}{abs_path.as_posix()}"
+
+
 # 讀取 DATABASE_URL
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
     print("❌ 警告：找不到 DATABASE_URL，使用 SQLite 作為後備")
     DATABASE_URL = "sqlite:///./lyrics.db"
+
+DATABASE_URL = resolve_sqlite_database_url(DATABASE_URL)
 
 print(f"[DB] 使用資料庫: {DATABASE_URL.split('://')[0]}")
 

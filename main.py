@@ -42,6 +42,7 @@ app.include_router(router)
 async def home():
     return {
         "status": "running",
+        "portable": bool(os.getenv("PORTABLE")),
         "frontend": "http://127.0.0.1:8000/frontend/index.html",
         "api_test": "http://127.0.0.1:8000/words/search/?q=23",
     }
@@ -153,5 +154,5 @@ if __name__ == "__main__":
         "main:app",
         host=os.getenv("HOST", "127.0.0.1"),
         port=int(os.getenv("PORT", "8000")),
-        reload=os.getenv("ENV", "local").lower() != "prod",
+        reload=os.getenv("ENV", "local").lower() != "prod" and not os.getenv("PORTABLE"),
     )

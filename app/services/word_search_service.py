@@ -38,6 +38,7 @@ from app.services.word_serializer import (
     get_word_text,
     paginate,
     serialize_page,
+    serialize_word,
 )
 
 def handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):  # untyped db to avoid FastAPI treating it as a response field during module import
@@ -118,7 +119,7 @@ def handle_pure_digit_query(q: str, code: Optional[str], mode: str, limit: int, 
     query = apply_code_filter(query, q, mode)
     query = query.filter(length_filter(len(q)))
     results = query.order_by(Word.char).offset(offset).limit(limit).all()
-    return deduplicate_words(results)
+    return [serialize_word(w) for w in deduplicate_words(results)]
 
 
 def handle_pure_canto_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db: "Session") -> List[dict]:
@@ -272,7 +273,6 @@ def search_words(
     q = normalize_code_tail_separators(q)
 
     if mode == 'syn':
-        # Independent syn/ant mode: bypass all code/rhyme/hybrid/wildcard paths.
         return handle_syn_ant_search(q, db, limit=limit, offset=offset)
 
     relation_parsed = parse_relation_syntax(q)
@@ -309,8 +309,6 @@ def search_words(
     if q.isdigit():
         return handle_pure_digit_query(q, code, mode, limit, offset, db)
 
-    # 純粵字（含自動 ensure 新詞 + code-aware 排序）
-    # 內部已處理「只有含中文才 _ensure」，非中文時直接查字表
     res = handle_pure_canto_query(q, code, mode, limit, offset, db)
     if res:
         return res
