@@ -28,6 +28,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Literal, Optional, Protocol, Sequence, Union
 
+# Imports needed for the moved filter logic (kept minimal to avoid cycles)
+from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
+from app.services.word_query_parser import matches_mask_literal_chars
+from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text
+
 
 # -----------------------------------------------------------------------------
 # 核心抽象定義（直接對應現有程式碼中的概念）
@@ -186,6 +191,78 @@ def matches_code_positions(code_str: str, required_codes: list[Optional[str]], m
     return True
 
 
+def matches_phoneme_at_position(
+    word,
+    pos: int,
+    anchor: str,
+    *,
+    constraint: str,
+    db,
+) -> bool:
+    """
+    檢查指定位置的聲母或韻母是否符合參考字的發音選項。
+
+    原位於 mask_search.py，僅供 filter_words_by_code_and_mask 使用。
+    """
+    if constraint == "final":
+        options = final_options_for_char(anchor, db)
+        parts = get_word_parts(word, "finals")
+    else:
+        options = initial_options_for_char(anchor, db)
+        parts = get_word_parts(word, "initials")
+    if not options or pos >= len(parts):
+        return False
+    return parts[pos] in options
+
+
+def filter_words_by_code_and_mask(
+    candidates: list,
+    *,
+    width: int,
+    code_digits: str,
+    mode: str,
+    mask: str,
+    db,
+    anchor_pos: Optional[int] = None,
+    anchor: Optional[str] = None,
+    constraint: Optional[str] = None,
+    literal_char: Optional[str] = None,
+) -> list:
+    """
+    核心位置過濾器：同時套用長度、mask literal、特定 code 數字、以及可選的 phoneme anchor / literal_char 約束。
+
+    這是 Phase 2.1 重點搬移的函式，原為 mask_search.py 內多個 handle_*（rhyme_anchor, code_tail, at_tail）的共用實作。
+    行為必須與原版 100% 一致（由後續 enforcement 驗證）。
+    """
+    required_codes: list[Optional[str]] = [None] * width
+    if code_digits:
+        for i, d in enumerate(code_digits):
+            required_codes[i] = d
+
+    filtered = []
+    for word in candidates:
+        word_char = get_word_text(word)
+        if len(word_char) != width:
+            continue
+        if mask and not matches_mask_literal_chars(word_char, mask):
+            continue
+        if literal_char is not None and word_char[-1] != literal_char:
+            continue
+        word_code_str = get_word_sort_code(word)
+        word_finals = get_word_parts(word, "finals")
+        if not word_code_str or not word_finals:
+            continue
+        if not matches_code_positions(word_code_str, required_codes, mode):
+            continue
+        if anchor_pos is not None and anchor and constraint:
+            if not matches_phoneme_at_position(
+                word, anchor_pos, anchor, constraint=constraint, db=db,
+            ):
+                continue
+        filtered.append(word)
+    return filtered
+
+
 __all__ = [
     "SlotConstraint",
     "MatchSpec",
@@ -193,4 +270,6 @@ __all__ = [
     "PositionMatchEngine",
     "build_match_spec_from_parsed",
     "matches_code_positions",
+    "matches_phoneme_at_position",
+    "filter_words_by_code_and_mask",
 ]

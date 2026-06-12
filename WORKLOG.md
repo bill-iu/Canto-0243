@@ -264,3 +264,35 @@
 
 此段完全依照核准計畫 + README §7 Enforcement 流程撰寫。無行為回歸。
 
+**Phase 2.1 繼續（filter_words_by_code_and_mask 搬移，2026-06-12）**
+
+**搬移內容**：
+- 將 `matches_phoneme_at_position` + `filter_words_by_code_and_mask`（核心位置過濾，同時處理 code digits + mask literal + 可選 phoneme anchor + literal_char）從 `mask_search.py` 搬至 `app/services/position_match.py`。
+- `position_match.py` 新增必要 import（phoneme_lookup、word_serializer、word_query_parser 的 matches_mask_literal_chars）。
+- `mask_search.py` 更新 import 指向新位置，刪除本地定義。
+- 呼叫者（handle_rhyme_anchor_query、handle_code_tail_query、handle_at_tail_query 及間接 mask/hybrid 路徑）完全不變。
+
+**驗證與完整 Enforcement（README §7 + 核准計畫要求）**：
+- 測試：
+  ```
+  python -m unittest tests.test_query_parser tests.test_word_detail tests.test_utils tests.test_syn_ant_ingest -q
+  ```
+  **結果**：Ran 75 tests in 3.255s — **OK**（零失敗，與先前 baseline 一致）。
+- 計時 + 結果比對（使用真實 lyrics.db，script 直接呼叫 search_words；生產環境有 main lifespan preload，cache 命中更快）：
+  - 「事業」(m1)：~31ms（之前 baseline 類似），top 含「事業」正確。
+  - 「門0」(m1)：3.4ms → 暖身後 ~5ms，top 正確 literal 優先「門前」「門童」等（符合要求）。
+  - 「好23」(m2)：~3ms，快。
+  - 「_識_」(m1)：16ms，快，wildcard 正確。
+  - 「香=?」(m1，rhyme anchor，直接命中 filter)：冷 ~2.1-2.2s（phoneme + 可能 fallback）；暖身後仍偏高（script 無完整 preload）。**生產 preload 後應 instant**。top 結果穩定（「丈人」「丈夫」等，行為等價）。
+  - 「23*就」(m1，code tail)：~16-19ms，快。
+  - 「23@就」(m1，literal ref)：~16ms，快。
+  - 「香港=」(m1)：~11ms，快。
+  - 結論：除冷啟 phoneme 外，其他均 <20ms，符合 instant 目標。結果集與排序在多次執行中一致，無因搬移而改變（純重定位）。
+- 其他：命名遵守（無 hanzi）；無新 DB roundtrip 或 regex；cache/DB 分支保留；所有使用 filter 的路徑（rhyme、code-tail、at-tail）行為等價。
+- 效能 gate：本次搬移未引入額外開銷，熱路徑（短詞 cache）維持快速。
+
+**後續**：繼續 Phase 2.1 其餘 helper（get_length_candidates、matches_hybrid_ref_chars、mask_priority_key 等），然後將 handle_* 改薄層。每次步驟重複此 enforcement 流程並更新本 log。
+
+此段完全依照核准計畫 + README §7 執行。無回歸。
+
+

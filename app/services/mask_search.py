@@ -17,7 +17,11 @@ from app.services.word_query_parser import (
 )
 
 # Phase 2.1：從 position_match 統一取得位置匹配工具（避免重複）
-from app.services.position_match import matches_code_positions
+from app.services.position_match import (
+    filter_words_by_code_and_mask,
+    matches_code_positions,
+    matches_phoneme_at_position,
+)
 from app.services.word_serializer import (
     get_word_jyutping,
     get_word_parts,
@@ -26,66 +30,8 @@ from app.services.word_serializer import (
     serialize_page,
 )
 
-def matches_phoneme_at_position(
-    word,
-    pos: int,
-    anchor: str,
-    *,
-    constraint: str,
-    db,
-) -> bool:
-    if constraint == "final":
-        options = final_options_for_char(anchor, db)
-        parts = get_word_parts(word, "finals")
-    else:
-        options = initial_options_for_char(anchor, db)
-        parts = get_word_parts(word, "initials")
-    if not options or pos >= len(parts):
-        return False
-    return parts[pos] in options
-
-
-def filter_words_by_code_and_mask(
-    candidates: list,
-    *,
-    width: int,
-    code_digits: str,
-    mode: str,
-    mask: str,
-    db,
-    anchor_pos: Optional[int] = None,
-    anchor: Optional[str] = None,
-    constraint: Optional[str] = None,
-    literal_char: Optional[str] = None,
-) -> list:
-    required_codes: list[Optional[str]] = [None] * width
-    if code_digits:
-        for i, d in enumerate(code_digits):
-            required_codes[i] = d
-
-    filtered = []
-    for word in candidates:
-        word_char = get_word_text(word)
-        if len(word_char) != width:
-            continue
-        if mask and not matches_mask_literal_chars(word_char, mask):
-            continue
-        if literal_char is not None and word_char[-1] != literal_char:
-            continue
-        word_code_str = get_word_sort_code(word)
-        word_finals = get_word_parts(word, "finals")
-        if not word_code_str or not word_finals:
-            continue
-        if not matches_code_positions(word_code_str, required_codes, mode):
-            continue
-        if anchor_pos is not None and anchor and constraint:
-            if not matches_phoneme_at_position(
-                word, anchor_pos, anchor, constraint=constraint, db=db,
-            ):
-                continue
-        filtered.append(word)
-    return filtered
-
+# matches_phoneme_at_position 與 filter_words_by_code_and_mask 已搬移至
+# app/services/position_match.py（Phase 2.1）。由新模組提供實作，呼叫站點不變。
 
 def get_length_candidates(db, width: int, mask: str):
     candidates = get_words_for_length(width)
