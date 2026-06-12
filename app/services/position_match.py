@@ -204,6 +204,50 @@ class MaskWildcardCandidateSource:
         return query.order_by(Word.char, Word.jyutping).all(), False
 
 
+@dataclass
+class CompoundAntCandidateSource:
+    """C3：!! 反義複合專用候選來源。
+
+    由 build_char_antonym_pairs 產生的單字 ant pair 展開為 2-char 複合候選字面 (a+b, b+a)，
+    然後以此集合做 char IN 取得 Word 列（可選 code_prefix 過濾）。
+
+    之後 PositionMatchEngine 的 filter_candidates_by_match_spec 負責 rhyme final_anchor (pos 1) 等 slot 約束。
+    行為刻意貼近 C3 之前 legacy compound ant 候選取得階段（char IN + code），以利 regression。
+    """
+
+    db: Any
+    ant_pairs: "set[tuple[str, str]]"
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        from app.utils.jyutping_codec import get_code_variants
+        from app.services.word_db_filters import length_filter
+
+        if length != 2:
+            return [], True
+
+        compounds: set[str] = set()
+        for a, b in self.ant_pairs:
+            if len(a) == 1 and len(b) == 1:
+                compounds.add(a + b)
+                compounds.add(b + a)
+        if not compounds:
+            return [], True
+
+        query = self.db.query(Word).filter(Word.char.in_(list(compounds)), length_filter(2))
+        if code:
+            variants = get_code_variants(code, mode)
+            query = query.filter(Word.code.in_(variants))
+
+        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+        return rows, False
+
+
 # -----------------------------------------------------------------------------
 # PositionMatchEngine（核心引擎，目前為骨架）
 # -----------------------------------------------------------------------------
@@ -491,6 +535,7 @@ __all__ = [
     "LengthMaskCandidateSource",
     "LengthCodeCandidateSource",
     "MaskWildcardCandidateSource",
+    "CompoundAntCandidateSource",
     "run_position_query",
     "PositionMatchEngine",
     "build_match_spec_from_parsed",

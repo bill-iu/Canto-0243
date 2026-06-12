@@ -130,6 +130,23 @@
 - `search_words` → `query_engine` alias（`execute_search`）；`word_search_service` 只留 `!!` handler
 - 測試／bench import 改 `query_engine.search_words`
 
+### 2026-06-13 — C3：`!!` 反義複合 → MatchSpec（CompoundAntExecutor + CandidateSource） ✅
+
+- 新 `compound_ant_executor.py`：`CompoundAntExecutor.compound_ant_page`
+- 新 `CompoundAntCandidateSource`（position_match.py）：由 `build_char_antonym_pairs` 展開 2-char compounds，char IN + code 過濾（行為貼近 legacy 候選取得）
+- `CompoundAntQuery.to_match_spec()`：width=2、code_prefix、rhyme_char → `final_anchor` slot (pos=1)
+- `QueryEngine` registry 直調 executor（移除最後一個 `to_handler_dict()` roundtrip 與 lazy word_search_service import）
+- **刪除** 整個 `app/services/word_search_service.py`（69 行，硬性 AC）
+- 對照 architecture review candidate 2「CompoundAntExecutor → MatchSpec」與 P-C executor 模式
+- 決策重點（grill 後）：
+  - Executor 擁有 ant pair 特殊候選邏輯；spec 統一由 parsed 產生（與 CodeTail/RhymeAnchor 一致）
+  - CandidateSource 隔離「語意候選集」；engine 負責 rhyme final_anchor 等位置約束
+  - SQL shape 維持 char IN + code（C3 不做大改；後續 bench 再優化）
+  - rhyme_char 永遠對應結果詞最後一格 final（pos=1 for width=2）
+- 測試：`tests/test_word_detail` 內 4 個 !! golden case（`!!`、`33!!`、`!!你`、`33!!你`）全綠；`ParseQueryGoldenTests` 通過；discover 維持 OK
+- Bench：`enforce_bench.py` 跑畢（BENCH_DONE），關鍵位置型 case 無明顯退化
+- 符合 handoff-c3-grill-20260612.md 所有 locked 決策與建議實作順序
+
 ### 2026-06-12 — P-C1：RelationSyntaxExecutor（候選 2 partial ✅）
 
 - 新 `relation_syntax_executor.py`：`syn_mode_page` + `relation_lookup_page`（typed `RelationLookupQuery`）
@@ -152,4 +169,4 @@
 - `PositionMatchEngine.match` → `filter_candidates_by_match_spec`（原生吃 `MatchSpec.slots`）
 - 測試：105 unittest OK；+`HybridCodeQuery` / `filter_candidates_by_match_spec` 門0 case
 
-**最後更新**：2026-06-12（P-A 候選 1）
+**最後更新**：2026-06-13（C3 `!!` → MatchSpec 完成，刪除 word_search_service.py）

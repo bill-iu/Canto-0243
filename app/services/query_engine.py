@@ -73,12 +73,25 @@ class CompoundAntQuery:
     def kind(self) -> QueryKind:
         return QueryKind.COMPOUND_ANT
 
-    def to_handler_dict(self) -> dict:
-        return {
-            "kind": "compound_ant",
-            "code_prefix": self.code_prefix,
-            "rhyme_char": self.rhyme_char,
-        }
+    def to_match_spec(self) -> "MatchSpec":
+        """Normalize !! compound-ant query to PositionMatchEngine MatchSpec (C3).
+
+        - width fixed at 2 (ant pair compounds are 2-char)
+        - code_prefix applied as global filter (via source or spec)
+        - rhyme_char (if present) → final_anchor on the *last* char of the compound (pos 1)
+        """
+        from app.services.position_match import MatchSpec, SlotConstraint
+
+        spec = MatchSpec(width=2, code_prefix=self.code_prefix)
+        if self.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(
+                    pos=1,  # last position in 2-char result
+                    kind="final_anchor",
+                    value=self.rhyme_char,
+                )
+            )
+        return spec
 
 
 @dataclass(frozen=True)
@@ -463,7 +476,7 @@ class QueryEngine:
         from app.services.equals_query_handler import handle_equals_syntax
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
-        from app.services.word_search_service import handle_antonym_compound_syntax
+        from app.services.compound_ant_executor import CompoundAntExecutor
 
         code = ctx.code
         mode = ctx.mode
@@ -472,12 +485,13 @@ class QueryEngine:
         db = ctx.db
         relation_executor = RelationSyntaxExecutor(db)
         lookup_executor = WordLookupExecutor(db)
+        compound_ant_executor = CompoundAntExecutor(db)
 
         handler_registry = {
             RelationLookupQuery: lambda p, c, m, l, o, d: relation_executor.relation_lookup_page(
                 p, mode=m, limit=l, offset=o
             ),
-            CompoundAntQuery: lambda p, c, m, l, o, d: handle_antonym_compound_syntax(p.to_handler_dict(), m, l, o, d),
+            CompoundAntQuery: lambda p, c, m, l, o, d: compound_ant_executor.compound_ant_page(p, mode=m, limit=l, offset=o),
             CodeTailQuery: lambda p, c, m, l, o, d: _dispatch_code_tail(p, m, l, o, d),
             LiteralRefQuery: lambda p, c, m, l, o, d: _dispatch_literal_ref(p, m, l, o, d),
             RhymeAnchorQuery: lambda p, c, m, l, o, d: _dispatch_rhyme_anchor(p, m, l, o, d),
