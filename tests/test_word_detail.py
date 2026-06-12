@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation
-from app.routers.word import search_words, handle_syn_ant_search
+from app.services.query_engine import search_words
 
 
 class CharacterDetailPayloadTests(unittest.TestCase):
@@ -94,7 +94,7 @@ class CharacterDetailPayloadTests(unittest.TestCase):
             session.commit()
 
             # Direct handle call (tests the early branch path + _ensure safety)
-            res = handle_syn_ant_search("快樂", session)
+            res = search_words(q="快樂", mode="syn", db=session)
             self.assertIsInstance(res, list)
             # Static fallback or SQL relations may produce results; empty is also valid when no data exists.
             chars = [r.get("char") for r in res]

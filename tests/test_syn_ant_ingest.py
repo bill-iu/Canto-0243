@@ -6,6 +6,8 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation, SynAntEdge
+from app.services.relation_ranker import RankedPools, RelationRanker
+from app.services.relation_syntax_executor import RelationSyntaxExecutor
 from app.services.syn_ant_service import (
     search_syn_ant,
     search_relation_chars,
@@ -376,6 +378,64 @@ class AntCilinExpansionTests(unittest.TestCase):
             self.assertEqual(count1, count2)
             self.assertGreater(stats1["inserted"], 0)
             self.assertEqual(stats2["inserted"], 0)
+
+
+class RelationRankerTests(unittest.TestCase):
+    def test_ranked_pools_chars_syn_without_page(self):
+        from unittest.mock import MagicMock
+
+        pools = RankedPools(
+            query="快樂",
+            syns=[
+                {
+                    "char": "開心",
+                    "relation": "syn",
+                    "source": "test",
+                    "result_type": "syn",
+                }
+            ],
+            ants=[{"char": "悲傷", "relation": "ant", "source": "test", "result_type": "syn"}],
+            semantic=[],
+            db=MagicMock(),
+            thesaurus=MagicMock(),
+            include_static=False,
+        )
+        self.assertEqual(pools.chars("syn"), ["開心"])
+        self.assertEqual(pools.chars("ant", expand=False), ["悲傷"])
+
+    def test_search_relation_chars_matches_ranker_projection(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="開心", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
+            db.commit()
+            ranked = RelationRanker(db).rank("快樂", include_static=False)
+            via_adapter = search_relation_chars(db, "快樂", "syn", include_static=False)
+            self.assertEqual(via_adapter, ranked.chars("syn", expand=False))
+
+
+class RelationSyntaxExecutorTests(unittest.TestCase):
+    def test_syn_mode_page_matches_search_syn_ant(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="開心", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
+            db.commit()
+            from app.services.syn_ant_service import search_syn_ant
+
+            via_syn_ant = search_syn_ant(db, "快樂")
+            via_executor = RelationSyntaxExecutor(db).syn_mode_page("快樂", limit=160, offset=0)
+            self.assertEqual(via_executor, via_syn_ant)
 
 
 class AntSynMirrorTests(unittest.TestCase):

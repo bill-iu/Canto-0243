@@ -7,7 +7,7 @@ from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.word_db_filters import apply_code_filter
-from app.services.word_search_service import handle_syn_ant_search, search_words
+from app.services.query_engine import search_words
 from app.services.word_serializer import deduplicate_words
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -62,4 +62,4 @@ def get_word(char: str, db: Session = Depends(get_db)):
     return word
 
 
-__all__ = ["router", "get_db", "search_words", "handle_syn_ant_search"]
+__all__ = ["router", "get_db", "search_words"]

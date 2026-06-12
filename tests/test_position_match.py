@@ -8,6 +8,7 @@ from app.services.position_match import (
     matches_code_positions,
     matches_phoneme_at_position,
     filter_words_by_code_and_mask,
+    filter_candidates_by_match_spec,
     build_final_options_at_positions,
     word_matches_last_final,
     matches_final_options,
@@ -21,6 +22,7 @@ from app.services.query_engine import (
     CodeTailQuery,
     LiteralRefQuery,
     MaskQuery,
+    HybridCodeQuery,
 )
 
 # Note: Some tests use real DB session from test setup; for full isolation, mocks can be expanded.
@@ -117,6 +119,26 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
         self.assertEqual(digit_slots[0].pos, 1)
         self.assertEqual(digit_slots[0].value, "0")
         self.assertEqual(spec.extra.get("literal_positions"), [(0, "門")])
+
+    def test_hybrid_code_to_spec(self):
+        q = HybridCodeQuery(raw_q="23就")
+        spec = q.to_match_spec()
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.code_prefix, "23")
+        self.assertEqual(spec.hybrid_ref_chars, "就")
+        self.assertEqual(spec.hybrid_ref_pos, 1)
+
+
+class TestFilterCandidatesByMatchSpec(unittest.TestCase):
+    def test_match_spec_code_digit_slots门0(self):
+        w_good = MagicMock(char="門人", code="00", finals='["un","an"]', initials='["m","j"]')
+        w_bad = MagicMock(char="門下", code="02", finals='["un","a"]', initials='["m","h"]')
+        spec = MaskQuery(raw_q="門0").to_match_spec()
+        db = MagicMock()
+        filtered = filter_candidates_by_match_spec([w_good, w_bad], spec, "m1", db)
+        chars = [getattr(w, "char", None) for w in filtered]
+        self.assertIn("門人", chars)
+        self.assertNotIn("門下", chars)
 
 
 class TestPositionMatchEngineMore(unittest.TestCase):

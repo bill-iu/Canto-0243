@@ -6,9 +6,9 @@ PositionMatchEngine（Phase 2.1 起步）
 目標：
 - 建立深層模組（deep module），集中處理所有「逐位置約束」邏輯（缺字、碼字、字面參考、韻錨、hybrid 等）。
 - 定義核心抽象：SlotConstraint、MatchSpec、CandidateSource、PositionMatchEngine。
-- 後續步驟會逐步把 mask_search.py 內的 filter_words_by_code_and_mask、get_length_candidates、matches_* 家族、build_*_options、hybrid 特殊處理等搬移進來。
-- 維持與現有 handle_* 的行為 100% 一致（parse 優先順序、literal 優先、hybrid literal-or-phoneme 語意、快取命中 instant、所有 README §7 關鍵案例輸出與排序完全相同）。
-- 最終讓 mask_search.py 的 handlers 變成薄層 adapter。
+- 後續步驟會逐步把 filter、matches_* 家族、build_*_options、hybrid 特殊處理等集中於本模組。
+- 維持與既有 handle_* 的行為 100% 一致（parse 優先順序、literal 優先、hybrid literal-or-phoneme 語意、快取命中 instant、所有 README §7 關鍵案例輸出與排序完全相同）。
+- QueryEngine registry 直接呼叫 run_position_query（P-A：mask_search 已刪除）。
 
 參考：
 - 手交說明（Cursor Grok Build Handoff Note 2026-06-12）
@@ -267,41 +267,8 @@ class PositionMatchEngine:
                     filtered.append(word)
             return filtered
 
-        # Reconstruct params from spec for the core filter
-        code_digits = spec.code_prefix or ""
-        mask = spec.mask or ""
-        anchor_pos = None
-        anchor = None
-        constraint = None
-        literal_char = None
-        for slot in spec.slots:
-            if slot.kind == "code_digit":
-                # code digit constraints (including those from mask like "門0") are also overlaid inside
-                # filter_words_by_code_and_mask using the mask string (and can be collected from slots here in future).
-                pass
-            if slot.kind == "literal_char":
-                literal_char = slot.value
-            if slot.kind in ("final_anchor", "initial_anchor"):
-                anchor_pos = slot.pos
-                anchor = slot.value
-                constraint = "final" if slot.kind == "final_anchor" else "initial"
-
-        filtered = filter_words_by_code_and_mask(
-            candidates,
-            width=spec.width,
-            code_digits=code_digits,
-            mode=mode,
-            mask=mask,
-            db=db,
-            anchor_pos=anchor_pos,
-            anchor=anchor,
-            constraint=constraint,
-            literal_char=literal_char,
-            slots=spec.slots,
-        )
-
-        # Note: sorting and serialize left to caller for now (as per docstring)
-        return filtered  # caller does serialize_page which handles offset/limit and sort if needed.
+        # Standard path: apply MatchSpec slot constraints via deep filter
+        return filter_candidates_by_match_spec(candidates, spec, mode, db)
 
 
 _DEFAULT_ENGINE = PositionMatchEngine()
@@ -484,6 +451,39 @@ def filter_words_by_code_and_mask(
     return filtered
 
 
+def filter_candidates_by_match_spec(
+    candidates: list,
+    spec: MatchSpec,
+    mode: str,
+    db,
+) -> list:
+    """Apply MatchSpec (slots + mask + code_prefix) to candidate 詞條 rows."""
+    anchor_pos: Optional[int] = None
+    anchor: Optional[str] = None
+    constraint: Optional[str] = None
+    literal_char: Optional[str] = None
+    for slot in spec.slots:
+        if slot.kind == "literal_char" and slot.pos == spec.width - 1:
+            literal_char = slot.value
+        elif slot.kind in ("final_anchor", "initial_anchor"):
+            anchor_pos = slot.pos
+            anchor = slot.value
+            constraint = "final" if slot.kind == "final_anchor" else "initial"
+    return filter_words_by_code_and_mask(
+        candidates,
+        width=spec.width,
+        code_digits=spec.code_prefix or "",
+        mode=mode,
+        mask=spec.mask or "",
+        db=db,
+        anchor_pos=anchor_pos,
+        anchor=anchor,
+        constraint=constraint,
+        literal_char=literal_char,
+        slots=spec.slots,
+    )
+
+
 __all__ = [
     "SlotConstraint",
     "MatchSpec",
@@ -497,6 +497,7 @@ __all__ = [
     "matches_code_positions",
     "matches_phoneme_at_position",
     "filter_words_by_code_and_mask",
+    "filter_candidates_by_match_spec",
     "get_length_candidates",
     "get_candidates_for_length",
     "build_final_options_at_positions",

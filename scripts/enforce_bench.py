@@ -16,7 +16,7 @@ except Exception:
     pass
 
 from app.database import SessionLocal
-from app.services.word_search_service import search_words
+from app.services.query_engine import search_words
 from app.services.word_serializer import get_word_jyutping, get_word_sort_code, get_word_text
 
 db = SessionLocal()

@@ -1,6 +1,6 @@
 """Query parse + dispatch for 詞條搜尋.
 
-Parse is pure (no DB). Execute delegates to existing handlers (migration phase C1).
+Parse is pure (no DB). Execute dispatches via registry to position / equals / lookup handlers.
 Priority order in parse_query is semantic — do not reorder without regression tests.
 """
 from __future__ import annotations
@@ -195,6 +195,24 @@ class HybridCodeQuery:
     def kind(self) -> QueryKind:
         return QueryKind.HYBRID_CODE
 
+    def to_match_spec(self) -> "MatchSpec":
+        """Normalize hybrid code query (e.g. 23就) to MatchSpec."""
+        from app.services.position_match import MatchSpec
+
+        hybrid_match = _HYBRID_CODE_RE.match(self.raw_q)
+        if not hybrid_match:
+            return MatchSpec(width=0)
+        num_prefix = hybrid_match.group(1)
+        ref_chars = hybrid_match.group(2)
+        num_suffix = hybrid_match.group(3)
+        full_code = num_prefix + num_suffix
+        return MatchSpec(
+            width=len(full_code),
+            code_prefix=full_code,
+            hybrid_ref_chars=ref_chars,
+            hybrid_ref_pos=max(0, len(num_prefix) - 1),
+        )
+
 
 @dataclass(frozen=True)
 class MaskQuery:
@@ -277,6 +295,80 @@ ParsedQuery = Union[
 _HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
 
 
+def _dispatch_code_tail(parsed: CodeTailQuery, mode: str, limit: int, offset: int, db: Session) -> list:
+    spec = parsed.to_match_spec()
+    from app.services.position_match import LengthMaskCandidateSource, run_position_query
+
+    return run_position_query(
+        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
+    )
+
+
+def _dispatch_literal_ref(parsed: LiteralRefQuery, mode: str, limit: int, offset: int, db: Session) -> list:
+    spec = parsed.to_match_spec()
+    from app.services.position_match import LengthMaskCandidateSource, run_position_query
+
+    return run_position_query(
+        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
+    )
+
+
+def _dispatch_rhyme_anchor(parsed: RhymeAnchorQuery, mode: str, limit: int, offset: int, db: Session) -> list:
+    spec = parsed.to_match_spec()
+    from app.services.position_match import LengthMaskCandidateSource, run_position_query
+
+    return run_position_query(
+        spec, db, mode, limit, offset, source=LengthMaskCandidateSource(db, spec.mask)
+    )
+
+
+def _dispatch_hybrid_code(
+    parsed: HybridCodeQuery,
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Session,
+) -> list:
+    spec = parsed.to_match_spec()
+    if spec.width == 0:
+        return []
+    from app.services.position_match import LengthCodeCandidateSource, run_position_query
+
+    return run_position_query(
+        spec,
+        db,
+        mode,
+        limit,
+        offset,
+        source=LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode),
+    )
+
+
+def _dispatch_hybrid_q(q: str, mode: str, limit: int, offset: int, db: Session) -> list:
+    return _dispatch_hybrid_code(HybridCodeQuery(raw_q=q), mode, limit, offset, db)
+
+
+def _dispatch_mask_wildcard(
+    parsed: MaskQuery,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Session,
+) -> list:
+    from app.services.position_match import MaskWildcardCandidateSource, mask_priority_key, run_position_query
+
+    spec = parsed.to_match_spec()
+    if spec.width == 0:
+        return []
+    if code:
+        spec.code_prefix = code
+    literal_positions = spec.extra.get("literal_positions", [])
+    source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
+    sort_key = lambda w: mask_priority_key(w, literal_positions)
+    return run_position_query(spec, db, mode, limit, offset, source=source, sort_key=sort_key)
+
+
 def parse_query(q: str) -> ParsedQuery:
     """Classify a normalized query string. No DB access."""
     relation_parsed = parse_relation_syntax(q)
@@ -350,9 +442,11 @@ class QueryEngine:
         q = normalize_code_tail_separators(ctx.q.strip())
 
         if ctx.mode == "syn":
-            from app.services.word_search_service import handle_syn_ant_search
+            from app.services.relation_syntax_executor import RelationSyntaxExecutor
 
-            return handle_syn_ant_search(q, ctx.db, limit=ctx.limit, offset=ctx.offset)
+            return RelationSyntaxExecutor(ctx.db).syn_mode_page(
+                q, limit=ctx.limit, offset=ctx.offset
+            )
 
         parsed = parse_query(q)
         return self._dispatch(parsed, q, ctx)
@@ -366,58 +460,39 @@ class QueryEngine:
         return deduplicate_words(results)
 
     def _dispatch(self, parsed: ParsedQuery, q: str, ctx: SearchContext) -> list:
-        from app.services.mask_search import (
-            handle_at_tail_query,
-            handle_code_tail_query,
-            handle_hybrid_syntax,
-            handle_mask_wildcard_query,
-            handle_rhyme_anchor_query,
-        )
         from app.services.equals_query_handler import handle_equals_syntax
-        from app.services.word_search_service import (
-            handle_antonym_compound_syntax,
-            handle_jyut_fragment_query,
-            handle_pure_canto_query,
-            handle_pure_digit_query,
-            handle_relation_lookup_syntax,
-        )
+        from app.services.relation_syntax_executor import RelationSyntaxExecutor
+        from app.services.word_lookup_executor import WordLookupExecutor
+        from app.services.word_search_service import handle_antonym_compound_syntax
 
         code = ctx.code
         mode = ctx.mode
         limit = ctx.limit
         offset = ctx.offset
         db = ctx.db
+        relation_executor = RelationSyntaxExecutor(db)
+        lookup_executor = WordLookupExecutor(db)
 
-        # Phase 2.2: registry for dispatch cohesion (reduce big isinstance ladder)
-        # Map type -> lambda(parsed, code, mode, limit, offset, db) that extracts arg and calls handler
-        # This makes dispatch data-driven, easy to extend, no long if-chain.
         handler_registry = {
-            RelationLookupQuery: lambda p, c, m, l, o, d: handle_relation_lookup_syntax(p.to_handler_dict(), m, l, o, d),
+            RelationLookupQuery: lambda p, c, m, l, o, d: relation_executor.relation_lookup_page(
+                p, mode=m, limit=l, offset=o
+            ),
             CompoundAntQuery: lambda p, c, m, l, o, d: handle_antonym_compound_syntax(p.to_handler_dict(), m, l, o, d),
-            CodeTailQuery: lambda p, c, m, l, o, d: handle_code_tail_query(p, m, l, o, d),
-            LiteralRefQuery: lambda p, c, m, l, o, d: handle_at_tail_query(p, m, l, o, d),
-            RhymeAnchorQuery: lambda p, c, m, l, o, d: handle_rhyme_anchor_query(p, m, l, o, d),
-            DigitCodeQuery: lambda p, c, m, l, o, d: handle_pure_digit_query(p.raw_q, c, m, l, o, d),
-            MaskQuery: lambda p, c, m, l, o, d: handle_mask_wildcard_query(p, c, m, l, o, d),
-            HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: handle_hybrid_syntax(p.hybrid_q, c, m, l, o, d),
+            CodeTailQuery: lambda p, c, m, l, o, d: _dispatch_code_tail(p, m, l, o, d),
+            LiteralRefQuery: lambda p, c, m, l, o, d: _dispatch_literal_ref(p, m, l, o, d),
+            RhymeAnchorQuery: lambda p, c, m, l, o, d: _dispatch_rhyme_anchor(p, m, l, o, d),
+            DigitCodeQuery: lambda p, c, m, l, o, d: lookup_executor.pure_digit(p.raw_q, c, m, l, o),
+            MaskQuery: lambda p, c, m, l, o, d: _dispatch_mask_wildcard(p, c, m, l, o, d),
+            HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: _dispatch_hybrid_q(p.hybrid_q, m, l, o, d),
             EqualsQuery: lambda p, c, m, l, o, d: handle_equals_syntax(p.raw_q, c, m, l, o, d),
-            HybridCodeQuery: lambda p, c, m, l, o, d: handle_hybrid_syntax(p.raw_q, c, m, l, o, d),
+            HybridCodeQuery: lambda p, c, m, l, o, d: _dispatch_hybrid_code(p, m, l, o, d),
+            WordLookupQuery: lambda p, c, m, l, o, d: lookup_executor.lookup(p.raw_q, c, m, l, o),
+            JyutpingFragmentQuery: lambda p, c, m, l, o, d: lookup_executor.jyut_fragment(p.raw_q, l, o),
         }
 
         handler = handler_registry.get(type(parsed))
         if handler:
             return handler(parsed, code, mode, limit, offset, db)
-
-        if isinstance(parsed, WordLookupQuery):
-            res = handle_pure_canto_query(parsed.raw_q, code, mode, limit, offset, db)
-            if res:
-                return res
-            if re.search(r"[a-zA-Z]", parsed.raw_q):
-                return handle_jyut_fragment_query(parsed.raw_q, limit, offset, db)
-            return []
-
-        if isinstance(parsed, JyutpingFragmentQuery):
-            return handle_jyut_fragment_query(parsed.raw_q, limit, offset, db)
 
         return []
 
@@ -427,3 +502,27 @@ _default_engine = QueryEngine()
 
 def execute_search(ctx: SearchContext) -> list:
     return _default_engine.execute(ctx)
+
+
+def search_words(
+    q: str = None,
+    code: str = None,
+    char: str = None,
+    mode: str = "m1",
+    limit: int = 100,
+    offset: int = 0,
+    *,
+    db: Session,
+):
+    """Public search entry (alias of execute_search)."""
+    return execute_search(
+        SearchContext(
+            q=q,
+            code=code,
+            char=char,
+            mode=mode,
+            limit=limit,
+            offset=offset,
+            db=db,
+        )
+    )

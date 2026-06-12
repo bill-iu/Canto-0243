@@ -123,4 +123,33 @@
 - Phase 2.3 + 門0：`527ba31`
 - 詳細 enforcement timing dump → git history / `scripts/enforce_bench.py` 輸出
 
-**最後更新**：2026-06-12（WORKLOG 壓縮 + PG 凍結）
+### 2026-06-12 — P-C2：WordLookupExecutor + search_words alias（候選 2 partial ✅）
+
+- 新 `word_lookup_executor.py`：`pure_digit` / `pure_canto` / `jyut_fragment` / `lookup`
+- `QueryEngine` registry 直調 lookup + relation executors；刪 C1 wrapper
+- `search_words` → `query_engine` alias（`execute_search`）；`word_search_service` 只留 `!!` handler
+- 測試／bench import 改 `query_engine.search_words`
+
+### 2026-06-12 — P-C1：RelationSyntaxExecutor（候選 2 partial ✅）
+
+- 新 `relation_syntax_executor.py`：`syn_mode_page` + `relation_lookup_page`（typed `RelationLookupQuery`）
+- `QueryEngine`：`mode=syn` 短路 + registry 直調 executor；kill `to_handler_dict()` on relation path
+- `words_for_relation_chars` 搬入 executor；`handle_*` 留 1 行 wrapper（C2 刪）
+- 測試：108 unittest OK
+
+### 2026-06-12 — P-B：RelationRanker（候選 3 ✅）
+
+- 新 `relation_ranker.py`：`RelationRanker(db, thesaurus).rank()` → `RankedPools`
+- `RankedPools.page()` / `.chars(kind, expand=…)`；`search_syn_ant` / `search_relation_chars` 薄 adapter
+- 移除 `search_relation_chars` → `search_syn_ant(limit=10**9)` 反模式
+- ant expand：`chars("ant", expand=True)` only；`mode=syn` page 路徑不 expand
+- 測試：105 unittest OK
+
+### 2026-06-12 — P-A：位置型 pipeline 收斂（候選 1 ✅）
+
+- 刪 `mask_search.py`；`QueryEngine` registry 直調 `run_position_query` + `CandidateSource`
+- `HybridCodeQuery.to_match_spec()`；dispatch helpers `_dispatch_*` 在 `query_engine.py`
+- `PositionMatchEngine.match` → `filter_candidates_by_match_spec`（原生吃 `MatchSpec.slots`）
+- 測試：105 unittest OK；+`HybridCodeQuery` / `filter_candidates_by_match_spec` 門0 case
+
+**最後更新**：2026-06-12（P-A 候選 1）
