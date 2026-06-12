@@ -7,7 +7,7 @@ M1_MAPPING = {"5": "4", "4": "5", "6": "2", "2": "6", "9": "3", "3": "9"}
 
 
 def get_0243_code(jyutping: str) -> str:
-    """根據 jyutping 產生 0243 code"""
+    """根據 jyutping 產生 0243 code（逐音節聲調 → TONE_MAP digit，非韻母鍵盤）。"""
     if not jyutping:
         return ""
 

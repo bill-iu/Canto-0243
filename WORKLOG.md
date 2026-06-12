@@ -577,4 +577,11 @@
 - `app/database.py` — 向後相容 facade；`main.py` lifespan / `__main__` 改呼叫 `bootstrap_local_db()`
 - import `app.database` 不再於載入時 ALTER SQLite（reload 更安全）
 
+**P0：等號錨位 + 領域語意（2026-06-12）**
+
+- `EqualsQueryHandler`：`start_pos = len(left_code) - target_length`（`23=你4` 錨在 pos 1，非首字）。
+- `CONTEXT.md`：讀音 vs 聲母／韻母錨 vs 碼位聲調；0243 碼＝聲調映射；新增「詞庫與注入」政策（LexiconPort、P0–P4 路線圖）。
+- 測試：`test_framed_equals_multi_digit_left_code_anchor_position` 以 `get_0243_code(jyutping)` 建 fixture；正例 `拿一好`/`做一念`（234），反例含 `走你好`（949）。
+- `README` 加 `23=你4` / `23你=4` 範例。
+
 

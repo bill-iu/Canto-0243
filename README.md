@@ -95,6 +95,8 @@ http://127.0.0.1:8000/docs
 ```text
 GET /words/search/?q=23就&mode=m2
 GET /words/search/?q=2=我3&mode=m1
+GET /words/search/?q=23=你4&mode=m1
+GET /words/search/?q=23你=4&mode=m1
 GET /words/search/?q=23=我&mode=m1
 GET /words/search/?q=香港=
 ```

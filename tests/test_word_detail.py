@@ -543,6 +543,74 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertIn("我作", final_chars)
             self.assertNotIn("做得", final_chars)
 
+    @staticmethod
+    def _word_with_tone_mapped_code(char: str, jyutping: str, *, initials: str, finals: str) -> Word:
+        """Word.code from per-syllable tone mapping (get_0243_code), not hand-filled."""
+        from app.utils.jyutping_codec import get_0243_code
+
+        return Word(
+            char=char,
+            code=get_0243_code(jyutping),
+            jyutping=jyutping,
+            finals=finals,
+            initials=initials,
+            length=len(char),
+        )
+
+    def test_framed_equals_multi_digit_left_code_anchor_position(self):
+        """23=你4 / 23你=4：pos 1 同聲/同韻「你」+ 整詞 code 聲調映射為 234。"""
+        with self._session() as session:
+            session.add_all([
+                # tones 6,1,3 -> 234；pos1 聲母 n（同「你」）
+                self._word_with_tone_mapped_code(
+                    "拿一好", "naa6 nei1 hou3",
+                    initials='["n","n","h"]', finals='["aa","ei","ou"]',
+                ),
+                self._word_with_tone_mapped_code(
+                    "做一念", "zou6 nei1 sim3",
+                    initials='["z","n","s"]', finals='["ou","ei","im"]',
+                ),
+                # 949：常見讀音 zau2 nei5 hou2，非 234（走你好）
+                self._word_with_tone_mapped_code(
+                    "走你好", "zau2 nei5 hou2",
+                    initials='["z","n","h"]', finals='["au","ei","ou"]',
+                ),
+                # 942：非 234
+                self._word_with_tone_mapped_code(
+                    "好你問", "hou2 nei5 man6",
+                    initials='["h","n","m"]', finals='["ou","ei","an"]',
+                ),
+                # 234 但 pos1 聲母 d，非同聲「你」
+                self._word_with_tone_mapped_code(
+                    "做一好", "zou6 dak1 hou3",
+                    initials='["z","d","h"]', finals='["ou","ak","ou"]',
+                ),
+                # 234 但 pos0 聲母 n（舊 bug 會誤比首字）；pos1 非 n
+                self._word_with_tone_mapped_code(
+                    "你一如", "nei6 jat1 hou3",
+                    initials='["n","j","h"]', finals='["ei","at","ou"]',
+                ),
+            ])
+            session.commit()
+
+            initial_eq = search_words(q="23=你4", mode="m1", db=session, limit=20, offset=0)
+            initial_chars = [r["char"] for r in initial_eq]
+            self.assertIn("拿一好", initial_chars)
+            self.assertIn("做一念", initial_chars)
+            self.assertNotIn("走你好", initial_chars)
+            self.assertNotIn("好你問", initial_chars)
+            self.assertNotIn("做一好", initial_chars)
+            self.assertNotIn("你一如", initial_chars)
+
+            final_eq = search_words(q="23你=4", mode="m1", db=session, limit=20, offset=0)
+            final_chars = [r["char"] for r in final_eq]
+            self.assertIn("拿一好", final_chars)
+            self.assertIn("做一念", final_chars)
+            self.assertNotIn("走你好", final_chars)
+            self.assertNotIn("好你問", final_chars)
+            self.assertNotIn("做一好", final_chars)
+            self.assertNotIn("你一如", final_chars)
+
     def test_rhyme_anchor_syntax(self):
         with self._session() as session:
             session.add_all([

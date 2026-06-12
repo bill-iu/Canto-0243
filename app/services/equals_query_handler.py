@@ -2,6 +2,9 @@
 
 Left ``=`` anchors initial; right ``=`` anchors final; whole-word templates like ``香港=``.
 Not part of PositionMatchEngine — phoneme sandwich / exact-match logic stays here.
+
+Product rules: see CONTEXT.md §「等號查詢」.
+參考字只提供聲母或韻母錨（非整段讀音）；逐格 code digit 單獨約束聲調（鬆/緊見 mode）。
 """
 
 from __future__ import annotations
@@ -64,11 +67,8 @@ class EqualsQueryHandler:
         query = apply_code_filter(query, full_code, mode)
         query = query.filter(length_filter(expected_length))
         is_rhyme_match = right_equal
-        # Code 夾單字錨（2=我3 / 2我=3）：左碼約束首字、右碼約束尾字，錨點音韻比對首字（pos 0）。
-        if target_length == 1 and left_code and right_code:
-            start_pos = 0
-        else:
-            start_pos = max(0, len(left_code) - target_length)
+        # 錨字對齊左碼尾位：2=我3 → pos 0；23=你4 → pos 1（code 3 那格同聲「你」）。
+        start_pos = max(0, len(left_code) - target_length)
 
         if start_pos == 0 and target_length == expected_length:
             target_parts = target_finals if is_rhyme_match else target_initials
