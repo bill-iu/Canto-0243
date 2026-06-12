@@ -569,4 +569,12 @@
 - `char_antonym_pairs` / `search_syn_ant` / `search_relation_chars` 改注入 `thesaurus` 參數（預設 `default_thesaurus_port()`）。
 - 搜尋語法與 API 行為不變；測試全綠。
 
+**database.py 拆分（架構 #6，2026-06-12）**
+
+- `app/db/connection.py` — engine、SessionLocal、Base、DATABASE_URL、env
+- `app/db/bootstrap.py` — `ensure_*`、`start_length_backfill`、`bootstrap_local_db()`（含原 import 時 embedding 補欄位移至此）
+- `app/db/dialect.py` — `contains_substring`
+- `app/database.py` — 向後相容 facade；`main.py` lifespan / `__main__` 改呼叫 `bootstrap_local_db()`
+- import `app.database` 不再於載入時 ALTER SQLite（reload 更安全）
+
 

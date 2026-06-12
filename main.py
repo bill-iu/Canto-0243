@@ -16,7 +16,8 @@ from contextlib import asynccontextmanager
 async def lifespan(app: FastAPI):
     if (os.getenv("ENV", "local").lower() != "prod" and not IS_POSTGRES):
         try:
-            from app.database import ensure_length_column
+            from app.db.bootstrap import ensure_length_column
+
             ensure_length_column()
         except Exception:
             pass  # 失敗不影響啟動，有 fallback
@@ -70,18 +71,9 @@ if __name__ == "__main__":
     # 這樣 import database 時完全沒有副作用，StatReload 穩定。
     if (env != "prod" and not IS_POSTGRES) or os.getenv("FORCE_CREATE_ALL"):
         try:
-            from app.database import (
-                ensure_length_column,
-                start_length_backfill,
-                ensure_word_relations_table,
-                ensure_word_relations_canonical_unique,
-                ensure_syn_ant_edges_table,
-            )
-            ensure_length_column()              # 輕量 length 欄位
-            ensure_word_relations_table()       # 輕量 word_relations（syn/ant 關係表）
-            ensure_word_relations_canonical_unique()  # (word_id, related_id, relation_type) + min-id canonical
-            ensure_syn_ant_edges_table()        # ingest v2 staging
-            start_length_backfill()             # 重型 length backfill（daemon）
+            from app.db.bootstrap import bootstrap_local_db
+
+            bootstrap_local_db()
         except Exception as e:
             print(f"[main] schema ensure / length backfill 啟動失敗（可忽略）：{e}")
 
