@@ -427,6 +427,10 @@ class SearchSyntaxTests(unittest.TestCase):
             ]
             self.assertTrue(set(at_chars).issubset(set(chars)))
 
+            eq_results = search_words(q="23就=", mode="m1", db=session, limit=20, offset=0)
+            eq_chars = [r["char"] for r in eq_results]
+            self.assertEqual(set(eq_chars), set(chars))
+
     def test_hybrid_includes_literal_tail_even_with_wrong_finals(self):
         with self._session() as session:
             session.add(
@@ -446,7 +450,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertEqual(at_chars, ["做就"])
 
     def test_code_tail_and_at_tail_syntax(self):
-        mid = "&"
+        mid = "*"
         with self._session() as session:
             session.add_all([
                 Word(
@@ -494,11 +498,44 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertNotIn("做得", at_chars)
 
             legacy_eq = search_words(q="23就=", mode="m1", db=session, limit=20, offset=0)
-            legacy_chars = [
-                r["char"] if isinstance(r, dict) else getattr(r, "char", r) for r in legacy_eq
-            ]
+            legacy_chars = [r["char"] for r in legacy_eq]
             self.assertIn("做就", legacy_chars)
             self.assertNotIn("做就就", legacy_chars)
+
+            legacy_amp = search_words(q="23&就=", mode="m1", db=session, limit=20, offset=0)
+            self.assertEqual([r["char"] for r in legacy_amp], final_chars)
+
+            legacy_dot = search_words(q="23\u00b7就=", mode="m1", db=session, limit=20, offset=0)
+            self.assertEqual([r["char"] for r in legacy_dot], final_chars)
+
+    def test_framed_equals_initial_vs_final(self):
+        with self._session() as session:
+            session.add_all([
+                Word(
+                    char="做我", code="23", jyutping="zou6 ngo5",
+                    finals='["ou","o"]', initials='["z","ng"]', length=2,
+                ),
+                Word(
+                    char="做得", code="23", jyutping="zou6 dak1",
+                    finals='["ou","ak"]', initials='["z","d"]', length=2,
+                ),
+                Word(
+                    char="好我", code="24", jyutping="hou2 ngo5",
+                    finals='["ou","o"]', initials='["h","ng"]', length=2,
+                ),
+            ])
+            session.commit()
+
+            initial_eq = search_words(q="2=我3", mode="m1", db=session, limit=20, offset=0)
+            initial_chars = [r["char"] for r in initial_eq]
+            self.assertIn("做我", initial_chars)
+            self.assertNotIn("做得", initial_chars)
+            self.assertNotIn("好我", initial_chars)
+
+            final_eq = search_words(q="2我=3", mode="m1", db=session, limit=20, offset=0)
+            final_chars = [r["char"] for r in final_eq]
+            self.assertIn("做我", final_chars)
+            self.assertNotIn("做得", final_chars)
 
     def test_rhyme_anchor_syntax(self):
         with self._session() as session:

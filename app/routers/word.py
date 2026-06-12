@@ -36,14 +36,36 @@ from collections import defaultdict
 # (Review cleanup: explanatory mentions of "hanzi" in comments kept only for history; all logic paths use canto/chars.)
 
 WILDCARD_CHARS = frozenset("_?%")
-CODE_TAIL_MIDDLE = "&"
+CODE_TAIL_MIDDLE = "*"
+LEGACY_CODE_TAIL_SEPARATORS = ("&", "\u00b7")
 
 CODE_TAIL_RE = re.compile(rf"^(\d+){re.escape(CODE_TAIL_MIDDLE)}(.+)$")
+HYBRID_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥])=$")
 AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
 SLOT_CHARS_RE = r"[0-9_?%]"
 
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
+
+
+def _normalize_code_tail_separators(q: str) -> str:
+    """Map legacy code-tail separators (&, ·) to * only at digit-prefix positions."""
+    m = re.match(r"^(\d+)([&·*])(.+)$", q)
+    if not m:
+        return q
+    sep = m.group(2)
+    if sep in LEGACY_CODE_TAIL_SEPARATORS:
+        return f"{m.group(1)}{CODE_TAIL_MIDDLE}{m.group(3)}"
+    return q
+
+
+def _is_hybrid_tail_equals_alias(q: str) -> bool:
+    """True for 23就= style queries that alias hybrid tail-rhyme (23就)."""
+    return bool(HYBRID_TAIL_EQUALS_RE.match(q))
+
+
+def _hybrid_query_from_tail_equals(q: str) -> str:
+    return q[:-1]
 
 
 def _is_wildcard_char(ch: str) -> bool:
@@ -119,8 +141,8 @@ def _initial_options_for_char(ch: str, db) -> set[str]:
 
 
 def _is_framed_equals_query(q: str) -> bool:
-    """Legacy framed equals: 香港=, 2=我3, 23就= — not query-level rhyme anchors."""
-    if CODE_TAIL_MIDDLE in q or "@" in q:
+    """Legacy framed equals: 香港=, 2=我3 — not query-level rhyme anchors or hybrid tail alias."""
+    if CODE_TAIL_MIDDLE in q or "@" in q or _is_hybrid_tail_equals_alias(q):
         return False
     match = re.match(r"^(\d*)(=)?([一-龥]+)(=)?(\d*)$", q)
     if not match:
@@ -142,7 +164,7 @@ def _is_framed_equals_query(q: str) -> bool:
 
 
 def _parse_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no &)."""
+    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no code-tail *)."""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q or _is_framed_equals_query(q):
         return None
 
@@ -820,7 +842,7 @@ def get_word(char: str, db: Session = Depends(get_db)):
 
 
 def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):  # untyped db to avoid FastAPI treating it as a response field during module import
-    """處理「左碼=目標=右碼」等號韻語法。"""
+    """Legacy framed equals: left = initial (=锚), right = final (锚=), whole-word template."""
     match = re.match(r'^(\d*)(=)?([一-龥]+)?(=)?(\d*)$', q)
     if not match:
         return []
@@ -835,7 +857,10 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
     if not target_str:
         return []
 
-    target = db.query(Word).filter(Word.char == target_str).first()
+    target_rows = db.query(Word).filter(Word.char == target_str).all()
+    if not target_rows:
+        target_rows = _ensure_word_in_db(db, target_str)
+    target = target_rows[0] if target_rows else None
     if not target:
         return []
 
@@ -849,7 +874,10 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
     query = _apply_code_filter(query, full_code, mode)
     query = query.filter(_length_filter(expected_length))
     is_rhyme_match = right_equal
-    start_pos = max(0, len(left_code) - target_length)
+    if target_length == 1 and left_code and right_code:
+        start_pos = len(left_code)
+    else:
+        start_pos = max(0, len(left_code) - target_length)
 
     if start_pos == 0 and target_length == expected_length:
         target_parts = target_finals if is_rhyme_match else target_initials
@@ -858,7 +886,7 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
         query = query.filter(compare_field == target_json)
 
         results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        return _deduplicate_words(results)
+        return _serialize_page(_deduplicate_words(results), offset, limit)
 
     candidates = query.order_by(Word.char).limit(2000).all()
     filtered = []
@@ -877,7 +905,7 @@ def _handle_equals_syntax(q: str, code: Optional[str], mode: str, limit: int, of
         if match_ok:
             filtered.append(word)
 
-    return _paginate(_deduplicate_words(filtered), offset, limit)
+    return _serialize_page(_deduplicate_words(filtered), offset, limit)
 
 
 def _get_word_parts(word, field: str) -> list:
@@ -1056,7 +1084,8 @@ def _handle_hybrid_syntax(q: str, code: Optional[str], mode: str, limit: int, of
         ):
             filtered.append(word)
 
-    return _paginate(_deduplicate_words(filtered), offset, limit)
+    filtered.sort(key=lambda w: (_get_word_text(w), _get_word_jyutping(w)))
+    return _serialize_page(filtered, offset, limit)
 
 
 def _handle_mask_wildcard_query(q: str, code: Optional[str], mode: str, limit: int, offset: int, db):
@@ -1284,7 +1313,7 @@ def search_words(
         return _deduplicate_words(results)
 
     q = q.strip()
-    q = q.replace("\u00b7", CODE_TAIL_MIDDLE)  # legacy middle-dot alias
+    q = _normalize_code_tail_separators(q)
 
     if mode == 'syn':
         # Independent syn/ant mode: bypass all code/rhyme/hybrid/wildcard paths.
@@ -1295,6 +1324,9 @@ def search_words(
         if relation_parsed["kind"] == "compound_ant":
             return _handle_antonym_compound_syntax(relation_parsed, mode, limit, offset, db)
         return _handle_relation_lookup_syntax(relation_parsed, mode, limit, offset, db)
+
+    if _is_hybrid_tail_equals_alias(q):
+        return _handle_hybrid_syntax(_hybrid_query_from_tail_equals(q), code, mode, limit, offset, db)
 
     if _is_framed_equals_query(q):
         return _handle_equals_syntax(q, code, mode, limit, offset, db)
