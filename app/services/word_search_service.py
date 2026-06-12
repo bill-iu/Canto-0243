@@ -10,28 +10,11 @@ from utils import get_code_variants, load_json_list
 
 from app.models.word import Word
 from app.services.code_aware_ranker import build_code_aware_results
-from app.services.mask_search import (
-    handle_at_tail_query,
-    handle_code_tail_query,
-    handle_hybrid_syntax,
-    handle_mask_wildcard_query,
-    handle_rhyme_anchor_query,
-    word_matches_last_final,
-)
+from app.services.mask_search import word_matches_last_final
 from app.services.phoneme_lookup import final_options_for_char
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
-from app.services.word_query_parser import (
-    hybrid_query_from_tail_equals,
-    is_framed_equals_query,
-    is_hybrid_tail_equals_alias,
-    looks_like_mask_query,
-    normalize_code_tail_separators,
-    parse_at_tail_query,
-    parse_code_tail_query,
-    parse_relation_syntax,
-    parse_rhyme_anchor_query,
-)
+from app.services.query_engine import QueryEngine, SearchContext
 from app.services.word_serializer import (
     deduplicate_words,
     get_primary_codes,
@@ -261,62 +244,17 @@ def search_words(
     *,
     db: Session,
 ):
-    if not q:
-        query = db.query(Word)
-        query = apply_code_filter(query, code, mode)
-        if char:
-            query = query.filter(Word.char == char)
-        results = query.order_by(Word.char).offset(offset).limit(limit).all()
-        return deduplicate_words(results)
-
-    q = q.strip()
-    q = normalize_code_tail_separators(q)
-
-    if mode == 'syn':
-        return handle_syn_ant_search(q, db, limit=limit, offset=offset)
-
-    relation_parsed = parse_relation_syntax(q)
-    if relation_parsed:
-        if relation_parsed["kind"] == "compound_ant":
-            return handle_antonym_compound_syntax(relation_parsed, mode, limit, offset, db)
-        return handle_relation_lookup_syntax(relation_parsed, mode, limit, offset, db)
-
-    if is_hybrid_tail_equals_alias(q):
-        return handle_hybrid_syntax(hybrid_query_from_tail_equals(q), code, mode, limit, offset, db)
-
-    if is_framed_equals_query(q):
-        return handle_equals_syntax(q, code, mode, limit, offset, db)
-
-    code_tail_parsed = parse_code_tail_query(q)
-    if code_tail_parsed:
-        return handle_code_tail_query(code_tail_parsed, mode, limit, offset, db)
-
-    at_tail_parsed = parse_at_tail_query(q)
-    if at_tail_parsed:
-        return handle_at_tail_query(at_tail_parsed, mode, limit, offset, db)
-
-    rhyme_anchor_parsed = parse_rhyme_anchor_query(q)
-    if rhyme_anchor_parsed:
-        return handle_rhyme_anchor_query(rhyme_anchor_parsed, mode, limit, offset, db)
-
-    hybrid_match = re.match(r'^(\d+)([一-龥]+)(\d*)$', q)
-    if hybrid_match and not hybrid_match.group(3):
-        return handle_hybrid_syntax(q, code, mode, limit, offset, db)
-
-    if looks_like_mask_query(q):
-        return handle_mask_wildcard_query(q, code, mode, limit, offset, db)
-
-    if q.isdigit():
-        return handle_pure_digit_query(q, code, mode, limit, offset, db)
-
-    res = handle_pure_canto_query(q, code, mode, limit, offset, db)
-    if res:
-        return res
-
-    if re.search(r'[a-zA-Z]', q):
-        return handle_jyut_fragment_query(q, limit, offset, db)
-
-    return []
+    return QueryEngine().execute(
+        SearchContext(
+            q=q,
+            code=code,
+            char=char,
+            mode=mode,
+            limit=limit,
+            offset=offset,
+            db=db,
+        )
+    )
 
 
 def handle_syn_ant_search(

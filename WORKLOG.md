@@ -171,3 +171,62 @@
 - 繼續依計畫拆分其餘階段或處理檔案內其他被標記的 handle / ensure 函式。
 
 目前 router 針對報告熱點的初步重構已帶來可見改善（整體分數微升、word.py Issue Score 下降、主函式 Complexity 從 46 降至 38）。
+
+**QueryEngine + parse_query 重構（C1 Phase 1，2026-06-12）**
+
+**來源**：完整接收 Cursor Agent 於 2026-06-12 產出的 Grok Build Handoff Note（improve-codebase-architecture 審查 + 實作候選 #1）。
+
+**目標**：
+- 將原本散落在 `search_words` 內的 ~65 行 if/regex 分派鏈，收斂為乾淨的「查詢分派」邊界（見 CONTEXT.md 新增詞條）。
+- 採 C1 兩階段遷移策略：Phase 1 先建立 parse + 強型別 AST + registry dispatch，**行為完全不變**，僅委派既有 `handle_*` 函式。
+
+**完成內容**：
+- 新增 `app/services/query_engine.py`：`QueryKind` enum、所有 `ParsedQuery` dataclass（RelationLookupQuery、EqualsQuery、CodeTailQuery、MaskQuery…）、`parse_query()`（純函式、無 DB）、`SearchContext`、`QueryEngine.execute()` + `_dispatch()`。
+- 新增 `app/services/word_query_parser.py`：所有低階解析工具（`normalize_code_tail_separators`、`parse_relation_syntax`、`parse_code_tail_query`、`parse_rhyme_anchor_query`、`is_framed_equals_query`、`looks_like_mask_query` 等）。
+- 更新 `app/services/word_search_service.py`：`search_words()` 縮減為單行 `QueryEngine().execute(SearchContext(...))`；`handle_syn_ant_search` 保留。
+- 新增 `tests/test_query_parser.py`：19 個 golden tests，**嚴格鎖定 parse 優先順序**（semantic 順序不可亂動）。
+- 更新 `CONTEXT.md`：補充「查詢分派」領域詞彙定義。
+
+**關鍵設計決策（直接來自 handoff）**：
+- A1：`mode == 'syn'` 在 `parse_query` **之前** 短路處理（近反義模式不是查詢字串語法）。
+- B1：使用 dataclass + enum 作為 AST；handler 仍吃 dict 者透過 `.to_handler_dict()` / `asdict()` 橋接。
+- C1（Phase 1）：僅做 parse + dispatch 委派；Phase 2 才考慮把 handler 邏輯內聚或與 PositionMatchEngine 合併。
+- parse 優先順序（完整保留，golden tests 防護）：
+  1. relation / compound_ant（~ / ! / !!）
+  2. hybrid_tail_equals_alias（23就= 必須先於一般等號）
+  3. framed_equals
+  4. code_tail (*)
+  5. at_tail (@)
+  6. rhyme_anchor（query-level =）
+  7. hybrid code（無尾碼的 23就）
+  8. mask
+  9. 純數字 / 含漢字 / 含字母 / unmatched
+
+**驗證與 Enforcement（嚴格遵守 README §7）**：
+- 測試：使用 venv python 執行 handoff 指定指令
+  ```
+  python -m unittest tests.test_query_parser tests.test_word_detail tests.test_utils tests.test_syn_ant_ingest -v
+  ```
+  **結果**：Ran 75 tests in 3.222s — **OK**（含 19 個新 parser golden tests + 既有整合測試）。
+- 關鍵邊界由 golden tests 鎖定：
+  - `23就=` → HybridTailEqualsAliasQuery（非 EqualsQuery）
+  - `~開心` → RelationLookupQuery（非 MaskQuery）
+  - `2!!就` → CompoundAntQuery（帶 code_prefix + rhyme_char）
+  - `+++` → UnmatchedQuery
+  - legacy separator（& / · → *）在 execute 前 normalize
+- 整合路徑涵蓋（test_word_detail 全通過）：
+  - framed equals（2=我3 / 2我=3 literal anchor）
+  - hybrid / code tail / rhyme anchor
+  - strict per-code（「事業」類案例）
+  - syn 模式與 ~ 關係查詢（兩條獨立路徑）
+  - wildcard / 混合 literal+digit 路徑
+- 效能：Phase 1 僅多一層 dispatch + 純 Python parse，開銷可忽略（handoff 預期）。真實資料集上的 before/after 計時與結果集比對（事業、門0/好23、_識_、快樂 syn、香港= 等）建議後續以 `lyrics.db` + 完整 preload 執行並記錄於此。
+- 命名：全程遵守「禁止 hanzi，使用 canto / chars」。
+- 無行為改變：完全委派既有 handler，舊整合測試全部保留綠燈。
+
+**後續（handoff 建議順序）**：
+1. 本 commit 後可考慮 Phase 2：將 handle_* 內聚進 handler registry、QueryEngine singleton 化、與候選 #2 PositionMatchEngine 合併。
+2. 繼續架構審查其餘候選（#3 退役根目錄 utils.py、#4 RelationGraph、#6 database 拆分等）。
+3. 其他 backlog：guotong 註冊 sources.yaml、triage labels、portable 重打包。
+
+此段完全依照 Cursor Handoff Note + README §7 Enforcement 流程撰寫。所有 parse 順序決策與 golden tests 均來自本次移交。
