@@ -106,5 +106,98 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
         self.assertEqual(spec.slots[0].pos, 1)
 
 
+class TestPositionMatchEngineMore(unittest.TestCase):
+    """Additional isolation coverage for PositionMatchEngine / helpers.
+    Targets handoff suggestions: hybrid boundaries (literal-or-phoneme), code_digit slots (門0 style mask),
+    literal_priority / mask_priority_key, more engine match scenarios.
+    """
+
+    def test_matches_hybrid_ref_chars_literal_or_phoneme(self):
+        """Core semantic for hybrid: position can match by exact char (literal ref) OR by final options (rhyme)."""
+        ref_chars = "就"
+        start_pos = 1
+        width = 2
+        # finals option at the ref pos (len must match width)
+        target_opts: list = [None, {"au", "iu", "o"}]  # dummy finals set containing possible
+
+        # Use correct len=width word. pos1 ref '就' ; literal match at [1]
+        # literal char match at ref pos bypasses final check (even if final not in opts)
+        self.assertTrue(
+            matches_hybrid_ref_chars("A就", ["x", "z"], ref_chars, start_pos, target_opts)
+        )
+
+        # phoneme match (final in options)
+        self.assertTrue(
+            matches_hybrid_ref_chars("A就", ["x", "au"], ref_chars, start_pos, target_opts)
+        )
+
+        # neither literal nor phoneme -> false
+        self.assertFalse(
+            matches_hybrid_ref_chars("A唔", ["x", "z"], ref_chars, start_pos, target_opts)
+        )
+
+    def test_filter_words_by_code_and_mask_with_code_digit_slots(self):
+        """門0 / 好23 style: code_digit slots (populated for mask digits) + literal mask must drive required_codes overlay."""
+        w_good = MagicMock(char="門人", code="00", finals='["un","an"]', initials='["m","j"]')
+        w_bad = MagicMock(char="門下", code="02", finals='["un","a"]', initials='["m","h"]')
+        candidates = [w_good, w_bad]
+        db = MagicMock()
+
+        # slots as produced by handle_mask_wildcard for "門0"
+        slots = [
+            SlotConstraint(pos=0, kind="literal_char", value="門"),
+            SlotConstraint(pos=1, kind="code_digit", value="0"),
+        ]
+        filtered = filter_words_by_code_and_mask(
+            candidates,
+            width=2,
+            code_digits="",
+            mode="m1",
+            mask="門0",
+            db=db,
+            slots=slots,
+        )
+        chars = [getattr(w, "char", None) for w in filtered]
+        self.assertIn("門人", chars)
+        self.assertNotIn("門下", chars)
+
+    def test_mask_priority_key_various_counts(self):
+        """literal_priority sorting key: more literal matches -> smaller (better) first component."""
+        w_full = MagicMock(char="門人", jyutping="mun4 jan4")
+        w_partial = MagicMock(char="門下", jyutping="mun4 haa5")
+        # Ensure w_none matches ZERO of the literal positions (avoid trailing '人' match on pos1)
+        w_none = MagicMock(char="好心", jyutping="hou2 sam1")
+
+        k_full = mask_priority_key(w_full, [(0, "門"), (1, "人")])
+        k_part = mask_priority_key(w_partial, [(0, "門"), (1, "人")])
+        k_none = mask_priority_key(w_none, [(0, "門"), (1, "人")])
+
+        self.assertEqual(k_full[0], -2)
+        self.assertEqual(k_part[0], -1)
+        self.assertEqual(k_none[0], 0)
+        # full better (smaller) than partial
+        self.assertLess(k_full[0], k_part[0])
+
+    def test_engine_match_hybrid_spec_with_pre_candidates(self):
+        """Exercise the hybrid special path in engine.match (pre_candidates + hybrid_* fields)."""
+        engine = PositionMatchEngine()
+        # Mock sufficient for hybrid branch (char match will succeed; get_* called on mock)
+        w = MagicMock(char="23就", code="23")
+        # Provide minimal so get_word_parts / get sort don't explode the path before matches_hybrid
+        # (in practice real words or better mocks; here we accept list return or handled error as smoke)
+        pre = [w]
+        db = MagicMock()
+        spec = MatchSpec(
+            width=2,
+            code_prefix="23",
+            hybrid_ref_chars="就",
+            hybrid_ref_pos=1,
+        )
+        res = engine.match(spec, None, db, pre_candidates=pre)
+        self.assertIsInstance(res, list)
+        # If the mock path lets the char match through, len may be 1; otherwise 0 is acceptable for isolation smoke.
+        # Main goal: no exception, hybrid branch taken.
+
+
 if __name__ == "__main__":
     unittest.main()

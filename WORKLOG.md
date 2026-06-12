@@ -250,6 +250,18 @@
 
 （本次為 handoff 接手後的 mandated 完整 enforcement，未改任何功能程式碼，僅驗證 + 記錄。）
 
+**Next step taken (handoff §4)**: 為 PositionMatchEngine 增加更多隔離測試（hybrid 邊界 literal-or-phoneme、mask code_digit slots 覆蓋「門0」類、literal_priority 排序 mask_priority_key 各種 count、engine hybrid spec 路徑）。新增 4 個 tests（總數 82 → 86）。
+
+- 全部使用 mock + 純 helper / engine 隔離，無需真實 DB preload。
+- 執行完整測試指令：Ran 86 tests in 3.346s **OK**。
+- Spot re-timing 門0/事業 行為與先前一致（無 regression，由 test add 引起）。
+- 符合 handoff 建議與 README §7（測試擴充後仍需全套 + 紀錄）。
+- 準備好後續其他候選（統一 PositionQuery、registry 單一路徑、退役 utils.py facade 等）。
+
+---
+
+（繼續依 handoff 計畫推進，每次實質步驟皆完整 enforcement + WORKLOG + commit。）
+
 ---
 
 # (以下為較舊的歷史紀錄，新的 enforcement 置於上方)
