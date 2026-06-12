@@ -140,7 +140,6 @@
     .menu-trigger,
     .ghost-button,
     .primary-button,
-    .example-button,
     .result-item,
     .load-more,
     .mode-option {
@@ -186,7 +185,6 @@
 
     .ghost-button:hover,
     .menu-trigger:hover,
-    .example-button:hover,
     .load-more:hover,
     .result-item:hover,
     .mode-option:hover {
@@ -197,7 +195,6 @@
 
     .ghost-button:active,
     .menu-trigger:active,
-    .example-button:active,
     .load-more:active,
     .result-item:active,
     .mode-option:active,
@@ -448,24 +445,6 @@
       opacity: 0.72;
     }
 
-    .syntax-rail {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .example-button {
-      min-width: 0;
-      min-height: 42px;
-      padding: 9px 11px;
-      color: var(--ink);
-      font-size: 13px;
-      text-align: left;
-      overflow: hidden;
-    }
-
-    .example-button code,
     .guide-example code {
       color: var(--accent-strong);
       font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -474,7 +453,6 @@
       white-space: nowrap;
     }
 
-    .example-button span,
     .guide-example span {
       display: block;
       min-width: 0;
@@ -765,7 +743,6 @@
         flex: 1;
       }
 
-      .syntax-rail,
       .guide-grid {
         grid-template-columns: 1fr;
       }
@@ -866,7 +843,7 @@
   <main class="main-wrap" id="mainContent">
     <section class="search-view" id="searchView" aria-labelledby="searchTitle">
       <div class="hero">
-        <p class="eyebrow">0243 / 02493 / Jyutping / Relation syntax</p>
+        <p class="eyebrow">Cantonese Lyric Rhyme Workbench</p>
         <h1 id="searchTitle">粵語填詞查韻工作台</h1>
         <p>輸入字、詞、韻母、編碼或關係語法。結果可點擊回查，方便在寫詞時快速轉向下一個候選。</p>
       </div>
@@ -877,7 +854,7 @@
           <span class="mode-readout" id="modeReadout">目前模式：m1 · 0243</span>
         </div>
         <div class="search-row">
-          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search" aria-describedby="searchHelp">
+          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search">
           <div class="search-actions">
             <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -890,28 +867,6 @@
             </button>
             <button class="primary-button" id="searchBtn" type="submit">搜尋</button>
           </div>
-        </div>
-        <div class="syntax-rail" id="searchHelp" aria-label="常用搜尋例子">
-          <button class="example-button" type="button" data-query="香??" data-mode="m1">
-            <code translate="no">香??</code>
-            <span>三字，首字是香</span>
-          </button>
-          <button class="example-button" type="button" data-query="23*就=" data-mode="m1">
-            <code translate="no">23*就=</code>
-            <span>三字，第三字同韻「就」</span>
-          </button>
-          <button class="example-button" type="button" data-query="?=就" data-mode="m1">
-            <code translate="no">?=就</code>
-            <span>二字，尾字同聲「就」</span>
-          </button>
-          <button class="example-button" type="button" data-query="香港=" data-mode="m1">
-            <code translate="no">香港=</code>
-            <span>整詞同韻模板</span>
-          </button>
-          <button class="example-button" type="button" data-query="!你" data-mode="m1">
-            <code translate="no">!你</code>
-            <span>反義於「你」</span>
-          </button>
         </div>
       </form>
 
@@ -1003,7 +958,7 @@
             <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>二字，整詞同韻「香港」</span></button>
             <button class="guide-example" type="button" data-query="大蛋糕=" data-mode="m1"><code translate="no">大蛋糕=</code><span>三字，整詞同韻「大蛋糕」</span></button>
             <button class="guide-example" type="button" data-query="34英皇=" data-mode="m1"><code translate="no">34英皇=</code><span>五字，前碼 34 + 整詞同韻</span></button>
-            <button class="guide-example" type="button" data-query="2我=3" data-mode="m1"><code translate="no">2我=3</code><span>二字，23同音，尾字同韻「我」</span></button>
+            <button class="guide-example" type="button" data-query="2我=3" data-mode="m1"><code translate="no">2我=3</code><span>二字，23同音，首字同韻「我」</span></button>
             <button class="guide-example" type="button" data-query="23就=" data-mode="m1"><code translate="no">23就=</code><span>二字，23同音 + 尾字同韻「就」（同 23就）</span></button>
           </div>
         </article>
@@ -1012,7 +967,7 @@
           <h2>左 <code translate="no">=</code> 查聲母</h2>
           <p>錨字在 <code translate="no">=</code> 右側（<code translate="no">=錨字</code>），該位置聲母與錨字相同。與右 <code translate="no">=</code> 查韻母不同，勿混用。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="2=我3" data-mode="m1"><code translate="no">2=我3</code><span>二字，23同音，尾字同聲「我」</span></button>
+            <button class="guide-example" type="button" data-query="2=我3" data-mode="m1"><code translate="no">2=我3</code><span>二字，23同音，首字同聲「我」</span></button>
           </div>
         </article>
 
@@ -1085,9 +1040,9 @@
     }
 
     const MODE_META = {
-      m1: { label: "m1 · 0243", placeholder: "輸入 香??、23*就=、?=就、香港=…" },
-      m2: { label: "m2 · 02493", placeholder: "輸入 02493、詞語或粵拼片段…" },
-      syn: { label: "syn · 近義 / 反義", placeholder: "輸入 開心、悲傷 或直接用 ~開心、!你…" },
+      m1: { label: "m1 · 0243", placeholder: "搵嘢：0243/打字" },
+      m2: { label: "m2 · 02493", placeholder: "搵嘢：02493/打字" },
+      syn: { label: "syn · 近義 / 反義", placeholder: "打字搵同義/反義" },
     };
 
     let currentMode = "m1";

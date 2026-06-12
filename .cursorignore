@@ -1,0 +1,56 @@
+﻿# .cursorignore — 排除 Cursor 索引與 AI 上下文中的大型/敏感/無關檔案
+# 語法同 .gitignore
+
+# --- Python 執行環境 ---
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# --- 資料庫（本專案 lyrics.db 常 >1GB，不宜進索引）---
+*.db
+*.sqlite3
+*.backup
+backup/
+
+# --- 環境變數與機密 ---
+.env
+.env.*
+!.env.example
+
+# --- 日誌與除錯輸出 ---
+*.log
+debug-*.log
+
+# --- 原始/中間資料（ingest 用，非程式邏輯）---
+data/raw/
+data/processed/
+
+# --- IDE 與系統 ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# --- Git 內部（減少索引噪音）---
+.git/
+
+# --- 大型靜態詞庫（需要改 ingest 時可暫時移除此段）---
+# 若希望 AI 能讀 cilin / thesaurus 全文，請註解掉下面三行
+data/cilin/
+data/thesaurus/
+data/antonym/

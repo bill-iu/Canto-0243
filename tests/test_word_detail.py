@@ -512,8 +512,12 @@ class SearchSyntaxTests(unittest.TestCase):
         with self._session() as session:
             session.add_all([
                 Word(
-                    char="做我", code="23", jyutping="zou6 ngo5",
-                    finals='["ou","o"]', initials='["z","ng"]', length=2,
+                    char="我做", code="23", jyutping="ngo5 zou6",
+                    finals='["o","ou"]', initials='["ng","z"]', length=2,
+                ),
+                Word(
+                    char="我作", code="23", jyutping="ngo5 zok3",
+                    finals='["o","ok"]', initials='["ng","z"]', length=2,
                 ),
                 Word(
                     char="做得", code="23", jyutping="zou6 dak1",
@@ -528,13 +532,15 @@ class SearchSyntaxTests(unittest.TestCase):
 
             initial_eq = search_words(q="2=我3", mode="m1", db=session, limit=20, offset=0)
             initial_chars = [r["char"] for r in initial_eq]
-            self.assertIn("做我", initial_chars)
+            self.assertIn("我做", initial_chars)
+            self.assertIn("我作", initial_chars)
             self.assertNotIn("做得", initial_chars)
             self.assertNotIn("好我", initial_chars)
 
             final_eq = search_words(q="2我=3", mode="m1", db=session, limit=20, offset=0)
             final_chars = [r["char"] for r in final_eq]
-            self.assertIn("做我", final_chars)
+            self.assertIn("我做", final_chars)
+            self.assertIn("我作", final_chars)
             self.assertNotIn("做得", final_chars)
 
     def test_rhyme_anchor_syntax(self):

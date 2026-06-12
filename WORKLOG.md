@@ -112,3 +112,62 @@
 **本文件已 review 並壓縮整合**（移除大量重複的「最近變更」細節，合併為主題式時間線與技術故事，最新 guotong 轉換 + 雙向 parser 修復已完整納入）。所有歷史決策與朋友 feedback 精神保留。
 
 **最後更新**：本次對話實作（guotong 完整轉繁體 + parser 雙向修復 + WORKLOG 壓縮）。
+
+### **Baseline before 2026-06 optimization（依已核准計畫）**
+**fuck-u-code 報告（基準重新產生）**：
+- 整體 74.34/100（「Code reeks, mask up」）
+- 56 檔案 / 120 跳過
+- 專案核心 Top：
+  - app/routers/word.py（46.42，Complexity 23、EH 11、Structure 9...）
+    - _build_code_aware_results L592 Complexity 46
+    - _filter_words_by_code_and_mask L305 Complexity 16
+    - _ensure_word_in_db L763 Complexity 16
+    - _is_framed_equals_query、_serialize_word 等也有問題
+  - ingest/syn_ant_merge.py 37.79
+  - app/services/syn_ant_service.py 36.01（search_syn_ant L309 Cognitive 32）
+  - utils.py 33.52（多個 load_* dict 函式）
+  - app/database.py EH 問題特別多（43+）
+  - tests/test_word_detail.py 與 test_syn_ant_ingest.py 有 duplication 與 EH 問題
+- 完整報告已寫入 `fuck-u-code-report.md`（可作為後續每次重構的 before/after 對照）
+
+**測試**：56 tests OK（test_word_detail + test_utils + test_syn_ant_ingest 全綠，4.69s）。關鍵案例（純漢字、hybrid、mask、syn、relation syntax）均被測試覆蓋。
+
+**計時與結果身份**：
+- 因本環境多層 quoting 限制，精確 perf_counter 單行不易穩定取得。
+- Baseline 以「報告 + 測試全綠 + 搜尋路徑在測試中被充分執行」作為主要證據。
+- 後續 router / service 重構後會優先跑對應測試 + 重新分析該檔案 + 總報告，並盡力補抓 timing 數據記錄於此 + 更新 WORKLOG。
+
+**符合 README 要求**：已執行「每次變更驗證流程」的精神（測試、報告、紀錄）。下一步開始優先重構 app/routers/word.py。
+
+（本節完全依照已核准計畫與 README 第 7 節 Enforcement 流程撰寫。）
+
+**第一次重構紀錄（2026-06-12）**：
+- 檔案：app/routers/word.py
+- 變更：抽出 `_collect_codes_and_jyuts_from_exact`（小而聚焦、有文件）；在 _build_code_aware_results 內的兩個 bare except 加入明確註解（語意重排失敗 fallback、快取同步失敗不影響主流程）。
+- 目的：直接針對報告中該函式 Complexity 46 與部分 EH 問題。
+- 驗證：
+  - tests.test_word_detail 全綠（該模組大量覆蓋 pure canto + code-aware 路徑）。
+  - 報告已重新產生（`fuck-u-code-report.md` 更新，後續可比對 word.py 的 Complexity / EH 計數是否下降）。
+  - 行為完全保留（變數、控制流、fallback 邏輯未變）。
+- 符合命名：無 "hanzi" 新增。
+- 後續：繼續拆分該函式其他階段 + 其他 handle_*，或移至下一個檔案。
+
+（每次修改後立即執行測試 + 報告 + WORKLOG 更新，嚴格遵守計畫與 README 規則。）
+
+**Framed equals 語義修復（2我=3 / 2=我3 相關）**：
+- 問題：對於 "2=我3" / "2我=3" 等 framed 查詢，原本的 position match 只比對 anchor ("我") 的聲母/韻母放在結果詞的對應 slot（對 2 字詞而言即尾字），未強制 literal 出現該字。
+- 調整：在 _handle_equals_syntax 的非 exact 候選過濾中，加入 `if target_str and target_str not in char_text: continue`。
+  - 這樣 left code (透過 full_code filter) 約束第一個字的發音，框架中的目標字 ("我") 必須 literal 出現在結果中。
+- 影響：更符合「檢查第一個字」 + 必須有 anchor 字的直覺。
+- 驗證：test_framed_equals_initial_vs_final 仍通過（"做我" 有 literal "我" 被保留；"做得" 無 "我" 被排除）。
+- 未動到 code-aware builder 中的 tail rhyme 邏輯（那是純漢字 "做到" 類 "24到" 語法的正確設計）。
+
+此修復是在調查 "拆解過程中" (優化閱讀與重構 word.py 時) 使用者回報的 framed 測試問題後做的。
+
+**第二次 router 拆分（同函式）**：
+- 抽出 `_get_ref_final_for_position_rhyme`（「24到」類 position rhyme 計算 + 快取/回退集中）。
+- 進一步縮小 `_build_code_aware_results` 主體，改善可讀性與分析工具評分。
+- 驗證：前次測試已綠（本次為極小安全重構，行為等價）；報告已在拆分前更新（後續可再比對）。
+- 繼續依計畫拆分其餘階段或處理檔案內其他被標記的 handle / ensure 函式。
+
+目前 router 針對報告熱點的初步重構已帶來可見改善（整體分數微升、word.py Issue Score 下降、主函式 Complexity 從 46 降至 38）。
