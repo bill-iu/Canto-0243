@@ -56,15 +56,13 @@ class LexiconEnsureTests(unittest.TestCase):
                 self.assertEqual(rows, [])
                 mock_pc.characters_to_jyutping.assert_not_called()
 
-    def test_single_char_still_uses_pycantonese_transition(self):
+    def test_single_char_lexicon_miss_does_not_inject(self):
         port = FakeLexiconPort({})
-        fake_jyut = [("你", "nei5")]
-        with patch("pycantonese.characters_to_jyutping", return_value=fake_jyut):
+        with patch("pycantonese.characters_to_jyutping") as mock_pc:
             with self.Session() as db:
                 rows = ensure_word_in_db(db, "你", lexicon=port)
-                self.assertEqual(len(rows), 1)
-                self.assertEqual(rows[0].char, "你")
-                self.assertEqual(rows[0].jyutping, "nei5")
+                self.assertEqual(rows, [])
+                mock_pc.assert_not_called()
 
     def test_existing_char_skips_injection(self):
         port = FakeLexiconPort({"香港": [LexiconEntry("香港", "hoeng1 gong2", "12")]})

@@ -32,6 +32,10 @@ from typing import Any, Callable, Literal, Optional, Protocol, Sequence, Union
 from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
 from app.services.word_query_parser import matches_mask_literal_chars
 from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text, get_word_jyutping
+from app.services.essay_sort import default_word_sort_key
+from app.lexicon.essay_index import get_essay_frequency
+from app.lexicon.curated_index import curated_sort_boost
+from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 
 # For candidate acquisition (moved from mask_search)
 from app.utils.jyutping_codec import get_code_variants
@@ -324,7 +328,7 @@ def run_position_query(
     else:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode)
 
-    key = sort_key or (lambda w: (get_word_text(w), get_word_jyutping(w)))
+    key = sort_key or default_word_sort_key
     filtered.sort(key=key)
     return serialize_page(filtered, offset, limit)
 
@@ -616,8 +620,15 @@ def matches_hybrid_ref_chars(
 
 
 def mask_priority_key(word, literal_positions: list[tuple[int, str]]):
-    """排序 key：literal 匹配數量優先（越多越好，負數排序）。"""
+    """literal 數 > curated > essay > pron_rank > char/jyut。"""
     char = get_word_text(word)
     jyutping = get_word_jyutping(word)
     exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
-    return (-exact_count, char, jyutping)
+    return (
+        -exact_count,
+        -curated_sort_boost(char),
+        -get_essay_frequency(char),
+        pron_rank_sort_value_for_word(char, jyutping),
+        char,
+        jyutping,
+    )

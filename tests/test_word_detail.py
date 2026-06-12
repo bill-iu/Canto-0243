@@ -1,5 +1,6 @@
 import unittest
 import json
+from pathlib import Path
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -369,6 +370,23 @@ class RelationSyntaxTests(unittest.TestCase):
 
 class SearchSyntaxTests(unittest.TestCase):
     """Regression tests for equals, hybrid, digit, jyutping, and strict per-code search paths."""
+
+    _RIME_FIXTURE = Path(__file__).resolve().parent.parent / "data" / "rime" / "fixtures" / "char_sample.csv"
+
+    @classmethod
+    def setUpClass(cls):
+        from app.lexicon.rime_char_index import load_rime_char_csv
+
+        load_rime_char_csv(cls._RIME_FIXTURE)
+
+    @classmethod
+    def tearDownClass(cls):
+        from app.lexicon.rime_char_index import reset_rime_char_for_tests
+
+        reset_rime_char_for_tests()
+        from app.utils.word_cache import reset_word_cache_for_tests
+
+        reset_word_cache_for_tests()
 
     def _session(self):
         engine = create_engine("sqlite:///:memory:")

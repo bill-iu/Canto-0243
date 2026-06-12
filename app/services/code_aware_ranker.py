@@ -12,6 +12,7 @@ from app.utils.word_cache import get_char_meta, get_words_for_length
 
 from app.models.word import Word
 from app.services.word_db_filters import length_filter
+from app.services.essay_sort import default_word_sort_key
 from app.services.word_ensure_service import sync_word_to_cache
 from app.services.word_serializer import (
     deduplicate_words,
@@ -140,7 +141,7 @@ def build_code_aware_results(q: str, exact_matches: List[Word], db: Session) -> 
         if get_word_sort_code(w) in set(codes)
     ]
     if cached_candidates:
-        code_candidates = sorted(cached_candidates, key=lambda w: (get_word_text(w), get_word_jyutping(w)))
+        code_candidates = sorted(cached_candidates, key=default_word_sort_key)
     else:
         code_candidates = (
             db.query(Word)
@@ -152,6 +153,7 @@ def build_code_aware_results(q: str, exact_matches: List[Word], db: Session) -> 
             .limit(500)
             .all()
         )
+        code_candidates = sorted(code_candidates, key=default_word_sort_key)
     candidates_by_code: dict[str, list] = defaultdict(list)
     for candidate in code_candidates:
         candidates_by_code[get_word_sort_code(candidate)].append(candidate)

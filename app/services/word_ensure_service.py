@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.lexicon.static_index import LexiconEntry
 from app.models.word import Word
 from app.services.lexicon_port import LexiconPort, default_lexicon_port
-from app.utils.jyutping_codec import get_0243_code, split_jyutping
+from app.utils.jyutping_codec import split_jyutping
 from app.utils.word_cache import update_word_in_cache
 
 
@@ -73,43 +73,6 @@ def _inject_lexicon_entries(db: Session, text: str, entries: List[LexiconEntry])
         return []
 
 
-def _inject_single_char_guess(db: Session, text: str) -> List[Word]:
-    """Transition path for len=1 until P2 (rime char.csv)."""
-    jyut_str = ""
-    try:
-        import pycantonese
-
-        jyut_list = pycantonese.characters_to_jyutping(text)
-        if jyut_list:
-            jyut_str = " ".join([item[1] for item in jyut_list if item and len(item) > 1 and item[1]])
-    except Exception as e:
-        print(f"[ensure] pycantonese error for {text}: {e}")
-    if not jyut_str:
-        try:
-            from pyjyutping import jyutping as pyjy
-
-            cand = pyjy.convert(text)
-            if cand:
-                jyut_str = cand
-        except Exception:
-            pass
-    if not jyut_str:
-        return []
-    code_val = get_0243_code(jyut_str) or ""
-    db_word = _word_from_entry(text, jyut_str, code_val)
-    db.add(db_word)
-    try:
-        db.commit()
-        db.refresh(db_word)
-        print(f"[ensure] injected into DB: '{text}' (code={code_val}, jyut={jyut_str})")
-        sync_word_to_cache(db_word)
-        return [db_word]
-    except Exception as e:
-        db.rollback()
-        print(f"[ensure] DB insert failed for {text}: {type(e).__name__}: {e}")
-        return []
-
-
 def ensure_word_in_db(
     db: Session,
     text: str,
@@ -125,11 +88,8 @@ def ensure_word_in_db(
     if not re.search(r"[\u4e00-\u9fff]", text):
         return []
 
-    if len(text) >= 2:
-        port = lexicon or default_lexicon_port()
-        entries = port.get_entries(text)
-        if not entries:
-            return []
-        return _inject_lexicon_entries(db, text, entries)
-
-    return _inject_single_char_guess(db, text)
+    port = lexicon or default_lexicon_port()
+    entries = port.get_entries(text)
+    if not entries:
+        return []
+    return _inject_lexicon_entries(db, text, entries)

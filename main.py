@@ -106,6 +106,30 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"[main] Lexicon preload 失敗（可忽略）：{e}")
 
+    try:
+        from app.lexicon.rime_char_index import ensure_rime_char_loaded
+
+        ensure_rime_char_loaded()
+        print("[main] Rime char.csv lexicon (data/rime/char.csv) 已載入。")
+    except Exception as e:
+        print(f"[main] Rime char preload 失敗（可忽略）：{e}")
+
+    try:
+        from app.lexicon.essay_index import ensure_essay_loaded
+
+        ensure_essay_loaded()
+        print("[main] Essay frequency corpus (data/essay/essay-cantonese.txt) 已載入。")
+    except Exception as e:
+        print(f"[main] Essay corpus preload 失敗（可忽略）：{e}")
+
+    try:
+        from app.lexicon.curated_index import ensure_curated_loaded
+
+        ensure_curated_loaded()
+        print("[main] Curated common words (data/lexicon/curated_common.txt) 已載入。")
+    except Exception as e:
+        print(f"[main] Curated lexicon preload 失敗（可忽略）：{e}")
+
     # Preload short-word metadata cache (for instant mask/hybrid/"門0"/"好23"/wildcard paths).
     # Query minimal columns, pre-parse JSON finals etc ONCE at startup (no per-request json.loads).
     # New words injected by _ensure are synced via update_word_in_cache so they participate without restart.

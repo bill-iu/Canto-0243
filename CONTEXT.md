@@ -136,9 +136,9 @@ _Avoid_：把 pycantonese 猜讀當詞庫、測試用造字進 production ensure
 **實作路線圖**：
 - **P0**：等號錨位修復、本文件語意、測試（`get_0243_code` 生成 code，禁止手填假碼）。
 - **P1**：`LexiconPort` + `Static0243Lexicon`；多字僅詞庫命中可注入。✅
-- **P2**：ingest rime upstream；單字 ensure 改 `char.csv` 預設。
-- **P3**：essay 頻次索引 → 搜尋排序。
-- **P4**：常用詞 curated 層 + 完整 `pron_rank` 排序策略。
+- **P2**：ingest rime upstream；單字 ensure 改 `char.csv` 預設。✅
+- **P3**：essay 頻次索引 → 搜尋排序。✅
+- **P4**：常用詞 curated 層 + 完整 `pron_rank` 排序策略。✅
 
 ### 使用者
 

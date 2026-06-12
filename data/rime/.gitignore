@@ -1,0 +1,4 @@
+# Full upstream download (run fetch_rime_data.py)
+char.csv
+word.csv
+phrase_fragment.csv
