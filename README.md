@@ -43,7 +43,7 @@ python main.py
 | API 文件 | http://127.0.0.1:8000/docs |
 | 健康檢查 | http://127.0.0.1:8000/ |
 
-預設使用專案根目錄的 `lyrics.db`（SQLite）。自訂路徑：複製 `.env.example` 為 `.env.local`，設定 `DATABASE_URL=sqlite:///./lyrics.db`。
+預設使用專案根目錄的 `lyrics.db`（SQLite）。自訂設定：複製 `.env.example` 為 `.env.local`（其餘變數見 example 註解）。
 
 ### Maintainer（首次灌庫）
 

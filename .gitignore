@@ -25,6 +25,7 @@ backup/
 .env.local
 .env.prod
 .env.*
+!.env.example
 
 # 日誌與臨時檔案
 *.log
