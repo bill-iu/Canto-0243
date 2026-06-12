@@ -6,7 +6,9 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from utils import get_char_meta, get_words_for_length, load_json_list
+from app.utils.embedding import cosine_similarity, get_text_embedding
+from app.utils.json_helpers import load_json_list
+from app.utils.word_cache import get_char_meta, get_words_for_length
 
 from app.models.word import Word
 from app.services.word_db_filters import length_filter
@@ -25,7 +27,6 @@ def try_query_embedding(q: str) -> list:
     if not q:
         return []
     try:
-        from utils import get_text_embedding
         if get_text_embedding.is_ready():
             return get_text_embedding(q)
     except Exception:
@@ -182,7 +183,6 @@ def build_code_aware_results(q: str, exact_matches: List[Word], db: Session) -> 
         # 純同 rhyme（不同字）
         if query_emb:
             try:
-                from utils import cosine_similarity
                 scored = []
                 for w in pure_ws[:200]:  # cap re-rank
                     w_emb = load_json_list(getattr(w, "embedding", None) or "[]")

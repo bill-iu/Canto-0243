@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Iterable, List, Optional
 
-from utils import get_0243_code, load_json_list
+from app.utils.jyutping_codec import get_0243_code
+from app.utils.json_helpers import load_json_list
 
 
 def deduplicate_words(words: Iterable) -> List:

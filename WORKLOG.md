@@ -547,4 +547,26 @@
 
 此段完全依照核准計畫 + README §7 執行。無回歸。
 
+**Phase 2.7 + utils 退役（2026-06-12）**：EqualsQueryHandler 獨立 + `app/` 改直連 `app.utils` / `app.thesaurus`
+
+1. **EqualsQueryHandler**（架構候選 #1）
+   - 新增 `app/services/equals_query_handler.py`：`EqualsQueryHandler.execute()` + `handle_equals_syntax` 薄包裝。
+   - 從 `word_search_service.py` 移除 ~70 行等號邏輯；`QueryEngine` registry 改委派新模組。
+   - 刻意不併入 `PositionMatchEngine`（phoneme sandwich / exact-match 語意獨立）。
+
+2. **退役根目錄 `utils.py` facade（架構候選 #3，app 層）**
+   - `app/services/*`、`main.py` 改 `from app.utils.*` / `from app.thesaurus.static_index`。
+   - 根 `utils.py` 保留給 `ingest/`、`generate_relationships.py` 等離線腳本；docstring 標 deprecated。
+   - `tests/test_word_detail.py` cache 測試改 `app.utils.word_cache`。
+
+**驗證**：`python -m unittest tests.test_query_parser tests.test_position_match tests.test_word_detail tests.test_utils tests.test_syn_ant_ingest -q` — **OK**（88 tests）。
+
+**近反義加深（2026-06-12）**：單一入口 + ThesaurusPort
+
+- `syn_ant_service.fetch_relations(word, kind?)` — DB tuple → `normalize_relation_row`（含 `final_score`）→ dedupe + sort；`~/!` 與 `mode=syn` 共用。
+- `relation_graph` 收斂為 `fetch_relation_tuples`（repo 僅 ORM/tuple，無 ranking）。
+- 刪除 `syn_ant_thesaurus_adapter.py`；新增 `thesaurus_port.py`（`ThesaurusPort` + `StaticThesaurusPort`，可 mock）。
+- `char_antonym_pairs` / `search_syn_ant` / `search_relation_chars` 改注入 `thesaurus` 參數（預設 `default_thesaurus_port()`）。
+- 搜尋語法與 API 行為不變；測試全綠。
+
 

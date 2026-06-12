@@ -100,7 +100,7 @@ if __name__ == "__main__":
     # 現在 syn/ant 主要來源是 word_relations 表（generate_relationships.py 在 ingest 時產生）+ static thesaurus。
     # 舊的 embedding matrix preload 邏輯已完全移除，不再於 runtime 執行。
     try:
-        from utils import ensure_thesaurus_loaded
+        from app.thesaurus.static_index import ensure_thesaurus_loaded
         ensure_thesaurus_loaded()
         print("[main] Static thesaurus (cilin / antonym / thesaurus) 已載入。")
     except Exception as e:
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         import threading
         from app.database import SessionLocal
         from app.models.word import Word
-        from utils import populate_word_cache_from_rows, get_word_cache_stats
+        from app.utils.word_cache import get_word_cache_stats, populate_word_cache_from_rows
 
         def _preload_word_cache():
             try:

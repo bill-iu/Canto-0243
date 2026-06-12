@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from utils import get_char_metas, load_json_list
+from app.utils.json_helpers import load_json_list
+from app.utils.word_cache import get_char_metas
 
 from app.models.word import Word
 from app.services.word_ensure_service import ensure_word_in_db, sync_word_to_cache

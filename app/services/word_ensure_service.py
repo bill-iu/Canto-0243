@@ -6,7 +6,8 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from app.models.word import Word
-from utils import get_0243_code, split_jyutping, update_word_in_cache
+from app.utils.jyutping_codec import get_0243_code, split_jyutping
+from app.utils.word_cache import update_word_in_cache
 
 
 def sync_word_to_cache(row) -> None:

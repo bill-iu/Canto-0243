@@ -5,7 +5,7 @@ from typing import Optional
 from sqlalchemy import and_, func, or_
 
 from app.models.word import Word
-from utils import get_code_variants
+from app.utils.jyutping_codec import get_code_variants
 
 
 def length_filter(length: int):

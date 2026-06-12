@@ -373,9 +373,9 @@ class QueryEngine:
             handle_mask_wildcard_query,
             handle_rhyme_anchor_query,
         )
+        from app.services.equals_query_handler import handle_equals_syntax
         from app.services.word_search_service import (
             handle_antonym_compound_syntax,
-            handle_equals_syntax,
             handle_jyut_fragment_query,
             handle_pure_canto_query,
             handle_pure_digit_query,

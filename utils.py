@@ -1,6 +1,8 @@
-"""Project-root facade for backward-compatible imports.
+"""Deprecated project-root facade for ingest scripts and legacy callers.
 
-New code may import from ``app.utils.*`` or ``app.thesaurus.*`` directly.
+Application code under ``app/`` should import from ``app.utils.*`` or
+``app.thesaurus.*`` directly. This module remains for ``ingest/``,
+``generate_relationships.py``, and similar offline tooling.
 """
 
 from app.thesaurus import static_index as _thesaurus

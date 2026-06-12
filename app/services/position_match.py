@@ -34,7 +34,8 @@ from app.services.word_query_parser import matches_mask_literal_chars
 from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text, get_word_jyutping
 
 # For candidate acquisition (moved from mask_search)
-from utils import get_words_for_length
+from app.utils.jyutping_codec import get_code_variants
+from app.utils.word_cache import get_words_for_length
 from app.services.word_db_filters import apply_code_filter, length_filter
 
 # Needed by the moved candidate helpers
@@ -249,7 +250,6 @@ class PositionMatchEngine:
                 spec.hybrid_ref_chars, spec.hybrid_ref_pos, spec.width, db
             )
             filtered = []
-            from utils import get_code_variants
             allowed_full_codes = set(get_code_variants(spec.code_prefix or "", mode)) if spec.code_prefix else set()
             for word in candidates:
                 word_code_str = get_word_sort_code(word)
@@ -387,8 +387,6 @@ def matches_code_positions(code_str: str, required_codes: list[Optional[str]], m
     for idx, req_digit in enumerate(required_codes):
         if req_digit is None:
             continue
-        # 延遲 import 避免循環（utils 會被很多地方依賴）
-        from utils import get_code_variants
         if code_str[idx] not in set(get_code_variants(req_digit, mode)):
             return False
     return True

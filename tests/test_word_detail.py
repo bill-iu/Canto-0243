@@ -634,12 +634,12 @@ if __name__ == "__main__":
 # --- Perf cache & mixed mask regression guards (non-strict timing; exercise new fast paths + fallback) ---
 def test_word_cache_helpers_and_mask_fallback():
     """Cache helpers populate/update + search_words mask path (in test :memory: will use DB fallback but must stay correct)."""
-    from utils import (
-        populate_word_cache_from_rows,
-        get_words_for_length,
+    from app.utils.word_cache import (
         get_char_meta,
-        update_word_in_cache,
         get_word_cache_stats,
+        get_words_for_length,
+        populate_word_cache_from_rows,
+        update_word_in_cache,
     )
     # Simulate preload rows (as main does)
     fake_rows = [
