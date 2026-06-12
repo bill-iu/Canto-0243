@@ -204,6 +204,23 @@ class MaskQuery:
     def kind(self) -> QueryKind:
         return QueryKind.MASK
 
+    def to_match_spec(self) -> 'MatchSpec':
+        """Normalize 缺字查詢 to MatchSpec (Phase 2.6)."""
+        from app.services.position_match import MatchSpec, SlotConstraint
+        from app.services.word_query_parser import parse_mask_query
+
+        expected_len, _, literal_positions = parse_mask_query(self.raw_q)
+        spec = MatchSpec(
+            width=expected_len,
+            literal_priority=True,
+            mask=self.raw_q,
+        )
+        for i, ch in enumerate(self.raw_q):
+            if ch.isdigit():
+                spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=ch))
+        spec.extra["literal_positions"] = literal_positions
+        return spec
+
 
 @dataclass(frozen=True)
 class DigitCodeQuery:
@@ -381,7 +398,7 @@ class QueryEngine:
             LiteralRefQuery: lambda p, c, m, l, o, d: handle_at_tail_query(p, m, l, o, d),
             RhymeAnchorQuery: lambda p, c, m, l, o, d: handle_rhyme_anchor_query(p, m, l, o, d),
             DigitCodeQuery: lambda p, c, m, l, o, d: handle_pure_digit_query(p.raw_q, c, m, l, o, d),
-            MaskQuery: lambda p, c, m, l, o, d: handle_mask_wildcard_query(p.raw_q, c, m, l, o, d),
+            MaskQuery: lambda p, c, m, l, o, d: handle_mask_wildcard_query(p, c, m, l, o, d),
             HybridTailEqualsAliasQuery: lambda p, c, m, l, o, d: handle_hybrid_syntax(p.hybrid_q, c, m, l, o, d),
             EqualsQuery: lambda p, c, m, l, o, d: handle_equals_syntax(p.raw_q, c, m, l, o, d),
             HybridCodeQuery: lambda p, c, m, l, o, d: handle_hybrid_syntax(p.raw_q, c, m, l, o, d),

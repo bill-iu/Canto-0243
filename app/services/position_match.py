@@ -113,6 +113,92 @@ class CandidateSource(Protocol):
         ...
 
 
+@dataclass
+class LengthMaskCandidateSource:
+    """Cache-first 長度桶 + mask literal 預過濾（韻錨／碼字 tail／字面參考）。"""
+
+    db: Any
+    mask: str
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        return get_length_candidates(self.db, length, self.mask)
+
+
+@dataclass
+class LengthCodeCandidateSource:
+    """Cache-first 長度桶 + 可選 0243 碼過濾（hybrid 等）。"""
+
+    db: Any
+    code: Optional[str] = None
+    mode: str = "m1"
+    fallback_limit: int = 2000
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        effective_code = code if code is not None else self.code
+        effective_mode = mode or self.mode
+        return get_candidates_for_length(
+            self.db,
+            length,
+            code=effective_code,
+            mode=effective_mode,
+            fallback_limit=self.fallback_limit,
+        )
+
+
+@dataclass
+class MaskWildcardCandidateSource:
+    """缺字查詢：cache literal 預過濾或 DB GLOB + 可選 code filter。"""
+
+    db: Any
+    mask: str
+    mode: str = "m1"
+    query_code: Optional[str] = None
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        from app.services.word_query_parser import mask_char_glob_pattern, parse_mask_query
+
+        effective_mode = mode or self.mode
+        effective_code = code if code is not None else self.query_code
+        _, required_codes, _ = parse_mask_query(self.mask)
+
+        candidates = get_words_for_length(length)
+        if candidates:
+            return [
+                w for w in candidates
+                if matches_mask_literal_chars(get_word_text(w), self.mask)
+            ], True
+
+        glob_pat = mask_char_glob_pattern(self.mask)
+        query = self.db.query(Word).filter(
+            length_filter(length),
+            Word.char.op("GLOB")(glob_pat),
+        )
+        code_filter = "".join(required_codes) if all(req is not None for req in required_codes) else None
+        if code_filter:
+            query = apply_code_filter(query, code_filter, effective_mode)
+        elif effective_code:
+            query = apply_code_filter(query, effective_code, effective_mode)
+        return query.order_by(Word.char, Word.jyutping).all(), False
+
+
 # -----------------------------------------------------------------------------
 # PositionMatchEngine（核心引擎，目前為骨架）
 # -----------------------------------------------------------------------------
@@ -212,6 +298,35 @@ class PositionMatchEngine:
 
         # Note: sorting and serialize left to caller for now (as per docstring)
         return filtered  # caller does serialize_page which handles offset/limit and sort if needed.
+
+
+_DEFAULT_ENGINE = PositionMatchEngine()
+
+
+def run_position_query(
+    spec: MatchSpec,
+    db: Any,
+    mode: str,
+    limit: int,
+    offset: int,
+    *,
+    source: CandidateSource | None = None,
+    pre_candidates: list[Any] | None = None,
+    sort_key: Callable[[Any], Any] | None = None,
+) -> list:
+    """Phase 2.4：位置型查詢統一入口（engine + sort + serialize）。"""
+    from app.services.word_serializer import serialize_page
+
+    if pre_candidates is not None:
+        filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=pre_candidates)
+    elif source is not None:
+        filtered = _DEFAULT_ENGINE.match(spec, source, db, mode)
+    else:
+        filtered = _DEFAULT_ENGINE.match(spec, None, db, mode)
+
+    key = sort_key or (lambda w: (get_word_text(w), get_word_jyutping(w)))
+    filtered.sort(key=key)
+    return serialize_page(filtered, offset, limit)
 
 
 # -----------------------------------------------------------------------------
@@ -371,6 +486,10 @@ __all__ = [
     "SlotConstraint",
     "MatchSpec",
     "CandidateSource",
+    "LengthMaskCandidateSource",
+    "LengthCodeCandidateSource",
+    "MaskWildcardCandidateSource",
+    "run_position_query",
     "PositionMatchEngine",
     "build_match_spec_from_parsed",
     "matches_code_positions",

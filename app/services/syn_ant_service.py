@@ -5,12 +5,8 @@ from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.models.word import Word
-from app.repositories.word_relation_repo import (
-    fetch_bidirectional_relations,
-    load_db_char_set,
-    normalize_relation_row,
-)
+from app.repositories.word_relation_repo import load_db_char_set
+from app.services.relation_graph import fetch_relations_for_query
 from app.services.char_antonym_pairs import build_char_antonym_pairs  # re-exported
 from app.services.syn_ant_ranking import (
     DERIVED_ANT_SOURCES,
@@ -80,14 +76,9 @@ def search_syn_ant(
     if db_char_set is None:
         db_char_set = load_db_char_set(db)
 
-    word_ids = [w.id for w in db.query(Word.id).filter(Word.char == q).all()]
-
     rel_items: List[dict] = []
     try:
-        for row in fetch_bidirectional_relations(db, word_ids):
-            item = normalize_relation_row(*row, query=q, db_char_set=db_char_set)
-            if item:
-                rel_items.append(item)
+        rel_items = fetch_relations_for_query(db, q, db_char_set=db_char_set)
     except Exception as exc:
         print(f"[syn] 讀取 word_relations 失敗，將退回 static thesaurus：{exc}")
 

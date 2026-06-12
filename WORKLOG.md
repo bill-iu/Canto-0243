@@ -142,7 +142,12 @@
 - 其他架構候選：退役 utils.py facade、database.py 拆分、RelationGraph 等（視情況）。
 - 繼續 enforcement + 更新本 log。
 
-工作樹乾淨，可 push。準備好繼續！如需特定下一步（e.g. 實作 2.3、加更多 engine 測試、執行特定 timing script），告訴我。
+### Phase 2.4–2.6 + RelationGraph（2026-06-13）
+- **2.4** `run_position_query()`：位置型 handler 統一 engine + sort + serialize。
+- **2.5** `LengthMaskCandidateSource` / `LengthCodeCandidateSource` / `MaskWildcardCandidateSource` 實作 CandidateSource seam。
+- **2.6** `MaskQuery.to_match_spec()`；`mask_search.py` 五個 handle_* 收斂為薄層。
+- **RelationGraph**：`normalize_relation_row` 自 `word_relation_repo` 移至 `relation_graph.py`；repo 僅 fetch。
+- 測試：88 tests OK（+MaskQuery.to_match_spec 單測）。
 
 ### Phase 2.3（選用）：PositionQuery / MatchSpec 正規化（2026-06-13）
 - 依 handoff 與「繼續下一步」指示，實作 MatchSpec 正規化，讓位置型語法（rhyme_anchor、code_tail、at_tail 等）直接透過 dataclass 方法轉 MatchSpec。

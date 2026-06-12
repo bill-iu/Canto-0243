@@ -20,6 +20,7 @@ from app.services.query_engine import (
     RhymeAnchorQuery,
     CodeTailQuery,
     LiteralRefQuery,
+    MaskQuery,
 )
 
 # Note: Some tests use real DB session from test setup; for full isolation, mocks can be expanded.
@@ -104,6 +105,18 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
         self.assertEqual(len(spec.slots), 1)
         self.assertEqual(spec.slots[0].kind, "literal_char")
         self.assertEqual(spec.slots[0].pos, 1)
+
+    def test_mask_query_to_spec(self):
+        q = MaskQuery(raw_q="門0")
+        spec = q.to_match_spec()
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.mask, "門0")
+        self.assertTrue(spec.literal_priority)
+        digit_slots = [s for s in spec.slots if s.kind == "code_digit"]
+        self.assertEqual(len(digit_slots), 1)
+        self.assertEqual(digit_slots[0].pos, 1)
+        self.assertEqual(digit_slots[0].value, "0")
+        self.assertEqual(spec.extra.get("literal_positions"), [(0, "門")])
 
 
 class TestPositionMatchEngineMore(unittest.TestCase):
