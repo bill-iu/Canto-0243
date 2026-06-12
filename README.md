@@ -194,6 +194,61 @@ python ingest_syn_ant.py build-relations
 alembic upgrade head
 ```
 
+### 資料來源總覽
+
+以下整理**目前已 ingest 或 bundled** 的資料，以及**尚未進庫**時可參考的外部詞典。詞庫與注入政策（P0–P4 路線圖）見 `CONTEXT.md` § 詞庫與注入；**P1** 起將以 `LexiconPort` / `Static0243Lexicon` 統一收錄門檻。
+
+#### `words` 表（詞條 · 粵拼 · 0243 碼）
+
+| 階段 | 本機路徑 | 上游／說明 | Ingest 指令 |
+|------|----------|------------|-------------|
+| 0243 編碼詞表 | `data/raw/0243_dict_1to5digits.json` | 專案內 bundled 0243 鍵盤編碼詞表（1–5 碼） | — |
+| 補粵拼 | `data/raw/merged_0243_with_jyutping.json` | 由 `add_jyutping_to_0243.py` 以 **pycantonese** / **pyjyutping** 對上表逐條補音 | `python add_jyutping_to_0243.py` |
+| 清洗後匯入 | `data/raw/clean/*.json` | 上述 pipeline 產物（每檔為 `{char, jyutping, code}` 陣列） | `python import_data.py` |
+
+> **注意**：`words` 表內容取決於 maintainer 是否已執行上述腳本；repo 內未必包含完整 raw JSON（可能僅有本地 `lyrics.db`）。
+
+#### `word_relations` 表（近義 · 反義 · 語意相關）
+
+預設經 `ingest_syn_ant.py`（`current_static`）或 `generate_relationships.py` 寫入；manifest 見 `data/syn_ant/sources.yaml`。
+
+| Source ID | 本機路徑 | 上游／說明 | 預設啟用 |
+|-----------|----------|------------|----------|
+| `cilin` | `data/cilin/new_cilin.txt` | [liao961120/cilin](https://github.com/liao961120/cilin)（`fetch_cilin_data.py`，繁體） | ✅（`current_static`） |
+| `guotong` | `data/thesaurus/dict_synonym.txt`<br>`data/thesaurus/dict_antonym.txt` | [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（簡體 raw → `convert_guodict.py` OpenCC 轉繁） | ✅ |
+| `antisem` | `data/antonym/antisem.txt` | 專案 bundled 反義詞表（ingest 標記 `source=antisem`） | ✅ |
+| `compound_antonyms` | `data/syn_ant/compound_antonyms.txt` | 專案 curated 雙字反義複合詞（`ingest_syn_ant.py build-relations`） | ✅ |
+| `cow` | `data/syn_ant/raw/cow/cow.txt` | Chinese Open Wordnet（CC-BY；需自行放置 raw） | ❌ |
+| `relation_pairs` | `data/syn_ant/raw/pairs/relations.tsv` | 研究用 TSV pairs | ❌ |
+| `hit_cilin` | `data/syn_ant/raw/hit_cilin/new_cilin.txt` | HIT Cilin Extended（授權不明；僅本地） | ❌ |
+| `antisem_extended` | `data/syn_ant/raw/antisem/antisem.txt` | 擴充 antisem（授權不明；僅本地） | ❌ |
+| `embedding_cosine` | — | `generate_relationships.py --include-embedding`（dev-only MiniLM） | 選用 |
+
+上述 cilin / guotong / antisem 檔案在 **runtime** 亦會由 static thesaurus 載入，作 `word_relations` 的即時 fallback（見 `app/thesaurus/static_index.py`）。
+
+#### Runtime 補字（尚未視為正式詞庫 ingest）
+
+| 機制 | 說明 |
+|------|------|
+| `_ensure` + pycantonese | 查詢字面不在 DB 時，**過渡期**以 pycantonese / pyjyutping 猜讀並注入；**P1 起**多字將改為僅詞庫命中才可注入（見 `CONTEXT.md`）。 |
+
+#### 計畫中（尚未 ingest，P2+）
+
+| 來源 | 連結 | 用途 |
+|------|------|------|
+| rime-cantonese-upstream | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | 單字 `char.csv`、詞級 `word.csv` 等（CC BY 4.0） |
+| essay-cantonese | [rime/rime-cantonese essay-cantonese.txt](https://raw.githubusercontent.com/rime/rime-cantonese/refs/heads/main/essay-cantonese.txt) | 語料頻次，僅排序（P3） |
+
+#### 資料庫找不到時可參考（尚未 ingest）
+
+以下外部粵語詞典**尚未**納入本專案 ingest pipeline；若 `words` 表查無該詞，可人工查閱或作日後 Lexicon 候選：
+
+| 名稱 | 連結 |
+|------|------|
+| words.hk 粵典詞表 | https://words.hk/faiman/analysis/wordslist/ |
+| cantonese.org CC-Canto | https://cantonese.org/download.html |
+| kaifangcidian.com 粵語詞典 | https://kaifangcidian.com/xiazai/ |
+
 ---
 
 ## 5. 環境設定
@@ -203,7 +258,7 @@ alembic upgrade head
    pip install -r requirements.txt
    ```
 2. 如需使用自訂資料庫位址，可建立 `.env` 並設定 `DATABASE_URL`。
-3. 依賴安裝完成後即可啟動服務。`pycantonese` / `pyjyutping` 用於資料庫沒有該字詞時的自動粵拼注入；既有資料查詢不會依賴 ML 套件。
+3. 依賴安裝完成後即可啟動服務。`pycantonese` / `pyjyutping` 用於資料庫沒有該字詞時的過渡期粵拼注入（正式詞庫來源見上文 **§ 資料來源總覽**）；既有資料查詢不會依賴 ML 套件。
 
 ---
 
