@@ -6,10 +6,13 @@ from typing import Set, Tuple
 
 from sqlalchemy.orm import Session
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from app.database import SessionLocal
 from app.models.word import Word
 from utils import split_jyutping
-# get_text_embedding 已移出（僅 ingest/dev 腳本使用）
 
 
 def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]], batch_size: int = 5000):
@@ -47,8 +50,6 @@ def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]
                 finals=finals,
                 tones=tones,
                 length=len(char),
-                # embedding 計算已移至 ingest 專用腳本（generate_relationships.py / dev deps）。
-                # 這裡不再強制計算，讓一般使用者不需要 ML 套件。
             )
         )
         existing.add(key)
@@ -65,7 +66,7 @@ def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]
 
 def import_all_in_folder(folder_path: str = "data/raw/clean"):
     """一次匯入整個資料夾的所有 JSON"""
-    folder = Path(folder_path)
+    folder = REPO_ROOT / folder_path
     if not folder.exists():
         print(f"❌ 資料夾不存在: {folder}")
         return

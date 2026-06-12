@@ -7,9 +7,9 @@ Backfill Script for Word Embeddings (Semantic Similarity)
 
 本地 SQLite 主 DB 瘦身後，embedding 預設不再寫入 lyrics.db。
 需明確 opt-in：
-  ALLOW_MAIN_DB_EMBEDDINGS=1 python backfill_embeddings.py --write-main-db
+  ALLOW_MAIN_DB_EMBEDDINGS=1 python scripts/legacy/backfill_embeddings.py --write-main-db
   或僅匯出旁路備份：
-  python backfill_embeddings.py --export-sidecar backup/lyrics_embeddings_new.jsonl.gz
+  python scripts/legacy/backfill_embeddings.py --export-sidecar backup/lyrics_embeddings_new.jsonl.gz
 
 Postgres 正式環境不受 --write-main-db 限制（仍可直接 backfill）。
 """
@@ -21,12 +21,14 @@ import gzip
 import json
 import os
 import sys
+from pathlib import Path
 from typing import Optional
 
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, func
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word
@@ -103,9 +105,9 @@ def backfill_embeddings(
     if not _sqlite_main_db_write_allowed(write_main_db):
         print("❌ 本地 SQLite 預設不寫入主 DB embedding（主 DB 已瘦身）。")
         print("   若要寫回 lyrics.db，請使用：")
-        print("     ALLOW_MAIN_DB_EMBEDDINGS=1 python backfill_embeddings.py --write-main-db")
+        print("     ALLOW_MAIN_DB_EMBEDDINGS=1 python scripts/legacy/backfill_embeddings.py --write-main-db")
         print("   或只匯出旁路備份：")
-        print("     python backfill_embeddings.py --export-sidecar backup/lyrics_embeddings.jsonl.gz")
+        print("     python scripts/legacy/backfill_embeddings.py --export-sidecar backup/lyrics_embeddings.jsonl.gz")
         return
 
     print("🔍 正在查詢需要 backfill embedding 的詞語...")

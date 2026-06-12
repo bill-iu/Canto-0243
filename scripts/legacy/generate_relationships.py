@@ -14,21 +14,21 @@ generate_relationships.py
   - 優先使用高品質的 static thesaurus（cilin、antisem、guotong）。
   - embedding 只是「可選」的輔助發現工具（只在 dev 環境執行本 script 時才需要）。
   - 產生的關係會標記 source，方便之後審計或過濾。
-  - 新詞建議先用 import_data.py 加入，之後再跑本 script 產生關係（或本 script 支援自動處理新詞）。
+  - 新詞建議先用 scripts/ingest/import_data.py 加入，之後再跑本 script 產生關係（或本 script 支援自動處理新詞）。
 
 使用方式：
   1. 安裝 dev 依賴（只有這時候才需要 ML 套件）：
        pip install -r requirements-dev.txt
 
   2. 執行（本地 SQLite）：
-       python generate_relationships.py
+       python scripts/legacy/generate_relationships.py
 
   3. 正式環境（Postgres）：
-       ENV=prod python generate_relationships.py
+       ENV=prod python scripts/legacy/generate_relationships.py
 
   選項：
-    python generate_relationships.py --limit 500     # 只處理前 500 個詞（測試用）
-    python generate_relationships.py --include-embedding   # 明確啟用 embedding 輔助（預設不載入 ML）
+    python scripts/legacy/generate_relationships.py --limit 500     # 只處理前 500 個詞（測試用）
+    python scripts/legacy/generate_relationships.py --include-embedding   # 明確啟用 embedding 輔助（預設不載入 ML）
 
 注意（redesign 後）：
   - **這是本專案中唯一合法載入 MiniLM / sentence-transformers 的地方**。
@@ -49,8 +49,8 @@ from sqlalchemy import text, tuple_
 # Proactively reduce noise from HF Hub when loading the model during ingest.
 os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
-# 讓我們能 import 專案內的東西
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO_ROOT))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word, WordRelation
@@ -337,8 +337,8 @@ def main(limit: Optional[int] = None, include_embedding: bool = False):
     print("\n提示：")
     print("  - 之後可重新執行本 script 來更新/補充關係（會自動去重）。")
     print("  - 一般使用者只要 `pip install -r requirements.txt` 就能使用這些關係，無需 ML 套件。")
-    print("  - 如需 v2 可插拔 ingest，請改用 `python ingest_syn_ant.py normalize` + `build-relations`。")
-    print("  - 如需只處理部分資料測試：python generate_relationships.py --limit 200")
+    print("  - 如需 v2 可插拔 ingest，請改用 `python -m ingest normalize` + `build-relations`。")
+    print("  - 如需只處理部分資料測試：python scripts/legacy/generate_relationships.py --limit 200")
 
 
 if __name__ == "__main__":

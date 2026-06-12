@@ -27,7 +27,7 @@
 | `app/services/equals_query_handler.py` | 等號 framed 查詢（獨立於 engine） |
 | `app/services/lexicon_port.py` | 詞庫埠；P0–P4 完成 |
 | `app/db/*` | connection · bootstrap · dialect；`database.py` facade |
-| ingest | `import_data.py` · `ingest_syn_ant.py` · `generate_relationships.py` |
+| ingest | `scripts/ingest/import_data.py` · `python -m ingest` · `scripts/legacy/generate_relationships.py` |
 
 ---
 
@@ -169,4 +169,12 @@
 - `PositionMatchEngine.match` → `filter_candidates_by_match_spec`（原生吃 `MatchSpec.slots`）
 - 測試：105 unittest OK；+`HybridCodeQuery` / `filter_candidates_by_match_spec` 門0 case
 
-**最後更新**：2026-06-13（C3 `!!` → MatchSpec 完成，刪除 word_search_service.py）
+**最後更新**：2026-06-13（根目錄腳本搬至 scripts/ + ingest CLI）
+
+### 2026-06-13 — 根目錄整理（grill B + D）
+
+- 刪死碼：`jyutping_table.py`、`add_jyutping_to_0243.py`、`convert_guodict.py`
+- 搬 `scripts/fetch/`、`scripts/db/`、`scripts/ingest/`、`scripts/legacy/`
+- `ingest_syn_ant.py` → `ingest/cli.py`；入口 `python -m ingest`
+- 根目錄保留：產品入口 + `WORKLOG.md` + `skills-lock.json` + `utils.py`（deprecated facade）
+- README 路徑全更新；108 unittest OK

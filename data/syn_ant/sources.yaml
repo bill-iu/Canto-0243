@@ -1,5 +1,5 @@
 # Syn/Ant data source manifest
-# - enabled_by_default: included in `python ingest_syn_ant.py normalize` without --source
+# - enabled_by_default: included in `python -m ingest normalize` without --source
 # - local_only: raw files must be placed under data/syn_ant/raw/ by maintainer (not committed)
 # - license: informational; verify before redistribution
 

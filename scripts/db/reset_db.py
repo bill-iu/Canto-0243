@@ -1,6 +1,13 @@
-from app.database import Base, engine, IS_POSTGRES
-import sys
 import os
+import sys
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from app.database import Base, engine, IS_POSTGRES
+
 
 def reset_database():
     env = os.getenv("ENV", "local").lower()
@@ -26,6 +33,7 @@ def reset_database():
     Base.metadata.create_all(bind=engine)
 
     print("✅ 資料庫重置完成！所有資料表已重新建立。")
+
 
 if __name__ == "__main__":
     reset_database()

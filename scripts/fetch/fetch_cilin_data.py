@@ -9,8 +9,8 @@ Only level-5 leaf codes (e.g. Aa01A01=, Ca01B01=) are exported — category tags
 
 Usage:
   pip install cilin opencc-python-reimplemented
-  python fetch_cilin_data.py
-  python ingest_syn_ant.py ingest-cilin --direct --dedupe-existing
+  python scripts/fetch/fetch_cilin_data.py
+  python -m ingest ingest-cilin --direct --dedupe-existing
 """
 
 from __future__ import annotations
@@ -18,15 +18,13 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-OUT_PATH = ROOT / "data" / "cilin" / "new_cilin.txt"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
+OUT_PATH = REPO_ROOT / "data" / "cilin" / "new_cilin.txt"
 
 from ingest.cilin_leaf import patch_opencc_for_cilin
-
-
-def _patch_opencc_for_cilin() -> None:
-    patch_opencc_for_cilin()
 
 
 def export_new_cilin(trad: bool = True) -> list[str]:
@@ -58,7 +56,6 @@ def assert_traditional_samples(lines: list[str]) -> None:
         raise RuntimeError(f"Traditional sample words missing from export: {missing}")
     if "旧历" in joined or "农历" in joined:
         raise RuntimeError("Export still contains Simplified Chinese forms (e.g. 旧历/农历)")
-    # Every line must be a leaf code
     from ingest.cilin_leaf import is_cilin_leaf_code
 
     bad = [ln.split()[0] for ln in lines if ln.strip() and not is_cilin_leaf_code(ln.split()[0])]

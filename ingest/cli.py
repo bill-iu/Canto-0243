@@ -1,34 +1,18 @@
-#!/usr/bin/env python3
-"""
-ingest_syn_ant.py — Syn/Ant ingest v2 CLI
-
-Commands:
-  report                          Manifest + staging + word_relations summary
-  normalize [--source ID ...]     Parse sources -> normalize -> syn_ant_edges staging
-  build-relations                 Merge staging -> word_relations
-  ingest-cilin                    Ingest Cilin leaf synonym groups (default: direct + dedupe)
-  expand-antonyms-cilin           Expand antonyms via Cilin synonym neighbors of ant endpoints
-  expand-antonyms-mirror          Persist !query results: ant endpoints + ~endpoint syns (ant_syn_mirror)
-  ingest-compound-ant             Seed single-char ant pairs from 0243 compound antonym list
-
-Examples:
-  python ingest_syn_ant.py report
-  python ingest_syn_ant.py ingest-cilin --direct --dedupe-existing --chunk-size 300
-  python ingest_syn_ant.py expand-antonyms-cilin
-  python ingest_syn_ant.py ingest-cilin --source-path C:/Users/User/Desktop/new_cilin.txt --staging
-"""
+"""Syn/Ant ingest v2 CLI (`python -m ingest <command>`)."""
 
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 from pathlib import Path
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
 from app.database import SessionLocal, ensure_syn_ant_edges_table, ensure_word_relations_table
 from app.models.word import SynAntEdge, WordRelation
+from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
 from ingest.syn_ant_merge import (
     build_word_relations_from_staging,
@@ -40,7 +24,7 @@ from ingest.syn_ant_merge import (
     persist_staging_edges,
     staging_report,
 )
-from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
+from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.syn_ant_sources import iter_cilin_line_chunks, parse_cilin_lines, parse_sources
 
 
@@ -140,7 +124,6 @@ def cmd_ingest_cilin(args: argparse.Namespace) -> int:
             print("ingest-cilin stats:", stats)
         return 0
 
-    # Staging path (audit/debug)
     ensure_syn_ant_edges_table()
     total_lines = 0
     total_persisted = 0
@@ -240,7 +223,7 @@ def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
     return 0
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Syn/Ant ingest v2")
     parser.add_argument("--manifest", default=None, help="Path to sources.yaml")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -326,7 +309,7 @@ def main() -> int:
     )
     p_compound.set_defaults(replace_relations=True)
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
     if args.command == "normalize":
@@ -344,5 +327,4 @@ def main() -> int:
     return 1
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+__all__ = ["main"]

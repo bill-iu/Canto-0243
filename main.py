@@ -56,7 +56,7 @@ if __name__ == "__main__":
         try:
             Base.metadata.create_all(bind=engine)
         except Exception as e:
-            # 常見原因：另一個 python 程序（例如 backfill_embeddings.py、其他 uvicorn、搜尋測試）還在持有 lyrics.db 的鎖。
+            # 常見原因：另一個 python 程序（例如 scripts/legacy/backfill_embeddings.py、其他 uvicorn、搜尋測試）還在持有 lyrics.db 的鎖。
             # SQLite 單一 writer 限制。在 Windows 上特別容易發生。
             # 解決：關閉其他使用該 DB 的 python 程序、等 backfill 完全結束、或重啟終端機。
             # 因為表格通常已存在，繼續啟動通常沒問題（auto ALTER 會在下次乾淨啟動時補欄位）。
@@ -79,7 +79,7 @@ if __name__ == "__main__":
 
     # === Embedding model load completely disabled at runtime (redesign complete) ===
     # Per user request and previous plan: the MiniLM model is ONLY loaded inside
-    # generate_relationships.py (ingest/dev-only script).
+    # scripts/legacy/generate_relationships.py (ingest/dev-only script).
     # Normal `python main.py` or uvicorn will NEVER trigger the background load
     # or print the "[embedding] 正在背景載入 ..." message, even if sentence-transformers
     # happens to be importable in the current environment.
@@ -89,7 +89,7 @@ if __name__ == "__main__":
 
     # === Synonym/Antonym 預載（以 SQL relations + static thesaurus 為主）===
     # 目標：一般使用者不需要 sentence-transformers / torch。
-    # 現在 syn/ant 主要來源是 word_relations 表（generate_relationships.py 在 ingest 時產生）+ static thesaurus。
+    # 現在 syn/ant 主要來源是 word_relations 表（ingest / legacy generate_relationships 在 ingest 時產生）+ static thesaurus。
     # 舊的 embedding matrix preload 邏輯已完全移除，不再於 runtime 執行。
     try:
         from app.thesaurus.static_index import ensure_thesaurus_loaded

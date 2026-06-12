@@ -6,19 +6,21 @@ Source: https://github.com/rime/rime-cantonese (essay-cantonese.txt)
 Format: 詞<TAB>頻次 — sort signal only, no injection gate.
 
 Usage:
-  python fetch_essay_data.py
-  python fetch_essay_data.py --verify
+  python scripts/fetch/fetch_essay_data.py
+  python scripts/fetch/fetch_essay_data.py --verify
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
-import urllib.request
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-OUT_DIR = ROOT / "data" / "essay"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+OUT_DIR = REPO_ROOT / "data" / "essay"
 ESSAY_URL = (
     "https://raw.githubusercontent.com/rime/rime-cantonese/refs/heads/main/essay-cantonese.txt"
 )
@@ -27,6 +29,8 @@ OUT_PATH = OUT_DIR / "essay-cantonese.txt"
 
 def fetch_essay_corpus(dest: Path = OUT_PATH) -> Path:
     dest.parent.mkdir(parents=True, exist_ok=True)
+    import urllib.request
+
     print(f"Downloading {ESSAY_URL} ...")
     urllib.request.urlretrieve(ESSAY_URL, dest)
     size = dest.stat().st_size

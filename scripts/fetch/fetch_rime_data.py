@@ -5,19 +5,21 @@ Download rime-cantonese-upstream char.csv for single-char lexicon (P2).
 Source: https://github.com/CanCLID/rime-cantonese-upstream (CC BY 4.0)
 
 Usage:
-  python fetch_rime_data.py
-  python fetch_rime_data.py --verify
+  python scripts/fetch/fetch_rime_data.py
+  python scripts/fetch/fetch_rime_data.py --verify
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
-import urllib.request
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-OUT_DIR = ROOT / "data" / "rime"
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+OUT_DIR = REPO_ROOT / "data" / "rime"
 CHAR_CSV_URL = (
     "https://raw.githubusercontent.com/CanCLID/rime-cantonese-upstream/main/char.csv"
 )
@@ -26,6 +28,8 @@ OUT_PATH = OUT_DIR / "char.csv"
 
 def fetch_char_csv(dest: Path = OUT_PATH) -> Path:
     dest.parent.mkdir(parents=True, exist_ok=True)
+    import urllib.request
+
     print(f"Downloading {CHAR_CSV_URL} ...")
     urllib.request.urlretrieve(CHAR_CSV_URL, dest)
     size = dest.stat().st_size
