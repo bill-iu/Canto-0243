@@ -1,30 +1,9 @@
 from __future__ import annotations
 
 import json
-import re
 from typing import Dict, Iterable, List, Optional, Set
 
-CJK_RE = re.compile(r"[\u4e00-\u9fff]")
-MAX_WORD_LEN = 12
-
-
-def clean_term(text: str) -> str:
-    if not text:
-        return ""
-    t = text.strip()
-    t = re.sub(r"[（(].*?[）)]", "", t)
-    t = re.sub(r"\s+", "", t)
-    return t
-
-
-def is_valid_term(text: str) -> bool:
-    if not text or len(text) > MAX_WORD_LEN:
-        return False
-    if not CJK_RE.search(text):
-        return False
-    if re.search(r"[0-9A-Za-z_]", text):
-        return False
-    return True
+from app.domain.relations.valid_term import clean_term, is_valid_term
 
 
 def normalize_edges(

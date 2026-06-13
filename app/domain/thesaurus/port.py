@@ -64,6 +64,7 @@ class StaticThesaurusPort:
                 load_antonym_dict,
                 load_cilin_index,
                 load_thesaurus_dicts,
+                mark_thesaurus_loaded,
             )
 
             if self._cilin_path:
@@ -75,6 +76,7 @@ class StaticThesaurusPort:
                     self._thesaurus_syn_path or "data/thesaurus/dict_synonym.txt",
                     self._thesaurus_ant_path or "data/thesaurus/dict_antonym.txt",
                 )
+            mark_thesaurus_loaded()
         self._loaded = True
 
     def get_cilin_synonyms(self, word: str) -> List[str]:

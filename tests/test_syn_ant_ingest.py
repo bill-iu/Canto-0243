@@ -207,7 +207,10 @@ class RuntimeServiceTests(unittest.TestCase):
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
         with Session() as db:
-            words = [Word(id=i + 1, char=f"詞{i}", code="22", jyutping="", length=2) for i in range(20)]
+            words = [
+                Word(id=i + 1, char=f"試{chr(0x4e02 + i)}", code="22", jyutping="", length=2)
+                for i in range(20)
+            ]
             db.add(Word(id=100, char="快樂", code="22", jyutping="", length=2))
             db.add_all(words)
             for i, w in enumerate(words):

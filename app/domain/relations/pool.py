@@ -9,6 +9,7 @@ from typing import List, Optional, Set
 from sqlalchemy.orm import Session
 
 from app.domain.relations.graph import CharRelationGraph
+from app.domain.relations.valid_term import normalize_literal
 from app.domain.relations.ranking import (
     DERIVED_ANT_SOURCES,
     dedupe_rel_items,
@@ -25,6 +26,33 @@ from app.repositories.word_relation_repo import chars_present_in_db, fetch_bidir
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 DEFAULT_PAGE_SIZE = 160
+
+
+def _pool_literal(text: str) -> Optional[str]:
+    return normalize_literal(text)
+
+
+def _filter_static_words(words: List[str]) -> List[str]:
+    out: List[str] = []
+    seen: Set[str] = set()
+    for w in words:
+        t = _pool_literal(w)
+        if t and t not in seen:
+            seen.add(t)
+            out.append(t)
+    return out
+
+
+def _filter_pool_items(items: List[dict]) -> List[dict]:
+    out: List[dict] = []
+    for item in items:
+        ch = _pool_literal(item.get("char") or "")
+        if not ch:
+            continue
+        patched = dict(item)
+        patched["char"] = ch
+        out.append(patched)
+    return out
 
 
 def _fetch_relation_tuples(db: Session, query: str) -> List[tuple]:
@@ -57,6 +85,7 @@ def _resolve_morpheme_chars(
 
 
 def _static_relation_pool(relation: str, words: List[str], present: Set[str]) -> List[dict]:
+    words = _filter_static_words(words)
     return [
         {
             "char": w,
@@ -99,7 +128,7 @@ def _fetch_db_relations(db: Session, query: str) -> List[dict]:
             items.append(item)
     items = dedupe_rel_items(items)
     items.sort(key=lambda x: (x.get("_sort", 99), x.get("char") or ""))
-    return items
+    return _filter_pool_items(items)
 
 
 def _collect_sorted_pool(
@@ -278,6 +307,8 @@ def build_pool(
     static_ants: List[str] = []
     if include_static:
         static_syns, static_ants = _load_static_pools(q, port)
+        static_syns = _filter_static_words(static_syns)
+        static_ants = _filter_static_words(static_ants)
     morpheme_chars = _resolve_morpheme_chars(q, static_syns, static_ants, port)
 
     candidate_chars: Set[str] = set()

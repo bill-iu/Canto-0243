@@ -8,6 +8,14 @@ from app.domain.thesaurus.port import StaticThesaurusPort
 
 
 class StaticThesaurusPortTests(unittest.TestCase):
+    def tearDown(self) -> None:
+        from app.domain.thesaurus.port import default_thesaurus_port
+        from app.thesaurus.static_index import ensure_thesaurus_loaded, reset_static_indexes_for_tests
+
+        reset_static_indexes_for_tests()
+        ensure_thesaurus_loaded(force=True)
+        default_thesaurus_port()._loaded = False  # type: ignore[attr-defined]
+
     def _fixture_port(self) -> StaticThesaurusPort:
         tmp = tempfile.mkdtemp()
         root = Path(tmp)
@@ -44,6 +52,22 @@ class StaticThesaurusPortTests(unittest.TestCase):
         self.assertIn("開心", heads)
         self.assertIn("愉快", heads)
         self.assertIn("前", heads)
+
+    def test_custom_load_survives_static_get_synonyms(self):
+        """Custom antisem must not be wiped when static_index.get_synonyms runs."""
+        import tempfile
+        from pathlib import Path
+
+        import app.thesaurus.static_index as si
+
+        si.reset_static_indexes_for_tests()
+        with tempfile.TemporaryDirectory() as tmp:
+            antisem = Path(tmp) / "antisem.txt"
+            antisem.write_text("開心:難過;悲傷\n", encoding="utf-8")
+            port = StaticThesaurusPort(antisem_path=str(antisem), auto_load=True)
+            self.assertIn("開心", port.get_antonyms("悲傷"))
+            si.get_synonyms("快樂")
+            self.assertIn("開心", port.get_antonyms("悲傷"))
 
     def test_antonyms_and_edges(self):
         port = self._fixture_port()

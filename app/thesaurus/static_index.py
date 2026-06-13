@@ -1,6 +1,8 @@
 import os
 from typing import Iterator, List, Tuple
 
+from app.domain.relations.valid_term import normalize_literal
+
 _cilin_syns: dict = {}
 _ant_dict: dict = {}
 _syn_dict: dict = {}
@@ -35,6 +37,17 @@ def get_guotong_synonyms(word: str) -> List[str]:
     return _syn_dict.get(word, []) if word else []
 
 
+def _literal_tokens_from_parts(parts: List[str]) -> List[str]:
+    out: List[str] = []
+    seen: set[str] = set()
+    for raw in parts:
+        t = normalize_literal(raw)
+        if t and t not in seen:
+            seen.add(t)
+            out.append(t)
+    return out
+
+
 def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:
     global _cilin_syns
     if not os.path.exists(path):
@@ -62,7 +75,10 @@ def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:
         code = parts[0]
         if not code.endswith("=") or len(code) < 8:
             continue
-        groups.append(parts[1:])
+        words = _literal_tokens_from_parts(parts[1:])
+        if len(words) < 2:
+            continue
+        groups.append(words)
 
     word_to_group = {}
     for g in groups:
@@ -115,13 +131,18 @@ def load_antonym_dict(path: str = "data/antonym/antisem.txt") -> None:
             if len(parts) < 2:
                 continue
             left, ants = parts[0], parts[1:]
-        if left and ants:
-            d[left] = ants
-            for ant in ants:
-                if ant not in d:
-                    d[ant] = []
-                if left not in d[ant]:
-                    d[ant].append(left)
+        head = normalize_literal(left)
+        if not head:
+            continue
+        tail_list = _literal_tokens_from_parts(ants)
+        if not tail_list:
+            continue
+        d[head] = tail_list
+        for ant in tail_list:
+            if ant not in d:
+                d[ant] = []
+            if head not in d[ant]:
+                d[ant].append(head)
     _ant_dict = d
 
 
@@ -151,17 +172,19 @@ def load_thesaurus_dicts(
             if "=" in line:
                 line = line.split("=", 1)[1]
             parts = [x.strip() for x in line.replace("——", " ").replace("—", " ").replace("–", " ").split() if x.strip()]
-            if len(parts) >= 2:
-                if target is _syn_dict:
-                    for w in parts:
-                        for other in parts:
-                            if other != w:
-                                _syn_dict.setdefault(w, []).append(other)
-                else:
-                    for w in parts:
-                        for other in parts:
-                            if other != w:
-                                _ant_dict.setdefault(w, []).append(other)
+            words = _literal_tokens_from_parts(parts)
+            if len(words) < 2:
+                continue
+            if target is _syn_dict:
+                for w in words:
+                    for other in words:
+                        if other != w:
+                            _syn_dict.setdefault(w, []).append(other)
+            else:
+                for w in words:
+                    for other in words:
+                        if other != w:
+                            _ant_dict.setdefault(w, []).append(other)
     for dd in (_syn_dict, _ant_dict):
         for k in list(dd.keys()):
             dd[k] = sorted(set(dd[k]))
@@ -196,3 +219,20 @@ def ensure_thesaurus_loaded(force: bool = False) -> None:
     load_antonym_dict()
     load_thesaurus_dicts()
     _thesaurus_loaded = True
+
+
+def mark_thesaurus_loaded() -> None:
+    """Mark indexes as loaded without loading bundled defaults (custom path ingest)."""
+    global _thesaurus_loaded
+    _thesaurus_loaded = True
+
+
+def reset_static_indexes_for_tests() -> None:
+    """Clear in-memory static thesaurus indexes (tests only)."""
+    global _cilin_syns, _ant_dict, _syn_dict, _thesaurus_loaded, _syn_chars, _syn_emb_mat
+    _cilin_syns = {}
+    _ant_dict = {}
+    _syn_dict = {}
+    _thesaurus_loaded = False
+    _syn_chars = []
+    _syn_emb_mat = None
