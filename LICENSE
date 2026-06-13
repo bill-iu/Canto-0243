@@ -1,0 +1,119 @@
+CANTO-0243 LICENCE
+=======================================================================
+
+Version 1.0
+
+Copyright (c) 2026 IU Ching Ue Bill. All rights reserved.
+
+
+ADDITIONAL TERMS AND CONDITIONS
+=======================================================================
+
+This work is licensed under the Creative Commons
+Attribution-NonCommercial-ShareAlike 4.0 International Public License
+(CC BY-NC-SA 4.0), available at:
+
+  https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+subject to the following additional terms and conditions. These additional
+terms supplement the CC BY-NC-SA 4.0 licence and take precedence where they
+conflict.
+
+By exercising any rights to the Licensed Material, You accept and agree to
+be bound by both these Additional Terms and the CC BY-NC-SA 4.0 Public
+License.
+
+
+1. PERMITTED USE
+
+   You may use this tool for any lawful purpose, including assisting Cantonese
+   lyric composition, rhyme lookup, and word substitution as part of a
+   commercial creative work (e.g. songs, scripts, published lyrics), provided
+   that such use complies with the restrictions set out below and the terms of
+   the CC BY-NC-SA 4.0 licence.
+
+
+2. RESTRICTIONS
+
+   In addition to the restrictions set out in the CC BY-NC-SA 4.0 licence, the
+   following restrictions apply:
+
+   a. NO REPACKAGING OR RESALE
+      You may not repackage, redistribute, sublicense, or sell this tool, in
+      whole or in part, as a standalone product or as part of a competing
+      product.
+
+   b. NO PAID API OR INFERENCE SERVICES
+      You may not use this tool to provide lookup, search, or inference as a
+      paid API service, whether directly or indirectly. This includes, but is
+      not limited to, offering access behind a paywall, subscription model, or
+      usage-based billing system. Free self-hosted or free public access is
+      permitted subject to Section 3.
+
+   c. COMMERCIAL SOFTWARE INTEGRATION
+      If you operate a commercial software package or paid inference service
+      and wish to incorporate this tool into your software, you must obtain a
+      separate written agreement from the Licensor. Please open an issue on the
+      official Canto-0243 repository or contact the copyright holder.
+
+
+3. ATTRIBUTION
+
+   a. In addition to the attribution requirements set out in Section 3(a) of
+      the CC BY-NC-SA 4.0 licence, You must include the name "Canto-0243" in
+      any attribution notice.
+
+   b. Any fork, derivative work, variation, improvement, or subsequent release
+      of this tool must retain the "Canto-0243" name in a reasonably prominent
+      position.
+
+   c. If You operate a public website, web application, or API powered by this
+      tool (including free access), You must display a reasonably prominent
+      notice such as "Powered by Canto-0243" and include a hyperlink to the
+      official repository URL published by the Licensor.
+
+   d. You may interchange "Canto 0243" for "Canto-0243" as needed for display.
+
+
+4. SHARE-ALIKE
+
+   Any variations, improvements, derivative works, or modified versions of
+   this tool that are publicly released must be distributed under this same
+   licence, including these Additional Terms, or a licence with substantially
+   equivalent terms.
+
+
+5. DISCLAIMER
+
+   This licence is provided on an "as-is" basis. The Licensor makes no
+   representations or warranties regarding the enforceability or legal
+   sufficiency of these terms. You are encouraged to seek independent legal
+   advice if you have questions about the scope or applicability of this
+   licence.
+
+
+6. CONTRIBUTIONS
+
+   By submitting any contribution (including source code, documentation, or
+   data curation) to this repository, You agree that:
+
+   a. Your contribution is provided under the terms of this Canto-0243
+      Licence.
+
+   b. You grant the Licensor (IU Ching Ue Bill) a perpetual, worldwide,
+      non-exclusive, no-charge, royalty-free, irrevocable license to use,
+      reproduce, prepare derivative works of, publicly display, and sublicense
+      your contribution, including for commercial purposes.
+
+   c. You represent that you are the legal owner of the contribution or have
+      the authority to submit it under these terms.
+
+
+7. THIRD-PARTY DATA
+
+   This repository may include scripts to download third-party dictionaries,
+   corpora, and thesaurus files. Such materials are not Licensed Material under
+   this licence and remain subject to their respective upstream terms. See
+   THIRD_PARTY_NOTICES.md.
+
+=======================================================================

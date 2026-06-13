@@ -7,7 +7,7 @@ sources:
   - id: current_static
     type: bundled
     parser: current_static
-    license: bundled
+    license: fetch-only
     enabled_by_default: true
     paths:
       cilin: data/cilin/new_cilin.txt
@@ -15,7 +15,7 @@ sources:
       thesaurus_syn: data/thesaurus/dict_synonym.txt
       thesaurus_ant: data/thesaurus/dict_antonym.txt
     source_rank: 70
-    attribution: Project bundled static thesaurus files
+    attribution: Project static paths; files from fetch scripts (see THIRD_PARTY_NOTICES.md)
 
   - id: cilin
     type: cilin
@@ -24,7 +24,7 @@ sources:
     enabled_by_default: false
     raw_path: data/cilin/new_cilin.txt
     source_rank: 55
-    attribution: Cilin extended (Traditional Chinese via fetch_cilin_data.py)
+    attribution: Cilin via liao961120/cilin; data upstream yaleimeng/Final_word_Similarity (MIT)
 
   - id: cow
     type: wordnet
