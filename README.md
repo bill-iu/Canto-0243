@@ -338,7 +338,7 @@ python -m unittest discover -s tests -q
 
 ## 致謝
 
-本專案在作者幾乎零程式背景的起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 擔任 code consultant：在設計與實作上給予大量指導，並提出許多寶貴嘅修改建議。冇有呢些協助，**Canto-0243** 唔會走到今天。
+本專案喺作者幾乎零程式背景嘅起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 擔任 code consultant：喺設計同實行上俾咗好多意見同指導，並且提出許多寶貴嘅修改建議。冇呢啲協助，**Canto-0243** 唔會出現。
 
 ---
 
