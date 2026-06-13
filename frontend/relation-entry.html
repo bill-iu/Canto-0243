@@ -119,6 +119,27 @@
       cursor: not-allowed;
     }
 
+    .danger-button {
+      min-height: 40px;
+      padding: 9px 16px;
+      border: 1px solid rgba(162, 59, 42, 0.45);
+      border-radius: 999px;
+      background: rgba(252, 236, 234, 0.9);
+      color: var(--danger);
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .danger-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .danger-button:hover {
+      border-color: var(--danger);
+      box-shadow: 0 8px 22px rgba(162, 59, 42, 0.12);
+    }
+
     .main-wrap {
       max-width: 640px;
       margin: 0 auto;
@@ -276,6 +297,7 @@
 
       <div class="actions">
         <button class="primary-button" id="submitBtn" type="submit">補上關係</button>
+        <button class="danger-button" id="revokeBtn" type="button">撤回關係</button>
       </div>
 
       <div class="status ok" id="okStatus" hidden role="status"></div>
@@ -288,6 +310,26 @@
     const okStatus = document.getElementById("okStatus");
     const errStatus = document.getElementById("errStatus");
     const submitBtn = document.getElementById("submitBtn");
+    const revokeBtn = document.getElementById("revokeBtn");
+
+    function payloadFromForm() {
+      const data = new FormData(form);
+      return {
+        seed_char: String(data.get("seed_char") || "").trim(),
+        opposite_char: String(data.get("opposite_char") || "").trim(),
+        relation_type: String(data.get("relation_type") || "syn"),
+      };
+    }
+
+    async function postRelation(path, payload) {
+      const response = await fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const body = await response.json().catch(() => ({}));
+      return { response, body };
+    }
 
     function showOk(text) {
       okStatus.textContent = text;
@@ -306,21 +348,10 @@
       okStatus.hidden = true;
       errStatus.hidden = true;
       submitBtn.disabled = true;
-
-      const data = new FormData(form);
-      const payload = {
-        seed_char: String(data.get("seed_char") || "").trim(),
-        opposite_char: String(data.get("opposite_char") || "").trim(),
-        relation_type: String(data.get("relation_type") || "syn"),
-      };
+      revokeBtn.disabled = true;
 
       try {
-        const response = await fetch("/relations/manual", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        });
-        const body = await response.json().catch(() => ({}));
+        const { response, body } = await postRelation("/relations/manual", payloadFromForm());
         if (!response.ok) {
           showErr(body.detail || "提交失敗，請稍後再試。");
           return;
@@ -330,6 +361,31 @@
         showErr("無法連線後端。請確認伺服器已啟動。");
       } finally {
         submitBtn.disabled = false;
+        revokeBtn.disabled = false;
+      }
+    });
+
+    revokeBtn.addEventListener("click", async () => {
+      okStatus.hidden = true;
+      errStatus.hidden = true;
+      submitBtn.disabled = true;
+      revokeBtn.disabled = true;
+
+      try {
+        const { response, body } = await postRelation(
+          "/relations/manual/revoke",
+          payloadFromForm()
+        );
+        if (!response.ok) {
+          showErr(body.detail || "撤回失敗，請稍後再試。");
+          return;
+        }
+        showOk(body.message || "已撤回關係。");
+      } catch (error) {
+        showErr("無法連線後端。請確認伺服器已啟動。");
+      } finally {
+        submitBtn.disabled = false;
+        revokeBtn.disabled = false;
       }
     });
   </script>

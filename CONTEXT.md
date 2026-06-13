@@ -120,6 +120,10 @@ _Avoid_：反義橋接（作泛稱）、runtime 即時猜反義
 創作者經頂欄進入**關係補錄**畫面，指定**種子字面**與**對端字面**（兩者須已收錄於詞條庫），選擇近義或反義；後端寫入一條 direct `word_relations`（`source=manual`）。若該 direct 關係（同字面對、同關係類型）已存在則整筆拒絕並提示。寫入成功後依類型一跳擴展：`manual` 近義 → 種子字面接上對端字面在 DB 與 static thesaurus 的**直接近義鄰居**，衍生 `source=manual_syn_cluster`；`manual` 反義 → 種子字面接上對端字面直接近義鄰居作反義（同 runtime `!` 鏡射），衍生 `source=manual_ant_mirror`。**擴展互斥**：一跳衍生不得寫入種子字面已具相反關係類型的字面（近義擴展跳過既有反義鄰居；反義鏡射跳過既有近義鄰居），避免同一字面同時出現在 `~` 與 `!` 結果。衍生列與 direct 去重；**direct 列排序信號優先於衍生列**。提交結果以筆數摘要回饋創作者。不佔查韻首屏主體。
 _Avoid_：手動關係、使用者新增關係（作領域正名）、把創作者手動關係稱作近義橋反義
 
+**撤回創作者手動關係**：
+在**關係補錄**以與補錄相同的種子字面、對端字面與關係類型，刪除對應的 direct `source=manual` 列，以及當初補錄時可重算的一跳衍生列（`manual_syn_cluster` 或 `manual_ant_mirror`）。僅限創作者手動寫入；`cilin`、`ant_syn_bridge` 等 ingest 資料不受影響。找不到 direct manual 列則拒絕並提示。
+_Avoid_：改類型、undo（作領域正名）、撤回 ingest 關係
+
 **關係補錄**：
 創作者手動關係功能的入口與專用畫面；與查韻搜尋分頁，經頂欄進入。
 _Avoid_：新增關係頁、relation form（作產品名稱）

@@ -182,6 +182,105 @@ def create_creator_manual_relation(
     }
 
 
+def _delete_relation_row(
+    db: Session,
+    word_id: int,
+    related_id: int,
+    relation_type: str,
+    *,
+    source: str,
+) -> int:
+    w, r = canonical_word_ids(word_id, related_id)
+    rows = (
+        db.query(WordRelation)
+        .filter(
+            WordRelation.word_id == w,
+            WordRelation.related_id == r,
+            WordRelation.relation_type == relation_type,
+            WordRelation.source == source,
+        )
+        .all()
+    )
+    for row in rows:
+        db.delete(row)
+    return len(rows)
+
+
+def revoke_creator_manual_relation(
+    db: Session,
+    *,
+    seed_char: str,
+    opposite_char: str,
+    relation_type: RelationType,
+) -> dict:
+    seed = _normalize_char(seed_char)
+    opposite = _normalize_char(opposite_char)
+    if relation_type not in ("syn", "ant"):
+        raise ManualRelationError("invalid_relation_type", "關係類型須為近義或反義")
+    if not seed or not opposite:
+        raise ManualRelationError("missing_literal", "請填寫種子字面與對端字面")
+    if seed == opposite:
+        raise ManualRelationError("self_relation", "種子字面與對端字面不可相同")
+
+    for label, char in (("種子字面", seed), ("對端字面", opposite)):
+        if not _char_in_lexicon(db, char):
+            raise ManualRelationError(
+                "not_in_lexicon",
+                f"{label}「{char}」未收錄於詞條庫",
+            )
+
+    char_to_id = get_char_to_primary_id(db)
+    seed_id = char_to_id.get(seed)
+    opposite_id = char_to_id.get(opposite)
+    if not seed_id or not opposite_id:
+        raise ManualRelationError("not_in_lexicon", "字面未收錄於詞條庫")
+
+    w, r = canonical_word_ids(seed_id, opposite_id)
+    direct_exists = (
+        db.query(WordRelation.id)
+        .filter(
+            WordRelation.word_id == w,
+            WordRelation.related_id == r,
+            WordRelation.relation_type == relation_type,
+            WordRelation.source == MANUAL_SOURCE,
+        )
+        .limit(1)
+        .first()
+        is not None
+    )
+    if not direct_exists:
+        raise ManualRelationError("not_found", "找不到可撤回的創作者手動關係")
+
+    expand_source = (
+        MANUAL_SYN_CLUSTER_SOURCE if relation_type == "syn" else MANUAL_ANT_MIRROR_SOURCE
+    )
+    expand_removed = 0
+    for neighbor in sorted(
+        _expand_targets(
+            db, seed_char=seed, opposite_char=opposite, relation_type=relation_type
+        )
+    ):
+        neighbor_id = char_to_id.get(neighbor)
+        if not neighbor_id:
+            continue
+        expand_removed += _delete_relation_row(
+            db,
+            seed_id,
+            neighbor_id,
+            relation_type,
+            source=expand_source,
+        )
+
+    direct_removed = _delete_relation_row(
+        db, seed_id, opposite_id, relation_type, source=MANUAL_SOURCE
+    )
+    if direct_removed != 1:
+        raise ManualRelationError("not_found", "找不到可撤回的創作者手動關係")
+
+    db.commit()
+    return {"direct": direct_removed, "expand": expand_removed}
+
+
 MANUAL_EXPAND_SOURCES = frozenset({MANUAL_SYN_CLUSTER_SOURCE, MANUAL_ANT_MIRROR_SOURCE})
 
 
@@ -240,4 +339,5 @@ __all__ = [
     "ManualRelationError",
     "create_creator_manual_relation",
     "prune_conflicting_manual_expansions",
+    "revoke_creator_manual_relation",
 ]
