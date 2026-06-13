@@ -28,7 +28,7 @@ Canto-0243（離線粵語填詞查韻工具 · ONE·搵·韻）：依 **0243／0
 
 完整離線體驗（詞條搜尋 + 近反義）請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（見 `v1.0.0-data` 或最新 data release）。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（見 [`v1.0.1-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.1-data) 或最新 data release）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. **Windows**：雙擊 **`START.bat`**。  
    **macOS**：建議下載 `canto-0243-portable-macos.tar.gz`（若只有 zip，解壓後雙擊 `START.command` 或執行 `./START.sh`）。  
