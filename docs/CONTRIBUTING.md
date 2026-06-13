@@ -4,9 +4,9 @@ Thank you for helping improve **Canto-0243** (0243 Cantonese rhyme dictionary fo
 
 ## Before you start
 
-1. Read [CONTEXT.md](CONTEXT.md) for domain vocabulary (查詢語法、詞庫、排序).
-2. Read [LICENSE](LICENSE) (Canto-0243 License). **This is not an OSI-approved open-source license** (NonCommercial + additional terms).
-3. Read [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) if your change touches data or fetch scripts.
+1. Read [CONTEXT.md](../CONTEXT.md) for domain vocabulary (查詢語法、詞庫、排序).
+2. Read [LICENSE](../LICENSE) (Canto-0243 License). **This is not an OSI-approved open-source license** (NonCommercial + additional terms).
+3. Read [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) if your change touches data or fetch scripts.
 
 ## License on contributions
 
@@ -40,3 +40,24 @@ Use GitHub Issues for bugs, feature ideas, and questions. For security-sensitive
 ## Naming
 
 Public-facing product name: **Canto-0243**. Forks must retain the name per LICENSE §3.
+
+## 源碼根目錄（維護者）
+
+領域定義見 [CONTEXT.md](../CONTEXT.md) § 源碼根目錄。
+
+**應留在根目錄的追蹤檔**：產品入口（`main.py`、`start.sh`、`requirements*.txt`、`alembic.ini`）、`README.md`、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`CONTEXT.md`、`WORKLOG.md`、`AGENTS.md`（stub）、`skills-lock.json`、`.env.example`、`.gitignore`。
+
+**允許的本機檔（通常 gitignore）**：
+
+| 檔案 | 用途 |
+|------|------|
+| `lyrics.db` | 開發／打包用詞條庫（Release 下載或 maintainer 自建） |
+| `.env.local` · `.env` · `.env.prod` | 本機環境變數 |
+
+**不得堆在根目錄**：
+
+- 任何 `*.log`、`debug-*.log`、`ingest-*.log`
+- 建置產物（用 `dist/`）
+- 未列入允許清單的資料 dump
+
+日誌請寫入 `logs/`（若腳本支援）或系統暫存區，並定期清理。Portable 交付腳本見 `portable/START.*`；clone 開發用 `./start.sh`（與 Portable 職責分開）。

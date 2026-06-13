@@ -30,6 +30,8 @@ backup/
 # 日誌與臨時檔案
 *.log
 debug-*.log
+ingest-*.log
+logs/
 data/raw/
 data/processed/
 

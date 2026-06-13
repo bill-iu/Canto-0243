@@ -224,6 +224,10 @@ _Avoid_：把可選自架服務當與離線版並重的一級產品
 離線交付的壓縮包形態，內含詞庫、前端與本機 API；解壓後以啟動腳本進入查韻介面，無需手動建庫。
 _Avoid_：把 zip／tar 當產品正名、把 portable 當雲端版
 
+**源碼根目錄**（維護者）：
+Clone 後第一層目錄；保留產品入口、`CONTEXT`、變更紀錄（`WORKLOG`）、agent 入口 stub（`AGENTS`）與 agent 鎖定（`skills-lock`）；對外授權與第三方聲明留根目錄；貢獻流程等維護說明收在 `docs/`；開發啟動用 `start.sh` 與 Portable 套件內啟動腳本並存、職責分開。根目錄允許的本機檔僅 `lyrics.db` 與 `.env*`（範例為 `.env.example`）；日誌與 debug 檔不得停留。
+_Avoid_：把根目錄當資料 dump、與 Portable 解壓目錄混淆、把開發啟動腳本與 Portable 啟動腳本混為一體
+
 **Windows 啟動訊息**：
 Portable 在 Windows 上啟動時，終端機提示以**英文**呈現，避免部分系統語系下中文無法正確顯示；`README` 與 macOS／Linux 啟動腳本仍可中英並列。
 _Avoid_：在 Windows 啟動腳本內寫中文 echo、要求使用者先讀 bat 才懂怎麼用

@@ -1,5 +1,7 @@
 ## Agent skills
 
+Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)。
+
 ### Issue tracker
 
 Issues live in GitHub Issues for `ICE-U-code/Canto-0243` (use the `gh` CLI). See `docs/agents/issue-tracker.md`.

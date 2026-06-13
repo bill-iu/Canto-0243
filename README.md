@@ -4,7 +4,7 @@ Canto-0243（離線粵語填詞查韻工具 · ONE·搵·韻）：依 **0243／0
 
 **授權**：程式碼依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**非 OSI 開源**）。第三方資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
 **技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· 純 HTML/JS 前端  
-**語意與領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`CONTRIBUTING.md`](CONTRIBUTING.md)
+**語意與領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
 
@@ -59,7 +59,7 @@ python main.py
 
 ### Maintainer（重建詞條庫與近反義）
 
-產物均為本地／gitignore，**勿** commit。詳見 [CONTRIBUTING.md](CONTRIBUTING.md)。
+產物均為本地／gitignore，**勿** commit。詳見 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)。
 
 ```bash
 pip install -r requirements-dev.txt
@@ -314,8 +314,13 @@ Canto-0243/
 │   ├── ingest/             # import_data
 │   └── legacy/             # generate_relationships · backfill_embeddings
 ├── tests/
-├── main.py · start.sh
-├── CONTEXT.md · WORKLOG.md · AGENTS.md
+├── docs/
+│   ├── CONTRIBUTING.md     # 貢獻與 PR · 源碼根目錄約定
+│   └── agents/             # issue-tracker · triage-labels · domain
+├── portable/               # START.bat · START.sh（build 複製進 zip）
+├── main.py · start.sh      # 開發入口（Portable 用 portable/START.*）
+├── README.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements.txt · requirements-dev.txt · requirements-postgres.txt
 ```
 
@@ -406,11 +411,11 @@ python -m unittest tests.test_syn_ant_ingest tests.test_relation_graph tests.tes
 |------|------|
 | [`LICENSE`](LICENSE) | Canto-0243 License（程式碼） |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | 貢獻與 PR 指南 |
+| [`CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR 指南 · 源碼根目錄約定 |
 | [`CONTEXT.md`](CONTEXT.md) | 領域詞彙表（查詢語法、詞庫、排序、產品邊界） |
 | [`WORKLOG.md`](WORKLOG.md) | 變更紀錄與效能驗證 |
 | [`AGENTS.md`](AGENTS.md) | Agent 協作指引 |
 
 ---
 
-**最後更新**：2026-06-13
+**最後更新**：2026-06-13（根目錄整理 · CONTRIBUTING 移至 docs）

@@ -5,6 +5,22 @@
 
 **Enforcement**（每次實質變更）：`python -m unittest discover -s tests -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
 
+### 2026-06-13 — 根目錄整理（grill C · D · A · D · A · B）
+
+**Grill 決策**
+
+- 源碼根目錄：產品入口 + `CONTEXT` + `WORKLOG` + `skills-lock` + 極短 `AGENTS`；授權／第三方聲明留根目錄
+- `CONTRIBUTING` → `docs/CONTRIBUTING.md`；`AGENTS.md` 保留 stub 並指到 `docs/agents/`
+- `start.sh`（開發）與 `portable/START.*`（交付）雙軌並存
+- 根目錄本機檔僅 `lyrics.db` 與 `.env*`；日誌不得停留
+- `WORKLOG.md` 留根目錄、持續追加
+
+**實作**
+
+- 刪根目錄 `debug-*.log`、`ingest-syn-bridge*.log`
+- 新增 `docs/CONTRIBUTING.md`（含源碼根目錄允許清單）
+- README 專案結構／相關文件連結更新；`CONTEXT.md` § 源碼根目錄
+
 ---
 
 ## 硬性規範
