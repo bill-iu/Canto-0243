@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
             pass  # 失敗不影響啟動，有 fallback
     yield
 
-app = FastAPI(title="0243 押韻字典", lifespan=lifespan)
+app = FastAPI(title="Canto-0243", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

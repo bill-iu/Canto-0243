@@ -62,6 +62,12 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertIsInstance(parsed, EqualsQuery)
         self.assertEqual(parsed.raw_q, "香港=")
 
+    def test_equals_query_whole_word_initial_leading(self):
+        parsed = self._parse("=香港")
+        self.assertIsInstance(parsed, EqualsQuery)
+        self.assertEqual(parsed.raw_q, "=香港")
+        self.assertNotIsInstance(parsed, RhymeAnchorQuery)
+
     def test_equals_query_code_sandwich(self):
         parsed = self._parse("2=我3")
         self.assertIsInstance(parsed, EqualsQuery)

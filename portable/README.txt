@@ -1,5 +1,5 @@
-0243 粵語填詞查韻工作台 — Portable 版
-0243 Cantonese Lyric Rhyme Workbench — Portable Edition
+Canto-0243 — Portable 版
+Canto-0243 Cantonese Rhyme Workbench — Portable Edition
 (Windows / macOS / Linux)
 ================================================================
 
@@ -29,7 +29,7 @@ macOS
 2. 首次請在「終端機」執行一次（賦予執行權限）：
    Run once in Terminal (grant execute permission):
 
-     cd /path/to/0243-lyrics-portable
+     cd /path/to/canto-0243-portable
      chmod +x START.sh START.command
      xattr -dr com.apple.quarantine .    # 若系統阻擋來自網路的檔案
                                            # if macOS blocks downloaded files
@@ -40,8 +40,8 @@ macOS
 4. 若未安裝 Python：brew install python@3.12
    If Python is missing: brew install python@3.12
 
-   建議使用 0243-lyrics-portable-macos.tar.gz（較 ZIP 友善）
-   Prefer 0243-lyrics-portable-macos.tar.gz over ZIP on Mac.
+   建議使用 canto-0243-portable-macos.tar.gz（較 ZIP 友善）
+   Prefer canto-0243-portable-macos.tar.gz over ZIP on Mac.
 
 
 Linux

@@ -618,6 +618,37 @@
       margin-bottom: 28px;
     }
 
+    .guide-intro {
+      max-width: 780px;
+      margin-bottom: 28px;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.74);
+    }
+
+    .guide-intro h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+      font-weight: 750;
+      text-wrap: balance;
+    }
+
+    .guide-intro p {
+      margin: 0 0 14px;
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--ink-soft);
+    }
+
+    .guide-intro p:last-child {
+      margin-bottom: 0;
+    }
+
+    .guide-intro code {
+      font-size: 0.92em;
+    }
+
     .guide-actions {
       display: flex;
       gap: 10px;
@@ -934,6 +965,37 @@
         </div>
       </div>
 
+      <article class="guide-intro" aria-labelledby="guideIntroTitle">
+        <h2 id="guideIntroTitle">基本說明</h2>
+        <p>
+          <strong>打數字，搵粵語啱音字。</strong>例如打 <code translate="no">390</code>，會搵到聲調序列一樣嘅三字詞，包括「香港人」、「吹口琴」、「烏龍茶」。<span translate="no">鬆</span> 用 0243 碼；<span translate="no">緊</span> 用 02493，調值更細。
+        </p>
+        <p>
+          <strong>打漢字，查詞條讀音同編碼。</strong>例如打「香港」，會見到 <code translate="no">hoeng1 gong2</code>、0243 碼 <code translate="no">39</code>，以及同音或相關候選。切換<strong>近義／反義</strong>模式，可以直接列出該詞嘅近義、反義同語意相關字。
+        </p>
+        <p>
+          <strong>打數字加尾字，搵啱音押韻嘅詞。</strong>譬如打 <code translate="no">390人</code>，會搵尾字同「人」韻嘅三字同音詞。二字用 <code translate="no">23就</code>；只要尾字字面、唔要同韻擴展，用 <code translate="no">23@就</code>。
+        </p>
+        <p>
+          <strong>可以夾多個韻字或加長位置。</strong>例如 <code translate="no">23*就</code>（三字，頭兩音節同 <code translate="no">23</code>，尾字係「就」）、<code translate="no">23?就</code>（四字碼字混合）、<code translate="no">390人成</code>（多個尾字錨）。用 <code translate="no">?</code>、<code translate="no">_</code> 或 <code translate="no">%</code> 表示該格字面不限，例如 <code translate="no">香??</code>。
+        </p>
+        <p>
+          <strong>打幾個漢字加等號，搵「多字韻」或「同聲」。</strong>打 <code translate="no">香港=</code> 會搵整詞逐音節同韻「香港」嘅詞，例如「香江」。打 <code translate="no">=香港</code> 會搵整詞逐音節同聲「香港」嘅詞，例如「香江」、「航機」（聲母序列與「香港」一致）。單格聲母錨寫 <code translate="no">=香?</code>、<code translate="no">?=就</code>。碼夾等號如 <code translate="no">2我=3</code>、<code translate="no">2=我3</code>，可同時約束 0243 碼同一格聲或韻。
+        </p>
+        <p>
+          <strong>打一個漢字加等號，搵「同韻」或「同聲」詞。</strong>打 <code translate="no">香=?</code> 會搵首字同「香」韻嘅二字詞；打 <code translate="no">?就=</code> 會搵尾字同「就」韻嘅詞。聲母錨寫 <code translate="no">=香?</code>、<code translate="no">?=就</code>。<strong>口訣：</strong><code translate="no">=</code> 在錨字後比韻母，在錨字前比聲母。
+        </p>
+        <p>
+          <strong>打粵拼，搵漢字。</strong>例如打 <code translate="no">syut</code> 會搵「雪」等讀音相符嘅字；打 <code translate="no">nei</code> 可以模糊搵「你」相關讀音。
+        </p>
+        <p>
+          <strong>近義、反義同反義複合。</strong>打 <code translate="no">~開心</code> 搵近義；打 <code translate="no">!你</code> 搵反義（含鏡像近義）。可加前綴碼，例如 <code translate="no">33!開心</code>。打 <code translate="no">!!</code> 搵二字反義複合（如「生死」、「是非」）；加尾字如 <code translate="no">33!!你</code> 再加同韻限制。
+        </p>
+        <p>
+          下面每張卡有<strong>可點擊例子</strong>，撳一下就會回到搜尋頁並自動執行。
+        </p>
+      </article>
+
       <div class="guide-grid">
         <article class="guide-card">
           <h2>基本查詢</h2>
@@ -1012,6 +1074,7 @@
           <h2>左 <code translate="no">=</code> 查聲母</h2>
           <p>錨字在 <code translate="no">=</code> 右側（<code translate="no">=錨字</code>），該位置聲母與錨字相同。與右 <code translate="no">=</code> 查韻母不同，勿混用。</p>
           <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="=香港" data-mode="m1"><code translate="no">=香港</code><span>二字，整詞同聲「香港」</span></button>
             <button class="guide-example" type="button" data-query="2=我3" data-mode="m1"><code translate="no">2=我3</code><span>二字，23同音，首字同聲「我」</span></button>
           </div>
         </article>

@@ -2,7 +2,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues for `ICE-U-code/0243---SQLalchemy-ORM` (use the `gh` CLI). See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for `ICE-U-code/Canto-0243` (use the `gh` CLI). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

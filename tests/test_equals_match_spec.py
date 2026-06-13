@@ -18,6 +18,16 @@ class BuildEqualsMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.width, 2)
         self.assertIsNone(spec.code_prefix)
 
+    def test_whole_word_initial_leading_equals(self):
+        spec = build_equals_match_spec("=香港")
+        self.assertIsNotNone(spec)
+        self.assertEqual(spec.ref_literal, "香港")
+        self.assertTrue(spec.whole_word_phoneme_match)
+        self.assertEqual(spec.ref_dimension, "initial")
+        self.assertEqual(spec.width, 2)
+        self.assertIsNone(spec.code_prefix)
+        self.assertFalse(spec.phoneme_anchor_only)
+
     def test_code_sandwich_initial(self):
         spec = build_equals_match_spec("2=我3")
         self.assertEqual(spec.ref_literal, "我")

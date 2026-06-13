@@ -1,4 +1,4 @@
-# 0243 離線押韻字典 — Worklog
+# Canto-0243 — Worklog
 
 **期間**：2026-05 ~ 2026-06 · **棧**：FastAPI + SQLAlchemy + SQLite（離線）+ HTML/JS  
 **目標**：快速粵語押韻搜尋（0243／等號韻／wildcard／近反義）。**原則**：ingest 重型、runtime 無 ML、純 SQL + static thesaurus。

@@ -238,10 +238,7 @@ class CompoundAntCandidateSource:
             return [], True
 
         query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
-        if code:
-            variants = get_code_variants(code, mode)
-            query = query.filter(Word.code.in_(variants))
-
+        # code_prefix 由 PositionMatchEngine 以預設讀音做逐位比對（避免多音字次選讀音誤匹配）
         rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
         return rows, False
 
@@ -546,6 +543,61 @@ def matches_phoneme_at_position(
     return parts[pos] in options
 
 
+def _group_candidates_by_char(candidates: list) -> dict[str, list]:
+    grouped: dict[str, list] = {}
+    for word in candidates:
+        char = get_word_text(word)
+        grouped.setdefault(char, []).append(word)
+    return grouped
+
+
+def preferred_pronunciation_rows(rows: list) -> list:
+    """多音字：僅保留 pron_rank 最佳（預設讀音）的候選列。"""
+    if not rows:
+        return []
+    ranked = [
+        (pron_rank_sort_value_for_word(get_word_text(word), get_word_jyutping(word)), word)
+        for word in rows
+    ]
+    best = min(rank for rank, _ in ranked)
+    return [word for rank, word in ranked if rank == best]
+
+
+def _word_passes_position_filters(
+    word,
+    *,
+    width: int,
+    required_codes: list[Optional[str]],
+    mode: str,
+    mask: str,
+    db,
+    anchor_pos: Optional[int],
+    anchor: Optional[str],
+    constraint: Optional[str],
+    literal_char: Optional[str],
+) -> bool:
+    word_char = get_word_text(word)
+    if len(word_char) != width:
+        return False
+    if mask and not matches_mask_literal_chars(word_char, mask):
+        return False
+    if literal_char is not None and word_char[-1] != literal_char:
+        return False
+    word_code_str = get_word_sort_code(word)
+    word_finals = get_rhyme_finals(word)
+    if not word_code_str or not word_finals:
+        return False
+    if any(req is not None for req in required_codes):
+        if not matches_code_positions(word_code_str, required_codes, mode):
+            return False
+    if anchor_pos is not None and anchor and constraint:
+        if not matches_phoneme_at_position(
+            word, anchor_pos, anchor, constraint=constraint, db=db,
+        ):
+            return False
+    return True
+
+
 def filter_words_by_code_and_mask(
     candidates: list,
     *,
@@ -587,26 +639,39 @@ def filter_words_by_code_and_mask(
                 required_codes[slot.pos] = str(slot.value)
 
     filtered = []
-    for word in candidates:
-        word_char = get_word_text(word)
-        if len(word_char) != width:
-            continue
-        if mask and not matches_mask_literal_chars(word_char, mask):
-            continue
-        if literal_char is not None and word_char[-1] != literal_char:
-            continue
-        word_code_str = get_word_sort_code(word)
-        word_finals = get_rhyme_finals(word)
-        if not word_code_str or not word_finals:
-            continue
-        if not matches_code_positions(word_code_str, required_codes, mode):
-            continue
-        if anchor_pos is not None and anchor and constraint:
-            if not matches_phoneme_at_position(
-                word, anchor_pos, anchor, constraint=constraint, db=db,
+    has_code_digit_constraints = any(req is not None for req in required_codes)
+    if has_code_digit_constraints:
+        for _char, group in _group_candidates_by_char(candidates).items():
+            for word in preferred_pronunciation_rows(group):
+                if _word_passes_position_filters(
+                    word,
+                    width=width,
+                    required_codes=required_codes,
+                    mode=mode,
+                    mask=mask,
+                    db=db,
+                    anchor_pos=anchor_pos,
+                    anchor=anchor,
+                    constraint=constraint,
+                    literal_char=literal_char,
+                ):
+                    filtered.append(word)
+                    break
+    else:
+        for word in candidates:
+            if _word_passes_position_filters(
+                word,
+                width=width,
+                required_codes=required_codes,
+                mode=mode,
+                mask=mask,
+                db=db,
+                anchor_pos=anchor_pos,
+                anchor=anchor,
+                constraint=constraint,
+                literal_char=literal_char,
             ):
-                continue
-        filtered.append(word)
+                filtered.append(word)
     return filtered
 
 

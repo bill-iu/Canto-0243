@@ -1,7 +1,7 @@
 # Create Matt Pocock triage labels on GitHub (idempotent).
 # Prereq: gh auth login  (once per machine)
 $ErrorActionPreference = "Stop"
-$Repo = "ICE-U-code/0243---SQLalchemy-ORM"
+$Repo = "ICE-U-code/Canto-0243"
 
 function Ensure-GhInPath {
     if (Get-Command gh -ErrorAction SilentlyContinue) { return }

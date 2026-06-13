@@ -28,7 +28,7 @@ class RimeCharLexiconTests(unittest.TestCase):
         from app.lexicon.rime_char_index import get_rime_char_entries, load_rime_char_csv
 
         count = load_rime_char_csv(FIXTURE_CSV)
-        self.assertEqual(count, 5)
+        self.assertEqual(count, 8)
 
         nei = get_rime_char_entries("你")
         self.assertEqual(len(nei), 1)

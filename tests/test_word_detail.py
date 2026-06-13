@@ -372,6 +372,33 @@ class RelationSyntaxTests(unittest.TestCase):
             code_rhyme_chars = [r["char"] for r in code_rhyme_results]
             self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
 
+    def test_compound_ant_code_prefix_ignores_alternate_polyphone_reading(self):
+        """33!!死：首尾預設讀音 code 94，次選 99 不得因 m1 等價誤入結果。"""
+        from app.lexicon.rime_char_index import load_rime_char_csv, reset_rime_char_for_tests
+
+        fixture = Path(__file__).resolve().parent.parent / "data" / "rime" / "fixtures" / "char_sample.csv"
+        load_rime_char_csv(fixture)
+
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        try:
+            with Session() as session:
+                self._seed(session)
+                session.add_all([
+                    Word(id=20, char="首尾", code="94", jyutping="sau2 mei5", finals='["au","ei"]', length=2),
+                    Word(id=21, char="首尾", code="99", jyutping="sau2 mei2", finals='["au","ei"]', length=2),
+                    Word(id=22, char="死", code="9", jyutping="sei2", finals='["ei"]', length=1),
+                ])
+                session.commit()
+
+                results = search_words(q="33!!死", mode="m1", db=session, limit=50, offset=0)
+                chars = [r["char"] for r in results]
+                self.assertNotIn("首尾", chars)
+                self.assertIn("生死", chars)
+        finally:
+            reset_rime_char_for_tests()
+
 
 class SearchSyntaxTests(unittest.TestCase):
     """Regression tests for equals, hybrid, digit, jyutping, and strict per-code search paths."""
@@ -420,6 +447,19 @@ class SearchSyntaxTests(unittest.TestCase):
             chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
             self.assertIn("香江", chars)
             self.assertNotIn("香島", chars)
+
+            session.add(
+                Word(
+                    char="航機", code="40", jyutping="hong4 gei1",
+                    finals='["ong","ei"]', initials='["h","g"]', length=2,
+                ),
+            )
+            session.commit()
+            initial_results = search_words(q="=香港", mode="m1", db=session, limit=20, offset=0)
+            initial_chars = [r["char"] if isinstance(r, dict) else r.char for r in initial_results]
+            self.assertIn("香江", initial_chars)
+            self.assertIn("航機", initial_chars)
+            self.assertNotIn("香島", initial_chars)
 
     def test_hybrid_syntax(self):
         with self._session() as session:

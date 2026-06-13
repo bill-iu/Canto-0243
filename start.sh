@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 0243 押韻字典 一鍵啟動腳本（開發用）
+# Canto-0243 一鍵啟動腳本（開發用）
 # 移動版請用：PORTABLE=1 ./start.sh  或  ./start.sh --portable
 # portable 套件請用目錄內的 START.sh / START.command
 
@@ -18,7 +18,7 @@ if [[ -n "${PORTABLE:-}" ]]; then
   export ENV="${ENV:-local}"
   [[ -f .env.local ]] || [[ ! -f env.portable ]] || cp -f env.portable .env.local
 else
-  echo "🚀 正在啟動 0243 押韻字典（開發版）..."
+  echo "🚀 正在啟動 Canto-0243（開發版）..."
 fi
 
 if [[ -d venv ]]; then
@@ -65,5 +65,5 @@ echo "✅ 已啟動（PID $SERVER_PID）"
 echo "後端：http://127.0.0.1:8000"
 echo "前端：$URL"
 if [[ -n "${PORTABLE:-}" ]]; then
-  echo "標題應顯示：0243 押韻字典 (移動版)"
+  echo "標題應顯示：Canto-0243 (移動版)"
 fi

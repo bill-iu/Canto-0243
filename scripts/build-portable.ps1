@@ -1,9 +1,9 @@
 # Build portable release for Windows / macOS / Linux (includes lyrics.db)
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
-$OutDir = Join-Path $Root "dist\0243-lyrics-portable"
-$ZipPath = Join-Path $Root "dist\0243-lyrics-portable.zip"
-$TarPath = Join-Path $Root "dist\0243-lyrics-portable-macos.tar.gz"
+$OutDir = Join-Path $Root "dist\canto-0243-portable"
+$ZipPath = Join-Path $Root "dist\canto-0243-portable.zip"
+$TarPath = Join-Path $Root "dist\canto-0243-portable-macos.tar.gz"
 
 $DbPath = Join-Path $Root "lyrics.db"
 if (-not (Test-Path $DbPath)) {
@@ -45,7 +45,7 @@ if (Get-Command tar -ErrorAction SilentlyContinue) {
     if (Test-Path $TarPath) { Remove-Item $TarPath -Force }
     Write-Host "==> Create macOS tar.gz (executable bits for START.sh)..."
     Push-Location (Join-Path $Root "dist")
-    tar -czf $TarPath "0243-lyrics-portable"
+    tar -czf $TarPath "canto-0243-portable"
     Pop-Location
 }
 

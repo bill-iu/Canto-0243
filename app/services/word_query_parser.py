@@ -111,6 +111,8 @@ def is_framed_equals_query(q: str) -> bool:
         return True
     if inner_equal and left_code and not right_equal:
         return True  # 34=我：左碼 + 內嵌 = + 參考字，無右碼
+    if inner_equal and not left_code and not right_code and len(target) >= 2:
+        return True  # =香港：整詞同聲（與 香港= 整詞同韻對稱）
     return False
 
 

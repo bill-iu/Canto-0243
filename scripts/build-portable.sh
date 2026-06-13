@@ -2,9 +2,9 @@
 # Build portable release (Windows / macOS / Linux) including lyrics.db
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-OUT_DIR="$ROOT/dist/0243-lyrics-portable"
-ZIP_PATH="$ROOT/dist/0243-lyrics-portable.zip"
-TAR_PATH="$ROOT/dist/0243-lyrics-portable-macos.tar.gz"
+OUT_DIR="$ROOT/dist/canto-0243-portable"
+ZIP_PATH="$ROOT/dist/canto-0243-portable.zip"
+TAR_PATH="$ROOT/dist/canto-0243-portable-macos.tar.gz"
 
 DB_PATH="$ROOT/lyrics.db"
 if [[ ! -f "$DB_PATH" ]]; then
@@ -47,7 +47,7 @@ rm -f "$ZIP_PATH"
 
 echo "==> Create macOS tar.gz (preserves executable bit)..."
 rm -f "$TAR_PATH"
-tar -czf "$TAR_PATH" -C "$ROOT/dist" "0243-lyrics-portable"
+tar -czf "$TAR_PATH" -C "$ROOT/dist" "canto-0243-portable"
 
 zip_mb=$(du -m "$ZIP_PATH" | cut -f1)
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)

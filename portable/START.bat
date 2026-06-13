@@ -2,7 +2,7 @@
 setlocal EnableExtensions
 cd /d "%~dp0"
 
-title 0243 Lyric Rhyme Workbench
+title Canto-0243
 
 where python >nul 2>&1
 if errorlevel 1 (
