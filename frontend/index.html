@@ -298,6 +298,24 @@
       font-weight: 650;
     }
 
+    .mode-note {
+      margin-left: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 450;
+    }
+
+    .mode-trigger-primary {
+      font-weight: 650;
+    }
+
+    .mode-trigger-note {
+      margin-left: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 450;
+    }
+
     .mode-help {
       display: block;
       margin-top: 1px;
@@ -863,33 +881,33 @@
 
       <nav class="app-actions" aria-label="主要操作">
         <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
-          <span class="mode-trigger-text" id="currentModeLabel">鬆 · 0243</span>
+          <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
           <span class="menu-chevron" aria-hidden="true">▾</span>
         </button>
         <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
         <a class="ghost-button guide-top-link" href="relation-entry.html" id="relationTopLink">補關係</a>
 
         <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
-          <div class="menu-group" role="group" aria-label="搜尋模式">
-            <p class="menu-label">Search mode</p>
+          <div class="menu-group" role="group" aria-label="0243搜尋模式">
+            <p class="menu-label">0243搜尋模式</p>
             <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
               <span>
-                <span class="mode-name">鬆 · 0243</span>
+                <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
                 <span class="mode-help">常用 0243 編碼與混合查詢</span>
               </span>
               <span class="mode-key">0243</span>
             </button>
             <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
               <span>
-                <span class="mode-name">緊 · 02493</span>
-                <span class="mode-help">更細分的五鍵聲調邏輯</span>
+                <span class="mode-name">02493模式<span class="mode-note">緊</span></span>
+                <span class="mode-help">02493 碼（分清二聲）</span>
               </span>
               <span class="mode-key">02493</span>
             </button>
             <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
               <span>
-                <span class="mode-name">查 · 近義 / 反義</span>
-                <span class="mode-help">直接查詞義關係</span>
+                <span class="mode-name">近反義<span class="mode-note">查</span></span>
+                <span class="mode-help">近義、反義與語意相關</span>
               </span>
               <span class="mode-key">~ / !</span>
             </button>
@@ -927,7 +945,7 @@
       <form class="search-panel" id="searchForm" role="search">
         <div class="field-label-row">
           <label class="field-label" for="searchInput">搜尋內容</label>
-          <span class="mode-readout" id="modeReadout">目前模式：鬆 · 0243</span>
+          <span class="mode-readout" id="modeReadout">目前模式：0243模式（鬆）</span>
         </div>
         <div class="search-row">
           <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search">
@@ -968,28 +986,28 @@
       <article class="guide-intro" aria-labelledby="guideIntroTitle">
         <h2 id="guideIntroTitle">基本說明</h2>
         <p>
-          <strong>打數字，搵粵語啱音字。</strong>例如打 <code translate="no">390</code>，會搵到聲調序列一樣嘅三字詞，包括「香港人」、「吹口琴」、「烏龍茶」。<span translate="no">鬆</span> 用 0243 碼；<span translate="no">緊</span> 用 02493，調值更細。
+          <strong>打數字，搵粵語啱音字。</strong>例如打「23」，會搵到聲調序列一樣嘅二字詞，包括「做好」、「做就」。打「232」會搵三字同調詞，例如「做就就」、「做得就」。<strong>0243模式</strong>用 0243 碼；<strong>02493模式</strong>用 02493，調值更細（分清二聲）。
         </p>
         <p>
-          <strong>打漢字，查詞條讀音同編碼。</strong>例如打「香港」，會見到 <code translate="no">hoeng1 gong2</code>、0243 碼 <code translate="no">39</code>，以及同音或相關候選。切換<strong>近義／反義</strong>模式，可以直接列出該詞嘅近義、反義同語意相關字。
+          <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音或相關候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
         </p>
         <p>
-          <strong>打數字加尾字，搵啱音押韻嘅詞。</strong>譬如打 <code translate="no">390人</code>，會搵尾字同「人」韻嘅三字同音詞。二字用 <code translate="no">23就</code>；只要尾字字面、唔要同韻擴展，用 <code translate="no">23@就</code>。
+          <strong>打數字加尾字，搵啱音押韻嘅詞。</strong>譬如打「23就」，會搵頭兩音節同「23」、尾字同韻「就」嘅二字詞。只要尾字字面、唔要同韻擴展，打「23@就」。
         </p>
         <p>
-          <strong>可以夾多個韻字或加長位置。</strong>例如 <code translate="no">23*就</code>（三字，頭兩音節同 <code translate="no">23</code>，尾字係「就」）、<code translate="no">23?就</code>（四字碼字混合）、<code translate="no">390人成</code>（多個尾字錨）。用 <code translate="no">?</code>、<code translate="no">_</code> 或 <code translate="no">%</code> 表示該格字面不限，例如 <code translate="no">香??</code>。
+          <strong>可以夾多個韻字或加長位置。</strong>例如「23*就」（三字，頭兩音節同「23」，尾字係「就」）、「23?就」（四字碼字混合）。用「?」、「_」或「%」表示該格字面不限，例如「做??」、「?你?」。
         </p>
         <p>
-          <strong>打幾個漢字加等號，搵「多字韻」或「同聲」。</strong>打 <code translate="no">香港=</code> 會搵整詞逐音節同韻「香港」嘅詞，例如「香江」。打 <code translate="no">=香港</code> 會搵整詞逐音節同聲「香港」嘅詞，例如「香江」、「航機」（聲母序列與「香港」一致）。單格聲母錨寫 <code translate="no">=香?</code>、<code translate="no">?=就</code>。碼夾等號如 <code translate="no">2我=3</code>、<code translate="no">2=我3</code>，可同時約束 0243 碼同一格聲或韻。
+          <strong>打幾個漢字加等號，搵「多字韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同韻「開心」嘅詞。打「=做好」會搵整詞逐音節同聲「做好」嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 0243 碼同一格聲或韻。
         </p>
         <p>
-          <strong>打一個漢字加等號，搵「同韻」或「同聲」詞。</strong>打 <code translate="no">香=?</code> 會搵首字同「香」韻嘅二字詞；打 <code translate="no">?就=</code> 會搵尾字同「就」韻嘅詞。聲母錨寫 <code translate="no">=香?</code>、<code translate="no">?=就</code>。<strong>口訣：</strong><code translate="no">=</code> 在錨字後比韻母，在錨字前比聲母。
+          <strong>打一個漢字加等號，搵「同韻」或「同聲」詞。</strong>打「就=?」會搵首字同「就」韻嘅二字詞；打「?就=」會搵尾字同「就」韻嘅詞。聲母錨打「=就?」、「?=你」。<strong>口訣：</strong>「=」在錨字後比韻母，在錨字前比聲母。
         </p>
         <p>
-          <strong>打粵拼，搵漢字。</strong>例如打 <code translate="no">syut</code> 會搵「雪」等讀音相符嘅字；打 <code translate="no">nei</code> 可以模糊搵「你」相關讀音。
+          <strong>打粵拼，精準搵漢字。</strong>無調打「syut」搵單字「雪」；打「nei hou」搵「你好」。有調打「ming4 baak6」搵「明白」嘅準確讀音。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
         </p>
         <p>
-          <strong>近義、反義同反義複合。</strong>打 <code translate="no">~開心</code> 搵近義；打 <code translate="no">!你</code> 搵反義（含鏡像近義）。可加前綴碼，例如 <code translate="no">33!開心</code>。打 <code translate="no">!!</code> 搵二字反義複合（如「生死」、「是非」）；加尾字如 <code translate="no">33!!你</code> 再加同韻限制。
+          <strong>近義、反義同反義複合。</strong>打「~開心」搵近義；打「!你」搵反義（含鏡像近義）。可加前綴碼，例如「33!開心」。打「!!」搵二字反義複合（如「生死」、「是非」）；加尾字如「33!!你」再加同韻限制。
         </p>
         <p>
           下面每張卡有<strong>可點擊例子</strong>，撳一下就會回到搜尋頁並自動執行。
@@ -999,20 +1017,21 @@
       <div class="guide-grid">
         <article class="guide-card">
           <h2>基本查詢</h2>
-          <p>輸入中文字、詞語、數字或粵拼片段。適合先粗略找候選，再點擊結果回查。</p>
+          <p>輸入中文字、詞語、數字或粵拼查詢。適合先找候選，再點擊結果回查。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="就" data-mode="m1"><code translate="no">就</code><span>查這個字的所有讀音</span></button>
-            <button class="guide-example" type="button" data-query="香港" data-mode="m1"><code translate="no">香港</code><span>查這個詞語</span></button>
-            <button class="guide-example" type="button" data-query="nei" data-mode="m1"><code translate="no">nei</code><span>用粵拼片段模糊搜尋</span></button>
+            <button class="guide-example" type="button" data-query="你好" data-mode="m1"><code translate="no">你好</code><span>查這個詞語</span></button>
+            <button class="guide-example" type="button" data-query="nei hou" data-mode="m1"><code translate="no">nei hou</code><span>粵拼查詢（無調）</span></button>
+            <button class="guide-example" type="button" data-query="ming4 baak6" data-mode="m1"><code translate="no">ming4 baak6</code><span>粵拼查詢（有調）</span></button>
           </div>
         </article>
 
         <article class="guide-card">
           <h2>0243 / 02493 數字</h2>
-          <p><span translate="no">鬆</span> 使用 0243；<span translate="no">緊</span> 使用 02493。純數字會列出符合該數字的候選。</p>
+          <p><strong>0243模式</strong> 使用 0243；<strong>02493模式</strong> 使用 02493。純數字會列出符合該數字的候選。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="23" data-mode="m1"><code translate="no">23</code><span>找同音字</span></button>
-            <button class="guide-example" type="button" data-query="93" data-mode="m2"><code translate="no">93</code><span>緊 增加數字9</span></button>
+            <button class="guide-example" type="button" data-query="93" data-mode="m2"><code translate="no">93</code><span>02493模式 增加數字9</span></button>
           </div>
         </article>
 
@@ -1151,9 +1170,27 @@
     const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
     const MODE_META = {
-      m1: { label: "鬆 · 0243", placeholder: "搵嘢：0243/打字" },
-      m2: { label: "緊 · 02493", placeholder: "搵嘢：02493/打字" },
-      syn: { label: "查 · 近義 / 反義", placeholder: "打字搵同義/反義" },
+      m1: {
+        title: "0243模式",
+        note: "鬆",
+        readout: "0243模式（鬆）",
+        statsLabel: "0243模式 · 鬆",
+        placeholder: "搵嘢：0243／漢字／粵拼",
+      },
+      m2: {
+        title: "02493模式",
+        note: "緊",
+        readout: "02493模式（緊）",
+        statsLabel: "02493模式 · 緊",
+        placeholder: "搵嘢：02493／漢字／粵拼",
+      },
+      syn: {
+        title: "近反義",
+        note: "查",
+        readout: "近反義模式（查）",
+        statsLabel: "近反義 · 查",
+        placeholder: "打字搵同義／反義",
+      },
     };
 
     function applyAppTitle(portable = false) {
@@ -1213,8 +1250,9 @@
 
     function updateModeLabel() {
       const meta = MODE_META[currentMode] || MODE_META.m1;
-      $.currentModeLabel.textContent = meta.label;
-      $.modeReadout.textContent = `目前模式：${meta.label}`;
+      $.currentModeLabel.innerHTML =
+        `<span class="mode-trigger-primary">${meta.title}</span><span class="mode-trigger-note">${meta.note}</span>`;
+      $.modeReadout.textContent = `目前模式：${meta.readout}`;
       $.searchInput.placeholder = meta.placeholder;
       document.querySelectorAll("[data-mode]").forEach((btn) => {
         if (!btn.classList.contains("mode-option")) return;
@@ -1348,11 +1386,11 @@
         frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
       });
       $.results.appendChild(frag);
-      $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].label}）`;
+      $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].statsLabel}）`;
       if (searchTotal != null && searchTotal > deduped.length) {
-        $.stats.textContent = `已載入 ${deduped.length} / ${searchTotal} 個結果（${MODE_META[currentMode].label}）`;
+        $.stats.textContent = `已載入 ${deduped.length} / ${searchTotal} 個結果（${MODE_META[currentMode].statsLabel}）`;
       } else if (searchTotal != null) {
-        $.stats.textContent = `${searchTotal} 個結果（${MODE_META[currentMode].label}）`;
+        $.stats.textContent = `${searchTotal} 個結果（${MODE_META[currentMode].statsLabel}）`;
       }
       updateShuffleButton();
     }
@@ -1463,6 +1501,13 @@
           return;
         }
         if (cached && Array.isArray(cached.data)) {
+          if (cached.data.length === 0 && cached.hint) {
+            $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(cached.hint)}</p>`;
+            updateShuffleButton();
+            setButtonLoading(false);
+            toggleLoadMoreButton(false);
+            return;
+          }
           finishSearchWithData(cached.data, { append: false, total: cached.total });
           setButtonLoading(false);
           return;
@@ -1478,14 +1523,19 @@
         const data = await res.json();
         const totalHeader = res.headers.get("X-Search-Total");
         const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
+        const searchHint = res.headers.get("X-Search-Hint");
 
         if (!isLoadMore) {
-          searchCache.set(cacheKey, { data, total });
+          searchCache.set(cacheKey, { data, total, hint: searchHint });
           if (searchCache.size > 50) searchCache.delete(searchCache.keys().next().value);
         }
 
         if (data.length === 0 && !isLoadMore) {
-          $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
+          if (searchHint) {
+            $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(searchHint)}</p>`;
+          } else {
+            $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
+          }
           updateShuffleButton();
           setButtonLoading(false);
           toggleLoadMoreButton(false);

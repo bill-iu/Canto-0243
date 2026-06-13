@@ -157,22 +157,21 @@ class SearchSortIntegrationTests(unittest.TestCase):
         self.assertIn("香港", chars)
         self.assertNotIn("香島", chars)
 
-    def test_jyutping_fragment_search_sorts_by_unified_key(self):
+    def test_jyutping_query_search_sorts_by_unified_key(self):
         from app.models.word import Word
         from app.services.query_engine import search_words
 
         with self.Session() as db:
             db.add_all([
+                Word(char="門", code="0", jyutping="mun4", length=1),
+                Word(char="問", code="3", jyutping="man6", length=1),
                 Word(char="門前", code="20", jyutping="mun4 cin4", length=2),
-                Word(char="門童", code="20", jyutping="mun4 tung4", length=2),
                 Word(char="路數", code="24", jyutping="lou6 sou3", length=2),
             ])
             db.commit()
             results = search_words(q="mun4", mode="m1", db=db, limit=10, offset=0)
             chars = [r["char"] for r in results]
-        self.assertEqual(chars[0], "門童")
-        self.assertIn("門前", chars)
-        self.assertNotIn("路數", chars)
+        self.assertEqual(chars, ["門"])
 
 
 if __name__ == "__main__":

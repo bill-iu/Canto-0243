@@ -1,4 +1,4 @@
-"""Load word-level entries from ingest JSON (data/raw/clean/*.json)."""
+"""Load word-level **詞級標音** rows from maintainer import JSON (default: gitignored local folder)."""
 
 from __future__ import annotations
 

@@ -30,7 +30,7 @@ python -m unittest discover -s tests -q
 
 - Keep changes focused; match existing style.
 - Add or update tests for behaviour changes.
-- Do not commit secrets, `.env.local`, `*.db`, or `data/raw/clean/` lexicon dumps.
+- Do not commit secrets, `.env.local`, `*.db`, maintainer-built **詞級標音** import files, or other gitignored data artifacts (see README § 資料來源).
 - Do not commit `skills-lock.json` churn unless intentionally updating agent skills.
 
 ## Issues

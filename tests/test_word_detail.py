@@ -762,7 +762,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertEqual(len(page2.items), 2)
             self.assertEqual(page2.total, 5)
 
-    def test_jyutping_fragment_syntax(self):
+    def test_jyutping_query_syntax(self):
         with self._session() as session:
             session.add_all([
                 Word(char="做到", code="24", jyutping="zou6 dou3", length=2),
@@ -770,11 +770,13 @@ class SearchSyntaxTests(unittest.TestCase):
                 Word(char="路數", code="24", jyutping="lou6 sou3", length=2),
             ])
             session.commit()
-            results = search_words(q="zou6", mode="m1", db=session, limit=20, offset=0)
-            chars = [r["char"] if isinstance(r, dict) else r.char for r in results]
-            self.assertIn("做到", chars)
-            self.assertIn("做數", chars)
-            self.assertNotIn("路數", chars)
+            exact = search_words(q="zou6 dou3", mode="m1", db=session, limit=20, offset=0)
+            exact_chars = [r["char"] if isinstance(r, dict) else r.char for r in exact]
+            self.assertEqual(exact_chars, ["做到"])
+
+            mixed = search_words(q="zou6 dou", mode="m1", db=session, limit=20, offset=0)
+            mixed_chars = [r["char"] if isinstance(r, dict) else r.char for r in mixed]
+            self.assertEqual(mixed_chars, ["做到"])
 
     def test_strict_per_code_headers_for_multi_code_word(self):
         with self._session() as session:

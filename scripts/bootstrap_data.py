@@ -79,8 +79,8 @@ def main(argv: list[str] | None = None) -> int:
     print("\n=== Next steps (maintainer) ===")
     print("  1. words.hk: download JSON/CSV from the wordslist page; optional:")
     print("       python scripts/fetch/fetch_words_hk_wordslist.py --input <file>")
-    print("  2. Build data/raw/clean/*.json + lyrics.db (see README Maintainer section)")
-    print("  3. python scripts/ingest/import_data.py")
+    print("  2. Derive multi-char 詞級標音 from upstream lexicons (see README / THIRD_PARTY_NOTICES)")
+    print("  3. python scripts/ingest/import_data.py   # → lyrics.db words table")
     print("  4. python -m ingest normalize --source current_static && python -m ingest build-relations")
 
     return 1 if failed else 0

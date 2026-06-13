@@ -18,7 +18,7 @@ class LexiconPort(Protocol):
 
 
 class Static0243Lexicon:
-    """Word-level entries from bundled ingest JSON (data/raw/clean)."""
+    """Word-level **詞級標音** from maintainer import JSON (runtime 預設讀本地 gitignore 目錄)."""
 
     def __init__(self, *, auto_load: bool = True, clean_dir: str | None = None) -> None:
         self._clean_dir = clean_dir

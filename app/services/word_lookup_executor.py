@@ -1,4 +1,4 @@
-"""詞條 lookup executor：純數字、純字面、粵拼片段與 WordLookup fallback。"""
+"""詞條 lookup executor：純數字、純字面、粵拼查詢與 WordLookup fallback。"""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from app.services.code_aware_ranker import build_code_aware_results
 from app.services.essay_sort import default_word_sort_key, sort_words
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
+from app.services.jyutping_match import expected_word_length, matches_jyutping_query
 from app.services.word_serializer import (
     deduplicate_words,
     paginate,
@@ -65,13 +66,14 @@ class WordLookupExecutor:
         return []
 
     def jyut_fragment(self, q: str, limit: int, offset: int) -> List[dict]:
-        results = (
-            self._db.query(Word)
-            .filter(Word.jyutping.ilike(f"%{q}%"))
-            .limit(500)
-            .all()
-        )
-        ordered = sort_words(deduplicate_words(results))
+        word_len = expected_word_length(q)
+        if word_len is None:
+            return []
+
+        query = self._db.query(Word).filter(length_filter(word_len))
+        candidates = query.all()
+        matched = [w for w in candidates if matches_jyutping_query(w.jyutping or "", q)]
+        ordered = sort_words(matched)
         page = paginate(ordered, offset, limit)
         return [serialize_word(w) for w in page]
 

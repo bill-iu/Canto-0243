@@ -46,6 +46,12 @@ class SearchContext:
 class SearchResult:
     items: List
     total: Optional[int] = None
+    hint: Optional[str] = None
+
+
+JYUTPING_SYN_MODE_HINT = (
+    "近反義模式只支援漢字查詢。請改打漢字，或切換至 0243模式／02493模式 查粵拼。"
+)
 
 
 def _dispatch_position_query(
@@ -110,7 +116,11 @@ class QueryEngine:
         q = normalize_code_tail_separators(ctx.q.strip())
 
         if ctx.mode == "syn":
+            from app.services.jyutping_match import is_jyutping_query
             from app.services.relation_syntax_executor import RelationSyntaxExecutor
+
+            if is_jyutping_query(q):
+                return SearchResult(items=[], hint=JYUTPING_SYN_MODE_HINT)
 
             items = RelationSyntaxExecutor(ctx.db).syn_mode_page(
                 q, limit=ctx.limit, offset=ctx.offset

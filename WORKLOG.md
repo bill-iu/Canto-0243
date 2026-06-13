@@ -3,16 +3,14 @@
 **期間**：2026-05 ~ 2026-06 · **棧**：FastAPI + SQLAlchemy + SQLite（離線）+ HTML/JS  
 **目標**：快速粵語押韻搜尋（0243／等號韻／wildcard／近反義）。**原則**：ingest 重型、runtime 無 ML、純 SQL + static thesaurus。
 
-**Enforcement**（每次實質變更）：`python -m unittest discover -s tests -q` + `python scripts/enforce_bench.py`。關鍵 case：`事業`、`門0`、`好23`、`_識_`、`香港=`、`香=?`（慢）、`23就`、`2=我3`、syn `快樂`。
+**Enforcement**（每次實質變更）：`python -m unittest discover -s tests -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
 
 ---
 
 ## 硬性規範
 
-- 禁 `hanzi` → 用 `canto` / `chars`
 - Regex 僅 Python 解析輸入；**禁** DB regex
 - Schema/backfill → `ensure_*`，lifespan/`__main__` 顯式呼叫；禁 import side-effect
-- 瞬間搜尋：preload 後常見查詢 <0.2s（慢 case `香=?` 除外）；**禁**為加速改結果集／排序
 
 ---
 
@@ -127,7 +125,7 @@
 ## 參考 commit / 標記
 
 - Phase 2.3 + 門0：`527ba31`
-- 詳細 enforcement timing dump → git history / `scripts/enforce_bench.py` 輸出
+- 詳細 timing dump → git history（歷史紀錄；可選 `scripts/enforce_bench.py`）
 
 ### 2026-06-12 — P-C2：WordLookupExecutor + search_words alias（候選 2 partial ✅）
 

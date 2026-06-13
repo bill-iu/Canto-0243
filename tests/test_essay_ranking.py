@@ -82,7 +82,7 @@ class EssaySearchRankingTests(unittest.TestCase):
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
         with Session() as db:
             with patch(
-                "app.utils.syllable_reading.compose_lexicon_entries_from_rime",
+                "app.domain.lexicon.admission.compose_lexicon_entries_from_rime",
                 return_value=[],
             ):
                 rows = ensure_word_in_db(db, "開心", lexicon=FakeLexiconPort({}))

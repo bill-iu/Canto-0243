@@ -66,6 +66,8 @@ def search_words_endpoint(
     )
     if result.total is not None:
         response.headers["X-Search-Total"] = str(result.total)
+    if result.hint:
+        response.headers["X-Search-Hint"] = result.hint
     return result.items
 
 

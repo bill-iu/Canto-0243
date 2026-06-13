@@ -104,7 +104,7 @@ if __name__ == "__main__":
         from app.lexicon.static_index import ensure_lexicon_loaded
 
         ensure_lexicon_loaded()
-        print("[main] Static 0243 lexicon (data/raw/clean) 已載入。")
+        print("[main] 詞級標音詞庫（maintainer 匯入 JSON）已載入。")
     except Exception as e:
         print(f"[main] Lexicon preload 失敗（可忽略）：{e}")
 
