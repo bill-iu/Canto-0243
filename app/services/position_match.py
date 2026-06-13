@@ -243,6 +243,30 @@ class CompoundAntCandidateSource:
         return rows, False
 
 
+@dataclass
+class CompoundSynCandidateSource:
+    """~~ 近義複合專用候選來源（字面容許集 + char IN）。"""
+
+    db: Any
+    compounds: frozenset[str]
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        from app.services.word_db_filters import length_filter
+
+        if length != 2 or not self.compounds:
+            return [], True
+
+        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
+        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+        return rows, False
+
+
 # -----------------------------------------------------------------------------
 # PositionMatchEngine（核心引擎，目前為骨架）
 # -----------------------------------------------------------------------------
@@ -675,6 +699,7 @@ __all__ = [
     "LengthCodeCandidateSource",
     "MaskWildcardCandidateSource",
     "CompoundAntCandidateSource",
+    "CompoundSynCandidateSource",
     "run_position_query",
     "run_equals_query",
     "build_equals_match_spec",

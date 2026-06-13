@@ -27,6 +27,7 @@ class QueryKind(str, Enum):
 
     RELATION_LOOKUP = "relation_lookup"
     COMPOUND_ANT = "compound_ant"
+    COMPOUND_SYN = "compound_syn"
     HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
     CODE_TAIL = "code_tail"
@@ -56,6 +57,16 @@ class RelationLookupQuery:
             "word": self.word,
             "code_prefix": self.code_prefix,
         }
+
+
+@dataclass(frozen=True)
+class CompoundSynQuery:
+    code_prefix: Optional[str]
+    rhyme_char: Optional[str]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.COMPOUND_SYN
 
 
 @dataclass(frozen=True)
@@ -189,6 +200,7 @@ class UnmatchedQuery:
 
 ParsedQuery = Union[
     RelationLookupQuery,
+    CompoundSynQuery,
     CompoundAntQuery,
     HybridTailEqualsAliasQuery,
     EqualsQuery,
@@ -208,6 +220,11 @@ def parse_query(q: str) -> ParsedQuery:
     """Classify a normalized query string. No DB access."""
     relation_parsed = parse_relation_syntax(q)
     if relation_parsed:
+        if relation_parsed["kind"] == "compound_syn":
+            return CompoundSynQuery(
+                code_prefix=relation_parsed.get("code_prefix"),
+                rhyme_char=relation_parsed.get("rhyme_char"),
+            )
         if relation_parsed["kind"] == "compound_ant":
             return CompoundAntQuery(
                 code_prefix=relation_parsed.get("code_prefix"),
@@ -262,6 +279,18 @@ def build_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
 
     if isinstance(parsed, EqualsQuery):
         return build_equals_match_spec(parsed.raw_q)
+
+    if isinstance(parsed, CompoundSynQuery):
+        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(
+                    pos=1,
+                    kind="final_anchor",
+                    value=parsed.rhyme_char,
+                )
+            )
+        return spec
 
     if isinstance(parsed, CompoundAntQuery):
         spec = MatchSpec(width=2, code_prefix=parsed.code_prefix)

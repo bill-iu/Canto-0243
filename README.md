@@ -14,7 +14,7 @@ Canto-0243（離線粵語填詞查韻工具 · ONE·搵·韻）：依 **0243／0
 |------|------|
 | 編碼模式 | **0243模式** `mode=m1`（0243 等價變體）· **02493模式** `mode=m2`（含 9 鍵聲調、分清二聲） |
 | 查詢類型 | 純漢字 · 純數字（分頁 + 總數 header）· **粵拼查詢**（`syut`／`nei hou`／`ming4 baak6`）· 混合碼字（`23就`）· wildcard（`3_`、`23?`）· 等號韻（`香港=`、`2=我3`）· 韻／聲錨（`?就=`） |
-| 近反義 | **近反義模式** `mode=syn` 全欄 UI（不收粵拼）；或 0243／02493 模式下 `~詞` / `!詞` / `!!` 反義複合（curated 列表） |
+| 近反義 | **近反義模式** `mode=syn` 全欄 UI（不收粵拼）；或 0243／02493 模式下 `~詞` / `!詞` / `!!` 反義複合 / `~~` 近義複合（curated 列表） |
 | 詞庫 | **詞庫埠** raw lookup + **收錄決策**；多字詞級標音或音節拼接讀音 |
 | 近反義資料 | **靜態詞林埠**（cilin／國語辭典近義／反義語料）；runtime 與 ingest 共用 |
 | 排序 | 同 match tier：**純漢字** → **essay 詞頻** → **curated** → **pron_rank** → 字面（[`CONTEXT.md`](CONTEXT.md) § 搜尋結果排序） |
@@ -212,6 +212,14 @@ PG 相關 issue／PR 可 **best-effort** 合併小修，但不構成產品承諾
 | `!!你` | 反義複合，尾字同韻「你」 |
 | `33!!你` | 33 同音＋反義複合＋尾韻「你」 |
 
+### 近義複合詞
+
+| 輸入範例 | 說明 |
+|----------|------|
+| `~~` | 二字近義複合（如朋友、同伴） |
+| `~~你` | 近義複合，尾字同韻「你」 |
+| `33~~你` | 33 同音＋近義複合＋尾韻「你」 |
+
 ```http
 GET /words/search/?q=你好&mode=m1
 GET /words/search/?q=23就&mode=m1
@@ -230,7 +238,7 @@ GET /words/search/?q=開心&mode=syn
 查詢字串 → query_parse（語法分類 · ParsedQuery · build_match_spec）
          → query_dispatch（優先序 registry → executors）
                 ↓
-    position_match · word_lookup_executor · relation_syntax_executor · compound_ant_executor
+    position_match · word_lookup_executor · relation_syntax_executor · compound_ant_executor · compound_syn_executor
                 ↓
     domain/lexicon（收錄決策）· domain/thesaurus（靜態詞林）· domain/relations（近反義池／關係圖）
                 ↓
@@ -263,6 +271,7 @@ GET /words/search/?q=開心&mode=syn
 | `word_lookup_executor.py` | 純數字、字面、粵拼 lookup |
 | `relation_syntax_executor.py` | `~` / `!`、近反義模式 |
 | `compound_ant_executor.py` | `!!` 反義複合 |
+| `compound_syn_executor.py` | `~~` 近義複合 |
 | `word_ensure_service.py` | 依收錄決策注入詞條庫 |
 | `phoneme_lookup.py` | 參考字聲母／韻母（收錄決策鏈） |
 | `relation_search.py` | 近反義池對外薄入口（測試／工具） |

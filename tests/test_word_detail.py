@@ -372,6 +372,58 @@ class RelationSyntaxTests(unittest.TestCase):
             code_rhyme_chars = [r["char"] for r in code_rhyme_results]
             self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
 
+    def test_double_tilde_compound_synonym_syntax(self):
+        from app.domain.relations.compound_syn import reset_compound_syn_cache_for_tests
+
+        reset_compound_syn_cache_for_tests()
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        try:
+            with Session() as session:
+                self._seed(session)
+                session.add_all([
+                    Word(id=8, char="朋友", code="33", jyutping="pang4 jau5", finals='["ang","au"]', length=2),
+                    Word(id=20, char="友", code="3", jyutping="jau5", finals='["au"]', length=1),
+                    Word(id=21, char="朋", code="3", jyutping="pang4", finals='["ang"]', length=1),
+                    Word(id=22, char="同", code="3", jyutping="tung4", finals='["ung"]', length=1),
+                    Word(id=23, char="伴", code="3", jyutping="bun6", finals='["un"]', length=1),
+                    Word(id=24, char="同伴", code="33", jyutping="tung4 bun6", finals='["ung","un"]', length=2),
+                    Word(id=25, char="散步", code="44", jyutping="saan3 bou6", finals='["aan","ou"]', length=2),
+                    Word(id=26, char="知", code="3", jyutping="zi1", finals='["i"]', length=1),
+                    Word(id=27, char="己", code="3", jyutping="gei2", finals='["ei"]', length=1),
+                    Word(id=28, char="知己", code="33", jyutping="zi1 gei2", finals='["i","ei"]', length=2),
+                    Word(id=29, char="你", code="2", jyutping="nei5", finals='["ei"]', length=1),
+                ])
+                session.add_all([
+                    WordRelation(word_id=20, related_id=21, relation_type="syn", source="test"),
+                    WordRelation(word_id=22, related_id=23, relation_type="syn", source="test"),
+                    WordRelation(word_id=26, related_id=27, relation_type="syn", source="test"),
+                ])
+                session.commit()
+
+                all_results = search_words(q="~~", mode="m1", db=session, limit=50, offset=0)
+                all_chars = [r["char"] for r in all_results]
+                self.assertIn("朋友", all_chars)
+                self.assertIn("同伴", all_chars)
+                self.assertNotIn("散步", all_chars)
+                self.assertNotIn("生死", all_chars)
+                self.assertNotIn("是非", all_chars)
+
+                code_results = search_words(q="33~~", mode="m1", db=session, limit=50, offset=0)
+                code_chars = [r["char"] for r in code_results]
+                self.assertIn("朋友", code_chars)
+                self.assertIn("同伴", code_chars)
+                self.assertNotIn("動靜", code_chars)
+
+                rhyme_results = search_words(q="~~你", mode="m1", db=session, limit=50, offset=0)
+                rhyme_chars = [r["char"] for r in rhyme_results]
+                self.assertIn("知己", rhyme_chars)
+                self.assertNotIn("朋友", rhyme_chars)
+                self.assertNotIn("同伴", rhyme_chars)
+        finally:
+            reset_compound_syn_cache_for_tests()
+
     def test_compound_ant_code_prefix_ignores_alternate_polyphone_reading(self):
         """33!!死：首尾預設讀音 code 94，次選 99 不得因 m1 等價誤入結果。"""
         from app.lexicon.rime_char_index import load_rime_char_csv, reset_rime_char_for_tests

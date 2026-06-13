@@ -3,6 +3,7 @@ import unittest
 from app.services.query_parse import (
     CodeTailQuery,
     CompoundAntQuery,
+    CompoundSynQuery,
     DigitCodeQuery,
     EqualsQuery,
     HybridCodeQuery,
@@ -56,6 +57,19 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertIsInstance(parsed, CompoundAntQuery)
         self.assertEqual(parsed.code_prefix, "2")
         self.assertEqual(parsed.rhyme_char, "就")
+
+    def test_compound_syn(self):
+        parsed = self._parse("~~")
+        self.assertIsInstance(parsed, CompoundSynQuery)
+        self.assertEqual(parsed.kind, QueryKind.COMPOUND_SYN)
+        self.assertIsNone(parsed.code_prefix)
+        self.assertIsNone(parsed.rhyme_char)
+
+    def test_compound_syn_with_rhyme_char(self):
+        parsed = self._parse("33~~你")
+        self.assertIsInstance(parsed, CompoundSynQuery)
+        self.assertEqual(parsed.code_prefix, "33")
+        self.assertEqual(parsed.rhyme_char, "你")
 
     def test_hybrid_tail_equals_alias(self):
         parsed = self._parse("23就=")
@@ -155,6 +169,13 @@ class BuildMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.code_prefix, "33")
         self.assertEqual(spec.slots[0].kind, "final_anchor")
+
+    def test_compound_syn(self):
+        spec = build_match_spec(CompoundSynQuery(code_prefix="33", rhyme_char="你"))
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.code_prefix, "33")
+        self.assertEqual(spec.slots[0].kind, "final_anchor")
+        self.assertEqual(spec.slots[0].value, "你")
 
     def test_code_tail(self):
         spec = build_match_spec(

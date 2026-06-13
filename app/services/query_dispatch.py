@@ -11,6 +11,7 @@ from app.services.essay_sort import sort_words
 from app.services.query_parse import (
     CodeTailQuery,
     CompoundAntQuery,
+    CompoundSynQuery,
     DigitCodeQuery,
     EqualsQuery,
     HybridCodeQuery,
@@ -140,6 +141,7 @@ class QueryEngine:
 
     def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
         from app.services.compound_ant_executor import CompoundAntExecutor
+        from app.services.compound_syn_executor import CompoundSynExecutor
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
 
@@ -151,6 +153,7 @@ class QueryEngine:
         relation_executor = RelationSyntaxExecutor(db)
         lookup_executor = WordLookupExecutor(db)
         compound_ant_executor = CompoundAntExecutor(db)
+        compound_syn_executor = CompoundSynExecutor(db)
 
         if isinstance(parsed, DigitCodeQuery):
             items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
@@ -158,6 +161,9 @@ class QueryEngine:
 
         handler_registry = {
             RelationLookupQuery: lambda p: relation_executor.relation_lookup_page(
+                p, mode=mode, limit=limit, offset=offset
+            ),
+            CompoundSynQuery: lambda p: compound_syn_executor.compound_syn_page(
                 p, mode=mode, limit=limit, offset=offset
             ),
             CompoundAntQuery: lambda p: compound_ant_executor.compound_ant_page(

@@ -132,6 +132,19 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"[main] Curated lexicon preload 失敗（可忽略）：{e}")
 
+    try:
+        from app.database import SessionLocal
+        from app.domain.relations.compound_syn import ensure_compound_syn_cache
+
+        db = SessionLocal()
+        try:
+            ensure_compound_syn_cache(db)
+            print("[main] 近義複合（~~）字面快取已預算。")
+        finally:
+            db.close()
+    except Exception as e:
+        print(f"[main] Compound syn cache preload 失敗（可忽略）：{e}")
+
     # Preload short-word metadata cache (for instant mask/hybrid/"門0"/"好23"/wildcard paths).
     # Query minimal columns, pre-parse JSON finals etc ONCE at startup (no per-request json.loads).
     # New words injected by _ensure are synced via update_word_in_cache so they participate without restart.

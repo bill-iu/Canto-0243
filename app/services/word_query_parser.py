@@ -13,6 +13,7 @@ AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
 SLOT_CHARS_RE = r"[0-9_?%]"
 
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
+COMPOUND_SYN_RE = re.compile(r"^(\d*)~~([\u4e00-\u9fff])?$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
 
 
@@ -237,7 +238,17 @@ def build_mask_from_slots(slots: str, width: int, anchor_pos: int) -> str:
 
 
 def parse_relation_syntax(q: str) -> Optional[dict]:
-    """Parse 0243 relation syntax: ~syn, !ant, !! compound, optional digit code prefix."""
+    """Parse 0243 relation syntax: ~~ compound syn, !! compound ant, ~syn, !ant."""
+    compound_syn = COMPOUND_SYN_RE.match(q)
+    if compound_syn:
+        prefix = compound_syn.group(1) or ""
+        rhyme_char = compound_syn.group(2) or None
+        return {
+            "kind": "compound_syn",
+            "code_prefix": prefix or None,
+            "rhyme_char": rhyme_char,
+        }
+
     compound = COMPOUND_ANT_RE.match(q)
     if compound:
         prefix = compound.group(1) or ""
