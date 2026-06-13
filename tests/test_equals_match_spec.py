@@ -33,6 +33,26 @@ class BuildEqualsMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.ref_dimension, "final")
         self.assertTrue(spec.phoneme_anchor_only)
 
+    def test_left_code_only_sandwich(self):
+        spec = build_equals_match_spec("34=我")
+        self.assertIsNotNone(spec)
+        self.assertEqual(spec.ref_literal, "我")
+        self.assertEqual(spec.ref_dimension, "initial")
+        self.assertTrue(spec.phoneme_anchor_only)
+        self.assertEqual(spec.ref_start_pos, 1)
+        self.assertEqual(spec.code_prefix, "34")
+        self.assertEqual(spec.width, 2)
+        self.assertFalse(spec.whole_word_phoneme_match)
+
+    def test_multi_char_ref_whole_word_equals(self):
+        spec = build_equals_match_spec("03=催是")
+        self.assertEqual(spec.ref_literal, "催是")
+        self.assertEqual(spec.code_prefix, "03")
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.ref_start_pos, 0)
+        self.assertTrue(spec.whole_word_phoneme_match)
+        self.assertEqual(spec.ref_dimension, "initial")
+
     def test_multi_digit_left_anchor(self):
         spec = build_equals_match_spec("23=你4")
         self.assertEqual(spec.ref_start_pos, 1)

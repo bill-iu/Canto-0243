@@ -136,6 +136,35 @@ class UnifiedDispatchTracerTests(unittest.TestCase):
         session.commit()
         return session
 
+    def test_left_code_only_equals_integration(self):
+        session = self._session_with_words(
+            [
+                Word(
+                    char="好我",
+                    code="34",
+                    jyutping="hou2 ngo5",
+                    finals='["ou", "o"]',
+                    initials='["h", "ng"]',
+                    length=2,
+                ),
+                Word(
+                    char="小馬騮",
+                    code="944",
+                    jyutping="siu2 maa5 ngau4",
+                    finals='["iu", "aa", "au"]',
+                    initials='["s", "m", "ng"]',
+                    length=3,
+                ),
+            ]
+        )
+        try:
+            results = search_words(q="34=我", mode="m1", db=session, limit=10, offset=0)
+            words = [r["char"] for r in results if r.get("result_type") == "word"]
+            self.assertIn("好我", words)
+            self.assertNotIn("小馬騮", words)
+        finally:
+            session.close()
+
     def test_mask_query_finds_matching_word(self):
         session = self._session_with_words(
             [
@@ -272,6 +301,72 @@ class UnifiedDispatchTracerTests(unittest.TestCase):
             words = [r["char"] for r in results if r.get("result_type") == "word"]
             self.assertIn("香港", words)
             self.assertIn("香江", words)
+        finally:
+            session.close()
+
+    def test_equals_jy_nucleus_excludes_but_fu(self):
+        """粵語 jyut6 jyu5 must not rhyme with 撥付 but6 fu6 (yut/yu vs ut/u)."""
+        session = self._session_with_words(
+            [
+                Word(
+                    char="粵語",
+                    code="24",
+                    jyutping="jyut6 jyu5",
+                    finals='["ut", "u"]',
+                    initials='["jy", "jy"]',
+                    length=2,
+                ),
+                Word(
+                    char="撥付",
+                    code="22",
+                    jyutping="but6 fu6",
+                    finals='["ut", "u"]',
+                    initials='["b", "f"]',
+                    length=2,
+                ),
+            ]
+        )
+        try:
+            results = search_words(q="粵語=", mode="m1", db=session, limit=10, offset=0)
+            words = [r["char"] for r in results if r.get("result_type") == "word"]
+            self.assertNotIn("撥付", words)
+        finally:
+            session.close()
+
+    def test_rhyme_anchor_yuan_excludes_un_final(self):
+        """?元= last syllable must rhyme yun (jyun), not plain un (wun/bun)."""
+        session = self._session_with_words(
+            [
+                Word(
+                    char="好換",
+                    code="42",
+                    jyutping="hou2 wun6",
+                    finals='["ou", "un"]',
+                    initials='["h", "w"]',
+                    length=2,
+                ),
+                Word(
+                    char="圓形",
+                    code="42",
+                    jyutping="jyun4 jing4",
+                    finals='["un", "ing"]',
+                    initials='["jy", "j"]',
+                    length=2,
+                ),
+                Word(
+                    char="元",
+                    code="40",
+                    jyutping="jyun4",
+                    finals='["un"]',
+                    initials='["jy"]',
+                    length=1,
+                ),
+            ]
+        )
+        try:
+            results = search_words(q="?元=", mode="m1", db=session, limit=10, offset=0)
+            words = [r["char"] for r in results if r.get("result_type") == "word"]
+            self.assertNotIn("好換", words)
         finally:
             session.close()
 

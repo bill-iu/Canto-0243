@@ -33,7 +33,7 @@ from typing import Any, Callable, Literal, Optional, Protocol, Sequence, Union
 # Imports needed for the moved filter logic (kept minimal to avoid cycles)
 from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
 from app.services.word_query_parser import matches_mask_literal_chars
-from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text, get_word_jyutping
+from app.services.word_serializer import get_word_parts, get_word_sort_code, get_word_text, get_word_jyutping, get_rhyme_finals
 from app.services.essay_sort import default_word_sort_key
 from app.lexicon.essay_index import get_essay_frequency
 from app.lexicon.curated_index import curated_sort_boost
@@ -301,7 +301,7 @@ class PositionMatchEngine:
                 word_code_str = get_word_sort_code(word)
                 if spec.code_prefix and word_code_str not in allowed_full_codes:
                     continue
-                word_finals = get_word_parts(word, "finals")
+                word_finals = get_rhyme_finals(word)
                 word_char = get_word_text(word)
                 if matches_hybrid_ref_chars(
                     word_char, word_finals, spec.hybrid_ref_chars, spec.hybrid_ref_pos, target_final_options
@@ -328,7 +328,11 @@ class PositionMatchEngine:
             return []
 
         is_final = spec.ref_dimension == "final"
-        target_parts = load_json_list(target.finals if is_final else target.initials)
+        target_parts = (
+            get_rhyme_finals(target)
+            if is_final
+            else load_json_list(target.initials)
+        )
         full_code = spec.code_prefix or ""
 
         query = db.query(Word)
@@ -336,9 +340,14 @@ class PositionMatchEngine:
         query = query.filter(length_filter(spec.width))
 
         if spec.whole_word_phoneme_match:
-            target_json = json.dumps(target_parts)
-            compare_field = Word.finals if is_final else Word.initials
-            return query.filter(compare_field == target_json).all()
+            candidates = query.all()
+            matched = [
+                w
+                for w in candidates
+                if (get_rhyme_finals(w) if is_final else get_word_parts(w, "initials"))
+                == target_parts
+            ]
+            return matched
 
         candidates = query.limit(2000).all()
         return [
@@ -396,6 +405,7 @@ def build_equals_match_spec(q: str) -> Optional[MatchSpec]:
     left_code = match.group(1) or ""
     right_code = match.group(5) or ""
     right_equal = bool(match.group(4))
+    inner_equal = bool(match.group(2))
     target_length = len(target_str)
     expected_length = len(left_code) + len(right_code) or target_length
     start_pos = max(0, len(left_code) - target_length)
@@ -407,7 +417,7 @@ def build_equals_match_spec(q: str) -> Optional[MatchSpec]:
         ref_literal=target_str,
         ref_start_pos=start_pos,
         ref_dimension="final" if right_equal else "initial",
-        phoneme_anchor_only=bool(left_code and right_code),
+        phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
         whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
     )
 
@@ -438,7 +448,7 @@ def matches_equals_phoneme_span(
     if not phoneme_anchor_only and ref_literal and ref_literal not in char_text:
         return False
     field = "finals" if dimension == "final" else "initials"
-    word_parts = get_word_parts(word, field)
+    word_parts = get_rhyme_finals(word) if dimension == "final" else get_word_parts(word, field)
     if not word_parts:
         return False
     for i in range(len(ref_parts)):
@@ -527,7 +537,7 @@ def matches_phoneme_at_position(
     """
     if constraint == "final":
         options = final_options_for_char(anchor, db)
-        parts = get_word_parts(word, "finals")
+        parts = get_rhyme_finals(word)
     else:
         options = initial_options_for_char(anchor, db)
         parts = get_word_parts(word, "initials")
@@ -586,7 +596,7 @@ def filter_words_by_code_and_mask(
         if literal_char is not None and word_char[-1] != literal_char:
             continue
         word_code_str = get_word_sort_code(word)
-        word_finals = get_word_parts(word, "finals")
+        word_finals = get_rhyme_finals(word)
         if not word_code_str or not word_finals:
             continue
         if not matches_code_positions(word_code_str, required_codes, mode):
@@ -733,7 +743,7 @@ def word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
     """檢查詞的最後一個音節的 final 是否在允許選項中。"""
     if not final_options:
         return True
-    word_finals = get_word_parts(word, "finals")
+    word_finals = get_rhyme_finals(word)
     return len(word_finals) >= 2 and word_finals[-1] in final_options
 
 

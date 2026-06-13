@@ -82,6 +82,18 @@ def get_word_parts(word, field: str) -> list:
     return load_json_list(getattr(word, field, None))
 
 
+def get_rhyme_finals(word) -> list:
+    """Rhyme finals from jyutping when available (correct jy- nucleus); else stored finals."""
+    from app.utils.jyutping_codec import rhyme_finals_from_jyutping
+
+    jp = get_word_jyutping(word)
+    if jp:
+        derived = rhyme_finals_from_jyutping(jp)
+        if derived:
+            return derived
+    return get_word_parts(word, "finals")
+
+
 def get_word_sort_code(word) -> str:
     if not word:
         return ""

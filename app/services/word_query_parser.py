@@ -109,6 +109,8 @@ def is_framed_equals_query(q: str) -> bool:
         return True
     if inner_equal and left_code and right_code:
         return True
+    if inner_equal and left_code and not right_equal:
+        return True  # 34=我：左碼 + 內嵌 = + 參考字，無右碼
     return False
 
 

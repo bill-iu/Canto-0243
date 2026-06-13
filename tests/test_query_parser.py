@@ -66,6 +66,11 @@ class ParseQueryGoldenTests(unittest.TestCase):
         parsed = self._parse("2=我3")
         self.assertIsInstance(parsed, EqualsQuery)
 
+    def test_equals_query_left_code_only(self):
+        parsed = self._parse("34=我")
+        self.assertIsInstance(parsed, EqualsQuery)
+        self.assertNotIsInstance(parsed, RhymeAnchorQuery)
+
     def test_code_tail_literal(self):
         parsed = self._parse("23*就")
         self.assertIsInstance(parsed, CodeTailQuery)

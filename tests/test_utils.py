@@ -20,9 +20,24 @@ class UtilsTests(unittest.TestCase):
 
     def test_split_jyutping(self):
         initials, finals, tones = split_jyutping("si1 jyun2")
-        self.assertEqual(initials, '["s", "jy"]')
-        self.assertEqual(finals, '["i", "un"]')
+        self.assertEqual(initials, '["s", "j"]')
+        self.assertEqual(finals, '["i", "yun"]')
         self.assertEqual(tones, '[1, 2]')
+
+    def test_split_jyutping_jy_nucleus(self):
+        initials, finals, _ = split_jyutping("jyut6 jyu5")
+        self.assertEqual(initials, '["j", "j"]')
+        self.assertEqual(finals, '["yut", "yu"]')
+        initials2, finals2, _ = split_jyutping("but6 fu6")
+        self.assertEqual(finals2, '["ut", "u"]')
+        self.assertNotEqual(finals, finals2)
+
+        initials3, finals3, _ = split_jyutping("jyun4")
+        self.assertEqual(initials3, '["j"]')
+        self.assertEqual(finals3, '["yun"]')
+        _, finals4, _ = split_jyutping("wun6")
+        self.assertEqual(finals4, '["un"]')
+        self.assertNotEqual(finals3, finals4)
 
     def test_get_code_variants(self):
         self.assertEqual(get_code_variants("23", "m2"), ["23"])

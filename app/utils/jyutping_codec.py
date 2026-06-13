@@ -43,11 +43,28 @@ def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
         initial = syllable[:split_pos] if split_pos != -1 else syllable
         final = syllable[split_pos:] if split_pos != -1 else ""
 
+        # j- + y- nucleus: medial y belongs to final (yut, yu, yun), not initial cluster "jy"
+        if initial == "jy" and final:
+            initial = "j"
+            final = "y" + final
+
         initials_list.append(initial)
         finals_list.append(final)
         tones_list.append(tone)
 
     return json.dumps(initials_list), json.dumps(finals_list), json.dumps(tones_list)
+
+
+def rhyme_finals_from_jyutping(jyutping: str) -> list[str]:
+    """韻母 list for rhyme compare; uses split_jyutping (jy- nucleus rules)."""
+    if not jyutping or not str(jyutping).strip():
+        return []
+    _, finals_json, _ = split_jyutping(jyutping)
+    try:
+        parsed = json.loads(finals_json)
+        return parsed if isinstance(parsed, list) else []
+    except (TypeError, json.JSONDecodeError):
+        return []
 
 
 def get_code_variants(code: str, mode: str = "m2") -> List[str]:

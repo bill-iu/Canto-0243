@@ -77,7 +77,12 @@ class CompositeLexicon:
             return []
         if len(text) == 1:
             return get_rime_char_entries(text)
-        return get_lexicon_entries(text)
+        static_entries = get_lexicon_entries(text)
+        if static_entries:
+            return static_entries
+        from app.utils.syllable_reading import compose_lexicon_entries_from_rime
+
+        return compose_lexicon_entries_from_rime(text)
 
 
 _default_port = CompositeLexicon(auto_load=False)

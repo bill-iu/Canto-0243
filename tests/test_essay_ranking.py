@@ -1,5 +1,6 @@
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 FIXTURE = Path(__file__).resolve().parent.parent / "data" / "essay" / "fixtures" / "essay_sample.txt"
 
@@ -80,7 +81,11 @@ class EssaySearchRankingTests(unittest.TestCase):
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
         with Session() as db:
-            rows = ensure_word_in_db(db, "開心", lexicon=FakeLexiconPort({}))
+            with patch(
+                "app.utils.syllable_reading.compose_lexicon_entries_from_rime",
+                return_value=[],
+            ):
+                rows = ensure_word_in_db(db, "開心", lexicon=FakeLexiconPort({}))
             self.assertEqual(rows, [])
 
 

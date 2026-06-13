@@ -90,6 +90,10 @@ def ensure_word_in_db(
 
     port = lexicon or default_lexicon_port()
     entries = port.get_entries(text)
+    if not entries and len(text) >= 2:
+        from app.utils.syllable_reading import compose_lexicon_entries_from_rime
+
+        entries = compose_lexicon_entries_from_rime(text)
     if not entries:
         return []
     return _inject_lexicon_entries(db, text, entries)
