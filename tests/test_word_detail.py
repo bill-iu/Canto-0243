@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation
-from app.services.query_engine import search_words
+from app.services.query_dispatch import search_words
 
 
 class CharacterDetailPayloadTests(unittest.TestCase):

@@ -11,7 +11,7 @@ from app.services.jyutping_match import (
     parse_jyutping_query,
 )
 from app.services.query_dispatch import JYUTPING_SYN_MODE_HINT, SearchContext, execute_search
-from app.services.query_engine import search_words
+from app.services.query_dispatch import search_words
 
 ESSAY_FIXTURE = Path(__file__).resolve().parent.parent / "data" / "essay" / "fixtures" / "essay_ranking_sample.txt"
 CURATED_FIXTURE = Path(__file__).resolve().parent.parent / "data" / "lexicon" / "fixtures" / "curated_sample.txt"

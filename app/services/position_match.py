@@ -457,47 +457,6 @@ def matches_equals_phoneme_span(
 
 
 # -----------------------------------------------------------------------------
-# 便利建構函式（後續遷移時使用）
-# -----------------------------------------------------------------------------
-
-def build_match_spec_from_parsed(parsed: dict) -> MatchSpec:
-    """
-    從現有 parser 產生的 dict（或 ParsedQuery.to_handler_dict()）建構 MatchSpec。
-
-    這是從舊 dict 世界過渡到新抽象的橋樑函式。
-    目前支援 rhyme_anchor / code_tail / at_tail 等常見位置型 parsed。
-    """
-    width = parsed.get("width", 0) or 0
-    spec = MatchSpec(width=width)
-
-    # 設定全域 code_prefix 如果有
-    if "code_digits" in parsed and parsed["code_digits"]:
-        spec.code_prefix = parsed["code_digits"]
-
-    # rhyme anchor / 參考字錨點
-    if "anchor_pos" in parsed and "anchor" in parsed and "constraint" in parsed:
-        kind = "final_anchor" if parsed["constraint"] == "final" else "initial_anchor"
-        spec.slots.append(SlotConstraint(
-            pos=parsed["anchor_pos"],
-            kind=kind,
-            value=parsed["anchor"]
-        ))
-
-    # literal char (e.g. at_tail)
-    if "literal_char" in parsed and parsed["literal_char"]:
-        # 對於 at_tail，通常是尾部 literal
-        # 這裡簡化為在對應位置加 literal_char 約束（實際由 handler 計算位置）
-        # 為了相容，先不加，留給後續完整實作
-        pass
-
-    # 其他如 mask literal 會在後續 MatchSpec 擴充中處理
-    # 目前先支援 anchor 類，確保 handler 能開始使用 spec
-
-    return spec
-
-
-# 預留未來擴充的 registry 或 factory
-# -----------------------------------------------------------------------------
 # 純匹配工具（Phase 2.1 第一批搬移目標）
 # 這些函式原本散落在 mask_search.py，現在集中到 PositionMatchEngine 負責的模組。
 # -----------------------------------------------------------------------------
@@ -721,7 +680,6 @@ __all__ = [
     "build_equals_match_spec",
     "matches_equals_phoneme_span",
     "PositionMatchEngine",
-    "build_match_spec_from_parsed",
     "matches_code_positions",
     "matches_phoneme_at_position",
     "filter_words_by_code_and_mask",

@@ -70,10 +70,10 @@ class BuildEqualsMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.width, 3)
         self.assertEqual(spec.ref_dimension, "initial")
 
-    def test_equals_query_to_match_spec(self):
-        from app.services.query_engine import EqualsQuery
+    def test_equals_query_build_match_spec(self):
+        from app.services.query_parse import EqualsQuery, build_match_spec
 
-        spec = EqualsQuery(raw_q="23=你4").to_match_spec()
+        spec = build_match_spec(EqualsQuery(raw_q="23=你4"))
         self.assertEqual(spec.ref_start_pos, 1)
 
 

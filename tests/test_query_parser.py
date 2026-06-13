@@ -1,6 +1,6 @@
 import unittest
 
-from app.services.query_engine import (
+from app.services.query_parse import (
     CodeTailQuery,
     CompoundAntQuery,
     DigitCodeQuery,
@@ -15,14 +15,19 @@ from app.services.query_engine import (
     RhymeAnchorQuery,
     UnmatchedQuery,
     WordLookupQuery,
+    build_match_spec,
     parse_query,
 )
 from app.services.word_query_parser import normalize_code_tail_separators
 
 
+def _parse(q: str):
+    return parse_query(normalize_code_tail_separators(q.strip()))
+
+
 class ParseQueryGoldenTests(unittest.TestCase):
     def _parse(self, q: str):
-        return parse_query(normalize_code_tail_separators(q.strip()))
+        return _parse(q)
 
     def test_relation_syn_lookup(self):
         parsed = self._parse("~開心")
@@ -135,6 +140,71 @@ class ParseQueryGoldenTests(unittest.TestCase):
     def test_unmatched_empty_symbols(self):
         parsed = self._parse("+++")
         self.assertIsInstance(parsed, UnmatchedQuery)
+
+
+class BuildMatchSpecTests(unittest.TestCase):
+    """build_match_spec: ParsedQuery → MatchSpec (no DB)."""
+
+    def test_equals_delegates(self):
+        spec = build_match_spec(EqualsQuery(raw_q="香港="))
+        self.assertEqual(spec.ref_literal, "香港")
+        self.assertTrue(spec.whole_word_phoneme_match)
+
+    def test_compound_ant(self):
+        spec = build_match_spec(CompoundAntQuery(code_prefix="33", rhyme_char="就"))
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.code_prefix, "33")
+        self.assertEqual(spec.slots[0].kind, "final_anchor")
+
+    def test_code_tail(self):
+        spec = build_match_spec(
+            CodeTailQuery(
+                code_digits="23", width=3, constraint="literal", anchor="就", anchor_pos=2
+            )
+        )
+        self.assertEqual(spec.mask, "??就")
+
+    def test_mask(self):
+        spec = build_match_spec(MaskQuery(raw_q="門0"))
+        self.assertEqual(spec.mask, "門0")
+        self.assertEqual(spec.extra["literal_positions"], [(0, "門")])
+
+    def test_hybrid(self):
+        spec = build_match_spec(HybridCodeQuery(raw_q="23就"))
+        self.assertEqual(spec.code_prefix, "23")
+
+    def test_non_position_returns_none(self):
+        self.assertIsNone(
+            build_match_spec(
+                RelationLookupQuery(relation_kind="syn", word="開心", code_prefix=None)
+            )
+        )
+        self.assertIsNone(build_match_spec(DigitCodeQuery(raw_q="33")))
+        self.assertIsNone(build_match_spec(WordLookupQuery(raw_q="香港")))
+        self.assertIsNone(
+            build_match_spec(
+                HybridTailEqualsAliasQuery(raw_q="23就=", hybrid_q="23就")
+            )
+        )
+        self.assertIsNone(build_match_spec(UnmatchedQuery(raw_q="+++")))
+
+    def test_code_tail_from_parse(self):
+        parsed = _parse("23*就")
+        spec = build_match_spec(parsed)
+        self.assertIsNotNone(spec)
+        self.assertEqual(spec.code_prefix, "23")
+        self.assertIn("就", spec.mask)
+
+    def test_literal_ref_from_parse(self):
+        parsed = _parse("23@就")
+        spec = build_match_spec(parsed)
+        self.assertEqual(spec.mask, "?就")
+
+    def test_equals_from_parse(self):
+        parsed = _parse("23=你4")
+        spec = build_match_spec(parsed)
+        self.assertEqual(spec.ref_start_pos, 1)
+        self.assertEqual(spec.code_prefix, "234")
 
 
 if __name__ == "__main__":

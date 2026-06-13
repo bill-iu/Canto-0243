@@ -90,7 +90,7 @@ class SearchSortIntegrationTests(unittest.TestCase):
 
     def test_pure_digit_search_sorts_by_unified_key(self):
         from app.models.word import Word
-        from app.services.query_engine import search_words
+        from app.services.query_dispatch import search_words
 
         with self.Session() as db:
             db.add_all([
@@ -106,7 +106,7 @@ class SearchSortIntegrationTests(unittest.TestCase):
 
     def test_mask_search_uses_same_sort_as_pure_digit(self):
         from app.models.word import Word
-        from app.services.query_engine import search_words
+        from app.services.query_dispatch import search_words
 
         with self.Session() as db:
             db.add_all([
@@ -132,7 +132,7 @@ class SearchSortIntegrationTests(unittest.TestCase):
         import json
 
         from app.models.word import Word
-        from app.services.query_engine import search_words
+        from app.services.query_dispatch import search_words
 
         shared_finals = json.dumps(["oeng", "ong"])
         with self.Session() as db:
@@ -159,7 +159,7 @@ class SearchSortIntegrationTests(unittest.TestCase):
 
     def test_jyutping_query_search_sorts_by_unified_key(self):
         from app.models.word import Word
-        from app.services.query_engine import search_words
+        from app.services.query_dispatch import search_words
 
         with self.Session() as db:
             db.add_all([

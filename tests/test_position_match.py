@@ -17,12 +17,13 @@ from app.services.position_match import (
     get_length_candidates,
     get_candidates_for_length,
 )
-from app.services.query_engine import (
+from app.services.query_parse import (
     RhymeAnchorQuery,
     CodeTailQuery,
     LiteralRefQuery,
     MaskQuery,
     HybridCodeQuery,
+    build_match_spec,
 )
 
 # Note: Some tests use real DB session from test setup; for full isolation, mocks can be expanded.
@@ -76,11 +77,11 @@ class TestPositionMatchEngineBasic(unittest.TestCase):
 
 
 class TestPositionQueryToMatchSpec(unittest.TestCase):
-    """Phase 2.3: verify the normalized to_match_spec() on position query dataclasses."""
+    """ParsedQuery → build_match_spec for position query types."""
 
     def test_rhyme_anchor_to_spec(self):
         q = RhymeAnchorQuery(constraint="final", anchor_pos=2, anchor="就", slots="23", width=3)
-        spec = q.to_match_spec()
+        spec = build_match_spec(q)
         self.assertEqual(spec.width, 3)
         self.assertEqual(spec.mask, "23?")
         self.assertEqual(len(spec.slots), 1)
@@ -90,7 +91,7 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
 
     def test_code_tail_literal_to_spec(self):
         q = CodeTailQuery(code_digits="23", width=3, constraint="literal", anchor="就", anchor_pos=2)
-        spec = q.to_match_spec()
+        spec = build_match_spec(q)
         self.assertEqual(spec.width, 3)
         self.assertEqual(spec.code_prefix, "23")
         self.assertEqual(spec.mask, "??就")  # derived same as old handler: build_mask("") then override at anchor_pos
@@ -100,7 +101,7 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
 
     def test_literal_ref_to_spec(self):
         q = LiteralRefQuery(code_digits="2", literal_char="我", width=2)
-        spec = q.to_match_spec()
+        spec = build_match_spec(q)
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.code_prefix, "2")
         self.assertEqual(spec.mask, "?我")
@@ -110,7 +111,7 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
 
     def test_mask_query_to_spec(self):
         q = MaskQuery(raw_q="門0")
-        spec = q.to_match_spec()
+        spec = build_match_spec(q)
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.mask, "門0")
         self.assertTrue(spec.literal_priority)
@@ -122,7 +123,7 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
 
     def test_hybrid_code_to_spec(self):
         q = HybridCodeQuery(raw_q="23就")
-        spec = q.to_match_spec()
+        spec = build_match_spec(q)
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.code_prefix, "23")
         self.assertEqual(spec.hybrid_ref_chars, "就")
@@ -133,7 +134,7 @@ class TestFilterCandidatesByMatchSpec(unittest.TestCase):
     def test_match_spec_code_digit_slots门0(self):
         w_good = MagicMock(char="門人", code="00", finals='["un","an"]', initials='["m","j"]')
         w_bad = MagicMock(char="門下", code="02", finals='["un","a"]', initials='["m","h"]')
-        spec = MaskQuery(raw_q="門0").to_match_spec()
+        spec = build_match_spec(MaskQuery(raw_q="門0"))
         db = MagicMock()
         filtered = filter_candidates_by_match_spec([w_good, w_bad], spec, "m1", db)
         chars = [getattr(w, "char", None) for w in filtered]

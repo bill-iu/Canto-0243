@@ -10,9 +10,10 @@ from typing import TYPE_CHECKING, List
 from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
-    from app.services.query_engine import CompoundAntQuery
+    from app.services.query_parse import CompoundAntQuery
 
 from app.services.position_match import CompoundAntCandidateSource, run_position_query
+from app.services.query_parse import build_match_spec
 from app.lexicon.compound_antonyms import load_compound_antonyms
 
 
@@ -36,7 +37,7 @@ class CompoundAntExecutor:
             return []
 
         source = CompoundAntCandidateSource(self._db, compounds)
-        spec = parsed.to_match_spec()
+        spec = build_match_spec(parsed)
 
         return run_position_query(
             spec,

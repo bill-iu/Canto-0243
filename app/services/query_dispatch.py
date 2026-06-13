@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.essay_sort import sort_words
-from app.services.match_spec_factory import build_match_spec
 from app.services.query_parse import (
     CodeTailQuery,
     CompoundAntQuery,
@@ -24,6 +23,7 @@ from app.services.query_parse import (
     RhymeAnchorQuery,
     UnmatchedQuery,
     WordLookupQuery,
+    build_match_spec,
     parse_query,
 )
 from app.services.word_db_filters import apply_code_filter
