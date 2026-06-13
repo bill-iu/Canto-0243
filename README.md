@@ -1,63 +1,93 @@
 # Canto-0243
 
-Canto-0243（離線粵語填詞查韻工具 · ONE·搵·韻）：依 **0243／02493 數字碼**、**粵拼**、**韻母／聲母規則** 與 **近義／反義關係**，幫創作者快速找可替換詞條。
+填粵語歌詞時，你常常唔係「不知道有什麼字」，而係要在**同音、押韻、近義**之間快速換字，又要對準 0243 鍵盤編碼與粵拼讀音。傳統做法係在詞典、韻書、近義表之間來回翻，手動試「呢個位可唔可以換另一個字」——慢，而且容易漏掉可用嘅替換。
+
+**Canto-0243**（**ONE·搵·韻**）把呢件事收成一個離線工作台：依 **0243／02493 數字碼**、**粵拼**、**韻母／聲母規則**與 **近義／反義關係**，幫你在幾秒內列出可替換嘅**詞條**。打 `23就` 搵同調又同「就」同韻嘅尾字；打 `香港=` 搵同「香港」同韻嘅候選；打 `~開心` 或切換**近反義模式**搵語意替換；打 `~~`／`!!` 搵填詞常用嘅二字近義／反義複合。套件解壓即用，詞庫與近反義資料都在本機，唔使常駐雲端。
 
 **授權**：程式碼依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**非 OSI 開源**）。第三方資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
 **技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· 純 HTML/JS 前端  
-**語意與領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
+**領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
 
-## 功能概覽
+## 最新版本
 
-| 類別 | 能力 |
-|------|------|
-| 編碼模式 | **0243模式** `mode=m1`（0243 等價變體）· **02493模式** `mode=m2`（含 9 鍵聲調、分清二聲） |
-| 查詢類型 | 純漢字 · 純數字（分頁 + 總數 header）· **粵拼查詢**（`syut`／`nei hou`／`ming4 baak6`）· 混合碼字（`23就`）· wildcard（`3_`、`23?`）· 等號韻（`香港=`、`2=我3`）· 韻／聲錨（`?就=`） |
-| 近反義 | **近反義模式** `mode=syn` 全欄 UI（不收粵拼）；或 0243／02493 模式下 `~詞` / `!詞` / `!!` 反義複合 / `~~` 近義複合（curated 列表） |
-| 詞庫 | **詞庫埠** raw lookup + **收錄決策**；多字詞級標音或音節拼接讀音 |
-| 近反義資料 | **靜態詞林埠**（cilin／國語辭典近義／反義語料）；runtime 與 ingest 共用 |
-| 排序 | 同 match tier：**純漢字** → **essay 詞頻** → **curated** → **pron_rank** → 字面（[`CONTEXT.md`](CONTEXT.md) § 搜尋結果排序） |
-| Runtime | essay 啟動載入記憶體 dict；`word_relations` + 靜態詞林 · 近反義池在 `app/domain/relations/` |
+官方離線資料包：**[v1.0.2-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.2-data)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+
+---
+
+## 功能
+
+* **0243／02493 編碼搜尋**：**0243模式** `mode=m1`（0243 等價變體）與 **02493模式** `mode=m2`（含 9 鍵聲調、分清二聲）。
+* **多種查詢語法**：純漢字 · 純數字（分頁 + 總數 header）· **粵拼查詢**（`syut`／`nei hou`／`ming4 baak6`）· 混合碼字（`23就`）· wildcard（`3_`、`23?`）· 等號韻／聲（`香港=`、`2=我3`）· 韻／聲錨（`?就=`）。
+* **近反義**：**近反義模式** `mode=syn` 全欄 UI（不收粵拼）；或在 0243搜尋模式下 `~詞`／`!詞`、反義複合 `!!`、近義複合 `~~`。
+* **詞庫與收錄**：**詞庫埠** raw lookup + **收錄決策**；多字詞級標音或音節拼接讀音。
+* **近反義資料**：**靜態詞林埠**（cilin／國語辭典近義／反義語料）；runtime 與 ingest 共用同一規則。
+* **結果排序**：同 match tier 內 **純漢字** → **essay 詞頻** → **curated** → **pron_rank** → 字面（詳見 [`CONTEXT.md`](CONTEXT.md) § 搜尋結果排序）。
 
 ---
 
 ## 快速開始
 
-### 一般使用者（推薦）
+### 1. 下載與安裝（一般使用者）
 
-完整離線體驗（詞條搜尋 + 近反義）請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
+完整離線體驗請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（見 [`v1.0.2-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.2-data) 或最新 data release）。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`v1.0.2-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.2-data) 或最新 data release）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
-3. **Windows**：雙擊 **`START.bat`**。  
-   **macOS**：建議下載 `canto-0243-portable-macos.tar.gz`（若只有 zip，解壓後雙擊 `START.command` 或執行 `./START.sh`）。  
-   **Linux**：`chmod +x START.sh && ./START.sh`
+3. 依平台啟動：
+   * **Windows**：雙擊 **`START.bat`**。
+   * **macOS**：建議下載 `canto-0243-portable-macos.tar.gz`；解壓後雙擊 `START.command` 或執行 `./START.sh`。
+   * **Linux**：`chmod +x START.sh && ./START.sh`
 
-**需求**：Python 3.10 或以上（已加入 PATH）。首次啟動會自動建立 venv 並安裝依賴；瀏覽器會開啟搜尋頁。
+**需求**：Python 3.10+（已加入 PATH）。首次啟動會自動建立 venv 並安裝依賴；瀏覽器會開啟搜尋頁。
 
 | 入口 | URL |
 |------|-----|
-| 前端 | http://127.0.0.1:8000/frontend/index.html |
+| 前端（搜尋教學在頂欄） | http://127.0.0.1:8000/frontend/index.html |
 | API 文件 | http://127.0.0.1:8000/docs |
 | 健康檢查 | http://127.0.0.1:8000/ |
 
 套件內已含 `lyrics.db` 與靜態近反義資料。疑難排解見解壓後資料夾內 `README.txt`。
 
-#### 從 Git clone（進階／開發）
+### 2. 如何使用
 
-clone 源碼**不**含完整 `lyrics.db`。若要在本機跑 `python main.py`，請先從 Releases 下載 `lyrics.db` 放專案根目錄，或走下方 **Maintainer** 管線自建。
+**三種模式**（頂欄 segmented control）：
+
+| 模式 | `mode` | 用途 |
+|------|--------|------|
+| **0243模式**（鬆） | `m1` | 0243 碼等價變體 |
+| **02493模式**（緊） | `m2` | 02493 碼，分清二聲 |
+| **近反義** | `syn` | 打漢字列出近義／反義欄（不收粵拼） |
+
+**語法族**（皆可在 **0243搜尋模式** 使用，除非註明）：
+
+* **字面／數字／粵拼**：直接打「你好」、`23`、`nei hou`。
+* **位置與 wildcard**：`香??`、`?你?`、`3_`、`23?`。
+* **數字 + 尾字**：`23就`（尾字同「就」同韻）、`23@就`（尾字字面固定）、`23*就`（加長位置）。
+* **等號錨點**：`=` 在錨字**後**比韻母（`?就=`）、在錨字**前**比聲母（`?=就`）；整詞同「香港」同韻 `香港=`、碼夾 `2我=3`。
+* **近反義關係查詢**：`~開心`、`!你`、`33!開心`。
+* **反義複合詞**：`!!`、`33!!`、`!!你`、`33!!你`（如生死、是非）。
+* **近義複合詞**：`~~`、`33~~`、`~~你`、`33~~你`（如朋友、恐懼）；**不適用近反義模式**。
+
+App 內 **「搜尋教學」** 有完整可點擊例子；下方「查詢語法速查」與教學頁一致，供離線查閱。
+
+### 3. 從 Git clone（開發者）
+
+clone 源碼**不**含完整 `lyrics.db`。若要在本機跑 `python main.py`，請先從 Releases 下載 `lyrics.db` 放專案根目錄，或走下方 Maintainer 管線自建。
 
 ```bash
 pip install -r requirements.txt
 python main.py
 ```
 
-亦可使用開發用 `./start.sh`（會建 venv 並開瀏覽器；仍須自备 `lyrics.db`）。
+亦可使用 `./start.sh`（建 venv 並開瀏覽器；仍須自备 `lyrics.db`）。
 
-**隨 repo 已有**（第 1 層，見下方「資料來源」）：essay 詞頻語料、curated 常用詞、反義複合列表，以及 **bundled** 近反義 static 檔（cilin、guotong thesaurus）。**單字 rime `char.csv` 與 antisem 不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層），否則單字讀音與完整 static fallback 不完整。
+**隨 repo 已有**（第 1 層，見「資料來源」）：essay 詞頻、curated 常用詞、反義／近義複合列表，以及 bundled 近反義 static 檔。**單字 rime `char.csv` 與 antisem 不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層）。
 
-### Maintainer（重建詞條庫與近反義）
+---
+
+## Maintainer：重建詞條庫與近反義
 
 產物均為本地／gitignore，**勿** commit。詳見 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)。
 
@@ -71,64 +101,45 @@ python scripts/ingest/import_data.py
 python -m ingest report
 python -m ingest normalize --source current_static
 python -m ingest build-relations
-# 或（legacy）：python scripts/legacy/generate_relationships.py
 ```
 
-可選近反義來源（預設關閉，如 COW）見 `data/syn_ant/sources.yaml`；需自行取得 raw 後再以 `--source` 指定。
+可選近反義來源（預設關閉）見 `data/syn_ant/sources.yaml`。
 
-#### 官方資料 Release（四件套）
+### 官方資料 Release（四件套）
 
 再分發前核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**將大檔 commit 入 git。
 
 | 資產 | 用途 |
 |------|------|
-| `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`）；放專案根目錄即可搜尋＋近反義 |
-| `canto-0243-portable.zip` | Windows 離線套件（解壓 → `START.bat`） |
-| `canto-0243-portable-macos.tar.gz` | macOS 離線套件（解壓 → `START.command`／`START.sh`；保留執行權） |
-| `words-lexicon.json` | **詞級標音**副件；可餵 `import_data.py` 或 `data/raw/clean/` 以對齊 runtime 收錄門 |
+| `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`） |
+| `canto-0243-portable.zip` | Windows 離線套件（`START.bat`） |
+| `canto-0243-portable-macos.tar.gz` | macOS 離線套件（`START.command`／`START.sh`） |
+| `words-lexicon.json` | **詞級標音**副件 |
 
 ```bash
-# 本地驗證通過後：
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
 bash scripts/build-portable.sh
-# 上傳四件套至 GitHub Release（對應 tag；portable 必須 zip + macOS tar.gz 齊備）
+# 上傳四件套至 GitHub Release（portable 須 zip + macOS tar.gz 齊備）
 ```
-
----
-
-## 部署與資料庫
-
-**產品保證路徑**：離線單機 + **SQLite**（`lyrics.db` 或 `DATABASE_URL` 指向的 SQLite 檔）。新 schema 變更（欄位、索引、表）**僅**透過 SQLite bootstrap／`scripts/db/init_db.py` 維護；測試亦只覆蓋 SQLite。
-
-**PostgreSQL**：程式中留有凍結 scaffold（`IS_POSTGRES` 分支、Alembic migration），**非**主要交付目標——無整合測試、migration 不再主動更新。若仍要實驗：
-
-```bash
-pip install -r requirements-postgres.txt
-# .env.local：DATABASE_URL=postgresql://...
-alembic upgrade head    # 對齊既有 migration；不保證與最新 SQLite schema 同步
-python main.py          # 啟動時會 log 凍結警告
-```
-
-PG 相關 issue／PR 可 **best-effort** 合併小修，但不構成產品承諾。領域用語見 [`CONTEXT.md`](CONTEXT.md) § 產品邊界。
 
 ---
 
 ## 查詢語法速查
 
-與前端「搜尋教學」可點擊例子一致；完整說明見 app 內教學頁。
+與前端「搜尋教學」可點擊例子一致。
 
 ### 基本查詢
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `就` | 查這個字的所有讀音 |
-| `你好` | 查這個詞語 |
-| `syut` | 粵拼查詢（無調；單字如「雪」） |
-| `nei hou` | 粵拼查詢（無調） |
-| `ming4 baak6` | 粵拼查詢（有調） |
+| `就` | 查呢個字嘅所有讀音 |
+| `你好` | 查呢個詞語 |
+| `syut` | 粵拼查詢（冇聲調） |
+| `nei hou` | 粵拼查詢（冇聲調） |
+| `ming4 baak6` | 粵拼查詢（有聲調） |
 
 ### 0243／02493 數字
 
@@ -141,59 +152,59 @@ PG 相關 issue／PR 可 **best-effort** 合併小修，但不構成產品承諾
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `香??` | 三字詞，第一字是「香」 |
-| `?你?` | 三字詞，中間是「你」 |
+| `香??` | 三字詞，第一個字係「香」 |
+| `?你?` | 三字詞，中間係「你」 |
 | `23?就` | 四字詞，23＋？＋就 |
 
 ### 數字 + 尾字
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `23就` | 二字，23 同音，尾字同韻「就」 |
-| `23@就` | 二字，23 同音，尾字必須是「就」 |
-| `23*就` | 三字，23 同音，第三字是「就」 |
-| `23*就=` | 三字，23 同音，第三字同韻「就」 |
-| `23*=就` | 三字，23 同音，第三字同聲「就」 |
+| `23就` | 二字，23 同音，尾字同「就」同韻 |
+| `23@就` | 二字，23 同音，尾字必須係「就」 |
+| `23*就` | 三字，23 同音，第三個字係「就」 |
+| `23*就=` | 三字，23 同音，第三個字同「就」同韻 |
+| `23*=就` | 三字，23 同音，第三個字同「就」同聲 |
 
 ### 韻母錨點
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `香=?` | 二字，首字同韻「香」 |
-| `?就=` | 二字，尾字同韻「就」 |
-| `??就=` | 三字，尾字同韻「就」 |
+| `香=?` | 二字，首字同「香」同韻 |
+| `?就=` | 二字，尾字同「就」同韻 |
+| `??就=` | 三字，尾字同「就」同韻 |
 
 ### 聲母錨點
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `=香?` | 二字，首字同聲「香」 |
-| `?=就` | 二字，尾字同聲「就」 |
-| `??=就` | 三字，尾字同聲「就」 |
+| `=香?` | 二字，首字同「香」同聲 |
+| `?=就` | 二字，尾字同「就」同聲 |
+| `??=就` | 三字，尾字同「就」同聲 |
 
 ### 右 `=` 查韻母（整詞／碼夾）
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `香港=` | 二字，整詞同韻「香港」 |
-| `大蛋糕=` | 三字，整詞同韻「大蛋糕」 |
-| `34英皇=` | 五字，前碼 34＋整詞同韻 |
-| `2我=3` | 二字，23 同音，首字同韻「我」 |
-| `23就=` | 二字，23 同音＋尾字同韻「就」（同 `23就`） |
+| `香港=` | 二字，整詞同「香港」同韻 |
+| `大蛋糕=` | 三字，整詞同「大蛋糕」同韻 |
+| `34英皇=` | 五字，前碼 34＋整詞同「英皇」同韻 |
+| `2我=3` | 二字，23 同音，首字同「我」同韻 |
+| `23就=` | 二字，23 同音＋尾字同「就」同韻（同 `23就`） |
 
 ### 左 `=` 查聲母
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `=香港` | 二字，整詞同聲「香港」 |
-| `2=我3` | 二字，23 同音，首字同聲「我」 |
+| `=香港` | 二字，整詞同「香港」同聲 |
+| `2=我3` | 二字，23 同音，首字同「我」同聲 |
 
 ### 萬用字元
 
 | 輸入範例 | 說明 |
 |----------|------|
 | `3_` | 二字，首字和 3 同音，尾字不限 |
-| `23?` | 三字，頭兩字 23 同音，第三字不限 |
+| `23?` | 三字，頭兩字 23 同音，第三個字不限 |
 
 ### 近義／反義
 
@@ -202,23 +213,25 @@ PG 相關 issue／PR 可 **best-effort** 合併小修，但不構成產品承諾
 | `~開心` | 近義於「開心」 |
 | `!你` | 反義於「你」（含鏡像近義） |
 | `33!開心` | 33 同音＋反義於「開心」 |
-| `mode=syn`＋`開心` | 近反義模式（兩欄 UI；粵拼請切換 0243／02493 模式） |
+| `mode=syn`＋`開心` | 近反義模式（兩欄 UI） |
 
 ### 反義複合詞
 
 | 輸入範例 | 說明 |
 |----------|------|
 | `!!` | 二字反義複合（如生死、是非） |
-| `!!你` | 反義複合，尾字同韻「你」 |
-| `33!!你` | 33 同音＋反義複合＋尾韻「你」 |
+| `33!!` | 33 同音＋反義複合 |
+| `!!你` | 反義複合，尾字同「你」同韻 |
+| `33!!你` | 33 同音＋反義複合＋尾字同「你」同韻 |
 
 ### 近義複合詞
 
 | 輸入範例 | 說明 |
 |----------|------|
-| `~~` | 二字近義複合（如朋友、同伴） |
-| `~~你` | 近義複合，尾字同韻「你」 |
-| `33~~你` | 33 同音＋近義複合＋尾韻「你」 |
+| `~~` | 二字近義複合（如朋友、恐懼） |
+| `33~~` | 33 同音＋近義複合 |
+| `~~你` | 近義複合，尾字同「你」同韻 |
+| `33~~你` | 33 同音＋近義複合＋尾字同「你」同韻 |
 
 ```http
 GET /words/search/?q=你好&mode=m1
@@ -227,174 +240,89 @@ GET /words/search/?q=香港=&mode=m1
 GET /words/search/?q=2=我3&mode=m1
 GET /words/search/?q=nei%20hou&mode=m1
 GET /words/search/?q=!你&mode=m1
+GET /words/search/?q=~~&mode=m1
 GET /words/search/?q=開心&mode=syn
 ```
 
 ---
 
-## 架構概覽
+## 進階：架構與部署
+
+### 架構概覽
 
 ```text
 查詢字串 → query_parse（語法分類 · ParsedQuery · build_match_spec）
          → query_dispatch（優先序 registry → executors）
                 ↓
-    position_match · word_lookup_executor · relation_syntax_executor · compound_ant_executor · compound_syn_executor
+    position_match · word_lookup_executor · relation_syntax_executor
+    · compound_ant_executor · compound_syn_executor
                 ↓
     domain/lexicon（收錄決策）· domain/thesaurus（靜態詞林）· domain/relations（近反義池／關係圖）
                 ↓
-         words 表（ORM + length 索引）· word_cache（短詞 preload）
+         words 表 · word_cache（短詞 preload）
                 ↓
-         essay_sort（純漢字 → essay → curated → pron_rank）· 結構性 tier 不變
-                ↓
-         JSON 結果（code / jyutping / word 列；純數字含 X-Search-Total）
+         essay_sort · JSON 結果（純數字含 X-Search-Total）
 ```
 
-### 領域層（`app/domain/`）
+| 層 | 路徑 | 職責 |
+|----|------|------|
+| 領域 | `app/domain/lexicon/` | 詞庫埠 · **收錄決策** |
+| 領域 | `app/domain/thesaurus/` | **靜態詞林埠** |
+| 領域 | `app/domain/relations/` | **近反義池** · **關係圖** · ranking |
+| 服務 | `app/services/query_parse.py` | `parse_query` · `build_match_spec` |
+| 服務 | `app/services/query_dispatch.py` | `search_words` registry |
+| 服務 | `app/services/position_match.py` | 位置比對 · 等號／碼夾 |
+| 服務 | `app/services/*_executor.py` | lookup · `~`/`!` · `!!` · `~~` |
 
-| 路徑 | 職責 |
-|------|------|
-| `lexicon/port.py` | 詞庫 **raw lookup**（rime 單字、詞級標音 JSON） |
-| `lexicon/admission.py` | **收錄決策**（`resolve_admission`） |
-| `thesaurus/port.py` | **靜態詞林埠**（分源近義／反義 getter、`iter_literal_heads`） |
-| `relations/pool.py` | **近反義池**建構（runtime + ingest 同源） |
-| `relations/graph.py` | **關係圖**（直接近義鄰居、`!` 鏡射對） |
-| `relations/ranking.py` | 池內排序 |
-| `relations/canonical.py` · `store.py` | 關係寫入規則 |
+設計原則：領域規則在 `app/domain/`；ingest 與 runtime 共用同一埠與池規則。
 
-### 服務層（`app/services/`）
+### 部署與資料庫
 
-| 模組 | 職責 |
-|------|------|
-| `query_parse.py` | `parse_query` + `build_match_spec`（純、無 DB） |
-| `query_dispatch.py` | `execute_search` / `search_words`（registry 分派） |
-| `position_match.py` | `MatchSpec`、位置比對、等號／碼夾等號 |
-| `word_lookup_executor.py` | 純數字、字面、粵拼 lookup |
-| `relation_syntax_executor.py` | `~` / `!`、近反義模式 |
-| `compound_ant_executor.py` | `!!` 反義複合 |
-| `compound_syn_executor.py` | `~~` 近義複合 |
-| `word_ensure_service.py` | 依收錄決策注入詞條庫 |
-| `phoneme_lookup.py` | 參考字聲母／韻母（收錄決策鏈） |
-| `relation_search.py` | 近反義池對外薄入口（測試／工具） |
-| `essay_sort.py` | 統一搜尋結果排序 key |
-| `jyutping_match.py` · `code_aware_ranker.py` | 粵拼比對、純漢字分段 header |
-| `manual_relation_service.py` | 關係補錄／撤回 |
-| `app/routers/relation.py` | 關係補錄 API |
+**產品保證路徑**：離線單機 + **SQLite**（`lyrics.db`）。新 schema 僅透過 SQLite bootstrap／`scripts/db/init_db.py` 維護。
 
-**設計原則**：領域規則集中在 `app/domain/`；ingest 批次走同一埠與池規則；regex 只在 Python 解析輸入，查詢走索引／純 SQL。
+**PostgreSQL**：凍結 scaffold，**非**主要交付目標。實驗用見 `requirements-postgres.txt` 與 [`CONTEXT.md`](CONTEXT.md) § 產品邊界。
 
----
-
-## 專案結構
+### 專案結構
 
 ```text
 Canto-0243/
-├── app/
-│   ├── db/                 # connection · bootstrap · dialect
-│   ├── domain/
-│   │   ├── lexicon/        # 詞庫埠 raw + 收錄決策（admission）
-│   │   ├── thesaurus/      # 靜態詞林埠
-│   │   └── relations/      # 近反義池 · 關係圖 · ranking · canonical · store
-│   ├── lexicon/            # essay · curated · rime char 索引實作
-│   ├── thesaurus/          # static_index（埠內部載入實作）
-│   ├── services/           # query parse/dispatch · executors · 排序 · 關係補錄
-│   ├── repositories/
-│   ├── routers/            # word.py · relation.py（關係補錄）
-│   ├── models/ · schemas/
-│   └── utils/              # jyutping_codec · word_cache · json_helpers
-├── frontend/
-│   ├── index.html          # 查韻首屏
-│   └── relation-entry.html # 關係補錄
-├── portable/               # START.bat · START.sh · env.portable（build 複製進 zip）
-├── data/                   # 見下方「資料來源」三層模型
-│   ├── rime/               # char.csv（第 2 層 bootstrap；fixtures 隨 repo）
-│   ├── essay/              # essay-cantonese.txt（隨 repo）
-│   ├── lexicon/            # curated_common.txt（隨 repo）
-│   ├── cilin/              # new_cilin.txt（隨 repo，bundled）
-│   ├── thesaurus/          # dict_synonym · dict_antonym（隨 repo，bundled）
-│   ├── antonym/            # antisem.txt（第 2 層 bootstrap）
-│   └── syn_ant/            # sources.yaml · compound_antonyms.txt（隨 repo）
-├── ingest/                 # syn/ant v2 pipeline + CLI（python -m ingest）
-├── scripts/
-│   ├── bootstrap_data.py
-│   ├── build-portable.ps1 · build-portable.sh
-│   ├── export_words_lexicon.py
-│   ├── fetch/              # fetch_rime_data · fetch_essay_data · fetch_cilin_data …
-│   ├── db/                 # init_db · reset_db
-│   ├── ingest/             # import_data
-│   └── legacy/             # generate_relationships · backfill_embeddings
+├── app/                    # API · domain · services · models
+├── frontend/               # index.html（查韻首屏）· relation-entry.html
+├── portable/               # START.bat · START.sh · env.portable
+├── data/                   # 見「資料來源」三層模型
+├── ingest/                 # python -m ingest
+├── scripts/                # bootstrap · build-portable · import_data
 ├── tests/
-├── docs/
-│   ├── CONTRIBUTING.md     # 貢獻與 PR · 源碼根目錄約定
-│   └── agents/             # issue-tracker · triage-labels · domain
-├── portable/               # START.bat · START.sh（build 複製進 zip）
-├── main.py · start.sh      # 開發入口（Portable 用 portable/START.*）
+├── docs/                   # CONTRIBUTING · agents/
+├── main.py · start.sh      # 開發入口
 ├── README.md · LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
-└── requirements.txt · requirements-dev.txt · requirements-postgres.txt
+└── requirements*.txt
 ```
 
----
+### 資料來源與授權
 
-## 資料來源與授權
-
-再分發前請核對各上游原文。完整授權表見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。收錄與排序政策見 [`CONTEXT.md`](CONTEXT.md) § 詞庫與排序。
-
-### 三層模型
-
-與 `scripts/bootstrap_data.py` 一致：**未 bundled 的才需 fetch**；essay、curated、compound_antonyms 與 bundled 近反義 static 檔隨 repo。
+再分發前請核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。收錄與排序見 [`CONTEXT.md`](CONTEXT.md) § 詞庫與排序。
 
 | 層級 | 說明 | 例子 |
 |------|------|------|
-| **1 · 隨 repo** | clone 即有；排序語料、curated 列表、反義複合、**bundled** 近反義 static | `data/essay/essay-cantonese.txt`、`data/lexicon/curated_common.txt`、`data/syn_ant/compound_antonyms.txt`、`data/cilin/new_cilin.txt`、`data/thesaurus/dict_*.txt` |
-| **2 · bootstrap fetch** | `python scripts/bootstrap_data.py` 下載（不在 git） | **rime `char.csv`**、**antisem**、guotong／cilin 可選重拉、words.hk manifest（路徑見 THIRD_PARTY_NOTICES） |
-| **3 · maintainer 自建** | gitignore；**勿** commit | `lyrics.db`、多字**詞級標音**（`import_data.py` 輸入，如 `data/raw/clean/` 或 `words-lexicon.json`） |
+| **1 · 隨 repo** | clone 即有 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
+| **3 · maintainer 自建** | gitignore | `lyrics.db`、詞級標音 JSON |
 
-```bash
-python scripts/bootstrap_data.py              # 第 2 層：rime char + antisem + guotong + words.hk manifest（＋可選 cilin）
-python scripts/bootstrap_data.py --update-essay   # 可選：重拉 essay 語料
-python scripts/fetch/fetch_essay_data.py [--verify]   # 同上，單獨執行
-```
-
-### 詞庫上游（多字詞級標音）
-
-多字**詞級標音**由 maintainer 自下列上游整理，再對照 0243 鍵盤編碼產出（第 3 層；法律細節見 THIRD_PARTY_NOTICES）。
-
-| 上游 | 連結 | 授權 |
-|------|------|------|
-| words.hk 粵典詞表 | [wordslist](https://words.hk/faiman/analysis/wordslist/) | **公有領域**（致謝 [words.hk](https://words.hk/)） |
-| CC-Canto | [download](https://cantonese.org/download.html) | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) |
-| 開放詞典 · 粵語詞典 | [下載](https://kaifangcidian.com/xiazai/) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
-
-單字讀音權威來自 rime `char.csv`（[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)，[rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream)）。Essay 詞頻與 curated 列表**僅用於排序**，不替代詞庫收錄門檻。
-
-### 近義／反義（預設來源）
-
-Manifest：`data/syn_ant/sources.yaml`。預設管線（`current_static`）經**靜態詞林埠**載入下列來源；fetch 後寫入 `word_relations` 表，並作 runtime 靜態詞林 fallback。
-
-| 來源 | 上游 | 授權 |
-|------|------|------|
-| cilin | [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)（[liao961120/cilin](https://github.com/liao961120/cilin) 匯出） | **MIT** |
-| guotong | [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) | [Anti-996](https://github.com/996icu/996.ICU/blob/master/LICENSE) |
-| antisem | [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword) | 無明示授權；fetch + 署名 |
-| compound_antonyms | 專案 curated | 專案內容 |
-
-**可選來源**（如 Chinese Open Wordnet／COW）見 `data/syn_ant/sources.yaml`；預設關閉，需自行取得 raw 並以 `--source` 啟用。Legacy embedding 路徑：`scripts/legacy/generate_relationships.py --include-embedding`。
+近義／反義預設管線：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。詳表見原 README 上游連結與 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ---
 
 ## 測試
 
-目前 **215** 個 unittest（含 `test_query_parser`、`test_thesaurus_port`、`test_relation_graph` 等）。
+目前 **225** 個 unittest。
 
 ```bash
 python -m unittest discover -s tests -q
-# 或分模組：
-python -m unittest tests.test_word_detail tests.test_query_parser tests.test_query_dispatch tests.test_position_match -v
-python -m unittest tests.test_lexicon_admission tests.test_lexicon_ensure tests.test_thesaurus_port tests.test_rime_lexicon -v
-python -m unittest tests.test_syn_ant_ingest tests.test_relation_graph tests.test_utils -v
 ```
 
-關鍵回歸案例：純漢字 strict code、`門0`／`好23`、wildcard、`mode=syn`、等號／碼夾查詢、粵拼精準查詢。
+關鍵回歸：純漢字 strict code、wildcard、`mode=syn`、等號／碼夾、粵拼、`~~`／`!!` 複合詞。
 
 ---
 
@@ -402,15 +330,15 @@ python -m unittest tests.test_syn_ant_ingest tests.test_relation_graph tests.tes
 
 | 層 | 檔案 | 用途 |
 |----|------|------|
-| Runtime（SQLite） | `requirements.txt` | FastAPI + SQLAlchemy + SQLite 離線查詢 |
-| Ingest / dev | `requirements-dev.txt` | cilin、opencc、ML（`scripts/ingest/import_data`、`scripts/legacy/*` 等） |
-| PostgreSQL（凍結） | `requirements-postgres.txt` | `psycopg2-binary`、`alembic`；實驗用，非產品承諾 |
+| Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
+| Ingest / dev | `requirements-dev.txt` | ingest 與 legacy 腳本 |
+| PostgreSQL（凍結） | `requirements-postgres.txt` | 實驗用 |
 
 ---
 
 ## 致謝
 
-本專案在作者幾乎零程式背景的起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 擔任 code consultant：在設計與實作上給予大量指導，並提出許多寶貴的修改建議。沒有這些協助，**Canto-0243** 不會走到今天。
+本專案在作者幾乎零程式背景的起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 擔任 code consultant：在設計與實作上給予大量指導，並提出許多寶貴嘅修改建議。冇有呢些協助，**Canto-0243** 唔會走到今天。
 
 ---
 
@@ -418,13 +346,13 @@ python -m unittest tests.test_syn_ant_ingest tests.test_relation_graph tests.tes
 
 | 文件 | 內容 |
 |------|------|
-| [`LICENSE`](LICENSE) | Canto-0243 License（程式碼） |
+| [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |
-| [`CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR 指南 · 源碼根目錄約定 |
-| [`CONTEXT.md`](CONTEXT.md) | 領域詞彙表（查詢語法、詞庫、排序、產品邊界） |
-| [`WORKLOG.md`](WORKLOG.md) | 變更紀錄與效能驗證 |
+| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR · 源碼根目錄約定 |
+| [`CONTEXT.md`](CONTEXT.md) | 領域詞彙表 |
+| [`WORKLOG.md`](WORKLOG.md) | 變更紀錄 |
 | [`AGENTS.md`](AGENTS.md) | Agent 協作指引 |
 
 ---
 
-**最後更新**：2026-06-13（根目錄整理 · CONTRIBUTING 移至 docs）
+**最後更新**：2026-06-13（README 結構對齊創作者導向快速開始 · v1.0.2-data）
