@@ -2,14 +2,7 @@ import unittest
 import tempfile
 from pathlib import Path
 
-from app.thesaurus.static_index import (
-    get_antonyms,
-    get_cilin_synonyms,
-    get_synonyms,
-    load_antonym_dict,
-    load_cilin_index,
-    load_thesaurus_dicts,
-)
+from app.domain.thesaurus.port import StaticThesaurusPort
 from app.utils.jyutping_codec import get_0243_code, get_code_variants, split_jyutping
 
 
@@ -51,22 +44,25 @@ class UtilsTests(unittest.TestCase):
             syn = root / "syn.txt"
             ant = root / "ant.txt"
 
-            cilin.write_text("Aa01A01 開心 快樂 高興\n", encoding="utf-8")
+            cilin.write_text("Aa01A01= 開心 快樂 高興\n", encoding="utf-8")
             antisem.write_text("開心:難過;悲傷\n", encoding="utf-8")
             syn.write_text("Bb01= 愉快 欣喜\n", encoding="utf-8")
             ant.write_text("前——後\n", encoding="utf-8")
 
-            load_cilin_index(str(cilin))
-            load_antonym_dict(str(antisem))
-            load_thesaurus_dicts(str(syn), str(ant))
+            port = StaticThesaurusPort(
+                cilin_path=str(cilin),
+                antisem_path=str(antisem),
+                thesaurus_syn_path=str(syn),
+                thesaurus_ant_path=str(ant),
+            )
 
-            self.assertIn("快樂", get_synonyms("開心"))
-            self.assertIn("開心", get_synonyms("快樂"))
-            self.assertIn("欣喜", get_synonyms("愉快"))
-            self.assertIn("悲傷", get_antonyms("開心"))
-            self.assertIn("開心", get_antonyms("悲傷"))
-            self.assertIn("後", get_antonyms("前"))
-            self.assertIn("前", get_antonyms("後"))
+            self.assertIn("快樂", port.get_synonyms("開心"))
+            self.assertIn("開心", port.get_synonyms("快樂"))
+            self.assertIn("欣喜", port.get_synonyms("愉快"))
+            self.assertIn("悲傷", port.get_antonyms("開心"))
+            self.assertIn("開心", port.get_antonyms("悲傷"))
+            self.assertIn("後", port.get_antonyms("前"))
+            self.assertIn("前", port.get_antonyms("後"))
 
     def test_bundled_cilin_file_traditional_and_loadable(self):
         path = Path(__file__).resolve().parents[1] / "data" / "cilin" / "new_cilin.txt"
@@ -77,8 +73,8 @@ class UtilsTests(unittest.TestCase):
         self.assertIn("快樂", content)
         self.assertNotIn("旧历", content)
 
-        load_cilin_index(str(path))
-        syns = get_cilin_synonyms("快樂")
+        port = StaticThesaurusPort(cilin_path=str(path))
+        syns = port.get_cilin_synonyms("快樂")
         self.assertGreater(len(syns), 5)
         self.assertIn("開心", syns)
 

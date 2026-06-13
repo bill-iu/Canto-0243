@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.pool import build_pool
 from app.repositories.word_relation_repo import load_db_char_set
-from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 
 class IngestBridgePoolContext:

@@ -144,36 +144,26 @@ def parse_relation_pairs(path: Path, source: str, source_rank: int = 60) -> List
 
 
 def parse_current_static(src: Dict[str, Any]) -> List[dict]:
-    """Emit edges from bundled static thesaurus via static_index loaders."""
-    from app.thesaurus.static_index import (
-        get_cilin_synonyms,
-        get_internal_dicts,
-        load_antonym_dict,
-        load_cilin_index,
-        load_thesaurus_dicts,
-    )
+    """Emit edges from bundled static thesaurus via 靜態詞林埠."""
+    from app.domain.thesaurus.port import StaticThesaurusPort
 
     paths = src.get("paths") or {}
     rank = int(src.get("source_rank") or 70)
-    if paths.get("cilin"):
-        load_cilin_index(str(ROOT / paths["cilin"]))
-    if paths.get("antisem"):
-        load_antonym_dict(str(ROOT / paths["antisem"]))
-    if paths.get("thesaurus_syn") or paths.get("thesaurus_ant"):
-        load_thesaurus_dicts(
-            str(ROOT / paths.get("thesaurus_syn", "data/thesaurus/dict_synonym.txt")),
-            str(ROOT / paths.get("thesaurus_ant", "data/thesaurus/dict_antonym.txt")),
-        )
+    port = StaticThesaurusPort(
+        cilin_path=str(ROOT / paths["cilin"]) if paths.get("cilin") else None,
+        antisem_path=str(ROOT / paths["antisem"]) if paths.get("antisem") else None,
+        thesaurus_syn_path=str(ROOT / paths["thesaurus_syn"]) if paths.get("thesaurus_syn") else None,
+        thesaurus_ant_path=str(ROOT / paths["thesaurus_ant"]) if paths.get("thesaurus_ant") else None,
+        auto_load=True,
+    )
 
-    _cilin_syns, _syn_dict, _ant_dict = get_internal_dicts()
     edges: List[dict] = []
-    seen_words = set(_cilin_syns.keys()) | set(_syn_dict.keys()) | set(_ant_dict.keys())
-    for w in seen_words:
-        for s in get_cilin_synonyms(w):
+    for w in port.iter_literal_heads():
+        for s in port.get_cilin_synonyms(w):
             edges.append(_edge(w, s, "syn", "cilin", source_rank=rank, confidence=0.85))
-        for s in _syn_dict.get(w, []):
+        for s in port.get_guotong_synonyms(w):
             edges.append(_edge(w, s, "syn", "guotong", source_rank=rank, confidence=0.8))
-        for a in _ant_dict.get(w, []):
+        for a in port.get_antonyms(w):
             edges.append(_edge(w, a, "ant", "antisem", source_rank=rank, confidence=0.85))
     return edges
 

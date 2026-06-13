@@ -26,9 +26,13 @@ def iter_antonym_edges() -> Iterator[Tuple[str, str]]:
             yield ch, ant
 
 
-def get_internal_dicts():
-    """Backward-compat for ingest paths that read module-level dicts."""
-    return _cilin_syns, _syn_dict, _ant_dict
+def iter_literal_heads() -> Iterator[str]:
+    seen = set(_cilin_syns.keys()) | set(_syn_dict.keys()) | set(_ant_dict.keys())
+    return iter(sorted(seen))
+
+
+def get_guotong_synonyms(word: str) -> List[str]:
+    return _syn_dict.get(word, []) if word else []
 
 
 def load_cilin_index(path: str = "data/cilin/new_cilin.txt") -> None:

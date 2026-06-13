@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 if TYPE_CHECKING:
     from app.services.query_parse import RelationLookupQuery
 from app.domain.relations.pool import build_pool
-from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import serialize_page

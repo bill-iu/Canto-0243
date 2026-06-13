@@ -3,7 +3,7 @@ from __future__ import annotations
 from sqlalchemy.orm import Session
 
 from app.domain.relations.graph import CharRelationGraph
-from app.services.thesaurus_port import default_thesaurus_port
+from app.domain.thesaurus.port import default_thesaurus_port
 
 
 def one_hop_syn_neighbors(

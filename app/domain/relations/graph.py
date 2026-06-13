@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, aliased
 
 from app.models.word import Word, WordRelation
 from app.repositories.word_relation_repo import load_db_char_set
-from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
 

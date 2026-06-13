@@ -5,7 +5,7 @@ from typing import Optional, Set, Tuple
 from sqlalchemy.orm import Session, aliased
 
 from app.models.word import Word, WordRelation
-from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 
 def _static_char_ant_pairs(thesaurus: ThesaurusPort) -> Set[Tuple[str, str]]:

@@ -475,7 +475,7 @@ def collect_ant_mirror_char_pairs(
 ) -> Set[Tuple[str, str]]:
     """Char pairs (head, tail) matching runtime ``!head`` expansion: ant endpoints + their syns."""
     from app.domain.relations.graph import CharRelationGraph
-    from app.services.thesaurus_port import default_thesaurus_port
+    from app.domain.thesaurus.port import default_thesaurus_port
 
     graph = CharRelationGraph(db, default_thesaurus_port())
     return graph.collect_mirror_ant_pairs(
@@ -511,7 +511,7 @@ def expand_antonyms_via_syn_endpoints(
 
     char_to_id = get_char_to_primary_id(db)
     from app.domain.relations.graph import CharRelationGraph
-    from app.services.thesaurus_port import default_thesaurus_port
+    from app.domain.thesaurus.port import default_thesaurus_port
 
     graph = CharRelationGraph(db, default_thesaurus_port())
     seeds = graph.direct_ant_oriented_pairs(exclude_sources={source})

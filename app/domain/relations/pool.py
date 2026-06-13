@@ -22,7 +22,7 @@ from app.domain.relations.ranking import (
 )
 from app.models.word import Word
 from app.repositories.word_relation_repo import chars_present_in_db, fetch_bidirectional_relations
-from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 DEFAULT_PAGE_SIZE = 160
 
