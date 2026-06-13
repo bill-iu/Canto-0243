@@ -164,6 +164,26 @@
       background: rgba(255, 255, 255, 0.72);
     }
 
+    a.ghost-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--ink);
+      line-height: 1.2;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+
+    a.ghost-button:visited {
+      color: var(--ink);
+    }
+
+    a.ghost-button:hover,
+    a.ghost-button:active {
+      text-decoration: none;
+    }
+
     .menu-trigger {
       display: inline-flex;
       align-items: center;
@@ -184,20 +204,24 @@
     }
 
     .ghost-button:hover,
+    a.ghost-button:hover,
     .menu-trigger:hover,
     .load-more:hover,
     .result-item:hover,
-    .mode-option:hover {
+    .mode-option:hover,
+    a.mode-option:hover {
       border-color: var(--accent);
       color: var(--accent-strong);
       box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
     }
 
     .ghost-button:active,
+    a.ghost-button:active,
     .menu-trigger:active,
     .load-more:active,
     .result-item:active,
     .mode-option:active,
+    a.mode-option:active,
     .primary-button:active {
       transform: translateY(1px);
     }
@@ -249,6 +273,19 @@
       padding: 10px 12px;
       border-radius: 14px;
       text-align: left;
+    }
+
+    a.mode-option {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a.mode-option:visited {
+      color: inherit;
+    }
+
+    a.mode-option:hover {
+      text-decoration: none;
     }
 
     .mode-option[aria-checked="true"] {
@@ -799,6 +836,7 @@
           <span class="menu-chevron" aria-hidden="true">▾</span>
         </button>
         <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
+        <a class="ghost-button guide-top-link" href="relation-entry.html" id="relationTopLink">補關係</a>
 
         <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
           <div class="menu-group" role="group" aria-label="搜尋模式">
@@ -825,8 +863,8 @@
               <span class="mode-key">~ / !</span>
             </button>
           </div>
-          <div class="menu-group" role="group" aria-label="教學">
-            <p class="menu-label">Guide</p>
+          <div class="menu-group" role="group" aria-label="工具">
+            <p class="menu-label">Tools</p>
             <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
               <span>
                 <span class="mode-name">搜尋教學</span>
@@ -834,6 +872,13 @@
               </span>
               <span class="mode-key">?</span>
             </button>
+            <a class="mode-option" id="relationMenuLink" href="relation-entry.html" role="menuitem">
+              <span>
+                <span class="mode-name">補關係</span>
+                <span class="mode-help">為已收錄字面補近義或反義</span>
+              </span>
+              <span class="mode-key">+</span>
+            </a>
           </div>
         </div>
       </nav>

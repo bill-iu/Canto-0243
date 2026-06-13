@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.database import Base, engine, IS_POSTGRES
+from app.routers.relation import router as relation_router
 from app.routers.word import router
 
 # 輕量 lifespan：確保 schema（例如 length 欄位），但不啟動重型 backfill。
@@ -37,6 +38,7 @@ app.add_middleware(
 
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 app.include_router(router)
+app.include_router(relation_router)
 
 
 @app.get("/")

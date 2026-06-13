@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#F7F5EF">
+  <title>關係補錄 · 0243 押韻字典</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #F7F5EF;
+      --panel: #FFFFFF;
+      --ink: #161716;
+      --muted: #6F746D;
+      --line: #DDD8CC;
+      --accent: #8A5A20;
+      --accent-strong: #5F3E16;
+      --danger: #A23B2A;
+      --shadow: 0 18px 44px rgba(22, 23, 22, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    button, input, select {
+      font: inherit;
+      touch-action: manipulation;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      background: rgba(247, 245, 239, 0.94);
+      border-bottom: 1px solid var(--line);
+      padding: calc(10px + env(safe-area-inset-top)) 18px 10px;
+    }
+
+    .app-bar {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+      font-size: 27px;
+      color: var(--accent);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .ghost-button,
+    .primary-button {
+      min-height: 40px;
+      padding: 9px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      cursor: pointer;
+    }
+
+    .ghost-button {
+      color: inherit;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .ghost-button:visited {
+      color: inherit;
+    }
+
+    .ghost-button:hover,
+    .primary-button:hover {
+      border-color: var(--accent);
+      color: var(--accent-strong);
+      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
+    }
+
+    .ghost-button:active,
+    .primary-button:active {
+      transform: translateY(1px);
+    }
+
+    .primary-button {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      font-weight: 650;
+    }
+
+    .primary-button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .main-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 18px 80px;
+    }
+
+    h1 {
+      margin: 0;
+      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
+      font-size: clamp(28px, 5vw, 40px);
+      line-height: 1.1;
+    }
+
+    .lede {
+      margin: 14px 0 0;
+      color: var(--muted);
+    }
+
+    .form-card {
+      margin-top: 28px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 450;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    input:focus-visible,
+    select:focus-visible,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .relation-type {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .relation-type label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .relation-type input {
+      accent-color: var(--accent);
+    }
+
+    .relation-type label:has(:checked) {
+      border-color: rgba(138, 90, 32, 0.48);
+      background: #F4EFE5;
+      color: var(--accent-strong);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .status {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+    }
+
+    .status[hidden] { display: none !important; }
+
+    .status.ok {
+      border: 1px solid rgba(138, 90, 32, 0.35);
+      background: #F4EFE5;
+      color: var(--accent-strong);
+    }
+
+    .status.err {
+      border: 1px solid rgba(162, 59, 42, 0.35);
+      background: #FCECEA;
+      color: var(--danger);
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-bar">
+      <a class="brand-link" href="index.html">
+        <span class="brand-mark" aria-hidden="true">韻</span>
+        <span class="brand-title">0243 押韻字典</span>
+      </a>
+      <a class="ghost-button" href="index.html">返回查韻</a>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    <h1>關係補錄</h1>
+    <p class="lede">為已收錄字面補近義或反義關係。種子字面為擴展起點；對端字面提供一跳鄰居來源。</p>
+
+    <form class="form-card" id="relationForm">
+      <div class="field">
+        <label for="seedChar">種子字面</label>
+        <span class="hint">擴展從此字面出發（例如要補「快樂」的關係時填快樂）</span>
+        <input type="text" id="seedChar" name="seed_char" required autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="field">
+        <label for="oppositeChar">對端字面</label>
+        <span class="hint">與種子建立 direct 關係的另一字面</span>
+        <input type="text" id="oppositeChar" name="opposite_char" required autocomplete="off" spellcheck="false">
+      </div>
+
+      <div class="field">
+        <span id="relationTypeLabel">關係類型</span>
+        <div class="relation-type" role="radiogroup" aria-labelledby="relationTypeLabel">
+          <label><input type="radio" name="relation_type" value="syn" checked> 近義</label>
+          <label><input type="radio" name="relation_type" value="ant"> 反義</label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary-button" id="submitBtn" type="submit">補上關係</button>
+      </div>
+
+      <div class="status ok" id="okStatus" hidden role="status"></div>
+      <div class="status err" id="errStatus" hidden role="alert"></div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("relationForm");
+    const okStatus = document.getElementById("okStatus");
+    const errStatus = document.getElementById("errStatus");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function showOk(text) {
+      okStatus.textContent = text;
+      okStatus.hidden = false;
+      errStatus.hidden = true;
+    }
+
+    function showErr(text) {
+      errStatus.textContent = text;
+      errStatus.hidden = false;
+      okStatus.hidden = true;
+    }
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      okStatus.hidden = true;
+      errStatus.hidden = true;
+      submitBtn.disabled = true;
+
+      const data = new FormData(form);
+      const payload = {
+        seed_char: String(data.get("seed_char") || "").trim(),
+        opposite_char: String(data.get("opposite_char") || "").trim(),
+        relation_type: String(data.get("relation_type") || "syn"),
+      };
+
+      try {
+        const response = await fetch("/relations/manual", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          showErr(body.detail || "提交失敗，請稍後再試。");
+          return;
+        }
+        showOk(body.message || "已補上關係。");
+      } catch (error) {
+        showErr("無法連線後端。請確認伺服器已啟動。");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
