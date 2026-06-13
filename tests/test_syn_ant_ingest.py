@@ -16,12 +16,14 @@ from app.services.syn_ant_service import (
     _sort_ant_pool,
     _final_score,
 )
+from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
 from ingest.syn_ant_merge import (
     build_word_relations_from_staging,
     ingest_cilin_leaf_direct,
     persist_staging_edges,
     expand_antonyms_via_cilin_synonyms,
+    expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
     collect_ant_mirror_char_pairs,
 )
@@ -380,6 +382,206 @@ class AntCilinExpansionTests(unittest.TestCase):
             self.assertEqual(stats2["inserted"], 0)
 
 
+class AntSynBridgeExpansionTests(unittest.TestCase):
+    def _seed_db(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        return Session
+
+    def test_expand_antonyms_via_embedding_syn_bridge(self):
+        from unittest.mock import MagicMock, patch
+
+        Session = self._seed_db()
+        vectors = {
+            "快樂": [1.0, 0.0],
+            "開心": [0.99, 0.01],
+            "悲傷": [0.0, 1.0],
+        }
+
+        def fake_encode(chars, model):
+            return {c: vectors[c] for c in chars if c in vectors}
+
+        with patch("ingest.syn_ant_merge._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_merge._encode_char_batch", side_effect=fake_encode
+        ):
+            with Session() as db:
+                db.add_all([
+                    Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                    Word(id=2, char="開心", code="22", jyutping="", length=2),
+                    Word(id=4, char="悲傷", code="22", jyutping="", length=2),
+                ])
+                db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=2, related_id=4, relation_type="ant", score=0.9, source="antisem"))
+                db.commit()
+
+                stats = expand_antonyms_via_embedding_syn_bridge(
+                    db, source="ant_syn_bridge", include_static=False
+                )
+                self.assertEqual(stats["targets"], 1)
+                self.assertEqual(stats["bridged"], 1)
+                self.assertEqual(stats["inserted"], 1)
+
+                derived = (
+                    db.query(WordRelation)
+                    .filter(WordRelation.source == "ant_syn_bridge", WordRelation.relation_type == "ant")
+                    .all()
+                )
+                self.assertEqual(len(derived), 1)
+                self.assertEqual((derived[0].word_id, derived[0].related_id), (1, 4))
+                self.assertAlmostEqual(derived[0].score, 0.9999, places=3)
+
+                res = search_syn_ant(db, "快樂", include_static=False)
+                ant_chars = [r["char"] for r in res if r["relation"] == "ant"]
+                self.assertIn("悲傷", ant_chars)
+
+    def test_expand_bridge_offset_limit_and_chunk_insert(self):
+        from unittest.mock import MagicMock, patch
+
+        Session = self._seed_db()
+        vectors = {
+            "甲": [1.0, 0.0],
+            "乙": [0.99, 0.01],
+            "丙": [0.0, 1.0],
+            "丁": [1.0, 0.0],
+            "戊": [0.99, 0.01],
+            "己": [0.0, 1.0],
+        }
+
+        def fake_encode(chars, model):
+            return {c: vectors[c] for c in chars if c in vectors}
+
+        with patch("ingest.syn_ant_merge._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_merge._encode_char_batch", side_effect=fake_encode
+        ):
+            with Session() as db:
+                db.add_all([
+                    Word(id=1, char="甲", code="2", jyutping="", length=1),
+                    Word(id=2, char="乙", code="2", jyutping="", length=1),
+                    Word(id=3, char="丙", code="2", jyutping="", length=1),
+                    Word(id=4, char="丁", code="2", jyutping="", length=1),
+                    Word(id=5, char="戊", code="2", jyutping="", length=1),
+                    Word(id=6, char="己", code="2", jyutping="", length=1),
+                ])
+                db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=2, related_id=3, relation_type="ant", score=0.9, source="antisem"))
+                db.add(WordRelation(word_id=4, related_id=5, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=5, related_id=6, relation_type="ant", score=0.9, source="antisem"))
+                db.commit()
+
+                batch_log: list[tuple[int, int, dict]] = []
+
+                def on_batch(n, total, st, _next_offset=0):
+                    batch_log.append((n, total, dict(st)))
+
+                stats = expand_antonyms_via_embedding_syn_bridge(
+                    db,
+                    source="ant_syn_bridge",
+                    include_static=False,
+                    offset=0,
+                    limit=1,
+                    chunk_size=1,
+                    on_batch=on_batch,
+                )
+                self.assertEqual(stats["total_targets"], 2)
+                self.assertEqual(stats["offset"], 0)
+                self.assertEqual(stats["targets"], 1)
+                self.assertEqual(stats["batches"], 1)
+                self.assertEqual(stats["bridged"], 1)
+                self.assertEqual(stats["inserted"], 1)
+                self.assertEqual(len(batch_log), 1)
+
+                derived = (
+                    db.query(WordRelation)
+                    .filter(WordRelation.source == "ant_syn_bridge", WordRelation.relation_type == "ant")
+                    .all()
+                )
+                self.assertEqual(len(derived), 1)
+                # sorted targets: 丁 before 甲
+                self.assertEqual((derived[0].word_id, derived[0].related_id), (4, 6))
+
+
+class IngestBridgePoolContextTests(unittest.TestCase):
+    def _seed_db(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        return Session
+
+    def _assert_pool_matches_ranker(self, db, query, *, include_static=False, thesaurus=None):
+        pool_ctx = IngestBridgePoolContext(
+            db, include_static=include_static, thesaurus=thesaurus
+        )
+        ranker = RelationRanker(db, thesaurus)
+        ranked = ranker.rank(query, include_static=include_static, quiet=True)
+        for kind in ("syn", "ant"):
+            self.assertEqual(
+                pool_ctx.relation_chars(query, kind),
+                ranked.chars(kind, expand=False),
+                msg=f"{query!r} {kind}",
+            )
+
+    def test_relation_chars_matches_ranker_db_only(self):
+        Session = self._seed_db()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="開心", code="22", jyutping="", length=2),
+                Word(id=3, char="愉快", code="22", jyutping="", length=2),
+                Word(id=4, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=5, char="傷心", code="22", jyutping="", length=2),
+            ])
+            db.add_all([
+                WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.95, source="cilin"),
+                WordRelation(word_id=1, related_id=3, relation_type="syn", score=0.80, source="test"),
+                WordRelation(word_id=2, related_id=4, relation_type="ant", score=0.90, source="antisem"),
+                WordRelation(word_id=2, related_id=5, relation_type="ant", score=0.70, source="ant_syn_bridge"),
+            ])
+            db.commit()
+
+            self._assert_pool_matches_ranker(db, "快樂", include_static=False)
+            self._assert_pool_matches_ranker(db, "開心", include_static=False)
+
+    def test_relation_chars_matches_ranker_with_static_thesaurus(self):
+        from unittest.mock import MagicMock
+
+        thesaurus = MagicMock()
+        thesaurus.get_synonyms.side_effect = lambda q: {
+            "快樂": ["愉快", "高興"],
+            "開心": ["欣喜"],
+        }.get(q, [])
+        thesaurus.get_antonyms.side_effect = lambda q: {
+            "快樂": ["痛苦"],
+            "開心": ["悲傷"],
+        }.get(q, [])
+
+        Session = self._seed_db()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="開心", code="22", jyutping="", length=2),
+                Word(id=3, char="愉快", code="22", jyutping="", length=2),
+                Word(id=4, char="悲傷", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+            db.commit()
+
+            self._assert_pool_matches_ranker(
+                db, "快樂", include_static=True, thesaurus=thesaurus
+            )
+            self._assert_pool_matches_ranker(
+                db, "開心", include_static=True, thesaurus=thesaurus
+            )
+
+    def test_relation_chars_empty_query(self):
+        Session = self._seed_db()
+        with Session() as db:
+            pool_ctx = IngestBridgePoolContext(db, include_static=False)
+            self.assertEqual(pool_ctx.relation_chars("", "syn"), [])
+            self.assertEqual(pool_ctx.relation_chars("   ", "ant"), [])
+            self.assertEqual(pool_ctx.relation_chars("abc", "syn"), [])
+
+
 class RelationRankerTests(unittest.TestCase):
     def test_ranked_pools_chars_syn_without_page(self):
         from unittest.mock import MagicMock
@@ -577,6 +779,33 @@ class CompoundAntIngestTests(unittest.TestCase):
                 .one()
             )
             self.assertEqual((rel.word_id, rel.related_id), (1, 2))
+
+
+class IngestLockTests(unittest.TestCase):
+    def test_stale_lock_removed_when_pid_dead(self):
+        import tempfile
+        from ingest.ingest_lock import acquire_ingest_lock, IngestLockError
+
+        with tempfile.TemporaryDirectory() as tmp:
+            lock_dir = Path(tmp)
+            path = lock_dir / "test.lock"
+            path.write_text("999999\n", encoding="utf-8")
+            acquired = acquire_ingest_lock("test", lock_dir=lock_dir)
+            self.assertEqual(acquired, path)
+            self.assertEqual(acquired.read_text(encoding="utf-8").strip(), str(__import__("os").getpid()))
+
+    def test_live_lock_blocks_second_acquire(self):
+        import tempfile
+        from unittest.mock import patch
+        from ingest.ingest_lock import acquire_ingest_lock, IngestLockError
+
+        with tempfile.TemporaryDirectory() as tmp:
+            lock_dir = Path(tmp)
+            path = lock_dir / "test.lock"
+            path.write_text("888888\n", encoding="utf-8")
+            with patch("ingest.ingest_lock._pid_alive", return_value=True):
+                with self.assertRaises(IngestLockError):
+                    acquire_ingest_lock("test", lock_dir=lock_dir)
 
 
 class CantoneseFixtureTests(unittest.TestCase):

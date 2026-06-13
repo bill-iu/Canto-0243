@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Optional, Set
 
-DERIVED_ANT_SOURCES = frozenset({"ant_syn_mirror", "ant_cilin_exanded"})
+DERIVED_ANT_SOURCES = frozenset({"ant_syn_mirror", "ant_cilin_exanded", "ant_syn_bridge"})
 
 QUERY_SYNONYM_PRIORITY: Dict[str, List[str]] = {
     "快樂": ["開心", "愉快", "高興", "歡樂", "快活", "喜悅", "稱快"],
@@ -19,6 +19,7 @@ SOURCE_BASE_RANK: Dict[str, int] = {
     "antisem": 10,
     "guotong": 15,
     "ant_cilin_exanded": 25,
+    "ant_syn_bridge": 28,
     "cow": 20,
     "current_static": 15,
     "runtime_static": 80,

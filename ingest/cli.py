@@ -12,12 +12,13 @@ if str(REPO_ROOT) not in sys.path:
 
 from app.database import SessionLocal, ensure_syn_ant_edges_table, ensure_word_relations_table
 from app.models.word import SynAntEdge, WordRelation
-from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
+from ingest.ingest_lock import IngestLockError, ingest_lock
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
 from ingest.syn_ant_merge import (
     build_word_relations_from_staging,
     clear_word_relations_source,
     expand_antonyms_via_cilin_synonyms,
+    expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
     get_db_char_set,
     ingest_cilin_leaf_direct,
@@ -180,6 +181,111 @@ def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_expand_antonyms_syn_bridge(args: argparse.Namespace) -> int:
+    try:
+        with ingest_lock("expand-antonyms-syn-bridge"):
+            return _run_expand_antonyms_syn_bridge(args)
+    except IngestLockError as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
+
+
+def _run_expand_antonyms_syn_bridge(args: argparse.Namespace) -> int:
+    from ingest.bridge_pool_context import (
+        clear_bridge_checkpoint,
+        read_bridge_checkpoint,
+        write_bridge_checkpoint,
+    )
+
+    ensure_word_relations_table()
+    source_id = (args.source or "ant_syn_bridge")[:32]
+    offset = max(0, int(args.offset or 0))
+    inserted_cumulative = 0
+
+    if args.fresh:
+        clear_bridge_checkpoint()
+        print("Cleared checkpoint (--fresh)", flush=True)
+    elif offset == 0 and not getattr(args, "no_auto_resume", False):
+        cp = read_bridge_checkpoint()
+        if cp and cp.get("offset", 0) > 0:
+            offset = int(cp["offset"])
+            inserted_cumulative = int(cp.get("inserted_cumulative") or 0)
+            total = cp.get("total_targets", "?")
+            print(
+                f"Resuming from checkpoint offset={offset} "
+                f"(inserted_cumulative={inserted_cumulative}, total_targets={total})",
+                flush=True,
+            )
+
+    def on_progress(processed: int, chunk_stats: dict) -> None:
+        print(
+            f"progress offset={offset + processed} "
+            f"bridged={chunk_stats.get('bridged', 0)} "
+            f"skipped_no_bridge={chunk_stats.get('skipped_no_bridge', 0)}",
+            flush=True,
+        )
+
+    def on_batch(
+        batch_num: int,
+        total_batches: int,
+        chunk_stats: dict,
+        next_offset: int,
+    ) -> None:
+        nonlocal inserted_cumulative
+        batch_inserted = int(chunk_stats.get("inserted") or 0)
+        inserted_cumulative += batch_inserted
+        write_bridge_checkpoint(
+            offset=next_offset,
+            inserted_cumulative=inserted_cumulative,
+            total_targets=chunk_stats.get("total_targets") or 0,
+        )
+        print(
+            f"batch {batch_num}/{total_batches} "
+            f"offset→{next_offset} "
+            f"bridged={chunk_stats.get('bridged', 0)} "
+            f"inserted={batch_inserted} "
+            f"cumulative={inserted_cumulative}",
+            flush=True,
+        )
+
+    with SessionLocal() as db:
+        if args.fresh and args.replace_relations:
+            removed = clear_word_relations_source(db, source_id)
+            print(f"Cleared {removed} existing word_relations with source={source_id!r} (--fresh)")
+        elif args.replace_relations and offset == 0:
+            removed = clear_word_relations_source(db, source_id)
+            print(f"Cleared {removed} existing word_relations with source={source_id!r}")
+        elif offset > 0:
+            print("Skipping clear: resuming from checkpoint", flush=True)
+
+        stats = expand_antonyms_via_embedding_syn_bridge(
+            db,
+            source=source_id,
+            dedupe_existing=args.dedupe_existing,
+            include_static=not args.no_static,
+            batch_size=args.batch_size,
+            embed_batch_size=args.embed_batch_size,
+            offset=offset,
+            limit=args.limit,
+            chunk_size=args.chunk_size,
+            on_batch=on_batch if args.chunk_size else None,
+            on_progress=on_progress if args.progress_interval else None,
+            progress_interval=max(0, int(args.progress_interval or 0)),
+        )
+        if not args.chunk_size:
+            inserted_cumulative += int(stats.get("inserted") or 0)
+        final_offset = offset + int(stats.get("targets") or 0)
+        total_targets = int(stats.get("total_targets") or 0)
+        if total_targets > 0:
+            write_bridge_checkpoint(
+                offset=final_offset,
+                inserted_cumulative=inserted_cumulative,
+                total_targets=total_targets,
+            )
+        print("expand-antonyms-syn-bridge stats:", stats)
+    return 0
+
+
 def cmd_expand_antonyms_mirror(args: argparse.Namespace) -> int:
     ensure_word_relations_table()
     source_id = (args.source or "ant_syn_mirror")[:32]
@@ -289,6 +395,48 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_mirror.set_defaults(replace_relations=True)
 
+    p_bridge = sub.add_parser(
+        "expand-antonyms-syn-bridge",
+        help="Expand antonyms via embedding-selected synonym bridge",
+    )
+    p_bridge.add_argument("--source", default="ant_syn_bridge", help="Source tag for bridged ant relations")
+    p_bridge.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_bridge.add_argument("--embed-batch-size", type=int, default=256, help="Embedding encode batch size")
+    p_bridge.add_argument("--offset", type=int, default=0, help="Skip first N target chars (resume)")
+    p_bridge.add_argument("--limit", type=int, default=None, help="Max target chars from offset (debug/smoke)")
+    p_bridge.add_argument(
+        "--chunk-size",
+        type=int,
+        default=200,
+        help="Process N targets per batch with incremental insert (default 200; 0 = single pass)",
+    )
+    p_bridge.add_argument(
+        "--progress-interval",
+        type=int,
+        default=50,
+        help="Print progress every N targets within a chunk (default 50; 0 = off)",
+    )
+    p_bridge.add_argument(
+        "--fresh",
+        action="store_true",
+        help="Clear checkpoint and restart from offset 0",
+    )
+    p_bridge.add_argument(
+        "--no-auto-resume",
+        action="store_true",
+        help="Do not resume from checkpoint when --offset is 0",
+    )
+    p_bridge.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
+    p_bridge.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_bridge.add_argument("--no-static", dest="no_static", action="store_true", help="Only use DB syn, not static thesaurus")
+    p_bridge.add_argument(
+        "--no-replace-relations",
+        dest="replace_relations",
+        action="store_false",
+        help="Keep existing bridged ant rows (default: clear source first)",
+    )
+    p_bridge.set_defaults(replace_relations=True)
+
     p_compound = sub.add_parser(
         "ingest-compound-ant",
         help="Seed single-char ant pairs from 0243 compound antonym list",
@@ -322,6 +470,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_expand_antonyms_cilin(args)
     if args.command == "expand-antonyms-mirror":
         return cmd_expand_antonyms_mirror(args)
+    if args.command == "expand-antonyms-syn-bridge":
+        return cmd_expand_antonyms_syn_bridge(args)
     if args.command == "ingest-compound-ant":
         return cmd_ingest_compound_ant(args)
     return 1

@@ -189,7 +189,7 @@ class RelationRanker:
         self._db = db
         self._thesaurus = thesaurus or default_thesaurus_port()
 
-    def rank(self, query: str, *, include_static: bool = True) -> RankedPools:
+    def rank(self, query: str, *, include_static: bool = True, quiet: bool = False) -> RankedPools:
         if not query or not re.search(r"[\u4e00-\u9fff]", query):
             return RankedPools(
                 query=query or "",
@@ -218,13 +218,14 @@ class RelationRanker:
             static_syns, static_ants = _load_static_pools(q, self._thesaurus)
         morpheme_chars = _resolve_morpheme_chars(q, static_syns, static_ants, self._thesaurus)
 
-        rel_syn = sum(1 for i in rel_items if i["relation"] == "syn")
-        rel_ant = sum(1 for i in rel_items if i["relation"] == "ant")
-        rel_sem = sum(1 for i in rel_items if i["relation"] == "semantic_related")
-        print(
-            f"[syn] q={q!r} rel_syn={rel_syn} rel_ant={rel_ant} rel_sem={rel_sem} "
-            f"static_syn={len(static_syns)} static_ant={len(static_ants)}"
-        )
+        if not quiet:
+            rel_syn = sum(1 for i in rel_items if i["relation"] == "syn")
+            rel_ant = sum(1 for i in rel_items if i["relation"] == "ant")
+            rel_sem = sum(1 for i in rel_items if i["relation"] == "semantic_related")
+            print(
+                f"[syn] q={q!r} rel_syn={rel_syn} rel_ant={rel_ant} rel_sem={rel_sem} "
+                f"static_syn={len(static_syns)} static_ant={len(static_ants)}"
+            )
 
         def _collect(relation: str, static_words: List[str]) -> List[dict]:
             out: List[dict] = []
