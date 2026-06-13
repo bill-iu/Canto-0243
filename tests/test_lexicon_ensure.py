@@ -5,22 +5,29 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
+from app.domain.lexicon.port import Static0243Lexicon
 from app.lexicon.static_index import LexiconEntry, load_lexicon_from_folder, reset_lexicon_for_tests
 from app.models.word import Word
-from app.services.lexicon_port import Static0243Lexicon
 from app.services.word_ensure_service import ensure_word_in_db
 from app.utils.word_cache import reset_word_cache_for_tests
 
 
 class FakeLexiconPort:
-    def __init__(self, entries_by_char):
-        self._entries = entries_by_char
+    def __init__(self, entries_by_char=None, *, rime_by_char=None, word_by_text=None):
+        if entries_by_char is not None:
+            rime_by_char = {k: v for k, v in entries_by_char.items() if len(k) == 1}
+            word_by_text = {k: v for k, v in entries_by_char.items() if len(k) > 1}
+        self._rime = rime_by_char or {}
+        self._word = word_by_text or {}
 
     def ensure_loaded(self) -> None:
         pass
 
-    def get_entries(self, char: str):
-        return list(self._entries.get(char, []))
+    def get_rime_char_entries(self, char: str):
+        return list(self._rime.get(char, []))
+
+    def get_word_lexicon_entries(self, text: str):
+        return list(self._word.get(text, []))
 
 
 class LexiconEnsureTests(unittest.TestCase):
@@ -35,7 +42,7 @@ class LexiconEnsureTests(unittest.TestCase):
 
     def test_multi_char_lexicon_hit_injects_all_codes(self):
         port = FakeLexiconPort(
-            {
+            word_by_text={
                 "香港": [
                     LexiconEntry(char="香港", jyutping="hoeng1 gong2", code="12"),
                     LexiconEntry(char="香港", jyutping="hoeng1 gong2", code="949"),
@@ -49,7 +56,7 @@ class LexiconEnsureTests(unittest.TestCase):
             self.assertEqual(codes, ["12", "949"])
 
     def test_multi_char_lexicon_miss_does_not_inject(self):
-        port = FakeLexiconPort({})
+        port = FakeLexiconPort()
         with patch(
             "app.domain.lexicon.admission.compose_lexicon_entries_from_rime",
             return_value=[],
@@ -59,7 +66,7 @@ class LexiconEnsureTests(unittest.TestCase):
                 self.assertEqual(rows, [])
 
     def test_single_char_lexicon_miss_does_not_inject(self):
-        port = FakeLexiconPort({})
+        port = FakeLexiconPort()
         with patch("pycantonese.characters_to_jyutping") as mock_pc:
             with self.Session() as db:
                 rows = ensure_word_in_db(db, "你", lexicon=port)
@@ -67,7 +74,9 @@ class LexiconEnsureTests(unittest.TestCase):
                 mock_pc.assert_not_called()
 
     def test_existing_char_skips_injection(self):
-        port = FakeLexiconPort({"香港": [LexiconEntry("香港", "hoeng1 gong2", "12")]})
+        port = FakeLexiconPort(
+            word_by_text={"香港": [LexiconEntry("香港", "hoeng1 gong2", "12")]}
+        )
         with self.Session() as db:
             db.add(Word(char="香港", code="12", jyutping="hoeng1 gong2", length=2))
             db.commit()
@@ -101,7 +110,7 @@ class Static0243LexiconTests(unittest.TestCase):
             count = load_lexicon_from_folder(tmp)
             self.assertEqual(count, 2)
             lex = Static0243Lexicon(auto_load=False, clean_dir=tmp)
-            entries = lex.get_entries("開心")
+            entries = lex.get_word_lexicon_entries("開心")
             self.assertEqual(len(entries), 2)
             self.assertEqual({e.code for e in entries}, {"23", "949"})
 

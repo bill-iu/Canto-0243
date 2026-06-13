@@ -42,14 +42,18 @@ class RimeCharLexiconTests(unittest.TestCase):
 
 
 class FakeLexiconPort:
-    def __init__(self, entries_by_char):
-        self._entries = entries_by_char
+    def __init__(self, *, rime_by_char=None, word_by_text=None):
+        self._rime = rime_by_char or {}
+        self._word = word_by_text or {}
 
     def ensure_loaded(self) -> None:
         pass
 
-    def get_entries(self, char: str):
-        return list(self._entries.get(char, []))
+    def get_rime_char_entries(self, char: str):
+        return list(self._rime.get(char, []))
+
+    def get_word_lexicon_entries(self, text: str):
+        return list(self._word.get(text, []))
 
 
 class SingleCharEnsureRimeTests(unittest.TestCase):
@@ -63,7 +67,9 @@ class SingleCharEnsureRimeTests(unittest.TestCase):
         reset_word_cache_for_tests()
 
     def test_single_char_ensure_uses_lexicon_not_pycantonese(self):
-        port = FakeLexiconPort({"你": [LexiconEntry(char="你", jyutping="nei5", code="4")]})
+        port = FakeLexiconPort(
+            rime_by_char={"你": [LexiconEntry(char="你", jyutping="nei5", code="4")]}
+        )
         with patch("pycantonese.characters_to_jyutping") as mock_pc:
             with self.Session() as db:
                 rows = ensure_word_in_db(db, "你", lexicon=port)
@@ -87,7 +93,7 @@ class CompositeLexiconTests(unittest.TestCase):
 
         from app.lexicon.rime_char_index import load_rime_char_csv
         from app.lexicon.static_index import load_lexicon_from_folder
-        from app.services.lexicon_port import CompositeLexicon
+        from app.domain.lexicon.port import CompositeLexicon
 
         with tempfile.TemporaryDirectory() as tmp:
             clean = Path(tmp) / "clean"
@@ -100,11 +106,11 @@ class CompositeLexiconTests(unittest.TestCase):
             load_lexicon_from_folder(clean)
 
             lex = CompositeLexicon(auto_load=False, clean_dir=clean, rime_char_csv=FIXTURE_CSV)
-            nei = lex.get_entries("你")
+            nei = lex.get_rime_char_entries("你")
             self.assertEqual(len(nei), 1)
             self.assertEqual(nei[0].jyutping, "nei5")
 
-            word = lex.get_entries("開心")
+            word = lex.get_word_lexicon_entries("開心")
             self.assertEqual(len(word), 1)
             self.assertEqual(word[0].code, "23")
 

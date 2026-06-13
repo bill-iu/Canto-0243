@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.domain.lexicon.admission import resolve_admission
 from app.lexicon.static_index import LexiconEntry
 from app.models.word import Word
-from app.services.lexicon_port import LexiconPort, default_lexicon_port
+from app.domain.lexicon.port import LexiconPort, default_lexicon_port
 from app.utils.jyutping_codec import split_jyutping
 from app.utils.word_cache import update_word_in_cache
 

@@ -10,7 +10,7 @@ from app.database import Base
 from app.lexicon.rime_char_index import load_rime_char_csv, reset_rime_char_for_tests
 from app.lexicon.static_index import reset_lexicon_for_tests
 from app.models.word import Word
-from app.services.query_engine import search_words
+from app.services.query_dispatch import search_words
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_lookup_executor import WordLookupExecutor
 from app.utils.jyutping_codec import get_0243_code
@@ -21,14 +21,21 @@ FIXTURE_CSV = Path(__file__).resolve().parent.parent / "data" / "rime" / "fixtur
 
 
 class FakeLexiconPort:
-    def __init__(self, entries_by_char):
-        self._entries = entries_by_char
+    def __init__(self, entries_by_char=None, *, rime_by_char=None, word_by_text=None):
+        if entries_by_char is not None:
+            rime_by_char = {k: v for k, v in entries_by_char.items() if len(k) == 1}
+            word_by_text = {k: v for k, v in entries_by_char.items() if len(k) > 1}
+        self._rime = rime_by_char or {}
+        self._word = word_by_text or {}
 
     def ensure_loaded(self) -> None:
         pass
 
-    def get_entries(self, char: str):
-        return list(self._entries.get(char, []))
+    def get_rime_char_entries(self, char: str):
+        return list(self._rime.get(char, []))
+
+    def get_word_lexicon_entries(self, text: str):
+        return list(self._word.get(text, []))
 
 
 class SyllableReadingTests(unittest.TestCase):

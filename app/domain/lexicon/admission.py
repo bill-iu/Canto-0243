@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional
 
+from app.domain.lexicon.port import LexiconPort, default_lexicon_port
 from app.lexicon.static_index import LexiconEntry
-from app.services.lexicon_port import LexiconPort, default_lexicon_port
 from app.utils.syllable_reading import compose_lexicon_entries_from_rime
 
 
@@ -30,38 +30,20 @@ class AdmissionResult:
         return bool(self.entries)
 
 
-def _composite_literal_entries(text: str) -> tuple[List[LexiconEntry], bool, bool]:
-    from app.lexicon.rime_char_index import get_rime_char_entries
-    from app.lexicon.static_index import get_lexicon_entries
-
+def _entries_for_literal(
+    text: str,
+    lexicon: LexiconPort,
+) -> tuple[List[LexiconEntry], bool, bool]:
     if len(text) == 1:
-        entries = get_rime_char_entries(text)
+        entries = list(lexicon.get_rime_char_entries(text))
         return entries, False, False
-    static_entries = get_lexicon_entries(text)
+
+    static_entries = list(lexicon.get_word_lexicon_entries(text))
     if static_entries:
         return static_entries, True, False
+
     composed = compose_lexicon_entries_from_rime(text)
     return composed, False, bool(composed)
-
-
-def _entries_for_literal(text: str, lexicon: LexiconPort) -> tuple[List[LexiconEntry], bool, bool]:
-    from app.lexicon.static_index import get_lexicon_entries
-    from app.services.lexicon_port import CompositeLexicon, Static0243Lexicon
-
-    if isinstance(lexicon, CompositeLexicon):
-        return _composite_literal_entries(text)
-
-    if isinstance(lexicon, Static0243Lexicon):
-        entries = get_lexicon_entries(text)
-        return entries, bool(entries and len(text) >= 2), False
-
-    entries = list(lexicon.get_entries(text))
-    if entries:
-        return entries, len(text) >= 2, False
-    if len(text) >= 2:
-        composed = compose_lexicon_entries_from_rime(text)
-        return composed, False, bool(composed)
-    return [], False, False
 
 
 def _classify_source(
