@@ -8,7 +8,7 @@ from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.repositories.word_relation_repo import load_db_char_set
+from app.repositories.word_relation_repo import chars_present_in_db
 from app.services.syn_ant_ranking import (
     DERIVED_ANT_SOURCES,
     merge_relation_pools,
@@ -44,6 +44,24 @@ def _syn_result(
         "score": score,
         "in_db": in_db,
     }
+
+
+def _apply_in_db_membership(items: List[dict], present: Set[str]) -> List[dict]:
+    from app.services.syn_ant_ranking import final_score
+
+    out: List[dict] = []
+    for item in items:
+        ch = item.get("char") or ""
+        in_db = ch in present
+        patched = dict(item)
+        patched["in_db"] = in_db
+        patched["_sort"] = final_score(
+            source=patched.get("source"),
+            confidence=patched.get("score"),
+            in_db=in_db,
+        )
+        out.append(patched)
+    return out
 
 
 def _load_static_pools(query: str, thesaurus: ThesaurusPort) -> tuple[List[str], List[str]]:
@@ -204,11 +222,9 @@ class RelationRanker:
         q = query.strip()
         from app.services.syn_ant_service import fetch_relations
 
-        db_char_set = load_db_char_set(self._db)
-
         rel_items: List[dict] = []
         try:
-            rel_items = fetch_relations(self._db, q, db_char_set=db_char_set)
+            rel_items = fetch_relations(self._db, q, db_char_set=set())
         except Exception as exc:
             print(f"[syn] 讀取 word_relations 失敗，將退回 static thesaurus：{exc}")
 
@@ -217,6 +233,16 @@ class RelationRanker:
         if include_static:
             static_syns, static_ants = _load_static_pools(q, self._thesaurus)
         morpheme_chars = _resolve_morpheme_chars(q, static_syns, static_ants, self._thesaurus)
+
+        candidate_chars: Set[str] = set()
+        for item in rel_items:
+            ch = item.get("char")
+            if ch:
+                candidate_chars.add(ch)
+        candidate_chars.update(static_syns)
+        candidate_chars.update(static_ants)
+        present_in_db = chars_present_in_db(self._db, candidate_chars)
+        rel_items = _apply_in_db_membership(rel_items, present_in_db)
 
         if not quiet:
             rel_syn = sum(1 for i in rel_items if i["relation"] == "syn")
@@ -231,7 +257,7 @@ class RelationRanker:
             out: List[dict] = []
             seen: Set[str] = set()
             db_pool = [i for i in rel_items if i["relation"] == relation]
-            static_pool = _static_relation_pool(relation, static_words, db_char_set)
+            static_pool = _static_relation_pool(relation, static_words, present_in_db)
             if relation == "syn":
                 effective_morphemes = morpheme_chars if len(q) >= 2 else set()
                 pool = sort_syn_pool(
