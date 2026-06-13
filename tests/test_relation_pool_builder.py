@@ -1,18 +1,17 @@
-"""Phase A: RelationPoolBuilder — single deep module for 近反義池建構."""
+"""近反義池 — build_pool + PoolSnapshot."""
 
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
+from app.domain.relations.pool import build_pool
 from app.models.word import Word, WordRelation
-from app.services.relation_pool_builder import RelationPoolBuilder
-from app.services.relation_ranker import RelationRanker
 
 
-class RelationPoolBuilderTests(unittest.TestCase):
+class RelationPoolTests(unittest.TestCase):
     def _session(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
@@ -32,31 +31,30 @@ class RelationPoolBuilderTests(unittest.TestCase):
         ])
         db.commit()
 
-    def test_syn_chars_match_relation_ranker(self):
+    def test_build_pool_syn_and_ant_chars(self):
         Session = self._session()
         with Session() as db:
             self._seed_happy_sad(db)
-            builder = RelationPoolBuilder(db)
-            ranked = RelationRanker(db).rank("快樂", include_static=False, quiet=True)
-            built = builder.build("快樂", include_static=False)
+            snapshot = build_pool(db, "快樂", include_static=False, quiet=True)
 
-            self.assertEqual(built.chars("syn"), ranked.chars("syn", expand=False))
-            self.assertEqual(built.chars("ant"), ranked.chars("ant", expand=False))
+            self.assertEqual(snapshot.chars("syn"), ["開心", "愉快"])
+            self.assertEqual(snapshot.chars("ant"), [])
 
     def test_ingest_cached_membership_skips_full_table_scan_per_query(self):
         Session = self._session()
         with Session() as db:
             self._seed_happy_sad(db)
             membership = {"快樂", "開心", "愉快", "悲傷"}
-            builder = RelationPoolBuilder(db, membership=membership)
 
             with patch(
-                "app.services.relation_pool_builder.chars_present_in_db",
+                "app.domain.relations.pool.chars_present_in_db",
                 side_effect=AssertionError("ingest must use cached membership"),
             ):
-                built = builder.build("快樂", include_static=False)
+                snapshot = build_pool(
+                    db, "快樂", include_static=False, membership=membership, quiet=True
+                )
 
-            self.assertEqual(built.chars("syn"), ["開心", "愉快"])
+            self.assertEqual(snapshot.chars("syn"), ["開心", "愉快"])
 
 
 if __name__ == "__main__":

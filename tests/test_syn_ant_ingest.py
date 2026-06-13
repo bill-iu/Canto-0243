@@ -6,15 +6,17 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.models.word import Word, WordRelation, SynAntEdge
-from app.services.relation_ranker import RankedPools, RelationRanker
+from app.domain.relations.pool import PoolSnapshot, build_pool
+from app.domain.relations.ranking import (
+    final_score as _final_score,
+    should_include_synonym as _should_include_synonym,
+    sort_ant_pool as _sort_ant_pool,
+    sort_syn_pool as _sort_syn_pool,
+)
 from app.services.relation_syntax_executor import RelationSyntaxExecutor
-from app.services.syn_ant_service import (
+from app.services.relation_search import (
     search_syn_ant,
     search_relation_chars,
-    _should_include_synonym,
-    _sort_syn_pool,
-    _sort_ant_pool,
-    _final_score,
 )
 from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
@@ -512,12 +514,18 @@ class IngestBridgePoolContextTests(unittest.TestCase):
         pool_ctx = IngestBridgePoolContext(
             db, include_static=include_static, thesaurus=thesaurus
         )
-        ranker = RelationRanker(db, thesaurus)
-        ranked = ranker.rank(query, include_static=include_static, quiet=True)
+        snapshot = build_pool(
+            db,
+            query,
+            include_static=include_static,
+            thesaurus=thesaurus,
+            membership=pool_ctx._membership,
+            quiet=True,
+        )
         for kind in ("syn", "ant"):
             self.assertEqual(
                 pool_ctx.relation_chars(query, kind),
-                ranked.chars(kind, expand=False),
+                snapshot.chars(kind, expand=False),
                 msg=f"{query!r} {kind}",
             )
 
@@ -582,11 +590,11 @@ class IngestBridgePoolContextTests(unittest.TestCase):
             self.assertEqual(pool_ctx.relation_chars("abc", "syn"), [])
 
 
-class RelationRankerTests(unittest.TestCase):
+class PoolSnapshotTests(unittest.TestCase):
     def test_ranked_pools_chars_syn_without_page(self):
         from unittest.mock import MagicMock
 
-        pools = RankedPools(
+        pools = PoolSnapshot(
             query="快樂",
             syns=[
                 {
@@ -598,9 +606,9 @@ class RelationRankerTests(unittest.TestCase):
             ],
             ants=[{"char": "悲傷", "relation": "ant", "source": "test", "result_type": "syn"}],
             semantic=[],
-            db=MagicMock(),
-            thesaurus=MagicMock(),
-            include_static=False,
+            _db=MagicMock(),
+            _thesaurus=MagicMock(),
+            _include_static=False,
         )
         self.assertEqual(pools.chars("syn"), ["開心"])
         self.assertEqual(pools.chars("ant", expand=False), ["悲傷"])
@@ -616,7 +624,7 @@ class RelationRankerTests(unittest.TestCase):
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
             db.commit()
-            ranked = RelationRanker(db).rank("快樂", include_static=False)
+            ranked = build_pool(db, "快樂", include_static=False, quiet=True)
             via_adapter = search_relation_chars(db, "快樂", "syn", include_static=False)
             self.assertEqual(via_adapter, ranked.chars("syn", expand=False))
 
@@ -633,7 +641,7 @@ class RelationSyntaxExecutorTests(unittest.TestCase):
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
             db.commit()
-            from app.services.syn_ant_service import search_syn_ant
+            from app.services.relation_search import search_syn_ant
 
             via_syn_ant = search_syn_ant(db, "快樂")
             via_executor = RelationSyntaxExecutor(db).syn_mode_page("快樂", limit=160, offset=0)

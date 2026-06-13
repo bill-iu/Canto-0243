@@ -13,7 +13,7 @@ from app.services.manual_relation_service import (
     create_creator_manual_relation,
     revoke_creator_manual_relation,
 )
-from app.services.syn_ant_service import search_syn_ant
+from app.services.relation_search import search_syn_ant
 from main import app
 
 

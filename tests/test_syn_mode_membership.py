@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base
 from app.models.word import Word, WordRelation
 from app.repositories.word_relation_repo import chars_present_in_db
-from app.services.relation_ranker import RelationRanker
+from app.domain.relations.pool import build_pool
 from app.services.relation_syntax_executor import RelationSyntaxExecutor
 
 
@@ -64,7 +64,7 @@ class RelationRankerBatchMembershipTests(unittest.TestCase):
                 "app.repositories.word_relation_repo.load_db_char_set",
                 side_effect=AssertionError("must not load full db char set"),
             ):
-                pools = RelationRanker(db).rank("快樂", include_static=False, quiet=True)
+                pools = build_pool(db, "快樂", include_static=False, quiet=True)
 
             by_char = {r["char"]: r for r in pools.syns}
             self.assertTrue(by_char["開心"]["in_db"])

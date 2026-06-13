@@ -467,98 +467,21 @@ def expand_antonyms_via_cilin_synonyms(
 ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
 
 
-def _build_char_syn_adjacency(
-    db: Session,
-    *,
-    include_static: bool = True,
-) -> Dict[str, Set[str]]:
-    """Bidirectional synonym neighbors keyed by char (word_relations syn + optional static)."""
-    from sqlalchemy.orm import aliased
-
-    adj: Dict[str, Set[str]] = {}
-    w1 = aliased(Word)
-    w2 = aliased(Word)
-    for a, b in (
-        db.query(w1.char, w2.char)
-        .join(WordRelation, WordRelation.word_id == w1.id)
-        .join(w2, WordRelation.related_id == w2.id)
-        .filter(WordRelation.relation_type == "syn")
-        .all()
-    ):
-        if not a or not b or a == b:
-            continue
-        adj.setdefault(a, set()).add(b)
-        adj.setdefault(b, set()).add(a)
-
-    if include_static:
-        try:
-            from app.thesaurus.static_index import ensure_thesaurus_loaded, get_synonyms
-
-            ensure_thesaurus_loaded()
-            db_chars = load_db_char_set(db)
-            for ch in db_chars:
-                for syn in get_synonyms(ch):
-                    if not syn or syn == ch or syn not in db_chars:
-                        continue
-                    adj.setdefault(ch, set()).add(syn)
-                    adj.setdefault(syn, set()).add(ch)
-        except Exception:
-            pass
-
-    return adj
-
-
-def _collect_direct_ant_oriented_pairs(
-    db: Session,
-    *,
-    exclude_sources: Optional[Set[str]] = None,
-) -> Set[Tuple[str, str]]:
-    """(head_char, ant_endpoint_char) for each non-mirror ant relation, both orientations."""
-    from sqlalchemy.orm import aliased
-
-    exclude_sources = exclude_sources or set()
-    w1 = aliased(Word)
-    w2 = aliased(Word)
-    q = (
-        db.query(w1.char, w2.char, WordRelation.source)
-        .join(WordRelation, WordRelation.word_id == w1.id)
-        .join(w2, WordRelation.related_id == w2.id)
-        .filter(WordRelation.relation_type == "ant")
-    )
-    oriented: Set[Tuple[str, str]] = set()
-    for a, b, src in q.all():
-        if not a or not b or a == b:
-            continue
-        if src in exclude_sources:
-            continue
-        oriented.add((a, b))
-        oriented.add((b, a))
-    return oriented
-
-
 def collect_ant_mirror_char_pairs(
     db: Session,
     *,
     include_static: bool = True,
     exclude_sources: Optional[Set[str]] = None,
 ) -> Set[Tuple[str, str]]:
-    """Char pairs (head, tail) matching runtime ``!head`` expansion: ant endpoints + their syns.
+    """Char pairs (head, tail) matching runtime ``!head`` expansion: ant endpoints + their syns."""
+    from app.domain.relations.graph import CharRelationGraph
+    from app.services.thesaurus_port import default_thesaurus_port
 
-    Example: if 開心 ant 悲傷 and 悲傷 syn 傷心, yields (開心, 悲傷) and (開心, 傷心).
-    Conceptually ``!開心`` mirrors ``~悲傷`` for the expanded portion.
-    """
-    exclude_sources = exclude_sources or {ANT_SYN_MIRROR_SOURCE}
-    syn_adj = _build_char_syn_adjacency(db, include_static=include_static)
-    seeds = _collect_direct_ant_oriented_pairs(db, exclude_sources=exclude_sources)
-    pairs: Set[Tuple[str, str]] = set()
-    for head, endpoint in seeds:
-        if head == endpoint:
-            continue
-        pairs.add((head, endpoint))
-        for syn_char in syn_adj.get(endpoint, set()):
-            if syn_char and syn_char != head:
-                pairs.add((head, syn_char))
-    return pairs
+    graph = CharRelationGraph(db, default_thesaurus_port())
+    return graph.collect_mirror_ant_pairs(
+        include_static=include_static,
+        exclude_sources=exclude_sources,
+    )
 
 
 def expand_antonyms_via_syn_endpoints(
@@ -587,7 +510,11 @@ def expand_antonyms_via_syn_endpoints(
     }
 
     char_to_id = get_char_to_primary_id(db)
-    seeds = _collect_direct_ant_oriented_pairs(db, exclude_sources={source})
+    from app.domain.relations.graph import CharRelationGraph
+    from app.services.thesaurus_port import default_thesaurus_port
+
+    graph = CharRelationGraph(db, default_thesaurus_port())
+    seeds = graph.direct_ant_oriented_pairs(exclude_sources={source})
     stats["ant_seed_orientations"] = len(seeds)
     if not seeds:
         return stats

@@ -1,4 +1,4 @@
-"""近反義關係查詢 executor：RelationRanker 之後的 Word 列投影。"""
+"""近反義關係查詢 executor：PoolSnapshot 之後的 Word 列投影。"""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
-    from app.services.query_engine import RelationLookupQuery
-from app.services.relation_ranker import RelationRanker
+    from app.services.query_parse import RelationLookupQuery
+from app.domain.relations.pool import build_pool
 from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
@@ -56,7 +56,7 @@ class RelationSyntaxExecutor:
             return []
         q = query.strip()
         ensure_word_in_db(self._db, q)
-        return RelationRanker(self._db, self._thesaurus).rank(q).page(limit, offset)
+        return build_pool(self._db, q, thesaurus=self._thesaurus, quiet=True).page(limit, offset)
 
     def relation_lookup_page(
         self,
@@ -69,7 +69,9 @@ class RelationSyntaxExecutor:
         """~ / ! 近反義關係查詢：ranked chars → Word 列。"""
         ensure_word_in_db(self._db, parsed.word)
         expand = parsed.relation_kind == "ant"
-        ranked_chars = RelationRanker(self._db, self._thesaurus).rank(parsed.word).chars(
+        ranked_chars = build_pool(
+            self._db, parsed.word, thesaurus=self._thesaurus, quiet=True
+        ).chars(
             parsed.relation_kind,
             expand=expand,
         )

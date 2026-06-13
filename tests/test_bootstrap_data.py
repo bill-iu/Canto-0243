@@ -1,4 +1,6 @@
-import subprocess
+import contextlib
+import importlib.util
+import io
 import sys
 import unittest
 from pathlib import Path
@@ -6,17 +8,24 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+def _bootstrap_main():
+    path = REPO_ROOT / "scripts" / "bootstrap_data.py"
+    spec = importlib.util.spec_from_file_location("bootstrap_data", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules["bootstrap_data"] = mod
+    spec.loader.exec_module(mod)
+    return mod.main
+
+
 class BootstrapDataTests(unittest.TestCase):
     def test_dry_run_lists_all_fetch_steps(self):
-        result = subprocess.run(
-            [sys.executable, "scripts/bootstrap_data.py", "--dry-run"],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-        )
-        self.assertEqual(result.returncode, 0, msg=result.stderr or result.stdout)
-        out = result.stdout
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = _bootstrap_main()(["--dry-run"])
+        self.assertEqual(rc, 0)
+        out = buf.getvalue()
         self.assertIn("fetch_rime_data.py", out)
         self.assertIn("fetch_antisem_data.py", out)
         self.assertIn("fetch_guotong_thesaurus.py", out)

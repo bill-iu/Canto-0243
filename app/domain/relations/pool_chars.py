@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from app.services.relation_pool_builder import RelationPoolBuilder
+from app.domain.relations.pool import build_pool
 
 
 def relation_chars_for_seed(
@@ -18,6 +18,4 @@ def relation_chars_for_seed(
     q = (seed_char or "").strip()
     if not q:
         return set()
-    return set(
-        RelationPoolBuilder(db).build(q, include_static=include_static).chars(kind)
-    )
+    return set(build_pool(db, q, include_static=include_static, quiet=True).chars(kind))

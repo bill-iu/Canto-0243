@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
-from app.services.relation_pool_builder import RelationPoolBuilder
+from app.domain.relations.graph import CharRelationGraph
+from app.services.thesaurus_port import default_thesaurus_port
 
 
 def one_hop_syn_neighbors(
@@ -17,5 +18,6 @@ def one_hop_syn_neighbors(
     seed = (seed_char or "").strip()
     if not opposite:
         return set()
-    syns = RelationPoolBuilder(db).build(opposite, include_static=include_static).chars("syn")
+    graph = CharRelationGraph(db, default_thesaurus_port())
+    syns = graph.direct_syn_neighbors(opposite, include_static=include_static)
     return {ch for ch in syns if ch and ch not in {seed, opposite}}
