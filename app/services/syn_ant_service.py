@@ -11,8 +11,7 @@ from app.services.relation_graph import fetch_relation_tuples
 from app.services.relation_ranker import DEFAULT_PAGE_SIZE, RelationRanker
 from app.services.syn_ant_ranking import (
     dedupe_rel_items,
-    final_score,
-    parse_group_codes,
+    normalize_relation_row,
 )
 from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
 
@@ -23,35 +22,6 @@ from app.services.syn_ant_ranking import (  # noqa: E402
     should_include_synonym as _should_include_synonym,
 )
 
-
-def normalize_relation_row(
-    rtype: str,
-    rchar: str,
-    source,
-    score,
-    jyutping,
-    code,
-    group_codes_raw,
-    *,
-    query: str,
-    db_char_set: Set[str],
-) -> dict | None:
-    if not rchar or rchar == query:
-        return None
-    in_db = rchar in db_char_set
-    group_codes = parse_group_codes(group_codes_raw)
-    return {
-        "char": rchar,
-        "relation": rtype,
-        "source": source or "word_relations",
-        "score": score,
-        "in_db": in_db,
-        "jyutping": jyutping or "",
-        "code": code or "",
-        "group_codes": group_codes,
-        "_group_codes": group_codes,
-        "_sort": final_score(source=source, confidence=score, in_db=in_db),
-    }
 
 
 def fetch_relations(

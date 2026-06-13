@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from app.services.query_engine import CompoundAntQuery
 
 from app.services.position_match import CompoundAntCandidateSource, run_position_query
-from ingest.compound_antonyms import load_compound_antonyms
+from app.lexicon.compound_antonyms import load_compound_antonyms
 
 
 class CompoundAntExecutor:

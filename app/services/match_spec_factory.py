@@ -7,14 +7,14 @@ from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from app.services.position_match import MatchSpec
-    from app.services.query_engine import ParsedQuery
+    from app.services.query_parse import ParsedQuery
 
 HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
 
 
 def build_match_spec(parsed: "ParsedQuery") -> Optional["MatchSpec"]:
     """Single interface: normalize any position-type ParsedQuery to MatchSpec."""
-    from app.services.query_engine import (
+    from app.services.query_parse import (
         CodeTailQuery,
         CompoundAntQuery,
         EqualsQuery,

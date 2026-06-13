@@ -703,7 +703,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertNotIn("A片", chars[:2])
 
     def test_pure_digit_exposes_total_count(self):
-        from app.services.query_engine import get_last_search_total
+        from app.services.query_dispatch import SearchContext, execute_search
 
         with self._session() as session:
             session.add_all([
@@ -711,11 +711,16 @@ class SearchSyntaxTests(unittest.TestCase):
                 for i in range(5)
             ])
             session.commit()
-            search_words(q="33", mode="m1", db=session, limit=2, offset=0)
-            self.assertEqual(get_last_search_total(), 5)
-            page2 = search_words(q="33", mode="m1", db=session, limit=2, offset=2)
-            self.assertEqual(len(page2), 2)
-            self.assertEqual(get_last_search_total(), 5)
+            page1 = execute_search(
+                SearchContext(q="33", code=None, char=None, mode="m1", limit=2, offset=0, db=session)
+            )
+            self.assertEqual(page1.total, 5)
+            self.assertEqual(len(page1.items), 2)
+            page2 = execute_search(
+                SearchContext(q="33", code=None, char=None, mode="m1", limit=2, offset=2, db=session)
+            )
+            self.assertEqual(len(page2.items), 2)
+            self.assertEqual(page2.total, 5)
 
     def test_jyutping_fragment_syntax(self):
         with self._session() as session:

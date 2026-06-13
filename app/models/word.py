@@ -110,7 +110,7 @@ Index("idx_word_rel_related_type", WordRelation.related_id, WordRelation.relatio
 @event.listens_for(WordRelation, "before_insert")
 @event.listens_for(WordRelation, "before_update")
 def _canonicalize_word_relation(_mapper, _connection, target: WordRelation) -> None:
-    from ingest.relation_canonical import canonical_word_ids
+    from app.domain.relations.canonical import canonical_word_ids
     w, r = canonical_word_ids(int(target.word_id), int(target.related_id))
     target.word_id = w
     target.related_id = r

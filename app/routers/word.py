@@ -8,7 +8,7 @@ from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.word_db_filters import apply_code_filter
 from app.services.essay_sort import sort_words
-from app.services.query_engine import get_last_search_total, search_words
+from app.services.query_dispatch import SearchContext, execute_search, search_words
 from app.services.word_serializer import deduplicate_words
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -53,11 +53,20 @@ def search_words_endpoint(
             query = query.filter(Word.char == char)
         results = query.all()
         return sort_words(deduplicate_words(results))[offset : offset + limit]
-    results = search_words(q=q, code=code, char=char, mode=mode, limit=limit, offset=offset, db=db)
-    total = get_last_search_total()
-    if total is not None:
-        response.headers["X-Search-Total"] = str(total)
-    return results
+    result = execute_search(
+        SearchContext(
+            q=q,
+            code=code,
+            char=char,
+            mode=mode,
+            limit=limit,
+            offset=offset,
+            db=db,
+        )
+    )
+    if result.total is not None:
+        response.headers["X-Search-Total"] = str(result.total)
+    return result.items
 
 
 @router.get("/{char}", response_model=WordRead)

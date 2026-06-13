@@ -35,10 +35,10 @@ class Static0243Lexicon:
         self._loaded = True
 
     def get_entries(self, char: str) -> List[LexiconEntry]:
-        from app.lexicon.static_index import get_lexicon_entries
+        from app.domain.lexicon.admission import resolve_admission
 
         self.ensure_loaded()
-        return get_lexicon_entries(char)
+        return resolve_admission(char, lexicon=self).entries
 
 
 class CompositeLexicon:
@@ -68,21 +68,10 @@ class CompositeLexicon:
         self._loaded = True
 
     def get_entries(self, char: str) -> List[LexiconEntry]:
-        from app.lexicon.rime_char_index import get_rime_char_entries
-        from app.lexicon.static_index import get_lexicon_entries
+        from app.domain.lexicon.admission import resolve_admission
 
         self.ensure_loaded()
-        text = (char or "").strip()
-        if not text:
-            return []
-        if len(text) == 1:
-            return get_rime_char_entries(text)
-        static_entries = get_lexicon_entries(text)
-        if static_entries:
-            return static_entries
-        from app.utils.syllable_reading import compose_lexicon_entries_from_rime
-
-        return compose_lexicon_entries_from_rime(text)
+        return resolve_admission(char, lexicon=self).entries
 
 
 _default_port = CompositeLexicon(auto_load=False)

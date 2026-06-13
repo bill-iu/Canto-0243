@@ -5,6 +5,7 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
+from app.domain.lexicon.admission import resolve_admission
 from app.lexicon.static_index import LexiconEntry
 from app.models.word import Word
 from app.services.lexicon_port import LexiconPort, default_lexicon_port
@@ -89,11 +90,7 @@ def ensure_word_in_db(
         return []
 
     port = lexicon or default_lexicon_port()
-    entries = port.get_entries(text)
-    if not entries and len(text) >= 2:
-        from app.utils.syllable_reading import compose_lexicon_entries_from_rime
-
-        entries = compose_lexicon_entries_from_rime(text)
-    if not entries:
+    admission = resolve_admission(text, lexicon=port)
+    if not admission.can_inject:
         return []
-    return _inject_lexicon_entries(db, text, entries)
+    return _inject_lexicon_entries(db, text, admission.entries)

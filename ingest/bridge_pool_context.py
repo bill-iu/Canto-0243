@@ -5,12 +5,12 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
 from app.repositories.word_relation_repo import load_db_char_set
-from app.services.syn_ant_ranking import merge_relation_pools, sort_ant_pool, sort_syn_pool
+from app.services.relation_pool_builder import RelationPoolBuilder
 from app.services.thesaurus_port import ThesaurusPort, default_thesaurus_port
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +18,7 @@ DEFAULT_CHECKPOINT_PATH = REPO_ROOT / "data" / "locks" / "expand-antonyms-syn-br
 
 
 class IngestBridgePoolContext:
-    """Cached db_char_set + thesaurus; same syn/ant sources as runtime ~ without per-call rank()."""
+    """Ingest adapter: cached 收錄 membership + RelationPoolBuilder (同源於 近反義模式)."""
 
     def __init__(
         self,
@@ -30,57 +30,17 @@ class IngestBridgePoolContext:
         self.db = db
         self.include_static = include_static
         self.thesaurus = thesaurus or default_thesaurus_port()
-        self.db_char_set: Set[str] = load_db_char_set(db)
+        self._builder = RelationPoolBuilder(
+            db,
+            thesaurus=self.thesaurus,
+            membership=load_db_char_set(db),
+        )
 
     def relation_chars(self, query: str, kind: str) -> List[str]:
-        from app.services.relation_ranker import (
-            _load_static_pools,
-            _resolve_morpheme_chars,
-            _static_relation_pool,
-        )
-        from app.services.syn_ant_service import fetch_relations
-
         q = (query or "").strip()
-        if not q:
+        if not q or kind not in ("syn", "ant"):
             return []
-
-        rel_items = fetch_relations(self.db, q, db_char_set=self.db_char_set)
-        static_syns: List[str] = []
-        static_ants: List[str] = []
-        if self.include_static:
-            static_syns, static_ants = _load_static_pools(q, self.thesaurus)
-
-        morpheme_chars = _resolve_morpheme_chars(q, static_syns, static_ants, self.thesaurus)
-        effective_morphemes = morpheme_chars if len(q) >= 2 else set()
-
-        if kind == "syn":
-            db_pool = [i for i in rel_items if i["relation"] == "syn"]
-            static_pool = _static_relation_pool("syn", static_syns, self.db_char_set)
-            pool = sort_syn_pool(
-                q,
-                list(merge_relation_pools(db_pool, static_pool).values()),
-                effective_morphemes,
-            )
-        elif kind == "ant":
-            db_pool = [i for i in rel_items if i["relation"] == "ant"]
-            static_pool = _static_relation_pool("ant", static_ants, self.db_char_set)
-            pool = sort_ant_pool(
-                q,
-                list(merge_relation_pools(db_pool, static_pool).values()),
-                effective_morphemes,
-            )
-        else:
-            return []
-
-        out: List[str] = []
-        seen: Set[str] = set()
-        for item in pool:
-            ch = item.get("char") or ""
-            if not ch or ch == q or ch in seen:
-                continue
-            seen.add(ch)
-            out.append(ch)
-        return out
+        return self._builder.build(q, include_static=self.include_static).chars(kind)
 
 
 def read_bridge_checkpoint(path: Path | None = None) -> Optional[dict]:

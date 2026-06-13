@@ -2,39 +2,22 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 from typing import Dict, Iterable, List, Set, Tuple
 
 from sqlalchemy.orm import Session
 
-from app.models.word import Word, WordRelation
-from ingest.relation_canonical import canonical_word_ids
-from ingest.syn_ant_merge import (
-    _fetch_existing_keys,
-    _insert_relations,
-    clear_word_relations_source,
-    get_char_to_primary_id,
+from app.domain.relations.canonical import canonical_word_ids
+from app.domain.relations.char_index import get_char_to_primary_id
+from app.domain.relations.store import (
+    fetch_existing_relation_keys as _fetch_existing_keys,
+    insert_relations as _insert_relations,
 )
+from app.lexicon.compound_antonyms import load_compound_antonyms
+from app.models.word import Word, WordRelation
+from ingest.syn_ant_merge import clear_word_relations_source
 
-DEFAULT_PATH = Path(__file__).resolve().parent.parent / "data" / "syn_ant" / "compound_antonyms.txt"
-
-
-def load_compound_antonyms(path: Path | None = None) -> List[str]:
-    """Load deduplicated 2-char compound list (order preserved)."""
-    p = path or DEFAULT_PATH
-    seen: Set[str] = set()
-    out: List[str] = []
-    for line in p.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        for token in line.replace("，", " ").replace(",", " ").split():
-            ch = token.strip()
-            if len(ch) != 2 or ch in seen:
-                continue
-            seen.add(ch)
-            out.append(ch)
-    return out
+# Re-export for ingest callers
+__all__ = ["ingest_compound_ant_char_pairs", "load_compound_antonyms"]
 
 
 def _compound_exists(db: Session, compound: str) -> bool:

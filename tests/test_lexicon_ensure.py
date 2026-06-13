@@ -50,15 +50,13 @@ class LexiconEnsureTests(unittest.TestCase):
 
     def test_multi_char_lexicon_miss_does_not_inject(self):
         port = FakeLexiconPort({})
-        with patch("app.services.word_ensure_service.pycantonese", create=True) as mock_pc:
-            with patch(
-                "app.utils.syllable_reading.compose_lexicon_entries_from_rime",
-                return_value=[],
-            ):
-                with self.Session() as db:
-                    rows = ensure_word_in_db(db, "走你好", lexicon=port)
-                    self.assertEqual(rows, [])
-                    mock_pc.characters_to_jyutping.assert_not_called()
+        with patch(
+            "app.domain.lexicon.admission.compose_lexicon_entries_from_rime",
+            return_value=[],
+        ):
+            with self.Session() as db:
+                rows = ensure_word_in_db(db, "走你好", lexicon=port)
+                self.assertEqual(rows, [])
 
     def test_single_char_lexicon_miss_does_not_inject(self):
         port = FakeLexiconPort({})

@@ -20,11 +20,11 @@ from ingest.syn_ant_merge import (
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
-    get_db_char_set,
     ingest_cilin_leaf_direct,
     persist_staging_edges,
     staging_report,
 )
+from app.repositories.word_relation_repo import load_db_char_set
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.syn_ant_sources import iter_cilin_line_chunks, parse_cilin_lines, parse_sources
 
@@ -59,7 +59,7 @@ def cmd_normalize(args: argparse.Namespace) -> int:
 
     ensure_syn_ant_edges_table()
     with SessionLocal() as db:
-        db_chars = get_db_char_set(db)
+        db_chars = load_db_char_set(db)
         normalized = normalize_edges(raw_edges, db_chars=db_chars, allow_external=args.allow_external)
         merged = merge_staging_edges(normalized)
         print(f"Normalized edges: {len(normalized)} -> merged unique: {len(merged)}")
@@ -131,7 +131,7 @@ def cmd_ingest_cilin(args: argparse.Namespace) -> int:
     batch_num = 0
 
     with SessionLocal() as db:
-        db_chars = get_db_char_set(db)
+        db_chars = load_db_char_set(db)
         db.query(SynAntEdge).filter(SynAntEdge.source == source_id).delete()
         db.commit()
         if args.replace_relations:

@@ -8,10 +8,17 @@ from sqlalchemy.orm import Session
 from sqlalchemy import bindparam, text, tuple_
 
 from ingest.cilin_leaf import groups_to_word_id_pairs, parse_leaf_groups
-from ingest.relation_canonical import (
+from app.domain.relations.canonical import (
     canonical_relation_dict,
     canonical_word_ids,
 )
+from app.domain.relations.char_index import get_char_to_ids, get_char_to_primary_id
+from app.domain.relations.store import (
+    fetch_existing_relation_keys as _fetch_existing_keys,
+    insert_relation_candidates as _insert_bridge_candidates,
+    insert_relations as _insert_relations,
+)
+from app.repositories.word_relation_repo import load_db_char_set
 from app.database import IS_POSTGRES
 from app.models.word import Word, WordRelation, SynAntEdge
 
@@ -39,20 +46,6 @@ def _group_codes_from_staging_evidence(evidence_raw: Optional[str]) -> Optional[
     if isinstance(leaf, str) and leaf:
         return hierarchy_codes_json(leaf)
     return None
-
-
-def get_db_char_set(db: Session) -> Set[str]:
-    rows = db.query(Word.char).distinct().all()
-    return {r[0] for r in rows if r[0]}
-
-
-def get_char_to_ids(db: Session) -> Dict[str, List[int]]:
-    mapping: Dict[str, List[int]] = {}
-    for wid, ch in db.query(Word.id, Word.char).all():
-        if not ch:
-            continue
-        mapping.setdefault(ch, []).append(int(wid))
-    return mapping
 
 
 def persist_staging_edges(
@@ -94,44 +87,6 @@ def persist_staging_edges(
         db.commit()
         count += len(batch)
     return count
-
-
-def _fetch_existing_keys(db: Session, keys: List[Tuple]) -> Set[Tuple]:
-    existing: Set[Tuple] = set()
-    for i in range(0, len(keys), SQL_IN_BATCH):
-        chunk = keys[i:i + SQL_IN_BATCH]
-        rows = (
-            db.query(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type)
-            .filter(tuple_(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type).in_(chunk))
-            .all()
-        )
-        existing.update(rows)
-    return existing
-
-
-def _insert_relations(db: Session, relations: List[WordRelation]) -> int:
-    inserted = 0
-    for i in range(0, len(relations), INSERT_BATCH):
-        batch: list[WordRelation] = []
-        for r in relations[i:i + INSERT_BATCH]:
-            if isinstance(r, WordRelation):
-                d = {
-                    "word_id": r.word_id,
-                    "related_id": r.related_id,
-                    "relation_type": r.relation_type,
-                    "score": r.score,
-                    "source": r.source,
-                    "group_codes": r.group_codes,
-                }
-                if r.id is not None:
-                    d["id"] = r.id
-                batch.append(WordRelation(**canonical_relation_dict(d)))
-            else:
-                batch.append(WordRelation(**canonical_relation_dict(r)))
-        db.add_all(batch)
-        db.commit()
-        inserted += len(batch)
-    return inserted
 
 
 def _build_relations_sql_bulk(
@@ -318,12 +273,6 @@ def build_word_relations_from_staging(
         stats["inserted"] += _insert_relations(db, to_insert)
 
     return stats
-
-
-def get_char_to_primary_id(db: Session) -> Dict[str, int]:
-    """One primary word id per char (minimum id) for relation ingest."""
-    mapping = get_char_to_ids(db)
-    return {ch: min(ids) for ch, ids in mapping.items() if ids}
 
 
 def ingest_cilin_leaf_direct(
@@ -546,7 +495,7 @@ def _build_char_syn_adjacency(
             from app.thesaurus.static_index import ensure_thesaurus_loaded, get_synonyms
 
             ensure_thesaurus_loaded()
-            db_chars = get_db_char_set(db)
+            db_chars = load_db_char_set(db)
             for ch in db_chars:
                 for syn in get_synonyms(ch):
                     if not syn or syn == ch or syn not in db_chars:
@@ -724,37 +673,6 @@ def _merge_bridge_stats(into: dict, chunk: dict) -> None:
             continue
         if isinstance(value, (int, float)):
             into[key] = into.get(key, 0) + value
-
-
-def _insert_bridge_candidates(
-    db: Session,
-    candidates: Dict[Tuple[int, int, str], dict],
-    *,
-    dedupe_existing: bool,
-    batch_size: int,
-) -> Tuple[int, int]:
-    if not candidates:
-        return 0, 0
-    pending = list(candidates.values())
-    skipped_existing = 0
-    if dedupe_existing:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing: Set[Tuple] = set()
-        for i in range(0, len(keys), SQL_IN_BATCH):
-            existing.update(_fetch_existing_keys(db, keys[i : i + SQL_IN_BATCH]))
-        before = len(pending)
-        pending = [
-            c
-            for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        skipped_existing = before - len(pending)
-    inserted = 0
-    if pending:
-        for i in range(0, len(pending), batch_size):
-            chunk = pending[i : i + batch_size]
-            inserted += _insert_relations(db, [WordRelation(**c) for c in chunk])
-    return inserted, skipped_existing
 
 
 def _process_bridge_targets(

@@ -6,13 +6,12 @@ from typing import Dict, Literal, Set, Tuple
 
 from sqlalchemy.orm import Session
 
+from app.domain.relations.canonical import canonical_word_ids
+from app.domain.relations.char_index import get_char_to_primary_id
+from app.domain.relations.pool_chars import relation_chars_for_seed
+from app.domain.relations.store import insert_relation_candidates
+from app.domain.relations.syn_neighbors import one_hop_syn_neighbors
 from app.models.word import Word, WordRelation
-from ingest.relation_canonical import canonical_word_ids
-from ingest.syn_ant_merge import (
-    _build_char_syn_adjacency,
-    _insert_bridge_candidates,
-    get_char_to_primary_id,
-)
 
 MANUAL_SOURCE = "manual"
 MANUAL_SYN_CLUSTER_SOURCE = "manual_syn_cluster"
@@ -85,24 +84,6 @@ def _relation_candidate(
     }
 
 
-def _one_hop_syn_neighbors(
-    db: Session, *, opposite_char: str, seed_char: str
-) -> Set[str]:
-    adj = _build_char_syn_adjacency(db, include_static=True)
-    return {
-        ch
-        for ch in adj.get(opposite_char, set())
-        if ch and ch not in {seed_char, opposite_char}
-    }
-
-
-def _seed_relation_char_set(db: Session, seed_char: str, kind: str) -> Set[str]:
-    from ingest.bridge_pool_context import IngestBridgePoolContext
-
-    ctx = IngestBridgePoolContext(db, include_static=True)
-    return set(ctx.relation_chars(seed_char, kind))
-
-
 def _expand_targets(
     db: Session,
     *,
@@ -111,13 +92,13 @@ def _expand_targets(
     relation_type: RelationType,
 ) -> Set[str]:
     """One-hop neighbors for manual expand, excluding opposite-type conflicts on seed."""
-    neighbors = _one_hop_syn_neighbors(
+    neighbors = one_hop_syn_neighbors(
         db, opposite_char=opposite_char, seed_char=seed_char
     )
     if relation_type == "syn":
-        blocked = _seed_relation_char_set(db, seed_char, "ant")
+        blocked = relation_chars_for_seed(db, seed_char, "ant")
     else:
-        blocked = _seed_relation_char_set(db, seed_char, "syn")
+        blocked = relation_chars_for_seed(db, seed_char, "syn")
     return {ch for ch in neighbors if ch not in blocked}
 
 
@@ -183,14 +164,14 @@ def create_creator_manual_relation(
         if item is not None:
             candidates[item[0]] = item[1]
 
-    direct_inserted, direct_skipped = _insert_bridge_candidates(
+    direct_inserted, _direct_skipped = insert_relation_candidates(
         db, {direct_key: direct_row}, dedupe_existing=True, batch_size=500
     )
     if direct_inserted != 1:
         raise ManualRelationError("already_exists", "此關係已存在")
 
     expand_candidates = {k: v for k, v in candidates.items() if k != direct_key}
-    expand_inserted, expand_skipped = _insert_bridge_candidates(
+    expand_inserted, expand_skipped = insert_relation_candidates(
         db, expand_candidates, dedupe_existing=True, batch_size=500
     )
 
@@ -244,7 +225,7 @@ def prune_conflicting_manual_expansions(
                 continue
 
         if not any(
-            other in _seed_relation_char_set(db, candidate_seed, opposite_kind)
+            other in relation_chars_for_seed(db, candidate_seed, opposite_kind)
             for candidate_seed, other in pairs
         ):
             continue

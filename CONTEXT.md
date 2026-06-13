@@ -84,6 +84,18 @@ _Avoid_：syn、查模式（作為模式名稱）、關係模式
 與查詢詞在語意上有關聯、但非近義亦非反義的詞條（近反義模式第三類結果）。
 _Avoid_：相關詞（不區分類型時）、semantic_related
 
+**近反義池**：
+對一個字面，合併 `word_relations` 與 static thesaurus 後、經排序與去重的近義、反義與語意相關候選集合；**近反義模式**與**近義橋反義** ingest 共用同一建池規則。
+_Avoid_：relation pool（作領域正名）、syn_ant_service（作池名稱）
+
+**收錄決策**：
+對一個字面，**詞庫埠**判定能否注入詞條庫、讀音來自何處（單字 rime、多字詞級標音、或音節拼接讀音）；`ensure_word_in_db` 僅執行注入，不重複收錄規則。
+_Avoid_：admission（作領域正名）、在 ensure 層重複拼接讀音邏輯
+
+**關係寫入**：
+將近義、反義列寫入詞條關係表的領域操作；含 canonical 字面對排序、收錄字面索引、去重插入。Runtime 與 ingest 共用同一寫入規則；ingest 僅作批次 adapter。
+_Avoid_：merge pipeline（作領域正名）、把 ingest 套件當 runtime 依賴
+
 ---
 
 ## 查詢語法
