@@ -948,7 +948,7 @@
           <span class="mode-readout" id="modeReadout">目前模式：0243模式（鬆）</span>
         </div>
         <div class="search-row">
-          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、?=就、香港=…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
           <div class="search-actions">
             <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1006,7 +1006,7 @@
           <strong>打粵拼，精準搵漢字。</strong>無調打「syut」搵單字「雪」；打「nei hou」搵「你好」。有調打「ming4 baak6」搵「明白」嘅準確讀音。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
         </p>
         <p>
-          <strong>近義、反義同複合詞。</strong>打「~開心」搵近義；打「!你」搵反義（含鏡像近義）。可加前綴碼，例如「33!開心」。打「!!」搵二字反義複合（如「生死」、「是非」）；打「~~」搵二字近義複合（如「朋友」、「同伴」）；加尾字如「33!!你」或「~~你」再加同韻限制。
+          <strong>近義、反義同複合詞（0243模式／02493模式）。</strong>打「~開心」搵與「開心」近義的詞；打「!你」搵反義（含鏡像近義）。可加前綴碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>。
         </p>
         <p>
           下面每張卡有<strong>可點擊例子</strong>，撳一下就會回到搜尋頁並自動執行。
@@ -1108,7 +1108,7 @@
 
         <article class="guide-card">
           <h2>近義 / 反義</h2>
-          <p><code translate="no">~</code> 查近義，<code translate="no">!</code> 查反義。</p>
+          <p><code translate="no">~</code> 查與該詞近義的候選；<code translate="no">!</code> 查反義（含鏡像近義）。可加 0243 碼前綴。僅 <strong>0243模式</strong>／<strong>02493模式</strong>；切換<strong>近反義模式</strong>時改打漢字查整欄關係。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="~開心" data-mode="m1"><code translate="no">~開心</code><span>近義於「開心」</span></button>
             <button class="guide-example" type="button" data-query="!你" data-mode="m1"><code translate="no">!你</code><span>反義於「你」（含鏡像近義）</span></button>
@@ -1118,9 +1118,10 @@
 
         <article class="guide-card">
           <h2>近義複合詞</h2>
-          <p><code translate="no">~~</code> 會找二字近義複合詞（curated 列表、同義素掃描、單字合成）；後面接一個字時，會搜尋尾字韻母。</p>
+          <p><code translate="no">~~</code> 找填詞常用的二字<strong>近義複合</strong>：兩字在字級上互為近義（如「朋友」「恐懼」），只回傳詞庫已有的二字詞。可加碼前綴或尾韻字，語法與 <code translate="no">!!</code> 對稱。僅 <strong>0243模式</strong>／<strong>02493模式</strong>。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="~~" data-mode="m1"><code translate="no">~~</code><span>二字近義複合（如朋友、同伴）</span></button>
+            <button class="guide-example" type="button" data-query="~~" data-mode="m1"><code translate="no">~~</code><span>二字近義複合（如朋友、恐懼）</span></button>
+            <button class="guide-example" type="button" data-query="33~~" data-mode="m1"><code translate="no">33~~</code><span>33同音 + 近義複合</span></button>
             <button class="guide-example" type="button" data-query="~~你" data-mode="m1"><code translate="no">~~你</code><span>近義複合，尾字同韻「你」</span></button>
             <button class="guide-example" type="button" data-query="33~~你" data-mode="m1"><code translate="no">33~~你</code><span>33同音 + 近義複合 + 尾韻「你」</span></button>
           </div>
@@ -1128,9 +1129,10 @@
 
         <article class="guide-card">
           <h2>反義複合詞</h2>
-          <p><code translate="no">!!</code> 會找兩個單字互為反義的二字複合詞；後面接一個字時，會搜尋尾字韻母。</p>
+          <p><code translate="no">!!</code> 找兩字互為反義的二字複合詞（如「生死」「是非」）；後面接一個字時，會搜尋尾字韻母。僅 <strong>0243模式</strong>／<strong>02493模式</strong>。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="!!" data-mode="m1"><code translate="no">!!</code><span>二字反義複合（如生死、是非）</span></button>
+            <button class="guide-example" type="button" data-query="33!!" data-mode="m1"><code translate="no">33!!</code><span>33同音 + 反義複合</span></button>
             <button class="guide-example" type="button" data-query="!!你" data-mode="m1"><code translate="no">!!你</code><span>反義複合，尾字同韻「你」</span></button>
             <button class="guide-example" type="button" data-query="33!!你" data-mode="m1"><code translate="no">33!!你</code><span>33同音 + 反義複合 + 尾韻「你」</span></button>
           </div>
