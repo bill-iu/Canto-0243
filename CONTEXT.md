@@ -228,8 +228,12 @@ _Avoid_：把可選自架服務當與離線版並重的一級產品
 離線交付的壓縮包形態，內含詞庫、前端與本機 API；解壓後以啟動腳本進入查韻介面，無需手動建庫。
 _Avoid_：把 zip／tar 當產品正名、把 portable 當雲端版
 
+**Ingest 執行狀態**：
+本機執行 ingest 時產生的 lock 與 checkpoint，僅供該機器防重入或續跑長任務；不納入版控、不隨 Portable 交付。
+_Avoid_：把 checkpoint 當詞庫資料、把 lock 檔 commit 進 repo
+
 **源碼根目錄**（維護者）：
-Clone 後第一層目錄；保留產品入口、`CONTEXT`、變更紀錄（`WORKLOG`）、agent 入口 stub（`AGENTS`）與 agent 鎖定（`skills-lock`）；對外授權與第三方聲明留根目錄；貢獻流程等維護說明收在 `docs/`；開發啟動用 `start.sh` 與 Portable 套件內啟動腳本並存、職責分開。根目錄允許的本機檔僅 `lyrics.db` 與 `.env*`（範例為 `.env.example`）；日誌與 debug 檔不得停留。
+Clone 後第一層目錄；保留產品入口、`CONTEXT`、變更紀錄（`WORKLOG`）、agent 入口 stub（`AGENTS`）與 agent 鎖定（`skills-lock`）；對外授權與第三方聲明留根目錄；貢獻流程等維護說明收在 `docs/`；開發啟動用 `start.sh` 與 Portable 套件內啟動腳本並存、職責分開。根目錄允許的本機檔僅 `lyrics.db` 與 `.env*`（範例為 `.env.example`）；日誌、debug 與 **Ingest 執行狀態** 不得停留或進版控。
 _Avoid_：把根目錄當資料 dump、與 Portable 解壓目錄混淆、把開發啟動腳本與 Portable 啟動腳本混為一體
 
 **Windows 啟動訊息**：

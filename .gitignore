@@ -34,6 +34,7 @@ ingest-*.log
 logs/
 data/raw/
 data/processed/
+data/locks/
 
 # Cursor / Agent 本機安裝（鎖定檔 skills-lock.json 可納入版控）
 .agents/
