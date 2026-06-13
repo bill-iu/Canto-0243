@@ -23,30 +23,17 @@ Canto-0243（離線粵語填詞查韻工具 · ONE·搵·韻）：依 **0243／0
 
 ## 快速開始
 
-### 一般使用者
+### 一般使用者（推薦）
 
-```bash
-pip install -r requirements.txt
-python main.py
-```
+完整離線體驗（詞條搜尋 + 近反義）請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-**隨 repo 已有**（第 1 層，見下方「資料來源」）：rime 單字 `char.csv`、essay 詞頻語料、curated 常用詞、反義複合列表。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（見 `v1.0.0-data` 或最新 data release）。
+2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
+3. **Windows**：雙擊 **`START.bat`**。  
+   **macOS**：建議下載 `canto-0243-portable-macos.tar.gz`（若只有 zip，解壓後雙擊 `START.command` 或執行 `./START.sh`）。  
+   **Linux**：`chmod +x START.sh && ./START.sh`
 
-**可選 fetch**（第 2 層）— 近反義 static thesaurus 與 words.hk manifest：
-
-```bash
-pip install -r requirements-dev.txt    # cilin 匯出需要
-python scripts/bootstrap_data.py       # rime · antisem · guotong · cilin · words.hk manifest
-python main.py
-```
-
-> **完整多字收錄**（詞級標音寫入 `words` 表）需已有 `lyrics.db`，或從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載官方資料包，或走下方 **Maintainer** 管線自建（第 3 層產物，**不**隨 repo、**勿** commit）。
-
-或使用一鍵腳本（會建 venv 並開瀏覽器）：
-
-```bash
-./start.sh
-```
+**需求**：Python 3.10 或以上（已加入 PATH）。首次啟動會自動建立 venv 並安裝依賴；瀏覽器會開啟搜尋頁。
 
 | 入口 | URL |
 |------|-----|
@@ -54,7 +41,20 @@ python main.py
 | API 文件 | http://127.0.0.1:8000/docs |
 | 健康檢查 | http://127.0.0.1:8000/ |
 
-預設使用專案根目錄的 `lyrics.db`（SQLite，gitignore）。自訂設定：複製 `.env.example` 為 `.env.local`（其餘變數見 example 註解）。
+套件內已含 `lyrics.db` 與靜態近反義資料。疑難排解見解壓後資料夾內 `README.txt`。
+
+#### 從 Git clone（進階／開發）
+
+clone 源碼**不**含完整 `lyrics.db`。若要在本機跑 `python main.py`，請先從 Releases 下載 `lyrics.db` 放專案根目錄，或走下方 **Maintainer** 管線自建。
+
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+亦可使用開發用 `./start.sh`（會建 venv 並開瀏覽器；仍須自备 `lyrics.db`）。
+
+**隨 repo 已有**（第 1 層，見下方「資料來源」）：rime 單字 `char.csv`、essay 詞頻語料、curated 常用詞、反義複合列表。近反義 static thesaurus 需 `bootstrap_data.py`（第 2 層）後才有完整 runtime fallback。
 
 ### Maintainer（重建詞條庫與近反義）
 
