@@ -47,17 +47,17 @@ if (Get-Command tar -ErrorAction SilentlyContinue) {
     Push-Location (Join-Path $Root "dist")
     tar -czf $TarPath "canto-0243-portable"
     Pop-Location
+} else {
+    throw "tar not found. Install tar (Windows 10+ includes tar.exe) so macOS bundle is always built."
 }
 
 $zipMb = [math]::Round((Get-Item $ZipPath).Length / 1MB, 1)
+$tarMb = [math]::Round((Get-Item $TarPath).Length / 1MB, 1)
 $dbMb = [math]::Round((Get-Item $DbPath).Length / 1MB, 1)
 Write-Host ""
 Write-Host "Done."
 Write-Host "  Folder: $OutDir"
-Write-Host "  ZIP:    $ZipPath (${zipMb} MB) - Windows / macOS / Linux"
-if (Test-Path $TarPath) {
-    $tarMb = [math]::Round((Get-Item $TarPath).Length / 1MB, 1)
-    Write-Host "  macOS:  $TarPath (${tarMb} MB) - preferred on Mac (chmod preserved)"
-}
+Write-Host "  ZIP:    $ZipPath (${zipMb} MB) - Windows (START.bat)"
+Write-Host "  macOS:  $TarPath (${tarMb} MB) - macOS (START.command / START.sh)"
 Write-Host "  db:     ${dbMb} MB"
-Write-Host "  Windows: START.bat | macOS: START.command or ./START.sh"
+Write-Host "  Upload both portable archives + lyrics.db + words-lexicon.json to GitHub Release."
