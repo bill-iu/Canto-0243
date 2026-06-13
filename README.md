@@ -40,7 +40,7 @@ python scripts/bootstrap_data.py       # rime · antisem · guotong · cilin · 
 python main.py
 ```
 
-> **完整多字收錄**（詞級標音寫入 `words` 表）需已有 `lyrics.db`，或走下方 **Maintainer** 管線（第 3 層產物，**不**隨 repo、**勿** commit）。
+> **完整多字收錄**（詞級標音寫入 `words` 表）需已有 `lyrics.db`，或從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載官方資料包，或走下方 **Maintainer** 管線自建（第 3 層產物，**不**隨 repo、**勿** commit）。
 
 或使用一鍵腳本（會建 venv 並開瀏覽器）：
 
@@ -74,6 +74,23 @@ python -m ingest build-relations
 ```
 
 可選近反義來源（預設關閉，如 COW）見 `data/syn_ant/sources.yaml`；需自行取得 raw 後再以 `--source` 指定。
+
+#### 官方資料 Release（三件套）
+
+再分發前核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**將大檔 commit 入 git。
+
+| 資產 | 用途 |
+|------|------|
+| `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`）；放專案根目錄即可搜尋＋近反義 |
+| `canto-0243-portable.zip` | 離線創作者套件（`scripts/build-portable.sh`） |
+| `words-lexicon.json` | **詞級標音**副件；可餵 `import_data.py` 或 `data/raw/clean/` 以對齊 runtime 收錄門 |
+
+```bash
+# 本地驗證通過後：
+python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+bash scripts/build-portable.sh
+# 上傳 dist/words-lexicon.json、lyrics.db、canto-0243-portable.zip 至 GitHub Release（對應 tag）
+```
 
 ---
 

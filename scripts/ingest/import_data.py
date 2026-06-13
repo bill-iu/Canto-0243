@@ -66,7 +66,6 @@ def import_json_file(json_path: Path, db: Session, existing: Set[Tuple[str, str]
 
 def import_all_in_folder(folder_path: str = "data/raw/clean"):
     """匯入 maintainer 自建詞級標音 JSON 至 words 表（預設目錄 gitignore）。"""
-    """一次匯入整個資料夾的所有 JSON"""
     folder = REPO_ROOT / folder_path
     if not folder.exists():
         print(f"❌ 資料夾不存在: {folder}")
