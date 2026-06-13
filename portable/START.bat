@@ -6,23 +6,23 @@ title Canto-0243
 
 where python >nul 2>&1
 if errorlevel 1 (
-  echo [錯誤] 找不到 Python。請安裝 Python 3.10 或以上並勾選 Add to PATH。
+  echo [ERROR] Python not found. Install Python 3.10+ and check "Add to PATH".
   echo https://www.python.org/downloads/
   pause
   exit /b 1
 )
 
 if not exist "lyrics.db" (
-  echo [錯誤] 找不到 lyrics.db，請確認 portable 套件完整。
+  echo [ERROR] lyrics.db not found. Extract the full portable package.
   pause
   exit /b 1
 )
 
 if not exist "venv\Scripts\python.exe" (
-  echo [初次啟動] 建立虛擬環境並安裝依賴...
+  echo [First run] Creating virtual environment and installing dependencies...
   python -m venv venv
   if errorlevel 1 (
-    echo [錯誤] 無法建立 venv
+    echo [ERROR] Failed to create venv
     pause
     exit /b 1
   )
@@ -30,7 +30,7 @@ if not exist "venv\Scripts\python.exe" (
   python -m pip install --upgrade pip
   pip install -r requirements.txt
   if errorlevel 1 (
-    echo [錯誤] 依賴安裝失敗
+    echo [ERROR] Failed to install dependencies
     pause
     exit /b 1
   )
@@ -48,8 +48,8 @@ set PORT=8000
 :have_port
 
 echo.
-echo 啟動中... 瀏覽器將開啟 http://%HOST%:%PORT%/frontend/index.html
-echo 關閉此視窗或按 Ctrl+C 可停止服務
+echo Starting server... Browser will open http://%HOST%:%PORT%/frontend/index.html
+echo Close this window or press Ctrl+C to stop.
 echo.
 
 start "" "http://%HOST%:%PORT%/frontend/index.html"
