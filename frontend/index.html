@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#F7F5EF">
-  <title>0243 押韻字典</title>
+  <title>Canto-0243</title>
   <style>
     :root {
       color-scheme: light;
@@ -823,10 +823,10 @@
   <header class="app-header">
     <div class="app-bar">
       <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
-        <span class="brand-mark" aria-hidden="true">韻</span>
+        <span class="brand-mark" aria-hidden="true">粵</span>
         <span>
-          <span class="brand-title" id="brandTitle">0243 押韻字典</span>
-          <span class="brand-subtitle">粵語填詞查韻工作台</span>
+          <span class="brand-title" id="brandTitle">Canto-0243</span>
+          <span class="brand-subtitle">ONE·搵·韻</span>
         </span>
       </button>
 
@@ -888,9 +888,9 @@
   <main class="main-wrap" id="mainContent">
     <section class="search-view" id="searchView" aria-labelledby="searchTitle">
       <div class="hero">
-        <p class="eyebrow">Cantonese Lyric Rhyme Workbench</p>
-        <h1 id="searchTitle">粵語填詞查韻工作台</h1>
-        <p>輸入字、詞、韻母、編碼或關係語法。結果可點擊回查，方便在寫詞時快速轉向下一個候選。</p>
+        <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
+        <h1 id="searchTitle">ONE·搵·韻</h1>
+        <p>格律/協音/押韻/近反義，一秒搵到。</p>
       </div>
 
       <form class="search-panel" id="searchForm" role="search">
@@ -1060,7 +1060,7 @@
 
       const title = document.createElement("h1");
       title.id = "fileFallbackTitle";
-      title.textContent = "0243 押韻字典";
+      title.textContent = "Canto-0243";
 
       const copy = document.createElement("p");
       copy.textContent = "你直接開啟了 index.html。此工具需要後端伺服器支援，請先啟動本地服務。";
@@ -1084,7 +1084,7 @@
       throw new Error("Direct file open - showing instruction only");
     }
 
-    const APP_TITLE_BASE = "0243 押韻字典";
+    const APP_TITLE_BASE = "Canto-0243";
     const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
     const MODE_META = {
