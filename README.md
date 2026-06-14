@@ -336,9 +336,41 @@ python -m unittest discover -s tests -q
 
 ---
 
-## 致謝
+## Canto-0243 授權與使用
+
+你可以將本工具用於任何合法用途，包括協助粵語填詞、查韻、換字，以及作為**商業創作**（例如歌曲、劇本、已發表歌詞）嘅一部分——前提係遵守下方限制同 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**非 OSI 開源**）。
+
+* **唔可以**將本工具重新打包、轉售，或作為競爭性產品單獨發布。
+* **唔可以**將本工具提供為**付費 API**、訂閱或按量計費嘅查詢／推理服務（免費自架或免費公開存取另論，但仍須遵守署名等條款）。
+* 任何公開發布嘅 fork、改進或衍生版本須**沿用同一授權**（或實質等同條款），並在合理顯眼位置保留 **Canto-0243** 名稱。若你營運公開網站、網頁 app 或 API（包括免費），須顯示例如「Powered by Canto-0243」並連結官方 repo。
+* 若你營運**商業軟件**或**付費推理服務**，希望將本工具整合入產品，請先與版權人聯絡或於官方 repo 開 Issue 商議書面授權。
+
+除上述條款外，本授權在實務上等同 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 加上附加限制。完整法律文本見 [`LICENSE`](LICENSE)。
+
+請在任何未來 fork 或發布中保留 **Canto-0243** 名稱。
+
+---
+
+## 致謝與第三方授權
+
+### 專案致謝
 
 本專案喺作者幾乎零程式背景嘅起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 擔任 code consultant：喺設計同實行上俾咗好多意見同指導，並且提出許多寶貴嘅修改建議。冇呢啲協助，**Canto-0243** 唔會出現。
+
+亦要多謝 **「0243理論」發明人黃志華老師**，奠定粵語填詞數碼化嘅理論基礎。多謝 [0243.hk](https://0243.hk) 開發者 **Daniel Tam** 先生開發呢個網站，解決咗好多人嘅填詞問題，並啟發作者開發本工具。
+
+### 資料與語料致謝
+
+Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感謝以下團隊與專案（再分發前請閱讀各上游完整條款；授權總表見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)）：
+
+* **Rime 粵語（單字讀音 `char.csv`、essay 詞頻）**：來自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 與 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。去畀佢哋一個 star！
+* **詞林同義詞（Cilin）**：經 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 匯出，採用 **MIT** 授權。
+* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)，採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
+* **ChineseAntiword（antisem）**：來自 [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword)；上游**無明示授權**，本地使用須署名，再分發前請自行核對條款。
+* **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有領域**（致謝 [words.hk](https://words.hk/)）。
+* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[CC-Canto](https://cantonese.org/download.html)（[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）。
+
+使用上述資料建構或再分發詞庫時，你同意遵守各自授權；部分來源含**非商業**或**署名**要求。可選近反義來源（如 COW）預設關閉，見 `data/syn_ant/sources.yaml`。
 
 ---
 
@@ -355,4 +387,4 @@ python -m unittest discover -s tests -q
 
 ---
 
-**最後更新**：2026-06-13（README 結構對齊創作者導向快速開始 · v1.0.2-data）
+**最後更新**：2026-06-13（README 授權與第三方致謝 · v1.0.2-data）
