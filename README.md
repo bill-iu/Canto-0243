@@ -12,7 +12,7 @@
 
 ## 最新版本
 
-官方離線資料包：**[v1.0.2-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.2-data)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方離線資料包：**[Official data bundle v1.0.0-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -33,7 +33,7 @@
 
 完整離線體驗請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`v1.0.2-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.2-data) 或最新 data release）。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Official data bundle v1.0.0-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
    * **Windows**：雙擊 **`START.bat`**。
@@ -387,4 +387,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-06-13（README 授權與第三方致謝 · v1.0.2-data）
+**最後更新**：2026-06-15（Open Design UI · Official data bundle v1.0.0-data）
