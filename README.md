@@ -1,7 +1,7 @@
 # Canto-0243
 
 <p align="center">
-  <b>繁體中文</b> · <a href="README.en.md">English</a>
+  <b>繁體中文</b> · <a href="README.zh-Hans.md">简体中文</a> · <a href="README.en.md">English</a>
 </p>
 
 填粵語歌詞，通常一係就「唔知有咩字」，一係就要喺**同音、押韻、近義**之間快速換字，又要對準 0243 與粵拼讀音。傳統做法係在詞典、韻書、近義表之間搵嚟搵去，手動試「呢個位可唔可以換另一個字」——慢，而且容易漏咗好多可以用嘅字。[0243.hk](https://0243.hk) 已經算係近年最好用嘅粵語填詞查找網站，但係偶爾都會 502 Bad Gateway 上唔到；或者喺搵字嘅時候無限輪迴 load 唔到；又或者你想搵某個字但係佢冇嗰個功能——呢啲時候就會拖慢你嘅進度。
@@ -127,6 +127,8 @@ python -m ingest build-relations
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
+# 若大幅更新 README.md，可重新生成简体版：
+# python scripts/gen_readme_zh_hans.py
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
@@ -304,7 +306,7 @@ Canto-0243/
 ├── tests/
 ├── docs/                   # CONTRIBUTING · agents/
 ├── main.py · start.sh      # 開發入口
-├── README.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── README.md · README.zh-Hans.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements*.txt
 ```
@@ -388,6 +390,7 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 | 文件 | 內容 |
 |------|------|
 | [`README.md`](README.md) | 本文件（繁體中文，GitHub 首頁） |
+| [`README.zh-Hans.md`](README.zh-Hans.md) | 简体中文說明 |
 | [`README.en.md`](README.en.md) | English documentation |
 | [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |

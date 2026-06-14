@@ -7,6 +7,8 @@ from scripts.update_readme_words_count import (
     EN_BEGIN,
     EN_END,
     EN_HEADING,
+    HANS_BEGIN,
+    HANS_END,
     ZH_BEGIN,
     ZH_END,
     ZH_HEADING,
@@ -35,9 +37,14 @@ class UpdateReadmeWordsCountTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             readme_zh = root / "README.md"
+            readme_hans = root / "README.zh-Hans.md"
             readme_en = root / "README.en.md"
             readme_zh.write_text(
                 f"{ZH_HEADING}\n\n{ZH_BEGIN}\n舊數字\n{ZH_END}\n",
+                encoding="utf-8",
+            )
+            readme_hans.write_text(
+                f"{ZH_HEADING}\n\n{HANS_BEGIN}\n旧数字\n{HANS_END}\n",
                 encoding="utf-8",
             )
             readme_en.write_text(
@@ -48,11 +55,13 @@ class UpdateReadmeWordsCountTests(unittest.TestCase):
             updated = update_readme_files(
                 193_277,
                 readme_zh=readme_zh,
+                readme_hans=readme_hans,
                 readme_en=readme_en,
             )
 
-            self.assertEqual(updated, [readme_zh, readme_en])
+            self.assertEqual(updated, [readme_zh, readme_hans, readme_en])
             self.assertIn("193,277", readme_zh.read_text(encoding="utf-8"))
+            self.assertIn("193,277", readme_hans.read_text(encoding="utf-8"))
             self.assertIn("193,277", readme_en.read_text(encoding="utf-8"))
 
 

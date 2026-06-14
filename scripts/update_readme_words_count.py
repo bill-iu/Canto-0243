@@ -13,14 +13,18 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB = REPO_ROOT / "lyrics.db"
 
 README_ZH = REPO_ROOT / "README.md"
+README_HANS = REPO_ROOT / "README.zh-Hans.md"
 README_EN = REPO_ROOT / "README.en.md"
 
 ZH_BEGIN = "<!-- words-count:zh-Hant -->"
 ZH_END = "<!-- /words-count:zh-Hant -->"
+HANS_BEGIN = "<!-- words-count:zh-Hans -->"
+HANS_END = "<!-- /words-count:zh-Hans -->"
 EN_BEGIN = "<!-- words-count:en -->"
 EN_END = "<!-- /words-count:en -->"
 
 ZH_HEADING = "## 最新版本"
+HANS_HEADING = "## 最新版本"
 EN_HEADING = "## Latest release"
 
 
@@ -38,6 +42,10 @@ def _format_block(begin: str, end: str, body: str) -> str:
 
 def _zh_body(count: int) -> str:
     return f"目前總詞條列數：**{count:,}**（`lyrics.db` · `words` 表）"
+
+
+def _hans_body(count: int) -> str:
+    return f"目前总词条列数：**{count:,}**（`lyrics.db` · `words` 表）"
 
 
 def _en_body(count: int) -> str:
@@ -67,6 +75,7 @@ def update_readme_files(
     count: int,
     *,
     readme_zh: Path = README_ZH,
+    readme_hans: Path = README_HANS,
     readme_en: Path = README_EN,
 ) -> list[Path]:
     updated: list[Path] = []
@@ -82,6 +91,18 @@ def update_readme_files(
     if new_zh != zh_text:
         readme_zh.write_text(new_zh, encoding="utf-8")
         updated.append(readme_zh)
+
+    hans_text = readme_hans.read_text(encoding="utf-8")
+    new_hans = _replace_or_insert(
+        hans_text,
+        begin=HANS_BEGIN,
+        end=HANS_END,
+        body=_hans_body(count),
+        heading=HANS_HEADING,
+    )
+    if new_hans != hans_text:
+        readme_hans.write_text(new_hans, encoding="utf-8")
+        updated.append(readme_hans)
 
     en_text = readme_en.read_text(encoding="utf-8")
     new_en = _replace_or_insert(
@@ -101,13 +122,18 @@ def update_readme_files(
 def readme_counts_match(db_path: Path = DEFAULT_DB) -> bool:
     count = count_words(db_path)
     zh = README_ZH.read_text(encoding="utf-8")
+    hans = README_HANS.read_text(encoding="utf-8")
     en = README_EN.read_text(encoding="utf-8")
-    return _zh_body(count) in zh and _en_body(count) in en
+    return (
+        _zh_body(count) in zh
+        and _hans_body(count) in hans
+        and _en_body(count) in en
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Update README.md / README.en.md with lyrics.db words row count."
+        description="Update README.md / README.zh-Hans.md / README.en.md with lyrics.db words row count."
     )
     parser.add_argument("--db", default=str(DEFAULT_DB), help="SQLite database path")
     parser.add_argument(
