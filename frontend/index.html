@@ -1,1050 +1,213 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="zh-HK" data-landing="a">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#F7F5EF">
+  <meta name="theme-color" content="#EBDFD0">
   <title>Canto-0243</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --bg: #F7F5EF;
-      --panel: #FFFFFF;
-      --ink: #161716;
-      --muted: #6F746D;
-      --line: #DDD8CC;
-      --accent: #8A5A20;
-      --accent-strong: #5F3E16;
-      --soft: #EEE9DE;
-      --danger: #A23B2A;
-      --shadow: 0 18px 44px rgba(22, 23, 22, 0.08);
-      --z-header: 20;
-      --z-menu: 30;
-    }
-
-    * { box-sizing: border-box; }
-
-    html {
-      background: var(--bg);
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-    }
-
-    body {
-      margin: 0;
-      min-width: 320px;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-      -webkit-tap-highlight-color: rgba(138, 90, 32, 0.18);
-      text-rendering: optimizeLegibility;
-    }
-
-    button,
-    input {
-      font: inherit;
-      touch-action: manipulation;
-    }
-
-    button {
-      color: inherit;
-    }
-
-    [hidden],
-    .is-hidden {
-      display: none !important;
-    }
-
-    .preload-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: rgba(247, 245, 239, 0.96);
-      backdrop-filter: blur(6px);
-      transition: opacity 220ms ease, visibility 220ms ease;
-    }
-
-    .preload-overlay.is-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-    .preload-card {
-      width: min(420px, 100%);
-      padding: 28px 24px 24px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .preload-card h2 {
-      margin: 0 0 8px;
-      font-family: "Songti TC", "Noto Serif TC", serif;
-      font-size: 1.35rem;
-      font-weight: 600;
-    }
-
-    .preload-card p {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .preload-track {
-      height: 8px;
-      border-radius: 999px;
-      background: var(--soft);
-      overflow: hidden;
-    }
-
-    .preload-bar {
-      height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
-      transition: width 180ms ease-out;
-    }
-
-    .preload-overlay.is-degraded .preload-card {
-      border-color: var(--accent);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .preload-bar { transition: none; }
-      .preload-overlay { transition: none; }
-    }
-
-    .skip-link {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 100;
-      transform: translateY(-140%);
-      padding: 10px 14px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--panel);
-      color: var(--ink);
-      text-decoration: none;
-      box-shadow: var(--shadow);
-      transition: transform 120ms ease-out;
-    }
-
-    .skip-link:focus-visible {
-      transform: translateY(0);
-    }
-
-    .app-header {
-      position: sticky;
-      top: 0;
-      z-index: var(--z-header);
-      background: rgba(247, 245, 239, 0.94);
-      border-bottom: 1px solid var(--line);
-      padding: calc(10px + env(safe-area-inset-top)) max(18px, env(safe-area-inset-right)) 10px max(18px, env(safe-area-inset-left));
-    }
-
-    .app-bar {
-      max-width: 1120px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .brand {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 10px;
-      min-width: 0;
-      padding: 7px 0;
-      border: 0;
-      background: transparent;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .brand-mark {
-      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
-      font-size: 27px;
-      line-height: 1;
-      color: var(--accent);
-    }
-
-    .brand-title {
-      font-size: 16px;
-      font-weight: 650;
-      white-space: nowrap;
-    }
-
-    .brand-subtitle {
-      display: block;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 450;
-      margin-top: 1px;
-    }
-
-    .app-actions {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-shrink: 0;
-    }
-
-    .menu-trigger,
-    .ghost-button,
-    .primary-button,
-    .result-item,
-    .load-more,
-    .mode-option {
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--panel);
-      cursor: pointer;
-      transition:
-        border-color 140ms ease-out,
-        box-shadow 140ms ease-out,
-        color 140ms ease-out,
-        background-color 140ms ease-out,
-        transform 120ms ease-out,
-        opacity 140ms ease-out;
-    }
-
-    .menu-trigger,
-    .ghost-button {
-      min-height: 40px;
-      padding: 9px 14px;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.72);
-    }
-
-    a.ghost-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: var(--ink);
-      line-height: 1.2;
-      white-space: nowrap;
-      vertical-align: middle;
-    }
-
-    a.ghost-button:visited {
-      color: var(--ink);
-    }
-
-    a.ghost-button:hover,
-    a.ghost-button:active {
-      text-decoration: none;
-    }
-
-    .menu-trigger {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      min-width: 148px;
-      justify-content: space-between;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .menu-chevron {
-      color: var(--accent);
-      font-size: 12px;
-      transition: transform 140ms ease-out;
-    }
-
-    .menu-trigger[aria-expanded="true"] .menu-chevron {
-      transform: rotate(180deg);
-    }
-
-    .ghost-button:hover,
-    a.ghost-button:hover,
-    .menu-trigger:hover,
-    .load-more:hover,
-    .result-item:hover,
-    .mode-option:hover,
-    a.mode-option:hover {
-      border-color: var(--accent);
-      color: var(--accent-strong);
-      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
-    }
-
-    .ghost-button:active,
-    a.ghost-button:active,
-    .menu-trigger:active,
-    .load-more:active,
-    .result-item:active,
-    .mode-option:active,
-    a.mode-option:active,
-    .primary-button:active {
-      transform: translateY(1px);
-    }
-
-    .mode-menu {
-      position: absolute;
-      top: calc(100% + 10px);
-      right: 0;
-      z-index: var(--z-menu);
-      width: min(320px, calc(100vw - 28px));
-      padding: 10px;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(-6px);
-      pointer-events: none;
-      transition: opacity 140ms ease-out, transform 140ms ease-out;
-    }
-
-    .mode-menu.is-open {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .menu-group + .menu-group {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--line);
-    }
-
-    .menu-label {
-      margin: 3px 8px 8px;
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-
-    .mode-option {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 44px;
-      margin-top: 6px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      text-align: left;
-    }
-
-    a.mode-option {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    a.mode-option:visited {
-      color: inherit;
-    }
-
-    a.mode-option:hover {
-      text-decoration: none;
-    }
-
-    .mode-option[aria-checked="true"] {
-      border-color: rgba(138, 90, 32, 0.48);
-      background: #F4EFE5;
-      color: var(--accent-strong);
-    }
-
-    .mode-name {
-      font-weight: 650;
-    }
-
-    .mode-note {
-      margin-left: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 450;
-    }
-
-    .mode-trigger-primary {
-      font-weight: 650;
-    }
-
-    .mode-trigger-note {
-      margin-left: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 450;
-    }
-
-    .mode-help {
-      display: block;
-      margin-top: 1px;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 450;
-    }
-
-    .mode-key {
-      color: var(--accent);
-      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .main-wrap {
-      width: min(1120px, 100%);
-      margin: 0 auto;
-      padding: 54px max(18px, env(safe-area-inset-right)) 86px max(18px, env(safe-area-inset-left));
-    }
-
-    .hero {
-      max-width: 760px;
-      margin: 0 0 26px;
-    }
-
-    .eyebrow {
-      margin: 0 0 12px;
-      color: var(--accent);
-      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-      font-size: 12px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .hero h1,
-    .guide-hero h1 {
-      margin: 0;
-      color: var(--ink);
-      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
-      font-size: clamp(36px, 6vw, 74px);
-      font-weight: 600;
-      line-height: 0.98;
-      text-wrap: balance;
-    }
-
-    .hero p,
-    .guide-hero p,
-    .guide-card p,
-    .info {
-      color: var(--muted);
-      text-wrap: pretty;
-    }
-
-    .hero p {
-      max-width: 620px;
-      margin: 18px 0 0;
-      font-size: 16px;
-    }
-
-    .search-panel {
-      margin-top: 26px;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.72);
-      box-shadow: 0 14px 34px rgba(22, 23, 22, 0.055);
-    }
-
-    .field-label-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 10px;
-    }
-
-    .field-label {
-      font-weight: 650;
-      color: var(--ink);
-    }
-
-    .mode-readout {
-      color: var(--muted);
-      font-size: 13px;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
-    }
-
-    .search-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-    }
-
-    .search-actions {
-      display: flex;
-      align-items: stretch;
-      gap: 8px;
-    }
-
-    .icon-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 58px;
-      min-height: 58px;
-      padding: 0;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--panel);
-      color: var(--muted);
-      cursor: pointer;
-      transition:
-        border-color 140ms ease-out,
-        box-shadow 140ms ease-out,
-        color 140ms ease-out,
-        background-color 140ms ease-out,
-        transform 120ms ease-out;
-    }
-
-    .icon-button:hover:not(:disabled) {
-      border-color: var(--accent);
-      color: var(--accent-strong);
-      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
-    }
-
-    .icon-button:active:not(:disabled) {
-      transform: translateY(1px);
-    }
-
-    .icon-button:disabled {
-      opacity: 0.38;
-      cursor: not-allowed;
-    }
-
-    .icon-button svg {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-
-    .search-row input {
-      width: 100%;
-      min-height: 58px;
-      padding: 14px 17px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--panel);
-      color: var(--ink);
-      font-size: 20px;
-      box-shadow: inset 0 1px 0 rgba(22, 23, 22, 0.035);
-      transition: border-color 140ms ease-out, box-shadow 140ms ease-out;
-    }
-
-    .search-row input::placeholder {
-      color: #96988F;
-    }
-
-    .search-row input:focus-visible {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(138, 90, 32, 0.14);
-    }
-
-    .primary-button {
-      min-height: 58px;
-      padding: 0 24px;
-      border-color: var(--ink);
-      background: var(--ink);
-      color: var(--panel);
-      font-weight: 650;
-    }
-
-    .primary-button:hover {
-      border-color: var(--accent-strong);
-      background: var(--accent-strong);
-      box-shadow: 0 10px 24px rgba(95, 62, 22, 0.18);
-    }
-
-    .primary-button:disabled {
-      cursor: wait;
-      opacity: 0.72;
-    }
-
-    .guide-example code {
-      color: var(--accent-strong);
-      font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-      font-variant-numeric: tabular-nums;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .guide-example span {
-      display: block;
-      min-width: 0;
-      margin-top: 2px;
-      color: var(--muted);
-      font-size: 12px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .status-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      min-height: 24px;
-      margin: 28px 0 12px;
-      color: var(--muted);
-      font-size: 13px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .stats {
-      min-width: 0;
-    }
-
-    .results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-      gap: 9px;
-      content-visibility: auto;
-      contain-intrinsic-size: 600px;
-    }
-
-    .result-item {
-      min-width: 0;
-      min-height: 50px;
-      padding: 12px 10px;
-      border-radius: 16px;
-      color: var(--ink);
-      font-size: 15px;
-      line-height: 1.25;
-      text-align: center;
-      overflow-wrap: anywhere;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .result-item:hover {
-      transform: translateY(-1px);
-    }
-
-    .info {
-      grid-column: 1 / -1;
-      padding: 44px 18px;
-      border: 1px dashed var(--line);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.5);
-      font-size: 15px;
-      text-align: center;
-    }
-
-    .info strong {
-      color: var(--ink);
-      font-weight: 650;
-    }
-
-    .info-error {
-      color: var(--danger);
-    }
-
-    .syn-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-      content-visibility: auto;
-      contain-intrinsic-size: 720px;
-    }
-
-    .syn-section {
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: rgba(255, 255, 255, 0.76);
-      padding: 14px;
-    }
-
-    .syn-section h2 {
-      margin: 0 0 12px;
-      color: var(--accent-strong);
-      font-size: 14px;
-      font-weight: 700;
-      text-wrap: balance;
-    }
-
-    .syn-section .results {
-      grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
-      gap: 7px;
-    }
-
-    .syn-empty {
-      color: var(--muted);
-      font-size: 13px;
-      padding: 9px 2px;
-    }
-
-    .load-more {
-      display: block;
-      width: min(320px, 100%);
-      min-height: 46px;
-      margin: 24px auto 0;
-      padding: 11px 18px;
-      color: var(--ink);
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .guide-view {
-      content-visibility: auto;
-      contain-intrinsic-size: 900px;
-    }
-
-    .guide-hero {
-      max-width: 780px;
-      margin-bottom: 28px;
-    }
-
-    .guide-intro {
-      max-width: 780px;
-      margin-bottom: 28px;
-      padding: 20px 22px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.74);
-    }
-
-    .guide-intro h2 {
-      margin: 0 0 14px;
-      font-size: 20px;
-      font-weight: 750;
-      text-wrap: balance;
-    }
-
-    .guide-intro p {
-      margin: 0 0 14px;
-      font-size: 15px;
-      line-height: 1.68;
-      color: var(--ink-soft);
-    }
-
-    .guide-intro p:last-child {
-      margin-bottom: 0;
-    }
-
-    .guide-intro code {
-      font-size: 0.92em;
-    }
-
-    .guide-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-
-    .guide-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .guide-card {
-      min-width: 0;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.74);
-    }
-
-    .guide-card h2 {
-      margin: 0 0 8px;
-      font-size: 18px;
-      font-weight: 750;
-      text-wrap: balance;
-      scroll-margin-top: 92px;
-    }
-
-    .guide-card p {
-      margin: 0 0 14px;
-      font-size: 14px;
-    }
-
-    .guide-examples {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 8px;
-    }
-
-    .guide-example {
-      min-width: 0;
-      min-height: 54px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--panel);
-      cursor: pointer;
-      text-align: left;
-      transition:
-        border-color 140ms ease-out,
-        box-shadow 140ms ease-out,
-        color 140ms ease-out,
-        transform 120ms ease-out;
-    }
-
-    .guide-example:hover {
-      border-color: var(--accent);
-      color: var(--accent-strong);
-      box-shadow: 0 8px 22px rgba(22, 23, 22, 0.07);
-    }
-
-    .guide-example:active {
-      transform: translateY(1px);
-    }
-
-    .file-fallback {
-      min-height: 100dvh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background: var(--bg);
-    }
-
-    .file-card {
-      width: min(560px, 100%);
-      padding: 30px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      text-align: center;
-    }
-
-    .file-card h1 {
-      margin: 0 0 12px;
-      font-family: "Songti TC", "Noto Serif TC", "PMingLiU", serif;
-      font-size: 34px;
-      text-wrap: balance;
-    }
-
-    .file-card p {
-      color: var(--muted);
-      text-wrap: pretty;
-    }
-
-    .file-note {
-      margin: 18px 0;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #F4EFE5;
-      color: var(--accent-strong);
-      font-size: 14px;
-    }
-
-    :focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        scroll-behavior: auto !important;
-        transition-duration: 1ms !important;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=block" rel="stylesheet">
+  <script>
+    (function () {
+      const root = document.documentElement;
+      const markReady = () => {
+        if (root.classList.contains("fonts-ready")) return;
+        root.classList.add("fonts-ready");
+        window.__gateBrandShownAt = performance.now();
+      };
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(markReady).catch(markReady);
+      } else {
+        markReady();
       }
-    }
-
-    @media (max-width: 760px) {
-      .app-bar {
-        align-items: flex-start;
-      }
-
-      .brand-subtitle,
-      .guide-top-link {
-        display: none;
-      }
-
-      .menu-trigger {
-        min-width: 124px;
-      }
-
-      .main-wrap {
-        padding-top: 36px;
-      }
-
-      .search-panel {
-        border-radius: 22px;
-        padding: 14px;
-      }
-
-      .field-label-row,
-      .status-row {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .search-row {
-        grid-template-columns: 1fr;
-      }
-
-      .search-actions {
-        width: 100%;
-      }
-
-      .primary-button {
-        flex: 1;
-      }
-
-      .guide-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero h1,
-      .guide-hero h1 {
-        font-size: clamp(34px, 12vw, 54px);
-      }
-    }
-
-    @media (max-width: 440px) {
-      .app-header {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-
-      .brand-title {
-        font-size: 14px;
-      }
-
-      .menu-trigger {
-        min-width: auto;
-        max-width: 132px;
-      }
-
-      .mode-trigger-text {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .results {
-        grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
-      }
-    }
-  </style>
+      window.setTimeout(markReady, 2400);
+    })();
+  </script>
+  <link rel="stylesheet" href="open-design.css">
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
   <div class="preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
-    <div class="preload-card">
-      <h2>載入詞庫</h2>
-      <p id="preloadLabel">正在預載缺字查詢索引…</p>
-      <div class="preload-track" aria-hidden="true">
-        <div class="preload-bar" id="preloadBar"></div>
-      </div>
+    <div class="gate-brand" id="gateBrand">
+      <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="brush-roughen-brand-gate" x="-8%" y="-120%" width="116%" height="340%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
+            <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <clipPath id="gate-ink-clip">
+            <rect id="gateInkClipRect" class="gate-ink-clip-rect" x="0" y="0" width="0" height="72"/>
+          </clipPath>
+        </defs>
+        <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
+        <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
+        <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
+        <g class="gate-ink-track" aria-hidden="true">
+          <path filter="url(#brush-roughen-brand-gate)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
+          <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+          <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+          <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+          <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+          <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+        </g>
+        <g class="gate-ink-fill" clip-path="url(#gate-ink-clip)" aria-hidden="true">
+          <path filter="url(#brush-roughen-brand-gate)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
+          <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+          <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+          <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+          <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+          <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+        </g>
+      </svg>
     </div>
+    <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="brush-roughen-brand-meter" x="-8%" y="-120%" width="116%" height="340%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
+          <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+        <clipPath id="gate-ink-clip-mini">
+          <rect id="gateInkClipRectMini" class="gate-ink-clip-rect" x="0" y="38" width="0" height="34"/>
+        </clipPath>
+      </defs>
+      <g class="gate-ink-track" aria-hidden="true">
+        <path filter="url(#brush-roughen-brand-meter)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
+        <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+        <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+        <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+        <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+        <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+      </g>
+      <g class="gate-ink-fill" clip-path="url(#gate-ink-clip-mini)" aria-hidden="true">
+        <path filter="url(#brush-roughen-brand-meter)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
+        <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+        <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+        <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+        <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+        <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <p class="gate-status" id="preloadLabel">正在預載缺字查詢索引…</p>
   </div>
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 
-  <header class="app-header">
-    <div class="app-bar">
-      <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
-        <span class="brand-mark" aria-hidden="true">粵</span>
-        <span>
-          <span class="brand-title" id="brandTitle">Canto-0243</span>
-          <span class="brand-subtitle">ONE·搵·韻</span>
-        </span>
-      </button>
-
-      <nav class="app-actions" aria-label="主要操作">
-        <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
-          <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
-          <span class="menu-chevron" aria-hidden="true">▾</span>
+  <div class="app-shell" id="appShell">
+    <header class="app-header">
+      <div class="app-bar">
+        <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
+          <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
+            <defs>
+              <filter id="brush-roughen-brand-header" x="-8%" y="-120%" width="116%" height="340%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
+                <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
+            <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
+            <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
+            <path filter="url(#brush-roughen-brand-header)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
+            <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+            <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+            <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+            <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+            <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+          </svg>
         </button>
-        <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
-        <a class="ghost-button guide-top-link" href="relation-entry.html" id="relationTopLink">補關係</a>
 
-        <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
-          <div class="menu-group" role="group" aria-label="0243搜尋模式">
-            <p class="menu-label">0243搜尋模式</p>
-            <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
-              <span>
-                <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
-                <span class="mode-help">常用 0243 編碼與混合查詢</span>
-              </span>
-              <span class="mode-key">0243</span>
-            </button>
-            <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
-              <span>
-                <span class="mode-name">02493模式<span class="mode-note">緊</span></span>
-                <span class="mode-help">02493 碼（分清二聲）</span>
-              </span>
-              <span class="mode-key">02493</span>
-            </button>
-            <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
-              <span>
-                <span class="mode-name">近反義<span class="mode-note">查</span></span>
-                <span class="mode-help">近義、反義與語意相關</span>
-              </span>
-              <span class="mode-key">~ / !</span>
-            </button>
-          </div>
-          <div class="menu-group" role="group" aria-label="工具">
-            <p class="menu-label">Tools</p>
-            <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
-              <span>
-                <span class="mode-name">搜尋教學</span>
-                <span class="mode-help">完整語法與例子</span>
-              </span>
-              <span class="mode-key">?</span>
-            </button>
-            <a class="mode-option" id="relationMenuLink" href="relation-entry.html" role="menuitem">
-              <span>
-                <span class="mode-name">補關係</span>
-                <span class="mode-help">為已收錄字面補近義或反義</span>
-              </span>
-              <span class="mode-key">+</span>
-            </a>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+        <nav class="app-actions" aria-label="主要操作">
+          <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
+            <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
+            <span class="menu-chevron" aria-hidden="true">▾</span>
+          </button>
+          <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
+          <a class="ghost-button guide-top-link" href="relation-entry.html" id="relationTopLink">補關係</a>
 
-  <main class="main-wrap" id="mainContent">
-    <section class="search-view" id="searchView" aria-labelledby="searchTitle">
-      <div class="hero">
-        <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
-        <h1 id="searchTitle">ONE·搵·韻</h1>
-        <p>格律/協音/押韻/近反義，一秒搵到。</p>
+          <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
+              <div class="menu-group" role="group" aria-label="0243搜尋模式">
+                <p class="menu-label">0243搜尋模式</p>
+                <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
+                  <span>
+                    <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
+                    <span class="mode-help">常用 0243 編碼與混合查詢</span>
+                  </span>
+                  <span class="mode-key">0243</span>
+                </button>
+                <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
+                  <span>
+                    <span class="mode-name">02493模式<span class="mode-note">緊</span></span>
+                    <span class="mode-help">02493 碼（分清二聲）</span>
+                  </span>
+                  <span class="mode-key">02493</span>
+                </button>
+                <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
+                  <span>
+                    <span class="mode-name">近反義<span class="mode-note">查</span></span>
+                    <span class="mode-help">近義、反義與語意相關</span>
+                  </span>
+                  <span class="mode-key">~ / !</span>
+                </button>
+              </div>
+              <div class="menu-group" role="group" aria-label="工具">
+                <p class="menu-label">Tools</p>
+                <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
+                  <span>
+                    <span class="mode-name">搜尋教學</span>
+                    <span class="mode-help">完整語法與例子</span>
+                  </span>
+                  <span class="mode-key">?</span>
+                </button>
+                <a class="mode-option" id="relationMenuLink" href="relation-entry.html" role="menuitem">
+                  <span>
+                    <span class="mode-name">補關係</span>
+                    <span class="mode-help">為已收錄字面補近義或反義</span>
+                  </span>
+                  <span class="mode-key">+</span>
+                </a>
+              </div>
+            </div>
+        </nav>
       </div>
+    </header>
 
-      <form class="search-panel" id="searchForm" role="search">
-        <div class="field-label-row">
-          <label class="field-label" for="searchInput">搜尋內容</label>
-          <span class="mode-readout" id="modeReadout">目前模式：0243模式（鬆）</span>
+    <main class="main-wrap" id="mainContent">
+      <section class="search-view" id="searchView" aria-labelledby="searchTitle">
+        <div class="hero">
+          <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
+          <h1 id="searchTitle">ONE·搵·韻</h1>
+          <p>格律/協音/押韻/近反義，一秒搵到。</p>
         </div>
-        <div class="search-row">
-          <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
-          <div class="search-actions">
-            <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 3h5v5"/>
-                <path d="M4 20L21 3"/>
-                <path d="M21 16v5h-5"/>
-                <path d="M15 15l6 6"/>
-                <path d="M4 4l5 5"/>
-              </svg>
-            </button>
-            <button class="primary-button" id="searchBtn" type="submit">搜尋</button>
+
+        <form class="search-panel" id="searchForm" role="search">
+          <div class="field-label-row">
+            <label class="field-label" for="searchInput">搜尋內容</label>
+            <span class="mode-readout" id="modeReadout">目前模式：0243模式（鬆）</span>
           </div>
+          <div class="search-row">
+            <div class="search-input-wrap" id="searchInputWrap">
+              <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+            </div>
+            <div class="search-actions">
+              <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16 3h5v5"/>
+                  <path d="M4 20L21 3"/>
+                  <path d="M21 16v5h-5"/>
+                  <path d="M15 15l6 6"/>
+                  <path d="M4 4l5 5"/>
+                </svg>
+              </button>
+              <button class="primary-button" id="searchBtn" type="submit">搜尋</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="status-row">
+          <div id="stats" class="stats" aria-live="polite"></div>
         </div>
-      </form>
 
-      <div class="status-row">
-        <div id="stats" class="stats" aria-live="polite"></div>
-        <button class="ghost-button" id="inlineGuideBtn" type="button">查看完整教學</button>
-      </div>
-
-      <div id="results" class="results" aria-live="polite"></div>
-    </section>
+        <div id="results" class="results" aria-live="polite"></div>
+      </section>
 
     <section class="guide-view is-hidden" id="guideView" aria-labelledby="guideTitle" hidden>
       <div class="guide-hero">
@@ -1059,25 +222,25 @@
       <article class="guide-intro" aria-labelledby="guideIntroTitle">
         <h2 id="guideIntroTitle">基本說明</h2>
         <p>
-          <strong>打數字，搵粵語啱音字。</strong>例如打「23」，會搵到聲調序列一樣嘅二字詞，包括「做好」、「做就」。打「232」會搵三字同調詞，例如「做就就」、「做得就」。<strong>0243模式</strong>用 0243 碼；<strong>02493模式</strong>用 02493，調值更細（分清二聲）。
+          <strong>打數字，搵 0243 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（0243 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞 0243 碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>用 0243 碼；<strong>02493模式</strong>用 02493，調值更細（分清二聲）。
         </p>
         <p>
-          <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音或相關候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
+          <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
         </p>
         <p>
-          <strong>打數字加尾字，搵啱音押韻嘅詞。</strong>譬如打「23就」，會搵頭兩音節同「23」、尾字同「就」同韻嘅二字詞。如果要尾字字面完全一樣，打「23@就」。
+          <strong>打數字加尾字，搵同音押韻嘅詞。</strong>譬如打「23就」，會搵頭兩音節同「23」、尾字同「就」同韻嘅二字詞。如果要尾字字面完全一樣，打「23@就」。
         </p>
         <p>
-          <strong>可以夾多個韻字或加長位置。</strong>例如「23*就」（三字，頭兩個字同「23」同音，尾字係「就」）、「23?就」（四字碼字混合）。用「?」、「_」或「%」表示該格字面不限，例如「做??」、「?你?」。
+          <strong>可以夾多個韻字或加長位置。</strong>例如「23*就」（三字，頭兩個字同「23」同音，尾字係「就」）、「23?就」（四字碼字混合）。用「?」、「_」或「%」表示該格字面不限，例如「香??」、「?你?」。
         </p>
         <p>
-          <strong>打幾個漢字加等號，搵「多字韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同「開心」同韻嘅詞。打「=最好」會搵整詞逐音節同「最好」同聲嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 0243 碼同一格聲或韻。
+          <strong>打幾個漢字加等號，搵「同韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同「開心」同韻嘅詞。打「=最好」會搵整詞逐音節同「最好」同聲嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 0243 碼同一格聲或韻。
         </p>
         <p>
           <strong>打一個漢字加等號，搵「同韻」或「同聲」詞。</strong>打「就=?」會搵首字同「就」同韻嘅二字詞；打「?就=」會搵尾字同「就」同韻嘅詞。聲母錨打「=就?」、「?=你」。<strong>口訣：</strong>「=」在錨字後比韻母，在錨字前比聲母。
         </p>
         <p>
-          <strong>打粵拼，精準搵漢字。</strong>冇聲調「syut」搵所有同發音單字；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
+          <strong>打粵拼，精準搵漢字。</strong>冇聲調如「syut」，搵粵拼字母相同嘅單字（忽略聲調）；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
         </p>
         <p>
           <strong>近義、反義同複合詞（0243模式／02493模式）。</strong>打「~開心」搵同「開心」近義嘅詞；打「!開心」搵反義詞。可加前綴0243碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>。
@@ -1214,6 +377,7 @@
       </div>
     </section>
   </main>
+  </div>
 
   <script>
     function showFileFallback() {
@@ -1281,8 +445,6 @@
     function applyAppTitle(portable = false) {
       const title = portable ? `${APP_TITLE_BASE}${APP_TITLE_PORTABLE_SUFFIX}` : APP_TITLE_BASE;
       document.title = title;
-      const brandTitle = document.getElementById("brandTitle");
-      if (brandTitle) brandTitle.textContent = title;
     }
 
     let currentMode = "m1";
@@ -1297,10 +459,52 @@
     const searchCache = new Map();
     let appSearchReady = false;
 
+    const LANDING_VARIANT = document.documentElement.dataset.landing || "a";
+    const LANDING_SESSION_KEY = "canto0243:landing-done";
+    const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const LANDING_REVEAL_MS = 420;
+    const LANDING_HANDOFF_MS = 640;
+    const GATE_BRAND_INTRO_MS = 700;
+
+    const GATE_INK_CLIP_MAX = 136;
+
+    function setGateInkProgress(progress01) {
+      const w = (Math.max(0, Math.min(1, progress01)) * GATE_INK_CLIP_MAX).toFixed(1);
+      if ($.gateInkClipRect) $.gateInkClipRect.setAttribute("width", w);
+      if ($.gateInkClipRectMini) $.gateInkClipRectMini.setAttribute("width", w);
+    }
+
+    function shouldPlayLanding() {
+      return !sessionStorage.getItem(LANDING_SESSION_KEY) && !REDUCED_MOTION;
+    }
+
+    function markLandingDone() {
+      sessionStorage.setItem(LANDING_SESSION_KEY, "1");
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => window.setTimeout(resolve, ms));
+    }
+
+    async function awaitGateBrandBeat(playLanding) {
+      if (!playLanding) return;
+      try {
+        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      } catch {
+        /* use timeout fallback below */
+      }
+      if (!document.documentElement.classList.contains("fonts-ready")) {
+        document.documentElement.classList.add("fonts-ready");
+        window.__gateBrandShownAt = performance.now();
+      }
+      const shownAt = window.__gateBrandShownAt ?? performance.now();
+      const remain = GATE_BRAND_INTRO_MS - (performance.now() - shownAt);
+      if (remain > 0) await sleep(remain);
+    }
+
     const $ = {
       homeBtn: document.getElementById("homeBtn"),
       guideTopBtn: document.getElementById("guideTopBtn"),
-      inlineGuideBtn: document.getElementById("inlineGuideBtn"),
       guideMenuBtn: document.getElementById("guideMenuBtn"),
       backToSearchBtn: document.getElementById("backToSearchBtn"),
       modeMenuButton: document.getElementById("modeMenuButton"),
@@ -1310,14 +514,17 @@
       searchView: document.getElementById("searchView"),
       guideView: document.getElementById("guideView"),
       searchForm: document.getElementById("searchForm"),
+      searchInputWrap: document.getElementById("searchInputWrap"),
       searchInput: document.getElementById("searchInput"),
       searchBtn: document.getElementById("searchBtn"),
       shuffleBtn: document.getElementById("shuffleBtn"),
       results: document.getElementById("results"),
       stats: document.getElementById("stats"),
       preloadOverlay: document.getElementById("preloadOverlay"),
-      preloadBar: document.getElementById("preloadBar"),
       preloadLabel: document.getElementById("preloadLabel"),
+      gateInkClipRect: document.getElementById("gateInkClipRect"),
+      gateInkClipRectMini: document.getElementById("gateInkClipRectMini"),
+      appShell: document.getElementById("appShell"),
     };
 
     function setSearchControlsEnabled(enabled) {
@@ -1326,12 +533,45 @@
       if ($.shuffleBtn) $.shuffleBtn.disabled = !enabled;
     }
 
-    function sleep(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
+    async function revealFromGate({ playLanding }) {
+      if (playLanding) {
+        markLandingDone();
+        document.body.classList.remove("landing-a-pending", "landing-b-pending");
+        if (LANDING_VARIANT === "b") {
+          $.preloadOverlay.classList.add("is-handoff");
+          $.appShell?.classList.remove("is-gated");
+          $.appShell?.classList.add("is-revealing", "landing-b-revealed");
+          $.searchForm?.classList.add("is-landing-in");
+          await sleep(LANDING_HANDOFF_MS);
+          $.preloadOverlay.classList.add("is-exiting");
+          await sleep(280);
+        } else {
+          $.preloadOverlay.classList.add("is-exiting");
+          $.appShell?.classList.remove("is-gated");
+          $.appShell?.classList.add("is-revealing");
+          await sleep(LANDING_REVEAL_MS);
+        }
+      }
+      $.preloadOverlay.classList.add("is-hidden");
+      $.preloadOverlay.classList.remove("is-exiting", "is-handoff");
+      $.preloadOverlay.setAttribute("aria-busy", "false");
+      appSearchReady = true;
+      setSearchControlsEnabled(true);
+      if (playLanding && !REDUCED_MOTION) {
+        await sleep(80);
+      }
+      $.searchInput.focus({ preventScroll: true });
     }
 
     async function waitForPreloadReady() {
+      const playLanding = shouldPlayLanding();
       setSearchControlsEnabled(false);
+      if (playLanding) {
+        $.appShell?.classList.add("is-gated");
+        document.body.classList.add(`landing-${LANDING_VARIANT}-pending`);
+      } else {
+        $.preloadOverlay.classList.add("preload-overlay--minimal");
+      }
       const started = Date.now();
       while (true) {
         try {
@@ -1339,14 +579,13 @@
           if (!res.ok) throw new Error(`ready ${res.status}`);
           const data = await res.json();
           const pct = Math.max(0, Math.min(100, Math.round((data.progress || 0) * 100)));
-          $.preloadBar.style.width = `${pct}%`;
+          setGateInkProgress(data.progress || 0);
           if (data.ready) {
+            setGateInkProgress(1);
             $.preloadLabel.textContent = "就緒";
             $.preloadOverlay.classList.remove("is-degraded");
-            $.preloadOverlay.setAttribute("aria-busy", "false");
-            $.preloadOverlay.classList.add("is-hidden");
-            appSearchReady = true;
-            setSearchControlsEnabled(true);
+            await awaitGateBrandBeat(playLanding);
+            await revealFromGate({ playLanding });
             return;
           }
           if (data.status === "failed") {
@@ -1362,11 +601,9 @@
       }
       $.preloadOverlay.classList.add("is-degraded");
       $.preloadLabel.textContent = "加速載入未完成，仍可搜尋（可能較慢）";
-      $.preloadOverlay.setAttribute("aria-busy", "false");
-      appSearchReady = true;
-      setSearchControlsEnabled(true);
-      await sleep(1400);
-      $.preloadOverlay.classList.add("is-hidden");
+      await awaitGateBrandBeat(playLanding);
+      await sleep(playLanding ? 600 : 1400);
+      await revealFromGate({ playLanding });
     }
 
     function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
@@ -1706,11 +943,25 @@
 
     $.shuffleBtn.addEventListener("click", shuffleResults);
 
+    const SEARCH_RING_BLUR_MS = 320;
+    function bindSearchDualRing() {
+      if (!$.searchInputWrap || !$.searchInput) return;
+      $.searchInput.addEventListener("focus", () => {
+        $.searchInputWrap.classList.remove("is-blurring");
+        $.searchInputWrap.classList.add("is-focused");
+      });
+      $.searchInput.addEventListener("blur", () => {
+        $.searchInputWrap.classList.remove("is-focused");
+        $.searchInputWrap.classList.add("is-blurring");
+        window.setTimeout(() => $.searchInputWrap.classList.remove("is-blurring"), SEARCH_RING_BLUR_MS);
+      });
+    }
+    bindSearchDualRing();
+
     $.homeBtn.addEventListener("click", goHome);
     $.modeMenuButton.addEventListener("click", () => toggleMenu());
     $.guideTopBtn.addEventListener("click", () => showGuide());
     $.guideMenuBtn.addEventListener("click", () => showGuide());
-    $.inlineGuideBtn.addEventListener("click", () => showGuide());
     $.backToSearchBtn.addEventListener("click", () => {
       showSearch();
       $.searchInput.focus();
