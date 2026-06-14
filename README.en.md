@@ -1,6 +1,8 @@
 # Canto-0243
 
-**Languages / 語言**：[繁體中文](README.zh-Hant.md) · [English](README.en.md)
+<p align="center">
+  <a href="README.md">繁體中文</a> · <b>English</b>
+</p>
 
 Writing Cantonese lyrics often means hunting for the right character—same tone, rhyming fit, or a near synonym—while matching 0243 codes and Jyutping. Flipping through dictionaries, rhyme books, and thesaurus tables by hand is slow and easy to miss good options. [0243.hk](https://0243.hk) is an excellent online Cantonese rhyme finder, but outages, endless loading, or missing features can still stall your workflow.
 
@@ -13,6 +15,10 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 ---
 
 ## Latest release
+
+<!-- words-count:en -->
+Current word entries: **193,277** (`lyrics.db` · `words` table)
+<!-- /words-count:en -->
 
 Official offline data bundle: **[Official data bundle v1.0.0-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
 
@@ -97,7 +103,7 @@ Outputs are local／gitignored—**do not** commit. See [docs/CONTRIBUTING.md](d
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
 # 1. Build multi-character lexicon readings from upstream tables (see THIRD_PARTY_NOTICES § multi-character readings)
-# 2. Import words table:
+# 2. Import words table (also syncs README word-entry total):
 python scripts/ingest/import_data.py
 # 3. Near／antonym ingest:
 python -m ingest report
@@ -120,6 +126,7 @@ Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **
 
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+python scripts/update_readme_words_count.py
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
@@ -297,7 +304,7 @@ Canto-0243/
 ├── tests/
 ├── docs/                   # CONTRIBUTING · agents/
 ├── main.py · start.sh      # dev entrypoints
-├── README.md · README.zh-Hant.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── README.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements*.txt
 ```
@@ -380,7 +387,7 @@ Building or redistributing lexicons from these sources requires complying with e
 
 | Document | Contents |
 |----------|----------|
-| [`README.zh-Hant.md`](README.zh-Hant.md) | This project (Traditional Chinese, full) |
+| [`README.md`](README.md) | Traditional Chinese (GitHub homepage) |
 | [`README.en.md`](README.en.md) | English documentation (this file) |
 | [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | Third-party data licenses |

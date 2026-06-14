@@ -77,6 +77,15 @@ def main(argv: list[str] | None = None) -> int:
     payload = json.dumps(rows, ensure_ascii=False, indent=args.indent or None)
     out_path.write_text(payload + "\n", encoding="utf-8")
     print(f"Exported {len(rows)} rows -> {out_path}")
+
+    from scripts.update_readme_words_count import count_words, update_readme_files
+
+    count = count_words(db_path)
+    updated = update_readme_files(count)
+    if updated:
+        names = ", ".join(p.name for p in updated)
+        print(f"Updated README word count ({names}): {count:,}")
+
     return 0
 
 

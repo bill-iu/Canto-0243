@@ -10,6 +10,10 @@ if (-not (Test-Path $DbPath)) {
     throw "lyrics.db not found; cannot build portable package."
 }
 
+Write-Host "==> Sync README word count..."
+python (Join-Path $Root "scripts\update_readme_words_count.py") --db $DbPath
+if ($LASTEXITCODE -ne 0) { throw "update_readme_words_count.py failed" }
+
 Write-Host "==> Clean output dir..."
 if (Test-Path $OutDir) { Remove-Item $OutDir -Recurse -Force }
 New-Item -ItemType Directory -Path $OutDir -Force | Out-Null

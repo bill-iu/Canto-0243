@@ -96,11 +96,26 @@ def import_all_in_folder(folder_path: str = "data/raw/clean"):
     print(f"總新增: {total_count} 筆")
     print(f"總跳過: {total_skipped} 筆")
     print("=" * 60)
+    _sync_readme_words_count()
+
+
+def _sync_readme_words_count() -> None:
+    from scripts.update_readme_words_count import count_words, update_readme_files
+
+    db_path = REPO_ROOT / "lyrics.db"
+    if not db_path.is_file():
+        return
+    count = count_words(db_path)
+    updated = update_readme_files(count)
+    if updated:
+        names = ", ".join(p.name for p in updated)
+        print(f"📝 README 詞條列數已更新（{names}）：{count:,}")
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         with SessionLocal() as db:
             import_json_file(Path(sys.argv[1]), db, set())
+        _sync_readme_words_count()
     else:
         import_all_in_folder("data/raw/clean")

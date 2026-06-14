@@ -12,6 +12,9 @@ if [[ ! -f "$DB_PATH" ]]; then
   exit 1
 fi
 
+echo "==> Sync README word count..."
+python "$ROOT/scripts/update_readme_words_count.py" --db "$DB_PATH"
+
 echo "==> Clean output dir..."
 rm -rf "$OUT_DIR"
 mkdir -p "$ROOT/dist"
