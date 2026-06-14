@@ -52,14 +52,17 @@ echo "啟動中... ${URL}"
 echo "關閉請按 Ctrl+C"
 echo ""
 
-open_browser() {
-  sleep 2
-  if [[ "$(uname -s)" == "Darwin" ]]; then
-    open "$URL" >/dev/null 2>&1 || true
-  elif command -v xdg-open >/dev/null 2>&1; then
-    xdg-open "$URL" >/dev/null 2>&1 || true
-  fi
-}
-open_browser &
+"$RUN_PY" main.py &
+SERVER_PID=$!
 
-exec "$RUN_PY" main.py
+if ! "$RUN_PY" scripts/wait_for_url.py "http://${HOST}:${PORT}/"; then
+  echo "[警告] 後端啟動逾時，仍嘗試打開瀏覽器…"
+fi
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  open "$URL" >/dev/null 2>&1 || true
+elif command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$URL" >/dev/null 2>&1 || true
+fi
+
+wait "$SERVER_PID"

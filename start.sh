@@ -47,9 +47,15 @@ echo "🌐 正在啟動後端..."
 python main.py &
 SERVER_PID=$!
 
-sleep 3
+HOST="${HOST:-127.0.0.1}"
+PORT="${PORT:-8000}"
+BASE_URL="http://${HOST}:${PORT}"
+URL="${BASE_URL}/frontend/index.html"
 
-URL="http://127.0.0.1:8000/frontend/index.html"
+if ! python scripts/wait_for_url.py "${BASE_URL}/"; then
+  echo "⚠️  後端啟動逾時，仍嘗試打開瀏覽器…"
+fi
+
 echo "🔗 正在打開前端..."
 if [[ "$(uname -s)" == "Darwin" ]]; then
   open "$URL" >/dev/null 2>&1 || true
@@ -62,7 +68,7 @@ else
 fi
 
 echo "✅ 已啟動（PID $SERVER_PID）"
-echo "後端：http://127.0.0.1:8000"
+echo "後端：${BASE_URL}"
 echo "前端：$URL"
 if [[ -n "${PORTABLE:-}" ]]; then
   echo "標題應顯示：Canto-0243 (移動版)"

@@ -48,11 +48,11 @@ set PORT=8000
 :have_port
 
 echo.
-echo Starting server... Browser will open http://%HOST%:%PORT%/frontend/index.html
+echo Starting server... Browser will open after backend is ready.
 echo Close this window or press Ctrl+C to stop.
 echo.
 
-start "" "http://%HOST%:%PORT%/frontend/index.html"
+start /B cmd /c "venv\Scripts\python.exe scripts\wait_for_url.py http://%HOST%:%PORT%/ && start \"\" http://%HOST%:%PORT%/frontend/index.html"
 venv\Scripts\python.exe main.py
 
 pause

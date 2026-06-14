@@ -54,6 +54,7 @@ async def home():
 if __name__ == "__main__":
     # 僅在本地 / SQLite 時自動 create_all（正式 PostgreSQL 請使用 Alembic）
     env = os.getenv("ENV", "local").lower()
+
     if (env != "prod" and not IS_POSTGRES) or os.getenv("FORCE_CREATE_ALL"):
         try:
             Base.metadata.create_all(bind=engine)
@@ -154,7 +155,7 @@ if __name__ == "__main__":
         import threading
         from app.database import SessionLocal
         from app.models.word import Word
-        from app.utils.word_cache import get_word_cache_stats, populate_word_cache_from_rows
+        from app.utils.word_cache import populate_word_cache_from_rows
 
         def _preload_word_cache():
             try:
@@ -179,9 +180,7 @@ if __name__ == "__main__":
                 finally:
                     db.close()
 
-                n = populate_word_cache_from_rows(rows)
-                stats = get_word_cache_stats()
-                print(f"[main] Word meta cache preloaded: {n} entries (lengths={stats['lengths'][:8]}... total_meta={stats['meta_size']}). Mask/hybrid now use pre-parsed in-mem (instant).")
+                populate_word_cache_from_rows(rows)
             except Exception as e:
                 print(f"[main] Word meta cache preload failed (mask/hybrid fall back to DB .all() + json per row): {e}")
 
