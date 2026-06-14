@@ -127,8 +127,7 @@ Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# After large README.md edits, regenerate Simplified Chinese:
-# python scripts/gen_readme_zh_hans.py
+# After large README.md edits, maintain README.zh-Hans.md manually (Simplified written Chinese):
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
@@ -390,7 +389,7 @@ Building or redistributing lexicons from these sources requires complying with e
 | Document | Contents |
 |----------|----------|
 | [`README.md`](README.md) | Traditional Chinese (GitHub homepage) |
-| [`README.zh-Hans.md`](README.zh-Hans.md) | Simplified Chinese documentation |
+| [`README.zh-Hans.md`](README.zh-Hans.md) | Simplified Chinese documentation (written Chinese) |
 | [`README.en.md`](README.en.md) | English documentation (this file) |
 | [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | Third-party data licenses |

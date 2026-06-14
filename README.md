@@ -127,8 +127,7 @@ python -m ingest build-relations
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# 若大幅更新 README.md，可重新生成简体版：
-# python scripts/gen_readme_zh_hans.py
+# 若大幅更新 README.md，请手工维护 README.zh-Hans.md（简体中文书面语）：
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
@@ -390,7 +389,7 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 | 文件 | 內容 |
 |------|------|
 | [`README.md`](README.md) | 本文件（繁體中文，GitHub 首頁） |
-| [`README.zh-Hans.md`](README.zh-Hans.md) | 简体中文說明 |
+| [`README.zh-Hans.md`](README.zh-Hans.md) | 简体中文说明（书面语） |
 | [`README.en.md`](README.en.md) | English documentation |
 | [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |
