@@ -127,7 +127,8 @@ python -m ingest build-relations
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# 若大幅更新 README.md，请手工维护 README.zh-Hans.md（简体中文书面语）：
+# 若大幅更新 README.md，可重新生成簡體書面語版：
+# python scripts/gen_readme_zh_hans.py
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:

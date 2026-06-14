@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Deprecated helper: OpenCC t2s draft from README.md.
-
-README.zh-Hans.md is maintained as Simplified **written Chinese** (书面语).
-Do not overwrite README.zh-Hans.md in release workflow; use --stdout to preview.
-"""
+"""Generate README.zh-Hans.md from README.md (t2s + colloquial → written Chinese)."""
 
 from __future__ import annotations
 
@@ -13,6 +9,11 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.readme_zh_hans_written import apply_written_rules, find_colloquial_markers
+
 SRC = REPO_ROOT / "README.md"
 DST = REPO_ROOT / "README.zh-Hans.md"
 
@@ -24,19 +25,24 @@ RELATED_DOCS = """| [`README.md`](README.md) | 繁体中文（GitHub 首页） |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | 本文件（简体中文书面语） |
 | [`README.en.md`](README.en.md) | English documentation |"""
 
+MAINTAINER_COMMENT = "# 若大幅更新 README.md，可重新生成简体书面语版：\n# python scripts/gen_readme_zh_hans.py"
 
-def generate() -> str:
+
+def _opencc_t2s(text: str) -> str:
     try:
         import opencc
     except ImportError as exc:
         raise SystemExit(
             "Missing opencc-python-reimplemented. Run: pip install -r requirements-dev.txt"
         ) from exc
+    return opencc.OpenCC("t2s").convert(text)
 
-    text = opencc.OpenCC("t2s").convert(SRC.read_text(encoding="utf-8"))
+
+def _apply_locale_fixes(text: str) -> str:
     text = re.sub(r"<p align=\"center\">.*?</p>", LANG_BAR, text, count=1, flags=re.DOTALL)
     text = text.replace("<!-- words-count:zh-Hant -->", "<!-- words-count:zh-Hans -->")
     text = text.replace("<!-- /words-count:zh-Hant -->", "<!-- /words-count:zh-Hans -->")
+    text = text.replace("目前總詞條列數", "目前总词条列数")
     text = text.replace(
         "README.md · README.en.md · LICENSE",
         "README.md · README.zh-Hans.md · README.en.md · LICENSE",
@@ -49,31 +55,74 @@ def generate() -> str:
         text,
         count=1,
     )
-    text = text.replace("**授權**：程式碼依", "**授权**：程序代码依")
+    text = re.sub(
+        r"# 若大幅更新 README\.md[^\n]*\n(?:# [^\n]*\n)?",
+        f"{MAINTAINER_COMMENT}\n",
+        text,
+        count=1,
+    )
+    return text
+
+
+def generate(source_text: str | None = None) -> str:
+    raw = source_text if source_text is not None else SRC.read_text(encoding="utf-8")
+    text = _opencc_t2s(raw)
+    text = apply_written_rules(text)
+    text = _apply_locale_fixes(text)
     return text
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description="Generate README.zh-Hans.md from README.md (Simplified written Chinese)."
+    )
     parser.add_argument(
         "--stdout",
         action="store_true",
-        help="Print draft to stdout instead of overwriting README.zh-Hans.md",
+        help="Print to stdout instead of writing README.zh-Hans.md",
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Exit 1 if README.zh-Hans.md differs from generated output",
+    )
+    parser.add_argument(
+        "--strict-colloquial",
+        action="store_true",
+        help="Exit 1 if generated text still contains Cantonese colloquial markers",
     )
     args = parser.parse_args()
+
     if not SRC.is_file():
         print(f"Source not found: {SRC}", file=sys.stderr)
         return 1
+
     draft = generate()
+    markers = find_colloquial_markers(draft)
+    if args.strict_colloquial and markers:
+        print(f"Colloquial markers remain: {', '.join(markers)}", file=sys.stderr)
+        return 1
+
+    if args.check:
+        if not DST.is_file():
+            print(f"Target not found: {DST}", file=sys.stderr)
+            return 1
+        current = DST.read_text(encoding="utf-8")
+        if current == draft:
+            print("README.zh-Hans.md is up to date.")
+            return 0
+        print("README.zh-Hans.md is stale. Run: python scripts/gen_readme_zh_hans.py", file=sys.stderr)
+        return 1
+
     if args.stdout:
         sys.stdout.write(draft)
         return 0
-    print(
-        "Refusing to overwrite README.zh-Hans.md (maintained as written Chinese). "
-        "Use --stdout to preview an OpenCC draft.",
-        file=sys.stderr,
-    )
-    return 2
+
+    DST.write_text(draft, encoding="utf-8")
+    print(f"Wrote {DST}")
+    if markers:
+        print(f"Note: remaining markers (may be acceptable): {', '.join(markers)}")
+    return 0
 
 
 if __name__ == "__main__":

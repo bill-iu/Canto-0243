@@ -27,8 +27,8 @@
 ## 功能
 
 * **0243／02493 编码搜索**：**0243模式** `mode=m1`（0243 等价变体）与 **02493模式** `mode=m2`（含 9 键声调、区分二声）。
-* **多种查询语法**：纯汉字 · 纯数字（分页 + 总数 header）· **粤拼查询**（`syut`／`nei hou`／`ming4 baak6`）· 混合码字（`23就`）· 通配符（`3_`、`23?`）· 等号韵／声（`香港=`、`2=我3`）· 韵／声锚（`?就=`）。
-* **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索模式下使用 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`。
+* **多种查询语法**：纯汉字 · 纯数字（分页 + 总数 header）· **粤拼查询**（`syut`／`nei hou`／`ming4 baak6`）· 混合码字（`23就`）· wildcard（`3_`、`23?`）· 等号韵／声（`香港=`、`2=我3`）· 韵／声锚（`?就=`）。
+* **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索模式下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`。
 * **词库与收录**：**词库埠** raw lookup + **收录决策**；多字词级标音或音节拼接读音。
 * **近反义资料**：**静态词林埠**（cilin／国语辞典近义／反义语料）；运行时与 ingest 共用同一规则。
 * **结果排序**：同一 match tier 内 **纯汉字** → **essay 词频** → **curated** → **pron_rank** → 字面（详见 [`CONTEXT.md`](CONTEXT.md) § 搜索结果排序）。
@@ -39,7 +39,7 @@
 
 ### 1. 下载与安装（一般用户）
 
-完整离线体验请使用官方 portable 套件，**无需** clone 源码或自行导入词库。
+完整离线体验请用官方 portable 套件，**无需** clone 源码或自行导入词库。
 
 1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Official data bundle v1.0.0-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)）。
 2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
@@ -60,7 +60,7 @@
 
 ### 2. 如何使用
 
-**三种模式**（顶栏分段控件）：
+**三种模式**（顶栏 segmented control）：
 
 | 模式 | `mode` | 用途 |
 |------|--------|------|
@@ -68,7 +68,7 @@
 | **02493模式**（紧） | `m2` | 02493 码，区分二声 |
 | **近反义** | `syn` | 输入汉字列出近义／反义栏（不接受粤拼） |
 
-**语法族**（均可在 **0243搜索模式** 使用，除非另有说明）：
+**语法族**（皆可在 **0243搜索模式** 使用，除非另有说明）：
 
 * **字面／数字／粤拼**：直接输入「你好」、`23`、`nei hou`。
 * **位置与通配符**：`香??`、`?你?`、`3_`、`23?`。
@@ -76,9 +76,9 @@
 * **等号锚点**：`=` 在锚字**后**比较韵母（`?就=`）、在锚字**前**比较声母（`?=就`）；整词与「香港」押韵 `香港=`、码夹 `2我=3`。
 * **近反义关系查询**：`~开心`、`!你`、`33!开心`。
 * **反义复合词**：`!!`、`33!!`、`!!你`、`33!!你`（如生死、是非）。
-* **近义复合词**：`~~`、`33~~`、`~~你`、`33~~你`（如朋友、恐惧）；**不适用于近反义模式**。
+* **近义复合词**：`~~`、`33~~`、`~~你`、`33~~你`（如朋友、恐惧）；**不适用近反义模式**。
 
-应用内 **「搜索教学」** 提供完整可点击示例；下文「查询语法速查」与教学页一致，供离线查阅。
+应用内 **「搜索教学」** 提供完整可点击示例；下方「查询语法速查」与教学页一致，供离线查阅。
 
 ### 3. 从 Git clone（开发者）
 
@@ -91,7 +91,7 @@ python main.py
 
 亦可使用 `./start.sh`（创建 venv 并打开浏览器；仍需自备 `lyrics.db`）。
 
-**随仓库提供**（第 1 层，见「资料来源」）：essay 词频、curated 常用词、反义／近义复合列表，以及 bundled 近反义静态文件。**单字 rime `char.csv` 与 antisem 不在 git 中**——clone 后请先执行 `python scripts/bootstrap_data.py`（第 2 层）。
+**随仓库提供**（第 1 层，见「资料来源」）：essay 词频、curated 常用词、反义／近义复合列表，以及 bundled 近反义 静态文件。**单字 rime `char.csv` 与 antisem 不在 git 中**——clone 后请先执行 `python scripts/bootstrap_data.py`（第 2 层）。
 
 ---
 
@@ -115,7 +115,7 @@ python -m ingest build-relations
 
 ### 官方资料 Release（四件套）
 
-再分发前请核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**请勿**将大文件 commit 至 git。
+再分发前核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。
 
 | 资产 | 用途 |
 |------|------|
@@ -127,9 +127,8 @@ python -m ingest build-relations
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# 若大幅更新 README.md，请手工维护本文件（简体中文书面语）：
-# 勿直接运行 gen_readme_zh_hans.py 覆盖正文
-# Windows:
+# 若大幅更新 README.md，可重新生成简体书面语版：
+# python scripts/gen_readme_zh_hans.py
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
 bash scripts/build-portable.sh
@@ -140,7 +139,7 @@ bash scripts/build-portable.sh
 
 ## 查询语法速查
 
-与前端「搜索教学」可点击示例一致。
+与前端「搜索教学」可点击例子一致。
 
 ### 基本查询
 
@@ -156,7 +155,7 @@ bash scripts/build-portable.sh
 
 | 输入示例 | 说明 | 模式 |
 |----------|------|------|
-| `23` | 查找同音字 | 0243模式 |
+| `23` | 找同音字 | 0243模式 |
 | `93` | 02493 增加数字 9 | 02493模式 |
 
 ### 字面位置
@@ -174,8 +173,8 @@ bash scripts/build-portable.sh
 | `23就` | 二字，23 同音，尾字与「就」押韵 |
 | `23@就` | 二字，23 同音，尾字必须为「就」 |
 | `23*就` | 三字，23 同音，第三字为「就」 |
-| `23*就=` | 三字，23 同音，第三字与「就」押韵 |
-| `23*=就` | 三字，23 同音，第三字与「就」同声 |
+| `23*就=` | 三字，23 同音，第三个字与「就」押韵 |
+| `23*=就` | 三字，23 同音，第三个字与「就」同声 |
 
 ### 韵母锚点
 
@@ -201,7 +200,7 @@ bash scripts/build-portable.sh
 | `大蛋糕=` | 三字，整词与「大蛋糕」押韵 |
 | `34英皇=` | 五字，前码 34＋整词与「英皇」押韵 |
 | `2我=3` | 二字，23 同音，首字与「我」押韵 |
-| `23就=` | 二字，23 同音且尾字与「就」押韵（同 `23就`） |
+| `23就=` | 二字，23 同音＋尾字与「就」押韵（同 `23就`） |
 
 ### 左 `=` 查声母
 
@@ -214,8 +213,8 @@ bash scripts/build-portable.sh
 
 | 输入示例 | 说明 |
 |----------|------|
-| `3_` | 二字，首字与 3 同音，尾字不限 |
-| `23?` | 三字，前两字 23 同音，第三字不限 |
+| `3_` | 二字，首字和 3 同音，尾字不限 |
+| `23?` | 三字，前两字 23 同音，第三个字不限 |
 
 ### 近义／反义
 
@@ -287,11 +286,11 @@ GET /words/search/?q=开心&mode=syn
 
 设计原则：领域规则位于 `app/domain/`；ingest 与运行时共用同一埠与池规则。
 
-### 部署与数据库
+### 部署与资料库
 
-**产品保证路径**：离线单机 + **SQLite**（`lyrics.db`）。新 schema 仅通过 SQLite bootstrap／`scripts/db/init_db.py` 维护。
+**产品保证路径**：离线单机 + **SQLite**（`lyrics.db`）。新 schema 仅透过 SQLite bootstrap／`scripts/db/init_db.py` 维护。
 
-**PostgreSQL**：冻结中的 scaffold，**非**主要交付目标。实验用途见 `requirements-postgres.txt` 与 [`CONTEXT.md`](CONTEXT.md) § 产品边界。
+**PostgreSQL**：冻结中的 scaffold，**非**主要交付目标。实验用见 `requirements-postgres.txt` 与 [`CONTEXT.md`](CONTEXT.md) § 产品边界。
 
 ### 项目结构
 
@@ -315,7 +314,7 @@ Canto-0243/
 
 再分发前请核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。收录与排序见 [`CONTEXT.md`](CONTEXT.md) § 词库与排序。
 
-| 层级 | 说明 | 示例 |
+| 层级 | 说明 | 例子 |
 |------|------|------|
 | **1 · 随仓库** | clone 即可得 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
 | **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
@@ -333,7 +332,7 @@ Canto-0243/
 python -m unittest discover -s tests -q
 ```
 
-关键回归：纯汉字 strict code、通配符、`mode=syn`、等号／码夹、粤拼、`~~`／`!!` 复合词。
+关键回归：纯汉字 strict code、wildcard、`mode=syn`、等号／码夹、粤拼、`~~`／`!!` 复合词。
 
 ---
 
@@ -353,12 +352,12 @@ python -m unittest discover -s tests -q
 
 * **不得**将本工具重新打包、转售，或作为竞争性产品单独发布。
 * **不得**将本工具提供为**付费 API**、订阅或按量计费的查询／推理服务（免费自托管或免费公开访问另论，但仍须遵守署名等条款）。
-* 任何公开发布的 fork、改进或衍生版本须**沿用同一授权**（或实质等同条款），并在合理显眼位置保留 **Canto-0243** 名称。若您运营公开网站、网页应用或 API（包括免费），须显示例如「Powered by Canto-0243」并链接至官方仓库。
-* 若您运营**商业软件**或**付费推理服务**，拟将本工具整合入产品，请先与版权人联系，或在官方仓库提交 Issue 商议书面授权。
+* 任何公开发布的 fork、改进或衍生版本须**沿用同一授权**（或实质等同条款），并在合理显眼位置保留 **Canto-0243** 名称。若您运营公开网站、网页 app 或 API（包括免费），须显示例如「Powered by Canto-0243」并链接至官方仓库。
+* 若您运营**商业软件**或**付费推理服务**，希望将本工具整合入产品，请先与版权人联络或于官方 repo 开 Issue 商议书面授权。
 
-除上述条款外，本授权在实务上等效于 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 并附加限制。完整法律文本见 [`LICENSE`](LICENSE)。
+除上述条款外，本授权在实务上等效于 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 加上附加限制。完整法律文本见 [`LICENSE`](LICENSE)。
 
-请在任何未来的 fork 或发布中保留 **Canto-0243** 名称。
+请在任何未来 fork 或发布中保留 **Canto-0243** 名称！
 
 ---
 
@@ -372,13 +371,13 @@ python -m unittest discover -s tests -q
 
 ### 资料与语料致谢
 
-Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感谢以下团队与项目（再分发前请阅读各上游完整条款；授权总表见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)）：
+Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感谢以下团队与专案（再分发前请阅读各上游完整条款；授权总表见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)）：
 
 * **Rime 粤语（单字读音 `char.csv`、essay 词频）**：来自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 与 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。欢迎为上述项目点 star。
-* **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 导出，采用 **MIT** 授权。
+* **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 汇出，采用 **MIT** 授权。
 * **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)，采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
 * **ChineseAntiword（antisem）**：来自 [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword)；上游**未明示授权**，本地使用须署名，再分发前请自行核对条款。
-* **words.hk 粤典词表**：来自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，属**公有领域**（致谢 [words.hk](https://words.hk/)）。
+* **words.hk 粤典词表**：来自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有领域**（致谢 [words.hk](https://words.hk/)）。
 * **多字词级标音上游**（maintainer 自建 `lyrics.db` 时）：[CC-Canto](https://cantonese.org/download.html)（[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)）、[开放词典 · 粤语词典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）。
 
 使用上述资料构建或再分发词库时，您同意遵守各自授权；部分来源含**非商业**或**署名**要求。可选近反义来源（如 COW）默认关闭，见 `data/syn_ant/sources.yaml`。

@@ -127,7 +127,8 @@ Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# After large README.md edits, maintain README.zh-Hans.md manually (Simplified written Chinese):
+# After large README.md edits, regenerate Simplified written Chinese:
+# python scripts/gen_readme_zh_hans.py
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
 # macOS / Linux:
