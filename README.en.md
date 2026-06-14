@@ -1,0 +1,394 @@
+# Canto-0243
+
+**Languages / 語言**：[繁體中文](README.zh-Hant.md) · [English](README.en.md)
+
+Writing Cantonese lyrics often means hunting for the right character—same tone, rhyming fit, or a near synonym—while matching 0243 codes and Jyutping. Flipping through dictionaries, rhyme books, and thesaurus tables by hand is slow and easy to miss good options. [0243.hk](https://0243.hk) is an excellent online Cantonese rhyme finder, but outages, endless loading, or missing features can still stall your workflow.
+
+**Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench built with AI agents. It lists replaceable **word entries** in seconds using **0243／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. Type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine.
+
+**License**: [Canto-0243 License](LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). Third-party data: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).  
+**Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · vanilla HTML/JS frontend  
+**Domain glossary**: [`CONTEXT.md`](CONTEXT.md) · Contributing: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
+
+---
+
+## Latest release
+
+Official offline data bundle: **[Official data bundle v1.0.0-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
+
+---
+
+## Features
+
+* **0243／02493 code search**: **0243 mode** `mode=m1` (0243 equivalence variants) and **02493 mode** `mode=m2` (9-key tones, distinguishes entering tone variants).
+* **Rich query syntax**: plain Chinese · plain digits (pagination + total header) · **Jyutping queries** (`syut`／`nei hou`／`ming4 baak6`) · code+character (`23就`) · wildcards (`3_`, `23?`) · equals rhyme／initial (`香港=`, `2=我3`) · rhyme／initial anchors (`?就=`).
+* **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
+* **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.
+* **Relation data**: **static thesaurus port** (Cilin／Guotong near-synonyms／antisem); runtime and ingest share the same rules.
+* **Result ranking**: within each match tier **plain Chinese** → **essay frequency** → **curated** → **pron_rank** → surface form (see [`CONTEXT.md`](CONTEXT.md) § search result ranking).
+
+---
+
+## Quick start
+
+### 1. Download & install (end users)
+
+For the full offline experience, use the official portable package—**no** git clone or manual DB setup.
+
+1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Official data bundle v1.0.0-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)).
+2. Extract the entire folder (e.g. `canto-0243-portable`).
+3. Launch by platform:
+   * **Windows**: double-click **`START.bat`**.
+   * **macOS**: prefer `canto-0243-portable-macos.tar.gz`; then double-click `START.command` or run `./START.sh`.
+   * **Linux**: `chmod +x START.sh && ./START.sh`
+
+**Requirements**: Python 3.10+ on PATH. First launch creates a venv and installs dependencies; your browser opens the search page.
+
+| Entry | URL |
+|-------|-----|
+| Frontend (search guide in header) | http://127.0.0.1:8000/frontend/index.html |
+| API docs | http://127.0.0.1:8000/docs |
+| Health check | http://127.0.0.1:8000/ |
+
+The package includes `lyrics.db` and static near／antonym data. Troubleshooting: see `README.txt` in the extracted folder.
+
+### 2. How to use
+
+**Three modes** (header segmented control):
+
+| Mode | `mode` | Purpose |
+|------|--------|---------|
+| **0243 mode** (loose) | `m1` | 0243 code equivalence variants |
+| **02493 mode** (strict) | `m2` | 02493 codes; finer entering-tone distinction |
+| **Near／antonym** | `syn` | Chinese-only near／antonym columns (no Jyutping) |
+
+**Syntax families** (all work in **0243 search mode** unless noted):
+
+* **Surface／digits／Jyutping**: type `你好`, `23`, `nei hou`.
+* **Position & wildcards**: `香??`, `?你?`, `3_`, `23?`.
+* **Digits + tail character**: `23就` (tail rhymes with 「就」), `23@就` (literal tail fixed), `23*就` (longer slot).
+* **Equals anchors**: `=` **after** anchor compares rhyme (`?就=`); `=` **before** anchor compares initial (`?=就`); whole-word rhyme `香港=`, code-sandwich `2我=3`.
+* **Near／antonym relation queries**: `~開心`, `!你`, `33!開心`.
+* **Antonym compounds**: `!!`, `33!!`, `!!你`, `33!!你` (e.g. 生死, 是非).
+* **Near-synonym compounds**: `~~`, `33~~`, `~~你`, `33~~你` (e.g. 朋友, 恐懼); **not** in near／antonym mode.
+
+The in-app **Search guide** has clickable examples; the cheat sheet below matches that page for offline reference.
+
+### 3. Git clone (developers)
+
+A clone **does not** include a full `lyrics.db`. To run `python main.py` locally, download `lyrics.db` from Releases into the repo root, or rebuild via the Maintainer pipeline below.
+
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+Or use `./start.sh` (creates venv and opens the browser—you still need `lyrics.db`).
+
+**Bundled with the repo** (tier 1, see Data sources): essay frequency, curated common words, antonym／near-synonym compound lists, and bundled static near／antonym files. **Rime `char.csv` and antisem are not in git**—after clone run `python scripts/bootstrap_data.py` (tier 2).
+
+---
+
+## Maintainer: rebuild lexicon & near／antonym data
+
+Outputs are local／gitignored—**do not** commit. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+
+```bash
+pip install -r requirements-dev.txt
+python scripts/bootstrap_data.py
+# 1. Build multi-character lexicon readings from upstream tables (see THIRD_PARTY_NOTICES § multi-character readings)
+# 2. Import words table:
+python scripts/ingest/import_data.py
+# 3. Near／antonym ingest:
+python -m ingest report
+python -m ingest normalize --source current_static
+python -m ingest build-relations
+```
+
+Optional relation sources (off by default): `data/syn_ant/sources.yaml`.
+
+### Official data release (four artifacts)
+
+Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **Do not** commit large artifacts to git.
+
+| Asset | Purpose |
+|-------|---------|
+| `lyrics.db` | Full **word-entry store** (`words` + `word_relations`) |
+| `canto-0243-portable.zip` | Windows portable (`START.bat`) |
+| `canto-0243-portable-macos.tar.gz` | macOS portable (`START.command`／`START.sh`) |
+| `words-lexicon.json` | **Lexicon-reading** sidecar |
+
+```bash
+python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+# Windows:
+powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
+# macOS / Linux:
+bash scripts/build-portable.sh
+# Upload all four to GitHub Release (portable must include zip + macOS tar.gz)
+```
+
+---
+
+## Query syntax cheat sheet
+
+Matches clickable examples in the frontend **Search guide**.
+
+### Basic lookup
+
+| Example | Description |
+|---------|-------------|
+| `就` | All readings for this character |
+| `你好` | Lookup this word |
+| `syut` | Jyutping (no tone digits) |
+| `nei hou` | Jyutping (no tone digits) |
+| `ming4 baak6` | Jyutping (with tones) |
+
+### 0243／02493 digits
+
+| Example | Description | Mode |
+|---------|-------------|------|
+| `23` | Same-code matches | 0243 mode |
+| `93` | 02493 adds digit 9 | 02493 mode |
+
+### Literal positions
+
+| Example | Description |
+|---------|-------------|
+| `香??` | 3-char word; first char is 「香」 |
+| `?你?` | 3-char word; middle is 「你」 |
+| `23?就` | 4-char word; 23 + ? + 就 |
+
+### Digits + tail character
+
+| Example | Description |
+|---------|-------------|
+| `23就` | 2-char; 23 same-code; tail rhymes with 「就」 |
+| `23@就` | 2-char; 23 same-code; tail must be 「就」 |
+| `23*就` | 3-char; 23 same-code; third char is 「就」 |
+| `23*就=` | 3-char; 23 same-code; third char rhymes with 「就」 |
+| `23*=就` | 3-char; 23 same-code; third char same initial as 「就」 |
+
+### Rhyme (final) anchors
+
+| Example | Description |
+|---------|-------------|
+| `香=?` | 2-char; first char rhymes with 「香」 |
+| `?就=` | 2-char; tail rhymes with 「就」 |
+| `??就=` | 3-char; tail rhymes with 「就」 |
+
+### Initial anchors
+
+| Example | Description |
+|---------|-------------|
+| `=香?` | 2-char; first char same initial as 「香」 |
+| `?=就` | 2-char; tail same initial as 「就」 |
+| `??=就` | 3-char; tail same initial as 「就」 |
+
+### Trailing `=` (whole-word rhyme／code sandwich)
+
+| Example | Description |
+|---------|-------------|
+| `香港=` | 2-char; whole word rhymes with 「香港」 |
+| `大蛋糕=` | 3-char; whole word rhymes with 「大蛋糕」 |
+| `34英皇=` | 5-char; prefix code 34 + whole word rhymes with 「英皇」 |
+| `2我=3` | 2-char; 23 same-code; first char rhymes with 「我」 |
+| `23就=` | 2-char; 23 same-code + tail rhymes with 「就」 (same as `23就`) |
+
+### Leading `=` (whole-word initial)
+
+| Example | Description |
+|---------|-------------|
+| `=香港` | 2-char; whole word same initial pattern as 「香港」 |
+| `2=我3` | 2-char; 23 same-code; first char same initial as 「我」 |
+
+### Wildcards
+
+| Example | Description |
+|---------|-------------|
+| `3_` | 2-char; first syllable matches 3; tail unrestricted |
+| `23?` | 3-char; first two syllables match 23; third unrestricted |
+
+### Near／antonym
+
+| Example | Description |
+|---------|-------------|
+| `~開心` | Near-synonyms of 「開心」 |
+| `!你` | Antonyms of 「你」 (includes mirror near-synonyms) |
+| `33!開心` | 33 same-code + antonyms of 「開心」 |
+| `mode=syn` + `開心` | Near／antonym mode (two-column UI) |
+
+### Antonym compounds
+
+| Example | Description |
+|---------|-------------|
+| `!!` | 2-char antonym compounds (e.g. 生死, 是非) |
+| `33!!` | 33 same-code + antonym compound |
+| `!!你` | Antonym compound; tail rhymes with 「你」 |
+| `33!!你` | 33 same-code + antonym compound + tail rhymes with 「你」 |
+
+### Near-synonym compounds
+
+| Example | Description |
+|---------|-------------|
+| `~~` | 2-char near-synonym compounds (e.g. 朋友, 恐懼) |
+| `33~~` | 33 same-code + near-synonym compound |
+| `~~你` | Near-synonym compound; tail rhymes with 「你」 |
+| `33~~你` | 33 same-code + near-synonym compound + tail rhymes with 「你」 |
+
+```http
+GET /words/search/?q=你好&mode=m1
+GET /words/search/?q=23就&mode=m1
+GET /words/search/?q=香港=&mode=m1
+GET /words/search/?q=2=我3&mode=m1
+GET /words/search/?q=nei%20hou&mode=m1
+GET /words/search/?q=!你&mode=m1
+GET /words/search/?q=~~&mode=m1
+GET /words/search/?q=開心&mode=syn
+```
+
+---
+
+## Advanced: architecture & deployment
+
+### Architecture overview
+
+```text
+query string → query_parse (syntax class · ParsedQuery · build_match_spec)
+            → query_dispatch (priority registry → executors)
+                   ↓
+    position_match · word_lookup_executor · relation_syntax_executor
+    · compound_ant_executor · compound_syn_executor
+                   ↓
+    domain/lexicon (admission) · domain/thesaurus (static thesaurus) · domain/relations (relation pool／graph)
+                   ↓
+         words table · word_cache (short-word preload)
+                   ↓
+         essay_sort · JSON results (plain digits include X-Search-Total)
+```
+
+| Layer | Path | Role |
+|-------|------|------|
+| Domain | `app/domain/lexicon/` | Lexicon port · **admission decisions** |
+| Domain | `app/domain/thesaurus/` | **Static thesaurus port** |
+| Domain | `app/domain/relations/` | **Near／antonym pool** · **relation graph** · ranking |
+| Service | `app/services/query_parse.py` | `parse_query` · `build_match_spec` |
+| Service | `app/services/query_dispatch.py` | `search_words` registry |
+| Service | `app/services/position_match.py` | Position match · equals／code-sandwich |
+| Service | `app/services/*_executor.py` | lookup · `~`/`!` · `!!` · `~~` |
+
+Design principle: domain rules live in `app/domain/`; ingest and runtime share the same ports and pool rules.
+
+### Deployment & database
+
+**Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). New schema is maintained only via SQLite bootstrap／`scripts/db/init_db.py`.
+
+**PostgreSQL**: frozen scaffold, **not** a primary delivery target. Experimental use: `requirements-postgres.txt` and [`CONTEXT.md`](CONTEXT.md) § product boundary.
+
+### Project layout
+
+```text
+Canto-0243/
+├── app/                    # API · domain · services · models
+├── frontend/               # index.html (search home) · relation-entry.html
+├── portable/               # START.bat · START.sh · env.portable
+├── data/                   # see Data sources (three tiers)
+├── ingest/                 # python -m ingest
+├── scripts/                # bootstrap · build-portable · import_data
+├── tests/
+├── docs/                   # CONTRIBUTING · agents/
+├── main.py · start.sh      # dev entrypoints
+├── README.md · README.zh-Hant.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
+└── requirements*.txt
+```
+
+### Data sources & licensing
+
+Verify [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. Admission and ranking: [`CONTEXT.md`](CONTEXT.md) § lexicon & ranking.
+
+| Tier | Description | Examples |
+|------|-------------|----------|
+| **1 · With repo** | available on clone | `data/essay/`, `data/lexicon/`, `data/syn_ant/`, bundled cilin／thesaurus |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`, antisem |
+| **3 · maintainer-built** | gitignored | `lyrics.db`, lexicon-reading JSON |
+
+Default near／antonym pipeline: `data/syn_ant/sources.yaml` (cilin, guotong, antisem, compound lists). Full upstream table: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+---
+
+## Tests
+
+Currently **225** unittest cases.
+
+```bash
+python -m unittest discover -s tests -q
+```
+
+Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code-sandwich, Jyutping, `~~`／`!!` compounds.
+
+---
+
+## Dependencies
+
+| Layer | File | Purpose |
+|-------|------|---------|
+| Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
+| Ingest / dev | `requirements-dev.txt` | ingest & legacy scripts |
+| PostgreSQL (frozen) | `requirements-postgres.txt` | experimental |
+
+---
+
+## Canto-0243 license & use
+
+You may use this tool for Cantonese lyric writing, rhyme lookup, character substitution, and as part of **commercial creative work** (songs, scripts, published lyrics)—subject to the restrictions below:
+
+* **You may not** repackage, resell, or ship it as a competing standalone product.
+* **You may not** offer this tool as a **paid API**, subscription, or metered query／inference service (free self-hosting or free public access is different, but attribution terms still apply).
+* Any public fork, improvement, or derivative must **use the same license** (or substantially equivalent terms) and keep the **Canto-0243** name in a reasonable, visible place. If you run a public site, web app, or API (including free), show e.g. “Powered by Canto-0243” linking to the official repo.
+* If you run **commercial software** or a **paid inference service** and want to embed this tool, contact the copyright holder or open an Issue on the official repo for written permission.
+
+Apart from the above, this license is in practice [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) plus additional restrictions. Full legal text: [`LICENSE`](LICENSE).
+
+Please keep the name **Canto-0243** in any future fork or distribution!
+
+---
+
+## Acknowledgements & third-party licenses
+
+### Project thanks
+
+Early in development—with almost no programming background—the author benefited from **[ivorhoulker](https://github.com/ivorhoulker)** as advisor: design and implementation guidance plus many valuable suggestions. Without that help, **Canto-0243** would not exist.
+
+Thanks also to **Professor Wong Chi-wah**, inventor of **0243 theory**, for the theoretical foundation of digitized Cantonese lyric writing; and to **Daniel Tam**, developer of [0243.hk](https://0243.hk), whose site solved many lyricists’ problems and inspired this tool.
+
+### Data & corpus thanks
+
+Canto-0243 integrates several open dictionaries, corpora, and near／antonym resources. We thank the teams and projects below (read each upstream license before redistribution; summary in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)):
+
+* **Rime Cantonese** (single-char `char.csv`, essay frequency): [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) and [rime/rime-cantonese](https://github.com/rime/rime-cantonese), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Give them a star!
+* **Cilin synonyms**: via [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin), **MIT**.
+* **Guotong near／antonym dictionary**: [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary), [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE).
+* **ChineseAntiword (antisem)**: [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword); upstream has **no explicit license**—attribute locally and verify before redistribution.
+* **words.hk Cantonese word list**: [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/), **public domain** (thanks [words.hk](https://words.hk/)).
+* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [CC-Canto](https://cantonese.org/download.html) ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)).
+
+Building or redistributing lexicons from these sources requires complying with each license; some impose **non-commercial** or **attribution** terms. Optional sources (e.g. COW) are off by default—see `data/syn_ant/sources.yaml`.
+
+---
+
+## Related documents
+
+| Document | Contents |
+|----------|----------|
+| [`README.zh-Hant.md`](README.zh-Hant.md) | This project (Traditional Chinese, full) |
+| [`README.en.md`](README.en.md) | English documentation (this file) |
+| [`LICENSE`](LICENSE) | Canto-0243 License |
+| [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | Third-party data licenses |
+| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | Contributing & repo-root conventions |
+| [`CONTEXT.md`](CONTEXT.md) | Domain glossary |
+| [`WORKLOG.md`](WORKLOG.md) | Change log |
+| [`AGENTS.md`](AGENTS.md) | Agent collaboration notes |
+
+---
+
+**Last updated**: 2026-06-15 (Open Design UI · Official data bundle v1.0.0-data)
