@@ -41,7 +41,13 @@ from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 
 # For candidate acquisition (moved from mask_search)
 from app.utils.jyutping_codec import get_code_variants
-from app.utils.word_cache import get_words_for_length
+from app.utils.word_cache import (
+    get_mask_index_candidates,
+    get_phoneme_index_candidates,
+    get_words_for_length,
+    is_word_cache_ready,
+    narrow_candidates_by_phoneme_anchor,
+)
 from app.services.word_db_filters import apply_code_filter, length_filter
 
 # Needed by the moved candidate helpers
@@ -129,7 +135,7 @@ class CandidateSource(Protocol):
 
 @dataclass
 class LengthMaskCandidateSource:
-    """Cache-first 長度桶 + mask literal 預過濾（韻錨／碼字 tail／字面參考）。"""
+    """Cache-first 長度桶 + mask literal 預過濾（碼字 tail／字面參考）。"""
 
     db: Any
     mask: str
@@ -142,6 +148,33 @@ class LengthMaskCandidateSource:
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
         return get_length_candidates(self.db, length, self.mask)
+
+
+@dataclass
+class RhymeAnchorCandidateSource:
+    """韻／聲錨：cache-ready 時直接走音素倒排索引，跳過全桶掃描。"""
+
+    db: Any
+    mask: str
+    anchor_pos: int
+    anchor: str
+    constraint: str
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        return get_rhyme_anchor_length_candidates(
+            self.db,
+            length,
+            self.mask,
+            self.anchor_pos,
+            self.anchor,
+            self.constraint,
+        )
 
 
 @dataclass
@@ -187,13 +220,17 @@ class MaskWildcardCandidateSource:
         code: Optional[str] = None,
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
-        from app.services.word_query_parser import mask_char_glob_pattern, parse_mask_query
+        from app.services.word_query_parser import mask_char_glob_pattern, mask_fixed_literal_prefix, parse_mask_query
 
         effective_mode = mode or self.mode
         effective_code = code if code is not None else self.query_code
         _, required_codes, _ = parse_mask_query(self.mask)
 
-        candidates = get_words_for_length(length)
+        indexed = get_mask_index_candidates(length, self.mask)
+        if indexed is not None:
+            candidates = indexed
+        else:
+            candidates = get_words_for_length(length)
         if candidates:
             return [
                 w for w in candidates
@@ -205,6 +242,9 @@ class MaskWildcardCandidateSource:
             length_filter(length),
             Word.char.op("GLOB")(glob_pat),
         )
+        prefix = mask_fixed_literal_prefix(self.mask)
+        if prefix:
+            query = query.filter(Word.char.like(f"{prefix}%"))
         code_filter = "".join(required_codes) if all(req is not None for req in required_codes) else None
         if code_filter:
             query = apply_code_filter(query, code_filter, effective_mode)
@@ -400,18 +440,45 @@ def run_position_query(
     sort_key: Callable[[Any], Any] | None = None,
 ) -> list:
     """Phase 2.4：位置型查詢統一入口（engine + sort + serialize）。"""
+    items, _ = run_position_query_tracked(
+        spec,
+        db,
+        mode,
+        limit,
+        offset,
+        source=source,
+        pre_candidates=pre_candidates,
+        sort_key=sort_key,
+    )
+    return items
+
+
+def run_position_query_tracked(
+    spec: MatchSpec,
+    db: Any,
+    mode: str,
+    limit: int,
+    offset: int,
+    *,
+    source: CandidateSource | None = None,
+    pre_candidates: list[Any] | None = None,
+    sort_key: Callable[[Any], Any] | None = None,
+) -> tuple[list, bool]:
+    """Like run_position_query; also returns whether candidates came from word_cache."""
     from app.services.word_serializer import serialize_page
 
+    from_cache = False
     if pre_candidates is not None:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=pre_candidates)
     elif source is not None:
-        filtered = _DEFAULT_ENGINE.match(spec, source, db, mode)
+        candidates, from_cache = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
+        filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=candidates)
     else:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode)
 
     key = sort_key or default_word_sort_key
     filtered.sort(key=key)
-    return serialize_page(filtered, offset, limit)
+    return serialize_page(filtered, offset, limit), from_cache
 
 
 def build_equals_match_spec(q: str) -> Optional[MatchSpec]:
@@ -676,6 +743,10 @@ def filter_candidates_by_match_spec(
             anchor_pos = slot.pos
             anchor = slot.value
             constraint = "final" if slot.kind == "final_anchor" else "initial"
+    if anchor_pos is not None and anchor and constraint:
+        candidates = narrow_candidates_by_phoneme_anchor(
+            candidates, spec.width, anchor_pos, anchor, constraint, db,
+        )
     return filter_words_by_code_and_mask(
         candidates,
         width=spec.width,
@@ -696,11 +767,13 @@ __all__ = [
     "MatchSpec",
     "CandidateSource",
     "LengthMaskCandidateSource",
+    "RhymeAnchorCandidateSource",
     "LengthCodeCandidateSource",
     "MaskWildcardCandidateSource",
     "CompoundAntCandidateSource",
     "CompoundSynCandidateSource",
     "run_position_query",
+    "run_position_query_tracked",
     "run_equals_query",
     "build_equals_match_spec",
     "matches_equals_phoneme_span",
@@ -710,6 +783,7 @@ __all__ = [
     "filter_words_by_code_and_mask",
     "filter_candidates_by_match_spec",
     "get_length_candidates",
+    "get_rhyme_anchor_length_candidates",
     "get_candidates_for_length",
     "build_final_options_at_positions",
     "word_matches_last_final",
@@ -730,17 +804,44 @@ def get_length_candidates(db, width: int, mask: str):
     取得指定長度的候選詞，並對 cache 命中者先做 mask literal 預過濾。
     用於 rhyme-anchor、code-tail、at-tail 等需要 mask 的情境。
     """
-    candidates = get_words_for_length(width)
+    indexed = get_mask_index_candidates(width, mask)
+    if indexed is not None:
+        candidates = indexed
+    else:
+        candidates = get_words_for_length(width)
     if candidates:
         return [w for w in candidates if matches_mask_literal_chars(get_word_text(w), mask)], True
-    # 延遲 import 避免循環
     from app.services.word_query_parser import mask_char_glob_pattern as _mask_glob
+    from app.services.word_query_parser import mask_fixed_literal_prefix
+
     glob_pat = _mask_glob(mask)
     query = db.query(Word).filter(
         length_filter(width),
         Word.char.op("GLOB")(glob_pat),
     )
+    prefix = mask_fixed_literal_prefix(mask)
+    if prefix:
+        query = query.filter(Word.char.like(f"{prefix}%"))
     return query.order_by(Word.char, Word.jyutping).all(), False
+
+
+def get_rhyme_anchor_length_candidates(
+    db,
+    width: int,
+    mask: str,
+    anchor_pos: int,
+    anchor: str,
+    constraint: str,
+) -> tuple[list[Any], bool]:
+    """韻／聲錨候選：音素索引優先，避免先物化整個 length 桶。"""
+    if is_word_cache_ready():
+        rows = get_phoneme_index_candidates(width, anchor_pos, anchor, constraint, db)
+        narrowed = [
+            w for w in rows
+            if matches_mask_literal_chars(get_word_text(w), mask)
+        ]
+        return narrowed, True
+    return get_length_candidates(db, width, mask)
 
 
 def get_candidates_for_length(

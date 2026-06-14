@@ -58,6 +58,71 @@
       display: none !important;
     }
 
+    .preload-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(247, 245, 239, 0.96);
+      backdrop-filter: blur(6px);
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .preload-overlay.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .preload-card {
+      width: min(420px, 100%);
+      padding: 28px 24px 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .preload-card h2 {
+      margin: 0 0 8px;
+      font-family: "Songti TC", "Noto Serif TC", serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+
+    .preload-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .preload-track {
+      height: 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      overflow: hidden;
+    }
+
+    .preload-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      transition: width 180ms ease-out;
+    }
+
+    .preload-overlay.is-degraded .preload-card {
+      border-color: var(--accent);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .preload-bar { transition: none; }
+      .preload-overlay { transition: none; }
+    }
+
     .skip-link {
       position: fixed;
       top: 12px;
@@ -867,6 +932,15 @@
   </style>
 </head>
 <body>
+  <div class="preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
+    <div class="preload-card">
+      <h2>載入詞庫</h2>
+      <p id="preloadLabel">正在預載缺字查詢索引…</p>
+      <div class="preload-track" aria-hidden="true">
+        <div class="preload-bar" id="preloadBar"></div>
+      </div>
+    </div>
+  </div>
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 
   <header class="app-header">
@@ -1219,7 +1293,9 @@
     let currentQuery = "";
     let searchTotal = null;
     const PAGE_SIZE = 160;
+    const PRELOAD_TIMEOUT_MS = 30000;
     const searchCache = new Map();
+    let appSearchReady = false;
 
     const $ = {
       homeBtn: document.getElementById("homeBtn"),
@@ -1239,7 +1315,59 @@
       shuffleBtn: document.getElementById("shuffleBtn"),
       results: document.getElementById("results"),
       stats: document.getElementById("stats"),
+      preloadOverlay: document.getElementById("preloadOverlay"),
+      preloadBar: document.getElementById("preloadBar"),
+      preloadLabel: document.getElementById("preloadLabel"),
     };
+
+    function setSearchControlsEnabled(enabled) {
+      $.searchInput.disabled = !enabled;
+      $.searchBtn.disabled = !enabled || isSearching;
+      if ($.shuffleBtn) $.shuffleBtn.disabled = !enabled;
+    }
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    async function waitForPreloadReady() {
+      setSearchControlsEnabled(false);
+      const started = Date.now();
+      while (true) {
+        try {
+          const res = await fetch("/ready", { cache: "no-store" });
+          if (!res.ok) throw new Error(`ready ${res.status}`);
+          const data = await res.json();
+          const pct = Math.max(0, Math.min(100, Math.round((data.progress || 0) * 100)));
+          $.preloadBar.style.width = `${pct}%`;
+          if (data.ready) {
+            $.preloadLabel.textContent = "就緒";
+            $.preloadOverlay.classList.remove("is-degraded");
+            $.preloadOverlay.setAttribute("aria-busy", "false");
+            $.preloadOverlay.classList.add("is-hidden");
+            appSearchReady = true;
+            setSearchControlsEnabled(true);
+            return;
+          }
+          if (data.status === "failed") {
+            break;
+          }
+          $.preloadLabel.textContent =
+            data.status === "loading" ? `載入詞庫… ${pct}%` : "等待詞庫就緒…";
+        } catch {
+          /* retry until timeout */
+        }
+        if (Date.now() - started >= PRELOAD_TIMEOUT_MS) break;
+        await sleep(220);
+      }
+      $.preloadOverlay.classList.add("is-degraded");
+      $.preloadLabel.textContent = "加速載入未完成，仍可搜尋（可能較慢）";
+      $.preloadOverlay.setAttribute("aria-busy", "false");
+      appSearchReady = true;
+      setSearchControlsEnabled(true);
+      await sleep(1400);
+      $.preloadOverlay.classList.add("is-hidden");
+    }
 
     function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
       const params = new URLSearchParams();
@@ -1255,7 +1383,7 @@
 
     function setButtonLoading(loading) {
       isSearching = loading;
-      $.searchBtn.disabled = loading;
+      $.searchBtn.disabled = loading || !appSearchReady;
       $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
     }
 
@@ -1478,6 +1606,7 @@
 
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
+      if (!appSearchReady) return;
       showSearch({ replace: true });
       setButtonLoading(true);
 
@@ -1637,7 +1766,9 @@
       }
     });
 
-    (function init() {
+    (async function init() {
+      await waitForPreloadReady();
+
       fetch("/")
         .then((res) => (res.ok ? res.json() : null))
         .then((data) => applyAppTitle(Boolean(data && data.portable)))

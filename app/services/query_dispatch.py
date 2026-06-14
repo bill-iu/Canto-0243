@@ -48,6 +48,7 @@ class SearchResult:
     items: List
     total: Optional[int] = None
     hint: Optional[str] = None
+    cache_path: Optional[str] = None
 
 
 JYUTPING_SYN_MODE_HINT = (
@@ -62,15 +63,16 @@ def _dispatch_position_query(
     limit: int,
     offset: int,
     db: Session,
-) -> list:
+) -> SearchResult:
     """Unified position-type dispatch: build_match_spec -> source -> run_position_query."""
     from app.services.position_match import (
         LengthCodeCandidateSource,
         LengthMaskCandidateSource,
         MaskWildcardCandidateSource,
+        RhymeAnchorCandidateSource,
         mask_priority_key,
         run_equals_query,
-        run_position_query,
+        run_position_query_tracked,
     )
 
     if isinstance(parsed, HybridTailEqualsAliasQuery):
@@ -79,11 +81,12 @@ def _dispatch_position_query(
         )
 
     if isinstance(parsed, EqualsQuery):
-        return run_equals_query(parsed.raw_q, db, mode, limit, offset)
+        items = run_equals_query(parsed.raw_q, db, mode, limit, offset)
+        return SearchResult(items=items, cache_path="fallback")
 
     spec = build_match_spec(parsed)
     if spec is None or spec.width == 0:
-        return []
+        return SearchResult(items=[])
 
     if isinstance(parsed, MaskQuery):
         if code:
@@ -91,19 +94,51 @@ def _dispatch_position_query(
         literal_positions = spec.extra.get("literal_positions", [])
         source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
         sort_key = lambda w: mask_priority_key(w, literal_positions)
-        return run_position_query(
+        items, from_cache = run_position_query_tracked(
             spec, db, mode, limit, offset, source=source, sort_key=sort_key
+        )
+        return SearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
         )
 
     if isinstance(parsed, HybridCodeQuery):
         source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
-        return run_position_query(spec, db, mode, limit, offset, source=source)
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return SearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
 
-    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery, RhymeAnchorQuery)):
+    if isinstance(parsed, RhymeAnchorQuery):
+        source = RhymeAnchorCandidateSource(
+            db,
+            spec.mask,
+            parsed.anchor_pos,
+            parsed.anchor,
+            parsed.constraint,
+        )
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return SearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
+
+    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery)):
         source = LengthMaskCandidateSource(db, spec.mask)
-        return run_position_query(spec, db, mode, limit, offset, source=source)
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return SearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
 
-    return []
+    return SearchResult(items=[])
 
 
 class QueryEngine:
@@ -184,7 +219,10 @@ class QueryEngine:
 
         handler = handler_registry.get(type(parsed))
         if handler:
-            return SearchResult(items=handler(parsed))
+            result = handler(parsed)
+            if isinstance(result, SearchResult):
+                return result
+            return SearchResult(items=result)
 
         if isinstance(parsed, UnmatchedQuery):
             return SearchResult(items=[])

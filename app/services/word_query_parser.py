@@ -64,6 +64,16 @@ def mask_char_glob_pattern(mask: str) -> str:
     )
 
 
+def mask_fixed_literal_prefix(mask: str) -> str:
+    """Leading literal run before first wildcard or code digit (for SQL prefix filter)."""
+    prefix: list[str] = []
+    for ch in mask:
+        if is_wildcard_char(ch) or ch.isdigit():
+            break
+        prefix.append(ch)
+    return "".join(prefix)
+
+
 def matches_mask_literal_chars(word_char: str, mask: str) -> bool:
     """True when every non-wildcard, non-digit mask slot equals the word character."""
     if len(word_char) != len(mask):

@@ -68,6 +68,8 @@ def search_words_endpoint(
         response.headers["X-Search-Total"] = str(result.total)
     if result.hint:
         response.headers["X-Search-Hint"] = result.hint
+    if result.cache_path:
+        response.headers["X-Search-Cache"] = result.cache_path
     return result.items
 
 

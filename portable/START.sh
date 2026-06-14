@@ -45,7 +45,8 @@ export ENV=local
 
 HOST="${HOST:-127.0.0.1}"
 PORT="${PORT:-8000}"
-URL="http://${HOST}:${PORT}/frontend/index.html"
+BASE_URL="http://${HOST}:${PORT}"
+URL="${BASE_URL}/frontend/index.html"
 
 echo ""
 echo "啟動中... ${URL}"
@@ -55,8 +56,12 @@ echo ""
 "$RUN_PY" main.py &
 SERVER_PID=$!
 
-if ! "$RUN_PY" scripts/wait_for_url.py "http://${HOST}:${PORT}/"; then
+# HTTP up first, then word-cache /ready (progress echoed by wait_for_url.py)
+if ! "$RUN_PY" scripts/wait_for_url.py "${BASE_URL}/"; then
   echo "[警告] 後端啟動逾時，仍嘗試打開瀏覽器…"
+fi
+if ! "$RUN_PY" scripts/wait_for_url.py --ready "${BASE_URL}/ready"; then
+  echo "[警告] 詞庫預載逾時，仍嘗試打開瀏覽器（搜尋可能較慢）…"
 fi
 
 if [[ "$(uname -s)" == "Darwin" ]]; then

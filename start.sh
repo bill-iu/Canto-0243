@@ -53,7 +53,11 @@ BASE_URL="http://${HOST}:${PORT}"
 URL="${BASE_URL}/frontend/index.html"
 
 if ! python scripts/wait_for_url.py "${BASE_URL}/"; then
-  echo "⚠️  後端啟動逾時，仍嘗試打開瀏覽器…"
+  echo "⚠️  後端啟動逾時，仍嘗試等待詞庫…"
+fi
+
+if ! python scripts/wait_for_url.py --ready "${BASE_URL}/ready"; then
+  echo "⚠️  詞庫預載逾時，仍嘗試打開瀏覽器（搜尋可能較慢）…"
 fi
 
 echo "🔗 正在打開前端..."
