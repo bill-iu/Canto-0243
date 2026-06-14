@@ -8,23 +8,16 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.essay_sort import sort_words
+from app.services.position_match import execute_mask_family_search, is_mask_family_query
 from app.services.query_parse import (
-    CodeTailQuery,
     CompoundAntQuery,
     CompoundSynQuery,
     DigitCodeQuery,
-    EqualsQuery,
-    HybridCodeQuery,
-    HybridTailEqualsAliasQuery,
     JyutpingFragmentQuery,
-    LiteralRefQuery,
-    MaskQuery,
     ParsedQuery,
     RelationLookupQuery,
-    RhymeAnchorQuery,
     UnmatchedQuery,
     WordLookupQuery,
-    build_match_spec,
     parse_query,
 )
 from app.services.word_db_filters import apply_code_filter
@@ -56,89 +49,17 @@ JYUTPING_SYN_MODE_HINT = (
 )
 
 
-def _dispatch_position_query(
-    parsed: ParsedQuery,
-    code: Optional[str],
-    mode: str,
-    limit: int,
-    offset: int,
-    db: Session,
-) -> SearchResult:
-    """Unified position-type dispatch: build_match_spec -> source -> run_position_query."""
-    from app.services.position_match import (
-        LengthCodeCandidateSource,
-        LengthMaskCandidateSource,
-        MaskWildcardCandidateSource,
-        RhymeAnchorCandidateSource,
-        mask_priority_key,
-        run_equals_query,
-        run_position_query_tracked,
+def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
+    """缺字型查詢執行 — 單一入口。"""
+    result = execute_mask_family_search(
+        parsed,
+        code=ctx.code,
+        mode=ctx.mode,
+        limit=ctx.limit,
+        offset=ctx.offset,
+        db=ctx.db,
     )
-
-    if isinstance(parsed, HybridTailEqualsAliasQuery):
-        return _dispatch_position_query(
-            HybridCodeQuery(raw_q=parsed.hybrid_q), code, mode, limit, offset, db
-        )
-
-    if isinstance(parsed, EqualsQuery):
-        items = run_equals_query(parsed.raw_q, db, mode, limit, offset)
-        return SearchResult(items=items, cache_path="fallback")
-
-    spec = build_match_spec(parsed)
-    if spec is None or spec.width == 0:
-        return SearchResult(items=[])
-
-    if isinstance(parsed, MaskQuery):
-        if code:
-            spec.code_prefix = code
-        literal_positions = spec.extra.get("literal_positions", [])
-        source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
-        sort_key = lambda w: mask_priority_key(w, literal_positions)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source, sort_key=sort_key
-        )
-        return SearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, HybridCodeQuery):
-        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return SearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, RhymeAnchorQuery):
-        source = RhymeAnchorCandidateSource(
-            db,
-            spec.mask,
-            parsed.anchor_pos,
-            parsed.anchor,
-            parsed.constraint,
-        )
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return SearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery)):
-        source = LengthMaskCandidateSource(db, spec.mask)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return SearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    return SearchResult(items=[])
+    return SearchResult(items=result.items, cache_path=result.cache_path)
 
 
 class QueryEngine:
@@ -194,6 +115,9 @@ class QueryEngine:
             items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
             return SearchResult(items=items, total=total)
 
+        if is_mask_family_query(parsed):
+            return _mask_family_search_result(parsed, ctx)
+
         handler_registry = {
             RelationLookupQuery: lambda p: relation_executor.relation_lookup_page(
                 p, mode=mode, limit=limit, offset=offset
@@ -204,15 +128,6 @@ class QueryEngine:
             CompoundAntQuery: lambda p: compound_ant_executor.compound_ant_page(
                 p, mode=mode, limit=limit, offset=offset
             ),
-            CodeTailQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
-            LiteralRefQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
-            RhymeAnchorQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
-            MaskQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
-            HybridTailEqualsAliasQuery: lambda p: _dispatch_position_query(
-                p, code, mode, limit, offset, db
-            ),
-            EqualsQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
-            HybridCodeQuery: lambda p: _dispatch_position_query(p, code, mode, limit, offset, db),
             WordLookupQuery: lambda p: lookup_executor.lookup(p.raw_q, code, mode, limit, offset),
             JyutpingFragmentQuery: lambda p: lookup_executor.jyut_fragment(p.raw_q, limit, offset),
         }

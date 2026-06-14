@@ -25,7 +25,7 @@ def fetch_existing_relation_keys(db: Session, keys: List[Tuple]) -> Set[Tuple]:
     return existing
 
 
-def insert_relations(db: Session, relations: List[WordRelation]) -> int:
+def insert_relations(db: Session, relations: List[WordRelation], *, commit: bool = True) -> int:
     inserted = 0
     for i in range(0, len(relations), INSERT_BATCH):
         batch: list[WordRelation] = []
@@ -45,7 +45,8 @@ def insert_relations(db: Session, relations: List[WordRelation]) -> int:
             else:
                 batch.append(WordRelation(**canonical_relation_dict(r)))
         db.add_all(batch)
-        db.commit()
+        if commit:
+            db.commit()
         inserted += len(batch)
     return inserted
 
@@ -56,6 +57,7 @@ def insert_relation_candidates(
     *,
     dedupe_existing: bool,
     batch_size: int,
+    commit: bool = True,
 ) -> Tuple[int, int]:
     if not candidates:
         return 0, 0
@@ -77,5 +79,5 @@ def insert_relation_candidates(
     if pending:
         for i in range(0, len(pending), batch_size):
             chunk = pending[i : i + batch_size]
-            inserted += insert_relations(db, [WordRelation(**c) for c in chunk])
+            inserted += insert_relations(db, [WordRelation(**c) for c in chunk], commit=commit)
     return inserted, skipped_existing

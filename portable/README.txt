@@ -1,7 +1,7 @@
 Canto-0243 — Portable 版
 Canto-0243 Cantonese Rhyme Workbench — Portable Edition
 (Windows / macOS / Linux)
-Bundle: Official data bundle v1.0.0-data
+Bundle: Canto-0243 v1.1.0
 ================================================================
 
 需求 / Requirements

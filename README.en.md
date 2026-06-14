@@ -20,7 +20,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 Current word entries: **193,277** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
-Official offline data bundle: **[Official data bundle v1.0.0-data](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
+Official offline data bundle: **[Canto-0243 v1.1.0](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.1.0)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
 
 ---
 
@@ -41,7 +41,7 @@ Official offline data bundle: **[Official data bundle v1.0.0-data](https://githu
 
 For the full offline experience, use the official portable package—**no** git clone or manual DB setup.
 
-1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Official data bundle v1.0.0-data`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.0.0-data)).
+1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Canto-0243 v1.1.0`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.1.0)).
 2. Extract the entire folder (e.g. `canto-0243-portable`).
 3. Launch by platform:
    * **Windows**: double-click **`START.bat`**.
@@ -401,4 +401,4 @@ Building or redistributing lexicons from these sources requires complying with e
 
 ---
 
-**Last updated**: 2026-06-15 (Open Design UI · Official data bundle v1.0.0-data)
+**Last updated**: 2026-06-15 (Architecture deep modules v1.1.0)

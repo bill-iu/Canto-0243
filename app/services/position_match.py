@@ -522,6 +522,216 @@ def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> lis
     return serialize_page(sort_words(deduplicate_words(filtered)), offset, limit)
 
 
+# -----------------------------------------------------------------------------
+# 缺字型查詢執行（CONTEXT § 缺字型查詢執行）— 單一深模組入口
+# -----------------------------------------------------------------------------
+
+@dataclass
+class MaskFamilySearchResult:
+    """缺字型查詢執行結果（供 query_dispatch 包成 SearchResult）。"""
+
+    items: list
+    cache_path: Optional[str] = None
+
+
+def is_mask_family_query(parsed: Any) -> bool:
+    """是否為缺字型查詢家族（不含 ~~ / !! 複合詞）。"""
+    from app.services.query_parse import (
+        CodeTailQuery,
+        EqualsQuery,
+        HybridCodeQuery,
+        HybridTailEqualsAliasQuery,
+        LiteralRefQuery,
+        MaskQuery,
+        RhymeAnchorQuery,
+    )
+
+    return isinstance(
+        parsed,
+        (
+            HybridTailEqualsAliasQuery,
+            EqualsQuery,
+            MaskQuery,
+            HybridCodeQuery,
+            RhymeAnchorQuery,
+            CodeTailQuery,
+            LiteralRefQuery,
+        ),
+    )
+
+
+def build_mask_family_match_spec(parsed: Any) -> Optional[MatchSpec]:
+    """缺字家族 ParsedQuery → MatchSpec。無 DB。"""
+    from app.services.query_parse import (
+        HYBRID_CODE_RE,
+        CodeTailQuery,
+        EqualsQuery,
+        HybridCodeQuery,
+        LiteralRefQuery,
+        MaskQuery,
+        RhymeAnchorQuery,
+    )
+    from app.services.word_query_parser import build_mask_from_slots, parse_mask_query
+
+    if isinstance(parsed, EqualsQuery):
+        return build_equals_match_spec(parsed.raw_q)
+
+    if isinstance(parsed, CodeTailQuery):
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_digits)
+        if parsed.constraint == "literal":
+            m = build_mask_from_slots("", parsed.width, parsed.anchor_pos)
+            m = m[: parsed.anchor_pos] + parsed.anchor
+            spec.mask = m
+            spec.slots.append(
+                SlotConstraint(pos=parsed.anchor_pos, kind="literal_char", value=parsed.anchor)
+            )
+        else:
+            kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
+            spec.slots.append(
+                SlotConstraint(pos=parsed.anchor_pos, kind=kind, value=parsed.anchor)
+            )
+            spec.mask = build_mask_from_slots("", parsed.width, parsed.anchor_pos)
+        return spec
+
+    if isinstance(parsed, LiteralRefQuery):
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_digits)
+        spec.slots.append(
+            SlotConstraint(pos=parsed.width - 1, kind="literal_char", value=parsed.literal_char)
+        )
+        spec.mask = "?" * (parsed.width - 1) + parsed.literal_char
+        return spec
+
+    if isinstance(parsed, RhymeAnchorQuery):
+        spec = MatchSpec(width=parsed.width)
+        kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
+        spec.slots.append(
+            SlotConstraint(pos=parsed.anchor_pos, kind=kind, value=parsed.anchor)
+        )
+        spec.mask = build_mask_from_slots(parsed.slots, parsed.width, parsed.anchor_pos)
+        return spec
+
+    if isinstance(parsed, HybridCodeQuery):
+        hybrid_match = HYBRID_CODE_RE.match(parsed.raw_q)
+        if not hybrid_match:
+            return MatchSpec(width=0)
+        num_prefix = hybrid_match.group(1)
+        ref_chars = hybrid_match.group(2)
+        num_suffix = hybrid_match.group(3)
+        full_code = num_prefix + num_suffix
+        return MatchSpec(
+            width=len(full_code),
+            code_prefix=full_code,
+            hybrid_ref_chars=ref_chars,
+            hybrid_ref_pos=max(0, len(num_prefix) - 1),
+        )
+
+    if isinstance(parsed, MaskQuery):
+        expected_len, _, literal_positions = parse_mask_query(parsed.raw_q)
+        spec = MatchSpec(
+            width=expected_len,
+            literal_priority=True,
+            mask=parsed.raw_q,
+        )
+        for i, ch in enumerate(parsed.raw_q):
+            if ch.isdigit():
+                spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=ch))
+        spec.extra["literal_positions"] = literal_positions
+        return spec
+
+    return None
+
+
+def execute_mask_family_search(
+    parsed: Any,
+    *,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Any,
+) -> MaskFamilySearchResult:
+    """缺字型查詢執行：ParsedQuery + 搜尋上下文 → 結果與快取路徑。"""
+    from app.services.query_parse import (
+        CodeTailQuery,
+        EqualsQuery,
+        HybridCodeQuery,
+        HybridTailEqualsAliasQuery,
+        LiteralRefQuery,
+        MaskQuery,
+        RhymeAnchorQuery,
+    )
+
+    if isinstance(parsed, HybridTailEqualsAliasQuery):
+        return execute_mask_family_search(
+            HybridCodeQuery(raw_q=parsed.hybrid_q),
+            code=code,
+            mode=mode,
+            limit=limit,
+            offset=offset,
+            db=db,
+        )
+
+    if isinstance(parsed, EqualsQuery):
+        items = run_equals_query(parsed.raw_q, db, mode, limit, offset)
+        return MaskFamilySearchResult(items=items, cache_path="fallback")
+
+    spec = build_mask_family_match_spec(parsed)
+    if spec is None or spec.width == 0:
+        return MaskFamilySearchResult(items=[])
+
+    if isinstance(parsed, MaskQuery):
+        if code:
+            spec.code_prefix = code
+        literal_positions = spec.extra.get("literal_positions", [])
+        source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
+        sort_key = lambda w: mask_priority_key(w, literal_positions)
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source, sort_key=sort_key
+        )
+        return MaskFamilySearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
+
+    if isinstance(parsed, HybridCodeQuery):
+        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return MaskFamilySearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
+
+    if isinstance(parsed, RhymeAnchorQuery):
+        source = RhymeAnchorCandidateSource(
+            db,
+            spec.mask,
+            parsed.anchor_pos,
+            parsed.anchor,
+            parsed.constraint,
+        )
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return MaskFamilySearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
+
+    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery)):
+        source = LengthMaskCandidateSource(db, spec.mask)
+        items, from_cache = run_position_query_tracked(
+            spec, db, mode, limit, offset, source=source
+        )
+        return MaskFamilySearchResult(
+            items=items,
+            cache_path="ready" if from_cache else "fallback",
+        )
+
+    return MaskFamilySearchResult(items=[])
+
+
 def matches_equals_phoneme_span(
     word,
     ref_parts: list,
@@ -765,6 +975,7 @@ def filter_candidates_by_match_spec(
 __all__ = [
     "SlotConstraint",
     "MatchSpec",
+    "MaskFamilySearchResult",
     "CandidateSource",
     "LengthMaskCandidateSource",
     "RhymeAnchorCandidateSource",
@@ -772,6 +983,9 @@ __all__ = [
     "MaskWildcardCandidateSource",
     "CompoundAntCandidateSource",
     "CompoundSynCandidateSource",
+    "is_mask_family_query",
+    "build_mask_family_match_spec",
+    "execute_mask_family_search",
     "run_position_query",
     "run_position_query_tracked",
     "run_equals_query",

@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
     from app.services.query_parse import RelationLookupQuery
-from app.domain.relations.pool import build_pool
+from app.domain.relations.pool_projection import project_relation_pool, relation_pool_chars
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
@@ -56,7 +56,9 @@ class RelationSyntaxExecutor:
             return []
         q = query.strip()
         ensure_word_in_db(self._db, q)
-        return build_pool(self._db, q, thesaurus=self._thesaurus, quiet=True).page(limit, offset)
+        return project_relation_pool(self._db, q, thesaurus=self._thesaurus).page(
+            limit, offset
+        )
 
     def relation_lookup_page(
         self,
@@ -68,12 +70,12 @@ class RelationSyntaxExecutor:
     ) -> List[dict]:
         """~ / ! 近反義關係查詢：ranked chars → Word 列。"""
         ensure_word_in_db(self._db, parsed.word)
-        expand = parsed.relation_kind == "ant"
-        ranked_chars = build_pool(
-            self._db, parsed.word, thesaurus=self._thesaurus, quiet=True
-        ).chars(
+        ranked_chars = relation_pool_chars(
+            self._db,
+            parsed.word,
             parsed.relation_kind,
-            expand=expand,
+            thesaurus=self._thesaurus,
+            expand_ant_via_syn=parsed.relation_kind == "ant",
         )
         return words_for_relation_chars(
             self._db,

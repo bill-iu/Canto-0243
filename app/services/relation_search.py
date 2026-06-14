@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import re
 from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.pool import DEFAULT_PAGE_SIZE, build_pool
-from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
+from app.domain.relations.pool import DEFAULT_PAGE_SIZE
+from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
+from app.domain.thesaurus.port import ThesaurusPort
 
 
 def search_syn_ant(
@@ -21,17 +21,15 @@ def search_syn_ant(
     db_char_set: Optional[Set[str]] = None,
     thesaurus: Optional[ThesaurusPort] = None,
 ) -> List[dict]:
-    if not query or not re.search(r"[\u4e00-\u9fff]", query):
-        return []
-    snapshot = build_pool(
+    return relation_pool_page(
         db,
-        query.strip(),
+        query,
+        limit=limit,
+        offset=offset,
         include_static=include_static,
-        thesaurus=thesaurus or default_thesaurus_port(),
+        thesaurus=thesaurus,
         membership=db_char_set,
-        quiet=True,
     )
-    return snapshot.page(limit, offset)
 
 
 def search_relation_chars(
@@ -43,19 +41,14 @@ def search_relation_chars(
     expand_ant_via_syn: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
 ) -> List[str]:
-    if relation_type not in ("syn", "ant"):
-        return []
-    if not query or not re.search(r"[\u4e00-\u9fff]", query):
-        return []
-    snapshot = build_pool(
+    return relation_pool_chars(
         db,
-        query.strip(),
+        query,
+        relation_type,
         include_static=include_static,
-        thesaurus=thesaurus or default_thesaurus_port(),
-        quiet=True,
+        expand_ant_via_syn=expand_ant_via_syn,
+        thesaurus=thesaurus,
     )
-    expand = relation_type == "ant" and expand_ant_via_syn
-    return snapshot.chars(relation_type, expand=expand)
 
 
 __all__ = [
