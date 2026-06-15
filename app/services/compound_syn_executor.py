@@ -9,7 +9,11 @@ from sqlalchemy.orm import Session
 if TYPE_CHECKING:
     from app.services.query_parse import CompoundSynQuery
 
-from app.domain.relations.compound_syn import DEFAULT_SYN_NEIGHBOR_K, search_compound_syn
+from app.domain.relations.compound_syn import (
+    DEFAULT_SYN_NEIGHBOR_K,
+    narrow_compound_syn_literals,
+    search_compound_syn,
+)
 from app.services.essay_sort import default_word_sort_key
 from app.services.position_match import CompoundSynCandidateSource, run_position_query
 from app.services.query_parse import build_match_spec
@@ -34,10 +38,20 @@ class CompoundSynExecutor:
         if not tiers:
             return []
 
-        source = CompoundSynCandidateSource(self._db, frozenset(tiers.keys()))
         spec = build_match_spec(parsed)
         if spec is None:
             return []
+
+        literals = narrow_compound_syn_literals(
+            frozenset(tiers.keys()),
+            width=spec.width,
+            rhyme_char=parsed.rhyme_char,
+            db=self._db,
+        )
+        if not literals:
+            return []
+
+        source = CompoundSynCandidateSource(self._db, literals)
 
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), default_word_sort_key(w))
         return run_position_query(

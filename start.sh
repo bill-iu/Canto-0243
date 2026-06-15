@@ -52,30 +52,31 @@ PORT="$PORT" HOST="$HOST" python main.py &
 SERVER_PID=$!
 
 BASE_URL="http://${HOST}:${PORT}"
-URL="${BASE_URL}/frontend/index.html?boot=$(date +%s)"
+HTML_URL="${BASE_URL}/frontend/index.html"
+URL="${HTML_URL}?boot=$(date +%s)"
 
-if ! python scripts/wait_for_url.py "${BASE_URL}/"; then
-  echo "⚠️  後端啟動逾時，仍嘗試打開瀏覽器…"
-fi
-
-echo "🔗 正在打開前端..."
-UNAME_S="$(uname -s)"
-OPEN_BRANCH="none"
-if [[ "$UNAME_S" == "Darwin" ]]; then
-  OPEN_BRANCH="darwin_open"
-  open "$URL" >/dev/null 2>&1 || true
-elif command -v xdg-open >/dev/null 2>&1; then
-  OPEN_BRANCH="xdg_open"
-  xdg-open "$URL" >/dev/null 2>&1 || true
-elif [[ "${OS:-}" == "Windows_NT" ]] || [[ "$UNAME_S" =~ MINGW|MSYS ]]; then
-  OPEN_BRANCH="cmd_start"
-  cmd //c start "" "$URL" || true
-elif command -v start >/dev/null 2>&1; then
-  OPEN_BRANCH="msys_start"
-  start "$URL" || true
+if python scripts/wait_for_url.py "${HTML_URL}" --interval 0.1 --timeout 90; then
+  echo "🔗 正在打開前端..."
+  UNAME_S="$(uname -s)"
+  OPEN_BRANCH="none"
+  if [[ "$UNAME_S" == "Darwin" ]]; then
+    OPEN_BRANCH="darwin_open"
+    open "$URL" >/dev/null 2>&1 || true
+  elif command -v xdg-open >/dev/null 2>&1; then
+    OPEN_BRANCH="xdg_open"
+    xdg-open "$URL" >/dev/null 2>&1 || true
+  elif [[ "${OS:-}" == "Windows_NT" ]] || [[ "$UNAME_S" =~ MINGW|MSYS ]]; then
+    OPEN_BRANCH="cmd_start"
+    cmd //c start "" "$URL" || true
+  elif command -v start >/dev/null 2>&1; then
+    OPEN_BRANCH="msys_start"
+    start "$URL" || true
+  else
+    OPEN_BRANCH="manual"
+    echo "請手動打開：$URL"
+  fi
 else
-  OPEN_BRANCH="manual"
-  echo "請手動打開：$URL"
+  echo "⚠️  查韻介面尚未就緒，請稍後手動打開：$URL"
 fi
 
 python scripts/wait_for_url.py --gate "${BASE_URL}/ready" &

@@ -298,9 +298,19 @@ class CompoundSynCandidateSource:
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
         from app.services.word_db_filters import length_filter
+        from app.services.word_serializer import get_word_text
+        from app.utils.word_cache import get_words_for_length, is_word_cache_ready
 
         if length != 2 or not self.compounds:
             return [], True
+
+        if is_word_cache_ready():
+            rows = [
+                w for w in get_words_for_length(2)
+                if get_word_text(w) in self.compounds
+            ]
+            if rows:
+                return rows, True
 
         query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
         rows = query.order_by(Word.char, Word.code, Word.jyutping).all()

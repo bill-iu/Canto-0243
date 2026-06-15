@@ -21,6 +21,8 @@ TIER_SYNTHESIZED = 2
 DEFAULT_SYN_NEIGHBOR_K = 12
 
 _snapshot: Optional["CompoundSynSnapshot"] = None
+_graph: Optional[CharRelationGraph] = None
+_tiers_cache: Optional[Dict[str, int]] = None
 
 
 @dataclass(frozen=True)
@@ -38,8 +40,10 @@ class CompoundSynSnapshot:
 
 
 def reset_compound_syn_snapshot_for_tests() -> None:
-    global _snapshot
+    global _snapshot, _graph, _tiers_cache
     _snapshot = None
+    _graph = None
+    _tiers_cache = None
 
 
 def _char_sort_key(ch: str) -> tuple:
@@ -77,7 +81,7 @@ def _scan_morpheme_compounds(
 
 def build_compound_syn_snapshot(db: Session) -> CompoundSynSnapshot:
     membership = load_db_char_set(db)
-    graph = default_char_relation_graph(db, membership=membership)
+    graph = _ensure_relation_graph(db, membership)
 
     two_char_rows = db.query(Word.char).filter(Word.length == 2).distinct().all()
     two_char_literals = {row[0] for row in two_char_rows if row[0] and len(row[0]) == 2}
@@ -94,6 +98,15 @@ def build_compound_syn_snapshot(db: Session) -> CompoundSynSnapshot:
         two_char_literals=frozenset(two_char_literals),
         single_char_literals=frozenset(single_char_literals),
     )
+
+
+def _ensure_relation_graph(db: Session, membership: set[str] | None = None) -> CharRelationGraph:
+    global _graph
+    if _graph is None:
+        if membership is None:
+            membership = load_db_char_set(db)
+        _graph = default_char_relation_graph(db, membership=membership)
+    return _graph
 
 
 def ensure_compound_syn_snapshot(db: Session) -> CompoundSynSnapshot:
@@ -128,15 +141,14 @@ def synthesize_compound_literals(
     return out
 
 
-def search_compound_syn(
+def _build_compound_syn_tiers_uncached(
     db: Session,
     *,
     k: int = DEFAULT_SYN_NEIGHBOR_K,
 ) -> Dict[str, int]:
-    """~~ 查詢候選：快照 union 查詢時單字近義合成，回傳字面 → tier。"""
     snapshot = ensure_compound_syn_snapshot(db)
     membership = load_db_char_set(db)
-    graph = default_char_relation_graph(db, membership=membership)
+    graph = _ensure_relation_graph(db, membership)
 
     tiers: Dict[str, int] = {}
     for ch in snapshot.curated_literals:
@@ -150,6 +162,39 @@ def search_compound_syn(
     return tiers
 
 
+def search_compound_syn(
+    db: Session,
+    *,
+    k: int = DEFAULT_SYN_NEIGHBOR_K,
+) -> Dict[str, int]:
+    """~~ 查詢候選：快照 union 查詢時單字近義合成，回傳字面 → tier。"""
+    global _tiers_cache
+    if _tiers_cache is not None:
+        return _tiers_cache
+    _tiers_cache = _build_compound_syn_tiers_uncached(db, k=k)
+    return _tiers_cache
+
+
+def narrow_compound_syn_literals(
+    literals: FrozenSet[str] | set[str],
+    *,
+    width: int,
+    rhyme_char: str | None,
+    db: Session,
+) -> frozenset[str]:
+    """韻／聲錨查詢前縮小候選字面（如 ~~港）。"""
+    if not rhyme_char or width != 2:
+        return frozenset(literals)
+    from app.utils.word_cache_index import get_phoneme_index_candidates
+    from app.services.word_serializer import get_word_text
+
+    phoneme_rows = get_phoneme_index_candidates(width, width - 1, rhyme_char, "final", db)
+    if phoneme_rows:
+        allowed = {get_word_text(w) for w in phoneme_rows}
+        return frozenset(ch for ch in literals if ch in allowed)
+    return frozenset(literals)
+
+
 __all__ = [
     "DEFAULT_SYN_NEIGHBOR_K",
     "TIER_CURATED",
@@ -161,4 +206,5 @@ __all__ = [
     "reset_compound_syn_snapshot_for_tests",
     "search_compound_syn",
     "synthesize_compound_literals",
+    "narrow_compound_syn_literals",
 ]
