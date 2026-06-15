@@ -8,7 +8,8 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.essay_sort import sort_words
-from app.services.position_match import execute_mask_family_search, is_mask_family_query
+from app.services.position_match import execute_mask_family_search
+from app.services.mask_family_normalize import is_mask_family_query, normalize_mask_family_parsed
 from app.services.query_parse import (
     CompoundAntQuery,
     CompoundSynQuery,
@@ -50,7 +51,8 @@ JYUTPING_SYN_MODE_HINT = (
 
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
-    """缺字型查詢執行 — 單一入口。"""
+    """缺字型查詢執行 — 單一入口（正規化在分派層）。"""
+    parsed = normalize_mask_family_parsed(parsed)
     result = execute_mask_family_search(
         parsed,
         code=ctx.code,

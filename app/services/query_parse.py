@@ -273,7 +273,8 @@ def parse_query(q: str) -> ParsedQuery:
 
 def build_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
     """Normalize position-type ParsedQuery to MatchSpec. No DB access."""
-    from app.services.position_match import MatchSpec, SlotConstraint, build_mask_family_match_spec
+    from app.services.mask_family_normalize import build_mask_family_match_spec
+    from app.services.position_match import MatchSpec, SlotConstraint
 
     mask_spec = build_mask_family_match_spec(parsed)
     if mask_spec is not None:
