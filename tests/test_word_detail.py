@@ -373,9 +373,9 @@ class RelationSyntaxTests(unittest.TestCase):
             self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
 
     def test_double_tilde_compound_synonym_syntax(self):
-        from app.domain.relations.compound_syn import reset_compound_syn_cache_for_tests
+        from app.domain.relations.compound_syn import reset_compound_syn_snapshot_for_tests
 
-        reset_compound_syn_cache_for_tests()
+        reset_compound_syn_snapshot_for_tests()
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
@@ -422,7 +422,7 @@ class RelationSyntaxTests(unittest.TestCase):
                 self.assertNotIn("朋友", rhyme_chars)
                 self.assertNotIn("同伴", rhyme_chars)
         finally:
-            reset_compound_syn_cache_for_tests()
+            reset_compound_syn_snapshot_for_tests()
 
     def test_compound_ant_code_prefix_ignores_alternate_polyphone_reading(self):
         """33!!死：首尾預設讀音 code 94，次選 99 不得因 m1 等價誤入結果。"""

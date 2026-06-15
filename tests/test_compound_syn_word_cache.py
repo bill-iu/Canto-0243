@@ -19,9 +19,9 @@ class CompoundSynWordCacheTest(unittest.TestCase):
         word_cache.reset_word_cache_for_tests()
 
     def test_rhyme_anchor_with_warmed_word_cache(self):
-        from app.domain.relations.compound_syn import reset_compound_syn_cache_for_tests
+        from app.domain.relations.compound_syn import reset_compound_syn_snapshot_for_tests
 
-        reset_compound_syn_cache_for_tests()
+        reset_compound_syn_snapshot_for_tests()
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
@@ -59,7 +59,7 @@ class CompoundSynWordCacheTest(unittest.TestCase):
                 self.assertIn("海港", chars)
                 self.assertNotIn("散步", chars)
         finally:
-            reset_compound_syn_cache_for_tests()
+            reset_compound_syn_snapshot_for_tests()
 
 
 if __name__ == "__main__":

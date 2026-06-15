@@ -13,7 +13,7 @@ FORBIDDEN = (
     "ensure_rime_char_loaded",
     "ensure_essay_loaded",
     "ensure_curated_loaded",
-    "ensure_compound_syn_cache",
+    "ensure_compound_syn_snapshot",
     "bootstrap_local_db",
     "ensure_length_column",
     "start_word_cache_preload_background",

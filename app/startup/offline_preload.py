@@ -110,16 +110,16 @@ def preload_static_runtime_resources() -> None:
 
 
 def preload_compound_syn_runtime_cache() -> None:
-    from app.domain.relations.compound_syn import ensure_compound_syn_cache
+    from app.domain.relations.compound_syn import ensure_compound_syn_snapshot
 
     def _run() -> None:
         db = SessionLocal()
         try:
-            ensure_compound_syn_cache(db)
+            ensure_compound_syn_snapshot(db)
         finally:
             db.close()
 
-    _best_effort("近義複合（~~）字面快取", _run)
+    _best_effort("近義複合（~~）快照", _run)
 
 
 def _run_background_phase(phase: str, fn: Callable[[], None]) -> None:

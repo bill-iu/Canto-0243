@@ -1,4 +1,4 @@
-"""近義複合（~~）候選建構：curated + 同義素掃描 + 單字合成。"""
+"""近義複合（~~）— 快照（源 1、2）與查詢時合成（源 3）。"""
 
 from __future__ import annotations
 
@@ -20,22 +20,26 @@ TIER_SYNTHESIZED = 2
 
 DEFAULT_SYN_NEIGHBOR_K = 12
 
-_cache: Optional["CompoundSynCache"] = None
+_snapshot: Optional["CompoundSynSnapshot"] = None
 
 
 @dataclass(frozen=True)
-class CompoundSynCache:
-    """啟動／首次查詢預算：curated 列表、同義素掃描集、詞庫 2 字字面全集。"""
+class CompoundSynSnapshot:
+    """近義複合快照：curated ∩ 詞庫 + 同義素掃描（不含查詢時單字合成）。"""
 
     curated_literals: FrozenSet[str]
     morpheme_literals: FrozenSet[str]
     two_char_literals: FrozenSet[str]
     single_char_literals: FrozenSet[str]
 
+    @property
+    def snapshot_literals(self) -> FrozenSet[str]:
+        return self.curated_literals | self.morpheme_literals
 
-def reset_compound_syn_cache_for_tests() -> None:
-    global _cache
-    _cache = None
+
+def reset_compound_syn_snapshot_for_tests() -> None:
+    global _snapshot
+    _snapshot = None
 
 
 def _char_sort_key(ch: str) -> tuple:
@@ -71,7 +75,7 @@ def _scan_morpheme_compounds(
     return out
 
 
-def build_compound_syn_cache(db: Session) -> CompoundSynCache:
+def build_compound_syn_snapshot(db: Session) -> CompoundSynSnapshot:
     membership = load_db_char_set(db)
     graph = default_char_relation_graph(db, membership=membership)
 
@@ -84,7 +88,7 @@ def build_compound_syn_cache(db: Session) -> CompoundSynCache:
     curated_file = [ch for ch in load_compound_synonyms() if ch in two_char_literals]
     morpheme = _scan_morpheme_compounds(db, graph, two_char_literals)
 
-    return CompoundSynCache(
+    return CompoundSynSnapshot(
         curated_literals=frozenset(curated_file),
         morpheme_literals=frozenset(morpheme),
         two_char_literals=frozenset(two_char_literals),
@@ -92,30 +96,31 @@ def build_compound_syn_cache(db: Session) -> CompoundSynCache:
     )
 
 
-def ensure_compound_syn_cache(db: Session) -> CompoundSynCache:
-    global _cache
-    if _cache is None:
-        _cache = build_compound_syn_cache(db)
-    return _cache
+def ensure_compound_syn_snapshot(db: Session) -> CompoundSynSnapshot:
+    """離線啟動預載：建立近義複合快照（源 1、2）。"""
+    global _snapshot
+    if _snapshot is None:
+        _snapshot = build_compound_syn_snapshot(db)
+    return _snapshot
 
 
 def synthesize_compound_literals(
-    cache: CompoundSynCache,
+    snapshot: CompoundSynSnapshot,
     graph: CharRelationGraph,
     *,
     k: int = DEFAULT_SYN_NEIGHBOR_K,
 ) -> Set[str]:
-    """查詢時單字近義合成（top‑K）；只回傳詞庫已有 2 字詞。"""
+    """查詢時單字近義合成（源 3）；只回傳詞庫已有 2 字詞。"""
     out: Set[str] = set()
-    base = cache.curated_literals | cache.morpheme_literals
-    for ch in cache.single_char_literals:
+    base = snapshot.snapshot_literals
+    for ch in snapshot.single_char_literals:
         for neighbor in _top_k_syn_neighbors(graph, ch, k):
             if not neighbor or neighbor == ch:
                 continue
             for compound in (ch + neighbor, neighbor + ch):
                 if len(compound) != 2:
                     continue
-                if compound not in cache.two_char_literals:
+                if compound not in snapshot.two_char_literals:
                     continue
                 if compound in base or compound in out:
                     continue
@@ -123,23 +128,23 @@ def synthesize_compound_literals(
     return out
 
 
-def build_compound_syn_tiers(
+def search_compound_syn(
     db: Session,
     *,
     k: int = DEFAULT_SYN_NEIGHBOR_K,
 ) -> Dict[str, int]:
-    """Union 三源候選 → 字面 → tier（curated < morpheme < synthesized）。"""
-    cache = ensure_compound_syn_cache(db)
+    """~~ 查詢候選：快照 union 查詢時單字近義合成，回傳字面 → tier。"""
+    snapshot = ensure_compound_syn_snapshot(db)
     membership = load_db_char_set(db)
     graph = default_char_relation_graph(db, membership=membership)
 
     tiers: Dict[str, int] = {}
-    for ch in cache.curated_literals:
+    for ch in snapshot.curated_literals:
         tiers[ch] = TIER_CURATED
-    for ch in cache.morpheme_literals:
+    for ch in snapshot.morpheme_literals:
         if ch not in tiers:
             tiers[ch] = TIER_MORPHEME
-    for ch in synthesize_compound_literals(cache, graph, k=k):
+    for ch in synthesize_compound_literals(snapshot, graph, k=k):
         if ch not in tiers:
             tiers[ch] = TIER_SYNTHESIZED
     return tiers
@@ -150,10 +155,10 @@ __all__ = [
     "TIER_CURATED",
     "TIER_MORPHEME",
     "TIER_SYNTHESIZED",
-    "CompoundSynCache",
-    "build_compound_syn_cache",
-    "build_compound_syn_tiers",
-    "ensure_compound_syn_cache",
-    "reset_compound_syn_cache_for_tests",
+    "CompoundSynSnapshot",
+    "build_compound_syn_snapshot",
+    "ensure_compound_syn_snapshot",
+    "reset_compound_syn_snapshot_for_tests",
+    "search_compound_syn",
     "synthesize_compound_literals",
 ]
