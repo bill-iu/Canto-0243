@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay frontend waitForPreloadReady against a cold-started server."""
+"""Replay frontend waitForPreloadReady against a cold-started server (server gate policy only)."""
 from __future__ import annotations
 
 import json
@@ -12,8 +12,8 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOG_PATH = os.path.join(ROOT, "debug-795493.log")
-PRELOAD_TIMEOUT_MS = 30_000
 POLL_MS = 220
+MAX_POLL_S = float(os.environ.get("GATE_LOOP_MAX_S", "180"))
 
 
 def _log(hypothesis_id: str, message: str, data: dict) -> None:
@@ -31,24 +31,19 @@ def _log(hypothesis_id: str, message: str, data: dict) -> None:
     print(f"[DEBUG-gate] {message} {data}")
 
 
-def _can_open(data: dict) -> bool:
-    if data.get("ready") or data.get("gate_ready"):
-        return True
-    wc = (data.get("phases") or {}).get("word_cache") or {}
-    return wc.get("status") in ("ready", "failed")
-
-
 def _label(data: dict | None, connecting: bool = False) -> str:
     if connecting or not data:
         return "執緊啲字…"
-    wc = (data.get("phases") or {}).get("word_cache") or {}
+    if data.get("degraded"):
+        return "字庫執唔切，照用得，可能慢啲"
+    if data.get("gate_ready"):
+        return "開得工！"
     progress = data.get("word_cache_progress")
     if progress is None:
+        wc = (data.get("phases") or {}).get("word_cache") or {}
         progress = wc.get("progress") or 0
     pct = int(max(0, min(100, round(float(progress) * 100))))
-    wc_status = wc.get("status")
-    if data.get("ready") or wc_status == "ready":
-        return "開得工！"
+    wc_status = ((data.get("phases") or {}).get("word_cache") or {}).get("status")
     if wc_status == "loading" or progress > 0:
         return f"執緊啲字… {pct}%" if pct < 85 else f"差啲就齊… {pct}%"
     return "執緊啲字…"
@@ -77,11 +72,8 @@ def _wait_http(base: str, timeout_s: float = 120.0) -> float:
 
 
 def simulate_gate_loop(base: str, *, open_delay_s: float) -> dict:
-    """open_delay_s: seconds after spawn before gate polling starts (browser open lag)."""
+    """Poll /ready until gate_ready; no client-side degrade budget."""
     time.sleep(max(0.0, open_delay_s))
-    budget_ms = PRELOAD_TIMEOUT_MS
-    budget_active = False
-    budget_last_at = 0.0
     last_snapshot: dict | None = None
     labels: list[str] = []
     poll = 0
@@ -89,29 +81,15 @@ def simulate_gate_loop(base: str, *, open_delay_s: float) -> dict:
     max_fail_streak = 0
     started = time.perf_counter()
 
-    def pause_budget() -> None:
-        nonlocal budget_active, budget_ms, budget_last_at
-        if budget_active:
-            budget_ms -= (time.perf_counter() - budget_last_at) * 1000.0
-            budget_active = False
-
-    def resume_budget() -> None:
-        nonlocal budget_active, budget_last_at
-        if not budget_active:
-            budget_active = True
-            budget_last_at = time.perf_counter()
-
-    while True:
+    while time.perf_counter() - started < MAX_POLL_S:
         poll += 1
         try:
-            pause_budget()
             data = _fetch_ready(base)
             last_snapshot = data
             fail_streak = 0
-            resume_budget()
             label = _label(data)
             labels.append(label)
-            if poll <= 5 or _can_open(data) or poll % 10 == 0:
+            if poll <= 5 or data.get("gate_ready") or poll % 10 == 0:
                 _log(
                     "B",
                     "poll ok",
@@ -119,16 +97,13 @@ def simulate_gate_loop(base: str, *, open_delay_s: float) -> dict:
                         "poll": poll,
                         "elapsed_s": round(time.perf_counter() - started, 2),
                         "label": label,
-                        "ready": data.get("ready"),
-                        "status": data.get("status"),
-                        "progress": data.get("progress"),
                         "gate_ready": data.get("gate_ready"),
+                        "degraded": data.get("degraded"),
+                        "gate_open_reason": data.get("gate_open_reason"),
                         "wc_status": (data.get("phases") or {}).get("word_cache", {}).get("status"),
-                        "can_open": _can_open(data),
-                        "budget_ms": round(budget_ms),
                     },
                 )
-            if _can_open(data):
+            if data.get("gate_ready"):
                 return {
                     "outcome": "success",
                     "polls": poll,
@@ -136,19 +111,7 @@ def simulate_gate_loop(base: str, *, open_delay_s: float) -> dict:
                     "labels": labels[-5:],
                     "final": data,
                 }
-            budget_ms -= (time.perf_counter() - budget_last_at) * 1000.0
-            budget_last_at = time.perf_counter()
-            if budget_ms <= 0:
-                return {
-                    "outcome": "degraded",
-                    "polls": poll,
-                    "elapsed_s": round(time.perf_counter() - started, 2),
-                    "labels": labels[-5:],
-                    "max_fail_streak": max_fail_streak,
-                    "last_snapshot": last_snapshot,
-                }
         except Exception as e:
-            pause_budget()
             fail_streak += 1
             max_fail_streak = max(max_fail_streak, fail_streak)
             if last_snapshot:
@@ -165,13 +128,12 @@ def simulate_gate_loop(base: str, *, open_delay_s: float) -> dict:
                         "err": type(e).__name__,
                         "fail_streak": fail_streak,
                         "has_snapshot": last_snapshot is not None,
-                        "budget_ms": round(budget_ms),
                     },
                 )
         time.sleep(POLL_MS / 1000.0)
 
     return {
-        "outcome": "incomplete",
+        "outcome": "timeout",
         "polls": poll,
         "elapsed_s": round(time.perf_counter() - started, 2),
         "labels": labels[-5:],
@@ -199,7 +161,6 @@ def main() -> int:
     proc = subprocess.Popen([sys.executable, "main.py"], cwd=ROOT, env=env)
     try:
         if os.environ.get("SKIP_HTTP_WAIT") == "1":
-            http_wait_s = 0.0
             _log("D", "skip http wait (immediate browser)", {})
             result = simulate_gate_loop(base, open_delay_s=open_delay)
         else:

@@ -508,17 +508,13 @@
     function formatGateStatusLabel(data, { connecting = false } = {}) {
       if (connecting || !data) return "執緊啲字…";
       if (data.degraded) return "字庫執唔切，照用得，可能慢啲";
+      if (data.gate_ready) return "開得工！";
       const pct = Math.max(0, Math.min(100, Math.round(wordCacheProgress(data) * 100)));
       const wcStatus = data.phases?.word_cache?.status;
-      if (data.ready || wcStatus === "ready") return "開得工！";
       if (wcStatus === "loading" || wordCacheProgress(data) > 0) {
         return pct >= GATE_NEAR_DONE_PCT ? `差啲就齊… ${pct}%` : `執緊啲字… ${pct}%`;
       }
       return "執緊啲字…";
-    }
-
-    function canOpenSearchGate(data) {
-      return Boolean(data?.gate_ready);
     }
 
     let lastReadySnapshot = null;
@@ -775,7 +771,7 @@
           if (!res.ok) throw new Error(`ready ${res.status}`);
           const data = await res.json();
           lastReadySnapshot = data;
-          if (canOpenSearchGate(data)) {
+          if (data.gate_ready) {
             setGateInkProgress(1);
             $.preloadLabel.textContent = formatGateStatusLabel(data);
             $.preloadOverlay.classList.toggle("is-degraded", Boolean(data.degraded));

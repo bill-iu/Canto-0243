@@ -12,7 +12,7 @@ class GateInkConstantTests(unittest.TestCase):
             timeout=5,
         ).read().decode("utf-8", "replace")
         self.assertIn("const GATE_INK_CLIP_MAX = 200", html)
-        self.assertIn("if (canOpenSearchGate(data))", html)
+        self.assertIn("data.gate_ready", html)
 
 
 if __name__ == "__main__":
