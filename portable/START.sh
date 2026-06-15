@@ -53,15 +53,13 @@ echo "啟動中... ${URL}"
 echo "關閉請按 Ctrl+C"
 echo ""
 
-"$RUN_PY" main.py &
+"$RUN_PY" scripts/free_port.py --port "$PORT" --host "$HOST" || true
+
+PORT="$PORT" HOST="$HOST" "$RUN_PY" main.py &
 SERVER_PID=$!
 
-# HTTP up first, then word-cache /ready (progress echoed by wait_for_url.py)
 if ! "$RUN_PY" scripts/wait_for_url.py "${BASE_URL}/"; then
   echo "[警告] 後端啟動逾時，仍嘗試打開瀏覽器…"
-fi
-if ! "$RUN_PY" scripts/wait_for_url.py --ready "${BASE_URL}/ready"; then
-  echo "[警告] 詞庫預載逾時，仍嘗試打開瀏覽器（搜尋可能較慢）…"
 fi
 
 if [[ "$(uname -s)" == "Darwin" ]]; then
@@ -69,5 +67,9 @@ if [[ "$(uname -s)" == "Darwin" ]]; then
 elif command -v xdg-open >/dev/null 2>&1; then
   xdg-open "$URL" >/dev/null 2>&1 || true
 fi
+
+"$RUN_PY" scripts/wait_for_url.py --gate "${BASE_URL}/ready" &
+
+"$RUN_PY" scripts/wait_for_url.py --ready --full "${BASE_URL}/ready" &
 
 wait "$SERVER_PID"

@@ -43,33 +43,43 @@ fi
 
 pip install -q -r requirements.txt 2>/dev/null || pip install -q fastapi uvicorn sqlalchemy pydantic python-multipart
 
-echo "🌐 正在啟動後端..."
-python main.py &
-SERVER_PID=$!
-
 HOST="${HOST:-127.0.0.1}"
 PORT="${PORT:-8000}"
+python scripts/free_port.py --port "$PORT" --host "$HOST" || true
+
+echo "🌐 正在啟動後端..."
+PORT="$PORT" HOST="$HOST" python main.py &
+SERVER_PID=$!
+
 BASE_URL="http://${HOST}:${PORT}"
-URL="${BASE_URL}/frontend/index.html"
+URL="${BASE_URL}/frontend/index.html?boot=$(date +%s)"
 
 if ! python scripts/wait_for_url.py "${BASE_URL}/"; then
-  echo "⚠️  後端啟動逾時，仍嘗試等待詞庫…"
-fi
-
-if ! python scripts/wait_for_url.py --ready "${BASE_URL}/ready"; then
-  echo "⚠️  詞庫預載逾時，仍嘗試打開瀏覽器（搜尋可能較慢）…"
+  echo "⚠️  後端啟動逾時，仍嘗試打開瀏覽器…"
 fi
 
 echo "🔗 正在打開前端..."
-if [[ "$(uname -s)" == "Darwin" ]]; then
+UNAME_S="$(uname -s)"
+OPEN_BRANCH="none"
+if [[ "$UNAME_S" == "Darwin" ]]; then
+  OPEN_BRANCH="darwin_open"
   open "$URL" >/dev/null 2>&1 || true
 elif command -v xdg-open >/dev/null 2>&1; then
+  OPEN_BRANCH="xdg_open"
   xdg-open "$URL" >/dev/null 2>&1 || true
+elif [[ "${OS:-}" == "Windows_NT" ]] || [[ "$UNAME_S" =~ MINGW|MSYS ]]; then
+  OPEN_BRANCH="cmd_start"
+  cmd //c start "" "$URL" || true
 elif command -v start >/dev/null 2>&1; then
-  start "$URL"
+  OPEN_BRANCH="msys_start"
+  start "$URL" || true
 else
+  OPEN_BRANCH="manual"
   echo "請手動打開：$URL"
 fi
+
+python scripts/wait_for_url.py --gate "${BASE_URL}/ready" &
+python scripts/wait_for_url.py --ready --full "${BASE_URL}/ready" &
 
 echo "✅ 已啟動（PID $SERVER_PID）"
 echo "後端：${BASE_URL}"

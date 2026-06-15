@@ -5,10 +5,24 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
+from starlette.responses import Response
 
 from app.routers.relation import router as relation_router
 from app.routers.word import router
 from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup, run_main_block_startup
+
+
+class FrontendNoCacheMiddleware(BaseHTTPMiddleware):
+    """避免瀏覽器快取 frontend HTML（內嵌就緒閘文案與邏輯）。"""
+
+    async def dispatch(self, request: Request, call_next) -> Response:
+        response = await call_next(request)
+        if request.url.path.startswith("/frontend/"):
+            response.headers["Cache-Control"] = "no-cache, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+        return response
 
 
 @asynccontextmanager
@@ -19,6 +33,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Canto-0243", lifespan=lifespan)
 
+app.add_middleware(FrontendNoCacheMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
@@ -34,11 +49,15 @@ app.include_router(relation_router)
 
 @app.get("/")
 async def home():
+    host = os.getenv("HOST", "127.0.0.1")
+    port = int(os.getenv("PORT", "8000"))
+    base = f"http://{host}:{port}"
     return {
         "status": "running",
         "portable": bool(os.getenv("PORTABLE")),
-        "frontend": "http://127.0.0.1:8000/frontend/index.html",
-        "api_test": "http://127.0.0.1:8000/words/search/?q=23",
+        "port": port,
+        "frontend": f"{base}/frontend/index.html",
+        "api_test": f"{base}/words/search/?q=23",
     }
 
 
@@ -49,11 +68,17 @@ async def preload_ready():
 
 if __name__ == "__main__":
     env = os.getenv("ENV", "local").lower()
-    run_main_block_startup(env=env)
+    # 預設單行程（無 StatReload）：避免 SQLite 雙行程、預載重跑、幽靈 LISTEN。
+    # 需要存檔自動重載時：UVICORN_RELOAD=1 ./start.sh
+    reload_opt_in = os.getenv("UVICORN_RELOAD", "").lower() in ("1", "true", "yes")
+    use_reload = reload_opt_in and env != "prod" and not os.getenv("PORTABLE")
+    # reload 時父行程與 worker 分離；DB bootstrap 僅在 lifespan（worker）執行，避免 SQLite 鎖導致詞庫預載失敗。
+    if not use_reload:
+        run_main_block_startup(env=env)
 
     uvicorn.run(
         "main:app",
         host=os.getenv("HOST", "127.0.0.1"),
         port=int(os.getenv("PORT", "8000")),
-        reload=os.getenv("ENV", "local").lower() != "prod" and not os.getenv("PORTABLE"),
+        reload=use_reload,
     )

@@ -373,6 +373,57 @@ class PositionMatchEngine:
         # Standard path: apply MatchSpec slot constraints via deep filter
         return filter_candidates_by_match_spec(candidates, spec, mode, db)
 
+    def _match_equals_whole_word(
+        self,
+        spec: MatchSpec,
+        db: Any,
+        mode: str,
+        *,
+        target: Any,
+        target_parts: list,
+        is_final: bool,
+    ) -> list[Any]:
+        """整詞同韻／同聲：cache 長度桶優先；DB 以 finals/initials 欄預篩再驗證。"""
+        full_code = spec.code_prefix or ""
+        target_key = tuple(target_parts)
+        cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+        storage_field = "finals" if is_final else "initials"
+        target_storage_key = _phoneme_storage_key(target, storage_field)
+
+        if cached is not None:
+            pool = cached
+            if target_storage_key:
+                pool = [
+                    w
+                    for w in pool
+                    if _phoneme_storage_key(w, storage_field) == target_storage_key
+                ]
+            if is_final:
+                return [w for w in pool if tuple(get_rhyme_finals(w)) == target_key]
+            return [w for w in pool if tuple(get_word_parts(w, "initials")) == target_key]
+
+        query = db.query(Word).filter(length_filter(spec.width))
+        if full_code:
+            query = apply_code_filter(query, full_code, mode)
+        if is_final:
+            db_literal = _phoneme_db_literal(target, "finals")
+            if db_literal:
+                query = query.filter(Word.finals == db_literal)
+            return [
+                w
+                for w in query.all()
+                if tuple(get_rhyme_finals(w)) == target_key
+            ]
+        db_literal = _phoneme_db_literal(target, "initials")
+        if db_literal:
+            query = query.filter(Word.initials == db_literal)
+            return query.all()
+        return [
+            w
+            for w in query.all()
+            if tuple(get_word_parts(w, "initials")) == target_key
+        ]
+
     def match_equals(self, spec: MatchSpec, db: Any, mode: str = "m1") -> list[Any]:
         """等號查詢／碼夾等號查詢：參考字讀音在 engine 內 resolve。"""
         from app.services.word_ensure_service import ensure_word_in_db
@@ -401,14 +452,14 @@ class PositionMatchEngine:
         query = query.filter(length_filter(spec.width))
 
         if spec.whole_word_phoneme_match:
-            candidates = query.all()
-            matched = [
-                w
-                for w in candidates
-                if (get_rhyme_finals(w) if is_final else get_word_parts(w, "initials"))
-                == target_parts
-            ]
-            return matched
+            return self._match_equals_whole_word(
+                spec,
+                db,
+                mode,
+                target=target,
+                target_parts=target_parts,
+                is_final=is_final,
+            )
 
         candidates = query.limit(2000).all()
         return [
@@ -508,6 +559,54 @@ def build_equals_match_spec(q: str) -> Optional[MatchSpec]:
         phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
         whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
     )
+
+
+def _word_stored_phoneme_json(word: Any, field: str):
+    if isinstance(word, dict):
+        return word.get(field)
+    return getattr(word, field, None)
+
+
+def _phoneme_storage_key(word: Any, field: str) -> tuple:
+    """Normalize stored finals/initials (JSON str or list) for equality prefilter."""
+    raw = _word_stored_phoneme_json(word, field)
+    if isinstance(raw, list):
+        return tuple(raw)
+    if isinstance(raw, str) and raw:
+        from app.utils.json_helpers import load_json_list
+
+        return tuple(load_json_list(raw))
+    return ()
+
+
+def _phoneme_db_literal(word: Any, field: str) -> str:
+    """DB column literal for SQL filter (ORM JSON string)."""
+    raw = _word_stored_phoneme_json(word, field)
+    if isinstance(raw, str):
+        return raw
+    if isinstance(raw, list):
+        import json
+
+        return json.dumps(raw, ensure_ascii=False, separators=(", ", ": "))
+    return ""
+
+
+def _equals_length_bucket_candidates(
+    width: int,
+    code_prefix: Optional[str],
+    mode: str,
+) -> Optional[list]:
+    """word_cache 長度桶候選；未就緒時回傳 None 走 DB。"""
+    from app.utils.jyutping_codec import get_code_variants
+    from app.utils.word_cache import get_words_for_length, is_word_cache_ready
+
+    if not is_word_cache_ready():
+        return None
+    candidates = get_words_for_length(width)
+    if not code_prefix:
+        return candidates
+    variants = set(get_code_variants(code_prefix, mode))
+    return [w for w in candidates if get_word_sort_code(w) in variants]
 
 
 def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> list:

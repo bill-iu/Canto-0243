@@ -130,6 +130,110 @@ html.fonts-ready .gate-brand {
       pointer-events: none;
     }
 
+.warmup-badge {
+      flex: 1;
+      min-width: 0;
+      max-width: min(300px, 42vw);
+      margin: 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 7px 14px 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      box-shadow: var(--search-input-inset);
+      color: var(--ink-soft);
+      font-size: 12px;
+      font-weight: 550;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      transition:
+        border-color 200ms ease-out,
+        background-color 200ms ease-out,
+        box-shadow 200ms ease-out,
+        opacity 420ms ease-out;
+    }
+
+.warmup-badge.is-exiting {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+.warmup-badge__label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--muted);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+    }
+
+.warmup-badge__ink {
+      flex: 0 0 auto;
+      width: 56px;
+      height: auto;
+      color: #9F1239;
+    }
+
+.warmup-badge__ink-track {
+      opacity: 0.2;
+    }
+
+.warmup-badge__ink-clip {
+      transition: width 180ms ease-out;
+    }
+
+.warmup-badge__pct {
+      flex: 0 0 auto;
+      min-width: 2.4em;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent-strong);
+      text-align: right;
+    }
+
+.warmup-badge.is-done {
+      border-color: rgba(138, 90, 32, 0.28);
+      background: var(--surface-soft);
+      box-shadow: none;
+    }
+
+.warmup-badge.is-done .warmup-badge__label {
+      color: var(--accent-strong);
+      font-weight: 650;
+      letter-spacing: 0.04em;
+    }
+
+.warmup-badge.is-done .warmup-badge__ink {
+      color: var(--accent);
+    }
+
+@media (max-width: 640px) {
+      .warmup-badge {
+        max-width: min(220px, 38vw);
+        gap: 8px;
+        padding: 6px 10px 6px 9px;
+        font-size: 11px;
+      }
+
+      .warmup-badge__ink {
+        width: 44px;
+      }
+
+      .warmup-badge__pct {
+        font-size: 10px;
+        min-width: 2.2em;
+      }
+    }
+
+@media (max-width: 440px) {
+      .warmup-badge__label {
+        max-width: 4.2em;
+      }
+    }
+
 .app-shell.is-revealing {
       opacity: 1;
       pointer-events: auto;
@@ -527,6 +631,7 @@ html.fonts-ready .gate-brand {
         opacity: 1 !important;
       }
       .app-shell { transition: none; }
+      .warmup-badge.is-exiting { opacity: 0; }
       .landing-b-pending .hero,
       .landing-b-revealed .hero { opacity: 1; }
     }

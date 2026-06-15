@@ -3,13 +3,47 @@
 from __future__ import annotations
 
 import os
+import threading
 from typing import Callable
 
 from app.database import Base, IS_POSTGRES, SessionLocal, engine
 
+_startup_lock = threading.Lock()
+_background_started = False
+_background_state = {
+    "static_resources": {"status": "pending", "progress": 0.0, "error": None},
+    "compound_syn": {"status": "pending", "progress": 0.0, "error": None},
+}
+
 
 def _local_sqlite_startup_enabled(env: str) -> bool:
     return (env != "prod" and not IS_POSTGRES) or bool(os.getenv("FORCE_CREATE_ALL"))
+
+
+def reset_background_preload_state_for_tests() -> None:
+    """測試用：重設背景預載狀態。"""
+    global _background_started
+    with _startup_lock:
+        _background_started = False
+        for key in _background_state:
+            _background_state[key] = {"status": "pending", "progress": 0.0, "error": None}
+
+
+def _set_background_phase(
+    phase: str,
+    *,
+    status: str | None = None,
+    progress: float | None = None,
+    error: str | None = None,
+) -> None:
+    with _startup_lock:
+        slot = _background_state[phase]
+        if status is not None:
+            slot["status"] = status
+        if progress is not None:
+            slot["progress"] = progress
+        if error is not None:
+            slot["error"] = error
 
 
 def ensure_dev_length_schema() -> None:
@@ -23,7 +57,7 @@ def ensure_dev_length_schema() -> None:
 
 
 def start_background_word_cache_preload() -> None:
-    """背景載入 word_cache（就緒閘 /ready 資料來源）。"""
+    """背景載入 word_cache（就緒閘搜尋解鎖依據）。"""
     from app.utils.word_cache import start_word_cache_preload_background
 
     start_word_cache_preload_background()
@@ -61,7 +95,7 @@ def _best_effort(label: str, fn: Callable[[], None]) -> None:
 
 
 def preload_static_runtime_resources() -> None:
-    """Eager 載入靜態詞林、排序語料等（`python main.py` 路徑）。"""
+    """載入靜態詞林、排序語料等。"""
     from app.lexicon.curated_index import ensure_curated_loaded
     from app.lexicon.essay_index import ensure_essay_loaded
     from app.lexicon.rime_char_index import ensure_rime_char_loaded
@@ -88,37 +122,117 @@ def preload_compound_syn_runtime_cache() -> None:
     _best_effort("近義複合（~~）字面快取", _run)
 
 
-def run_lifespan_startup(*, env: str | None = None) -> None:
-    """FastAPI lifespan：schema ensure + word_cache 背景預載。"""
-    effective_env = (env or os.getenv("ENV", "local")).lower()
-    if _local_sqlite_startup_enabled(effective_env):
-        ensure_dev_length_schema()
+def _run_background_phase(phase: str, fn: Callable[[], None]) -> None:
+    _set_background_phase(phase, status="loading", progress=0.05)
+    try:
+        fn()
+        _set_background_phase(phase, status="ready", progress=1.0)
+    except Exception as e:
+        _set_background_phase(phase, status="failed", progress=1.0, error=str(e))
+
+
+def start_background_runtime_preload() -> None:
+    """lifespan：詞庫快取、靜態語料、複合詞快取並行背景預載。"""
+    global _background_started
+    with _startup_lock:
+        if _background_started:
+            return
+        _background_started = True
+
     try:
         start_background_word_cache_preload()
     except Exception as e:
         print(f"[offline_preload] Word cache preload thread failed to start: {e}")
 
+    threading.Thread(
+        target=_run_background_phase,
+        args=("static_resources", preload_static_runtime_resources),
+        daemon=True,
+    ).start()
+    threading.Thread(
+        target=_run_background_phase,
+        args=("compound_syn", preload_compound_syn_runtime_cache),
+        daemon=True,
+    ).start()
+
+
+def run_lifespan_startup(*, env: str | None = None) -> None:
+    """FastAPI lifespan：schema ensure + 背景預載（uvicorn worker 內執行）。"""
+    effective_env = (env or os.getenv("ENV", "local")).lower()
+    if _local_sqlite_startup_enabled(effective_env):
+        run_create_all_if_needed(effective_env)
+        run_local_db_bootstrap(effective_env)
+        ensure_dev_length_schema()
+    start_background_runtime_preload()
+
 
 def run_main_block_startup(*, env: str | None = None) -> None:
-    """`python main.py`：create_all、bootstrap、靜態資源與複合詞快取 eager preload。"""
+    """`python main.py`：僅 DB ensure；其餘預載交 lifespan 背景。"""
     effective_env = (env or os.getenv("ENV", "local")).lower()
     run_create_all_if_needed(effective_env)
     run_local_db_bootstrap(effective_env)
-    preload_static_runtime_resources()
-    preload_compound_syn_runtime_cache()
+
+
+def _phase_snapshot(phase: str) -> dict:
+    with _startup_lock:
+        slot = _background_state[phase]
+        return {
+            "status": slot["status"],
+            "progress": float(slot["progress"]),
+            "error": slot["error"],
+        }
+
+
+def _phase_done(snapshot: dict) -> bool:
+    return snapshot["status"] in ("ready", "failed")
 
 
 def get_readiness_snapshot() -> dict:
-    """就緒閘 API 快照（詞庫 word_cache）。"""
+    """就緒閘 API：詞庫快取解鎖搜尋；startup_complete 為全部背景預載完成。"""
     from app.utils.word_cache import get_preload_snapshot
 
-    return get_preload_snapshot()
+    word_cache = get_preload_snapshot()
+    static_resources = _phase_snapshot("static_resources")
+    compound_syn = _phase_snapshot("compound_syn")
+
+    phases = [word_cache, static_resources, compound_syn]
+    aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / 3.0
+
+    word_cache_ready = bool(word_cache.get("ready"))
+    gate_ready = word_cache.get("status") in ("ready", "failed")
+    startup_complete = word_cache_ready and all(_phase_done(p) for p in (static_resources, compound_syn))
+    tail_pending = not all(_phase_done(p) for p in (static_resources, compound_syn))
+
+    status = word_cache.get("status") or "pending"
+    if startup_complete:
+        status = "ready"
+    elif status in ("pending",) and any(
+        p.get("status") == "loading" for p in (static_resources, compound_syn)
+    ):
+        status = "loading"
+
+    return {
+        "ready": word_cache_ready,
+        "gate_ready": gate_ready,
+        "startup_complete": startup_complete,
+        "tail_pending": tail_pending,
+        "status": status,
+        "progress": aggregate_progress,
+        "error": word_cache.get("error"),
+        "phases": {
+            "word_cache": word_cache,
+            "static_resources": static_resources,
+            "compound_syn": compound_syn,
+        },
+    }
 
 
 __all__ = [
     "get_readiness_snapshot",
+    "reset_background_preload_state_for_tests",
     "run_lifespan_startup",
     "run_main_block_startup",
+    "start_background_runtime_preload",
     "start_background_word_cache_preload",
     "preload_static_runtime_resources",
     "preload_compound_syn_runtime_cache",

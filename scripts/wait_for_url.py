@@ -37,27 +37,47 @@ def main() -> int:
     parser.add_argument("--timeout", type=float, default=120.0)
     parser.add_argument("--interval", type=float, default=0.35)
     parser.add_argument(
+        "--gate",
+        action="store_true",
+        help="Wait until JSON body has gate_ready=true (search gate may open)",
+    )
+    parser.add_argument(
         "--ready",
         action="store_true",
         help="Wait until JSON body has ready=true (for word-cache preload)",
+    )
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="With --ready: wait until startup_complete=true (all background preload)",
     )
     args = parser.parse_args()
 
     started = time.time()
     last_progress = -1.0
+    near_done_pct = 85
     while time.time() - started < args.timeout:
-        if args.ready:
+        if args.gate or args.ready:
             payload = _fetch_json(args.url)
             if isinstance(payload, dict):
-                if payload.get("ready"):
-                    pct = int(float(payload.get("progress") or 1.0) * 100)
-                    print(f"[wait] 詞庫就緒 ({pct}%)")
+                if args.gate:
+                    done = bool(payload.get("gate_ready"))
+                    progress = float(
+                        (payload.get("phases") or {}).get("word_cache", {}).get("progress")
+                        or payload.get("progress")
+                        or 0.0
+                    )
+                else:
+                    done = bool(payload.get("startup_complete")) if args.full else bool(payload.get("ready"))
+                    progress = float(payload.get("progress") or 0.0)
+                if done:
+                    pct = int(progress * 100) if progress else 100
+                    print(f"[wait] 開得工！ ({pct}%)")
                     return 0
-                progress = float(payload.get("progress") or 0.0)
                 if progress - last_progress >= 0.05 or last_progress < 0:
                     pct = int(progress * 100)
-                    status = payload.get("status") or "loading"
-                    print(f"[wait] 載入詞庫… {pct}% ({status})")
+                    label = "差啲就齊" if pct >= near_done_pct else "執緊啲字"
+                    print(f"[wait] {label}… {pct}%")
                     last_progress = progress
         else:
             status = _fetch_status(args.url)

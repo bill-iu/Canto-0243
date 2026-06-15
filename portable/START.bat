@@ -52,7 +52,7 @@ echo Starting server... Browser will open after backend is ready.
 echo Close this window or press Ctrl+C to stop.
 echo.
 
-start /B cmd /c "venv\Scripts\python.exe scripts\wait_for_url.py http://%HOST%:%PORT%/ && venv\Scripts\python.exe scripts\wait_for_url.py --ready http://%HOST%:%PORT%/ready && start \"\" http://%HOST%:%PORT%/frontend/index.html"
+start /B cmd /c "venv\Scripts\python.exe scripts\wait_for_url.py http://%HOST%:%PORT%/ && start \"\" http://%HOST%:%PORT%/frontend/index.html && venv\Scripts\python.exe scripts\wait_for_url.py --gate http://%HOST%:%PORT%/ready"
 venv\Scripts\python.exe main.py
 
 pause

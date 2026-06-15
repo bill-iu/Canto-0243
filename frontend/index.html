@@ -2,6 +2,8 @@
 <html lang="zh-HK" data-landing="a">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#EBDFD0">
   <title>Canto-0243</title>
@@ -88,7 +90,7 @@
         <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
       </g>
     </svg>
-    <p class="gate-status" id="preloadLabel">正在預載缺字查詢索引…</p>
+    <p class="gate-status" id="preloadLabel">執緊啲字…</p>
   </div>
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 
@@ -114,6 +116,23 @@
             <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
           </svg>
         </button>
+        <div class="warmup-badge" id="warmupBadge" hidden aria-live="polite" aria-atomic="true">
+          <span class="warmup-badge__label" id="warmupBadgeLabel">執埋啲手尾</span>
+          <svg class="warmup-badge__ink" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
+            <defs>
+              <clipPath id="warmup-ink-clip">
+                <rect id="warmupInkClipRect" class="warmup-badge__ink-clip" x="0" y="38" width="0" height="34"/>
+              </clipPath>
+            </defs>
+            <g class="warmup-badge__ink-track" aria-hidden="true">
+              <path d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="currentColor"/>
+            </g>
+            <g class="warmup-badge__ink-fill" clip-path="url(#warmup-ink-clip)" aria-hidden="true">
+              <path d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="currentColor"/>
+            </g>
+          </svg>
+          <span class="warmup-badge__pct" id="warmupBadgePct">0%</span>
+        </div>
 
         <nav class="app-actions" aria-label="主要操作">
           <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
@@ -456,6 +475,8 @@
     let searchTotal = null;
     const PAGE_SIZE = 160;
     const PRELOAD_TIMEOUT_MS = 30000;
+    const WARMUP_DONE_HOLD_MS = 2000;
+    const WARMUP_DONE_FADE_MS = 420;
     const searchCache = new Map();
     let appSearchReady = false;
 
@@ -466,7 +487,162 @@
     const LANDING_HANDOFF_MS = 640;
     const GATE_BRAND_INTRO_MS = 700;
 
-    const GATE_INK_CLIP_MAX = 136;
+    const GATE_NEAR_DONE_PCT = 85;
+    const GATE_INK_CLIP_MAX = 200;
+
+    function formatGateStatusLabel(data, { connecting = false } = {}) {
+      if (connecting || !data) return "執緊啲字…";
+      const pct = Math.max(0, Math.min(100, Math.round((data.progress || 0) * 100)));
+      const wcStatus = data.phases?.word_cache?.status;
+      if (data.ready || wcStatus === "ready") return "開得工！";
+      if (data.status === "loading" || (data.progress || 0) > 0) {
+        return pct >= GATE_NEAR_DONE_PCT ? `差啲就齊… ${pct}%` : `執緊啲字… ${pct}%`;
+      }
+      return "執緊啲字…";
+    }
+
+    function canOpenSearchGate(data) {
+      if (!data) return false;
+      if (data.ready || data.gate_ready) return true;
+      const wcStatus = data.phases?.word_cache?.status;
+      return wcStatus === "ready" || wcStatus === "failed";
+    }
+
+    let lastReadySnapshot = null;
+
+    let warmupDoneShown = false;
+    let warmupTailShown = false;
+    let warmupPollTimer = null;
+    let warmupDismissTimer = null;
+
+    function clearWarmupDismissTimer() {
+      if (warmupDismissTimer) {
+        window.clearTimeout(warmupDismissTimer);
+        warmupDismissTimer = null;
+      }
+    }
+
+    function hideWarmupBadge() {
+      if (!$.warmupBadge) return;
+      clearWarmupDismissTimer();
+      $.warmupBadge.hidden = true;
+      $.warmupBadge.classList.remove("is-done", "is-exiting");
+      if ($.warmupBadgePct) $.warmupBadgePct.hidden = false;
+    }
+
+    function dismissWarmupBadgeWithFade() {
+      if (!$.warmupBadge || $.warmupBadge.hidden) return;
+      if (REDUCED_MOTION) {
+        hideWarmupBadge();
+        return;
+      }
+      $.warmupBadge.classList.add("is-exiting");
+      warmupDismissTimer = window.setTimeout(() => {
+        hideWarmupBadge();
+        warmupDismissTimer = null;
+      }, WARMUP_DONE_FADE_MS);
+    }
+
+    function warmupPctFromProgress(progress01) {
+      return Math.max(0, Math.min(100, Math.round((progress01 || 0) * 100)));
+    }
+
+    function setWarmupInkProgress(progress01) {
+      const w = (Math.max(0, Math.min(1, progress01)) * GATE_INK_CLIP_MAX).toFixed(1);
+      if ($.warmupInkClipRect) $.warmupInkClipRect.setAttribute("width", w);
+    }
+
+    function setWarmupBadgeTail(progress01) {
+      if (!$.warmupBadge || warmupDoneShown) return;
+      warmupTailShown = true;
+      const pct = warmupPctFromProgress(progress01);
+      if ($.warmupBadgeLabel) $.warmupBadgeLabel.textContent = "執埋啲手尾";
+      if ($.warmupBadgePct) {
+        $.warmupBadgePct.textContent = `${pct}%`;
+        $.warmupBadgePct.hidden = false;
+      }
+      setWarmupInkProgress(progress01);
+      $.warmupBadge.setAttribute("aria-label", `背景預載 ${pct}%`);
+      $.warmupBadge.hidden = false;
+      $.warmupBadge.classList.remove("is-done");
+    }
+
+    function showWarmupBadgeDone() {
+      if (!$.warmupBadge || warmupDoneShown || !warmupTailShown) {
+        hideWarmupBadge();
+        warmupDoneShown = true;
+        return;
+      }
+      warmupDoneShown = true;
+      if ($.warmupBadgeLabel) $.warmupBadgeLabel.textContent = "搞掂！";
+      if ($.warmupBadgePct) $.warmupBadgePct.hidden = true;
+      setWarmupInkProgress(1);
+      $.warmupBadge.setAttribute("aria-label", "背景預載完成");
+      $.warmupBadge.classList.add("is-done");
+      $.warmupBadge.classList.remove("is-exiting");
+      $.warmupBadge.hidden = false;
+      clearWarmupDismissTimer();
+      warmupDismissTimer = window.setTimeout(() => {
+        warmupDismissTimer = null;
+        dismissWarmupBadgeWithFade();
+      }, WARMUP_DONE_HOLD_MS);
+    }
+
+    function applyWarmupBadgeFromReady(data) {
+      if (!data || !appSearchReady || warmupDoneShown) return;
+      if (data.startup_complete) {
+        if (warmupTailShown) showWarmupBadgeDone();
+        else hideWarmupBadge();
+        stopWarmupBadgePoll();
+        return;
+      }
+      setWarmupBadgeTail(data.progress);
+    }
+
+    async function syncWarmupBadgeAfterSearchVisible() {
+      if (!$.warmupBadge) return;
+      try {
+        const res = await fetch("/ready", { cache: "no-store" });
+        if (!res.ok) {
+          hideWarmupBadge();
+          return;
+        }
+        const data = await res.json();
+        if (data.startup_complete) {
+          hideWarmupBadge();
+          return;
+        }
+        setWarmupBadgeTail(data.progress);
+        startWarmupBadgePoll();
+      } catch {
+        hideWarmupBadge();
+      }
+    }
+
+    function stopWarmupBadgePoll() {
+      if (warmupPollTimer) {
+        window.clearInterval(warmupPollTimer);
+        warmupPollTimer = null;
+      }
+    }
+
+    function startWarmupBadgePoll() {
+      if (warmupPollTimer) return;
+      warmupPollTimer = window.setInterval(async () => {
+        if (warmupDoneShown) {
+          stopWarmupBadgePoll();
+          return;
+        }
+        try {
+          const res = await fetch("/ready", { cache: "no-store" });
+          if (!res.ok) return;
+          applyWarmupBadgeFromReady(await res.json());
+          if (warmupDoneShown) stopWarmupBadgePoll();
+        } catch {
+          /* retry */
+        }
+      }, 400);
+    }
 
     function setGateInkProgress(progress01) {
       const w = (Math.max(0, Math.min(1, progress01)) * GATE_INK_CLIP_MAX).toFixed(1);
@@ -489,7 +665,9 @@
     async function awaitGateBrandBeat(playLanding) {
       if (!playLanding) return;
       try {
-        if (document.fonts && document.fonts.ready) await document.fonts.ready;
+        if (document.fonts && document.fonts.ready) {
+          await Promise.race([document.fonts.ready, sleep(2400)]);
+        }
       } catch {
         /* use timeout fallback below */
       }
@@ -525,6 +703,10 @@
       gateInkClipRect: document.getElementById("gateInkClipRect"),
       gateInkClipRectMini: document.getElementById("gateInkClipRectMini"),
       appShell: document.getElementById("appShell"),
+      warmupBadge: document.getElementById("warmupBadge"),
+      warmupBadgeLabel: document.getElementById("warmupBadgeLabel"),
+      warmupBadgePct: document.getElementById("warmupBadgePct"),
+      warmupInkClipRect: document.getElementById("warmupInkClipRect"),
     };
 
     function setSearchControlsEnabled(enabled) {
@@ -566,44 +748,70 @@
     async function waitForPreloadReady() {
       const playLanding = shouldPlayLanding();
       setSearchControlsEnabled(false);
+      hideWarmupBadge();
+      lastReadySnapshot = null;
       if (playLanding) {
         $.appShell?.classList.add("is-gated");
         document.body.classList.add(`landing-${LANDING_VARIANT}-pending`);
       } else {
         $.preloadOverlay.classList.add("preload-overlay--minimal");
       }
-      const started = Date.now();
+      let gateBudgetMs = PRELOAD_TIMEOUT_MS;
+      let gateBudgetActive = false;
+      let gateBudgetLastAt = 0;
+
+      function pauseGateBudget() {
+        if (!gateBudgetActive) return;
+        gateBudgetMs -= Date.now() - gateBudgetLastAt;
+        gateBudgetActive = false;
+      }
+
+      function resumeGateBudget() {
+        if (!gateBudgetActive) {
+          gateBudgetActive = true;
+          gateBudgetLastAt = Date.now();
+        }
+      }
+
       while (true) {
         try {
+          pauseGateBudget();
           const res = await fetch("/ready", { cache: "no-store" });
           if (!res.ok) throw new Error(`ready ${res.status}`);
           const data = await res.json();
-          const pct = Math.max(0, Math.min(100, Math.round((data.progress || 0) * 100)));
-          setGateInkProgress(data.progress || 0);
-          if (data.ready) {
+          lastReadySnapshot = data;
+          resumeGateBudget();
+          if (canOpenSearchGate(data)) {
             setGateInkProgress(1);
-            $.preloadLabel.textContent = "就緒";
+            $.preloadLabel.textContent = formatGateStatusLabel(data);
             $.preloadOverlay.classList.remove("is-degraded");
             await awaitGateBrandBeat(playLanding);
             await revealFromGate({ playLanding });
+            await syncWarmupBadgeAfterSearchVisible();
             return;
           }
-          if (data.status === "failed") {
-            break;
-          }
-          $.preloadLabel.textContent =
-            data.status === "loading" ? `載入詞庫… ${pct}%` : "等待詞庫就緒…";
+          setGateInkProgress(data.progress || 0);
+          gateBudgetMs -= Date.now() - gateBudgetLastAt;
+          gateBudgetLastAt = Date.now();
+          if (gateBudgetMs <= 0) break;
+          $.preloadLabel.textContent = formatGateStatusLabel(data);
         } catch {
-          /* retry until timeout */
+          pauseGateBudget();
+          if (lastReadySnapshot) {
+            setGateInkProgress(lastReadySnapshot.progress || 0);
+            $.preloadLabel.textContent = formatGateStatusLabel(lastReadySnapshot);
+          } else {
+            $.preloadLabel.textContent = formatGateStatusLabel(null, { connecting: true });
+          }
         }
-        if (Date.now() - started >= PRELOAD_TIMEOUT_MS) break;
         await sleep(220);
       }
       $.preloadOverlay.classList.add("is-degraded");
-      $.preloadLabel.textContent = "加速載入未完成，仍可搜尋（可能較慢）";
+      $.preloadLabel.textContent = "字庫執唔切，照用得，可能慢啲";
       await awaitGateBrandBeat(playLanding);
       await sleep(playLanding ? 600 : 1400);
       await revealFromGate({ playLanding });
+      await syncWarmupBadgeAfterSearchVisible();
     }
 
     function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
@@ -896,7 +1104,7 @@
 
       try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("後端回應失敗");
+        if (!res.ok) throw new Error(`後端回應失敗 (${res.status})`);
         const data = await res.json();
         const totalHeader = res.headers.get("X-Search-Total");
         const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
@@ -922,7 +1130,12 @@
         finishSearchWithData(data, { append: isLoadMore, total: isLoadMore ? null : total });
       } catch (error) {
         console.error(error);
-        $.results.innerHTML = '<p class="info info-error"><strong>無法連接到後端。</strong><br>請確認伺服器已啟動，然後再次搜尋。</p>';
+        const isHttp = error instanceof Error && /後端回應失敗/.test(error.message);
+        if (isHttp) {
+          $.results.innerHTML = `<p class="info info-error"><strong>搜尋失敗（${escapeHtml(error.message)}）。</strong><br>後端已連線但處理請求時出錯；請重啟 <code translate="no">start.sh</code> 後再試。</p>`;
+        } else {
+          $.results.innerHTML = '<p class="info info-error"><strong>無法連接到後端。</strong><br>請確認已執行 <code translate="no">start.sh</code> 並透過 <code translate="no">http://127.0.0.1:8000/frontend/index.html</code> 開啟（勿直接開檔案）。</p>';
+        }
         updateShuffleButton();
         toggleLoadMoreButton(false);
       }

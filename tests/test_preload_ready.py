@@ -36,8 +36,10 @@ class TestPreloadReadyEndpoint(unittest.TestCase):
         client = TestClient(app)
         payload = client.get("/ready").json()
         self.assertTrue(payload["ready"])
-        self.assertEqual(payload["status"], "ready")
-        self.assertGreaterEqual(payload["progress"], 1.0)
+        self.assertTrue(payload["gate_ready"])
+        self.assertEqual(payload["phases"]["word_cache"]["status"], "ready")
+        self.assertIn("startup_complete", payload)
+        self.assertIn("tail_pending", payload)
 
 
 if __name__ == "__main__":

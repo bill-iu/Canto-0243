@@ -11,7 +11,7 @@
       "source": "ibelick/ui-skills",
       "sourceType": "github",
       "skillPath": "skills/baseline-ui/SKILL.md",
-      "computedHash": "49817c981208de2f412719f7814d31eba2b2096462edc048a279d93f522cab0f"
+      "computedHash": "dfcb3e778b57ad1cba92375689bb8265fa5aef78fba523a744f5220b3c619901"
     },
     "brainstorming": {
       "source": "obra/superpowers",
@@ -30,6 +30,12 @@
       "sourceType": "github",
       "skillPath": "skills/productivity/caveman/SKILL.md",
       "computedHash": "934433479903febc585bf6deb5f0cebc63137e3f86b7babe0aab1ecb94d6d7a4"
+    },
+    "cloud": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/SKILL.md",
+      "computedHash": "b8d447a793468bb3d832239cf99872b6d21538f388ecafaedf9ea1aff78a9aca"
     },
     "code-review-expert": {
       "source": "sanyuan0704/code-review-expert",
@@ -127,6 +133,12 @@
       "skillPath": "skills/personal/obsidian-vault/SKILL.md",
       "computedHash": "960437c7c2febc15cf9d49964f0c8bd889d90a56e81b6eaa33f3ac5b594291c3"
     },
+    "open-source": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "skillPath": "skills/open-source/SKILL.md",
+      "computedHash": "633e852b42541167618777abe3e680499131ee59b13b46125e6ced74e04dba99"
+    },
     "prototype": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -138,6 +150,12 @@
       "sourceType": "github",
       "skillPath": "skills/deprecated/qa/SKILL.md",
       "computedHash": "20c63e29b268b1f0762cff524b5e321d5e1a773b4f61b90d84811b755948a66c"
+    },
+    "remote-browser": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "skillPath": "skills/remote-browser/SKILL.md",
+      "computedHash": "8cf89823c7cafe4d52e0c5ed4cce97ff6956d6367a19341b0c6f1c1ef025932e"
     },
     "request-refactor-plan": {
       "source": "mattpocock/skills",
@@ -246,6 +264,12 @@
       "sourceType": "github",
       "skillPath": "skills/in-progress/writing-shape/SKILL.md",
       "computedHash": "4cae0b2eccd512594a1edc15a0eeffaa2f11e7f2cf21dd4cf9213171c165d324"
+    },
+    "x402": {
+      "source": "browser-use/browser-use",
+      "sourceType": "github",
+      "skillPath": "skills/x402/SKILL.md",
+      "computedHash": "c3e54f71161ba230d6fbeee1a633136fd7b6791499f3c281dc9917479f6d315a"
     },
     "zoom-out": {
       "source": "mattpocock/skills",
