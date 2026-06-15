@@ -1,9 +1,15 @@
 from __future__ import annotations
 
+import os
+import pickle
 import threading
+from collections import defaultdict
+from pathlib import Path
 
 from app.utils.json_helpers import load_json_list
 
+_DISK_CACHE_VERSION = 1
+_COLD_BUILD_MIN_ROWS = 500
 _length_buckets: dict = {}
 _char_meta: dict = {}
 _bucket_entry_index: dict = {}
@@ -83,6 +89,10 @@ def start_word_cache_preload_background() -> None:
 
         begin_preload()
         try:
+            if _disk_cache_enabled() and try_restore_word_cache_from_disk():
+                complete_preload()
+                return
+
             db = SessionLocal()
             try:
                 set_preload_progress(0.15)
@@ -104,6 +114,8 @@ def start_word_cache_preload_background() -> None:
             set_preload_progress(0.55)
             populate_word_cache_from_rows(rows)
             complete_preload()
+            if _disk_cache_enabled():
+                persist_word_cache_to_disk()
         except Exception as e:
             fail_preload(str(e))
             print(
@@ -113,6 +125,248 @@ def start_word_cache_preload_background() -> None:
             )
 
     threading.Thread(target=_preload_word_cache, daemon=True).start()
+
+
+def _disk_cache_enabled() -> bool:
+    return os.getenv("WORD_CACHE_DISK", "1").lower() not in ("0", "false", "no")
+
+
+def _disk_cache_path() -> Path:
+    from app.db.connection import PROJECT_ROOT
+
+    return PROJECT_ROOT / ".cache" / "word_meta.bin"
+
+
+def _sqlite_fingerprint() -> dict | None:
+    from app.db.connection import DATABASE_URL, PROJECT_ROOT
+
+    if not DATABASE_URL.startswith("sqlite"):
+        return None
+    raw = DATABASE_URL.removeprefix("sqlite:///")
+    path = Path(raw)
+    if not path.is_absolute():
+        path = PROJECT_ROOT / path
+    if not path.is_file():
+        return None
+    st = path.stat()
+    return {
+        "version": _DISK_CACHE_VERSION,
+        "mtime_ns": st.st_mtime_ns,
+        "size": st.st_size,
+        "path": str(path.resolve()),
+    }
+
+
+def _cache_state_payload() -> dict:
+    return {
+        "length_buckets": _length_buckets,
+        "bucket_entry_index": _bucket_entry_index,
+        "char_meta": _char_meta,
+        "literal_index": _literal_index,
+        "final_index": _final_index,
+        "initial_index": _initial_index,
+        "code_digit_index": _code_digit_index,
+    }
+
+
+def _install_cache_state(state: dict) -> None:
+    global _length_buckets, _char_meta, _bucket_entry_index
+    global _literal_index, _final_index, _initial_index, _code_digit_index
+    _length_buckets = state["length_buckets"]
+    _bucket_entry_index = state["bucket_entry_index"]
+    _char_meta = state["char_meta"]
+    _literal_index = state["literal_index"]
+    _final_index = state["final_index"]
+    _initial_index = state["initial_index"]
+    _code_digit_index = state["code_digit_index"]
+
+
+def try_restore_word_cache_from_disk() -> bool:
+    fp = _sqlite_fingerprint()
+    if not fp:
+        return False
+    cache_path = _disk_cache_path()
+    if not cache_path.is_file():
+        return False
+    try:
+        with cache_path.open("rb") as handle:
+            payload = pickle.load(handle)
+        if payload.get("fingerprint") != fp:
+            return False
+        _install_cache_state(payload["state"])
+        set_preload_progress(0.99)
+        return bool(_length_buckets)
+    except Exception:
+        return False
+
+
+def persist_word_cache_to_disk() -> None:
+    fp = _sqlite_fingerprint()
+    if not fp or not _length_buckets:
+        return
+    cache_path = _disk_cache_path()
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {"fingerprint": fp, "state": _cache_state_payload()}
+    tmp_path = cache_path.with_suffix(".tmp")
+    with tmp_path.open("wb") as handle:
+        pickle.dump(payload, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    tmp_path.replace(cache_path)
+
+
+def _row_field(obj, key: str, default=""):
+    try:
+        if hasattr(obj, "get"):
+            return obj.get(key, default)
+        return getattr(obj, key, default)
+    except Exception:
+        try:
+            return obj[key] if key in obj else default
+        except Exception:
+            return default
+
+
+def _row_to_entry(r) -> dict | None:
+    if isinstance(r, (list, tuple)):
+        if len(r) < 6:
+            return None
+        char, code, jyut, finals_raw, inits_raw, length = r[0], r[1], r[2], r[3], r[4], r[5]
+    else:
+        char = _row_field(r, "char", None)
+        code = _row_field(r, "code", "")
+        jyut = _row_field(r, "jyutping", "")
+        finals_raw = _row_field(r, "finals", None)
+        inits_raw = _row_field(r, "initials", None)
+        length = _row_field(r, "length", None)
+        if length is None and char:
+            length = len(char)
+    if not char:
+        return None
+    finals = load_json_list(finals_raw)
+    inits = load_json_list(inits_raw)
+    length = int(length) if length is not None else len(char or "")
+    return {
+        "char": char,
+        "code": code or "",
+        "jyutping": jyut or "",
+        "finals": finals,
+        "initials": inits,
+        "length": length,
+    }
+
+
+def _append_to_indexes_into(
+    literal_index: dict,
+    final_index: dict,
+    initial_index: dict,
+    code_digit_index: dict,
+    length: int,
+    bucket_idx: int,
+    entry: dict,
+) -> None:
+    char = entry.get("char") or ""
+    for pos, ch in enumerate(char):
+        literal_index[(length, pos, ch)].append(bucket_idx)
+    for pos, final in enumerate(entry.get("finals") or []):
+        if final:
+            final_index[(length, pos, final)].append(bucket_idx)
+    for pos, initial in enumerate(entry.get("initials") or []):
+        if initial:
+            initial_index[(length, pos, initial)].append(bucket_idx)
+    code = entry.get("code") or ""
+    for pos, digit in enumerate(code):
+        if pos < length and digit.isdigit():
+            code_digit_index[(length, pos, digit)].append(bucket_idx)
+
+
+def _store_entry_into(
+    length_buckets: dict,
+    bucket_entry_index: dict,
+    literal_index: dict,
+    final_index: dict,
+    initial_index: dict,
+    code_digit_index: dict,
+    entry: dict,
+) -> bool:
+    """Store entry into local structures; return True if a new bucket row was added."""
+    length = int(entry["length"])
+    bucket = length_buckets.setdefault(length, [])
+    idx_map = bucket_entry_index.setdefault(length, {})
+    key = _entry_key(entry)
+    if key in idx_map:
+        bucket[idx_map[key]] = entry
+        return False
+    bucket_idx = len(bucket)
+    idx_map[key] = bucket_idx
+    bucket.append(entry)
+    _append_to_indexes_into(
+        literal_index, final_index, initial_index, code_digit_index, length, bucket_idx, entry
+    )
+    return True
+
+
+def _populate_cold_build(row_list: list, *, report_every: int, populate_span: float) -> int:
+    global _length_buckets, _char_meta, _bucket_entry_index
+    global _literal_index, _final_index, _initial_index, _code_digit_index
+
+    length_buckets: dict = {}
+    bucket_entry_index: dict = {}
+    char_meta: dict = {}
+    literal_index: dict = defaultdict(list)
+    final_index: dict = defaultdict(list)
+    initial_index: dict = defaultdict(list)
+    code_digit_index: dict = defaultdict(list)
+    total = len(row_list)
+    added = 0
+
+    def _row_progress(done: int) -> None:
+        if total <= 0:
+            return
+        with _preload_lock:
+            if _preload_state["status"] != "loading":
+                return
+        frac = min(1.0, done / total)
+        set_preload_progress(0.55 + frac * populate_span)
+
+    for row_idx, r in enumerate(row_list):
+        entry = _row_to_entry(r)
+        if not entry:
+            continue
+        key = _entry_key(entry)
+        ch = entry["char"]
+        is_new = _store_entry_into(
+            length_buckets,
+            bucket_entry_index,
+            literal_index,
+            final_index,
+            initial_index,
+            code_digit_index,
+            entry,
+        )
+        if is_new:
+            metas = char_meta.setdefault(ch, [])
+            metas.append(entry)
+        else:
+            metas = char_meta.setdefault(ch, [])
+            for meta_idx, existing in enumerate(metas):
+                if _entry_key(existing) == key:
+                    metas[meta_idx] = entry
+                    break
+            else:
+                metas.append(entry)
+        added += 1
+        if report_every and row_idx > 0 and row_idx % report_every == 0:
+            _row_progress(row_idx)
+    if total:
+        _row_progress(total)
+
+    _length_buckets = length_buckets
+    _bucket_entry_index = bucket_entry_index
+    _char_meta = char_meta
+    _literal_index = dict(literal_index)
+    _final_index = dict(final_index)
+    _initial_index = dict(initial_index)
+    _code_digit_index = dict(code_digit_index)
+    return added
 
 
 def _append_to_indexes(length: int, bucket_idx: int, entry: dict) -> None:
@@ -153,57 +407,46 @@ def _store_entry(entry: dict, *, index_new: bool, bucket_idx: int | None = None)
 
 
 def populate_word_cache_from_rows(rows: list) -> int:
-    global _length_buckets, _char_meta, _bucket_entry_index
-    global _literal_index, _final_index, _initial_index, _code_digit_index
-    added = 0
-    for r in rows or []:
-        if isinstance(r, (list, tuple)):
-            char, code, jyut, finals_raw, inits_raw, length = r[0], r[1], r[2], r[3], r[4], r[5]
-        else:
-            def _g(obj, k, default=""):
-                try:
-                    if hasattr(obj, "get"):
-                        return obj.get(k, default)
-                    return getattr(obj, k, default)
-                except Exception:
-                    try:
-                        return obj[k] if k in obj else default
-                    except Exception:
-                        return default
+    row_list = list(rows or [])
+    total = len(row_list)
+    report_every = max(2000, total // 40) if total else 0
+    populate_span = 0.44  # 0.55 → 0.99 while indexing; complete_preload() sets 1.0
 
-            char = _g(r, "char", None)
-            code = _g(r, "code", "")
-            jyut = _g(r, "jyutping", "")
-            finals_raw = _g(r, "finals", None)
-            inits_raw = _g(r, "initials", None)
-            length = _g(r, "length", None)
-            if length is None and char:
-                length = len(char)
-        if not char:
+    if total >= _COLD_BUILD_MIN_ROWS and not _length_buckets:
+        return _populate_cold_build(row_list, report_every=report_every, populate_span=populate_span)
+
+    added = 0
+
+    def _row_progress(done: int) -> None:
+        if total <= 0:
+            return
+        with _preload_lock:
+            if _preload_state["status"] != "loading":
+                return
+        frac = min(1.0, done / total)
+        set_preload_progress(0.55 + frac * populate_span)
+
+    for row_idx, r in enumerate(row_list):
+        entry = _row_to_entry(r)
+        if not entry:
             continue
-        finals = load_json_list(finals_raw)
-        inits = load_json_list(inits_raw)
-        length = int(length) if length is not None else len(char or "")
-        entry = {
-            "char": char,
-            "code": code or "",
-            "jyutping": jyut or "",
-            "finals": finals,
-            "initials": inits,
-            "length": length,
-        }
         key = _entry_key(entry)
+        length = entry["length"]
         idx_map = _bucket_entry_index.setdefault(length, {})
         is_new = key not in idx_map
         _store_entry(entry, index_new=is_new)
-        metas = _char_meta.setdefault(char, [])
-        for idx, existing in enumerate(metas):
+        metas = _char_meta.setdefault(entry["char"], [])
+        for meta_idx, existing in enumerate(metas):
             if _entry_key(existing) == key:
-                metas[idx] = entry
+                metas[meta_idx] = entry
                 break
         else:
             metas.append(entry)
         added += 1
+        if report_every and row_idx > 0 and row_idx % report_every == 0:
+            _row_progress(row_idx)
+    if total:
+        _row_progress(total)
     return added
 
 

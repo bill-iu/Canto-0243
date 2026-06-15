@@ -63,7 +63,8 @@ def main() -> int:
                 if args.gate:
                     done = bool(payload.get("gate_ready"))
                     progress = float(
-                        (payload.get("phases") or {}).get("word_cache", {}).get("progress")
+                        payload.get("word_cache_progress")
+                        or (payload.get("phases") or {}).get("word_cache", {}).get("progress")
                         or payload.get("progress")
                         or 0.0
                     )

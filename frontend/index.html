@@ -490,12 +490,28 @@
     const GATE_NEAR_DONE_PCT = 85;
     const GATE_INK_CLIP_MAX = 200;
 
+    function wordCacheProgress(data) {
+      const wc = data?.phases?.word_cache;
+      if (!wc) return 0;
+      return typeof data?.word_cache_progress === "number"
+        ? data.word_cache_progress
+        : (wc.progress ?? 0);
+    }
+
+    function tailPreloadProgress(data) {
+      if (typeof data?.tail_progress === "number") return data.tail_progress;
+      const phases = data?.phases || {};
+      const sr = phases.static_resources?.progress ?? 0;
+      const cs = phases.compound_syn?.progress ?? 0;
+      return (sr + cs) / 2;
+    }
+
     function formatGateStatusLabel(data, { connecting = false } = {}) {
       if (connecting || !data) return "執緊啲字…";
-      const pct = Math.max(0, Math.min(100, Math.round((data.progress || 0) * 100)));
+      const pct = Math.max(0, Math.min(100, Math.round(wordCacheProgress(data) * 100)));
       const wcStatus = data.phases?.word_cache?.status;
       if (data.ready || wcStatus === "ready") return "開得工！";
-      if (data.status === "loading" || (data.progress || 0) > 0) {
+      if (wcStatus === "loading" || wordCacheProgress(data) > 0) {
         return pct >= GATE_NEAR_DONE_PCT ? `差啲就齊… ${pct}%` : `執緊啲字… ${pct}%`;
       }
       return "執緊啲字…";
@@ -596,7 +612,7 @@
         stopWarmupBadgePoll();
         return;
       }
-      setWarmupBadgeTail(data.progress);
+      setWarmupBadgeTail(tailPreloadProgress(data));
     }
 
     async function syncWarmupBadgeAfterSearchVisible() {
@@ -612,7 +628,7 @@
           hideWarmupBadge();
           return;
         }
-        setWarmupBadgeTail(data.progress);
+        setWarmupBadgeTail(tailPreloadProgress(data));
         startWarmupBadgePoll();
       } catch {
         hideWarmupBadge();
@@ -790,7 +806,7 @@
             await syncWarmupBadgeAfterSearchVisible();
             return;
           }
-          setGateInkProgress(data.progress || 0);
+          setGateInkProgress(wordCacheProgress(data));
           gateBudgetMs -= Date.now() - gateBudgetLastAt;
           gateBudgetLastAt = Date.now();
           if (gateBudgetMs <= 0) break;
@@ -798,7 +814,7 @@
         } catch {
           pauseGateBudget();
           if (lastReadySnapshot) {
-            setGateInkProgress(lastReadySnapshot.progress || 0);
+            setGateInkProgress(wordCacheProgress(lastReadySnapshot));
             $.preloadLabel.textContent = formatGateStatusLabel(lastReadySnapshot);
           } else {
             $.preloadLabel.textContent = formatGateStatusLabel(null, { connecting: true });

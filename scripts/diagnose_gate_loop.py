@@ -41,11 +41,15 @@ def _can_open(data: dict) -> bool:
 def _label(data: dict | None, connecting: bool = False) -> str:
     if connecting or not data:
         return "執緊啲字…"
-    pct = int(max(0, min(100, round((data.get("progress") or 0) * 100))))
-    wc_status = (data.get("phases") or {}).get("word_cache", {}).get("status")
+    wc = (data.get("phases") or {}).get("word_cache") or {}
+    progress = data.get("word_cache_progress")
+    if progress is None:
+        progress = wc.get("progress") or 0
+    pct = int(max(0, min(100, round(float(progress) * 100))))
+    wc_status = wc.get("status")
     if data.get("ready") or wc_status == "ready":
         return "開得工！"
-    if data.get("status") == "loading" or (data.get("progress") or 0) > 0:
+    if wc_status == "loading" or progress > 0:
         return f"執緊啲字… {pct}%" if pct < 85 else f"差啲就齊… {pct}%"
     return "執緊啲字…"
 

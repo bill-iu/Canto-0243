@@ -197,6 +197,9 @@ def get_readiness_snapshot() -> dict:
 
     phases = [word_cache, static_resources, compound_syn]
     aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / 3.0
+    tail_progress = (
+        float(static_resources.get("progress") or 0.0) + float(compound_syn.get("progress") or 0.0)
+    ) / 2.0
 
     word_cache_ready = bool(word_cache.get("ready"))
     gate_ready = word_cache.get("status") in ("ready", "failed")
@@ -218,6 +221,8 @@ def get_readiness_snapshot() -> dict:
         "tail_pending": tail_pending,
         "status": status,
         "progress": aggregate_progress,
+        "word_cache_progress": float(word_cache.get("progress") or 0.0),
+        "tail_progress": tail_progress,
         "error": word_cache.get("error"),
         "phases": {
             "word_cache": word_cache,
