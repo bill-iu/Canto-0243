@@ -9,8 +9,8 @@ DISPATCH_PATH = REPO_ROOT / "app" / "services" / "query_dispatch.py"
 
 FORBIDDEN = (
     "build_match_spec",
-    "build_mask_family_match_spec",
     "build_equals_match_spec",
+    "execute_mask_family_search",
     "CandidateSource",
     "run_position_query",
     "run_position_query_tracked",
@@ -23,7 +23,9 @@ FORBIDDEN = (
 )
 
 ALLOWED = (
-    "execute_mask_family_search",
+    "execute_match_spec",
+    "run_equals_query",
+    "build_mask_family_match_spec",
     "is_mask_family_query",
     "normalize_mask_family_parsed",
     "_mask_family_search_result",

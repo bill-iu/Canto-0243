@@ -612,6 +612,77 @@ class MaskFamilySearchResult:
     cache_path: Optional[str] = None
 
 
+def _phoneme_anchor_slot(spec: MatchSpec) -> Optional[SlotConstraint]:
+    for slot in spec.slots:
+        if slot.kind in ("final_anchor", "initial_anchor"):
+            return slot
+    return None
+
+
+def _resolve_mask_family_source(
+    spec: MatchSpec,
+    db: Any,
+    mode: str,
+    query_code: Optional[str],
+) -> tuple[Optional[CandidateSource], Optional[Callable]]:
+    """由 MatchSpec 形狀選擇候選來源（registry，不依 ParsedQuery）。"""
+    if spec.literal_priority and spec.mask:
+        effective_code = query_code or spec.code_prefix
+        source = MaskWildcardCandidateSource(
+            db, spec.mask, mode=mode, query_code=effective_code
+        )
+        literal_positions = spec.extra.get("literal_positions", [])
+        sort_key = lambda w: mask_priority_key(w, literal_positions)
+        return source, sort_key
+
+    if spec.hybrid_ref_chars:
+        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
+        return source, None
+
+    anchor = _phoneme_anchor_slot(spec)
+    if anchor and spec.mask and not spec.literal_priority:
+        constraint = "final" if anchor.kind == "final_anchor" else "initial"
+        source = RhymeAnchorCandidateSource(
+            db,
+            spec.mask,
+            anchor.pos,
+            anchor.value or "",
+            constraint,
+        )
+        return source, None
+
+    if spec.mask:
+        return LengthMaskCandidateSource(db, spec.mask), None
+
+    return None, None
+
+
+def execute_match_spec(
+    spec: MatchSpec,
+    *,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Any,
+) -> MaskFamilySearchResult:
+    """缺字型查詢執行：僅收 MatchSpec（CONTEXT § 缺字型查詢執行）。"""
+    if spec is None or spec.width == 0:
+        return MaskFamilySearchResult(items=[])
+
+    source, sort_key = _resolve_mask_family_source(spec, db, mode, code)
+    if source is None:
+        return MaskFamilySearchResult(items=[])
+
+    items, from_cache = run_position_query_tracked(
+        spec, db, mode, limit, offset, source=source, sort_key=sort_key
+    )
+    return MaskFamilySearchResult(
+        items=items,
+        cache_path="ready" if from_cache else "fallback",
+    )
+
+
 def execute_mask_family_search(
     parsed: Any,
     *,
@@ -621,75 +692,23 @@ def execute_mask_family_search(
     offset: int,
     db: Any,
 ) -> MaskFamilySearchResult:
-    """缺字型查詢執行：ParsedQuery + 搜尋上下文 → 結果與快取路徑。"""
-    from app.services.query_parse import (
-        CodeTailQuery,
-        EqualsQuery,
-        HybridCodeQuery,
-        LiteralRefQuery,
-        MaskQuery,
-        RhymeAnchorQuery,
-    )
+    """相容薄包裝：ParsedQuery → spec → execute_match_spec（請改用 query_dispatch）。"""
+    from app.services.query_parse import EqualsQuery
 
+    parsed = normalize_mask_family_parsed(parsed)
     if isinstance(parsed, EqualsQuery):
         items = run_equals_query(parsed.raw_q, db, mode, limit, offset)
         return MaskFamilySearchResult(items=items, cache_path="fallback")
 
     spec = build_mask_family_match_spec(parsed)
-    if spec is None or spec.width == 0:
-        return MaskFamilySearchResult(items=[])
-
-    if isinstance(parsed, MaskQuery):
-        if code:
-            spec.code_prefix = code
-        literal_positions = spec.extra.get("literal_positions", [])
-        source = MaskWildcardCandidateSource(db, spec.mask, mode=mode, query_code=spec.code_prefix)
-        sort_key = lambda w: mask_priority_key(w, literal_positions)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source, sort_key=sort_key
-        )
-        return MaskFamilySearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, HybridCodeQuery):
-        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return MaskFamilySearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, RhymeAnchorQuery):
-        source = RhymeAnchorCandidateSource(
-            db,
-            spec.mask,
-            parsed.anchor_pos,
-            parsed.anchor,
-            parsed.constraint,
-        )
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return MaskFamilySearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    if isinstance(parsed, (CodeTailQuery, LiteralRefQuery)):
-        source = LengthMaskCandidateSource(db, spec.mask)
-        items, from_cache = run_position_query_tracked(
-            spec, db, mode, limit, offset, source=source
-        )
-        return MaskFamilySearchResult(
-            items=items,
-            cache_path="ready" if from_cache else "fallback",
-        )
-
-    return MaskFamilySearchResult(items=[])
+    return execute_match_spec(
+        spec,
+        code=code,
+        mode=mode,
+        limit=limit,
+        offset=offset,
+        db=db,
+    )
 
 
 def matches_equals_phoneme_span(
@@ -945,6 +964,7 @@ __all__ = [
     "CompoundSynCandidateSource",
     "is_mask_family_query",
     "build_mask_family_match_spec",
+    "execute_match_spec",
     "execute_mask_family_search",
     "run_position_query",
     "run_position_query_tracked",
