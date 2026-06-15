@@ -183,56 +183,20 @@ def _phase_snapshot(phase: str) -> dict:
         }
 
 
-def _phase_done(snapshot: dict) -> bool:
-    return snapshot["status"] in ("ready", "failed")
+def get_background_phase_snapshot(phase: str) -> dict:
+    """背景預載 phase 快照（供 readiness_gate 消費）。"""
+    return _phase_snapshot(phase)
 
 
 def get_readiness_snapshot() -> dict:
-    """就緒閘 API：詞庫快取解鎖搜尋；startup_complete 為全部背景預載完成。"""
-    from app.utils.word_cache import get_preload_snapshot
+    """就緒閘 API：委派 readiness_gate.snapshot()。"""
+    from app.startup.readiness_gate import snapshot
 
-    word_cache = get_preload_snapshot()
-    static_resources = _phase_snapshot("static_resources")
-    compound_syn = _phase_snapshot("compound_syn")
-
-    phases = [word_cache, static_resources, compound_syn]
-    aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / 3.0
-    tail_progress = (
-        float(static_resources.get("progress") or 0.0) + float(compound_syn.get("progress") or 0.0)
-    ) / 2.0
-
-    word_cache_ready = bool(word_cache.get("ready"))
-    gate_ready = word_cache.get("status") in ("ready", "failed")
-    startup_complete = word_cache_ready and all(_phase_done(p) for p in (static_resources, compound_syn))
-    tail_pending = not all(_phase_done(p) for p in (static_resources, compound_syn))
-
-    status = word_cache.get("status") or "pending"
-    if startup_complete:
-        status = "ready"
-    elif status in ("pending",) and any(
-        p.get("status") == "loading" for p in (static_resources, compound_syn)
-    ):
-        status = "loading"
-
-    return {
-        "ready": word_cache_ready,
-        "gate_ready": gate_ready,
-        "startup_complete": startup_complete,
-        "tail_pending": tail_pending,
-        "status": status,
-        "progress": aggregate_progress,
-        "word_cache_progress": float(word_cache.get("progress") or 0.0),
-        "tail_progress": tail_progress,
-        "error": word_cache.get("error"),
-        "phases": {
-            "word_cache": word_cache,
-            "static_resources": static_resources,
-            "compound_syn": compound_syn,
-        },
-    }
+    return snapshot()
 
 
 __all__ = [
+    "get_background_phase_snapshot",
     "get_readiness_snapshot",
     "reset_background_preload_state_for_tests",
     "run_lifespan_startup",

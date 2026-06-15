@@ -9,6 +9,7 @@ from app.schemas.word_schema import WordCreate, WordRead
 from app.services.word_db_filters import apply_code_filter
 from app.services.essay_sort import sort_words
 from app.services.query_dispatch import SearchContext, execute_search, search_words
+from app.startup.readiness_gate import require_search_ready
 from app.services.word_serializer import deduplicate_words
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -47,6 +48,7 @@ def search_words_endpoint(
     db: Session = Depends(get_db),
 ):
     if not q:
+        require_search_ready()
         query = db.query(Word)
         query = apply_code_filter(query, code, mode)
         if char:

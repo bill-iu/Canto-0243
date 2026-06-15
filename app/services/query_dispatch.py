@@ -149,6 +149,9 @@ _default_engine = QueryEngine()
 
 
 def execute_search(ctx: SearchContext) -> SearchResult:
+    from app.startup.readiness_gate import require_search_ready
+
+    require_search_ready()
     return _default_engine.execute(ctx)
 
 

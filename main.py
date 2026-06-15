@@ -7,11 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import Response
+from starlette.responses import JSONResponse, Response
 
 from app.routers.relation import router as relation_router
 from app.routers.word import router
 from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup, run_main_block_startup
+from app.startup.readiness_gate import SearchGateBlocked
 
 
 class FrontendNoCacheMiddleware(BaseHTTPMiddleware):
@@ -45,6 +46,15 @@ app.add_middleware(
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 app.include_router(router)
 app.include_router(relation_router)
+
+
+@app.exception_handler(SearchGateBlocked)
+async def search_gate_blocked_handler(_request: Request, exc: SearchGateBlocked) -> JSONResponse:
+    return JSONResponse(
+        status_code=503,
+        content=exc.snapshot,
+        headers={"Retry-After": "1"},
+    )
 
 
 @app.get("/")

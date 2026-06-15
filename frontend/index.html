@@ -474,7 +474,6 @@
     let currentQuery = "";
     let searchTotal = null;
     const PAGE_SIZE = 160;
-    const PRELOAD_TIMEOUT_MS = 30000;
     const WARMUP_DONE_HOLD_MS = 2000;
     const WARMUP_DONE_FADE_MS = 420;
     const searchCache = new Map();
@@ -508,6 +507,7 @@
 
     function formatGateStatusLabel(data, { connecting = false } = {}) {
       if (connecting || !data) return "執緊啲字…";
+      if (data.degraded) return "字庫執唔切，照用得，可能慢啲";
       const pct = Math.max(0, Math.min(100, Math.round(wordCacheProgress(data) * 100)));
       const wcStatus = data.phases?.word_cache?.status;
       if (data.ready || wcStatus === "ready") return "開得工！";
@@ -518,10 +518,7 @@
     }
 
     function canOpenSearchGate(data) {
-      if (!data) return false;
-      if (data.ready || data.gate_ready) return true;
-      const wcStatus = data.phases?.word_cache?.status;
-      return wcStatus === "ready" || wcStatus === "failed";
+      return Boolean(data?.gate_ready);
     }
 
     let lastReadySnapshot = null;
@@ -772,47 +769,24 @@
       } else {
         $.preloadOverlay.classList.add("preload-overlay--minimal");
       }
-      let gateBudgetMs = PRELOAD_TIMEOUT_MS;
-      let gateBudgetActive = false;
-      let gateBudgetLastAt = 0;
-
-      function pauseGateBudget() {
-        if (!gateBudgetActive) return;
-        gateBudgetMs -= Date.now() - gateBudgetLastAt;
-        gateBudgetActive = false;
-      }
-
-      function resumeGateBudget() {
-        if (!gateBudgetActive) {
-          gateBudgetActive = true;
-          gateBudgetLastAt = Date.now();
-        }
-      }
-
       while (true) {
         try {
-          pauseGateBudget();
           const res = await fetch("/ready", { cache: "no-store" });
           if (!res.ok) throw new Error(`ready ${res.status}`);
           const data = await res.json();
           lastReadySnapshot = data;
-          resumeGateBudget();
           if (canOpenSearchGate(data)) {
             setGateInkProgress(1);
             $.preloadLabel.textContent = formatGateStatusLabel(data);
-            $.preloadOverlay.classList.remove("is-degraded");
+            $.preloadOverlay.classList.toggle("is-degraded", Boolean(data.degraded));
             await awaitGateBrandBeat(playLanding);
             await revealFromGate({ playLanding });
             await syncWarmupBadgeAfterSearchVisible();
             return;
           }
           setGateInkProgress(wordCacheProgress(data));
-          gateBudgetMs -= Date.now() - gateBudgetLastAt;
-          gateBudgetLastAt = Date.now();
-          if (gateBudgetMs <= 0) break;
           $.preloadLabel.textContent = formatGateStatusLabel(data);
         } catch {
-          pauseGateBudget();
           if (lastReadySnapshot) {
             setGateInkProgress(wordCacheProgress(lastReadySnapshot));
             $.preloadLabel.textContent = formatGateStatusLabel(lastReadySnapshot);
@@ -822,12 +796,6 @@
         }
         await sleep(220);
       }
-      $.preloadOverlay.classList.add("is-degraded");
-      $.preloadLabel.textContent = "字庫執唔切，照用得，可能慢啲";
-      await awaitGateBrandBeat(playLanding);
-      await sleep(playLanding ? 600 : 1400);
-      await revealFromGate({ playLanding });
-      await syncWarmupBadgeAfterSearchVisible();
     }
 
     function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
@@ -1120,6 +1088,18 @@
 
       try {
         const res = await fetch(url);
+        if (res.status === 503) {
+          const snap = await res.json().catch(() => null);
+          if (snap && !snap.gate_ready) {
+            setGateInkProgress(wordCacheProgress(snap));
+            const pct = Math.round(wordCacheProgress(snap) * 100);
+            $.results.innerHTML = `<p class="info"><strong>仲未開得工…</strong><br>詞庫快取索引載入中（${pct}%）。請稍候再搜。</p>`;
+            updateShuffleButton();
+            toggleLoadMoreButton(false);
+            setButtonLoading(false);
+            return;
+          }
+        }
         if (!res.ok) throw new Error(`後端回應失敗 (${res.status})`);
         const data = await res.json();
         const totalHeader = res.headers.get("X-Search-Total");

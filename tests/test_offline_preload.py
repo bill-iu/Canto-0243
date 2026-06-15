@@ -53,6 +53,7 @@ class OfflinePreloadTests(unittest.TestCase):
         payload = get_readiness_snapshot()
         self.assertFalse(payload["ready"])
         self.assertTrue(payload["gate_ready"])
+        self.assertEqual(payload["gate_open_reason"], "ready")
         self.assertFalse(payload["startup_complete"])
 
     def test_startup_complete_when_all_background_phases_done(self):
