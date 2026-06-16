@@ -17,10 +17,10 @@
 ## 最新版本
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**193,277**（`lyrics.db` · `words` 表）
+目前總詞條列數：**193,278**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
-官方離線資料包：**[Canto-0243 v1.1.0](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.1.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方離線資料包：**[Canto-0243 v1.2.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -41,7 +41,7 @@
 
 完整離線體驗請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.1.0`](https://github.com/ICE-U-code/Canto-0243/releases/tag/v1.1.0)）。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
    * **Windows**：雙擊 **`START.bat`**。
@@ -401,4 +401,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-06-15（架構深模組 v1.1.0 · 缺字型查詢／關係補錄／近反義池投影／離線啟動預載）
+**最後更新**：2026-06-16（v1.2.0 · 參考字讀音解析／查詢分派收斂／position_match 套件化 · ADR-0004）
