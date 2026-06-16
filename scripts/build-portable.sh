@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Build portable release: macOS .app (免安裝) + optional folder for dev smoke test
-set -euo pipefail
+set -eu
+# ponytail: macOS /bin/bash 3.x lacks pipefail; CI macos-latest uses env bash
+[[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]] && set -o pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_DIR="$ROOT/dist/canto-0243-portable"
 APP_DIR="$ROOT/dist/Canto-0243.app"
