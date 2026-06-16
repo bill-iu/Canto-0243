@@ -51,7 +51,8 @@
 gh release create v1.3.0 --draft --title "Canto-0243 v1.3.0"
 gh release upload v1.3.0 lyrics.db
 
-# 3. 推送 tag（觸發 release-full.yml）
+# 3. 等幾秒讓 draft 在 API 同步，再推送 tag（觸發 release-full.yml）
+sleep 10
 git tag v1.3.0
 git push origin v1.3.0
 ```

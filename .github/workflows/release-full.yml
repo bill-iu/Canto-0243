@@ -24,7 +24,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${{ github.ref_name }}"
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
+          REPO="${{ github.repository }}"
+          # ponytail: gh release view uses REST get-by-tag; draft releases are list-only until published
+          found=""
+          for i in $(seq 1 12); do
+            found=$(gh api "repos/${REPO}/releases" --paginate --jq ".[] | select(.tag_name==\"${TAG}\") | .id" | head -1)
+            if [[ -n "$found" ]]; then
+              break
+            fi
+            echo "Waiting for draft release ${TAG} (attempt ${i}/12)..."
+            sleep 5
+          done
+          if [[ -z "$found" ]]; then
             echo "::error::No GitHub Release for ${TAG}. Create a draft release and upload lyrics.db before pushing the tag."
             exit 1
           fi
