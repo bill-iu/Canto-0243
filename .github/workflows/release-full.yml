@@ -22,6 +22,7 @@ jobs:
       - name: Verify draft release includes lyrics.db
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           TAG="${{ github.ref_name }}"
           REPO="${{ github.repository }}"
@@ -156,6 +157,7 @@ jobs:
       - name: Publish release assets
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
         run: |
           TAG="${{ github.ref_name }}"
           WIN="artifacts/windows-portable/canto-0243-portable.zip"
