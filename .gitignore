@@ -42,6 +42,9 @@ data/locks/
 .cursor/
 !.cursor/rules/
 !.cursor/rules/**
+agent-tools/
+mcps/
+commit-msg.txt
 
 # IDE 設定
 .vscode/

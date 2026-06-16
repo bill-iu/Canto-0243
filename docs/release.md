@@ -61,6 +61,8 @@ CI 會：從同 tag 取 `lyrics.db` → Windows／macOS 各 build portable → e
 
 若 Windows 或 macOS build 失敗，**不會** publish（ADR-0008 Q5=A）。
 
+**Release 後可刪本機建置暫存**：`dist/` 內 zip、解壓目錄、export 等皆為本機副產物；正式四件套以 GitHub Release 為準。確認 Release 齊全後可執行 `rm -rf dist/`（Windows：`Remove-Item -Recurse -Force dist`）；下次 build 或 export 會自動重建。
+
 ### 詞庫發佈（CI）
 
 **前置**：目標 tag 已有 full Release（含 zip + macOS tar.gz）。

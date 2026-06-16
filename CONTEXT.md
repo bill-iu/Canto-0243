@@ -323,6 +323,10 @@ _Avoid_：把 checkpoint 當詞庫資料、把 lock 檔 commit 進 repo
 Clone 後第一層目錄；保留產品入口、`CONTEXT`、變更紀錄（`WORKLOG`）、agent 入口 stub（`AGENTS`）與 agent 鎖定（`skills-lock`）；對外授權與第三方聲明留根目錄；貢獻流程等維護說明收在 `docs/`；開發啟動用 `start.sh` 與 Portable 套件內啟動腳本並存、職責分開。根目錄允許的本機檔僅 `lyrics.db` 與 `.env*`（範例為 `.env.example`）；日誌、debug 與 **Ingest 執行狀態** 不得停留或進版控。
 _Avoid_：把根目錄當資料 dump、與 Portable 解壓目錄混淆、把開發啟動腳本與 Portable 啟動腳本混為一體
 
+**建置暫存**（維護者）：
+本機 `dist/` 目錄，存放 build 腳本產出的 zip、解壓樹、`words-lexicon.json` export 等；**不進版控**、**非**創作者下載來源。正式 **全量發佈** 四件套以 GitHub Release 為準；Release 確認後可整目錄刪除，需要時再跑 build／export 重建。
+_Avoid_：把本機 dist 當發佈歸檔、在 dist 內長期保留多版 zip、把 dist 解壓樹當日常開發工作目錄
+
 **開發版啟動**：
 維護者執行 `start.sh` 時，瀏覽器應在**查韻介面 HTML 可載入**後儘快開啟，不等待**就緒閘**解鎖；頁面由既有就緒閘接手進度與搜尋解鎖。不得出現瀏覽器原生「無法連線」畫面——腳本須確保 HTTP 已能回應查韻介面後才開啟 URL。
 _Avoid_：等 gate_ready 才開瀏覽器、先開瀏覽器再等後端（未就緒時 fetch 失敗）、把開發版啟動與 Portable 啟動混為同一套等待策略

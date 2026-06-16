@@ -57,7 +57,8 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 **不得堆在根目錄**：
 
 - 任何 `*.log`、`debug-*.log`、`ingest-*.log`
-- 建置產物（用 `dist/`）
+- 建置產物（用 `dist/`；Release 後可整目錄刪除，見 [release.md](release.md)）
+- Cursor 暫存（`agent-tools/`、`mcps/`、`commit-msg.txt` 等；已 gitignore）
 - 未列入允許清單的資料 dump
 
 日誌請寫入 `logs/`（若腳本支援）或系統暫存區，並定期清理。Portable 交付腳本見 `portable/START.*`；clone 開發用 `./start.sh`（與 Portable 職責分開）。
