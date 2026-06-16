@@ -8,10 +8,10 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from app.models.word import Word
-from app.services.code_aware_ranker import build_code_aware_results
+from app.domain.lexicon.lookup_layout import build_lookup_layout
 from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
 from app.services.word_db_filters import apply_code_filter, length_filter
-from app.services.word_ensure_service import ensure_word_in_db
+from app.services.word_ensure_service import ensure_word_in_db, warm_ref_char_for_lookup
 from app.services.jyutping_match import expected_word_length, matches_jyutping_query
 from app.services.word_serializer import (
     deduplicate_words,
@@ -61,7 +61,9 @@ class WordLookupExecutor:
             raw_targets = self._db.query(Word).filter(Word.char == q).all()
         target_words = deduplicate_words(raw_targets)
         if target_words:
-            built = build_code_aware_results(q, raw_targets, self._db)
+            if len(q) >= 1:
+                warm_ref_char_for_lookup(q[-1], self._db)
+            built = build_lookup_layout(q, raw_targets, self._db)
             return paginate(built, offset, limit)
         return []
 

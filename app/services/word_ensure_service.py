@@ -10,7 +10,7 @@ from app.lexicon.static_index import LexiconEntry
 from app.models.word import Word
 from app.domain.lexicon.port import LexiconPort, default_lexicon_port
 from app.utils.jyutping_codec import split_jyutping
-from app.utils.word_cache import update_word_in_cache
+from app.utils.word_cache import get_char_meta, update_word_in_cache
 
 
 def sync_word_to_cache(row) -> None:
@@ -94,3 +94,12 @@ def ensure_word_in_db(
     if not admission.can_inject:
         return []
     return _inject_lexicon_entries(db, text, admission.entries)
+
+
+def warm_ref_char_for_lookup(last_ch: str, db: Session) -> None:
+    """詞條 lookup 版面尾字韻錨前：快取無 meta 時將詞庫列同步至索引。"""
+    if not last_ch or (get_char_meta(last_ch) or {}).get("finals"):
+        return
+    ref_row = db.query(Word).filter(Word.char == last_ch).first()
+    if ref_row:
+        sync_word_to_cache(ref_row)
