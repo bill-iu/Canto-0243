@@ -10,6 +10,9 @@
   --chrome-tab-divider: var(--bg);
   --chrome-tab-title: var(--muted);
   --chrome-tab-title-active: var(--ink);
+  --chrome-tab-title-font-size: 14px;
+  --chrome-tab-divider-width: 2px;
+  --chrome-tab-divider-opacity: 1;
   /* chrome-tabs 垂直尺寸（單一來源；改 tab 高度時 ::after 會同步） */
   --chrome-tabs-padding-top: 12px;
   --chrome-tab-height: 48px;
@@ -28,6 +31,14 @@
     - 10px
   );
   --chrome-tab-divider-inset: calc((var(--chrome-tab-height) - 8px) / 2);
+  /* 互動區（避開無縫底條）內的 divider 定位 */
+  --chrome-tab-interaction-height: calc(var(--chrome-tab-height) - var(--chrome-header-seam-height));
+  --chrome-tab-divider-length: var(--chrome-tab-title-font-size);
+  --chrome-tab-divider-inset-top: calc((var(--chrome-tab-interaction-height) - var(--chrome-tab-divider-length)) / 2);
+  --chrome-tab-divider-inset-bottom: calc(
+    var(--chrome-header-seam-height)
+    + (var(--chrome-tab-interaction-height) - var(--chrome-tab-divider-length)) / 2
+  );
 }
 
 .prototype-ribbon {
@@ -207,12 +218,11 @@ body.prototype-query-tabs {
   position: absolute;
   /* 對齊到最後一個 tab 原本的 divider 位置（tab-content-margin=9px） */
   left: -8px; /* 吃掉 tab 幾何右側留白，貼緊最右 tab */
-  top: 16px;
-  bottom: 16px;
-  width: 2px;
+  top: var(--chrome-tab-divider-inset-top);
+  height: var(--chrome-tab-divider-length);
+  width: var(--chrome-tab-divider-width);
   background: var(--chrome-tab-divider);
-  /* 視覺粗幼對齊一般 divider（避免看起來更粗/更亮） */
-  opacity: 0.82;
+  opacity: var(--chrome-tab-divider-opacity);
   transition: opacity 0.2s ease;
   pointer-events: none;
 }
@@ -247,6 +257,15 @@ body.prototype-query-tabs {
 .prototype-query-tabs .main-wrap {
   padding-top: 24px;
   background: var(--bg);
+}
+
+/* 無縫底條覆蓋 tab 底部同色帶；互動區避開該高度（SVG 背景仍貼底） */
+.prototype-query-tabs .chrome-tabs .chrome-tab .chrome-tab-content {
+  bottom: var(--chrome-header-seam-height);
+}
+
+.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-add .chrome-tab-add-hit {
+  height: calc(100% - var(--chrome-header-seam-height));
 }
 
 /* 無縫：只用 header 全寬 ::after；隱藏 tab 容器內 bottom-bar 避免 active 下凸出長方形 */

@@ -77,9 +77,9 @@
 
 .chrome-tabs .chrome-tab .chrome-tab-dividers {
   position: absolute;
-  /* divider：縮短 + 加粗 */
-  top: var(--chrome-tab-divider-inset, 20px);
-  bottom: var(--chrome-tab-divider-inset, 20px);
+  /* divider：縮短 + 加粗；與 title / × 同處互動區 */
+  top: var(--chrome-tab-divider-inset-top, var(--chrome-tab-divider-inset, 20px));
+  bottom: var(--chrome-tab-divider-inset-bottom, var(--chrome-tab-divider-inset, 20px));
   left: var(--tab-content-margin);
   right: var(--tab-content-margin);
   z-index: 2;
@@ -98,9 +98,9 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 2px;
+  width: var(--chrome-tab-divider-width, 2px);
   background: var(--chrome-tab-divider, #a9adb0);
-  opacity: 1;
+  opacity: var(--chrome-tab-divider-opacity, 1);
   transition: opacity 0.2s ease;
 }
 
@@ -216,7 +216,7 @@
   -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
   mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
   font-family: "JetBrains Mono", ui-monospace, monospace;
-  font-size: 14px;
+  font-size: var(--chrome-tab-title-font-size, 14px);
   font-weight: 650;
 }
 
