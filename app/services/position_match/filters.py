@@ -75,7 +75,7 @@ def matches_phoneme_at_position(
 
 
 def slot_constraint_matches(word, slot, db) -> bool:
-    from app.services.jyutping_anchor_match import matches_jyutping_anchor_at_position
+    from app.services.jyutping_anchor import matches_jyutping_anchor_at_position
 
     if slot.kind in ("rhyme_letters", "syllable_letters", "initial_letters"):
         return matches_jyutping_anchor_at_position(
