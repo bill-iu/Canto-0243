@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Build portable release (Windows / macOS / Linux) including lyrics.db
+# Build portable release: macOS .app (免安裝) + optional folder for dev smoke test
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_DIR="$ROOT/dist/canto-0243-portable"
-ZIP_PATH="$ROOT/dist/canto-0243-portable.zip"
+APP_DIR="$ROOT/dist/Canto-0243.app"
+APP_RES="$APP_DIR/Contents/Resources/app"
 TAR_PATH="$ROOT/dist/canto-0243-portable-macos.tar.gz"
 
 DB_PATH="$ROOT/lyrics.db"
@@ -13,11 +14,7 @@ if [[ ! -f "$DB_PATH" ]]; then
 fi
 
 echo "==> Sync README word count..."
-python "$ROOT/scripts/update_readme_words_count.py" --db "$DB_PATH"
-
-echo "==> Clean output dir..."
-rm -rf "$OUT_DIR"
-mkdir -p "$ROOT/dist"
+python3 "$ROOT/scripts/update_readme_words_count.py" --db "$DB_PATH"
 
 copy_tree() {
   local src="$1" dst="$2"
@@ -25,40 +22,59 @@ copy_tree() {
   mkdir -p "$dst"
   rsync -a --delete \
     --exclude '__pycache__' --exclude '.git' --exclude 'venv' --exclude '.venv' \
-    --exclude 'dist' --exclude '.agents' --exclude '*.pyc' --exclude '*.pyo' \
+    --exclude 'dist' --exclude '.agents' --exclude 'macos' \
+    --exclude '*.pyc' --exclude '*.pyo' \
     "$src/" "$dst/"
 }
 
-echo "==> Copy app, data, frontend..."
-copy_tree "$ROOT/app" "$OUT_DIR/app"
-copy_tree "$ROOT/frontend" "$OUT_DIR/frontend"
-copy_tree "$ROOT/data" "$OUT_DIR/data"
-copy_tree "$ROOT/portable" "$OUT_DIR"
+copy_portable_bundle() {
+  local dst="$1"
+  echo "==> Copy bundle into $dst..."
+  rm -rf "$dst"
+  mkdir -p "$dst"
+  copy_tree "$ROOT/app" "$dst/app"
+  copy_tree "$ROOT/frontend" "$dst/frontend"
+  copy_tree "$ROOT/data" "$dst/data"
+  copy_tree "$ROOT/portable" "$dst"
+  cp -f "$ROOT/main.py" "$ROOT/requirements.txt" "$dst/"
+  cp -f "$DB_PATH" "$dst/lyrics.db"
+  chmod +x "$dst/START.sh" "$dst/START.command" 2>/dev/null || true
+}
 
-for f in main.py requirements.txt; do
-  cp -f "$ROOT/$f" "$OUT_DIR/$f"
-done
+bundle_venv() {
+  local dst="$1"
+  echo "==> Build bundled venv in $dst (may take a few minutes)..."
+  python3 "$ROOT/scripts/portable_venv.py" "$dst"
+  python3 "$ROOT/scripts/portable_venv.py" "$dst" --self-check
+}
 
-echo "==> Copy lyrics.db..."
-cp -f "$DB_PATH" "$OUT_DIR/lyrics.db"
+echo "==> Clean output dirs..."
+rm -rf "$OUT_DIR" "$APP_DIR"
+mkdir -p "$ROOT/dist"
 
-chmod +x "$OUT_DIR/START.sh" "$OUT_DIR/START.command" 2>/dev/null || true
+copy_portable_bundle "$OUT_DIR"
+bundle_venv "$OUT_DIR"
 
-echo "==> Create zip..."
-rm -f "$ZIP_PATH"
-(cd "$OUT_DIR" && zip -r -q "$ZIP_PATH" .)
+echo "==> Build Canto-0243.app..."
+mkdir -p "$APP_DIR/Contents/MacOS"
+copy_portable_bundle "$APP_RES"
+bundle_venv "$APP_RES"
+cp -f "$ROOT/portable/macos/Info.plist" "$APP_DIR/Contents/Info.plist"
+cp -f "$ROOT/portable/macos/launcher" "$APP_DIR/Contents/MacOS/Canto-0243"
+chmod +x "$APP_DIR/Contents/MacOS/Canto-0243"
 
-echo "==> Create macOS tar.gz (preserves executable bit)..."
+echo "==> Create macOS tar.gz (Canto-0243.app)..."
 rm -f "$TAR_PATH"
-tar -czf "$TAR_PATH" -C "$ROOT/dist" "canto-0243-portable"
+tar -czf "$TAR_PATH" -C "$ROOT/dist" "Canto-0243.app"
 
-zip_mb=$(du -m "$ZIP_PATH" | cut -f1)
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)
 db_mb=$(du -m "$DB_PATH" | cut -f1)
 
 echo ""
 echo "Done."
-echo "  Folder: $OUT_DIR"
-echo "  ZIP:    $ZIP_PATH (${zip_mb} MB)"
-echo "  macOS:  $TAR_PATH (${tar_mb} MB, db ${db_mb} MB)"
-echo "  Upload lyrics.db, words-lexicon.json, canto-0243-portable.zip, canto-0243-portable-macos.tar.gz to GitHub Release."
+echo "  Dev folder: $OUT_DIR"
+echo "  macOS app:  $APP_DIR"
+echo "  tar.gz:     $TAR_PATH (${tar_mb} MB, .app 免安裝)"
+echo "  db:         ${db_mb} MB"
+echo "  Windows zip: run scripts/build-portable.ps1 on Windows"
+echo "  Upload tar.gz + zip + lyrics.db + words-lexicon.json to GitHub Release."

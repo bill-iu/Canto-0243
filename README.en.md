@@ -44,11 +44,11 @@ For the full offline experience, use the official portable package—**no** git 
 1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)).
 2. Extract the entire folder (e.g. `canto-0243-portable`).
 3. Launch by platform:
-   * **Windows**: double-click **`START.bat`**.
-   * **macOS**: prefer `canto-0243-portable-macos.tar.gz`; then double-click `START.command` or run `./START.sh`.
-   * **Linux**: `chmod +x START.sh && ./START.sh`
+   * **Windows**: extract and double-click **`START.bat`** (no Python install).
+   * **macOS**: download `canto-0243-portable-macos.tar.gz`, then double-click **`Canto-0243.app`**.
+   * **Linux**: `chmod +x START.sh && ./START.sh` (system Python 3.10+ required).
 
-**Requirements**: Python 3.10+ on PATH. First launch creates a venv and installs dependencies; your browser opens the search page.
+**Requirements**: **Zero-install** on Windows／macOS (bundled runtime). Linux still needs Python 3.10+.
 
 | Entry | URL |
 |-------|-----|
@@ -121,8 +121,8 @@ Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **
 | Asset | Purpose |
 |-------|---------|
 | `lyrics.db` | Full **word-entry store** (`words` + `word_relations`) |
-| `canto-0243-portable.zip` | Windows portable (`START.bat`) |
-| `canto-0243-portable-macos.tar.gz` | macOS portable (`START.command`／`START.sh`) |
+| `canto-0243-portable.zip` | Windows zero-install (`START.bat`, bundled venv) |
+| `canto-0243-portable-macos.tar.gz` | macOS zero-install **`Canto-0243.app`** |
 | `words-lexicon.json` | **Lexicon-reading** sidecar |
 
 ```bash
@@ -132,7 +132,7 @@ python scripts/update_readme_words_count.py
 # python scripts/gen_readme_zh_hans.py
 # Windows:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS / Linux:
+# macOS (Canto-0243.app tar.gz):
 bash scripts/build-portable.sh
 # Upload all four to GitHub Release (portable must include zip + macOS tar.gz)
 ```

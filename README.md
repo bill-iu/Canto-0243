@@ -44,11 +44,11 @@
 1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
-   * **Windows**：雙擊 **`START.bat`**。
-   * **macOS**：建議下載 `canto-0243-portable-macos.tar.gz`；解壓後雙擊 `START.command` 或執行 `./START.sh`。
-   * **Linux**：`chmod +x START.sh && ./START.sh`
+   * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
+   * **macOS**：下載 `canto-0243-portable-macos.tar.gz`，解壓後雙擊 **`Canto-0243.app`**。
+   * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
 
-**需求**：Python 3.10+（已加入 PATH）。首次啟動會自動建立 venv 並安裝依賴；瀏覽器會開啟搜尋頁。
+**需求**：Windows／macOS **免安裝**（套件已內建 Python）；Linux 仍須 Python 3.10+。
 
 | 入口 | URL |
 |------|-----|
@@ -116,25 +116,24 @@ python -m ingest build-relations
 
 ### 官方資料 Release（四件套）
 
-再分發前核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**將大檔 commit 入 git。
+再分發前核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**將大檔 commit 入 git。  
+**全量發佈**與**詞庫發佈**分層、手動／CI checklist 見 [docs/release.md](docs/release.md)（[ADR-0008](docs/adr/0008-release-publishing-tiers.md)）。
 
 | 資產 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`） |
-| `canto-0243-portable.zip` | Windows 離線套件（`START.bat`） |
-| `canto-0243-portable-macos.tar.gz` | macOS 離線套件（`START.command`／`START.sh`） |
+| `canto-0243-portable.zip` | Windows 免安裝套件（內建 venv + `START.bat`） |
+| `canto-0243-portable-macos.tar.gz` | macOS 免安裝 **`Canto-0243.app`** |
 | `words-lexicon.json` | **詞級標音**副件 |
 
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# 若大幅更新 README.md，可重新生成簡體書面語版：
-# python scripts/gen_readme_zh_hans.py
-# Windows:
+# Windows（含內建 venv zip）:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS / Linux:
+# macOS（含 Canto-0243.app tar.gz）:
 bash scripts/build-portable.sh
-# 上傳四件套至 GitHub Release（portable 須 zip + macOS tar.gz 齊備）
+# 上傳四件套至 GitHub Release
 ```
 
 ---

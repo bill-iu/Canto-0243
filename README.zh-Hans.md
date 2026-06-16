@@ -44,11 +44,11 @@
 1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)）。
 2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
 3. 按平台启动：
-   * **Windows**：双击 **`START.bat`**。
-   * **macOS**：建议下载 `canto-0243-portable-macos.tar.gz`；解压后双击 `START.command` 或执行 `./START.sh`。
-   * **Linux**：`chmod +x START.sh && ./START.sh`
+   * **Windows**：解压后双击 **`START.bat`**（无需安装 Python）。
+   * **macOS**：下载 `canto-0243-portable-macos.tar.gz`，解压后双击 **`Canto-0243.app`**。
+   * **Linux**：`chmod +x START.sh && ./START.sh`（须本机 Python 3.10+）。
 
-**环境要求**：Python 3.10+（已加入 PATH）。首次启动将自动创建 venv 并安装依赖；浏览器将打开搜索页面。
+**环境要求**：Windows／macOS **免安装**（套件已内置 Python）；Linux 仍须 Python 3.10+。
 
 | 入口 | URL |
 |------|-----|
@@ -121,8 +121,8 @@ python -m ingest build-relations
 | 资产 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**词条库**（`words` + `word_relations`） |
-| `canto-0243-portable.zip` | Windows 离线套件（`START.bat`） |
-| `canto-0243-portable-macos.tar.gz` | macOS 离线套件（`START.command`／`START.sh`） |
+| `canto-0243-portable.zip` | Windows 免安装套件（内置 venv + `START.bat`） |
+| `canto-0243-portable-macos.tar.gz` | macOS 免安装 **`Canto-0243.app`** |
 | `words-lexicon.json` | **词级标音**附件 |
 
 ```bash
@@ -131,7 +131,7 @@ python scripts/update_readme_words_count.py
 # 若大幅更新 README.md，可重新生成简体书面语版：
 # python scripts/gen_readme_zh_hans.py
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS / Linux:
+# macOS（Canto-0243.app tar.gz）:
 bash scripts/build-portable.sh
 # 上传四件套至 GitHub Release（portable 须同时提供 zip 与 macOS tar.gz）
 ```

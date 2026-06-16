@@ -7,35 +7,19 @@ if [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
   xattr -dr com.apple.quarantine "$ROOT" 2>/dev/null || true
 fi
 
-if ! command -v python3 >/dev/null 2>&1 && ! command -v python >/dev/null 2>&1; then
-  echo "[錯誤] 找不到 Python 3.10+"
-  echo "macOS 可安裝：brew install python@3.12  或從 https://www.python.org/downloads/ 下載"
-  exit 1
-fi
-
-PY=python3
-command -v python3 >/dev/null 2>&1 || PY=python
-
 if [[ ! -f lyrics.db ]]; then
   echo "[錯誤] 找不到 lyrics.db，請確認套件完整解壓"
   exit 1
 fi
 
-if [[ ! -d venv ]]; then
-  echo "[初次啟動] 建立虛擬環境並安裝依賴（約 1–3 分鐘）..."
-  "$PY" -m venv venv
-  # shellcheck disable=SC1091
-  source venv/bin/activate
-  python -m pip install --upgrade pip
-  pip install -r requirements.txt
-else
-  # shellcheck disable=SC1091
-  source venv/bin/activate
-fi
-
 RUN_PY="$ROOT/venv/bin/python"
 if [[ ! -x "$RUN_PY" ]]; then
-  echo "[錯誤] venv 損壞，請刪除 venv 資料夾後重試"
+  if [[ "$(uname -s)" == "Linux" ]]; then
+    echo "[Linux] 此套件未內建 Python 環境，請使用本機 Python 3.10+ 執行："
+    echo "  python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && ./START.sh"
+    exit 1
+  fi
+  echo "[錯誤] 找不到內建執行環境。請重新下載完整免安裝套件。"
   exit 1
 fi
 
@@ -69,7 +53,5 @@ elif command -v xdg-open >/dev/null 2>&1; then
 fi
 
 "$RUN_PY" scripts/wait_for_url.py --gate "${BASE_URL}/ready" &
-
-"$RUN_PY" scripts/wait_for_url.py --ready --full "${BASE_URL}/ready" &
 
 wait "$SERVER_PID"

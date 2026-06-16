@@ -1,0 +1,45 @@
+#!/bin/bash
+# macOS .app entry — bundled venv, no system Python required.
+set -euo pipefail
+
+APP_ROOT="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
+cd "$APP_ROOT"
+
+PY="$APP_ROOT/venv/bin/python"
+if [[ ! -x "$PY" ]]; then
+  osascript -e 'display alert "Canto-0243" message "找不到內建執行環境。請重新下載完整安裝包。" as critical' || true
+  exit 1
+fi
+
+if [[ ! -f "$APP_ROOT/lyrics.db" ]]; then
+  osascript -e 'display alert "Canto-0243" message "找不到 lyrics.db。請確認已完整解壓。" as critical' || true
+  exit 1
+fi
+
+export PORTABLE=1
+export ENV=local
+[[ -f "$APP_ROOT/.env.local" ]] || cp -f "$APP_ROOT/env.portable" "$APP_ROOT/.env.local"
+
+HOST="${HOST:-127.0.0.1}"
+PORT="${PORT:-8000}"
+BASE_URL="http://${HOST}:${PORT}"
+URL="${BASE_URL}/frontend/index.html"
+
+"$PY" "$APP_ROOT/scripts/free_port.py" --port "$PORT" --host "$HOST" || true
+
+"$PY" "$APP_ROOT/main.py" &
+SERVER_PID=$!
+
+cleanup() {
+  kill "$SERVER_PID" 2>/dev/null || true
+  wait "$SERVER_PID" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+if ! "$PY" "$APP_ROOT/scripts/wait_for_url.py" "${BASE_URL}/"; then
+  osascript -e 'display alert "Canto-0243" message "後端啟動逾時，仍嘗試打開瀏覽器。"' || true
+fi
+
+open "$URL" >/dev/null 2>&1 || true
+"$PY" "$APP_ROOT/scripts/wait_for_url.py" --gate "${BASE_URL}/ready" &
+wait "$SERVER_PID"

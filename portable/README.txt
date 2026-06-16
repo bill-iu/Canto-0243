@@ -1,59 +1,59 @@
-Canto-0243 — Portable 版
-Canto-0243 Cantonese Rhyme Workbench — Portable Edition
-(Windows / macOS / Linux)
-Bundle: Canto-0243 v1.1.0
+Canto-0243 — 免安裝離線版
+Canto-0243 Cantonese Rhyme Workbench — Zero-install offline edition
+(Windows / macOS / Linux*)
+Bundle: Canto-0243 v1.2.0
 ================================================================
 
-需求 / Requirements
--------------------
-Python 3.10 或以上
-Python 3.10 or newer
+* Linux 仍須本機 Python 3.10+（不列免安裝承諾）。
 
 
-Windows
--------
+Windows（免安裝）
+-----------------
 1. 解壓縮整個資料夾
    Extract the entire folder.
 
 2. 雙擊 START.bat
    Double-click START.bat.
 
-3. 首次會自動安裝依賴；瀏覽器會開啟搜尋頁
-   On first launch, dependencies install automatically; your browser opens the search page.
+3. 無需安裝 Python；瀏覽器會自動開啟搜尋頁
+   No Python install required; your browser opens the search page.
 
 
-macOS
------
-1. 解壓縮（建議放到「應用程式」或「文件」，勿從郵件附件直接執行）
-   Extract the archive (prefer Applications or Documents; do not run directly from Mail attachments).
+macOS（免安裝）
+---------------
+1. 下載 canto-0243-portable-macos.tar.gz 並解壓
+   Download canto-0243-portable-macos.tar.gz and extract.
 
-2. 首次請在「終端機」執行一次（賦予執行權限）：
-   Run once in Terminal (grant execute permission):
+2. 將 Canto-0243.app 拖到「應用程式」資料夾
+   Drag Canto-0243.app to Applications.
 
-     cd /path/to/canto-0243-portable
-     chmod +x START.sh START.command
-     xattr -dr com.apple.quarantine .    # 若系統阻擋來自網路的檔案
-                                           # if macOS blocks downloaded files
+3. 雙擊 Canto-0243.app 啟動（無需安裝 Python、無需 chmod）
+   Double-click Canto-0243.app (no Python, no Terminal chmod).
 
-3. 之後可雙擊 START.command，或在終端機執行 ./START.sh
-   Then double-click START.command, or run ./START.sh in Terminal.
+   若 macOS 阻擋來自網路的檔案：
+   If macOS quarantines the download:
 
-4. 若未安裝 Python：brew install python@3.12
-   If Python is missing: brew install python@3.12
+     xattr -dr com.apple.quarantine ~/Applications/Canto-0243.app
 
-   建議使用 canto-0243-portable-macos.tar.gz（較 ZIP 友善）
-   Prefer canto-0243-portable-macos.tar.gz over ZIP on Mac.
+   進階：資料夾版仍可用 START.command / START.sh（內含 venv）
+   Advanced: folder bundle START.command / START.sh also work.
 
 
 Linux
 -----
-  chmod +x START.sh && ./START.sh
+  需本機 Python 3.10+；解壓後若無 venv/，請：
+  Requires system Python 3.10+; if venv/ is missing:
+
+    python3 -m venv venv && source venv/bin/activate
+    pip install -r requirements.txt
+    chmod +x START.sh && ./START.sh
 
 
 內容 / Contents
 ---------------
-- lyrics.db — 主詞庫（已內建） / main word database (included)
-- data/ — 靜態同義/反義詞典 / static synonym & antonym dictionaries
+- venv/ — 內建 Python 執行環境（WM 免安裝） / bundled runtime (WM)
+- lyrics.db — 主詞庫 / main word database
+- data/ — 靜態同義/反義詞典 / static dictionaries
 - frontend/ — 網頁介面 / web UI
 - app/、main.py — 後端 API / backend API
 
@@ -63,16 +63,17 @@ Linux
 - 8000 埠被佔用：編輯 .env.local，修改 PORT
   Port 8000 in use: edit .env.local and change PORT.
 
+- 「找不到內建執行環境」：請重新下載完整 Release 套件
+  "Bundled runtime missing": re-download the full release package.
+
 - macOS「無法打開，因為來自身份不明的開發者」：
-  macOS “cannot be opened because it is from an unidentified developer”:
+  xattr -dr com.apple.quarantine /path/to/Canto-0243.app
 
-    xattr -dr com.apple.quarantine .
-
-- 關閉服務：在終端機視窗按 Ctrl+C
-  Stop the server: press Ctrl+C in the terminal window.
+- 關閉服務：關閉命令視窗，或從 Dock 結束 Canto-0243.app
+  Stop: close the console window, or quit the .app from the Dock.
 
 
 重新打包（開發者）/ Rebuild (developers)
 ----------------------------------------
-  Windows:  powershell -File scripts\build-portable.ps1
+  Windows:  powershell -ExecutionPolicy Bypass -File scripts\build-portable.ps1
   macOS:    bash scripts/build-portable.sh
