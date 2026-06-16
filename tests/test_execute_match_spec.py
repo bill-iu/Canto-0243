@@ -47,6 +47,29 @@ class ExecuteMatchSpecTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_equals_via_execute_match_spec(self):
+        session = self._session_with_words(
+            [
+                Word(
+                    char="香港",
+                    code="33",
+                    jyutping="hoeng1 gong2",
+                    finals='["oeng","ong"]',
+                    initials='["h","g"]',
+                    length=2,
+                ),
+            ]
+        )
+        try:
+            spec = normalize_to_match_spec(parse_query("香港="))
+            result = execute_match_spec(
+                spec, code=None, mode="m1", limit=10, offset=0, db=session
+            )
+            words = [r.get("char") for r in result.items if r.get("result_type") == "word"]
+            self.assertIn("香港", words)
+        finally:
+            session.close()
+
     def test_dispatch_uses_execute_match_spec_path(self):
         reset_word_cache_for_tests()
         session = self._session_with_words(

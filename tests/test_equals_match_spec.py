@@ -2,7 +2,7 @@
 
 import unittest
 
-from app.services.position_match.engine import matches_equals_phoneme_span
+from app.services.position_match.filters import matches_equals_phoneme_span
 from app.services.query_parse import build_equals_match_spec
 
 

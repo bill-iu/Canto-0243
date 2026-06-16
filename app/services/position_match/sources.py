@@ -140,66 +140,6 @@ class MaskWildcardCandidateSource:
         return query.order_by(Word.char, Word.jyutping).all(), False
 
 
-@dataclass
-class CompoundAntCandidateSource:
-    """C3：!! 反義複合專用候選來源。
-
-    候選集 = `compound_antonyms.txt` curated 2 字詞（!! 產品語意），
-    char IN 取得 Word 列（可選 code_prefix 過濾）；rhyme 等 slot 由 engine 處理。
-    """
-
-    db: Any
-    compounds: frozenset[str]
-
-    def get_candidates(
-        self,
-        length: int,
-        *,
-        code: Optional[str] = None,
-        mode: str = "m1",
-    ) -> tuple[list[Any], bool]:
-        from app.services.word_db_filters import length_filter
-
-        if length != 2 or not self.compounds:
-            return [], True
-
-        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
-        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
-        return rows, False
-
-
-@dataclass
-class CompoundSynCandidateSource:
-    """~~ 近義複合專用候選來源（字面容許集 + char IN）。"""
-
-    db: Any
-    compounds: frozenset[str]
-
-    def get_candidates(
-        self,
-        length: int,
-        *,
-        code: Optional[str] = None,
-        mode: str = "m1",
-    ) -> tuple[list[Any], bool]:
-        from app.services.word_db_filters import length_filter
-
-        if length != 2 or not self.compounds:
-            return [], True
-
-        if is_word_cache_ready():
-            rows = [
-                w for w in get_words_for_length(2)
-                if get_word_text(w) in self.compounds
-            ]
-            if rows:
-                return rows, True
-
-        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
-        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
-        return rows, False
-
-
 def get_length_candidates(db, width: int, mask: str):
     """
     取得指定長度的候選詞，並對 cache 命中者先做 mask literal 預過濾。

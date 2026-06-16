@@ -11,7 +11,7 @@ from app.services.word_serializer import get_word_jyutping, get_word_parts
 
 
 def _word_rhyme_finals(word):
-    from app.services.position_match.engine import get_rhyme_finals
+    from app.services.word_serializer import get_rhyme_finals
 
     return get_rhyme_finals(word)
 

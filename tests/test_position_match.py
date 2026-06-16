@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from app.services.position_match.engine import (
-    PositionMatchEngine,
+from app.services.position_match.engine import PositionMatchEngine
+from app.services.position_match.filters import (
     build_final_options_at_positions,
     filter_candidates_by_match_spec,
     filter_words_by_code_and_mask,

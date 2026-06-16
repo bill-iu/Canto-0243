@@ -8,12 +8,11 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
-from app.services.position_match import execute_match_spec, run_equals_query
+from app.services.position_match import execute_match_spec
 from app.services.query_parse import (
     CompoundAntQuery,
     CompoundSynQuery,
     DigitCodeQuery,
-    EqualsQuery,
     JYUTPING_ANCHOR_INVALID_HINT,
     JyutpingFragmentQuery,
     ParsedQuery,
@@ -54,11 +53,7 @@ JYUTPING_SYN_MODE_HINT = (
 
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
-    """缺字型查詢執行 — 正規化與等號分支在分派層，執行僅收 MatchSpec。"""
-    if isinstance(parsed, EqualsQuery):
-        items = run_equals_query(parsed.raw_q, ctx.db, ctx.mode, ctx.limit, ctx.offset)
-        return SearchResult(items=items, cache_path="fallback")
-
+    """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
     spec = normalize_to_match_spec(parsed)
     if spec is None:
         return SearchResult(items=[])

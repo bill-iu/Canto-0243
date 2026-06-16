@@ -24,7 +24,6 @@ FORBIDDEN = (
 
 ALLOWED = (
     "execute_match_spec",
-    "run_equals_query",
     "is_mask_family_query",
     "normalize_to_match_spec",
     "_mask_family_search_result",
