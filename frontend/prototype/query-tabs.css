@@ -39,6 +39,16 @@
     var(--chrome-header-seam-height)
     + (var(--chrome-tab-interaction-height) - var(--chrome-tab-divider-length)) / 2
   );
+  /* 品牌列膠囊按鈕：0.75×；保留圓角，主要收窄上下內距 */
+  --header-capsule-scale: 0.75;
+  --header-capsule-radius: 999px;
+  --header-capsule-min-height: calc(56px * var(--header-capsule-scale));
+  --header-capsule-padding-y: 8px;
+  --header-capsule-padding-x: calc(20px * var(--header-capsule-scale));
+  --header-capsule-font-size: calc(17px * var(--header-capsule-scale));
+  --header-capsule-gap: calc(10px * var(--header-capsule-scale));
+  --header-capsule-mode-min-width: calc(196px * var(--header-capsule-scale));
+  --header-capsule-chevron-size: 17px;
 }
 
 .prototype-ribbon {
@@ -129,6 +139,39 @@ body.prototype-query-tabs {
 .prototype-query-tabs .app-actions {
   flex-shrink: 0;
   padding-top: 4px;
+  gap: var(--header-capsule-gap);
+}
+
+/* 品牌列三顆膠囊：0.75×、圓角膠囊、收窄上下（僅 prototype） */
+.prototype-query-tabs .app-actions .menu-trigger,
+.prototype-query-tabs .app-actions .ghost-button {
+  min-height: var(--header-capsule-min-height);
+  padding: var(--header-capsule-padding-y) var(--header-capsule-padding-x);
+  border-radius: var(--header-capsule-radius);
+  font-size: var(--header-capsule-font-size);
+  font-weight: 550;
+  line-height: 1.15;
+}
+
+.prototype-query-tabs .app-actions .menu-trigger {
+  gap: var(--header-capsule-gap);
+  min-width: var(--header-capsule-mode-min-width);
+  justify-content: space-between;
+}
+
+.prototype-query-tabs .app-actions .mode-trigger-primary {
+  font-size: var(--header-capsule-font-size);
+  font-weight: 650;
+}
+
+.prototype-query-tabs .app-actions .mode-trigger-note {
+  margin-left: calc(7px * var(--header-capsule-scale));
+  font-size: calc(14px * var(--header-capsule-scale));
+  font-weight: 450;
+}
+
+.prototype-query-tabs .app-actions .menu-chevron {
+  font-size: var(--header-capsule-chevron-size);
 }
 
 .prototype-query-tabs .app-header__tabdeck {
@@ -317,13 +360,7 @@ body.prototype-query-tabs {
   }
 
   .prototype-query-tabs .app-actions {
-    gap: 8px;
-  }
-
-  .prototype-query-tabs .menu-trigger,
-  .prototype-query-tabs .ghost-button {
-    padding-inline: 12px;
-    font-size: 0.82rem;
+    gap: calc(8px * var(--header-capsule-scale));
   }
 }
 
