@@ -36,11 +36,27 @@ class ReadinessGateHttpTests(unittest.TestCase):
         self.assertIn("word_cache_progress", body)
         self.assertEqual(body["gate_ready"], expected["gate_ready"])
 
+    def test_empty_query_returns_503_while_locked(self):
+        client = TestClient(app)
+        for path in ("/words/search/", "/words/search/?code=33"):
+            with self.subTest(path=path):
+                res = client.get(path)
+                self.assertEqual(res.status_code, 503)
+                self.assertEqual(res.headers.get("retry-after"), "1")
+                self.assertFalse(res.json()["gate_ready"])
+
     def test_search_allowed_after_gate_opens(self):
         complete_preload()
         client = TestClient(app)
         res = client.get("/words/search/?q=23")
         self.assertNotEqual(res.status_code, 503)
+
+    def test_empty_query_allowed_after_gate_opens(self):
+        complete_preload()
+        client = TestClient(app)
+        res = client.get("/words/search/", params={"code": "33", "limit": 5})
+        self.assertEqual(res.status_code, 200)
+        self.assertIsInstance(res.json(), list)
 
     def test_ready_and_503_share_schema_fields(self):
         client = TestClient(app)

@@ -17,3 +17,4 @@
 - 503 body 與 `GET /ready` 回傳相同 flat JSON（`readiness_gate.snapshot()`），不用 FastAPI `{"detail": …}` 包裝；建議加 `Retry-After: 1`。
 - Snapshot 含 `degraded` 與 `gate_open_reason`（`ready` | `failed` | `degraded` | `null`）；`gate_ready` 為三者之一即 true。
 - Policy 測試集中在 `readiness_gate`，不必鏡像前端 state machine。
+- `GET /words/search` 不論 `q` 是否為空，皆須經 `execute_search`（**查詢分派**）；不得在路由層另建 list-filter 或重複 `require_search_ready()`。
