@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#EBDFD0">
   <title>Canto-0243</title>
+  <!-- Active tab URL: view=guide | view=relation -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=block" rel="stylesheet">
@@ -28,8 +29,11 @@
   </script>
   <link rel="stylesheet" href="open-design.css">
   <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="chrome-tabs.css">
+  <link rel="stylesheet" href="query-tabs.css">
+  <link rel="stylesheet" href="relation-entry.css">
 </head>
-<body>
+<body class="query-tabs-app">
   <div class="preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
     <div class="gate-brand" id="gateBrand">
       <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
@@ -95,8 +99,8 @@
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 
   <div class="app-shell" id="appShell">
-    <header class="app-header">
-      <div class="app-bar">
+    <header class="app-header app-header--tabs">
+      <div class="app-header__chrome">
         <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
           <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
             <defs>
@@ -140,7 +144,7 @@
             <span class="menu-chevron" aria-hidden="true">▾</span>
           </button>
           <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
-          <a class="ghost-button guide-top-link" href="relation-entry.html" id="relationTopLink">補關係</a>
+          <button class="ghost-button guide-top-link" id="relationTopBtn" type="button">補關係</button>
 
           <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
               <div class="menu-group" role="group" aria-label="0243搜尋模式">
@@ -176,16 +180,31 @@
                   </span>
                   <span class="mode-key">?</span>
                 </button>
-                <a class="mode-option" id="relationMenuLink" href="relation-entry.html" role="menuitem">
+                <button class="mode-option" id="relationMenuBtn" type="button" role="menuitem">
                   <span>
                     <span class="mode-name">補關係</span>
                     <span class="mode-help">為已收錄字面補近義或反義</span>
                   </span>
                   <span class="mode-key">+</span>
-                </a>
+                </button>
               </div>
             </div>
         </nav>
+      </div>
+      <div class="app-header__tabdeck" aria-label="查詢分頁">
+        <div class="tabdeck-strip" aria-label="查詢分頁列（Chrome Tabs）">
+          <div class="chrome-tabs" id="queryChromeTabs">
+            <svg class="chrome-tabs-defs" aria-hidden="true" width="0" height="0" style="position:absolute">
+              <defs>
+                <symbol id="query-tab-geometry" viewBox="0 0 214 36">
+                  <path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z"/>
+                </symbol>
+              </defs>
+            </svg>
+            <div class="chrome-tabs-content" id="queryTabstrip" role="tablist" aria-label="查詢分頁列"></div>
+            <div class="chrome-tabs-bottom-bar" aria-hidden="true"></div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -395,10 +414,69 @@
         </article>
       </div>
     </section>
+
+    <section class="relation-view relation-main is-hidden" id="relationView" aria-labelledby="relationTitle" hidden>
+      <header class="relation-hero">
+        <h1 id="relationTitle">關係補錄</h1>
+        <p class="relation-lede">為已收錄字面補近義或反義關係。種子字面為擴展起點；對端字面提供一跳鄰居來源。</p>
+      </header>
+
+      <form class="relation-form" id="relationForm">
+        <div class="field">
+          <label for="seedChar">種子字面</label>
+          <span class="hint">擴展從此字面出發（例如要補「快樂」的關係時填快樂）</span>
+          <div class="search-input-wrap" data-input-wrap>
+            <input type="text" id="seedChar" name="seed_char" required autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="oppositeChar">對端字面</label>
+          <span class="hint">與種子建立 direct 關係的另一字面</span>
+          <div class="search-input-wrap" data-input-wrap>
+            <input type="text" id="oppositeChar" name="opposite_char" required autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="field">
+          <span id="relationTypeLabel">關係類型</span>
+          <div class="relation-type" role="radiogroup" aria-labelledby="relationTypeLabel">
+            <label><input type="radio" name="relation_type" value="syn" checked> 近義</label>
+            <label><input type="radio" name="relation_type" value="ant"> 反義</label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary-button" id="relationSubmitBtn" type="submit">補上關係</button>
+          <button class="danger-button" id="relationRevokeBtn" type="button">撤回關係</button>
+        </div>
+
+        <div class="status ok" id="relationOkStatus" hidden role="status"></div>
+        <div class="status err" id="relationErrStatus" hidden role="alert"></div>
+      </form>
+    </section>
   </main>
   </div>
 
-  <script>
+  <script src="chrome-tabs-layout.js"></script>
+  <script type="module">
+    import {
+      SESSION_KEY,
+      VIEW,
+      tabLabel,
+      findTabByView,
+      openSingletonView,
+      createSearchTab,
+      createGuideTab,
+      createRelationTab,
+      buildUrlSearchParams,
+      parseUrlSearchParams,
+      serializeSession,
+      deserializeSession,
+      closeTab as closeTabInState,
+      applyUrlToTabs,
+    } from "./query-tabs-state.mjs";
+
     function showFileFallback() {
       document.body.innerHTML = "";
       const wrap = document.createElement("main");
@@ -467,17 +545,273 @@
     }
 
     let currentMode = "m1";
-    let currentView = "search";
-    let currentResults = [];
-    let currentOffset = 0;
     let isSearching = false;
-    let currentQuery = "";
-    let searchTotal = null;
     const PAGE_SIZE = 160;
     const WARMUP_DONE_HOLD_MS = 2000;
     const WARMUP_DONE_FADE_MS = 420;
     const searchCache = new Map();
     let appSearchReady = false;
+
+    let tabState = { activeId: 1, nextTabId: 2, tabs: [] };
+    let chromeLayout = null;
+
+    const TAB_GEOMETRY_SVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg width="52%" height="100%"><use xlink:href="#query-tab-geometry" width="214" height="36" class="chrome-tab-geometry"/></svg>
+        <g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0"><use xlink:href="#query-tab-geometry" width="214" height="36" class="chrome-tab-geometry"/></svg></g>
+      </svg>`;
+
+    function activeTab() {
+      return tabState.tabs.find((t) => t.id === tabState.activeId) || tabState.tabs[0];
+    }
+
+    function firstSearchTab() {
+      return tabState.tabs.find((t) => t.view === VIEW.SEARCH) || null;
+    }
+
+    function persistTabs() {
+      try {
+        sessionStorage.setItem(SESSION_KEY, serializeSession(tabState));
+      } catch {
+        /* ignore quota */
+      }
+    }
+
+    function loadTabsFromSession() {
+      try {
+        const raw = sessionStorage.getItem(SESSION_KEY);
+        if (!raw) return false;
+        tabState = deserializeSession(raw);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function ensureDefaultTabs(parsed) {
+      if (loadTabsFromSession()) return;
+      tabState = applyUrlToTabs(null, parsed);
+      if (!tabState.tabs.length) {
+        tabState = { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
+      }
+    }
+
+    function saveActiveTabFromUi() {
+      const tab = activeTab();
+      if (!tab) return;
+      if (tab.view === VIEW.SEARCH) {
+        tab.q = $.searchInput.value;
+      } else if (tab.view === VIEW.RELATION) {
+        tab.relation = relationPayloadFromForm();
+      }
+    }
+
+    function updateBrowserUrlFromActiveTab(replace = false) {
+      const tab = activeTab();
+      if (!tab) return;
+      const params = buildUrlSearchParams(tab, currentMode);
+      const suffix = params.toString() ? `?${params.toString()}` : "";
+      const url = `${window.location.pathname}${suffix}`;
+      const state = {
+        tabId: tab.id,
+        view: tab.view,
+        query: tab.view === VIEW.SEARCH ? tab.q || "" : "",
+        mode: currentMode,
+      };
+      if (replace) window.history.replaceState(state, "", url);
+      else window.history.pushState(state, "", url);
+    }
+
+    function syncViewPanels() {
+      const tab = activeTab();
+      if (!tab) return;
+      const isSearch = tab.view === VIEW.SEARCH;
+      const isGuide = tab.view === VIEW.GUIDE;
+      const isRelation = tab.view === VIEW.RELATION;
+      $.searchView.hidden = !isSearch;
+      $.guideView.hidden = !isGuide;
+      $.relationView.hidden = !isRelation;
+      $.searchView.classList.toggle("is-hidden", !isSearch);
+      $.guideView.classList.toggle("is-hidden", !isGuide);
+      $.relationView.classList.toggle("is-hidden", !isRelation);
+      if (isSearch) {
+        $.searchInput.value = tab.q || "";
+        renderSearchResults(tab.results || [], tab.total);
+        toggleLoadMoreButton(shouldShowLoadMore(tab));
+        updateShuffleButton();
+      } else if (isRelation) {
+        applyRelationForm(tab.relation || {});
+      }
+      updateBrowserUrlFromActiveTab(true);
+      renderTabstrip();
+    }
+
+    function shouldShowLoadMore(tab) {
+      const results = tab.results || [];
+      const total = tab.total;
+      return (total != null && results.length < total) || results.length >= PAGE_SIZE;
+    }
+
+    function escapeHtmlAttr(s) {
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function renderTabstrip() {
+      const tabsHtml = tabState.tabs
+        .map((t, idx) => {
+          const isActive = t.id === tabState.activeId;
+          const isLast = idx === tabState.tabs.length - 1;
+          const closeBtn =
+            tabState.tabs.length > 1
+              ? `<button type="button" class="chrome-tab-close" data-close="${t.id}" aria-label="關閉分頁"></button>`
+              : "";
+          const label = tabLabel(t);
+          return `
+            <div class="chrome-tab${isLast ? " chrome-tab-is-last" : ""}" data-tab-id="${t.id}"${isActive ? " active" : ""} role="presentation">
+              <div class="chrome-tab-dividers"></div>
+              <div class="chrome-tab-background">${TAB_GEOMETRY_SVG}</div>
+              <div class="chrome-tab-content">
+                <div class="chrome-tab-favicon" hidden></div>
+                <div class="chrome-tab-title">${escapeHtmlAttr(label)}</div>
+                <div class="chrome-tab-drag-handle" role="tab" aria-selected="${isActive}" aria-label="${escapeHtmlAttr(label)}" data-tab="${t.id}"></div>
+                ${closeBtn}
+              </div>
+            </div>`;
+        })
+        .join("");
+      $.tabstrip.innerHTML =
+        tabsHtml +
+        `<div class="chrome-tab chrome-tab-add" role="presentation" data-add-tab>
+          <div class="chrome-tab-add-hit" role="button" aria-label="新查詢分頁" title="Alt+N">+</div>
+        </div>`;
+      wireTabstrip();
+      if (chromeLayout) chromeLayout.layout();
+      requestAnimationFrame(scrollActiveTabIntoView);
+    }
+
+    function scrollActiveTabIntoView() {
+      const active = $.tabstrip.querySelector(".chrome-tab[active]");
+      if (active) active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+    }
+
+    function wireTabstrip() {
+      $.tabstrip.querySelectorAll("[data-tab]").forEach((el) => {
+        el.addEventListener("click", () => selectTab(Number(el.dataset.tab)));
+        el.addEventListener("auxclick", (e) => {
+          if (e.button !== 1) return;
+          e.preventDefault();
+          closeTab(Number(el.dataset.tab));
+        });
+      });
+      $.tabstrip.querySelectorAll("[data-add-tab]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          addSearchTab();
+        });
+      });
+      $.tabstrip.querySelectorAll("[data-close]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          closeTab(Number(btn.dataset.close));
+        });
+      });
+      wireTabstripHoverDividers();
+    }
+
+    function wireTabstripHoverDividers() {
+      const clearHoverFlags = () => {
+        $.tabstrip.querySelectorAll(".chrome-tab").forEach((t) => {
+          t.classList.remove("is-hovered", "hide-left-divider-hover", "hide-right-divider-hover");
+        });
+        applyActiveNeighborDividerHides();
+      };
+      const applyActiveNeighborDividerHides = () => {
+        $.tabstrip.querySelectorAll(".chrome-tab").forEach((t) => {
+          t.classList.remove("hide-left-divider-active", "hide-right-divider-active");
+        });
+        const active = $.tabstrip.querySelector(".chrome-tab[active]");
+        if (!active) return;
+        const prev = active.previousElementSibling;
+        const next = active.nextElementSibling;
+        if (prev && prev.classList.contains("chrome-tab") && !prev.classList.contains("chrome-tab-add")) {
+          prev.classList.add("hide-right-divider-active");
+        }
+        if (next && next.classList.contains("chrome-tab") && !next.classList.contains("chrome-tab-add")) {
+          next.classList.add("hide-left-divider-active");
+        }
+      };
+      $.tabstrip.querySelectorAll(".chrome-tab:not(.chrome-tab-add)").forEach((tab) => {
+        tab.addEventListener("mouseenter", () => {
+          clearHoverFlags();
+          tab.classList.add("is-hovered");
+          const prev = tab.previousElementSibling;
+          const next = tab.nextElementSibling;
+          if (prev && prev.classList.contains("chrome-tab") && !prev.classList.contains("chrome-tab-add")) {
+            prev.classList.add("hide-right-divider-hover");
+          }
+          if (next && next.classList.contains("chrome-tab") && !next.classList.contains("chrome-tab-add")) {
+            next.classList.add("hide-left-divider-hover");
+          }
+        });
+        tab.addEventListener("mouseleave", clearHoverFlags);
+      });
+      applyActiveNeighborDividerHides();
+    }
+
+    function addSearchTab() {
+      saveActiveTabFromUi();
+      const tab = createSearchTab({ id: tabState.nextTabId });
+      tabState = {
+        activeId: tab.id,
+        nextTabId: tabState.nextTabId + 1,
+        tabs: [...tabState.tabs, tab],
+      };
+      persistTabs();
+      syncViewPanels();
+      if (activeTab()?.view === VIEW.SEARCH) $.searchInput.focus();
+    }
+
+    function closeTab(id) {
+      if (tabState.tabs.length <= 1) return;
+      saveActiveTabFromUi();
+      tabState = closeTabInState(tabState, id);
+      persistTabs();
+      syncViewPanels();
+    }
+
+    function selectTab(id) {
+      if (tabState.activeId === id) return;
+      saveActiveTabFromUi();
+      tabState = { ...tabState, activeId: id };
+      persistTabs();
+      syncViewPanels();
+      const tab = activeTab();
+      if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
+      else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
+      else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
+    }
+
+    function openSingletonViewTab(view, createTab) {
+      saveActiveTabFromUi();
+      tabState = openSingletonView(tabState, view, createTab);
+      const singleton = findTabByView(tabState.tabs, view);
+      if (singleton) tabState = { ...tabState, activeId: singleton.id };
+      persistTabs();
+      syncViewPanels();
+      toggleMenu(false);
+      if (view === VIEW.GUIDE) {
+        document.getElementById("guideTitle")?.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else if (view === VIEW.RELATION) {
+        $.seedChar?.focus({ preventScroll: true });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    }
 
     const LANDING_VARIANT = document.documentElement.dataset.landing || "a";
     const LANDING_SESSION_KEY = "canto0243:landing-done";
@@ -692,7 +1026,9 @@
     const $ = {
       homeBtn: document.getElementById("homeBtn"),
       guideTopBtn: document.getElementById("guideTopBtn"),
+      relationTopBtn: document.getElementById("relationTopBtn"),
       guideMenuBtn: document.getElementById("guideMenuBtn"),
+      relationMenuBtn: document.getElementById("relationMenuBtn"),
       backToSearchBtn: document.getElementById("backToSearchBtn"),
       modeMenuButton: document.getElementById("modeMenuButton"),
       modeMenu: document.getElementById("modeMenu"),
@@ -700,6 +1036,9 @@
       modeReadout: document.getElementById("modeReadout"),
       searchView: document.getElementById("searchView"),
       guideView: document.getElementById("guideView"),
+      relationView: document.getElementById("relationView"),
+      chromeTabs: document.getElementById("queryChromeTabs"),
+      tabstrip: document.getElementById("queryTabstrip"),
       searchForm: document.getElementById("searchForm"),
       searchInputWrap: document.getElementById("searchInputWrap"),
       searchInput: document.getElementById("searchInput"),
@@ -707,6 +1046,13 @@
       shuffleBtn: document.getElementById("shuffleBtn"),
       results: document.getElementById("results"),
       stats: document.getElementById("stats"),
+      relationForm: document.getElementById("relationForm"),
+      seedChar: document.getElementById("seedChar"),
+      oppositeChar: document.getElementById("oppositeChar"),
+      relationSubmitBtn: document.getElementById("relationSubmitBtn"),
+      relationRevokeBtn: document.getElementById("relationRevokeBtn"),
+      relationOkStatus: document.getElementById("relationOkStatus"),
+      relationErrStatus: document.getElementById("relationErrStatus"),
       preloadOverlay: document.getElementById("preloadOverlay"),
       preloadLabel: document.getElementById("preloadLabel"),
       gateInkClipRect: document.getElementById("gateInkClipRect"),
@@ -794,16 +1140,41 @@
       }
     }
 
-    function updateBrowserUrl(query = currentQuery, mode = currentMode, view = currentView, replace = false) {
-      const params = new URLSearchParams();
-      if (query) params.set("q", query);
-      if (mode && mode !== "m1") params.set("mode", mode);
-      if (view && view !== "search") params.set("view", view);
-      const suffix = params.toString() ? `?${params.toString()}` : "";
-      const url = `${window.location.pathname}${suffix}`;
-      const state = { type: view, query, mode, view };
-      if (replace) window.history.replaceState(state, "", url);
-      else window.history.pushState(state, "", url);
+    function focusSearchTab(tab) {
+      if (!tab || tab.view !== VIEW.SEARCH) return;
+      tabState = { ...tabState, activeId: tab.id };
+      persistTabs();
+      syncViewPanels();
+      $.searchInput.focus();
+    }
+
+    function ensureActiveSearchTab() {
+      let tab = activeTab();
+      if (tab?.view === VIEW.SEARCH) return tab;
+      tab = firstSearchTab();
+      if (tab) {
+        focusSearchTab(tab);
+        return tab;
+      }
+      addSearchTab();
+      return activeTab();
+    }
+
+    function showSearch({ replace = false } = {}) {
+      const tab = ensureActiveSearchTab();
+      if (!tab) return;
+      syncViewPanels();
+      if (!replace) updateBrowserUrlFromActiveTab(false);
+    }
+
+    function showGuide({ replace = false } = {}) {
+      openSingletonViewTab(VIEW.GUIDE, createGuideTab);
+      if (!replace) updateBrowserUrlFromActiveTab(false);
+    }
+
+    function showRelation({ replace = false } = {}) {
+      openSingletonViewTab(VIEW.RELATION, createRelationTab);
+      if (!replace) updateBrowserUrlFromActiveTab(false);
     }
 
     function setButtonLoading(loading) {
@@ -834,55 +1205,30 @@
       if (!nextOpen && returnFocus) $.modeMenuButton.focus();
     }
 
-    function showSearch({ replace = false } = {}) {
-      currentView = "search";
-      $.guideView.hidden = true;
-      $.searchView.hidden = false;
-      $.guideView.classList.add("is-hidden");
-      $.searchView.classList.remove("is-hidden");
-      toggleLoadMoreButton(currentResults.length >= PAGE_SIZE);
-      updateShuffleButton();
-      updateBrowserUrl(currentQuery, currentMode, currentView, replace);
-    }
-
-    function showGuide({ replace = false } = {}) {
-      currentView = "guide";
-      $.searchView.hidden = true;
-      $.guideView.hidden = false;
-      $.searchView.classList.add("is-hidden");
-      $.guideView.classList.remove("is-hidden");
-      toggleLoadMoreButton(false);
-      updateShuffleButton();
-      toggleMenu(false);
-      updateBrowserUrl(currentQuery, currentMode, currentView, replace);
-      document.getElementById("guideTitle").focus({ preventScroll: true });
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
     function switchMode(mode, { runSearch = true, replace = true } = {}) {
       if (!MODE_META[mode]) return;
       currentMode = mode;
       updateModeLabel();
       toggleMenu(false);
 
-      const input = $.searchInput.value.trim();
-      if (input && currentView === "search" && runSearch) {
-        updateBrowserUrl(input, currentMode, currentView, replace);
+      const tab = activeTab();
+      const input = tab?.view === VIEW.SEARCH ? $.searchInput.value.trim() : "";
+      if (input && tab?.view === VIEW.SEARCH && runSearch) {
+        updateBrowserUrlFromActiveTab(replace);
         searchDict(false, true);
       } else {
-        updateBrowserUrl(input, currentMode, currentView, replace);
+        updateBrowserUrlFromActiveTab(replace);
       }
     }
 
     function runExample(query, mode = currentMode) {
       switchMode(mode, { runSearch: false, replace: true });
-      currentView = "search";
-      $.guideView.hidden = true;
-      $.searchView.hidden = false;
-      $.guideView.classList.add("is-hidden");
-      $.searchView.classList.remove("is-hidden");
+      const tab = ensureActiveSearchTab();
+      if (!tab) return;
+      tab.q = query;
       $.searchInput.value = query;
-      $.searchInput.focus();
+      persistTabs();
+      syncViewPanels();
       searchDict(false);
     }
 
@@ -904,21 +1250,25 @@
     }
 
     function updateShuffleButton() {
-      $.shuffleBtn.disabled = !currentResults.length || currentView !== "search";
+      const tab = activeTab();
+      const results = tab?.view === VIEW.SEARCH ? tab.results || [] : [];
+      $.shuffleBtn.disabled = !results.length || tab?.view !== VIEW.SEARCH;
     }
 
     function shuffleResults() {
-      if (!currentResults.length) return;
-      const shuffled = currentResults.slice();
+      const tab = activeTab();
+      if (!tab || tab.view !== VIEW.SEARCH || !tab.results?.length) return;
+      const shuffled = tab.results.slice();
       for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
       }
-      currentResults = shuffled;
-      renderSearchResults(currentResults);
+      tab.results = shuffled;
+      persistTabs();
+      renderSearchResults(tab.results);
     }
 
-    function renderSearchResults(data) {
+    function renderSearchResults(data, total = null) {
       $.results.innerHTML = "";
       $.results.className = currentMode === "syn" ? "syn-container" : "results";
 
@@ -951,10 +1301,10 @@
       });
       $.results.appendChild(frag);
       $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].statsLabel}）`;
-      if (searchTotal != null && searchTotal > deduped.length) {
-        $.stats.textContent = `已載入 ${deduped.length} / ${searchTotal} 個結果（${MODE_META[currentMode].statsLabel}）`;
-      } else if (searchTotal != null) {
-        $.stats.textContent = `${searchTotal} 個結果（${MODE_META[currentMode].statsLabel}）`;
+      if (total != null && total > deduped.length) {
+        $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${MODE_META[currentMode].statsLabel}）`;
+      } else if (total != null) {
+        $.stats.textContent = `${total} 個結果（${MODE_META[currentMode].statsLabel}）`;
       }
       updateShuffleButton();
     }
@@ -996,42 +1346,55 @@
         btn.addEventListener("click", () => searchDict(true));
         $.results.after(btn);
       }
-      btn.hidden = !show || currentView !== "search";
+      const tab = activeTab();
+      btn.hidden = !show || tab?.view !== VIEW.SEARCH;
     }
 
     function goHome() {
-      currentView = "search";
-      $.guideView.hidden = true;
-      $.searchView.hidden = false;
-      $.guideView.classList.add("is-hidden");
-      $.searchView.classList.remove("is-hidden");
+      const tab = activeTab();
+      if (!tab) return;
+      if (tab.view !== VIEW.SEARCH) {
+        let searchTab = firstSearchTab();
+        if (!searchTab) {
+          addSearchTab();
+          searchTab = activeTab();
+        }
+        if (searchTab) focusSearchTab(searchTab);
+      }
+      const active = activeTab();
+      if (!active || active.view !== VIEW.SEARCH) return;
+      active.q = "";
+      active.results = [];
+      active.offset = 0;
+      active.total = null;
       $.searchInput.value = "";
       $.results.innerHTML = "";
       $.results.className = "results";
       $.stats.textContent = "";
-      currentQuery = "";
-      currentResults = [];
-      currentOffset = 0;
-      searchTotal = null;
       toggleLoadMoreButton(false);
       updateShuffleButton();
-      updateBrowserUrl("", currentMode, "search", true);
+      persistTabs();
+      syncViewPanels();
+      updateBrowserUrlFromActiveTab(true);
       $.searchInput.focus();
     }
 
-    function finishSearchWithData(data, { append = false, total = null } = {}) {
-      const displayData = append ? currentResults.concat(data) : data;
-      currentResults = displayData;
-      currentOffset += data.length;
-      if (!append && total != null) searchTotal = total;
-      renderSearchResults(displayData);
-      const hasMore = (searchTotal != null && displayData.length < searchTotal) || data.length === PAGE_SIZE;
+    function finishSearchWithData(tab, data, { append = false, total = null } = {}) {
+      const displayData = append ? (tab.results || []).concat(data) : data;
+      tab.results = displayData;
+      tab.offset = (tab.offset || 0) + data.length;
+      if (!append && total != null) tab.total = total;
+      persistTabs();
+      renderSearchResults(displayData, tab.total);
+      const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
       toggleLoadMoreButton(hasMore);
     }
 
     async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       if (isSearching) return;
       if (!appSearchReady) return;
+      const tab = ensureActiveSearchTab();
+      if (!tab) return;
       showSearch({ replace: true });
       setButtonLoading(true);
 
@@ -1040,28 +1403,29 @@
       if (!isLoadMore) {
         $.results.innerHTML = "";
         $.stats.textContent = "";
-        currentResults = [];
-        currentOffset = 0;
-        searchTotal = null;
+        tab.results = [];
+        tab.offset = 0;
+        tab.total = null;
         toggleLoadMoreButton(false);
       }
 
       if (!input) {
         $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">香??</code>、<code translate="no">23*就=</code>、<code translate="no">?=就</code> 或 <code translate="no">香港=</code>。</p>';
-        currentQuery = "";
+        tab.q = "";
+        persistTabs();
         updateShuffleButton();
         setButtonLoading(false);
         return;
       }
 
-      if (!restoreFromHistory && !isLoadMore) updateBrowserUrl(input, currentMode, "search");
-      currentQuery = input;
+      tab.q = input;
+      if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(true);
 
-      const cacheKey = `${currentMode}:${input}:${currentOffset}`;
+      const cacheKey = `${currentMode}:${input}:${tab.offset || 0}`;
       if (!isLoadMore && searchCache.has(cacheKey)) {
         const cached = searchCache.get(cacheKey);
         if (Array.isArray(cached)) {
-          finishSearchWithData(cached, { append: false });
+          finishSearchWithData(tab, cached, { append: false });
           setButtonLoading(false);
           return;
         }
@@ -1073,14 +1437,14 @@
             toggleLoadMoreButton(false);
             return;
           }
-          finishSearchWithData(cached.data, { append: false, total: cached.total });
+          finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
           setButtonLoading(false);
           return;
         }
         searchCache.delete(cacheKey);
       }
 
-      const url = `/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${currentOffset}`;
+      const url = `/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
 
       try {
         const res = await fetch(url);
@@ -1119,7 +1483,7 @@
           return;
         }
 
-        finishSearchWithData(data, { append: isLoadMore, total: isLoadMore ? null : total });
+        finishSearchWithData(tab, data, { append: isLoadMore, total: isLoadMore ? null : total });
       } catch (error) {
         console.error(error);
         const isHttp = error instanceof Error && /後端回應失敗/.test(error.message);
@@ -1139,6 +1503,61 @@
       const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
+    }
+
+    function relationPayloadFromForm() {
+      const data = new FormData($.relationForm);
+      return {
+        seed_char: String(data.get("seed_char") || "").trim(),
+        opposite_char: String(data.get("opposite_char") || "").trim(),
+        relation_type: String(data.get("relation_type") || "syn"),
+      };
+    }
+
+    function applyRelationForm(relation) {
+      if (!$.seedChar || !$.oppositeChar) return;
+      $.seedChar.value = relation.seed_char || "";
+      $.oppositeChar.value = relation.opposite_char || "";
+      const type = relation.relation_type === "ant" ? "ant" : "syn";
+      $.relationForm.querySelectorAll('input[name="relation_type"]').forEach((input) => {
+        input.checked = input.value === type;
+      });
+    }
+
+    function showRelationOk(text) {
+      $.relationOkStatus.textContent = text;
+      $.relationOkStatus.hidden = false;
+      $.relationErrStatus.hidden = true;
+    }
+
+    function showRelationErr(text) {
+      $.relationErrStatus.textContent = text;
+      $.relationErrStatus.hidden = false;
+      $.relationOkStatus.hidden = true;
+    }
+
+    async function postRelation(path, payload) {
+      const response = await fetch(path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const body = await response.json().catch(() => ({}));
+      return { response, body };
+    }
+
+    function bindInputDualRing(wrap) {
+      const input = wrap.querySelector("input");
+      if (!input) return;
+      input.addEventListener("focus", () => {
+        wrap.classList.remove("is-blurring");
+        wrap.classList.add("is-focused");
+      });
+      input.addEventListener("blur", () => {
+        wrap.classList.remove("is-focused");
+        wrap.classList.add("is-blurring");
+        window.setTimeout(() => wrap.classList.remove("is-blurring"), SEARCH_RING_BLUR_MS);
+      });
     }
 
     $.searchForm.addEventListener("submit", (event) => {
@@ -1162,14 +1581,69 @@
       });
     }
     bindSearchDualRing();
+    document.querySelectorAll("[data-input-wrap]").forEach(bindInputDualRing);
+
+    $.searchInput.addEventListener("input", () => {
+      const tab = activeTab();
+      if (tab?.view === VIEW.SEARCH) {
+        tab.q = $.searchInput.value;
+        persistTabs();
+        renderTabstrip();
+      }
+    });
 
     $.homeBtn.addEventListener("click", goHome);
     $.modeMenuButton.addEventListener("click", () => toggleMenu());
     $.guideTopBtn.addEventListener("click", () => showGuide());
     $.guideMenuBtn.addEventListener("click", () => showGuide());
+    $.relationTopBtn.addEventListener("click", () => showRelation());
+    $.relationMenuBtn.addEventListener("click", () => showRelation());
     $.backToSearchBtn.addEventListener("click", () => {
       showSearch();
       $.searchInput.focus();
+    });
+
+    $.relationForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      $.relationOkStatus.hidden = true;
+      $.relationErrStatus.hidden = true;
+      $.relationSubmitBtn.disabled = true;
+      $.relationRevokeBtn.disabled = true;
+      saveActiveTabFromUi();
+      try {
+        const { response, body } = await postRelation("/relations/manual", relationPayloadFromForm());
+        if (!response.ok) {
+          showRelationErr(body.detail || "提交失敗，請稍後再試。");
+          return;
+        }
+        showRelationOk(body.message || "已補上關係。");
+      } catch {
+        showRelationErr("無法連線後端。請確認伺服器已啟動。");
+      } finally {
+        $.relationSubmitBtn.disabled = false;
+        $.relationRevokeBtn.disabled = false;
+      }
+    });
+
+    $.relationRevokeBtn.addEventListener("click", async () => {
+      $.relationOkStatus.hidden = true;
+      $.relationErrStatus.hidden = true;
+      $.relationSubmitBtn.disabled = true;
+      $.relationRevokeBtn.disabled = true;
+      saveActiveTabFromUi();
+      try {
+        const { response, body } = await postRelation("/relations/manual/revoke", relationPayloadFromForm());
+        if (!response.ok) {
+          showRelationErr(body.detail || "撤回失敗，請稍後再試。");
+          return;
+        }
+        showRelationOk(body.message || "已撤回關係。");
+      } catch {
+        showRelationErr("無法連線後端。請確認伺服器已啟動。");
+      } finally {
+        $.relationSubmitBtn.disabled = false;
+        $.relationRevokeBtn.disabled = false;
+      }
     });
 
     document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
@@ -1188,36 +1662,48 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") toggleMenu(false, { returnFocus: true });
+      if (!event.altKey || event.ctrlKey || event.metaKey) return;
+      const key = event.key.toLowerCase();
+      if (key === "n") {
+        event.preventDefault();
+        addSearchTab();
+        return;
+      }
+      if (key === "w") {
+        event.preventDefault();
+        closeTab(tabState.activeId);
+      }
     });
 
     window.addEventListener("popstate", (event) => {
       const state = event.state || {};
-      currentMode = MODE_META[state.mode] ? state.mode : "m1";
+      const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+      currentMode = MODE_META[state.mode || parsed.mode] ? (state.mode || parsed.mode) : "m1";
       updateModeLabel();
-      $.searchInput.value = state.query || "";
-      currentQuery = state.query || "";
-      if (state.view === "guide") {
-        currentView = "guide";
-        $.searchView.hidden = true;
-        $.guideView.hidden = false;
-        $.searchView.classList.add("is-hidden");
-        $.guideView.classList.remove("is-hidden");
-        toggleLoadMoreButton(false);
+
+      if (state.tabId) {
+        const tab = tabState.tabs.find((t) => t.id === state.tabId);
+        if (tab) {
+          if (tab.view === VIEW.SEARCH && (state.query || parsed.q)) tab.q = state.query || parsed.q;
+          tabState = { ...tabState, activeId: tab.id };
+          persistTabs();
+          syncViewPanels();
+          if (tab.view === VIEW.SEARCH && tab.q) searchDict(false, true);
+          return;
+        }
+      }
+
+      if (parsed.view === VIEW.GUIDE) {
+        openSingletonViewTab(VIEW.GUIDE, createGuideTab);
+      } else if (parsed.view === VIEW.RELATION) {
+        openSingletonViewTab(VIEW.RELATION, createRelationTab);
       } else {
-        currentView = "search";
-        $.guideView.hidden = true;
-        $.searchView.hidden = false;
-        $.guideView.classList.add("is-hidden");
-        $.searchView.classList.remove("is-hidden");
-        if (currentQuery) searchDict(false, true);
-        else {
-          $.results.innerHTML = "";
-          $.results.className = "results";
-          $.stats.textContent = "";
-          currentResults = [];
-          currentOffset = 0;
-          toggleLoadMoreButton(false);
-          updateShuffleButton();
+        const tab = ensureActiveSearchTab();
+        if (tab) {
+          tab.q = parsed.q || "";
+          persistTabs();
+          syncViewPanels();
+          if (tab.q) searchDict(false, true);
         }
       }
     });
@@ -1231,29 +1717,33 @@
         .catch(() => {});
 
       $.modeMenu.hidden = true;
-      const params = new URLSearchParams(window.location.search);
-      const q = params.get("q") || "";
-      const mode = params.get("mode") || "m1";
-      const view = params.get("view") || "search";
-      currentMode = MODE_META[mode] ? mode : "m1";
-      currentView = view === "guide" ? "guide" : "search";
-      currentQuery = q;
-      $.searchInput.value = q;
+      const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+      currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
       updateModeLabel();
+      ensureDefaultTabs(parsed);
 
-      if (currentView === "guide") {
-        $.searchView.hidden = true;
-        $.guideView.hidden = false;
-        $.searchView.classList.add("is-hidden");
-        $.guideView.classList.remove("is-hidden");
-        updateBrowserUrl(q, currentMode, currentView, true);
-      } else {
-        $.guideView.hidden = true;
-        $.searchView.hidden = false;
-        $.guideView.classList.add("is-hidden");
-        $.searchView.classList.remove("is-hidden");
-        updateBrowserUrl(q, currentMode, currentView, true);
-        if (q) searchDict(false, true);
+      const urlTab = tabState.tabs.find((t) => {
+        if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
+        if (parsed.view === VIEW.RELATION) return t.view === VIEW.RELATION;
+        return t.view === VIEW.SEARCH;
+      });
+      if (urlTab) tabState = { ...tabState, activeId: urlTab.id };
+      if (parsed.view === VIEW.SEARCH && parsed.q) {
+        const searchTab = tabState.tabs.find((t) => t.id === tabState.activeId && t.view === VIEW.SEARCH)
+          || tabState.tabs.find((t) => t.view === VIEW.SEARCH);
+        if (searchTab) {
+          searchTab.q = parsed.q;
+          tabState = { ...tabState, activeId: searchTab.id };
+        }
+      }
+
+      chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
+      syncViewPanels();
+      persistTabs();
+
+      const active = activeTab();
+      if (active?.view === VIEW.SEARCH && active.q) {
+        searchDict(false, true);
       }
     })();
   </script>

@@ -77,16 +77,16 @@
 }
 
 /* 刪除右上 radial（只影響 prototype） */
-body.prototype-query-tabs {
+body.query-tabs-app {
   background: var(--bg);
 }
 
-.prototype-query-tabs .ghost-button.prototype-guide-btn:not(:disabled) {
+.query-tabs-app .ghost-button.guide-top-link:not(:disabled) {
   cursor: pointer;
 }
 
 /* L1：品牌列 = 正式 header；只有 tabdeck = strip 底 */
-.prototype-query-tabs .app-header--tabs {
+.query-tabs-app .app-header--tabs {
   position: sticky;
   top: 0;
   z-index: var(--z-header);
@@ -97,7 +97,7 @@ body.prototype-query-tabs {
 }
 
 /* 無縫：用全寬底條把 header 色帶收口到 --bg */
-.prototype-query-tabs .app-header--tabs::after {
+.query-tabs-app .app-header--tabs::after {
   content: "";
   position: absolute;
   left: 0;
@@ -109,7 +109,7 @@ body.prototype-query-tabs {
   z-index: 2;
 }
 
-.prototype-query-tabs .app-header__chrome {
+.query-tabs-app .app-header__chrome {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -124,27 +124,27 @@ body.prototype-query-tabs {
   backdrop-filter: none;
 }
 
-.prototype-query-tabs .brand {
+.query-tabs-app .brand {
   flex-shrink: 0;
   padding: 2px 0 0;
   margin: 0;
 }
 
-.prototype-query-tabs .brand-logo {
+.query-tabs-app .brand-logo {
   height: 56px;
   width: auto;
   display: block;
 }
 
-.prototype-query-tabs .app-actions {
+.query-tabs-app .app-actions {
   flex-shrink: 0;
   padding-top: 4px;
   gap: var(--header-capsule-gap);
 }
 
 /* 品牌列三顆膠囊：0.75×、圓角膠囊、收窄上下（僅 prototype） */
-.prototype-query-tabs .app-actions .menu-trigger,
-.prototype-query-tabs .app-actions .ghost-button {
+.query-tabs-app .app-actions .menu-trigger,
+.query-tabs-app .app-actions .ghost-button {
   min-height: var(--header-capsule-min-height);
   padding: var(--header-capsule-padding-y) var(--header-capsule-padding-x);
   border-radius: var(--header-capsule-radius);
@@ -153,28 +153,28 @@ body.prototype-query-tabs {
   line-height: 1.15;
 }
 
-.prototype-query-tabs .app-actions .menu-trigger {
+.query-tabs-app .app-actions .menu-trigger {
   gap: var(--header-capsule-gap);
   min-width: var(--header-capsule-mode-min-width);
   justify-content: space-between;
 }
 
-.prototype-query-tabs .app-actions .mode-trigger-primary {
+.query-tabs-app .app-actions .mode-trigger-primary {
   font-size: var(--header-capsule-font-size);
   font-weight: 650;
 }
 
-.prototype-query-tabs .app-actions .mode-trigger-note {
+.query-tabs-app .app-actions .mode-trigger-note {
   margin-left: calc(7px * var(--header-capsule-scale));
   font-size: calc(14px * var(--header-capsule-scale));
   font-weight: 450;
 }
 
-.prototype-query-tabs .app-actions .menu-chevron {
+.query-tabs-app .app-actions .menu-chevron {
   font-size: var(--header-capsule-chevron-size);
 }
 
-.prototype-query-tabs .app-header__tabdeck {
+.query-tabs-app .app-header__tabdeck {
   display: flex;
   align-items: flex-end;
   gap: 6px;
@@ -186,7 +186,7 @@ body.prototype-query-tabs {
   background: transparent;
 }
 
-.prototype-query-tabs .tabdeck-strip {
+.query-tabs-app .tabdeck-strip {
   display: flex;
   align-items: flex-end;
   gap: 6px;
@@ -197,7 +197,7 @@ body.prototype-query-tabs {
   max-width: 100%;
 }
 
-.prototype-query-tabs .tabdeck-strip .chrome-tabs {
+.query-tabs-app .tabdeck-strip .chrome-tabs {
   flex: 1 1 auto;
   min-width: 0;
   width: 100%;
@@ -206,33 +206,33 @@ body.prototype-query-tabs {
 }
 
 /* P3：無色帶時不需要左側端蓋 */
-.prototype-query-tabs .tabdeck-strip .chrome-tabs::before {
+.query-tabs-app .tabdeck-strip .chrome-tabs::before {
   content: none;
 }
 
 /* A1：非作用中 hover 才顯示關閉 */
-.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]) .chrome-tab-close {
+.query-tabs-app .chrome-tabs .chrome-tab:not([active]) .chrome-tab-close {
   opacity: 0;
   pointer-events: none;
 }
 
 /* Q2：inactive tab 完全 blend in；hover 才出現背景（沿用上游行為） */
-.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
+.query-tabs-app .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
   opacity: 0;
 }
 
-.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-close,
-.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]):focus-within .chrome-tab-close {
+.query-tabs-app .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-close,
+.query-tabs-app .chrome-tabs .chrome-tab:not([active]):focus-within .chrome-tab-close {
   opacity: 0.85;
   pointer-events: auto;
 }
 
-.prototype-query-tabs .chrome-tabs .chrome-tab[active] .chrome-tab-close {
+.query-tabs-app .chrome-tabs .chrome-tab[active] .chrome-tab-close {
   opacity: 1;
   pointer-events: auto;
 }
 
-.prototype-query-tabs .query-tab-add {
+.query-tabs-app .query-tab-add {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -252,11 +252,11 @@ body.prototype-query-tabs {
 }
 
 /* U1：+ 左側也有 divider 小長方形（並跟隨 S2 被蓋住/顯示） */
-.prototype-query-tabs .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
+.query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
   position: relative;
 }
 
-.prototype-query-tabs .chrome-tabs .chrome-tab-add .chrome-tab-add-hit::before {
+.query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit::before {
   content: "";
   position: absolute;
   /* 對齊到最後一個 tab 原本的 divider 位置（tab-content-margin=9px） */
@@ -271,53 +271,53 @@ body.prototype-query-tabs {
 }
 
 /* 避免 + 旁邊雙線：最後一個 tab 的右分隔線關掉，只留 + 的 pseudo */
-.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last .chrome-tab-dividers::after {
+.query-tabs-app .chrome-tabs .chrome-tab.chrome-tab-is-last .chrome-tab-dividers::after {
   opacity: 0;
 }
 
 /* S2：最後一個 tab hover/active 時，+ 左側分隔線也一起消失再出現 */
-.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last[active] ~ .chrome-tab-add .chrome-tab-add-hit::before {
+.query-tabs-app .chrome-tabs .chrome-tab.chrome-tab-is-last[active] ~ .chrome-tab-add .chrome-tab-add-hit::before {
   opacity: 0;
 }
 
 @media (hover: hover) {
-  .prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last:hover ~ .chrome-tab-add .chrome-tab-add-hit::before {
+  .query-tabs-app .chrome-tabs .chrome-tab.chrome-tab-is-last:hover ~ .chrome-tab-add .chrome-tab-add-hit::before {
     opacity: 0;
   }
 }
 
-.prototype-query-tabs .query-tab-add:hover {
+.query-tabs-app .query-tab-add:hover {
   color: var(--accent-strong);
   background: rgba(244, 237, 228, 0.45);
 }
 
-.prototype-query-tabs .query-tab-add:focus-visible {
+.query-tabs-app .query-tab-add:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
 }
 
 /* I1：bottom-bar + main 同色接 hero */
-.prototype-query-tabs .main-wrap {
+.query-tabs-app .main-wrap {
   padding-top: 24px;
   background: var(--bg);
 }
 
 /* 無縫底條覆蓋 tab 底部同色帶；互動區避開該高度（SVG 背景仍貼底） */
-.prototype-query-tabs .chrome-tabs .chrome-tab .chrome-tab-content {
+.query-tabs-app .chrome-tabs .chrome-tab .chrome-tab-content {
   bottom: var(--chrome-header-seam-height);
 }
 
-.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-add .chrome-tab-add-hit {
+.query-tabs-app .chrome-tabs .chrome-tab.chrome-tab-add .chrome-tab-add-hit {
   height: calc(100% - var(--chrome-header-seam-height));
 }
 
 /* 無縫：只用 header 全寬 ::after；隱藏 tab 容器內 bottom-bar 避免 active 下凸出長方形 */
-.prototype-query-tabs .chrome-tabs .chrome-tabs-bottom-bar {
+.query-tabs-app .chrome-tabs .chrome-tabs-bottom-bar {
   display: none;
 }
 
-.prototype-query-tabs .chrome-tabs .chrome-tab,
-.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-add {
+.query-tabs-app .chrome-tabs .chrome-tab,
+.query-tabs-app .chrome-tabs .chrome-tab.chrome-tab-add {
   bottom: 0;
 }
 
@@ -355,11 +355,11 @@ body.prototype-query-tabs {
     --brand-rail: 118px;
   }
 
-  .prototype-query-tabs .brand-logo {
+  .query-tabs-app .brand-logo {
     height: 44px;
   }
 
-  .prototype-query-tabs .app-actions {
+  .query-tabs-app .app-actions {
     gap: calc(8px * var(--header-capsule-scale));
   }
 }
@@ -369,15 +369,15 @@ body.prototype-query-tabs {
     --brand-rail: 88px;
   }
 
-  .prototype-query-tabs .brand-logo {
+  .query-tabs-app .brand-logo {
     height: 38px;
   }
 
-  .prototype-query-tabs .prototype-guide-btn {
+  .query-tabs-app .guide-top-link {
     display: none;
   }
 
-  .prototype-query-tabs .tabdeck-strip .chrome-tabs {
+  .query-tabs-app .tabdeck-strip .chrome-tabs {
     min-width: 220px;
     width: min(720px, calc(100vw - var(--brand-rail) - 80px));
   }
