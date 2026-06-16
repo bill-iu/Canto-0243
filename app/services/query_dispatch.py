@@ -10,8 +10,6 @@ from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
 from app.services.position_match import execute_match_spec
 from app.services.query_parse import (
-    CompoundAntQuery,
-    CompoundSynQuery,
     DigitCodeQuery,
     JYUTPING_ANCHOR_INVALID_HINT,
     JyutpingAnchorQuery,
@@ -21,9 +19,9 @@ from app.services.query_parse import (
     UnmatchedQuery,
     WordLookupQuery,
     build_jyutping_dual_match_specs,
-    is_mask_family_query,
     normalize_to_match_spec,
     parse_query,
+    uses_match_spec,
 )
 from app.services.word_db_filters import apply_code_filter
 from app.services.word_query_parser import normalize_search_query
@@ -140,8 +138,6 @@ class QueryEngine:
         return sort_search_results(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
 
     def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
-        from app.services.compound_ant_executor import CompoundAntExecutor
-        from app.services.compound_syn_executor import CompoundSynExecutor
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
 
@@ -152,24 +148,16 @@ class QueryEngine:
         db = ctx.db
         relation_executor = RelationSyntaxExecutor(db)
         lookup_executor = WordLookupExecutor(db)
-        compound_ant_executor = CompoundAntExecutor(db)
-        compound_syn_executor = CompoundSynExecutor(db)
 
         if isinstance(parsed, DigitCodeQuery):
             items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
             return SearchResult(items=items, total=total)
 
-        if is_mask_family_query(parsed):
+        if uses_match_spec(parsed):
             return _mask_family_search_result(parsed, ctx)
 
         handler_registry = {
             RelationLookupQuery: lambda p: relation_executor.relation_lookup_page(
-                p, mode=mode, limit=limit, offset=offset
-            ),
-            CompoundSynQuery: lambda p: compound_syn_executor.compound_syn_page(
-                p, mode=mode, limit=limit, offset=offset
-            ),
-            CompoundAntQuery: lambda p: compound_ant_executor.compound_ant_page(
                 p, mode=mode, limit=limit, offset=offset
             ),
             WordLookupQuery: lambda p: lookup_executor.lookup(p.raw_q, code, mode, limit, offset),

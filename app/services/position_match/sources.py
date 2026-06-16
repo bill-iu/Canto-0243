@@ -213,6 +213,73 @@ def _phoneme_anchor_slot(spec: MatchSpec) -> Optional[SlotConstraint]:
     return None
 
 
+def _compound_rhyme_char(spec: MatchSpec) -> Optional[str]:
+    for slot in spec.slots:
+        if slot.kind == "final_anchor" and isinstance(slot.value, str):
+            return slot.value
+    return None
+
+
+@dataclass
+class CompoundSynCandidateSource:
+    """~~ 近義複合：字面容許集 + char IN（cache-first）。"""
+
+    db: Any
+    compounds: frozenset[str]
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        if length != 2 or not self.compounds:
+            return [], True
+
+        if is_word_cache_ready():
+            rows = [
+                w for w in get_words_for_length(2)
+                if get_word_text(w) in self.compounds
+            ]
+            if rows:
+                return rows, True
+
+        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
+        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+        return rows, False
+
+
+@dataclass
+class CompoundAntCandidateSource:
+    """!! 反義複合：curated 字面 + char IN（cache-first）。"""
+
+    db: Any
+    compounds: frozenset[str]
+
+    def get_candidates(
+        self,
+        length: int,
+        *,
+        code: Optional[str] = None,
+        mode: str = "m1",
+    ) -> tuple[list[Any], bool]:
+        if length != 2 or not self.compounds:
+            return [], True
+
+        if is_word_cache_ready():
+            rows = [
+                w for w in get_words_for_length(2)
+                if get_word_text(w) in self.compounds
+            ]
+            if rows:
+                return rows, True
+
+        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
+        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+        return rows, False
+
+
 def _resolve_mask_family_source(
     spec: MatchSpec,
     db: Any,
@@ -220,6 +287,27 @@ def _resolve_mask_family_source(
     query_code: Optional[str],
 ) -> tuple[Optional[CandidateSource], Optional[Callable]]:
     """由 MatchSpec 形狀選擇候選來源（registry，不依 ParsedQuery）。"""
+    if spec.compound_kind == "syn":
+        from app.domain.lexicon.ranking import search_result_sort_key
+        from app.domain.relations.compound_syn import search_compound_syn
+
+        rhyme_char = _compound_rhyme_char(spec)
+        tiers = search_compound_syn(db, rhyme_char=rhyme_char, width=spec.width)
+        if not tiers:
+            return None, None
+        source = CompoundSynCandidateSource(db, frozenset(tiers.keys()))
+        sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
+        return source, sort_key
+
+    if spec.compound_kind == "ant":
+        from app.domain.relations.compound_ant import search_compound_ant
+
+        rhyme_char = _compound_rhyme_char(spec)
+        compounds = search_compound_ant(db, rhyme_char=rhyme_char, width=spec.width)
+        if not compounds:
+            return None, None
+        return CompoundAntCandidateSource(db, compounds), None
+
     if spec.literal_priority and spec.mask:
         effective_code = query_code or spec.code_prefix
         source = MaskWildcardCandidateSource(
