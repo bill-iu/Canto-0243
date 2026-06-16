@@ -1,36 +1,69 @@
-"""Install frontend favicon assets from a source PNG mask/icon."""
+"""Install frontend favicon assets from favicon-source.png (or bootstrap from raw PNG)."""
 
 from __future__ import annotations
 
+import argparse
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FRONTEND = REPO_ROOT / "frontend"
 SOURCE_PNG = FRONTEND / "favicon-source.png"
 
 BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+GLYPH = (235, 223, 208)  # #EBDFD0 — matches frontend theme-color
+MASTER = 512
+PAD_RATIO = 0.10  # equal margin → centered in browser tab slot
 
 
-def normalize_mask_png(src: Image.Image, *, alpha_threshold: int = 16) -> Image.Image:
-    """Turn an alpha-mask PNG into a solid white glyph on a black square."""
-    rgba = src.convert("RGBA")
-    out = Image.new("RGB", rgba.size, BLACK)
+def extract_mask(rgba: Image.Image, *, threshold: int = 24) -> Image.Image:
+    """Binary mask from alpha and/or dark-on-black glyph."""
+    rgb = rgba.convert("RGB")
+    r, g, b = rgb.split()
+    lum = ImageChops.lighter(ImageChops.lighter(r, g), b)
     alpha = rgba.getchannel("A")
-    mask = alpha.point(lambda value: 255 if value > alpha_threshold else 0)
-    white_layer = Image.new("RGB", rgba.size, WHITE)
-    out.paste(white_layer, mask=mask)
+    combined = ImageChops.lighter(lum, alpha)
+    return combined.point(lambda value: 255 if value > threshold else 0)
+
+
+def center_mask_on_square(mask: Image.Image, size: int, pad_ratio: float = PAD_RATIO) -> Image.Image:
+    bbox = mask.getbbox()
+    if not bbox:
+        raise ValueError("empty glyph mask")
+    cropped = mask.crop(bbox)
+    inner = max(1, int(size * (1 - 2 * pad_ratio)))
+    scale = min(inner / cropped.width, inner / cropped.height)
+    new_w = max(1, int(cropped.width * scale))
+    new_h = max(1, int(cropped.height * scale))
+    resized = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
+    canvas = Image.new("L", (size, size), 0)
+    canvas.paste(resized, ((size - new_w) // 2, (size - new_h) // 2))
+    return canvas
+
+
+def mask_to_rgb(mask: Image.Image, *, color: tuple[int, int, int] = GLYPH) -> Image.Image:
+    out = Image.new("RGB", mask.size, BLACK)
+    layer = Image.new("RGB", mask.size, color)
+    out.paste(layer, mask=mask)
     return out
 
 
 def render_icon(size: int, source: Image.Image) -> Image.Image:
-    base = normalize_mask_png(source)
-    if base.size != (size, size):
-        return base.resize((size, size), Image.Resampling.LANCZOS)
-    return base
+    mask = center_mask_on_square(extract_mask(source.convert("RGBA")), MASTER)
+    if size != MASTER:
+        mask = mask.resize((size, size), Image.Resampling.LANCZOS)
+    return mask_to_rgb(mask)
+
+
+def write_master(source_png: Path, dest: Path = SOURCE_PNG, *, size: int = MASTER) -> Path:
+    with Image.open(source_png) as src:
+        mask = center_mask_on_square(extract_mask(src.convert("RGBA")), size)
+        master = mask_to_rgb(mask)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    master.save(dest, format="PNG", optimize=True)
+    return dest
 
 
 def install_favicons(
@@ -100,8 +133,29 @@ analyze_icon_brightness = analyze_icon_content
 analyze_icon_brightness_bytes = analyze_icon_content_bytes
 
 
-if __name__ == "__main__":
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Build frontend favicon assets from favicon-source.png")
+    parser.add_argument(
+        "--from",
+        dest="from_path",
+        type=Path,
+        help="Bootstrap favicon-source.png from a raw glyph PNG (e.g. uploaded 64×64 asset)",
+    )
+    args = parser.parse_args(argv)
+
+    if args.from_path:
+        write_master(args.from_path)
+        print(f"Wrote master {SOURCE_PNG}")
+
     install_favicons()
+    ok = True
     for name in ("favicon-32.png", "apple-touch-icon.png", "favicon.ico"):
         stats = analyze_icon_content(FRONTEND / name)
-        print(name, stats, "ok" if icon_has_visible_mark(stats) else "BAD")
+        visible = icon_has_visible_mark(stats)
+        print(name, stats, "ok" if visible else "BAD")
+        ok = ok and visible
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
