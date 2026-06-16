@@ -1,16 +1,16 @@
 # Canto-0243
 
 <p align="center">
-  <a href="README.md">繁體中文</a> · <a href="README.zh-Hans.md">简体中文</a> · <b>English</b>
+  <a href="../README.md">繁體中文</a> · <a href="README.zh-Hans.md">简体中文</a> · <b>English</b>
 </p>
 
 Writing Cantonese lyrics often means hunting for the right character—same tone, rhyming fit, or a near synonym—while matching 0243 codes and Jyutping. Flipping through dictionaries, rhyme books, and thesaurus tables by hand is slow and easy to miss good options. [0243.hk](https://0243.hk) is an excellent online Cantonese rhyme finder, but outages, endless loading, or missing features can still stall your workflow.
 
 **Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench built with AI agents. It lists replaceable **word entries** in seconds using **0243／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. Type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine.
 
-**License**: [Canto-0243 License](LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). Third-party data: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).  
+**License**: [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). Third-party data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
 **Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · vanilla HTML/JS frontend  
-**Domain glossary**: [`CONTEXT.md`](CONTEXT.md) · Contributing: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
+**Domain glossary**: [`CONTEXT.md`](../CONTEXT.md) · Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
 
@@ -20,7 +20,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 Current word entries: **193,278** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
-Official offline data bundle: **[Canto-0243 v1.2.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
+Official offline data bundle: **[Canto-0243 v1.3.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
 
 ---
 
@@ -31,7 +31,7 @@ Official offline data bundle: **[Canto-0243 v1.2.0](https://github.com/bill-iu/C
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 * **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.
 * **Relation data**: **static thesaurus port** (Cilin／Guotong near-synonyms／antisem); runtime and ingest share the same rules.
-* **Result ranking**: within each match tier **plain Chinese** → **essay frequency** → **curated** → **pron_rank** → surface form (see [`CONTEXT.md`](CONTEXT.md) § search result ranking).
+* **Result ranking**: within each match tier **plain Chinese** → **essay frequency** → **curated** → **pron_rank** → surface form (see [`CONTEXT.md`](../CONTEXT.md) § search result ranking).
 
 ---
 
@@ -41,7 +41,7 @@ Official offline data bundle: **[Canto-0243 v1.2.0](https://github.com/bill-iu/C
 
 For the full offline experience, use the official portable package—**no** git clone or manual DB setup.
 
-1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)).
+1. Download **`canto-0243-portable.zip`** from [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) (pin to [`Canto-0243 v1.3.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)).
 2. Extract the entire folder (e.g. `canto-0243-portable`).
 3. Launch by platform:
    * **Windows**: extract and double-click **`START.bat`** (no Python install).
@@ -98,7 +98,7 @@ Or use `./start.sh` (creates venv and opens the browser—you still need `lyrics
 
 ## Maintainer: rebuild lexicon & near／antonym data
 
-Outputs are local／gitignored—**do not** commit. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+Outputs are local／gitignored—**do not** commit. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ```bash
 pip install -r requirements-dev.txt
@@ -116,8 +116,8 @@ Optional relation sources (off by default): `data/syn_ant/sources.yaml`.
 
 ### Official data release (four artifacts)
 
-Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **Do not** commit large artifacts to git.  
-**Full release** vs **lexicon-only release** tiers and checklists: [docs/release.md](docs/release.md) ([ADR-0008](docs/adr/0008-release-publishing-tiers.md)).
+Check [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution. **Do not** commit large artifacts to git.  
+**Full release** vs **lexicon-only release** tiers and checklists: [release.md](release.md) ([ADR-0008](adr/0008-release-publishing-tiers.md)).
 
 | Asset | Purpose |
 |-------|---------|
@@ -322,7 +322,7 @@ Design principle: domain rules live in `app/domain/`; ingest and runtime share t
 
 **Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). New schema is maintained only via SQLite bootstrap／`scripts/db/init_db.py`.
 
-**PostgreSQL**: frozen scaffold, **not** a primary delivery target. Experimental use: `requirements-postgres.txt` and [`CONTEXT.md`](CONTEXT.md) § product boundary.
+**PostgreSQL**: frozen scaffold, **not** a primary delivery target. Experimental use: `requirements-postgres.txt` and [`CONTEXT.md`](../CONTEXT.md) § product boundary.
 
 ### Project layout
 
@@ -335,16 +335,17 @@ Canto-0243/
 ├── ingest/                 # python -m ingest
 ├── scripts/                # bootstrap · build-portable · import_data
 ├── tests/
-├── docs/                   # CONTRIBUTING · agents/
+├── docs/                   # CONTRIBUTING · README.* · release
 ├── main.py · start.sh      # dev entrypoints
-├── README.md · README.zh-Hans.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── README.md               # 繁中（GitHub 首页）
+├── LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements*.txt
 ```
 
 ### Data sources & licensing
 
-Verify [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. Admission and ranking: [`CONTEXT.md`](CONTEXT.md) § lexicon & ranking.
+Verify [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution. Admission and ranking: [`CONTEXT.md`](../CONTEXT.md) § lexicon & ranking.
 
 | Tier | Description | Examples |
 |------|-------------|----------|
@@ -352,7 +353,7 @@ Verify [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. A
 | **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`, antisem |
 | **3 · maintainer-built** | gitignored | `lyrics.db`, lexicon-reading JSON |
 
-Default near／antonym pipeline: `data/syn_ant/sources.yaml` (cilin, guotong, antisem, compound lists). Full upstream table: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Default near／antonym pipeline: `data/syn_ant/sources.yaml` (cilin, guotong, antisem, compound lists). Full upstream table: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
 ---
 
@@ -387,7 +388,7 @@ You may use this tool for Cantonese lyric writing, rhyme lookup, character subst
 * Any public fork, improvement, or derivative must **use the same license** (or substantially equivalent terms) and keep the **Canto-0243** name in a reasonable, visible place. If you run a public site, web app, or API (including free), show e.g. “Powered by Canto-0243” linking to the official repo.
 * If you run **commercial software** or a **paid inference service** and want to embed this tool, contact the copyright holder or open an Issue on the official repo for written permission.
 
-Apart from the above, this license is in practice [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) plus additional restrictions. Full legal text: [`LICENSE`](LICENSE).
+Apart from the above, this license is in practice [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) plus additional restrictions. Full legal text: [`LICENSE`](../LICENSE).
 
 Please keep the name **Canto-0243** in any future fork or distribution!
 
@@ -403,7 +404,7 @@ Thanks also to **Professor Wong Chi-wah**, inventor of **0243 theory**, for the 
 
 ### Data & corpus thanks
 
-Canto-0243 integrates several open dictionaries, corpora, and near／antonym resources. We thank the teams and projects below (read each upstream license before redistribution; summary in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)):
+Canto-0243 integrates several open dictionaries, corpora, and near／antonym resources. We thank the teams and projects below (read each upstream license before redistribution; summary in [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)):
 
 * **Rime Cantonese** (single-char `char.csv`, essay frequency): [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) and [rime/rime-cantonese](https://github.com/rime/rime-cantonese), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Give them a star!
 * **Cilin synonyms**: via [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin), **MIT**.
@@ -420,16 +421,16 @@ Building or redistributing lexicons from these sources requires complying with e
 
 | Document | Contents |
 |----------|----------|
-| [`README.md`](README.md) | Traditional Chinese (GitHub homepage) |
+| [`README.md`](../README.md) | Traditional Chinese (GitHub homepage) |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | Simplified Chinese documentation (written Chinese) |
 | [`README.en.md`](README.en.md) | English documentation (this file) |
-| [`LICENSE`](LICENSE) | Canto-0243 License |
-| [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | Third-party data licenses |
-| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | Contributing & repo-root conventions |
-| [`CONTEXT.md`](CONTEXT.md) | Domain glossary |
-| [`WORKLOG.md`](WORKLOG.md) | Change log |
-| [`AGENTS.md`](AGENTS.md) | Agent collaboration notes |
+| [`LICENSE`](../LICENSE) | Canto-0243 License |
+| [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) | Third-party data licenses |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contributing & repo-root conventions |
+| [`CONTEXT.md`](../CONTEXT.md) | Domain glossary |
+| [`WORKLOG.md`](../WORKLOG.md) | Change log |
+| [`AGENTS.md`](../AGENTS.md) | Agent collaboration notes |
 
 ---
 
-**Last updated**: 2026-06-16 (v1.2.0 · reference reading · query normalize · position_match package · ADR-0004)
+**Last updated**: 2026-06-17 (v1.3.0 · ambiguous Jyutping m/ng dual-column anchors · ADR-0009)

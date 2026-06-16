@@ -1,7 +1,7 @@
 # Canto-0243
 
 <p align="center">
-  <b>繁體中文</b> · <a href="README.zh-Hans.md">简体中文</a> · <a href="README.en.md">English</a>
+  <b>繁體中文</b> · <a href="docs/README.zh-Hans.md">简体中文</a> · <a href="docs/README.en.md">English</a>
 </p>
 
 填粵語歌詞，通常一係就「唔知有咩字」，一係就要喺**同音、押韻、近義**之間快速換字，又要對準 0243 與粵拼讀音。傳統做法係喺詞典、韻書、近義表之間搵嚟搵去，手動試「呢個位可唔可以換另一個字」——慢，而且容易漏咗好多可以用嘅字。[0243.hk](https://0243.hk) 已經算係近年最好用嘅粵語填詞查找網站，但係偶爾都會 502 Bad Gateway 上唔到；或者喺搵字嘅時候無限輪迴 load 唔到；又或者你想搵某個字但係佢冇嗰個功能——呢啲時候就會拖慢你嘅進度。
@@ -20,7 +20,7 @@
 目前總詞條列數：**193,278**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
-官方離線資料包：**[Canto-0243 v1.2.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方離線資料包：**[Canto-0243 v1.3.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -41,7 +41,7 @@
 
 完整離線體驗請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)）。
+1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.3.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)）。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
    * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
@@ -333,9 +333,10 @@ Canto-0243/
 ├── ingest/                 # python -m ingest
 ├── scripts/                # bootstrap · build-portable · import_data
 ├── tests/
-├── docs/                   # CONTRIBUTING · agents/
+├── docs/                   # CONTRIBUTING · README.en · README.zh-Hans · release
 ├── main.py · start.sh      # 開發入口
-├── README.md · README.zh-Hans.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── README.md               # 繁中（GitHub 首頁）
+├── LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements*.txt
 ```
@@ -419,8 +420,8 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 | 文件 | 內容 |
 |------|------|
 | [`README.md`](README.md) | 本文件（繁體中文，GitHub 首頁） |
-| [`README.zh-Hans.md`](README.zh-Hans.md) | 简体中文说明（书面语） |
-| [`README.en.md`](README.en.md) | English documentation |
+| [`docs/README.zh-Hans.md`](docs/README.zh-Hans.md) | 简体中文说明（书面语） |
+| [`docs/README.en.md`](docs/README.en.md) | English documentation |
 | [`LICENSE`](LICENSE) | Canto-0243 License |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |
 | [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR · 源碼根目錄約定 |
@@ -430,4 +431,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-06-16（v1.2.0 · 參考字讀音解析／查詢分派收斂／position_match 套件化 · ADR-0004）
+**最後更新**：2026-06-17（v1.3.0 · 歧義粵拼錨 m／ng 雙列 · ADR-0009）

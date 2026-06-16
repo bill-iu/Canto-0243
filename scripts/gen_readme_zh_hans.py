@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate README.zh-Hans.md from README.md (t2s + colloquial → written Chinese)."""
+"""Generate docs/README.zh-Hans.md from README.md (t2s + colloquial → written Chinese)."""
 
 from __future__ import annotations
 
@@ -15,13 +15,13 @@ if str(REPO_ROOT) not in sys.path:
 from scripts.readme_zh_hans_written import apply_written_rules, find_colloquial_markers
 
 SRC = REPO_ROOT / "README.md"
-DST = REPO_ROOT / "README.zh-Hans.md"
+DST = REPO_ROOT / "docs" / "README.zh-Hans.md"
 
 LANG_BAR = """<p align="center">
-  <a href="README.md">繁體中文</a> · <b>简体中文</b> · <a href="README.en.md">English</a>
+  <a href="../README.md">繁體中文</a> · <b>简体中文</b> · <a href="README.en.md">English</a>
 </p>"""
 
-RELATED_DOCS = """| [`README.md`](README.md) | 繁体中文（GitHub 首页） |
+RELATED_DOCS = """| [`README.md`](../README.md) | 繁体中文（GitHub 首页） |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | 本文件（简体中文书面语） |
 | [`README.en.md`](README.en.md) | English documentation |"""
 
@@ -44,13 +44,17 @@ def _apply_locale_fixes(text: str) -> str:
     text = text.replace("<!-- /words-count:zh-Hant -->", "<!-- /words-count:zh-Hans -->")
     text = text.replace("目前總詞條列數", "目前总词条列数")
     text = text.replace(
-        "README.md · README.en.md · LICENSE",
-        "README.md · README.zh-Hans.md · README.en.md · LICENSE",
+        "README.md               # 繁中（GitHub 首頁）",
+        "README.md               # 繁中（GitHub 首页）",
+    )
+    text = text.replace(
+        "├── docs/                   # CONTRIBUTING · README.en · README.zh-Hans · release",
+        "├── docs/                   # CONTRIBUTING · README.* · release",
     )
     text = re.sub(
-        r"\| \[`README\.md`\]\(README\.md\) \| [^\n]+ \|\n"
-        r"(?:\| \[`README\.zh-Hans\.md`\]\(README\.zh-Hans\.md\) \| [^\n]+ \|\n)?"
-        r"\| \[`README\.en\.md`\]\(README\.en\.md\) \| English documentation \|",
+        r"\| \[`README\.md`\]\([^)]+\) \| [^\n]+ \|\n"
+        r"\| \[`docs/README\.zh-Hans\.md`\]\([^)]+\) \| [^\n]+ \|\n"
+        r"\| \[`docs/README\.en\.md`\]\([^)]+\) \| English documentation \|",
         RELATED_DOCS,
         text,
         count=1,
@@ -61,6 +65,11 @@ def _apply_locale_fixes(text: str) -> str:
         text,
         count=1,
     )
+    for name in ("LICENSE", "THIRD_PARTY_NOTICES.md", "CONTEXT.md", "WORKLOG.md", "AGENTS.md"):
+        text = text.replace(f"]({name})", f"](../{name})")
+    text = text.replace("docs/CONTRIBUTING.md", "CONTRIBUTING.md")
+    text = text.replace("docs/release.md", "release.md")
+    text = text.replace("docs/adr/", "adr/")
     return text
 
 
@@ -74,17 +83,17 @@ def generate(source_text: str | None = None) -> str:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Generate README.zh-Hans.md from README.md (Simplified written Chinese)."
+        description="Generate docs/README.zh-Hans.md from README.md (Simplified written Chinese)."
     )
     parser.add_argument(
         "--stdout",
         action="store_true",
-        help="Print to stdout instead of writing README.zh-Hans.md",
+        help="Print to stdout instead of writing docs/README.zh-Hans.md",
     )
     parser.add_argument(
         "--check",
         action="store_true",
-        help="Exit 1 if README.zh-Hans.md differs from generated output",
+        help="Exit 1 if docs/README.zh-Hans.md differs from generated output",
     )
     parser.add_argument(
         "--strict-colloquial",
@@ -109,9 +118,9 @@ def main() -> int:
             return 1
         current = DST.read_text(encoding="utf-8")
         if current == draft:
-            print("README.zh-Hans.md is up to date.")
+            print("docs/README.zh-Hans.md is up to date.")
             return 0
-        print("README.zh-Hans.md is stale. Run: python scripts/gen_readme_zh_hans.py", file=sys.stderr)
+        print("docs/README.zh-Hans.md is stale. Run: python scripts/gen_readme_zh_hans.py", file=sys.stderr)
         return 1
 
     if args.stdout:

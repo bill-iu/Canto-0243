@@ -1,16 +1,16 @@
 # Canto-0243
 
 <p align="center">
-  <a href="README.md">繁體中文</a> · <b>简体中文</b> · <a href="README.en.md">English</a>
+  <a href="../README.md">繁體中文</a> · <b>简体中文</b> · <a href="README.en.md">English</a>
 </p>
 
 填写粤语歌词时，常见困难一是不知道有哪些字可用，二是需要在**同音、押韵、近义**之间快速换字，同时又要符合 0243 与粤拼读音。传统做法是在词典、韵书、近义表之间反复查阅，手动尝试「这一位置能否换成另一个字」——效率低，且容易遗漏许多可用字。[0243.hk](https://0243.hk) 已是近年来较好用的粤语填词检索网站，但偶尔会出现 502 Bad Gateway 无法访问；检索时也可能长时间加载；或缺少所需功能——这些情况都会拖慢创作进度。
 
 **Canto-0243**（**ONE·揾·韵**）是由多种 AI Agent 协助开发的离线粤语填词检索工作台：依据 **0243／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出可替换的**词条**。输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。套件解压即可使用，词库与近反义资料均存于本地，无需常驻云端。
 
-**授权**：程序代码依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**非 OSI 开源**）。第三方资料见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
+**授权**：程序代码依 [Canto-0243 License](../LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**非 OSI 开源**）。第三方资料见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。  
 **技术栈**：FastAPI · SQLAlchemy · SQLite（离线单机）· 纯 HTML/JS 前端  
-**领域词汇**：见 [`CONTEXT.md`](CONTEXT.md) · 贡献指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
+**领域词汇**：见 [`CONTEXT.md`](../CONTEXT.md) · 贡献指南 [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
 
@@ -20,18 +20,18 @@
 目前总词条列数：**193,278**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
-官方离线资料包：**[Canto-0243 v1.2.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方离线资料包：**[Canto-0243 v1.3.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
 ## 功能
 
 * **0243／02493 编码搜索**：**0243模式** `mode=m1`（0243 等价变体）与 **02493模式** `mode=m2`（含 9 键声调、区分二声）。
-* **多种查询语法**：纯汉字 · 纯数字（分页 + 总数 header）· **粤拼查询**（`syut`／`nei hou`／`ming4 baak6`）· **粤拼锚**（`?yut?`、`23o`、`3hon4` 等，见速查）· 混合码字（`23就`）· wildcard（`3_`、`23?`）· 等号韵／声（`香港=`、`2=我3`）· 韵／声锚（`?就=`、`?港=?`）。
+* **多种查询语法**：纯汉字 · 纯数字（分页 + 总数 header）· **粤拼查询**（`syut`／`nei hou`／`ming4 baak6`）· **粤拼锚**（`?yut?`、`23o`、`3hon4` 等拉丁锚，见速查）· 混合码字（`23就`）· wildcard（`3_`、`23?`）· 等号韵／声（`香港=`、`2=我3`）· 韵／声锚（`?就=`、`?港=?`）。
 * **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索模式下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`。
 * **词库与收录**：**词库埠** raw lookup + **收录决策**；多字词级标音或音节拼接读音。
 * **近反义资料**：**静态词林埠**（cilin／国语辞典近义／反义语料）；运行时与 ingest 共用同一规则。
-* **结果排序**：同一 match tier 内 **纯汉字** → **essay 词频** → **curated** → **pron_rank** → 字面（详见 [`CONTEXT.md`](CONTEXT.md) § 搜索结果排序）。
+* **结果排序**：同一 match tier 内 **纯汉字** → **essay 词频** → **curated** → **pron_rank** → 字面（详见 [`CONTEXT.md`](../CONTEXT.md) § 搜索结果排序）。
 
 ---
 
@@ -41,14 +41,14 @@
 
 完整离线体验请用官方 portable 套件，**无需** clone 源码或自行导入词库。
 
-1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.2.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.2.0)）。
+1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.3.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.3.0)）。
 2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
 3. 按平台启动：
    * **Windows**：解压后双击 **`START.bat`**（无需安装 Python）。
    * **macOS**：下载 `canto-0243-portable-macos.tar.gz`，解压后双击 **`Canto-0243.app`**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（须本机 Python 3.10+）。
 
-**环境要求**：Windows／macOS **免安装**（套件已内置 Python）；Linux 仍须 Python 3.10+。
+**环境要求**：Windows／macOS **免安装**（套件已内建 Python）；Linux 仍须 Python 3.10+。
 
 | 入口 | URL |
 |------|-----|
@@ -74,7 +74,7 @@
 * **位置与通配符**：`香??`、`?你?`、`3_`、`23?`。
 * **数字 + 尾字**：`23就`（尾字与「就」押韵）、`23@就`（尾字字面固定）、`23*就`（延长位置约束）。
 * **等号锚点**：`=` 在锚字**后**比较韵母（`?就=`）、在锚字**前**比较声母（`?=就`）；整词与「香港」押韵 `香港=`、码夹 `2我=3`。
-* **粤拼锚**：缺字查询内用拉丁代替汉字参考字（`?syut?` 中格音节、`23o` 码后**末格**韵母、`3hon4` 首格音节等）；**不是**整段粤拼查询；**近反义模式**不接受。
+* **粤拼锚**：缺字查询内用拉丁取代汉字参考字（`?syut?` 中格音节、`23o` 码后**末格**韵母、`3hon4` 首格音节等）；**并非**整段粤拼查询；**近反义模式**不接受。
 * **近反义关系查询**：`~开心`、`!你`、`33!开心`。
 * **反义复合词**：`!!`、`33!!`、`!!你`、`33!!你`（如生死、是非）。
 * **近义复合词**：`~~`、`33~~`、`~~你`、`33~~你`（如朋友、恐惧）；**不适用近反义模式**。
@@ -98,7 +98,7 @@ python main.py
 
 ## Maintainer：重建词条库与近反义
 
-产物均为本地／gitignore 文件，**请勿** commit。详见 [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)。
+产物均为本地／gitignore 文件，**请勿** commit。详见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ```bash
 pip install -r requirements-dev.txt
@@ -116,25 +116,24 @@ python -m ingest build-relations
 
 ### 官方资料 Release（四件套）
 
-再分发前核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。  
-**全量发布**与**词库发布**分层及 checklist 见 [docs/release.md](docs/release.md)（[ADR-0008](docs/adr/0008-release-publishing-tiers.md)）。
+再分发前核对 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。  
+**全量发布**与**词库发布**分层、手动／CI checklist 见 [release.md](release.md)（[ADR-0008](adr/0008-release-publishing-tiers.md)）。
 
 | 资产 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**词条库**（`words` + `word_relations`） |
-| `canto-0243-portable.zip` | Windows 免安装套件（内置 venv + `START.bat`） |
+| `canto-0243-portable.zip` | Windows 免安装套件（内建 venv + `START.bat`） |
 | `canto-0243-portable-macos.tar.gz` | macOS 免安装 **`Canto-0243.app`** |
 | `words-lexicon.json` | **词级标音**附件 |
 
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 python scripts/update_readme_words_count.py
-# 若大幅更新 README.md，可重新生成简体书面语版：
-# python scripts/gen_readme_zh_hans.py
+# Windows（含内建 venv zip）:
 powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS（Canto-0243.app tar.gz）:
+# macOS（含 Canto-0243.app tar.gz）:
 bash scripts/build-portable.sh
-# 上传四件套至 GitHub Release（portable 须同时提供 zip 与 macOS tar.gz）
+# 上传四件套至 GitHub Release
 ```
 
 ---
@@ -196,7 +195,7 @@ bash scripts/build-portable.sh
 
 ### 粤拼锚（拉丁锚）
 
-缺字查询家族内以拉丁字母标读音约束，**不是**整段粤拼查询（`syut` 查词 ≠ `?syut?` 锚中格）。**近反义模式**不接受粤拼锚；无效韵母片段会拒绝并提示。
+缺字查询家族内以拉丁字母标读音约束，**并非**整段粤拼查询（`syut` 查词 ≠ `?syut?` 锚中格）。**近反义模式**不接受粤拼锚；无效韵母片段会拒绝并提示。
 
 **通配符位置**
 
@@ -215,7 +214,7 @@ bash scripts/build-portable.sh
 | `3?hon4` | 三字，`{首码}?{音节}{末码}`，中格音节 |
 | `3h4` | 二字，码 `34`，**首格**声母 `h` |
 | `23ngo` | 二字，码 `23`，**末格**完整音节 `ngo` |
-| `23o` | 二字，码 `23`，**末格**韵母 `o`（比 `23ngo` 宽） |
+| `23o` | 二字，码 `23`，**末格**韵母 `o`（比 `23ngo` 阔） |
 | `23ei0` | 三字，码 `230`，**中格**韵母 `ei`（同 `23你=0` 类） |
 
 `3hon4` 音节在**首格**；`23ngo`／`23o` 拉丁在码后、锚**末格**——两者格式不同，勿混。
@@ -321,7 +320,7 @@ GET /words/search/?q=开心&mode=syn
 
 **产品保证路径**：离线单机 + **SQLite**（`lyrics.db`）。新 schema 仅透过 SQLite bootstrap／`scripts/db/init_db.py` 维护。
 
-**PostgreSQL**：冻结中的 scaffold，**非**主要交付目标。实验用见 `requirements-postgres.txt` 与 [`CONTEXT.md`](CONTEXT.md) § 产品边界。
+**PostgreSQL**：冻结中的 scaffold，**非**主要交付目标。实验用见 `requirements-postgres.txt` 与 [`CONTEXT.md`](../CONTEXT.md) § 产品边界。
 
 ### 项目结构
 
@@ -334,16 +333,17 @@ Canto-0243/
 ├── ingest/                 # python -m ingest
 ├── scripts/                # bootstrap · build-portable · import_data
 ├── tests/
-├── docs/                   # CONTRIBUTING · agents/
+├── docs/                   # CONTRIBUTING · README.* · release
 ├── main.py · start.sh      # 开发入口
-├── README.md · README.zh-Hans.md · README.en.md · LICENSE · THIRD_PARTY_NOTICES.md
+├── README.md               # 繁中（GitHub 首页）
+├── LICENSE · THIRD_PARTY_NOTICES.md
 ├── CONTEXT.md · WORKLOG.md · AGENTS.md · skills-lock.json
 └── requirements*.txt
 ```
 
 ### 资料来源与授权
 
-再分发前请核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。收录与排序见 [`CONTEXT.md`](CONTEXT.md) § 词库与排序。
+再分发前请核对 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。收录与排序见 [`CONTEXT.md`](../CONTEXT.md) § 词库与排序。
 
 | 层级 | 说明 | 例子 |
 |------|------|------|
@@ -351,7 +351,7 @@ Canto-0243/
 | **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
 | **3 · maintainer 自建** | gitignore | `lyrics.db`、词级标音 JSON |
 
-近义／反义默认管线：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。详表见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+近义／反义默认管线：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。详表见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
 
 ---
 
@@ -386,7 +386,7 @@ python -m unittest discover -s tests -q
 * 任何公开发布的 fork、改进或衍生版本须**沿用同一授权**（或实质等同条款），并在合理显眼位置保留 **Canto-0243** 名称。若您运营公开网站、网页 app 或 API（包括免费），须显示例如「Powered by Canto-0243」并链接至官方仓库。
 * 若您运营**商业软件**或**付费推理服务**，希望将本工具整合入产品，请先与版权人联络或于官方 repo 开 Issue 商议书面授权。
 
-除上述条款外，本授权在实务上等效于 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 加上附加限制。完整法律文本见 [`LICENSE`](LICENSE)。
+除上述条款外，本授权在实务上等效于 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 加上附加限制。完整法律文本见 [`LICENSE`](../LICENSE)。
 
 请在任何未来 fork 或发布中保留 **Canto-0243** 名称！
 
@@ -402,7 +402,7 @@ python -m unittest discover -s tests -q
 
 ### 资料与语料致谢
 
-Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感谢以下团队与专案（再分发前请阅读各上游完整条款；授权总表见 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)）：
+Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感谢以下团队与专案（再分发前请阅读各上游完整条款；授权总表见 [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)）：
 
 * **Rime 粤语（单字读音 `char.csv`、essay 词频）**：来自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 与 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。欢迎为上述项目点 star。
 * **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 汇出，采用 **MIT** 授权。
@@ -419,16 +419,16 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 | 文件 | 内容 |
 |------|------|
-| [`README.md`](README.md) | 繁体中文（GitHub 首页） |
+| [`README.md`](../README.md) | 繁体中文（GitHub 首页） |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | 本文件（简体中文书面语） |
 | [`README.en.md`](README.en.md) | English documentation |
-| [`LICENSE`](LICENSE) | Canto-0243 License |
-| [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方资料授权 |
-| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 贡献与 PR · 源码根目录约定 |
-| [`CONTEXT.md`](CONTEXT.md) | 领域词汇表 |
-| [`WORKLOG.md`](WORKLOG.md) | 变更记录 |
-| [`AGENTS.md`](AGENTS.md) | Agent 协作指引 |
+| [`LICENSE`](../LICENSE) | Canto-0243 License |
+| [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) | 第三方资料授权 |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | 贡献与 PR · 源码根目录约定 |
+| [`CONTEXT.md`](../CONTEXT.md) | 领域词汇表 |
+| [`WORKLOG.md`](../WORKLOG.md) | 变更记录 |
+| [`AGENTS.md`](../AGENTS.md) | Agent 协作指引 |
 
 ---
 
-**最后更新**：2026-06-16（v1.2.0 · 参考字读音解析／查询分派收敛／position_match 套件化 · ADR-0004）
+**最后更新**：2026-06-17（v1.3.0 · 歧义粤拼锚 m／ng 双列 · ADR-0009）

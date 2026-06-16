@@ -13,8 +13,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB = REPO_ROOT / "lyrics.db"
 
 README_ZH = REPO_ROOT / "README.md"
-README_HANS = REPO_ROOT / "README.zh-Hans.md"
-README_EN = REPO_ROOT / "README.en.md"
+README_HANS = REPO_ROOT / "docs" / "README.zh-Hans.md"
+README_EN = REPO_ROOT / "docs" / "README.en.md"
 
 ZH_BEGIN = "<!-- words-count:zh-Hant -->"
 ZH_END = "<!-- /words-count:zh-Hant -->"
@@ -133,7 +133,7 @@ def readme_counts_match(db_path: Path = DEFAULT_DB) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Update README.md / README.zh-Hans.md / README.en.md with lyrics.db words row count."
+        description="Update README.md and docs/README.* with lyrics.db words row count."
     )
     parser.add_argument("--db", default=str(DEFAULT_DB), help="SQLite database path")
     parser.add_argument(
