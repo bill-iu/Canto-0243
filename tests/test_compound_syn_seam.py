@@ -1,14 +1,14 @@
-"""接縫測試：近義複合候選規則僅在近義複合模組定義。"""
+"""接縫測試：近義複合候選規則僅在 registry 委派 domain。"""
 from __future__ import annotations
 
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-EXECUTOR_PATH = REPO_ROOT / "app" / "services" / "compound_syn_executor.py"
+SOURCES_PATH = REPO_ROOT / "app" / "services" / "position_match" / "sources.py"
 PRELOAD_PATH = REPO_ROOT / "app" / "startup" / "offline_preload.py"
 
-EXECUTOR_FORBIDDEN = (
+SOURCES_FORBIDDEN = (
     "load_compound_synonyms",
     "_scan_morpheme_compounds",
     "synthesize_compound_literals",
@@ -16,9 +16,10 @@ EXECUTOR_FORBIDDEN = (
     "ensure_compound_syn_snapshot",
     "CompoundSynSnapshot",
     "narrow_compound_syn_literals",
+    "load_compound_antonyms",
 )
 
-EXECUTOR_ALLOWED = ("search_compound_syn",)
+SOURCES_ALLOWED = ("search_compound_syn", "search_compound_ant")
 
 PRELOAD_FORBIDDEN = (
     "ensure_compound_syn_cache",
@@ -31,12 +32,12 @@ PRELOAD_ALLOWED = ("ensure_compound_syn_snapshot", "preload_compound_syn_runtime
 
 
 class TestCompoundSynSeam(unittest.TestCase):
-    def test_executor_delegates_to_search_compound_syn(self):
-        source = EXECUTOR_PATH.read_text(encoding="utf-8")
-        for symbol in EXECUTOR_FORBIDDEN:
+    def test_sources_delegates_to_domain_compound_search(self):
+        source = SOURCES_PATH.read_text(encoding="utf-8")
+        for symbol in SOURCES_FORBIDDEN:
             with self.subTest(symbol=symbol):
                 self.assertNotIn(symbol, source)
-        for symbol in EXECUTOR_ALLOWED:
+        for symbol in SOURCES_ALLOWED:
             with self.subTest(symbol=symbol):
                 self.assertIn(symbol, source)
 

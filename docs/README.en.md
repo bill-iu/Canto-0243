@@ -299,7 +299,6 @@ query string → query_parse (syntax class · ParsedQuery · build_match_spec)
             → query_dispatch (priority registry → executors)
                    ↓
     position_match · word_lookup_executor · relation_syntax_executor
-    · compound_ant_executor · compound_syn_executor
                    ↓
     domain/lexicon (admission) · domain/thesaurus (static thesaurus) · domain/relations (relation pool／graph)
                    ↓

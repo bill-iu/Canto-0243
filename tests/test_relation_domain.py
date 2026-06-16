@@ -116,12 +116,12 @@ class RuntimeNoIngestImportTests(unittest.TestCase):
         path = REPO_ROOT / "app" / "services" / "manual_relation_service.py"
         self.assertEqual(self._imports_ingest(path), [])
 
-    def test_compound_ant_executor_does_not_import_ingest(self):
-        path = REPO_ROOT / "app" / "services" / "compound_ant_executor.py"
+    def test_position_match_sources_do_not_import_ingest(self):
+        path = REPO_ROOT / "app" / "services" / "position_match" / "sources.py"
         self.assertEqual(self._imports_ingest(path), [])
 
-    def test_compound_syn_executor_does_not_import_ingest(self):
-        path = REPO_ROOT / "app" / "services" / "compound_syn_executor.py"
+    def test_compound_ant_domain_does_not_import_ingest(self):
+        path = REPO_ROOT / "app" / "domain" / "relations" / "compound_ant.py"
         self.assertEqual(self._imports_ingest(path), [])
 
     def test_word_model_uses_domain_canonical(self):

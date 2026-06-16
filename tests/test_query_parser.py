@@ -18,6 +18,7 @@ from app.services.query_parse import (
     WordLookupQuery,
     build_match_spec,
     parse_query,
+    uses_match_spec,
 )
 from app.services.word_query_parser import normalize_search_query
 
@@ -177,12 +178,14 @@ class BuildMatchSpecTests(unittest.TestCase):
         spec = build_match_spec(CompoundAntQuery(code_prefix="33", rhyme_char="就"))
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.code_prefix, "33")
+        self.assertEqual(spec.compound_kind, "ant")
         self.assertEqual(spec.slots[0].kind, "final_anchor")
 
     def test_compound_syn(self):
         spec = build_match_spec(CompoundSynQuery(code_prefix="33", rhyme_char="你"))
         self.assertEqual(spec.width, 2)
         self.assertEqual(spec.code_prefix, "33")
+        self.assertEqual(spec.compound_kind, "syn")
         self.assertEqual(spec.slots[0].kind, "final_anchor")
         self.assertEqual(spec.slots[0].value, "你")
 
@@ -255,6 +258,16 @@ class BuildMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.slots[0].pos, 1)
         self.assertEqual(spec.slots[0].kind, "final_anchor")
         self.assertEqual(spec.slots[0].value, "港")
+
+
+class UsesMatchSpecTests(unittest.TestCase):
+    def test_compound_queries_use_match_spec(self):
+        self.assertTrue(uses_match_spec(CompoundSynQuery(code_prefix=None, rhyme_char=None)))
+        self.assertTrue(uses_match_spec(CompoundAntQuery(code_prefix="33", rhyme_char="就")))
+
+    def test_non_position_queries_do_not(self):
+        self.assertFalse(uses_match_spec(RelationLookupQuery(relation_kind="syn", word="開心")))
+        self.assertFalse(uses_match_spec(DigitCodeQuery(raw_q="33")))
 
 
 if __name__ == "__main__":

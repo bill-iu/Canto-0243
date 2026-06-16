@@ -46,7 +46,7 @@ class CompoundSynPerfTests(unittest.TestCase):
             session.close()
 
     def test_compound_syn_candidate_source_uses_word_cache_when_ready(self):
-        from app.services.compound_syn_executor import CompoundSynCandidateSource
+        from app.services.position_match.sources import CompoundSynCandidateSource
 
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)

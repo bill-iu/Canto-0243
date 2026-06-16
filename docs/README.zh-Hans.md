@@ -297,7 +297,6 @@ GET /words/search/?q=开心&mode=syn
          → query_dispatch（优先序 registry → executors）
                 ↓
     position_match · word_lookup_executor · relation_syntax_executor
-    · compound_ant_executor · compound_syn_executor
                 ↓
     domain/lexicon（收录决策）· domain/thesaurus（静态词林）· domain/relations（近反义池／关系图）
                 ↓

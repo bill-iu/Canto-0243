@@ -24,7 +24,7 @@ FORBIDDEN = (
 
 ALLOWED = (
     "execute_match_spec",
-    "is_mask_family_query",
+    "uses_match_spec",
     "normalize_to_match_spec",
     "_mask_family_search_result",
 )
@@ -42,6 +42,11 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         for symbol in ALLOWED:
             with self.subTest(symbol=symbol):
                 self.assertIn(symbol, source)
+
+    def test_query_dispatch_has_no_compound_handler_registry(self):
+        source = DISPATCH_PATH.read_text(encoding="utf-8")
+        self.assertNotIn("CompoundSynQuery", source)
+        self.assertNotIn("CompoundAntQuery", source)
 
 
 if __name__ == "__main__":
