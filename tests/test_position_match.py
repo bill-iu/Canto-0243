@@ -12,10 +12,10 @@ from app.services.position_match.engine import (
     matches_phoneme_at_position,
     word_matches_last_final,
 )
+from app.domain.lexicon.ranking import literal_priority_sort_key
 from app.services.position_match.sources import (
     get_candidates_for_length,
     get_length_candidates,
-    mask_priority_key,
 )
 from app.services.position_match.spec import MatchSpec, SlotConstraint
 from app.services.query_parse import _build_mask_family_match_spec as build_mask_family_match_spec
@@ -55,9 +55,9 @@ class TestPositionMatchHelpers(unittest.TestCase):
         self.assertIn("做得", chars)
         self.assertNotIn("好我", chars)
 
-    def test_mask_priority_key(self):
+    def test_literal_priority_sort_key(self):
         w = MagicMock(char="香港", jyutping="hoeng1 gong2")
-        key = mask_priority_key(w, [(0, "香"), (1, "港")])
+        key = literal_priority_sort_key(w, [(0, "香"), (1, "港")])
         # Higher exact count -> lower (better) key due to -count
         self.assertEqual(key[0], -2)  # both match
 
@@ -146,7 +146,7 @@ class TestFilterCandidatesByMatchSpec(unittest.TestCase):
 class TestPositionMatchEngineMore(unittest.TestCase):
     """Additional isolation coverage for PositionMatchEngine / helpers.
     Targets handoff suggestions: hybrid boundaries (literal-or-phoneme), code_digit slots (門0 style mask),
-    literal_priority / mask_priority_key, more engine match scenarios.
+    literal_priority_sort_key, more engine match scenarios.
     """
 
     def test_matches_hybrid_ref_chars_literal_or_phoneme(self):
@@ -198,16 +198,16 @@ class TestPositionMatchEngineMore(unittest.TestCase):
         self.assertIn("門人", chars)
         self.assertNotIn("門下", chars)
 
-    def test_mask_priority_key_various_counts(self):
+    def test_literal_priority_sort_key_various_counts(self):
         """literal_priority sorting key: more literal matches -> smaller (better) first component."""
         w_full = MagicMock(char="門人", jyutping="mun4 jan4")
         w_partial = MagicMock(char="門下", jyutping="mun4 haa5")
         # Ensure w_none matches ZERO of the literal positions (avoid trailing '人' match on pos1)
         w_none = MagicMock(char="好心", jyutping="hou2 sam1")
 
-        k_full = mask_priority_key(w_full, [(0, "門"), (1, "人")])
-        k_part = mask_priority_key(w_partial, [(0, "門"), (1, "人")])
-        k_none = mask_priority_key(w_none, [(0, "門"), (1, "人")])
+        k_full = literal_priority_sort_key(w_full, [(0, "門"), (1, "人")])
+        k_part = literal_priority_sort_key(w_partial, [(0, "門"), (1, "人")])
+        k_none = literal_priority_sort_key(w_none, [(0, "門"), (1, "人")])
 
         self.assertEqual(k_full[0], -2)
         self.assertEqual(k_part[0], -1)

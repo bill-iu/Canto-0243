@@ -14,7 +14,7 @@ FORBIDDEN = (
     "CandidateSource",
     "run_position_query",
     "run_position_query_tracked",
-    "mask_priority_key",
+    "literal_priority_sort_key",
     "MaskWildcardCandidateSource",
     "LengthCodeCandidateSource",
     "LengthMaskCandidateSource",

@@ -52,9 +52,13 @@ class CuratedSearchRankingTests(unittest.TestCase):
 
         from app.database import Base
         from app.lexicon.curated_index import load_curated_common
+        from app.lexicon.essay_index import load_essay_corpus, reset_essay_for_tests
         from app.models.word import Word
         from app.routers.word import search_words
 
+        essay_empty = Path(__file__).resolve().parent.parent / "data" / "essay" / "fixtures" / "essay_empty.txt"
+        reset_essay_for_tests()
+        load_essay_corpus(essay_empty)
         load_curated_common(CURATED_FIXTURE)
 
         engine = create_engine("sqlite:///:memory:")

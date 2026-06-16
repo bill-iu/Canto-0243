@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.code_aware_ranker import build_code_aware_results
-from app.services.essay_sort import default_word_sort_key, sort_words
+from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.jyutping_match import expected_word_length, matches_jyutping_query
@@ -31,7 +31,7 @@ class WordLookupExecutor:
         query = apply_code_filter(query, q, mode)
         query = query.filter(length_filter(len(q)))
         words = deduplicate_words(query.all())
-        words.sort(key=default_word_sort_key)
+        words.sort(key=search_result_sort_key)
         return words
 
     def pure_digit(
@@ -73,7 +73,7 @@ class WordLookupExecutor:
         query = self._db.query(Word).filter(length_filter(word_len))
         candidates = query.all()
         matched = [w for w in candidates if matches_jyutping_query(w.jyutping or "", q)]
-        ordered = sort_words(matched)
+        ordered = sort_search_results(matched)
         page = paginate(ordered, offset, limit)
         return [serialize_word(w) for w in page]
 

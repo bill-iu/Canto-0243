@@ -14,7 +14,7 @@ from app.domain.relations.compound_syn import (
     narrow_compound_syn_literals,
     search_compound_syn,
 )
-from app.services.essay_sort import default_word_sort_key
+from app.domain.lexicon.ranking import search_result_sort_key
 from app.services.position_match.engine import run_position_query
 from app.services.position_match.sources import CompoundSynCandidateSource
 from app.services.query_parse import build_match_spec
@@ -54,7 +54,7 @@ class CompoundSynExecutor:
 
         source = CompoundSynCandidateSource(self._db, literals)
 
-        sort_key = lambda w: (tiers.get(get_word_text(w), 99), default_word_sort_key(w))
+        sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return run_position_query(
             spec,
             self._db,

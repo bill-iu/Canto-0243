@@ -12,7 +12,7 @@ from app.domain.relations.graph import CharRelationGraph, default_char_relation_
 from app.lexicon.compound_synonyms import load_compound_synonyms
 from app.models.word import Word
 from app.repositories.word_relation_repo import load_db_char_set
-from app.services.essay_sort import default_word_sort_key
+from app.domain.lexicon.ranking import search_result_sort_key
 
 TIER_CURATED = 0
 TIER_MORPHEME = 1
@@ -47,7 +47,7 @@ def reset_compound_syn_snapshot_for_tests() -> None:
 
 
 def _char_sort_key(ch: str) -> tuple:
-    return default_word_sort_key(SimpleNamespace(char=ch, code="", jyutping=""))
+    return search_result_sort_key(SimpleNamespace(char=ch, code="", jyutping=""))
 
 
 def _top_k_syn_neighbors(graph: CharRelationGraph, char: str, k: int) -> list[str]:

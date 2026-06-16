@@ -11,7 +11,7 @@ from app.domain.lexicon.reference_reading import (
 )
 from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 from app.models.word import Word
-from app.services.essay_sort import default_word_sort_key
+from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
     get_candidates_for_length,
@@ -230,7 +230,7 @@ def run_position_query_tracked(
     else:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode)
 
-    key = sort_key or default_word_sort_key
+    key = sort_key or search_result_sort_key
     filtered.sort(key=key)
     return serialize_page(filtered, offset, limit), from_cache
 
@@ -280,7 +280,7 @@ def _equals_length_bucket_candidates(
 
 def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> list:
     """等號查詢統一入口：spec 建構 → engine → 排序 → 序列化。"""
-    from app.services.essay_sort import sort_words
+
     from app.services.query_parse import build_equals_match_spec
     from app.services.word_serializer import deduplicate_words, serialize_page
 
@@ -288,7 +288,7 @@ def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> lis
     if spec is None:
         return []
     filtered = _DEFAULT_ENGINE.match_equals(spec, db, mode)
-    return serialize_page(sort_words(deduplicate_words(filtered)), offset, limit)
+    return serialize_page(sort_search_results(deduplicate_words(filtered)), offset, limit)
 
 
 def execute_match_spec(

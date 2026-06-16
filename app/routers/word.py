@@ -7,7 +7,7 @@ from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.word_db_filters import apply_code_filter
-from app.services.essay_sort import sort_words
+from app.domain.lexicon.ranking import sort_search_results
 from app.services.query_dispatch import SearchContext, execute_search, search_words
 from app.startup.readiness_gate import require_search_ready
 from app.services.word_serializer import deduplicate_words
@@ -54,7 +54,7 @@ def search_words_endpoint(
         if char:
             query = query.filter(Word.char == char)
         results = query.all()
-        return sort_words(deduplicate_words(results))[offset : offset + limit]
+        return sort_search_results(deduplicate_words(results))[offset : offset + limit]
     result = execute_search(
         SearchContext(
             q=q,

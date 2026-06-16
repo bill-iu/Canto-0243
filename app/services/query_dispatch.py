@@ -7,7 +7,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from app.models.word import Word
-from app.services.essay_sort import sort_words
+from app.domain.lexicon.ranking import sort_search_results
 from app.services.position_match import execute_match_spec, run_equals_query
 from app.services.query_parse import (
     CompoundAntQuery,
@@ -105,7 +105,7 @@ class QueryEngine:
         if ctx.char:
             query = query.filter(Word.char == ctx.char)
         results = query.all()
-        return sort_words(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
+        return sort_search_results(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
 
     def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
         from app.services.compound_ant_executor import CompoundAntExecutor

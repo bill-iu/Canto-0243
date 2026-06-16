@@ -5,9 +5,8 @@ from __future__ import annotations
 from typing import Any, Literal, Optional, Set
 
 from app.domain.lexicon.admission import resolve_admission
+from app.domain.lexicon.ranking import authoritative_reading_sort_key
 from app.models.word import Word
-from app.lexicon.essay_index import get_essay_frequency
-from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 from app.lexicon.static_index import LexiconEntry
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import get_rhyme_finals, get_word_jyutping, get_word_text
@@ -40,28 +39,13 @@ def _finals_from_entries(entries: list[LexiconEntry]) -> set[str]:
     return options
 
 
-def _is_aa_variant_jyutping(jyutping: str) -> bool:
-    return "aa" in (jyutping or "").lower()
-
-
-def _authoritative_row_sort_key(row: Any) -> tuple:
-    char = get_word_text(row)
-    jyut = get_word_jyutping(row)
-    return (
-        pron_rank_sort_value_for_word(char, jyut),
-        -get_essay_frequency(char),
-        1 if _is_aa_variant_jyutping(jyut) else 0,
-        jyut or "",
-    )
-
-
 def select_authoritative_pronunciation_row(rows: list) -> Optional[Any]:
     """多讀音時選單列：pron_rank → Essay 詞頻 → 略過 aa 變體 → 粵拼序。"""
     if not rows:
         return None
-    best = min(_authoritative_row_sort_key(row) for row in rows)
+    best = min(authoritative_reading_sort_key(row) for row in rows)
     for row in rows:
-        if _authoritative_row_sort_key(row) == best:
+        if authoritative_reading_sort_key(row) == best:
             return row
     return rows[0]
 

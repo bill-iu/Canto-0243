@@ -5,9 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Optional
 
-from app.lexicon.curated_index import curated_sort_boost
-from app.lexicon.essay_index import get_essay_frequency
-from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
+from app.domain.lexicon.ranking import literal_priority_sort_key
 from app.models.word import Word
 from app.services.position_match.spec import CandidateSource, MatchSpec, SlotConstraint
 from app.services.word_db_filters import apply_code_filter, length_filter
@@ -268,21 +266,6 @@ def get_candidates_for_length(
     return query.order_by(Word.char, Word.jyutping).limit(fallback_limit).all(), False
 
 
-def mask_priority_key(word, literal_positions: list[tuple[int, str]]):
-    """literal 數 > curated > essay > pron_rank > char/jyut。"""
-    char = get_word_text(word)
-    jyutping = get_word_jyutping(word)
-    exact_count = sum(1 for pos, ch in literal_positions if pos < len(char) and char[pos] == ch)
-    return (
-        -exact_count,
-        -curated_sort_boost(char),
-        -get_essay_frequency(char),
-        pron_rank_sort_value_for_word(char, jyutping),
-        char,
-        jyutping,
-    )
-
-
 def _phoneme_anchor_slot(spec: MatchSpec) -> Optional[SlotConstraint]:
     for slot in spec.slots:
         if slot.kind in ("final_anchor", "initial_anchor"):
@@ -303,7 +286,7 @@ def _resolve_mask_family_source(
             db, spec.mask, mode=mode, query_code=effective_code
         )
         literal_positions = spec.extra.get("literal_positions", [])
-        sort_key = lambda w: mask_priority_key(w, literal_positions)
+        sort_key = lambda w: literal_priority_sort_key(w, literal_positions)
         return source, sort_key
 
     if spec.hybrid_ref_chars:
