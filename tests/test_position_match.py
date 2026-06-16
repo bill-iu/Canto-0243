@@ -1,23 +1,24 @@
 import unittest
 from unittest.mock import MagicMock
 
-from app.services.position_match import (
+from app.services.position_match.engine import (
     PositionMatchEngine,
-    MatchSpec,
-    SlotConstraint,
-    matches_code_positions,
-    matches_phoneme_at_position,
-    filter_words_by_code_and_mask,
-    filter_candidates_by_match_spec,
     build_final_options_at_positions,
-    word_matches_last_final,
+    filter_candidates_by_match_spec,
+    filter_words_by_code_and_mask,
+    matches_code_positions,
     matches_final_options,
     matches_hybrid_ref_chars,
-    mask_priority_key,
-    get_length_candidates,
-    get_candidates_for_length,
-    build_mask_family_match_spec,
+    matches_phoneme_at_position,
+    word_matches_last_final,
 )
+from app.services.position_match.sources import (
+    get_candidates_for_length,
+    get_length_candidates,
+    mask_priority_key,
+)
+from app.services.position_match.spec import MatchSpec, SlotConstraint
+from app.services.query_parse import _build_mask_family_match_spec as build_mask_family_match_spec
 from app.services.query_parse import (
     RhymeAnchorQuery,
     CodeTailQuery,

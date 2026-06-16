@@ -12,7 +12,8 @@ from sqlalchemy.orm import Session
 if TYPE_CHECKING:
     from app.services.query_parse import CompoundAntQuery
 
-from app.services.position_match import CompoundAntCandidateSource, run_position_query
+from app.services.position_match.engine import run_position_query
+from app.services.position_match.sources import CompoundAntCandidateSource
 from app.services.query_parse import build_match_spec
 from app.lexicon.compound_antonyms import load_compound_antonyms
 

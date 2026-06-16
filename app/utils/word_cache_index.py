@@ -320,12 +320,13 @@ def get_phoneme_index_candidates(
 ) -> list:
     if not is_populated() or not anchor:
         return []
-    from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
+    from app.domain.lexicon.reference_reading import anchor_phoneme_options
 
-    options = (
-        final_options_for_char(anchor, db)
-        if constraint == "final"
-        else initial_options_for_char(anchor, db)
+    options = anchor_phoneme_options(
+        anchor,
+        "final" if constraint == "final" else "initial",
+        db,
+        allow_inject=False,
     )
     if not options:
         return []

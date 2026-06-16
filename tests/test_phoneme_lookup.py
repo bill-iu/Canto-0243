@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
 from app.lexicon.static_index import LexiconEntry
-from app.services.phoneme_lookup import final_options_for_char, initial_options_for_char
+from app.domain.lexicon.reference_reading import final_options_for_char, initial_options_for_char
 from app.utils.word_cache import reset_word_cache_for_tests, update_word_in_cache
 
 

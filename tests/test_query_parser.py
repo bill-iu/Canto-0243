@@ -202,12 +202,15 @@ class BuildMatchSpecTests(unittest.TestCase):
         )
         self.assertIsNone(build_match_spec(DigitCodeQuery(raw_q="33")))
         self.assertIsNone(build_match_spec(WordLookupQuery(raw_q="香港")))
-        self.assertIsNone(
-            build_match_spec(
-                HybridTailEqualsAliasQuery(raw_q="23就=", hybrid_q="23就")
-            )
-        )
         self.assertIsNone(build_match_spec(UnmatchedQuery(raw_q="+++")))
+
+    def test_alias_rewrites_to_hybrid_spec(self):
+        spec = build_match_spec(
+            HybridTailEqualsAliasQuery(raw_q="23就=", hybrid_q="23就")
+        )
+        self.assertIsNotNone(spec)
+        self.assertEqual(spec.width, 2)
+        self.assertEqual(spec.code_prefix, "23")
 
     def test_code_tail_from_parse(self):
         parsed = _parse("23*就")

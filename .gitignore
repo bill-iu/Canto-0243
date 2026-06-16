@@ -40,6 +40,8 @@ data/locks/
 # Cursor / Agent 本機安裝（鎖定檔 skills-lock.json 可納入版控）
 .agents/
 .cursor/
+!.cursor/rules/
+!.cursor/rules/**
 
 # IDE 設定
 .vscode/

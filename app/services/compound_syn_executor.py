@@ -15,7 +15,8 @@ from app.domain.relations.compound_syn import (
     search_compound_syn,
 )
 from app.services.essay_sort import default_word_sort_key
-from app.services.position_match import CompoundSynCandidateSource, run_position_query
+from app.services.position_match.engine import run_position_query
+from app.services.position_match.sources import CompoundSynCandidateSource
 from app.services.query_parse import build_match_spec
 from app.services.word_serializer import get_word_text
 

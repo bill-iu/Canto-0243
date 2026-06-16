@@ -8,11 +8,6 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.services.essay_sort import sort_words
-from app.services.mask_family_normalize import (
-    build_mask_family_match_spec,
-    is_mask_family_query,
-    normalize_mask_family_parsed,
-)
 from app.services.position_match import execute_match_spec, run_equals_query
 from app.services.query_parse import (
     CompoundAntQuery,
@@ -24,6 +19,8 @@ from app.services.query_parse import (
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
+    is_mask_family_query,
+    normalize_to_match_spec,
     parse_query,
 )
 from app.services.word_db_filters import apply_code_filter
@@ -57,12 +54,11 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化與等號分支在分派層，執行僅收 MatchSpec。"""
-    parsed = normalize_mask_family_parsed(parsed)
     if isinstance(parsed, EqualsQuery):
         items = run_equals_query(parsed.raw_q, ctx.db, ctx.mode, ctx.limit, ctx.offset)
         return SearchResult(items=items, cache_path="fallback")
 
-    spec = build_mask_family_match_spec(parsed)
+    spec = normalize_to_match_spec(parsed)
     if spec is None:
         return SearchResult(items=[])
 
