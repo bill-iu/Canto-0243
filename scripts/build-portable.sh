@@ -13,8 +13,10 @@ if [[ ! -f "$DB_PATH" ]]; then
   exit 1
 fi
 
-echo "==> Sync README word count..."
-python3 "$ROOT/scripts/update_readme_words_count.py" --db "$DB_PATH"
+if [[ -z "${SKIP_README_SYNC:-}" ]]; then
+  echo "==> Sync README word count..."
+  python3 "$ROOT/scripts/update_readme_words_count.py" --db "$DB_PATH"
+fi
 
 copy_tree() {
   local src="$1" dst="$2"

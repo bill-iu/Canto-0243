@@ -33,14 +33,50 @@
 
 勿在未完成全量的 semver 上單獨發詞庫。
 
-## 長期（CI 落地後）
+## 長期（CI 已落地）
 
 | 類型 | 觸發 | Workflow |
 |------|------|----------|
-| 全量發佈 | push tag `v*.*.*` | `release-full.yml` |
-| 詞庫發佈 | `workflow_dispatch` 或 `v*-lexicon` tag | `release-lexicon.yml` |
+| PR／push `main` | 自動 | `ci.yml`（unit tests） |
+| **全量發佈** | push tag `v*.*.*` | `release-full.yml` |
+| **詞庫發佈** | Actions → **Release (lexicon)** → Run workflow | `release-lexicon.yml` |
 
-CI 契約同 ADR-0008：全量 matrix 全綠才發 Release；詞庫只更新 db／json asset。
+### 全量發佈（CI）
+
+**前置（本地）** — tag 推送前：
+
+```bash
+# 1. 準備 lyrics.db（ingest 等）
+# 2. 建立 draft release 並上傳 db
+gh release create v1.3.0 --draft --title "Canto-0243 v1.3.0"
+gh release upload v1.3.0 lyrics.db
+
+# 3. 推送 tag（觸發 release-full.yml）
+git tag v1.3.0
+git push origin v1.3.0
+```
+
+CI 會：從同 tag 取 `lyrics.db` → Windows／macOS 各 build portable → export `words-lexicon.json` → 上傳四件套 → **取消 draft（正式發佈）**。
+
+若 Windows 或 macOS build 失敗，**不會** publish（ADR-0008 Q5=A）。
+
+### 詞庫發佈（CI）
+
+**前置**：目標 tag 已有 full Release（含 zip + macOS tar.gz）。
+
+```bash
+# 1. 上傳新 lyrics.db 到該 tag
+gh release upload v1.2.0 lyrics.db --clobber
+
+# 2. GitHub → Actions → Release (lexicon) → Run workflow
+#    target_tag: v1.2.0
+```
+
+Workflow 會 export `words-lexicon.json`、上傳 db／json，並在 Release notes 追加「詞庫更新 YYYY-MM-DD」。
+
+### 手動 fallback
+
+CI 不可用時，仍可按上方「過渡期（手動）」checklist 操作。
 
 ## 常見問題
 

@@ -116,7 +116,8 @@ python -m ingest build-relations
 
 ### 官方资料 Release（四件套）
 
-再分发前核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。
+再分发前核对 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。  
+**全量发布**与**词库发布**分层及 checklist 见 [docs/release.md](docs/release.md)（[ADR-0008](docs/adr/0008-release-publishing-tiers.md)）。
 
 | 资产 | 用途 |
 |------|------|

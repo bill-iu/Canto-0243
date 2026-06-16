@@ -1,0 +1,77 @@
+name: Release (lexicon)
+
+# ADR-0008: update lyrics.db + words-lexicon.json on an existing full release tag.
+# Before dispatch: upload new lyrics.db to the target tag release (gh release upload).
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_tag:
+        description: "Existing full release tag (e.g. v1.2.0)"
+        required: true
+        type: string
+      note:
+        description: "Optional note appended to release body"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  lexicon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify full release assets exist
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_TAG: ${{ inputs.target_tag }}
+        run: |
+          if ! gh release view "$TARGET_TAG" >/dev/null 2>&1; then
+            echo "::error::Release ${TARGET_TAG} not found."
+            exit 1
+          fi
+          mapfile -t names < <(gh release view "$TARGET_TAG" --json assets -q '.assets[].name')
+          has_zip=false
+          has_mac=false
+          for n in "${names[@]}"; do
+            [[ "$n" == "canto-0243-portable.zip" ]] && has_zip=true
+            [[ "$n" == "canto-0243-portable-macos.tar.gz" ]] && has_mac=true
+          done
+          if [[ "$has_zip" != true || "$has_mac" != true ]]; then
+            echo "::error::Release ${TARGET_TAG} is not a full release (missing zip or macOS tar.gz)."
+            exit 1
+          fi
+          gh release download "$TARGET_TAG" --pattern "lyrics.db" --clobber
+          if [[ ! -s lyrics.db ]]; then
+            echo "::error::Upload lyrics.db to ${TARGET_TAG} before running this workflow."
+            exit 1
+          fi
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Export and upload lexicon assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_TAG: ${{ inputs.target_tag }}
+          NOTE: ${{ inputs.note }}
+          PYTHONUTF8: "1"
+        run: |
+          pip install -r requirements.txt
+          mkdir -p dist
+          python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+          gh release upload "$TARGET_TAG" lyrics.db dist/words-lexicon.json --clobber
+          STAMP="$(date -u +%Y-%m-%d)"
+          LINE="詞庫更新 ${STAMP}"
+          if [[ -n "$NOTE" ]]; then
+            LINE="${LINE} — ${NOTE}"
+          fi
+          gh release edit "$TARGET_TAG" --notes-append "${LINE}"
+          echo "Updated lexicon assets on ${TARGET_TAG}."

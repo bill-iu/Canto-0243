@@ -159,6 +159,8 @@ class JyutpingAnchorQuery:
     code_slots: Optional[list] = None
     equals_style: bool = False
     hybrid_rhyme: bool = False
+    dual_phoneme: bool = False
+    dual_initial_value: Optional[str] = None
 
     @property
     def kind(self) -> QueryKind:
@@ -301,6 +303,8 @@ def parse_query(q: str) -> ParsedQuery:
 
     jyutping_anchor_parsed = parse_jyutping_anchor_query(q)
     if jyutping_anchor_parsed:
+        if jyutping_anchor_parsed.get("dual_phoneme"):
+            return JyutpingAnchorQuery(**jyutping_anchor_parsed)
         if jyutping_anchor_parsed.get("anchor_kind") == "rhyme_letters":
             if not rhyme_letters_resolve_ok(jyutping_anchor_parsed["anchor_value"]):
                 return UnmatchedQuery(raw_q=q, hint=JYUTPING_ANCHOR_INVALID_HINT)
@@ -439,22 +443,7 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
         return spec
 
     if isinstance(parsed, JyutpingAnchorQuery):
-        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
-        spec.mask = "?" * parsed.width
-        spec.slots.append(
-            SlotConstraint(
-                pos=parsed.anchor_pos,
-                kind=parsed.anchor_kind,
-                value=parsed.anchor_value,
-            )
-        )
-        if parsed.code_slots:
-            for pos, digit in parsed.code_slots:
-                spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
-        elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
-            for i, d in enumerate(parsed.code_prefix):
-                spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
-        return spec
+        return _build_jyutping_anchor_match_spec(parsed)
 
     if isinstance(parsed, HybridCodeQuery):
         hybrid_match = HYBRID_CODE_RE.match(parsed.raw_q)
@@ -485,6 +474,62 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
         return spec
 
     return None
+
+
+def _apply_jyutping_anchor_code_slots(spec: "MatchSpec", parsed: JyutpingAnchorQuery) -> None:
+    from app.services.position_match import SlotConstraint
+
+    if parsed.code_slots:
+        for pos, digit in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+    elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
+        for i, d in enumerate(parsed.code_prefix):
+            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
+
+
+def _build_jyutping_anchor_match_spec(parsed: JyutpingAnchorQuery) -> "MatchSpec":
+    from app.services.position_match import MatchSpec, SlotConstraint
+
+    spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+    spec.mask = "?" * parsed.width
+    spec.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind=parsed.anchor_kind,
+            value=parsed.anchor_value,
+        )
+    )
+    _apply_jyutping_anchor_code_slots(spec, parsed)
+    return spec
+
+
+def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple["MatchSpec", "MatchSpec"]:
+    """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
+    from app.services.position_match import MatchSpec, SlotConstraint
+
+    def _base() -> "MatchSpec":
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+        spec.mask = "?" * parsed.width
+        _apply_jyutping_anchor_code_slots(spec, parsed)
+        return spec
+
+    initial = _base()
+    initial.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="initial_letters",
+            value=(parsed.dual_initial_value or parsed.anchor_value),
+        )
+    )
+    final = _base()
+    final.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="rhyme_letters",
+            value=parsed.anchor_value,
+        )
+    )
+    return initial, final
 
 
 def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:

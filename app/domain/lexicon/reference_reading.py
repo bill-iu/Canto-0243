@@ -11,7 +11,13 @@ from app.lexicon.static_index import LexiconEntry
 from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import get_rhyme_finals, get_word_jyutping, get_word_text
 from app.utils.json_helpers import load_json_list
-from app.utils.jyutping_codec import rhyme_finals_from_jyutping, split_jyutping
+from app.utils.jyutping_codec import (
+    expand_standalone_nasal_final_options,
+    is_standalone_nasal_syllable_token,
+    rhyme_final_index_keys_per_position,
+    rhyme_finals_from_jyutping,
+    split_jyutping,
+)
 
 PhonemeDimension = Literal["initial", "final"]
 
@@ -20,6 +26,9 @@ def _initials_from_entries(entries: list[LexiconEntry]) -> set[str]:
     options: set[str] = set()
     for ent in entries:
         if not ent.jyutping:
+            continue
+        token = ent.jyutping.split()[0]
+        if is_standalone_nasal_syllable_token(token):
             continue
         initials, _, _ = split_jyutping(ent.jyutping)
         parsed = load_json_list(initials)
@@ -33,10 +42,9 @@ def _finals_from_entries(entries: list[LexiconEntry]) -> set[str]:
     for ent in entries:
         if not ent.jyutping:
             continue
-        finals = rhyme_finals_from_jyutping(ent.jyutping)
-        if finals:
-            options.add(finals[0])
-    return options
+        for key_set in rhyme_final_index_keys_per_position(ent.jyutping):
+            options |= set(key_set)
+    return expand_standalone_nasal_final_options(options)
 
 
 def select_authoritative_pronunciation_row(rows: list) -> Optional[Any]:
@@ -78,6 +86,10 @@ def anchor_phoneme_options(
     result: set[str] = set()
     for row in rows:
         if dimension == "initial":
+            jyut = get_word_jyutping(row) or getattr(row, "jyutping", "") or ""
+            token = jyut.split()[0] if jyut else ""
+            if is_standalone_nasal_syllable_token(token):
+                continue
             initials = load_json_list(getattr(row, "initials", None))
             if initials:
                 result.add(initials[0])

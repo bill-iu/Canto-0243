@@ -116,7 +116,8 @@ Optional relation sources (off by default): `data/syn_ant/sources.yaml`.
 
 ### Official data release (four artifacts)
 
-Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **Do not** commit large artifacts to git.
+Check [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) before redistribution. **Do not** commit large artifacts to git.  
+**Full release** vs **lexicon-only release** tiers and checklists: [docs/release.md](docs/release.md) ([ADR-0008](docs/adr/0008-release-publishing-tiers.md)).
 
 | Asset | Purpose |
 |-------|---------|

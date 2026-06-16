@@ -1,0 +1,167 @@
+name: Release (full)
+
+# ADR-0008: strict semver tag → dual-platform portable + publish draft release.
+# Before push tag: create draft release and upload lyrics.db (see docs/release.md).
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-full-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify draft release includes lyrics.db
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.ref_name }}"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "::error::No GitHub Release for ${TAG}. Create a draft release and upload lyrics.db before pushing the tag."
+            exit 1
+          fi
+          gh release download "$TAG" --pattern "lyrics.db" --clobber
+          if [[ ! -s lyrics.db ]]; then
+            echo "::error::Release ${TAG} has no lyrics.db asset."
+            exit 1
+          fi
+          echo "OK: lyrics.db from release ${TAG} ($(wc -c < lyrics.db) bytes)"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lyrics-db
+          path: lyrics.db
+          retention-days: 2
+
+  build-windows:
+    needs: gate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lyrics-db
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Build Windows portable zip
+        shell: pwsh
+        run: |
+          if (-not (Test-Path lyrics.db)) { throw "lyrics.db missing" }
+          powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1 -SkipReadmeSync
+        env:
+          PYTHONUTF8: "1"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-portable
+          path: dist/canto-0243-portable.zip
+          retention-days: 2
+
+  build-macos:
+    needs: gate
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lyrics-db
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Build macOS portable tar.gz
+        run: |
+          test -s lyrics.db
+          export SKIP_README_SYNC=1
+          bash scripts/build-portable.sh
+        env:
+          PYTHONUTF8: "1"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-portable
+          path: dist/canto-0243-portable-macos.tar.gz
+          retention-days: 2
+
+  lexicon:
+    needs: gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lyrics-db
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Export words-lexicon.json
+        run: |
+          test -s lyrics.db
+          pip install -r requirements.txt
+          mkdir -p dist
+          python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+        env:
+          PYTHONUTF8: "1"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-lexicon
+          path: |
+            lyrics.db
+            dist/words-lexicon.json
+          retention-days: 2
+
+  publish:
+    needs: [build-windows, build-macos, lexicon]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Publish release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.ref_name }}"
+          WIN="artifacts/windows-portable/canto-0243-portable.zip"
+          MAC="artifacts/macos-portable/canto-0243-portable-macos.tar.gz"
+          DB="artifacts/release-lexicon/lyrics.db"
+          JSON="artifacts/release-lexicon/dist/words-lexicon.json"
+          for f in "$WIN" "$MAC" "$DB" "$JSON"; do
+            if [[ ! -f "$f" ]]; then
+              echo "::error::Missing artifact: $f"
+              exit 1
+            fi
+          done
+          gh release upload "$TAG" \
+            "$WIN" \
+            "$MAC" \
+            "$DB" \
+            "$JSON" \
+            --clobber
+          gh release edit "$TAG" --draft=false
+          echo "Published ${TAG} (four artifacts attached, draft cleared)."

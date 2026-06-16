@@ -14,11 +14,13 @@ from app.services.query_parse import (
     CompoundSynQuery,
     DigitCodeQuery,
     JYUTPING_ANCHOR_INVALID_HINT,
+    JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     ParsedQuery,
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
+    build_jyutping_dual_match_specs,
     is_mask_family_query,
     normalize_to_match_spec,
     parse_query,
@@ -54,6 +56,9 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
+    if isinstance(parsed, JyutpingAnchorQuery) and parsed.dual_phoneme:
+        return _dual_phoneme_anchor_search_result(parsed, ctx)
+
     spec = normalize_to_match_spec(parsed)
     if spec is None:
         return SearchResult(items=[])
@@ -67,6 +72,38 @@ def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> Searc
         db=ctx.db,
     )
     return SearchResult(items=result.items, cache_path=result.cache_path)
+
+
+def _dual_phoneme_anchor_search_result(
+    parsed: JyutpingAnchorQuery, ctx: SearchContext
+) -> SearchResult:
+    """歧義 m／ng 粵拼錨：合併 limit 分節（同近反義）。"""
+    initial_spec, final_spec = build_jyutping_dual_match_specs(parsed)
+    unpaged_limit = max(ctx.limit + ctx.offset, ctx.limit) + 500
+    initial_result = execute_match_spec(
+        initial_spec,
+        code=ctx.code,
+        mode=ctx.mode,
+        limit=unpaged_limit,
+        offset=0,
+        db=ctx.db,
+    )
+    final_result = execute_match_spec(
+        final_spec,
+        code=ctx.code,
+        mode=ctx.mode,
+        limit=unpaged_limit,
+        offset=0,
+        db=ctx.db,
+    )
+    tagged: list = []
+    for item in initial_result.items:
+        tagged.append({**item, "anchor_dimension": "initial"})
+    for item in final_result.items:
+        tagged.append({**item, "anchor_dimension": "final"})
+    page = tagged[ctx.offset : ctx.offset + ctx.limit]
+    cache_path = initial_result.cache_path or final_result.cache_path
+    return SearchResult(items=page, cache_path=cache_path)
 
 
 class QueryEngine:

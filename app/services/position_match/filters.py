@@ -68,6 +68,10 @@ def matches_phoneme_at_position(
         parts = get_rhyme_finals(word)
     else:
         options = anchor_phoneme_options(anchor, "initial", db, allow_inject=True)
+        from app.utils.jyutping_codec import is_standalone_nasal_syllable_token, syllable_token_at
+
+        if is_standalone_nasal_syllable_token(syllable_token_at(get_word_jyutping(word), pos)):
+            return False
         parts = get_word_parts(word, "initials")
     if not options or pos >= len(parts):
         return False

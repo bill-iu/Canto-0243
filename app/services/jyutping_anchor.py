@@ -10,8 +10,17 @@ from typing import Literal, Optional
 from app.services.jyutping_match import _parse_syllable_token, parse_word_jyutping
 from app.services.word_serializer import get_rhyme_finals, get_word_jyutping, get_word_parts
 
-VOWEL_RHYME_LETTERS = frozenset("aeioum")
+from app.utils.jyutping_codec import (
+    STANDALONE_NASAL_FINALS,
+    is_standalone_nasal_syllable_token,
+    rhyme_final_index_keys_per_position,
+    syllable_token_at,
+)
+
+VOWEL_RHYME_LETTERS = frozenset("aeiou")
 STANDALONE_NG = "ng"
+AMBIGUOUS_PHONEME_LETTERS = frozenset({"m", "ng"})
+INITIAL_CLUSTERS = frozenset({"ng", "gw", "kw"})
 
 AnchorKind = Literal["initial_letters", "rhyme_letters", "syllable_letters"]
 
@@ -31,7 +40,7 @@ def _is_complete_syllable_in_rime(letters: str) -> bool:
 
 
 def classify_latin_anchor(letters: str) -> Optional[AnchorKind]:
-    """G4：單母音/m、獨立 ng→韻母；rime 完整音節→syllable；單輔音→聲母；其餘→韻母片段。"""
+    """G4：單母音、獨立 ng→韻母；rime 完整音節→syllable；單輔音→聲母；其餘→韻母片段。"""
     from app.lexicon.rime_char_index import ensure_rime_char_loaded
 
     ensure_rime_char_loaded()
@@ -45,6 +54,64 @@ def classify_latin_anchor(letters: str) -> Optional[AnchorKind]:
     if _is_complete_syllable_in_rime(text):
         return "syllable_letters"
     return "rhyme_letters"
+
+
+def _is_hybrid_rhyme_letters(letters: str) -> bool:
+    text = (letters or "").strip().lower()
+    if text in VOWEL_RHYME_LETTERS or text in AMBIGUOUS_PHONEME_LETTERS:
+        return True
+    return classify_latin_anchor(text) == "rhyme_letters"
+
+
+def parse_dual_phoneme_anchor_query(q: str) -> Optional[dict]:
+    """歧義粵拼錨：m／ng 碼夾或三格中格 → 雙列（ADR-0009）。"""
+    m = re.match(r"^(\?)([a-zA-Z]+)(\?)$", q)
+    if m:
+        letters = m.group(2).lower()
+        if letters in AMBIGUOUS_PHONEME_LETTERS:
+            return {
+                "raw_q": q,
+                "width": 3,
+                "anchor_pos": 1,
+                "anchor_kind": "rhyme_letters",
+                "anchor_value": normalize_rhyme_letters(letters),
+                "dual_phoneme": True,
+                "dual_initial_value": letters,
+            }
+    m = re.match(r"^(\d+)(m|ng)(\d+)$", q, re.IGNORECASE)
+    if m:
+        left, letters, right = m.group(1), m.group(2).lower(), m.group(3)
+        return {
+            "raw_q": q,
+            "width": len(left) + len(right),
+            "anchor_pos": max(0, len(left) - 1),
+            "anchor_kind": "rhyme_letters",
+            "anchor_value": normalize_rhyme_letters(letters),
+            "code_prefix": left + right,
+            "equals_style": True,
+            "dual_phoneme": True,
+            "dual_initial_value": letters,
+        }
+    return None
+
+
+def parse_code_cluster_initial_query(q: str) -> Optional[dict]:
+    """{首碼}{ng|gw|kw}{末碼} — 雙聲母錨（ng 歧義由 dual parser 處理）。"""
+    m = re.match(r"^(\d)(ng|gw|kw)(\d)$", q, re.IGNORECASE)
+    if not m:
+        return None
+    cluster = m.group(2).lower()
+    if cluster == "ng":
+        return None
+    return {
+        "raw_q": q,
+        "width": 2,
+        "anchor_pos": 0,
+        "anchor_kind": "initial_letters",
+        "anchor_value": cluster,
+        "code_prefix": m.group(1) + m.group(3),
+        "equals_style": True,
+    }
 
 
 def normalize_rhyme_letters(letters: str) -> str:
@@ -193,7 +260,7 @@ def parse_rhyme_vowel_hybrid_query(q: str) -> Optional[dict]:
     if not m:
         return None
     letters = m.group(2).lower()
-    if classify_latin_anchor(letters) != "rhyme_letters":
+    if not _is_hybrid_rhyme_letters(letters):
         return None
     prefix = m.group(1)
     return {
@@ -214,9 +281,11 @@ def parse_jyutping_anchor_query(q: str) -> Optional[dict]:
 
     ensure_rime_char_loaded()
     for parser in (
+        parse_dual_phoneme_anchor_query,
         parse_triple_jyutping_slot_query,
         parse_end_jyutping_syllable_query,
         parse_code_syllable_three_query,
+        parse_code_cluster_initial_query,
         parse_code_initial_query,
         parse_code_syllable_two_query,
         parse_code_rhyme_equals_query,
@@ -248,6 +317,8 @@ def rhyme_letter_final_options(letters: str) -> frozenset[str]:
     from app.utils.jyutping_codec import split_jyutping
 
     letters = normalize_rhyme_letters(letters)
+    if letters == STANDALONE_NG:
+        return frozenset(STANDALONE_NASAL_FINALS)
     ensure_rime_char_loaded()
     finals: set[str] = set()
     for entries in _entries_by_char.values():
@@ -255,6 +326,9 @@ def rhyme_letter_final_options(letters: str) -> frozenset[str]:
             token = entry.jyutping.split()[0]
             syl = _parse_syllable_token(token)
             if not syl or not syllable_matches_rhyme_fragment(syl.letters, letters):
+                continue
+            if is_standalone_nasal_syllable_token(token):
+                finals |= set(STANDALONE_NASAL_FINALS)
                 continue
             finals_json = split_jyutping(token)[1]
             try:
@@ -271,6 +345,11 @@ def rhyme_letters_resolve_ok(letters: str) -> bool:
 
 
 def matches_rhyme_letters_at_position(word, pos: int, letters: str, db) -> bool:
+    fragment = normalize_rhyme_letters(letters)
+    if fragment == STANDALONE_NG:
+        keys = rhyme_final_index_keys_per_position(get_word_jyutping(word) or "")
+        if pos < len(keys) and keys[pos] & STANDALONE_NASAL_FINALS:
+            return True
     options = rhyme_letter_final_options(letters)
     if not options:
         return False
@@ -294,6 +373,9 @@ def matches_syllable_letters_at_position(word, pos: int, letters: str, db) -> bo
 
 
 def matches_initial_letters_at_position(word, pos: int, letter: str, db) -> bool:
+    jyut = get_word_jyutping(word)
+    if is_standalone_nasal_syllable_token(syllable_token_at(jyut, pos)):
+        return False
     parts = get_word_parts(word, "initials")
     return pos < len(parts) and parts[pos] == letter.lower()
 
