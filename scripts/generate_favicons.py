@@ -6,61 +6,57 @@ import argparse
 from io import BytesIO
 from pathlib import Path
 
-from PIL import Image, ImageChops
+import numpy as np
+from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FRONTEND = REPO_ROOT / "frontend"
 SOURCE_PNG = FRONTEND / "favicon-source.png"
 
-BLACK = (0, 0, 0)
-GLYPH = (235, 223, 208)  # #EBDFD0 — matches frontend theme-color
 MASTER = 512
-PAD_RATIO = 0.10  # equal margin → centered in browser tab slot
+BASE = 64
+GLYPH_SCALE = 1.30
+GLYPH_COLOR = (0, 0, 0)
+DEFAULT_STYLE = "boosted"
 
 
-def extract_mask(rgba: Image.Image, *, threshold: int = 24) -> Image.Image:
-    """Binary mask from alpha and/or dark-on-black glyph."""
-    rgb = rgba.convert("RGB")
-    r, g, b = rgb.split()
-    lum = ImageChops.lighter(ImageChops.lighter(r, g), b)
-    alpha = rgba.getchannel("A")
-    combined = ImageChops.lighter(lum, alpha)
-    return combined.point(lambda value: 255 if value > threshold else 0)
-
-
-def center_mask_on_square(mask: Image.Image, size: int, pad_ratio: float = PAD_RATIO) -> Image.Image:
-    bbox = mask.getbbox()
-    if not bbox:
-        raise ValueError("empty glyph mask")
-    cropped = mask.crop(bbox)
-    inner = max(1, int(size * (1 - 2 * pad_ratio)))
-    scale = min(inner / cropped.width, inner / cropped.height)
-    new_w = max(1, int(cropped.width * scale))
-    new_h = max(1, int(cropped.height * scale))
-    resized = cropped.resize((new_w, new_h), Image.Resampling.LANCZOS)
-    canvas = Image.new("L", (size, size), 0)
-    canvas.paste(resized, ((size - new_w) // 2, (size - new_h) // 2))
+def scale_glyph_centered(rgba: Image.Image, scale: float) -> Image.Image:
+    rgba = rgba.convert("RGBA")
+    w, h = rgba.size
+    nw = max(1, round(w * scale))
+    nh = max(1, round(h * scale))
+    scaled = rgba.resize((nw, nh), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    canvas.paste(scaled, ((w - nw) // 2, (h - nh) // 2), scaled)
     return canvas
 
 
-def mask_to_rgb(mask: Image.Image, *, color: tuple[int, int, int] = GLYPH) -> Image.Image:
-    out = Image.new("RGB", mask.size, BLACK)
-    layer = Image.new("RGB", mask.size, color)
-    out.paste(layer, mask=mask)
-    return out
+def recolor_glyph(
+    rgba: Image.Image,
+    *,
+    color: tuple[int, int, int] = GLYPH_COLOR,
+) -> Image.Image:
+    arr = np.asarray(rgba.convert("RGBA"), dtype=np.uint8).copy()
+    mask = arr[..., 3] > 8
+    for i, component in enumerate(color):
+        arr[..., i][mask] = component
+    return Image.fromarray(arr, mode="RGBA")
 
 
-def render_icon(size: int, source: Image.Image) -> Image.Image:
-    mask = center_mask_on_square(extract_mask(source.convert("RGBA")), MASTER)
-    if size != MASTER:
-        mask = mask.resize((size, size), Image.Resampling.LANCZOS)
-    return mask_to_rgb(mask)
+def render_rgba(source: Image.Image, size: int, *, style: str = "plain") -> Image.Image:
+    """Resize RGBA master; optional boosted = +30% scale + black glyph."""
+    rgba = source.convert("RGBA")
+    if rgba.size != (size, size):
+        rgba = rgba.resize((size, size), Image.Resampling.LANCZOS)
+    if style == "boosted":
+        rgba = scale_glyph_centered(rgba, GLYPH_SCALE)
+        rgba = recolor_glyph(rgba)
+    return rgba
 
 
 def write_master(source_png: Path, dest: Path = SOURCE_PNG, *, size: int = MASTER) -> Path:
     with Image.open(source_png) as src:
-        mask = center_mask_on_square(extract_mask(src.convert("RGBA")), size)
-        master = mask_to_rgb(mask)
+        master = render_rgba(src, size, style="plain")
     dest.parent.mkdir(parents=True, exist_ok=True)
     master.save(dest, format="PNG", optimize=True)
     return dest
@@ -69,15 +65,17 @@ def write_master(source_png: Path, dest: Path = SOURCE_PNG, *, size: int = MASTE
 def install_favicons(
     source_png: Path = SOURCE_PNG,
     frontend_dir: Path = FRONTEND,
+    *,
+    style: str = DEFAULT_STYLE,
 ) -> None:
     if not source_png.is_file():
         raise FileNotFoundError(f"missing favicon source: {source_png}")
 
     with Image.open(source_png) as src:
-        favicon_png = render_icon(64, src)
-        apple_touch = render_icon(180, src)
-        ico_16 = render_icon(16, src)
-        ico_32 = render_icon(32, src)
+        favicon_png = render_rgba(src, BASE, style=style)
+        apple_touch = render_rgba(src, 180, style=style)
+        ico_16 = render_rgba(src, 16, style=style)
+        ico_32 = render_rgba(src, 32, style=style)
 
     frontend_dir.mkdir(parents=True, exist_ok=True)
     favicon_png.save(frontend_dir / "favicon-32.png", format="PNG", optimize=True)
@@ -85,47 +83,80 @@ def install_favicons(
     ico_32.save(
         frontend_dir / "favicon.ico",
         format="ICO",
-        sizes=[(16, 16), (32, 32)],
+        sizes=[(32, 32), (16, 16)],
         append_images=[ico_16],
     )
 
 
-def analyze_icon_content(path: Path, *, bright_threshold: int = 200) -> dict[str, float | int]:
+def mask_iou(reference: Image.Image, candidate: Image.Image, *, threshold: int = 15) -> float:
+    """Compare glyph silhouettes via alpha / luma masks."""
+    ref = np.asarray(reference.convert("RGBA"), dtype=np.float32)
+    cand = np.asarray(candidate.convert("RGBA"), dtype=np.float32)
+    if ref.shape[:2] != cand.shape[:2]:
+        cand_img = Image.fromarray(cand.astype(np.uint8), "RGBA").resize(
+            (ref.shape[1], ref.shape[0]), Image.Resampling.LANCZOS
+        )
+        cand = np.asarray(cand_img, dtype=np.float32)
+    ref_mask = (ref[..., 3] > 8) | (ref[..., :3].max(axis=2) > threshold)
+    cand_mask = (cand[..., 3] > 8) | (cand[..., :3].max(axis=2) > threshold)
+    inter = (ref_mask & cand_mask).sum()
+    union = (ref_mask | cand_mask).sum()
+    return float(inter / union) if union else 0.0
+
+
+def icon_lacks_solid_block(rgba: np.ndarray) -> bool:
+    """False when favicon would render as a solid tab square (opaque bg block)."""
+    alpha = rgba[..., 3]
+    pixels = alpha.size
+    if int((alpha <= 8).sum()) < pixels * 0.5:
+        return False
+    h, w = alpha.shape
+    corners = (alpha[0, 0], alpha[0, w - 1], alpha[h - 1, 0], alpha[h - 1, w - 1])
+    if sum(int(c) > 200 for c in corners) >= 2:
+        return False
+    return (alpha > 200).sum() / pixels <= 0.85
+
+
+def _rgba_stats(rgba: np.ndarray) -> dict[str, float | int | bool]:
+    alpha = rgba[..., 3]
+    luma = 0.299 * rgba[..., 0] + 0.587 * rgba[..., 1] + 0.114 * rgba[..., 2]
+    glyph = alpha > 8
+    transparent = alpha <= 8
+    return {
+        "pixel_count": int(alpha.size),
+        "transparent_pixels": int(transparent.sum()),
+        "glyph_pixels": int(glyph.sum()),
+        "avg_glyph_luma": float(luma[glyph].mean()) if glyph.any() else 0.0,
+        "alpha_std": float(alpha.std()),
+        "lacks_solid_block": icon_lacks_solid_block(rgba),
+    }
+
+
+def analyze_icon_content(path: Path) -> dict[str, float | int | bool]:
     with Image.open(path) as img:
-        rgb = img.convert("RGB")
-        pixels = list(rgb.get_flattened_data())
-
-    luma = [0.299 * r + 0.587 * g + 0.114 * b for r, g, b in pixels]
-    bright = sum(1 for value in luma if value >= bright_threshold)
-    mean = sum(luma) / len(luma)
-    variance = sum((value - mean) ** 2 for value in luma) / len(luma)
-    return {
-        "pixel_count": len(pixels),
-        "bright_pixels": bright,
-        "avg_luma": mean,
-        "luma_std": variance**0.5,
-    }
+        if img.format == "ICO":
+            img.seek(0)
+        rgba = np.asarray(img.convert("RGBA"), dtype=np.uint8)
+    return _rgba_stats(rgba)
 
 
-def analyze_icon_content_bytes(data: bytes, *, bright_threshold: int = 200) -> dict[str, float | int]:
+def analyze_icon_content_bytes(data: bytes) -> dict[str, float | int | bool]:
     with Image.open(BytesIO(data)) as img:
-        rgb = img.convert("RGB")
-        pixels = list(rgb.get_flattened_data())
-
-    luma = [0.299 * r + 0.587 * g + 0.114 * b for r, g, b in pixels]
-    bright = sum(1 for value in luma if value >= bright_threshold)
-    mean = sum(luma) / len(luma)
-    variance = sum((value - mean) ** 2 for value in luma) / len(luma)
-    return {
-        "pixel_count": len(pixels),
-        "bright_pixels": bright,
-        "avg_luma": mean,
-        "luma_std": variance**0.5,
-    }
+        if img.format == "ICO":
+            img.seek(0)
+        rgba = np.asarray(img.convert("RGBA"), dtype=np.uint8)
+    return _rgba_stats(rgba)
 
 
-def icon_has_visible_mark(stats: dict[str, float | int]) -> bool:
-    return stats["bright_pixels"] >= 48 and stats["luma_std"] >= 20.0
+def icon_has_visible_mark(stats: dict[str, float | int | bool]) -> bool:
+    """Transparent favicon: glyph present, background mostly clear, no solid block."""
+    pixels = int(stats["pixel_count"])
+    return (
+        stats["glyph_pixels"] >= 48
+        and stats["transparent_pixels"] >= pixels * 0.5
+        and stats["alpha_std"] >= 20.0
+        and stats.get("lacks_solid_block", True)
+    )
 
 
 # Backwards-compatible aliases used by older tests/scripts.
@@ -139,7 +170,13 @@ def main(argv: list[str] | None = None) -> int:
         "--from",
         dest="from_path",
         type=Path,
-        help="Bootstrap favicon-source.png from a raw glyph PNG (e.g. uploaded 64×64 asset)",
+        help="Bootstrap favicon-source.png from a raw transparent glyph PNG",
+    )
+    parser.add_argument(
+        "--style",
+        choices=("plain", "boosted"),
+        default=DEFAULT_STYLE,
+        help="plain = source colors; boosted = +30%% scale + black glyph",
     )
     args = parser.parse_args(argv)
 
@@ -147,7 +184,13 @@ def main(argv: list[str] | None = None) -> int:
         write_master(args.from_path)
         print(f"Wrote master {SOURCE_PNG}")
 
-    install_favicons()
+    install_favicons(style=args.style)
+
+    if args.from_path:
+        with Image.open(args.from_path) as raw, Image.open(FRONTEND / "favicon-32.png") as out:
+            iou = mask_iou(raw, out)
+            print(f"shape IoU vs source @64: {iou:.3f}")
+
     ok = True
     for name in ("favicon-32.png", "apple-touch-icon.png", "favicon.ico"):
         stats = analyze_icon_content(FRONTEND / name)

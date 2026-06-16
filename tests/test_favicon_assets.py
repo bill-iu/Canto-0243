@@ -1,17 +1,20 @@
-"""Regression: favicon assets must show a visible mark, not a blank black square."""
+"""Regression: favicon assets must show a transparent-background glyph, not a solid square."""
 
 from __future__ import annotations
 
 import unittest
 from pathlib import Path
 
+import numpy as np
 from fastapi.testclient import TestClient
+from PIL import Image
 
 from main import app
 from scripts.generate_favicons import (
     analyze_icon_content,
     analyze_icon_content_bytes,
     icon_has_visible_mark,
+    icon_lacks_solid_block,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +32,15 @@ class FaviconAssetTests(unittest.TestCase):
         for name in ICON_FILES:
             with self.subTest(name=name):
                 self.assertTrue((FRONTEND / name).is_file(), f"missing frontend/{name}")
+
+    def test_icons_not_solid_tab_blocks(self):
+        for name in ICON_FILES:
+            with self.subTest(name=name):
+                with Image.open(FRONTEND / name) as img:
+                    if img.format == "ICO":
+                        img.seek(0)
+                    rgba = np.asarray(img.convert("RGBA"), dtype=np.uint8)
+                self.assertTrue(icon_lacks_solid_block(rgba), name)
 
     def test_icons_show_visible_mark(self):
         for name in ICON_FILES:
