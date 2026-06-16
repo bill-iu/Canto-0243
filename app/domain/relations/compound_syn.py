@@ -166,13 +166,20 @@ def search_compound_syn(
     db: Session,
     *,
     k: int = DEFAULT_SYN_NEIGHBOR_K,
+    rhyme_char: str | None = None,
+    width: int = 2,
 ) -> Dict[str, int]:
-    """~~ 查詢候選：快照 union 查詢時單字近義合成，回傳字面 → tier。"""
+    """~~ 查詢候選：字面 → tier；可選韻錨縮窄（如 ~~港）。"""
     global _tiers_cache
-    if _tiers_cache is not None:
-        return _tiers_cache
-    _tiers_cache = _build_compound_syn_tiers_uncached(db, k=k)
-    return _tiers_cache
+    if _tiers_cache is None:
+        _tiers_cache = _build_compound_syn_tiers_uncached(db, k=k)
+    tiers = _tiers_cache
+    if not rhyme_char or width != 2:
+        return tiers
+    allowed = narrow_compound_syn_literals(
+        frozenset(tiers.keys()), width=width, rhyme_char=rhyme_char, db=db
+    )
+    return {ch: tiers[ch] for ch in allowed if ch in tiers}
 
 
 def narrow_compound_syn_literals(

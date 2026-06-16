@@ -15,6 +15,7 @@ EXECUTOR_FORBIDDEN = (
     "build_compound_syn_snapshot",
     "ensure_compound_syn_snapshot",
     "CompoundSynSnapshot",
+    "narrow_compound_syn_literals",
 )
 
 EXECUTOR_ALLOWED = ("search_compound_syn",)

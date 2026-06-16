@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -82,6 +83,18 @@ class CompoundSynSnapshotTests(unittest.TestCase):
             tiers = search_compound_syn(session, k=12)
             self.assertEqual(tiers.get("朋友"), TIER_CURATED)
             self.assertEqual(tiers.get("同伴"), TIER_MORPHEME)
+        finally:
+            session.close()
+
+    @patch("app.domain.relations.compound_syn.narrow_compound_syn_literals")
+    def test_search_compound_syn_rhyme_char_narrows_literals(self, mock_narrow):
+        session = self._session_with_seed()
+        try:
+            mock_narrow.return_value = frozenset({"海港"})
+            tiers = search_compound_syn(session, k=12, rhyme_char="港")
+            mock_narrow.assert_called_once()
+            self.assertEqual(set(tiers.keys()), {"海港"})
+            self.assertEqual(tiers["海港"], TIER_MORPHEME)
         finally:
             session.close()
 

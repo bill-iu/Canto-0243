@@ -1,23 +1,17 @@
-"""近義複合（~~）executor — 鏡像 CompoundAntExecutor。"""
+"""近義複合（~~）executor — 單一編排入口。"""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from dataclasses import dataclass
+from typing import TYPE_CHECKING, Any, List, Optional
 
 from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
     from app.services.query_parse import CompoundSynQuery
 
-from app.domain.relations.compound_syn import (
-    DEFAULT_SYN_NEIGHBOR_K,
-    narrow_compound_syn_literals,
-    search_compound_syn,
-)
-from dataclasses import dataclass
-from typing import Any, Optional
-
 from app.domain.lexicon.ranking import search_result_sort_key
+from app.domain.relations.compound_syn import DEFAULT_SYN_NEIGHBOR_K, search_compound_syn
 from app.models.word import Word
 from app.services.position_match.engine import run_position_query
 from app.services.query_parse import build_match_spec
@@ -70,7 +64,12 @@ class CompoundSynExecutor:
         limit: int,
         offset: int,
     ) -> List[dict]:
-        tiers = search_compound_syn(self._db, k=DEFAULT_SYN_NEIGHBOR_K)
+        tiers = search_compound_syn(
+            self._db,
+            k=DEFAULT_SYN_NEIGHBOR_K,
+            rhyme_char=parsed.rhyme_char,
+            width=2,
+        )
         if not tiers:
             return []
 
@@ -78,17 +77,7 @@ class CompoundSynExecutor:
         if spec is None:
             return []
 
-        literals = narrow_compound_syn_literals(
-            frozenset(tiers.keys()),
-            width=spec.width,
-            rhyme_char=parsed.rhyme_char,
-            db=self._db,
-        )
-        if not literals:
-            return []
-
-        source = CompoundSynCandidateSource(self._db, literals)
-
+        source = CompoundSynCandidateSource(self._db, frozenset(tiers.keys()))
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return run_position_query(
             spec,
@@ -101,4 +90,4 @@ class CompoundSynExecutor:
         )
 
 
-__all__ = ["CompoundSynExecutor"]
+__all__ = ["CompoundSynExecutor", "CompoundSynCandidateSource"]
