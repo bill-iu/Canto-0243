@@ -351,6 +351,13 @@ def is_mask_family_query(parsed: Any) -> bool:
     )
 
 
+def uses_match_spec(parsed: Any) -> bool:
+    """是否經 MatchSpec 進入缺字型查詢執行（含近義／反義複合，語法分類仍非缺字家族）。"""
+    return is_mask_family_query(parsed) or isinstance(
+        parsed, (CompoundSynQuery, CompoundAntQuery)
+    )
+
+
 def _rewrite_mask_family_aliases(parsed: ParsedQuery) -> ParsedQuery:
     """別名改寫（如 HybridTailEqualsAlias → HybridCode），在正規化開頭完成。"""
     if isinstance(parsed, HybridTailEqualsAliasQuery):
@@ -543,7 +550,7 @@ def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
         return mask_spec
 
     if isinstance(parsed, CompoundSynQuery):
-        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix)
+        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="syn")
         if parsed.rhyme_char:
             spec.slots.append(
                 SlotConstraint(
@@ -555,7 +562,7 @@ def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
         return spec
 
     if isinstance(parsed, CompoundAntQuery):
-        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix)
+        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="ant")
         if parsed.rhyme_char:
             spec.slots.append(
                 SlotConstraint(

@@ -59,6 +59,8 @@ class MatchSpec:
     phoneme_anchor_only: bool = False
     whole_word_phoneme_match: bool = False
 
+    compound_kind: Optional[Literal["syn", "ant"]] = None
+
     # 未來可擴充的政策（排序、去重策略等）
     extra: dict[str, Any] = field(default_factory=dict)
 
