@@ -374,6 +374,16 @@ def matches_phoneme_at_position(
     return parts[pos] in options
 
 
+def _slot_constraint_matches(word, slot, db) -> bool:
+    from app.services.jyutping_anchor_match import matches_jyutping_anchor_at_position
+
+    if slot.kind in ("rhyme_letters", "syllable_letters", "initial_letters"):
+        return matches_jyutping_anchor_at_position(
+            word, slot.pos, slot.kind, str(slot.value or ""), db
+        )
+    return False
+
+
 def _group_candidates_by_char(candidates: list) -> dict[str, list]:
     grouped: dict[str, list] = {}
     for word in candidates:
@@ -406,6 +416,7 @@ def _word_passes_position_filters(
     anchor: Optional[str],
     constraint: Optional[str],
     literal_char: Optional[str],
+    slots: Optional[list] = None,
 ) -> bool:
     word_char = get_word_text(word)
     if len(word_char) != width:
@@ -426,6 +437,10 @@ def _word_passes_position_filters(
             word, anchor_pos, anchor, constraint=constraint, db=db,
         ):
             return False
+    for slot in slots or []:
+        if slot.kind in ("rhyme_letters", "syllable_letters", "initial_letters"):
+            if not _slot_constraint_matches(word, slot, db):
+                return False
     return True
 
 
@@ -475,6 +490,7 @@ def filter_words_by_code_and_mask(
                     anchor=anchor,
                     constraint=constraint,
                     literal_char=literal_char,
+                    slots=slots,
                 ):
                     filtered.append(word)
                     break
@@ -491,6 +507,7 @@ def filter_words_by_code_and_mask(
                 anchor=anchor,
                 constraint=constraint,
                 literal_char=literal_char,
+                slots=slots,
             ):
                 filtered.append(word)
     return filtered
@@ -518,6 +535,12 @@ def filter_candidates_by_match_spec(
         candidates = narrow_candidates_by_phoneme_anchor(
             candidates, spec.width, anchor_pos, anchor, constraint, db,
         )
+    for slot in spec.slots:
+        if slot.kind in ("rhyme_letters", "syllable_letters", "initial_letters"):
+            candidates = [
+                w for w in candidates
+                if _slot_constraint_matches(w, slot, db)
+            ]
     return filter_words_by_code_and_mask(
         candidates,
         width=spec.width,

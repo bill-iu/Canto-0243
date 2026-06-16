@@ -14,6 +14,7 @@ from app.services.query_parse import (
     CompoundSynQuery,
     DigitCodeQuery,
     EqualsQuery,
+    JYUTPING_ANCHOR_INVALID_HINT,
     JyutpingFragmentQuery,
     ParsedQuery,
     RelationLookupQuery,
@@ -151,7 +152,7 @@ class QueryEngine:
             return SearchResult(items=result)
 
         if isinstance(parsed, UnmatchedQuery):
-            return SearchResult(items=[])
+            return SearchResult(items=[], hint=parsed.hint)
 
         return SearchResult(items=[])
 

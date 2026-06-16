@@ -284,6 +284,9 @@
           <strong>打粵拼，精準搵漢字。</strong>冇聲調如「syut」，搵粵拼字母相同嘅單字（忽略聲調）；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
         </p>
         <p>
+          <strong>打粵拼錨，唔使打漢字參考字。</strong>喺缺字查詢（<code translate="no">?</code> 通配）用拉丁標韻母或完整音節，例如 <code translate="no">?yut?</code>（中格韻母）、<code translate="no">?syut?</code>（中格音節）、<code translate="no">?hon</code>（末格音節）。碼後直接加字母如 <code translate="no">23o</code>（末格韻母）、<code translate="no">23ngo</code>（末格音節 <code translate="no">ngo</code>）——同 <code translate="no">3hon4</code>（首格音節）格式唔同。整段 <code translate="no">syut</code> 係<strong>粵拼查詢</strong>，唔同 <code translate="no">?syut?</code>。無效韻母片段會拒絕並提示。
+        </p>
+        <p>
           <strong>近義、反義同複合詞（0243模式／02493模式）。</strong>打「~開心」搵同「開心」近義嘅詞；打「!開心」搵反義詞。可加前綴0243碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>。
         </p>
         <p>
@@ -340,6 +343,7 @@
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="香=?" data-mode="m1"><code translate="no">香=?</code><span>二字，首字同「香」同韻</span></button>
             <button class="guide-example" type="button" data-query="?就=" data-mode="m1"><code translate="no">?就=</code><span>二字，尾字同「就」同韻</span></button>
+            <button class="guide-example" type="button" data-query="?港=?" data-mode="m1"><code translate="no">?港=?</code><span>三字，中格同「港」同韻</span></button>
             <button class="guide-example" type="button" data-query="??就=" data-mode="m1"><code translate="no">??就=</code><span>三字，尾字同「就」同韻</span></button>
           </div>
         </article>
@@ -351,6 +355,22 @@
             <button class="guide-example" type="button" data-query="=香?" data-mode="m1"><code translate="no">=香?</code><span>二字，首字同「香」同聲</span></button>
             <button class="guide-example" type="button" data-query="?=就" data-mode="m1"><code translate="no">?=就</code><span>二字，尾字同「就」同聲</span></button>
             <button class="guide-example" type="button" data-query="??=就" data-mode="m1"><code translate="no">??=就</code><span>三字，尾字同「就」同聲</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>粵拼錨（拉丁錨）</h2>
+          <p>缺字查詢內用拉丁取代漢字參考字；<strong>唔係</strong>整段粵拼查詢。近反義模式唔收。<code translate="no">3hon4</code> 音節喺<strong>首格</strong>；<code translate="no">23ngo</code>／<code translate="no">23o</code> 喺碼後、錨<strong>末格</strong>。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="?yut?" data-mode="m1"><code translate="no">?yut?</code><span>三字，中格韻母片段 yut</span></button>
+            <button class="guide-example" type="button" data-query="?syut?" data-mode="m1"><code translate="no">?syut?</code><span>三字，中格完整音節 syut</span></button>
+            <button class="guide-example" type="button" data-query="?hon" data-mode="m1"><code translate="no">?hon</code><span>二字，末格完整音節 hon</span></button>
+            <button class="guide-example" type="button" data-query="3hon4" data-mode="m1"><code translate="no">3hon4</code><span>二字，碼 34，首格音節 hon</span></button>
+            <button class="guide-example" type="button" data-query="3?hon4" data-mode="m1"><code translate="no">3?hon4</code><span>三字，首碼?音節末碼</span></button>
+            <button class="guide-example" type="button" data-query="3h4" data-mode="m1"><code translate="no">3h4</code><span>二字，碼 34，首格聲母 h</span></button>
+            <button class="guide-example" type="button" data-query="23ngo" data-mode="m1"><code translate="no">23ngo</code><span>二字，碼 23，末格音節 ngo</span></button>
+            <button class="guide-example" type="button" data-query="23o" data-mode="m1"><code translate="no">23o</code><span>二字，碼 23，末格韻母 o</span></button>
+            <button class="guide-example" type="button" data-query="23ei0" data-mode="m1"><code translate="no">23ei0</code><span>三字，碼 230，中格韻母 ei</span></button>
           </div>
         </article>
 

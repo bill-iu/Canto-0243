@@ -147,6 +147,15 @@ class ParseQueryGoldenTests(unittest.TestCase):
         parsed = self._parse("23就=")
         self.assertNotIsInstance(parsed, EqualsQuery)
 
+    def test_triple_rhyme_anchor_not_word_lookup(self):
+        from app.services.query_parse import TripleRhymeAnchorQuery
+
+        parsed = self._parse("?港=?")
+        self.assertIsInstance(parsed, TripleRhymeAnchorQuery)
+        self.assertEqual(parsed.anchor, "港")
+        self.assertEqual(parsed.width, 3)
+        self.assertEqual(parsed.anchor_pos, 1)
+
     def test_relation_beats_mask(self):
         parsed = self._parse("~開心")
         self.assertNotIsInstance(parsed, MaskQuery)
@@ -229,6 +238,23 @@ class BuildMatchSpecTests(unittest.TestCase):
         spec = build_match_spec(parsed)
         self.assertEqual(spec.ref_start_pos, 1)
         self.assertEqual(spec.code_prefix, "234")
+
+    def test_triple_rhyme_anchor_spec(self):
+        from app.services.query_parse import TripleRhymeAnchorQuery
+
+        spec = build_match_spec(
+            TripleRhymeAnchorQuery(
+                anchor="港",
+                anchor_pos=1,
+                width=3,
+                leading_slots="?",
+            )
+        )
+        self.assertEqual(spec.width, 3)
+        self.assertEqual(spec.mask, "???")
+        self.assertEqual(spec.slots[0].pos, 1)
+        self.assertEqual(spec.slots[0].kind, "final_anchor")
+        self.assertEqual(spec.slots[0].value, "港")
 
 
 if __name__ == "__main__":

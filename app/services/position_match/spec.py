@@ -11,6 +11,9 @@ ConstraintKind = Literal[
     "literal_char",      # 必須完全匹配的粵字（canto char）
     "final_anchor",      # 韻母（final）錨點（參考字的發音）
     "initial_anchor",    # 聲母（initial）錨點
+    "rhyme_letters",     # 韻母粵拼錨（拉丁片段）
+    "syllable_letters",  # 完整音節粵拼錨
+    "initial_letters",   # 聲母粵拼錨（單輔音）
     "wildcard",          # 萬用字元（_ ? %），不做約束
 ]
 

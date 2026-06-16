@@ -27,7 +27,7 @@ Official offline data bundle: **[Canto-0243 v1.2.0](https://github.com/bill-iu/C
 ## Features
 
 * **0243／02493 code search**: **0243 mode** `mode=m1` (0243 equivalence variants) and **02493 mode** `mode=m2` (9-key tones, distinguishes entering tone variants).
-* **Rich query syntax**: plain Chinese · plain digits (pagination + total header) · **Jyutping queries** (`syut`／`nei hou`／`ming4 baak6`) · code+character (`23就`) · wildcards (`3_`, `23?`) · equals rhyme／initial (`香港=`, `2=我3`) · rhyme／initial anchors (`?就=`).
+* **Rich query syntax**: plain Chinese · plain digits (pagination + total header) · **Jyutping queries** (`syut`／`nei hou`／`ming4 baak6`) · **Jyutping anchors** (`?yut?`, `23o`, `3hon4`, etc.—see cheat sheet) · code+character (`23就`) · wildcards (`3_`, `23?`) · equals rhyme／initial (`香港=`, `2=我3`) · rhyme／initial anchors (`?就=`, `?港=?`).
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 * **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.
 * **Relation data**: **static thesaurus port** (Cilin／Guotong near-synonyms／antisem); runtime and ingest share the same rules.
@@ -74,6 +74,7 @@ The package includes `lyrics.db` and static near／antonym data. Troubleshooting
 * **Position & wildcards**: `香??`, `?你?`, `3_`, `23?`.
 * **Digits + tail character**: `23就` (tail rhymes with 「就」), `23@就` (literal tail fixed), `23*就` (longer slot).
 * **Equals anchors**: `=` **after** anchor compares rhyme (`?就=`); `=` **before** anchor compares initial (`?=就`); whole-word rhyme `香港=`, code-sandwich `2我=3`.
+* **Jyutping anchors**: Latin replaces a reference character inside mask-family queries (`?syut?` middle syllable, `23o` rhyme on **last slot** after digits, `3hon4` first-slot syllable, etc.); **not** a full Jyutping lookup; **near／antonym mode** does not accept them.
 * **Near／antonym relation queries**: `~開心`, `!你`, `33!開心`.
 * **Antonym compounds**: `!!`, `33!!`, `!!你`, `33!!你` (e.g. 生死, 是非).
 * **Near-synonym compounds**: `~~`, `33~~`, `~~你`, `33~~你` (e.g. 朋友, 恐懼); **not** in near／antonym mode.
@@ -193,6 +194,32 @@ Matches clickable examples in the frontend **Search guide**.
 | `?=就` | 2-char; tail same initial as 「就」 |
 | `??=就` | 3-char; tail same initial as 「就」 |
 
+### Jyutping anchors (Latin anchors)
+
+Within the **mask-family** queries, Latin letters mark a phoneme constraint—**not** a full Jyutping lookup (`syut` looks up a word; `?syut?` anchors the middle slot). **Near／antonym mode** does not accept Jyutping anchors; invalid rhyme fragments are rejected with a hint.
+
+**Wildcard slots**
+
+| Example | Description |
+|---------|-------------|
+| `?港=?` | 3-char; **middle** slot rhymes with 「港」 (triple rhyme anchor) |
+| `?yut?` | 3-char; **middle** rhyme fragment `yut` |
+| `?syut?` | 3-char; **middle** full syllable `syut` |
+| `?hon` | 2-char; **last slot** full syllable `hon` |
+
+**Digits + Latin**
+
+| Example | Description |
+|---------|-------------|
+| `3hon4` | 2-char; code `34`; **first slot** full syllable `hon` |
+| `3?hon4` | 3-char; `{digit}?{syllable}{digit}`; middle syllable |
+| `3h4` | 2-char; code `34`; **first slot** initial `h` |
+| `23ngo` | 2-char; code `23`; **last slot** full syllable `ngo` |
+| `23o` | 2-char; code `23`; **last slot** rhyme `o` (broader than `23ngo`) |
+| `23ei0` | 3-char; code `230`; **middle** rhyme `ei` (like `23你=0`) |
+
+In `3hon4` the syllable is on the **first** slot; in `23ngo`／`23o` the Latin suffix anchors the **last** slot after the digit run—different shapes, do not mix them up.
+
 ### Trailing `=` (whole-word rhyme／code sandwich)
 
 | Example | Description |
@@ -250,6 +277,9 @@ GET /words/search/?q=23就&mode=m1
 GET /words/search/?q=香港=&mode=m1
 GET /words/search/?q=2=我3&mode=m1
 GET /words/search/?q=nei%20hou&mode=m1
+GET /words/search/?q=?syut?&mode=m1
+GET /words/search/?q=23o&mode=m1
+GET /words/search/?q=3hon4&mode=m1
 GET /words/search/?q=!你&mode=m1
 GET /words/search/?q=~~&mode=m1
 GET /words/search/?q=開心&mode=syn
@@ -333,7 +363,7 @@ Currently **225** unittest cases.
 python -m unittest discover -s tests -q
 ```
 
-Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code-sandwich, Jyutping, `~~`／`!!` compounds.
+Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code-sandwich, Jyutping, Jyutping anchors, `~~`／`!!` compounds.
 
 ---
 

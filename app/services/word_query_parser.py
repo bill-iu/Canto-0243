@@ -182,6 +182,30 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
     return None
 
 
+def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
+    """三格韻錨：?{參考字}=? — 中格韻母、前後通配。"""
+    if not q or CODE_TAIL_MIDDLE in q or "@" in q or is_framed_equals_query(q):
+        return None
+    if is_hybrid_tail_equals_alias(q):
+        return None
+
+    m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=(\?)$", q)
+    if not m:
+        return None
+    leading, anchor, _trail = m.group(1), m.group(2), m.group(3)
+    if not any(is_wildcard_char(c) for c in leading):
+        return None
+    anchor_pos = len(leading)
+    width = anchor_pos + 2
+    return {
+        "anchor": anchor,
+        "anchor_pos": anchor_pos,
+        "width": width,
+        "leading_slots": leading,
+        "constraint": "final",
+    }
+
+
 def parse_code_tail_query(q: str) -> Optional[dict]:
     if CODE_TAIL_MIDDLE not in q:
         return None

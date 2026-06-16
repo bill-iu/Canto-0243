@@ -6,6 +6,8 @@ from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Any, Literal, Optional, Union
 
+from app.services.jyutping_anchor import parse_jyutping_anchor_query
+from app.services.jyutping_anchor_match import rhyme_letters_resolve_ok
 from app.services.word_query_parser import (
     build_mask_from_slots,
     hybrid_query_from_tail_equals,
@@ -17,6 +19,7 @@ from app.services.word_query_parser import (
     parse_mask_query,
     parse_relation_syntax,
     parse_rhyme_anchor_query,
+    parse_triple_rhyme_anchor_query,
 )
 
 HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
@@ -33,6 +36,8 @@ class QueryKind(str, Enum):
     CODE_TAIL = "code_tail"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
+    TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
+    JYUTPING_ANCHOR = "jyutping_anchor"
     HYBRID_CODE = "hybrid_code"
     MASK = "mask"
     DIGIT_CODE = "digit_code"
@@ -145,6 +150,39 @@ class RhymeAnchorQuery:
 
 
 @dataclass(frozen=True)
+class JyutpingAnchorQuery:
+    raw_q: str
+    width: int
+    anchor_pos: int
+    anchor_kind: Literal["initial_letters", "rhyme_letters", "syllable_letters"]
+    anchor_value: str
+    code_prefix: Optional[str] = None
+    code_slots: Optional[list] = None
+    equals_style: bool = False
+    hybrid_rhyme: bool = False
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.JYUTPING_ANCHOR
+
+
+@dataclass(frozen=True)
+class TripleRhymeAnchorQuery:
+    anchor: str
+    anchor_pos: int
+    width: int
+    leading_slots: str
+    constraint: Literal["final"] = "final"
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.TRIPLE_RHYME_ANCHOR
+
+    def to_handler_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class HybridCodeQuery:
     raw_q: str
 
@@ -192,6 +230,7 @@ class JyutpingFragmentQuery:
 @dataclass(frozen=True)
 class UnmatchedQuery:
     raw_q: str
+    hint: Optional[str] = None
 
     @property
     def kind(self) -> QueryKind:
@@ -207,6 +246,8 @@ ParsedQuery = Union[
     CodeTailQuery,
     LiteralRefQuery,
     RhymeAnchorQuery,
+    TripleRhymeAnchorQuery,
+    JyutpingAnchorQuery,
     HybridCodeQuery,
     MaskQuery,
     DigitCodeQuery,
@@ -214,6 +255,11 @@ ParsedQuery = Union[
     JyutpingFragmentQuery,
     UnmatchedQuery,
 ]
+
+
+JYUTPING_ANCHOR_INVALID_HINT = (
+    "粵拼錨無效：韻母片段喺收錄讀音中搵唔到對應。請檢查拼寫或改用漢字錨。"
+)
 
 
 def parse_query(q: str) -> ParsedQuery:
@@ -250,6 +296,17 @@ def parse_query(q: str) -> ParsedQuery:
     if at_tail_parsed:
         return LiteralRefQuery(**at_tail_parsed)
 
+    triple_rhyme_parsed = parse_triple_rhyme_anchor_query(q)
+    if triple_rhyme_parsed:
+        return TripleRhymeAnchorQuery(**triple_rhyme_parsed)
+
+    jyutping_anchor_parsed = parse_jyutping_anchor_query(q)
+    if jyutping_anchor_parsed:
+        if jyutping_anchor_parsed.get("anchor_kind") == "rhyme_letters":
+            if not rhyme_letters_resolve_ok(jyutping_anchor_parsed["anchor_value"]):
+                return UnmatchedQuery(raw_q=q, hint=JYUTPING_ANCHOR_INVALID_HINT)
+        return JyutpingAnchorQuery(**jyutping_anchor_parsed)
+
     rhyme_anchor_parsed = parse_rhyme_anchor_query(q)
     if rhyme_anchor_parsed:
         return RhymeAnchorQuery(**rhyme_anchor_parsed)
@@ -283,6 +340,8 @@ def is_mask_family_query(parsed: Any) -> bool:
             MaskQuery,
             HybridCodeQuery,
             RhymeAnchorQuery,
+            TripleRhymeAnchorQuery,
+            JyutpingAnchorQuery,
             CodeTailQuery,
             LiteralRefQuery,
         ),
@@ -366,6 +425,36 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
             SlotConstraint(pos=parsed.anchor_pos, kind=kind, value=parsed.anchor)
         )
         spec.mask = build_mask_from_slots(parsed.slots, parsed.width, parsed.anchor_pos)
+        return spec
+
+    if isinstance(parsed, TripleRhymeAnchorQuery):
+        spec = MatchSpec(width=parsed.width)
+        spec.slots.append(
+            SlotConstraint(
+                pos=parsed.anchor_pos,
+                kind="final_anchor",
+                value=parsed.anchor,
+            )
+        )
+        spec.mask = "?" * parsed.width
+        return spec
+
+    if isinstance(parsed, JyutpingAnchorQuery):
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+        spec.mask = "?" * parsed.width
+        spec.slots.append(
+            SlotConstraint(
+                pos=parsed.anchor_pos,
+                kind=parsed.anchor_kind,
+                value=parsed.anchor_value,
+            )
+        )
+        if parsed.code_slots:
+            for pos, digit in parsed.code_slots:
+                spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+        elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
+            for i, d in enumerate(parsed.code_prefix):
+                spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
         return spec
 
     if isinstance(parsed, HybridCodeQuery):
