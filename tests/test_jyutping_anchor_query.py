@@ -9,11 +9,11 @@ from app.database import Base
 from app.models.word import Word
 from app.services.query_dispatch import search_words
 from app.services.query_parse import JyutpingAnchorQuery, parse_query
-from app.services.word_query_parser import normalize_code_tail_separators
+from app.services.word_query_parser import normalize_search_query
 
 
 def _parse(q: str):
-    return parse_query(normalize_code_tail_separators(q.strip()))
+    return parse_query(normalize_search_query(q))
 
 
 class TripleRhymeAnchorSearchTests(unittest.TestCase):

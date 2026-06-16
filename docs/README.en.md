@@ -161,6 +161,8 @@ Matches clickable examples in the frontend **Search guide**.
 | `23` | Same-code matches | 0243 mode |
 | `93` | 02493 adds digit 9 | 02493 mode |
 
+**Punctuation equivalence** (normalized at query dispatch): full-width `？` = `?`; `～`／`！` = `~`／`!`; `~~`／`!!` = `～～`／`！！` and mixed forms (e.g. `~～`).
+
 ### Literal positions
 
 | Example | Description |

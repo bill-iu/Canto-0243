@@ -26,7 +26,7 @@ from app.services.query_parse import (
     parse_query,
 )
 from app.services.word_db_filters import apply_code_filter
-from app.services.word_query_parser import normalize_code_tail_separators
+from app.services.word_query_parser import normalize_search_query
 from app.services.word_serializer import deduplicate_words
 
 
@@ -114,7 +114,7 @@ class QueryEngine:
             items = self._execute_list_filter(ctx)
             return SearchResult(items=items)
 
-        q = normalize_code_tail_separators(ctx.q.strip())
+        q = normalize_search_query(ctx.q)
 
         if ctx.mode == "syn":
             from app.services.jyutping_match import is_jyutping_query

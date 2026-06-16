@@ -19,11 +19,11 @@ from app.services.query_parse import (
     build_match_spec,
     parse_query,
 )
-from app.services.word_query_parser import normalize_code_tail_separators
+from app.services.word_query_parser import normalize_search_query
 
 
 def _parse(q: str):
-    return parse_query(normalize_code_tail_separators(q.strip()))
+    return parse_query(normalize_search_query(q))
 
 
 class ParseQueryGoldenTests(unittest.TestCase):

@@ -28,6 +28,17 @@ def normalize_code_tail_separators(q: str) -> str:
     return q
 
 
+def normalize_query_syntax(q: str) -> str:
+    """Full-width relation/wildcard punctuation → ASCII (查詢分派入口)."""
+    q = q.replace("！！", "!!").replace("～～", "~~")
+    return q.replace("！", "!").replace("～", "~").replace("？", "?")
+
+
+def normalize_search_query(q: str) -> str:
+    """查詢分派入口：strip、code-tail、全形標點正規化。"""
+    return normalize_query_syntax(normalize_code_tail_separators(q.strip()))
+
+
 def is_hybrid_tail_equals_alias(q: str) -> bool:
     """True for 23就= style queries that alias hybrid tail-rhyme (23就)."""
     return bool(HYBRID_TAIL_EQUALS_RE.match(q))
