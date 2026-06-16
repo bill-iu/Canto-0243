@@ -1,0 +1,334 @@
+/* PROTOTYPE — header 整合（L1 分層）+ chrome-tabs Open Design token */
+
+:root {
+  --brand-rail: 156px;
+  /* 深色帶但仍是 Open Design 暖棕系（避免偏灰黑） */
+  --chrome-tabs-strip-bg: color-mix(in srgb, var(--bg) 72%, var(--accent) 28%);
+  --chrome-tab-inactive-fill: color-mix(in srgb, var(--chrome-tabs-strip-bg) 72%, var(--surface) 28%);
+  --chrome-tab-active-fill: var(--bg);
+  /* divider / +：用主畫面同色（--bg） */
+  --chrome-tab-divider: var(--bg);
+  --chrome-tab-title: var(--muted);
+  --chrome-tab-title-active: var(--ink);
+  /* chrome-tabs 垂直尺寸（單一來源；改 tab 高度時 ::after 會同步） */
+  --chrome-tabs-padding-top: 12px;
+  --chrome-tab-height: 48px;
+  --chrome-tabs-bottom-bar-height: 4px;
+  /* 上游 SVG 腳部略壓入 padding 區 */
+  --chrome-tabs-overlap: 2px;
+  --chrome-tabs-height: calc(
+    var(--chrome-tabs-padding-top)
+    + var(--chrome-tab-height)
+    - var(--chrome-tabs-overlap)
+  );
+  /* 無縫底條：tab 42px + padding-top 10px 時實測 12px；兩者變動都需同步 */
+  --chrome-header-seam-height: calc(
+    var(--chrome-tab-height) * 12 / 42
+    + var(--chrome-tabs-padding-top)
+    - 10px
+  );
+  --chrome-tab-divider-inset: calc((var(--chrome-tab-height) - 8px) / 2);
+}
+
+.prototype-ribbon {
+  margin: 0;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--line);
+}
+
+.prototype-ribbon a {
+  color: var(--accent-strong);
+  font-weight: 600;
+}
+
+.prototype-ribbon kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+/* 刪除右上 radial（只影響 prototype） */
+body.prototype-query-tabs {
+  background: var(--bg);
+}
+
+.prototype-query-tabs .ghost-button.prototype-guide-btn:not(:disabled) {
+  cursor: pointer;
+}
+
+/* L1：品牌列 = 正式 header；只有 tabdeck = strip 底 */
+.prototype-query-tabs .app-header--tabs {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  padding: 0;
+  background: var(--chrome-tabs-strip-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: none;
+}
+
+/* 無縫：用全寬底條把 header 色帶收口到 --bg */
+.prototype-query-tabs .app-header--tabs::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--chrome-header-seam-height);
+  background: var(--bg);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.prototype-query-tabs .app-header__chrome {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding:
+    calc(8px + env(safe-area-inset-top))
+    max(12px, env(safe-area-inset-right))
+    10px
+    max(12px, env(safe-area-inset-left));
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.prototype-query-tabs .brand {
+  flex-shrink: 0;
+  padding: 2px 0 0;
+  margin: 0;
+}
+
+.prototype-query-tabs .brand-logo {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+
+.prototype-query-tabs .app-actions {
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.prototype-query-tabs .app-header__tabdeck {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding:
+    0
+    max(12px, env(safe-area-inset-right))
+    0
+    max(12px, env(safe-area-inset-left));
+  background: transparent;
+}
+
+.prototype-query-tabs .tabdeck-strip {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  width: 100%;
+  margin-left: 0;
+  padding: 0 0 0 0;
+  background: transparent;
+  max-width: 100%;
+}
+
+.prototype-query-tabs .tabdeck-strip .chrome-tabs {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* P3：無色帶時不需要左側端蓋 */
+.prototype-query-tabs .tabdeck-strip .chrome-tabs::before {
+  content: none;
+}
+
+/* A1：非作用中 hover 才顯示關閉 */
+.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]) .chrome-tab-close {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Q2：inactive tab 完全 blend in；hover 才出現背景（沿用上游行為） */
+.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
+  opacity: 0;
+}
+
+.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-close,
+.prototype-query-tabs .chrome-tabs .chrome-tab:not([active]):focus-within .chrome-tab-close {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+
+.prototype-query-tabs .chrome-tabs .chrome-tab[active] .chrome-tab-close {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.prototype-query-tabs .query-tab-add {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 32px;
+  height: 40px;
+  margin: 0 0 6px 0;
+  padding: 0 10px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 160ms ease-out, background-color 160ms ease-out;
+}
+
+/* U1：+ 左側也有 divider 小長方形（並跟隨 S2 被蓋住/顯示） */
+.prototype-query-tabs .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
+  position: relative;
+}
+
+.prototype-query-tabs .chrome-tabs .chrome-tab-add .chrome-tab-add-hit::before {
+  content: "";
+  position: absolute;
+  /* 對齊到最後一個 tab 原本的 divider 位置（tab-content-margin=9px） */
+  left: -8px; /* 吃掉 tab 幾何右側留白，貼緊最右 tab */
+  top: 16px;
+  bottom: 16px;
+  width: 2px;
+  background: var(--chrome-tab-divider);
+  /* 視覺粗幼對齊一般 divider（避免看起來更粗/更亮） */
+  opacity: 0.82;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* 避免 + 旁邊雙線：最後一個 tab 的右分隔線關掉，只留 + 的 pseudo */
+.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last .chrome-tab-dividers::after {
+  opacity: 0;
+}
+
+/* S2：最後一個 tab hover/active 時，+ 左側分隔線也一起消失再出現 */
+.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last[active] ~ .chrome-tab-add .chrome-tab-add-hit::before {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-is-last:hover ~ .chrome-tab-add .chrome-tab-add-hit::before {
+    opacity: 0;
+  }
+}
+
+.prototype-query-tabs .query-tab-add:hover {
+  color: var(--accent-strong);
+  background: rgba(244, 237, 228, 0.45);
+}
+
+.prototype-query-tabs .query-tab-add:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* I1：bottom-bar + main 同色接 hero */
+.prototype-query-tabs .main-wrap {
+  padding-top: 24px;
+  background: var(--bg);
+}
+
+/* 無縫：只用 header 全寬 ::after；隱藏 tab 容器內 bottom-bar 避免 active 下凸出長方形 */
+.prototype-query-tabs .chrome-tabs .chrome-tabs-bottom-bar {
+  display: none;
+}
+
+.prototype-query-tabs .chrome-tabs .chrome-tab,
+.prototype-query-tabs .chrome-tabs .chrome-tab.chrome-tab-add {
+  bottom: 0;
+}
+
+.prototype-state-toggle {
+  display: block;
+  width: 100%;
+  max-width: 1120px;
+  margin: 24px auto 32px;
+  padding: 10px 20px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.prototype-state-panel {
+  max-width: 1120px;
+  margin: -16px auto 40px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #e7e5e4;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+  overflow: auto;
+  max-height: 180px;
+}
+
+@media (max-width: 720px) {
+  :root {
+    --brand-rail: 118px;
+  }
+
+  .prototype-query-tabs .brand-logo {
+    height: 44px;
+  }
+
+  .prototype-query-tabs .app-actions {
+    gap: 8px;
+  }
+
+  .prototype-query-tabs .menu-trigger,
+  .prototype-query-tabs .ghost-button {
+    padding-inline: 12px;
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --brand-rail: 88px;
+  }
+
+  .prototype-query-tabs .brand-logo {
+    height: 38px;
+  }
+
+  .prototype-query-tabs .prototype-guide-btn {
+    display: none;
+  }
+
+  .prototype-query-tabs .tabdeck-strip .chrome-tabs {
+    min-width: 220px;
+    width: min(720px, calc(100vw - var(--brand-rail) - 80px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
+    transition: none;
+  }
+}

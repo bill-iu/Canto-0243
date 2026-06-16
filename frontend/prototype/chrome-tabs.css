@@ -1,0 +1,286 @@
+/* Vendored from https://github.com/adamschwartz/chrome-tabs (MIT) — Open Design token overrides in query-tabs.css */
+
+.chrome-tabs {
+  box-sizing: border-box;
+  position: relative;
+  font-size: 13px;
+  height: var(--chrome-tabs-height, 62px);
+  /* 讓 active tab 真的貼到下方內容區，避免留出一條色帶縫 */
+  padding: var(--chrome-tabs-padding-top, 12px) 4px 0 4px;
+  background: transparent;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.chrome-tabs * {
+  box-sizing: inherit;
+  font: inherit;
+}
+
+.chrome-tabs .chrome-tabs-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.chrome-tabs .chrome-tab.chrome-tab-add {
+  position: absolute;
+  left: 0;
+  bottom: var(--chrome-tabs-bottom-bar-height, 4px);
+  top: auto;
+  height: var(--chrome-tab-height, 48px);
+  width: 52px;
+  z-index: 6;
+  pointer-events: all;
+}
+
+.chrome-tabs .chrome-tab-add-hit {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--bg);
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1;
+}
+
+.chrome-tabs .chrome-tab-add-hit:hover {
+  background: rgba(22, 23, 22, 0.08);
+  color: var(--bg);
+}
+
+.chrome-tabs .chrome-tab {
+  position: absolute;
+  left: 0;
+  bottom: var(--chrome-tabs-bottom-bar-height, 4px);
+  top: auto;
+  height: var(--chrome-tab-height, 48px);
+  width: 320px;
+  border: 0;
+  margin: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.chrome-tabs .chrome-tab,
+.chrome-tabs .chrome-tab * {
+  user-select: none;
+  cursor: default;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-dividers {
+  position: absolute;
+  /* divider：縮短 + 加粗 */
+  top: var(--chrome-tab-divider-inset, 20px);
+  bottom: var(--chrome-tab-divider-inset, 20px);
+  left: var(--tab-content-margin);
+  right: var(--tab-content-margin);
+  z-index: 2;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-dividers,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  pointer-events: none;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--chrome-tab-divider, #a9adb0);
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+/* 你要的「真正消失」：active / hover 時 divider 直接 opacity 0（不靠背景覆蓋） */
+.chrome-tabs .chrome-tab[active] .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab[active] .chrome-tab-dividers::after {
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-dividers::before,
+  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-dividers::after {
+    opacity: 0;
+  }
+}
+
+/* hover 時把相鄰 tab 的靠近邊 divider 也一起關掉 */
+.chrome-tabs .chrome-tab.hide-left-divider-hover .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab.hide-right-divider-hover .chrome-tab-dividers::after,
+.chrome-tabs .chrome-tab.hide-left-divider-active .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab.hide-right-divider-active .chrome-tab-dividers::after {
+  opacity: 0;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-dividers::before {
+  left: 0;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-dividers::after {
+  right: 0;
+}
+
+.chrome-tabs .chrome-tab:first-child .chrome-tab-dividers::before,
+.chrome-tabs .chrome-tab:last-child .chrome-tab-dividers::after {
+  opacity: 0;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-content {
+  z-index: 3;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-background > svg {
+  width: 100%;
+  height: 100%;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-background > svg .chrome-tab-geometry {
+  fill: var(--chrome-tab-inactive-fill, #f4f5f6);
+}
+
+.chrome-tabs .chrome-tab[active] {
+  z-index: 5;
+}
+
+.chrome-tabs .chrome-tab[active] .chrome-tab-background > svg .chrome-tab-geometry {
+  fill: var(--chrome-tab-active-fill, #fff);
+}
+
+.chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab:not([active]):hover {
+    z-index: 2;
+  }
+
+  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-background {
+    opacity: 1;
+  }
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-content {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  left: var(--tab-content-margin);
+  right: var(--tab-content-margin);
+  padding: 0 10px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  overflow: hidden;
+  pointer-events: all;
+}
+
+/* hover tab 半透明輪廓（不影響 active） */
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-content {
+    box-shadow: 0 0 0 1px rgba(244, 237, 228, 0.55) inset, 0 0 0 1px rgba(22, 23, 22, 0.10);
+    background: rgba(244, 237, 228, 0.10);
+  }
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-title {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  color: var(--chrome-tab-title, #5f6368);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.chrome-tabs .chrome-tab[active] .chrome-tab-title {
+  color: var(--chrome-tab-title-active, #45474a);
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-drag-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-close {
+  flex-grow: 0;
+  flex-shrink: 0;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0,0,0,.45)' stroke-linecap='square' stroke-width='1.5' d='m0,0 8,8 m0,-8 -8,8'/></svg>");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 9px 9px;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .chrome-tabs .chrome-tab .chrome-tab-close:hover {
+    background-color: rgba(22, 23, 22, 0.08);
+  }
+}
+
+.chrome-tabs .chrome-tabs-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  height: var(--chrome-tabs-bottom-bar-height, 4px);
+  left: 0;
+  width: 100%;
+  background: var(--chrome-tab-active-fill, #fff);
+  z-index: 10;
+}
+
+.chrome-tabs .chrome-tab-favicon {
+  display: none;
+}
+
+.chrome-tabs .chrome-tab-was-just-added {
+  top: 10px;
+  animation: chrome-tab-was-just-added 120ms forwards ease-in-out;
+}
+
+@keyframes chrome-tab-was-just-added {
+  to {
+    top: 0;
+  }
+}
+
+.chrome-tabs .chrome-tabs-layout-style {
+  display: none;
+}

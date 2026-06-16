@@ -57,6 +57,14 @@ async def search_gate_blocked_handler(_request: Request, exc: SearchGateBlocked)
     )
 
 
+@app.get("/prototype")
+@app.get("/prototype/")
+async def prototype_query_tabs():
+    from starlette.responses import RedirectResponse
+
+    return RedirectResponse("/frontend/prototype/query-tabs.html", status_code=302)
+
+
 @app.get("/")
 async def home():
     host = os.getenv("HOST", "127.0.0.1")
