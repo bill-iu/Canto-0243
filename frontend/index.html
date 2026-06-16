@@ -6,7 +6,10 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#EBDFD0">
-  <title>Canto-0243</title>
+  <link rel="icon" href="favicon.ico" sizes="32x32">
+  <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Canto-0243 ONE·搵·韻</title>
   <!-- Active tab URL: view=guide | view=relation -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -458,6 +461,7 @@
   </main>
   </div>
 
+  <script src="vendor/draggabilly.pkgd.min.js"></script>
   <script src="chrome-tabs-layout.js"></script>
   <script type="module">
     import {
@@ -474,6 +478,7 @@
       serializeSession,
       deserializeSession,
       closeTab as closeTabInState,
+      reorderTabsByIds,
       applyUrlToTabs,
     } from "./query-tabs-state.mjs";
 
@@ -512,7 +517,7 @@
       throw new Error("Direct file open - showing instruction only");
     }
 
-    const APP_TITLE_BASE = "Canto-0243";
+    const APP_TITLE_BASE = "Canto-0243 ONE·搵·韻";
     const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
     const MODE_META = {
@@ -554,6 +559,7 @@
 
     let tabState = { activeId: 1, nextTabId: 2, tabs: [] };
     let chromeLayout = null;
+    let pendingNewTabAnimation = null;
 
     const TAB_GEOMETRY_SVG = `
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -622,7 +628,7 @@
       else window.history.pushState(state, "", url);
     }
 
-    function syncViewPanels() {
+    function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
       const tab = activeTab();
       if (!tab) return;
       const isSearch = tab.view === VIEW.SEARCH;
@@ -643,7 +649,49 @@
         applyRelationForm(tab.relation || {});
       }
       updateBrowserUrlFromActiveTab(true);
-      renderTabstrip();
+      if (shouldRenderTabstrip) renderTabstrip();
+      else requestAnimationFrame(scrollActiveTabIntoView);
+    }
+
+    function applyActiveNeighborDividerHides() {
+      $.tabstrip.querySelectorAll(".chrome-tab").forEach((t) => {
+        t.classList.remove("hide-left-divider-active", "hide-right-divider-active");
+      });
+      const active = $.tabstrip.querySelector(".chrome-tab[active]");
+      if (!active) return;
+      const prev = active.previousElementSibling;
+      const next = active.nextElementSibling;
+      if (prev && prev.classList.contains("chrome-tab") && !prev.classList.contains("chrome-tab-add")) {
+        prev.classList.add("hide-right-divider-active");
+      }
+      if (next && next.classList.contains("chrome-tab") && !next.classList.contains("chrome-tab-add")) {
+        next.classList.add("hide-left-divider-active");
+      }
+    }
+
+    function markActiveTabInStrip(id) {
+      $.tabstrip.querySelectorAll(".chrome-tab:not(.chrome-tab-add)").forEach((el) => {
+        const tid = Number(el.dataset.tabId);
+        const isActive = tid === id;
+        if (isActive) el.setAttribute("active", "");
+        else el.removeAttribute("active");
+        const handle = el.querySelector("[data-tab]");
+        if (handle) handle.setAttribute("aria-selected", String(isActive));
+      });
+      applyActiveNeighborDividerHides();
+    }
+
+    function activateTabOnPress(id) {
+      if (tabState.activeId === id) return;
+      saveActiveTabFromUi();
+      tabState = { ...tabState, activeId: id };
+      persistTabs();
+      markActiveTabInStrip(id);
+      syncViewPanels({ renderTabstrip: false });
+      const tab = activeTab();
+      if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
+      else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
+      else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
     }
 
     function shouldShowLoadMore(tab) {
@@ -659,6 +707,38 @@
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;");
+    }
+
+    function animateNewTabEntry(tabId) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const el = $.tabstrip.querySelector(`.chrome-tab[data-tab-id="${tabId}"]`);
+      if (!el) return;
+      const finalMatch = el.style.transform.match(/translate3d\(([-\d.]+)px,\s*0,\s*0\)/);
+      if (!finalMatch) return;
+      const baseTransform = `translate3d(${finalMatch[1]}px, 0, 0)`;
+      el.classList.add("chrome-tab-is-entering");
+      el.style.transform = `${baseTransform} scaleX(0)`;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          let finished = false;
+          const cleanup = () => {
+            if (finished) return;
+            finished = true;
+            el.classList.remove("chrome-tab-is-entering");
+            el.style.transform = baseTransform;
+          };
+          el.addEventListener(
+            "transitionend",
+            (e) => {
+              if (e.propertyName !== "transform") return;
+              cleanup();
+            },
+            { once: true }
+          );
+          el.style.transform = `${baseTransform} scaleX(1)`;
+          setTimeout(cleanup, 260);
+        });
+      });
     }
 
     function renderTabstrip() {
@@ -690,8 +770,38 @@
           <div class="chrome-tab-add-hit" role="button" aria-label="新查詢分頁" title="Alt+N">+</div>
         </div>`;
       wireTabstrip();
-      if (chromeLayout) chromeLayout.layout();
+      if (chromeLayout) {
+        chromeLayout.layout();
+        setupTabDrag();
+      }
+      if (pendingNewTabAnimation) {
+        const { tabId } = pendingNewTabAnimation;
+        pendingNewTabAnimation = null;
+        animateNewTabEntry(tabId);
+      }
       requestAnimationFrame(scrollActiveTabIntoView);
+    }
+
+    function updateTabstripLastMarkers() {
+      const normal = [...$.tabstrip.querySelectorAll(".chrome-tab:not(.chrome-tab-add)")];
+      normal.forEach((el) => el.classList.remove("chrome-tab-is-last"));
+      if (normal.length) normal[normal.length - 1].classList.add("chrome-tab-is-last");
+    }
+
+    function setupTabDrag() {
+      if (!chromeLayout || typeof Draggabilly === "undefined") return;
+      chromeLayout.setupDraggabilly({
+        onPointerDown(id) {
+          activateTabOnPress(id);
+        },
+        onReorderEnd(orderedIds) {
+          const next = reorderTabsByIds(tabState, orderedIds);
+          if (next === tabState) return;
+          tabState = next;
+          persistTabs();
+          updateTabstripLastMarkers();
+        },
+      });
     }
 
     function scrollActiveTabIntoView() {
@@ -730,21 +840,6 @@
         });
         applyActiveNeighborDividerHides();
       };
-      const applyActiveNeighborDividerHides = () => {
-        $.tabstrip.querySelectorAll(".chrome-tab").forEach((t) => {
-          t.classList.remove("hide-left-divider-active", "hide-right-divider-active");
-        });
-        const active = $.tabstrip.querySelector(".chrome-tab[active]");
-        if (!active) return;
-        const prev = active.previousElementSibling;
-        const next = active.nextElementSibling;
-        if (prev && prev.classList.contains("chrome-tab") && !prev.classList.contains("chrome-tab-add")) {
-          prev.classList.add("hide-right-divider-active");
-        }
-        if (next && next.classList.contains("chrome-tab") && !next.classList.contains("chrome-tab-add")) {
-          next.classList.add("hide-left-divider-active");
-        }
-      };
       $.tabstrip.querySelectorAll(".chrome-tab:not(.chrome-tab-add)").forEach((tab) => {
         tab.addEventListener("mouseenter", () => {
           clearHoverFlags();
@@ -766,6 +861,7 @@
     function addSearchTab() {
       saveActiveTabFromUi();
       const tab = createSearchTab({ id: tabState.nextTabId });
+      pendingNewTabAnimation = { tabId: tab.id };
       tabState = {
         activeId: tab.id,
         nextTabId: tabState.nextTabId + 1,

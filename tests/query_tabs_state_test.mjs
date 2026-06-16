@@ -16,6 +16,8 @@ import {
   serializeSession,
   deserializeSession,
   closeTab,
+  reorderTab,
+  reorderTabsByIds,
   applyUrlToTabs,
 } from "../frontend/query-tabs-state.mjs";
 
@@ -123,5 +125,69 @@ describe("query-tabs-state", () => {
     assert.equal(state.tabs.length, 1);
     assert.equal(state.tabs[0].view, VIEW.GUIDE);
     assert.equal(state.activeId, state.tabs[0].id);
+  });
+
+  it("reorderTab moves a tab within the tabs array", () => {
+    const state = {
+      activeId: 1,
+      nextTabId: 4,
+      tabs: [
+        createSearchTab({ id: 1, q: "a" }),
+        createSearchTab({ id: 2, q: "b" }),
+        createGuideTab({ id: 3 }),
+      ],
+    };
+    const next = reorderTab(state, 0, 2);
+    assert.deepEqual(
+      next.tabs.map((t) => t.id),
+      [2, 3, 1]
+    );
+    assert.equal(next.activeId, 1);
+  });
+
+  it("reorderTab no-ops on invalid or unchanged indices", () => {
+    const state = {
+      activeId: 1,
+      nextTabId: 2,
+      tabs: [createSearchTab({ id: 1, q: "" })],
+    };
+    assert.equal(reorderTab(state, 0, 0), state);
+    assert.equal(reorderTab(state, -1, 0), state);
+    assert.equal(reorderTab(state, 0, 3), state);
+  });
+
+  it("reorderTabsByIds reorders tabs to match the given id list", () => {
+    const state = {
+      activeId: 2,
+      nextTabId: 4,
+      tabs: [
+        createSearchTab({ id: 1, q: "a" }),
+        createSearchTab({ id: 2, q: "b" }),
+        createRelationTab({ id: 3 }),
+      ],
+    };
+    const next = reorderTabsByIds(state, [3, 1, 2]);
+    assert.deepEqual(
+      next.tabs.map((t) => t.id),
+      [3, 1, 2]
+    );
+    assert.equal(next.activeId, 2);
+  });
+
+  it("serializeSession preserves tab order after reorder", () => {
+    const state = reorderTab(
+      {
+        activeId: 1,
+        nextTabId: 3,
+        tabs: [createSearchTab({ id: 1, q: "a" }), createGuideTab({ id: 2 })],
+      },
+      0,
+      1
+    );
+    const restored = deserializeSession(serializeSession(state));
+    assert.deepEqual(
+      restored.tabs.map((t) => t.id),
+      [2, 1]
+    );
   });
 });

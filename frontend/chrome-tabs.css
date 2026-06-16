@@ -9,7 +9,7 @@
   padding: var(--chrome-tabs-padding-top, 12px) 4px 0 4px;
   background: transparent;
   border-radius: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .chrome-tabs * {
@@ -52,8 +52,18 @@
 }
 
 .chrome-tabs .chrome-tab-add-hit:hover {
-  background: rgba(22, 23, 22, 0.08);
-  color: var(--bg);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.chrome-tabs .chrome-tab-add-hit:active {
+  transform: scale(0.96);
+}
+
+.chrome-tabs .chrome-tab-add-hit:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .chrome-tabs .chrome-tab {
@@ -171,17 +181,18 @@
 }
 
 .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
-  transition: opacity 0.2s ease;
+  transition: opacity 200ms ease-out;
   opacity: 0;
+}
+
+.chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-background,
+.chrome-tabs .chrome-tab:focus-within:not([active]) .chrome-tab-background {
+  opacity: 1;
 }
 
 @media (hover: hover) {
   .chrome-tabs .chrome-tab:not([active]):hover {
     z-index: 2;
-  }
-
-  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-background {
-    opacity: 1;
   }
 }
 
@@ -193,19 +204,46 @@
   bottom: 0;
   left: var(--tab-content-margin);
   right: var(--tab-content-margin);
-  padding: 0 10px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  padding: 0 12px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   overflow: hidden;
   pointer-events: all;
+  transition:
+    box-shadow 220ms cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 220ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* hover tab 半透明輪廓（不影響 active） */
-@media (hover: hover) {
-  .chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-content {
-    box-shadow: 0 0 0 1px rgba(244, 237, 228, 0.55) inset, 0 0 0 1px rgba(22, 23, 22, 0.10);
-    background: rgba(244, 237, 228, 0.10);
-  }
+.chrome-tabs .chrome-tab[active] .chrome-tab-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.72) 18%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(255, 255, 255, 0.72) 82%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.chrome-tabs .chrome-tab[active] .chrome-tab-background {
+  filter: drop-shadow(0 -2px 10px rgba(22, 23, 22, 0.06)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+}
+
+/* hover / focus-within tab 半透明輪廓（不影響 active） */
+.chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-content,
+.chrome-tabs .chrome-tab:focus-within:not([active]) .chrome-tab-content {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.22) inset,
+    0 0 0 1px rgba(22, 23, 22, 0.06);
+  background: rgba(244, 237, 228, 0.14);
 }
 
 .chrome-tabs .chrome-tab .chrome-tab-title {
@@ -213,15 +251,21 @@
   overflow: hidden;
   white-space: nowrap;
   color: var(--chrome-tab-title, #5f6368);
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
-  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 28px), transparent);
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: var(--chrome-tab-title-font-size, 14px);
-  font-weight: 650;
+  font-weight: 520;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  transition: color 220ms cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
 }
 
 .chrome-tabs .chrome-tab[active] .chrome-tab-title {
   color: var(--chrome-tab-title-active, #45474a);
+  font-weight: 640;
+  letter-spacing: -0.025em;
 }
 
 .chrome-tabs .chrome-tab .chrome-tab-drag-handle {
@@ -238,22 +282,45 @@
   flex-grow: 0;
   flex-shrink: 0;
   position: relative;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border: none;
   border-radius: 50%;
   background-color: transparent;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(0,0,0,.45)' stroke-linecap='square' stroke-width='1.5' d='m0,0 8,8 m0,-8 -8,8'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'><path stroke='rgba(22,23,22,.52)' stroke-linecap='round' stroke-width='1.35' d='m1.5,1.5 5,5 m0,-5 -5,5'/></svg>");
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: 9px 9px;
+  background-size: 8px 8px;
   cursor: pointer;
+  opacity: 0;
+  transition:
+    background-color 180ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 180ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 180ms ease-out;
 }
 
-@media (hover: hover) {
-  .chrome-tabs .chrome-tab .chrome-tab-close:hover {
-    background-color: rgba(22, 23, 22, 0.08);
-  }
+.chrome-tabs .chrome-tab[active] .chrome-tab-close,
+.chrome-tabs .chrome-tab:focus-within .chrome-tab-close {
+  opacity: 1;
+}
+
+.chrome-tabs .chrome-tab:not([active]):hover .chrome-tab-close {
+  opacity: 0.85;
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-close:hover:not(:disabled) {
+  background-color: rgba(22, 23, 22, 0.09);
+  transform: scale(1.06);
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-close:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.chrome-tabs .chrome-tab .chrome-tab-close:focus-visible {
+  outline: none;
+  opacity: 1;
+  box-shadow: var(--focus-ring);
 }
 
 .chrome-tabs .chrome-tabs-bottom-bar {
@@ -273,6 +340,21 @@
 .chrome-tabs .chrome-tab-was-just-added {
   top: 10px;
   animation: chrome-tab-was-just-added 120ms forwards ease-in-out;
+}
+
+.chrome-tabs .chrome-tab.chrome-tab-is-entering {
+  transform-origin: left center;
+  overflow: hidden;
+  transition: transform 180ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.chrome-tabs.chrome-tabs-is-sorting .chrome-tab:not(.chrome-tab-is-dragging):not(.chrome-tab-add),
+.chrome-tabs:not(.chrome-tabs-is-sorting) .chrome-tab.chrome-tab-was-just-dragged {
+  transition: transform 120ms ease-in-out;
+}
+
+.chrome-tabs .chrome-tab.chrome-tab-is-dragging {
+  z-index: 20;
 }
 
 @keyframes chrome-tab-was-just-added {

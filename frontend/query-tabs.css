@@ -3,19 +3,21 @@
 :root {
   --brand-rail: 156px;
   /* 深色帶但仍是 Open Design 暖棕系（避免偏灰黑） */
-  --chrome-tabs-strip-bg: color-mix(in srgb, var(--bg) 72%, var(--accent) 28%);
-  --chrome-tab-inactive-fill: color-mix(in srgb, var(--chrome-tabs-strip-bg) 72%, var(--surface) 28%);
+  --chrome-tabs-strip-bg: color-mix(in srgb, var(--bg) 58%, var(--accent) 42%);
+  --chrome-tabs-strip-highlight: rgba(255, 255, 255, 0.14);
+  --chrome-tab-inactive-fill: color-mix(in srgb, var(--chrome-tabs-strip-bg) 68%, var(--surface) 32%);
   --chrome-tab-active-fill: var(--bg);
-  /* divider / +：用主畫面同色（--bg） */
-  --chrome-tab-divider: var(--bg);
-  --chrome-tab-title: var(--muted);
+  --chrome-tab-active-glow: rgba(138, 90, 32, 0.12);
+  /* divider / +：白色 */
+  --chrome-tab-divider: rgba(255, 255, 255, 0.88);
+  --chrome-tab-title: color-mix(in srgb, var(--muted) 88%, var(--surface) 12%);
   --chrome-tab-title-active: var(--ink);
-  --chrome-tab-title-font-size: 14px;
-  --chrome-tab-divider-width: 2px;
-  --chrome-tab-divider-opacity: 1;
+  --chrome-tab-title-font-size: 13.5px;
+  --chrome-tab-divider-width: 1px;
+  --chrome-tab-divider-opacity: 0.72;
   /* chrome-tabs 垂直尺寸（單一來源；改 tab 高度時 ::after 會同步） */
-  --chrome-tabs-padding-top: 12px;
-  --chrome-tab-height: 48px;
+  --chrome-tabs-padding-top: 14px;
+  --chrome-tab-height: 50px;
   --chrome-tabs-bottom-bar-height: 4px;
   /* 上游 SVG 腳部略壓入 padding 區 */
   --chrome-tabs-overlap: 2px;
@@ -49,6 +51,7 @@
   --header-capsule-gap: calc(10px * var(--header-capsule-scale));
   --header-capsule-mode-min-width: calc(196px * var(--header-capsule-scale));
   --header-capsule-chevron-size: 17px;
+  --chrome-tab-width: 220px;
 }
 
 .prototype-ribbon {
@@ -91,9 +94,15 @@ body.query-tabs-app {
   top: 0;
   z-index: var(--z-header);
   padding: 0;
-  background: var(--chrome-tabs-strip-bg);
-  backdrop-filter: blur(10px);
+  background:
+    linear-gradient(180deg, var(--chrome-tabs-strip-highlight) 0%, transparent 38%),
+    radial-gradient(ellipse 120% 90% at 12% -20%, rgba(255, 255, 255, 0.08), transparent 58%),
+    radial-gradient(ellipse 80% 70% at 88% 0%, rgba(95, 62, 22, 0.14), transparent 52%),
+    var(--chrome-tabs-strip-bg);
+  backdrop-filter: blur(14px) saturate(1.08);
+  -webkit-backdrop-filter: blur(14px) saturate(1.08);
   border-bottom: none;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
 }
 
 /* 無縫：用全寬底條把 header 色帶收口到 --bg */
@@ -117,9 +126,9 @@ body.query-tabs-app {
   width: 100%;
   padding:
     calc(8px + env(safe-area-inset-top))
-    max(12px, env(safe-area-inset-right))
+    var(--space-page-x)
     10px
-    max(12px, env(safe-area-inset-left));
+    var(--space-page-x);
   background: transparent;
   backdrop-filter: none;
 }
@@ -131,15 +140,21 @@ body.query-tabs-app {
 }
 
 .query-tabs-app .brand-logo {
-  height: 56px;
+  height: clamp(44px, 10vw, 56px);
   width: auto;
   display: block;
+  flex-shrink: 0;
 }
 
 .query-tabs-app .app-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   flex-shrink: 0;
   padding-top: 4px;
   gap: var(--header-capsule-gap);
+  max-width: 100%;
 }
 
 /* 品牌列三顆膠囊：0.75×、圓角膠囊、收窄上下（僅 prototype） */
@@ -151,6 +166,38 @@ body.query-tabs-app {
   font-size: var(--header-capsule-font-size);
   font-weight: 550;
   line-height: 1.15;
+  white-space: nowrap;
+  border: 1px solid color-mix(in srgb, var(--line) 72%, rgba(255, 255, 255, 0.28) 28%);
+  background: color-mix(in srgb, var(--surface) 88%, rgba(255, 255, 255, 0.12) 12%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.42) inset,
+    0 6px 18px rgba(22, 23, 22, 0.04);
+  transition:
+    box-shadow 200ms cubic-bezier(0.32, 0.72, 0, 1),
+    border-color 200ms ease-out,
+    transform 120ms ease-out;
+}
+
+.query-tabs-app .app-actions .menu-trigger:hover:not(:disabled),
+.query-tabs-app .app-actions .ghost-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48) inset,
+    0 10px 24px rgba(22, 23, 22, 0.07);
+}
+
+.query-tabs-app .app-actions .menu-trigger:active:not(:disabled),
+.query-tabs-app .app-actions .ghost-button:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.36) inset,
+    0 4px 12px rgba(22, 23, 22, 0.05);
+}
+
+.query-tabs-app .app-actions .menu-trigger:focus-visible,
+.query-tabs-app .app-actions .ghost-button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), 0 1px 0 rgba(255, 255, 255, 0.42) inset;
 }
 
 .query-tabs-app .app-actions .menu-trigger {
@@ -178,12 +225,17 @@ body.query-tabs-app {
   display: flex;
   align-items: flex-end;
   gap: 6px;
-  padding:
-    0
-    max(12px, env(safe-area-inset-right))
-    0
-    max(12px, env(safe-area-inset-left));
+  padding: 0 var(--space-page-x);
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
   background: transparent;
+}
+
+.query-tabs-app .app-header__tabdeck::-webkit-scrollbar {
+  display: none;
 }
 
 .query-tabs-app .tabdeck-strip {
@@ -199,10 +251,14 @@ body.query-tabs-app {
 
 .query-tabs-app .tabdeck-strip .chrome-tabs {
   flex: 1 1 auto;
-  min-width: 0;
+  min-width: min-content;
   width: 100%;
   background: transparent;
   border-radius: 0;
+}
+
+.query-tabs-app .tabdeck-strip .chrome-tabs .chrome-tabs-content {
+  min-width: min-content;
 }
 
 /* P3：無色帶時不需要左側端蓋 */
@@ -227,6 +283,14 @@ body.query-tabs-app {
   pointer-events: auto;
 }
 
+.query-tabs-app .chrome-tabs .chrome-tab:focus-visible {
+  outline: none;
+}
+
+.query-tabs-app .chrome-tabs .chrome-tab:focus-visible .chrome-tab-content {
+  box-shadow: var(--focus-ring);
+}
+
 .query-tabs-app .chrome-tabs .chrome-tab[active] .chrome-tab-close {
   opacity: 1;
   pointer-events: auto;
@@ -237,23 +301,48 @@ body.query-tabs-app {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  min-width: 32px;
-  height: 40px;
+  min-width: 34px;
+  height: 42px;
   margin: 0 0 6px 0;
   padding: 0 10px;
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: var(--muted);
-  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.15rem;
+  font-weight: 500;
   line-height: 1;
   cursor: pointer;
-  transition: color 160ms ease-out, background-color 160ms ease-out;
+  transition:
+    color 200ms cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 200ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* U1：+ 左側也有 divider 小長方形（並跟隨 S2 被蓋住/顯示） */
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
   position: relative;
+  color: #fff;
+  transition:
+    color 200ms cubic-bezier(0.32, 0.72, 0, 1),
+    background-color 200ms cubic-bezier(0.32, 0.72, 0, 1),
+    transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.04);
+}
+
+.query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:active {
+  transform: scale(0.96);
+}
+
+.query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit::before {
@@ -287,8 +376,13 @@ body.query-tabs-app {
 }
 
 .query-tabs-app .query-tab-add:hover {
-  color: var(--accent-strong);
-  background: rgba(244, 237, 228, 0.45);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.04);
+}
+
+.query-tabs-app .query-tab-add:active {
+  transform: scale(0.96);
 }
 
 .query-tabs-app .query-tab-add:focus-visible {
@@ -353,14 +447,24 @@ body.query-tabs-app {
 @media (max-width: 720px) {
   :root {
     --brand-rail: 118px;
+    --chrome-tab-width: min(200px, 46vw);
+    --chrome-tabs-padding-top: 10px;
+    --chrome-tab-height: 46px;
+    --header-capsule-scale: 0.68;
   }
 
-  .query-tabs-app .brand-logo {
-    height: 44px;
+  .query-tabs-app .app-header__chrome {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .query-tabs-app .app-actions {
+    justify-content: flex-start;
     gap: calc(8px * var(--header-capsule-scale));
+  }
+
+  .query-tabs-app .app-actions .ghost-button:nth-child(3) {
+    display: none;
   }
 }
 
@@ -384,7 +488,16 @@ body.query-tabs-app {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background {
-    transition: none;
+  .chrome-tabs .chrome-tab.chrome-tab-is-entering,
+  .chrome-tabs .chrome-tab:not([active]) .chrome-tab-background,
+  .chrome-tabs .chrome-tab,
+  .chrome-tabs .chrome-tab-content,
+  .chrome-tabs .chrome-tab-title,
+  .chrome-tabs .chrome-tab-close,
+  .query-tabs-app .app-actions .menu-trigger,
+  .query-tabs-app .app-actions .ghost-button,
+  .query-tabs-app .query-tab-add {
+    transition: none !important;
+    animation: none !important;
   }
 }

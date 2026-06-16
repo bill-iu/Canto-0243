@@ -8,14 +8,16 @@
       --surface-input: #F6F1E9;
       --ink: #161716;
       --ink-soft: #3A3632;
-      --muted: #6F746D;
+      --muted: #5C6159;
       --line: #D9CEBD;
       --accent: #8A5A20;
       --accent-strong: #5F3E16;
       --soft: #EEE9DE;
       --danger: #A23B2A;
       --control-shadow-hover: 0 8px 22px rgba(22, 23, 22, 0.07);
-      --focus-ring: 0 0 0 4px rgba(138, 90, 32, 0.14);
+      --focus-ring: 0 0 0 3px var(--bg), 0 0 0 5px rgba(138, 90, 32, 0.42);
+      --space-page-x: clamp(16px, 4vw, 24px);
+      --space-section: clamp(28px, 5vw, 48px);
       --search-input-inset: inset 0 1px 0 rgba(22, 23, 22, 0.035);
       --shadow: 0 18px 44px rgba(22, 23, 22, 0.08);
       --shadow-soft: 0 10px 28px rgba(22, 23, 22, 0.06);
@@ -38,7 +40,7 @@ body {
       min-width: 320px;
       min-height: 100dvh;
       background:
-        radial-gradient(ellipse 100% 70% at 100% 0%, rgba(138, 90, 32, 0.12), transparent 62%),
+        radial-gradient(ellipse 100% 70% at 100% 0%, rgba(138, 90, 32, 0.1), transparent 62%),
         var(--bg);
       color: var(--ink);
       font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
@@ -50,7 +52,17 @@ body {
 
 button, input { font: inherit; touch-action: manipulation; }
 
-button { color: inherit; }
+button {
+      color: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+button:disabled {
+      cursor: not-allowed;
+      opacity: 0.38;
+    }
 
 [hidden], .is-hidden { display: none !important; }
 
@@ -66,22 +78,25 @@ button { color: inherit; }
     }
 
 .skip-link {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 100;
-      transform: translateY(-140%);
+      position: absolute;
+      left: var(--space-page-x);
+      top: -100px;
+      z-index: calc(var(--z-header) + 2);
       padding: 10px 14px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--surface);
-      color: var(--ink);
+      border-radius: 10px;
+      background: var(--ink);
+      color: var(--surface);
+      font-size: 0.875rem;
+      font-weight: 600;
       text-decoration: none;
-      box-shadow: var(--shadow-soft);
-      transition: transform 120ms ease-out;
+      transition: top 160ms ease-out;
     }
 
-.skip-link:focus-visible { transform: translateY(0); }
+.skip-link:focus {
+      top: calc(8px + env(safe-area-inset-top));
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
 
 .search-panel.is-landing-in {
       animation: search-rise-in 560ms cubic-bezier(0.22, 1, 0.36, 1) both;

@@ -145,6 +145,26 @@ export function closeTab(state, tabId) {
   return { ...state, tabs, activeId };
 }
 
+export function reorderTab(state, fromIndex, toIndex) {
+  const { tabs } = state;
+  if (fromIndex === toIndex) return state;
+  if (fromIndex < 0 || fromIndex >= tabs.length) return state;
+  if (toIndex < 0 || toIndex >= tabs.length) return state;
+  const next = [...tabs];
+  const [moved] = next.splice(fromIndex, 1);
+  next.splice(toIndex, 0, moved);
+  return { ...state, tabs: next };
+}
+
+export function reorderTabsByIds(state, orderedIds) {
+  const byId = new Map(state.tabs.map((t) => [t.id, t]));
+  const tabs = orderedIds.map((id) => byId.get(id)).filter((t) => t != null);
+  if (tabs.length !== state.tabs.length) return state;
+  const unchanged = state.tabs.every((t, i) => t.id === tabs[i].id);
+  if (unchanged) return state;
+  return { ...state, tabs };
+}
+
 export function applyUrlToTabs(existingState, parsed) {
   if (existingState) {
     return existingState;

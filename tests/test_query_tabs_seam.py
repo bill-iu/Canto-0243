@@ -1,11 +1,13 @@
 """接縫測試：index.html 接入查詢分頁 chrome-tabs 與領域契約。"""
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.js"
 MAIN_PATH = REPO_ROOT / "main.py"
 RELATION_ENTRY_PATH = REPO_ROOT / "frontend" / "relation-entry.html"
 
@@ -14,11 +16,13 @@ FRONTEND_ASSETS = (
     "chrome-tabs-layout.js",
     "query-tabs.css",
     "query-tabs-state.mjs",
+    "vendor/draggabilly.pkgd.min.js",
 )
 
 INDEX_REQUIRED = (
     'href="chrome-tabs.css"',
     'href="query-tabs.css"',
+    'src="vendor/draggabilly.pkgd.min.js"',
     'src="chrome-tabs-layout.js"',
     'from "./query-tabs-state.mjs"',
     "SESSION_KEY",
@@ -27,6 +31,10 @@ INDEX_REQUIRED = (
     "app-header--tabs",
     "view=relation",
     "openSingletonView",
+    "reorderTabsByIds",
+    "setupTabDrag",
+    "setupDraggabilly",
+    "activateTabOnPress",
     "data.gate_ready",
     'fetch("/ready"',
 )
@@ -79,6 +87,21 @@ class TestQueryTabsSeam(unittest.TestCase):
         for symbol in MAIN_FORBIDDEN:
             with self.subTest(symbol=symbol):
                 self.assertNotIn(symbol, source)
+
+    def test_setup_draggabilly_relayouts_after_destroy(self):
+        """Draggabilly.destroy() clears inline transforms; layout() must follow."""
+        source = LAYOUT_PATH.read_text(encoding="utf-8")
+        pattern = (
+            r"(?s)"
+            r"this\.draggabillies\.forEach\(\(d\) => d\.destroy\(\)\);"
+            r".*?this\.layout\(\);"
+            r".*?const tabEls = this\.normalTabEls"
+        )
+        self.assertRegex(
+            source,
+            pattern,
+            "setupDraggabilly must call layout() after Draggabilly teardown",
+        )
 
 
 if __name__ == "__main__":

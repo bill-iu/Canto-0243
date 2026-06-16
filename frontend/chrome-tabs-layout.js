@@ -1,6 +1,6 @@
 /**
  * Layout engine adapted from https://github.com/adamschwartz/chrome-tabs (MIT).
- * Prototype: no Draggabilly; positions tabs via injected CSS rules.
+ * Positions tabs via translate3d; optional Draggabilly for horizontal reorder.
  */
 (function (global) {
   const TAB_CONTENT_MARGIN = 9;
@@ -24,6 +24,21 @@
         </svg>
       </g>
     </svg>`;
+
+  const noop = () => {};
+
+  function closest(value, array) {
+    let best = Infinity;
+    let bestIndex = -1;
+    array.forEach((v, i) => {
+      const dist = Math.abs(value - v);
+      if (dist < best) {
+        best = dist;
+        bestIndex = i;
+      }
+    });
+    return bestIndex;
+  }
 
   let instanceId = 0;
 
@@ -54,7 +69,14 @@
         this.styleEl.className = "chrome-tabs-layout-style";
         this.rootEl.appendChild(this.styleEl);
       }
-      window.addEventListener("resize", () => this.layout());
+      this.draggabillies = [];
+      this.dragCallbacks = null;
+      this.isDragging = false;
+      this.draggabillyDragging = null;
+      window.addEventListener("resize", () => {
+        this.cleanUpPreviouslyDraggedTabs();
+        this.layout();
+      });
     }
 
     get tabEls() {
@@ -113,6 +135,14 @@
       return this.tabContentPositions.map((p) => p - TAB_CONTENT_MARGIN);
     }
 
+    getTabIdsFromDom() {
+      return this.normalTabEls.map((el) => Number(el.dataset.tabId));
+    }
+
+    cleanUpPreviouslyDraggedTabs() {
+      this.normalTabEls.forEach((tabEl) => tabEl.classList.remove("chrome-tab-was-just-dragged"));
+    }
+
     layout() {
       const widths = this.tabContentWidths;
       const tabs = this.normalTabEls;
@@ -140,6 +170,106 @@
         addEl.style.width = `${ADD_TAB_WIDTH}px`;
         addEl.style.transform = `translate3d(${addPos}px,0,0)`;
       }
+    }
+
+    animateTabMove(tabEl, originIndex, destinationIndex) {
+      const tabs = this.normalTabEls;
+      if (destinationIndex < originIndex) {
+        this.contentEl.insertBefore(tabEl, tabs[destinationIndex]);
+      } else {
+        const ref = tabs[destinationIndex + 1] || this.addTabEl;
+        this.contentEl.insertBefore(tabEl, ref);
+      }
+      this.layout();
+    }
+
+    setupDraggabilly(callbacks = {}) {
+      const Draggabilly = global.Draggabilly;
+      if (!Draggabilly) return;
+
+      if (callbacks.onPointerDown || callbacks.onReorderEnd) {
+        this.dragCallbacks = callbacks;
+      }
+      const { onPointerDown = noop, onReorderEnd = noop } = this.dragCallbacks || callbacks;
+
+      if (this.isDragging && this.draggabillyDragging) {
+        this.isDragging = false;
+        this.rootEl.classList.remove("chrome-tabs-is-sorting");
+        this.draggabillyDragging.element.classList.remove("chrome-tab-is-dragging");
+        this.draggabillyDragging.element.style.transform = "";
+        this.draggabillyDragging.dragEnd();
+        this.draggabillyDragging.isDragging = false;
+        this.draggabillyDragging.positionDrag = noop;
+        this.draggabillyDragging.destroy();
+        this.draggabillyDragging = null;
+      }
+
+      this.draggabillies.forEach((d) => d.destroy());
+      this.draggabillies = [];
+      this.cleanUpPreviouslyDraggedTabs();
+      this.layout();
+
+      const tabEls = this.normalTabEls;
+      const tabPositions = this.tabPositions;
+
+      tabEls.forEach((tabEl, originalIndex) => {
+        const originalTabPositionX = tabPositions[originalIndex];
+        const tabId = Number(tabEl.dataset.tabId);
+
+        const draggabilly = new Draggabilly(tabEl, {
+          axis: "x",
+          handle: ".chrome-tab-drag-handle",
+          containment: this.contentEl,
+        });
+
+        this.draggabillies.push(draggabilly);
+
+        draggabilly.on("pointerDown", () => {
+          if (tabId) onPointerDown(tabId);
+        });
+
+        draggabilly.on("dragStart", () => {
+          this.isDragging = true;
+          this.draggabillyDragging = draggabilly;
+          tabEl.classList.add("chrome-tab-is-dragging");
+          this.rootEl.classList.add("chrome-tabs-is-sorting");
+        });
+
+        draggabilly.on("dragMove", (event, pointer, moveVector) => {
+          const currentTabEls = this.normalTabEls;
+          const currentIndex = currentTabEls.indexOf(tabEl);
+          const currentTabPositionX = originalTabPositionX + moveVector.x;
+          const destinationIndexTarget = closest(currentTabPositionX, this.tabPositions);
+          const destinationIndex = Math.max(0, Math.min(currentTabEls.length - 1, destinationIndexTarget));
+          if (currentIndex !== destinationIndex) {
+            this.animateTabMove(tabEl, currentIndex, destinationIndex);
+          }
+        });
+
+        draggabilly.on("dragEnd", () => {
+          this.isDragging = false;
+          const finalTranslateX = parseFloat(tabEl.style.left, 10);
+          tabEl.style.transform = "translate3d(0, 0, 0)";
+
+          requestAnimationFrame(() => {
+            tabEl.style.left = "0";
+            tabEl.style.transform = `translate3d(${finalTranslateX}px, 0, 0)`;
+
+            requestAnimationFrame(() => {
+              tabEl.classList.remove("chrome-tab-is-dragging");
+              this.rootEl.classList.remove("chrome-tabs-is-sorting");
+              tabEl.classList.add("chrome-tab-was-just-dragged");
+
+              requestAnimationFrame(() => {
+                tabEl.style.transform = "";
+                this.layout();
+                onReorderEnd(this.getTabIdsFromDom());
+                this.setupDraggabilly();
+              });
+            });
+          });
+        });
+      });
     }
 
     createTabEl() {
