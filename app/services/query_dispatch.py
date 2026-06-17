@@ -15,6 +15,7 @@ from app.services.query_parse import (
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     ParsedQuery,
+    QueryKind,
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
@@ -25,7 +26,6 @@ from app.services.query_parse import (
     normalize_query,
     normalize_to_match_spec,
     resolve_fallback_0243_mode,
-    uses_match_spec,
 )
 from app.services.word_db_filters import apply_code_filter
 from app.services.word_serializer import deduplicate_words
@@ -136,6 +136,7 @@ class QueryEngine:
     def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
+        from app.services.query_route_registry import RouteKind, route_kind_for
 
         code = ctx.code
         mode = ctx.mode
@@ -145,29 +146,33 @@ class QueryEngine:
         relation_executor = RelationSyntaxExecutor(db)
         lookup_executor = WordLookupExecutor(db)
 
-        if isinstance(parsed, DigitCodeQuery):
+        route_kind = route_kind_for(parsed.kind)
+
+        if route_kind == RouteKind.DIGIT:
+            assert isinstance(parsed, DigitCodeQuery)
             items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
             return SearchResult(items=items, total=total)
 
-        if uses_match_spec(parsed):
+        if route_kind == RouteKind.MASK_FAMILY:
             return _mask_family_search_result(parsed, ctx)
 
-        handler_registry = {
-            RelationLookupQuery: lambda p: relation_executor.relation_lookup_page(
-                p, mode=mode, limit=limit, offset=offset
-            ),
-            WordLookupQuery: lambda p: lookup_executor.lookup(p.raw_q, code, mode, limit, offset),
-            JyutpingFragmentQuery: lambda p: lookup_executor.jyut_fragment(p.raw_q, limit, offset),
-        }
-
-        handler = handler_registry.get(type(parsed))
-        if handler:
-            result = handler(parsed)
-            if isinstance(result, SearchResult):
-                return result
+        if route_kind == RouteKind.RELATION:
+            assert isinstance(parsed, RelationLookupQuery)
+            result = relation_executor.relation_lookup_page(parsed, mode=mode, limit=limit, offset=offset)
             return SearchResult(items=result)
 
-        if isinstance(parsed, UnmatchedQuery):
+        if route_kind == RouteKind.LOOKUP:
+            if parsed.kind == QueryKind.WORD_LOOKUP:
+                assert isinstance(parsed, WordLookupQuery)
+                items = lookup_executor.lookup(parsed.raw_q, code, mode, limit, offset)
+                return SearchResult(items=items)
+            assert parsed.kind == QueryKind.JYUTPING_FRAGMENT
+            assert isinstance(parsed, JyutpingFragmentQuery)
+            items = lookup_executor.jyut_fragment(parsed.raw_q, limit, offset)
+            return SearchResult(items=items)
+
+        if route_kind == RouteKind.UNMATCHED:
+            assert isinstance(parsed, UnmatchedQuery)
             return SearchResult(items=[], hint=parsed.hint)
 
         return SearchResult(items=[])
