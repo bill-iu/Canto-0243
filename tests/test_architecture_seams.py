@@ -305,6 +305,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         "activateTabOnPress",
         "wireTabstripKeyboard",
         "wireModeMenuKeyboard",
+        "stripLauncherBootFromUrl",
         'fetch("/ready"',
     )
     APP_CONTEXT_REQUIRED = (
@@ -413,6 +414,28 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("function wireModeMenuKeyboard", search)
         self.assertIn("ArrowDown", search)
         self.assertIn("wireModeMenuKeyboard", main)
+
+    def test_gate_mjs_exports_public_api(self):
+        source = GATE_MJS_PATH.read_text(encoding="utf-8")
+        self.assertIn("export {", source)
+        self.assertIn("waitForPreloadReady", source)
+        self.assertNotRegex(source, r"\nlet lastReadySnapshot\s*=")
+
+    def test_frontend_esm_modules_export_public_api(self):
+        exports_required = {
+            "relation-form.mjs": ("relationPayloadFromForm", "postRelation"),
+            "tabs-core.mjs": ("activeTab", "persistTabs"),
+            "tabs-ui.mjs": ("renderTabstrip", "showSearch"),
+            "view-sync.mjs": ("syncViewPanels",),
+            "search-workbench.mjs": ("searchDict", "toggleMenu"),
+        }
+        frontend = REPO_ROOT / "frontend"
+        for name, symbols in exports_required.items():
+            source = (frontend / name).read_text(encoding="utf-8")
+            with self.subTest(module=name):
+                self.assertIn("export {", source)
+                for symbol in symbols:
+                    self.assertIn(symbol, source)
 
 
 class TestGateFrontendSeam(unittest.TestCase):

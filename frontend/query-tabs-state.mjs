@@ -93,6 +93,16 @@ export function parseUrlSearchParams(params) {
   };
 }
 
+/** local_launch cache-bust only — not a semantic query param. */
+export const LAUNCHER_BOOT_PARAM = "boot";
+
+export function searchParamsWithoutBoot(params) {
+  if (!params.has(LAUNCHER_BOOT_PARAM)) return null;
+  const next = new URLSearchParams(params);
+  next.delete(LAUNCHER_BOOT_PARAM);
+  return next;
+}
+
 export function serializeSession(state) {
   return JSON.stringify({
     activeId: state.activeId,

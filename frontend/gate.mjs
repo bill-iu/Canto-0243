@@ -47,13 +47,6 @@ function formatGateStatusLabel(data, { connecting = false } = {}) {
   return "執緊啲字…";
 }
 
-let lastReadySnapshot = null;
-
-let warmupDoneShown = false;
-let warmupTailShown = false;
-let warmupPollTimer = null;
-let warmupDismissTimer = null;
-
 function clearWarmupDismissTimer() {
   if (warmupDismissTimer) {
     window.clearTimeout(warmupDismissTimer);
@@ -219,47 +212,6 @@ async function awaitGateBrandBeat(playLanding) {
   if (remain > 0) await sleep(remain);
 }
 
-const $ = {
-  homeBtn: document.getElementById("homeBtn"),
-  guideTopBtn: document.getElementById("guideTopBtn"),
-  relationTopBtn: document.getElementById("relationTopBtn"),
-  guideMenuBtn: document.getElementById("guideMenuBtn"),
-  relationMenuBtn: document.getElementById("relationMenuBtn"),
-  backToSearchBtn: document.getElementById("backToSearchBtn"),
-  modeMenuButton: document.getElementById("modeMenuButton"),
-  modeMenu: document.getElementById("modeMenu"),
-  currentModeLabel: document.getElementById("currentModeLabel"),
-  modeReadout: document.getElementById("modeReadout"),
-  searchView: document.getElementById("searchView"),
-  guideView: document.getElementById("guideView"),
-  relationView: document.getElementById("relationView"),
-  chromeTabs: document.getElementById("queryChromeTabs"),
-  tabstrip: document.getElementById("queryTabstrip"),
-  searchForm: document.getElementById("searchForm"),
-  searchInputWrap: document.getElementById("searchInputWrap"),
-  searchInput: document.getElementById("searchInput"),
-  searchBtn: document.getElementById("searchBtn"),
-  shuffleBtn: document.getElementById("shuffleBtn"),
-  results: document.getElementById("results"),
-  stats: document.getElementById("stats"),
-  relationForm: document.getElementById("relationForm"),
-  seedChar: document.getElementById("seedChar"),
-  oppositeChar: document.getElementById("oppositeChar"),
-  relationSubmitBtn: document.getElementById("relationSubmitBtn"),
-  relationRevokeBtn: document.getElementById("relationRevokeBtn"),
-  relationOkStatus: document.getElementById("relationOkStatus"),
-  relationErrStatus: document.getElementById("relationErrStatus"),
-  preloadOverlay: document.getElementById("preloadOverlay"),
-  preloadLabel: document.getElementById("preloadLabel"),
-  gateInkClipRect: document.getElementById("gateInkClipRect"),
-  gateInkClipRectMini: document.getElementById("gateInkClipRectMini"),
-  appShell: document.getElementById("appShell"),
-  warmupBadge: document.getElementById("warmupBadge"),
-  warmupBadgeLabel: document.getElementById("warmupBadgeLabel"),
-  warmupBadgePct: document.getElementById("warmupBadgePct"),
-  warmupInkClipRect: document.getElementById("warmupInkClipRect"),
-};
-
 function setSearchControlsEnabled(enabled) {
   $.searchInput.disabled = !enabled;
   $.searchBtn.disabled = !enabled || isSearching;
@@ -267,9 +219,9 @@ function setSearchControlsEnabled(enabled) {
 }
 
 async function revealFromGate({ playLanding }) {
+  document.body.classList.remove("landing-a-pending", "landing-b-pending");
   if (playLanding) {
     markLandingDone();
-    document.body.classList.remove("landing-a-pending", "landing-b-pending");
     if (LANDING_VARIANT === "b") {
       $.preloadOverlay.classList.add("is-handoff");
       $.appShell?.classList.remove("is-gated");
@@ -335,3 +287,9 @@ async function waitForPreloadReady() {
     await sleep(220);
   }
 }
+
+export {
+  setGateInkProgress,
+  waitForPreloadReady,
+  wordCacheProgress,
+};

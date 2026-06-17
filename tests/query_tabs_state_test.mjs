@@ -13,6 +13,8 @@ import {
   createRelationTab,
   buildUrlSearchParams,
   parseUrlSearchParams,
+  searchParamsWithoutBoot,
+  LAUNCHER_BOOT_PARAM,
   serializeSession,
   deserializeSession,
   closeTab,
@@ -88,6 +90,16 @@ describe("query-tabs-state", () => {
     assert.equal(parsed.view, VIEW.RELATION);
     assert.equal(parsed.mode, "m3");
     assert.equal(parsed.q, "ignored");
+  });
+
+  it("searchParamsWithoutBoot drops launcher cache-bust only", () => {
+    const withBoot = new URLSearchParams("boot=1781737611&q=香");
+    const stripped = searchParamsWithoutBoot(withBoot);
+    assert.equal(stripped?.get("boot"), null);
+    assert.equal(stripped?.get("q"), "香");
+
+    const bare = new URLSearchParams("q=香");
+    assert.equal(searchParamsWithoutBoot(bare), null);
   });
 
   it("serializeSession round-trips tabs including relation draft", () => {

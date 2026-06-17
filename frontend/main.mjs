@@ -19,6 +19,7 @@ import {
   ensureDefaultTabs,
   saveActiveTabFromUi,
   updateActiveTabTitle,
+  stripLauncherBootFromUrl,
 } from "./tabs-core.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import {
@@ -245,6 +246,7 @@ window.addEventListener("popstate", (event) => {
 
 (async function init() {
   await waitForPreloadReady();
+  stripLauncherBootFromUrl();
 
   fetch("/")
     .then((res) => (res.ok ? res.json() : null))

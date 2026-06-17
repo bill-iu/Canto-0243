@@ -9,6 +9,8 @@ import {
   createSearchTab,
   applyUrlToTabs,
   buildUrlSearchParams,
+  tabLabel,
+  searchParamsWithoutBoot,
 } from "./app-context.mjs";
 import { relationPayloadFromForm } from "./relation-form.mjs";
 
@@ -161,3 +163,25 @@ function scrollActiveTabIntoView() {
   const active = $.tabstrip.querySelector(".chrome-tab[active]");
   if (active) active.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
 }
+
+function stripLauncherBootFromUrl() {
+  const next = searchParamsWithoutBoot(new URLSearchParams(window.location.search));
+  if (!next) return;
+  const suffix = next.toString() ? `?${next.toString()}` : "";
+  window.history.replaceState(window.history.state, "", `${window.location.pathname}${suffix}${window.location.hash}`);
+}
+
+export {
+  activeTab,
+  animateNewTabEntry,
+  ensureDefaultTabs,
+  firstSearchTab,
+  markActiveTabInStrip,
+  persistTabs,
+  saveActiveTabFromUi,
+  scrollActiveTabIntoView,
+  stripLauncherBootFromUrl,
+  updateActiveTabTitle,
+  updateBrowserUrlFromActiveTab,
+  updateTabstripLastMarkers,
+};

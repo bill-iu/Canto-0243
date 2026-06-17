@@ -40,3 +40,11 @@ async function postRelation(path, payload) {
   const body = await response.json().catch(() => ({}));
   return { response, body };
 }
+
+export {
+  applyRelationForm,
+  postRelation,
+  relationPayloadFromForm,
+  showRelationErr,
+  showRelationOk,
+};

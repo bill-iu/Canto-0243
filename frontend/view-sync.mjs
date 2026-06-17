@@ -32,3 +32,5 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   if (shouldRenderTabstrip) renderTabstrip();
   else requestAnimationFrame(scrollActiveTabIntoView);
 }
+
+export { syncViewPanels };

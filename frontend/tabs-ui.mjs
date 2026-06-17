@@ -301,3 +301,27 @@ function goHome() {
   updateBrowserUrlFromActiveTab(true);
   $.searchInput.focus();
 }
+
+export {
+  addSearchTab,
+  closeTab,
+  ensureActiveSearchTab,
+  goHome,
+  openSingletonViewTab,
+  renderTabstrip,
+  showGuide,
+  showRelation,
+  showSearch,
+};
+
+export {
+  addSearchTab,
+  closeTab,
+  ensureActiveSearchTab,
+  goHome,
+  openSingletonViewTab,
+  renderTabstrip,
+  showGuide,
+  showRelation,
+  showSearch,
+};
