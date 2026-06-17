@@ -27,31 +27,7 @@ export PORTABLE=1
 export ENV=local
 [[ -f .env.local ]] || cp -f env.portable .env.local
 
-HOST="${HOST:-127.0.0.1}"
-PORT="${PORT:-8000}"
-BASE_URL="http://${HOST}:${PORT}"
-URL="${BASE_URL}/frontend/index.html"
+export HOST="${HOST:-127.0.0.1}"
+export PORT="${PORT:-8000}"
 
-echo ""
-echo "啟動中... ${URL}"
-echo "關閉請按 Ctrl+C"
-echo ""
-
-"$RUN_PY" scripts/free_port.py --port "$PORT" --host "$HOST" || true
-
-PORT="$PORT" HOST="$HOST" "$RUN_PY" main.py &
-SERVER_PID=$!
-
-if ! "$RUN_PY" scripts/wait_for_url.py "${BASE_URL}/"; then
-  echo "[警告] 後端啟動逾時，仍嘗試打開瀏覽器…"
-fi
-
-if [[ "$(uname -s)" == "Darwin" ]]; then
-  open "$URL" >/dev/null 2>&1 || true
-elif command -v xdg-open >/dev/null 2>&1; then
-  xdg-open "$URL" >/dev/null 2>&1 || true
-fi
-
-"$RUN_PY" scripts/wait_for_url.py --gate "${BASE_URL}/ready" &
-
-wait "$SERVER_PID"
+exec "$RUN_PY" scripts/local_launch.py --portable --lang zh --wait-server --python "$RUN_PY" --root "$ROOT"

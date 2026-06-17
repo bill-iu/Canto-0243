@@ -9,7 +9,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py")
+RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py", "local_launch.py")
 
 
 def _venv_python(venv_dir: Path) -> Path:

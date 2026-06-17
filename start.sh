@@ -41,50 +41,22 @@ else
   pip install -r requirements.txt 2>/dev/null || pip install fastapi uvicorn sqlalchemy pydantic python-multipart
 fi
 
-pip install -q -r requirements.txt 2>/dev/null || pip install -q fastapi uvicorn sqlalchemy pydantic python-multipart
-
-HOST="${HOST:-127.0.0.1}"
-PORT="${PORT:-8000}"
-python scripts/free_port.py --port "$PORT" --host "$HOST" || true
-
-echo "🌐 正在啟動後端..."
-PORT="$PORT" HOST="$HOST" python main.py &
-SERVER_PID=$!
-
-BASE_URL="http://${HOST}:${PORT}"
-HTML_URL="${BASE_URL}/frontend/index.html"
-URL="${HTML_URL}?boot=$(date +%s)"
-
-if python scripts/wait_for_url.py "${HTML_URL}" --interval 0.1 --timeout 90; then
-  echo "🔗 正在打開前端..."
-  UNAME_S="$(uname -s)"
-  OPEN_BRANCH="none"
-  if [[ "$UNAME_S" == "Darwin" ]]; then
-    OPEN_BRANCH="darwin_open"
-    open "$URL" >/dev/null 2>&1 || true
-  elif command -v xdg-open >/dev/null 2>&1; then
-    OPEN_BRANCH="xdg_open"
-    xdg-open "$URL" >/dev/null 2>&1 || true
-  elif [[ "${OS:-}" == "Windows_NT" ]] || [[ "$UNAME_S" =~ MINGW|MSYS ]]; then
-    OPEN_BRANCH="cmd_start"
-    cmd //c start "" "$URL" || true
-  elif command -v start >/dev/null 2>&1; then
-    OPEN_BRANCH="msys_start"
-    start "$URL" || true
-  else
-    OPEN_BRANCH="manual"
-    echo "請手動打開：$URL"
+REQS="requirements.txt"
+STAMP=".venv-reqs.stamp"
+if [[ -f "$REQS" ]]; then
+  HASH="$(python -c "import hashlib, pathlib; print(hashlib.sha256(pathlib.Path('$REQS').read_bytes()).hexdigest()[:16])")"
+  if [[ ! -f "$STAMP" ]] || [[ "$(cat "$STAMP")" != "$HASH" ]]; then
+    pip install -q -r "$REQS" 2>/dev/null || pip install -q fastapi uvicorn sqlalchemy pydantic python-multipart
+    echo "$HASH" > "$STAMP"
   fi
-else
-  echo "⚠️  查韻介面尚未就緒，請稍後手動打開：$URL"
 fi
 
-python scripts/wait_for_url.py --gate "${BASE_URL}/ready" &
-python scripts/wait_for_url.py --ready --full "${BASE_URL}/ready" &
+export HOST="${HOST:-127.0.0.1}"
+export PORT="${PORT:-8000}"
 
-echo "✅ 已啟動（PID $SERVER_PID）"
-echo "後端：${BASE_URL}"
-echo "前端：$URL"
+LAUNCH=(python scripts/local_launch.py --tail-ready --no-wait-server)
 if [[ -n "${PORTABLE:-}" ]]; then
-  echo "標題應顯示：Canto-0243 (移動版)"
+  LAUNCH+=(--portable --wait-server --lang zh)
 fi
+
+"${LAUNCH[@]}" &
