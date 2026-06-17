@@ -41,6 +41,30 @@ describe("frontend ESM public API", () => {
     assert.match(src, /\nlet lastReadySnapshot\s*=/);
   });
 
+  const MUTABLE_SHELL_KEYS = [
+    "tabState",
+    "chromeLayout",
+    "currentMode",
+    "last0243Mode",
+    "isSearching",
+    "appSearchReady",
+    "pendingNewTabAnimation",
+  ];
+
+  it("mutable app state is assigned via shell, not imported live bindings", () => {
+    assert.match(readModule("app-context.mjs"), /export const shell = \{/);
+    for (const name of readdirSync(root).filter((f) => f.endsWith(".mjs") && f !== "app-context.mjs")) {
+      const src = readModule(name);
+      for (const key of MUTABLE_SHELL_KEYS) {
+        assert.doesNotMatch(
+          src,
+          new RegExp(`(?<!shell\\.)\\b${key}\\s*=`),
+          `${name} must not assign to imported ${key}; use shell.${key}`,
+        );
+      }
+    }
+  });
+
   it("gate.mjs exports gate loop entrypoints", () => {
     assertExports("gate.mjs", ["waitForPreloadReady", "wordCacheProgress", "setGateInkProgress"]);
   });

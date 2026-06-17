@@ -1,10 +1,7 @@
 ﻿import {
   MODE_META,
   SEARCH_RING_BLUR_MS,
-  currentMode,
-  last0243Mode,
-  tabState,
-  chromeLayout,
+  shell,
   applyAppTitle,
   parseUrlSearchParams,
   createGuideTab,
@@ -187,7 +184,7 @@ document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
 });
 
 document.querySelectorAll("[data-query]").forEach((btn) => {
-  btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || currentMode));
+  btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || shell.currentMode));
 });
 
 document.addEventListener("click", (event) => {
@@ -207,21 +204,21 @@ document.addEventListener("keydown", (event) => {
   }
   if (key === "w") {
     event.preventDefault();
-    closeTab(tabState.activeId);
+    closeTab(shell.tabState.activeId);
   }
 });
 
 window.addEventListener("popstate", (event) => {
   const state = event.state || {};
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
-  currentMode = MODE_META[state.mode || parsed.mode] ? (state.mode || parsed.mode) : "m1";
+  shell.currentMode = MODE_META[state.mode || parsed.mode] ? (state.mode || parsed.mode) : "m1";
   updateModeLabel();
 
   if (state.tabId) {
-    const tab = tabState.tabs.find((t) => t.id === state.tabId);
+    const tab = shell.tabState.tabs.find((t) => t.id === state.tabId);
     if (tab) {
       if (tab.view === VIEW.SEARCH && (state.query || parsed.q)) tab.q = state.query || parsed.q;
-      tabState = { ...tabState, activeId: tab.id };
+      shell.tabState = { ...shell.tabState, activeId: tab.id };
       persistTabs();
       syncViewPanels();
       if (tab.view === VIEW.SEARCH && tab.q) searchDict(false, true);
@@ -255,30 +252,30 @@ window.addEventListener("popstate", (event) => {
 
   $.modeMenu.hidden = true;
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
-  currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
-  if (currentMode === "m1" || currentMode === "m2") {
-    last0243Mode = currentMode;
+  shell.currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
+  if (shell.currentMode === "m1" || shell.currentMode === "m2") {
+    shell.last0243Mode = shell.currentMode;
   }
   updateModeLabel();
   wireModeMenuKeyboard();
   ensureDefaultTabs(parsed);
 
-  const urlTab = tabState.tabs.find((t) => {
+  const urlTab = shell.tabState.tabs.find((t) => {
     if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
     if (parsed.view === VIEW.RELATION) return t.view === VIEW.RELATION;
     return t.view === VIEW.SEARCH;
   });
-  if (urlTab) tabState = { ...tabState, activeId: urlTab.id };
+  if (urlTab) shell.tabState = { ...shell.tabState, activeId: urlTab.id };
   if (parsed.view === VIEW.SEARCH && parsed.q) {
-    const searchTab = tabState.tabs.find((t) => t.id === tabState.activeId && t.view === VIEW.SEARCH)
-      || tabState.tabs.find((t) => t.view === VIEW.SEARCH);
+    const searchTab = shell.tabState.tabs.find((t) => t.id === shell.tabState.activeId && t.view === VIEW.SEARCH)
+      || shell.tabState.tabs.find((t) => t.view === VIEW.SEARCH);
     if (searchTab) {
       searchTab.q = parsed.q;
-      tabState = { ...tabState, activeId: searchTab.id };
+      shell.tabState = { ...shell.tabState, activeId: searchTab.id };
     }
   }
 
-  chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
+  shell.chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
   syncViewPanels();
   persistTabs();
 

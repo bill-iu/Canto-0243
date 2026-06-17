@@ -4,10 +4,7 @@ import {
   $,
   MODE_META,
   PAGE_SIZE,
-  currentMode,
-  last0243Mode,
-  isSearching,
-  appSearchReady,
+  shell,
   searchCache,
   VIEW,
 } from "./app-context.mjs";
@@ -27,20 +24,20 @@ function shouldShowLoadMore(tab) {
 }
 
 function setButtonLoading(loading) {
-  isSearching = loading;
-  $.searchBtn.disabled = loading || !appSearchReady;
+  shell.isSearching = loading;
+  $.searchBtn.disabled = loading || !shell.appSearchReady;
   $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
 }
 
 function updateModeLabel() {
-  const meta = MODE_META[currentMode] || MODE_META.m1;
+  const meta = MODE_META[shell.currentMode] || MODE_META.m1;
   $.currentModeLabel.innerHTML =
     `<span class="mode-trigger-primary">${meta.title}</span><span class="mode-trigger-note">${meta.note}</span>`;
   $.modeReadout.textContent = `目前模式：${meta.readout}`;
   $.searchInput.placeholder = meta.placeholder;
   document.querySelectorAll("[data-mode]").forEach((btn) => {
     if (!btn.classList.contains("mode-option")) return;
-    btn.setAttribute("aria-checked", btn.dataset.mode === currentMode ? "true" : "false");
+    btn.setAttribute("aria-checked", btn.dataset.mode === shell.currentMode ? "true" : "false");
   });
 }
 
@@ -106,10 +103,10 @@ function toggleMenu(open, { returnFocus = false } = {}) {
 
 function switchMode(mode, { runSearch = true, replace = true } = {}) {
   if (!MODE_META[mode]) return;
-  if (mode === "syn" && (currentMode === "m1" || currentMode === "m2")) {
-    last0243Mode = currentMode;
+  if (mode === "syn" && (shell.currentMode === "m1" || shell.currentMode === "m2")) {
+    shell.last0243Mode = shell.currentMode;
   }
-  currentMode = mode;
+  shell.currentMode = mode;
   updateModeLabel();
   toggleMenu(false);
 
@@ -123,7 +120,7 @@ function switchMode(mode, { runSearch = true, replace = true } = {}) {
   }
 }
 
-function runExample(query, mode = currentMode) {
+function runExample(query, mode = shell.currentMode) {
   switchMode(mode, { runSearch: false, replace: true });
   const tab = ensureActiveSearchTab();
   if (!tab) return;
@@ -171,22 +168,22 @@ function shuffleResults() {
 }
 
 function maybeModeRedirectForRelationSyntax(input, tab) {
-  if (currentMode !== "syn" || !isRelationSyntaxQuery(input)) return;
-  const target = MODE_META[last0243Mode] ? last0243Mode : "m1";
+  if (shell.currentMode !== "syn" || !isRelationSyntaxQuery(input)) return;
+  const target = MODE_META[shell.last0243Mode] ? shell.last0243Mode : "m1";
   tab.offset = 0;
   tab.redirectHint = modeRedirectHint(target);
-  if (currentMode !== target) {
-    currentMode = target;
+  if (shell.currentMode !== target) {
+    shell.currentMode = target;
     updateModeLabel();
   }
 }
 
 function applyEffectiveModeFromResponse(res, searchHint) {
   const effectiveMode = res.headers.get("X-Effective-Mode");
-  if (!effectiveMode || !MODE_META[effectiveMode] || effectiveMode === currentMode) {
+  if (!effectiveMode || !MODE_META[effectiveMode] || effectiveMode === shell.currentMode) {
     return searchHint;
   }
-  currentMode = effectiveMode;
+  shell.currentMode = effectiveMode;
   updateModeLabel();
   updateBrowserUrlFromActiveTab(true);
   return searchHint || modeRedirectHint(effectiveMode);
@@ -203,9 +200,9 @@ function renderSearchResults(data, total = null) {
     $.results.appendChild(banner);
     tab.redirectHint = null;
   }
-  $.results.className = currentMode === "syn" ? "syn-container" : "results";
+  $.results.className = shell.currentMode === "syn" ? "syn-container" : "results";
 
-  if (currentMode === "syn") {
+  if (shell.currentMode === "syn") {
     const syns = data.filter((r) => r.relation === "syn");
     const ants = data.filter((r) => r.relation === "ant");
     const related = data.filter((r) => r.relation === "semantic_related");
@@ -244,11 +241,11 @@ function renderSearchResults(data, total = null) {
     frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
   });
   $.results.appendChild(frag);
-  $.stats.textContent = `${deduped.length} 個結果（${MODE_META[currentMode].statsLabel}）`;
+  $.stats.textContent = `${deduped.length} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
   if (total != null && total > deduped.length) {
-    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${MODE_META[currentMode].statsLabel}）`;
+    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
   } else if (total != null) {
-    $.stats.textContent = `${total} 個結果（${MODE_META[currentMode].statsLabel}）`;
+    $.stats.textContent = `${total} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
   }
   updateShuffleButton();
 }
@@ -306,8 +303,8 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
-  if (isSearching) return;
-  if (!appSearchReady) return;
+  if (shell.isSearching) return;
+  if (!shell.appSearchReady) return;
   const tab = ensureActiveSearchTab();
   if (!tab) return;
   showSearch({ replace: true });
@@ -339,7 +336,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
   if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(true);
 
-  const cacheKey = `${currentMode}:${input}:${tab.offset || 0}`;
+  const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {
     const cached = searchCache.get(cacheKey);
     if (Array.isArray(cached)) {
@@ -362,9 +359,9 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     searchCache.delete(cacheKey);
   }
 
-  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(currentMode)}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
-  if (currentMode === "syn" && MODE_META[last0243Mode]) {
-    url += `&fallback_0243_mode=${encodeURIComponent(last0243Mode)}`;
+  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
+  if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
+    url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }
 
   try {

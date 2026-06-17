@@ -1,7 +1,6 @@
 import {
   $,
-  appSearchReady,
-  isSearching,
+  shell,
   setAppSearchReady,
   REDUCED_MOTION,
   LANDING_VARIANT,
@@ -123,7 +122,7 @@ function showWarmupBadgeDone() {
 }
 
 function applyWarmupBadgeFromReady(data) {
-  if (!data || !appSearchReady || warmupDoneShown) return;
+  if (!data || !shell.appSearchReady || warmupDoneShown) return;
   if (data.startup_complete) {
     if (warmupTailShown) showWarmupBadgeDone();
     else hideWarmupBadge();
@@ -216,7 +215,7 @@ async function awaitGateBrandBeat(playLanding) {
 
 function setSearchControlsEnabled(enabled) {
   $.searchInput.disabled = !enabled;
-  $.searchBtn.disabled = !enabled || isSearching;
+  $.searchBtn.disabled = !enabled || shell.isSearching;
   if ($.shuffleBtn) $.shuffleBtn.disabled = !enabled;
 }
 

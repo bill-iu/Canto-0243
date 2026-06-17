@@ -3,9 +3,7 @@ import { TAB_GEOMETRY_SVG } from "./tab-geometry.mjs";
 import {
   $,
   VIEW,
-  tabState,
-  chromeLayout,
-  pendingNewTabAnimation,
+  shell,
   createSearchTab,
   createGuideTab,
   createRelationTab,
@@ -18,7 +16,7 @@ import {
 import {
   activeTab, firstSearchTab, persistTabs, saveActiveTabFromUi,
   updateBrowserUrlFromActiveTab, markActiveTabInStrip, animateNewTabEntry,
-  updateTabstripLastMarkers, scrollActiveTabIntoView,
+  updateTabstripLastMarkers, scrollActiveTabIntoView, applyActiveNeighborDividerHides,
 } from "./tabs-core.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import {
@@ -26,12 +24,12 @@ import {
 } from "./search-workbench.mjs";
 
 function renderTabstrip() {
-  const tabsHtml = tabState.tabs
+  const tabsHtml = shell.tabState.tabs
     .map((t, idx) => {
-      const isActive = t.id === tabState.activeId;
-      const isLast = idx === tabState.tabs.length - 1;
+      const isActive = t.id === shell.tabState.activeId;
+      const isLast = idx === shell.tabState.tabs.length - 1;
       const closeBtn =
-        tabState.tabs.length > 1
+        shell.tabState.tabs.length > 1
           ? `<button type="button" class="chrome-tab-close" data-close="${t.id}" aria-label="關閉分頁"></button>`
           : "";
       const label = tabLabel(t);
@@ -54,28 +52,28 @@ function renderTabstrip() {
       <div class="chrome-tab-add-hit" role="button" aria-label="新查詢分頁" title="Alt+N">+</div>
     </div>`;
   wireTabstrip();
-  if (chromeLayout) {
-    chromeLayout.layout();
+  if (shell.chromeLayout) {
+    shell.chromeLayout.layout();
     setupTabDrag();
   }
-  if (pendingNewTabAnimation) {
-    const { tabId } = pendingNewTabAnimation;
-    pendingNewTabAnimation = null;
+  if (shell.pendingNewTabAnimation) {
+    const { tabId } = shell.pendingNewTabAnimation;
+    shell.pendingNewTabAnimation = null;
     animateNewTabEntry(tabId);
   }
   requestAnimationFrame(scrollActiveTabIntoView);
 }
 
 function setupTabDrag() {
-  if (!chromeLayout || typeof Draggabilly === "undefined") return;
-  chromeLayout.setupDraggabilly({
+  if (!shell.chromeLayout || typeof Draggabilly === "undefined") return;
+  shell.chromeLayout.setupDraggabilly({
     onPointerDown(id) {
       activateTabOnPress(id);
     },
     onReorderEnd(orderedIds) {
-      const next = reorderTabsByIds(tabState, orderedIds);
-      if (next === tabState) return;
-      tabState = next;
+      const next = reorderTabsByIds(shell.tabState, orderedIds);
+      if (next === shell.tabState) return;
+      shell.tabState = next;
       persistTabs();
       updateTabstripLastMarkers();
     },
@@ -125,7 +123,7 @@ function wireTabstripKeyboard() {
     else if (event.key === "End") nextIdx = tabs.length - 1;
     else if (
       (event.key === "Delete" || event.key === "Backspace")
-      && tabState.tabs.length > 1
+      && shell.tabState.tabs.length > 1
       && !event.altKey
       && !event.ctrlKey
       && !event.metaKey
@@ -173,9 +171,9 @@ function wireTabstripHoverDividers() {
 }
 
 function activateTabOnPress(id) {
-  if (tabState.activeId === id) return;
+  if (shell.tabState.activeId === id) return;
   saveActiveTabFromUi();
-  tabState = { ...tabState, activeId: id };
+  shell.tabState = { ...shell.tabState, activeId: id };
   persistTabs();
   markActiveTabInStrip(id);
   syncViewPanels({ renderTabstrip: false });
@@ -187,12 +185,12 @@ function activateTabOnPress(id) {
 
 function addSearchTab() {
   saveActiveTabFromUi();
-  const tab = createSearchTab({ id: tabState.nextTabId });
-  pendingNewTabAnimation = { tabId: tab.id };
-  tabState = {
+  const tab = createSearchTab({ id: shell.tabState.nextTabId });
+  shell.pendingNewTabAnimation = { tabId: tab.id };
+  shell.tabState = {
     activeId: tab.id,
-    nextTabId: tabState.nextTabId + 1,
-    tabs: [...tabState.tabs, tab],
+    nextTabId: shell.tabState.nextTabId + 1,
+    tabs: [...shell.tabState.tabs, tab],
   };
   persistTabs();
   syncViewPanels();
@@ -200,17 +198,17 @@ function addSearchTab() {
 }
 
 function closeTab(id) {
-  if (tabState.tabs.length <= 1) return;
+  if (shell.tabState.tabs.length <= 1) return;
   saveActiveTabFromUi();
-  tabState = closeTabInState(tabState, id);
+  shell.tabState = closeTabInState(shell.tabState, id);
   persistTabs();
   syncViewPanels();
 }
 
 function selectTab(id) {
-  if (tabState.activeId === id) return;
+  if (shell.tabState.activeId === id) return;
   saveActiveTabFromUi();
-  tabState = { ...tabState, activeId: id };
+  shell.tabState = { ...shell.tabState, activeId: id };
   persistTabs();
   syncViewPanels();
   const tab = activeTab();
@@ -221,9 +219,9 @@ function selectTab(id) {
 
 function openSingletonViewTab(view, createTab) {
   saveActiveTabFromUi();
-  tabState = openSingletonView(tabState, view, createTab);
-  const singleton = findTabByView(tabState.tabs, view);
-  if (singleton) tabState = { ...tabState, activeId: singleton.id };
+  shell.tabState = openSingletonView(shell.tabState, view, createTab);
+  const singleton = findTabByView(shell.tabState.tabs, view);
+  if (singleton) shell.tabState = { ...shell.tabState, activeId: singleton.id };
   persistTabs();
   syncViewPanels();
   toggleMenu(false);
@@ -238,7 +236,7 @@ function openSingletonViewTab(view, createTab) {
 
 function focusSearchTab(tab) {
   if (!tab || tab.view !== VIEW.SEARCH) return;
-  tabState = { ...tabState, activeId: tab.id };
+  shell.tabState = { ...shell.tabState, activeId: tab.id };
   persistTabs();
   syncViewPanels();
   $.searchInput.focus();

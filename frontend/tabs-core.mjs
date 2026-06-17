@@ -1,8 +1,7 @@
 import {
   $,
   VIEW,
-  tabState,
-  currentMode,
+  shell,
   SESSION_KEY,
   serializeSession,
   deserializeSession,
@@ -15,16 +14,16 @@ import {
 import { relationPayloadFromForm } from "./relation-form.mjs";
 
 function activeTab() {
-  return tabState.tabs.find((t) => t.id === tabState.activeId) || tabState.tabs[0];
+  return shell.tabState.tabs.find((t) => t.id === shell.tabState.activeId) || shell.tabState.tabs[0];
 }
 
 function firstSearchTab() {
-  return tabState.tabs.find((t) => t.view === VIEW.SEARCH) || null;
+  return shell.tabState.tabs.find((t) => t.view === VIEW.SEARCH) || null;
 }
 
 function persistTabs() {
   try {
-    sessionStorage.setItem(SESSION_KEY, serializeSession(tabState));
+    sessionStorage.setItem(SESSION_KEY, serializeSession(shell.tabState));
   } catch {
     /* ignore quota */
   }
@@ -34,7 +33,7 @@ function loadTabsFromSession() {
   try {
     const raw = sessionStorage.getItem(SESSION_KEY);
     if (!raw) return false;
-    tabState = deserializeSession(raw);
+    shell.tabState = deserializeSession(raw);
     return true;
   } catch {
     return false;
@@ -43,9 +42,9 @@ function loadTabsFromSession() {
 
 function ensureDefaultTabs(parsed) {
   if (loadTabsFromSession()) return;
-  tabState = applyUrlToTabs(null, parsed);
-  if (!tabState.tabs.length) {
-    tabState = { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
+  shell.tabState = applyUrlToTabs(null, parsed);
+  if (!shell.tabState.tabs.length) {
+    shell.tabState = { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
   }
 }
 
@@ -62,14 +61,14 @@ function saveActiveTabFromUi() {
 function updateBrowserUrlFromActiveTab(replace = false) {
   const tab = activeTab();
   if (!tab) return;
-  const params = buildUrlSearchParams(tab, currentMode);
+  const params = buildUrlSearchParams(tab, shell.currentMode);
   const suffix = params.toString() ? `?${params.toString()}` : "";
   const url = `${window.location.pathname}${suffix}`;
   const state = {
     tabId: tab.id,
     view: tab.view,
     query: tab.view === VIEW.SEARCH ? tab.q || "" : "",
-    mode: currentMode,
+    mode: shell.currentMode,
   };
   if (replace) window.history.replaceState(state, "", url);
   else window.history.pushState(state, "", url);
@@ -117,7 +116,7 @@ function updateActiveTabTitle() {
   const handle = row.querySelector(`[data-tab="${tab.id}"]`);
   if (handle) {
     handle.setAttribute("aria-label", label);
-    handle.setAttribute("aria-selected", String(tab.id === tabState.activeId));
+    handle.setAttribute("aria-selected", String(tab.id === shell.tabState.activeId));
   }
 }
 
@@ -174,6 +173,7 @@ function stripLauncherBootFromUrl() {
 export {
   activeTab,
   animateNewTabEntry,
+  applyActiveNeighborDividerHides,
   ensureDefaultTabs,
   firstSearchTab,
   markActiveTabInStrip,

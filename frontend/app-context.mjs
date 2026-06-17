@@ -79,16 +79,19 @@ export const GATE_BRAND_INTRO_MS = 700;
 export const GATE_NEAR_DONE_PCT = 85;
 export const GATE_INK_CLIP_MAX = 200;
 
-export let currentMode = "m1";
-export let last0243Mode = "m1";
-export let isSearching = false;
-export let appSearchReady = false;
+// ponytail: const shell — importers cannot assign to export let live bindings in browsers
+export const shell = {
+  currentMode: "m1",
+  last0243Mode: "m1",
+  isSearching: false,
+  appSearchReady: false,
+  tabState: { activeId: 1, nextTabId: 2, tabs: [] },
+  chromeLayout: null,
+  pendingNewTabAnimation: null,
+};
 export function setAppSearchReady(ready) {
-  appSearchReady = ready;
+  shell.appSearchReady = ready;
 }
-export let tabState = { activeId: 1, nextTabId: 2, tabs: [] };
-export let chromeLayout = null;
-export let pendingNewTabAnimation = null;
 
 export const $ = {
   homeBtn: document.getElementById("homeBtn"),
