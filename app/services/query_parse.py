@@ -20,7 +20,6 @@ from app.services.word_query_parser import (
     parse_code_ref_rhyme_contradiction_hint,
     parse_double_wildcard_initial_query,
     parse_double_wildcard_rhyme_query,
-    parse_mask_query,
     parse_relation_syntax,
     parse_rhyme_anchor_query,
     parse_prefix_wildcard_equals_query,
@@ -680,8 +679,6 @@ def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
     from app.services.query_match_spec_registry import build_match_spec_for_parsed
 
     parsed = _rewrite_mask_family_aliases(parsed)
-    if isinstance(parsed, JyutpingAnchorQuery) and parsed.dual_phoneme:
-        return None
     return build_match_spec_for_parsed(parsed)
 
 

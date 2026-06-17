@@ -9,7 +9,12 @@ from app.domain.lexicon.ranking import literal_priority_sort_key
 from app.models.word import Word
 from app.services.position_match.spec import CandidateSource, MatchSpec, SlotConstraint
 from app.services.word_db_filters import apply_code_filter, length_filter
-from app.services.word_query_parser import matches_mask_literal_chars
+from app.services.position_match.mask_adapter import (
+    mask_char_glob_pattern,
+    mask_fixed_literal_prefix,
+    matches_mask_literal_chars,
+    required_codes_from_spec,
+)
 from app.services.word_serializer import get_word_jyutping, get_word_sort_code, get_word_text
 from app.utils.jyutping_codec import get_code_variants
 from app.utils.word_cache import (
@@ -99,6 +104,7 @@ class MaskWildcardCandidateSource:
     mask: str
     mode: str = "m1"
     query_code: Optional[str] = None
+    required_codes: Optional[list[Optional[str]]] = None
 
     def get_candidates(
         self,
@@ -107,11 +113,9 @@ class MaskWildcardCandidateSource:
         code: Optional[str] = None,
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
-        from app.services.word_query_parser import mask_char_glob_pattern, mask_fixed_literal_prefix, parse_mask_query
-
         effective_mode = mode or self.mode
         effective_code = code if code is not None else self.query_code
-        _, required_codes, _ = parse_mask_query(self.mask)
+        required_codes = self.required_codes or [None] * len(self.mask)
 
         indexed = get_mask_index_candidates(length, self.mask)
         if indexed is not None:
@@ -152,10 +156,7 @@ def get_length_candidates(db, width: int, mask: str):
         candidates = get_words_for_length(width)
     if candidates:
         return [w for w in candidates if matches_mask_literal_chars(get_word_text(w), mask)], True
-    from app.services.word_query_parser import mask_char_glob_pattern as _mask_glob
-    from app.services.word_query_parser import mask_fixed_literal_prefix
-
-    glob_pat = _mask_glob(mask)
+    glob_pat = mask_char_glob_pattern(mask)
     query = db.query(Word).filter(
         length_filter(width),
         Word.char.op("GLOB")(glob_pat),
@@ -357,7 +358,11 @@ def _resolve_mask_family_source(
     if spec.literal_priority and spec.mask:
         effective_code = query_code or spec.code_prefix
         source = MaskWildcardCandidateSource(
-            db, spec.mask, mode=mode, query_code=effective_code
+            db,
+            spec.mask,
+            mode=mode,
+            query_code=effective_code,
+            required_codes=required_codes_from_spec(spec),
         )
         literal_positions = spec.extra.get("literal_positions", [])
         sort_key = lambda w: literal_priority_sort_key(w, literal_positions)

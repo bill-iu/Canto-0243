@@ -26,6 +26,7 @@ from app.services.query_parse import (
     WildcardCodeAnchorQuery,
     _build_jyutping_anchor_match_spec,
     build_equals_match_spec,
+    build_jyutping_dual_match_specs,
 )
 from app.services.word_query_parser import build_mask_from_slots, parse_mask_query
 
@@ -155,9 +156,13 @@ def _spec_triple_rhyme_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.JYUTPING_ANCHOR
     q = parsed  # type: JyutpingAnchorQuery
-    # ponytail: dual 雙列仍由 dispatch 特判；Phase 2 收斂
     if q.dual_phoneme:
-        return None
+        initial, final = build_jyutping_dual_match_specs(q)
+        carrier = MatchSpec(width=q.width, code_prefix=q.code_prefix)
+        carrier.extra["dual_phoneme"] = True
+        carrier.extra["dual_initial_spec"] = initial
+        carrier.extra["dual_final_spec"] = final
+        return carrier
     return _build_jyutping_anchor_match_spec(q)
 
 

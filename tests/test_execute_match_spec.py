@@ -70,6 +70,43 @@ class ExecuteMatchSpecTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_dual_phoneme_via_normalize_and_execute(self):
+        session = self._session_with_words(
+            [
+                Word(
+                    id=1,
+                    char="門人",
+                    code="34",
+                    jyutping="mun4 jan4",
+                    finals='["un","an"]',
+                    initials='["m","j"]',
+                    length=2,
+                ),
+                Word(
+                    id=2,
+                    char="唔人",
+                    code="34",
+                    jyutping="m4 jan4",
+                    finals='[""]',
+                    initials='["m"]',
+                    length=2,
+                ),
+            ]
+        )
+        try:
+            spec = normalize_to_match_spec(parse_query("3m4"))
+            self.assertTrue(spec.extra.get("dual_phoneme"))
+            result = execute_match_spec(
+                spec, code=None, mode="m1", limit=20, offset=0, db=session
+            )
+            by_dim: dict[str, list[str]] = {}
+            for row in result.items:
+                by_dim.setdefault(row.get("anchor_dimension"), []).append(row["char"])
+            self.assertIn("門人", by_dim.get("initial", []))
+            self.assertIn("唔人", by_dim.get("final", []))
+        finally:
+            session.close()
+
     def test_dispatch_uses_execute_match_spec_path(self):
         reset_word_cache_for_tests()
         session = self._session_with_words(

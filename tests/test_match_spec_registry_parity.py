@@ -44,6 +44,7 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
             ("就=", {"width": 1, "anchor": "就"}),
             ("?*港=?", {"width": 3, "anchor": "港"}),
             ("?yut?", {"width": 3, "jyutping_slot": True}),
+            ("3m4", {"width": 2, "dual_phoneme": True}),
             ("23就", {"width": 2, "hybrid_ref": "就"}),
             ("門0", {"width": 2, "literal_priority": True}),
             ("33~~你", {"width": 2, "compound_kind": "syn", "code_prefix": "33"}),
@@ -86,6 +87,10 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
                     self.assertTrue(
                         kinds & {"rhyme_letters", "syllable_letters", "initial_letters"}
                     )
+                if expected.get("dual_phoneme"):
+                    self.assertTrue(spec.extra.get("dual_phoneme"))
+                    self.assertIn("dual_initial_spec", spec.extra)
+                    self.assertIn("dual_final_spec", spec.extra)
 
     def test_alias_rewrite_before_registry(self):
         from app.services.query_parse import HybridTailEqualsAliasQuery, normalize_to_match_spec

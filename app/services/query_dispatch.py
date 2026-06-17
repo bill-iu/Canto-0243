@@ -8,18 +8,16 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
-from app.services.position_match import execute_dual_phoneme_anchor_specs, execute_match_spec
+from app.services.position_match import execute_match_spec
 from app.services.query_parse import (
     DigitCodeQuery,
     JYUTPING_ANCHOR_INVALID_HINT,
-    JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     ParsedQuery,
     QueryKind,
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
-    build_jyutping_dual_match_specs,
     is_relation_syntax_query,
     mode_redirect_hint,
     normalize_and_parse,
@@ -59,19 +57,6 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
-    if isinstance(parsed, JyutpingAnchorQuery) and parsed.dual_phoneme:
-        initial_spec, final_spec = build_jyutping_dual_match_specs(parsed)
-        result = execute_dual_phoneme_anchor_specs(
-            initial_spec,
-            final_spec,
-            code=ctx.code,
-            mode=ctx.mode,
-            limit=ctx.limit,
-            offset=ctx.offset,
-            db=ctx.db,
-        )
-        return SearchResult(items=result.items, cache_path=result.cache_path)
-
     spec = normalize_to_match_spec(parsed)
     if spec is None:
         return SearchResult(items=[])

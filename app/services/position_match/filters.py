@@ -7,7 +7,7 @@ from typing import Any, Optional
 from app.domain.lexicon.reference_reading import anchor_phoneme_options
 from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
 from app.services.position_match.spec import MatchSpec
-from app.services.word_query_parser import matches_mask_literal_chars
+from app.services.position_match.mask_adapter import matches_mask_literal_chars
 from app.services.word_serializer import (
     get_rhyme_finals,
     get_word_jyutping,

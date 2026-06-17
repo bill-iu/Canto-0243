@@ -329,6 +329,17 @@ def execute_match_spec(
     if spec is None or spec.width == 0:
         return MaskFamilySearchResult(items=[])
 
+    if spec.extra.get("dual_phoneme"):
+        return execute_dual_phoneme_anchor_specs(
+            spec.extra["dual_initial_spec"],
+            spec.extra["dual_final_spec"],
+            code=code,
+            mode=mode,
+            limit=limit,
+            offset=offset,
+            db=db,
+        )
+
     if spec.ref_literal:
         from app.services.word_serializer import deduplicate_words, serialize_page
 

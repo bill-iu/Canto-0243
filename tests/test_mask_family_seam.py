@@ -26,7 +26,6 @@ FORBIDDEN = (
 
 ALLOWED = (
     "execute_match_spec",
-    "execute_dual_phoneme_anchor_specs",
     "normalize_to_match_spec",
     "_mask_family_search_result",
     "route_kind_for",
