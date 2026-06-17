@@ -313,15 +313,3 @@ export {
   showRelation,
   showSearch,
 };
-
-export {
-  addSearchTab,
-  closeTab,
-  ensureActiveSearchTab,
-  goHome,
-  openSingletonViewTab,
-  renderTabstrip,
-  showGuide,
-  showRelation,
-  showSearch,
-};
