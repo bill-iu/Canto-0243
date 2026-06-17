@@ -10,6 +10,7 @@ from app.database import Base
 from app.models.word import Word
 from app.services.position_match.engine import PositionMatchEngine
 from app.services.position_match.filters import apply_match_spec
+from app.services.position_match.spec import get_equals_span
 from app.services.position_match.sources import get_candidates_for_length
 from app.services.query_parse import normalize_and_parse, normalize_to_match_spec
 from app.services.word_serializer import get_word_text
@@ -26,7 +27,7 @@ class ApplyMatchSpecPipelineTests(unittest.TestCase):
         return session
 
     def _rows_for_spec(self, spec, session):
-        if spec.ref_literal:
+        if get_equals_span(spec):
             return apply_match_spec(spec, [], session, "m1")
         candidates, _ = get_candidates_for_length(
             session, spec.width, code=spec.code_prefix, mode="m1"

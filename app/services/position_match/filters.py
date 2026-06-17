@@ -6,7 +6,7 @@ from typing import Any, Optional
 
 from app.domain.lexicon.reference_reading import anchor_phoneme_options
 from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
-from app.services.position_match.spec import MatchSpec
+from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.position_match.mask_adapter import matches_mask_literal_chars
 from app.services.word_serializer import (
     get_rhyme_finals,
@@ -412,22 +412,24 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     from app.services.word_db_filters import apply_code_filter, length_filter
     from app.utils.json_helpers import load_json_list
 
-    if not spec.ref_literal:
+    if not get_equals_span(spec):
         return []
 
-    is_final = spec.ref_dimension == "final"
+    span = get_equals_span(spec)
+    assert span is not None
+    is_final = span.dimension == "final"
     dimension = "final" if is_final else "initial"
     prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
 
     if prefix_wildcard:
         target_parts = suffix_aligned_ref_phoneme_parts(
-            spec.ref_literal, dimension, db, allow_inject=True,
+            span.ref_literal, dimension, db, allow_inject=True,
         )
         if not target_parts:
             return []
         target = None
     else:
-        target = equals_authoritative_row(spec.ref_literal, db, allow_inject=True)
+        target = equals_authoritative_row(span.ref_literal, db, allow_inject=True)
         if not target:
             return []
         target_parts = (
@@ -442,7 +444,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     query = apply_code_filter(query, full_code, mode)
     query = query.filter(length_filter(spec.width))
 
-    if spec.whole_word_phoneme_match:
+    if span.whole_word:
         return _equals_whole_word_matches(
             spec,
             db,
@@ -463,10 +465,10 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         if matches_equals_phoneme_span(
             word,
             target_parts,
-            spec.ref_start_pos,
-            phoneme_anchor_only=spec.phoneme_anchor_only,
-            ref_literal=spec.ref_literal,
-            dimension=spec.ref_dimension,
+            span.start_pos,
+            phoneme_anchor_only=span.phoneme_anchor_only,
+            ref_literal=span.ref_literal,
+            dimension=span.dimension,
         )
     ]
 
@@ -507,7 +509,7 @@ def apply_match_spec(
     mode: str = "m1",
 ) -> list[Any]:
     """MatchSpec 單一過濾管線（equals／hybrid／slot；ADR-0004 #6）。"""
-    if spec.ref_literal:
+    if get_equals_span(spec):
         return query_words_by_equals_spec(spec, db, mode)
     if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
         return filter_hybrid_ref_candidates(candidates, spec, mode, db)

@@ -47,6 +47,7 @@ def is_framed_equals_query(q: str) -> bool:
 def build_equals_match_spec(q: str):
     """查詢字串 → 等號 MatchSpec（純函式，無 DB）。語意見 CONTEXT § 碼夾等號查詢。"""
     from app.services.position_match import MatchSpec
+    from app.services.position_match.spec import EqualsSpan
 
     match = re.match(r"^(\d*)(=)?([一-龥]+)?(=)?(\d*)$", q)
     if not match:
@@ -64,12 +65,15 @@ def build_equals_match_spec(q: str):
     start_pos = max(0, len(left_code) - target_length)
     full_code = left_code + right_code
 
+    span = EqualsSpan(
+        ref_literal=target_str,
+        start_pos=start_pos,
+        dimension="final" if right_equal else "initial",
+        phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
+        whole_word=(start_pos == 0 and target_length == expected_length),
+    )
     return MatchSpec(
         width=expected_length,
         code_prefix=full_code if full_code else None,
-        ref_literal=target_str,
-        ref_start_pos=start_pos,
-        ref_dimension="final" if right_equal else "initial",
-        phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
-        whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
+        extra={"equals_span": span},
     )

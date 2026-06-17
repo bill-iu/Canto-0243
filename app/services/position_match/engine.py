@@ -14,6 +14,7 @@ from app.services.position_match.spec import (
     CandidateSource,
     MaskFamilySearchResult,
     MatchSpec,
+    get_equals_span,
 )
 
 
@@ -158,7 +159,7 @@ def execute_match_spec(
             db=db,
         )
 
-    if spec.ref_literal:
+    if get_equals_span(spec):
         filtered = apply_match_spec(spec, [], db, mode)
         items = serialize_page(
             sort_search_results(deduplicate_words(filtered)),

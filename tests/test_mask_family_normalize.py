@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import unittest
 
+from app.services.position_match.spec import get_equals_span
 from app.services.query_parse import (
     EqualsQuery,
     HybridCodeQuery,
@@ -27,7 +28,7 @@ class NormalizeToMatchSpecTests(unittest.TestCase):
         for q in ("香港=", "=香港", "2=我3", "34=我"):
             spec = build_equals_match_spec(q)
             self.assertIsNotNone(spec)
-            self.assertTrue(spec.ref_literal)
+            self.assertIsNotNone(get_equals_span(spec))
 
     def test_mask_query_spec_width(self):
         spec = normalize_to_match_spec(MaskQuery(raw_q="門0"))

@@ -196,9 +196,13 @@ class BuildMatchSpecTests(unittest.TestCase):
     """build_match_spec: ParsedQuery → MatchSpec (no DB)."""
 
     def test_equals_delegates(self):
+        from app.services.position_match.spec import get_equals_span
+
         spec = build_match_spec(EqualsQuery(raw_q="香港="))
-        self.assertEqual(spec.ref_literal, "香港")
-        self.assertTrue(spec.whole_word_phoneme_match)
+        span = get_equals_span(spec)
+        self.assertIsNotNone(span)
+        self.assertEqual(span.ref_literal, "香港")
+        self.assertTrue(span.whole_word)
 
     def test_compound_ant(self):
         spec = build_match_spec(CompoundAntQuery(code_prefix="33", rhyme_char="就"))
@@ -268,9 +272,13 @@ class BuildMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.mask, "?就")
 
     def test_equals_from_parse(self):
+        from app.services.position_match.spec import get_equals_span
+
         parsed = _parse("23=你4")
         spec = build_match_spec(parsed)
-        self.assertEqual(spec.ref_start_pos, 1)
+        span = get_equals_span(spec)
+        self.assertIsNotNone(span)
+        self.assertEqual(span.start_pos, 1)
         self.assertEqual(spec.code_prefix, "234")
 
     def test_triple_rhyme_anchor_spec(self):

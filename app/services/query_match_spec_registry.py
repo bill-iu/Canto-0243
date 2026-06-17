@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 from app.services.position_match import MatchSpec, SlotConstraint
+from app.services.position_match.spec import EqualsSpan, attach_equals_span, get_equals_span
 from app.services.query_types import (
     HYBRID_CODE_RE,
     CodeRefMiddleRhymeQuery,
@@ -96,10 +97,19 @@ def _spec_prefix_wildcard_equals(parsed: ParsedQuery) -> Optional[MatchSpec]:
     if spec is None:
         return MatchSpec(width=0)
     spec.width = q.width
-    spec.ref_start_pos = 1
+    span = get_equals_span(spec)
+    if span:
+        attach_equals_span(
+            spec,
+            EqualsSpan(
+                ref_literal=span.ref_literal,
+                start_pos=1,
+                dimension=span.dimension,
+                phoneme_anchor_only=True,
+                whole_word=False,
+            ),
+        )
     spec.mask = "?" * q.width
-    spec.whole_word_phoneme_match = False
-    spec.phoneme_anchor_only = True
     spec.extra["prefix_wildcard_equals"] = True
     return spec
 

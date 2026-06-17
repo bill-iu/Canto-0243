@@ -31,6 +31,30 @@ class SlotConstraint:
     value: Optional[Union[str, set[str]]] = None   # 視 kind 而定：digit 字串、canto char、phoneme set 等
 
 
+@dataclass(frozen=True)
+class EqualsSpan:
+    """等號查詢 span 語意（CONTEXT § 等號查詢、碼夾等號查詢）。"""
+
+    ref_literal: str
+    start_pos: int = 0
+    dimension: Literal["initial", "final"] = "final"
+    phoneme_anchor_only: bool = False
+    whole_word: bool = False
+
+
+def get_equals_span(spec: "MatchSpec") -> Optional[EqualsSpan]:
+    raw = spec.extra.get("equals_span")
+    if raw is None:
+        return None
+    if isinstance(raw, EqualsSpan):
+        return raw
+    return EqualsSpan(**raw)
+
+
+def attach_equals_span(spec: "MatchSpec", span: EqualsSpan) -> None:
+    spec.extra["equals_span"] = span
+
+
 @dataclass
 class MatchSpec:
     """
@@ -51,13 +75,6 @@ class MatchSpec:
 
     # 為 mask 等
     mask: str = ""
-
-    # 等號查詢／碼夾等號查詢（CONTEXT § 等號查詢、碼夾等號查詢）
-    ref_literal: str = ""
-    ref_start_pos: int = 0
-    ref_dimension: Literal["initial", "final"] = "final"
-    phoneme_anchor_only: bool = False
-    whole_word_phoneme_match: bool = False
 
     compound_kind: Optional[Literal["syn", "ant"]] = None
 

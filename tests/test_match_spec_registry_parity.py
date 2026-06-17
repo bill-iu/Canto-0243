@@ -4,6 +4,7 @@ from __future__ import annotations
 import unittest
 
 from app.services.query_match_spec_registry import MATCH_SPEC_BUILDERS, build_match_spec_for_parsed
+from app.services.position_match.spec import get_equals_span
 from app.services.query_parse import QueryKind, normalize_and_parse, parse_query
 from app.services.word_query_parser import normalize_search_query
 
@@ -59,9 +60,13 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
                 self.assertIsNotNone(spec, msg=f"no spec for {q!r}")
                 self.assertEqual(spec.width, expected["width"])
                 if "ref_literal" in expected:
-                    self.assertEqual(spec.ref_literal, expected["ref_literal"])
+                    span = get_equals_span(spec)
+                    self.assertIsNotNone(span)
+                    self.assertEqual(span.ref_literal, expected["ref_literal"])
                 if expected.get("whole_word"):
-                    self.assertTrue(spec.whole_word_phoneme_match)
+                    span = get_equals_span(spec)
+                    self.assertIsNotNone(span)
+                    self.assertTrue(span.whole_word)
                 if expected.get("prefix_wildcard"):
                     self.assertTrue(spec.extra.get("prefix_wildcard_equals"))
                 if "code_prefix" in expected:
