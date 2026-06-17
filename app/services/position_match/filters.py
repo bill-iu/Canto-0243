@@ -135,7 +135,15 @@ def _word_passes_position_filters(
     if any(req is not None for req in required_codes):
         if not matches_code_positions(word_code_str, required_codes, mode):
             return False
-    if anchor_pos is not None and anchor and constraint:
+    anchor_slots = [s for s in (slots or []) if s.kind in ("final_anchor", "initial_anchor")]
+    if anchor_slots:
+        for slot in anchor_slots:
+            constraint = "final" if slot.kind == "final_anchor" else "initial"
+            if not matches_phoneme_at_position(
+                word, slot.pos, slot.value, constraint=constraint, db=db,
+            ):
+                return False
+    elif anchor_pos is not None and anchor and constraint:
         if not matches_phoneme_at_position(
             word, anchor_pos, anchor, constraint=constraint, db=db,
         ):
@@ -219,21 +227,16 @@ def filter_candidates_by_match_spec(
     mode: str,
     db,
 ) -> list:
-    anchor_pos: Optional[int] = None
-    anchor: Optional[str] = None
-    constraint: Optional[str] = None
     literal_char: Optional[str] = None
     for slot in spec.slots:
         if slot.kind == "literal_char" and slot.pos == spec.width - 1:
             literal_char = slot.value
-        elif slot.kind in ("final_anchor", "initial_anchor"):
-            anchor_pos = slot.pos
-            anchor = slot.value
+    for slot in spec.slots:
+        if slot.kind in ("final_anchor", "initial_anchor"):
             constraint = "final" if slot.kind == "final_anchor" else "initial"
-    if anchor_pos is not None and anchor and constraint:
-        candidates = narrow_candidates_by_phoneme_anchor(
-            candidates, spec.width, anchor_pos, anchor, constraint, db,
-        )
+            candidates = narrow_candidates_by_phoneme_anchor(
+                candidates, spec.width, slot.pos, slot.value, constraint, db,
+            )
     for slot in spec.slots:
         if slot.kind in ("rhyme_letters", "syllable_letters", "initial_letters"):
             candidates = [w for w in candidates if slot_constraint_matches(w, slot, db)]
@@ -244,9 +247,6 @@ def filter_candidates_by_match_spec(
         mode=mode,
         mask=spec.mask or "",
         db=db,
-        anchor_pos=anchor_pos,
-        anchor=anchor,
-        constraint=constraint,
         literal_char=literal_char,
         slots=spec.slots,
     )
