@@ -264,15 +264,42 @@ def _equals_length_bucket_candidates(
     return [w for w in candidates if get_word_sort_code(w) in variants]
 
 
-def run_equals_query(q: str, db: Any, mode: str, limit: int, offset: int) -> list:
-    from app.services.query_parse import build_equals_match_spec
-
-    spec = build_equals_match_spec(q)
-    if spec is None:
-        return []
-    return execute_match_spec(
-        spec, code=None, mode=mode, limit=limit, offset=offset, db=db
-    ).items
+def execute_dual_phoneme_anchor_specs(
+    initial_spec: MatchSpec,
+    final_spec: MatchSpec,
+    *,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Any,
+) -> MaskFamilySearchResult:
+    """歧義 m／ng 粵拼錨：合併雙維結果並標 anchor_dimension。"""
+    unpaged_limit = max(limit + offset, limit) + 500
+    initial_result = execute_match_spec(
+        initial_spec,
+        code=code,
+        mode=mode,
+        limit=unpaged_limit,
+        offset=0,
+        db=db,
+    )
+    final_result = execute_match_spec(
+        final_spec,
+        code=code,
+        mode=mode,
+        limit=unpaged_limit,
+        offset=0,
+        db=db,
+    )
+    tagged: list = []
+    for item in initial_result.items:
+        tagged.append({**item, "anchor_dimension": "initial"})
+    for item in final_result.items:
+        tagged.append({**item, "anchor_dimension": "final"})
+    page = tagged[offset : offset + limit]
+    cache_path = initial_result.cache_path or final_result.cache_path
+    return MaskFamilySearchResult(items=page, cache_path=cache_path)
 
 
 def execute_match_spec(

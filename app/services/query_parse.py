@@ -13,6 +13,7 @@ from app.services.word_query_parser import (
     is_framed_equals_query,
     is_hybrid_tail_equals_alias,
     looks_like_mask_query,
+    normalize_search_query,
     parse_at_tail_query,
     parse_code_tail_query,
     parse_mask_query,
@@ -261,6 +262,16 @@ ParsedQuery = Union[
 JYUTPING_ANCHOR_INVALID_HINT = (
     "粵拼錨無效：韻母片段喺收錄讀音中搵唔到對應。請檢查拼寫或改用漢字錨。"
 )
+
+
+def normalize_query(q: str) -> str:
+    """查詢分派 lexer 入口：strip、code-tail、全形標點正規化。"""
+    return normalize_search_query(q)
+
+
+def normalize_and_parse(q: str) -> ParsedQuery:
+    """正規化後分類查詢字串。無 DB access。"""
+    return parse_query(normalize_query(q))
 
 
 def parse_query(q: str) -> ParsedQuery:

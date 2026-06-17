@@ -9,10 +9,9 @@ from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
     from app.services.query_parse import RelationLookupQuery
-from app.domain.relations.pool_projection import project_relation_pool, relation_pool_chars
+from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.services.word_db_filters import apply_code_filter, length_filter
-from app.services.word_ensure_service import ensure_word_in_db
 from app.services.word_serializer import serialize_page
 from app.utils.jyutping_codec import get_code_variants
 
@@ -54,10 +53,12 @@ class RelationSyntaxExecutor:
         """mode=syn：full syn + ant + semantic 分頁列（近反義模式）。"""
         if not query or not re.search(r"[\u4e00-\u9fff]", query):
             return []
-        q = query.strip()
-        ensure_word_in_db(self._db, q)
-        return project_relation_pool(self._db, q, thesaurus=self._thesaurus).page(
-            limit, offset
+        return relation_pool_page(
+            self._db,
+            query.strip(),
+            limit=limit,
+            offset=offset,
+            thesaurus=self._thesaurus,
         )
 
     def relation_lookup_page(
@@ -69,7 +70,6 @@ class RelationSyntaxExecutor:
         offset: int,
     ) -> List[dict]:
         """~ / ! 近反義關係查詢：ranked chars → Word 列。"""
-        ensure_word_in_db(self._db, parsed.word)
         ranked_chars = relation_pool_chars(
             self._db,
             parsed.word,

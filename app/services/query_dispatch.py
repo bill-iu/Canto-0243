@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
-from app.services.position_match import execute_match_spec
+from app.services.position_match import execute_dual_phoneme_anchor_specs, execute_match_spec
 from app.services.query_parse import (
     DigitCodeQuery,
     JYUTPING_ANCHOR_INVALID_HINT,
@@ -19,12 +19,12 @@ from app.services.query_parse import (
     UnmatchedQuery,
     WordLookupQuery,
     build_jyutping_dual_match_specs,
+    normalize_and_parse,
+    normalize_query,
     normalize_to_match_spec,
-    parse_query,
     uses_match_spec,
 )
 from app.services.word_db_filters import apply_code_filter
-from app.services.word_query_parser import normalize_search_query
 from app.services.word_serializer import deduplicate_words
 
 
@@ -55,7 +55,17 @@ JYUTPING_SYN_MODE_HINT = (
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
     if isinstance(parsed, JyutpingAnchorQuery) and parsed.dual_phoneme:
-        return _dual_phoneme_anchor_search_result(parsed, ctx)
+        initial_spec, final_spec = build_jyutping_dual_match_specs(parsed)
+        result = execute_dual_phoneme_anchor_specs(
+            initial_spec,
+            final_spec,
+            code=ctx.code,
+            mode=ctx.mode,
+            limit=ctx.limit,
+            offset=ctx.offset,
+            db=ctx.db,
+        )
+        return SearchResult(items=result.items, cache_path=result.cache_path)
 
     spec = normalize_to_match_spec(parsed)
     if spec is None:
@@ -72,38 +82,6 @@ def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> Searc
     return SearchResult(items=result.items, cache_path=result.cache_path)
 
 
-def _dual_phoneme_anchor_search_result(
-    parsed: JyutpingAnchorQuery, ctx: SearchContext
-) -> SearchResult:
-    """歧義 m／ng 粵拼錨：合併 limit 分節（同近反義）。"""
-    initial_spec, final_spec = build_jyutping_dual_match_specs(parsed)
-    unpaged_limit = max(ctx.limit + ctx.offset, ctx.limit) + 500
-    initial_result = execute_match_spec(
-        initial_spec,
-        code=ctx.code,
-        mode=ctx.mode,
-        limit=unpaged_limit,
-        offset=0,
-        db=ctx.db,
-    )
-    final_result = execute_match_spec(
-        final_spec,
-        code=ctx.code,
-        mode=ctx.mode,
-        limit=unpaged_limit,
-        offset=0,
-        db=ctx.db,
-    )
-    tagged: list = []
-    for item in initial_result.items:
-        tagged.append({**item, "anchor_dimension": "initial"})
-    for item in final_result.items:
-        tagged.append({**item, "anchor_dimension": "final"})
-    page = tagged[ctx.offset : ctx.offset + ctx.limit]
-    cache_path = initial_result.cache_path or final_result.cache_path
-    return SearchResult(items=page, cache_path=cache_path)
-
-
 class QueryEngine:
     """Deep module: parse + ordered dispatch for 詞條搜尋."""
 
@@ -112,7 +90,7 @@ class QueryEngine:
             items = self._execute_list_filter(ctx)
             return SearchResult(items=items)
 
-        q = normalize_search_query(ctx.q)
+        q = normalize_query(ctx.q)
 
         if ctx.mode == "syn":
             from app.services.jyutping_match import is_jyutping_query
@@ -126,7 +104,7 @@ class QueryEngine:
             )
             return SearchResult(items=items)
 
-        parsed = parse_query(q)
+        parsed = normalize_and_parse(ctx.q)
         return self._dispatch(parsed, ctx)
 
     def _execute_list_filter(self, ctx: SearchContext) -> list:

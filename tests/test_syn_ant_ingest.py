@@ -14,10 +14,7 @@ from app.domain.relations.ranking import (
     sort_syn_pool as _sort_syn_pool,
 )
 from app.services.relation_syntax_executor import RelationSyntaxExecutor
-from app.services.relation_search import (
-    search_syn_ant,
-    search_relation_chars,
-)
+from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
 from ingest.syn_ant_merge import (
@@ -190,14 +187,14 @@ class RuntimeServiceTests(unittest.TestCase):
             ])
             db.commit()
 
-            res = search_syn_ant(db, "快樂", include_static=False)
+            res = relation_pool_page(db, "快樂", include_static=False)
             by_char = {r["char"]: r for r in res}
             self.assertEqual(by_char["愉快"]["relation"], "syn")
             self.assertEqual(by_char["悲傷"]["relation"], "ant")
             self.assertTrue(by_char["愉快"]["in_db"])
 
             # backward: query 愉快 should still find 快樂 as syn via related_id direction
-            res2 = search_syn_ant(db, "愉快", include_static=False)
+            res2 = relation_pool_page(db, "愉快", include_static=False)
             chars2 = [r["char"] for r in res2 if r["relation"] == "syn"]
             self.assertIn("快樂", chars2)
 
@@ -223,12 +220,12 @@ class RuntimeServiceTests(unittest.TestCase):
                 ))
             db.commit()
 
-            page1 = search_syn_ant(db, "快樂", limit=5, offset=0, include_static=False)
-            page2 = search_syn_ant(db, "快樂", limit=5, offset=5, include_static=False)
+            page1 = relation_pool_page(db, "快樂", limit=5, offset=0, include_static=False)
+            page2 = relation_pool_page(db, "快樂", limit=5, offset=5, include_static=False)
             self.assertEqual(len(page1), 5)
             self.assertEqual(len(page2), 5)
             self.assertTrue(set(r["char"] for r in page1).isdisjoint(r["char"] for r in page2))
-            all_pages = search_syn_ant(db, "快樂", limit=100, offset=0, include_static=False)
+            all_pages = relation_pool_page(db, "快樂", limit=100, offset=0, include_static=False)
             self.assertEqual(len(all_pages), 20)
 
     def test_staging_to_word_relations(self):
@@ -275,7 +272,7 @@ class RuntimeServiceTests(unittest.TestCase):
             count2 = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
             self.assertEqual(count1, count2)
 
-            res = search_syn_ant(db, "愉快", include_static=False)
+            res = relation_pool_page(db, "愉快", include_static=False)
             self.assertIn("快樂", [r["char"] for r in res if r["relation"] == "syn"])
 
             rel = db.query(WordRelation).filter(WordRelation.relation_type == "syn").first()
@@ -343,7 +340,7 @@ class AntCilinExpansionTests(unittest.TestCase):
             self.assertIn((2, 5), pairs)  # 悲傷 ant 愉快 (via 快樂 syn 愉快)
             self.assertNotIn((1, 1), pairs)
 
-            res = search_syn_ant(db, "快樂", include_static=False)
+            res = relation_pool_page(db, "快樂", include_static=False)
             ant_chars = [r["char"] for r in res if r["relation"] == "ant"]
             self.assertIn("悲傷", ant_chars)
             self.assertIn("傷心", ant_chars)
@@ -436,7 +433,7 @@ class AntSynBridgeExpansionTests(unittest.TestCase):
                 self.assertEqual((derived[0].word_id, derived[0].related_id), (1, 4))
                 self.assertAlmostEqual(derived[0].score, 0.9999, places=3)
 
-                res = search_syn_ant(db, "快樂", include_static=False)
+                res = relation_pool_page(db, "快樂", include_static=False)
                 ant_chars = [r["char"] for r in res if r["relation"] == "ant"]
                 self.assertIn("悲傷", ant_chars)
 
@@ -616,7 +613,7 @@ class PoolSnapshotTests(unittest.TestCase):
         self.assertEqual(pools.chars("syn"), ["開心"])
         self.assertEqual(pools.chars("ant", expand=False), ["悲傷"])
 
-    def test_search_relation_chars_matches_ranker_projection(self):
+    def test_relation_pool_chars_matches_ranker_projection(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
@@ -628,12 +625,12 @@ class PoolSnapshotTests(unittest.TestCase):
             db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
             db.commit()
             ranked = build_pool(db, "快樂", include_static=False, quiet=True)
-            via_adapter = search_relation_chars(db, "快樂", "syn", include_static=False)
+            via_adapter = relation_pool_chars(db, "快樂", "syn", include_static=False)
             self.assertEqual(via_adapter, ranked.chars("syn", expand=False))
 
 
 class RelationSyntaxExecutorTests(unittest.TestCase):
-    def test_syn_mode_page_matches_search_syn_ant(self):
+    def test_syn_mode_page_matches_relation_pool_page(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
@@ -644,9 +641,9 @@ class RelationSyntaxExecutorTests(unittest.TestCase):
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", source="test"))
             db.commit()
-            from app.services.relation_search import search_syn_ant
+            from app.domain.relations.pool_projection import relation_pool_page
 
-            via_syn_ant = search_syn_ant(db, "快樂")
+            via_syn_ant = relation_pool_page(db, "快樂")
             via_executor = RelationSyntaxExecutor(db).syn_mode_page("快樂", limit=160, offset=0)
             self.assertEqual(via_executor, via_syn_ant)
 
@@ -677,10 +674,10 @@ class AntSynMirrorTests(unittest.TestCase):
             stats = expand_antonyms_via_syn_endpoints(db, source="ant_syn_mirror", include_static=False)
             self.assertGreater(stats["inserted"], 0)
 
-            bang_chars = search_relation_chars(
+            bang_chars = relation_pool_chars(
                 db, "開心", "ant", include_static=False, expand_ant_via_syn=False,
             )
-            tilde_endpoint = search_relation_chars(
+            tilde_endpoint = relation_pool_chars(
                 db, "悲傷", "syn", include_static=False, expand_ant_via_syn=False,
             )
             self.assertIn("悲傷", bang_chars)
@@ -832,7 +829,7 @@ class CantoneseFixtureTests(unittest.TestCase):
                 db.add(Word(char=ch, code="22", jyutping="", length=len(ch)))
             db.commit()
             for q in ("快樂", "大"):
-                res = search_syn_ant(db, q)
+                res = relation_pool_page(db, q)
                 self.assertNotIn(q, [r["char"] for r in res])
 
 

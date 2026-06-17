@@ -13,7 +13,7 @@ from app.services.manual_relation_service import (
     create_creator_manual_relation,
     revoke_creator_manual_relation,
 )
-from app.services.relation_search import search_syn_ant
+from app.domain.relations.pool_projection import relation_pool_page
 from main import app
 
 
@@ -86,7 +86,7 @@ class RevokeCreatorManualRelationTests(unittest.TestCase):
             )
             syns_before = {
                 r["char"]
-                for r in search_syn_ant(db, "不幸", include_static=False)
+                for r in relation_pool_page(db, "不幸", include_static=False)
                 if r["relation"] == "syn"
             }
             self.assertIn("好運", syns_before)
@@ -96,7 +96,7 @@ class RevokeCreatorManualRelationTests(unittest.TestCase):
             )
             syns_after = {
                 r["char"]
-                for r in search_syn_ant(db, "不幸", include_static=False)
+                for r in relation_pool_page(db, "不幸", include_static=False)
                 if r["relation"] == "syn"
             }
             self.assertNotIn("好運", syns_after)

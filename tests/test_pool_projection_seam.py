@@ -7,7 +7,6 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 RUNTIME_MODULES = (
-    REPO_ROOT / "app" / "services" / "relation_search.py",
     REPO_ROOT / "app" / "services" / "relation_syntax_executor.py",
 )
 

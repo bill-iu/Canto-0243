@@ -13,7 +13,7 @@ from app.services.manual_relation_service import (
     create_creator_manual_relation,
     prune_conflicting_manual_expansions,
 )
-from app.services.relation_search import search_syn_ant
+from app.domain.relations.pool_projection import relation_pool_page
 from main import app
 
 
@@ -179,7 +179,7 @@ class CreatorManualRelationTests(unittest.TestCase):
             )
             self.assertEqual(len(mirror), 0)
 
-            res = search_syn_ant(db, "羞恥", include_static=False)
+            res = relation_pool_page(db, "羞恥", include_static=False)
             syns = {r["char"] for r in res if r["relation"] == "syn"}
             ants = {r["char"] for r in res if r["relation"] == "ant"}
             self.assertIn("丟人", syns)
@@ -262,7 +262,7 @@ class CreatorManualRelationTests(unittest.TestCase):
             create_creator_manual_relation(
                 db, seed_char="快樂", opposite_char="開心", relation_type="syn"
             )
-            syns = [r["char"] for r in search_syn_ant(db, "快樂", include_static=False) if r["relation"] == "syn"]
+            syns = [r["char"] for r in relation_pool_page(db, "快樂", include_static=False) if r["relation"] == "syn"]
             self.assertIn("開心", syns)
 
 

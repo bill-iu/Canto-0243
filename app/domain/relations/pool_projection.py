@@ -15,14 +15,20 @@ def project_relation_pool(
     db: Session,
     seed_char: str,
     *,
+    allow_inject: bool = True,
     include_static: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
     membership: Optional[Set[str]] = None,
 ) -> PoolSnapshot:
     """Runtime 近反義池投影：統一 build_pool 讀取入口（規則不變）。"""
+    q = (seed_char or "").strip()
+    if allow_inject and q and re.search(r"[\u4e00-\u9fff]", q):
+        from app.services.word_ensure_service import ensure_word_in_db
+
+        ensure_word_in_db(db, q)
     return build_pool(
         db,
-        seed_char,
+        q,
         include_static=include_static,
         thesaurus=thesaurus or default_thesaurus_port(),
         membership=membership,
@@ -34,6 +40,7 @@ def relation_pool_page(
     db: Session,
     seed_char: str,
     *,
+    allow_inject: bool = True,
     limit: int = DEFAULT_PAGE_SIZE,
     offset: int = 0,
     include_static: bool = True,
@@ -45,6 +52,7 @@ def relation_pool_page(
     return project_relation_pool(
         db,
         seed_char.strip(),
+        allow_inject=allow_inject,
         include_static=include_static,
         thesaurus=thesaurus,
         membership=membership,
@@ -56,6 +64,7 @@ def relation_pool_chars(
     seed_char: str,
     relation_type: str,
     *,
+    allow_inject: bool = True,
     include_static: bool = True,
     expand_ant_via_syn: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
@@ -67,6 +76,7 @@ def relation_pool_chars(
     snapshot = project_relation_pool(
         db,
         seed_char.strip(),
+        allow_inject=allow_inject,
         include_static=include_static,
         thesaurus=thesaurus,
     )
