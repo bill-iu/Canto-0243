@@ -37,64 +37,68 @@
   <link rel="stylesheet" href="relation-entry.css">
 </head>
 <body class="query-tabs-app">
+  <svg class="svg-defs" aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden" focusable="false">
+    <defs>
+      <filter id="brush-roughen-brand" x="-8%" y="-120%" width="116%" height="340%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
+        <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <symbol id="brand-wordmark" viewBox="0 0 200 72" overflow="visible">
+        <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
+        <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
+        <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
+      </symbol>
+      <symbol id="brand-ink-blob" viewBox="0 0 200 72" overflow="visible">
+        <path d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z"/>
+      </symbol>
+      <symbol id="brand-ink-flicks" viewBox="0 0 200 72" overflow="visible">
+        <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
+        <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
+        <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
+        <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
+        <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+      </symbol>
+      <symbol id="brand-ink-flicks-current" viewBox="0 0 200 72" overflow="visible">
+        <path d="M133.5 47.0 L135.0 45.5" stroke="currentColor" stroke-width="0.9" stroke-linecap="round"/>
+        <path d="M132.2 48.4 L133.6 49.2" stroke="currentColor" stroke-width="0.65" stroke-linecap="round"/>
+        <path d="M134.2 46.2 L135.2 44.9" stroke="currentColor" stroke-width="0.5" stroke-linecap="round"/>
+        <path d="M132.8 47.6 L134.0 48.4" stroke="currentColor" stroke-width="0.4" stroke-linecap="round"/>
+        <path d="M134.0 46.6 L135.0 45.8" stroke="currentColor" stroke-width="0.3" stroke-linecap="round"/>
+      </symbol>
+    </defs>
+  </svg>
   <div class="preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
     <div class="gate-brand" id="gateBrand">
       <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
         <defs>
-          <filter id="brush-roughen-brand-gate" x="-8%" y="-120%" width="116%" height="340%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
-            <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
-          </filter>
           <clipPath id="gate-ink-clip">
             <rect id="gateInkClipRect" class="gate-ink-clip-rect" x="0" y="0" width="0" height="72"/>
           </clipPath>
         </defs>
-        <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
-        <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
-        <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
+        <use href="#brand-wordmark"/>
         <g class="gate-ink-track" aria-hidden="true">
-          <path filter="url(#brush-roughen-brand-gate)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
-          <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
-          <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
-          <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
-          <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
-          <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+          <use href="#brand-ink-blob" fill="#9F1239" filter="url(#brush-roughen-brand)"/>
+          <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
         </g>
         <g class="gate-ink-fill" clip-path="url(#gate-ink-clip)" aria-hidden="true">
-          <path filter="url(#brush-roughen-brand-gate)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
-          <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
-          <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
-          <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
-          <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
-          <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+          <use href="#brand-ink-blob" fill="#9F1239" filter="url(#brush-roughen-brand)"/>
+          <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
         </g>
       </svg>
     </div>
     <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
       <defs>
-        <filter id="brush-roughen-brand-meter" x="-8%" y="-120%" width="116%" height="340%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
-          <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
         <clipPath id="gate-ink-clip-mini">
           <rect id="gateInkClipRectMini" class="gate-ink-clip-rect" x="0" y="38" width="0" height="34"/>
         </clipPath>
       </defs>
       <g class="gate-ink-track" aria-hidden="true">
-        <path filter="url(#brush-roughen-brand-meter)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
-        <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
-        <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
-        <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
-        <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
-        <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+        <use href="#brand-ink-blob" fill="#9F1239" filter="url(#brush-roughen-brand)"/>
+        <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
       </g>
       <g class="gate-ink-fill" clip-path="url(#gate-ink-clip-mini)" aria-hidden="true">
-        <path filter="url(#brush-roughen-brand-meter)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
-        <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
-        <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
-        <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
-        <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
-        <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+        <use href="#brand-ink-blob" fill="#9F1239" filter="url(#brush-roughen-brand)"/>
+        <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
       </g>
     </svg>
     <p class="gate-status" id="preloadLabel">執緊啲字…</p>
@@ -106,21 +110,11 @@
       <div class="app-header__chrome">
         <button class="brand" id="homeBtn" type="button" aria-label="返回搜尋首頁">
           <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
-            <defs>
-              <filter id="brush-roughen-brand-header" x="-8%" y="-120%" width="116%" height="340%">
-                <feTurbulence type="fractalNoise" baseFrequency="0.042 0.38" numOctaves="4" seed="7" result="turb"/>
-                <feDisplacementMap in="SourceGraphic" in2="turb" scale="2.4" xChannelSelector="R" yChannelSelector="G"/>
-              </filter>
-            </defs>
-            <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
-            <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
-            <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
-            <path filter="url(#brush-roughen-brand-header)" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="#9F1239"/>
-            <path d="M133.5 47.0 L135.0 45.5" stroke="#9F1239" stroke-width="0.9" stroke-linecap="round"/>
-            <path d="M132.2 48.4 L133.6 49.2" stroke="#9F1239" stroke-width="0.65" stroke-linecap="round"/>
-            <path d="M134.2 46.2 L135.2 44.9" stroke="#9F1239" stroke-width="0.5" stroke-linecap="round"/>
-            <path d="M132.8 47.6 L134.0 48.4" stroke="#9F1239" stroke-width="0.4" stroke-linecap="round"/>
-            <path d="M134.0 46.6 L135.0 45.8" stroke="#9F1239" stroke-width="0.3" stroke-linecap="round"/>
+            <use href="#brand-wordmark"/>
+            <g aria-hidden="true">
+              <use href="#brand-ink-blob" fill="#9F1239" filter="url(#brush-roughen-brand)"/>
+              <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
+            </g>
           </svg>
         </button>
         <div class="warmup-badge" id="warmupBadge" hidden aria-live="polite" aria-atomic="true">
@@ -132,10 +126,12 @@
               </clipPath>
             </defs>
             <g class="warmup-badge__ink-track" aria-hidden="true">
-              <path d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="currentColor"/>
+              <use href="#brand-ink-blob" fill="currentColor"/>
+              <use href="#brand-ink-flicks-current"/>
             </g>
             <g class="warmup-badge__ink-fill" clip-path="url(#warmup-ink-clip)" aria-hidden="true">
-              <path d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z" fill="currentColor"/>
+              <use href="#brand-ink-blob" fill="currentColor"/>
+              <use href="#brand-ink-flicks-current"/>
             </g>
           </svg>
           <span class="warmup-badge__pct" id="warmupBadgePct">0%</span>

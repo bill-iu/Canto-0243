@@ -28,7 +28,7 @@ class QueryGrammarMaskTests(unittest.TestCase):
         self.assertFalse(looks_like_mask_query("~開心"))
 
     def test_mask_query_via_facade(self):
-        from app.services.word_query_parser import parse_mask_query
+        from app.services.query_grammar.mask import parse_mask_query
 
         width, codes, literals = parse_mask_query("門0")
         self.assertEqual(width, 2)

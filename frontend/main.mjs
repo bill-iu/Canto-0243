@@ -38,6 +38,7 @@ import {
   runExample,
   shuffleResults,
   searchDict,
+  wireModeMenuKeyboard,
 } from "./search-workbench.mjs";
 import {
   relationPayloadFromForm,
@@ -257,6 +258,7 @@ window.addEventListener("popstate", (event) => {
     last0243Mode = currentMode;
   }
   updateModeLabel();
+  wireModeMenuKeyboard();
   ensureDefaultTabs(parsed);
 
   const urlTab = tabState.tabs.find((t) => {

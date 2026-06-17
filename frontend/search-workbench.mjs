@@ -44,6 +44,47 @@ function updateModeLabel() {
   });
 }
 
+let modeMenuKeyboardWired = false;
+
+function modeMenuItems() {
+  return [...$.modeMenu.querySelectorAll('[role="menuitem"], [role="menuitemradio"]')];
+}
+
+function syncModeMenuTabindex(focusIndex) {
+  const items = modeMenuItems();
+  items.forEach((el, i) => {
+    el.setAttribute("tabindex", i === focusIndex ? "0" : "-1");
+  });
+  items[focusIndex]?.focus({ preventScroll: true });
+}
+
+function wireModeMenuKeyboard() {
+  if (modeMenuKeyboardWired || !$.modeMenu) return;
+  modeMenuKeyboardWired = true;
+  modeMenuItems().forEach((el) => el.setAttribute("tabindex", "-1"));
+  $.modeMenu.addEventListener("keydown", (event) => {
+    const items = modeMenuItems();
+    const idx = items.indexOf(document.activeElement);
+    if (idx < 0) return;
+
+    let nextIdx = -1;
+    if (event.key === "ArrowDown") nextIdx = (idx + 1) % items.length;
+    else if (event.key === "ArrowUp") nextIdx = (idx - 1 + items.length) % items.length;
+    else if (event.key === "Home") nextIdx = 0;
+    else if (event.key === "End") nextIdx = items.length - 1;
+    else if (event.key === " " || event.key === "Enter") {
+      event.preventDefault();
+      document.activeElement?.click();
+      return;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    syncModeMenuTabindex(nextIdx);
+  });
+}
+
 function toggleMenu(open, { returnFocus = false } = {}) {
   const nextOpen = typeof open === "boolean"
     ? open
@@ -51,7 +92,16 @@ function toggleMenu(open, { returnFocus = false } = {}) {
   $.modeMenuButton.setAttribute("aria-expanded", String(nextOpen));
   $.modeMenu.classList.toggle("is-open", nextOpen);
   $.modeMenu.hidden = !nextOpen;
-  if (!nextOpen && returnFocus) $.modeMenuButton.focus();
+  if (nextOpen) {
+    wireModeMenuKeyboard();
+    const items = modeMenuItems();
+    const checked = $.modeMenu.querySelector('[role="menuitemradio"][aria-checked="true"]');
+    const focusIdx = checked ? Math.max(0, items.indexOf(checked)) : 0;
+    syncModeMenuTabindex(focusIdx);
+  } else {
+    modeMenuItems().forEach((el) => el.setAttribute("tabindex", "-1"));
+    if (returnFocus) $.modeMenuButton.focus();
+  }
 }
 
 function switchMode(mode, { runSearch = true, replace = true } = {}) {
@@ -373,3 +423,19 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     setButtonLoading(false);
   }
 }
+
+export {
+  applyEffectiveModeFromResponse,
+  finishSearchWithData,
+  renderSearchResults,
+  runExample,
+  searchDict,
+  shouldShowLoadMore,
+  shuffleResults,
+  switchMode,
+  toggleLoadMoreButton,
+  toggleMenu,
+  updateModeLabel,
+  updateShuffleButton,
+  wireModeMenuKeyboard,
+};

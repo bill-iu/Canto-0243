@@ -303,6 +303,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         "setupTabDrag",
         "activateTabOnPress",
         "wireTabstripKeyboard",
+        "wireModeMenuKeyboard",
         'fetch("/ready"',
     )
     APP_CONTEXT_REQUIRED = (
@@ -379,6 +380,28 @@ class TestQueryTabsSeam(unittest.TestCase):
             pattern,
             "setupDraggabilly must call layout() after Draggabilly teardown",
         )
+
+    def test_brand_ink_svg_symbols_dry(self):
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn('id="brand-ink-blob"', source)
+        self.assertIn('id="brush-roughen-brand"', source)
+        self.assertIn('href="#brand-ink-blob"', source)
+        ink_blob_path = "M4 55.5 C14 54.9 24 55.1 34 55.7"
+        self.assertEqual(source.count(ink_blob_path), 1)
+        for legacy in (
+            "brush-roughen-brand-gate",
+            "brush-roughen-brand-meter",
+            "brush-roughen-brand-header",
+        ):
+            with self.subTest(filter=legacy):
+                self.assertNotIn(legacy, source)
+
+    def test_mode_menu_keyboard_wired(self):
+        search = SEARCH_MJS_PATH.read_text(encoding="utf-8")
+        main = MAIN_MJS_PATH.read_text(encoding="utf-8")
+        self.assertIn("function wireModeMenuKeyboard", search)
+        self.assertIn("ArrowDown", search)
+        self.assertIn("wireModeMenuKeyboard", main)
 
 
 class TestGateFrontendSeam(unittest.TestCase):
