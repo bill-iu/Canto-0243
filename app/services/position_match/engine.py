@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Callable, Optional
 
-from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
+from app.domain.lexicon.ranking import search_result_sort_key
 from app.services.position_match.filters import apply_match_spec
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
@@ -83,7 +83,9 @@ def run_position_query_tracked(
     from app.services.word_serializer import serialize_page
 
     from_cache = False
-    if pre_candidates is not None:
+    if get_equals_span(spec):
+        filtered = apply_match_spec(spec, [], db, mode)
+    elif pre_candidates is not None:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=pre_candidates)
     elif source is not None:
         candidates, from_cache = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
@@ -143,8 +145,6 @@ def execute_match_spec(
     offset: int,
     db: Any,
 ) -> MaskFamilySearchResult:
-    from app.services.word_serializer import deduplicate_words, serialize_page
-
     if spec is None or spec.width == 0:
         return MaskFamilySearchResult(items=[])
 
@@ -159,23 +159,12 @@ def execute_match_spec(
             db=db,
         )
 
-    if get_equals_span(spec):
-        filtered = apply_match_spec(spec, [], db, mode)
-        items = serialize_page(
-            sort_search_results(deduplicate_words(filtered)),
-            offset,
-            limit,
-        )
-        return MaskFamilySearchResult(items=items, cache_path="fallback")
-
     source, sort_key = _resolve_mask_family_source(spec, db, mode, code)
-    if source is None:
+    if not get_equals_span(spec) and source is None:
         return MaskFamilySearchResult(items=[])
 
     items, from_cache = run_position_query_tracked(
         spec, db, mode, limit, offset, source=source, sort_key=sort_key
     )
-    return MaskFamilySearchResult(
-        items=items,
-        cache_path="ready" if from_cache else "fallback",
-    )
+    cache_path = "fallback" if get_equals_span(spec) or not from_cache else "ready"
+    return MaskFamilySearchResult(items=items, cache_path=cache_path)

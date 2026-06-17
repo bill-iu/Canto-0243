@@ -1,8 +1,8 @@
 import { escapeHtmlAttr } from "./dom-escape.mjs";
+import { TAB_GEOMETRY_SVG } from "./tab-geometry.mjs";
 import {
   $,
   VIEW,
-  TAB_GEOMETRY_SVG,
   tabState,
   chromeLayout,
   pendingNewTabAnimation,
@@ -42,7 +42,7 @@ function renderTabstrip() {
           <div class="chrome-tab-content">
             <div class="chrome-tab-favicon" hidden></div>
             <div class="chrome-tab-title">${escapeHtmlAttr(label)}</div>
-            <div class="chrome-tab-drag-handle" role="tab" aria-selected="${isActive}" aria-label="${escapeHtmlAttr(label)}" data-tab="${t.id}"></div>
+            <div class="chrome-tab-drag-handle" role="tab" tabindex="${isActive ? "0" : "-1"}" aria-selected="${isActive}" aria-label="${escapeHtmlAttr(label)}" data-tab="${t.id}"></div>
             ${closeBtn}
           </div>
         </div>`;
@@ -104,6 +104,47 @@ function wireTabstrip() {
     });
   });
   wireTabstripHoverDividers();
+  wireTabstripKeyboard();
+}
+
+let tabstripKeyboardWired = false;
+
+function wireTabstripKeyboard() {
+  if (tabstripKeyboardWired || !$.tabstrip) return;
+  tabstripKeyboardWired = true;
+  $.tabstrip.addEventListener("keydown", (event) => {
+    const tabs = [...$.tabstrip.querySelectorAll("[data-tab][role='tab']")];
+    const current = document.activeElement;
+    const idx = tabs.indexOf(current);
+    if (idx < 0) return;
+
+    let nextIdx = -1;
+    if (event.key === "ArrowRight") nextIdx = (idx + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") nextIdx = (idx - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") nextIdx = 0;
+    else if (event.key === "End") nextIdx = tabs.length - 1;
+    else if (
+      (event.key === "Delete" || event.key === "Backspace")
+      && tabState.tabs.length > 1
+      && !event.altKey
+      && !event.ctrlKey
+      && !event.metaKey
+    ) {
+      event.preventDefault();
+      const id = Number(current.dataset.tab);
+      const neighbor = tabs[idx + 1] || tabs[idx - 1];
+      closeTab(id);
+      neighbor?.focus({ preventScroll: true });
+      return;
+    } else {
+      return;
+    }
+
+    event.preventDefault();
+    const id = Number(tabs[nextIdx].dataset.tab);
+    selectTab(id);
+    tabs[nextIdx].focus({ preventScroll: true });
+  });
 }
 
 function wireTabstripHoverDividers() {
@@ -194,16 +235,6 @@ function openSingletonViewTab(view, createTab) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
-
-const LANDING_VARIANT = document.documentElement.dataset.landing || "a";
-const LANDING_SESSION_KEY = "canto0243:landing-done";
-const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const LANDING_REVEAL_MS = 420;
-const LANDING_HANDOFF_MS = 640;
-const GATE_BRAND_INTRO_MS = 700;
-
-const GATE_NEAR_DONE_PCT = 85;
-const GATE_INK_CLIP_MAX = 200;
 
 function focusSearchTab(tab) {
   if (!tab || tab.view !== VIEW.SEARCH) return;

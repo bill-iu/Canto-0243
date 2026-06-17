@@ -17,6 +17,7 @@ FRONTEND_ASSETS = (
     "chrome-tabs-layout.js",
     "query-tabs.css",
     "query-tabs-state.mjs",
+    "tab-geometry.js",
     "main.mjs",
     "app-context.mjs",
     "vendor/draggabilly.pkgd.min.js",
@@ -25,6 +26,7 @@ FRONTEND_ASSETS = (
 INDEX_REQUIRED = (
     'href="chrome-tabs.css"',
     'href="query-tabs.css"',
+    'src="tab-geometry.js"',
     'src="vendor/draggabilly.pkgd.min.js"',
     'src="chrome-tabs-layout.js"',
     'src="./main.mjs"',
@@ -42,6 +44,7 @@ MAIN_MJS_REQUIRED = (
     "reorderTabsByIds",
     "setupTabDrag",
     "activateTabOnPress",
+    "wireTabstripKeyboard",
     'fetch("/ready"',
 )
 

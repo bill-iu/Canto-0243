@@ -13,18 +13,6 @@
   const TAB_SIZE_SMALLER = 70;
   const TAB_SIZE_MINI = 56;
 
-  const TAB_GEOMETRY_SVG = `
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <svg width="52%" height="100%">
-        <use xlink:href="#query-tab-geometry" width="214" height="36" class="chrome-tab-geometry"/>
-      </svg>
-      <g transform="scale(-1, 1)">
-        <svg width="52%" height="100%" x="-100%" y="0">
-          <use xlink:href="#query-tab-geometry" width="214" height="36" class="chrome-tab-geometry"/>
-        </svg>
-      </g>
-    </svg>`;
-
   const noop = () => {};
 
   function closest(value, array) {
@@ -41,20 +29,6 @@
   }
 
   let instanceId = 0;
-
-  function tabTemplate() {
-    return `
-      <div class="chrome-tab">
-        <div class="chrome-tab-dividers"></div>
-        <div class="chrome-tab-background">${TAB_GEOMETRY_SVG}</div>
-        <div class="chrome-tab-content">
-          <div class="chrome-tab-favicon" hidden></div>
-          <div class="chrome-tab-title"></div>
-          <div class="chrome-tab-drag-handle" data-tab-select></div>
-          <button type="button" class="chrome-tab-close" aria-label="關閉分頁"></button>
-        </div>
-      </div>`;
-  }
 
   class QueryChromeTabsLayout {
     constructor(rootEl) {
@@ -270,12 +244,6 @@
           });
         });
       });
-    }
-
-    createTabEl() {
-      const wrap = document.createElement("div");
-      wrap.innerHTML = tabTemplate().trim();
-      return wrap.firstElementChild;
     }
   }
 

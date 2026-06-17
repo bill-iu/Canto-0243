@@ -96,7 +96,10 @@ function markActiveTabInStrip(id) {
     if (isActive) el.setAttribute("active", "");
     else el.removeAttribute("active");
     const handle = el.querySelector("[data-tab]");
-    if (handle) handle.setAttribute("aria-selected", String(isActive));
+    if (handle) {
+      handle.setAttribute("aria-selected", String(isActive));
+      handle.setAttribute("tabindex", isActive ? "0" : "-1");
+    }
   });
   applyActiveNeighborDividerHides();
 }

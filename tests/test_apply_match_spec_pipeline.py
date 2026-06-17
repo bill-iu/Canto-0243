@@ -78,6 +78,37 @@ class ApplyMatchSpecPipelineTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_execute_equals_uses_same_serialize_pipeline(self):
+        session = self._session(
+            [
+                Word(
+                    char="香港",
+                    code="33",
+                    jyutping="hoeng1 gong2",
+                    finals='["oeng","ong"]',
+                    initials='["h","g"]',
+                    length=2,
+                ),
+            ]
+        )
+        try:
+            from app.services.position_match.engine import (
+                execute_match_spec,
+                run_position_query_tracked,
+            )
+
+            spec = normalize_to_match_spec(normalize_and_parse("香港="))
+            self.assertIsNotNone(spec)
+            via_execute = execute_match_spec(
+                spec, code=None, mode="m1", limit=10, offset=0, db=session
+            )
+            via_tracked, _ = run_position_query_tracked(
+                spec, session, "m1", 10, 0
+            )
+            self.assertEqual(via_execute.items, via_tracked)
+        finally:
+            session.close()
+
     def test_engine_delegates_to_apply_match_spec(self):
         session = self._session(
             [
