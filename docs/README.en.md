@@ -341,7 +341,7 @@ Design principle: domain rules live in `app/domain/`; ingest and runtime share t
 ```text
 Canto-0243/
 ├── app/                    # API · domain · services · models
-├── frontend/               # index.html (search home) · relation-entry.html
+├── frontend/               # index.html (search home; relation tab in-app)
 ├── portable/               # START.bat · START.sh · env.portable
 ├── data/                   # see Data sources (three tiers)
 ├── ingest/                 # python -m ingest

@@ -30,6 +30,7 @@ START_BAT = REPO_ROOT / "portable" / "START.bat"
 START_SH_PORTABLE = REPO_ROOT / "portable" / "START.sh"
 MACOS_LAUNCHER = REPO_ROOT / "portable" / "macos" / "launcher"
 RELATION_ENTRY_PATH = REPO_ROOT / "frontend" / "relation-entry.html"
+RELATION_ENTRY_CSS_PATH = REPO_ROOT / "frontend" / "relation-entry.css"
 SERVED_BASE = "http://127.0.0.1:8000/frontend"
 
 
@@ -316,6 +317,8 @@ class TestQueryTabsSeam(unittest.TestCase):
         "prototype-query-tabs",
         "canto0243:prototype:query-tabs",
         "relation-entry.html",
+        "relation-entry.css",
+        "display=block",
         "PROTOTYPE ·",
     )
     MAIN_FORBIDDEN = (
@@ -360,6 +363,14 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_relation_entry_page_removed(self):
         with self.subTest(path=str(RELATION_ENTRY_PATH.relative_to(REPO_ROOT))):
             self.assertFalse(RELATION_ENTRY_PATH.exists())
+
+    def test_relation_entry_css_merged_into_index(self):
+        self.assertFalse(RELATION_ENTRY_CSS_PATH.exists())
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn(".relation-main", (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
+        self.assertNotIn("relation-entry.css", source)
+        self.assertIn("display=swap", source)
+        self.assertIn('use[filter="url(#brush-roughen-brand)"]', (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
 
     def test_main_py_has_no_prototype_route(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

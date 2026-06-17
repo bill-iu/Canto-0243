@@ -339,7 +339,7 @@ GET /words/search/?q=开心&mode=syn
 ```text
 Canto-0243/
 ├── app/                    # API · domain · services · models
-├── frontend/               # index.html（查韵首屏）· relation-entry.html
+├── frontend/               # index.html（查韵首屏；含关系补录分页）
 ├── portable/               # START.bat · START.sh · env.portable
 ├── data/                   # 见「资料来源」三层模型
 ├── ingest/                 # python -m ingest

@@ -119,7 +119,7 @@ for rule in rules:
         open_rules.append(rule)
 
 open_css = (
-    "/* Open Design · shared shell (index + relation-entry) */\n\n"
+    "/* Open Design · shared shell (index.html) */\n\n"
     + "\n\n".join(dedent(r).strip() for r in open_rules if r.strip())
     + "\n"
 )
