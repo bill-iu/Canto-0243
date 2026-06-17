@@ -11,7 +11,7 @@ from starlette.responses import FileResponse, JSONResponse, Response
 
 from app.routers.relation import router as relation_router
 from app.routers.word import router
-from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup, run_main_block_startup
+from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup
 from app.startup.readiness_gate import SearchGateBlocked
 
 
@@ -88,9 +88,6 @@ if __name__ == "__main__":
     reload_opt_in = os.getenv("UVICORN_RELOAD", "").lower() in ("1", "true", "yes")
     use_reload = reload_opt_in and env != "prod" and not os.getenv("PORTABLE")
     # reload 時父行程與 worker 分離；DB bootstrap 僅在 lifespan（worker）執行，避免 SQLite 鎖導致詞庫預載失敗。
-    if not use_reload:
-        run_main_block_startup(env=env)
-
     uvicorn.run(
         "main:app",
         host=os.getenv("HOST", "127.0.0.1"),

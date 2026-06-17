@@ -46,16 +46,6 @@ def _set_background_phase(
             slot["error"] = error
 
 
-def ensure_dev_length_schema() -> None:
-    """Lifespan：本地 SQLite length 欄位輕量 ensure。"""
-    try:
-        from app.db.bootstrap import ensure_length_column
-
-        ensure_length_column()
-    except Exception:
-        pass
-
-
 def start_background_word_cache_preload() -> None:
     """背景載入 word_cache（就緒閘搜尋解鎖依據）。"""
     from app.utils.word_cache import start_word_cache_preload_background
@@ -157,20 +147,12 @@ def start_background_runtime_preload() -> None:
 
 
 def run_lifespan_startup(*, env: str | None = None) -> None:
-    """FastAPI lifespan：schema ensure + 背景預載（uvicorn worker 內執行）。"""
+    """FastAPI lifespan：schema ensure（單次）+ 背景預載。"""
     effective_env = (env or os.getenv("ENV", "local")).lower()
     if _local_sqlite_startup_enabled(effective_env):
         run_create_all_if_needed(effective_env)
         run_local_db_bootstrap(effective_env)
-        ensure_dev_length_schema()
     start_background_runtime_preload()
-
-
-def run_main_block_startup(*, env: str | None = None) -> None:
-    """`python main.py`：僅 DB ensure；其餘預載交 lifespan 背景。"""
-    effective_env = (env or os.getenv("ENV", "local")).lower()
-    run_create_all_if_needed(effective_env)
-    run_local_db_bootstrap(effective_env)
 
 
 def _phase_snapshot(phase: str) -> dict:
@@ -200,7 +182,6 @@ __all__ = [
     "get_readiness_snapshot",
     "reset_background_preload_state_for_tests",
     "run_lifespan_startup",
-    "run_main_block_startup",
     "start_background_runtime_preload",
     "start_background_word_cache_preload",
     "preload_static_runtime_resources",
