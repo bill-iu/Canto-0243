@@ -222,8 +222,8 @@ def _compound_rhyme_char(spec: MatchSpec) -> Optional[str]:
 
 
 @dataclass
-class CompoundSynCandidateSource:
-    """~~ 近義複合：字面容許集 + char IN（cache-first）。"""
+class CompoundCandidateSource:
+    """近義／反義複合：字面容許集 + char IN（cache-first）。"""
 
     db: Any
     compounds: frozenset[str]
@@ -255,38 +255,8 @@ class CompoundSynCandidateSource:
         return rows, False
 
 
-@dataclass
-class CompoundAntCandidateSource:
-    """!! 反義複合：候選字面 + char IN（cache-first）。"""
-
-    db: Any
-    compounds: frozenset[str]
-    expected_length: int = 2
-
-    def get_candidates(
-        self,
-        length: int,
-        *,
-        code: Optional[str] = None,
-        mode: str = "m1",
-    ) -> tuple[list[Any], bool]:
-        if length != self.expected_length or not self.compounds:
-            return [], True
-
-        if is_word_cache_ready():
-            rows = [
-                w for w in get_words_for_length(self.expected_length)
-                if get_word_text(w) in self.compounds
-            ]
-            if rows:
-                return rows, True
-
-        query = self.db.query(Word).filter(
-            Word.char.in_(list(self.compounds)),
-            length_filter(self.expected_length),
-        )
-        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
-        return rows, False
+CompoundSynCandidateSource = CompoundCandidateSource
+CompoundAntCandidateSource = CompoundCandidateSource
 
 
 def _resolve_mask_family_source(
@@ -312,7 +282,7 @@ def _resolve_mask_family_source(
             )
             if not tiers:
                 return None, None
-            source = CompoundSynCandidateSource(
+            source = CompoundCandidateSource(
                 db, frozenset(tiers.keys()), expected_length=3
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
@@ -323,7 +293,7 @@ def _resolve_mask_family_source(
         tiers = search_compound_syn(db, rhyme_char=rhyme_char, width=spec.width)
         if not tiers:
             return None, None
-        source = CompoundSynCandidateSource(db, frozenset(tiers.keys()))
+        source = CompoundCandidateSource(db, frozenset(tiers.keys()))
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 
@@ -340,7 +310,7 @@ def _resolve_mask_family_source(
             )
             if not tiers:
                 return None, None
-            source = CompoundAntCandidateSource(
+            source = CompoundCandidateSource(
                 db, frozenset(tiers.keys()), expected_length=3
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
@@ -351,7 +321,7 @@ def _resolve_mask_family_source(
         tiers = search_compound_ant(db, rhyme_char=rhyme_char, width=spec.width)
         if not tiers:
             return None, None
-        source = CompoundAntCandidateSource(db, frozenset(tiers.keys()))
+        source = CompoundCandidateSource(db, frozenset(tiers.keys()))
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 

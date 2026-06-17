@@ -101,7 +101,6 @@ export function serializeSession(state) {
       id: t.id,
       view: t.view,
       q: t.q,
-      results: t.results,
       offset: t.offset,
       total: t.total,
       relation: t.relation ? { ...t.relation } : undefined,

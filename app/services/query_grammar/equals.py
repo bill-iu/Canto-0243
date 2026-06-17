@@ -42,3 +42,34 @@ def is_framed_equals_query(q: str) -> bool:
     if inner_equal and not left_code and not right_code and len(target) >= 2:
         return True
     return False
+
+
+def build_equals_match_spec(q: str):
+    """查詢字串 → 等號 MatchSpec（純函式，無 DB）。語意見 CONTEXT § 碼夾等號查詢。"""
+    from app.services.position_match import MatchSpec
+
+    match = re.match(r"^(\d*)(=)?([一-龥]+)?(=)?(\d*)$", q)
+    if not match:
+        return None
+    target_str = match.group(3) or ""
+    if not target_str:
+        return None
+
+    left_code = match.group(1) or ""
+    right_code = match.group(5) or ""
+    right_equal = bool(match.group(4))
+    inner_equal = bool(match.group(2))
+    target_length = len(target_str)
+    expected_length = len(left_code) + len(right_code) or target_length
+    start_pos = max(0, len(left_code) - target_length)
+    full_code = left_code + right_code
+
+    return MatchSpec(
+        width=expected_length,
+        code_prefix=full_code if full_code else None,
+        ref_literal=target_str,
+        ref_start_pos=start_pos,
+        ref_dimension="final" if right_equal else "initial",
+        phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
+        whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
+    )

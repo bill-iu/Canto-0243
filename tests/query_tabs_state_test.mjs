@@ -103,7 +103,10 @@ describe("query-tabs-state", () => {
       ],
     };
     const raw = serializeSession(state);
+    const payload = JSON.parse(raw);
+    assert.equal(payload.tabs[0].results, undefined);
     const restored = deserializeSession(raw);
+    assert.deepEqual(restored.tabs[0].results, []);
     assert.deepEqual(restored.tabs[1].relation, state.tabs[1].relation);
     assert.equal(restored.activeId, 2);
     assert.equal(restored.nextTabId, 3);

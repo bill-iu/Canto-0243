@@ -374,8 +374,8 @@ def normalize_and_parse(q: str) -> ParsedQuery:
     return parse_query(normalize_query(q))
 
 
-def parse_query(q: str) -> ParsedQuery:
-    """Classify a normalized query string. No DB access."""
+def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
+    """分派優先序：缺字型兜底（step 7）之前嘅分類。mask 形狀探針共用。"""
     relation_parsed = parse_relation_syntax(q)
     if relation_parsed:
         if relation_parsed["kind"] == "compound_connect_syn":
@@ -501,6 +501,15 @@ def parse_query(q: str) -> ParsedQuery:
     if hybrid_match and not hybrid_match.group(3):
         return HybridCodeQuery(raw_q=q)
 
+    return None
+
+
+def parse_query(q: str) -> ParsedQuery:
+    """Classify a normalized query string. No DB access."""
+    parsed = try_parse_before_mask(q)
+    if parsed is not None:
+        return parsed
+
     if looks_like_mask_query(q):
         return MaskQuery(raw_q=q)
 
@@ -516,39 +525,11 @@ def parse_query(q: str) -> ParsedQuery:
     return UnmatchedQuery(raw_q=q)
 
 
-def is_mask_family_query(parsed: Any) -> bool:
-    """是否為缺字型查詢家族（不含 ~~ / !! 複合詞）。"""
-    return isinstance(
-        parsed,
-        (
-            HybridTailEqualsAliasQuery,
-            EqualsQuery,
-            MaskQuery,
-            HybridCodeQuery,
-            RhymeAnchorQuery,
-            TripleRhymeAnchorQuery,
-            JyutpingAnchorQuery,
-            StarAnchorQuery,
-            WildcardCodeAnchorQuery,
-            CodeRefMiddleRhymeQuery,
-            SerialPhonemeAnchorQuery,
-            PrefixWildcardEqualsQuery,
-            LiteralRefQuery,
-        ),
-    )
-
-
 def uses_match_spec(parsed: Any) -> bool:
-    """是否經 MatchSpec 進入缺字型查詢執行（含近義／反義複合，語法分類仍非缺字家族）。"""
-    return is_mask_family_query(parsed) or isinstance(
-        parsed,
-        (
-            CompoundSynQuery,
-            CompoundAntQuery,
-            CompoundConnectSynQuery,
-            CompoundConnectAntQuery,
-        ),
-    )
+    """是否經 MatchSpec 進入缺字型查詢執行（實作：query_kind_registry）。"""
+    from app.services.query_kind_registry import uses_match_spec as _uses
+
+    return _uses(parsed)
 
 
 VALID_FALLBACK_0243_MODES = frozenset({"m1", "m2"})
@@ -591,34 +572,10 @@ def _rewrite_mask_family_aliases(parsed: ParsedQuery) -> ParsedQuery:
 
 
 def build_equals_match_spec(q: str) -> Optional["MatchSpec"]:
-    """查詢字串 → 等號 MatchSpec（純函式，無 DB）。語意見 CONTEXT § 碼夾等號查詢。"""
-    from app.services.position_match import MatchSpec
+    """Re-export：實作於 query_grammar.equals。"""
+    from app.services.query_grammar.equals import build_equals_match_spec as _build
 
-    match = re.match(r"^(\d*)(=)?([一-龥]+)?(=)?(\d*)$", q)
-    if not match:
-        return None
-    target_str = match.group(3) or ""
-    if not target_str:
-        return None
-
-    left_code = match.group(1) or ""
-    right_code = match.group(5) or ""
-    right_equal = bool(match.group(4))
-    inner_equal = bool(match.group(2))
-    target_length = len(target_str)
-    expected_length = len(left_code) + len(right_code) or target_length
-    start_pos = max(0, len(left_code) - target_length)
-    full_code = left_code + right_code
-
-    return MatchSpec(
-        width=expected_length,
-        code_prefix=full_code if full_code else None,
-        ref_literal=target_str,
-        ref_start_pos=start_pos,
-        ref_dimension="final" if right_equal else "initial",
-        phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
-        whole_word_phoneme_match=(start_pos == 0 and target_length == expected_length),
-    )
+    return _build(q)
 
 
 def _apply_jyutping_anchor_code_slots(spec: "MatchSpec", parsed: JyutpingAnchorQuery) -> None:

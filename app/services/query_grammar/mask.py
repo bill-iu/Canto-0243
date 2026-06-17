@@ -4,8 +4,6 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from app.services.query_grammar import rhyme as rhyme_grammar
-from app.services.query_grammar import wca as wca_grammar
 from app.services.query_tokens import CODE_TAIL_MIDDLE, is_wildcard_char
 
 
@@ -26,19 +24,11 @@ def parse_mask_query(mask: str) -> tuple[int, list[Optional[str]], list[tuple[in
 
 def looks_like_mask_query(q: str) -> bool:
     """True when q uses position mask syntax (digits / canto / wildcards)."""
+    from app.services.query_parse import try_parse_before_mask
+
     if not q or CODE_TAIL_MIDDLE in q or "@" in q:
         return False
-    if wca_grammar.looks_like_wildcard_code_anchor_query(q):
-        return False
-    if rhyme_grammar.parse_code_ref_middle_rhyme_query(q):
-        return False
-    if rhyme_grammar.parse_code_ref_rhyme_contradiction_hint(q):
-        return False
-    if rhyme_grammar.parse_double_wildcard_rhyme_query(q):
-        return False
-    if rhyme_grammar.parse_double_wildcard_initial_query(q):
-        return False
-    if rhyme_grammar.parse_rhyme_anchor_query(q):
+    if try_parse_before_mask(q) is not None:
         return False
     if not re.match(r"^[0-9_?%一-龥]+$", q):
         return False

@@ -25,10 +25,10 @@ from app.services.query_parse import (
     TripleRhymeAnchorQuery,
     WildcardCodeAnchorQuery,
     _build_jyutping_anchor_match_spec,
-    build_equals_match_spec,
     build_jyutping_dual_match_specs,
 )
-from app.services.word_query_parser import build_mask_from_slots, parse_mask_query
+from app.services.query_grammar.equals import build_equals_match_spec
+from app.services.query_grammar.mask import build_mask_from_slots, parse_mask_query
 
 
 MatchSpecBuilder = Callable[[ParsedQuery], Optional[MatchSpec]]

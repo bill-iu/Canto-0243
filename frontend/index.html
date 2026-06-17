@@ -517,6 +517,7 @@
       applyUrlToTabs,
     } from "./query-tabs-state.mjs";
     import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
+    import { escapeHtml, escapeHtmlAttr } from "./dom-escape.mjs";
 
     function showFileFallback() {
       document.body.innerHTML = "";
@@ -737,13 +738,19 @@
       return (total != null && results.length < total) || results.length >= PAGE_SIZE;
     }
 
-    function escapeHtmlAttr(s) {
-      return String(s)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+    function updateActiveTabTitle() {
+      const tab = activeTab();
+      if (!tab) return;
+      const label = tabLabel(tab);
+      const row = $.tabstrip.querySelector(`.chrome-tab[data-tab-id="${tab.id}"]`);
+      if (!row) return;
+      const titleEl = row.querySelector(".chrome-tab-title");
+      if (titleEl) titleEl.textContent = label;
+      const handle = row.querySelector(`[data-tab="${tab.id}"]`);
+      if (handle) {
+        handle.setAttribute("aria-label", label);
+        handle.setAttribute("aria-selected", String(tab.id === tabState.activeId));
+      }
     }
 
     function animateNewTabEntry(tabId) {
@@ -1687,12 +1694,6 @@
       }
     }
 
-    function escapeHtml(text) {
-      const div = document.createElement("div");
-      div.textContent = text;
-      return div.innerHTML;
-    }
-
     function relationPayloadFromForm() {
       const data = new FormData($.relationForm);
       return {
@@ -1776,7 +1777,7 @@
       if (tab?.view === VIEW.SEARCH) {
         tab.q = $.searchInput.value;
         persistTabs();
-        renderTabstrip();
+        updateActiveTabTitle();
       }
     });
 
