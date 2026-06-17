@@ -1,6 +1,7 @@
 # 虛擬環境
 venv/
 .venv/
+.venv-reqs.stamp
 __pycache__/
 *.pyc
 *.pyo

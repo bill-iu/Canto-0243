@@ -22,7 +22,6 @@ FORBIDDEN = (
 
 REQUIRED = (
     "run_lifespan_startup",
-    "run_main_block_startup",
     "get_readiness_snapshot",
     "offline_preload",
 )

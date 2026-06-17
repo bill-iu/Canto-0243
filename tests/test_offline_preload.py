@@ -9,7 +9,6 @@ from app.startup.offline_preload import (
     preload_static_runtime_resources,
     reset_background_preload_state_for_tests,
     run_lifespan_startup,
-    run_main_block_startup,
 )
 from app.utils.word_cache import complete_preload, populate_word_cache_from_rows, reset_word_cache_for_tests
 
@@ -80,29 +79,15 @@ class OfflinePreloadTests(unittest.TestCase):
         self.assertFalse(payload["tail_pending"])
 
     @patch("app.startup.offline_preload.start_background_runtime_preload")
-    @patch("app.startup.offline_preload.ensure_dev_length_schema")
     @patch("app.startup.offline_preload.run_local_db_bootstrap")
     @patch("app.startup.offline_preload.run_create_all_if_needed")
     def test_run_lifespan_startup_triggers_background_preload(
-        self, create_all, bootstrap, _schema, background
+        self, create_all, bootstrap, background
     ):
         run_lifespan_startup(env="local")
         create_all.assert_called_once_with("local")
         bootstrap.assert_called_once_with("local")
         background.assert_called_once()
-
-    @patch("app.startup.offline_preload.preload_compound_syn_runtime_cache")
-    @patch("app.startup.offline_preload.preload_static_runtime_resources")
-    @patch("app.startup.offline_preload.run_local_db_bootstrap")
-    @patch("app.startup.offline_preload.run_create_all_if_needed")
-    def test_run_main_block_startup_only_db_bootstrap(
-        self, create_all, bootstrap, static_resources, compound_cache
-    ):
-        run_main_block_startup(env="local")
-        create_all.assert_called_once_with("local")
-        bootstrap.assert_called_once_with("local")
-        static_resources.assert_not_called()
-        compound_cache.assert_not_called()
 
     @patch("app.startup.offline_preload._best_effort")
     def test_preload_static_runtime_resources_calls_all_loaders(self, best_effort):

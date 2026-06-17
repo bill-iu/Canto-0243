@@ -10,7 +10,7 @@
 2. **Windows** — `scripts/build-portable.ps1` 產出含 venv 的 `canto-0243-portable.zip`；`START.bat` 只使用 `venv\Scripts\python.exe`，不再探測系統 Python 或首次 pip。
 3. **macOS** — `scripts/build-portable.sh` 產出 `Canto-0243.app`（`Contents/Resources/app` 含完整 bundle + venv），`canto-0243-portable-macos.tar.gz` 只打包 `.app`；取代 chmod／Terminal 為預設創作者路徑。
 4. **跨平台建置** — Windows zip 在 Windows 建；macOS .app 在 macOS 建；Release 四件套仍含兩者 + `lyrics.db` + `words-lexicon.json`。
-5. **開發路徑不變** — clone 後 `./start.sh` 與 Portable 啟動腳本職責分開。
+5. **本機啟動契約統一** — `start.sh` 與 Portable `START.*` 共用同一啟動規則（見 CONTEXT § **本機啟動**）；維護者須在開發版路徑驗證 Portable 級體感（HTML 就緒時間、終端即時回饋），不可僅在解壓 zip 後才量測。
 
 **Considered Options**
 
@@ -23,3 +23,4 @@
 - Release 套件體積顯著增大（含 Python 依賴）。
 - CI／維護者需分 OS 跑 build 腳本。
 - Linux 使用者 README 仍說明本機 Python 路徑。
+- 啟動腳本變更須同步 `start.sh` 與 `START.*`，並以開發版 smoke 驗證 Portable 體感。
