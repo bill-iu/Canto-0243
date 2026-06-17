@@ -4,7 +4,7 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 from app.services.position_match import MatchSpec, SlotConstraint
-from app.services.query_parse import (
+from app.services.query_types import (
     HYBRID_CODE_RE,
     CodeRefMiddleRhymeQuery,
     CompoundAntQuery,
@@ -24,11 +24,60 @@ from app.services.query_parse import (
     StarAnchorQuery,
     TripleRhymeAnchorQuery,
     WildcardCodeAnchorQuery,
-    _build_jyutping_anchor_match_spec,
-    build_jyutping_dual_match_specs,
 )
 from app.services.query_grammar.equals import build_equals_match_spec
 from app.services.query_grammar.mask import build_mask_from_slots, parse_mask_query
+
+
+def _apply_jyutping_anchor_code_slots(spec: MatchSpec, parsed: JyutpingAnchorQuery) -> None:
+    if parsed.code_slots:
+        for pos, digit in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+    elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
+        for i, d in enumerate(parsed.code_prefix):
+            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
+
+
+def _build_jyutping_anchor_match_spec(parsed: JyutpingAnchorQuery) -> MatchSpec:
+    spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+    spec.mask = "?" * parsed.width
+    spec.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind=parsed.anchor_kind,
+            value=parsed.anchor_value,
+        )
+    )
+    _apply_jyutping_anchor_code_slots(spec, parsed)
+    return spec
+
+
+def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple[MatchSpec, MatchSpec]:
+    """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
+
+    def _base() -> MatchSpec:
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+        spec.mask = "?" * parsed.width
+        _apply_jyutping_anchor_code_slots(spec, parsed)
+        return spec
+
+    initial = _base()
+    initial.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="initial_letters",
+            value=(parsed.dual_initial_value or parsed.anchor_value),
+        )
+    )
+    final = _base()
+    final.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="rhyme_letters",
+            value=parsed.anchor_value,
+        )
+    )
+    return initial, final
 
 
 MatchSpecBuilder = Callable[[ParsedQuery], Optional[MatchSpec]]
@@ -262,4 +311,4 @@ def build_match_spec_for_parsed(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return builder(parsed)
 
 
-__all__ = ["MATCH_SPEC_BUILDERS", "MatchSpecBuilder", "build_match_spec_for_parsed"]
+__all__ = ["MATCH_SPEC_BUILDERS", "MatchSpecBuilder", "build_jyutping_dual_match_specs", "build_match_spec_for_parsed"]

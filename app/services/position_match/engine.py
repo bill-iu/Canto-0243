@@ -5,12 +5,7 @@ from __future__ import annotations
 from typing import Any, Callable, Optional
 
 from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
-from app.services.position_match.filters import (
-    build_final_options_at_positions,
-    filter_candidates_by_match_spec,
-    matches_hybrid_ref_chars,
-    query_words_by_equals_spec,
-)
+from app.services.position_match.filters import apply_match_spec
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
     get_candidates_for_length,
@@ -20,12 +15,6 @@ from app.services.position_match.spec import (
     MaskFamilySearchResult,
     MatchSpec,
 )
-from app.services.word_serializer import (
-    get_rhyme_finals,
-    get_word_sort_code,
-    get_word_text,
-)
-from app.utils.jyutping_codec import get_code_variants
 
 
 class PositionMatchEngine:
@@ -49,25 +38,7 @@ class PositionMatchEngine:
         else:
             candidates, _ = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
 
-        if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
-            target_final_options = build_final_options_at_positions(
-                spec.hybrid_ref_chars, spec.hybrid_ref_pos, spec.width, db
-            )
-            filtered = []
-            allowed_full_codes = set(get_code_variants(spec.code_prefix or "", mode)) if spec.code_prefix else set()
-            for word in candidates:
-                word_code_str = get_word_sort_code(word)
-                if spec.code_prefix and word_code_str not in allowed_full_codes:
-                    continue
-                word_finals = get_rhyme_finals(word)
-                word_char = get_word_text(word)
-                if matches_hybrid_ref_chars(
-                    word_char, word_finals, spec.hybrid_ref_chars, spec.hybrid_ref_pos, target_final_options
-                ):
-                    filtered.append(word)
-            return filtered
-
-        return filter_candidates_by_match_spec(candidates, spec, mode, db)
+        return apply_match_spec(spec, candidates, db, mode)
 
 
 _DEFAULT_ENGINE = PositionMatchEngine()
@@ -171,6 +142,8 @@ def execute_match_spec(
     offset: int,
     db: Any,
 ) -> MaskFamilySearchResult:
+    from app.services.word_serializer import deduplicate_words, serialize_page
+
     if spec is None or spec.width == 0:
         return MaskFamilySearchResult(items=[])
 
@@ -186,9 +159,7 @@ def execute_match_spec(
         )
 
     if spec.ref_literal:
-        from app.services.word_serializer import deduplicate_words, serialize_page
-
-        filtered = query_words_by_equals_spec(spec, db, mode)
+        filtered = apply_match_spec(spec, [], db, mode)
         items = serialize_page(
             sort_search_results(deduplicate_words(filtered)),
             offset,

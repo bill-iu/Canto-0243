@@ -469,3 +469,46 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
             dimension=spec.ref_dimension,
         )
     ]
+
+
+def filter_hybrid_ref_candidates(
+    candidates: list,
+    spec: MatchSpec,
+    mode: str,
+    db,
+) -> list:
+    """碼夾 hybrid 查詢：參考字韻母選項比對。"""
+    if spec.hybrid_ref_chars is None or spec.hybrid_ref_pos is None:
+        return candidates
+    target_final_options = build_final_options_at_positions(
+        spec.hybrid_ref_chars, spec.hybrid_ref_pos, spec.width, db
+    )
+    filtered = []
+    allowed_full_codes = (
+        set(get_code_variants(spec.code_prefix or "", mode)) if spec.code_prefix else set()
+    )
+    for word in candidates:
+        word_code_str = get_word_sort_code(word)
+        if spec.code_prefix and word_code_str not in allowed_full_codes:
+            continue
+        word_finals = get_rhyme_finals(word)
+        word_char = get_word_text(word)
+        if matches_hybrid_ref_chars(
+            word_char, word_finals, spec.hybrid_ref_chars, spec.hybrid_ref_pos, target_final_options
+        ):
+            filtered.append(word)
+    return filtered
+
+
+def apply_match_spec(
+    spec: MatchSpec,
+    candidates: list,
+    db: Any,
+    mode: str = "m1",
+) -> list[Any]:
+    """MatchSpec 單一過濾管線（equals／hybrid／slot；ADR-0004 #6）。"""
+    if spec.ref_literal:
+        return query_words_by_equals_spec(spec, db, mode)
+    if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
+        return filter_hybrid_ref_candidates(candidates, spec, mode, db)
+    return filter_candidates_by_match_spec(candidates, spec, mode, db)

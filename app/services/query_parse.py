@@ -2,9 +2,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import asdict, dataclass
-from enum import Enum
-from typing import Any, Literal, Optional, Union
+from typing import Any, Optional
 
 from app.services.jyutping_anchor import parse_jyutping_anchor_query, rhyme_letters_resolve_ok
 from app.services.query_grammar.equals import (
@@ -35,333 +33,76 @@ from app.services.query_grammar.star import (
 )
 from app.services.query_grammar.wca import parse_wildcard_code_anchor_query
 from app.services.query_lexer import normalize_search_query, slot_connector_syntax_error
-
-HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
-
-
-class QueryKind(str, Enum):
-    """Parsed query classification (domain syntax types)."""
-
-    RELATION_LOOKUP = "relation_lookup"
-    COMPOUND_ANT = "compound_ant"
-    COMPOUND_SYN = "compound_syn"
-    HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
-    EQUALS = "equals"
-    STAR_ANCHOR = "star_anchor"
-    WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
-    CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
-    SERIAL_PHONEME = "serial_phoneme"
-    PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
-    LITERAL_REF = "literal_ref"
-    RHYME_ANCHOR = "rhyme_anchor"
-    TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
-    JYUTPING_ANCHOR = "jyutping_anchor"
-    HYBRID_CODE = "hybrid_code"
-    MASK = "mask"
-    DIGIT_CODE = "digit_code"
-    WORD_LOOKUP = "word_lookup"
-    JYUTPING_FRAGMENT = "jyutping_fragment"
-    UNMATCHED = "unmatched"
-
-
-@dataclass(frozen=True)
-class RelationLookupQuery:
-    relation_kind: Literal["syn", "ant"]
-    word: str
-    code_prefix: Optional[str] = None
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.RELATION_LOOKUP
-
-    def to_handler_dict(self) -> dict:
-        return {
-            "kind": self.relation_kind,
-            "word": self.word,
-            "code_prefix": self.code_prefix,
-        }
-
-
-@dataclass(frozen=True)
-class CompoundSynQuery:
-    code_prefix: Optional[str]
-    rhyme_char: Optional[str]
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_SYN
-
-
-@dataclass(frozen=True)
-class CompoundAntQuery:
-    code_prefix: Optional[str]
-    rhyme_char: Optional[str]
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_ANT
-
-
-@dataclass(frozen=True)
-class CompoundConnectSynQuery:
-    code_prefix: Optional[str]
-    connective: str
-    rhyme_char: Optional[str]
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_SYN
-
-
-@dataclass(frozen=True)
-class CompoundConnectAntQuery:
-    code_prefix: Optional[str]
-    connective: str
-    rhyme_char: Optional[str]
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_ANT
-
-
-@dataclass(frozen=True)
-class HybridTailEqualsAliasQuery:
-    raw_q: str
-    hybrid_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.HYBRID_TAIL_EQUALS_ALIAS
-
-
-@dataclass(frozen=True)
-class EqualsQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.EQUALS
-
-
-@dataclass(frozen=True)
-class PrefixWildcardEqualsQuery:
-    raw_q: str
-    inner_q: str
-    ref_literal: str
-    width: int
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.PREFIX_WILDCARD_EQUALS
-
-
-@dataclass(frozen=True)
-class SerialPhonemeAnchorQuery:
-    raw_q: str
-    width: int
-    constraint: Literal["final", "initial"]
-    code_slots: list[tuple[int, str]]
-    anchors: list[tuple[int, str]]
-    mask: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.SERIAL_PHONEME
-
-
-@dataclass(frozen=True)
-class StarAnchorQuery:
-    width: int
-    constraint: str
-    anchor: str
-    anchor_pos: int
-    code_slots: list[tuple[int, str]]
-    code_prefix: Optional[str] = None
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.STAR_ANCHOR
-
-    def to_handler_dict(self) -> dict:
-        return asdict(self)
-
-
-@dataclass(frozen=True)
-class WildcardCodeAnchorQuery:
-    raw_q: str
-    width: int
-    slots: list[dict]
-    head_literal: Optional[str] = None
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.WILDCARD_CODE_ANCHOR
-
-
-@dataclass(frozen=True)
-class CodeRefMiddleRhymeQuery:
-    raw_q: str
-    width: int
-    anchor: str
-    anchor_pos: int
-    leading: str
-    digits: str
-    slots: list[dict]
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.CODE_REF_MIDDLE_RHYME
-
-
-@dataclass(frozen=True)
-class LiteralRefQuery:
-    code_digits: str
-    literal_char: str
-    width: int
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.LITERAL_REF
-
-    def to_handler_dict(self) -> dict:
-        return asdict(self)
-
-
-@dataclass(frozen=True)
-class RhymeAnchorQuery:
-    constraint: str
-    anchor_pos: int
-    anchor: str
-    slots: str
-    width: int
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.RHYME_ANCHOR
-
-    def to_handler_dict(self) -> dict:
-        return asdict(self)
-
-
-@dataclass(frozen=True)
-class JyutpingAnchorQuery:
-    raw_q: str
-    width: int
-    anchor_pos: int
-    anchor_kind: Literal["initial_letters", "rhyme_letters", "syllable_letters"]
-    anchor_value: str
-    code_prefix: Optional[str] = None
-    code_slots: Optional[list] = None
-    equals_style: bool = False
-    hybrid_rhyme: bool = False
-    dual_phoneme: bool = False
-    dual_initial_value: Optional[str] = None
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.JYUTPING_ANCHOR
-
-
-@dataclass(frozen=True)
-class TripleRhymeAnchorQuery:
-    anchor: str
-    anchor_pos: int
-    width: int
-    leading_slots: str
-    constraint: Literal["final"] = "final"
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.TRIPLE_RHYME_ANCHOR
-
-    def to_handler_dict(self) -> dict:
-        return asdict(self)
-
-
-@dataclass(frozen=True)
-class HybridCodeQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.HYBRID_CODE
-
-
-@dataclass(frozen=True)
-class MaskQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.MASK
-
-
-@dataclass(frozen=True)
-class DigitCodeQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.DIGIT_CODE
-
-
-@dataclass(frozen=True)
-class WordLookupQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.WORD_LOOKUP
-
-
-@dataclass(frozen=True)
-class JyutpingFragmentQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.JYUTPING_FRAGMENT
-
-
-@dataclass(frozen=True)
-class UnmatchedQuery:
-    raw_q: str
-    hint: Optional[str] = None
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.UNMATCHED
-
-
-ParsedQuery = Union[
-    RelationLookupQuery,
-    CompoundSynQuery,
+from app.services.query_types import (
+    HYBRID_CODE_RE,
+    JYUTPING_ANCHOR_INVALID_HINT,
+    CodeRefMiddleRhymeQuery,
     CompoundAntQuery,
-    CompoundConnectSynQuery,
     CompoundConnectAntQuery,
-    HybridTailEqualsAliasQuery,
+    CompoundConnectSynQuery,
+    CompoundSynQuery,
+    DigitCodeQuery,
     EqualsQuery,
+    HybridCodeQuery,
+    HybridTailEqualsAliasQuery,
+    JyutpingAnchorQuery,
+    JyutpingFragmentQuery,
+    LiteralRefQuery,
+    MaskQuery,
+    ParsedQuery,
     PrefixWildcardEqualsQuery,
+    QueryKind,
+    RelationLookupQuery,
+    RhymeAnchorQuery,
     SerialPhonemeAnchorQuery,
     StarAnchorQuery,
-    WildcardCodeAnchorQuery,
-    CodeRefMiddleRhymeQuery,
-    LiteralRefQuery,
-    RhymeAnchorQuery,
     TripleRhymeAnchorQuery,
-    JyutpingAnchorQuery,
-    HybridCodeQuery,
-    MaskQuery,
-    DigitCodeQuery,
-    WordLookupQuery,
-    JyutpingFragmentQuery,
     UnmatchedQuery,
-]
-
-
-JYUTPING_ANCHOR_INVALID_HINT = (
-    "粵拼錨無效：韻母片段喺收錄讀音中搵唔到對應。請檢查拼寫或改用漢字錨。"
+    WildcardCodeAnchorQuery,
+    WordLookupQuery,
 )
+
+# ponytail: 過渡 re-export；新 code 請 from query_types
+__all__ = [
+    "HYBRID_CODE_RE",
+    "JYUTPING_ANCHOR_INVALID_HINT",
+    "CodeRefMiddleRhymeQuery",
+    "CompoundAntQuery",
+    "CompoundConnectAntQuery",
+    "CompoundConnectSynQuery",
+    "CompoundSynQuery",
+    "DigitCodeQuery",
+    "EqualsQuery",
+    "HybridCodeQuery",
+    "HybridTailEqualsAliasQuery",
+    "JyutpingAnchorQuery",
+    "JyutpingFragmentQuery",
+    "LiteralRefQuery",
+    "MaskQuery",
+    "ParsedQuery",
+    "PrefixWildcardEqualsQuery",
+    "QueryKind",
+    "RelationLookupQuery",
+    "RhymeAnchorQuery",
+    "SerialPhonemeAnchorQuery",
+    "StarAnchorQuery",
+    "TripleRhymeAnchorQuery",
+    "UnmatchedQuery",
+    "WildcardCodeAnchorQuery",
+    "WordLookupQuery",
+    "build_equals_match_spec",
+    "build_jyutping_dual_match_specs",
+    "build_match_spec",
+    "is_relation_syntax_query",
+    "mode_redirect_hint",
+    "normalize_and_parse",
+    "normalize_query",
+    "normalize_to_match_spec",
+    "parse_query",
+    "resolve_fallback_0243_mode",
+    "try_parse_before_mask",
+    "uses_match_spec",
+]
 
 
 def normalize_query(q: str) -> str:
@@ -578,60 +319,11 @@ def build_equals_match_spec(q: str) -> Optional["MatchSpec"]:
     return _build(q)
 
 
-def _apply_jyutping_anchor_code_slots(spec: "MatchSpec", parsed: JyutpingAnchorQuery) -> None:
-    from app.services.position_match import SlotConstraint
-
-    if parsed.code_slots:
-        for pos, digit in parsed.code_slots:
-            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
-    elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
-        for i, d in enumerate(parsed.code_prefix):
-            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
-
-
-def _build_jyutping_anchor_match_spec(parsed: JyutpingAnchorQuery) -> "MatchSpec":
-    from app.services.position_match import MatchSpec, SlotConstraint
-
-    spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
-    spec.mask = "?" * parsed.width
-    spec.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind=parsed.anchor_kind,
-            value=parsed.anchor_value,
-        )
-    )
-    _apply_jyutping_anchor_code_slots(spec, parsed)
-    return spec
-
-
 def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple["MatchSpec", "MatchSpec"]:
-    """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
-    from app.services.position_match import MatchSpec, SlotConstraint
+    """Re-export：實作於 query_match_spec_registry。"""
+    from app.services.query_match_spec_registry import build_jyutping_dual_match_specs as _build
 
-    def _base() -> "MatchSpec":
-        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
-        spec.mask = "?" * parsed.width
-        _apply_jyutping_anchor_code_slots(spec, parsed)
-        return spec
-
-    initial = _base()
-    initial.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind="initial_letters",
-            value=(parsed.dual_initial_value or parsed.anchor_value),
-        )
-    )
-    final = _base()
-    final.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind="rhyme_letters",
-            value=parsed.anchor_value,
-        )
-    )
-    return initial, final
+    return _build(parsed)
 
 
 def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:

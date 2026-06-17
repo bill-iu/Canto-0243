@@ -5,10 +5,10 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from app.services.query_parse import QueryKind
+from app.services.query_types import QueryKind
 
 if TYPE_CHECKING:
-    from app.services.query_parse import ParsedQuery
+    from app.services.query_types import ParsedQuery
 
 
 class RouteKind(str, Enum):
