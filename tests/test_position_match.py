@@ -21,7 +21,7 @@ from app.services.position_match.spec import MatchSpec, SlotConstraint
 from app.services.query_parse import _build_mask_family_match_spec as build_mask_family_match_spec
 from app.services.query_parse import (
     RhymeAnchorQuery,
-    CodeTailQuery,
+    StarAnchorQuery,
     LiteralRefQuery,
     MaskQuery,
     HybridCodeQuery,
@@ -91,14 +91,22 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
         self.assertEqual(spec.slots[0].value, "就")
 
     def test_code_tail_literal_to_spec(self):
-        q = CodeTailQuery(code_digits="23", width=3, constraint="literal", anchor="就", anchor_pos=2)
+        q = StarAnchorQuery(
+            width=3,
+            constraint="literal",
+            anchor="就",
+            anchor_pos=2,
+            code_slots=[(0, "2"), (1, "3")],
+            code_prefix="23",
+        )
         spec = build_mask_family_match_spec(q)
         self.assertEqual(spec.width, 3)
         self.assertEqual(spec.code_prefix, "23")
         self.assertEqual(spec.mask, "??就")  # derived same as old handler: build_mask("") then override at anchor_pos
-        self.assertEqual(len(spec.slots), 1)
-        self.assertEqual(spec.slots[0].kind, "literal_char")
-        self.assertEqual(spec.slots[0].pos, 2)
+        self.assertEqual(len(spec.slots), 3)
+        kinds = [s.kind for s in spec.slots]
+        self.assertIn("literal_char", kinds)
+        self.assertEqual(sorted(s.value for s in spec.slots if s.kind == "code_digit"), ["2", "3"])
 
     def test_literal_ref_to_spec(self):
         q = LiteralRefQuery(code_digits="2", literal_char="我", width=2)

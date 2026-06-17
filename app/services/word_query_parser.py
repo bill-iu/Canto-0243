@@ -30,6 +30,7 @@ def normalize_code_tail_separators(q: str) -> str:
 
 def normalize_query_syntax(q: str) -> str:
     """Full-width relation/wildcard punctuation → ASCII (查詢分派入口)."""
+    q = q.replace("＊", "*").replace("﹡", "*")
     q = q.replace("！！", "!!").replace("～～", "~~")
     return q.replace("！", "!").replace("～", "~").replace("？", "?")
 
@@ -255,6 +256,80 @@ def parse_code_tail_query(q: str) -> Optional[dict]:
             "constraint": "literal",
             "anchor": m2.group(1),
             "anchor_pos": width - 1,
+        }
+    return None
+
+
+def parse_star_anchor_query(q: str) -> Optional[dict]:
+    """
+    Star-anchor family (綜合頭/中/尾格):
+
+    - 尾格（既有）: {code}*{漢字}{可選 '='}  /  {code}*= {漢字}（同聲母，legacy）
+    - 中格（新增）: {left_code}*{漢字}{可選 '='}{right_code}
+    - 頭格（新增）: *{漢字}{可選 '='}{right_code}
+    """
+    if not q or CODE_TAIL_MIDDLE not in q or "@" in q:
+        return None
+
+    # 頭格：*門0 / *門=0
+    m = re.match(r"^\*([一-龥])(=)?(\d+)$", q)
+    if m:
+        anchor, eq, right = m.group(1), m.group(2), m.group(3)
+        width = 1 + len(right)
+        anchor_pos = 0
+        return {
+            "width": width,
+            "anchor_pos": anchor_pos,
+            "anchor": anchor,
+            "constraint": "final" if eq else "literal",
+            "code_slots": [(anchor_pos + 1 + i, d) for i, d in enumerate(right)],
+            "code_prefix": None,
+        }
+
+    # 中格：2*就3 / 2*就=3 / 23*就45 / 23*就=45
+    m = re.match(r"^(\d+)\*([一-龥])(=)?(\d+)$", q)
+    if m:
+        left, anchor, eq, right = m.group(1), m.group(2), m.group(3), m.group(4)
+        anchor_pos = len(left)
+        width = len(left) + 1 + len(right)
+        code_slots = [(i, d) for i, d in enumerate(left)] + [
+            (anchor_pos + 1 + i, d) for i, d in enumerate(right)
+        ]
+        return {
+            "width": width,
+            "anchor_pos": anchor_pos,
+            "anchor": anchor,
+            "constraint": "final" if eq else "literal",
+            "code_slots": code_slots,
+            "code_prefix": None,
+        }
+
+    # 尾格：23*就 / 23*就=
+    m = re.match(r"^(\d+)\*([一-龥])(=)?$", q)
+    if m:
+        code, anchor, eq = m.group(1), m.group(2), m.group(3)
+        width = len(code) + 1
+        return {
+            "width": width,
+            "anchor_pos": width - 1,
+            "anchor": anchor,
+            "constraint": "final" if eq else "literal",
+            "code_slots": [(i, d) for i, d in enumerate(code)],
+            "code_prefix": code,
+        }
+
+    # 尾格同聲母（legacy）：23*=就
+    m = re.match(r"^(\d+)\*=([一-龥])$", q)
+    if m:
+        code, anchor = m.group(1), m.group(2)
+        width = len(code) + 1
+        return {
+            "width": width,
+            "anchor_pos": width - 1,
+            "anchor": anchor,
+            "constraint": "initial",
+            "code_slots": [(i, d) for i, d in enumerate(code)],
+            "code_prefix": code,
         }
     return None
 

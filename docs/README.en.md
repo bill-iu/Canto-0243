@@ -74,7 +74,7 @@ The package includes `lyrics.db` and static near／antonym data. Troubleshooting
 * **Position & wildcards**: `香??`, `?你?`, `3_`, `23?`.
 * **Digits + tail character**: `23就` (tail rhymes with 「就」), `23@就` (literal tail fixed), `23*就` (longer slot).
 * **Equals anchors**: `=` **after** anchor compares rhyme (`?就=`); `=` **before** anchor compares initial (`?=就`); whole-word rhyme `香港=`, code-sandwich `2我=3`.
-* **Jyutping anchors**: Latin replaces a reference character inside mask-family queries (`?syut?` middle syllable, `23o` rhyme on **last slot** after digits, `3hon4` first-slot syllable, etc.); **not** a full Jyutping lookup; **near／antonym mode** does not accept them.
+* **Jyutping anchors**: Jyutping replaces a reference character inside mask-family queries (`?syut?` middle syllable, `23o` rhyme on **last slot** after digits, `3hon4` first-slot syllable, etc.); **not** a full Jyutping lookup; **near／antonym mode** does not accept them.
 * **Near／antonym relation queries**: `~開心`, `!你`, `33!開心`.
 * **Antonym compounds**: `!!`, `33!!`, `!!你`, `33!!你` (e.g. 生死, 是非).
 * **Near-synonym compounds**: `~~`, `33~~`, `~~你`, `33~~你` (e.g. 朋友, 恐懼); **not** in near／antonym mode.
@@ -163,43 +163,37 @@ Matches clickable examples in the frontend **Search guide**.
 
 **Punctuation equivalence** (normalized at query dispatch): full-width `？` = `?`; `～`／`！` = `~`／`!`; `~~`／`!!` = `～～`／`！！` and mixed forms (e.g. `~～`).
 
-### Literal positions
+### Mask queries (literals / digits / wildcards)
 
 | Example | Description |
 |---------|-------------|
 | `香??` | 3-char word; first char is 「香」 |
 | `?你?` | 3-char word; middle is 「你」 |
-| `23?就` | 4-char word; 23 + ? + 就 |
+| `_識_` | 3-char word; middle is 「識」 |
+| `3_` | 2-char; first syllable matches 3; tail unrestricted |
+| `23?` | 3-char; first two syllables match 23; third unrestricted |
+| `門0` | 2-char; first is 「門」 + second slot code is 0 |
 
-### Digits + tail character
+### Star anchors (`*`) — pin a slot by literal / rhyme / initial
 
-| Example | Description |
-|---------|-------------|
-| `23就` | 2-char; 23 same-code; tail rhymes with 「就」 |
-| `23@就` | 2-char; 23 same-code; tail must be 「就」 |
-| `23*就` | 3-char; 23 same-code; third char is 「就」 |
-| `23*就=` | 3-char; 23 same-code; third char rhymes with 「就」 |
-| `23*=就` | 3-char; 23 same-code; third char same initial as 「就」 |
+Use `*` to connect digits and an anchor character. **`=` always sticks to the anchor character**: `就=` means “same rhyme (finals) as 就”; without `=` it means the slot is literally that character. `*=就` is the legacy “same initial” shape.
 
-### Rhyme (final) anchors
+Three shapes (slot is obvious by where `*` appears):
 
-| Example | Description |
-|---------|-------------|
-| `香=?` | 2-char; first char rhymes with 「香」 |
-| `?就=` | 2-char; tail rhymes with 「就」 |
-| `??就=` | 3-char; tail rhymes with 「就」 |
+- **Tail slot**: `{code}*{Han}{optional '='}` / `{code}*= {Han}`  
+  Examples: `23*就`, `23*就=`, `23*=就`
+- **Middle slot**: `{left_code}*{Han}{optional '='}{right_code}`  
+  Examples: `2*就3` (middle literal), `2*就=3` (middle rhymes)
+- **Head slot**: `*{Han}{optional '='}{right_code}`  
+  Examples: `*門0` (head literal), `*門=0` (head rhymes)
 
-### Initial anchors
+> `門0` still works, but is a **deprecated** alias. Prefer `*門0`.
 
-| Example | Description |
-|---------|-------------|
-| `=香?` | 2-char; first char same initial as 「香」 |
-| `?=就` | 2-char; tail same initial as 「就」 |
-| `??=就` | 3-char; tail same initial as 「就」 |
+(Related) You can also use `=` anchors without `*`: `香=?`, `?就=`, `=香?`, `?=就`.
 
-### Jyutping anchors (Latin anchors)
+### Jyutping anchors
 
-Within the **mask-family** queries, Latin letters mark a phoneme constraint—**not** a full Jyutping lookup (`syut` looks up a word; `?syut?` anchors the middle slot). **Near／antonym mode** does not accept Jyutping anchors; invalid rhyme fragments are rejected with a hint.
+Within the **mask-family** queries, Jyutping marks a phoneme constraint—**not** a full Jyutping lookup (`syut` looks up a word; `?syut?` anchors the middle slot). **Near／antonym mode** does not accept Jyutping anchors; invalid rhyme fragments are rejected with a hint.
 
 **Wildcard slots**
 
@@ -210,7 +204,7 @@ Within the **mask-family** queries, Latin letters mark a phoneme constraint—**
 | `?syut?` | 3-char; **middle** full syllable `syut` |
 | `?hon` | 2-char; **last slot** full syllable `hon` |
 
-**Digits + Latin**
+**Digits + Jyutping**
 
 | Example | Description |
 |---------|-------------|
@@ -221,7 +215,7 @@ Within the **mask-family** queries, Latin letters mark a phoneme constraint—**
 | `23o` | 2-char; code `23`; **last slot** rhyme `o` (broader than `23ngo`) |
 | `23ei0` | 3-char; code `230`; **middle** rhyme `ei` (like `23你=0`) |
 
-In `3hon4` the syllable is on the **first** slot; in `23ngo`／`23o` the Latin suffix anchors the **last** slot after the digit run—different shapes, do not mix them up.
+In `3hon4` the syllable is on the **first** slot; in `23ngo`／`23o` the Jyutping suffix anchors the **last** slot after the digit run—different shapes, do not mix them up.
 
 ### Trailing `=` (whole-word rhyme／code sandwich)
 
@@ -239,13 +233,6 @@ In `3hon4` the syllable is on the **first** slot; in `23ngo`／`23o` the Latin s
 |---------|-------------|
 | `=香港` | 2-char; whole word same initial pattern as 「香港」 |
 | `2=我3` | 2-char; 23 same-code; first char same initial as 「我」 |
-
-### Wildcards
-
-| Example | Description |
-|---------|-------------|
-| `3_` | 2-char; first syllable matches 3; tail unrestricted |
-| `23?` | 3-char; first two syllables match 23; third unrestricted |
 
 ### Near／antonym
 

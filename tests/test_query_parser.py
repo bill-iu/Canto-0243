@@ -1,7 +1,7 @@
 import unittest
 
 from app.services.query_parse import (
-    CodeTailQuery,
+    StarAnchorQuery,
     CompoundAntQuery,
     CompoundSynQuery,
     DigitCodeQuery,
@@ -99,8 +99,8 @@ class ParseQueryGoldenTests(unittest.TestCase):
 
     def test_code_tail_literal(self):
         parsed = self._parse("23*就")
-        self.assertIsInstance(parsed, CodeTailQuery)
-        self.assertEqual(parsed.code_digits, "23")
+        self.assertIsInstance(parsed, StarAnchorQuery)
+        self.assertEqual(parsed.code_prefix, "23")
         self.assertEqual(parsed.constraint, "literal")
         self.assertEqual(parsed.anchor, "就")
 
@@ -191,8 +191,13 @@ class BuildMatchSpecTests(unittest.TestCase):
 
     def test_code_tail(self):
         spec = build_match_spec(
-            CodeTailQuery(
-                code_digits="23", width=3, constraint="literal", anchor="就", anchor_pos=2
+            StarAnchorQuery(
+                width=3,
+                constraint="literal",
+                anchor="就",
+                anchor_pos=2,
+                code_slots=[(0, "2"), (1, "3")],
+                code_prefix="23",
             )
         )
         self.assertEqual(spec.mask, "??就")

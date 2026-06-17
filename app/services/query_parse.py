@@ -15,10 +15,10 @@ from app.services.word_query_parser import (
     looks_like_mask_query,
     normalize_search_query,
     parse_at_tail_query,
-    parse_code_tail_query,
     parse_mask_query,
     parse_relation_syntax,
     parse_rhyme_anchor_query,
+    parse_star_anchor_query,
     parse_triple_rhyme_anchor_query,
 )
 
@@ -33,7 +33,7 @@ class QueryKind(str, Enum):
     COMPOUND_SYN = "compound_syn"
     HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
-    CODE_TAIL = "code_tail"
+    STAR_ANCHOR = "star_anchor"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
@@ -104,16 +104,17 @@ class EqualsQuery:
 
 
 @dataclass(frozen=True)
-class CodeTailQuery:
-    code_digits: str
+class StarAnchorQuery:
     width: int
     constraint: str
     anchor: str
     anchor_pos: int
+    code_slots: list[tuple[int, str]]
+    code_prefix: Optional[str] = None
 
     @property
     def kind(self) -> QueryKind:
-        return QueryKind.CODE_TAIL
+        return QueryKind.STAR_ANCHOR
 
     def to_handler_dict(self) -> dict:
         return asdict(self)
@@ -245,7 +246,7 @@ ParsedQuery = Union[
     CompoundAntQuery,
     HybridTailEqualsAliasQuery,
     EqualsQuery,
-    CodeTailQuery,
+    StarAnchorQuery,
     LiteralRefQuery,
     RhymeAnchorQuery,
     TripleRhymeAnchorQuery,
@@ -300,9 +301,25 @@ def parse_query(q: str) -> ParsedQuery:
     if is_framed_equals_query(q):
         return EqualsQuery(raw_q=q)
 
-    code_tail_parsed = parse_code_tail_query(q)
-    if code_tail_parsed:
-        return CodeTailQuery(**code_tail_parsed)
+    star_parsed = parse_star_anchor_query(q)
+    if star_parsed:
+        return StarAnchorQuery(**star_parsed)
+    if "*" in q:
+        if re.match(r"^\d+\*=([一-龥])\d+$", q):
+            return UnmatchedQuery(
+                raw_q=q,
+                hint="`=` 只能緊貼錨字後面：請改用 `2*就3`（字面）或 `2*就=3`（同韻母）。",
+            )
+        if re.match(r"^\*[一-龥]\d+=$", q):
+            return UnmatchedQuery(
+                raw_q=q,
+                hint="`=` 只能緊貼錨字後面：請改用 `*門0`（字面）或 `*門=0`（同韻母）。",
+            )
+        if re.match(r"^\*[一-龥](=)?$", q):
+            return UnmatchedQuery(
+                raw_q=q,
+                hint="星號錨（頭格）需要右碼：請改用 `*門0`（字面）或 `*門=0`（同韻母）。",
+            )
 
     at_tail_parsed = parse_at_tail_query(q)
     if at_tail_parsed:
@@ -356,7 +373,7 @@ def is_mask_family_query(parsed: Any) -> bool:
             RhymeAnchorQuery,
             TripleRhymeAnchorQuery,
             JyutpingAnchorQuery,
-            CodeTailQuery,
+            StarAnchorQuery,
             LiteralRefQuery,
         ),
     )
@@ -414,21 +431,29 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
     if isinstance(parsed, EqualsQuery):
         return build_equals_match_spec(parsed.raw_q)
 
-    if isinstance(parsed, CodeTailQuery):
-        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_digits)
+    if isinstance(parsed, StarAnchorQuery):
+        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+        spec.mask = "?" * parsed.width
+        for pos, d in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=d))
         if parsed.constraint == "literal":
-            m = build_mask_from_slots("", parsed.width, parsed.anchor_pos)
-            m = m[: parsed.anchor_pos] + parsed.anchor
-            spec.mask = m
             spec.slots.append(
                 SlotConstraint(pos=parsed.anchor_pos, kind="literal_char", value=parsed.anchor)
             )
-        else:
-            kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
-            spec.slots.append(
-                SlotConstraint(pos=parsed.anchor_pos, kind=kind, value=parsed.anchor)
+            spec.mask = (
+                spec.mask[: parsed.anchor_pos] + parsed.anchor + spec.mask[parsed.anchor_pos + 1 :]
             )
-            spec.mask = build_mask_from_slots("", parsed.width, parsed.anchor_pos)
+            return spec
+        if parsed.constraint == "final":
+            spec.slots.append(
+                SlotConstraint(pos=parsed.anchor_pos, kind="final_anchor", value=parsed.anchor)
+            )
+            return spec
+        if parsed.constraint == "initial":
+            spec.slots.append(
+                SlotConstraint(pos=parsed.anchor_pos, kind="initial_anchor", value=parsed.anchor)
+            )
+            return spec
         return spec
 
     if isinstance(parsed, LiteralRefQuery):
