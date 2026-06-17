@@ -27,7 +27,11 @@ _Avoid_：Word（實作名）、候選（僅在描述搜尋結果清單時使用
 
 **字面**：
 詞條上顯示的漢字序列（一至多字），例如「香港」的字面長度為 2。
-_Avoid_：詞面、字串、char（實作名）
+_Avoid_：詞面、字串
+
+**程式識別子（canto 字）**：
+討論或撰寫程式時，指 CJK 字元嘅識別子分工：**`chars`** 指字元序列／字串操作／regex 範圍（如 `mask_chars`、`q_chars`）；**`canto`** 指單一粵語書面字、音節槽內一格（如 `canto_char`、`has_canto`）。領域討論、UI 文案同 hint 仍用**漢字**／**字面**；`canto`／`chars` 只限程式命名。歷史識別子 **`literal_char`**（MatchSpec slot kind）語意等同固定 canto 槽，保留唔改；新 code 唔再新增 `*_char` 識別子。
+_Avoid_：`hanzi`、`Hanzi`、`_HANZI_*`、把 `chars` 同 `canto` 混用於同一概念、喺用戶文案改用 `canto`/`chars`、新 code 用 `*_char` 命名（`literal_char` 除外）
 
 **0243 碼**：
 附在詞條上的數字序列；每一格對應一個音節的聲調，經固定映射轉成 0/2/3/4/9。長度與字面音節數一致（「香港」→ 兩位碼）。

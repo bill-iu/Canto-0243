@@ -22,7 +22,7 @@ class IsRelationSyntaxQueryTests(unittest.TestCase):
         self.assertTrue(is_relation_syntax_query("!與!"))
         self.assertTrue(is_relation_syntax_query("33!!你"))
 
-    def test_plain_hanzi_not_relation_syntax(self):
+    def test_plain_chars_not_relation_syntax(self):
         self.assertFalse(is_relation_syntax_query("開心"))
         self.assertFalse(is_relation_syntax_query("香??"))
         self.assertFalse(is_relation_syntax_query("23"))
@@ -99,7 +99,7 @@ class SynModeRedirectTests(unittest.TestCase):
         finally:
             session.close()
 
-    def test_syn_mode_plain_hanzi_stays_pool(self):
+    def test_syn_mode_plain_chars_stays_pool(self):
         session = self._session_with_seed()
         try:
             result = execute_search(

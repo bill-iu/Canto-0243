@@ -24,7 +24,7 @@ from app.services.word_query_parser import (
     parse_rhyme_anchor_query,
     parse_single_char_rhyme_anchor_query,
     parse_prefix_wildcard_equals_query,
-    parse_pure_hanzi_serial_hint,
+    parse_pure_chars_serial_hint,
     parse_serial_phoneme_anchor_query,
     parse_star_anchor_query,
     parse_triple_rhyme_anchor_query,
@@ -424,9 +424,9 @@ def parse_query(q: str) -> ParsedQuery:
     if prefix_eq_hint:
         return UnmatchedQuery(raw_q=q, hint=prefix_eq_hint)
 
-    pure_hanzi_hint = parse_pure_hanzi_serial_hint(q)
-    if pure_hanzi_hint:
-        return UnmatchedQuery(raw_q=q, hint=pure_hanzi_hint)
+    pure_chars_hint = parse_pure_chars_serial_hint(q)
+    if pure_chars_hint:
+        return UnmatchedQuery(raw_q=q, hint=pure_chars_hint)
 
     prefix_eq = parse_prefix_wildcard_equals_query(q)
     if prefix_eq:

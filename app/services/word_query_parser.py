@@ -20,7 +20,7 @@ DIGIT_AFTER_SLOT_CONNECTOR_HINT = (
 HYBRID_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥])=$")
 AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
 SLOT_CHARS_RE = r"[0-9_?%]"
-_HANZI_RE = re.compile(r"[\u4e00-\u9fff]")
+_CANTO_CHARS_RE = re.compile(r"[\u4e00-\u9fff]")
 
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
 FILLWORD_CONNECTIVES = "與和或共同及跟而且並向"
@@ -56,7 +56,7 @@ def normalize_query_syntax(q: str) -> str:
 
 def normalize_jyutping_slot_connectors(q: str) -> str:
     """ADR-0013：缺字型粵拼錨 slot 連接符規範化（?hon→?*hon、3?ngo4→3*ngo4）。"""
-    if not q or re.search(_HANZI_RE, q):
+    if not q or re.search(_CANTO_CHARS_RE, q):
         m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
         if m:
             return f"{m.group(1)}*{m.group(2)}{m.group(3)}"
@@ -90,7 +90,7 @@ def normalize_search_query(q: str) -> str:
     return normalize_canonical_star_query(q)
 
 
-PURE_HANZI_SERIAL_HINT = (
+PURE_CHARS_SERIAL_HINT = (
     "每個 `{字}=`／`={字}` 前須有 0243 碼。"
     "例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。"
 )
@@ -115,7 +115,7 @@ def prefix_wildcard_equals_missing_eq_hint(q: str) -> Optional[str]:
     return None
 
 
-def parse_pure_hanzi_serial_hint(q: str) -> Optional[str]:
+def parse_pure_chars_serial_hint(q: str) -> Optional[str]:
     if not q or not re.fullmatch(r"[一-龥=]+", q):
         return None
     if re.fullmatch(r"[一-龥]=", q):
@@ -123,7 +123,7 @@ def parse_pure_hanzi_serial_hint(q: str) -> Optional[str]:
     if is_framed_equals_query(q):
         return None
     if re.search(r"(?<![0-9])([一-龥])=", q):
-        return PURE_HANZI_SERIAL_HINT
+        return PURE_CHARS_SERIAL_HINT
     return None
 
 
@@ -218,7 +218,7 @@ def parse_serial_phoneme_anchor_query(q: str) -> Optional[dict]:
 
 
 _HEAD_LITERAL_TAIL_RE = re.compile(r"[_?%0-9=]")
-_MIDDLE_WILDCARD_BEFORE_HANZI_RE = re.compile(
+_MIDDLE_WILDCARD_BEFORE_CANTO_RE = re.compile(
     rf"(?<![0-9*])([{re.escape('?_')}%])([一-龥])(?!=)"
 )
 _RHYME_ANCHOR_SHAPE_RE = re.compile(
@@ -259,7 +259,7 @@ def normalize_canonical_star_query(q: str) -> str:
             return q
         if _HEAD_LITERAL_TAIL_RE.search(tail):
             return "*" + q
-    return _MIDDLE_WILDCARD_BEFORE_HANZI_RE.sub(r"\1*\2", q)
+    return _MIDDLE_WILDCARD_BEFORE_CANTO_RE.sub(r"\1*\2", q)
 
 
 def mask_from_canonical_star_query(q: str) -> Optional[str]:
@@ -290,7 +290,7 @@ def _wca_tokenize(body: str) -> Optional[list[tuple[str, str]]]:
             while i < len(body) and body[i].isdigit():
                 tokens.append(("code", body[i]))
                 i += 1
-        elif _HANZI_RE.match(ch):
+        elif _CANTO_CHARS_RE.match(ch):
             tokens.append(("ref", ch))
             i += 1
         else:

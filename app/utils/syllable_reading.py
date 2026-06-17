@@ -14,7 +14,7 @@ _CANTO_RE = re.compile(r"[\u4e00-\u9fff]")
 def compose_lexicon_entries_from_rime(text: str) -> list[LexiconEntry]:
     """
     Build one LexiconEntry by concatenating each character's rime 預設 reading.
-    Returns [] if any character lacks a rime default or text is not multi-char hanzi.
+    Returns [] if any character lacks a rime default or text is not multi-canto chars.
     """
     text = (text or "").strip()
     if len(text) < 2:

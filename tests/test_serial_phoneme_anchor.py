@@ -15,7 +15,7 @@ from app.services.query_parse import (
 )
 from app.services.word_query_parser import (
     PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT,
-    PURE_HANZI_SERIAL_HINT,
+    PURE_CHARS_SERIAL_HINT,
     normalize_search_query,
 )
 
@@ -74,11 +74,11 @@ class PrefixWildcardEqualsTests(unittest.TestCase):
         self.assertEqual(parsed.hint, PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT)
 
 
-class PureHanziSerialHintTests(unittest.TestCase):
+class PureCharsSerialHintTests(unittest.TestCase):
     def test_qiong_kun_liu_dao(self):
         parsed = _parse("窮困=潦倒=")
         self.assertIsInstance(parsed, UnmatchedQuery)
-        self.assertEqual(parsed.hint, PURE_HANZI_SERIAL_HINT)
+        self.assertEqual(parsed.hint, PURE_CHARS_SERIAL_HINT)
 
 
 class SingleCharRhymeNormalizeTests(unittest.TestCase):

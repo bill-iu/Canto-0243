@@ -26,10 +26,10 @@ class NormalizeCanonicalStarTests(unittest.TestCase):
         self.assertEqual(normalize_search_query("香港"), "香港")
         self.assertEqual(normalize_search_query("香"), "香")
 
-    def test_middle_wildcard_before_hanzi(self):
+    def test_middle_wildcard_before_canto(self):
         self.assertEqual(normalize_search_query("?你?"), "?*你?")
 
-    def test_no_star_when_digit_before_hanzi(self):
+    def test_no_star_when_digit_before_canto(self):
         self.assertEqual(normalize_search_query("?30人"), "?30人")
 
     def test_skips_equals_and_rhyme_anchors(self):
