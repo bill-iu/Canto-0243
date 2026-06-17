@@ -83,14 +83,12 @@ export let currentMode = "m1";
 export let last0243Mode = "m1";
 export let isSearching = false;
 export let appSearchReady = false;
+export function setAppSearchReady(ready) {
+  appSearchReady = ready;
+}
 export let tabState = { activeId: 1, nextTabId: 2, tabs: [] };
 export let chromeLayout = null;
 export let pendingNewTabAnimation = null;
-export let lastReadySnapshot = null;
-export let warmupDoneShown = false;
-export let warmupTailShown = false;
-export let warmupPollTimer = null;
-export let warmupDismissTimer = null;
 
 export const $ = {
   homeBtn: document.getElementById("homeBtn"),

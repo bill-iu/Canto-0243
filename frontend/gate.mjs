@@ -2,11 +2,7 @@ import {
   $,
   appSearchReady,
   isSearching,
-  lastReadySnapshot,
-  warmupDoneShown,
-  warmupTailShown,
-  warmupPollTimer,
-  warmupDismissTimer,
+  setAppSearchReady,
   REDUCED_MOTION,
   LANDING_VARIANT,
   LANDING_SESSION_KEY,
@@ -18,6 +14,12 @@ import {
   WARMUP_DONE_HOLD_MS,
   WARMUP_DONE_FADE_MS,
 } from "./app-context.mjs";
+
+let lastReadySnapshot = null;
+let warmupDoneShown = false;
+let warmupTailShown = false;
+let warmupPollTimer = null;
+let warmupDismissTimer = null;
 
 function wordCacheProgress(data) {
   const wc = data?.phases?.word_cache;
@@ -240,7 +242,7 @@ async function revealFromGate({ playLanding }) {
   $.preloadOverlay.classList.add("is-hidden");
   $.preloadOverlay.classList.remove("is-exiting", "is-handoff");
   $.preloadOverlay.setAttribute("aria-busy", "false");
-  appSearchReady = true;
+  setAppSearchReady(true);
   setSearchControlsEnabled(true);
   if (playLanding && !REDUCED_MOTION) {
     await sleep(80);

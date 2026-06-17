@@ -33,9 +33,16 @@ describe("frontend ESM public API", () => {
     }
   });
 
+  it("gate.mjs does not assign to imported live bindings", () => {
+    const src = readModule("gate.mjs");
+    assert.doesNotMatch(src, /import[\s\S]*\blastReadySnapshot\b[\s\S]*from/);
+    assert.doesNotMatch(src, /\bappSearchReady\s*=/);
+    assert.match(src, /setAppSearchReady\(true\)/);
+    assert.match(src, /\nlet lastReadySnapshot\s*=/);
+  });
+
   it("gate.mjs exports gate loop entrypoints", () => {
     assertExports("gate.mjs", ["waitForPreloadReady", "wordCacheProgress", "setGateInkProgress"]);
-    assert.doesNotMatch(readModule("gate.mjs"), /\nlet lastReadySnapshot\s*=/);
   });
 
   it("relation-form.mjs exports relation tab API", () => {

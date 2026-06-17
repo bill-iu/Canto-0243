@@ -419,7 +419,9 @@ class TestQueryTabsSeam(unittest.TestCase):
         source = GATE_MJS_PATH.read_text(encoding="utf-8")
         self.assertIn("export {", source)
         self.assertIn("waitForPreloadReady", source)
-        self.assertNotRegex(source, r"\nlet lastReadySnapshot\s*=")
+        self.assertIn("setAppSearchReady(true)", source)
+        self.assertRegex(source, r"\nlet lastReadySnapshot\s*=")
+        self.assertNotIn("lastReadySnapshot,", source.split("from \"./app-context.mjs\"")[0])
 
     def test_frontend_esm_modules_export_public_api(self):
         exports_required = {
