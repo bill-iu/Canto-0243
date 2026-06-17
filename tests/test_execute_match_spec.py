@@ -1,4 +1,4 @@
-"""缺字型查詢執行 registry — execute_match_spec 僅收 MatchSpec。"""
+"""缺字型查詢執行 registry — dual_phoneme 與 dispatch 端到端（smoke 見 test_apply_match_spec_pipeline）。"""
 from __future__ import annotations
 
 import unittest
@@ -23,52 +23,6 @@ class ExecuteMatchSpecTests(unittest.TestCase):
         session.add_all(words)
         session.commit()
         return session
-
-    def test_registry_mask_query_via_normalize(self):
-        session = self._session_with_words(
-            [
-                Word(
-                    char="門口",
-                    code="10",
-                    jyutping="mun4 hau2",
-                    finals='["un","au"]',
-                    initials='["m","h"]',
-                    length=2,
-                ),
-            ]
-        )
-        try:
-            spec = normalize_to_match_spec(parse_query("門0"))
-            result = execute_match_spec(
-                spec, code=None, mode="m1", limit=10, offset=0, db=session
-            )
-            words = [r.get("char") for r in result.items if r.get("result_type") == "word"]
-            self.assertIn("門口", words)
-        finally:
-            session.close()
-
-    def test_equals_via_execute_match_spec(self):
-        session = self._session_with_words(
-            [
-                Word(
-                    char="香港",
-                    code="33",
-                    jyutping="hoeng1 gong2",
-                    finals='["oeng","ong"]',
-                    initials='["h","g"]',
-                    length=2,
-                ),
-            ]
-        )
-        try:
-            spec = normalize_to_match_spec(parse_query("香港="))
-            result = execute_match_spec(
-                spec, code=None, mode="m1", limit=10, offset=0, db=session
-            )
-            words = [r.get("char") for r in result.items if r.get("result_type") == "word"]
-            self.assertIn("香港", words)
-        finally:
-            session.close()
 
     def test_dual_phoneme_via_normalize_and_execute(self):
         session = self._session_with_words(

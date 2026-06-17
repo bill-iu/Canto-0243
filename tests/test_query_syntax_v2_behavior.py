@@ -1,4 +1,4 @@
-"""ADR-0012 行為測試 — 經 search_words / execute_search 公開介面（TDD 垂直切片）。"""
+"""ADR-0012/0013 行為測試 — 經 search_words / execute_search 公開介面。"""
 from __future__ import annotations
 
 import unittest
@@ -24,6 +24,58 @@ def _memory_db(*words: Word):
 
 def _chars(items) -> list[str]:
     return [r["char"] for r in items if r.get("result_type") == "word"]
+
+
+class P0StarAliasSearchEquivalenceTests(unittest.TestCase):
+    def test_men0_search_same(self):
+        with _memory_db(
+            Word(char="門前", code="20", jyutping="mun4 cin4", length=2),
+            Word(char="他人", code="20", jyutping="taa1 jan4", length=2),
+        ) as db:
+            a = _chars(search_words(q="門0", mode="m1", db=db, limit=10))
+            b = _chars(search_words(q="*門0", mode="m1", db=db, limit=10))
+            self.assertEqual(a, b)
+            self.assertIn("門前", a)
+            self.assertNotIn("他人", a)
+
+
+class CodeRhymeStarTailSearchTests(unittest.TestCase):
+    def setUp(self):
+        reset_word_cache_for_tests()
+
+    def test_23_plus_o_matches_three_char_not_two_char(self):
+        with _memory_db(
+            Word(
+                char="好我",
+                code="23",
+                jyutping="hou2 ngo5",
+                finals='["ou","o"]',
+                initials='["h","ng"]',
+                length=2,
+            ),
+            Word(
+                char="好我哦",
+                code="230",
+                jyutping="hou2 ngo5 o1",
+                finals='["ou","o","o"]',
+                initials='["h","ng",""]',
+                length=3,
+            ),
+        ) as db:
+            two = _chars(
+                execute_search(
+                    SearchContext(q="23o", code=None, char=None, mode="m1", limit=10, offset=0, db=db)
+                ).items
+            )
+            three = _chars(
+                execute_search(
+                    SearchContext(q="23+o", code=None, char=None, mode="m1", limit=10, offset=0, db=db)
+                ).items
+            )
+            self.assertIn("好我", two)
+            self.assertNotIn("好我哦", two)
+            self.assertIn("好我哦", three)
+            self.assertNotIn("好我", three)
 
 
 class WildcardCodeAnchorBehaviorTests(unittest.TestCase):
