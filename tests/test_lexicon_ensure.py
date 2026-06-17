@@ -107,7 +107,7 @@ class Static0243LexiconTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
-            count = load_lexicon_from_folder(tmp)
+            count = load_lexicon_from_folder(tmp, include_fixture=False)
             self.assertEqual(count, 2)
             lex = Static0243Lexicon(auto_load=False, clean_dir=tmp)
             entries = lex.get_word_lexicon_entries("開心")

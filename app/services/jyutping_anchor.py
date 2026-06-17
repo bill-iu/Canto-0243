@@ -65,7 +65,7 @@ def _is_hybrid_rhyme_letters(letters: str) -> bool:
 
 def parse_dual_phoneme_anchor_query(q: str) -> Optional[dict]:
     """歧義粵拼錨：m／ng 碼夾或三格中格 → 雙列（ADR-0009）。"""
-    m = re.match(r"^(\?)([a-zA-Z]+)(\?)$", q)
+    m = re.match(r"^(\?)\*?([a-zA-Z]+)(\?)$", q)
     if m:
         letters = m.group(2).lower()
         if letters in AMBIGUOUS_PHONEME_LETTERS:
@@ -123,8 +123,8 @@ def normalize_rhyme_letters(letters: str) -> str:
 
 
 def parse_triple_jyutping_slot_query(q: str) -> Optional[dict]:
-    """?{拉丁}? — 三格；中格粵拼錨。"""
-    m = re.match(r"^(\?)([a-zA-Z]+)(\?)$", q)
+    """?{拉丁}? / ?*{拉丁}? — 三格；中格粵拼錨。"""
+    m = re.match(r"^(\?)\*?([a-zA-Z]+)(\?)$", q)
     if not m:
         return None
     letters = m.group(2)
@@ -141,8 +141,8 @@ def parse_triple_jyutping_slot_query(q: str) -> Optional[dict]:
 
 
 def parse_end_jyutping_syllable_query(q: str) -> Optional[dict]:
-    """?{音節} — 二字末格完整音節（?hon）。"""
-    m = re.match(r"^(\?)([a-zA-Z]+)$", q)
+    """?{音節} / ?*{音節} — 二字末格完整音節（?hon）。"""
+    m = re.match(r"^(\?)\*?([a-zA-Z]+)$", q)
     if not m:
         return None
     letters = m.group(2).lower()
@@ -158,8 +158,8 @@ def parse_end_jyutping_syllable_query(q: str) -> Optional[dict]:
 
 
 def parse_code_syllable_three_query(q: str) -> Optional[dict]:
-    """{首碼}?{音節}{末碼} — 三字碼音節（3?hon4）。"""
-    m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
+    """{首碼}?{音節}{末碼} / {首碼}*{音節}{末碼} — 三字碼音節（3?hon4）。"""
+    m = re.match(r"^(\d)[\?*]([a-zA-Z]+)(\d)$", q)
     if not m:
         return None
     letters = m.group(2).lower()
@@ -257,7 +257,7 @@ def parse_hybrid_jyutping_syllable_query(q: str) -> Optional[dict]:
 def parse_rhyme_vowel_hybrid_query(q: str) -> Optional[dict]:
     """{碼}{母音} — 碼後韻母錨末格（23o）。"""
     m = re.match(r"^(\d+)([a-zA-Z]+)$", q)
-    if not m:
+    if not m or "*" in q:
         return None
     letters = m.group(2).lower()
     if not _is_hybrid_rhyme_letters(letters):
@@ -270,6 +270,27 @@ def parse_rhyme_vowel_hybrid_query(q: str) -> Optional[dict]:
         "anchor_kind": "rhyme_letters",
         "anchor_value": normalize_rhyme_letters(letters),
         "code_prefix": prefix,
+        "hybrid_rhyme": True,
+    }
+
+
+def parse_code_rhyme_star_tail_query(q: str) -> Optional[dict]:
+    """{碼}*{韻母} — 三字碼尾韻母錨（23*o ↔ 23*我=）。"""
+    m = re.match(r"^(\d+)\*([a-zA-Z]+)$", q)
+    if not m:
+        return None
+    letters = m.group(2).lower()
+    if not _is_hybrid_rhyme_letters(letters):
+        return None
+    code = m.group(1)
+    return {
+        "raw_q": q,
+        "width": len(code) + 1,
+        "anchor_pos": len(code),
+        "anchor_kind": "rhyme_letters",
+        "anchor_value": normalize_rhyme_letters(letters),
+        "code_prefix": code,
+        "code_slots": [(i, d) for i, d in enumerate(code)],
         "hybrid_rhyme": True,
     }
 
@@ -289,6 +310,7 @@ def parse_jyutping_anchor_query(q: str) -> Optional[dict]:
         parse_code_initial_query,
         parse_code_syllable_two_query,
         parse_code_rhyme_equals_query,
+        parse_code_rhyme_star_tail_query,
         parse_hybrid_jyutping_syllable_query,
         parse_rhyme_vowel_hybrid_query,
     ):

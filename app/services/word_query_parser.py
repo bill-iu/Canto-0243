@@ -8,9 +8,19 @@ CODE_TAIL_MIDDLE = "*"
 LEGACY_CODE_TAIL_SEPARATORS = ("&", "\u00b7")
 
 CODE_TAIL_RE = re.compile(rf"^(\d+){re.escape(CODE_TAIL_MIDDLE)}(.+)$")
+
+CONSECUTIVE_SLOT_CONNECTOR_HINT = (
+    "唔支援連續 `*`／`+`：通配音節請用 `?`，slot 連接符最多一個。"
+    "例：`?30?+人`（唔好寫 `?30++人`）。"
+)
+DIGIT_AFTER_SLOT_CONNECTOR_HINT = (
+    "`*`／`+` 後須接漢字或粵拼錨，唔可以接碼。"
+    "例：尾格用 `2*好3` 或 `2*好人`。"
+)
 HYBRID_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥])=$")
 AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
 SLOT_CHARS_RE = r"[0-9_?%]"
+_HANZI_RE = re.compile(r"[\u4e00-\u9fff]")
 
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
 FILLWORD_CONNECTIVES = "與和或共同及跟而且並向"
@@ -38,13 +48,246 @@ def normalize_code_tail_separators(q: str) -> str:
 def normalize_query_syntax(q: str) -> str:
     """Full-width relation/wildcard punctuation → ASCII (查詢分派入口)."""
     q = q.replace("＊", "*").replace("﹡", "*")
+    q = q.replace("＋", "+")
+    q = q.replace("+", "*")
     q = q.replace("！！", "!!").replace("～～", "~~")
     return q.replace("！", "!").replace("～", "~").replace("？", "?")
 
 
+def normalize_jyutping_slot_connectors(q: str) -> str:
+    """ADR-0013：缺字型粵拼錨 slot 連接符規範化（?hon→?*hon、3?ngo4→3*ngo4）。"""
+    if not q or re.search(_HANZI_RE, q):
+        m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
+        if m:
+            return f"{m.group(1)}*{m.group(2)}{m.group(3)}"
+        return q
+    m = re.match(r"^(\?)([a-zA-Z]+)(\?)$", q)
+    if m and "*" not in q:
+        return f"?*{m.group(2)}?"
+    m = re.match(r"^(\?)([a-zA-Z]+)$", q)
+    if m and "*" not in q:
+        return f"?*{m.group(2)}"
+    m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
+    if m:
+        return f"{m.group(1)}*{m.group(2)}{m.group(3)}"
+    return q
+
+
+def slot_connector_syntax_error(q: str) -> Optional[str]:
+    """連續 ** 或 * 後接碼 → hint 文案。"""
+    if "**" in q:
+        return CONSECUTIVE_SLOT_CONNECTOR_HINT
+    if re.search(r"\*\d", q):
+        return DIGIT_AFTER_SLOT_CONNECTOR_HINT
+    return None
+
+
 def normalize_search_query(q: str) -> str:
-    """查詢分派入口：strip、code-tail、全形標點正規化。"""
-    return normalize_query_syntax(normalize_code_tail_separators(q.strip()))
+    """查詢分派入口：strip、code-tail、全形標點、星號槽規範化。"""
+    q = normalize_query_syntax(normalize_code_tail_separators(q.strip()))
+    q = normalize_jyutping_slot_connectors(q)
+    return normalize_canonical_star_query(q)
+
+
+_HEAD_LITERAL_TAIL_RE = re.compile(r"[_?%0-9=]")
+_MIDDLE_WILDCARD_BEFORE_HANZI_RE = re.compile(
+    rf"(?<![0-9*])([{re.escape('?_')}%])([一-龥])(?!=)"
+)
+_RHYME_ANCHOR_SHAPE_RE = re.compile(
+    rf"^(?:"
+    rf"({SLOT_CHARS_RE}+)([一-龥])=$|"
+    rf"([一-龥])=({SLOT_CHARS_RE}+)$|"
+    rf"=([一-龥])({SLOT_CHARS_RE}+)$|"
+    rf"({SLOT_CHARS_RE}+)=([一-龥])$"
+    rf")"
+)
+_TRIPLE_RHYME_ANCHOR_SHAPE_RE = re.compile(rf"^({SLOT_CHARS_RE}+)([一-龥])=\?$")
+
+
+def normalize_canonical_star_query(q: str) -> str:
+    """P0：首格字面 *X…、通配左中格 ?*字…（碼左參考字、韻錨、等號查詢唔插 *）。"""
+    if not q or "*" in q:
+        return q
+    if is_framed_equals_query(q):
+        return q
+    if _RHYME_ANCHOR_SHAPE_RE.match(q) or _TRIPLE_RHYME_ANCHOR_SHAPE_RE.match(q):
+        return q
+    m = re.match(r"^([一-龥])(.+)$", q)
+    if m:
+        tail = m.group(2)
+        if tail.startswith("="):
+            return q
+        if _HEAD_LITERAL_TAIL_RE.search(tail):
+            return "*" + q
+    return _MIDDLE_WILDCARD_BEFORE_HANZI_RE.sub(r"\1*\2", q)
+
+
+def mask_from_canonical_star_query(q: str) -> Optional[str]:
+    """`*` 規範缺字串 → 等價 mask（與 normalize 後首格／中格字面 MaskQuery 同一 MatchSpec）。"""
+    if not q or "=" in q:
+        return None
+    m = re.match(r"^\*([一-龥][0-9_?%]+)$", q)
+    if m:
+        return m.group(1)
+    m = re.match(r"^([_?%])\*([一-龥])([0-9_?%]*)$", q)
+    if m:
+        return m.group(1) + m.group(2) + m.group(3)
+    return None
+
+
+def _wca_tokenize(body: str) -> Optional[list[tuple[str, str]]]:
+    tokens: list[tuple[str, str]] = []
+    i = 0
+    while i < len(body):
+        ch = body[i]
+        if is_wildcard_char(ch):
+            tokens.append(("wild", ch))
+            i += 1
+        elif ch == CODE_TAIL_MIDDLE:
+            tokens.append(("star", ""))
+            i += 1
+        elif ch.isdigit():
+            while i < len(body) and body[i].isdigit():
+                tokens.append(("code", body[i]))
+                i += 1
+        elif _HANZI_RE.match(ch):
+            tokens.append(("ref", ch))
+            i += 1
+        else:
+            return None
+    return tokens or None
+
+
+def _wca_tokens_to_spec(
+    tokens: list[tuple[str, str]], *, head_literal: Optional[str] = None
+) -> Optional[dict]:
+    syllables: list[dict] = []
+    if head_literal:
+        syllables.append({"literal": head_literal})
+    i = 0
+    while i < len(tokens):
+        kind, val = tokens[i]
+        if kind == "wild":
+            syllables.append({"wild": True})
+            i += 1
+        elif kind == "code":
+            syllables.append({"code": val})
+            i += 1
+        elif kind == "star":
+            if i + 1 < len(tokens) and tokens[i + 1][0] == "ref":
+                syllables.append({"ref": tokens[i + 1][1], "star_before": True})
+                i += 2
+            else:
+                syllables.append({"wild": True})
+                i += 1
+        elif kind == "ref":
+            if syllables and "code" in syllables[-1] and "ref" not in syllables[-1]:
+                syllables[-1]["ref"] = val
+                i += 1
+            else:
+                return None
+        else:
+            return None
+    if not syllables:
+        return None
+    if not any("code" in s for s in syllables) or not any("ref" in s for s in syllables):
+        return None
+    if head_literal is None and not (tokens and tokens[0][0] == "wild"):
+        return None
+    slots: list[dict] = []
+    for pos, syl in enumerate(syllables):
+        if "literal" in syl:
+            slots.append({"pos": pos, "kind": "literal_char", "value": syl["literal"]})
+        if "code" in syl:
+            slots.append({"pos": pos, "kind": "code_digit", "value": syl["code"]})
+        if "ref" in syl:
+            slots.append({"pos": pos, "kind": "final_anchor", "value": syl["ref"]})
+    return {"width": len(syllables), "slots": slots, "head_literal": head_literal}
+
+
+def parse_wildcard_code_anchor_query(q: str) -> Optional[dict]:
+    """通配碼錨：?30人、?30*人、*香?30人（左至右掃描）。"""
+    if not q or "@" in q or "=" in q:
+        return None
+    if re.match(r"^\d+\*", q):
+        return None
+    m = re.match(r"^\*([一-龥])([?_%][0-9_?%*一-龥]+)$", q)
+    if m:
+        tokens = _wca_tokenize(m.group(2))
+        if not tokens:
+            return None
+        spec = _wca_tokens_to_spec(tokens, head_literal=m.group(1))
+        if spec:
+            spec["raw_q"] = q
+        return spec
+    if q[0] not in "?_%":
+        return None
+    tokens = _wca_tokenize(q)
+    if not tokens:
+        return None
+    spec = _wca_tokens_to_spec(tokens)
+    if spec:
+        spec["raw_q"] = q
+    return spec
+
+
+def looks_like_wildcard_code_anchor_query(q: str) -> bool:
+    return parse_wildcard_code_anchor_query(q) is not None
+
+
+def parse_code_ref_rhyme_contradiction_hint(q: str) -> Optional[str]:
+    """?3人? 無 = → hint（P3）。"""
+    m = re.match(r"^([?_%]+)(\d+)([一-龥])([?_%])$", q)
+    if m and "=" not in q:
+        d, ref = m.group(2), m.group(3)
+        return f"碼位同參考字「{ref}」衝突：請改用 `?{d}{ref}=?` 標中格同韻。"
+    return None
+
+
+def parse_code_ref_middle_rhyme_query(q: str) -> Optional[dict]:
+    """碼＋參考字＋通配（中格韻）：?3人=?（P3）。"""
+    m = re.match(r"^([?_%]+)(\d+)([一-龥])=\?$", q)
+    if not m:
+        return None
+    leading, digits, anchor = m.group(1), m.group(2), m.group(3)
+    width = len(leading) + len(digits) + 1
+    anchor_pos = len(leading) + len(digits) - 1
+    slots: list[dict] = []
+    for i, d in enumerate(digits):
+        slots.append({"pos": len(leading) + i, "kind": "code_digit", "value": d})
+    slots.append({"pos": anchor_pos, "kind": "final_anchor", "value": anchor})
+    return {
+        "raw_q": q,
+        "width": width,
+        "anchor": anchor,
+        "anchor_pos": anchor_pos,
+        "leading": leading,
+        "digits": digits,
+        "slots": slots,
+    }
+
+
+def parse_single_char_rhyme_anchor_query(q: str) -> Optional[dict]:
+    """單字韻錨 ?就=（P2，無 *）。"""
+    m = re.match(r"^([?_%])([一-龥])=$", q)
+    if not m:
+        return None
+    anchor = m.group(2)
+    return {"raw_q": q, "anchor": anchor, "width": 1, "anchor_pos": 0}
+
+
+def parse_double_wildcard_rhyme_query(q: str) -> Optional[dict]:
+    """二字韻錨 ?*就=（P2）。"""
+    m = re.match(r"^([?_%])\*([一-龥])=$", q)
+    if not m:
+        return None
+    return {
+        "constraint": "final",
+        "anchor": m.group(2),
+        "anchor_pos": 1,
+        "slots": m.group(1),
+        "width": 2,
+    }
 
 
 def is_hybrid_tail_equals_alias(q: str) -> bool:
@@ -109,6 +352,16 @@ def looks_like_mask_query(q: str) -> bool:
     """True when q uses position mask syntax (digits / canto / wildcards)."""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q:
         return False
+    if looks_like_wildcard_code_anchor_query(q):
+        return False
+    if parse_code_ref_middle_rhyme_query(q):
+        return False
+    if parse_code_ref_rhyme_contradiction_hint(q):
+        return False
+    if parse_single_char_rhyme_anchor_query(q):
+        return False
+    if parse_double_wildcard_rhyme_query(q):
+        return False
     if parse_rhyme_anchor_query(q):
         return False
     if not re.match(r"^[0-9_?%一-龥]+$", q):
@@ -147,8 +400,10 @@ def is_framed_equals_query(q: str) -> bool:
 
 
 def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """Query-level rhyme anchor: 香=? / ?就= / =香? / ?=就 (no code-tail *)."""
+    """Query-level rhyme anchor: 香=? / ?*就= / =香? / ?=就 (no code-tail *)."""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q or is_framed_equals_query(q):
+        return None
+    if parse_single_char_rhyme_anchor_query(q) or parse_double_wildcard_rhyme_query(q):
         return None
 
     m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=$", q)

@@ -10,6 +10,7 @@ from typing import Dict, List, Optional
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_CLEAN_DIR = ROOT / "data" / "raw" / "clean"
+DEFAULT_FIXTURE_JSON = ROOT / "data" / "lexicon" / "fixtures" / "word_lexicon.json"
 
 _entries_by_char: Dict[str, List["LexiconEntry"]] = {}
 _loaded = False
@@ -26,7 +27,40 @@ def _is_canto_char(text: str) -> bool:
     return bool(text and re.search(r"[\u4e00-\u9fff]", text))
 
 
-def load_lexicon_from_folder(folder: Path | str = DEFAULT_CLEAN_DIR) -> int:
+def _ingest_lexicon_rows(data: object, index: Dict[str, List[LexiconEntry]]) -> int:
+    if not isinstance(data, list):
+        return 0
+    count = 0
+    for item in data:
+        if not isinstance(item, dict):
+            continue
+        char = str(item.get("char") or "").strip()
+        jyutping = str(item.get("jyutping") or "").strip()
+        code = str(item.get("code") or "").strip()
+        if not char or not _is_canto_char(char) or not jyutping or not code:
+            continue
+        entry = LexiconEntry(char=char, jyutping=jyutping, code=code)
+        bucket = index.setdefault(char, [])
+        if not any(e.code == code and e.jyutping == jyutping for e in bucket):
+            bucket.append(entry)
+            count += 1
+    return count
+
+
+def _ingest_lexicon_json(path: Path, index: Dict[str, List[LexiconEntry]]) -> int:
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception:
+        return 0
+    return _ingest_lexicon_rows(data, index)
+
+
+def load_lexicon_from_folder(
+    folder: Path | str = DEFAULT_CLEAN_DIR,
+    *,
+    include_fixture: bool = True,
+) -> int:
     """Load ``{char, jyutping, code}`` rows from clean JSON files. Returns entry count."""
     global _entries_by_char, _loaded
 
@@ -34,32 +68,12 @@ def load_lexicon_from_folder(folder: Path | str = DEFAULT_CLEAN_DIR) -> int:
     index: Dict[str, List[LexiconEntry]] = {}
     count = 0
 
-    if not folder_path.is_dir():
-        _entries_by_char = index
-        _loaded = True
-        return 0
+    if folder_path.is_dir():
+        for json_path in sorted(folder_path.glob("*.json")):
+            count += _ingest_lexicon_json(json_path, index)
 
-    for json_path in sorted(folder_path.glob("*.json")):
-        try:
-            with open(json_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except Exception:
-            continue
-        if not isinstance(data, list):
-            continue
-        for item in data:
-            if not isinstance(item, dict):
-                continue
-            char = str(item.get("char") or "").strip()
-            jyutping = str(item.get("jyutping") or "").strip()
-            code = str(item.get("code") or "").strip()
-            if not char or not _is_canto_char(char) or not jyutping or not code:
-                continue
-            entry = LexiconEntry(char=char, jyutping=jyutping, code=code)
-            bucket = index.setdefault(char, [])
-            if not any(e.code == code and e.jyutping == jyutping for e in bucket):
-                bucket.append(entry)
-                count += 1
+    if include_fixture and DEFAULT_FIXTURE_JSON.is_file():
+        count += _ingest_lexicon_json(DEFAULT_FIXTURE_JSON, index)
 
     _entries_by_char = index
     _loaded = True

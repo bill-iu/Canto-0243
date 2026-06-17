@@ -15,11 +15,17 @@ from app.services.word_query_parser import (
     looks_like_mask_query,
     normalize_search_query,
     parse_at_tail_query,
+    slot_connector_syntax_error,
+    parse_code_ref_middle_rhyme_query,
+    parse_code_ref_rhyme_contradiction_hint,
+    parse_double_wildcard_rhyme_query,
     parse_mask_query,
     parse_relation_syntax,
     parse_rhyme_anchor_query,
+    parse_single_char_rhyme_anchor_query,
     parse_star_anchor_query,
     parse_triple_rhyme_anchor_query,
+    parse_wildcard_code_anchor_query,
 )
 
 HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
@@ -34,6 +40,9 @@ class QueryKind(str, Enum):
     HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
     STAR_ANCHOR = "star_anchor"
+    WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
+    CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
+    SINGLE_CHAR_RHYME = "single_char_rhyme"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
@@ -140,6 +149,45 @@ class StarAnchorQuery:
 
     def to_handler_dict(self) -> dict:
         return asdict(self)
+
+
+@dataclass(frozen=True)
+class WildcardCodeAnchorQuery:
+    raw_q: str
+    width: int
+    slots: list[dict]
+    head_literal: Optional[str] = None
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.WILDCARD_CODE_ANCHOR
+
+
+@dataclass(frozen=True)
+class CodeRefMiddleRhymeQuery:
+    raw_q: str
+    width: int
+    anchor: str
+    anchor_pos: int
+    leading: str
+    digits: str
+    slots: list[dict]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.CODE_REF_MIDDLE_RHYME
+
+
+@dataclass(frozen=True)
+class SingleCharRhymeAnchorQuery:
+    raw_q: str
+    anchor: str
+    width: int
+    anchor_pos: int
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.SINGLE_CHAR_RHYME
 
 
 @dataclass(frozen=True)
@@ -271,6 +319,9 @@ ParsedQuery = Union[
     HybridTailEqualsAliasQuery,
     EqualsQuery,
     StarAnchorQuery,
+    WildcardCodeAnchorQuery,
+    CodeRefMiddleRhymeQuery,
+    SingleCharRhymeAnchorQuery,
     LiteralRefQuery,
     RhymeAnchorQuery,
     TripleRhymeAnchorQuery,
@@ -331,11 +382,21 @@ def parse_query(q: str) -> ParsedQuery:
             code_prefix=relation_parsed.get("code_prefix"),
         )
 
+    slot_hint = slot_connector_syntax_error(q)
+    if slot_hint:
+        return UnmatchedQuery(raw_q=q, hint=slot_hint)
+
     if is_hybrid_tail_equals_alias(q):
         return HybridTailEqualsAliasQuery(raw_q=q, hybrid_q=hybrid_query_from_tail_equals(q))
 
     if is_framed_equals_query(q):
         return EqualsQuery(raw_q=q)
+
+    from app.services.word_query_parser import mask_from_canonical_star_query
+
+    mask_literal = mask_from_canonical_star_query(q)
+    if mask_literal:
+        return MaskQuery(raw_q=mask_literal)
 
     star_parsed = parse_star_anchor_query(q)
     if star_parsed:
@@ -360,6 +421,26 @@ def parse_query(q: str) -> ParsedQuery:
     at_tail_parsed = parse_at_tail_query(q)
     if at_tail_parsed:
         return LiteralRefQuery(**at_tail_parsed)
+
+    contradiction_hint = parse_code_ref_rhyme_contradiction_hint(q)
+    if contradiction_hint:
+        return UnmatchedQuery(raw_q=q, hint=contradiction_hint)
+
+    code_ref_middle = parse_code_ref_middle_rhyme_query(q)
+    if code_ref_middle:
+        return CodeRefMiddleRhymeQuery(**code_ref_middle)
+
+    single_char_rhyme = parse_single_char_rhyme_anchor_query(q)
+    if single_char_rhyme:
+        return SingleCharRhymeAnchorQuery(**single_char_rhyme)
+
+    double_wild_rhyme = parse_double_wildcard_rhyme_query(q)
+    if double_wild_rhyme:
+        return RhymeAnchorQuery(**double_wild_rhyme)
+
+    wca_parsed = parse_wildcard_code_anchor_query(q)
+    if wca_parsed:
+        return WildcardCodeAnchorQuery(**wca_parsed)
 
     triple_rhyme_parsed = parse_triple_rhyme_anchor_query(q)
     if triple_rhyme_parsed:
@@ -410,6 +491,9 @@ def is_mask_family_query(parsed: Any) -> bool:
             TripleRhymeAnchorQuery,
             JyutpingAnchorQuery,
             StarAnchorQuery,
+            WildcardCodeAnchorQuery,
+            CodeRefMiddleRhymeQuery,
+            SingleCharRhymeAnchorQuery,
             LiteralRefQuery,
         ),
     )
@@ -536,6 +620,42 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
             SlotConstraint(pos=parsed.width - 1, kind="literal_char", value=parsed.literal_char)
         )
         spec.mask = "?" * (parsed.width - 1) + parsed.literal_char
+        return spec
+
+    if isinstance(parsed, WildcardCodeAnchorQuery):
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = "?" * parsed.width
+        for slot in parsed.slots:
+            spec.slots.append(
+                SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
+            )
+            if slot["kind"] == "literal_char":
+                spec.mask = (
+                    spec.mask[: slot["pos"]]
+                    + slot["value"]
+                    + spec.mask[slot["pos"] + 1 :]
+                )
+        return spec
+
+    if isinstance(parsed, CodeRefMiddleRhymeQuery):
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = "?" * parsed.width
+        for slot in parsed.slots:
+            spec.slots.append(
+                SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
+            )
+        return spec
+
+    if isinstance(parsed, SingleCharRhymeAnchorQuery):
+        spec = MatchSpec(width=1)
+        spec.mask = "?"
+        spec.slots.append(
+            SlotConstraint(
+                pos=parsed.anchor_pos,
+                kind="final_anchor",
+                value=parsed.anchor,
+            )
+        )
         return spec
 
     if isinstance(parsed, RhymeAnchorQuery):

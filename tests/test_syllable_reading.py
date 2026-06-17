@@ -62,6 +62,45 @@ class SyllableReadingTests(unittest.TestCase):
     def test_compose_fails_when_char_missing(self):
         self.assertEqual(compose_lexicon_entries_from_rime("你X"), [])
 
+    def test_lou_dou_word_lexicon_overrides_syllable_compose(self):
+        """潦倒：詞級標音 lou5 dou2，非 rime 預設拼接 liu2 dou2。"""
+        from app.lexicon.rime_char_index import DEFAULT_CHAR_CSV, load_rime_char_csv
+        from app.lexicon.static_index import ensure_lexicon_loaded, get_lexicon_entries
+
+        ensure_lexicon_loaded()
+        entries = get_lexicon_entries("潦倒")
+        self.assertEqual(len(entries), 1)
+        self.assertEqual(entries[0].jyutping, "lou5 dou2")
+        load_rime_char_csv(DEFAULT_CHAR_CSV)
+        composed = compose_lexicon_entries_from_rime("潦倒")
+        self.assertEqual(composed[0].jyutping, "liu2 dou2")
+
+    def test_ensure_injects_lou_dou_from_word_lexicon(self):
+        from app.lexicon.static_index import ensure_lexicon_loaded
+
+        ensure_lexicon_loaded()
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as db:
+            rows = ensure_word_in_db(db, "潦倒")
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0].jyutping, "lou5 dou2")
+            self.assertEqual(rows[0].code, get_0243_code("lou5 dou2"))
+
+    def test_lou_dou_compound_word_lexicon(self):
+        from app.lexicon.static_index import ensure_lexicon_loaded, get_lexicon_entries
+
+        ensure_lexicon_loaded()
+        for char, jyut in (
+            ("窮困潦倒", "kung4 kwan3 lou5 dou2"),
+            ("窮愁潦倒", "kung4 sau4 lou5 dou2"),
+            ("窮途潦倒", "kung4 tou4 lou5 dou2"),
+        ):
+            entries = get_lexicon_entries(char)
+            self.assertEqual(len(entries), 1, char)
+            self.assertEqual(entries[0].jyutping, jyut, char)
+
     def test_ensure_injects_composed_multi_char(self):
         port = FakeLexiconPort({})
         engine = create_engine("sqlite:///:memory:")

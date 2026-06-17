@@ -116,6 +116,14 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.constraint, "final")
         self.assertEqual(parsed.anchor, "香")
 
+    def test_single_char_rhyme_anchor(self):
+        from app.services.query_parse import SingleCharRhymeAnchorQuery
+
+        parsed = self._parse("?就=")
+        self.assertIsInstance(parsed, SingleCharRhymeAnchorQuery)
+        self.assertEqual(parsed.anchor, "就")
+        self.assertEqual(parsed.width, 1)
+
     def test_rhyme_anchor_initial(self):
         parsed = self._parse("?=就")
         self.assertIsInstance(parsed, RhymeAnchorQuery)

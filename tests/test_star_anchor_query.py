@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import unittest
 
-from app.services.query_parse import StarAnchorQuery, UnmatchedQuery, parse_query
+from app.services.query_parse import MaskQuery, StarAnchorQuery, UnmatchedQuery, parse_query
 from app.services.word_query_parser import normalize_search_query
 
 
@@ -48,13 +48,10 @@ class StarAnchorGoldenParseTests(unittest.TestCase):
         self.assertEqual(parsed.constraint, "final")
 
     def test_head_literal(self):
+        # P0：*門0 收斂 MaskQuery，與 門0 同一 MatchSpec（見 test_query_syntax_v2_p0）
         parsed = _parse("*門0")
-        self.assertIsInstance(parsed, StarAnchorQuery)
-        self.assertEqual(parsed.width, 2)
-        self.assertEqual(parsed.anchor_pos, 0)
-        self.assertEqual(parsed.anchor, "門")
-        self.assertEqual(parsed.constraint, "literal")
-        self.assertEqual(parsed.code_slots, [(1, "0")])
+        self.assertIsInstance(parsed, MaskQuery)
+        self.assertEqual(parsed.raw_q, "門0")
 
     def test_head_rhyme_final(self):
         parsed = _parse("*門=0")

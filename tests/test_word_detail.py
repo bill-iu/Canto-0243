@@ -481,6 +481,11 @@ class SearchSyntaxTests(unittest.TestCase):
 
         reset_word_cache_for_tests()
 
+    def setUp(self):
+        from app.utils.word_cache import reset_word_cache_for_tests
+
+        reset_word_cache_for_tests()
+
     def _session(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
@@ -758,6 +763,14 @@ class SearchSyntaxTests(unittest.TestCase):
                     char="做得", code="23", jyutping="zou6 dak1",
                     finals='["ou","ak"]', initials='["z","d"]', length=2,
                 ),
+                Word(
+                    char="就", code="2", jyutping="zau6",
+                    finals='["au"]', initials='["z"]', length=1,
+                ),
+                Word(
+                    char="做", code="2", jyutping="zou6",
+                    finals='["ou"]', initials='["z"]', length=1,
+                ),
             ])
             session.commit()
 
@@ -767,10 +780,16 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertIn("香江", pf_chars)
             self.assertIn("香島", pf_chars)
 
-            suffix_final = search_words(q="?就=", mode="m1", db=session, limit=20, offset=0)
-            sf_chars = [r["char"] for r in suffix_final]
-            self.assertIn("做就", sf_chars)
-            self.assertNotIn("做得", sf_chars)
+            single_rhyme = search_words(q="?就=", mode="m1", db=session, limit=20, offset=0)
+            sr_chars = [r["char"] for r in single_rhyme]
+            self.assertIn("就", sr_chars)
+            self.assertNotIn("做", sr_chars)
+            self.assertNotIn("做就", sr_chars)
+
+            double_rhyme = search_words(q="?*就=", mode="m1", db=session, limit=20, offset=0)
+            dr_chars = [r["char"] for r in double_rhyme]
+            self.assertIn("做就", dr_chars)
+            self.assertNotIn("做得", dr_chars)
 
             suffix_initial = search_words(q="?=就", mode="m1", db=session, limit=20, offset=0)
             si_chars = [r["char"] for r in suffix_initial]
