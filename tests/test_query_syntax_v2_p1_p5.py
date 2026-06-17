@@ -102,9 +102,12 @@ class P2SingleCharRhymeTests(unittest.TestCase):
 
 class P3CodeRefMiddleRhymeTests(unittest.TestCase):
     def test_parse(self):
+        from app.services.query_parse import SerialPhonemeAnchorQuery
+
         parsed = _parse("?3人=?")
-        self.assertIsInstance(parsed, CodeRefMiddleRhymeQuery)
+        self.assertIsInstance(parsed, SerialPhonemeAnchorQuery)
         self.assertEqual(parsed.width, 3)
+        self.assertEqual(parsed.anchors, [(1, "人")])
 
     def test_contradiction_hint(self):
         parsed = _parse("?3人?")

@@ -8,6 +8,7 @@ from app.services.query_parse import (
     EqualsQuery,
     HybridCodeQuery,
     HybridTailEqualsAliasQuery,
+    SerialPhonemeAnchorQuery,
     JyutpingFragmentQuery,
     LiteralRefQuery,
     MaskQuery,
@@ -72,10 +73,11 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.code_prefix, "33")
         self.assertEqual(parsed.rhyme_char, "你")
 
-    def test_hybrid_tail_equals_alias(self):
+    def test_serial_rhyme_anchor(self):
         parsed = self._parse("23就=")
-        self.assertIsInstance(parsed, HybridTailEqualsAliasQuery)
-        self.assertEqual(parsed.hybrid_q, "23就")
+        self.assertIsInstance(parsed, SerialPhonemeAnchorQuery)
+        self.assertEqual(parsed.width, 2)
+        self.assertEqual(parsed.anchors, [(1, "就")])
 
     def test_equals_query_whole_word(self):
         parsed = self._parse("香港=")
@@ -151,9 +153,10 @@ class ParseQueryGoldenTests(unittest.TestCase):
         parsed = self._parse("hoeng")
         self.assertIsInstance(parsed, JyutpingFragmentQuery)
 
-    def test_hybrid_tail_equals_beats_equals(self):
-        """23就= must classify as alias, not 等號查詢."""
+    def test_serial_rhyme_beats_equals(self):
+        """23就= must classify as serial rhyme, not 等號查詢."""
         parsed = self._parse("23就=")
+        self.assertIsInstance(parsed, SerialPhonemeAnchorQuery)
         self.assertNotIsInstance(parsed, EqualsQuery)
 
     def test_triple_rhyme_anchor_not_word_lookup(self):

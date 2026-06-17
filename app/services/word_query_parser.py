@@ -86,7 +86,135 @@ def normalize_search_query(q: str) -> str:
     """查詢分派入口：strip、code-tail、全形標點、星號槽規範化。"""
     q = normalize_query_syntax(normalize_code_tail_separators(q.strip()))
     q = normalize_jyutping_slot_connectors(q)
+    q = normalize_redundant_single_char_rhyme(q)
     return normalize_canonical_star_query(q)
+
+
+PURE_HANZI_SERIAL_HINT = (
+    "每個 `{字}=`／`={字}` 前須有 0243 碼。"
+    "例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。"
+)
+PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT = (
+    "前綴通配等號查詢須以 `=` 結尾。"
+    "例：`?困潦倒=`（唔好漏尾格 `=`）。"
+)
+_SERIAL_CHARSET_RE = re.compile(r"^[0-9?=一-龥]+$")
+
+
+def normalize_redundant_single_char_rhyme(q: str) -> str:
+    """?{單字}= → {單字}=（冗餘前導 ?）。"""
+    m = re.match(r"^(\?)([一-龥])=$", q)
+    if m:
+        return f"{m.group(2)}="
+    return q
+
+
+def prefix_wildcard_equals_missing_eq_hint(q: str) -> Optional[str]:
+    if re.fullmatch(r"\?[一-龥]{2,}", q):
+        return PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT
+    return None
+
+
+def parse_pure_hanzi_serial_hint(q: str) -> Optional[str]:
+    if not q or not re.fullmatch(r"[一-龥=]+", q):
+        return None
+    if re.fullmatch(r"[一-龥]=", q):
+        return None
+    if is_framed_equals_query(q):
+        return None
+    if re.search(r"(?<![0-9])([一-龥])=", q):
+        return PURE_HANZI_SERIAL_HINT
+    return None
+
+
+def parse_prefix_wildcard_equals_query(q: str) -> Optional[dict]:
+    m = re.fullmatch(r"\?([一-龥]{2,})=$", q)
+    if not m:
+        return None
+    inner = f"{m.group(1)}="
+    return {"raw_q": q, "inner_q": inner, "ref_literal": m.group(1), "width": len(m.group(1)) + 1}
+
+
+def _scan_serial_phoneme(q: str, constraint: str) -> Optional[dict]:
+    i = 0
+    pos = 0
+    code_slots: list[tuple[int, str]] = []
+    anchors: list[tuple[int, str]] = []
+    mask_chars: list[str] = []
+    while i < len(q):
+        ch = q[i]
+        if ch == "?":
+            mask_chars.append("?")
+            pos += 1
+            i += 1
+            continue
+        if ch.isdigit():
+            if constraint == "final":
+                m = re.match(r"^(\d)([一-龥])=(?=[0-9?=]|$)", q[i:])
+            else:
+                m = re.match(r"^(\d)=([一-龥])(?=[0-9?=]|$)", q[i:])
+            if m:
+                digit, anchor = m.group(1), m.group(2)
+                code_slots.append((pos, digit))
+                anchors.append((pos, anchor))
+                mask_chars.append(digit)
+                pos += 1
+                i += len(m.group(0))
+                continue
+            code_slots.append((pos, ch))
+            mask_chars.append(ch)
+            pos += 1
+            i += 1
+            continue
+        return None
+    if not anchors:
+        return None
+    return {
+        "width": pos,
+        "constraint": constraint,
+        "code_slots": code_slots,
+        "anchors": anchors,
+        "mask": "".join(mask_chars),
+    }
+
+
+def framed_equals_blocks_serial(q: str) -> bool:
+    """碼夾／整詞等號唔走串列（G2）。"""
+    if not is_framed_equals_query(q):
+        return False
+    m = re.match(r"^(\d*)(=)?([一-龥]+)(=)?(\d*)$", q)
+    if not m:
+        return False
+    if m.group(2):
+        return True
+    if m.group(5):
+        return True
+    if m.group(4) and len(m.group(3)) >= 2:
+        return True
+    return False
+
+
+def parse_serial_phoneme_anchor_query(q: str) -> Optional[dict]:
+    if not q or not _SERIAL_CHARSET_RE.match(q):
+        return None
+    if CODE_TAIL_MIDDLE in q or "@" in q or "*" in q or "_" in q or "%" in q:
+        return None
+    if framed_equals_blocks_serial(q):
+        return None
+    if re.fullmatch(r"[一-龥]=", q):
+        return None
+    has_rhyme = bool(re.search(r"\d[一-龥]=", q))
+    has_initial = bool(re.search(r"\d=[一-龥]", q))
+    if has_rhyme and has_initial:
+        return None
+    constraint = "final" if has_rhyme else "initial"
+    if not has_rhyme and not has_initial:
+        return None
+    parsed = _scan_serial_phoneme(q, constraint)
+    if not parsed:
+        return None
+    parsed["raw_q"] = q
+    return parsed
 
 
 _HEAD_LITERAL_TAIL_RE = re.compile(r"[_?%0-9=]")
@@ -107,6 +235,18 @@ _TRIPLE_RHYME_ANCHOR_SHAPE_RE = re.compile(rf"^({SLOT_CHARS_RE}+)([一-龥])=\?$
 def normalize_canonical_star_query(q: str) -> str:
     """P0：首格字面 *X…、通配左中格 ?*字…（碼左參考字、韻錨、等號查詢唔插 *）。"""
     if not q or "*" in q:
+        return q
+    if re.match(r"^\?([一-龥]{2,})=$", q):
+        return q
+    if re.match(r"^\?[一-龥]{2,}$", q):
+        return q
+    if (
+        re.fullmatch(r"[一-龥=]+", q)
+        and re.search(r"(?<![0-9])([一-龥])=", q)
+        and not re.fullmatch(r"[一-龥]=", q)
+    ):
+        return q
+    if _SERIAL_CHARSET_RE.match(q) and re.search(r"\d[一-龥]=", q):
         return q
     if is_framed_equals_query(q):
         return q
@@ -268,11 +408,15 @@ def parse_code_ref_middle_rhyme_query(q: str) -> Optional[dict]:
 
 
 def parse_single_char_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """單字韻錨 ?就=（P2，無 *）。"""
-    m = re.match(r"^([?_%])([一-龥])=$", q)
+    """單字韻錨 就=（規範形；?就= normalize 後等價）。"""
+    m = re.match(r"^([一-龥])=$", q)
     if not m:
-        return None
-    anchor = m.group(2)
+        m = re.match(r"^([?_%])([一-龥])=$", q)
+        if not m:
+            return None
+        anchor = m.group(2)
+    else:
+        anchor = m.group(1)
     return {"raw_q": q, "anchor": anchor, "width": 1, "anchor_pos": 0}
 
 

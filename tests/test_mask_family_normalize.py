@@ -6,8 +6,8 @@ import unittest
 from app.services.query_parse import (
     EqualsQuery,
     HybridCodeQuery,
-    HybridTailEqualsAliasQuery,
     MaskQuery,
+    SerialPhonemeAnchorQuery,
     build_equals_match_spec,
     normalize_to_match_spec,
     parse_query,
@@ -15,13 +15,13 @@ from app.services.query_parse import (
 
 
 class NormalizeToMatchSpecTests(unittest.TestCase):
-    def test_alias_rewrites_to_hybrid_code(self):
-        alias = parse_query("23就=")
-        self.assertIsInstance(alias, HybridTailEqualsAliasQuery)
-        spec = normalize_to_match_spec(alias)
+    def test_serial_rhyme_builds_match_spec(self):
+        parsed = parse_query("23就=")
+        self.assertIsInstance(parsed, SerialPhonemeAnchorQuery)
+        spec = normalize_to_match_spec(parsed)
         self.assertIsNotNone(spec)
         self.assertEqual(spec.width, 2)
-        self.assertEqual(spec.code_prefix, "23")
+        self.assertEqual(spec.mask, "23")
 
     def test_equals_spec_literals(self):
         for q in ("香港=", "=香港", "2=我3", "34=我"):

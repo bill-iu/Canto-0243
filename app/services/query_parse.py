@@ -23,9 +23,13 @@ from app.services.word_query_parser import (
     parse_relation_syntax,
     parse_rhyme_anchor_query,
     parse_single_char_rhyme_anchor_query,
+    parse_prefix_wildcard_equals_query,
+    parse_pure_hanzi_serial_hint,
+    parse_serial_phoneme_anchor_query,
     parse_star_anchor_query,
     parse_triple_rhyme_anchor_query,
     parse_wildcard_code_anchor_query,
+    prefix_wildcard_equals_missing_eq_hint,
 )
 
 HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
@@ -43,6 +47,8 @@ class QueryKind(str, Enum):
     WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
     CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
     SINGLE_CHAR_RHYME = "single_char_rhyme"
+    SERIAL_PHONEME = "serial_phoneme"
+    PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
@@ -132,6 +138,32 @@ class EqualsQuery:
     @property
     def kind(self) -> QueryKind:
         return QueryKind.EQUALS
+
+
+@dataclass(frozen=True)
+class PrefixWildcardEqualsQuery:
+    raw_q: str
+    inner_q: str
+    ref_literal: str
+    width: int
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.PREFIX_WILDCARD_EQUALS
+
+
+@dataclass(frozen=True)
+class SerialPhonemeAnchorQuery:
+    raw_q: str
+    width: int
+    constraint: Literal["final", "initial"]
+    code_slots: list[tuple[int, str]]
+    anchors: list[tuple[int, str]]
+    mask: str
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.SERIAL_PHONEME
 
 
 @dataclass(frozen=True)
@@ -318,6 +350,8 @@ ParsedQuery = Union[
     CompoundConnectAntQuery,
     HybridTailEqualsAliasQuery,
     EqualsQuery,
+    PrefixWildcardEqualsQuery,
+    SerialPhonemeAnchorQuery,
     StarAnchorQuery,
     WildcardCodeAnchorQuery,
     CodeRefMiddleRhymeQuery,
@@ -385,6 +419,22 @@ def parse_query(q: str) -> ParsedQuery:
     slot_hint = slot_connector_syntax_error(q)
     if slot_hint:
         return UnmatchedQuery(raw_q=q, hint=slot_hint)
+
+    prefix_eq_hint = prefix_wildcard_equals_missing_eq_hint(q)
+    if prefix_eq_hint:
+        return UnmatchedQuery(raw_q=q, hint=prefix_eq_hint)
+
+    pure_hanzi_hint = parse_pure_hanzi_serial_hint(q)
+    if pure_hanzi_hint:
+        return UnmatchedQuery(raw_q=q, hint=pure_hanzi_hint)
+
+    prefix_eq = parse_prefix_wildcard_equals_query(q)
+    if prefix_eq:
+        return PrefixWildcardEqualsQuery(**prefix_eq)
+
+    serial_parsed = parse_serial_phoneme_anchor_query(q)
+    if serial_parsed:
+        return SerialPhonemeAnchorQuery(**serial_parsed)
 
     if is_hybrid_tail_equals_alias(q):
         return HybridTailEqualsAliasQuery(raw_q=q, hybrid_q=hybrid_query_from_tail_equals(q))
@@ -494,6 +544,8 @@ def is_mask_family_query(parsed: Any) -> bool:
             WildcardCodeAnchorQuery,
             CodeRefMiddleRhymeQuery,
             SingleCharRhymeAnchorQuery,
+            SerialPhonemeAnchorQuery,
+            PrefixWildcardEqualsQuery,
             LiteralRefQuery,
         ),
     )
@@ -588,6 +640,25 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
 
     if isinstance(parsed, EqualsQuery):
         return build_equals_match_spec(parsed.raw_q)
+
+    if isinstance(parsed, PrefixWildcardEqualsQuery):
+        spec = build_equals_match_spec(parsed.inner_q)
+        if spec is None:
+            return MatchSpec(width=0)
+        spec.width = parsed.width
+        spec.ref_start_pos = 1
+        spec.mask = "?" * parsed.width
+        return spec
+
+    if isinstance(parsed, SerialPhonemeAnchorQuery):
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = parsed.mask if len(parsed.mask) == parsed.width else "?" * parsed.width
+        for pos, digit in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+        kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
+        for pos, anchor in parsed.anchors:
+            spec.slots.append(SlotConstraint(pos=pos, kind=kind, value=anchor))
+        return spec
 
     if isinstance(parsed, StarAnchorQuery):
         spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
