@@ -314,63 +314,69 @@ class RelationSyntaxTests(unittest.TestCase):
             self.assertEqual(ant_chars, ["傷心"])
 
     def test_double_bang_compound_antonym_syntax(self):
+        from app.domain.relations.compound_ant import reset_compound_ant_snapshot_for_tests
+
+        reset_compound_ant_snapshot_for_tests()
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-        with Session() as session:
-            self._seed(session)
-            session.add(WordRelation(word_id=5, related_id=7, relation_type="ant", source="char_pair"))
-            session.add(WordRelation(word_id=1, related_id=5, relation_type="ant", source="char_pair"))
-            session.commit()
-            # 生-死 ant via char lookup: add explicit single-char ant pairs through words
-            session.add_all([
-                Word(id=10, char="生", code="3", jyutping="saang1", finals='["aang"]', length=1),
-                Word(id=11, char="死", code="3", jyutping="sei2", finals='["ei"]', length=1),
-                Word(id=12, char="是", code="3", jyutping="si6", finals='["i"]', length=1),
-                Word(id=13, char="非", code="3", jyutping="fei1", finals='["ei"]', length=1),
-                Word(id=14, char="動", code="4", jyutping="dung6", finals='["ung"]', length=1),
-                Word(id=15, char="靜", code="4", jyutping="zing6", finals='["ing"]', length=1),
-                Word(id=18, char="你", code="2", jyutping="nei5", finals='["ei"]', length=1),
-            ])
-            session.add_all([
-                Word(id=16, char="真", code="3", jyutping="zan1", length=1),
-                Word(id=17, char="假", code="3", jyutping="gaa2", length=1),
-            ])
-            session.add_all([
-                WordRelation(word_id=10, related_id=11, relation_type="ant", source="char_pair"),
-                WordRelation(word_id=12, related_id=13, relation_type="ant", source="char_pair"),
-                WordRelation(word_id=14, related_id=15, relation_type="ant", source="ant_pair"),
-                WordRelation(word_id=16, related_id=17, relation_type="ant", source="char_pair"),
-            ])
-            session.commit()
+        try:
+            with Session() as session:
+                self._seed(session)
+                session.add(WordRelation(word_id=5, related_id=7, relation_type="ant", source="char_pair"))
+                session.add(WordRelation(word_id=1, related_id=5, relation_type="ant", source="char_pair"))
+                session.commit()
+                # 生-死 ant via char lookup: add explicit single-char ant pairs through words
+                session.add_all([
+                    Word(id=10, char="生", code="3", jyutping="saang1", finals='["aang"]', length=1),
+                    Word(id=11, char="死", code="3", jyutping="sei2", finals='["ei"]', length=1),
+                    Word(id=12, char="是", code="3", jyutping="si6", finals='["i"]', length=1),
+                    Word(id=13, char="非", code="3", jyutping="fei1", finals='["ei"]', length=1),
+                    Word(id=14, char="動", code="4", jyutping="dung6", finals='["ung"]', length=1),
+                    Word(id=15, char="靜", code="4", jyutping="zing6", finals='["ing"]', length=1),
+                    Word(id=18, char="你", code="2", jyutping="nei5", finals='["ei"]', length=1),
+                ])
+                session.add_all([
+                    Word(id=16, char="真", code="3", jyutping="zan1", length=1),
+                    Word(id=17, char="假", code="3", jyutping="gaa2", length=1),
+                ])
+                session.add_all([
+                    WordRelation(word_id=10, related_id=11, relation_type="ant", source="char_pair"),
+                    WordRelation(word_id=12, related_id=13, relation_type="ant", source="char_pair"),
+                    WordRelation(word_id=14, related_id=15, relation_type="ant", source="ant_pair"),
+                    WordRelation(word_id=16, related_id=17, relation_type="ant", source="char_pair"),
+                ])
+                session.commit()
 
-            # 下令：DB 有詞但不在 curated compound_antonyms.txt → !! 不應回傳
-            session.add(Word(id=19, char="下令", code="29", jyutping="haa6 ling6", finals='["aa","ing"]', length=2))
-            session.commit()
+                # 下令：反義素掃描唔會收（首尾唔係 ant 對）
+                session.add(Word(id=19, char="下令", code="29", jyutping="haa6 ling6", finals='["aa","ing"]', length=2))
+                session.commit()
 
-            all_results = search_words(q="!!", mode="m1", db=session, limit=50, offset=0)
-            all_chars = [r["char"] for r in all_results]
-            self.assertIn("生死", all_chars)
-            self.assertIn("是非", all_chars)
-            self.assertIn("動靜", all_chars)
-            self.assertNotIn("真假", all_chars)
-            self.assertNotIn("下令", all_chars)
+                all_results = search_words(q="!!", mode="m1", db=session, limit=50, offset=0)
+                all_chars = [r["char"] for r in all_results]
+                self.assertIn("生死", all_chars)
+                self.assertIn("是非", all_chars)
+                self.assertIn("動靜", all_chars)
+                self.assertNotIn("真假", all_chars)
+                self.assertNotIn("下令", all_chars)
 
-            code_results = search_words(q="33!!", mode="m1", db=session, limit=50, offset=0)
-            code_chars = [r["char"] for r in code_results]
-            self.assertIn("生死", code_chars)
-            self.assertIn("是非", code_chars)
-            self.assertNotIn("動靜", code_chars)
+                code_results = search_words(q="33!!", mode="m1", db=session, limit=50, offset=0)
+                code_chars = [r["char"] for r in code_results]
+                self.assertIn("生死", code_chars)
+                self.assertIn("是非", code_chars)
+                self.assertNotIn("動靜", code_chars)
 
-            rhyme_results = search_words(q="!!你", mode="m1", db=session, limit=50, offset=0)
-            rhyme_chars = [r["char"] for r in rhyme_results]
-            self.assertIn("生死", rhyme_chars)
-            self.assertIn("是非", rhyme_chars)
-            self.assertNotIn("動靜", rhyme_chars)
+                rhyme_results = search_words(q="!!你", mode="m1", db=session, limit=50, offset=0)
+                rhyme_chars = [r["char"] for r in rhyme_results]
+                self.assertIn("生死", rhyme_chars)
+                self.assertIn("是非", rhyme_chars)
+                self.assertNotIn("動靜", rhyme_chars)
 
-            code_rhyme_results = search_words(q="33!!你", mode="m1", db=session, limit=50, offset=0)
-            code_rhyme_chars = [r["char"] for r in code_rhyme_results]
-            self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
+                code_rhyme_results = search_words(q="33!!你", mode="m1", db=session, limit=50, offset=0)
+                code_rhyme_chars = [r["char"] for r in code_rhyme_results]
+                self.assertCountEqual(code_rhyme_chars, ["生死", "是非"])
+        finally:
+            reset_compound_ant_snapshot_for_tests()
 
     def test_double_tilde_compound_synonym_syntax(self):
         from app.domain.relations.compound_syn import reset_compound_syn_snapshot_for_tests
@@ -426,8 +432,10 @@ class RelationSyntaxTests(unittest.TestCase):
 
     def test_compound_ant_code_prefix_ignores_alternate_polyphone_reading(self):
         """33!!死：首尾預設讀音 code 94，次選 99 不得因 m1 等價誤入結果。"""
+        from app.domain.relations.compound_ant import reset_compound_ant_snapshot_for_tests
         from app.lexicon.rime_char_index import load_rime_char_csv, reset_rime_char_for_tests
 
+        reset_compound_ant_snapshot_for_tests()
         fixture = Path(__file__).resolve().parent.parent / "data" / "rime" / "fixtures" / "char_sample.csv"
         load_rime_char_csv(fixture)
 
@@ -450,6 +458,7 @@ class RelationSyntaxTests(unittest.TestCase):
                 self.assertIn("生死", chars)
         finally:
             reset_rime_char_for_tests()
+            reset_compound_ant_snapshot_for_tests()
 
 
 class SearchSyntaxTests(unittest.TestCase):

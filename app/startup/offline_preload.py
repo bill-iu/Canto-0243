@@ -13,6 +13,7 @@ _background_started = False
 _background_state = {
     "static_resources": {"status": "pending", "progress": 0.0, "error": None},
     "compound_syn": {"status": "pending", "progress": 0.0, "error": None},
+    "compound_ant": {"status": "pending", "progress": 0.0, "error": None},
 }
 
 
@@ -99,6 +100,19 @@ def preload_static_runtime_resources() -> None:
     _best_effort("Curated common words (data/lexicon/curated_common.txt)", ensure_curated_loaded)
 
 
+def preload_compound_ant_runtime_cache() -> None:
+    from app.domain.relations.compound_ant import ensure_compound_ant_snapshot
+
+    def _run() -> None:
+        db = SessionLocal()
+        try:
+            ensure_compound_ant_snapshot(db)
+        finally:
+            db.close()
+
+    _best_effort("反義複合（!!）快照", _run)
+
+
 def preload_compound_syn_runtime_cache() -> None:
     from app.domain.relations.compound_syn import ensure_compound_syn_snapshot
 
@@ -144,6 +158,11 @@ def start_background_runtime_preload() -> None:
         args=("compound_syn", preload_compound_syn_runtime_cache),
         daemon=True,
     ).start()
+    threading.Thread(
+        target=_run_background_phase,
+        args=("compound_ant", preload_compound_ant_runtime_cache),
+        daemon=True,
+    ).start()
 
 
 def run_lifespan_startup(*, env: str | None = None) -> None:
@@ -186,4 +205,5 @@ __all__ = [
     "start_background_word_cache_preload",
     "preload_static_runtime_resources",
     "preload_compound_syn_runtime_cache",
+    "preload_compound_ant_runtime_cache",
 ]

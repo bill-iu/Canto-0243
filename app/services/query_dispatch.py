@@ -1,7 +1,7 @@
 """Query dispatch for 詞條搜尋 — registry + SearchResult (no global total state)."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
@@ -19,9 +19,12 @@ from app.services.query_parse import (
     UnmatchedQuery,
     WordLookupQuery,
     build_jyutping_dual_match_specs,
+    is_relation_syntax_query,
+    mode_redirect_hint,
     normalize_and_parse,
     normalize_query,
     normalize_to_match_spec,
+    resolve_fallback_0243_mode,
     uses_match_spec,
 )
 from app.services.word_db_filters import apply_code_filter
@@ -37,6 +40,7 @@ class SearchContext:
     limit: int
     offset: int
     db: Session
+    fallback_0243_mode: Optional[str] = None
 
 
 @dataclass
@@ -45,6 +49,7 @@ class SearchResult:
     total: Optional[int] = None
     hint: Optional[str] = None
     cache_path: Optional[str] = None
+    effective_mode: Optional[str] = None
 
 
 JYUTPING_SYN_MODE_HINT = (
@@ -98,6 +103,19 @@ class QueryEngine:
 
             if is_jyutping_query(q):
                 return SearchResult(items=[], hint=JYUTPING_SYN_MODE_HINT)
+
+            if is_relation_syntax_query(q):
+                effective = resolve_fallback_0243_mode(ctx.fallback_0243_mode)
+                redirected = replace(ctx, mode=effective, offset=0)
+                parsed = normalize_and_parse(ctx.q)
+                result = self._dispatch(parsed, redirected)
+                return SearchResult(
+                    items=result.items,
+                    total=result.total,
+                    hint=mode_redirect_hint(effective),
+                    cache_path=result.cache_path,
+                    effective_mode=effective,
+                )
 
             items = RelationSyntaxExecutor(ctx.db).syn_mode_page(
                 q, limit=ctx.limit, offset=ctx.offset

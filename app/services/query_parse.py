@@ -85,6 +85,28 @@ class CompoundAntQuery:
 
 
 @dataclass(frozen=True)
+class CompoundConnectSynQuery:
+    code_prefix: Optional[str]
+    connective: str
+    rhyme_char: Optional[str]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.COMPOUND_SYN
+
+
+@dataclass(frozen=True)
+class CompoundConnectAntQuery:
+    code_prefix: Optional[str]
+    connective: str
+    rhyme_char: Optional[str]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.COMPOUND_ANT
+
+
+@dataclass(frozen=True)
 class HybridTailEqualsAliasQuery:
     raw_q: str
     hybrid_q: str
@@ -244,6 +266,8 @@ ParsedQuery = Union[
     RelationLookupQuery,
     CompoundSynQuery,
     CompoundAntQuery,
+    CompoundConnectSynQuery,
+    CompoundConnectAntQuery,
     HybridTailEqualsAliasQuery,
     EqualsQuery,
     StarAnchorQuery,
@@ -279,6 +303,18 @@ def parse_query(q: str) -> ParsedQuery:
     """Classify a normalized query string. No DB access."""
     relation_parsed = parse_relation_syntax(q)
     if relation_parsed:
+        if relation_parsed["kind"] == "compound_connect_syn":
+            return CompoundConnectSynQuery(
+                code_prefix=relation_parsed.get("code_prefix"),
+                connective=relation_parsed["connective"],
+                rhyme_char=relation_parsed.get("rhyme_char"),
+            )
+        if relation_parsed["kind"] == "compound_connect_ant":
+            return CompoundConnectAntQuery(
+                code_prefix=relation_parsed.get("code_prefix"),
+                connective=relation_parsed["connective"],
+                rhyme_char=relation_parsed.get("rhyme_char"),
+            )
         if relation_parsed["kind"] == "compound_syn":
             return CompoundSynQuery(
                 code_prefix=relation_parsed.get("code_prefix"),
@@ -382,8 +418,46 @@ def is_mask_family_query(parsed: Any) -> bool:
 def uses_match_spec(parsed: Any) -> bool:
     """是否經 MatchSpec 進入缺字型查詢執行（含近義／反義複合，語法分類仍非缺字家族）。"""
     return is_mask_family_query(parsed) or isinstance(
-        parsed, (CompoundSynQuery, CompoundAntQuery)
+        parsed,
+        (
+            CompoundSynQuery,
+            CompoundAntQuery,
+            CompoundConnectSynQuery,
+            CompoundConnectAntQuery,
+        ),
     )
+
+
+VALID_FALLBACK_0243_MODES = frozenset({"m1", "m2"})
+
+
+def resolve_fallback_0243_mode(fallback: str | None) -> str:
+    """近反義前次0243搜尋模式 → 執行檔；缺省 0243模式。"""
+    if fallback in VALID_FALLBACK_0243_MODES:
+        return fallback
+    return "m1"
+
+
+def is_relation_syntax_query(q: str) -> bool:
+    """是否為近反義關係查詢語法（觸發搜尋模式轉接）。"""
+    parsed = normalize_and_parse(q)
+    if isinstance(parsed, RelationLookupQuery):
+        return True
+    return isinstance(
+        parsed,
+        (
+            CompoundSynQuery,
+            CompoundAntQuery,
+            CompoundConnectSynQuery,
+            CompoundConnectAntQuery,
+        ),
+    )
+
+
+def mode_redirect_hint(mode: str) -> str:
+    """轉接提示文案（介面／API 保險一致）。"""
+    label = "02493模式（緊）" if mode == "m2" else "0243模式（鬆）"
+    return f"此語法已切換至 {label} 查詢"
 
 
 def _rewrite_mask_family_aliases(parsed: ParsedQuery) -> ParsedQuery:
@@ -603,6 +677,32 @@ def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
             spec.slots.append(
                 SlotConstraint(
                     pos=1,
+                    kind="final_anchor",
+                    value=parsed.rhyme_char,
+                )
+            )
+        return spec
+
+    if isinstance(parsed, CompoundConnectSynQuery):
+        spec = MatchSpec(width=3, code_prefix=parsed.code_prefix, compound_kind="syn")
+        spec.extra["connective"] = parsed.connective
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(
+                    pos=2,
+                    kind="final_anchor",
+                    value=parsed.rhyme_char,
+                )
+            )
+        return spec
+
+    if isinstance(parsed, CompoundConnectAntQuery):
+        spec = MatchSpec(width=3, code_prefix=parsed.code_prefix, compound_kind="ant")
+        spec.extra["connective"] = parsed.connective
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(
+                    pos=2,
                     kind="final_anchor",
                     value=parsed.rhyme_char,
                 )

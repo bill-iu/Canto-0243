@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Response
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
@@ -41,8 +41,11 @@ def search_words_endpoint(
     mode: str = "m1",
     limit: int = 100,
     offset: int = 0,
+    fallback_0243_mode: str = None,
+    x_fallback_0243_mode: str = Header(None, alias="X-Fallback-0243-Mode"),
     db: Session = Depends(get_db),
 ):
+    fallback = fallback_0243_mode or x_fallback_0243_mode
     result = execute_search(
         SearchContext(
             q=q,
@@ -52,12 +55,15 @@ def search_words_endpoint(
             limit=limit,
             offset=offset,
             db=db,
+            fallback_0243_mode=fallback,
         )
     )
     if result.total is not None:
         response.headers["X-Search-Total"] = str(result.total)
     if result.hint:
         response.headers["X-Search-Hint"] = result.hint
+    if result.effective_mode:
+        response.headers["X-Effective-Mode"] = result.effective_mode
     if result.cache_path:
         response.headers["X-Search-Cache"] = result.cache_path
     return result.items

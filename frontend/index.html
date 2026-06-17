@@ -417,12 +417,21 @@
 
         <article class="guide-card">
           <h2>反義複合詞</h2>
-          <p><code translate="no">!!</code> 找兩字互為反義的二字複合詞（如「生死」「是非」）；後面接一個字時，會搜尋尾字韻母。僅 <strong>0243模式</strong>／<strong>02493模式</strong>。</p>
+          <p><code translate="no">!!</code> 找兩字互為反義的二字複合詞（如「生死」「是非」）；詞庫有「我你」時亦會出「你我」。後面接一個字時，會搜尋尾字韻母。三字填詞連接詞複合用 <code translate="no">!與!</code>（見下）。僅 <strong>0243模式</strong>／<strong>02493模式</strong>。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="!!" data-mode="m1"><code translate="no">!!</code><span>二字反義複合（如生死、是非）</span></button>
             <button class="guide-example" type="button" data-query="33!!" data-mode="m1"><code translate="no">33!!</code><span>33同音 + 反義複合</span></button>
             <button class="guide-example" type="button" data-query="!!你" data-mode="m1"><code translate="no">!!你</code><span>反義複合，尾字同「你」同韻</span></button>
             <button class="guide-example" type="button" data-query="33!!你" data-mode="m1"><code translate="no">33!!你</code><span>33同音 + 反義複合 + 尾字同「你」同韻</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>連接詞複合詞</h2>
+          <p><code translate="no">!與!</code>／<code translate="no">~與~</code> 找三字詞，中格為填詞連接詞（與、和、或、共、同、及、跟、而、且、並、向），首尾沿用 <code translate="no">!!</code>／<code translate="no">~~</code> 規則。可加碼前綴或尾韻字。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="!與!" data-mode="m1"><code translate="no">!與!</code><span>反義連接詞複合（如生與死）</span></button>
+            <button class="guide-example" type="button" data-query="~與~" data-mode="m1"><code translate="no">~與~</code><span>近義連接詞複合</span></button>
           </div>
         </article>
       </div>
@@ -491,6 +500,7 @@
       reorderTabsByIds,
       applyUrlToTabs,
     } from "./query-tabs-state.mjs";
+    import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
 
     function showFileFallback() {
       document.body.innerHTML = "";
@@ -560,6 +570,7 @@
     }
 
     let currentMode = "m1";
+    let last0243Mode = "m1";
     let isSearching = false;
     const PAGE_SIZE = 160;
     const WARMUP_DONE_HOLD_MS = 2000;
@@ -1313,6 +1324,9 @@
 
     function switchMode(mode, { runSearch = true, replace = true } = {}) {
       if (!MODE_META[mode]) return;
+      if (mode === "syn" && (currentMode === "m1" || currentMode === "m2")) {
+        last0243Mode = currentMode;
+      }
       currentMode = mode;
       updateModeLabel();
       toggleMenu(false);
@@ -1374,8 +1388,39 @@
       renderSearchResults(tab.results);
     }
 
+    function maybeModeRedirectForRelationSyntax(input, tab) {
+      if (currentMode !== "syn" || !isRelationSyntaxQuery(input)) return;
+      const target = MODE_META[last0243Mode] ? last0243Mode : "m1";
+      tab.offset = 0;
+      tab.redirectHint = modeRedirectHint(target);
+      if (currentMode !== target) {
+        currentMode = target;
+        updateModeLabel();
+      }
+    }
+
+    function applyEffectiveModeFromResponse(res, searchHint) {
+      const effectiveMode = res.headers.get("X-Effective-Mode");
+      if (!effectiveMode || !MODE_META[effectiveMode] || effectiveMode === currentMode) {
+        return searchHint;
+      }
+      currentMode = effectiveMode;
+      updateModeLabel();
+      updateBrowserUrlFromActiveTab(true);
+      return searchHint || modeRedirectHint(effectiveMode);
+    }
+
     function renderSearchResults(data, total = null) {
       $.results.innerHTML = "";
+      const tab = activeTab();
+      const redirectHint = tab?.redirectHint;
+      if (redirectHint) {
+        const banner = document.createElement("p");
+        banner.className = "info mode-redirect-hint";
+        banner.textContent = redirectHint;
+        $.results.appendChild(banner);
+        tab.redirectHint = null;
+      }
       $.results.className = currentMode === "syn" ? "syn-container" : "results";
 
       if (currentMode === "syn") {
@@ -1536,6 +1581,9 @@
       }
 
       tab.q = input;
+      if (!isLoadMore) {
+        maybeModeRedirectForRelationSyntax(input, tab);
+      }
       if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(true);
 
       const cacheKey = `${currentMode}:${input}:${tab.offset || 0}`;
@@ -1561,7 +1609,10 @@
         searchCache.delete(cacheKey);
       }
 
-      const url = `/words/search/?q=${encodeURIComponent(input)}&mode=${currentMode}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
+      let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(currentMode)}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
+      if (currentMode === "syn" && MODE_META[last0243Mode]) {
+        url += `&fallback_0243_mode=${encodeURIComponent(last0243Mode)}`;
+      }
 
       try {
         const res = await fetch(url);
@@ -1581,7 +1632,11 @@
         const data = await res.json();
         const totalHeader = res.headers.get("X-Search-Total");
         const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
-        const searchHint = res.headers.get("X-Search-Hint");
+        let searchHint = res.headers.get("X-Search-Hint");
+        searchHint = applyEffectiveModeFromResponse(res, searchHint);
+        if (!searchHint && tab.redirectHint) {
+          searchHint = tab.redirectHint;
+        }
 
         if (!isLoadMore) {
           searchCache.set(cacheKey, { data, total, hint: searchHint });
@@ -1589,8 +1644,10 @@
         }
 
         if (data.length === 0 && !isLoadMore) {
-          if (searchHint) {
-            $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(searchHint)}</p>`;
+          if (searchHint || tab.redirectHint) {
+            const hint = tab.redirectHint || searchHint;
+            tab.redirectHint = null;
+            $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(hint)}</p>`;
           } else {
             $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
           }
@@ -1836,6 +1893,9 @@
       $.modeMenu.hidden = true;
       const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
       currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
+      if (currentMode === "m1" || currentMode === "m2") {
+        last0243Mode = currentMode;
+      }
       updateModeLabel();
       ensureDefaultTabs(parsed);
 

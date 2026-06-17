@@ -270,6 +270,13 @@ class UsesMatchSpecTests(unittest.TestCase):
         self.assertTrue(uses_match_spec(CompoundSynQuery(code_prefix=None, rhyme_char=None)))
         self.assertTrue(uses_match_spec(CompoundAntQuery(code_prefix="33", rhyme_char="就")))
 
+    def test_is_relation_syntax_query(self):
+        from app.services.query_parse import is_relation_syntax_query
+
+        self.assertTrue(is_relation_syntax_query("!!"))
+        self.assertTrue(is_relation_syntax_query("~開心"))
+        self.assertFalse(is_relation_syntax_query("開心"))
+
     def test_non_position_queries_do_not(self):
         self.assertFalse(uses_match_spec(RelationLookupQuery(relation_kind="syn", word="開心")))
         self.assertFalse(uses_match_spec(DigitCodeQuery(raw_q="33")))

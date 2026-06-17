@@ -19,7 +19,7 @@ SOURCES_FORBIDDEN = (
     "load_compound_antonyms",
 )
 
-SOURCES_ALLOWED = ("search_compound_syn", "search_compound_ant")
+SOURCES_ALLOWED = ("search_compound_syn", "search_compound_ant", "search_connective_compound")
 
 PRELOAD_FORBIDDEN = (
     "ensure_compound_syn_cache",
@@ -28,7 +28,12 @@ PRELOAD_FORBIDDEN = (
     "search_compound_syn",
 )
 
-PRELOAD_ALLOWED = ("ensure_compound_syn_snapshot", "preload_compound_syn_runtime_cache")
+PRELOAD_ALLOWED = (
+    "ensure_compound_syn_snapshot",
+    "preload_compound_syn_runtime_cache",
+    "ensure_compound_ant_snapshot",
+    "preload_compound_ant_runtime_cache",
+)
 
 
 class TestCompoundSynSeam(unittest.TestCase):

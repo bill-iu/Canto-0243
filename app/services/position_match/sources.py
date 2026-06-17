@@ -226,6 +226,7 @@ class CompoundSynCandidateSource:
 
     db: Any
     compounds: frozenset[str]
+    expected_length: int = 2
 
     def get_candidates(
         self,
@@ -234,28 +235,32 @@ class CompoundSynCandidateSource:
         code: Optional[str] = None,
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
-        if length != 2 or not self.compounds:
+        if length != self.expected_length or not self.compounds:
             return [], True
 
         if is_word_cache_ready():
             rows = [
-                w for w in get_words_for_length(2)
+                w for w in get_words_for_length(self.expected_length)
                 if get_word_text(w) in self.compounds
             ]
             if rows:
                 return rows, True
 
-        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
+        query = self.db.query(Word).filter(
+            Word.char.in_(list(self.compounds)),
+            length_filter(self.expected_length),
+        )
         rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
         return rows, False
 
 
 @dataclass
 class CompoundAntCandidateSource:
-    """!! 反義複合：curated 字面 + char IN（cache-first）。"""
+    """!! 反義複合：候選字面 + char IN（cache-first）。"""
 
     db: Any
     compounds: frozenset[str]
+    expected_length: int = 2
 
     def get_candidates(
         self,
@@ -264,18 +269,21 @@ class CompoundAntCandidateSource:
         code: Optional[str] = None,
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
-        if length != 2 or not self.compounds:
+        if length != self.expected_length or not self.compounds:
             return [], True
 
         if is_word_cache_ready():
             rows = [
-                w for w in get_words_for_length(2)
+                w for w in get_words_for_length(self.expected_length)
                 if get_word_text(w) in self.compounds
             ]
             if rows:
                 return rows, True
 
-        query = self.db.query(Word).filter(Word.char.in_(list(self.compounds)), length_filter(2))
+        query = self.db.query(Word).filter(
+            Word.char.in_(list(self.compounds)),
+            length_filter(self.expected_length),
+        )
         rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
         return rows, False
 
@@ -287,11 +295,30 @@ def _resolve_mask_family_source(
     query_code: Optional[str],
 ) -> tuple[Optional[CandidateSource], Optional[Callable]]:
     """由 MatchSpec 形狀選擇候選來源（registry，不依 ParsedQuery）。"""
+    from app.domain.lexicon.ranking import search_result_sort_key
+
+    connective = spec.extra.get("connective")
     if spec.compound_kind == "syn":
-        from app.domain.lexicon.ranking import search_result_sort_key
+        rhyme_char = _compound_rhyme_char(spec)
+        if connective and spec.width == 3:
+            from app.domain.relations.compound_connect import search_connective_compound
+
+            tiers = search_connective_compound(
+                db,
+                compound_kind="syn",
+                connective=connective,
+                rhyme_char=rhyme_char,
+            )
+            if not tiers:
+                return None, None
+            source = CompoundSynCandidateSource(
+                db, frozenset(tiers.keys()), expected_length=3
+            )
+            sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
+            return source, sort_key
+
         from app.domain.relations.compound_syn import search_compound_syn
 
-        rhyme_char = _compound_rhyme_char(spec)
         tiers = search_compound_syn(db, rhyme_char=rhyme_char, width=spec.width)
         if not tiers:
             return None, None
@@ -300,13 +327,32 @@ def _resolve_mask_family_source(
         return source, sort_key
 
     if spec.compound_kind == "ant":
+        rhyme_char = _compound_rhyme_char(spec)
+        if connective and spec.width == 3:
+            from app.domain.relations.compound_connect import search_connective_compound
+
+            tiers = search_connective_compound(
+                db,
+                compound_kind="ant",
+                connective=connective,
+                rhyme_char=rhyme_char,
+            )
+            if not tiers:
+                return None, None
+            source = CompoundAntCandidateSource(
+                db, frozenset(tiers.keys()), expected_length=3
+            )
+            sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
+            return source, sort_key
+
         from app.domain.relations.compound_ant import search_compound_ant
 
-        rhyme_char = _compound_rhyme_char(spec)
-        compounds = search_compound_ant(db, rhyme_char=rhyme_char, width=spec.width)
-        if not compounds:
+        tiers = search_compound_ant(db, rhyme_char=rhyme_char, width=spec.width)
+        if not tiers:
             return None, None
-        return CompoundAntCandidateSource(db, compounds), None
+        source = CompoundAntCandidateSource(db, frozenset(tiers.keys()))
+        sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
+        return source, sort_key
 
     if spec.literal_priority and spec.mask:
         effective_code = query_code or spec.code_prefix
