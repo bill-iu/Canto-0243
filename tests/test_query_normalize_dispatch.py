@@ -42,6 +42,15 @@ class QueryDispatchParseSeamTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertNotIn("word_query_parser", source)
 
+    def test_query_parse_does_not_import_word_query_parser(self):
+        source = (
+            Path(__file__).resolve().parents[1]
+            / "app"
+            / "services"
+            / "query_parse.py"
+        ).read_text(encoding="utf-8")
+        self.assertNotIn("word_query_parser", source)
+
 
 if __name__ == "__main__":
     unittest.main()

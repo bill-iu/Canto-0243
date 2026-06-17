@@ -7,29 +7,34 @@ from enum import Enum
 from typing import Any, Literal, Optional, Union
 
 from app.services.jyutping_anchor import parse_jyutping_anchor_query, rhyme_letters_resolve_ok
-from app.services.word_query_parser import (
-    build_mask_from_slots,
+from app.services.query_grammar.equals import (
     hybrid_query_from_tail_equals,
     is_framed_equals_query,
     is_hybrid_tail_equals_alias,
-    looks_like_mask_query,
-    normalize_search_query,
-    parse_at_tail_query,
-    slot_connector_syntax_error,
+)
+from app.services.query_grammar.mask import looks_like_mask_query
+from app.services.query_grammar.relation import parse_relation_syntax
+from app.services.query_grammar.rhyme import (
     parse_code_ref_middle_rhyme_query,
     parse_code_ref_rhyme_contradiction_hint,
     parse_double_wildcard_initial_query,
     parse_double_wildcard_rhyme_query,
-    parse_relation_syntax,
     parse_rhyme_anchor_query,
+    parse_triple_rhyme_anchor_query,
+)
+from app.services.query_grammar.serial import (
     parse_prefix_wildcard_equals_query,
     parse_pure_chars_serial_hint,
     parse_serial_phoneme_anchor_query,
-    parse_star_anchor_query,
-    parse_triple_rhyme_anchor_query,
-    parse_wildcard_code_anchor_query,
     prefix_wildcard_equals_missing_eq_hint,
 )
+from app.services.query_grammar.star import (
+    mask_from_canonical_star_query,
+    parse_at_tail_query,
+    parse_star_anchor_query,
+)
+from app.services.query_grammar.wca import parse_wildcard_code_anchor_query
+from app.services.query_lexer import normalize_search_query, slot_connector_syntax_error
 
 HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
 
@@ -426,8 +431,6 @@ def parse_query(q: str) -> ParsedQuery:
 
     if is_framed_equals_query(q):
         return EqualsQuery(raw_q=q)
-
-    from app.services.word_query_parser import mask_from_canonical_star_query
 
     mask_literal = mask_from_canonical_star_query(q)
     if mask_literal:

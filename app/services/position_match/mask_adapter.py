@@ -4,12 +4,7 @@ from __future__ import annotations
 from typing import Optional
 
 from app.services.position_match.spec import MatchSpec
-
-_WILDCARD_CHARS = frozenset("_?%")
-
-
-def is_wildcard_char(ch: str) -> bool:
-    return len(ch) == 1 and ch in _WILDCARD_CHARS
+from app.services.query_tokens import is_wildcard_char
 
 
 def matches_mask_literal_chars(word_char: str, mask: str) -> bool:
