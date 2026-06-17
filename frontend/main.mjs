@@ -1,0 +1,285 @@
+﻿import {
+  MODE_META,
+  SEARCH_RING_BLUR_MS,
+  currentMode,
+  last0243Mode,
+  tabState,
+  chromeLayout,
+  applyAppTitle,
+  parseUrlSearchParams,
+  createGuideTab,
+  createRelationTab,
+  VIEW,
+  $,
+} from "./app-context.mjs";
+import { waitForPreloadReady } from "./gate.mjs";
+import {
+  activeTab,
+  persistTabs,
+  ensureDefaultTabs,
+  saveActiveTabFromUi,
+  updateActiveTabTitle,
+} from "./tabs-core.mjs";
+import { syncViewPanels } from "./view-sync.mjs";
+import {
+  addSearchTab,
+  closeTab,
+  openSingletonViewTab,
+  ensureActiveSearchTab,
+  showSearch,
+  showGuide,
+  showRelation,
+  goHome,
+} from "./tabs-ui.mjs";
+import {
+  updateModeLabel,
+  toggleMenu,
+  switchMode,
+  runExample,
+  shuffleResults,
+  searchDict,
+} from "./search-workbench.mjs";
+import {
+  relationPayloadFromForm,
+  postRelation,
+  showRelationOk,
+  showRelationErr,
+} from "./relation-form.mjs";
+
+function showFileFallback() {
+  document.body.innerHTML = "";
+  const wrap = document.createElement("main");
+  wrap.className = "file-fallback";
+
+  const card = document.createElement("section");
+  card.className = "file-card";
+  card.setAttribute("aria-labelledby", "fileFallbackTitle");
+
+  const title = document.createElement("h1");
+  title.id = "fileFallbackTitle";
+  title.textContent = "Canto-0243";
+
+  const copy = document.createElement("p");
+  copy.textContent = "你直接開啟了 index.html。此工具需要後端伺服器支援，請先啟動本地服務。";
+
+  const note = document.createElement("div");
+  note.className = "file-note";
+  note.textContent = "請先執行 start.sh，再開啟應用程式。";
+
+  const link = document.createElement("a");
+  link.className = "primary-button";
+  link.href = "http://127.0.0.1:8000/frontend/index.html";
+  link.textContent = "開啟應用程式";
+
+  card.append(title, copy, note, link);
+  wrap.appendChild(card);
+  document.body.appendChild(wrap);
+}
+
+if (location.protocol === "file:") {
+  document.addEventListener("DOMContentLoaded", showFileFallback);
+  throw new Error("Direct file open - showing instruction only");
+}
+
+function bindInputDualRing(wrap) {
+  const input = wrap.querySelector("input");
+  if (!input) return;
+  input.addEventListener("focus", () => {
+    wrap.classList.remove("is-blurring");
+    wrap.classList.add("is-focused");
+  });
+  input.addEventListener("blur", () => {
+    wrap.classList.remove("is-focused");
+    wrap.classList.add("is-blurring");
+    window.setTimeout(() => wrap.classList.remove("is-blurring"), SEARCH_RING_BLUR_MS);
+  });
+}
+
+function bindSearchDualRing() {
+  if (!$.searchInputWrap || !$.searchInput) return;
+  $.searchInput.addEventListener("focus", () => {
+    $.searchInputWrap.classList.remove("is-blurring");
+    $.searchInputWrap.classList.add("is-focused");
+  });
+  $.searchInput.addEventListener("blur", () => {
+    $.searchInputWrap.classList.remove("is-focused");
+    $.searchInputWrap.classList.add("is-blurring");
+    window.setTimeout(() => $.searchInputWrap.classList.remove("is-blurring"), SEARCH_RING_BLUR_MS);
+  });
+}
+bindSearchDualRing();
+document.querySelectorAll("[data-input-wrap]").forEach(bindInputDualRing);
+
+$.searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  searchDict();
+});
+
+$.shuffleBtn.addEventListener("click", shuffleResults);
+
+$.searchInput.addEventListener("input", () => {
+  const tab = activeTab();
+  if (tab?.view === VIEW.SEARCH) {
+    tab.q = $.searchInput.value;
+    persistTabs();
+    updateActiveTabTitle();
+  }
+});
+
+$.homeBtn.addEventListener("click", goHome);
+$.modeMenuButton.addEventListener("click", () => toggleMenu());
+$.guideTopBtn.addEventListener("click", () => showGuide());
+$.guideMenuBtn.addEventListener("click", () => showGuide());
+$.relationTopBtn.addEventListener("click", () => showRelation());
+$.relationMenuBtn.addEventListener("click", () => showRelation());
+$.backToSearchBtn.addEventListener("click", () => {
+  showSearch();
+  $.searchInput.focus();
+});
+
+$.relationForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  $.relationOkStatus.hidden = true;
+  $.relationErrStatus.hidden = true;
+  $.relationSubmitBtn.disabled = true;
+  $.relationRevokeBtn.disabled = true;
+  saveActiveTabFromUi();
+  try {
+    const { response, body } = await postRelation("/relations/manual", relationPayloadFromForm());
+    if (!response.ok) {
+      showRelationErr(body.detail || "提交失敗，請稍後再試。");
+      return;
+    }
+    showRelationOk(body.message || "已補上關係。");
+  } catch {
+    showRelationErr("無法連線後端。請確認伺服器已啟動。");
+  } finally {
+    $.relationSubmitBtn.disabled = false;
+    $.relationRevokeBtn.disabled = false;
+  }
+});
+
+$.relationRevokeBtn.addEventListener("click", async () => {
+  $.relationOkStatus.hidden = true;
+  $.relationErrStatus.hidden = true;
+  $.relationSubmitBtn.disabled = true;
+  $.relationRevokeBtn.disabled = true;
+  saveActiveTabFromUi();
+  try {
+    const { response, body } = await postRelation("/relations/manual/revoke", relationPayloadFromForm());
+    if (!response.ok) {
+      showRelationErr(body.detail || "撤回失敗，請稍後再試。");
+      return;
+    }
+    showRelationOk(body.message || "已撤回關係。");
+  } catch {
+    showRelationErr("無法連線後端。請確認伺服器已啟動。");
+  } finally {
+    $.relationSubmitBtn.disabled = false;
+    $.relationRevokeBtn.disabled = false;
+  }
+});
+
+document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
+  btn.addEventListener("click", () => switchMode(btn.dataset.mode));
+});
+
+document.querySelectorAll("[data-query]").forEach((btn) => {
+  btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || currentMode));
+});
+
+document.addEventListener("click", (event) => {
+  if (!$.modeMenu.contains(event.target) && !$.modeMenuButton.contains(event.target)) {
+    toggleMenu(false);
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") toggleMenu(false, { returnFocus: true });
+  if (!event.altKey || event.ctrlKey || event.metaKey) return;
+  const key = event.key.toLowerCase();
+  if (key === "n") {
+    event.preventDefault();
+    addSearchTab();
+    return;
+  }
+  if (key === "w") {
+    event.preventDefault();
+    closeTab(tabState.activeId);
+  }
+});
+
+window.addEventListener("popstate", (event) => {
+  const state = event.state || {};
+  const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+  currentMode = MODE_META[state.mode || parsed.mode] ? (state.mode || parsed.mode) : "m1";
+  updateModeLabel();
+
+  if (state.tabId) {
+    const tab = tabState.tabs.find((t) => t.id === state.tabId);
+    if (tab) {
+      if (tab.view === VIEW.SEARCH && (state.query || parsed.q)) tab.q = state.query || parsed.q;
+      tabState = { ...tabState, activeId: tab.id };
+      persistTabs();
+      syncViewPanels();
+      if (tab.view === VIEW.SEARCH && tab.q) searchDict(false, true);
+      return;
+    }
+  }
+
+  if (parsed.view === VIEW.GUIDE) {
+    openSingletonViewTab(VIEW.GUIDE, createGuideTab);
+  } else if (parsed.view === VIEW.RELATION) {
+    openSingletonViewTab(VIEW.RELATION, createRelationTab);
+  } else {
+    const tab = ensureActiveSearchTab();
+    if (tab) {
+      tab.q = parsed.q || "";
+      persistTabs();
+      syncViewPanels();
+      if (tab.q) searchDict(false, true);
+    }
+  }
+});
+
+(async function init() {
+  await waitForPreloadReady();
+
+  fetch("/")
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => applyAppTitle(Boolean(data && data.portable)))
+    .catch(() => {});
+
+  $.modeMenu.hidden = true;
+  const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+  currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
+  if (currentMode === "m1" || currentMode === "m2") {
+    last0243Mode = currentMode;
+  }
+  updateModeLabel();
+  ensureDefaultTabs(parsed);
+
+  const urlTab = tabState.tabs.find((t) => {
+    if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
+    if (parsed.view === VIEW.RELATION) return t.view === VIEW.RELATION;
+    return t.view === VIEW.SEARCH;
+  });
+  if (urlTab) tabState = { ...tabState, activeId: urlTab.id };
+  if (parsed.view === VIEW.SEARCH && parsed.q) {
+    const searchTab = tabState.tabs.find((t) => t.id === tabState.activeId && t.view === VIEW.SEARCH)
+      || tabState.tabs.find((t) => t.view === VIEW.SEARCH);
+    if (searchTab) {
+      searchTab.q = parsed.q;
+      tabState = { ...tabState, activeId: searchTab.id };
+    }
+  }
+
+  chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
+  syncViewPanels();
+  persistTabs();
+
+  const active = activeTab();
+  if (active?.view === VIEW.SEARCH && active.q) {
+    searchDict(false, true);
+  }
+})();

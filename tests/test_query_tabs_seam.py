@@ -7,6 +7,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+MAIN_MJS_PATH = REPO_ROOT / "frontend" / "main.mjs"
 LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.js"
 MAIN_PATH = REPO_ROOT / "main.py"
 RELATION_ENTRY_PATH = REPO_ROOT / "frontend" / "relation-entry.html"
@@ -16,6 +17,8 @@ FRONTEND_ASSETS = (
     "chrome-tabs-layout.js",
     "query-tabs.css",
     "query-tabs-state.mjs",
+    "main.mjs",
+    "app-context.mjs",
     "vendor/draggabilly.pkgd.min.js",
 )
 
@@ -24,19 +27,27 @@ INDEX_REQUIRED = (
     'href="query-tabs.css"',
     'src="vendor/draggabilly.pkgd.min.js"',
     'src="chrome-tabs-layout.js"',
-    'from "./query-tabs-state.mjs"',
-    "SESSION_KEY",
+    'src="./main.mjs"',
     'id="queryChromeTabs"',
     'id="queryTabstrip"',
     "app-header--tabs",
     "view=relation",
+)
+
+MAIN_MJS_REQUIRED = (
+    'from "./gate.mjs"',
+    "waitForPreloadReady",
+    "syncViewPanels",
     "openSingletonView",
     "reorderTabsByIds",
     "setupTabDrag",
-    "setupDraggabilly",
     "activateTabOnPress",
-    "data.gate_ready",
     'fetch("/ready"',
+)
+
+APP_CONTEXT_REQUIRED = (
+    'from "./query-tabs-state.mjs"',
+    "SESSION_KEY",
 )
 
 INDEX_FORBIDDEN = (
@@ -70,6 +81,22 @@ class TestQueryTabsSeam(unittest.TestCase):
         for symbol in INDEX_REQUIRED:
             with self.subTest(symbol=symbol):
                 self.assertIn(symbol, source)
+
+    def test_main_mjs_wires_query_tabs(self):
+        source = MAIN_MJS_PATH.read_text(encoding="utf-8")
+        app_ctx = (REPO_ROOT / "frontend" / "app-context.mjs").read_text(encoding="utf-8")
+        gate = (REPO_ROOT / "frontend" / "gate.mjs").read_text(encoding="utf-8")
+        tabs_ui = (REPO_ROOT / "frontend" / "tabs-ui.mjs").read_text(encoding="utf-8")
+        layout = LAYOUT_PATH.read_text(encoding="utf-8")
+        bundle = source + app_ctx + gate + tabs_ui + layout
+        for symbol in MAIN_MJS_REQUIRED:
+            with self.subTest(symbol=symbol):
+                self.assertIn(symbol, bundle)
+        for symbol in APP_CONTEXT_REQUIRED:
+            with self.subTest(symbol=symbol):
+                self.assertIn(symbol, app_ctx)
+        self.assertIn("data.gate_ready", gate)
+        self.assertIn("setupDraggabilly", layout)
 
     def test_index_html_has_no_prototype_or_relation_entry_links(self):
         source = INDEX_PATH.read_text(encoding="utf-8")

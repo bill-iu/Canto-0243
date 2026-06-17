@@ -6,6 +6,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+GATE_MJS_PATH = REPO_ROOT / "frontend" / "gate.mjs"
+SEARCH_MJS_PATH = REPO_ROOT / "frontend" / "search-workbench.mjs"
 
 FORBIDDEN = (
     "canOpenSearchGate",
@@ -34,10 +36,13 @@ class TestGateFrontendSeam(unittest.TestCase):
                 self.assertNotIn(symbol, source)
 
     def test_index_html_uses_server_gate_contract(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
+        gate = GATE_MJS_PATH.read_text(encoding="utf-8")
+        search = SEARCH_MJS_PATH.read_text(encoding="utf-8")
+        bundle = gate + search
         for symbol in REQUIRED:
             with self.subTest(symbol=symbol):
-                self.assertIn(symbol, source)
+                self.assertIn(symbol, bundle)
+        self.assertIn('src="./main.mjs"', INDEX_PATH.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
