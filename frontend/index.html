@@ -1624,7 +1624,6 @@
             $.results.innerHTML = `<p class="info"><strong>仲未開得工…</strong><br>詞庫快取索引載入中（${pct}%）。請稍候再搜。</p>`;
             updateShuffleButton();
             toggleLoadMoreButton(false);
-            setButtonLoading(false);
             return;
           }
         }
@@ -1652,7 +1651,6 @@
             $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
           }
           updateShuffleButton();
-          setButtonLoading(false);
           toggleLoadMoreButton(false);
           return;
         }
@@ -1668,9 +1666,9 @@
         }
         updateShuffleButton();
         toggleLoadMoreButton(false);
+      } finally {
+        setButtonLoading(false);
       }
-
-      setButtonLoading(false);
     }
 
     function escapeHtml(text) {

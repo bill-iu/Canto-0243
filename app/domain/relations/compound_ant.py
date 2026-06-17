@@ -67,8 +67,7 @@ def _expand_pair_symmetry(
 
 
 def _top_k_ant_neighbors(graph: CharRelationGraph, char: str, k: int) -> list[str]:
-    pairs = graph.direct_ant_oriented_pairs()
-    neighbors = {b for a, b in pairs if a == char}
+    neighbors = graph.direct_ant_neighbors(char)
     if not neighbors:
         return []
     ordered = sorted(neighbors, key=_char_sort_key)

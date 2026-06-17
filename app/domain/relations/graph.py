@@ -27,6 +27,8 @@ class CharRelationGraph:
         self._thesaurus = thesaurus
         self._membership = membership
         self._adjacency: Optional[Dict[str, Set[str]]] = None
+        self._ant_adjacency: Optional[Dict[str, Set[str]]] = None
+        self._ant_oriented_pairs: Optional[Set[Tuple[str, str]]] = None
 
     def _resolve_membership(self) -> Set[str]:
         if self._membership is not None:
@@ -73,6 +75,21 @@ class CharRelationGraph:
             return set()
         adj = self._ensure_adjacency(include_static=include_static)
         return set(adj.get(ch, set()))
+
+    def _ensure_ant_adjacency(self) -> Dict[str, Set[str]]:
+        if self._ant_adjacency is None:
+            adj: Dict[str, Set[str]] = {}
+            for a, b in self.direct_ant_oriented_pairs():
+                adj.setdefault(a, set()).add(b)
+            self._ant_adjacency = adj
+        return self._ant_adjacency
+
+    def direct_ant_neighbors(self, char: str) -> Set[str]:
+        """直接反義鄰居（快取 adjacency，合成掃描唔重打 DB）。"""
+        ch = (char or "").strip()
+        if not ch:
+            return set()
+        return set(self._ensure_ant_adjacency().get(ch, set()))
 
     def _direct_ant_oriented_pairs(
         self,
@@ -123,7 +140,12 @@ class CharRelationGraph:
         *,
         exclude_sources: Optional[Set[str]] = None,
     ) -> Set[Tuple[str, str]]:
-        return self._direct_ant_oriented_pairs(exclude_sources=exclude_sources)
+        exclude_sources = exclude_sources or set()
+        if exclude_sources:
+            return self._direct_ant_oriented_pairs(exclude_sources=exclude_sources)
+        if self._ant_oriented_pairs is None:
+            self._ant_oriented_pairs = self._direct_ant_oriented_pairs()
+        return self._ant_oriented_pairs
 
 
 def default_char_relation_graph(
