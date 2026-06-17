@@ -71,6 +71,29 @@ def _qiong_chou_liu_dao() -> Word:
     )
 
 
+def _gong_hei_faat_coi() -> Word:
+    return _word(
+        "恭喜發財",
+        code="0243",
+        jyutping="gung1 hei2 faat3 coi4",
+        finals='["ung", "ei", "aat", "oi"]',
+        initials='["g", "h", "f", "c"]',
+        length=4,
+    )
+
+
+def _mou_sei_short_finals() -> Word:
+    """length=4 但 finals 較短 — 前綴通配等號 span 不得通過。"""
+    return _word(
+        "冇say",
+        code="0000",
+        jyutping="mou5 sei1",
+        finals='["ou", "ei"]',
+        initials='["m", "s"]',
+        length=4,
+    )
+
+
 class PrefixWildcardEqualsBehaviorTests(unittest.TestCase):
     def setUp(self):
         reset_word_cache_for_tests()
@@ -91,6 +114,16 @@ class PrefixWildcardEqualsBehaviorTests(unittest.TestCase):
             found = _chars(search_words(q="?困潦倒=", mode="m1", db=db, limit=20))
             self.assertIn("窮困潦倒", found)
             self.assertNotIn("窮愁潦倒", found)
+        finally:
+            db.close()
+
+    def test_xi_fa_coi_excludes_short_phoneme_rows(self):
+        """?喜發財= 唔收 finals 音節不足嘅候選（即使 length 欄為 4）。"""
+        db = _memory_db(_gong_hei_faat_coi(), _mou_sei_short_finals())
+        try:
+            found = _chars(search_words(q="?喜發財=", mode="m1", db=db, limit=20))
+            self.assertIn("恭喜發財", found)
+            self.assertNotIn("冇say", found)
         finally:
             db.close()
 

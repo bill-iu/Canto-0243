@@ -93,6 +93,39 @@ class MatchesEqualsPhonemeSpanTests(unittest.TestCase):
             )
         )
 
+    def test_prefix_wildcard_span_rejects_short_phoneme_lists(self):
+        """音節不足不得通過（?喜發財= 假陽性：length=4 但 finals 較短）。"""
+        word = self._word("冇say", initials=["m", "s"], finals=["ou", "ei"])
+        target = ["ei", "aat", "oi"]
+        self.assertFalse(
+            matches_equals_phoneme_span(
+                word,
+                target,
+                start_pos=1,
+                phoneme_anchor_only=True,
+                ref_literal="喜發財",
+                dimension="final",
+            )
+        )
+
+    def test_prefix_wildcard_span_accepts_full_rhyme_tail(self):
+        word = self._word(
+            "恭喜發財",
+            initials=["g", "h", "f", "c"],
+            finals=["ung", "ei", "aat", "oi"],
+        )
+        target = ["ei", "aat", "oi"]
+        self.assertTrue(
+            matches_equals_phoneme_span(
+                word,
+                target,
+                start_pos=1,
+                phoneme_anchor_only=True,
+                ref_literal="喜發財",
+                dimension="final",
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

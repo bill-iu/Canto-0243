@@ -38,9 +38,10 @@ def matches_equals_phoneme_span(
         return False
     for i in range(len(ref_parts)):
         pos = start_pos + i
-        if pos < len(word_parts) and i < len(ref_parts):
-            if ref_parts[i] and ref_parts[i] != word_parts[pos]:
-                return False
+        if pos >= len(word_parts):
+            return False
+        if ref_parts[i] and ref_parts[i] != word_parts[pos]:
+            return False
     return True
 
 
