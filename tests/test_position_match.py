@@ -18,7 +18,7 @@ from app.services.position_match.sources import (
     get_length_candidates,
 )
 from app.services.position_match.spec import MatchSpec, SlotConstraint
-from app.services.query_parse import _build_mask_family_match_spec as build_mask_family_match_spec
+from app.services.query_match_spec_registry import build_match_spec_for_parsed as build_mask_family_match_spec
 from app.services.query_parse import (
     RhymeAnchorQuery,
     StarAnchorQuery,

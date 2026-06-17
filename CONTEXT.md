@@ -143,6 +143,10 @@ _Avoid_：CharRelationGraph（作領域正名）、在 ingest 繞過靜態詞林
 將創作者輸入分類為等號、碼字、缺字等語法類型，正規化為可比對規格並路由至對應搜尋路徑；**分派優先序**本身是領域規則的一部分。執行層（**缺字型查詢執行**）不應重複語法解析或 ParsedQuery→規格轉換。
 _Avoid_：parser、handler chain（實作細節）、在 position_match 各處散落 build_* 正規化
 
+**查詢種類**：
+`parse_query` 產出後，每條查詢歸一類（等號、串列韻／聲錨、前綴通配等號、詞條 lookup…）。**比對規格建構**與**搜尋路由**須以同一**查詢種類**驅動，唔再各自維護第二套型別分支；**parse_query** 優先序鏈可維持現狀。
+_Avoid_：parse 後仍用 dataclass isinstance 梯做 spec／dispatch、把查詢種類當實作 enum 名寫進領域文案
+
 **缺字型查詢執行**：
 接收**查詢分派**正規化後的比對規格，將缺字查詢、韻／聲錨、碼字查詢、字面參考、碼夾等號查詢，以及標有 `compound_kind` 的近義／反義複合查詢，統一執行為搜尋結果；不應再依 ParsedQuery 型別分支或重複語法正規化。語法上 ~~／!! 仍不屬缺字型查詢家族。
 _Avoid_：位置查詢、position match、候選來源（作領域正名）、在執行層保留 isinstance 分派梯
