@@ -633,6 +633,9 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
         spec.width = parsed.width
         spec.ref_start_pos = 1
         spec.mask = "?" * parsed.width
+        spec.whole_word_phoneme_match = False
+        spec.phoneme_anchor_only = True
+        spec.extra["prefix_wildcard_equals"] = True
         return spec
 
     if isinstance(parsed, SerialPhonemeAnchorQuery):

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any, Callable, Optional
 
-from app.domain.lexicon.reference_reading import equals_authoritative_row
+from app.domain.lexicon.reference_reading import equals_authoritative_row, suffix_aligned_ref_phoneme_parts
 from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
 from app.models.word import Word
 from app.services.position_match.filters import (
@@ -129,16 +129,27 @@ class PositionMatchEngine:
         if not spec.ref_literal:
             return []
 
-        target = equals_authoritative_row(spec.ref_literal, db, allow_inject=True)
-        if not target:
-            return []
-
         is_final = spec.ref_dimension == "final"
-        target_parts = (
-            get_rhyme_finals(target)
-            if is_final
-            else load_json_list(target.initials)
-        )
+        dimension = "final" if is_final else "initial"
+        prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
+
+        if prefix_wildcard:
+            target_parts = suffix_aligned_ref_phoneme_parts(
+                spec.ref_literal, dimension, db, allow_inject=True,
+            )
+            if not target_parts:
+                return []
+            target = None
+        else:
+            target = equals_authoritative_row(spec.ref_literal, db, allow_inject=True)
+            if not target:
+                return []
+            target_parts = (
+                get_rhyme_finals(target)
+                if is_final
+                else load_json_list(target.initials)
+            )
+
         full_code = spec.code_prefix or ""
 
         query = db.query(Word)
@@ -155,7 +166,11 @@ class PositionMatchEngine:
                 is_final=is_final,
             )
 
-        candidates = query.limit(2000).all()
+        if prefix_wildcard:
+            cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+            candidates = cached if cached is not None else query.all()
+        else:
+            candidates = query.limit(2000).all()
         return [
             word
             for word in candidates

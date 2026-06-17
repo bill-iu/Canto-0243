@@ -1,4 +1,4 @@
-"""ADR-0014：串列韻／聲錨 + 前綴通配等號。"""
+"""ADR-0014：串列韻／聲錨 + 前綴通配等號（解析契約）。"""
 from __future__ import annotations
 
 import unittest
@@ -10,7 +10,6 @@ from app.services.query_parse import (
     SerialPhonemeAnchorQuery,
     UnmatchedQuery,
     build_match_spec,
-    normalize_and_parse,
     parse_query,
 )
 from app.services.word_query_parser import (

@@ -123,6 +123,48 @@ def equals_ref_phoneme_parts(
     return parts if parts else None
 
 
+def _phoneme_parts_suffix(row: Any, dimension: PhonemeDimension, suffix_len: int) -> Optional[list]:
+    if suffix_len <= 0:
+        return None
+    if dimension == "final":
+        parts = get_rhyme_finals(row)
+    else:
+        parts = load_json_list(getattr(row, "initials", None))
+    if not parts or len(parts) < suffix_len:
+        return None
+    return parts[-suffix_len:]
+
+
+def _rows_ending_with_literal(literal: str, db) -> list:
+    rows = db.query(Word).filter(Word.char.like(f"%{literal}")).all()
+    return [row for row in rows if get_word_text(row).endswith(literal)]
+
+
+def suffix_aligned_ref_phoneme_parts(
+    literal: str,
+    dimension: PhonemeDimension,
+    db,
+    *,
+    allow_inject: bool = True,
+) -> Optional[list]:
+    """前綴通配等號：後綴對齊讀音（長詞後綴優先）。"""
+    ref_len = len(literal)
+    if ref_len < 2:
+        return equals_ref_phoneme_parts(literal, dimension, db, allow_inject=allow_inject)
+
+    suffix_rows = _rows_ending_with_literal(literal, db)
+    longer = [row for row in suffix_rows if len(get_word_text(row)) > ref_len]
+    exact = [row for row in suffix_rows if len(get_word_text(row)) == ref_len]
+    pool = longer or exact
+    if not pool:
+        return equals_ref_phoneme_parts(literal, dimension, db, allow_inject=allow_inject)
+
+    row = select_authoritative_pronunciation_row(pool)
+    if not row:
+        return equals_ref_phoneme_parts(literal, dimension, db, allow_inject=allow_inject)
+    return _phoneme_parts_suffix(row, dimension, ref_len)
+
+
 def final_options_for_char(ch: str, db, *, allow_inject: bool = True) -> set[str]:
     return anchor_phoneme_options(ch, "final", db, allow_inject=allow_inject)
 
@@ -138,4 +180,5 @@ __all__ = [
     "final_options_for_char",
     "initial_options_for_char",
     "select_authoritative_pronunciation_row",
+    "suffix_aligned_ref_phoneme_parts",
 ]
