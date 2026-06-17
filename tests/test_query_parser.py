@@ -119,18 +119,29 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.anchor, "香")
 
     def test_single_char_rhyme_anchor(self):
-        from app.services.query_parse import SingleCharRhymeAnchorQuery
+        from app.services.query_parse import RhymeAnchorQuery
 
         parsed = self._parse("?就=")
-        self.assertIsInstance(parsed, SingleCharRhymeAnchorQuery)
+        self.assertIsInstance(parsed, RhymeAnchorQuery)
+        self.assertEqual(parsed.constraint, "final")
         self.assertEqual(parsed.anchor, "就")
         self.assertEqual(parsed.width, 1)
 
-    def test_rhyme_anchor_initial(self):
+    def test_single_char_initial_anchor(self):
+        from app.services.query_parse import RhymeAnchorQuery
+
         parsed = self._parse("?=就")
         self.assertIsInstance(parsed, RhymeAnchorQuery)
         self.assertEqual(parsed.constraint, "initial")
         self.assertEqual(parsed.anchor, "就")
+        self.assertEqual(parsed.width, 1)
+
+    def test_rhyme_anchor_initial(self):
+        parsed = self._parse("?*=就")
+        self.assertIsInstance(parsed, RhymeAnchorQuery)
+        self.assertEqual(parsed.constraint, "initial")
+        self.assertEqual(parsed.anchor, "就")
+        self.assertEqual(parsed.width, 2)
 
     def test_hybrid_code(self):
         parsed = self._parse("23就")
@@ -167,6 +178,10 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.anchor, "港")
         self.assertEqual(parsed.width, 3)
         self.assertEqual(parsed.anchor_pos, 1)
+
+        parsed_canonical = self._parse("?*港=?")
+        self.assertIsInstance(parsed_canonical, TripleRhymeAnchorQuery)
+        self.assertEqual(parsed_canonical.anchor, "港")
 
     def test_relation_beats_mask(self):
         parsed = self._parse("~開心")

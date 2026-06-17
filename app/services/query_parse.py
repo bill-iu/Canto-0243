@@ -18,11 +18,11 @@ from app.services.word_query_parser import (
     slot_connector_syntax_error,
     parse_code_ref_middle_rhyme_query,
     parse_code_ref_rhyme_contradiction_hint,
+    parse_double_wildcard_initial_query,
     parse_double_wildcard_rhyme_query,
     parse_mask_query,
     parse_relation_syntax,
     parse_rhyme_anchor_query,
-    parse_single_char_rhyme_anchor_query,
     parse_prefix_wildcard_equals_query,
     parse_pure_chars_serial_hint,
     parse_serial_phoneme_anchor_query,
@@ -46,7 +46,6 @@ class QueryKind(str, Enum):
     STAR_ANCHOR = "star_anchor"
     WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
     CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
-    SINGLE_CHAR_RHYME = "single_char_rhyme"
     SERIAL_PHONEME = "serial_phoneme"
     PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
     LITERAL_REF = "literal_ref"
@@ -211,18 +210,6 @@ class CodeRefMiddleRhymeQuery:
 
 
 @dataclass(frozen=True)
-class SingleCharRhymeAnchorQuery:
-    raw_q: str
-    anchor: str
-    width: int
-    anchor_pos: int
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.SINGLE_CHAR_RHYME
-
-
-@dataclass(frozen=True)
 class LiteralRefQuery:
     code_digits: str
     literal_char: str
@@ -355,7 +342,6 @@ ParsedQuery = Union[
     StarAnchorQuery,
     WildcardCodeAnchorQuery,
     CodeRefMiddleRhymeQuery,
-    SingleCharRhymeAnchorQuery,
     LiteralRefQuery,
     RhymeAnchorQuery,
     TripleRhymeAnchorQuery,
@@ -480,13 +466,13 @@ def parse_query(q: str) -> ParsedQuery:
     if code_ref_middle:
         return CodeRefMiddleRhymeQuery(**code_ref_middle)
 
-    single_char_rhyme = parse_single_char_rhyme_anchor_query(q)
-    if single_char_rhyme:
-        return SingleCharRhymeAnchorQuery(**single_char_rhyme)
-
     double_wild_rhyme = parse_double_wildcard_rhyme_query(q)
     if double_wild_rhyme:
         return RhymeAnchorQuery(**double_wild_rhyme)
+
+    double_wild_initial = parse_double_wildcard_initial_query(q)
+    if double_wild_initial:
+        return RhymeAnchorQuery(**double_wild_initial)
 
     wca_parsed = parse_wildcard_code_anchor_query(q)
     if wca_parsed:
@@ -543,7 +529,6 @@ def is_mask_family_query(parsed: Any) -> bool:
             StarAnchorQuery,
             WildcardCodeAnchorQuery,
             CodeRefMiddleRhymeQuery,
-            SingleCharRhymeAnchorQuery,
             SerialPhonemeAnchorQuery,
             PrefixWildcardEqualsQuery,
             LiteralRefQuery,
@@ -715,18 +700,6 @@ def _build_mask_family_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
             spec.slots.append(
                 SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
             )
-        return spec
-
-    if isinstance(parsed, SingleCharRhymeAnchorQuery):
-        spec = MatchSpec(width=1)
-        spec.mask = "?"
-        spec.slots.append(
-            SlotConstraint(
-                pos=parsed.anchor_pos,
-                kind="final_anchor",
-                value=parsed.anchor,
-            )
-        )
         return spec
 
     if isinstance(parsed, RhymeAnchorQuery):

@@ -87,6 +87,8 @@ def normalize_search_query(q: str) -> str:
     q = normalize_query_syntax(normalize_code_tail_separators(q.strip()))
     q = normalize_jyutping_slot_connectors(q)
     q = normalize_redundant_single_char_rhyme(q)
+    q = normalize_redundant_single_char_initial(q)
+    q = normalize_middle_rhyme_triple(q)
     return normalize_canonical_star_query(q)
 
 
@@ -106,6 +108,22 @@ def normalize_redundant_single_char_rhyme(q: str) -> str:
     m = re.match(r"^(\?)([一-龥])=$", q)
     if m:
         return f"{m.group(2)}="
+    return q
+
+
+def normalize_redundant_single_char_initial(q: str) -> str:
+    """?={單字} → ={單字}（冗餘前導 ?）。"""
+    m = re.match(r"^(\?)=([一-龥])$", q)
+    if m:
+        return f"={m.group(2)}"
+    return q
+
+
+def normalize_middle_rhyme_triple(q: str) -> str:
+    """?{字}=? → ?*{字}=?（中格同韻三字；中間無數字）。"""
+    m = re.match(r"^\?([一-龥])=\?$", q)
+    if m:
+        return f"?*{m.group(1)}=?"
     return q
 
 
@@ -250,7 +268,7 @@ def normalize_canonical_star_query(q: str) -> str:
         return q
     if is_framed_equals_query(q):
         return q
-    if _RHYME_ANCHOR_SHAPE_RE.match(q) or _TRIPLE_RHYME_ANCHOR_SHAPE_RE.match(q):
+    if _RHYME_ANCHOR_SHAPE_RE.match(q):
         return q
     m = re.match(r"^([一-龥])(.+)$", q)
     if m:
@@ -434,6 +452,20 @@ def parse_double_wildcard_rhyme_query(q: str) -> Optional[dict]:
     }
 
 
+def parse_double_wildcard_initial_query(q: str) -> Optional[dict]:
+    """二字聲錨 ?*=就（P2 對稱）。"""
+    m = re.match(r"^([?_%])\*=([一-龥])$", q)
+    if not m:
+        return None
+    return {
+        "constraint": "initial",
+        "anchor": m.group(2),
+        "anchor_pos": 1,
+        "slots": m.group(1),
+        "width": 2,
+    }
+
+
 def is_hybrid_tail_equals_alias(q: str) -> bool:
     """True for 23就= style queries that alias hybrid tail-rhyme (23就)."""
     return bool(HYBRID_TAIL_EQUALS_RE.match(q))
@@ -502,9 +534,7 @@ def looks_like_mask_query(q: str) -> bool:
         return False
     if parse_code_ref_rhyme_contradiction_hint(q):
         return False
-    if parse_single_char_rhyme_anchor_query(q):
-        return False
-    if parse_double_wildcard_rhyme_query(q):
+    if parse_double_wildcard_rhyme_query(q) or parse_double_wildcard_initial_query(q):
         return False
     if parse_rhyme_anchor_query(q):
         return False
@@ -544,11 +574,31 @@ def is_framed_equals_query(q: str) -> bool:
 
 
 def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """Query-level rhyme anchor: 香=? / ?*就= / =香? / ?=就 (no code-tail *)."""
+    """Query-level rhyme/initial anchor: 就= / =就 / 香=? / ?*就= / =香? / ?*=就."""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q or is_framed_equals_query(q):
         return None
-    if parse_single_char_rhyme_anchor_query(q) or parse_double_wildcard_rhyme_query(q):
+    if parse_double_wildcard_rhyme_query(q) or parse_double_wildcard_initial_query(q):
         return None
+
+    m = re.match(r"^([一-龥])=$", q)
+    if m:
+        return {
+            "constraint": "final",
+            "anchor": m.group(1),
+            "anchor_pos": 0,
+            "slots": "",
+            "width": 1,
+        }
+
+    m = re.match(r"^=([一-龥])$", q)
+    if m:
+        return {
+            "constraint": "initial",
+            "anchor": m.group(1),
+            "anchor_pos": 0,
+            "slots": "",
+            "width": 1,
+        }
 
     m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=$", q)
     if m:
@@ -601,10 +651,24 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
 
 
 def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """三格韻錨：?{參考字}=? — 中格韻母、前後通配。"""
-    if not q or CODE_TAIL_MIDDLE in q or "@" in q or is_framed_equals_query(q):
+    """中格同韻三字：規範形 ?*{參考字}=?（?{字}=? normalize 後）。"""
+    if not q or "@" in q or is_framed_equals_query(q):
         return None
     if is_hybrid_tail_equals_alias(q):
+        return None
+
+    m = re.match(r"^(\?\*)([一-龥])=\?$", q)
+    if m:
+        anchor = m.group(2)
+        return {
+            "anchor": anchor,
+            "anchor_pos": 1,
+            "width": 3,
+            "leading_slots": m.group(1),
+            "constraint": "final",
+        }
+
+    if CODE_TAIL_MIDDLE in q:
         return None
 
     m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=(\?)$", q)
@@ -612,6 +676,8 @@ def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
         return None
     leading, anchor, _trail = m.group(1), m.group(2), m.group(3)
     if not any(is_wildcard_char(c) for c in leading):
+        return None
+    if re.search(r"\d", leading):
         return None
     anchor_pos = len(leading)
     width = anchor_pos + 2

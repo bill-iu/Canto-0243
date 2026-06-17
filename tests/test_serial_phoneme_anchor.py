@@ -6,8 +6,8 @@ import unittest
 from app.services.query_parse import (
     EqualsQuery,
     PrefixWildcardEqualsQuery,
+    RhymeAnchorQuery,
     SerialPhonemeAnchorQuery,
-    SingleCharRhymeAnchorQuery,
     UnmatchedQuery,
     build_match_spec,
     normalize_and_parse,
@@ -87,11 +87,13 @@ class SingleCharRhymeNormalizeTests(unittest.TestCase):
 
     def test_zou_canonical(self):
         parsed = _parse("就=")
-        self.assertIsInstance(parsed, SingleCharRhymeAnchorQuery)
+        self.assertIsInstance(parsed, RhymeAnchorQuery)
+        self.assertEqual(parsed.width, 1)
 
     def test_question_zou_still_works(self):
         parsed = _parse("?就=")
-        self.assertIsInstance(parsed, SingleCharRhymeAnchorQuery)
+        self.assertIsInstance(parsed, RhymeAnchorQuery)
+        self.assertEqual(parsed.width, 1)
 
 
 class SerialMatchSpecTests(unittest.TestCase):

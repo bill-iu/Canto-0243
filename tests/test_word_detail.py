@@ -793,8 +793,13 @@ class SearchSyntaxTests(unittest.TestCase):
 
             suffix_initial = search_words(q="?=就", mode="m1", db=session, limit=20, offset=0)
             si_chars = [r["char"] for r in suffix_initial]
-            self.assertIn("做就", si_chars)
-            self.assertNotIn("做得", si_chars)
+            self.assertIn("就", si_chars)
+            self.assertNotIn("做就", si_chars)
+
+            suffix_double = search_words(q="?*=就", mode="m1", db=session, limit=20, offset=0)
+            sd_chars = [r["char"] for r in suffix_double]
+            self.assertIn("做就", sd_chars)
+            self.assertNotIn("做得", sd_chars)
 
     def test_pure_digit_syntax(self):
         with self._session() as session:

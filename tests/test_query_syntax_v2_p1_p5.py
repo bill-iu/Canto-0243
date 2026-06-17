@@ -6,7 +6,7 @@ import unittest
 from app.services.query_dispatch import execute_search, SearchContext
 from app.services.query_parse import (
     CodeRefMiddleRhymeQuery,
-    SingleCharRhymeAnchorQuery,
+    RhymeAnchorQuery,
     UnmatchedQuery,
     WildcardCodeAnchorQuery,
     build_match_spec,
@@ -85,7 +85,7 @@ class P1SearchTests(unittest.TestCase):
 class P2SingleCharRhymeTests(unittest.TestCase):
     def test_parse_single_char(self):
         parsed = _parse("?就=")
-        self.assertIsInstance(parsed, SingleCharRhymeAnchorQuery)
+        self.assertIsInstance(parsed, RhymeAnchorQuery)
         self.assertEqual(parsed.width, 1)
 
     def test_spec_width_one(self):

@@ -35,7 +35,13 @@ class NormalizeCanonicalStarTests(unittest.TestCase):
     def test_skips_equals_and_rhyme_anchors(self):
         self.assertEqual(normalize_search_query("=香港"), "=香港")
         self.assertEqual(normalize_search_query("香=?"), "香=?")
-        self.assertEqual(normalize_search_query("?港=?"), "?港=?")
+
+    def test_middle_rhyme_triple_normalizes(self):
+        self.assertEqual(normalize_search_query("?港=?"), "?*港=?")
+        self.assertEqual(normalize_search_query("?3人=?"), "?3人=?")
+
+    def test_redundant_single_char_initial(self):
+        self.assertEqual(normalize_search_query("?=就"), "=就")
 
 
 class CanonicalStarMaskParseTests(unittest.TestCase):
@@ -70,6 +76,12 @@ class P0EquivalentMatchSpecTests(unittest.TestCase):
     def test_middle_you_same_spec(self):
         spec_a = build_match_spec(_parse("?你?"))
         spec_b = build_match_spec(_parse("?*你?"))
+        self.assertEqual(spec_a.mask, spec_b.mask)
+
+    def test_middle_rhyme_triple_same_spec(self):
+        spec_a = build_match_spec(_parse("?港=?"))
+        spec_b = build_match_spec(_parse("?*港=?"))
+        self.assertEqual(spec_a.width, spec_b.width)
         self.assertEqual(spec_a.mask, spec_b.mask)
 
 
