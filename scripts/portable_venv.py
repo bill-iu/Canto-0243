@@ -134,6 +134,25 @@ def _bundle_dest(lib_dir: Path, src: Path, dep: str) -> Path:
     return dest
 
 
+def _bundle_dep(lib_dir: Path, dep: str) -> Path | None:
+    src = Path(dep)
+    if not src.is_file():
+        return None
+
+    cursor = src
+    while cursor.parent != cursor:
+        if cursor.name == "Resources" and (cursor / "Python.app").is_dir():
+            dest_root = lib_dir / "Resources"
+            shutil.copytree(cursor, dest_root, dirs_exist_ok=True)
+            return dest_root / src.relative_to(cursor)
+        cursor = cursor.parent
+
+    dest = _bundle_dest(lib_dir, src, dep)
+    if not dest.is_file() or dest.resolve() != src.resolve():
+        shutil.copy2(src, dest)
+    return dest
+
+
 def relocate_macos_venv(venv_dir: Path) -> None:
     """Bundle non-portable dylibs into venv/lib and rewrite Mach-O paths."""
     if sys.platform != "darwin":
@@ -149,18 +168,17 @@ def relocate_macos_venv(venv_dir: Path) -> None:
             for dep in non_portable_load_paths(_otool_lib_paths(binary), venv_root=venv_dir):
                 if dep in old_to_bundled:
                     continue
-                src = Path(dep)
-                if not src.is_file():
+                dest = _bundle_dep(lib_dir, dep)
+                if dest is None:
                     continue
-                dest = _bundle_dest(lib_dir, src, dep)
-                if not dest.is_file():
-                    shutil.copy2(src, dest)
                 old_to_bundled[dep] = dest
 
         if not old_to_bundled:
             break
 
         for dest in set(old_to_bundled.values()):
+            if dest.parent != lib_dir:
+                continue
             subprocess.run(
                 ["install_name_tool", "-id", f"@loader_path/{dest.name}", str(dest)],
                 check=True,
@@ -200,7 +218,7 @@ def _adhoc_sign_venv(venv_dir: Path) -> None:
     candidates = list(_iter_mach_o_binaries(venv_dir))
     lib_dir = venv_dir / "lib"
     if lib_dir.is_dir():
-        for path in lib_dir.iterdir():
+        for path in lib_dir.rglob("*"):
             if path.is_file() and _is_mach_o(path):
                 candidates.append(path)
     for path in candidates:
