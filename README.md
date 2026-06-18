@@ -45,7 +45,7 @@
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）或 tar 內容。
 3. 依平台啟動：
    * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
-   * **macOS（Intel x86_64）**：解壓 tar 後進入 `canto-0243-portable/`，雙擊 **`Canto-0243.command`**（會開 Terminal）。若被攔截：**右鍵→打開** → 確認；Sequoia 15 若只見「惡意軟件」對話框：按 **完成** → **系統設定→隱私與安全性** → **仍要開啟**（Canto-0243）→ 再雙擊。
+   * **macOS（Intel x86_64）**：解壓 tar 後進入 `canto-0243-portable/`，雙擊 **`Canto-0243.command`**（會開 Terminal）。若被攔截：**右鍵→打開** → 確認；若只見「惡意軟件」對話框：按 **完成** → **系統設定→隱私與保安** → **強制開啟**（Canto-0243）→ 再雙擊。
    * **macOS（Apple Silicon）**：arm64 tar 過渡期**暫不提供**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
 
