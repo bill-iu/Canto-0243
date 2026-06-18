@@ -45,7 +45,7 @@ For the full offline experience, use the official portable package—**no** git 
 2. Extract the entire folder (e.g. `canto-0243-portable`).
 3. Launch by platform:
    * **Windows**: extract and double-click **`START.bat`** (no Python install).
-   * **macOS**: download `canto-0243-portable-macos-arm64.tar.gz` or `canto-0243-portable-macos-x86_64.tar.gz` for your chip, then double-click **`Canto-0243.app`**. If Gatekeeper blocks it, **right-click → Open** on **`.app`** or **`Open Canto-0243.command`** (confirm once each).
+   * **macOS**: download `canto-0243-portable-macos-arm64.tar.gz` or `canto-0243-portable-macos-x86_64.tar.gz` for your chip, then double-click **`Canto-0243.app`**. If blocked: **right-click → Open** on **`.app`** or **`Open Canto-0243.command`** (once each). On **Sequoia 15**, if you only see a malware dialog (Done / Move to Trash): tap **Done** → **System Settings → Privacy & Security** → scroll down → **Open Anyway** (Canto-0243) → double-click again.
    * **Linux**: `chmod +x START.sh && ./START.sh` (system Python 3.10+ required).
 
 **Requirements**: **Zero-install** on Windows／macOS (bundled runtime). Linux still needs Python 3.10+.

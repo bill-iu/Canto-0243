@@ -74,8 +74,8 @@ Linux
 - 「找不到內建執行環境」：請重新下載完整 Release 套件
   "Bundled runtime missing": re-download the full release package.
 
-- macOS Gatekeeper：確認 tar 與晶片相符（arm64 / x86_64）；被擋時右鍵→「打開」.app 或 Open Canto-0243.command（各一次）
-  macOS Gatekeeper: match tar to chip; if blocked, right-click → Open on .app or Open Canto-0243.command (once each).
+- macOS Gatekeeper：確認 tar 與晶片相符（arm64 / x86_64）；被擋時右鍵→「打開」，或 Sequoia 15：系統設定→隱私與安全性→仍要開啟
+  macOS Gatekeeper: match tar to chip; right-click → Open, or Sequoia 15: System Settings → Privacy & Security → Open Anyway
 
 - 關閉服務：關閉命令視窗，或從 Dock 結束 Canto-0243.app
   Stop: close the console window, or quit the .app from the Dock.

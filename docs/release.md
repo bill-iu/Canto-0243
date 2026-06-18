@@ -99,7 +99,7 @@ bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
 `--upload` 會 `--clobber` 覆寫同 tag 的 `lyrics.db`、`words-lexicon.json`、對應架構 tar。  
 Windows zip 仍須 Windows 建置或等 CI。雙架構 macOS 五件套齊全需兩台 Mac 或 CI。
 
-Sequoia 從 GitHub **下載**後仍可能出現惡意軟件檢查對話框；見 `portable/README.txt`「仍要開啟」路徑。長期解法：Developer ID + notarization。
+Sequoia 從 GitHub **下載**後可能出現惡意軟件檢查對話框；創作者路徑見 `portable/README.txt` 與 CONTEXT § macOS 應用程式套件（**仍要開啟**）。
 
 ## 常見問題
 

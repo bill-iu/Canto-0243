@@ -45,7 +45,7 @@
 2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
 3. 按平台启动：
    * **Windows**：解压后双击 **`START.bat`**（无需安装 Python）。
-   * **macOS**：依芯片下载 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解压后双击 **`Canto-0243.app`**。若被系统拦截，对 **`.app`** 或 **`Open Canto-0243.command`** **右键→打开**（各确认一次）。
+   * **macOS**：依芯片下载 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解压后双击 **`Canto-0243.app`**。若被拦截：**右键→打开** `.app` 或 **`Open Canto-0243.command`**（各确认一次）。Sequoia 15 若只见「恶意软件」对话框（仅完成／移至垃圾桶）：点 **完成** → **系统设置→隐私与安全性** → 滚到底 → **仍要打开**（Canto-0243）→ 再双击 `.app`。
    * **Linux**：`chmod +x START.sh && ./START.sh`（须本机 Python 3.10+）。
 
 **环境要求**：Windows／macOS **免安装**（套件已内建 Python）；Linux 仍须 Python 3.10+。
