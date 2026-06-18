@@ -387,12 +387,12 @@ _Avoid_：把可選自架服務當與離線版並重的一級產品
 _Avoid_：把「仍需本機 Python」的套件稱作免安裝、把 Docker 映像當創作者免安裝交付
 
 **Portable 套件**：
-**離線單機交付**的發佈物，內含詞庫、前端與本機 API。創作者路徑：**Windows** 為解壓 zip 後雙擊啟動；**macOS** 為 **macOS 應用程式套件** 雙擊啟動——兩者皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。
+**離線單機交付**的發佈物，內含詞庫、前端與本機 API。創作者路徑：**Windows** 為解壓 zip 後雙擊啟動；**macOS** 為解壓 tar 後雙擊 **`Canto-0243.command`**（內含 venv，開 Terminal）——兩者皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。
 _Avoid_：把 zip／tar 當產品正名、把 portable 當雲端版、要求 Linux 與 WM 同等免安裝投入
 
 **macOS 應用程式套件**：
-macOS 上創作者雙擊圖示啟動查韻介面的 `.app` 形態；與 Windows zip 並列為 **免安裝交付** 的主要通道，取代「解壓後須在終端機 chmod」作為預設創作者體驗。從網路下載後嘅系統隔離須由產品喺首次啟動時自行處理，唔得要求創作者開 Terminal 手動 `xattr`。**未 notarize** 時，創作者用**圖形介面**完成首次 **Gatekeeper 放行**：可先試 **右鍵→打開** `.app` 或備用 **`Open Canto-0243.command`**；Sequoia 15 等若只見惡意軟件對話框（僅「完成／移至垃圾桶」），按完成後到 **系統設定→隱私與安全性→仍要開啟**（Canto-0243），再雙擊 `.app`。
-_Avoid_：把 tar.gz 當 macOS 創作者預設下載、把 .app 當雲端或自架服務、把 `xattr` 清除留俾使用者自行處理、把「仍要開啟」等同要求 Terminal、假設 notarize 已完成
+macOS 上創作者啟動查韻介面的主要形態。**未 notarize** 過渡期：tar 內為 **`canto-0243-portable/` 資料夾 + `Canto-0243.command`**（雙擊開 Terminal，腳本清 `com.apple.quarantine` 後執行內建 venv）；與 Windows zip 並列為 **免安裝交付**（創作者唔裝 Python、唔跑 pip）。**仍要開啟**／右鍵→打開針對 **`Canto-0243.command`** 一次即可，唔再要求先放行 `.app` 再經 `Open …command` 轉開。日後 notarize 可恢復 `.app` 雙擊無 Terminal。
+_Avoid_：把 tar.gz 當產品正名、把 `.command` 當雲端或自架服務、要求創作者手動 `xattr`、假設 notarize 已完成、仍教學「雙擊 .app」而現行 tar 已無 `.app`
 
 **全量發佈**：
 程式、依賴、詞庫與各平台 **Portable 套件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／`.app` 與 `lyrics.db`、`words-lexicon.json`。macOS 目標為 **Apple Silicon** 與 **Intel** 各一個 tar.gz；過渡期可只發 **x86_64**，Release notes 須註明 arm64 暫無。Windows 可先 Publish，macOS 後補同一 tag（見 **分渠道發佈**）。

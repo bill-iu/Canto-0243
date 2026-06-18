@@ -37,7 +37,7 @@ Options:
   --tar-only         With --upload: only replace macOS tar (do not clobber lyrics.db/json)
   --draft            With --upload: create draft release if tag missing
   --notes-file PATH  Release notes when creating a new release
-  --test             After build, open dist/Canto-0243.app (no download quarantine)
+  --test             After build, open dist/canto-0243-portable/Canto-0243.command
   --sync-readme      Run update_readme_words_count during build (default: skip)
   -h, --help         Show this help
 
@@ -115,7 +115,8 @@ if [[ "$ARCH" != "$HOST_ARCH" ]]; then
 fi
 
 TAR_PATH="$ROOT/dist/canto-0243-portable-macos-${ARCH}.tar.gz"
-APP_DIR="$ROOT/dist/Canto-0243.app"
+BUNDLE_DIR="$ROOT/dist/canto-0243-portable"
+ENTRY_CMD="$BUNDLE_DIR/Canto-0243.command"
 
 echo "==> Canto-0243 local macOS release"
 echo "    tag:  $TAG"
@@ -141,12 +142,9 @@ echo "==> Build portable..."
   exit 1
 }
 
-if [[ -d "$APP_DIR" ]] && command -v codesign >/dev/null 2>&1; then
+if [[ -x "$ENTRY_CMD" ]] && command -v codesign >/dev/null 2>&1; then
   echo "==> Codesign check..."
-  codesign --verify --deep --strict "$APP_DIR" && echo "    codesign: OK"
-  if command -v spctl >/dev/null 2>&1; then
-    spctl -a -vv "$APP_DIR" 2>&1 || echo "    spctl: expected reject until notarized or user override"
-  fi
+  codesign --verify --strict "$ENTRY_CMD" && echo "    Canto-0243.command: OK"
 fi
 
 echo "==> Export words-lexicon.json..."
@@ -159,9 +157,9 @@ echo "  $TAR_PATH (${tar_mb} MB)"
 echo "  $ROOT/dist/words-lexicon.json"
 
 if [[ "$TEST" -eq 1 ]]; then
-  echo "==> Local smoke: open $APP_DIR"
+  echo "==> Local smoke: open $ENTRY_CMD"
   echo "    (same-machine build has no com.apple.quarantine — should launch)"
-  open "$APP_DIR"
+  open "$ENTRY_CMD"
 fi
 
 if [[ "$UPLOAD" -eq 1 ]]; then

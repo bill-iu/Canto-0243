@@ -1,3 +1,4 @@
 portable/macos/launcher text eol=lf
 portable/macos/Open*.command text eol=lf
+portable/macos/Canto-0243.command text eol=lf
 portable/macos/Info.plist text eol=lf

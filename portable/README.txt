@@ -26,25 +26,23 @@ macOS（免安裝）
      canto-0243-portable-macos-arm64.tar.gz
      canto-0243-portable-macos-x86_64.tar.gz
 
-2. 將 Canto-0243.app 拖到「應用程式」資料夾（或留在解壓目錄）
-   Drag Canto-0243.app to Applications (or keep it in the extract folder).
+2. 進入解壓後的 canto-0243-portable 資料夾
+   Open the extracted canto-0243-portable folder.
 
-3. 雙擊 Canto-0243.app 啟動（無需安裝 Python、無需 chmod）
-   Double-click Canto-0243.app (no Python, no Terminal chmod).
+3. 雙擊 Canto-0243.command 啟動（會開啟 Terminal；無需安裝 Python）
+   Double-click Canto-0243.command (opens Terminal; no Python install).
 
    若 macOS 顯示無法驗證／無法開啟：
-   If Gatekeeper blocks the app or script:
-     • 對 Canto-0243.app 或 Open Canto-0243.command：右鍵（或 Control+點擊）→「打開」→ 確認
-       Right-click (or Control-click) → Open → confirm (once per item).
+   If Gatekeeper blocks the script:
+     • 對 Canto-0243.command：右鍵（或 Control+點擊）→「打開」→ 確認
+       Right-click (or Control-click) Canto-0243.command → Open → confirm (once).
      • Sequoia 15（只有「完成／移至垃圾桶」、無「打開」）：先按「完成」，再到
-       系統設定 → 隱私與安全性 → 向下捲動 →「仍要開啟」（Canto-0243）→ 再雙擊 .app
+       系統設定 → 隱私與安全性 → 向下捲動 →「仍要開啟」（Canto-0243）→ 再雙擊
        Sequoia 15 (Done / Move to Trash only): tap Done, then System Settings →
        Privacy & Security → scroll down → Open Anyway (Canto-0243) → double-click again.
-     • 仍不行再試同目錄的 Open Canto-0243.command（會清隔離並開啟 .app）
-       Then try Open Canto-0243.command in the same folder (clears quarantine, opens .app).
 
-   進階：資料夾版仍可用 START.command / START.sh（內含 venv）
-   Advanced: folder bundle START.command / START.sh also work.
+   進階：同資料夾內 START.sh 亦可於 Terminal 手動執行
+   Advanced: you can also run ./START.sh from Terminal in the same folder.
 
 
 Linux
@@ -77,7 +75,7 @@ Linux
 - macOS Gatekeeper：確認 tar 與晶片相符（arm64 / x86_64）；被擋時右鍵→「打開」，或 Sequoia 15：系統設定→隱私與安全性→仍要開啟
   macOS Gatekeeper: match tar to chip; right-click → Open, or Sequoia 15: System Settings → Privacy & Security → Open Anyway
 
-- 關閉服務：關閉命令視窗，或從 Dock 結束 Canto-0243.app
+- 關閉服務：關閉 Terminal 視窗，或於其中按 Ctrl+C
   Stop: close the console window, or quit the .app from the Dock.
 
 

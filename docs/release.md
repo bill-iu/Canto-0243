@@ -54,7 +54,7 @@ gh release upload v1.7.0 lyrics.db --clobber
 | 路徑 | 做法 |
 |------|------|
 | **下載隔離** | 從 Release 下載 x86_64 tar → 解壓 → 雙擊 `.app` → Gatekeeper：**仍要開啟** |
-| **本機建置** | `release-macos-local.sh --tag vNEXT --test` → 雙擊 `dist/Canto-0243.app` |
+| **本機建置** | `release-macos-local.sh --tag vNEXT --test` → 雙擊 `dist/canto-0243-portable/Canto-0243.command` |
 
 兩邊都通再視為該版 macOS 可交付。
 
