@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import os
 import re
 import shutil
@@ -37,11 +38,14 @@ def libpython_deps(paths: list[str]) -> list[str]:
     return [p for p in paths if _LIBPYTHON_RE.search(p)]
 
 
-def non_portable_load_paths(paths: list[str]) -> list[str]:
+def non_portable_load_paths(paths: list[str], *, venv_root: Path | None = None) -> list[str]:
     """Public: absolute load paths that break off the build machine."""
+    venv_prefix = str(venv_root.resolve()) if venv_root else ""
     bad: list[str] = []
     for p in paths:
         if not p.startswith("/"):
+            continue
+        if venv_prefix and p.startswith(venv_prefix):
             continue
         if p.startswith("/usr/lib") or p.startswith("/System"):
             continue
@@ -122,65 +126,75 @@ def _iter_mach_o_binaries(venv_dir: Path) -> list[Path]:
     return sorted(seen)
 
 
+def _bundle_dest(lib_dir: Path, src: Path, dep: str) -> Path:
+    dest = lib_dir / src.name
+    if dest.is_file() and dest.resolve() != src.resolve():
+        digest = hashlib.sha256(dep.encode()).hexdigest()[:8]
+        dest = lib_dir / f"{src.name}.{digest}"
+    return dest
+
+
 def relocate_macos_venv(venv_dir: Path) -> None:
-    """Bundle libpython into venv and rewrite Mach-O load paths (ponytail: darwin only)."""
+    """Bundle non-portable dylibs into venv/lib and rewrite Mach-O paths."""
     if sys.platform != "darwin":
         return
 
-    py = _venv_python(venv_dir)
-    if not py.is_file():
-        raise RuntimeError(f"venv python missing: {py}")
-
-    py_deps = _otool_lib_paths(py)
-    src_deps = bundled_python_deps(py_deps)
-    if not src_deps:
-        if non_portable_load_paths(py_deps):
-            raise RuntimeError(f"non-portable python deps but no bundle target: {py_deps}")
-        return
-
-    src = Path(src_deps[0])
-    if not src.is_file():
-        raise RuntimeError(f"python runtime source missing: {src}")
-
+    venv_dir = venv_dir.resolve()
     lib_dir = venv_dir / "lib"
     lib_dir.mkdir(parents=True, exist_ok=True)
-    bundled = lib_dir / _bundled_lib_name()
-    if bundled.resolve() != src.resolve():
-        shutil.copy2(src, bundled)
 
-    old_refs: set[str] = set()
-    for binary in _iter_mach_o_binaries(venv_dir):
-        for dep in _otool_lib_paths(binary):
-            if bundled_python_deps([dep]) or dep in non_portable_load_paths([dep]):
-                if not dep.startswith("@"):
-                    old_refs.add(dep)
+    for _ in range(8):
+        old_to_bundled: dict[str, Path] = {}
+        for binary in _iter_mach_o_binaries(venv_dir):
+            for dep in non_portable_load_paths(_otool_lib_paths(binary), venv_root=venv_dir):
+                if dep in old_to_bundled:
+                    continue
+                src = Path(dep)
+                if not src.is_file():
+                    continue
+                dest = _bundle_dest(lib_dir, src, dep)
+                if not dest.is_file():
+                    shutil.copy2(src, dest)
+                old_to_bundled[dep] = dest
 
-    subprocess.run(
-        ["install_name_tool", "-id", f"@loader_path/{bundled.name}", str(bundled)],
-        check=True,
-        capture_output=True,
-    )
+        if not old_to_bundled:
+            break
 
-    for binary in _iter_mach_o_binaries(venv_dir):
-        new_ref = _loader_path_ref(binary, bundled)
-        for old in sorted(old_refs):
-            if old not in _otool_lib_paths(binary):
-                continue
+        for dest in set(old_to_bundled.values()):
             subprocess.run(
-                ["install_name_tool", "-change", old, new_ref, str(binary)],
+                ["install_name_tool", "-id", f"@loader_path/{dest.name}", str(dest)],
                 check=True,
                 capture_output=True,
             )
 
-    if non_portable_load_paths(_otool_lib_paths(py)):
-        raise RuntimeError("python still has non-portable load paths after relocate")
+        for binary in _iter_mach_o_binaries(venv_dir):
+            deps = _otool_lib_paths(binary)
+            for old, dest in old_to_bundled.items():
+                if old not in deps:
+                    continue
+                subprocess.run(
+                    [
+                        "install_name_tool",
+                        "-change",
+                        old,
+                        _loader_path_ref(binary, dest),
+                        str(binary),
+                    ],
+                    check=True,
+                    capture_output=True,
+                )
+
+    py = _venv_python(venv_dir)
+    bad = non_portable_load_paths(_otool_lib_paths(py), venv_root=venv_dir)
+    if bad:
+        raise RuntimeError(f"python still has non-portable load paths: {bad}")
 
 
 def assert_portable_macos_venv(venv_dir: Path) -> None:
     if sys.platform != "darwin":
         return
     py = _venv_python(venv_dir)
-    bad = non_portable_load_paths(_otool_lib_paths(py))
+    bad = non_portable_load_paths(_otool_lib_paths(py), venv_root=venv_dir)
     if bad:
         raise RuntimeError(f"non-portable load paths on {py}: {bad}")
 
