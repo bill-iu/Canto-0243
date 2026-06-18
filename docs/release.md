@@ -83,6 +83,24 @@ Workflow 會 export `words-lexicon.json`、上傳 db／json，並在 Release not
 
 CI 不可用時，仍可按上方「過渡期（手動）」checklist 操作。
 
+### macOS 本地快速發佈（繞過 CI）
+
+在 **Mac 本機**建置並上傳 macOS tar（不等 `release-full.yml`）：
+
+```bash
+# 1. 確認 lyrics.db 在 repo 根目錄
+# 2. 本機建置 + 開啟 smoke（無下載隔離，驗證 .app 能跑）
+bash scripts/release-macos-local.sh --tag v1.6.5 --test
+
+# 3. 確認無誤後上傳（Intel 機只會產 x86_64 tar；arm64 需在 M 系列 Mac 各建一次）
+bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
+```
+
+`--upload` 會 `--clobber` 覆寫同 tag 的 `lyrics.db`、`words-lexicon.json`、對應架構 tar。  
+Windows zip 仍須 Windows 建置或等 CI。雙架構 macOS 五件套齊全需兩台 Mac 或 CI。
+
+Sequoia 從 GitHub **下載**後仍可能出現惡意軟件檢查對話框；見 `portable/README.txt`「仍要開啟」路徑。長期解法：Developer ID + notarization。
+
 ## 常見問題
 
 **Q：只改了 `app/` 或 `frontend/`，要全量嗎？**  

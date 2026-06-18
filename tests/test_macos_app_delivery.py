@@ -46,6 +46,14 @@ class MacosAppDeliveryTests(unittest.TestCase):
         source = BUILD_SH.read_text(encoding="utf-8")
         self.assertIn('codesign --force --sign - "$OPEN_CMD_DIST"', source)
 
+    def test_release_macos_local_script_exists(self):
+        script = REPO_ROOT / "scripts" / "release-macos-local.sh"
+        self.assertTrue(script.is_file())
+        source = script.read_text(encoding="utf-8")
+        self.assertIn("--upload", source)
+        self.assertIn("build-portable.sh", source)
+        self.assertIn("canto-0243-portable-macos-", source)
+
 
 if __name__ == "__main__":
     unittest.main()

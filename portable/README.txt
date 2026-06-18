@@ -36,6 +36,10 @@ macOS（免安裝）
    If Gatekeeper blocks the app or script:
      • 對 Canto-0243.app 或 Open Canto-0243.command：右鍵（或 Control+點擊）→「打開」→ 確認
        Right-click (or Control-click) → Open → confirm (once per item).
+     • Sequoia 15（只有「完成／移至垃圾桶」、無「打開」）：先按「完成」，再到
+       系統設定 → 隱私與安全性 → 向下捲動 →「仍要開啟」（Canto-0243）→ 再雙擊 .app
+       Sequoia 15 (Done / Move to Trash only): tap Done, then System Settings →
+       Privacy & Security → scroll down → Open Anyway (Canto-0243) → double-click again.
      • 仍不行再試同目錄的 Open Canto-0243.command（會清隔離並開啟 .app）
        Then try Open Canto-0243.command in the same folder (clears quarantine, opens .app).
 
