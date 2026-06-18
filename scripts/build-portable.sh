@@ -67,10 +67,18 @@ mkdir -p "$ROOT/dist"
 copy_portable_bundle "$OUT_DIR"
 bundle_venv "$OUT_DIR"
 
+echo "==> Warm word cache snapshot (.cache/word_meta.bin)..."
+python3 "$ROOT/scripts/warm_word_cache.py" "$OUT_DIR"
+
 echo "==> Build Canto-0243.app..."
 mkdir -p "$APP_DIR/Contents/MacOS"
 copy_portable_bundle "$APP_RES"
 bundle_venv "$APP_RES"
+if [[ -d "$OUT_DIR/.cache" ]]; then
+  rm -rf "$APP_RES/.cache"
+  cp -R "$OUT_DIR/.cache" "$APP_RES/.cache"
+fi
+
 cp -f "$ROOT/portable/macos/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp -f "$ROOT/portable/macos/launcher" "$APP_DIR/Contents/MacOS/Canto-0243"
 chmod +x "$APP_DIR/Contents/MacOS/Canto-0243"

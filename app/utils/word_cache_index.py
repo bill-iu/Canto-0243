@@ -114,19 +114,21 @@ def _append_to_indexes_into(
     char = entry.get("char") or ""
     for pos, ch in enumerate(char):
         literal_index[(length, pos, ch)].append(bucket_idx)
-    from app.utils.jyutping_codec import rhyme_final_index_keys_per_position
-
     jyut = entry.get("jyutping") or ""
-    key_sets = rhyme_final_index_keys_per_position(jyut) if jyut else []
-    if key_sets:
+    finals_list = entry.get("finals") or []
+    if finals_list:
+        for pos, final in enumerate(finals_list):
+            if final:
+                final_index[(length, pos, final)].append(bucket_idx)
+    elif jyut:
+        from app.utils.jyutping_codec import rhyme_final_index_keys_per_position
+
+        key_sets = rhyme_final_index_keys_per_position(jyut)
         for pos, keys in enumerate(key_sets):
             for final in keys:
                 final_index[(length, pos, final)].append(bucket_idx)
-    else:
-        for pos, final in enumerate(entry.get("finals") or []):
-            if final:
-                final_index[(length, pos, final)].append(bucket_idx)
-    for pos, initial in enumerate(entry.get("initials") or []):
+    initials = entry.get("initials") or []
+    for pos, initial in enumerate(initials):
         if initial:
             initial_index[(length, pos, initial)].append(bucket_idx)
     code = entry.get("code") or ""

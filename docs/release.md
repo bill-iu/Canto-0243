@@ -12,7 +12,7 @@
 2. `python scripts/export_words_lexicon.py -o dist/words-lexicon.json`
 3. `python scripts/update_readme_words_count.py`
 4. **Windows**：`powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1`
-5. **macOS**：`bash scripts/build-portable.sh`
+5. **macOS**：`bash scripts/build-portable.sh`（含 `.cache/word_meta.bin` 預暖）
 6. 建立 GitHub Release tag `vMAJOR.MINOR.PATCH`
 7. 上傳五件套：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、`canto-0243-portable-macos-arm64.tar.gz`、`canto-0243-portable-macos-x86_64.tar.gz`
 8. Release notes 註明全量版本與變更摘要
@@ -62,6 +62,8 @@ CI 會：從同 tag 取 `lyrics.db` → Windows／macOS（arm64 + x86_64）各 b
 若 Windows 或 macOS build 失敗，**不會** publish（ADR-0008 Q5=A）。
 
 **Release 後可刪本機建置暫存**：`dist/` 內 zip、解壓目錄、export 等皆為本機副產物；正式五件套以 GitHub Release 為準。確認 Release 齊全後可執行 `rm -rf dist/`（Windows：`Remove-Item -Recurse -Force dist`）；下次 build 或 export 會自動重建。
+
+僅刷新 Portable 內詞庫快取快照（不 rebuild 整套）：`python scripts/warm_word_cache.py dist/canto-0243-portable`
 
 ### 詞庫發佈（CI）
 

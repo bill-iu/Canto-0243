@@ -35,6 +35,10 @@ Write-Host "==> Smoke check bundled runtime..."
 python (Join-Path $Root "scripts\portable_venv.py") $OutDir --self-check
 if ($LASTEXITCODE -ne 0) { throw "portable venv self-check failed" }
 
+Write-Host "==> Warm word cache snapshot (.cache/word_meta.bin)..."
+python (Join-Path $Root "scripts\warm_word_cache.py") $OutDir
+if ($LASTEXITCODE -ne 0) { throw "warm_word_cache.py failed" }
+
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Write-Host "==> Create zip (Windows 免安裝)..."
 Compress-Archive -Path "$OutDir\*" -DestinationPath $ZipPath -CompressionLevel Optimal

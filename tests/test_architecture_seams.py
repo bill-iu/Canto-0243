@@ -79,6 +79,12 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
         self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
 
+    def test_build_portable_warms_word_cache(self):
+        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn("warm_word_cache.py", source)
+        ps1 = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
+        self.assertIn("warm_word_cache.py", ps1)
+
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertNotIn("run_main_block_startup", source)
