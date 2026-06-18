@@ -159,21 +159,48 @@ def _delete_non_portable_rpaths(binary: Path, venv_dir: Path) -> None:
             )
 
 
+def _rpath_fixup_binaries(venv_dir: Path) -> list[Path]:
+    """Mach-O that may reference libpython via @rpath (not every site-packages .so)."""
+    py = _venv_python(venv_dir)
+    bins: list[Path] = [py]
+    bin_dir = venv_dir / "bin"
+    if bin_dir.is_dir():
+        bins.extend(p for p in bin_dir.iterdir() if p.is_file() and _is_mach_o(p))
+    seen: set[Path] = set()
+    out: list[Path] = []
+    for binary in bins:
+        resolved = binary.resolve()
+        if resolved not in seen:
+            seen.add(resolved)
+            out.append(binary)
+    return out
+
+
+def _libpython_rpath_deps(binary: Path) -> list[str]:
+    return [
+        dep
+        for dep in _otool_lib_paths(binary)
+        if dep.startswith("@rpath/") and _LIBPYTHON_RE.search(dep)
+    ]
+
+
 def _fix_rpath_and_loader_deps(binary: Path, lib_dir: Path) -> None:
     bundled = lib_dir / _bundled_lib_name()
     if not bundled.is_file():
         return
+    rpath_deps = _libpython_rpath_deps(binary)
+    if not rpath_deps:
+        return
     rel_lib = os.path.relpath(lib_dir, start=binary.parent).replace("\\", "/")
     loader_lib = f"@loader_path/{rel_lib}"
     if loader_lib not in _otool_rpaths(binary):
-        subprocess.run(
+        proc = subprocess.run(
             ["install_name_tool", "-add_rpath", loader_lib, str(binary)],
-            check=True,
             capture_output=True,
         )
-    for dep in _otool_lib_paths(binary):
-        if not dep.startswith("@rpath/"):
-            continue
+        if proc.returncode != 0 and b"duplicate" not in proc.stderr.lower():
+            proc.check_returncode()
+    for dep in rpath_deps:
         tail = dep.removeprefix("@rpath/")
         target = lib_dir / tail
         if not target.is_file():
@@ -285,6 +312,7 @@ def relocate_macos_venv(venv_dir: Path) -> None:
 
     for binary in _iter_mach_o_binaries(venv_dir):
         _delete_non_portable_rpaths(binary, venv_dir)
+    for binary in _rpath_fixup_binaries(venv_dir):
         _fix_rpath_and_loader_deps(binary, lib_dir)
 
     _assert_venv_portable(venv_dir)

@@ -11,6 +11,7 @@ from scripts.portable_venv import (
     non_portable_load_paths,
     non_portable_rpaths,
     relocate_macos_venv,
+    _libpython_rpath_deps,
 )
 
 
@@ -64,6 +65,18 @@ class PortableVenvMacosTests(unittest.TestCase):
             ),
             ["/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib"],
         )
+
+    def test_libpython_rpath_deps_filters_rpath_libpython(self):
+        deps = [
+            "@rpath/libpython3.10.dylib",
+            "@rpath/libfoo.dylib",
+            "@loader_path/../lib/libpython3.10.dylib",
+        ]
+        with patch("scripts.portable_venv._otool_lib_paths", return_value=deps):
+            self.assertEqual(
+                _libpython_rpath_deps(MagicMock()),
+                ["@rpath/libpython3.10.dylib"],
+            )
 
     def test_relocate_macos_venv_is_noop_off_darwin(self):
         with patch("scripts.portable_venv.sys.platform", "linux"):
