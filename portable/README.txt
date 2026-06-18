@@ -21,19 +21,18 @@ Windows（免安裝）
 
 macOS（免安裝）
 ---------------
-1. 下載 canto-0243-portable-macos.tar.gz 並解壓
-   Download canto-0243-portable-macos.tar.gz and extract.
+1. 依晶片下載對應 tar 並解壓（Apple Silicon → arm64；Intel → x86_64）
+   Download the matching tar for your Mac (Apple Silicon → arm64; Intel → x86_64):
+     canto-0243-portable-macos-arm64.tar.gz
+     canto-0243-portable-macos-x86_64.tar.gz
 
 2. 將 Canto-0243.app 拖到「應用程式」資料夾
    Drag Canto-0243.app to Applications.
 
 3. 雙擊 Canto-0243.app 啟動（無需安裝 Python、無需 chmod）
    Double-click Canto-0243.app (no Python, no Terminal chmod).
-
-   若 macOS 阻擋來自網路的檔案：
-   If macOS quarantines the download:
-
-     xattr -dr com.apple.quarantine ~/Applications/Canto-0243.app
+   首次啟動會自動處理下載隔離；若仍被阻擋，請確認下載了正確架構的 tar。
+   Quarantine is cleared on first launch; if blocked, verify you used the correct arch tar.
 
    進階：資料夾版仍可用 START.command / START.sh（內含 venv）
    Advanced: folder bundle START.command / START.sh also work.
@@ -66,8 +65,8 @@ Linux
 - 「找不到內建執行環境」：請重新下載完整 Release 套件
   "Bundled runtime missing": re-download the full release package.
 
-- macOS「無法打開，因為來自身份不明的開發者」：
-  xattr -dr com.apple.quarantine /path/to/Canto-0243.app
+- macOS「無法打開」：確認下載了與晶片相符的 tar（arm64 或 x86_64）
+  macOS "cannot open": verify the tar matches your chip (arm64 or x86_64).
 
 - 關閉服務：關閉命令視窗，或從 Dock 結束 Canto-0243.app
   Stop: close the console window, or quit the .app from the Dock.

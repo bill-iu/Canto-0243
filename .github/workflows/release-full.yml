@@ -85,7 +85,17 @@ jobs:
 
   build-macos:
     needs: gate
-    runs-on: macos-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - runner: macos-latest
+            arch: arm64
+            artifact: canto-0243-portable-macos-arm64.tar.gz
+          - runner: macos-13
+            arch: x86_64
+            artifact: canto-0243-portable-macos-x86_64.tar.gz
+    runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v4
 
@@ -99,18 +109,20 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
 
-      - name: Build macOS portable tar.gz
+      - name: Build macOS portable tar.gz (${{ matrix.arch }})
         run: |
           test -s lyrics.db
           export SKIP_README_SYNC=1
+          export PORTABLE_MACOS_ARCH="${{ matrix.arch }}"
           bash scripts/build-portable.sh
+          test -f "dist/${{ matrix.artifact }}"
         env:
           PYTHONUTF8: "1"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: macos-portable
-          path: dist/canto-0243-portable-macos.tar.gz
+          name: macos-portable-${{ matrix.arch }}
+          path: dist/${{ matrix.artifact }}
           retention-days: 2
 
   lexicon:
@@ -161,10 +173,11 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           WIN="artifacts/windows-portable/canto-0243-portable.zip"
-          MAC="artifacts/macos-portable/canto-0243-portable-macos.tar.gz"
+          MAC_ARM="artifacts/macos-portable-arm64/canto-0243-portable-macos-arm64.tar.gz"
+          MAC_X86="artifacts/macos-portable-x86_64/canto-0243-portable-macos-x86_64.tar.gz"
           DB="artifacts/release-lexicon/lyrics.db"
           JSON="artifacts/release-lexicon/dist/words-lexicon.json"
-          for f in "$WIN" "$MAC" "$DB" "$JSON"; do
+          for f in "$WIN" "$MAC_ARM" "$MAC_X86" "$DB" "$JSON"; do
             if [[ ! -f "$f" ]]; then
               echo "::error::Missing artifact: $f"
               exit 1
@@ -172,9 +185,10 @@ jobs:
           done
           gh release upload "$TAG" \
             "$WIN" \
-            "$MAC" \
+            "$MAC_ARM" \
+            "$MAC_X86" \
             "$DB" \
             "$JSON" \
             --clobber
           gh release edit "$TAG" --draft=false
-          echo "Published ${TAG} (four artifacts attached, draft cleared)."
+          echo "Published ${TAG} (five artifacts attached, draft cleared)."

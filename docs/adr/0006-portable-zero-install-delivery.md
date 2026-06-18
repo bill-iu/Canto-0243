@@ -8,7 +8,7 @@
 
 1. **建置時打包 venv** — `scripts/portable_venv.py` 以 `python -m venv --copies` 在發佈目錄建立可搬移 venv 並 `pip install -r requirements.txt`；`scripts/wait_for_url.py`、`free_port.py` 一併複製。
 2. **Windows** — `scripts/build-portable.ps1` 產出含 venv 的 `canto-0243-portable.zip`；`START.bat` 只使用 `venv\Scripts\python.exe`，不再探測系統 Python 或首次 pip。
-3. **macOS** — `scripts/build-portable.sh` 產出 `Canto-0243.app`（`Contents/Resources/app` 含完整 bundle + venv），`canto-0243-portable-macos.tar.gz` 只打包 `.app`；取代 chmod／Terminal 為預設創作者路徑。
+3. **macOS** — `scripts/build-portable.sh` 產出 `Canto-0243.app`（`Contents/Resources/app` 含完整 bundle + venv），架構專用 `canto-0243-portable-macos-{arm64,x86_64}.tar.gz` 只打包 `.app`；取代 chmod／Terminal 為預設創作者路徑。詳見 [ADR-0016](0016-macos-dual-arch-quarantine.md)。
 4. **跨平台建置** — Windows zip 在 Windows 建；macOS .app 在 macOS 建；Release 四件套仍含兩者 + `lyrics.db` + `words-lexicon.json`。
 5. **本機啟動契約統一** — `start.sh` 與 Portable `START.*` 共用同一啟動規則（見 CONTEXT § **本機啟動**）；維護者須在開發版路徑驗證 Portable 級體感（HTML 就緒時間、終端即時回饋），不可僅在解壓 zip 後才量測。
 

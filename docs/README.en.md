@@ -45,7 +45,7 @@ For the full offline experience, use the official portable package—**no** git 
 2. Extract the entire folder (e.g. `canto-0243-portable`).
 3. Launch by platform:
    * **Windows**: extract and double-click **`START.bat`** (no Python install).
-   * **macOS**: download `canto-0243-portable-macos.tar.gz`, then double-click **`Canto-0243.app`**.
+   * **macOS**: download `canto-0243-portable-macos-arm64.tar.gz` or `canto-0243-portable-macos-x86_64.tar.gz` for your chip, then double-click **`Canto-0243.app`**.
    * **Linux**: `chmod +x START.sh && ./START.sh` (system Python 3.10+ required).
 
 **Requirements**: **Zero-install** on Windows／macOS (bundled runtime). Linux still needs Python 3.10+.
@@ -125,7 +125,8 @@ Check [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution.
 |-------|---------|
 | `lyrics.db` | Full **word-entry store** (`words` + `word_relations`) |
 | `canto-0243-portable.zip` | Windows zero-install (`START.bat`, bundled venv) |
-| `canto-0243-portable-macos.tar.gz` | macOS zero-install **`Canto-0243.app`** |
+| `canto-0243-portable-macos-arm64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Apple Silicon) |
+| `canto-0243-portable-macos-x86_64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Intel) |
 | `words-lexicon.json` | **Lexicon-reading** sidecar |
 
 ```bash

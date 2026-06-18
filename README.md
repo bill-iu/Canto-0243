@@ -45,7 +45,7 @@
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
    * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
-   * **macOS**：下載 `canto-0243-portable-macos.tar.gz`，解壓後雙擊 **`Canto-0243.app`**。
+   * **macOS**：依晶片下載 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解壓後雙擊 **`Canto-0243.app`**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
 
 **需求**：Windows／macOS **免安裝**（套件已內建 Python）；Linux 仍須 Python 3.10+。
@@ -125,7 +125,8 @@ python -m ingest build-relations
 |------|------|
 | `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`） |
 | `canto-0243-portable.zip` | Windows 免安裝套件（內建 venv + `START.bat`） |
-| `canto-0243-portable-macos.tar.gz` | macOS 免安裝 **`Canto-0243.app`** |
+| `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Apple Silicon） |
+| `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Intel） |
 | `words-lexicon.json` | **詞級標音**副件 |
 
 ```bash

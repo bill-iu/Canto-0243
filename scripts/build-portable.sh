@@ -7,7 +7,15 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_DIR="$ROOT/dist/canto-0243-portable"
 APP_DIR="$ROOT/dist/Canto-0243.app"
 APP_RES="$APP_DIR/Contents/Resources/app"
-TAR_PATH="$ROOT/dist/canto-0243-portable-macos.tar.gz"
+case "${PORTABLE_MACOS_ARCH:-$(uname -m)}" in
+  arm64|aarch64) MAC_ARCH=arm64 ;;
+  x86_64) MAC_ARCH=x86_64 ;;
+  *)
+    echo "unsupported macOS arch: ${PORTABLE_MACOS_ARCH:-$(uname -m)}" >&2
+    exit 1
+    ;;
+esac
+TAR_PATH="$ROOT/dist/canto-0243-portable-macos-${MAC_ARCH}.tar.gz"
 
 DB_PATH="$ROOT/lyrics.db"
 if [[ ! -f "$DB_PATH" ]]; then
@@ -67,7 +75,12 @@ cp -f "$ROOT/portable/macos/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp -f "$ROOT/portable/macos/launcher" "$APP_DIR/Contents/MacOS/Canto-0243"
 chmod +x "$APP_DIR/Contents/MacOS/Canto-0243"
 
-echo "==> Create macOS tar.gz (Canto-0243.app)..."
+if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
+  echo "==> Ad-hoc codesign Canto-0243.app..."
+  codesign --force --deep --sign - "$APP_DIR"
+fi
+
+echo "==> Create macOS tar.gz (Canto-0243.app, ${MAC_ARCH})..."
 rm -f "$TAR_PATH"
 tar -czf "$TAR_PATH" -C "$ROOT/dist" "Canto-0243.app"
 

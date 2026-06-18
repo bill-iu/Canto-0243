@@ -14,7 +14,7 @@
 4. **Windows**：`powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1`
 5. **macOS**：`bash scripts/build-portable.sh`
 6. 建立 GitHub Release tag `vMAJOR.MINOR.PATCH`
-7. 上傳四件套：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、`canto-0243-portable-macos.tar.gz`
+7. 上傳五件套：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、`canto-0243-portable-macos-arm64.tar.gz`、`canto-0243-portable-macos-x86_64.tar.gz`
 8. Release notes 註明全量版本與變更摘要
 
 兩平台 zip／`.app` 須來自**同一 tag** 的 build；若只完成一邊，**不要**發佈該 tag。
@@ -57,15 +57,15 @@ git tag v1.3.0
 git push origin v1.3.0
 ```
 
-CI 會：從同 tag 取 `lyrics.db` → Windows／macOS 各 build portable → export `words-lexicon.json` → 上傳四件套 → **取消 draft（正式發佈）**。
+CI 會：從同 tag 取 `lyrics.db` → Windows／macOS（arm64 + x86_64）各 build portable → export `words-lexicon.json` → 上傳五件套 → **取消 draft（正式發佈）**。
 
 若 Windows 或 macOS build 失敗，**不會** publish（ADR-0008 Q5=A）。
 
-**Release 後可刪本機建置暫存**：`dist/` 內 zip、解壓目錄、export 等皆為本機副產物；正式四件套以 GitHub Release 為準。確認 Release 齊全後可執行 `rm -rf dist/`（Windows：`Remove-Item -Recurse -Force dist`）；下次 build 或 export 會自動重建。
+**Release 後可刪本機建置暫存**：`dist/` 內 zip、解壓目錄、export 等皆為本機副產物；正式五件套以 GitHub Release 為準。確認 Release 齊全後可執行 `rm -rf dist/`（Windows：`Remove-Item -Recurse -Force dist`）；下次 build 或 export 會自動重建。
 
 ### 詞庫發佈（CI）
 
-**前置**：目標 tag 已有 full Release（含 zip + macOS tar.gz）。
+**前置**：目標 tag 已有 full Release（含 zip + 雙 macOS tar）。
 
 ```bash
 # 1. 上傳新 lyrics.db 到該 tag

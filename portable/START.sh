@@ -3,8 +3,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
 
-if [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$ROOT" 2>/dev/null || true
+if command -v python3 >/dev/null 2>&1 && [[ -f "$ROOT/scripts/portable_macos.py" ]]; then
+  python3 "$ROOT/scripts/portable_macos.py" "$ROOT" || true
 fi
 
 if [[ ! -f lyrics.db ]]; then

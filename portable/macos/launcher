@@ -2,7 +2,18 @@
 # macOS .app entry — bundled venv, no system Python required.
 set -euo pipefail
 
-APP_ROOT="$(cd "$(dirname "$0")/../Resources/app" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+APP_BUNDLE="$(cd "$SCRIPT_DIR/.." && pwd)"
+APP_ROOT="$(cd "$SCRIPT_DIR/../Resources/app" && pwd)"
+
+# 下載隔離：系統 Python 清 .app／bundle（Gatekeeper 放行後首次啟動）
+if PY3="$(command -v python3 2>/dev/null)"; then
+  "$PY3" "$APP_ROOT/scripts/portable_macos.py" "$APP_BUNDLE" "$APP_ROOT" 2>/dev/null || true
+elif [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
+  xattr -dr com.apple.quarantine "$APP_BUNDLE" 2>/dev/null || true
+  xattr -dr com.apple.quarantine "$APP_ROOT" 2>/dev/null || true
+fi
+
 cd "$APP_ROOT"
 
 PY="$APP_ROOT/venv/bin/python"

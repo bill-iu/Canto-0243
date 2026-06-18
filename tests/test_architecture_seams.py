@@ -70,6 +70,15 @@ class TestLocalLaunchSeam(unittest.TestCase):
             with self.subTest(path=path.name):
                 self.assertIn("local_launch.py", path.read_text(encoding="utf-8"))
 
+    def test_macos_launcher_clears_download_quarantine(self):
+        source = MACOS_LAUNCHER.read_text(encoding="utf-8")
+        self.assertIn("portable_macos.py", source)
+
+    def test_build_portable_macos_tar_is_arch_specific(self):
+        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
+        self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
+
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertNotIn("run_main_block_startup", source)

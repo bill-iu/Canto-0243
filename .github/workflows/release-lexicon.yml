@@ -36,12 +36,14 @@ jobs:
           fi
           mapfile -t names < <(gh release view "$TARGET_TAG" --json assets -q '.assets[].name')
           has_zip=false
-          has_mac=false
+          has_mac_arm=false
+          has_mac_x86=false
           for n in "${names[@]}"; do
             [[ "$n" == "canto-0243-portable.zip" ]] && has_zip=true
-            [[ "$n" == "canto-0243-portable-macos.tar.gz" ]] && has_mac=true
+            [[ "$n" == "canto-0243-portable-macos-arm64.tar.gz" ]] && has_mac_arm=true
+            [[ "$n" == "canto-0243-portable-macos-x86_64.tar.gz" ]] && has_mac_x86=true
           done
-          if [[ "$has_zip" != true || "$has_mac" != true ]]; then
+          if [[ "$has_zip" != true || "$has_mac_arm" != true || "$has_mac_x86" != true ]]; then
             echo "::error::Release ${TARGET_TAG} is not a full release (missing zip or macOS tar.gz)."
             exit 1
           fi
