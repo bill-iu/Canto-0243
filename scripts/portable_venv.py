@@ -12,6 +12,52 @@ from pathlib import Path
 
 RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py", "local_launch.py")
 _LIBPYTHON_RE = re.compile(r"libpython\d+\.\d+\.dylib")
+_BUNDLED_LIB = "libpython{major}.{minor}.dylib"
+
+
+def _bundled_lib_name() -> str:
+    return _BUNDLED_LIB.format(major=sys.version_info.major, minor=sys.version_info.minor)
+
+
+def bundled_python_deps(paths: list[str]) -> list[str]:
+    """Public: otool deps that must be bundled for a relocatable macOS venv."""
+    out: list[str] = []
+    for p in paths:
+        if _LIBPYTHON_RE.search(p):
+            out.append(p)
+        elif p.endswith("/Python") and (
+            "Python.framework" in p or "/hostedtoolcache/Python/" in p
+        ):
+            out.append(p)
+    return out
+
+
+def libpython_deps(paths: list[str]) -> list[str]:
+    """Public: libpython dylib deps only (for tests)."""
+    return [p for p in paths if _LIBPYTHON_RE.search(p)]
+
+
+def non_portable_load_paths(paths: list[str]) -> list[str]:
+    """Public: absolute load paths that break off the build machine."""
+    bad: list[str] = []
+    for p in paths:
+        if not p.startswith("/"):
+            continue
+        if p.startswith("/usr/lib") or p.startswith("/System"):
+            continue
+        if (
+            bundled_python_deps([p])
+            or "/Users/" in p
+            or "hostedtoolcache" in p
+            or "Python.framework" in p
+        ):
+            bad.append(p)
+    return bad
+
+
+def non_portable_libpython_refs(paths: list[str]) -> list[str]:
+    """Public: non-portable libpython-style refs (for tests)."""
+    return non_portable_load_paths(bundled_python_deps(paths))
 
 
 def _venv_python(venv_dir: Path) -> Path:
@@ -56,22 +102,6 @@ def _is_mach_o(path: Path) -> bool:
     return "Mach-O" in out
 
 
-def libpython_deps(paths: list[str]) -> list[str]:
-    """Public: filter otool deps to libpython dylibs (for tests)."""
-    return [p for p in paths if _LIBPYTHON_RE.search(p)]
-
-
-def non_portable_libpython_refs(paths: list[str]) -> list[str]:
-    """Public: absolute /Users or hostedtoolcache libpython refs (for tests)."""
-    bad: list[str] = []
-    for p in libpython_deps(paths):
-        if p.startswith("@") or p.startswith("/usr/lib") or p.startswith("/System"):
-            continue
-        if p.startswith("/"):
-            bad.append(p)
-    return bad
-
-
 def _iter_mach_o_binaries(venv_dir: Path) -> list[Path]:
     roots = [
         venv_dir / "bin",
@@ -101,24 +131,35 @@ def relocate_macos_venv(venv_dir: Path) -> None:
     if not py.is_file():
         raise RuntimeError(f"venv python missing: {py}")
 
-    src_deps = libpython_deps(_otool_lib_paths(py))
+    py_deps = _otool_lib_paths(py)
+    src_deps = bundled_python_deps(py_deps)
     if not src_deps:
-        raise RuntimeError(f"no libpython dependency on {py}")
+        if non_portable_load_paths(py_deps):
+            raise RuntimeError(f"non-portable python deps but no bundle target: {py_deps}")
+        return
 
     src = Path(src_deps[0])
     if not src.is_file():
-        raise RuntimeError(f"libpython source missing: {src}")
+        raise RuntimeError(f"python runtime source missing: {src}")
 
     lib_dir = venv_dir / "lib"
     lib_dir.mkdir(parents=True, exist_ok=True)
-    bundled = lib_dir / src.name
+    bundled = lib_dir / _bundled_lib_name()
     if bundled.resolve() != src.resolve():
         shutil.copy2(src, bundled)
 
-    old_refs = set(src_deps)
-    for other in _iter_mach_o_binaries(venv_dir):
-        for dep in libpython_deps(_otool_lib_paths(other)):
-            old_refs.add(dep)
+    old_refs: set[str] = set()
+    for binary in _iter_mach_o_binaries(venv_dir):
+        for dep in _otool_lib_paths(binary):
+            if bundled_python_deps([dep]) or dep in non_portable_load_paths([dep]):
+                if not dep.startswith("@"):
+                    old_refs.add(dep)
+
+    subprocess.run(
+        ["install_name_tool", "-id", f"@loader_path/{bundled.name}", str(bundled)],
+        check=True,
+        capture_output=True,
+    )
 
     for binary in _iter_mach_o_binaries(venv_dir):
         new_ref = _loader_path_ref(binary, bundled)
@@ -131,17 +172,17 @@ def relocate_macos_venv(venv_dir: Path) -> None:
                 capture_output=True,
             )
 
-    if non_portable_libpython_refs(_otool_lib_paths(py)):
-        raise RuntimeError("libpython still references non-portable path after relocate")
+    if non_portable_load_paths(_otool_lib_paths(py)):
+        raise RuntimeError("python still has non-portable load paths after relocate")
 
 
 def assert_portable_macos_venv(venv_dir: Path) -> None:
     if sys.platform != "darwin":
         return
     py = _venv_python(venv_dir)
-    bad = non_portable_libpython_refs(_otool_lib_paths(py))
+    bad = non_portable_load_paths(_otool_lib_paths(py))
     if bad:
-        raise RuntimeError(f"non-portable libpython refs on {py}: {bad}")
+        raise RuntimeError(f"non-portable load paths on {py}: {bad}")
 
 
 def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:

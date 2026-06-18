@@ -5,8 +5,10 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from scripts.portable_venv import (
+    bundled_python_deps,
     libpython_deps,
     non_portable_libpython_refs,
+    non_portable_load_paths,
     relocate_macos_venv,
 )
 
@@ -24,6 +26,23 @@ class PortableVenvMacosTests(unittest.TestCase):
                 "/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib/libpython3.10.dylib",
                 "@loader_path/../lib/libpython3.10.dylib",
             ],
+        )
+
+    def test_bundled_python_deps_includes_framework_python(self):
+        deps = [
+            "/Users/runner/hostedtoolcache/Python/3.10.11/arm64/Python",
+            "/usr/lib/libSystem.B.dylib",
+        ]
+        self.assertEqual(deps[0:1], bundled_python_deps(deps))
+
+    def test_non_portable_load_paths_flags_hostedtoolcache(self):
+        deps = [
+            "/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib/libpython3.10.dylib",
+            "@loader_path/../lib/libpython3.10.dylib",
+        ]
+        self.assertEqual(
+            non_portable_load_paths(deps),
+            ["/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib/libpython3.10.dylib"],
         )
 
     def test_non_portable_libpython_refs_flags_absolute_paths(self):
