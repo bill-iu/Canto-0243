@@ -6,7 +6,7 @@
 
 填写粤语歌词时，常见困难一是不知道有哪些字可用，二是需要在**同音、押韵、近义**之间快速换字，同时又要符合 0243 与粤拼读音。传统做法是在词典、韵书、近义表之间反复查阅，手动尝试「这一位置能否换成另一个字」——效率低，且容易遗漏许多可用字。[0243.hk](https://0243.hk) 已是近年来较好用的粤语填词检索网站，但偶尔会出现 502 Bad Gateway 无法访问；检索时也可能长时间加载；或缺少所需功能——这些情况都会拖慢创作进度。
 
-**Canto-0243**（**ONE·揾·韵**）是由多种 AI Agent 协助开发的离线粤语填词检索工作台：依据 **0243／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出可替换的**词条**。输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。套件解压即可使用，词库与近反义资料均存于本地，无需常驻云端。
+**Canto-0243**（**ONE·揾·韵**）是在 Cursor、Codex、Grok Build、GitHub Copilot 等多种 AI Agent 协助下开发的离线粤语填词检索工作台：依据 **0243／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出符合条件的**词条**。例如输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。套件解压即可使用，词库与近反义资料均存于本地，无需联网。
 
 **授权**：程序代码依 [Canto-0243 License](../LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**非 OSI 开源**）。第三方资料见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。  
 **技术栈**：FastAPI · SQLAlchemy · SQLite（离线单机）· 纯 HTML/JS 前端  
@@ -20,7 +20,7 @@
 目前总词条列数：**193,289**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
-官方离线资料包：**[Canto-0243 v1.6.4](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.4)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方离线资料包：**[Canto-0243 v1.0.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.0)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 过渡期暂不提供）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -41,11 +41,12 @@
 
 完整离线体验请用官方 portable 套件，**无需** clone 源码或自行导入词库。
 
-1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.6.4`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.4)）。
-2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
+1. 从 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（Windows）与 **`canto-0243-portable-macos-x86_64.tar.gz`**（Intel Mac）；建议对照 [`Canto-0243 v1.0.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.0)。
+2. 解压缩整个文件夹（例如 `canto-0243-portable`）或 tar 内容。
 3. 按平台启动：
    * **Windows**：解压后双击 **`START.bat`**（无需安装 Python）。
-   * **macOS**：依芯片下载 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解压后双击 **`Canto-0243.app`**。若被拦截：**右键→打开** `.app` 或 **`Open Canto-0243.command`**（各确认一次）。Sequoia 15 若只见「恶意软件」对话框（仅完成／移至垃圾桶）：点 **完成** → **系统设置→隐私与安全性** → 滚到底 → **仍要打开**（Canto-0243）→ 再双击 `.app`。
+   * **macOS（Intel x86_64）**：解压 tar 后进入 `canto-0243-portable/`，双击 **`Canto-0243.command`**（会开 Terminal）。若被拦截：**右键→打开** → 确认；若只见「恶意软件」对话框：按 **完成** → **系统设定→隐私与保安** → **强制开启**（Canto-0243）→ 再双击。
+   * **macOS（Apple Silicon）**：arm64 tar 过渡期**暂不提供**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（须本机 Python 3.10+）。
 
 **环境要求**：Windows／macOS **免安装**（套件已内建 Python）；Linux 仍须 Python 3.10+。
@@ -116,28 +117,32 @@ python -m ingest build-relations
 
 可选近反义来源（默认关闭）见 `data/syn_ant/sources.yaml`。
 
-### 官方资料 Release（四件套）
+### 官方资料 Release
 
 再分发前核对 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。**勿**将大文件 commit 至 git。  
-**全量发布**与**词库发布**分层、手动／CI checklist 见 [release.md](release.md)（[ADR-0008](adr/0008-release-publishing-tiers.md)）。
+**分渠道发布**（Windows 本机 + Intel MacBook）、**词库发布** checklist 见 [release.md](release.md)（[ADR-0018](adr/0018-split-channel-release.md)）。
 
 | 资产 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**词条库**（`words` + `word_relations`） |
 | `canto-0243-portable.zip` | Windows 免安装套件（内建 venv + `START.bat`） |
-| `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安装 **`Canto-0243.app`**（Apple Silicon） |
-| `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安装 **`Canto-0243.app`**（Intel） |
+| `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安装文件夹 + **`Canto-0243.command`**（Intel；现行渠道） |
+| `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安装（Apple Silicon；过渡期暂不提供） |
 | `words-lexicon.json` | **词级标音**附件 |
 
-```bash
-python scripts/export_words_lexicon.py -o dist/words-lexicon.json
-python scripts/update_readme_words_count.py
-# Windows（含内建 venv zip）:
-powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS（含 Canto-0243.app tar.gz）:
-bash scripts/build-portable.sh
-# 上传四件套至 GitHub Release
+```powershell
+# Windows 全量（建置 + 上传 Release）:
+powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag vX.Y.Z -Upload
 ```
+
+```bash
+# Intel MacBook（同步 main；lyrics.db 在 repo 根目录；gh auth 须对 upstream 有 write）
+git fetch origin && git checkout main && git merge origin/main
+bash scripts/release-macos-local.sh --tag vX.Y.Z --test   # 本机 smoke（首次会下载建置用 CPython 至 .build-python/）
+GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --arch x86_64 --upload --tar-only
+```
+
+手动取得建置用 Python：`bash scripts/fetch-macos-build-python.sh`（仅 x86_64；Apple CLT 内建 Python 不足以产出可搬移 venv）。详见 [release.md](release.md)。
 
 ---
 
@@ -453,4 +458,4 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 ---
 
-**最后更新**：2026-06-18（加号锚 · 四字部分韵／声锚 · 搜索教学）
+**最后更新**：2026-06-19（v1.0.0 · 分渠道发布 · macOS Intel 本机建置）

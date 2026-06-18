@@ -209,6 +209,40 @@ class TestTransitionFacadeRemoval(unittest.TestCase):
         self.assertNotIn("query_route_registry", source)
 
 
+class TestReferenceReadingSeam(unittest.TestCase):
+    """ADR-0004 #2: 參考字讀音解析 domain 不依賴 services。"""
+
+    PATH = REPO_ROOT / "app" / "domain" / "lexicon" / "reference_reading.py"
+
+    def test_reference_reading_does_not_import_services(self):
+        source = self.PATH.read_text(encoding="utf-8")
+        tree = ast.parse(source)
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module:
+                self.assertFalse(
+                    node.module.startswith("app.services"),
+                    f"services import: {node.module}",
+                )
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    self.assertFalse(
+                        alias.name.startswith("app.services"),
+                        f"services import: {alias.name}",
+                    )
+        self.assertNotIn("app.services", source)
+
+
+class TestWordSerializerReexport(unittest.TestCase):
+    def test_getters_reexport_word_row(self):
+        from app.domain.lexicon import word_row
+        from app.services import word_serializer
+
+        self.assertIs(word_serializer.get_word_text, word_row.get_word_text)
+        self.assertIs(word_serializer.get_word_jyutping, word_row.get_word_jyutping)
+        self.assertIs(word_serializer.get_rhyme_finals, word_row.get_rhyme_finals)
+        self.assertIs(word_serializer.get_word_parts, word_row.get_word_parts)
+
+
 class TestCompoundSynSeam(unittest.TestCase):
     SOURCES_FORBIDDEN = (
         "load_compound_synonyms",
@@ -293,6 +327,21 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         source = DISPATCH_PATH.read_text(encoding="utf-8")
         self.assertNotIn("CompoundSynQuery", source)
         self.assertNotIn("CompoundAntQuery", source)
+
+
+class TestQueryModeDispatchSeam(unittest.TestCase):
+    """#4: syn-mode branches live in query_mode_dispatch, not nested in execute."""
+
+    def test_query_dispatch_delegates_syn_mode(self):
+        source = DISPATCH_PATH.read_text(encoding="utf-8")
+        self.assertIn("dispatch_syn_mode", source)
+        self.assertNotIn("syn_mode_page", source)
+        self.assertNotIn("is_relation_syntax_query", source)
+        self.assertNotIn("is_jyutping_query", source)
+
+    def test_query_mode_dispatch_module_exists(self):
+        path = REPO_ROOT / "app" / "services" / "query_mode_dispatch.py"
+        self.assertTrue(path.is_file())
 
 
 class TestQueryParseTypesSeam(unittest.TestCase):

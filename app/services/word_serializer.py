@@ -2,8 +2,13 @@ from __future__ import annotations
 
 from typing import Iterable, List, Optional
 
+from app.domain.lexicon.word_row import (
+    get_rhyme_finals,
+    get_word_jyutping,
+    get_word_parts,
+    get_word_text,
+)
 from app.utils.jyutping_codec import get_0243_code
-from app.utils.json_helpers import load_json_list
 
 
 def deduplicate_words(words: Iterable) -> List:
@@ -62,36 +67,6 @@ def serialize_word(
 def serialize_page(words: Iterable, offset: int, limit: int, **serialize_kw) -> List[dict]:
     page = paginate(deduplicate_words(words), offset, limit)
     return [serialize_word(w, **serialize_kw) for w in page]
-
-
-def get_word_text(word) -> str:
-    if isinstance(word, dict):
-        return word.get("char") or ""
-    return getattr(word, "char", "") or ""
-
-
-def get_word_jyutping(word) -> str:
-    if isinstance(word, dict):
-        return word.get("jyutping") or ""
-    return getattr(word, "jyutping", "") or ""
-
-
-def get_word_parts(word, field: str) -> list:
-    if isinstance(word, dict):
-        return word.get(field) or []
-    return load_json_list(getattr(word, field, None))
-
-
-def get_rhyme_finals(word) -> list:
-    """Rhyme finals from jyutping when available (correct jy- nucleus); else stored finals."""
-    from app.utils.jyutping_codec import rhyme_finals_from_jyutping
-
-    jp = get_word_jyutping(word)
-    if jp:
-        derived = rhyme_finals_from_jyutping(jp)
-        if derived:
-            return derived
-    return get_word_parts(word, "finals")
 
 
 def get_word_sort_code(word) -> str:

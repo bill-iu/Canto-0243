@@ -1,7 +1,7 @@
 """Query dispatch for 詞條搜尋 — registry + SearchResult (no global total state)."""
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
@@ -18,12 +18,9 @@ from app.services.query_parse import (
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
-    is_relation_syntax_query,
-    mode_redirect_hint,
     normalize_and_parse,
     normalize_query,
     normalize_to_match_spec,
-    resolve_fallback_0243_mode,
 )
 from app.services.word_db_filters import apply_code_filter
 from app.services.word_serializer import deduplicate_words
@@ -88,29 +85,9 @@ class QueryEngine:
         q = normalize_query(ctx.q)
 
         if ctx.mode == "syn":
-            from app.services.jyutping_match import is_jyutping_query
-            from app.services.relation_syntax_executor import RelationSyntaxExecutor
+            from app.services.query_mode_dispatch import dispatch_syn_mode
 
-            if is_jyutping_query(q):
-                return SearchResult(items=[], hint=JYUTPING_SYN_MODE_HINT)
-
-            if is_relation_syntax_query(q):
-                effective = resolve_fallback_0243_mode(ctx.fallback_0243_mode)
-                redirected = replace(ctx, mode=effective, offset=0)
-                parsed = normalize_and_parse(ctx.q)
-                result = self._dispatch(parsed, redirected)
-                return SearchResult(
-                    items=result.items,
-                    total=result.total,
-                    hint=mode_redirect_hint(effective),
-                    cache_path=result.cache_path,
-                    effective_mode=effective,
-                )
-
-            items = RelationSyntaxExecutor(ctx.db).syn_mode_page(
-                q, limit=ctx.limit, offset=ctx.offset
-            )
-            return SearchResult(items=items)
+            return dispatch_syn_mode(ctx, q, self)
 
         parsed = normalize_and_parse(ctx.q)
         return self._dispatch(parsed, ctx)

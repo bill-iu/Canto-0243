@@ -6,6 +6,18 @@ from pathlib import Path
 from typing import List, Protocol, runtime_checkable
 
 from app.lexicon.static_index import LexiconEntry
+from sqlalchemy.orm import Session
+
+
+@runtime_checkable
+class WordRowInjectPort(Protocol):
+    def ensure_word_rows(self, db: Session, text: str) -> list:
+        ...
+
+    def inject_lexicon_rows(
+        self, db: Session, text: str, entries: List[LexiconEntry]
+    ) -> list:
+        ...
 
 
 @runtime_checkable
@@ -87,15 +99,27 @@ class CompositeLexicon:
 
 
 _default_port = CompositeLexicon(auto_load=False)
+_default_inject_port: WordRowInjectPort | None = None
 
 
 def default_lexicon_port() -> LexiconPort:
     return _default_port
 
 
+def default_word_inject_port() -> WordRowInjectPort:
+    global _default_inject_port
+    if _default_inject_port is None:
+        from app.domain.lexicon.word_inject import SyncingWordRowInject
+
+        _default_inject_port = SyncingWordRowInject()
+    return _default_inject_port
+
+
 __all__ = [
     "CompositeLexicon",
     "LexiconPort",
     "Static0243Lexicon",
+    "WordRowInjectPort",
     "default_lexicon_port",
+    "default_word_inject_port",
 ]

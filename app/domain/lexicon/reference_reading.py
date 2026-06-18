@@ -5,11 +5,11 @@ from __future__ import annotations
 from typing import Any, Literal, Optional, Set
 
 from app.domain.lexicon.admission import resolve_admission
+from app.domain.lexicon.port import default_word_inject_port
 from app.domain.lexicon.ranking import authoritative_reading_sort_key
+from app.domain.lexicon.word_row import get_rhyme_finals, get_word_jyutping, get_word_text
 from app.models.word import Word
 from app.lexicon.static_index import LexiconEntry
-from app.services.word_ensure_service import ensure_word_in_db
-from app.services.word_serializer import get_rhyme_finals, get_word_jyutping, get_word_text
 from app.utils.json_helpers import load_json_list
 from app.utils.jyutping_codec import (
     expand_standalone_nasal_final_options,
@@ -64,7 +64,7 @@ def _db_rows_for_literal(literal: str, db, *, allow_inject: bool) -> list:
         return rows
     admission = resolve_admission(literal)
     if admission.can_inject:
-        return ensure_word_in_db(db, literal)
+        return default_word_inject_port().ensure_word_rows(db, literal)
     return []
 
 
@@ -116,13 +116,12 @@ def equals_authoritative_row_for_code(
 ) -> Optional[Any]:
     """整詞等號 + 左碼前綴：參考讀音對齊該碼（詞級標音可補庫內 stale 列）。"""
     from app.lexicon.static_index import get_lexicon_entries
-    from app.services.word_ensure_service import inject_lexicon_entries
     from app.utils.jyutping_codec import get_code_variants
 
     variants = set(get_code_variants(code_prefix, mode))
     lexicon_hits = [e for e in get_lexicon_entries(literal) if e.code in variants]
     if lexicon_hits and allow_inject:
-        inject_lexicon_entries(db, literal, lexicon_hits)
+        default_word_inject_port().inject_lexicon_rows(db, literal, lexicon_hits)
     rows = db.query(Word).filter(Word.char == literal).all()
     matching = [r for r in rows if (getattr(r, "code", None) or "") in variants]
     if matching:
