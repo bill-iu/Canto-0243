@@ -54,7 +54,7 @@ def _phase_done(snapshot: dict) -> bool:
     return snapshot.get("status") in ("ready", "failed")
 
 
-def _collect_phases() -> tuple[dict, dict, dict]:
+def _collect_phases() -> tuple[dict, dict, dict, dict]:
     from app.startup.offline_preload import get_background_phase_snapshot
     from app.utils.word_cache import get_preload_snapshot
 
@@ -62,7 +62,12 @@ def _collect_phases() -> tuple[dict, dict, dict]:
         get_preload_snapshot(),
         get_background_phase_snapshot("static_resources"),
         get_background_phase_snapshot("compound_syn"),
+        get_background_phase_snapshot("compound_ant"),
     )
+
+
+def _tail_phases(static_resources: dict, compound_syn: dict, compound_ant: dict) -> tuple[dict, ...]:
+    return (static_resources, compound_syn, compound_ant)
 
 
 def _sync_loading_clock(wc_status: str) -> None:
@@ -92,29 +97,26 @@ def _gate_open_reason(word_cache: dict) -> str | None:
 
 def snapshot() -> dict[str, Any]:
     """就緒閘契約：/ready 與 503 body 共用此 flat JSON。"""
-    word_cache, static_resources, compound_syn = _collect_phases()
+    word_cache, static_resources, compound_syn, compound_ant = _collect_phases()
     wc_status = word_cache.get("status") or "pending"
     _sync_loading_clock(wc_status)
 
-    phases = [word_cache, static_resources, compound_syn]
-    aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / 3.0
-    tail_progress = (
-        float(static_resources.get("progress") or 0.0) + float(compound_syn.get("progress") or 0.0)
-    ) / 2.0
+    tail = _tail_phases(static_resources, compound_syn, compound_ant)
+    phases = [word_cache, *tail]
+    aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / len(phases)
+    tail_progress = sum(float(p.get("progress") or 0.0) for p in tail) / len(tail)
 
     word_cache_ready = bool(word_cache.get("ready"))
     gate_open_reason = _gate_open_reason(word_cache)
     gate_ready = gate_open_reason is not None
     degraded = gate_open_reason == "degraded"
-    startup_complete = word_cache_ready and all(_phase_done(p) for p in (static_resources, compound_syn))
-    tail_pending = not all(_phase_done(p) for p in (static_resources, compound_syn))
+    startup_complete = word_cache_ready and all(_phase_done(p) for p in tail)
+    tail_pending = not all(_phase_done(p) for p in tail)
 
     status = wc_status
     if startup_complete:
         status = "ready"
-    elif status == "pending" and any(
-        p.get("status") == "loading" for p in (static_resources, compound_syn)
-    ):
+    elif status == "pending" and any(p.get("status") == "loading" for p in tail):
         status = "loading"
 
     return {
@@ -133,6 +135,7 @@ def snapshot() -> dict[str, Any]:
             "word_cache": word_cache,
             "static_resources": static_resources,
             "compound_syn": compound_syn,
+            "compound_ant": compound_ant,
         },
     }
 

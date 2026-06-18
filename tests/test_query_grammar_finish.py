@@ -27,7 +27,7 @@ class QueryGrammarMaskTests(unittest.TestCase):
         self.assertTrue(looks_like_mask_query("門0"))
         self.assertFalse(looks_like_mask_query("~開心"))
 
-    def test_mask_query_via_facade(self):
+    def test_mask_query_via_grammar(self):
         from app.services.query_grammar.mask import parse_mask_query
 
         width, codes, literals = parse_mask_query("門0")
@@ -68,15 +68,14 @@ class QueryGrammarRelationTests(unittest.TestCase):
                 self.assertIsInstance(parse_query(nq), MaskQuery)
 
 
-class WordQueryParserFacadeTests(unittest.TestCase):
-    def test_facade_is_reexport_only(self):
+class QueryGrammarFacadeRemovedTests(unittest.TestCase):
+    def test_word_query_parser_module_removed(self):
         from pathlib import Path
 
-        source = (
+        path = (
             Path(__file__).resolve().parents[1]
             / "app"
             / "services"
             / "word_query_parser.py"
-        ).read_text(encoding="utf-8")
-        self.assertNotIn("def parse_", source)
-        self.assertNotIn("def _wca", source)
+        )
+        self.assertFalse(path.is_file())

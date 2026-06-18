@@ -54,7 +54,7 @@ sys.path.insert(0, str(REPO_ROOT))
 
 from app.database import SessionLocal, IS_POSTGRES
 from app.models.word import Word, WordRelation
-from ingest.relation_canonical import canonical_relation_dict, relation_storage_key
+from app.domain.relations.canonical import canonical_relation_dict, relation_storage_key
 from app.thesaurus.static_index import (
     ensure_thesaurus_loaded,
     get_antonyms,

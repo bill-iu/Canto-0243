@@ -30,7 +30,7 @@ class QueryGrammarSerialTests(unittest.TestCase):
 
 class QueryParserFacadeTests(unittest.TestCase):
     def test_normalize_search_query_end_to_end_via_facade(self):
-        from app.services.word_query_parser import normalize_search_query
+        from app.services.query_lexer import normalize_search_query
 
         self.assertEqual(normalize_search_query(" 23&就 "), "23+就")
 
@@ -40,7 +40,7 @@ class QueryParserFacadeTests(unittest.TestCase):
         self.assertEqual(normalize_search_query("香0"), "+香0")
 
     def test_serial_parse_via_facade(self):
-        from app.services.word_query_parser import parse_serial_phoneme_anchor_query
+        from app.services.query_grammar.serial import parse_serial_phoneme_anchor_query
 
         parsed = parse_serial_phoneme_anchor_query("4困=")
         self.assertIsNotNone(parsed)

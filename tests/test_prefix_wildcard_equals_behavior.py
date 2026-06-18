@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base
 from app.models.word import Word
 from app.services.query_dispatch import SearchContext, execute_search, search_words
-from app.services.word_query_parser import PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT
+from app.services.query_grammar.serial import PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT
 from app.utils.word_cache import reset_word_cache_for_tests
 
 

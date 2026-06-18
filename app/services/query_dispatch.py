@@ -126,7 +126,7 @@ class QueryEngine:
     def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
-        from app.services.query_route_registry import RouteKind, route_kind_for
+        from app.services.query_kind_registry import RouteKind, route_kind_for
 
         code = ctx.code
         mode = ctx.mode

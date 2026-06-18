@@ -45,6 +45,7 @@ class WordCachePreloadProgressTests(unittest.TestCase):
 
         mod._set_background_phase("static_resources", status="ready", progress=1.0)
         mod._set_background_phase("compound_syn", status="loading", progress=0.05)
+        mod._set_background_phase("compound_ant", status="pending", progress=0.0)
         begin_preload()
         populate_word_cache_from_rows(
             [
@@ -63,7 +64,7 @@ class WordCachePreloadProgressTests(unittest.TestCase):
         complete_preload()
         payload = get_readiness_snapshot()
         self.assertAlmostEqual(payload["word_cache_progress"], 1.0)
-        self.assertAlmostEqual(payload["tail_progress"], 0.525, places=2)
+        self.assertAlmostEqual(payload["tail_progress"], 0.35, places=2)
         self.assertGreater(payload["progress"], payload["word_cache_progress"] * 0.3)
 
 

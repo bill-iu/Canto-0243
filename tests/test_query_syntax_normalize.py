@@ -11,7 +11,7 @@ from app.services.query_parse import (
     RelationLookupQuery,
     parse_query,
 )
-from app.services.word_query_parser import normalize_query_syntax, normalize_search_query
+from app.services.query_lexer import normalize_query_syntax, normalize_search_query
 
 
 class NormalizeQuerySyntaxTests(unittest.TestCase):

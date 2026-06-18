@@ -36,6 +36,41 @@ class ReadinessGatePolicyTests(unittest.TestCase):
         reset_background_preload_state_for_tests()
         reset_readiness_gate_for_tests()
 
+    def test_snapshot_includes_compound_ant_phase_in_tail_progress(self):
+        from app.startup import offline_preload as mod
+
+        mod._set_background_phase("static_resources", status="ready", progress=1.0)
+        mod._set_background_phase("compound_syn", status="loading", progress=0.05)
+        mod._set_background_phase("compound_ant", status="loading", progress=0.5)
+        payload = snapshot()
+        self.assertEqual(payload["phases"]["compound_ant"]["status"], "loading")
+        self.assertAlmostEqual(payload["tail_progress"], (1.0 + 0.05 + 0.5) / 3.0, places=3)
+
+    def test_startup_complete_when_compound_ant_failed(self):
+        from app.startup import offline_preload as mod
+
+        populate_word_cache_from_rows(
+            [
+                {
+                    "char": "做就",
+                    "code": "23",
+                    "jyutping": "zou6 zau6",
+                    "finals": '["ou","au"]',
+                    "initials": '["z","z"]',
+                    "length": 2,
+                }
+            ]
+        )
+        complete_preload()
+        mod._set_background_phase("static_resources", status="ready", progress=1.0)
+        mod._set_background_phase("compound_syn", status="ready", progress=1.0)
+        mod._set_background_phase(
+            "compound_ant", status="failed", progress=1.0, error="boom"
+        )
+        payload = snapshot()
+        self.assertTrue(payload["startup_complete"])
+        self.assertFalse(payload["tail_pending"])
+
     def test_snapshot_locked_while_word_cache_pending(self):
         payload = snapshot()
         self.assertFalse(payload["gate_ready"])

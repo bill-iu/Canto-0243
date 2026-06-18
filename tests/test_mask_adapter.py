@@ -11,7 +11,8 @@ from app.services.position_match.mask_adapter import (
 from app.services.position_match.spec import MatchSpec, SlotConstraint
 from app.services.query_match_spec_registry import build_match_spec_for_parsed
 from app.services.query_parse import parse_query
-from app.services.word_query_parser import normalize_search_query, parse_mask_query
+from app.services.query_lexer import normalize_search_query
+from app.services.query_grammar.mask import parse_mask_query
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 POSITION_MATCH_DIR = REPO_ROOT / "app" / "services" / "position_match"

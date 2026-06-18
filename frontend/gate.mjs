@@ -33,7 +33,8 @@ function tailPreloadProgress(data) {
   const phases = data?.phases || {};
   const sr = phases.static_resources?.progress ?? 0;
   const cs = phases.compound_syn?.progress ?? 0;
-  return (sr + cs) / 2;
+  const ca = phases.compound_ant?.progress ?? 0;
+  return (sr + cs + ca) / 3;
 }
 
 function formatGateStatusLabel(data, { connecting = false } = {}) {

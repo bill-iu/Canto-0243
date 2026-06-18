@@ -12,10 +12,10 @@ from app.services.query_parse import (
     build_match_spec,
     parse_query,
 )
-from app.services.word_query_parser import (
+from app.services.query_lexer import normalize_search_query
+from app.services.query_grammar.serial import (
     PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT,
     PURE_CHARS_SERIAL_HINT,
-    normalize_search_query,
 )
 
 

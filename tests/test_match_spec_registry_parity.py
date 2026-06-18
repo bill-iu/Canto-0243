@@ -6,7 +6,7 @@ import unittest
 from app.services.query_match_spec_registry import MATCH_SPEC_BUILDERS, build_match_spec_for_parsed
 from app.services.position_match.spec import get_equals_span
 from app.services.query_parse import QueryKind, normalize_and_parse, parse_query
-from app.services.word_query_parser import normalize_search_query
+from app.services.query_lexer import normalize_search_query
 
 
 def _parse(q: str):

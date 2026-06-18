@@ -9,7 +9,7 @@ from app.database import Base
 from app.models.word import Word
 from app.services.query_dispatch import search_words
 from app.services.query_parse import JyutpingAnchorQuery, parse_query
-from app.services.word_query_parser import normalize_search_query
+from app.services.query_lexer import normalize_search_query
 
 
 def _parse(q: str):

@@ -73,6 +73,7 @@ class OfflinePreloadTests(unittest.TestCase):
         complete_preload()
         mod._set_background_phase("static_resources", status="ready", progress=1.0)
         mod._set_background_phase("compound_syn", status="ready", progress=1.0)
+        mod._set_background_phase("compound_ant", status="ready", progress=1.0)
 
         payload = get_readiness_snapshot()
         self.assertTrue(payload["startup_complete"])

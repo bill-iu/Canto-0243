@@ -13,12 +13,9 @@ from app.services.query_parse import (
     build_match_spec,
     parse_query,
 )
-from app.services.word_query_parser import (
-    CONSECUTIVE_SLOT_CONNECTOR_HINT,
-    DIGIT_AFTER_SLOT_CONNECTOR_HINT,
-    mask_from_canonical_plus_query,
-    normalize_search_query,
-)
+from app.services.query_lexer import normalize_search_query
+from app.services.query_tokens import CONSECUTIVE_SLOT_CONNECTOR_HINT, DIGIT_AFTER_SLOT_CONNECTOR_HINT
+from app.services.query_grammar.plus import mask_from_canonical_plus_query
 
 
 def _parse(q: str):

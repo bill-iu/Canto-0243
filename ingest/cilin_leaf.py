@@ -165,7 +165,7 @@ def groups_to_word_id_pairs(
     char_to_id: Dict[str, int],
 ) -> List[dict]:
     """Map leaf groups to canonical (word_id, related_id) relation dicts."""
-    from ingest.relation_canonical import canonical_word_ids
+    from app.domain.relations.canonical import canonical_word_ids
 
     out: List[dict] = []
     seen: Set[Tuple[int, int, str]] = set()

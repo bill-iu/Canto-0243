@@ -1,8 +1,7 @@
-"""#3 驗收：query_lexer／query_grammar 拆分完成；word_query_parser 僅 facade。"""
+"""#3 驗收：query_lexer／query_grammar 為公開入口；word_query_parser facade 已移除。"""
 from __future__ import annotations
 
 import ast
-import importlib
 import unittest
 from pathlib import Path
 
@@ -59,11 +58,14 @@ class QueryGrammarModuleSmokeTests(unittest.TestCase):
 
 
 class QueryGrammarIsolationTests(unittest.TestCase):
-    def test_lexer_does_not_import_facade(self):
+    def test_word_query_parser_facade_removed(self):
+        self.assertFalse(FACADE_PATH.is_file())
+
+    def test_lexer_does_not_import_removed_facade(self):
         source = LEXER_PATH.read_text(encoding="utf-8")
         self.assertNotIn("word_query_parser", source)
 
-    def test_grammar_modules_do_not_import_facade(self):
+    def test_grammar_modules_do_not_import_removed_facade(self):
         for path in sorted(GRAMMAR_DIR.glob("*.py")):
             if path.name == "__init__.py":
                 continue
@@ -71,7 +73,7 @@ class QueryGrammarIsolationTests(unittest.TestCase):
             with self.subTest(module=path.name):
                 self.assertNotIn("word_query_parser", source)
 
-    def test_query_parse_does_not_import_facade(self):
+    def test_query_parse_does_not_import_removed_facade(self):
         source = (SERVICES / "query_parse.py").read_text(encoding="utf-8")
         tree = ast.parse(source)
         for node in ast.walk(tree):
@@ -81,32 +83,18 @@ class QueryGrammarIsolationTests(unittest.TestCase):
                 for alias in node.names:
                     self.assertNotIn("word_query_parser", alias.name)
 
-    def test_facade_has_no_function_defs(self):
-        source = FACADE_PATH.read_text(encoding="utf-8")
-        tree = ast.parse(source)
-        fn_defs = [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]
-        self.assertEqual(fn_defs, [], "word_query_parser must remain re-export only")
 
+class QueryGrammarPublicEntryTests(unittest.TestCase):
+    def test_lexer_normalize_is_importable(self):
+        from app.services.query_lexer import normalize_search_query
 
-class QueryGrammarFacadeParityTests(unittest.TestCase):
-    def test_facade_reexports_match_lexer_and_grammar(self):
-        import app.services.word_query_parser as facade
+        self.assertEqual(normalize_search_query("香0"), "+香0")
 
-        from app.services.query_lexer import normalize_search_query as lexer_normalize
-        from app.services.query_grammar.mask import parse_mask_query as grammar_mask
-        from app.services.query_grammar.serial import (
-            parse_serial_phoneme_anchor_query as grammar_serial,
-        )
+    def test_grammar_mask_is_importable(self):
+        from app.services.query_grammar.mask import parse_mask_query
 
-        self.assertIs(facade.normalize_search_query, lexer_normalize)
-        self.assertIs(facade.parse_mask_query, grammar_mask)
-        self.assertIs(facade.parse_serial_phoneme_anchor_query, grammar_serial)
-
-    def test_facade_all_symbols_importable(self):
-        facade = importlib.import_module("app.services.word_query_parser")
-        for name in facade.__all__:
-            with self.subTest(symbol=name):
-                self.assertTrue(hasattr(facade, name), f"missing re-export: {name}")
+        width, _codes, _literals = parse_mask_query("門0")
+        self.assertEqual(width, 2)
 
 
 if __name__ == "__main__":

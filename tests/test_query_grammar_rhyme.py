@@ -39,7 +39,7 @@ class RhymeStarIntegrationTests(unittest.TestCase):
         self.assertEqual(normalize_search_query("就="), "就=")
 
     def test_parse_via_facade(self):
-        from app.services.word_query_parser import parse_rhyme_anchor_query
+        from app.services.query_grammar.rhyme import parse_rhyme_anchor_query
 
         parsed = parse_rhyme_anchor_query("=就")
         self.assertIsNotNone(parsed)

@@ -188,6 +188,27 @@ class TestPoolProjectionSeam(unittest.TestCase):
                 self.assertIn(symbol, source)
 
 
+class TestTransitionFacadeRemoval(unittest.TestCase):
+    """#3: shallow pass-through modules removed; callers use real modules."""
+
+    REMOVED = (
+        REPO_ROOT / "app" / "services" / "query_route_registry.py",
+        REPO_ROOT / "app" / "services" / "word_query_parser.py",
+        REPO_ROOT / "app" / "domain" / "relations" / "pool_chars.py",
+        REPO_ROOT / "ingest" / "relation_canonical.py",
+    )
+
+    def test_shallow_facade_files_removed(self):
+        for path in self.REMOVED:
+            with self.subTest(path=path.name):
+                self.assertFalse(path.is_file(), f"facade still present: {path}")
+
+    def test_query_dispatch_imports_query_kind_registry(self):
+        source = DISPATCH_PATH.read_text(encoding="utf-8")
+        self.assertIn("query_kind_registry", source)
+        self.assertNotIn("query_route_registry", source)
+
+
 class TestCompoundSynSeam(unittest.TestCase):
     SOURCES_FORBIDDEN = (
         "load_compound_synonyms",
@@ -472,6 +493,11 @@ class TestGateFrontendSeam(unittest.TestCase):
         'fetch("/ready"',
         "仲未開得工",
     )
+
+    def test_gate_mjs_tail_progress_includes_compound_ant(self):
+        source = GATE_MJS_PATH.read_text(encoding="utf-8")
+        self.assertIn("compound_ant", source)
+        self.assertIn("/ 3", source)
 
     def test_index_html_has_no_client_gate_policy(self):
         source = INDEX_PATH.read_text(encoding="utf-8")

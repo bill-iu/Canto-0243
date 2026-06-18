@@ -22,7 +22,7 @@ from sqlalchemy import or_
 
 from app.database import SessionLocal
 from app.models.word import Word, WordRelation
-from ingest.relation_canonical import canonical_word_ids
+from app.domain.relations.canonical import canonical_word_ids
 from app.utils.jyutping_codec import get_0243_code
 
 WordKey = Tuple[str, str, str]  # (char, code, jyutping)

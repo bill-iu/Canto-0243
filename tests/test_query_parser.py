@@ -21,7 +21,7 @@ from app.services.query_parse import (
     parse_query,
     uses_match_spec,
 )
-from app.services.word_query_parser import normalize_search_query
+from app.services.query_lexer import normalize_search_query
 
 
 def _parse(q: str):
