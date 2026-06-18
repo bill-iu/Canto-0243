@@ -1,7 +1,7 @@
 import unittest
 
 from app.services.query_parse import (
-    StarAnchorQuery,
+    PlusAnchorQuery,
     CompoundAntQuery,
     CompoundSynQuery,
     DigitCodeQuery,
@@ -100,8 +100,8 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertNotIsInstance(parsed, RhymeAnchorQuery)
 
     def test_code_tail_literal(self):
-        parsed = self._parse("23*就")
-        self.assertIsInstance(parsed, StarAnchorQuery)
+        parsed = self._parse("23+就")
+        self.assertIsInstance(parsed, PlusAnchorQuery)
         self.assertEqual(parsed.code_prefix, "23")
         self.assertEqual(parsed.constraint, "literal")
         self.assertEqual(parsed.anchor, "就")
@@ -137,7 +137,7 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.width, 1)
 
     def test_rhyme_anchor_initial(self):
-        parsed = self._parse("?*=就")
+        parsed = self._parse("?+=就")
         self.assertIsInstance(parsed, RhymeAnchorQuery)
         self.assertEqual(parsed.constraint, "initial")
         self.assertEqual(parsed.anchor, "就")
@@ -179,7 +179,7 @@ class ParseQueryGoldenTests(unittest.TestCase):
         self.assertEqual(parsed.width, 3)
         self.assertEqual(parsed.anchor_pos, 1)
 
-        parsed_canonical = self._parse("?*港=?")
+        parsed_canonical = self._parse("?+港=?")
         self.assertIsInstance(parsed_canonical, TripleRhymeAnchorQuery)
         self.assertEqual(parsed_canonical.anchor, "港")
 
@@ -221,7 +221,7 @@ class BuildMatchSpecTests(unittest.TestCase):
 
     def test_code_tail(self):
         spec = build_match_spec(
-            StarAnchorQuery(
+            PlusAnchorQuery(
                 width=3,
                 constraint="literal",
                 anchor="就",
@@ -260,7 +260,7 @@ class BuildMatchSpecTests(unittest.TestCase):
         self.assertEqual(spec.code_prefix, "23")
 
     def test_code_tail_from_parse(self):
-        parsed = _parse("23*就")
+        parsed = _parse("23+就")
         spec = build_match_spec(parsed)
         self.assertIsNotNone(spec)
         self.assertEqual(spec.code_prefix, "23")

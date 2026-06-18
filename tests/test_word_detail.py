@@ -786,7 +786,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertNotIn("做", sr_chars)
             self.assertNotIn("做就", sr_chars)
 
-            double_rhyme = search_words(q="?*就=", mode="m1", db=session, limit=20, offset=0)
+            double_rhyme = search_words(q="?+就=", mode="m1", db=session, limit=20, offset=0)
             dr_chars = [r["char"] for r in double_rhyme]
             self.assertIn("做就", dr_chars)
             self.assertNotIn("做得", dr_chars)
@@ -796,7 +796,7 @@ class SearchSyntaxTests(unittest.TestCase):
             self.assertIn("就", si_chars)
             self.assertNotIn("做就", si_chars)
 
-            suffix_double = search_words(q="?*=就", mode="m1", db=session, limit=20, offset=0)
+            suffix_double = search_words(q="?+=就", mode="m1", db=session, limit=20, offset=0)
             sd_chars = [r["char"] for r in suffix_double]
             self.assertIn("做就", sd_chars)
             self.assertNotIn("做得", sd_chars)

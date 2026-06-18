@@ -21,7 +21,7 @@ class QueryKind(str, Enum):
     COMPOUND_SYN = "compound_syn"
     HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
-    STAR_ANCHOR = "star_anchor"
+    PLUS_ANCHOR = "plus_anchor"
     WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
     CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
     SERIAL_PHONEME = "serial_phoneme"
@@ -170,7 +170,7 @@ class SerialPhonemeAnchorQuery:
 
 
 @dataclass(frozen=True)
-class StarAnchorQuery:
+class PlusAnchorQuery:
     width: int
     constraint: str
     anchor: str
@@ -180,7 +180,7 @@ class StarAnchorQuery:
 
     @property
     def kind(self) -> QueryKind:
-        return QueryKind.STAR_ANCHOR
+        return QueryKind.PLUS_ANCHOR
 
     def to_handler_dict(self) -> dict:
         return asdict(self)
@@ -345,7 +345,7 @@ ParsedQuery = Union[
     PartialRhymeMaskQuery,
     PartialInitialMaskQuery,
     SerialPhonemeAnchorQuery,
-    StarAnchorQuery,
+    PlusAnchorQuery,
     WildcardCodeAnchorQuery,
     CodeRefMiddleRhymeQuery,
     LiteralRefQuery,

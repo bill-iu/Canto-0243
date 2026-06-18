@@ -1,4 +1,4 @@
-"""星號錨 grammar — normalize 收尾、mask 快路、parse（#3 下一輪）。"""
+"""加號錨 grammar — normalize 收尾、mask 快路、parse。"""
 from __future__ import annotations
 
 import re
@@ -9,18 +9,19 @@ from app.services.query_grammar import serial as serial_grammar
 from app.services.query_grammar.equals import is_framed_equals_query
 from app.services.query_tokens import CODE_TAIL_MIDDLE
 
-CODE_TAIL_RE = re.compile(rf"^(\d+){re.escape(CODE_TAIL_MIDDLE)}(.+)$")
+_CODE_TAIL_ESC = re.escape(CODE_TAIL_MIDDLE)
+CODE_TAIL_RE = re.compile(rf"^(\d+){_CODE_TAIL_ESC}(.+)$")
 AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
 
 _HEAD_LITERAL_TAIL_RE = re.compile(r"[_?%0-9=]")
 _MIDDLE_WILDCARD_BEFORE_CANTO_RE = re.compile(
-    rf"(?<![0-9*])([{re.escape('?_')}%])([一-龥])(?!=)"
+    rf"(?<![0-9{_CODE_TAIL_ESC}])([{re.escape('?_')}%])([一-龥])(?!=)"
 )
 
 
-def normalize_canonical_star_query(q: str) -> str:
-    """P0：首格字面 *X…、通配左中格 ?*字…（碼左參考字、韻錨、等號查詢唔插 *）。"""
-    if not q or "*" in q:
+def normalize_canonical_plus_query(q: str) -> str:
+    """首格字面 +X…、通配左中格 ?+字…（碼左參考字、韻錨、等號查詢唔插 +）。"""
+    if not q or CODE_TAIL_MIDDLE in q:
         return q
     if serial_grammar.blocks_star_normalize(q):
         return q
@@ -34,18 +35,20 @@ def normalize_canonical_star_query(q: str) -> str:
         if tail.startswith("="):
             return q
         if _HEAD_LITERAL_TAIL_RE.search(tail):
-            return "*" + q
-    return _MIDDLE_WILDCARD_BEFORE_CANTO_RE.sub(r"\1*\2", q)
+            return CODE_TAIL_MIDDLE + q
+    return _MIDDLE_WILDCARD_BEFORE_CANTO_RE.sub(
+        rf"\1{CODE_TAIL_MIDDLE}\2", q
+    )
 
 
-def mask_from_canonical_star_query(q: str) -> Optional[str]:
-    """`*` 規範缺字串 → 等價 mask（與 normalize 後首格／中格字面 MaskQuery 同一 MatchSpec）。"""
+def mask_from_canonical_plus_query(q: str) -> Optional[str]:
+    """`+` 規範缺字串 → 等價 mask（與 normalize 後首格／中格字面 MaskQuery 同一 MatchSpec）。"""
     if not q or "=" in q:
         return None
-    m = re.match(r"^\*([一-龥][0-9_?%]+)$", q)
+    m = re.match(rf"^{_CODE_TAIL_ESC}([一-龥][0-9_?%]+)$", q)
     if m:
         return m.group(1)
-    m = re.match(r"^([_?%])\*([一-龥])([0-9_?%]*)$", q)
+    m = re.match(rf"^([_?%]){_CODE_TAIL_ESC}([一-龥])([0-9_?%]*)$", q)
     if m:
         return m.group(1) + m.group(2) + m.group(3)
     return None
@@ -93,18 +96,12 @@ def parse_code_tail_query(q: str) -> Optional[dict]:
     return None
 
 
-def parse_star_anchor_query(q: str) -> Optional[dict]:
-    """
-    Star-anchor family (綜合頭/中/尾格):
-
-    - 尾格（既有）: {code}*{漢字}{可選 '='}  /  {code}*= {漢字}（同聲母，legacy）
-    - 中格（新增）: {left_code}*{漢字}{可選 '='}{right_code}
-    - 頭格（新增）: *{漢字}{可選 '='}{right_code}
-    """
+def parse_plus_anchor_query(q: str) -> Optional[dict]:
+    """加號錨（頭／中／尾格）：{code}+{漢字}、{left}+{漢字}{right}、+{漢字}{code}。"""
     if not q or CODE_TAIL_MIDDLE not in q or "@" in q:
         return None
 
-    m = re.match(r"^\*([一-龥])(=)?(\d+)$", q)
+    m = re.match(rf"^{_CODE_TAIL_ESC}([一-龥])(=)?(\d+)$", q)
     if m:
         anchor, eq, right = m.group(1), m.group(2), m.group(3)
         width = 1 + len(right)
@@ -118,7 +115,7 @@ def parse_star_anchor_query(q: str) -> Optional[dict]:
             "code_prefix": None,
         }
 
-    m = re.match(r"^(\d+)\*([一-龥])(=)?(\d+)$", q)
+    m = re.match(rf"^(\d+){_CODE_TAIL_ESC}([一-龥])(=)?(\d+)$", q)
     if m:
         left, anchor, eq, right = m.group(1), m.group(2), m.group(3), m.group(4)
         anchor_pos = len(left)
@@ -135,7 +132,7 @@ def parse_star_anchor_query(q: str) -> Optional[dict]:
             "code_prefix": None,
         }
 
-    m = re.match(r"^(\d+)\*([一-龥])(=)?$", q)
+    m = re.match(rf"^(\d+){_CODE_TAIL_ESC}([一-龥])(=)?$", q)
     if m:
         code, anchor, eq = m.group(1), m.group(2), m.group(3)
         width = len(code) + 1
@@ -148,7 +145,7 @@ def parse_star_anchor_query(q: str) -> Optional[dict]:
             "code_prefix": code,
         }
 
-    m = re.match(r"^(\d+)\*=([一-龥])$", q)
+    m = re.match(rf"^(\d+){_CODE_TAIL_ESC}=([一-龥])$", q)
     if m:
         code, anchor = m.group(1), m.group(2)
         width = len(code) + 1

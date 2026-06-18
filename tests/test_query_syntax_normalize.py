@@ -28,10 +28,10 @@ class NormalizeQuerySyntaxTests(unittest.TestCase):
 
     def test_search_query_chains_code_tail(self):
         self.assertEqual(normalize_search_query(" 33～～你 "), "33~~你")
-        self.assertEqual(normalize_search_query("23&就"), "23*就")
-        self.assertEqual(normalize_search_query("2＊香=0"), "2*香=0")
-        self.assertEqual(normalize_search_query("23＋就"), "23*就")
-        self.assertEqual(normalize_search_query("?hon"), "?*hon")
+        self.assertEqual(normalize_search_query("23&就"), "23+就")
+        self.assertEqual(normalize_search_query("2＊香=0"), "2+香=0")
+        self.assertEqual(normalize_search_query("23＋就"), "23+就")
+        self.assertEqual(normalize_search_query("?hon"), "?+hon")
 
 
 class FullwidthParseGoldenTests(unittest.TestCase):

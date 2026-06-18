@@ -28,12 +28,12 @@ from app.services.query_grammar.serial import (
     parse_serial_phoneme_anchor_query,
     prefix_wildcard_equals_missing_eq_hint,
 )
-from app.services.query_grammar.star import (
-    mask_from_canonical_star_query,
-    normalize_canonical_star_query,
+from app.services.query_grammar.plus import (
+    mask_from_canonical_plus_query,
+    normalize_canonical_plus_query,
     parse_at_tail_query,
     parse_code_tail_query,
-    parse_star_anchor_query,
+    parse_plus_anchor_query,
 )
 from app.services.query_grammar.wca import (
     looks_like_wildcard_code_anchor_query,
@@ -69,8 +69,8 @@ __all__ = [
     "is_wildcard_char",
     "looks_like_mask_query",
     "looks_like_wildcard_code_anchor_query",
-    "mask_from_canonical_star_query",
-    "normalize_canonical_star_query",
+    "mask_from_canonical_plus_query",
+    "normalize_canonical_plus_query",
     "normalize_code_tail_separators",
     "normalize_jyutping_slot_connectors",
     "normalize_query_syntax",
@@ -88,7 +88,7 @@ __all__ = [
     "parse_relation_syntax",
     "parse_rhyme_anchor_query",
     "parse_serial_phoneme_anchor_query",
-    "parse_star_anchor_query",
+    "parse_plus_anchor_query",
     "parse_triple_rhyme_anchor_query",
     "parse_wildcard_code_anchor_query",
     "prefix_wildcard_equals_missing_eq_hint",

@@ -21,7 +21,7 @@ from app.services.position_match.spec import MatchSpec, SlotConstraint
 from app.services.query_match_spec_registry import build_match_spec_for_parsed as build_mask_family_match_spec
 from app.services.query_parse import (
     RhymeAnchorQuery,
-    StarAnchorQuery,
+    PlusAnchorQuery,
     LiteralRefQuery,
     MaskQuery,
     HybridCodeQuery,
@@ -91,7 +91,7 @@ class TestPositionQueryToMatchSpec(unittest.TestCase):
         self.assertEqual(spec.slots[0].value, "就")
 
     def test_code_tail_literal_to_spec(self):
-        q = StarAnchorQuery(
+        q = PlusAnchorQuery(
             width=3,
             constraint="literal",
             anchor="就",

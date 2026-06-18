@@ -33,7 +33,7 @@ class P0StarAliasSearchEquivalenceTests(unittest.TestCase):
             Word(char="他人", code="20", jyutping="taa1 jan4", length=2),
         ) as db:
             a = _chars(search_words(q="門0", mode="m1", db=db, limit=10))
-            b = _chars(search_words(q="*門0", mode="m1", db=db, limit=10))
+            b = _chars(search_words(q="+門0", mode="m1", db=db, limit=10))
             self.assertEqual(a, b)
             self.assertIn("門前", a)
             self.assertNotIn("他人", a)
@@ -126,7 +126,7 @@ class WildcardCodeAnchorBehaviorTests(unittest.TestCase):
                 length=3,
             ),
         ) as db:
-            found = _chars(search_words(q="?30*人", mode="m1", db=db, limit=20))
+            found = _chars(search_words(q="?30+人", mode="m1", db=db, limit=20))
             self.assertIn("老師本人", found)
             self.assertNotIn("讀書人", found)
 
@@ -155,7 +155,7 @@ class WildcardCodeAnchorBehaviorTests(unittest.TestCase):
 
 
 class SingleCharRhymeBehaviorTests(unittest.TestCase):
-    """單字韻錨 ?就= — 只返單字；?*就= 才返二字。"""
+    """單字韻錨 ?就= — 只返單字；?+就= 才返二字。"""
 
     def setUp(self):
         reset_word_cache_for_tests()
@@ -198,7 +198,7 @@ class SingleCharRhymeBehaviorTests(unittest.TestCase):
             ),
             Word(char="就", code="2", jyutping="zau6", finals='["au"]', initials='["z"]', length=1),
         ) as db:
-            found = _chars(search_words(q="?*就=", mode="m1", db=db, limit=20))
+            found = _chars(search_words(q="?+就=", mode="m1", db=db, limit=20))
             self.assertIn("做就", found)
             self.assertNotIn("做得", found)
             self.assertNotIn("就", found)
@@ -252,7 +252,7 @@ class CodeRefMiddleRhymeBehaviorTests(unittest.TestCase):
 
 
 class HeadLiteralWildcardCodeAnchorBehaviorTests(unittest.TestCase):
-    """頭格字面 + 通配碼錨：*香?30人"""
+    """頭格字面 + 通配碼錨：+香?30人"""
 
     def setUp(self):
         reset_word_cache_for_tests()
@@ -276,7 +276,7 @@ class HeadLiteralWildcardCodeAnchorBehaviorTests(unittest.TestCase):
                 length=3,
             ),
         ) as db:
-            found = _chars(search_words(q="*香?30人", mode="m1", db=db, limit=20))
+            found = _chars(search_words(q="+香?30人", mode="m1", db=db, limit=20))
             self.assertIn("香江本人", found)
             self.assertNotIn("香港人", found)
 

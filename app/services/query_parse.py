@@ -29,13 +29,14 @@ from app.services.query_grammar.serial import (
     parse_serial_phoneme_anchor_query,
     prefix_wildcard_equals_missing_eq_hint,
 )
-from app.services.query_grammar.star import (
-    mask_from_canonical_star_query,
+from app.services.query_grammar.plus import (
+    mask_from_canonical_plus_query,
     parse_at_tail_query,
-    parse_star_anchor_query,
+    parse_plus_anchor_query,
 )
 from app.services.query_grammar.wca import parse_wildcard_code_anchor_query
 from app.services.query_lexer import normalize_search_query, slot_connector_syntax_error
+from app.services.query_tokens import CODE_TAIL_MIDDLE
 from app.services.query_types import (
     HYBRID_CODE_RE,
     JYUTPING_ANCHOR_INVALID_HINT,
@@ -60,7 +61,7 @@ from app.services.query_types import (
     RelationLookupQuery,
     RhymeAnchorQuery,
     SerialPhonemeAnchorQuery,
-    StarAnchorQuery,
+    PlusAnchorQuery,
     TripleRhymeAnchorQuery,
     UnmatchedQuery,
     WildcardCodeAnchorQuery,
@@ -90,7 +91,7 @@ __all__ = [
     "RelationLookupQuery",
     "RhymeAnchorQuery",
     "SerialPhonemeAnchorQuery",
-    "StarAnchorQuery",
+    "PlusAnchorQuery",
     "TripleRhymeAnchorQuery",
     "UnmatchedQuery",
     "WildcardCodeAnchorQuery",
@@ -190,28 +191,29 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     if is_framed_equals_query(q):
         return EqualsQuery(raw_q=q)
 
-    mask_literal = mask_from_canonical_star_query(q)
+    mask_literal = mask_from_canonical_plus_query(q)
     if mask_literal:
         return MaskQuery(raw_q=mask_literal)
 
-    star_parsed = parse_star_anchor_query(q)
-    if star_parsed:
-        return StarAnchorQuery(**star_parsed)
-    if "*" in q:
-        if re.match(r"^\d+\*=([一-龥])\d+$", q):
+    plus_parsed = parse_plus_anchor_query(q)
+    if plus_parsed:
+        return PlusAnchorQuery(**plus_parsed)
+    if CODE_TAIL_MIDDLE in q:
+        esc = re.escape(CODE_TAIL_MIDDLE)
+        if re.match(rf"^\d+{esc}=([一-龥])\d+$", q):
             return UnmatchedQuery(
                 raw_q=q,
-                hint="`=` 只能緊貼錨字後面：請改用 `2*就3`（字面）或 `2*就=3`（同韻母）。",
+                hint=f"`=` 只能緊貼錨字後面：請改用 `2+就3`（字面）或 `2+就=3`（同韻母）。",
             )
-        if re.match(r"^\*[一-龥]\d+=$", q):
+        if re.match(rf"^{esc}[一-龥]\d+=$", q):
             return UnmatchedQuery(
                 raw_q=q,
-                hint="`=` 只能緊貼錨字後面：請改用 `*門0`（字面）或 `*門=0`（同韻母）。",
+                hint=f"`=` 只能緊貼錨字後面：請改用 `+門0`（字面）或 `+門=0`（同韻母）。",
             )
-        if re.match(r"^\*[一-龥](=)?$", q):
+        if re.match(rf"^{esc}[一-龥](=)?$", q):
             return UnmatchedQuery(
                 raw_q=q,
-                hint="星號錨（頭格）需要右碼：請改用 `*門0`（字面）或 `*門=0`（同韻母）。",
+                hint="加號錨（頭格）需要右碼：請改用 `+門0`（字面）或 `+門=0`（同韻母）。",
             )
 
     at_tail_parsed = parse_at_tail_query(q)

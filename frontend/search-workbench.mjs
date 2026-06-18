@@ -322,7 +322,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
 
   if (!input) {
-    $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">香??</code>、<code translate="no">23*就=</code>、<code translate="no">?=就</code> 或 <code translate="no">香港=</code>。</p>';
+    $.results.innerHTML = '<p class="info"><strong>請輸入搜尋內容。</strong><br>例如 <code translate="no">香??</code>、<code translate="no">23+就=</code>、<code translate="no">?=就</code> 或 <code translate="no">香港=</code>。</p>';
     tab.q = "";
     persistTabs();
     updateShuffleButton();

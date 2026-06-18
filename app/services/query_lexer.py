@@ -1,4 +1,4 @@
-"""查詢 lexer — normalize 全鏈（#3 試點；canonical star 仍由 facade 收尾）。"""
+"""查詢 lexer — normalize 全鏈（#3 試點；canonical plus 仍由 facade 收尾）。"""
 from __future__ import annotations
 
 import re
@@ -14,8 +14,8 @@ from app.services.query_tokens import (
 
 
 def normalize_code_tail_separators(q: str) -> str:
-    """Map legacy code-tail separators (&, ·) to * only at digit-prefix positions."""
-    m = re.match(r"^(\d+)([&·*])(.+)$", q)
+    """Legacy 碼尾 &／·／* → 規範形 +。"""
+    m = re.match(r"^(\d+)([&·*+])(.+)$", q)
     if not m:
         return q
     sep = m.group(2)
@@ -25,38 +25,38 @@ def normalize_code_tail_separators(q: str) -> str:
 
 
 def normalize_query_syntax(q: str) -> str:
-    """Full-width relation/wildcard punctuation → ASCII (查詢分派入口)."""
+    """全形標點 → ASCII；`*` silent 別名 → `+`。"""
     q = q.replace("＊", "*").replace("﹡", "*")
     q = q.replace("＋", "+")
-    q = q.replace("+", "*")
+    q = q.replace("*", CODE_TAIL_MIDDLE)
     q = q.replace("！！", "!!").replace("～～", "~~")
     return q.replace("！", "!").replace("～", "~").replace("？", "?")
 
 
 def normalize_jyutping_slot_connectors(q: str) -> str:
-    """ADR-0013：缺字型粵拼錨 slot 連接符規範化（?hon→?*hon、3?ngo4→3*ngo4）。"""
+    """粵拼錨 slot 連接符規範化（?hon→?+hon、3?ngo4→3+ngo4）。"""
     if not q or re.search(CANTO_CHARS_RE, q):
         m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
         if m:
-            return f"{m.group(1)}*{m.group(2)}{m.group(3)}"
+            return f"{m.group(1)}{CODE_TAIL_MIDDLE}{m.group(2)}{m.group(3)}"
         return q
     m = re.match(r"^(\?)([a-zA-Z]+)(\?)$", q)
-    if m and "*" not in q:
-        return f"?*{m.group(2)}?"
+    if m and CODE_TAIL_MIDDLE not in q:
+        return f"?{CODE_TAIL_MIDDLE}{m.group(2)}?"
     m = re.match(r"^(\?)([a-zA-Z]+)$", q)
-    if m and "*" not in q:
-        return f"?*{m.group(2)}"
+    if m and CODE_TAIL_MIDDLE not in q:
+        return f"?{CODE_TAIL_MIDDLE}{m.group(2)}"
     m = re.match(r"^(\d)\?([a-zA-Z]+)(\d)$", q)
     if m:
-        return f"{m.group(1)}*{m.group(2)}{m.group(3)}"
+        return f"{m.group(1)}{CODE_TAIL_MIDDLE}{m.group(2)}{m.group(3)}"
     return q
 
 
 def slot_connector_syntax_error(q: str) -> Optional[str]:
-    """連續 ** 或 * 後接碼 → hint 文案。"""
-    if "**" in q:
+    """連續 ++ 或 + 後接碼 → hint。"""
+    if "++" in q:
         return CONSECUTIVE_SLOT_CONNECTOR_HINT
-    if re.search(r"\*\d", q):
+    if re.search(rf"{re.escape(CODE_TAIL_MIDDLE)}\d", q):
         return DIGIT_AFTER_SLOT_CONNECTOR_HINT
     return None
 
@@ -78,15 +78,15 @@ def normalize_redundant_single_char_initial(q: str) -> str:
 
 
 def normalize_middle_rhyme_triple(q: str) -> str:
-    """?{字}=? → ?*{字}=?（中格同韻三字；中間無數字）。"""
+    """?{字}=? → ?+{字}=?（中格同韻三字；中間無數字）。"""
     m = re.match(r"^\?([一-龥])=\?$", q)
     if m:
-        return f"?*{m.group(1)}=?"
+        return f"?{CODE_TAIL_MIDDLE}{m.group(1)}=?"
     return q
 
 
 def normalize_search_query_core(q: str) -> str:
-    """normalize 主鏈（不含 canonical star）。"""
+    """normalize 主鏈（不含 canonical plus）。"""
     from app.services.query_grammar.rhyme import (
         normalize_partial_initial_mask_query,
         normalize_partial_rhyme_mask_query,
@@ -103,7 +103,7 @@ def normalize_search_query_core(q: str) -> str:
 
 
 def normalize_search_query(q: str) -> str:
-    """查詢分派入口：strip、code-tail、全形標點、星號槽規範化。"""
-    from app.services.query_grammar.star import normalize_canonical_star_query
+    """查詢分派入口：strip、code-tail、全形標點、加號槽規範化。"""
+    from app.services.query_grammar.plus import normalize_canonical_plus_query
 
-    return normalize_canonical_star_query(normalize_search_query_core(q))
+    return normalize_canonical_plus_query(normalize_search_query_core(q))

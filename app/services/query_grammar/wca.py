@@ -6,6 +6,8 @@ from typing import Optional
 
 from app.services.query_tokens import CANTO_CHARS_RE, CODE_TAIL_MIDDLE, is_wildcard_char
 
+_PLUS = re.escape(CODE_TAIL_MIDDLE)
+
 
 def _tokenize(body: str) -> Optional[list[tuple[str, str]]]:
     tokens: list[tuple[str, str]] = []
@@ -78,12 +80,12 @@ def _tokens_to_spec(
 
 
 def parse_wildcard_code_anchor_query(q: str) -> Optional[dict]:
-    """通配碼錨：?30人、?30*人、*香?30人（左至右掃描）。"""
+    """通配碼錨：?30人、?30+人、+香?30人（左至右掃描）。"""
     if not q or "@" in q or "=" in q:
         return None
-    if re.match(r"^\d+\*", q):
+    if re.match(rf"^\d+{_PLUS}", q):
         return None
-    m = re.match(r"^\*([一-龥])([?_%][0-9_?%*一-龥]+)$", q)
+    m = re.match(rf"^{_PLUS}([一-龥])([?_%][0-9_?%{_PLUS}一-龥]+)$", q)
     if m:
         tokens = _tokenize(m.group(2))
         if not tokens:

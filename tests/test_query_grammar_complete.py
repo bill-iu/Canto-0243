@@ -19,10 +19,10 @@ class QueryGrammarModuleSmokeTests(unittest.TestCase):
 
         self.assertTrue(is_framed_equals_query("香港="))
 
-    def test_star_canonical_normalize(self):
-        from app.services.query_grammar.star import normalize_canonical_star_query
+    def test_plus_canonical_normalize(self):
+        from app.services.query_grammar.plus import normalize_canonical_plus_query
 
-        self.assertEqual(normalize_canonical_star_query("香0"), "*香0")
+        self.assertEqual(normalize_canonical_plus_query("香0"), "+香0")
 
     def test_serial_phoneme_anchor(self):
         from app.services.query_grammar.serial import parse_serial_phoneme_anchor_query

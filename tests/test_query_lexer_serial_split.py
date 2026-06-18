@@ -5,10 +5,10 @@ import unittest
 
 
 class QueryLexerCoreTests(unittest.TestCase):
-    def test_middle_rhyme_triple_inserts_star_connector(self):
+    def test_middle_rhyme_triple_inserts_plus_connector(self):
         from app.services.query_lexer import normalize_search_query_core
 
-        self.assertEqual(normalize_search_query_core("?港=?"), "?*港=?")
+        self.assertEqual(normalize_search_query_core("?港=?"), "?+港=?")
 
 
 class QueryGrammarSerialTests(unittest.TestCase):
@@ -32,12 +32,12 @@ class QueryParserFacadeTests(unittest.TestCase):
     def test_normalize_search_query_end_to_end_via_facade(self):
         from app.services.word_query_parser import normalize_search_query
 
-        self.assertEqual(normalize_search_query(" 23&就 "), "23*就")
+        self.assertEqual(normalize_search_query(" 23&就 "), "23+就")
 
     def test_normalize_search_query_via_lexer_module(self):
         from app.services.query_lexer import normalize_search_query
 
-        self.assertEqual(normalize_search_query("香0"), "*香0")
+        self.assertEqual(normalize_search_query("香0"), "+香0")
 
     def test_serial_parse_via_facade(self):
         from app.services.word_query_parser import parse_serial_phoneme_anchor_query
@@ -47,22 +47,22 @@ class QueryParserFacadeTests(unittest.TestCase):
         self.assertEqual(parsed["constraint"], "final")
 
 
-class QueryGrammarStarEqualsTests(unittest.TestCase):
+class QueryGrammarPlusEqualsTests(unittest.TestCase):
     def test_framed_equals_via_equals_stub(self):
         from app.services.query_grammar.equals import is_framed_equals_query
 
         self.assertTrue(is_framed_equals_query("香港="))
         self.assertTrue(is_framed_equals_query("2=我3"))
 
-    def test_star_head_literal_normalize(self):
-        from app.services.query_grammar.star import normalize_canonical_star_query
+    def test_plus_head_literal_normalize(self):
+        from app.services.query_grammar.plus import normalize_canonical_plus_query
 
-        self.assertEqual(normalize_canonical_star_query("香0"), "*香0")
+        self.assertEqual(normalize_canonical_plus_query("香0"), "+香0")
 
-    def test_mask_from_canonical_star(self):
-        from app.services.query_grammar.star import mask_from_canonical_star_query
+    def test_mask_from_canonical_plus(self):
+        from app.services.query_grammar.plus import mask_from_canonical_plus_query
 
-        self.assertEqual(mask_from_canonical_star_query("*門0"), "門0")
+        self.assertEqual(mask_from_canonical_plus_query("+門0"), "門0")
 
     def test_grammar_modules_do_not_import_word_query_parser(self):
         from pathlib import Path

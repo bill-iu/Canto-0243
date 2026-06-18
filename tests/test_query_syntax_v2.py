@@ -1,4 +1,4 @@
-"""ADR-0012/0013 查詢語法 v2 — normalize／parse／spec 契約（行為見 test_query_syntax_v2_behavior）。"""
+"""ADR-0012/0015 查詢語法 v2 — normalize／parse／spec 契約（行為見 test_query_syntax_v2_behavior）。"""
 from __future__ import annotations
 
 import unittest
@@ -6,8 +6,8 @@ import unittest
 from app.services.query_parse import (
     CodeRefMiddleRhymeQuery,
     JyutpingAnchorQuery,
+    PlusAnchorQuery,
     RhymeAnchorQuery,
-    StarAnchorQuery,
     UnmatchedQuery,
     WildcardCodeAnchorQuery,
     build_match_spec,
@@ -16,7 +16,7 @@ from app.services.query_parse import (
 from app.services.word_query_parser import (
     CONSECUTIVE_SLOT_CONNECTOR_HINT,
     DIGIT_AFTER_SLOT_CONNECTOR_HINT,
-    mask_from_canonical_star_query,
+    mask_from_canonical_plus_query,
     normalize_search_query,
 )
 
@@ -25,19 +25,19 @@ def _parse(q: str):
     return parse_query(normalize_search_query(q))
 
 
-class NormalizeCanonicalStarTests(unittest.TestCase):
+class NormalizeCanonicalPlusTests(unittest.TestCase):
     def test_head_literal_mask(self):
-        self.assertEqual(normalize_search_query("香??"), "*香??")
-        self.assertEqual(normalize_search_query("門0"), "*門0")
+        self.assertEqual(normalize_search_query("香??"), "+香??")
+        self.assertEqual(normalize_search_query("門0"), "+門0")
 
     def test_head_skips_pure_word_lookup(self):
         self.assertEqual(normalize_search_query("香港"), "香港")
         self.assertEqual(normalize_search_query("香"), "香")
 
     def test_middle_wildcard_before_canto(self):
-        self.assertEqual(normalize_search_query("?你?"), "?*你?")
+        self.assertEqual(normalize_search_query("?你?"), "?+你?")
 
-    def test_no_star_when_digit_before_canto(self):
+    def test_no_plus_when_digit_before_canto(self):
         self.assertEqual(normalize_search_query("?30人"), "?30人")
 
     def test_skips_equals_and_rhyme_anchors(self):
@@ -45,29 +45,29 @@ class NormalizeCanonicalStarTests(unittest.TestCase):
         self.assertEqual(normalize_search_query("香=?"), "香=?")
 
     def test_middle_rhyme_triple_normalizes(self):
-        self.assertEqual(normalize_search_query("?港=?"), "?*港=?")
+        self.assertEqual(normalize_search_query("?港=?"), "?+港=?")
         self.assertEqual(normalize_search_query("?3人=?"), "?3人=?")
 
     def test_redundant_single_char_initial(self):
         self.assertEqual(normalize_search_query("?=就"), "=就")
 
 
-class CanonicalStarMaskParseTests(unittest.TestCase):
+class CanonicalPlusMaskParseTests(unittest.TestCase):
     def test_head_mask_from_canonical(self):
-        self.assertEqual(mask_from_canonical_star_query("*香??"), "香??")
-        self.assertEqual(mask_from_canonical_star_query("*門0"), "門0")
+        self.assertEqual(mask_from_canonical_plus_query("+香??"), "香??")
+        self.assertEqual(mask_from_canonical_plus_query("+門0"), "門0")
 
     def test_middle_mask_from_canonical(self):
-        self.assertEqual(mask_from_canonical_star_query("?*你?"), "?你?")
+        self.assertEqual(mask_from_canonical_plus_query("?+你?"), "?你?")
 
     def test_rejects_rhyme_head(self):
-        self.assertIsNone(mask_from_canonical_star_query("*門=0"))
+        self.assertIsNone(mask_from_canonical_plus_query("+門=0"))
 
 
 class P0EquivalentMatchSpecTests(unittest.TestCase):
     def test_men0_alias_same_spec(self):
         spec_a = build_match_spec(_parse("門0"))
-        spec_b = build_match_spec(_parse("*門0"))
+        spec_b = build_match_spec(_parse("+門0"))
         self.assertEqual(spec_a.width, spec_b.width)
         self.assertEqual(spec_a.mask, spec_b.mask)
         self.assertEqual(
@@ -77,18 +77,18 @@ class P0EquivalentMatchSpecTests(unittest.TestCase):
 
     def test_heung_mask_alias_same_spec(self):
         spec_a = build_match_spec(_parse("香??"))
-        spec_b = build_match_spec(_parse("*香??"))
+        spec_b = build_match_spec(_parse("+香??"))
         self.assertEqual(spec_a.mask, spec_b.mask)
         self.assertEqual(spec_a.width, 3)
 
     def test_middle_you_same_spec(self):
         spec_a = build_match_spec(_parse("?你?"))
-        spec_b = build_match_spec(_parse("?*你?"))
+        spec_b = build_match_spec(_parse("?+你?"))
         self.assertEqual(spec_a.mask, spec_b.mask)
 
     def test_middle_rhyme_triple_same_spec(self):
         spec_a = build_match_spec(_parse("?港=?"))
-        spec_b = build_match_spec(_parse("?*港=?"))
+        spec_b = build_match_spec(_parse("?+港=?"))
         self.assertEqual(spec_a.width, spec_b.width)
         self.assertEqual(spec_a.mask, spec_b.mask)
 
@@ -99,8 +99,8 @@ class P1WildcardCodeAnchorParseTests(unittest.TestCase):
         self.assertIsInstance(parsed, WildcardCodeAnchorQuery)
         self.assertEqual(parsed.width, 3)
 
-    def test_four_syllable_star_before_ref(self):
-        parsed = _parse("?30*人")
+    def test_four_syllable_plus_before_ref(self):
+        parsed = _parse("?30+人")
         self.assertIsInstance(parsed, WildcardCodeAnchorQuery)
         self.assertEqual(parsed.width, 4)
 
@@ -120,8 +120,8 @@ class P2SingleCharRhymeTests(unittest.TestCase):
         spec = build_match_spec(_parse("?就="))
         self.assertEqual(spec.width, 1)
 
-    def test_double_char_star_rhyme(self):
-        parsed = _parse("?*就=")
+    def test_double_char_plus_rhyme(self):
+        parsed = _parse("?+就=")
         self.assertIsInstance(parsed, RhymeAnchorQuery)
         self.assertEqual(parsed.width, 2)
 
@@ -143,19 +143,19 @@ class P3CodeRefMiddleRhymeTests(unittest.TestCase):
 
 class P4HeadLiteralExtensionTests(unittest.TestCase):
     def test_head_plus_wca(self):
-        parsed = _parse("*香?30人")
+        parsed = _parse("+香?30人")
         self.assertIsInstance(parsed, WildcardCodeAnchorQuery)
         self.assertEqual(parsed.width, 4)
         self.assertEqual(parsed.head_literal, "香")
 
 
-class PlusAliasNormalizeTests(unittest.TestCase):
-    def test_plus_and_fullwidth_plus_to_star(self):
-        self.assertEqual(normalize_search_query("23+就"), "23*就")
-        self.assertEqual(normalize_search_query("23＋就"), "23*就")
+class LegacyStarAliasTests(unittest.TestCase):
+    def test_star_alias_normalizes_to_plus(self):
+        self.assertEqual(normalize_search_query("23*就"), "23+就")
+        self.assertEqual(normalize_search_query("23＊就"), "23+就")
 
-    def test_plus_alias_parses_like_star(self):
-        self.assertIsInstance(_parse("23+就"), StarAnchorQuery)
+    def test_star_alias_parses_like_plus(self):
+        self.assertIsInstance(_parse("23*就"), PlusAnchorQuery)
         self.assertEqual(_parse("23+就").anchor, "就")
 
 
@@ -165,25 +165,25 @@ class SlotConnectorSyntaxErrorTests(unittest.TestCase):
         self.assertIsInstance(parsed, UnmatchedQuery)
         self.assertEqual(parsed.hint, CONSECUTIVE_SLOT_CONNECTOR_HINT)
 
-    def test_star_before_digit_hint(self):
-        parsed = _parse("2*好*3")
+    def test_plus_before_digit_hint(self):
+        parsed = _parse("2+好+3")
         self.assertIsInstance(parsed, UnmatchedQuery)
         self.assertEqual(parsed.hint, DIGIT_AFTER_SLOT_CONNECTOR_HINT)
 
 
 class JyutpingSlotNormalizeTests(unittest.TestCase):
-    def test_question_hon_inserts_star(self):
-        self.assertEqual(normalize_search_query("?hon"), "?*hon")
+    def test_question_hon_inserts_plus(self):
+        self.assertEqual(normalize_search_query("?hon"), "?+hon")
 
-    def test_triple_yut_inserts_star(self):
-        self.assertEqual(normalize_search_query("?yut?"), "?*yut?")
+    def test_triple_yut_inserts_plus(self):
+        self.assertEqual(normalize_search_query("?yut?"), "?+yut?")
 
     def test_code_syllable_three_replaces_question(self):
-        self.assertEqual(normalize_search_query("3?ngo4"), "3*ngo4")
-        self.assertEqual(normalize_search_query("3+ngo4"), "3*ngo4")
+        self.assertEqual(normalize_search_query("3?ngo4"), "3+ngo4")
+        self.assertEqual(normalize_search_query("3*ngo4"), "3+ngo4")
 
 
-class CodeRhymeStarTailParseTests(unittest.TestCase):
+class CodeRhymePlusTailParseTests(unittest.TestCase):
     def test_23_plus_o_is_three_syllable_jyutping(self):
         parsed = _parse("23+o")
         self.assertIsInstance(parsed, JyutpingAnchorQuery)

@@ -23,7 +23,7 @@ from app.services.query_types import (
     QueryKind,
     RhymeAnchorQuery,
     SerialPhonemeAnchorQuery,
-    StarAnchorQuery,
+    PlusAnchorQuery,
     TripleRhymeAnchorQuery,
     WildcardCodeAnchorQuery,
 )
@@ -148,9 +148,9 @@ def _spec_serial_phoneme(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
-def _spec_star_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.STAR_ANCHOR
-    q = parsed  # type: StarAnchorQuery
+def _spec_plus_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    assert parsed.kind == QueryKind.PLUS_ANCHOR
+    q = parsed  # type: PlusAnchorQuery
     spec = MatchSpec(width=q.width, code_prefix=q.code_prefix)
     spec.mask = "?" * q.width
     for pos, d in q.code_slots:
@@ -322,7 +322,7 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.PARTIAL_RHYME_MASK: _spec_partial_rhyme_mask,
     QueryKind.PARTIAL_INITIAL_MASK: _spec_partial_initial_mask,
     QueryKind.SERIAL_PHONEME: _spec_serial_phoneme,
-    QueryKind.STAR_ANCHOR: _spec_star_anchor,
+    QueryKind.PLUS_ANCHOR: _spec_plus_anchor,
     QueryKind.LITERAL_REF: _spec_literal_ref,
     QueryKind.WILDCARD_CODE_ANCHOR: _spec_wildcard_code_anchor,
     QueryKind.CODE_REF_MIDDLE_RHYME: _spec_code_ref_middle_rhyme,

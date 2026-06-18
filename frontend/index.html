@@ -221,7 +221,7 @@
           </div>
           <div class="search-row">
             <div class="search-input-wrap" id="searchInputWrap">
-              <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23*就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
+              <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23+就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
             </div>
             <div class="search-actions">
               <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
@@ -249,7 +249,7 @@
       <div class="guide-hero">
         <p class="eyebrow">Search manual</p>
         <h1 id="guideTitle" tabindex="-1">所有搜尋語法</h1>
-        <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 在錨字<strong>後</strong> → 韻母；在錨字<strong>前</strong> → 聲母（一般查詢與 <code translate="no">*</code> 延伸段相同）。</p>
+        <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 在錨字<strong>後</strong> → 韻母；在錨字<strong>前</strong> → 聲母（一般查詢與 <code translate="no">+</code> 延伸段相同）。</p>
         <div class="guide-actions">
           <button class="primary-button" id="backToSearchBtn" type="button">回到搜尋</button>
         </div>
@@ -264,10 +264,10 @@
           <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
         </p>
         <p>
-          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽仍用 <code translate="no">*</code>，如 <code translate="no">23*就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。
+          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。
         </p>
         <p>
-          <strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">*</code>，例 <code translate="no">*香??</code>、<code translate="no">23*就</code>、<code translate="no">?30*人</code>。
+          <strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">+</code>，例 <code translate="no">+香??</code>、<code translate="no">23+就</code>、<code translate="no">?30+人</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。
         </p>
         <p>
           <strong>打幾個漢字加等號，搵「同韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同「開心」同韻嘅詞。打「=最好」會搵整詞逐音節同「最好」同聲嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 0243 碼同一格聲或韻。
@@ -279,7 +279,7 @@
           <strong>打粵拼，精準搵漢字。</strong>冇聲調如「syut」，搵粵拼相同嘅單字（忽略聲調）；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。
         </p>
         <p>
-          <strong>打粵拼錨，唔使打漢字參考字。</strong>規範形如 <code translate="no">?*yut?</code>、<code translate="no">?*hon</code>、<code translate="no">3*ngo4</code>、<code translate="no">23o</code>（二字韻母）／<code translate="no">23*o</code>（三字碼尾韻母）。<code translate="no">?*m?</code>、<code translate="no">3m4</code> 會分聲母／韻母兩列。
+          <strong>打粵拼錨，唔使打漢字參考字。</strong>規範形如 <code translate="no">?+yut?</code>、<code translate="no">?+hon</code>、<code translate="no">3+ngo4</code>、<code translate="no">23o</code>（二字韻母）／<code translate="no">23+o</code>（三字碼尾韻母）。<code translate="no">?+m?</code>、<code translate="no">3m4</code> 會分聲母／韻母兩列。
         </p>
         <p>
           <strong>近義、反義同複合詞（0243模式／02493模式）。</strong>打「~開心」搵同「開心」近義嘅詞；打「!開心」搵反義詞。可加前綴0243碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>。
@@ -320,15 +320,22 @@
             <button class="guide-example" type="button" data-query="?4困=4潦=9倒=" data-mode="m1"><code translate="no">?4困=4潦=9倒=</code><span>四字：首槽通配＋韻錨</span></button>
             <button class="guide-example" type="button" data-query="?3人=?" data-mode="m1"><code translate="no">?3人=?</code><span>三字：中格碼 3＋同「人」韻</span></button>
             <button class="guide-example" type="button" data-query="?困潦倒=" data-mode="m1" title="前綴通配等號：首音節完全通配，第 2–4 格同「困潦倒」韻模板（須尾 =）。唔同 0449窮困潦倒=（該例要碼+全詞同韻）。"><code translate="no">?困潦倒=</code><span>四字：首音節通配，其餘同「困潦倒」同韻</span></button>
+            <button class="guide-example" type="button" data-query="窮?潦倒=" data-mode="m1" title="四字部分韻錨：? 通配該格，其餘格同參考字韻母。"><code translate="no">窮?潦倒=</code><span>四字：第 1 格通配＋部分韻錨</span></button>
+            <button class="guide-example" type="button" data-query="窮困?倒=" data-mode="m1"><code translate="no">窮困?倒=</code><span>四字：第 3 格通配＋部分韻錨</span></button>
+            <button class="guide-example" type="button" data-query="窮困潦=?" data-mode="m1"><code translate="no">窮困潦=?</code><span>四字：尾格通配＋部分韻錨</span></button>
+            <button class="guide-example" type="button" data-query="?=困潦倒" data-mode="m1" title="前綴通配聲錨：首音節通配，其餘格同「困潦倒」聲母。"><code translate="no">?=困潦倒</code><span>四字：首音節通配＋聲錨模板</span></button>
+            <button class="guide-example" type="button" data-query="=窮?潦倒" data-mode="m1"><code translate="no">=窮?潦倒</code><span>四字：第 2 格通配＋部分聲錨</span></button>
+            <button class="guide-example" type="button" data-query="=窮困?倒" data-mode="m1"><code translate="no">=窮困?倒</code><span>四字：第 3 格通配＋部分聲錨</span></button>
+            <button class="guide-example" type="button" data-query="=窮困潦?" data-mode="m1"><code translate="no">=窮困潦?</code><span>四字：尾格通配＋部分聲錨</span></button>
           </div>
         </article>
 
         <article class="guide-card">
           <h2>通配碼錨</h2>
-          <p>首音節 <code translate="no">?</code> 通配，後接連續碼；尾漢字係韻參考字。加槽用 <code translate="no">*</code>。</p>
+          <p>首音節 <code translate="no">?</code> 通配，後接連續碼；尾漢字係韻參考字。加槽用 <code translate="no">+</code>。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="?30人" data-mode="m1"><code translate="no">?30人</code><span>三字：碼 30＋尾同「人」韻</span></button>
-            <button class="guide-example" type="button" data-query="?30*人" data-mode="m1"><code translate="no">?30*人</code><span>四字：首任意＋30＋多一槽＋同「人」韻</span></button>
+            <button class="guide-example" type="button" data-query="?30+人" data-mode="m1"><code translate="no">?30+人</code><span>四字：首任意＋30＋多一槽＋同「人」韻</span></button>
           </div>
         </article>
 
@@ -336,28 +343,28 @@
           <h2>缺字／音查詢（遮罩）</h2>
           <p>漢字固定字面，數字固定碼，其餘用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="*香??" data-mode="m1"><code translate="no">*香??</code><span>三字，首格字面「香」</span></button>
-            <button class="guide-example" type="button" data-query="?*你?" data-mode="m1"><code translate="no">?*你?</code><span>三字，中格字面「你」</span></button>
+            <button class="guide-example" type="button" data-query="+香??" data-mode="m1"><code translate="no">+香??</code><span>三字，首格字面「香」</span></button>
+            <button class="guide-example" type="button" data-query="?+你?" data-mode="m1"><code translate="no">?+你?</code><span>三字，中格字面「你」</span></button>
             <button class="guide-example" type="button" data-query="_識_" data-mode="m1"><code translate="no">_識_</code><span>三字，中格字面「識」</span></button>
             <button class="guide-example" type="button" data-query="3_" data-mode="m1"><code translate="no">3_</code><span>二字：首字同 3 同音，尾字不限</span></button>
             <button class="guide-example" type="button" data-query="23?" data-mode="m1"><code translate="no">23?</code><span>三字：頭兩字 23 同音，尾字不限</span></button>
-            <button class="guide-example" type="button" data-query="*門0" data-mode="m1"><code translate="no">*門0</code><span>二字：首格字面「門」＋尾碼 0</span></button>
+            <button class="guide-example" type="button" data-query="+門0" data-mode="m1"><code translate="no">+門0</code><span>二字：首格字面「門」＋尾碼 0</span></button>
           </div>
         </article>
 
         <article class="guide-card">
-          <h2>星號錨（<code translate="no">*</code>）</h2>
-          <p><code translate="no">*</code> 連接碼同錨字；<code translate="no">=</code> 緊貼錨字定韻或聲。通配槽用 <code translate="no">?</code>，唔連續寫多個 <code translate="no">*</code>。</p>
+          <h2>加號錨（<code translate="no">+</code>）</h2>
+          <p><code translate="no">+</code> 連接碼同錨字；<code translate="no">=</code> 緊貼錨字定韻或聲。通配槽用 <code translate="no">?</code>，唔連續寫多個 <code translate="no">+</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="23*好" data-mode="m1"><code translate="no">23*好</code><span>三字：尾格字面「好」</span></button>
-            <button class="guide-example" type="button" data-query="23*好=" data-mode="m1"><code translate="no">23*好=</code><span>三字：尾格同「好」同韻母</span></button>
-            <button class="guide-example" type="button" data-query="23*=好" data-mode="m1"><code translate="no">23*=好</code><span>三字：尾格同「好」同聲母</span></button>
+            <button class="guide-example" type="button" data-query="23+好" data-mode="m1"><code translate="no">23+好</code><span>三字：尾格字面「好」</span></button>
+            <button class="guide-example" type="button" data-query="23+好=" data-mode="m1"><code translate="no">23+好=</code><span>三字：尾格同「好」同韻母</span></button>
+            <button class="guide-example" type="button" data-query="23+=好" data-mode="m1"><code translate="no">23+=好</code><span>三字：尾格同「好」同聲母</span></button>
 
-            <button class="guide-example" type="button" data-query="2*好3" data-mode="m1"><code translate="no">2*好3</code><span>三字：中格字面「好」＋首/尾碼</span></button>
-            <button class="guide-example" type="button" data-query="2*好=3" data-mode="m1"><code translate="no">2*好=3</code><span>三字：中格同「好」同韻母＋首/尾碼</span></button>
+            <button class="guide-example" type="button" data-query="2+好3" data-mode="m1"><code translate="no">2+好3</code><span>三字：中格字面「好」＋首/尾碼</span></button>
+            <button class="guide-example" type="button" data-query="2+好=3" data-mode="m1"><code translate="no">2+好=3</code><span>三字：中格同「好」同韻母＋首/尾碼</span></button>
 
-            <button class="guide-example" type="button" data-query="*門0" data-mode="m1"><code translate="no">*門0</code><span>二字：首格字面「門」＋尾碼 0</span></button>
-            <button class="guide-example" type="button" data-query="*門=0" data-mode="m1"><code translate="no">*門=0</code><span>二字：首格同「門」同韻母＋尾碼 0</span></button>
+            <button class="guide-example" type="button" data-query="+門0" data-mode="m1"><code translate="no">+門0</code><span>二字：首格字面「門」＋尾碼 0</span></button>
+            <button class="guide-example" type="button" data-query="+門=0" data-mode="m1"><code translate="no">+門=0</code><span>二字：首格同「門」同韻母＋尾碼 0</span></button>
           </div>
         </article>
 
@@ -367,8 +374,8 @@
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="香=?" data-mode="m1"><code translate="no">香=?</code><span>二字，首字同「香」同韻</span></button>
             <button class="guide-example" type="button" data-query="就=" data-mode="m1"><code translate="no">就=</code><span>單字，同「就」同韻</span></button>
-            <button class="guide-example" type="button" data-query="?*就=" data-mode="m1"><code translate="no">?*就=</code><span>二字，尾字同「就」同韻</span></button>
-            <button class="guide-example" type="button" data-query="?*港=?" data-mode="m1"><code translate="no">?*港=?</code><span>三字，中格同「港」同韻（`?港=?` 等價）</span></button>
+            <button class="guide-example" type="button" data-query="?+就=" data-mode="m1"><code translate="no">?+就=</code><span>二字，尾字同「就」同韻</span></button>
+            <button class="guide-example" type="button" data-query="?+港=?" data-mode="m1"><code translate="no">?+港=?</code><span>三字，中格同「港」同韻（`?港=?` 等價）</span></button>
             <button class="guide-example" type="button" data-query="=香?" data-mode="m1"><code translate="no">=香?</code><span>二字，首字同「香」同聲</span></button>
             <button class="guide-example" type="button" data-query="?=就" data-mode="m1"><code translate="no">?=就</code><span>二字，尾字同「就」同聲</span></button>
           </div>
@@ -376,19 +383,19 @@
 
         <article class="guide-card">
           <h2>粵拼錨</h2>
-          <p>缺字族用拉丁拼標韻母、音節或聲母；slot 連接用 <code translate="no">*</code>（如 <code translate="no">?*hon</code>、<code translate="no">3*ngo4</code>）。</p>
+          <p>缺字族用拉丁拼標韻母、音節或聲母；slot 連接用 <code translate="no">+</code>（如 <code translate="no">?+hon</code>、<code translate="no">3+ngo4</code>）。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="?*hon" data-mode="m1"><code translate="no">?*hon</code><span>二字，末格音節 hon</span></button>
-            <button class="guide-example" type="button" data-query="?*yut?" data-mode="m1"><code translate="no">?*yut?</code><span>三字，中格韻母 yut</span></button>
-            <button class="guide-example" type="button" data-query="?*syut?" data-mode="m1"><code translate="no">?*syut?</code><span>三字，中格音節 syut</span></button>
-            <button class="guide-example" type="button" data-query="3*ngo4" data-mode="m1"><code translate="no">3*ngo4</code><span>三字，首碼＋音節＋末碼</span></button>
+            <button class="guide-example" type="button" data-query="?+hon" data-mode="m1"><code translate="no">?+hon</code><span>二字，末格音節 hon</span></button>
+            <button class="guide-example" type="button" data-query="?+yut?" data-mode="m1"><code translate="no">?+yut?</code><span>三字，中格韻母 yut</span></button>
+            <button class="guide-example" type="button" data-query="?+syut?" data-mode="m1"><code translate="no">?+syut?</code><span>三字，中格音節 syut</span></button>
+            <button class="guide-example" type="button" data-query="3+ngo4" data-mode="m1"><code translate="no">3+ngo4</code><span>三字，首碼＋音節＋末碼</span></button>
             <button class="guide-example" type="button" data-query="3hon4" data-mode="m1"><code translate="no">3hon4</code><span>二字，碼 34，首格音節 hon</span></button>
             <button class="guide-example" type="button" data-query="3h4" data-mode="m1"><code translate="no">3h4</code><span>二字，碼 34，首格聲母 h</span></button>
             <button class="guide-example" type="button" data-query="3gw4" data-mode="m1"><code translate="no">3gw4</code><span>二字，碼 34，首格雙聲母 gw</span></button>
             <button class="guide-example" type="button" data-query="23o" data-mode="m1"><code translate="no">23o</code><span>二字，碼 23，末格韻母 o</span></button>
-            <button class="guide-example" type="button" data-query="23*o" data-mode="m1"><code translate="no">23*o</code><span>三字，碼 23＋尾格韻母 o</span></button>
+            <button class="guide-example" type="button" data-query="23+o" data-mode="m1"><code translate="no">23+o</code><span>三字，碼 23＋尾格韻母 o</span></button>
             <button class="guide-example" type="button" data-query="23ei0" data-mode="m1"><code translate="no">23ei0</code><span>三字，碼 230，中格韻母 ei</span></button>
-            <button class="guide-example" type="button" data-query="?*m?" data-mode="m1"><code translate="no">?*m?</code><span>三字，中格 m／ng 雙列</span></button>
+            <button class="guide-example" type="button" data-query="?+m?" data-mode="m1"><code translate="no">?+m?</code><span>三字，中格 m／ng 雙列</span></button>
             <button class="guide-example" type="button" data-query="3m4" data-mode="m1"><code translate="no">3m4</code><span>二字碼 34，首格 m／ng 雙列</span></button>
           </div>
         </article>
@@ -400,7 +407,7 @@
             <button class="guide-example" type="button" data-query="0449窮困潦倒=" data-mode="m1" title="填滿 code+全詞；要求四字整詞同韻且碼 0449。同 04困=49倒= 唔同（該例只韻錨第 2／4 格）。"><code translate="no">0449窮困潦倒=</code><span>四字：碼 0449＋整詞同「窮困潦倒」韻</span></button>
             <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>二字，整詞同「香港」同韻</span></button>
             <button class="guide-example" type="button" data-query="2我=3" data-mode="m1"><code translate="no">2我=3</code><span>二字，23同音，首字同「我」同韻</span></button>
-            <button class="guide-example" type="button" data-query="23*就=" data-mode="m1"><code translate="no">23*就=</code><span>三字，碼 23＋尾格同「就」同韻</span></button>
+            <button class="guide-example" type="button" data-query="23+就=" data-mode="m1"><code translate="no">23+就=</code><span>三字，碼 23＋尾格同「就」同韻</span></button>
             <button class="guide-example" type="button" data-query="=香港" data-mode="m1"><code translate="no">=香港</code><span>二字，整詞同「香港」同聲</span></button>
             <button class="guide-example" type="button" data-query="2=我3" data-mode="m1"><code translate="no">2=我3</code><span>二字，23同音，首字同「我」同聲</span></button>
           </div>

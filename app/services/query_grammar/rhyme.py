@@ -111,10 +111,9 @@ def parse_code_ref_middle_rhyme_query(q: str) -> Optional[dict]:
         "slots": slots,
     }
 
-
 def parse_double_wildcard_rhyme_query(q: str) -> Optional[dict]:
-    """二字韻錨 ?*就=（P2）。"""
-    m = re.match(r"^([?_%])\*([一-龥])=$", q)
+    """二字韻錨 ?+就=（P2）。"""
+    m = re.match(rf"^([?_%]){re.escape(CODE_TAIL_MIDDLE)}([一-龥])=$", q)
     if not m:
         return None
     return {
@@ -127,8 +126,8 @@ def parse_double_wildcard_rhyme_query(q: str) -> Optional[dict]:
 
 
 def parse_double_wildcard_initial_query(q: str) -> Optional[dict]:
-    """二字聲錨 ?*=就（P2 對稱）。"""
-    m = re.match(r"^([?_%])\*=([一-龥])$", q)
+    """二字聲錨 ?+=就（P2 對稱）。"""
+    m = re.match(rf"^([?_%]){re.escape(CODE_TAIL_MIDDLE)}=([一-龥])$", q)
     if not m:
         return None
     return {
@@ -224,7 +223,7 @@ def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
     if is_hybrid_tail_equals_alias(q):
         return None
 
-    m = re.match(r"^(\?\*)([一-龥])=\?$", q)
+    m = re.match(rf"^(\?{re.escape(CODE_TAIL_MIDDLE)})([一-龥])=\?$", q)
     if m:
         anchor = m.group(2)
         return {
