@@ -20,7 +20,7 @@
 目前总词条列数：**193,289**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
-官方离线资料包：**[Canto-0243 v1.6.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.0)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方离线资料包：**[Canto-0243 v1.6.2](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.2)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -41,7 +41,7 @@
 
 完整离线体验请用官方 portable 套件，**无需** clone 源码或自行导入词库。
 
-1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.6.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.0)）。
+1. 从 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下载 **`canto-0243-portable.zip`**（建议对照 [`Canto-0243 v1.6.2`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.2)）。
 2. 解压缩整个文件夹（例如 `canto-0243-portable`）。
 3. 按平台启动：
    * **Windows**：解压后双击 **`START.bat`**（无需安装 Python）。
