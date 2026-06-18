@@ -15,12 +15,12 @@ $DbPath = Join-Path $Root "lyrics.db"
 $LexiconPath = Join-Path $Root "dist\words-lexicon.json"
 
 function Invoke-Gh {
-    param([string[]]$Args)
+    param([string[]]$GhArgs)
     $all = @()
     if ($env:GH_REPO) { $all += "-R", $env:GH_REPO }
-    $all += $Args
+    $all += $GhArgs
     & gh @all
-    if ($LASTEXITCODE -ne 0) { throw "gh failed: $($Args -join ' ')" }
+    if ($LASTEXITCODE -ne 0) { throw "gh failed: $($GhArgs -join ' ')" }
 }
 
 if (-not (Test-Path $DbPath)) {
@@ -77,14 +77,14 @@ if (-not $releaseExists) {
         $notes = @(
             "## Canto-0243 $Tag",
             "",
-            "- Windows: ``canto-0243-portable.zip`` (this upload)",
-            "- macOS Intel: ``canto-0243-portable-macos-x86_64.tar.gz`` — **待 MacBook 補上**",
-            "- macOS Apple Silicon (arm64): **暫不提供**",
+            "- Windows: canto-0243-portable.zip (this upload)",
+            "- macOS Intel: canto-0243-portable-macos-x86_64.tar.gz (pending MacBook)",
+            "- macOS Apple Silicon arm64: not available yet",
             "",
-            "Sequoia 下載 macOS 後若被擋：系統設定 → 隱私與安全性 → 仍要開啟。"
-        ) -join "`n"
+            "Sequoia Gatekeeper: System Settings, Privacy and Security, Open Anyway."
+        ) -join [Environment]::NewLine
         $tmp = [System.IO.Path]::GetTempFileName()
-        Set-Content -Path $tmp -Value $notes -Encoding utf8NoBOM
+        [System.IO.File]::WriteAllText($tmp, $notes)
         Invoke-Gh @($createArgs + @("--notes-file", $tmp))
         Remove-Item $tmp -Force
     }
@@ -100,4 +100,4 @@ Invoke-Gh @("release", "upload", $Tag, $ZipPath, "--clobber")
 $repo = if ($env:GH_REPO) { $env:GH_REPO } else { (gh repo view --json nameWithOwner -q .nameWithOwner) }
 Write-Host ""
 Write-Host "Uploaded: https://github.com/$repo/releases/tag/$Tag"
-Write-Host "Next: Intel MacBook — sync fork, build x86_64, upload tar (--tar-only)."
+Write-Host 'Next: Intel MacBook sync fork, build x86_64, upload tar (--tar-only).'
