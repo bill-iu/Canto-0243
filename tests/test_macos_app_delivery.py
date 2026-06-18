@@ -15,7 +15,7 @@ class MacosAppDeliveryTests(unittest.TestCase):
     def test_build_portable_uses_deep_adhoc_codesign_on_app_bundle(self):
         source = BUILD_SH.read_text(encoding="utf-8")
         self.assertIn('codesign --deep --force --sign - "$APP_DIR"', source)
-        self.assertIn("codesign --verify --deep --strict", source)
+        self.assertIn('codesign --verify --deep --strict "$APP_DIR"', source)
 
     def test_build_portable_strips_crlf_before_codesign(self):
         source = BUILD_SH.read_text(encoding="utf-8")

@@ -97,7 +97,7 @@ strip_cr "$OPEN_CMD_DIST"
 if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
   echo "==> Ad-hoc deep codesign Canto-0243.app (Sequoia: seal venv Mach-O)..."
   codesign --deep --force --sign - "$APP_DIR"
-  codesign --verify --deep --strict - "$APP_DIR"
+  codesign --verify --deep --strict "$APP_DIR"
   echo "==> Ad-hoc codesign Open Canto-0243.command..."
   codesign --force --sign - "$OPEN_CMD_DIST"
 fi
