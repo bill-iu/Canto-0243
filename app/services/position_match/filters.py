@@ -407,6 +407,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     """等號／碼夾等號查詢：候選解析 + span 比對（ADR-0004 收斂至 filters）。"""
     from app.domain.lexicon.reference_reading import (
         equals_authoritative_row,
+        equals_authoritative_row_for_code,
         suffix_aligned_ref_phoneme_parts,
     )
     from app.models.word import Word
@@ -421,6 +422,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     is_final = span.dimension == "final"
     dimension = "final" if is_final else "initial"
     prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
+    full_code = spec.code_prefix or ""
 
     if prefix_wildcard:
         target_parts = suffix_aligned_ref_phoneme_parts(
@@ -430,7 +432,12 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
             return []
         target = None
     else:
-        target = equals_authoritative_row(span.ref_literal, db, allow_inject=True)
+        if span.whole_word and full_code:
+            target = equals_authoritative_row_for_code(
+                span.ref_literal, full_code, mode, db, allow_inject=True,
+            )
+        else:
+            target = equals_authoritative_row(span.ref_literal, db, allow_inject=True)
         if not target:
             return []
         target_parts = (
@@ -438,8 +445,6 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
             if is_final
             else load_json_list(target.initials)
         )
-
-    full_code = spec.code_prefix or ""
 
     query = db.query(Word)
     query = apply_code_filter(query, full_code, mode)

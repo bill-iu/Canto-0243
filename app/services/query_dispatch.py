@@ -69,7 +69,12 @@ def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> Searc
         offset=ctx.offset,
         db=ctx.db,
     )
-    return SearchResult(items=result.items, cache_path=result.cache_path)
+    hint = None
+    if not result.items:
+        from app.services.query_grammar.equals import code_prefixed_whole_word_equals_empty_hint
+
+        hint = code_prefixed_whole_word_equals_empty_hint(spec, ctx.db)
+    return SearchResult(items=result.items, hint=hint, cache_path=result.cache_path)
 
 
 class QueryEngine:

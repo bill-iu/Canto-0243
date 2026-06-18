@@ -315,11 +315,11 @@
           <p>左至右每位數字一音節碼；<code translate="no">=</code> 永遠喺參考字右側。可加 <code translate="no">?</code> 通配單槽。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="23就=" data-mode="m1"><code translate="no">23就=</code><span>二字：碼 23＋尾格同「就」韻</span></button>
-            <button class="guide-example" type="button" data-query="04困=49倒=" data-mode="m1"><code translate="no">04困=49倒=</code><span>四字：第 2／4 格韻錨（窮困潦倒）</span></button>
+            <button class="guide-example" type="button" data-query="04困=49倒=" data-mode="m1" title="串列韻錨：只約束第 2／4 格韻。同 0449窮困潦倒= 唔同（該例要求四字整詞同韻）。"><code translate="no">04困=49倒=</code><span>四字：第 2／4 格韻錨（窮困潦倒）</span></button>
             <button class="guide-example" type="button" data-query="04=困49=倒" data-mode="m1"><code translate="no">04=困49=倒</code><span>四字：第 2／4 格聲錨</span></button>
             <button class="guide-example" type="button" data-query="?4困=4潦=9倒=" data-mode="m1"><code translate="no">?4困=4潦=9倒=</code><span>四字：首槽通配＋韻錨</span></button>
             <button class="guide-example" type="button" data-query="?3人=?" data-mode="m1"><code translate="no">?3人=?</code><span>三字：中格碼 3＋同「人」韻</span></button>
-            <button class="guide-example" type="button" data-query="?香港=" data-mode="m1"><code translate="no">?香港=</code><span>前綴通配等號：首音節通配＋整段韻模板</span></button>
+            <button class="guide-example" type="button" data-query="?困潦倒=" data-mode="m1" title="前綴通配等號：首音節完全通配，第 2–4 格同「困潦倒」韻模板（須尾 =）。唔同 0449窮困潦倒=（該例要碼+全詞同韻）。"><code translate="no">?困潦倒=</code><span>四字：首音節通配，其餘同「困潦倒」同韻</span></button>
           </div>
         </article>
 
@@ -395,8 +395,9 @@
 
         <article class="guide-card">
           <h2>整詞／碼夾等號（<code translate="no">=</code>）</h2>
-          <p>詞尾 <code translate="no">=</code> 比整詞韻，詞首 <code translate="no">=</code> 比整詞聲；碼夾約束單格。</p>
+          <p>詞尾 <code translate="no">=</code> 比整詞韻，詞首 <code translate="no">=</code> 比整詞聲；碼夾約束單格。<code translate="no">{左碼}{全詞}=</code>（碼長=字數）再加 0243 碼約束。</p>
           <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="0449窮困潦倒=" data-mode="m1" title="填滿 code+全詞；要求四字整詞同韻且碼 0449。同 04困=49倒= 唔同（該例只韻錨第 2／4 格）。"><code translate="no">0449窮困潦倒=</code><span>四字：碼 0449＋整詞同「窮困潦倒」韻</span></button>
             <button class="guide-example" type="button" data-query="香港=" data-mode="m1"><code translate="no">香港=</code><span>二字，整詞同「香港」同韻</span></button>
             <button class="guide-example" type="button" data-query="2我=3" data-mode="m1"><code translate="no">2我=3</code><span>二字，23同音，首字同「我」同韻</span></button>
             <button class="guide-example" type="button" data-query="23*就=" data-mode="m1"><code translate="no">23*就=</code><span>三字，碼 23＋尾格同「就」同韻</span></button>

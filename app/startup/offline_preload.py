@@ -75,6 +75,25 @@ def run_local_db_bootstrap(env: str) -> None:
         bootstrap_local_db()
     except Exception as e:
         print(f"[offline_preload] schema ensure / length backfill 啟動失敗（可忽略）：{e}")
+    run_lou_dou_reading_patch(env)
+
+
+def run_lou_dou_reading_patch(env: str) -> None:
+    """潦倒成語 liu→lou5 讀音與 code 修正（startup 一次）。"""
+    if not _local_sqlite_startup_enabled(env):
+        return
+    try:
+        from app.db.connection import DATABASE_URL, IS_POSTGRES
+        from scripts.patch_lou_dou_readings import patch_lyrics_db
+
+        if IS_POSTGRES or not DATABASE_URL.startswith("sqlite:///"):
+            return
+        db_path = DATABASE_URL.removeprefix("sqlite:///")
+        n = patch_lyrics_db(db_path)
+        if n:
+            print(f"[offline_preload] 潦倒成語讀音修正 {n} row(s)")
+    except Exception as e:
+        print(f"[offline_preload] lou_dou patch 失敗（可忽略）：{e}")
 
 
 def _best_effort(label: str, fn: Callable[[], None]) -> None:
@@ -201,6 +220,7 @@ __all__ = [
     "get_readiness_snapshot",
     "reset_background_preload_state_for_tests",
     "run_lifespan_startup",
+    "run_lou_dou_reading_patch",
     "start_background_runtime_preload",
     "start_background_word_cache_preload",
     "preload_static_runtime_resources",

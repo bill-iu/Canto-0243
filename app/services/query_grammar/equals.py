@@ -77,3 +77,29 @@ def build_equals_match_spec(q: str):
         code_prefix=full_code if full_code else None,
         extra={"equals_span": span},
     )
+
+
+CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT = (
+    "「{literal}」有收錄，但在 0243 碼 {code} 下無整詞同韻結果。"
+)
+
+
+def code_prefixed_whole_word_equals_empty_hint(spec, db) -> str | None:
+    """左碼整詞等號零結果：參考詞有收錄但 code+整詞同韻無候選（CONTEXT § 等號查詢）。"""
+    from app.lexicon.static_index import get_lexicon_entries
+    from app.models.word import Word
+    from app.services.position_match.spec import get_equals_span
+
+    span = get_equals_span(spec)
+    if not span or not span.whole_word:
+        return None
+    code = spec.code_prefix or ""
+    literal = span.ref_literal
+    if not code or len(code) != len(literal):
+        return None
+    catalogued = bool(get_lexicon_entries(literal)) or bool(
+        db.query(Word).filter(Word.char == literal).first()
+    )
+    if not catalogued:
+        return None
+    return CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT.format(literal=literal, code=code)

@@ -74,6 +74,11 @@ def _inject_lexicon_entries(db: Session, text: str, entries: List[LexiconEntry])
         return []
 
 
+def inject_lexicon_entries(db: Session, text: str, entries: List[LexiconEntry]) -> List[Word]:
+    """補入詞級標音列（已有同 code 列則跳過）。"""
+    return _inject_lexicon_entries(db, text, entries)
+
+
 def ensure_word_in_db(
     db: Session,
     text: str,
