@@ -93,6 +93,10 @@ OPEN_CMD_SRC="$ROOT/portable/macos/Open Canto-0243.command"
 OPEN_CMD_DIST="$ROOT/dist/Open Canto-0243.command"
 cp -f "$OPEN_CMD_SRC" "$OPEN_CMD_DIST"
 chmod +x "$OPEN_CMD_DIST"
+if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
+  echo "==> Ad-hoc codesign Open Canto-0243.command..."
+  codesign --force --sign - "$OPEN_CMD_DIST"
+fi
 
 echo "==> Create macOS tar.gz (Canto-0243.app, ${MAC_ARCH})..."
 rm -f "$TAR_PATH"

@@ -9,8 +9,8 @@
 1. **雙原生 macOS tar** — 全量 Release 附 `canto-0243-portable-macos-arm64.tar.gz`（Apple Silicon）與 `canto-0243-portable-macos-x86_64.tar.gz`（Intel）；各 tar 內 `.app` 的 bundled venv 為該架構原生，唔靠 Rosetta 單檔冒充通用。
 2. **五件套** — 全量 artifact：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、上述兩個 macOS tar。
 3. **下載隔離** — `portable/macos/launcher` 與 `portable/START.sh` 於啟動時呼叫 `scripts/portable_macos.py` 清除 `com.apple.quarantine`；**唔得**要求創作者手動 `xattr`（見 CONTEXT）。
-4. **建置時 ad-hoc 淺簽** — 只簽 `Contents/MacOS/Canto-0243` 與外層 `.app`（**唔** `--deep` 簽 `venv`，避免 Sequoia「無法開啟」）。
-5. **備用入口** — tar 內附 `Open Canto-0243.command`：清隔離後 `open` `.app`；唔要求創作者手動 Terminal `xattr`。
+4. **建置時 ad-hoc 淺簽** — 簽 `Contents/MacOS/Canto-0243`、外層 `.app`、以及 **`Open Canto-0243.command`**（**唔** `--deep` 簽 `venv`）。
+5. **備用入口** — tar 內附 `Open Canto-0243.command`：清隔離後 `open` `.app`。未 notarize 時 README 說明**右鍵→打開**（唔要求 Terminal `xattr`）。
 6. **CI** — `release-full.yml` 的 `build-macos` 以 matrix 分別在 `macos-latest`（arm64）與 `macos-15-intel`（x86_64）runner 建置；兩邊皆 green 才 publish。
 
 **Considered Options**

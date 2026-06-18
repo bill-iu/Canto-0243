@@ -31,8 +31,13 @@ macOS（免安裝）
 
 3. 雙擊 Canto-0243.app 啟動（無需安裝 Python、無需 chmod）
    Double-click Canto-0243.app (no Python, no Terminal chmod).
-   若顯示「無法開啟應用程式」，改雙擊同目錄的 Open Canto-0243.command（會自動處理隔離並開啟）。
-   If macOS says the app cannot be opened, double-click Open Canto-0243.command instead.
+
+   若 macOS 顯示無法驗證／無法開啟：
+   If Gatekeeper blocks the app or script:
+     • 對 Canto-0243.app 或 Open Canto-0243.command：右鍵（或 Control+點擊）→「打開」→ 確認
+       Right-click (or Control-click) → Open → confirm (once per item).
+     • 仍不行再試同目錄的 Open Canto-0243.command（會清隔離並開啟 .app）
+       Then try Open Canto-0243.command in the same folder (clears quarantine, opens .app).
 
    進階：資料夾版仍可用 START.command / START.sh（內含 venv）
    Advanced: folder bundle START.command / START.sh also work.
@@ -65,8 +70,8 @@ Linux
 - 「找不到內建執行環境」：請重新下載完整 Release 套件
   "Bundled runtime missing": re-download the full release package.
 
-- macOS「無法打開」：確認下載了與晶片相符的 tar（arm64 或 x86_64）
-  macOS "cannot open": verify the tar matches your chip (arm64 or x86_64).
+- macOS Gatekeeper：確認 tar 與晶片相符（arm64 / x86_64）；被擋時右鍵→「打開」.app 或 Open Canto-0243.command（各一次）
+  macOS Gatekeeper: match tar to chip; if blocked, right-click → Open on .app or Open Canto-0243.command (once each).
 
 - 關閉服務：關閉命令視窗，或從 Dock 結束 Canto-0243.app
   Stop: close the console window, or quit the .app from the Dock.

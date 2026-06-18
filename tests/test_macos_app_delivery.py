@@ -26,6 +26,10 @@ class MacosAppDeliveryTests(unittest.TestCase):
         source = BUILD_SH.read_text(encoding="utf-8")
         self.assertIn("Open Canto-0243.command", source)
 
+    def test_build_portable_adhoc_signs_open_command(self):
+        source = BUILD_SH.read_text(encoding="utf-8")
+        self.assertIn('codesign --force --sign - "$OPEN_CMD_DIST"', source)
+
 
 if __name__ == "__main__":
     unittest.main()
