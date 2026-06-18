@@ -68,7 +68,7 @@ copy_portable_bundle "$OUT_DIR"
 bundle_venv "$OUT_DIR"
 
 echo "==> Warm word cache snapshot (.cache/word_meta.bin)..."
-python3 "$ROOT/scripts/warm_word_cache.py" "$OUT_DIR"
+"$OUT_DIR/venv/bin/python" "$ROOT/scripts/warm_word_cache.py" "$OUT_DIR"
 
 echo "==> Build Canto-0243.app..."
 mkdir -p "$APP_DIR/Contents/MacOS"

@@ -36,7 +36,8 @@ python (Join-Path $Root "scripts\portable_venv.py") $OutDir --self-check
 if ($LASTEXITCODE -ne 0) { throw "portable venv self-check failed" }
 
 Write-Host "==> Warm word cache snapshot (.cache/word_meta.bin)..."
-python (Join-Path $Root "scripts\warm_word_cache.py") $OutDir
+$BundlePy = Join-Path $OutDir "venv\Scripts\python.exe"
+& $BundlePy (Join-Path $Root "scripts\warm_word_cache.py") $OutDir
 if ($LASTEXITCODE -ne 0) { throw "warm_word_cache.py failed" }
 
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
