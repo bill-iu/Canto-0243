@@ -9,6 +9,7 @@ from scripts.portable_venv import (
     libpython_deps,
     non_portable_libpython_refs,
     non_portable_load_paths,
+    non_portable_rpaths,
     relocate_macos_venv,
 )
 
@@ -54,6 +55,14 @@ class PortableVenvMacosTests(unittest.TestCase):
         self.assertEqual(
             non_portable_libpython_refs(deps),
             ["/Users/runner/libpython3.10.dylib"],
+        )
+
+    def test_non_portable_rpaths_flags_hostedtoolcache(self):
+        self.assertEqual(
+            non_portable_rpaths(
+                ["/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib"]
+            ),
+            ["/Users/runner/hostedtoolcache/Python/3.10.11/x64/lib"],
         )
 
     def test_relocate_macos_venv_is_noop_off_darwin(self):

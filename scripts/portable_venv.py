@@ -126,6 +126,71 @@ def _iter_mach_o_binaries(venv_dir: Path) -> list[Path]:
     return sorted(seen)
 
 
+def _otool_rpaths(binary: Path) -> list[str]:
+    out = subprocess.check_output(["otool", "-l", str(binary)], text=True)
+    paths: list[str] = []
+    lines = out.splitlines()
+    for i, line in enumerate(lines):
+        if "cmd LC_RPATH" not in line:
+            continue
+        for follow in lines[i + 1 : i + 5]:
+            match = re.search(r"path\s+(.+?)\s*(?:\(offset|\(align|$)", follow.strip())
+            if match:
+                paths.append(match.group(1).strip())
+                break
+    return paths
+
+
+def non_portable_rpaths(paths: list[str], *, venv_root: Path | None = None) -> list[str]:
+    """Public: LC_RPATH entries that break off the build machine."""
+    return [p for p in paths if non_portable_load_paths([p], venv_root=venv_root)]
+
+
+def _delete_non_portable_rpaths(binary: Path, venv_dir: Path) -> None:
+    for _ in range(8):
+        bad = non_portable_rpaths(_otool_rpaths(binary), venv_root=venv_dir)
+        if not bad:
+            return
+        for rpath in bad:
+            subprocess.run(
+                ["install_name_tool", "-delete_rpath", rpath, str(binary)],
+                check=True,
+                capture_output=True,
+            )
+
+
+def _fix_rpath_and_loader_deps(binary: Path, lib_dir: Path) -> None:
+    bundled = lib_dir / _bundled_lib_name()
+    if not bundled.is_file():
+        return
+    rel_lib = os.path.relpath(lib_dir, start=binary.parent).replace("\\", "/")
+    loader_lib = f"@loader_path/{rel_lib}"
+    if loader_lib not in _otool_rpaths(binary):
+        subprocess.run(
+            ["install_name_tool", "-add_rpath", loader_lib, str(binary)],
+            check=True,
+            capture_output=True,
+        )
+    for dep in _otool_lib_paths(binary):
+        if not dep.startswith("@rpath/"):
+            continue
+        tail = dep.removeprefix("@rpath/")
+        target = lib_dir / tail
+        if not target.is_file():
+            target = bundled
+        subprocess.run(
+            [
+                "install_name_tool",
+                "-change",
+                dep,
+                _loader_path_ref(binary, target),
+                str(binary),
+            ],
+            check=True,
+            capture_output=True,
+        )
+
+
 def _bundle_dest(lib_dir: Path, src: Path, dep: str) -> Path:
     dest = lib_dir / src.name
     if dest.is_file() and dest.resolve() != src.resolve():
@@ -203,11 +268,37 @@ def relocate_macos_venv(venv_dir: Path) -> None:
                 )
 
     py = _venv_python(venv_dir)
-    bad = non_portable_load_paths(_otool_lib_paths(py), venv_root=venv_dir)
-    if bad:
-        raise RuntimeError(f"python still has non-portable load paths: {bad}")
+    bundled = lib_dir / _bundled_lib_name()
+    if not bundled.is_file():
+        for dep in non_portable_load_paths(_otool_lib_paths(py)):
+            dest = _bundle_dep(lib_dir, dep)
+            if dest is not None and bundled.is_file():
+                break
+        if not bundled.is_file():
+            for rpath in _otool_rpaths(py):
+                candidate = Path(rpath) / bundled.name
+                if candidate.is_file():
+                    shutil.copy2(candidate, bundled)
+                    break
+    if not bundled.is_file():
+        raise RuntimeError(f"could not bundle {bundled.name} for portable venv")
 
+    for binary in _iter_mach_o_binaries(venv_dir):
+        _delete_non_portable_rpaths(binary, venv_dir)
+        _fix_rpath_and_loader_deps(binary, lib_dir)
+
+    _assert_venv_portable(venv_dir)
     _adhoc_sign_venv(venv_dir)
+
+
+def _assert_venv_portable(venv_dir: Path) -> None:
+    py = _venv_python(venv_dir)
+    bad = non_portable_load_paths(_otool_lib_paths(py), venv_root=venv_dir)
+    bad_rpaths = non_portable_rpaths(_otool_rpaths(py), venv_root=venv_dir)
+    if bad or bad_rpaths:
+        raise RuntimeError(
+            f"non-portable python load paths={bad} rpaths={bad_rpaths}"
+        )
 
 
 def _adhoc_sign_venv(venv_dir: Path) -> None:
@@ -236,10 +327,7 @@ def _adhoc_sign_venv(venv_dir: Path) -> None:
 def assert_portable_macos_venv(venv_dir: Path) -> None:
     if sys.platform != "darwin":
         return
-    py = _venv_python(venv_dir)
-    bad = non_portable_load_paths(_otool_lib_paths(py), venv_root=venv_dir)
-    if bad:
-        raise RuntimeError(f"non-portable load paths on {py}: {bad}")
+    _assert_venv_portable(venv_dir)
 
 
 def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
