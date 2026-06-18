@@ -127,6 +127,12 @@ echo "==> Build portable..."
 (
   export PORTABLE_MACOS_ARCH="$ARCH"
   export SKIP_README_SYNC="$SKIP_README"
+  BUILD_PY="$ROOT/.build-python/python/bin/python3.12"
+  if [[ ! -x "$BUILD_PY" ]]; then
+    echo "==> Fetch build Python (standalone CPython 3.12)..."
+    bash "$ROOT/scripts/fetch-macos-build-python.sh"
+  fi
+  export PORTABLE_BUILD_PYTHON="$BUILD_PY"
   bash "$ROOT/scripts/build-portable.sh"
 )
 

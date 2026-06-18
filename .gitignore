@@ -12,6 +12,7 @@ __pycache__/
 # 建置產物
 dist/
 build/
+.build-python/
 *.egg-info/
 
 # 資料庫與備份

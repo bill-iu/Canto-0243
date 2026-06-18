@@ -245,6 +245,100 @@ def _bundle_dep(lib_dir: Path, dep: str) -> Path | None:
     return dest
 
 
+def _seed_venv_libpython(venv_dir: Path) -> None:
+    """Copy libpython into venv/lib when --copies leaves an @executable_path ref unfilled."""
+    lib_dir = venv_dir / "lib"
+    bundled = lib_dir / _bundled_lib_name()
+    if bundled.is_file():
+        return
+    py = _venv_python(venv_dir)
+    want = f"@executable_path/../lib/{bundled.name}"
+    if want not in _otool_lib_paths(py):
+        return
+    for src in (
+        Path(sys.base_prefix) / "lib" / bundled.name,
+        Path(sys.executable).resolve().parent.parent / "lib" / bundled.name,
+    ):
+        if src.is_file():
+            lib_dir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, bundled)
+            return
+
+
+def _materialize_clt_framework_stdlib(venv_dir: Path) -> None:
+    """Apple CLT / virtualenv: copy framework stdlib into venv and point pyvenv.cfg home at venv/bin."""
+    cfg = venv_dir / "pyvenv.cfg"
+    if not cfg.is_file():
+        return
+    text = cfg.read_text()
+    if "Python3.framework" not in text:
+        return
+    base_prefix: Path | None = None
+    for line in text.splitlines():
+        if line.startswith("base-prefix = "):
+            base_prefix = Path(line.split("=", 1)[1].strip())
+            break
+    if base_prefix is None or not base_prefix.is_dir():
+        return
+    ver = f"python{sys.version_info.major}.{sys.version_info.minor}"
+    src_lib = base_prefix / "lib" / ver
+    dst_lib = venv_dir / "lib" / ver
+    if src_lib.is_dir():
+        shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True)
+    bundled_src = base_prefix / "lib" / _bundled_lib_name()
+    if bundled_src.is_file():
+        lib_dir = venv_dir / "lib"
+        lib_dir.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(bundled_src, lib_dir / _bundled_lib_name())
+    home = (venv_dir / "bin").resolve()
+    lines: list[str] = []
+    for line in text.splitlines():
+        if line.startswith("home = "):
+            lines.append(f"home = {home}")
+        else:
+            lines.append(line)
+    cfg.write_text("\n".join(lines) + "\n")
+
+
+def _ensure_venv_pip(py: Path) -> None:
+    if subprocess.run([str(py), "-m", "pip", "--version"], capture_output=True).returncode == 0:
+        return
+    subprocess.run([str(py), "-m", "ensurepip", "--upgrade", "--default-pip"], check=True)
+
+
+def _create_copies_venv(venv_dir: Path) -> None:
+    """Create a relocatable venv (file copies, not symlinks to system Python)."""
+    last: subprocess.CompletedProcess[str] | None = None
+    for extra in ((), ("--without-pip",)):
+        if venv_dir.exists():
+            shutil.rmtree(venv_dir)
+        proc = subprocess.run(
+            [sys.executable, "-m", "venv", "--copies", *extra, str(venv_dir)],
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode == 0:
+            return
+        last = proc
+    err = ((last.stderr or "") + (last.stdout or "")) if last else ""
+    if "cannot create venvs without using symlinks" not in err:
+        raise subprocess.CalledProcessError(
+            last.returncode if last else 1,
+            last.args if last else [],
+            last.stdout if last else "",
+            last.stderr if last else "",
+        )
+    subprocess.run(
+        [sys.executable, "-m", "pip", "install", "virtualenv"],
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        [sys.executable, "-m", "virtualenv", "--always-copy", str(venv_dir)],
+        check=True,
+    )
+
+
 def relocate_macos_venv(venv_dir: Path) -> None:
     """Bundle non-portable dylibs into venv/lib and rewrite Mach-O paths."""
     if sys.platform != "darwin":
@@ -315,6 +409,21 @@ def relocate_macos_venv(venv_dir: Path) -> None:
     for binary in _rpath_fixup_binaries(venv_dir):
         _fix_rpath_and_loader_deps(binary, lib_dir)
 
+    dot_ref = "@executable_path/../.Python"
+    for binary in _iter_mach_o_binaries(venv_dir):
+        if dot_ref in _otool_lib_paths(binary):
+            subprocess.run(
+                [
+                    "install_name_tool",
+                    "-change",
+                    dot_ref,
+                    _loader_path_ref(binary, bundled),
+                    str(binary),
+                ],
+                check=True,
+                capture_output=True,
+            )
+
     _assert_venv_portable(venv_dir)
     _adhoc_sign_venv(venv_dir)
 
@@ -369,11 +478,11 @@ def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
     if venv_dir.exists():
         shutil.rmtree(venv_dir)
 
-    subprocess.run(
-        [sys.executable, "-m", "venv", "--copies", str(venv_dir)],
-        check=True,
-    )
+    _create_copies_venv(venv_dir)
+    _seed_venv_libpython(venv_dir)
+    _materialize_clt_framework_stdlib(venv_dir)
     py = _venv_python(venv_dir)
+    _ensure_venv_pip(py)
     env = {**os.environ, "PYTHONUTF8": "1"}
     subprocess.run([str(py), "-m", "pip", "install", "-r", str(req)], check=True, env=env)
 

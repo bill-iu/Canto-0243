@@ -44,10 +44,10 @@ copy_portable_bundle() {
   echo "==> Copy bundle into $dst..."
   rm -rf "$dst"
   mkdir -p "$dst"
+  copy_tree "$ROOT/portable" "$dst"
   copy_tree "$ROOT/app" "$dst/app"
   copy_tree "$ROOT/frontend" "$dst/frontend"
   copy_tree "$ROOT/data" "$dst/data"
-  copy_tree "$ROOT/portable" "$dst"
   cp -f "$ROOT/main.py" "$ROOT/requirements.txt" "$dst/"
   cp -f "$DB_PATH" "$dst/lyrics.db"
   chmod +x "$dst/START.sh" "$dst/START.command" 2>/dev/null || true
@@ -56,8 +56,9 @@ copy_portable_bundle() {
 bundle_venv() {
   local dst="$1"
   echo "==> Build bundled venv in $dst (may take a few minutes)..."
-  python3 "$ROOT/scripts/portable_venv.py" "$dst"
-  python3 "$ROOT/scripts/portable_venv.py" "$dst" --self-check
+  local py="${PORTABLE_BUILD_PYTHON:-python3}"
+  "$py" "$ROOT/scripts/portable_venv.py" "$dst"
+  "$py" "$ROOT/scripts/portable_venv.py" "$dst" --self-check
 }
 
 echo "==> Clean output dirs..."
