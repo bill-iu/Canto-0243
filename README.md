@@ -20,7 +20,7 @@
 目前總詞條列數：**193,289**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
-官方離線資料包：**[Canto-0243 v1.6.4](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.4)**（`canto-0243-portable.zip`、macOS `tar.gz`、`lyrics.db`、`words-lexicon.json`）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方離線資料包：**[Canto-0243 v1.0.0](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.0)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
 
 ---
 
@@ -41,11 +41,12 @@
 
 完整離線體驗請用官方 portable 套件，**毋須** clone 源碼或自行灌庫。
 
-1. 從 [GitHub Releases](https://github.com/ICE-U-code/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（建議對照 [`Canto-0243 v1.6.4`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.4)）。
-2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
+1. 從 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（Windows）與 **`canto-0243-portable-macos-x86_64.tar.gz`**（Intel Mac）；建議對照 [`Canto-0243 v1.0.0`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.0)。
+2. 解壓縮整個資料夾（例如 `canto-0243-portable`）或 tar 內容。
 3. 依平台啟動：
    * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
-   * **macOS**：依晶片下載 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解壓後雙擊 **`Canto-0243.app`**。若被攔截：**右鍵→打開** `.app` 或 **`Open Canto-0243.command`**（各確認一次）。Sequoia 15 若只見「惡意軟件」對話框（僅完成／移至垃圾桶）：按 **完成** → **系統設定→隱私與安全性** → 捲到底 → **仍要開啟**（Canto-0243）→ 再雙擊 `.app`。
+   * **macOS（Intel x86_64）**：解壓 tar 後雙擊 **`Canto-0243.app`**。若被攔截：**右鍵→打開** `.app` 或 **`Open Canto-0243.command`**（各確認一次）。Sequoia 15 若只見「惡意軟件」對話框（僅完成／移至垃圾桶）：按 **完成** → **系統設定→隱私與安全性** → 捲到底 → **仍要開啟**（Canto-0243）→ 再雙擊 `.app`。
+   * **macOS（Apple Silicon）**：arm64 tar 過渡期**暫不提供**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
 
 **需求**：Windows／macOS **免安裝**（套件已內建 Python）；Linux 仍須 Python 3.10+。
@@ -135,9 +136,13 @@ powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag 
 ```
 
 ```bash
-# Intel MacBook（fork 同步後，只補 x86_64 tar）:
-GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --upload --tar-only
+# Intel MacBook（同步 main；lyrics.db 在 repo 根目錄；gh auth 須對 upstream 有 write）
+git fetch origin && git checkout main && git merge origin/main
+bash scripts/release-macos-local.sh --tag vX.Y.Z --test   # 本機 smoke（首次會下載建置用 CPython 至 .build-python/）
+GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --arch x86_64 --upload --tar-only
 ```
+
+手動取得建置用 Python：`bash scripts/fetch-macos-build-python.sh`（僅 x86_64；Apple CLT 內建 Python 不足以產出可搬移 venv）。詳見 [docs/release.md](docs/release.md)。
 
 ---
 
@@ -453,4 +458,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-06-18（加號錨 · 四字部分韻／聲錨 · 搜尋教學）
+**最後更新**：2026-06-19（v1.0.0 · 分渠道發佈 · macOS Intel 本機建置）
