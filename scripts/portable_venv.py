@@ -189,6 +189,31 @@ def relocate_macos_venv(venv_dir: Path) -> None:
     if bad:
         raise RuntimeError(f"python still has non-portable load paths: {bad}")
 
+    _adhoc_sign_venv(venv_dir)
+
+
+def _adhoc_sign_venv(venv_dir: Path) -> None:
+    """Re-sign Mach-O after install_name_tool (ponytail: ad-hoc -, darwin only)."""
+    if sys.platform != "darwin":
+        return
+    signed: set[Path] = set()
+    candidates = list(_iter_mach_o_binaries(venv_dir))
+    lib_dir = venv_dir / "lib"
+    if lib_dir.is_dir():
+        for path in lib_dir.iterdir():
+            if path.is_file() and _is_mach_o(path):
+                candidates.append(path)
+    for path in candidates:
+        resolved = path.resolve()
+        if resolved in signed:
+            continue
+        signed.add(resolved)
+        subprocess.run(
+            ["codesign", "--force", "--sign", "-", str(path)],
+            check=True,
+            capture_output=True,
+        )
+
 
 def assert_portable_macos_venv(venv_dir: Path) -> None:
     if sys.platform != "darwin":
