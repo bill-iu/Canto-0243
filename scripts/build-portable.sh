@@ -83,17 +83,21 @@ cp -f "$ROOT/portable/macos/Info.plist" "$APP_DIR/Contents/Info.plist"
 cp -f "$ROOT/portable/macos/launcher" "$APP_DIR/Contents/MacOS/Canto-0243"
 chmod +x "$APP_DIR/Contents/MacOS/Canto-0243"
 
-if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
-  echo "==> Ad-hoc codesign Canto-0243.app (shallow; ponytail: no --deep over venv)..."
-  codesign --force --sign - "$APP_DIR/Contents/MacOS/Canto-0243"
-  codesign --force --sign - "$APP_DIR"
-fi
+strip_cr() {
+  python3 -c 'import pathlib, sys; p = pathlib.Path(sys.argv[1]); p.write_bytes(p.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n"))' "$1"
+}
 
 OPEN_CMD_SRC="$ROOT/portable/macos/Open Canto-0243.command"
 OPEN_CMD_DIST="$ROOT/dist/Open Canto-0243.command"
 cp -f "$OPEN_CMD_SRC" "$OPEN_CMD_DIST"
 chmod +x "$OPEN_CMD_DIST"
+strip_cr "$APP_DIR/Contents/MacOS/Canto-0243"
+strip_cr "$OPEN_CMD_DIST"
+
 if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
+  echo "==> Ad-hoc deep codesign Canto-0243.app (Sequoia: seal venv Mach-O)..."
+  codesign --deep --force --sign - "$APP_DIR"
+  codesign --verify --deep --strict - "$APP_DIR"
   echo "==> Ad-hoc codesign Open Canto-0243.command..."
   codesign --force --sign - "$OPEN_CMD_DIST"
 fi
