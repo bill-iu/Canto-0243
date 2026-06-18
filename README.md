@@ -116,27 +116,27 @@ python -m ingest build-relations
 
 可選近反義來源（預設關閉）見 `data/syn_ant/sources.yaml`。
 
-### 官方資料 Release（四件套）
+### 官方資料 Release
 
 再分發前核對 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。**勿**將大檔 commit 入 git。  
-**全量發佈**與**詞庫發佈**分層、手動／CI checklist 見 [docs/release.md](docs/release.md)（[ADR-0008](docs/adr/0008-release-publishing-tiers.md)）。
+**分渠道發佈**（Windows 本機 + Intel MacBook）、**詞庫發佈** checklist 見 [docs/release.md](docs/release.md)（[ADR-0018](docs/adr/0018-split-channel-release.md)）。
 
 | 資產 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`） |
 | `canto-0243-portable.zip` | Windows 免安裝套件（內建 venv + `START.bat`） |
-| `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Apple Silicon） |
-| `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Intel） |
+| `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Intel；現行渠道） |
+| `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安裝 **`Canto-0243.app`**（Apple Silicon；過渡期暫不提供） |
 | `words-lexicon.json` | **詞級標音**副件 |
 
+```powershell
+# Windows 全量（建置 + 上傳 Release）:
+powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag vX.Y.Z -Upload
+```
+
 ```bash
-python scripts/export_words_lexicon.py -o dist/words-lexicon.json
-python scripts/update_readme_words_count.py
-# Windows（含內建 venv zip）:
-powershell -ExecutionPolicy Bypass -File scripts/build-portable.ps1
-# macOS（含 Canto-0243.app tar.gz）:
-bash scripts/build-portable.sh
-# 上傳四件套至 GitHub Release
+# Intel MacBook（fork 同步後，只補 x86_64 tar）:
+GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --upload --tar-only
 ```
 
 ---

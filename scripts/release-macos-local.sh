@@ -10,8 +10,18 @@ ARCH="auto"
 UPLOAD=0
 DRAFT=0
 TEST=0
+TAR_ONLY=0
 NOTES_FILE=""
 SKIP_README=1
+GH_REPO="${GH_REPO:-}"
+
+_gh() {
+  if [[ -n "$GH_REPO" ]]; then
+    gh -R "$GH_REPO" "$@"
+  else
+    gh "$@"
+  fi
+}
 
 usage() {
   cat <<'EOF'
@@ -23,7 +33,8 @@ to an existing GitHub Release (no CI wait).
 Options:
   --tag TAG          Required. Release tag (e.g. v1.6.5)
   --arch ARCH        auto (default), arm64, or x86_64 — must match this Mac's CPU
-  --upload           Upload lyrics.db, words-lexicon.json, and built tar(s) via gh
+  --upload           Upload built tar via gh (see --tar-only)
+  --tar-only         With --upload: only replace macOS tar (do not clobber lyrics.db/json)
   --draft            With --upload: create draft release if tag missing
   --notes-file PATH  Release notes when creating a new release
   --test             After build, open dist/Canto-0243.app (no download quarantine)
@@ -32,13 +43,14 @@ Options:
 
 Prerequisites:
   lyrics.db at repo root, python3, gh (for --upload), gh auth login
+  Optional: GH_REPO=bill-iu/Canto-0243 when uploading from a fork clone
 
 Examples:
   # Build + smoke on this Mac (fast iteration):
   bash scripts/release-macos-local.sh --tag v1.6.5 --test
 
-  # Build x86_64 on Intel Mac and replace release asset:
-  bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
+  # After Windows published zip — Intel Mac uploads tar only to upstream:
+  GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload --tar-only
 
 Sequoia download quarantine:
   Apps built here open without quarantine. After downloading from GitHub, Gatekeeper
@@ -51,6 +63,7 @@ while [[ $# -gt 0 ]]; do
     --tag) TAG="$2"; shift 2 ;;
     --arch) ARCH="$2"; shift 2 ;;
     --upload) UPLOAD=1; shift ;;
+    --tar-only) TAR_ONLY=1; shift ;;
     --draft) DRAFT=1; shift ;;
     --notes-file) NOTES_FILE="$2"; shift 2 ;;
     --test) TEST=1; shift ;;
@@ -108,6 +121,7 @@ echo "==> Canto-0243 local macOS release"
 echo "    tag:  $TAG"
 echo "    arch: $ARCH (host $HOST_ARCH)"
 echo "    root: $ROOT"
+[[ -n "$GH_REPO" ]] && echo "    repo: $GH_REPO"
 
 echo "==> Build portable..."
 (
@@ -149,25 +163,31 @@ if [[ "$UPLOAD" -eq 1 ]]; then
     echo "error: gh CLI required for --upload" >&2
     exit 1
   }
-  if ! gh release view "$TAG" >/dev/null 2>&1; then
+  if ! _gh release view "$TAG" >/dev/null 2>&1; then
     title="Canto-0243 ${TAG}"
     if [[ "$DRAFT" -eq 1 ]]; then
       if [[ -n "$NOTES_FILE" ]]; then
-        gh release create "$TAG" --draft --title "$title" --notes-file "$NOTES_FILE"
+        _gh release create "$TAG" --draft --title "$title" --notes-file "$NOTES_FILE"
       else
-        gh release create "$TAG" --draft --title "$title" --notes "macOS ${ARCH} local build"
+        _gh release create "$TAG" --draft --title "$title" --notes "macOS ${ARCH} local build"
       fi
     elif [[ -n "$NOTES_FILE" ]]; then
-      gh release create "$TAG" --title "$title" --notes-file "$NOTES_FILE"
+      _gh release create "$TAG" --title "$title" --notes-file "$NOTES_FILE"
     else
-      gh release create "$TAG" --title "$title" --notes "macOS ${ARCH} local build"
+      _gh release create "$TAG" --title "$title" --notes "macOS ${ARCH} local build"
     fi
   fi
   echo "==> Upload to GitHub Release $TAG..."
-  gh release upload "$TAG" "$ROOT/lyrics.db" --clobber
-  gh release upload "$TAG" "$ROOT/dist/words-lexicon.json" --clobber
-  gh release upload "$TAG" "$TAR_PATH" --clobber
-  repo="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+  if [[ "$TAR_ONLY" -eq 0 ]]; then
+    _gh release upload "$TAG" "$ROOT/lyrics.db" --clobber
+    _gh release upload "$TAG" "$ROOT/dist/words-lexicon.json" --clobber
+  fi
+  _gh release upload "$TAG" "$TAR_PATH" --clobber
+  if [[ -n "$GH_REPO" ]]; then
+    repo="$GH_REPO"
+  else
+    repo="$(_gh repo view --json nameWithOwner -q .nameWithOwner)"
+  fi
   echo ""
   echo "Uploaded: https://github.com/${repo}/releases/tag/${TAG}"
   echo "Asset: canto-0243-portable-macos-${ARCH}.tar.gz"

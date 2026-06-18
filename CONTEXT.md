@@ -15,7 +15,7 @@
 | 搜尋模式 | 0243搜尋、近反義、近反義池、靜態詞林埠 |
 | 查詢語法 | 基礎規則、分派優先序、各語法家族 |
 | 詞庫與排序 | 詞庫埠、收錄決策、參考字讀音解析、essay 詞頻、結果誰靠前 |
-| 產品邊界 | 離線交付、創作者 |
+| 產品邊界 | 離線交付、創作者、分渠道發佈 |
 
 ---
 
@@ -395,12 +395,16 @@ macOS 上創作者雙擊圖示啟動查韻介面的 `.app` 形態；與 Windows 
 _Avoid_：把 tar.gz 當 macOS 創作者預設下載、把 .app 當雲端或自架服務、把 `xattr` 清除留俾使用者自行處理、把「仍要開啟」等同要求 Terminal、假設 notarize 已完成
 
 **全量發佈**：
-程式、依賴、詞庫與雙平台 **Portable 套件** 一併更新的正式發佈；創作者下載的 zip／`.app` 與 `lyrics.db`、`words-lexicon.json` 屬同一版本線。macOS 分 **Apple Silicon** 與 **Intel** 各一個 tar.gz（兩條 **免安裝交付** 下載，唔共用同一內建執行環境）。
-_Avoid_：把每次 commit 都當全量發佈、把只換詞庫當全量發佈、用單一 macOS tar 冒充雙架構原生
+程式、依賴、詞庫與各平台 **Portable 套件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／`.app` 與 `lyrics.db`、`words-lexicon.json`。macOS 目標為 **Apple Silicon** 與 **Intel** 各一個 tar.gz；過渡期可只發 **x86_64**，Release notes 須註明 arm64 暫無。Windows 可先 Publish，macOS 後補同一 tag（見 **分渠道發佈**）。
+_Avoid_：把每次 commit 都當全量發佈、把只換詞庫當全量發佈、用單一 macOS tar 冒充雙架構原生、在 fork Release 當正式下載頁
+
+**分渠道發佈**：
+**全量發佈**的建置與上傳由兩條維護者渠道分工：**Windows 渠道**（本機 Windows 打包 zip 與詞庫資產並 Publish Release）、**macOS 渠道**（Intel MacBook 自 fork 同步後建 x86_64 tar 上傳至**上游**同一 tag）。fork 僅作建置工作區，唔作創作者第二下載來源。
+_Avoid_：把 fork 當發佈終點、要求 Intel Mac 單機產出 arm64、恢復 tag 觸發全平台 CI 作唯一發佈路徑
 
 **詞庫發佈**：
-只更新 `lyrics.db` 與／或 `words-lexicon.json`、程式與依賴不變的發佈；須在**同一 semver** 上已完成 **全量發佈**（該 Release 已含雙平台 Portable）之後才可進行。**免安裝交付** 的 Portable 套件沿用該 semver 已發佈的 zip／`.app`，創作者只需在該版 Release 重新下載詞庫檔或自行替換本機 db。
-_Avoid_：詞庫發佈仍強制重建雙平台 zip、在未完成全量發佈的 semver 上單獨發詞庫、為詞庫更新另開 semver tag 令創作者搵錯下載頁
+只更新 `lyrics.db` 與／或 `words-lexicon.json`、程式與依賴不變的發佈；須在**同一 semver** 上該 Release 已有 **Windows zip + macOS x86_64 tar**（arm64 過渡期不要求）之後才可進行。**免安裝交付** 的 Portable 套件沿用該 semver 已發佈的 zip／`.app`。
+_Avoid_：詞庫發佈仍強制重建雙平台 zip、在僅有 Windows zip 未補 macOS 時發詞庫、為詞庫更新另開 semver tag 令創作者搵錯下載頁
 
 **開發容器環境**：
 供維護者與貢獻者取得一致本地開發環境的 Docker 設定；**非**創作者交付物，不取代 **離線單機交付** 或 **免安裝交付**。
@@ -415,7 +419,7 @@ Clone 後第一層目錄；保留產品入口、`CONTEXT`、變更紀錄（`WORK
 _Avoid_：把根目錄當資料 dump、與 Portable 解壓目錄混淆、把開發啟動腳本與 Portable 啟動腳本混為一體
 
 **建置暫存**（維護者）：
-本機 `dist/` 目錄，存放 build 腳本產出的 zip、解壓樹、`words-lexicon.json` export 等；**不進版控**、**非**創作者下載來源。正式 **全量發佈** 四件套以 GitHub Release 為準；Release 確認後可整目錄刪除，需要時再跑 build／export 重建。
+本機 `dist/` 目錄，存放 build 腳本產出的 zip、解壓樹、`words-lexicon.json` export 等；**不進版控**、**非**創作者下載來源。正式 **全量發佈** 資產以 GitHub Release 為準；Release 確認後可整目錄刪除，需要時再跑 build／export 重建。
 _Avoid_：把本機 dist 當發佈歸檔、在 dist 內長期保留多版 zip、把 dist 解壓樹當日常開發工作目錄
 
 **本機啟動**：

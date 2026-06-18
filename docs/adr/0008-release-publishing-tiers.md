@@ -4,16 +4,18 @@
 
 交付形態（建置時 pre-build venv）見 [ADR-0006](0006-portable-zero-install-delivery.md)。本 ADR 只定 **發佈節奏、artifact 政策與 CI 契約**。
 
+> **修訂**：tag 觸發全量 CI、雙平台 matrix 全有或全無 — 見 [ADR-0018](0018-split-channel-release.md)（**已取代**下列 §2、§6、§8 之 CI 部分）。發佈改為 Windows 本機 + Intel MacBook 分渠道手動上傳。
+
 ## 我們決定
 
-1. **兩層發佈** — **全量發佈**：程式、依賴、詞庫與雙平台 Portable 一併更新；**詞庫發佈**：只更新 `lyrics.db` 與／或 `words-lexicon.json`，Portable zip／`.app` 沿用同一 semver 已發佈版本。
-2. **全量觸發** — `release-full` workflow 僅由 strict semver tag（`vMAJOR.MINOR.PATCH`）觸發；`-rc`、`-lexicon` 等 suffix 不跑 full build。
-3. **雙 workflow** — `release-full.yml`（全量）與 `release-lexicon.yml`（詞庫）分開；詞庫 workflow 以 `workflow_dispatch` 或 `v*-lexicon` tag 觸發，不與 full 混在同一 pipeline 邏輯內自動 diff。
+1. **兩層發佈** — **全量發佈**：程式、依賴、詞庫與雙平台 **Portable 套件** 一併更新的正式發佈線；**詞庫發佈**：只更新 `lyrics.db` 與／或 `words-lexicon.json`，Portable zip／`.app` 沿用同一 semver 已發佈版本。
+2. ~~**全量觸發** — `release-full` workflow 僅由 strict semver tag 觸發~~ → **ADR-0018**：手動分渠道，無 tag CI。
+3. **雙 workflow** — ~~`release-full.yml`~~ + `release-lexicon.yml`（詞庫）；詞庫以 `workflow_dispatch` 觸發。
 4. **詞庫掛同一 semver** — 詞庫發佈只替換該 semver GitHub Release 上的 db／json asset；Release notes 註明「詞庫更新 YYYY-MM-DD」。不為純詞庫更新另開 semver tag。
-5. **詞庫前置條件** — 目標 semver 上須已有一次成功的全量 Release（含 Windows zip 與 macOS `.app`）；否則 lexicon workflow fail。
-6. **全量 CI 全有或全無** — Windows 與 macOS matrix 須皆 green 才建立／更新正式 Release；一邊 fail 則不上傳任何 artifact。
-7. **過渡期手動** — CI 未落地前：維護者本地跑 build 腳本 + GitHub UI 上傳；詞庫實質更新後可手動替換同一 tag 的 db／json（見 [docs/release.md](../release.md)）。
-8. **長期 CI** — push `v*.*.*` 自動全量 build；詞庫由 `release-lexicon` workflow 觸發。詞庫觸發節奏：`lyrics.db` 有實質更新（ingest 完成、條目明顯增減）即發，程式無變無須 bump full tag。
+5. **詞庫前置條件** — 目標 semver 上須已有 **Windows zip + macOS x86_64 tar**（ADR-0018；arm64 過渡期不要求）；否則 lexicon workflow fail。
+6. ~~**全量 CI 全有或全無**~~ → **ADR-0018**：Windows 可先 Publish，macOS 後補同一 tag。
+7. **過渡期手動** — 維護者本地跑 build 腳本 + `gh release upload`（見 [docs/release.md](../release.md)）。
+8. ~~**長期 CI push tag 自動全量**~~ → **ADR-0018**：長期以分渠道本機建置為主；CI 保留測試與詞庫 workflow。
 
 **Considered Options**
 

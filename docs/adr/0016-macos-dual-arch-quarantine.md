@@ -7,12 +7,12 @@
 ## 我們決定
 
 1. **雙原生 macOS tar** — 全量 Release 附 `canto-0243-portable-macos-arm64.tar.gz`（Apple Silicon）與 `canto-0243-portable-macos-x86_64.tar.gz`（Intel）；各 tar 內 `.app` 的 bundled venv 為該架構原生，唔靠 Rosetta 單檔冒充通用。
-2. **五件套** — 全量 artifact：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、上述兩個 macOS tar。
+2. **五件套（目標）** — 全量 artifact：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、上述兩個 macOS tar。過渡期見 [ADR-0018](0018-split-channel-release.md)（可先僅 x86_64 + zip）。
 3. **下載隔離** — `portable/macos/launcher` 與 `portable/START.sh` 於啟動時呼叫 `scripts/portable_macos.py` 清除 `com.apple.quarantine`；**唔得**要求創作者手動 `xattr`（見 CONTEXT）。
 4. **建置時 ad-hoc deep 簽** — `codesign --deep --force --sign -` 封裝整個 `.app`（含 `venv` 內所有 Mach-O）；另簽 **`Open Canto-0243.command`**。建置腳本強制 LF 行尾（Windows checkout 的 CRLF 會令 shebang 失效）。
 5. **可搬移 venv** — `portable_venv.py` 建置後將 `libpython3.*.dylib` 複製入 `venv/lib/` 並以 `install_name_tool` 改為 `@loader_path/…`（避免 CI `/Users/runner/…` 絕對路徑喺創作者機 DYLD 失敗）。
 6. **備用入口與 Gatekeeper 放行** — tar 內附 `Open Canto-0243.command`（清隔離後 `open` `.app`）。**未 notarize** 時創作者用圖形介面放行：右鍵→打開，或 Sequoia 15 **系統設定→隱私與安全性→仍要開啟**（唔要求 Terminal `xattr`；見 CONTEXT § macOS 應用程式套件）。
-7. **CI** — `release-full.yml` 的 `build-macos` 以 matrix 分別在 `macos-latest`（arm64）與 `macos-15-intel`（x86_64）runner 建置；兩邊皆 green 才 publish。
+7. **建置渠道** — 過渡期 macOS x86_64 由 Intel MacBook 本機 `release-macos-local.sh` 上傳；arm64 待日後建置機。已停用 `release-full.yml` matrix（ADR-0018）。
 
 **Considered Options**
 
