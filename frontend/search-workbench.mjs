@@ -17,6 +17,20 @@ import {
 } from "./tabs-ui.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 
+function emptySearchResultsHtml(input, hint, mode) {
+  const q = escapeHtml(input);
+  if (mode === "m1" || mode === "m2") {
+    if (hint) {
+      return `<p class="info"><strong>搵唔到</strong><br>${escapeHtml(hint)}</p>`;
+    }
+    return `<p class="info"><strong>搵唔到「${q}」。</strong></p>`;
+  }
+  if (hint) {
+    return `<p class="info"><strong>找不到「${q}」。</strong><br>${escapeHtml(hint)}</p>`;
+  }
+  return `<p class="info"><strong>找不到「${q}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
+}
+
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
@@ -349,8 +363,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       return;
     }
     if (cached && Array.isArray(cached.data)) {
-      if (cached.data.length === 0 && cached.hint) {
-        $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(cached.hint)}</p>`;
+      if (cached.data.length === 0) {
+        $.results.innerHTML = emptySearchResultsHtml(input, cached.hint, shell.currentMode);
         updateShuffleButton();
         setButtonLoading(false);
         toggleLoadMoreButton(false);
@@ -397,13 +411,9 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     }
 
     if (data.length === 0 && !isLoadMore) {
-      if (searchHint || tab.redirectHint) {
-        const hint = tab.redirectHint || searchHint;
-        tab.redirectHint = null;
-        $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>${escapeHtml(hint)}</p>`;
-      } else {
-        $.results.innerHTML = `<p class="info"><strong>找不到「${escapeHtml(input)}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
-      }
+      const hint = tab.redirectHint || searchHint;
+      tab.redirectHint = null;
+      $.results.innerHTML = emptySearchResultsHtml(input, hint, shell.currentMode);
       updateShuffleButton();
       toggleLoadMoreButton(false);
       return;

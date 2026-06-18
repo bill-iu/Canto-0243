@@ -26,7 +26,7 @@ Official offline data bundle: **[Canto-0243 v1.6.0](https://github.com/bill-iu/C
 
 ## Features
 
-* **0243／02493 code search**: **0243 mode** `mode=m1` (0243 equivalence variants) and **02493 mode** `mode=m2` (9-key tones, distinguishes entering tone variants).
+* **0243／02493 code search**: **0243 mode** `mode=m1` (0243 equivalence variants) and **02493 mode** `mode=m2` (02493 codes; distinguishes entering-tone variants).
 * **Rich query syntax**: plain Chinese · plain digits · **Jyutping queries** · **Jyutping anchors** · code+character (`23就`) · wildcards · **serial rhyme／initial anchors** (`04困=49倒=`, `23就=`) · **prefix wildcard equals** (`?香港=`) · equals rhyme／initial (`香港=`, `2=我3`) · rhyme／initial anchors (`就=`, `?*就=`, `?港=?`).
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 * **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.

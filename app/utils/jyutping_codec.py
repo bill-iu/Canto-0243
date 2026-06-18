@@ -4,6 +4,8 @@ from typing import FrozenSet, List, Set, Tuple
 TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "4", 6: "2"}
 VOWELS = "aeiou"
 M1_MAPPING = {"5": "4", "4": "5", "6": "2", "2": "6", "9": "3", "3": "9"}
+# ponytail: CONTEXT § 02493 碼 — query-only digits → stored 0243 碼
+M02493_TO_0243 = {"1": "3", "5": "4", "6": "2", "7": "3", "8": "4"}
 STANDALONE_NASAL_FINALS = frozenset({"m", "ng"})
 
 
@@ -68,11 +70,19 @@ def rhyme_finals_from_jyutping(jyutping: str) -> list[str]:
         return []
 
 
+def normalize_02493_code(code: str) -> str:
+    """02493 碼逐位正規化為詞庫 0243 碼（CONTEXT § 02493 碼）。"""
+    if not code or not code.isdigit():
+        return code
+    return "".join(M02493_TO_0243.get(digit, digit) for digit in code)
+
+
 def get_code_variants(code: str, mode: str = "m2") -> List[str]:
-    """生成 m1 / m2 的 code 等價變體"""
+    """生成 m1 / m2 的 code 等價變體（先 02493→0243 正規化，m1 再鬆檔展開）。"""
     if not code or not code.isdigit():
         return [code]
 
+    code = normalize_02493_code(code)
     variants = {code}
 
     if mode == "m1":
@@ -150,6 +160,9 @@ def rhyme_final_tuples_compatible(jyutping_a: str, jyutping_b: str) -> bool:
 
 
 if __name__ == "__main__":
+    assert normalize_02493_code("021") == "023"
+    assert "023" in get_code_variants("021", "m1")
+    assert get_code_variants("021", "m2") == ["023"]
     assert STANDALONE_NASAL_FINALS <= expand_standalone_nasal_final_options({"m"})
     assert rhyme_final_tuples_compatible("m4", "ng5")
     assert rhyme_final_key_sets_compatible(

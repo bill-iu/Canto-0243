@@ -3,7 +3,7 @@ import tempfile
 from pathlib import Path
 
 from app.domain.thesaurus.port import StaticThesaurusPort
-from app.utils.jyutping_codec import get_0243_code, get_code_variants, split_jyutping
+from app.utils.jyutping_codec import get_0243_code, get_code_variants, normalize_02493_code, split_jyutping
 
 
 class UtilsTests(unittest.TestCase):
@@ -32,9 +32,16 @@ class UtilsTests(unittest.TestCase):
         self.assertEqual(finals4, '["un"]')
         self.assertNotEqual(finals3, finals4)
 
+    def test_normalize_02493_code(self):
+        self.assertEqual(normalize_02493_code("021"), "023")
+        self.assertEqual(normalize_02493_code("027"), "023")
+        self.assertEqual(normalize_02493_code("58"), "44")
+
     def test_get_code_variants(self):
         self.assertEqual(get_code_variants("23", "m2"), ["23"])
         self.assertIn("44", get_code_variants("54", "m1"))
+        self.assertIn("023", get_code_variants("021", "m1"))
+        self.assertEqual(get_code_variants("021", "m2"), ["023"])
 
     def test_static_thesaurus_parsers_are_bidirectional(self):
         with tempfile.TemporaryDirectory() as tmp:
