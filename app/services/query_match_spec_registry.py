@@ -118,7 +118,7 @@ def _spec_prefix_wildcard_equals(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_partial_rhyme_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.PARTIAL_RHYME_MASK
     q = parsed  # type: PartialRhymeMaskQuery
-    spec = MatchSpec(width=q.width)
+    spec = MatchSpec(width=q.width, mask=q.pattern)
     spec.extra["partial_rhyme_mask"] = True
     for pos, ch in q.anchors:
         spec.slots.append(SlotConstraint(pos=pos, kind="final_anchor", value=ch))
@@ -128,7 +128,7 @@ def _spec_partial_rhyme_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_partial_initial_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.PARTIAL_INITIAL_MASK
     q = parsed  # type: PartialInitialMaskQuery
-    spec = MatchSpec(width=q.width)
+    spec = MatchSpec(width=q.width, mask=q.pattern)
     spec.extra["partial_initial_mask"] = True
     for pos, ch in q.anchors:
         spec.slots.append(SlotConstraint(pos=pos, kind="initial_anchor", value=ch))

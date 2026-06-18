@@ -303,10 +303,14 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
-  if (shell.isSearching) return;
   if (!shell.appSearchReady) return;
   const tab = ensureActiveSearchTab();
   if (!tab) return;
+
+  shell.searchAbort?.abort();
+  shell.searchAbort = new AbortController();
+  const { signal } = shell.searchAbort;
+
   showSearch({ replace: true });
   setButtonLoading(true);
 
@@ -365,7 +369,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
 
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { signal });
     if (res.status === 503) {
       const snap = await res.json().catch(() => null);
       if (snap && !snap.gate_ready) {
@@ -407,6 +411,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
 
     finishSearchWithData(tab, data, { append: isLoadMore, total: isLoadMore ? null : total });
   } catch (error) {
+    if (error?.name === "AbortError") return;
     console.error(error);
     const isHttp = error instanceof Error && /後端回應失敗/.test(error.message);
     if (isHttp) {
@@ -417,7 +422,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     updateShuffleButton();
     toggleLoadMoreButton(false);
   } finally {
-    setButtonLoading(false);
+    if (!signal.aborted) setButtonLoading(false);
   }
 }
 

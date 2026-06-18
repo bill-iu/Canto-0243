@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from unittest.mock import patch
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -153,6 +154,19 @@ class PartialRhymeMaskBehaviorTests(unittest.TestCase):
             found = _chars(search_words(q="窮困?倒=", mode="m1", db=db, limit=30))
             self.assertIn("窮困潦倒", found)
             self.assertNotIn("窮途潦倒", found)
+        finally:
+            db.close()
+
+    def test_partial_rhyme_mask_precomputes_anchor_options(self):
+        """每個錨格 contextual 選項只算一次，唔好隨候選詞數爆炸。"""
+        db = _memory_db(_qiong_kun_liu_dao(), _qiong_tou_liu_dao(), _qiong_chou_liu_dao())
+        try:
+            with patch(
+                "app.services.position_match.filters.contextual_final_options_at_position",
+                return_value={"ung", "an", "ou"},
+            ) as mock_ctx:
+                search_words(q="窮困?倒=", mode="m1", db=db, limit=30)
+                self.assertEqual(mock_ctx.call_count, 3)
         finally:
             db.close()
 

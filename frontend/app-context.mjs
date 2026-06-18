@@ -84,6 +84,7 @@ export const shell = {
   currentMode: "m1",
   last0243Mode: "m1",
   isSearching: false,
+  searchAbort: null,
   appSearchReady: false,
   tabState: { activeId: 1, nextTabId: 2, tabs: [] },
   chromeLayout: null,

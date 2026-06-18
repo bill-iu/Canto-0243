@@ -88,9 +88,13 @@ def _contextual_phoneme_options_at_position(
 ) -> set[str]:
     from app.models.word import Word
     from app.services.word_db_filters import length_filter
+    from app.utils.word_cache import get_words_for_length, is_word_cache_ready
 
     options: set[str] = set()
-    for row in db.query(Word).filter(length_filter(width)).all():
+    rows = get_words_for_length(width) if is_word_cache_ready() else None
+    if rows is None:
+        rows = db.query(Word).filter(length_filter(width)).all()
+    for row in rows:
         text = get_word_text(row)
         if len(text) != width or text[pos] != anchor_char:
             continue
@@ -126,37 +130,70 @@ def contextual_initial_options_at_position(
     )
 
 
-def word_passes_partial_rhyme_mask(spec: MatchSpec, word, db) -> bool:
+def _partial_mask_slot_options(
+    spec: MatchSpec,
+    db,
+    *,
+    dimension: str,
+) -> dict[tuple[int, str], set[str]]:
+    """每個錨格選項只算一次（唔好喺逐候選詞迴圈內全庫掃描）。"""
+    kind = "final_anchor" if dimension == "final" else "initial_anchor"
+    ctx = (
+        contextual_final_options_at_position
+        if dimension == "final"
+        else contextual_initial_options_at_position
+    )
+    out: dict[tuple[int, str], set[str]] = {}
+    for slot in spec.slots:
+        if slot.kind != kind:
+            continue
+        key = (slot.pos, slot.value)
+        if key not in out:
+            out[key] = ctx(db, spec.width, slot.pos, slot.value)
+    return out
+
+
+def word_passes_partial_rhyme_mask(
+    spec: MatchSpec,
+    word,
+    db,
+    *,
+    slot_options: Optional[dict[tuple[int, str], set[str]]] = None,
+) -> bool:
     text = get_word_text(word)
     if len(text) != spec.width:
         return False
     finals = get_rhyme_finals(word)
     if not finals:
         return False
+    opts = slot_options or _partial_mask_slot_options(spec, db, dimension="final")
     for slot in spec.slots:
         if slot.kind != "final_anchor":
             continue
-        options = contextual_final_options_at_position(
-            db, spec.width, slot.pos, slot.value,
-        )
+        options = opts.get((slot.pos, slot.value))
         if not options or slot.pos >= len(finals) or finals[slot.pos] not in options:
             return False
     return True
 
 
-def word_passes_partial_initial_mask(spec: MatchSpec, word, db) -> bool:
+def word_passes_partial_initial_mask(
+    spec: MatchSpec,
+    word,
+    db,
+    *,
+    slot_options: Optional[dict[tuple[int, str], set[str]]] = None,
+) -> bool:
     text = get_word_text(word)
     if len(text) != spec.width:
         return False
     initials = get_word_parts(word, "initials")
     if not initials:
         return False
+    opts = slot_options or _partial_mask_slot_options(spec, db, dimension="initial")
     for slot in spec.slots:
         if slot.kind != "initial_anchor":
             continue
-        options = contextual_initial_options_at_position(
-            db, spec.width, slot.pos, slot.value,
-        )
+        options = opts.get((slot.pos, slot.value))
         if not options or slot.pos >= len(initials) or initials[slot.pos] not in options:
             return False
     return True
@@ -312,10 +349,18 @@ def filter_candidates_by_match_spec(
     db,
 ) -> list:
     if spec.extra.get("partial_rhyme_mask"):
-        candidates = [w for w in candidates if word_passes_partial_rhyme_mask(spec, w, db)]
+        slot_options = _partial_mask_slot_options(spec, db, dimension="final")
+        candidates = [
+            w for w in candidates
+            if word_passes_partial_rhyme_mask(spec, w, db, slot_options=slot_options)
+        ]
         return candidates
     if spec.extra.get("partial_initial_mask"):
-        candidates = [w for w in candidates if word_passes_partial_initial_mask(spec, w, db)]
+        slot_options = _partial_mask_slot_options(spec, db, dimension="initial")
+        candidates = [
+            w for w in candidates
+            if word_passes_partial_initial_mask(spec, w, db, slot_options=slot_options)
+        ]
         return candidates
 
     literal_char: Optional[str] = None
