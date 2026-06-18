@@ -10,7 +10,7 @@
 2. **五件套** — 全量 artifact：`lyrics.db`、`words-lexicon.json`、`canto-0243-portable.zip`、上述兩個 macOS tar。
 3. **下載隔離** — `portable/macos/launcher` 與 `portable/START.sh` 於啟動時呼叫 `scripts/portable_macos.py` 清除 `com.apple.quarantine`；**唔得**要求創作者手動 `xattr`（見 CONTEXT）。
 4. **建置時 ad-hoc codesign** — `build-portable.sh` 對 `.app` 做 `codesign --sign -`，改善 Gatekeeper 首次開啟；與啟動時清隔離互補。
-5. **CI** — `release-full.yml` 的 `build-macos` 以 matrix 分別在 Apple Silicon 與 Intel runner 建置；兩邊皆 green 才 publish。
+5. **CI** — `release-full.yml` 的 `build-macos` 以 matrix 分別在 `macos-latest`（arm64）與 `macos-15-intel`（x86_64）runner 建置；兩邊皆 green 才 publish。
 
 **Considered Options**
 

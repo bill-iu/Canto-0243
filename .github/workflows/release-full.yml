@@ -92,7 +92,7 @@ jobs:
           - runner: macos-latest
             arch: arm64
             artifact: canto-0243-portable-macos-arm64.tar.gz
-          - runner: macos-13
+          - runner: macos-15-intel
             arch: x86_64
             artifact: canto-0243-portable-macos-x86_64.tar.gz
     runs-on: ${{ matrix.runner }}
