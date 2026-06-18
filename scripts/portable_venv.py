@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py", "local_launch.py")
+_LIBPYTHON_RE = re.compile(r"libpython\d+\.\d+\.dylib")
 
 
 def _venv_python(venv_dir: Path) -> Path:
@@ -27,6 +29,119 @@ def copy_runtime_scripts(root: Path, repo_root: Path | None = None) -> None:
         if not src.is_file():
             raise FileNotFoundError(f"missing runtime script: {src}")
         shutil.copy2(src, scripts_dst / name)
+
+
+def _loader_path_ref(from_binary: Path, dylib: Path) -> str:
+    rel = os.path.relpath(dylib, start=from_binary.parent).replace("\\", "/")
+    return f"@loader_path/{rel}"
+
+
+def _otool_lib_paths(binary: Path) -> list[str]:
+    out = subprocess.check_output(["otool", "-L", str(binary)], text=True)
+    paths: list[str] = []
+    for line in out.splitlines()[1:]:
+        line = line.strip()
+        if not line:
+            continue
+        dep = line.split(" (", 1)[0].strip()
+        paths.append(dep)
+    return paths
+
+
+def _is_mach_o(path: Path) -> bool:
+    try:
+        out = subprocess.check_output(["file", "-b", str(path)], text=True)
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    return "Mach-O" in out
+
+
+def libpython_deps(paths: list[str]) -> list[str]:
+    """Public: filter otool deps to libpython dylibs (for tests)."""
+    return [p for p in paths if _LIBPYTHON_RE.search(p)]
+
+
+def non_portable_libpython_refs(paths: list[str]) -> list[str]:
+    """Public: absolute /Users or hostedtoolcache libpython refs (for tests)."""
+    bad: list[str] = []
+    for p in libpython_deps(paths):
+        if p.startswith("@") or p.startswith("/usr/lib") or p.startswith("/System"):
+            continue
+        if p.startswith("/"):
+            bad.append(p)
+    return bad
+
+
+def _iter_mach_o_binaries(venv_dir: Path) -> list[Path]:
+    roots = [
+        venv_dir / "bin",
+        venv_dir / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "lib-dynload",
+        venv_dir / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "site-packages",
+    ]
+    seen: set[Path] = set()
+    for root in roots:
+        if not root.is_dir():
+            continue
+        for path in root.rglob("*"):
+            if not path.is_file() or path.is_symlink():
+                continue
+            if _is_mach_o(path):
+                resolved = path.resolve()
+                if resolved not in seen:
+                    seen.add(resolved)
+    return sorted(seen)
+
+
+def relocate_macos_venv(venv_dir: Path) -> None:
+    """Bundle libpython into venv and rewrite Mach-O load paths (ponytail: darwin only)."""
+    if sys.platform != "darwin":
+        return
+
+    py = _venv_python(venv_dir)
+    if not py.is_file():
+        raise RuntimeError(f"venv python missing: {py}")
+
+    src_deps = libpython_deps(_otool_lib_paths(py))
+    if not src_deps:
+        raise RuntimeError(f"no libpython dependency on {py}")
+
+    src = Path(src_deps[0])
+    if not src.is_file():
+        raise RuntimeError(f"libpython source missing: {src}")
+
+    lib_dir = venv_dir / "lib"
+    lib_dir.mkdir(parents=True, exist_ok=True)
+    bundled = lib_dir / src.name
+    if bundled.resolve() != src.resolve():
+        shutil.copy2(src, bundled)
+
+    old_refs = set(src_deps)
+    for other in _iter_mach_o_binaries(venv_dir):
+        for dep in libpython_deps(_otool_lib_paths(other)):
+            old_refs.add(dep)
+
+    for binary in _iter_mach_o_binaries(venv_dir):
+        new_ref = _loader_path_ref(binary, bundled)
+        for old in sorted(old_refs):
+            if old not in _otool_lib_paths(binary):
+                continue
+            subprocess.run(
+                ["install_name_tool", "-change", old, new_ref, str(binary)],
+                check=True,
+                capture_output=True,
+            )
+
+    if non_portable_libpython_refs(_otool_lib_paths(py)):
+        raise RuntimeError("libpython still references non-portable path after relocate")
+
+
+def assert_portable_macos_venv(venv_dir: Path) -> None:
+    if sys.platform != "darwin":
+        return
+    py = _venv_python(venv_dir)
+    bad = non_portable_libpython_refs(_otool_lib_paths(py))
+    if bad:
+        raise RuntimeError(f"non-portable libpython refs on {py}: {bad}")
 
 
 def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
@@ -47,6 +162,8 @@ def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
     py = _venv_python(venv_dir)
     env = {**os.environ, "PYTHONUTF8": "1"}
     subprocess.run([str(py), "-m", "pip", "install", "-r", str(req)], check=True, env=env)
+
+    relocate_macos_venv(venv_dir)
 
     py = _venv_python(venv_dir)
     if not py.is_file():
@@ -72,6 +189,7 @@ def main() -> int:
         if not py.is_file():
             print(f"FAIL: no venv at {root / 'venv'}", file=sys.stderr)
             return 1
+        assert_portable_macos_venv(root / "venv")
         subprocess.run([str(py), "-c", "import fastapi, uvicorn, sqlalchemy"], check=True)
         print("OK")
         return 0
