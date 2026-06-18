@@ -45,7 +45,7 @@
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）。
 3. 依平台啟動：
    * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
-   * **macOS**：依晶片下載 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解壓後雙擊 **`Canto-0243.app`**。
+   * **macOS**：依晶片下載 `canto-0243-portable-macos-arm64.tar.gz` 或 `canto-0243-portable-macos-x86_64.tar.gz`，解壓後雙擊 **`Canto-0243.app`**；若系統拒絕開啟，改雙擊 **`Open Canto-0243.command`**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
 
 **需求**：Windows／macOS **免安裝**（套件已內建 Python）；Linux 仍須 Python 3.10+。

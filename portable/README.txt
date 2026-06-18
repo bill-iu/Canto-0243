@@ -26,13 +26,13 @@ macOS（免安裝）
      canto-0243-portable-macos-arm64.tar.gz
      canto-0243-portable-macos-x86_64.tar.gz
 
-2. 將 Canto-0243.app 拖到「應用程式」資料夾
-   Drag Canto-0243.app to Applications.
+2. 將 Canto-0243.app 拖到「應用程式」資料夾（或留在解壓目錄）
+   Drag Canto-0243.app to Applications (or keep it in the extract folder).
 
 3. 雙擊 Canto-0243.app 啟動（無需安裝 Python、無需 chmod）
    Double-click Canto-0243.app (no Python, no Terminal chmod).
-   首次啟動會自動處理下載隔離；若仍被阻擋，請確認下載了正確架構的 tar。
-   Quarantine is cleared on first launch; if blocked, verify you used the correct arch tar.
+   若顯示「無法開啟應用程式」，改雙擊同目錄的 Open Canto-0243.command（會自動處理隔離並開啟）。
+   If macOS says the app cannot be opened, double-click Open Canto-0243.command instead.
 
    進階：資料夾版仍可用 START.command / START.sh（內含 venv）
    Advanced: folder bundle START.command / START.sh also work.

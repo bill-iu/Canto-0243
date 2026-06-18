@@ -84,13 +84,19 @@ cp -f "$ROOT/portable/macos/launcher" "$APP_DIR/Contents/MacOS/Canto-0243"
 chmod +x "$APP_DIR/Contents/MacOS/Canto-0243"
 
 if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
-  echo "==> Ad-hoc codesign Canto-0243.app..."
-  codesign --force --deep --sign - "$APP_DIR"
+  echo "==> Ad-hoc codesign Canto-0243.app (shallow; ponytail: no --deep over venv)..."
+  codesign --force --sign - "$APP_DIR/Contents/MacOS/Canto-0243"
+  codesign --force --sign - "$APP_DIR"
 fi
+
+OPEN_CMD_SRC="$ROOT/portable/macos/Open Canto-0243.command"
+OPEN_CMD_DIST="$ROOT/dist/Open Canto-0243.command"
+cp -f "$OPEN_CMD_SRC" "$OPEN_CMD_DIST"
+chmod +x "$OPEN_CMD_DIST"
 
 echo "==> Create macOS tar.gz (Canto-0243.app, ${MAC_ARCH})..."
 rm -f "$TAR_PATH"
-tar -czf "$TAR_PATH" -C "$ROOT/dist" "Canto-0243.app"
+tar -czf "$TAR_PATH" -C "$ROOT/dist" "Canto-0243.app" "Open Canto-0243.command"
 
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)
 db_mb=$(du -m "$DB_PATH" | cut -f1)
