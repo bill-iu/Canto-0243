@@ -90,16 +90,29 @@ CI 不可用時，仍可按上方「過渡期（手動）」checklist 操作。
 ```bash
 # 1. 確認 lyrics.db 在 repo 根目錄
 # 2. 本機建置 + 開啟 smoke（無下載隔離，驗證 .app 能跑）
-bash scripts/release-macos-local.sh --tag v1.6.5 --test
+bash scripts/release-macos-local.sh --tag vNEXT --test
 
-# 3. 確認無誤後上傳（Intel 機只會產 x86_64 tar；arm64 需在 M 系列 Mac 各建一次）
-bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
+# 3. 雙路驗收都通過後才上傳（見下方「macOS Gatekeeper 雙路驗收」）
+bash scripts/release-macos-local.sh --tag vNEXT --arch x86_64 --upload
 ```
 
 `--upload` 會 `--clobber` 覆寫同 tag 的 `lyrics.db`、`words-lexicon.json`、對應架構 tar。  
 Windows zip 仍須 Windows 建置或等 CI。雙架構 macOS 五件套齊全需兩台 Mac 或 CI。
 
 Sequoia 從 GitHub **下載**後可能出現惡意軟件檢查對話框；創作者路徑見 `portable/README.txt` 與 CONTEXT § macOS 應用程式套件（**仍要開啟**）。
+
+### macOS Gatekeeper 雙路驗收（發新 tag 前必過）
+
+**政策**：Intel／Sequoia 上 **兩條路都通** 先 bump semver 或 push 新 full tag；唔好未驗就收工發佈。
+
+| 路徑 | 做法 | 通過標準 |
+|------|------|----------|
+| **下載隔離** | 從 GitHub Release 下載現行 macOS tar（Intel → `x86_64`），解壓、雙擊 `.app` | 惡意軟件對話框 → **完成** → **系統設定→隱私與安全性→仍要開啟** → 再雙擊 → 見啟動回饋／瀏覽器開查韻頁 |
+| **本機建置** | `git pull` 後 `bash scripts/release-macos-local.sh --tag vNEXT --test` | `dist/Canto-0243.app` **無**下載隔離，雙擊直接啟動（同上通過標準） |
+
+兩邊都綠 → 才執行 `--upload` 或 CI tag 發佈。任一路失敗 → 修 build／文件，**唔**發新 tag。
+
+驗收基線建議：下載路用**已發佈**含 deep sign + LF 的 tar（例如 v1.6.4 `x86_64`）；本機路用 `main` 最新 commit。
 
 ## 常見問題
 
