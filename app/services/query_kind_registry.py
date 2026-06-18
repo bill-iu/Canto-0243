@@ -34,6 +34,7 @@ QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.PREFIX_WILDCARD_EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.PARTIAL_RHYME_MASK: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
+    QueryKind.PARTIAL_INITIAL_MASK: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.SERIAL_PHONEME: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.STAR_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.WILDCARD_CODE_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),

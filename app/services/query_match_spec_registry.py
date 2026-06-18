@@ -125,6 +125,16 @@ def _spec_partial_rhyme_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
+def _spec_partial_initial_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    assert parsed.kind == QueryKind.PARTIAL_INITIAL_MASK
+    q = parsed  # type: PartialInitialMaskQuery
+    spec = MatchSpec(width=q.width)
+    spec.extra["partial_initial_mask"] = True
+    for pos, ch in q.anchors:
+        spec.slots.append(SlotConstraint(pos=pos, kind="initial_anchor", value=ch))
+    return spec
+
+
 def _spec_serial_phoneme(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.SERIAL_PHONEME
     q = parsed  # type: SerialPhonemeAnchorQuery
@@ -310,6 +320,7 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.EQUALS: _spec_equals,
     QueryKind.PREFIX_WILDCARD_EQUALS: _spec_prefix_wildcard_equals,
     QueryKind.PARTIAL_RHYME_MASK: _spec_partial_rhyme_mask,
+    QueryKind.PARTIAL_INITIAL_MASK: _spec_partial_initial_mask,
     QueryKind.SERIAL_PHONEME: _spec_serial_phoneme,
     QueryKind.STAR_ANCHOR: _spec_star_anchor,
     QueryKind.LITERAL_REF: _spec_literal_ref,

@@ -17,11 +17,13 @@ from app.services.query_grammar.rhyme import (
     parse_code_ref_rhyme_contradiction_hint,
     parse_double_wildcard_initial_query,
     parse_double_wildcard_rhyme_query,
+    parse_partial_initial_mask_query,
     parse_partial_rhyme_mask_query,
     parse_rhyme_anchor_query,
     parse_triple_rhyme_anchor_query,
 )
 from app.services.query_grammar.serial import (
+    parse_prefix_wildcard_initial_query,
     parse_prefix_wildcard_equals_query,
     parse_pure_chars_serial_hint,
     parse_serial_phoneme_anchor_query,
@@ -51,6 +53,7 @@ from app.services.query_types import (
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
+    PartialInitialMaskQuery,
     PartialRhymeMaskQuery,
     PrefixWildcardEqualsQuery,
     QueryKind,
@@ -165,9 +168,17 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     if prefix_eq:
         return PrefixWildcardEqualsQuery(**prefix_eq)
 
+    prefix_initial = parse_prefix_wildcard_initial_query(q)
+    if prefix_initial:
+        return PrefixWildcardEqualsQuery(**prefix_initial)
+
     partial_rhyme = parse_partial_rhyme_mask_query(q)
     if partial_rhyme:
         return PartialRhymeMaskQuery(**partial_rhyme)
+
+    partial_initial = parse_partial_initial_mask_query(q)
+    if partial_initial:
+        return PartialInitialMaskQuery(**partial_initial)
 
     serial_parsed = parse_serial_phoneme_anchor_query(q)
     if serial_parsed:

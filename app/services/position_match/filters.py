@@ -79,13 +79,13 @@ def matches_phoneme_at_position(
     return parts[pos] in options
 
 
-def contextual_final_options_at_position(
+def _contextual_phoneme_options_at_position(
     db,
     width: int,
     pos: int,
     anchor_char: str,
+    dimension: str,
 ) -> set[str]:
-    """四字部分韻錨：同長詞同位置字面讀音 union；無樣本則 fallback 錨點字韻母。"""
     from app.models.word import Word
     from app.services.word_db_filters import length_filter
 
@@ -94,11 +94,36 @@ def contextual_final_options_at_position(
         text = get_word_text(row)
         if len(text) != width or text[pos] != anchor_char:
             continue
-        finals = get_rhyme_finals(row)
-        if finals and pos < len(finals):
-            options.add(finals[pos])
-    options |= anchor_phoneme_options(anchor_char, "final", db, allow_inject=True)
+        if dimension == "final":
+            parts = get_rhyme_finals(row)
+        else:
+            parts = get_word_parts(row, "initials")
+        if parts and pos < len(parts):
+            options.add(parts[pos])
+    options |= anchor_phoneme_options(anchor_char, dimension, db, allow_inject=True)
     return options
+
+
+def contextual_final_options_at_position(
+    db,
+    width: int,
+    pos: int,
+    anchor_char: str,
+) -> set[str]:
+    return _contextual_phoneme_options_at_position(
+        db, width, pos, anchor_char, "final",
+    )
+
+
+def contextual_initial_options_at_position(
+    db,
+    width: int,
+    pos: int,
+    anchor_char: str,
+) -> set[str]:
+    return _contextual_phoneme_options_at_position(
+        db, width, pos, anchor_char, "initial",
+    )
 
 
 def word_passes_partial_rhyme_mask(spec: MatchSpec, word, db) -> bool:
@@ -115,6 +140,24 @@ def word_passes_partial_rhyme_mask(spec: MatchSpec, word, db) -> bool:
             db, spec.width, slot.pos, slot.value,
         )
         if not options or slot.pos >= len(finals) or finals[slot.pos] not in options:
+            return False
+    return True
+
+
+def word_passes_partial_initial_mask(spec: MatchSpec, word, db) -> bool:
+    text = get_word_text(word)
+    if len(text) != spec.width:
+        return False
+    initials = get_word_parts(word, "initials")
+    if not initials:
+        return False
+    for slot in spec.slots:
+        if slot.kind != "initial_anchor":
+            continue
+        options = contextual_initial_options_at_position(
+            db, spec.width, slot.pos, slot.value,
+        )
+        if not options or slot.pos >= len(initials) or initials[slot.pos] not in options:
             return False
     return True
 
@@ -270,6 +313,9 @@ def filter_candidates_by_match_spec(
 ) -> list:
     if spec.extra.get("partial_rhyme_mask"):
         candidates = [w for w in candidates if word_passes_partial_rhyme_mask(spec, w, db)]
+        return candidates
+    if spec.extra.get("partial_initial_mask"):
+        candidates = [w for w in candidates if word_passes_partial_initial_mask(spec, w, db)]
         return candidates
 
     literal_char: Optional[str] = None

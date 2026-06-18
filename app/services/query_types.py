@@ -27,6 +27,7 @@ class QueryKind(str, Enum):
     SERIAL_PHONEME = "serial_phoneme"
     PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
     PARTIAL_RHYME_MASK = "partial_rhyme_mask"
+    PARTIAL_INITIAL_MASK = "partial_initial_mask"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
@@ -140,6 +141,18 @@ class PartialRhymeMaskQuery:
     @property
     def kind(self) -> QueryKind:
         return QueryKind.PARTIAL_RHYME_MASK
+
+
+@dataclass(frozen=True)
+class PartialInitialMaskQuery:
+    raw_q: str
+    pattern: str
+    width: int
+    anchors: list[tuple[int, str]]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.PARTIAL_INITIAL_MASK
 
 
 @dataclass(frozen=True)
@@ -330,6 +343,7 @@ ParsedQuery = Union[
     EqualsQuery,
     PrefixWildcardEqualsQuery,
     PartialRhymeMaskQuery,
+    PartialInitialMaskQuery,
     SerialPhonemeAnchorQuery,
     StarAnchorQuery,
     WildcardCodeAnchorQuery,

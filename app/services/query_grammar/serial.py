@@ -52,6 +52,14 @@ def parse_pure_chars_serial_hint(q: str) -> Optional[str]:
     return None
 
 
+def parse_prefix_wildcard_initial_query(q: str) -> Optional[dict]:
+    m = re.fullmatch(r"\?=([一-龥]{2,})$", q)
+    if not m:
+        return None
+    inner = f"={m.group(1)}"
+    return {"raw_q": q, "inner_q": inner, "ref_literal": m.group(1), "width": len(m.group(1)) + 1}
+
+
 def parse_prefix_wildcard_equals_query(q: str) -> Optional[dict]:
     m = re.fullmatch(r"\?([一-龥]{2,})=$", q)
     if not m:

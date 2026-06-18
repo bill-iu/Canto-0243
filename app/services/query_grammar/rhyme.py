@@ -24,6 +24,28 @@ def _is_wildcard_char(ch: str) -> bool:
     return len(ch) == 1 and ch in WILDCARD_CHARS
 
 
+def normalize_partial_initial_mask_query(q: str) -> str:
+    """`=窮困潦?` 尾格通配已係規範形，唔改寫。"""
+    return q
+
+
+def parse_partial_initial_mask_query(q: str) -> Optional[dict]:
+    """四字部分聲錨：`=窮?潦倒` 等；`?` 通配，其餘格同參考字聲母。"""
+    nq = normalize_partial_initial_mask_query(q)
+    m = re.fullmatch(r"^=([一-龥?]{4})$", nq)
+    if not m:
+        return None
+    pattern = m.group(1)
+    if "?" not in pattern or all(ch == "?" for ch in pattern):
+        return None
+    if pattern.startswith("?") and re.fullmatch(r"\?[一-龥]{3}", pattern):
+        return None
+    anchors = [(pos, ch) for pos, ch in enumerate(pattern) if ch != "?"]
+    if not anchors:
+        return None
+    return {"raw_q": q, "pattern": pattern, "width": 4, "anchors": anchors}
+
+
 def normalize_partial_rhyme_mask_query(q: str) -> str:
     """`窮困潦=?` → `窮困潦?=`（尾格通配 + 韻錨）。"""
     m = re.fullmatch(r"^([一-龥]{3})=\?$", q)
@@ -52,6 +74,8 @@ def parse_partial_rhyme_mask_query(q: str) -> Optional[dict]:
 def blocks_star_normalize(q: str) -> bool:
     """韻／聲錨形狀 — star normalize 唔插 `*`。"""
     if parse_partial_rhyme_mask_query(q):
+        return True
+    if parse_partial_initial_mask_query(q):
         return True
     return bool(_RHYME_ANCHOR_SHAPE_RE.match(q))
 
