@@ -160,7 +160,10 @@ def execute_match_spec(
         )
 
     source, sort_key = _resolve_mask_family_source(spec, db, mode, code)
-    if not get_equals_span(spec) and source is None:
+    has_phoneme_anchors = any(
+        s.kind in ("final_anchor", "initial_anchor") for s in spec.slots
+    )
+    if not get_equals_span(spec) and source is None and not has_phoneme_anchors:
         return MaskFamilySearchResult(items=[])
 
     items, from_cache = run_position_query_tracked(

@@ -18,6 +18,7 @@ from app.services.query_types import (
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
+    PartialRhymeMaskQuery,
     PrefixWildcardEqualsQuery,
     QueryKind,
     RhymeAnchorQuery,
@@ -111,6 +112,16 @@ def _spec_prefix_wildcard_equals(parsed: ParsedQuery) -> Optional[MatchSpec]:
         )
     spec.mask = "?" * q.width
     spec.extra["prefix_wildcard_equals"] = True
+    return spec
+
+
+def _spec_partial_rhyme_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    assert parsed.kind == QueryKind.PARTIAL_RHYME_MASK
+    q = parsed  # type: PartialRhymeMaskQuery
+    spec = MatchSpec(width=q.width)
+    spec.extra["partial_rhyme_mask"] = True
+    for pos, ch in q.anchors:
+        spec.slots.append(SlotConstraint(pos=pos, kind="final_anchor", value=ch))
     return spec
 
 
@@ -298,6 +309,7 @@ def _spec_compound_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
 MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.EQUALS: _spec_equals,
     QueryKind.PREFIX_WILDCARD_EQUALS: _spec_prefix_wildcard_equals,
+    QueryKind.PARTIAL_RHYME_MASK: _spec_partial_rhyme_mask,
     QueryKind.SERIAL_PHONEME: _spec_serial_phoneme,
     QueryKind.STAR_ANCHOR: _spec_star_anchor,
     QueryKind.LITERAL_REF: _spec_literal_ref,

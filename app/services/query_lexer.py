@@ -87,7 +87,10 @@ def normalize_middle_rhyme_triple(q: str) -> str:
 
 def normalize_search_query_core(q: str) -> str:
     """normalize 主鏈（不含 canonical star）。"""
+    from app.services.query_grammar.rhyme import normalize_partial_rhyme_mask_query
+
     q = normalize_query_syntax(normalize_code_tail_separators(q.strip()))
+    q = normalize_partial_rhyme_mask_query(q)
     q = normalize_jyutping_slot_connectors(q)
     q = normalize_redundant_single_char_rhyme(q)
     q = normalize_redundant_single_char_initial(q)

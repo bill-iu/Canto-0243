@@ -17,6 +17,7 @@ from app.services.query_grammar.rhyme import (
     parse_code_ref_rhyme_contradiction_hint,
     parse_double_wildcard_initial_query,
     parse_double_wildcard_rhyme_query,
+    parse_partial_rhyme_mask_query,
     parse_rhyme_anchor_query,
     parse_triple_rhyme_anchor_query,
 )
@@ -50,6 +51,7 @@ from app.services.query_types import (
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
+    PartialRhymeMaskQuery,
     PrefixWildcardEqualsQuery,
     QueryKind,
     RelationLookupQuery,
@@ -162,6 +164,10 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     prefix_eq = parse_prefix_wildcard_equals_query(q)
     if prefix_eq:
         return PrefixWildcardEqualsQuery(**prefix_eq)
+
+    partial_rhyme = parse_partial_rhyme_mask_query(q)
+    if partial_rhyme:
+        return PartialRhymeMaskQuery(**partial_rhyme)
 
     serial_parsed = parse_serial_phoneme_anchor_query(q)
     if serial_parsed:

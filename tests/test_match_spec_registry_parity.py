@@ -30,6 +30,7 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
             QueryKind.MASK,
             QueryKind.COMPOUND_SYN,
             QueryKind.COMPOUND_ANT,
+            QueryKind.PARTIAL_RHYME_MASK,
         }
         self.assertEqual(missing, set())
 
@@ -52,6 +53,7 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
             ("33!!你", {"width": 2, "compound_kind": "ant", "code_prefix": "33"}),
             ("349~與~你", {"width": 3, "compound_kind": "syn", "code_prefix": "349", "connective": "與"}),
             ("!與!", {"width": 3, "compound_kind": "ant", "connective": "與"}),
+            ("窮?潦倒=", {"width": 4, "partial_rhyme_mask": True, "anchor_count": 3}),
         ]
         for q, expected in cases:
             with self.subTest(q=q):
@@ -96,6 +98,8 @@ class MatchSpecRegistryParityTests(unittest.TestCase):
                     self.assertTrue(spec.extra.get("dual_phoneme"))
                     self.assertIn("dual_initial_spec", spec.extra)
                     self.assertIn("dual_final_spec", spec.extra)
+                if expected.get("partial_rhyme_mask"):
+                    self.assertTrue(spec.extra.get("partial_rhyme_mask"))
 
     def test_alias_rewrite_before_registry(self):
         from app.services.query_parse import HybridTailEqualsAliasQuery, normalize_to_match_spec

@@ -26,6 +26,7 @@ class QueryKind(str, Enum):
     CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
     SERIAL_PHONEME = "serial_phoneme"
     PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
+    PARTIAL_RHYME_MASK = "partial_rhyme_mask"
     LITERAL_REF = "literal_ref"
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
@@ -127,6 +128,18 @@ class PrefixWildcardEqualsQuery:
     @property
     def kind(self) -> QueryKind:
         return QueryKind.PREFIX_WILDCARD_EQUALS
+
+
+@dataclass(frozen=True)
+class PartialRhymeMaskQuery:
+    raw_q: str
+    pattern: str
+    width: int
+    anchors: list[tuple[int, str]]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.PARTIAL_RHYME_MASK
 
 
 @dataclass(frozen=True)
@@ -316,6 +329,7 @@ ParsedQuery = Union[
     HybridTailEqualsAliasQuery,
     EqualsQuery,
     PrefixWildcardEqualsQuery,
+    PartialRhymeMaskQuery,
     SerialPhonemeAnchorQuery,
     StarAnchorQuery,
     WildcardCodeAnchorQuery,

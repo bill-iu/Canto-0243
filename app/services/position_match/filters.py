@@ -79,6 +79,46 @@ def matches_phoneme_at_position(
     return parts[pos] in options
 
 
+def contextual_final_options_at_position(
+    db,
+    width: int,
+    pos: int,
+    anchor_char: str,
+) -> set[str]:
+    """四字部分韻錨：同長詞同位置字面讀音 union；無樣本則 fallback 錨點字韻母。"""
+    from app.models.word import Word
+    from app.services.word_db_filters import length_filter
+
+    options: set[str] = set()
+    for row in db.query(Word).filter(length_filter(width)).all():
+        text = get_word_text(row)
+        if len(text) != width or text[pos] != anchor_char:
+            continue
+        finals = get_rhyme_finals(row)
+        if finals and pos < len(finals):
+            options.add(finals[pos])
+    options |= anchor_phoneme_options(anchor_char, "final", db, allow_inject=True)
+    return options
+
+
+def word_passes_partial_rhyme_mask(spec: MatchSpec, word, db) -> bool:
+    text = get_word_text(word)
+    if len(text) != spec.width:
+        return False
+    finals = get_rhyme_finals(word)
+    if not finals:
+        return False
+    for slot in spec.slots:
+        if slot.kind != "final_anchor":
+            continue
+        options = contextual_final_options_at_position(
+            db, spec.width, slot.pos, slot.value,
+        )
+        if not options or slot.pos >= len(finals) or finals[slot.pos] not in options:
+            return False
+    return True
+
+
 def slot_constraint_matches(word, slot, db) -> bool:
     from app.services.jyutping_anchor import matches_jyutping_anchor_at_position
 
@@ -228,6 +268,10 @@ def filter_candidates_by_match_spec(
     mode: str,
     db,
 ) -> list:
+    if spec.extra.get("partial_rhyme_mask"):
+        candidates = [w for w in candidates if word_passes_partial_rhyme_mask(spec, w, db)]
+        return candidates
+
     literal_char: Optional[str] = None
     for slot in spec.slots:
         if slot.kind == "literal_char" and slot.pos == spec.width - 1:
