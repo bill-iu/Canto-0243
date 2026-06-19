@@ -95,6 +95,19 @@ gh release upload v1.7.0 dist/words-lexicon.json --clobber
 
 兩邊都通再視為該版 macOS 可交付。
 
+## Draft → Publish 前 smoke（全量發佈）
+
+**前置**：該 tag 已有 zip + x86_64 tar + db／json（Draft 可見即可）。
+
+| 平台 | 做法 |
+|------|------|
+| **Windows** | 從 **Draft Release** 下載 zip（唔用本機 `dist/`）→ 解壓 → `START.bat` → 瀏覽器開查韻頁 |
+| **macOS** | 從 **Draft Release** 下載 x86_64 tar → 解壓 → `Canto-0243.command` |
+
+**詞庫行為**（詞庫變更大時必做）：對 2–3 個近義字（例：哀愁、悲傷、憂傷）各查 `字面!`，確認有合理反義、無明顯 hub 噪音。維護者可先用 `python -m ingest report` 對照 `ant_syn_bridge ant rows` 與 checkpoint。
+
+**Publish**：Win + Mac smoke 都通 → GitHub Release 頁 **Publish release**。
+
 ## CI（保留）
 
 | Workflow | 觸發 | 用途 |
