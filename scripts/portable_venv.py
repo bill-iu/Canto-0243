@@ -247,6 +247,8 @@ def _bundle_dep(lib_dir: Path, dep: str) -> Path | None:
 
 def _seed_venv_libpython(venv_dir: Path) -> None:
     """Copy libpython into venv/lib when --copies leaves an @executable_path ref unfilled."""
+    if sys.platform != "darwin":
+        return
     lib_dir = venv_dir / "lib"
     bundled = lib_dir / _bundled_lib_name()
     if bundled.is_file():
