@@ -25,6 +25,8 @@ python -m ingest expand-antonyms-syn-bridge --fresh
 | `--min-bridge-cosine 0.80` | 橋接語意門檻 |
 | `--max-bridged-ants-per-head 30` | 橋接借入上限 |
 
+**唔影響關係補錄**：只清寫 `ant_syn_bridge`；`manual`／`manual_syn_cluster`／`manual_ant_mirror` 唔刪不改。已有手動反義的字面會跳過橋接；同一 (head, ant) 已存在則唔重複插入。
+
 **唔好**手動刪 `data/locks/*.lock` 恢復進度；中斷後重新執行同一命令（無 `--fresh`）會自動 resume checkpoint。要從頭再跑才加 `--fresh`。
 
 可選覆寫（對照 outlier 時）：
@@ -48,7 +50,9 @@ python -m ingest report
 
 ### 2. 抽樣語意（5 字）
 
-從 DB 取 5 個僅經橋接補反義的字面（示例查詢）：
+抽樣**只驗 `ant_syn_bridge` 品質**；**關係補錄**（`manual` 系）唔納入抽樣，亦唔作為橋接好壞嘅判準。
+
+從 DB 取 5 個僅經橋接補反義的字面（示例查詢；排除 head 已有 `manual` 反義者）：
 
 ```bash
 python -c "from app.database import SessionLocal; from app.models.word import Word, WordRelation; \
