@@ -80,3 +80,5 @@ print([r[0] for r in rows]); db.close()"
 ### 3. 詞庫發佈
 
 驗收通過後，依 [release.md](release.md) § 步驟 3 上傳 **發佈詞庫快照**（`lyrics.db`、`words-lexicon.json`）。
+
+**semver**：僅橋接重跑、詞庫內容變而程式不變 → **詞庫發佈**（同一 semver 覆寫 db／json），唔單為橋接 bump 新 tag。若同次尚有創作者可感知嘅程式或介面變更，先 bump 新 semver 做 **全量發佈**。
