@@ -131,7 +131,7 @@ class CodePrefixedWholeWordEqualsTests(unittest.TestCase):
         try:
             result = execute_search(
                 SearchContext(
-                    q="0449測試查詢=",
+                    q="0449冇哩個詞=",
                     code=None,
                     char=None,
                     mode="m1",
@@ -142,6 +142,33 @@ class CodePrefixedWholeWordEqualsTests(unittest.TestCase):
             )
             self.assertEqual(result.items, [])
             self.assertIsNone(result.hint)
+        finally:
+            db.close()
+
+    def test_ref_code_mismatch_still_rhymes_by_code_prefix(self):
+        """23更好=：參考詞 code 49，左碼 23 只約束候選；幸好 code 29 同韻應入選。"""
+        db = _memory_db(
+            Word(
+                char="更好",
+                code="49",
+                jyutping="gang3 hou2",
+                finals='["ang", "ou"]',
+                initials='["g", "h"]',
+                length=2,
+            ),
+            Word(
+                char="幸好",
+                code="29",
+                jyutping="hang6 hou2",
+                finals='["ang", "ou"]',
+                initials='["h", "h"]',
+                length=2,
+            ),
+        )
+        try:
+            found = _word_chars(search_words(q="23更好=", mode="m1", db=db, limit=20))
+            self.assertIn("幸好", found)
+            self.assertNotIn("更好", found)
         finally:
             db.close()
 

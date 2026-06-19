@@ -7,6 +7,7 @@ from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.query_dispatch import SearchContext, execute_search, search_words
+from app.utils.search_hint_header import encode_search_hint
 
 router = APIRouter(prefix="/words", tags=["words"])
 
@@ -61,7 +62,7 @@ def search_words_endpoint(
     if result.total is not None:
         response.headers["X-Search-Total"] = str(result.total)
     if result.hint:
-        response.headers["X-Search-Hint"] = result.hint
+        response.headers["X-Search-Hint"] = encode_search_hint(result.hint)
     if result.effective_mode:
         response.headers["X-Effective-Mode"] = result.effective_mode
     if result.cache_path:

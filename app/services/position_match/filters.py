@@ -567,10 +567,15 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
             return []
         target = None
     else:
-        if span.whole_word and full_code:
+        if span.whole_word and full_code and spec.width == 4:
+            # CONTEXT § 等號查詢：四字先用左碼對齊參考讀音；短詞只用權威列
             target = equals_authoritative_row_for_code(
                 span.ref_literal, full_code, mode, db, allow_inject=True,
             )
+            if target is None:
+                target = equals_authoritative_row(
+                    span.ref_literal, db, allow_inject=True,
+                )
         else:
             target = equals_authoritative_row(span.ref_literal, db, allow_inject=True)
         if not target:

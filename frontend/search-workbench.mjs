@@ -192,6 +192,19 @@ function maybeModeRedirectForRelationSyntax(input, tab) {
   }
 }
 
+function decodeSearchHintHeader(raw) {
+  if (!raw) return raw;
+  const prefix = "UTF-8''";
+  if (raw.startsWith(prefix)) {
+    try {
+      return decodeURIComponent(raw.slice(prefix.length));
+    } catch {
+      return raw;
+    }
+  }
+  return raw;
+}
+
 function applyEffectiveModeFromResponse(res, searchHint) {
   const effectiveMode = res.headers.get("X-Effective-Mode");
   if (!effectiveMode || !MODE_META[effectiveMode] || effectiveMode === shell.currentMode) {
@@ -399,7 +412,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     const data = await res.json();
     const totalHeader = res.headers.get("X-Search-Total");
     const total = totalHeader ? Number.parseInt(totalHeader, 10) : null;
-    let searchHint = res.headers.get("X-Search-Hint");
+    let searchHint = decodeSearchHintHeader(res.headers.get("X-Search-Hint"));
     searchHint = applyEffectiveModeFromResponse(res, searchHint);
     if (!searchHint && tab.redirectHint) {
       searchHint = tab.redirectHint;
