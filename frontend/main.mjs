@@ -10,6 +10,7 @@
   $,
 } from "./app-context.mjs";
 import { waitForPreloadReady } from "./gate.mjs";
+import { QueryChromeTabsLayout } from "./chrome-tabs-layout.mjs";
 import {
   activeTab,
   persistTabs,

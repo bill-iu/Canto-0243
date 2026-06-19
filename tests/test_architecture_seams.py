@@ -15,7 +15,7 @@ MAIN_MJS_PATH = REPO_ROOT / "frontend" / "main.mjs"
 APP_CONTEXT_PATH = REPO_ROOT / "frontend" / "app-context.mjs"
 GATE_MJS_PATH = REPO_ROOT / "frontend" / "gate.mjs"
 SEARCH_MJS_PATH = REPO_ROOT / "frontend" / "search-workbench.mjs"
-LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.js"
+LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.mjs"
 MAIN_PATH = REPO_ROOT / "main.py"
 DISPATCH_PATH = REPO_ROOT / "app" / "services" / "query_dispatch.py"
 PARSE_PATH = REPO_ROOT / "app" / "services" / "query_parse.py"
@@ -393,10 +393,10 @@ class TestQueryParseTypesSeam(unittest.TestCase):
 class TestQueryTabsSeam(unittest.TestCase):
     FRONTEND_ASSETS = (
         "chrome-tabs.css",
-        "chrome-tabs-layout.js",
+        "chrome-tabs-layout.mjs",
         "query-tabs.css",
         "query-tabs-state.mjs",
-        "tab-geometry.js",
+        "tab-geometry.mjs",
         "main.mjs",
         "app-context.mjs",
         "vendor/draggabilly.pkgd.min.js",
@@ -404,9 +404,7 @@ class TestQueryTabsSeam(unittest.TestCase):
     INDEX_REQUIRED = (
         'href="chrome-tabs.css"',
         'href="query-tabs.css"',
-        'src="tab-geometry.js"',
         'src="vendor/draggabilly.pkgd.min.js"',
-        'src="chrome-tabs-layout.js"',
         'src="./main.mjs"',
         'id="queryChromeTabs"',
         'id="queryTabstrip"',
@@ -472,6 +470,32 @@ class TestQueryTabsSeam(unittest.TestCase):
                 self.assertIn(symbol, app_ctx)
         self.assertIn("data.gate_ready", gate)
         self.assertIn("setupDraggabilly", layout)
+
+    def test_tab_geometry_js_shim_removed(self):
+        path = REPO_ROOT / "frontend" / "tab-geometry.js"
+        self.assertFalse(path.is_file())
+
+    def test_tab_geometry_mjs_self_contained(self):
+        path = REPO_ROOT / "frontend" / "tab-geometry.mjs"
+        source = path.read_text(encoding="utf-8")
+        self.assertIn("export const TAB_GEOMETRY_SVG", source)
+        self.assertIn("#query-tab-geometry", source)
+        self.assertNotIn("globalThis.TAB_GEOMETRY", source)
+
+    def test_chrome_tabs_layout_js_shim_removed(self):
+        path = REPO_ROOT / "frontend" / "chrome-tabs-layout.js"
+        self.assertFalse(path.is_file())
+
+    def test_chrome_tabs_layout_mjs_esm(self):
+        source = LAYOUT_PATH.read_text(encoding="utf-8")
+        self.assertIn("export class QueryChromeTabsLayout", source)
+        self.assertIn("globalThis.Draggabilly", source)
+        self.assertNotIn("global.QueryChromeTabsLayout", source)
+
+    def test_main_mjs_imports_chrome_tabs_layout(self):
+        source = MAIN_MJS_PATH.read_text(encoding="utf-8")
+        self.assertIn('from "./chrome-tabs-layout.mjs"', source)
+        self.assertIn("QueryChromeTabsLayout", source)
 
     def test_index_html_has_no_prototype_or_relation_entry_links(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
