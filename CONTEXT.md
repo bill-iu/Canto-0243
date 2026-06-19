@@ -395,16 +395,28 @@ macOS 上創作者啟動查韻介面的主要形態。**未 notarize** 過渡期
 _Avoid_：把 tar.gz 當產品正名、把 `.command` 當雲端或自架服務、要求創作者手動 `xattr`、假設 notarize 已完成、仍教學「雙擊 .app」而現行 tar 已無 `.app`
 
 **全量發佈**：
-程式、依賴、詞庫與各平台 **Portable 套件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／`.app` 與 `lyrics.db`、`words-lexicon.json`。macOS 目標為 **Apple Silicon** 與 **Intel** 各一個 tar.gz；過渡期可只發 **x86_64**，Release notes 須註明 arm64 暫無。Windows 可先 Publish，macOS 後補同一 tag（見 **分渠道發佈**）。
-_Avoid_：把每次 commit 都當全量發佈、把只換詞庫當全量發佈、用單一 macOS tar 冒充雙架構原生、在 fork Release 當正式下載頁
+程式、依賴、詞庫與各平台 **Portable 套件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／`.app` 與 `lyrics.db`、`words-lexicon.json`。macOS 目標為 **Apple Silicon** 與 **Intel** 各一個 tar.gz；過渡期可只發 **x86_64**，Release notes 須註明 arm64 暫無。Windows 可先 Publish，macOS 後補同一 tag（見 **分渠道發佈**）。**須 bump 新 semver**：創作者可感知的查韻行為、介面、詞庫覆蓋範圍或 API 契約變更。**可刷新同一 semver**（見 **發佈者渠道**）：打包／建置腳本、文件、或程式修正但創作者體感不變（例如內部重構、啟動更穩）。
+_Avoid_：把每次 commit 都當全量發佈、把只換詞庫當全量發佈、用單一 macOS tar 冒充雙架構原生、在 fork Release 當正式下載頁、把詞庫內容更新當 tag 刷新（應走 **詞庫發佈**）
 
 **分渠道發佈**：
-**全量發佈**的建置與上傳由兩條維護者渠道分工：**Windows 渠道**（本機 Windows 打包 zip 與詞庫資產並 Publish Release）、**macOS 渠道**（Intel MacBook 自 fork 同步後建 x86_64 tar 上傳至**上游**同一 tag）。fork 僅作建置工作區，唔作創作者第二下載來源。
-_Avoid_：把 fork 當發佈終點、要求 Intel Mac 單機產出 arm64、恢復 tag 觸發全平台 CI 作唯一發佈路徑
+**全量發佈**的建置與上傳由兩條維護者渠道分工：**Windows 渠道**（本機 Windows 打包 zip 與詞庫資產並 Publish Release）、**macOS 渠道**（Intel MacBook 自 fork 同步後建 x86_64 tar 上傳至**上游**同一 tag）。fork 僅作建置工作區，唔作發佈終點。macOS 渠道建置前須對齊 **tag 指向之 commit**（唔假設 fork `main` 尖端等同 tag），再對齊 **發佈詞庫快照**，只補 tar，唔建立 Release、唔上傳詞庫資產（維護腳本須硬拒絕違規上傳）。發佈者渠道**刷新同一 semver** 時，macOS 渠道須重 build tar 並覆寫上傳，即使 mac 專用程式碼冇變。Windows 已 Publish 而 macOS tar 未補時，該 semver 對 **Windows 創作者**已**分平台可交付**；**詞庫發佈**與跨平台驗收仍須 zip + x86_64 tar 齊。
+_Avoid_：把 fork 當發佈終點、要求 Intel Mac 單機產出 arm64、恢復 tag 觸發全平台 CI 作唯一發佈路徑、tag 指新 commit 卻保留舊 tar、因缺 macOS tar 就話 Windows 創作者都唔應下載、macOS 渠道喺無 Release 時建立或上傳詞庫資產、用 fork main 尖端代替 tag commit 建置
+
+**發佈者渠道**：
+**全量發佈** 中負責建立 semver tag、撰寫 Release 說明、上傳 zip 與詞庫資產（`lyrics.db`、`words-lexicon.json`）的維護者渠道；現行由 **Windows 渠道** 擔任。**macOS 渠道** 只補同一 tag 的平台 tar，不建立 Release、不修改說明、不覆寫詞庫資產。對外語意不變時，發佈者渠道可**刷新同一 semver**（移 tag 至新 commit、覆寫 zip／詞庫資產；說明可維持不變）；須 bump 新 semver 的情況見 **全量發佈**。
+_Avoid_：macOS 渠道當第二下載頁或發佈終點、macOS 上傳覆寫 Windows 已傳詞庫、兩渠道各自建 tag 令創作者搵唔到單一 Release 頁、每次小修都開新 semver 令同一語意版本碎片化
+
+**分平台可交付**：
+某一 semver Release 上，至少一個創作者平台嘅 **Portable 套件** 已可下載使用，但另一平台資產尚未補齊。唔等同 **全量發佈** 跨平台驗收完成，亦唔阻擋已齊平台嘅創作者下載。
+_Avoid_：把分平台可交付當成 semver 完全完工、把缺 tar 當成整個 Release 未發佈
 
 **詞庫發佈**：
-只更新 `lyrics.db` 與／或 `words-lexicon.json`、程式與依賴不變的發佈；須在**同一 semver** 上該 Release 已有 **Windows zip + macOS x86_64 tar**（arm64 過渡期不要求）之後才可進行。**免安裝交付** 的 Portable 套件沿用該 semver 已發佈的 zip／`.app`。
-_Avoid_：詞庫發佈仍強制重建雙平台 zip、在僅有 Windows zip 未補 macOS 時發詞庫、為詞庫更新另開 semver tag 令創作者搵錯下載頁
+只更新 `lyrics.db` 與／或 `words-lexicon.json`、程式與依賴不變的發佈；須在**同一 semver** 上該 Release 已有 **Windows zip + macOS x86_64 tar**（arm64 過渡期不要求）之後才可進行；由 **發佈者渠道** 執行上傳（ingest 後更新 **發佈詞庫快照**）。**免安裝交付** 的 Portable 套件沿用該 semver 已發佈的 zip／`.app`；macOS 渠道唔參與詞庫發佈。
+_Avoid_：詞庫發佈仍強制重建雙平台 zip、在僅有 Windows zip 未補 macOS 時發詞庫、為詞庫更新另開 semver tag 令創作者搵錯下載頁、macOS 渠道上傳 db/json、兩渠道各自 ingest 出不同快照
+
+**發佈詞庫快照**：
+某一 semver Release 上由**發佈者渠道**上傳的 `lyrics.db` 與 `words-lexicon.json`；為該版對外詞庫準線，優先於 tag 指向 commit 內未必已提交的本機 db。macOS 渠道建 tar 前須對齊此快照（從該 semver Release 取得已上傳資產），唔好各自 ingest 出不同詞庫卻共用同一 semver。
+_Avoid_：假設 `lyrics.db` 永遠已 commit 在 tag、Mac 用 fork 本機另一份 db 建置、把 ingest 產物當 **詞庫發佈** 卻未經發佈者渠道上傳、Mac 喺 Windows upload 之前就建 tar
 
 **開發容器環境**：
 供維護者與貢獻者取得一致本地開發環境的 Docker 設定；**非**創作者交付物，不取代 **離線單機交付** 或 **免安裝交付**。

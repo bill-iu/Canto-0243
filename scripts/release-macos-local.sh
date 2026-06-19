@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Local macOS portable build + optional GitHub Release upload (bypass CI).
-# ponytail: one machine = one native arch; use CI for both arm64 + x86_64.
+# macOS portable build + tar-only upload to an existing upstream Release (ADR-0018).
+# ponytail: one machine = one native arch; publisher channel is Windows.
 set -eu
 [[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]] && set -o pipefail
 
@@ -8,10 +8,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 TAG=""
 ARCH="auto"
 UPLOAD=0
-DRAFT=0
 TEST=0
-TAR_ONLY=0
-NOTES_FILE=""
 SKIP_README=1
 GH_REPO="${GH_REPO:-}"
 
@@ -27,30 +24,28 @@ usage() {
   cat <<'EOF'
 Usage: bash scripts/release-macos-local.sh --tag vX.Y.Z [options]
 
-Build canto-0243-portable-macos-{arch}.tar.gz on this Mac and optionally upload
-to an existing GitHub Release (no CI wait).
+Build canto-0243-portable-macos-{arch}.tar.gz on this Mac. With --upload, only
+replaces the macOS tar on an existing Release (Windows channel publishes first).
 
 Options:
   --tag TAG          Required. Release tag (e.g. v1.6.5)
   --arch ARCH        auto (default), arm64, or x86_64 — must match this Mac's CPU
-  --upload           Upload built tar via gh (see --tar-only)
-  --tar-only         With --upload: only replace macOS tar (do not clobber lyrics.db/json)
-  --draft            With --upload: create draft release if tag missing
-  --notes-file PATH  Release notes when creating a new release
+  --upload           Upload tar only via gh (Release must already exist)
+  --tar-only         Accepted alias for --upload (tar-only is the only upload mode)
   --test             After build, open dist/canto-0243-portable/Canto-0243.command
   --sync-readme      Run update_readme_words_count during build (default: skip)
   -h, --help         Show this help
 
 Prerequisites:
-  lyrics.db at repo root, python3, gh (for --upload), gh auth login
-  Optional: GH_REPO=bill-iu/Canto-0243 when uploading from a fork clone
+  --upload: gh auth, GH_REPO=bill-iu/Canto-0243 (fork clone), git checkout at TAG,
+            Release already published by Windows channel
+  build: lyrics.db at repo root (upload syncs from Release before build)
+  python3; optional .build-python/ via scripts/fetch-macos-build-python.sh
 
 Examples:
-  # Build + smoke on this Mac (fast iteration):
   bash scripts/release-macos-local.sh --tag v1.6.5 --test
 
-  # After Windows published zip — Intel Mac uploads tar only to upstream:
-  GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload --tar-only
+  GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
 
 Sequoia download quarantine:
   Apps built here open without quarantine. After downloading from GitHub, Gatekeeper
@@ -62,10 +57,11 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --tag) TAG="$2"; shift 2 ;;
     --arch) ARCH="$2"; shift 2 ;;
-    --upload) UPLOAD=1; shift ;;
-    --tar-only) TAR_ONLY=1; shift ;;
-    --draft) DRAFT=1; shift ;;
-    --notes-file) NOTES_FILE="$2"; shift 2 ;;
+    --upload|--tar-only) UPLOAD=1; shift ;;
+    --draft|--notes-file)
+      echo "error: $1 removed — Windows channel creates Release and notes" >&2
+      exit 1
+      ;;
     --test) TEST=1; shift ;;
     --sync-readme) SKIP_README=0; shift ;;
     -h|--help) usage; exit 0 ;;
@@ -85,11 +81,6 @@ done
 [[ -n "$TAG" ]] || {
   echo "error: --tag is required" >&2
   usage >&2
-  exit 1
-}
-
-[[ -f "$ROOT/lyrics.db" ]] || {
-  echo "error: lyrics.db not found at repo root" >&2
   exit 1
 }
 
@@ -113,6 +104,42 @@ if [[ "$ARCH" != "$HOST_ARCH" ]]; then
   echo "error: --arch $ARCH but this Mac is $HOST_ARCH (venv would be wrong CPU)" >&2
   exit 1
 fi
+
+_verify_at_tag_commit() {
+  local tag_commit head_commit
+  tag_commit="$(git -C "$ROOT" rev-parse "${TAG}^{commit}")" || {
+    echo "error: unknown git tag $TAG (git fetch upstream --tags?)" >&2
+    exit 1
+  }
+  head_commit="$(git -C "$ROOT" rev-parse HEAD)"
+  if [[ "$tag_commit" != "$head_commit" ]]; then
+    echo "error: HEAD ($head_commit) != $TAG ($tag_commit); run: git checkout $TAG" >&2
+    exit 1
+  fi
+}
+
+_sync_published_lexicon() {
+  echo "==> Sync 發佈詞庫快照 from Release $TAG..."
+  _gh release download "$TAG" -p "lyrics.db" -D "$ROOT" --clobber
+}
+
+if [[ "$UPLOAD" -eq 1 ]]; then
+  command -v gh >/dev/null 2>&1 || {
+    echo "error: gh CLI required for --upload" >&2
+    exit 1
+  }
+  if ! _gh release view "$TAG" >/dev/null 2>&1; then
+    echo "error: Release $TAG does not exist — Windows channel must publish first" >&2
+    exit 1
+  fi
+  _verify_at_tag_commit
+  _sync_published_lexicon
+fi
+
+[[ -f "$ROOT/lyrics.db" ]] || {
+  echo "error: lyrics.db not found at repo root" >&2
+  exit 1
+}
 
 TAR_PATH="$ROOT/dist/canto-0243-portable-macos-${ARCH}.tar.gz"
 BUNDLE_DIR="$ROOT/dist/canto-0243-portable"
@@ -147,7 +174,7 @@ if [[ -x "$ENTRY_CMD" ]] && command -v codesign >/dev/null 2>&1; then
   codesign --verify --strict "$ENTRY_CMD" && echo "    Canto-0243.command: OK"
 fi
 
-echo "==> Export words-lexicon.json..."
+echo "==> Export words-lexicon.json (local dist only; not uploaded by this script)..."
 python3 "$ROOT/scripts/export_words_lexicon.py" -o "$ROOT/dist/words-lexicon.json"
 
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)
@@ -163,29 +190,7 @@ if [[ "$TEST" -eq 1 ]]; then
 fi
 
 if [[ "$UPLOAD" -eq 1 ]]; then
-  command -v gh >/dev/null 2>&1 || {
-    echo "error: gh CLI required for --upload" >&2
-    exit 1
-  }
-  if ! _gh release view "$TAG" >/dev/null 2>&1; then
-    title="Canto-0243 ${TAG}"
-    if [[ "$DRAFT" -eq 1 ]]; then
-      if [[ -n "$NOTES_FILE" ]]; then
-        _gh release create "$TAG" --draft --title "$title" --notes-file "$NOTES_FILE"
-      else
-        _gh release create "$TAG" --draft --title "$title" --notes "macOS ${ARCH} local build"
-      fi
-    elif [[ -n "$NOTES_FILE" ]]; then
-      _gh release create "$TAG" --title "$title" --notes-file "$NOTES_FILE"
-    else
-      _gh release create "$TAG" --title "$title" --notes "macOS ${ARCH} local build"
-    fi
-  fi
-  echo "==> Upload to GitHub Release $TAG..."
-  if [[ "$TAR_ONLY" -eq 0 ]]; then
-    _gh release upload "$TAG" "$ROOT/lyrics.db" --clobber
-    _gh release upload "$TAG" "$ROOT/dist/words-lexicon.json" --clobber
-  fi
+  echo "==> Upload to GitHub Release $TAG (tar only)..."
   _gh release upload "$TAG" "$TAR_PATH" --clobber
   if [[ -n "$GH_REPO" ]]; then
     repo="$GH_REPO"

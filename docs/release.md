@@ -1,59 +1,91 @@
 # Release 維護 checklist
 
-決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § 分渠道發佈、全量發佈、詞庫發佈。
+決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈者渠道**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
 
-## 現行：分渠道全量發佈
+## 渠道職責
 
-| 渠道 | 機器 | 產物 | 腳本 |
-|------|------|------|------|
-| **Windows** | 本機 Windows | `canto-0243-portable.zip`、`lyrics.db`、`words-lexicon.json` | `scripts/release-windows-local.ps1` |
-| **macOS Intel** | Intel MacBook（fork 同步建置） | `canto-0243-portable-macos-x86_64.tar.gz` | `scripts/release-macos-local.sh` |
-
-**同一 GitHub Release tag**（例如 `v1.7.0`）；fork 只作建置工作區，**上傳目標為 upstream**（`bill-iu/Canto-0243`）。
+| | **Windows 渠道（發佈者）** | **macOS 渠道（補件者）** |
+|---|---------------------------|---------------------------|
+| 機器 | 本機 Windows | Intel MacBook（fork 建置工作區） |
+| 上傳目標 | upstream `bill-iu/Canto-0243` | 同一 upstream tag |
+| 全量產物 | zip + `lyrics.db` + `words-lexicon.json` | `canto-0243-portable-macos-x86_64.tar.gz` **only** |
+| 建立 Release／寫 notes | ✅ | ❌（腳本硬拒） |
+| 詞庫發佈 | ✅ | ❌ |
 
 **arm64** tar 過渡期**不提供**；Release notes 寫清楚。
 
-### 步驟 1 — Windows（先 Publish）
+### semver：新 tag vs 刷新
+
+| 情況 | 做法 |
+|------|------|
+| 創作者可感知變更（行為、介面、詞庫覆蓋、API） | bump 新 semver |
+| 打包／建置修正、內部重構、體感不變 | 發佈者渠道可 **刷新同一 tag**（`git tag -f` + `--clobber` 重傳）；notes 可不改 |
+| 發佈者刷新 tag 後 | macOS **必須** checkout 該 tag、重 build、覆寫 tar |
+
+`lyrics.db` **唔保證**在 tag commit 內；以 Release 上 **發佈詞庫快照** 為準（Windows upload 後 Mac 從 Release 下載對齊）。
+
+### 分平台可交付
+
+Windows 已 Publish、macOS tar 未補時：Windows 創作者可下載 zip；**詞庫發佈**與跨平台驗收仍須 zip + x86_64 tar 齊。
+
+## 步驟 1 — Windows（發佈者渠道）
 
 ```powershell
-# 前置：lyrics.db 在 repo 根目錄；gh auth login
+# 前置：lyrics.db 在 repo 根目錄（可為本機 ingest，唔一定要 commit）；gh auth login
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 
-會：build zip → export lexicon → 建立／更新 Release → 上傳三件。Release notes 預設註明 macOS x86_64 待補、arm64 暫無。
+會：build zip → export lexicon → 建立／更新 Release → 上傳 zip + db + json。
 
-可選：`-NotesFile path\to\notes.md`、`-SkipReadmeSync`、`-Draft`（少數情況先 draft）。
+可選：`-NotesFile path\to\notes.md`、`-SkipReadmeSync`、`-Draft`。
 
-### 步驟 2 — Intel MacBook（補 x86_64 tar）
+**刷新同一 tag**（語意不變）：
+
+```powershell
+git tag -f v1.0.0 HEAD
+git push -f origin v1.0.0
+powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.0.0 -Upload -SkipReadmeSync
+```
+
+## 步驟 2 — Intel MacBook（補 tar）
 
 ```bash
-# fork clone：同步 upstream main，確認 lyrics.db 與 tag 一致
-git fetch upstream && git checkout main && git merge upstream/main
+export GH_REPO=bill-iu/Canto-0243   # fork clone 時必設；gh 預設已指 upstream 可省略
 
-# 建置 + 本機 smoke（可選）
+git fetch upstream --tags
+git checkout v1.7.0                   # 必須對齊 tag 指向之 commit，唔好用 main 尖端代替
+
+# 建置 + 本機 smoke（可選；唔 upload）
 bash scripts/release-macos-local.sh --tag v1.7.0 --test
 
-# 只上傳 tar 到 upstream（勿覆寫 Windows 的 db/json）
-export GH_REPO=bill-iu/Canto-0243   # 或 gh 預設已指 upstream
-bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload --tar-only
+# 上傳：腳本會驗證 Release 已存在、HEAD==tag、從 Release 下載 lyrics.db，只上傳 tar
+bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ```
 
 MacBook 須 `gh auth` 對 upstream 有 **contents: write**。
 
-### 步驟 3 — 詞庫發佈（可選，程式不變時）
+`--tar-only` 仍接受（與 `--upload` 同義）；`--draft`／`--notes-file` 已移除——請用 Windows 渠道發佈。
 
-**前置**：該 tag 已有 **zip + x86_64 tar**（唔要求 arm64）。
+## 步驟 3 — 詞庫發佈（可選，程式不變）
 
-```bash
+**執行者**：發佈者渠道（Windows）。**前置**：該 tag 已有 **zip + x86_64 tar**。
+
+```powershell
+# Windows：ingest 後
 gh release upload v1.7.0 lyrics.db --clobber
-# GitHub → Actions → Release (lexicon) → target_tag: v1.7.0
+python scripts/export_words_lexicon.py -o dist/words-lexicon.json
+gh release upload v1.7.0 dist/words-lexicon.json --clobber
 ```
 
-### 驗收（macOS）
+或 GitHub → Actions → **Release (lexicon)** → `target_tag: v1.7.0`（CI 備援）。
+
+macOS 刷新 tag 後須重跑步驟 2，使 tar 與 tag commit 一致。
+
+## 驗收（macOS）
 
 | 路徑 | 做法 |
 |------|------|
-| **下載隔離** | 從 Release 下載 x86_64 tar → 解壓 → 雙擊 `.app` → Gatekeeper：**仍要開啟** |
+| **下載隔離** | 從 Release 下載 x86_64 tar → 解壓 → 雙擊 `Canto-0243.command` → Gatekeeper：**仍要開啟** |
 | **本機建置** | `release-macos-local.sh --tag vNEXT --test` → 雙擊 `dist/canto-0243-portable/Canto-0243.command` |
 
 兩邊都通再視為該版 macOS 可交付。
@@ -63,7 +95,7 @@ gh release upload v1.7.0 lyrics.db --clobber
 | Workflow | 觸發 | 用途 |
 |----------|------|------|
 | `ci.yml` | push `main`、PR | unit tests |
-| `release-lexicon.yml` | `workflow_dispatch` | 詞庫 export + 上傳 db/json |
+| `release-lexicon.yml` | `workflow_dispatch` | 詞庫 export + 上傳 db/json（備援） |
 
 已停用：`release-full.yml`、`release-macos-intel-beta.yml`（見 ADR-0018）。
 
@@ -71,18 +103,21 @@ gh release upload v1.7.0 lyrics.db --clobber
 
 1. `scripts/build-portable.ps1` / `scripts/build-portable.sh`
 2. `python scripts/export_words_lexicon.py -o dist/words-lexicon.json`
-3. `gh release create` / `gh release upload` 同上表資產名
+3. Windows：`gh release create`／`upload` zip + db + json；macOS：只 `upload` tar 到已存在 Release
 
 ## 常見問題
 
 **Q：只改了 `app/`，要全量嗎？**  
-要。須 rebuild 各平台 Portable 並 bump semver（新 tag）。
+要。須 rebuild 各平台 Portable。創作者可感知變更 → bump 新 semver；純打包修正 → 可刷新同一 tag。
 
 **Q：ingest 完只想換詞庫？**  
-在同一最新 semver 上做詞庫發佈；須 zip + x86_64 tar 已在該 tag。
+**詞庫發佈**（Windows）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。
 
 **Q：Release 已出 zip 但未有 macOS，可以詞庫發佈嗎？**  
 不可以。須等 MacBook 補 x86_64 tar。
+
+**Q：Windows 刷新咗 tag，Mac tar 要重做嗎？**  
+要。即使 mac 專用程式碼冇變，tar 必須對應 tag 指向之 commit。
 
 **Q：Intel Mac 可以建 arm64 嗎？**  
 不可以。arm64 須 M 系列 Mac 或日後另設渠道。

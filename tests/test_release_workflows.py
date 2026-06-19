@@ -22,6 +22,10 @@ class ReleaseWorkflowTests(unittest.TestCase):
         mac = (REPO / "scripts" / "release-macos-local.sh").read_text(encoding="utf-8")
         self.assertIn("--tar-only", mac)
         self.assertIn("GH_REPO", mac)
+        self.assertIn("Windows channel must publish first", mac)
+        self.assertIn("git checkout $TAG", mac)
+        self.assertNotIn("release create", mac)
+        self.assertNotIn('release upload "$TAG" "$ROOT/lyrics.db"', mac)
 
 
 if __name__ == "__main__":
