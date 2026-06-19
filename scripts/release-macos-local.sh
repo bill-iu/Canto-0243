@@ -25,7 +25,7 @@ usage() {
 Usage: bash scripts/release-macos-local.sh --tag vX.Y.Z [options]
 
 Build canto-0243-portable-macos-{arch}.tar.gz on this Mac. With --upload, only
-replaces the macOS tar on an existing Release (Windows channel publishes first).
+replaces the macOS tar on an existing Release (publisher role must run first).
 
 Options:
   --tag TAG          Required. Release tag (e.g. v1.6.5)
@@ -38,7 +38,7 @@ Options:
 
 Prerequisites:
   --upload: gh auth, GH_REPO=bill-iu/Canto-0243 (fork clone), git checkout at TAG,
-            Release already published by Windows channel
+            Release must already exist (publisher role)
   build: lyrics.db at repo root (upload syncs from Release before build)
   python3; optional .build-python/ via scripts/fetch-macos-build-python.sh
 
@@ -59,7 +59,7 @@ while [[ $# -gt 0 ]]; do
     --arch) ARCH="$2"; shift 2 ;;
     --upload|--tar-only) UPLOAD=1; shift ;;
     --draft|--notes-file)
-      echo "error: $1 removed — Windows channel creates Release and notes" >&2
+      echo "error: $1 removed — publisher role creates Release and notes" >&2
       exit 1
       ;;
     --test) TEST=1; shift ;;
@@ -129,7 +129,7 @@ if [[ "$UPLOAD" -eq 1 ]]; then
     exit 1
   }
   if ! _gh release view "$TAG" >/dev/null 2>&1; then
-    echo "error: Release $TAG does not exist — Windows channel must publish first" >&2
+    echo "error: Release $TAG does not exist — publisher role must publish first" >&2
     exit 1
   fi
   _verify_at_tag_commit

@@ -34,6 +34,7 @@ python -m unittest discover -s tests -q
 - Add or update tests for behaviour changes.
 - Do not commit secrets, `.env.local`, `*.db`, maintainer-built **詞級標音** import files, or other gitignored data artifacts (see README § 資料來源).
 - Do not commit `skills-lock.json` churn unless intentionally updating agent skills.
+- **發佈唔屬 PR 範圍**：合併後由具 upstream 權限嘅維護者依 [release.md](release.md) 執行 **發佈主理**／**發佈補件**；contributor 無需跑 `release-windows-local.ps1` 或 `release-macos-local.sh`，亦唔論用邊部 OS 開發。
 
 ## Issues
 

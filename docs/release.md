@@ -1,16 +1,20 @@
 # Release 維護 checklist
 
-決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈者渠道**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
+決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
 
-## 渠道職責
+**貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。貢獻者用邊部 OS 開發無關。
 
-| | **Windows 渠道（發佈者）** | **macOS 渠道（補件者）** |
-|---|---------------------------|---------------------------|
-| 機器 | 本機 Windows | Intel MacBook（fork 建置工作區） |
-| 上傳目標 | upstream `bill-iu/Canto-0243` | 同一 upstream tag |
-| 全量產物 | zip + `lyrics.db` + `words-lexicon.json` | `canto-0243-portable-macos-x86_64.tar.gz` **only** |
-| 建立 Release／寫 notes | ✅ | ❌（腳本硬拒） |
-| 詞庫發佈 | ✅ | ❌ |
+## 現行維護編排
+
+領域上係 **發佈主理**／**發佈補件** 兩個角色（見 CONTEXT）；下表係**而家常用**嘅腳本同環境對應，可隨維護者調整。
+
+| | **發佈主理** | **發佈補件** |
+|---|-------------|-------------|
+| 領域職責 | 建立 tag、Release notes、上傳 zip + 詞庫資產 | 只上傳 macOS tar 至同一 tag |
+| 現行常用腳本 | `scripts/release-windows-local.ps1` | `scripts/release-macos-local.sh` |
+| 現行常用建置環境 | Windows 本機 | macOS（x86_64；須能跑 `build-portable.sh`） |
+| 上傳目標 | upstream Release | 同一 upstream tag |
+| 詞庫發佈 | ✅ | ❌（腳本硬拒） |
 
 **arm64** tar 過渡期**不提供**；Release notes 寫清楚。
 
@@ -19,16 +23,16 @@
 | 情況 | 做法 |
 |------|------|
 | 創作者可感知變更（行為、介面、詞庫覆蓋、API） | bump 新 semver |
-| 打包／建置修正、內部重構、體感不變 | 發佈者渠道可 **刷新同一 tag**（`git tag -f` + `--clobber` 重傳）；notes 可不改 |
-| 發佈者刷新 tag 後 | macOS **必須** checkout 該 tag、重 build、覆寫 tar |
+| 打包／建置修正、內部重構、體感不變 | 發佈主理可 **刷新同一 tag**（`git tag -f` + `--clobber` 重傳）；notes 可不改 |
+| 主理刷新 tag 後 | 發佈補件 **必須** checkout 該 tag、重 build、覆寫 tar |
 
-`lyrics.db` **唔保證**在 tag commit 內；以 Release 上 **發佈詞庫快照** 為準（Windows upload 後 Mac 從 Release 下載對齊）。
+`lyrics.db` **唔保證**在 tag commit 內；以 Release 上 **發佈詞庫快照** 為準（主理 upload 後，補件從 Release 下載對齊）。
 
 ### 分平台可交付
 
-Windows 已 Publish、macOS tar 未補時：Windows 創作者可下載 zip；**詞庫發佈**與跨平台驗收仍須 zip + x86_64 tar 齊。
+主理已 Publish zip、macOS tar 未補時：Windows 創作者可下載 zip；**詞庫發佈**與跨平台驗收仍須 zip + x86_64 tar 齊。
 
-## 步驟 1 — Windows（發佈者渠道）
+## 步驟 1 — 發佈主理（現行：Windows 腳本）
 
 ```powershell
 # 前置：lyrics.db 在 repo 根目錄（可為本機 ingest，唔一定要 commit）；gh auth login
@@ -47,7 +51,7 @@ git push -f origin v1.0.0
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.0.0 -Upload -SkipReadmeSync
 ```
 
-## 步驟 2 — Intel MacBook（補 tar）
+## 步驟 2 — 發佈補件（現行：macOS 腳本）
 
 ```bash
 export GH_REPO=bill-iu/Canto-0243   # fork clone 時必設；gh 預設已指 upstream 可省略
@@ -62,16 +66,16 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --test
 bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ```
 
-MacBook 須 `gh auth` 對 upstream 有 **contents: write**。
+須 `gh auth` 對 upstream 有 **contents: write**。
 
-`--tar-only` 仍接受（與 `--upload` 同義）；`--draft`／`--notes-file` 已移除——請用 Windows 渠道發佈。
+`--tar-only` 仍接受（與 `--upload` 同義）；`--draft`／`--notes-file` 已移除——請由發佈主理建立 Release。
 
 ## 步驟 3 — 詞庫發佈（可選，程式不變）
 
-**執行者**：發佈者渠道（Windows）。**前置**：該 tag 已有 **zip + x86_64 tar**。
+**執行者**：發佈主理。**前置**：該 tag 已有 **zip + x86_64 tar**。
 
 ```powershell
-# Windows：ingest 後
+# 主理機：ingest 後
 gh release upload v1.7.0 lyrics.db --clobber
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 gh release upload v1.7.0 dist/words-lexicon.json --clobber
@@ -79,7 +83,7 @@ gh release upload v1.7.0 dist/words-lexicon.json --clobber
 
 或 GitHub → Actions → **Release (lexicon)** → `target_tag: v1.7.0`（CI 備援）。
 
-macOS 刷新 tag 後須重跑步驟 2，使 tar 與 tag commit 一致。
+主理刷新 tag 後，發佈補件須重跑步驟 2，使 tar 與 tag commit 一致。
 
 ## 驗收（macOS）
 
@@ -103,7 +107,7 @@ macOS 刷新 tag 後須重跑步驟 2，使 tar 與 tag commit 一致。
 
 1. `scripts/build-portable.ps1` / `scripts/build-portable.sh`
 2. `python scripts/export_words_lexicon.py -o dist/words-lexicon.json`
-3. Windows：`gh release create`／`upload` zip + db + json；macOS：只 `upload` tar 到已存在 Release
+3. 主理：`gh release create`／`upload` zip + db + json；補件：只 `upload` tar 到已存在 Release
 
 ## 常見問題
 
@@ -111,16 +115,16 @@ macOS 刷新 tag 後須重跑步驟 2，使 tar 與 tag commit 一致。
 要。須 rebuild 各平台 Portable。創作者可感知變更 → bump 新 semver；純打包修正 → 可刷新同一 tag。
 
 **Q：ingest 完只想換詞庫？**  
-**詞庫發佈**（Windows）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。
+**詞庫發佈**（發佈主理）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。
 
-**Q：Release 已出 zip 但未有 macOS，可以詞庫發佈嗎？**  
-不可以。須等 MacBook 補 x86_64 tar。
+**Q：Release 已出 zip 但未有 macOS tar，可以詞庫發佈嗎？**  
+不可以。須等發佈補件上傳 x86_64 tar。
 
-**Q：Windows 刷新咗 tag，Mac tar 要重做嗎？**  
+**Q：主理刷新咗 tag，補件 tar 要重做嗎？**  
 要。即使 mac 專用程式碼冇變，tar 必須對應 tag 指向之 commit。
 
 **Q：Intel Mac 可以建 arm64 嗎？**  
-不可以。arm64 須 M 系列 Mac 或日後另設渠道。
+不可以。arm64 須 M 系列 Mac 或日後另設編排。
 
 **Q：Release 後可刪 `dist/` 嗎？**  
 可以。正式資產以 GitHub Release 為準。
