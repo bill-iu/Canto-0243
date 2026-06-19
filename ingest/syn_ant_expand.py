@@ -282,6 +282,7 @@ def _empty_bridge_stats() -> dict:
         "batches": 0,
         "bridged": 0,
         "skipped_no_bridge": 0,
+        "skipped_has_ant": 0,
         "skipped_no_model": 0,
         "skipped_self": 0,
         "skipped_no_char_id": 0,
@@ -343,6 +344,10 @@ def _process_bridge_targets(
         head_id = char_to_id.get(head_char)
         if not head_id:
             stats["skipped_no_char_id"] += 1
+            continue
+
+        if head_char in global_ant_chars:
+            stats["skipped_has_ant"] += 1
             continue
 
         syn_pool = pool_ctx.relation_chars(head_char, "syn")
@@ -412,6 +417,36 @@ def _process_bridge_targets(
 
     stats["candidate_pairs"] = len(candidates)
     return stats, candidates
+
+
+def _chars_with_new_ant_from_candidates(
+    candidates: Dict[Tuple[int, int, str], dict],
+    char_to_id: Dict[str, int],
+) -> Set[str]:
+    id_to_char = {vid: ch for ch, vid in char_to_id.items()}
+    chars: Set[str] = set()
+    for w, r, rtype in candidates:
+        if rtype != "ant":
+            continue
+        if w in id_to_char:
+            chars.add(id_to_char[w])
+        if r in id_to_char:
+            chars.add(id_to_char[r])
+    return chars
+
+
+def _refresh_bridge_ant_chars(
+    db: Session,
+    *,
+    candidates: Dict[Tuple[int, int, str], dict],
+    char_to_id: Dict[str, int],
+    global_ant_chars: Set[str],
+) -> Set[str]:
+    merged = set(global_ant_chars)
+    merged |= _chars_with_new_ant_from_candidates(candidates, char_to_id)
+    db.expire_all()
+    merged |= _chars_with_relations_of_type(db, "ant")
+    return merged
 
 
 def _chars_with_relations_of_type(db: Session, relation_type: str) -> Set[str]:
@@ -544,6 +579,12 @@ def expand_antonyms_via_embedding_syn_bridge(
             chunk_stats["inserted"] = inserted
             chunk_stats["skipped_existing"] = skipped_existing
             embedding_cache.clear()
+            global_ant_chars = _refresh_bridge_ant_chars(
+                db,
+                candidates=candidates,
+                char_to_id=char_to_id,
+                global_ant_chars=global_ant_chars,
+            )
             stats["batches"] += 1
             _merge_bridge_stats(stats, chunk_stats)
             if on_batch is not None:
