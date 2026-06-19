@@ -17,14 +17,16 @@ from app.services.relation_syntax_executor import RelationSyntaxExecutor
 from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
-from ingest.syn_ant_merge import (
+from ingest.syn_ant_build import (
     build_word_relations_from_staging,
     ingest_cilin_leaf_direct,
-    persist_staging_edges,
+)
+from ingest.syn_ant_staging import persist_staging_edges
+from ingest.syn_ant_expand import (
+    collect_ant_mirror_char_pairs,
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
-    collect_ant_mirror_char_pairs,
 )
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.cilin_leaf import (
@@ -404,8 +406,8 @@ class AntSynBridgeExpansionTests(unittest.TestCase):
         def fake_encode(chars, model):
             return {c: vectors[c] for c in chars if c in vectors}
 
-        with patch("ingest.syn_ant_merge._load_embedding_model", return_value=MagicMock()), patch(
-            "ingest.syn_ant_merge._encode_char_batch", side_effect=fake_encode
+        with patch("ingest.syn_ant_expand._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_expand._encode_char_batch", side_effect=fake_encode
         ):
             with Session() as db:
                 db.add_all([
@@ -453,8 +455,8 @@ class AntSynBridgeExpansionTests(unittest.TestCase):
         def fake_encode(chars, model):
             return {c: vectors[c] for c in chars if c in vectors}
 
-        with patch("ingest.syn_ant_merge._load_embedding_model", return_value=MagicMock()), patch(
-            "ingest.syn_ant_merge._encode_char_batch", side_effect=fake_encode
+        with patch("ingest.syn_ant_expand._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_expand._encode_char_batch", side_effect=fake_encode
         ):
             with Session() as db:
                 db.add_all([

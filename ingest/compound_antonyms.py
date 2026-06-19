@@ -14,7 +14,7 @@ from app.domain.relations.store import (
 )
 from app.lexicon.compound_antonyms import load_compound_antonyms
 from app.models.word import Word, WordRelation
-from ingest.syn_ant_merge import clear_word_relations_source
+from ingest.syn_ant_build import clear_word_relations_source
 
 # Re-export for ingest callers
 __all__ = ["ingest_compound_ant_char_pairs", "load_compound_antonyms"]

@@ -329,6 +329,39 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         self.assertNotIn("CompoundAntQuery", source)
 
 
+class TestSynAntIngestModulesSeam(unittest.TestCase):
+    """#6: syn_ant_merge removed; staging / build / expand split by command."""
+
+    STAGING_PATH = REPO_ROOT / "ingest" / "syn_ant_staging.py"
+    BUILD_PATH = REPO_ROOT / "ingest" / "syn_ant_build.py"
+    EXPAND_PATH = REPO_ROOT / "ingest" / "syn_ant_expand.py"
+    MERGE_PATH = REPO_ROOT / "ingest" / "syn_ant_merge.py"
+
+    def test_syn_ant_merge_removed(self):
+        self.assertFalse(self.MERGE_PATH.is_file())
+
+    def test_staging_module_boundary(self):
+        source = self.STAGING_PATH.read_text(encoding="utf-8")
+        self.assertIn("def persist_staging_edges", source)
+        self.assertIn("def staging_report", source)
+        self.assertNotIn("def build_word_relations_from_staging", source)
+        self.assertNotIn("expand_antonyms_via_", source)
+
+    def test_build_module_boundary(self):
+        source = self.BUILD_PATH.read_text(encoding="utf-8")
+        self.assertIn("def build_word_relations_from_staging", source)
+        self.assertIn("def ingest_cilin_leaf_direct", source)
+        self.assertIn("def clear_word_relations_source", source)
+        self.assertNotIn("def persist_staging_edges", source)
+        self.assertNotIn("expand_antonyms_via_", source)
+
+    def test_expand_module_boundary(self):
+        source = self.EXPAND_PATH.read_text(encoding="utf-8")
+        self.assertIn("def expand_antonyms_via_cilin_synonyms", source)
+        self.assertNotIn("def persist_staging_edges", source)
+        self.assertNotIn("def build_word_relations_from_staging", source)
+
+
 class TestQueryModeDispatchSeam(unittest.TestCase):
     """#4: syn-mode branches live in query_mode_dispatch, not nested in execute."""
 

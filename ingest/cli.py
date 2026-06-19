@@ -14,15 +14,16 @@ from app.database import SessionLocal, ensure_syn_ant_edges_table, ensure_word_r
 from app.models.word import SynAntEdge, WordRelation
 from ingest.ingest_lock import IngestLockError, ingest_lock
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
-from ingest.syn_ant_merge import (
+from ingest.syn_ant_build import (
     build_word_relations_from_staging,
     clear_word_relations_source,
+    ingest_cilin_leaf_direct,
+)
+from ingest.syn_ant_staging import persist_staging_edges, staging_report
+from ingest.syn_ant_expand import (
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
-    ingest_cilin_leaf_direct,
-    persist_staging_edges,
-    staging_report,
 )
 from app.repositories.word_relation_repo import load_db_char_set
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
