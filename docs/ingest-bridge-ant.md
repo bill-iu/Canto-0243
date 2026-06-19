@@ -9,9 +9,19 @@
 - 近義橋品質閘門（橋接語意門檻、借入上限、多橋合併）變更後
 - 其他 ingest 已更新近義／反義池，需以新池重算 `ant_syn_bridge`
 
-## 全量重跑
+## 詞庫發佈前順序
 
-前置：`build-relations` 等上游 ingest 已完成；`lyrics.db` 在 repo 根目錄。
+**發佈主理**在要上傳 `lyrics.db` 當日，若需重跑近義橋，固定次序如下（橋接**永遠**在 `build-relations` 之後、上傳 db 之前）：
+
+1. `python -m ingest normalize` → `python -m ingest build-relations`（更新近反義池）
+2. 其他 expand（如 `expand-antonyms-cilin`、`expand-antonyms-mirror`；按當次 ingest 需要）
+3. **`python -m ingest expand-antonyms-syn-bridge --fresh`**
+4. 下方 § 驗收
+5. [release.md](release.md) § 步驟 3 上傳 **發佈詞庫快照**
+
+`lyrics.db` 須在 repo 根目錄（可為本機 ingest 產物，唔一定要 commit）。
+
+## 全量重跑
 
 ```bash
 python -m ingest expand-antonyms-syn-bridge --fresh
