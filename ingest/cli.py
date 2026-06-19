@@ -28,6 +28,15 @@ from ingest.syn_ant_expand import (
 from app.repositories.word_relation_repo import load_db_char_set
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.syn_ant_sources import iter_cilin_line_chunks, parse_cilin_lines, parse_sources
+from ingest.lexicon_corrections import (
+    DEFAULT_BATCH_N,
+    DEFAULT_TSV,
+    apply_pending,
+    check_status,
+    load_corrections,
+    post_apply_exports,
+    save_corrections,
+)
 
 
 def cmd_report(_: argparse.Namespace) -> int:
@@ -341,6 +350,39 @@ def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_apply_lexicon_corrections(args: argparse.Namespace) -> int:
+    path = Path(args.file)
+    rows = load_corrections(path)
+    if args.check or not args.apply:
+        return check_status(rows, batch_n=args.batch_n)
+
+    pending = [r for r in rows if r.is_pending]
+    if not pending:
+        print("No pending corrections.")
+        return 0
+
+    with SessionLocal() as db:
+        try:
+            updated, _logs = apply_pending(db, rows, dry_run=False)
+            db.commit()
+        except Exception as exc:
+            db.rollback()
+            print(f"apply failed (rolled back): {exc}", file=sys.stderr)
+            return 1
+
+    save_corrections(updated, path)
+    print(f"Updated {path}")
+
+    if not args.no_exports:
+        print("==> Export words-lexicon.json + README word count...")
+        post_apply_exports()
+
+    remaining = sum(1 for r in updated if r.is_pending)
+    print(f"Done. {remaining} pending remaining.")
+    print("Next: git commit TSV (+ README if changed), then 詞庫發佈 per docs/release.md")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Syn/Ant ingest v2")
     parser.add_argument("--manifest", default=None, help="Path to sources.yaml")
@@ -482,6 +524,25 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_compound.set_defaults(replace_relations=True)
 
+    p_lxc = sub.add_parser(
+        "apply-lexicon-corrections",
+        help="Apply pending 詞庫勘誤 rows (see docs/lexicon-corrections.md)",
+    )
+    p_lxc.add_argument("--file", default=str(DEFAULT_TSV), help="Corrections TSV path")
+    p_lxc.add_argument("--check", action="store_true", help="Show pending/applied counts only")
+    p_lxc.add_argument("--apply", action="store_true", help="Apply pending rows to lyrics.db")
+    p_lxc.add_argument(
+        "--batch-n",
+        type=int,
+        default=DEFAULT_BATCH_N,
+        help=f"Pending count hint threshold (default {DEFAULT_BATCH_N})",
+    )
+    p_lxc.add_argument(
+        "--no-exports",
+        action="store_true",
+        help="Skip words-lexicon export and README word-count sync",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
@@ -499,6 +560,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_expand_antonyms_syn_bridge(args)
     if args.command == "ingest-compound-ant":
         return cmd_ingest_compound_ant(args)
+    if args.command == "apply-lexicon-corrections":
+        return cmd_apply_lexicon_corrections(args)
     return 1
 
 

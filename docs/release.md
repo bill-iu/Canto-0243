@@ -77,6 +77,8 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ```powershell
 # 主理機：ingest 後（近義橋規則變更時見 docs/ingest-bridge-ant.md）
 python -m ingest expand-antonyms-syn-bridge --fresh   # 可選；品質閘門更新後
+# 詞條標音勘誤累積套用後見 docs/lexicon-corrections.md
+python -m ingest apply-lexicon-corrections --apply   # 可選；改 db + export/json + README 詞條數
 gh release upload v1.7.0 lyrics.db --clobber
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 gh release upload v1.7.0 dist/words-lexicon.json --clobber
