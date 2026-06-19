@@ -269,6 +269,8 @@ def _run_expand_antonyms_syn_bridge(args: argparse.Namespace) -> int:
             offset=offset,
             limit=args.limit,
             chunk_size=args.chunk_size,
+            min_bridge_cosine=args.min_bridge_cosine,
+            max_bridged_ants_per_head=args.max_bridged_ants_per_head,
             on_batch=on_batch if args.chunk_size else None,
             on_progress=on_progress if args.progress_interval else None,
             progress_interval=max(0, int(args.progress_interval or 0)),
@@ -410,6 +412,18 @@ def main(argv: list[str] | None = None) -> int:
         type=int,
         default=200,
         help="Process N targets per batch with incremental insert (default 200; 0 = single pass)",
+    )
+    p_bridge.add_argument(
+        "--min-bridge-cosine",
+        type=float,
+        default=0.80,
+        help="Min head–bridge synonym cosine to borrow ants (default 0.80)",
+    )
+    p_bridge.add_argument(
+        "--max-bridged-ants-per-head",
+        type=int,
+        default=30,
+        help="Max ant relations per head after multi-bridge merge (default 30)",
     )
     p_bridge.add_argument(
         "--progress-interval",

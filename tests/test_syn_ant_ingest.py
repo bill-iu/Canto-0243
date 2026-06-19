@@ -504,6 +504,165 @@ class AntSynBridgeExpansionTests(unittest.TestCase):
                 # sorted targets: 丁 before 甲
                 self.assertEqual((derived[0].word_id, derived[0].related_id), (4, 6))
 
+    def test_bridge_min_cosine_skips_and_passes_at_threshold(self):
+        from unittest.mock import MagicMock, patch
+
+        Session = self._seed_db()
+        vectors = {
+            "快樂": [1.0, 0.0],
+            "開心": [0.8, 0.6],
+            "悲傷": [0.0, 1.0],
+            "冷淡": [0.7, 0.7141428],
+            "漠然": [0.0, -1.0],
+        }
+
+        def fake_encode(chars, model):
+            return {c: vectors[c] for c in chars if c in vectors}
+
+        with patch("ingest.syn_ant_expand._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_expand._encode_char_batch", side_effect=fake_encode
+        ):
+            with Session() as db:
+                db.add_all([
+                    Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                    Word(id=2, char="開心", code="22", jyutping="", length=2),
+                    Word(id=3, char="悲傷", code="22", jyutping="", length=2),
+                    Word(id=4, char="冷淡", code="22", jyutping="", length=2),
+                    Word(id=5, char="漠然", code="22", jyutping="", length=2),
+                ])
+                db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=1, related_id=4, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=2, related_id=3, relation_type="ant", score=0.9, source="antisem"))
+                db.add(WordRelation(word_id=4, related_id=5, relation_type="ant", score=0.9, source="antisem"))
+                db.commit()
+
+                low = expand_antonyms_via_embedding_syn_bridge(
+                    db, source="ant_syn_bridge", include_static=False, min_bridge_cosine=0.81
+                )
+                self.assertEqual(low["bridged"], 0)
+                self.assertEqual(low["skipped_no_bridge"], 1)
+
+                ok = expand_antonyms_via_embedding_syn_bridge(
+                    db, source="ant_syn_bridge", include_static=False, min_bridge_cosine=0.80
+                )
+                self.assertEqual(ok["bridged"], 1)
+                self.assertEqual(ok["inserted"], 1)
+                row = (
+                    db.query(WordRelation)
+                    .filter(WordRelation.source == "ant_syn_bridge", WordRelation.relation_type == "ant")
+                    .one()
+                )
+                self.assertEqual((row.word_id, row.related_id), (1, 3))
+                self.assertAlmostEqual(row.score, 0.8, places=3)
+
+    def test_bridge_max_ants_per_head_caps(self):
+        from unittest.mock import MagicMock, patch
+
+        Session = self._seed_db()
+        vectors = {"快樂": [1.0, 0.0], "開心": [0.99, 0.01]}
+        suffixes = (
+            "甲乙丙丁戊己庚辛壬癸"
+            "子丑寅卯辰巳午未申酉戌亥"
+            "天地人日月金木水火土"
+        )[:35]
+        ant_chars = [f"戚{c}" for c in suffixes]
+
+        def fake_encode(chars, model):
+            return {c: vectors.get(c, [0.0, 1.0]) for c in chars}
+
+        with patch("ingest.syn_ant_expand._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_expand._encode_char_batch", side_effect=fake_encode
+        ):
+            with Session() as db:
+                words = [
+                    Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                    Word(id=2, char="開心", code="22", jyutping="", length=2),
+                ]
+                for i, ch in enumerate(ant_chars):
+                    words.append(Word(id=10 + i, char=ch, code="22", jyutping="", length=2))
+                db.add_all(words)
+                db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+                for i in range(35):
+                    db.add(
+                        WordRelation(
+                            word_id=2,
+                            related_id=10 + i,
+                            relation_type="ant",
+                            score=0.5,
+                            source="antisem",
+                        )
+                    )
+                db.commit()
+
+                stats = expand_antonyms_via_embedding_syn_bridge(
+                    db,
+                    source="ant_syn_bridge",
+                    include_static=False,
+                    max_bridged_ants_per_head=30,
+                )
+                self.assertEqual(stats["bridged"], 1)
+                self.assertEqual(stats["inserted"], 30)
+                count = (
+                    db.query(WordRelation)
+                    .filter(WordRelation.source == "ant_syn_bridge", WordRelation.relation_type == "ant")
+                    .count()
+                )
+                self.assertEqual(count, 30)
+
+    def test_bridge_multi_merge_prefers_higher_bridge_score(self):
+        from unittest.mock import MagicMock, patch
+
+        Session = self._seed_db()
+        vectors = {
+            "快樂": [1.0, 0.0],
+            "愉快": [0.99, 0.01],
+            "開心": [0.85, 0.5267833],
+            "哀甲": [0.0, 1.0],
+            "哀乙": [0.0, 0.9],
+            "哀丙": [0.0, 0.8],
+        }
+
+        def fake_encode(chars, model):
+            return {c: vectors[c] for c in chars if c in vectors}
+
+        with patch("ingest.syn_ant_expand._load_embedding_model", return_value=MagicMock()), patch(
+            "ingest.syn_ant_expand._encode_char_batch", side_effect=fake_encode
+        ):
+            with Session() as db:
+                db.add_all([
+                    Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                    Word(id=2, char="愉快", code="22", jyutping="", length=2),
+                    Word(id=3, char="開心", code="22", jyutping="", length=2),
+                    Word(id=4, char="哀甲", code="22", jyutping="", length=2),
+                    Word(id=5, char="哀乙", code="22", jyutping="", length=2),
+                    Word(id=6, char="哀丙", code="22", jyutping="", length=2),
+                ])
+                db.add(WordRelation(word_id=1, related_id=2, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=1, related_id=3, relation_type="syn", score=0.9, source="test"))
+                db.add(WordRelation(word_id=2, related_id=4, relation_type="ant", score=0.9, source="antisem"))
+                db.add(WordRelation(word_id=2, related_id=5, relation_type="ant", score=0.9, source="antisem"))
+                db.add(WordRelation(word_id=3, related_id=6, relation_type="ant", score=0.9, source="antisem"))
+                db.add(WordRelation(word_id=3, related_id=4, relation_type="ant", score=0.9, source="antisem"))
+                db.commit()
+
+                stats = expand_antonyms_via_embedding_syn_bridge(
+                    db, source="ant_syn_bridge", include_static=False, max_bridged_ants_per_head=10
+                )
+                self.assertEqual(stats["bridged"], 1)
+                self.assertEqual(stats["inserted"], 3)
+
+                rows = (
+                    db.query(WordRelation)
+                    .filter(WordRelation.source == "ant_syn_bridge", WordRelation.relation_type == "ant")
+                    .order_by(WordRelation.related_id)
+                    .all()
+                )
+                self.assertEqual(len(rows), 3)
+                by_tail = {r.related_id: r.score for r in rows}
+                self.assertAlmostEqual(by_tail[4], 0.9999, places=3)  # 哀甲 via 愉快
+                self.assertAlmostEqual(by_tail[5], 0.9999, places=3)  # 哀乙 via 愉快
+                self.assertAlmostEqual(by_tail[6], 0.85, places=2)  # 哀丙 via 開心
+
 
 class IngestBridgePoolContextTests(unittest.TestCase):
     def _seed_db(self):

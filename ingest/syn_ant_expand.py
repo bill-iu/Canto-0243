@@ -251,6 +251,27 @@ def expand_antonyms_via_syn_endpoints(
 
 
 ANT_SYN_BRIDGE_SOURCE = "ant_syn_bridge"
+DEFAULT_MIN_BRIDGE_COSINE = 0.80
+DEFAULT_MAX_BRIDGED_ANTS_PER_HEAD = 30
+
+
+def _merge_bridge_ants_by_score(
+    qualified_bridges: List[Tuple[str, List[str], float]],
+    *,
+    max_ants: int,
+) -> List[Tuple[str, float]]:
+    """Dedupe ants across bridges; keep highest 橋分 per ant; rank and cap."""
+    best_score: Dict[str, float] = {}
+    for _syn_char, direct_ants, score in qualified_bridges:
+        rounded = round(float(score), 4)
+        for ant_char in direct_ants:
+            if not ant_char:
+                continue
+            prev = best_score.get(ant_char)
+            if prev is None or rounded > prev:
+                best_score[ant_char] = rounded
+    ranked = sorted(best_score.items(), key=lambda item: (-item[1], item[0]))
+    return ranked[: max(0, int(max_ants))]
 
 
 def _empty_bridge_stats() -> dict:
@@ -290,6 +311,8 @@ def _process_bridge_targets(
     pool_ctx,
     global_ant_chars: Set[str],
     embedding_cache: Dict[str, List[float]],
+    min_bridge_cosine: float = DEFAULT_MIN_BRIDGE_COSINE,
+    max_bridged_ants_per_head: int = DEFAULT_MAX_BRIDGED_ANTS_PER_HEAD,
     progress_interval: int = 50,
     on_progress=None,
     progress_base: int = 0,
@@ -346,27 +369,27 @@ def _process_bridge_targets(
             stats["skipped_no_bridge"] += 1
             continue
 
-        best_syn = None
-        best_score = -1.0
-        best_ants: List[str] = []
+        qualified_bridges: List[Tuple[str, List[str], float]] = []
         for syn_char, direct_ants in bridge_options:
             syn_vec = embedding_cache.get(syn_char)
             if not syn_vec:
                 continue
             score = cosine_similarity(head_vec, syn_vec)
-            if score > best_score or (score == best_score and (best_syn is None or syn_char < best_syn)):
-                best_score = score
-                best_syn = syn_char
-                best_ants = direct_ants
+            if score < min_bridge_cosine:
+                continue
+            qualified_bridges.append((syn_char, direct_ants, score))
 
-        if not best_syn or not best_ants:
+        if not qualified_bridges:
             stats["skipped_no_bridge"] += 1
             continue
 
         stats["bridged"] += 1
-        bridge_score = round(float(best_score), 4)
+        merged_ants = _merge_bridge_ants_by_score(
+            qualified_bridges,
+            max_ants=max_bridged_ants_per_head,
+        )
 
-        for ant_char in best_ants:
+        for ant_char, bridge_score in merged_ants:
             if not ant_char or ant_char == head_char:
                 stats["skipped_self"] += 1
                 continue
@@ -448,11 +471,13 @@ def expand_antonyms_via_embedding_syn_bridge(
     offset: int = 0,
     limit: Optional[int] = None,
     chunk_size: Optional[int] = None,
+    min_bridge_cosine: float = DEFAULT_MIN_BRIDGE_COSINE,
+    max_bridged_ants_per_head: int = DEFAULT_MAX_BRIDGED_ANTS_PER_HEAD,
     on_batch=None,
     on_progress=None,
     progress_interval: int = 50,
 ) -> dict:
-    """近義橋反義：有 syn、無 ant 的字面 → embedding 挑橋接近義 → 借其 direct ant。
+    """近義橋反義：有 syn、無 ant 的字面 → 多橋合併、橋分排序 → 借 direct ant。
 
     See CONTEXT § 近義橋反義.
 
@@ -504,6 +529,8 @@ def expand_antonyms_via_embedding_syn_bridge(
                 pool_ctx=pool_ctx,
                 global_ant_chars=global_ant_chars,
                 embedding_cache=embedding_cache,
+                min_bridge_cosine=min_bridge_cosine,
+                max_bridged_ants_per_head=max_bridged_ants_per_head,
                 progress_interval=progress_interval,
                 on_progress=on_progress,
                 progress_base=start + batch_start,
@@ -540,6 +567,8 @@ def expand_antonyms_via_embedding_syn_bridge(
         pool_ctx=pool_ctx,
         global_ant_chars=global_ant_chars,
         embedding_cache=embedding_cache,
+        min_bridge_cosine=min_bridge_cosine,
+        max_bridged_ants_per_head=max_bridged_ants_per_head,
         progress_interval=progress_interval,
         on_progress=on_progress,
         progress_base=start,
@@ -559,6 +588,8 @@ def expand_antonyms_via_embedding_syn_bridge(
 __all__ = [
     "ANT_SYN_BRIDGE_SOURCE",
     "ANT_SYN_MIRROR_SOURCE",
+    "DEFAULT_MAX_BRIDGED_ANTS_PER_HEAD",
+    "DEFAULT_MIN_BRIDGE_COSINE",
     "collect_ant_mirror_char_pairs",
     "expand_antonyms_via_cilin_synonyms",
     "expand_antonyms_via_embedding_syn_bridge",
