@@ -39,7 +39,16 @@ def cmd_report(_: argparse.Namespace) -> int:
         print(staging_report(db))
         rel_count = db.query(WordRelation).count()
         syn_count = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
+        bridge_ant = (
+            db.query(WordRelation)
+            .filter(
+                WordRelation.source == "ant_syn_bridge",
+                WordRelation.relation_type == "ant",
+            )
+            .count()
+        )
         print(f"\nword_relations rows: {rel_count} (syn: {syn_count})")
+        print(f"ant_syn_bridge ant rows: {bridge_ant}")
     return 0
 
 
@@ -401,6 +410,7 @@ def main(argv: list[str] | None = None) -> int:
     p_bridge = sub.add_parser(
         "expand-antonyms-syn-bridge",
         help="Expand antonyms via embedding-selected synonym bridge",
+        description="近義橋反義 ingest。全量重跑與驗收見 docs/ingest-bridge-ant.md",
     )
     p_bridge.add_argument("--source", default="ant_syn_bridge", help="Source tag for bridged ant relations")
     p_bridge.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
@@ -434,7 +444,7 @@ def main(argv: list[str] | None = None) -> int:
     p_bridge.add_argument(
         "--fresh",
         action="store_true",
-        help="Clear checkpoint and restart from offset 0",
+        help="Clear checkpoint and restart from offset 0 (see docs/ingest-bridge-ant.md)",
     )
     p_bridge.add_argument(
         "--no-auto-resume",

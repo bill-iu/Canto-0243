@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
@@ -9,6 +11,9 @@ from sqlalchemy.orm import Session
 from app.domain.relations.pool import build_pool
 from app.repositories.word_relation_repo import load_db_char_set
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_BRIDGE_CHECKPOINT = REPO_ROOT / "data" / "locks" / "expand-antonyms-syn-bridge.checkpoint.json"
 
 
 class IngestBridgePoolContext:
@@ -36,3 +41,41 @@ class IngestBridgePoolContext:
             membership=self._membership,
             quiet=True,
         ).chars(kind)
+
+
+def read_bridge_checkpoint(path: Path | None = None) -> dict | None:
+    p = path or DEFAULT_BRIDGE_CHECKPOINT
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, TypeError):
+        return None
+
+
+def write_bridge_checkpoint(
+    *,
+    offset: int,
+    inserted_cumulative: int,
+    total_targets: int,
+    path: Path | None = None,
+) -> None:
+    p = path or DEFAULT_BRIDGE_CHECKPOINT
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        json.dumps(
+            {
+                "offset": int(offset),
+                "inserted_cumulative": int(inserted_cumulative),
+                "total_targets": int(total_targets),
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+
+def clear_bridge_checkpoint(path: Path | None = None) -> None:
+    p = path or DEFAULT_BRIDGE_CHECKPOINT
+    try:
+        p.unlink(missing_ok=True)
+    except OSError:
+        pass

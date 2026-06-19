@@ -75,7 +75,8 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 **執行者**：發佈主理。**前置**：該 tag 已有 **zip + x86_64 tar**。
 
 ```powershell
-# 主理機：ingest 後
+# 主理機：ingest 後（近義橋規則變更時見 docs/ingest-bridge-ant.md）
+python -m ingest expand-antonyms-syn-bridge --fresh   # 可選；品質閘門更新後
 gh release upload v1.7.0 lyrics.db --clobber
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 gh release upload v1.7.0 dist/words-lexicon.json --clobber
@@ -115,7 +116,10 @@ gh release upload v1.7.0 dist/words-lexicon.json --clobber
 要。須 rebuild 各平台 Portable。創作者可感知變更 → bump 新 semver；純打包修正 → 可刷新同一 tag。
 
 **Q：ingest 完只想換詞庫？**  
-**詞庫發佈**（發佈主理）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。
+**詞庫發佈**（發佈主理）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。若只更新近義橋反義，先依 [ingest-bridge-ant.md](ingest-bridge-ant.md) 重跑並驗收。
+
+**Q：近義橋 ingest 中斷點？**  
+重新執行 `expand-antonyms-syn-bridge`（無 `--fresh`）會 resume checkpoint；從頭重跑用 `--fresh`。唔好手動刪 lock 檔。
 
 **Q：Release 已出 zip 但未有 macOS tar，可以詞庫發佈嗎？**  
 不可以。須等發佈補件上傳 x86_64 tar。

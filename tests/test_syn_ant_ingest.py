@@ -773,6 +773,33 @@ class AntSynBridgeExpansionTests(unittest.TestCase):
                 self.assertEqual(row.related_id, 4)
 
 
+class BridgeCheckpointTests(unittest.TestCase):
+    def test_bridge_checkpoint_roundtrip(self):
+        from tempfile import TemporaryDirectory
+        from pathlib import Path
+
+        from ingest.bridge_pool_context import (
+            clear_bridge_checkpoint,
+            read_bridge_checkpoint,
+            write_bridge_checkpoint,
+        )
+
+        with TemporaryDirectory() as tmp:
+            path = Path(tmp) / "cp.json"
+            write_bridge_checkpoint(
+                offset=120,
+                inserted_cumulative=45,
+                total_targets=500,
+                path=path,
+            )
+            cp = read_bridge_checkpoint(path=path)
+            self.assertEqual(cp["offset"], 120)
+            self.assertEqual(cp["inserted_cumulative"], 45)
+            self.assertEqual(cp["total_targets"], 500)
+            clear_bridge_checkpoint(path=path)
+            self.assertIsNone(read_bridge_checkpoint(path=path))
+
+
 class IngestBridgePoolContextTests(unittest.TestCase):
     def _seed_db(self):
         engine = create_engine("sqlite:///:memory:")
