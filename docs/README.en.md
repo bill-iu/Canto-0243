@@ -17,7 +17,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 ## Latest release
 
 <!-- words-count:en -->
-Current word entries: **193,290** (`lyrics.db` · `words` table)
+Current word entries: **193,288** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 Official offline data bundle: **[Canto-0243 v1.6.4](https://github.com/bill-iu/Canto-0243/releases/tag/v1.6.4)** (`canto-0243-portable.zip`, macOS `tar.gz`, `lyrics.db`, `words-lexicon.json`). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
