@@ -43,6 +43,16 @@ python -m ingest expand-antonyms-syn-bridge --fresh
 
 **唔好**手動刪 `data/locks/*.lock` 恢復進度；中斷後重新執行同一命令（無 `--fresh`）會自動 resume checkpoint。要從頭再跑才加 `--fresh`。
 
+### 中斷恢復
+
+| 情況 | 做法 |
+|------|------|
+| 未完成；`expand-antonyms-syn-bridge.checkpoint.json` 存在且 `offset < total_targets` | 再跑同一命令（**唔**加 `--fresh`）→ auto resume |
+| 懷疑 db 與 checkpoint 唔一致，或要重驗品質閘門 | `--fresh` 清 checkpoint 並重刪 `ant_syn_bridge` 後全量重跑 |
+| 已跑完（`offset == total_targets`） | 直接 § 驗收，唔再跑 |
+
+只透過 `--fresh` 清 checkpoint；**唔**手動刪 `data/locks/*.lock`（進程鎖）。
+
 可選覆寫（對照 outlier 時）：
 
 ```bash
