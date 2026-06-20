@@ -35,7 +35,8 @@ def blocks_star_normalize(q: str) -> bool:
 
 
 def prefix_wildcard_equals_missing_eq_hint(q: str) -> Optional[str]:
-    if re.fullmatch(r"\?[一-龥]{2,}", q):
+    # ponytail: 恰好 2 字（?得快）走缺字查詢；≥3 字漏尾 = 才 hint
+    if re.fullmatch(r"\?[一-龥]{3,}", q):
         return PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT
     return None
 
