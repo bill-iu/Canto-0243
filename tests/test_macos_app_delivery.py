@@ -35,10 +35,10 @@ class MacosAppDeliveryTests(unittest.TestCase):
         self.assertIn('"canto-0243-portable"', source)
         self.assertNotIn("Canto-0243.app", source)
 
-    def test_build_portable_adhoc_signs_venv_and_mac_command(self):
+    def test_build_portable_adhoc_signs_mac_command(self):
         source = BUILD_SH.read_text(encoding="utf-8")
-        self.assertIn('codesign --deep --force --sign - "$OUT_DIR/venv"', source)
         self.assertIn('codesign --force --sign - "$OUT_DIR/Canto-0243.command"', source)
+        self.assertNotIn('codesign --deep', source)
 
     def test_release_macos_local_script_exists(self):
         script = REPO_ROOT / "scripts" / "release-macos-local.sh"
