@@ -39,7 +39,7 @@
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 
-會：build zip → export lexicon → 建立／更新 Release → 上傳 zip + db + json。
+會：build zip → export lexicon → 建立／更新 Release → 上傳 zip + **lyrics.db** + **words-lexicon.json** + **`LYRICS_DB_LICENSE.md`**（**詞條庫資料授權**，CC BY-SA 3.0 混合；見 CONTEXT）。
 
 可選：`-NotesFile path\to\notes.md`、`-SkipReadmeSync`、`-Draft`。
 

@@ -232,8 +232,12 @@ _Avoid_：獨立 relation-entry 頁、雙軌 HTML
 _Avoid_：manual command（作泛稱）
 
 **詞庫勘誤**：
-維護者累積發現嘅**詞條**標音錯誤清單（以字面 `char` 為入口；鎖定列須字面＋現有 0243 碼＋現有粵拼三欄齊），批次套用至詞條庫後經**詞庫發佈**對外；與**關係補錄**（近義／反義）無關。支援 `set_jyutping`（連帶重算碼）、`set_code`（只改碼）、刪錯列；唔包新增缺詞（第二階段）。累積 **20** 筆 `pending` 為建議套用批次；套用後維護者**手動 commit** 清單與 `applied` 狀態，夠批再**詞庫發佈**（唔為每批開新 semver 全量發佈）。
-_Avoid_：把詞庫勘誤當關係補錄、只靠字面改多讀音列、為每幾筆勘誤開新 semver 全量發佈、套用後自動 git commit／自動 Release
+維護者累積發現嘅**詞條**標音錯誤清單（以字面 `char` 為入口；鎖定列須字面＋現有 0243 碼＋現有粵拼三欄齊），批次套用至詞條庫或 **副件從源重建** 最終 store；與**關係補錄**（近義／反義）無關。支援 `set_jyutping`（連帶重算碼）、`set_code`（只改碼）、刪錯列；**唔**負責 upstream 無字面嘅**新增收錄**（見 **詞級標音 curated**）。累積 **20** 筆 `pending` 為建議套用批次；套用後維護者**手動 commit** 清單與 `applied` 狀態，夠批再**詞庫發佈**（唔為每批開新 semver 全量發佈）。
+_Avoid_：把詞庫勘誤當關係補錄、只靠字面改多讀音列、為每幾筆勘誤開新 semver 全量發佈、套用後自動 git commit／自動 Release、用勘誤 TSV bulk 補 CC-only 缺詞
+
+**詞級標音 curated**：
+maintainer 維護、可選嘅 **詞級標音 curated** 小表（**副件從源重建（擱置）** 用）；現行 **詞條庫** 仍由 ingest 產出，過渡期含 CC-Canto 等混合來源（見 **詞條庫資料授權**）。**詞庫勘誤** TSV 只管修正／刪除已有列，**唔**用 `add` 補新詞。
+_Avoid_：把排序用 curated 同本檔混為一檔、用 CC raw 自動填表、數千條無審核 bulk 匯入、新增缺詞寫入勘誤 TSV、Beta 前一次 diff 自動灌入 legacy 讀音
 
 ### 查詢語法基礎
 
@@ -358,6 +362,10 @@ _Avoid_：word_cache（作領域正名）、把預載執行緒或磁碟快照當
 長度 ≥ 2 的字面，僅當詞庫有該詞的**詞級標音**（粵拼＋0243 碼）時，才以詞級標音**收錄**進詞條庫；可有多個讀音列。詞級標音未命中時，不由此路徑注入（改走**音節拼接讀音**收錄路徑，若拼接成功）。
 _Avoid_：逐字拼接多音字讀音後冒充詞級標音、把拼接結果稱作詞級標音
 
+**詞級標音上游**：
+maintainer 自建 **詞級標音副件** 時認可的上游：**words.hk**（公有領域）、**開放詞典 · 粵語詞典**（CC BY 3.0）。**優先序**：**詞庫勘誤** → words.hk → 開放詞典（僅補 words.hk 無之字面）→ **詞級標音 curated**（僅補前序仍無之字面）；**音節拼接讀音**只作 runtime **收錄決策** fallback，**唔**寫入副件 export。
+_Avoid_：未列上游來源混入 export、開放詞典與 words.hk 同字面無 tie-break 全收、把拼接結果 export 進副件
+
 **音節拼接讀音**：
 詞庫無該多字詞級標音時，逐字取 rime 單字「預設」讀音拼成整詞粵拼與 0243 碼；用於查詢、結果頁顯示與參考字錨點解析。拼接成功時可作**收錄決策**的第三條路徑寫入詞條庫，但**不**宣稱為詞級標音、**不**與詞級標音混稱。任一字缺 rime 預設則拼接失敗；單字有多個 rime 讀音時**只取預設**，不展開讀音組合。
 _Avoid_：與詞級標音混稱、把拼接結果當詞庫權威、線上 API 猜音
@@ -411,28 +419,60 @@ _Avoid_：預設字母序、每種語法各一套 tie-break、混雜粵拼字面
 _Avoid_：把可選自架服務當與離線版並重的一級產品
 
 **免安裝交付**：
-創作者**無需自行安裝 Python 或執行 pip**，解壓或安裝後雙擊即可進入查韻介面；依賴與詞庫在發佈時已就緒，無需手動建庫。Windows 與 macOS 為創作者一級通道；Linux 不在此承諾內（見 **Portable 套件**）。
-_Avoid_：把「仍需本機 Python」的套件稱作免安裝、把 Docker 映像當創作者免安裝交付
+創作者**無需自行安裝 Python 或執行 pip**；解壓或安裝後雙擊進入查韻介面；**Portable 套件** 內含 **詞條庫**（或 Release 另附同版 **詞條庫** 檔），**唔**要求首次啟動跑 maintainer ingest。Windows 與 macOS 為創作者一級通道；Linux 不在此承諾內（見 **Portable 套件**）。
+_Avoid_：把「仍需本機 Python」的套件稱作免安裝、把 Docker 映像當創作者免安裝交付、把 **首次建庫（擱置）** 當現行創作者必經路徑
+
+**首次建庫（擱置）**：
+原 **Option C** 設想：由 **詞級標音副件** 匯入並在本機建立 **詞條庫**（含 bundled tier2 輕量 ingest）。**現行創作者路徑唔採用**；維持 v1.0.2 式預置 **詞條庫**。將來若重啟須另開 semver 與 **Beta 預發佈（擱置）** 驗收。
+_Avoid_：把現行 Portable 當首次建庫交付、未驗收就下架 Release **詞條庫** 資產
 
 **Portable 套件**：
-**離線單機交付**的發佈物，內含詞庫、前端與本機 API。創作者路徑：**Windows** 為解壓 zip 後雙擊啟動；**macOS** 為解壓 tar 後雙擊 **`Canto-0243.command`**（內含 venv，開 Terminal）——兩者皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。
-_Avoid_：把 zip／tar 當產品正名、把 portable 當雲端版、要求 Linux 與 WM 同等免安裝投入
+**離線單機交付**的發佈物，內含 **詞條庫**、前端與本機 API；**words-lexicon.json** 為同版 **詞條庫** 匯出副件。創作者路徑：**Windows** 解壓 zip 後雙擊 **`START.bat`**；**macOS** 解壓 tar 後雙擊 **`Canto-0243.command`**——皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。
+_Avoid_：把 zip／tar 當產品正名、Portable 內嵌 **詞條庫** 卻只標程式 license、缺 **詞條庫** 卻承諾即開即查
+
+**詞級標音副件**：
+某一 semver 上由 **詞條庫** 匯出嘅 `{字面, 粵拼, 0243 碼}` 列表（`words-lexicon.json`）；授權同 **詞條庫**（**詞條庫資料授權**），**唔**跟 **Canto-0243 License**。
+_Avoid_：把副件當程式原始碼、整包標單一 NC license
+
+**詞條庫資料授權**：
+**詞條庫**（`lyrics.db`）及同版 **詞級標音副件**（`words-lexicon.json`）之資料層授權，**唔**跟 **Canto-0243 License**（程式 NC 等）。過渡期以 **CC BY-SA 3.0 混合** 標示（含 CC-Canto 等 upstream 贡献）；逐源見 **第三方來源告示**；Release 附 **`LYRICS_DB_LICENSE.md`**（只涵蓋 **詞條庫** 與同版 **words-lexicon.json**）。**唔**主張整包跟程式同一附加限制。
+_Avoid_：Release 只寫程式 LICENSE 當全包、過渡期假裝已無 CC 來源、用程式 NC 限制 **詞條庫** 再分發
+
+**副件從源重建（擱置）**：
+原 **Option C** maintainer 管線：由 **詞級標音上游** merge 產 **詞級標音副件**，**唔**以 legacy export 作權威。現行仍以 ingest 維護 **詞條庫**；本路徑**唔**阻塞過渡期發佈。
+_Avoid_：未建管線就下架 **詞條庫** Release 資產
+
+**詞級標音資料授權（擱置）**：
+原 **Option C** 用語；現行改稱 **詞條庫資料授權**（**CC BY-SA 3.0 混合** 過渡期）。保留本詞僅防舊文引用混淆。
+_Avoid_：與 **詞條庫資料授權** 並列使用而不定義取捨
+
+**第三方來源告示**：
+`THIRD_PARTY_NOTICES.md` 列程式 bundled 資料、fetch tier2 與 **詞條庫** 上游；**詞條庫** Release 授權摘要見 **`LYRICS_DB_LICENSE.md`**。
+_Avoid_：NOTICES 與 **LYRICS_DB_LICENSE** 矛盾、把程式 NC 當 **詞條庫** 授權
+
+**分層授權**：
+程式與 curated 程式資料依 **Canto-0243 License**；**詞條庫** 與 **詞級標音副件** 依 **詞條庫資料授權** 分開標示與分發。
+_Avoid_：Release 只寫一個 LICENSE 當全包、假設 **詞條庫** 跟程式 NC
+
+**黃金查詢集**：
+**詞級標音副件** 或查詢行為重大更新後，鎖定**零回歸**的固定查詢清單（含 **等號查詢**、成語、常見 2–3 字等）。**CI smoke 子集**（約二十條）每次 PR 必過；**完整集**於 **Beta 預發佈**／**全量發佈**前必過（有本機 **詞條庫** 時跑 bench 或同等腳本）。
+_Avoid_：把 enforce_bench 當唯一來源卻唔維護清單、CI 跑完整集卻無 fixture db、release 只靠人手 spot check
 
 **macOS 應用程式套件**：
 macOS 上創作者啟動查韻介面的主要形態。**未 notarize** 過渡期：tar 內為 **`canto-0243-portable/` 資料夾 + `Canto-0243.command`**（雙擊開 Terminal，腳本清 `com.apple.quarantine` 後執行內建 venv）；與 Windows zip 並列為 **免安裝交付**（創作者唔裝 Python、唔跑 pip）。**仍要開啟**／右鍵→打開針對 **`Canto-0243.command`** 一次即可，唔再要求先放行 `.app` 再經 `Open …command` 轉開。日後 notarize 可恢復 `.app` 雙擊無 Terminal。
 _Avoid_：把 tar.gz 當產品正名、把 `.command` 當雲端或自架服務、要求創作者手動 `xattr`、假設 notarize 已完成、仍教學「雙擊 .app」而現行 tar 已無 `.app`
 
 **全量發佈**：
-程式、依賴、詞庫與各平台 **Portable 套件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／`.app` 與 `lyrics.db`、`words-lexicon.json`。macOS 目標為 **Apple Silicon** 與 **Intel** 各一個 tar.gz；過渡期可只發 **x86_64**，Release notes 須註明 arm64 暫無。可先 **Publish** 已齊平台資產，再補另一平台同一 tag（見 **分渠道發佈**）。**須 bump 新 semver**：創作者可感知的查韻行為、介面、詞庫覆蓋範圍或 API 契約變更。**可刷新同一 semver**（見 **發佈主理**）：打包／建置腳本、文件、或程式修正但創作者體感不變（例如內部重構、啟動更穩）。
-_Avoid_：把每次 commit 都當全量發佈、把只換詞庫當全量發佈、用單一 macOS tar 冒充雙架構原生、在 fork Release 當正式下載頁、把詞庫內容更新當 tag 刷新（應走 **詞庫發佈**）
+程式、依賴、**Portable 套件**、**詞條庫** 與 **詞級標音副件** 屬同一 semver 版本線；創作者由**同一 GitHub Release tag** 下載 zip／tar、**詞條庫** 與 **words-lexicon.json**（**詞條庫資料授權**）。macOS 目標為 **Apple Silicon** 與 **Intel** 各一 tar.gz；過渡期可只發 **x86_64**。**須 bump 新 semver**：創作者可感知變更。**可刷新同一 semver**：打包修正、query hotfix 等（例如 v1.0.2 刷新）。
+_Avoid_：刷新 semver 卻改 **詞條庫** license 而不更新 **LYRICS_DB_LICENSE**、把 **詞庫交付切換（擱置）** 當現行必做步驟
 
 **分渠道發佈**：
 **全量發佈**按**平台資產角色**分工，唔綁維護者用邊部 OS：**發佈主理**建立 semver tag、撰寫 Release 說明、上傳 Windows zip 與詞庫資產；**發佈補件**只上傳 macOS tar 至**上游**同一 tag。補件建置須對齊 **tag 指向之 commit** 與 **發佈詞庫快照**；唔建立 Release、唔上傳詞庫資產。主理**刷新同一 semver** 時，補件須重 build 並覆寫 tar。主理已 Publish 而 macOS tar 未補時，該 semver 對 **Windows 創作者**已**分平台可交付**；**詞庫發佈**與跨平台驗收仍須 zip + x86_64 tar 齊。邊部機器執行主理／補件屬維護編排，見 `docs/release.md`（唔寫入創作者 README）。
 _Avoid_：把分渠道發佈當成「Windows 機先、Mac 機後」的領域規則、把 fork 當發佈終點、要求單機產出 arm64、恢復 tag 觸發全平台 CI 作唯一發佈路徑、tag 指新 commit 卻保留舊 tar、因缺 macOS tar 就話 Windows 創作者都唔應下載、補件喺無 Release 時建立或上傳詞庫資產、用 main 尖端代替 tag commit 建置
 
 **發佈主理**：
-**全量發佈** 中負責建立 semver tag、撰寫 Release 說明、上傳 zip 與詞庫資產（`lyrics.db`、`words-lexicon.json`）的**角色**（唔等同「必須 Windows 機」）。對外語意不變時可**刷新同一 semver**（移 tag 至新 commit、覆寫 zip／詞庫資產；說明可維持不變）；須 bump 新 semver 的情況見 **全量發佈**。
-_Avoid_：把發佈主理綁死 Windows、把補件當第二下載頁或發佈終點、補件上傳覆寫主理已傳詞庫、主理與補件各自建 tag 令創作者搵唔到單一 Release 頁、每次小修都開新 semver 令同一語意版本碎片化
+**全量發佈** 中負責建立 semver tag、撰寫 Release 說明、上傳 zip、**詞條庫**、**words-lexicon.json** 與 **LYRICS_DB_LICENSE** 的**角色**。對外語意不變時可**刷新同一 semver**。
+_Avoid_：把 **詞條庫** 當程式 NC 一併上傳而不附 **詞條庫資料授權**
 
 **發佈補件**：
 **分渠道發佈** 中只上傳 macOS **Portable 套件** tar 至已存在之同一 semver Release 的**角色**（唔等同「必須 Intel Mac」）。唔參與 **詞庫發佈**。
@@ -447,8 +487,28 @@ _Avoid_：把分平台可交付當成 semver 完全完工、把缺 tar 當成整
 _Avoid_：詞庫發佈仍強制重建雙平台 zip、在僅有 Windows zip 未補 macOS 時發詞庫、為詞庫更新另開 semver tag 令創作者搵錯下載頁、發佈補件上傳 db/json、兩角色各自 ingest 出不同快照
 
 **發佈詞庫快照**：
-某一 semver Release 上由**發佈主理**上傳的 `lyrics.db` 與 `words-lexicon.json`；為該版對外詞庫準線，優先於 tag 指向 commit 內未必已提交的本機 db。**發佈補件**建 tar 前須對齊此快照（從該 semver Release 取得已上傳資產），唔好各自 ingest 出不同詞庫卻共用同一 semver。
-_Avoid_：假設 `lyrics.db` 永遠已 commit 在 tag、補件用本機另一份 db 建置、把 ingest 產物當 **詞庫發佈** 卻未經發佈主理上傳、補件喺主理 upload 之前就建 tar
+某一 semver Release 上由**發佈主理**上傳的 **詞條庫** 與同版 **words-lexicon.json**（**詞條庫資料授權**）；**發佈補件**建 tar 前須對齊此快照。
+_Avoid_：上傳 **詞條庫** 卻唔附 **LYRICS_DB_LICENSE**、把 **副件從源重建（擱置）** 當現行必經步驟
+
+**Beta 預發佈（擱置）**：
+原 **Option C**／v1.0.3 路線（首次建庫、下架 **詞條庫** 等）。**現行唔採用**。
+_Avoid_：把 v1.0.3-beta 當現行計劃
+
+**Option C 收工（擱置）**：
+原計劃在 **Release 下架詞條庫** 後完成交付切換；**現行暫停**。CC 脫離見 GitHub issue #9。
+_Avoid_：宣稱 Option C 已完成
+
+**詞級標音外掛（擱置）**：
+須在 **Option C 收工（擱置）** 解除後再議。
+_Avoid_：與過渡期 **詞條庫** 發佈混同一 PR
+
+**Release 下架詞條庫（擱置）**：
+原 **詞庫交付切換** 步驟；**現行 Release 仍附 **詞條庫** 資產**。
+_Avoid_：過渡期刪除 **詞條庫** 下載而無替代來源
+
+**詞庫交付切換（擱置）**：
+原創作者路徑改 **Portable** + **首次建庫（擱置）**；**現行維持 v1.0.2 模型**。
+_Avoid_：把 **詞條庫資料授權** 分開標示誤當已完成本切換
 
 **開發容器環境**：
 供維護者與貢獻者取得一致本地開發環境的 Docker 設定；**非**創作者交付物，不取代 **離線單機交付** 或 **免安裝交付**。
