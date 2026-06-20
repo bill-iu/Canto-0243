@@ -8,7 +8,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 
 **Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench built with AI agents. It lists replaceable **word entries** in seconds using **0243／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. Type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine.
 
-**License**: [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). Third-party data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
+**License**: [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). **Word-entry store** `lyrics.db` and matching `words-lexicon.json`: [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) (CC BY-SA 3.0 mixed). Third-party data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
 **Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · vanilla HTML/JS frontend  
 **Domain glossary**: [`CONTEXT.md`](../CONTEXT.md) · Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
@@ -20,7 +20,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 Current word entries: **193,288** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
-Official offline data bundle: **[Canto-0243 v1.0.2](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.2)** (`canto-0243-portable.zip`, `canto-0243-portable-macos-x86_64.tar.gz`, `lyrics.db`, `words-lexicon.json`; Apple Silicon arm64 not available yet). Feedback welcome on [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues).
+Official offline data bundle: **[Canto-0243 v1.0.2](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.2)** (`canto-0243-portable.zip`, `canto-0243-portable-macos-x86_64.tar.gz`, `lyrics.db`, `words-lexicon.json`, `LYRICS_DB_LICENSE.md`; Apple Silicon arm64 not available yet). Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues).
 
 ---
 
@@ -128,6 +128,7 @@ Check [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution.
 | `canto-0243-portable-macos-arm64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Apple Silicon) |
 | `canto-0243-portable-macos-x86_64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Intel) |
 | `words-lexicon.json` | **Lexicon-reading** sidecar |
+| `LYRICS_DB_LICENSE.md` | **Word-entry store** and matching sidecar license (CC BY-SA 3.0 mixed) |
 
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
@@ -364,7 +365,7 @@ Verify [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution
 |------|-------------|----------|
 | **1 · With repo** | available on clone | `data/essay/`, `data/lexicon/`, `data/syn_ant/`, bundled cilin／thesaurus |
 | **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`, antisem |
-| **3 · maintainer-built** | gitignored | `lyrics.db`, lexicon-reading JSON |
+| **3 · maintainer-built** | gitignored; store licensing in [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | `lyrics.db`, lexicon-reading JSON |
 
 Default near／antonym pipeline: `data/syn_ant/sources.yaml` (cilin, guotong, antisem, compound lists). Full upstream table: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
@@ -437,7 +438,8 @@ Building or redistributing lexicons from these sources requires complying with e
 | [`README.md`](../README.md) | Traditional Chinese (GitHub homepage) |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | Simplified Chinese documentation (written Chinese) |
 | [`README.en.md`](README.en.md) | English documentation (this file) |
-| [`LICENSE`](../LICENSE) | Canto-0243 License |
+| [`LICENSE`](../LICENSE) | Canto-0243 License (software) |
+| [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | **Word-entry store** and `words-lexicon.json` data license |
 | [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) | Third-party data licenses |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contributing & repo-root conventions |
 | [`CONTEXT.md`](../CONTEXT.md) | Domain glossary |
@@ -446,4 +448,4 @@ Building or redistributing lexicons from these sources requires complying with e
 
 ---
 
-**Last updated**: 2026-06-19 (v1.0.2 hotfix: code-prefixed equals · search hint header · 行 readings)
+**Last updated**: 2026-06-20 (README: word-entry store license in `LYRICS_DB_LICENSE.md`)

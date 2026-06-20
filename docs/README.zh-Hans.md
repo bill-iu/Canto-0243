@@ -8,7 +8,7 @@
 
 **Canto-0243**（**ONE·揾·韵**）是在 Cursor、Codex、Grok Build、GitHub Copilot 等多种 AI Agent 协助下开发的离线粤语填词检索工作台：依据 **0243／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出符合条件的**词条**。例如输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。套件解压即可使用，词库与近反义资料均存于本地，无需联网。
 
-**授权**：程序代码依 [Canto-0243 License](../LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**非 OSI 开源**）。第三方资料见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。  
+**授权**：程序依 [Canto-0243 License](../LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**非 OSI 开源**）。**词条库** `lyrics.db` 与同版 `words-lexicon.json` 依 [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md)（CC BY-SA 3.0 混合）。第三方资料见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。  
 **技术栈**：FastAPI · SQLAlchemy · SQLite（离线单机）· 纯 HTML/JS 前端  
 **领域词汇**：见 [`CONTEXT.md`](../CONTEXT.md) · 贡献指南 [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
@@ -20,7 +20,7 @@
 目前总词条列数：**193,288**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
-官方离线资料包：**[Canto-0243 v1.0.2](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.2)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 过渡期暂不提供）。问题与建议欢迎提交 [GitHub Issues](https://github.com/ICE-U-code/Canto-0243/issues)。
+官方离线资料包：**[Canto-0243 v1.0.2](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.2)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`、`LYRICS_DB_LICENSE.md`；Apple Silicon arm64 过渡期暂不提供）。问题与建议欢迎提交 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
 
 ---
 
@@ -129,6 +129,7 @@ python -m ingest build-relations
 | `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安装文件夹 + **`Canto-0243.command`**（Intel；现行渠道） |
 | `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安装（Apple Silicon；过渡期暂不提供） |
 | `words-lexicon.json` | **词级标音**附件 |
+| `LYRICS_DB_LICENSE.md` | **词条库**与同版 **词级标音附件**之授权（CC BY-SA 3.0 混合） |
 
 ```powershell
 # Windows 全量（建置 + 上传 Release）:
@@ -403,7 +404,7 @@ Canto-0243/
 |------|------|------|
 | **1 · 随仓库** | clone 即可得 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
 | **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
-| **3 · maintainer 自建** | gitignore | `lyrics.db`、词级标音 JSON |
+| **3 · maintainer 自建** | gitignore；**词条库**授权见 [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | `lyrics.db`、词级标音 JSON |
 
 近义／反义默认管线：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。详表见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
 
@@ -476,7 +477,8 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 | [`README.md`](../README.md) | 繁体中文（GitHub 首页） |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | 本文件（简体中文书面语） |
 | [`README.en.md`](README.en.md) | English documentation |
-| [`LICENSE`](../LICENSE) | Canto-0243 License |
+| [`LICENSE`](../LICENSE) | Canto-0243 License（程序） |
+| [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | **词条库**与 `words-lexicon.json` 资料授权 |
 | [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) | 第三方资料授权 |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | 贡献与 PR · 源码根目录约定 |
 | [`CONTEXT.md`](../CONTEXT.md) | 领域词汇表 |
@@ -485,4 +487,4 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 ---
 
-**最后更新**：2026-06-19（v1.0.2 · hotfix：左码整词同韵 · 搜索提示 header · 行标音）
+**最后更新**：2026-06-20（README：词条库授权与 `LYRICS_DB_LICENSE.md` 分开标示）
