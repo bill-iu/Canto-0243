@@ -3,7 +3,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 cd "$ROOT"
 
-if command -v python3 >/dev/null 2>&1 && [[ -f "$ROOT/scripts/portable_macos.py" ]]; then
+if [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
+  xattr -cr "$ROOT" 2>/dev/null || true
+elif command -v python3 >/dev/null 2>&1 && [[ -f "$ROOT/scripts/portable_macos.py" ]]; then
   python3 "$ROOT/scripts/portable_macos.py" "$ROOT" || true
 fi
 

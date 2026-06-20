@@ -505,22 +505,23 @@ def _assert_venv_portable(venv_dir: Path) -> None:
         )
 
 
+def _iter_all_mach_o_under(root: Path) -> list[Path]:
+    seen: set[Path] = set()
+    if not root.is_dir():
+        return []
+    for path in root.rglob("*"):
+        if path.is_file() and not path.is_symlink() and _is_mach_o(path):
+            resolved = path.resolve()
+            if resolved not in seen:
+                seen.add(resolved)
+    return sorted(seen)
+
+
 def _adhoc_sign_venv(venv_dir: Path) -> None:
-    """Re-sign Mach-O after install_name_tool (ponytail: ad-hoc -, darwin only)."""
+    """Re-sign every Mach-O in venv after install_name_tool (ponytail: ad-hoc -, darwin only)."""
     if sys.platform != "darwin":
         return
-    signed: set[Path] = set()
-    candidates = list(_iter_mach_o_binaries(venv_dir))
-    lib_dir = venv_dir / "lib"
-    if lib_dir.is_dir():
-        for path in lib_dir.rglob("*"):
-            if path.is_file() and _is_mach_o(path):
-                candidates.append(path)
-    for path in candidates:
-        resolved = path.resolve()
-        if resolved in signed:
-            continue
-        signed.add(resolved)
+    for path in _iter_all_mach_o_under(venv_dir):
         subprocess.run(
             ["codesign", "--force", "--sign", "-", str(path)],
             check=True,

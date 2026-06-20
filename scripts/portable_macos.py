@@ -25,11 +25,8 @@ def clear_download_quarantine(
     if run is None:
         run = subprocess.run
     target = str(path)
-    run(
-        ["xattr", "-dr", "com.apple.quarantine", target],
-        check=False,
-        capture_output=True,
-    )
+    # ponytail: -cr clears all xattrs (quarantine, provenance, …); -dr alone misses Sequoia cases
+    run(["xattr", "-cr", target], check=False, capture_output=True)
     return True
 
 

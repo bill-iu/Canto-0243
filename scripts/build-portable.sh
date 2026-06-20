@@ -80,7 +80,8 @@ chmod +x "$OUT_DIR/Canto-0243.command"
 strip_cr "$OUT_DIR/Canto-0243.command"
 
 if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
-  echo "==> Ad-hoc codesign Canto-0243.command..."
+  echo "==> Ad-hoc deep codesign venv + Canto-0243.command..."
+  codesign --deep --force --sign - "$OUT_DIR/venv"
   codesign --force --sign - "$OUT_DIR/Canto-0243.command"
 fi
 

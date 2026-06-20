@@ -10,8 +10,8 @@ APP_ROOT="$(cd "$SCRIPT_DIR/../Resources/app" && pwd)"
 if PY3="$(command -v python3 2>/dev/null)"; then
   "$PY3" "$APP_ROOT/scripts/portable_macos.py" "$APP_BUNDLE" "$APP_ROOT" 2>/dev/null || true
 elif [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$APP_BUNDLE" 2>/dev/null || true
-  xattr -dr com.apple.quarantine "$APP_ROOT" 2>/dev/null || true
+  xattr -cr "$APP_BUNDLE" 2>/dev/null || true
+  xattr -cr "$APP_ROOT" 2>/dev/null || true
 fi
 
 cd "$APP_ROOT"

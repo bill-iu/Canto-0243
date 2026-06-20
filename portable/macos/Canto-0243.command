@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 
 if command -v xattr >/dev/null 2>&1; then
-  xattr -dr com.apple.quarantine "$ROOT" 2>/dev/null || true
+  xattr -cr "$ROOT" 2>/dev/null || true
 fi
 
 exec /bin/bash "$ROOT/START.sh"

@@ -23,8 +23,8 @@ class ClearDownloadQuarantineTests(unittest.TestCase):
             self.assertTrue(clear_download_quarantine("/tmp/Canto-0243.app", platform="darwin"))
             run.assert_called_once()
             args = run.call_args[0][0]
-            self.assertEqual(args[:3], ["xattr", "-dr", "com.apple.quarantine"])
-            self.assertEqual(args[3], "/tmp/Canto-0243.app")
+            self.assertEqual(args[:2], ["xattr", "-cr"])
+            self.assertEqual(args[2], "/tmp/Canto-0243.app")
 
 
 class ReleaseMacosArtifactsTests(unittest.TestCase):
