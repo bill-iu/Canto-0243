@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from scripts.portable_venv import (
@@ -12,6 +13,8 @@ from scripts.portable_venv import (
     non_portable_rpaths,
     relocate_macos_venv,
     _libpython_rpath_deps,
+    _stdlib_source_prefix,
+    _venv_home_is_local,
 )
 
 
@@ -81,6 +84,19 @@ class PortableVenvMacosTests(unittest.TestCase):
     def test_relocate_macos_venv_is_noop_off_darwin(self):
         with patch("scripts.portable_venv.sys.platform", "linux"):
             relocate_macos_venv(MagicMock())
+
+    def test_venv_home_is_local_under_bundle_bin(self):
+        venv = Path("/tmp/canto-0243-portable/venv")
+        self.assertTrue(_venv_home_is_local(venv / "bin", venv))
+        self.assertFalse(_venv_home_is_local(Path("/install/bin"), venv))
+
+    def test_stdlib_source_prefix_prefers_base_prefix(self):
+        cfg = {"base-prefix": "/Library/Frameworks/Python.framework/Versions/3.12"}
+        with patch("pathlib.Path.is_dir", return_value=True):
+            self.assertEqual(
+                _stdlib_source_prefix(cfg, Path("/Library/Frameworks/Python.framework/Versions/3.12/bin")),
+                Path("/Library/Frameworks/Python.framework/Versions/3.12"),
+            )
 
 
 if __name__ == "__main__":

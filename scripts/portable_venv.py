@@ -267,39 +267,104 @@ def _seed_venv_libpython(venv_dir: Path) -> None:
             return
 
 
-def _materialize_clt_framework_stdlib(venv_dir: Path) -> None:
-    """Apple CLT / virtualenv: copy framework stdlib into venv and point pyvenv.cfg home at venv/bin."""
-    cfg = venv_dir / "pyvenv.cfg"
-    if not cfg.is_file():
-        return
-    text = cfg.read_text()
-    if "Python3.framework" not in text:
-        return
-    base_prefix: Path | None = None
+def _parse_pyvenv_cfg(text: str) -> dict[str, str]:
+    out: dict[str, str] = {}
     for line in text.splitlines():
-        if line.startswith("base-prefix = "):
-            base_prefix = Path(line.split("=", 1)[1].strip())
-            break
-    if base_prefix is None or not base_prefix.is_dir():
+        if " = " not in line:
+            continue
+        key, value = line.split(" = ", 1)
+        out[key.strip()] = value.strip()
+    return out
+
+
+def _venv_home_is_local(home: Path, venv_dir: Path) -> bool:
+    try:
+        home.resolve().relative_to((venv_dir / "bin").resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def _stdlib_source_prefix(cfg: dict[str, str], home: Path) -> Path | None:
+    base = cfg.get("base-prefix")
+    if base:
+        candidate = Path(base)
+        if candidate.is_dir():
+            return candidate
+    parent = home.parent
+    return parent if parent.is_dir() else None
+
+
+def _materialize_portable_stdlib(venv_dir: Path) -> None:
+    """Embed build-time stdlib in venv so 免安裝 bundle runs off any extract path."""
+    if sys.platform != "darwin":
         return
+    cfg_path = venv_dir / "pyvenv.cfg"
+    if not cfg_path.is_file():
+        return
+    text = cfg_path.read_text()
+    cfg = _parse_pyvenv_cfg(text)
+    home_raw = cfg.get("home")
+    if not home_raw:
+        return
+    home = Path(home_raw)
+    if _venv_home_is_local(home, venv_dir):
+        return
+    src_prefix = _stdlib_source_prefix(cfg, home)
+    if src_prefix is None:
+        raise RuntimeError(f"cannot locate stdlib source for portable venv: {cfg_path}")
+
     ver = f"python{sys.version_info.major}.{sys.version_info.minor}"
-    src_lib = base_prefix / "lib" / ver
+    src_lib = src_prefix / "lib" / ver
     dst_lib = venv_dir / "lib" / ver
     if src_lib.is_dir():
         shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True)
-    bundled_src = base_prefix / "lib" / _bundled_lib_name()
+
+    zip_name = f"python{sys.version_info.major}{sys.version_info.minor}.zip"
+    src_zip = src_prefix / "lib" / zip_name
+    if src_zip.is_file():
+        dst_zip = venv_dir / "lib" / zip_name
+        if not dst_zip.is_file():
+            shutil.copy2(src_zip, dst_zip)
+
+    bundled_src = src_prefix / "lib" / _bundled_lib_name()
     if bundled_src.is_file():
         lib_dir = venv_dir / "lib"
         lib_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(bundled_src, lib_dir / _bundled_lib_name())
-    home = (venv_dir / "bin").resolve()
+        bundled = lib_dir / _bundled_lib_name()
+        if not bundled.is_file():
+            shutil.copy2(bundled_src, bundled)
+
+    venv_home = (venv_dir / "bin").resolve()
     lines: list[str] = []
     for line in text.splitlines():
         if line.startswith("home = "):
-            lines.append(f"home = {home}")
+            lines.append(f"home = {venv_home}")
         else:
             lines.append(line)
-    cfg.write_text("\n".join(lines) + "\n")
+    cfg_path.write_text("\n".join(lines) + "\n")
+
+
+def _assert_venv_relocatable(venv_dir: Path) -> None:
+    """Fail build if venv python still resolves stdlib outside the bundle."""
+    py = _venv_python(venv_dir)
+    root = str(venv_dir.resolve())
+    code = f"""import sys
+root = {root!r}
+if not sys.prefix.startswith(root):
+    raise SystemExit(f"prefix {{sys.prefix!r}} not under {{root!r}}")
+for entry in sys.path:
+    if not entry or entry.startswith(root):
+        continue
+    if entry.startswith("/usr") or entry.startswith("/System"):
+        continue
+    if entry.startswith("/"):
+        raise SystemExit(f"non-portable sys.path entry: {{entry!r}}")
+"""
+    proc = subprocess.run([str(py), "-c", code], capture_output=True, text=True)
+    if proc.returncode != 0:
+        detail = (proc.stderr or proc.stdout or "").strip()
+        raise RuntimeError(f"venv not relocatable: {detail}")
 
 
 def _ensure_venv_pip(py: Path) -> None:
@@ -482,13 +547,14 @@ def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
 
     _create_copies_venv(venv_dir)
     _seed_venv_libpython(venv_dir)
-    _materialize_clt_framework_stdlib(venv_dir)
+    _materialize_portable_stdlib(venv_dir)
     py = _venv_python(venv_dir)
     _ensure_venv_pip(py)
     env = {**os.environ, "PYTHONUTF8": "1"}
     subprocess.run([str(py), "-m", "pip", "install", "-r", str(req)], check=True, env=env)
 
     relocate_macos_venv(venv_dir)
+    _assert_venv_relocatable(venv_dir)
 
     py = _venv_python(venv_dir)
     if not py.is_file():
@@ -515,6 +581,7 @@ def main() -> int:
             print(f"FAIL: no venv at {root / 'venv'}", file=sys.stderr)
             return 1
         assert_portable_macos_venv(root / "venv")
+        _assert_venv_relocatable(root / "venv")
         subprocess.run([str(py), "-c", "import fastapi, uvicorn, sqlalchemy"], check=True)
         print("OK")
         return 0
