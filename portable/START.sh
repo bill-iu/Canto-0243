@@ -5,7 +5,8 @@ cd "$ROOT"
 
 if [[ "$(uname -s)" == "Darwin" ]] && command -v xattr >/dev/null 2>&1; then
   xattr -cr "$ROOT" 2>/dev/null || true
-elif command -v python3 >/dev/null 2>&1 && [[ -f "$ROOT/scripts/portable_macos.py" ]]; then
+fi
+if command -v python3 >/dev/null 2>&1 && [[ -f "$ROOT/scripts/portable_macos.py" ]]; then
   python3 "$ROOT/scripts/portable_macos.py" "$ROOT" || true
 fi
 
@@ -23,6 +24,10 @@ if [[ ! -x "$RUN_PY" ]]; then
   fi
   echo "[錯誤] 找不到內建執行環境。請重新下載完整免安裝套件。"
   exit 1
+fi
+
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  export PYTHONHOME="$ROOT/venv"
 fi
 
 export PORTABLE=1

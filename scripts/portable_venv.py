@@ -366,6 +366,30 @@ for entry in sys.path:
         detail = (proc.stderr or proc.stdout or "").strip()
         raise RuntimeError(f"venv not relocatable: {detail}")
 
+    # Stale pyvenv.cfg home (build-machine absolute path) must not break creators.
+    bogus_home = venv_dir / "pyvenv.cfg"
+    text = bogus_home.read_text()
+    lines = []
+    for line in text.splitlines():
+        if line.startswith("home = "):
+            lines.append("home = /nonexistent/canto-portable-build-path/venv/bin")
+        else:
+            lines.append(line)
+    bogus_home.write_text("\n".join(lines) + "\n")
+    try:
+        env = {**os.environ, "PYTHONHOME": root}
+        proc = subprocess.run(
+            [str(py), "-c", "import encodings"],
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode != 0:
+            detail = (proc.stderr or proc.stdout or "").strip()
+            raise RuntimeError(f"venv not relocatable with PYTHONHOME: {detail}")
+    finally:
+        bogus_home.write_text(text)
+
 
 def _ensure_venv_pip(py: Path) -> None:
     if subprocess.run([str(py), "-m", "pip", "--version"], capture_output=True).returncode == 0:

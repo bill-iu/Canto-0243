@@ -28,6 +28,12 @@ class MacosAppDeliveryTests(unittest.TestCase):
         source = MAC_CMD.read_text(encoding="utf-8")
         self.assertIn("xattr -cr", source)
         self.assertIn("START.sh", source)
+
+    def test_start_sh_sets_pythonhome_on_darwin(self):
+        start = REPO_ROOT / "portable" / "START.sh"
+        source = start.read_text(encoding="utf-8")
+        self.assertIn('PYTHONHOME="$ROOT/venv"', source)
+        self.assertIn("portable_macos.py", source)
         self.assertNotIn("Canto-0243.app", source)
 
     def test_macos_tar_is_portable_folder_only(self):

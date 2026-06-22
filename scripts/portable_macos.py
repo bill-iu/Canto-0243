@@ -30,6 +30,32 @@ def clear_download_quarantine(
     return True
 
 
+def patch_portable_venv_cfg(bundle_root: str | Path) -> bool:
+    """Rewrite venv/pyvenv.cfg home to this extract path (build-time paths break on other Macs)."""
+    root = Path(bundle_root).resolve()
+    cfg = root / "venv" / "pyvenv.cfg"
+    if not cfg.is_file():
+        return False
+    venv_bin = (root / "venv" / "bin").resolve()
+    lines: list[str] = []
+    for line in cfg.read_text().splitlines():
+        if line.startswith("home = "):
+            lines.append(f"home = {venv_bin}")
+        else:
+            lines.append(line)
+    cfg.write_text("\n".join(lines) + "\n")
+    return True
+
+
+def prepare_portable_bundle(bundle_root: str | Path, *, platform: str | None = None) -> None:
+    """Creator launch prep: clear quarantine + point venv cfg at this extract folder."""
+    root = Path(bundle_root).resolve()
+    clear_download_quarantine(root, platform=platform)
+    plat = platform if platform is not None else sys.platform
+    if plat == "darwin":
+        patch_portable_venv_cfg(root)
+
+
 def macos_portable_tar_name(machine_arch: str) -> str:
     """依建置機器架構回傳 portable tar 檔名。"""
     name = _MACOS_TAR.get(machine_arch)
@@ -49,7 +75,7 @@ def release_full_macos_artifacts() -> tuple[str, ...]:
 def main(argv: list[str] | None = None) -> int:
     args = list(sys.argv[1:] if argv is None else argv)
     for path in args:
-        clear_download_quarantine(path)
+        prepare_portable_bundle(path)
     return 0
 
 
