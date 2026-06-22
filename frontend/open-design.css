@@ -353,13 +353,19 @@ a.mode-option {
     }
 
 .query-explain {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
       margin: 10px 2px 0;
       font-size: 13px;
       line-height: 1.45;
+    }
+
+.query-explain__summary {
       color: var(--muted);
     }
 
-.query-explain.is-warning {
+.query-explain__warning {
       color: #9a5b14;
     }
 

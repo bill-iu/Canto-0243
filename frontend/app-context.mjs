@@ -119,6 +119,8 @@ export const $ = {
   searchInputWrap: document.getElementById("searchInputWrap"),
   searchInput: document.getElementById("searchInput"),
   queryExplain: document.getElementById("queryExplain"),
+  queryExplainSummary: document.getElementById("queryExplainSummary"),
+  queryExplainWarning: document.getElementById("queryExplainWarning"),
   searchBtn: document.getElementById("searchBtn"),
   shuffleBtn: document.getElementById("shuffleBtn"),
   results: document.getElementById("results"),

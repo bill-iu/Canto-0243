@@ -7,6 +7,7 @@ from typing import Optional
 
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
+    HYBRID_CODE_RE,
     CompoundAntQuery,
     CompoundConnectAntQuery,
     CompoundConnectSynQuery,
@@ -95,7 +96,7 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
     if isinstance(parsed, DigitCodeQuery):
         return f"查詢 0243 碼「{parsed.raw_q}」"
     if isinstance(parsed, HybridCodeQuery):
-        return f"碼字查詢「{parsed.raw_q}」"
+        return _hybrid_code_summary(parsed.raw_q)
     if isinstance(parsed, LiteralRefQuery):
         pos = _word_pos(parsed.width - 1)
         return f"{_width_label(parsed.width)}：{pos}字面為「{parsed.literal_char}」，碼為 {parsed.code_digits}"
@@ -192,6 +193,18 @@ def _serial_summary(parsed: SerialPhonemeAnchorQuery) -> str:
     return f"{_width_label(parsed.width)}：串列錨——" + "，".join(anchor_bits)
 
 
+def _hybrid_code_summary(raw_q: str) -> str:
+    match = HYBRID_CODE_RE.match(raw_q)
+    if not match:
+        return f"碼字查詢「{raw_q}」"
+    digits = match.group(1)
+    ref = match.group(2)
+    width = len(digits)
+    if len(ref) == 1:
+        return f"{_width_label(width)}：碼 {digits}，{_word_pos(width - 1)}同「{ref}」同韻"
+    return f"{_width_label(width)}：碼 {digits}，字面含「{ref}」"
+
+
 def _equals_summary(raw_q: str) -> str:
     inner = raw_q.strip()
     if inner.startswith("="):
@@ -209,15 +222,9 @@ def _warning_for(parsed: ParsedQuery) -> Optional[str]:
     value = parsed.anchor_value
     prefix = parsed.code_prefix or ""
     if parsed.width == 2 and "+" not in parsed.raw_q:
-        return (
-            f"此查詢為兩個字。若你想搵三個字（碼 {prefix} 加第 3 個字同韻母 {value}），"
-            f"請用「{prefix}+{value}」。"
-        )
+        return f"易混：三個字請改「{prefix}+{value}」"
     if parsed.width >= 3 and "+" in parsed.raw_q:
-        return (
-            f"此查詢為三個字。若你想搵兩個字（第 2 個字同韻母 {value}），"
-            f"請用「{prefix}{value}」。"
-        )
+        return f"易混：兩個字請改「{prefix}{value}」"
     return None
 
 

@@ -7,20 +7,34 @@ let explainAbort = null;
 function clearQueryExplain() {
   if (!$.queryExplain) return;
   $.queryExplain.hidden = true;
-  $.queryExplain.textContent = "";
-  $.queryExplain.classList.remove("is-warning");
+  if ($.queryExplainSummary) $.queryExplainSummary.textContent = "";
+  if ($.queryExplainWarning) {
+    $.queryExplainWarning.textContent = "";
+    $.queryExplainWarning.hidden = true;
+  }
 }
 
 function renderQueryExplain({ summary, warning }) {
   if (!$.queryExplain) return;
-  const text = warning || summary;
-  if (!text) {
+  const hasSummary = Boolean(summary);
+  const hasWarning = Boolean(warning);
+  if (!hasSummary && !hasWarning) {
     clearQueryExplain();
     return;
   }
-  $.queryExplain.textContent = text;
+  if ($.queryExplainSummary) {
+    $.queryExplainSummary.textContent = summary || "";
+  }
+  if ($.queryExplainWarning) {
+    if (hasWarning) {
+      $.queryExplainWarning.textContent = warning;
+      $.queryExplainWarning.hidden = false;
+    } else {
+      $.queryExplainWarning.textContent = "";
+      $.queryExplainWarning.hidden = true;
+    }
+  }
   $.queryExplain.hidden = false;
-  $.queryExplain.classList.toggle("is-warning", Boolean(warning));
 }
 
 async function refreshQueryExplain(input = $.searchInput?.value ?? "") {

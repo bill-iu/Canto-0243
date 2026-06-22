@@ -236,7 +236,10 @@
               <button class="primary-button" id="searchBtn" type="submit">搜尋</button>
             </div>
           </div>
-          <p class="query-explain" id="queryExplain" hidden aria-live="polite"></p>
+          <p class="query-explain" id="queryExplain" hidden aria-live="polite">
+            <span class="query-explain__summary" id="queryExplainSummary"></span>
+            <span class="query-explain__warning" id="queryExplainWarning" hidden></span>
+          </p>
         </form>
 
         <div class="status-row">

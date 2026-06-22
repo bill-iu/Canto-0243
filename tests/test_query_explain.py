@@ -34,11 +34,22 @@ class QueryExplainTests(unittest.TestCase):
         self.assertIn("香", result.summary or "")
         self.assertIn("任意字", result.summary or "")
 
-    def test_23o_warns_about_23_plus_o(self):
+    def test_hybrid_code_tail_ref_rhyme_summary(self):
+        result = explain_query("23我")
+        self.assertIn("兩個字", result.summary or "")
+        self.assertIn("碼 23", result.summary or "")
+        self.assertIn("第 2 個字", result.summary or "")
+        self.assertIn("我", result.summary or "")
+        self.assertIn("同韻", result.summary or "")
+        self.assertEqual(result.kind, "hybrid_code")
+
+    def test_23o_keeps_summary_and_warning(self):
         result = explain_query("23o")
         self.assertIn("兩個字", result.summary or "")
+        self.assertIn("同韻母 o", result.summary or "")
         self.assertIsNotNone(result.warning)
         self.assertIn("23+o", result.warning or "")
+        self.assertNotIn("此查詢為", result.warning or "")
 
     def test_23_plus_o_warns_about_23o(self):
         result = explain_query("23+o")

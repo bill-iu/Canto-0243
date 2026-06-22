@@ -409,6 +409,8 @@ class TestQueryTabsSeam(unittest.TestCase):
         'id="queryChromeTabs"',
         'id="queryTabstrip"',
         'id="queryExplain"',
+        'id="queryExplainSummary"',
+        'id="queryExplainWarning"',
         "app-header--tabs",
         "view=relation",
     )
