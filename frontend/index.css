@@ -754,6 +754,71 @@ html.fonts-ready .gate-brand {
   cursor: not-allowed;
 }
 
+.secondary-button {
+  min-height: 56px;
+  padding: 12px 20px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.secondary-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.corrections-row-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+
+.corrections-row-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.corrections-row-choice:has(:checked) {
+  border-color: rgba(138, 90, 32, 0.48);
+  background: var(--soft);
+}
+
+.corrections-preview {
+  margin: 0;
+  font-size: 14px;
+  color: var(--accent-strong);
+}
+
+.corrections-session {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.corrections-session__title {
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.corrections-session__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 .relation-view .status {
   margin-top: 20px;
   padding: 14px 2px;

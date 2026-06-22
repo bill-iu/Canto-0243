@@ -32,6 +32,15 @@ class UtilsTests(unittest.TestCase):
         self.assertEqual(finals4, '["un"]')
         self.assertNotEqual(finals3, finals4)
 
+    def test_split_jyutping_y_nucleus_after_consonant_cluster(self):
+        """zyu/syu/cyu：y 屬韻母 yu，唔同 fu 的 u（CONTEXT § y- 韻核）。"""
+        initials, finals, _ = split_jyutping("zyu6 syu1 cyu5")
+        self.assertEqual(initials, '["z", "s", "c"]')
+        self.assertEqual(finals, '["yu", "yu", "yu"]')
+        _, fu_finals, _ = split_jyutping("fu6")
+        self.assertEqual(fu_finals, '["u"]')
+        self.assertNotEqual(finals, fu_finals)
+
     def test_normalize_02493_code(self):
         self.assertEqual(normalize_02493_code("021"), "023")
         self.assertEqual(normalize_02493_code("027"), "023")

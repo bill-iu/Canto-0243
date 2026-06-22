@@ -412,5 +412,20 @@ class JyutpingAnchorRejectTests(unittest.TestCase):
         self.assertEqual(result.hint, JYUTPING_ANCHOR_INVALID_HINT)
 
 
+class RhymeFragmentMatchTests(unittest.TestCase):
+    def test_single_letter_u_anchor_separates_u_and_yu(self):
+        from app.services.jyutping_anchor import syllable_matches_rhyme_fragment
+
+        self.assertTrue(syllable_matches_rhyme_fragment("fu", "u"))
+        self.assertFalse(syllable_matches_rhyme_fragment("zyu", "u"))
+        self.assertTrue(syllable_matches_rhyme_fragment("zyu", "yu"))
+
+    def test_multi_letter_fragment_uses_suffix_match(self):
+        from app.services.jyutping_anchor import syllable_matches_rhyme_fragment
+
+        self.assertTrue(syllable_matches_rhyme_fragment("gong", "ong"))
+        self.assertTrue(syllable_matches_rhyme_fragment("jyun", "yun"))
+
+
 if __name__ == "__main__":
     unittest.main()

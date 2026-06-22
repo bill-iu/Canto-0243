@@ -5,11 +5,13 @@ export const VIEW = Object.freeze({
   SEARCH: "search",
   GUIDE: "guide",
   RELATION: "relation",
+  CORRECTIONS: "corrections",
 });
 
 export function tabLabel(tab) {
   if (tab.view === VIEW.GUIDE) return "搜尋教學";
   if (tab.view === VIEW.RELATION) return "補關係";
+  if (tab.view === VIEW.CORRECTIONS) return "詞庫勘誤";
   const q = (tab.q || "").trim();
   if (!q) return "新查詢";
   return q.length > TAB_LABEL_MAX ? `${q.slice(0, TAB_LABEL_MAX)}…` : q;
@@ -53,6 +55,23 @@ export function createRelationTab({ id, relation = { seed_char: "", opposite_cha
   };
 }
 
+export function createCorrectionsTab({ id, prefetchChar = "" } = {}) {
+  return {
+    id,
+    view: VIEW.CORRECTIONS,
+    q: "",
+    results: [],
+    offset: 0,
+    total: null,
+    prefetchChar: prefetchChar || "",
+  };
+}
+
+/** ponytail: maintainer 入口；builder 輸入 debug 開勘誤分頁，唔當查詢。 */
+export function isCorrectionsSearchCommand(q) {
+  return (q || "").trim().toLowerCase() === "debug";
+}
+
 export function openSingletonView(state, view, createTab) {
   const existing = findTabByView(state.tabs, view);
   if (existing) {
@@ -77,6 +96,10 @@ export function buildUrlSearchParams(tab, mode = "m1") {
     params.set("view", "relation");
     return params;
   }
+  if (tab.view === VIEW.CORRECTIONS) {
+    params.set("view", "corrections");
+    return params;
+  }
   if (tab.q) params.set("q", tab.q);
   return params;
 }
@@ -86,6 +109,7 @@ export function parseUrlSearchParams(params) {
   let view = VIEW.SEARCH;
   if (rawView === "guide") view = VIEW.GUIDE;
   else if (rawView === "relation") view = VIEW.RELATION;
+  else if (rawView === "corrections") view = VIEW.CORRECTIONS;
   return {
     q: params.get("q") || "",
     mode: params.get("mode") || "m1",
@@ -114,6 +138,7 @@ export function serializeSession(state) {
       offset: t.offset,
       total: t.total,
       relation: t.relation ? { ...t.relation } : undefined,
+      prefetchChar: t.prefetchChar || "",
     })),
   });
 }
@@ -130,6 +155,9 @@ export function deserializeSession(raw) {
       if (t.view === VIEW.GUIDE) return createGuideTab({ id: t.id });
       if (t.view === VIEW.RELATION) {
         return createRelationTab({ id: t.id, relation: t.relation });
+      }
+      if (t.view === VIEW.CORRECTIONS) {
+        return createCorrectionsTab({ id: t.id, prefetchChar: t.prefetchChar });
       }
       return createSearchTab({
         id: t.id,
@@ -184,6 +212,10 @@ export function applyUrlToTabs(existingState, parsed) {
   }
   if (parsed.view === VIEW.RELATION) {
     const tab = createRelationTab({ id: 1 });
+    return { activeId: 1, nextTabId: 2, tabs: [tab] };
+  }
+  if (parsed.view === VIEW.CORRECTIONS) {
+    const tab = createCorrectionsTab({ id: 1 });
     return { activeId: 1, nextTabId: 2, tabs: [tab] };
   }
   const tab = createSearchTab({ id: 1, q: parsed.q });

@@ -54,7 +54,15 @@ fi
 export HOST="${HOST:-127.0.0.1}"
 export PORT="${PORT:-8000}"
 
-LAUNCH=(python scripts/local_launch.py --tail-ready --no-wait-server)
+if [[ -x "$ROOT/venv/bin/python" ]]; then
+  RUN_PY="$ROOT/venv/bin/python"
+elif [[ -f "$ROOT/venv/Scripts/python.exe" ]]; then
+  RUN_PY="$ROOT/venv/Scripts/python.exe"
+else
+  RUN_PY="python"
+fi
+
+LAUNCH=("$RUN_PY" scripts/local_launch.py --tail-ready --no-wait-server --python "$RUN_PY" --root "$ROOT")
 if [[ -n "${PORTABLE:-}" ]]; then
   LAUNCH+=(--portable --wait-server --lang zh)
 fi

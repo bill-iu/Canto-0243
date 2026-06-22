@@ -256,6 +256,54 @@ class SearchWordsDispatchTests(unittest.TestCase):
         finally:
             session.close()
 
+    def test_39zhu_hybrid_excludes_u_rhyme_false_positives(self):
+        """39住= 尾格同韻 yu（住），唔匹配 fu 系 u 尾（辛苦、功夫、師父）。"""
+        session = self._session_with_words(
+            [
+                Word(
+                    char="留住",
+                    code="39",
+                    jyutping="lau4 zyu6",
+                    finals='["au", "yu"]',
+                    initials='["l", "z"]',
+                    length=2,
+                ),
+                Word(
+                    char="辛苦",
+                    code="39",
+                    jyutping="san1 fu1",
+                    finals='["an", "u"]',
+                    initials='["s", "f"]',
+                    length=2,
+                ),
+                Word(
+                    char="功夫",
+                    code="39",
+                    jyutping="gung1 fu1",
+                    finals='["ung", "u"]',
+                    initials='["g", "f"]',
+                    length=2,
+                ),
+                Word(
+                    char="師父",
+                    code="39",
+                    jyutping="si1 fu6",
+                    finals='["i", "u"]',
+                    initials='["s", "f"]',
+                    length=2,
+                ),
+            ]
+        )
+        try:
+            results = search_words(q="39住=", mode="m1", db=session, limit=20, offset=0)
+            words = [r["char"] for r in results if r.get("result_type") == "word"]
+            self.assertIn("留住", words)
+            self.assertNotIn("辛苦", words)
+            self.assertNotIn("功夫", words)
+            self.assertNotIn("師父", words)
+        finally:
+            session.close()
+
 
 if __name__ == "__main__":
     unittest.main()

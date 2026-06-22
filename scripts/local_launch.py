@@ -36,6 +36,18 @@ def _messages(lang: str) -> dict[str, str]:
     }
 
 
+def _win_no_window_flags() -> int:
+    return getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+
+def _headless_python(python: Path) -> Path:
+    """ponytail: Windows 用 pythonw.exe 跑背景子行程，避免彈 CMD。"""
+    if sys.platform != "win32":
+        return python
+    pythonw = python.with_name("pythonw.exe")
+    return pythonw if pythonw.is_file() else python
+
+
 def _spawn_detached(python: Path, root: Path, args: list[str]) -> None:
     kwargs: dict = {
         "cwd": root,
@@ -43,18 +55,21 @@ def _spawn_detached(python: Path, root: Path, args: list[str]) -> None:
         "stderr": subprocess.DEVNULL,
     }
     if sys.platform == "win32":
-        kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+        kwargs["creationflags"] = (
+            subprocess.CREATE_NEW_PROCESS_GROUP
+            | subprocess.DETACHED_PROCESS
+            | _win_no_window_flags()
+        )
     else:
         kwargs["start_new_session"] = True
-    subprocess.Popen([str(python), *args], **kwargs)
+    subprocess.Popen([str(_headless_python(python)), *args], **kwargs)
 
 
 def _run_quiet(python: Path, root: Path, args: list[str]) -> int:
-    return subprocess.run(
-        [str(python), *args],
-        cwd=root,
-        check=False,
-    ).returncode
+    kwargs: dict = {"cwd": root, "check": False}
+    if sys.platform == "win32":
+        kwargs["creationflags"] = _win_no_window_flags()
+    return subprocess.run([str(python), *args], **kwargs).returncode
 
 
 def _terminate(proc: subprocess.Popen[bytes]) -> None:
@@ -119,11 +134,15 @@ def main() -> int:
         env["PORTABLE"] = "1"
         env.setdefault("ENV", "local")
 
-    server = subprocess.Popen(
-        [str(python), "main.py"],
-        cwd=root,
-        env=env,
-    )
+    server_kwargs: dict = {
+        "cwd": root,
+        "env": env,
+        "stdout": subprocess.DEVNULL,
+        "stderr": subprocess.DEVNULL,
+    }
+    if sys.platform == "win32":
+        server_kwargs["creationflags"] = _win_no_window_flags()
+    server = subprocess.Popen([str(_headless_python(python)), "main.py"], **server_kwargs)
 
     def _on_signal(signum: int, _frame: object) -> None:
         _terminate(server)

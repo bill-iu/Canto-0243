@@ -9,6 +9,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import FileResponse, JSONResponse, Response
 
+from app.routers.lexicon import router as lexicon_router
 from app.routers.relation import router as relation_router
 from app.routers.word import router
 from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup
@@ -46,6 +47,7 @@ app.add_middleware(
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 app.include_router(router)
 app.include_router(relation_router)
+app.include_router(lexicon_router)
 
 
 @app.exception_handler(SearchGateBlocked)

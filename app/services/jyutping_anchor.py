@@ -328,10 +328,19 @@ def is_jyutping_anchor_mask_query(q: str) -> bool:
 
 
 def syllable_matches_rhyme_fragment(syl_letters: str, fragment: str) -> bool:
+    from app.utils.jyutping_codec import split_jyutping
+
     fragment = normalize_rhyme_letters(fragment)
     syl_letters = syl_letters.lower()
     if fragment == STANDALONE_NG:
         return syl_letters in ("m", "ng")
+    if len(fragment) == 1:
+        finals_json = split_jyutping(syl_letters)[1]
+        try:
+            arr = json.loads(finals_json)
+        except (TypeError, json.JSONDecodeError):
+            arr = []
+        return bool(arr) and str(arr[0]) == fragment
     return syl_letters == fragment or syl_letters.endswith(fragment)
 
 

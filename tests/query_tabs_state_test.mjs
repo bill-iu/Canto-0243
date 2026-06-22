@@ -13,6 +13,7 @@ import {
   createRelationTab,
   buildUrlSearchParams,
   parseUrlSearchParams,
+  isCorrectionsSearchCommand,
   searchParamsWithoutBoot,
   LAUNCHER_BOOT_PARAM,
   serializeSession,
@@ -35,9 +36,10 @@ describe("query-tabs-state", () => {
     assert.equal(tabLabel({ view: VIEW.SEARCH, q: long }), `${"x".repeat(TAB_LABEL_MAX)}…`);
   });
 
-  it("labels guide and relation tabs with fixed copy", () => {
+  it("labels guide, relation, and corrections tabs with fixed copy", () => {
     assert.equal(tabLabel({ view: VIEW.GUIDE }), "搜尋教學");
     assert.equal(tabLabel({ view: VIEW.RELATION }), "補關係");
+    assert.equal(tabLabel({ view: VIEW.CORRECTIONS }), "詞庫勘誤");
   });
 
   it("openSingletonView switches to existing guide tab instead of duplicating", () => {
@@ -90,6 +92,17 @@ describe("query-tabs-state", () => {
     assert.equal(parsed.view, VIEW.RELATION);
     assert.equal(parsed.mode, "m3");
     assert.equal(parsed.q, "ignored");
+  });
+
+  it("parseUrlSearchParams exposes corrections view", () => {
+    const parsed = parseUrlSearchParams(new URLSearchParams("view=corrections"));
+    assert.equal(parsed.view, VIEW.CORRECTIONS);
+  });
+
+  it("isCorrectionsSearchCommand matches builder debug entry", () => {
+    assert.equal(isCorrectionsSearchCommand("debug"), true);
+    assert.equal(isCorrectionsSearchCommand(" DEBUG "), true);
+    assert.equal(isCorrectionsSearchCommand("debugger"), false);
   });
 
   it("searchParamsWithoutBoot drops launcher cache-bust only", () => {

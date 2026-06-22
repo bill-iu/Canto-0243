@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <title>Canto-0243 ONE·搵·韻</title>
-  <!-- Active tab URL: view=guide | view=relation -->
+  <!-- Active tab URL: view=guide | view=relation | view=corrections -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
@@ -510,6 +510,62 @@
         <div class="status ok" id="relationOkStatus" hidden role="status"></div>
         <div class="status err" id="relationErrStatus" hidden role="alert"></div>
       </form>
+    </section>
+
+    <section class="relation-view relation-main corrections-view is-hidden" id="correctionsView" aria-labelledby="correctionsTitle" hidden>
+      <header class="relation-hero">
+        <h1 id="correctionsTitle">詞庫勘誤</h1>
+        <p class="relation-lede">維護者專用：在搜尋框輸入 <code translate="no">debug</code> 開此分頁。記錄標音或 0243 碼問題至 pending 清單；搜尋結果待批次套用後才更新。</p>
+      </header>
+
+      <form class="relation-form" id="correctionsLookupForm">
+        <div class="field">
+          <label for="correctionChar">字面</label>
+          <span class="hint">輸入已收錄詞條字面，列出所有收錄列後選取要修正的一列</span>
+          <div class="search-input-wrap" data-input-wrap>
+            <input type="text" id="correctionChar" name="char" required autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary-button" id="correctionLookupBtn" type="submit">查收錄列</button>
+        </div>
+      </form>
+
+      <div class="corrections-rows" id="correctionRowsPanel" hidden>
+        <p class="hint" id="correctionRowsHint">選取要修正的收錄列：</p>
+        <div class="corrections-row-list" id="correctionRowList" role="radiogroup" aria-labelledby="correctionRowsHint"></div>
+      </div>
+
+      <form class="relation-form" id="correctionsSubmitForm" hidden>
+        <div class="field">
+          <label for="correctionNewJyutping">新粵拼</label>
+          <span class="hint">改粵拼時填寫；重算 code 可留空</span>
+          <div class="search-input-wrap" data-input-wrap>
+            <input type="text" id="correctionNewJyutping" name="new_jyutping" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="field">
+          <label for="correctionNote">備註</label>
+          <span class="hint">可選：發現原因或參考</span>
+          <div class="search-input-wrap" data-input-wrap>
+            <input type="text" id="correctionNote" name="note" autocomplete="off">
+          </div>
+        </div>
+        <div class="field">
+          <p class="corrections-preview" id="correctionCodePreview" hidden></p>
+        </div>
+        <div class="actions">
+          <button class="primary-button" id="correctionJyutpingBtn" type="button">改粵拼</button>
+          <button class="secondary-button" id="correctionRecalcCodeBtn" type="button">重算 code</button>
+        </div>
+        <div class="status ok" id="correctionOkStatus" hidden role="status"></div>
+        <div class="status err" id="correctionErrStatus" hidden role="alert"></div>
+      </form>
+
+      <section class="corrections-session" id="correctionSessionPanel" hidden aria-labelledby="correctionSessionTitle">
+        <h2 class="corrections-session__title" id="correctionSessionTitle">本次 session</h2>
+        <ul class="corrections-session__list" id="correctionSessionList"></ul>
+      </section>
     </section>
   </main>
   </div>

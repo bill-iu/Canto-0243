@@ -70,6 +70,14 @@ def search_words_endpoint(
     return result.items
 
 
+@router.get("/rows", response_model=list[WordRead])
+def list_word_rows(char: str, db: Session = Depends(get_db)):
+    literal = (char or "").strip()
+    if not literal:
+        raise HTTPException(status_code=400, detail="請提供字面")
+    return db.query(Word).filter(Word.char == literal).order_by(Word.id).all()
+
+
 @router.get("/{char}", response_model=WordRead)
 def get_word(char: str, db: Session = Depends(get_db)):
     word = db.query(Word).filter(Word.char == char).first()

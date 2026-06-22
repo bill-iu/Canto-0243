@@ -13,9 +13,10 @@ import {
   activeTab, persistTabs, updateBrowserUrlFromActiveTab,
 } from "./tabs-core.mjs";
 import {
-  ensureActiveSearchTab, showSearch,
+  ensureActiveSearchTab, showSearch, showCorrections,
 } from "./tabs-ui.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
+import { isCorrectionsSearchCommand } from "./query-tabs-state.mjs";
 
 function emptySearchResultsHtml(input, hint, mode) {
   const q = escapeHtml(input);
@@ -357,6 +358,12 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     tab.q = "";
     persistTabs();
     updateShuffleButton();
+    setButtonLoading(false);
+    return;
+  }
+
+  if (!isLoadMore && isCorrectionsSearchCommand(input)) {
+    showCorrections({ replace: true });
     setButtonLoading(false);
     return;
   }

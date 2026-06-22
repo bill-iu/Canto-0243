@@ -7,6 +7,7 @@ import {
   createSearchTab,
   createGuideTab,
   createRelationTab,
+  createCorrectionsTab,
   findTabByView,
   openSingletonView,
   reorderTabsByIds,
@@ -181,6 +182,7 @@ function activateTabOnPress(id) {
   if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
+  else if (tab?.view === VIEW.CORRECTIONS) $.correctionChar?.focus({ preventScroll: true });
 }
 
 function addSearchTab() {
@@ -215,6 +217,7 @@ function selectTab(id) {
   if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
+  else if (tab?.view === VIEW.CORRECTIONS) $.correctionChar?.focus({ preventScroll: true });
 }
 
 function openSingletonViewTab(view, createTab) {
@@ -230,6 +233,9 @@ function openSingletonViewTab(view, createTab) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (view === VIEW.RELATION) {
     $.seedChar?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (view === VIEW.CORRECTIONS) {
+    $.correctionChar?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
@@ -271,6 +277,11 @@ function showRelation({ replace = false } = {}) {
   if (!replace) updateBrowserUrlFromActiveTab(false);
 }
 
+function showCorrections({ replace = false } = {}) {
+  openSingletonViewTab(VIEW.CORRECTIONS, createCorrectionsTab);
+  if (!replace) updateBrowserUrlFromActiveTab(false);
+}
+
 function goHome() {
   const tab = activeTab();
   if (!tab) return;
@@ -309,5 +320,6 @@ export {
   renderTabstrip,
   showGuide,
   showRelation,
+  showCorrections,
   showSearch,
 };

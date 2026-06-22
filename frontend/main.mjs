@@ -6,6 +6,7 @@
   parseUrlSearchParams,
   createGuideTab,
   createRelationTab,
+  createCorrectionsTab,
   VIEW,
   $,
 } from "./app-context.mjs";
@@ -231,6 +232,8 @@ window.addEventListener("popstate", (event) => {
     openSingletonViewTab(VIEW.GUIDE, createGuideTab);
   } else if (parsed.view === VIEW.RELATION) {
     openSingletonViewTab(VIEW.RELATION, createRelationTab);
+  } else if (parsed.view === VIEW.CORRECTIONS) {
+    openSingletonViewTab(VIEW.CORRECTIONS, createCorrectionsTab);
   } else {
     const tab = ensureActiveSearchTab();
     if (tab) {
@@ -264,6 +267,7 @@ window.addEventListener("popstate", (event) => {
   const urlTab = shell.tabState.tabs.find((t) => {
     if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
     if (parsed.view === VIEW.RELATION) return t.view === VIEW.RELATION;
+    if (parsed.view === VIEW.CORRECTIONS) return t.view === VIEW.CORRECTIONS;
     return t.view === VIEW.SEARCH;
   });
   if (urlTab) shell.tabState = { ...shell.tabState, activeId: urlTab.id };

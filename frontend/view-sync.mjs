@@ -1,4 +1,4 @@
-import { $, VIEW } from "./app-context.mjs";
+import { $, VIEW, shell } from "./app-context.mjs";
 import {
   activeTab, updateBrowserUrlFromActiveTab, scrollActiveTabIntoView,
 } from "./tabs-core.mjs";
@@ -7,6 +7,7 @@ import {
   shouldShowLoadMore, renderSearchResults, toggleLoadMoreButton, updateShuffleButton,
 } from "./search-workbench.mjs";
 import { applyRelationForm } from "./relation-form.mjs";
+import { mountCorrectionsPanel } from "./lexicon-corrections.mjs";
 
 function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   const tab = activeTab();
@@ -14,12 +15,15 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   const isSearch = tab.view === VIEW.SEARCH;
   const isGuide = tab.view === VIEW.GUIDE;
   const isRelation = tab.view === VIEW.RELATION;
+  const isCorrections = tab.view === VIEW.CORRECTIONS;
   $.searchView.hidden = !isSearch;
   $.guideView.hidden = !isGuide;
   $.relationView.hidden = !isRelation;
+  $.correctionsView.hidden = !isCorrections;
   $.searchView.classList.toggle("is-hidden", !isSearch);
   $.guideView.classList.toggle("is-hidden", !isGuide);
   $.relationView.classList.toggle("is-hidden", !isRelation);
+  $.correctionsView.classList.toggle("is-hidden", !isCorrections);
   if (isSearch) {
     $.searchInput.value = tab.q || "";
     renderSearchResults(tab.results || [], tab.total);
@@ -27,6 +31,8 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
     updateShuffleButton();
   } else if (isRelation) {
     applyRelationForm(tab.relation || {});
+  } else if (isCorrections) {
+    mountCorrectionsPanel(tab);
   }
   updateBrowserUrlFromActiveTab(true);
   if (shouldRenderTabstrip) renderTabstrip();

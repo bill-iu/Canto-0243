@@ -46,9 +46,9 @@ def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
         initial = syllable[:split_pos] if split_pos != -1 else syllable
         final = syllable[split_pos:] if split_pos != -1 else ""
 
-        # j- + y- nucleus: medial y belongs to final (yut, yu, yun), not initial cluster "jy"
-        if initial == "jy" and final:
-            initial = "j"
+        # y- 韻核：辅音叢集 + y + 元音 → y… 歸韻母（zyu→z+yu；yau 的 y 係聲母故 split_pos<2）
+        if split_pos >= 2 and syllable[split_pos - 1] == "y" and final:
+            initial = syllable[: split_pos - 1]
             final = "y" + final
 
         initials_list.append(initial)
@@ -59,7 +59,7 @@ def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
 
 
 def rhyme_finals_from_jyutping(jyutping: str) -> list[str]:
-    """韻母 list for rhyme compare; uses split_jyutping (jy- nucleus rules)."""
+    """韻母 list for rhyme compare; uses split_jyutping (y- 韻核規則)."""
     if not jyutping or not str(jyutping).strip():
         return []
     _, finals_json, _ = split_jyutping(jyutping)
@@ -169,4 +169,6 @@ if __name__ == "__main__":
         rhyme_final_index_keys_per_position("m4")[0],
         rhyme_final_index_keys_per_position("ng5")[0],
     )
+    assert json.loads(split_jyutping("zyu6")[1]) == ["yu"]
+    assert json.loads(split_jyutping("fu6")[1]) == ["u"]
     print("OK")
