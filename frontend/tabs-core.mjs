@@ -64,6 +64,13 @@ function saveActiveTabFromUi() {
   }
 }
 
+let nextHistSeq = 1;
+
+function historySeqFromState(state) {
+  const n = state?._histSeq;
+  return typeof n === "number" ? n : 0;
+}
+
 function updateBrowserUrlFromActiveTab(replace = false) {
   const tab = activeTab();
   if (!tab) return;
@@ -75,9 +82,16 @@ function updateBrowserUrlFromActiveTab(replace = false) {
   const suffix = params.toString() ? `?${params.toString()}` : "";
   const url = `${window.location.pathname}${suffix}`;
   const state = buildHistoryStateForTab(tab, mode);
-  const useReplace = replace || !shouldPushSearchHistory(state, window.history.state);
+  const prevState = window.history.state;
+  const useReplace = replace || !shouldPushSearchHistory(state, prevState);
+  if (useReplace) {
+    state._histSeq = historySeqFromState(prevState) || shell.lastHistSeq || nextHistSeq++;
+  } else {
+    state._histSeq = nextHistSeq++;
+  }
   if (useReplace) window.history.replaceState(state, "", url);
   else window.history.pushState(state, "", url);
+  shell.lastHistSeq = state._histSeq;
 }
 
 function applyActiveNeighborDividerHides() {

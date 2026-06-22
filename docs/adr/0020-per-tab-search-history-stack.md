@@ -1,5 +1,5 @@
 # Per-tab search history stacks (搜尋分頁回溯鏈)
 
-Each **search** query tab keeps its own in-memory `historyStack` + `historyIndex`, persisted in `sessionStorage` across reload. Browser `pushState` records stack commits on the active tab only; tab switches use `replaceState`. `popstate` applies only when `state.tabId` matches the active **search** tab—otherwise the current URL is restored (teaching/relation views never cross-navigate on Back). New searches truncate forward branches; blank **新查詢** is stack index 0. Mode-only pill changes do not commit; mode change plus re-search does.
+Each **search** query tab keeps its own in-memory `historyStack` + `historyIndex`, persisted in `sessionStorage` across reload. Browser `pushState` records stack commits on the active tab only; tab switches use `replaceState`. **Back** on the active search tab always steps that tab’s internal stack (one frame per press), ignoring foreign `tabId` entries left in the global browser history. **Forward** is rejected via monotonic `_histSeq` on history state (ADR: no in-tab forward). New searches truncate forward branches in the internal stack; blank **新查詢** is stack index 0. Mode-only pill changes do not commit; mode change plus re-search does.
 
 **Considered:** one global browser history (ADR-0019)—Back leaks across tabs. Rejected: browser-forward support within a tab.

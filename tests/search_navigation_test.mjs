@@ -17,6 +17,8 @@ import {
   commitSearchHistoryFrame,
   currentSearchHistoryFrame,
   applyPopstateToSearchTab,
+  stepSearchTabBack,
+  isHistoryForward,
   shouldApplySearchPopstate,
   resetSearchTabHistory,
 } from "../frontend/search-navigation.mjs";
@@ -111,6 +113,30 @@ describe("search-navigation", () => {
     });
     assert.equal(home.q, "");
     assert.equal(tab.historyIndex, 0);
+  });
+
+  it("stepSearchTabBack steps active tab stack ignoring foreign browser state", () => {
+    const tab = createSearchTab({ id: 1, q: "可以" });
+    ensureSearchTabHistory(tab, "m1");
+    commitSearchHistoryFrame(tab, { q: "34", mode: "m1" });
+    commitSearchHistoryFrame(tab, { q: "可以", mode: "m1" });
+    const frame = stepSearchTabBack(tab);
+    assert.equal(frame.q, "34");
+    assert.equal(tab.historyIndex, 1);
+    const foreign = applyPopstateToSearchTab(tab, {
+      tabId: 2,
+      view: VIEW.SEARCH,
+      query: "香港",
+      mode: "m1",
+    });
+    assert.equal(foreign.q, "");
+    assert.equal(tab.historyIndex, 0);
+  });
+
+  it("isHistoryForward detects browser forward navigation", () => {
+    assert.equal(isHistoryForward(5, { _histSeq: 7 }), true);
+    assert.equal(isHistoryForward(5, { _histSeq: 3 }), false);
+    assert.equal(isHistoryForward(5, { _histSeq: 5 }), false);
   });
 
   it("shouldApplySearchPopstate rejects wrong tab and non-search views", () => {

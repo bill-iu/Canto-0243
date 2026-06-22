@@ -49,6 +49,7 @@ describe("frontend ESM public API", () => {
     "isSearching",
     "appSearchReady",
     "pendingNewTabAnimation",
+    "lastHistSeq",
   ];
 
   it("mutable app state is assigned via shell, not imported live bindings", () => {

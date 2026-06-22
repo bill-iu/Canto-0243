@@ -42,9 +42,9 @@ import {
   wireModeMenuKeyboard,
 } from "./search-workbench.mjs";
 import {
-  applyPopstateToSearchTab,
   ensureSearchTabHistory,
-  shouldApplySearchPopstate,
+  isHistoryForward,
+  stepSearchTabBack,
 } from "./search-navigation.mjs";
 import {
   relationPayloadFromForm,
@@ -216,20 +216,47 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+let suppressPopstateStep = false;
+
 window.addEventListener("popstate", (event) => {
   const state = event.state || {};
   const tab = activeTab();
+  const seq = state._histSeq;
 
-  if (!shouldApplySearchPopstate(tab, state)) {
+  if (tab?.view !== VIEW.SEARCH) {
+    if (typeof seq === "number") shell.lastHistSeq = seq;
     updateBrowserUrlFromActiveTab(true);
     return;
   }
 
-  const frame = applyPopstateToSearchTab(tab, state);
+  if (suppressPopstateStep) {
+    suppressPopstateStep = false;
+    if (typeof seq === "number") shell.lastHistSeq = seq;
+    updateBrowserUrlFromActiveTab(true);
+    return;
+  }
+
+  if (isHistoryForward(shell.lastHistSeq, state)) {
+    suppressPopstateStep = true;
+    history.back();
+    return;
+  }
+
+  if (typeof seq === "number") shell.lastHistSeq = seq;
+
+  const frame = stepSearchTabBack(tab);
+  if (!frame) {
+    suppressPopstateStep = true;
+    history.forward();
+    updateBrowserUrlFromActiveTab(true);
+    return;
+  }
+
   shell.currentMode = MODE_META[frame.mode] ? frame.mode : shell.currentMode;
   updateModeLabel();
   persistTabs();
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
   if (frame.q) {
     searchDict(false, true);
   } else {
@@ -259,6 +286,7 @@ window.addEventListener("popstate", (event) => {
   updateModeLabel();
   wireModeMenuKeyboard();
   ensureDefaultTabs(parsed);
+  shell.lastHistSeq = window.history.state?._histSeq ?? 0;
 
   const urlTab = shell.tabState.tabs.find((t) => {
     if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;

@@ -37,16 +37,23 @@ function commitSearchHistoryFrame(tab, { q, mode }) {
   return { pushed: true, frame };
 }
 
-function applyPopstateToSearchTab(tab, state) {
-  ensureSearchTabHistory(tab, state.mode || "m1");
-  const query = state.query ?? "";
-  const mode = state.mode ?? "m1";
-  let idx = tab.historyStack.findIndex((f) => f.q === query && f.mode === mode);
-  if (idx < 0 && tab.historyIndex > 0) idx = tab.historyIndex - 1;
-  if (idx >= 0) tab.historyIndex = idx;
+function stepSearchTabBack(tab) {
+  ensureSearchTabHistory(tab);
+  if (tab.historyIndex <= 0) return null;
+  tab.historyIndex -= 1;
   const frame = tab.historyStack[tab.historyIndex];
   tab.q = frame.q;
   return frame;
+}
+
+function isHistoryForward(lastSeq, state) {
+  const seq = state?._histSeq;
+  if (typeof seq !== "number") return false;
+  return seq > (lastSeq ?? 0);
+}
+
+function applyPopstateToSearchTab(tab, _state) {
+  return stepSearchTabBack(tab) ?? currentSearchHistoryFrame(tab);
 }
 
 function shouldApplySearchPopstate(activeTab, state) {
@@ -119,9 +126,11 @@ export {
   commitSearchHistoryFrame,
   currentSearchHistoryFrame,
   ensureSearchTabHistory,
+  isHistoryForward,
   resetSearchTabHistory,
   resolveSearchRestore,
   shouldApplySearchPopstate,
   shouldPushSearchHistory,
+  stepSearchTabBack,
   withResultClickQuery,
 };

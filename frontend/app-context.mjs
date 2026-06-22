@@ -93,6 +93,7 @@ export const shell = {
   tabState: { activeId: 1, nextTabId: 2, tabs: [] },
   chromeLayout: null,
   pendingNewTabAnimation: null,
+  lastHistSeq: 0,
 };
 export function setAppSearchReady(ready) {
   shell.appSearchReady = ready;
