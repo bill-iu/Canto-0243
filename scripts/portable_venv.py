@@ -366,6 +366,10 @@ for entry in sys.path:
         detail = (proc.stderr or proc.stdout or "").strip()
         raise RuntimeError(f"venv not relocatable: {detail}")
 
+    # macOS START.sh sets PYTHONHOME to venv; Windows portable does not — skip there.
+    if sys.platform == "win32":
+        return
+
     # Stale pyvenv.cfg home (build-machine absolute path) must not break creators.
     bogus_home = venv_dir / "pyvenv.cfg"
     text = bogus_home.read_text()
