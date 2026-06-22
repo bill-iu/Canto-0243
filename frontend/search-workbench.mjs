@@ -17,6 +17,10 @@ import {
 } from "./tabs-ui.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import { isCorrectionsSearchCommand } from "./query-tabs-state.mjs";
+import {
+  buildResultSearchHref,
+  withResultClickQuery,
+} from "./search-navigation.mjs";
 
 function emptySearchResultsHtml(input, hint, mode) {
   const q = escapeHtml(input);
@@ -128,7 +132,7 @@ function switchMode(mode, { runSearch = true, replace = true } = {}) {
   const tab = activeTab();
   const input = tab?.view === VIEW.SEARCH ? $.searchInput.value.trim() : "";
   if (input && tab?.view === VIEW.SEARCH && runSearch) {
-    updateBrowserUrlFromActiveTab(replace);
+    updateBrowserUrlFromActiveTab(false);
     searchDict(false, true);
   } else {
     updateBrowserUrlFromActiveTab(replace);
@@ -146,19 +150,30 @@ function runExample(query, mode = shell.currentMode) {
   searchDict(false);
 }
 
-function createResultButton(text, query, title = "") {
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "result-item";
-  btn.textContent = text;
-  if (title) btn.title = title;
-  btn.addEventListener("click", () => handleResultClick(query));
-  btn.setAttribute("aria-label", `選擇 ${text}`);
-  return btn;
+function createResultLink(text, query, title = "") {
+  const link = document.createElement("a");
+  link.className = "result-item";
+  link.href = buildResultSearchHref({
+    pathname: window.location.pathname,
+    query,
+    mode: shell.currentMode,
+  });
+  link.textContent = text;
+  if (title) link.title = title;
+  link.addEventListener("click", (event) => {
+    event.preventDefault();
+    handleResultClick(query);
+  });
+  link.setAttribute("aria-label", `搜尋 ${text}`);
+  return link;
 }
 
 function handleResultClick(queryText) {
+  const tab = ensureActiveSearchTab();
+  if (!tab) return;
+  Object.assign(tab, withResultClickQuery(tab, queryText));
   $.searchInput.value = queryText;
+  persistTabs();
   showSearch({ replace: true });
   searchDict();
 }
@@ -266,7 +281,7 @@ function renderSearchResults(data, total = null) {
   deduped.forEach((word) => {
     const display = word.display_text || word.char;
     const qtext = word.query_text || word.char;
-    frag.appendChild(createResultButton(display, qtext, word.jyutping || ""));
+    frag.appendChild(createResultLink(display, qtext, word.jyutping || ""));
   });
   $.results.appendChild(frag);
   $.stats.textContent = `${deduped.length} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
@@ -292,7 +307,7 @@ function createSynSection(title, items) {
       const char = item && typeof item === "object" ? item.char || "" : String(item || "");
       const source = item && typeof item === "object" && item.source ? `來源：${item.source}` : "";
       const inDb = item && typeof item === "object" && item.in_db === false ? "外部詞庫" : "";
-      if (char) grid.appendChild(createResultButton(char, char, [source, inDb].filter(Boolean).join(" · ")));
+      if (char) grid.appendChild(createResultLink(char, char, [source, inDb].filter(Boolean).join(" · ")));
     });
   } else {
     const empty = document.createElement("p");
@@ -372,7 +387,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   if (!isLoadMore) {
     maybeModeRedirectForRelationSyntax(input, tab);
   }
-  if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(true);
+  if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(false);
 
   const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {

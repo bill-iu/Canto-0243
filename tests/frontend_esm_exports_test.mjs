@@ -99,4 +99,12 @@ describe("frontend ESM public API", () => {
   it("search-workbench.mjs exports search shell API", () => {
     assertExports("search-workbench.mjs", ["searchDict", "toggleMenu", "updateModeLabel"]);
   });
+
+  it("search-navigation.mjs exports result navigation helpers", () => {
+    assertExports("search-navigation.mjs", [
+      "withResultClickQuery",
+      "shouldPushSearchHistory",
+      "buildResultSearchHref",
+    ]);
+  });
 });

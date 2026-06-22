@@ -12,6 +12,10 @@ import {
   searchParamsWithoutBoot,
 } from "./app-context.mjs";
 import { relationPayloadFromForm } from "./relation-form.mjs";
+import {
+  buildHistoryStateForTab,
+  shouldPushSearchHistory,
+} from "./search-navigation.mjs";
 
 function activeTab() {
   return shell.tabState.tabs.find((t) => t.id === shell.tabState.activeId) || shell.tabState.tabs[0];
@@ -64,13 +68,9 @@ function updateBrowserUrlFromActiveTab(replace = false) {
   const params = buildUrlSearchParams(tab, shell.currentMode);
   const suffix = params.toString() ? `?${params.toString()}` : "";
   const url = `${window.location.pathname}${suffix}`;
-  const state = {
-    tabId: tab.id,
-    view: tab.view,
-    query: tab.view === VIEW.SEARCH ? tab.q || "" : "",
-    mode: shell.currentMode,
-  };
-  if (replace) window.history.replaceState(state, "", url);
+  const state = buildHistoryStateForTab(tab, shell.currentMode);
+  const useReplace = replace || !shouldPushSearchHistory(state, window.history.state);
+  if (useReplace) window.history.replaceState(state, "", url);
   else window.history.pushState(state, "", url);
 }
 

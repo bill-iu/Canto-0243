@@ -325,6 +325,10 @@ html.fonts-ready .gate-brand {
       contain-intrinsic-size: 600px;
     }
 
+a.result-item {
+      text-decoration: none;
+    }
+
 .result-item {
       min-width: 0;
       min-height: 50px;
