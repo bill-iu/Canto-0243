@@ -234,7 +234,20 @@ def _effective_constraints(
         for i, ch in enumerate(equals.ref_literal):
             pos = equals.start_pos + i
             if 0 <= pos < spec.width:
-                result[pos] = (dim_kind, ch)
+                digit = (
+                    spec.code_prefix[pos]
+                    if spec.code_prefix and pos < len(spec.code_prefix)
+                    else None
+                )
+                if equals.phoneme_anchor_only and digit is not None:
+                    kind = (
+                        "hybrid_tail_rhyme"
+                        if equals.dimension == "final"
+                        else "hybrid_tail_initial"
+                    )
+                    result[pos] = (kind, f"{digit}|{ch}")
+                else:
+                    result[pos] = (dim_kind, ch)
 
     if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) == 1:
         pos = spec.hybrid_ref_pos if spec.hybrid_ref_pos is not None else 0
@@ -259,6 +272,9 @@ def _constraint_phrase(pos: int, kind: str, value: str) -> str:
     if kind == "hybrid_tail_rhyme":
         digit, ref = value.split("|", 1)
         return f"{label}同 {digit} 同音且同「{ref}」同韻"
+    if kind == "hybrid_tail_initial":
+        digit, ref = value.split("|", 1)
+        return f"{label}同 {digit} 同音且同「{ref}」同聲"
     if kind == "final_anchor":
         return f"{label}同「{value}」同韻"
     if kind == "initial_anchor":

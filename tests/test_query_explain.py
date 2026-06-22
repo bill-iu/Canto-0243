@@ -42,6 +42,14 @@ class QueryExplainTests(unittest.TestCase):
         )
         self.assertEqual(result.kind, "hybrid_code")
 
+    def test_code_sandwich_equals_keeps_code_at_anchor_pos(self):
+        result = explain_query("32我=0")
+        self.assertEqual(
+            result.summary,
+            "三個字：第 1 個字同 3 同音，第 2 個字同 2 同音且同「我」同韻，第 3 個字同 0 同音",
+        )
+        self.assertEqual(result.kind, "equals")
+
     def test_23o_keeps_summary_and_warning(self):
         result = explain_query("23o")
         self.assertIn("兩個字", result.summary or "")
