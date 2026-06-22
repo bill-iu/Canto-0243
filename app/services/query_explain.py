@@ -1,31 +1,19 @@
-"""查詢語意解釋 — ParsedQuery → creator-facing copy (ADR-0021)."""
+"""查詢語意解釋 — ParsedQuery → MatchSpec slot scan → creator-facing copy (ADR-0021)."""
 from __future__ import annotations
 
 import re
 from dataclasses import dataclass
 from typing import Optional
 
+from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
-    HYBRID_CODE_RE,
-    CompoundAntQuery,
-    CompoundConnectAntQuery,
-    CompoundConnectSynQuery,
-    CompoundSynQuery,
     DigitCodeQuery,
-    EqualsQuery,
-    HybridCodeQuery,
     HybridTailEqualsAliasQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
-    LiteralRefQuery,
-    MaskQuery,
     ParsedQuery,
-    PlusAnchorQuery,
-    PrefixWildcardEqualsQuery,
     RelationLookupQuery,
-    RhymeAnchorQuery,
-    SerialPhonemeAnchorQuery,
     UnmatchedQuery,
     WordLookupQuery,
 )
@@ -34,6 +22,17 @@ _WILDCARD_RE = re.compile(r"^[?_%]$")
 _DIGIT_RE = re.compile(r"^\d$")
 _CANTO_RE = re.compile(r"^[一-龥]$")
 _CN_WIDTH = ("", "一", "兩", "三", "四", "五", "六", "七", "八", "九", "十")
+_RHYME_LABELS = ("", "單押", "雙押", "三押", "四押")
+_SLOT_PRIORITY = {
+    "wildcard": 0,
+    "code_digit": 1,
+    "literal_char": 2,
+    "final_anchor": 3,
+    "initial_anchor": 3,
+    "rhyme_letters": 4,
+    "initial_letters": 4,
+    "syllable_letters": 4,
+}
 
 
 @dataclass(frozen=True)
@@ -65,153 +64,204 @@ def _width_label(width: int) -> str:
     return f"{cn}個字"
 
 
-def _rhyme_or_initial(constraint: str) -> str:
-    return "同韻" if constraint == "final" else "同聲"
+def _rhyme_label(n: int) -> str:
+    if n < len(_RHYME_LABELS):
+        return _RHYME_LABELS[n]
+    return f"{n}押"
 
 
-def _code_slots_phrase(code_slots: list[tuple[int, str]], width: int) -> Optional[str]:
-    if not code_slots:
-        return None
-    positions = sorted(pos for pos, _ in code_slots)
-    if positions == list(range(len(positions))) and len(positions) == width - 1:
-        digits = "".join(d for _, d in sorted(code_slots, key=lambda x: x[0]))
-        return f"前 {len(positions)} 個字為碼 {digits}"
-    parts = [f"{_word_pos(pos)}為碼 {digit}" for pos, digit in sorted(code_slots, key=lambda x: x[0])]
-    return "，".join(parts)
+def _rhyme_or_initial(dimension: str) -> str:
+    return "同韻" if dimension == "final" else "同聲"
+
+
+def _pos_list_label(positions: list[int]) -> str:
+    if len(positions) == 1:
+        return _word_pos(positions[0])
+    nums = "、".join(f"第 {p + 1}" for p in positions)
+    return f"{nums} 個字"
+
+
+def _build_match_spec(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    from app.services.query_match_spec_registry import build_match_spec_for_parsed
+
+    return build_match_spec_for_parsed(parsed)
 
 
 def _summary_for(parsed: ParsedQuery) -> Optional[str]:
-    if isinstance(parsed, PlusAnchorQuery):
-        return _plus_summary(parsed)
-    if isinstance(parsed, RhymeAnchorQuery):
-        return _rhyme_summary(parsed)
-    if isinstance(parsed, MaskQuery):
-        return _mask_summary(parsed.raw_q)
-    if isinstance(parsed, JyutpingAnchorQuery):
-        return _jyutping_summary(parsed)
-    if isinstance(parsed, SerialPhonemeAnchorQuery):
-        return _serial_summary(parsed)
     if isinstance(parsed, WordLookupQuery):
         return f"查詢詞條「{parsed.raw_q}」"
     if isinstance(parsed, DigitCodeQuery):
         return f"查詢 0243 碼「{parsed.raw_q}」"
-    if isinstance(parsed, HybridCodeQuery):
-        return _hybrid_code_summary(parsed.raw_q)
-    if isinstance(parsed, LiteralRefQuery):
-        pos = _word_pos(parsed.width - 1)
-        return f"{_width_label(parsed.width)}：{pos}字面為「{parsed.literal_char}」，碼為 {parsed.code_digits}"
     if isinstance(parsed, RelationLookupQuery):
-        label = "近義" if parsed.relation_kind == "syn" else "反義"
+        label = "近義詞" if parsed.relation_kind == "syn" else "反義詞"
         prefix = f"碼 {parsed.code_prefix} " if parsed.code_prefix else ""
-        return f"查詢「{parsed.word}」嘅{prefix}{label}關係"
-    if isinstance(parsed, (CompoundSynQuery, CompoundAntQuery)):
-        label = "近義" if isinstance(parsed, CompoundSynQuery) else "反義"
-        return f"查詢{label}複合詞"
-    if isinstance(parsed, (CompoundConnectSynQuery, CompoundConnectAntQuery)):
-        label = "近義" if isinstance(parsed, CompoundConnectSynQuery) else "反義"
-        return f"查詢含「{parsed.connective}」嘅{label}複合詞"
-    if isinstance(parsed, EqualsQuery):
-        return _equals_summary(parsed.raw_q)
-    if isinstance(parsed, PrefixWildcardEqualsQuery):
-        dim = "同韻" if parsed.raw_q.endswith("=") else "同聲"
-        return f"{_width_label(parsed.width)}：首個字任意，其餘同「{parsed.ref_literal}」{dim}"
+        return f"查「{parsed.word}」嘅{prefix}{label}"
     if isinstance(parsed, JyutpingFragmentQuery):
         return f"粵拼查詢「{parsed.raw_q}」"
     if isinstance(parsed, HybridTailEqualsAliasQuery):
         return f"碼夾等號查詢「{parsed.raw_q}」"
     if isinstance(parsed, UnmatchedQuery):
         return None
-    raw = getattr(parsed, "raw_q", None)
-    return f"查詢「{raw}」" if raw else "查詢"
+
+    spec = _build_match_spec(parsed)
+    if spec is None:
+        raw = getattr(parsed, "raw_q", None)
+        return f"查詢「{raw}」" if raw else "查詢"
+    return _summary_from_match_spec(spec, parsed)
 
 
-def _plus_summary(parsed: PlusAnchorQuery) -> str:
-    parts = [_width_label(parsed.width)]
-    code_phrase = _code_slots_phrase(parsed.code_slots, parsed.width)
-    if code_phrase:
-        parts.append(code_phrase)
-    pos = _word_pos(parsed.anchor_pos)
-    if parsed.constraint == "literal":
-        parts.append(f"{pos}為「{parsed.anchor}」")
-    else:
-        parts.append(f"{pos}同「{parsed.anchor}」{_rhyme_or_initial(parsed.constraint)}")
+def _summary_from_match_spec(spec: MatchSpec, parsed: ParsedQuery) -> Optional[str]:
+    if spec.extra.get("dual_phoneme"):
+        dual = spec.extra.get("dual_final_spec")
+        if isinstance(dual, MatchSpec):
+            spec = dual
+
+    if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) > 1:
+        return _hybrid_multi_char_summary(spec)
+
+    equals = get_equals_span(spec)
+    if equals and spec.extra.get("prefix_wildcard_equals"):
+        return _prefix_wildcard_equals_summary(spec, equals)
+    if equals and equals.whole_word:
+        return _whole_word_equals_summary(spec, equals)
+
+    if spec.compound_kind:
+        return _compound_summary(spec)
+
+    return _slot_scan_summary(spec, equals)
+
+
+def _whole_word_equals_summary(spec: MatchSpec, equals) -> str:
+    dim = _rhyme_or_initial(equals.dimension)
+    label = _rhyme_label(len(equals.ref_literal))
+    line = f"整詞同「{equals.ref_literal}」{dim}（{label}）"
+    code_phrase = _code_prefix_phrase(spec)
+    return f"{line}；{code_phrase}" if code_phrase else line
+
+
+def _prefix_wildcard_equals_summary(spec: MatchSpec, equals) -> str:
+    dim = _rhyme_or_initial(equals.dimension)
+    label = _rhyme_label(len(equals.ref_literal))
+    positions = list(range(equals.start_pos, spec.width))
+    pos_label = _pos_list_label(positions)
+    return (
+        f"首個字任意；{pos_label}同「{equals.ref_literal}」{dim}（{label}）"
+    )
+
+
+def _hybrid_multi_char_summary(spec: MatchSpec) -> str:
+    ref = spec.hybrid_ref_chars or ""
+    parts = [_width_label(spec.width)]
+    scan = _slot_scan_details(spec, None)
+    if scan:
+        parts.append(scan)
+    parts.append(f"字面含「{ref}」")
     return "：".join(parts[:2]) + ("，" + "，".join(parts[2:]) if len(parts) > 2 else "")
 
 
-def _rhyme_summary(parsed: RhymeAnchorQuery) -> str:
-    pos = _word_pos(parsed.anchor_pos)
-    dim = _rhyme_or_initial(parsed.constraint)
-    if parsed.width == 1:
-        return f"一個字：同「{parsed.anchor}」{dim}"
-    parts = [_width_label(parsed.width), f"{pos}同「{parsed.anchor}」{dim}"]
-    return "：".join(parts)
+def _compound_summary(spec: MatchSpec) -> str:
+    label = "近義" if spec.compound_kind == "syn" else "反義"
+    connective = spec.extra.get("connective")
+    if connective:
+        return f"查詢含「{connective}」嘅{label}複合詞"
+    return f"查詢{label}複合詞"
 
 
-def _mask_summary(mask: str) -> str:
-    width = len(mask)
-    parts = [_width_label(width)]
-    details: list[str] = []
-    wildcard_positions: list[int] = []
-    for idx, ch in enumerate(mask):
-        if _WILDCARD_RE.match(ch):
-            wildcard_positions.append(idx)
-        elif _DIGIT_RE.match(ch):
-            details.append(f"{_word_pos(idx)}為碼 {ch}")
-        elif _CANTO_RE.match(ch):
-            details.append(f"{_word_pos(idx)}為「{ch}」")
-    if wildcard_positions:
-        if len(wildcard_positions) == 1:
-            details.append(f"{_word_pos(wildcard_positions[0])}為任意字")
-        else:
-            labels = "、".join(_word_pos(i) for i in wildcard_positions)
-            details.append(f"{labels}為任意字")
-    return "：".join([parts[0], "，".join(details)])
+def _code_prefix_phrase(spec: MatchSpec) -> Optional[str]:
+    if not spec.code_prefix:
+        return None
+    if spec.width == len(spec.code_prefix):
+        parts = [
+            f"{_word_pos(i)}同 {digit} 同音"
+            for i, digit in enumerate(spec.code_prefix)
+        ]
+        return "，".join(parts)
+    return f"前 {len(spec.code_prefix)} 個字為碼 {spec.code_prefix}"
 
 
-def _jyutping_summary(parsed: JyutpingAnchorQuery) -> str:
-    parts = [_width_label(parsed.width)]
-    if parsed.code_prefix:
-        n = len(parsed.code_prefix)
-        if n < parsed.width:
-            parts.append(f"前 {n} 個字為碼 {parsed.code_prefix}")
-    pos = _word_pos(parsed.anchor_pos)
-    if parsed.anchor_kind == "rhyme_letters":
-        parts.append(f"{pos}同韻母 {parsed.anchor_value}")
-    elif parsed.anchor_kind == "initial_letters":
-        parts.append(f"{pos}同聲母 {parsed.anchor_value}")
-    else:
-        parts.append(f"{pos}粵拼音節 {parsed.anchor_value}")
-    return "：".join(parts[:2]) + ("，" + "，".join(parts[2:]) if len(parts) > 2 else "")
+def _slot_scan_summary(spec: MatchSpec, equals) -> str:
+    details = _slot_scan_details(spec, equals)
+    if not details:
+        return _width_label(spec.width)
+    return f"{_width_label(spec.width)}：{details}"
 
 
-def _serial_summary(parsed: SerialPhonemeAnchorQuery) -> str:
-    dim = _rhyme_or_initial(parsed.constraint)
-    anchor_bits = [
-        f"{_word_pos(pos)}同「{char}」{dim}"
-        for pos, char in parsed.anchors
+def _slot_scan_details(spec: MatchSpec, equals) -> str:
+    constraints = _effective_constraints(spec, equals)
+    phrases = [
+        _constraint_phrase(pos, kind, value)
+        for pos, (kind, value) in sorted(constraints.items())
     ]
-    return f"{_width_label(parsed.width)}：串列錨——" + "，".join(anchor_bits)
+    return "，".join(phrases)
 
 
-def _hybrid_code_summary(raw_q: str) -> str:
-    match = HYBRID_CODE_RE.match(raw_q)
-    if not match:
-        return f"碼字查詢「{raw_q}」"
-    digits = match.group(1)
-    ref = match.group(2)
-    width = len(digits)
-    if len(ref) == 1:
-        return f"{_width_label(width)}：碼 {digits}，{_word_pos(width - 1)}同「{ref}」同韻"
-    return f"{_width_label(width)}：碼 {digits}，字面含「{ref}」"
+def _effective_constraints(
+    spec: MatchSpec,
+    equals,
+) -> dict[int, tuple[str, str]]:
+    result: dict[int, tuple[str, str]] = {}
+
+    if spec.code_prefix and spec.width == len(spec.code_prefix):
+        for i, digit in enumerate(spec.code_prefix):
+            result.setdefault(i, ("code_digit", digit))
+
+    if spec.mask:
+        for i, ch in enumerate(spec.mask):
+            if i >= spec.width:
+                break
+            if _WILDCARD_RE.match(ch):
+                result.setdefault(i, ("wildcard", ch))
+            elif _DIGIT_RE.match(ch):
+                result.setdefault(i, ("code_digit", ch))
+            elif _CANTO_RE.match(ch):
+                result.setdefault(i, ("literal_char", ch))
+
+    for slot in spec.slots:
+        value = slot.value if slot.value is not None else ""
+        if isinstance(value, set):
+            value = next(iter(value), "")
+        existing = result.get(slot.pos)
+        if existing and _SLOT_PRIORITY.get(existing[0], 0) >= _SLOT_PRIORITY.get(
+            slot.kind, 0
+        ):
+            continue
+        result[slot.pos] = (slot.kind, str(value))
+
+    if equals and not equals.whole_word:
+        dim_kind = (
+            "final_anchor" if equals.dimension == "final" else "initial_anchor"
+        )
+        for i, ch in enumerate(equals.ref_literal):
+            pos = equals.start_pos + i
+            if 0 <= pos < spec.width:
+                result[pos] = (dim_kind, ch)
+
+    if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) == 1:
+        pos = spec.hybrid_ref_pos if spec.hybrid_ref_pos is not None else 0
+        result[pos] = ("final_anchor", spec.hybrid_ref_chars)
+
+    return result
 
 
-def _equals_summary(raw_q: str) -> str:
-    inner = raw_q.strip()
-    if inner.startswith("="):
-        return f"整詞同「{inner[1:]}」同聲"
-    if inner.endswith("="):
-        return f"整詞同「{inner[:-1]}」同韻"
-    return f"等號查詢「{inner}」"
+def _constraint_phrase(pos: int, kind: str, value: str) -> str:
+    label = _word_pos(pos)
+    if kind == "code_digit":
+        return f"{label}同 {value} 同音"
+    if kind == "literal_char":
+        return f"{label}為「{value}」"
+    if kind == "wildcard":
+        return f"{label}任意字"
+    if kind == "final_anchor":
+        return f"{label}同「{value}」同韻"
+    if kind == "initial_anchor":
+        return f"{label}同「{value}」同聲"
+    if kind == "rhyme_letters":
+        return f"{label}同韻母 {value}"
+    if kind == "initial_letters":
+        return f"{label}同聲母 {value}"
+    if kind == "syllable_letters":
+        return f"{label}粵拼音節 {value}"
+    return f"{label}為「{value}」"
 
 
 def _warning_for(parsed: ParsedQuery) -> Optional[str]:

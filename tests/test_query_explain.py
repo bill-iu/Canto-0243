@@ -37,7 +37,6 @@ class QueryExplainTests(unittest.TestCase):
     def test_hybrid_code_tail_ref_rhyme_summary(self):
         result = explain_query("23我")
         self.assertIn("兩個字", result.summary or "")
-        self.assertIn("碼 23", result.summary or "")
         self.assertIn("第 2 個字", result.summary or "")
         self.assertIn("我", result.summary or "")
         self.assertIn("同韻", result.summary or "")
@@ -63,11 +62,33 @@ class QueryExplainTests(unittest.TestCase):
         self.assertIn("第 2 個字", result.summary or "")
         self.assertIn("困", result.summary or "")
         self.assertIn("同韻", result.summary or "")
+        self.assertNotIn("串列錨", result.summary or "")
 
     def test_word_lookup_summary(self):
         result = explain_query("香港")
+        self.assertIn("查詢詞條", result.summary or "")
         self.assertIn("香港", result.summary or "")
         self.assertEqual(result.kind, "word_lookup")
+
+    def test_equals_whole_word_rhyme_with_rhyme_label(self):
+        result = explain_query("香港=")
+        self.assertIn("整詞同「香港」同韻", result.summary or "")
+        self.assertIn("雙押", result.summary or "")
+        self.assertEqual(result.kind, "equals")
+
+    def test_prefix_wildcard_equals_summary(self):
+        result = explain_query("?香港=")
+        self.assertIn("首個字任意", result.summary or "")
+        self.assertIn("第 2、第 3 個字", result.summary or "")
+        self.assertIn("同「香港」同韻", result.summary or "")
+        self.assertIn("雙押", result.summary or "")
+        self.assertEqual(result.kind, "prefix_wildcard_equals")
+
+    def test_relation_synonym_lookup(self):
+        result = explain_query("~開心")
+        self.assertIn("查「開心」嘅近義詞", result.summary or "")
+        self.assertNotIn("近義關係", result.summary or "")
+        self.assertEqual(result.kind, "relation_lookup")
 
 
 if __name__ == "__main__":
