@@ -17,7 +17,7 @@
 ## 最新版本
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**193,288**（`lyrics.db` · `words` 表）
+目前總詞條列數：**193,294**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
 官方離線資料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`、`LYRICS_DB_LICENSE.md`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
