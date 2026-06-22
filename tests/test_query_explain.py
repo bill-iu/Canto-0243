@@ -36,10 +36,10 @@ class QueryExplainTests(unittest.TestCase):
 
     def test_hybrid_code_tail_ref_rhyme_summary(self):
         result = explain_query("23我")
-        self.assertIn("兩個字", result.summary or "")
-        self.assertIn("第 2 個字", result.summary or "")
-        self.assertIn("我", result.summary or "")
-        self.assertIn("同韻", result.summary or "")
+        self.assertEqual(
+            result.summary,
+            "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且同「我」同韻",
+        )
         self.assertEqual(result.kind, "hybrid_code")
 
     def test_23o_keeps_summary_and_warning(self):

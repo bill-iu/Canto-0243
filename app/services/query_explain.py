@@ -238,7 +238,12 @@ def _effective_constraints(
 
     if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) == 1:
         pos = spec.hybrid_ref_pos if spec.hybrid_ref_pos is not None else 0
-        result[pos] = ("final_anchor", spec.hybrid_ref_chars)
+        ref = spec.hybrid_ref_chars
+        existing = result.get(pos)
+        if existing and existing[0] == "code_digit":
+            result[pos] = ("hybrid_tail_rhyme", f"{existing[1]}|{ref}")
+        else:
+            result[pos] = ("final_anchor", ref)
 
     return result
 
@@ -251,6 +256,9 @@ def _constraint_phrase(pos: int, kind: str, value: str) -> str:
         return f"{label}為「{value}」"
     if kind == "wildcard":
         return f"{label}任意字"
+    if kind == "hybrid_tail_rhyme":
+        digit, ref = value.split("|", 1)
+        return f"{label}同 {digit} 同音且同「{ref}」同韻"
     if kind == "final_anchor":
         return f"{label}同「{value}」同韻"
     if kind == "initial_anchor":
