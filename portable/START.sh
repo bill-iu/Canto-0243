@@ -27,6 +27,12 @@ if [[ ! -x "$RUN_PY" ]]; then
 fi
 
 if [[ "$(uname -s)" == "Darwin" ]]; then
+  if [[ -f "$ROOT/venv/pyvenv.cfg" ]]; then
+    VENV_BIN="$(cd "$ROOT/venv/bin" && pwd)"
+    sed -i '' "s|^home = .*|home = ${VENV_BIN}|" "$ROOT/venv/pyvenv.cfg" 2>/dev/null \
+      || sed -i "s|^home = .*|home = ${VENV_BIN}|" "$ROOT/venv/pyvenv.cfg" 2>/dev/null \
+      || true
+  fi
   export PYTHONHOME="$ROOT/venv"
 fi
 
