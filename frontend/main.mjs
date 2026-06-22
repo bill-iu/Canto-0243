@@ -41,6 +41,7 @@ import {
   searchDict,
   wireModeMenuKeyboard,
 } from "./search-workbench.mjs";
+import { refreshQueryExplain, scheduleQueryExplain } from "./query-explain.mjs";
 import {
   ensureSearchTabHistory,
   isHistoryForward,
@@ -130,6 +131,7 @@ $.searchInput.addEventListener("input", () => {
     tab.q = $.searchInput.value;
     persistTabs();
     updateActiveTabTitle();
+    scheduleQueryExplain($.searchInput.value);
   }
 });
 

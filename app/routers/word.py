@@ -7,6 +7,7 @@ from app.database import SessionLocal
 from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.query_dispatch import SearchContext, execute_search, search_words
+from app.services.query_explain import explain_query
 from app.utils.search_hint_header import encode_search_hint
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -68,6 +69,17 @@ def search_words_endpoint(
     if result.cache_path:
         response.headers["X-Search-Cache"] = result.cache_path
     return result.items
+
+
+@router.get("/query/explain")
+@router.get("/query/explain/")
+def query_explain_endpoint(q: str = "", mode: str = "m1"):
+    result = explain_query(q or "", mode)
+    return {
+        "summary": result.summary,
+        "warning": result.warning,
+        "kind": result.kind,
+    }
 
 
 @router.get("/rows", response_model=list[WordRead])

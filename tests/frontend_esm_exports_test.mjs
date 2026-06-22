@@ -109,4 +109,12 @@ describe("frontend ESM public API", () => {
       "buildResultSearchHref",
     ]);
   });
+
+  it("query-explain.mjs exports live explain API", () => {
+    assertExports("query-explain.mjs", [
+      "refreshQueryExplain",
+      "scheduleQueryExplain",
+      "clearQueryExplain",
+    ]);
+  });
 });

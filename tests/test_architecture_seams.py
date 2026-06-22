@@ -408,6 +408,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         'src="./main.mjs"',
         'id="queryChromeTabs"',
         'id="queryTabstrip"',
+        'id="queryExplain"',
         "app-header--tabs",
         "view=relation",
     )
@@ -423,6 +424,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         "wireModeMenuKeyboard",
         "stripLauncherBootFromUrl",
         'fetch("/ready"',
+        'from "./query-explain.mjs"',
     )
     APP_CONTEXT_REQUIRED = (
         'from "./query-tabs-state.mjs"',
@@ -474,6 +476,11 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_view_sync_does_not_mutate_browser_history(self):
         source = (REPO_ROOT / "frontend" / "view-sync.mjs").read_text(encoding="utf-8")
         self.assertNotIn("updateBrowserUrlFromActiveTab", source)
+
+    def test_word_router_exposes_query_explain(self):
+        source = (REPO_ROOT / "app" / "routers" / "word.py").read_text(encoding="utf-8")
+        self.assertIn("/query/explain", source)
+        self.assertIn("explain_query", source)
 
     def test_tab_geometry_js_shim_removed(self):
         path = REPO_ROOT / "frontend" / "tab-geometry.js"

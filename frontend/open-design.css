@@ -352,6 +352,17 @@ a.mode-option {
       gap: 10px;
     }
 
+.query-explain {
+      margin: 10px 2px 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+.query-explain.is-warning {
+      color: #9a5b14;
+    }
+
 .search-input-wrap {
       position: relative;
       min-width: 0;

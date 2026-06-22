@@ -6,6 +6,7 @@ import {
 } from "./search-workbench.mjs";
 import { applyRelationForm } from "./relation-form.mjs";
 import { mountCorrectionsPanel } from "./lexicon-corrections.mjs";
+import { clearQueryExplain, refreshQueryExplain } from "./query-explain.mjs";
 
 function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   const tab = activeTab();
@@ -27,7 +28,11 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
     renderSearchResults(tab.results || [], tab.total);
     toggleLoadMoreButton(shouldShowLoadMore(tab));
     updateShuffleButton();
-  } else if (isRelation) {
+    refreshQueryExplain(tab.q || "");
+  } else {
+    clearQueryExplain();
+  }
+  if (isRelation) {
     applyRelationForm(tab.relation || {});
   } else if (isCorrections) {
     mountCorrectionsPanel(tab);

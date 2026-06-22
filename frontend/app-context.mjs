@@ -118,6 +118,7 @@ export const $ = {
   searchForm: document.getElementById("searchForm"),
   searchInputWrap: document.getElementById("searchInputWrap"),
   searchInput: document.getElementById("searchInput"),
+  queryExplain: document.getElementById("queryExplain"),
   searchBtn: document.getElementById("searchBtn"),
   shuffleBtn: document.getElementById("shuffleBtn"),
   results: document.getElementById("results"),
