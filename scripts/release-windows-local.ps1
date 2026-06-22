@@ -43,7 +43,9 @@ if (-not (Test-Path $ZipPath)) {
 
 Write-Host "==> Export words-lexicon.json..."
 New-Item -ItemType Directory -Path (Split-Path $LexiconPath) -Force | Out-Null
-python (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
+$BundlePy = Join-Path $Root "dist\canto-0243-portable\venv\Scripts\python.exe"
+if (-not (Test-Path $BundlePy)) { throw "bundled python missing: $BundlePy" }
+& $BundlePy (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
 if ($LASTEXITCODE -ne 0) { throw "export_words_lexicon.py failed" }
 
 $zipMb = [math]::Round((Get-Item $ZipPath).Length / 1MB, 1)
