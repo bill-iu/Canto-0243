@@ -19,6 +19,7 @@ import { syncViewPanels } from "./view-sync.mjs";
 import { isCorrectionsSearchCommand } from "./query-tabs-state.mjs";
 import {
   buildResultSearchHref,
+  commitSearchHistoryFrame,
   withResultClickQuery,
 } from "./search-navigation.mjs";
 
@@ -386,7 +387,10 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   if (!isLoadMore) {
     maybeModeRedirectForRelationSyntax(input, tab);
   }
-  if (!restoreFromHistory && !isLoadMore) updateBrowserUrlFromActiveTab(false);
+  if (!restoreFromHistory && !isLoadMore) {
+    const { pushed } = commitSearchHistoryFrame(tab, { q: input, mode: shell.currentMode });
+    updateBrowserUrlFromActiveTab(!pushed);
+  }
 
   const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {

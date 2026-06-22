@@ -14,6 +14,8 @@ import {
 import { relationPayloadFromForm } from "./relation-form.mjs";
 import {
   buildHistoryStateForTab,
+  currentSearchHistoryFrame,
+  ensureSearchTabHistory,
   shouldPushSearchHistory,
 } from "./search-navigation.mjs";
 
@@ -65,10 +67,14 @@ function saveActiveTabFromUi() {
 function updateBrowserUrlFromActiveTab(replace = false) {
   const tab = activeTab();
   if (!tab) return;
-  const params = buildUrlSearchParams(tab, shell.currentMode);
+  if (tab.view === VIEW.SEARCH) ensureSearchTabHistory(tab, shell.currentMode);
+  const mode = tab.view === VIEW.SEARCH
+    ? currentSearchHistoryFrame(tab).mode
+    : shell.currentMode;
+  const params = buildUrlSearchParams(tab, mode);
   const suffix = params.toString() ? `?${params.toString()}` : "";
   const url = `${window.location.pathname}${suffix}`;
-  const state = buildHistoryStateForTab(tab, shell.currentMode);
+  const state = buildHistoryStateForTab(tab, mode);
   const useReplace = replace || !shouldPushSearchHistory(state, window.history.state);
   if (useReplace) window.history.replaceState(state, "", url);
   else window.history.pushState(state, "", url);

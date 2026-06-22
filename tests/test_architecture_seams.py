@@ -572,7 +572,7 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_frontend_esm_modules_export_public_api(self):
         exports_required = {
             "relation-form.mjs": ("relationPayloadFromForm", "postRelation"),
-            "search-navigation.mjs": ("withResultClickQuery", "shouldPushSearchHistory"),
+            "search-navigation.mjs": ("withResultClickQuery", "commitSearchHistoryFrame", "shouldApplySearchPopstate"),
             "tabs-core.mjs": ("activeTab", "persistTabs"),
             "tabs-ui.mjs": ("renderTabstrip", "showSearch"),
             "view-sync.mjs": ("syncViewPanels",),

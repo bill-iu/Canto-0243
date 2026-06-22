@@ -20,6 +20,7 @@ import {
   updateTabstripLastMarkers, scrollActiveTabIntoView, applyActiveNeighborDividerHides,
 } from "./tabs-core.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
+import { resetSearchTabHistory } from "./search-navigation.mjs";
 import {
   toggleLoadMoreButton, updateShuffleButton, toggleMenu,
 } from "./search-workbench.mjs";
@@ -300,10 +301,7 @@ function goHome() {
   }
   const active = activeTab();
   if (!active || active.view !== VIEW.SEARCH) return;
-  active.q = "";
-  active.results = [];
-  active.offset = 0;
-  active.total = null;
+  resetSearchTabHistory(active, shell.currentMode);
   $.searchInput.value = "";
   $.results.innerHTML = "";
   $.results.className = "results";

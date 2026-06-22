@@ -103,7 +103,8 @@ describe("frontend ESM public API", () => {
   it("search-navigation.mjs exports result navigation helpers", () => {
     assertExports("search-navigation.mjs", [
       "withResultClickQuery",
-      "shouldPushSearchHistory",
+      "commitSearchHistoryFrame",
+      "shouldApplySearchPopstate",
       "buildResultSearchHref",
     ]);
   });

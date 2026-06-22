@@ -21,7 +21,17 @@ export function findTabByView(tabs, view) {
   return tabs.find((t) => t.view === view) || null;
 }
 
-export function createSearchTab({ id, q = "", results = [], offset = 0, total = null } = {}) {
+export function createSearchTab({
+  id,
+  q = "",
+  results = [],
+  offset = 0,
+  total = null,
+  historyStack = null,
+  historyIndex = 0,
+} = {}) {
+  const stack = historyStack ?? [{ q: "", mode: "m1" }];
+  const index = typeof historyIndex === "number" ? historyIndex : stack.length - 1;
   return {
     id,
     view: VIEW.SEARCH,
@@ -29,6 +39,8 @@ export function createSearchTab({ id, q = "", results = [], offset = 0, total = 
     results,
     offset,
     total,
+    historyStack: stack,
+    historyIndex: index,
   };
 }
 
@@ -137,6 +149,8 @@ export function serializeSession(state) {
       q: t.q,
       offset: t.offset,
       total: t.total,
+      historyStack: t.view === VIEW.SEARCH ? t.historyStack : undefined,
+      historyIndex: t.view === VIEW.SEARCH ? t.historyIndex : undefined,
       relation: t.relation ? { ...t.relation } : undefined,
       prefetchChar: t.prefetchChar || "",
     })),
@@ -165,6 +179,8 @@ export function deserializeSession(raw) {
         results: t.results || [],
         offset: t.offset || 0,
         total: t.total ?? null,
+        historyStack: Array.isArray(t.historyStack) ? t.historyStack : null,
+        historyIndex: t.historyIndex,
       });
     }),
   };

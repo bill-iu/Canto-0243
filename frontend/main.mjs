@@ -42,6 +42,11 @@ import {
   wireModeMenuKeyboard,
 } from "./search-workbench.mjs";
 import {
+  applyPopstateToSearchTab,
+  ensureSearchTabHistory,
+  shouldApplySearchPopstate,
+} from "./search-navigation.mjs";
+import {
   relationPayloadFromForm,
   postRelation,
   showRelationOk,
@@ -213,36 +218,26 @@ document.addEventListener("keydown", (event) => {
 
 window.addEventListener("popstate", (event) => {
   const state = event.state || {};
-  const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
-  shell.currentMode = MODE_META[state.mode || parsed.mode] ? (state.mode || parsed.mode) : "m1";
-  updateModeLabel();
+  const tab = activeTab();
 
-  if (state.tabId) {
-    const tab = shell.tabState.tabs.find((t) => t.id === state.tabId);
-    if (tab) {
-      if (tab.view === VIEW.SEARCH) tab.q = state.query ?? parsed.q ?? "";
-      shell.tabState = { ...shell.tabState, activeId: tab.id };
-      persistTabs();
-      syncViewPanels();
-      if (tab.view === VIEW.SEARCH && tab.q) searchDict(false, true);
-      return;
-    }
+  if (!shouldApplySearchPopstate(tab, state)) {
+    updateBrowserUrlFromActiveTab(true);
+    return;
   }
 
-  if (parsed.view === VIEW.GUIDE) {
-    openSingletonViewTab(VIEW.GUIDE, createGuideTab);
-  } else if (parsed.view === VIEW.RELATION) {
-    openSingletonViewTab(VIEW.RELATION, createRelationTab);
-  } else if (parsed.view === VIEW.CORRECTIONS) {
-    openSingletonViewTab(VIEW.CORRECTIONS, createCorrectionsTab);
+  const frame = applyPopstateToSearchTab(tab, state);
+  shell.currentMode = MODE_META[frame.mode] ? frame.mode : shell.currentMode;
+  updateModeLabel();
+  persistTabs();
+  syncViewPanels();
+  if (frame.q) {
+    searchDict(false, true);
   } else {
-    const tab = ensureActiveSearchTab();
-    if (tab) {
-      tab.q = parsed.q || "";
-      persistTabs();
-      syncViewPanels();
-      if (tab.q) searchDict(false, true);
-    }
+    tab.results = [];
+    tab.offset = 0;
+    tab.total = null;
+    persistTabs();
+    syncViewPanels();
   }
 });
 
@@ -280,6 +275,10 @@ window.addEventListener("popstate", (event) => {
       shell.tabState = { ...shell.tabState, activeId: searchTab.id };
     }
   }
+
+  shell.tabState.tabs.forEach((t) => {
+    if (t.view === VIEW.SEARCH) ensureSearchTabHistory(t, shell.currentMode);
+  });
 
   shell.chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
   syncViewPanels();
