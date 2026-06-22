@@ -19,6 +19,7 @@ import {
   saveActiveTabFromUi,
   updateActiveTabTitle,
   stripLauncherBootFromUrl,
+  updateBrowserUrlFromActiveTab,
 } from "./tabs-core.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import {
@@ -219,7 +220,7 @@ window.addEventListener("popstate", (event) => {
   if (state.tabId) {
     const tab = shell.tabState.tabs.find((t) => t.id === state.tabId);
     if (tab) {
-      if (tab.view === VIEW.SEARCH && (state.query || parsed.q)) tab.q = state.query || parsed.q;
+      if (tab.view === VIEW.SEARCH) tab.q = state.query ?? parsed.q ?? "";
       shell.tabState = { ...shell.tabState, activeId: tab.id };
       persistTabs();
       syncViewPanels();
@@ -282,6 +283,7 @@ window.addEventListener("popstate", (event) => {
 
   shell.chromeLayout = new QueryChromeTabsLayout($.chromeTabs);
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
   persistTabs();
 
   const active = activeTab();

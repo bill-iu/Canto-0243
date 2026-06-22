@@ -1,7 +1,5 @@
 import { $, VIEW, shell } from "./app-context.mjs";
-import {
-  activeTab, updateBrowserUrlFromActiveTab, scrollActiveTabIntoView,
-} from "./tabs-core.mjs";
+import { activeTab, scrollActiveTabIntoView } from "./tabs-core.mjs";
 import { renderTabstrip } from "./tabs-ui.mjs";
 import {
   shouldShowLoadMore, renderSearchResults, toggleLoadMoreButton, updateShuffleButton,
@@ -34,7 +32,6 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   } else if (isCorrections) {
     mountCorrectionsPanel(tab);
   }
-  updateBrowserUrlFromActiveTab(true);
   if (shouldRenderTabstrip) renderTabstrip();
   else requestAnimationFrame(scrollActiveTabIntoView);
 }

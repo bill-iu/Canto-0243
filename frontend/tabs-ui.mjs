@@ -178,6 +178,7 @@ function activateTabOnPress(id) {
   persistTabs();
   markActiveTabInStrip(id);
   syncViewPanels({ renderTabstrip: false });
+  updateBrowserUrlFromActiveTab(true);
   const tab = activeTab();
   if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
@@ -196,6 +197,7 @@ function addSearchTab() {
   };
   persistTabs();
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
   if (activeTab()?.view === VIEW.SEARCH) $.searchInput.focus();
 }
 
@@ -205,6 +207,7 @@ function closeTab(id) {
   shell.tabState = closeTabInState(shell.tabState, id);
   persistTabs();
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
 }
 
 function selectTab(id) {
@@ -213,6 +216,7 @@ function selectTab(id) {
   shell.tabState = { ...shell.tabState, activeId: id };
   persistTabs();
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
   const tab = activeTab();
   if (tab?.view === VIEW.SEARCH) $.searchInput.focus();
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
@@ -245,6 +249,7 @@ function focusSearchTab(tab) {
   shell.tabState = { ...shell.tabState, activeId: tab.id };
   persistTabs();
   syncViewPanels();
+  updateBrowserUrlFromActiveTab(true);
   $.searchInput.focus();
 }
 

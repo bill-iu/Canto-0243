@@ -174,7 +174,6 @@ function handleResultClick(queryText) {
   Object.assign(tab, withResultClickQuery(tab, queryText));
   $.searchInput.value = queryText;
   persistTabs();
-  showSearch({ replace: true });
   searchDict();
 }
 
@@ -354,10 +353,10 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   shell.searchAbort = new AbortController();
   const { signal } = shell.searchAbort;
 
-  showSearch({ replace: true });
-  setButtonLoading(true);
-
   const input = $.searchInput.value.trim();
+  if (!isLoadMore && input) tab.q = input;
+  if (!restoreFromHistory) showSearch({ replace: true });
+  setButtonLoading(true);
 
   if (!isLoadMore) {
     $.results.innerHTML = "";

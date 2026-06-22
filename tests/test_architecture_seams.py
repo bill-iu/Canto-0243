@@ -471,6 +471,10 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("data.gate_ready", gate)
         self.assertIn("setupDraggabilly", layout)
 
+    def test_view_sync_does_not_mutate_browser_history(self):
+        source = (REPO_ROOT / "frontend" / "view-sync.mjs").read_text(encoding="utf-8")
+        self.assertNotIn("updateBrowserUrlFromActiveTab", source)
+
     def test_tab_geometry_js_shim_removed(self):
         path = REPO_ROOT / "frontend" / "tab-geometry.js"
         self.assertFalse(path.is_file())
