@@ -1,6 +1,6 @@
 ## Agent skills
 
-Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)。
+Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)。**Git**：agent 改動先 commit+push 到 **`dev`**，確認後 PR 入 **`main`**（見 [`docs/agents/git-workflow.md`](docs/agents/git-workflow.md)）。
 
 ### Coding style (Ponytail)
 
