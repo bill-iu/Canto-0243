@@ -91,7 +91,7 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
     if isinstance(parsed, WordLookupQuery):
         return f"查詢詞條「{parsed.raw_q}」"
     if isinstance(parsed, DigitCodeQuery):
-        return f"查詢 0243 碼「{parsed.raw_q}」"
+        return f"查同{parsed.raw_q}同音嘅字"
     if isinstance(parsed, RelationLookupQuery):
         label = "近義詞" if parsed.relation_kind == "syn" else "反義詞"
         prefix = f"碼 {parsed.code_prefix} " if parsed.code_prefix else ""

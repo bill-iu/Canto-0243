@@ -70,6 +70,11 @@ class QueryExplainTests(unittest.TestCase):
         self.assertIn("香港", result.summary or "")
         self.assertEqual(result.kind, "word_lookup")
 
+    def test_digit_code_summary(self):
+        result = explain_query("23")
+        self.assertEqual(result.summary, "查同23同音嘅字")
+        self.assertEqual(result.kind, "digit_code")
+
     def test_equals_whole_word_rhyme_with_rhyme_label(self):
         result = explain_query("香港=")
         self.assertIn("整詞同「香港」同韻", result.summary or "")
