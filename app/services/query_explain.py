@@ -220,12 +220,19 @@ def _effective_constraints(
         value = slot.value if slot.value is not None else ""
         if isinstance(value, set):
             value = next(iter(value), "")
+        value = str(value)
         existing = result.get(slot.pos)
+        if slot.kind == "final_anchor" and existing and existing[0] == "code_digit":
+            result[slot.pos] = ("hybrid_tail_rhyme", f"{existing[1]}|{value}")
+            continue
+        if slot.kind == "initial_anchor" and existing and existing[0] == "code_digit":
+            result[slot.pos] = ("hybrid_tail_initial", f"{existing[1]}|{value}")
+            continue
         if existing and _SLOT_PRIORITY.get(existing[0], 0) >= _SLOT_PRIORITY.get(
             slot.kind, 0
         ):
             continue
-        result[slot.pos] = (slot.kind, str(value))
+        result[slot.pos] = (slot.kind, value)
 
     if equals and not equals.whole_word:
         dim_kind = (

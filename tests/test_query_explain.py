@@ -42,6 +42,28 @@ class QueryExplainTests(unittest.TestCase):
         )
         self.assertEqual(result.kind, "hybrid_code")
 
+    def test_serial_phoneme_equals_matches_hybrid_code_explain(self):
+        """23我= aliases 23我 (serial_phoneme); anchor slot must keep trailing code digit."""
+        expected = (
+            "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且同「我」同韻"
+        )
+        self.assertEqual(explain_query("23我=").summary, expected)
+        self.assertEqual(explain_query("23我=").kind, "serial_phoneme")
+
+    def test_serial_phoneme_single_slot_code_plus_anchor(self):
+        result = explain_query("2我=")
+        self.assertEqual(
+            result.summary,
+            "一個字：第 1 個字同 2 同音且同「我」同韻",
+        )
+
+    def test_serial_phoneme_two_digit_tail_anchor(self):
+        result = explain_query("04困=")
+        self.assertEqual(
+            result.summary,
+            "兩個字：第 1 個字同 0 同音，第 2 個字同 4 同音且同「困」同韻",
+        )
+
     def test_code_sandwich_equals_keeps_code_at_anchor_pos(self):
         result = explain_query("32我=0")
         self.assertEqual(
