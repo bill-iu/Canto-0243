@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import re
 
+from app.utils.trad_chinese import to_traditional
+
 CJK_RE = re.compile(r"[\u4e00-\u9fff]")
 MAX_WORD_LEN = 12
 
@@ -28,8 +30,8 @@ def is_valid_term(text: str) -> bool:
 
 
 def normalize_literal(text: str) -> str | None:
-    """clean_term + is_valid_term；無效則 None。"""
-    t = clean_term(text)
+    """clean_term + s2t + is_valid_term；無效則 None。"""
+    t = to_traditional(clean_term(text))
     if not is_valid_term(t):
         return None
     return t

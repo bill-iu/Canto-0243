@@ -21,6 +21,15 @@ if str(REPO_ROOT) not in sys.path:
 
 from scripts.fetch._download import download_file
 
+
+def _convert_file_to_traditional(path: Path) -> None:
+    try:
+        from app.utils.trad_chinese import to_traditional
+    except ImportError:
+        return
+    text = path.read_text(encoding="utf-8")
+    path.write_text(to_traditional(text), encoding="utf-8")
+
 ANTISEM_URL = (
     "https://raw.githubusercontent.com/liuhuanyong/ChineseAntiword/master/antisem.txt"
 )
@@ -38,6 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         "See THIRD_PARTY_NOTICES.md."
     )
     download_file(ANTISEM_URL, args.output, label="antisem.txt")
+    _convert_file_to_traditional(args.output)
     return 0
 
 

@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 
+from app.domain.relations.valid_term import normalize_literal
 from ingest.cilin_leaf import (
     groups_to_syn_edges,
     iter_cilin_leaf_line_chunks,
@@ -84,12 +85,14 @@ def parse_antonym_pairs(path: Path, source: str, source_rank: int = 55) -> List[
             if len(parts) < 2:
                 continue
             left, ants = parts[0], parts[1:]
-        if not left or not ants:
+        head = normalize_literal(left)
+        if not head:
             continue
-        for ant in ants:
-            if ant and ant != left:
-                edges.append(_edge(left, ant, "ant", source, source_rank=source_rank))
-                edges.append(_edge(ant, left, "ant", source, source_rank=source_rank))
+        for raw_ant in ants:
+            ant = normalize_literal(raw_ant)
+            if ant and ant != head:
+                edges.append(_edge(head, ant, "ant", source, source_rank=source_rank))
+                edges.append(_edge(ant, head, "ant", source, source_rank=source_rank))
     return edges
 
 

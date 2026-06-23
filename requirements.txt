@@ -6,6 +6,7 @@ python-multipart
 python-dotenv          # 這行很重要（支援 .env）
 pycantonese            # runtime 新詞 / 罕見字自動粵拼注入
 pyjyutping             # pycantonese fallback
+opencc-python-reimplemented  # antisem s2t → 繁體字面
 
 # 依賴分層：
 #   requirements.txt           — 離線查詢（SQLite，產品保證路徑）

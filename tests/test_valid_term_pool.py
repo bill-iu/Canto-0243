@@ -20,6 +20,11 @@ class ValidTermTests(unittest.TestCase):
         self.assertEqual(clean_term("開心（愉快）"), "開心")
         self.assertTrue(is_valid_term(clean_term("開心（愉快）")))
 
+    def test_normalize_literal_converts_simplified_to_traditional(self):
+        self.assertEqual(normalize_literal("快乐"), "快樂")
+        self.assertEqual(normalize_literal("高兴"), "高興")
+        self.assertEqual(normalize_literal("开心"), "開心")
+
 
 class GuotongNoiseFixtureTests(unittest.TestCase):
     def tearDown(self) -> None:

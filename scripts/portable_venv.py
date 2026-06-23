@@ -593,6 +593,22 @@ def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
     return py
 
 
+def _smoke_portable_runtime(py: Path, root: Path) -> None:
+    code = """
+import fastapi, uvicorn, sqlalchemy
+import opencc
+from app.utils.trad_chinese import to_traditional
+assert to_traditional("快乐") == "快樂"
+from app.thesaurus.static_index import reset_static_indexes_for_tests, get_antonyms, ensure_thesaurus_loaded
+reset_static_indexes_for_tests()
+ensure_thesaurus_loaded(force=True)
+ants = get_antonyms("痛苦")
+assert "开心" not in ants, ants
+assert "開心" in ants, ants
+"""
+    subprocess.run([str(py), "-c", code], check=True, cwd=root)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Build portable pre-installed venv")
     parser.add_argument("root", type=Path, help="Portable bundle root (contains requirements.txt)")
@@ -611,7 +627,7 @@ def main() -> int:
             return 1
         assert_portable_macos_venv(root / "venv")
         _assert_venv_relocatable(root / "venv")
-        subprocess.run([str(py), "-c", "import fastapi, uvicorn, sqlalchemy"], check=True)
+        _smoke_portable_runtime(py, root)
         print("OK")
         return 0
 

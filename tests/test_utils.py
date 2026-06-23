@@ -94,6 +94,20 @@ class UtilsTests(unittest.TestCase):
         self.assertGreater(len(syns), 5)
         self.assertIn("開心", syns)
 
+    def test_pain_antonyms_are_traditional_not_simplified(self):
+        antisem = Path(__file__).resolve().parents[1] / "data" / "antonym" / "antisem.txt"
+        if not antisem.exists() or antisem.stat().st_size < 1000:
+            self.skipTest("data/antonym/antisem.txt missing; run scripts/bootstrap_data.py")
+        from app.thesaurus.static_index import ensure_thesaurus_loaded, get_antonyms, reset_static_indexes_for_tests
+
+        reset_static_indexes_for_tests()
+        ensure_thesaurus_loaded(force=True)
+        ants = get_antonyms("痛苦")
+        simplified = {"开心", "快乐", "高兴", "欢乐", "喜悦", "惬意"}
+        self.assertTrue(ants, "expected antonyms for 痛苦")
+        self.assertFalse(simplified & set(ants))
+        self.assertTrue({"開心", "快樂", "高興", "歡樂"} & set(ants))
+
 
 if __name__ == "__main__":
     unittest.main()
