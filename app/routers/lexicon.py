@@ -8,7 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.schemas.lexicon_schema import LexiconCorrectionCreate, LexiconCorrectionQueued
 from app.services.lexicon_correction_queue import LexiconCorrectionQueueError, queue_lexicon_correction
 from app.utils.jyutping_codec import get_0243_code
-from ingest.lexicon_corrections import DEFAULT_TSV
+from app.lexicon.corrections import DEFAULT_TSV
 
 router = APIRouter(prefix="/lexicon", tags=["lexicon"])
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from ingest.lexicon_corrections import LexiconCorrection, load_corrections, save_corrections
+from app.lexicon.corrections import LexiconCorrection, load_corrections, save_corrections
 
 
 @dataclass(frozen=True)
