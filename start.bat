@@ -21,4 +21,5 @@ if not exist "%PY%" (
 if not defined HOST set HOST=127.0.0.1
 if not defined PORT set PORT=8000
 
-"%PY%" scripts\local_launch.py --tail-ready --no-wait-server --python "%PY%" --root "%~dp0"
+REM ponytail: %~dp0 ends with \ which escapes the closing quote in cmd; %CD% is safe after cd above
+"%PY%" scripts\local_launch.py --tail-ready --no-wait-server --python "%PY%" --root "%CD%"
