@@ -606,7 +606,10 @@ ants = get_antonyms("痛苦")
 assert "开心" not in ants, ants
 assert "開心" in ants, ants
 """
-    subprocess.run([str(py), "-c", code], check=True, cwd=root)
+    env = os.environ.copy()
+    env.setdefault("PYTHONUTF8", "1")
+    env.setdefault("PYTHONIOENCODING", "utf-8")
+    subprocess.run([str(py), "-c", code], check=True, cwd=root, env=env)
 
 
 def main() -> int:
