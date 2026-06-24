@@ -179,6 +179,25 @@ def parse_code_syllable_three_query(q: str) -> Optional[dict]:
     }
 
 
+def parse_code_rhyme_three_query(q: str) -> Optional[dict]:
+    """{首碼}+{韻母}{末碼} / {首碼}?{韻母}{末碼} — 三字中格韻母（3+an4 ↔ 3+人=4）。"""
+    m = re.match(rf"^(\d)[\?{_SLOT}]([a-zA-Z]+)(\d)$", q)
+    if not m:
+        return None
+    letters = m.group(2).lower()
+    if classify_latin_anchor(letters) != "rhyme_letters":
+        return None
+    return {
+        "raw_q": q,
+        "width": 3,
+        "anchor_pos": 1,
+        "anchor_kind": "rhyme_letters",
+        "anchor_value": normalize_rhyme_letters(letters),
+        "code_prefix": m.group(1) + m.group(3),
+        "code_slots": [(0, m.group(1)), (2, m.group(3))],
+    }
+
+
 def parse_code_syllable_two_query(q: str) -> Optional[dict]:
     """{首碼}{音節}{末碼} — 二字碼音節（3hon4），無中間 ?。"""
     m = re.match(r"^(\d)([a-zA-Z]+)(\d)$", q)
@@ -309,6 +328,7 @@ def parse_jyutping_anchor_query(q: str) -> Optional[dict]:
         parse_triple_jyutping_slot_query,
         parse_end_jyutping_syllable_query,
         parse_code_syllable_three_query,
+        parse_code_rhyme_three_query,
         parse_code_cluster_initial_query,
         parse_code_initial_query,
         parse_code_syllable_two_query,

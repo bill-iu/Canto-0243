@@ -55,6 +55,25 @@ class TestPositionMatchHelpers(unittest.TestCase):
         self.assertIn("做得", chars)
         self.assertNotIn("好我", chars)
 
+    def test_filter_words_sparse_code_slots_ignore_code_prefix_fill(self):
+        w_ok = MagicMock(char="超人氣", code="304", finals='["iu","an","ei"]')
+        w_bad = MagicMock(char="超級人", code="343", finals='["iu","ap","an"]')
+        slots = [
+            SlotConstraint(pos=0, kind="code_digit", value="3"),
+            SlotConstraint(pos=2, kind="code_digit", value="4"),
+        ]
+        filtered = filter_words_by_code_and_mask(
+            [w_ok, w_bad],
+            width=3,
+            code_digits="34",
+            mode="m1",
+            mask="???",
+            db=MagicMock(),
+            slots=slots,
+        )
+        chars = [w.char for w in filtered]
+        self.assertEqual(chars, ["超人氣"])
+
     def test_literal_priority_sort_key(self):
         w = MagicMock(char="香港", jyutping="hoeng1 gong2")
         key = literal_priority_sort_key(w, [(0, "香"), (1, "港")])

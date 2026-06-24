@@ -371,6 +371,98 @@ class JyutpingAnchorSearchTests(unittest.TestCase):
         self.assertIn("呢坐", chars)
         self.assertNotIn("呢你", chars)
 
+    def test_3_plus_jan4_middle_syllable_with_sparse_codes(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        with Session() as session:
+            session.add_all(
+                [
+                    Word(
+                        id=1,
+                        char="超人氣",
+                        code="304",
+                        jyutping="ciu1 jan4 hei3",
+                        finals='["iu","an","ei"]',
+                        initials='["c","j","h"]',
+                        length=3,
+                    ),
+                    Word(
+                        id=2,
+                        char="超級人",
+                        code="343",
+                        jyutping="ciu1 kap1 jan4",
+                        finals='["iu","ap","an"]',
+                        initials='["c","k","j"]',
+                        length=3,
+                    ),
+                    Word(
+                        id=3,
+                        char="下雨天",
+                        code="304",
+                        jyutping="haa6 jyu5 tin1",
+                        finals='["aa","yu","in"]',
+                        initials='["h","j","t"]',
+                        length=3,
+                    ),
+                ]
+            )
+            session.commit()
+            results = search_words(q="3+jan4", mode="m1", db=session, limit=20, offset=0)
+
+        chars = [r["char"] for r in results]
+        self.assertIn("超人氣", chars)
+        self.assertNotIn("超級人", chars)
+        self.assertNotIn("下雨天", chars)
+
+    def test_3_plus_an4_matches_plus_anchor_ren_equals(self):
+        from app.services.query_parse import JyutpingAnchorQuery, PlusAnchorQuery
+
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+        parsed_latin = _parse("3+an4")
+        self.assertIsInstance(parsed_latin, JyutpingAnchorQuery)
+        self.assertEqual(parsed_latin.anchor_kind, "rhyme_letters")
+        self.assertEqual(parsed_latin.anchor_value, "an")
+
+        with Session() as session:
+            session.add_all(
+                [
+                    Word(
+                        id=1,
+                        char="討人厭",
+                        code="304",
+                        jyutping="tou2 jan4 jim3",
+                        finals='["ou","an","im"]',
+                        initials='["t","j","j"]',
+                        length=3,
+                    ),
+                    Word(
+                        id=2,
+                        char="下雨天",
+                        code="304",
+                        jyutping="haa6 jyu5 tin1",
+                        finals='["aa","yu","in"]',
+                        initials='["h","j","t"]',
+                        length=3,
+                    ),
+                ]
+            )
+            session.commit()
+            latin = search_words(q="3+an4", mode="m1", db=session, limit=20, offset=0)
+            hanzi = search_words(q="3+人=4", mode="m1", db=session, limit=20, offset=0)
+
+        self.assertIsInstance(_parse("3+人=4"), PlusAnchorQuery)
+        self.assertCountEqual(
+            [r["char"] for r in latin],
+            [r["char"] for r in hanzi],
+        )
+        self.assertIn("討人厭", [r["char"] for r in latin])
+        self.assertNotIn("下雨天", [r["char"] for r in latin])
+
 
 class JyutpingAnchorRejectTests(unittest.TestCase):
     def test_invalid_rhyme_anchor_rejected_not_fragment(self):
