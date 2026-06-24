@@ -1,0 +1,392 @@
+@import 'vite/client';
+
+:root {
+  font-family: 'Segoe UI', Roboto, 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  line-height: 1.6;
+  color-scheme: light dark;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* App Container */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header */
+.app-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.app-header .subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.db-status {
+  margin-top: 1rem;
+}
+
+.status-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-loading progress {
+  width: 200px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.status-ready {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+.status-error {
+  background-color: rgba(255, 0, 0, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Main Content */
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Search Form */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.search-controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.25s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.search-input:disabled {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.mode-selector label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  font-size: 0.9rem;
+}
+
+.mode-selector label:hover {
+  background-color: #e0e0e0;
+}
+
+.mode-selector input[type="radio"] {
+  accent-color: #667eea;
+}
+
+.mode-selector label:has(input:checked) {
+  background-color: #667eea;
+  color: white;
+}
+
+.search-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.search-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.search-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Stats Toggle */
+.stats-toggle {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 1rem;
+}
+
+.stats-toggle:hover {
+  background-color: #e0e0e0;
+}
+
+/* Database Stats */
+.db-stats {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.db-stats p {
+  margin: 0.25rem 0;
+  color: #555;
+}
+
+/* Search Results */
+.search-results {
+  flex: 1;
+}
+
+.loading,
+.error,
+.no-results {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 1rem;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+.results-count {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.results-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.25s ease;
+}
+
+.result-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.result-item .word {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.result-item .jyutping {
+  font-size: 0.95rem;
+  color: #667eea;
+  font-style: italic;
+}
+
+.result-item .code {
+  font-size: 0.95rem;
+  color: #999;
+  font-family: 'Courier New', monospace;
+}
+
+/* Footer */
+.app-footer {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid #e0e0e0;
+}
+
+.app-footer p {
+  margin: 0.25rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .app-main {
+    padding: 1rem;
+  }
+
+  .search-controls {
+    flex-direction: column;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+
+  .mode-selector {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .result-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .app-header {
+    background: linear-gradient(135deg, #2d3748 0%, #4c1d95 100%);
+  }
+
+  .search-input {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .search-input:focus {
+    border-color: #667eea;
+  }
+
+  .mode-selector label {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  .mode-selector label:has(input:checked) {
+    background-color: #667eea;
+    color: white;
+  }
+
+  .search-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  .stats-toggle {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+  }
+
+  .db-stats {
+    background-color: #2d2d2d;
+  }
+
+  .db-stats p {
+    color: #e0e0e0;
+  }
+
+  .result-item {
+    background-color: #2d2d2d;
+  }
+
+  .result-item .word {
+    color: #e0e0e0;
+  }
+
+  .result-item .jyutping {
+    color: #99b4ff;
+  }
+
+  .result-item .code {
+    color: #888;
+  }
+
+  .app-footer {
+    background-color: #2d2d2d;
+  }
+
+  .app-footer p {
+    color: #888;
+  }
+}
