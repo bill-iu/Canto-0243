@@ -277,6 +277,20 @@ export function parseQuery(q: string): ParsedQuery {
     } as RelationLookupQuery;
   }
   
+  // Check for hybrid tail equals alias (e.g., 23就=)
+  if (isHybridTailEqualsAlias(normalized)) {
+    return {
+      kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
+      raw_q: normalized,
+      hybrid_q: hybridQueryFromTailEquals(normalized),
+    } as HybridTailEqualsAliasQuery;
+  }
+  
+  // Check for framed equals query (e.g., 香港=, 2=我3, =香, 就=)
+  if (isFramedEqualsQuery(normalized)) {
+    return { kind: QueryKind.EQUALS, raw_q: normalized } as EqualsQuery;
+  }
+  
   // Check for various mask patterns
   // This is a placeholder - full mask detection is complex
   if (looksLikeMaskQuery(normalized)) {
@@ -327,8 +341,197 @@ function looksLikeMaskQuery(q: string): boolean {
 export interface MatchSpec {
   width: number; // Number of syllables/characters
   code_prefix?: string;
+  equals_span?: EqualsSpan; // For equals queries
   // Additional spec properties would be added here
   // This is a simplified version
+}
+
+// ============================================================================
+// Equals Query Support (from query_grammar/equals.py)
+// ============================================================================
+
+/**
+ * Constants for equals query processing
+ */
+export const CODE_TAIL_MIDDLE = '\u2215'; // Division slash (∕)
+
+/**
+ * Regex for hybrid tail equals alias (e.g., 23就=)
+ */
+const HYBRID_TAIL_EQUALS_RE = /^(\d+)([\u4e00-\u9fff])=$/;
+
+/**
+ * Equals query interface
+ */
+export interface EqualsQuery extends ParsedQuery {
+  kind: QueryKind.EQUALS;
+  raw_q: string;
+}
+
+/**
+ * Hybrid tail equals alias query interface
+ */
+export interface HybridTailEqualsAliasQuery extends ParsedQuery {
+  kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS;
+  raw_q: string;
+  hybrid_q: string;
+}
+
+/**
+ * Dimension type for equals span
+ */
+export type EqualsDimension = 'initial' | 'final' | 'rhyme' | 'phone';
+
+/**
+ * Equals span specification for position matching
+ */
+export interface EqualsSpan {
+  ref_literal: string;
+  start_pos: number;
+  dimension: EqualsDimension;
+  phoneme_anchor_only: boolean;
+  whole_word: boolean;
+}
+
+/**
+ * Check if query is a hybrid tail equals alias (e.g., 23就=)
+ */
+export function isHybridTailEqualsAlias(q: string): boolean {
+  return HYBRID_TAIL_EQUALS_RE.test(q);
+}
+
+/**
+ * Convert hybrid tail equals query to hybrid query
+ * e.g., "23就=" -> "23就"
+ */
+export function hybridQueryFromTailEquals(q: string): string {
+  return q.slice(0, -1);
+}
+
+/**
+ * Check if query is a framed equals query
+ * e.g., "香港=", "2=我3", "=香", "就="
+ */
+export function isFramedEqualsQuery(q: string): boolean {
+  if (q.includes(CODE_TAIL_MIDDLE) || q.includes('@') || isHybridTailEqualsAlias(q)) {
+    return false;
+  }
+  
+  const match = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)(=)?(\d*)$/);
+  if (!match) {
+    return false;
+  }
+  
+  const target = match[3] || '';
+  if (!target) {
+    return false;
+  }
+  
+  const left_code = match[1] || '';
+  const right_code = match[5] || '';
+  const right_equal = Boolean(match[4]);
+  const inner_equal = Boolean(match[2]);
+  
+  // Right equal with multi-char target or single char with left code
+  if (right_equal && target.length >= 2) {
+    return true;
+  }
+  if (right_equal && left_code && target.length === 1) {
+    return true;
+  }
+  // Inner equal cases
+  if (inner_equal && left_code && right_code) {
+    return true;
+  }
+  if (inner_equal && left_code && !right_equal) {
+    return true;
+  }
+  if (inner_equal && !left_code && !right_equal && target.length >= 2) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * Build MatchSpec for equals query
+ * Converts query string to MatchSpec for position matching
+ */
+export function buildEqualsMatchSpec(q: string): (MatchSpec & { equals_span: EqualsSpan }) | null {
+  const match = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)?(=)?(\d*)$/);
+  if (!match) {
+    return null;
+  }
+  
+  const target_str = match[3] || '';
+  if (!target_str) {
+    return null;
+  }
+  
+  const left_code = match[1] || '';
+  const right_code = match[5] || '';
+  const right_equal = Boolean(match[4]);
+  const inner_equal = Boolean(match[2]);
+  const target_length = target_str.length;
+  const expected_length = left_code.length + right_code.length || target_length;
+  const start_pos = Math.max(0, left_code.length - target_length);
+  const full_code = left_code + right_code;
+  
+  const span: EqualsSpan = {
+    ref_literal: target_str,
+    start_pos: start_pos,
+    dimension: right_equal ? 'final' : 'initial',
+    phoneme_anchor_only: Boolean(left_code && (right_code || inner_equal)),
+    whole_word: start_pos === 0 && target_length === expected_length,
+  };
+  
+  return {
+    width: expected_length,
+    code_prefix: full_code || undefined,
+    equals_span: span,
+  };
+}
+
+/**
+ * Hint message for code-prefixed whole word equals empty results
+ */
+const CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT = 
+  '「{literal}」有收錄，但在 0243 碼 {code} 下無整詞同韻結果。';
+
+/**
+ * Generate hint for empty results in code-prefixed whole word equals query
+ */
+export async function codePrefixedWholeWordEqualsEmptyHint(
+  spec: MatchSpec & { equals_span?: EqualsSpan },
+  db: Database
+): Promise<string | null> {
+  const span = spec.equals_span;
+  if (!span || !span.whole_word) {
+    return null;
+  }
+  
+  const code = spec.code_prefix || '';
+  const literal = span.ref_literal;
+  
+  if (!code || code.length !== literal.length) {
+    return null;
+  }
+  
+  // Check if the literal exists in the database
+  const sql = 'SELECT COUNT(*) as count FROM words WHERE char = ?';
+  const stmt = db.prepare(sql);
+  stmt.bind([literal]);
+  const result = stmt.step() ? stmt.getAsObject() : { count: 0 };
+  stmt.free();
+  
+  if (result.count === 0) {
+    return null;
+  }
+  
+  // Literal exists but no results - generate hint
+  return CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT
+    .replace('{literal}', literal)
+    .replace('{code}', code);
 }
 
 // ============================================================================
@@ -353,7 +556,7 @@ export async function executeSearch(ctx: SearchContext): Promise<SearchResult> {
   }
   
   const parsed = normalizeAndParse(ctx.q);
-  return dispatch(parsed, { ...ctx, db });
+  return await dispatch(parsed, { ...ctx, db });
 }
 
 /**
@@ -383,7 +586,7 @@ function executeListFilter(db: Database, ctx: SearchContext): SearchResult {
 /**
  * Dispatch query based on parsed type
  */
-function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database }): SearchResult {
+async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database }): Promise<SearchResult> {
   const routeKind = routeKindFor(parsed.kind);
   const { db, mode, limit, offset } = ctx;
   
@@ -404,6 +607,17 @@ function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database }): S
       break;
     
     case RouteKind.MASK_FAMILY:
+      // Handle equals queries
+      if (parsed.kind === QueryKind.EQUALS) {
+        return executeEqualsQuery(parsed as EqualsQuery, db, mode, limit, offset);
+      }
+      // Handle hybrid tail equals alias
+      if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
+        return executeMaskFamily(
+          { kind: QueryKind.MASK, raw_q: (parsed as HybridTailEqualsAliasQuery).hybrid_q },
+          db, mode, limit, offset
+        );
+      }
       // For now, treat mask queries as simple text search
       return executeMaskFamily(parsed, db, mode, limit, offset);
     
@@ -543,6 +757,216 @@ function executeJyutpingFragment(
 }
 
 /**
+ * Execute equals query (e.g., 2=我3, 香港=, =香, 就=)
+ * This implements the equals query syntax for finding words with matching rhymes/initials
+ */
+async function executeEqualsQuery(
+  parsed: EqualsQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number
+): Promise<SearchResult> {
+  // Build MatchSpec for the equals query
+  const spec = buildEqualsMatchSpec(parsed.raw_q);
+  
+  if (!spec) {
+    return { items: [], hint: '無效的等號查詢語法' };
+  }
+  
+  const span = spec.equals_span;
+  const { ref_literal, dimension, phoneme_anchor_only, whole_word } = span;
+  const { code_prefix } = spec;
+  
+  // For now, implement a simplified version
+  // Full implementation would use proper rhyme/initial matching
+  
+  // Case 1: whole word equals (e.g., 香港=)
+  if (whole_word && code_prefix) {
+    // Find words with same code as the reference word
+    const sql = `
+      SELECT w.word, w.jyutping, w.code
+      FROM words w
+      WHERE w.char = ? AND w.code = ?
+      ORDER BY w.word
+      LIMIT ? OFFSET ?
+    `;
+    const stmt = db.prepare(sql);
+    stmt.bind([ref_literal, code_prefix, limit, offset]);
+    
+    const results: QueryResult[] = [];
+    while (stmt.step()) {
+      const row = stmt.getAsObject();
+      results.push({
+        word: row.word,
+        jyutping: row.jyutping,
+        code: row.code,
+        score: 0,
+      });
+    }
+    stmt.free();
+    
+    // If no results and it's a code-prefixed whole word equals, provide hint
+    if (results.length === 0) {
+      const hint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
+      return { items: [], hint: hint || '未找到符合的結果' };
+    }
+    
+    return { items: results };
+  }
+  
+  // Case 2: code + equals + word (e.g., 2=我3)
+  if (code_prefix && ref_literal) {
+    // This is a code-anchored equals query
+    // Find words where the reference word's phoneme matches at the specified position
+    const codeLength = code_prefix.length;
+    const expectedLength = spec.width;
+    
+    // Build SQL based on dimension
+    if (dimension === 'final' || dimension === 'rhyme') {
+      // Match final/rhyme - need to get phoneme from reference word
+      const refSql = 'SELECT jyutping, code FROM words WHERE char = ?';
+      const refStmt = db.prepare(refSql);
+      refStmt.bind([ref_literal]);
+      const refRow = refStmt.step() ? refStmt.getAsObject() : null;
+      refStmt.free();
+      
+      if (refRow) {
+        // For now, do a simple code match for the specified width
+        const pattern = code_prefix + '%';
+        const sql = `
+          SELECT word, jyutping, code
+          FROM words
+          WHERE code LIKE ? AND LENGTH(char) = ?
+          ORDER BY word
+          LIMIT ? OFFSET ?
+        `;
+        const stmt = db.prepare(sql);
+        stmt.bind([pattern, expectedLength, limit, offset]);
+        
+        const results: QueryResult[] = [];
+        while (stmt.step()) {
+          const row = stmt.getAsObject();
+          results.push({
+            word: row.word,
+            jyutping: row.jyutping,
+            code: row.code,
+            score: 0,
+          });
+        }
+        stmt.free();
+        
+        return { items: results };
+      }
+    }
+    
+    // Default: try code prefix matching
+    const pattern = code_prefix + '%';
+    const sql = `
+      SELECT word, jyutping, code
+      FROM words
+      WHERE code LIKE ? AND LENGTH(char) = ?
+      ORDER BY word
+      LIMIT ? OFFSET ?
+    `;
+    const stmt = db.prepare(sql);
+    stmt.bind([pattern, expectedLength, limit, offset]);
+    
+    const results: QueryResult[] = [];
+    while (stmt.step()) {
+      const row = stmt.getAsObject();
+      results.push({
+        word: row.word,
+        jyutping: row.jyutping,
+        code: row.code,
+        score: 0,
+      });
+    }
+    stmt.free();
+    
+    return { items: results };
+  }
+  
+  // Case 3: equals + word (e.g., =香)
+  if (!code_prefix && ref_literal && dimension === 'initial') {
+    // Match words with same initial as reference word
+    const refSql = 'SELECT jyutping FROM words WHERE char = ?';
+    const refStmt = db.prepare(refSql);
+    refStmt.bind([ref_literal]);
+    const refRow = refStmt.step() ? refStmt.getAsObject() : null;
+    refStmt.free();
+    
+    if (refRow && refRow.jyutping) {
+      // Extract first character of jyutping for initial matching
+      const initial = refRow.jyutping.charAt(0);
+      const sql = `
+        SELECT word, jyutping, code
+        FROM words
+        WHERE jyutping LIKE ?
+        ORDER BY word
+        LIMIT ? OFFSET ?
+      `;
+      const stmt = db.prepare(sql);
+      stmt.bind([`${initial}%`, limit, offset]);
+      
+      const results: QueryResult[] = [];
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        results.push({
+          word: row.word,
+          jyutping: row.jyutping,
+          code: row.code,
+          score: 0,
+        });
+      }
+      stmt.free();
+      
+      return { items: results };
+    }
+  }
+  
+  // Case 4: word + equals (e.g., 就=)
+  if (code_prefix && ref_literal && dimension === 'final') {
+    // Similar to case 3 but for final matching
+    const refSql = 'SELECT jyutping FROM words WHERE char = ?';
+    const refStmt = db.prepare(refSql);
+    refStmt.bind([ref_literal]);
+    const refRow = refStmt.step() ? refStmt.getAsObject() : null;
+    refStmt.free();
+    
+    if (refRow && refRow.jyutping) {
+      // For now, use simple pattern matching
+      const sql = `
+        SELECT word, jyutping, code
+        FROM words
+        WHERE jyutping LIKE ?
+        ORDER BY word
+        LIMIT ? OFFSET ?
+      `;
+      const stmt = db.prepare(sql);
+      stmt.bind([`%${refRow.jyutping.slice(-1)}`, limit, offset]);
+      
+      const results: QueryResult[] = [];
+      while (stmt.step()) {
+        const row = stmt.getAsObject();
+        results.push({
+          word: row.word,
+          jyutping: row.jyutping,
+          code: row.code,
+          score: 0,
+        });
+      }
+      stmt.free();
+      
+      return { items: results };
+    }
+  }
+  
+  // Fallback: try simple text search
+  return executeMaskFamily(parsed, db, mode, limit, offset);
+}
+
+/**
  * Execute mask family query (contains wildcards)
  */
 function executeMaskFamily(
@@ -648,17 +1072,17 @@ export class QueryEngine {
     
     // Parse and dispatch
     const parsed = normalizeAndParse(ctx.q);
-    return dispatch(parsed, dbCtx);
+    return await dispatch(parsed, dbCtx);
   }
   
   /**
    * Dispatch synonym mode queries
    */
-  private dispatchSynMode(ctx: SearchContext & { q: string }, dbCtx: SearchContext & { db: Database }): SearchResult {
+  private async dispatchSynMode(ctx: SearchContext & { q: string }, dbCtx: SearchContext & { db: Database }): Promise<SearchResult> {
     // For now, treat syn mode like normal search but with relation queries
     // Full implementation would handle mode switching and relation lookup
     const parsed = normalizeAndParse(ctx.q);
-    return dispatch(parsed, dbCtx);
+    return await dispatch(parsed, dbCtx);
   }
 }
 
