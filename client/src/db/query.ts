@@ -1,24 +1,43 @@
 /**
- * Query Engine for Canto-0243 PWA
- * Port of Python query logic to JavaScript
- * Interfaces with sql.js to execute queries against lyrics.db
+ * Query API - Simplified interface for the PWA client
+ * Uses the ported query engine from Python
  */
 
+import { 
+  QueryResult as EngineQueryResult,
+  QueryMode,
+  SearchResult,
+  QueryEngine,
+  queryEngine,
+  searchWords,
+  executeSearch,
+  normalizeQuery,
+  parseQuery,
+  normalizeAndParse,
+  QueryKind,
+  SearchContext,
+} from './query-engine';
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
-import { Database } from 'sql.js';
+
+// Re-export the main types and functions
+export type { 
+  QueryMode,
+  QueryResult as EngineQueryResult,
+  SearchResult,
+  SearchContext,
+};
+export { 
+  QueryKind,
+  normalizeQuery,
+  parseQuery,
+  normalizeAndParse,
+  executeSearch,
+  queryEngine,
+  searchWords,
+};
 
 /**
- * Query options for search
- */
-export interface QueryOptions {
-  query: string;
-  mode?: '0243' | '02493' | 'synonym';
-  limit?: number;
-  offset?: number;
-}
-
-/**
- * Query result structure
+ * Legacy QueryResult interface for backward compatibility
  */
 export interface QueryResult {
   word: string;
@@ -29,31 +48,59 @@ export interface QueryResult {
 }
 
 /**
- * Execute a raw SQL query
+ * Legacy QueryOptions interface
  */
-export async function executeSQL(sql: string, params: any[] = []): Promise<any[]> {
-  // Ensure database is initialized
-  if (!isDatabaseInitialized()) {
-    await initializeDatabase();
-  }
-  
-  const db = getDatabase();
-  
-  try {
-    const stmt = db.prepare(sql);
-    const result = stmt.getAsObject(params);
-    stmt.free();
-    return result ? [result] : [];
-  } catch (error) {
-    console.error('SQL execution error:', error);
-    return [];
+export interface QueryOptions {
+  query: string;
+  mode?: '0243' | '02493' | 'synonym';
+  limit?: number;
+  offset?: number;
+}
+
+/**
+ * Map legacy mode names to engine mode names
+ */
+function mapLegacyMode(mode?: string): QueryMode {
+  switch (mode) {
+    case '0243':
+      return 'm1';
+    case '02493':
+      return 'm2';
+    case 'synonym':
+      return 'syn';
+    default:
+      return '0243';
   }
 }
 
 /**
- * Execute a SQL query that returns multiple rows
+ * Search with legacy QueryOptions interface
+ * This maintains backward compatibility with existing code
  */
-export async function executeSQLAll(sql: string, params: any[] = []): Promise<any[]> {
+export async function search(options: QueryOptions): Promise<QueryResult[]> {
+  const mode = mapLegacyMode(options.mode);
+  const results = await searchWords(
+    options.query,
+    undefined, // code
+    undefined, // char
+    mode,
+    options.limit || 50,
+    options.offset || 0
+  );
+  
+  // Convert engine results to legacy format
+  return results.map((r: EngineQueryResult) => ({
+    word: r.word,
+    jyutping: r.jyutping,
+    code: r.code,
+    score: r.score,
+  }));
+}
+
+/**
+ * Execute raw SQL query - for advanced use cases
+ */
+export async function executeSQL(sql: string, params: any[] = []): Promise<any[]> {
   if (!isDatabaseInitialized()) {
     await initializeDatabase();
   }
@@ -63,6 +110,11 @@ export async function executeSQLAll(sql: string, params: any[] = []): Promise<an
   try {
     const stmt = db.prepare(sql);
     const results = [];
+    
+    if (params.length > 0) {
+      stmt.bind(params);
+    }
+    
     while (stmt.step()) {
       results.push(stmt.getAsObject());
     }
@@ -75,114 +127,40 @@ export async function executeSQLAll(sql: string, params: any[] = []): Promise<an
 }
 
 /**
- * Search words by 0243 code pattern
- */
-export async function searchByCode(pattern: string, limit: number = 50): Promise<QueryResult[]> {
-  const sql = `
-    SELECT word, jyutping, code 
-    FROM words 
-    WHERE code GLOB ? 
-    LIMIT ?
-  `;
-  
-  const results = await executeSQLAll(sql, [pattern, limit]);
-  return results.map((row: any) => ({
-    word: row.word,
-    jyutping: row.jyutping,
-    code: row.code,
-    score: 0 // Placeholder for ranking
-  }));
-}
-
-/**
- * Search words by jyutping pattern
- */
-export async function searchByJyutping(pattern: string, limit: number = 50): Promise<QueryResult[]> {
-  const sql = `
-    SELECT word, jyutping, code 
-    FROM words 
-    WHERE jyutping LIKE ?
-    LIMIT ?
-  `;
-  
-  const results = await executeSQLAll(sql, [`%${pattern}%`, limit]);
-  return results.map((row: any) => ({
-    word: row.word,
-    jyutping: row.jyutping,
-    code: row.code,
-    score: 0
-  }));
-}
-
-/**
- * Search words by Chinese text
- */
-export async function searchByText(text: string, limit: number = 50): Promise<QueryResult[]> {
-  const sql = `
-    SELECT word, jyutping, code 
-    FROM words 
-    WHERE word LIKE ?
-    LIMIT ?
-  `;
-  
-  const results = await executeSQLAll(sql, [`%${text}%`, limit]);
-  return results.map((row: any) => ({
-    word: row.word,
-    jyutping: row.jyutping,
-    code: row.code,
-    score: 0
-  }));
-}
-
-/**
- * Main search function that dispatches based on query pattern
- */
-export async function search(options: QueryOptions): Promise<QueryResult[]> {
-  const { query, mode = '0243', limit = 50, offset = 0 } = options;
-  
-  // Simple dispatch based on query pattern
-  // This will be enhanced with proper 0243 parsing logic
-  
-  // Check if query is numeric (0243/02493 pattern)
-  if (/^[\d=+?*_#%]+$/.test(query)) {
-    return searchByCode(query.replace(/[+?*_#%]/g, '?'), limit);
-  }
-  
-  // Check if query contains Chinese characters
-  if (/[\u4e00-\u9fff]/.test(query)) {
-    return searchByText(query, limit);
-  }
-  
-  // Check if query looks like jyutping
-  if (/^[a-z0-9\s]+$/.test(query.toLowerCase())) {
-    return searchByJyutping(query, limit);
-  }
-  
-  // Default: try text search
-  return searchByText(query, limit);
-}
-
-/**
  * Get database statistics
  */
 export async function getDatabaseStats(): Promise<{ wordCount: number; tableCount: number }> {
   const db = getDatabase();
   
-  const wordCount = await executeSQL("SELECT COUNT(*) as count FROM words");
-  const tables = await executeSQLAll("SELECT name FROM sqlite_master WHERE type='table'");
+  const wordCountResult = await executeSQL("SELECT COUNT(*) as count FROM words");
+  const tables = await executeSQL("SELECT name FROM sqlite_master WHERE type='table'");
   
   return {
-    wordCount: wordCount[0]?.count || 0,
+    wordCount: wordCountResult[0]?.count || 0,
     tableCount: tables.length
   };
 }
 
 /**
- * Get table schema for debugging
+ * Search by 0243 code pattern
  */
-export async function getTableSchema(tableName: string): Promise<any[]> {
-  return executeSQLAll(`PRAGMA table_info(${tableName})`);
+export async function searchByCode(pattern: string, limit: number = 50): Promise<QueryResult[]> {
+  return search({ query: pattern, mode: '0243', limit });
 }
 
-// Re-export database initialization
+/**
+ * Search by jyutping pattern
+ */
+export async function searchByJyutping(pattern: string, limit: number = 50): Promise<QueryResult[]> {
+  return search({ query: pattern, mode: '0243', limit });
+}
+
+/**
+ * Search by Chinese text
+ */
+export async function searchByText(text: string, limit: number = 50): Promise<QueryResult[]> {
+  return search({ query: text, mode: '0243', limit });
+}
+
+// Export database initialization
 export { initializeDatabase, getDatabase, isDatabaseInitialized } from './init';

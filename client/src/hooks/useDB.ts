@@ -10,7 +10,21 @@ import {
   isDatabaseInitialized,
   resetDatabase
 } from '../db/init';
-import { search, getDatabaseStats, QueryOptions, QueryResult } from '../db/query';
+import {
+  search,
+  getDatabaseStats,
+  QueryOptions,
+  QueryResult,
+  QueryMode,
+  QueryKind,
+  normalizeQuery,
+  parseQuery,
+  normalizeAndParse
+} from '../db/query';
+
+// Re-export query engine types and functions for convenience
+export type { QueryMode, QueryKind };
+export { normalizeQuery, parseQuery, normalizeAndParse };;
 
 /**
  * Database status type
