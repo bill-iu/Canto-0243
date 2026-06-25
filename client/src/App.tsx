@@ -4,7 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useDB, useSearch, QueryOptions } from './hooks/useDB';
+import { useDB, useSearch } from './hooks/useDB';
+import type { QueryOptions } from './hooks/useDB';
 import './App.css';
 
 function App() {

@@ -3,31 +3,30 @@
  * Uses the ported query engine from Python
  */
 
-import { 
-  QueryResult as EngineQueryResult,
+import type { 
   QueryMode,
   SearchResult,
-  QueryEngine,
+  SearchContext,
+  QueryKind,
+} from './query-engine';
+import { 
   queryEngine,
   searchWords,
   executeSearch,
   normalizeQuery,
   parseQuery,
   normalizeAndParse,
-  QueryKind,
-  SearchContext,
 } from './query-engine';
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
 
-// Re-export the main types and functions
+// Re-export the query engine types
 export type { 
   QueryMode,
-  QueryResult as EngineQueryResult,
   SearchResult,
   SearchContext,
+  QueryKind,
 };
 export { 
-  QueryKind,
   normalizeQuery,
   parseQuery,
   normalizeAndParse,

@@ -4,3 +4,5 @@ char	old_jyutping	old_code	action	value	note
 行	hong6	9	delete		錯列；已有 hang4／hang6／hong4
 巷	hong6	9	delete		錯列；巷讀 hong6 非 code 9 單字列
 不斷	but1 dyun6	34	set_code	32	
+半年	bun3 nin4	00	set_code	40	
+半年	bun4 nin4	00	set_jyutping	bun3 nin4	

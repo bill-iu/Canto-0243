@@ -8,13 +8,13 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['lyrics.db'],
+      includeAssets: [],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,db,woff2}'],
+        globPatterns: ['**/*.{js,css,html,woff2}'],
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB cache limit
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/.*\.db$/,
+            urlPattern: /\/lyrics\.db$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'database-cache',

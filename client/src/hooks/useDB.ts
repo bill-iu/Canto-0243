@@ -13,18 +13,20 @@ import {
 import {
   search,
   getDatabaseStats,
-  QueryOptions,
-  QueryResult,
-  QueryMode,
-  QueryKind,
   normalizeQuery,
   parseQuery,
   normalizeAndParse
 } from '../db/query';
+import type {
+  QueryOptions,
+  QueryResult,
+  QueryMode,
+  QueryKind
+} from '../db/query';
 
 // Re-export query engine types and functions for convenience
-export type { QueryMode, QueryKind };
-export { normalizeQuery, parseQuery, normalizeAndParse };;
+export type { QueryMode, QueryKind, QueryOptions, QueryResult };
+export { normalizeQuery, parseQuery, normalizeAndParse };
 
 /**
  * Database status type
