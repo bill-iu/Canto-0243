@@ -123,6 +123,16 @@ class QueryEngine:
         if route_kind == RouteKind.MASK_FAMILY:
             return _mask_family_search_result(parsed, ctx)
 
+        if route_kind == RouteKind.HETERONYM:
+            from app.services.heteronym_code_executor import execute_heteronym_code_search
+            from app.services.query_types import HeteronymCodeQuery
+
+            assert isinstance(parsed, HeteronymCodeQuery)
+            items = execute_heteronym_code_search(
+                parsed, mode=mode, limit=limit, offset=offset, db=db
+            )
+            return SearchResult(items=items)
+
         if route_kind == RouteKind.RELATION:
             assert isinstance(parsed, RelationLookupQuery)
             result = relation_executor.relation_lookup_page(parsed, mode=mode, limit=limit, offset=offset)

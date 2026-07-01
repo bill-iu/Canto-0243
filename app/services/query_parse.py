@@ -11,7 +11,8 @@ from app.services.query_grammar.equals import (
     is_hybrid_tail_equals_alias,
 )
 from app.services.query_grammar.mask import looks_like_mask_query
-from app.services.query_grammar.relation import parse_relation_syntax
+from app.services.query_grammar.heteronym import parse_heteronym_code_query
+from app.services.query_grammar.relation import parse_doubled_syllable_syntax, parse_relation_syntax
 from app.services.query_grammar.rhyme import (
     parse_code_ref_middle_rhyme_query,
     parse_code_ref_rhyme_contradiction_hint,
@@ -44,6 +45,8 @@ from app.services.query_types import (
     CompoundAntQuery,
     CompoundConnectAntQuery,
     CompoundConnectSynQuery,
+    CompoundDoubledSyllableQuery,
+    HeteronymCodeQuery,
     CompoundSynQuery,
     DigitCodeQuery,
     EqualsQuery,
@@ -124,6 +127,21 @@ def normalize_and_parse(q: str) -> ParsedQuery:
 def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     """分派優先序：缺字型兜底（step 7）之前嘅分類。mask 形狀探針共用。"""
     relation_parsed = parse_relation_syntax(q)
+    doubled_parsed = parse_doubled_syllable_syntax(q)
+    if doubled_parsed:
+        return CompoundDoubledSyllableQuery(
+            code_prefix=doubled_parsed.get("code_prefix"),
+            rhyme_char=doubled_parsed.get("rhyme_char"),
+        )
+    heteronym_parsed = parse_heteronym_code_query(q)
+    if heteronym_parsed:
+        if heteronym_parsed["kind"] == "heteronym_unequal":
+            return UnmatchedQuery(raw_q=q, hint=heteronym_parsed["hint"])
+        return HeteronymCodeQuery(
+            left_template=heteronym_parsed["left_template"],
+            right_template=heteronym_parsed["right_template"],
+            width=heteronym_parsed["width"],
+        )
     if relation_parsed:
         if relation_parsed["kind"] == "compound_connect_syn":
             return CompoundConnectSynQuery(

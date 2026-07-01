@@ -145,6 +145,21 @@ def preload_compound_syn_runtime_cache() -> None:
     _best_effort("近義複合（~~）快照", _run)
 
 
+def preload_doubled_syllable_and_heteronym_caches() -> None:
+    from app.domain.lexicon.heteronym_index import ensure_heteronym_index
+    from app.domain.relations.compound_doubled_syllable import ensure_doubled_syllable_snapshot
+
+    def _run() -> None:
+        db = SessionLocal()
+        try:
+            ensure_doubled_syllable_snapshot(db)
+            ensure_heteronym_index(db)
+        finally:
+            db.close()
+
+    _best_effort("同音節疊字（$$）與同音異讀索引", _run)
+
+
 def _run_background_phase(phase: str, fn: Callable[[], None]) -> None:
     _set_background_phase(phase, status="loading", progress=0.05)
     try:
@@ -180,6 +195,11 @@ def start_background_runtime_preload() -> None:
     threading.Thread(
         target=_run_background_phase,
         args=("compound_ant", preload_compound_ant_runtime_cache),
+        daemon=True,
+    ).start()
+    threading.Thread(
+        target=_run_background_phase,
+        args=("doubled_syllable", preload_doubled_syllable_and_heteronym_caches),
         daemon=True,
     ).start()
 

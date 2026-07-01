@@ -9,6 +9,7 @@ from typing import Any, Dict, List
 
 from app.lexicon.candidates import LexiconCandidate
 from app.utils.jyutping_codec import get_0243_code
+from ingest.lexicon_validate import is_valid_word_lexicon_reading
 from ingest.lexicon_raw_paths import resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
 
@@ -63,6 +64,8 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
         code = str(item.get("code") or "").strip() or (get_0243_code(jyutping) or "")
         if not char or not jyutping or not code or not _CJK.search(char):
             continue
+        if len(char) >= 2 and not is_valid_word_lexicon_reading(char, jyutping):
+            continue
         key = (char, jyutping)
         if key in seen:
             continue
@@ -81,6 +84,8 @@ def _append_candidate(
 ) -> None:
     code = get_0243_code(jyutping) or ""
     if not char or not jyutping or not code or not _CJK.search(char):
+        return
+    if len(char) >= 2 and not is_valid_word_lexicon_reading(char, jyutping):
         return
     key = (char, jyutping)
     if key in seen:

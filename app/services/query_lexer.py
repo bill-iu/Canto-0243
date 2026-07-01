@@ -30,6 +30,8 @@ def normalize_query_syntax(q: str) -> str:
     q = q.replace("＋", "+")
     q = q.replace("*", CODE_TAIL_MIDDLE)
     q = q.replace("！！", "!!").replace("～～", "~~")
+    q = q.replace("＄＄", "$$").replace("＄", "$")
+    q = q.replace("／", "/")
     return q.replace("！", "!").replace("～", "~").replace("？", "?")
 
 
@@ -93,6 +95,9 @@ def normalize_search_query_core(q: str) -> str:
     )
 
     q = normalize_query_syntax(normalize_code_tail_separators(q.strip()))
+    from app.services.jyutping_anchor import normalize_hanzi_dollar_syllable_anchors
+
+    q = normalize_hanzi_dollar_syllable_anchors(q)
     q = normalize_partial_rhyme_mask_query(q)
     q = normalize_partial_initial_mask_query(q)
     q = normalize_jyutping_slot_connectors(q)

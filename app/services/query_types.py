@@ -19,6 +19,8 @@ class QueryKind(str, Enum):
     RELATION_LOOKUP = "relation_lookup"
     COMPOUND_ANT = "compound_ant"
     COMPOUND_SYN = "compound_syn"
+    COMPOUND_DOUBLED_SYLLABLE = "compound_doubled_syllable"
+    HETERONYM_CODE = "heteronym_code"
     HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
     PLUS_ANCHOR = "plus_anchor"
@@ -66,6 +68,27 @@ class CompoundSynQuery:
     @property
     def kind(self) -> QueryKind:
         return QueryKind.COMPOUND_SYN
+
+
+@dataclass(frozen=True)
+class CompoundDoubledSyllableQuery:
+    code_prefix: Optional[str]
+    rhyme_char: Optional[str]
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.COMPOUND_DOUBLED_SYLLABLE
+
+
+@dataclass(frozen=True)
+class HeteronymCodeQuery:
+    left_template: str
+    right_template: str
+    width: int
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.HETERONYM_CODE
 
 
 @dataclass(frozen=True)
@@ -336,6 +359,8 @@ class UnmatchedQuery:
 ParsedQuery = Union[
     RelationLookupQuery,
     CompoundSynQuery,
+    CompoundDoubledSyllableQuery,
+    HeteronymCodeQuery,
     CompoundAntQuery,
     CompoundConnectSynQuery,
     CompoundConnectAntQuery,

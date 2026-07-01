@@ -66,6 +66,40 @@ def _is_hybrid_rhyme_letters(letters: str) -> bool:
     return classify_latin_anchor(text) == "rhyme_letters"
 
 
+def default_syllable_letters_for_anchor_char(char: str) -> Optional[str]:
+    """漢字完整音節錨：rime 預設讀音嘅音節字母（唔含聲調）。"""
+    from app.lexicon.rime_char_index import get_rime_char_entries
+
+    entries = get_rime_char_entries(char)
+    if not entries:
+        return None
+    token = (entries[0].jyutping or "").split()[0]
+    syl = _parse_syllable_token(token)
+    return syl.letters if syl else None
+
+
+def normalize_hanzi_dollar_syllable_anchors(q: str) -> str:
+    """`$`+單漢字 → 拉丁完整音節字母；保留 `$$` 供同音節疊字查詢。"""
+    if not q or "$" not in q:
+        return q
+    out: list[str] = []
+    i = 0
+    while i < len(q):
+        if q[i] == "$" and i + 1 < len(q) and q[i + 1] == "$":
+            out.append("$$")
+            i += 2
+            continue
+        if q[i] == "$" and i + 1 < len(q) and re.fullmatch(r"[一-龥]", q[i + 1]):
+            letters = default_syllable_letters_for_anchor_char(q[i + 1])
+            if letters:
+                out.append(letters)
+                i += 2
+                continue
+        out.append(q[i])
+        i += 1
+    return "".join(out)
+
+
 def parse_dual_phoneme_anchor_query(q: str) -> Optional[dict]:
     """歧義粵拼錨：m／ng 碼夾或三格中格 → 雙列（ADR-0009）。"""
     m = re.match(rf"^(\?){_SLOT}?([a-zA-Z]+)(\?)$", q)

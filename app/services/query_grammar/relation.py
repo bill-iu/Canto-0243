@@ -14,6 +14,20 @@ COMPOUND_CONNECT_SYN_RE = re.compile(
 )
 COMPOUND_SYN_RE = re.compile(r"^(\d*)~~([\u4e00-\u9fff])?$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
+COMPOUND_DOUBLED_SYLLABLE_RE = re.compile(r"^(\d*)\$\$([\u4e00-\u9fff])?$")
+
+
+def parse_doubled_syllable_syntax(q: str) -> Optional[dict]:
+    m = COMPOUND_DOUBLED_SYLLABLE_RE.match(q)
+    if not m:
+        return None
+    prefix = m.group(1) or ""
+    rhyme_char = m.group(2) or None
+    return {
+        "kind": "compound_doubled_syllable",
+        "code_prefix": prefix or None,
+        "rhyme_char": rhyme_char,
+    }
 
 
 def parse_relation_syntax(q: str) -> Optional[dict]:

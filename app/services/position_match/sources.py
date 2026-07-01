@@ -269,6 +269,17 @@ def _resolve_mask_family_source(
     from app.domain.lexicon.ranking import search_result_sort_key
 
     connective = spec.extra.get("connective")
+    if spec.compound_kind == "doubled_syllable":
+        rhyme_char = _compound_rhyme_char(spec)
+        from app.domain.relations.compound_doubled_syllable import search_doubled_syllable
+
+        tiers = search_doubled_syllable(db, rhyme_char=rhyme_char, width=spec.width)
+        if not tiers:
+            return None, None
+        source = CompoundCandidateSource(db, frozenset(tiers.keys()))
+        sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
+        return source, sort_key
+
     if spec.compound_kind == "syn":
         rhyme_char = _compound_rhyme_char(spec)
         if connective and spec.width == 3:

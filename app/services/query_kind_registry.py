@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 class RouteKind(str, Enum):
     DIGIT = "digit"
     MASK_FAMILY = "mask_family"
+    HETERONYM = "heteronym"
     RELATION = "relation"
     LOOKUP = "lookup"
     UNMATCHED = "unmatched"
@@ -29,6 +30,8 @@ class QueryKindMeta:
 QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.RELATION_LOOKUP: QueryKindMeta(RouteKind.RELATION),
     QueryKind.COMPOUND_SYN: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
+    QueryKind.COMPOUND_DOUBLED_SYLLABLE: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
+    QueryKind.HETERONYM_CODE: QueryKindMeta(RouteKind.HETERONYM),
     QueryKind.COMPOUND_ANT: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.HYBRID_TAIL_EQUALS_ALIAS: QueryKindMeta(RouteKind.MASK_FAMILY),
     QueryKind.EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
