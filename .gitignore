@@ -17,6 +17,7 @@ build/
 
 # 資料庫與備份
 *.db
+!tests/fixtures/*.db
 *.db.bak
 *.backup
 backup/
