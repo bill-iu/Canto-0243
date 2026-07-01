@@ -6,10 +6,12 @@ export const VIEW = Object.freeze({
   GUIDE: "guide",
   RELATION: "relation",
   CORRECTIONS: "corrections",
+  ABOUT: "about",
 });
 
 export function tabLabel(tab) {
   if (tab.view === VIEW.GUIDE) return "搜尋教學";
+  if (tab.view === VIEW.ABOUT) return "關於 Canto-0243";
   if (tab.view === VIEW.RELATION) return "補關係";
   if (tab.view === VIEW.CORRECTIONS) return "詞庫勘誤";
   const q = (tab.q || "").trim();
@@ -79,6 +81,17 @@ export function createCorrectionsTab({ id, prefetchChar = "" } = {}) {
   };
 }
 
+export function createAboutTab({ id } = {}) {
+  return {
+    id,
+    view: VIEW.ABOUT,
+    q: "",
+    results: [],
+    offset: 0,
+    total: null,
+  };
+}
+
 /** ponytail: maintainer 入口；builder 輸入 debug 開勘誤分頁，唔當查詢。 */
 export function isCorrectionsSearchCommand(q) {
   return (q || "").trim().toLowerCase() === "debug";
@@ -112,6 +125,10 @@ export function buildUrlSearchParams(tab, mode = "m1") {
     params.set("view", "corrections");
     return params;
   }
+  if (tab.view === VIEW.ABOUT) {
+    params.set("view", "about");
+    return params;
+  }
   if (tab.q) params.set("q", tab.q);
   return params;
 }
@@ -122,6 +139,7 @@ export function parseUrlSearchParams(params) {
   if (rawView === "guide") view = VIEW.GUIDE;
   else if (rawView === "relation") view = VIEW.RELATION;
   else if (rawView === "corrections") view = VIEW.CORRECTIONS;
+  else if (rawView === "about") view = VIEW.ABOUT;
   return {
     q: params.get("q") || "",
     mode: params.get("mode") || "m1",
@@ -173,6 +191,7 @@ export function deserializeSession(raw) {
       if (t.view === VIEW.CORRECTIONS) {
         return createCorrectionsTab({ id: t.id, prefetchChar: t.prefetchChar });
       }
+      if (t.view === VIEW.ABOUT) return createAboutTab({ id: t.id });
       return createSearchTab({
         id: t.id,
         q: t.q || "",
@@ -232,6 +251,10 @@ export function applyUrlToTabs(existingState, parsed) {
   }
   if (parsed.view === VIEW.CORRECTIONS) {
     const tab = createCorrectionsTab({ id: 1 });
+    return { activeId: 1, nextTabId: 2, tabs: [tab] };
+  }
+  if (parsed.view === VIEW.ABOUT) {
+    const tab = createAboutTab({ id: 1 });
     return { activeId: 1, nextTabId: 2, tabs: [tab] };
   }
   const tab = createSearchTab({ id: 1, q: parsed.q });

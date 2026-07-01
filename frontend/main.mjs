@@ -30,6 +30,7 @@ import {
   showSearch,
   showGuide,
   showRelation,
+  showAbout,
   goHome,
 } from "./tabs-ui.mjs";
 import {
@@ -141,6 +142,11 @@ $.guideTopBtn.addEventListener("click", () => showGuide());
 $.guideMenuBtn.addEventListener("click", () => showGuide());
 $.relationTopBtn.addEventListener("click", () => showRelation());
 $.relationMenuBtn.addEventListener("click", () => showRelation());
+$.aboutTopBtn.addEventListener("click", () => showAbout());
+document.getElementById("aboutBackToSearchBtn")?.addEventListener("click", () => {
+  showSearch();
+  $.searchInput.focus();
+});
 $.backToSearchBtn.addEventListener("click", () => {
   showSearch();
   $.searchInput.focus();
@@ -294,6 +300,7 @@ window.addEventListener("popstate", (event) => {
     if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
     if (parsed.view === VIEW.RELATION) return t.view === VIEW.RELATION;
     if (parsed.view === VIEW.CORRECTIONS) return t.view === VIEW.CORRECTIONS;
+    if (parsed.view === VIEW.ABOUT) return t.view === VIEW.ABOUT;
     return t.view === VIEW.SEARCH;
   });
   if (urlTab) shell.tabState = { ...shell.tabState, activeId: urlTab.id };
