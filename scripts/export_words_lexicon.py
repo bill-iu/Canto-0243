@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export words-table rows as 詞級標音 JSON for import_data / static_index."""
+"""Export words-table rows as 詞級標音 JSON for release sidecar / static_index."""
 
 from __future__ import annotations
 

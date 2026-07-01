@@ -4,7 +4,7 @@ from app.database import Base
 # 支援 vector embeddings（semantic similarity 排序優化）
 # - PostgreSQL + pgvector: 使用 Vector(384) + hnsw index (見 database.py ensure)
 # - SQLite（本地開發）: 退回 String（儲存 JSON 序列化的 float list）
-# 兩邊都在 import_data 時計算 embedding，並在搜尋排序中融入 semantic score
+# 兩邊都在 ingest build-db 時計算 embedding，並在搜尋排序中融入 semantic score
 # 注意：根據 Supabase Postgres Best Practices，embedding 計算已隔離到 dev/ingest (generate_relationships.py)
 try:
     from pgvector.sqlalchemy import Vector

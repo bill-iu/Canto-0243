@@ -7,8 +7,7 @@ License: Public domain (credit words.hk appreciated).
 
 The wordslist JSON/CSV is published via the words.hk browser UI; there is no
 stable raw URL in this repo. This script writes a manifest and prints manual
-steps. Converting wordslist → 0243-coded **詞級標音** for `import_data.py` remains a
-maintainer step (see README § 資料來源 · THIRD_PARTY_NOTICES § tier 3).
+steps. Enable `words_hk` in `data/lexicon/sources.yaml` and run `python -m ingest build-db`
 
 Usage:
   python scripts/fetch/fetch_words_hk_wordslist.py
@@ -43,8 +42,8 @@ def write_manifest(*, copied: str | None = None) -> Path:
         "raw_file": copied,
         "notes": (
             "Download JSON or CSV from the words.hk wordslist page in a browser, "
-            "then pass --input to this script. Derive 詞級標音 for import_data.py separately "
-            "(see README Maintainer section)."
+            "then pass --input to this script. Ingest via `python -m ingest build-db` "
+            "(see data/lexicon/sources.yaml)."
         ),
     }
     MANIFEST.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -77,11 +77,10 @@ def main(argv: list[str] | None = None) -> int:
         failed += _run(cmd, dry_run=args.dry_run, label=label) != 0
 
     print("\n=== Next steps (maintainer) ===")
-    print("  1. words.hk: download JSON/CSV from the wordslist page; optional:")
-    print("       python scripts/fetch/fetch_words_hk_wordslist.py --input <file>")
-    print("  2. Derive multi-char 詞級標音 from upstream lexicons (see README / THIRD_PARTY_NOTICES)")
-    print("  3. python scripts/ingest/import_data.py   # → lyrics.db words table")
-    print("  4. python -m ingest normalize --source current_static && python -m ingest build-relations")
+    print("  1. words.hk / 開放詞典: fetch or place raw JSON (see data/lexicon/sources.yaml)")
+    print("  2. Full lexicon rebuild (per-source manifest, no CC-Canto):")
+    print("       python -m ingest build-db")
+    print("  3. Relations: python -m ingest normalize --source current_static && python -m ingest build-relations")
 
     return 1 if failed else 0
 

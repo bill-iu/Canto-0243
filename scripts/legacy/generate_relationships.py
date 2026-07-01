@@ -14,7 +14,7 @@ generate_relationships.py
   - 優先使用高品質的 static thesaurus（cilin、antisem、guotong）。
   - embedding 只是「可選」的輔助發現工具（只在 dev 環境執行本 script 時才需要）。
   - 產生的關係會標記 source，方便之後審計或過濾。
-  - 新詞建議先用 scripts/ingest/import_data.py 加入，之後再跑本 script 產生關係（或本 script 支援自動處理新詞）。
+  - 新詞經 `python -m ingest build-db` 或關係補錄寫入 **詞條庫** 後，再跑本 script 產生關係（或本 script 支援自動處理新詞）。
 
 使用方式：
   1. 安裝 dev 依賴（只有這時候才需要 ML 套件）：
