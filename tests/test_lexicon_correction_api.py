@@ -82,11 +82,11 @@ class LexiconCorrectionApiTests(unittest.TestCase):
             rows = load_corrections(tsv_path)
             self.assertEqual(len(rows), 1)
             self.assertEqual(rows[0].char, "不斷")
+            self.assertEqual(rows[0].old_code, "34")
             self.assertEqual(rows[0].action, "set_code")
             self.assertEqual(rows[0].value, "32")
-            self.assertTrue(rows[0].is_pending)
 
-    def test_queue_duplicate_pending_rejected(self):
+    def test_queue_duplicate_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:
             tsv_path = Path(tmp) / "c.tsv"
             client, _Session = self._client(tsv_path=tsv_path)
@@ -103,7 +103,7 @@ class LexiconCorrectionApiTests(unittest.TestCase):
 
             second = client.post("/lexicon/corrections", json=payload)
             self.assertEqual(second.status_code, 409)
-            self.assertIn("pending", second.json()["detail"])
+            self.assertIn("相同", second.json()["detail"])
 
             rows = load_corrections(tsv_path)
             self.assertEqual(len(rows), 1)

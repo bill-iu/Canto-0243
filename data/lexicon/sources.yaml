@@ -1,0 +1,41 @@
+# Lexicon SSOT manifest (CONTEXT § 詞條源清單)
+# enabled: include in `python -m ingest build-db` without --lexicon-source
+
+sources:
+  - id: rime
+    type: rime
+    parser: rime_char
+    license: CC-BY-4.0
+    enabled_by_default: true
+    raw_path: data/rime/char.csv
+    source_rank: 100
+    attribution: CanCLID/rime-cantonese-upstream char.csv
+
+  - id: words_hk
+    type: lexicon_json
+    parser: lexicon_json
+    license: public-domain
+    enabled_by_default: false
+    local_only: true
+    raw_path: data/lexicon/raw/words_hk/wordslist.json
+    source_rank: 90
+    attribution: words.hk wordslist
+
+  - id: kaifang
+    type: lexicon_json
+    parser: lexicon_json
+    license: CC-BY-3.0
+    enabled_by_default: false
+    local_only: true
+    raw_path: data/lexicon/raw/kaifang/cantonese.json
+    source_rank: 80
+    attribution: 開放詞典 · 粵語詞典
+
+  - id: curated
+    type: lexicon_json
+    parser: lexicon_json
+    license: project
+    enabled_by_default: true
+    raw_path: data/lexicon/curated_lexicon.json
+    source_rank: 20
+    attribution: Maintainer curated 詞級標音

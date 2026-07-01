@@ -107,6 +107,17 @@ Index("idx_word_rel_word_type", WordRelation.word_id, WordRelation.relation_type
 Index("idx_word_rel_related_type", WordRelation.related_id, WordRelation.relation_type)
 
 
+class WordSource(Base):
+    """Provenance: which SSOT source contributed a canonical word row."""
+
+    __tablename__ = "word_sources"
+    __table_args__ = (UniqueConstraint("word_id", "source", name="uq_word_source"),)
+
+    id = Column(_id_type, primary_key=True, autoincrement=True)
+    word_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
+    source = Column(String(32), nullable=False)
+
+
 @event.listens_for(WordRelation, "before_insert")
 @event.listens_for(WordRelation, "before_update")
 def _canonicalize_word_relation(_mapper, _connection, target: WordRelation) -> None:

@@ -31,6 +31,14 @@
 python -m ingest expand-antonyms-syn-bridge --fresh
 ```
 
+烘焙 git 快照（embedding 後寫入 TSV）：
+
+```bash
+python -m ingest bake-syn-bridge
+```
+
+只匯出既有 `ant_syn_bridge` 列、唔跑模型：`python -m ingest bake-syn-bridge --export-only`
+
 | 預設 | 說明 |
 |------|------|
 | `--fresh` | 清 checkpoint，由 offset 0 開始 |

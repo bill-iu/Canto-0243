@@ -1,0 +1,12 @@
+sources:
+  - id: rime
+    parser: rime_char
+    enabled_by_default: true
+    raw_path: data/rime/fixtures/char_sample.csv
+    source_rank: 100
+
+  - id: curated
+    parser: lexicon_json
+    enabled_by_default: true
+    raw_path: data/lexicon/fixtures/word_lexicon.json
+    source_rank: 20

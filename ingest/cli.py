@@ -37,6 +37,7 @@ from ingest.lexicon_corrections import (
     post_apply_exports,
     save_corrections,
 )
+from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
 
 
 def cmd_report(_: argparse.Namespace) -> int:
@@ -382,36 +383,144 @@ def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_build_db(args: argparse.Namespace) -> int:
+    from app.database import Base, engine
+    from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST, build_lexicon_words
+    from ingest.lexicon_truncate import truncate_lexicon_core
+    from ingest.bridge_snapshot import ingest_bridge_snapshot
+    from ingest.manual_relations_apply import apply_manual_relations
+
+    manifest = args.lexicon_manifest or str(DEFAULT_LEXICON_MANIFEST)
+    print(f"==> build-db manifest: {manifest}")
+
+    Base.metadata.create_all(bind=engine)
+    ensure_syn_ant_edges_table()
+    ensure_word_relations_table()
+
+    with SessionLocal() as db:
+        print("==> truncate words / relations / staging")
+        truncate_lexicon_core(db)
+        print("==> lexicon SSOT ingest + overlay")
+        n_words = build_lexicon_words(db, manifest_path=manifest)
+        db.commit()
+        print(f"    persisted {n_words} word(s)")
+
+    if args.skip_relations:
+        print("skip-relations: done")
+        return _build_db_exports(args)
+
+    steps = [
+        ("normalize", lambda: cmd_normalize(
+            argparse.Namespace(manifest=None, source=None, allow_external=False, append=False)
+        )),
+        ("build-relations", lambda: cmd_build_relations(
+            argparse.Namespace(allow_external=False, source=None, batch_size=300, batched=False)
+        )),
+        ("ingest-cilin", lambda: cmd_ingest_cilin(
+            argparse.Namespace(
+                manifest=None,
+                source_path=None,
+                staging=False,
+                chunk_size=300,
+                dedupe_existing=True,
+                allow_external=False,
+                replace_relations=True,
+            )
+        )),
+        ("expand-antonyms-cilin", lambda: cmd_expand_antonyms_cilin(
+            argparse.Namespace(
+                source=None,
+                cilin_syn_source="cilin",
+                confidence=0.75,
+                dedupe_existing=True,
+                batch_size=300,
+                replace_relations=True,
+            )
+        )),
+        ("expand-antonyms-mirror", lambda: cmd_expand_antonyms_mirror(
+            argparse.Namespace(
+                source=None,
+                no_static=False,
+                confidence=0.72,
+                dedupe_existing=True,
+                batch_size=300,
+                replace_relations=True,
+            )
+        )),
+        ("ingest-compound-ant", lambda: cmd_ingest_compound_ant(
+            argparse.Namespace(
+                list_path=None,
+                source=None,
+                confidence=0.9,
+                dedupe_existing=True,
+                replace_relations=True,
+            )
+        )),
+    ]
+    for label, fn in steps:
+        print(f"==> {label}")
+        rc = fn()
+        if rc != 0:
+            print(f"{label} failed with exit {rc}", file=sys.stderr)
+            return rc
+
+    with SessionLocal() as db:
+        print("==> bridge snapshot")
+        bstats = ingest_bridge_snapshot(db)
+        db.commit()
+        print(f"    bridge: {bstats}")
+        print("==> manual relations")
+        mcount = apply_manual_relations(db)
+        db.commit()
+        print(f"    manual rows: {mcount}")
+
+    return _build_db_exports(args)
+
+
+def _build_db_exports(args: argparse.Namespace) -> int:
+    if args.no_exports:
+        return 0
+    print("==> export words-lexicon.json + README word count")
+    try:
+        post_apply_exports()
+    except Exception as exc:
+        print(f"export failed: {exc}", file=sys.stderr)
+        return 1
+    if args.copy_public:
+        import shutil
+        src = REPO_ROOT / "lyrics.db"
+        dest = REPO_ROOT / "client" / "public" / "lyrics.db"
+        if src.is_file():
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dest)
+            print(f"    copied -> {dest}")
+    return 0
+
+
 def cmd_apply_lexicon_corrections(args: argparse.Namespace) -> int:
     path = Path(args.file)
     rows = load_corrections(path)
     if args.check or not args.apply:
         return check_status(rows, batch_n=args.batch_n)
 
-    pending = [r for r in rows if r.is_pending]
-    if not pending:
-        print("No pending corrections.")
+    if not rows:
+        print("No corrections.")
         return 0
 
     with SessionLocal() as db:
         try:
-            updated, _logs = apply_pending(db, rows, dry_run=False)
+            apply_pending(db, rows, dry_run=False)
             db.commit()
         except Exception as exc:
             db.rollback()
             print(f"apply failed (rolled back): {exc}", file=sys.stderr)
             return 1
 
-    save_corrections(updated, path)
-    print(f"Updated {path}")
-
     if not args.no_exports:
         print("==> Export words-lexicon.json + README word count...")
         post_apply_exports()
 
-    remaining = sum(1 for r in updated if r.is_pending)
-    print(f"Done. {remaining} pending remaining.")
-    print("Next: git commit TSV (+ README if changed), then 詞庫發佈 per docs/release.md")
+    print("Done. Prefer: python -m ingest build-db for full lexicon rebuild.")
     return 0
 
 
@@ -602,6 +711,36 @@ def main(argv: list[str] | None = None) -> int:
         help="Skip words-lexicon export and README word-count sync",
     )
 
+    p_build_db = sub.add_parser("build-db", help="Wipe and rebuild lyrics.db from SSOT manifest")
+    p_build_db.add_argument(
+        "--lexicon-manifest",
+        default=None,
+        help="Path to data/lexicon/sources.yaml (default: repo manifest)",
+    )
+    p_build_db.add_argument("--skip-relations", action="store_true", help="Only rebuild words tables")
+    p_build_db.add_argument("--no-exports", action="store_true", help="Skip export + README sync")
+    p_build_db.add_argument(
+        "--copy-public",
+        action="store_true",
+        help="Copy lyrics.db to client/public/ after build",
+    )
+
+    p_migrate = sub.add_parser(
+        "migrate-legacy-snapshots",
+        help="Export bridge + manual relations from legacy lyrics.db into TSV sidecars",
+    )
+    p_migrate.add_argument("--db", default="lyrics.db", help="Legacy lyrics.db path")
+    p_migrate.add_argument(
+        "--bridge-out",
+        default="data/syn_ant/ant_syn_bridge_pairs.tsv",
+        help="Bridge snapshot TSV output",
+    )
+    p_migrate.add_argument(
+        "--manual-out",
+        default="data/relations/manual_relations.tsv",
+        help="Manual relations TSV output",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
@@ -623,7 +762,27 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_ingest_compound_ant(args)
     if args.command == "apply-lexicon-corrections":
         return cmd_apply_lexicon_corrections(args)
+    if args.command == "build-db":
+        return cmd_build_db(args)
+    if args.command == "migrate-legacy-snapshots":
+        return cmd_migrate_legacy_snapshots(args)
     return 1
+
+
+def cmd_migrate_legacy_snapshots(args: argparse.Namespace) -> int:
+    from ingest.migrate_legacy import export_bridge_snapshot, export_manual_relations
+
+    db = Path(args.db)
+    if not db.is_file():
+        print(f"db not found: {db}", file=sys.stderr)
+        return 1
+    bridge_out = Path(args.bridge_out)
+    manual_out = Path(args.manual_out)
+    nb = export_bridge_snapshot(db, bridge_out)
+    nm = export_manual_relations(db, manual_out)
+    print(f"exported bridge pairs: {nb} -> {bridge_out}")
+    print(f"exported manual relations: {nm} -> {manual_out}")
+    return 0
 
 
 __all__ = ["main"]
