@@ -35,7 +35,9 @@
 ## 步驟 1 — 發佈主理（現行：Windows 腳本）
 
 ```powershell
-# 前置：lyrics.db 在 repo 根目錄（可為本機 ingest，唔一定要 commit）；gh auth login
+# 前置：lyrics.db 在 repo 根目錄（維護者本機 build-db，唔一定要 commit）：
+#   python scripts/bootstrap_data.py
+#   python -m ingest build-db
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 
@@ -75,10 +77,10 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 **執行者**：發佈主理。**前置**：該 tag 已有 **zip + x86_64 tar**。
 
 ```powershell
-# 主理機：ingest 後（近義橋規則變更時見 docs/ingest-bridge-ant.md）
-python -m ingest expand-antonyms-syn-bridge --fresh   # 可選；品質閘門更新後
-# 詞條標音勘誤累積套用後見 docs/lexicon-corrections.md
-python -m ingest apply-lexicon-corrections --apply   # 可選；改 db + export/json + README 詞條數
+# 主理機：詞條／關係變更後全量重建（見 docs/lexicon-corrections.md、docs/ingest-bridge-ant.md）
+python scripts/bootstrap_data.py   # 若 raw 未齊
+python -m ingest build-db
+# 可選 hotfix（唔跑全量）：python -m ingest apply-lexicon-corrections --apply
 gh release upload v1.7.0 lyrics.db --clobber
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
 gh release upload v1.7.0 dist/words-lexicon.json --clobber
@@ -131,7 +133,7 @@ gh release upload v1.7.0 dist/words-lexicon.json --clobber
 要。須 rebuild 各平台 Portable。創作者可感知變更 → bump 新 semver；純打包修正 → 可刷新同一 tag。
 
 **Q：ingest 完只想換詞庫？**  
-**詞庫發佈**（發佈主理）；須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。若只更新近義橋反義，先依 [ingest-bridge-ant.md](ingest-bridge-ant.md) 重跑並驗收。
+**詞庫發佈**（發佈主理）：`python -m ingest build-db` 重建後 upload db／json。須 zip + x86_64 tar 已在該 tag。Portable zip／tar 唔重建。
 
 **Q：近義橋 ingest 中斷點？**  
 重新執行 `expand-antonyms-syn-bridge`（無 `--fresh`）會 resume checkpoint；從頭重跑用 `--fresh`。唔好手動刪 lock 檔。

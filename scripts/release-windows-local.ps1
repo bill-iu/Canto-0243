@@ -24,7 +24,7 @@ function Invoke-Gh {
 }
 
 if (-not (Test-Path $DbPath)) {
-    throw "lyrics.db not found at repo root"
+    throw "lyrics.db not found at repo root. Run: python scripts/bootstrap_data.py && python -m ingest build-db"
 }
 
 Write-Host "==> Canto-0243 local Windows release"
