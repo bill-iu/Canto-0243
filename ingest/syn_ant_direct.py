@@ -84,6 +84,18 @@ def ingest_flat_char_edges(
     return stats
 
 
+def _dedupe_relation_batch(batch: List[WordRelation]) -> List[WordRelation]:
+    seen: set[tuple[int, int, str]] = set()
+    out: List[WordRelation] = []
+    for r in batch:
+        k = (int(r.word_id), int(r.related_id), str(r.relation_type))
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(r)
+    return out
+
+
 def _flush_flat_batch(
     db: Session,
     batch: List[WordRelation],
@@ -91,7 +103,8 @@ def _flush_flat_batch(
     dedupe_existing: bool,
     stats: dict,
 ) -> int:
-    candidates = batch
+    candidates = _dedupe_relation_batch(batch)
+    stats["skipped_in_batch"] = stats.get("skipped_in_batch", 0) + len(batch) - len(candidates)
     if dedupe_existing:
         keys = [(r.word_id, r.related_id, r.relation_type) for r in candidates]
         existing = fetch_existing_relation_keys(db, keys)

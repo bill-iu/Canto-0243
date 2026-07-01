@@ -44,6 +44,27 @@ class IngestFlatCharEdgesTests(unittest.TestCase):
             rel = db.query(WordRelation).one()
             self.assertEqual({rel.word_id, rel.related_id}, {1, 3})
 
+    def test_flat_batch_dedupes_within_chunk(self):
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine)
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="大", code="2", jyutping="daai6", length=1),
+                Word(id=2, char="細", code="2", jyutping="sai3", length=1),
+            ])
+            db.commit()
+            edge = {
+                "head": "大",
+                "tail": "細",
+                "relation_type": "ant",
+                "source": "antisem",
+                "confidence": 0.85,
+            }
+            stats = ingest_flat_char_edges(db, [edge, edge], char_to_id={"大": 1, "細": 2})
+            self.assertEqual(stats["inserted"], 1)
+            self.assertEqual(db.query(WordRelation).count(), 1)
+
 
 class IngestStaticRelationsTests(unittest.TestCase):
     def _session_with_words(self):
