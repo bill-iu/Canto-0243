@@ -9,7 +9,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
-from app.lexicon.corrections import LexiconCorrection, load_corrections, save_corrections
+from app.lexicon.corrections import (
+    DEFAULT_TSV,
+    FIELDS,
+    LexiconCorrection,
+    load_corrections,
+    save_corrections,
+)
 from app.models.word import Word
 from ingest.lexicon_corrections import apply_one, apply_pending, check_status
 
@@ -33,6 +39,18 @@ class LexiconCorrectionsTests(unittest.TestCase):
             self.assertEqual(len(loaded), 1)
             self.assertEqual(loaded[0].char, "行")
             self.assertEqual(loaded[0].old_jyutping, "hong6")
+
+    def test_repo_corrections_tsv_new_schema(self):
+        self.assertTrue(DEFAULT_TSV.is_file(), f"missing {DEFAULT_TSV}")
+        header = DEFAULT_TSV.read_text(encoding="utf-8").splitlines()[0].split("\t")
+        self.assertEqual(header, list(FIELDS))
+        rows = load_corrections(DEFAULT_TSV)
+        self.assertGreaterEqual(len(rows), 1)
+        buduan = [r for r in rows if r.char == "不斷" and r.action == "set_code"]
+        self.assertEqual(len(buduan), 1)
+        self.assertEqual(buduan[0].old_jyutping, "but1 dyun6")
+        self.assertEqual(buduan[0].old_code, "34")
+        self.assertEqual(buduan[0].value, "32")
 
     def test_load_legacy_header(self):
         with tempfile.TemporaryDirectory() as tmp:

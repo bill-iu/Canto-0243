@@ -28,6 +28,23 @@ class LexiconOverlayTests(unittest.TestCase):
         self.assertEqual(out[0].jyutping, "nei5")
         self.assertEqual(out[0].code, "4")
 
+    def test_set_code_from_repo_buduan_row(self):
+        candidates = [
+            LexiconCandidate(char="不斷", jyutping="but1 dyun6", code="34", sources=("rime",)),
+        ]
+        corrections = [
+            LexiconCorrection(
+                char="不斷",
+                old_jyutping="but1 dyun6",
+                old_code="34",
+                action="set_code",
+                value="32",
+            ),
+        ]
+        out = apply_lexicon_overlay(candidates, corrections)
+        self.assertEqual(out[0].jyutping, "but1 dyun6")
+        self.assertEqual(out[0].code, "32")
+
 
 if __name__ == "__main__":
     unittest.main()
