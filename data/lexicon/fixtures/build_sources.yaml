@@ -5,6 +5,20 @@ sources:
     raw_path: data/rime/fixtures/char_sample.csv
     source_rank: 100
 
+  - id: words_hk
+    parser: lexicon_json
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/fixtures/words_hk_sample.json
+    source_rank: 90
+
+  - id: kaifang
+    parser: lexicon_json
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/fixtures/kaifang_sample.json
+    source_rank: 80
+
   - id: curated
     parser: lexicon_json
     enabled_by_default: true

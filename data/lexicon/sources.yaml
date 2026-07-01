@@ -15,7 +15,7 @@ sources:
     type: lexicon_json
     parser: lexicon_json
     license: public-domain
-    enabled_by_default: false
+    enabled_by_default: true
     local_only: true
     raw_path: data/lexicon/raw/words_hk/wordslist.json
     source_rank: 90
@@ -25,7 +25,7 @@ sources:
     type: lexicon_json
     parser: lexicon_json
     license: CC-BY-3.0
-    enabled_by_default: false
+    enabled_by_default: true
     local_only: true
     raw_path: data/lexicon/raw/kaifang/cantonese.json
     source_rank: 80

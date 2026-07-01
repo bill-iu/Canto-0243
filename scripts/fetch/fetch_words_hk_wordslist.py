@@ -27,8 +27,9 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-OUT_DIR = REPO_ROOT / "data" / "raw" / "words.hk"
+OUT_DIR = REPO_ROOT / "data" / "lexicon" / "raw" / "words_hk"
 MANIFEST = OUT_DIR / "manifest.json"
+DEFAULT_DEST = OUT_DIR / "wordslist.json"
 WORDS_PAGE = "https://words.hk/faiman/analysis/wordslist/"
 
 
@@ -64,7 +65,7 @@ def main(argv: list[str] | None = None) -> int:
         if not args.input.is_file():
             print(f"Input not found: {args.input}", file=sys.stderr)
             return 1
-        dest = OUT_DIR / args.input.name
+        dest = DEFAULT_DEST if args.input.suffix.lower() == ".json" else OUT_DIR / args.input.name
         shutil.copy2(args.input, dest)
         copied = str(dest.relative_to(REPO_ROOT))
         print(f"Copied wordslist → {dest}")

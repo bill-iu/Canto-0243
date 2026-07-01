@@ -37,6 +37,7 @@ ingest-*.log
 logs/
 .cache/
 data/raw/
+data/lexicon/raw/
 data/processed/
 data/locks/
 

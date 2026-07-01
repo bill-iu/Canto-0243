@@ -30,13 +30,20 @@ def collect_lexicon_candidates(
         source_ids=source_ids,
         defaults_only=not bool(source_ids),
     )
-    missing = [s["id"] for s in sources if not source_availability(s).get("available")]
-    if missing:
-        raise FileNotFoundError(f"enabled lexicon sources missing raw files: {', '.join(missing)}")
+    missing_required: list[str] = []
     layers: list[tuple[int, list[LexiconCandidate]]] = []
     for src in sources:
+        if not source_availability(src).get("available"):
+            if src.get("local_only"):
+                continue  # ponytail: maintainer-local; skip when raw absent
+            missing_required.append(str(src["id"]))
+            continue
         batch = ingest_source(src)
         layers.append((int(src.get("source_rank") or 50), batch))
+    if missing_required:
+        raise FileNotFoundError(
+            f"enabled lexicon sources missing raw files: {', '.join(missing_required)}"
+        )
     merged = merge_lexicon_candidates(layers)
     corrections = load_corrections(DEFAULT_TSV)
     return apply_lexicon_overlay(merged, corrections)
