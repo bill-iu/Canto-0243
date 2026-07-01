@@ -13,7 +13,8 @@ from app.utils.jyutping_codec import split_jyutping
 from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_overlay import apply_lexicon_overlay
 from ingest.lexicon_sources import ingest_source
-from ingest.syn_ant_manifest import load_manifest, select_sources, source_availability
+from ingest.lexicon_stats import lexicon_source_availability
+from ingest.syn_ant_manifest import load_manifest, select_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEXICON_MANIFEST = ROOT / "data" / "lexicon" / "sources.yaml"
@@ -23,6 +24,7 @@ def collect_lexicon_candidates(
     manifest_path: Path | str | None = None,
     *,
     source_ids: Optional[List[str]] = None,
+    repo_root: Path | None = None,
 ) -> list[LexiconCandidate]:
     manifest = load_manifest(manifest_path or DEFAULT_LEXICON_MANIFEST)
     sources = select_sources(
@@ -33,7 +35,7 @@ def collect_lexicon_candidates(
     missing_required: list[str] = []
     layers: list[tuple[int, list[LexiconCandidate]]] = []
     for src in sources:
-        if not source_availability(src).get("available"):
+        if not lexicon_source_availability(src, repo_root=repo_root).get("available"):
             if src.get("local_only"):
                 continue  # ponytail: maintainer-local; skip when raw absent
             missing_required.append(str(src["id"]))

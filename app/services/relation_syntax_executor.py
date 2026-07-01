@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 if TYPE_CHECKING:
     from app.services.query_parse import RelationLookupQuery
-from app.domain.relations.pool_projection import project_relation_pool
+from app.domain.relations.pool_projection import project_relation_pool, relation_pool_page
 from app.domain.relations.pool import PoolSnapshot
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.services.word_db_filters import apply_code_filter, length_filter

@@ -29,6 +29,18 @@ class BuildLexiconTests(unittest.TestCase):
         sources = session.query(WordSource).all()
         self.assertTrue(any(s.source == "rime" for s in sources))
 
+    def test_fixture_build_has_multi_char_words(self):
+        from ingest.lexicon_stats import lexicon_word_stats
+
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        session = sessionmaker(bind=engine)()
+        truncate_lexicon_core(session)
+        build_lexicon_words(session, manifest_path=FIXTURE_MANIFEST)
+        session.commit()
+        stats = lexicon_word_stats(session)
+        self.assertGreater(stats["multi_char"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

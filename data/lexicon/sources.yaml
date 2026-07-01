@@ -13,7 +13,7 @@ sources:
 
   - id: words_hk
     type: lexicon_json
-    parser: lexicon_json
+    parser: words_hk_wordslist
     license: public-domain
     enabled_by_default: true
     local_only: true
@@ -23,7 +23,7 @@ sources:
 
   - id: kaifang
     type: lexicon_json
-    parser: lexicon_json
+    parser: kaifang_txt
     license: CC-BY-3.0
     enabled_by_default: true
     local_only: true

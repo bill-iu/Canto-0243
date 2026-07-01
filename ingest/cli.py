@@ -390,6 +390,8 @@ def cmd_build_db(args: argparse.Namespace) -> int:
     from ingest.bridge_snapshot import ingest_bridge_snapshot
     from ingest.manual_relations_apply import apply_manual_relations
 
+    from ingest.lexicon_stats import check_min_multi_char, lexicon_word_stats
+
     manifest = args.lexicon_manifest or str(DEFAULT_LEXICON_MANIFEST)
     print(f"==> build-db manifest: {manifest}")
 
@@ -403,7 +405,17 @@ def cmd_build_db(args: argparse.Namespace) -> int:
         print("==> lexicon SSOT ingest + overlay")
         n_words = build_lexicon_words(db, manifest_path=manifest)
         db.commit()
+        stats = lexicon_word_stats(db)
         print(f"    persisted {n_words} word(s)")
+        print(
+            f"    lexicon stats: total={stats['total']} multi_char={stats['multi_char']}"
+        )
+        if args.min_multi_char is not None:
+            try:
+                check_min_multi_char(db, args.min_multi_char)
+            except ValueError as exc:
+                print(f"build-db failed: {exc}", file=sys.stderr)
+                return 1
 
     if args.skip_relations:
         print("skip-relations: done")
@@ -723,6 +735,13 @@ def main(argv: list[str] | None = None) -> int:
         "--copy-public",
         action="store_true",
         help="Copy lyrics.db to client/public/ after build",
+    )
+    p_build_db.add_argument(
+        "--min-multi-char",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Fail if fewer than N length>=2 words (release gate)",
     )
 
     p_migrate = sub.add_parser(

@@ -1,6 +1,8 @@
 """words.hk / kaifang lexicon sources (CONTEXT § 詞條源清單)."""
 from __future__ import annotations
 
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -19,6 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCES = ROOT / "data" / "lexicon" / "sources.yaml"
 FIXTURE_MANIFEST = ROOT / "data" / "lexicon" / "fixtures" / "build_sources.yaml"
 WORDS_HK_FIXTURE = ROOT / "data" / "lexicon" / "fixtures" / "words_hk_sample.json"
+RIME_FIXTURE = ROOT / "data" / "rime" / "fixtures" / "char_sample.csv"
 
 
 class LexiconSourcesEnabledTests(unittest.TestCase):
@@ -31,11 +34,44 @@ class LexiconSourcesEnabledTests(unittest.TestCase):
         self.assertTrue(by_id["kaifang"]["local_only"])
 
     def test_collect_skips_missing_local_only_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            rime_dest = root / "data/rime/fixtures/char_sample.csv"
+            rime_dest.parent.mkdir(parents=True)
+            shutil.copy(RIME_FIXTURE, rime_dest)
+            manifest = root / "sources.yaml"
+            manifest.write_text(
+                """
+sources:
+  - id: rime
+    parser: rime_char
+    enabled_by_default: true
+    raw_path: data/rime/fixtures/char_sample.csv
+    source_rank: 100
+  - id: words_hk
+    parser: words_hk_wordslist
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/raw/words_hk/wordslist.json
+    source_rank: 90
+""".strip(),
+                encoding="utf-8",
+            )
+            candidates = collect_lexicon_candidates(manifest, repo_root=root)
+            sources_seen = {s for c in candidates for s in c.sources}
+            self.assertIn("rime", sources_seen)
+            self.assertNotIn("words_hk", sources_seen)
+
+    def test_collect_includes_words_hk_from_legacy_raw_when_present(self):
+        legacy = ROOT / "data/raw/words.hk/wordslist.json"
+        if not legacy.is_file():
+            self.skipTest("maintainer-local data/raw/words.hk not present")
         candidates = collect_lexicon_candidates(SOURCES)
         sources_seen = {s for c in candidates for s in c.sources}
-        self.assertIn("rime", sources_seen)
-        self.assertNotIn("words_hk", sources_seen)
-        self.assertNotIn("kaifang", sources_seen)
+        self.assertIn("words_hk", sources_seen)
+        self.assertGreater(sum(1 for c in candidates if len(c.char) >= 2), 1000)
+        if (ROOT / "data/raw/kaifang").is_dir() and list((ROOT / "data/raw/kaifang").glob("*.txt")):
+            self.assertIn("kaifang", sources_seen)
 
     def test_ingest_lexicon_json_reads_fixture(self):
         out = ingest_lexicon_json(WORDS_HK_FIXTURE, source_id="words_hk")
