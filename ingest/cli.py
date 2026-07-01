@@ -307,6 +307,38 @@ def _run_expand_antonyms_syn_bridge(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_bake_syn_bridge(args: argparse.Namespace) -> int:
+    from ingest.bridge_snapshot import DEFAULT_SNAPSHOT, write_bridge_snapshot
+
+    if not args.export_only:
+        expand_args = argparse.Namespace(
+            source=args.source,
+            batch_size=args.batch_size,
+            embed_batch_size=args.embed_batch_size,
+            offset=0,
+            limit=args.limit,
+            chunk_size=args.chunk_size,
+            progress_interval=args.progress_interval,
+            min_bridge_cosine=args.min_bridge_cosine,
+            max_bridged_ants_per_head=args.max_bridged_ants_per_head,
+            fresh=True,
+            no_auto_resume=True,
+            dedupe_existing=args.dedupe_existing,
+            no_static=args.no_static,
+            replace_relations=True,
+        )
+        rc = cmd_expand_antonyms_syn_bridge(expand_args)
+        if rc:
+            return rc
+
+    out = Path(args.output or DEFAULT_SNAPSHOT)
+    ensure_word_relations_table()
+    with SessionLocal() as db:
+        n = write_bridge_snapshot(db, out, source=(args.source or "ant_syn_bridge")[:32])
+    print(f"bake-syn-bridge: wrote {n} pair(s) -> {out}")
+    return 0
+
+
 def cmd_expand_antonyms_mirror(args: argparse.Namespace) -> int:
     ensure_word_relations_table()
     source_id = (args.source or "ant_syn_mirror")[:32]
@@ -504,6 +536,33 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_bridge.set_defaults(replace_relations=True)
 
+    p_bake = sub.add_parser(
+        "bake-syn-bridge",
+        help="Bake ant_syn_bridge snapshot TSV (embedding run + export)",
+        description="Maintainer: expand-antonyms-syn-bridge --fresh, then export git-tracked TSV. See docs/ingest-bridge-ant.md",
+    )
+    p_bake.add_argument(
+        "--output",
+        default="data/syn_ant/ant_syn_bridge_pairs.tsv",
+        help="Snapshot TSV path (default: data/syn_ant/ant_syn_bridge_pairs.tsv)",
+    )
+    p_bake.add_argument(
+        "--export-only",
+        action="store_true",
+        help="Skip embedding; export current ant_syn_bridge rows from lyrics.db",
+    )
+    p_bake.add_argument("--source", default="ant_syn_bridge", help="Source tag for bridged ant relations")
+    p_bake.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_bake.add_argument("--embed-batch-size", type=int, default=256, help="Embedding encode batch size")
+    p_bake.add_argument("--limit", type=int, default=None, help="Max target chars (debug/smoke)")
+    p_bake.add_argument("--chunk-size", type=int, default=0, help="Chunked insert with checkpoint (0 = single pass)")
+    p_bake.add_argument("--progress-interval", type=int, default=50, help="Progress print interval")
+    p_bake.add_argument("--min-bridge-cosine", type=float, default=0.80, help="Min head–bridge synonym cosine")
+    p_bake.add_argument("--max-bridged-ants-per-head", type=int, default=30, help="Max ant relations per head")
+    p_bake.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
+    p_bake.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_bake.add_argument("--no-static", dest="no_static", action="store_true", help="Only use DB syn, not static thesaurus")
+
     p_compound = sub.add_parser(
         "ingest-compound-ant",
         help="Seed single-char ant pairs from 0243 compound antonym list",
@@ -558,6 +617,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_expand_antonyms_mirror(args)
     if args.command == "expand-antonyms-syn-bridge":
         return cmd_expand_antonyms_syn_bridge(args)
+    if args.command == "bake-syn-bridge":
+        return cmd_bake_syn_bridge(args)
     if args.command == "ingest-compound-ant":
         return cmd_ingest_compound_ant(args)
     if args.command == "apply-lexicon-corrections":
