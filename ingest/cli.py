@@ -10,24 +10,20 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from app.database import SessionLocal, ensure_syn_ant_edges_table, ensure_word_relations_table
-from app.models.word import SynAntEdge, WordRelation
+from app.database import SessionLocal, ensure_word_relations_table
+from app.models.word import WordRelation
 from ingest.ingest_lock import IngestLockError, ingest_lock
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
 from ingest.syn_ant_build import (
-    build_word_relations_from_staging,
     clear_word_relations_source,
     ingest_cilin_leaf_direct,
 )
-from ingest.syn_ant_staging import persist_staging_edges, staging_report
+from ingest.syn_ant_direct import ingest_static_relations
 from ingest.syn_ant_expand import (
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
 )
-from app.repositories.word_relation_repo import load_db_char_set
-from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
-from ingest.syn_ant_sources import iter_cilin_line_chunks, parse_cilin_lines, parse_sources
 from ingest.lexicon_corrections import (
     DEFAULT_BATCH_N,
     DEFAULT_TSV,
@@ -43,10 +39,8 @@ from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compou
 def cmd_report(_: argparse.Namespace) -> int:
     print(manifest_report())
     print()
-    ensure_syn_ant_edges_table()
     ensure_word_relations_table()
     with SessionLocal() as db:
-        print(staging_report(db))
         rel_count = db.query(WordRelation).count()
         syn_count = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
         bridge_ant = (
@@ -62,44 +56,15 @@ def cmd_report(_: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_normalize(args: argparse.Namespace) -> int:
-    manifest = load_manifest(args.manifest)
-    sources = select_sources(
-        manifest,
-        source_ids=args.source or None,
-        defaults_only=not bool(args.source),
-    )
-    if not sources:
-        print("No sources selected.")
-        return 1
-
-    print(f"Parsing {len(sources)} source(s)...")
-    raw_edges = parse_sources(sources)
-    print(f"Raw edges: {len(raw_edges)}")
-
-    ensure_syn_ant_edges_table()
-    with SessionLocal() as db:
-        db_chars = load_db_char_set(db)
-        normalized = normalize_edges(raw_edges, db_chars=db_chars, allow_external=args.allow_external)
-        merged = merge_staging_edges(normalized)
-        print(f"Normalized edges: {len(normalized)} -> merged unique: {len(merged)}")
-        n = persist_staging_edges(db, merged, clear=not args.append)
-        print(f"Persisted {n} rows to syn_ant_edges staging.")
-    return 0
-
-
-def cmd_build_relations(args: argparse.Namespace) -> int:
-    ensure_syn_ant_edges_table()
+def cmd_ingest_static_relations(args: argparse.Namespace) -> int:
     ensure_word_relations_table()
     with SessionLocal() as db:
-        stats = build_word_relations_from_staging(
+        stats = ingest_static_relations(
             db,
-            allow_external=args.allow_external,
-            batch_size=args.batch_size,
-            source=args.source,
-            use_batched_sql=args.batched,
+            manifest_path=args.manifest,
+            chunk_size=args.chunk_size,
         )
-        print("build-relations stats:", stats)
+        print("ingest-static-relations stats:", stats)
     return 0
 
 
@@ -125,60 +90,21 @@ def cmd_ingest_cilin(args: argparse.Namespace) -> int:
 
     chunk_size = args.chunk_size
     source_id = src["id"]
-    source_rank = int(src.get("source_rank") or 55)
 
     ensure_word_relations_table()
-
-    if not args.staging:
-        print(f"Cilin direct ingest from {path} (chunk={chunk_size}, dedupe={args.dedupe_existing})")
-        with SessionLocal() as db:
-            if args.replace_relations:
-                removed = clear_word_relations_source(db, source_id)
-                print(f"Cleared {removed} existing word_relations with source={source_id!r}")
-            stats = ingest_cilin_leaf_direct(
-                db,
-                path,
-                source=source_id,
-                chunk_size=chunk_size,
-                dedupe_existing=args.dedupe_existing,
-            )
-            print("ingest-cilin stats:", stats)
-        return 0
-
-    ensure_syn_ant_edges_table()
-    total_lines = 0
-    total_persisted = 0
-    batch_num = 0
-
+    print(f"Cilin direct ingest from {path} (chunk={chunk_size}, dedupe={args.dedupe_existing})")
     with SessionLocal() as db:
-        db_chars = load_db_char_set(db)
-        db.query(SynAntEdge).filter(SynAntEdge.source == source_id).delete()
-        db.commit()
         if args.replace_relations:
             removed = clear_word_relations_source(db, source_id)
             print(f"Cleared {removed} existing word_relations with source={source_id!r}")
-
-        for lines in iter_cilin_line_chunks(path, chunk_size=chunk_size):
-            batch_num += 1
-            total_lines += len(lines)
-            raw = parse_cilin_lines(lines, source_id, source_rank=source_rank)
-            normalized = normalize_edges(raw, db_chars=db_chars, allow_external=args.allow_external)
-            merged = merge_staging_edges(normalized)
-            n = persist_staging_edges(db, merged, clear=False, batch_size=chunk_size)
-            total_persisted += n
-            print(f"  chunk {batch_num}: {len(lines)} lines -> {len(merged)} edges ({n} rows)", flush=True)
-
-    print(f"Cilin staging done: {total_lines} lines in {batch_num} chunks, {total_persisted} staging rows.")
-
-    with SessionLocal() as db:
-        stats = build_word_relations_from_staging(
+        stats = ingest_cilin_leaf_direct(
             db,
-            allow_external=args.allow_external,
-            batch_size=chunk_size,
+            path,
             source=source_id,
-            use_batched_sql=True,
+            chunk_size=chunk_size,
+            dedupe_existing=args.dedupe_existing,
         )
-        print("build-relations stats:", stats)
+        print("ingest-cilin stats:", stats)
     return 0
 
 
@@ -384,6 +310,15 @@ def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
 
 
 def cmd_build_db(args: argparse.Namespace) -> int:
+    try:
+        with ingest_lock("build-db"):
+            return _cmd_build_db_impl(args)
+    except IngestLockError as exc:
+        print(exc, file=sys.stderr)
+        return 1
+
+
+def _cmd_build_db_impl(args: argparse.Namespace) -> int:
     from app.database import Base, engine
     from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST, build_lexicon_words
     from ingest.lexicon_truncate import truncate_lexicon_core
@@ -396,11 +331,10 @@ def cmd_build_db(args: argparse.Namespace) -> int:
     print(f"==> build-db manifest: {manifest}")
 
     Base.metadata.create_all(bind=engine)
-    ensure_syn_ant_edges_table()
     ensure_word_relations_table()
 
     with SessionLocal() as db:
-        print("==> truncate words / relations / staging")
+        print("==> truncate words / relations")
         truncate_lexicon_core(db)
         print("==> lexicon SSOT ingest + overlay")
         n_words = build_lexicon_words(db, manifest_path=manifest)
@@ -422,22 +356,8 @@ def cmd_build_db(args: argparse.Namespace) -> int:
         return _build_db_exports(args)
 
     steps = [
-        ("normalize", lambda: cmd_normalize(
-            argparse.Namespace(manifest=None, source=None, allow_external=False, append=False)
-        )),
-        ("build-relations", lambda: cmd_build_relations(
-            argparse.Namespace(allow_external=False, source=None, batch_size=300, batched=False)
-        )),
-        ("ingest-cilin", lambda: cmd_ingest_cilin(
-            argparse.Namespace(
-                manifest=None,
-                source_path=None,
-                staging=False,
-                chunk_size=300,
-                dedupe_existing=True,
-                allow_external=False,
-                replace_relations=True,
-            )
+        ("ingest-static-relations", lambda: cmd_ingest_static_relations(
+            argparse.Namespace(manifest=None, chunk_size=300)
         )),
         ("expand-antonyms-cilin", lambda: cmd_expand_antonyms_cilin(
             argparse.Namespace(
@@ -543,24 +463,17 @@ def main(argv: list[str] | None = None) -> int:
 
     sub.add_parser("report", help="Show manifest + DB stats")
 
-    p_norm = sub.add_parser("normalize", help="Parse sources into syn_ant_edges staging")
-    p_norm.add_argument("--source", action="append", help="Source id (repeatable)")
-    p_norm.add_argument("--allow-external", action="store_true", help="Keep edges where tail/head not in words DB")
-    p_norm.add_argument("--append", action="store_true", help="Append staging instead of replace")
+    p_static = sub.add_parser(
+        "ingest-static-relations",
+        help="Direct-write bundled static syn/ant into word_relations",
+    )
+    p_static.add_argument("--chunk-size", type=int, default=300, help="Cilin leaf chunk size")
 
-    p_build = sub.add_parser("build-relations", help="Merge staging into word_relations")
-    p_build.add_argument("--allow-external", action="store_true", help="Include external-only char pairs")
-    p_build.add_argument("--batch-size", type=int, default=300, help="Staging rows per SQL batch (default 300)")
-    p_build.add_argument("--source", help="Only merge staging rows from this source id")
-    p_build.add_argument("--batched", action="store_true", help="Force batched SQL merge")
-
-    p_cilin = sub.add_parser("ingest-cilin", help="Ingest Cilin leaf synonym groups")
+    p_cilin = sub.add_parser("ingest-cilin", help="Ingest Cilin leaf synonym groups (direct)")
     p_cilin.add_argument("--chunk-size", type=int, default=300, help="Leaf groups per chunk (default 300)")
     p_cilin.add_argument("--source-path", help="Override Cilin file path (e.g. Desktop/new_cilin.txt)")
-    p_cilin.add_argument("--staging", action="store_true", help="Use syn_ant_edges staging path instead of direct")
     p_cilin.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing canonical syn pairs")
     p_cilin.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
-    p_cilin.add_argument("--allow-external", action="store_true", help="Keep edges where char not in words DB")
     p_cilin.add_argument(
         "--no-replace-relations",
         dest="replace_relations",
@@ -763,10 +676,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
-    if args.command == "normalize":
-        return cmd_normalize(args)
-    if args.command == "build-relations":
-        return cmd_build_relations(args)
+    if args.command == "ingest-static-relations":
+        return cmd_ingest_static_relations(args)
     if args.command == "ingest-cilin":
         return cmd_ingest_cilin(args)
     if args.command == "expand-antonyms-cilin":

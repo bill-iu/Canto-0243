@@ -302,64 +302,10 @@ def ensure_word_relations_table() -> None:
             )
 
 
-def ensure_syn_ant_edges_table() -> None:
-    """Create syn_ant_edges staging table for ingest v2 (SQLite auto-create)."""
-    if IS_POSTGRES:
-        print("[DB] PostgreSQL 環境：syn_ant_edges 請透過 Alembic migration 管理。")
-        return
-
-    try:
-        inspector = inspect(engine)
-        if "words" not in inspector.get_table_names():
-            return
-        if "syn_ant_edges" not in inspector.get_table_names():
-            with engine.connect() as conn:
-                conn.execute(
-                    text(
-                        """
-                    CREATE TABLE IF NOT EXISTS syn_ant_edges (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        head_char VARCHAR(50) NOT NULL,
-                        tail_char VARCHAR(50) NOT NULL,
-                        relation_type VARCHAR(16) NOT NULL,
-                        source VARCHAR(64),
-                        confidence FLOAT,
-                        source_rank INTEGER,
-                        evidence TEXT,
-                        license_tag VARCHAR(32),
-                        in_db_head INTEGER,
-                        in_db_tail INTEGER
-                    )
-                """
-                    )
-                )
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_syn_ant_head_type
-                    ON syn_ant_edges (head_char, relation_type)
-                """
-                    )
-                )
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_syn_ant_tail_type
-                    ON syn_ant_edges (tail_char, relation_type)
-                """
-                    )
-                )
-                conn.commit()
-            print("[DB] 已為本地 SQLite 自動建立 syn_ant_edges staging 表。")
-    except Exception as e:
-        print(f"[DB] 建立 syn_ant_edges 表時發生錯誤：{type(e).__name__}: {e}")
-
-
 def bootstrap_local_db() -> None:
     """一次執行本地 SQLite dev bootstrap（schema 補丁 + length 背景回填）。"""
     ensure_embedding_column()
     ensure_length_column()
     ensure_word_relations_table()
     ensure_word_relations_canonical_unique()
-    ensure_syn_ant_edges_table()
     start_length_backfill()

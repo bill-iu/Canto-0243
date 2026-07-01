@@ -18,6 +18,7 @@ from ingest.syn_ant_manifest import load_manifest, select_sources
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEXICON_MANIFEST = ROOT / "data" / "lexicon" / "sources.yaml"
+PERSIST_CHUNK = 2000
 
 
 def collect_lexicon_candidates(
@@ -53,22 +54,28 @@ def collect_lexicon_candidates(
 
 def persist_lexicon_candidates(db: Session, candidates: list[LexiconCandidate]) -> int:
     count = 0
-    for c in candidates:
-        initials, finals, tones = split_jyutping(c.jyutping)
-        word = Word(
-            char=c.char,
-            jyutping=c.jyutping,
-            code=c.code,
-            initials=initials,
-            finals=finals,
-            tones=tones,
-            length=len(c.char),
-        )
-        db.add(word)
+    for off in range(0, len(candidates), PERSIST_CHUNK):
+        chunk = candidates[off : off + PERSIST_CHUNK]
+        words: list[Word] = []
+        for c in chunk:
+            initials, finals, tones = split_jyutping(c.jyutping)
+            words.append(
+                Word(
+                    char=c.char,
+                    jyutping=c.jyutping,
+                    code=c.code,
+                    initials=initials,
+                    finals=finals,
+                    tones=tones,
+                    length=len(c.char),
+                )
+            )
+        db.add_all(words)
         db.flush()
-        for src in c.sources:
-            db.add(WordSource(word_id=word.id, source=src[:32]))
-        count += 1
+        for word, cand in zip(words, chunk):
+            for src in cand.sources:
+                db.add(WordSource(word_id=word.id, source=src[:32]))
+        count += len(chunk)
     return count
 
 

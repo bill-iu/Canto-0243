@@ -4,7 +4,12 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from app.database import Base
 from app.lexicon.candidates import LexiconCandidate
+from app.models.word import Word, WordSource
 from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_sources import ingest_rime_char_csv
 
@@ -102,6 +107,25 @@ class LexiconReadingFormatTests(unittest.TestCase):
             self.assertEqual(keys, {("開心", "hoi1 sam1"), ("香港", "hoeng1 gong2")})
         finally:
             Path(path).unlink(missing_ok=True)
+
+
+class LexiconPersistTests(unittest.TestCase):
+    def test_persist_lexicon_bulk_inserts_words_and_sources(self):
+        from ingest.lexicon_build import persist_lexicon_candidates
+
+        engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(bind=engine)
+        Session = sessionmaker(bind=engine)
+        cands = [
+            LexiconCandidate(char=c, jyutping="zi6", code="4", sources=("words_hk",))
+            for c in "一二三四五六七八"
+        ]
+        with Session() as db:
+            n = persist_lexicon_candidates(db, cands)
+            db.commit()
+            self.assertEqual(n, 8)
+            self.assertEqual(db.query(Word).count(), 8)
+            self.assertEqual(db.query(WordSource).count(), 8)
 
 
 if __name__ == "__main__":

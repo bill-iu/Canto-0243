@@ -125,25 +125,3 @@ def _canonicalize_word_relation(_mapper, _connection, target: WordRelation) -> N
     w, r = canonical_word_ids(int(target.word_id), int(target.related_id))
     target.word_id = w
     target.related_id = r
-
-
-class SynAntEdge(Base):
-    """Staging table for syn/ant ingest v2 (normalized char-level edges before merge)."""
-
-    __tablename__ = "syn_ant_edges"
-
-    id = Column(_id_type, primary_key=True, autoincrement=True)
-    head_char = Column(String(50), index=True, nullable=False)
-    tail_char = Column(String(50), index=True, nullable=False)
-    relation_type = Column(String(16), index=True, nullable=False)
-    source = Column(String(64), nullable=True)
-    confidence = Column(Float, nullable=True)
-    source_rank = Column(Integer, nullable=True)
-    evidence = Column(Text, nullable=True)
-    license_tag = Column(String(32), nullable=True)
-    in_db_head = Column(Integer, nullable=True)  # SQLite bool as 0/1
-    in_db_tail = Column(Integer, nullable=True)
-
-
-Index("idx_syn_ant_head_type", SynAntEdge.head_char, SynAntEdge.relation_type)
-Index("idx_syn_ant_tail_type", SynAntEdge.tail_char, SynAntEdge.relation_type)

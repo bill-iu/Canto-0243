@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
-from app.models.word import Word, WordRelation, SynAntEdge
+from app.models.word import Word, WordRelation
 from app.domain.relations.pool import PoolSnapshot, build_pool
 from app.domain.relations.ranking import (
     final_score as _final_score,
@@ -17,11 +17,7 @@ from app.services.relation_syntax_executor import RelationSyntaxExecutor
 from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
-from ingest.syn_ant_build import (
-    build_word_relations_from_staging,
-    ingest_cilin_leaf_direct,
-)
-from ingest.syn_ant_staging import persist_staging_edges
+from ingest.syn_ant_build import ingest_cilin_leaf_direct
 from ingest.syn_ant_expand import (
     collect_ant_mirror_char_pairs,
     expand_antonyms_via_cilin_synonyms,
@@ -230,29 +226,7 @@ class RuntimeServiceTests(unittest.TestCase):
             all_pages = relation_pool_page(db, "快樂", limit=100, offset=0, include_static=False)
             self.assertEqual(len(all_pages), 20)
 
-    def test_staging_to_word_relations(self):
-        engine = create_engine("sqlite:///:memory:")
-        Base.metadata.create_all(bind=engine)
-        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-        with Session() as db:
-            db.add_all([
-                Word(id=10, char="大", code="2", jyutping="daai6", length=1),
-                Word(id=11, char="細", code="2", jyutping="sai3", length=1),
-            ])
-            db.commit()
-            edges = normalize_edges(
-                parse_antonym_pairs(FIXTURES / "antonym_sample.txt", "test_ant"),
-                db_chars={"大", "細"},
-                allow_external=False,
-            )
-            persist_staging_edges(db, edges)
-            stats = build_word_relations_from_staging(db)
-            self.assertGreater(stats["inserted"], 0)
-            rels = db.query(WordRelation).all()
-            self.assertTrue(any(r.relation_type == "ant" for r in rels))
-
-    def test_direct_cilin_ingest_dedupes(self):
+    def test_syn_ant_pagination(self):
         engine = create_engine("sqlite:///:memory:")
         Base.metadata.create_all(bind=engine)
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
