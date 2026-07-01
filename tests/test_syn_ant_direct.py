@@ -77,6 +77,25 @@ class IngestStaticRelationsTests(unittest.TestCase):
             codes = json.loads(rel.group_codes)
             self.assertTrue(codes)
 
+    def test_cilin_cross_chunk_dedupes(self):
+        if not CILIN_SAMPLE.is_file():
+            self.skipTest("cilin sample missing")
+        Session, _ = self._session_with_words()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="faai3 lok6", length=2),
+                Word(id=2, char="愉快", code="22", jyutping="jyu4 faai3", length=2),
+                Word(id=3, char="開心", code="22", jyutping="hoi1 sam1", length=2),
+            ])
+            db.commit()
+            from ingest.syn_ant_build import ingest_cilin_leaf_direct
+            stats = ingest_cilin_leaf_direct(db, CILIN_SAMPLE, chunk_size=1, dedupe_existing=True)
+            self.assertGreater(stats["inserted"], 0)
+            count = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
+            stats2 = ingest_cilin_leaf_direct(db, CILIN_SAMPLE, chunk_size=1, dedupe_existing=True)
+            self.assertEqual(stats2["inserted"], 0)
+            self.assertEqual(db.query(WordRelation).filter(WordRelation.relation_type == "syn").count(), count)
+
     def test_no_syn_ant_edges_table_required(self):
         Session, engine = self._session_with_words()
         with Session() as db:

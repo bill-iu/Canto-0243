@@ -117,14 +117,14 @@ def ingest_cilin_and_flat_static(
             cilin_path,
             source="cilin",
             chunk_size=chunk_size,
-            dedupe_existing=False,
+            dedupe_existing=True,
         )
     char_to_id = get_char_to_primary_id(db)
     stats["flat"] = ingest_flat_char_edges(
         db,
         flat_edges,
         char_to_id=char_to_id,
-        dedupe_existing=False,
+        dedupe_existing=True,
     )
     return stats
 
