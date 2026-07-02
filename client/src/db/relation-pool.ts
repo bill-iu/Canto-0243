@@ -498,6 +498,20 @@ export function buildRelationPool(
   return { query: q, syns: synPool, ants: antPool, semantic: semanticPool };
 }
 
+/** Port of pool_projection.relation_pool_page — flat syns+ants+semantic slice */
+export function relationPoolPage(
+  db: Database,
+  seed: string,
+  limit: number,
+  offset: number,
+): RelationPoolItem[] {
+  const pool = buildRelationPool(db, seed);
+  const combined = [...pool.syns, ...pool.ants, ...pool.semantic];
+  const safeOffset = Math.max(0, offset);
+  const safeLimit = limit < 0 ? 0 : limit;
+  return combined.slice(safeOffset, safeOffset + safeLimit);
+}
+
 export function relationLookupItems(
   db: Database,
   seed: string,

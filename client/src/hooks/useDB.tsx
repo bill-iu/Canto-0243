@@ -231,7 +231,13 @@ export function useDB(): UseDBReturn {
 /**
  * Hook for a specific query with loading state and load-more pagination.
  */
-export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pageSize = SEARCH_PAGE_SIZE) {
+export function useSearch(
+  query: string,
+  mode: QueryOptions['mode'] = '0243',
+  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' },
+) {
+  const pageSize = options?.pageSize ?? SEARCH_PAGE_SIZE;
+  const fallback0243Mode = options?.fallback_0243_mode;
   const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
   const [total, setTotal] = useState<number | null>(null);
@@ -265,7 +271,13 @@ export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pa
 
     const run = async () => {
       try {
-        const page = await searchPage({ query: trimmed, mode, limit: pageSize, offset: 0 });
+        const page = await searchPage({
+          query: trimmed,
+          mode,
+          limit: pageSize,
+          offset: 0,
+          fallback_0243_mode: fallback0243Mode,
+        });
         if (!cancelled) {
           setResults(page.items);
           setTotal(page.total ?? null);
@@ -291,7 +303,7 @@ export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pa
     return () => {
       cancelled = true;
     };
-  }, [trimmed, mode, pageSize, canSearch]);
+  }, [trimmed, mode, pageSize, canSearch, fallback0243Mode]);
 
   const loadMore = useCallback(async () => {
     if (!canSearch || loading || loadingMore || !hasMore) {
@@ -305,6 +317,7 @@ export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pa
         mode,
         limit: pageSize,
         offset: results.length,
+        fallback_0243_mode: fallback0243Mode,
       });
       setResults((prev) => [...prev, ...page.items]);
       if (page.total != null) {
@@ -316,7 +329,7 @@ export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pa
     } finally {
       setLoadingMore(false);
     }
-  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length]);
+  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length, fallback0243Mode]);
 
   return {
     results,

@@ -53,6 +53,8 @@ GOLDEN_QUERY_JOURNEYS: tuple[QueryJourneyCase, ...] = (
         seed="left_code",
     ),
     QueryJourneyCase("~開心", "syn", db="memory", seed="relation_syn"),
+    QueryJourneyCase("開心", "syn", db="memory", seed="relation_syn", min_words=1, must_include=("愉快",)),
+    QueryJourneyCase("ming4", "syn", db="memory", seed="relation_syn"),
 )
 
 

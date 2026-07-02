@@ -3,10 +3,15 @@
  * Progressive Web App for Cantonese lyric query
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { ResultList } from './result-list';
+import { SynResultList, synResultsStats } from './syn-result-list';
+import { formatEmptySearchMessage } from './empty-search-message';
+import { isRelationSyntaxQuery, modeRedirectHint } from './db/query-engine';
 import './App.css';
+
+type UiMode = '0243' | '02493' | 'synonym';
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -16,43 +21,61 @@ function App() {
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
   const [query, setQuery] = useState('');
-  const [mode, setMode] = useState<'0243' | '02493' | 'synonym'>('0243');
+  const [mode, setMode] = useState<UiMode>('0243');
+  const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>('0243');
+  const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(false);
-  
-  const { 
-    isReady, 
-    status, 
+
+  const trimmedQuery = query.trim();
+  const relationSyntax = trimmedQuery ? isRelationSyntaxQuery(trimmedQuery) : false;
+
+  // ponytail: 介面轉接 — match desktop maybeModeRedirectForRelationSyntax
+  useEffect(() => {
+    if (!trimmedQuery) {
+      setRedirectHint(null);
+      return;
+    }
+    if (relationSyntax) {
+      setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1'));
+      if (mode === 'synonym') {
+        setMode(last0243Mode);
+      }
+      return;
+    }
+    setRedirectHint(null);
+  }, [trimmedQuery, relationSyntax, mode, last0243Mode]);
+
+  const {
+    isReady,
     offlineStatus,
     isOnline,
     isDbCached,
-    progress, 
+    progress,
     error: dbError,
     initialize,
     retryOfflineReady,
-    getStats 
+    getStats,
   } = useDB();
-  
-  const { 
-    results, 
+
+  const {
+    results,
     total,
-    hint,
+    hint: searchHint,
     loading: searchLoading,
     loadingMore,
     error: searchError,
     hasMore,
     loadMore,
-  } = useSearch(query, mode);
+  } = useSearch(query, mode, { fallback_0243_mode: last0243Mode });
 
-  // Auto-initialize database on mount
+  const displayHint = redirectHint || searchHint;
+
   useEffect(() => {
-    // Auto mode: only attempt when we are online, or when a cached DB likely exists.
-    // Otherwise, stay "not ready" with a clear message until user reconnects.
     if (isOnline || isDbCached) {
       initialize();
     }
   }, [initialize, isOnline, isDbCached]);
 
-  // Load database stats
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
     if (isReady && showStats && !stats) {
@@ -64,12 +87,34 @@ function App() {
     setQuery(nextQuery);
   };
 
-  const resultsLabel =
-    total != null && total > results.length
-      ? `已載入 ${results.length} / ${total} 個結果`
-      : results.length > 0
-        ? `${results.length} 個結果`
-        : '';
+  const handleModeChange = (next: UiMode) => {
+    if (next === '0243' || next === '02493') {
+      setLast0243Mode(next);
+    }
+    setMode(next);
+  };
+
+  const synLayout = mode === 'synonym';
+
+  const resultsLabel = useMemo(() => {
+    if (synLayout && results.length > 0) {
+      return synResultsStats(results);
+    }
+    if (total != null && total > results.length) {
+      return `已載入 ${results.length} / ${total} 個結果`;
+    }
+    if (results.length > 0) {
+      return `${results.length} 個結果`;
+    }
+    return '';
+  }, [synLayout, results, total]);
+
+  const emptyMessage = useMemo(() => {
+    if (!trimmedQuery || searchLoading || results.length > 0 || offlineStatus !== 'ready') {
+      return null;
+    }
+    return formatEmptySearchMessage(trimmedQuery, displayHint, mode);
+  }, [trimmedQuery, searchLoading, results.length, offlineStatus, displayHint, mode]);
 
   const toggleStats = () => {
     setShowStats(!showStats);
@@ -80,8 +125,7 @@ function App() {
       <header className="app-header">
         <h1>Canto-0243 PWA</h1>
         <p className="subtitle">粵語填詞查詢工具</p>
-        
-        {/* Database Status */}
+
         <div className="db-status">
           {offlineStatus === 'preparing' && (
             <div className="status-loading">
@@ -143,7 +187,7 @@ function App() {
                 <input
                   type="radio"
                   checked={mode === '0243'}
-                  onChange={() => setMode('0243')}
+                  onChange={() => handleModeChange('0243')}
                   disabled={!isReady}
                 />
                 0243模式
@@ -152,7 +196,7 @@ function App() {
                 <input
                   type="radio"
                   checked={mode === '02493'}
-                  onChange={() => setMode('02493')}
+                  onChange={() => handleModeChange('02493')}
                   disabled={!isReady}
                 />
                 02493模式
@@ -161,27 +205,22 @@ function App() {
                 <input
                   type="radio"
                   checked={mode === 'synonym'}
-                  onChange={() => setMode('synonym')}
+                  onChange={() => handleModeChange('synonym')}
                   disabled={!isReady}
                 />
                 近反義
               </label>
             </div>
           </div>
-          <button 
-            type="submit" 
-            className="search-button"
-            disabled={!isReady || !query.trim()}
-          >
+          <button type="submit" className="search-button" disabled={!isReady || !trimmedQuery}>
             搜尋
           </button>
         </form>
 
-        {/* Stats Toggle */}
         <button onClick={toggleStats} className="stats-toggle">
           {showStats ? '隱藏統計' : '顯示資料庫統計'}
         </button>
-        
+
         {showStats && stats && (
           <div className="db-stats">
             <p>詞條數量: {stats.wordCount.toLocaleString()}</p>
@@ -189,16 +228,19 @@ function App() {
           </div>
         )}
 
-        {/* Search Results */}
         <div className="search-results">
-          {hint && <p className="search-hint">{hint}</p>}
+          {displayHint && results.length > 0 && <p className="search-hint">{displayHint}</p>}
           {searchLoading && <p className="loading">搜尋中...</p>}
           {searchError && <p className="error">錯誤: {searchError.message}</p>}
-          
+
           {results.length > 0 && (
             <div className="results-list">
               {resultsLabel && <p className="results-count">{resultsLabel}</p>}
-              <ResultList results={results} onPick={handlePickResult} />
+              {synLayout ? (
+                <SynResultList results={results} onPick={handlePickResult} />
+              ) : (
+                <ResultList results={results} onPick={handlePickResult} />
+              )}
               {hasMore && (
                 <button
                   type="button"
@@ -211,9 +253,14 @@ function App() {
               )}
             </div>
           )}
-          
-          {results.length === 0 && query && !searchLoading && offlineStatus === 'ready' && (
-            <p className="no-results">未找到結果</p>
+
+          {emptyMessage && (
+            <div className="no-results">
+              <p>
+                <strong>{emptyMessage.primary}</strong>
+              </p>
+              {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
+            </div>
           )}
         </div>
       </main>

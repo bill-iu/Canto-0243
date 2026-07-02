@@ -48,6 +48,9 @@ export interface QueryResult {
   score?: number;
   resultType?: 'code' | 'jyutping' | 'word';
   anchor_dimension?: 'initial' | 'final';
+  relation?: 'syn' | 'ant' | 'semantic_related';
+  in_db?: boolean;
+  source?: string;
 }
 
 export interface SearchPageResult {
@@ -67,6 +70,7 @@ export interface QueryOptions {
   mode?: '0243' | '02493' | 'synonym';
   limit?: number;
   offset?: number;
+  fallback_0243_mode?: '0243' | '02493';
 }
 
 /**
@@ -93,6 +97,9 @@ function mapEngineResult(r: SearchResult['items'][number]): QueryResult {
     score: r.score,
     resultType: r.resultType,
     anchor_dimension: r.anchor_dimension,
+    relation: r.relation,
+    in_db: r.in_db,
+    source: r.source,
   };
 }
 
@@ -101,11 +108,13 @@ function mapEngineResult(r: SearchResult['items'][number]): QueryResult {
  */
 export async function searchPage(options: QueryOptions): Promise<SearchPageResult> {
   const mode = mapLegacyMode(options.mode);
+  const fallback = options.fallback_0243_mode ? mapLegacyMode(options.fallback_0243_mode) : undefined;
   const result = await queryEngine.execute({
     q: options.query,
     mode,
     limit: options.limit ?? SEARCH_PAGE_SIZE,
     offset: options.offset ?? 0,
+    fallback_0243_mode: fallback,
   });
   return {
     items: result.items.map(mapEngineResult),

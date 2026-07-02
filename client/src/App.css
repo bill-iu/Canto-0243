@@ -221,6 +221,67 @@ body {
   font-size: 1rem;
 }
 
+.no-results p {
+  margin: 0.35rem 0;
+}
+
+.syn-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.syn-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  color: #444;
+}
+
+.syn-section__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.syn-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #d8dcff;
+  border-radius: 999px;
+  background: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.syn-chip:hover {
+  background: #f3f4ff;
+  border-color: #667eea;
+}
+
+.syn-chip:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.syn-chip__badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #888;
+  background: #f0f0f0;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.syn-empty {
+  margin: 0;
+  color: #888;
+  font-size: 0.95rem;
+}
+
 .error {
   color: #d32f2f;
 }
@@ -484,6 +545,30 @@ body {
   .result-item .code {
     color: #888;
     font-family: 'Courier New', monospace;
+  }
+
+  .syn-section__title {
+    color: #ccc;
+  }
+
+  .syn-chip {
+    background: #2d2d2d;
+    border-color: #3d4270;
+    color: #e0e0e0;
+  }
+
+  .syn-chip:hover {
+    background: #2a2d45;
+    border-color: #667eea;
+  }
+
+  .syn-chip__badge {
+    background: #3a3a3a;
+    color: #aaa;
+  }
+
+  .syn-empty {
+    color: #888;
   }
 
   .app-footer {
