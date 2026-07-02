@@ -593,6 +593,26 @@ export function executeCompoundSearch(
   }));
 }
 
+/** MF-5 F5: compound candidate rows for position-match source injection */
+export function fetchCompoundWordRows(
+  db: Database,
+  spec: CompoundSearchSpec,
+  mode: string,
+): WordRow[] {
+  const tiers = searchCompoundTiers(db, spec);
+  if (!tiers.size) {
+    return [];
+  }
+  const rows = fetchCompoundRows(db, new Set(tiers.keys()), spec.width);
+  return rows.filter((row) => {
+    const code = String(row.code ?? '');
+    if (spec.code_prefix && !matchesCodePrefix(code, spec.code_prefix, mode)) {
+      return false;
+    }
+    return true;
+  });
+}
+
 /** ponytail: runnable self-check — `npx tsx client/scripts/compound-self-check.ts` */
 export function compoundLogicSelfCheck(): void {
   resetCompoundCaches();

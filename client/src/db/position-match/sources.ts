@@ -1,9 +1,10 @@
 /**
- * Candidate sources — port of app/services/position_match/sources.py (MF-3 subset)
+ * Candidate sources — port of app/services/position_match/sources.py (MF-3 + MF-5 F5)
  */
+import { fetchCompoundWordRows, type CompoundSearchSpec } from '../compound.ts';
 import { getCodeVariants } from '../code-variants.ts';
 import type { Database } from '../sqljs.ts';
-import type { CandidateSource } from './spec.ts';
+import type { CandidateSource, MatchSpec } from './spec.ts';
 
 export type WordRow = Record<string, unknown>;
 
@@ -89,6 +90,83 @@ export class LengthCodeCandidateSource implements CandidateSource {
       fallbackLimit: this.fallbackLimit,
     });
   }
+}
+
+/** Port of sources._compound_rhyme_char */
+export function compoundRhymeChar(spec: MatchSpec): string | undefined {
+  for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'final_anchor' && slot.value) {
+      return String(slot.value);
+    }
+  }
+  return undefined;
+}
+
+export function compoundSearchSpecFromMatchSpec(spec: MatchSpec): CompoundSearchSpec | null {
+  if (!spec.compound_kind) {
+    return null;
+  }
+  const connective = spec.extra?.connective;
+  return {
+    compound_kind: spec.compound_kind,
+    width: spec.width,
+    code_prefix: spec.code_prefix,
+    rhyme_char: compoundRhymeChar(spec),
+    connective: typeof connective === 'string' ? connective : undefined,
+  };
+}
+
+/** Port of CompoundCandidateSource */
+export class CompoundCandidateSource implements CandidateSource {
+  constructor(
+    private readonly db: Database,
+    private readonly compounds: Set<string>,
+    private readonly expectedLength = 2,
+  ) {}
+
+  getCandidates(
+    length: number,
+    _options?: { code?: string | null; mode?: string },
+  ): [WordRow[], boolean] {
+    if (length !== this.expectedLength || !this.compounds.size) {
+      return [[], false];
+    }
+    const list = [...this.compounds];
+    const placeholders = list.map(() => '?').join(', ');
+    const stmt = this.db.prepare(`
+      SELECT char, jyutping, code, initials, finals, length
+      FROM words
+      WHERE char IN (${placeholders})
+        AND (
+          length = ?
+          OR ((length IS NULL OR length = 0) AND length(char) = ?)
+        )
+      ORDER BY char, jyutping
+    `);
+    stmt.bind([...list, this.expectedLength, this.expectedLength]);
+    const rows: WordRow[] = [];
+    while (stmt.step()) {
+      const row = stmt.getAsObject() as WordRow;
+      if (wordMatchesWidth(row, this.expectedLength)) {
+        rows.push(row);
+      }
+    }
+    stmt.free();
+    return [rows, false];
+  }
+}
+
+/** ponytail: MF-5 F5 compound_kind source — reuses compound.ts tier search */
+export function getCompoundCandidatesForSpec(
+  spec: MatchSpec,
+  db: Database,
+  mode: string,
+): WordRow[] {
+  const compoundSpec = compoundSearchSpecFromMatchSpec(spec);
+  if (!compoundSpec) {
+    return [];
+  }
+  return fetchCompoundWordRows(db, compoundSpec, mode);
 }
 
 /** ponytail: runnable self-check — needs injected Database */
