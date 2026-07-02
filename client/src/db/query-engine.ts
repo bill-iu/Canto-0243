@@ -14,6 +14,7 @@ import {
   executeCompoundSearch,
   type CompoundSearchSpec,
 } from './compound.ts';
+import { executeHeteronymCodeSearch } from './heteronym.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -284,6 +285,8 @@ export interface QueryResult {
   score: number;
   /** ponytail: lookup layout row kind — upgrade path: full lookup_layout.ts module */
   resultType?: 'code' | 'jyutping' | 'word';
+  heteronym_tags?: string[];
+  anchor_dimension?: 'initial' | 'final';
 }
 
 /**
@@ -2297,15 +2300,130 @@ function executeSerialPhonemeQuery(
   return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
-/** ponytail: JYUTPING_ANCHOR execution — upgrade: jyutping_anchor.py matchers */
-function executeJyutpingAnchorQuery(
-  _parsed: JyutpingAnchorQuery,
-  _db: Database,
-  _mode: QueryMode,
-  _limit: number,
-  _offset: number,
+/** ponytail: JYUTPING_ANCHOR execution — syllable/initial/rhyme letters + dual merge */
+function parseSyllableLetterTokens(jyutping: string): string[] {
+  return jyutping
+    .trim()
+    .split(/\s+/)
+    .map((s) => s.replace(/[1-6]$/i, '').toLowerCase());
+}
+
+function matchesJyutpingAnchorAtPosition(
+  word: WordRow,
+  pos: number,
+  kind: JyutpingAnchorQuery['anchor_kind'],
+  value: string,
+): boolean {
+  const letters = value.toLowerCase();
+  if (kind === 'syllable_letters') {
+    const syls = parseSyllableLetterTokens(String(word.jyutping ?? ''));
+    return pos < syls.length && syls[pos] === letters;
+  }
+  if (kind === 'initial_letters') {
+    const parts = getWordParts(word, 'initials');
+    return pos < parts.length && parts[pos] === letters;
+  }
+  if (kind === 'rhyme_letters') {
+    const frag = letters === 'm' ? 'ng' : letters;
+    const finals = getRhymeFinals(word);
+    if (pos < finals.length && (finals[pos] === frag || finals[pos] === letters)) {
+      return true;
+    }
+    const syls = parseSyllableLetterTokens(String(word.jyutping ?? ''));
+    if (pos < syls.length) {
+      const s = syls[pos]!;
+      return s === frag || s.endsWith(frag) || (letters === 'ng' && (s === 'm' || s === 'ng'));
+    }
+  }
+  return false;
+}
+
+function executeDualPhonemeJyutpingQuery(
+  parsed: JyutpingAnchorQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
 ): SearchResult {
-  return { items: [] };
+  const initialLetter = /m/i.test(parsed.raw_q) ? 'm' : parsed.anchor_value;
+  const initialParsed: JyutpingAnchorQuery = {
+    ...parsed,
+    anchor_kind: 'initial_letters',
+    anchor_value: initialLetter,
+    dual_phoneme: false,
+  };
+  const finalParsed: JyutpingAnchorQuery = {
+    ...parsed,
+    anchor_kind: 'rhyme_letters',
+    anchor_value: parsed.anchor_value === 'm' ? 'ng' : parsed.anchor_value,
+    dual_phoneme: false,
+  };
+  const initial = executeJyutpingAnchorQuery(initialParsed, db, mode, limit + offset + 500, 0);
+  const final = executeJyutpingAnchorQuery(finalParsed, db, mode, limit + offset + 500, 0);
+  const tagged: QueryResult[] = [
+    ...initial.items.map((r) => ({ ...r, anchor_dimension: 'initial' as const })),
+    ...final.items.map((r) => ({ ...r, anchor_dimension: 'final' as const })),
+  ];
+  return { items: tagged.slice(offset, offset + limit) };
+}
+
+function executeJyutpingAnchorQuery(
+  parsed: JyutpingAnchorQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  if (parsed.dual_phoneme) {
+    return executeDualPhonemeJyutpingQuery(parsed, db, mode, limit, offset);
+  }
+
+  const width = parsed.width;
+  const searchMode = normalizeSearchMode(mode);
+  const requiredCodes: Array<string | null> = Array(width).fill(null);
+  if (parsed.code_prefix && parsed.code_prefix.length === width) {
+    for (let i = 0; i < width; i++) {
+      requiredCodes[i] = parsed.code_prefix[i]!;
+    }
+  }
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    const charText = String(word.char ?? '');
+    if (!wordMatchesWidth(word, width) || charText.length !== width) {
+      continue;
+    }
+    const code = String(word.code ?? '');
+    if (parsed.code_prefix && !matchesCodePositions(code, requiredCodes, searchMode)) {
+      continue;
+    }
+    if (
+      !matchesJyutpingAnchorAtPosition(
+        word,
+        parsed.anchor_pos,
+        parsed.anchor_kind,
+        parsed.anchor_value,
+      )
+    ) {
+      continue;
+    }
+    matched.push(rowToResult(word));
+  }
+  stmt.free();
+
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 function matchesPhonemeAtPosition(
@@ -2750,6 +2868,11 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
 
     case RouteKind.HETERONYM:
+      if (parsed.kind === QueryKind.HETERONYM_CODE) {
+        const h = parsed as HeteronymCodeQuery;
+        const items = executeHeteronymCodeSearch(h, db, mode, limit, offset);
+        return { items };
+      }
       return { items: [] };
     
     case RouteKind.UNMATCHED:
