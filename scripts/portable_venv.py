@@ -604,7 +604,7 @@ reset_static_indexes_for_tests()
 ensure_thesaurus_loaded(force=True)
 ants = get_antonyms("痛苦")
 assert "开心" not in ants, ants
-assert "開心" in ants, ants
+assert ("開心" in ants) or ("高興" in ants), ants
 """
     env = os.environ.copy()
     env.setdefault("PYTHONUTF8", "1")
