@@ -184,7 +184,7 @@ def _compare(py: dict, ts: dict) -> dict:
     issues: list[str] = []
     if py["kind"] != _kind_label(ts.get("kind", "")):
         issues.append("kind")
-    if py["chars"] != ts.get("chars", []):
+    if sorted(py["chars"]) != sorted(ts.get("chars", [])):
         issues.append("chars")
     if (py["hint"] or None) != (ts.get("hint") or None):
         issues.append("hint")

@@ -110,6 +110,24 @@ export interface RhymeAnchorQuery extends ParsedQuery {
   width: number;
 }
 
+/** Prefix wildcard equals (?困潦倒=) */
+export interface PrefixWildcardEqualsQuery extends ParsedQuery {
+  kind: QueryKind.PREFIX_WILDCARD_EQUALS;
+  raw_q: string;
+  inner_q: string;
+  ref_literal: string;
+  width: number;
+}
+
+/** Four-char partial rhyme mask (窮?潦倒=) */
+export interface PartialRhymeMaskQuery extends ParsedQuery {
+  kind: QueryKind.PARTIAL_RHYME_MASK;
+  raw_q: string;
+  pattern: string;
+  width: number;
+  anchors: Array<[number, string]>;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -299,6 +317,17 @@ export function parseQuery(q: string): ParsedQuery {
     } as RelationLookupQuery;
   }
   
+  // Prefix wildcard equals (?困潦倒=) — before framed equals / mask
+  const prefixWildcard = parsePrefixWildcardEqualsQuery(normalized);
+  if (prefixWildcard) {
+    return prefixWildcard;
+  }
+
+  const partialRhyme = parsePartialRhymeMaskQuery(normalized);
+  if (partialRhyme) {
+    return partialRhyme;
+  }
+
   // Check for hybrid tail equals alias (e.g., 23就=)
   if (isHybridTailEqualsAlias(normalized)) {
     return {
@@ -366,6 +395,64 @@ function isWildcardChar(ch: string): boolean {
 
 function isSlotChar(ch: string): boolean {
   return ch.length === 1 && SLOT_CHAR_RE.test(ch);
+}
+
+/** Port of query_grammar/serial.parse_prefix_wildcard_equals_query */
+export function parsePrefixWildcardEqualsQuery(q: string): PrefixWildcardEqualsQuery | null {
+  const m = q.match(/^\?([\u4e00-\u9fff]{2,})=$/);
+  if (!m) {
+    return null;
+  }
+  const ref = m[1]!;
+  return {
+    kind: QueryKind.PREFIX_WILDCARD_EQUALS,
+    raw_q: q,
+    inner_q: `${ref}=`,
+    ref_literal: ref,
+    width: ref.length + 1,
+  };
+}
+
+/** Port of rhyme.normalize_partial_rhyme_mask_query */
+function normalizePartialRhymeMaskQuery(q: string): string {
+  const m = q.match(/^([\u4e00-\u9fff]{3})=\?$/);
+  if (m) {
+    return `${m[1]}?=`;
+  }
+  return q;
+}
+
+/** Port of rhyme.parse_partial_rhyme_mask_query */
+export function parsePartialRhymeMaskQuery(q: string): PartialRhymeMaskQuery | null {
+  const nq = normalizePartialRhymeMaskQuery(q);
+  const m = nq.match(/^([\u4e00-\u9fff?]{4})=$/);
+  if (!m) {
+    return null;
+  }
+  const pattern = m[1]!;
+  if (!pattern.includes('?') || pattern.split('').every((ch) => ch === '?')) {
+    return null;
+  }
+  if (pattern.startsWith('?') && /^\?[\u4e00-\u9fff]{3}$/.test(pattern)) {
+    return null;
+  }
+  const anchors: Array<[number, string]> = [];
+  for (let pos = 0; pos < pattern.length; pos++) {
+    const ch = pattern[pos]!;
+    if (ch !== '?') {
+      anchors.push([pos, ch]);
+    }
+  }
+  if (!anchors.length) {
+    return null;
+  }
+  return {
+    kind: QueryKind.PARTIAL_RHYME_MASK,
+    raw_q: q,
+    pattern,
+    width: 4,
+    anchors,
+  };
 }
 
 /** Port of query_grammar/rhyme.parse_rhyme_anchor_query (P1 subset) */
@@ -518,6 +605,102 @@ function anchorPhonemeOptions(
   }
   stmt.free();
   return options;
+}
+
+function contextualFinalOptionsAtPosition(
+  db: Database,
+  width: number,
+  pos: number,
+  anchorChar: string,
+): Set<string> {
+  const options = new Set<string>();
+  const stmt = db.prepare(`
+    SELECT char, initials, finals, jyutping, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const text = String(row.char ?? '');
+    if (text.length !== width || text[pos] !== anchorChar) {
+      continue;
+    }
+    const finals = getRhymeFinals(row);
+    if (finals.length > pos && finals[pos]) {
+      options.add(finals[pos]!);
+    }
+  }
+  stmt.free();
+  for (const opt of anchorPhonemeOptions(db, anchorChar, 'final')) {
+    options.add(opt);
+  }
+  return options;
+}
+
+function wordPassesPartialRhymeMask(
+  word: WordRow,
+  parsed: PartialRhymeMaskQuery,
+  slotOptions: Map<string, Set<string>>,
+  width: number,
+): boolean {
+  const text = String(word.char ?? '');
+  if (text.length !== width) {
+    return false;
+  }
+  const finals = getRhymeFinals(word);
+  if (!finals.length) {
+    return false;
+  }
+  for (const [pos, anchor] of parsed.anchors) {
+    const options = slotOptions.get(`${pos}:${anchor}`);
+    if (!options?.size || pos >= finals.length || !options.has(finals[pos]!)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function executePartialRhymeMaskQuery(
+  parsed: PartialRhymeMaskQuery,
+  db: Database,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const width = parsed.width;
+  const slotOptions = new Map<string, Set<string>>();
+  for (const [pos, anchor] of parsed.anchors) {
+    const key = `${pos}:${anchor}`;
+    if (!slotOptions.has(key)) {
+      slotOptions.set(key, contextualFinalOptionsAtPosition(db, width, pos, anchor));
+    }
+  }
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    if (wordPassesPartialRhymeMask(word, parsed, slotOptions, width)) {
+      matched.push(rowToResult(word));
+    }
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
 }
 
 function matchesPhonemeAtPosition(
@@ -854,6 +1037,23 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
     
     case RouteKind.MASK_FAMILY:
+      if (parsed.kind === QueryKind.PREFIX_WILDCARD_EQUALS) {
+        return executePrefixWildcardEquals(
+          parsed as PrefixWildcardEqualsQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
+      if (parsed.kind === QueryKind.PARTIAL_RHYME_MASK) {
+        return executePartialRhymeMaskQuery(
+          parsed as PartialRhymeMaskQuery,
+          db,
+          limit,
+          offset,
+        );
+      }
       if (parsed.kind === QueryKind.RHYME_ANCHOR) {
         return executeRhymeAnchorQuery(parsed as RhymeAnchorQuery, db, limit, offset);
       }
@@ -1111,6 +1311,134 @@ function equalsRefPhonemeParts(
     return parts.length ? parts : null;
   }
   return inferRefPhonemeParts(db, literal, dimension);
+}
+
+function phonemePartsSuffix(
+  row: WordRow,
+  dimension: EqualsDimension,
+  suffixLen: number,
+): string[] | null {
+  const isFinal = dimension === 'final' || dimension === 'rhyme';
+  const parts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
+  if (!parts.length || parts.length < suffixLen) {
+    return null;
+  }
+  return parts.slice(-suffixLen);
+}
+
+/** Port of suffix_aligned_ref_phoneme_parts — ponytail: first pool row, not pron_rank sort */
+function suffixAlignedRefPhonemeParts(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+): string[] | null {
+  const refLen = literal.length;
+  if (refLen < 2) {
+    return equalsRefPhonemeParts(db, literal, dimension);
+  }
+
+  const stmt = db.prepare(
+    'SELECT char, initials, finals, jyutping, length FROM words WHERE char LIKE ? LIMIT 500',
+  );
+  stmt.bind([`%${literal}`]);
+  const suffixRows: WordRow[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    if (String(row.char ?? '').endsWith(literal)) {
+      suffixRows.push(row);
+    }
+  }
+  stmt.free();
+
+  const longer = suffixRows.filter((r) => String(r.char ?? '').length > refLen);
+  const exact = suffixRows.filter((r) => String(r.char ?? '').length === refLen);
+  const pool = longer.length ? longer : exact;
+  if (!pool.length) {
+    return equalsRefPhonemeParts(db, literal, dimension);
+  }
+
+  return phonemePartsSuffix(pool[0]!, dimension, refLen);
+}
+
+function buildPrefixWildcardEqualsSpec(
+  parsed: PrefixWildcardEqualsQuery,
+): (MatchSpec & { equals_span: EqualsSpan }) | null {
+  const inner = buildEqualsMatchSpec(parsed.inner_q);
+  if (!inner?.equals_span) {
+    return null;
+  }
+  return {
+    width: parsed.width,
+    code_prefix: inner.code_prefix,
+    equals_span: {
+      ref_literal: inner.equals_span.ref_literal,
+      start_pos: 1,
+      dimension: inner.equals_span.dimension,
+      phoneme_anchor_only: true,
+      whole_word: false,
+    },
+  };
+}
+
+function executePrefixWildcardEquals(
+  parsed: PrefixWildcardEqualsQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const spec = buildPrefixWildcardEqualsSpec(parsed);
+  if (!spec?.equals_span) {
+    return { items: [], hint: '無效的前綴通配等號查詢' };
+  }
+
+  const span = spec.equals_span;
+  const targetParts = suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
+  if (!targetParts) {
+    return { items: [] };
+  }
+
+  const width = spec.width;
+  const fullCode = spec.code_prefix || '';
+  const variants = fullCode ? getCodeVariants(fullCode, normalizeSearchMode(mode)) : [];
+
+  let sql = `
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+  `;
+  const params: (string | number)[] = [width, width];
+  if (variants.length) {
+    sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+    params.push(...variants);
+  }
+  sql += ' LIMIT 2000';
+
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    if (!wordMatchesWidth(word, width)) {
+      continue;
+    }
+    if (
+      matchesEqualsPhonemeSpan(word, targetParts, span.start_pos, {
+        phoneme_anchor_only: span.phoneme_anchor_only,
+        ref_literal: span.ref_literal,
+        dimension: span.dimension,
+      })
+    ) {
+      matched.push(rowToResult(word));
+    }
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
 }
 
 function wordMatchesWidth(row: WordRow, width: number): boolean {
