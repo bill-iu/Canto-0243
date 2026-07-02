@@ -9,6 +9,12 @@ import type { QueryOptions } from './hooks/useDB';
 import './App.css';
 
 function App() {
+  const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
+  const conn = (navigator as any).connection;
+  const isLikelyMetered =
+    Boolean(conn?.saveData) ||
+    (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
+
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<'0243' | '02493' | 'synonym'>('0243');
   const [showStats, setShowStats] = useState(false);
@@ -16,9 +22,13 @@ function App() {
   const { 
     isReady, 
     status, 
+    offlineStatus,
+    isOnline,
+    isDbCached,
     progress, 
     error: dbError,
     initialize,
+    retryOfflineReady,
     getStats 
   } = useDB();
   
@@ -30,8 +40,12 @@ function App() {
 
   // Auto-initialize database on mount
   useEffect(() => {
-    initialize();
-  }, [initialize]);
+    // Auto mode: only attempt when we are online, or when a cached DB likely exists.
+    // Otherwise, stay "not ready" with a clear message until user reconnects.
+    if (isOnline || isDbCached) {
+      initialize();
+    }
+  }, [initialize, isOnline, isDbCached]);
 
   // Load database stats
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
@@ -58,17 +72,42 @@ function App() {
         
         {/* Database Status */}
         <div className="db-status">
-          {status === 'loading' && (
+          {offlineStatus === 'preparing' && (
             <div className="status-loading">
               <span>載入資料庫: {progress}%</span>
               <progress value={progress} max="100" />
             </div>
           )}
-          {status === 'ready' && (
-            <span className="status-ready">✓ 資料庫就緒</span>
+          {offlineStatus === 'ready' && (
+            <span className="status-ready">✓ 資料庫就緒（詞庫版本：{lexiconVersion}）</span>
           )}
-          {status === 'error' && (
-            <span className="status-error">✗ 錯誤: {dbError?.message}</span>
+          {offlineStatus === 'not_ready' && (
+            <div className="status-loading">
+              <span>
+                {isOnline
+                  ? '尚未離線就緒（首次使用需下載一次資料）'
+                  : isDbCached
+                    ? '偵測到離線緩存，但尚未初始化（可嘗試重試）'
+                    : '離線未就緒（需要一次上線完成離線就緒）'}
+              </span>
+              {isOnline && !isDbCached && (
+                <span style={{ display: 'block', opacity: 0.85, marginTop: 6 }}>
+                  提示：首次離線就緒需下載較大資料包，建議用 Wi‑Fi。
+                  {isLikelyMetered ? '（偵測到可能為省流量/慢速網路）' : ''}
+                </span>
+              )}
+              <button type="button" className="stats-toggle" onClick={retryOfflineReady}>
+                重新嘗試離線就緒
+              </button>
+            </div>
+          )}
+          {offlineStatus === 'failed' && (
+            <div className="status-error">
+              <span>✗ 離線就緒失敗: {dbError?.message}</span>
+              <button type="button" className="stats-toggle" onClick={retryOfflineReady}>
+                重試
+              </button>
+            </div>
           )}
         </div>
       </header>
@@ -82,7 +121,7 @@ function App() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="輸入 0243 碼、粵拼 或 漢字..."
               className="search-input"
-              disabled={status === 'loading'}
+              disabled={offlineStatus === 'preparing'}
               autoFocus
             />
             <div className="mode-selector">
@@ -164,7 +203,7 @@ function App() {
 
       <footer className="app-footer">
         <p>Canto-0243 PWA v0.1.0</p>
-        <p>離線粵語填詞查詢工具</p>
+        <p>離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}</p>
       </footer>
     </div>
   );

@@ -14,8 +14,7 @@
   "dependencies": {
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "sql.js": "^1.14.1",
-    "sql.js-httpvfs": "^0.8.12"
+    "sql.js": "^1.14.1"
   },
   "devDependencies": {
     "@types/node": "^24.13.2",

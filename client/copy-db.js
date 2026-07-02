@@ -7,7 +7,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 const SOURCE_DB = path.resolve('../lyrics.db');
-const TARGET_DB = path.resolve('./public/lyrics.db');
+const RELEASE_TAG = process.env.RELEASE_TAG || process.argv[2] || 'dev';
+const TARGET_DB = path.resolve(`./public/lyrics.${RELEASE_TAG}.db`);
 
 async function copyDatabase() {
   try {
@@ -16,7 +17,7 @@ async function copyDatabase() {
     
     // Copy the database file
     await fs.copyFile(SOURCE_DB, TARGET_DB);
-    console.log('✓ Database copied to public/lyrics.db');
+    console.log(`✓ Database copied to public/lyrics.${RELEASE_TAG}.db`);
     
     // Verify the file was copied
     const stats = await fs.stat(TARGET_DB);

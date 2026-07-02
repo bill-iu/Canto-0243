@@ -53,6 +53,7 @@ data/locks/
 agent-tools/
 mcps/
 commit-msg.txt
+terminals/
 
 # IDE 設定
 .vscode/

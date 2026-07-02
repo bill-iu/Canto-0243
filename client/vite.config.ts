@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // Project Pages: https://<user>.github.io/Canto-0243/
+  // Serve locally at / to keep dev ergonomics.
+  base: command === 'serve' ? '/' : '/Canto-0243/',
   plugins: [
     react(),
     VitePWA({
@@ -14,13 +17,13 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB cache limit
         runtimeCaching: [
           {
-            urlPattern: /\/lyrics\.db$/,
+            urlPattern: /\/lyrics\.(?:v?\d+\.\d+\.\d+)\.db$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'database-cache',
               expiration: {
-                maxEntries: 1,
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                maxEntries: 2,
+                maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
               }
             }
           }
@@ -35,14 +38,9 @@ export default defineConfig({
         display: 'standalone',
         icons: [
           {
-            src: '/icon-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
-          },
-          {
-            src: '/icon-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
+            src: 'icons.svg',
+            sizes: 'any',
+            type: 'image/svg+xml'
           }
         ]
       }
@@ -55,4 +53,4 @@ export default defineConfig({
       'Cross-Origin-Embedder-Policy': 'require-corp'
     }
   }
-})
+}))

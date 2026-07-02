@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   initializeDatabase,
-  getDatabase,
+  getDefaultDbUrl,
   isDatabaseInitialized,
   resetDatabase
 } from '../db/init';
@@ -33,15 +33,23 @@ export { normalizeQuery, parseQuery, normalizeAndParse };
  */
 export type DatabaseStatus = 'idle' | 'loading' | 'ready' | 'error';
 
+export type OfflineReadinessStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
+
 /**
  * Database hook return type
  */
 export interface UseDBReturn {
   status: DatabaseStatus;
+  offlineStatus: OfflineReadinessStatus;
+  isOfflineReady: boolean;
+  isOnline: boolean;
+  isDbCached: boolean | null;
+  dbUrl: string;
   progress: number;
   error: Error | null;
   isReady: boolean;
   initialize: () => Promise<void>;
+  retryOfflineReady: () => Promise<void>;
   search: (options: QueryOptions) => Promise<QueryResult[]>;
   getStats: () => Promise<{ wordCount: number; tableCount: number }>;
   reset: () => void;
@@ -54,6 +62,24 @@ export function useDB(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
+  const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
+  const [isDbCached, setIsDbCached] = useState<boolean | null>(null);
+  const [isValidated, setIsValidated] = useState<boolean>(false);
+
+  const dbUrl = getDefaultDbUrl();
+
+  const checkDbCached = useCallback(async () => {
+    if (!('caches' in window)) {
+      setIsDbCached(false);
+      return;
+    }
+    try {
+      const match = await caches.match(dbUrl);
+      setIsDbCached(Boolean(match));
+    } catch {
+      setIsDbCached(false);
+    }
+  }, [dbUrl]);
 
   /**
    * Initialize the database
@@ -67,9 +93,14 @@ export function useDB(): UseDBReturn {
       setStatus('loading');
       setError(null);
       setProgress(0);
+      setIsValidated(false);
 
       // Initialize database - progress will be updated via httpvfs
       await initializeDatabase();
+
+      // Validate with a minimal query so "Ready" means "can actually query"
+      await getDatabaseStats();
+      setIsValidated(true);
       
       setStatus('ready');
       setProgress(100);
@@ -77,8 +108,19 @@ export function useDB(): UseDBReturn {
       setError(err instanceof Error ? err : new Error(String(err)));
       setStatus('error');
       setProgress(0);
+      setIsValidated(false);
     }
   }, [status]);
+
+  const retryOfflineReady = useCallback(async () => {
+    resetDatabase();
+    setStatus('idle');
+    setProgress(0);
+    setError(null);
+    setIsValidated(false);
+    await checkDbCached();
+    await initialize();
+  }, [checkDbCached, initialize]);
 
   /**
    * Execute a search query
@@ -126,15 +168,46 @@ export function useDB(): UseDBReturn {
     if (isDatabaseInitialized()) {
       setStatus('ready');
       setProgress(100);
+      // Note: still validate on demand; global init doesn't guarantee offline package integrity
     }
   }, []);
 
+  useEffect(() => {
+    checkDbCached();
+  }, [checkDbCached]);
+
+  useEffect(() => {
+    const onOnline = () => setIsOnline(true);
+    const onOffline = () => setIsOnline(false);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, []);
+
+  const offlineStatus: OfflineReadinessStatus =
+    status === 'ready' && isValidated
+      ? 'ready'
+      : status === 'loading'
+        ? 'preparing'
+        : status === 'error'
+          ? 'failed'
+          : 'not_ready';
+
   return {
     status,
+    offlineStatus,
+    isOfflineReady: offlineStatus === 'ready',
+    isOnline,
+    isDbCached,
+    dbUrl,
     progress,
     error,
     isReady: status === 'ready',
     initialize,
+    retryOfflineReady,
     search: searchQuery,
     getStats,
     reset

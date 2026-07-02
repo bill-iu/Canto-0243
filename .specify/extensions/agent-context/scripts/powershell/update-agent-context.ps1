@@ -63,6 +63,10 @@ if (-not (Test-Path -LiteralPath $ExtConfig)) {
     exit 0
 }
 
+if ($null -ne $PlanPath) {
+    $PlanPath = $PlanPath.Trim()
+}
+
 $Options = $null
 if (Get-Command ConvertFrom-Yaml -ErrorAction SilentlyContinue) {
     try {
@@ -73,57 +77,28 @@ if (Get-Command ConvertFrom-Yaml -ErrorAction SilentlyContinue) {
 }
 
 if ($null -eq $Options) {
-    # ConvertFrom-Yaml unavailable or failed; fall back to Python+PyYAML.
-    $pythonCmd = $null
-    foreach ($candidate in @('python3', 'python')) {
-        if (Get-Command $candidate -ErrorAction SilentlyContinue) {
-            # Verify it is Python 3
-            $verOut = & $candidate --version 2>&1
-            if ($verOut -match 'Python 3') {
-                $pythonCmd = $candidate
-                break
-            }
-        }
+    # ConvertFrom-Yaml unavailable or failed; parse minimal YAML subset.
+    # ponytail: We only need a few scalar keys; avoid extra deps.
+    try {
+        $raw = Get-Content -LiteralPath $ExtConfig -Raw
+        $opts = @{}
+
+        $m = [regex]::Match($raw, '(?m)^\s*context_file\s*:\s*(.+?)\s*$')
+        if ($m.Success) { $opts['context_file'] = $m.Groups[1].Value.Trim() }
+
+        $start = [regex]::Match($raw, '(?m)^\s*start\s*:\s*(.+?)\s*$')
+        $end   = [regex]::Match($raw, '(?m)^\s*end\s*:\s*(.+?)\s*$')
+        $cm = @{}
+        if ($start.Success) { $cm['start'] = $start.Groups[1].Value.Trim() }
+        if ($end.Success)   { $cm['end']   = $end.Groups[1].Value.Trim() }
+        if ($cm.Count -gt 0) { $opts['context_markers'] = $cm }
+
+        $Options = $opts
+    } catch {
+        $Options = $null
     }
 
-    if ($pythonCmd) {
-        try {
-            $jsonOut = & $pythonCmd -c @'
-import json
-import sys
-try:
-    import yaml
-except ImportError:
-    print(
-        "agent-context: PyYAML is required to parse extension config; cannot update context.",
-        file=sys.stderr,
-    )
-    sys.exit(2)
-
-try:
-    with open(sys.argv[1], "r", encoding="utf-8") as fh:
-        data = yaml.safe_load(fh)
-except Exception as exc:
-    print(
-        f"agent-context: unable to parse {sys.argv[1]} ({exc}); cannot update context.",
-        file=sys.stderr,
-    )
-    sys.exit(2)
-
-if not isinstance(data, dict):
-    data = {}
-
-print(json.dumps(data))
-'@ $ExtConfig
-            if ($LASTEXITCODE -eq 0 -and $jsonOut) {
-                $Options = $jsonOut | ConvertFrom-Json -ErrorAction Stop
-            }
-        } catch {
-            $Options = $null
-        }
-    }
-
-    if (-not $Options) {
+    if (-not $Options -or $Options.Count -eq 0) {
         Write-Warning "agent-context: unable to parse $ExtConfig; skipping update."
         exit 0
     }
@@ -166,6 +141,23 @@ if ($cm) {
 }
 
 if (-not $PlanPath) {
+    # Prefer feature.json if present (single source of truth for current feature dir)
+    try {
+        $featureJson = Join-Path $ProjectRoot '.specify/feature.json'
+        if (Test-Path -LiteralPath $featureJson) {
+            $fj = Get-Content -LiteralPath $featureJson -Raw | ConvertFrom-Json -ErrorAction Stop
+            $fd = Get-ConfigValue -Object $fj -Key 'feature_directory'
+            if ($fd) {
+                $planCandidate = Join-Path (Join-Path $ProjectRoot $fd) 'plan.md'
+                if (Test-Path -LiteralPath $planCandidate) {
+                    $PlanPath = [System.IO.Path]::GetRelativePath($ProjectRoot, $planCandidate).Replace('\','/')
+                }
+            }
+        }
+    } catch {
+        # Non-fatal: fall back to directory scan.
+    }
+
     # Discover plan.md exactly one level deep (specs/<feature>/plan.md),
     # matching the bash glob specs/*/plan.md. Wrap in try/catch so access errors under
     # $ErrorActionPreference = 'Stop' don't abort the script.
