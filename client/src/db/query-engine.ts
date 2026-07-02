@@ -21,6 +21,19 @@ import {
   parseJyutpingAnchorQuery as parseJyutpingAnchorFields,
 } from './jyutping-anchor.ts';
 import { rhymeFinalsFromJyutping } from './jyutping-codec.ts';
+import {
+  attachEqualsSpan,
+  createMatchSpec,
+  getEqualsSpan,
+  type CandidateSource,
+  type CompoundKind,
+  type ConstraintKind,
+  type EqualsDimension,
+  type EqualsSpan,
+  type MaskFamilySearchResult,
+  type MatchSpec,
+  type SlotConstraint,
+} from './position-match/spec.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -2400,21 +2413,6 @@ function executeRhymeAnchorQuery(
 }
 
 // ============================================================================
-// Match Specification (from position_match/spec.py)
-// ============================================================================
-
-/**
- * Position match specification
- */
-export interface MatchSpec {
-  width: number; // Number of syllables/characters
-  code_prefix?: string;
-  equals_span?: EqualsSpan; // For equals queries
-  // Additional spec properties would be added here
-  // This is a simplified version
-}
-
-// ============================================================================
 // Equals Query Support (from query_grammar/equals.py)
 // ============================================================================
 
@@ -2443,22 +2441,6 @@ export interface HybridTailEqualsAliasQuery extends ParsedQuery {
   kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS;
   raw_q: string;
   hybrid_q: string;
-}
-
-/**
- * Dimension type for equals span
- */
-export type EqualsDimension = 'initial' | 'final' | 'rhyme' | 'phone';
-
-/**
- * Equals span specification for position matching
- */
-export interface EqualsSpan {
-  ref_literal: string;
-  start_pos: number;
-  dimension: EqualsDimension;
-  phoneme_anchor_only: boolean;
-  whole_word: boolean;
 }
 
 /**
@@ -2525,7 +2507,7 @@ export function isFramedEqualsQuery(q: string): boolean {
  * Build MatchSpec for equals query
  * Converts query string to MatchSpec for position matching
  */
-export function buildEqualsMatchSpec(q: string): (MatchSpec & { equals_span: EqualsSpan }) | null {
+export function buildEqualsMatchSpec(q: string): MatchSpec | null {
   const match = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)?(=)?(\d*)$/);
   if (!match) {
     return null;
@@ -2552,12 +2534,12 @@ export function buildEqualsMatchSpec(q: string): (MatchSpec & { equals_span: Equ
     phoneme_anchor_only: Boolean(left_code && (right_code || inner_equal)),
     whole_word: start_pos === 0 && target_length === expected_length,
   };
-  
-  return {
-    width: expected_length,
+
+  const spec = createMatchSpec(expected_length, {
     code_prefix: full_code || undefined,
-    equals_span: span,
-  };
+  });
+  attachEqualsSpan(spec, span);
+  return spec;
 }
 
 /**
@@ -2570,10 +2552,10 @@ const CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT =
  * Generate hint for empty results in code-prefixed whole word equals query
  */
 export async function codePrefixedWholeWordEqualsEmptyHint(
-  spec: MatchSpec & { equals_span?: EqualsSpan },
+  spec: MatchSpec,
   db: Database
 ): Promise<string | null> {
-  const span = spec.equals_span;
+  const span = getEqualsSpan(spec);
   if (!span || !span.whole_word) {
     return null;
   }
@@ -3149,24 +3131,21 @@ function suffixAlignedRefPhonemeParts(
   return phonemePartsSuffix(pool[0]!, dimension, refLen);
 }
 
-function buildPrefixWildcardEqualsSpec(
-  parsed: PrefixWildcardEqualsQuery,
-): (MatchSpec & { equals_span: EqualsSpan }) | null {
+function buildPrefixWildcardEqualsSpec(parsed: PrefixWildcardEqualsQuery): MatchSpec | null {
   const inner = buildEqualsMatchSpec(parsed.inner_q);
-  if (!inner?.equals_span) {
+  const innerSpan = inner ? getEqualsSpan(inner) : null;
+  if (!innerSpan) {
     return null;
   }
-  return {
-    width: parsed.width,
-    code_prefix: inner.code_prefix,
-    equals_span: {
-      ref_literal: inner.equals_span.ref_literal,
-      start_pos: 1,
-      dimension: inner.equals_span.dimension,
-      phoneme_anchor_only: true,
-      whole_word: false,
-    },
-  };
+  const spec = createMatchSpec(parsed.width, { code_prefix: inner.code_prefix });
+  attachEqualsSpan(spec, {
+    ref_literal: innerSpan.ref_literal,
+    start_pos: 1,
+    dimension: innerSpan.dimension,
+    phoneme_anchor_only: true,
+    whole_word: false,
+  });
+  return spec;
 }
 
 function executePrefixWildcardEquals(
@@ -3177,11 +3156,11 @@ function executePrefixWildcardEquals(
   offset: number,
 ): SearchResult {
   const spec = buildPrefixWildcardEqualsSpec(parsed);
-  if (!spec?.equals_span) {
+  const span = spec ? getEqualsSpan(spec) : null;
+  if (!span) {
     return { items: [], hint: '無效的前綴通配等號查詢' };
   }
 
-  const span = spec.equals_span;
   const targetParts = suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
   if (!targetParts) {
     return { items: [] };
@@ -3237,15 +3216,17 @@ function wordMatchesWidth(row: WordRow, width: number): boolean {
   return String(row.char ?? '').length === width;
 }
 
-/** Code-anchored equals (e.g. 2=我3, 34=我) — port of query_words_by_equals_spec non-whole-word branch */
 function executeCodeAnchoredEquals(
-  spec: MatchSpec & { equals_span: EqualsSpan },
+  spec: MatchSpec,
   db: Database,
   mode: QueryMode,
   limit: number,
   offset: number,
 ): SearchResult {
-  const span = spec.equals_span;
+  const span = getEqualsSpan(spec);
+  if (!span) {
+    return { items: [] };
+  }
   const refParts = equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
   if (!refParts) {
     return { items: [] };
@@ -3297,18 +3278,17 @@ function executeCodeAnchoredEquals(
   return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
-/**
- * Whole-word equals (e.g. 香港=) — match words sharing ref finals/initials JSON (P1).
- * ponytail: uses stored finals/initials columns; full port uses rhyme tuple compare in filters.py
- */
 function executeWholeWordEquals(
-  spec: MatchSpec & { equals_span: EqualsSpan },
+  spec: MatchSpec,
   db: Database,
   mode: QueryMode,
   limit: number,
   offset: number
 ): SearchResult {
-  const span = spec.equals_span;
+  const span = getEqualsSpan(spec);
+  if (!span) {
+    return { items: [] };
+  }
   const isFinal = span.dimension === 'final' || span.dimension === 'rhyme';
   const field = isFinal ? 'finals' : 'initials';
 
@@ -3378,19 +3358,17 @@ async function executeEqualsQuery(
   if (!spec) {
     return { items: [], hint: '無效的等號查詢語法' };
   }
-  
-  const span = spec.equals_span;
+
+  const span = getEqualsSpan(spec);
+  if (!span) {
+    return { items: [], hint: '無效的等號查詢語法' };
+  }
+
   const { ref_literal, dimension, whole_word } = span;
   const code_prefix = spec.code_prefix;
 
   if (whole_word) {
-    const items = executeWholeWordEquals(
-      spec as MatchSpec & { equals_span: EqualsSpan },
-      db,
-      mode,
-      limit,
-      offset,
-    ).items;
+    const items = executeWholeWordEquals(spec, db, mode, limit, offset).items;
     if (items.length === 0 && code_prefix) {
       const hint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
       return { items: [], hint: hint || '未找到符合的結果' };
@@ -3654,4 +3632,17 @@ export type {
   RelationLookupQuery,
   UnmatchedQuery,
   MatchSpec,
+  EqualsSpan,
+  EqualsDimension,
+  SlotConstraint,
+  ConstraintKind,
+  CompoundKind,
+  CandidateSource,
+  MaskFamilySearchResult,
 };
+export {
+  attachEqualsSpan,
+  createMatchSpec,
+  getEqualsSpan,
+  positionMatchSpecSelfCheck,
+} from './position-match/spec.ts';
