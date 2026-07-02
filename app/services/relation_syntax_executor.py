@@ -213,14 +213,7 @@ class RelationSyntaxExecutor:
             # 只需要同義詞
             all_items = pool.syns
         elif parsed.relation_kind == "ant":
-            # 需要反義詞，使用 PoolSnapshot.chars() 獲取擴展後的 chars
-            expanded_chars = pool.chars("ant", expand=True)
-            # 從 pool 中篩選出符合擴展 chars 的 items
-            all_items = []
-            for item in pool.ants + pool.syns:
-                char = item.get("char") or ""
-                if char in expanded_chars:
-                    all_items.append(item)
+            all_items = pool.ants
         else:
             all_items = pool.syns + pool.ants + pool.semantic
         

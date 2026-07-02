@@ -19,11 +19,11 @@ from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
 from ingest.syn_ant_build import ingest_cilin_leaf_direct
 from ingest.syn_ant_expand import (
-    collect_ant_mirror_char_pairs,
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
     expand_antonyms_via_syn_endpoints,
 )
+from app.domain.relations.mirror_ant import collect_lexicon_mirror_pairs
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.cilin_leaf import (
     groups_to_syn_edges,
@@ -811,7 +811,7 @@ class IngestBridgePoolContextTests(unittest.TestCase):
         for kind in ("syn", "ant"):
             self.assertEqual(
                 pool_ctx.relation_chars(query, kind),
-                snapshot.chars(kind, expand=False),
+                snapshot.chars(kind),
                 msg=f"{query!r} {kind}",
             )
 
@@ -897,7 +897,7 @@ class PoolSnapshotTests(unittest.TestCase):
             _include_static=False,
         )
         self.assertEqual(pools.chars("syn"), ["開心"])
-        self.assertEqual(pools.chars("ant", expand=False), ["悲傷"])
+        self.assertEqual(pools.chars("ant"), ["悲傷"])
 
     def test_relation_pool_chars_matches_ranker_projection(self):
         engine = create_engine("sqlite:///:memory:")
@@ -912,7 +912,7 @@ class PoolSnapshotTests(unittest.TestCase):
             db.commit()
             ranked = build_pool(db, "快樂", include_static=False, quiet=True)
             via_adapter = relation_pool_chars(db, "快樂", "syn", include_static=False)
-            self.assertEqual(via_adapter, ranked.chars("syn", expand=False))
+            self.assertEqual(via_adapter, ranked.chars("syn"))
 
 
 class RelationSyntaxExecutorTests(unittest.TestCase):
@@ -958,10 +958,10 @@ class AntSynMirrorTests(unittest.TestCase):
             db.commit()
 
             bang_chars = relation_pool_chars(
-                db, "開心", "ant", include_static=False, expand_ant_via_syn=False,
+                db, "開心", "ant", include_static=False,
             )
             tilde_endpoint = relation_pool_chars(
-                db, "悲傷", "syn", include_static=False, expand_ant_via_syn=False,
+                db, "悲傷", "syn", include_static=False,
             )
             self.assertIn("悲傷", bang_chars)
             for ch in tilde_endpoint:
@@ -970,11 +970,13 @@ class AntSynMirrorTests(unittest.TestCase):
             self.assertIn("難過", bang_chars)
 
             stats = expand_antonyms_via_syn_endpoints(
-                db, source="ant_syn_mirror", include_static=False
+                db, source="ant_syn_mirror", include_static=False, insert=True
             )
             self.assertGreater(stats["inserted"], 0)
 
-    def test_collect_mirror_pairs_dedupes(self):
+    def test_collect_mirror_pairs_per_head(self):
+        from unittest.mock import MagicMock
+
         Session = self._seed_db()
         with Session() as db:
             db.add_all([
@@ -986,10 +988,13 @@ class AntSynMirrorTests(unittest.TestCase):
             db.add(WordRelation(word_id=11, related_id=12, relation_type="syn", source="cilin"))
             db.commit()
 
-            pairs = collect_ant_mirror_char_pairs(db, include_static=False)
-            self.assertIn(("你", "我"), pairs)
+            thesaurus = MagicMock()
+            thesaurus.get_synonyms.return_value = []
+            thesaurus.get_antonyms.return_value = []
+            thesaurus.get_cilin_synonyms.return_value = []
+            pairs = collect_lexicon_mirror_pairs(db, thesaurus, include_static=False)
             self.assertIn(("你", "吾"), pairs)
-            self.assertIn(("我", "你"), pairs)
+            self.assertNotIn(("你", "我"), pairs)
 
 
 class CompoundAntIngestTests(unittest.TestCase):

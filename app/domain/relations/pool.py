@@ -197,27 +197,6 @@ def _ui_result(item: dict, relation: str) -> dict:
     }
 
 
-def _expand_ant_chars_via_graph(
-    graph: CharRelationGraph,
-    query: str,
-    seed_chars: List[str],
-) -> List[str]:
-    if not seed_chars:
-        return []
-    q = query.strip()
-    expanded: List[str] = []
-    seen: Set[str] = {q}
-    for ant_char in seed_chars:
-        if ant_char and ant_char not in seen:
-            seen.add(ant_char)
-            expanded.append(ant_char)
-        for syn_char in graph.direct_syn_neighbors(ant_char):
-            if syn_char and syn_char not in seen:
-                seen.add(syn_char)
-                expanded.append(syn_char)
-    return expanded
-
-
 @dataclass
 class PoolSnapshot:
     """近反義池快照：供近反義模式 page 與 ~ / ! char 投影。"""
@@ -244,44 +223,11 @@ class PoolSnapshot:
         combined = self.syns + self.ants + self.semantic
         return combined[offset : offset + limit]
 
-    def chars(self, kind: str, *, expand: bool = False) -> List[str]:
+    def chars(self, kind: str) -> List[str]:
         if kind not in ("syn", "ant"):
             return []
         rows = self.syns if kind == "syn" else self.ants
-        direct = [r["char"] for r in rows if r.get("char")]
-        if kind != "ant" or not expand:
-            return direct
-
-        q = self.query.strip()
-        seed_chars: List[str] = []
-        derived_chars: List[str] = []
-        seen_seed: Set[str] = set()
-        for row in self.ants:
-            ch = row.get("char") or ""
-            if not ch or ch == q or ch in seen_seed:
-                continue
-            seen_seed.add(ch)
-            src = row.get("source") or ""
-            if src in DERIVED_ANT_SOURCES:
-                derived_chars.append(ch)
-            else:
-                seed_chars.append(ch)
-
-        graph = get_process_cached_graph(
-            self._db,
-            self._thesaurus or default_thesaurus_port(),
-            membership=self._membership,
-        )
-        expanded = _expand_ant_chars_via_graph(graph, q, seed_chars)
-        if not derived_chars:
-            return expanded
-        out = list(expanded)
-        seen = set(out)
-        for ch in derived_chars:
-            if ch not in seen:
-                seen.add(ch)
-                out.append(ch)
-        return out
+        return [r["char"] for r in rows if r.get("char")]
 
 
 def build_pool(

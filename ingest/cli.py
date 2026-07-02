@@ -294,10 +294,13 @@ def cmd_bake_syn_bridge(args: argparse.Namespace) -> int:
 
 
 def cmd_expand_antonyms_mirror(args: argparse.Namespace) -> int:
+    from ingest.derived_ant_snapshot import DEFAULT_MIRROR_SNAPSHOT
+
     ensure_word_relations_table()
     source_id = (args.source or "ant_syn_mirror")[:32]
+    output = args.output or str(DEFAULT_MIRROR_SNAPSHOT)
     with SessionLocal() as db:
-        if args.replace_relations:
+        if args.insert and args.replace_relations:
             removed = clear_word_relations_source(db, source_id)
             print(f"Cleared {removed} existing word_relations with source={source_id!r}")
         stats = expand_antonyms_via_syn_endpoints(
@@ -307,6 +310,8 @@ def cmd_expand_antonyms_mirror(args: argparse.Namespace) -> int:
             dedupe_existing=args.dedupe_existing,
             include_static=not args.no_static,
             batch_size=args.batch_size,
+            insert=bool(args.insert),
+            export_path=output,
         )
         print("expand-antonyms-mirror stats:", stats)
     return 0
@@ -554,19 +559,29 @@ def main(argv: list[str] | None = None) -> int:
 
     p_mirror = sub.add_parser(
         "expand-antonyms-mirror",
-        help="Persist !query ant expansion (~endpoint syns) into word_relations",
+        help="Export mirror ant pairs TSV (default)",
     )
     p_mirror.add_argument("--source", default="ant_syn_mirror", help="Source tag for mirror ant relations")
+    p_mirror.add_argument(
+        "--output",
+        default=None,
+        help="TSV output path (default: data/syn_ant/ant_syn_mirror_pairs.tsv)",
+    )
+    p_mirror.add_argument(
+        "--insert",
+        action="store_true",
+        help="Also persist pairs to word_relations (maintainer debug; default export-only)",
+    )
     p_mirror.add_argument("--confidence", type=float, default=0.72, help="Score for mirror ant relations")
     p_mirror.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
     p_mirror.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
     p_mirror.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
-    p_mirror.add_argument("--no-static", dest="no_static", action="store_true", help="Only use DB syn, not static thesaurus")
+    p_mirror.add_argument("--no-static", dest="no_static", action="store_true", help="Seeds: DB ants only, no static thesaurus")
     p_mirror.add_argument(
         "--no-replace-relations",
         dest="replace_relations",
         action="store_false",
-        help="Keep existing mirror ant rows (default: clear source first)",
+        help="With --insert: keep existing mirror ant rows (default: clear source first)",
     )
     p_mirror.set_defaults(replace_relations=True)
 

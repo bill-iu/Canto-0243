@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import List, Optional, Set
+from typing import List, Set
 
 from app.domain.relations.graph import CharRelationGraph
 from app.domain.relations.ranking import final_score, sort_ant_pool
-from app.domain.relations.valid_term import normalize_literal
 from app.domain.thesaurus.port import ThesaurusPort
 
 from app.domain.relations.cilin_derived import (
@@ -14,13 +13,11 @@ from app.domain.relations.cilin_derived import (
     CILIN_DERIVED_SOURCE,
     cilin_derived_ant_pairs,
 )
-
-MIRROR_SOURCE = "ant_syn_mirror"
-MIRROR_CONFIDENCE = 0.72
-
-
-def _pool_literal(text: str) -> Optional[str]:
-    return normalize_literal(text)
+from app.domain.relations.mirror_ant import (
+    MIRROR_CONFIDENCE,
+    MIRROR_SOURCE,
+    mirror_ant_pairs,
+)
 
 
 def _derived_ant_item(
@@ -81,28 +78,23 @@ def runtime_mirror_ant_items(
     q = query.strip()
     if not q or not seed_chars:
         return []
-    out: List[dict] = []
-    seen: Set[str] = {q}
-    for seed in seed_chars:
-        seed = (seed or "").strip()
-        if not seed or seed in seen:
-            continue
-        seen.add(seed)
-        for syn in graph.direct_syn_neighbors(seed, include_static=include_static):
-            ch = _pool_literal(syn)
-            if not ch or ch == q or ch in seen or ch not in present:
-                continue
-            seen.add(ch)
-            in_db = ch in present
-            out.append(
-                _derived_ant_item(
-                    char=ch,
-                    source=MIRROR_SOURCE,
-                    confidence=MIRROR_CONFIDENCE,
-                    in_db=in_db,
-                )
-            )
-    return out
+    pairs = mirror_ant_pairs(
+        q,
+        seed_chars,
+        syn_neighbors_of=lambda s: graph.direct_syn_neighbors(
+            s, include_static=include_static
+        ),
+        membership=present,
+    )
+    return [
+        _derived_ant_item(
+            char=tail,
+            source=MIRROR_SOURCE,
+            confidence=MIRROR_CONFIDENCE,
+            in_db=tail in present,
+        )
+        for _head, tail in pairs
+    ]
 
 
 def append_runtime_derived_ant_pool(

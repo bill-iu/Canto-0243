@@ -19,11 +19,12 @@ from app.domain.relations.cilin_derived import (
     collect_lexicon_cilin_derived_pairs,
     write_cilin_derived_pairs_tsv,
 )
-from app.domain.thesaurus.port import default_thesaurus_port
-from ingest.syn_ant_expand import (
-    ANT_SYN_MIRROR_SOURCE,
-    expand_antonyms_via_syn_endpoints,
+from app.domain.relations.mirror_ant import (
+    collect_lexicon_mirror_pairs,
+    write_mirror_ant_pairs_tsv,
 )
+from app.domain.thesaurus.port import default_thesaurus_port
+from ingest.syn_ant_expand import ANT_SYN_MIRROR_SOURCE
 
 ROOT = Path(__file__).resolve().parents[1]
 MIRROR_SOURCE = ANT_SYN_MIRROR_SOURCE
@@ -150,17 +151,11 @@ def bake_derived_ant_snapshots(
     )
     stats["cilin"] = {"candidate_pairs": len(cilin_pairs), "exported": cilin_exported}
 
-    clear_word_relations_source(db, MIRROR_SOURCE)
-    mirror_expand = expand_antonyms_via_syn_endpoints(
-        db,
-        source=MIRROR_SOURCE,
-        confidence=mirror_confidence,
-        dedupe_existing=True,
-        include_static=include_static,
-        batch_size=batch_size,
+    mirror_pairs = collect_lexicon_mirror_pairs(db, port, include_static=include_static)
+    mirror_exported = write_mirror_ant_pairs_tsv(
+        mirror_path, mirror_pairs, confidence=mirror_confidence
     )
-    mirror_exported = write_derived_ant_snapshot(db, mirror_path, source=MIRROR_SOURCE)
-    stats["mirror"] = {"expand": mirror_expand, "exported": mirror_exported}
+    stats["mirror"] = {"candidate_pairs": len(mirror_pairs), "exported": mirror_exported}
     return stats
 
 

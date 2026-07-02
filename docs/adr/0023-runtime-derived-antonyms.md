@@ -5,7 +5,7 @@
 ## 我們決定
 
 1. **查詢時展開** — **詞林衍生反義**與 **反義端點鏡射** 改為 **查詢時**對當前 head 單點展開；**唔**寫入 `word_relations`，**唔**納入日常 **詞條庫建置命令** inject。
-2. **雙消費端** — **近反義模式**（`build_pool`）與 **`!` 展開**（`PoolSnapshot.chars(expand=True)`）皆須覆蓋兩層；展開順序：先 **詞林衍生反義**，再 **反義端點鏡射**。
+2. **雙消費端** — **近反義模式**（`build_pool`）與 **`!` 反義查詢**（`pool.ants`）共用同一 **近反義池**；皆須覆蓋兩層；展開順序：先 **詞林衍生反義**，再 **反義端點鏡射**。鏡射核心見 `mirror_ant.py`（per-head 字面對）；**唔**保留 `chars(expand=…)` 或全庫 `collect_mirror_ant_pairs`。
 3. **鄰居權威** — 詞林衍生用 **靜態詞林埠** `get_cilin_synonyms`（cilin-only）；鏡射用 **關係圖** 全源直接近義（DB syn ∪ 靜態合併近義）。
 4. **收錄閘** — 衍生候選須在 **收錄字面**（membership）內先納入池。
 5. **舊列忽略** — 讀取 `word_relations` 時 **完全忽略** `ant_cilin_exanded`／`ant_syn_mirror` 等衍生 `source` 列；覆蓋只信 runtime。

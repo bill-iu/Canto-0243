@@ -160,23 +160,6 @@ def expand_antonyms_via_cilin_synonyms(
 ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
 
 
-def collect_ant_mirror_char_pairs(
-    db: Session,
-    *,
-    include_static: bool = True,
-    exclude_sources: Optional[Set[str]] = None,
-) -> Set[Tuple[str, str]]:
-    """Char pairs (head, tail) matching runtime ``!head`` expansion: ant endpoints + their syns."""
-    from app.domain.relations.graph import CharRelationGraph
-    from app.domain.thesaurus.port import default_thesaurus_port
-
-    graph = CharRelationGraph(db, default_thesaurus_port())
-    return graph.collect_mirror_ant_pairs(
-        include_static=include_static,
-        exclude_sources=exclude_sources,
-    )
-
-
 def expand_antonyms_via_syn_endpoints(
     db: Session,
     *,
@@ -185,85 +168,48 @@ def expand_antonyms_via_syn_endpoints(
     dedupe_existing: bool = True,
     include_static: bool = True,
     batch_size: int = INSERT_BATCH,
+    insert: bool = True,
+    export_path: str | None = None,
+    thesaurus=None,
 ) -> dict:
-    """Persist ``!query`` results as ant word_relations via ant-endpoint synonym expansion.
-
-    Uses direct ant seeds (excluding prior mirror rows), then adds one hop through
-    synonym neighbors of each ant endpoint — same logic as runtime ``!`` search.
-    """
-    source = (source or ANT_SYN_MIRROR_SOURCE)[:32]
-    stats = {
-        "ant_seed_orientations": 0,
-        "mirror_char_pairs": 0,
-        "candidate_pairs": 0,
-        "inserted": 0,
-        "skipped_existing": 0,
-        "skipped_no_char_id": 0,
-        "skipped_self": 0,
-    }
-
-    char_to_id = get_char_to_primary_id(db)
-    from app.domain.relations.graph import CharRelationGraph
+    """反義端點鏡射：per-head 核心 + export/insert adapters（CONTEXT § 反義端點鏡射）。"""
+    from app.domain.relations.mirror_ant import (
+        collect_lexicon_mirror_pairs,
+        write_mirror_ant_pairs_tsv,
+    )
     from app.domain.thesaurus.port import default_thesaurus_port
 
-    graph = CharRelationGraph(db, default_thesaurus_port())
-    seeds = graph.direct_ant_oriented_pairs(exclude_sources={source})
-    stats["ant_seed_orientations"] = len(seeds)
-    if not seeds:
-        return stats
-
-    mirror_pairs = collect_ant_mirror_char_pairs(
-        db,
-        include_static=include_static,
-        exclude_sources={source},
-    )
-    stats["mirror_char_pairs"] = len(mirror_pairs)
-
-    candidates: Dict[Tuple[int, int, str], dict] = {}
-    for head_char, tail_char in mirror_pairs:
-        if head_char == tail_char:
-            stats["skipped_self"] += 1
-            continue
-        head_id = char_to_id.get(head_char)
-        tail_id = char_to_id.get(tail_char)
-        if not head_id or not tail_id:
-            stats["skipped_no_char_id"] += 1
-            continue
-        w, r = canonical_word_ids(head_id, tail_id)
-        if w == r:
-            stats["skipped_self"] += 1
-            continue
-        key = (w, r, "ant")
-        candidates[key] = {
-            "word_id": w,
-            "related_id": r,
-            "relation_type": "ant",
-            "score": confidence,
-            "source": source,
-        }
-
-    stats["candidate_pairs"] = len(candidates)
-    if not candidates:
-        return stats
-
-    pending = list(candidates.values())
-    if dedupe_existing:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing: Set[Tuple] = set()
-        for i in range(0, len(keys), SQL_IN_BATCH):
-            existing.update(_fetch_existing_keys(db, keys[i:i + SQL_IN_BATCH]))
-        before = len(pending)
-        pending = [
-            c for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        stats["skipped_existing"] = before - len(pending)
-
-    if pending:
-        for i in range(0, len(pending), batch_size):
-            chunk = pending[i:i + batch_size]
-            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
-
+    port = thesaurus or default_thesaurus_port()
+    pairs = collect_lexicon_mirror_pairs(db, port, include_static=include_static)
+    stats: dict = {
+        "candidate_pairs": len(pairs),
+        "inserted": 0,
+        "skipped_existing": 0,
+        "skipped_self": 0,
+        "skipped_no_char_id": 0,
+        "exported": 0,
+    }
+    if export_path:
+        stats["exported"] = write_mirror_ant_pairs_tsv(
+            export_path, pairs, confidence=confidence
+        )
+    if insert:
+        persist = _persist_cilin_derived_ant_pairs(
+            db,
+            pairs,
+            source=source,
+            confidence=confidence,
+            dedupe_existing=dedupe_existing,
+            batch_size=batch_size,
+        )
+        stats.update(
+            {
+                "inserted": persist["inserted"],
+                "skipped_existing": persist["skipped_existing"],
+                "skipped_self": persist["skipped_self"],
+                "skipped_no_char_id": persist.get("skipped_no_char_id", 0),
+            }
+        )
     return stats
 
 
@@ -648,7 +594,6 @@ __all__ = [
     "ANT_SYN_MIRROR_SOURCE",
     "DEFAULT_MAX_BRIDGED_ANTS_PER_HEAD",
     "DEFAULT_MIN_BRIDGE_COSINE",
-    "collect_ant_mirror_char_pairs",
     "expand_antonyms_via_cilin_synonyms",
     "expand_antonyms_via_embedding_syn_bridge",
     "expand_antonyms_via_syn_endpoints",

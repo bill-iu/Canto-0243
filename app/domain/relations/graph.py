@@ -1,4 +1,4 @@
-"""Char-level 關係圖：直接近義鄰居與 ! 鏡射對（runtime + ingest 同源）。"""
+"""Char-level 關係圖：直接近義鄰居（runtime + ingest 同源）。"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
 
 
 class CharRelationGraph:
-    """Bidirectional char syn adjacency + ant mirror pair collection."""
+    """Bidirectional char syn adjacency for runtime relation expansion."""
 
     def __init__(
         self,
@@ -114,26 +114,6 @@ class CharRelationGraph:
             oriented.add((a, b))
             oriented.add((b, a))
         return oriented
-
-    def collect_mirror_ant_pairs(
-        self,
-        *,
-        include_static: bool = True,
-        exclude_sources: Optional[Set[str]] = None,
-    ) -> Set[Tuple[str, str]]:
-        """Char pairs (head, tail) for ! 鏡射：ant endpoint + 其直接近義鄰居。"""
-        exclude_sources = exclude_sources or {ANT_SYN_MIRROR_SOURCE}
-        adj = self._ensure_adjacency(include_static=include_static)
-        seeds = self._direct_ant_oriented_pairs(exclude_sources=exclude_sources)
-        pairs: Set[Tuple[str, str]] = set()
-        for head, endpoint in seeds:
-            if head == endpoint:
-                continue
-            pairs.add((head, endpoint))
-            for syn_char in adj.get(endpoint, set()):
-                if syn_char and syn_char != head:
-                    pairs.add((head, syn_char))
-        return pairs
 
     def direct_ant_oriented_pairs(
         self,

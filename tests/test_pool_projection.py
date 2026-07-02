@@ -57,9 +57,9 @@ class PoolProjectionEquivalenceTests(unittest.TestCase):
             )
             self.assertEqual(
                 relation_pool_chars(
-                    db, "快樂", "syn", include_static=False, expand_ant_via_syn=False
+                    db, "快樂", "syn", include_static=False
                 ),
-                snapshot.chars("syn", expand=False),
+                snapshot.chars("syn"),
             )
 
 

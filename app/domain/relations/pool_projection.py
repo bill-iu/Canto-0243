@@ -66,7 +66,6 @@ def relation_pool_chars(
     *,
     allow_inject: bool = True,
     include_static: bool = True,
-    expand_ant_via_syn: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
 ) -> List[str]:
     if relation_type not in ("syn", "ant"):
@@ -80,8 +79,7 @@ def relation_pool_chars(
         include_static=include_static,
         thesaurus=thesaurus,
     )
-    expand = relation_type == "ant" and expand_ant_via_syn
-    return snapshot.chars(relation_type, expand=expand)
+    return snapshot.chars(relation_type)
 
 
 def relation_chars_for_seed(

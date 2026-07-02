@@ -62,7 +62,9 @@ class CharRelationGraphTests(unittest.TestCase):
 
             self.assertIn("芬芳", neighbors)
 
-    def test_mirror_ant_pairs_match_runtime_expand_pattern(self):
+    def test_mirror_ant_pairs_match_per_head_core(self):
+        from app.domain.relations.mirror_ant import mirror_ant_pairs
+
         Session = self._session()
         with Session() as db:
             db.add_all([
@@ -80,11 +82,14 @@ class CharRelationGraphTests(unittest.TestCase):
 
             membership = {"開心", "悲傷", "傷心", "難過"}
             graph = CharRelationGraph(db, FakeThesaurus(), membership=membership)
-            pairs = graph.collect_mirror_ant_pairs(include_static=False)
+            pairs = mirror_ant_pairs(
+                "開心",
+                ["悲傷"],
+                syn_neighbors_of=lambda s: graph.direct_syn_neighbors(s, include_static=False),
+                membership=membership,
+            )
 
-            self.assertIn(("開心", "悲傷"), pairs)
-            self.assertIn(("開心", "傷心"), pairs)
-            self.assertIn(("開心", "難過"), pairs)
+            self.assertEqual(set(pairs), {("開心", "傷心"), ("開心", "難過")})
 
 
 if __name__ == "__main__":
