@@ -9,6 +9,11 @@ import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { ResultList } from './result-list';
 import { SynResultList, synResultsStats } from './syn-result-list';
+import {
+  AnchorResultList,
+  anchorResultsStats,
+  hasAnchorResultLayout,
+} from './anchor-result-list';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isRelationSyntaxQuery, modeRedirectHint } from './db/query-engine';
 import { GuideView } from './guide-view';
@@ -169,11 +174,15 @@ function App() {
   };
 
   const synLayout = mode === 'synonym';
+  const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
   const statsSuffix = `（${modeMeta.statsLabel}）`;
 
   const resultsLabel = useMemo(() => {
     if (synLayout && displayResults.length > 0) {
       return `${synResultsStats(displayResults)}${statsSuffix}`;
+    }
+    if (anchorLayout && displayResults.length > 0) {
+      return `${anchorResultsStats(displayResults, total)}${statsSuffix}`;
     }
     if (total != null && total > displayResults.length) {
       return `已載入 ${displayResults.length} / ${total} 個結果${statsSuffix}`;
@@ -182,7 +191,7 @@ function App() {
       return `${displayResults.length} 個結果${statsSuffix}`;
     }
     return '';
-  }, [synLayout, displayResults, total, statsSuffix]);
+  }, [synLayout, anchorLayout, displayResults, total, statsSuffix]);
 
   const emptyMessage = useMemo(() => {
     if (!searchQuery || searchLoading || results.length > 0 || offlineStatus !== 'ready') {
@@ -352,6 +361,8 @@ function App() {
                   </div>
                   {synLayout ? (
                     <SynResultList results={displayResults} onPick={handlePickResult} />
+                  ) : anchorLayout ? (
+                    <AnchorResultList results={displayResults} onPick={handlePickResult} />
                   ) : (
                     <ResultList results={displayResults} onPick={handlePickResult} />
                   )}
