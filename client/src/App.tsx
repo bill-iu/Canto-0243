@@ -3,16 +3,21 @@
  * Progressive Web App for Cantonese lyric query
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { ResultList } from './result-list';
 import { SynResultList, synResultsStats } from './syn-result-list';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isRelationSyntaxQuery, modeRedirectHint } from './db/query-engine';
+import { GuideView } from './guide-view';
+import type { GuideMode } from './guide-examples';
+import { mergeShuffledResults, shuffleResults } from './shuffle-results';
+import type { QueryResult } from './db/query';
 import './App.css';
 
 type UiMode = '0243' | '02493' | 'synonym';
+type AppView = 'search' | 'guide';
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -21,14 +26,19 @@ function App() {
     Boolean(conn?.saveData) ||
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
+  const [view, setView] = useState<AppView>('search');
   const [query, setQuery] = useState('');
   const [mode, setMode] = useState<UiMode>('0243');
   const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>('0243');
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(false);
+  const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
+  const [resultsShuffled, setResultsShuffled] = useState(false);
+  const searchKeyRef = useRef('');
 
   const trimmedQuery = query.trim();
   const relationSyntax = trimmedQuery ? isRelationSyntaxQuery(trimmedQuery) : false;
+  const searchKey = `${trimmedQuery}\0${mode}`;
 
   // ponytail: 介面轉接 — match desktop maybeModeRedirectForRelationSyntax
   useEffect(() => {
@@ -69,8 +79,23 @@ function App() {
     loadMore,
   } = useSearch(query, mode, { fallback_0243_mode: last0243Mode });
 
+  useEffect(() => {
+    if (searchKeyRef.current !== searchKey) {
+      searchKeyRef.current = searchKey;
+      setResultsShuffled(false);
+    }
+  }, [searchKey]);
+
+  useEffect(() => {
+    if (!resultsShuffled) {
+      setDisplayResults(results);
+      return;
+    }
+    setDisplayResults((prev) => mergeShuffledResults(prev, results));
+  }, [results, resultsShuffled]);
+
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(query);
-  const showExplain = Boolean(explainSummary || explainWarning);
+  const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
 
@@ -98,20 +123,32 @@ function App() {
     setMode(next);
   };
 
+  const handleRunExample = (nextQuery: string, exampleMode: GuideMode) => {
+    handleModeChange(exampleMode);
+    setQuery(nextQuery);
+    setResultsShuffled(false);
+    setView('search');
+  };
+
+  const handleShuffle = () => {
+    setDisplayResults(shuffleResults(results));
+    setResultsShuffled(true);
+  };
+
   const synLayout = mode === 'synonym';
 
   const resultsLabel = useMemo(() => {
-    if (synLayout && results.length > 0) {
-      return synResultsStats(results);
+    if (synLayout && displayResults.length > 0) {
+      return synResultsStats(displayResults);
     }
-    if (total != null && total > results.length) {
-      return `已載入 ${results.length} / ${total} 個結果`;
+    if (total != null && total > displayResults.length) {
+      return `已載入 ${displayResults.length} / ${total} 個結果`;
     }
-    if (results.length > 0) {
-      return `${results.length} 個結果`;
+    if (displayResults.length > 0) {
+      return `${displayResults.length} 個結果`;
     }
     return '';
-  }, [synLayout, results, total]);
+  }, [synLayout, displayResults, total]);
 
   const emptyMessage = useMemo(() => {
     if (!trimmedQuery || searchLoading || results.length > 0 || offlineStatus !== 'ready') {
@@ -124,11 +161,22 @@ function App() {
     setShowStats(!showStats);
   };
 
+  const canShuffle = view === 'search' && displayResults.length > 0;
+
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Canto-0243 PWA</h1>
-        <p className="subtitle">粵語填詞查詢工具</p>
+        <div className="app-header__top">
+          <div>
+            <h1>Canto-0243 PWA</h1>
+            <p className="subtitle">粵語填詞查詢工具</p>
+          </div>
+          {view === 'search' ? (
+            <button type="button" className="guide-top-link" onClick={() => setView('guide')}>
+              搜尋教學
+            </button>
+          ) : null}
+        </div>
 
         <div className="db-status">
           {offlineStatus === 'preparing' && (
@@ -175,109 +223,124 @@ function App() {
       </header>
 
       <main className="app-main">
-        <form onSubmit={(e) => e.preventDefault()} className="search-form">
-          <div className="search-controls">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="輸入 0243 碼、粵拼 或 漢字..."
-              className="search-input"
-              disabled={offlineStatus === 'preparing'}
-              autoFocus
-            />
-            <div className="mode-selector">
-              <label>
+        {view === 'guide' ? (
+          <GuideView onPick={handleRunExample} onBack={() => setView('search')} />
+        ) : (
+          <>
+            <form onSubmit={(e) => e.preventDefault()} className="search-form">
+              <div className="search-controls">
                 <input
-                  type="radio"
-                  checked={mode === '0243'}
-                  onChange={() => handleModeChange('0243')}
-                  disabled={!isReady}
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="輸入 0243 碼、粵拼 或 漢字..."
+                  className="search-input"
+                  disabled={offlineStatus === 'preparing'}
+                  autoFocus
                 />
-                0243模式
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  checked={mode === '02493'}
-                  onChange={() => handleModeChange('02493')}
-                  disabled={!isReady}
-                />
-                02493模式
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  checked={mode === 'synonym'}
-                  onChange={() => handleModeChange('synonym')}
-                  disabled={!isReady}
-                />
-                近反義
-              </label>
-            </div>
-          </div>
-          <button type="submit" className="search-button" disabled={!isReady || !trimmedQuery}>
-            搜尋
-          </button>
-        </form>
+                <div className="mode-selector">
+                  <label>
+                    <input
+                      type="radio"
+                      checked={mode === '0243'}
+                      onChange={() => handleModeChange('0243')}
+                      disabled={!isReady}
+                    />
+                    0243模式
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={mode === '02493'}
+                      onChange={() => handleModeChange('02493')}
+                      disabled={!isReady}
+                    />
+                    02493模式
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      checked={mode === 'synonym'}
+                      onChange={() => handleModeChange('synonym')}
+                      disabled={!isReady}
+                    />
+                    近反義
+                  </label>
+                </div>
+              </div>
+              <button type="submit" className="search-button" disabled={!isReady || !trimmedQuery}>
+                搜尋
+              </button>
+            </form>
 
-        {showExplain && (
-          <p className="query-explain" aria-live="polite">
-            {explainSummary ? (
-              <span className="query-explain__summary">{explainSummary}</span>
-            ) : null}
-            {explainWarning ? (
-              <span className="query-explain__warning">{explainWarning}</span>
-            ) : null}
-          </p>
-        )}
-
-        <button onClick={toggleStats} className="stats-toggle">
-          {showStats ? '隱藏統計' : '顯示資料庫統計'}
-        </button>
-
-        {showStats && stats && (
-          <div className="db-stats">
-            <p>詞條數量: {stats.wordCount.toLocaleString()}</p>
-            <p>資料表數量: {stats.tableCount}</p>
-          </div>
-        )}
-
-        <div className="search-results">
-          {displayHint && results.length > 0 && <p className="search-hint">{displayHint}</p>}
-          {searchLoading && <p className="loading">搜尋中...</p>}
-          {searchError && <p className="error">錯誤: {searchError.message}</p>}
-
-          {results.length > 0 && (
-            <div className="results-list">
-              {resultsLabel && <p className="results-count">{resultsLabel}</p>}
-              {synLayout ? (
-                <SynResultList results={results} onPick={handlePickResult} />
-              ) : (
-                <ResultList results={results} onPick={handlePickResult} />
-              )}
-              {hasMore && (
-                <button
-                  type="button"
-                  className="load-more"
-                  onClick={() => void loadMore()}
-                  disabled={loadingMore || searchLoading}
-                >
-                  {loadingMore ? '載入中…' : '載入更多'}
-                </button>
-              )}
-            </div>
-          )}
-
-          {emptyMessage && (
-            <div className="no-results">
-              <p>
-                <strong>{emptyMessage.primary}</strong>
+            {showExplain && (
+              <p className="query-explain" aria-live="polite">
+                {explainSummary ? (
+                  <span className="query-explain__summary">{explainSummary}</span>
+                ) : null}
+                {explainWarning ? (
+                  <span className="query-explain__warning">{explainWarning}</span>
+                ) : null}
               </p>
-              {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
+            )}
+
+            <button onClick={toggleStats} className="stats-toggle">
+              {showStats ? '隱藏統計' : '顯示資料庫統計'}
+            </button>
+
+            {showStats && stats && (
+              <div className="db-stats">
+                <p>詞條數量: {stats.wordCount.toLocaleString()}</p>
+                <p>資料表數量: {stats.tableCount}</p>
+              </div>
+            )}
+
+            <div className="search-results">
+              {displayHint && displayResults.length > 0 && (
+                <p className="search-hint">{displayHint}</p>
+              )}
+              {searchLoading && <p className="loading">搜尋中...</p>}
+              {searchError && <p className="error">錯誤: {searchError.message}</p>}
+
+              {displayResults.length > 0 && (
+                <div className="results-list">
+                  <div className="results-toolbar">
+                    {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
+                    {canShuffle ? (
+                      <button type="button" className="shuffle-button" onClick={handleShuffle}>
+                        打亂
+                      </button>
+                    ) : null}
+                  </div>
+                  {synLayout ? (
+                    <SynResultList results={displayResults} onPick={handlePickResult} />
+                  ) : (
+                    <ResultList results={displayResults} onPick={handlePickResult} />
+                  )}
+                  {hasMore && (
+                    <button
+                      type="button"
+                      className="load-more"
+                      onClick={() => void loadMore()}
+                      disabled={loadingMore || searchLoading}
+                    >
+                      {loadingMore ? '載入中…' : '載入更多'}
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {emptyMessage && (
+                <div className="no-results">
+                  <p>
+                    <strong>{emptyMessage.primary}</strong>
+                  </p>
+                  {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
       </main>
 
       <footer className="app-footer">
