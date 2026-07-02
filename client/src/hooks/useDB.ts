@@ -8,7 +8,8 @@ import {
   initializeDatabase,
   getDefaultDbUrl,
   isDatabaseInitialized,
-  resetDatabase
+  isLexiconCachedForBackend,
+  resetDatabase,
 } from '../db/init';
 import {
   search,
@@ -70,17 +71,12 @@ export function useDB(): UseDBReturn {
   const dbUrl = getDefaultDbUrl();
 
   const checkDbCached = useCallback(async () => {
-    if (!('caches' in window)) {
-      setIsDbCached(false);
-      return;
-    }
     try {
-      const match = await caches.match(dbUrl);
-      setIsDbCached(Boolean(match));
+      setIsDbCached(await isLexiconCachedForBackend());
     } catch {
       setIsDbCached(false);
     }
-  }, [dbUrl]);
+  }, []);
 
   /**
    * Initialize the database

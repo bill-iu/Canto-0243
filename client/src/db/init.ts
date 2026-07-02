@@ -4,6 +4,13 @@
  */
 
 import type { DatabaseBackend } from './database-backend.ts';
+import { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
+import {
+  ensureLexiconInOpfs,
+  lexiconOpfsFileName,
+  readLexiconFromOpfs,
+} from './opfs-lexicon.ts';
+import { opfsFileSize } from './opfs-storage.ts';
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
@@ -22,9 +29,58 @@ export function injectDatabaseForTests(candidate: DatabaseBackend | null): void 
   injectedDb = candidate;
 }
 
+export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
+
+export function getDbBackendMode(): DbBackendMode {
+  return resolveDbBackendMode();
+}
+
+function lexiconVersion(): string {
+  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+}
+
 function defaultDbUrl(): string {
-  const ver = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
-  return new URL(`lyrics.${ver}.db`, import.meta.env.BASE_URL).toString();
+  return new URL(`lyrics.${lexiconVersion()}.db`, import.meta.env.BASE_URL).toString();
+}
+
+function sqlJsLocateFile(file: string): string {
+  if (file.endsWith('.wasm')) {
+    return `https://sql.js.org/dist/${file}`;
+  }
+  return file;
+}
+
+async function loadSqlJsFromBytes(bytes: Uint8Array): Promise<DatabaseBackend> {
+  return openSqlJsDatabase(bytes, sqlJsLocateFile);
+}
+
+async function fetchLexiconBytes(dbPath: string): Promise<Uint8Array> {
+  const response = await fetch(dbPath);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch lexicon package (${response.status})`);
+  }
+  return new Uint8Array(await response.arrayBuffer());
+}
+
+async function initializeSqlJsFetch(dbPath: string): Promise<DatabaseBackend> {
+  return loadSqlJsFromBytes(await fetchLexiconBytes(dbPath));
+}
+
+async function initializeOpfsLexicon(version: string, dbPath: string): Promise<DatabaseBackend> {
+  const ensured = await ensureLexiconInOpfs({
+    version,
+    fetchBytes: () => fetchLexiconBytes(dbPath),
+  });
+  const bytes = await readLexiconFromOpfs(version);
+  if (!bytes?.byteLength) {
+    throw new Error('OPFS lexicon missing after ensure');
+  }
+  console.log(
+    ensured.fetched
+      ? `Lexicon imported to OPFS (${ensured.byteSize} bytes)`
+      : `Lexicon loaded from OPFS cache (${ensured.byteSize} bytes)`,
+  );
+  return loadSqlJsFromBytes(bytes);
 }
 
 async function loadBrowserRankingIndex(): Promise<void> {
@@ -85,20 +141,42 @@ async function loadBrowserCompoundLists(): Promise<void> {
   }
 }
 
+async function loadAuxiliaryIndexes(): Promise<void> {
+  await Promise.all([
+    loadBrowserRankingIndex(),
+    loadBrowserRhymeLetterIndex(),
+    loadBrowserStaticSynIndex(),
+    loadBrowserCompoundLists(),
+  ]);
+}
+
 export function getDefaultDbUrl(): string {
   return defaultDbUrl();
 }
 
-export {
-  ensureLexiconInOpfs,
-  lexiconOpfsFileName,
-  readLexiconFromOpfs,
-  removeLexiconFromOpfs,
-} from './opfs-lexicon.ts';
+export { ensureLexiconInOpfs, lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
+
+/** DB-3: OPFS hit = offline lexicon present without SW cache */
+export async function isLexiconCachedForBackend(
+  mode: DbBackendMode = getDbBackendMode(),
+  version: string = lexiconVersion(),
+): Promise<boolean> {
+  if (mode === 'opfs') {
+    return (await opfsFileSize(lexiconOpfsFileName(version))) > 0;
+  }
+  if (!('caches' in globalThis)) {
+    return false;
+  }
+  try {
+    const match = await caches.match(defaultDbUrl());
+    return Boolean(match);
+  } catch {
+    return false;
+  }
+}
 
 /**
- * Initialize the SQL.js database with lyrics.db
- * Uses httpvfs for efficient chunked loading of large database files
+ * Initialize the database (sql.js default, or OPFS-backed import when VITE_DB_BACKEND=opfs)
  */
 export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<DatabaseBackend> {
   if (injectedDb) {
@@ -109,33 +187,18 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
   }
 
   try {
-    const response = await fetch(dbPath);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch lexicon package (${response.status})`);
-    }
-    const arrayBuffer = await response.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
+    const mode = getDbBackendMode();
+    const version = lexiconVersion();
+    db =
+      mode === 'opfs'
+        ? await initializeOpfsLexicon(version, dbPath)
+        : await initializeSqlJsFetch(dbPath);
 
-    db = await openSqlJsDatabase(uint8Array, (file: string) => {
-      if (file.endsWith('.wasm')) {
-        return `https://sql.js.org/dist/${file}`;
-      }
-      return file;
-    });
-    
-    // Mark as initialized
     isInitialized = true;
+    await loadAuxiliaryIndexes();
 
-    await Promise.all([
-      loadBrowserRankingIndex(),
-      loadBrowserRhymeLetterIndex(),
-      loadBrowserStaticSynIndex(),
-      loadBrowserCompoundLists(),
-    ]);
-    
-    console.log('Database initialized successfully');
+    console.log(`Database initialized (${mode})`);
     return db;
-
   } catch (error) {
     console.error('Failed to initialize database:', error);
     throw new Error('Could not initialize database. Please ensure the lexicon package is accessible.');

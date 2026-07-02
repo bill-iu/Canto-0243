@@ -79,7 +79,10 @@ function App() {
             </div>
           )}
           {offlineStatus === 'ready' && (
-            <span className="status-ready">✓ 資料庫就緒（詞庫版本：{lexiconVersion}）</span>
+            <span className="status-ready">
+              ✓ 資料庫就緒（詞庫版本：{lexiconVersion}
+              {(import.meta as ImportMeta).env?.VITE_DB_BACKEND === 'opfs' ? ' · OPFS' : ''}）
+            </span>
           )}
           {offlineStatus === 'not_ready' && (
             <div className="status-loading">

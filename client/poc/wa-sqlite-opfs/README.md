@@ -45,9 +45,14 @@ npm run dev:ios      # iOS 實機（https + 區網，見下方）
 3. **DB-2（版本化 OPFS import）**
    - 按 **「3. DB-2 ensure」** 或開啟 `?selfcheck=1`
    - 應見 `DB-2 ok`（第二次 ensure 不觸發 fetch）
-   - 實作見 `client/src/db/opfs-lexicon.ts`（DB-3 才接入 `init.ts` 預設路徑）
+   - 實作見 `client/src/db/opfs-lexicon.ts`
 
-4. **記錄**（DB-0 完成時填進 issue / WORKLOG）
+4. **DB-3（init 雙路徑）**
+   - 主線 `client/src/db/init.ts`：`VITE_DB_BACKEND=opfs` 時走 `ensureLexiconInOpfs` → sql.js 開庫；預設仍 `sqljs`（parity 不變）
+   - 主 PWA 驗證：`cd client && VITE_DB_BACKEND=opfs npm run dev`（需 COOP/COEP，見 `vite.config.ts`）
+   - Node 自檢：`npx tsx scripts/init-backend-self-check.ts`
+
+5. **記錄**（DB-0 完成時填進 issue / WORKLOG）
    - 裝置型號 + OS 版本
    - COUNT 結果
    - Import 耗時（可選）
