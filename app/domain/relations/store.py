@@ -84,4 +84,5 @@ def insert_relation_candidates(
     stats = bulk_insert_word_relations(
         db, records, commit=commit, chunk_size=batch_size or CHUNK_SIZE
     )
-    return stats["attempted"], 0
+    inserted = int(stats.get("inserted", stats["attempted"]))
+    return inserted, int(stats["attempted"]) - inserted

@@ -12,7 +12,15 @@ from app.startup.offline_preload import run_lou_dou_reading_patch
 
 class LouDouStartupPatchTests(unittest.TestCase):
     def test_run_patch_updates_sqlite(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        import gc
+        import shutil
+        import sqlite3
+        import tempfile
+        from pathlib import Path
+        from unittest.mock import patch
+
+        tmp = tempfile.mkdtemp()
+        try:
             db_path = Path(tmp) / "test.db"
             conn = sqlite3.connect(db_path)
             conn.execute(
@@ -31,12 +39,15 @@ class LouDouStartupPatchTests(unittest.TestCase):
                     with patch("app.db.connection.IS_POSTGRES", False):
                         run_lou_dou_reading_patch("local")
 
-            row = sqlite3.connect(db_path).execute(
-                "SELECT code, jyutping FROM words WHERE char='窮困潦倒'"
-            ).fetchone()
+            with sqlite3.connect(db_path) as verify:
+                row = verify.execute(
+                    "SELECT code, jyutping FROM words WHERE char='窮困潦倒'"
+                ).fetchone()
             self.assertEqual(row[0], "0449")
             self.assertEqual(row[1], "kung4 kwan3 lou5 dou2")
-
+        finally:
+            gc.collect()
+            shutil.rmtree(tmp, ignore_errors=True)
 
 if __name__ == "__main__":
     unittest.main()

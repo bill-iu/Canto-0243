@@ -117,14 +117,23 @@ def bulk_insert_word_relations(
         )
 
     chunks = 0
+    inserted = 0
     for i in range(0, len(records), chunk_size):
         params = [r.to_param() for r in records[i : i + chunk_size]]
-        db.execute(stmt, params)
+        if bind.dialect.name == "sqlite":
+            before = db.execute(text("SELECT total_changes()")).scalar() or 0
+            db.execute(stmt, params)
+            after = db.execute(text("SELECT total_changes()")).scalar() or 0
+            inserted += max(0, int(after) - int(before))
+        else:
+            result = db.execute(stmt, params)
+            rowcount = result.rowcount
+            inserted += rowcount if rowcount is not None and rowcount >= 0 else len(params)
         chunks += 1
         if commit:
             db.commit()
 
-    return {"attempted": len(records), "chunks": chunks}
+    return {"attempted": len(records), "inserted": inserted, "chunks": chunks}
 
 
 def collect_unique_relation_tuples(edges: Iterable[RelationTuple]) -> List[RelationTuple]:

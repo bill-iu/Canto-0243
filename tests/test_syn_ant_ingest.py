@@ -912,8 +912,6 @@ class IngestBridgePoolContextTests(unittest.TestCase):
 
 class PoolSnapshotTests(unittest.TestCase):
     def test_ranked_pools_chars_syn_without_page(self):
-        from unittest.mock import MagicMock
-
         pools = PoolSnapshot(
             query="快樂",
             syns=[
@@ -926,9 +924,6 @@ class PoolSnapshotTests(unittest.TestCase):
             ],
             ants=[{"char": "悲傷", "relation": "ant", "source": "test", "result_type": "syn"}],
             semantic=[],
-            _db=MagicMock(),
-            _thesaurus=MagicMock(),
-            _include_static=False,
         )
         self.assertEqual(pools.chars("syn"), ["開心"])
         self.assertEqual(pools.chars("ant"), ["悲傷"])

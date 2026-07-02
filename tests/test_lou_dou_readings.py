@@ -21,13 +21,16 @@ class LouDouReadingPatchTests(unittest.TestCase):
         self.assertIsNone(corrected_lou_dou_jyutping("lou5 dou2"))
 
     def test_patch_in_memory_db(self):
+        import gc
+        import shutil
         import sqlite3
         import tempfile
         from pathlib import Path
 
         from app.utils.jyutping_codec import split_jyutping
 
-        with tempfile.TemporaryDirectory() as tmp:
+        tmp = tempfile.mkdtemp()
+        try:
             db_path = Path(tmp) / "test.db"
             conn = sqlite3.connect(db_path)
             conn.execute(
@@ -45,11 +48,15 @@ class LouDouReadingPatchTests(unittest.TestCase):
             conn.close()
 
             self.assertEqual(patch_lyrics_db(db_path), 1)
-            row = sqlite3.connect(db_path).execute(
-                "SELECT jyutping, code FROM words WHERE char='窮困潦倒'"
-            ).fetchone()
+            with sqlite3.connect(db_path) as verify:
+                row = verify.execute(
+                    "SELECT jyutping, code FROM words WHERE char='窮困潦倒'"
+                ).fetchone()
             self.assertEqual(row[0], "kung4 kwan3 lou5 dou2")
             self.assertEqual(row[1], "0449")
+        finally:
+            gc.collect()
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 if __name__ == "__main__":

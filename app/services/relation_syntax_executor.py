@@ -102,7 +102,10 @@ def words_for_relation_pool_from_items(
         seen.add(char)
         unique_items.append(item)
     
-    # 申請 code_prefix 過濾
+    # 關係語法（~ / !）只投影收錄字面，靜態未收錄候選留俾近反義模式
+    unique_items = [item for item in unique_items if item.get("in_db")]
+    if not unique_items:
+        return []
     if code_prefix:
         variants = get_code_variants(code_prefix, mode)
         # 過濾出符合 code_prefix 的 items

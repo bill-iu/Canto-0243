@@ -202,7 +202,7 @@ class RelationPoolTests(unittest.TestCase):
             membership = {"快樂", "開心", "愉快", "悲傷"}
 
             with patch(
-                "app.domain.relations.pool.chars_present_in_db",
+                "app.domain.relations.pool_builder.chars_present_in_db",
                 side_effect=AssertionError("ingest must use cached membership"),
             ):
                 snapshot = build_pool(

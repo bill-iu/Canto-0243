@@ -94,8 +94,8 @@ class RelationDomainStoreTests(unittest.TestCase):
                 dedupe_existing=True,
                 batch_size=50,
             )
-            self.assertEqual(inserted, 1)
-            self.assertEqual(skipped, 0)
+            self.assertEqual(inserted, 0)
+            self.assertEqual(skipped, 1)
             rel = (
                 db.query(WordRelation)
                 .filter(WordRelation.relation_type == "ant")

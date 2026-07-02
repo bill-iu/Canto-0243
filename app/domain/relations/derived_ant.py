@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import List, Set
 
+from sqlalchemy.orm import Session
+
 from app.domain.relations.graph import CharRelationGraph
 from app.domain.relations.ranking import final_score, sort_ant_pool
 from app.domain.thesaurus.port import ThesaurusPort
@@ -12,6 +14,7 @@ from app.domain.relations.cilin_derived import (
     CILIN_DERIVED_CONFIDENCE,
     CILIN_DERIVED_SOURCE,
     cilin_derived_ant_pairs,
+    direct_ant_seeds_for_head,
 )
 from app.domain.relations.mirror_ant import (
     MIRROR_CONFIDENCE,
@@ -101,21 +104,32 @@ def append_runtime_derived_ant_pool(
     query: str,
     ant_pool: List[dict],
     *,
+    db: Session,
     thesaurus: ThesaurusPort,
     graph: CharRelationGraph,
     present: Set[str],
     include_static: bool,
     morpheme_chars: Set[str],
+    head_syns: Set[str],
 ) -> List[dict]:
-    seeds = [item.get("char") or "" for item in ant_pool if item.get("char")]
+    seeds = direct_ant_seeds_for_head(
+        db,
+        query,
+        thesaurus=thesaurus,
+        membership=present,
+        include_static=include_static,
+    )
     cilin_items = runtime_cilin_derived_ant_items(
         query, seeds, thesaurus=thesaurus, present=present
     )
     merged = {item["char"]: item for item in ant_pool}
     for item in cilin_items:
-        prev = merged.get(item["char"])
+        ch = item.get("char") or ""
+        if not ch or ch in head_syns:
+            continue
+        prev = merged.get(ch)
         if prev is None or item.get("_sort", 99) < prev.get("_sort", 99):
-            merged[item["char"]] = item
+            merged[ch] = item
     mirror_items = runtime_mirror_ant_items(
         query,
         seeds,
@@ -124,9 +138,12 @@ def append_runtime_derived_ant_pool(
         include_static=include_static,
     )
     for item in mirror_items:
-        prev = merged.get(item["char"])
+        ch = item.get("char") or ""
+        if not ch or ch in head_syns:
+            continue
+        prev = merged.get(ch)
         if prev is None or item.get("_sort", 99) < prev.get("_sort", 99):
-            merged[item["char"]] = item
+            merged[ch] = item
     return sort_ant_pool(query, list(merged.values()), morpheme_chars)
 
 

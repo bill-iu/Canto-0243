@@ -17,7 +17,14 @@ class RecomputePhonemeJsonTests(unittest.TestCase):
         self.assertFalse(needs_phoneme_recompute("zyu6", initials, finals, tones))
 
     def test_recompute_in_memory_db(self):
-        with tempfile.TemporaryDirectory() as tmp:
+        import gc
+        import shutil
+        import sqlite3
+        import tempfile
+        from pathlib import Path
+
+        tmp = tempfile.mkdtemp()
+        try:
             db_path = Path(tmp) / "test.db"
             conn = sqlite3.connect(db_path)
             conn.execute(
@@ -35,10 +42,14 @@ class RecomputePhonemeJsonTests(unittest.TestCase):
             self.assertEqual(report["stale"], 1)
             self.assertEqual(report["updated"], 1)
 
-            row = sqlite3.connect(db_path).execute(
-                "SELECT initials, finals FROM words WHERE char='住'"
-            ).fetchone()
+            with sqlite3.connect(db_path) as verify:
+                row = verify.execute(
+                    "SELECT initials, finals FROM words WHERE char='住'"
+                ).fetchone()
             self.assertEqual(row, ('["z"]', '["yu"]'))
+        finally:
+            gc.collect()
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 if __name__ == "__main__":
