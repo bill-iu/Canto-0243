@@ -117,12 +117,12 @@ _Avoid_：toast、彈窗確認
 _Avoid_：相關詞（不區分類型時）、semantic_related
 
 **近反義池**：
-對一個字面，合併 `word_relations`（**唔**含 **詞林衍生反義**／**反義端點鏡射** 等衍生 `source` 列）、**靜態詞林**、**查詢時**兩層衍生反義展開後，經排序與去重的近義、反義與語意相關候選集合；候選必須是**有效字面**（含漢字、無詞林編碼或英數噪音）。衍生反義覆蓋以 runtime 展開為準，**唔**讀舊 **詞條庫** 殘留衍生列。**近反義模式**與 **`!` 反義查詢**共用**同一份** `ants` 列表（已含兩層衍生），**唔**再經獨立 graph 重展開或掃描 `syns` 回撈。**近義橋反義** ingest 共用同一建池規則（ingest 唔 live 展開衍生層）。
-_Avoid_：relation pool（作領域正名）、syn_ant_service（作池名稱）、合併 DB 衍生列與 runtime 雙份供應、把舊快照 inject 列當查詢 SSOT、`!` 與近反義模式用兩套反義展開
+對一個字面，合併 `word_relations`（**唔**含 **詞林衍生反義**／**反義端點鏡射** 等衍生 `source` 列）、**靜態詞林**、**查詢時**兩層衍生反義展開後，經排序與去重的近義、反義與語意相關候選集合；候選必須是**有效字面**（含漢字、無詞林編碼或英數噪音）。衍生反義覆蓋以 runtime 展開為準，**唔**讀舊 **詞條庫** 殘留衍生列。**近反義模式**與 **`!` 反義查詢**共用**同一份** `ants` 列表（已含兩層衍生），**唔**再經獨立 graph 重展開或掃描 `syns` 回撈。**近義橋反義** ingest 經 **近反義池投影** 讀池；**反義**側只含 **直接反義**（DB 剔除衍生 `source` ＋靜態反義），**唔** live 展開 **詞林衍生反義**／**反義端點鏡射**；讀取**唔**觸發**收錄決策**注入（只讀既有收錄字面）。
+_Avoid_：relation pool（作領域正名）、syn_ant_service（作池名稱）、合併 DB 衍生列與 runtime 雙份供應、把舊快照 inject 列當查詢 SSOT、`!` 與近反義模式用兩套反義展開、ingest 橋接借入衍生反義候選、ingest 讀池觸發詞條注入
 
 **近反義池投影**：
-Runtime 讀取**近反義池**的統一入口；近反義模式、`~`／`!` 查詢與關係補錄擴展互斥皆經此投影取得池快照。**`!` 反義**直接消費快照 `ants`（與近反義模式同一列表）；**唔**設獨立 `expand` 展開參數。建池規則本身不變。
-_Avoid_：pool facade、runtime 直呼 build_pool、`!` 另建 expand 路徑或掃 `syns` 補 items、保留 `expand_ant_via_syn` 雙語意
+Runtime 讀取**近反義池**的統一入口；近反義模式、`~`／`!` 查詢與關係補錄擴展互斥皆經此投影取得池快照。**`!` 反義**直接消費快照 `ants`（與近反義模式同一列表）；**唔**設獨立 `expand` 展開參數。**近義橋反義** ingest 亦經此投影；**反義**讀取為 **直接反義** 子集（唔展開兩層衍生），**近義**讀取規則同創作者查詢。建池排序與去重規則本身不變。
+_Avoid_：pool facade、runtime 直呼 build_pool、`!` 另建 expand 路徑或掃 `syns` 補 items、保留 `expand_ant_via_syn` 雙語意、ingest 繞過投影直呼建池、ingest 反義含衍生層
 
 **靜態詞林埠**：
 bundled 近義／反義語料（詞林 cilin、國語辭典近義檔 `dict_synonym`、反義檔 `dict_antonym`）的 **raw lookup** 邊界。Runtime `~`／`!` 以合併近義、反義 getter 消費；ingest 可用分源 getter（cilin、guotong）與種子字面全集枚舉。資料載入與模組內 dict 為實作細節，對外只經埠存取。**靜態語料授權閘門**：納入 bundle 或 **靜態詞林埠** 上游須有明示、可再分發授權；作者禁止「二次建庫共享」或無 LICENSE 者（如 ChineseSemanticKB、ChineseAntiword）**唔**納入。**反義來源**：guotong `dict_antonym`（Anti-996）；**唔**採用 OpenHowNet。**OpenHowNet（C）已取消**——義原展開噪音過高、與辭典式反義對不符。
@@ -213,8 +213,8 @@ _Avoid_：compound_syn_cache（作領域正名）
 _Avoid_：把源 3 tier 快取當快照
 
 **近義橋反義**（ingest 補全）：
-有近義無反義的字面：在近義候選中以語意向量找**橋接近義**（已有反義者）；head 與橋接近義須達**橋接語意門檻**，未達則不貢獻反義。**多橋合併**：合格橋候選皆可貢獻直接反義，去重後按**橋分**排序，取前 N（**橋接借入上限**）。寫入關係表（`source=ant_syn_bridge`）。**詞條庫建置命令**預設由 **近義橋反義快照** 注入，唔跑 embedding；embedding 全量重算僅用於**烘焙**快照。僅 ingest，不 runtime 載 embedding。**多補取向**：門檻偏寬，寧可多橋接、以筆數上限控噪音。
-_Avoid_：runtime 即時猜反義、每次 build 預設跑 embedding 橋接
+有近義無反義的字面：在近義候選中以語意向量找**橋接近義**（已有反義者）；head 與橋接近義須達**橋接語意門檻**，未達則不貢獻反義。**多橋合併**：合格橋候選皆可貢獻**直接反義**（經 **近反義池投影** 讀取，**唔**含衍生反義層），去重後按**橋分**排序，取前 N（**橋接借入上限**）。寫入關係表（`source=ant_syn_bridge`）。**詞條庫建置命令**預設由 **近義橋反義快照** 注入，唔跑 embedding；embedding 全量重算僅用於**烘焙**快照。僅 ingest，不 runtime 載 embedding。**多補取向**：門檻偏寬，寧可多橋接、以筆數上限控噪音。
+_Avoid_：runtime 即時猜反義、每次 build 預設跑 embedding 橋接、橋接借入詞林衍生或鏡射候選、ingest 繞過近反義池投影
 
 **近義橋反義快照**：
 由 embedding 橋接**烘焙**產出、git 追蹤嘅字面級反義對列表（如 `data/syn_ant/ant_syn_bridge_pairs.tsv`）；**詞條庫建置命令**預設 ingest 此快照（`source=ant_syn_bridge`），取代日常 rebuild 跑模型。近義／反義池或橋接品質閘門變更後，maintainer **重烘焙**並 commit 新快照。

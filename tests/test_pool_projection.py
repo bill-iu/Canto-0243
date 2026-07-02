@@ -62,6 +62,71 @@ class PoolProjectionEquivalenceTests(unittest.TestCase):
                 snapshot.chars("syn"),
             )
 
+    def test_include_derived_ant_false_omits_runtime_derived(self):
+        from unittest.mock import MagicMock
+
+        from app.domain.relations.cilin_derived import CILIN_DERIVED_SOURCE
+        from app.domain.relations.mirror_ant import MIRROR_SOURCE
+
+        Session = self._session()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心"],
+        }.get(w, [])
+        thesaurus.get_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心", "哀愁"],
+        }.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=3, char="傷心", code="22", jyutping="", length=2),
+                Word(id=4, char="哀愁", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="guotong"))
+            db.commit()
+            membership = {"快樂", "悲傷", "傷心", "哀愁"}
+
+            full = build_pool(
+                db,
+                "快樂",
+                include_static=True,
+                thesaurus=thesaurus,
+                membership=membership,
+                quiet=True,
+            )
+            direct = build_pool(
+                db,
+                "快樂",
+                include_static=True,
+                thesaurus=thesaurus,
+                membership=membership,
+                include_derived_ant=False,
+                quiet=True,
+            )
+            full_sources = {r["char"]: r.get("source") for r in full.ants}
+            direct_chars = [r["char"] for r in direct.ants]
+
+            self.assertEqual(full_sources.get("傷心"), CILIN_DERIVED_SOURCE)
+            self.assertEqual(full_sources.get("哀愁"), MIRROR_SOURCE)
+            self.assertIn("悲傷", direct_chars)
+            self.assertNotIn("傷心", direct_chars)
+            self.assertNotIn("哀愁", direct_chars)
+
+            via_projection = relation_pool_chars(
+                db,
+                "快樂",
+                "ant",
+                include_static=True,
+                thesaurus=thesaurus,
+                membership=membership,
+                include_derived_ant=False,
+                allow_inject=False,
+            )
+            self.assertEqual(via_projection, direct_chars)
+
 
 if __name__ == "__main__":
     unittest.main()

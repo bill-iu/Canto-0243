@@ -235,6 +235,7 @@ def build_pool(
     query: str,
     *,
     include_static: bool = True,
+    include_derived_ant: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
     membership: Optional[Set[str]] = None,
     quiet: bool = False,
@@ -299,20 +300,21 @@ def build_pool(
         present=present,
         morpheme_chars=morpheme_chars,
     )
-    graph = get_process_cached_graph(
-        db,
-        port,
-        membership=lexicon_membership,
-    )
-    ant_pool = append_runtime_derived_ant_pool(
-        q,
-        ant_pool,
-        thesaurus=port,
-        graph=graph,
-        present=lexicon_membership,
-        include_static=include_static,
-        morpheme_chars=morpheme_chars,
-    )
+    if include_derived_ant:
+        graph = get_process_cached_graph(
+            db,
+            port,
+            membership=lexicon_membership,
+        )
+        ant_pool = append_runtime_derived_ant_pool(
+            q,
+            ant_pool,
+            thesaurus=port,
+            graph=graph,
+            present=lexicon_membership,
+            include_static=include_static,
+            morpheme_chars=morpheme_chars,
+        )
 
     seen_main = {q} | {r["char"] for r in syn_pool} | {r["char"] for r in ant_pool}
     semantic_pool: List[dict] = []

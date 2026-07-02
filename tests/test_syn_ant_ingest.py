@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import Base
 from app.models.word import Word, WordRelation
 from app.domain.relations.pool import PoolSnapshot, build_pool
+from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from app.domain.relations.ranking import (
     final_score as _final_score,
     should_include_synonym as _should_include_synonym,
@@ -14,7 +15,6 @@ from app.domain.relations.ranking import (
     sort_syn_pool as _sort_syn_pool,
 )
 from app.services.relation_syntax_executor import RelationSyntaxExecutor
-from app.domain.relations.pool_projection import relation_pool_chars, relation_pool_page
 from ingest.bridge_pool_context import IngestBridgePoolContext
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs
 from ingest.syn_ant_build import ingest_cilin_leaf_direct
@@ -800,18 +800,20 @@ class IngestBridgePoolContextTests(unittest.TestCase):
         pool_ctx = IngestBridgePoolContext(
             db, include_static=include_static, thesaurus=thesaurus
         )
-        snapshot = build_pool(
-            db,
-            query,
-            include_static=include_static,
-            thesaurus=thesaurus,
-            membership=pool_ctx._membership,
-            quiet=True,
-        )
         for kind in ("syn", "ant"):
+            via_projection = relation_pool_chars(
+                db,
+                query,
+                kind,
+                allow_inject=False,
+                include_static=include_static,
+                thesaurus=thesaurus or pool_ctx.thesaurus,
+                membership=pool_ctx._membership,
+                include_derived_ant=False,
+            )
             self.assertEqual(
                 pool_ctx.relation_chars(query, kind),
-                snapshot.chars(kind),
+                via_projection,
                 msg=f"{query!r} {kind}",
             )
 
@@ -874,6 +876,37 @@ class IngestBridgePoolContextTests(unittest.TestCase):
             self.assertEqual(pool_ctx.relation_chars("", "syn"), [])
             self.assertEqual(pool_ctx.relation_chars("   ", "ant"), [])
             self.assertEqual(pool_ctx.relation_chars("abc", "syn"), [])
+
+    def test_ingest_ant_pool_excludes_runtime_derived(self):
+        from unittest.mock import MagicMock
+
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心"],
+        }.get(w, [])
+        thesaurus.get_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心", "哀愁"],
+        }.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
+        Session = self._seed_db()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=3, char="傷心", code="22", jyutping="", length=2),
+                Word(id=4, char="哀愁", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="guotong"))
+            db.commit()
+
+            pool_ctx = IngestBridgePoolContext(
+                db, include_static=True, thesaurus=thesaurus
+            )
+            ant_chars = pool_ctx.relation_chars("快樂", "ant")
+            self.assertIn("悲傷", ant_chars)
+            self.assertNotIn("傷心", ant_chars)
+            self.assertNotIn("哀愁", ant_chars)
 
 
 class PoolSnapshotTests(unittest.TestCase):

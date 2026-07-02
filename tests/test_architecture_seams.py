@@ -187,6 +187,12 @@ class TestPoolProjectionSeam(unittest.TestCase):
             with self.subTest(symbol=symbol):
                 self.assertIn(symbol, source)
 
+    def test_ingest_bridge_pool_context_uses_projection(self):
+        path = REPO_ROOT / "ingest" / "bridge_pool_context.py"
+        source = path.read_text(encoding="utf-8")
+        self.assertNotIn("build_pool", source)
+        self.assertIn("pool_projection", source)
+
 
 class TestTransitionFacadeRemoval(unittest.TestCase):
     """#3: shallow pass-through modules removed; callers use real modules."""

@@ -1,4 +1,4 @@
-"""Ingest adapter: cached 收錄 membership + build_pool（同源於 近反義模式）。"""
+"""Ingest adapter: cached 收錄 membership + 近反義池投影（直接反義子集）。"""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.pool import build_pool
+from app.domain.relations.pool_projection import project_relation_pool
 from app.repositories.word_relation_repo import load_db_char_set
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
@@ -33,13 +33,14 @@ class IngestBridgePoolContext:
         q = (query or "").strip()
         if not q or kind not in ("syn", "ant"):
             return []
-        return build_pool(
+        return project_relation_pool(
             self.db,
             q,
+            allow_inject=False,
             include_static=self.include_static,
+            include_derived_ant=False,
             thesaurus=self.thesaurus,
             membership=self._membership,
-            quiet=True,
         ).chars(kind)
 
 
