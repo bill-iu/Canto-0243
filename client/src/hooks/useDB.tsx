@@ -10,7 +10,6 @@ import {
   useEffect,
   useLayoutEffect,
   useCallback,
-  useMemo,
   type ReactNode,
 } from 'react';
 import {
@@ -22,22 +21,25 @@ import {
 } from '../db/init';
 import {
   search,
+  searchPage,
   getDatabaseStats,
   validateOfflineReadiness,
   normalizeQuery,
   parseQuery,
   normalizeAndParse,
+  SEARCH_PAGE_SIZE,
 } from '../db/query';
 import type {
   QueryOptions,
   QueryResult,
   QueryMode,
   QueryKind,
+  SearchPageResult,
 } from '../db/query';
 
 // Re-export query engine types and functions for convenience
-export type { QueryMode, QueryKind, QueryOptions, QueryResult };
-export { normalizeQuery, parseQuery, normalizeAndParse };
+export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
+export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE };
 
 /**
  * Database status type
@@ -227,23 +229,33 @@ export function useDB(): UseDBReturn {
 }
 
 /**
- * Hook for a specific query with loading state
+ * Hook for a specific query with loading state and load-more pagination.
  */
-export function useSearch(queryOptions: QueryOptions | null) {
-  const { search, isReady, status } = useDB();
+export function useSearch(query: string, mode: QueryOptions['mode'] = '0243', pageSize = SEARCH_PAGE_SIZE) {
+  const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
+  const [lastPageSize, setLastPageSize] = useState(0);
 
-  const stableOptions = useMemo(
-    () => queryOptions,
-    [queryOptions?.query, queryOptions?.mode, queryOptions?.limit, queryOptions?.offset],
-  );
+  const trimmed = query.trim();
+  const canSearch = Boolean(trimmed) && isReady;
+
+  const hasMore =
+    canSearch &&
+    ((total != null && results.length < total) ||
+      (total == null && lastPageSize >= pageSize));
 
   useLayoutEffect(() => {
-    if (!stableOptions || !isReady) {
+    if (!canSearch) {
       setResults([]);
+      setTotal(null);
+      setHint(null);
       setLoading(false);
+      setLastPageSize(0);
       return;
     }
 
@@ -251,16 +263,22 @@ export function useSearch(queryOptions: QueryOptions | null) {
     setLoading(true);
     setSearchError(null);
 
-    const executeSearch = async () => {
+    const run = async () => {
       try {
-        const hits = await search(stableOptions);
+        const page = await searchPage({ query: trimmed, mode, limit: pageSize, offset: 0 });
         if (!cancelled) {
-          setResults(hits);
+          setResults(page.items);
+          setTotal(page.total ?? null);
+          setHint(page.hint ?? null);
+          setLastPageSize(page.items.length);
         }
       } catch (err) {
         if (!cancelled) {
           setSearchError(err instanceof Error ? err : new Error(String(err)));
           setResults([]);
+          setTotal(null);
+          setHint(null);
+          setLastPageSize(0);
         }
       } finally {
         if (!cancelled) {
@@ -269,17 +287,47 @@ export function useSearch(queryOptions: QueryOptions | null) {
       }
     };
 
-    void executeSearch();
+    void run();
     return () => {
       cancelled = true;
     };
-  }, [stableOptions, isReady, search]);
+  }, [trimmed, mode, pageSize, canSearch]);
+
+  const loadMore = useCallback(async () => {
+    if (!canSearch || loading || loadingMore || !hasMore) {
+      return;
+    }
+    setLoadingMore(true);
+    setSearchError(null);
+    try {
+      const page = await searchPage({
+        query: trimmed,
+        mode,
+        limit: pageSize,
+        offset: results.length,
+      });
+      setResults((prev) => [...prev, ...page.items]);
+      if (page.total != null) {
+        setTotal(page.total);
+      }
+      setLastPageSize(page.items.length);
+    } catch (err) {
+      setSearchError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length]);
 
   return {
     results,
+    total,
+    hint,
     loading: loading || status === 'loading',
+    loadingMore,
     error: searchError,
     isReady,
+    hasMore,
+    loadMore,
   };
 }
 

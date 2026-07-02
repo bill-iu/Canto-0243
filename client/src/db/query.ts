@@ -46,7 +46,18 @@ export interface QueryResult {
   code: string;
   definition?: string;
   score?: number;
+  resultType?: 'code' | 'jyutping' | 'word';
+  anchor_dimension?: 'initial' | 'final';
 }
+
+export interface SearchPageResult {
+  items: QueryResult[];
+  total?: number;
+  hint?: string;
+  effectiveMode?: QueryMode;
+}
+
+export const SEARCH_PAGE_SIZE = 50;
 
 /**
  * Legacy QueryOptions interface
@@ -74,28 +85,43 @@ function mapLegacyMode(mode?: string): QueryMode {
   }
 }
 
+function mapEngineResult(r: SearchResult['items'][number]): QueryResult {
+  return {
+    word: r.word,
+    jyutping: r.jyutping,
+    code: r.code,
+    score: r.score,
+    resultType: r.resultType,
+    anchor_dimension: r.anchor_dimension,
+  };
+}
+
+/**
+ * Search with pagination metadata (total, hint, lookup resultType).
+ */
+export async function searchPage(options: QueryOptions): Promise<SearchPageResult> {
+  const mode = mapLegacyMode(options.mode);
+  const result = await queryEngine.execute({
+    q: options.query,
+    mode,
+    limit: options.limit ?? SEARCH_PAGE_SIZE,
+    offset: options.offset ?? 0,
+  });
+  return {
+    items: result.items.map(mapEngineResult),
+    total: result.total,
+    hint: result.hint,
+    effectiveMode: result.effective_mode,
+  };
+}
+
 /**
  * Search with legacy QueryOptions interface
  * This maintains backward compatibility with existing code
  */
 export async function search(options: QueryOptions): Promise<QueryResult[]> {
-  const mode = mapLegacyMode(options.mode);
-  const results = await searchWords(
-    options.query,
-    undefined, // code
-    undefined, // char
-    mode,
-    options.limit || 50,
-    options.offset || 0
-  );
-  
-  // Convert engine results to legacy format
-  return results.map((r) => ({
-    word: r.word,
-    jyutping: r.jyutping,
-    code: r.code,
-    score: r.score,
-  }));
+  const page = await searchPage(options);
+  return page.items;
 }
 
 /**

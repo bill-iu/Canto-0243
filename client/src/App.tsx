@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
-import type { QueryOptions } from './hooks/useDB.tsx';
+import { ResultList } from './result-list';
 import './App.css';
 
 function App() {
@@ -34,9 +34,14 @@ function App() {
   
   const { 
     results, 
-    loading: searchLoading, 
-    error: searchError
-  } = useSearch(query ? { query, mode, limit: 50 } : null);
+    total,
+    hint,
+    loading: searchLoading,
+    loadingMore,
+    error: searchError,
+    hasMore,
+    loadMore,
+  } = useSearch(query, mode);
 
   // Auto-initialize database on mount
   useEffect(() => {
@@ -55,10 +60,16 @@ function App() {
     }
   }, [isReady, showStats, stats, getStats]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Search is triggered automatically by useSearch hook
+  const handlePickResult = (nextQuery: string) => {
+    setQuery(nextQuery);
   };
+
+  const resultsLabel =
+    total != null && total > results.length
+      ? `已載入 ${results.length} / ${total} 個結果`
+      : results.length > 0
+        ? `${results.length} 個結果`
+        : '';
 
   const toggleStats = () => {
     setShowStats(!showStats);
@@ -116,7 +127,7 @@ function App() {
       </header>
 
       <main className="app-main">
-        <form onSubmit={handleSearch} className="search-form">
+        <form onSubmit={(e) => e.preventDefault()} className="search-form">
           <div className="search-controls">
             <input
               type="text"
@@ -180,21 +191,24 @@ function App() {
 
         {/* Search Results */}
         <div className="search-results">
+          {hint && <p className="search-hint">{hint}</p>}
           {searchLoading && <p className="loading">搜尋中...</p>}
           {searchError && <p className="error">錯誤: {searchError.message}</p>}
           
           {results.length > 0 && (
             <div className="results-list">
-              <p className="results-count">找到 {results.length} 個結果</p>
-              <ul>
-                {results.map((result, index) => (
-                  <li key={index} className="result-item">
-                    <span className="word">{result.word}</span>
-                    <span className="jyutping">{result.jyutping}</span>
-                    <span className="code">{result.code}</span>
-                  </li>
-                ))}
-              </ul>
+              {resultsLabel && <p className="results-count">{resultsLabel}</p>}
+              <ResultList results={results} onPick={handlePickResult} />
+              {hasMore && (
+                <button
+                  type="button"
+                  className="load-more"
+                  onClick={() => void loadMore()}
+                  disabled={loadingMore || searchLoading}
+                >
+                  {loadingMore ? '載入中…' : '載入更多'}
+                </button>
+              )}
             </div>
           )}
           

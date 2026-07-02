@@ -1993,7 +1993,7 @@ function executeWordLookup(
   stmt.free();
 
   const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches));
-  return { items: built.slice(offset, offset + limit) };
+  return { items: built.slice(offset, offset + limit), total: built.length };
 }
 
 /**
