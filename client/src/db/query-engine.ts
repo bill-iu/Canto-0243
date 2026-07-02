@@ -753,6 +753,191 @@ function executeJyutpingFragment(
   return { items: results };
 }
 
+type WordRow = Record<string, unknown>;
+
+function loadJsonList(raw: unknown): string[] {
+  if (Array.isArray(raw)) {
+    return raw.map(String);
+  }
+  if (typeof raw === 'string' && raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.map(String) : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
+function getWordParts(row: WordRow, field: 'initials' | 'finals'): string[] {
+  return loadJsonList(row[field]);
+}
+
+function getRhymeFinals(row: WordRow): string[] {
+  const fromCol = getWordParts(row, 'finals');
+  if (fromCol.length) {
+    return fromCol;
+  }
+  // ponytail: no jyutping derive yet — upgrade path: rhyme_finals_from_jyutping
+  return [];
+}
+
+function matchesEqualsPhonemeSpan(
+  word: WordRow,
+  refParts: string[],
+  startPos: number,
+  opts: {
+    phoneme_anchor_only: boolean;
+    ref_literal: string;
+    dimension: EqualsDimension;
+  },
+): boolean {
+  const charText = String(word.char ?? '');
+  if (!opts.phoneme_anchor_only && opts.ref_literal && !charText.includes(opts.ref_literal)) {
+    return false;
+  }
+  const isFinal = opts.dimension === 'final' || opts.dimension === 'rhyme';
+  const wordParts = isFinal ? getRhymeFinals(word) : getWordParts(word, 'initials');
+  if (!wordParts.length) {
+    return false;
+  }
+  for (let i = 0; i < refParts.length; i++) {
+    const pos = startPos + i;
+    if (pos >= wordParts.length) {
+      return false;
+    }
+    if (refParts[i] && refParts[i] !== wordParts[pos]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function equalsAuthoritativeRow(db: Database, literal: string): WordRow | null {
+  const stmt = db.prepare(
+    'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ? LIMIT 1',
+  );
+  stmt.bind([literal]);
+  const row = stmt.step() ? (stmt.getAsObject() as WordRow) : null;
+  stmt.free();
+  return row;
+}
+
+/** ponytail: infer ref phoneme when exact row missing — scan words containing literal */
+function inferRefPhonemeParts(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+): string[] | null {
+  const stmt = db.prepare(
+    'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
+  );
+  stmt.bind([`%${literal}%`]);
+  const isFinal = dimension === 'final' || dimension === 'rhyme';
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const text = String(row.char ?? '');
+    const idx = text.indexOf(literal);
+    if (idx < 0) {
+      continue;
+    }
+    const parts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
+    if (!parts.length || idx >= parts.length) {
+      continue;
+    }
+    if (literal.length === 1) {
+      stmt.free();
+      return [parts[idx]!];
+    }
+  }
+  stmt.free();
+  return null;
+}
+
+function equalsRefPhonemeParts(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+): string[] | null {
+  const row = equalsAuthoritativeRow(db, literal);
+  if (row) {
+    const isFinal = dimension === 'final' || dimension === 'rhyme';
+    const parts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
+    return parts.length ? parts : null;
+  }
+  return inferRefPhonemeParts(db, literal, dimension);
+}
+
+function wordMatchesWidth(row: WordRow, width: number): boolean {
+  const stored = Number(row.length ?? 0);
+  if (stored > 0) {
+    return stored === width;
+  }
+  return String(row.char ?? '').length === width;
+}
+
+/** Code-anchored equals (e.g. 2=我3, 34=我) — port of query_words_by_equals_spec non-whole-word branch */
+function executeCodeAnchoredEquals(
+  spec: MatchSpec & { equals_span: EqualsSpan },
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const span = spec.equals_span;
+  const refParts = equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
+  if (!refParts) {
+    return { items: [] };
+  }
+
+  const fullCode = spec.code_prefix || '';
+  const variants = fullCode ? getCodeVariants(fullCode, normalizeSearchMode(mode)) : [];
+  const width = spec.width;
+
+  let sql = `
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+  `;
+  const params: (string | number)[] = [width, width];
+
+  if (variants.length) {
+    sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+    params.push(...variants);
+  }
+
+  sql += ' LIMIT 2000';
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const candidates: WordRow[] = [];
+  while (stmt.step()) {
+    candidates.push(stmt.getAsObject() as WordRow);
+  }
+  stmt.free();
+
+  const matched: QueryResult[] = [];
+  for (const word of candidates) {
+    if (!wordMatchesWidth(word, width)) {
+      continue;
+    }
+    if (
+      matchesEqualsPhonemeSpan(word, refParts, span.start_pos, {
+        phoneme_anchor_only: span.phoneme_anchor_only,
+        ref_literal: span.ref_literal,
+        dimension: span.dimension,
+      })
+    ) {
+      matched.push(rowToResult(word));
+    }
+  }
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
+}
+
 /**
  * Whole-word equals (e.g. 香港=) — match words sharing ref finals/initials JSON (P1).
  * ponytail: uses stored finals/initials columns; full port uses rhyme tuple compare in filters.py
@@ -836,8 +1021,8 @@ async function executeEqualsQuery(
   }
   
   const span = spec.equals_span;
-  const { ref_literal, dimension, code_prefix } = span;
-  const { whole_word } = span;
+  const { ref_literal, dimension, whole_word } = span;
+  const code_prefix = spec.code_prefix;
 
   if (whole_word) {
     const items = executeWholeWordEquals(
@@ -853,65 +1038,10 @@ async function executeEqualsQuery(
     }
     return { items };
   }
-  
-  // Case 2: code + equals + word (e.g., 2=我3)
+
+  // Code-anchored equals (e.g. 2=我3, 34=我, 2我=3)
   if (code_prefix && ref_literal) {
-    // This is a code-anchored equals query
-    // Find words where the reference word's phoneme matches at the specified position
-    const codeLength = code_prefix.length;
-    const expectedLength = spec.width;
-    
-    // Build SQL based on dimension
-    if (dimension === 'final' || dimension === 'rhyme') {
-      // Match final/rhyme - need to get phoneme from reference word
-      const refSql = 'SELECT jyutping, code FROM words WHERE char = ?';
-      const refStmt = db.prepare(refSql);
-      refStmt.bind([ref_literal]);
-      const refRow = refStmt.step() ? refStmt.getAsObject() : null;
-      refStmt.free();
-      
-      if (refRow) {
-        // For now, do a simple code match for the specified width
-        const pattern = code_prefix + '%';
-        const sql = `
-          SELECT char, jyutping, code
-          FROM words
-          WHERE code LIKE ? AND LENGTH(char) = ?
-          ORDER BY char
-          LIMIT ? OFFSET ?
-        `;
-        const stmt = db.prepare(sql);
-        stmt.bind([pattern, expectedLength, limit, offset]);
-        
-        const results: QueryResult[] = [];
-        while (stmt.step()) {
-          results.push(rowToResult(stmt.getAsObject()));
-        }
-        stmt.free();
-        
-        return { items: results };
-      }
-    }
-    
-    // Default: try code prefix matching
-    const pattern = code_prefix + '%';
-    const sql = `
-      SELECT char, jyutping, code
-      FROM words
-      WHERE code LIKE ? AND LENGTH(char) = ?
-      ORDER BY char
-      LIMIT ? OFFSET ?
-    `;
-    const stmt = db.prepare(sql);
-    stmt.bind([pattern, expectedLength, limit, offset]);
-    
-    const results: QueryResult[] = [];
-    while (stmt.step()) {
-      results.push(rowToResult(stmt.getAsObject()));
-    }
-    stmt.free();
-    
-    return { items: results };
+    return executeCodeAnchoredEquals(spec, db, mode, limit, offset);
   }
   
   // Case 3: equals + word (e.g., =香)
