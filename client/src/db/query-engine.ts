@@ -9,6 +9,7 @@
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
+import { sortQueryResults, sortWordRows } from './ranking.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -27,6 +28,7 @@ export enum QueryKind {
   COMPOUND_ANT = 'compound_ant',
   COMPOUND_SYN = 'compound_syn',
   COMPOUND_DOUBLED_SYLLABLE = 'compound_doubled_syllable',
+  HETERONYM_CODE = 'heteronym_code',
   HYBRID_TAIL_EQUALS_ALIAS = 'hybrid_tail_equals_alias',
   EQUALS = 'equals',
   PLUS_ANCHOR = 'plus_anchor',
@@ -55,6 +57,7 @@ export enum RouteKind {
   DIGIT = 'digit',
   MASK_FAMILY = 'mask_family',
   RELATION = 'relation',
+  HETERONYM = 'heteronym',
   LOOKUP = 'lookup',
   UNMATCHED = 'unmatched',
   EMPTY = 'empty',
@@ -209,6 +212,43 @@ export interface CompoundDoubledSyllableQuery extends ParsedQuery {
   rhyme_char?: string;
 }
 
+export interface HeteronymCodeQuery extends ParsedQuery {
+  kind: QueryKind.HETERONYM_CODE;
+  raw_q: string;
+  left_template: string;
+  right_template: string;
+  width: number;
+}
+
+export interface WildcardCodeAnchorQuery extends ParsedQuery {
+  kind: QueryKind.WILDCARD_CODE_ANCHOR;
+  raw_q: string;
+  width: number;
+  slots: Array<{ pos: number; kind: string; value?: string }>;
+  head_literal?: string;
+}
+
+export interface CodeRefMiddleRhymeQuery extends ParsedQuery {
+  kind: QueryKind.CODE_REF_MIDDLE_RHYME;
+  raw_q: string;
+  width: number;
+  anchor: string;
+  anchor_pos: number;
+  leading: string;
+  digits: string;
+  slots: Array<{ pos: number; kind: string; value?: string }>;
+}
+
+export interface TripleRhymeAnchorQuery extends ParsedQuery {
+  kind: QueryKind.TRIPLE_RHYME_ANCHOR;
+  raw_q: string;
+  anchor: string;
+  anchor_pos: number;
+  width: number;
+  leading_slots: string;
+  constraint: 'final';
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -290,6 +330,7 @@ const QUERY_KIND_META: Record<QueryKind, QueryKindMeta> = {
   [QueryKind.COMPOUND_SYN]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.COMPOUND_ANT]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: { route: RouteKind.MASK_FAMILY, match_spec: true },
+  [QueryKind.HETERONYM_CODE]: { route: RouteKind.HETERONYM },
   [QueryKind.HYBRID_TAIL_EQUALS_ALIAS]: { route: RouteKind.MASK_FAMILY },
   [QueryKind.EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.PREFIX_WILDCARD_EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
@@ -384,6 +425,35 @@ function hasJyutpingChars(q: string): boolean {
 }
 
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
+/** ponytail: Python CODE_TAIL_MIDDLE is `+`; TS legacy uses ∕ for plus-anchor only */
+const GRAMMAR_PLUS = '+';
+
+/** Port of heteronym.parse_heteronym_code_query */
+export function parseHeteronymCodeQuery(q: string): HeteronymCodeQuery | UnmatchedQuery | null {
+  if (!q || q.includes('$') || /[\u4e00-\u9fff]/.test(q)) {
+    return null;
+  }
+  const m = q.match(/^([\d?]+)\/([\d?]+)$/);
+  if (!m) {
+    return null;
+  }
+  const left = m[1]!;
+  const right = m[2]!;
+  if (left.length !== right.length) {
+    return {
+      kind: QueryKind.UNMATCHED,
+      raw_q: q,
+      hint: '同音異讀查詢左右碼位模板須等長。',
+    };
+  }
+  return {
+    kind: QueryKind.HETERONYM_CODE,
+    raw_q: q,
+    left_template: left,
+    right_template: right,
+    width: left.length,
+  };
+}
 
 /** Port of relation.parse_doubled_syllable_syntax */
 export function parseDoubledSyllableSyntax(q: string): CompoundDoubledSyllableQuery | null {
@@ -459,6 +529,353 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
   return null;
 }
 
+/** Port of rhyme.parse_code_ref_rhyme_contradiction_hint */
+function parseCodeRefRhymeContradictionHint(q: string): string | null {
+  const m = q.match(/^([?_%]+)(\d+)([\u4e00-\u9fff])([?_%])$/);
+  if (m && !q.includes('=')) {
+    return `碼位同參考字「${m[3]}」衝突：請改用 \`?${m[2]}${m[3]}=?\` 標中格同韻。`;
+  }
+  return null;
+}
+
+/** Port of rhyme.parse_code_ref_middle_rhyme_query */
+export function parseCodeRefMiddleRhymeQuery(q: string): CodeRefMiddleRhymeQuery | null {
+  const m = q.match(/^([?_%]+)(\d+)([\u4e00-\u9fff])=\?$/);
+  if (!m) {
+    return null;
+  }
+  const leading = m[1]!;
+  const digits = m[2]!;
+  const anchor = m[3]!;
+  const width = leading.length + digits.length + 1;
+  const anchorPos = leading.length + digits.length - 1;
+  const slots: CodeRefMiddleRhymeQuery['slots'] = [];
+  for (let i = 0; i < digits.length; i++) {
+    slots.push({ pos: leading.length + i, kind: 'code_digit', value: digits[i] });
+  }
+  slots.push({ pos: anchorPos, kind: 'final_anchor', value: anchor });
+  return {
+    kind: QueryKind.CODE_REF_MIDDLE_RHYME,
+    raw_q: q,
+    width,
+    anchor,
+    anchor_pos: anchorPos,
+    leading,
+    digits,
+    slots,
+  };
+}
+
+/** Port of rhyme.parse_double_wildcard_rhyme_query */
+function parseDoubleWildcardRhymeQuery(q: string): RhymeAnchorQuery | null {
+  const m = q.match(/^([?_%])\+([\u4e00-\u9fff])=$/);
+  if (!m) {
+    return null;
+  }
+  return {
+    kind: QueryKind.RHYME_ANCHOR,
+    raw_q: q,
+    constraint: 'final',
+    anchor: m[2]!,
+    anchor_pos: 1,
+    slots: m[1]!,
+    width: 2,
+  };
+}
+
+/** Port of rhyme.parse_double_wildcard_initial_query */
+function parseDoubleWildcardInitialQuery(q: string): RhymeAnchorQuery | null {
+  const m = q.match(/^([?_%])\+=([\u4e00-\u9fff])$/);
+  if (!m) {
+    return null;
+  }
+  return {
+    kind: QueryKind.RHYME_ANCHOR,
+    raw_q: q,
+    constraint: 'initial',
+    anchor: m[2]!,
+    anchor_pos: 1,
+    slots: m[1]!,
+    width: 2,
+  };
+}
+
+/** Port of rhyme.parse_triple_rhyme_anchor_query */
+export function parseTripleRhymeAnchorQuery(q: string): TripleRhymeAnchorQuery | null {
+  if (!q || q.includes('@') || isFramedEqualsQuery(q) || isHybridTailEqualsAlias(q)) {
+    return null;
+  }
+
+  let m = q.match(/^(\?\+)([\u4e00-\u9fff])=\?$/);
+  if (m) {
+    return {
+      kind: QueryKind.TRIPLE_RHYME_ANCHOR,
+      raw_q: q,
+      anchor: m[2]!,
+      anchor_pos: 1,
+      width: 3,
+      leading_slots: m[1]!,
+      constraint: 'final',
+    };
+  }
+
+  if (q.includes('+') || q.includes(CODE_TAIL_MIDDLE)) {
+    return null;
+  }
+
+  m = q.match(/^([0-9_?%]+)([\u4e00-\u9fff])=\?$/);
+  if (!m) {
+    return null;
+  }
+  const leading = m[1]!;
+  const anchor = m[2]!;
+  if (![...leading].some((c) => isWildcardChar(c))) {
+    return null;
+  }
+  if (/\d/.test(leading)) {
+    return null;
+  }
+  const anchorPos = leading.length;
+  return {
+    kind: QueryKind.TRIPLE_RHYME_ANCHOR,
+    raw_q: q,
+    anchor,
+    anchor_pos: anchorPos,
+    width: anchorPos + 2,
+    leading_slots: leading,
+    constraint: 'final',
+  };
+}
+
+function wcaTokenize(body: string): Array<[string, string]> | null {
+  const tokens: Array<[string, string]> = [];
+  let i = 0;
+  while (i < body.length) {
+    const ch = body[i]!;
+    if (isWildcardChar(ch)) {
+      tokens.push(['wild', ch]);
+      i += 1;
+    } else if (ch === GRAMMAR_PLUS || ch === CODE_TAIL_MIDDLE) {
+      tokens.push(['star', '']);
+      i += 1;
+    } else if (/\d/.test(ch)) {
+      while (i < body.length && /\d/.test(body[i]!)) {
+        tokens.push(['code', body[i]!]);
+        i += 1;
+      }
+    } else if (/[\u4e00-\u9fff]/.test(ch)) {
+      tokens.push(['ref', ch]);
+      i += 1;
+    } else {
+      return null;
+    }
+  }
+  return tokens.length ? tokens : null;
+}
+
+function wcaTokensToSpec(
+  tokens: Array<[string, string]>,
+  headLiteral?: string,
+): Omit<WildcardCodeAnchorQuery, 'kind' | 'raw_q'> | null {
+  const syllables: Array<Record<string, string | boolean>> = [];
+  if (headLiteral) {
+    syllables.push({ literal: headLiteral });
+  }
+  let i = 0;
+  while (i < tokens.length) {
+    const [kind, val] = tokens[i]!;
+    if (kind === 'wild') {
+      syllables.push({ wild: true });
+      i += 1;
+    } else if (kind === 'code') {
+      syllables.push({ code: val });
+      i += 1;
+    } else if (kind === 'star') {
+      if (i + 1 < tokens.length && tokens[i + 1]![0] === 'ref') {
+        syllables.push({ ref: tokens[i + 1]![1], star_before: true });
+        i += 2;
+      } else {
+        syllables.push({ wild: true });
+        i += 1;
+      }
+    } else if (kind === 'ref') {
+      const last = syllables[syllables.length - 1];
+      if (last && 'code' in last && !('ref' in last)) {
+        last.ref = val;
+        i += 1;
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+  if (!syllables.length) {
+    return null;
+  }
+  if (!syllables.some((s) => 'code' in s) || !syllables.some((s) => 'ref' in s)) {
+    return null;
+  }
+  if (!headLiteral && !(tokens[0] && tokens[0][0] === 'wild')) {
+    return null;
+  }
+  const slots: WildcardCodeAnchorQuery['slots'] = [];
+  for (let pos = 0; pos < syllables.length; pos++) {
+    const syl = syllables[pos]!;
+    if ('literal' in syl) {
+      slots.push({ pos, kind: 'literal_char', value: String(syl.literal) });
+    }
+    if ('code' in syl) {
+      slots.push({ pos, kind: 'code_digit', value: String(syl.code) });
+    }
+    if ('ref' in syl) {
+      slots.push({ pos, kind: 'final_anchor', value: String(syl.ref) });
+    }
+  }
+  return { width: syllables.length, slots, head_literal: headLiteral };
+}
+
+/** Port of wca.parse_wildcard_code_anchor_query */
+export function parseWildcardCodeAnchorQuery(q: string): WildcardCodeAnchorQuery | null {
+  if (!q || q.includes('@') || q.includes('=')) {
+    return null;
+  }
+  if (/^\d+\+/.test(q)) {
+    return null;
+  }
+  let m = q.match(/^\+([\u4e00-\u9fff])([?_%0-9+\u4e00-\u9fff]+)$/);
+  if (m) {
+    const tokens = wcaTokenize(m[2]!);
+    if (!tokens) {
+      return null;
+    }
+    const spec = wcaTokensToSpec(tokens, m[1]);
+    if (!spec) {
+      return null;
+    }
+    return { kind: QueryKind.WILDCARD_CODE_ANCHOR, raw_q: q, ...spec };
+  }
+  if (!'?_%'.includes(q[0]!)) {
+    return null;
+  }
+  const tokens = wcaTokenize(q);
+  if (!tokens) {
+    return null;
+  }
+  const spec = wcaTokensToSpec(tokens);
+  if (!spec) {
+    return null;
+  }
+  return { kind: QueryKind.WILDCARD_CODE_ANCHOR, raw_q: q, ...spec };
+}
+
+/** Port of query_parse.try_parse_before_mask */
+export function tryParseBeforeMask(q: string): ParsedQuery | null {
+  const doubled = parseDoubledSyllableSyntax(q);
+  if (doubled) {
+    return doubled;
+  }
+
+  const heteronym = parseHeteronymCodeQuery(q);
+  if (heteronym) {
+    return heteronym;
+  }
+
+  const relationParsed = parseRelationSyntax(q);
+  if (relationParsed) {
+    return relationParsed;
+  }
+
+  const prefixWildcard = parsePrefixWildcardEqualsQuery(q);
+  if (prefixWildcard) {
+    return prefixWildcard;
+  }
+
+  const partialRhyme = parsePartialRhymeMaskQuery(q);
+  if (partialRhyme) {
+    return partialRhyme;
+  }
+
+  const partialInitial = parsePartialInitialMaskQuery(q);
+  if (partialInitial) {
+    return partialInitial;
+  }
+
+  const serialPhoneme = parseSerialPhonemeAnchorQuery(q);
+  if (serialPhoneme) {
+    return serialPhoneme;
+  }
+
+  if (isHybridTailEqualsAlias(q)) {
+    return {
+      kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
+      raw_q: q,
+      hybrid_q: hybridQueryFromTailEquals(q),
+    } as HybridTailEqualsAliasQuery;
+  }
+
+  if (isFramedEqualsQuery(q)) {
+    return { kind: QueryKind.EQUALS, raw_q: q } as EqualsQuery;
+  }
+
+  const plusAnchor = parsePlusAnchorQuery(q);
+  if (plusAnchor) {
+    return plusAnchor;
+  }
+
+  const literalRef = parseAtTailQuery(q);
+  if (literalRef) {
+    return literalRef;
+  }
+
+  const contradictionHint = parseCodeRefRhymeContradictionHint(q);
+  if (contradictionHint) {
+    return { kind: QueryKind.UNMATCHED, raw_q: q, hint: contradictionHint };
+  }
+
+  const codeRefMiddle = parseCodeRefMiddleRhymeQuery(q);
+  if (codeRefMiddle) {
+    return codeRefMiddle;
+  }
+
+  const doubleWildRhyme = parseDoubleWildcardRhymeQuery(q);
+  if (doubleWildRhyme) {
+    return doubleWildRhyme;
+  }
+
+  const doubleWildInitial = parseDoubleWildcardInitialQuery(q);
+  if (doubleWildInitial) {
+    return doubleWildInitial;
+  }
+
+  const wca = parseWildcardCodeAnchorQuery(q);
+  if (wca) {
+    return wca;
+  }
+
+  const tripleRhyme = parseTripleRhymeAnchorQuery(q);
+  if (tripleRhyme) {
+    return tripleRhyme;
+  }
+
+  const jyutpingAnchor = parseJyutpingAnchorQuery(q);
+  if (jyutpingAnchor) {
+    return jyutpingAnchor;
+  }
+
+  const rhymeAnchor = parseRhymeAnchorQuery(q);
+  if (rhymeAnchor) {
+    return rhymeAnchor;
+  }
+
+  const hybridCode = parseHybridCodeQuery(q);
+  if (hybridCode) {
+    return hybridCode;
+  }
+
+  return null;
+}
+
 /** Port of query_parse.is_relation_syntax_query */
 function isRelationSyntaxQuery(q: string): boolean {
   const parsed = normalizeAndParse(q);
@@ -501,69 +918,9 @@ function executeCompoundQuery(
 export function parseQuery(q: string): ParsedQuery {
   const normalized = normalizeQuery(q);
 
-  const doubled = parseDoubledSyllableSyntax(normalized);
-  if (doubled) {
-    return doubled;
-  }
-
-  const relationParsed = parseRelationSyntax(normalized);
-  if (relationParsed) {
-    return relationParsed;
-  }
-
-  // Prefix wildcard equals (?困潦倒=) — before framed equals / mask
-  const prefixWildcard = parsePrefixWildcardEqualsQuery(normalized);
-  if (prefixWildcard) {
-    return prefixWildcard;
-  }
-
-  const partialRhyme = parsePartialRhymeMaskQuery(normalized);
-  if (partialRhyme) {
-    return partialRhyme;
-  }
-
-  const partialInitial = parsePartialInitialMaskQuery(normalized);
-  if (partialInitial) {
-    return partialInitial;
-  }
-
-  const serialPhoneme = parseSerialPhonemeAnchorQuery(normalized);
-  if (serialPhoneme) {
-    return serialPhoneme;
-  }
-
-  // Check for hybrid tail equals alias (e.g., 23就=)
-  if (isHybridTailEqualsAlias(normalized)) {
-    return {
-      kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
-      raw_q: normalized,
-      hybrid_q: hybridQueryFromTailEquals(normalized),
-    } as HybridTailEqualsAliasQuery;
-  }
-  
-  // Check for framed equals query (e.g., 香港=, 2=我3)
-  if (isFramedEqualsQuery(normalized)) {
-    return { kind: QueryKind.EQUALS, raw_q: normalized } as EqualsQuery;
-  }
-
-  const rhymeAnchor = parseRhymeAnchorQuery(normalized);
-  if (rhymeAnchor) {
-    return rhymeAnchor;
-  }
-
-  const plusAnchor = parsePlusAnchorQuery(normalized);
-  if (plusAnchor) {
-    return plusAnchor;
-  }
-
-  const literalRef = parseAtTailQuery(normalized);
-  if (literalRef) {
-    return literalRef;
-  }
-
-  const hybridCode = parseHybridCodeQuery(normalized);
-  if (hybridCode) {
-    return hybridCode;
+  const beforeMask = tryParseBeforeMask(normalized);
+  if (beforeMask) {
+    return beforeMask;
   }
 
   if (looksLikeMaskQuery(normalized)) {
@@ -578,16 +935,10 @@ export function parseQuery(q: string): ParsedQuery {
     return { kind: QueryKind.WORD_LOOKUP, raw_q: normalized };
   }
 
-  const jyutpingAnchor = parseJyutpingAnchorQuery(normalized);
-  if (jyutpingAnchor) {
-    return jyutpingAnchor;
-  }
-
   if (hasJyutpingChars(normalized)) {
     return { kind: QueryKind.JYUTPING_FRAGMENT, raw_q: normalized };
   }
-  
-  // Unmatched
+
   return { kind: QueryKind.UNMATCHED, raw_q: normalized, hint: '無法辨認的查詢語法' };
 }
 
@@ -617,7 +968,7 @@ function looksLikeMaskQuery(q: string): boolean {
 /** Port of HYBRID_CODE_RE — must run before looksLikeMaskQuery */
 export function parseHybridCodeQuery(q: string): HybridCodeQuery | null {
   const m = q.match(/^(\d+)([\u4e00-\u9fff]+)(\d*)$/);
-  if (!m) {
+  if (!m || m[3]) {
     return null;
   }
   return { kind: QueryKind.HYBRID_CODE, raw_q: q };
@@ -811,8 +1162,7 @@ function executeMaskQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 /** Port of plus_anchor MatchSpec — code_digit slots + literal/final/initial anchor */
@@ -871,8 +1221,7 @@ function executePlusAnchorQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 const HYBRID_CODE_MATCH_RE = /^(\d+)([\u4e00-\u9fff]+)(\d*)$/;
@@ -1027,10 +1376,8 @@ function executeHybridCodeQuery(
   stmt.free();
 
   const matched = filterHybridRefCandidates(candidates, spec, searchMode, db);
-  matched.sort((a, b) =>
-    String(a.char ?? '').localeCompare(String(b.char ?? ''), 'zh-Hant'),
-  );
-  return { items: matched.slice(offset, offset + limit).map((r) => rowToResult(r)) };
+  const sorted = sortWordRows(matched);
+  return { items: sorted.slice(offset, offset + limit).map((r) => rowToResult(r)) };
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/parser-self-check.ts` */
@@ -1041,12 +1388,21 @@ export function parserLogicSelfCheck(): void {
     ['?yut?', QueryKind.JYUTPING_ANCHOR],
     ['3m4', QueryKind.JYUTPING_ANCHOR],
     ['就=', QueryKind.RHYME_ANCHOR],
+    ['?+就=', QueryKind.RHYME_ANCHOR],
+    ['?+人=?', QueryKind.TRIPLE_RHYME_ANCHOR],
+    ['?30人', QueryKind.WILDCARD_CODE_ANCHOR],
+    ['12/12', QueryKind.HETERONYM_CODE],
+    ['33~與~你', QueryKind.COMPOUND_SYN],
   ];
   for (const [q, kind] of cases) {
     const parsed = normalizeAndParse(q);
     if (parsed.kind !== kind) {
       throw new Error(`parserLogicSelfCheck: ${q} → ${parsed.kind}, want ${kind}`);
     }
+  }
+  const codeRef = parseCodeRefMiddleRhymeQuery('?3人=?');
+  if (!codeRef || codeRef.anchor !== '人' || codeRef.width !== 3) {
+    throw new Error('parserLogicSelfCheck: code_ref_middle parse');
   }
 }
 
@@ -1119,8 +1475,7 @@ function executeLiteralRefQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 const WILDCARD_CHARS = new Set(['_', '?', '%']);
@@ -1410,7 +1765,10 @@ export function parseJyutpingAnchorQuery(q: string): JyutpingAnchorQuery | null 
 
 /** Port of query_grammar/rhyme.parse_rhyme_anchor_query (P1 subset) */
 export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
-  if (!q || q.includes(CODE_TAIL_MIDDLE) || q.includes('@') || isFramedEqualsQuery(q)) {
+  if (!q || q.includes(CODE_TAIL_MIDDLE) || q.includes('+') || q.includes('@') || isFramedEqualsQuery(q)) {
+    return null;
+  }
+  if (parseDoubleWildcardRhymeQuery(q) || parseDoubleWildcardInitialQuery(q)) {
     return null;
   }
 
@@ -1687,8 +2045,7 @@ function executePartialRhymeMaskQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 function wordPassesPartialInitialMask(
@@ -1756,8 +2113,7 @@ function executePartialInitialMaskQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 function executeSerialPhonemeQuery(
@@ -1809,8 +2165,7 @@ function executeSerialPhonemeQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 /** ponytail: JYUTPING_ANCHOR execution — upgrade: jyutping_anchor.py matchers */
@@ -1883,8 +2238,7 @@ function executeRhymeAnchorQuery(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 // ============================================================================
@@ -2265,6 +2619,9 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
         return executeRelationLookup(parsed as RelationLookupQuery, db, mode, limit, offset);
       }
       break;
+
+    case RouteKind.HETERONYM:
+      return { items: [] };
     
     case RouteKind.UNMATCHED:
       if (parsed.kind === QueryKind.UNMATCHED) {
@@ -2705,8 +3062,7 @@ function executePrefixWildcardEquals(
   }
   stmt.free();
 
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 function wordMatchesWidth(row: WordRow, width: number): boolean {
@@ -2774,8 +3130,7 @@ function executeCodeAnchoredEquals(
       matched.push(rowToResult(word));
     }
   }
-  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
-  return { items: matched.slice(offset, offset + limit) };
+  return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
 /**

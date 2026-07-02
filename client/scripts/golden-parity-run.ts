@@ -6,8 +6,15 @@
  */
 
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { loadRankingData } from '../src/db/ranking-loader.node.ts';
 
 type ParityCase = { id: number; query: string; mode: string };
+
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+loadRankingData(repoRoot);
 
 const dbPath = process.argv[2];
 const casesPath = process.argv[3];
