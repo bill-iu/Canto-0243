@@ -17,7 +17,7 @@
 ## 最新版本
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**193,294**（`lyrics.db` · `words` 表）
+目前總詞條列數：**125,244**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
 官方離線資料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -96,7 +96,7 @@ python main.py
 
 亦可使用 `./start.sh`（建 venv 並開瀏覽器；仍須自备 `lyrics.db`）。
 
-**隨 repo 已有**（第 1 層，見「資料來源」）：essay 詞頻、curated 常用詞、反義／近義複合列表，以及 bundled 近反義 static 檔。**單字 rime `char.csv` 與 antisem 不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層）。
+**隨 repo 已有**（第 1 層，見「資料來源」）：essay 詞頻、curated 常用詞、反義／近義複合列表，以及 bundled 詞林 cilin。**單字 rime `char.csv` 與 guotong 詞典（`dict_synonym`／`dict_antonym`）不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層）。
 
 ---
 
@@ -107,13 +107,14 @@ python main.py
 ```bash
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
-# 全量重建詞條庫（per-source manifest；見 data/lexicon/sources.yaml）：
+# 全量重建詞條庫（lexicon + build-word-relations + bridge／manual；見 data/lexicon/sources.yaml）：
 python -m ingest build-db
-# 近反義 ingest：
+# 只重建靜態近反義關係（cilin + guotong + compound_ant）：
+python -m ingest build-word-relations
 python -m ingest report
-python -m ingest normalize --source current_static
-python -m ingest build-relations
 ```
+
+`word_relations` 以較小 `word_id` 在前儲存無向邊；唯一鍵 `(word_id, related_id, relation_type)`。`build-word-relations` 於記憶體組裝後按 2000 列一批 bulk insert（衝突自動丟棄）。
 
 可選近反義來源（預設關閉）見 `data/syn_ant/sources.yaml`。
 
@@ -418,10 +419,10 @@ Canto-0243/
 | 層級 | 說明 | 例子 |
 |------|------|------|
 | **1 · 隨 repo** | clone 即有 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
-| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、guotong 詞典（近義／反義） |
 | **3 · maintainer 自建** | gitignore；整包授權見 [LICENSE](LICENSE) | `lyrics.db`、詞級標音 JSON |
 
-近義／反義預設管線：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。詳表見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+近義／反義靜態來源：`data/syn_ant/sources.yaml`（**cilin**、**guotong** `dict_antonym`、**compound_ant** 列表）。`python -m ingest build-db` 熱路徑跑 **`build-word-relations`**（唔再經 staging／逐批查重）。詳表見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ---
 
@@ -476,8 +477,7 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 * **Rime 粵語（單字讀音 `char.csv`、essay 詞頻）**：來自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 與 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。去畀佢哋一個 star！
 * **詞林同義詞（Cilin）**：經 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 匯出，採用 **MIT** 授權。
-* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)，採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
-* **ChineseAntiword（antisem）**：來自 [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword)；上游**無明示授權**，本地使用須署名，再分發前請自行核對條款。
+* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；專案**反義詞主來源**。
 * **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有領域**（致謝 [words.hk](https://words.hk/)）。
 * **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[words.hk 粵典詞表](https://words.hk/faiman/analysis/wordslist/)（公有領域）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 單字讀音與 maintainer curated（見 `data/lexicon/sources.yaml`）。
 
@@ -501,4 +501,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-07-01（詞條庫整包 Canto-0243 License；脫離 CC-Canto）
+**最後更新**：2026-07-02（guotong 反義、build-word-relations 重構）

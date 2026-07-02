@@ -17,7 +17,7 @@
 ## 最新版本
 
 <!-- words-count:zh-Hans -->
-目前总词条列数：**193,294**（`lyrics.db` · `words` 表）
+目前总词条列数：**125,244**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
 官方离线资料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 过渡期暂不提供）。问题与建议欢迎提交 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -95,7 +95,7 @@ python main.py
 
 亦可使用 `./start.sh`（创建 venv 并打开浏览器；仍需自备 `lyrics.db`）。
 
-**随仓库提供**（第 1 层，见「资料来源」）：essay 词频、curated 常用词、反义／近义复合列表，以及 bundled 近反义 静态文件。**单字 rime `char.csv` 与 antisem 不在 git 中**——clone 后请先执行 `python scripts/bootstrap_data.py`（第 2 层）。
+**随仓库提供**（第 1 层，见「资料来源」）：essay 词频、curated 常用词、反义／近义复合列表，以及 bundled 词林 cilin。**单字 rime `char.csv` 与 guotong 词典（`dict_synonym`／`dict_antonym`）不在 git 中**——clone 后请先执行 `python scripts/bootstrap_data.py`（第 2 层）。
 
 ---
 
@@ -106,11 +106,14 @@ python main.py
 ```bash
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
+# 全量重建词条库（lexicon + build-word-relations + bridge／manual；见 data/lexicon/sources.yaml）：
 python -m ingest build-db
+# 只重建静态近反义关系（cilin + guotong + compound_ant）：
+python -m ingest build-word-relations
 python -m ingest report
-python -m ingest normalize --source current_static
-python -m ingest build-relations
 ```
+
+`word_relations` 以较小 `word_id` 在前存储无向边；唯一键 `(word_id, related_id, relation_type)`。`build-word-relations` 在内存组装后按 2000 列一批 bulk insert（冲突自动丢弃）。
 
 可选近反义来源（默认关闭）见 `data/syn_ant/sources.yaml`。
 
@@ -399,10 +402,10 @@ Canto-0243/
 | 层级 | 说明 | 例子 |
 |------|------|------|
 | **1 · 随仓库** | clone 即可得 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
-| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、guotong 词典（近义／反义） |
 | **3 · maintainer 自建** | gitignore；整包授权见 [LICENSE](../LICENSE) | `lyrics.db`、词级标音 JSON |
 
-近义／反义默认管线：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。详表见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
+近义／反义静态来源：`data/syn_ant/sources.yaml`（**cilin**、**guotong** `dict_antonym`、**compound_ant** 列表）。`python -m ingest build-db` 热路径运行 **`build-word-relations`**（不再经 staging／逐批查重）。详表见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。
 
 ---
 
@@ -457,8 +460,7 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 * **Rime 粤语（单字读音 `char.csv`、essay 词频）**：来自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 与 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。欢迎为上述项目点 star。
 * **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 汇出，采用 **MIT** 授权。
-* **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)，采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
-* **ChineseAntiword（antisem）**：来自 [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword)；上游**未明示授权**，本地使用须署名，再分发前请自行核对条款。
+* **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；本项目**反义词主来源**。
 * **words.hk 粤典词表**：来自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有领域**（致谢 [words.hk](https://words.hk/)）。
 * **多字词级标音上游**（maintainer 自建 `lyrics.db` 时）：[words.hk 粤典词表](https://words.hk/faiman/analysis/wordslist/)（公有领域）、[开放词典 · 粤语词典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 单字读音与 maintainer curated（见 `data/lexicon/sources.yaml`）。
 
@@ -482,4 +484,4 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 ---
 
-**最后更新**：2026-07-01（词条库整包 Canto-0243 License；脱离 CC-Canto）
+**最后更新**：2026-07-02（guotong 反义、build-word-relations 重构）
