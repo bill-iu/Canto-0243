@@ -11,7 +11,6 @@ sources:
     enabled_by_default: true
     paths:
       cilin: data/cilin/new_cilin.txt
-      antisem: data/antonym/antisem.txt
       thesaurus_syn: data/thesaurus/dict_synonym.txt
       thesaurus_ant: data/thesaurus/dict_antonym.txt
     source_rank: 70
@@ -64,4 +63,4 @@ sources:
     local_only: true
     raw_path: data/syn_ant/raw/antisem/antisem.txt
     source_rank: 55
-    attribution: Extended antisem dictionary (local only)
+    attribution: Deprecated ChineseAntiword copy (local only; prefer guotong dict_antonym)

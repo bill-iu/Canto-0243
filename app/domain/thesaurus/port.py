@@ -36,18 +36,16 @@ class StaticThesaurusPort:
         self,
         *,
         cilin_path: str | None = None,
-        antisem_path: str | None = None,
         thesaurus_syn_path: str | None = None,
         thesaurus_ant_path: str | None = None,
         auto_load: bool = True,
     ) -> None:
         self._cilin_path = cilin_path
-        self._antisem_path = antisem_path
         self._thesaurus_syn_path = thesaurus_syn_path
         self._thesaurus_ant_path = thesaurus_ant_path
         self._loaded = False
         self._use_defaults = not any(
-            [cilin_path, antisem_path, thesaurus_syn_path, thesaurus_ant_path]
+            [cilin_path, thesaurus_syn_path, thesaurus_ant_path]
         )
         if auto_load:
             self.ensure_loaded()
@@ -61,7 +59,6 @@ class StaticThesaurusPort:
             ensure_thesaurus_loaded()
         else:
             from app.thesaurus.static_index import (
-                load_antonym_dict,
                 load_cilin_index,
                 load_thesaurus_dicts,
                 mark_thesaurus_loaded,
@@ -69,8 +66,6 @@ class StaticThesaurusPort:
 
             if self._cilin_path:
                 load_cilin_index(self._cilin_path)
-            if self._antisem_path:
-                load_antonym_dict(self._antisem_path)
             if self._thesaurus_syn_path or self._thesaurus_ant_path:
                 load_thesaurus_dicts(
                     self._thesaurus_syn_path or "data/thesaurus/dict_synonym.txt",

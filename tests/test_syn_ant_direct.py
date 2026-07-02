@@ -58,7 +58,7 @@ class IngestFlatCharEdgesTests(unittest.TestCase):
                 "head": "大",
                 "tail": "細",
                 "relation_type": "ant",
-                "source": "antisem",
+                "source": "guotong",
                 "confidence": 0.85,
             }
             stats = ingest_flat_char_edges(db, [edge, edge], char_to_id={"大": 1, "細": 2})
@@ -131,7 +131,7 @@ class IngestStaticRelationsTests(unittest.TestCase):
                     "head": "大",
                     "tail": "細",
                     "relation_type": "ant",
-                    "source": "antisem",
+                    "source": "guotong",
                     "confidence": 0.85,
                 }],
             )

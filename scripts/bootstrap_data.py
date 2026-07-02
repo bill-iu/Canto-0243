@@ -56,7 +56,6 @@ def main(argv: list[str] | None = None) -> int:
 
     steps: list[tuple[str, list[str]]] = [
         ("rime char.csv (CC BY 4.0)", [PYTHON, "scripts/fetch/fetch_rime_data.py"]),
-        ("antisem antonyms (ChineseAntiword)", [PYTHON, "scripts/fetch/fetch_antisem_data.py"]),
         ("guotong thesaurus (Anti-996)", [PYTHON, "scripts/fetch/fetch_guotong_thesaurus.py"]),
         ("words.hk wordslist manifest", [PYTHON, "scripts/fetch/fetch_words_hk_wordslist.py"]),
     ]

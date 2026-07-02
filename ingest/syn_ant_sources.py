@@ -154,7 +154,6 @@ def parse_current_static(src: Dict[str, Any]) -> List[dict]:
     rank = int(src.get("source_rank") or 70)
     port = StaticThesaurusPort(
         cilin_path=str(ROOT / paths["cilin"]) if paths.get("cilin") else None,
-        antisem_path=str(ROOT / paths["antisem"]) if paths.get("antisem") else None,
         thesaurus_syn_path=str(ROOT / paths["thesaurus_syn"]) if paths.get("thesaurus_syn") else None,
         thesaurus_ant_path=str(ROOT / paths["thesaurus_ant"]) if paths.get("thesaurus_ant") else None,
         auto_load=True,
@@ -167,7 +166,7 @@ def parse_current_static(src: Dict[str, Any]) -> List[dict]:
         for s in port.get_guotong_synonyms(w):
             edges.append(_edge(w, s, "syn", "guotong", source_rank=rank, confidence=0.8))
         for a in port.get_antonyms(w):
-            edges.append(_edge(w, a, "ant", "antisem", source_rank=rank, confidence=0.85))
+            edges.append(_edge(w, a, "ant", "guotong", source_rank=rank, confidence=0.85))
     return edges
 
 

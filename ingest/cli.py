@@ -19,6 +19,7 @@ from ingest.syn_ant_build import (
     ingest_cilin_leaf_direct,
 )
 from ingest.syn_ant_direct import ingest_static_relations
+from ingest.word_relations_build import build_word_relations
 from ingest.syn_ant_expand import (
     expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_embedding_syn_bridge,
@@ -34,6 +35,13 @@ from ingest.lexicon_corrections import (
     save_corrections,
 )
 from ingest.compound_antonyms import ingest_compound_ant_char_pairs, load_compound_antonyms
+from ingest.derived_ant_snapshot import (
+    DEFAULT_CILIN_SNAPSHOT,
+    DEFAULT_MIRROR_SNAPSHOT,
+    bake_derived_ant_snapshots,
+    ingest_cilin_derived_ant_snapshot,
+    ingest_mirror_derived_ant_snapshot,
+)
 
 
 def cmd_report(_: argparse.Namespace) -> int:
@@ -53,6 +61,19 @@ def cmd_report(_: argparse.Namespace) -> int:
         )
         print(f"\nword_relations rows: {rel_count} (syn: {syn_count})")
         print(f"ant_syn_bridge ant rows: {bridge_ant}")
+    return 0
+
+
+def cmd_build_word_relations(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    with SessionLocal() as db:
+        stats = build_word_relations(
+            db,
+            manifest_path=args.manifest,
+            compound_path=args.compound_path,
+            replace_static=not args.append,
+        )
+        print("build-word-relations stats:", stats)
     return 0
 
 
@@ -309,6 +330,37 @@ def cmd_ingest_compound_ant(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ingest_derived_ant_snapshots(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    cilin_path = Path(args.cilin_path) if args.cilin_path else DEFAULT_CILIN_SNAPSHOT
+    mirror_path = Path(args.mirror_path) if args.mirror_path else DEFAULT_MIRROR_SNAPSHOT
+    with SessionLocal() as db:
+        cilin_stats = ingest_cilin_derived_ant_snapshot(db, cilin_path)
+        mirror_stats = ingest_mirror_derived_ant_snapshot(db, mirror_path)
+        print("ingest-derived-ant-snapshots:", {"cilin": cilin_stats, "mirror": mirror_stats})
+    return 0
+
+
+def cmd_bake_derived_ant_snapshots(args: argparse.Namespace) -> int:
+    ensure_word_relations_table()
+    cilin_out = Path(args.cilin_out or DEFAULT_CILIN_SNAPSHOT)
+    mirror_out = Path(args.mirror_out or DEFAULT_MIRROR_SNAPSHOT)
+    with SessionLocal() as db:
+        stats = bake_derived_ant_snapshots(
+            db,
+            cilin_path=cilin_out,
+            mirror_path=mirror_out,
+            export_only=args.export_only,
+            cilin_syn_source=args.cilin_syn_source,
+            cilin_confidence=args.cilin_confidence,
+            mirror_confidence=args.mirror_confidence,
+            include_static=not args.no_static,
+            batch_size=args.batch_size,
+        )
+    print(f"bake-derived-ant-snapshots: {stats}")
+    return 0
+
+
 def cmd_build_db(args: argparse.Namespace) -> int:
     try:
         with ingest_lock("build-db"):
@@ -356,37 +408,8 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
         return _build_db_exports(args)
 
     steps = [
-        ("ingest-static-relations", lambda: cmd_ingest_static_relations(
-            argparse.Namespace(manifest=None, chunk_size=300)
-        )),
-        ("expand-antonyms-cilin", lambda: cmd_expand_antonyms_cilin(
-            argparse.Namespace(
-                source=None,
-                cilin_syn_source="cilin",
-                confidence=0.75,
-                dedupe_existing=True,
-                batch_size=300,
-                replace_relations=True,
-            )
-        )),
-        ("expand-antonyms-mirror", lambda: cmd_expand_antonyms_mirror(
-            argparse.Namespace(
-                source=None,
-                no_static=False,
-                confidence=0.72,
-                dedupe_existing=True,
-                batch_size=300,
-                replace_relations=True,
-            )
-        )),
-        ("ingest-compound-ant", lambda: cmd_ingest_compound_ant(
-            argparse.Namespace(
-                list_path=None,
-                source=None,
-                confidence=0.9,
-                dedupe_existing=True,
-                replace_relations=True,
-            )
+        ("build-word-relations", lambda: cmd_build_word_relations(
+            argparse.Namespace(manifest=None, compound_path=None, append=False)
         )),
     ]
     for label, fn in steps:
@@ -465,9 +488,24 @@ def main(argv: list[str] | None = None) -> int:
 
     p_static = sub.add_parser(
         "ingest-static-relations",
-        help="Direct-write bundled static syn/ant into word_relations",
+        help="Alias for build-word-relations (static cilin/guotong/compound)",
     )
-    p_static.add_argument("--chunk-size", type=int, default=300, help="Cilin leaf chunk size")
+    p_static.add_argument("--chunk-size", type=int, default=300, help="Ignored (compat)")
+
+    p_build_rel = sub.add_parser(
+        "build-word-relations",
+        help="Precompute static syn/ant into word_relations (canonical ids + bulk insert)",
+    )
+    p_build_rel.add_argument("--manifest", help="Override data/syn_ant/sources.yaml")
+    p_build_rel.add_argument(
+        "--compound-path",
+        help="Override compound antonyms list (default: data/syn_ant/compound_antonyms.txt)",
+    )
+    p_build_rel.add_argument(
+        "--append",
+        action="store_true",
+        help="Do not clear static sources before insert (default: replace cilin/guotong/compound_ant)",
+    )
 
     p_cilin = sub.add_parser("ingest-cilin", help="Ingest Cilin leaf synonym groups (direct)")
     p_cilin.add_argument("--chunk-size", type=int, default=300, help="Leaf groups per chunk (default 300)")
@@ -514,6 +552,34 @@ def main(argv: list[str] | None = None) -> int:
         help="Keep existing mirror ant rows (default: clear source first)",
     )
     p_mirror.set_defaults(replace_relations=True)
+
+    p_derived = sub.add_parser(
+        "ingest-derived-ant-snapshots",
+        help="Inject baked cilin-derived and mirror ant snapshots into word_relations",
+    )
+    p_derived.add_argument("--cilin-path", help=f"Override cilin snapshot (default: {DEFAULT_CILIN_SNAPSHOT.name})")
+    p_derived.add_argument("--mirror-path", help=f"Override mirror snapshot (default: {DEFAULT_MIRROR_SNAPSHOT.name})")
+
+    p_bake_derived = sub.add_parser(
+        "bake-derived-ant-snapshots",
+        help="Bake cilin-derived + mirror ant snapshots (live expand or export-only)",
+    )
+    p_bake_derived.add_argument(
+        "--cilin-out",
+        default=str(DEFAULT_CILIN_SNAPSHOT),
+        help="Cilin-derived ant snapshot TSV output",
+    )
+    p_bake_derived.add_argument(
+        "--mirror-out",
+        default=str(DEFAULT_MIRROR_SNAPSHOT),
+        help="Mirror ant snapshot TSV output",
+    )
+    p_bake_derived.add_argument("--export-only", action="store_true", help="Only export existing DB rows to TSV")
+    p_bake_derived.add_argument("--cilin-syn-source", default="cilin", help="Cilin synonym source for live expand")
+    p_bake_derived.add_argument("--cilin-confidence", type=float, default=0.75, help="Score for cilin-derived ant")
+    p_bake_derived.add_argument("--mirror-confidence", type=float, default=0.72, help="Score for mirror ant")
+    p_bake_derived.add_argument("--batch-size", type=int, default=300, help="Insert batch size for live expand")
+    p_bake_derived.add_argument("--no-static", dest="no_static", action="store_true", help="Mirror expand: DB syn only")
 
     p_bridge = sub.add_parser(
         "expand-antonyms-syn-bridge",
@@ -676,6 +742,8 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
+    if args.command == "build-word-relations":
+        return cmd_build_word_relations(args)
     if args.command == "ingest-static-relations":
         return cmd_ingest_static_relations(args)
     if args.command == "ingest-cilin":
@@ -684,6 +752,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_expand_antonyms_cilin(args)
     if args.command == "expand-antonyms-mirror":
         return cmd_expand_antonyms_mirror(args)
+    if args.command == "ingest-derived-ant-snapshots":
+        return cmd_ingest_derived_ant_snapshots(args)
+    if args.command == "bake-derived-ant-snapshots":
+        return cmd_bake_derived_ant_snapshots(args)
     if args.command == "expand-antonyms-syn-bridge":
         return cmd_expand_antonyms_syn_bridge(args)
     if args.command == "bake-syn-bridge":

@@ -334,6 +334,7 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
 
     DIRECT_PATH = REPO_ROOT / "ingest" / "syn_ant_direct.py"
     BUILD_PATH = REPO_ROOT / "ingest" / "syn_ant_build.py"
+    WORD_REL_BUILD_PATH = REPO_ROOT / "ingest" / "word_relations_build.py"
     EXPAND_PATH = REPO_ROOT / "ingest" / "syn_ant_expand.py"
     MERGE_PATH = REPO_ROOT / "ingest" / "syn_ant_merge.py"
     STAGING_PATH = REPO_ROOT / "ingest" / "syn_ant_staging.py"
@@ -350,6 +351,12 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
         self.assertIn("def ingest_flat_char_edges", source)
         self.assertNotIn("def persist_staging_edges", source)
         self.assertNotIn("expand_antonyms_via_", source)
+
+    def test_word_relations_build_module_boundary(self):
+        source = self.WORD_REL_BUILD_PATH.read_text(encoding="utf-8")
+        self.assertIn("def build_word_relations", source)
+        self.assertIn("bulk_insert_word_relations", source)
+        self.assertNotIn("fetch_existing_relation_keys", source)
 
     def test_build_module_boundary(self):
         source = self.BUILD_PATH.read_text(encoding="utf-8")

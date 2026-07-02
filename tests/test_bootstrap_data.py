@@ -27,7 +27,6 @@ class BootstrapDataTests(unittest.TestCase):
         self.assertEqual(rc, 0)
         out = buf.getvalue()
         self.assertIn("fetch_rime_data.py", out)
-        self.assertIn("fetch_antisem_data.py", out)
         self.assertIn("fetch_guotong_thesaurus.py", out)
         self.assertIn("fetch_words_hk_wordslist.py", out)
         self.assertIn("fetch_cilin_data.py", out)

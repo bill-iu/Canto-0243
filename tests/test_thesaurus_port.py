@@ -20,16 +20,13 @@ class StaticThesaurusPortTests(unittest.TestCase):
         tmp = tempfile.mkdtemp()
         root = Path(tmp)
         cilin = root / "cilin.txt"
-        antisem = root / "antisem.txt"
         syn = root / "syn.txt"
         ant = root / "ant.txt"
         cilin.write_text("Aa01A01= 開心 快樂 高興\n", encoding="utf-8")
-        antisem.write_text("開心:難過;悲傷\n", encoding="utf-8")
         syn.write_text("Bb01= 愉快 欣喜\n", encoding="utf-8")
-        ant.write_text("前——後\n", encoding="utf-8")
+        ant.write_text("開心 難過 悲傷\n前——後\n", encoding="utf-8")
         return StaticThesaurusPort(
             cilin_path=str(cilin),
-            antisem_path=str(antisem),
             thesaurus_syn_path=str(syn),
             thesaurus_ant_path=str(ant),
         )
@@ -54,7 +51,7 @@ class StaticThesaurusPortTests(unittest.TestCase):
         self.assertIn("前", heads)
 
     def test_custom_load_survives_static_get_synonyms(self):
-        """Custom antisem must not be wiped when static_index.get_synonyms runs."""
+        """Custom guotong ant must not be wiped when static_index.get_synonyms runs."""
         import tempfile
         from pathlib import Path
 
@@ -62,9 +59,9 @@ class StaticThesaurusPortTests(unittest.TestCase):
 
         si.reset_static_indexes_for_tests()
         with tempfile.TemporaryDirectory() as tmp:
-            antisem = Path(tmp) / "antisem.txt"
-            antisem.write_text("開心:難過;悲傷\n", encoding="utf-8")
-            port = StaticThesaurusPort(antisem_path=str(antisem), auto_load=True)
+            ant = Path(tmp) / "ant.txt"
+            ant.write_text("開心 難過 悲傷\n", encoding="utf-8")
+            port = StaticThesaurusPort(thesaurus_ant_path=str(ant), auto_load=True)
             self.assertIn("開心", port.get_antonyms("悲傷"))
             si.get_synonyms("快樂")
             self.assertIn("開心", port.get_antonyms("悲傷"))

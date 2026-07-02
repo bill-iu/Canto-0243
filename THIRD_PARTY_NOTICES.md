@@ -20,8 +20,7 @@ Produced by `python scripts/bootstrap_data.py` (not committed by default).
 | Dataset | Path (after fetch) | Upstream | License / terms |
 |---------|-------------------|----------|-----------------|
 | Cilin synonym groups | `data/cilin/new_cilin.txt` | [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity) (via [liao961120/cilin](https://github.com/liao961120/cilin) API) | **MIT** |
-| Guotong thesaurus | `data/thesaurus/dict_*.txt` | [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) | [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE) |
-| ChineseAntiword antisem | `data/antonym/antisem.txt` | [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword) | **No explicit license** — fetch for local use; attribution required; verify before redistribution |
+| Guotong thesaurus | `data/thesaurus/dict_*.txt` | [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) | [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE) — includes near-synonym and antonym pairs (`dict_antonym.txt`) |
 | words.hk wordlist | `data/lexicon/raw/words_hk/` (manifest) | [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/) | **Public domain** (credit [words.hk](https://words.hk/) appreciated) |
 
 ```bash
