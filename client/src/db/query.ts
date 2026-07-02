@@ -68,7 +68,7 @@ function mapLegacyMode(mode?: string): QueryMode {
     case 'synonym':
       return 'syn';
     default:
-      return '0243';
+      return 'm1';
   }
 }
 
@@ -88,7 +88,7 @@ export async function search(options: QueryOptions): Promise<QueryResult[]> {
   );
   
   // Convert engine results to legacy format
-  return results.map((r: EngineQueryResult) => ({
+  return results.map((r) => ({
     word: r.word,
     jyutping: r.jyutping,
     code: r.code,
@@ -122,6 +122,23 @@ export async function executeSQL(sql: string, params: any[] = []): Promise<any[]
   } catch (error) {
     console.error('SQL execution error:', error);
     return [];
+  }
+}
+
+/** Golden parity probe query — must succeed for offline readiness (see ADR-0024 D-G2). */
+export const OFFLINE_READINESS_PROBE_QUERY = '事業';
+
+/**
+ * Validate DB can run a minimal real query (not COUNT-only).
+ */
+export async function validateOfflineReadiness(): Promise<void> {
+  const results = await search({
+    query: OFFLINE_READINESS_PROBE_QUERY,
+    mode: '0243',
+    limit: 1,
+  });
+  if (!results.length || !results[0]?.word) {
+    throw new Error('離線就緒驗證失敗：基本查詢無結果');
   }
 }
 

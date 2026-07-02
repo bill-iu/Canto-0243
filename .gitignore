@@ -13,6 +13,7 @@ __pycache__/
 dist/
 build/
 .build-python/
+client/.tmp/
 *.egg-info/
 
 # Node / frontend

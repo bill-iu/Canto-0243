@@ -6,8 +6,9 @@
  * to enable full client-side search functionality in the browser.
  */
 
-import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
-import { Database } from 'sql.js';
+import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
+import type { Database } from './sqljs.ts';
+import { getCodeVariants } from './code-variants.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -151,6 +152,16 @@ export interface SearchResult {
   hint?: string;
   cache_path?: string;
   effective_mode?: QueryMode;
+}
+
+/** Map lyrics.db row (`char`) to UI-facing QueryResult (`word`). */
+function rowToResult(row: Record<string, unknown>): QueryResult {
+  return {
+    word: String(row.char ?? ''),
+    jyutping: String(row.jyutping ?? ''),
+    code: String(row.code ?? ''),
+    score: 0,
+  };
 }
 
 // ============================================================================
@@ -563,20 +574,15 @@ export async function executeSearch(ctx: SearchContext): Promise<SearchResult> {
  * Execute list filter (when query is empty)
  */
 function executeListFilter(db: Database, ctx: SearchContext): SearchResult {
-  // Simple implementation: get all words
-  // This should be enhanced with proper filtering
-  const sql = `SELECT word, jyutping, code FROM words ORDER BY word LIMIT ? OFFSET ?`;
+  const { limit, offset } = ctx;
+  const sql = `SELECT char, jyutping, code FROM words ORDER BY char LIMIT ? OFFSET ?`;
   const stmt = db.prepare(sql);
   const results: QueryResult[] = [];
   
+  stmt.bind([limit, offset]);
+  
   while (stmt.step()) {
-    const row = stmt.getAsObject();
-    results.push({
-      word: row.word,
-      jyutping: row.jyutping,
-      code: row.code,
-      score: 0,
-    });
+    results.push(rowToResult(stmt.getAsObject()));
   }
   stmt.free();
   
@@ -638,8 +644,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
   return { items: [] };
 }
 
+function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' {
+  if (mode === 'm2' || mode === '02493') {
+    return 'm2';
+  }
+  return 'm1';
+}
+
 /**
- * Execute digit code query
+ * Execute digit code query (pure digits only — P0 scope A)
  */
 function executeDigitCodeQuery(
   parsed: DigitCodeQuery,
@@ -648,38 +661,34 @@ function executeDigitCodeQuery(
   limit: number,
   offset: number
 ): SearchResult {
-  // Normalize mode: m1 = 0243 (loose), m2 = 02493 (strict)
-  const normalizedMode = mode === 'm1' ? '0243' : mode === 'm2' ? '02493' : mode;
-  
-  // Simple implementation: match code exactly or with wildcards
-  // In the full implementation, this would use proper 0243/02493 normalization
+  const q = parsed.raw_q;
+  const searchMode = normalizeSearchMode(mode);
+  const variants = getCodeVariants(q, searchMode);
+  const placeholders = variants.map(() => '?').join(', ');
+  const len = q.length;
+
   const sql = `
-    SELECT word, jyutping, code 
-    FROM words 
-    WHERE code GLOB ?
-    ORDER BY word 
+    SELECT char, jyutping, code
+    FROM words
+    WHERE code IN (${placeholders})
+      AND (
+        length = ?
+        OR ((length IS NULL OR length = 0) AND length(char) = ?)
+      )
+    ORDER BY char
     LIMIT ? OFFSET ?
   `;
-  
+
   const stmt = db.prepare(sql);
   const results: QueryResult[] = [];
-  
-  // For now, use simple GLOB matching
-  // Full implementation would handle 0243 vs 02493 mode differences
-  const pattern = parsed.raw_q.replace(/\*/g, '%').replace(/\?/g, '_');
-  stmt.bind([pattern, limit, offset]);
-  
+
+  stmt.bind([...variants, len, len, limit, offset]);
+
   while (stmt.step()) {
-    const row = stmt.getAsObject();
-    results.push({
-      word: row.word,
-      jyutping: row.jyutping,
-      code: row.code,
-      score: 0,
-    });
+    results.push(rowToResult(stmt.getAsObject()));
   }
   stmt.free();
-  
+
   return { items: results };
 }
 
@@ -694,26 +703,20 @@ function executeWordLookup(
   offset: number
 ): SearchResult {
   const sql = `
-    SELECT word, jyutping, code 
+    SELECT char, jyutping, code 
     FROM words 
-    WHERE word LIKE ?
-    ORDER BY word 
+    WHERE char = ?
+    ORDER BY char 
     LIMIT ? OFFSET ?
   `;
   
   const stmt = db.prepare(sql);
   const results: QueryResult[] = [];
   
-  stmt.bind([`%${parsed.raw_q}%`, limit, offset]);
+  stmt.bind([parsed.raw_q, limit, offset]);
   
   while (stmt.step()) {
-    const row = stmt.getAsObject();
-    results.push({
-      word: row.word,
-      jyutping: row.jyutping,
-      code: row.code,
-      score: 0,
-    });
+    results.push(rowToResult(stmt.getAsObject()));
   }
   stmt.free();
   
@@ -730,10 +733,10 @@ function executeJyutpingFragment(
   offset: number
 ): SearchResult {
   const sql = `
-    SELECT word, jyutping, code 
+    SELECT char, jyutping, code 
     FROM words 
     WHERE jyutping LIKE ?
-    ORDER BY word 
+    ORDER BY char 
     LIMIT ? OFFSET ?
   `;
   
@@ -743,13 +746,7 @@ function executeJyutpingFragment(
   stmt.bind([`%${parsed.raw_q}%`, limit, offset]);
   
   while (stmt.step()) {
-    const row = stmt.getAsObject();
-    results.push({
-      word: row.word,
-      jyutping: row.jyutping,
-      code: row.code,
-      score: 0,
-    });
+    results.push(rowToResult(stmt.getAsObject()));
   }
   stmt.free();
   
@@ -785,10 +782,10 @@ async function executeEqualsQuery(
   if (whole_word && code_prefix) {
     // Find words with same code as the reference word
     const sql = `
-      SELECT w.word, w.jyutping, w.code
+      SELECT w.char, w.jyutping, w.code
       FROM words w
       WHERE w.char = ? AND w.code = ?
-      ORDER BY w.word
+      ORDER BY w.char
       LIMIT ? OFFSET ?
     `;
     const stmt = db.prepare(sql);
@@ -796,13 +793,7 @@ async function executeEqualsQuery(
     
     const results: QueryResult[] = [];
     while (stmt.step()) {
-      const row = stmt.getAsObject();
-      results.push({
-        word: row.word,
-        jyutping: row.jyutping,
-        code: row.code,
-        score: 0,
-      });
+      results.push(rowToResult(stmt.getAsObject()));
     }
     stmt.free();
     
@@ -835,10 +826,10 @@ async function executeEqualsQuery(
         // For now, do a simple code match for the specified width
         const pattern = code_prefix + '%';
         const sql = `
-          SELECT word, jyutping, code
+          SELECT char, jyutping, code
           FROM words
           WHERE code LIKE ? AND LENGTH(char) = ?
-          ORDER BY word
+          ORDER BY char
           LIMIT ? OFFSET ?
         `;
         const stmt = db.prepare(sql);
@@ -846,13 +837,7 @@ async function executeEqualsQuery(
         
         const results: QueryResult[] = [];
         while (stmt.step()) {
-          const row = stmt.getAsObject();
-          results.push({
-            word: row.word,
-            jyutping: row.jyutping,
-            code: row.code,
-            score: 0,
-          });
+          results.push(rowToResult(stmt.getAsObject()));
         }
         stmt.free();
         
@@ -863,10 +848,10 @@ async function executeEqualsQuery(
     // Default: try code prefix matching
     const pattern = code_prefix + '%';
     const sql = `
-      SELECT word, jyutping, code
+      SELECT char, jyutping, code
       FROM words
       WHERE code LIKE ? AND LENGTH(char) = ?
-      ORDER BY word
+      ORDER BY char
       LIMIT ? OFFSET ?
     `;
     const stmt = db.prepare(sql);
@@ -874,13 +859,7 @@ async function executeEqualsQuery(
     
     const results: QueryResult[] = [];
     while (stmt.step()) {
-      const row = stmt.getAsObject();
-      results.push({
-        word: row.word,
-        jyutping: row.jyutping,
-        code: row.code,
-        score: 0,
-      });
+      results.push(rowToResult(stmt.getAsObject()));
     }
     stmt.free();
     
@@ -900,10 +879,10 @@ async function executeEqualsQuery(
       // Extract first character of jyutping for initial matching
       const initial = refRow.jyutping.charAt(0);
       const sql = `
-        SELECT word, jyutping, code
+        SELECT char, jyutping, code
         FROM words
         WHERE jyutping LIKE ?
-        ORDER BY word
+        ORDER BY char
         LIMIT ? OFFSET ?
       `;
       const stmt = db.prepare(sql);
@@ -911,13 +890,7 @@ async function executeEqualsQuery(
       
       const results: QueryResult[] = [];
       while (stmt.step()) {
-        const row = stmt.getAsObject();
-        results.push({
-          word: row.word,
-          jyutping: row.jyutping,
-          code: row.code,
-          score: 0,
-        });
+        results.push(rowToResult(stmt.getAsObject()));
       }
       stmt.free();
       
@@ -937,24 +910,18 @@ async function executeEqualsQuery(
     if (refRow && refRow.jyutping) {
       // For now, use simple pattern matching
       const sql = `
-        SELECT word, jyutping, code
+        SELECT char, jyutping, code
         FROM words
         WHERE jyutping LIKE ?
-        ORDER BY word
+        ORDER BY char
         LIMIT ? OFFSET ?
       `;
       const stmt = db.prepare(sql);
-      stmt.bind([`%${refRow.jyutping.slice(-1)}`, limit, offset]);
+      stmt.bind([`%${String(refRow.jyutping).slice(-1)}`, limit, offset]);
       
       const results: QueryResult[] = [];
       while (stmt.step()) {
-        const row = stmt.getAsObject();
-        results.push({
-          word: row.word,
-          jyutping: row.jyutping,
-          code: row.code,
-          score: 0,
-        });
+        results.push(rowToResult(stmt.getAsObject()));
       }
       stmt.free();
       
@@ -984,10 +951,10 @@ function executeMaskFamily(
     .replace(/_%/g, '_');  // Clean up consecutive wildcards
   
   const sql = `
-    SELECT word, jyutping, code 
+    SELECT char, jyutping, code 
     FROM words 
-    WHERE code LIKE ? OR word LIKE ?
-    ORDER BY word 
+    WHERE code LIKE ? OR char LIKE ?
+    ORDER BY char 
     LIMIT ? OFFSET ?
   `;
   
@@ -997,13 +964,7 @@ function executeMaskFamily(
   stmt.bind([pattern, pattern, limit, offset]);
   
   while (stmt.step()) {
-    const row = stmt.getAsObject();
-    results.push({
-      word: row.word,
-      jyutping: row.jyutping,
-      code: row.code,
-      score: 0,
-    });
+    results.push(rowToResult(stmt.getAsObject()));
   }
   stmt.free();
   

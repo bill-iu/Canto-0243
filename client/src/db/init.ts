@@ -3,11 +3,18 @@
  * Handles loading lyrics.db as a static asset with chunked/streamed loading
  */
 
-import initSqlJs, { Database } from 'sql.js';
+import { initSqlJs, type Database } from './sqljs.ts';
 
 // Database instance singleton
 let db: Database | null = null;
 let isInitialized = false;
+
+/** ponytail: parity runner / node probe only — inject pre-loaded sql.js Database */
+let injectedDb: Database | null = null;
+
+export function injectDatabaseForTests(candidate: Database | null): void {
+  injectedDb = candidate;
+}
 
 function defaultDbUrl(): string {
   const ver = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -23,6 +30,9 @@ export function getDefaultDbUrl(): string {
  * Uses httpvfs for efficient chunked loading of large database files
  */
 export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<Database> {
+  if (injectedDb) {
+    return injectedDb;
+  }
   if (db && isInitialized) {
     return db;
   }
@@ -67,6 +77,9 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
  * Throws if database is not initialized
  */
 export function getDatabase(): Database {
+  if (injectedDb) {
+    return injectedDb;
+  }
   if (!db) {
     throw new Error('Database not initialized. Call initializeDatabase() first.');
   }
@@ -77,13 +90,14 @@ export function getDatabase(): Database {
  * Check if database is initialized
  */
 export function isDatabaseInitialized(): boolean {
-  return isInitialized;
+  return injectedDb !== null || isInitialized;
 }
 
 /**
  * Reset database instance (useful for testing)
  */
 export function resetDatabase(): void {
+  injectedDb = null;
   if (db) {
     db.close();
     db = null;

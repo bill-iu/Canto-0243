@@ -13,6 +13,7 @@ import {
 import {
   search,
   getDatabaseStats,
+  validateOfflineReadiness,
   normalizeQuery,
   parseQuery,
   normalizeAndParse
@@ -99,7 +100,7 @@ export function useDB(): UseDBReturn {
       await initializeDatabase();
 
       // Validate with a minimal query so "Ready" means "can actually query"
-      await getDatabaseStats();
+      await validateOfflineReadiness();
       setIsValidated(true);
       
       setStatus('ready');
