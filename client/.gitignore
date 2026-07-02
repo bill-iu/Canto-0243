@@ -20,6 +20,7 @@ dist-ssr
 public/ranking-index.json
 public/static-syn-index.json
 public/static-ant-index.json
+public/static-cilin-syn-index.json
 public/rhyme-letter-index.json
 
 # Editor directories and files

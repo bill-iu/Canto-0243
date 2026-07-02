@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { initStaticSynIndex, initStaticAntIndex } from './thesaurus.ts';
+import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 
@@ -180,6 +180,14 @@ function parseGuotongAnt(text: string): Record<string, string[]> {
   return out;
 }
 
+export function buildStaticCilinSynIndex(repoRoot: string): Record<string, string[]> {
+  const cilinPath = path.join(path.resolve(repoRoot), 'data/cilin/new_cilin.txt');
+  if (!fs.existsSync(cilinPath)) {
+    return {};
+  }
+  return parseCilin(fs.readFileSync(cilinPath, 'utf8'));
+}
+
 export function buildStaticSynIndex(repoRoot: string): Record<string, string[]> {
   const root = path.resolve(repoRoot);
   const cilinPath = path.join(root, 'data/cilin/new_cilin.txt');
@@ -210,4 +218,5 @@ export function loadStaticSynData(repoRoot: string): void {
 export function loadStaticRelationData(repoRoot: string): void {
   initStaticSynIndex(buildStaticSynIndex(repoRoot));
   initStaticAntIndex(buildStaticAntIndex(repoRoot));
+  initStaticCilinSynIndex(buildStaticCilinSynIndex(repoRoot));
 }

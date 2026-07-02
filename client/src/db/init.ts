@@ -7,7 +7,7 @@ import { initSqlJs, type Database } from './sqljs.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
 import { initRhymeLetterIndex } from './rime-index.ts';
-import { initStaticSynIndex, initStaticAntIndex } from './thesaurus.ts';
+import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 
 // Database instance singleton
 let db: Database | null = null;
@@ -57,15 +57,19 @@ async function loadBrowserRhymeLetterIndex(): Promise<void> {
 async function loadBrowserStaticSynIndex(): Promise<void> {
   try {
     const base = import.meta.env.BASE_URL;
-    const [synRes, antRes] = await Promise.all([
+    const [synRes, antRes, cilinRes] = await Promise.all([
       fetch(new URL('static-syn-index.json', base).toString()),
       fetch(new URL('static-ant-index.json', base).toString()),
+      fetch(new URL('static-cilin-syn-index.json', base).toString()),
     ]);
     if (synRes.ok) {
       initStaticSynIndex(await synRes.json());
     }
     if (antRes.ok) {
       initStaticAntIndex(await antRes.json());
+    }
+    if (cilinRes.ok) {
+      initStaticCilinSynIndex(await cilinRes.json());
     }
   } catch {
     // ponytail: compound/relation fall back to DB graph only

@@ -5,6 +5,7 @@
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
+import { appendRuntimeDerivedAntPool } from './derived-ant.ts';
 
 export type RelationKind = 'syn' | 'ant' | 'semantic_related';
 
@@ -276,6 +277,19 @@ function charsPresentInDb(db: Database, chars: Iterable<string>): Set<string> {
   return present;
 }
 
+function loadDbCharSet(db: Database): Set<string> {
+  const stmt = db.prepare('SELECT DISTINCT char FROM words');
+  const out = new Set<string>();
+  while (stmt.step()) {
+    const ch = String((stmt.getAsObject() as { char?: string }).char ?? '');
+    if (ch) {
+      out.add(ch);
+    }
+  }
+  stmt.free();
+  return out;
+}
+
 const BIDIRECTIONAL_REL_ROWS_SQL = `
   SELECT wr.relation_type AS relation_type, w2.char AS rchar, wr.source AS source,
          wr.score AS score, w2.jyutping AS jyutping, w2.code AS code, wr.group_codes AS group_codes
@@ -407,9 +421,10 @@ export type RelationPoolSnapshot = {
 export function buildRelationPool(
   db: Database,
   query: string,
-  options: { includeStatic?: boolean } = {},
+  options: { includeStatic?: boolean; includeDerivedAnt?: boolean } = {},
 ): RelationPoolSnapshot {
   const includeStatic = options.includeStatic !== false;
+  const includeDerivedAnt = options.includeDerivedAnt !== false;
   const q = query.trim();
   if (!q || !CJK_RE.test(q)) {
     return { query: q, syns: [], ants: [], semantic: [] };
@@ -442,7 +457,30 @@ export function buildRelationPool(
   relItems = applyInDbMembership(relItems, present);
 
   const synPool = collectSortedPool(q, 'syn', relItems, staticSyns, present, morphemeChars);
-  const antPool = collectSortedPool(q, 'ant', relItems, staticAnts, present, morphemeChars);
+  let antPool = collectSortedPool(q, 'ant', relItems, staticAnts, present, morphemeChars);
+
+  if (includeDerivedAnt) {
+    const membership = loadDbCharSet(db);
+    const headSyns = new Set(synPool.map((r) => r.char));
+    const relAntRows = relItems
+      .filter((i) => i.relation === 'ant')
+      .map((i) => ({ char: i.char, source: i.source }));
+    const effectiveMorphemes = q.length >= 2 ? morphemeChars : new Set<string>();
+    antPool = sortAntPool(
+      q,
+      appendRuntimeDerivedAntPool(
+        q,
+        antPool,
+        db,
+        membership,
+        includeStatic,
+        effectiveMorphemes,
+        headSyns,
+        relAntRows,
+      ),
+      effectiveMorphemes,
+    ).filter((item) => item.char && item.char !== q);
+  }
 
   const seenMain = new Set([q, ...synPool.map((r) => r.char), ...antPool.map((r) => r.char)]);
   const semanticPool = relItems.filter((item) => {

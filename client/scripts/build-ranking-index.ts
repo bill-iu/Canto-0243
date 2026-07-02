@@ -7,7 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildRankingData } from '../src/db/ranking-loader.node.ts';
-import { buildStaticSynIndex, buildStaticAntIndex } from '../src/db/thesaurus-loader.node.ts';
+import { buildStaticSynIndex, buildStaticAntIndex, buildStaticCilinSynIndex } from '../src/db/thesaurus-loader.node.ts';
 import { buildRhymeLetterIndex } from '../src/db/rime-index-loader.node.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -15,16 +15,20 @@ const outDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../pu
 const outPath = path.join(outDir, 'ranking-index.json');
 const synOutPath = path.join(outDir, 'static-syn-index.json');
 const antOutPath = path.join(outDir, 'static-ant-index.json');
+const cilinOutPath = path.join(outDir, 'static-cilin-syn-index.json');
+
 const rhymeOutPath = path.join(outDir, 'rhyme-letter-index.json');
 
 const data = buildRankingData(repoRoot);
 const synData = buildStaticSynIndex(repoRoot);
 const antData = buildStaticAntIndex(repoRoot);
+const cilinData = buildStaticCilinSynIndex(repoRoot);
 const rhymeData = buildRhymeLetterIndex(repoRoot);
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(outPath, JSON.stringify(data));
 fs.writeFileSync(synOutPath, JSON.stringify(synData));
 fs.writeFileSync(antOutPath, JSON.stringify(antData));
+fs.writeFileSync(cilinOutPath, JSON.stringify(cilinData));
 fs.writeFileSync(rhymeOutPath, JSON.stringify(rhymeData));
 
 const synAntSrc = path.join(repoRoot, 'data/syn_ant');
@@ -45,6 +49,9 @@ const antChars = Object.keys(antData).length;
 console.log(`✓ ranking-index.json (${kb} KB)`);
 console.log(`✓ static-syn-index.json (${synKb} KB, ${synChars} heads)`);
 console.log(`✓ static-ant-index.json (${antKb} KB, ${antChars} heads)`);
+console.log(
+  `✓ static-cilin-syn-index.json (${Math.round(fs.statSync(cilinOutPath).size / 1024)} KB, ${Object.keys(cilinData).length} heads)`,
+);
 console.log(
   `✓ rhyme-letter-index.json (${Math.round(fs.statSync(rhymeOutPath).size / 1024)} KB, ${Object.keys(rhymeData.finalOptions).length} fragments)`,
 );
