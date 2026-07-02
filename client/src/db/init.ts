@@ -7,10 +7,14 @@ import type { DatabaseBackend } from './database-backend.ts';
 import { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
 import {
   ensureLexiconInOpfs,
-  lexiconOpfsFileName,
   readLexiconFromOpfs,
 } from './opfs-lexicon.ts';
-import { opfsFileSize } from './opfs-storage.ts';
+import {
+  getLexiconCacheStatus,
+  resolveLexiconBytes,
+  type LexiconCacheStatus,
+  type LexiconRestoreSource,
+} from './lexicon-restore.ts';
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
@@ -30,6 +34,11 @@ export function injectDatabaseForTests(candidate: DatabaseBackend | null): void 
 }
 
 export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
+export {
+  getLexiconCacheStatus,
+  type LexiconCacheStatus,
+  type LexiconRestoreSource,
+} from './lexicon-restore.ts';
 
 export function getDbBackendMode(): DbBackendMode {
   return resolveDbBackendMode();
@@ -54,22 +63,16 @@ async function loadSqlJsFromBytes(bytes: Uint8Array): Promise<DatabaseBackend> {
   return openSqlJsDatabase(bytes, sqlJsLocateFile);
 }
 
-async function fetchLexiconBytes(dbPath: string): Promise<Uint8Array> {
-  const response = await fetch(dbPath);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch lexicon package (${response.status})`);
-  }
-  return new Uint8Array(await response.arrayBuffer());
-}
-
-async function initializeSqlJsFetch(dbPath: string): Promise<DatabaseBackend> {
-  return loadSqlJsFromBytes(await fetchLexiconBytes(dbPath));
+async function initializeSqlJsPath(version: string, dbPath: string): Promise<DatabaseBackend> {
+  const { bytes, source } = await resolveLexiconBytes(version, dbPath);
+  console.log(`Lexicon restore (${source}) → sql.js`);
+  return loadSqlJsFromBytes(bytes);
 }
 
 async function initializeOpfsLexicon(version: string, dbPath: string): Promise<DatabaseBackend> {
   const ensured = await ensureLexiconInOpfs({
     version,
-    fetchBytes: () => fetchLexiconBytes(dbPath),
+    fetchBytes: async () => (await resolveLexiconBytes(version, dbPath)).bytes,
   });
   const bytes = await readLexiconFromOpfs(version);
   if (!bytes?.byteLength) {
@@ -156,23 +159,13 @@ export function getDefaultDbUrl(): string {
 
 export { ensureLexiconInOpfs, lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
 
-/** DB-3: OPFS hit = offline lexicon present without SW cache */
+/** DB-4: offline lexicon present in OPFS and/or SW cache */
 export async function isLexiconCachedForBackend(
-  mode: DbBackendMode = getDbBackendMode(),
+  _mode: DbBackendMode = getDbBackendMode(),
   version: string = lexiconVersion(),
+  dbUrl: string = defaultDbUrl(),
 ): Promise<boolean> {
-  if (mode === 'opfs') {
-    return (await opfsFileSize(lexiconOpfsFileName(version))) > 0;
-  }
-  if (!('caches' in globalThis)) {
-    return false;
-  }
-  try {
-    const match = await caches.match(defaultDbUrl());
-    return Boolean(match);
-  } catch {
-    return false;
-  }
+  return (await getLexiconCacheStatus(version, dbUrl)).any;
 }
 
 /**
@@ -192,7 +185,7 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     db =
       mode === 'opfs'
         ? await initializeOpfsLexicon(version, dbPath)
-        : await initializeSqlJsFetch(dbPath);
+        : await initializeSqlJsPath(version, dbPath);
 
     isInitialized = true;
     await loadAuxiliaryIndexes();

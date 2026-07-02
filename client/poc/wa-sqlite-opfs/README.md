@@ -52,7 +52,18 @@ npm run dev:ios      # iOS 實機（https + 區網，見下方）
    - 主 PWA 驗證：`cd client && VITE_DB_BACKEND=opfs npm run dev`（需 COOP/COEP，見 `vite.config.ts`）
    - Node 自檢：`npx tsx scripts/init-backend-self-check.ts`
 
-5. **記錄**（DB-0 完成時填進 issue / WORKLOG）
+5. **DB-4（OPFS + SW 雙路復原）**
+   - `client/src/db/lexicon-restore.ts`：OPFS → SW CacheFirst → 網路
+   - SW 亦快取 `lyrics.dev.db`（`vite.config.ts` urlPattern）
+   - 契約：`specs/001-pwa-offline-coexist/contracts/offline-readiness.md`
+   - Node 自檢：`npx tsx scripts/lexicon-restore-self-check.ts`
+
+6. **DB-5（實機量測）**
+   - `client/src/db/db-benchmark.ts` + `?benchmark=1`
+   - 記錄表：`specs/001-pwa-offline-coexist/research.md` § DB-5
+   - Node 自檢：`npx tsx scripts/db-benchmark-self-check.ts`
+
+7. **記錄**（DB-0 完成時填進 issue / WORKLOG）
    - 裝置型號 + OS 版本
    - COUNT 結果
    - Import 耗時（可選）
