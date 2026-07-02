@@ -17,7 +17,7 @@ export default defineConfig(({ command }) => ({
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB cache limit
         runtimeCaching: [
           {
-            urlPattern: /\/lyrics\.(?:dev|v?\d+\.\d+\.\d+)\.db$/,
+            urlPattern: /\/lyrics\.(?:dev|v[\d.]+(?:-[\w.]+)?)\.db$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'database-cache',
