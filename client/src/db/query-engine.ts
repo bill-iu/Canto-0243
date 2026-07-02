@@ -143,6 +143,18 @@ export interface LiteralRefQuery extends ParsedQuery {
   width: number;
 }
 
+/** Plus anchor (23+就, 2+好3, +門0) */
+export interface PlusAnchorQuery extends ParsedQuery {
+  kind: QueryKind.PLUS_ANCHOR;
+  raw_q: string;
+  width: number;
+  anchor_pos: number;
+  anchor: string;
+  constraint: 'literal' | 'final' | 'initial';
+  code_slots: Array<[number, string]>;
+  code_prefix?: string;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -362,6 +374,11 @@ export function parseQuery(q: string): ParsedQuery {
     return rhymeAnchor;
   }
 
+  const plusAnchor = parsePlusAnchorQuery(normalized);
+  if (plusAnchor) {
+    return plusAnchor;
+  }
+
   const literalRef = parseAtTailQuery(normalized);
   if (literalRef) {
     return literalRef;
@@ -441,6 +458,86 @@ export function parseAtTailQuery(q: string): LiteralRefQuery | null {
     literal_char: m[2]!,
     width: code_digits.length,
   };
+}
+
+/** Port of plus.parse_plus_anchor_query — slot connector is `+` (Python CODE_TAIL_MIDDLE) */
+export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
+  if (!q || !q.includes('+') || q.includes('@')) {
+    return null;
+  }
+
+  const base = (
+    fields: Omit<PlusAnchorQuery, 'kind' | 'raw_q'>,
+  ): PlusAnchorQuery => ({
+    kind: QueryKind.PLUS_ANCHOR,
+    raw_q: q,
+    ...fields,
+  });
+
+  let m = q.match(/^\+([\u4e00-\u9fff])(=)?(\d+)$/);
+  if (m) {
+    const anchor = m[1]!;
+    const right = m[3]!;
+    const width = 1 + right.length;
+    return base({
+      width,
+      anchor_pos: 0,
+      anchor,
+      constraint: m[2] ? 'final' : 'literal',
+      code_slots: [...right].map((d, i) => [1 + i, d] as [number, string]),
+    });
+  }
+
+  m = q.match(/^(\d+)\+([\u4e00-\u9fff])(=)?(\d+)$/);
+  if (m) {
+    const left = m[1]!;
+    const anchor = m[2]!;
+    const right = m[4]!;
+    const anchorPos = left.length;
+    const width = left.length + 1 + right.length;
+    return base({
+      width,
+      anchor_pos: anchorPos,
+      anchor,
+      constraint: m[3] ? 'final' : 'literal',
+      code_slots: [
+        ...[...left].map((d, i) => [i, d] as [number, string]),
+        ...[...right].map((d, i) => [anchorPos + 1 + i, d] as [number, string]),
+      ],
+    });
+  }
+
+  m = q.match(/^(\d+)\+([\u4e00-\u9fff])(=)?$/);
+  if (m) {
+    const code = m[1]!;
+    const anchor = m[2]!;
+    const width = code.length + 1;
+    return base({
+      width,
+      anchor_pos: width - 1,
+      anchor,
+      constraint: m[3] ? 'final' : 'literal',
+      code_slots: [...code].map((d, i) => [i, d] as [number, string]),
+      code_prefix: code,
+    });
+  }
+
+  m = q.match(/^(\d+)\+=([\u4e00-\u9fff])$/);
+  if (m) {
+    const code = m[1]!;
+    const anchor = m[2]!;
+    const width = code.length + 1;
+    return base({
+      width,
+      anchor_pos: width - 1,
+      anchor,
+      constraint: 'initial',
+      code_slots: [...code].map((d, i) => [i, d] as [number, string]),
+      code_prefix: code,
+    });
+  }
+
+  return null;
 }
 
 /** Port of query_grammar/mask.parse_mask_query */
@@ -525,6 +622,66 @@ function executeMaskQuery(
       continue;
     }
     if (!matchesMaskLiteralPositions(charText, literalPositions)) {
+      continue;
+    }
+    const code = String(row.code ?? '');
+    if (!matchesCodePositions(code, requiredCodes, searchMode)) {
+      continue;
+    }
+    matched.push(rowToResult(row));
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
+}
+
+/** Port of plus_anchor MatchSpec — code_digit slots + literal/final/initial anchor */
+function executePlusAnchorQuery(
+  parsed: PlusAnchorQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const width = parsed.width;
+  const requiredCodes: Array<string | null> = Array(width).fill(null);
+  for (const [pos, digit] of parsed.code_slots) {
+    requiredCodes[pos] = digit;
+  }
+  const searchMode = normalizeSearchMode(mode);
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const charText = String(row.char ?? '');
+    if (!wordMatchesWidth(row, width) || charText.length !== width) {
+      continue;
+    }
+    if (parsed.constraint === 'literal' && charText[parsed.anchor_pos] !== parsed.anchor) {
+      continue;
+    }
+    if (
+      parsed.constraint === 'final' &&
+      !matchesPhonemeAtPosition(row, parsed.anchor_pos, parsed.anchor, 'final', db)
+    ) {
+      continue;
+    }
+    if (
+      parsed.constraint === 'initial' &&
+      !matchesPhonemeAtPosition(row, parsed.anchor_pos, parsed.anchor, 'initial', db)
+    ) {
       continue;
     }
     const code = String(row.code ?? '');
@@ -1275,6 +1432,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       if (parsed.kind === QueryKind.LITERAL_REF) {
         return executeLiteralRefQuery(
           parsed as LiteralRefQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
+      if (parsed.kind === QueryKind.PLUS_ANCHOR) {
+        return executePlusAnchorQuery(
+          parsed as PlusAnchorQuery,
           db,
           mode,
           limit,
