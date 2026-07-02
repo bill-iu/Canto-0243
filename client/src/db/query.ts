@@ -17,7 +17,9 @@ import {
   parseQuery,
   normalizeAndParse,
 } from './query-engine';
-import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
+import { getDatabase, initializeDatabase, isDatabaseInitialized, getDefaultDbUrl } from './init';
+import { getLexiconCacheStatus } from './lexicon-restore.ts';
+import { opfsAvailable } from './opfs-storage.ts';
 
 // Re-export the query engine types
 export type { 
@@ -140,6 +142,16 @@ export async function validateOfflineReadiness(): Promise<void> {
   const hasProbeWord = results.some((r) => r.word === OFFLINE_READINESS_PROBE_QUERY);
   if (!results.length || !hasProbeWord) {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
+  }
+
+  const version = (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  const cache = await getLexiconCacheStatus(version, getDefaultDbUrl());
+  // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
+  if (opfsAvailable() && !cache.opfs) {
+    throw new Error('離線就緒驗證失敗：詞庫尚未寫入本機儲存，請稍候或重試');
+  }
+  if (!opfsAvailable() && !cache.any) {
+    throw new Error('離線就緒驗證失敗：詞庫未快取至本機');
   }
 }
 
