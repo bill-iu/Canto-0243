@@ -206,6 +206,8 @@ export interface QueryResult {
   code: string;
   definition?: string;
   score: number;
+  /** ponytail: lookup layout row kind — upgrade path: full lookup_layout.ts module */
+  resultType?: 'code' | 'jyutping' | 'word';
 }
 
 /**
@@ -423,6 +425,31 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
   }
 
   return null;
+}
+
+/** Port of query_parse.is_relation_syntax_query */
+function isRelationSyntaxQuery(q: string): boolean {
+  const parsed = normalizeAndParse(q);
+  if (parsed.kind === QueryKind.RELATION_LOOKUP) {
+    return true;
+  }
+  return (
+    parsed.kind === QueryKind.COMPOUND_SYN ||
+    parsed.kind === QueryKind.COMPOUND_ANT ||
+    parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE
+  );
+}
+
+function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
+  if (fallback === 'm2' || fallback === '02493') {
+    return 'm2';
+  }
+  return 'm1';
+}
+
+function modeRedirectHint(mode: 'm1' | 'm2'): string {
+  const label = mode === 'm2' ? '02493模式（緊）' : '0243模式（鬆）';
+  return `此語法已切換至 ${label} 查詢`;
 }
 
 /** ponytail: compound tiers from relation index — stub returns [] until relation DB port */
@@ -804,15 +831,190 @@ function executePlusAnchorQuery(
   return { items: matched.slice(offset, offset + limit) };
 }
 
-/** ponytail: stub — next step ports filter_hybrid_ref_candidates */
+const HYBRID_CODE_MATCH_RE = /^(\d+)([\u4e00-\u9fff]+)(\d*)$/;
+
+type HybridMatchSpec = {
+  width: number;
+  codePrefix: string;
+  hybridRefChars: string;
+  hybridRefPos: number;
+};
+
+function buildHybridMatchSpec(rawQ: string): HybridMatchSpec | null {
+  const m = rawQ.match(HYBRID_CODE_MATCH_RE);
+  if (!m) {
+    return null;
+  }
+  const numPrefix = m[1]!;
+  const refChars = m[2]!;
+  const numSuffix = m[3] ?? '';
+  const fullCode = numPrefix + numSuffix;
+  return {
+    width: fullCode.length,
+    codePrefix: fullCode,
+    hybridRefChars: refChars,
+    hybridRefPos: Math.max(0, numPrefix.length - 1),
+  };
+}
+
+/** Port of filters.build_final_options_at_positions */
+function buildFinalOptionsAtPositions(
+  db: Database,
+  refChars: string,
+  startPos: number,
+  width: number,
+): Array<Set<string> | null> {
+  const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
+  for (let i = 0; i < refChars.length; i++) {
+    const pos = startPos + i;
+    if (pos >= 0 && pos < width) {
+      const opts = anchorPhonemeOptions(db, refChars[i]!, 'final');
+      if (opts.size) {
+        target[pos] = opts;
+      }
+    }
+  }
+  return target;
+}
+
+/** Port of filters.matches_hybrid_ref_chars */
+function matchesHybridRefChars(
+  wordChar: string,
+  wordFinals: string[],
+  refChars: string,
+  startPos: number,
+  targetFinalOptions: Array<Set<string> | null>,
+): boolean {
+  const width = targetFinalOptions.length;
+  if (wordChar.length !== width || wordFinals.length !== width) {
+    return false;
+  }
+  for (let i = 0; i < refChars.length; i++) {
+    const pos = startPos + i;
+    if (pos < 0 || pos >= width) {
+      return false;
+    }
+    if (wordChar[pos] === refChars[i]) {
+      continue;
+    }
+    const options = targetFinalOptions[pos];
+    if (options?.size && wordFinals[pos] && options.has(wordFinals[pos]!)) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+
+/** Port of filters.filter_hybrid_ref_candidates */
+function filterHybridRefCandidates(
+  candidates: WordRow[],
+  spec: HybridMatchSpec,
+  mode: 'm1' | 'm2',
+  db: Database,
+): WordRow[] {
+  const targetFinalOptions = buildFinalOptionsAtPositions(
+    db,
+    spec.hybridRefChars,
+    spec.hybridRefPos,
+    spec.width,
+  );
+  const allowedCodes = spec.codePrefix
+    ? new Set(getCodeVariants(spec.codePrefix, mode))
+    : null;
+
+  const filtered: WordRow[] = [];
+  for (const word of candidates) {
+    const wordCode = String(word.code ?? '');
+    if (allowedCodes && !allowedCodes.has(wordCode)) {
+      continue;
+    }
+    const wordChar = String(word.char ?? '');
+    const wordFinals = getRhymeFinals(word);
+    if (
+      matchesHybridRefChars(
+        wordChar,
+        wordFinals,
+        spec.hybridRefChars,
+        spec.hybridRefPos,
+        targetFinalOptions,
+      )
+    ) {
+      filtered.push(word);
+    }
+  }
+  return filtered;
+}
+
+/** Port of filter_hybrid_ref_candidates + position_match engine width bucket */
 function executeHybridCodeQuery(
-  _parsed: HybridCodeQuery,
-  _db: Database,
-  _mode: QueryMode,
-  _limit: number,
-  _offset: number,
+  parsed: HybridCodeQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
 ): SearchResult {
-  return { items: [] };
+  const spec = buildHybridMatchSpec(parsed.raw_q);
+  if (!spec) {
+    return { items: [] };
+  }
+  const searchMode = normalizeSearchMode(mode);
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([spec.width, spec.width]);
+
+  const candidates: WordRow[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const charText = String(row.char ?? '');
+    if (!wordMatchesWidth(row, spec.width) || charText.length !== spec.width) {
+      continue;
+    }
+    candidates.push(row);
+  }
+  stmt.free();
+
+  const matched = filterHybridRefCandidates(candidates, spec, searchMode, db);
+  matched.sort((a, b) =>
+    String(a.char ?? '').localeCompare(String(b.char ?? ''), 'zh-Hant'),
+  );
+  return { items: matched.slice(offset, offset + limit).map((r) => rowToResult(r)) };
+}
+
+/** ponytail: runnable self-check — `npx tsx client/scripts/lookup-layout-self-check.ts` */
+export function lookupLayoutSelfCheck(): void {
+  const rows: WordRow[] = [
+    { char: '事業', code: '22', jyutping: 'si6 jip6' },
+  ];
+  const layout = buildLookupLayout('事業', rows);
+  const words = layout.map((r) => r.word);
+  const expected = ['22', 'si6 jip6', '事業'];
+  if (words.length !== expected.length || words.some((w, i) => w !== expected[i])) {
+    throw new Error(`lookupLayoutSelfCheck: got ${words.join(',')}`);
+  }
+}
+
+/** ponytail: runnable self-check — `npx tsx client/scripts/hybrid-self-check.ts` */
+export function hybridLogicSelfCheck(): void {
+  const spec = buildHybridMatchSpec('23就');
+  if (!spec || spec.width !== 2 || spec.codePrefix !== '23' || spec.hybridRefPos !== 1) {
+    throw new Error('hybridLogicSelfCheck: spec parse');
+  }
+  const target: Array<Set<string> | null> = [null, new Set(['au'])];
+  if (!matchesHybridRefChars('成就', ['ing', 'au'], '就', 1, target)) {
+    throw new Error('hybridLogicSelfCheck: literal tail match');
+  }
+  if (matchesHybridRefChars('走先', ['au', 'in'], '就', 1, target)) {
+    throw new Error('hybridLogicSelfCheck: rhyme-only reject');
+  }
 }
 
 /** Port of literal_ref MatchSpec execution — code per position + tail literal */
@@ -1652,35 +1854,114 @@ function executeDigitCodeQuery(
   return { items: results };
 }
 
+/** Port of word_serializer.deduplicate_words */
+function deduplicateWordRows(rows: WordRow[]): WordRow[] {
+  const seen = new Set<string>();
+  const out: WordRow[] = [];
+  for (const row of rows) {
+    const c = String(row.char ?? '');
+    if (!c || seen.has(c)) {
+      continue;
+    }
+    seen.add(c);
+    out.push(row);
+  }
+  return out;
+}
+
+function getWordSortCode(row: WordRow): string {
+  const code = String(row.code ?? '').trim();
+  if (code) {
+    return code;
+  }
+  // ponytail: no jyutping→0243 derive yet
+  return '';
+}
+
+/** Port of lookup_layout._collect_codes_and_jyuts */
+function collectCodesAndJyuts(rows: WordRow[]): {
+  codes: string[];
+  codeToJyuts: Map<string, string[]>;
+} {
+  const codes: string[] = [];
+  const seenCodes = new Set<string>();
+  const codeToJyuts = new Map<string, string[]>();
+  for (const row of rows) {
+    const c = getWordSortCode(row);
+    if (c && /^\d+$/.test(c) && !seenCodes.has(c)) {
+      seenCodes.add(c);
+      codes.push(c);
+    }
+    const j = String(row.jyutping ?? '').trim();
+    if (c && j) {
+      const list = codeToJyuts.get(c) ?? [];
+      if (!list.includes(j)) {
+        list.push(j);
+      }
+      codeToJyuts.set(c, list);
+    }
+  }
+  codes.sort((a, b) => Number(a) - Number(b));
+  return { codes, codeToJyuts };
+}
+
+/** Port of lookup_layout code/jyutping headers + exact word rows (rhyme sections: later) */
+function buildLookupLayout(_q: string, exactMatches: WordRow[]): QueryResult[] {
+  if (!exactMatches.length) {
+    return [];
+  }
+  const results: QueryResult[] = [];
+  const seenWords = new Set<string>();
+  const { codes, codeToJyuts } = collectCodesAndJyuts(exactMatches);
+
+  for (const code of codes) {
+    results.push({ word: code, code, jyutping: '', score: 0, resultType: 'code' });
+  }
+  const seenJyuts = new Set<string>();
+  for (const code of codes) {
+    for (const jy of codeToJyuts.get(code) ?? []) {
+      const j = jy.trim();
+      if (!j || seenJyuts.has(j)) {
+        continue;
+      }
+      seenJyuts.add(j);
+      results.push({ word: j, code: '', jyutping: j, score: 0, resultType: 'jyutping' });
+    }
+  }
+  for (const row of deduplicateWordRows(exactMatches)) {
+    const char = String(row.char ?? '');
+    if (!char || seenWords.has(char)) {
+      continue;
+    }
+    seenWords.add(char);
+    results.push({ ...rowToResult(row), resultType: 'word' });
+  }
+  return results;
+}
+
 /**
  * Execute word lookup query
  */
 function executeWordLookup(
   parsed: WordLookupQuery,
   db: Database,
-  mode: QueryMode,
+  _mode: QueryMode,
   limit: number,
-  offset: number
+  offset: number,
 ): SearchResult {
-  const sql = `
-    SELECT char, jyutping, code 
-    FROM words 
-    WHERE char = ?
-    ORDER BY char 
-    LIMIT ? OFFSET ?
-  `;
-  
-  const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
-  
-  stmt.bind([parsed.raw_q, limit, offset]);
-  
+  const stmt = db.prepare(
+    'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
+  );
+  stmt.bind([parsed.raw_q]);
+
+  const matches: WordRow[] = [];
   while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
+    matches.push(stmt.getAsObject() as WordRow);
   }
   stmt.free();
-  
-  return { items: results };
+
+  const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches));
+  return { items: built.slice(offset, offset + limit) };
 }
 
 /**
@@ -2237,6 +2518,79 @@ function executeMaskFamily(
   return { items: results };
 }
 
+type RelationPoolRow = {
+  char: string;
+  code: string;
+  jyutping: string;
+  score: number;
+};
+
+const BIDIRECTIONAL_REL_SQL = `
+  SELECT w2.char AS char, w2.code AS code, w2.jyutping AS jyutping, wr.score AS score
+  FROM words w1
+  JOIN word_relations wr ON wr.word_id = w1.id
+  JOIN words w2 ON w2.id = wr.related_id
+  WHERE w1.char = ? AND wr.relation_type = ? AND w2.char != w1.char
+  UNION
+  SELECT w1.char AS char, w1.code AS code, w1.jyutping AS jyutping, wr.score AS score
+  FROM words w2
+  JOIN word_relations wr ON wr.related_id = w2.id
+  JOIN words w1 ON w1.id = wr.word_id
+  WHERE w2.char = ? AND wr.relation_type = ? AND w1.char != w2.char
+`;
+
+function fetchBidirectionalRelations(
+  db: Database,
+  seedChar: string,
+  relationType: 'syn' | 'ant',
+): RelationPoolRow[] {
+  const stmt = db.prepare(BIDIRECTIONAL_REL_SQL);
+  stmt.bind([seedChar, relationType, seedChar, relationType]);
+  const byChar = new Map<string, RelationPoolRow>();
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as Record<string, unknown>;
+    const char = String(row.char ?? '');
+    if (!char) {
+      continue;
+    }
+    const score = Number(row.score ?? 0);
+    const existing = byChar.get(char);
+    if (!existing || score > existing.score) {
+      byChar.set(char, {
+        char,
+        code: String(row.code ?? ''),
+        jyutping: String(row.jyutping ?? ''),
+        score,
+      });
+    }
+  }
+  stmt.free();
+  return [...byChar.values()].sort((a, b) => b.score - a.score || a.char.localeCompare(b.char));
+}
+
+/** ponytail: 2-hop syn expansion — upgrade: pool_builder + static thesaurus port */
+function expandSynTwoHop(db: Database, seedChar: string, oneHop: RelationPoolRow[]): RelationPoolRow[] {
+  const byChar = new Map(oneHop.map((r) => [r.char, r]));
+  for (const mid of oneHop.map((r) => r.char)) {
+    for (const row of fetchBidirectionalRelations(db, mid, 'syn')) {
+      if (row.char === seedChar || byChar.has(row.char)) {
+        continue;
+      }
+      byChar.set(row.char, row);
+    }
+  }
+  return [...byChar.values()].sort((a, b) => b.score - a.score || a.char.localeCompare(b.char));
+}
+
+function relationRowsToResults(rows: RelationPoolRow[]): QueryResult[] {
+  return rows.map((r) => ({
+    word: r.char,
+    jyutping: r.jyutping,
+    code: r.code,
+    score: r.score,
+  }));
+}
+
 /**
  * Execute relation lookup query (synonym/antonym)
  */
@@ -2245,14 +2599,25 @@ function executeRelationLookup(
   db: Database,
   mode: QueryMode,
   limit: number,
-  offset: number
+  offset: number,
 ): SearchResult {
-  // This is a placeholder - full implementation would use word_relations table
-  // For now, just return empty results
-  return {
-    items: [],
-    hint: '近反義模式功能正在開發中...',
-  };
+  const seed = parsed.word.trim();
+  if (!seed) {
+    return { items: [] };
+  }
+
+  let rows =
+    parsed.relation_kind === 'syn'
+      ? expandSynTwoHop(db, seed, fetchBidirectionalRelations(db, seed, 'syn'))
+      : fetchBidirectionalRelations(db, seed, 'ant');
+
+  if (parsed.code_prefix) {
+    const variants = new Set(getCodeVariants(parsed.code_prefix, normalizeSearchMode(mode)));
+    const prefixLen = parsed.code_prefix.length;
+    rows = rows.filter((r) => variants.has(r.code) && [...r.char].length === prefixLen);
+  }
+
+  return { items: relationRowsToResults(rows.slice(offset, offset + limit)) };
 }
 
 // ============================================================================
@@ -2303,13 +2668,23 @@ export class QueryEngine {
   }
   
   /**
-   * Dispatch synonym mode queries
+   * Dispatch synonym mode queries (port of query_mode_dispatch.dispatch_syn_mode)
    */
   private async dispatchSynMode(ctx: SearchContext & { q: string }, dbCtx: SearchContext & { db: Database }): Promise<SearchResult> {
-    // For now, treat syn mode like normal search but with relation queries
-    // Full implementation would handle mode switching and relation lookup
-    const parsed = normalizeAndParse(ctx.q);
-    return await dispatch(parsed, dbCtx);
+    if (isRelationSyntaxQuery(ctx.q)) {
+      const effective = resolveFallback0243Mode(ctx.fallback_0243_mode);
+      const parsed = normalizeAndParse(ctx.q);
+      const result = await dispatch(parsed, { ...dbCtx, mode: effective, offset: 0 });
+      return {
+        items: result.items,
+        total: result.total,
+        hint: modeRedirectHint(effective),
+        effective_mode: effective,
+        cache_path: result.cache_path,
+      };
+    }
+    // ponytail: syn_mode_page (pool browse) — upgrade: RelationSyntaxExecutor.syn_mode_page
+    return { items: [] };
   }
 }
 
