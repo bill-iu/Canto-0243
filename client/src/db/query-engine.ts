@@ -129,6 +129,38 @@ export interface PartialRhymeMaskQuery extends ParsedQuery {
   anchors: Array<[number, string]>;
 }
 
+/** Four-char partial initial mask (=窮?潦倒) */
+export interface PartialInitialMaskQuery extends ParsedQuery {
+  kind: QueryKind.PARTIAL_INITIAL_MASK;
+  raw_q: string;
+  pattern: string;
+  width: number;
+  anchors: Array<[number, string]>;
+}
+
+/** Serial phoneme anchors (04困=49倒=) */
+export interface SerialPhonemeAnchorQuery extends ParsedQuery {
+  kind: QueryKind.SERIAL_PHONEME;
+  raw_q: string;
+  width: number;
+  constraint: 'final' | 'initial';
+  code_slots: Array<[number, string]>;
+  anchors: Array<[number, string]>;
+  mask: string;
+}
+
+/** Jyutping anchor (?yut?, 3m4) — execution port partial */
+export interface JyutpingAnchorQuery extends ParsedQuery {
+  kind: QueryKind.JYUTPING_ANCHOR;
+  raw_q: string;
+  width: number;
+  anchor_pos: number;
+  anchor_kind: 'initial_letters' | 'rhyme_letters' | 'syllable_letters';
+  anchor_value: string;
+  dual_phoneme?: boolean;
+  code_prefix?: string;
+}
+
 /** Hybrid code query (23就) */
 export interface HybridCodeQuery extends ParsedQuery {
   kind: QueryKind.HYBRID_CODE;
@@ -490,6 +522,16 @@ export function parseQuery(q: string): ParsedQuery {
     return partialRhyme;
   }
 
+  const partialInitial = parsePartialInitialMaskQuery(normalized);
+  if (partialInitial) {
+    return partialInitial;
+  }
+
+  const serialPhoneme = parseSerialPhonemeAnchorQuery(normalized);
+  if (serialPhoneme) {
+    return serialPhoneme;
+  }
+
   // Check for hybrid tail equals alias (e.g., 23就=)
   if (isHybridTailEqualsAlias(normalized)) {
     return {
@@ -527,18 +569,20 @@ export function parseQuery(q: string): ParsedQuery {
   if (looksLikeMaskQuery(normalized)) {
     return { kind: QueryKind.MASK, raw_q: normalized };
   }
-  
-  // Check for pure digit codes
+
   if (isPureDigits(normalized)) {
     return { kind: QueryKind.DIGIT_CODE, raw_q: normalized };
   }
-  
-  // Check for Chinese characters (word lookup)
+
   if (hasChineseChars(normalized)) {
     return { kind: QueryKind.WORD_LOOKUP, raw_q: normalized };
   }
-  
-  // Check for jyutping (contains letters)
+
+  const jyutpingAnchor = parseJyutpingAnchorQuery(normalized);
+  if (jyutpingAnchor) {
+    return jyutpingAnchor;
+  }
+
   if (hasJyutpingChars(normalized)) {
     return { kind: QueryKind.JYUTPING_FRAGMENT, raw_q: normalized };
   }
@@ -989,6 +1033,23 @@ function executeHybridCodeQuery(
   return { items: matched.slice(offset, offset + limit).map((r) => rowToResult(r)) };
 }
 
+/** ponytail: runnable self-check — `npx tsx client/scripts/parser-self-check.ts` */
+export function parserLogicSelfCheck(): void {
+  const cases: Array<[string, QueryKind]> = [
+    ['=窮?潦倒', QueryKind.PARTIAL_INITIAL_MASK],
+    ['04困=49倒=', QueryKind.SERIAL_PHONEME],
+    ['?yut?', QueryKind.JYUTPING_ANCHOR],
+    ['3m4', QueryKind.JYUTPING_ANCHOR],
+    ['就=', QueryKind.RHYME_ANCHOR],
+  ];
+  for (const [q, kind] of cases) {
+    const parsed = normalizeAndParse(q);
+    if (parsed.kind !== kind) {
+      throw new Error(`parserLogicSelfCheck: ${q} → ${parsed.kind}, want ${kind}`);
+    }
+  }
+}
+
 /** ponytail: runnable self-check — `npx tsx client/scripts/lookup-layout-self-check.ts` */
 export function lookupLayoutSelfCheck(): void {
   const rows: WordRow[] = [
@@ -1129,6 +1190,222 @@ export function parsePartialRhymeMaskQuery(q: string): PartialRhymeMaskQuery | n
     width: 4,
     anchors,
   };
+}
+
+/** Port of rhyme.parse_partial_initial_mask_query */
+export function parsePartialInitialMaskQuery(q: string): PartialInitialMaskQuery | null {
+  const m = q.match(/^=([\u4e00-\u9fff?]{4})$/);
+  if (!m) {
+    return null;
+  }
+  const pattern = m[1]!;
+  if (!pattern.includes('?') || pattern.split('').every((ch) => ch === '?')) {
+    return null;
+  }
+  if (pattern.startsWith('?') && /^\?[\u4e00-\u9fff]{3}$/.test(pattern)) {
+    return null;
+  }
+  const anchors: Array<[number, string]> = [];
+  for (let pos = 0; pos < pattern.length; pos++) {
+    const ch = pattern[pos]!;
+    if (ch !== '?') {
+      anchors.push([pos, ch]);
+    }
+  }
+  if (!anchors.length) {
+    return null;
+  }
+  return {
+    kind: QueryKind.PARTIAL_INITIAL_MASK,
+    raw_q: q,
+    pattern,
+    width: 4,
+    anchors,
+  };
+}
+
+const SERIAL_CHARSET_RE = /^[0-9?=\u4e00-\u9fff]+$/;
+
+function framedEqualsBlocksSerial(q: string): boolean {
+  if (!isFramedEqualsQuery(q)) {
+    return false;
+  }
+  const m = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)(=)?(\d*)$/);
+  if (!m) {
+    return false;
+  }
+  if (m[2]) {
+    return true;
+  }
+  if (m[5]) {
+    return true;
+  }
+  if (m[4] && (m[3]?.length ?? 0) >= 2) {
+    return true;
+  }
+  return false;
+}
+
+function scanSerialPhoneme(
+  q: string,
+  constraint: 'final' | 'initial',
+): Omit<SerialPhonemeAnchorQuery, 'kind' | 'raw_q'> | null {
+  let i = 0;
+  let pos = 0;
+  const code_slots: Array<[number, string]> = [];
+  const anchors: Array<[number, string]> = [];
+  const maskChars: string[] = [];
+
+  while (i < q.length) {
+    const ch = q[i]!;
+    if (ch === '?') {
+      maskChars.push('?');
+      pos += 1;
+      i += 1;
+      continue;
+    }
+    if (/\d/.test(ch)) {
+      const anchorRe =
+        constraint === 'final'
+          ? /^(\d)([\u4e00-\u9fff])=(?=[0-9?=]|$)/
+          : /^(\d)=([\u4e00-\u9fff])(?=[0-9?=]|$)/;
+      const m = q.slice(i).match(anchorRe);
+      if (m) {
+        code_slots.push([pos, m[1]!]);
+        anchors.push([pos, m[2]!]);
+        maskChars.push(m[1]!);
+        pos += 1;
+        i += m[0].length;
+        continue;
+      }
+      code_slots.push([pos, ch]);
+      maskChars.push(ch);
+      pos += 1;
+      i += 1;
+      continue;
+    }
+    return null;
+  }
+  if (!anchors.length) {
+    return null;
+  }
+  return {
+    width: pos,
+    constraint,
+    code_slots,
+    anchors,
+    mask: maskChars.join(''),
+  };
+}
+
+/** Port of serial.parse_serial_phoneme_anchor_query */
+export function parseSerialPhonemeAnchorQuery(q: string): SerialPhonemeAnchorQuery | null {
+  if (!q || !SERIAL_CHARSET_RE.test(q)) {
+    return null;
+  }
+  if (q.includes(CODE_TAIL_MIDDLE) || q.includes('+') || q.includes('@') || q.includes('*') || q.includes('_') || q.includes('%')) {
+    return null;
+  }
+  if (framedEqualsBlocksSerial(q)) {
+    return null;
+  }
+  if (/^[\u4e00-\u9fff]=$/.test(q)) {
+    return null;
+  }
+  const hasRhyme = /\d[\u4e00-\u9fff]=/.test(q);
+  const hasInitial = /\d=[\u4e00-\u9fff]/.test(q);
+  if (hasRhyme && hasInitial) {
+    return null;
+  }
+  const constraint: 'final' | 'initial' = hasRhyme ? 'final' : 'initial';
+  if (!hasRhyme && !hasInitial) {
+    return null;
+  }
+  const parsed = scanSerialPhoneme(q, constraint);
+  if (!parsed) {
+    return null;
+  }
+  return { kind: QueryKind.SERIAL_PHONEME, raw_q: q, ...parsed };
+}
+
+const VOWEL_RHYME_LETTERS = new Set(['a', 'e', 'i', 'o', 'u']);
+
+/** ponytail: classify without rime index — multi-letter → rhyme_letters */
+function classifyLatinAnchor(letters: string): JyutpingAnchorQuery['anchor_kind'] | null {
+  const text = letters.trim().toLowerCase();
+  if (!text || !/^[a-z]+$/.test(text)) {
+    return null;
+  }
+  if (VOWEL_RHYME_LETTERS.has(text) || text === 'ng') {
+    return 'rhyme_letters';
+  }
+  if (text.length === 1) {
+    return 'initial_letters';
+  }
+  return 'rhyme_letters';
+}
+
+function parseDualPhonemeAnchorQuery(q: string): JyutpingAnchorQuery | null {
+  let m = q.match(/^\?\+?([a-zA-Z]+)\?$/i);
+  if (m) {
+    const letters = m[1]!.toLowerCase();
+    if (letters === 'm' || letters === 'ng') {
+      return {
+        kind: QueryKind.JYUTPING_ANCHOR,
+        raw_q: q,
+        width: 3,
+        anchor_pos: 1,
+        anchor_kind: 'rhyme_letters',
+        anchor_value: letters === 'm' ? 'ng' : letters,
+        dual_phoneme: true,
+      };
+    }
+  }
+  m = q.match(/^(\d+)(m|ng)(\d+)$/i);
+  if (m) {
+    const left = m[1]!;
+    const letters = m[2]!.toLowerCase();
+    return {
+      kind: QueryKind.JYUTPING_ANCHOR,
+      raw_q: q,
+      width: left.length + m[3]!.length,
+      anchor_pos: Math.max(0, left.length - 1),
+      anchor_kind: 'rhyme_letters',
+      anchor_value: letters,
+      code_prefix: left + m[3]!,
+      dual_phoneme: true,
+    };
+  }
+  return null;
+}
+
+function parseTripleJyutpingSlotQuery(q: string): JyutpingAnchorQuery | null {
+  const m = q.match(/^\?\+?([a-zA-Z]+)\?$/i);
+  if (!m) {
+    return null;
+  }
+  const letters = m[1]!;
+  const kind = classifyLatinAnchor(letters);
+  if (!kind) {
+    return null;
+  }
+  const value = kind === 'rhyme_letters' && letters.toLowerCase() === 'm' ? 'ng' : letters.toLowerCase();
+  return {
+    kind: QueryKind.JYUTPING_ANCHOR,
+    raw_q: q,
+    width: 3,
+    anchor_pos: 1,
+    anchor_kind: kind,
+    anchor_value: value,
+  };
+}
+
+/** Port of jyutping_anchor.parse_jyutping_anchor_query (classification subset) */
+export function parseJyutpingAnchorQuery(q: string): JyutpingAnchorQuery | null {
+  if (!q || /[\u4e00-\u9fff]/.test(q)) {
+    return null;
+  }
+  return parseDualPhonemeAnchorQuery(q) ?? parseTripleJyutpingSlotQuery(q);
 }
 
 /** Port of query_grammar/rhyme.parse_rhyme_anchor_query (P1 subset) */
@@ -1318,6 +1595,41 @@ function contextualFinalOptionsAtPosition(
   return options;
 }
 
+function contextualInitialOptionsAtPosition(
+  db: Database,
+  width: number,
+  pos: number,
+  anchorChar: string,
+): Set<string> {
+  const options = new Set<string>();
+  const stmt = db.prepare(`
+    SELECT char, initials, finals, jyutping, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const text = String(row.char ?? '');
+    if (text.length !== width || text[pos] !== anchorChar) {
+      continue;
+    }
+    const initials = getWordParts(row, 'initials');
+    if (initials.length > pos && initials[pos]) {
+      options.add(initials[pos]!);
+    }
+  }
+  stmt.free();
+  for (const opt of anchorPhonemeOptions(db, anchorChar, 'initial')) {
+    options.add(opt);
+  }
+  return options;
+}
+
 function wordPassesPartialRhymeMask(
   word: WordRow,
   parsed: PartialRhymeMaskQuery,
@@ -1377,6 +1689,139 @@ function executePartialRhymeMaskQuery(
 
   matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
   return { items: matched.slice(offset, offset + limit) };
+}
+
+function wordPassesPartialInitialMask(
+  word: WordRow,
+  parsed: PartialInitialMaskQuery,
+  slotOptions: Map<string, Set<string>>,
+  width: number,
+): boolean {
+  const text = String(word.char ?? '');
+  if (text.length !== width) {
+    return false;
+  }
+  const initials = getWordParts(word, 'initials');
+  if (!initials.length) {
+    return false;
+  }
+  for (const [pos, ch] of parsed.pattern.split('').entries()) {
+    if (ch === '?') {
+      continue;
+    }
+    if (text[pos] !== ch) {
+      return false;
+    }
+  }
+  for (const [pos, anchor] of parsed.anchors) {
+    const options = slotOptions.get(`${pos}:${anchor}`);
+    if (!options?.size || pos >= initials.length || !options.has(initials[pos]!)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function executePartialInitialMaskQuery(
+  parsed: PartialInitialMaskQuery,
+  db: Database,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const width = parsed.width;
+  const slotOptions = new Map<string, Set<string>>();
+  for (const [pos, anchor] of parsed.anchors) {
+    const key = `${pos}:${anchor}`;
+    if (!slotOptions.has(key)) {
+      slotOptions.set(key, contextualInitialOptionsAtPosition(db, width, pos, anchor));
+    }
+  }
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    if (wordPassesPartialInitialMask(word, parsed, slotOptions, width)) {
+      matched.push(rowToResult(word));
+    }
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
+}
+
+function executeSerialPhonemeQuery(
+  parsed: SerialPhonemeAnchorQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const { width, constraint, code_slots, anchors } = parsed;
+  const searchMode = normalizeSearchMode(mode);
+  const requiredCodes: Array<string | null> = Array(width).fill(null);
+  for (const [pos, digit] of code_slots) {
+    requiredCodes[pos] = digit;
+  }
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    const charText = String(word.char ?? '');
+    if (!wordMatchesWidth(word, width) || charText.length !== width) {
+      continue;
+    }
+    const code = String(word.code ?? '');
+    if (!matchesCodePositions(code, requiredCodes, searchMode)) {
+      continue;
+    }
+    let ok = true;
+    for (const [pos, anchor] of anchors) {
+      if (!matchesPhonemeAtPosition(word, pos, anchor, constraint === 'final' ? 'final' : 'initial', db)) {
+        ok = false;
+        break;
+      }
+    }
+    if (ok) {
+      matched.push(rowToResult(word));
+    }
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
+}
+
+/** ponytail: JYUTPING_ANCHOR execution — upgrade: jyutping_anchor.py matchers */
+function executeJyutpingAnchorQuery(
+  _parsed: JyutpingAnchorQuery,
+  _db: Database,
+  _mode: QueryMode,
+  _limit: number,
+  _offset: number,
+): SearchResult {
+  return { items: [] };
 }
 
 function matchesPhonemeAtPosition(
@@ -1743,6 +2188,23 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
           offset,
         );
       }
+      if (parsed.kind === QueryKind.PARTIAL_INITIAL_MASK) {
+        return executePartialInitialMaskQuery(
+          parsed as PartialInitialMaskQuery,
+          db,
+          limit,
+          offset,
+        );
+      }
+      if (parsed.kind === QueryKind.SERIAL_PHONEME) {
+        return executeSerialPhonemeQuery(
+          parsed as SerialPhonemeAnchorQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
       if (parsed.kind === QueryKind.HYBRID_CODE) {
         return executeHybridCodeQuery(
           parsed as HybridCodeQuery,
@@ -1775,6 +2237,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       }
       if (parsed.kind === QueryKind.RHYME_ANCHOR) {
         return executeRhymeAnchorQuery(parsed as RhymeAnchorQuery, db, limit, offset);
+      }
+      if (parsed.kind === QueryKind.JYUTPING_ANCHOR) {
+        return executeJyutpingAnchorQuery(
+          parsed as JyutpingAnchorQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
       }
       // Handle equals queries
       if (parsed.kind === QueryKind.EQUALS) {
