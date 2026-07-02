@@ -108,7 +108,8 @@ PWA Shell (React + Vite，可沿用 client/)
 | `query-engine.ts` LOC | **~1,134** |
 | 相對 Python 執行層 LOC | **~13%** 骨架 |
 | Golden parity | **18/18** journeys、**15/15** match_spec（`scripts/pwa_golden_parity.py --gate all`） |
-| 已知阻斷 | 無（方案 D 執行層 parity 閘門已達標；長尾 jyutping parser 形狀仍待補） |
+| 已知阻斷 | 無（parity 閘門已達標） |
+| 技術債 | `executeMaskFamily` 仍為 LIKE stub（見 §6）；長尾 jyutping parser 已補齊（2026-07-02） |
 
 ### 3.2 需重寫／補齊範圍
 
@@ -205,14 +206,121 @@ ELSE 選 D；Pyodide POC 歸檔；繼續 TS parity + 條件成熟時 OPFS
 
 **已選定方案 D 為執行路徑**（TS port + sql.js → 目標 wasm-sqlite/wa-sqlite + OPFS）。方案 E 不刪除，但不在目前 sprint 執行 POC。
 
-下一工作項：
+下一工作項（分階段，見 §6–§7）：
 
-1. **P0**：schema（`char`）、基本 lookup、離線就緒真查詢驗證
-2. **P1**：golden parity 逐條拉高
-3. **P2**：wasm-sqlite + OPFS（D-G4）
-4. **（可選）** 時間盒 E POC：僅在 D parity 連續受阻時啟動
+1. ~~**P0**：schema（`char`）、基本 lookup、離線就緒真查詢驗證~~ ✅
+2. ~~**P1**：golden parity 逐條拉高~~ ✅（18/18 + 15/15）
+3. **P1.5**：缺字型查詢執行收斂至 `MatchSpec` 管線（§6 MF-0…MF-6）
+4. **P2**：wasm-sqlite + OPFS（D-G4，§7 DB-0…DB-5）
+5. **（可選）** 時間盒 E POC：僅在 D parity 連續受阻時啟動
 
 ---
+
+## 6. 缺字型查詢執行（`executeMaskFamily`）分階段實作
+
+### 6.0 Grill 結論（術語與邊界）
+
+| 常見誤解 | 實際 |
+|----------|------|
+| 「把 `executeMaskFamily` 寫完整」 | TS 內該函式目前是 **SQL `LIKE` stub**，不是 Python 的缺字型執行 |
+| Python 對應物 | `query_dispatch._mask_family_search_result` → `normalize_to_match_spec` → `execute_match_spec` |
+| 領域用語（CONTEXT） | **缺字型查詢執行**只收 **比對規格**（`MatchSpec`），不在執行層 `isinstance` 分派（ADR-0002） |
+| Parity 現況 | Golden **已綠**；多數 `QueryKind` 已有**獨立 executor**；stub 僅承接 **4 種**未實作 kind |
+
+**仍走 stub 的 QueryKind**（`client/src/db/query-engine.ts` `dispatch` fallback）：
+
+- `WILDCARD_CODE_ANCHOR`（例 `?30人`）
+- `TRIPLE_RHYME_ANCHOR`（例 `?+人=?`）
+- `CODE_REF_MIDDLE_RHYME`（例 `?3人=?`）
+- `HYBRID_TAIL_EQUALS_ALIAS`（例 `23就=` → 改寫為 hybrid_q 再 LIKE）
+
+**建議**：不要擴寫 stub；按 ADR-0002 建 **MatchSpec 管線**，逐 kind 遷移後刪除 stub。
+
+### 6.1 目標架構（對齊 Python）
+
+```text
+ParsedQuery
+  → normalizeToMatchSpec(parsed)     # port query_match_spec_registry.py
+  → executeMatchSpec(spec, ctx)      # port position_match/engine.py
+       ├─ resolveMaskFamilySource    # sources.py
+       ├─ getCandidatesForLength     # sql.js 直查 width
+       └─ applyMatchSpec             # filters.py
+```
+
+TS 目錄建議（ponytail：先一檔，長大再拆）：
+
+```text
+client/src/db/position-match/
+  spec.ts          # SlotConstraint, MatchSpec, EqualsSpan
+  match-spec.ts    # buildMatchSpecForParsed（registry）
+  sources.ts       # 候選來源
+  filters.ts       # slot 過濾
+  engine.ts        # executeMatchSpec 入口
+```
+
+### 6.2 分階段步驟（每步可獨立 merge + self-check）
+
+| 步驟 | ID | 交付物 | 通過條件 | 依賴 |
+|------|-----|--------|----------|------|
+| 0 | **MF-0** | 將 stub 重新命名為 `executeMaskFamilyStub`；`dispatch` 註解標明過渡 | `pwa_golden_parity.py --gate all` 仍綠 | — |
+| 1 | **MF-1** | `position-match/spec.ts`：完整 `MatchSpec` / `SlotConstraint`（自 `query-engine.ts` 抽出） | TypeScript 編譯；既有 equals self-check 仍過 | MF-0 |
+| 2 | **MF-2** | `match-spec.ts`：port `build_match_spec_for_parsed` | Node self-check 對 `MATCH_SPEC_REPRESENTATIVE_CASES` 欄位與 Python 一致 | MF-1 |
+| 3 | **MF-3** | `sources.ts`：`getCandidatesForLength`（`length` / `char` 長度 + 可選 `code` 前綴） | 單元 self-check：`width=2` 候選數 > 0（fixture db） | MF-1 |
+| 4 | **MF-4** | **垂直切片**：上述 4 種 stub kind 各一條 `executeMatchSpec` 路徑 | 4 條代表查詢有結果且與 Python fixture 一致 | MF-2, MF-3 |
+| 5 | **MF-5** | `filters.ts` 分批 port（見下表） | 每批合併後 parity 不 regress | MF-4 |
+| 6 | **MF-6** | `dispatch` MASK_FAMILY 預設走 `executeMatchSpec`；逐 kind 移除重複 executor | stub 刪除；parity 全綠 | MF-5 |
+
+**MF-5 過濾器分批**（對應 `position_match/filters.py` ~667 LOC）：
+
+| 批次 | 約束 kind | 覆蓋 QueryKind 示例 |
+|------|-----------|---------------------|
+| F1 | `code_digit`, `literal_char`, `wildcard` | `MASK`, `LITERAL_REF`, `WILDCARD_CODE_ANCHOR` |
+| F2 | `final_anchor`, `initial_anchor` | `RHYME_ANCHOR`, `PARTIAL_*_MASK` |
+| F3 | `rhyme_letters`, `syllable_letters`, `initial_letters` | `JYUTPING_ANCHOR`, `TRIPLE_RHYME_ANCHOR` |
+| F4 | `equals_span` + `mask_adapter` | `EQUALS`, `PREFIX_WILDCARD_EQUALS`, `HYBRID_TAIL_EQUALS_ALIAS` |
+| F5 | `compound_kind` source 注入 | 已由 `compound.ts` 覆蓋；MF-6 時改為 source registry 統一 |
+
+**複雜度控制原則**：
+
+- 每步 **只加一層**；MF-4 先讓 4 種 stub kind 走通，不等待 F1–F5 全完
+- 已有獨立 executor 的 kind **暫不動**，直到 MF-6 證明 `executeMatchSpec` 等價
+- 每步附 **最小 runnable check**（`client/scripts/*-self-check.ts` 或 parity 子集）
+
+---
+
+## 7. wasm-sqlite + OPFS（D-G4）分階段實作
+
+### 7.0 Grill 結論
+
+| 問題 | 建議答案 |
+|------|----------|
+| OPFS 是否阻擋 parity？ | **否**（ADR D-G4）；現行 sql.js 全檔 `fetch` + RAM 已滿足 D-G1–G3 |
+| 何時切換？ | **parity 全綠且 MF-4 完成後**再動儲存層，避免同時 debug 執行與 I/O |
+| iOS 風險 | OPFS 持久化 ≠ 免重新下載；SW cache 與 OPFS 職責需分開（契約 `offline-readiness.md`） |
+
+### 7.1 現況（`client/src/db/init.ts`）
+
+- sql.js + **整檔 `arrayBuffer` 進 RAM**
+- 註解已說明：避免 iOS range request 碎片化
+- 目標：wa-sqlite + OPFS VFS → 查詢時 mmap 式讀取、降低峰值 RAM
+
+### 7.2 分階段步驟
+
+| 步驟 | ID | 交付物 | 通過條件 | 依賴 |
+|------|-----|--------|----------|------|
+| 0 | **DB-0** | Spike：`client/poc/wa-sqlite-opfs/` 最小 open + `SELECT COUNT(*)` | 本機 Chrome + 一台 iOS 手動 OK | — |
+| 1 | **DB-1** | `DatabaseBackend` 介面；sql.js 實作適配現有 `prepare/step` | 現有 parity **零改動**通過 | DB-0 |
+| 2 | **DB-2** | OPFS import：版本化 `lyrics.{semver}.db` 寫入 OPFS（一次性） | 二次開啟不重新 `fetch` 全檔 | DB-1 |
+| 3 | **DB-3** | `init.ts` feature flag（`VITE_DB_BACKEND=opfs`）；預設仍 sql.js | CI / parity 預設路徑不變 | DB-2 |
+| 4 | **DB-4** | SW 策略：HTML/JS cache 不變；db 可由 OPFS 或 SW 雙路復原 | `offline-readiness.md` 契約更新 + 手動 Scenario B | DB-3 |
+| 5 | **DB-5** | 實機量測：冷啟 RAM 峰值、飛航查詢 | 記錄於 `research.md`；較 sql.js 峰值下降為成功 | DB-4 |
+
+**不做的（YAGNI）**：
+
+- 不在 Phase 2 引入 Worker 內 SQL（除非 DB-0 證明主線程 jank）
+- 不為 OPFS 改 query-engine 語意
+- 不刪 sql.js 路徑，直至 DB-5 連續兩版 release 穩定
+
 
 ## Consequences
 
