@@ -285,7 +285,15 @@ class AntCilinExpansionTests(unittest.TestCase):
         return Session
 
     def test_expand_antonyms_via_cilin_synonyms(self):
+        from unittest.mock import MagicMock
+
         Session = self._seed_db()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心", "難過"],
+        }.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
         with Session() as db:
             db.add_all([
                 Word(id=1, char="快樂", code="22", jyutping="", length=2),
@@ -295,14 +303,11 @@ class AntCilinExpansionTests(unittest.TestCase):
                 Word(id=5, char="愉快", code="22", jyutping="", length=2),
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", score=0.9, source="antisem"))
-            db.add_all([
-                WordRelation(word_id=2, related_id=3, relation_type="syn", score=0.85, source="cilin"),
-                WordRelation(word_id=2, related_id=4, relation_type="syn", score=0.85, source="cilin"),
-                WordRelation(word_id=1, related_id=5, relation_type="syn", score=0.85, source="cilin"),
-            ])
             db.commit()
 
-            stats = expand_antonyms_via_cilin_synonyms(db, source="ant_cilin_exanded")
+            stats = expand_antonyms_via_cilin_synonyms(
+                db, source="ant_cilin_exanded", thesaurus=thesaurus, insert=True
+            )
             self.assertGreater(stats["inserted"], 0)
 
             derived = (
@@ -313,11 +318,17 @@ class AntCilinExpansionTests(unittest.TestCase):
             pairs = {(r.word_id, r.related_id) for r in derived}
             self.assertIn((1, 3), pairs)  # 快樂 ant 傷心
             self.assertIn((1, 4), pairs)  # 快樂 ant 難過
-            self.assertIn((2, 5), pairs)  # 悲傷 ant 愉快 (via 快樂 syn 愉快)
+            self.assertNotIn((2, 5), pairs)  # syns_a 已捨棄
             self.assertNotIn((1, 1), pairs)
 
     def test_expand_skips_existing_ant_pairs(self):
+        from unittest.mock import MagicMock
+
         Session = self._seed_db()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {"悲傷": ["傷心"]}.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
         with Session() as db:
             db.add_all([
                 Word(id=1, char="快樂", code="22", jyutping="", length=2),
@@ -326,15 +337,22 @@ class AntCilinExpansionTests(unittest.TestCase):
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="antisem"))
             db.add(WordRelation(word_id=1, related_id=3, relation_type="ant", source="manual"))
-            db.add(WordRelation(word_id=2, related_id=3, relation_type="syn", source="cilin"))
             db.commit()
 
-            stats = expand_antonyms_via_cilin_synonyms(db, source="ant_cilin_exanded")
+            stats = expand_antonyms_via_cilin_synonyms(
+                db, source="ant_cilin_exanded", thesaurus=thesaurus, insert=True
+            )
             self.assertEqual(stats["inserted"], 0)
             self.assertGreater(stats["skipped_existing"], 0)
 
     def test_expand_idempotent_with_replace_source(self):
+        from unittest.mock import MagicMock
+
         Session = self._seed_db()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {"悲傷": ["傷心"]}.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
         with Session() as db:
             db.add_all([
                 Word(id=1, char="快樂", code="22", jyutping="", length=2),
@@ -342,12 +360,15 @@ class AntCilinExpansionTests(unittest.TestCase):
                 Word(id=3, char="傷心", code="22", jyutping="", length=2),
             ])
             db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="antisem"))
-            db.add(WordRelation(word_id=2, related_id=3, relation_type="syn", source="cilin"))
             db.commit()
 
-            stats1 = expand_antonyms_via_cilin_synonyms(db, source="ant_cilin_exanded")
+            stats1 = expand_antonyms_via_cilin_synonyms(
+                db, source="ant_cilin_exanded", thesaurus=thesaurus, insert=True
+            )
             count1 = db.query(WordRelation).filter(WordRelation.source == "ant_cilin_exanded").count()
-            stats2 = expand_antonyms_via_cilin_synonyms(db, source="ant_cilin_exanded", dedupe_existing=True)
+            stats2 = expand_antonyms_via_cilin_synonyms(
+                db, source="ant_cilin_exanded", dedupe_existing=True, thesaurus=thesaurus, insert=True
+            )
             count2 = db.query(WordRelation).filter(WordRelation.source == "ant_cilin_exanded").count()
             self.assertEqual(count1, count2)
             self.assertGreater(stats1["inserted"], 0)

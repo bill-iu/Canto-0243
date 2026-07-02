@@ -14,14 +14,18 @@ from app.domain.relations.char_index import get_char_to_primary_id
 from app.domain.relations.store import insert_relations
 from app.models.word import Word, WordRelation
 from ingest.syn_ant_build import clear_word_relations_source
+from app.domain.relations.cilin_derived import (
+    CILIN_DERIVED_SOURCE,
+    collect_lexicon_cilin_derived_pairs,
+    write_cilin_derived_pairs_tsv,
+)
+from app.domain.thesaurus.port import default_thesaurus_port
 from ingest.syn_ant_expand import (
     ANT_SYN_MIRROR_SOURCE,
-    expand_antonyms_via_cilin_synonyms,
     expand_antonyms_via_syn_endpoints,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-CILIN_DERIVED_SOURCE = "ant_cilin_exanded"
 MIRROR_SOURCE = ANT_SYN_MIRROR_SOURCE
 DEFAULT_CILIN_SNAPSHOT = ROOT / "data" / "syn_ant" / "ant_cilin_exanded_pairs.tsv"
 DEFAULT_MIRROR_SNAPSHOT = ROOT / "data" / "syn_ant" / "ant_syn_mirror_pairs.tsv"
@@ -139,17 +143,12 @@ def bake_derived_ant_snapshots(
         stats["mirror"] = {"exported": write_derived_ant_snapshot(db, mirror_path, source=MIRROR_SOURCE)}
         return stats
 
-    clear_word_relations_source(db, CILIN_DERIVED_SOURCE)
-    expand_stats = expand_antonyms_via_cilin_synonyms(
-        db,
-        source=CILIN_DERIVED_SOURCE,
-        cilin_syn_source=cilin_syn_source,
-        confidence=cilin_confidence,
-        dedupe_existing=True,
-        batch_size=batch_size,
+    port = default_thesaurus_port()
+    cilin_pairs = collect_lexicon_cilin_derived_pairs(db, port, include_static=include_static)
+    cilin_exported = write_cilin_derived_pairs_tsv(
+        cilin_path, cilin_pairs, confidence=cilin_confidence
     )
-    cilin_exported = write_derived_ant_snapshot(db, cilin_path, source=CILIN_DERIVED_SOURCE)
-    stats["cilin"] = {"expand": expand_stats, "exported": cilin_exported}
+    stats["cilin"] = {"candidate_pairs": len(cilin_pairs), "exported": cilin_exported}
 
     clear_word_relations_source(db, MIRROR_SOURCE)
     mirror_expand = expand_antonyms_via_syn_endpoints(

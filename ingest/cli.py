@@ -130,10 +130,13 @@ def cmd_ingest_cilin(args: argparse.Namespace) -> int:
 
 
 def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
+    from ingest.derived_ant_snapshot import DEFAULT_CILIN_SNAPSHOT
+
     ensure_word_relations_table()
     source_id = (args.source or "ant_cilin_exanded")[:32]
+    output = args.output or str(DEFAULT_CILIN_SNAPSHOT)
     with SessionLocal() as db:
-        if args.replace_relations:
+        if args.insert and args.replace_relations:
             removed = clear_word_relations_source(db, source_id)
             print(f"Cleared {removed} existing word_relations with source={source_id!r}")
         stats = expand_antonyms_via_cilin_synonyms(
@@ -143,6 +146,9 @@ def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
             confidence=args.confidence,
             dedupe_existing=args.dedupe_existing,
             batch_size=args.batch_size,
+            insert=bool(args.insert),
+            export_path=output,
+            include_static=not args.no_static,
         )
         print("expand-antonyms-cilin stats:", stats)
     return 0
@@ -520,18 +526,29 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_cilin.set_defaults(replace_relations=True)
 
-    p_expand = sub.add_parser("expand-antonyms-cilin", help="Expand antonyms via Cilin synonym neighbors")
+    p_expand = sub.add_parser("expand-antonyms-cilin", help="Export cilin-derived ant pairs TSV (default)")
     p_expand.add_argument("--source", default="ant_cilin_exanded", help="Source tag for derived ant relations")
-    p_expand.add_argument("--cilin-syn-source", default="cilin", help="Cilin synonym source to expand from")
+    p_expand.add_argument(
+        "--output",
+        default=None,
+        help="TSV output path (default: data/syn_ant/ant_cilin_exanded_pairs.tsv)",
+    )
+    p_expand.add_argument(
+        "--insert",
+        action="store_true",
+        help="Also persist pairs to word_relations (maintainer debug; default export-only)",
+    )
+    p_expand.add_argument("--cilin-syn-source", default="cilin", help="Deprecated; core uses 靜態詞林埠")
     p_expand.add_argument("--confidence", type=float, default=0.75, help="Score for derived ant relations")
     p_expand.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
     p_expand.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
     p_expand.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
+    p_expand.add_argument("--no-static", dest="no_static", action="store_true", help="Seeds: DB ants only, no static thesaurus")
     p_expand.add_argument(
         "--no-replace-relations",
         dest="replace_relations",
         action="store_false",
-        help="Keep existing derived ant rows (default: clear source first)",
+        help="With --insert: keep existing derived ant rows (default: clear source first)",
     )
     p_expand.set_defaults(replace_relations=True)
 

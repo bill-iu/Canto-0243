@@ -149,6 +149,8 @@ class DerivedAntSnapshotTests(unittest.TestCase):
             self.assertIn("愉快", mirror_out.read_text(encoding="utf-8"))
 
     def test_bake_live_expand_then_export(self):
+        from unittest.mock import MagicMock, patch
+
         db = self._session()
         db.add_all([
             Word(id=1, char="快樂", code="22", jyutping="faai3 lok6", length=2),
@@ -157,24 +159,33 @@ class DerivedAntSnapshotTests(unittest.TestCase):
             Word(id=4, char="悲傷", code="22", jyutping="bei1 soeng1", length=2),
         ])
         db.add(WordRelation(word_id=1, related_id=4, relation_type="ant", score=0.9, source="antisem"))
-        db.add(WordRelation(word_id=2, related_id=3, relation_type="syn", score=0.85, source="cilin"))
-        db.add(WordRelation(word_id=4, related_id=2, relation_type="syn", score=0.85, source="cilin"))
         db.commit()
+
+        mock_port = MagicMock()
+        mock_port.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["愉快"],
+        }.get(w, [])
+        mock_port.get_antonyms.return_value = []
 
         with tempfile.TemporaryDirectory() as tmp:
             cilin_out = Path(tmp) / "cilin.tsv"
             mirror_out = Path(tmp) / "mirror.tsv"
-            stats = bake_derived_ant_snapshots(
-                db,
-                cilin_path=cilin_out,
-                mirror_path=mirror_out,
-                export_only=False,
-            )
-            self.assertGreater(stats["cilin"]["expand"]["inserted"], 0)
+            with patch(
+                "ingest.derived_ant_snapshot.default_thesaurus_port",
+                return_value=mock_port,
+            ):
+                stats = bake_derived_ant_snapshots(
+                    db,
+                    cilin_path=cilin_out,
+                    mirror_path=mirror_out,
+                    export_only=False,
+                )
+            self.assertGreater(stats["cilin"]["candidate_pairs"], 0)
             self.assertGreater(stats["cilin"]["exported"], 0)
             self.assertGreaterEqual(stats["mirror"]["exported"], 0)
             self.assertTrue(cilin_out.is_file())
             self.assertTrue(mirror_out.is_file())
+            self.assertIn("愉快", cilin_out.read_text(encoding="utf-8"))
 
     def test_bake_cli_registered(self):
         import subprocess

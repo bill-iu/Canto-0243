@@ -9,9 +9,13 @@ from app.domain.relations.ranking import final_score, sort_ant_pool
 from app.domain.relations.valid_term import normalize_literal
 from app.domain.thesaurus.port import ThesaurusPort
 
-CILIN_DERIVED_SOURCE = "ant_cilin_exanded"
+from app.domain.relations.cilin_derived import (
+    CILIN_DERIVED_CONFIDENCE,
+    CILIN_DERIVED_SOURCE,
+    cilin_derived_ant_pairs,
+)
+
 MIRROR_SOURCE = "ant_syn_mirror"
-CILIN_DERIVED_CONFIDENCE = 0.75
 MIRROR_CONFIDENCE = 0.72
 
 
@@ -48,28 +52,22 @@ def runtime_cilin_derived_ant_items(
     q = query.strip()
     if not q or not seed_chars:
         return []
-    out: List[dict] = []
-    seen: Set[str] = {q}
-    for seed in seed_chars:
-        seed = (seed or "").strip()
-        if not seed:
-            continue
-        thesaurus.ensure_loaded()
-        for syn in thesaurus.get_cilin_synonyms(seed):
-            ch = _pool_literal(syn)
-            if not ch or ch == q or ch in seen or ch not in present:
-                continue
-            seen.add(ch)
-            in_db = ch in present
-            out.append(
-                _derived_ant_item(
-                    char=ch,
-                    source=CILIN_DERIVED_SOURCE,
-                    confidence=CILIN_DERIVED_CONFIDENCE,
-                    in_db=in_db,
-                )
-            )
-    return out
+    thesaurus.ensure_loaded()
+    pairs = cilin_derived_ant_pairs(
+        q,
+        seed_chars,
+        cilin_synonyms_of=thesaurus.get_cilin_synonyms,
+        membership=present,
+    )
+    return [
+        _derived_ant_item(
+            char=tail,
+            source=CILIN_DERIVED_SOURCE,
+            confidence=CILIN_DERIVED_CONFIDENCE,
+            in_db=tail in present,
+        )
+        for _head, tail in pairs
+    ]
 
 
 def runtime_mirror_ant_items(

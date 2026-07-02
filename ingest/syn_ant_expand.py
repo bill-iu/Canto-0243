@@ -19,7 +19,10 @@ INSERT_BATCH = 300
 SQL_IN_BATCH = 300
 
 def _build_cilin_syn_adjacency(db: Session, *, cilin_syn_source: str = "cilin") -> Dict[int, Set[int]]:
-    """Bidirectional Cilin synonym neighbors keyed by word id."""
+    """Bidirectional Cilin synonym neighbors keyed by word id.
+
+    ponytail: legacy helper for tests; runtime/bake use 靜態詞林埠 via cilin_derived core.
+    """
     syn_neighbors: Dict[int, Set[int]] = {}
     rows = (
         db.query(WordRelation.word_id, WordRelation.related_id)
@@ -35,6 +38,67 @@ def _build_cilin_syn_adjacency(db: Session, *, cilin_syn_source: str = "cilin") 
     return syn_neighbors
 
 
+def _persist_cilin_derived_ant_pairs(
+    db: Session,
+    pairs: List[Tuple[str, str]],
+    *,
+    source: str,
+    confidence: float,
+    dedupe_existing: bool,
+    batch_size: int,
+) -> dict:
+    source = (source or "ant_cilin_exanded")[:32]
+    stats = {
+        "candidate_pairs": len(pairs),
+        "inserted": 0,
+        "skipped_existing": 0,
+        "skipped_no_char_id": 0,
+        "skipped_self": 0,
+    }
+    if not pairs:
+        return stats
+
+    char_to_id = get_char_to_primary_id(db)
+    pending: List[dict] = []
+    for head, tail in pairs:
+        head_id, tail_id = char_to_id.get(head), char_to_id.get(tail)
+        if not head_id or not tail_id:
+            stats["skipped_no_char_id"] += 1
+            continue
+        w, r = canonical_word_ids(head_id, tail_id)
+        if w == r:
+            stats["skipped_self"] += 1
+            continue
+        pending.append(
+            {
+                "word_id": w,
+                "related_id": r,
+                "relation_type": "ant",
+                "score": confidence,
+                "source": source,
+            }
+        )
+
+    if dedupe_existing and pending:
+        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
+        existing: Set[Tuple] = set()
+        for i in range(0, len(keys), SQL_IN_BATCH):
+            existing.update(_fetch_existing_keys(db, keys[i : i + SQL_IN_BATCH]))
+        before = len(pending)
+        pending = [
+            c
+            for c in pending
+            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
+        ]
+        stats["skipped_existing"] = before - len(pending)
+
+    if pending:
+        for i in range(0, len(pending), batch_size):
+            chunk = pending[i : i + batch_size]
+            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
+    return stats
+
+
 def expand_antonyms_via_cilin_synonyms(
     db: Session,
     *,
@@ -43,100 +107,53 @@ def expand_antonyms_via_cilin_synonyms(
     confidence: float = 0.75,
     dedupe_existing: bool = True,
     batch_size: int = INSERT_BATCH,
+    insert: bool = True,
+    export_path: str | None = None,
+    thesaurus=None,
+    include_static: bool = True,
 ) -> dict:
-    """Expand ant relations using Cilin synonym neighbors of each antonym endpoint.
+    """詞林衍生反義：per-head 核心 + export/insert adapters（CONTEXT § 詞林衍生反義）。"""
+    from app.domain.relations.cilin_derived import (
+        collect_lexicon_cilin_derived_pairs,
+        write_cilin_derived_pairs_tsv,
+    )
+    from app.domain.thesaurus.port import default_thesaurus_port
 
-    Example: if 快樂 ant 悲傷 and 悲傷 syn 傷心/難過 (cilin), insert 快樂 ant 傷心/難過.
-    Processes all existing ant seeds; dedupes by canonical (word_id, related_id, ant).
-    """
-    source = (source or "ant_cilin_exanded")[:32]
-    stats = {
+    _ = cilin_syn_source  # ponytail: kept for CLI compat; core uses 靜態詞林埠
+    port = thesaurus or default_thesaurus_port()
+    pairs = collect_lexicon_cilin_derived_pairs(
+        db, port, include_static=include_static
+    )
+    stats: dict = {
         "ant_seeds": 0,
-        "candidate_pairs": 0,
+        "candidate_pairs": len(pairs),
         "inserted": 0,
         "skipped_existing": 0,
         "skipped_self": 0,
         "skipped_no_syn": 0,
+        "exported": 0,
     }
-
-    syn_neighbors = _build_cilin_syn_adjacency(db, cilin_syn_source=cilin_syn_source)
-    if not syn_neighbors:
-        return stats
-
-    ant_rows = (
-        db.query(WordRelation.word_id, WordRelation.related_id)
-        .filter(WordRelation.relation_type == "ant")
-        .all()
-    )
-    stats["ant_seeds"] = len(ant_rows)
-    if not ant_rows:
-        return stats
-
-    candidates: Dict[Tuple[int, int, str], dict] = {}
-    for word_id, related_id in ant_rows:
-        a, b = int(word_id), int(related_id)
-        syns_b = syn_neighbors.get(b)
-        syns_a = syn_neighbors.get(a)
-        if not syns_b and not syns_a:
-            stats["skipped_no_syn"] += 1
-            continue
-        if syns_b:
-            for syn_id in syns_b:
-                if syn_id == a:
-                    stats["skipped_self"] += 1
-                    continue
-                w, r = canonical_word_ids(a, syn_id)
-                if w == r:
-                    stats["skipped_self"] += 1
-                    continue
-                key = (w, r, "ant")
-                candidates[key] = {
-                    "word_id": w,
-                    "related_id": r,
-                    "relation_type": "ant",
-                    "score": confidence,
-                    "source": source,
-                }
-        if syns_a:
-            for syn_id in syns_a:
-                if syn_id == b:
-                    stats["skipped_self"] += 1
-                    continue
-                w, r = canonical_word_ids(syn_id, b)
-                if w == r:
-                    stats["skipped_self"] += 1
-                    continue
-                key = (w, r, "ant")
-                candidates[key] = {
-                    "word_id": w,
-                    "related_id": r,
-                    "relation_type": "ant",
-                    "score": confidence,
-                    "source": source,
-                }
-
-    stats["candidate_pairs"] = len(candidates)
-    if not candidates:
-        return stats
-
-    pending = list(candidates.values())
-    if dedupe_existing:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing: Set[Tuple] = set()
-        for i in range(0, len(keys), SQL_IN_BATCH):
-            existing.update(_fetch_existing_keys(db, keys[i:i + SQL_IN_BATCH]))
-        before = len(pending)
-        pending = [
-            c for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        stats["skipped_existing"] = before - len(pending)
-
-    if pending:
-        for i in range(0, len(pending), batch_size):
-            chunk = pending[i:i + batch_size]
-            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
-
+    if export_path:
+        stats["exported"] = write_cilin_derived_pairs_tsv(
+            export_path, pairs, confidence=confidence
+        )
+    if insert:
+        persist = _persist_cilin_derived_ant_pairs(
+            db,
+            pairs,
+            source=source,
+            confidence=confidence,
+            dedupe_existing=dedupe_existing,
+            batch_size=batch_size,
+        )
+        stats.update(
+            {
+                "inserted": persist["inserted"],
+                "skipped_existing": persist["skipped_existing"],
+                "skipped_self": persist["skipped_self"],
+            }
+        )
+        stats["skipped_no_char_id"] = persist.get("skipped_no_char_id", 0)
     return stats
 
 
