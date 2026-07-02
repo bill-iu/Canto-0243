@@ -79,6 +79,12 @@
       "skillPath": "skills/fixing-metadata/SKILL.md",
       "computedHash": "699e13890fb50acffa02dfd2d5b0e719bd916a9e2b7e6035bdc4513fc73d9174"
     },
+    "database-schema-designer": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/database-schema-designer/SKILL.md",
+      "computedHash": "4e03040b71a4c8aaaabfb7c6fde10d82526ed40d03d93f9059e0280f0be27a62"
+    },
     "fixing-motion-performance": {
       "source": "ibelick/ui-skills",
       "sourceType": "github",
