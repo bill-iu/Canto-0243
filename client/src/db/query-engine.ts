@@ -15,6 +15,14 @@ import {
   type CompoundSearchSpec,
 } from './compound.ts';
 import { executeHeteronymCodeSearch } from './heteronym.ts';
+import { relationLookupItems } from './relation-pool.ts';
+import {
+  classifyLatinAnchor,
+  matchesJyutpingAnchorAtPosition,
+  normalizeRhymeLetters,
+  rhymeLettersResolveOk,
+} from './jyutping-anchor.ts';
+import { rhymeFinalsFromJyutping } from './jyutping-codec.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -1815,22 +1823,6 @@ export function parseSerialPhonemeAnchorQuery(q: string): SerialPhonemeAnchorQue
   return { kind: QueryKind.SERIAL_PHONEME, raw_q: q, ...parsed };
 }
 
-const VOWEL_RHYME_LETTERS = new Set(['a', 'e', 'i', 'o', 'u']);
-
-/** ponytail: classify without rime index — multi-letter → rhyme_letters */
-function classifyLatinAnchor(letters: string): JyutpingAnchorQuery['anchor_kind'] | null {
-  const text = letters.trim().toLowerCase();
-  if (!text || !/^[a-z]+$/.test(text)) {
-    return null;
-  }
-  if (VOWEL_RHYME_LETTERS.has(text) || text === 'ng') {
-    return 'rhyme_letters';
-  }
-  if (text.length === 1) {
-    return 'initial_letters';
-  }
-  return 'rhyme_letters';
-}
 
 function parseDualPhonemeAnchorQuery(q: string): JyutpingAnchorQuery | null {
   let m = q.match(/^\?\+?([a-zA-Z]+)\?$/i);
@@ -1876,7 +1868,10 @@ function parseTripleJyutpingSlotQuery(q: string): JyutpingAnchorQuery | null {
   if (!kind) {
     return null;
   }
-  const value = kind === 'rhyme_letters' && letters.toLowerCase() === 'm' ? 'ng' : letters.toLowerCase();
+  const value = kind === 'rhyme_letters' ? normalizeRhymeLetters(letters) : letters.toLowerCase();
+  if (kind === 'rhyme_letters' && !rhymeLettersResolveOk(value)) {
+    return null;
+  }
   return {
     kind: QueryKind.JYUTPING_ANCHOR,
     raw_q: q,
@@ -2298,44 +2293,6 @@ function executeSerialPhonemeQuery(
   stmt.free();
 
   return { items: sortQueryResults(matched).slice(offset, offset + limit) };
-}
-
-/** ponytail: JYUTPING_ANCHOR execution — syllable/initial/rhyme letters + dual merge */
-function parseSyllableLetterTokens(jyutping: string): string[] {
-  return jyutping
-    .trim()
-    .split(/\s+/)
-    .map((s) => s.replace(/[1-6]$/i, '').toLowerCase());
-}
-
-function matchesJyutpingAnchorAtPosition(
-  word: WordRow,
-  pos: number,
-  kind: JyutpingAnchorQuery['anchor_kind'],
-  value: string,
-): boolean {
-  const letters = value.toLowerCase();
-  if (kind === 'syllable_letters') {
-    const syls = parseSyllableLetterTokens(String(word.jyutping ?? ''));
-    return pos < syls.length && syls[pos] === letters;
-  }
-  if (kind === 'initial_letters') {
-    const parts = getWordParts(word, 'initials');
-    return pos < parts.length && parts[pos] === letters;
-  }
-  if (kind === 'rhyme_letters') {
-    const frag = letters === 'm' ? 'ng' : letters;
-    const finals = getRhymeFinals(word);
-    if (pos < finals.length && (finals[pos] === frag || finals[pos] === letters)) {
-      return true;
-    }
-    const syls = parseSyllableLetterTokens(String(word.jyutping ?? ''));
-    if (pos < syls.length) {
-      const s = syls[pos]!;
-      return s === frag || s.endsWith(frag) || (letters === 'ng' && (s === 'm' || s === 'ng'));
-    }
-  }
-  return false;
 }
 
 function executeDualPhonemeJyutpingQuery(
@@ -3100,8 +3057,8 @@ function getRhymeFinals(row: WordRow): string[] {
   if (fromCol.length) {
     return fromCol;
   }
-  // ponytail: no jyutping derive yet — upgrade path: rhyme_finals_from_jyutping
-  return [];
+  const jyut = String(row.jyutping ?? '');
+  return jyut ? rhymeFinalsFromJyutping(jyut) : [];
 }
 
 function matchesEqualsPhonemeSpan(
@@ -3596,82 +3553,6 @@ function executeMaskFamily(
   return { items: results };
 }
 
-type RelationPoolRow = {
-  char: string;
-  code: string;
-  jyutping: string;
-  score: number;
-};
-
-const BIDIRECTIONAL_REL_SQL = `
-  SELECT w2.char AS char, w2.code AS code, w2.jyutping AS jyutping, wr.score AS score
-  FROM words w1
-  JOIN word_relations wr ON wr.word_id = w1.id
-  JOIN words w2 ON w2.id = wr.related_id
-  WHERE w1.char = ? AND wr.relation_type = ? AND w2.char != w1.char
-  UNION
-  SELECT w1.char AS char, w1.code AS code, w1.jyutping AS jyutping, wr.score AS score
-  FROM words w2
-  JOIN word_relations wr ON wr.related_id = w2.id
-  JOIN words w1 ON w1.id = wr.word_id
-  WHERE w2.char = ? AND wr.relation_type = ? AND w1.char != w2.char
-`;
-
-function fetchBidirectionalRelations(
-  db: Database,
-  seedChar: string,
-  relationType: 'syn' | 'ant',
-): RelationPoolRow[] {
-  const stmt = db.prepare(BIDIRECTIONAL_REL_SQL);
-  stmt.bind([seedChar, relationType, seedChar, relationType]);
-  const byChar = new Map<string, RelationPoolRow>();
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as Record<string, unknown>;
-    const char = String(row.char ?? '');
-    if (!char) {
-      continue;
-    }
-    const score = Number(row.score ?? 0);
-    const existing = byChar.get(char);
-    if (!existing || score > existing.score) {
-      byChar.set(char, {
-        char,
-        code: String(row.code ?? ''),
-        jyutping: String(row.jyutping ?? ''),
-        score,
-      });
-    }
-  }
-  stmt.free();
-  return [...byChar.values()].sort((a, b) => b.score - a.score || a.char.localeCompare(b.char));
-}
-
-/** ponytail: 2-hop syn expansion — upgrade: pool_builder + static thesaurus port */
-function expandSynTwoHop(db: Database, seedChar: string, oneHop: RelationPoolRow[]): RelationPoolRow[] {
-  const byChar = new Map(oneHop.map((r) => [r.char, r]));
-  for (const mid of oneHop.map((r) => r.char)) {
-    for (const row of fetchBidirectionalRelations(db, mid, 'syn')) {
-      if (row.char === seedChar || byChar.has(row.char)) {
-        continue;
-      }
-      byChar.set(row.char, row);
-    }
-  }
-  return [...byChar.values()].sort((a, b) => b.score - a.score || a.char.localeCompare(b.char));
-}
-
-function relationRowsToResults(rows: RelationPoolRow[]): QueryResult[] {
-  return rows.map((r) => ({
-    word: r.char,
-    jyutping: r.jyutping,
-    code: r.code,
-    score: r.score,
-  }));
-}
-
-/**
- * Execute relation lookup query (synonym/antonym)
- */
 function executeRelationLookup(
   parsed: RelationLookupQuery,
   db: Database,
@@ -3684,18 +3565,24 @@ function executeRelationLookup(
     return { items: [] };
   }
 
-  let rows =
-    parsed.relation_kind === 'syn'
-      ? expandSynTwoHop(db, seed, fetchBidirectionalRelations(db, seed, 'syn'))
-      : fetchBidirectionalRelations(db, seed, 'ant');
+  const rows = relationLookupItems(
+    db,
+    seed,
+    parsed.relation_kind,
+    mode,
+    parsed.code_prefix,
+    limit,
+    offset,
+  );
 
-  if (parsed.code_prefix) {
-    const variants = new Set(getCodeVariants(parsed.code_prefix, normalizeSearchMode(mode)));
-    const prefixLen = parsed.code_prefix.length;
-    rows = rows.filter((r) => variants.has(r.code) && [...r.char].length === prefixLen);
-  }
-
-  return { items: relationRowsToResults(rows.slice(offset, offset + limit)) };
+  return {
+    items: rows.map((r) => ({
+      word: r.char,
+      jyutping: r.jyutping,
+      code: r.code,
+      score: r.score ?? 0,
+    })),
+  };
 }
 
 // ============================================================================

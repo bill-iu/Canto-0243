@@ -10,12 +10,14 @@ import {
   resetCompoundCaches,
 } from '../src/db/compound.ts';
 import { loadRankingData } from '../src/db/ranking-loader.node.ts';
+import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 compoundLogicSelfCheck();
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 loadRankingData(repoRoot);
+loadStaticRelationData(repoRoot);
 
 const fixture = path.join(repoRoot, 'tests/fixtures/lyrics.db');
 if (fs.existsSync(fixture)) {

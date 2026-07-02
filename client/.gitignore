@@ -18,6 +18,9 @@ dist-ssr
 
 # Generated at prebuild (scripts/build-ranking-index.ts)
 public/ranking-index.json
+public/static-syn-index.json
+public/static-ant-index.json
+public/rhyme-letter-index.json
 
 # Editor directories and files
 .vscode/*

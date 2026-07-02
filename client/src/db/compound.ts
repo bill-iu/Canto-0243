@@ -1,10 +1,11 @@
 /**
  * Compound query execution — port of app/domain/relations/compound_*.py (P2 subset)
- * ponytail: DB syn/ant graph only; static thesaurus deferred
+ * ponytail: DB syn/ant graph + static cilin/guotong syn (prebuild index)
  */
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { compareSearchResults } from './ranking.ts';
+import { getStaticSynonyms } from './thesaurus.ts';
 
 export type CompoundKind = 'syn' | 'ant' | 'doubled_syllable';
 
@@ -111,7 +112,7 @@ function loadSingleCharLiterals(db: Database): Set<string> {
   return out;
 }
 
-function loadSynAdjacency(db: Database): Map<string, Set<string>> {
+function loadSynAdjacency(db: Database, membership?: Set<string>): Map<string, Set<string>> {
   const adj = new Map<string, Set<string>>();
   const stmt = db.prepare(`
     SELECT w1.char AS a, w2.char AS b
@@ -137,6 +138,24 @@ function loadSynAdjacency(db: Database): Map<string, Set<string>> {
     adj.get(b)!.add(a);
   }
   stmt.free();
+
+  if (membership) {
+    for (const ch of membership) {
+      for (const syn of getStaticSynonyms(ch)) {
+        if (!syn || syn === ch || !membership.has(syn)) {
+          continue;
+        }
+        if (!adj.has(ch)) {
+          adj.set(ch, new Set());
+        }
+        if (!adj.has(syn)) {
+          adj.set(syn, new Set());
+        }
+        adj.get(ch)!.add(syn);
+        adj.get(syn)!.add(ch);
+      }
+    }
+  }
   return adj;
 }
 
@@ -295,7 +314,7 @@ function narrowByRhymeChar(
 function buildSynTiers(db: Database): TierMap {
   const twoChar = loadTwoCharLiterals(db);
   const singles = loadSingleCharLiterals(db);
-  const synAdj = loadSynAdjacency(db);
+  const synAdj = loadSynAdjacency(db, singles);
   const antPairs = loadAntOrientedPairs(db);
   const morpheme = scanMorphemeSynCompounds(twoChar, synAdj, antPairs);
   const curated = new Set([...curatedSyn].filter((ch) => twoChar.has(ch)));

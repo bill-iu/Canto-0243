@@ -6,6 +6,8 @@
 import { initSqlJs, type Database } from './sqljs.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
+import { initRhymeLetterIndex } from './rime-index.ts';
+import { initStaticSynIndex, initStaticAntIndex } from './thesaurus.ts';
 
 // Database instance singleton
 let db: Database | null = null;
@@ -38,6 +40,36 @@ async function loadBrowserRankingIndex(): Promise<void> {
     // ponytail: empty ranking signals — localeCompare-tier fallback via compareSearchResults defaults
   }
   rankingLoaded = true;
+}
+
+async function loadBrowserRhymeLetterIndex(): Promise<void> {
+  try {
+    const url = new URL('rhyme-letter-index.json', import.meta.env.BASE_URL).toString();
+    const res = await fetch(url);
+    if (res.ok) {
+      initRhymeLetterIndex(await res.json());
+    }
+  } catch {
+    // ponytail: rhyme_letters falls back to empty options
+  }
+}
+
+async function loadBrowserStaticSynIndex(): Promise<void> {
+  try {
+    const base = import.meta.env.BASE_URL;
+    const [synRes, antRes] = await Promise.all([
+      fetch(new URL('static-syn-index.json', base).toString()),
+      fetch(new URL('static-ant-index.json', base).toString()),
+    ]);
+    if (synRes.ok) {
+      initStaticSynIndex(await synRes.json());
+    }
+    if (antRes.ok) {
+      initStaticAntIndex(await antRes.json());
+    }
+  } catch {
+    // ponytail: compound/relation fall back to DB graph only
+  }
 }
 
 async function loadBrowserCompoundLists(): Promise<void> {
@@ -90,7 +122,12 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     // Mark as initialized
     isInitialized = true;
 
-    await Promise.all([loadBrowserRankingIndex(), loadBrowserCompoundLists()]);
+    await Promise.all([
+      loadBrowserRankingIndex(),
+      loadBrowserRhymeLetterIndex(),
+      loadBrowserStaticSynIndex(),
+      loadBrowserCompoundLists(),
+    ]);
     
     console.log('Database initialized successfully');
     return db;
