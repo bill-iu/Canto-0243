@@ -140,6 +140,12 @@ body {
   gap: 1rem;
 }
 
+.mode-readout {
+  margin: -0.5rem 0 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
 .search-input {
   flex: 1;
   padding: 1rem;
@@ -745,6 +751,10 @@ body {
 
   .guide-example code {
     color: #e0e0e0;
+  }
+
+  .mode-readout {
+    color: #bbb;
   }
 
   .load-more {
