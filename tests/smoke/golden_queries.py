@@ -1,7 +1,7 @@
 """黃金查詢集 CI 子集 — enforce_bench + registry 代表查詢去重。"""
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -12,6 +12,18 @@ class QueryJourneyCase:
     min_words: int = 0
     must_include: tuple[str, ...] = ()
     seed: str = ""
+
+
+@dataclass(frozen=True)
+class ParityCase:
+    """PWA vs portable parity row — used by scripts/pwa_golden_parity.py."""
+
+    query: str
+    mode: str = "m1"
+    db: str = "fixture"  # fixture | memory
+    seed: str = ""
+    ordered: bool = False
+    suite: str = "journey"  # journey | match_spec
 
 
 # enforce_bench critical + registry representatives; deduped ~18
@@ -61,6 +73,44 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("窮?潦倒=", {"width": 4, "partial_rhyme_mask": True, "anchor_count": 3}),
     ("=窮?潦倒", {"width": 4, "partial_initial_mask": True, "anchor_count": 3}),
 )
+
+# Journey gate: only lookup layout order is gated (D-G1); mask ranking waits for M3.
+JOURNEY_ORDERED_QUERIES = frozenset({"事業"})
+# Match-spec baseline: ranked partial masks compare order (M2/M3).
+MATCH_SPEC_ORDERED_QUERIES = frozenset({"窮?潦倒=", "=窮?潦倒"})
+
+
+def parity_cases_from_journeys() -> tuple[ParityCase, ...]:
+    return tuple(
+        ParityCase(
+            query=c.query,
+            mode=c.mode,
+            db=c.db,
+            seed=c.seed,
+            ordered=c.query in JOURNEY_ORDERED_QUERIES,
+            suite="journey",
+        )
+        for c in GOLDEN_QUERY_JOURNEYS
+    )
+
+
+def parity_cases_from_match_spec() -> tuple[ParityCase, ...]:
+    return tuple(
+        ParityCase(
+            query=q,
+            mode="m1",
+            db="fixture",
+            ordered=q in MATCH_SPEC_ORDERED_QUERIES,
+            suite="match_spec",
+        )
+        for q, _meta in MATCH_SPEC_REPRESENTATIVE_CASES
+    )
+
+
+PARITY_JOURNEY_CASES: tuple[ParityCase, ...] = parity_cases_from_journeys()
+PARITY_MATCH_SPEC_CASES: tuple[ParityCase, ...] = parity_cases_from_match_spec()
+ALL_PARITY_CASES: tuple[ParityCase, ...] = PARITY_JOURNEY_CASES + PARITY_MATCH_SPEC_CASES
+
 
 BUILDER_KINDS_WITH_REPRESENTATIVE_QUERY = frozenset({
     "EQUALS",
