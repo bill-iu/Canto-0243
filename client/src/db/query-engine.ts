@@ -26,6 +26,7 @@ export enum QueryKind {
   RELATION_LOOKUP = 'relation_lookup',
   COMPOUND_ANT = 'compound_ant',
   COMPOUND_SYN = 'compound_syn',
+  COMPOUND_DOUBLED_SYLLABLE = 'compound_doubled_syllable',
   HYBRID_TAIL_EQUALS_ALIAS = 'hybrid_tail_equals_alias',
   EQUALS = 'equals',
   PLUS_ANCHOR = 'plus_anchor',
@@ -155,6 +156,27 @@ export interface PlusAnchorQuery extends ParsedQuery {
   code_prefix?: string;
 }
 
+export interface CompoundSynQuery extends ParsedQuery {
+  kind: QueryKind.COMPOUND_SYN;
+  raw_q: string;
+  code_prefix?: string;
+  rhyme_char?: string;
+}
+
+export interface CompoundAntQuery extends ParsedQuery {
+  kind: QueryKind.COMPOUND_ANT;
+  raw_q: string;
+  code_prefix?: string;
+  rhyme_char?: string;
+}
+
+export interface CompoundDoubledSyllableQuery extends ParsedQuery {
+  kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE;
+  raw_q: string;
+  code_prefix?: string;
+  rhyme_char?: string;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -233,6 +255,7 @@ const QUERY_KIND_META: Record<QueryKind, QueryKindMeta> = {
   [QueryKind.RELATION_LOOKUP]: { route: RouteKind.RELATION },
   [QueryKind.COMPOUND_SYN]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.COMPOUND_ANT]: { route: RouteKind.MASK_FAMILY, match_spec: true },
+  [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.HYBRID_TAIL_EQUALS_ALIAS]: { route: RouteKind.MASK_FAMILY },
   [QueryKind.EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.PREFIX_WILDCARD_EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
@@ -326,24 +349,109 @@ function hasJyutpingChars(q: string): boolean {
   return /[a-zA-Z]/.test(q);
 }
 
+const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
+
+/** Port of relation.parse_doubled_syllable_syntax */
+export function parseDoubledSyllableSyntax(q: string): CompoundDoubledSyllableQuery | null {
+  const m = q.match(/^(\d*)\$\$([\u4e00-\u9fff])?$/);
+  if (!m) {
+    return null;
+  }
+  return {
+    kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE,
+    raw_q: q,
+    code_prefix: m[1] || undefined,
+    rhyme_char: m[2] || undefined,
+  };
+}
+
+/** Port of relation.parse_relation_syntax (compound + single ~ / ! lookup) */
+export function parseRelationSyntax(q: string): ParsedQuery | null {
+  let m = q.match(
+    new RegExp(`^(\\d*)~([${FILLWORD_CONNECTIVES}])~([\u4e00-\u9fff])?$`),
+  );
+  if (m) {
+    return {
+      kind: QueryKind.COMPOUND_SYN,
+      raw_q: q,
+      code_prefix: m[1] || undefined,
+      rhyme_char: m[3] || undefined,
+    } as CompoundSynQuery;
+  }
+
+  m = q.match(
+    new RegExp(`^(\\d*)!([${FILLWORD_CONNECTIVES}])!([\u4e00-\u9fff])?$`),
+  );
+  if (m) {
+    return {
+      kind: QueryKind.COMPOUND_ANT,
+      raw_q: q,
+      code_prefix: m[1] || undefined,
+      rhyme_char: m[3] || undefined,
+    } as CompoundAntQuery;
+  }
+
+  m = q.match(/^(\d*)~~([\u4e00-\u9fff])?$/);
+  if (m) {
+    return {
+      kind: QueryKind.COMPOUND_SYN,
+      raw_q: q,
+      code_prefix: m[1] || undefined,
+      rhyme_char: m[2] || undefined,
+    } as CompoundSynQuery;
+  }
+
+  m = q.match(/^(\d*)!!([\u4e00-\u9fff])?$/);
+  if (m) {
+    return {
+      kind: QueryKind.COMPOUND_ANT,
+      raw_q: q,
+      code_prefix: m[1] || undefined,
+      rhyme_char: m[2] || undefined,
+    } as CompoundAntQuery;
+  }
+
+  m = q.match(/^(\d*)([~!])([\u4e00-\u9fff]+)$/);
+  if (m) {
+    return {
+      kind: QueryKind.RELATION_LOOKUP,
+      raw_q: q,
+      relation_kind: m[2] === '~' ? 'syn' : 'ant',
+      word: m[3]!,
+      code_prefix: m[1] || undefined,
+    } as RelationLookupQuery;
+  }
+
+  return null;
+}
+
+/** ponytail: compound tiers from relation index — stub returns [] until relation DB port */
+function executeCompoundQuery(
+  _parsed: CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
+  _db: Database,
+  _mode: QueryMode,
+  _limit: number,
+  _offset: number,
+): SearchResult {
+  return { items: [] };
+}
+
 /**
  * Parse query and classify into QueryKind
  */
 export function parseQuery(q: string): ParsedQuery {
   const normalized = normalizeQuery(q);
-  
-  // Check for relation syntax (syn/ant queries)
-  // This is a simplified version - full implementation in Python has complex patterns
-  if (normalized.startsWith('~') || normalized.startsWith('！') || 
-      normalized.startsWith('!') || normalized.startsWith('～')) {
-    return {
-      kind: QueryKind.RELATION_LOOKUP,
-      raw_q: normalized,
-      relation_kind: normalized.startsWith('~') || normalized.startsWith('～') ? 'syn' : 'ant',
-      word: normalized.slice(1),
-    } as RelationLookupQuery;
+
+  const doubled = parseDoubledSyllableSyntax(normalized);
+  if (doubled) {
+    return doubled;
   }
-  
+
+  const relationParsed = parseRelationSyntax(normalized);
+  if (relationParsed) {
+    return relationParsed;
+  }
+
   // Prefix wildcard equals (?困潦倒=) — before framed equals / mask
   const prefixWildcard = parsePrefixWildcardEqualsQuery(normalized);
   if (prefixWildcard) {
@@ -1403,6 +1511,19 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
     
     case RouteKind.MASK_FAMILY:
+      if (
+        parsed.kind === QueryKind.COMPOUND_SYN ||
+        parsed.kind === QueryKind.COMPOUND_ANT ||
+        parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE
+      ) {
+        return executeCompoundQuery(
+          parsed as CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
       if (parsed.kind === QueryKind.PREFIX_WILDCARD_EQUALS) {
         return executePrefixWildcardEquals(
           parsed as PrefixWildcardEqualsQuery,
