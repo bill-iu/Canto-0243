@@ -99,6 +99,17 @@ export interface MaskQuery extends ParsedQuery {
   raw_q: string;
 }
 
+/** Rhyme/initial anchor query (就=, =就, 香=?, =香?) */
+export interface RhymeAnchorQuery extends ParsedQuery {
+  kind: QueryKind.RHYME_ANCHOR;
+  raw_q: string;
+  constraint: 'final' | 'initial';
+  anchor_pos: number;
+  anchor: string;
+  slots: string;
+  width: number;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -297,13 +308,17 @@ export function parseQuery(q: string): ParsedQuery {
     } as HybridTailEqualsAliasQuery;
   }
   
-  // Check for framed equals query (e.g., 香港=, 2=我3, =香, 就=)
+  // Check for framed equals query (e.g., 香港=, 2=我3)
   if (isFramedEqualsQuery(normalized)) {
     return { kind: QueryKind.EQUALS, raw_q: normalized } as EqualsQuery;
   }
+
+  const rhymeAnchor = parseRhymeAnchorQuery(normalized);
+  if (rhymeAnchor) {
+    return rhymeAnchor;
+  }
   
   // Check for various mask patterns
-  // This is a placeholder - full mask detection is complex
   if (looksLikeMaskQuery(normalized)) {
     return { kind: QueryKind.MASK, raw_q: normalized };
   }
@@ -340,6 +355,232 @@ export function normalizeAndParse(q: string): ParsedQuery {
 function looksLikeMaskQuery(q: string): boolean {
   // Contains wildcards: ?, _, %, *
   return /[?*_%]/.test(q);
+}
+
+const WILDCARD_CHARS = new Set(['_', '?', '%']);
+const SLOT_CHAR_RE = /[0-9_?%]/;
+
+function isWildcardChar(ch: string): boolean {
+  return ch.length === 1 && WILDCARD_CHARS.has(ch);
+}
+
+function isSlotChar(ch: string): boolean {
+  return ch.length === 1 && SLOT_CHAR_RE.test(ch);
+}
+
+/** Port of query_grammar/rhyme.parse_rhyme_anchor_query (P1 subset) */
+export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
+  if (!q || q.includes(CODE_TAIL_MIDDLE) || q.includes('@') || isFramedEqualsQuery(q)) {
+    return null;
+  }
+
+  const base = (fields: Omit<RhymeAnchorQuery, 'kind' | 'raw_q'>): RhymeAnchorQuery => ({
+    kind: QueryKind.RHYME_ANCHOR,
+    raw_q: q,
+    ...fields,
+  });
+
+  let m = q.match(/^([\u4e00-\u9fff])=$/);
+  if (m) {
+    return base({
+      constraint: 'final',
+      anchor: m[1]!,
+      anchor_pos: 0,
+      slots: '',
+      width: 1,
+    });
+  }
+
+  m = q.match(/^=([\u4e00-\u9fff])$/);
+  if (m) {
+    return base({
+      constraint: 'initial',
+      anchor: m[1]!,
+      anchor_pos: 0,
+      slots: '',
+      width: 1,
+    });
+  }
+
+  m = q.match(/^([0-9_?%]+)([\u4e00-\u9fff])=$/);
+  if (m) {
+    const slots = m[1]!;
+    return base({
+      constraint: 'final',
+      anchor: m[2]!,
+      anchor_pos: slots.length,
+      slots,
+      width: slots.length + 1,
+    });
+  }
+
+  m = q.match(/^([\u4e00-\u9fff])=([0-9_?%]+)$/);
+  if (m) {
+    const slots = m[2]!;
+    return base({
+      constraint: 'final',
+      anchor: m[1]!,
+      anchor_pos: 0,
+      slots,
+      width: slots.length + 1,
+    });
+  }
+
+  m = q.match(/^=([\u4e00-\u9fff])([0-9_?%]+)$/);
+  if (m) {
+    const slots = m[2]!;
+    return base({
+      constraint: 'initial',
+      anchor: m[1]!,
+      anchor_pos: 0,
+      slots,
+      width: slots.length + 1,
+    });
+  }
+
+  m = q.match(/^([0-9_?%]+)=([\u4e00-\u9fff])$/);
+  if (m) {
+    const slots = m[1]!;
+    return base({
+      constraint: 'initial',
+      anchor: m[2]!,
+      anchor_pos: slots.length,
+      slots,
+      width: slots.length + 1,
+    });
+  }
+
+  return null;
+}
+
+/** Port of query_grammar/mask.build_mask_from_slots */
+function buildMaskFromSlots(slots: string, width: number, anchorPos: number): string {
+  const chars = Array(width).fill('?');
+  if (anchorPos === 0) {
+    for (let i = 0; i < slots.length; i++) {
+      chars[i + 1] = slots[i]!;
+    }
+  } else {
+    for (let i = 0; i < slots.length; i++) {
+      chars[i] = slots[i]!;
+    }
+  }
+  return chars.join('');
+}
+
+function matchesMaskLiteralChars(wordChar: string, mask: string): boolean {
+  if (wordChar.length !== mask.length) {
+    return false;
+  }
+  for (let idx = 0; idx < mask.length; idx++) {
+    const ch = mask[idx]!;
+    if (isWildcardChar(ch) || /\d/.test(ch)) {
+      continue;
+    }
+    if (wordChar[idx] !== ch) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/** ponytail: DB + substring infer; upgrade path: lexicon admission union */
+function anchorPhonemeOptions(
+  db: Database,
+  char: string,
+  dimension: 'final' | 'initial',
+): Set<string> {
+  const options = new Set<string>();
+  const row = equalsAuthoritativeRow(db, char);
+  if (row) {
+    const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
+    if (parts.length) {
+      options.add(parts[0]!);
+    }
+  }
+
+  const stmt = db.prepare(
+    'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
+  );
+  stmt.bind([`%${char}%`]);
+  while (stmt.step()) {
+    const hit = stmt.getAsObject() as WordRow;
+    const text = String(hit.char ?? '');
+    for (let idx = 0; idx < text.length; idx++) {
+      if (text[idx] !== char) {
+        continue;
+      }
+      const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
+      if (parts.length > idx && parts[idx]) {
+        options.add(parts[idx]!);
+      }
+    }
+  }
+  stmt.free();
+  return options;
+}
+
+function matchesPhonemeAtPosition(
+  word: WordRow,
+  pos: number,
+  anchor: string,
+  constraint: 'final' | 'initial',
+  db: Database,
+): boolean {
+  const options = anchorPhonemeOptions(db, anchor, constraint);
+  const parts = constraint === 'final' ? getRhymeFinals(word) : getWordParts(word, 'initials');
+  if (!options.size || pos >= parts.length) {
+    return false;
+  }
+  return options.has(parts[pos]!);
+}
+
+function executeRhymeAnchorQuery(
+  parsed: RhymeAnchorQuery,
+  db: Database,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const mask = buildMaskFromSlots(parsed.slots, parsed.width, parsed.anchor_pos);
+  const width = parsed.width;
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const word = stmt.getAsObject() as WordRow;
+    const charText = String(word.char ?? '');
+    if (!wordMatchesWidth(word, width)) {
+      continue;
+    }
+    if (!matchesMaskLiteralChars(charText, mask)) {
+      continue;
+    }
+    if (
+      !matchesPhonemeAtPosition(
+        word,
+        parsed.anchor_pos,
+        parsed.anchor,
+        parsed.constraint,
+        db,
+      )
+    ) {
+      continue;
+    }
+    matched.push(rowToResult(word));
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
 }
 
 // ============================================================================
@@ -613,6 +854,9 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
     
     case RouteKind.MASK_FAMILY:
+      if (parsed.kind === QueryKind.RHYME_ANCHOR) {
+        return executeRhymeAnchorQuery(parsed as RhymeAnchorQuery, db, limit, offset);
+      }
       // Handle equals queries
       if (parsed.kind === QueryKind.EQUALS) {
         return executeEqualsQuery(parsed as EqualsQuery, db, mode, limit, offset);
