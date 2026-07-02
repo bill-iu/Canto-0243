@@ -12,7 +12,7 @@ PWA（`client/`）須與 PC portable 在**同一 `lyrics.db`** 下呈現**等價
 
 | 代號 | 查詢邏輯 | SQLite 存取 | 狀態 |
 |------|----------|-------------|------|
-| **D** | TypeScript port（`client/src/db/query-engine.ts`） | sql.js（現況）；目標 wasm-sqlite + OPFS | 已開始；golden parity **0/18** |
+| **D** | TypeScript port（`client/src/db/query-engine.ts`） | sql.js（現況）；目標 wasm-sqlite + OPFS | golden parity **18/18 + 15/15**（2026-07-02） |
 | **E** | 瀏覽器內 Python（Pyodide）執行 portable 同源引擎 | sqlite3 / SQLAlchemy + OPFS | 未實作 |
 
 ADR-0023 已選 React + Vite + PWA +「port 查詢引擎至 JS」，但 **parity 未達標** 且 **Pyodide 優化路線**（Lazy、Worker、OPFS、trim）是否足以改變決策，需以數據與 POC 驗證，而非架構討論直接定案。
@@ -107,8 +107,8 @@ PWA Shell (React + Vite，可沿用 client/)
 |------|------|
 | `query-engine.ts` LOC | **~1,134** |
 | 相對 Python 執行層 LOC | **~13%** 骨架 |
-| Golden parity | **0/18**（`scripts/pwa_golden_parity.py`） |
-| 已知阻斷 | SQL 欄位 `word` vs `char`；parser 分類不全；mask/syn 為 stub |
+| Golden parity | **18/18** journeys、**15/15** match_spec（`scripts/pwa_golden_parity.py --gate all`） |
+| 已知阻斷 | 複合查詢執行（~~/!!/$$）、heteronym 執行、jyutping anchor 執行仍 stub；browser 端 ranking 資料未 bundle |
 
 ### 3.2 需重寫／補齊範圍
 

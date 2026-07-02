@@ -786,9 +786,24 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
     return relationParsed;
   }
 
+  const prefixEqHint = prefixWildcardEqualsMissingEqHint(q);
+  if (prefixEqHint) {
+    return { kind: QueryKind.UNMATCHED, raw_q: q, hint: prefixEqHint };
+  }
+
+  const pureCharsHint = parsePureCharsSerialHint(q);
+  if (pureCharsHint) {
+    return { kind: QueryKind.UNMATCHED, raw_q: q, hint: pureCharsHint };
+  }
+
   const prefixWildcard = parsePrefixWildcardEqualsQuery(q);
   if (prefixWildcard) {
     return prefixWildcard;
+  }
+
+  const prefixInitial = parsePrefixWildcardInitialQuery(q);
+  if (prefixInitial) {
+    return prefixInitial;
   }
 
   const partialRhyme = parsePartialRhymeMaskQuery(q);
@@ -1393,6 +1408,7 @@ export function parserLogicSelfCheck(): void {
     ['?30人', QueryKind.WILDCARD_CODE_ANCHOR],
     ['12/12', QueryKind.HETERONYM_CODE],
     ['33~與~你', QueryKind.COMPOUND_SYN],
+    ['?=困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
   ];
   for (const [q, kind] of cases) {
     const parsed = normalizeAndParse(q);
@@ -1403,6 +1419,10 @@ export function parserLogicSelfCheck(): void {
   const codeRef = parseCodeRefMiddleRhymeQuery('?3人=?');
   if (!codeRef || codeRef.anchor !== '人' || codeRef.width !== 3) {
     throw new Error('parserLogicSelfCheck: code_ref_middle parse');
+  }
+  const missingEq = normalizeAndParse('?困潦倒');
+  if (missingEq.kind !== QueryKind.UNMATCHED || !missingEq.hint?.includes('尾格')) {
+    throw new Error('parserLogicSelfCheck: prefix wildcard missing = hint');
   }
 }
 
@@ -1503,6 +1523,52 @@ export function parsePrefixWildcardEqualsQuery(q: string): PrefixWildcardEqualsQ
     ref_literal: ref,
     width: ref.length + 1,
   };
+}
+
+/** Port of query_grammar/serial.parse_prefix_wildcard_initial_query */
+export function parsePrefixWildcardInitialQuery(q: string): PrefixWildcardEqualsQuery | null {
+  const m = q.match(/^\?=([\u4e00-\u9fff]{2,})$/);
+  if (!m) {
+    return null;
+  }
+  const ref = m[1]!;
+  return {
+    kind: QueryKind.PREFIX_WILDCARD_EQUALS,
+    raw_q: q,
+    inner_q: `=${ref}`,
+    ref_literal: ref,
+    width: ref.length + 1,
+  };
+}
+
+const PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT =
+  '前綴通配等號查詢須以 `=` 結尾。例：`?困潦倒=`（唔好漏尾格 `=`）。';
+const PURE_CHARS_SERIAL_HINT =
+  '每個 `{字}=`／`={字}` 前須有 0243 碼。例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。';
+
+/** Port of serial.prefix_wildcard_equals_missing_eq_hint */
+function prefixWildcardEqualsMissingEqHint(q: string): string | null {
+  if (/^\?[\u4e00-\u9fff]{3,}$/.test(q)) {
+    return PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT;
+  }
+  return null;
+}
+
+/** Port of serial.parse_pure_chars_serial_hint */
+function parsePureCharsSerialHint(q: string): string | null {
+  if (!q || !/^[\u4e00-\u9fff=]+$/.test(q)) {
+    return null;
+  }
+  if (/^[\u4e00-\u9fff]=$/.test(q)) {
+    return null;
+  }
+  if (isFramedEqualsQuery(q)) {
+    return null;
+  }
+  if (/(?<![0-9])([\u4e00-\u9fff])=/.test(q)) {
+    return PURE_CHARS_SERIAL_HINT;
+  }
+  return null;
 }
 
 /** Port of rhyme.normalize_partial_rhyme_mask_query */
