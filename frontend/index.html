@@ -10,7 +10,7 @@
   <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <title>Canto-0243 ONE·搵·韻</title>
-  <!-- Active tab URL: view=guide | view=relation | view=corrections -->
+  <!-- Active tab URL: view=guide | view=relation | view=corrections | view=about -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
@@ -143,6 +143,7 @@
           </button>
           <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
           <button class="ghost-button guide-top-link" id="relationTopBtn" type="button">補關係</button>
+          <button class="ghost-button guide-top-link" id="aboutTopBtn" type="button">關於</button>
 
           <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
               <div class="menu-group" role="group" aria-label="0243搜尋模式">
@@ -164,7 +165,7 @@
                 <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
                   <span>
                     <span class="mode-name">近反義<span class="mode-note">查</span></span>
-                    <span class="mode-help">近義、反義與語意相關</span>
+                    <span class="mode-help">近義、反義與語意相關 (BETA)</span>
                   </span>
                   <span class="mode-key">~ / !</span>
                 </button>
@@ -211,7 +212,7 @@
         <div class="hero">
           <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
           <h1 id="searchTitle">ONE·搵·韻</h1>
-          <p>格律/協音/押韻/近反義，一秒搵到。</p>
+          <p>格律/協音/押韻/近反義，一步搵到。</p>
         </div>
 
         <form class="search-panel" id="searchForm" role="search">
@@ -409,6 +410,7 @@
             <button class="guide-example" type="button" data-query="?+syut?" data-mode="m1"><code translate="no">?+syut?</code><span>三字，中格音節 syut</span></button>
             <button class="guide-example" type="button" data-query="3+ngo4" data-mode="m1"><code translate="no">3+ngo4</code><span>三字，首碼＋音節＋末碼</span></button>
             <button class="guide-example" type="button" data-query="3hon4" data-mode="m1"><code translate="no">3hon4</code><span>二字，碼 34，首格音節 hon</span></button>
+            <button class="guide-example" type="button" data-query="3$漢4" data-mode="m1"><code translate="no">3$漢4</code><span>同上（漢字音節錨，≡ 3hon4）</span></button>
             <button class="guide-example" type="button" data-query="3h4" data-mode="m1"><code translate="no">3h4</code><span>二字，碼 34，首格聲母 h</span></button>
             <button class="guide-example" type="button" data-query="3gw4" data-mode="m1"><code translate="no">3gw4</code><span>二字，碼 34，首格雙聲母 gw</span></button>
             <button class="guide-example" type="button" data-query="23o" data-mode="m1"><code translate="no">23o</code><span>二字，碼 23，末格韻母 o</span></button>
@@ -465,6 +467,25 @@
         </article>
 
         <article class="guide-card">
+          <h2>同音節疊字</h2>
+          <p><code translate="no">$$</code> 搵二字詞且兩字音節相同（聲調不限）；語法鏡像 <code translate="no">~~</code>。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="$$" data-mode="m1"><code translate="no">$$</code><span>二字同音節疊字（如慢慢、識食）</span></button>
+            <button class="guide-example" type="button" data-query="33$$" data-mode="m1"><code translate="no">33$$</code><span>33 同音 + 同音節疊字</span></button>
+            <button class="guide-example" type="button" data-query="$$你" data-mode="m1"><code translate="no">$$你</code><span>疊字，尾字同「你」同韻</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>同音異讀</h2>
+          <p><code translate="no">{左碼}/{右碼}</code> 搵同一字面、至少兩個唔同讀音；<code translate="no">?</code> 通配碼位。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="33/34" data-mode="m1"><code translate="no">33/34</code><span>如「今晚」gum1 maan1 與 gum1 maan5</span></button>
+            <button class="guide-example" type="button" data-query="?3/?4" data-mode="m1"><code translate="no">?3/?4</code><span>只約束第 2 字碼 3／4 嘅異讀</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
           <h2>連接詞複合詞</h2>
           <p>中格填詞連接詞（與、和、或…）嘅三字複合；<code translate="no">~與~</code> 近義、<code translate="no">!與!</code> 反義。</p>
           <div class="guide-examples">
@@ -514,6 +535,64 @@
         <div class="status ok" id="relationOkStatus" hidden role="status"></div>
         <div class="status err" id="relationErrStatus" hidden role="alert"></div>
       </form>
+    </section>
+
+    <section class="guide-view about-view is-hidden" id="aboutView" aria-labelledby="aboutTitle" hidden>
+      <div class="guide-hero">
+        <p class="eyebrow">About</p>
+        <h1 id="aboutTitle" tabindex="-1">關於 Canto-0243</h1>
+        <p class="about-lede">ONE·搵·韻 — 離線粵語填詞查找工作台。</p>
+      </div>
+
+      <article class="guide-intro about-block" aria-labelledby="aboutIntroTitle">
+        <h2 id="aboutIntroTitle">簡介</h2>
+        <p>填粵語歌詞時，往往要在<strong>同音、押韻、近義</strong>之間快速換字，又要對準 0243 與粵拼讀音。Canto-0243 用 <strong>0243／02493 數字碼</strong>、<strong>粵拼</strong>、<strong>韻母／聲母規則</strong>與<strong>近義／反義關係</strong>，在幾秒內列出符合條件的詞條；套件解壓即用，詞庫與近反義資料存於本地，無需連網。</p>
+        <h2 id="aboutWhyTitle">為何選擇本工具</h2>
+        <ul class="about-list">
+          <li><strong>開源</strong> — 原始碼公開，歡迎檢視、改進與回饋</li>
+          <li><strong>免費</strong> — 下載即用，無訂閱或按量收費</li>
+          <li><strong>持續更新</strong> — 維護者持續改進詞庫與功能，並透過 Release 發佈</li>
+        </ul>
+      </article>
+
+      <article class="guide-intro about-block about-pledge" aria-labelledby="aboutPledgeTitle">
+        <h2 id="aboutPledgeTitle">承諾與授權</h2>
+        <p><strong>本工具 100% 免費、開源。我們絕不會利用本工具或其底層數據牟利。</strong>任何創作者皆可將本工具用於<strong>商業創作</strong>（例如歌曲、劇本、已發表歌詞），前提為遵守下方限制與 <a href="https://github.com/bill-iu/Canto-0243/blob/dev/LICENSE" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>（CC BY-NC-SA 4.0 + 附加條款）。</p>
+        <p><strong>禁止事項（摘要）：</strong>不得將本工具重新打包轉售或作為競爭性產品單獨發布；不得提供付費 API、訂閱或按量計費的查詢服務；公開 fork 或衍生版本須沿用同一授權並保留 Canto-0243 名稱與適當署名。完整條文見 License 連結。</p>
+      </article>
+
+      <article class="guide-intro about-block" aria-labelledby="aboutThanksTitle">
+        <h2 id="aboutThanksTitle">專案致謝</h2>
+        <p>本專案在作者幾乎零程式背景的起步階段，得益於 <a href="https://github.com/ivorhoulker" target="_blank" rel="noopener noreferrer">ivorhoulker（艾浩家）</a> 擔任 Advisor，在設計與實行上給予許多指導與寶貴建議。</p>
+        <p>亦要多謝 <strong>「0243 理論」發明人黃志華老師</strong>（很榮幸得到他的支持），奠定粵語填詞數碼化的理論基礎。多謝 <a href="https://0243.hk" target="_blank" rel="noopener noreferrer">0243.hk</a> 開發者 <strong>Daniel Tam</strong> 先生開發該網站，解決許多填詞難題，並啟發本工具的開發。</p>
+      </article>
+
+      <article class="guide-intro about-block" aria-labelledby="aboutSourcesTitle">
+        <h2 id="aboutSourcesTitle">資料來源</h2>
+        <p>本應用程式得以實現，全賴語言學家、開源維護者及社群貢獻者的出色工作。我們十分榮幸能整合以下項目的數據：</p>
+        <ul class="about-sources">
+          <li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粵典）</a>：採用公有領域授權（致謝 words.hk）。</li>
+          <li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粵語（中州韻粵語拼音）</a>：單字讀音與 essay 詞頻；採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>
+          <li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">開放詞典 · 粵語詞典（Kaifangcidian）</a>：採用 <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>。</li>
+          <li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">詞林同義詞（Cilin）</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>
+          <li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：<code>dict_synonym.txt</code>、<code>dict_antonym.txt</code>；採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>（反義詞主來源）。</li>
+        </ul>
+        <p>完整第三方授權清單見 <a href="https://github.com/bill-iu/Canto-0243/blob/dev/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer">THIRD_PARTY_NOTICES.md</a>。</p>
+      </article>
+
+      <article class="guide-intro about-block" aria-labelledby="aboutDevTitle">
+        <h2 id="aboutDevTitle">關於開發者</h2>
+        <p><strong><a href="https://github.com/bill-iu/Canto-0243" target="_blank" rel="noopener noreferrer">Bill IU（姚程馭）</a></strong> — 演員，粵語音樂劇填詞人，超級業餘的程式設計師。</p>
+      </article>
+
+      <article class="guide-intro about-block about-report" aria-labelledby="aboutReportTitle">
+        <h2 id="aboutReportTitle">錯誤回報</h2>
+        <p>如果您發現任何問題，請前往 GitHub <a href="https://github.com/bill-iu/Canto-0243/issues/new" target="_blank" rel="noopener noreferrer">提交 Issue</a>（建議使用錯誤回報範本）。非常感謝您的協助！</p>
+        <div class="guide-actions">
+          <a class="primary-button about-report-btn" href="https://github.com/bill-iu/Canto-0243/issues/new" target="_blank" rel="noopener noreferrer">前往 GitHub 回報</a>
+          <button class="ghost-button" id="aboutBackToSearchBtn" type="button">回到搜尋</button>
+        </div>
+      </article>
     </section>
 
     <section class="relation-view relation-main corrections-view is-hidden" id="correctionsView" aria-labelledby="correctionsTitle" hidden>

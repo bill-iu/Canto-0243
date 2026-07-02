@@ -1,6 +1,8 @@
-char	code	jyutping	action	value	note	status	applied_at
-行	2	hong6	set_jyutping	hang6	罪行、品行等 háng 系讀音	applied	2026-06-19
-行	0	hong6	set_jyutping	hong4	單字「行」hóng 四聲	applied	2026-06-19
-行	9	hong6	delete		錯列；已有 hang4／hang6／hong4	applied	2026-06-19
-巷	9	hong6	delete		錯列；巷讀 hong6 非 code 9 單字列	applied	2026-06-19
-不斷	34	bat1 dyun6	set_code	32		pending	
+char	old_jyutping	old_code	action	value	note
+行	hong6	2	set_jyutping	hang6	罪行、品行等 háng 系讀音
+行	hong6	0	set_jyutping	hong4	單字「行」hóng 四聲
+行	hong6	9	delete		錯列；已有 hang4／hang6／hong4
+巷	hong6	9	delete		錯列；巷讀 hong6 非 code 9 單字列
+不斷	but1 dyun6	34	set_code	32	
+半年	bun3 nin4	00	set_code	40	
+半年	bun4 nin4	00	set_jyutping	bun3 nin4	

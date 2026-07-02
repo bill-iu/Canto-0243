@@ -3,7 +3,7 @@
 **期間**：2026-05 ~ 2026-06 · **棧**：FastAPI + SQLAlchemy + SQLite（離線）+ HTML/JS  
 **目標**：快速粵語押韻搜尋（0243／等號韻／wildcard／近反義）。**原則**：ingest 重型、runtime 無 ML、純 SQL + static thesaurus。
 
-**Enforcement**（每次實質變更）：`python -m unittest discover -s tests -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
+**Enforcement**（每次實質變更）：`python -m unittest discover -s tests/smoke -q` ＋ `python scripts/check_seams.py -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
 
 ### 2026-06-13 — 根目錄整理（grill C · D · A · D · A · B）
 
@@ -99,12 +99,11 @@
 - **P0**：`start_pos = len(left_code) - target_length`（`23=你4` 錨 pos 1）；語意見 `CONTEXT.md` § 碼夾等號查詢
 - **P1–P4**：詞庫埠 · rime 單字 ensure · essay 詞頻 · curated + pron_rank 排序 ✅
 
-### 2026-06-12 — PostgreSQL 凍結
+### 2026-07-02 — SQLite-only
 
-- 交付 = **離線 SQLite**；PG scaffold **Freeze**（code 留、不投資）
-- Schema 新變更 **僅 SQLite**（bootstrap）；Alembic 不再更新
-- `psycopg2`/`alembic` → `requirements-postgres.txt`；PG URL 啟動警告
-- PG issue：best-effort patch，無 CI、無承諾
+- 交付 = **離線 SQLite**；移除 PostgreSQL scaffold 與 Alembic
+- `DATABASE_URL=postgresql...` 會 fail-fast（避免誤以為支援）
+- Schema 變更一律走 SQLite bootstrap（`app/db/bootstrap.py`）
 
 ---
 

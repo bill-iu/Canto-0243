@@ -76,7 +76,7 @@ class MatchSpec:
     # 為 mask 等
     mask: str = ""
 
-    compound_kind: Optional[Literal["syn", "ant"]] = None
+    compound_kind: Optional[Literal["syn", "ant", "doubled_syllable"]] = None
 
     # 未來可擴充的政策（排序、去重策略等）
     extra: dict[str, Any] = field(default_factory=dict)

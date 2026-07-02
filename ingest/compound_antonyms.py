@@ -8,10 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relations.store import (
-    fetch_existing_relation_keys as _fetch_existing_keys,
-    insert_relations as _insert_relations,
-)
+from app.domain.relations.store import insert_relations
 from app.lexicon.compound_antonyms import load_compound_antonyms
 from app.models.word import Word, WordRelation
 from ingest.syn_ant_build import clear_word_relations_source
@@ -99,17 +96,7 @@ def ingest_compound_ant_char_pairs(
     if not pending:
         return stats
 
-    if dedupe_existing:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing = _fetch_existing_keys(db, keys)
-        before = len(pending)
-        pending = [
-            c for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        stats["skipped_existing"] = before - len(pending)
-
-    if pending:
-        stats["inserted"] = _insert_relations(db, [WordRelation(**c) for c in pending])
+    _ = dedupe_existing  # ponytail: no-op; INSERT OR IGNORE replaces pre-fetch dedupe
+    stats["inserted"] = insert_relations(db, [WordRelation(**c) for c in pending])
 
     return stats

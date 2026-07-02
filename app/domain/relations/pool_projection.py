@@ -17,6 +17,7 @@ def project_relation_pool(
     *,
     allow_inject: bool = True,
     include_static: bool = True,
+    include_derived_ant: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
     membership: Optional[Set[str]] = None,
 ) -> PoolSnapshot:
@@ -30,6 +31,7 @@ def project_relation_pool(
         db,
         q,
         include_static=include_static,
+        include_derived_ant=include_derived_ant,
         thesaurus=thesaurus or default_thesaurus_port(),
         membership=membership,
         quiet=True,
@@ -44,6 +46,7 @@ def relation_pool_page(
     limit: int = DEFAULT_PAGE_SIZE,
     offset: int = 0,
     include_static: bool = True,
+    include_derived_ant: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
     membership: Optional[Set[str]] = None,
 ) -> List[dict]:
@@ -54,6 +57,7 @@ def relation_pool_page(
         seed_char.strip(),
         allow_inject=allow_inject,
         include_static=include_static,
+        include_derived_ant=include_derived_ant,
         thesaurus=thesaurus,
         membership=membership,
     ).page(limit, offset)
@@ -66,8 +70,9 @@ def relation_pool_chars(
     *,
     allow_inject: bool = True,
     include_static: bool = True,
-    expand_ant_via_syn: bool = True,
+    include_derived_ant: bool = True,
     thesaurus: Optional[ThesaurusPort] = None,
+    membership: Optional[Set[str]] = None,
 ) -> List[str]:
     if relation_type not in ("syn", "ant"):
         return []
@@ -78,10 +83,11 @@ def relation_pool_chars(
         seed_char.strip(),
         allow_inject=allow_inject,
         include_static=include_static,
+        include_derived_ant=include_derived_ant,
         thesaurus=thesaurus,
+        membership=membership,
     )
-    expand = relation_type == "ant" and expand_ant_via_syn
-    return snapshot.chars(relation_type, expand=expand)
+    return snapshot.chars(relation_type)
 
 
 def relation_chars_for_seed(

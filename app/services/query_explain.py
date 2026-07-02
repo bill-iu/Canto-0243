@@ -8,7 +8,9 @@ from typing import Optional
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
+    CompoundDoubledSyllableQuery,
     DigitCodeQuery,
+    HeteronymCodeQuery,
     HybridTailEqualsAliasQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
@@ -100,6 +102,11 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
         return f"粵拼查詢「{parsed.raw_q}」"
     if isinstance(parsed, HybridTailEqualsAliasQuery):
         return f"碼夾等號查詢「{parsed.raw_q}」"
+    if isinstance(parsed, HeteronymCodeQuery):
+        return (
+            f"查同字面異讀（{parsed.left_template}/{parsed.right_template}）："
+            f"搵至少兩個唔同讀音，分別符合左右碼位模板"
+        )
     if isinstance(parsed, UnmatchedQuery):
         return None
 
@@ -160,6 +167,18 @@ def _hybrid_multi_char_summary(spec: MatchSpec) -> str:
 
 
 def _compound_summary(spec: MatchSpec) -> str:
+    if spec.compound_kind == "doubled_syllable":
+        rhyme = next(
+            (s.value for s in spec.slots if s.kind == "final_anchor" and isinstance(s.value, str)),
+            None,
+        )
+        if spec.code_prefix and rhyme:
+            return f"查二字同音節疊字（碼 {spec.code_prefix}，尾字同「{rhyme}」同韻）"
+        if spec.code_prefix:
+            return f"查二字同音節疊字（碼 {spec.code_prefix}）"
+        if rhyme:
+            return f"查二字同音節疊字（尾字同「{rhyme}」同韻）"
+        return "查二字同音節疊字（兩字音節相同，聲調不限）"
     label = "近義" if spec.compound_kind == "syn" else "反義"
     connective = spec.extra.get("connective")
     if connective:

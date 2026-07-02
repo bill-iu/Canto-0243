@@ -11,7 +11,7 @@ Backfill Script for Word Embeddings (Semantic Similarity)
   或僅匯出旁路備份：
   python scripts/legacy/backfill_embeddings.py --export-sidecar backup/lyrics_embeddings_new.jsonl.gz
 
-Postgres 正式環境不受 --write-main-db 限制（仍可直接 backfill）。
+SQLite-only：需明確 opt-in 先會寫回主 DB。
 """
 
 from __future__ import annotations
@@ -30,7 +30,7 @@ from sqlalchemy import or_, func
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from app.database import SessionLocal, IS_POSTGRES
+from app.database import SessionLocal
 from app.models.word import Word
 from app.utils.embedding import enable_embedding_model_for_ingest, get_text_embedding
 
@@ -40,8 +40,6 @@ PRINT_EVERY = 100
 
 
 def _sqlite_main_db_write_allowed(write_main_db: bool) -> bool:
-    if IS_POSTGRES:
-        return True
     if write_main_db:
         return True
     if os.getenv("ALLOW_MAIN_DB_EMBEDDINGS", "").strip() in ("1", "true", "yes"):
@@ -164,10 +162,7 @@ def backfill_embeddings(
             try:
                 emb = get_text_embedding(text_for_embed)
                 if emb:
-                    if IS_POSTGRES:
-                        word.embedding = emb
-                    else:
-                        word.embedding = json.dumps(emb)
+                    word.embedding = json.dumps(emb)
                     updated += 1
                 else:
                     skipped += 1
@@ -211,7 +206,7 @@ def main():
     args = parser.parse_args()
 
     print("🚀 啟動 Embedding Backfill Script")
-    print(f"資料庫類型: {'PostgreSQL' if IS_POSTGRES else 'SQLite'}")
+    print("資料庫類型: SQLite")
     print(f"ENV: {os.getenv('ENV', 'local')}")
     print()
 

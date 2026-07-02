@@ -1,4 +1,4 @@
-"""Char-level 關係圖：直接近義鄰居與 ! 鏡射對（runtime + ingest 同源）。"""
+"""Char-level 關係圖：直接近義鄰居（runtime + ingest 同源）。"""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"
 
 
 class CharRelationGraph:
-    """Bidirectional char syn adjacency + ant mirror pair collection."""
+    """Bidirectional char syn adjacency for runtime relation expansion."""
 
     def __init__(
         self,
@@ -115,26 +115,6 @@ class CharRelationGraph:
             oriented.add((b, a))
         return oriented
 
-    def collect_mirror_ant_pairs(
-        self,
-        *,
-        include_static: bool = True,
-        exclude_sources: Optional[Set[str]] = None,
-    ) -> Set[Tuple[str, str]]:
-        """Char pairs (head, tail) for ! 鏡射：ant endpoint + 其直接近義鄰居。"""
-        exclude_sources = exclude_sources or {ANT_SYN_MIRROR_SOURCE}
-        adj = self._ensure_adjacency(include_static=include_static)
-        seeds = self._direct_ant_oriented_pairs(exclude_sources=exclude_sources)
-        pairs: Set[Tuple[str, str]] = set()
-        for head, endpoint in seeds:
-            if head == endpoint:
-                continue
-            pairs.add((head, endpoint))
-            for syn_char in adj.get(endpoint, set()):
-                if syn_char and syn_char != head:
-                    pairs.add((head, syn_char))
-        return pairs
-
     def direct_ant_oriented_pairs(
         self,
         *,
@@ -146,6 +126,33 @@ class CharRelationGraph:
         if self._ant_oriented_pairs is None:
             self._ant_oriented_pairs = self._direct_ant_oriented_pairs()
         return self._ant_oriented_pairs
+
+
+def get_process_cached_graph(
+    db: Session,
+    thesaurus: ThesaurusPort,
+    *,
+    membership: Optional[Set[str]] = None,
+) -> CharRelationGraph:
+    """進程級 lazy 關係圖快取（CONTEXT § 關係圖）。"""
+    global _cached_graph_key, _cached_graph
+    mem_key = frozenset(membership) if membership is not None else None
+    key = (id(db.get_bind()), id(thesaurus), mem_key)
+    if _cached_graph is None or _cached_graph_key != key:
+        _cached_graph_key = key
+        _cached_graph = CharRelationGraph(db, thesaurus, membership=membership)
+    return _cached_graph
+
+
+_cached_graph_key: Optional[tuple] = None
+_cached_graph: Optional[CharRelationGraph] = None
+
+
+def clear_process_cached_graph() -> None:
+    """測試用：清進程級關係圖快取。"""
+    global _cached_graph_key, _cached_graph
+    _cached_graph_key = None
+    _cached_graph = None
 
 
 def default_char_relation_graph(
@@ -164,5 +171,7 @@ def default_char_relation_graph(
 __all__ = [
     "ANT_SYN_MIRROR_SOURCE",
     "CharRelationGraph",
+    "clear_process_cached_graph",
     "default_char_relation_graph",
+    "get_process_cached_graph",
 ]

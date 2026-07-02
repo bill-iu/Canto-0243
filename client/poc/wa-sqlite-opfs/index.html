@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DB-0 — wa-sqlite + OPFS spike</title>
+    <style>
+      :root {
+        font-family: system-ui, sans-serif;
+        line-height: 1.5;
+      }
+      body {
+        max-width: 40rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      button {
+        margin: 0.25rem 0.5rem 0.25rem 0;
+        padding: 0.5rem 0.75rem;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 1rem;
+        overflow: auto;
+      }
+      .ok {
+        color: #0a7;
+      }
+      .err {
+        color: #c30;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>DB-0 spike</h1>
+    <p>wa-sqlite + <code>OPFSCoopSyncVFS</code>：寫入 OPFS → <code>SELECT COUNT(*) FROM words</code></p>
+    <p id="env"></p>
+    <label>
+      詞庫來源
+      <select id="db-source">
+        <option value="/lyrics.fixture.db">fixture（~120KB，快）</option>
+        <option value="/lyrics.dev.db">lyrics.dev.db（~106MB，實機用）</option>
+      </select>
+    </label>
+    <div>
+      <button id="btn-import" type="button">1. Import → OPFS + COUNT</button>
+      <button id="btn-count" type="button">2. COUNT only（驗 OPFS 持久）</button>
+      <button id="btn-reset" type="button">Reset OPFS</button>
+      <button id="btn-db2" type="button">3. DB-2 ensure（不重複 fetch）</button>
+    </div>
+    <pre id="log">就緒。</pre>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

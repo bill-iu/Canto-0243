@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from typing import Any, Dict, Iterable, Iterator, List, Optional
 
+from app.domain.relations.valid_term import normalize_literal
 from ingest.cilin_leaf import (
     groups_to_syn_edges,
     iter_cilin_leaf_line_chunks,
@@ -84,12 +85,14 @@ def parse_antonym_pairs(path: Path, source: str, source_rank: int = 55) -> List[
             if len(parts) < 2:
                 continue
             left, ants = parts[0], parts[1:]
-        if not left or not ants:
+        head = normalize_literal(left)
+        if not head:
             continue
-        for ant in ants:
-            if ant and ant != left:
-                edges.append(_edge(left, ant, "ant", source, source_rank=source_rank))
-                edges.append(_edge(ant, left, "ant", source, source_rank=source_rank))
+        for raw_ant in ants:
+            ant = normalize_literal(raw_ant)
+            if ant and ant != head:
+                edges.append(_edge(head, ant, "ant", source, source_rank=source_rank))
+                edges.append(_edge(ant, head, "ant", source, source_rank=source_rank))
     return edges
 
 
@@ -151,7 +154,6 @@ def parse_current_static(src: Dict[str, Any]) -> List[dict]:
     rank = int(src.get("source_rank") or 70)
     port = StaticThesaurusPort(
         cilin_path=str(ROOT / paths["cilin"]) if paths.get("cilin") else None,
-        antisem_path=str(ROOT / paths["antisem"]) if paths.get("antisem") else None,
         thesaurus_syn_path=str(ROOT / paths["thesaurus_syn"]) if paths.get("thesaurus_syn") else None,
         thesaurus_ant_path=str(ROOT / paths["thesaurus_ant"]) if paths.get("thesaurus_ant") else None,
         auto_load=True,
@@ -164,7 +166,7 @@ def parse_current_static(src: Dict[str, Any]) -> List[dict]:
         for s in port.get_guotong_synonyms(w):
             edges.append(_edge(w, s, "syn", "guotong", source_rank=rank, confidence=0.8))
         for a in port.get_antonyms(w):
-            edges.append(_edge(w, a, "ant", "antisem", source_rank=rank, confidence=0.85))
+            edges.append(_edge(w, a, "ant", "guotong", source_rank=rank, confidence=0.85))
     return edges
 
 

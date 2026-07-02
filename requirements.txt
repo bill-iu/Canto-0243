@@ -6,8 +6,9 @@ python-multipart
 python-dotenv          # 這行很重要（支援 .env）
 pycantonese            # runtime 新詞 / 罕見字自動粵拼注入
 pyjyutping             # pycantonese fallback
+opencc-python-reimplemented  # cilin export + trad_chinese
 
 # 依賴分層：
 #   requirements.txt           — 離線查詢（SQLite，產品保證路徑）
 #   requirements-dev.txt       — ingest / ML（import_data、generate_relationships 等）
-#   requirements-postgres.txt    — 凍結 PG scaffold（實驗用，非產品承諾）
+#   （已移除 PostgreSQL scaffold；本專案 SQLite-only）

@@ -3,9 +3,13 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Optional, Set
 
-DERIVED_ANT_SOURCES = frozenset({
+RUNTIME_DERIVED_ANT_SOURCES = frozenset({
     "ant_syn_mirror",
     "ant_cilin_exanded",
+})
+
+DERIVED_ANT_SOURCES = frozenset({
+    *RUNTIME_DERIVED_ANT_SOURCES,
     "ant_syn_bridge",
     "manual_ant_mirror",
 })

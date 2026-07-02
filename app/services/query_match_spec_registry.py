@@ -280,6 +280,20 @@ def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
+def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    assert parsed.kind == QueryKind.COMPOUND_DOUBLED_SYLLABLE
+    from app.services.query_types import CompoundDoubledSyllableQuery
+
+    if not isinstance(parsed, CompoundDoubledSyllableQuery):
+        return None
+    spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="doubled_syllable")
+    if parsed.rhyme_char:
+        spec.slots.append(
+            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
+        )
+    return spec
+
+
 def _spec_compound_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.COMPOUND_SYN
     if isinstance(parsed, CompoundConnectSynQuery):
@@ -332,6 +346,7 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.HYBRID_CODE: _spec_hybrid_code,
     QueryKind.MASK: _spec_mask,
     QueryKind.COMPOUND_SYN: _spec_compound_syn,
+    QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_compound_doubled_syllable,
     QueryKind.COMPOUND_ANT: _spec_compound_ant,
 }
 

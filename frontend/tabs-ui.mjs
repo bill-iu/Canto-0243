@@ -8,6 +8,7 @@ import {
   createGuideTab,
   createRelationTab,
   createCorrectionsTab,
+  createAboutTab,
   findTabByView,
   openSingletonView,
   reorderTabsByIds,
@@ -185,6 +186,7 @@ function activateTabOnPress(id) {
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.CORRECTIONS) $.correctionChar?.focus({ preventScroll: true });
+  else if (tab?.view === VIEW.ABOUT) document.getElementById("aboutTitle")?.focus({ preventScroll: true });
 }
 
 function addSearchTab() {
@@ -223,6 +225,7 @@ function selectTab(id) {
   else if (tab?.view === VIEW.GUIDE) document.getElementById("guideTitle")?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.RELATION) $.seedChar?.focus({ preventScroll: true });
   else if (tab?.view === VIEW.CORRECTIONS) $.correctionChar?.focus({ preventScroll: true });
+  else if (tab?.view === VIEW.ABOUT) document.getElementById("aboutTitle")?.focus({ preventScroll: true });
 }
 
 function openSingletonViewTab(view, createTab) {
@@ -241,6 +244,9 @@ function openSingletonViewTab(view, createTab) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (view === VIEW.CORRECTIONS) {
     $.correctionChar?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (view === VIEW.ABOUT) {
+    document.getElementById("aboutTitle")?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
@@ -288,6 +294,11 @@ function showCorrections({ replace = false } = {}) {
   if (!replace) updateBrowserUrlFromActiveTab(false);
 }
 
+function showAbout({ replace = false } = {}) {
+  openSingletonViewTab(VIEW.ABOUT, createAboutTab);
+  if (!replace) updateBrowserUrlFromActiveTab(false);
+}
+
 function goHome() {
   const tab = activeTab();
   if (!tab) return;
@@ -324,5 +335,6 @@ export {
   showGuide,
   showRelation,
   showCorrections,
+  showAbout,
   showSearch,
 };

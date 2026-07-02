@@ -1,0 +1,72 @@
+name: Pages (PWA)
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      target_tag:
+        description: "Existing release tag with lyrics.db (e.g. v1.2.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download lexicon (lyrics.db) from this release tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.target_tag || github.ref_name }}
+        run: |
+          gh release download "$TAG" -p "lyrics.db" --clobber
+          test -s lyrics.db
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install client dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Build PWA bundle
+        working-directory: client
+        env:
+          RELEASE_TAG: ${{ inputs.target_tag || github.ref_name }}
+          VITE_LEXICON_VERSION: ${{ inputs.target_tag || github.ref_name }}
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: client/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

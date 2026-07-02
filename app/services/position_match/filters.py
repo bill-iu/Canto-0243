@@ -291,9 +291,14 @@ def filter_words_by_code_and_mask(
     slots: Optional[list] = None,
 ) -> list:
     required_codes: list[Optional[str]] = [None] * width
-    if code_digits:
+    has_slot_code_digits = bool(slots) and any(
+        getattr(slot, "kind", None) == "code_digit" for slot in slots
+    )
+    # ponytail: code_prefix concatenation is not positional when code_digit slots are sparse (3+jan4)
+    if code_digits and not has_slot_code_digits:
         for i, d in enumerate(code_digits):
-            required_codes[i] = d
+            if i < width:
+                required_codes[i] = d
     if mask:
         for i, ch in enumerate(mask):
             if i < width and ch.isdigit():

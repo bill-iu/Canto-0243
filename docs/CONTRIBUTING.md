@@ -23,7 +23,8 @@ If you cannot agree to these terms, please do not contribute.
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 `__pycache__/` 與 `*.pyc` 為 Python 自動產生的 bytecode 快取，已在 `.gitignore`；**可隨時刪除**，下次 `import` 會重建。請勿提交至 git。
@@ -48,7 +49,7 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 
 領域定義見 [CONTEXT.md](../CONTEXT.md) § 源碼根目錄。
 
-**應留在根目錄的追蹤檔**：產品入口（`main.py`、`start.sh`、`requirements*.txt`、`alembic.ini`）、`README.md`（繁體中文，GitHub 首頁）、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`CONTEXT.md`、`WORKLOG.md`、`AGENTS.md`（stub）、`skills-lock.json`、`.env.example`、`.gitignore`。英文／简体中文 README 見 `docs/README.en.md`、`docs/README.zh-Hans.md`。
+**應留在根目錄的追蹤檔**：產品入口（`main.py`、`start.sh`、`requirements*.txt`）、`README.md`（繁體中文，GitHub 首頁）、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`CONTEXT.md`、`WORKLOG.md`、`AGENTS.md`（stub）、`skills-lock.json`、`.env.example`、`.gitignore`。英文／简体中文 README 見 `docs/README.en.md`、`docs/README.zh-Hans.md`。
 
 **允許的本機檔（通常 gitignore）**：
 

@@ -1,0 +1,4 @@
+context_file: .cursor/rules/specify-rules.mdc
+context_markers:
+  start: <!-- SPECKIT START -->
+  end: <!-- SPECKIT END -->

@@ -13,10 +13,15 @@ __pycache__/
 dist/
 build/
 .build-python/
+client/.tmp/
 *.egg-info/
+
+# Node / frontend
+**/node_modules/
 
 # 資料庫與備份
 *.db
+!tests/fixtures/*.db
 *.db.bak
 *.backup
 backup/
@@ -36,6 +41,7 @@ ingest-*.log
 logs/
 .cache/
 data/raw/
+data/lexicon/raw/
 data/processed/
 data/locks/
 
@@ -44,9 +50,11 @@ data/locks/
 .cursor/
 !.cursor/rules/
 !.cursor/rules/**
+.codegraph/
 agent-tools/
 mcps/
 commit-msg.txt
+terminals/
 
 # IDE 設定
 .vscode/

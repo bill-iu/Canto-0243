@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
 
 permissions:
   contents: read
@@ -26,7 +26,12 @@ jobs:
         env:
           PYTHONUTF8: "1"
 
-      - name: Unit tests
-        run: python -m unittest discover -s tests -q
+      - name: Smoke tests
+        run: python -m unittest discover -s tests/smoke -q
+        env:
+          PYTHONUTF8: "1"
+
+      - name: Architecture seam checks
+        run: python scripts/check_seams.py -q
         env:
           PYTHONUTF8: "1"

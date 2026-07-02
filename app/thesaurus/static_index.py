@@ -102,50 +102,6 @@ def get_cilin_synonyms(word: str) -> List[str]:
     return _cilin_syns.get(word, []) if word else []
 
 
-def load_antonym_dict(path: str = "data/antonym/antisem.txt") -> None:
-    global _ant_dict
-    if not os.path.exists(path):
-        return
-    d = {}
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            lines = f.readlines()
-    except UnicodeDecodeError:
-        try:
-            with open(path, "r", encoding="gbk") as f:
-                lines = f.readlines()
-        except Exception:
-            return
-    except Exception:
-        return
-
-    for line in lines:
-        line = line.strip()
-        if not line or line.startswith("#") or ":" not in line and " " not in line:
-            continue
-        if ":" in line:
-            left, right = line.split(":", 1)
-            ants = [x.strip() for x in right.replace("；", ";").split(";") if x.strip()]
-        else:
-            parts = line.split()
-            if len(parts) < 2:
-                continue
-            left, ants = parts[0], parts[1:]
-        head = normalize_literal(left)
-        if not head:
-            continue
-        tail_list = _literal_tokens_from_parts(ants)
-        if not tail_list:
-            continue
-        d[head] = tail_list
-        for ant in tail_list:
-            if ant not in d:
-                d[ant] = []
-            if head not in d[ant]:
-                d[ant].append(head)
-    _ant_dict = d
-
-
 def load_thesaurus_dicts(
     syn_path: str = "data/thesaurus/dict_synonym.txt",
     ant_path: str = "data/thesaurus/dict_antonym.txt",
@@ -216,7 +172,6 @@ def ensure_thesaurus_loaded(force: bool = False) -> None:
     if _thesaurus_loaded and not force:
         return
     load_cilin_index()
-    load_antonym_dict()
     load_thesaurus_dicts()
     _thesaurus_loaded = True
 

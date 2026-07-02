@@ -6,7 +6,7 @@ import os
 import threading
 from typing import Callable
 
-from app.database import Base, IS_POSTGRES, SessionLocal, engine
+from app.database import Base, SessionLocal, engine
 
 _startup_lock = threading.Lock()
 _background_started = False
@@ -18,7 +18,7 @@ _background_state = {
 
 
 def _local_sqlite_startup_enabled(env: str) -> bool:
-    return (env != "prod" and not IS_POSTGRES) or bool(os.getenv("FORCE_CREATE_ALL"))
+    return (env != "prod") or bool(os.getenv("FORCE_CREATE_ALL"))
 
 
 def reset_background_preload_state_for_tests() -> None:
@@ -56,7 +56,7 @@ def start_background_word_cache_preload() -> None:
 
 def run_create_all_if_needed(env: str) -> None:
     if not _local_sqlite_startup_enabled(env):
-        print("[offline_preload] 略過 create_all（正式環境建議使用 alembic upgrade head）")
+        print("[offline_preload] 略過 create_all（正式環境不自動動 schema）")
         return
     try:
         Base.metadata.create_all(bind=engine)
@@ -83,10 +83,10 @@ def run_lou_dou_reading_patch(env: str) -> None:
     if not _local_sqlite_startup_enabled(env):
         return
     try:
-        from app.db.connection import DATABASE_URL, IS_POSTGRES
+        from app.db.connection import DATABASE_URL
         from scripts.patch_lou_dou_readings import patch_lyrics_db
 
-        if IS_POSTGRES or not DATABASE_URL.startswith("sqlite:///"):
+        if not DATABASE_URL.startswith("sqlite:///"):
             return
         db_path = DATABASE_URL.removeprefix("sqlite:///")
         n = patch_lyrics_db(db_path)
@@ -145,6 +145,21 @@ def preload_compound_syn_runtime_cache() -> None:
     _best_effort("近義複合（~~）快照", _run)
 
 
+def preload_doubled_syllable_and_heteronym_caches() -> None:
+    from app.domain.lexicon.heteronym_index import ensure_heteronym_index
+    from app.domain.relations.compound_doubled_syllable import ensure_doubled_syllable_snapshot
+
+    def _run() -> None:
+        db = SessionLocal()
+        try:
+            ensure_doubled_syllable_snapshot(db)
+            ensure_heteronym_index(db)
+        finally:
+            db.close()
+
+    _best_effort("同音節疊字（$$）與同音異讀索引", _run)
+
+
 def _run_background_phase(phase: str, fn: Callable[[], None]) -> None:
     _set_background_phase(phase, status="loading", progress=0.05)
     try:
@@ -180,6 +195,11 @@ def start_background_runtime_preload() -> None:
     threading.Thread(
         target=_run_background_phase,
         args=("compound_ant", preload_compound_ant_runtime_cache),
+        daemon=True,
+    ).start()
+    threading.Thread(
+        target=_run_background_phase,
+        args=("doubled_syllable", preload_doubled_syllable_and_heteronym_caches),
         daemon=True,
     ).start()
 

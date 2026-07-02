@@ -7,13 +7,11 @@ import time
 
 from sqlalchemy import inspect, text
 
-from app.db.connection import IS_POSTGRES, engine
+from app.db.connection import engine
 
 
 def ensure_embedding_column() -> None:
-    """為本地 SQLite 自動補上 embedding 欄位（Postgres 走 Alembic）。"""
-    if IS_POSTGRES:
-        return
+    """為本地 SQLite 自動補上 embedding 欄位。"""
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -38,8 +36,6 @@ def ensure_embedding_column() -> None:
 
 def ensure_length_column() -> None:
     """輕量 schema 確保：只負責 ALTER 與建立 index（如果需要）。"""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -70,8 +66,6 @@ def ensure_length_column() -> None:
 
 def start_length_backfill() -> None:
     """若有需要回填的 length，啟動 daemon 背景執行緒批次更新（不阻塞啟動）。"""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -132,8 +126,6 @@ def start_length_backfill() -> None:
 
 def ensure_word_relations_canonical_unique() -> None:
     """Canonicalize (min word_id first) and enforce unique (word_id, related_id, relation_type)."""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "word_relations" not in inspector.get_table_names():
@@ -182,8 +174,6 @@ def ensure_word_relations_pair_unique() -> None:
 
 def ensure_word_relations_group_codes_column() -> None:
     """Add group_codes column to word_relations (Cilin hierarchy for sort). Idempotent."""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "word_relations" not in inspector.get_table_names():
@@ -200,27 +190,7 @@ def ensure_word_relations_group_codes_column() -> None:
 
 
 def ensure_word_relations_table() -> None:
-    """建立 word_relations 表與索引（SQLite 自動；Postgres 提示 Alembic + 可選 vector index）。"""
-    if IS_POSTGRES:
-        print("[DB] PostgreSQL 環境：建議使用 Alembic 建立 word_relations 表及索引。")
-        print("     範例 migration 會在後續文件提供。")
-        try:
-            with engine.connect() as conn:
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_words_embedding_hnsw
-                    ON words USING hnsw (embedding vector_cosine_ops);
-                """
-                    )
-                )
-                conn.commit()
-            print("[DB] 已確保 Postgres embedding vector 索引 (hnsw for cosine)。")
-        except Exception as e:
-            print(
-                f"[DB] 建立 embedding vector index 時發生錯誤（可忽略，若 pgvector extension 未啟用或 migration 稍後處理）：{e}"
-            )
-        return
+    """建立 word_relations 表與索引（SQLite 自動）。"""
 
     try:
         inspector = inspect(engine)
@@ -302,64 +272,10 @@ def ensure_word_relations_table() -> None:
             )
 
 
-def ensure_syn_ant_edges_table() -> None:
-    """Create syn_ant_edges staging table for ingest v2 (SQLite auto-create)."""
-    if IS_POSTGRES:
-        print("[DB] PostgreSQL 環境：syn_ant_edges 請透過 Alembic migration 管理。")
-        return
-
-    try:
-        inspector = inspect(engine)
-        if "words" not in inspector.get_table_names():
-            return
-        if "syn_ant_edges" not in inspector.get_table_names():
-            with engine.connect() as conn:
-                conn.execute(
-                    text(
-                        """
-                    CREATE TABLE IF NOT EXISTS syn_ant_edges (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        head_char VARCHAR(50) NOT NULL,
-                        tail_char VARCHAR(50) NOT NULL,
-                        relation_type VARCHAR(16) NOT NULL,
-                        source VARCHAR(64),
-                        confidence FLOAT,
-                        source_rank INTEGER,
-                        evidence TEXT,
-                        license_tag VARCHAR(32),
-                        in_db_head INTEGER,
-                        in_db_tail INTEGER
-                    )
-                """
-                    )
-                )
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_syn_ant_head_type
-                    ON syn_ant_edges (head_char, relation_type)
-                """
-                    )
-                )
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_syn_ant_tail_type
-                    ON syn_ant_edges (tail_char, relation_type)
-                """
-                    )
-                )
-                conn.commit()
-            print("[DB] 已為本地 SQLite 自動建立 syn_ant_edges staging 表。")
-    except Exception as e:
-        print(f"[DB] 建立 syn_ant_edges 表時發生錯誤：{type(e).__name__}: {e}")
-
-
 def bootstrap_local_db() -> None:
     """一次執行本地 SQLite dev bootstrap（schema 補丁 + length 背景回填）。"""
     ensure_embedding_column()
     ensure_length_column()
     ensure_word_relations_table()
     ensure_word_relations_canonical_unique()
-    ensure_syn_ant_edges_table()
     start_length_backfill()

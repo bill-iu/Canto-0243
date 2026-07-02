@@ -1,7 +1,8 @@
 name: Release (lexicon)
 
-# ADR-0008: update lyrics.db + words-lexicon.json on an existing full release tag.
-# Before dispatch: upload new lyrics.db to the target tag release (gh release upload).
+# ADR-0008: export/update lyrics.db + words-lexicon.json on an existing full release tag.
+# Maintainer: bootstrap + `python -m ingest build-db` locally, upload lyrics.db to the tag,
+# then dispatch this workflow (or run export/upload steps manually).
 
 on:
   workflow_dispatch:

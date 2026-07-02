@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import subprocess
 import sys
-from datetime import date
 from pathlib import Path
 from typing import TextIO
 
@@ -30,19 +29,17 @@ DEFAULT_BATCH_N = 20
 def _find_word(db: Session, corr: LexiconCorrection):
     from app.models.word import Word
 
-    matches = (
-        db.query(Word)
-        .filter(
-            Word.char == corr.char,
-            Word.code == corr.code,
-            Word.jyutping == corr.jyutping,
-        )
-        .all()
+    q = db.query(Word).filter(
+        Word.char == corr.char,
+        Word.jyutping == corr.old_jyutping,
     )
+    if corr.old_code:
+        q = q.filter(Word.code == corr.old_code)
+    matches = q.all()
     if len(matches) != 1:
         raise ValueError(
-            f"expected 1 word row for {corr.char!r} code={corr.code!r} jyutping={corr.jyutping!r}, "
-            f"found {len(matches)}"
+            f"expected 1 word row for {corr.char!r} old_jyutping={corr.old_jyutping!r}"
+            f" old_code={corr.old_code!r}, found {len(matches)}"
         )
     return matches[0]
 
@@ -72,6 +69,8 @@ def apply_one(db: Session, corr: LexiconCorrection) -> str:
         db.delete(row)
         return "deleted"
     if corr.action == "set_code":
+        if not corr.old_code:
+            raise ValueError(f"set_code requires old_code for {corr.char!r}")
         word_len = len(row.char or "")
         if len(corr.value) != word_len:
             raise ValueError(
@@ -91,16 +90,10 @@ def check_status(
     out: TextIO | None = None,
 ) -> int:
     sink = out or sys.stdout
-    pending = [r for r in rows if r.is_pending]
-    applied = len(rows) - len(pending)
-    sink.write(f"lexicon corrections: {len(pending)} pending, {applied} applied\n")
-    if pending:
-        sink.write("pending:\n")
-        for r in pending:
-            sink.write(f"  {r.char}\t{r.code}\t{r.jyutping}\t{r.action}\t{r.value}\n")
-    if len(pending) >= batch_n:
-        sink.write(f"\n>= {batch_n} pending — consider: python -m ingest apply-lexicon-corrections --apply\n")
-    return 0 if pending else 0
+    sink.write(f"lexicon corrections: {len(rows)} row(s)\n")
+    for r in rows:
+        sink.write(f"  {r.char}\t{r.old_jyutping}\t{r.old_code}\t{r.action}\t{r.value}\n")
+    return 0
 
 
 def apply_pending(
@@ -112,33 +105,21 @@ def apply_pending(
 ) -> tuple[list[LexiconCorrection], list[str]]:
     sink = out or sys.stdout
     logs: list[str] = []
-    today = date.today().isoformat()
-    updated = list(rows)
-    pending_idxs = [i for i, r in enumerate(updated) if r.is_pending]
-    if not pending_idxs:
-        sink.write("No pending corrections.\n")
-        return updated, logs
+    if not rows:
+        sink.write("No corrections.\n")
+        return [], logs
 
-    for i in pending_idxs:
-        corr = updated[i]
+    for corr in rows:
         if dry_run:
             logs.append(f"would apply: {corr.char} {corr.action} {corr.value}".strip())
             continue
         msg = apply_one(db, corr)
-        logs.append(f"applied: {corr.char} code={corr.code} jyutping={corr.jyutping} -> {msg}")
-        updated[i] = LexiconCorrection(
-            char=corr.char,
-            code=corr.code,
-            jyutping=corr.jyutping,
-            action=corr.action,
-            value=corr.value,
-            note=corr.note,
-            status="applied",
-            applied_at=today,
+        logs.append(
+            f"applied: {corr.char} old_jyutping={corr.old_jyutping} old_code={corr.old_code} -> {msg}"
         )
     for line in logs:
         sink.write(line + "\n")
-    return updated, logs
+    return list(rows), logs
 
 
 def post_apply_exports(repo_root: Path = REPO_ROOT) -> None:

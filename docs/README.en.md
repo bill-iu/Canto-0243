@@ -8,7 +8,7 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 
 **Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench built with AI agents. It lists replaceable **word entries** in seconds using **0243／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. Type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine.
 
-**License**: [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). **Word-entry store** `lyrics.db` and matching `words-lexicon.json`: [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) (CC BY-SA 3.0 mixed). Third-party data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
+**License**: Full bundle (program, `lyrics.db`, `words-lexicon.json`) under [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **not OSI-open source**). Upstream data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
 **Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · vanilla HTML/JS frontend  
 **Domain glossary**: [`CONTEXT.md`](../CONTEXT.md) · Contributing: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
@@ -17,10 +17,10 @@ Writing Cantonese lyrics often means hunting for the right character—same tone
 ## Latest release
 
 <!-- words-count:en -->
-Current word entries: **193,294** (`lyrics.db` · `words` table)
+Current word entries: **193,298** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
-Official offline data bundle: **[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)** (`canto-0243-portable.zip`, `canto-0243-portable-macos-x86_64.tar.gz`, `lyrics.db`, `words-lexicon.json`, `LYRICS_DB_LICENSE.md`; Apple Silicon arm64 not available yet). Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues).
+Official offline data bundle: **[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)** (`canto-0243-portable.zip`, `canto-0243-portable-macos-x86_64.tar.gz`, `lyrics.db`, `words-lexicon.json`; Apple Silicon arm64 not available yet). Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues).
 
 ---
 
@@ -30,7 +30,7 @@ Official offline data bundle: **[Canto-0243 v1.0.3](https://github.com/bill-iu/C
 * **Rich query syntax**: plain Chinese · plain digits · **Jyutping queries** · **Jyutping anchors** · code+character (`23就`) · wildcards · **serial rhyme／initial anchors** (`04困=49倒=`, `23就=`) · **prefix wildcard equals** (`?香港=`) · equals rhyme／initial (`香港=`, `2=我3`) · rhyme／initial anchors (`就=`, `?*就=`, `?港=?`).
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 * **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.
-* **Relation data**: **static thesaurus port** (Cilin／Guotong near-synonyms／antisem); runtime and ingest share the same rules.
+* **Relation data**: **static thesaurus port** (Cilin + Guotong near-synonyms / antonyms); runtime and ingest share the same rules.
 * **Result ranking**: within each match tier **plain Chinese** → **essay frequency** → **curated** → **pron_rank** → surface form (see [`CONTEXT.md`](../CONTEXT.md) § search result ranking).
 
 ---
@@ -94,7 +94,7 @@ python main.py
 
 Or use `./start.sh` (creates venv and opens the browser—you still need `lyrics.db`).
 
-**Bundled with the repo** (tier 1, see Data sources): essay frequency, curated common words, antonym／near-synonym compound lists, and bundled static near／antonym files. **Rime `char.csv` and antisem are not in git**—after clone run `python scripts/bootstrap_data.py` (tier 2).
+**Bundled with the repo** (tier 1, see Data sources): essay frequency, curated common words, antonym／near-synonym compound lists, and bundled Cilin. **Rime `char.csv` and Guotong thesaurus files (`dict_synonym`／`dict_antonym`) are not in git**—after clone run `python scripts/bootstrap_data.py` (tier 2).
 
 ---
 
@@ -105,14 +105,14 @@ Outputs are local／gitignored—**do not** commit. See [CONTRIBUTING.md](CONTRI
 ```bash
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
-# 1. Build multi-character lexicon readings from upstream tables (see THIRD_PARTY_NOTICES § multi-character readings)
-# 2. Import words table (also syncs README word-entry total):
-python scripts/ingest/import_data.py
-# 3. Near／antonym ingest:
+# Full lexicon rebuild (lexicon + build-word-relations + bridge／manual):
+python -m ingest build-db
+# Static syn／ant only (cilin + guotong + compound_ant):
+python -m ingest build-word-relations
 python -m ingest report
-python -m ingest normalize --source current_static
-python -m ingest build-relations
 ```
+
+`word_relations` stores undirected edges with the smaller `word_id` first; unique key `(word_id, related_id, relation_type)`. `build-word-relations` assembles rows in memory, then bulk-inserts in 2,000-row transactions (conflicts dropped).
 
 Optional relation sources (off by default): `data/syn_ant/sources.yaml`.
 
@@ -128,7 +128,6 @@ Check [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution.
 | `canto-0243-portable-macos-arm64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Apple Silicon) |
 | `canto-0243-portable-macos-x86_64.tar.gz` | macOS zero-install **`Canto-0243.app`** (Intel) |
 | `words-lexicon.json` | **Lexicon-reading** sidecar |
-| `LYRICS_DB_LICENSE.md` | **Word-entry store** and matching sidecar license (CC BY-SA 3.0 mixed) |
 
 ```bash
 python scripts/export_words_lexicon.py -o dist/words-lexicon.json
@@ -334,9 +333,7 @@ Design principle: domain rules live in `app/domain/`; ingest and runtime share t
 
 ### Deployment & database
 
-**Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). New schema is maintained only via SQLite bootstrap／`scripts/db/init_db.py`.
-
-**PostgreSQL**: frozen scaffold, **not** a primary delivery target. Experimental use: `requirements-postgres.txt` and [`CONTEXT.md`](../CONTEXT.md) § product boundary.
+**Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). This repo is SQLite-only.
 
 ### Project layout
 
@@ -347,7 +344,7 @@ Canto-0243/
 ├── portable/               # START.bat · START.sh · env.portable
 ├── data/                   # see Data sources (three tiers)
 ├── ingest/                 # python -m ingest
-├── scripts/                # bootstrap · build-portable · import_data
+├── scripts/                # bootstrap · build-portable · ingest
 ├── tests/
 ├── docs/                   # CONTRIBUTING · README.* · release
 ├── main.py · start.sh      # dev entrypoints
@@ -364,19 +361,20 @@ Verify [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) before redistribution
 | Tier | Description | Examples |
 |------|-------------|----------|
 | **1 · With repo** | available on clone | `data/essay/`, `data/lexicon/`, `data/syn_ant/`, bundled cilin／thesaurus |
-| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`, antisem |
-| **3 · maintainer-built** | gitignored; store licensing in [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | `lyrics.db`, lexicon-reading JSON |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`, Guotong thesaurus (syn／ant) |
+| **3 · maintainer-built** | gitignored; bundle license in [LICENSE](../LICENSE) | `lyrics.db`, lexicon-reading JSON |
 
-Default near／antonym pipeline: `data/syn_ant/sources.yaml` (cilin, guotong, antisem, compound lists). Full upstream table: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
+Static near／ant sources: `data/syn_ant/sources.yaml` (**cilin**, **guotong** `dict_antonym`, **compound_ant**). `python -m ingest build-db` runs **`build-word-relations`** on the hot path (no staging／per-batch dedupe queries). Full upstream table: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).
 
 ---
 
 ## Tests
 
-Currently **225** unittest cases.
+Currently **34** smoke unittest cases plus `scripts/check_seams.py` architecture checks.
 
 ```bash
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code-sandwich, Jyutping, Jyutping anchors, `~~`／`!!` compounds.
@@ -389,7 +387,7 @@ Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code
 |-------|------|---------|
 | Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
 | Ingest / dev | `requirements-dev.txt` | ingest & legacy scripts |
-| PostgreSQL (frozen) | `requirements-postgres.txt` | experimental |
+| PostgreSQL | (removed) | n/a |
 
 ---
 
@@ -422,10 +420,9 @@ Canto-0243 integrates several open dictionaries, corpora, and near／antonym res
 
 * **Rime Cantonese** (single-char `char.csv`, essay frequency): [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) and [rime/rime-cantonese](https://github.com/rime/rime-cantonese), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Give them a star!
 * **Cilin synonyms**: via [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin), **MIT**.
-* **Guotong near／antonym dictionary**: [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary), [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE).
-* **ChineseAntiword (antisem)**: [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword); upstream has **no explicit license**—attribute locally and verify before redistribution.
+* **Guotong near／antonym dictionary**: [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) (`dict_synonym.txt`, `dict_antonym.txt`), [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)—primary **antonym** source for this project.
 * **words.hk Cantonese word list**: [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/), **public domain** (thanks [words.hk](https://words.hk/)).
-* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [CC-Canto](https://cantonese.org/download.html) ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)).
+* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/) (public domain), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)), Rime single-char and maintainer curated (`data/lexicon/sources.yaml`).
 
 Building or redistributing lexicons from these sources requires complying with each license; some impose **non-commercial** or **attribution** terms. Optional sources (e.g. COW) are off by default—see `data/syn_ant/sources.yaml`.
 
@@ -438,8 +435,7 @@ Building or redistributing lexicons from these sources requires complying with e
 | [`README.md`](../README.md) | Traditional Chinese (GitHub homepage) |
 | [`README.zh-Hans.md`](README.zh-Hans.md) | Simplified Chinese documentation (written Chinese) |
 | [`README.en.md`](README.en.md) | English documentation (this file) |
-| [`LICENSE`](../LICENSE) | Canto-0243 License (software) |
-| [`LYRICS_DB_LICENSE.md`](../LYRICS_DB_LICENSE.md) | **Word-entry store** and `words-lexicon.json` data license |
+| [`LICENSE`](../LICENSE) | Canto-0243 License (program and word-entry bundle) |
 | [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md) | Third-party data licenses |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Contributing & repo-root conventions |
 | [`CONTEXT.md`](../CONTEXT.md) | Domain glossary |
@@ -448,4 +444,4 @@ Building or redistributing lexicons from these sources requires complying with e
 
 ---
 
-**Last updated**: 2026-06-20 (README: word-entry store license in `LYRICS_DB_LICENSE.md`)
+**Last updated**: 2026-07-02 (Guotong antonyms, build-word-relations refactor)

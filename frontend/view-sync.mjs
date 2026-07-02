@@ -15,14 +15,17 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   const isGuide = tab.view === VIEW.GUIDE;
   const isRelation = tab.view === VIEW.RELATION;
   const isCorrections = tab.view === VIEW.CORRECTIONS;
+  const isAbout = tab.view === VIEW.ABOUT;
   $.searchView.hidden = !isSearch;
   $.guideView.hidden = !isGuide;
   $.relationView.hidden = !isRelation;
   $.correctionsView.hidden = !isCorrections;
+  $.aboutView.hidden = !isAbout;
   $.searchView.classList.toggle("is-hidden", !isSearch);
   $.guideView.classList.toggle("is-hidden", !isGuide);
   $.relationView.classList.toggle("is-hidden", !isRelation);
   $.correctionsView.classList.toggle("is-hidden", !isCorrections);
+  $.aboutView.classList.toggle("is-hidden", !isAbout);
   if (isSearch) {
     $.searchInput.value = tab.q || "";
     renderSearchResults(tab.results || [], tab.total);

@@ -24,7 +24,7 @@ function Invoke-Gh {
 }
 
 if (-not (Test-Path $DbPath)) {
-    throw "lyrics.db not found at repo root"
+    throw "lyrics.db not found at repo root. Run: python scripts/bootstrap_data.py && python -m ingest build-db"
 }
 
 Write-Host "==> Canto-0243 local Windows release"
@@ -95,13 +95,8 @@ if (-not $releaseExists) {
 }
 
 Write-Host "==> Upload to GitHub Release $Tag..."
-$DbLicense = Join-Path $Root "LYRICS_DB_LICENSE.md"
-if (-not (Test-Path $DbLicense)) {
-    throw "LYRICS_DB_LICENSE.md not found at repo root"
-}
 Invoke-Gh @("release", "upload", $Tag, $DbPath, "--clobber")
 Invoke-Gh @("release", "upload", $Tag, $LexiconPath, "--clobber")
-Invoke-Gh @("release", "upload", $Tag, $DbLicense, "--clobber")
 Invoke-Gh @("release", "upload", $Tag, $ZipPath, "--clobber")
 
 $repo = if ($env:GH_REPO) { $env:GH_REPO } else { (gh repo view --json nameWithOwner -q .nameWithOwner) }

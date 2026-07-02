@@ -66,6 +66,40 @@ def _is_hybrid_rhyme_letters(letters: str) -> bool:
     return classify_latin_anchor(text) == "rhyme_letters"
 
 
+def default_syllable_letters_for_anchor_char(char: str) -> Optional[str]:
+    """漢字完整音節錨：rime 預設讀音嘅音節字母（唔含聲調）。"""
+    from app.lexicon.rime_char_index import get_rime_char_entries
+
+    entries = get_rime_char_entries(char)
+    if not entries:
+        return None
+    token = (entries[0].jyutping or "").split()[0]
+    syl = _parse_syllable_token(token)
+    return syl.letters if syl else None
+
+
+def normalize_hanzi_dollar_syllable_anchors(q: str) -> str:
+    """`$`+單漢字 → 拉丁完整音節字母；保留 `$$` 供同音節疊字查詢。"""
+    if not q or "$" not in q:
+        return q
+    out: list[str] = []
+    i = 0
+    while i < len(q):
+        if q[i] == "$" and i + 1 < len(q) and q[i + 1] == "$":
+            out.append("$$")
+            i += 2
+            continue
+        if q[i] == "$" and i + 1 < len(q) and re.fullmatch(r"[一-龥]", q[i + 1]):
+            letters = default_syllable_letters_for_anchor_char(q[i + 1])
+            if letters:
+                out.append(letters)
+                i += 2
+                continue
+        out.append(q[i])
+        i += 1
+    return "".join(out)
+
+
 def parse_dual_phoneme_anchor_query(q: str) -> Optional[dict]:
     """歧義粵拼錨：m／ng 碼夾或三格中格 → 雙列（ADR-0009）。"""
     m = re.match(rf"^(\?){_SLOT}?([a-zA-Z]+)(\?)$", q)
@@ -174,6 +208,25 @@ def parse_code_syllable_three_query(q: str) -> Optional[dict]:
         "anchor_pos": 1,
         "anchor_kind": "syllable_letters",
         "anchor_value": letters,
+        "code_prefix": m.group(1) + m.group(3),
+        "code_slots": [(0, m.group(1)), (2, m.group(3))],
+    }
+
+
+def parse_code_rhyme_three_query(q: str) -> Optional[dict]:
+    """{首碼}+{韻母}{末碼} / {首碼}?{韻母}{末碼} — 三字中格韻母（3+an4 ↔ 3+人=4）。"""
+    m = re.match(rf"^(\d)[\?{_SLOT}]([a-zA-Z]+)(\d)$", q)
+    if not m:
+        return None
+    letters = m.group(2).lower()
+    if classify_latin_anchor(letters) != "rhyme_letters":
+        return None
+    return {
+        "raw_q": q,
+        "width": 3,
+        "anchor_pos": 1,
+        "anchor_kind": "rhyme_letters",
+        "anchor_value": normalize_rhyme_letters(letters),
         "code_prefix": m.group(1) + m.group(3),
         "code_slots": [(0, m.group(1)), (2, m.group(3))],
     }
@@ -309,6 +362,7 @@ def parse_jyutping_anchor_query(q: str) -> Optional[dict]:
         parse_triple_jyutping_slot_query,
         parse_end_jyutping_syllable_query,
         parse_code_syllable_three_query,
+        parse_code_rhyme_three_query,
         parse_code_cluster_initial_query,
         parse_code_initial_query,
         parse_code_syllable_two_query,

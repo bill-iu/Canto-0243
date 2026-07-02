@@ -1,54 +1,70 @@
 from __future__ import annotations
 
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Sequence, Tuple, Union
 
-from sqlalchemy import tuple_
 from sqlalchemy.orm import Session
 
-from app.domain.relations.canonical import canonical_relation_dict
+from app.domain.relations.bulk_insert import (
+    CHUNK_SIZE,
+    RelationRecord,
+    RelationTuple,
+    bulk_insert_word_relations,
+    relation_record,
+)
 from app.models.word import WordRelation
 
-SQL_IN_BATCH = 300
-INSERT_BATCH = 300
+# ponytail: legacy alias for ingest CLI defaults
+INSERT_BATCH = CHUNK_SIZE
 
 
-def fetch_existing_relation_keys(db: Session, keys: List[Tuple]) -> Set[Tuple]:
-    existing: Set[Tuple] = set()
-    for i in range(0, len(keys), SQL_IN_BATCH):
-        chunk = keys[i : i + SQL_IN_BATCH]
-        rows = (
-            db.query(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type)
-            .filter(tuple_(WordRelation.word_id, WordRelation.related_id, WordRelation.relation_type).in_(chunk))
-            .all()
-        )
-        existing.update(rows)
-    return existing
+def _records_from_rows(relations: Sequence[Union[WordRelation, dict]]) -> List[RelationRecord]:
+    out: List[RelationRecord] = []
+    for row in relations:
+        if isinstance(row, WordRelation):
+            rec = relation_record(
+                int(row.word_id),
+                int(row.related_id),
+                str(row.relation_type),
+                row.score,
+                row.source,
+                row.group_codes,
+            )
+        else:
+            rec = relation_record(
+                row["word_id"],
+                row["related_id"],
+                row["relation_type"],
+                row.get("score"),
+                row.get("source"),
+                row.get("group_codes"),
+            )
+        if rec is not None:
+            out.append(rec)
+    return out
 
 
-def insert_relations(db: Session, relations: List[WordRelation], *, commit: bool = True) -> int:
-    inserted = 0
-    for i in range(0, len(relations), INSERT_BATCH):
-        batch: list[WordRelation] = []
-        for r in relations[i : i + INSERT_BATCH]:
-            if isinstance(r, WordRelation):
-                d = {
-                    "word_id": r.word_id,
-                    "related_id": r.related_id,
-                    "relation_type": r.relation_type,
-                    "score": r.score,
-                    "source": r.source,
-                    "group_codes": r.group_codes,
-                }
-                if r.id is not None:
-                    d["id"] = r.id
-                batch.append(WordRelation(**canonical_relation_dict(d)))
-            else:
-                batch.append(WordRelation(**canonical_relation_dict(r)))
-        db.add_all(batch)
-        if commit:
-            db.commit()
-        inserted += len(batch)
-    return inserted
+def insert_relations(
+    db: Session,
+    relations: List[WordRelation],
+    *,
+    commit: bool = True,
+    chunk_size: int = CHUNK_SIZE,
+) -> int:
+    records = _records_from_rows(relations)
+    if not records:
+        return 0
+    stats = bulk_insert_word_relations(db, records, commit=commit, chunk_size=chunk_size)
+    return stats["attempted"]
+
+
+def insert_relation_records(
+    db: Session,
+    rows: Sequence[Union[RelationRecord, RelationTuple]],
+    *,
+    commit: bool = True,
+    chunk_size: int = CHUNK_SIZE,
+) -> dict[str, int]:
+    return bulk_insert_word_relations(db, rows, commit=commit, chunk_size=chunk_size)
 
 
 def insert_relation_candidates(
@@ -59,25 +75,14 @@ def insert_relation_candidates(
     batch_size: int,
     commit: bool = True,
 ) -> Tuple[int, int]:
+    _ = dedupe_existing  # ponytail: no-op; INSERT OR IGNORE replaces pre-fetch dedupe
     if not candidates:
         return 0, 0
-    pending = list(candidates.values())
-    skipped_existing = 0
-    if dedupe_existing:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing: Set[Tuple] = set()
-        for i in range(0, len(keys), SQL_IN_BATCH):
-            existing.update(fetch_existing_relation_keys(db, keys[i : i + SQL_IN_BATCH]))
-        before = len(pending)
-        pending = [
-            c
-            for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        skipped_existing = before - len(pending)
-    inserted = 0
-    if pending:
-        for i in range(0, len(pending), batch_size):
-            chunk = pending[i : i + batch_size]
-            inserted += insert_relations(db, [WordRelation(**c) for c in chunk], commit=commit)
-    return inserted, skipped_existing
+    records = _records_from_rows(list(candidates.values()))
+    if not records:
+        return 0, 0
+    stats = bulk_insert_word_relations(
+        db, records, commit=commit, chunk_size=batch_size or CHUNK_SIZE
+    )
+    inserted = int(stats.get("inserted", stats["attempted"]))
+    return inserted, int(stats["attempted"]) - inserted

@@ -8,8 +8,8 @@
 
 **Canto-0243**（**ONE·搵·韻**）係我用幾個唔同AI AGENT(Cursor, Codex, Grok Build, Github Copilot）開發嘅一個離線粵語填詞查找工作台：用 **0243／02493 數字碼**、**粵拼**、**韻母／聲母規則**與 **近義／反義關係**，喺幾秒內列出符合條件嘅**詞條**。例如打 `23就` 搵同調又同「就」同韻嘅尾字；打 `香港=` 搵同「香港」同韻嘅候選詞；打 `~開心` 或切換**近反義模式**搵近義/反義詞；打 `~~`／`!!` 搵填詞常用嘅二字近義／反義複合詞。套件解壓即用，所有詞庫與近反義資料都儲存喺本地環境，唔使連上網。
 
-**授權**：程式依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**非 OSI 開源**）。**詞條庫** `lyrics.db` 與同版 `words-lexicon.json` 依 [`LYRICS_DB_LICENSE.md`](LYRICS_DB_LICENSE.md)（CC BY-SA 3.0 混合）。第三方資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
-**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· 純 HTML/JS 前端  
+**授權**：整包（程式、`lyrics.db`、`words-lexicon.json`）依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**開源**）。第三方上游資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
+**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· 純 HTML/JS 前端（SQLite-only）  
 **領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
@@ -17,10 +17,10 @@
 ## 最新版本
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**193,294**（`lyrics.db` · `words` 表）
+目前總詞條列數：**193,298**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
-官方離線資料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`、`LYRICS_DB_LICENSE.md`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
+官方離線資料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
 
 ---
 
@@ -77,7 +77,8 @@
 * **前綴通配等號**：`?{詞≥2}=` 首音節通配＋整段韻模板（如 `?香港=`、`?困潦倒=`）；聲母對稱 `?={詞≥2}`（如 `?=困潦倒`）。
 * **數字 + 尾字**：`23就`（尾字同「就」同韻）、`23@就`（尾字字面固定）、`23+就`（加長位置；輸入 `*` 等同 `+`）。
 * **等號錨點**：`=` 在錨字**後**比韻母（`就=`、`?+就=`）、在錨字**前**比聲母（`?=就`）；整詞 `香港=`、碼夾 `2=我3`。
-* **粵拼錨**：缺字查詢內用粵拼取代漢字參考字（`?syut?` 中格音節、`23o` 碼後**末格**韻母、`3hon4` 首格音節等）；**唔係**整段粵拼查詢；**近反義模式**唔收。
+* **粵拼錨**：缺字查詢內用粵拼取代漢字參考字（`?syut?` 中格音節、`23o` 碼後**末格**韻母、`3hon4`／`3$漢4` 首格音節等）；**唔係**整段粵拼查詢；**近反義模式**唔收。
+* **同音節疊字**：`$$`（鏡像 `~~` 語法）；**同音異讀**：`33/34` 等碼位模板。
 * **近反義關係查詢**：`~開心`、`!你`、`33!開心`。
 * **反義複合詞**：`!!`、`33!!`、`!!你`、`33!!你`（如生死、是非）。
 * **近義複合詞**：`~~`、`33~~`、`~~你`、`33~~你`（如朋友、恐懼）；**不適用近反義模式**。
@@ -95,7 +96,7 @@ python main.py
 
 亦可使用 `./start.sh`（建 venv 並開瀏覽器；仍須自备 `lyrics.db`）。
 
-**隨 repo 已有**（第 1 層，見「資料來源」）：essay 詞頻、curated 常用詞、反義／近義複合列表，以及 bundled 近反義 static 檔。**單字 rime `char.csv` 與 antisem 不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層）。
+**隨 repo 已有**（第 1 層，見「資料來源」）：essay 詞頻、curated 常用詞、反義／近義複合列表，以及 bundled 詞林 cilin。**單字 rime `char.csv` 與 guotong 詞典（`dict_synonym`／`dict_antonym`）不在 git**——clone 後請先跑 `python scripts/bootstrap_data.py`（第 2 層）。
 
 ---
 
@@ -106,14 +107,14 @@ python main.py
 ```bash
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
-# 1. 自上游詞表整理多字詞級標音（見 THIRD_PARTY_NOTICES § 多字詞級標音）
-# 2. 匯入 words 表（會同步更新 README 詞條列數）：
-python scripts/ingest/import_data.py
-# 3. 近反義 ingest：
+# 全量重建詞條庫（lexicon + build-word-relations + bridge／manual；見 data/lexicon/sources.yaml）：
+python -m ingest build-db
+# 只重建靜態近反義關係（cilin + guotong + compound_ant）：
+python -m ingest build-word-relations
 python -m ingest report
-python -m ingest normalize --source current_static
-python -m ingest build-relations
 ```
+
+`word_relations` 以較小 `word_id` 在前儲存無向邊；唯一鍵 `(word_id, related_id, relation_type)`。`build-word-relations` 於記憶體組裝後按 2000 列一批 bulk insert（衝突自動丟棄）。
 
 可選近反義來源（預設關閉）見 `data/syn_ant/sources.yaml`。
 
@@ -129,7 +130,6 @@ python -m ingest build-relations
 | `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安裝資料夾 + **`Canto-0243.command`**（Intel；現行渠道） |
 | `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安裝（Apple Silicon；過渡期暫不提供） |
 | `words-lexicon.json` | **詞級標音**副件 |
-| `LYRICS_DB_LICENSE.md` | **詞條庫**與同版 **詞級標音副件**之授權（CC BY-SA 3.0 混合） |
 
 ```powershell
 # Windows 全量（建置 + 上傳 Release）:
@@ -278,6 +278,7 @@ GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --ar
 | `?+syut?`（`?syut?`） | 三字，中格音節 `syut` |
 | `?+hon`（`?hon`） | 二字，末格音節 `hon` |
 | `3hon4` | 二字，碼 `34`，首格音節 `hon` |
+| `3$漢4` | 同上（漢字音節錨 `$漢` ≡ `hon`） |
 | `3?hon4` | 三字，中格音節 `hon` |
 | `23o` | 二字，碼 `23`，末格韻母 `o` |
 | `23+o` | 三字，碼 `23` + 末格韻母 `o`（比 `23o` 多一槽） |
@@ -322,6 +323,21 @@ GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag vX.Y.Z --ar
 | `33~~` | 33 同音＋近義複合 |
 | `~~你` | 近義複合，尾字同「你」同韻 |
 | `33~~你` | 33 同音＋近義複合＋尾字同「你」同韻 |
+
+### 同音節疊字（`$$`）
+
+| 輸入範例 | 說明 |
+|----------|------|
+| `$$` | 二字同音節疊字（如慢慢、識食；聲調不限） |
+| `33$$` | 33 同音＋同音節疊字 |
+| `$$你` | 疊字，尾字同「你」同韻 |
+
+### 同音異讀（`code/code`）
+
+| 輸入範例 | 說明 |
+|----------|------|
+| `33/34` | 同字面兩讀音：左模板 `33`、右模板 `34`（如今晚） |
+| `?3/?4` | 只約束第 2 字碼；`?` 通配 |
 
 ```http
 GET /words/search/?q=你好&mode=m1
@@ -375,7 +391,7 @@ GET /words/search/?q=開心&mode=syn
 
 **產品保證路徑**：離線單機 + **SQLite**（`lyrics.db`）。新 schema 僅透過 SQLite bootstrap／`scripts/db/init_db.py` 維護。
 
-**PostgreSQL**：凍結 scaffold，**非**主要交付目標。實驗用見 `requirements-postgres.txt` 與 [`CONTEXT.md`](CONTEXT.md) § 產品邊界。
+**資料庫**：SQLite-only（產品保證路徑）。
 
 ### 專案結構
 
@@ -386,7 +402,7 @@ Canto-0243/
 ├── portable/               # START.bat · START.sh · env.portable
 ├── data/                   # 見「資料來源」三層模型
 ├── ingest/                 # python -m ingest
-├── scripts/                # bootstrap · build-portable · import_data
+├── scripts/                # bootstrap · build-portable · ingest
 ├── tests/
 ├── docs/                   # CONTRIBUTING · README.en · README.zh-Hans · release
 ├── main.py · start.sh      # 開發入口
@@ -403,22 +419,23 @@ Canto-0243/
 | 層級 | 說明 | 例子 |
 |------|------|------|
 | **1 · 隨 repo** | clone 即有 | `data/essay/`、`data/lexicon/`、`data/syn_ant/`、bundled cilin／thesaurus |
-| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、antisem |
-| **3 · maintainer 自建** | gitignore；**詞條庫**授權見 [`LYRICS_DB_LICENSE.md`](LYRICS_DB_LICENSE.md) | `lyrics.db`、詞級標音 JSON |
+| **2 · bootstrap** | `python scripts/bootstrap_data.py` | rime `char.csv`、guotong 詞典（近義／反義） |
+| **3 · maintainer 自建** | gitignore；整包授權見 [LICENSE](LICENSE) | `lyrics.db`、詞級標音 JSON |
 
-近義／反義預設管線：`data/syn_ant/sources.yaml`（cilin、guotong、antisem、compound 列表）。詳表見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+近義／反義靜態來源：`data/syn_ant/sources.yaml`（**cilin**、**guotong** `dict_antonym`、**compound_ant** 列表）。`python -m ingest build-db` 熱路徑跑 **`build-word-relations`**（唔再經 staging／逐批查重）。詳表見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ---
 
 ## 測試
 
-目前 **565** 個 unittest。
+目前 **34** 個 smoke unittest，另跑 `scripts/check_seams.py` 架構檢查。
 
 ```bash
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
-關鍵回歸：純漢字 strict code、wildcard、`mode=syn`、等號／碼夾、粵拼、粵拼錨、`~~`／`!!` 複合詞。
+關鍵回歸：純漢字 strict code、wildcard、`mode=syn`、等號／碼夾、粵拼、粵拼錨、`$`／`$$`、`code/code`、`~~`／`!!` 複合詞。
 
 ---
 
@@ -428,7 +445,7 @@ python -m unittest discover -s tests -q
 |----|------|------|
 | Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
 | Ingest / dev | `requirements-dev.txt` | ingest 與 legacy 腳本 |
-| PostgreSQL（凍結） | `requirements-postgres.txt` | 實驗用 |
+| PostgreSQL | （已移除） | 不適用 |
 
 ---
 
@@ -461,10 +478,9 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 * **Rime 粵語（單字讀音 `char.csv`、essay 詞頻）**：來自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 與 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。去畀佢哋一個 star！
 * **詞林同義詞（Cilin）**：經 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 匯出，採用 **MIT** 授權。
-* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)，採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
-* **ChineseAntiword（antisem）**：來自 [liuhuanyong/ChineseAntiword](https://github.com/liuhuanyong/ChineseAntiword)；上游**無明示授權**，本地使用須署名，再分發前請自行核對條款。
+* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；專案**反義詞主來源**。
 * **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有領域**（致謝 [words.hk](https://words.hk/)）。
-* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[CC-Canto](https://cantonese.org/download.html)（[CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）。
+* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[words.hk 粵典詞表](https://words.hk/faiman/analysis/wordslist/)（公有領域）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 單字讀音與 maintainer curated（見 `data/lexicon/sources.yaml`）。
 
 使用上述資料建構或再分發詞庫時，你同意遵守各自授權；部分來源含**非商業**或**署名**要求。可選近反義來源（如 COW）預設關閉，見 `data/syn_ant/sources.yaml`。
 
@@ -477,8 +493,7 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 | [`README.md`](README.md) | 本文件（繁體中文，GitHub 首頁） |
 | [`docs/README.zh-Hans.md`](docs/README.zh-Hans.md) | 简体中文说明（书面语） |
 | [`docs/README.en.md`](docs/README.en.md) | English documentation |
-| [`LICENSE`](LICENSE) | Canto-0243 License（程式） |
-| [`LYRICS_DB_LICENSE.md`](LYRICS_DB_LICENSE.md) | **詞條庫**與 `words-lexicon.json` 資料授權 |
+| [`LICENSE`](LICENSE) | Canto-0243 License（程式與詞條庫交付） |
 | [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) | 第三方資料授權 |
 | [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR · 源碼根目錄約定 |
 | [`CONTEXT.md`](CONTEXT.md) | 領域詞彙表 |
@@ -487,4 +502,4 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 
 ---
 
-**最後更新**：2026-06-20（README：詞條庫授權與 `LYRICS_DB_LICENSE.md` 分開標示）
+**最後更新**：2026-07-02（guotong 反義、build-word-relations 重構）

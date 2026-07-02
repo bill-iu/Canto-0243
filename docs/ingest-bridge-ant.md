@@ -19,7 +19,7 @@
 
 1. `python -m ingest normalize` → `python -m ingest build-relations`（更新近反義池）
 2. 其他 expand（如 `expand-antonyms-cilin`、`expand-antonyms-mirror`；按當次 ingest 需要）
-3. **`python -m ingest expand-antonyms-syn-bridge --fresh`**
+3. **`python -m ingest expand-antonyms-syn-bridge --fresh`**（或 **`python -m ingest bake-syn-bridge`** 同時匯出 `data/syn_ant/ant_syn_bridge_pairs.tsv` 供 commit）
 4. 下方 § 驗收
 5. [release.md](release.md) § 步驟 3 上傳 **發佈詞庫快照**
 
@@ -30,6 +30,14 @@
 ```bash
 python -m ingest expand-antonyms-syn-bridge --fresh
 ```
+
+烘焙 git 快照（embedding 後寫入 TSV）：
+
+```bash
+python -m ingest bake-syn-bridge
+```
+
+只匯出既有 `ant_syn_bridge` 列、唔跑模型：`python -m ingest bake-syn-bridge --export-only`
 
 | 預設 | 說明 |
 |------|------|
