@@ -1,0 +1,17 @@
+{
+  "name": "wa-sqlite-opfs-poc",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@journeyapps/wa-sqlite": "^1.7.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}
