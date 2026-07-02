@@ -1,6 +1,6 @@
 /**
  * Compound query execution — port of app/domain/relations/compound_*.py (P2 subset)
- * ponytail: DB syn/ant graph only; static thesaurus + compound_connect width-3 deferred
+ * ponytail: DB syn/ant graph only; static thesaurus deferred
  */
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
@@ -23,6 +23,8 @@ const TIER_CURATED = 0;
 const TIER_MORPHEME = 1;
 const TIER_SYNTHESIZED = 2;
 const NEIGHBOR_K = 12;
+
+const FILLWORD_CONNECTIVES = new Set('與和或共同及跟而且並向'.split(''));
 
 let curatedSyn = new Set<string>();
 let curatedAnt = new Set<string>();
@@ -383,6 +385,64 @@ function buildAntTiers(db: Database): TierMap {
   return tiers;
 }
 
+function loadThreeCharLiterals(db: Database): Set<string> {
+  const stmt = db.prepare(`
+    SELECT DISTINCT char FROM words
+    WHERE length = 3 OR ((length IS NULL OR length = 0) AND length(char) = 3)
+  `);
+  const out = new Set<string>();
+  while (stmt.step()) {
+    const ch = String((stmt.getAsObject() as WordRow).char ?? '');
+    if (ch.length === 3) {
+      out.add(ch);
+    }
+  }
+  stmt.free();
+  return out;
+}
+
+function flankTiersFromTwoChar(twoCharTiers: TierMap): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const [w, tier] of twoCharTiers) {
+    if (w.length !== 2) {
+      continue;
+    }
+    for (const pair of [`${w[0]}\t${w[1]}`, `${w[1]}\t${w[0]}`]) {
+      const prev = out.get(pair);
+      out.set(pair, prev === undefined ? tier : Math.min(prev, tier));
+    }
+  }
+  return out;
+}
+
+/** Port of compound_connect.search_connective_compound */
+function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): TierMap {
+  const connective = spec.connective;
+  if (!connective || !FILLWORD_CONNECTIVES.has(connective) || spec.width !== 3) {
+    return new Map();
+  }
+  const twoCharTiers =
+    spec.compound_kind === 'ant'
+      ? (antTiersCache ??= buildAntTiers(db))
+      : (synTiersCache ??= buildSynTiers(db));
+  const flankTiers = flankTiersFromTwoChar(twoCharTiers);
+  if (!flankTiers.size) {
+    return new Map();
+  }
+  const tiers = new Map<string, number>();
+  for (const w of loadThreeCharLiterals(db)) {
+    if (w[1] !== connective) {
+      continue;
+    }
+    const tier = flankTiers.get(`${w[0]}\t${w[2]}`);
+    if (tier !== undefined) {
+      tiers.set(w, tier);
+    }
+  }
+  // ponytail: Python narrow_compound_syn_literals no-op at width 3 — rhyme_char unchanged
+  return tiers;
+}
+
 function buildDoubledTiers(db: Database): TierMap {
   const tiers = new Map<string, number>();
   const stmt = db.prepare(`
@@ -402,7 +462,7 @@ function buildDoubledTiers(db: Database): TierMap {
 
 function tierMapForSpec(db: Database, spec: CompoundSearchSpec): TierMap {
   if (spec.connective && spec.width === 3) {
-    return new Map();
+    return searchConnectiveCompound(db, spec);
   }
   if (spec.compound_kind === 'doubled_syllable') {
     if (!doubledCache) {

@@ -920,7 +920,7 @@ function modeRedirectHint(mode: 'm1' | 'm2'): string {
   return `此語法已切換至 ${label} 查詢`;
 }
 
-/** ponytail: compound tiers — connective width-3 deferred to compound_connect port */
+/** ponytail: compound tiers — connective width-3 via compound_connect port */
 function buildCompoundSearchSpec(
   parsed: CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
 ): CompoundSearchSpec | null {

@@ -23,15 +23,15 @@ if (fs.existsSync(fixture)) {
   const db = new SQL.Database(fs.readFileSync(fixture));
   resetCompoundCaches();
   initCompoundLists({ syn: ['朋友'], ant: [] });
-  const items = executeCompoundSearch(
+  const connect = executeCompoundSearch(
     db,
-    { compound_kind: 'syn', width: 2 },
+    { compound_kind: 'syn', width: 3, connective: '與' },
     'm1',
     10,
     0,
   );
-  if (!Array.isArray(items)) {
-    throw new Error('compound-self-check: expected array');
+  if (!Array.isArray(connect)) {
+    throw new Error('compound-self-check: connective expected array');
   }
 }
 
