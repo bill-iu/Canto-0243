@@ -81,8 +81,11 @@ document.getElementById('btn-count')!.addEventListener('click', async () => {
 
 document.getElementById('btn-reset')!.addEventListener('click', async () => {
   try {
-    await ask({ type: 'reset' });
-    log('OPFS db removed', 'ok');
+    const res = await ask({ type: 'reset' });
+    if (res.type === 'error') {
+      throw new Error(res.message);
+    }
+    log('OPFS db removed（COUNT only 需重新 Import）', 'ok');
   } catch (e) {
     log(e instanceof Error ? e.message : String(e), 'err');
   }

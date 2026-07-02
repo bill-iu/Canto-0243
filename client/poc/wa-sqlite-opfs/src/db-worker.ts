@@ -8,6 +8,8 @@ import { SQLITE_OPEN_CREATE, SQLITE_OPEN_READONLY, SQLITE_OPEN_READWRITE } from 
 
 const DB_FILE = 'lyrics-opfs.db';
 const VFS_NAME = 'opfs-coop';
+/** CoopSync creates journal/wal siblings — reset must drop all */
+const DB_RELATED_SUFFIXES = ['', '-journal', '-wal'] as const;
 
 type Sqlite3 = ReturnType<typeof SQLite.Factory>;
 
@@ -23,6 +25,29 @@ async function ensureSqlite(): Promise<Sqlite3> {
   db.vfs_register(vfs, true);
   sqlite3 = db;
   return db;
+}
+
+/** ponytail: sync size probe — upgrade path: share with DB-2 import guard */
+async function opfsImportedDbBytes(): Promise<number> {
+  const root = await navigator.storage.getDirectory();
+  try {
+    const handle = await root.getFileHandle(DB_FILE);
+    const access = await handle.createSyncAccessHandle();
+    try {
+      return access.getSize();
+    } finally {
+      access.close();
+    }
+  } catch {
+    return 0;
+  }
+}
+
+async function requireImportedDb(): Promise<void> {
+  const bytes = await opfsImportedDbBytes();
+  if (bytes <= 0) {
+    throw new Error('OPFS 尚無詞庫，請先按 Import');
+  }
 }
 
 async function importDbToOpfs(bytes: Uint8Array): Promise<void> {
@@ -48,15 +73,20 @@ async function importDbToOpfs(bytes: Uint8Array): Promise<void> {
 }
 
 async function resetOpfsDb(): Promise<void> {
+  // ponytail: drop VFS accessiblePaths cache — else COUNT opens empty CREATE shell
+  sqlite3 = null;
   const root = await navigator.storage.getDirectory();
-  try {
-    await root.removeEntry(DB_FILE);
-  } catch {
-    // ponytail: missing file is fine
+  for (const suffix of DB_RELATED_SUFFIXES) {
+    try {
+      await root.removeEntry(DB_FILE + suffix);
+    } catch {
+      // missing entry is fine
+    }
   }
 }
 
 async function countWords(): Promise<number> {
+  await requireImportedDb();
   const db = await ensureSqlite();
   const handle = await db.open_v2(DB_FILE, SQLITE_OPEN_READONLY, VFS_NAME);
   try {

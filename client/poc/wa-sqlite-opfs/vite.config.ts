@@ -1,5 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import basicSsl from '@vitejs/plugin-basic-ssl';
 import { defineConfig } from 'vite';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -29,18 +30,23 @@ function serveDbPlugin() {
   };
 }
 
-export default defineConfig({
-  plugins: [serveDbPlugin()],
-  server: {
-    headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
+export default defineConfig(({ mode }) => {
+  const iosHttps = mode === 'ios';
+
+  return {
+    plugins: [serveDbPlugin(), ...(iosHttps ? [basicSsl()] : [])],
+    server: {
+      host: iosHttps,
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+      },
     },
-  },
-  worker: {
-    format: 'es',
-  },
-  optimizeDeps: {
-    exclude: ['@journeyapps/wa-sqlite'],
-  },
+    worker: {
+      format: 'es',
+    },
+    optimizeDeps: {
+      exclude: ['@journeyapps/wa-sqlite'],
+    },
+  };
 });
