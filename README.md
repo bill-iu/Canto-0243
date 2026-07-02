@@ -428,10 +428,11 @@ Canto-0243/
 
 ## 測試
 
-目前 **565** 個 unittest。
+目前 **34** 個 smoke unittest，另跑 `scripts/check_seams.py` 架構檢查。
 
 ```bash
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 關鍵回歸：純漢字 strict code、wildcard、`mode=syn`、等號／碼夾、粵拼、粵拼錨、`$`／`$$`、`code/code`、`~~`／`!!` 複合詞。

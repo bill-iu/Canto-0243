@@ -372,10 +372,11 @@ Static near／ant sources: `data/syn_ant/sources.yaml` (**cilin**, **guotong** `
 
 ## Tests
 
-Currently **225** unittest cases.
+Currently **34** smoke unittest cases plus `scripts/check_seams.py` architecture checks.
 
 ```bash
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code-sandwich, Jyutping, Jyutping anchors, `~~`／`!!` compounds.

@@ -23,7 +23,8 @@ If you cannot agree to these terms, please do not contribute.
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 python scripts/bootstrap_data.py
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 `__pycache__/` 與 `*.pyc` 為 Python 自動產生的 bytecode 快取，已在 `.gitignore`；**可隨時刪除**，下次 `import` 會重建。請勿提交至 git。

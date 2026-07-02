@@ -411,10 +411,11 @@ Canto-0243/
 
 ## 测试
 
-目前 **565** 个 unittest。
+目前 **34** 个 smoke unittest，另跑 `scripts/check_seams.py` 架构检查。
 
 ```bash
-python -m unittest discover -s tests -q
+python -m unittest discover -s tests/smoke -q
+python scripts/check_seams.py -q
 ```
 
 关键回归：纯汉字 strict code、wildcard、`mode=syn`、等号／码夹、粤拼、粤拼锚、`~~`／`!!` 复合词。

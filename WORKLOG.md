@@ -3,7 +3,7 @@
 **期間**：2026-05 ~ 2026-06 · **棧**：FastAPI + SQLAlchemy + SQLite（離線）+ HTML/JS  
 **目標**：快速粵語押韻搜尋（0243／等號韻／wildcard／近反義）。**原則**：ingest 重型、runtime 無 ML、純 SQL + static thesaurus。
 
-**Enforcement**（每次實質變更）：`python -m unittest discover -s tests -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
+**Enforcement**（每次實質變更）：`python -m unittest discover -s tests/smoke -q` ＋ `python scripts/check_seams.py -q`。可選：有本地 `lyrics.db` 時跑 `python scripts/enforce_bench.py` 抽查關鍵查詢。
 
 ### 2026-06-13 — 根目錄整理（grill C · D · A · D · A · B）
 
