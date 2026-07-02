@@ -59,7 +59,7 @@ function defaultDbUrl(): string {
 
 function sqlJsLocateFile(file: string): string {
   if (file.endsWith('.wasm')) {
-    return `https://sql.js.org/dist/${file}`;
+    return publicAssetUrl('sql-wasm-browser.wasm');
   }
   return file;
 }
