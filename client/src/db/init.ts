@@ -48,8 +48,13 @@ function lexiconVersion(): string {
   return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
 }
 
+function publicAssetUrl(file: string): string {
+  const base = import.meta.env.BASE_URL || '/';
+  return `${base.replace(/\/?$/, '/')}${file.replace(/^\//, '')}`;
+}
+
 function defaultDbUrl(): string {
-  return new URL(`lyrics.${lexiconVersion()}.db`, import.meta.env.BASE_URL).toString();
+  return publicAssetUrl(`lyrics.${lexiconVersion()}.db`);
 }
 
 function sqlJsLocateFile(file: string): string {
@@ -91,7 +96,7 @@ async function loadBrowserRankingIndex(): Promise<void> {
     return;
   }
   try {
-    const url = new URL('ranking-index.json', import.meta.env.BASE_URL).toString();
+    const url = publicAssetUrl('ranking-index.json');
     const res = await fetch(url);
     if (res.ok) {
       initRankingData(await res.json());
@@ -104,7 +109,7 @@ async function loadBrowserRankingIndex(): Promise<void> {
 
 async function loadBrowserRhymeLetterIndex(): Promise<void> {
   try {
-    const url = new URL('rhyme-letter-index.json', import.meta.env.BASE_URL).toString();
+    const url = publicAssetUrl('rhyme-letter-index.json');
     const res = await fetch(url);
     if (res.ok) {
       initRhymeLetterIndex(await res.json());
@@ -116,11 +121,10 @@ async function loadBrowserRhymeLetterIndex(): Promise<void> {
 
 async function loadBrowserStaticSynIndex(): Promise<void> {
   try {
-    const base = import.meta.env.BASE_URL;
     const [synRes, antRes, cilinRes] = await Promise.all([
-      fetch(new URL('static-syn-index.json', base).toString()),
-      fetch(new URL('static-ant-index.json', base).toString()),
-      fetch(new URL('static-cilin-syn-index.json', base).toString()),
+      fetch(publicAssetUrl('static-syn-index.json')),
+      fetch(publicAssetUrl('static-ant-index.json')),
+      fetch(publicAssetUrl('static-cilin-syn-index.json')),
     ]);
     if (synRes.ok) {
       initStaticSynIndex(await synRes.json());
