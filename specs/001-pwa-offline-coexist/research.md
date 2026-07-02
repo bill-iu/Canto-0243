@@ -54,7 +54,7 @@
 
 ## DB-5: Storage layer measurements (ADR-0024 §7.2)
 
-**Date**: 2026-07-02  
+**Date**: 2026-07-02（量測：2026-07-03 桌面 Chrome）  
 **Harness**: `client/src/db/db-benchmark.ts`；瀏覽器開啟 `?benchmark=1`（見 [quickstart.md](./quickstart.md) Scenario D）
 
 ### Scope
@@ -92,19 +92,32 @@ VITE_DB_BACKEND=opfs npm run dev
 # 4) iOS：npm run dev:ios（poc 目錄）或 Pages 部署後 Scenario A + D5-M5
 ```
 
-### Results（手動填入）
+### Results（2026-07-03 桌面 Chrome，Win，`lyrics.dev.db` 106MB）
 
-| 裝置 | OS | Backend | D5-M1 initMs | D5-M2 probeMs | D5-M3 heap MB (init) | D5-M5 飛航 OK | 備註 |
-|------|-----|---------|--------------|---------------|----------------------|---------------|------|
-| _TBD_ | | sqljs | | | | | |
-| _TBD_ | | opfs 2nd cold | | | | | 預期 init 無網路 fetch |
+| 裝置 | OS | Backend | D5-M1 initMs | D5-M2 probeMs | D5-M3 heap MB (init) | D5-M4 storage MB | D5-M5 飛航 OK | 備註 |
+|------|-----|---------|--------------|---------------|----------------------|------------------|---------------|------|
+| 桌面 Chrome | Win10 | sqljs 冷啟 | 1700 | 0 | 500.6 | 0 | — | `cache.any=false` |
+| 桌面 Chrome | Win10 | sqljs 暖啟 | 624 | 0 | 561.0 | 0 | — | 同 session；dev 無 SW cache |
+| 桌面 Chrome | Win10 | opfs 首次 | 2236 | 0 | 519.3 | 106 | — | fetch + 寫入 OPFS |
+| 桌面 Chrome | Win10 | opfs 二次 | 1206 | 0 | 705.9* | 106 | — | `cache.opfs=true`；無 re-fetch |
+
+\*第四次 heap 偏高：同一 Chrome session 累積（先前已跑 sqljs×2 + opfs×1）；**不宜**作 opfs vs sqljs RAM 結論。
+
+**探針**：四次皆 `ok: true`；`probeQuery=事業`，`probeWord=22`（0243 模式首筆結果）。
+
+**小結**：
+
+- sqljs 暖啟 initMs **624** vs 冷啟 **1700**（dev HTTP 快取，非 SW）
+- opfs 二次 initMs **1206** vs 首次 **2236**（省去 106MB fetch，符合預期）
+- D5-M3 皆 ~500–700 MB heap：**sql.js 整檔進 RAM**；OPFS 尚未降峰值
+- dev 環境 `swCache` 全程 `false`（Workbox 未 cache 詞庫）；production PWA 待另驗
 
 ### Gate（DB-5 完成勾選）
 
-- [ ] 桌面 Chrome：`?benchmark=1` 產出有效 JSON（`ok: true`）
-- [ ] iOS：Scenario A 飛航查詢通過（D5-M5）
-- [ ] `sqljs` vs `opfs` 各至少一筆 D5-M1/M2 記錄於上表
-- [ ] **不**翻轉 `VITE_DB_BACKEND` 預設（待上表 + 兩版 release）
+- [x] 桌面 Chrome：`?benchmark=1` 產出有效 JSON（`ok: true`）
+- [ ] iOS：Scenario A 飛航查詢通過（D5-M5）— **待補**
+- [x] `sqljs` vs `opfs` 各至少一筆 D5-M1/M2 記錄於上表
+- [x] **不**翻轉 `VITE_DB_BACKEND` 預設（維持 `sqljs`；翻預設待兩版 release 穩定）
 
 ### RAM 峰值結論（預期）
 
