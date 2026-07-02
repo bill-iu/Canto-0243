@@ -40,6 +40,161 @@ class RelationPoolTests(unittest.TestCase):
             self.assertEqual(snapshot.chars("syn"), ["開心", "愉快"])
             self.assertEqual(snapshot.chars("ant"), [])
 
+    def test_runtime_cilin_derived_ant_without_db_derived_rows(self):
+        from unittest.mock import MagicMock
+
+        Session = self._session()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心", "難過"],
+        }.get(w, [])
+        thesaurus.get_synonyms.return_value = []
+        thesaurus.get_antonyms.return_value = []
+
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=3, char="傷心", code="22", jyutping="", length=2),
+                Word(id=4, char="難過", code="22", jyutping="", length=2),
+            ])
+            db.add(
+                WordRelation(
+                    word_id=1, related_id=2, relation_type="ant", score=0.9, source="guotong"
+                )
+            )
+            db.commit()
+
+            membership = {"快樂", "悲傷", "傷心", "難過"}
+            snapshot = build_pool(
+                db,
+                "快樂",
+                include_static=False,
+                thesaurus=thesaurus,
+                membership=membership,
+                quiet=True,
+            )
+
+            ant_chars = [r["char"] for r in snapshot.ants]
+            self.assertIn("悲傷", ant_chars)
+            self.assertIn("傷心", ant_chars)
+            self.assertIn("難過", ant_chars)
+            derived = [r for r in snapshot.ants if r.get("source") == "ant_cilin_exanded"]
+            self.assertEqual({r["char"] for r in derived}, {"傷心", "難過"})
+
+    def test_ignores_stale_db_derived_ant_rows(self):
+        from unittest.mock import MagicMock
+
+        Session = self._session()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.return_value = []
+        thesaurus.get_synonyms.return_value = []
+        thesaurus.get_antonyms.return_value = []
+
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=3, char="過期字", code="22", jyutping="", length=3),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="guotong"))
+            db.add(
+                WordRelation(
+                    word_id=1,
+                    related_id=3,
+                    relation_type="ant",
+                    source="ant_cilin_exanded",
+                )
+            )
+            db.commit()
+
+            membership = {"快樂", "悲傷", "過期字"}
+            snapshot = build_pool(
+                db,
+                "快樂",
+                include_static=False,
+                thesaurus=thesaurus,
+                membership=membership,
+                quiet=True,
+            )
+            ant_chars = [r["char"] for r in snapshot.ants]
+            self.assertIn("悲傷", ant_chars)
+            self.assertNotIn("過期字", ant_chars)
+
+    def test_runtime_mirror_ant_from_full_syn_neighbors(self):
+        from unittest.mock import MagicMock
+
+        Session = self._session()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心"],
+        }.get(w, [])
+        thesaurus.get_synonyms.side_effect = lambda w: {
+            "悲傷": ["傷心", "哀愁"],
+        }.get(w, [])
+        thesaurus.get_antonyms.return_value = []
+
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+                Word(id=3, char="傷心", code="22", jyutping="", length=2),
+                Word(id=4, char="哀愁", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="guotong"))
+            db.commit()
+
+            membership = {"快樂", "悲傷", "傷心", "哀愁"}
+            snapshot = build_pool(
+                db,
+                "快樂",
+                include_static=True,
+                thesaurus=thesaurus,
+                membership=membership,
+                quiet=True,
+            )
+            by_source = {r["char"]: r.get("source") for r in snapshot.ants}
+            self.assertEqual(by_source.get("傷心"), "ant_cilin_exanded")
+            self.assertEqual(by_source.get("哀愁"), "ant_syn_mirror")
+
+    def test_process_cached_graph_reused_across_build_pool_calls(self):
+        from unittest.mock import MagicMock, patch
+
+        from app.domain.relations.graph import clear_process_cached_graph
+
+        clear_process_cached_graph()
+        Session = self._session()
+        thesaurus = MagicMock()
+        thesaurus.get_cilin_synonyms.return_value = []
+        thesaurus.get_synonyms.return_value = []
+        thesaurus.get_antonyms.return_value = []
+
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="快樂", code="22", jyutping="", length=2),
+                Word(id=2, char="悲傷", code="22", jyutping="", length=2),
+            ])
+            db.add(WordRelation(word_id=1, related_id=2, relation_type="ant", source="guotong"))
+            db.commit()
+            membership = {"快樂", "悲傷"}
+
+            with patch(
+                "app.domain.relations.graph.CharRelationGraph",
+                wraps=__import__(
+                    "app.domain.relations.graph", fromlist=["CharRelationGraph"]
+                ).CharRelationGraph,
+            ) as graph_cls:
+                build_pool(
+                    db, "快樂", include_static=False, thesaurus=thesaurus,
+                    membership=membership, quiet=True,
+                )
+                build_pool(
+                    db, "悲傷", include_static=False, thesaurus=thesaurus,
+                    membership=membership, quiet=True,
+                )
+                self.assertEqual(graph_cls.call_count, 1)
+        clear_process_cached_graph()
+
     def test_ingest_cached_membership_skips_full_table_scan_per_query(self):
         Session = self._session()
         with Session() as db:

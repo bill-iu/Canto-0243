@@ -8,7 +8,8 @@ from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.graph import CharRelationGraph
+from app.domain.relations.derived_ant import append_runtime_derived_ant_pool
+from app.domain.relations.graph import CharRelationGraph, get_process_cached_graph
 from app.domain.relations.valid_term import normalize_literal
 from app.domain.relations.ranking import (
     DERIVED_ANT_SOURCES,
@@ -22,7 +23,11 @@ from app.domain.relations.ranking import (
     sort_syn_pool,
 )
 from app.models.word import Word
-from app.repositories.word_relation_repo import chars_present_in_db, fetch_bidirectional_relations
+from app.repositories.word_relation_repo import (
+    chars_present_in_db,
+    fetch_bidirectional_relations,
+    load_db_char_set,
+)
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 DEFAULT_PAGE_SIZE = 160
@@ -127,6 +132,11 @@ def _fetch_db_relations(db: Session, query: str) -> List[dict]:
         if item:
             items.append(item)
     items = dedupe_rel_items(items)
+    items = [
+        item
+        for item in items
+        if (item.get("source") or "") not in DERIVED_ANT_SOURCES
+    ]
     items.sort(key=lambda x: (x.get("_sort", 99), x.get("char") or ""))
     return _filter_pool_items(items)
 
@@ -257,7 +267,7 @@ class PoolSnapshot:
             else:
                 seed_chars.append(ch)
 
-        graph = CharRelationGraph(
+        graph = get_process_cached_graph(
             self._db,
             self._thesaurus or default_thesaurus_port(),
             membership=self._membership,
@@ -321,8 +331,10 @@ def build_pool(
 
     if membership is not None:
         present = membership
+        lexicon_membership = membership
     else:
         present = chars_present_in_db(db, candidate_chars)
+        lexicon_membership = load_db_char_set(db)
     rel_items = _apply_in_db_membership(rel_items, present)
 
     syn_pool = _collect_sorted_pool(
@@ -339,6 +351,20 @@ def build_pool(
         rel_items=rel_items,
         static_words=static_ants,
         present=present,
+        morpheme_chars=morpheme_chars,
+    )
+    graph = get_process_cached_graph(
+        db,
+        port,
+        membership=lexicon_membership,
+    )
+    ant_pool = append_runtime_derived_ant_pool(
+        q,
+        ant_pool,
+        thesaurus=port,
+        graph=graph,
+        present=lexicon_membership,
+        include_static=include_static,
         morpheme_chars=morpheme_chars,
     )
 

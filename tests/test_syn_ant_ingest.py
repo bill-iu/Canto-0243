@@ -316,12 +316,6 @@ class AntCilinExpansionTests(unittest.TestCase):
             self.assertIn((2, 5), pairs)  # 悲傷 ant 愉快 (via 快樂 syn 愉快)
             self.assertNotIn((1, 1), pairs)
 
-            res = relation_pool_page(db, "快樂", include_static=False)
-            ant_chars = [r["char"] for r in res if r["relation"] == "ant"]
-            self.assertIn("悲傷", ant_chars)
-            self.assertIn("傷心", ant_chars)
-            self.assertIn("難過", ant_chars)
-
     def test_expand_skips_existing_ant_pairs(self):
         Session = self._seed_db()
         with Session() as db:
@@ -942,9 +936,6 @@ class AntSynMirrorTests(unittest.TestCase):
             ])
             db.commit()
 
-            stats = expand_antonyms_via_syn_endpoints(db, source="ant_syn_mirror", include_static=False)
-            self.assertGreater(stats["inserted"], 0)
-
             bang_chars = relation_pool_chars(
                 db, "開心", "ant", include_static=False, expand_ant_via_syn=False,
             )
@@ -956,6 +947,11 @@ class AntSynMirrorTests(unittest.TestCase):
                 self.assertIn(ch, bang_chars)
             self.assertIn("傷心", bang_chars)
             self.assertIn("難過", bang_chars)
+
+            stats = expand_antonyms_via_syn_endpoints(
+                db, source="ant_syn_mirror", include_static=False
+            )
+            self.assertGreater(stats["inserted"], 0)
 
     def test_collect_mirror_pairs_dedupes(self):
         Session = self._seed_db()

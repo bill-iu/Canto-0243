@@ -148,6 +148,33 @@ class CharRelationGraph:
         return self._ant_oriented_pairs
 
 
+def get_process_cached_graph(
+    db: Session,
+    thesaurus: ThesaurusPort,
+    *,
+    membership: Optional[Set[str]] = None,
+) -> CharRelationGraph:
+    """進程級 lazy 關係圖快取（CONTEXT § 關係圖）。"""
+    global _cached_graph_key, _cached_graph
+    mem_key = frozenset(membership) if membership is not None else None
+    key = (id(db.get_bind()), id(thesaurus), mem_key)
+    if _cached_graph is None or _cached_graph_key != key:
+        _cached_graph_key = key
+        _cached_graph = CharRelationGraph(db, thesaurus, membership=membership)
+    return _cached_graph
+
+
+_cached_graph_key: Optional[tuple] = None
+_cached_graph: Optional[CharRelationGraph] = None
+
+
+def clear_process_cached_graph() -> None:
+    """測試用：清進程級關係圖快取。"""
+    global _cached_graph_key, _cached_graph
+    _cached_graph_key = None
+    _cached_graph = None
+
+
 def default_char_relation_graph(
     db: Session,
     *,
@@ -164,5 +191,7 @@ def default_char_relation_graph(
 __all__ = [
     "ANT_SYN_MIRROR_SOURCE",
     "CharRelationGraph",
+    "clear_process_cached_graph",
     "default_char_relation_graph",
+    "get_process_cached_graph",
 ]
