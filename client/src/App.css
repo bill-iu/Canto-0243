@@ -178,6 +178,23 @@ body {
   transform: none;
 }
 
+.query-explain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: -1rem 0 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.query-explain__summary {
+  color: #666;
+}
+
+.query-explain__warning {
+  color: #9a5b14;
+}
+
 /* Stats Toggle */
 .stats-toggle {
   padding: 0.75rem 1.5rem;
@@ -520,6 +537,14 @@ body {
   .search-hint {
     background-color: #3d3520;
     color: #f0e6c8;
+  }
+
+  .query-explain__summary {
+    color: #aaa;
+  }
+
+  .query-explain__warning {
+    color: #d4a574;
   }
 
   .load-more {

@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
+import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { ResultList } from './result-list';
 import { SynResultList, synResultsStats } from './syn-result-list';
 import { formatEmptySearchMessage } from './empty-search-message';
@@ -67,6 +68,9 @@ function App() {
     hasMore,
     loadMore,
   } = useSearch(query, mode, { fallback_0243_mode: last0243Mode });
+
+  const { summary: explainSummary, warning: explainWarning } = useQueryExplain(query);
+  const showExplain = Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
 
@@ -216,6 +220,17 @@ function App() {
             搜尋
           </button>
         </form>
+
+        {showExplain && (
+          <p className="query-explain" aria-live="polite">
+            {explainSummary ? (
+              <span className="query-explain__summary">{explainSummary}</span>
+            ) : null}
+            {explainWarning ? (
+              <span className="query-explain__warning">{explainWarning}</span>
+            ) : null}
+          </p>
+        )}
 
         <button onClick={toggleStats} className="stats-toggle">
           {showStats ? '隱藏統計' : '顯示資料庫統計'}
