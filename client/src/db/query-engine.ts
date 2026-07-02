@@ -1870,21 +1870,20 @@ function executeDigitCodeQuery(
         length = ?
         OR ((length IS NULL OR length = 0) AND length(char) = ?)
       )
-    ORDER BY char
-    LIMIT ? OFFSET ?
   `;
 
   const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
+  const rows: WordRow[] = [];
 
-  stmt.bind([...variants, len, len, limit, offset]);
+  stmt.bind([...variants, len, len]);
 
   while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
+    rows.push(stmt.getAsObject() as WordRow);
   }
   stmt.free();
 
-  return { items: results };
+  const sorted = sortQueryResults(deduplicateWordRows(rows).map((row) => rowToResult(row)));
+  return { items: sorted.slice(offset, offset + limit), total: sorted.length };
 }
 
 /** Port of word_serializer.deduplicate_words */
