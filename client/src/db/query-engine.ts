@@ -2763,14 +2763,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       if (parsed.kind === QueryKind.EQUALS) {
         return executeEqualsQuery(parsed as EqualsQuery, db, mode, limit, offset);
       }
-      // Handle hybrid tail equals alias
+      // ponytail: HYBRID_TAIL_EQUALS_ALIAS 暫走 stub；MF-4 改 executeMatchSpec
       if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
-        return executeMaskFamily(
+        return executeMaskFamilyStub(
           { kind: QueryKind.MASK, raw_q: (parsed as HybridTailEqualsAliasQuery).hybrid_q },
           db, mode, limit, offset
         );
       }
-      return executeMaskFamily(parsed, db, mode, limit, offset);
+      // ponytail: WILDCARD_CODE_ANCHOR | TRIPLE_RHYME_ANCHOR | CODE_REF_MIDDLE_RHYME → stub until MF-4
+      return executeMaskFamilyStub(parsed, db, mode, limit, offset);
     
     case RouteKind.RELATION:
       if (parsed.kind === QueryKind.RELATION_LOOKUP) {
@@ -3466,13 +3467,14 @@ async function executeEqualsQuery(
   }
   
   // Fallback: try simple text search
-  return executeMaskFamily(parsed, db, mode, limit, offset);
+  return executeMaskFamilyStub(parsed, db, mode, limit, offset);
 }
 
 /**
- * Execute mask family query (contains wildcards)
+ * Transitional LIKE stub — not Python execute_match_spec (ADR-0024 §6 MF-0).
+ * ponytail: ceiling = SQL LIKE on code/char; upgrade path = executeMatchSpec via MF-4…MF-6.
  */
-function executeMaskFamily(
+function executeMaskFamilyStub(
   parsed: ParsedQuery,
   db: Database,
   mode: QueryMode,
