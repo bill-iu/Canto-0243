@@ -3,7 +3,16 @@
  * Provides easy access to the SQL.js database in React components
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  useMemo,
+  type ReactNode,
+} from 'react';
 import {
   initializeDatabase,
   getDefaultDbUrl,
@@ -17,13 +26,13 @@ import {
   validateOfflineReadiness,
   normalizeQuery,
   parseQuery,
-  normalizeAndParse
+  normalizeAndParse,
 } from '../db/query';
 import type {
   QueryOptions,
   QueryResult,
   QueryMode,
-  QueryKind
+  QueryKind,
 } from '../db/query';
 
 // Re-export query engine types and functions for convenience
@@ -57,10 +66,9 @@ export interface UseDBReturn {
   reset: () => void;
 }
 
-/**
- * Custom hook for managing the SQL.js database
- */
-export function useDB(): UseDBReturn {
+const DBContext = createContext<UseDBReturn | null>(null);
+
+function useDBState(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
@@ -78,11 +86,11 @@ export function useDB(): UseDBReturn {
     }
   }, []);
 
-  /**
-   * Initialize the database
-   */
   const initialize = useCallback(async () => {
-    if (status === 'ready' || status === 'loading') {
+    if (status === 'loading') {
+      return;
+    }
+    if (status === 'ready' && isValidated) {
       return;
     }
 
@@ -92,13 +100,10 @@ export function useDB(): UseDBReturn {
       setProgress(0);
       setIsValidated(false);
 
-      // Initialize database - progress will be updated via httpvfs
       await initializeDatabase();
-
-      // Validate with a minimal query so "Ready" means "can actually query"
       await validateOfflineReadiness();
       setIsValidated(true);
-      
+
       setStatus('ready');
       setProgress(100);
     } catch (err) {
@@ -107,7 +112,7 @@ export function useDB(): UseDBReturn {
       setProgress(0);
       setIsValidated(false);
     }
-  }, [status]);
+  }, [status, isValidated]);
 
   const retryOfflineReady = useCallback(async () => {
     resetDatabase();
@@ -119,55 +124,49 @@ export function useDB(): UseDBReturn {
     await initialize();
   }, [checkDbCached, initialize]);
 
-  /**
-   * Execute a search query
-   */
   const searchQuery = useCallback(async (options: QueryOptions) => {
-    // Auto-initialize if not ready
-    if (status === 'idle') {
+    if (!isDatabaseInitialized()) {
       await initialize();
     }
-    
-    if (status !== 'ready') {
+    if (!isDatabaseInitialized()) {
       throw new Error('Database not ready');
     }
-    
     return search(options);
-  }, [status, initialize]);
+  }, [initialize]);
 
-  /**
-   * Get database statistics
-   */
   const getStats = useCallback(async () => {
-    if (status === 'idle') {
+    if (!isDatabaseInitialized()) {
       await initialize();
     }
-    
-    if (status !== 'ready') {
+    if (!isDatabaseInitialized()) {
       throw new Error('Database not ready');
     }
-    
     return getDatabaseStats();
-  }, [status, initialize]);
+  }, [initialize]);
 
-  /**
-   * Reset the database connection
-   */
   const reset = useCallback(() => {
     resetDatabase();
     setStatus('idle');
     setProgress(0);
     setError(null);
+    setIsValidated(false);
   }, []);
 
-  // Auto-initialize on mount if not already initialized globally
   useEffect(() => {
-    if (isDatabaseInitialized()) {
-      setStatus('ready');
-      setProgress(100);
-      // Note: still validate on demand; global init doesn't guarantee offline package integrity
+    if (!isDatabaseInitialized() || status !== 'idle') {
+      return;
     }
-  }, []);
+    void (async () => {
+      try {
+        await validateOfflineReadiness();
+        setIsValidated(true);
+        setStatus('ready');
+        setProgress(100);
+      } catch {
+        // ponytail: let App auto-initialize on online/cache
+      }
+    })();
+  }, [status]);
 
   useEffect(() => {
     checkDbCached();
@@ -202,13 +201,29 @@ export function useDB(): UseDBReturn {
     dbUrl,
     progress,
     error,
-    isReady: status === 'ready',
+    isReady: offlineStatus === 'ready',
     initialize,
     retryOfflineReady,
     search: searchQuery,
     getStats,
-    reset
+    reset,
   };
+}
+
+export function DBProvider({ children }: { children: ReactNode }) {
+  const value = useDBState();
+  return <DBContext.Provider value={value}>{children}</DBContext.Provider>;
+}
+
+/**
+ * Custom hook for managing the SQL.js database (shared via DBProvider)
+ */
+export function useDB(): UseDBReturn {
+  const ctx = useContext(DBContext);
+  if (!ctx) {
+    throw new Error('useDB must be used within DBProvider');
+  }
+  return ctx;
 }
 
 /**
@@ -220,34 +235,51 @@ export function useSearch(queryOptions: QueryOptions | null) {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    if (!queryOptions || !isReady) {
+  const stableOptions = useMemo(
+    () => queryOptions,
+    [queryOptions?.query, queryOptions?.mode, queryOptions?.limit, queryOptions?.offset],
+  );
+
+  useLayoutEffect(() => {
+    if (!stableOptions || !isReady) {
       setResults([]);
+      setLoading(false);
       return;
     }
 
+    let cancelled = false;
+    setLoading(true);
+    setSearchError(null);
+
     const executeSearch = async () => {
       try {
-        setLoading(true);
-        setSearchError(null);
-        const results = await search(queryOptions);
-        setResults(results);
+        const hits = await search(stableOptions);
+        if (!cancelled) {
+          setResults(hits);
+        }
       } catch (err) {
-        setSearchError(err instanceof Error ? err : new Error(String(err)));
-        setResults([]);
+        if (!cancelled) {
+          setSearchError(err instanceof Error ? err : new Error(String(err)));
+          setResults([]);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    executeSearch();
-  }, [queryOptions, isReady, search]);
+    void executeSearch();
+    return () => {
+      cancelled = true;
+    };
+  }, [stableOptions, isReady, search]);
 
   return {
     results,
     loading: loading || status === 'loading',
     error: searchError,
-    isReady
+    isReady,
   };
 }
 

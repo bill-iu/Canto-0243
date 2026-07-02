@@ -135,9 +135,10 @@ export async function validateOfflineReadiness(): Promise<void> {
   const results = await search({
     query: OFFLINE_READINESS_PROBE_QUERY,
     mode: '0243',
-    limit: 1,
+    limit: 10,
   });
-  if (!results.length || !results[0]?.word) {
+  const hasProbeWord = results.some((r) => r.word === OFFLINE_READINESS_PROBE_QUERY);
+  if (!results.length || !hasProbeWord) {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
   }
 }

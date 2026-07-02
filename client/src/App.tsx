@@ -4,8 +4,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useDB, useSearch } from './hooks/useDB';
-import type { QueryOptions } from './hooks/useDB';
+import { useDB, useSearch } from './hooks/useDB.tsx';
+import type { QueryOptions } from './hooks/useDB.tsx';
 import './App.css';
 
 function App() {
@@ -198,7 +198,7 @@ function App() {
             </div>
           )}
           
-          {results.length === 0 && query && !searchLoading && (
+          {results.length === 0 && query && !searchLoading && offlineStatus === 'ready' && (
             <p className="no-results">未找到結果</p>
           )}
         </div>
