@@ -34,6 +34,13 @@ jobs:
           gh release download "$TAG" -p "lyrics.db" --clobber
           test -s lyrics.db
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Fetch rime char.csv for PWA prebuild
+        run: python scripts/fetch/fetch_rime_data.py
+
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
