@@ -9,7 +9,8 @@
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
-import { sortQueryResults, sortWordRows } from './ranking.ts';
+import { sortQueryResults, sortWordRows, compareSearchResults } from './ranking.ts';
+import { searchCompoundTiers } from './compound.ts';
 import {
   executeCompoundSearch,
   type CompoundSearchSpec,
@@ -40,9 +41,10 @@ import {
   isWildcardChar,
   parseMaskQuery,
 } from './position-match/mask-grammar.ts';
-import { getCandidatesForLength, wordMatchesWidth } from './position-match/sources.ts';
+import { getCandidatesForLength, wordMatchesWidth, compoundSearchSpecFromMatchSpec } from './position-match/sources.ts';
 import { executeMatchSpec } from './position-match/engine.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
+import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
 
 // ============================================================================
@@ -307,12 +309,44 @@ export interface SearchResult {
 
 /** Map lyrics.db row (`char`) to UI-facing QueryResult (`word`). */
 function rowToResult(row: Record<string, unknown>): QueryResult {
-  return {
+  const item: QueryResult = {
     word: String(row.char ?? ''),
     jyutping: String(row.jyutping ?? ''),
     code: String(row.code ?? ''),
     score: 0,
   };
+  const dim = row.anchor_dimension;
+  if (dim === 'initial' || dim === 'final') {
+    item.anchor_dimension = dim;
+  }
+  return item;
+}
+
+function sortMaskFamilyRows(
+  spec: MatchSpec,
+  rows: WordRow[],
+  db: Database,
+  mode: QueryMode,
+): WordRow[] {
+  if (spec.extra?.dual_phoneme) {
+    return rows;
+  }
+  if (spec.compound_kind) {
+    const compoundSpec = compoundSearchSpecFromMatchSpec(spec);
+    if (!compoundSpec) {
+      return sortWordRows(rows);
+    }
+    const tiers = searchCompoundTiers(db, compoundSpec);
+    return [...rows].sort((a, b) => {
+      const ta = tiers.get(getWordText(a)) ?? 99;
+      const tb = tiers.get(getWordText(b)) ?? 99;
+      if (ta !== tb) {
+        return ta - tb;
+      }
+      return compareSearchResults(a, b);
+    });
+  }
+  return sortWordRows(rows);
 }
 
 // ============================================================================
@@ -330,7 +364,7 @@ const QUERY_KIND_META: Record<QueryKind, QueryKindMeta> = {
   [QueryKind.COMPOUND_ANT]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.HETERONYM_CODE]: { route: RouteKind.HETERONYM },
-  [QueryKind.HYBRID_TAIL_EQUALS_ALIAS]: { route: RouteKind.MASK_FAMILY },
+  [QueryKind.HYBRID_TAIL_EQUALS_ALIAS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.PREFIX_WILDCARD_EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.PARTIAL_RHYME_MASK]: { route: RouteKind.MASK_FAMILY, match_spec: true },
@@ -2521,104 +2555,7 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
     
     case RouteKind.MASK_FAMILY:
-      if (
-        parsed.kind === QueryKind.COMPOUND_SYN ||
-        parsed.kind === QueryKind.COMPOUND_ANT ||
-        parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE
-      ) {
-        return executeCompoundQuery(
-          parsed as CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.PREFIX_WILDCARD_EQUALS) {
-        return executePrefixWildcardEquals(
-          parsed as PrefixWildcardEqualsQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.PARTIAL_RHYME_MASK) {
-        return executePartialRhymeMaskQuery(
-          parsed as PartialRhymeMaskQuery,
-          db,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.PARTIAL_INITIAL_MASK) {
-        return executePartialInitialMaskQuery(
-          parsed as PartialInitialMaskQuery,
-          db,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.SERIAL_PHONEME) {
-        return executeSerialPhonemeQuery(
-          parsed as SerialPhonemeAnchorQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.HYBRID_CODE) {
-        return executeHybridCodeQuery(
-          parsed as HybridCodeQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.LITERAL_REF) {
-        return executeLiteralRefQuery(
-          parsed as LiteralRefQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.PLUS_ANCHOR) {
-        return executePlusAnchorQuery(
-          parsed as PlusAnchorQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      if (parsed.kind === QueryKind.MASK) {
-        return executeMaskQuery(parsed as MaskQuery, db, mode, limit, offset);
-      }
-      if (parsed.kind === QueryKind.RHYME_ANCHOR) {
-        return executeRhymeAnchorQuery(parsed as RhymeAnchorQuery, db, limit, offset);
-      }
-      if (parsed.kind === QueryKind.JYUTPING_ANCHOR) {
-        return executeJyutpingAnchorQuery(
-          parsed as JyutpingAnchorQuery,
-          db,
-          mode,
-          limit,
-          offset,
-        );
-      }
-      // Handle equals queries
-      if (parsed.kind === QueryKind.EQUALS) {
-        return executeEqualsQuery(parsed as EqualsQuery, db, mode, limit, offset);
-      }
-      // MF-4: stub kinds → executeMatchSpec（ADR-0024 §6）
-      if (MASK_FAMILY_EXECUTE_MATCH_SPEC_KINDS.has(parsed.kind)) {
-        return executeMaskFamilySearchResult(parsed, db, mode, limit, offset, ctx.code);
-      }
-      return executeMaskFamilyStub(parsed, db, mode, limit, offset);
+      return executeMaskFamilySearchResult(parsed, db, mode, limit, offset, ctx.code);
     
     case RouteKind.RELATION:
       if (parsed.kind === QueryKind.RELATION_LOOKUP) {
@@ -3305,22 +3242,15 @@ async function executeEqualsQuery(
   return executeMaskFamilyStub(parsed, db, mode, limit, offset);
 }
 
-/** MF-4 stub kinds — port of query_dispatch._mask_family_search_result */
-const MASK_FAMILY_EXECUTE_MATCH_SPEC_KINDS: ReadonlySet<QueryKind> = new Set([
-  QueryKind.WILDCARD_CODE_ANCHOR,
-  QueryKind.TRIPLE_RHYME_ANCHOR,
-  QueryKind.CODE_REF_MIDDLE_RHYME,
-  QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
-]);
-
-function executeMaskFamilySearchResult(
+/** MF-6: port of query_dispatch._mask_family_search_result */
+async function executeMaskFamilySearchResult(
   parsed: ParsedQuery,
   db: Database,
   mode: QueryMode,
   limit: number,
   offset: number,
   code?: string,
-): SearchResult {
+): Promise<SearchResult> {
   const spec = normalizeToMatchSpec(parsed);
   if (!spec) {
     return { items: [] };
@@ -3333,46 +3263,18 @@ function executeMaskFamilySearchResult(
     offset,
     code: code ?? null,
   });
-  return { items: rows.map((row) => rowToResult(row)) };
-}
-
-/**
- * Transitional LIKE stub — not Python execute_match_spec (ADR-0024 §6 MF-0).
- * ponytail: ceiling = SQL LIKE on code/char; upgrade path = executeMatchSpec via MF-4…MF-6.
- */
-function executeMaskFamilyStub(
-  parsed: ParsedQuery,
-  db: Database,
-  mode: QueryMode,
-  limit: number,
-  offset: number
-): SearchResult {
-  // For now, treat as simple code matching
-  // Full implementation would parse mask patterns properly
-  const pattern = parsed.raw_q
-    .replace(/\?/g, '_')  // ? matches single character
-    .replace(/\*/g, '%')  // * matches any sequence
-    .replace(/_%/g, '_');  // Clean up consecutive wildcards
-  
-  const sql = `
-    SELECT char, jyutping, code 
-    FROM words 
-    WHERE code LIKE ? OR char LIKE ?
-    ORDER BY char 
-    LIMIT ? OFFSET ?
-  `;
-  
-  const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
-  
-  stmt.bind([pattern, pattern, limit, offset]);
-  
-  while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
+  const ordered = sortMaskFamilyRows(spec, rows, db, mode);
+  const items = spec.extra?.dual_phoneme
+    ? ordered.map((row) => rowToResult(row))
+    : sortQueryResults(ordered.map((row) => rowToResult(row)));
+  let hint: string | undefined;
+  if (!items.length && getEqualsSpan(spec)) {
+    const emptyHint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
+    if (emptyHint) {
+      hint = emptyHint;
+    }
   }
-  stmt.free();
-  
-  return { items: results };
+  return { items, hint };
 }
 
 function executeRelationLookup(

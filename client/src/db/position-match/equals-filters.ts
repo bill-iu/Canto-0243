@@ -269,8 +269,8 @@ export function queryWordsByEqualsSpec(
     if (!targetParts) {
       return [];
     }
-  } else {
-    if (span.whole_word && fullCode && spec.width === 4) {
+  } else if (span.whole_word) {
+    if (fullCode && spec.width === 4) {
       target =
         equalsAuthoritativeRowForCode(db, span.ref_literal, fullCode, searchMode) ??
         equalsAuthoritativeRow(db, span.ref_literal);
@@ -282,6 +282,12 @@ export function queryWordsByEqualsSpec(
     }
     targetParts = isFinal ? getRhymeFinals(target) : getWordParts(target, 'initials');
     if (!targetParts.length) {
+      return [];
+    }
+  } else {
+    // ponytail: infer via substring when no standalone row (parity with executeCodeAnchoredEquals / lexicon inject)
+    targetParts = equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
+    if (!targetParts) {
       return [];
     }
   }
