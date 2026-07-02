@@ -31,8 +31,9 @@ const cases: ParityCase[] = JSON.parse(fs.readFileSync(casesPath, 'utf8'));
 const buf = fs.readFileSync(dbPath);
 
 const initSqlJs = (await import('../src/db/sqljs.ts')).initSqlJs;
+const { createSqlJsBackend } = await import('../src/db/sqljs-backend.ts');
 const SQL = await initSqlJs();
-const db = new SQL.Database(buf);
+const db = createSqlJsBackend(new SQL.Database(buf));
 
 const { injectDatabaseForTests } = await import('../src/db/init.ts');
 injectDatabaseForTests(db);

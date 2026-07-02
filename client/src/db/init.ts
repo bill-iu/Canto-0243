@@ -3,21 +3,22 @@
  * Handles loading lyrics.db as a static asset with chunked/streamed loading
  */
 
-import { initSqlJs, type Database } from './sqljs.ts';
+import type { DatabaseBackend } from './database-backend.ts';
+import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
 import { initRhymeLetterIndex } from './rime-index.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 
 // Database instance singleton
-let db: Database | null = null;
+let db: DatabaseBackend | null = null;
 let isInitialized = false;
 let rankingLoaded = false;
 
-/** ponytail: parity runner / node probe only — inject pre-loaded sql.js Database */
-let injectedDb: Database | null = null;
+/** ponytail: parity runner / node probe only — inject pre-loaded backend */
+let injectedDb: DatabaseBackend | null = null;
 
-export function injectDatabaseForTests(candidate: Database | null): void {
+export function injectDatabaseForTests(candidate: DatabaseBackend | null): void {
   injectedDb = candidate;
 }
 
@@ -92,7 +93,7 @@ export function getDefaultDbUrl(): string {
  * Initialize the SQL.js database with lyrics.db
  * Uses httpvfs for efficient chunked loading of large database files
  */
-export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<Database> {
+export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<DatabaseBackend> {
   if (injectedDb) {
     return injectedDb;
   }
@@ -101,19 +102,6 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
   }
 
   try {
-    // Initialize SQL.js
-    const SQL = await initSqlJs({
-      locateFile: (file: string) => {
-        // For wasm file, use the imported version
-        if (file.endsWith('.wasm')) {
-          return `https://sql.js.org/dist/${file}`;
-        }
-        return file;
-      }
-    });
-
-    // Fetch the whole DB once so SW cache stores a complete file.
-    // This avoids iOS cache fragmentation with range/chunk requests.
     const response = await fetch(dbPath);
     if (!response.ok) {
       throw new Error(`Failed to fetch lexicon package (${response.status})`);
@@ -121,7 +109,12 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     const arrayBuffer = await response.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
 
-    db = new SQL.Database(uint8Array);
+    db = await openSqlJsDatabase(uint8Array, (file: string) => {
+      if (file.endsWith('.wasm')) {
+        return `https://sql.js.org/dist/${file}`;
+      }
+      return file;
+    });
     
     // Mark as initialized
     isInitialized = true;
@@ -146,7 +139,7 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
  * Get the database instance
  * Throws if database is not initialized
  */
-export function getDatabase(): Database {
+export function getDatabase(): DatabaseBackend {
   if (injectedDb) {
     return injectedDb;
   }
