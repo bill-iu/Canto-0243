@@ -89,6 +89,13 @@ export function getDefaultDbUrl(): string {
   return defaultDbUrl();
 }
 
+export {
+  ensureLexiconInOpfs,
+  lexiconOpfsFileName,
+  readLexiconFromOpfs,
+  removeLexiconFromOpfs,
+} from './opfs-lexicon.ts';
+
 /**
  * Initialize the SQL.js database with lyrics.db
  * Uses httpvfs for efficient chunked loading of large database files

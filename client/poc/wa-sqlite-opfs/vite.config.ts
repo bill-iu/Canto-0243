@@ -35,6 +35,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [serveDbPlugin(), ...(iosHttps ? [basicSsl()] : [])],
+    resolve: {
+      alias: {
+        '@canto/db': path.join(repoRoot, 'client/src/db'),
+      },
+    },
     server: {
       host: iosHttps,
       headers: {

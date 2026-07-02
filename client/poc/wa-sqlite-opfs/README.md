@@ -42,7 +42,12 @@ npm run dev:ios      # iOS 實機（https + 區網，見下方）
    - 選 `lyrics.dev.db` → Import（約 106MB，需耐心）
    - COUNT only 成功即 DB-0 iOS 通過
 
-3. **記錄**（DB-0 完成時填進 issue / WORKLOG）
+3. **DB-2（版本化 OPFS import）**
+   - 按 **「3. DB-2 ensure」** 或開啟 `?selfcheck=1`
+   - 應見 `DB-2 ok`（第二次 ensure 不觸發 fetch）
+   - 實作見 `client/src/db/opfs-lexicon.ts`（DB-3 才接入 `init.ts` 預設路徑）
+
+4. **記錄**（DB-0 完成時填進 issue / WORKLOG）
    - 裝置型號 + OS 版本
    - COUNT 結果
    - Import 耗時（可選）

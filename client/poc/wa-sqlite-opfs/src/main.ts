@@ -1,4 +1,5 @@
 import type { WorkerRequest, WorkerResponse } from './db-worker.ts';
+import { opfsLexiconSelfCheck } from '@canto/db/opfs-lexicon-self-check.ts';
 
 const logEl = document.getElementById('log')!;
 const envEl = document.getElementById('env')!;
@@ -90,3 +91,24 @@ document.getElementById('btn-reset')!.addEventListener('click', async () => {
     log(e instanceof Error ? e.message : String(e), 'err');
   }
 });
+
+document.getElementById('btn-db2')!.addEventListener('click', async () => {
+  try {
+    log('DB-2 ensureLexiconInOpfs self-check …');
+    const url = sourceEl.value;
+    await opfsLexiconSelfCheck(async () => {
+      const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`fetch ${url} → ${res.status}`);
+      }
+      return new Uint8Array(await res.arrayBuffer());
+    });
+    log('DB-2 ok: 第二次 ensure 未 fetch，OPFS 可開庫 COUNT', 'ok');
+  } catch (e) {
+    log(e instanceof Error ? e.message : String(e), 'err');
+  }
+});
+
+if (new URLSearchParams(location.search).has('selfcheck')) {
+  void document.getElementById('btn-db2')!.click();
+}
