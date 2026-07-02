@@ -372,9 +372,7 @@ GET /words/search/?q=开心&mode=syn
 
 ### 部署与资料库
 
-**产品保证路径**：离线单机 + **SQLite**（`lyrics.db`）。新 schema 仅透过 SQLite bootstrap／`scripts/db/init_db.py` 维护。
-
-**PostgreSQL**：冻结中的 scaffold，**非**主要交付目标。实验用见 `requirements-postgres.txt` 与 [`CONTEXT.md`](../CONTEXT.md) § 产品边界。
+**产品保证路径**：离线单机 + **SQLite**（`lyrics.db`）。本仓库 SQLite-only。
 
 ### 项目结构
 
@@ -428,7 +426,7 @@ python scripts/check_seams.py -q
 |----|------|------|
 | Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
 | Ingest / dev | `requirements-dev.txt` | ingest 与 legacy 脚本 |
-| PostgreSQL（冻结） | `requirements-postgres.txt` | 实验用 |
+| PostgreSQL | （已移除） | 不适用 |
 
 ---
 

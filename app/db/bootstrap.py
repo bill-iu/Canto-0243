@@ -7,13 +7,11 @@ import time
 
 from sqlalchemy import inspect, text
 
-from app.db.connection import IS_POSTGRES, engine
+from app.db.connection import engine
 
 
 def ensure_embedding_column() -> None:
-    """為本地 SQLite 自動補上 embedding 欄位（Postgres 走 Alembic）。"""
-    if IS_POSTGRES:
-        return
+    """為本地 SQLite 自動補上 embedding 欄位。"""
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -38,8 +36,6 @@ def ensure_embedding_column() -> None:
 
 def ensure_length_column() -> None:
     """輕量 schema 確保：只負責 ALTER 與建立 index（如果需要）。"""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -70,8 +66,6 @@ def ensure_length_column() -> None:
 
 def start_length_backfill() -> None:
     """若有需要回填的 length，啟動 daemon 背景執行緒批次更新（不阻塞啟動）。"""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "words" not in inspector.get_table_names():
@@ -132,8 +126,6 @@ def start_length_backfill() -> None:
 
 def ensure_word_relations_canonical_unique() -> None:
     """Canonicalize (min word_id first) and enforce unique (word_id, related_id, relation_type)."""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "word_relations" not in inspector.get_table_names():
@@ -182,8 +174,6 @@ def ensure_word_relations_pair_unique() -> None:
 
 def ensure_word_relations_group_codes_column() -> None:
     """Add group_codes column to word_relations (Cilin hierarchy for sort). Idempotent."""
-    if IS_POSTGRES:
-        return
     try:
         inspector = inspect(engine)
         if "word_relations" not in inspector.get_table_names():
@@ -200,27 +190,7 @@ def ensure_word_relations_group_codes_column() -> None:
 
 
 def ensure_word_relations_table() -> None:
-    """建立 word_relations 表與索引（SQLite 自動；Postgres 提示 Alembic + 可選 vector index）。"""
-    if IS_POSTGRES:
-        print("[DB] PostgreSQL 環境：建議使用 Alembic 建立 word_relations 表及索引。")
-        print("     範例 migration 會在後續文件提供。")
-        try:
-            with engine.connect() as conn:
-                conn.execute(
-                    text(
-                        """
-                    CREATE INDEX IF NOT EXISTS idx_words_embedding_hnsw
-                    ON words USING hnsw (embedding vector_cosine_ops);
-                """
-                    )
-                )
-                conn.commit()
-            print("[DB] 已確保 Postgres embedding vector 索引 (hnsw for cosine)。")
-        except Exception as e:
-            print(
-                f"[DB] 建立 embedding vector index 時發生錯誤（可忽略，若 pgvector extension 未啟用或 migration 稍後處理）：{e}"
-            )
-        return
+    """建立 word_relations 表與索引（SQLite 自動）。"""
 
     try:
         inspector = inspect(engine)

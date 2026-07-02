@@ -6,15 +6,15 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from app.database import Base, engine, IS_POSTGRES
+from app.database import Base, engine
 
 
 def reset_database():
     env = os.getenv("ENV", "local").lower()
-    is_prod = env == "prod" or IS_POSTGRES
+    is_prod = env == "prod"
     if is_prod:
-        print("❌ 拒絕執行：偵測到正式環境 (ENV=prod 或 PostgreSQL)。")
-        print("   正式環境請使用 Alembic 管理 schema（alembic upgrade / downgrade），避免資料遺失。")
+        print("❌ 拒絕執行：偵測到正式環境 (ENV=prod)。")
+        print("   正式環境請避免用 reset_db 進行破壞性操作，避免資料遺失。")
         print("   如需強制，請設定 ALLOW_RESET_PROD=1 並重新確認。")
         if os.getenv("ALLOW_RESET_PROD") != "1":
             return

@@ -17,7 +17,6 @@ from app.db.bootstrap import (
 from app.db.connection import (
     DATABASE_URL,
     ENV,
-    IS_POSTGRES,
     PROJECT_ROOT,
     Base,
     SessionLocal,
@@ -29,7 +28,6 @@ from app.db.dialect import contains_substring
 __all__ = [
     "DATABASE_URL",
     "ENV",
-    "IS_POSTGRES",
     "PROJECT_ROOT",
     "Base",
     "SessionLocal",

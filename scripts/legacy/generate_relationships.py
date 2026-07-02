@@ -23,7 +23,7 @@ generate_relationships.py
   2. 執行（本地 SQLite）：
        python scripts/legacy/generate_relationships.py
 
-  3. 正式環境（Postgres）：
+  3. 正式環境（SQLite-only，仍可用 ENV=prod 作為限制開關）：
        ENV=prod python scripts/legacy/generate_relationships.py
 
   選項：
@@ -52,7 +52,7 @@ os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
-from app.database import SessionLocal, IS_POSTGRES
+from app.database import SessionLocal
 from app.models.word import Word, WordRelation
 from app.domain.relations.canonical import canonical_relation_dict, relation_storage_key
 from app.thesaurus.static_index import (
@@ -294,7 +294,7 @@ def generate_from_embedding(db: Session, char_to_id: Dict[str, int], limit: Opti
 
 def main(limit: Optional[int] = None, include_embedding: bool = False):
     print("🚀 啟動 generate_relationships.py（ingest 階段關係產生器）")
-    print(f"資料庫類型: {'PostgreSQL' if IS_POSTGRES else 'SQLite'}")
+    print("資料庫類型: SQLite")
     print(f"ENV: {os.getenv('ENV', 'local')}")
     print()
 

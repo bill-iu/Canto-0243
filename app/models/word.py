@@ -1,15 +1,5 @@
-from sqlalchemy import Column, Integer, String, Text, Index, ForeignKey, Float, BigInteger, UniqueConstraint, event
+from sqlalchemy import BigInteger, Column, Float, ForeignKey, Index, Integer, String, Text, UniqueConstraint, event
 from app.database import Base
-
-# 支援 vector embeddings（semantic similarity 排序優化）
-# - PostgreSQL + pgvector: 使用 Vector(384) + hnsw index (見 database.py ensure)
-# - SQLite（本地開發）: 退回 String（儲存 JSON 序列化的 float list）
-# 兩邊都在 ingest build-db 時計算 embedding，並在搜尋排序中融入 semantic score
-# 注意：根據 Supabase Postgres Best Practices，embedding 計算已隔離到 dev/ingest (generate_relationships.py)
-try:
-    from pgvector.sqlalchemy import Vector
-except ImportError:
-    Vector = None
 
 # Module-level type selection (cleaner than conditional inside class body)
 _id_type = BigInteger().with_variant(Integer, "sqlite")
@@ -18,16 +8,12 @@ _id_type = BigInteger().with_variant(Integer, "sqlite")
 class Word(Base):
     __tablename__ = "words"
 
-    # Primary key: BigInteger + identity recommended by Supabase Postgres Best Practices
-    # for better index locality and to avoid fragmentation (vs serial or random UUID).
-    # For SQLite ok; for Postgres use migration to set GENERATED ALWAYS AS IDENTITY.
     id = Column(_id_type, primary_key=True, index=True)
     char = Column(String(50), index=True)
     code = Column(String(20), index=True)
     jyutping = Column(String(100))
 
-    # Index on jyutping for jyut fragment searches (ilike %q%). For Postgres % leading wildcard,
-    # consider pg_trgm extension + GIN index for better perf on broad searches (per query best practices).
+    # Index on jyutping for jyut fragment searches (LIKE %q%).
     # Current path caps results (limit 500) so acceptable.
 
     # Explicit length column for fast indexed filtering on word length (used heavily by hybrid, wildcard, =, code searches)
@@ -41,15 +27,8 @@ class Word(Base):
 
     meaning = Column(Text)
 
-    # Vector embedding for semantic similarity sorting (同時支援 Postgres 與 SQLite)
-    # 384 dim 對應 sentence-transformers paraphrase-multilingual-MiniLM-L12-v2
-    # Postgres 端會在 migration 中建立 pgvector extension + index
-    #
-    # Refactored for cleaner module-level definition (avoids executing conditional
-    # logic inside class body at import time). The actual column type for PG
-    # is managed via Alembic migration + pgvector; SQLite falls back to TEXT/JSON.
-    _embedding_type = Vector(384) if Vector is not None else String(4096)
-    embedding = Column(_embedding_type, nullable=True)  # JSON 序列化 float list 作為 SQLite 儲存
+    # embedding：SQLite TEXT（JSON 序列化 float list），由 ingest 階段計算
+    embedding = Column(Text, nullable=True)
 
 
 # Additional index for jyutping searches (see comment above)
@@ -64,7 +43,6 @@ Index('idx_length_code_finals_model', Word.length, Word.code, Word.finals)
 # ============================================================
 # WordRelation：預先計算的同義/反義/語意關係（ingest 階段產生）
 # ============================================================
-# 應用 Supabase Postgres Best Practices (precompute for perf, avoid runtime heavy ops)
 # 目標：讓 syn/ant 搜尋走純 SQL（快速、可預期），而非 runtime 依賴
 # sentence-transformers + numpy matrix。
 #
@@ -79,7 +57,7 @@ Index('idx_length_code_finals_model', Word.length, Word.code, Word.finals)
 # 這個表在 ingest 時（generate_relationships.py）由 maintainer 用 dev deps 產生。
 # 一般使用者執行服務時不需要 sentence-transformers。
 #
-# 對應的 ensure 函式在 app/database.py（SQLite 自動建立，PG 建議用 Alembic）。
+# 對應的 ensure 函式在 app/database.py（SQLite-only：啟動時 schema ensure）。
 # 複合索引符合 query perf 最佳實踐（indexes on filter columns for relations）。
 class WordRelation(Base):
     __tablename__ = "word_relations"

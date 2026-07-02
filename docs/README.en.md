@@ -333,9 +333,7 @@ Design principle: domain rules live in `app/domain/`; ingest and runtime share t
 
 ### Deployment & database
 
-**Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). New schema is maintained only via SQLite bootstrap／`scripts/db/init_db.py`.
-
-**PostgreSQL**: frozen scaffold, **not** a primary delivery target. Experimental use: `requirements-postgres.txt` and [`CONTEXT.md`](../CONTEXT.md) § product boundary.
+**Supported product path**: offline single-machine + **SQLite** (`lyrics.db`). This repo is SQLite-only.
 
 ### Project layout
 
@@ -389,7 +387,7 @@ Key regressions: plain-Chinese strict code, wildcards, `mode=syn`, equals／code
 |-------|------|---------|
 | Runtime | `requirements.txt` | FastAPI + SQLAlchemy + SQLite |
 | Ingest / dev | `requirements-dev.txt` | ingest & legacy scripts |
-| PostgreSQL (frozen) | `requirements-postgres.txt` | experimental |
+| PostgreSQL | (removed) | n/a |
 
 ---
 

@@ -15,6 +15,9 @@ build/
 .build-python/
 *.egg-info/
 
+# Node / frontend
+**/node_modules/
+
 # 資料庫與備份
 *.db
 !tests/fixtures/*.db
@@ -46,6 +49,7 @@ data/locks/
 .cursor/
 !.cursor/rules/
 !.cursor/rules/**
+.codegraph/
 agent-tools/
 mcps/
 commit-msg.txt

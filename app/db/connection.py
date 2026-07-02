@@ -43,27 +43,16 @@ DATABASE_URL = resolve_sqlite_database_url(DATABASE_URL)
 
 print(f"[DB] 使用資料庫: {DATABASE_URL.split('://')[0]}")
 
-IS_POSTGRES = DATABASE_URL.startswith("postgresql")
-
-if IS_POSTGRES:
-    print(
-        "[DB] ⚠️  PostgreSQL 路徑已凍結：無整合測試、schema 變更僅保證 SQLite。"
-        " 自行承擔；套件見 requirements-postgres.txt，詳見 README § 部署與資料庫。"
+if DATABASE_URL.startswith("postgresql"):
+    raise SystemExit(
+        "❌ 本專案已改為 SQLite-only；不支援 PostgreSQL。\n"
+        "請移除/改回 DATABASE_URL（例如 sqlite:///./lyrics.db）。"
     )
 
-if IS_POSTGRES:
-    engine = create_engine(
-        DATABASE_URL,
-        pool_pre_ping=True,
-        pool_size=10,
-        max_overflow=20,
-        pool_recycle=3600,
-    )
-else:
-    engine = create_engine(
-        DATABASE_URL,
-        connect_args={"check_same_thread": False, "timeout": 30},
-    )
+engine = create_engine(
+    DATABASE_URL,
+    connect_args={"check_same_thread": False, "timeout": 30},
+)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
