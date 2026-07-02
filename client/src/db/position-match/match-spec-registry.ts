@@ -34,6 +34,7 @@ import type {
   SerialPhonemeAnchorQuery,
   TripleRhymeAnchorQuery,
   WildcardCodeAnchorQuery,
+  HybridTailEqualsAliasQuery,
 } from '../query-engine.ts';
 
 const HYBRID_CODE_RE = /^(\d+)([\u4e00-\u9fff]+)(\d*)$/;
@@ -378,9 +379,18 @@ export function buildMatchSpecForParsed(parsed: ParsedQuery): MatchSpec | null {
   return builder(parsed);
 }
 
+/** Port of query_parse._rewrite_mask_family_aliases */
+export function rewriteMaskFamilyAliases(parsed: ParsedQuery): ParsedQuery {
+  if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
+    const q = parsed as HybridTailEqualsAliasQuery;
+    return { kind: QueryKind.HYBRID_CODE, raw_q: q.hybrid_q };
+  }
+  return parsed;
+}
+
 /** Alias — port of normalize_to_match_spec */
 export function normalizeToMatchSpec(parsed: ParsedQuery): MatchSpec | null {
-  return buildMatchSpecForParsed(parsed);
+  return buildMatchSpecForParsed(rewriteMaskFamilyAliases(parsed));
 }
 
 function anchorSlots(spec: MatchSpec): SlotConstraint[] {

@@ -40,6 +40,9 @@ import {
   isWildcardChar,
   parseMaskQuery,
 } from './position-match/mask-grammar.ts';
+import { getCandidatesForLength, wordMatchesWidth } from './position-match/sources.ts';
+import { executeMatchSpec } from './position-match/engine.ts';
+import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
 
 // ============================================================================
@@ -1402,28 +1405,7 @@ function executeHybridCodeQuery(
     return { items: [] };
   }
   const searchMode = normalizeSearchMode(mode);
-
-  const stmt = db.prepare(`
-    SELECT char, jyutping, code, initials, finals, length
-    FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
-    LIMIT 2000
-  `);
-  stmt.bind([spec.width, spec.width]);
-
-  const candidates: WordRow[] = [];
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
-    const charText = String(row.char ?? '');
-    if (!wordMatchesWidth(row, spec.width) || charText.length !== spec.width) {
-      continue;
-    }
-    candidates.push(row);
-  }
-  stmt.free();
+  const [candidates] = getCandidatesForLength(db, spec.width, { mode: searchMode });
 
   const matched = filterHybridRefCandidates(candidates, spec, searchMode, db);
   const sorted = sortWordRows(matched);
@@ -2632,14 +2614,10 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       if (parsed.kind === QueryKind.EQUALS) {
         return executeEqualsQuery(parsed as EqualsQuery, db, mode, limit, offset);
       }
-      // ponytail: HYBRID_TAIL_EQUALS_ALIAS 暫走 stub；MF-4 改 executeMatchSpec
-      if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
-        return executeMaskFamilyStub(
-          { kind: QueryKind.MASK, raw_q: (parsed as HybridTailEqualsAliasQuery).hybrid_q },
-          db, mode, limit, offset
-        );
+      // MF-4: stub kinds → executeMatchSpec（ADR-0024 §6）
+      if (MASK_FAMILY_EXECUTE_MATCH_SPEC_KINDS.has(parsed.kind)) {
+        return executeMaskFamilySearchResult(parsed, db, mode, limit, offset, ctx.code);
       }
-      // ponytail: WILDCARD_CODE_ANCHOR | TRIPLE_RHYME_ANCHOR | CODE_REF_MIDDLE_RHYME → stub until MF-4
       return executeMaskFamilyStub(parsed, db, mode, limit, offset);
     
     case RouteKind.RELATION:
@@ -3095,14 +3073,6 @@ function executePrefixWildcardEquals(
   return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
-function wordMatchesWidth(row: WordRow, width: number): boolean {
-  const stored = Number(row.length ?? 0);
-  if (stored > 0) {
-    return stored === width;
-  }
-  return String(row.char ?? '').length === width;
-}
-
 function executeCodeAnchoredEquals(
   spec: MatchSpec,
   db: Database,
@@ -3335,6 +3305,37 @@ async function executeEqualsQuery(
   return executeMaskFamilyStub(parsed, db, mode, limit, offset);
 }
 
+/** MF-4 stub kinds — port of query_dispatch._mask_family_search_result */
+const MASK_FAMILY_EXECUTE_MATCH_SPEC_KINDS: ReadonlySet<QueryKind> = new Set([
+  QueryKind.WILDCARD_CODE_ANCHOR,
+  QueryKind.TRIPLE_RHYME_ANCHOR,
+  QueryKind.CODE_REF_MIDDLE_RHYME,
+  QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
+]);
+
+function executeMaskFamilySearchResult(
+  parsed: ParsedQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+  code?: string,
+): SearchResult {
+  const spec = normalizeToMatchSpec(parsed);
+  if (!spec) {
+    return { items: [] };
+  }
+  const searchMode = normalizeSearchMode(mode);
+  const rows = executeMatchSpec(spec, {
+    db,
+    mode: searchMode,
+    limit,
+    offset,
+    code: code ?? null,
+  });
+  return { items: rows.map((row) => rowToResult(row)) };
+}
+
 /**
  * Transitional LIKE stub — not Python execute_match_spec (ADR-0024 §6 MF-0).
  * ponytail: ceiling = SQL LIKE on code/char; upgrade path = executeMatchSpec via MF-4…MF-6.
@@ -3546,4 +3547,14 @@ export {
   buildMatchSpecForParsed,
   MATCH_SPEC_BUILDERS,
   normalizeToMatchSpec,
+  rewriteMaskFamilyAliases,
 } from './position-match/match-spec-registry.ts';
+export {
+  executeMatchSpec,
+} from './position-match/engine.ts';
+export {
+  getCandidatesForLength,
+  LengthCodeCandidateSource,
+  positionMatchSourcesSelfCheck,
+  wordMatchesWidth,
+} from './position-match/sources.ts';
