@@ -34,58 +34,24 @@ import {
   type MatchSpec,
   type SlotConstraint,
 } from './position-match/spec.ts';
+import { buildEqualsMatchSpec } from './position-match/equals-spec.ts';
+import {
+  buildMaskFromSlots,
+  isWildcardChar,
+  parseMaskQuery,
+} from './position-match/mask-grammar.ts';
+import { QueryKind, RouteKind } from './query-kind.ts';
 
 // ============================================================================
 // Query Types and Constants
 // ============================================================================
 
+export { QueryKind, RouteKind } from './query-kind.ts';
+
 /**
  * Query modes supported by the engine
  */
 export type QueryMode = 'm1' | 'm2' | '0243' | '02493' | 'syn';
-
-/**
- * Query kind enumeration - maps to Python QueryKind
- */
-export enum QueryKind {
-  RELATION_LOOKUP = 'relation_lookup',
-  COMPOUND_ANT = 'compound_ant',
-  COMPOUND_SYN = 'compound_syn',
-  COMPOUND_DOUBLED_SYLLABLE = 'compound_doubled_syllable',
-  HETERONYM_CODE = 'heteronym_code',
-  HYBRID_TAIL_EQUALS_ALIAS = 'hybrid_tail_equals_alias',
-  EQUALS = 'equals',
-  PLUS_ANCHOR = 'plus_anchor',
-  WILDCARD_CODE_ANCHOR = 'wildcard_code_anchor',
-  CODE_REF_MIDDLE_RHYME = 'code_ref_middle_rhyme',
-  SERIAL_PHONEME = 'serial_phoneme',
-  PREFIX_WILDCARD_EQUALS = 'prefix_wildcard_equals',
-  PARTIAL_RHYME_MASK = 'partial_rhyme_mask',
-  PARTIAL_INITIAL_MASK = 'partial_initial_mask',
-  LITERAL_REF = 'literal_ref',
-  RHYME_ANCHOR = 'rhyme_anchor',
-  TRIPLE_RHYME_ANCHOR = 'triple_rhyme_anchor',
-  JYUTPING_ANCHOR = 'jyutping_anchor',
-  HYBRID_CODE = 'hybrid_code',
-  MASK = 'mask',
-  DIGIT_CODE = 'digit_code',
-  WORD_LOOKUP = 'word_lookup',
-  JYUTPING_FRAGMENT = 'jyutping_fragment',
-  UNMATCHED = 'unmatched',
-}
-
-/**
- * Route kind for query dispatch
- */
-export enum RouteKind {
-  DIGIT = 'digit',
-  MASK_FAMILY = 'mask_family',
-  RELATION = 'relation',
-  HETERONYM = 'heteronym',
-  LOOKUP = 'lookup',
-  UNMATCHED = 'unmatched',
-  EMPTY = 'empty',
-}
 
 /**
  * Base parsed query interface
@@ -1174,26 +1140,6 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
   return null;
 }
 
-/** Port of query_grammar/mask.parse_mask_query */
-function parseMaskQuery(
-  mask: string,
-): { width: number; requiredCodes: Array<string | null>; literalPositions: Array<[number, string]> } {
-  const requiredCodes: Array<string | null> = Array(mask.length).fill(null);
-  const literalPositions: Array<[number, string]> = [];
-  for (let idx = 0; idx < mask.length; idx++) {
-    const ch = mask[idx]!;
-    if (isWildcardChar(ch)) {
-      continue;
-    }
-    if (/\d/.test(ch)) {
-      requiredCodes[idx] = ch;
-      continue;
-    }
-    literalPositions.push([idx, ch]);
-  }
-  return { width: mask.length, requiredCodes, literalPositions };
-}
-
 function matchesCodePositions(
   codeStr: string,
   requiredCodes: Array<string | null>,
@@ -1591,12 +1537,7 @@ function executeLiteralRefQuery(
   return { items: sortQueryResults(matched).slice(offset, offset + limit) };
 }
 
-const WILDCARD_CHARS = new Set(['_', '?', '%']);
 const SLOT_CHAR_RE = /[0-9_?%]/;
-
-function isWildcardChar(ch: string): boolean {
-  return ch.length === 1 && WILDCARD_CHARS.has(ch);
-}
 
 function isSlotChar(ch: string): boolean {
   return ch.length === 1 && SLOT_CHAR_RE.test(ch);
@@ -1938,21 +1879,6 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
   }
 
   return null;
-}
-
-/** Port of query_grammar/mask.build_mask_from_slots */
-function buildMaskFromSlots(slots: string, width: number, anchorPos: number): string {
-  const chars = Array(width).fill('?');
-  if (anchorPos === 0) {
-    for (let i = 0; i < slots.length; i++) {
-      chars[i + 1] = slots[i]!;
-    }
-  } else {
-    for (let i = 0; i < slots.length; i++) {
-      chars[i] = slots[i]!;
-    }
-  }
-  return chars.join('');
 }
 
 function matchesMaskLiteralChars(wordChar: string, mask: string): boolean {
@@ -2501,45 +2427,6 @@ export function isFramedEqualsQuery(q: string): boolean {
   }
   
   return false;
-}
-
-/**
- * Build MatchSpec for equals query
- * Converts query string to MatchSpec for position matching
- */
-export function buildEqualsMatchSpec(q: string): MatchSpec | null {
-  const match = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)?(=)?(\d*)$/);
-  if (!match) {
-    return null;
-  }
-  
-  const target_str = match[3] || '';
-  if (!target_str) {
-    return null;
-  }
-  
-  const left_code = match[1] || '';
-  const right_code = match[5] || '';
-  const right_equal = Boolean(match[4]);
-  const inner_equal = Boolean(match[2]);
-  const target_length = target_str.length;
-  const expected_length = left_code.length + right_code.length || target_length;
-  const start_pos = Math.max(0, left_code.length - target_length);
-  const full_code = left_code + right_code;
-  
-  const span: EqualsSpan = {
-    ref_literal: target_str,
-    start_pos: start_pos,
-    dimension: right_equal ? 'final' : 'initial',
-    phoneme_anchor_only: Boolean(left_code && (right_code || inner_equal)),
-    whole_word: start_pos === 0 && target_length === expected_length,
-  };
-
-  const spec = createMatchSpec(expected_length, {
-    code_prefix: full_code || undefined,
-  });
-  attachEqualsSpan(spec, span);
-  return spec;
 }
 
 /**
@@ -3646,3 +3533,17 @@ export {
   getEqualsSpan,
   positionMatchSpecSelfCheck,
 } from './position-match/spec.ts';
+export {
+  buildEqualsMatchSpec,
+} from './position-match/equals-spec.ts';
+export {
+  buildMaskFromSlots,
+  isWildcardChar,
+  parseMaskQuery,
+} from './position-match/mask-grammar.ts';
+export {
+  buildJyutpingDualMatchSpecs,
+  buildMatchSpecForParsed,
+  MATCH_SPEC_BUILDERS,
+  normalizeToMatchSpec,
+} from './position-match/match-spec-registry.ts';
