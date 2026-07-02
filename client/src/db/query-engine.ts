@@ -134,6 +134,15 @@ export interface HybridCodeQuery extends ParsedQuery {
   raw_q: string;
 }
 
+/** Literal reference at tail (23@就) */
+export interface LiteralRefQuery extends ParsedQuery {
+  kind: QueryKind.LITERAL_REF;
+  raw_q: string;
+  code_digits: string;
+  literal_char: string;
+  width: number;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -353,6 +362,11 @@ export function parseQuery(q: string): ParsedQuery {
     return rhymeAnchor;
   }
 
+  const literalRef = parseAtTailQuery(normalized);
+  if (literalRef) {
+    return literalRef;
+  }
+
   const hybridCode = parseHybridCodeQuery(normalized);
   if (hybridCode) {
     return hybridCode;
@@ -411,6 +425,22 @@ export function parseHybridCodeQuery(q: string): HybridCodeQuery | null {
     return null;
   }
   return { kind: QueryKind.HYBRID_CODE, raw_q: q };
+}
+
+/** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@就） */
+export function parseAtTailQuery(q: string): LiteralRefQuery | null {
+  const m = q.match(/^(\d+)@([\u4e00-\u9fff])$/);
+  if (!m) {
+    return null;
+  }
+  const code_digits = m[1]!;
+  return {
+    kind: QueryKind.LITERAL_REF,
+    raw_q: q,
+    code_digits,
+    literal_char: m[2]!,
+    width: code_digits.length,
+  };
 }
 
 /** Port of query_grammar/mask.parse_mask_query */
@@ -518,6 +548,51 @@ function executeHybridCodeQuery(
   _offset: number,
 ): SearchResult {
   return { items: [] };
+}
+
+/** Port of literal_ref MatchSpec execution — code per position + tail literal */
+function executeLiteralRefQuery(
+  parsed: LiteralRefQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const { code_digits, literal_char, width } = parsed;
+  const searchMode = normalizeSearchMode(mode);
+  const requiredCodes = [...code_digits];
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const charText = String(row.char ?? '');
+    if (!wordMatchesWidth(row, width) || charText.length !== width) {
+      continue;
+    }
+    if (charText[width - 1] !== literal_char) {
+      continue;
+    }
+    const code = String(row.code ?? '');
+    if (!matchesCodePositions(code, requiredCodes, searchMode)) {
+      continue;
+    }
+    matched.push(rowToResult(row));
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
 }
 
 const WILDCARD_CHARS = new Set(['_', '?', '%']);
@@ -1191,6 +1266,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       if (parsed.kind === QueryKind.HYBRID_CODE) {
         return executeHybridCodeQuery(
           parsed as HybridCodeQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
+      if (parsed.kind === QueryKind.LITERAL_REF) {
+        return executeLiteralRefQuery(
+          parsed as LiteralRefQuery,
           db,
           mode,
           limit,
