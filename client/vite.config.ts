@@ -11,10 +11,10 @@ export default defineConfig(({ command }) => ({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: [],
+      includeAssets: ['sql-wasm-browser.wasm'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,woff2}'],
-        maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB cache limit
+        globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
+        maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
         runtimeCaching: [
           {
             urlPattern: /\/lyrics\.(?:dev|v[\d.]+(?:-[\w.]+)?)\.db$/,
@@ -24,6 +24,17 @@ export default defineConfig(({ command }) => ({
               expiration: {
                 maxEntries: 2,
                 maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
+              }
+            }
+          },
+          {
+            urlPattern: /\/sql-wasm-browser\.wasm$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'sqljs-wasm-cache',
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 90 * 24 * 60 * 60
               }
             }
           }

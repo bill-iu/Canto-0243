@@ -17,7 +17,9 @@ import {
   parseQuery,
   normalizeAndParse,
 } from './query-engine';
-import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
+import { getDatabase, initializeDatabase, isDatabaseInitialized, getDefaultDbUrl } from './init';
+import { getLexiconCacheStatus } from './lexicon-restore.ts';
+import { opfsAvailable } from './opfs-storage.ts';
 
 // Re-export the query engine types
 export type { 
@@ -44,7 +46,21 @@ export interface QueryResult {
   code: string;
   definition?: string;
   score?: number;
+  resultType?: 'code' | 'jyutping' | 'word';
+  anchor_dimension?: 'initial' | 'final';
+  relation?: 'syn' | 'ant' | 'semantic_related';
+  in_db?: boolean;
+  source?: string;
 }
+
+export interface SearchPageResult {
+  items: QueryResult[];
+  total?: number;
+  hint?: string;
+  effectiveMode?: QueryMode;
+}
+
+export const SEARCH_PAGE_SIZE = 50;
 
 /**
  * Legacy QueryOptions interface
@@ -54,6 +70,7 @@ export interface QueryOptions {
   mode?: '0243' | '02493' | 'synonym';
   limit?: number;
   offset?: number;
+  fallback_0243_mode?: '0243' | '02493';
 }
 
 /**
@@ -72,28 +89,48 @@ function mapLegacyMode(mode?: string): QueryMode {
   }
 }
 
+function mapEngineResult(r: SearchResult['items'][number]): QueryResult {
+  return {
+    word: r.word,
+    jyutping: r.jyutping,
+    code: r.code,
+    score: r.score,
+    resultType: r.resultType,
+    anchor_dimension: r.anchor_dimension,
+    relation: r.relation,
+    in_db: r.in_db,
+    source: r.source,
+  };
+}
+
+/**
+ * Search with pagination metadata (total, hint, lookup resultType).
+ */
+export async function searchPage(options: QueryOptions): Promise<SearchPageResult> {
+  const mode = mapLegacyMode(options.mode);
+  const fallback = options.fallback_0243_mode ? mapLegacyMode(options.fallback_0243_mode) : undefined;
+  const result = await queryEngine.execute({
+    q: options.query,
+    mode,
+    limit: options.limit ?? SEARCH_PAGE_SIZE,
+    offset: options.offset ?? 0,
+    fallback_0243_mode: fallback,
+  });
+  return {
+    items: result.items.map(mapEngineResult),
+    total: result.total,
+    hint: result.hint,
+    effectiveMode: result.effective_mode,
+  };
+}
+
 /**
  * Search with legacy QueryOptions interface
  * This maintains backward compatibility with existing code
  */
 export async function search(options: QueryOptions): Promise<QueryResult[]> {
-  const mode = mapLegacyMode(options.mode);
-  const results = await searchWords(
-    options.query,
-    undefined, // code
-    undefined, // char
-    mode,
-    options.limit || 50,
-    options.offset || 0
-  );
-  
-  // Convert engine results to legacy format
-  return results.map((r) => ({
-    word: r.word,
-    jyutping: r.jyutping,
-    code: r.code,
-    score: r.score,
-  }));
+  const page = await searchPage(options);
+  return page.items;
 }
 
 /**
@@ -140,6 +177,16 @@ export async function validateOfflineReadiness(): Promise<void> {
   const hasProbeWord = results.some((r) => r.word === OFFLINE_READINESS_PROBE_QUERY);
   if (!results.length || !hasProbeWord) {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
+  }
+
+  const version = (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  const cache = await getLexiconCacheStatus(version, getDefaultDbUrl());
+  // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
+  if (opfsAvailable() && !cache.opfs) {
+    throw new Error('離線就緒驗證失敗：詞庫尚未寫入本機儲存，請稍候或重試');
+  }
+  if (!opfsAvailable() && !cache.any) {
+    throw new Error('離線就緒驗證失敗：詞庫未快取至本機');
   }
 }
 

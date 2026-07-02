@@ -88,7 +88,7 @@
 | DB-3 `VITE_DB_BACKEND=opfs` | ✅ | 預設仍 `sqljs` |
 | DB-4 雙路還原 | ✅ | OPFS → SW → network |
 | DB-5 benchmark | ✅ 桌面 | `?benchmark=1`；見 `research.md` |
-| D5-M5 iOS 飛航 | ⏳ | quickstart Scenario D 步驟 3 |
+| D5-M5 iOS 飛航 | ⏳ | 需 **連網重開一次**（v1.0.4-beta+ OPFS write-through）後再測 |
 | wa-sqlite VFS（降 RAM） | ⏳ | POC 在 `client/poc/`；非本 release blocker |
 
 ---
@@ -110,3 +110,9 @@
 - **Bug**：`useSearch` 內再次 `useDB()` → 搜尋 state 永遠 `not ready` → UI 顯示「未找到結果」
 - **Fix**：`DBProvider` 共用 context；`validateOfflineReadiness` 驗證結果含 `事業` 字面
 - **portable smoke**：反義詞 `痛苦` 接受 `開心` 或 `高興`
+
+## iOS 飛航修復（2026-07-03）
+
+- **Bug**：`sqljs` 預設路徑只載入 RAM，未寫 OPFS；iOS 重開飛航時 SW 快取不可靠 → 開庫失敗
+- **Fix**：`sqljs` 成功開庫後 write-through 至 OPFS；Ready 前驗證 OPFS 已落地；`sql-wasm-browser.wasm` 納入 SW 快取
+- **用戶操作**：部署後需 **連網再開一次**，待「離線就緒」完成 OPFS 寫入，再測飛航

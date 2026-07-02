@@ -12,7 +12,7 @@ import { getCodeVariants } from './code-variants.ts';
 import { sortQueryResults, sortWordRows, compareSearchResults } from './ranking.ts';
 import { searchCompoundTiers } from './compound.ts';
 import { executeHeteronymCodeSearch } from './heteronym.ts';
-import { relationLookupItems } from './relation-pool.ts';
+import { relationLookupItems, relationPoolPage, type RelationPoolItem } from './relation-pool.ts';
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from './jyutping-anchor.ts';
 import { rhymeFinalsFromJyutping } from './jyutping-codec.ts';
 import {
@@ -267,6 +267,9 @@ export interface QueryResult {
   resultType?: 'code' | 'jyutping' | 'word';
   heteronym_tags?: string[];
   anchor_dimension?: 'initial' | 'final';
+  relation?: 'syn' | 'ant' | 'semantic_related';
+  in_db?: boolean;
+  source?: string;
 }
 
 /**
@@ -910,8 +913,20 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
   return null;
 }
 
+export const JYUTPING_SYN_MODE_HINT =
+  '近反義模式只支援漢字查詢。請改打漢字，或切換至 0243模式／02493模式 查粵拼。';
+
+/** Port of jyutping_match.is_jyutping_query */
+export function isJyutpingQuery(q: string): boolean {
+  const t = (q || '').trim();
+  if (!t || /[\u4e00-\u9fff]/.test(t)) {
+    return false;
+  }
+  return /[a-zA-Z]/.test(t) && /^[a-zA-Z0-9\s]+$/.test(t);
+}
+
 /** Port of query_parse.is_relation_syntax_query */
-function isRelationSyntaxQuery(q: string): boolean {
+export function isRelationSyntaxQuery(q: string): boolean {
   const parsed = normalizeAndParse(q);
   if (parsed.kind === QueryKind.RELATION_LOOKUP) {
     return true;
@@ -930,7 +945,7 @@ function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
   return 'm1';
 }
 
-function modeRedirectHint(mode: 'm1' | 'm2'): string {
+export function modeRedirectHint(mode: 'm1' | 'm2'): string {
   const label = mode === 'm2' ? '02493模式（緊）' : '0243模式（鬆）';
   return `此語法已切換至 ${label} 查詢`;
 }
@@ -1870,21 +1885,20 @@ function executeDigitCodeQuery(
         length = ?
         OR ((length IS NULL OR length = 0) AND length(char) = ?)
       )
-    ORDER BY char
-    LIMIT ? OFFSET ?
   `;
 
   const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
+  const rows: WordRow[] = [];
 
-  stmt.bind([...variants, len, len, limit, offset]);
+  stmt.bind([...variants, len, len]);
 
   while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
+    rows.push(stmt.getAsObject() as WordRow);
   }
   stmt.free();
 
-  return { items: results };
+  const sorted = sortQueryResults(deduplicateWordRows(rows).map((row) => rowToResult(row)));
+  return { items: sorted.slice(offset, offset + limit), total: sorted.length };
 }
 
 /** Port of word_serializer.deduplicate_words */
@@ -1994,7 +2008,7 @@ function executeWordLookup(
   stmt.free();
 
   const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches));
-  return { items: built.slice(offset, offset + limit) };
+  return { items: built.slice(offset, offset + limit), total: built.length };
 }
 
 /**
@@ -2125,12 +2139,19 @@ function executeRelationLookup(
   );
 
   return {
-    items: rows.map((r) => ({
-      word: r.char,
-      jyutping: r.jyutping,
-      code: r.code,
-      score: r.score ?? 0,
-    })),
+    items: rows.map(poolItemToResult),
+  };
+}
+
+function poolItemToResult(item: RelationPoolItem): QueryResult {
+  return {
+    word: item.char,
+    jyutping: item.jyutping,
+    code: item.code,
+    score: item.score ?? 0,
+    relation: item.relation,
+    in_db: item.in_db,
+    source: item.source,
   };
 }
 
@@ -2185,9 +2206,15 @@ export class QueryEngine {
    * Dispatch synonym mode queries (port of query_mode_dispatch.dispatch_syn_mode)
    */
   private async dispatchSynMode(ctx: SearchContext & { q: string }, dbCtx: SearchContext & { db: Database }): Promise<SearchResult> {
-    if (isRelationSyntaxQuery(ctx.q)) {
+    const { q, limit, offset, db } = dbCtx;
+
+    if (isJyutpingQuery(q)) {
+      return { items: [], hint: JYUTPING_SYN_MODE_HINT };
+    }
+
+    if (isRelationSyntaxQuery(q)) {
       const effective = resolveFallback0243Mode(ctx.fallback_0243_mode);
-      const parsed = normalizeAndParse(ctx.q);
+      const parsed = normalizeAndParse(q);
       const result = await dispatch(parsed, { ...dbCtx, mode: effective, offset: 0 });
       return {
         items: result.items,
@@ -2197,8 +2224,9 @@ export class QueryEngine {
         cache_path: result.cache_path,
       };
     }
-    // ponytail: syn_mode_page (pool browse) — upgrade: RelationSyntaxExecutor.syn_mode_page
-    return { items: [] };
+
+    const page = relationPoolPage(db, q, limit, offset);
+    return { items: page.map(poolItemToResult) };
   }
 }
 

@@ -1,0 +1,134 @@
+[
+  {
+    "query": "香港=",
+    "summary": "整詞同「香港」同韻（雙押）",
+    "warning": null,
+    "kind": "equals"
+  },
+  {
+    "query": "事業",
+    "summary": "查詢詞條「事業」",
+    "warning": null,
+    "kind": "word_lookup"
+  },
+  {
+    "query": "23+好=",
+    "summary": "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同「好」同韻",
+    "warning": null,
+    "kind": "plus_anchor"
+  },
+  {
+    "query": "?香港=",
+    "summary": "首個字任意；第 2、第 3 個字同「香港」同韻（雙押）",
+    "warning": null,
+    "kind": "prefix_wildcard_equals"
+  },
+  {
+    "query": "~開心",
+    "summary": "查「開心」嘅近義詞",
+    "warning": null,
+    "kind": "relation_lookup"
+  },
+  {
+    "query": "33",
+    "summary": "查同33同音嘅字",
+    "warning": null,
+    "kind": "digit_code"
+  },
+  {
+    "query": "ming4",
+    "summary": "粵拼查詢「ming4」",
+    "warning": null,
+    "kind": "jyutping_fragment"
+  },
+  {
+    "query": "23就",
+    "summary": "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且同「就」同韻",
+    "warning": null,
+    "kind": "hybrid_code"
+  },
+  {
+    "query": "香=?",
+    "summary": "兩個字：第 1 個字同「香」同韻，第 2 個字任意字",
+    "warning": null,
+    "kind": "rhyme_anchor"
+  },
+  {
+    "query": "33~~你",
+    "summary": "查詢近義複合詞",
+    "warning": null,
+    "kind": "compound_syn"
+  },
+  {
+    "query": "$$",
+    "summary": "查二字同音節疊字（兩字音節相同，聲調不限）",
+    "warning": null,
+    "kind": "compound_doubled_syllable"
+  },
+  {
+    "query": "?困潦倒=",
+    "summary": "首個字任意；第 2、第 3、第 4 個字同「困潦倒」同韻（三押）",
+    "warning": null,
+    "kind": "prefix_wildcard_equals"
+  },
+  {
+    "query": "2=我3",
+    "summary": "兩個字：第 1 個字同 2 同音且同「我」同聲，第 2 個字同 3 同音",
+    "warning": null,
+    "kind": "equals"
+  },
+  {
+    "query": "0449窮困潦倒=",
+    "summary": "整詞同「窮困潦倒」同韻（四押）；第 1 個字同 0 同音，第 2 個字同 4 同音，第 3 個字同 4 同音，第 4 個字同 9 同音",
+    "warning": null,
+    "kind": "equals"
+  },
+  {
+    "query": "3m4",
+    "summary": "兩個字：第 1 個字同韻母 ng，第 2 個字同 4 同音",
+    "warning": null,
+    "kind": "jyutping_anchor"
+  },
+  {
+    "query": "23@就",
+    "summary": "兩個字：第 1 個字同 2 同音，第 2 個字為「就」",
+    "warning": null,
+    "kind": "literal_ref"
+  },
+  {
+    "query": "就=",
+    "summary": "一個字：第 1 個字同「就」同韻",
+    "warning": null,
+    "kind": "rhyme_anchor"
+  },
+  {
+    "query": "33!開心",
+    "summary": "查「開心」嘅碼 33 反義詞",
+    "warning": null,
+    "kind": "relation_lookup"
+  },
+  {
+    "query": "23+好2",
+    "summary": "四個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字為「好」，第 4 個字同 2 同音",
+    "warning": null,
+    "kind": "plus_anchor"
+  },
+  {
+    "query": "?2我=3",
+    "summary": "三個字：第 1 個字任意字，第 2 個字同 2 同音且同「我」同韻，第 3 個字同 3 同音",
+    "warning": null,
+    "kind": "serial_phoneme"
+  },
+  {
+    "query": "23ng",
+    "summary": "兩個字：第 1 個字同 2 同音，第 2 個字同韻母 ng",
+    "warning": "易混：三個字請改「23+ng」",
+    "kind": "jyutping_anchor"
+  },
+  {
+    "query": "1/22",
+    "summary": null,
+    "warning": "同音異讀查詢左右碼位模板須等長。",
+    "kind": "unmatched"
+  }
+]
