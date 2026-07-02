@@ -108,7 +108,7 @@ PWA Shell (React + Vite，可沿用 client/)
 | `query-engine.ts` LOC | **~1,134** |
 | 相對 Python 執行層 LOC | **~13%** 骨架 |
 | Golden parity | **18/18** journeys、**15/15** match_spec（`scripts/pwa_golden_parity.py --gate all`） |
-| 已知阻斷 | 複合查詢執行（~~/!!/$$）、heteronym 執行、jyutping anchor 執行仍 stub；browser 端 ranking 資料未 bundle |
+| 已知阻斷 | `compound_connect`（width-3）、heteronym 執行、jyutping anchor 執行仍 stub；browser ranking 靠 prebuild `ranking-index.json` |
 
 ### 3.2 需重寫／補齊範圍
 

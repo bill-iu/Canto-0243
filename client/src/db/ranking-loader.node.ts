@@ -72,7 +72,11 @@ function parseCuratedList(text: string): string[] {
 }
 
 /** Load ranking signals from repo data/ (call before query-engine in Node runners). */
-export function loadRankingData(repoRoot: string): void {
+export function buildRankingData(repoRoot: string): {
+  essay: Record<string, number>;
+  curated: string[];
+  pronRank: Record<string, number>;
+} {
   const root = path.resolve(repoRoot);
   const charCsv = fs.readFileSync(path.join(root, 'data/rime/char.csv'), 'utf8');
   const essayPath = path.join(root, 'data/essay/essay-cantonese.txt');
@@ -85,9 +89,13 @@ export function loadRankingData(repoRoot: string): void {
     ? parseCuratedList(fs.readFileSync(curatedPath, 'utf8'))
     : [];
 
-  initRankingData({
+  return {
     essay,
     curated,
     pronRank: parseCharCsv(charCsv),
-  });
+  };
+}
+
+export function loadRankingData(repoRoot: string): void {
+  initRankingData(buildRankingData(repoRoot));
 }

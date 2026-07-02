@@ -10,6 +10,10 @@ import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.t
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { sortQueryResults, sortWordRows } from './ranking.ts';
+import {
+  executeCompoundSearch,
+  type CompoundSearchSpec,
+} from './compound.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -916,15 +920,74 @@ function modeRedirectHint(mode: 'm1' | 'm2'): string {
   return `此語法已切換至 ${label} 查詢`;
 }
 
-/** ponytail: compound tiers from relation index — stub returns [] until relation DB port */
+/** ponytail: compound tiers — connective width-3 deferred to compound_connect port */
+function buildCompoundSearchSpec(
+  parsed: CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
+): CompoundSearchSpec | null {
+  if (parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) {
+    return {
+      compound_kind: 'doubled_syllable',
+      width: 2,
+      code_prefix: parsed.code_prefix,
+      rhyme_char: parsed.rhyme_char,
+    };
+  }
+  if (parsed.kind === QueryKind.COMPOUND_SYN) {
+    const connect = parsed.raw_q.match(
+      /^(\d*)~([與和或共同及跟而且並向])~([\u4e00-\u9fff])?$/,
+    );
+    if (connect) {
+      return {
+        compound_kind: 'syn',
+        width: 3,
+        code_prefix: connect[1] || undefined,
+        connective: connect[2],
+        rhyme_char: connect[3] || undefined,
+      };
+    }
+    return {
+      compound_kind: 'syn',
+      width: 2,
+      code_prefix: parsed.code_prefix,
+      rhyme_char: parsed.rhyme_char,
+    };
+  }
+  if (parsed.kind === QueryKind.COMPOUND_ANT) {
+    const connect = parsed.raw_q.match(
+      /^(\d*)!([與和或共同及跟而且並向])!([\u4e00-\u9fff])?$/,
+    );
+    if (connect) {
+      return {
+        compound_kind: 'ant',
+        width: 3,
+        code_prefix: connect[1] || undefined,
+        connective: connect[2],
+        rhyme_char: connect[3] || undefined,
+      };
+    }
+    return {
+      compound_kind: 'ant',
+      width: 2,
+      code_prefix: parsed.code_prefix,
+      rhyme_char: parsed.rhyme_char,
+    };
+  }
+  return null;
+}
+
 function executeCompoundQuery(
-  _parsed: CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
-  _db: Database,
-  _mode: QueryMode,
-  _limit: number,
-  _offset: number,
+  parsed: CompoundSynQuery | CompoundAntQuery | CompoundDoubledSyllableQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
 ): SearchResult {
-  return { items: [] };
+  const spec = buildCompoundSearchSpec(parsed);
+  if (!spec) {
+    return { items: [] };
+  }
+  const items = executeCompoundSearch(db, spec, mode, limit, offset);
+  return { items };
 }
 
 /**

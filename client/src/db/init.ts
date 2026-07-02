@@ -4,10 +4,13 @@
  */
 
 import { initSqlJs, type Database } from './sqljs.ts';
+import { initRankingData } from './ranking.ts';
+import { loadCompoundListsFromUrl } from './compound.ts';
 
 // Database instance singleton
 let db: Database | null = null;
 let isInitialized = false;
+let rankingLoaded = false;
 
 /** ponytail: parity runner / node probe only — inject pre-loaded sql.js Database */
 let injectedDb: Database | null = null;
@@ -19,6 +22,30 @@ export function injectDatabaseForTests(candidate: Database | null): void {
 function defaultDbUrl(): string {
   const ver = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
   return new URL(`lyrics.${ver}.db`, import.meta.env.BASE_URL).toString();
+}
+
+async function loadBrowserRankingIndex(): Promise<void> {
+  if (rankingLoaded) {
+    return;
+  }
+  try {
+    const url = new URL('ranking-index.json', import.meta.env.BASE_URL).toString();
+    const res = await fetch(url);
+    if (res.ok) {
+      initRankingData(await res.json());
+    }
+  } catch {
+    // ponytail: empty ranking signals — localeCompare-tier fallback via compareSearchResults defaults
+  }
+  rankingLoaded = true;
+}
+
+async function loadBrowserCompoundLists(): Promise<void> {
+  try {
+    await loadCompoundListsFromUrl(import.meta.env.BASE_URL);
+  } catch {
+    // ponytail: compound curated lists optional until public/data/syn_ant present
+  }
 }
 
 export function getDefaultDbUrl(): string {
@@ -62,6 +89,8 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     
     // Mark as initialized
     isInitialized = true;
+
+    await Promise.all([loadBrowserRankingIndex(), loadBrowserCompoundLists()]);
     
     console.log('Database initialized successfully');
     return db;
