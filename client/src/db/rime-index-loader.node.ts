@@ -23,7 +23,9 @@ function parseCharCsvEntries(csvText: string): RimeEntry[] {
     return out;
   }
   const header = lines[0]!.split(',');
+  const charIdx = header.indexOf('char');
   const jyutIdx = header.indexOf('jyutping');
+  const rankIdx = header.indexOf('pron_rank');
   if (jyutIdx < 0) {
     return out;
   }
@@ -33,8 +35,10 @@ function parseCharCsvEntries(csvText: string): RimeEntry[] {
       continue;
     }
     const cols = line.split(',');
+    const ch = (cols[charIdx] ?? '').trim();
     const jyut = (cols[jyutIdx] ?? '').trim();
-    if (!jyut) {
+    const pronRank = rankIdx >= 0 ? (cols[rankIdx] ?? '').trim() : '預設';
+    if (!ch || !/^[\u4e00-\u9fff]$/.test(ch) || pronRank !== '預設' || !jyut) {
       continue;
     }
     for (const token of jyut.split(/\s+/)) {

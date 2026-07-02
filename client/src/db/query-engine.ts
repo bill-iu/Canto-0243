@@ -17,10 +17,8 @@ import {
 import { executeHeteronymCodeSearch } from './heteronym.ts';
 import { relationLookupItems } from './relation-pool.ts';
 import {
-  classifyLatinAnchor,
   matchesJyutpingAnchorAtPosition,
-  normalizeRhymeLetters,
-  rhymeLettersResolveOk,
+  parseJyutpingAnchorQuery as parseJyutpingAnchorFields,
 } from './jyutping-anchor.ts';
 import { rhymeFinalsFromJyutping } from './jyutping-codec.ts';
 
@@ -165,7 +163,7 @@ export interface SerialPhonemeAnchorQuery extends ParsedQuery {
   mask: string;
 }
 
-/** Jyutping anchor (?yut?, 3m4) — execution port partial */
+/** Jyutping anchor (?yut?, 3m4, 23o, …) */
 export interface JyutpingAnchorQuery extends ParsedQuery {
   kind: QueryKind.JYUTPING_ANCHOR;
   raw_q: string;
@@ -175,6 +173,10 @@ export interface JyutpingAnchorQuery extends ParsedQuery {
   anchor_value: string;
   dual_phoneme?: boolean;
   code_prefix?: string;
+  equals_style?: boolean;
+  code_slots?: Array<[number, string]>;
+  hybrid_rhyme?: boolean;
+  dual_initial_value?: string;
 }
 
 /** Hybrid code query (23就) */
@@ -1476,6 +1478,10 @@ export function parserLogicSelfCheck(): void {
     ['04困=49倒=', QueryKind.SERIAL_PHONEME],
     ['?yut?', QueryKind.JYUTPING_ANCHOR],
     ['3m4', QueryKind.JYUTPING_ANCHOR],
+    ['?hon', QueryKind.JYUTPING_ANCHOR],
+    ['3+hon4', QueryKind.JYUTPING_ANCHOR],
+    ['23o', QueryKind.JYUTPING_ANCHOR],
+    ['3hon4', QueryKind.JYUTPING_ANCHOR],
     ['就=', QueryKind.RHYME_ANCHOR],
     ['?+就=', QueryKind.RHYME_ANCHOR],
     ['?+人=?', QueryKind.TRIPLE_RHYME_ANCHOR],
@@ -1824,70 +1830,13 @@ export function parseSerialPhonemeAnchorQuery(q: string): SerialPhonemeAnchorQue
 }
 
 
-function parseDualPhonemeAnchorQuery(q: string): JyutpingAnchorQuery | null {
-  let m = q.match(/^\?\+?([a-zA-Z]+)\?$/i);
-  if (m) {
-    const letters = m[1]!.toLowerCase();
-    if (letters === 'm' || letters === 'ng') {
-      return {
-        kind: QueryKind.JYUTPING_ANCHOR,
-        raw_q: q,
-        width: 3,
-        anchor_pos: 1,
-        anchor_kind: 'rhyme_letters',
-        anchor_value: letters === 'm' ? 'ng' : letters,
-        dual_phoneme: true,
-      };
-    }
-  }
-  m = q.match(/^(\d+)(m|ng)(\d+)$/i);
-  if (m) {
-    const left = m[1]!;
-    const letters = m[2]!.toLowerCase();
-    return {
-      kind: QueryKind.JYUTPING_ANCHOR,
-      raw_q: q,
-      width: left.length + m[3]!.length,
-      anchor_pos: Math.max(0, left.length - 1),
-      anchor_kind: 'rhyme_letters',
-      anchor_value: letters,
-      code_prefix: left + m[3]!,
-      dual_phoneme: true,
-    };
-  }
-  return null;
-}
-
-function parseTripleJyutpingSlotQuery(q: string): JyutpingAnchorQuery | null {
-  const m = q.match(/^\?\+?([a-zA-Z]+)\?$/i);
-  if (!m) {
-    return null;
-  }
-  const letters = m[1]!;
-  const kind = classifyLatinAnchor(letters);
-  if (!kind) {
-    return null;
-  }
-  const value = kind === 'rhyme_letters' ? normalizeRhymeLetters(letters) : letters.toLowerCase();
-  if (kind === 'rhyme_letters' && !rhymeLettersResolveOk(value)) {
-    return null;
-  }
-  return {
-    kind: QueryKind.JYUTPING_ANCHOR,
-    raw_q: q,
-    width: 3,
-    anchor_pos: 1,
-    anchor_kind: kind,
-    anchor_value: value,
-  };
-}
-
-/** Port of jyutping_anchor.parse_jyutping_anchor_query (classification subset) */
+/** Port of jyutping_anchor.parse_jyutping_anchor_query */
 export function parseJyutpingAnchorQuery(q: string): JyutpingAnchorQuery | null {
-  if (!q || /[\u4e00-\u9fff]/.test(q)) {
+  const fields = parseJyutpingAnchorFields(q);
+  if (!fields) {
     return null;
   }
-  return parseDualPhonemeAnchorQuery(q) ?? parseTripleJyutpingSlotQuery(q);
+  return { kind: QueryKind.JYUTPING_ANCHOR, ...fields };
 }
 
 /** Port of query_grammar/rhyme.parse_rhyme_anchor_query (P1 subset) */
@@ -2338,8 +2287,12 @@ function executeJyutpingAnchorQuery(
   const width = parsed.width;
   const searchMode = normalizeSearchMode(mode);
   const requiredCodes: Array<string | null> = Array(width).fill(null);
-  if (parsed.code_prefix && parsed.code_prefix.length === width) {
-    for (let i = 0; i < width; i++) {
+  if (parsed.code_slots?.length) {
+    for (const [pos, digit] of parsed.code_slots) {
+      requiredCodes[pos] = digit;
+    }
+  } else if (parsed.code_prefix) {
+    for (let i = 0; i < Math.min(parsed.code_prefix.length, width); i++) {
       requiredCodes[i] = parsed.code_prefix[i]!;
     }
   }
@@ -2363,7 +2316,8 @@ function executeJyutpingAnchorQuery(
       continue;
     }
     const code = String(word.code ?? '');
-    if (parsed.code_prefix && !matchesCodePositions(code, requiredCodes, searchMode)) {
+    const hasCodeFilter = Boolean(parsed.code_slots?.length || parsed.code_prefix);
+    if (hasCodeFilter && !matchesCodePositions(code, requiredCodes, searchMode)) {
       continue;
     }
     if (
