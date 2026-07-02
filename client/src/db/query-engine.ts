@@ -754,6 +754,70 @@ function executeJyutpingFragment(
 }
 
 /**
+ * Whole-word equals (e.g. 香港=) — match words sharing ref finals/initials JSON (P1).
+ * ponytail: uses stored finals/initials columns; full port uses rhyme tuple compare in filters.py
+ */
+function executeWholeWordEquals(
+  spec: MatchSpec & { equals_span: EqualsSpan },
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number
+): SearchResult {
+  const span = spec.equals_span;
+  const isFinal = span.dimension === 'final' || span.dimension === 'rhyme';
+  const field = isFinal ? 'finals' : 'initials';
+
+  const refStmt = db.prepare(
+    `SELECT char, jyutping, code, finals, initials, length FROM words WHERE char = ? LIMIT 1`,
+  );
+  refStmt.bind([span.ref_literal]);
+  const refRow = refStmt.step() ? refStmt.getAsObject() : null;
+  refStmt.free();
+
+  if (!refRow) {
+    return { items: [] };
+  }
+
+  const phonemeKey = String(refRow[field] ?? '');
+  if (!phonemeKey) {
+    return { items: [] };
+  }
+
+  const width = spec.width;
+  let sql = `
+    SELECT char, jyutping, code
+    FROM words
+    WHERE ${field} = ?
+      AND (
+        length = ?
+        OR ((length IS NULL OR length = 0) AND length(char) = ?)
+      )
+  `;
+  const params: (string | number)[] = [phonemeKey, width, width];
+
+  if (spec.code_prefix) {
+    const variants = getCodeVariants(spec.code_prefix, normalizeSearchMode(mode));
+    const placeholders = variants.map(() => '?').join(', ');
+    sql += ` AND code IN (${placeholders})`;
+    params.push(...variants);
+  }
+
+  sql += ' ORDER BY char LIMIT ? OFFSET ?';
+  params.push(limit, offset);
+
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const results: QueryResult[] = [];
+  while (stmt.step()) {
+    results.push(rowToResult(stmt.getAsObject()));
+  }
+  stmt.free();
+
+  return { items: results };
+}
+
+/**
  * Execute equals query (e.g., 2=我3, 香港=, =香, 就=)
  * This implements the equals query syntax for finding words with matching rhymes/initials
  */
@@ -772,38 +836,22 @@ async function executeEqualsQuery(
   }
   
   const span = spec.equals_span;
-  const { ref_literal, dimension, phoneme_anchor_only, whole_word } = span;
-  const { code_prefix } = spec;
-  
-  // For now, implement a simplified version
-  // Full implementation would use proper rhyme/initial matching
-  
-  // Case 1: whole word equals (e.g., 香港=)
-  if (whole_word && code_prefix) {
-    // Find words with same code as the reference word
-    const sql = `
-      SELECT w.char, w.jyutping, w.code
-      FROM words w
-      WHERE w.char = ? AND w.code = ?
-      ORDER BY w.char
-      LIMIT ? OFFSET ?
-    `;
-    const stmt = db.prepare(sql);
-    stmt.bind([ref_literal, code_prefix, limit, offset]);
-    
-    const results: QueryResult[] = [];
-    while (stmt.step()) {
-      results.push(rowToResult(stmt.getAsObject()));
-    }
-    stmt.free();
-    
-    // If no results and it's a code-prefixed whole word equals, provide hint
-    if (results.length === 0) {
+  const { ref_literal, dimension, code_prefix } = span;
+  const { whole_word } = span;
+
+  if (whole_word) {
+    const items = executeWholeWordEquals(
+      spec as MatchSpec & { equals_span: EqualsSpan },
+      db,
+      mode,
+      limit,
+      offset,
+    ).items;
+    if (items.length === 0 && code_prefix) {
       const hint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
       return { items: [], hint: hint || '未找到符合的結果' };
     }
-    
-    return { items: results };
+    return { items };
   }
   
   // Case 2: code + equals + word (e.g., 2=我3)
