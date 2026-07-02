@@ -128,6 +128,12 @@ export interface PartialRhymeMaskQuery extends ParsedQuery {
   anchors: Array<[number, string]>;
 }
 
+/** Hybrid code query (23就) */
+export interface HybridCodeQuery extends ParsedQuery {
+  kind: QueryKind.HYBRID_CODE;
+  raw_q: string;
+}
+
 /**
  * Relation lookup query (near-synonym or antonym)
  */
@@ -346,8 +352,12 @@ export function parseQuery(q: string): ParsedQuery {
   if (rhymeAnchor) {
     return rhymeAnchor;
   }
-  
-  // Check for various mask patterns
+
+  const hybridCode = parseHybridCodeQuery(normalized);
+  if (hybridCode) {
+    return hybridCode;
+  }
+
   if (looksLikeMaskQuery(normalized)) {
     return { kind: QueryKind.MASK, raw_q: normalized };
   }
@@ -379,11 +389,135 @@ export function normalizeAndParse(q: string): ParsedQuery {
 }
 
 /**
- * Simple mask query detection
+ * Mask detection — port of query_grammar/mask.looks_like_mask_query
  */
 function looksLikeMaskQuery(q: string): boolean {
-  // Contains wildcards: ?, _, %, *
-  return /[?*_%]/.test(q);
+  if (!q || q.includes(CODE_TAIL_MIDDLE) || q.includes('@')) {
+    return false;
+  }
+  if (!/^[0-9_?%\u4e00-\u9fff]+$/.test(q)) {
+    return false;
+  }
+  const hasWild = [...q].some((c) => isWildcardChar(c));
+  const hasDigit = /\d/.test(q);
+  const hasCanto = [...q].some((c) => !/\d/.test(c) && !isWildcardChar(c));
+  return hasWild || (hasDigit && hasCanto);
+}
+
+/** Port of HYBRID_CODE_RE — must run before looksLikeMaskQuery */
+export function parseHybridCodeQuery(q: string): HybridCodeQuery | null {
+  const m = q.match(/^(\d+)([\u4e00-\u9fff]+)(\d*)$/);
+  if (!m) {
+    return null;
+  }
+  return { kind: QueryKind.HYBRID_CODE, raw_q: q };
+}
+
+/** Port of query_grammar/mask.parse_mask_query */
+function parseMaskQuery(
+  mask: string,
+): { width: number; requiredCodes: Array<string | null>; literalPositions: Array<[number, string]> } {
+  const requiredCodes: Array<string | null> = Array(mask.length).fill(null);
+  const literalPositions: Array<[number, string]> = [];
+  for (let idx = 0; idx < mask.length; idx++) {
+    const ch = mask[idx]!;
+    if (isWildcardChar(ch)) {
+      continue;
+    }
+    if (/\d/.test(ch)) {
+      requiredCodes[idx] = ch;
+      continue;
+    }
+    literalPositions.push([idx, ch]);
+  }
+  return { width: mask.length, requiredCodes, literalPositions };
+}
+
+function matchesCodePositions(
+  codeStr: string,
+  requiredCodes: Array<string | null>,
+  mode: 'm1' | 'm2',
+): boolean {
+  if (codeStr.length !== requiredCodes.length) {
+    return false;
+  }
+  for (let idx = 0; idx < requiredCodes.length; idx++) {
+    const req = requiredCodes[idx];
+    if (!req) {
+      continue;
+    }
+    const variants = new Set(getCodeVariants(req, mode));
+    if (!variants.has(codeStr[idx]!)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function matchesMaskLiteralPositions(
+  wordChar: string,
+  literalPositions: Array<[number, string]>,
+): boolean {
+  for (const [idx, ch] of literalPositions) {
+    if (wordChar[idx] !== ch) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function executeMaskQuery(
+  parsed: MaskQuery,
+  db: Database,
+  mode: QueryMode,
+  limit: number,
+  offset: number,
+): SearchResult {
+  const { width, requiredCodes, literalPositions } = parseMaskQuery(parsed.raw_q);
+  const searchMode = normalizeSearchMode(mode);
+
+  const stmt = db.prepare(`
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    LIMIT 2000
+  `);
+  stmt.bind([width, width]);
+
+  const matched: QueryResult[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const charText = String(row.char ?? '');
+    if (!wordMatchesWidth(row, width) || charText.length !== width) {
+      continue;
+    }
+    if (!matchesMaskLiteralPositions(charText, literalPositions)) {
+      continue;
+    }
+    const code = String(row.code ?? '');
+    if (!matchesCodePositions(code, requiredCodes, searchMode)) {
+      continue;
+    }
+    matched.push(rowToResult(row));
+  }
+  stmt.free();
+
+  matched.sort((a, b) => a.word.localeCompare(b.word, 'zh-Hant'));
+  return { items: matched.slice(offset, offset + limit) };
+}
+
+/** ponytail: stub — next step ports filter_hybrid_ref_candidates */
+function executeHybridCodeQuery(
+  _parsed: HybridCodeQuery,
+  _db: Database,
+  _mode: QueryMode,
+  _limit: number,
+  _offset: number,
+): SearchResult {
+  return { items: [] };
 }
 
 const WILDCARD_CHARS = new Set(['_', '?', '%']);
@@ -1054,6 +1188,18 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
           offset,
         );
       }
+      if (parsed.kind === QueryKind.HYBRID_CODE) {
+        return executeHybridCodeQuery(
+          parsed as HybridCodeQuery,
+          db,
+          mode,
+          limit,
+          offset,
+        );
+      }
+      if (parsed.kind === QueryKind.MASK) {
+        return executeMaskQuery(parsed as MaskQuery, db, mode, limit, offset);
+      }
       if (parsed.kind === QueryKind.RHYME_ANCHOR) {
         return executeRhymeAnchorQuery(parsed as RhymeAnchorQuery, db, limit, offset);
       }
@@ -1068,7 +1214,6 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
           db, mode, limit, offset
         );
       }
-      // For now, treat mask queries as simple text search
       return executeMaskFamily(parsed, db, mode, limit, offset);
     
     case RouteKind.RELATION:
