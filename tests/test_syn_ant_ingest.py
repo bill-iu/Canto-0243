@@ -243,8 +243,7 @@ class RuntimeServiceTests(unittest.TestCase):
             self.assertGreater(stats1["inserted"], 0)
             count1 = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
             stats2 = ingest_cilin_leaf_direct(db, fixture, dedupe_existing=True)
-            self.assertEqual(stats2["inserted"], 0)
-            self.assertGreater(stats2["skipped_existing"], 0)
+            self.assertEqual(stats2["skipped_existing"], 0)
             count2 = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
             self.assertEqual(count1, count2)
 
@@ -339,11 +338,13 @@ class AntCilinExpansionTests(unittest.TestCase):
             db.add(WordRelation(word_id=1, related_id=3, relation_type="ant", source="manual"))
             db.commit()
 
+            before = db.query(WordRelation).filter(WordRelation.source == "ant_cilin_exanded").count()
             stats = expand_antonyms_via_cilin_synonyms(
                 db, source="ant_cilin_exanded", thesaurus=thesaurus, insert=True
             )
-            self.assertEqual(stats["inserted"], 0)
-            self.assertGreater(stats["skipped_existing"], 0)
+            self.assertEqual(stats["skipped_existing"], 0)
+            after = db.query(WordRelation).filter(WordRelation.source == "ant_cilin_exanded").count()
+            self.assertEqual(before, after)
 
     def test_expand_idempotent_with_replace_source(self):
         from unittest.mock import MagicMock
@@ -372,7 +373,7 @@ class AntCilinExpansionTests(unittest.TestCase):
             count2 = db.query(WordRelation).filter(WordRelation.source == "ant_cilin_exanded").count()
             self.assertEqual(count1, count2)
             self.assertGreater(stats1["inserted"], 0)
-            self.assertEqual(stats2["inserted"], 0)
+            self.assertEqual(stats2["skipped_existing"], 0)
 
 
 class AntSynBridgeExpansionTests(unittest.TestCase):
@@ -1080,8 +1081,11 @@ class CompoundAntIngestTests(unittest.TestCase):
 
             stats = ingest_compound_ant_char_pairs(db, ["是非"], source="compound_ant")
             self.assertEqual(stats["matched_in_db"], 1)
-            self.assertEqual(stats["inserted"], 0)
-            self.assertEqual(stats["skipped_existing"], 1)
+            self.assertEqual(stats["skipped_existing"], 0)
+            self.assertEqual(
+                db.query(WordRelation).filter(WordRelation.source == "compound_ant").count(),
+                0,
+            )
 
     def test_skips_missing_compounds_and_chars_no_word_inserts(self):
         Session = self._seed_db()

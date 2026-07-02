@@ -361,8 +361,28 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
     def test_word_relations_build_module_boundary(self):
         source = self.WORD_REL_BUILD_PATH.read_text(encoding="utf-8")
         self.assertIn("def build_word_relations", source)
-        self.assertIn("bulk_insert_word_relations", source)
+        self.assertIn("insert_relation_records", source)
+        self.assertNotIn("bulk_insert_word_relations", source)
         self.assertNotIn("fetch_existing_relation_keys", source)
+
+    def test_ingest_write_modules_use_store_not_bulk(self):
+        paths = [
+            self.DIRECT_PATH,
+            self.BUILD_PATH,
+            self.WORD_REL_BUILD_PATH,
+            self.EXPAND_PATH,
+            REPO_ROOT / "ingest" / "compound_antonyms.py",
+            REPO_ROOT / "ingest" / "derived_ant_snapshot.py",
+            REPO_ROOT / "ingest" / "bridge_snapshot.py",
+        ]
+        store_path = REPO_ROOT / "app" / "domain" / "relations" / "store.py"
+        store_source = store_path.read_text(encoding="utf-8")
+        self.assertIn("bulk_insert_word_relations", store_source)
+        for path in paths:
+            with self.subTest(path=path.name):
+                source = path.read_text(encoding="utf-8")
+                self.assertNotIn("bulk_insert_word_relations", source)
+                self.assertNotIn("fetch_existing_relation_keys", source)
 
     def test_build_module_boundary(self):
         source = self.BUILD_PATH.read_text(encoding="utf-8")

@@ -15,8 +15,8 @@ from app.domain.relations.pool_projection import (
     relation_pool_page,
 )
 from app.domain.relations.store import (
-    fetch_existing_relation_keys,
     insert_relation_candidates,
+    insert_relation_records,
     insert_relations,
 )
 from app.domain.relations.syn_neighbors import one_hop_syn_neighbors
@@ -30,7 +30,6 @@ __all__ = [
     "canonical_relation_dict",
     "canonical_word_ids",
     "relation_storage_key",
-    "fetch_existing_relation_keys",
     "get_char_to_ids",
     "get_char_to_primary_id",
     "insert_relation_candidates",

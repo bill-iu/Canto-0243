@@ -114,7 +114,7 @@ class IngestStaticRelationsTests(unittest.TestCase):
             self.assertGreater(stats["inserted"], 0)
             count = db.query(WordRelation).filter(WordRelation.relation_type == "syn").count()
             stats2 = ingest_cilin_leaf_direct(db, CILIN_SAMPLE, chunk_size=1, dedupe_existing=True)
-            self.assertEqual(stats2["inserted"], 0)
+            self.assertEqual(stats2["skipped_existing"], 0)
             self.assertEqual(db.query(WordRelation).filter(WordRelation.relation_type == "syn").count(), count)
 
     def test_no_syn_ant_edges_table_required(self):

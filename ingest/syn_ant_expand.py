@@ -9,14 +9,11 @@ from sqlalchemy.orm import Session
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
 from app.domain.relations.store import (
-    fetch_existing_relation_keys as _fetch_existing_keys,
+    INSERT_BATCH,
     insert_relation_candidates as _insert_bridge_candidates,
     insert_relations as _insert_relations,
 )
 from app.models.word import Word, WordRelation
-
-INSERT_BATCH = 300
-SQL_IN_BATCH = 300
 
 def _build_cilin_syn_adjacency(db: Session, *, cilin_syn_source: str = "cilin") -> Dict[int, Set[int]]:
     """Bidirectional Cilin synonym neighbors keyed by word id.
@@ -47,6 +44,7 @@ def _persist_cilin_derived_ant_pairs(
     dedupe_existing: bool,
     batch_size: int,
 ) -> dict:
+    _ = dedupe_existing, batch_size  # ponytail: no-op; bulk OR IGNORE + CHUNK_SIZE default
     source = (source or "ant_cilin_exanded")[:32]
     stats = {
         "candidate_pairs": len(pairs),
@@ -79,23 +77,10 @@ def _persist_cilin_derived_ant_pairs(
             }
         )
 
-    if dedupe_existing and pending:
-        keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in pending]
-        existing: Set[Tuple] = set()
-        for i in range(0, len(keys), SQL_IN_BATCH):
-            existing.update(_fetch_existing_keys(db, keys[i : i + SQL_IN_BATCH]))
-        before = len(pending)
-        pending = [
-            c
-            for c in pending
-            if (c["word_id"], c["related_id"], c["relation_type"]) not in existing
-        ]
-        stats["skipped_existing"] = before - len(pending)
-
     if pending:
-        for i in range(0, len(pending), batch_size):
-            chunk = pending[i : i + batch_size]
-            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in chunk])
+        stats["inserted"] += _insert_relations(
+            db, [WordRelation(**c) for c in pending]
+        )
     return stats
 
 

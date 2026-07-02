@@ -6,11 +6,7 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relations.store import (
-    fetch_existing_relation_keys as _fetch_existing_keys,
-    insert_relations as _insert_relations,
-)
-from app.models.word import WordRelation
+from app.domain.relations.store import insert_relations
 from ingest.cilin_leaf import groups_to_word_id_pairs, parse_leaf_groups
 
 INSERT_BATCH = 300
@@ -26,6 +22,7 @@ def ingest_cilin_leaf_direct(
     dedupe_existing: bool = True,
 ) -> dict:
     """Ingest leaf Cilin groups directly into word_relations with canonical dedupe."""
+    _ = dedupe_existing  # ponytail: no-op; INSERT OR IGNORE replaces pre-fetch dedupe
     from ingest.cilin_leaf import iter_cilin_leaf_line_chunks
 
     char_to_id = get_char_to_primary_id(db)
@@ -55,17 +52,12 @@ def ingest_cilin_leaf_direct(
             c["score"] = confidence
         stats["candidate_pairs"] += len(candidates)
 
-        if not candidates:
-            continue
-
-        if dedupe_existing:
-            keys = [(c["word_id"], c["related_id"], c["relation_type"]) for c in candidates]
-            existing = _fetch_existing_keys(db, keys)
-            candidates = [c for c in candidates if (c["word_id"], c["related_id"], c["relation_type"]) not in existing]
-            stats["skipped_existing"] += len(keys) - len(candidates)
-
         if candidates:
-            stats["inserted"] += _insert_relations(db, [WordRelation(**c) for c in candidates])
+            from app.models.word import WordRelation
+
+            stats["inserted"] += insert_relations(
+                db, [WordRelation(**c) for c in candidates]
+            )
 
         if stats["batches"] % 20 == 0:
             print(
@@ -78,6 +70,8 @@ def ingest_cilin_leaf_direct(
 
 
 def clear_word_relations_source(db: Session, source: str) -> int:
+    from app.models.word import WordRelation
+
     n = db.query(WordRelation).filter(WordRelation.source == source).delete()
     db.commit()
     return n

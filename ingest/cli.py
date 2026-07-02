@@ -545,7 +545,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_expand.add_argument("--cilin-syn-source", default="cilin", help="Deprecated; core uses 靜態詞林埠")
     p_expand.add_argument("--confidence", type=float, default=0.75, help="Score for derived ant relations")
-    p_expand.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_expand.add_argument("--batch-size", type=int, default=2000, help="Insert batch size")
     p_expand.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
     p_expand.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
     p_expand.add_argument("--no-static", dest="no_static", action="store_true", help="Seeds: DB ants only, no static thesaurus")
@@ -573,7 +573,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Also persist pairs to word_relations (maintainer debug; default export-only)",
     )
     p_mirror.add_argument("--confidence", type=float, default=0.72, help="Score for mirror ant relations")
-    p_mirror.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_mirror.add_argument("--batch-size", type=int, default=2000, help="Insert batch size")
     p_mirror.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing ant keys")
     p_mirror.add_argument("--no-dedupe-existing", dest="dedupe_existing", action="store_false")
     p_mirror.add_argument("--no-static", dest="no_static", action="store_true", help="Seeds: DB ants only, no static thesaurus")
@@ -610,7 +610,7 @@ def main(argv: list[str] | None = None) -> int:
     p_bake_derived.add_argument("--cilin-syn-source", default="cilin", help="Cilin synonym source for live expand")
     p_bake_derived.add_argument("--cilin-confidence", type=float, default=0.75, help="Score for cilin-derived ant")
     p_bake_derived.add_argument("--mirror-confidence", type=float, default=0.72, help="Score for mirror ant")
-    p_bake_derived.add_argument("--batch-size", type=int, default=300, help="Insert batch size for live expand")
+    p_bake_derived.add_argument("--batch-size", type=int, default=2000, help="Insert batch size for live expand")
     p_bake_derived.add_argument("--no-static", dest="no_static", action="store_true", help="Mirror expand: DB syn only")
 
     p_bridge = sub.add_parser(
@@ -619,7 +619,7 @@ def main(argv: list[str] | None = None) -> int:
         description="近義橋反義 ingest。全量重跑與驗收見 docs/ingest-bridge-ant.md",
     )
     p_bridge.add_argument("--source", default="ant_syn_bridge", help="Source tag for bridged ant relations")
-    p_bridge.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_bridge.add_argument("--batch-size", type=int, default=2000, help="Insert batch size")
     p_bridge.add_argument("--embed-batch-size", type=int, default=256, help="Embedding encode batch size")
     p_bridge.add_argument("--offset", type=int, default=0, help="Skip first N target chars (resume)")
     p_bridge.add_argument("--limit", type=int, default=None, help="Max target chars from offset (debug/smoke)")
@@ -684,7 +684,7 @@ def main(argv: list[str] | None = None) -> int:
         help="Skip embedding; export current ant_syn_bridge rows from lyrics.db",
     )
     p_bake.add_argument("--source", default="ant_syn_bridge", help="Source tag for bridged ant relations")
-    p_bake.add_argument("--batch-size", type=int, default=300, help="Insert batch size")
+    p_bake.add_argument("--batch-size", type=int, default=2000, help="Insert batch size")
     p_bake.add_argument("--embed-batch-size", type=int, default=256, help="Embedding encode batch size")
     p_bake.add_argument("--limit", type=int, default=None, help="Max target chars (debug/smoke)")
     p_bake.add_argument("--chunk-size", type=int, default=0, help="Chunked insert with checkpoint (0 = single pass)")

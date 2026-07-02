@@ -8,10 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relations.store import (
-    fetch_existing_relation_keys,
-    insert_relations,
-)
+from app.domain.relations.store import insert_relations
 from app.models.word import WordRelation
 from ingest.word_relations_build import build_word_relations, collect_guotong_flat_edges
 
@@ -76,12 +73,7 @@ def _flush_flat_batch(
 ) -> int:
     candidates = _dedupe_relation_batch(batch)
     stats["skipped_in_batch"] = stats.get("skipped_in_batch", 0) + len(batch) - len(candidates)
-    if dedupe_existing:
-        keys = [(r.word_id, r.related_id, r.relation_type) for r in candidates]
-        existing = fetch_existing_relation_keys(db, keys)
-        before = len(candidates)
-        candidates = [r for r in candidates if (r.word_id, r.related_id, r.relation_type) not in existing]
-        stats["skipped_existing"] += before - len(candidates)
+    _ = dedupe_existing  # ponytail: no-op; INSERT OR IGNORE replaces pre-fetch dedupe
     if not candidates:
         return 0
     return insert_relations(db, candidates)

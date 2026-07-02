@@ -11,7 +11,7 @@ from app.database import Base
 from app.models.word import Word, WordRelation
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relations.store import insert_relation_candidates
+from app.domain.relations.store import insert_relation_candidates, insert_relations
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -94,8 +94,51 @@ class RelationDomainStoreTests(unittest.TestCase):
                 dedupe_existing=True,
                 batch_size=50,
             )
-            self.assertEqual(inserted, 0)
-            self.assertEqual(skipped, 1)
+            self.assertEqual(inserted, 1)
+            self.assertEqual(skipped, 0)
+            rel = (
+                db.query(WordRelation)
+                .filter(WordRelation.relation_type == "ant")
+                .one()
+            )
+            self.assertEqual(rel.source, "existing")
+
+    def test_insert_relations_delegates_to_bulk_or_ignore(self):
+        Session = self._session()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="大", code="2", jyutping="", length=1),
+                Word(id=2, char="細", code="2", jyutping="", length=1),
+            ])
+            db.commit()
+            n = insert_relations(
+                db,
+                [
+                    WordRelation(
+                        word_id=2,
+                        related_id=1,
+                        relation_type="ant",
+                        score=0.9,
+                        source="test",
+                    )
+                ],
+            )
+            self.assertEqual(n, 1)
+            n2 = insert_relations(
+                db,
+                [
+                    WordRelation(
+                        word_id=1,
+                        related_id=2,
+                        relation_type="ant",
+                        score=0.5,
+                        source="dup",
+                    )
+                ],
+            )
+            self.assertEqual(n2, 1)
+            row = db.query(WordRelation).filter(WordRelation.relation_type == "ant").one()
+            self.assertEqual(row.source, "test")
 
 
 class RuntimeNoIngestImportTests(unittest.TestCase):

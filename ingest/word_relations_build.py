@@ -8,12 +8,9 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.bulk_insert import (
-    RelationTuple,
-    bulk_insert_word_relations,
-    normalize_relation_tuple,
-)
+from app.domain.relations.bulk_insert import RelationTuple, normalize_relation_tuple
 from app.domain.relations.char_index import get_char_to_primary_id
+from app.domain.relations.store import insert_relation_records
 from app.domain.thesaurus.port import StaticThesaurusPort
 from app.lexicon.compound_antonyms import load_compound_antonyms
 from app.models.word import Word
@@ -228,7 +225,7 @@ def build_word_relations(
         compound_path=compound_path,
     )
     stats["candidates"] = len(rows)
-    ins = bulk_insert_word_relations(db, rows)
+    ins = insert_relation_records(db, rows)
     stats["inserted"] = ins["attempted"]
     stats["chunks"] = ins["chunks"]
     stats["elapsed_s"] = round(time.perf_counter() - t0, 3)

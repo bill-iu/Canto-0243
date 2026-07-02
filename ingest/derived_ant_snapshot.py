@@ -135,7 +135,7 @@ def bake_derived_ant_snapshots(
     cilin_confidence: float = 0.75,
     mirror_confidence: float = 0.72,
     include_static: bool = True,
-    batch_size: int = 300,
+    batch_size: int = 2000,
 ) -> dict:
     stats: dict[str, Any] = {}
 
