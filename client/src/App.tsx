@@ -59,7 +59,7 @@ function App() {
     openAbout,
     goHome,
     ensureActiveSearchTab,
-    patchActiveSearchTab,
+    patchSearchTab,
     commitActiveSearch,
     pushBrowserUrl,
     popstateFrame,
@@ -92,6 +92,7 @@ function App() {
   const [gateOpen, setGateOpen] = useState(true);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
+  const syncedTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
 
   const trimmedInput = inputQuery.trim();
@@ -99,19 +100,10 @@ function App() {
   const searchKey = `${searchQuery}\0${mode}`;
   const modeMeta = modeMetaFor(mode);
 
-  const saveActiveSearchSnapshot = useCallback(() => {
-    if (activeTab?.view !== VIEW.SEARCH) return;
-    patchActiveSearchTab({
-      q: inputQuery,
-      results: displayResults,
-      total: cachedTotal,
-      offset: displayResults.length,
-    });
-  }, [activeTab, inputQuery, displayResults, cachedTotal, patchActiveSearchTab]);
-
   const loadSearchTabUi = useCallback(
     (tab: typeof activeTab, live: boolean) => {
       if (!tab || tab.view !== VIEW.SEARCH) return;
+      syncedTabIdRef.current = null;
       hydrateSearch(tab.q || '');
       setUseLiveFetch(live);
       setResultsShuffled(false);
@@ -119,6 +111,7 @@ function App() {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
+        syncedTabIdRef.current = tab.id;
       }
     },
     [hydrateSearch],
@@ -127,16 +120,14 @@ function App() {
   useEffect(() => {
     if (!activeTab) return;
     if (activeTabIdRef.current === activeTab.id) return;
-    const isFirst = activeTabIdRef.current === null;
-    if (!isFirst) {
-      saveActiveSearchSnapshot();
-    }
     activeTabIdRef.current = activeTab.id;
     if (activeTab.view === VIEW.SEARCH) {
       const hasCache = ((activeTab.results as QueryResult[]) || []).length > 0;
       loadSearchTabUi(activeTab, !hasCache);
+    } else {
+      syncedTabIdRef.current = activeTab.id;
     }
-  }, [activeTab, saveActiveSearchSnapshot, loadSearchTabUi]);
+  }, [activeTab, loadSearchTabUi]);
 
   useEffect(() => {
     if (!trimmedInput) {
@@ -176,6 +167,34 @@ function App() {
     loadMore,
   } = useSearch(useLiveFetch ? searchQuery : '', mode, { fallback_0243_mode: last0243Mode });
 
+  const saveLeavingSearchTab = useCallback(() => {
+    const leavingId = tabState.activeId;
+    const leaving = tabState.tabs.find((t) => t.id === leavingId);
+    if (leaving?.view !== VIEW.SEARCH) return;
+    patchSearchTab(leavingId, {
+      q: inputQuery,
+      results: displayResults,
+      total: useLiveFetch ? total : cachedTotal,
+      offset: displayResults.length,
+    });
+  }, [
+    tabState.activeId,
+    tabState.tabs,
+    inputQuery,
+    displayResults,
+    useLiveFetch,
+    total,
+    cachedTotal,
+    patchSearchTab,
+  ]);
+
+  useEffect(() => {
+    if (!activeTab || activeTab.view !== VIEW.SEARCH || !useLiveFetch) return;
+    if (searchQuery === (activeTab.q || '').trim()) {
+      syncedTabIdRef.current = activeTab.id;
+    }
+  }, [activeTab, searchQuery, useLiveFetch]);
+
   useEffect(() => {
     if (searchKeyRef.current !== searchKey) {
       searchKeyRef.current = searchKey;
@@ -194,14 +213,24 @@ function App() {
 
   useEffect(() => {
     if (!useLiveFetch || view !== 'search' || searchLoading) return;
-    patchActiveSearchTab({
+    if (syncedTabIdRef.current !== activeTab?.id) return;
+    patchSearchTab(activeTab!.id, {
       q: searchQuery,
       results,
       total,
       offset: results.length,
     });
     setCachedTotal(total);
-  }, [useLiveFetch, view, searchLoading, searchQuery, results, total, patchActiveSearchTab]);
+  }, [
+    useLiveFetch,
+    view,
+    searchLoading,
+    searchQuery,
+    results,
+    total,
+    activeTab,
+    patchSearchTab,
+  ]);
 
   useEffect(() => {
     if (initialSearchDoneRef.current || !needsInitialSearch || !isReady || gateOpen) return;
@@ -306,28 +335,35 @@ function App() {
   };
 
   const handleSelectTab = (id: number) => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     selectTab(id);
   };
 
   const handleCloseTab = (id: number) => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     closeTab(id);
   };
 
   const handleAddTab = () => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     addSearchTab();
   };
 
   const handleOpenGuide = () => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     openGuide();
   };
 
   const handleOpenAbout = () => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     openAbout();
+  };
+
+  const handleSearchInput = (value: string) => {
+    setInputQueryDebounced(value);
+    if (activeTab?.view === VIEW.SEARCH) {
+      patchSearchTab(tabState.activeId, { q: value });
+    }
   };
 
   const synLayout = mode === 'synonym';
@@ -366,8 +402,9 @@ function App() {
   const canSearch = isReady && !gateOpen;
 
   const handleHome = () => {
-    saveActiveSearchSnapshot();
+    saveLeavingSearchTab();
     goHome();
+    syncedTabIdRef.current = tabState.activeId;
     setUseLiveFetch(false);
     hydrateSearch('');
     setDisplayResults([]);
@@ -439,7 +476,7 @@ function App() {
                       id="searchInput"
                       type="search"
                       value={inputQuery}
-                      onChange={(e) => setInputQueryDebounced(e.target.value)}
+                      onChange={(e) => handleSearchInput(e.target.value)}
                       placeholder={modeMeta.placeholder}
                       disabled={gateOpen || offlineStatus === 'preparing'}
                       autoComplete="off"

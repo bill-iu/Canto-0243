@@ -178,14 +178,14 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
     [currentMode],
   );
 
-  const patchActiveSearchTab = useCallback(
-    (snapshot: Partial<SearchTabSnapshot>) => {
+  const patchSearchTab = useCallback(
+    (tabId: number, snapshot: Partial<SearchTabSnapshot>) => {
       setAndPersist((prev) => {
         const tabs = prev.tabs.map((t) => {
-          if (t.id !== prev.activeId || t.view !== VIEW.SEARCH) return t;
+          if (t.id !== tabId || t.view !== VIEW.SEARCH) return t;
           return {
             ...t,
-            q: snapshot.q ?? t.q,
+            q: snapshot.q !== undefined ? snapshot.q : t.q,
             results: snapshot.results ?? (t.results as QueryResult[]),
             offset: snapshot.offset ?? t.offset,
             total: snapshot.total !== undefined ? snapshot.total : t.total,
@@ -195,6 +195,13 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       });
     },
     [setAndPersist],
+  );
+
+  const patchActiveSearchTab = useCallback(
+    (snapshot: Partial<SearchTabSnapshot>) => {
+      patchSearchTab(tabStateRef.current.activeId, snapshot);
+    },
+    [patchSearchTab],
   );
 
   const selectTab = useCallback(
@@ -415,6 +422,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
     goHome,
     ensureActiveSearchTab,
     patchActiveSearchTab,
+    patchSearchTab,
     commitActiveSearch,
     pushBrowserUrl,
     popstateFrame,
