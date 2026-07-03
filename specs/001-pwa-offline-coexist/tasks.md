@@ -89,7 +89,26 @@
 | DB-4 雙路還原 | ✅ | OPFS → SW → network |
 | DB-5 benchmark | ✅ 桌面 | `?benchmark=1`；見 `research.md` |
 | D5-M5 iOS 飛航 | ✅ | iPhone iOS 26.5.1，2026-07-03 |
-| wa-sqlite VFS（降 RAM） | ⏳ | POC 在 `client/poc/`；非本 release blocker |
+| wa-sqlite VFS（降 RAM） | ✅ | POC 在 `client/poc/`；非本 release blocker |
+
+---
+
+## Phase 8: Visual parity（PWA ↔ Portable light）
+
+**範圍**：搜尋殼 markup + 全站 guide/about/benchmark 狀態；**不含**共用 CSS 抽離（D）、**不含** dark mode、**不含** Portable 頂欄 ghost-button（教學／關於維持在模式選單內）。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-V01 | 複製 `frontend/open-design.css` → `client/src/open-design.css`；`frontend/index.css` → `client/src/shell.css` | ✅ |
+| T-V02 | `client/index.html`：`theme-color` `#EBDFD0`、Google Fonts、`fonts-ready` 腳本 | ✅ |
+| T-V03 | `BrandSvgDefs` + gate 全屏遮罩（ink 進度、開得工 handoff；`failed`/`not_ready` 不撤 + 重試） | ✅ |
+| T-V04 | `App.tsx`：`app-shell` / `app-bar` / `search-panel` markup；gate 後**不**常駐 header 離線就緒 | ✅ |
+| T-V05 | `GuideView` / `AboutView`：`guide-hero` 結構；About 顯示 `VITE_LEXICON_VERSION` | ✅ |
+| T-V06 | `BenchmarkApp`：open-design token + 最小 shell | ✅ |
+| T-V07 | `pwa-app.css`：結果列／syn 適配；移除 `App.css` dark mode | ✅ |
+| T-V08 | `quickstart.md` Scenario E 驗收 | ✅ |
+
+**驗收**：見 [quickstart.md § Scenario E](./quickstart.md#scenario-e-p2-visual-parity-gate--shell)。
 
 ---
 

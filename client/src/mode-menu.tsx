@@ -57,7 +57,7 @@ export function ModeMenu({
   };
 
   return (
-    <div className="mode-menu-root" ref={rootRef}>
+    <div className="app-actions mode-menu-root" ref={rootRef}>
       <button
         type="button"
         className="menu-trigger"

@@ -77,6 +77,33 @@
 - 飛航模式下探針查詢有結果
 - Safari 無 `performance.memory` 時，以 Web Inspector Memory 手動補 D5-M3
 
+## Scenario E (P2): Visual parity — gate + shell
+
+**Prerequisites**: `npm run dev`（`client/`）；桌面 Chrome 或手機 Safari。
+
+1. **冷啟 gate**
+   - 清除該 origin 的 `sessionStorage`（或無痕視窗首次開啟）
+   - 開啟 PWA 根 URL
+   - 應見全屏 gate：SVG wordmark、ink 進度、「執緊啲字…」文案
+   - 離線就緒後短暫顯示「開得工！」再 handoff 至搜尋殼
+2. **Gate 後 header**
+   - header **不**應常駐「離線就緒」chip（僅 brand + 模式選單下拉）
+   - 模式選單內可進入「搜尋教學」「關於」（**無** Portable 頂欄 ghost-button）
+3. **搜尋殼**
+   - hero「ONE·搵·韻」、warm paper 背景、`search-panel` 圓角輸入與 primary 搜尋鈕
+   - 查 `事業`、`?+m?` 有結果；詞條 grid 視覺與 Portable light 一致（允許 PWA 多 code/jyutping 標題列）
+4. **Guide / About**
+   - `guide-hero` 排版；About 頁顯示詞庫版本（與 release 一致）
+5. **Benchmark**（`?benchmark=1`）
+   - 使用 open-design token 與最小 shell（不要求 pixel-perfect）
+
+**Failure paths**
+- 離線且未就緒：gate **不撤**，顯示需連網／重試
+- `failed`：gate 保留錯誤訊息 + 重試鈕
+
+**Expected outcomes**
+- light 視覺與 Portable 同源 CSS；行為見 [offline-readiness.md](./contracts/offline-readiness.md)
+
 ---
 
 ## Results（2026-07-03 T018）

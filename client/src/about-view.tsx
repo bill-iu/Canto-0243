@@ -1,4 +1,5 @@
 export interface AboutViewProps {
+  lexiconVersion: string;
   onBack: () => void;
 }
 
@@ -6,19 +7,22 @@ const LICENSE_URL = 'https://github.com/bill-iu/Canto-0243/blob/dev/LICENSE';
 const ISSUES_URL = 'https://github.com/bill-iu/Canto-0243/issues/new';
 const NOTICES_URL = 'https://github.com/bill-iu/Canto-0243/blob/dev/THIRD_PARTY_NOTICES.md';
 
-export function AboutView({ onBack }: AboutViewProps) {
+export function AboutView({ lexiconVersion, onBack }: AboutViewProps) {
   return (
     <div className="guide-view about-view">
-      <header className="guide-view__header">
-        <h1 className="about-view__title" id="aboutTitle" tabIndex={-1}>
+      <header className="guide-hero">
+        <p className="eyebrow">About</p>
+        <h1 id="aboutTitle" tabIndex={-1}>
           關於 Canto-0243
         </h1>
-        <button type="button" className="guide-back" onClick={onBack}>
-          返回搜尋
-        </button>
+        <p className="about-lede">ONE·搵·韻 — 離線粵語填詞查找工作台。</p>
+        <p className="about-meta">詞庫版本：{lexiconVersion}</p>
+        <div className="guide-actions">
+          <button type="button" className="primary-button" onClick={onBack}>
+            返回搜尋
+          </button>
+        </div>
       </header>
-
-      <p className="about-lede">ONE·搵·韻 — 離線粵語填詞查找工作台。</p>
 
       <article className="guide-card about-block">
         <h2>簡介</h2>
@@ -179,11 +183,11 @@ export function AboutView({ onBack }: AboutViewProps) {
           </a>
           （建議使用錯誤回報範本）。非常感謝您的協助！
         </p>
-        <div className="about-actions">
-          <a className="about-report-btn" href={ISSUES_URL} target="_blank" rel="noopener noreferrer">
+        <div className="about-actions guide-actions">
+          <a className="primary-button about-report-btn" href={ISSUES_URL} target="_blank" rel="noopener noreferrer">
             前往 GitHub 回報
           </a>
-          <button type="button" className="guide-back" onClick={onBack}>
+          <button type="button" className="ghost-button" onClick={onBack}>
             回到搜尋
           </button>
         </div>

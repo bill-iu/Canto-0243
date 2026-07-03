@@ -8,13 +8,17 @@ export interface GuideViewProps {
 export function GuideView({ onPick, onBack }: GuideViewProps) {
   return (
     <div className="guide-view">
-      <header className="guide-view__header">
-        <h2 className="guide-view__title" id="guideTitle" tabIndex={-1}>
+      <header className="guide-hero">
+        <p className="eyebrow">Guide</p>
+        <h1 id="guideTitle" tabIndex={-1}>
           搜尋教學
-        </h2>
-        <button type="button" className="guide-back" onClick={onBack}>
-          返回搜尋
-        </button>
+        </h1>
+        <p>0243／粵拼／韻母規則與近反義語法，揀例子即試。</p>
+        <div className="guide-actions">
+          <button type="button" className="primary-button" onClick={onBack}>
+            返回搜尋
+          </button>
+        </div>
       </header>
 
       <div className="guide-grid">
