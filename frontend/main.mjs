@@ -148,16 +148,6 @@ document.getElementById("aboutBackToSearchBtn")?.addEventListener("click", () =>
   $.searchInput.focus();
 });
 
-function pickModeFromGuide(mode) {
-  showSearch({ replace: true });
-  switchMode(mode, { runSearch: false, replace: true });
-  $.searchInput.focus({ preventScroll: true });
-}
-
-document.querySelectorAll(".guide-mode-pick").forEach((btn) => {
-  btn.addEventListener("click", () => pickModeFromGuide(btn.dataset.mode));
-});
-
 $.relationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   $.relationOkStatus.hidden = true;

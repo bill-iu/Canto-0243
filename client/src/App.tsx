@@ -151,14 +151,12 @@ function App() {
       setLast0243Mode(next);
     }
     setMode(next);
+    if (view === 'guide') {
+      setView('search');
+    }
     if (trimmedInput) {
       flushSearchQuery();
     }
-  };
-
-  const handleGuideModePick = (next: UiMode) => {
-    handleModeChange(next);
-    setView('search');
   };
 
   const handleBackToSearch = () => {
@@ -254,11 +252,7 @@ function App() {
 
         <main className="main-wrap">
           {view === 'guide' ? (
-            <GuideView
-              currentMode={mode}
-              onPick={handleRunExample}
-              onModePick={handleGuideModePick}
-            />
+            <GuideView onPick={handleRunExample} />
           ) : view === 'about' ? (
             <AboutView lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (

@@ -1,22 +1,10 @@
 import { GUIDE_SECTIONS, type GuideExample, type GuideMode } from './guide-examples';
-import { MODE_META, modeMetaFor, uiModeToUrlMode, type UiMode } from './mode-meta';
-import { modeHelp } from './mode-menu';
-
-const GUIDE_MODE_OPTIONS: Array<{ uiMode: UiMode; key: string }> = [
-  { uiMode: '0243', key: '0243' },
-  { uiMode: '02493', key: '02493' },
-  { uiMode: 'synonym', key: '~ / !' },
-];
 
 export interface GuideViewProps {
-  currentMode: UiMode;
   onPick: (query: string, mode: GuideMode) => void;
-  onModePick: (mode: UiMode) => void;
 }
 
-export function GuideView({ currentMode, onPick, onModePick }: GuideViewProps) {
-  const activeUrlMode = uiModeToUrlMode(currentMode);
-
+export function GuideView({ onPick }: GuideViewProps) {
   return (
     <div className="guide-view">
       <header className="guide-hero">
@@ -25,30 +13,6 @@ export function GuideView({ currentMode, onPick, onModePick }: GuideViewProps) {
           搜尋教學
         </h1>
         <p>0243／粵拼／韻母規則與近反義語法，揀例子即試。</p>
-        <div className="guide-actions" role="group" aria-label="0243搜尋模式">
-          {GUIDE_MODE_OPTIONS.map((option) => {
-            const meta = MODE_META[uiModeToUrlMode(option.uiMode)];
-            const checked = uiModeToUrlMode(option.uiMode) === activeUrlMode;
-            return (
-              <button
-                key={option.uiMode}
-                type="button"
-                className="mode-option guide-mode-pick"
-                aria-checked={checked}
-                onClick={() => onModePick(option.uiMode)}
-              >
-                <span>
-                  <span className="mode-name">
-                    {meta.title}
-                    <span className="mode-note">{meta.note}</span>
-                  </span>
-                  <span className="mode-help">{modeHelp(option.uiMode)}</span>
-                </span>
-                <span className="mode-key">{option.key}</span>
-              </button>
-            );
-          })}
-        </div>
       </header>
 
       <div className="guide-grid">
@@ -90,14 +54,4 @@ function GuideExampleButton({
       <span>{example.label}</span>
     </button>
   );
-}
-
-/** ponytail: runnable self-check — guide mode pick count */
-export function guideViewSelfCheck(): void {
-  if (GUIDE_MODE_OPTIONS.length !== 3) {
-    throw new Error('guideViewSelfCheck: mode options');
-  }
-  if (modeMetaFor('0243').title !== '0243模式') {
-    throw new Error('guideViewSelfCheck: m1 meta');
-  }
 }

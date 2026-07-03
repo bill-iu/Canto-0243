@@ -545,12 +545,6 @@ a.result-item {
       margin-top: 20px;
     }
 
-.guide-actions .guide-mode-pick {
-      flex: 1 1 min(100%, 240px);
-      justify-content: space-between;
-      text-align: left;
-    }
-
 .guide-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
