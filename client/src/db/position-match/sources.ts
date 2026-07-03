@@ -25,6 +25,8 @@ export type GetCandidatesOptions = {
   code?: string | null;
   mode?: string;
   fallbackLimit?: number;
+  /** ponytail: jyutping letter anchors need full length bucket (desktop word_cache parity) */
+  unlimited?: boolean;
 };
 
 /**
@@ -38,6 +40,7 @@ export function getCandidatesForLength(
 ): [WordRow[], boolean] {
   const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
   const limit = options.fallbackLimit ?? 2000;
+  const unlimited = options.unlimited === true;
   const code = options.code ?? null;
 
   let sql = `
@@ -58,8 +61,11 @@ export function getCandidatesForLength(
     }
   }
 
-  sql += ' ORDER BY char, jyutping LIMIT ?';
-  params.push(limit);
+  sql += ' ORDER BY char, jyutping';
+  if (!unlimited) {
+    sql += ' LIMIT ?';
+    params.push(limit);
+  }
 
   const stmt = db.prepare(sql);
   stmt.bind(params);

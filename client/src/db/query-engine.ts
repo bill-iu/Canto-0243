@@ -27,8 +27,8 @@ import {
   type SlotConstraint,
 } from './position-match/spec.ts';
 import { isWildcardChar } from './position-match/mask-grammar.ts';
-import { compoundSearchSpecFromMatchSpec } from './position-match/sources.ts';
-import { executeMatchSpec } from './position-match/engine.ts';
+import { compoundSearchSpecFromMatchSpec, getCandidatesForLength } from './position-match/sources.ts';
+import { executeMatchSpec, filterMatchSpecRows } from './position-match/engine.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
@@ -1975,7 +1975,7 @@ function loadCodeCandidates(db: Database, lenQ: number, codes: string[]): WordRo
   }
   const placeholders = codes.map(() => '?').join(',');
   const stmt = db.prepare(
-    `SELECT char, jyutping, code, initials, finals, length FROM words WHERE length = ? AND code IN (${placeholders}) ORDER BY char, jyutping LIMIT 500`,
+    `SELECT char, jyutping, code, initials, finals, length FROM words WHERE length = ? AND code IN (${placeholders}) ORDER BY char, jyutping`,
   );
   stmt.bind([lenQ, ...codes]);
   const rows: WordRow[] = [];
@@ -1984,6 +1984,65 @@ function loadCodeCandidates(db: Database, lenQ: number, codes: string[]): WordRo
   }
   stmt.free();
   return sortWordRows(rows);
+}
+
+function lookupLiteralChars(q: string): string[] {
+  return [...new Set([...q])];
+}
+
+function wordSharesLookupLiteral(char: string, literals: string[]): boolean {
+  return literals.some((ch) => char.includes(ch));
+}
+
+/** 漢字 lookup：同碼同韻含字面 → 同碼其他含字面 → 異碼含字面 */
+function appendLookupLiteralTiers(
+  results: QueryResult[],
+  seen: Set<string>,
+  opts: {
+    q: string;
+    codes: string[];
+    exactMatches: WordRow[];
+    sameCodeCandidates: WordRow[];
+    db: Database;
+    lenQ: number;
+  },
+): void {
+  const literals = lookupLiteralChars(opts.q);
+  if (!literals.length) {
+    return;
+  }
+  const codeSet = new Set(opts.codes);
+
+  for (const code of opts.codes) {
+    const finJson = finalsJsonForCode(opts.exactMatches, code);
+    if (!finJson) {
+      continue;
+    }
+    const targetFinals = loadJsonList(finJson);
+    const sameRhymeLiteral = opts.sameCodeCandidates.filter((row) => {
+      if (getWordSortCode(row) !== code) {
+        return false;
+      }
+      if (JSON.stringify(getRhymeFinals(row)) !== JSON.stringify(targetFinals)) {
+        return false;
+      }
+      return wordSharesLookupLiteral(String(row.char ?? ''), literals);
+    });
+    appendLookupWords(results, seen, sortWordRows(sameRhymeLiteral));
+  }
+
+  const sameCodeLiteral = opts.sameCodeCandidates.filter((row) =>
+    wordSharesLookupLiteral(String(row.char ?? ''), literals),
+  );
+  appendLookupWords(results, seen, sortWordRows(sameCodeLiteral));
+
+  const [allLen] = getCandidatesForLength(opts.db, opts.lenQ, { unlimited: true });
+  const diffCodeLiteral = allLen.filter((row) => {
+    const code = getWordSortCode(row);
+    const ch = String(row.char ?? '');
+    return code && !codeSet.has(code) && wordSharesLookupLiteral(ch, literals);
+  });
+  appendLookupWords(results, seen, sortWordRows(diffCodeLiteral));
 }
 
 function resolveTailRhymeRefFromDb(
@@ -2038,13 +2097,15 @@ function appendPerCodeRhymeSections(
     const pool = (opts.candidatesByCode.get(code) ?? [])
       .filter((row) => JSON.stringify(getRhymeFinals(row)) === JSON.stringify(targetFinals))
       .slice(0, 50);
-    const shared = pool.filter((row) => {
-      const text = String(row.char ?? '');
-      return qChars.some((ch) => text.includes(ch));
-    });
-    const sharedChars = new Set(shared.map((row) => String(row.char ?? '')));
+    const sharedChars = new Set(
+      pool
+        .filter((row) => {
+          const text = String(row.char ?? '');
+          return qChars.some((ch) => text.includes(ch));
+        })
+        .map((row) => String(row.char ?? '')),
+    );
     const pure = pool.filter((row) => !sharedChars.has(String(row.char ?? '')));
-    appendLookupWords(results, seen, shared);
     appendLookupWords(results, seen, sortWordRows(pure).slice(0, 200));
   }
 }
@@ -2106,6 +2167,15 @@ function buildLookupLayout(
     candidatesByCode.set(code, list);
   }
 
+  appendLookupLiteralTiers(results, seenWords, {
+    q,
+    codes,
+    exactMatches,
+    sameCodeCandidates: candidates,
+    db,
+    lenQ,
+  });
+
   appendPerCodeRhymeSections(results, seenWords, {
     q,
     codes,
@@ -2120,7 +2190,11 @@ function buildLookupLayout(
     refVal: ref,
     refPos: pos,
   });
-  appendLookupWords(results, seenWords, candidates.slice(0, 100));
+  appendLookupWords(
+    results,
+    seenWords,
+    sortWordRows(candidates.filter((row) => !seenWords.has(String(row.char ?? '')))),
+  );
   return results;
 }
 
@@ -2237,17 +2311,21 @@ async function executeMaskFamilySearchResult(
     return { items: [] };
   }
   const searchMode = normalizeSearchMode(mode);
-  const rows = executeMatchSpec(spec, {
-    db,
-    mode: searchMode,
-    limit,
-    offset,
-    code: code ?? null,
-  });
-  const ordered = sortMaskFamilyRows(spec, rows, db, mode);
-  const items = spec.extra?.dual_phoneme
-    ? ordered.map((row) => rowToResult(row))
-    : sortQueryResults(ordered.map((row) => rowToResult(row)));
+  const dbCtx = { db, mode: searchMode, code: code ?? null };
+  let items: QueryResult[];
+  let total: number | undefined;
+
+  if (spec.extra?.dual_phoneme) {
+    const rows = executeMatchSpec(spec, { ...dbCtx, limit, offset });
+    items = rows.map((row) => rowToResult(row));
+  } else {
+    const allRows = filterMatchSpecRows(spec, dbCtx);
+    const ordered = sortMaskFamilyRows(spec, allRows, db, mode);
+    const sorted = sortQueryResults(ordered.map((row) => rowToResult(row)));
+    total = sorted.length;
+    items = sorted.slice(offset, offset + limit);
+  }
+
   let hint: string | undefined;
   if (!items.length && getEqualsSpan(spec)) {
     const emptyHint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
@@ -2255,7 +2333,7 @@ async function executeMaskFamilySearchResult(
       hint = emptyHint;
     }
   }
-  return { items, hint };
+  return { items, total, hint };
 }
 
 function executeRelationLookup(

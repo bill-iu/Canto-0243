@@ -2,6 +2,7 @@
  * executeMatchSpec — port of position_match/engine.py (MF-4)
  */
 import type { Database } from '../sqljs.ts';
+import { sortWordRows } from '../ranking.ts';
 import { applyMatchSpec, filterHybridRefCandidates } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getEqualsSpan, type MatchSpec } from './spec.ts';
@@ -24,20 +25,8 @@ function shouldUseMaskCandidates(spec: MatchSpec): boolean {
   );
 }
 
-function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): WordRow[] {
-  const initialSpec = spec.extra?.dual_initial_spec;
-  const finalSpec = spec.extra?.dual_final_spec;
-  if (!initialSpec || !finalSpec) {
-    return [];
-  }
-  const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
-  const initialRows = executeMatchSpec(initialSpec, { ...ctx, limit: unpagedLimit, offset: 0 });
-  const finalRows = executeMatchSpec(finalSpec, { ...ctx, limit: unpagedLimit, offset: 0 });
-  const tagged: WordRow[] = [
-    ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
-    ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
-  ];
-  return tagged.slice(ctx.offset, ctx.offset + ctx.limit);
+function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
+  return (spec.slots ?? []).some((s) => JYUTPING_LETTER_KINDS.has(s.kind));
 }
 
 export type ExecuteMatchSpecContext = {
@@ -48,31 +37,23 @@ export type ExecuteMatchSpecContext = {
   code?: string | null;
 };
 
-export function executeMatchSpec(
+/** Filter all matching rows — port of PositionMatchEngine.match (no sort/page). */
+export function filterMatchSpecRows(
   spec: MatchSpec,
-  ctx: ExecuteMatchSpecContext,
+  ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code'>,
 ): WordRow[] {
   if (!spec || spec.width === 0) {
     return [];
   }
-  if (spec.extra?.dual_phoneme) {
-    return executeDualPhonemeAnchorSpecs(spec, ctx);
-  }
-  if (getEqualsSpan(spec)) {
-    const filtered = applyMatchSpec(spec, [], ctx.db, ctx.mode);
-    return filtered.slice(ctx.offset, ctx.offset + ctx.limit);
-  }
-  if (spec.compound_kind) {
-    const filtered = applyMatchSpec(spec, [], ctx.db, ctx.mode);
-    return filtered.slice(ctx.offset, ctx.offset + ctx.limit);
+  if (getEqualsSpan(spec) || spec.compound_kind) {
+    return applyMatchSpec(spec, [], ctx.db, ctx.mode);
   }
   if (spec.hybrid_ref_chars != null && spec.hybrid_ref_pos != null) {
     const [candidates] = getCandidatesForLength(ctx.db, spec.width, {
       code: ctx.code ?? spec.code_prefix ?? null,
       mode: ctx.mode,
     });
-    const filtered = filterHybridRefCandidates(candidates, spec, ctx.mode, ctx.db);
-    return filtered.slice(ctx.offset, ctx.offset + ctx.limit);
+    return filterHybridRefCandidates(candidates, spec, ctx.mode, ctx.db);
   }
 
   const hasPositionFilters =
@@ -94,7 +75,40 @@ export function executeMatchSpec(
       : getCandidatesForLength(ctx.db, spec.width, {
           code,
           mode: ctx.mode,
+          unlimited: specNeedsFullLengthBucket(spec),
         });
-  const filtered = applyMatchSpec(spec, candidates, ctx.db, ctx.mode);
-  return filtered.slice(ctx.offset, ctx.offset + ctx.limit);
+  return applyMatchSpec(spec, candidates, ctx.db, ctx.mode);
+}
+
+function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): WordRow[] {
+  const initialSpec = spec.extra?.dual_initial_spec;
+  const finalSpec = spec.extra?.dual_final_spec;
+  if (!initialSpec || !finalSpec) {
+    return [];
+  }
+  const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
+  const base = { db: ctx.db, mode: ctx.mode, code: ctx.code ?? null };
+  const initialRows = sortWordRows(filterMatchSpecRows(initialSpec, base)).slice(0, unpagedLimit);
+  const finalRows = sortWordRows(filterMatchSpecRows(finalSpec, base)).slice(0, unpagedLimit);
+  const tagged: WordRow[] = [
+    ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
+    ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
+  ];
+  return tagged.slice(ctx.offset, ctx.offset + ctx.limit);
+}
+
+/** Port of run_position_query_tracked — filter, sort, then page. */
+export function executeMatchSpec(
+  spec: MatchSpec,
+  ctx: ExecuteMatchSpecContext,
+): WordRow[] {
+  if (!spec || spec.width === 0) {
+    return [];
+  }
+  if (spec.extra?.dual_phoneme) {
+    return executeDualPhonemeAnchorSpecs(spec, ctx);
+  }
+  const filtered = filterMatchSpecRows(spec, ctx);
+  const sorted = sortWordRows(filtered);
+  return sorted.slice(ctx.offset, ctx.offset + ctx.limit);
 }
