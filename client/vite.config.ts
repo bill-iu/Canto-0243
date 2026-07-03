@@ -21,7 +21,13 @@ export default defineConfig(({ command }) => ({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['sql-wasm-browser.wasm'],
+      includeAssets: [
+        'icon-32.png',
+        'icon-180.png',
+        'icon-192.png',
+        'icon-512.png',
+        'sql-wasm-browser.wasm',
+      ],
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
@@ -54,16 +60,29 @@ export default defineConfig(({ command }) => ({
         name: 'Canto-0243 PWA',
         short_name: 'Canto0243',
         description: '粵語填詞查詢工具 - 依 0243 數字碼搜尋可替換詞條',
-        theme_color: '#ffffff',
-        background_color: '#f5f5f5',
+        theme_color: '#EBDFD0',
+        background_color: '#EBDFD0',
         display: 'standalone',
         icons: [
           {
-            src: 'icons.svg',
-            sizes: 'any',
-            type: 'image/svg+xml'
-          }
-        ]
+            src: 'icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
       }
     })
   ],
