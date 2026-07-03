@@ -25,6 +25,7 @@ export function QueryTabsBar({
 
   const {
     draggingId,
+    touchArmId,
     overIndex,
     handlePointerDown,
     handlePointerMove,
@@ -39,6 +40,7 @@ export function QueryTabsBar({
         const isActive = tab.id === activeId;
         const label = tabLabel(tab);
         const isDragging = draggingId === tab.id;
+        const isTouchArmed = touchArmId === tab.id;
         const isDropTarget = overIndex === index && draggingId != null && !isDragging;
         return (
           <div
@@ -48,6 +50,7 @@ export function QueryTabsBar({
               'query-tab-pill',
               isActive ? 'is-active' : '',
               isDragging ? 'is-dragging' : '',
+              isTouchArmed ? 'is-touch-armed' : '',
               isDropTarget ? 'is-drop-target' : '',
             ]
               .filter(Boolean)
@@ -60,7 +63,7 @@ export function QueryTabsBar({
               className="query-tab-pill__label"
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
-              title="拖曳以重排（桌面滑鼠）"
+              title="拖曳以重排（桌面滑鼠；手機長按）"
               onClick={(event) => {
                 handleClick(event);
                 if (!event.defaultPrevented) onSelect(tab.id);

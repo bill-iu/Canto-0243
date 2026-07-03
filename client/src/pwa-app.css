@@ -38,6 +38,10 @@
   scrollbar-width: thin;
 }
 
+.query-tabs-bar--touch-drag {
+  touch-action: none;
+}
+
 .query-tab-pill {
   display: inline-flex;
   align-items: center;
@@ -89,6 +93,12 @@
 .query-tab-pill.is-dragging {
   opacity: 0.65;
   cursor: grabbing;
+}
+
+.query-tab-pill.is-touch-armed {
+  transform: scale(1.05);
+  border-color: var(--accent-strong);
+  z-index: 1;
 }
 
 .query-tab-pill.is-dragging .query-tab-pill__label {

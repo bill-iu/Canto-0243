@@ -150,12 +150,19 @@
 
 ---
 
-## Scenario G-mobile (P2, Phase 10b): iPhone touch 分頁重排
+## Scenario G-mobile (P2): iPhone touch 分頁重排
 
-**Prerequisites**：iPhone 主畫面 PWA；Phase 10b 實作後才驗。
+**Prerequisites**：iPhone **主畫面 PWA**；離線就緒。Android 同 code path，標「待驗」。
 
-1. 長按 pill → 拖曳重排；tap 仍切換分頁
-2. **不**驗 Alt+N/W
+1. **短 tap** → 切換作用中分頁（同 Phase 9）
+2. **長按 pill ≥400ms**（手指移動 ≤10px）→ pill 放大／深 border；該分頁變作用中
+3. **長按後橫拖** → 重排；**+** 不可長按拖
+4. **長按未滿時橫滑 >10px** → 取消長按，分頁列可 scroll（唔進 drag）
+5. **session 列順序** → 拖後同 tab 重整，順序還原
+6. **不**驗 Alt+N/W
+
+**Expected outcomes**
+- 與 Phase 10 共用 `reorderTab` / session 契約
 
 ---
 

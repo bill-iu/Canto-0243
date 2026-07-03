@@ -145,14 +145,16 @@
 
 ---
 
-## Phase 10b: PWA 查詢分頁 — iPhone touch 拖曳（後做）
+## Phase 10b: PWA 查詢分頁 — touch 拖曳
 
-**範圍**：iPhone 主畫面 PWA 長按拖曳 pill 重排；**唔**含 Alt。Portable **零改**。
+**範圍**：`usePillTabDrag` touch 分支；**長按 `LONG_PRESS_MS=400`** 進 drag；移動 **>10px** 未滿時長取消（scroll）；短 tap 切 tab；**+** 不參與。Portable **零改**。P1 驗收：**iPhone 主畫面 PWA**；Android 同 code、待驗。
 
 | ID | 任務 | 狀態 |
 |----|------|------|
-| T-T20 | touch 拖曳 UX（長按閾值、與 scroll 分工） | ⏸️ |
-| T-T21 | `quickstart.md` Scenario G-mobile | ⏸️ |
+| T-T20 | touch 長按拖曳 + scroll 分工 + 視覺回饋 | ✅ |
+| T-T21 | `quickstart.md` Scenario G-mobile | ✅ |
+
+**刻意不含**：Alt+N/W（桌面 Phase 10）；haptic；Portable 改動。
 
 **驗收**：見 [quickstart.md § Scenario G-mobile](./quickstart.md#scenario-g-mobile-p2-pwa-tab-touch-reorder)。
 
