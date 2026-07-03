@@ -50,6 +50,8 @@ declare module '@shared/query-tabs' {
   export function serializeSession(state: TabState): string;
   export function deserializeSession(raw: string): TabState;
   export function closeTab(state: TabState, tabId: number): TabState;
+  export function reorderTab(state: TabState, fromIndex: number, toIndex: number): TabState;
+  export function reorderTabsByIds(state: TabState, orderedIds: number[]): TabState;
   export function applyUrlToTabs(
     existingState: TabState | null,
     parsed: ReturnType<typeof parseUrlSearchParams>,

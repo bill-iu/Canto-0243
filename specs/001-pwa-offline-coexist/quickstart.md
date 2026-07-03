@@ -129,6 +129,36 @@
 
 ---
 
+## Scenario G (P2): PWA 分頁重排 + 快捷鍵（桌面）
+
+**Prerequisites**：離線就緒；**桌面 Chrome** 開 https://bill-iu.github.io/Canto-0243/（非 iPhone）。
+
+1. **滑鼠拖曳**
+   - 開 ≥3 個搜尋分頁（不同查詢字）
+   - 用滑鼠拖曳 pill 改變順序；按住時該分頁變作用中
+   - **+** 鈕不可拖曳
+2. **Alt+N / Alt+W**
+   - Alt+N → 新空白「新查詢」分頁並聚焦搜尋框
+   - Alt+W → 關閉作用中分頁（Guide/About 亦適用）；僅剩 1 分頁時無效
+3. **session 列順序**
+   - 拖曳後同 tab 重整 → 分頁列順序還原
+
+**Out of scope（Phase 10b）**：iPhone 長按拖曳；iPhone 不驗 Alt。
+
+**Expected outcomes**
+- `reorderTab` / session 序列化與 Portable 共用契約一致
+
+---
+
+## Scenario G-mobile (P2, Phase 10b): iPhone touch 分頁重排
+
+**Prerequisites**：iPhone 主畫面 PWA；Phase 10b 實作後才驗。
+
+1. 長按 pill → 拖曳重排；tap 仍切換分頁
+2. **不**驗 Alt+N/W
+
+---
+
 ## Results（2026-07-03 T018）
 
 **環境**：https://bill-iu.github.io/Canto-0243/（`dev` deploy + `v1.0.4-beta` 詞庫）  

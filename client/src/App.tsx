@@ -55,6 +55,7 @@ function App() {
     selectTab,
     addSearchTab,
     closeTab,
+    reorderTabs,
     openGuide,
     openAbout,
     goHome,
@@ -282,6 +283,27 @@ function App() {
     }
   }, [isReady, showStats, stats, getStats]);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!event.altKey || event.ctrlKey || event.metaKey) return;
+      const key = event.key.toLowerCase();
+      if (key === 'n') {
+        event.preventDefault();
+        saveLeavingSearchTab();
+        addSearchTab();
+        requestAnimationFrame(() => document.getElementById('searchInput')?.focus());
+        return;
+      }
+      if (key === 'w') {
+        event.preventDefault();
+        saveLeavingSearchTab();
+        closeTab(tabState.activeId);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId]);
+
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
       const q = (nextQuery ?? inputQuery).trim();
@@ -332,6 +354,11 @@ function App() {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     runCommittedSearch();
+  };
+
+  const handleReorderTabs = (fromIndex: number, toIndex: number) => {
+    saveLeavingSearchTab();
+    reorderTabs(fromIndex, toIndex);
   };
 
   const handleSelectTab = (id: number) => {
@@ -445,6 +472,7 @@ function App() {
             onSelect={handleSelectTab}
             onClose={handleCloseTab}
             onAdd={handleAddTab}
+            onReorder={handleReorderTabs}
           />
         </header>
 

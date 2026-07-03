@@ -125,9 +125,36 @@
 | T-T05 | `popstate` 回溯鏈 + URL 只反映作用中分頁 | ✅ |
 | T-T06 | `quickstart.md` Scenario F 驗收 | ✅ |
 
-**刻意不含**：拖曳重排、Alt+N/W（Phase 2）；relation/corrections view（PWA 不 expose）。
+**刻意不含**：拖曳重排、Alt+N/W（→ Phase 10）；iPhone touch 拖曳（→ Phase 10b）；relation/corrections view（PWA 不 expose）。
 
 **驗收**：見 [quickstart.md § Scenario F](./quickstart.md#scenario-f-p2-pwa-query-tabs)。
+
+---
+
+## Phase 10: PWA 查詢分頁進階（桌面）
+
+**範圍**：只改 `client/`；Portable **零改**。桌面瀏覽器 PWA：pill **滑鼠**拖曳重排 + Alt+N/W + session **列順序**還原；iPhone **唔做** Alt、**唔做** touch 拖曳（→ Phase 10b）。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T10 | `usePillTabDrag`（pointer、`mouse` only）+ `reorderTab` | ✅ |
+| T-T11 | 全局 Alt+N（新空白搜尋分頁）／Alt+W（關作用中分頁） | ✅ |
+| T-T12 | `quickstart.md` Scenario G 驗收 | ✅ |
+
+**驗收**：見 [quickstart.md § Scenario G](./quickstart.md#scenario-g-p2-pwa-tab-reorder--shortcuts)。
+
+---
+
+## Phase 10b: PWA 查詢分頁 — iPhone touch 拖曳（後做）
+
+**範圍**：iPhone 主畫面 PWA 長按拖曳 pill 重排；**唔**含 Alt。Portable **零改**。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T20 | touch 拖曳 UX（長按閾值、與 scroll 分工） | ⏸️ |
+| T-T21 | `quickstart.md` Scenario G-mobile | ⏸️ |
+
+**驗收**：見 [quickstart.md § Scenario G-mobile](./quickstart.md#scenario-g-mobile-p2-pwa-tab-touch-reorder)。
 
 ---
 
