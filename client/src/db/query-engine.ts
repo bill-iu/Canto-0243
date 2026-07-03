@@ -294,6 +294,8 @@ export interface SearchResult {
   hint?: string;
   cache_path?: string;
   effective_mode?: QueryMode;
+  /** 純漢字詞條 lookup：只輸出詞列（無碼／粵拼標題列） */
+  lookup_layout?: boolean;
 }
 
 /** Map lyrics.db row (`char`) to UI-facing QueryResult (`word`). */
@@ -1223,11 +1225,13 @@ export function lookupLayoutSelfCheck(): void {
   const rows: WordRow[] = [
     { char: '事業', code: '22', jyutping: 'si6 jip6' },
   ];
-  const layout = buildLookupLayout('事業', rows);
+  const layout = buildLookupLayout('事業', rows, null);
   const words = layout.map((r) => r.word);
-  const expected = ['22', 'si6 jip6', '事業'];
-  if (words.length !== expected.length || words.some((w, i) => w !== expected[i])) {
+  if (words.length !== 1 || words[0] !== '事業') {
     throw new Error(`lookupLayoutSelfCheck: got ${words.join(',')}`);
+  }
+  if (layout.some((r) => r.resultType === 'code' || r.resultType === 'jyutping')) {
+    throw new Error('lookupLayoutSelfCheck: must not emit code/jyutping headers');
   }
 }
 
@@ -1952,37 +1956,171 @@ function collectCodesAndJyuts(rows: WordRow[]): {
   return { codes, codeToJyuts };
 }
 
-/** Port of lookup_layout code/jyutping headers + exact word rows (rhyme sections: later) */
-function buildLookupLayout(_q: string, exactMatches: WordRow[]): QueryResult[] {
+function finalsJsonForCode(exactMatches: WordRow[], code: string): string | null {
+  for (const row of exactMatches) {
+    if (getWordSortCode(row) !== code) {
+      continue;
+    }
+    const finalsRaw = row.finals;
+    if (finalsRaw) {
+      return typeof finalsRaw === 'string' ? finalsRaw : JSON.stringify(finalsRaw);
+    }
+  }
+  return null;
+}
+
+function loadCodeCandidates(db: Database, lenQ: number, codes: string[]): WordRow[] {
+  if (!codes.length) {
+    return [];
+  }
+  const placeholders = codes.map(() => '?').join(',');
+  const stmt = db.prepare(
+    `SELECT char, jyutping, code, initials, finals, length FROM words WHERE length = ? AND code IN (${placeholders}) ORDER BY char, jyutping LIMIT 500`,
+  );
+  stmt.bind([lenQ, ...codes]);
+  const rows: WordRow[] = [];
+  while (stmt.step()) {
+    rows.push(stmt.getAsObject() as WordRow);
+  }
+  stmt.free();
+  return sortWordRows(rows);
+}
+
+function resolveTailRhymeRefFromDb(
+  db: Database,
+  lastCh: string,
+  lenQ: number,
+): { ref: string | null; pos: number } {
+  const refPos = lenQ > 0 ? Math.max(0, lenQ - 1) : 0;
+  if (!lastCh) {
+    return { ref: null, pos: refPos };
+  }
+  const row = equalsAuthoritativeRow(db, lastCh);
+  if (!row) {
+    return { ref: null, pos: refPos };
+  }
+  const fins = getRhymeFinals(row);
+  return { ref: fins[0] ?? null, pos: refPos };
+}
+
+function appendLookupWords(
+  results: QueryResult[],
+  seen: Set<string>,
+  rows: WordRow[],
+): void {
+  for (const row of deduplicateWordRows(rows)) {
+    const char = String(row.char ?? '');
+    if (!char || seen.has(char)) {
+      continue;
+    }
+    seen.add(char);
+    results.push({ ...rowToResult(row), resultType: 'word' });
+  }
+}
+
+function appendPerCodeRhymeSections(
+  results: QueryResult[],
+  seen: Set<string>,
+  opts: {
+    q: string;
+    codes: string[];
+    exactMatches: WordRow[];
+    candidatesByCode: Map<string, WordRow[]>;
+  },
+): void {
+  const qChars = [...new Set([...opts.q])];
+  for (const code of opts.codes) {
+    const finJson = finalsJsonForCode(opts.exactMatches, code);
+    if (!finJson) {
+      continue;
+    }
+    const targetFinals = loadJsonList(finJson);
+    const pool = (opts.candidatesByCode.get(code) ?? [])
+      .filter((row) => JSON.stringify(getRhymeFinals(row)) === JSON.stringify(targetFinals))
+      .slice(0, 50);
+    const shared = pool.filter((row) => {
+      const text = String(row.char ?? '');
+      return qChars.some((ch) => text.includes(ch));
+    });
+    const sharedChars = new Set(shared.map((row) => String(row.char ?? '')));
+    const pure = pool.filter((row) => !sharedChars.has(String(row.char ?? '')));
+    appendLookupWords(results, seen, shared);
+    appendLookupWords(results, seen, sortWordRows(pure).slice(0, 200));
+  }
+}
+
+function appendTailRhymeSection(
+  results: QueryResult[],
+  seen: Set<string>,
+  opts: {
+    codes: string[];
+    candidatesByCode: Map<string, WordRow[]>;
+    refVal: string | null;
+    refPos: number;
+  },
+): void {
+  if (opts.refVal == null) {
+    return;
+  }
+  for (const code of opts.codes) {
+    const matched: WordRow[] = [];
+    for (const row of (opts.candidatesByCode.get(code) ?? []).slice(0, 50)) {
+      const wf = getRhymeFinals(row);
+      if (wf.length > opts.refPos && wf[opts.refPos] === opts.refVal) {
+        matched.push(row);
+      }
+    }
+    appendLookupWords(results, seen, matched);
+  }
+}
+
+/** Port of lookup_layout.build_lookup_layout — UI 只顯示詞條（無碼／粵拼標題列） */
+function buildLookupLayout(
+  q: string,
+  exactMatches: WordRow[],
+  db: Database | null,
+): QueryResult[] {
   if (!exactMatches.length) {
     return [];
   }
   const results: QueryResult[] = [];
   const seenWords = new Set<string>();
-  const { codes, codeToJyuts } = collectCodesAndJyuts(exactMatches);
+  const lenQ = [...q].length;
+  const { codes } = collectCodesAndJyuts(exactMatches);
 
-  for (const code of codes) {
-    results.push({ word: code, code, jyutping: '', score: 0, resultType: 'code' });
+  appendLookupWords(results, seenWords, exactMatches);
+  if (!db || !codes.length) {
+    return results;
   }
-  const seenJyuts = new Set<string>();
-  for (const code of codes) {
-    for (const jy of codeToJyuts.get(code) ?? []) {
-      const j = jy.trim();
-      if (!j || seenJyuts.has(j)) {
-        continue;
-      }
-      seenJyuts.add(j);
-      results.push({ word: j, code: '', jyutping: j, score: 0, resultType: 'jyutping' });
-    }
-  }
-  for (const row of deduplicateWordRows(exactMatches)) {
-    const char = String(row.char ?? '');
-    if (!char || seenWords.has(char)) {
+
+  const codeSet = new Set(codes);
+  const candidates = loadCodeCandidates(db, lenQ, codes);
+  const candidatesByCode = new Map<string, WordRow[]>();
+  for (const row of candidates) {
+    const code = getWordSortCode(row);
+    if (!codeSet.has(code)) {
       continue;
     }
-    seenWords.add(char);
-    results.push({ ...rowToResult(row), resultType: 'word' });
+    const list = candidatesByCode.get(code) ?? [];
+    list.push(row);
+    candidatesByCode.set(code, list);
   }
+
+  appendPerCodeRhymeSections(results, seenWords, {
+    q,
+    codes,
+    exactMatches,
+    candidatesByCode,
+  });
+
+  const { ref, pos } = resolveTailRhymeRefFromDb(db, q.slice(-1) ?? '', lenQ);
+  appendTailRhymeSection(results, seenWords, {
+    codes,
+    candidatesByCode,
+    refVal: ref,
+    refPos: pos,
+  });
+  appendLookupWords(results, seenWords, candidates.slice(0, 100));
   return results;
 }
 
@@ -2007,8 +2145,12 @@ function executeWordLookup(
   }
   stmt.free();
 
-  const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches));
-  return { items: built.slice(offset, offset + limit), total: built.length };
+  const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches), db);
+  return {
+    items: built.slice(offset, offset + limit),
+    total: built.length,
+    lookup_layout: true,
+  };
 }
 
 /**

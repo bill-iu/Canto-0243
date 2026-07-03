@@ -21,6 +21,7 @@ import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
+import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
 import { modeMetaFor, type UiMode } from './mode-meta';
 import { parseSearchUrl, replaceAppUrl, type AppView } from './search-url';
@@ -94,6 +95,7 @@ function App() {
     results,
     total,
     hint: searchHint,
+    lookupLayout,
     loading: searchLoading,
     loadingMore,
     error: searchError,
@@ -207,7 +209,7 @@ function App() {
     setShowStats(!showStats);
   };
 
-  const canShuffle = view === 'search' && displayResults.length > 0;
+  const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
   const canSearch = isReady && offlineStatus !== 'preparing';
 
   return (
@@ -236,7 +238,7 @@ function App() {
           )}
           {offlineStatus === 'ready' && (
             <span className="status-ready">
-              ✓ 資料庫就緒（詞庫版本：{lexiconVersion}
+              ✓ 資料庫離線就緒（詞庫版本：{lexiconVersion}
               {(import.meta as ImportMeta).env?.VITE_DB_BACKEND === 'opfs' ? ' · OPFS' : ''}）
             </span>
           )}
@@ -293,9 +295,21 @@ function App() {
               <p className="mode-readout" aria-live="polite">
                 目前模式：{modeMeta.readout}
               </p>
-              <button type="submit" className="search-button" disabled={!canSearch || !trimmedInput}>
-                搜尋
-              </button>
+              <div className="search-actions">
+                <button
+                  type="button"
+                  className="icon-button shuffle-button"
+                  onClick={handleShuffle}
+                  disabled={!canShuffle}
+                  aria-label="隨機打亂結果"
+                  title="隨機打亂結果"
+                >
+                  <ShuffleIcon />
+                </button>
+                <button type="submit" className="search-button" disabled={!canSearch || !trimmedInput}>
+                  搜尋
+                </button>
+              </div>
             </form>
 
             {showExplain && (
@@ -331,18 +345,17 @@ function App() {
                 <div className="results-list">
                   <div className="results-toolbar">
                     {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
-                    {canShuffle ? (
-                      <button type="button" className="shuffle-button" onClick={handleShuffle}>
-                        打亂
-                      </button>
-                    ) : null}
                   </div>
                   {synLayout ? (
                     <SynResultList results={displayResults} onPick={handlePickResult} />
                   ) : anchorLayout ? (
                     <AnchorResultList results={displayResults} onPick={handlePickResult} />
                   ) : (
-                    <ResultList results={displayResults} onPick={handlePickResult} />
+                    <ResultList
+                      results={displayResults}
+                      onPick={handlePickResult}
+                      wordOnly={lookupLayout}
+                    />
                   )}
                   {hasMore && (
                     <button

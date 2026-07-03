@@ -24,9 +24,12 @@ function resultKey(row: QueryResult, index: number): string {
 export function ResultList({
   results,
   onPick,
+  wordOnly = false,
 }: {
   results: QueryResult[];
   onPick: (query: string) => void;
+  /** 詞條 lookup：只顯示漢字，粵拼放 title（對齊桌面） */
+  wordOnly?: boolean;
 }) {
   const rows = displayResults(results);
   if (!rows.length) {
@@ -37,7 +40,7 @@ export function ResultList({
     <ul className="results-list-items">
       {rows.map((row, index) => {
         const pick = row.word;
-        if (row.resultType === 'code') {
+        if (!wordOnly && row.resultType === 'code') {
           return (
             <li key={resultKey(row, index)} className="result-item result-item--code">
               <button type="button" className="result-link" onClick={() => onPick(pick)} aria-label={`搜尋碼 ${pick}`}>
@@ -47,7 +50,7 @@ export function ResultList({
             </li>
           );
         }
-        if (row.resultType === 'jyutping') {
+        if (!wordOnly && row.resultType === 'jyutping') {
           return (
             <li key={resultKey(row, index)} className="result-item result-item--jyutping">
               <button type="button" className="result-link" onClick={() => onPick(pick)} aria-label={`搜尋粵拼 ${pick}`}>
@@ -57,6 +60,7 @@ export function ResultList({
             </li>
           );
         }
+        const title = wordOnly && row.jyutping ? row.jyutping : undefined;
         return (
           <li key={resultKey(row, index)} className="result-item">
             <button
@@ -64,11 +68,12 @@ export function ResultList({
               className="result-link result-link--word"
               onClick={() => onPick(pick)}
               aria-label={`搜尋 ${pick}`}
+              title={title}
             >
               <span className="word">{row.word}</span>
             </button>
-            {row.jyutping ? <span className="jyutping">{row.jyutping}</span> : null}
-            {row.code ? <span className="code">{row.code}</span> : null}
+            {!wordOnly && row.jyutping ? <span className="jyutping">{row.jyutping}</span> : null}
+            {!wordOnly && row.code ? <span className="code">{row.code}</span> : null}
           </li>
         );
       })}

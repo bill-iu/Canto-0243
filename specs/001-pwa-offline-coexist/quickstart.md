@@ -18,7 +18,7 @@
 ## Scenario A (P1): First online load → offline ready → fully offline search
 
 1. 用手機開啟 PWA（在線）
-2. 等到介面顯示「離線就緒」（見離線就緒契約）
+2. 等到介面顯示「資料庫離線就緒」（見離線就緒契約；Ready 狀態 UI 文案）
 3. 執行至少 1 次查詢並看到結果
 4. 將手機切換到飛航模式（完全離線）
 5. 從主畫面重新開啟 PWA
@@ -76,4 +76,22 @@
 - Benchmark 頁可重現、JSON 可複製到 research 表
 - 飛航模式下探針查詢有結果
 - Safari 無 `performance.memory` 時，以 Web Inspector Memory 手動補 D5-M3
+
+---
+
+## Results（2026-07-03 T018）
+
+**環境**：https://bill-iu.github.io/Canto-0243/（`dev` deploy + `v1.0.4-beta` 詞庫）  
+**裝置**：iPhone iOS **26.5.1**（主畫面 PWA）；Android **pending**
+
+| 情境 | 結果 | 備註 |
+|------|------|------|
+| **A** 在線就緒 → 飛航查詢 | **pass** | UI 顯示「資料庫離線就緒」；飛航重開後查 `事業` 成功 |
+| **B3** 兩路皆空 → 復原 | **韌性 pass / strict 未重現** | 飛航下刪網站資料後仍就緒（OPFS 存活）；連網後 SW 回填。符合 DB-4 雙路設計 |
+| **B1/B2** | **pending** | 待 Android 或桌面 Chrome |
+| **C** portable ↔ PWA | **parity 腳本 pass** | `pwa_golden_parity.py --gate all` 20/20；肉眼對照待 `v1.0.4-beta` portable zip |
+| **P6 smoke** | **pass** | 桌面瀏覽器代測：mode menu、`?view=guide/about`、URL sync |
+| **D5-M5** iOS 飛航 | **pass** | 含於 Scenario A |
+
+**Deploy run**：[Actions #28651396099](https://github.com/bill-iu/Canto-0243/actions/runs/28651396099)（`dev` + `v1.0.4-beta`）
 

@@ -319,6 +319,44 @@ body {
   cursor: not-allowed;
 }
 
+.search-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #444;
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease;
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.icon-button:hover:not(:disabled) {
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.icon-button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
 .search-button {
   padding: 1rem 2rem;
   font-size: 1.1rem;
@@ -529,22 +567,6 @@ body {
 
 .shuffle-button {
   flex-shrink: 0;
-  padding: 0.35rem 0.85rem;
-  border: 1px solid #d0d0d0;
-  border-radius: 8px;
-  background: white;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.shuffle-button:hover:not(:disabled) {
-  border-color: #667eea;
-  color: #667eea;
-}
-
-.shuffle-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 /* Stats Toggle */

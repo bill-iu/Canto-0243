@@ -58,6 +58,7 @@ export interface SearchPageResult {
   total?: number;
   hint?: string;
   effectiveMode?: QueryMode;
+  lookupLayout?: boolean;
 }
 
 export const SEARCH_PAGE_SIZE = 50;
@@ -121,6 +122,7 @@ export async function searchPage(options: QueryOptions): Promise<SearchPageResul
     total: result.total,
     hint: result.hint,
     effectiveMode: result.effective_mode,
+    lookupLayout: result.lookup_layout,
   };
 }
 

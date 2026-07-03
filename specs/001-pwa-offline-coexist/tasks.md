@@ -74,7 +74,7 @@
 
 ## Phase 7: Validation & Handoff
 
-- [ ] T018 跑完 `specs/001-pwa-offline-coexist/quickstart.md` 全部情境（A/B/C），記錄結果（至少 iOS + Android 各一次）
+- [ ] T018 跑完 `specs/001-pwa-offline-coexist/quickstart.md` 全部情境（A/B/C），記錄結果（至少 iOS + Android 各一次）— **iOS ✅ 2026-07-03**；Android ⏳；B1/B2 ⏳；C 肉眼待 portable zip
 - [x] T019 回填必要的 docs（若新增部署/維護步驟，更新對應文件入口點，保持「單 pipeline」敘事一致）— `docs/pwa.md`、`quickstart.md` Scenario D
 
 ---
@@ -88,7 +88,7 @@
 | DB-3 `VITE_DB_BACKEND=opfs` | ✅ | 預設仍 `sqljs` |
 | DB-4 雙路還原 | ✅ | OPFS → SW → network |
 | DB-5 benchmark | ✅ 桌面 | `?benchmark=1`；見 `research.md` |
-| D5-M5 iOS 飛航 | ⏳ | 需 **連網重開一次**（v1.0.4-beta+ OPFS write-through）後再測 |
+| D5-M5 iOS 飛航 | ✅ | iPhone iOS 26.5.1，2026-07-03 |
 | wa-sqlite VFS（降 RAM） | ⏳ | POC 在 `client/poc/`；非本 release blocker |
 
 ---
@@ -97,9 +97,9 @@
 
 | 項目 | 優先 | 說明 |
 |------|------|------|
-| **T018** quickstart A/B/C 實機 | P1 | iOS Safari + Android Chrome 各跑一輪 |
-| **D5-M5** iOS 飛航探針 | P2 | `research.md` gate 最後一項 |
-| **portable zip** 上傳 release | P3 | smoke 已修；用戶明確不補 zip |
+| **T018** quickstart A/B/C 實機 | P1 | iOS ✅；Android ⏳ |
+| **D5-M5** iOS 飛航探針 | P2 | ✅ 2026-07-03 |
+| **portable zip** 上傳 release | P3 | 補 `v1.0.4-beta` zip（本次） |
 | **production SW cache** 詞庫命中 | P3 | dev 無 SW cache；Pages 部署後可選驗 |
 | **PR dev→main** | 維護 | `main` 有分支保護；合併需用戶確認 |
 
