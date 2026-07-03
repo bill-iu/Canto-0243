@@ -294,7 +294,7 @@ export interface SearchResult {
   hint?: string;
   cache_path?: string;
   effective_mode?: QueryMode;
-  /** 純漢字詞條 lookup：只輸出詞列（無碼／粵拼標題列） */
+  /** 純漢字詞條 lookup：只輸出詞列（PWA 詞條行已含碼／粵拼；見 CONTEXT 詞條 lookup 版面） */
   lookup_layout?: boolean;
 }
 
@@ -2135,7 +2135,7 @@ function appendTailRhymeSection(
   }
 }
 
-/** Port of lookup_layout.build_lookup_layout — UI 只顯示詞條（無碼／粵拼標題列） */
+/** Port of lookup_layout.build_lookup_layout — PWA 略過 code／jyutping 標題列（詞條行已內嵌；Portable 保留） */
 function buildLookupLayout(
   q: string,
   exactMatches: WordRow[],

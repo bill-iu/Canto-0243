@@ -271,7 +271,7 @@ def _append_tail_rhyme_section(
 
 
 def build_lookup_layout(q: str, exact_matches: List[Word], db: Session) -> List[dict]:
-    """純漢字精確查詢的多段版面（code header → 本詞 → 同韻段 → 尾字韻 → 同碼餘下）。"""
+    """純漢字精確查詢的多段版面（code header → 本詞 → 字面段 → 同韻段 → 尾字韻 → 同碼餘下）。"""
     if not exact_matches:
         return []
 
