@@ -17,19 +17,19 @@ import {
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isRelationSyntaxQuery, modeRedirectHint } from './db/query-engine';
 import { GuideView } from './guide-view';
+import { AboutView } from './about-view';
+import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import type { QueryResult } from './db/query';
 import { modeMetaFor, type UiMode } from './mode-meta';
-import { parseSearchUrl, replaceSearchUrl } from './search-url';
+import { parseSearchUrl, replaceAppUrl, type AppView } from './search-url';
 import './App.css';
-
-type AppView = 'search' | 'guide';
 
 const initialUrl =
   typeof window !== 'undefined'
     ? parseSearchUrl(window.location.search)
-    : { q: '', mode: '0243' as UiMode };
+    : { q: '', mode: '0243' as UiMode, view: 'search' as AppView };
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -46,7 +46,7 @@ function App() {
     hydrateSearch,
   } = useDebouncedSearchQuery(initialUrl.q);
 
-  const [view, setView] = useState<AppView>('search');
+  const [view, setView] = useState<AppView>(initialUrl.view);
   const [mode, setMode] = useState<UiMode>(initialUrl.mode);
   const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>(() =>
     initialUrl.mode === '02493' ? '02493' : '0243',
@@ -128,8 +128,7 @@ function App() {
   }, [initialize, isOnline, isDbCached]);
 
   useEffect(() => {
-    if (view !== 'search') return;
-    replaceSearchUrl(searchQuery, mode);
+    replaceAppUrl({ q: searchQuery, mode, view });
   }, [searchQuery, mode, view]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
@@ -151,6 +150,10 @@ function App() {
     if (trimmedInput) {
       flushSearchQuery();
     }
+  };
+
+  const handleBackToSearch = () => {
+    setView('search');
   };
 
   const handleRunExample = (nextQuery: string, exampleMode: GuideMode) => {
@@ -215,11 +218,13 @@ function App() {
             <h1>Canto-0243 PWA</h1>
             <p className="subtitle">粵語填詞查詢工具</p>
           </div>
-          {view === 'search' ? (
-            <button type="button" className="guide-top-link" onClick={() => setView('guide')}>
-              搜尋教學
-            </button>
-          ) : null}
+          <ModeMenu
+            mode={mode}
+            disabled={!isReady}
+            onModeChange={handleModeChange}
+            onOpenGuide={() => setView('guide')}
+            onOpenAbout={() => setView('about')}
+          />
         </div>
 
         <div className="db-status">
@@ -268,7 +273,9 @@ function App() {
 
       <main className="app-main">
         {view === 'guide' ? (
-          <GuideView onPick={handleRunExample} onBack={() => setView('search')} />
+          <GuideView onPick={handleRunExample} onBack={handleBackToSearch} />
+        ) : view === 'about' ? (
+          <AboutView onBack={handleBackToSearch} />
         ) : (
           <>
             <form onSubmit={handleSubmit} className="search-form">
@@ -282,35 +289,6 @@ function App() {
                   disabled={offlineStatus === 'preparing'}
                   autoFocus
                 />
-                <div className="mode-selector">
-                  <label>
-                    <input
-                      type="radio"
-                      checked={mode === '0243'}
-                      onChange={() => handleModeChange('0243')}
-                      disabled={!isReady}
-                    />
-                    0243模式
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={mode === '02493'}
-                      onChange={() => handleModeChange('02493')}
-                      disabled={!isReady}
-                    />
-                    02493模式
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      checked={mode === 'synonym'}
-                      onChange={() => handleModeChange('synonym')}
-                      disabled={!isReady}
-                    />
-                    近反義
-                  </label>
-                </div>
               </div>
               <p className="mode-readout" aria-live="polite">
                 目前模式：{modeMeta.readout}
