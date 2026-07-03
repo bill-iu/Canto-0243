@@ -95,7 +95,6 @@ function App() {
     results,
     total,
     hint: searchHint,
-    lookupLayout,
     loading: searchLoading,
     loadingMore,
     error: searchError,
@@ -237,10 +236,13 @@ function App() {
             </div>
           )}
           {offlineStatus === 'ready' && (
-            <span className="status-ready">
-              ✓ 資料庫離線就緒（詞庫版本：{lexiconVersion}
-              {(import.meta as ImportMeta).env?.VITE_DB_BACKEND === 'opfs' ? ' · OPFS' : ''}）
-            </span>
+            <div className="status-ready">
+              <span className="status-ready__primary">✓ 資料庫離線就緒</span>
+              <span className="status-ready__version">
+                詞庫版本：{lexiconVersion}
+                {(import.meta as ImportMeta).env?.VITE_DB_BACKEND === 'opfs' ? ' · OPFS' : ''}
+              </span>
+            </div>
           )}
           {offlineStatus === 'not_ready' && (
             <div className="status-loading">
@@ -351,11 +353,7 @@ function App() {
                   ) : anchorLayout ? (
                     <AnchorResultList results={displayResults} onPick={handlePickResult} />
                   ) : (
-                    <ResultList
-                      results={displayResults}
-                      onPick={handlePickResult}
-                      wordOnly={lookupLayout}
-                    />
+                    <ResultList results={displayResults} onPick={handlePickResult} />
                   )}
                   {hasMore && (
                     <button

@@ -242,7 +242,6 @@ export function useSearch(
   const [results, setResults] = useState<QueryResult[]>([]);
   const [total, setTotal] = useState<number | null>(null);
   const [hint, setHint] = useState<string | null>(null);
-  const [lookupLayout, setLookupLayout] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
@@ -261,7 +260,6 @@ export function useSearch(
       setResults([]);
       setTotal(null);
       setHint(null);
-      setLookupLayout(false);
       setLoading(false);
       setLastPageSize(0);
       return;
@@ -284,7 +282,6 @@ export function useSearch(
           setResults(page.items);
           setTotal(page.total ?? null);
           setHint(page.hint ?? null);
-          setLookupLayout(Boolean(page.lookupLayout));
           setLastPageSize(page.items.length);
         }
       } catch (err) {
@@ -339,7 +336,6 @@ export function useSearch(
     results,
     total,
     hint,
-    lookupLayout,
     loading: loading || status === 'loading',
     loadingMore,
     error: searchError,
