@@ -106,6 +106,29 @@
 
 ---
 
+## Scenario F (P2): PWA 查詢分頁
+
+**Prerequisites**: 離線就緒（gate handoff 完成）；桌面 Chrome 或 iPhone 主畫面 PWA。
+
+1. **新增分頁**
+   - 點分頁列 `+` → 新「新查詢」分頁；≥1 分頁時可 `×` 關閉（不可關到零）
+2. **並行查詢**
+   - 分頁 A 查 `事業`、分頁 B 查 `香港` → 切換分頁應**即時**顯示各自結果（同 session **唔**重查）
+3. **session 還原**
+   - 兩個以上分頁各有查詢 → **同 tab 內**重整 → 分頁列與標籤還原；**只**作用中分頁自動重跑搜尋
+4. **URL**
+   - 切換作用中分頁 → 網址只反映該分頁 `q` / `mode` / `view`；Guide/About 各至多一 singleton 分頁
+5. **回溯鏈**
+   - 同一搜尋分頁：查 A → 再查 B → 瀏覽器「返回」→ 回到 A 的結果（或空查詢）
+
+**Failure paths**
+- 僅剩一個分頁時：`×` 不可用或無效
+
+**Expected outcomes**
+- 行為對齊 `CONTEXT.md` §查詢分頁；契約測試 `tests/query_tabs_state_test.mjs` 仍 pass
+
+---
+
 ## Results（2026-07-03 T018）
 
 **環境**：https://bill-iu.github.io/Canto-0243/（`dev` deploy + `v1.0.4-beta` 詞庫）  

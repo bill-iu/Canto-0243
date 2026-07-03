@@ -112,6 +112,25 @@
 
 ---
 
+## Phase 9: PWA 查詢分頁（in-app tabs）
+
+**範圍**：PWA 一律 in-app 分頁；Portable **零改**；狀態層 import `frontend/query-tabs-state.mjs` + `search-navigation.mjs`（R-A）；pill 分頁列（UI-A）；M2（含回溯鏈）；results 對齊 Portable S-A。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T01 | Vite alias → shared `query-tabs-state.mjs` / `search-navigation.mjs` | ✅ |
+| T-T02 | 薄化 `search-url.ts` → shared `buildUrlSearchParams` / `parseUrlSearchParams` | ✅ |
+| T-T03 | `useQueryTabs` + pill `QueryTabsBar`；`sessionStorage` `canto0243:query-tabs` | ✅ |
+| T-T04 | `App.tsx`：active tab ↔ 搜尋／guide／about；切 tab 記憶體保留 results | ✅ |
+| T-T05 | `popstate` 回溯鏈 + URL 只反映作用中分頁 | ✅ |
+| T-T06 | `quickstart.md` Scenario F 驗收 | ✅ |
+
+**刻意不含**：拖曳重排、Alt+N/W（Phase 2）；relation/corrections view（PWA 不 expose）。
+
+**驗收**：見 [quickstart.md § Scenario F](./quickstart.md#scenario-f-p2-pwa-query-tabs)。
+
+---
+
 ## Remaining（不阻擋本次 Pages redeploy）
 
 | 項目 | 優先 | 說明 |

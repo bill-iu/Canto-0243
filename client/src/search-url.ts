@@ -1,3 +1,10 @@
+import {
+  VIEW,
+  buildUrlSearchParams,
+  parseUrlSearchParams,
+  searchParamsWithoutBoot,
+  type QueryTab,
+} from '../../frontend/query-tabs-state.mjs';
 import { uiModeToUrlMode, urlModeToUiMode, type UiMode } from './mode-meta';
 
 export type AppView = 'search' | 'guide' | 'about';
@@ -8,19 +15,41 @@ export interface ParsedSearchUrl {
   view: AppView;
 }
 
-function parseAppView(raw: string | null): AppView {
-  if (raw === 'guide') return 'guide';
-  if (raw === 'about') return 'about';
+function appViewFromShared(view: string): AppView {
+  if (view === VIEW.GUIDE) return 'guide';
+  if (view === VIEW.ABOUT) return 'about';
   return 'search';
 }
 
 export function parseSearchUrl(search: string): ParsedSearchUrl {
   const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
-  const view = parseAppView(params.get('view'));
+  const parsed = parseUrlSearchParams(params);
   return {
-    q: view === 'search' ? params.get('q') || '' : '',
-    mode: urlModeToUiMode(params.get('mode')),
-    view,
+    q: parsed.view === VIEW.SEARCH ? parsed.q : '',
+    mode: urlModeToUiMode(parsed.mode),
+    view: appViewFromShared(parsed.view),
+  };
+}
+
+export function tabForAppUrl(options: {
+  q?: string;
+  mode?: UiMode;
+  view?: AppView;
+}): QueryTab {
+  const view = options.view ?? 'search';
+  if (view === 'guide') {
+    return { id: 0, view: VIEW.GUIDE, q: '', results: [], offset: 0, total: null };
+  }
+  if (view === 'about') {
+    return { id: 0, view: VIEW.ABOUT, q: '', results: [], offset: 0, total: null };
+  }
+  return {
+    id: 0,
+    view: VIEW.SEARCH,
+    q: (options.q ?? '').trim(),
+    results: [],
+    offset: 0,
+    total: null,
   };
 }
 
@@ -29,25 +58,8 @@ export function buildAppQueryString(options: {
   mode?: UiMode;
   view?: AppView;
 }): string {
-  const view = options.view ?? 'search';
-  const params = new URLSearchParams();
-  if (view === 'guide') {
-    params.set('view', 'guide');
-    return params.toString();
-  }
-  if (view === 'about') {
-    params.set('view', 'about');
-    return params.toString();
-  }
-  const mode = options.mode ?? '0243';
-  const trimmed = (options.q ?? '').trim();
-  const urlMode = uiModeToUrlMode(mode);
-  if (urlMode !== 'm1') {
-    params.set('mode', urlMode);
-  }
-  if (trimmed) {
-    params.set('q', trimmed);
-  }
+  const tab = tabForAppUrl(options);
+  const params = buildUrlSearchParams(tab, uiModeToUrlMode(options.mode ?? '0243'));
   return params.toString();
 }
 
@@ -65,6 +77,18 @@ export function replaceAppUrl(options: { q: string; mode: UiMode; view: AppView 
 
 export function replaceSearchUrl(q: string, mode: UiMode): void {
   replaceAppUrl({ q, mode, view: 'search' });
+}
+
+export function stripLauncherBootFromUrl(): void {
+  if (typeof window === 'undefined') return;
+  const next = searchParamsWithoutBoot(new URLSearchParams(window.location.search));
+  if (!next) return;
+  const suffix = next.toString() ? `?${next.toString()}` : '';
+  window.history.replaceState(
+    window.history.state,
+    '',
+    `${window.location.pathname}${suffix}${window.location.hash}`,
+  );
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p4-search-shell-self-check.ts` */

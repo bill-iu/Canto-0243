@@ -1,9 +1,19 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const repoRoot = path.dirname(fileURLToPath(import.meta.url))
+
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
+  resolve: {
+    alias: {
+      '@shared/query-tabs': path.resolve(repoRoot, '../frontend/query-tabs-state.mjs'),
+      '@shared/search-navigation': path.resolve(repoRoot, '../frontend/search-navigation.mjs'),
+    },
+  },
   // Project Pages: https://<user>.github.io/Canto-0243/
   // Serve locally at / to keep dev ergonomics.
   base: command === 'serve' ? '/' : '/Canto-0243/',

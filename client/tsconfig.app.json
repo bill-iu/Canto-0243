@@ -14,6 +14,11 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@shared/query-tabs": ["../frontend/query-tabs-state.mjs"],
+      "@shared/search-navigation": ["../frontend/search-navigation.mjs"]
+    },
 
     /* Linting */
     "noUnusedLocals": true,

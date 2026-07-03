@@ -3,7 +3,7 @@
  * Progressive Web App for Cantonese lyric query
  */
 
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
@@ -24,15 +24,17 @@ import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
 import { modeMetaFor, type UiMode } from './mode-meta';
-import { parseSearchUrl, replaceAppUrl, type AppView } from './search-url';
+import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
+import { QueryTabsBar } from './query-tabs/query-tabs-bar';
+import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 
 const initialUrl =
   typeof window !== 'undefined'
     ? parseSearchUrl(window.location.search)
-    : { q: '', mode: '0243' as UiMode, view: 'search' as AppView };
+    : { q: '', mode: '0243' as UiMode, view: 'search' as const };
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -41,32 +43,101 @@ function App() {
     Boolean(conn?.saveData) ||
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
+  const [mode, setMode] = useState<UiMode>(initialUrl.mode);
+  const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>(() =>
+    initialUrl.mode === '02493' ? '02493' : '0243',
+  );
+
+  const {
+    tabState,
+    activeTab,
+    tabs,
+    selectTab,
+    addSearchTab,
+    closeTab,
+    openGuide,
+    openAbout,
+    goHome,
+    ensureActiveSearchTab,
+    patchActiveSearchTab,
+    commitActiveSearch,
+    pushBrowserUrl,
+    popstateFrame,
+    consumePopstateFrame,
+    needsInitialSearch,
+  } = useQueryTabs({ currentMode: mode, onModeChange: setMode });
+
+  const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
+  const view =
+    activeTab?.view === VIEW.GUIDE
+      ? 'guide'
+      : activeTab?.view === VIEW.ABOUT
+        ? 'about'
+        : 'search';
+
   const {
     inputQuery,
     searchQuery,
     setInputQueryDebounced,
     flushSearchQuery,
     hydrateSearch,
-  } = useDebouncedSearchQuery(initialUrl.q);
+  } = useDebouncedSearchQuery(activeSearchTab?.q ?? '');
 
-  const [view, setView] = useState<AppView>(initialUrl.view);
-  const [mode, setMode] = useState<UiMode>(initialUrl.mode);
-  const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>(() =>
-    initialUrl.mode === '02493' ? '02493' : '0243',
-  );
+  const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(false);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
+  const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [gateOpen, setGateOpen] = useState(true);
   const searchKeyRef = useRef('');
+  const activeTabIdRef = useRef<number | null>(null);
+  const initialSearchDoneRef = useRef(false);
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
   const searchKey = `${searchQuery}\0${mode}`;
   const modeMeta = modeMetaFor(mode);
 
-  // ponytail: 介面轉接 — match desktop maybeModeRedirectForRelationSyntax
+  const saveActiveSearchSnapshot = useCallback(() => {
+    if (activeTab?.view !== VIEW.SEARCH) return;
+    patchActiveSearchTab({
+      q: inputQuery,
+      results: displayResults,
+      total: cachedTotal,
+      offset: displayResults.length,
+    });
+  }, [activeTab, inputQuery, displayResults, cachedTotal, patchActiveSearchTab]);
+
+  const loadSearchTabUi = useCallback(
+    (tab: typeof activeTab, live: boolean) => {
+      if (!tab || tab.view !== VIEW.SEARCH) return;
+      hydrateSearch(tab.q || '');
+      setUseLiveFetch(live);
+      setResultsShuffled(false);
+      if (!live) {
+        const cached = (tab.results as QueryResult[]) || [];
+        setDisplayResults(cached);
+        setCachedTotal(tab.total ?? null);
+      }
+    },
+    [hydrateSearch],
+  );
+
+  useEffect(() => {
+    if (!activeTab) return;
+    if (activeTabIdRef.current === activeTab.id) return;
+    const isFirst = activeTabIdRef.current === null;
+    if (!isFirst) {
+      saveActiveSearchSnapshot();
+    }
+    activeTabIdRef.current = activeTab.id;
+    if (activeTab.view === VIEW.SEARCH) {
+      const hasCache = ((activeTab.results as QueryResult[]) || []).length > 0;
+      loadSearchTabUi(activeTab, !hasCache);
+    }
+  }, [activeTab, saveActiveSearchSnapshot, loadSearchTabUi]);
+
   useEffect(() => {
     if (!trimmedInput) {
       setRedirectHint(null);
@@ -103,7 +174,7 @@ function App() {
     error: searchError,
     hasMore,
     loadMore,
-  } = useSearch(searchQuery, mode, { fallback_0243_mode: last0243Mode });
+  } = useSearch(useLiveFetch ? searchQuery : '', mode, { fallback_0243_mode: last0243Mode });
 
   useEffect(() => {
     if (searchKeyRef.current !== searchKey) {
@@ -113,27 +184,67 @@ function App() {
   }, [searchKey]);
 
   useEffect(() => {
+    if (!useLiveFetch) return;
     if (!resultsShuffled) {
       setDisplayResults(results);
       return;
     }
     setDisplayResults((prev) => mergeShuffledResults(prev, results));
-  }, [results, resultsShuffled]);
+  }, [results, resultsShuffled, useLiveFetch]);
+
+  useEffect(() => {
+    if (!useLiveFetch || view !== 'search' || searchLoading) return;
+    patchActiveSearchTab({
+      q: searchQuery,
+      results,
+      total,
+      offset: results.length,
+    });
+    setCachedTotal(total);
+  }, [useLiveFetch, view, searchLoading, searchQuery, results, total, patchActiveSearchTab]);
+
+  useEffect(() => {
+    if (initialSearchDoneRef.current || !needsInitialSearch || !isReady || gateOpen) return;
+    initialSearchDoneRef.current = true;
+    setUseLiveFetch(true);
+    hydrateSearch(activeSearchTab?.q || '');
+    flushSearchQuery(activeSearchTab?.q || '');
+  }, [
+    needsInitialSearch,
+    isReady,
+    gateOpen,
+    activeSearchTab?.q,
+    hydrateSearch,
+    flushSearchQuery,
+  ]);
+
+  useEffect(() => {
+    if (!popstateFrame) return;
+    setMode(popstateFrame.mode);
+    if (popstateFrame.q) {
+      setUseLiveFetch(true);
+      hydrateSearch(popstateFrame.q);
+      flushSearchQuery(popstateFrame.q);
+    } else {
+      setUseLiveFetch(false);
+      hydrateSearch('');
+      setDisplayResults([]);
+      setCachedTotal(null);
+    }
+    consumePopstateFrame();
+  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame]);
 
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
+  const effectiveTotal = useLiveFetch ? total : cachedTotal;
 
   useEffect(() => {
     if (isOnline || isDbCached) {
       initialize();
     }
   }, [initialize, isOnline, isDbCached]);
-
-  useEffect(() => {
-    replaceAppUrl({ q: searchQuery, mode, view });
-  }, [searchQuery, mode, view]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
@@ -142,8 +253,20 @@ function App() {
     }
   }, [isReady, showStats, stats, getStats]);
 
+  const runCommittedSearch = useCallback(
+    (nextQuery?: string) => {
+      const q = (nextQuery ?? inputQuery).trim();
+      flushSearchQuery(q);
+      setUseLiveFetch(true);
+      setResultsShuffled(false);
+      const pushed = commitActiveSearch(q, mode);
+      pushBrowserUrl(tabState, !pushed);
+    },
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState],
+  );
+
   const handlePickResult = (nextQuery: string) => {
-    flushSearchQuery(nextQuery);
+    runCommittedSearch(nextQuery);
   };
 
   const handleModeChange = (next: UiMode) => {
@@ -152,15 +275,15 @@ function App() {
     }
     setMode(next);
     if (view === 'guide') {
-      setView('search');
+      ensureActiveSearchTab();
     }
     if (trimmedInput) {
-      flushSearchQuery();
+      runCommittedSearch();
     }
   };
 
   const handleBackToSearch = () => {
-    setView('search');
+    ensureActiveSearchTab();
   };
 
   const handleRunExample = (nextQuery: string, exampleMode: GuideMode) => {
@@ -168,9 +291,8 @@ function App() {
       setLast0243Mode(exampleMode);
     }
     setMode(exampleMode);
-    hydrateSearch(nextQuery);
-    setResultsShuffled(false);
-    setView('search');
+    ensureActiveSearchTab();
+    runCommittedSearch(nextQuery);
   };
 
   const handleShuffle = () => {
@@ -180,7 +302,32 @@ function App() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    flushSearchQuery();
+    runCommittedSearch();
+  };
+
+  const handleSelectTab = (id: number) => {
+    saveActiveSearchSnapshot();
+    selectTab(id);
+  };
+
+  const handleCloseTab = (id: number) => {
+    saveActiveSearchSnapshot();
+    closeTab(id);
+  };
+
+  const handleAddTab = () => {
+    saveActiveSearchSnapshot();
+    addSearchTab();
+  };
+
+  const handleOpenGuide = () => {
+    saveActiveSearchSnapshot();
+    openGuide();
+  };
+
+  const handleOpenAbout = () => {
+    saveActiveSearchSnapshot();
+    openAbout();
   };
 
   const synLayout = mode === 'synonym';
@@ -192,23 +339,24 @@ function App() {
       return `${synResultsStats(displayResults)}${statsSuffix}`;
     }
     if (anchorLayout && displayResults.length > 0) {
-      return `${anchorResultsStats(displayResults, total)}${statsSuffix}`;
+      return `${anchorResultsStats(displayResults, effectiveTotal)}${statsSuffix}`;
     }
-    if (total != null && total > displayResults.length) {
-      return `已載入 ${displayResults.length} / ${total} 個結果${statsSuffix}`;
+    if (effectiveTotal != null && effectiveTotal > displayResults.length) {
+      return `已載入 ${displayResults.length} / ${effectiveTotal} 個結果${statsSuffix}`;
     }
     if (displayResults.length > 0) {
       return `${displayResults.length} 個結果${statsSuffix}`;
     }
     return '';
-  }, [synLayout, anchorLayout, displayResults, total, statsSuffix]);
+  }, [synLayout, anchorLayout, displayResults, effectiveTotal, statsSuffix]);
 
   const emptyMessage = useMemo(() => {
-    if (!searchQuery || searchLoading || results.length > 0 || offlineStatus !== 'ready') {
+    if (!searchQuery || searchLoading || displayResults.length > 0 || offlineStatus !== 'ready') {
       return null;
     }
+    if (!useLiveFetch) return null;
     return formatEmptySearchMessage(searchQuery, displayHint, mode);
-  }, [searchQuery, searchLoading, results.length, offlineStatus, displayHint, mode]);
+  }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
   const toggleStats = () => {
     setShowStats(!showStats);
@@ -218,7 +366,13 @@ function App() {
   const canSearch = isReady && !gateOpen;
 
   const handleHome = () => {
-    setView('search');
+    saveActiveSearchSnapshot();
+    goHome();
+    setUseLiveFetch(false);
+    hydrateSearch('');
+    setDisplayResults([]);
+    setCachedTotal(null);
+    setResultsShuffled(false);
   };
 
   return (
@@ -244,10 +398,17 @@ function App() {
               mode={mode}
               disabled={!isReady || gateOpen}
               onModeChange={handleModeChange}
-              onOpenGuide={() => setView('guide')}
-              onOpenAbout={() => setView('about')}
+              onOpenGuide={handleOpenGuide}
+              onOpenAbout={handleOpenAbout}
             />
           </div>
+          <QueryTabsBar
+            tabs={tabs}
+            activeId={tabState.activeId}
+            onSelect={handleSelectTab}
+            onClose={handleCloseTab}
+            onAdd={handleAddTab}
+          />
         </header>
 
         <main className="main-wrap">
@@ -336,8 +497,10 @@ function App() {
                 {displayHint && displayResults.length > 0 && (
                   <p className="search-hint">{displayHint}</p>
                 )}
-                {searchLoading && <p className="loading">搜尋中…</p>}
-                {searchError && <p className="error">錯誤: {searchError.message}</p>}
+                {useLiveFetch && searchLoading && <p className="loading">搜尋中…</p>}
+                {useLiveFetch && searchError && (
+                  <p className="error">錯誤: {searchError.message}</p>
+                )}
 
                 {displayResults.length > 0 && (
                   <div className="results-list">
@@ -349,7 +512,7 @@ function App() {
                     ) : (
                       <ResultList results={displayResults} onPick={handlePickResult} />
                     )}
-                    {hasMore && (
+                    {useLiveFetch && hasMore && (
                       <button
                         type="button"
                         className="load-more"
