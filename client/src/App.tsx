@@ -156,6 +156,11 @@ function App() {
     }
   };
 
+  const handleGuideModePick = (next: UiMode) => {
+    handleModeChange(next);
+    setView('search');
+  };
+
   const handleBackToSearch = () => {
     setView('search');
   };
@@ -249,7 +254,11 @@ function App() {
 
         <main className="main-wrap">
           {view === 'guide' ? (
-            <GuideView onPick={handleRunExample} onBack={handleBackToSearch} />
+            <GuideView
+              currentMode={mode}
+              onPick={handleRunExample}
+              onModePick={handleGuideModePick}
+            />
           ) : view === 'about' ? (
             <AboutView lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (

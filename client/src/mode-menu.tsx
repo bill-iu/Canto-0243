@@ -152,6 +152,8 @@ function modeHelp(uiMode: UiMode): string {
   return '近義、反義與語意相關';
 }
 
+export { modeHelp };
+
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p6-mode-menu-self-check.ts` */
 export function modeMenuSelfCheck(): void {
   if (MODE_OPTIONS.length !== 3) {

@@ -152,10 +152,10 @@
 
 .results-list-items .result-link {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
   min-height: 50px;
   padding: 12px 10px;
@@ -176,6 +176,20 @@
     transform 120ms ease-out;
 }
 
+.results-list-items .result-link .word {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.result-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
 .results-list-items .result-link:hover {
   border-color: var(--accent);
   color: var(--accent-strong);
@@ -189,20 +203,6 @@
   box-shadow: var(--focus-ring);
 }
 
-.results-list-items .result-item--code .result-link,
-.results-list-items .result-item--jyutping .result-link {
-  background: var(--surface-soft);
-}
-
-.result-link--word {
-  flex-direction: column;
-}
-
-.result-link--word .word {
-  font-size: 16px;
-  font-weight: 650;
-}
-
 .result-item .jyutping {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12px;
@@ -213,14 +213,6 @@
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12px;
   color: var(--muted);
-}
-
-.result-kind {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent-strong);
 }
 
 .syn-container {

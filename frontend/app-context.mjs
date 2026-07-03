@@ -108,7 +108,6 @@ export const $ = {
   aboutTopBtn: document.getElementById("aboutTopBtn"),
   guideMenuBtn: document.getElementById("guideMenuBtn"),
   relationMenuBtn: document.getElementById("relationMenuBtn"),
-  backToSearchBtn: document.getElementById("backToSearchBtn"),
   modeMenuButton: document.getElementById("modeMenuButton"),
   modeMenu: document.getElementById("modeMenu"),
   currentModeLabel: document.getElementById("currentModeLabel"),

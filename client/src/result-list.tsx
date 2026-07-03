@@ -1,14 +1,14 @@
 import type { QueryResult } from './db/query';
 
-/** ponytail: desktop dedupe for flat search rows only; lookup layout keeps all sections */
+/** ponytail: PWA 只渲染 word 列；碼／粵拼內嵌於詞條行（唔出 Portable 標題列） */
 export function displayResults(results: QueryResult[]): QueryResult[] {
   const seen = new Set<string>();
   return results.filter((row) => {
     if (row.resultType && row.resultType !== 'word') {
-      return true;
+      return false;
     }
-    const key = row.word;
-    if (!key || seen.has(key)) {
+    const key = `${row.word}\0${row.jyutping ?? ''}\0${row.code ?? ''}`;
+    if (!row.word || seen.has(key)) {
       return false;
     }
     seen.add(key);
@@ -17,8 +17,7 @@ export function displayResults(results: QueryResult[]): QueryResult[] {
 }
 
 function resultKey(row: QueryResult, index: number): string {
-  const kind = row.resultType ?? 'word';
-  return `${kind}-${row.word}-${row.code}-${index}`;
+  return `word-${row.word}-${row.code}-${row.jyutping}-${index}`;
 }
 
 export function ResultList({
@@ -37,38 +36,22 @@ export function ResultList({
     <ul className="results-list-items">
       {rows.map((row, index) => {
         const pick = row.word;
-        if (row.resultType === 'code') {
-          return (
-            <li key={resultKey(row, index)} className="result-item result-item--code">
-              <button type="button" className="result-link" onClick={() => onPick(pick)} aria-label={`搜尋碼 ${pick}`}>
-                <span className="result-kind">碼</span>
-                <span className="code">{row.code || pick}</span>
-              </button>
-            </li>
-          );
-        }
-        if (row.resultType === 'jyutping') {
-          return (
-            <li key={resultKey(row, index)} className="result-item result-item--jyutping">
-              <button type="button" className="result-link" onClick={() => onPick(pick)} aria-label={`搜尋粵拼 ${pick}`}>
-                <span className="result-kind">粵拼</span>
-                <span className="jyutping">{row.jyutping || pick}</span>
-              </button>
-            </li>
-          );
-        }
         return (
           <li key={resultKey(row, index)} className="result-item">
             <button
               type="button"
-              className="result-link result-link--word"
+              className="result-link"
               onClick={() => onPick(pick)}
-              aria-label={`搜尋 ${pick}`}
+              aria-label={`搜尋 ${pick}${row.jyutping ? ` ${row.jyutping}` : ''}${row.code ? ` ${row.code}` : ''}`}
             >
               <span className="word">{row.word}</span>
+              {(row.jyutping || row.code) && (
+                <span className="result-meta">
+                  {row.jyutping ? <span className="jyutping">{row.jyutping}</span> : null}
+                  {row.code ? <span className="code">{row.code}</span> : null}
+                </span>
+              )}
             </button>
-            {row.jyutping ? <span className="jyutping">{row.jyutping}</span> : null}
-            {row.code ? <span className="code">{row.code}</span> : null}
           </li>
         );
       })}

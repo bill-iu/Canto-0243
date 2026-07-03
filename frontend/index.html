@@ -255,8 +255,28 @@
         <p class="eyebrow">Search manual</p>
         <h1 id="guideTitle" tabindex="-1">所有搜尋語法</h1>
         <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 在錨字<strong>後</strong> → 韻母；在錨字<strong>前</strong> → 聲母（一般查詢與 <code translate="no">+</code> 延伸段相同）。</p>
-        <div class="guide-actions">
-          <button class="primary-button" id="backToSearchBtn" type="button">回到搜尋</button>
+        <div class="guide-actions" role="group" aria-label="0243搜尋模式">
+          <button class="mode-option guide-mode-pick" type="button" data-mode="m1">
+            <span>
+              <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
+              <span class="mode-help">常用 0243 編碼與混合查詢</span>
+            </span>
+            <span class="mode-key">0243</span>
+          </button>
+          <button class="mode-option guide-mode-pick" type="button" data-mode="m2">
+            <span>
+              <span class="mode-name">02493模式<span class="mode-note">緊</span></span>
+              <span class="mode-help">02493 碼（分清二聲）</span>
+            </span>
+            <span class="mode-key">02493</span>
+          </button>
+          <button class="mode-option guide-mode-pick" type="button" data-mode="syn">
+            <span>
+              <span class="mode-name">近反義<span class="mode-note">查</span></span>
+              <span class="mode-help">近義、反義與語意相關 (BETA)</span>
+            </span>
+            <span class="mode-key">~ / !</span>
+          </button>
         </div>
       </div>
 
