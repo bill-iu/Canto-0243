@@ -3,11 +3,26 @@
  */
 import type { Database } from '../sqljs.ts';
 import { applyMatchSpec, filterHybridRefCandidates } from './filters.ts';
-import { getCandidatesForLength } from './sources.ts';
+import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getEqualsSpan, type MatchSpec } from './spec.ts';
 import type { WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
+
+function shouldUseMaskCandidates(spec: MatchSpec): boolean {
+  if (spec.extra?.partial_rhyme_mask || spec.extra?.partial_initial_mask) {
+    return Boolean(spec.mask);
+  }
+  if (!spec.mask || spec.compound_kind || getEqualsSpan(spec)) {
+    return false;
+  }
+  if (spec.literal_priority) {
+    return true;
+  }
+  return (spec.slots ?? []).some(
+    (s) => s.kind === 'final_anchor' || s.kind === 'initial_anchor',
+  );
+}
 
 function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): WordRow[] {
   const initialSpec = spec.extra?.dual_initial_spec;
@@ -73,10 +88,13 @@ export function executeMatchSpec(
   }
 
   const code = ctx.code ?? spec.code_prefix ?? null;
-  const [candidates] = getCandidatesForLength(ctx.db, spec.width, {
-    code,
-    mode: ctx.mode,
-  });
+  const [candidates] =
+    shouldUseMaskCandidates(spec) && spec.mask
+      ? getLengthMaskCandidates(ctx.db, spec.width, spec.mask)
+      : getCandidatesForLength(ctx.db, spec.width, {
+          code,
+          mode: ctx.mode,
+        });
   const filtered = applyMatchSpec(spec, candidates, ctx.db, ctx.mode);
   return filtered.slice(ctx.offset, ctx.offset + ctx.limit);
 }
