@@ -1,7 +1,7 @@
 /* Open Design · shared shell (index.html) */
 
 :root {
-      color-scheme: light;
+      color-scheme: light dark;
       --bg: #EBDFD0;
       --surface: #F4EDE4;
       --surface-soft: #EFE6DA;
@@ -26,6 +26,30 @@
       --z-preload: 200;
     }
 
+html[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #1C1917;
+      --surface: #25221F;
+      --surface-soft: #2C2824;
+      --surface-input: #322D28;
+      --ink: #F5F0E6;
+      --ink-soft: #D2C7B8;
+      --muted: #8F8577;
+      --line: #463F38;
+      --accent: #B37D3E;
+      --accent-strong: #D19C62;
+      --soft: #3A342E;
+      --danger: #B85A4A;
+      --control-shadow-hover: 0 8px 22px rgba(0, 0, 0, 0.35);
+      --focus-ring: 0 0 0 3px var(--bg), 0 0 0 5px rgba(179, 125, 62, 0.5);
+      --search-input-inset: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      --shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+      --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.3);
+
+      /* separate header color from main content bg, like light mode */
+      --header-bg: #25221F;
+    }
+
 * { box-sizing: border-box; }
 
 html {
@@ -48,6 +72,13 @@ body {
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
       -webkit-tap-highlight-color: rgba(138, 90, 32, 0.18);
+    }
+
+html[data-theme="dark"] body {
+      background:
+        radial-gradient(ellipse 100% 70% at 100% 0%, rgba(179, 125, 62, 0.08), transparent 65%),
+        var(--bg);
+      -webkit-tap-highlight-color: rgba(179, 125, 62, 0.15);
     }
 
 button, input { font: inherit; touch-action: manipulation; }
@@ -107,9 +138,13 @@ button:disabled {
       top: 0;
       z-index: var(--z-header);
       overflow: visible;
-      background: rgba(235, 223, 208, 0.92);
+      background: color-mix(in srgb, var(--bg) 92%, transparent);
       backdrop-filter: blur(10px);
       padding: calc(14px + env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) 14px max(20px, env(safe-area-inset-left));
+    }
+
+html[data-theme="dark"] .app-header {
+      background: color-mix(in srgb, var(--header-bg, #25221F) 90%, transparent);
     }
 
 .app-bar {
@@ -511,3 +546,26 @@ a.mode-option {
       outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
+
+/* Theme and language switches are now inside the dropdown menu (mode-menu) */
+.menu-switches {
+  display: flex;
+  gap: 6px;
+}
+.menu-switches .mode-switch {
+  flex: 1 1 0;
+  min-height: 36px;
+  padding: 6px 8px;
+  font-size: 13px;
+  justify-content: center;
+  text-align: center;
+}
+.menu-switches .mode-switch:first-child {
+  flex: 0 0 42px; /* icon only narrower */
+  font-size: 16px;
+  padding: 4px;
+}
+.menu-switches .theme-icon {
+  font-size: 16px;
+  line-height: 1;
+}

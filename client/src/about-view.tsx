@@ -21,7 +21,7 @@ export function AboutView({ lexiconVersion, onBack }: AboutViewProps) {
         <h1 id="aboutTitle" tabIndex={-1}>
           關於 Canto-0243
         </h1>
-        <p className="about-lede">ONE·搵·韻 — 離線粵語填詞查找工作台。</p>
+        <p className="about-lede">{/* bilingual via parent if needed; static for now */}ONE-RUN-RHYME — Offline Cantonese lyric rhyme workbench. / ONE·搵·韻 — 離線粵語填詞查找工作台。</p>
         <p className="about-meta">詞庫版本：{lexiconVersion}</p>
         <div className="guide-actions">
           <button type="button" className="primary-button" onClick={onBack}>

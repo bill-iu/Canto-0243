@@ -32,6 +32,7 @@ import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
+import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-context.mjs';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -93,6 +94,8 @@ function App() {
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [gateOpen, setGateOpen] = useState(true);
+  const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
+  const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
@@ -171,6 +174,18 @@ function App() {
 
   const shouldShowInstallBanner =
     !gateOpen && !isStandalone && !installDismissed;
+
+  // Apply theme + lang (shared with vanilla via app-context)
+  useEffect(() => {
+    setTheme(uiTheme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#EBDFD0');
+  }, [uiTheme]);
+
+  useEffect(() => {
+    setLang(uiLang);
+    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : 'en';
+  }, [uiLang]);
 
   const {
     results,
@@ -466,12 +481,13 @@ function App() {
         isLikelyMetered={isLikelyMetered}
         onRetry={retryOfflineReady}
         onOpenChange={setGateOpen}
+        theme={uiTheme}
       />
       <div className={`app-shell${gateOpen ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
-            <button className="brand" type="button" aria-label="返回搜尋首頁" onClick={handleHome}>
-              <BrandLogo />
+            <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
+              <BrandLogo theme={uiTheme} />
             </button>
             <ModeMenu
               mode={mode}
@@ -479,6 +495,10 @@ function App() {
               onModeChange={handleModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}
+              theme={uiTheme}
+              lang={uiLang}
+              onThemeChange={(next) => setUiTheme(next)}
+              onLangChange={(next) => setUiLang(next)}
             />
           </div>
           <QueryTabsBar
@@ -500,17 +520,17 @@ function App() {
             <section className="search-view" aria-labelledby="searchTitle">
               <div className="hero">
                 <p className="eyebrow">Cantonese Lyrics Writing Workbench</p>
-                <h1 id="searchTitle">ONE·搵·韻</h1>
-                <p>格律／協音／押韻／近反義，一步搵到。</p>
+                <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
+                <p>{uiLang === 'en' ? 'Meter / sound match / rhyme / near-antonyms — find in one step.' : '格律／協音／押韻／近反義，一步搵到。'}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="search-panel" role="search">
                 <div className="field-label-row">
                   <label className="field-label" htmlFor="searchInput">
-                    搜尋內容
+                    {uiLang === 'en' ? 'Search' : '搜尋內容'}
                   </label>
                   <span className="mode-readout" aria-live="polite">
-                    目前模式：{modeMeta.readout}
+                    {(uiLang === 'en' ? 'Current mode: ' : '目前模式：')}{modeMeta.readout}
                   </span>
                 </div>
                 <div className="search-row">
@@ -533,8 +553,8 @@ function App() {
                       className="icon-button"
                       onClick={handleShuffle}
                       disabled={!canShuffle}
-                      aria-label="隨機打亂結果"
-                      title="隨機打亂結果"
+                      aria-label={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
+                      title={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
                     >
                       <ShuffleIcon />
                     </button>
@@ -543,7 +563,7 @@ function App() {
                       className="primary-button"
                       disabled={!canSearch || !trimmedInput}
                     >
-                      搜尋
+                      {uiLang === 'en' ? 'Search' : '搜尋'}
                     </button>
                   </div>
                 </div>
@@ -577,7 +597,7 @@ function App() {
                 {displayHint && displayResults.length > 0 && (
                   <p className="search-hint">{displayHint}</p>
                 )}
-                {useLiveFetch && searchLoading && <p className="loading">搜尋中…</p>}
+                {useLiveFetch && searchLoading && <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>}
                 {useLiveFetch && searchError && (
                   <p className="error">錯誤: {searchError.message}</p>
                 )}

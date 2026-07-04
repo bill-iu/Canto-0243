@@ -54,6 +54,21 @@
   --chrome-tab-width: 220px;
 }
 
+/* Dark mode: make header strip and main content use two different colors (like light mode) */
+html[data-theme="dark"] {
+  --chrome-tabs-strip-bg: #25221F;           /* header / tab strip - distinct from main */
+  --chrome-tabs-strip-highlight: rgba(255, 255, 255, 0.05);
+  --chrome-tab-inactive-fill: #2C2824;
+  --chrome-tab-active-fill: #1C1917;         /* active tab blends to main content bg */
+  --chrome-tab-active-glow: rgba(179, 125, 62, 0.12);
+  --chrome-tab-divider: rgba(255, 255, 255, 0.12);
+  --chrome-tab-title: #8F8577;
+  --chrome-tab-title-active: #F5F0E6;
+
+  /* plain header bg for non-tabs contexts */
+  --header-bg: #25221F;
+}
+
 .prototype-ribbon {
   margin: 0;
   padding: 8px 16px;

@@ -46,7 +46,89 @@ export {
 };
 
 export const APP_TITLE_BASE = "Canto-0243 ONE·搵·韻";
+export const APP_TITLE_BASE_EN = "Canto-0243 ONE-RUN-RHYME";
 export const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
+
+export const LANG_KEY = 'canto-lang';
+export const THEME_KEY = 'canto-theme';
+
+const MESSAGES = {
+  zh: {
+    'hero.title': 'ONE·搵·韻',
+    'hero.tagline': '格律／協音／押韻／近反義，一步搵到。',
+    'search.label': '搜尋內容',
+    'search.button': '搜尋',
+    'search.placeholder.default': '輸入 香??、23+就=、~=開心、!!、~~…',
+    'mode.readout.prefix': '目前模式：',
+    'shuffle.aria': '隨機打亂結果',
+    'brand.aria': '返回搜尋首頁',
+    'menu.0243.group': '0243搜尋模式',
+    'menu.tools': '工具',
+    'menu.guide': '搜尋教學',
+    'menu.guide.help': '完整語法與例子',
+    'menu.about': '關於',
+    'menu.about.help': '授權、致謝與回報',
+    'about.title': '關於 Canto-0243',
+    'about.lede': 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
+    'about.back': '返回搜尋',
+    'gate.preparing': '執緊啲字…',
+    'empty.notfound': '搵唔到',
+    'lang.toggle': '中 / EN',
+    'theme.toggle': '切換主題',
+  },
+  en: {
+    'hero.title': 'ONE-RUN-RHYME',
+    'hero.tagline': 'Meter / sound match / rhyme / near-antonyms — find in one step.',
+    'search.label': 'Search',
+    'search.button': 'Search',
+    'search.placeholder.default': 'Try 香??, 23+就=, ~=happy, !!, ~~…',
+    'mode.readout.prefix': 'Current mode: ',
+    'shuffle.aria': 'Shuffle results',
+    'brand.aria': 'Back to search home',
+    'menu.0243.group': '0243 Search Modes',
+    'menu.tools': 'Tools',
+    'menu.guide': 'Search Guide',
+    'menu.guide.help': 'Full syntax & examples',
+    'menu.about': 'About',
+    'menu.about.help': 'License, credits & feedback',
+    'about.title': 'About Canto-0243',
+    'about.lede': 'ONE-RUN-RHYME — Offline Cantonese lyric rhyme workbench.',
+    'about.back': 'Back to search',
+    'gate.preparing': 'Loading…',
+    'empty.notfound': 'No matches',
+    'lang.toggle': 'EN / 中',
+    'theme.toggle': 'Toggle theme',
+  },
+};
+
+export function getLang() {
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved === 'zh' || saved === 'en') return saved;
+  return (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+}
+
+export function setLang(lang) {
+  localStorage.setItem(LANG_KEY, lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+}
+
+export function t(key, lang = getLang()) {
+  return MESSAGES[lang]?.[key] ?? MESSAGES.zh[key] ?? key;
+}
+
+export function getTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === 'light' || saved === 'dark') return saved;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function setTheme(theme) {
+  localStorage.setItem(THEME_KEY, theme);
+  document.documentElement.dataset.theme = theme;
+  // update meta theme-color
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = theme === 'dark' ? '#1C1917' : '#EBDFD0';
+}
 
 export const MODE_META = {
   m1: {
@@ -167,8 +249,9 @@ export function readPortableBootstrapFlag() {
   return document.querySelector('meta[name="canto-portable"]')?.content === "1";
 }
 
-export function applyAppTitle(portable = false) {
-  const title = portable ? `${APP_TITLE_BASE}${APP_TITLE_PORTABLE_SUFFIX}` : APP_TITLE_BASE;
+export function applyAppTitle(portable = false, lang = getLang()) {
+  const base = lang === 'en' ? APP_TITLE_BASE_EN : APP_TITLE_BASE;
+  const title = portable ? `${base}${APP_TITLE_PORTABLE_SUFFIX}` : base;
   document.title = title;
   if ($.portableExitBtn) {
     $.portableExitBtn.hidden = !portable;

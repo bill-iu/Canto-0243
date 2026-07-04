@@ -14,6 +14,10 @@ export interface ModeMenuProps {
   onModeChange: (mode: UiMode) => void;
   onOpenGuide: () => void;
   onOpenAbout: () => void;
+  theme?: 'light' | 'dark';
+  lang?: 'zh' | 'en';
+  onThemeChange?: (theme: 'light' | 'dark') => void;
+  onLangChange?: (lang: 'zh' | 'en') => void;
 }
 
 export function ModeMenu({
@@ -22,6 +26,10 @@ export function ModeMenu({
   onModeChange,
   onOpenGuide,
   onOpenAbout,
+  theme = 'light',
+  lang = 'zh',
+  onThemeChange,
+  onLangChange,
 }: ModeMenuProps) {
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -81,8 +89,8 @@ export function ModeMenu({
         role="menu"
         hidden={!open}
       >
-        <div className="menu-group" role="group" aria-label="0243搜尋模式">
-          <p className="menu-label">0243搜尋模式</p>
+        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}>
+          <p className="menu-label">{lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}</p>
           {MODE_OPTIONS.map((option) => {
             const optionMeta = MODE_META[uiModeToUrlMode(option.uiMode)];
             const checked = uiModeToUrlMode(option.uiMode) === urlMode;
@@ -101,15 +109,15 @@ export function ModeMenu({
                     {optionMeta.title}
                     <span className="mode-note">{optionMeta.note}</span>
                   </span>
-                  <span className="mode-help">{modeHelp(option.uiMode)}</span>
+                  <span className="mode-help">{modeHelp(option.uiMode, lang)}</span>
                 </span>
                 <span className="mode-key">{option.key}</span>
               </button>
             );
           })}
         </div>
-        <div className="menu-group" role="group" aria-label="工具">
-          <p className="menu-label">工具</p>
+        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '工具' : 'Tools'}>
+          <p className="menu-label">{lang === 'zh' ? '工具' : 'Tools'}</p>
           <button
             type="button"
             className="mode-option"
@@ -120,8 +128,8 @@ export function ModeMenu({
             }}
           >
             <span>
-              <span className="mode-name">搜尋教學</span>
-              <span className="mode-help">完整語法與例子</span>
+              <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
+              <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
             </span>
             <span className="mode-key">?</span>
           </button>
@@ -135,21 +143,50 @@ export function ModeMenu({
             }}
           >
             <span>
-              <span className="mode-name">關於</span>
-              <span className="mode-help">授權、致謝與回報</span>
+              <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
+              <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
             </span>
             <span className="mode-key">i</span>
           </button>
+        </div>
+
+        {/* Compact switches row inside dropdown: theme icon + single lang toggle (side-by-side to shorten menu) */}
+        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '顯示' : 'Display'}>
+          <p className="menu-label">{lang === 'zh' ? '顯示' : 'Display'}</p>
+          <div className="menu-switches">
+            <button
+              type="button"
+              className="mode-option mode-switch"
+              onClick={() => {
+                onThemeChange?.(theme === 'dark' ? 'light' : 'dark');
+                close();
+              }}
+              aria-label={lang === 'zh' ? '切換主題' : 'Toggle theme'}
+            >
+              <span aria-hidden="true">{theme === 'dark' ? '🌙' : '☀️'}</span>
+            </button>
+            <button
+              type="button"
+              className="mode-option mode-switch"
+              onClick={() => {
+                onLangChange?.(lang === 'zh' ? 'en' : 'zh');
+                close();
+              }}
+              aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
+            >
+              <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-function modeHelp(uiMode: UiMode): string {
-  if (uiMode === '0243') return '常用 0243 編碼與混合查詢';
-  if (uiMode === '02493') return '02493 碼（分清二聲）';
-  return '近義、反義與語意相關';
+function modeHelp(uiMode: UiMode, lang: 'zh' | 'en' = 'zh'): string {
+  if (uiMode === '0243') return lang === 'zh' ? '常用 0243 編碼與混合查詢' : 'Common 0243 codes & mixed queries';
+  if (uiMode === '02493') return lang === 'zh' ? '02493 碼（分清二聲）' : '02493 codes (distinguish 2nd tone)';
+  return lang === 'zh' ? '近義、反義與語意相關' : 'Synonyms, antonyms & semantically related';
 }
 
 export { modeHelp };

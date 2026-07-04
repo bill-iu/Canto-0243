@@ -43,11 +43,12 @@ function setButtonLoading(loading) {
   $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
 }
 
-function updateModeLabel() {
+function updateModeLabel(lang = 'zh') {
   const meta = MODE_META[shell.currentMode] || MODE_META.m1;
   $.currentModeLabel.innerHTML =
     `<span class="mode-trigger-primary">${meta.title}</span><span class="mode-trigger-note">${meta.note}</span>`;
-  $.modeReadout.textContent = `目前模式：${meta.readout}`;
+  const prefix = (typeof t === 'function') ? t('mode.readout.prefix', lang) : '目前模式：';
+  $.modeReadout.textContent = `${prefix}${meta.readout}`;
   $.searchInput.placeholder = meta.placeholder;
   document.querySelectorAll("[data-mode]").forEach((btn) => {
     if (!btn.classList.contains("mode-option")) return;

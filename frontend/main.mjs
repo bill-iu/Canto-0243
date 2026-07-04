@@ -10,6 +10,13 @@
   createCorrectionsTab,
   VIEW,
   $,
+  getLang,
+  setLang,
+  t,
+  getTheme,
+  setTheme,
+  LANG_KEY,
+  THEME_KEY,
 } from "./app-context.mjs";
 import { waitForPreloadReady } from "./gate.mjs";
 import { QueryChromeTabsLayout } from "./chrome-tabs-layout.mjs";
@@ -353,4 +360,164 @@ async function refreshPortableChrome() {
   if (active?.view === VIEW.SEARCH && active.q) {
     searchDict(false, true);
   }
+
+  // Theme + Lang dual mode init (light/dark + 中/EN) — now inside dropdown menu
+  function applyLangToChrome(lang) {
+    // hero
+    const h1 = document.getElementById('searchTitle');
+    if (h1) h1.textContent = t('hero.title', lang);
+    const tag = document.querySelector('.hero p:not(.eyebrow)');
+    if (tag) tag.textContent = t('hero.tagline', lang);
+
+    // search form
+    const label = document.querySelector('.field-label[for="searchInput"]');
+    if (label) label.textContent = t('search.label', lang);
+    const input = document.getElementById('searchInput');
+    if (input && !input.value) input.placeholder = t('search.placeholder.default', lang);
+    const btn = document.getElementById('searchBtn');
+    if (btn) btn.textContent = t('search.button', lang);
+
+    // shuffle
+    const shuffle = document.getElementById('shuffleBtn');
+    if (shuffle) {
+      shuffle.setAttribute('aria-label', t('shuffle.aria', lang));
+      shuffle.setAttribute('title', t('shuffle.aria', lang));
+    }
+
+    // brand
+    const brand = document.getElementById('homeBtn');
+    if (brand) brand.setAttribute('aria-label', t('brand.aria', lang));
+
+    // menu labels (update on fly for i18n)
+    document.querySelectorAll('.menu-label').forEach(el => {
+      const txt = el.textContent.trim();
+      if (txt.includes('0243') || txt.includes('搜尋模式') || txt.includes('Search Modes')) {
+        el.textContent = t('menu.0243.group', lang);
+      } else if (txt === '工具' || txt === 'Tools') {
+        el.textContent = t('menu.tools', lang);
+      } else if (txt === '顯示' || txt === 'Display') {
+        el.textContent = lang === 'zh' ? '顯示' : 'Display';
+      }
+    });
+
+    // portable exit
+    if ($.portableExitBtn && !$.portableExitBtn.hidden) {
+      $.portableExitBtn.textContent = lang === 'en' ? 'Exit Canto-0243' : '退出 Canto-0243';
+    }
+
+    applyAppTitle(readPortableBootstrapFlag(), lang);
+
+    // update theme/lang menu checks and labels
+    updateThemeLangMenuUI(lang);
+  }
+
+  function updateThemeLangMenuUI(lang = getLang()) {
+    const currentTheme = document.documentElement.dataset.theme || 'light';
+    const currentLang = lang;
+
+    // theme switch icon
+    const themeBtn = document.getElementById('theme-switch');
+    if (themeBtn) {
+      const icon = themeBtn.querySelector('.theme-icon');
+      if (icon) icon.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+      themeBtn.setAttribute('aria-label', lang === 'zh' ? '切換主題' : 'Toggle theme');
+      themeBtn.setAttribute('title', lang === 'zh' ? '切換主題' : 'Toggle theme');
+    }
+
+    // lang switch text
+    const langBtn = document.getElementById('lang-switch');
+    const langText = document.getElementById('lang-switch-text');
+    if (langBtn && langText) {
+      langText.textContent = lang === 'zh' ? '中 / EN' : 'EN / 中';
+      langBtn.setAttribute('aria-label', lang === 'zh' ? '切換語言' : 'Toggle language');
+      langBtn.setAttribute('title', lang === 'zh' ? '切換語言' : 'Toggle language');
+    }
+
+    // update display label
+    const displayLabel = document.getElementById('displayMenuLabel');
+    if (displayLabel) {
+      displayLabel.textContent = lang === 'zh' ? '顯示' : 'Display';
+    }
+    // update group aria-label
+    const displayGroup = document.querySelector('#modeMenu .menu-group[aria-label="顯示"], #modeMenu .menu-group[aria-label="Display"]');
+    if (displayGroup) displayGroup.setAttribute('aria-label', lang === 'zh' ? '顯示' : 'Display');
+  }
+
+  function applyTheme(theme) {
+    setTheme(theme);
+    updateThemeLangMenuUI();
+    updateBrandForTheme();
+  }
+
+  function updateBrandForTheme() {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    const wordmarkId = isDark ? '#brand-wordmark-dark' : '#brand-wordmark';
+    const blobId = isDark ? '#brand-ink-blob-dark' : '#brand-ink-blob';
+    const flicksId = isDark ? '#brand-ink-flicks-dark' : '#brand-ink-flicks';
+    const inkColor = isDark ? '#FB7185' : '#9F1239';
+
+    // Update all uses for wordmark, ink-blob, ink-flicks (header, gate, meter)
+    document.querySelectorAll('use[href="#brand-wordmark"], use[href="#brand-wordmark-dark"]').forEach((el) => {
+      el.setAttribute('href', wordmarkId);
+    });
+    document.querySelectorAll('use[href="#brand-ink-blob"], use[href="#brand-ink-blob-dark"]').forEach((el) => {
+      el.setAttribute('href', blobId);
+      if (el.hasAttribute('fill')) el.setAttribute('fill', inkColor);
+    });
+    document.querySelectorAll('use[href="#brand-ink-flicks"], use[href="#brand-ink-flicks-dark"]').forEach((el) => {
+      el.setAttribute('href', flicksId);
+    });
+    document.querySelectorAll('use[href="#brand-ink-flicks-current"], use[href="#brand-ink-flicks-current-dark"]').forEach((el) => {
+      el.setAttribute('href', isDark ? '#brand-ink-flicks-current-dark' : '#brand-ink-flicks-current');
+    });
+  }
+
+  function initThemeLang() {
+    const lang = getLang();
+    setLang(lang);
+
+    const theme = getTheme();
+    setTheme(theme);  // ensure html attr
+
+    applyLangToChrome(lang);
+    updateBrandForTheme();
+
+    // wire the compact switches in dropdown (icons + single toggle, side by side)
+    const themeBtn = document.getElementById('theme-switch');
+    if (themeBtn) {
+      themeBtn.onclick = () => {
+        const current = document.documentElement.dataset.theme || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        applyTheme(next);
+        const menu = document.getElementById('modeMenu');
+        if (menu) menu.classList.remove('is-open');
+      };
+    }
+
+    const langBtn = document.getElementById('lang-switch');
+    if (langBtn) {
+      langBtn.onclick = () => {
+        const next = getLang() === 'zh' ? 'en' : 'zh';
+        setLang(next);
+        applyLangToChrome(next);
+        if (typeof updateModeLabel === 'function') updateModeLabel(next);
+        const menu = document.getElementById('modeMenu');
+        if (menu) menu.classList.remove('is-open');
+      };
+    }
+
+    // initial menu UI
+    updateThemeLangMenuUI(lang);
+
+    // respect system changes for theme if no explicit
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem(THEME_KEY)) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+  }
+
+  initThemeLang();
 })();
