@@ -118,3 +118,22 @@ describe("frontend ESM public API", () => {
     ]);
   });
 });
+
+  // PWA 就緒閘 icon (brand-wordmark) 和 ink (brand-ink-*) 防止消失的 source 檢查
+  // 未來改動若移除 <use> 或 <symbol> 會 fail，保護動畫元素
+  it("pwa ready-gate brand defs contain icon and ink symbols", () => {
+    const defsSrc = readFileSync(new URL("../client/src/brand-svg-defs.tsx", import.meta.url), "utf8");
+    assert.match(defsSrc, /id="brand-wordmark"/);
+    assert.match(defsSrc, /id="brand-ink-blob"/);
+    assert.match(defsSrc, /id="brand-ink-flicks"/);
+  });
+
+  it("pwa brand-logo gate variant contains icon and ink uses", () => {
+    const logoSrc = readFileSync(new URL("../client/src/brand-logo.tsx", import.meta.url), "utf8");
+    assert.match(logoSrc, /href="#brand-wordmark"/);
+    assert.match(logoSrc, /href="#brand-ink-blob"/);
+    assert.match(logoSrc, /href="#brand-ink-flicks"/);
+    assert.match(logoSrc, /className="gate-ink-track"/);
+    assert.match(logoSrc, /className="gate-ink-fill"/);
+  });
+});
