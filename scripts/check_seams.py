@@ -98,6 +98,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         source = path.read_text(encoding="utf-8")
         self.assertIn("local_launch.py", source)
         self.assertIn("--gui", source)
+        self.assertIn("_ensure_env_local", source)
+        self.assertIn("查韻介面未能啟動", source)
 
     def test_main_exposes_portable_shutdown(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
@@ -122,6 +124,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("--gui", source)
         self.assertIn("_html_ready", source)
         self.assertIn("_probe_home_portable", source)
+        self.assertIn('_spawn_detached(python, root, ["main.py"]', source)
+        self.assertIn("return 0 if html_ready else 1", source)
 
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
