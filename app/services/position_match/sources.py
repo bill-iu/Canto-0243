@@ -276,7 +276,9 @@ def _resolve_mask_family_source(
         tiers = search_doubled_syllable(db, rhyme_char=rhyme_char, width=spec.width)
         if not tiers:
             return None, None
-        source = CompoundCandidateSource(db, frozenset(tiers.keys()))
+        source = CompoundCandidateSource(
+            db, frozenset(tiers.keys()), expected_length=spec.width
+        )
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 

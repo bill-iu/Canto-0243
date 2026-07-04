@@ -186,16 +186,18 @@ function compoundSummary(spec: MatchSpec): string {
     const rhyme = (spec.slots ?? []).find(
       (s) => s.kind === 'final_anchor' && typeof s.value === 'string',
     )?.value as string | undefined;
+    const n = spec.width;
+    const base = `查${n}字雙聲疊韻字（各字音節相同，聲調不限）`;
     if (spec.code_prefix && rhyme) {
-      return `查二字同音節疊字（碼 ${spec.code_prefix}，尾字同「${rhyme}」同韻）`;
+      return `查${n}字雙聲疊韻字（碼 ${spec.code_prefix}，尾字同「${rhyme}」同韻）`;
     }
     if (spec.code_prefix) {
-      return `查二字同音節疊字（碼 ${spec.code_prefix}）`;
+      return `查${n}字雙聲疊韻字（碼 ${spec.code_prefix}）`;
     }
     if (rhyme) {
-      return `查二字同音節疊字（尾字同「${rhyme}」同韻）`;
+      return `查${n}字雙聲疊韻字（尾字同「${rhyme}」同韻）`;
     }
-    return '查二字同音節疊字（兩字音節相同，聲調不限）';
+    return base;
   }
   const label = spec.compound_kind === 'syn' ? '近義' : '反義';
   const connective = spec.extra?.connective;

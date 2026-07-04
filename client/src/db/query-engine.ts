@@ -193,9 +193,15 @@ export interface CompoundAntQuery extends ParsedQuery {
 export interface CompoundDoubledSyllableQuery extends ParsedQuery {
   kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE;
   raw_q: string;
+  width: number;
   code_prefix?: string;
   rhyme_char?: string;
 }
+
+const DOUBLED_SYLLABLE_MIN_DOLLARS = 2;
+const DOUBLED_SYLLABLE_MAX_DOLLARS = 4;
+const DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT = '雙聲疊韻字查詢須用 2 至 4 個連續 $。';
+const DOUBLED_SYLLABLE_CODE_WIDTH_HINT = '碼位數須與 $ 個數一致（如 333$$$）。';
 
 export interface HeteronymCodeQuery extends ParsedQuery {
   kind: QueryKind.HETERONYM_CODE;
@@ -423,8 +429,34 @@ export function normalizeQuery(q: string): string {
   };
   
   normalized = normalized.replace(/[！＠＃＄％＆＊（）＋－＝７８？、。]/g, (match) => fullToHalf[match] || match);
-  
-  return normalized;
+  normalized = normalized.replace(/～～/g, '~~').replace(/！！/g, '!!');
+
+  return normalizeHanziDollarSyllableAnchors(normalized);
+}
+
+/** Port of jyutping_anchor.normalize_hanzi_dollar_syllable_anchors (連續 $ 保留) */
+function normalizeHanziDollarSyllableAnchors(q: string): string {
+  if (!q || !q.includes('$')) {
+    return q;
+  }
+  const out: string[] = [];
+  let i = 0;
+  while (i < q.length) {
+    if (q[i] === '$') {
+      let j = i;
+      while (j < q.length && q[j] === '$') {
+        j += 1;
+      }
+      if (j - i >= 2) {
+        out.push(q.slice(i, j));
+        i = j;
+        continue;
+      }
+    }
+    out.push(q[i]!);
+    i += 1;
+  }
+  return out.join('');
 }
 
 /**
@@ -480,16 +512,35 @@ export function parseHeteronymCodeQuery(q: string): HeteronymCodeQuery | Unmatch
 }
 
 /** Port of relation.parse_doubled_syllable_syntax */
-export function parseDoubledSyllableSyntax(q: string): CompoundDoubledSyllableQuery | null {
-  const m = q.match(/^(\d*)\$\$([\u4e00-\u9fff])?$/);
+export function parseDoubledSyllableSyntax(
+  q: string,
+): CompoundDoubledSyllableQuery | UnmatchedQuery | null {
+  const m = q.match(/^(\d*)(\$+)([\u4e00-\u9fff])?$/);
   if (!m) {
     return null;
+  }
+  const width = m[2]!.length;
+  if (width < DOUBLED_SYLLABLE_MIN_DOLLARS || width > DOUBLED_SYLLABLE_MAX_DOLLARS) {
+    return {
+      kind: QueryKind.UNMATCHED,
+      raw_q: q,
+      hint: DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT,
+    };
+  }
+  const prefix = m[1] ?? '';
+  if (prefix && prefix.length !== width) {
+    return {
+      kind: QueryKind.UNMATCHED,
+      raw_q: q,
+      hint: DOUBLED_SYLLABLE_CODE_WIDTH_HINT,
+    };
   }
   return {
     kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE,
     raw_q: q,
-    code_prefix: m[1] || undefined,
-    rhyme_char: m[2] || undefined,
+    width,
+    code_prefix: prefix || undefined,
+    rhyme_char: m[3] || undefined,
   };
 }
 
@@ -1203,6 +1254,7 @@ export function parserLogicSelfCheck(): void {
     ['12/12', QueryKind.HETERONYM_CODE],
     ['33~與~你', QueryKind.COMPOUND_SYN],
     ['?=困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
+    ['$$$', QueryKind.COMPOUND_DOUBLED_SYLLABLE],
   ];
   for (const [q, kind] of cases) {
     const parsed = normalizeAndParse(q);

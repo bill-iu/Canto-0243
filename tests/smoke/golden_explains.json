@@ -61,7 +61,7 @@
   },
   {
     "query": "$$",
-    "summary": "查二字同音節疊字（兩字音節相同，聲調不限）",
+    "summary": "查2字雙聲疊韻字（各字音節相同，聲調不限）",
     "warning": null,
     "kind": "compound_doubled_syllable"
   },

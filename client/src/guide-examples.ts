@@ -269,12 +269,13 @@ export const GUIDE_SECTIONS: GuideSection[] = [
   },
   {
     id: 'doubled',
-    title: '同音節疊字',
-    intro: '$$ 搵二字詞且兩字音節相同（聲調不限）；語法鏡像 ~~。',
+    title: '雙聲疊韻字',
+    intro: '連續 $ 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；語法鏡像 ~~。',
     examples: [
-      { query: '$$', mode: '0243', label: '二字同音節疊字（如慢慢、識食）', familyId: 'compound_doubled' },
-      { query: '33$$', mode: '0243', label: '33 同音 + 同音節疊字' },
-      { query: '$$你', mode: '0243', label: '疊字，尾字同「你」同韻' },
+      { query: '$$', mode: '0243', label: '二字雙聲疊韻字（如慢慢、識食）', familyId: 'compound_doubled' },
+      { query: '$$$', mode: '0243', label: '三字雙聲疊韻字（如哈哈哈）' },
+      { query: '33$$', mode: '0243', label: '33 同音 + 二字雙聲疊韻字' },
+      { query: '$$你', mode: '0243', label: '二字，尾字同「你」同韻' },
     ],
   },
   {

@@ -31,7 +31,10 @@ let curatedSyn = new Set<string>();
 let curatedAnt = new Set<string>();
 let synTiersCache: TierMap | null = null;
 let antTiersCache: TierMap | null = null;
-let doubledCache: TierMap | null = null;
+const doubledCaches = new Map<number, TierMap>();
+
+const MIN_DOUBLED_WIDTH = 2;
+const MAX_DOUBLED_WIDTH = 4;
 
 export function initCompoundLists(data: { syn?: string[]; ant?: string[] }): void {
   if (data.syn) {
@@ -47,7 +50,7 @@ export function initCompoundLists(data: { syn?: string[]; ant?: string[] }): voi
 export function resetCompoundCaches(): void {
   synTiersCache = null;
   antTiersCache = null;
-  doubledCache = null;
+  doubledCaches.clear();
 }
 
 function parseCompoundList(text: string): string[] {
@@ -238,14 +241,17 @@ function syllableLetters(token: string): string {
   return token.replace(/[1-6]$/i, '').toLowerCase();
 }
 
-function rowHasDoubledSyllables(jyutping: string): boolean {
+export function rowHasUniformSyllableLetters(jyutping: string, width: number): boolean {
   const parts = jyutping.trim().split(/\s+/);
-  if (parts.length !== 2) {
+  if (parts.length !== width) {
     return false;
   }
-  const left = syllableLetters(parts[0]!);
-  const right = syllableLetters(parts[1]!);
-  return Boolean(left) && left === right;
+  const letters = parts.map((p) => syllableLetters(p));
+  return Boolean(letters[0]) && letters.every((x) => x === letters[0]);
+}
+
+function rowHasDoubledSyllables(jyutping: string): boolean {
+  return rowHasUniformSyllableLetters(jyutping, MIN_DOUBLED_WIDTH);
 }
 
 function getRhymeFinals(word: WordRow): string[] {
@@ -267,12 +273,16 @@ function narrowByRhymeChar(
   width: number,
   rhymeChar: string,
 ): Set<string> {
-  if (!rhymeChar || width !== 2) {
+  if (!rhymeChar || width < MIN_DOUBLED_WIDTH) {
     return literals;
   }
+  const tailPos = width - 1;
   const stmt = db.prepare(`
     SELECT char, jyutping, finals FROM words
-    WHERE char = ? AND (length = 2 OR ((length IS NULL OR length = 0) AND length(char) = 2))
+    WHERE char = ? AND (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
     LIMIT 20
   `);
   const anchorStmt = db.prepare(`
@@ -293,11 +303,11 @@ function narrowByRhymeChar(
 
   const out = new Set<string>();
   for (const literal of literals) {
-    stmt.bind([literal]);
+    stmt.bind([literal, width, width]);
     let ok = false;
     while (stmt.step()) {
       const finals = getRhymeFinals(stmt.getAsObject() as WordRow);
-      if (finals.length >= 2 && allowedFinals.has(finals[1]!)) {
+      if (finals.length > tailPos && allowedFinals.has(finals[tailPos]!)) {
         ok = true;
         break;
       }
@@ -462,16 +472,17 @@ function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): TierM
   return tiers;
 }
 
-function buildDoubledTiers(db: Database): TierMap {
+function buildDoubledTiers(db: Database, width: number): TierMap {
   const tiers = new Map<string, number>();
   const stmt = db.prepare(`
     SELECT char, jyutping FROM words
-    WHERE length = 2 OR ((length IS NULL OR length = 0) AND length(char) = 2)
+    WHERE length = ? OR ((length IS NULL OR length = 0) AND length(char) = ?)
   `);
+  stmt.bind([width, width]);
   while (stmt.step()) {
     const row = stmt.getAsObject() as WordRow;
     const ch = String(row.char ?? '');
-    if (ch.length === 2 && rowHasDoubledSyllables(String(row.jyutping ?? ''))) {
+    if (ch.length === width && rowHasUniformSyllableLetters(String(row.jyutping ?? ''), width)) {
       tiers.set(ch, TIER_CURATED);
     }
   }
@@ -484,10 +495,13 @@ function tierMapForSpec(db: Database, spec: CompoundSearchSpec): TierMap {
     return searchConnectiveCompound(db, spec);
   }
   if (spec.compound_kind === 'doubled_syllable') {
-    if (!doubledCache) {
-      doubledCache = buildDoubledTiers(db);
+    if (spec.width < MIN_DOUBLED_WIDTH || spec.width > MAX_DOUBLED_WIDTH) {
+      return new Map();
     }
-    return doubledCache;
+    if (!doubledCaches.has(spec.width)) {
+      doubledCaches.set(spec.width, buildDoubledTiers(db, spec.width));
+    }
+    return doubledCaches.get(spec.width)!;
   }
   if (spec.compound_kind === 'syn') {
     if (!synTiersCache) {
@@ -532,9 +546,6 @@ function fetchCompoundRows(db: Database, literals: Set<string>, width: number): 
 
 export function searchCompoundTiers(db: Database, spec: CompoundSearchSpec): TierMap {
   let tiers = tierMapForSpec(db, spec);
-  if (spec.width !== 2) {
-    return tiers;
-  }
   if (spec.rhyme_char) {
     const allowed = narrowByRhymeChar(db, new Set(tiers.keys()), spec.width, spec.rhyme_char);
     const narrowed = new Map<string, number>();
@@ -573,6 +584,12 @@ export function executeCompoundSearch(
     if (spec.code_prefix && !matchesCodePrefix(code, spec.code_prefix, mode)) {
       return false;
     }
+    if (
+      spec.compound_kind === 'doubled_syllable'
+      && !rowHasUniformSyllableLetters(String(row.jyutping ?? ''), spec.width)
+    ) {
+      return false;
+    }
     return true;
   });
 
@@ -607,6 +624,12 @@ export function fetchCompoundWordRows(
   return rows.filter((row) => {
     const code = String(row.code ?? '');
     if (spec.code_prefix && !matchesCodePrefix(code, spec.code_prefix, mode)) {
+      return false;
+    }
+    if (
+      spec.compound_kind === 'doubled_syllable'
+      && !rowHasUniformSyllableLetters(String(row.jyutping ?? ''), spec.width)
+    ) {
       return false;
     }
     return true;

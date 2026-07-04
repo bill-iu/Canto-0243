@@ -157,7 +157,7 @@ def preload_doubled_syllable_and_heteronym_caches() -> None:
         finally:
             db.close()
 
-    _best_effort("同音節疊字（$$）與同音異讀索引", _run)
+    _best_effort("雙聲疊韻字（$$…）與同音異讀索引", _run)
 
 
 def _run_background_phase(phase: str, fn: Callable[[], None]) -> None:

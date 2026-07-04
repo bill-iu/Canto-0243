@@ -286,10 +286,14 @@ def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
 
     if not isinstance(parsed, CompoundDoubledSyllableQuery):
         return None
-    spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="doubled_syllable")
+    spec = MatchSpec(
+        width=parsed.width,
+        code_prefix=parsed.code_prefix,
+        compound_kind="doubled_syllable",
+    )
     if parsed.rhyme_char:
         spec.slots.append(
-            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
+            SlotConstraint(pos=parsed.width - 1, kind="final_anchor", value=parsed.rhyme_char)
         )
     return spec
 

@@ -172,13 +172,15 @@ def _compound_summary(spec: MatchSpec) -> str:
             (s.value for s in spec.slots if s.kind == "final_anchor" and isinstance(s.value, str)),
             None,
         )
+        n = spec.width
+        base = f"查{n}字雙聲疊韻字（各字音節相同，聲調不限）"
         if spec.code_prefix and rhyme:
-            return f"查二字同音節疊字（碼 {spec.code_prefix}，尾字同「{rhyme}」同韻）"
+            return f"查{n}字雙聲疊韻字（碼 {spec.code_prefix}，尾字同「{rhyme}」同韻）"
         if spec.code_prefix:
-            return f"查二字同音節疊字（碼 {spec.code_prefix}）"
+            return f"查{n}字雙聲疊韻字（碼 {spec.code_prefix}）"
         if rhyme:
-            return f"查二字同音節疊字（尾字同「{rhyme}」同韻）"
-        return "查二字同音節疊字（兩字音節相同，聲調不限）"
+            return f"查{n}字雙聲疊韻字（尾字同「{rhyme}」同韻）"
+        return base
     label = "近義" if spec.compound_kind == "syn" else "反義"
     connective = spec.extra.get("connective")
     if connective:

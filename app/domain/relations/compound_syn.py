@@ -189,8 +189,8 @@ def narrow_compound_syn_literals(
     rhyme_char: str | None,
     db: Session,
 ) -> frozenset[str]:
-    """韻／聲錨查詢前縮小候選字面（如 ~~港）。"""
-    if not rhyme_char or width != 2:
+    """韻／聲錨查詢前縮小候選字面（如 ~~港、$$$你）。"""
+    if not rhyme_char or width < 2:
         return frozenset(literals)
     from app.utils.word_cache_index import get_phoneme_index_candidates
     from app.services.word_serializer import get_word_text
