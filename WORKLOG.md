@@ -99,7 +99,11 @@
 - **P0**：`start_pos = len(left_code) - target_length`（`23=你4` 錨 pos 1）；語意見 `CONTEXT.md` § 碼夾等號查詢
 - **P1–P4**：詞庫埠 · rime 單字 ensure · essay 詞頻 · curated + pron_rank 排序 ✅
 
-### 2026-07-02 — SQLite-only
+### 2026-07-04 — Windows portable exe + UI 退出
+
+- Windows 交付：`Canto-0243.exe`（PyInstaller GUI launcher，無 cmd）；`START.bat` 降為進階備用
+- `POST /shutdown`（僅 `PORTABLE=1` + localhost）；前端 header「退出 Canto-0243」
+- Header 全站精簡：搜尋教學／補關係／關於移入下拉 menu
 
 - 交付 = **離線 SQLite**；移除 PostgreSQL scaffold 與 Alembic
 - `DATABASE_URL=postgresql...` 會 fail-fast（避免誤以為支援）

@@ -43,6 +43,7 @@ GOLDEN_QUERY_JOURNEYS: tuple[QueryJourneyCase, ...] = (
     QueryJourneyCase("33~~你", "m1"),
     QueryJourneyCase("33!!你", "m1"),
     QueryJourneyCase("$$", "m1"),
+    QueryJourneyCase("$$$", "m1"),
     QueryJourneyCase("窮?潦倒=", "m1"),
     QueryJourneyCase(
         "34=我",
@@ -53,6 +54,8 @@ GOLDEN_QUERY_JOURNEYS: tuple[QueryJourneyCase, ...] = (
         seed="left_code",
     ),
     QueryJourneyCase("~開心", "syn", db="memory", seed="relation_syn"),
+    QueryJourneyCase("開心", "syn", db="memory", seed="relation_syn", min_words=1, must_include=("愉快",)),
+    QueryJourneyCase("ming4", "syn", db="memory", seed="relation_syn"),
 )
 
 
@@ -69,6 +72,7 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("門0", {"width": 2, "literal_priority": True}),
     ("33~~你", {"width": 2, "compound_kind": "syn", "code_prefix": "33"}),
     ("$$", {"width": 2, "compound_kind": "doubled_syllable"}),
+    ("$$$", {"width": 3, "compound_kind": "doubled_syllable"}),
     ("33!!你", {"width": 2, "compound_kind": "ant", "code_prefix": "33"}),
     ("窮?潦倒=", {"width": 4, "partial_rhyme_mask": True, "anchor_count": 3}),
     ("=窮?潦倒", {"width": 4, "partial_initial_mask": True, "anchor_count": 3}),

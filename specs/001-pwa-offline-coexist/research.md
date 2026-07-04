@@ -96,6 +96,7 @@ VITE_DB_BACKEND=opfs npm run dev
 
 | 裝置 | OS | Backend | D5-M1 initMs | D5-M2 probeMs | D5-M3 heap MB (init) | D5-M4 storage MB | D5-M5 飛航 OK | 備註 |
 |------|-----|---------|--------------|---------------|----------------------|------------------|---------------|------|
+| iPhone PWA | iOS 26.5.1 | sqljs + OPFS write-through | — | — | — | — | **yes** | Pages `v1.0.4-beta`；Scenario A 2026-07-03 |
 | 桌面 Chrome | Win10 | sqljs 冷啟 | 1700 | 0 | 500.6 | 0 | — | `cache.any=false` |
 | 桌面 Chrome | Win10 | sqljs 暖啟 | 624 | 0 | 561.0 | 0 | — | 同 session；dev 無 SW cache |
 | 桌面 Chrome | Win10 | opfs 首次 | 2236 | 0 | 519.3 | 106 | — | fetch + 寫入 OPFS |
@@ -115,7 +116,7 @@ VITE_DB_BACKEND=opfs npm run dev
 ### Gate（DB-5 完成勾選）
 
 - [x] 桌面 Chrome：`?benchmark=1` 產出有效 JSON（`ok: true`）
-- [ ] iOS：Scenario A 飛航查詢通過（D5-M5）— **待補**
+- [x] iOS：Scenario A 飛航查詢通過（D5-M5）— iPhone iOS 26.5.1，2026-07-03
 - [x] `sqljs` vs `opfs` 各至少一筆 D5-M1/M2 記錄於上表
 - [x] **不**翻轉 `VITE_DB_BACKEND` 預設（維持 `sqljs`；翻預設待兩版 release 穩定）
 

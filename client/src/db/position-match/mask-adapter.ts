@@ -18,6 +18,25 @@ export function matchesMaskLiteralChars(wordChar: string, mask: string): boolean
   return true;
 }
 
+/** SQLite GLOB：通配／碼槽 → ?，字面保留 */
+export function maskCharGlobPattern(mask: string): string {
+  return [...mask]
+    .map((ch) => (isWildcardChar(ch) || /\d/.test(ch) ? '?' : ch))
+    .join('');
+}
+
+/** 首段連續字面（至第一個通配或碼槽） */
+export function maskFixedLiteralPrefix(mask: string): string {
+  const prefix: string[] = [];
+  for (const ch of mask) {
+    if (isWildcardChar(ch) || /\d/.test(ch)) {
+      break;
+    }
+    prefix.push(ch);
+  }
+  return prefix.join('');
+}
+
 export function requiredCodesFromSpec(spec: MatchSpec): Array<string | null> {
   const codes: Array<string | null> = Array(spec.width).fill(null);
   const mask = spec.mask ?? '';

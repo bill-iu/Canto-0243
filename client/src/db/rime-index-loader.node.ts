@@ -16,18 +16,50 @@ const VOWEL_RHYME_LETTERS = new Set(['a', 'e', 'i', 'o', 'u']);
 
 type RimeEntry = { letters: string; final: string; token: string };
 
+function rankValue(pronRank: string): number {
+  if (pronRank === '預設') {
+    return 0;
+  }
+  if (pronRank === '常用') {
+    return 1;
+  }
+  if (pronRank === '罕見') {
+    return 2;
+  }
+  return 99;
+}
+
+function tokensToRimeEntries(jyut: string): RimeEntry[] {
+  const entries: RimeEntry[] = [];
+  for (const token of jyut.split(/\s+/)) {
+    const letters = syllableLetters(token);
+    if (!letters) {
+      continue;
+    }
+    let final = '';
+    if (isStandaloneNasalSyllableToken(token)) {
+      final = letters;
+    } else {
+      const [, finals] = splitJyutping(token);
+      final = finals[0] ?? '';
+    }
+    entries.push({ letters, final, token });
+  }
+  return entries;
+}
+
 function parseCharCsvEntries(csvText: string): RimeEntry[] {
-  const out: RimeEntry[] = [];
+  const rowsByChar = new Map<string, Array<{ rank: number; jyut: string }>>();
   const lines = csvText.split(/\r?\n/);
   if (!lines.length) {
-    return out;
+    return [];
   }
   const header = lines[0]!.split(',');
   const charIdx = header.indexOf('char');
   const jyutIdx = header.indexOf('jyutping');
   const rankIdx = header.indexOf('pron_rank');
   if (jyutIdx < 0) {
-    return out;
+    return [];
   }
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i]!.trim();
@@ -38,22 +70,20 @@ function parseCharCsvEntries(csvText: string): RimeEntry[] {
     const ch = (cols[charIdx] ?? '').trim();
     const jyut = (cols[jyutIdx] ?? '').trim();
     const pronRank = rankIdx >= 0 ? (cols[rankIdx] ?? '').trim() : '預設';
-    if (!ch || !/^[\u4e00-\u9fff]$/.test(ch) || pronRank !== '預設' || !jyut) {
+    if (!ch || !/^[\u4e00-\u9fff]$/.test(ch) || !jyut) {
       continue;
     }
-    for (const token of jyut.split(/\s+/)) {
-      const letters = syllableLetters(token);
-      if (!letters) {
-        continue;
-      }
-      let final = '';
-      if (isStandaloneNasalSyllableToken(token)) {
-        final = letters;
-      } else {
-        const [, finals] = splitJyutping(token);
-        final = finals[0] ?? '';
-      }
-      out.push({ letters, final, token });
+    const bucket = rowsByChar.get(ch) ?? [];
+    bucket.push({ rank: rankValue(pronRank), jyut });
+    rowsByChar.set(ch, bucket);
+  }
+  const out: RimeEntry[] = [];
+  for (const rows of rowsByChar.values()) {
+    const preset = rows.filter((r) => r.rank === 0);
+    const minRank = Math.min(...rows.map((r) => r.rank));
+    const pickFrom = preset.length ? preset : rows.filter((r) => r.rank === minRank);
+    for (const row of pickFrom) {
+      out.push(...tokensToRimeEntries(row.jyut));
     }
   }
   return out;

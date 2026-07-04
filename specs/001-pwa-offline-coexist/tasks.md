@@ -74,7 +74,7 @@
 
 ## Phase 7: Validation & Handoff
 
-- [ ] T018 跑完 `specs/001-pwa-offline-coexist/quickstart.md` 全部情境（A/B/C），記錄結果（至少 iOS + Android 各一次）
+- [ ] T018 跑完 `specs/001-pwa-offline-coexist/quickstart.md` 全部情境（A/B/C），記錄結果（至少 iOS + Android 各一次）— **iOS ✅ 2026-07-03**；Android ⏳；B1/B2 ⏳；C 肉眼待 portable zip
 - [x] T019 回填必要的 docs（若新增部署/維護步驟，更新對應文件入口點，保持「單 pipeline」敘事一致）— `docs/pwa.md`、`quickstart.md` Scenario D
 
 ---
@@ -88,8 +88,90 @@
 | DB-3 `VITE_DB_BACKEND=opfs` | ✅ | 預設仍 `sqljs` |
 | DB-4 雙路還原 | ✅ | OPFS → SW → network |
 | DB-5 benchmark | ✅ 桌面 | `?benchmark=1`；見 `research.md` |
-| D5-M5 iOS 飛航 | ⏳ | quickstart Scenario D 步驟 3 |
-| wa-sqlite VFS（降 RAM） | ⏳ | POC 在 `client/poc/`；非本 release blocker |
+| D5-M5 iOS 飛航 | ✅ | iPhone iOS 26.5.1，2026-07-03 |
+| wa-sqlite VFS（降 RAM） | ✅ | POC 在 `client/poc/`；非本 release blocker |
+
+---
+
+## Phase 8: Visual parity（PWA ↔ Portable light）
+
+**範圍**：搜尋殼 markup + 全站 guide/about/benchmark 狀態；**不含**共用 CSS 抽離（D）、**不含** dark mode、**不含** Portable 頂欄 ghost-button（教學／關於維持在模式選單內）。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-V01 | 複製 `frontend/open-design.css` → `client/src/open-design.css`；`frontend/index.css` → `client/src/shell.css` | ✅ |
+| T-V02 | `client/index.html`：`theme-color` `#EBDFD0`、Google Fonts、`fonts-ready` 腳本 | ✅ |
+| T-V03 | `BrandSvgDefs` + gate 全屏遮罩（ink 進度、開得工 handoff；`failed`/`not_ready` 不撤 + 重試） | ✅ |
+| T-V04 | `App.tsx`：`app-shell` / `app-bar` / `search-panel` markup；gate 後**不**常駐 header 離線就緒 | ✅ |
+| T-V05 | `GuideView` / `AboutView`：`guide-hero` 結構；About 顯示 `VITE_LEXICON_VERSION` | ✅ |
+| T-V06 | `BenchmarkApp`：open-design token + 最小 shell | ✅ |
+| T-V07 | `pwa-app.css`：結果列／syn 適配；移除 `App.css` dark mode | ✅ |
+| T-V08 | `quickstart.md` Scenario E 驗收 | ✅ |
+
+**驗收**：見 [quickstart.md § Scenario E](./quickstart.md#scenario-e-p2-visual-parity-gate--shell)。
+
+---
+
+## Phase 9: PWA 查詢分頁（in-app tabs）
+
+**範圍**：PWA 一律 in-app 分頁；Portable **零改**；狀態層 import `frontend/query-tabs-state.mjs` + `search-navigation.mjs`（R-A）；pill 分頁列（UI-A）；M2（含回溯鏈）；results 對齊 Portable S-A。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T01 | Vite alias → shared `query-tabs-state.mjs` / `search-navigation.mjs` | ✅ |
+| T-T02 | 薄化 `search-url.ts` → shared `buildUrlSearchParams` / `parseUrlSearchParams` | ✅ |
+| T-T03 | `useQueryTabs` + pill `QueryTabsBar`；`sessionStorage` `canto0243:query-tabs` | ✅ |
+| T-T04 | `App.tsx`：active tab ↔ 搜尋／guide／about；切 tab 記憶體保留 results | ✅ |
+| T-T05 | `popstate` 回溯鏈 + URL 只反映作用中分頁 | ✅ |
+| T-T06 | `quickstart.md` Scenario F 驗收 | ✅ |
+
+**刻意不含**：拖曳重排、Alt+N/W（→ Phase 10）；iPhone touch 拖曳（→ Phase 10b）；relation/corrections view（PWA 不 expose）。
+
+**驗收**：見 [quickstart.md § Scenario F](./quickstart.md#scenario-f-p2-pwa-query-tabs)。
+
+---
+
+## Phase 10: PWA 查詢分頁進階（桌面）
+
+**範圍**：只改 `client/`；Portable **零改**。桌面瀏覽器 PWA：pill **滑鼠**拖曳重排 + Alt+N/W + session **列順序**還原；iPhone **唔做** Alt、**唔做** touch 拖曳（→ Phase 10b）。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T10 | `usePillTabDrag`（pointer、`mouse` only）+ `reorderTab` | ✅ |
+| T-T11 | 全局 Alt+N（新空白搜尋分頁）／Alt+W（關作用中分頁） | ✅ |
+| T-T12 | `quickstart.md` Scenario G 驗收 | ✅ |
+
+**驗收**：見 [quickstart.md § Scenario G](./quickstart.md#scenario-g-p2-pwa-tab-reorder--shortcuts)。
+
+---
+
+## Phase 10b: PWA 查詢分頁 — touch 拖曳
+
+**範圍**：`usePillTabDrag` touch 分支；**長按 `LONG_PRESS_MS=400`** 進 drag；移動 **>10px** 未滿時長取消（scroll）；短 tap 切 tab；**+** 不參與。Portable **零改**。P1 驗收：**iPhone 主畫面 PWA**；Android 同 code、待驗。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-T20 | touch 長按拖曳 + scroll 分工 + 視覺回饋 | ✅ |
+| T-T21 | `quickstart.md` Scenario G-mobile | ✅ |
+
+**刻意不含**：Alt+N/W（桌面 Phase 10）；haptic；Portable 改動。
+
+**驗收**：見 [quickstart.md § Scenario G-mobile](./quickstart.md#scenario-g-mobile-p2-pwa-tab-touch-reorder)。
+
+---
+
+## Phase 11: 全端共用 CSS（frontend SSOT）
+
+**範圍**：`frontend/` 為 canonical CSS；PWA 刪 `client/src/` 複製、Vite import `../frontend/*`；Portable `<link>` 對齊；results/syn 合併入 `workbench.css`（dual selector）；`check_seams.py` 防 drift。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-C11 | `frontend/index.css` → `shell.css`；新建 `workbench.css` | ✅ |
+| T-C12 | PWA：`root.css` + import frontend CSS；`pwa-app.css` 縮至 pill tabs | ✅ |
+| T-C13 | Portable：`index.html` link order（open-design → shell → workbench → tabs） | ✅ |
+| T-C14 | `check_seams.py`：無 client duplicate + import path 檢查 | ✅ |
+
+**Load order**：`open-design.css` → `shell.css` → `workbench.css` →（Portable `query-tabs.css` / PWA `root.css` + `pwa-app.css`）。
 
 ---
 
@@ -97,9 +179,9 @@
 
 | 項目 | 優先 | 說明 |
 |------|------|------|
-| **T018** quickstart A/B/C 實機 | P1 | iOS Safari + Android Chrome 各跑一輪 |
-| **D5-M5** iOS 飛航探針 | P2 | `research.md` gate 最後一項 |
-| **portable zip** 上傳 release | P3 | smoke 已修；用戶明確不補 zip |
+| **T018** quickstart A/B/C 實機 | P1 | iOS ✅；Android ⏳ |
+| **D5-M5** iOS 飛航探針 | P2 | ✅ 2026-07-03 |
+| **portable zip** 上傳 release | P3 | 補 `v1.0.4-beta` zip（本次） |
 | **production SW cache** 詞庫命中 | P3 | dev 無 SW cache；Pages 部署後可選驗 |
 | **PR dev→main** | 維護 | `main` 有分支保護；合併需用戶確認 |
 
@@ -110,3 +192,9 @@
 - **Bug**：`useSearch` 內再次 `useDB()` → 搜尋 state 永遠 `not ready` → UI 顯示「未找到結果」
 - **Fix**：`DBProvider` 共用 context；`validateOfflineReadiness` 驗證結果含 `事業` 字面
 - **portable smoke**：反義詞 `痛苦` 接受 `開心` 或 `高興`
+
+## iOS 飛航修復（2026-07-03）
+
+- **Bug**：`sqljs` 預設路徑只載入 RAM，未寫 OPFS；iOS 重開飛航時 SW 快取不可靠 → 開庫失敗
+- **Fix**：`sqljs` 成功開庫後 write-through 至 OPFS；Ready 前驗證 OPFS 已落地；`sql-wasm-browser.wasm` 納入 SW 快取
+- **用戶操作**：部署後需 **連網再開一次**，待「離線就緒」完成 OPFS 寫入，再測飛航

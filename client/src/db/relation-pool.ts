@@ -5,6 +5,7 @@
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
+import { getCuratedAntCompounds } from './compound.ts';
 import { appendRuntimeDerivedAntPool } from './derived-ant.ts';
 
 export type RelationKind = 'syn' | 'ant' | 'semantic_related';
@@ -436,6 +437,19 @@ export function buildRelationPool(
   if (includeStatic) {
     staticSyns = filterStaticWords(getStaticSynonyms(q));
     staticAnts = filterStaticWords(getStaticAntonyms(q));
+    if (q.length === 1) {
+      const extra: string[] = [];
+      for (const compound of getCuratedAntCompounds()) {
+        if (compound.length !== 2 || !compound.includes(q)) {
+          continue;
+        }
+        const other = compound[0] === q ? compound[1]! : compound[0]!;
+        if (other && other !== q) {
+          extra.push(other);
+        }
+      }
+      staticAnts = [...new Set([...staticAnts, ...extra])];
+    }
   }
   const morphemeChars =
     q.length >= 2
@@ -498,6 +512,20 @@ export function buildRelationPool(
   return { query: q, syns: synPool, ants: antPool, semantic: semanticPool };
 }
 
+/** Port of pool_projection.relation_pool_page — flat syns+ants+semantic slice */
+export function relationPoolPage(
+  db: Database,
+  seed: string,
+  limit: number,
+  offset: number,
+): RelationPoolItem[] {
+  const pool = buildRelationPool(db, seed);
+  const combined = [...pool.syns, ...pool.ants, ...pool.semantic];
+  const safeOffset = Math.max(0, offset);
+  const safeLimit = limit < 0 ? 0 : limit;
+  return combined.slice(safeOffset, safeOffset + safeLimit);
+}
+
 export function relationLookupItems(
   db: Database,
   seed: string,
@@ -521,10 +549,24 @@ export function relationLookupItems(
   });
 
   if (codePrefix) {
+    if (seed.length !== codePrefix.length) {
+      return [];
+    }
     const variants = new Set(getCodeVariants(codePrefix, mode === 'm2' || mode === '02493' ? 'm2' : 'm1'));
-    unique = unique.filter(
-      (item) => variants.has(item.code) && item.char.length === codePrefix.length,
-    );
+    const stmt = db.prepare('SELECT code FROM words WHERE char = ? LIMIT 20');
+    stmt.bind([seed]);
+    let seedOk = false;
+    while (stmt.step()) {
+      const code = String((stmt.getAsObject() as Record<string, unknown>).code ?? '');
+      if (variants.has(code)) {
+        seedOk = true;
+        break;
+      }
+    }
+    stmt.free();
+    if (!seedOk) {
+      return [];
+    }
   }
 
   unique.sort((a, b) => (a._sort ?? 99) - (b._sort ?? 99));

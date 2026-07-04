@@ -66,9 +66,12 @@ export async function resolveLexiconBytes(
     return { bytes: fromOpfs, source: 'opfs' };
   }
 
-  const hadSwCache = await isSwLexiconCached(dbUrl);
-  const bytes = await fetchLexiconFromUrl(dbUrl);
   const offline = typeof navigator !== 'undefined' && !navigator.onLine;
+  const hadSwCache = await isSwLexiconCached(dbUrl);
+  if (offline && !hadSwCache) {
+    throw new Error('Lexicon not cached for offline use (OPFS and SW both missing)');
+  }
+  const bytes = await fetchLexiconFromUrl(dbUrl);
   const source: LexiconRestoreSource =
     hadSwCache || (offline && bytes.byteLength > 0) ? 'sw-cache' : 'network';
   return { bytes, source };

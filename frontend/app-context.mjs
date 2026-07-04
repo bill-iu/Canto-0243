@@ -103,12 +103,10 @@ export function setAppSearchReady(ready) {
 
 export const $ = {
   homeBtn: document.getElementById("homeBtn"),
-  guideTopBtn: document.getElementById("guideTopBtn"),
-  relationTopBtn: document.getElementById("relationTopBtn"),
-  aboutTopBtn: document.getElementById("aboutTopBtn"),
+  portableExitBtn: document.getElementById("portableExitBtn"),
   guideMenuBtn: document.getElementById("guideMenuBtn"),
   relationMenuBtn: document.getElementById("relationMenuBtn"),
-  backToSearchBtn: document.getElementById("backToSearchBtn"),
+  aboutMenuBtn: document.getElementById("aboutMenuBtn"),
   modeMenuButton: document.getElementById("modeMenuButton"),
   modeMenu: document.getElementById("modeMenu"),
   currentModeLabel: document.getElementById("currentModeLabel"),
@@ -165,7 +163,14 @@ export const $ = {
 
 export const searchCache = new Map();
 
+export function readPortableBootstrapFlag() {
+  return document.querySelector('meta[name="canto-portable"]')?.content === "1";
+}
+
 export function applyAppTitle(portable = false) {
   const title = portable ? `${APP_TITLE_BASE}${APP_TITLE_PORTABLE_SUFFIX}` : APP_TITLE_BASE;
   document.title = title;
+  if ($.portableExitBtn) {
+    $.portableExitBtn.hidden = !portable;
+  }
 }

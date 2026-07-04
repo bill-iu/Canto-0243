@@ -12,11 +12,17 @@ Windows（免安裝）
 1. 解壓縮整個資料夾
    Extract the entire folder.
 
-2. 雙擊 START.bat
-   Double-click START.bat.
+2. 雙擊 Canto-0243.exe（推薦；無 cmd 視窗）
+   Double-click Canto-0243.exe (recommended; no console window).
+
+   進階／疑難排解：雙擊 START.bat
+   Advanced / troubleshooting: double-click START.bat.
 
 3. 無需安裝 Python；瀏覽器會自動開啟搜尋頁
    No Python install required; your browser opens the search page.
+
+4. 退出：查韻介面 header「退出 Canto-0243」
+   Exit: use “退出 Canto-0243” in the app header (portable only).
 
 
 macOS（免安裝）
@@ -75,8 +81,8 @@ Linux
 - macOS Gatekeeper：確認 tar 與晶片相符（arm64 / x86_64）；被擋時右鍵→「打開」，或 Sequoia 15：系統設定→隱私與安全性→仍要開啟
   macOS Gatekeeper: match tar to chip; right-click → Open, or Sequoia 15: System Settings → Privacy & Security → Open Anyway
 
-- 關閉服務：關閉 Terminal 視窗，或於其中按 Ctrl+C
-  Stop: close the console window, or quit the .app from the Dock.
+- 關閉服務：查韻介面 header「退出 Canto-0243」；或工作管理員結束 pythonw.exe
+  Stop: use “退出 Canto-0243” in the app header, or end pythonw.exe in Task Manager.
 
 
 重新打包（開發者）/ Rebuild (developers)

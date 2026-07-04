@@ -18,7 +18,7 @@
 ## Scenario A (P1): First online load → offline ready → fully offline search
 
 1. 用手機開啟 PWA（在線）
-2. 等到介面顯示「離線就緒」（見離線就緒契約）
+2. 等到介面顯示「資料庫離線就緒」（見離線就緒契約；Ready 狀態 UI 文案）
 3. 執行至少 1 次查詢並看到結果
 4. 將手機切換到飛航模式（完全離線）
 5. 從主畫面重新開啟 PWA
@@ -76,4 +76,109 @@
 - Benchmark 頁可重現、JSON 可複製到 research 表
 - 飛航模式下探針查詢有結果
 - Safari 無 `performance.memory` 時，以 Web Inspector Memory 手動補 D5-M3
+
+## Scenario E (P2): Visual parity — gate + shell
+
+**Prerequisites**: `npm run dev`（`client/`）；桌面 Chrome 或手機 Safari。
+
+1. **冷啟 gate**
+   - 清除該 origin 的 `sessionStorage`（或無痕視窗首次開啟）
+   - 開啟 PWA 根 URL
+   - 應見全屏 gate：SVG wordmark、ink 進度、「執緊啲字…」文案
+   - 離線就緒後短暫顯示「開得工！」再 handoff 至搜尋殼
+2. **Gate 後 header**
+   - header **不**應常駐「離線就緒」chip（僅 brand + 模式選單下拉）
+   - 模式選單內可進入「搜尋教學」「關於」（**無** Portable 頂欄 ghost-button）
+3. **搜尋殼**
+   - hero「ONE·搵·韻」、warm paper 背景、`search-panel` 圓角輸入與 primary 搜尋鈕
+   - 查 `事業`、`?+m?` 有結果；詞條 grid 視覺與 Portable light 一致（允許 PWA 多 code/jyutping 標題列）
+4. **Guide / About**
+   - `guide-hero` 排版；About 頁顯示詞庫版本（與 release 一致）
+5. **Benchmark**（`?benchmark=1`）
+   - 使用 open-design token 與最小 shell（不要求 pixel-perfect）
+
+**Failure paths**
+- 離線且未就緒：gate **不撤**，顯示需連網／重試
+- `failed`：gate 保留錯誤訊息 + 重試鈕
+
+**Expected outcomes**
+- light 視覺與 Portable 同源 CSS；行為見 [offline-readiness.md](./contracts/offline-readiness.md)
+
+---
+
+## Scenario F (P2): PWA 查詢分頁
+
+**Prerequisites**: 離線就緒（gate handoff 完成）；桌面 Chrome 或 iPhone 主畫面 PWA。
+
+1. **新增分頁**
+   - 點分頁列 `+` → 新「新查詢」分頁；≥1 分頁時可 `×` 關閉（不可關到零）
+2. **並行查詢**
+   - 分頁 A 查 `事業`、分頁 B 查 `香港` → 切換分頁應**即時**顯示各自結果（同 session **唔**重查）
+3. **session 還原**
+   - 兩個以上分頁各有查詢 → **同 tab 內**重整 → 分頁列與標籤還原；**只**作用中分頁自動重跑搜尋
+4. **URL**
+   - 切換作用中分頁 → 網址只反映該分頁 `q` / `mode` / `view`；Guide/About 各至多一 singleton 分頁
+5. **回溯鏈**
+   - 同一搜尋分頁：查 A → 再查 B → 瀏覽器「返回」→ 回到 A 的結果（或空查詢）
+
+**Failure paths**
+- 僅剩一個分頁時：`×` 不可用或無效
+
+**Expected outcomes**
+- 行為對齊 `CONTEXT.md` §查詢分頁；契約測試 `tests/query_tabs_state_test.mjs` 仍 pass
+
+---
+
+## Scenario G (P2): PWA 分頁重排 + 快捷鍵（桌面）
+
+**Prerequisites**：離線就緒；**桌面 Chrome** 開 https://bill-iu.github.io/Canto-0243/（非 iPhone）。
+
+1. **滑鼠拖曳**
+   - 開 ≥3 個搜尋分頁（不同查詢字）
+   - 用滑鼠拖曳 pill 改變順序；按住時該分頁變作用中
+   - **+** 鈕不可拖曳
+2. **Alt+N / Alt+W**
+   - Alt+N → 新空白「新查詢」分頁並聚焦搜尋框
+   - Alt+W → 關閉作用中分頁（Guide/About 亦適用）；僅剩 1 分頁時無效
+3. **session 列順序**
+   - 拖曳後同 tab 重整 → 分頁列順序還原
+
+**Out of scope（Phase 10b）**：iPhone 長按拖曳；iPhone 不驗 Alt。
+
+**Expected outcomes**
+- `reorderTab` / session 序列化與 Portable 共用契約一致
+
+---
+
+## Scenario G-mobile (P2): iPhone touch 分頁重排
+
+**Prerequisites**：iPhone **主畫面 PWA**；離線就緒。Android 同 code path，標「待驗」。
+
+1. **短 tap** → 切換作用中分頁（同 Phase 9）
+2. **長按 pill ≥400ms**（手指移動 ≤10px）→ pill 放大／深 border；該分頁變作用中
+3. **長按後橫拖** → 重排；**+** 不可長按拖
+4. **長按未滿時橫滑 >10px** → 取消長按，分頁列可 scroll（唔進 drag）
+5. **session 列順序** → 拖後同 tab 重整，順序還原
+6. **不**驗 Alt+N/W
+
+**Expected outcomes**
+- 與 Phase 10 共用 `reorderTab` / session 契約
+
+---
+
+## Results（2026-07-03 T018）
+
+**環境**：https://bill-iu.github.io/Canto-0243/（`dev` deploy + `v1.0.4-beta` 詞庫）  
+**裝置**：iPhone iOS **26.5.1**（主畫面 PWA）；Android **pending**
+
+| 情境 | 結果 | 備註 |
+|------|------|------|
+| **A** 在線就緒 → 飛航查詢 | **pass** | UI 顯示「資料庫離線就緒」；飛航重開後查 `事業` 成功 |
+| **B3** 兩路皆空 → 復原 | **韌性 pass / strict 未重現** | 飛航下刪網站資料後仍就緒（OPFS 存活）；連網後 SW 回填。符合 DB-4 雙路設計 |
+| **B1/B2** | **pending** | 待 Android 或桌面 Chrome |
+| **C** portable ↔ PWA | **parity 腳本 pass** | `pwa_golden_parity.py --gate all` 20/20；肉眼對照待 `v1.0.4-beta` portable zip |
+| **P6 smoke** | **pass** | 桌面瀏覽器代測：mode menu、`?view=guide/about`、URL sync |
+| **D5-M5** iOS 飛航 | **pass** | 含於 Scenario A |
+
+**Deploy run**：[Actions #28651396099](https://github.com/bill-iu/Canto-0243/actions/runs/28651396099)（`dev` + `v1.0.4-beta`）
 

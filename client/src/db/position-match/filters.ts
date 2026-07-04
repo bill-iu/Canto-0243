@@ -7,7 +7,7 @@ import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { queryWordsByEqualsSpec } from './equals-filters.ts';
 import { matchesMaskLiteralChars } from './mask-adapter.ts';
-import { getCandidatesForLength, getCompoundCandidatesForSpec } from './sources.ts';
+import { getCandidatesForLength, getCandidatesWithLiteralAt, getCompoundCandidatesForSpec } from './sources.ts';
 import type { MatchSpec, SlotConstraint } from './spec.ts';
 import { getEqualsSpan } from './spec.ts';
 import { getRhymeFinals, getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
@@ -50,34 +50,21 @@ function equalsAuthoritativeRow(db: Database, char: string): WordRow | null {
   return row;
 }
 
-function anchorPhonemeOptions(
+export function anchorPhonemeOptions(
   db: Database,
   char: string,
   dimension: 'final' | 'initial',
 ): Set<string> {
   const options = new Set<string>();
-  const row = equalsAuthoritativeRow(db, char);
-  if (row) {
-    const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
-    if (parts.length) {
-      options.add(parts[0]!);
-    }
-  }
   const stmt = db.prepare(
-    'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
+    'SELECT char, initials, finals, jyutping FROM words WHERE char = ? LIMIT 50',
   );
-  stmt.bind([`%${char}%`]);
+  stmt.bind([char]);
   while (stmt.step()) {
     const hit = stmt.getAsObject() as WordRow;
-    const text = getWordText(hit);
-    for (let idx = 0; idx < text.length; idx++) {
-      if (text[idx] !== char) {
-        continue;
-      }
-      const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
-      if (parts.length > idx && parts[idx]) {
-        options.add(parts[idx]!);
-      }
+    const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
+    if (parts.length) {
+      options.add(parts[0]!);
     }
   }
   stmt.free();
@@ -134,12 +121,8 @@ function contextualPhonemeOptionsAtPosition(
   dimension: 'final' | 'initial',
 ): Set<string> {
   const options = new Set<string>();
-  const [rows] = getCandidatesForLength(db, width);
+  const rows = getCandidatesWithLiteralAt(db, width, pos, anchorChar);
   for (const row of rows) {
-    const text = getWordText(row);
-    if (text.length !== width || text[pos] !== anchorChar) {
-      continue;
-    }
     const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
     if (parts.length > pos && parts[pos]) {
       options.add(parts[pos]!);

@@ -23,18 +23,12 @@ import {
   withResultClickQuery,
 } from "./search-navigation.mjs";
 
-function emptySearchResultsHtml(input, hint, mode) {
+function emptySearchResultsHtml(input, hint, _mode) {
   const q = escapeHtml(input);
-  if (mode === "m1" || mode === "m2") {
-    if (hint) {
-      return `<p class="info"><strong>搵唔到</strong><br>${escapeHtml(hint)}</p>`;
-    }
-    return `<p class="info"><strong>搵唔到「${q}」。</strong></p>`;
-  }
   if (hint) {
-    return `<p class="info"><strong>找不到「${q}」。</strong><br>${escapeHtml(hint)}</p>`;
+    return `<p class="info"><strong>搵唔到</strong><br>${escapeHtml(hint)}</p>`;
   }
-  return `<p class="info"><strong>找不到「${q}」。</strong><br>試試改用較短的詞、加上 <code translate="no">=</code> 查韻，或切換搜尋模式。</p>`;
+  return `<p class="info"><strong>搵唔到「${q}」。</strong></p>`;
 }
 
 function shouldShowLoadMore(tab) {

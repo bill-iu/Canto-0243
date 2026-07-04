@@ -1,13 +1,15 @@
 import os
+import threading
+from pathlib import Path
 
 import uvicorn
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import FileResponse, JSONResponse, Response
+from starlette.responses import FileResponse, HTMLResponse, JSONResponse, Response
 
 from app.routers.lexicon import router as lexicon_router
 from app.routers.relation import router as relation_router
@@ -44,6 +46,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+FRONTEND_INDEX = Path("frontend/index.html")
+
+
+def _is_portable() -> bool:
+    return os.getenv("PORTABLE", "").lower() not in ("", "0", "false", "no")
+
+
+@app.get("/frontend/index.html", include_in_schema=False)
+async def serve_frontend_index() -> HTMLResponse:
+    """Portable 模式注入 meta，令 reload 後即刻顯示退出按鈕。"""
+    html = FRONTEND_INDEX.read_text(encoding="utf-8")
+    if _is_portable():
+        tag = '<meta name="canto-portable" content="1">'
+        if 'name="canto-portable"' not in html:
+            html = html.replace("<head>", f"<head>\n  {tag}", 1)
+    return HTMLResponse(
+        html,
+        headers={"Cache-Control": "no-cache, must-revalidate", "Pragma": "no-cache"},
+    )
+
+
 app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 app.include_router(router)
 app.include_router(relation_router)
@@ -66,7 +89,7 @@ async def home():
     base = f"http://{host}:{port}"
     return {
         "status": "running",
-        "portable": bool(os.getenv("PORTABLE")),
+        "portable": _is_portable(),
         "port": port,
         "frontend": f"{base}/frontend/index.html",
         "api_test": f"{base}/words/search/?q=23",
@@ -80,7 +103,32 @@ async def root_favicon() -> FileResponse:
 
 @app.get("/ready")
 async def preload_ready():
-    return get_readiness_snapshot()
+    snap = get_readiness_snapshot()
+    snap["portable"] = _is_portable()
+    return snap
+
+
+def _client_is_localhost(request: Request) -> bool:
+    if not request.client:
+        return False
+    host = request.client.host.strip("[]")
+    return host in ("127.0.0.1", "localhost", "::1") or host.startswith("127.")
+
+
+@app.post("/shutdown")
+async def portable_shutdown(request: Request):
+    """Portable-only graceful exit (localhost callers)."""
+    if not _is_portable():
+        raise HTTPException(status_code=403, detail="shutdown only available in portable mode")
+    if not _client_is_localhost(request):
+        raise HTTPException(status_code=403, detail="shutdown only allowed from localhost")
+
+    def _exit_soon() -> None:
+        # ponytail: portable 退出用 _exit；Windows 上 SIGTERM 對 uvicorn 不可靠
+        threading.Timer(0.25, lambda: os._exit(0)).start()
+
+    _exit_soon()
+    return {"ok": True, "message": "shutting down"}
 
 
 if __name__ == "__main__":

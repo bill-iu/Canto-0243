@@ -43,7 +43,7 @@
 
 | 路徑 | 職責 | 典型生命週期 |
 |------|------|----------------|
-| **OPFS** | 版本化檔案 `lyrics-{version}.db` 落地（`VITE_DB_BACKEND=opfs` 時必寫入） | 瀏覽器儲存空間；清除「網站資料」可能一併刪除 |
+| **OPFS** | 版本化檔案 `lyrics-{version}.db` 落地（`sqljs` 與 `opfs` 成功開庫後皆寫入） | 瀏覽器儲存空間；清除「網站資料」可能一併刪除 |
 | **Service Worker `CacheFirst`** | HTTP 層快取 `lyrics.{version}.db`（含 `lyrics.dev.db`） | Workbox `database-cache`；與 HTML/JS 快取策略分開 |
 
 **復原優先順序**（實作：`client/src/db/lexicon-restore.ts`）：
@@ -56,7 +56,7 @@
 
 **`VITE_DB_BACKEND` 差異**：
 
-- `sqljs`（預設）：開庫 bytes 來自上述 1→2→3；整檔進 RAM
+- `sqljs`（預設）：開庫 bytes 來自上述 1→2→3；整檔進 RAM；**首次成功開庫後寫入 OPFS**（供 iOS 飛航冷啟）
 - `opfs`：優先 OPFS 開庫；若 OPFS 缺失則從 2 或 3 取得並**寫入 OPFS** 後再開
 
 ### Scenario B (cache evicted)
