@@ -93,7 +93,7 @@ function App() {
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
-  const [gateOpen, setGateOpen] = useState(true);
+  const [gateOpen, setGateOpen] = useState(false);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
   const searchKeyRef = useRef('');
@@ -192,7 +192,6 @@ function App() {
     if (!sessionStorage.getItem(LANDING_SESSION_KEY)) {
       sessionStorage.setItem(LANDING_SESSION_KEY, '1');
     }
-    // Also force gate to be considered open=false for reveal
   }
 
   // Apply theme + lang (shared with vanilla via app-context)
