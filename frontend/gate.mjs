@@ -2,6 +2,7 @@ import {
   $,
   shell,
   setAppSearchReady,
+  applyAppTitle,
   REDUCED_MOTION,
   LANDING_VARIANT,
   LANDING_SESSION_KEY,
@@ -267,6 +268,9 @@ async function waitForPreloadReady() {
       if (!res.ok) throw new Error(`ready ${res.status}`);
       const data = await res.json();
       lastReadySnapshot = data;
+      if (typeof data.portable === "boolean") {
+        applyAppTitle(data.portable);
+      }
       if (data.gate_ready) {
         setGateInkProgress(1);
         $.preloadLabel.textContent = formatGateStatusLabel(data);

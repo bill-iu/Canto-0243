@@ -104,6 +104,20 @@ def _open_browser(boot_url: str) -> None:
     webbrowser.open(boot_url, new=2)
 
 
+def _probe_home_portable(base_url: str) -> bool | None:
+    """若後端已在跑，回傳 portable 旗標；連線失敗則 None。"""
+    try:
+        import json
+        import urllib.error
+        import urllib.request
+
+        with urllib.request.urlopen(f"{base_url.rstrip('/')}/", timeout=1.5) as resp:
+            data = json.loads(resp.read().decode())
+            return bool(data.get("portable"))
+    except Exception:
+        return None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Canto-0243 local launch (start.sh / START.*)")
     parser.add_argument("--root", type=Path, default=None, help="Repo / portable bundle root")
@@ -159,8 +173,9 @@ def main() -> int:
     boot_url = f"{html_url}?boot={int(time.time())}"
 
     if args.gui and _html_ready(python, root, html_url, timeout="1"):
-        _open_browser(boot_url)
-        return 0
+        if _probe_home_portable(base_url) is not False:
+            _open_browser(boot_url)
+            return 0
 
     if not args.silent:
         print(msgs["starting"], flush=True)

@@ -419,11 +419,6 @@ html.fonts-ready .gate-brand {
   font-size: 1.05rem;
   color: var(--ink-muted, #444);
 }
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-    }
 
 .guide-intro code {
       font-family: "JetBrains Mono", ui-monospace, monospace;

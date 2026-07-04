@@ -103,6 +103,12 @@ class TestLocalLaunchSeam(unittest.TestCase):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertIn('"/shutdown"', source)
         self.assertIn("PORTABLE", source)
+        self.assertIn("serve_frontend_index", source)
+        self.assertIn('name="canto-portable"', source)
+
+    def test_ready_includes_portable_flag(self):
+        source = MAIN_PATH.read_text(encoding="utf-8")
+        self.assertIn('snap["portable"]', source)
 
     def test_index_header_menu_only_plus_portable_exit(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
@@ -115,6 +121,7 @@ class TestLocalLaunchSeam(unittest.TestCase):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
         self.assertIn("--gui", source)
         self.assertIn("_html_ready", source)
+        self.assertIn("_probe_home_portable", source)
 
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

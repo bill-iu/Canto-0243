@@ -3,6 +3,7 @@
   SEARCH_RING_BLUR_MS,
   shell,
   applyAppTitle,
+  readPortableBootstrapFlag,
   parseUrlSearchParams,
   createGuideTab,
   createRelationTab,
@@ -293,14 +294,23 @@ window.addEventListener("popstate", (event) => {
   }
 });
 
+async function refreshPortableChrome() {
+  try {
+    const res = await fetch("/", { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    applyAppTitle(Boolean(data?.portable));
+  } catch {
+    /* ponytail: meta tag from /frontend/index.html is the reload fallback */
+  }
+}
+
 (async function init() {
+  applyAppTitle(readPortableBootstrapFlag());
+  void refreshPortableChrome();
   await waitForPreloadReady();
   stripLauncherBootFromUrl();
-
-  fetch("/")
-    .then((res) => (res.ok ? res.json() : null))
-    .then((data) => applyAppTitle(Boolean(data && data.portable)))
-    .catch(() => {});
+  await refreshPortableChrome();
 
   $.modeMenu.hidden = true;
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));

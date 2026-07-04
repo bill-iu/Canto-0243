@@ -163,6 +163,10 @@ export const $ = {
 
 export const searchCache = new Map();
 
+export function readPortableBootstrapFlag() {
+  return document.querySelector('meta[name="canto-portable"]')?.content === "1";
+}
+
 export function applyAppTitle(portable = false) {
   const title = portable ? `${APP_TITLE_BASE}${APP_TITLE_PORTABLE_SUFFIX}` : APP_TITLE_BASE;
   document.title = title;
