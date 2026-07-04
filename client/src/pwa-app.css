@@ -105,6 +105,53 @@
   color: var(--accent-strong);
 }
 
+/* PWA Install Banner */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  z-index: 200;
+  cursor: pointer;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 180ms ease, opacity 180ms ease;
+}
+
+.pwa-install-banner:hover {
+  background: color-mix(in srgb, var(--surface) 95%, var(--accent) 5%);
+}
+
+.pwa-install-banner__close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--muted);
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+.pwa-install-banner__close:hover {
+  color: var(--ink);
+}
+
+.app-shell.has-install-banner .main-wrap,
+.app-shell.has-install-banner .app-footer {
+  padding-bottom: 56px;
+}
+
 /* ponytail: lightningcss 曾把多行 selector 壓成 .gate-brand{display:none}；明確還原就緒閘品牌區 */
 .preload-overlay:not(.preload-overlay--minimal) .gate-brand {
   display: block;
