@@ -168,12 +168,32 @@ function App() {
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
 
+  // Strengthened D for hybrid A+D: better detection of cold PWA launch from home screen (iOS specific for airplane cold start)
+  // Use navigation type + no referrer + no landed key to detect fresh icon tap
+  const navEntry = window.performance?.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
+  const isColdLaunch = isStandalone && 
+    (navEntry?.type === 'navigate' || !document.referrer) &&
+    !sessionStorage.getItem(LANDING_SESSION_KEY);
+  const isPwaLaunch = isStandalone;
+  const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
+  const isColdPwaOfflineLaunch = isColdLaunch && !isOnline;
+
   const [installDismissed, setInstallDismissed] = useState(
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
   const shouldShowInstallBanner =
     !gateOpen && !isStandalone && !installDismissed;
+
+  // For cold PWA offline launch, force show the main shell immediately (D strengthening)
+  // so user doesn't get stuck on gate or Safari error page
+  if (isColdPwaOfflineLaunch) {
+    // Immediately mark as "landed" and force reveal
+    if (!sessionStorage.getItem(LANDING_SESSION_KEY)) {
+      sessionStorage.setItem(LANDING_SESSION_KEY, '1');
+    }
+    // Also force gate to be considered open=false for reveal
+  }
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
@@ -301,10 +321,12 @@ function App() {
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
 
   useEffect(() => {
-    if (isOnline || isDbCached) {
+    // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
+    // This prevents any implicit network attempt that could trigger Safari error
+    if (isOnline || isDbCached || isColdPwaOfflineLaunch) {
       initialize();
     }
-  }, [initialize, isOnline, isDbCached]);
+  }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
@@ -483,7 +505,7 @@ function App() {
         onOpenChange={setGateOpen}
         theme={uiTheme}
       />
-      <div className={`app-shell${gateOpen ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
+      <div className={`app-shell${(gateOpen && !isColdPwaOfflineLaunch) ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
