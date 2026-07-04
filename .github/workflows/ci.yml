@@ -26,6 +26,9 @@ jobs:
         env:
           PYTHONUTF8: "1"
 
+      - name: Bootstrap CI lexicon data
+        run: cp data/rime/fixtures/char_sample.csv data/rime/char.csv
+
       - name: Smoke tests
         run: python -m unittest discover -s tests/smoke -q
         env:
