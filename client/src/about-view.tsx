@@ -200,9 +200,9 @@ export function AboutView({ lexiconVersion, onBack }: AboutViewProps) {
       </article>
 
       <p className="about-slogan about-slogan--bottom">
-        這一次，
+        呢一次，
         <br />
-        重奪你的創作主導權。
+        拎返你嘅創作主導權。
       </p>
     </div>
   );

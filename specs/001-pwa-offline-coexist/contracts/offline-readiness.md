@@ -36,6 +36,7 @@
 - 系統不得在 Not Ready / Failed 狀態下誤導使用者「已可離線查詢」
 - 當狀態由 Ready 退回 Not Ready（例如 cache 被清除）時，必須可被使用者理解且可自助復原
 - **Ready 的技術定義**（D-G2）：詞庫可開啟且能完成至少一次真查詢（非僅 `COUNT(*)`）；探針查詢見 `OFFLINE_READINESS_PROBE_QUERY`（`client/src/db/query.ts`）
+- **Ready 的視覺定義**：首屏品牌字與 About 標語所需的 critical display font 已可由本機資源載入；飛航冷啟時不得因缺少字體資源而把指定標語退回系統字體。
 
 ### Lexicon storage (DB-4)
 
@@ -58,6 +59,16 @@
 
 - `sqljs`（預設）：開庫 bytes 來自上述 1→2→3；整檔進 RAM；**首次成功開庫後寫入 OPFS**（供 iOS 飛航冷啟）
 - `opfs`：優先 OPFS 開庫；若 OPFS 缺失則從 2 或 3 取得並**寫入 OPFS** 後再開
+
+### Critical display fonts
+
+PWA shell 的品牌字體屬離線就緒體驗的一部分。以下文字必須在飛航冷啟時維持與在線狀態一致的 display serif 呈現：
+
+- `ONE·搵·韻`
+- `即使離線，亦完全可用。`
+- `呢一次，拎返你嘅創作主導權。`
+
+實作可用專用 critical subset，而不要求把完整 CJK 字體全量納入首屏關鍵路徑。字體 CSS 不得依賴 `fonts.gstatic.com` 等遠端 URL 才能完成上述標語的字形載入。
 
 ### Scenario B (cache evicted)
 
