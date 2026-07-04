@@ -105,6 +105,11 @@
   color: var(--accent-strong);
 }
 
+/* ponytail: lightningcss 曾把多行 selector 壓成 .gate-brand{display:none}；明確還原就緒閘品牌區 */
+.preload-overlay:not(.preload-overlay--minimal) .gate-brand {
+  display: block;
+}
+
 .preload-overlay .primary-button {
   margin-top: 8px;
 }

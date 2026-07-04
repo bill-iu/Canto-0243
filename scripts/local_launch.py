@@ -48,12 +48,20 @@ def _headless_python(python: Path) -> Path:
     return pythonw if pythonw.is_file() else python
 
 
-def _spawn_detached(python: Path, root: Path, args: list[str]) -> None:
+def _spawn_detached(
+    python: Path,
+    root: Path,
+    args: list[str],
+    *,
+    env: dict[str, str] | None = None,
+) -> None:
     kwargs: dict = {
         "cwd": root,
         "stdout": subprocess.DEVNULL,
         "stderr": subprocess.DEVNULL,
     }
+    if env is not None:
+        kwargs["env"] = env
     if sys.platform == "win32":
         kwargs["creationflags"] = (
             subprocess.CREATE_NEW_PROCESS_GROUP
@@ -195,23 +203,29 @@ def main() -> int:
         env["PORTABLE"] = "1"
         env.setdefault("ENV", "local")
 
-    server_kwargs: dict = {
-        "cwd": root,
-        "env": env,
-        "stdout": subprocess.DEVNULL,
-        "stderr": subprocess.DEVNULL,
-    }
-    if sys.platform == "win32":
-        server_kwargs["creationflags"] = _win_no_window_flags()
-    server = subprocess.Popen([str(_headless_python(python)), "main.py"], **server_kwargs)
+    server: subprocess.Popen[bytes] | None = None
+    if args.gui:
+        # ponytail: detach so PyInstaller exe exit does not reap main.py
+        _spawn_detached(python, root, ["main.py"], env=env)
+    else:
+        server_kwargs: dict = {
+            "cwd": root,
+            "env": env,
+            "stdout": subprocess.DEVNULL,
+            "stderr": subprocess.DEVNULL,
+        }
+        if sys.platform == "win32":
+            server_kwargs["creationflags"] = _win_no_window_flags()
+        server = subprocess.Popen([str(_headless_python(python)), "main.py"], **server_kwargs)
 
-    def _on_signal(signum: int, _frame: object) -> None:
-        _terminate(server)
-        raise SystemExit(128 + signum)
+        def _on_signal(signum: int, _frame: object) -> None:
+            assert server is not None
+            _terminate(server)
+            raise SystemExit(128 + signum)
 
-    signal.signal(signal.SIGINT, _on_signal)
-    if hasattr(signal, "SIGTERM"):
-        signal.signal(signal.SIGTERM, _on_signal)
+        signal.signal(signal.SIGINT, _on_signal)
+        if hasattr(signal, "SIGTERM"):
+            signal.signal(signal.SIGTERM, _on_signal)
 
     html_ready = _html_ready(python, root, html_url)
 
@@ -221,6 +235,14 @@ def main() -> int:
         _open_browser(boot_url)
     elif not args.silent:
         print(f"{msgs['wait_fail']} {boot_url}", flush=True)
+
+    if args.gui:
+        _spawn_detached(
+            python,
+            root,
+            ["scripts/wait_for_url.py", "--gate", f"{base_url}/ready"],
+        )
+        return 0 if html_ready else 1
 
     _spawn_detached(
         python,
@@ -241,10 +263,12 @@ def main() -> int:
     wait_server = bool(args.wait_server) or not args.no_wait_server
 
     exit_code = 0
-    if wait_server:
+    if wait_server and server is not None:
         exit_code = server.wait()
-    elif server.poll() is not None:
+    elif server is not None and server.poll() is not None:
         exit_code = server.returncode or 1
+    elif not html_ready:
+        exit_code = 1
 
     if args.pause_on_exit and sys.platform == "win32":
         try:
