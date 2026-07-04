@@ -78,8 +78,22 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("=窮?潦倒", {"width": 4, "partial_initial_mask": True, "anchor_count": 3}),
 )
 
-# Journey gate: only lookup layout order is gated (D-G1); mask ranking waits for M3.
-JOURNEY_ORDERED_QUERIES = frozenset({"事業"})
+# Journey gate: lookup layout + mask family ordering (now includes mask ranking).
+JOURNEY_ORDERED_QUERIES = frozenset({
+  "事業",
+  "門0",
+  "23就",
+  "23@就",
+  "23+就",
+  "?困潦倒=",
+  "33~~你",
+  "33!!你",
+  "$$",
+  "$$$",
+  "窮?潦倒=",
+  "香港=",
+  "香=?",
+})
 # Match-spec baseline: ranked masks including literal_priority ordering.
 MATCH_SPEC_ORDERED_QUERIES = frozenset({
   "香港=",
