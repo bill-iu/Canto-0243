@@ -10,7 +10,7 @@
       justify-content: center;
       gap: 28px;
       padding: 24px;
-      background: rgba(235, 223, 208, 0.96);
+      background: color-mix(in srgb, var(--bg) 96%, transparent);
       backdrop-filter: blur(8px);
       transition: opacity 420ms ease, visibility 420ms ease;
     }
