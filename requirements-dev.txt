@@ -20,3 +20,4 @@ numpy
 pyyaml
 cilin
 opencc-python-reimplemented
+pyinstaller  # Windows portable Canto-0243.exe (build-time only)

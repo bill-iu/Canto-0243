@@ -82,6 +82,28 @@ def _terminate(proc: subprocess.Popen[bytes]) -> None:
         proc.kill()
 
 
+def _html_ready(python: Path, root: Path, html_url: str, *, timeout: str = WAIT_TIMEOUT) -> bool:
+    return (
+        _run_quiet(
+            python,
+            root,
+            [
+                "scripts/wait_for_url.py",
+                html_url,
+                "--interval",
+                WAIT_INTERVAL,
+                "--timeout",
+                timeout,
+            ],
+        )
+        == 0
+    )
+
+
+def _open_browser(boot_url: str) -> None:
+    webbrowser.open(boot_url, new=2)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Canto-0243 local launch (start.sh / START.*)")
     parser.add_argument("--root", type=Path, default=None, help="Repo / portable bundle root")
@@ -108,19 +130,43 @@ def main() -> int:
         action="store_true",
         help="Windows: pause before exit (START.bat)",
     )
+    parser.add_argument(
+        "--silent",
+        action="store_true",
+        help="No terminal output (Windows GUI launcher)",
+    )
+    parser.add_argument(
+        "--gui",
+        action="store_true",
+        help="Portable GUI: silent, no-wait-server, reuse running backend",
+    )
     args = parser.parse_args()
+
+    if args.gui:
+        args.silent = True
+        args.no_wait_server = True
+        args.portable = True
 
     root = (args.root or Path.cwd()).resolve()
     os.chdir(root)
     python = (args.python or Path(sys.executable)).resolve()
     msgs = _messages(args.lang)
 
-    print(msgs["starting"], flush=True)
-    if args.portable:
-        print(msgs["close_hint"], flush=True)
-
     host = os.environ.get("HOST", "127.0.0.1")
     port = os.environ.get("PORT", "8000")
+    base_url = f"http://{host}:{port}"
+    html_url = f"{base_url}{HTML_SUFFIX}"
+    boot_url = f"{html_url}?boot={int(time.time())}"
+
+    if args.gui and _html_ready(python, root, html_url, timeout="1"):
+        _open_browser(boot_url)
+        return 0
+
+    if not args.silent:
+        print(msgs["starting"], flush=True)
+        if args.portable:
+            print(msgs["close_hint"], flush=True)
+
     _run_quiet(
         python,
         root,
@@ -152,27 +198,13 @@ def main() -> int:
     if hasattr(signal, "SIGTERM"):
         signal.signal(signal.SIGTERM, _on_signal)
 
-    base_url = f"http://{host}:{port}"
-    html_url = f"{base_url}{HTML_SUFFIX}"
-    boot_url = f"{html_url}?boot={int(time.time())}"
-
-    html_ready = _run_quiet(
-        python,
-        root,
-        [
-            "scripts/wait_for_url.py",
-            html_url,
-            "--interval",
-            WAIT_INTERVAL,
-            "--timeout",
-            WAIT_TIMEOUT,
-        ],
-    ) == 0
+    html_ready = _html_ready(python, root, html_url)
 
     if html_ready:
-        print(msgs["opening"], flush=True)
-        webbrowser.open(boot_url, new=2)
-    else:
+        if not args.silent:
+            print(msgs["opening"], flush=True)
+        _open_browser(boot_url)
+    elif not args.silent:
         print(f"{msgs['wait_fail']} {boot_url}", flush=True)
 
     _spawn_detached(
@@ -187,8 +219,9 @@ def main() -> int:
             ["scripts/wait_for_url.py", "--ready", "--full", f"{base_url}/ready"],
         )
 
-    print(f"{msgs['running']} {base_url}")
-    print(f"{msgs['ui']} {boot_url}")
+    if not args.silent:
+        print(f"{msgs['running']} {base_url}")
+        print(f"{msgs['ui']} {boot_url}")
 
     wait_server = bool(args.wait_server) or not args.no_wait_server
 

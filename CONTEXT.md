@@ -545,7 +545,7 @@ _Avoid_：把「仍需本機 Python」的套件稱作免安裝、把 Docker 映�
 _Avoid_：把現行 Portable 當首次建庫交付、未驗收就下架 Release **詞條庫** 資產
 
 **Portable 套件**：
-**離線單機交付**的發佈物，內含 **詞條庫**、前端與本機 API；**words-lexicon.json** 為同版 **詞條庫** 匯出副件。創作者路徑：**Windows** 解壓 zip 後雙擊 **`START.bat`**；**macOS** 解壓 tar 後雙擊 **`Canto-0243.command`**——皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。
+**離線單機交付**的發佈物，內含 **詞條庫**、前端與本機 API；**words-lexicon.json** 為同版 **詞條庫** 匯出副件。創作者路徑：**Windows** 解壓 zip 後雙擊 **`Canto-0243.exe`**（無 cmd；`START.bat` 作進階備用）；**macOS** 解壓 tar 後雙擊 **`Canto-0243.command`**——皆屬 **免安裝交付**。**Linux** 仍提供啟動腳本與說明，但須本機已有 Python，不列為免安裝承諾。Portable 查韻介面 header 提供 **退出 Canto-0243**（僅 portable 模式），關閉本機後端。
 _Avoid_：把 zip／tar 當產品正名、缺 **詞條庫** 卻承諾即開即查
 
 **詞級標音副件**：

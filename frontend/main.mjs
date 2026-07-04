@@ -138,11 +138,10 @@ $.searchInput.addEventListener("input", () => {
 
 $.homeBtn.addEventListener("click", goHome);
 $.modeMenuButton.addEventListener("click", () => toggleMenu());
-$.guideTopBtn.addEventListener("click", () => showGuide());
 $.guideMenuBtn.addEventListener("click", () => showGuide());
-$.relationTopBtn.addEventListener("click", () => showRelation());
 $.relationMenuBtn.addEventListener("click", () => showRelation());
-$.aboutTopBtn.addEventListener("click", () => showAbout());
+$.aboutMenuBtn.addEventListener("click", () => showAbout());
+$.portableExitBtn?.addEventListener("click", () => exitPortable());
 document.getElementById("aboutBackToSearchBtn")?.addEventListener("click", () => {
   showSearch();
   $.searchInput.focus();
@@ -198,6 +197,28 @@ document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
 document.querySelectorAll("[data-query]").forEach((btn) => {
   btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || shell.currentMode));
 });
+
+const PORTABLE_EXIT_CONFIRM = "將關閉本機服務，未儲存工作唔會遺失。確定退出 Canto-0243？";
+
+async function exitPortable() {
+  if (!window.confirm(PORTABLE_EXIT_CONFIRM)) return;
+  try {
+    const response = await fetch("/shutdown", { method: "POST" });
+    if (!response.ok) throw new Error("shutdown failed");
+    window.close();
+    window.setTimeout(() => {
+      if (document.visibilityState === "visible") {
+        document.body.replaceChildren();
+        const note = document.createElement("p");
+        note.className = "portable-exit-note";
+        note.textContent = "Canto-0243 已退出。你可以關閉此分頁。";
+        document.body.appendChild(note);
+      }
+    }, 400);
+  } catch {
+    window.alert("無法關閉本機服務。請稍後再試，或使用工作管理員結束 pythonw.exe。");
+  }
+}
 
 document.addEventListener("click", (event) => {
   if (!$.modeMenu.contains(event.target) && !$.modeMenuButton.contains(event.target)) {

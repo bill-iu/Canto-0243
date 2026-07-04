@@ -17,7 +17,7 @@
 ## 最新版本
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**193,298**（`lyrics.db` · `words` 表）
+目前總詞條列數：**125,245**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
 官方離線資料包：**[Canto-0243 v1.0.3](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)**（`canto-0243-portable.zip`、`canto-0243-portable-macos-x86_64.tar.gz`、`lyrics.db`、`words-lexicon.json`；Apple Silicon arm64 過渡期暫不提供）。問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -44,7 +44,7 @@
 1. 從 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases) 下載 **`canto-0243-portable.zip`**（Windows）與 **`canto-0243-portable-macos-x86_64.tar.gz`**（Intel Mac）；建議對照 [`Canto-0243 v1.0.3`](https://github.com/bill-iu/Canto-0243/releases/tag/v1.0.3)。
 2. 解壓縮整個資料夾（例如 `canto-0243-portable`）或 tar 內容。
 3. 依平台啟動：
-   * **Windows**：解壓後雙擊 **`START.bat`**（無需安裝 Python）。
+   * **Windows**：解壓後雙擊 **`Canto-0243.exe`**（無需安裝 Python、無 cmd 視窗）。進階／疑難排解可用 **`START.bat`**。
    * **macOS（Intel x86_64）**：解壓 tar 後進入 `canto-0243-portable/`，雙擊 **`Canto-0243.command`**（會開 Terminal）。若被攔截：**右鍵→打開** → 確認；若只見「惡意軟件」對話框：按 **完成** → **系統設定→隱私與保安** → **強制開啟**（Canto-0243）→ 再雙擊。
    * **macOS（Apple Silicon）**：arm64 tar 過渡期**暫不提供**。
    * **Linux**：`chmod +x START.sh && ./START.sh`（須本機 Python 3.10+）。
@@ -126,7 +126,7 @@ python -m ingest report
 | 資產 | 用途 |
 |------|------|
 | `lyrics.db` | 完整**詞條庫**（`words` + `word_relations`） |
-| `canto-0243-portable.zip` | Windows 免安裝套件（內建 venv + `START.bat`） |
+| `canto-0243-portable.zip` | Windows 免安裝套件（`Canto-0243.exe` + 內建 venv） |
 | `canto-0243-portable-macos-x86_64.tar.gz` | macOS 免安裝資料夾 + **`Canto-0243.command`**（Intel；現行渠道） |
 | `canto-0243-portable-macos-arm64.tar.gz` | macOS 免安裝（Apple Silicon；過渡期暫不提供） |
 | `words-lexicon.json` | **詞級標音**副件 |

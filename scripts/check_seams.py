@@ -90,6 +90,31 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("warm_word_cache.py", source)
         ps1 = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
         self.assertIn("warm_word_cache.py", ps1)
+        self.assertIn("PyInstaller", ps1)
+        self.assertIn("Canto-0243.exe", ps1)
+
+    def test_portable_win_launcher_exists(self):
+        path = REPO_ROOT / "scripts" / "portable_win_launcher.py"
+        source = path.read_text(encoding="utf-8")
+        self.assertIn("local_launch.py", source)
+        self.assertIn("--gui", source)
+
+    def test_main_exposes_portable_shutdown(self):
+        source = MAIN_PATH.read_text(encoding="utf-8")
+        self.assertIn('"/shutdown"', source)
+        self.assertIn("PORTABLE", source)
+
+    def test_index_header_menu_only_plus_portable_exit(self):
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn('id="aboutMenuBtn"', source)
+        self.assertIn('id="portableExitBtn"', source)
+        self.assertNotIn('id="guideTopBtn"', source)
+        self.assertNotIn('id="aboutTopBtn"', source)
+
+    def test_local_launch_supports_gui_reuse(self):
+        source = LAUNCH_PATH.read_text(encoding="utf-8")
+        self.assertIn("--gui", source)
+        self.assertIn("_html_ready", source)
 
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

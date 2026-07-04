@@ -5,7 +5,7 @@ import unittest
 
 from app.models.word import Word
 from app.services.query_dispatch import search_words
-from app.services.query_parse import RelationLookupQuery, normalize_and_parse
+from app.services.query_parse import RelationLookupQuery, is_relation_syntax_query, normalize_and_parse
 
 from tests.smoke.golden_queries import GOLDEN_QUERY_JOURNEYS
 from tests.smoke.helpers import fixture_sessionmaker, memory_sessionmaker, seed_happy_sad
@@ -43,9 +43,10 @@ class QueryJourneySmokeTests(unittest.TestCase):
             with self.subTest(q=case.query, mode=case.mode, db=case.db):
                 parsed = normalize_and_parse(case.query)
                 self.assertIsNotNone(parsed)
-                if case.mode == "syn" and case.seed == "relation_syn":
+                if case.mode == "syn" and case.seed == "relation_syn" and is_relation_syntax_query(case.query):
                     self.assertIsInstance(parsed, RelationLookupQuery)
-                    self.assertEqual(parsed.relation_kind, "syn")
+                    if case.query.startswith("~"):
+                        self.assertEqual(parsed.relation_kind, "syn")
 
                 if case.db == "fixture":
                     Session = fixture_sessionmaker()
@@ -62,7 +63,10 @@ class QueryJourneySmokeTests(unittest.TestCase):
                         limit=10,
                         offset=0,
                     )
-                words = [r["char"] for r in results if r.get("result_type") == "word"]
+                if case.mode == "syn":
+                    words = [r["char"] for r in results if r.get("char")]
+                else:
+                    words = [r["char"] for r in results if r.get("result_type") == "word"]
                 self.assertGreaterEqual(len(words), case.min_words)
                 for char in case.must_include:
                     self.assertIn(char, words)

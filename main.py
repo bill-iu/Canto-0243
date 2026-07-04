@@ -1,8 +1,9 @@
 import os
+import threading
 
 import uvicorn
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -81,6 +82,29 @@ async def root_favicon() -> FileResponse:
 @app.get("/ready")
 async def preload_ready():
     return get_readiness_snapshot()
+
+
+def _client_is_localhost(request: Request) -> bool:
+    if not request.client:
+        return False
+    host = request.client.host.strip("[]")
+    return host in ("127.0.0.1", "localhost", "::1") or host.startswith("127.")
+
+
+@app.post("/shutdown")
+async def portable_shutdown(request: Request):
+    """Portable-only graceful exit (localhost callers)."""
+    if not os.getenv("PORTABLE"):
+        raise HTTPException(status_code=403, detail="shutdown only available in portable mode")
+    if not _client_is_localhost(request):
+        raise HTTPException(status_code=403, detail="shutdown only allowed from localhost")
+
+    def _exit_soon() -> None:
+        # ponytail: portable 退出用 _exit；Windows 上 SIGTERM 對 uvicorn 不可靠
+        threading.Timer(0.25, lambda: os._exit(0)).start()
+
+    _exit_soon()
+    return {"ok": True, "message": "shutting down"}
 
 
 if __name__ == "__main__":
