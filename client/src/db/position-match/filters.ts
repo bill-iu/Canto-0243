@@ -50,7 +50,7 @@ function equalsAuthoritativeRow(db: Database, char: string): WordRow | null {
   return row;
 }
 
-function anchorPhonemeOptions(
+export function anchorPhonemeOptions(
   db: Database,
   char: string,
   dimension: 'final' | 'initial',

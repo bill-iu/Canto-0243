@@ -19,6 +19,7 @@ import {
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
+import { applyRuntimeDbPatches } from './db-patch.ts';
 import { initRhymeLetterIndex } from './rime-index.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 
@@ -209,6 +210,7 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
         ? await initializeOpfsLexicon(version, dbPath)
         : await initializeSqlJsPath(version, dbPath);
 
+    applyRuntimeDbPatches(db);
     isInitialized = true;
     await loadAuxiliaryIndexes();
 

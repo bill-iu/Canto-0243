@@ -3,6 +3,7 @@
  * ponytail: DB syn/ant graph + static cilin/guotong syn (prebuild index)
  */
 import type { Database } from './sqljs.ts';
+import { ensureConnectiveCompoundRows } from './db-patch.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { compareSearchResults } from './ranking.ts';
 import { getStaticSynonyms } from './thesaurus.ts';
@@ -57,7 +58,7 @@ export function resetCompoundCaches(): void {
   doubledCaches.clear();
 }
 
-function parseCompoundList(text: string): string[] {
+export function parseCompoundList(text: string): string[] {
   const out: string[] = [];
   const seen = new Set<string>();
   for (const line of text.split(/\r?\n/)) {
@@ -454,6 +455,7 @@ function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): TierM
   if (!connective || !FILLWORD_CONNECTIVES.has(connective) || spec.width !== 3) {
     return new Map();
   }
+  ensureConnectiveCompoundRows(db);
   const twoCharTiers =
     spec.compound_kind === 'ant'
       ? (antTiersCache ??= buildAntTiers(db))

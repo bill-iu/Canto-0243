@@ -29,6 +29,7 @@ import {
 import { isWildcardChar } from './position-match/mask-grammar.ts';
 import { compoundSearchSpecFromMatchSpec, getCandidatesForLength } from './position-match/sources.ts';
 import { executeMatchSpec, filterMatchSpecRows } from './position-match/engine.ts';
+import { anchorPhonemeOptions } from './position-match/filters.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
@@ -1644,42 +1645,6 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
   }
 
   return null;
-}
-
-/** ponytail: DB + substring infer; upgrade path: lexicon admission union */
-function anchorPhonemeOptions(
-  db: Database,
-  char: string,
-  dimension: 'final' | 'initial',
-): Set<string> {
-  const options = new Set<string>();
-  const row = equalsAuthoritativeRow(db, char);
-  if (row) {
-    const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
-    if (parts.length) {
-      options.add(parts[0]!);
-    }
-  }
-
-  const stmt = db.prepare(
-    'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
-  );
-  stmt.bind([`%${char}%`]);
-  while (stmt.step()) {
-    const hit = stmt.getAsObject() as WordRow;
-    const text = String(hit.char ?? '');
-    for (let idx = 0; idx < text.length; idx++) {
-      if (text[idx] !== char) {
-        continue;
-      }
-      const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
-      if (parts.length > idx && parts[idx]) {
-        options.add(parts[idx]!);
-      }
-    }
-  }
-  stmt.free();
-  return options;
 }
 
 // ============================================================================
