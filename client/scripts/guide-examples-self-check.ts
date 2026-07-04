@@ -38,11 +38,15 @@ loadStaticRelationData(repoRoot);
 loadRhymeLetterData(repoRoot);
 loadCompoundListsFromDisk();
 
-const dbPath =
-  process.argv[2] ??
-  (fs.existsSync(path.join(repoRoot, 'lyrics.db'))
-    ? path.join(repoRoot, 'lyrics.db')
-    : path.join(repoRoot, 'client/public/lyrics.db'));
+const defaultDb = [
+  path.join(repoRoot, 'tests/fixtures/lyrics.db'),
+  path.join(repoRoot, 'lyrics.db'),
+  path.join(repoRoot, 'client/public/lyrics.db'),
+].find((p) => fs.existsSync(p));
+const dbPath = process.argv[2] ?? defaultDb;
+if (!dbPath) {
+  throw new Error('no lyrics.db found (pass path as argv[2])');
+}
 
 const SQL = await initSqlJs();
 const db = createSqlJsBackend(new SQL.Database(fs.readFileSync(dbPath)));

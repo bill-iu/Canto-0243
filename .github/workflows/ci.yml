@@ -35,3 +35,24 @@ jobs:
         run: python scripts/check_seams.py -q
         env:
           PYTHONUTF8: "1"
+
+      - name: Guide example regression (Python)
+        run: python -m unittest tests.test_guide_example_queries -q
+        env:
+          PYTHONUTF8: "1"
+          DATABASE_URL: sqlite:///./tests/fixtures/lyrics.db
+          READINESS_GATE_ENFORCE: "0"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install PWA dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Guide example regression (PWA)
+        run: npx tsx scripts/guide-examples-self-check.ts ../tests/fixtures/lyrics.db
+        working-directory: client

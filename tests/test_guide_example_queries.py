@@ -4,8 +4,14 @@ from __future__ import annotations
 
 import os
 import unittest
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+FIXTURE_DB = REPO_ROOT / "tests" / "fixtures" / "lyrics.db"
 
 os.environ.setdefault("READINESS_GATE_ENFORCE", "0")
+if not os.environ.get("DATABASE_URL") and FIXTURE_DB.is_file():
+    os.environ["DATABASE_URL"] = f"sqlite:///{FIXTURE_DB.as_posix()}"
 
 from app.database import SessionLocal
 from app.services.query_dispatch import search_words
