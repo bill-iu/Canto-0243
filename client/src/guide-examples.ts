@@ -270,21 +270,31 @@ export const GUIDE_SECTIONS: GuideSection[] = [
   {
     id: 'doubled',
     title: '雙聲疊韻字',
-    intro: '連續 $ 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；語法鏡像 ~~。',
+    intro:
+      '連續 $ 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；可加碼前綴或尾韻字。語法鏡像 ~~。',
     examples: [
-      { query: '$$', mode: '0243', label: '二字雙聲疊韻字（如慢慢、識食）', familyId: 'compound_doubled' },
-      { query: '$$$', mode: '0243', label: '三字雙聲疊韻字（如哈哈哈）' },
-      { query: '33$$', mode: '0243', label: '33 同音 + 二字雙聲疊韻字' },
+      { query: '$$', mode: '0243', label: '二字（如慢慢、識食）', familyId: 'compound_doubled' },
+      { query: '$$$', mode: '0243', label: '三字（如哈哈哈）' },
+      { query: '$$$$', mode: '0243', label: '四字同音節詞' },
+      { query: '33$$', mode: '0243', label: '碼 33 + 二字雙聲疊韻字' },
+      { query: '333$$$', mode: '0243', label: '碼 333 + 三字雙聲疊韻字' },
       { query: '$$你', mode: '0243', label: '二字，尾字同「你」同韻' },
     ],
   },
   {
     id: 'heteronym',
     title: '同音異讀',
-    intro: '{左碼}/{右碼} 搵同一字面、至少兩個唔同讀音；? 通配碼位。',
+    intro:
+      '{左碼}/{右碼} 搵同一字面、至少兩個唔同粵拼讀音；? 通配碼位。僅 0243／02493 模式。',
     examples: [
-      { query: '33/34', mode: '0243', label: '如「今晚」gam1 maan1 與 gam1 maan5', familyId: 'heteronym_code' },
-      { query: '?3/?4', mode: '0243', label: '只約束第 2 字碼 3／4 嘅異讀' },
+      {
+        query: '33/34',
+        mode: '0243',
+        label: '二字異讀（如「今晚」gam1 maan1／gam1 maan5）',
+        familyId: 'heteronym_code',
+      },
+      { query: '?3/?4', mode: '0243', label: '只約束第 2 字碼 3／4' },
+      { query: '3/4', mode: '0243', label: '單字異讀（如「上」soeng5／soeng6）' },
     ],
   },
   {
