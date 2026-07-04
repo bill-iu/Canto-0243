@@ -80,8 +80,8 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
 
 # Journey gate: only lookup layout order is gated (D-G1); mask ranking waits for M3.
 JOURNEY_ORDERED_QUERIES = frozenset({"事業"})
-# Match-spec baseline: ranked partial masks compare order (M2/M3).
-MATCH_SPEC_ORDERED_QUERIES = frozenset({"窮?潦倒=", "=窮?潦倒"})
+# Match-spec baseline: ranked masks including literal_priority ordering.
+MATCH_SPEC_ORDERED_QUERIES = frozenset({"窮?潦倒=", "=窮?潦倒", "門0"})
 
 
 def parity_cases_from_journeys() -> tuple[ParityCase, ...]:
