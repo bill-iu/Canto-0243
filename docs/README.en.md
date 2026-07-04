@@ -31,7 +31,6 @@ Official offline data bundle: **[Canto-0243 v1.0.3](https://github.com/bill-iu/C
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 * **Lexicon & admission**: lexicon port raw lookup + **admission decisions**; multi-character lexicon readings or syllable-concatenated readings.
 * **Relation data**: **static thesaurus port** (Cilin + Guotong near-synonyms / antonyms); runtime and ingest share the same rules.
-* **Result ranking**: within each match tier **plain Chinese** → **essay frequency** → **curated** → **pron_rank** → surface form (see [`CONTEXT.md`](../CONTEXT.md) § search result ranking).
 
 ---
 
@@ -403,6 +402,12 @@ You may use this tool for Cantonese lyric writing, rhyme lookup, character subst
 Apart from the above, this license is in practice [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) plus additional restrictions. Full legal text: [`LICENSE`](../LICENSE).
 
 Please keep the name **Canto-0243** in any future fork or distribution!
+
+---
+
+## About the Developer
+
+**Bill IU (姚程馭)** — actor, Cantonese musical theatre lyricist, and extremely amateur programmer.
 
 ---
 

@@ -31,7 +31,6 @@
 * **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索模式下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`。
 * **词库与收录**：**词库埠** raw lookup + **收录决策**；多字词级标音或音节拼接读音。
 * **近反义资料**：**静态词林埠**（cilin／国语辞典近义／反义语料）；运行时与 ingest 共用同一规则。
-* **结果排序**：同一 match tier 内 **纯汉字** → **essay 词频** → **curated** → **pron_rank** → 字面（详见 [`CONTEXT.md`](../CONTEXT.md) § 搜索结果排序）。
 
 ---
 
@@ -442,6 +441,12 @@ python scripts/check_seams.py -q
 除上述条款外，本授权在实务上等效于 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0（CC BY-NC-SA 4.0）](https://creativecommons.org/licenses/by-nc-sa/4.0/) 加上附加限制。完整法律文本见 [`LICENSE`](../LICENSE)。
 
 请在任何未来 fork 或发布中保留 **Canto-0243** 名称！
+
+---
+
+## 关于开发者
+
+**Bill IU（姚程驭）** — 演员，粤语音乐剧填词人，超级业余的程序设计师。
 
 ---
 
