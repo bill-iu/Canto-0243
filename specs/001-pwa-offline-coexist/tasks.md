@@ -160,6 +160,21 @@
 
 ---
 
+## Phase 11: 全端共用 CSS（frontend SSOT）
+
+**範圍**：`frontend/` 為 canonical CSS；PWA 刪 `client/src/` 複製、Vite import `../frontend/*`；Portable `<link>` 對齊；results/syn 合併入 `workbench.css`（dual selector）；`check_seams.py` 防 drift。
+
+| ID | 任務 | 狀態 |
+|----|------|------|
+| T-C11 | `frontend/index.css` → `shell.css`；新建 `workbench.css` | ✅ |
+| T-C12 | PWA：`root.css` + import frontend CSS；`pwa-app.css` 縮至 pill tabs | ✅ |
+| T-C13 | Portable：`index.html` link order（open-design → shell → workbench → tabs） | ✅ |
+| T-C14 | `check_seams.py`：無 client duplicate + import path 檢查 | ✅ |
+
+**Load order**：`open-design.css` → `shell.css` → `workbench.css` →（Portable `query-tabs.css` / PWA `root.css` + `pwa-app.css`）。
+
+---
+
 ## Remaining（不阻擋本次 Pages redeploy）
 
 | 項目 | 優先 | 說明 |

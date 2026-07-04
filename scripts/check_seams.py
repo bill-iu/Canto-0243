@@ -522,13 +522,40 @@ class TestQueryTabsSeam(unittest.TestCase):
         with self.subTest(path=str(RELATION_ENTRY_PATH.relative_to(REPO_ROOT))):
             self.assertFalse(RELATION_ENTRY_PATH.exists())
 
-    def test_relation_entry_css_merged_into_index(self):
+    def test_relation_entry_css_merged_into_shell(self):
         self.assertFalse(RELATION_ENTRY_CSS_PATH.exists())
         source = INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn(".relation-main", (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
+        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        workbench = (REPO_ROOT / "frontend" / "workbench.css").read_text(encoding="utf-8")
+        self.assertIn(".relation-main", shell)
+        self.assertIn("a.result-item", workbench)
         self.assertNotIn("relation-entry.css", source)
         self.assertIn("display=swap", source)
-        self.assertIn('use[filter="url(#brush-roughen-brand)"]', (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
+        self.assertIn('use[filter="url(#brush-roughen-brand)"]', shell)
+
+    def test_shared_css_single_source_in_frontend(self):
+        client_src = REPO_ROOT / "client" / "src"
+        for name in ("open-design.css", "shell.css"):
+            with self.subTest(duplicate=name):
+                self.assertFalse((client_src / name).is_file(), f"remove duplicate client/src/{name}")
+        self.assertTrue((REPO_ROOT / "frontend" / "shell.css").is_file())
+        self.assertTrue((REPO_ROOT / "frontend" / "workbench.css").is_file())
+        self.assertFalse((REPO_ROOT / "frontend" / "index.css").is_file())
+
+    def test_pwa_main_imports_frontend_css(self):
+        source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
+        for path in ("../../frontend/open-design.css", "../../frontend/shell.css", "../../frontend/workbench.css"):
+            with self.subTest(import_path=path):
+                self.assertIn(path, source)
+        self.assertIn("./root.css", source)
+        self.assertIn("./pwa-app.css", source)
+
+    def test_index_html_links_shared_css(self):
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        for href in ("shell.css", "workbench.css"):
+            with self.subTest(href=href):
+                self.assertIn(f'href="{href}"', source)
+        self.assertNotIn('href="index.css"', source)
 
     def test_main_py_has_no_prototype_route(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

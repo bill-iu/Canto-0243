@@ -1,4 +1,4 @@
-"""One-time migration: split inline CSS from prototype.html into open-design.css + index.css.
+"""One-time migration: split inline CSS from prototype.html into open-design.css + shell.css.
 
 Source file was removed after E2 phase 1; re-run only if you restore inline styles.
 """
@@ -130,5 +130,5 @@ index_css = (
 )
 
 (ROOT / "frontend" / "open-design.css").write_text(open_css, encoding="utf-8")
-(ROOT / "frontend" / "index.css").write_text(index_css, encoding="utf-8")
+(ROOT / "frontend" / "shell.css").write_text(index_css, encoding="utf-8")
 print(f"rules={len(rules)} open={len(open_rules)} index={len(index_rules)}")

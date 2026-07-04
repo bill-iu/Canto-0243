@@ -1,4 +1,4 @@
-"""One-time migration: replace index.html inline CSS with open-design.css + index.css links.
+"""One-time migration: replace index.html inline CSS with open-design.css + shell.css links.
 
 Completed in E2 phase 1; prototype.html source removed. Kept for reference only.
 """

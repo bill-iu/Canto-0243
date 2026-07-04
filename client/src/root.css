@@ -12,5 +12,10 @@ body {
 }
 
 #root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  border: none;
+  text-align: initial;
   min-height: 100dvh;
 }

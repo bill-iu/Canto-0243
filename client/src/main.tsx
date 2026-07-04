@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import './open-design.css';
-import './shell.css';
-import './index.css';
+import '../../frontend/open-design.css';
+import '../../frontend/shell.css';
+import '../../frontend/workbench.css';
+import './root.css';
 import './pwa-app.css';
 import App from './App.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
