@@ -117,48 +117,42 @@ _Avoid_：toast、彈窗確認
 _Avoid_：相關詞（不區分類型時）、semantic_related
 
 **近反義池**：
-對一個字面，合併 `word_relations`（**唔**含 **詞林衍生反義**／**反義端點鏡射** 等衍生 `source` 列）、**靜態詞林**、**查詢時**兩層衍生反義展開後，經排序與去重的近義、反義與語意相關候選集合；候選必須是**有效字面**（含漢字、無詞林編碼或英數噪音）。衍生反義覆蓋以 runtime 展開為準，**唔**讀舊 **詞條庫** 殘留衍生列。**近反義模式**與 **`!` 反義查詢**共用**同一份** `ants` 列表（已含兩層衍生），**唔**再經獨立 graph 重展開或掃描 `syns` 回撈。**近義橋反義** ingest 經 **近反義池投影** 讀池；**反義**側只含 **直接反義**（DB 剔除衍生 `source` ＋靜態反義），**唔** live 展開 **詞林衍生反義**／**反義端點鏡射**；讀取**唔**觸發**收錄決策**注入（只讀既有收錄字面）。
-_Avoid_：relation pool（作領域正名）、syn_ant_service（作池名稱）、合併 DB 衍生列與 runtime 雙份供應、把舊快照 inject 列當查詢 SSOT、`!` 與近反義模式用兩套反義展開、ingest 橋接借入衍生反義候選、ingest 讀池觸發詞條注入
+合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。投影統一讀取入口。
+_Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT
 
 **近反義池快照**：
-對單一字面完成建池後嘅定格結果（近義／反義／語意相關三池與計數）；供 **近反義池投影** 與近反義模式分頁消費。**唔**綁定詞條庫連線、靜態埠或建池參數狀態。
-_Avoid_：在快照上掛 Session／thesaurus、把快照當可變建池上下文、以快照承載寫入副作用
+單字面建池後定格（三池+計數）。供投影與分頁。
+_Avoid_：掛 session、當可變上下文
 
 **近反義池投影**：
-Runtime 讀取**近反義池**的統一入口；近反義模式、`~`／`!` 查詢與關係補錄擴展互斥皆經此投影取得池快照。**`!` 反義**直接消費快照 `ants`（與近反義模式同一列表）；**唔**設獨立 `expand` 展開參數。**近義橋反義** ingest 亦經此投影；**反義**讀取為 **直接反義** 子集（唔展開兩層衍生），**近義**讀取規則同創作者查詢。建池排序與去重規則本身不變。
-_Avoid_：pool facade、runtime 直呼 build_pool、`!` 另建 expand 路徑或掃 `syns` 補 items、保留 `expand_ant_via_syn` 雙語意、ingest 繞過投影直呼建池、ingest 反義含衍生層
+近反義/`~`/`!`/關係補錄統一入口。! 直用 ants；反義讀 direct 子集。_Avoid_：獨立 expand、ingest 繞過投影
 
 **靜態詞林埠**：
-bundled 近義／反義語料（詞林 cilin、國語辭典近義檔 `dict_synonym`、反義檔 `dict_antonym`）的 **raw lookup** 邊界。Runtime `~`／`!` 以合併近義、反義 getter 消費；ingest 可用分源 getter（cilin、guotong）與種子字面全集枚舉。資料載入與模組內 dict 為實作細節，對外只經埠存取。**靜態語料授權閘門**：納入 bundle 或 **靜態詞林埠** 上游須有明示、可再分發授權；作者禁止「二次建庫共享」或無 LICENSE 者（如 ChineseSemanticKB、ChineseAntiword）**唔**納入。**反義來源**：guotong `dict_antonym`（Anti-996）；**唔**採用 OpenHowNet。**OpenHowNet（C）已取消**——義原展開噪音過高、與辭典式反義對不符。
-_Avoid_：ThesaurusPort（作領域正名）、static thesaurus（作中文正名）、直接讀模組級 dict、無授權語料入 bundle
+bundled 近/反義語料 raw lookup（cilin + guotong）。Runtime ~ / ! 消費；ingest 分源。授權閘：只納可再分發者。反義 guotong，唔 OpenHowNet。
+_Avoid_：直接讀 dict、無授權入 bundle
 
 **收錄決策**：
-對一個字面，在 raw lookup 之上判定能否注入詞條庫、讀音來自何處（單字 rime、多字詞級標音、或音節拼接讀音），輸出三分類結果。**參考字讀音解析**須經此決策鏈；`ensure_word_in_db` 僅依決策結果執行 DB 注入，不重複收錄規則。
-_Avoid_：admission（作領域正名）、在 ensure 層重複拼接讀音邏輯、把收錄判斷藏進詞庫埠 lookup、快取優先於收錄決策當讀音權威
+字面 raw lookup 上判定注入與讀音來源（rime/詞級/拼接）。參考字解析經此。
+_Avoid_：admission、快取優先於決策
 
 **參考字讀音解析**：
-依**收錄決策**解析**參考字**讀音，對外兩條入口：（1）**錨點音素選項**——單字**參考字**在**韻／聲錨**所在音節的聲母或韻母選項集合（如「香」在 `香=?` 取韻母 `oeng`，在 `=香?` 取聲母 `h`）；多讀音時 **union 全部可用選項**（如「行」同時含 `hang` 系韻部與 `hong` 系韻部）。（2）**等號參考讀音**——**等號查詢**與**碼夾等號查詢**所用整詞字面的粵拼音節序列（聲母列或韻母列）；多讀音時取 **pron_rank** 權威單列，**不** OR 比對（與**碼夾等號查詢**約束一致）。`pron_rank` 平手時依 **Essay 詞頻**（字面級）降序，再平手略過 `aa` 變體寫法（如 `haang` 視同 `hang` 族）後依粵拼字串升序選單列。呼叫端明示是否允許注入詞條庫——**查詢分派**與**缺字型查詢執行**的比對路徑可注入，**詞庫快取索引**取向量候選與預載路徑不注入。注入成功後才更新**詞庫快取索引**；解析本身不隱式 sync 既有詞條。不以快取為讀音權威。
-_Avoid_：phoneme_lookup（作領域正名）、在索引候選解析時隱式 ensure 或 sync、把參考字整段讀音當比對條件、在 match_equals 重複 ensure 編排、等號路徑對多讀音做 OR
+依決策解析參考字：錨點選項（union 多讀）、等號參考（pron_rank 權威）。呼叫端明示注入。_Avoid_：隱式 ensure、把整段當條件、OR 多讀音
 
 **關係寫入**：
-將近義、反義列寫入 `word_relations`。**儲存契約**：無向邊以 **較小 `word_id` 在前、`related_id` 在後**；唯一鍵 **`(word_id, related_id, relation_type)`**；`relation_type` 僅 `syn`／`ant`（及可選 `semantic_related`）。每 **字面** 以 **關係錨點詞條**（最小 id）作端點。**詞條庫建置**：`build-word-relations` 於記憶體組裝 `RelationRecord` 列表、去重後按 **2000 列一批** 開 transaction bulk insert；衝突 **`ON CONFLICT DO NOTHING`**（SQLite：`INSERT OR IGNORE`），**唔**逐列 loop insert、**唔**逐批查既有列。目標：靜態 syn/ant 寫入 **<10 秒**。**所有** `word_relations` 持久化（build、快照 inject、expand debug insert、橋接、手動補錄）**統一**經同一 **bulk insert** 語意；**唔**保留平行 ORM 逐批寫入管線。衝突一律靠 DB **ignore**，**唔** pre-fetch 既有列換統計。
-_Avoid_：merge pipeline（作領域正名）、把 ingest 套件當 runtime 依賴、staging→relations JOIN 展開同一字面全部讀音列、長期保留雙管線（staging 寫入再 JOIN）、`store` ORM 與 `bulk_insert` 雙軌並存、寫入前逐批 SELECT 既有鍵、ingest 繞過 **關係寫入** 公開入口直呼 bulk 實作
-
-**關係 staging**：
-**詞條庫建置命令** 中間站表（`syn_ant_edges`）：存放 normalize 後嘅**字面級**近義／反義邊，供舊管線 `build-relations` JOIN `words` 寫入 `word_relations`。**Runtime 唔讀**。**已廢止**：build 熱路徑與 maintainer CLI **唔**再寫入或依賴 staging；改 **關係直寫**。表與 `normalize`→staging、`build-relations` 子命令從產品路徑移除（非 debug 保留）。
-_Avoid_：把 staging 當近反義池、把 staging 當詞條 SSOT、創作者查詢依賴 staging、build-db 仍經 syn_ant_edges
+近/反義寫 word_relations。契約：小 id 前、唯一 (id, related, type)。每字面以最小詞條為錨。bulk insert 統一，ignore 衝突。
+_Avoid_：merge pipeline、staging 依賴、雙管線
 
 **關係直寫**：
-**已取代**為 **`build-word-relations`**：記憶體收集 cilin leaf + guotong + compound_ant → canonical 三元組 → bulk insert；`ingest-static-relations` 為相容別名。**build-db** 熱路徑只跑 `build-word-relations`（**唔**再跑衍生反義快照 inject／獨立 compound 步）；bridge 快照與 **關係補錄** 仍於其後套用。cilin 近義保留 `group_codes`。
-_Avoid_：直寫仍經 staging、直寫展開多讀音 id 對、直寫 cilin 無 group_codes、build-db 同時直寫 cilin 又跑 ingest-cilin、未量測就廢 word_relations
+build-word-relations 記憶體集 + bulk。build-db 熱路徑只此。
+_Avoid_：staging、展開多讀音
 
 **關係錨點詞條**：
-**關係寫入** 時每 **字面** 揀一條代表 **詞條**（現行：該字面最小 `word.id`）作 head／tail 端點；與 **等號參考讀音選列**（多讀音揀權威列）係不同契約——關係圖以字面為鄰居，唔複製異讀邊。
-_Avoid_：把關係錨點當查詢用權威讀音、對多讀音字面寫 N×M 條關係
+每字面最小 word.id 為端點。與等號選列不同契約（圖以字面鄰）。
+_Avoid_：當查詢權威、N×M 邊
 
 **關係圖**：
-對已收錄字面，查詢**直接近義鄰居**（`word_relations` 雙向近義 **＋** 靜態詞林近義）與**直接反義鏡射對**（`!` expand 同源）。**詞林衍生反義**、**反義端點鏡射**、近反義池建構、創作者手動關係擴展、近義橋反義 ingest 共用同一鄰居規則。鄰接結構採**進程級 lazy 快取**：首次近反義或 `!` 查詢建構，同進程內後續查詢重用，至 process 重啟失效。
-_Avoid_：CharRelationGraph（作領域正名）、在 ingest 繞過靜態詞林埠直讀模組 dict、每次查詢全量重建鄰接、就緒閘阻塞預熱全圖
+已收錄字面直接近/反鄰居（word_relations + 靜態）。共用 lazy 快取。
+_Avoid_：全量重建、就緒閘預熱
 
 ---
 
@@ -173,100 +167,48 @@ _Avoid_：parser、handler chain（實作細節）、在 position_match 各處�
 _Avoid_：parse 後仍用 dataclass isinstance 梯做 spec／dispatch、把查詢種類當實作 enum 名寫進領域文案
 
 **查詢語意解釋**：
-向**創作者**即時說明當前搜尋字串嘅查詢意圖；權威來自**查詢分派**解析，唔另建前端 parser。**等號查詢**（整詞同韻／同聲）用一句概括（如整詞同「香港」同韻），句尾括**押韻標註**（單押／雙押／三押／四押，依參考詞字數）。**前綴通配等號查詢**先述首個字**任意字**，再述第 2 字起同參考詞讀音模板**同韻**並附押韻標註。其餘缺字家族等以**由左至右**逐字掃描組句：先標**幾個字**，再逐個字列出約束（如第 N 個字同 {碼} **同音**、第 N 個字為「{字面}」、第 N 個字**任意字**、第 N 個字同「{參考字}」**同韻**／**同聲**、第 N 個字同{片段} **同韻母**／**同聲母**）。**詞條 lookup**、**近反義關係查詢**、**雙聲疊韻字查詢**等無逐字比對規格者用最短動作句（如查詢詞條「香港」、查「開心」嘅**近義詞**／**反義詞**）。**雙聲疊韻字查詢**底句為「查{N}字雙聲疊韻字（各字音節相同，聲調不限）」；有碼前綴／尾字韻錨時鏡像 `~~` 補「碼 …」「尾字同「…」同韻」；**唔**附押韻標註。**位置錨定**易混時另加簡短警告，唔取代主解釋。語法無效時沿用 parser 已有 hint。
-_Avoid_：格、槽、音節、音節槽（作創作者解釋文案）、前端複製 parse 規則、把解釋當第二套語法規格、「同音」泛指同韻或同聲、押韻標註用於逐字掃描句或雙聲疊韻字查詢、解釋文案寫近義關係／反義關係（改用近義詞／反義詞）、別名或等價查詢（如 `23我` 與 `23我=`）解釋與實際分派唔一致、同音節疊字（作解釋文案）
+查詢分派權威，創作者即時說明意圖。等號一句概（+押韻標）。缺字逐字掃描標約束。無規格者最短句。位置混加警告。
+_Avoid_：格槽音節、前端 parse、解釋當規格、「同音」泛同韻、押韻標用於逐字/疊韻句
 
 **押韻標註**：
-**等號查詢**語意解釋句尾括號；**前綴通配等號查詢**句尾亦用同一套標數，標示參考詞字數與填詞習慣：一字（單押）、二字（雙押）、三字（三押）、四字（四押）；五字及以上依字數延伸（五押、六押…）。含左碼整詞等號（如 `0449窮困潦倒=`）時，押數仍跟參考詞字數，碼約束另句補充。
-_Avoid_：當通用韻腳標籤用於缺字逐字掃描句或**韻／聲錨**單字查詢、與搜尋結果排序混淆、cap 四押
+等號/前綴等號句尾標參考詞字數（單/雙/三/四押...）。碼約束另補。
+_Avoid_：通用韻腳標、與排序混、cap 四押
 
 **缺字型查詢執行**：
-接收**查詢分派**正規化後的比對規格，將缺字查詢、韻／聲錨、碼字查詢、字面參考、碼夾等號查詢，以及標有 `compound_kind` 的近義／反義複合查詢，統一執行為搜尋結果；不應再依 ParsedQuery 型別分支或重複語法正規化。語法上 ~~／!! 仍不屬缺字型查詢家族。
-_Avoid_：位置查詢、position match、候選來源（作領域正名）、在執行層保留 isinstance 分派梯
+查詢分派規格統一執行為搜尋結果。~~/!! 不屬此。
+_Avoid_：position match、執行層分派梯
 
 **近反義關係查詢**：
-在 **0243搜尋模式**下以 `~`（近義）或 `!`（反義）查詞義關係；可帶前綴 0243 碼（如 `33!開心`）——前綴約束**種子字面**須有該碼讀音，結果近義／反義詞**唔**再按結果詞碼篩走。單字種子可經**反義複合詞**表拆字補候選（如 `你我` → `!你` 含「我」）。`!!`／`~~` 為複合詞；`!{連接}!`／`~{連接}~` 為**連接詞複合查詢**。於**近反義模式**輸入時觸發**搜尋模式轉接**。全形 `～`／`！`／`＄`／`／` 與半形 `~`／`!`／`$`／`/` 等價；`？` 與 `?` 等價——入口正規化為半形後再解析。
-_Avoid_：稱此為「開啟近反義模式」（那是近反義模式的另一條路徑）
+0243模式下 ~ / ! 查近/反義。可前綴碼。單字種子經反義複合補。!!/~~ 複合；!{連}! / ~{連}~ 連接詞複合。模式輸入觸發轉接。符號正規化。
+_Avoid_：稱為開啟近反義模式
 
-**反義複合詞**：
-填詞二字對舉（如「生死」「是非」）；`!!` 及 `33!!`、`!!你` 等變體，只返詞庫 2 字詞。候選：curated ∩ 詞庫（AB／BA 對稱）→ 反義素掃描 → 單字反義合成（top‑K=12）；啟動預算前两源，合成查詢時追加。
-_Avoid_：一般雙字詞、把 `!!` 當僅 curated 列表
-
-**反義複合快照**：
-**離線啟動預載**就緒後供 `!!` 讀取的候選字面（curated ∩ 詞庫 + 反義素掃描）；單字合成不在快照內。
-_Avoid_：compound_ant_cache（作領域正名）、把查詢合成寫回快照
-
-**填詞連接詞**：
-**連接詞複合查詢**中格固定 11 字：**與、和、或、共、同、及、跟、而、且、並、向**。
-_Avoid_：把任意虛詞都當填詞連接詞
+**反義/近義複合詞**：
+填詞二字對舉（!! / ~~）。curated ∩ 詞庫 → 素掃描 → 單字合成。快照供離線預載。
+_Avoid_：一般雙字詞
 
 **連接詞複合查詢**：
-三字；中格為**填詞連接詞**；首尾互為反義（`!{連接}!`）或近義（`~{連接}~`）；可帶尾韻錨。只返詞庫已有三字詞；`A{連接}B`／`B{連接}A` 對稱。
-_Avoid_：把 `!與!` 當整詞 lookup、無首尾關係約束
-
-**近義複合詞**：
-填詞二字近義複合（如「恐懼」）；`~~` 及變體，候選規則同**反義複合詞**對稱（curated → 同義素掃描 → 單字近義合成）。
-_Avoid_：把一般雙字並列詞都當近義複合
-
-**近義複合快照**：
-供 `~~` 讀取的候選字面（curated + 同義素掃描）；單字合成查詢時追加。
-_Avoid_：compound_syn_cache（作領域正名）
+三字，中格固定連接詞（與和或...）。首尾互為近/反。只返已有三字詞，對稱。
+_Avoid_：任意虛詞、當整詞 lookup
 
 **源 3 tier 快取**：
-首次 `~~` 查詢 lazy 預算單字近義合成 tier 表；效能優化，不擴快照，不重啟即失效。
-_Avoid_：把源 3 tier 快取當快照
+~~ lazy 單字近義合成 tier。效能用。
+_Avoid_：當快照
 
-**近義橋反義**（ingest 補全）：
-有近義無反義的字面：在近義候選中以語意向量找**橋接近義**（已有反義者）；head 與橋接近義須達**橋接語意門檻**，未達則不貢獻反義。**多橋合併**：合格橋候選皆可貢獻**直接反義**（經 **近反義池投影** 讀取，**唔**含衍生反義層），去重後按**橋分**排序，取前 N（**橋接借入上限**）。寫入關係表（`source=ant_syn_bridge`）。**詞條庫建置命令**預設由 **近義橋反義快照** 注入，唔跑 embedding；embedding 全量重算僅用於**烘焙**快照。僅 ingest，不 runtime 載 embedding。**多補取向**：門檻偏寬，寧可多橋接、以筆數上限控噪音。
-_Avoid_：runtime 即時猜反義、每次 build 預設跑 embedding 橋接、橋接借入詞林衍生或鏡射候選、ingest 繞過近反義池投影
+**近義橋反義**：
+有近無反字面 → 語意向量找橋接近義（達門檻）→ 多橋合併借 direct ant（投影讀，排序橋分）。快照注入，僅 ingest。
+_Avoid_：runtime 猜、預設 embedding、ingest 繞投影
 
-**近義橋反義快照**：
-由 embedding 橋接**烘焙**產出、git 追蹤嘅字面級反義對列表（如 `data/syn_ant/ant_syn_bridge_pairs.tsv`）；**詞條庫建置命令**預設 ingest 此快照（`source=ant_syn_bridge`），取代日常 rebuild 跑模型。近義／反義池或橋接品質閘門變更後，maintainer **重烘焙**並 commit 新快照。
-_Avoid_：把快照當未修改 upstream raw、每次 build 重算 embedding、快照唔入版控導致 CI 缺橋接
+**詞林衍生反義 / 反義端點鏡射**：
+直接反義頭經靜態 cilin 近鄰或全源近鄰再展開反。per-head，查詢時展開，標衍生語意。快照可選。
+_Avoid_：全庫 live、納未收錄、bake 與 runtime 雙軌
 
-**詞林衍生反義**：
-對已有**直接反義**邊，經 **靜態詞林埠** 嘅 **cilin** 近義鄰居再展開一層反義（例：快樂 ant 悲傷、悲傷 syn 傷心 → 快樂 ant 傷心）；鄰居權威來自 bundled cilin raw lookup，**唔**以 **詞條庫** cilin 關係列為準。衍生候選須為**收錄字面**（membership 內）先納入池。**查詢時**對當前 head 單點展開，唔寫入關係表；候選仍標 **詞林衍生反義** 語意（`ant_cilin_exanded`）供 **近反義池** 排序。**近反義模式**與 **`!` 展開**皆須消費此層。領域核心契約為 **per-head**（head ＋ 該 head **直接反義**種子 → 衍生 tail **字面對**）；核心輸出 `(head, tail)` 字面對，**唔**綁 **詞條庫** id 或 pool 排序欄位；runtime／bake／persist 各用 adapter 消費。**唔**產出舊 ingest syns_a 反向對。maintainer 烘焙為 **bake adapter**，逐收錄 head 呼叫同一核心。
-_Avoid_：以 **反義端點鏡射**（全源近義）代替本層、以 **詞條庫** cilin syn 列取代靜態 cilin lookup、納入未收錄字面、核心產 pool dict 或 word_id 對、每次 **詞條庫建置** 全庫 live 展開、bake 保留 syns_a
+**衍生反義快照重烘焙 / 近義橋重跑**：
+maintainer 單命令重烘焙（raw 變或演算法變）。預設 export-only。
+_Avoid_：PR 預設跑、build 熱路徑 live
 
-**詞林衍生反義快照**：
-maintainer **可選**匯出嘅字面級反義對 TSV（`expand-antonyms-cilin`／`bake-derived-ant-snapshots`）；供回歸對照與 diff，**唔**再作 **近反義池** 或 **`!` 展開** 覆蓋嘅權威來源，**唔**納入日常 **詞條庫建置命令** inject。烘焙時逐 **收錄字面** head 迭代，**直接反義種子**來源同 **近反義池**（DB 直接反義、排除衍生 `source`，**加** **靜態詞林埠** 反義 lookup，再 filter membership）。
-_Avoid_：把快照當創作者查詢 SSOT、build 仍 inject、缺檔 fail fast 阻貢獻者驗 lexicon、bake 只讀 **詞條庫** 忽略靜態反義、種子來源與 runtime 唔同
-
-**反義端點鏡射**：
-對**直接反義**種子，經**全源**直接近義鄰居（**詞條庫** syn **＋** **靜態詞林埠** 合併近義，同 **關係圖** 規則）再展開一層反義候選。衍生候選須為**收錄字面**（membership 內）先納入池。**查詢時**對當前 head 單點展開，唔寫入關係表；候選標 **反義端點鏡射** 語意（`ant_syn_mirror`）供排序。**近反義模式**與 **`!` 反義查詢**皆須消費此層；展開順序上先 **詞林衍生反義**、再鏡射。領域核心契約為 **per-head**（head ＋ 直接反義種子 → 衍生 tail **字面對**）；**唔**用全庫 `collect_mirror_ant_pairs` 掃描。maintainer 烘焙為 **bake adapter**，逐收錄 head 呼叫同一核心。
-_Avoid_：把鏡射當 **詞林衍生反義**、每次 **詞條庫建置** 全庫 live 展開、納入未收錄字面、鏡射先於詞林衍生反義、全庫 mirror 掃描當 canonical、bake 與 runtime 雙軌
-
-**反義端點鏡射快照**：
-maintainer **可選**匯出嘅字面級反義對 TSV（`expand-antonyms-mirror`／`bake-derived-ant-snapshots`）；供回歸對照與 diff，**唔**再作查詢覆蓋權威，**唔**納入日常 **詞條庫建置命令** inject。烘焙時逐 **收錄字面** head 迭代，**直接反義種子**來源同 **近反義池**；核心同 runtime per-head 字面對一致。
-_Avoid_：把快照當創作者查詢 SSOT、build 仍 inject、缺檔 fail fast、全庫 mirror 掃描匯出
-
-**衍生反義快照重烘焙**：
-maintainer 單命令 `bake-derived-ant-snapshots` 可匯出 **詞林衍生反義快照** 與 **反義端點鏡射快照** 作回歸基線；內部複用與 runtime 同源嘅展開邏輯。**唔**納入日常 **詞條庫建置命令**。**觸發條件**：cilin／guotong raw 變更，或兩層衍生**展開演算法**變更時於 **發佈主理機** commit 新 TSV。`expand-antonyms-cilin`／`expand-antonyms-mirror` CLI **保留**作 maintainer debug；兩者皆 **預設 export-only**（寫 TSV），`--insert` 僅經 persist adapter 寫 **詞條庫**（唔影響創作者查詢 SSOT）。
-_Avoid_：貢獻者 PR 預設跑烘焙、build-db 熱路徑仍 live expand 或 inject、把烘焙當查詢 SSOT、刪 debug expand 命令、CLI 預設 insert 衍生列、mirror 與 cilin CLI 契約不一致
-
-**近義橋重跑**：
-近義橋反義規則或近反義池變更後之 **近義橋反義快照** 重烘焙（embedding 全量）並 commit；納入 maintainer **詞條庫建置命令** 流程。**唔**係每次 **詞條從源重建** 必做。維護步驟見 `docs/ingest-bridge-ant.md`（唔寫入創作者 README）。
-_Avoid_：貢獻者 PR 內代跑 embedding 烘焙、把日常 build-db 同重烘焙混為一步、手動刪 lock 檔當恢復
-
-**橋接語意門檻**：
-近義橋反義 ingest 時，head 與橋候選近義之語意相似須達的最低要求；未達之橋候選不貢獻反義。
-_Avoid_：把筆數上限當作語意門檻
-
-**橋接借入上限**：
-每個 head 經多橋合併後寫入之直接反義筆數上限（預設 30）；依橋分由高到低取前 N。
-_Avoid_：把單一橋候選之反義池大小當作借入上限
-
-**橋分**：
-head 與橋候選近義之語意相似；多橋合併時作借入反義去重保留與排序依據（較高橋分優先）。
-_Avoid_：把橋分當作 head 與每條反義之直接相似
-
-**多橋合併**：
-近義橋反義自多個合格橋候選借入直接反義，字面去重後按橋分排序截斷至橋接借入上限。
-_Avoid_：單橋贏者通吃、以反義池 outdegree 剔除橋候選
-
-**橋接目標排除**：
-已具反義之字面不參與近義橋反義；同輪 chunked ingest 每批寫入後須反映新狀態，避免重複橋接。
-_Avoid_：僅以開跑快照判定目標、手動刪 lock 檔恢復
+**橋接語意門檻 / 借入上限 / 橋分 / 多橋合併 / 目標排除**：
+橋接門檻、每頭上限、排序依橋分、去重截斷。已反義字面排除。
+_Avoid_：上限當門檻、單橋贏者、開跑快照判定
 
 **創作者手動關係**：
 **關係補錄**寫入 direct `word_relations`（`source=manual`）並一跳擴展（`manual_syn_cluster`／`manual_ant_mirror`）；擴展互斥：唔同時寫入種子字面既有相反關係類型。**創作者**填詞時**即時寫本機 **詞條庫****（唔經 rebuild）；**維護者**將要進 Release 嘅補錄寫入 **關係補錄清單**，由 **詞條庫建置命令** 套用。
@@ -353,7 +295,7 @@ _Avoid_：星號錨（舊稱）
 **複合查詢**：~~／!! 等近反義複合，或連接詞複合。候選來自 curated + 素掃描。
 _Avoid_：把一般雙字詞當複合
 
-**異讀查詢**：左碼/右碼 找同一字面多讀音。結果**按字面合併** + 標註左／右。
+**同音異讀查詢**：左碼/右碼 找同一字面多讀音。結果**按字面合併** + 標註左／右。字面群組依**詞條排序信號**（頻率優先），同字面內純粵拼 lexical。
 _Avoid_：左右不等長、單一讀音重複
 
 **粵拼查詢**：整段粵拼查詞。
@@ -377,57 +319,15 @@ _Avoid_：把 runtime 詞條庫本身稱作詞庫、把收錄決策塞進 raw lo
 詞條庫在 runtime 記憶體中的可查索引與就緒狀態；就緒後供搜尋路徑依字面形狀與聲韻維度取向量候選，未就緒時搜尋降級直查詞條庫。**離線啟動預載**的編排與磁碟暖啟屬餵入此索引的實作細節，不與索引介面混稱。**免安裝交付**的 Portable 套件可內含與捆綁 `lyrics.db` 對應的預暖磁碟快照，縮短首次**就緒閘**等待。
 _Avoid_：word_cache（作領域正名）、把預載執行緒或磁碟快照當成索引定義的一部分
 
-**多字收錄**：
-長度 ≥ 2 的字面，僅當詞庫有該詞的**詞級標音**（粵拼＋0243 碼）時，才以詞級標音**收錄**進詞條庫；可有多個讀音列。詞級標音未命中時，不由此路徑注入（改走**音節拼接讀音**收錄路徑，若拼接成功）。
-_Avoid_：逐字拼接多音字讀音後冒充詞級標音、把拼接結果稱作詞級標音
+**詞級標音家族**：
+多字收錄（詞級標音優先，否則拼接）、詞級異讀（上游決定）、讀音合併（(字面,粵拼) 去重，跨層限制）、格式門檻（合法即收）、上游優先序（勘誤 > words.hk > 開放 > curated）、拼接讀音（fallback，非詞級）、單字收錄（rime 預設）。
+_Avoid_：混稱拼接為詞級、r ime 過濾異讀、essay 單獨收錄
 
-**詞級異讀**：
-同一**字面**、多條相異**粵拼**嘅**詞條**（如「今晚」`gam1 maan5` 與 `gam1 maan1`）。**合理**與否以**詞級標音上游**列出為準（口語／書面、多調等詞級現象）；**rime 單字表**唔做異讀裁判，亦唔用音節拼接預設否定上游異讀。**詞條從源重建** 合併 **詞級標音** 時**唔**以 rime 音節內容過濾讀音。上游日後列出罕見或錯誤讀音時，照收錄，由 **詞庫勘誤** overlay 人手刪改，唔靠自動 rime 過濾代替勘誤。
-_Avoid_：用 rime 預設拼接否定詞級異讀、用 pron_rank 擋多字讀音、build 合併時用 rime 音節存在性過濾詞級標音、把異讀與上游錯誤混為「自動過濾」處理
+**詞條庫建置流程**：
+建置命令（單一入口，≤10min，bulk relations <10s）、從源重建（全量 wipe+ingest+overlay）、SSOT來源（rime+words.hk+開放+curated）、源清單（yaml enabled）、fixture（CI 用）、CC-Canto 脫離。
+_Avoid_：legacy 當 SSOT、增量 patch、完整 db 版控
 
-**詞級讀音合併**：
-**詞條從源重建** 合併 **詞級標音** 時，以 **(字面, 粵拼)** 去重；同一字面之相異粵拼須保留為多條**詞條**（支援**詞級異讀**與**異讀碼查詢**）。**同層**（同一上游 ingest batch）：相異粵拼**全收**。**跨層**：高優先來源已出現過嘅字面，低優先來源**只可**合併**相同**粵拼嘅來源紀錄，**唔可**新增粵拼；低優先仍可補**前序完全無**嘅新字面（含該字面嘅全部讀音列）。進入合併前須通過 **詞級標音格式門檻**。
-_Avoid_：二字字面只留第一條粵拼、跨層低優先加新粵拼、把 merge 當單讀音覆蓋、收語法損壞嘅粵拼
 
-**詞級標音格式門檻**：
-**詞級標音** ingest／合併嘅信任邊界校驗：粵拼 token 語法合法、音節數與**字面**長度一致、可衍生 **0243 碼**；唔合格行**靜默丟棄**（可記 log／計數），**唔** fail 成個 **詞條庫建置命令**。**唔**查 rime 該字有冇該音節（語義合理性交 **詞級標音上游** 與 **詞庫勘誤**）。
-_Avoid_：用 rime 音節存在性當格式門檻、壞行令 build fail fast、把格式門檻當異讀過濾
-
-**詞條庫建置命令**：
-maintainer 單一入口（如 `python -m ingest build-db`）執行 **詞條從源重建** 全條龍：truncate 查詢核心表 → lexicon ingest → **詞庫勘誤** overlay → **`build-word-relations`**（靜態 syn/ant bulk insert）→ **近義橋反義快照** inject → **關係補錄清單** 套用 → export 與 README 詞條數；可選 copy 至 PWA `public/`。**唔**預設跑 embedding 橋接烘焙、**唔**再跑詞林衍生反義／mirror 快照 inject。`client` prebuild 僅 copy 已建 **詞條庫**。**詞條庫建置互斥**：同一 **詞條庫** 同時只准一個建置進程。**詞條庫建置時限**：全條龍須 **≤10 分鐘**；靜態關係寫入目標 **<10 秒**。
-_Avoid_：把 client prebuild 當 SSOT compile、創作者 build 依賴 raw 字典、預設 build 跑 embedding 橋接、跳過 relations 只 rebuild words、無鎖並行多個 build-db、為達時限偷減關係語意
-
-**詞條從源重建**：
-maintainer 由 **詞條 SSOT 來源** manifest 逐源 ingest、合併、套用 **詞庫勘誤** overlay，**全量替換** **詞條庫** 內 `words`（及 **詞條來源紀錄**）與 `word_relations` 等查詢核心表，產出下游產物（export json、README 詞條數、PWA copy 等）；**唔**以現行 **詞條庫** 作輸入權威。每次 build 全量重算，唔依賴 `pending`／`applied` 狀態機；**唔**保留 runtime **收錄決策** 注入列。
-_Avoid_：把 copy 現行 **詞條庫** 叫從源重建、增量 patch 當權威、rebuild 時 merge runtime 注入列、跳過 overlay 直接改 raw 檔
-
-**詞條 SSOT 來源**：
-重建 **詞條庫** 時嘅**唯一權威輸入**：maintainer fetch 嘅**未修改原始字典檔**——預設 **rime** 單字表、**words.hk**、**開放詞典**、專案 **Curated 常用詞**（**詞級標音 curated**）；以 **詞條源清單** 列舉，每源獨立 ingest。**唔**含 **CC-Canto**（見 **CC-Canto 脫離**）。**唔**以 legacy **詞條庫**、`data/raw/clean` 混合 JSON 或 runtime **音節拼接讀音** 作 build 輸入。
-_Avoid_：把現行 **詞條庫** 當 SSOT、把拼接結果寫入 build、未列清單嘅檔案混入 ingest、把 CC-Canto 當預設源
-
-**詞條源清單**：
-`data/lexicon/sources.yaml` 列舉 **詞條 SSOT 來源** 與 ingest 模組；`enabled`（或註解該項）決定該次 build 是否納入。停用源唔需要 raw 檔、唔參與合併；**啟用**源缺 raw 則 **詞條庫建置命令** fail fast。增刪詞典 ≈ 改清單一行 + **詞條從源重建**（wipe → reingest → overlay）；**唔**版控完整 **詞條庫** 本體（`lyrics.db` gitignore）。
-_Avoid_：手改 **詞條庫** 當維護方式、停用源仍要求 raw 存在、增源要改多個散落腳本、把完整 **詞條庫** commit 入 git
-
-**詞條庫 fixture**：
-CI 與煙霧測試用嘅細 **詞條庫** 快照（如 `tests/fixtures/lyrics.db`），版控追蹤；完整 **詞條庫** 由 **詞條庫建置命令** 本機產出，Release 上傳產物。
-_Avoid_：用 fixture 當 Release 資產、CI 每次 PR 跑完整 build-db、把 fixture 當 SSOT
-
-**CC-Canto 脫離**：
-**詞條從源重建** 與 **詞條源清單** **唔**再納入 CC-Canto（結案 GitHub issue #9 方向）。既有 **詞條庫** 內 CC 來源讀音須經 wipe reingest 清除，唔靠增量刪除。
-_Avoid_：預設 manifest 仍含 CC-Canto、為過渡保留 CC merge 分支、Release 仍標 CC BY-SA 混合（脫離後）
-
-**詞級標音上游**：
-**詞條 SSOT 來源** 入面、多字 **詞級標音** 嘅認可第三方：**words.hk**（公有領域）、**開放詞典 · 粵語詞典**（CC BY 3.0）。合併**優先序**：**詞庫勘誤** → words.hk → 開放詞典（僅補 words.hk 無之字面）→ **詞級標音 curated**（僅補前序仍無之字面）；單字讀音由 rime 單字表 SSOT 提供。**音節拼接讀音**只作 runtime **收錄決策** fallback，**唔**寫入 build 或副件 export。跨層讀音邊界見 **詞級讀音合併**（低優先唔得為已 claim 字面加新粵拼）。
-_Avoid_：未列上游來源混入 export、低優先為高優先已有字面加異讀、開放詞典與 words.hk 同字面無 tie-break 全收、把拼接結果 export 進副件
-
-**音節拼接讀音**：
-詞庫無該多字詞級標音時，逐字取 rime 單字「預設」讀音拼成整詞粵拼與 0243 碼；用於查詢、結果頁顯示與參考字錨點解析。拼接成功時可作**收錄決策**的第三條路徑寫入詞條庫，但**不**宣稱為詞級標音、**不**與詞級標音混稱。任一字缺 rime 預設則拼接失敗；單字有多個 rime 讀音時**只取預設**，不展開讀音組合。
-_Avoid_：與詞級標音混稱、把拼接結果當詞庫權威、線上 API 猜音
-
-**單字收錄**：
-長度 1 的字面，詞條庫已有則不重複注入；否則從 rime 單字表取「預設」讀音注入（runtime **收錄決策** fallback）。**詞條從源重建** 時 rime SSOT ingest **包含** `char.csv` 全部有效讀音列（預設、常用、罕見），唔限預設。
-_Avoid_：為排序而單獨收錄 essay 裡出現但未收錄的字、build 只 ingest rime 預設讀音、把 fallback 預設規則當 build 範圍
 
 **Essay 語料**：
 粵語書面／口語詞頻語料（[rime-cantonese](https://github.com/rime/rime-cantonese) · [essay-cantonese.txt](https://github.com/rime/rime-cantonese/blob/main/essay-cantonese.txt)，CC BY 4.0），格式為「詞＋詞頻」。**不**開注入門、**不**用於猜讀音；僅供排序。語料隨 repo 提供。
@@ -437,34 +337,25 @@ _Avoid_：把語料當詞庫、把語料當近義來源
 啟動時自 Essay 語料建立的**字面→詞頻**查表，僅供搜尋排序；載入記憶體，不寫入詞條庫、不另建詞頻表。更新語料檔後重啟即生效。
 _Avoid_：詞頻表（作資料庫實體）、把詞頻存進詞條列、用 vector embedding 取代詞頻排序
 
-**Curated 常用詞**：
-專案維護的填詞常用字面列表，在 essay 詞頻相同時作排序加成。
-_Avoid_：把 curated 排在 essay 之前（現行 tier 為 essay 優先）
-
-**pron_rank**：
-rime 單字表的讀音常用度標記（預設＞常用＞罕見），用於單字讀音選擇與排序 tie-break；多字讀音以詞級標音為準。
-_Avoid_：把 pron_rank 當收錄門檻
-
-**詞條排序信號**：
-**搜尋結果排序**與**等號參考讀音選列**共用的可比較信號定義（純漢字、Essay 詞頻、curated、pron_rank、字面等）；兩條契約 tier 順序不同，但信號來源一致，由同一模組對外提供兩條 key。
-_Avoid_：把兩條契約收成一條 tier、essay_sort（實作名）
+**排序信號**：
+essay/curated 頻率 + pron + lexical。多契約 tier：
+搜尋結果：han → -essay → -curated → pron → 字面
+等號參考：pron → -essay → !aa → jyut
+同音異讀：han → -essay → -curated → ch/jyut（內 lexical）
+_Avoid_：把契約收成一條 tier、essay_sort（實作名）
 
 **等號參考讀音選列**：
-多讀音字面在**等號參考讀音**情境下選權威單列的 tie-break：**pron_rank → Essay 詞頻 → 略過 aa 變體 → 粵拼序**；信號來自**詞條排序信號**，tier 順序與**搜尋結果排序**不同。
-_Avoid_：與搜尋結果排序共用同一 tier 順序、把選列規則散落各呼叫端
+多讀音選權威用**排序信號**等號契約。_Avoid_：與搜尋共用 tier、規則散落
 
 **詞條 lookup 版面**：
-純漢字精確查詢（詞條 lookup）回傳的多段結果編排：code header → 粵拼 header → 查詢詞本身 → 同碼同韻段（同碼同韻含字面 → 同碼其他含字面 → 異碼含字面）→ 尾字韻錨段 → 同碼餘下；各詞條段內套用**搜尋結果排序**。快取暖化不藏在版面模組內，由呼叫端明示執行。
-**Portable** 與 **PWA** 共用上述版面與詞條順序；**呈現**不同：**Portable** 清單頭一至兩行顯示 `result_type` 為 code／jyutping 嘅標題列（純碼、純粵拼，可點擊展開）；**PWA** 唔另出標題列，因每條詞條行已內嵌粵拼同 0243 碼。兩端詞條（`result_type=word`）次序須一致。
-_Avoid_：code_aware_ranker（作領域正名）、在版面模組內隱式 sync 詞庫快取索引、為對齊 PWA 而刪除 Portable 碼／粵拼標題列或將標題列移到詞條之後
+純漢字查詢回傳多段：code/粵拼 header → 查詢詞 → 同碼同韻段（含字面→其他→異碼）→尾韻錨→餘下。各段用**排序信號**。
+**Portable**/**PWA** 共用順序；Portable 另標題列，PWA 內嵌。_Avoid_：code_aware、隱式 sync、刪 Portable 標題為對齊 PWA
 
 **缺字查詢字面優先**：
-**缺字查詢**結果在同一匹配層級內，先比**參考字**位置的字面吻合數（愈多愈前），再套用**搜尋結果排序**；不得在字面優先 tier 內另訂 essay／curated 順序。
-_Avoid_：mask_priority（作領域正名）、把字面吻合與 essay 詞頻混為同一維度
+**缺字查詢**結果先比參考字吻合數，再**排序信號**。_Avoid_：mask_priority、吻合與頻率混
 
 **搜尋結果排序**：
-扁平詞條清單在同一匹配層級內，依**詞條排序信號**套用 tier：**純漢字字面 → essay 詞頻 → curated → pron_rank → 字面**。**缺字查詢字面優先**、code header、近反義分組等結構性區塊順序不變，只在區塊內套用上述信號。目標是貼近 0243 常用度體感，不要求與 0243.hk 逐詞一致。
-_Avoid_：預設字母序、每種語法各一套 tie-break、混雜粵拼字面與純漢字無區分、維護 0243 完整快照作 CI 門檻
+扁平清單用**排序信號**搜尋契約。**缺字查詢字面優先**前置。異讀/等號變體。_Avoid_：預設字母、每語法一套、混粵拼純漢、完整快照 CI
 
 ---
 
@@ -486,7 +377,7 @@ _Avoid_：預設字母序、每種語法各一套 tie-break、混雜粵拼字面
 
 **就緒閘**：詞庫快取索引就緒前阻所有分派搜尋；傳進度；降級逾時後放行。
 
-**離線啟動預載**：essay/curated/複合快照/異讀索引/詞庫快取；就緒以索引為準。
+**離線啟動預載**：essay/curated/複合快照/同音異讀索引/詞庫快取；就緒以索引為準。
 
 **創作者**：用本工具搜韻換字填詞者。
 
