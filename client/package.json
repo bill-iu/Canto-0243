@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "npx tsx scripts/build-ranking-index.ts && node copy-db.js",
+    "prebuild": "npx tsx scripts/build-ranking-index.ts && npx tsx scripts/build-fonts.ts && node copy-db.js",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "oxlint",
     "copy-db": "node copy-db.js",
-    "build-ranking": "npx tsx scripts/build-ranking-index.ts"
+    "build-ranking": "npx tsx scripts/build-ranking-index.ts",
+    "build-fonts": "npx tsx scripts/build-fonts.ts"
   },
   "dependencies": {
     "react": "^19.2.7",
