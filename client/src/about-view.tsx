@@ -10,6 +10,12 @@ const NOTICES_URL = 'https://github.com/bill-iu/Canto-0243/blob/dev/THIRD_PARTY_
 export function AboutView({ lexiconVersion, onBack }: AboutViewProps) {
   return (
     <div className="guide-view about-view">
+      <p className="about-slogan about-slogan--top">
+        即使離線，
+        <br />
+        亦完全可用。
+      </p>
+
       <header className="guide-hero">
         <p className="eyebrow">About</p>
         <h1 id="aboutTitle" tabIndex={-1}>
@@ -192,6 +198,12 @@ export function AboutView({ lexiconVersion, onBack }: AboutViewProps) {
           </button>
         </div>
       </article>
+
+      <p className="about-slogan about-slogan--bottom">
+        這一次，
+        <br />
+        重奪你的創作主導權。
+      </p>
     </div>
   );
 }

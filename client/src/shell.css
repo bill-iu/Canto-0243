@@ -493,6 +493,22 @@ a.result-item {
 
 .guide-intro p:last-child { margin-bottom: 0; }
 
+.about-slogan {
+      max-width: 780px;
+      margin: 0;
+      font-family: "Playfair Display", "Noto Serif TC", serif;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 600;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+.about-slogan--top { margin-bottom: 32px; }
+
+.about-slogan--bottom { margin-top: 48px; }
+
 .about-lede {
       margin: 10px 0 0;
       font-size: 16px;
