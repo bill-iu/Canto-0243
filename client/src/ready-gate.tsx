@@ -60,7 +60,7 @@ export function ReadyGate({
   onOpenChange,
 }: ReadyGateProps) {
   const playLanding = useMemo(
-    () => !sessionStorage.getItem(LANDING_SESSION_KEY) && !prefersReducedMotion(),
+    () => !prefersReducedMotion(),
     [],
   );
   const skipGate = useMemo(

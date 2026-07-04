@@ -136,4 +136,18 @@ describe("frontend ESM public API", () => {
     assert.match(logoSrc, /className="gate-ink-track"/);
     assert.match(logoSrc, /className="gate-ink-fill"/);
   });
+
+  it("ready-gate always renders gate-brand icon and gate-ink-meter (logo+ink) when visible", () => {
+    const gateSrc = readFileSync(new URL("../client/src/ready-gate.tsx", import.meta.url), "utf8");
+    // Ensures no conditional that could hide the logo/ink elements in the animation
+    assert.match(gateSrc, /<div className="gate-brand">/);
+    assert.match(gateSrc, /<BrandLogo variant="gate"/);
+    assert.match(gateSrc, /<GateInkMeter/);
+  });
+
+  it("shell.css has rules to show gate-brand in non-minimal mode", () => {
+    const shellSrc = readFileSync(new URL("../frontend/shell.css", import.meta.url), "utf8");
+    assert.match(shellSrc, /:not\(.minimal.\) .gate-brand/);
+    assert.match(shellSrc, /html\.fonts-ready .gate-brand/);
+  });
 });
