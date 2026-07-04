@@ -29,7 +29,7 @@ export function initRankingData(data: {
 }
 
 function isPureHan(text: string): boolean {
-  return Boolean(text) && [...text].every((ch) => /\u4e00-\u9fff/.test(ch));
+  return Boolean(text) && [...text].every((ch) => /[\u4e00-\u9fff]/.test(ch));
 }
 
 function pronRankSortValue(char: string, jyutping: string): number {
@@ -68,6 +68,21 @@ function essayFrequency(char: string): number {
 
 function curatedBoost(char: string): number {
   return curated.has((char || '').trim()) ? 1 : 0;
+}
+
+function getLiteralExactCount(row: WordRow, positions: Array<[number, string]>): number {
+  const text = String(row.char ?? '');
+  return positions.reduce((count, [pos, ch]) =>
+    count + (pos < text.length && text[pos] === ch ? 1 : 0), 0);
+}
+
+export function literalPriorityCompare(
+  a: WordRow, b: WordRow, positions: Array<[number, string]>
+): number {
+  const ea = getLiteralExactCount(a, positions);
+  const eb = getLiteralExactCount(b, positions);
+  if (ea !== eb) return eb - ea;  // higher exact count first (字面優先)
+  return compareSearchResults(a, b);
 }
 
 export function searchResultSortKey(row: WordRow): [number, number, number, number, string, string] {
@@ -135,6 +150,14 @@ export function rankingLogicSelfCheck(): void {
   const order = rows.map((r) => r.word).join(',');
   if (order !== '窮困潦倒,窮苦潦倒,窮酸潦倒') {
     throw new Error(`rankingLogicSelfCheck: got ${order}`);
+  }
+
+  // literal priority (缺字查詢字面優先) test — 門0 style
+  const litPositions: Array<[number, string]> = [[0, '窮']];
+  const litA = { char: '窮困潦倒', jyutping: 'kung4 kwan3 liu5 dou2' };
+  const litB = { char: '困窮潦倒', jyutping: 'kwan3 kung4 liu5 dou2' };
+  if (literalPriorityCompare(litA, litB, litPositions) >= 0) {
+    throw new Error('literalPriorityCompare: 窮 at pos0 should precede');
   }
 }
 
