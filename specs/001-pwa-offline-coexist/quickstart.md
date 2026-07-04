@@ -21,12 +21,13 @@
 2. 等到介面顯示「資料庫離線就緒」（見離線就緒契約；Ready 狀態 UI 文案）
 3. 執行至少 1 次查詢並看到結果
 4. 將手機切換到飛航模式（完全離線）
-5. 從主畫面重新開啟 PWA
-6. 再執行至少 1 次查詢
+5. 從主畫面重新開啟 PWA（**iOS 特別驗**：先殺掉 PWA 進程 / 清除 Safari 資料，確保冷啟動；點擊主畫面 PWA 圖示，應無 Safari 原生「尚未連接互聯網」錯誤頁，而是直接顯示 cached shell + 離線就緒狀態）
+6. 再執行至少 1 次查詢（驗證 hybrid A+D 修復：navigateFallback + PWA cold launch 偵測讓 shell 正常載入，DB 從 OPFS 載入）
 
 **Expected outcomes**
 - 離線狀態下可開啟並查詢
 - 不需要額外登入或後端服務
+- iOS 主畫面 PWA 冷啟動無 browser 級錯誤頁（App shell + gate 正常顯示）
 
 ## Scenario B (P3): Cache evicted → user can self-recover
 
@@ -67,15 +68,19 @@
 2. **桌面 Chrome — opfs 對照**
    - `VITE_DB_BACKEND=opfs npm run dev`（同 URL `?benchmark=1`）
    - 首次執行後關閉分頁，再開一次 `?benchmark=1`（第二次應無網路 fetch）
-3. **iOS 飛航（D5-M5）**
+3. **iOS 飛航冷啟動（D5-M5）**（混合 A+D 驗證重點）
    - 完成 Scenario A 步驟 1–3（離線就緒 + 在線查詢一次）
-   - 飛航模式 → 主畫面重開 PWA → 再查詢 `事業` 或任意 golden query
+   - 飛航模式
+   - 殺掉 PWA 進程（或清除網站資料）
+   - 主畫面點擊 PWA 圖示冷啟動（驗證無 Safari 原生錯誤，shell 立即載入）
+   - 再查詢 `事業` 或任意 golden query（確認 DB 從 OPFS 成功載入，UI 正常）
 4. 將結果填入 [`research.md` § DB-5](./research.md#db-5-storage-layer-measurements-adr-0024-72)
 
 **Expected outcomes**
 - Benchmark 頁可重現、JSON 可複製到 research 表
 - 飛航模式下探針查詢有結果
 - Safari 無 `performance.memory` 時，以 Web Inspector Memory 手動補 D5-M3
+- **混合 A+D 重點驗**：iOS 主畫面 PWA 冷啟動（殺進程後飛航重開）無原生錯誤頁，App shell 立即顯示（navigateFallback），DB 從 OPFS 載入成功，UI 可操作查詢
 
 ## Scenario E (P2): Visual parity — gate + shell
 
@@ -178,7 +183,7 @@
 | **B1/B2** | **pending** | 待 Android 或桌面 Chrome |
 | **C** portable ↔ PWA | **parity 腳本 pass** | `pwa_golden_parity.py --gate all` 20/20；肉眼對照待 `v1.0.4-beta` portable zip |
 | **P6 smoke** | **pass** | 桌面瀏覽器代測：mode menu、`?view=guide/about`、URL sync |
-| **D5-M5** iOS 飛航 | **pass** | 含於 Scenario A |
+| **D5-M5** iOS 飛航冷啟動 (A+D) | **pass** | Scenario A 加強版：主畫面 PWA 冷啟動無 Safari 錯誤頁；shell + 查詢成功（OPFS + navigateFallback + app detection） |
 
 **Deploy run**：[Actions #28651396099](https://github.com/bill-iu/Canto-0243/actions/runs/28651396099)（`dev` + `v1.0.4-beta`）
 

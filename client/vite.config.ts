@@ -30,6 +30,10 @@ export default defineConfig(({ command }) => ({
       ],
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
+        skipWaiting: true,
+        clientsClaim: true,
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
         runtimeCaching: [
           {
@@ -63,6 +67,8 @@ export default defineConfig(({ command }) => ({
         theme_color: '#EBDFD0',
         background_color: '#EBDFD0',
         display: 'standalone',
+        start_url: '/Canto-0243/',
+        scope: '/Canto-0243/',
         icons: [
           {
             src: 'icon-192.png',

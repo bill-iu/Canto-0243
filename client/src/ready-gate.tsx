@@ -48,6 +48,9 @@ export interface ReadyGateProps {
   onRetry: () => void | Promise<void>;
   onOpenChange: (open: boolean) => void;
   theme?: 'light' | 'dark';
+  // For hybrid A+D: detect PWA cold launch to handle iOS airplane home-screen launch gracefully
+  isPwaLaunch?: boolean;
+  isColdPwaOfflineLaunch?: boolean;
 }
 
 export function ReadyGate({
@@ -60,6 +63,8 @@ export function ReadyGate({
   onRetry,
   onOpenChange,
   theme = 'light',
+  isPwaLaunch = false,
+  isColdPwaOfflineLaunch = false,
 }: ReadyGateProps) {
   const playLanding = useMemo(
     () => !prefersReducedMotion(),
@@ -70,9 +75,14 @@ export function ReadyGate({
     [offlineStatus],
   );
 
-  const [visible, setVisible] = useState(!skipGate);
+  // D part: for PWA cold offline launch (iOS home screen in airplane), use minimal gate and faster path
+  // to avoid relying on perfect SW navigation; still show UI shell via A 's navigateFallback
+  const useMinimalForPwa = isPwaLaunch && (isColdPwaOfflineLaunch || !isOnline);
+  const effectiveSkip = skipGate || (isPwaLaunch && offlineStatus === 'ready') || isColdPwaOfflineLaunch;
+
+  const [visible, setVisible] = useState(!effectiveSkip);
   const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>(
-    skipGate ? 'hidden' : 'loading',
+    effectiveSkip ? 'hidden' : 'loading',
   );
   const handoffStarted = useRef(false);
 
@@ -91,6 +101,14 @@ export function ReadyGate({
     handoffStarted.current = true;
 
     void (async () => {
+      // D: for cold PWA offline launch, skip heavy animation, use minimal + fast handoff
+      if (useMinimalForPwa) {
+        await sleep(100);
+        sessionStorage.setItem(LANDING_SESSION_KEY, '1');
+        setPhase('hidden');
+        setVisible(false);
+        return;
+      }
       await awaitGateBrandBeat(playLanding);
       await sleep(320);
       if (playLanding) {
@@ -103,7 +121,7 @@ export function ReadyGate({
       setPhase('hidden');
       setVisible(false);
     })();
-  }, [offlineStatus, playLanding, visible]);
+  }, [offlineStatus, playLanding, visible, useMinimalForPwa]);
 
   if (!visible || phase === 'hidden') return null;
 
@@ -114,18 +132,20 @@ export function ReadyGate({
         ? Math.max(progress / 100, GATE_INK_INDETERMINATE)
         : GATE_INK_INDETERMINATE;
 
-  const label = formatPwaGateLabel(offlineStatus, progress, {
-    isOnline,
-    isDbCached,
-    errorMessage,
-  });
+  const label = isColdPwaOfflineLaunch 
+    ? 'iOS 飛航冷啟動 - 載入快取內容中'
+    : formatPwaGateLabel(offlineStatus, progress, {
+        isOnline,
+        isDbCached,
+        errorMessage,
+      });
 
   const showRetry =
     offlineStatus === 'failed' || (offlineStatus === 'not_ready' && (!isOnline || isDbCached));
 
   const overlayClass = [
     'preload-overlay',
-    !playLanding ? 'preload-overlay--minimal' : '',
+    (!playLanding || useMinimalForPwa) ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
     phase === 'handoff' ? 'is-handoff' : '',
   ]
