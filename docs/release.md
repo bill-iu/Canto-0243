@@ -1,5 +1,11 @@
 # Release 維護 checklist
 
+## Release source rule
+
+Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `origin/dev` must already be merged into `origin/main`. If not, merge `dev -> main` first, update `origin/main`, then tag or dispatch workflow from the latest `main` commit.
+
+This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
+
 決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。貢獻者用邊部 OS 開發無關。

@@ -23,6 +23,31 @@ function Invoke-Gh {
     if ($LASTEXITCODE -ne 0) { throw "gh failed: $($GhArgs -join ' ')" }
 }
 
+function Assert-ReleaseSource {
+    if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+        throw "git required to verify release source"
+    }
+
+    & git fetch origin main dev --quiet
+    if ($LASTEXITCODE -ne 0) { throw "failed to fetch origin/main and origin/dev" }
+
+    $branch = (& git branch --show-current).Trim()
+    if ($branch -ne "main") {
+        throw "release rebuild must run from main after dev is merged. Current branch: $branch"
+    }
+
+    $head = (& git rev-parse HEAD).Trim()
+    $originMain = (& git rev-parse origin/main).Trim()
+    if ($head -ne $originMain) {
+        throw "local main is not at origin/main. Pull main before rebuilding release assets."
+    }
+
+    & git merge-base --is-ancestor origin/dev origin/main
+    if ($LASTEXITCODE -ne 0) {
+        throw "origin/dev is not merged into origin/main. Merge dev first, then rebuild release assets."
+    }
+}
+
 if (-not (Test-Path $DbPath)) {
     throw "lyrics.db not found at repo root. Run: python scripts/bootstrap_data.py && python -m ingest build-db"
 }
@@ -31,6 +56,7 @@ Write-Host "==> Canto-0243 local Windows release"
 Write-Host "    tag:  $Tag"
 Write-Host "    root: $Root"
 if ($env:GH_REPO) { Write-Host "    repo: $env:GH_REPO" }
+Assert-ReleaseSource
 
 $buildArgs = @()
 if ($SkipReadmeSync) { $buildArgs += "-SkipReadmeSync" }
