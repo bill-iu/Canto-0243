@@ -708,6 +708,10 @@ _Avoid_：跨 session 的「首次訪客」、first visit（實作名）
 **詞庫快取索引**預載完成前阻擋搜尋的過渡狀態；須向創作者傳達載入進度，就緒（或**降級逾時**）後才解鎖搜尋列。凡經**查詢分派**的搜尋請求，在閘未解鎖前應拒絕，與 UI 一致，不得僅靠前端隱藏搜尋列或個別路由各自判斷。
 _Avoid_：splash screen、把就緒閘當純裝飾開場、就緒與搜尋可用性脫節、預載中仍允許搜尋 API 靜默降級直查詞條庫
 
+**PWA 安裝提示**：
+**PWA 交付頻道** 在 **就緒閘** 完全隱藏、主介面已顯示並可操作後，於畫面底部自動出現的橫幅提示，引導創作者將應用程式「加到主畫面」。提示在支援的平台可直接觸發安裝，在其他平台則提供操作指引。它在 **首次進入** 情境下（且非 standalone 模式）至多出現一次；創作者關閉或互動後，在同一 session 內不再顯示。橫幅使用「將Canto-0243 加到主畫面」文字，整個區域可點擊觸發動作，並設有獨立關閉控制。橫幅以固定方式位於 app-footer 之上，內容區會相應留白。在不支援直接安裝的平台，點擊後橫幅會原地替換成操作指引（例如「請按分享按鈕 → 加到主畫面」）。關閉後使用 sessionStorage 確保同一 session 不重複顯示。beforeinstallprompt 事件需盡早監聽以避免錯過，並以 preventDefault 抑制原生提示。邏輯以獨立 hook 與 component 實作，deferred prompt 以 ref 保存，由 App 控制條件式渲染。hook useEffect([]) 盡早 attach listener（空依賴）。App 頂層無條件呼叫 hook，gate 後條件 render Banner。hook 回傳 { hasNativePrompt, trigger }，App 決定顯示時機，Banner 依 hasNativePrompt 決定呼叫 prompt 或顯示指引。hook 內只設 hasNativePrompt 與 trigger（不處理 userChoice 狀態）。trigger 僅呼叫 prompt()，不依 userChoice 改變顯示邏輯。
+_Avoid_：安裝 banner、A2HS、自動安裝橫幅、將Canto 0243新增至主畫面（避免帶入實作細節或偏離詞彙表用語）
+
 **離線啟動預載**：
 離線查韻 runtime 啟動時載入的靜態詞林、排序語料、**詞庫快取索引**與複合詞預算（**近義複合快照**、**反義複合快照**、**雙聲疊韻字查詢** N=2／3／4 快照）；就緒閘以**詞庫快取索引**就緒為準解鎖搜尋，tail 進度涵蓋上述複合快照與靜態語料。
 _Avoid_：startup hook（作領域正名）、把 lifespan 當產品概念、反義複合快照背景建置但就緒閘不可見

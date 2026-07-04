@@ -28,6 +28,8 @@ import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
+import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
+import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 
@@ -156,6 +158,19 @@ function App() {
     retryOfflineReady,
     getStats,
   } = useDB();
+
+  const { hasNativePrompt, trigger } = usePwaInstallPrompt();
+
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    (navigator as any).standalone === true;
+
+  const [installDismissed, setInstallDismissed] = useState(
+    () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
+  );
+
+  const shouldShowInstallBanner =
+    !gateOpen && !isStandalone && !installDismissed;
 
   const {
     results,
@@ -452,7 +467,7 @@ function App() {
         onRetry={retryOfflineReady}
         onOpenChange={setGateOpen}
       />
-      <div className={`app-shell${gateOpen ? ' is-gated' : ' is-revealing'}`}>
+      <div className={`app-shell${gateOpen ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label="返回搜尋首頁" onClick={handleHome}>
@@ -611,6 +626,14 @@ function App() {
           </p>
         </footer>
       </div>
+
+      {shouldShowInstallBanner && (
+        <PwaInstallBanner
+          hasNativePrompt={hasNativePrompt}
+          onTrigger={trigger}
+          onDismiss={() => setInstallDismissed(true)}
+        />
+      )}
     </>
   );
 }
