@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { loadRankingData } from '../src/db/ranking-loader.node.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
+import { initCompoundLists, parseCompoundList } from '../src/db/compound.ts';
 
 type ParityCase = { id: number; query: string; mode: string };
 
@@ -19,6 +20,12 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../
 loadRankingData(repoRoot);
 loadStaticRelationData(repoRoot);
 loadRhymeLetterData(repoRoot);
+
+const synPath = path.join(repoRoot, 'data/syn_ant/compound_synonyms.txt');
+const antPath = path.join(repoRoot, 'data/syn_ant/compound_antonyms.txt');
+const syn = fs.existsSync(synPath) ? parseCompoundList(fs.readFileSync(synPath, 'utf8')) : [];
+const ant = fs.existsSync(antPath) ? parseCompoundList(fs.readFileSync(antPath, 'utf8')) : [];
+initCompoundLists({ syn, ant });
 
 const dbPath = process.argv[2];
 const casesPath = process.argv[3];

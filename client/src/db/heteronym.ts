@@ -3,6 +3,7 @@
  */
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
+import { sortHeteronymResults } from './ranking.ts';
 
 type WordRow = Record<string, unknown>;
 type ReadingRow = [string, string];
@@ -179,8 +180,7 @@ export function executeHeteronymCodeSearch(
     rowStmt.free();
   }
 
-  items.sort((a, b) => a.word.localeCompare(b.word) || a.jyutping.localeCompare(b.jyutping));
-  return items.slice(offset, offset + limit);
+  return sortHeteronymResults(items).slice(offset, offset + limit);
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/heteronym-self-check.ts` */
@@ -209,5 +209,38 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   );
   if (items.length !== 2) {
     throw new Error(`heteronymLogicSelfCheck: rows ${items.length}`);
+  }
+
+  // heteronym sort self-check: freq primary across chars, pure jyut lexical within char
+  const { initRankingData } = await import('./ranking.ts');
+  initRankingData({
+    essay: { '高頻': 100, '低頻': 10 },
+  });
+  const db2 = new SQL.Database();
+  db2.run(
+    'CREATE TABLE words (id INTEGER PRIMARY KEY, char TEXT, code TEXT, jyutping TEXT, length INTEGER)',
+  );
+  db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('高頻', '35', 'a1 b1', 2)`);
+  db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('高頻', '56', 'a2 b2', 2)`);
+  db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '35', 'a1 b1', 2)`);
+  db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '56', 'a2 b2', 2)`);
+  resetHeteronymIndex();
+  const hetItems = executeHeteronymCodeSearch(
+    { left_template: '1?', right_template: '?2', width: 2 },
+    db2,
+    'm1',
+    10,
+    0,
+  );
+  const hetOrder = hetItems.map((r) => r.word).join(',');
+  if (hetOrder !== '高頻,高頻,低頻,低頻') {
+    throw new Error(`heteronymLogicSelfCheck: char order ${hetOrder}`);
+  }
+  const highJyuts = hetItems
+    .filter((r) => r.word === '高頻')
+    .map((r) => r.jyutping)
+    .join(',');
+  if (highJyuts !== 'a1 b1,a2 b2') {
+    throw new Error(`heteronymLogicSelfCheck: within-char jyut order ${highJyuts}`);
   }
 }

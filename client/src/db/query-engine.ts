@@ -9,7 +9,7 @@
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
 import type { Database } from './sqljs.ts';
 import { getCodeVariants } from './code-variants.ts';
-import { sortQueryResults, sortWordRows, compareSearchResults } from './ranking.ts';
+import { sortQueryResults, sortWordRows, compareSearchResults, literalPriorityCompare } from './ranking.ts';
 import { searchCompoundTiers } from './compound.ts';
 import { executeHeteronymCodeSearch } from './heteronym.ts';
 import { relationLookupItems, relationPoolPage, type RelationPoolItem } from './relation-pool.ts';
@@ -328,6 +328,10 @@ function sortMaskFamilyRows(
 ): WordRow[] {
   if (spec.extra?.dual_phoneme) {
     return rows;
+  }
+  if (spec.literal_priority && spec.extra?.literal_positions?.length) {
+    const positions = spec.extra.literal_positions as Array<[number, string]>;
+    return [...rows].sort((a, b) => literalPriorityCompare(a, b, positions));
   }
   if (spec.compound_kind) {
     const compoundSpec = compoundSearchSpecFromMatchSpec(spec);
@@ -2338,9 +2342,12 @@ async function executeMaskFamilySearchResult(
   } else {
     const allRows = filterMatchSpecRows(spec, dbCtx);
     const ordered = sortMaskFamilyRows(spec, allRows, db, mode);
-    const sorted = sortQueryResults(ordered.map((row) => rowToResult(row)));
-    total = sorted.length;
-    items = sorted.slice(offset, offset + limit);
+    const mapped = ordered.map((row) => rowToResult(row));
+    const finalSorted = (spec.literal_priority || spec.compound_kind)
+      ? mapped
+      : sortQueryResults(mapped);
+    total = finalSorted.length;
+    items = finalSorted.slice(offset, offset + limit);
   }
 
   let hint: string | undefined;

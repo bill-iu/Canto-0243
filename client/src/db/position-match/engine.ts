@@ -2,7 +2,7 @@
  * executeMatchSpec — port of position_match/engine.py (MF-4)
  */
 import type { Database } from '../sqljs.ts';
-import { sortWordRows } from '../ranking.ts';
+import { sortWordRows, literalPriorityCompare } from '../ranking.ts';
 import { applyMatchSpec, filterHybridRefCandidates } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getEqualsSpan, type MatchSpec } from './spec.ts';
@@ -109,6 +109,12 @@ export function executeMatchSpec(
     return executeDualPhonemeAnchorSpecs(spec, ctx);
   }
   const filtered = filterMatchSpecRows(spec, ctx);
-  const sorted = sortWordRows(filtered);
+  let sorted: WordRow[];
+  if (spec.literal_priority && spec.extra?.literal_positions?.length) {
+    const positions = spec.extra.literal_positions as Array<[number, string]>;
+    sorted = [...filtered].sort((a, b) => literalPriorityCompare(a, b, positions));
+  } else {
+    sorted = sortWordRows(filtered);
+  }
   return sorted.slice(ctx.offset, ctx.offset + ctx.limit);
 }

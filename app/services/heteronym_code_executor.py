@@ -6,6 +6,7 @@ from typing import List
 from sqlalchemy.orm import Session
 
 from app.domain.lexicon.heteronym_index import ensure_heteronym_index
+from app.domain.lexicon.ranking import heteronym_sort_key
 from app.models.word import Word
 from app.services.position_match.filters import matches_code_positions
 from app.services.query_grammar.heteronym import code_template_to_required
@@ -80,7 +81,7 @@ def execute_heteronym_code_search(
             payload["heteronym_tags"] = tags
             items.append(payload)
 
-    items.sort(key=lambda r: (r.get("char") or "", r.get("jyutping") or ""))
+    items.sort(key=heteronym_sort_key)
     return paginate(items, offset, limit)
 
 
