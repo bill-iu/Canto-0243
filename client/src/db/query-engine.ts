@@ -33,6 +33,36 @@ import { anchorPhonemeOptions } from './position-match/filters.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
+import { routeKindFor } from './query-kind-registry.ts';
+import type {
+  CodeRefMiddleRhymeQuery,
+  CompoundAntQuery,
+  CompoundDoubledSyllableQuery,
+  CompoundSynQuery,
+  DigitCodeQuery,
+  HeteronymCodeQuery,
+  HybridCodeQuery,
+  JyutpingAnchorQuery,
+  JyutpingFragmentQuery,
+  LiteralRefQuery,
+  MaskQuery,
+  ParsedQuery,
+  PartialInitialMaskQuery,
+  PartialRhymeMaskQuery,
+  PlusAnchorQuery,
+  PrefixWildcardEqualsQuery,
+  QueryMode,
+  QueryResult,
+  RelationLookupQuery,
+  RhymeAnchorQuery,
+  SearchContext,
+  SearchResult,
+  SerialPhonemeAnchorQuery,
+  TripleRhymeAnchorQuery,
+  UnmatchedQuery,
+  WildcardCodeAnchorQuery,
+  WordLookupQuery,
+} from './query-types.ts';
 
 // ============================================================================
 // Query Types and Constants
@@ -40,270 +70,10 @@ import { QueryKind, RouteKind } from './query-kind.ts';
 
 export { QueryKind, RouteKind } from './query-kind.ts';
 
-/**
- * Query modes supported by the engine
- */
-export type QueryMode = 'm1' | 'm2' | '0243' | '02493' | 'syn';
-
-/**
- * Base parsed query interface
- */
-export interface ParsedQuery {
-  kind: QueryKind;
-  raw_q: string;
-}
-
-/**
- * Digit code query (pure numeric codes)
- */
-export interface DigitCodeQuery extends ParsedQuery {
-  kind: QueryKind.DIGIT_CODE;
-  raw_q: string;
-}
-
-/**
- * Word lookup query (Chinese characters)
- */
-export interface WordLookupQuery extends ParsedQuery {
-  kind: QueryKind.WORD_LOOKUP;
-  raw_q: string;
-}
-
-/**
- * Jyutping fragment query
- */
-export interface JyutpingFragmentQuery extends ParsedQuery {
-  kind: QueryKind.JYUTPING_FRAGMENT;
-  raw_q: string;
-}
-
-/**
- * Mask query (contains wildcards)
- */
-export interface MaskQuery extends ParsedQuery {
-  kind: QueryKind.MASK;
-  raw_q: string;
-}
-
-/** Rhyme/initial anchor query (就=, =就, 香=?, =香?) */
-export interface RhymeAnchorQuery extends ParsedQuery {
-  kind: QueryKind.RHYME_ANCHOR;
-  raw_q: string;
-  constraint: 'final' | 'initial';
-  anchor_pos: number;
-  anchor: string;
-  slots: string;
-  width: number;
-}
-
-/** Prefix wildcard equals (?困潦倒=) */
-export interface PrefixWildcardEqualsQuery extends ParsedQuery {
-  kind: QueryKind.PREFIX_WILDCARD_EQUALS;
-  raw_q: string;
-  inner_q: string;
-  ref_literal: string;
-  width: number;
-}
-
-/** Four-char partial rhyme mask (窮?潦倒=) */
-export interface PartialRhymeMaskQuery extends ParsedQuery {
-  kind: QueryKind.PARTIAL_RHYME_MASK;
-  raw_q: string;
-  pattern: string;
-  width: number;
-  anchors: Array<[number, string]>;
-}
-
-/** Four-char partial initial mask (=窮?潦倒) */
-export interface PartialInitialMaskQuery extends ParsedQuery {
-  kind: QueryKind.PARTIAL_INITIAL_MASK;
-  raw_q: string;
-  pattern: string;
-  width: number;
-  anchors: Array<[number, string]>;
-}
-
-/** Serial phoneme anchors (04困=49倒=) */
-export interface SerialPhonemeAnchorQuery extends ParsedQuery {
-  kind: QueryKind.SERIAL_PHONEME;
-  raw_q: string;
-  width: number;
-  constraint: 'final' | 'initial';
-  code_slots: Array<[number, string]>;
-  anchors: Array<[number, string]>;
-  mask: string;
-}
-
-/** Jyutping anchor (?yut?, 3m4, 23o, …) */
-export interface JyutpingAnchorQuery extends ParsedQuery {
-  kind: QueryKind.JYUTPING_ANCHOR;
-  raw_q: string;
-  width: number;
-  anchor_pos: number;
-  anchor_kind: 'initial_letters' | 'rhyme_letters' | 'syllable_letters';
-  anchor_value: string;
-  dual_phoneme?: boolean;
-  code_prefix?: string;
-  equals_style?: boolean;
-  code_slots?: Array<[number, string]>;
-  hybrid_rhyme?: boolean;
-  dual_initial_value?: string;
-}
-
-/** Hybrid code query (23就) */
-export interface HybridCodeQuery extends ParsedQuery {
-  kind: QueryKind.HYBRID_CODE;
-  raw_q: string;
-}
-
-/** Literal reference at tail (23@就) */
-export interface LiteralRefQuery extends ParsedQuery {
-  kind: QueryKind.LITERAL_REF;
-  raw_q: string;
-  code_digits: string;
-  literal_char: string;
-  width: number;
-}
-
-/** Plus anchor (23+就, 2+好3, +門0) */
-export interface PlusAnchorQuery extends ParsedQuery {
-  kind: QueryKind.PLUS_ANCHOR;
-  raw_q: string;
-  width: number;
-  anchor_pos: number;
-  anchor: string;
-  constraint: 'literal' | 'final' | 'initial';
-  code_slots: Array<[number, string]>;
-  code_prefix?: string;
-}
-
-export interface CompoundSynQuery extends ParsedQuery {
-  kind: QueryKind.COMPOUND_SYN;
-  raw_q: string;
-  code_prefix?: string;
-  rhyme_char?: string;
-}
-
-export interface CompoundAntQuery extends ParsedQuery {
-  kind: QueryKind.COMPOUND_ANT;
-  raw_q: string;
-  code_prefix?: string;
-  rhyme_char?: string;
-}
-
-export interface CompoundDoubledSyllableQuery extends ParsedQuery {
-  kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE;
-  raw_q: string;
-  width: number;
-  code_prefix?: string;
-  rhyme_char?: string;
-}
-
 const DOUBLED_SYLLABLE_MIN_DOLLARS = 2;
 const DOUBLED_SYLLABLE_MAX_DOLLARS = 4;
 const DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT = '雙聲疊韻字查詢須用 2 至 4 個連續 $。';
 const DOUBLED_SYLLABLE_CODE_WIDTH_HINT = '碼位數須與 $ 個數一致（如 333$$$）。';
-
-export interface HeteronymCodeQuery extends ParsedQuery {
-  kind: QueryKind.HETERONYM_CODE;
-  raw_q: string;
-  left_template: string;
-  right_template: string;
-  width: number;
-}
-
-export interface WildcardCodeAnchorQuery extends ParsedQuery {
-  kind: QueryKind.WILDCARD_CODE_ANCHOR;
-  raw_q: string;
-  width: number;
-  slots: Array<{ pos: number; kind: string; value?: string }>;
-  head_literal?: string;
-}
-
-export interface CodeRefMiddleRhymeQuery extends ParsedQuery {
-  kind: QueryKind.CODE_REF_MIDDLE_RHYME;
-  raw_q: string;
-  width: number;
-  anchor: string;
-  anchor_pos: number;
-  leading: string;
-  digits: string;
-  slots: Array<{ pos: number; kind: string; value?: string }>;
-}
-
-export interface TripleRhymeAnchorQuery extends ParsedQuery {
-  kind: QueryKind.TRIPLE_RHYME_ANCHOR;
-  raw_q: string;
-  anchor: string;
-  anchor_pos: number;
-  width: number;
-  leading_slots: string;
-  constraint: 'final';
-}
-
-/**
- * Relation lookup query (near-synonym or antonym)
- */
-export interface RelationLookupQuery extends ParsedQuery {
-  kind: QueryKind.RELATION_LOOKUP;
-  raw_q: string;
-  relation_kind: 'syn' | 'ant';
-  word: string;
-  code_prefix?: string;
-}
-
-/**
- * Unmatched query (invalid syntax)
- */
-export interface UnmatchedQuery extends ParsedQuery {
-  kind: QueryKind.UNMATCHED;
-  raw_q: string;
-  hint?: string;
-}
-
-/**
- * Query result structure
- */
-export interface QueryResult {
-  word: string;
-  jyutping: string;
-  code: string;
-  definition?: string;
-  score: number;
-  /** ponytail: lookup layout row kind — upgrade path: full lookup_layout.ts module */
-  resultType?: 'code' | 'jyutping' | 'word';
-  heteronym_tags?: string[];
-  anchor_dimension?: 'initial' | 'final';
-  relation?: 'syn' | 'ant' | 'semantic_related';
-  in_db?: boolean;
-  source?: string;
-}
-
-/**
- * Search context for query execution
- */
-export interface SearchContext {
-  q: string | null;
-  code?: string;
-  char?: string;
-  mode: QueryMode;
-  limit: number;
-  offset: number;
-  fallback_0243_mode?: QueryMode;
-}
-
-/**
- * Search result with metadata
- */
-export interface SearchResult {
-  items: QueryResult[];
-  total?: number;
-  hint?: string;
-  cache_path?: string;
-  effective_mode?: QueryMode;
-  /** 純漢字詞條 lookup：只輸出詞列（PWA 詞條行已含碼／粵拼；見 CONTEXT 詞條 lookup 版面） */
-  lookup_layout?: boolean;
-}
 
 /** Map lyrics.db row (`char`) to UI-facing QueryResult (`word`). */
 function rowToResult(row: Record<string, unknown>): QueryResult {
@@ -349,62 +119,6 @@ function sortMaskFamilyRows(
     });
   }
   return sortWordRows(rows);
-}
-
-// ============================================================================
-// Query Kind Metadata (from query_kind_registry.py)
-// ============================================================================
-
-interface QueryKindMeta {
-  route: RouteKind;
-  match_spec: boolean;
-}
-
-const QUERY_KIND_META: Record<QueryKind, QueryKindMeta> = {
-  [QueryKind.RELATION_LOOKUP]: { route: RouteKind.RELATION },
-  [QueryKind.COMPOUND_SYN]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.COMPOUND_ANT]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.HETERONYM_CODE]: { route: RouteKind.HETERONYM },
-  [QueryKind.HYBRID_TAIL_EQUALS_ALIAS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.PREFIX_WILDCARD_EQUALS]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.PARTIAL_RHYME_MASK]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.PARTIAL_INITIAL_MASK]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.SERIAL_PHONEME]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.PLUS_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.WILDCARD_CODE_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.CODE_REF_MIDDLE_RHYME]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.LITERAL_REF]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.RHYME_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.TRIPLE_RHYME_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.JYUTPING_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.HYBRID_CODE]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.MASK]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.DIGIT_CODE]: { route: RouteKind.DIGIT },
-  [QueryKind.WORD_LOOKUP]: { route: RouteKind.LOOKUP },
-  [QueryKind.JYUTPING_FRAGMENT]: { route: RouteKind.LOOKUP },
-  [QueryKind.UNMATCHED]: { route: RouteKind.UNMATCHED },
-};
-
-const MASK_FAMILY_KINDS: Set<QueryKind> = new Set(
-  Object.entries(QUERY_KIND_META)
-    .filter(([_, m]) => m.route === RouteKind.MASK_FAMILY)
-    .map(([k]) => k as QueryKind)
-);
-
-const MATCH_SPEC_KINDS: Set<QueryKind> = new Set(
-  Object.entries(QUERY_KIND_META)
-    .filter(([_, m]) => m.match_spec)
-    .map(([k]) => k as QueryKind)
-);
-
-function routeKindFor(kind: QueryKind): RouteKind {
-  return QUERY_KIND_META[kind]?.route || RouteKind.EMPTY;
-}
-
-function usesMatchSpec(kind: QueryKind): boolean {
-  return MATCH_SPEC_KINDS.has(kind);
 }
 
 // ============================================================================
