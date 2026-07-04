@@ -17,6 +17,11 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # --- paths ---
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+CLIENT_INDEX_PATH = REPO_ROOT / "client" / "index.html"
+CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
+PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
+RELEASE_WINDOWS_PATH = REPO_ROOT / "scripts" / "release-windows-local.ps1"
+RELEASE_MACOS_PATH = REPO_ROOT / "scripts" / "release-macos-local.sh"
 MAIN_MJS_PATH = REPO_ROOT / "frontend" / "main.mjs"
 APP_CONTEXT_PATH = REPO_ROOT / "frontend" / "app-context.mjs"
 GATE_MJS_PATH = REPO_ROOT / "frontend" / "gate.mjs"
@@ -585,6 +590,47 @@ class TestQueryTabsSeam(unittest.TestCase):
                 self.assertIn(path, source)
         self.assertIn("./root.css", source)
         self.assertIn("./pwa-app.css", source)
+
+    def test_pwa_preloads_critical_display_subset(self):
+        source = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn("/fonts/PlayfairDisplay-600.woff2", source)
+        for weight in ("500", "600", "700"):
+            with self.subTest(weight=weight):
+                self.assertIn(f"/fonts/CantoCriticalSerif-{weight}.woff2", source)
+                self.assertNotIn(f'/fonts/NotoSerifTC-{weight}.woff2" as="font"', source)
+
+    def test_pwa_display_css_uses_critical_serif(self):
+        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        stack = '"Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif'
+        self.assertIn(stack, shell)
+        self.assertNotIn('"Playfair Display", "Noto Serif TC", serif', shell)
+
+    def test_pwa_font_builder_generates_critical_subset(self):
+        source = CLIENT_FONT_BUILD_PATH.read_text(encoding="utf-8")
+        self.assertIn("criticalDisplayText", source)
+        self.assertIn("Canto Critical Serif", source)
+        self.assertIn("CantoCriticalSerif-", source)
+        self.assertIn("text=", source)
+        self.assertIn("display=block", source)
+        self.assertIn("fonts.css still contains remote Google font URLs", source)
+
+    def test_pages_workflow_requires_merged_release_source(self):
+        source = PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")
+        self.assertIn("Verify release source is current", source)
+        self.assertIn("GITHUB_REF_NAME", source)
+        self.assertIn("merge-base --is-ancestor origin/dev origin/main", source)
+
+    def test_release_script_requires_merged_main_source(self):
+        source = RELEASE_WINDOWS_PATH.read_text(encoding="utf-8")
+        self.assertIn("function Assert-ReleaseSource", source)
+        self.assertIn('branch -ne "main"', source)
+        self.assertIn("merge-base --is-ancestor origin/dev origin/main", source)
+
+    def test_macos_release_script_requires_merged_main_source(self):
+        source = RELEASE_MACOS_PATH.read_text(encoding="utf-8")
+        self.assertIn("_assert_release_source", source)
+        self.assertIn("merge-base --is-ancestor origin/dev origin/main", source)
+        self.assertIn('merge-base --is-ancestor "${TAG}^{commit}" origin/main', source)
 
     def test_index_html_links_shared_css(self):
         source = INDEX_PATH.read_text(encoding="utf-8")

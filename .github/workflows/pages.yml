@@ -25,6 +25,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Verify release source is current
+        run: |
+          git fetch origin main dev --quiet
+          if [ "${GITHUB_REF_TYPE}" = "branch" ] && [ "${GITHUB_REF_NAME}" != "main" ]; then
+            echo "::error::Pages deploy must be dispatched from main after dev has been merged."
+            exit 1
+          fi
+          if [ "${GITHUB_REF_TYPE}" = "tag" ] && ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
+            echo "::error::Release tag commit must be reachable from origin/main."
+            exit 1
+          fi
+          if ! git merge-base --is-ancestor origin/dev origin/main; then
+            echo "::error::origin/dev is not merged into origin/main. Merge dev first, then redeploy Pages."
+            exit 1
+          fi
 
       - name: Download lexicon (lyrics.db) from this release tag
         env:

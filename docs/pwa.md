@@ -10,6 +10,10 @@
 
 ## 發佈順序（必做）
 
+### 0) 確認 release source
+
+`redeploy Pages` 前，必須先確認 `origin/dev` 已經 merge 到 `origin/main`，並從最新 `main` commit 觸發 **Pages (PWA)** workflow。若 `dev` 尚未合入，先 merge `dev -> main`，再 redeploy。
+
 ### 1) 確保 tag release 已有 `lyrics.db`
 
 - 建立/更新對應嘅 release tag（例如 `v1.0.3`）

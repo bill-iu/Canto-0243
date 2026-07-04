@@ -118,10 +118,28 @@ _verify_at_tag_commit() {
   fi
 }
 
+_assert_release_source() {
+  git -C "$ROOT" fetch origin main dev --quiet || {
+    echo "error: failed to fetch origin/main and origin/dev" >&2
+    exit 1
+  }
+  if ! git -C "$ROOT" merge-base --is-ancestor origin/dev origin/main; then
+    echo "error: origin/dev is not merged into origin/main; merge dev first, then rebuild release assets" >&2
+    exit 1
+  fi
+  if ! git -C "$ROOT" merge-base --is-ancestor "${TAG}^{commit}" origin/main; then
+    echo "error: $TAG is not reachable from origin/main; tag from latest main after dev is merged" >&2
+    exit 1
+  fi
+}
+
 _sync_published_lexicon() {
   echo "==> Sync 發佈詞庫快照 from Release $TAG..."
   _gh release download "$TAG" -p "lyrics.db" -D "$ROOT" --clobber
 }
+
+_verify_at_tag_commit
+_assert_release_source
 
 if [[ "$UPLOAD" -eq 1 ]]; then
   command -v gh >/dev/null 2>&1 || {
@@ -132,7 +150,6 @@ if [[ "$UPLOAD" -eq 1 ]]; then
     echo "error: Release $TAG does not exist — publisher role must publish first" >&2
     exit 1
   fi
-  _verify_at_tag_commit
   _sync_published_lexicon
 fi
 

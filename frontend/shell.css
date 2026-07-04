@@ -80,7 +80,7 @@ html.fonts-ready .gate-brand {
 .gate-title,
     .gate-hero-title {
       margin: 0;
-      font-family: "Playfair Display", "Noto Serif TC", serif;
+      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
       font-size: clamp(2.1rem, 6vw, 3.2rem);
       font-weight: 600;
       line-height: 1.02;
@@ -293,7 +293,7 @@ html.fonts-ready .gate-brand {
 .hero h1,
     .guide-hero h1 {
       margin: 0;
-      font-family: "Playfair Display", "Noto Serif TC", serif;
+      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
       font-size: clamp(48px, 8vw, 96px);
       font-weight: 600;
       line-height: 0.95;
@@ -354,7 +354,7 @@ html.fonts-ready .gate-brand {
 .about-slogan {
       max-width: 780px;
       margin: 0;
-      font-family: "Playfair Display", "Noto Serif TC", serif;
+      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
       font-size: clamp(36px, 6vw, 64px);
       font-weight: 600;
       line-height: 0.95;
@@ -530,7 +530,7 @@ html.fonts-ready .gate-brand {
 
 .file-card h1 {
       margin: 0 0 12px;
-      font-family: "Playfair Display", "Noto Serif TC", serif;
+      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
       font-size: 34px;
       text-wrap: balance;
     }
@@ -554,7 +554,7 @@ html.fonts-ready .gate-brand {
 
 .relation-hero h1 {
   margin: 0;
-  font-family: "Playfair Display", "Noto Serif TC", serif;
+  font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
   font-size: clamp(36px, 6vw, 52px);
   font-weight: 600;
   line-height: 1.05;
