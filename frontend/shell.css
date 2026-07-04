@@ -30,8 +30,7 @@
       gap: 0;
     }
 
-.preload-overlay--minimal .gate-brand,
-    .preload-overlay--minimal .gate-hero {
+.preload-overlay--minimal .gate-brand, .preload-overlay--minimal .gate-hero {
       display: none;
     }
 
