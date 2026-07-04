@@ -27,6 +27,8 @@ export default defineConfig(({ command }) => ({
         'icon-192.png',
         'icon-512.png',
         'sql-wasm-browser.wasm',
+        'fonts/fonts.css',
+        'fonts/*.woff2',
       ],
       workbox: {
         globPatterns: ['**/*.{js,css,html,woff2,wasm}'],

@@ -58,6 +58,7 @@ async function main() {
   // Parse @font-face for woff2
   const faceRegex = /@font-face\s*\{([^}]+)\}/g;
   const faces: Array<{ family: string; weight: string; style: string; url: string }> = [];
+  const seenUrls = new Set<string>();
   let m;
   while ((m = faceRegex.exec(css)) !== null) {
     const block = m[1];
@@ -65,7 +66,8 @@ async function main() {
     const weight = (block.match(/font-weight:\s*(\d+)/) || [])[1];
     const style = (block.match(/font-style:\s*(\w+)/) || [])[1] || 'normal';
     const src = (block.match(/src:\s*url\((https:[^)]+\.woff2)\)/) || [])[1];
-    if (family && weight && src) {
+    if (family && weight && src && !seenUrls.has(src)) {
+      seenUrls.add(src);
       faces.push({ family, weight, style, url: src });
     }
   }
@@ -83,25 +85,19 @@ async function main() {
     await download(face.url, dest);
   }
 
-  // Generate fonts.css with @font-face pointing to local files (relative urls work regardless of base)
-  let cssContent = '';
+  // Rewrite the original CSS to use local font files, preserving all @font-face details (unicode-range etc for CJK)
+  let localCss = css;
   for (const face of faces) {
     const ext = face.style === 'italic' ? '-italic' : '';
     const safeFamily = face.family.replace(/\s+/g, '');
     const fileName = `${safeFamily}-${face.weight}${ext}.woff2`;
-    cssContent += `@font-face {
-  font-family: '${face.family}';
-  font-style: ${face.style};
-  font-weight: ${face.weight};
-  src: url('./${fileName}') format('woff2');
-  font-display: swap;
-}
-`;
+    // Replace the original remote url with local relative
+    localCss = localCss.replace(face.url, `./${fileName}`);
   }
-  fs.writeFileSync(path.join(outDir, 'fonts.css'), cssContent);
-  console.log('✓ fonts.css generated');
+  fs.writeFileSync(path.join(outDir, 'fonts.css'), localCss);
+  console.log('✓ fonts.css generated (with local src urls)');
 
-  console.log(`✓ ${faces.length} font files downloaded to public/fonts/`);
+  console.log(`✓ ${faces.length} unique font files (woff2) to public/fonts/`);
 }
 
 main().catch((err) => {
