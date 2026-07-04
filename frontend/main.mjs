@@ -446,6 +446,30 @@ async function refreshPortableChrome() {
   function applyTheme(theme) {
     setTheme(theme);
     updateThemeLangMenuUI();
+    updateBrandForTheme();
+  }
+
+  function updateBrandForTheme() {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    const wordmarkId = isDark ? '#brand-wordmark-dark' : '#brand-wordmark';
+    const blobId = isDark ? '#brand-ink-blob-dark' : '#brand-ink-blob';
+    const flicksId = isDark ? '#brand-ink-flicks-dark' : '#brand-ink-flicks';
+    const inkColor = isDark ? '#FB7185' : '#9F1239';
+
+    // Update all uses for wordmark, ink-blob, ink-flicks (header, gate, meter)
+    document.querySelectorAll('use[href="#brand-wordmark"], use[href="#brand-wordmark-dark"]').forEach((el) => {
+      el.setAttribute('href', wordmarkId);
+    });
+    document.querySelectorAll('use[href="#brand-ink-blob"], use[href="#brand-ink-blob-dark"]').forEach((el) => {
+      el.setAttribute('href', blobId);
+      if (el.hasAttribute('fill')) el.setAttribute('fill', inkColor);
+    });
+    document.querySelectorAll('use[href="#brand-ink-flicks"], use[href="#brand-ink-flicks-dark"]').forEach((el) => {
+      el.setAttribute('href', flicksId);
+    });
+    document.querySelectorAll('use[href="#brand-ink-flicks-current"], use[href="#brand-ink-flicks-current-dark"]').forEach((el) => {
+      el.setAttribute('href', isDark ? '#brand-ink-flicks-current-dark' : '#brand-ink-flicks-current');
+    });
   }
 
   function initThemeLang() {
@@ -456,6 +480,7 @@ async function refreshPortableChrome() {
     setTheme(theme);  // ensure html attr
 
     applyLangToChrome(lang);
+    updateBrandForTheme();
 
     // wire the compact switches in dropdown (icons + single toggle, side by side)
     const themeBtn = document.getElementById('theme-switch');

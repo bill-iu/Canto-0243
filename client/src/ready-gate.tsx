@@ -47,6 +47,7 @@ export interface ReadyGateProps {
   isLikelyMetered: boolean;
   onRetry: () => void | Promise<void>;
   onOpenChange: (open: boolean) => void;
+  theme?: 'light' | 'dark';
 }
 
 export function ReadyGate({
@@ -58,6 +59,7 @@ export function ReadyGate({
   isLikelyMetered,
   onRetry,
   onOpenChange,
+  theme = 'light',
 }: ReadyGateProps) {
   const playLanding = useMemo(
     () => !prefersReducedMotion(),
@@ -133,9 +135,9 @@ export function ReadyGate({
   return (
     <div className={overlayClass} role="status" aria-live="polite" aria-busy={offlineStatus !== 'ready'}>
       <div className="gate-brand">
-        <BrandLogo variant="gate" inkProgress={inkProgress} />
+        <BrandLogo variant="gate" inkProgress={inkProgress} theme={theme} />
       </div>
-      <GateInkMeter inkProgress={inkProgress} />
+      <GateInkMeter inkProgress={inkProgress} theme={theme} />
       <p className="gate-status">{label}</p>
       {showRetry && (
         <button type="button" className="primary-button" onClick={() => void onRetry()}>

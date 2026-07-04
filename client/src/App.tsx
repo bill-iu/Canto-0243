@@ -481,12 +481,13 @@ function App() {
         isLikelyMetered={isLikelyMetered}
         onRetry={retryOfflineReady}
         onOpenChange={setGateOpen}
+        theme={uiTheme}
       />
       <div className={`app-shell${gateOpen ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
-              <BrandLogo />
+              <BrandLogo theme={uiTheme} />
             </button>
             <ModeMenu
               mode={mode}
