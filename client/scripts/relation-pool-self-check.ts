@@ -2,7 +2,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { relationLookupItems, relationPoolLogicSelfCheck } from '../src/db/relation-pool.ts';
+import { buildRelationPool, relationLookupItems, relationPoolLogicSelfCheck } from '../src/db/relation-pool.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
@@ -54,6 +54,16 @@ for (let i = 0; i < rels.length; i++) {
 }
 
 relationPoolLogicSelfCheck(db);
+
+const snapshot = buildRelationPool(db, '開心');
+const snapshotChars = snapshot.chars('syn');
+if (!snapshotChars.includes('快樂') || !snapshotChars.includes('愉快')) {
+  throw new Error(`relation-pool-self-check: snapshot chars ${snapshotChars.join(',')}`);
+}
+const firstPage = snapshot.page(1, 0).map((i) => i.char);
+if (firstPage.length !== 1 || !snapshotChars.includes(firstPage[0] ?? '')) {
+  throw new Error(`relation-pool-self-check: snapshot page ${firstPage.join(',')}`);
+}
 
 const items = relationLookupItems(db, '開心', 'syn', 'm1', undefined, 20, 0);
 const chars = items.map((i) => i.char).sort();
