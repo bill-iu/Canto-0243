@@ -54,5 +54,21 @@ def literal_priority_sort_key(word, literal_positions: list[tuple[int, str]]) ->
     return (-exact_count, *search_result_sort_key(word))
 
 
+def heteronym_sort_key(word) -> tuple:
+    """同音異讀查詢專用：頻率部分（同搜尋結果排序） + 字面 + 粵拼（不含 pron_rank）。
+    以實現不同字面按常用字詞頻排序，同字面內讀音恢復純粵拼 lexical 排序。
+    """
+    ch = get_word_text(word)
+    jyut = get_word_jyutping(word)
+    han_tier = 0 if _is_pure_han_text(ch) else 1
+    return (
+        han_tier,
+        -get_essay_frequency(ch),
+        -curated_sort_boost(ch),
+        ch,
+        jyut,
+    )
+
+
 def sort_search_results(words: Iterable[T]) -> List[T]:
     return sorted(words, key=search_result_sort_key)

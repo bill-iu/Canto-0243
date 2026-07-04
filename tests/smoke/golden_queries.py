@@ -78,7 +78,7 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("=窮?潦倒", {"width": 4, "partial_initial_mask": True, "anchor_count": 3}),
 )
 
-# Journey gate: lookup layout + mask family ordering (now includes mask ranking).
+# Journey gate: lookup layout + mask family ordering (now includes mask ranking + heteronym).
 JOURNEY_ORDERED_QUERIES = frozenset({
   "事業",
   "門0",

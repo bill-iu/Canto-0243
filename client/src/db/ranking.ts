@@ -128,10 +128,48 @@ export function sortQueryResults<T extends { word: string; jyutping: string }>(r
   );
 }
 
+export function heteronymSortKey(row: WordRow): [number, number, number, string, string] {
+  const ch = String(row.char ?? '');
+  const jyut = String(row.jyutping ?? '');
+  const hanTier = isPureHan(ch) ? 0 : 1;
+  return [
+    hanTier,
+    -essayFrequency(ch),
+    -curatedBoost(ch),
+    ch,
+    jyut,
+  ];
+}
+
+export function compareHeteronym(a: WordRow, b: WordRow): number {
+  const ka = heteronymSortKey(a);
+  const kb = heteronymSortKey(b);
+  for (let i = 0; i < ka.length; i++) {
+    const av = ka[i]!;
+    const bv = kb[i]!;
+    if (av < bv) {
+      return -1;
+    }
+    if (av > bv) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+export function sortHeteronymResults<T extends { word: string; jyutping: string }>(rows: T[]): T[] {
+  return [...rows].sort((a, b) =>
+    compareHeteronym(
+      { char: a.word, jyutping: a.jyutping },
+      { char: b.word, jyutping: b.jyutping },
+    ),
+  );
+}
+
 /** ponytail: runnable self-check — `npx tsx client/scripts/ranking-self-check.ts` */
 export function rankingLogicSelfCheck(): void {
   initRankingData({
-    essay: { 窮困潦倒: 100, 窮苦潦倒: 50, 窮酸潦倒: 10 },
+    essay: { 窮困潦倒: 100, 窮苦潦倒: 50, 窮酸潦倒: 10, '高頻': 100, '低頻': 10 },
     curated: ['窮困潦倒'],
     pronRank: {
       '窮\tkung4': 0,
@@ -158,6 +196,23 @@ export function rankingLogicSelfCheck(): void {
   const litB = { char: '困窮潦倒', jyutping: 'kwan3 kung4 liu5 dou2' };
   if (literalPriorityCompare(litA, litB, litPositions) >= 0) {
     throw new Error('literalPriorityCompare: 窮 at pos0 should precede');
+  }
+
+  // heteronym_sort_key test: freq primary, lexical jyut within char (no pron)
+  const h1 = { char: '高頻', jyutping: 'gou1 pan4' };
+  const h2 = { char: '低頻', jyutping: 'dai1 pan4' };
+  const h3 = { char: '高頻', jyutping: 'gou2 pan4' };
+  const hSorted = [h2, h1, h3].sort((a, b) => compareHeteronym(a, b));
+  const hOrder = hSorted.map((r) => r.char).join(',');
+  if (hOrder !== '高頻,高頻,低頻') {
+    throw new Error(`heteronymSortKey char order: ${hOrder}`);
+  }
+  const hWithin = hSorted
+    .filter((r) => r.char === '高頻')
+    .map((r) => r.jyutping)
+    .join(',');
+  if (hWithin !== 'gou1 pan4,gou2 pan4') {
+    throw new Error(`heteronymSortKey within jyut: ${hWithin}`);
   }
 }
 
