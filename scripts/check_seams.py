@@ -616,10 +616,13 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_brand_ink_svg_symbols_dry(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
         self.assertIn('id="brand-ink-blob"', source)
+        self.assertIn('id="brand-ink-blob-dark"', source)
         self.assertIn('id="brush-roughen-brand"', source)
         self.assertIn('href="#brand-ink-blob"', source)
+        # DRY: the blob path data lives in one place only (shared via <use> for light/dark)
         ink_blob_path = "M4 55.5 C14 54.9 24 55.1 34 55.7"
         self.assertEqual(source.count(ink_blob_path), 1)
+        self.assertIn('id="brand-ink-blob-path"', source)
         for legacy in (
             "brush-roughen-brand-gate",
             "brush-roughen-brand-meter",
