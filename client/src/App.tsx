@@ -170,12 +170,12 @@ function App() {
 
   // Strengthened D for hybrid A+D: better detection of cold PWA launch from home screen (iOS specific for airplane cold start)
   // Use navigation type + no referrer + no landed key to detect fresh icon tap
+  const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
   const navEntry = window.performance?.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
   const isColdLaunch = isStandalone && 
     (navEntry?.type === 'navigate' || !document.referrer) &&
     !sessionStorage.getItem(LANDING_SESSION_KEY);
   const isPwaLaunch = isStandalone;
-  const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
   const isColdPwaOfflineLaunch = isColdLaunch && !isOnline;
 
   const [installDismissed, setInstallDismissed] = useState(
@@ -191,6 +191,10 @@ function App() {
     // Immediately mark as "landed" and force reveal
     if (!sessionStorage.getItem(LANDING_SESSION_KEY)) {
       sessionStorage.setItem(LANDING_SESSION_KEY, '1');
+    }
+    // Ensure gate is not blocking the shell
+    if (gateOpen) {
+      setGateOpen(false);
     }
   }
 
@@ -503,6 +507,8 @@ function App() {
         onRetry={retryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
+        isPwaLaunch={isPwaLaunch}
+        isColdPwaOfflineLaunch={isColdPwaOfflineLaunch}
       />
       <div className={`app-shell${(gateOpen && !isColdPwaOfflineLaunch) ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
