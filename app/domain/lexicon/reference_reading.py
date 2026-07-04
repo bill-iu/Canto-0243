@@ -78,12 +78,9 @@ def anchor_phoneme_options(
     """錨點音素選項：多讀音 union；allow_inject 控制是否 ensure。"""
     admission = resolve_admission(char)
     extract = _initials_from_entries if dimension == "initial" else _finals_from_entries
-    options = extract(admission.entries)
-    if options:
-        return options
+    result: set[str] = set(extract(admission.entries))
 
     rows = _db_rows_for_literal(char, db, allow_inject=allow_inject)
-    result: set[str] = set()
     for row in rows:
         if dimension == "initial":
             jyut = get_word_jyutping(row) or getattr(row, "jyutping", "") or ""

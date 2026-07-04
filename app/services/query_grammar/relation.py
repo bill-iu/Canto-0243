@@ -14,19 +14,30 @@ COMPOUND_CONNECT_SYN_RE = re.compile(
 )
 COMPOUND_SYN_RE = re.compile(r"^(\d*)~~([\u4e00-\u9fff])?$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")
-COMPOUND_DOUBLED_SYLLABLE_RE = re.compile(r"^(\d*)\$\$([\u4e00-\u9fff])?$")
+COMPOUND_DOUBLED_SYLLABLE_RE = re.compile(r"^(\d*)(\$+)([\u4e00-\u9fff])?$")
+DOUBLED_SYLLABLE_MIN_DOLLARS = 2
+DOUBLED_SYLLABLE_MAX_DOLLARS = 4
+DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT = "雙聲疊韻字查詢須用 2 至 4 個連續 $。"
+DOUBLED_SYLLABLE_CODE_WIDTH_HINT = "碼位數須與 $ 個數一致（如 333$$$）。"
 
 
 def parse_doubled_syllable_syntax(q: str) -> Optional[dict]:
     m = COMPOUND_DOUBLED_SYLLABLE_RE.match(q)
     if not m:
         return None
+    dollars = m.group(2) or ""
+    width = len(dollars)
+    if width < DOUBLED_SYLLABLE_MIN_DOLLARS or width > DOUBLED_SYLLABLE_MAX_DOLLARS:
+        return {"kind": "doubled_syllable_invalid", "hint": DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT}
     prefix = m.group(1) or ""
-    rhyme_char = m.group(2) or None
+    if prefix and len(prefix) != width:
+        return {"kind": "doubled_syllable_invalid", "hint": DOUBLED_SYLLABLE_CODE_WIDTH_HINT}
+    rhyme_char = m.group(3) or None
     return {
         "kind": "compound_doubled_syllable",
         "code_prefix": prefix or None,
         "rhyme_char": rhyme_char,
+        "width": width,
     }
 
 

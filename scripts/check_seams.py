@@ -90,6 +90,38 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("warm_word_cache.py", source)
         ps1 = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
         self.assertIn("warm_word_cache.py", ps1)
+        self.assertIn("PyInstaller", ps1)
+        self.assertIn("Canto-0243.exe", ps1)
+
+    def test_portable_win_launcher_exists(self):
+        path = REPO_ROOT / "scripts" / "portable_win_launcher.py"
+        source = path.read_text(encoding="utf-8")
+        self.assertIn("local_launch.py", source)
+        self.assertIn("--gui", source)
+
+    def test_main_exposes_portable_shutdown(self):
+        source = MAIN_PATH.read_text(encoding="utf-8")
+        self.assertIn('"/shutdown"', source)
+        self.assertIn("PORTABLE", source)
+        self.assertIn("serve_frontend_index", source)
+        self.assertIn('name="canto-portable"', source)
+
+    def test_ready_includes_portable_flag(self):
+        source = MAIN_PATH.read_text(encoding="utf-8")
+        self.assertIn('snap["portable"]', source)
+
+    def test_index_header_menu_only_plus_portable_exit(self):
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn('id="aboutMenuBtn"', source)
+        self.assertIn('id="portableExitBtn"', source)
+        self.assertNotIn('id="guideTopBtn"', source)
+        self.assertNotIn('id="aboutTopBtn"', source)
+
+    def test_local_launch_supports_gui_reuse(self):
+        source = LAUNCH_PATH.read_text(encoding="utf-8")
+        self.assertIn("--gui", source)
+        self.assertIn("_html_ready", source)
+        self.assertIn("_probe_home_portable", source)
 
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
@@ -522,13 +554,40 @@ class TestQueryTabsSeam(unittest.TestCase):
         with self.subTest(path=str(RELATION_ENTRY_PATH.relative_to(REPO_ROOT))):
             self.assertFalse(RELATION_ENTRY_PATH.exists())
 
-    def test_relation_entry_css_merged_into_index(self):
+    def test_relation_entry_css_merged_into_shell(self):
         self.assertFalse(RELATION_ENTRY_CSS_PATH.exists())
         source = INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn(".relation-main", (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
+        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        workbench = (REPO_ROOT / "frontend" / "workbench.css").read_text(encoding="utf-8")
+        self.assertIn(".relation-main", shell)
+        self.assertIn("a.result-item", workbench)
         self.assertNotIn("relation-entry.css", source)
         self.assertIn("display=swap", source)
-        self.assertIn('use[filter="url(#brush-roughen-brand)"]', (REPO_ROOT / "frontend" / "index.css").read_text(encoding="utf-8"))
+        self.assertIn('use[filter="url(#brush-roughen-brand)"]', shell)
+
+    def test_shared_css_single_source_in_frontend(self):
+        client_src = REPO_ROOT / "client" / "src"
+        for name in ("open-design.css", "shell.css"):
+            with self.subTest(duplicate=name):
+                self.assertFalse((client_src / name).is_file(), f"remove duplicate client/src/{name}")
+        self.assertTrue((REPO_ROOT / "frontend" / "shell.css").is_file())
+        self.assertTrue((REPO_ROOT / "frontend" / "workbench.css").is_file())
+        self.assertFalse((REPO_ROOT / "frontend" / "index.css").is_file())
+
+    def test_pwa_main_imports_frontend_css(self):
+        source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
+        for path in ("../../frontend/open-design.css", "../../frontend/shell.css", "../../frontend/workbench.css"):
+            with self.subTest(import_path=path):
+                self.assertIn(path, source)
+        self.assertIn("./root.css", source)
+        self.assertIn("./pwa-app.css", source)
+
+    def test_index_html_links_shared_css(self):
+        source = INDEX_PATH.read_text(encoding="utf-8")
+        for href in ("shell.css", "workbench.css"):
+            with self.subTest(href=href):
+                self.assertIn(f'href="{href}"', source)
+        self.assertNotIn('href="index.css"', source)
 
     def test_main_py_has_no_prototype_route(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

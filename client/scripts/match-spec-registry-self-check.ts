@@ -25,6 +25,7 @@ const cases: Array<[string, Record<string, unknown>]> = [
   ['門0', { width: 2, literal_priority: true }],
   ['33~~你', { width: 2, compound_kind: 'syn', code_prefix: '33' }],
   ['$$', { width: 2, compound_kind: 'doubled_syllable' }],
+  ['$$$', { width: 3, compound_kind: 'doubled_syllable' }],
   ['33!!你', { width: 2, compound_kind: 'ant', code_prefix: '33' }],
   ['窮?潦倒=', { width: 4, partial_rhyme_mask: true, anchor_count: 3 }],
   ['=窮?潦倒', { width: 4, partial_initial_mask: true, anchor_count: 3 }],

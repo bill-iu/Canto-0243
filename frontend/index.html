@@ -31,7 +31,8 @@
     })();
   </script>
   <link rel="stylesheet" href="open-design.css">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="shell.css">
+  <link rel="stylesheet" href="workbench.css">
   <link rel="stylesheet" href="chrome-tabs.css">
   <link rel="stylesheet" href="query-tabs.css">
 </head>
@@ -141,9 +142,7 @@
             <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
             <span class="menu-chevron" aria-hidden="true">▾</span>
           </button>
-          <button class="ghost-button guide-top-link" id="guideTopBtn" type="button">搜尋教學</button>
-          <button class="ghost-button guide-top-link" id="relationTopBtn" type="button">補關係</button>
-          <button class="ghost-button guide-top-link" id="aboutTopBtn" type="button">關於</button>
+          <button class="ghost-button portable-exit-btn" id="portableExitBtn" type="button" hidden>退出 Canto-0243</button>
 
           <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
               <div class="menu-group" role="group" aria-label="0243搜尋模式">
@@ -185,6 +184,13 @@
                     <span class="mode-help">為已收錄字面補近義或反義</span>
                   </span>
                   <span class="mode-key">+</span>
+                </button>
+                <button class="mode-option" id="aboutMenuBtn" type="button" role="menuitem">
+                  <span>
+                    <span class="mode-name">關於</span>
+                    <span class="mode-help">版本、授權與資料來源</span>
+                  </span>
+                  <span class="mode-key">i</span>
                 </button>
               </div>
             </div>
@@ -255,9 +261,6 @@
         <p class="eyebrow">Search manual</p>
         <h1 id="guideTitle" tabindex="-1">所有搜尋語法</h1>
         <p>每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 在錨字<strong>後</strong> → 韻母；在錨字<strong>前</strong> → 聲母（一般查詢與 <code translate="no">+</code> 延伸段相同）。</p>
-        <div class="guide-actions">
-          <button class="primary-button" id="backToSearchBtn" type="button">回到搜尋</button>
-        </div>
       </div>
 
       <article class="guide-intro" aria-labelledby="guideIntroTitle">
@@ -467,21 +470,25 @@
         </article>
 
         <article class="guide-card">
-          <h2>同音節疊字</h2>
-          <p><code translate="no">$$</code> 搵二字詞且兩字音節相同（聲調不限）；語法鏡像 <code translate="no">~~</code>。</p>
+          <h2>雙聲疊韻字</h2>
+          <p>連續 <code translate="no">$</code> 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；可加碼前綴或尾韻字。語法鏡像 <code translate="no">~~</code>。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="$$" data-mode="m1"><code translate="no">$$</code><span>二字同音節疊字（如慢慢、識食）</span></button>
-            <button class="guide-example" type="button" data-query="33$$" data-mode="m1"><code translate="no">33$$</code><span>33 同音 + 同音節疊字</span></button>
-            <button class="guide-example" type="button" data-query="$$你" data-mode="m1"><code translate="no">$$你</code><span>疊字，尾字同「你」同韻</span></button>
+            <button class="guide-example" type="button" data-query="$$" data-mode="m1"><code translate="no">$$</code><span>二字（如慢慢、識食）</span></button>
+            <button class="guide-example" type="button" data-query="$$$" data-mode="m1"><code translate="no">$$$</code><span>三字（如哈哈哈）</span></button>
+            <button class="guide-example" type="button" data-query="$$$$" data-mode="m1"><code translate="no">$$$$</code><span>四字同音節詞</span></button>
+            <button class="guide-example" type="button" data-query="33$$" data-mode="m1"><code translate="no">33$$</code><span>碼 33 + 二字雙聲疊韻字</span></button>
+            <button class="guide-example" type="button" data-query="333$$$" data-mode="m1"><code translate="no">333$$$</code><span>碼 333 + 三字雙聲疊韻字</span></button>
+            <button class="guide-example" type="button" data-query="$$你" data-mode="m1"><code translate="no">$$你</code><span>二字，尾字同「你」同韻</span></button>
           </div>
         </article>
 
         <article class="guide-card">
           <h2>同音異讀</h2>
-          <p><code translate="no">{左碼}/{右碼}</code> 搵同一字面、至少兩個唔同讀音；<code translate="no">?</code> 通配碼位。</p>
+          <p><code translate="no">{左碼}/{右碼}</code> 搵同一字面、至少兩個唔同粵拼讀音；<code translate="no">?</code> 通配碼位。僅 0243／02493 模式。</p>
           <div class="guide-examples">
-            <button class="guide-example" type="button" data-query="33/34" data-mode="m1"><code translate="no">33/34</code><span>如「今晚」gum1 maan1 與 gum1 maan5</span></button>
-            <button class="guide-example" type="button" data-query="?3/?4" data-mode="m1"><code translate="no">?3/?4</code><span>只約束第 2 字碼 3／4 嘅異讀</span></button>
+            <button class="guide-example" type="button" data-query="33/34" data-mode="m1"><code translate="no">33/34</code><span>二字異讀（如「今晚」gam1 maan1／gam1 maan5）</span></button>
+            <button class="guide-example" type="button" data-query="?3/?4" data-mode="m1"><code translate="no">?3/?4</code><span>只約束第 2 字碼 3／4</span></button>
+            <button class="guide-example" type="button" data-query="3/4" data-mode="m1"><code translate="no">3/4</code><span>單字異讀（如「上」soeng5／soeng6）</span></button>
           </div>
         </article>
 
@@ -538,6 +545,8 @@
     </section>
 
     <section class="guide-view about-view is-hidden" id="aboutView" aria-labelledby="aboutTitle" hidden>
+      <p class="about-slogan about-slogan--top">即使離線，<br>亦完全可用。</p>
+
       <div class="guide-hero">
         <p class="eyebrow">About</p>
         <h1 id="aboutTitle" tabindex="-1">關於 Canto-0243</h1>
@@ -593,6 +602,8 @@
           <button class="ghost-button" id="aboutBackToSearchBtn" type="button">回到搜尋</button>
         </div>
       </article>
+
+      <p class="about-slogan about-slogan--bottom">這一次，<br>重奪你的創作主導權。</p>
     </section>
 
     <section class="relation-view relation-main corrections-view is-hidden" id="correctionsView" aria-labelledby="correctionsTitle" hidden>

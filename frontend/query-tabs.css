@@ -462,10 +462,6 @@ body.query-tabs-app {
     justify-content: flex-start;
     gap: calc(8px * var(--header-capsule-scale));
   }
-
-  .query-tabs-app .app-actions .ghost-button:nth-child(3) {
-    display: none;
-  }
 }
 
 @media (max-width: 480px) {
@@ -475,10 +471,6 @@ body.query-tabs-app {
 
   .query-tabs-app .brand-logo {
     height: 38px;
-  }
-
-  .query-tabs-app .guide-top-link {
-    display: none;
   }
 
   .query-tabs-app .tabdeck-strip .chrome-tabs {

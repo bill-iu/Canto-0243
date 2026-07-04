@@ -56,9 +56,15 @@ def _extract_chars(items: list) -> list[str]:
     chars: list[str] = []
     for item in items:
         if isinstance(item, dict):
-            c = item.get("char")
+            rt = item.get("result_type")
+            if rt in ("code", "jyutping"):
+                continue
+            c = item.get("char") or item.get("display_text") or item.get("word")
         else:
-            c = getattr(item, "char", None)
+            rt = getattr(item, "result_type", None)
+            if rt in ("code", "jyutping"):
+                continue
+            c = getattr(item, "char", None) or getattr(item, "word", None)
         if c:
             chars.append(c)
     return chars

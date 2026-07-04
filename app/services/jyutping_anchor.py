@@ -79,16 +79,20 @@ def default_syllable_letters_for_anchor_char(char: str) -> Optional[str]:
 
 
 def normalize_hanzi_dollar_syllable_anchors(q: str) -> str:
-    """`$`+單漢字 → 拉丁完整音節字母；保留 `$$` 供同音節疊字查詢。"""
+    """`$`+單漢字 → 拉丁完整音節字母；保留連續 `$` 供雙聲疊韻字查詢。"""
     if not q or "$" not in q:
         return q
     out: list[str] = []
     i = 0
     while i < len(q):
-        if q[i] == "$" and i + 1 < len(q) and q[i + 1] == "$":
-            out.append("$$")
-            i += 2
-            continue
+        if q[i] == "$":
+            j = i
+            while j < len(q) and q[j] == "$":
+                j += 1
+            if j - i >= 2:
+                out.append(q[i:j])
+                i = j
+                continue
         if q[i] == "$" and i + 1 < len(q) and re.fullmatch(r"[一-龥]", q[i + 1]):
             letters = default_syllable_letters_for_anchor_char(q[i + 1])
             if letters:

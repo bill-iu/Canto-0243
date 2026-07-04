@@ -11,6 +11,11 @@ from app.models.word import Word
 
 FILLWORD_CONNECTIVES = frozenset("與和或共同及跟而且並向")
 
+# ponytail: guide／essay 常見填詞連接詞三字詞 — 查詢時 ensure 入庫（CONTEXT § 連接詞複合查詢）
+CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {
+    "與": ("生與死", "天與地", "男與女", "父與子"),
+}
+
 
 def _flank_tiers_from_two_char(two_char_tiers: Dict[str, int]) -> Dict[tuple[str, str], int]:
     out: Dict[tuple[str, str], int] = {}
@@ -39,6 +44,11 @@ def search_connective_compound(
     """!與!／~與~：三字詞庫掃描，首尾沿用 !!／~~ 候選規則。"""
     if connective not in FILLWORD_CONNECTIVES:
         return {}
+
+    from app.services.word_ensure_service import ensure_word_in_db
+
+    for literal in CONNECTIVE_LITERAL_SEEDS.get(connective, ()):
+        ensure_word_in_db(db, literal)
 
     if compound_kind == "ant":
         from app.domain.relations.compound_ant import search_compound_ant

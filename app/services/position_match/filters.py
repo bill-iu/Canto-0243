@@ -663,5 +663,17 @@ def apply_match_spec(
     if get_equals_span(spec):
         return query_words_by_equals_spec(spec, db, mode)
     if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
-        return filter_hybrid_ref_candidates(candidates, spec, mode, db)
-    return filter_candidates_by_match_spec(candidates, spec, mode, db)
+        filtered = filter_hybrid_ref_candidates(candidates, spec, mode, db)
+    else:
+        filtered = filter_candidates_by_match_spec(candidates, spec, mode, db)
+    if spec.compound_kind == "doubled_syllable":
+        from app.domain.relations.compound_doubled_syllable import (
+            row_has_uniform_syllable_letters,
+        )
+
+        filtered = [
+            w
+            for w in filtered
+            if row_has_uniform_syllable_letters(get_word_jyutping(w), spec.width)
+        ]
+    return filtered

@@ -1,13 +1,21 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { BenchmarkApp } from './BenchmarkApp.tsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
-const benchmark = new URLSearchParams(location.search).has('benchmark')
+import '../../frontend/open-design.css';
+import '../../frontend/shell.css';
+import '../../frontend/workbench.css';
+import './root.css';
+import './pwa-app.css';
+import App from './App.tsx';
+import { BenchmarkApp } from './BenchmarkApp.tsx';
+import { DBProvider } from './hooks/useDB.tsx';
+
+const benchmark = new URLSearchParams(location.search).has('benchmark');
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {benchmark ? <BenchmarkApp /> : <App />}
+    <DBProvider>
+      {benchmark ? <BenchmarkApp /> : <App />}
+    </DBProvider>
   </StrictMode>,
-)
+);

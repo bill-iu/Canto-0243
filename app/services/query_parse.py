@@ -129,7 +129,10 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     relation_parsed = parse_relation_syntax(q)
     doubled_parsed = parse_doubled_syllable_syntax(q)
     if doubled_parsed:
+        if doubled_parsed.get("kind") == "doubled_syllable_invalid":
+            return UnmatchedQuery(raw_q=q, hint=doubled_parsed["hint"])
         return CompoundDoubledSyllableQuery(
+            width=doubled_parsed["width"],
             code_prefix=doubled_parsed.get("code_prefix"),
             rhyme_char=doubled_parsed.get("rhyme_char"),
         )

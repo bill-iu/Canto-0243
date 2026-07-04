@@ -3,7 +3,15 @@
  * Provides easy access to the SQL.js database in React components
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import {
   initializeDatabase,
   getDefaultDbUrl,
@@ -13,22 +21,25 @@ import {
 } from '../db/init';
 import {
   search,
+  searchPage,
   getDatabaseStats,
   validateOfflineReadiness,
   normalizeQuery,
   parseQuery,
-  normalizeAndParse
+  normalizeAndParse,
+  SEARCH_PAGE_SIZE,
 } from '../db/query';
 import type {
   QueryOptions,
   QueryResult,
   QueryMode,
-  QueryKind
+  QueryKind,
+  SearchPageResult,
 } from '../db/query';
 
 // Re-export query engine types and functions for convenience
-export type { QueryMode, QueryKind, QueryOptions, QueryResult };
-export { normalizeQuery, parseQuery, normalizeAndParse };
+export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
+export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE };
 
 /**
  * Database status type
@@ -57,10 +68,9 @@ export interface UseDBReturn {
   reset: () => void;
 }
 
-/**
- * Custom hook for managing the SQL.js database
- */
-export function useDB(): UseDBReturn {
+const DBContext = createContext<UseDBReturn | null>(null);
+
+function useDBState(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [error, setError] = useState<Error | null>(null);
@@ -78,11 +88,11 @@ export function useDB(): UseDBReturn {
     }
   }, []);
 
-  /**
-   * Initialize the database
-   */
   const initialize = useCallback(async () => {
-    if (status === 'ready' || status === 'loading') {
+    if (status === 'loading') {
+      return;
+    }
+    if (status === 'ready' && isValidated) {
       return;
     }
 
@@ -92,13 +102,10 @@ export function useDB(): UseDBReturn {
       setProgress(0);
       setIsValidated(false);
 
-      // Initialize database - progress will be updated via httpvfs
       await initializeDatabase();
-
-      // Validate with a minimal query so "Ready" means "can actually query"
       await validateOfflineReadiness();
       setIsValidated(true);
-      
+
       setStatus('ready');
       setProgress(100);
     } catch (err) {
@@ -107,7 +114,7 @@ export function useDB(): UseDBReturn {
       setProgress(0);
       setIsValidated(false);
     }
-  }, [status]);
+  }, [status, isValidated]);
 
   const retryOfflineReady = useCallback(async () => {
     resetDatabase();
@@ -119,55 +126,49 @@ export function useDB(): UseDBReturn {
     await initialize();
   }, [checkDbCached, initialize]);
 
-  /**
-   * Execute a search query
-   */
   const searchQuery = useCallback(async (options: QueryOptions) => {
-    // Auto-initialize if not ready
-    if (status === 'idle') {
+    if (!isDatabaseInitialized()) {
       await initialize();
     }
-    
-    if (status !== 'ready') {
+    if (!isDatabaseInitialized()) {
       throw new Error('Database not ready');
     }
-    
     return search(options);
-  }, [status, initialize]);
+  }, [initialize]);
 
-  /**
-   * Get database statistics
-   */
   const getStats = useCallback(async () => {
-    if (status === 'idle') {
+    if (!isDatabaseInitialized()) {
       await initialize();
     }
-    
-    if (status !== 'ready') {
+    if (!isDatabaseInitialized()) {
       throw new Error('Database not ready');
     }
-    
     return getDatabaseStats();
-  }, [status, initialize]);
+  }, [initialize]);
 
-  /**
-   * Reset the database connection
-   */
   const reset = useCallback(() => {
     resetDatabase();
     setStatus('idle');
     setProgress(0);
     setError(null);
+    setIsValidated(false);
   }, []);
 
-  // Auto-initialize on mount if not already initialized globally
   useEffect(() => {
-    if (isDatabaseInitialized()) {
-      setStatus('ready');
-      setProgress(100);
-      // Note: still validate on demand; global init doesn't guarantee offline package integrity
+    if (!isDatabaseInitialized() || status !== 'idle') {
+      return;
     }
-  }, []);
+    void (async () => {
+      try {
+        await validateOfflineReadiness();
+        setIsValidated(true);
+        setStatus('ready');
+        setProgress(100);
+      } catch {
+        // ponytail: let App auto-initialize on online/cache
+      }
+    })();
+  }, [status]);
 
   useEffect(() => {
     checkDbCached();
@@ -202,52 +203,145 @@ export function useDB(): UseDBReturn {
     dbUrl,
     progress,
     error,
-    isReady: status === 'ready',
+    isReady: offlineStatus === 'ready',
     initialize,
     retryOfflineReady,
     search: searchQuery,
     getStats,
-    reset
+    reset,
   };
 }
 
-/**
- * Hook for a specific query with loading state
- */
-export function useSearch(queryOptions: QueryOptions | null) {
-  const { search, isReady, status } = useDB();
-  const [results, setResults] = useState<QueryResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [searchError, setSearchError] = useState<Error | null>(null);
+export function DBProvider({ children }: { children: ReactNode }) {
+  const value = useDBState();
+  return <DBContext.Provider value={value}>{children}</DBContext.Provider>;
+}
 
-  useEffect(() => {
-    if (!queryOptions || !isReady) {
+/**
+ * Custom hook for managing the SQL.js database (shared via DBProvider)
+ */
+export function useDB(): UseDBReturn {
+  const ctx = useContext(DBContext);
+  if (!ctx) {
+    throw new Error('useDB must be used within DBProvider');
+  }
+  return ctx;
+}
+
+/**
+ * Hook for a specific query with loading state and load-more pagination.
+ */
+export function useSearch(
+  query: string,
+  mode: QueryOptions['mode'] = '0243',
+  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' },
+) {
+  const pageSize = options?.pageSize ?? SEARCH_PAGE_SIZE;
+  const fallback0243Mode = options?.fallback_0243_mode;
+  const { isReady, status } = useDB();
+  const [results, setResults] = useState<QueryResult[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+  const [hint, setHint] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
+  const [searchError, setSearchError] = useState<Error | null>(null);
+  const [lastPageSize, setLastPageSize] = useState(0);
+
+  const trimmed = query.trim();
+  const canSearch = Boolean(trimmed) && isReady;
+
+  const hasMore =
+    canSearch &&
+    ((total != null && results.length < total) ||
+      (total == null && lastPageSize >= pageSize));
+
+  useLayoutEffect(() => {
+    if (!canSearch) {
       setResults([]);
+      setTotal(null);
+      setHint(null);
+      setLoading(false);
+      setLastPageSize(0);
       return;
     }
 
-    const executeSearch = async () => {
+    let cancelled = false;
+    setLoading(true);
+    setSearchError(null);
+
+    const run = async () => {
       try {
-        setLoading(true);
-        setSearchError(null);
-        const results = await search(queryOptions);
-        setResults(results);
+        const page = await searchPage({
+          query: trimmed,
+          mode,
+          limit: pageSize,
+          offset: 0,
+          fallback_0243_mode: fallback0243Mode,
+        });
+        if (!cancelled) {
+          setResults(page.items);
+          setTotal(page.total ?? null);
+          setHint(page.hint ?? null);
+          setLastPageSize(page.items.length);
+        }
       } catch (err) {
-        setSearchError(err instanceof Error ? err : new Error(String(err)));
-        setResults([]);
+        if (!cancelled) {
+          setSearchError(err instanceof Error ? err : new Error(String(err)));
+          setResults([]);
+          setTotal(null);
+          setHint(null);
+          setLookupLayout(false);
+          setLastPageSize(0);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
-    executeSearch();
-  }, [queryOptions, isReady, search]);
+    void run();
+    return () => {
+      cancelled = true;
+    };
+  }, [trimmed, mode, pageSize, canSearch, fallback0243Mode]);
+
+  const loadMore = useCallback(async () => {
+    if (!canSearch || loading || loadingMore || !hasMore) {
+      return;
+    }
+    setLoadingMore(true);
+    setSearchError(null);
+    try {
+      const page = await searchPage({
+        query: trimmed,
+        mode,
+        limit: pageSize,
+        offset: results.length,
+        fallback_0243_mode: fallback0243Mode,
+      });
+      setResults((prev) => [...prev, ...page.items]);
+      if (page.total != null) {
+        setTotal(page.total);
+      }
+      setLastPageSize(page.items.length);
+    } catch (err) {
+      setSearchError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length, fallback0243Mode]);
 
   return {
     results,
+    total,
+    hint,
     loading: loading || status === 'loading',
+    loadingMore,
     error: searchError,
-    isReady
+    isReady,
+    hasMore,
+    loadMore,
   };
 }
 

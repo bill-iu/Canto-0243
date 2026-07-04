@@ -99,7 +99,6 @@ def _load_code_candidates(len_q: int, codes: List[str], db: Session) -> list:
         db.query(Word)
         .filter(length_filter(len_q), Word.code.in_(codes))
         .order_by(Word.char, Word.jyutping)
-        .limit(500)
         .all()
     )
     return sorted(rows, key=search_result_sort_key)
@@ -163,6 +162,61 @@ def _rank_pure_rhyme_words(pure_ws: List[Word], seen: set[str], query_emb: list)
         return candidates
 
 
+def _append_lookup_literal_tiers(
+    results: List[dict],
+    seen: set[str],
+    *,
+    q: str,
+    codes: List[str],
+    exact_matches: List[Word],
+    same_code_candidates: list,
+    db: Session,
+    len_q: int,
+) -> None:
+    """同碼同韻含字面 → 同碼其他含字面 → 異碼含字面。"""
+    literals = list(dict.fromkeys(q))
+    if not literals:
+        return
+    code_set = set(codes)
+
+    for code in codes:
+        fin_json = _finals_json_for_code(exact_matches, code)
+        if not fin_json:
+            continue
+        target_finals = load_json_list(fin_json)
+        same_rhyme_literal = [
+            w
+            for w in same_code_candidates
+            if get_word_sort_code(w) == code
+            and get_word_parts(w, "finals") == target_finals
+            and any(ch in get_word_text(w) for ch in literals)
+        ]
+        _append_words(
+            results,
+            seen,
+            sorted(same_rhyme_literal, key=search_result_sort_key),
+        )
+
+    same_code_literal = [
+        w for w in same_code_candidates if any(ch in get_word_text(w) for ch in literals)
+    ]
+    _append_words(results, seen, sorted(same_code_literal, key=search_result_sort_key))
+
+    all_len = (
+        db.query(Word)
+        .filter(length_filter(len_q))
+        .order_by(Word.char, Word.jyutping)
+        .all()
+    )
+    diff_code_literal = [
+        w
+        for w in all_len
+        if get_word_sort_code(w) not in code_set
+        and any(ch in get_word_text(w) for ch in literals)
+    ]
+    _append_words(results, seen, sorted(diff_code_literal, key=search_result_sort_key))
+
+
 def _append_per_code_rhyme_sections(
     results: List[dict],
     seen: set[str],
@@ -184,10 +238,12 @@ def _append_per_code_rhyme_sections(
             if get_word_parts(w, "finals") == target_finals
         ][:50]
         pool = deduplicate_words(pool)
-        shared = [w for w in pool if any(ch in get_word_text(w) for ch in q_chars)]
-        shared_chars = {get_word_text(w) for w in shared}
+        shared_chars = {
+            get_word_text(w)
+            for w in pool
+            if any(ch in get_word_text(w) for ch in q_chars)
+        }
         pure = [w for w in pool if get_word_text(w) not in shared_chars]
-        _append_words(results, seen, shared)
         _append_words(results, seen, _rank_pure_rhyme_words(pure, seen, query_emb))
 
 
@@ -215,7 +271,7 @@ def _append_tail_rhyme_section(
 
 
 def build_lookup_layout(q: str, exact_matches: List[Word], db: Session) -> List[dict]:
-    """純漢字精確查詢的多段版面（code header → 本詞 → 同韻段 → 尾字韻 → 同碼餘下）。"""
+    """純漢字精確查詢的多段版面（code header → 本詞 → 字面段 → 同韻段 → 尾字韻 → 同碼餘下）。"""
     if not exact_matches:
         return []
 
@@ -234,6 +290,17 @@ def build_lookup_layout(q: str, exact_matches: List[Word], db: Session) -> List[
     candidates_by_code: dict[str, list] = defaultdict(list)
     for candidate in code_candidates:
         candidates_by_code[get_word_sort_code(candidate)].append(candidate)
+
+    _append_lookup_literal_tiers(
+        results,
+        seen,
+        q=q,
+        codes=codes,
+        exact_matches=exact_matches,
+        same_code_candidates=code_candidates,
+        db=db,
+        len_q=len_q,
+    )
 
     _append_per_code_rhyme_sections(
         results,
@@ -256,5 +323,12 @@ def build_lookup_layout(q: str, exact_matches: List[Word], db: Session) -> List[
         ref_val=ref_val,
         ref_pos=ref_pos,
     )
-    _append_words(results, seen, code_candidates[:100])
+    _append_words(
+        results,
+        seen,
+        sorted(
+            [w for w in code_candidates if get_word_text(w) not in seen],
+            key=search_result_sort_key,
+        ),
+    )
     return results

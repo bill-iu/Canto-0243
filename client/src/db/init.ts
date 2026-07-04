@@ -9,6 +9,7 @@ import {
   ensureLexiconInOpfs,
   readLexiconFromOpfs,
 } from './opfs-lexicon.ts';
+import { opfsAvailable } from './opfs-storage.ts';
 import {
   getLexiconCacheStatus,
   resolveLexiconBytes,
@@ -18,6 +19,7 @@ import {
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
+import { applyRuntimeDbPatches } from './db-patch.ts';
 import { initRhymeLetterIndex } from './rime-index.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 
@@ -68,9 +70,26 @@ async function loadSqlJsFromBytes(bytes: Uint8Array): Promise<DatabaseBackend> {
   return openSqlJsDatabase(bytes, sqlJsLocateFile);
 }
 
+/** sqljs 路徑：開庫後寫入 OPFS，供 iOS 飛航冷啟（SW 大檔快取不可靠） */
+async function persistLexiconForOffline(version: string, bytes: Uint8Array): Promise<void> {
+  if (!opfsAvailable() || !bytes.byteLength) {
+    return;
+  }
+  const ensured = await ensureLexiconInOpfs({
+    version,
+    fetchBytes: async () => bytes,
+  });
+  console.log(
+    ensured.fetched
+      ? `Lexicon persisted to OPFS (${ensured.byteSize} bytes)`
+      : `Lexicon already in OPFS (${ensured.byteSize} bytes)`,
+  );
+}
+
 async function initializeSqlJsPath(version: string, dbPath: string): Promise<DatabaseBackend> {
   const { bytes, source } = await resolveLexiconBytes(version, dbPath);
   console.log(`Lexicon restore (${source}) → sql.js`);
+  await persistLexiconForOffline(version, bytes);
   return loadSqlJsFromBytes(bytes);
 }
 
@@ -191,6 +210,7 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
         ? await initializeOpfsLexicon(version, dbPath)
         : await initializeSqlJsPath(version, dbPath);
 
+    applyRuntimeDbPatches(db);
     isInitialized = true;
     await loadAuxiliaryIndexes();
 
@@ -198,7 +218,12 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     return db;
   } catch (error) {
     console.error('Failed to initialize database:', error);
-    throw new Error('Could not initialize database. Please ensure the lexicon package is accessible.');
+    const offline = typeof navigator !== 'undefined' && !navigator.onLine;
+    throw new Error(
+      offline
+        ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
+        : '無法載入詞庫，請確認網路後重試',
+    );
   }
 }
 

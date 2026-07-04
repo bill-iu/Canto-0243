@@ -72,6 +72,7 @@ class CompoundSynQuery:
 
 @dataclass(frozen=True)
 class CompoundDoubledSyllableQuery:
+    width: int
     code_prefix: Optional[str]
     rhyme_char: Optional[str]
 

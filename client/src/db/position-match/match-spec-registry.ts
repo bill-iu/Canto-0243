@@ -298,12 +298,12 @@ function specMask(parsed: ParsedQuery): MatchSpec | null {
 
 function specCompoundDoubledSyllable(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as CompoundDoubledSyllableQuery;
-  const spec = createMatchSpec(2, {
+  const spec = createMatchSpec(q.width, {
     code_prefix: q.code_prefix,
     compound_kind: 'doubled_syllable',
   });
   if (q.rhyme_char) {
-    slots(spec).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
+    slots(spec).push({ pos: q.width - 1, kind: 'final_anchor', value: q.rhyme_char });
   }
   return spec;
 }

@@ -4,6 +4,11 @@
 import { fetchCompoundWordRows, type CompoundSearchSpec } from '../compound.ts';
 import { getCodeVariants } from '../code-variants.ts';
 import type { Database } from '../sqljs.ts';
+import {
+  maskCharGlobPattern,
+  maskFixedLiteralPrefix,
+  matchesMaskLiteralChars,
+} from './mask-adapter.ts';
 import type { CandidateSource, MatchSpec } from './spec.ts';
 
 export type WordRow = Record<string, unknown>;
@@ -20,6 +25,8 @@ export type GetCandidatesOptions = {
   code?: string | null;
   mode?: string;
   fallbackLimit?: number;
+  /** ponytail: jyutping letter anchors need full length bucket (desktop word_cache parity) */
+  unlimited?: boolean;
 };
 
 /**
@@ -33,6 +40,7 @@ export function getCandidatesForLength(
 ): [WordRow[], boolean] {
   const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
   const limit = options.fallbackLimit ?? 2000;
+  const unlimited = options.unlimited === true;
   const code = options.code ?? null;
 
   let sql = `
@@ -53,8 +61,11 @@ export function getCandidatesForLength(
     }
   }
 
-  sql += ' ORDER BY char, jyutping LIMIT ?';
-  params.push(limit);
+  sql += ' ORDER BY char, jyutping';
+  if (!unlimited) {
+    sql += ' LIMIT ?';
+    params.push(limit);
+  }
 
   const stmt = db.prepare(sql);
   stmt.bind(params);
@@ -67,6 +78,58 @@ export function getCandidatesForLength(
   }
   stmt.free();
   return [rows, false];
+}
+
+/** Port of sources.get_length_candidates — mask GLOB，唔受 2000 上限 */
+export function getLengthMaskCandidates(
+  db: Database,
+  length: number,
+  mask: string,
+): [WordRow[], boolean] {
+  const globPat = maskCharGlobPattern(mask);
+  const prefix = maskFixedLiteralPrefix(mask);
+  let sql = `
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+    AND char GLOB ?
+  `;
+  const params: Array<string | number> = [length, length, globPat];
+  if (prefix) {
+    sql += ' AND char LIKE ?';
+    params.push(`${prefix}%`);
+  }
+  sql += ' ORDER BY char, jyutping';
+
+  const stmt = db.prepare(sql);
+  stmt.bind(params);
+  const rows: WordRow[] = [];
+  while (stmt.step()) {
+    const row = stmt.getAsObject() as WordRow;
+    const text = String(row.char ?? '');
+    if (wordMatchesWidth(row, length) && matchesMaskLiteralChars(text, mask)) {
+      rows.push(row);
+    }
+  }
+  stmt.free();
+  return [rows, false];
+}
+
+function maskWithLiteralAt(width: number, pos: number, ch: string): string {
+  return Array.from({ length: width }, (_, i) => (i === pos ? ch : '?')).join('');
+}
+
+/** 錨字在固定格的所有 width 詞（partial mask slot options） */
+export function getCandidatesWithLiteralAt(
+  db: Database,
+  width: number,
+  pos: number,
+  ch: string,
+): WordRow[] {
+  return getLengthMaskCandidates(db, width, maskWithLiteralAt(width, pos, ch))[0];
 }
 
 /** Port of LengthCodeCandidateSource */

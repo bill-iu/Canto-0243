@@ -41,6 +41,7 @@ def load_rime_char_csv(path: Path | str = DEFAULT_CHAR_CSV) -> int:
         _loaded = True
         return 0
 
+    rows_by_char: Dict[str, List[tuple[int, str, str, str]]] = {}
     with open(csv_path, "r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
@@ -53,13 +54,17 @@ def load_rime_char_csv(path: Path | str = DEFAULT_CHAR_CSV) -> int:
                 continue
             rank_val = PRON_RANK_SORT.get(pron_rank, UNKNOWN_PRON_RANK_SORT)
             rank_map[(char, jyutping)] = rank_val
-            if pron_rank != DEFAULT_PRON_RANK:
-                continue
             code = get_0243_code(jyutping) or ""
             if not code:
                 continue
+            rows_by_char.setdefault(char, []).append((rank_val, pron_rank, jyutping, code))
+
+    for char, ranked_rows in rows_by_char.items():
+        preset = [r for r in ranked_rows if r[1] == DEFAULT_PRON_RANK]
+        pick_from = preset if preset else [r for r in ranked_rows if r[0] == min(x[0] for x in ranked_rows)]
+        bucket = index.setdefault(char, [])
+        for _rank_val, _pron_rank, jyutping, code in pick_from:
             entry = LexiconEntry(char=char, jyutping=jyutping, code=code)
-            bucket = index.setdefault(char, [])
             if not any(e.jyutping == jyutping and e.code == code for e in bucket):
                 bucket.append(entry)
                 count += 1

@@ -36,7 +36,9 @@ const SQL = await initSqlJs();
 const db = createSqlJsBackend(new SQL.Database(buf));
 
 const { injectDatabaseForTests } = await import('../src/db/init.ts');
+const { applyRuntimeDbPatches } = await import('../src/db/db-patch.ts');
 injectDatabaseForTests(db);
+applyRuntimeDbPatches(db);
 
 const { queryEngine, normalizeAndParse } = await import('../src/db/query-engine.ts');
 
@@ -58,6 +60,7 @@ for (const c of cases) {
       offset: 0,
     });
     const chars = result.items
+      .filter((r) => r.resultType !== 'code' && r.resultType !== 'jyutping')
       .map((r) => r.word)
       .filter((w): w is string => Boolean(w));
     out.push({
