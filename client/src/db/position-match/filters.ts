@@ -56,28 +56,15 @@ function anchorPhonemeOptions(
   dimension: 'final' | 'initial',
 ): Set<string> {
   const options = new Set<string>();
-  const row = equalsAuthoritativeRow(db, char);
-  if (row) {
-    const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
-    if (parts.length) {
-      options.add(parts[0]!);
-    }
-  }
   const stmt = db.prepare(
-    'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
+    'SELECT char, initials, finals, jyutping FROM words WHERE char = ? LIMIT 50',
   );
-  stmt.bind([`%${char}%`]);
+  stmt.bind([char]);
   while (stmt.step()) {
     const hit = stmt.getAsObject() as WordRow;
-    const text = getWordText(hit);
-    for (let idx = 0; idx < text.length; idx++) {
-      if (text[idx] !== char) {
-        continue;
-      }
-      const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
-      if (parts.length > idx && parts[idx]) {
-        options.add(parts[idx]!);
-      }
+    const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
+    if (parts.length) {
+      options.add(parts[0]!);
     }
   }
   stmt.free();

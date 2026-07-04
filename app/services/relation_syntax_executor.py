@@ -12,11 +12,25 @@ if TYPE_CHECKING:
 from app.domain.relations.pool_projection import project_relation_pool, relation_pool_page
 from app.domain.relations.pool import PoolSnapshot
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
-from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_serializer import serialize_page
 from app.utils.jyutping_codec import get_code_variants
 
 from app.models.word import Word
+
+
+def _seed_has_code_prefix(
+    db: Session,
+    seed: str,
+    code_prefix: str,
+    mode: str,
+) -> bool:
+    """碼前綴約束種子字面讀音（如 33!開心），唔篩結果詞碼。"""
+    text = (seed or "").strip()
+    if not text or len(text) != len(code_prefix):
+        return False
+    variants = set(get_code_variants(code_prefix, mode))
+    rows = db.query(Word).filter(Word.char == text).all()
+    return any((row.code or "") in variants for row in rows)
 
 
 def _pool_item_to_word_dict(item: dict, query_text: str) -> dict:
@@ -55,10 +69,6 @@ def words_for_relation_chars(
 
     char_order = {ch: idx for idx, ch in enumerate(dict.fromkeys(ranked_chars))}
     query = db.query(Word).filter(Word.char.in_(list(char_order.keys())))
-    if code_prefix:
-        variants = get_code_variants(code_prefix, mode)
-        query = query.filter(Word.code.in_(variants), length_filter(len(code_prefix)))
-
     words = query.all()
     words.sort(key=lambda w: (char_order.get(w.char or "", 10**9), w.code or "", w.jyutping or ""))
     return serialize_page(words, offset, limit, result_type="word")
@@ -106,17 +116,7 @@ def words_for_relation_pool_from_items(
     unique_items = [item for item in unique_items if item.get("in_db")]
     if not unique_items:
         return []
-    if code_prefix:
-        variants = get_code_variants(code_prefix, mode)
-        # 過濾出符合 code_prefix 的 items
-        filtered_items = []
-        for item in unique_items:
-            char = item.get("char") or ""
-            code = item.get("code") or ""
-            if code in variants and len(char) == len(code_prefix):
-                filtered_items.append(item)
-        unique_items = filtered_items
-    
+
     # 按 _sort 分數排序
     unique_items.sort(key=lambda x: x.get("_sort", 99))
     
@@ -220,9 +220,14 @@ class RelationSyntaxExecutor:
         else:
             all_items = pool.syns + pool.ants + pool.semantic
         
+        if parsed.code_prefix and not _seed_has_code_prefix(
+            self._db, parsed.word, parsed.code_prefix, mode
+        ):
+            return []
+
         return words_for_relation_pool_from_items(
             all_items,
-            code_prefix=parsed.code_prefix,
+            code_prefix=None,
             mode=mode,
             limit=limit,
             offset=offset,

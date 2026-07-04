@@ -70,6 +70,26 @@ def _load_static_pools(query: str, thesaurus: ThesaurusPort) -> tuple[List[str],
     return thesaurus.get_synonyms(query), thesaurus.get_antonyms(query)
 
 
+def _compound_char_antonyms(char: str) -> List[str]:
+    """反義複合詞表拆字：如 你我 → 你↔我（CONTEXT § 反義複合詞）。"""
+    from app.lexicon.compound_antonyms import load_compound_antonyms
+
+    text = (char or "").strip()
+    if len(text) != 1:
+        return []
+    out: List[str] = []
+    seen: set[str] = set()
+    for compound in load_compound_antonyms():
+        if len(compound) != 2 or text not in compound:
+            continue
+        other = compound[1] if compound[0] == text else compound[0]
+        if not other or other == text or other in seen:
+            continue
+        seen.add(other)
+        out.append(other)
+    return out
+
+
 def _resolve_morpheme_chars(
     query: str,
     static_syns: List[str],
@@ -228,6 +248,8 @@ def build_pool(
         static_syns, static_ants = _load_static_pools(q, port)
         static_syns = _filter_static_words(static_syns)
         static_ants = _filter_static_words(static_ants)
+        if len(q) == 1:
+            static_ants = list(dict.fromkeys(static_ants + _compound_char_antonyms(q)))
     morpheme_chars = _resolve_morpheme_chars(q, static_syns, static_ants, port)
 
     candidate_chars: Set[str] = set()

@@ -36,6 +36,10 @@ const doubledCaches = new Map<number, TierMap>();
 const MIN_DOUBLED_WIDTH = 2;
 const MAX_DOUBLED_WIDTH = 4;
 
+export function getCuratedAntCompounds(): Set<string> {
+  return curatedAnt;
+}
+
 export function initCompoundLists(data: { syn?: string[]; ant?: string[] }): void {
   if (data.syn) {
     curatedSyn = new Set(data.syn);
