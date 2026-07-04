@@ -86,6 +86,17 @@ export function ReadyGate({
   );
   const handoffStarted = useRef(false);
 
+  // B: for cold PWA offline launch, force immediate hide of gate
+  // so shell reveals right away (even while DB is still loading in background)
+  // This prevents getting stuck on the pure launch background color.
+  useEffect(() => {
+    if (isColdPwaOfflineLaunch && visible) {
+      setVisible(false);
+      setPhase('hidden');
+      onOpenChange(false);
+    }
+  }, [isColdPwaOfflineLaunch, visible, onOpenChange]);
+
   useEffect(() => {
     if (offlineStatus === 'preparing') {
       handoffStarted.current = false;
@@ -97,6 +108,7 @@ export function ReadyGate({
   }, [visible, phase, onOpenChange]);
 
   useEffect(() => {
+    if (isColdPwaOfflineLaunch) return; // B: cold path already handled by the force-hide effect above
     if (offlineStatus !== 'ready' || handoffStarted.current || !visible) return;
     handoffStarted.current = true;
 
@@ -121,7 +133,7 @@ export function ReadyGate({
       setPhase('hidden');
       setVisible(false);
     })();
-  }, [offlineStatus, playLanding, visible, useMinimalForPwa]);
+  }, [offlineStatus, playLanding, visible, useMinimalForPwa, isColdPwaOfflineLaunch]);
 
   if (!visible || phase === 'hidden') return null;
 
