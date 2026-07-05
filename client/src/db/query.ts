@@ -183,11 +183,12 @@ export async function validateOfflineReadiness(): Promise<void> {
 
   const version = (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
   const cache = await getLexiconCacheStatus(version, getDefaultDbUrl());
+  const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
-  if (opfsAvailable() && !cache.opfs) {
+  if (hasOpfs && !cache.opfs) {
     throw new Error('離線就緒驗證失敗：詞庫尚未寫入本機儲存，請稍候或重試');
   }
-  if (!opfsAvailable() && !cache.any) {
+  if (!hasOpfs && !cache.any) {
     throw new Error('離線就緒驗證失敗：詞庫未快取至本機');
   }
 }

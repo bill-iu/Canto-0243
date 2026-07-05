@@ -72,3 +72,25 @@ def heteronym_sort_key(word) -> tuple:
 
 def sort_search_results(words: Iterable[T]) -> List[T]:
     return sorted(words, key=search_result_sort_key)
+
+
+def ranking_logic_self_check() -> None:
+    """Self-check: search_result_sort_key + heteronym_sort_key.
+
+    heteronym: essay/curated freq primary for char order; pure jyut lexical (no pron_rank) within char.
+    """
+    class W:
+        def __init__(self, c: str, j: str = "") -> None:
+            self.char = c
+            self.jyutping = j
+
+    # real essay: 我 (millions) >> 屎 (~35k); within-char jyut lexical asc
+    w_h1 = W("我", "ngo5")
+    w_h2 = W("我", "ngo1")
+    w_l = W("屎", "si2")
+    s = sorted([w_l, w_h1, w_h2], key=heteronym_sort_key)
+    chs = [x.char for x in s]
+    assert chs == ["我", "我", "屎"], chs
+    jys = [x.jyutping for x in s if x.char == "我"]
+    assert jys == ["ngo1", "ngo5"], jys  # lexical, skip pron
+    print("ranking_logic_self_check: heteronym freq+lexical OK")

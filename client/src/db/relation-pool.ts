@@ -7,20 +7,15 @@ import { getCodeVariants } from './code-variants.ts';
 import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
 import { getCuratedAntCompounds } from './compound.ts';
 import { appendRuntimeDerivedAntPool } from './derived-ant.ts';
+import {
+  createRelationPoolSnapshot,
+  relationPoolSnapshotItems,
+  type RelationKind,
+  type RelationPoolItem,
+  type RelationPoolSnapshot,
+} from './relation-pool-snapshot.ts';
 
-export type RelationKind = 'syn' | 'ant' | 'semantic_related';
-
-export type RelationPoolItem = {
-  char: string;
-  relation: RelationKind;
-  source: string;
-  score: number | null;
-  in_db: boolean;
-  jyutping: string;
-  code: string;
-  group_codes: string[];
-  _sort: number;
-};
+export type { RelationKind, RelationPoolItem, RelationPoolSnapshot } from './relation-pool-snapshot.ts';
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 const RUNTIME_DERIVED_ANT_SOURCES = new Set(['ant_syn_mirror', 'ant_cilin_exanded']);
@@ -412,13 +407,6 @@ function collectSortedPool(
   return out;
 }
 
-export type RelationPoolSnapshot = {
-  query: string;
-  syns: RelationPoolItem[];
-  ants: RelationPoolItem[];
-  semantic: RelationPoolItem[];
-};
-
 export function buildRelationPool(
   db: Database,
   query: string,
@@ -428,7 +416,7 @@ export function buildRelationPool(
   const includeDerivedAnt = options.includeDerivedAnt !== false;
   const q = query.trim();
   if (!q || !CJK_RE.test(q)) {
-    return { query: q, syns: [], ants: [], semantic: [] };
+    return createRelationPoolSnapshot(q, [], [], []);
   }
 
   let relItems = fetchDbRelations(db, q);
@@ -509,7 +497,7 @@ export function buildRelationPool(
     return true;
   });
 
-  return { query: q, syns: synPool, ants: antPool, semantic: semanticPool };
+  return createRelationPoolSnapshot(q, synPool, antPool, semanticPool);
 }
 
 /** Port of pool_projection.relation_pool_page — flat syns+ants+semantic slice */
@@ -519,11 +507,7 @@ export function relationPoolPage(
   limit: number,
   offset: number,
 ): RelationPoolItem[] {
-  const pool = buildRelationPool(db, seed);
-  const combined = [...pool.syns, ...pool.ants, ...pool.semantic];
-  const safeOffset = Math.max(0, offset);
-  const safeLimit = limit < 0 ? 0 : limit;
-  return combined.slice(safeOffset, safeOffset + safeLimit);
+  return buildRelationPool(db, seed).page(limit, offset);
 }
 
 export function relationLookupItems(
@@ -536,8 +520,7 @@ export function relationLookupItems(
   offset: number,
 ): RelationPoolItem[] {
   const pool = buildRelationPool(db, seed);
-  const allItems =
-    relationKind === 'syn' ? pool.syns : relationKind === 'ant' ? pool.ants : [...pool.syns, ...pool.ants, ...pool.semantic];
+  const allItems = relationPoolSnapshotItems(pool, relationKind);
 
   const seen = new Set<string>();
   let unique = allItems.filter((item) => {

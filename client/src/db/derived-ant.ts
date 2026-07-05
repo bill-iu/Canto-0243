@@ -3,7 +3,7 @@
  */
 import type { Database } from './sqljs.ts';
 import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
-import type { RelationPoolItem } from './relation-pool.ts';
+import type { RelationPoolItem } from './relation-pool-snapshot.ts';
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 

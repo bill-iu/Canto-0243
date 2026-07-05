@@ -3,15 +3,44 @@
  * ponytail: main-thread async API (sync access handles are Worker-only)
  */
 
-export function opfsAvailable(): boolean {
-  return typeof navigator !== 'undefined' && typeof navigator.storage?.getDirectory === 'function';
+let opfsRoot: FileSystemDirectoryHandle | null = null;
+let opfsProbe: Promise<FileSystemDirectoryHandle | null> | null = null;
+let opfsUnavailable = false;
+
+async function probeRootDir(): Promise<FileSystemDirectoryHandle | null> {
+  if (opfsRoot) return opfsRoot;
+  if (opfsUnavailable) return null;
+  if (typeof navigator === 'undefined' || typeof navigator.storage?.getDirectory !== 'function') {
+    opfsUnavailable = true;
+    return null;
+  }
+
+  opfsProbe ??= navigator.storage.getDirectory()
+    .then((root) => {
+      opfsRoot = root;
+      return root;
+    })
+    .catch(() => {
+      opfsUnavailable = true;
+      return null;
+    })
+    .finally(() => {
+      opfsProbe = null;
+    });
+
+  return opfsProbe;
+}
+
+export async function opfsAvailable(): Promise<boolean> {
+  return (await probeRootDir()) !== null;
 }
 
 async function rootDir(): Promise<FileSystemDirectoryHandle> {
-  if (!opfsAvailable()) {
+  const root = await probeRootDir();
+  if (!root) {
     throw new Error('OPFS unavailable (secure context + storage.getDirectory required)');
   }
-  return navigator.storage.getDirectory();
+  return root;
 }
 
 export async function opfsFileSize(name: string): Promise<number> {

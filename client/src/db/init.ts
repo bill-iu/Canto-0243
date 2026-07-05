@@ -72,7 +72,7 @@ async function loadSqlJsFromBytes(bytes: Uint8Array): Promise<DatabaseBackend> {
 
 /** sqljs 路徑：開庫後寫入 OPFS，供 iOS 飛航冷啟（SW 大檔快取不可靠） */
 async function persistLexiconForOffline(version: string, bytes: Uint8Array): Promise<void> {
-  if (!opfsAvailable() || !bytes.byteLength) {
+  if (!(await opfsAvailable()) || !bytes.byteLength) {
     return;
   }
   const ensured = await ensureLexiconInOpfs({

@@ -3,6 +3,7 @@
  * One-time fetch per semver; subsequent ensure skips network.
  */
 import {
+  opfsAvailable,
   opfsFileSize,
   readOpfsFile,
   removeOpfsFile,
@@ -25,6 +26,10 @@ export async function ensureLexiconInOpfs(opts: {
   version: string;
   fetchBytes: () => Promise<Uint8Array>;
 }): Promise<EnsureLexiconResult> {
+  if (!(await opfsAvailable())) {
+    throw new Error('ensureLexiconInOpfs: OPFS unavailable');
+  }
+
   const fileName = lexiconOpfsFileName(opts.version);
   const existing = await opfsFileSize(fileName);
   if (existing > 0) {
