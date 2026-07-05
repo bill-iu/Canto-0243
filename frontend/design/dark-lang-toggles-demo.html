@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canto-0243 • OD Dark + Lang Toggle Demo</title>
+  <link rel="stylesheet" href="../open-design.css">
+  <link rel="stylesheet" href="../shell.css">
+  <style>
+    /* demo overrides */
+    body { padding: 40px; }
+    .demo-header { max-width: 1120px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="app-header">
+    <div class="app-bar">
+      <button class="brand" aria-label="返回搜尋首頁">
+        <svg class="brand-logo" width="160" height="58" viewBox="0 0 200 72" aria-hidden="true"><use href="#brand-wordmark"/></svg>
+      </button>
+
+      <!-- NEW TOGGLES (as implemented) -->
+      <div class="app-actions">
+        <button class="icon-button theme-toggle" aria-label="切換主題"><span class="theme-icon">☀️</span></button>
+        <button class="ghost-button lang-toggle"><span>中 / EN</span></button>
+
+        <button class="menu-trigger" aria-haspopup="menu">
+          <span class="mode-trigger-text"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
+          <span class="menu-chevron">▾</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero" style="max-width:1120px;margin:40px auto;">
+    <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
+    <h1>ONE·搵·韻</h1>
+    <p>格律／協音／押韻／近反義，一步搵到。</p>
+  </div>
+
+  <script>
+    // Demo JS mirroring the impl
+    const html = document.documentElement;
+    function setTheme(th) {
+      html.dataset.theme = th;
+      const icon = document.querySelector('.theme-icon');
+      if (icon) icon.textContent = th === 'dark' ? '🌙' : '☀️';
+    }
+    document.querySelector('.theme-toggle').addEventListener('click', () => {
+      const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+    });
+    document.querySelector('.lang-toggle').addEventListener('click', () => {
+      const cur = html.lang.startsWith('en') ? 'zh' : 'en';
+      html.lang = cur === 'zh' ? 'zh-Hant' : 'en';
+      const h1 = document.querySelector('h1');
+      const p = document.querySelector('.hero p:last-child');
+      if (cur === 'en') {
+        h1.textContent = 'ONE-RUN-RHYME';
+        p.textContent = 'Meter / sound match / rhyme / near-antonyms — find in one step.';
+        document.querySelector('.lang-toggle span').textContent = 'EN / 中';
+      } else {
+        h1.textContent = 'ONE·搵·韻';
+        p.textContent = '格律／協音／押韻／近反義，一步搵到。';
+        document.querySelector('.lang-toggle span').textContent = '中 / EN';
+      }
+    });
+    // default light
+    setTheme('light');
+  </script>
+</body>
+</html>

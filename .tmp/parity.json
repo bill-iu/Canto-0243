@@ -1,0 +1,862 @@
+[ENV] 目前環境: LOCAL | 載入設定檔: .env.local
+[DB] 使用資料庫: sqlite
+[ensure] injected from lexicon: '我' (1 row(s))
+{
+  "gate": "journeys",
+  "gate_pass": true,
+  "journeys": {
+    "passed": 18,
+    "total": 18
+  },
+  "match_spec": {
+    "passed": 10,
+    "total": 15
+  },
+  "cases": [
+    {
+      "id": 0,
+      "suite": "journey",
+      "query": "事業",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": true,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 0,
+        "kind": "WORD_LOOKUP",
+        "chars": [
+          "22",
+          "si6 jip6",
+          "事業"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 0,
+        "kind": "word_lookup",
+        "chars": [
+          "22",
+          "si6 jip6",
+          "事業"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 1,
+      "suite": "journey",
+      "query": "事業",
+      "mode": "m2",
+      "db": "fixture",
+      "ordered": true,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 1,
+        "kind": "WORD_LOOKUP",
+        "chars": [
+          "22",
+          "si6 jip6",
+          "事業"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 1,
+        "kind": "word_lookup",
+        "chars": [
+          "22",
+          "si6 jip6",
+          "事業"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 2,
+      "suite": "journey",
+      "query": "門0",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 2,
+        "kind": "MASK",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 2,
+        "kind": "mask",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 3,
+      "suite": "journey",
+      "query": "好23",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 3,
+        "kind": "MASK",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 3,
+        "kind": "mask",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 4,
+      "suite": "journey",
+      "query": "香港=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 4,
+        "kind": "EQUALS",
+        "chars": [
+          "香港"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 4,
+        "kind": "equals",
+        "chars": [
+          "香港"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 5,
+      "suite": "journey",
+      "query": "香=?",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 5,
+        "kind": "RHYME_ANCHOR",
+        "chars": [
+          "香港"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 5,
+        "kind": "rhyme_anchor",
+        "chars": [
+          "香港"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 6,
+      "suite": "journey",
+      "query": "23就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 6,
+        "kind": "HYBRID_CODE",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 6,
+        "kind": "hybrid_code",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 7,
+      "suite": "journey",
+      "query": "23@就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 7,
+        "kind": "LITERAL_REF",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 7,
+        "kind": "literal_ref",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 8,
+      "suite": "journey",
+      "query": "2=我3",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 8,
+        "kind": "EQUALS",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 8,
+        "kind": "equals",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 9,
+      "suite": "journey",
+      "query": "2我=3",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 9,
+        "kind": "EQUALS",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 9,
+        "kind": "equals",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 10,
+      "suite": "journey",
+      "query": "23+就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 10,
+        "kind": "PLUS_ANCHOR",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 10,
+        "kind": "plus_anchor",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 11,
+      "suite": "journey",
+      "query": "?困潦倒=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 11,
+        "kind": "PREFIX_WILDCARD_EQUALS",
+        "chars": [
+          "窮困潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 11,
+        "kind": "prefix_wildcard_equals",
+        "chars": [
+          "窮困潦倒"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 12,
+      "suite": "journey",
+      "query": "33~~你",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 12,
+        "kind": "COMPOUND_SYN",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 12,
+        "kind": "compound_syn",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 13,
+      "suite": "journey",
+      "query": "33!!你",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 13,
+        "kind": "COMPOUND_ANT",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 13,
+        "kind": "compound_ant",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 14,
+      "suite": "journey",
+      "query": "$$",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 14,
+        "kind": "COMPOUND_DOUBLED_SYLLABLE",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 14,
+        "kind": "compound_doubled_syllable",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 15,
+      "suite": "journey",
+      "query": "窮?潦倒=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 15,
+        "kind": "PARTIAL_RHYME_MASK",
+        "chars": [
+          "窮困潦倒",
+          "窮愁潦倒",
+          "窮途潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 15,
+        "kind": "partial_rhyme_mask",
+        "chars": [
+          "窮困潦倒",
+          "窮途潦倒",
+          "窮愁潦倒"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 16,
+      "suite": "journey",
+      "query": "34=我",
+      "mode": "m1",
+      "db": "memory",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 16,
+        "kind": "EQUALS",
+        "chars": [
+          "好我"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 16,
+        "kind": "equals",
+        "chars": [
+          "好我"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 17,
+      "suite": "journey",
+      "query": "~開心",
+      "mode": "syn",
+      "db": "memory",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 17,
+        "kind": "RELATION_LOOKUP",
+        "chars": [
+          "愉快",
+          "快樂"
+        ],
+        "hint": "此語法已切換至 0243模式（鬆） 查詢"
+      },
+      "typescript": {
+        "id": 17,
+        "kind": "relation_lookup",
+        "chars": [
+          "快樂",
+          "愉快"
+        ],
+        "hint": "此語法已切換至 0243模式（鬆） 查詢",
+        "error": null
+      }
+    },
+    {
+      "id": 18,
+      "suite": "match_spec",
+      "query": "香港=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 18,
+        "kind": "EQUALS",
+        "chars": [
+          "香港"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 18,
+        "kind": "equals",
+        "chars": [
+          "香港"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 19,
+      "suite": "match_spec",
+      "query": "?困潦倒=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 19,
+        "kind": "PREFIX_WILDCARD_EQUALS",
+        "chars": [
+          "窮困潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 19,
+        "kind": "prefix_wildcard_equals",
+        "chars": [
+          "窮困潦倒"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 20,
+      "suite": "match_spec",
+      "query": "04困=49倒=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": false,
+      "issues": [
+        "kind",
+        "chars"
+      ],
+      "python": {
+        "id": 20,
+        "kind": "SERIAL_PHONEME",
+        "chars": [
+          "窮困潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 20,
+        "kind": "word_lookup",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 21,
+      "suite": "match_spec",
+      "query": "23+就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 21,
+        "kind": "PLUS_ANCHOR",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 21,
+        "kind": "plus_anchor",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 22,
+      "suite": "match_spec",
+      "query": "23@就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 22,
+        "kind": "LITERAL_REF",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 22,
+        "kind": "literal_ref",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 23,
+      "suite": "match_spec",
+      "query": "就=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 23,
+        "kind": "RHYME_ANCHOR",
+        "chars": [
+          "就",
+          "首"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 23,
+        "kind": "rhyme_anchor",
+        "chars": [
+          "首",
+          "就"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 24,
+      "suite": "match_spec",
+      "query": "?yut?",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": false,
+      "issues": [
+        "kind"
+      ],
+      "python": {
+        "id": 24,
+        "kind": "JYUTPING_ANCHOR",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 24,
+        "kind": "jyutping_fragment",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 25,
+      "suite": "match_spec",
+      "query": "3m4",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": false,
+      "issues": [
+        "kind"
+      ],
+      "python": {
+        "id": 25,
+        "kind": "JYUTPING_ANCHOR",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 25,
+        "kind": "jyutping_fragment",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 26,
+      "suite": "match_spec",
+      "query": "23就",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 26,
+        "kind": "HYBRID_CODE",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 26,
+        "kind": "hybrid_code",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 27,
+      "suite": "match_spec",
+      "query": "門0",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 27,
+        "kind": "MASK",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 27,
+        "kind": "mask",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 28,
+      "suite": "match_spec",
+      "query": "33~~你",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 28,
+        "kind": "COMPOUND_SYN",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 28,
+        "kind": "compound_syn",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 29,
+      "suite": "match_spec",
+      "query": "$$",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 29,
+        "kind": "COMPOUND_DOUBLED_SYLLABLE",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 29,
+        "kind": "compound_doubled_syllable",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 30,
+      "suite": "match_spec",
+      "query": "33!!你",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": false,
+      "match": true,
+      "issues": [],
+      "python": {
+        "id": 30,
+        "kind": "COMPOUND_ANT",
+        "chars": [],
+        "hint": null
+      },
+      "typescript": {
+        "id": 30,
+        "kind": "compound_ant",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 31,
+      "suite": "match_spec",
+      "query": "窮?潦倒=",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": true,
+      "match": false,
+      "issues": [
+        "order"
+      ],
+      "python": {
+        "id": 31,
+        "kind": "PARTIAL_RHYME_MASK",
+        "chars": [
+          "窮困潦倒",
+          "窮愁潦倒",
+          "窮途潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 31,
+        "kind": "partial_rhyme_mask",
+        "chars": [
+          "窮困潦倒",
+          "窮途潦倒",
+          "窮愁潦倒"
+        ],
+        "hint": null,
+        "error": null
+      }
+    },
+    {
+      "id": 32,
+      "suite": "match_spec",
+      "query": "=窮?潦倒",
+      "mode": "m1",
+      "db": "fixture",
+      "ordered": true,
+      "match": false,
+      "issues": [
+        "kind",
+        "order"
+      ],
+      "python": {
+        "id": 32,
+        "kind": "PARTIAL_INITIAL_MASK",
+        "chars": [
+          "窮困潦倒",
+          "窮愁潦倒",
+          "窮途潦倒"
+        ],
+        "hint": null
+      },
+      "typescript": {
+        "id": 32,
+        "kind": "word_lookup",
+        "chars": [],
+        "hint": null,
+        "error": null
+      }
+    }
+  ]
+}
