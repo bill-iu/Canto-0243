@@ -44,7 +44,7 @@ export default defineConfig(({ command }) => ({
             options: {
               cacheName: 'database-cache',
               expiration: {
-                maxEntries: 2,
+                maxEntries: 1,
                 maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
               }
             }
