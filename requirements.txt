@@ -8,6 +8,7 @@ pycantonese            # runtime 新詞 / 罕見字自動粵拼注入
 pyjyutping             # pycantonese fallback
 setuptools             # pyjyutping imports pkg_resources
 opencc-python-reimplemented  # cilin export + trad_chinese
+pyyaml                       # sources manifest loader for supplement-source checks
 
 # 依賴分層：
 #   requirements.txt           — 離線查詢（SQLite，產品保證路徑）
