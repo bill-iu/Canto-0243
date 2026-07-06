@@ -39,7 +39,19 @@ export default defineConfig(({ command }) => ({
         maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
         runtimeCaching: [
           {
-            urlPattern: /\/lyrics\.(?:dev|v[\d.]+(?:-[\w.]+)?)\.db$/,
+            urlPattern: /\/lexicon-manifest\.json$/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'lexicon-manifest-cache',
+              networkTimeoutSeconds: 3,
+              expiration: {
+                maxEntries: 1,
+                maxAgeSeconds: 24 * 60 * 60
+              }
+            }
+          },
+          {
+            urlPattern: /\/lyrics(?:\.[^/]+)?\.db$/,
             handler: 'CacheFirst',
             options: {
               cacheName: 'database-cache',

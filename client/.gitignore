@@ -22,6 +22,7 @@ public/static-syn-index.json
 public/static-ant-index.json
 public/static-cilin-syn-index.json
 public/rhyme-letter-index.json
+public/lexicon-manifest.json
 public/fonts/*.woff2
 public/fonts/fonts.css
 

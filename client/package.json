@@ -7,6 +7,7 @@
     "dev": "vite",
     "prebuild": "npx tsx scripts/build-ranking-index.ts && npx tsx scripts/build-fonts.ts && node copy-db.js",
     "build": "vite build",
+    "postbuild": "node scripts/check-pages-artifact.js",
     "preview": "vite preview",
     "lint": "oxlint",
     "copy-db": "node copy-db.js",
