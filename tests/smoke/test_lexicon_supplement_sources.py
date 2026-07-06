@@ -14,8 +14,10 @@ from ingest.lexicon_sources import (
     ingest_hsk30_wordlist,
     ingest_rime_phrase_yaml,
     ingest_rime_words_yaml,
+    ingest_words_hk_wordslist,
     resolve_generated_jyutping,
 )
+from ingest.lexicon_validate import build_mixed_literal_code, is_valid_word_lexicon_reading
 from ingest.syn_ant_manifest import load_manifest
 
 
@@ -109,6 +111,34 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertEqual(stats["rejected_long"], 1)
         self.assertEqual(stats["rejected_place_or_org"], 1)
         self.assertEqual(stats["rejected_mixed"], 1)
+
+    def test_punctuation_in_phrase_is_ignored_for_reading_validation(self):
+        self.assertTrue(
+            is_valid_word_lexicon_reading(
+                "犧牲小我，完成大我",
+                "hei1 sang1 siu2 ngo5 jyun4 sing4 daai6 ngo5",
+            )
+        )
+
+    def test_mixed_literal_words_hk_entries_use_pyjyutping_and_wildcard_code(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "wordslist.json"
+            path.write_text('{"AV女優": ["ei1 wi1 neoi5 jau1"]}', encoding="utf-8")
+            with patch("ingest.lexicon_validate._generate_mixed_literal_jyutping", return_value="ei1 wi1 neoi5 jau1"):
+                rows = ingest_words_hk_wordslist(path, source_id="words_hk")
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].char, "AV女優")
+        self.assertEqual(rows[0].jyutping, "ei1 wi1 neoi5 jau1")
+        self.assertEqual(rows[0].code, "??43")
+        self.assertTrue(
+            is_valid_word_lexicon_reading(
+                "AV女優",
+                "ei1 wi1 neoi5 jau1",
+                allow_mixed_literal=True,
+            )
+        )
+        self.assertEqual(build_mixed_literal_code("AV女優", "ei1 wi1 neoi5 jau1"), "??43")
 
     def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]

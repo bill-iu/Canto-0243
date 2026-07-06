@@ -16,6 +16,14 @@ def _is_pure_han_text(text: str) -> bool:
     return bool(text) and all("\u4e00" <= ch <= "\u9fff" for ch in text)
 
 
+def _rank_tier(text: str) -> int:
+    if _is_pure_han_text(text):
+        return 0
+    if bool(text) and any("\u4e00" <= ch <= "\u9fff" for ch in text) and any(ch.isalnum() for ch in text):
+        return 1
+    return 2
+
+
 def _is_aa_variant_jyutping(jyutping: str) -> bool:
     return "aa" in (jyutping or "").lower()
 
@@ -24,7 +32,7 @@ def search_result_sort_key(word) -> tuple:
     """扁平搜尋結果排序：純漢字 → essay → curated → pron_rank → 字面。"""
     ch = get_word_text(word)
     jyut = get_word_jyutping(word)
-    han_tier = 0 if _is_pure_han_text(ch) else 1
+    han_tier = _rank_tier(ch)
     return (
         han_tier,
         -get_essay_frequency(ch),
@@ -60,7 +68,7 @@ def heteronym_sort_key(word) -> tuple:
     """
     ch = get_word_text(word)
     jyut = get_word_jyutping(word)
-    han_tier = 0 if _is_pure_han_text(ch) else 1
+    han_tier = _rank_tier(ch)
     return (
         han_tier,
         -get_essay_frequency(ch),

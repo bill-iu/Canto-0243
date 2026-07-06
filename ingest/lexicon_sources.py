@@ -10,7 +10,11 @@ from typing import Any, Dict, List, Optional
 from app.lexicon.candidates import LexiconCandidate
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
-from ingest.lexicon_validate import is_valid_word_lexicon_reading
+from ingest.lexicon_validate import (
+    _generate_mixed_literal_jyutping,
+    build_mixed_literal_code,
+    is_valid_word_lexicon_reading,
+)
 from ingest.lexicon_raw_paths import ROOT, resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
 
@@ -347,9 +351,29 @@ def ingest_words_hk_wordslist(path: Path | str, *, source_id: str) -> list[Lexic
             continue
         if not isinstance(readings, list):
             continue
+        if not _CJK.search(literal) and not re.search(r"[A-Za-z0-9]", literal):
+            continue
         for raw_jy in readings:
             jyutping = str(raw_jy or "").strip()
-            _append_candidate(out, seen, char=literal, jyutping=jyutping, source_id=source_id)
+            if not jyutping and re.search(r"[A-Za-z0-9]", literal) and _CJK.search(literal):
+                jyutping = _generate_mixed_literal_jyutping(literal) or ""
+            if not jyutping:
+                continue
+            if re.search(r"[A-Za-z0-9]", literal) and _CJK.search(literal):
+                if not is_valid_word_lexicon_reading(literal, jyutping, allow_mixed_literal=True):
+                    continue
+                code = build_mixed_literal_code(literal, jyutping) or get_0243_code(jyutping) or ""
+            else:
+                if len(literal) >= 2 and not is_valid_word_lexicon_reading(literal, jyutping):
+                    continue
+                code = get_0243_code(jyutping) or ""
+            if not code:
+                continue
+            key = (literal, jyutping)
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(LexiconCandidate(char=literal, jyutping=jyutping, code=code, sources=(source_id,)))
     return out
 
 
