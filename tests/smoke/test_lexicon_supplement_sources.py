@@ -18,6 +18,7 @@ from ingest.lexicon_sources import (
     ingest_words_hk_wordslist,
     resolve_generated_jyutping,
 )
+from ingest.lexicon_candidate_normalizer import LexiconCandidateNormalizer
 from ingest.lexicon_validate import build_mixed_literal_code, is_valid_word_lexicon_reading
 from ingest.syn_ant_manifest import load_manifest
 
@@ -149,6 +150,14 @@ class LexiconSupplementSourceTests(unittest.TestCase):
 
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].code, "??43")
+
+    def test_candidate_normalizer_exposes_single_interface_for_mixed_literals(self):
+        normalizer = LexiconCandidateNormalizer()
+        candidate = normalizer.normalize_candidate("AV女優", "ei1 wi1 neoi5 jau1", source_id="words_hk")
+
+        self.assertIsNotNone(candidate)
+        self.assertEqual(candidate.char, "AV女優")
+        self.assertEqual(candidate.code, "??43")
 
     def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]
