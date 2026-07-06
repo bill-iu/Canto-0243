@@ -39,6 +39,7 @@ Verify upstream terms before enabling additional sources.
 |----------|------|-----------------|
 | Rime single-char | [rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Rime words | [rime/rime-cantonese `jyut6ping3.words`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
+| Rime phrase supplements | [rime/rime-cantonese `jyut6ping3.phrase`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
 | HSK 3.0 word list | [elkmovie/hsk30](https://github.com/elkmovie/hsk30) | [MIT](https://github.com/elkmovie/hsk30/blob/main/LICENSE) |
 | words.hk 粵典詞表 | [wordslist](https://words.hk/faiman/analysis/wordslist/) | **Public domain** (credit [words.hk](https://words.hk/) appreciated) |
 | 開放詞典 · 粵語詞典 | [下載](https://kaifangcidian.com/xiazai/) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |

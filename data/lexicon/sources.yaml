@@ -59,3 +59,14 @@ sources:
     raw_path: data/lexicon/raw/hsk30/wordlist.txt
     source_rank: 5
     attribution: elkmovie/hsk30 wordlist.txt
+
+  - id: rime_phrase
+    type: rime_dict
+    parser: rime_phrase_yaml
+    license: CC-BY-4.0
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.dict.yaml
+    allowlist_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.8char-allowlist.txt
+    source_rank: 3
+    attribution: rime/rime-cantonese jyut6ping3.phrase.dict.yaml

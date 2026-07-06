@@ -12,6 +12,7 @@ _LEGACY_BY_ID: dict[str, tuple[str, ...]] = {
     "kaifang": ("data/raw/kaifang",),
     "hsk30": ("data/raw/hsk30/wordlist.txt",),
     "rime_words": ("data/raw/rime-cantonese/jyut6ping3.words.dict.yaml",),
+    "rime_phrase": ("data/raw/rime-cantonese/jyut6ping3.phrase.dict.yaml",),
 }
 
 

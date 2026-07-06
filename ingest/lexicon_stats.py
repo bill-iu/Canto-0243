@@ -12,6 +12,7 @@ _LEXICON_RAW_PARSERS = frozenset(
         "kaifang_txt",
         "lexicon_json",
         "hsk30_wordlist",
+        "rime_phrase_yaml",
         "rime_words_yaml",
     }
 )

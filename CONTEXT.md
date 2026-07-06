@@ -323,6 +323,10 @@ _Avoid_：word_cache（作領域正名）、把預載執行緒或磁碟快照當
 多字收錄（詞級標音優先，否則拼接）、詞級異讀（上游決定）、讀音合併（(字面,粵拼) 去重，跨層限制）、格式門檻（合法即收）、上游優先序（勘誤 > words.hk > 開放 > curated）、拼接讀音（fallback，非詞級）、單字收錄（rime 預設）。
 _Avoid_：混稱拼接為詞級、r ime 過濾異讀、essay 單獨收錄
 
+**短語補缺來源**：
+低權威 **詞條 SSOT 來源**，用於從本地 raw 短語清單補入前序來源未覆蓋的固定短語；讀音由既定粵拼 pipeline 產生，並受既有 (字面,粵拼) 去重與跨層限制約束。一般收錄只接受 2–7 字純漢字短語；8 字只接受本地 allowlist 明示的成語／俗語型特例；長句、機構／地點／店名型字面與混合字元列只進統計，不入 **詞條庫**。
+_Avoid_：把 phrase raw 全量當詞庫、把長句或機構名靠自動讀音直接收錄、把短語補缺當高權威異讀來源
+
 **詞條庫建置流程**：
 建置命令（單一入口，≤10min，bulk relations <10s）、從源重建（全量 wipe+ingest+overlay）、SSOT來源（rime+words.hk+開放+curated）、源清單（yaml enabled）、fixture（CI 用）、CC-Canto 脫離。
 _Avoid_：legacy 當 SSOT、增量 patch、完整 db 版控

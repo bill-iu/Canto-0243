@@ -11,14 +11,52 @@ from app.lexicon.candidates import LexiconCandidate
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from ingest.lexicon_validate import is_valid_word_lexicon_reading
-from ingest.lexicon_raw_paths import resolve_lexicon_raw_path
+from ingest.lexicon_raw_paths import ROOT, resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
 
 _SOURCE_RIME = "rime"
 _CJK = re.compile(r"[\u4e00-\u9fff]")
 _CJK_WORD = re.compile(r"[\u3400-\u9fff]+")
+_CJK_ONLY = re.compile(r"^[\u3400-\u9fff]+$")
 _JYUTPING_TOKEN = re.compile(r"^[a-z]+\d$", re.IGNORECASE)
 _HSK_NOISE = re.compile(r"(?:\d+|[一二三四五六七八九十]+)[级級][词詞][汇彙]表$")
+_PHRASE_ORG_PLACE_SUFFIXES = frozenset(
+    {
+        "中學",
+        "小學",
+        "幼稚園",
+        "學校",
+        "大學",
+        "醫院",
+        "診所",
+        "總站",
+        "車站",
+        "分行",
+        "銀行",
+        "餐館",
+        "酒樓",
+        "酒店",
+        "商場",
+        "廣場",
+        "體育館",
+        "羽毛球館",
+        "中心",
+        "公司",
+    }
+)
+_RIME_PHRASE_STAT_KEYS = (
+    "body_rows",
+    "accepted",
+    "accepted_8_char_allowlisted",
+    "duplicate_literal",
+    "missing_jyutping",
+    "invalid_reading",
+    "rejected_short",
+    "rejected_long",
+    "rejected_mixed",
+    "rejected_place_or_org",
+    "rejected_8_char_needs_review",
+)
 
 
 def ingest_rime_char_csv(path: Path | str) -> list[LexiconCandidate]:
@@ -136,6 +174,51 @@ def resolve_generated_jyutping(text: str) -> Optional[str]:
     return _full_pycantonese_reading(text) or _full_pyjyutping_reading(text)
 
 
+def empty_rime_phrase_stats() -> dict[str, int]:
+    return {key: 0 for key in _RIME_PHRASE_STAT_KEYS}
+
+
+def _bump(stats: dict[str, int] | None, key: str) -> None:
+    if stats is not None:
+        stats[key] = int(stats.get(key, 0)) + 1
+
+
+def _load_phrase_allowlist(path: Path | str | None) -> set[str]:
+    if not path:
+        return set()
+    allow_path = Path(path)
+    if not allow_path.is_file():
+        return set()
+    try:
+        lines = allow_path.read_text(encoding="utf-8-sig").splitlines()
+    except OSError:
+        return set()
+    return {
+        to_traditional(line.strip())
+        for line in lines
+        if line.strip() and not line.lstrip().startswith("#")
+    }
+
+
+def _looks_like_phrase_place_or_org(literal: str) -> bool:
+    return any(literal.endswith(suffix) for suffix in _PHRASE_ORG_PLACE_SUFFIXES)
+
+
+def _rime_phrase_rejection(literal: str, allowlist_8: set[str]) -> str | None:
+    if not _CJK_ONLY.match(literal):
+        return "rejected_mixed"
+    length = len(literal)
+    if length < 2:
+        return "rejected_short"
+    if length > 8:
+        return "rejected_long"
+    if _looks_like_phrase_place_or_org(literal):
+        return "rejected_place_or_org"
+    if length == 8 and literal not in allowlist_8:
+        return "rejected_8_char_needs_review"
+    return None
+
+
 def ingest_hsk30_wordlist(path: Path | str, *, source_id: str) -> list[LexiconCandidate]:
     txt_path = Path(path)
     if not txt_path.is_file():
@@ -188,6 +271,59 @@ def ingest_rime_words_yaml(path: Path | str, *, source_id: str) -> list[LexiconC
         char = parts[0].strip()
         jyutping = parts[1].strip()
         _append_candidate(out, seen, char=char, jyutping=jyutping, source_id=source_id)
+    return out
+
+
+def ingest_rime_phrase_yaml(
+    path: Path | str,
+    *,
+    source_id: str,
+    allowlist_path: Path | str | None = None,
+    stats: dict[str, int] | None = None,
+) -> list[LexiconCandidate]:
+    yaml_path = Path(path)
+    if not yaml_path.is_file():
+        return []
+    try:
+        text = yaml_path.read_text(encoding="utf-8-sig")
+    except OSError:
+        return []
+
+    allowlist_8 = _load_phrase_allowlist(allowlist_path)
+    out: list[LexiconCandidate] = []
+    seen_literals: set[str] = set()
+    seen_pairs: set[tuple[str, str]] = set()
+    in_body = False
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not in_body:
+            if line == "...":
+                in_body = True
+            continue
+        if not line or line.startswith("#"):
+            continue
+        _bump(stats, "body_rows")
+        literal = to_traditional(line.split("\t", 1)[0].strip())
+        if literal in seen_literals:
+            _bump(stats, "duplicate_literal")
+            continue
+        seen_literals.add(literal)
+        rejection = _rime_phrase_rejection(literal, allowlist_8)
+        if rejection:
+            _bump(stats, rejection)
+            continue
+        jyutping = resolve_generated_jyutping(literal)
+        if not jyutping:
+            _bump(stats, "missing_jyutping")
+            continue
+        before = len(out)
+        _append_candidate(out, seen_pairs, char=literal, jyutping=jyutping, source_id=source_id)
+        if len(out) == before:
+            _bump(stats, "invalid_reading")
+            continue
+        _bump(stats, "accepted")
+        if len(literal) == 8:
+            _bump(stats, "accepted_8_char_allowlisted")
     return out
 
 
@@ -287,4 +423,15 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
     if parser == "rime_words_yaml":
         path = resolve_lexicon_raw_path(src) or Path("")
         return ingest_rime_words_yaml(path, source_id=source_id)
+    if parser == "rime_phrase_yaml":
+        path = resolve_lexicon_raw_path(src) or Path("")
+        allowlist_raw = src.get("allowlist_path") or ""
+        allowlist_path = Path(allowlist_raw) if allowlist_raw else None
+        if allowlist_path and not allowlist_path.is_absolute():
+            allowlist_path = ROOT / allowlist_path
+        return ingest_rime_phrase_yaml(
+            path,
+            source_id=source_id,
+            allowlist_path=allowlist_path,
+        )
     return []
