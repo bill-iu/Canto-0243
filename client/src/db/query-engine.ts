@@ -719,7 +719,7 @@ function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
   return 'm1';
 }
 
-import { modeRedirectHint } from '../../frontend/mode-i18n.mjs';
+import { modeRedirectHint } from '../mode-meta.ts';
 export { modeRedirectHint };
 
 /**
