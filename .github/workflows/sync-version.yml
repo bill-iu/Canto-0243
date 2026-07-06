@@ -1,27 +1,23 @@
-```yaml
 name: Sync Version to README
 
 on:
   release:
-    types: [published, created]
-  workflow_dispatch:
+    types: [published]  # 只在正式發布時觸發（非草稿建立）
+  workflow_dispatch:    # 允許手動觸發
 
 jobs:
   sync-version:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      
+
     steps:
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
+          # release event 的 github.ref 是 tag ref（detached HEAD），
+          # 必須 checkout main 才能在有效分支上提交並推送
+          ref: ${{ github.event.repository.default_branch }}
 
       - name: Sync version
         run: python scripts/sync-version.py
@@ -42,5 +38,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git add README.md docs/README.*.md
           git commit -m "chore: Sync version to latest release"
-          git push
-```
+          git push origin ${{ github.event.repository.default_branch }}
