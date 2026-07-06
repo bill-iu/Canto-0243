@@ -460,6 +460,22 @@ def _build_db_exports(args: argparse.Namespace) -> int:
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(src, dest)
             print(f"    copied -> {dest}")
+    # ADR-0027: page_size=16384 + VACUUM — defragment and optimise page layout
+    print("==> VACUUM (page_size=16384, defragment)")
+    try:
+        from app.database import engine as _engine
+        _engine.dispose()
+        import sqlite3, os
+        db_path = str(REPO_ROOT / "lyrics.db")
+        size_before = os.path.getsize(db_path)
+        with sqlite3.connect(db_path) as _conn:
+            _conn.execute("PRAGMA page_size = 16384")
+            _conn.execute("VACUUM")
+        size_after = os.path.getsize(db_path)
+        print(f"    {size_before / 1024 / 1024:.1f} MB -> {size_after / 1024 / 1024:.1f} MB"
+              f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)")
+    except Exception as exc:
+        print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
     return 0
 
 

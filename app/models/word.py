@@ -8,35 +8,27 @@ _id_type = BigInteger().with_variant(Integer, "sqlite")
 class Word(Base):
     __tablename__ = "words"
 
-    id = Column(_id_type, primary_key=True, index=True)
+    id = Column(_id_type, primary_key=True)  # INTEGER PRIMARY KEY = rowid; no extra index needed (ADR-0027)
     char = Column(String(50), index=True)
     code = Column(String(20), index=True)
-    jyutping = Column(String(100))
+    jyutping = Column(String(100))  # jyutping index removed — only used in ORDER BY, never in WHERE (ADR-0027)
 
-    # Index on jyutping for jyut fragment searches (LIKE %q%).
-    # Current path caps results (limit 500) so acceptable.
-
-    # Explicit length column for fast indexed filtering on word length (used heavily by hybrid, wildcard, =, code searches)
-    # Populated on insert and via migration for old rows. Greatly speeds up length==N queries vs func.length every time.
+    # Explicit length column for fast indexed filtering on word length
     length = Column(Integer, index=True, nullable=True)
 
-    # 加上 index（你朋友建議的）
     initials = Column(String(200), index=True)
     finals = Column(String(200), index=True)
-    tones = Column(String(100), index=True)
+    # tones removed — derivable from jyutping via split_jyutping(), zero runtime queries (ADR-0027)
 
-    meaning = Column(Text)
+    # Bitmask encoding ingest provenance: hsk30=1 kaifang=2 rime=4 rime_phrase=8 rime_words=16 words_hk=32
+    # Replaces word_sources table (ADR-0027). Query: WHERE source_flags & 8 > 0 (rime_phrase)
+    source_flags = Column(Integer, nullable=True, default=0)
 
-    # embedding：SQLite TEXT（JSON 序列化 float list），由 ingest 階段計算
-    embedding = Column(Text, nullable=True)
+    # meaning and embedding removed — always NULL, never populated (ADR-0027)
 
 
-# Additional index for jyutping searches (see comment above)
-Index('idx_jyutping', Word.jyutping)
-
-# 可選：額外複合索引（效能更好）
-Index('idx_code_char', Word.code, Word.char)
-Index('idx_length_code_model', Word.length, Word.code)
+# Composite index: covers length-only, length+code, and length+code+finals queries.
+# idx_length_code dropped — its prefix is fully covered by this index (ADR-0027).
 Index('idx_length_code_finals_model', Word.length, Word.code, Word.finals)
 
 
@@ -83,17 +75,6 @@ class WordRelation(Base):
 # 額外複合索引（推薦用於 syn/ant 查詢）
 Index("idx_word_rel_word_type", WordRelation.word_id, WordRelation.relation_type)
 Index("idx_word_rel_related_type", WordRelation.related_id, WordRelation.relation_type)
-
-
-class WordSource(Base):
-    """Provenance: which SSOT source contributed a canonical word row."""
-
-    __tablename__ = "word_sources"
-    __table_args__ = (UniqueConstraint("word_id", "source", name="uq_word_source"),)
-
-    id = Column(_id_type, primary_key=True, autoincrement=True)
-    word_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
-    source = Column(String(32), nullable=False)
 
 
 @event.listens_for(WordRelation, "before_insert")

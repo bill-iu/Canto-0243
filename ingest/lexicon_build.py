@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.lexicon.candidates import LexiconCandidate
 from app.lexicon.corrections import DEFAULT_TSV, load_corrections
-from app.models.word import Word, WordSource
+from app.models.word import Word
 from app.utils.jyutping_codec import split_jyutping
 from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_overlay import apply_lexicon_overlay
@@ -19,6 +19,16 @@ from ingest.syn_ant_manifest import load_manifest, select_sources
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LEXICON_MANIFEST = ROOT / "data" / "lexicon" / "sources.yaml"
 PERSIST_CHUNK = 2000
+
+# ADR-0027: source_flags bitmask — replaces word_sources table
+SOURCE_FLAG_MAP: dict[str, int] = {
+    "hsk30": 1,
+    "kaifang": 2,
+    "rime": 4,
+    "rime_phrase": 8,
+    "rime_words": 16,
+    "words_hk": 32,
+}
 
 
 def collect_lexicon_candidates(
@@ -58,7 +68,10 @@ def persist_lexicon_candidates(db: Session, candidates: list[LexiconCandidate]) 
         chunk = candidates[off : off + PERSIST_CHUNK]
         words: list[Word] = []
         for c in chunk:
-            initials, finals, tones = split_jyutping(c.jyutping)
+            initials, finals, _ = split_jyutping(c.jyutping)
+            flags = 0
+            for src in c.sources:
+                flags |= SOURCE_FLAG_MAP.get(src, 0)
             words.append(
                 Word(
                     char=c.char,
@@ -66,15 +79,12 @@ def persist_lexicon_candidates(db: Session, candidates: list[LexiconCandidate]) 
                     code=c.code,
                     initials=initials,
                     finals=finals,
-                    tones=tones,
+                    source_flags=flags,
                     length=len(c.char),
                 )
             )
         db.add_all(words)
         db.flush()
-        for word, cand in zip(words, chunk):
-            for src in cand.sources:
-                db.add(WordSource(word_id=word.id, source=src[:32]))
         count += len(chunk)
     return count
 
