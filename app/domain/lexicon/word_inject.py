@@ -35,18 +35,16 @@ def sync_word_rows_to_cache(rows: List) -> None:
 
 def _word_from_entry(text: str, jyut_str: str, code_val: str) -> Word:
     try:
-        initials, finals, tones = split_jyutping(jyut_str)
+        initials, finals, _ = split_jyutping(jyut_str)
     except Exception:
-        initials = finals = tones = "[]"
+        initials = finals = "[]"
     return Word(
         char=text,
         code=code_val,
         jyutping=jyut_str,
         initials=initials,
         finals=finals,
-        tones=tones,
         length=len(text),
-        meaning=None,
     )
 
 

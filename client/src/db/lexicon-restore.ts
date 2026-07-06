@@ -46,11 +46,26 @@ export async function isLexiconCachedAnywhere(version: string, dbUrl: string): P
 }
 
 async function fetchLexiconFromUrl(dbUrl: string): Promise<Uint8Array> {
-  const response = await fetch(dbUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch lexicon package (${response.status})`);
+  // Use Web Locks to serialise concurrent downloads across tabs.
+  // The tab that wins the lock fetches once; the SW CacheFirst strategy caches the
+  // response. Subsequent tabs that acquire the lock call fetch() and are served
+  // instantly from SW cache — no additional network request.
+  const doFetch = async (): Promise<Uint8Array> => {
+    const response = await fetch(dbUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch lexicon package (${response.status})`);
+    }
+    return new Uint8Array(await response.arrayBuffer());
+  };
+
+  if (typeof navigator !== 'undefined' && 'locks' in navigator) {
+    const safeName = dbUrl.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80);
+    return (navigator as Navigator & { locks: LockManager }).locks.request(
+      `lexicon-fetch-${safeName}`,
+      doFetch,
+    );
   }
-  return new Uint8Array(await response.arrayBuffer());
+  return doFetch();
 }
 
 /**

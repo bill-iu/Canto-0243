@@ -1,6 +1,8 @@
 /**
  * Versioned lexicon OPFS import — ADR-0024 DB-2
  * One-time fetch per semver; subsequent ensure skips network.
+ * Web Locks guard the download path: only one tab fetches per version at a time.
+ * Other tabs wait for the lock, then find the file in OPFS and return immediately.
  */
 import {
   opfsAvailable,
@@ -31,17 +33,36 @@ export async function ensureLexiconInOpfs(opts: {
   }
 
   const fileName = lexiconOpfsFileName(opts.version);
+
+  // Fast path: already in OPFS — skip lock and network entirely
   const existing = await opfsFileSize(fileName);
   if (existing > 0) {
     return { fileName, byteSize: existing, fetched: false };
   }
 
-  const bytes = await opts.fetchBytes();
-  if (!bytes.byteLength) {
-    throw new Error(`ensureLexiconInOpfs: empty payload for ${fileName}`);
+  // Slow path: acquire a cross-tab lock to serialise downloads.
+  // A tab that wins the lock downloads once; all waiting tabs re-check OPFS
+  // after the lock is released and find the file already written.
+  const doDownload = async (): Promise<EnsureLexiconResult> => {
+    const existingNow = await opfsFileSize(fileName);
+    if (existingNow > 0) {
+      return { fileName, byteSize: existingNow, fetched: false };
+    }
+    const bytes = await opts.fetchBytes();
+    if (!bytes.byteLength) {
+      throw new Error(`ensureLexiconInOpfs: empty payload for ${fileName}`);
+    }
+    await writeOpfsFile(fileName, bytes);
+    return { fileName, byteSize: bytes.byteLength, fetched: true };
+  };
+
+  if (typeof navigator !== 'undefined' && 'locks' in navigator) {
+    return (navigator as Navigator & { locks: LockManager }).locks.request(
+      `lexicon-ensure-${fileName}`,
+      doDownload,
+    );
   }
-  await writeOpfsFile(fileName, bytes);
-  return { fileName, byteSize: bytes.byteLength, fetched: true };
+  return doDownload();
 }
 
 export async function readLexiconFromOpfs(version: string): Promise<Uint8Array | null> {
