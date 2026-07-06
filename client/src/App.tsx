@@ -26,7 +26,7 @@ import type { QueryResult } from './db/query';
 import { modeMetaFor, type UiMode } from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
-import { BrandLogo } from './brand-logo';
+import { BrandLogo, GateInkMeter } from './brand-logo';
 import { ReadyGate } from './ready-gate';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
@@ -327,6 +327,12 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
+  const headerPreparing = offlineStatus === 'preparing';
+  const headerInkProgress = headerPreparing ? Math.max(progress / 100, 0.12) : 1;
+  const headerStatusLabel =
+    uiLang === 'en'
+      ? `Preparing lexicon${progress > 0 ? ` ${Math.round(progress)}%` : ''}`
+      : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
 
   useEffect(() => {
     // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
@@ -522,8 +528,18 @@ function App() {
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
-              <BrandLogo theme={uiTheme} />
+              <BrandLogo
+                variant={headerPreparing ? 'gate' : 'header'}
+                inkProgress={headerInkProgress}
+                theme={uiTheme}
+              />
             </button>
+            {headerPreparing && (
+              <div className="header-load-status" role="status" aria-live="polite" aria-busy="true">
+                <GateInkMeter inkProgress={headerInkProgress} theme={uiTheme} />
+                <span>{headerStatusLabel}</span>
+              </div>
+            )}
             <ModeMenu
               mode={mode}
               disabled={gateOpen || offlineStatus === 'preparing'}
