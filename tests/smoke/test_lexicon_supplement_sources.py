@@ -177,6 +177,21 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertEqual(candidate.code, "AV")
         self.assertEqual(candidate.char, "AV女優")
 
+    def test_candidate_normalizer_can_register_strategy_by_source_id(self):
+        class PrefixStrategy(DefaultLexiconCandidateStrategy):
+            def should_accept(self, literal: str, jyutping: str) -> bool:
+                return literal.startswith("AV")
+
+            def build_code(self, literal: str, jyutping: str, *, code: str | None = None) -> str:
+                return "AV"
+
+        normalizer = LexiconCandidateNormalizer()
+        normalizer.register_strategy("custom", PrefixStrategy())
+        candidate = normalizer.normalize_candidate("AV女優", "ei1 wi1 neoi5 jau1", source_id="custom")
+
+        self.assertIsNotNone(candidate)
+        self.assertEqual(candidate.code, "AV")
+
     def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]
         low = [

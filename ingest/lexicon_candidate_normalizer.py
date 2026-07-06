@@ -19,8 +19,20 @@ class DefaultLexiconCandidateStrategy:
 class LexiconCandidateNormalizer:
     """Normalize raw literal/jyutping pairs into canonical LexiconCandidate rows."""
 
-    def __init__(self, *, strategy: DefaultLexiconCandidateStrategy | None = None) -> None:
-        self.strategy = strategy or DefaultLexiconCandidateStrategy()
+    def __init__(
+        self,
+        *,
+        strategy: DefaultLexiconCandidateStrategy | None = None,
+        strategies: dict[str, DefaultLexiconCandidateStrategy] | None = None,
+    ) -> None:
+        self.default_strategy = strategy or DefaultLexiconCandidateStrategy()
+        self.strategies = dict(strategies or {})
+
+    def register_strategy(self, source_id: str, strategy: DefaultLexiconCandidateStrategy) -> None:
+        self.strategies[source_id] = strategy
+
+    def _strategy_for(self, source_id: str) -> DefaultLexiconCandidateStrategy:
+        return self.strategies.get(source_id) or self.default_strategy
 
     def normalize_candidate(
         self,
@@ -30,13 +42,14 @@ class LexiconCandidateNormalizer:
         source_id: str,
         code: str | None = None,
     ) -> LexiconCandidate | None:
-        if not self.strategy.should_accept(literal, jyutping):
+        strategy = self._strategy_for(source_id)
+        if not strategy.should_accept(literal, jyutping):
             return None
         normalized = normalize_lexicon_candidate(literal, jyutping, code=code)
         if not normalized:
             return None
         char, jy, _ = normalized
-        code_value = self.strategy.build_code(literal, jyutping, code=code)
+        code_value = strategy.build_code(literal, jyutping, code=code)
         if not code_value:
             return None
         return LexiconCandidate(char=char, jyutping=jy, code=code_value, sources=(source_id,))
