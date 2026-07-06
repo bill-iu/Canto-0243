@@ -50,6 +50,20 @@ async function charHasFinal(db: DatabaseBackend, char: string, final: string): P
   return false;
 }
 
+async function hasColumn(db: DatabaseBackend, column: string): Promise<boolean> {
+  const stmt = await db.prepare('PRAGMA table_info(words)');
+  await stmt.bind([]);
+  while (await stmt.step()) {
+    const row = await stmt.getAsObject();
+    if (String(row.name ?? '') === column) {
+      await stmt.free();
+      return true;
+    }
+  }
+  await stmt.free();
+  return false;
+}
+
 async function insertWordRow(db: DatabaseBackend, seed: WordSeed): Promise<void> {
   const exists = await db.prepare('SELECT 1 FROM words WHERE char = ? AND jyutping = ? LIMIT 1');
   await exists.bind([seed.char, seed.jyutping]);
@@ -60,19 +74,16 @@ async function insertWordRow(db: DatabaseBackend, seed: WordSeed): Promise<void>
   }
   const [initials, finals, tones] = splitJyutping(seed.jyutping);
   const id = await nextWordId(db);
-  const ins = await db.prepare(
-    'INSERT INTO words (id, char, code, jyutping, initials, finals, tones, length) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-  );
-  await ins.bind([
-    id,
-    seed.char,
-    seed.code,
-    seed.jyutping,
-    JSON.stringify(initials),
-    JSON.stringify(finals),
-    JSON.stringify(tones),
-    [...seed.char].length,
-  ]);
+  const hasTones = await hasColumn(db, 'tones');
+  const sql =
+    hasTones
+      ? 'INSERT INTO words (id, char, code, jyutping, initials, finals, tones, length) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
+      : 'INSERT INTO words (id, char, code, jyutping, initials, finals, length) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const ins = await db.prepare(sql);
+  const bindValues = hasTones
+    ? [id, seed.char, seed.code, seed.jyutping, JSON.stringify(initials), JSON.stringify(finals), JSON.stringify(tones), [...seed.char].length]
+    : [id, seed.char, seed.code, seed.jyutping, JSON.stringify(initials), JSON.stringify(finals), [...seed.char].length];
+  await ins.bind(bindValues);
   await ins.step();
   await ins.free();
 }
@@ -83,7 +94,7 @@ export async function patchLouDouReadings(db: DatabaseBackend): Promise<number> 
     "SELECT id, char, code, jyutping FROM words WHERE char LIKE '%潦倒' AND length(char) >= 3",
   );
   await sel.bind([]);
-  const updates: Array<{ id: number; jyutping: string; code: string; initials: string; finals: string; tones: string }> =
+  const updates: Array<{ id: number; jyutping: string; code: string; initials: string; finals: string; tones?: string }> =
     [];
   while (await sel.step()) {
     const row = await sel.getAsObject();
@@ -104,15 +115,19 @@ export async function patchLouDouReadings(db: DatabaseBackend): Promise<number> 
     });
   }
   await sel.free();
-  const upd = await db.prepare(
-    'UPDATE words SET jyutping = ?, code = ?, initials = ?, finals = ?, tones = ? WHERE id = ?',
-  );
-  for (const u of updates) {
-    await upd.bind([u.jyutping, u.code, u.initials, u.finals, u.tones, u.id]);
-    await upd.step();
-    await upd.reset();
+  const hasTones = updates.length > 0 ? await hasColumn(db, 'tones') : false;
+  if (hasTones) {
+    const upd = await db.prepare(
+      'UPDATE words SET jyutping = ?, code = ?, initials = ?, finals = ?, tones = ? WHERE id = ?',
+    );
+    for (const u of updates) {
+      const row = u as { id: number; jyutping: string; code: string; initials: string; finals: string; tones: string };
+      await upd.bind([row.jyutping, row.code, row.initials, row.finals, row.tones, row.id]);
+      await upd.step();
+      await upd.reset();
+    }
+    await upd.free();
   }
-  await upd.free();
   return updates.length;
 }
 

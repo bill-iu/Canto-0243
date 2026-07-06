@@ -27,6 +27,7 @@ export type EnsureLexiconResult = {
 export async function ensureLexiconInOpfs(opts: {
   version: string;
   fetchBytes: () => Promise<Uint8Array>;
+  expectedByteSize?: number;
 }): Promise<EnsureLexiconResult> {
   if (!(await opfsAvailable())) {
     throw new Error('ensureLexiconInOpfs: OPFS unavailable');
@@ -34,10 +35,20 @@ export async function ensureLexiconInOpfs(opts: {
 
   const fileName = lexiconOpfsFileName(opts.version);
 
+  const acceptExisting = async (size: number): Promise<EnsureLexiconResult | null> => {
+    if (size <= 0) return null;
+    if (opts.expectedByteSize != null && size !== opts.expectedByteSize) {
+      await removeOpfsFile(fileName);
+      return null;
+    }
+    return { fileName, byteSize: size, fetched: false };
+  };
+
   // Fast path: already in OPFS — skip lock and network entirely
   const existing = await opfsFileSize(fileName);
-  if (existing > 0) {
-    return { fileName, byteSize: existing, fetched: false };
+  const cached = await acceptExisting(existing);
+  if (cached) {
+    return cached;
   }
 
   // Slow path: acquire a cross-tab lock to serialise downloads.
@@ -45,8 +56,9 @@ export async function ensureLexiconInOpfs(opts: {
   // after the lock is released and find the file already written.
   const doDownload = async (): Promise<EnsureLexiconResult> => {
     const existingNow = await opfsFileSize(fileName);
-    if (existingNow > 0) {
-      return { fileName, byteSize: existingNow, fetched: false };
+    const cachedNow = await acceptExisting(existingNow);
+    if (cachedNow) {
+      return cachedNow;
     }
     const bytes = await opts.fetchBytes();
     if (!bytes.byteLength) {

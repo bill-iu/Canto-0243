@@ -125,15 +125,21 @@ async function persistLexiconForOffline(version: string, bytes: Uint8Array): Pro
   if (!(await opfsAvailable()) || !bytes.byteLength) {
     return;
   }
-  const ensured = await ensureLexiconInOpfs({
-    version,
-    fetchBytes: async () => bytes,
-  });
-  console.log(
-    ensured.fetched
-      ? `Lexicon persisted to OPFS (${ensured.byteSize} bytes)`
-      : `Lexicon already in OPFS (${ensured.byteSize} bytes)`,
-  );
+  try {
+    const ensured = await ensureLexiconInOpfs({
+      version,
+      expectedByteSize: bytes.byteLength,
+      fetchBytes: async () => bytes,
+    });
+    console.log(
+      ensured.fetched
+        ? `Lexicon persisted to OPFS (${ensured.byteSize} bytes)`
+        : `Lexicon already in OPFS (${ensured.byteSize} bytes)`,
+    );
+  } catch (error) {
+    // ponytail: OPFS persist is offline insurance — must not block first online open
+    console.warn('Lexicon OPFS persist skipped:', error);
+  }
 }
 
 async function verifyLexiconIntegrity(
@@ -157,12 +163,10 @@ async function verifyLexiconIntegrity(
 }
 
 async function initializeSqlJsPath(target: LexiconTarget): Promise<DatabaseBackend> {
-  const { bytes, source } = await resolveLexiconBytes(target.version, target.dbUrl);
+  const { bytes, source } = await resolveLexiconBytes(target.version, target.dbUrl, target);
   lastLexiconRestoreSource = source;
   console.log(`Lexicon restore (${source}) → sql.js`);
-  if (source === 'network') {
-    await verifyLexiconIntegrity(bytes, target);
-  }
+  await verifyLexiconIntegrity(bytes, target);
   await persistLexiconForOffline(target.version, bytes);
   return loadSqlJsFromBytes(bytes);
 }
@@ -311,10 +315,15 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       }
       console.error('Failed to initialize database:', error);
       const offline = typeof navigator !== 'undefined' && !navigator.onLine;
+      const detail =
+        error instanceof Error && error.message && !/無法載入詞庫/.test(error.message)
+          ? `（${error.message}）`
+          : '';
+      console.error('PWA lexicon init error detail:', error);
       throw new Error(
         offline
           ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
-          : '無法載入詞庫，請確認網路後重試',
+          : `無法載入詞庫，請確認網路後重試${detail}`,
       );
     }
   })();

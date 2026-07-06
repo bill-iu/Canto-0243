@@ -15,9 +15,11 @@ import {
 } from 'react';
 import {
   initializeDatabase,
+  getCurrentLexiconTarget,
   getDefaultDbUrl,
   isDatabaseInitialized,
   isLexiconCachedForBackend,
+  removeLexiconFromOpfs,
   resetDatabase,
 } from '../db/init';
 import {
@@ -139,6 +141,12 @@ function useDBState(): UseDBReturn {
     setProgress(0);
     setError(null);
     setIsValidated(false);
+    try {
+      const target = await getCurrentLexiconTarget();
+      await removeLexiconFromOpfs(target.version);
+    } catch {
+      // ponytail: purge stale OPFS copy best-effort before re-fetch
+    }
     await checkDbCached();
     await initialize();
   }, [checkDbCached, initialize]);
