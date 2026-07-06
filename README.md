@@ -16,16 +16,13 @@
 
 ## 最新版本
 
+<!-- version:zh-Hant -->
+目前版本：**v1.0.5**
+<!-- /version:zh-Hant -->
+
 <!-- words-count:zh-Hant -->
 目前總詞條列數：**468,438**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
-
-### v1.0.5 重點更新
-
-- **補充詞庫來源**：整合粵拼（Rime Cantonese 102K+ 字、330K+ 詞）、HSK 3.0（11K 普通話參考詞）、開放粵語詞典，提高詞彙覆蓋
-- **混合字串統一處理**：新增 `LexiconCandidateNormalizer`，統一處理 CJK + 字母混合詞條（如「ai2 Canto」）
-- **詞庫完整性驗證**：PWA 網絡下載後自動以 SHA-256 + 字節大小驗證，確保資料完整無損
-- **TypeScript 修復**：升級相容 TypeScript 6.0+，無棄用警告
 
 **立即開始使用（兩種方式，同等重要）**
 

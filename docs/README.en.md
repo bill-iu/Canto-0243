@@ -16,16 +16,13 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 
 ## Latest release
 
+<!-- version:en -->
+Current version: **v1.0.5**
+<!-- /version:en -->
+
 <!-- words-count:en -->
 Current word entries: **468,438** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
-
-### v1.0.5 highlights
-
-- **Supplementary lexicon sources**: Integrated Jyutping (Rime Cantonese 102K+ characters, 330K+ phrases), HSK 3.0 (11K Mandarin reference entries), and Open Cantonese Dictionary for broader vocabulary coverage
-- **Unified mixed-character handling**: New `LexiconCandidateNormalizer` strategy for consistent processing of CJK + Latin character mixed entries (e.g., "ai2 Canto")
-- **Lexicon integrity verification**: PWA automatically verifies network-downloaded databases using SHA-256 hash + byte size validation for data integrity
-- **TypeScript upgrade**: Full compatibility with TypeScript 6.0+ with no deprecation warnings
 
 **Get started now (two equally important options)**
 
