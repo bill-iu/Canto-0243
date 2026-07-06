@@ -7,6 +7,10 @@ import {
   shell,
   searchCache,
   VIEW,
+  getLang,
+  getModeMeta,
+  syncPortableModeMenu,
+  t,
 } from "./app-context.mjs";
 import { wordCacheProgress, setGateInkProgress } from "./gate.mjs";
 import {
@@ -43,13 +47,13 @@ function setButtonLoading(loading) {
   $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
 }
 
-function updateModeLabel(lang = 'zh') {
-  const meta = MODE_META[shell.currentMode] || MODE_META.m1;
+function updateModeLabel(lang = getLang()) {
+  const meta = getModeMeta(shell.currentMode, lang);
   $.currentModeLabel.innerHTML =
     `<span class="mode-trigger-primary">${meta.title}</span><span class="mode-trigger-note">${meta.note}</span>`;
-  const prefix = (typeof t === 'function') ? t('mode.readout.prefix', lang) : '目前模式：';
-  $.modeReadout.textContent = `${prefix}${meta.readout}`;
+  $.modeReadout.textContent = `${t('mode.readout.prefix', lang)}${meta.readout}`;
   $.searchInput.placeholder = meta.placeholder;
+  syncPortableModeMenu(lang);
   document.querySelectorAll("[data-mode]").forEach((btn) => {
     if (!btn.classList.contains("mode-option")) return;
     btn.setAttribute("aria-checked", btn.dataset.mode === shell.currentMode ? "true" : "false");
@@ -196,7 +200,7 @@ function maybeModeRedirectForRelationSyntax(input, tab) {
   if (shell.currentMode !== "syn" || !isRelationSyntaxQuery(input)) return;
   const target = MODE_META[shell.last0243Mode] ? shell.last0243Mode : "m1";
   tab.offset = 0;
-  tab.redirectHint = modeRedirectHint(target);
+  tab.redirectHint = modeRedirectHint(target, getLang());
   if (shell.currentMode !== target) {
     shell.currentMode = target;
     updateModeLabel();
@@ -224,7 +228,7 @@ function applyEffectiveModeFromResponse(res, searchHint) {
   shell.currentMode = effectiveMode;
   updateModeLabel();
   updateBrowserUrlFromActiveTab(true);
-  return searchHint || modeRedirectHint(effectiveMode);
+  return searchHint || modeRedirectHint(effectiveMode, getLang());
 }
 
 function renderSearchResults(data, total = null) {
@@ -279,11 +283,12 @@ function renderSearchResults(data, total = null) {
     frag.appendChild(createResultLink(display, qtext, word.jyutping || ""));
   });
   $.results.appendChild(frag);
-  $.stats.textContent = `${deduped.length} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
+  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  $.stats.textContent = `${deduped.length} 個結果（${statsLabel}）`;
   if (total != null && total > deduped.length) {
-    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
+    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${statsLabel}）`;
   } else if (total != null) {
-    $.stats.textContent = `${total} 個結果（${MODE_META[shell.currentMode].statsLabel}）`;
+    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
   }
   updateShuffleButton();
 }

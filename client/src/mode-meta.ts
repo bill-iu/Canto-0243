@@ -1,6 +1,14 @@
-/** 模式文案 — port of frontend/app-context.mjs MODE_META */
+/** 模式文案 — shared with frontend/mode-i18n.mjs */
+import {
+  MODE_META as MODE_META_ZH,
+  getModeMeta as getSharedModeMeta,
+  modeHelp as sharedModeHelp,
+  modeRedirectHint as sharedModeRedirectHint,
+} from '../../frontend/mode-i18n.mjs';
+
 export type UiMode = '0243' | '02493' | 'synonym';
 export type UrlMode = 'm1' | 'm2' | 'syn';
+export type UiLang = 'zh' | 'en';
 
 export interface ModeMeta {
   title: string;
@@ -10,29 +18,7 @@ export interface ModeMeta {
   placeholder: string;
 }
 
-export const MODE_META: Record<UrlMode, ModeMeta> = {
-  m1: {
-    title: '0243模式',
-    note: '鬆',
-    readout: '0243模式（鬆）',
-    statsLabel: '0243模式 · 鬆',
-    placeholder: '搵嘢：0243／漢字／粵拼',
-  },
-  m2: {
-    title: '02493模式',
-    note: '緊',
-    readout: '02493模式（緊）',
-    statsLabel: '02493模式 · 緊',
-    placeholder: '搵嘢：02493／漢字／粵拼',
-  },
-  syn: {
-    title: '近反義',
-    note: '查',
-    readout: '近反義模式（查）',
-    statsLabel: '近反義 · 查',
-    placeholder: '打字搵同義／反義',
-  },
-};
+export const MODE_META: Record<UrlMode, ModeMeta> = MODE_META_ZH;
 
 export function uiModeToUrlMode(mode: UiMode): UrlMode {
   if (mode === '02493') return 'm2';
@@ -46,14 +32,32 @@ export function urlModeToUiMode(mode: string | null | undefined): UiMode {
   return '0243';
 }
 
-export function modeMetaFor(uiMode: UiMode): ModeMeta {
-  return MODE_META[uiModeToUrlMode(uiMode)];
+export function getModeMeta(urlMode: UrlMode, lang: UiLang = 'zh'): ModeMeta {
+  return getSharedModeMeta(urlMode, lang);
+}
+
+export function modeMetaFor(uiMode: UiMode, lang: UiLang = 'zh'): ModeMeta {
+  return getModeMeta(uiModeToUrlMode(uiMode), lang);
+}
+
+export function modeHelp(uiMode: UiMode, lang: UiLang = 'zh'): string {
+  return sharedModeHelp(uiModeToUrlMode(uiMode), lang);
+}
+
+export function modeRedirectHint(mode: 'm1' | 'm2', lang: UiLang = 'zh'): string {
+  return sharedModeRedirectHint(mode, lang);
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p4-search-shell-self-check.ts` */
 export function modeMetaSelfCheck(): void {
   if (modeMetaFor('0243').readout !== '0243模式（鬆）') {
-    throw new Error('modeMetaSelfCheck: m1 readout');
+    throw new Error('modeMetaSelfCheck: zh m1 readout');
+  }
+  if (modeMetaFor('02493', 'en').readout !== '02493 Mode (Strict)') {
+    throw new Error('modeMetaSelfCheck: en m2 readout');
+  }
+  if (modeMetaFor('synonym', 'en').title !== 'Near-Antonyms') {
+    throw new Error('modeMetaSelfCheck: en syn title');
   }
   if (uiModeToUrlMode('02493') !== 'm2' || urlModeToUiMode('m2') !== '02493') {
     throw new Error('modeMetaSelfCheck: m2 roundtrip');

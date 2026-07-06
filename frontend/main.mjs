@@ -417,6 +417,7 @@ async function refreshPortableChrome() {
 
     applyAboutLang(lang);
     applyGuideLang(lang);
+    updateModeLabel(lang);
     renderTabstrip();
 
     // portable exit

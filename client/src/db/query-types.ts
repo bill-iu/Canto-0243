@@ -206,6 +206,7 @@ export interface SearchContext {
   limit: number;
   offset: number;
   fallback_0243_mode?: QueryMode;
+  ui_lang?: 'zh' | 'en';
 }
 
 export interface SearchResult {

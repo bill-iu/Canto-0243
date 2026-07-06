@@ -130,29 +130,7 @@ export function setTheme(theme) {
   if (meta) meta.content = theme === 'dark' ? '#1C1917' : '#EBDFD0';
 }
 
-export const MODE_META = {
-  m1: {
-    title: "0243模式",
-    note: "鬆",
-    readout: "0243模式（鬆）",
-    statsLabel: "0243模式 · 鬆",
-    placeholder: "搵嘢：0243／漢字／粵拼",
-  },
-  m2: {
-    title: "02493模式",
-    note: "緊",
-    readout: "02493模式（緊）",
-    statsLabel: "02493模式 · 緊",
-    placeholder: "搵嘢：02493／漢字／粵拼",
-  },
-  syn: {
-    title: "近反義",
-    note: "查",
-    readout: "近反義模式（查）",
-    statsLabel: "近反義 · 查",
-    placeholder: "打字搵同義／反義",
-  },
-};
+export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";
 
 export const PAGE_SIZE = 160;
 export const WARMUP_DONE_HOLD_MS = 2000;

@@ -719,10 +719,8 @@ function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
   return 'm1';
 }
 
-export function modeRedirectHint(mode: 'm1' | 'm2'): string {
-  const label = mode === 'm2' ? '02493模式（緊）' : '0243模式（鬆）';
-  return `此語法已切換至 ${label} 查詢`;
-}
+import { modeRedirectHint } from '../../frontend/mode-i18n.mjs';
+export { modeRedirectHint };
 
 /**
  * Parse query and classify into QueryKind
@@ -2145,7 +2143,7 @@ export class QueryEngine {
       return {
         items: result.items,
         total: result.total,
-        hint: modeRedirectHint(effective),
+        hint: modeRedirectHint(effective, ctx.ui_lang ?? 'zh'),
         effective_mode: effective,
         cache_path: result.cache_path,
       };

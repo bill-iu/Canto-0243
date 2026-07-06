@@ -77,6 +77,22 @@ declare module '../../frontend/about-i18n.mjs' {
   export function applyAboutLang(lang: 'zh' | 'en'): void;
 }
 
+declare module '../../frontend/mode-i18n.mjs' {
+  export type UrlMode = 'm1' | 'm2' | 'syn';
+  export interface ModeMeta {
+    title: string;
+    note: string;
+    readout: string;
+    statsLabel: string;
+    placeholder: string;
+  }
+  export const MODE_META: Record<UrlMode, ModeMeta>;
+  export function getModeMeta(mode: string, lang?: 'zh' | 'en'): ModeMeta;
+  export function modeHelp(mode: UrlMode, lang?: 'zh' | 'en'): string;
+  export function modeRedirectHint(mode: 'm1' | 'm2', lang?: 'zh' | 'en'): string;
+  export function syncPortableModeMenu(lang?: 'zh' | 'en'): void;
+}
+
 declare module '@shared/search-navigation' {
   import type { QueryTab } from '@shared/query-tabs';
 

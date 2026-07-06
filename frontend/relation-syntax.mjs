@@ -34,7 +34,4 @@ export function isRelationSyntaxQuery(q) {
   );
 }
 
-export function modeRedirectHint(mode) {
-  const label = mode === "m2" ? "02493模式（緊）" : "0243模式（鬆）";
-  return `此語法已切換至 ${label} 查詢`;
-}
+export { modeRedirectHint } from "./mode-i18n.mjs";
