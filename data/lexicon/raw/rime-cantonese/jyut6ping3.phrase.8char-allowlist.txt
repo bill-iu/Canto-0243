@@ -1,0 +1,1 @@
+# Local 8-char phrase allowlist for lexicon supplement parsing

@@ -9,7 +9,7 @@
 **Canto-0243**（**ONE·搵·韻**）係我用幾個唔同AI AGENT(Cursor, Codex, Grok Build, Github Copilot）開發嘅一個離線粵語填詞查找工作台：用 **0243／02493 數字碼**、**粵拼**、**韻母／聲母規則**與 **近義／反義關係**，喺幾秒內列出符合條件嘅**詞條**。例如打 `23就` 搵同調又同「就」同韻嘅尾字；打 `香港=` 搵同「香港」同韻嘅候選詞；打 `~開心` 或切換**近反義模式**搵近義/反義詞；打 `~~`／`!!` 搵填詞常用嘅二字近義／反義複合詞。套件解壓即用，所有詞庫與近反義資料都儲存喺本地環境，唔使連上網。
 
 **授權**：整包（程式、`lyrics.db`、`words-lexicon.json`）依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**開源**）。第三方上游資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
-**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· 純 HTML/JS 前端（SQLite-only）  
+**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· PWA 前端（Service Worker / Web App Manifest；Vite + 純 HTML/JS，離線資料庫以 OPFS / wa-sqlite 提供）  
 **領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
@@ -128,8 +128,8 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 * **Rime 粵語（單字讀音 `char.csv`、essay 詞頻）**：來自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 與 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。去畀佢哋一個 star！
 * **詞林同義詞（Cilin）**：經 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 匯出，採用 **MIT** 授權。
 * **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；專案**反義詞主來源**。
-* **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有領域**（致謝 [words.hk](https://words.hk/)）。
-* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[words.hk 粵典詞表](https://words.hk/faiman/analysis/wordslist/)（公有領域）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 單字讀音與 maintainer curated（見 `data/lexicon/sources.yaml`）。
+* **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，採用**非商業開放授權**（詳見 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
+* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[words.hk 粵典詞表](https://words.hk/faiman/analysis/wordslist/)（非商業開放授權）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 粵語詞典補缺來源（[CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY)）、[HSK 3.0 word list](https://github.com/elkmovie/hsk30)（MIT）以及 maintainer curated 詞庫來源。
 
 使用上述資料建構或再分發詞庫時，你同意遵守各自授權；部分來源含**非商業**或**署名**要求。可選近反義來源（如 COW）預設關閉，見 `data/syn_ant/sources.yaml`。
 
