@@ -33,8 +33,9 @@ export const ABOUT_COPY = {
     sourcesIntro:
       '本應用程式得以實現，全賴語言學家、開源維護者及社群貢獻者的出色工作。我們十分榮幸能整合以下項目的數據：',
     sourcesList:
-      '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粵典）</a>：採用公有領域授權（致謝 words.hk）。</li>' +
-      '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粵語（中州韻粵語拼音）</a>：單字讀音與 essay 詞頻；採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
+      '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粵典）</a>：採用<strong>非商業開放授權</strong>（詳見 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
+      '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粵語詞典補缺來源</a>：採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
+      '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 詞表</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">開放詞典 · 粵語詞典（Kaifangcidian）</a>：採用 <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>。</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">詞林同義詞（Cilin）</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：<code>dict_synonym.txt</code>、<code>dict_antonym.txt</code>；採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>（反義詞主來源）。</li>',
@@ -83,8 +84,9 @@ export const ABOUT_COPY = {
     sourcesIntro:
       'This app exists thanks to outstanding work by linguists, open-source maintainers, and community contributors. We are proud to integrate data from:',
     sourcesList:
-      '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk (粵典)</a>: public domain (thanks <a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk</a>).</li>' +
-      '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime Cantonese</a>: single-character readings and essay word frequency; <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</li>' +
+      '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk (粵典)</a>: <strong>non-commercial open license</strong> (see <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>).</li>' +
+      '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime Cantonese supplement sources</a>: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</li>' +
+      '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 word list</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">Kaifang Dictionary · Cantonese</a>: <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">Cilin synonyms</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <code>dict_synonym.txt</code>, <code>dict_antonym.txt</code>; <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a> (primary antonym source).</li>',
