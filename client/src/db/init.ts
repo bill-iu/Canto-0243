@@ -25,9 +25,25 @@ import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from 
 let db: DatabaseBackend | null = null;
 let isInitialized = false;
 let rankingLoaded = false;
+let staticRelationLoaded = false;
+let lexiconTargetPromise: Promise<LexiconTarget> | null = null;
 
 /** ponytail: parity runner / node probe only — inject pre-loaded backend */
 let injectedDb: DatabaseBackend | null = null;
+
+type LexiconManifest = {
+  lexiconVersion?: string;
+  dbFile?: string;
+  byteSize?: number;
+  sha256?: string;
+};
+
+export type LexiconTarget = {
+  version: string;
+  dbUrl: string;
+  byteSize?: number;
+  sha256?: string;
+};
 
 export function injectDatabaseForTests(candidate: DatabaseBackend | null): void {
   injectedDb = candidate;
@@ -55,6 +71,39 @@ function publicAssetUrl(file: string): string {
 
 function defaultDbUrl(): string {
   return publicAssetUrl(`lyrics.${lexiconVersion()}.db`);
+}
+
+function fallbackLexiconTarget(): LexiconTarget {
+  return {
+    version: lexiconVersion(),
+    dbUrl: defaultDbUrl(),
+  };
+}
+
+async function loadLexiconTarget(): Promise<LexiconTarget> {
+  try {
+    const res = await fetch(publicAssetUrl('lexicon-manifest.json'), { cache: 'no-cache' });
+    if (!res.ok) {
+      return fallbackLexiconTarget();
+    }
+    const manifest = (await res.json()) as LexiconManifest;
+    if (!manifest.lexiconVersion || !manifest.dbFile) {
+      return fallbackLexiconTarget();
+    }
+    return {
+      version: manifest.lexiconVersion,
+      dbUrl: publicAssetUrl(manifest.dbFile),
+      byteSize: manifest.byteSize,
+      sha256: manifest.sha256,
+    };
+  } catch {
+    return fallbackLexiconTarget();
+  }
+}
+
+export function getCurrentLexiconTarget(): Promise<LexiconTarget> {
+  lexiconTargetPromise ??= loadLexiconTarget();
+  return lexiconTargetPromise;
 }
 
 function sqlJsLocateFile(file: string): string {
@@ -132,7 +181,10 @@ async function loadBrowserRhymeLetterIndex(): Promise<void> {
   }
 }
 
-async function loadBrowserStaticSynIndex(): Promise<void> {
+export async function ensureStaticRelationIndexes(): Promise<void> {
+  if (staticRelationLoaded) {
+    return;
+  }
   try {
     const [synRes, antRes, cilinRes] = await Promise.all([
       fetch(publicAssetUrl('static-syn-index.json')),
@@ -148,6 +200,7 @@ async function loadBrowserStaticSynIndex(): Promise<void> {
     if (cilinRes.ok) {
       initStaticCilinSynIndex(await cilinRes.json());
     }
+    staticRelationLoaded = true;
   } catch {
     // ponytail: compound/relation fall back to DB graph only
   }
@@ -163,11 +216,10 @@ async function loadBrowserCompoundLists(): Promise<void> {
 
 async function loadAuxiliaryIndexes(): Promise<void> {
   await Promise.all([
-    loadBrowserRankingIndex(),
     loadBrowserRhymeLetterIndex(),
-    loadBrowserStaticSynIndex(),
     loadBrowserCompoundLists(),
   ]);
+  void loadBrowserRankingIndex();
 }
 
 export function getDefaultDbUrl(): string {
@@ -179,16 +231,17 @@ export { ensureLexiconInOpfs, lexiconOpfsFileName, readLexiconFromOpfs, removeLe
 /** DB-4: offline lexicon present in OPFS and/or SW cache */
 export async function isLexiconCachedForBackend(
   _mode: DbBackendMode = getDbBackendMode(),
-  version: string = lexiconVersion(),
-  dbUrl: string = defaultDbUrl(),
+  version?: string,
+  dbUrl?: string,
 ): Promise<boolean> {
-  return (await getLexiconCacheStatus(version, dbUrl)).any;
+  const target = version && dbUrl ? { version, dbUrl } : await getCurrentLexiconTarget();
+  return (await getLexiconCacheStatus(target.version, target.dbUrl)).any;
 }
 
 /**
  * Initialize the database (sql.js default, or OPFS VFS when VITE_DB_BACKEND=opfs/opfs-vfs)
  */
-export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<DatabaseBackend> {
+export async function initializeDatabase(dbPath?: string): Promise<DatabaseBackend> {
   if (injectedDb) {
     return injectedDb;
   }
@@ -198,11 +251,13 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
 
   try {
     const mode = getDbBackendMode();
-    const version = lexiconVersion();
+    const target = dbPath
+      ? { version: lexiconVersion(), dbUrl: dbPath }
+      : await getCurrentLexiconTarget();
     db =
       mode === 'opfs-vfs'
-        ? await initializeOpfsLexicon(version, dbPath)
-        : await initializeSqlJsPath(version, dbPath);
+        ? await initializeOpfsLexicon(target.version, target.dbUrl)
+        : await initializeSqlJsPath(target.version, target.dbUrl);
 
     await applyRuntimeDbPatches(db);
     isInitialized = true;
@@ -247,10 +302,11 @@ export function isDatabaseInitialized(): boolean {
  */
 export function resetDatabase(): void {
   injectedDb = null;
+  isInitialized = false;
+  lexiconTargetPromise = null;
   if (db) {
     void db.close();
     db = null;
-    isInitialized = false;
   }
 }
 

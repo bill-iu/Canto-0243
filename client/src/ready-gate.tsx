@@ -79,12 +79,29 @@ export function ReadyGate({
   // to avoid relying on perfect SW navigation; still show UI shell via A 's navigateFallback
   const useMinimalForPwa = isPwaLaunch && (isColdPwaOfflineLaunch || !isOnline);
   const effectiveSkip = skipGate || (isPwaLaunch && offlineStatus === 'ready') || isColdPwaOfflineLaunch;
+  const shouldShowGate =
+    !effectiveSkip &&
+    (offlineStatus === 'preparing' ||
+      offlineStatus === 'failed' ||
+      (!isOnline && (offlineStatus === 'not_ready' || Boolean(isDbCached))));
 
-  const [visible, setVisible] = useState(!effectiveSkip);
+  const [visible, setVisible] = useState(shouldShowGate);
   const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>(
-    effectiveSkip ? 'hidden' : 'loading',
+    shouldShowGate ? 'loading' : 'hidden',
   );
   const handoffStarted = useRef(false);
+
+  useEffect(() => {
+    if (shouldShowGate && !visible) {
+      handoffStarted.current = false;
+      setPhase('loading');
+      setVisible(true);
+    }
+    if (!shouldShowGate && visible && offlineStatus !== 'ready') {
+      setPhase('hidden');
+      setVisible(false);
+    }
+  }, [shouldShowGate, visible, offlineStatus]);
 
   // B: for cold PWA offline launch, force immediate hide of gate
   // so shell reveals right away (even while DB is still loading in background)
