@@ -6,6 +6,7 @@ python-multipart
 python-dotenv          # 這行很重要（支援 .env）
 pycantonese            # runtime 新詞 / 罕見字自動粵拼注入
 pyjyutping             # pycantonese fallback
+setuptools             # pyjyutping imports pkg_resources
 opencc-python-reimplemented  # cilin export + trad_chinese
 
 # 依賴分層：

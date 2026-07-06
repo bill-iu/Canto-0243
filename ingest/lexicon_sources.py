@@ -5,17 +5,20 @@ import csv
 import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from app.lexicon.candidates import LexiconCandidate
 from app.utils.jyutping_codec import get_0243_code
+from app.utils.trad_chinese import to_traditional
 from ingest.lexicon_validate import is_valid_word_lexicon_reading
 from ingest.lexicon_raw_paths import resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
 
 _SOURCE_RIME = "rime"
 _CJK = re.compile(r"[\u4e00-\u9fff]")
+_CJK_WORD = re.compile(r"[\u3400-\u9fff]+")
 _JYUTPING_TOKEN = re.compile(r"^[a-z]+\d$", re.IGNORECASE)
+_HSK_NOISE = re.compile(r"(?:\d+|[一二三四五六七八九十]+)[级級][词詞][汇彙]表$")
 
 
 def ingest_rime_char_csv(path: Path | str) -> list[LexiconCandidate]:
@@ -92,6 +95,100 @@ def _append_candidate(
         return
     seen.add(key)
     out.append(LexiconCandidate(char=char, jyutping=jyutping, code=code, sources=(source_id,)))
+
+
+def _full_pycantonese_reading(text: str) -> Optional[str]:
+    try:
+        import pycantonese
+    except ImportError:
+        return None
+
+    try:
+        pairs = pycantonese.characters_to_jyutping(text)
+    except Exception:
+        return None
+    if not pairs:
+        return None
+    if len(pairs) == 1 and pairs[0][0] == text and pairs[0][1]:
+        return str(pairs[0][1]).strip() or None
+    if "".join(str(p[0]) for p in pairs) != text:
+        return None
+    if any(not p[1] for p in pairs):
+        return None
+    return " ".join(str(p[1]).strip() for p in pairs if p[1])
+
+
+def _full_pyjyutping_reading(text: str) -> Optional[str]:
+    try:
+        from pyjyutping import jyutping
+    except Exception:
+        return None
+    try:
+        reading = jyutping.convert(text)
+    except Exception:
+        return None
+    reading = str(reading or "").strip()
+    return reading or None
+
+
+def resolve_generated_jyutping(text: str) -> Optional[str]:
+    """Maintainer import helper: pycantonese first, pyjyutping fallback."""
+    return _full_pycantonese_reading(text) or _full_pyjyutping_reading(text)
+
+
+def ingest_hsk30_wordlist(path: Path | str, *, source_id: str) -> list[LexiconCandidate]:
+    txt_path = Path(path)
+    if not txt_path.is_file():
+        return []
+    try:
+        text = txt_path.read_text(encoding="utf-8")
+    except OSError:
+        return []
+
+    out: list[LexiconCandidate] = []
+    seen_words: set[str] = set()
+    seen_pairs: set[tuple[str, str]] = set()
+    for match in _CJK_WORD.finditer(text):
+        literal = to_traditional(match.group(0).strip())
+        if len(literal) < 2 or _HSK_NOISE.search(literal):
+            continue
+        if literal in seen_words:
+            continue
+        seen_words.add(literal)
+        jyutping = resolve_generated_jyutping(literal)
+        if not jyutping:
+            continue
+        _append_candidate(out, seen_pairs, char=literal, jyutping=jyutping, source_id=source_id)
+    return out
+
+
+def ingest_rime_words_yaml(path: Path | str, *, source_id: str) -> list[LexiconCandidate]:
+    yaml_path = Path(path)
+    if not yaml_path.is_file():
+        return []
+    try:
+        text = yaml_path.read_text(encoding="utf-8-sig")
+    except OSError:
+        return []
+
+    out: list[LexiconCandidate] = []
+    seen: set[tuple[str, str]] = set()
+    in_body = False
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not in_body:
+            if line == "...":
+                in_body = True
+            continue
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split("\t")
+        if len(parts) < 2:
+            continue
+        char = parts[0].strip()
+        jyutping = parts[1].strip()
+        _append_candidate(out, seen, char=char, jyutping=jyutping, source_id=source_id)
+    return out
 
 
 def ingest_words_hk_wordslist(path: Path | str, *, source_id: str) -> list[LexiconCandidate]:
@@ -184,4 +281,10 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
     if parser == "lexicon_json":
         path = resolve_lexicon_raw_path(src) or resolve_source_path(src) or Path("")
         return ingest_lexicon_json(path, source_id=source_id)
+    if parser == "hsk30_wordlist":
+        path = resolve_lexicon_raw_path(src) or Path("")
+        return ingest_hsk30_wordlist(path, source_id=source_id)
+    if parser == "rime_words_yaml":
+        path = resolve_lexicon_raw_path(src) or Path("")
+        return ingest_rime_words_yaml(path, source_id=source_id)
     return []

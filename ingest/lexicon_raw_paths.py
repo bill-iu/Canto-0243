@@ -10,6 +10,8 @@ ROOT = Path(__file__).resolve().parents[1]
 _LEGACY_BY_ID: dict[str, tuple[str, ...]] = {
     "words_hk": ("data/raw/words.hk/wordslist.json",),
     "kaifang": ("data/raw/kaifang",),
+    "hsk30": ("data/raw/hsk30/wordlist.txt",),
+    "rime_words": ("data/raw/rime-cantonese/jyut6ping3.words.dict.yaml",),
 }
 
 
@@ -35,9 +37,10 @@ def resolve_lexicon_raw_path(
         if path.is_file():
             return path
         if path.is_dir():
-            txts = sorted(path.glob("*.txt"))
-            if txts:
-                return txts[0]
+            for pattern in ("*.txt", "*.dict.yaml", "*.yaml"):
+                hits = sorted(path.glob(pattern))
+                if hits:
+                    return hits[0]
     return None
 
 

@@ -1,4 +1,4 @@
-# Lexicon SSOT manifest (CONTEXT § 詞條源清單)
+# Lexicon SSOT manifest (CONTEXT: lexicon source manifest)
 # enabled: include in `python -m ingest build-db` without --lexicon-source
 
 sources:
@@ -29,7 +29,7 @@ sources:
     local_only: true
     raw_path: data/lexicon/raw/kaifang/cantonese.json
     source_rank: 80
-    attribution: 開放詞典 · 粵語詞典
+    attribution: kaifangcidian cantonese.json
 
   - id: curated
     type: lexicon_json
@@ -38,4 +38,24 @@ sources:
     enabled_by_default: true
     raw_path: data/lexicon/curated_lexicon.json
     source_rank: 20
-    attribution: Maintainer curated 詞級標音
+    attribution: Maintainer curated lexicon readings
+
+  - id: rime_words
+    type: rime_dict
+    parser: rime_words_yaml
+    license: CC-BY-4.0
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/raw/rime-cantonese/jyut6ping3.words.dict.yaml
+    source_rank: 10
+    attribution: rime/rime-cantonese jyut6ping3.words.dict.yaml
+
+  - id: hsk30
+    type: wordlist
+    parser: hsk30_wordlist
+    license: MIT
+    enabled_by_default: true
+    local_only: true
+    raw_path: data/lexicon/raw/hsk30/wordlist.txt
+    source_rank: 5
+    attribution: elkmovie/hsk30 wordlist.txt

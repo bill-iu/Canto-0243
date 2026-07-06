@@ -6,7 +6,15 @@ from sqlalchemy.orm import Session
 from app.models.word import Word
 from ingest.lexicon_raw_paths import ROOT, resolve_lexicon_raw_path
 
-_LEXICON_RAW_PARSERS = frozenset({"words_hk_wordslist", "kaifang_txt", "lexicon_json"})
+_LEXICON_RAW_PARSERS = frozenset(
+    {
+        "words_hk_wordslist",
+        "kaifang_txt",
+        "lexicon_json",
+        "hsk30_wordlist",
+        "rime_words_yaml",
+    }
+)
 
 
 def lexicon_source_availability(
