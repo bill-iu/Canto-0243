@@ -18,7 +18,10 @@ from ingest.lexicon_sources import (
     ingest_words_hk_wordslist,
     resolve_generated_jyutping,
 )
-from ingest.lexicon_candidate_normalizer import LexiconCandidateNormalizer
+from ingest.lexicon_candidate_normalizer import (
+    DefaultLexiconCandidateStrategy,
+    LexiconCandidateNormalizer,
+)
 from ingest.lexicon_validate import build_mixed_literal_code, is_valid_word_lexicon_reading
 from ingest.syn_ant_manifest import load_manifest
 
@@ -158,6 +161,21 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertIsNotNone(candidate)
         self.assertEqual(candidate.char, "AV女優")
         self.assertEqual(candidate.code, "??43")
+
+    def test_candidate_normalizer_allows_strategy_override_per_source(self):
+        class PrefixStrategy(DefaultLexiconCandidateStrategy):
+            def should_accept(self, literal: str, jyutping: str) -> bool:
+                return literal.startswith("AV")
+
+            def build_code(self, literal: str, jyutping: str, *, code: str | None = None) -> str:
+                return "AV"
+
+        normalizer = LexiconCandidateNormalizer(strategy=PrefixStrategy())
+        candidate = normalizer.normalize_candidate("AV女優", "ei1 wi1 neoi5 jau1", source_id="custom")
+
+        self.assertIsNotNone(candidate)
+        self.assertEqual(candidate.code, "AV")
+        self.assertEqual(candidate.char, "AV女優")
 
     def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]
