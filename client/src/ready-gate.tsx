@@ -81,8 +81,7 @@ export function ReadyGate({
   const effectiveSkip = skipGate || (isPwaLaunch && offlineStatus === 'ready') || isColdPwaOfflineLaunch;
   const shouldShowGate =
     !effectiveSkip &&
-    (offlineStatus === 'preparing' ||
-      offlineStatus === 'failed' ||
+    (offlineStatus === 'failed' ||
       (!isOnline && (offlineStatus === 'not_ready' || Boolean(isDbCached))));
 
   const [visible, setVisible] = useState(shouldShowGate);

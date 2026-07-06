@@ -105,6 +105,30 @@
   color: var(--accent-strong);
 }
 
+.header-load-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  margin-right: auto;
+  padding: 5px 10px 5px 8px;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--accent) 12%);
+  color: var(--accent-strong);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.header-load-status .gate-ink-meter {
+  display: block;
+  width: 48px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
 /* PWA Install Banner */
 .pwa-install-banner {
   position: fixed;
@@ -172,6 +196,13 @@
 }
 
 @media (max-width: 640px) {
+  .header-load-status {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-right: 0;
+  }
+
   .menu-trigger {
     min-width: 0;
   }
