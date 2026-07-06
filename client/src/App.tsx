@@ -287,7 +287,11 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (initialSearchDoneRef.current || !needsInitialSearch || !isReady || gateOpen) return;
+    if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen) return;
+    if (!isReady) {
+      void initialize();
+      return;
+    }
     initialSearchDoneRef.current = true;
     setUseLiveFetch(true);
     hydrateSearch(activeSearchTab?.q || '');
@@ -295,6 +299,7 @@ function App() {
   }, [
     needsInitialSearch,
     isReady,
+    initialize,
     gateOpen,
     activeSearchTab?.q,
     hydrateSearch,
@@ -326,7 +331,7 @@ function App() {
   useEffect(() => {
     // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
     // This prevents any implicit network attempt that could trigger Safari error
-    if (isOnline || isDbCached || isColdPwaOfflineLaunch) {
+    if (isColdPwaOfflineLaunch || (!isOnline && isDbCached)) {
       initialize();
     }
   }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch]);
@@ -367,8 +372,11 @@ function App() {
       setResultsShuffled(false);
       const pushed = commitActiveSearch(q, mode);
       pushBrowserUrl(tabState, !pushed);
+      if (q && !isReady) {
+        void initialize();
+      }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState],
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, initialize],
   );
 
   const handlePickResult = (nextQuery: string) => {
@@ -481,7 +489,7 @@ function App() {
   };
 
   const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
-  const canSearch = isReady && !gateOpen;
+  const canSearch = !gateOpen && offlineStatus !== 'preparing';
 
   const handleHome = () => {
     saveLeavingSearchTab();
@@ -518,7 +526,7 @@ function App() {
             </button>
             <ModeMenu
               mode={mode}
-              disabled={!isReady || gateOpen}
+              disabled={gateOpen || offlineStatus === 'preparing'}
               onModeChange={handleModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}

@@ -6,7 +6,7 @@
  * to enable full client-side search functionality in the browser.
  */
 
-import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
+import { ensureStaticRelationIndexes, getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
 import type { Database } from './sqljs.ts';
 import { queryFirst, queryRows } from './database-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
@@ -2116,11 +2116,15 @@ export class QueryEngine {
     
     // Handle syn mode
     if (ctx.mode === 'syn') {
+      await ensureStaticRelationIndexes();
       return this.dispatchSynMode({ ...ctx, q }, dbCtx);
     }
-    
+
     // Parse and dispatch
     const parsed = normalizeAndParse(ctx.q);
+    if (parsed.kind === QueryKind.RELATION_LOOKUP) {
+      await ensureStaticRelationIndexes();
+    }
     return await dispatch(parsed, dbCtx);
   }
   

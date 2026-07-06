@@ -17,7 +17,7 @@ import {
   parseQuery,
   normalizeAndParse,
 } from './query-engine';
-import { getDatabase, initializeDatabase, isDatabaseInitialized, getDefaultDbUrl } from './init';
+import { getCurrentLexiconTarget, getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
 import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
@@ -171,8 +171,8 @@ export async function validateOfflineReadiness(): Promise<void> {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
   }
 
-  const version = (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
-  const cache = await getLexiconCacheStatus(version, getDefaultDbUrl());
+  const target = await getCurrentLexiconTarget();
+  const cache = await getLexiconCacheStatus(target.version, target.dbUrl);
   const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
   if (hasOpfs && !cache.opfs) {
