@@ -17,7 +17,14 @@ import {
   parseQuery,
   normalizeAndParse,
 } from './query-engine';
-import { getCurrentLexiconTarget, getDatabase, initializeDatabase, isDatabaseInitialized } from './init';
+import {
+  getCurrentLexiconTarget,
+  getDatabase,
+  getDbBackendMode,
+  getLastLexiconRestoreSource,
+  initializeDatabase,
+  isDatabaseInitialized,
+} from './init';
 import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
@@ -162,6 +169,21 @@ export const OFFLINE_READINESS_PROBE_QUERY = '事業';
 /**
  * Validate DB can run a minimal real query (not COUNT-only).
  */
+async function waitForLexiconCache(
+  version: string,
+  dbUrl: string,
+  attempts = 8,
+): Promise<Awaited<ReturnType<typeof getLexiconCacheStatus>>> {
+  for (let i = 0; i < attempts; i++) {
+    const cache = await getLexiconCacheStatus(version, dbUrl);
+    if (cache.any) {
+      return cache;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 150));
+  }
+  return getLexiconCacheStatus(version, dbUrl);
+}
+
 export async function validateOfflineReadiness(): Promise<void> {
   const results = await search({
     query: OFFLINE_READINESS_PROBE_QUERY,
@@ -173,8 +195,15 @@ export async function validateOfflineReadiness(): Promise<void> {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
   }
 
+  const mode = getDbBackendMode();
+  const restoreSource = getLastLexiconRestoreSource();
+  // ponytail: OPFS VFS / OPFS restore already proved local lexicon this session
+  if (mode === 'opfs-vfs' || restoreSource === 'opfs') {
+    return;
+  }
+
   const target = await getCurrentLexiconTarget();
-  const cache = await getLexiconCacheStatus(target.version, target.dbUrl);
+  const cache = await waitForLexiconCache(target.version, target.dbUrl);
   const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
   if (hasOpfs && !cache.opfs) {

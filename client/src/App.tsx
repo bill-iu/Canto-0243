@@ -100,6 +100,7 @@ function App() {
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
+  const lexiconLoadStartedRef = useRef(false);
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
@@ -290,24 +291,20 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen) return;
-    if (!isReady) {
-      void initialize();
-      return;
-    }
+    if (gateOpen || isReady || offlineStatus === 'error') return;
+    const wantsLexicon = Boolean(searchQuery.trim()) || needsInitialSearch;
+    if (!wantsLexicon || lexiconLoadStartedRef.current) return;
+    lexiconLoadStartedRef.current = true;
+    void initialize();
+  }, [gateOpen, isReady, offlineStatus, searchQuery, needsInitialSearch, initialize]);
+
+  useEffect(() => {
+    if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen || !isReady) return;
     initialSearchDoneRef.current = true;
     setUseLiveFetch(true);
     hydrateSearch(activeSearchTab?.q || '');
     flushSearchQuery(activeSearchTab?.q || '');
-  }, [
-    needsInitialSearch,
-    isReady,
-    initialize,
-    gateOpen,
-    activeSearchTab?.q,
-    hydrateSearch,
-    flushSearchQuery,
-  ]);
+  }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
   useEffect(() => {
     if (!popstateFrame) return;
@@ -340,10 +337,11 @@ function App() {
   useEffect(() => {
     // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
     // This prevents any implicit network attempt that could trigger Safari error
-    if (isColdPwaOfflineLaunch || (!isOnline && isDbCached)) {
-      initialize();
-    }
-  }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch]);
+    if (!isColdPwaOfflineLaunch && (isOnline || !isDbCached)) return;
+    if (lexiconLoadStartedRef.current || isReady) return;
+    lexiconLoadStartedRef.current = true;
+    void initialize();
+  }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch, isReady]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
@@ -381,12 +379,18 @@ function App() {
       setResultsShuffled(false);
       const pushed = commitActiveSearch(q, mode);
       pushBrowserUrl(tabState, !pushed);
-      if (q && !isReady) {
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+        lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, initialize],
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
   );
+
+  const handleRetryOfflineReady = useCallback(async () => {
+    lexiconLoadStartedRef.current = false;
+    await retryOfflineReady();
+  }, [retryOfflineReady]);
 
   const handlePickResult = (nextQuery: string) => {
     runCommittedSearch(nextQuery);
@@ -521,7 +525,7 @@ function App() {
         isOnline={isOnline}
         isDbCached={isDbCached}
         isLikelyMetered={isLikelyMetered}
-        onRetry={retryOfflineReady}
+        onRetry={handleRetryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
         isPwaLaunch={isPwaLaunch}
