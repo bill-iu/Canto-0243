@@ -115,7 +115,7 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 * **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 汇出，采用 **MIT** 授权。
 * **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；本项目**反义词主来源**。
 * **words.hk 粤典词表**：来自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，**公有领域**（致谢 [words.hk](https://words.hk/)）。
-* **多字词级标音上游**（maintainer 自建 `lyrics.db` 时）：[words.hk 粤典词表](https://words.hk/faiman/analysis/wordslist/)（公有领域）、[开放词典 · 粤语词典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 单字读音与 maintainer curated（见 `data/lexicon/sources.yaml`）。
+* **多字词级标音上游**（maintainer 自建 `lyrics.db` 时）：[words.hk 粤典词表](https://words.hk/faiman/analysis/wordslist/)（公有领域）、[开放词典 · 粤语词典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 单字读音／`jyut6ping3.words`（[CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY)）、[HSK 3.0 word list](https://github.com/elkmovie/hsk30)（MIT）与 maintainer curated（见 `data/lexicon/sources.yaml`）。
 
 使用上述资料构建或再分发词库时，您同意遵守各自授权；部分来源含**非商业**或**署名**要求。可选近反义来源（如 COW）默认关闭，见 `data/syn_ant/sources.yaml`。
 
