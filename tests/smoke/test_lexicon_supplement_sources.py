@@ -7,12 +7,22 @@ from pathlib import Path
 from unittest.mock import patch
 
 from app.lexicon.candidates import LexiconCandidate
+from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST
 from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_sources import (
     ingest_hsk30_wordlist,
     ingest_rime_words_yaml,
     resolve_generated_jyutping,
 )
+from ingest.syn_ant_manifest import load_manifest
+
+
+SUPPLEMENT_RAW_PARSERS = {
+    "hsk30_wordlist",
+    "kaifang_txt",
+    "rime_words_yaml",
+    "words_hk_wordslist",
+}
 
 
 class LexiconSupplementSourceTests(unittest.TestCase):
@@ -63,6 +73,22 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertIn(("一行", "jat1 hong4"), by_pair)
         self.assertNotIn(("一行", "jat1 hang4"), by_pair)
         self.assertIn(("新詞", "san1 ci4"), by_pair)
+
+    def test_supplement_sources_are_local_only_raw_files(self):
+        manifest = load_manifest(DEFAULT_LEXICON_MANIFEST)
+        checked = 0
+        for src in manifest:
+            if src.get("parser") not in SUPPLEMENT_RAW_PARSERS:
+                continue
+            checked += 1
+            raw_path = str(src.get("raw_path") or "")
+            self.assertTrue(raw_path, src["id"])
+            self.assertTrue(src.get("local_only"), src["id"])
+            self.assertTrue(
+                raw_path.startswith("data/lexicon/raw/"),
+                f"{src['id']} raw_path must stay maintainer-local: {raw_path}",
+            )
+        self.assertGreaterEqual(checked, 4)
 
 
 if __name__ == "__main__":
