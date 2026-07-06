@@ -51,7 +51,7 @@ if (!dbPath) {
 const SQL = await initSqlJs();
 const db = createSqlJsBackend(new SQL.Database(fs.readFileSync(dbPath)));
 injectDatabaseForTests(db);
-applyRuntimeDbPatches(db);
+await applyRuntimeDbPatches(db);
 
 const failures: string[] = [];
 for (const q of GUIDE_ZERO_CASES) {

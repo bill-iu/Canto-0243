@@ -30,5 +30,5 @@ if (danIdx > maiIdx) {
   throw new Error(`digit-code-ranking-self-check: 但係@${danIdx} should precede 係咪@${maiIdx}`);
 }
 
-db.close();
+await db.close();
 console.log('digit-code-ranking self-check ok:', words.slice(0, 5).join(', '));

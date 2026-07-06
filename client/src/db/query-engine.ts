@@ -8,6 +8,7 @@
 
 import { getDatabase, initializeDatabase, isDatabaseInitialized } from './init.ts';
 import type { Database } from './sqljs.ts';
+import { queryFirst, queryRows } from './database-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { sortQueryResults, sortWordRows, compareSearchResults, literalPriorityCompare } from './ranking.ts';
 import { searchCompoundTiers } from './compound.ts';
@@ -90,17 +91,18 @@ function rowToResult(row: Record<string, unknown>): QueryResult {
   return item;
 }
 
-function sortMaskFamilyRows(
+async function sortMaskFamilyRows(
   spec: MatchSpec,
   rows: WordRow[],
   db: Database,
-  mode: QueryMode,
-): WordRow[] {
+  _mode: QueryMode,
+): Promise<WordRow[]> {
   if (spec.extra?.dual_phoneme) {
     return rows;
   }
-  if (spec.literal_priority && spec.extra?.literal_positions?.length) {
-    const positions = spec.extra.literal_positions as Array<[number, string]>;
+  const literalPositions = spec.extra?.literal_positions;
+  if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
+    const positions = literalPositions as Array<[number, string]>;
     return [...rows].sort((a, b) => literalPriorityCompare(a, b, positions));
   }
   if (spec.compound_kind) {
@@ -108,7 +110,7 @@ function sortMaskFamilyRows(
     if (!compoundSpec) {
       return sortWordRows(rows);
     }
-    const tiers = searchCompoundTiers(db, compoundSpec);
+    const tiers = await searchCompoundTiers(db, compoundSpec);
     return [...rows].sort((a, b) => {
       const ta = tiers.get(getWordText(a)) ?? 99;
       const tb = tiers.get(getWordText(b)) ?? 99;
@@ -907,17 +909,17 @@ function buildHybridMatchSpec(rawQ: string): HybridMatchSpec | null {
 }
 
 /** Port of filters.build_final_options_at_positions */
-function buildFinalOptionsAtPositions(
+async function buildFinalOptionsAtPositions(
   db: Database,
   refChars: string,
   startPos: number,
   width: number,
-): Array<Set<string> | null> {
+): Promise<Array<Set<string> | null>> {
   const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
   for (let i = 0; i < refChars.length; i++) {
     const pos = startPos + i;
     if (pos >= 0 && pos < width) {
-      const opts = anchorPhonemeOptions(db, refChars[i]!, 'final');
+      const opts = await anchorPhonemeOptions(db, refChars[i]!, 'final');
       if (opts.size) {
         target[pos] = opts;
       }
@@ -992,11 +994,11 @@ export function parserLogicSelfCheck(): void {
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/lookup-layout-self-check.ts` */
-export function lookupLayoutSelfCheck(): void {
+export async function lookupLayoutSelfCheck(): Promise<void> {
   const rows: WordRow[] = [
     { char: '事業', code: '22', jyutping: 'si6 jip6' },
   ];
-  const layout = buildLookupLayout('事業', rows, null);
+  const layout = await buildLookupLayout('事業', rows, null);
   const words = layout.map((r) => r.word);
   if (words.length !== 1 || words[0] !== '事業') {
     throw new Error(`lookupLayoutSelfCheck: got ${words.join(',')}`);
@@ -1480,13 +1482,10 @@ export async function codePrefixedWholeWordEqualsEmptyHint(
   if (!code || code.length !== literal.length) {
     return null;
   }
-  
+
   // Check if the literal exists in the database
   const sql = 'SELECT COUNT(*) as count FROM words WHERE char = ?';
-  const stmt = db.prepare(sql);
-  stmt.bind([literal]);
-  const result = stmt.step() ? stmt.getAsObject() : { count: 0 };
-  stmt.free();
+  const result = await queryFirst(db, sql, [literal]) ?? { count: 0 };
   
   if (result.count === 0) {
     return null;
@@ -1526,19 +1525,11 @@ export async function executeSearch(ctx: SearchContext): Promise<SearchResult> {
 /**
  * Execute list filter (when query is empty)
  */
-function executeListFilter(db: Database, ctx: SearchContext): SearchResult {
+async function executeListFilter(db: Database, ctx: SearchContext): Promise<SearchResult> {
   const { limit, offset } = ctx;
   const sql = `SELECT char, jyutping, code FROM words ORDER BY char LIMIT ? OFFSET ?`;
-  const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
-  
-  stmt.bind([limit, offset]);
-  
-  while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
-  }
-  stmt.free();
-  
+  const results = (await queryRows(db, sql, [limit, offset])).map(rowToResult);
+
   return { items: results };
 }
 
@@ -1577,7 +1568,7 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
     case RouteKind.HETERONYM:
       if (parsed.kind === QueryKind.HETERONYM_CODE) {
         const h = parsed as HeteronymCodeQuery;
-        const items = executeHeteronymCodeSearch(h, db, mode, limit, offset);
+        const items = await executeHeteronymCodeSearch(h, db, mode, limit, offset);
         return { items };
       }
       return { items: [] };
@@ -1603,13 +1594,13 @@ function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' {
 /**
  * Execute digit code query (pure digits only — P0 scope A)
  */
-function executeDigitCodeQuery(
+async function executeDigitCodeQuery(
   parsed: DigitCodeQuery,
   db: Database,
   mode: QueryMode,
   limit: number,
   offset: number
-): SearchResult {
+): Promise<SearchResult> {
   const q = parsed.raw_q;
   const searchMode = normalizeSearchMode(mode);
   const variants = getCodeVariants(q, searchMode);
@@ -1626,15 +1617,7 @@ function executeDigitCodeQuery(
       )
   `;
 
-  const stmt = db.prepare(sql);
-  const rows: WordRow[] = [];
-
-  stmt.bind([...variants, len, len]);
-
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject() as WordRow);
-  }
-  stmt.free();
+  const rows = await queryRows(db, sql, [...variants, len, len]) as WordRow[];
 
   const sorted = sortQueryResults(deduplicateWordRows(rows).map((row) => rowToResult(row)));
   return { items: sorted.slice(offset, offset + limit), total: sorted.length };
@@ -1704,20 +1687,16 @@ function finalsJsonForCode(exactMatches: WordRow[], code: string): string | null
   return null;
 }
 
-function loadCodeCandidates(db: Database, lenQ: number, codes: string[]): WordRow[] {
+async function loadCodeCandidates(db: Database, lenQ: number, codes: string[]): Promise<WordRow[]> {
   if (!codes.length) {
     return [];
   }
   const placeholders = codes.map(() => '?').join(',');
-  const stmt = db.prepare(
+  const rows = await queryRows(
+    db,
     `SELECT char, jyutping, code, initials, finals, length FROM words WHERE length = ? AND code IN (${placeholders}) ORDER BY char, jyutping`,
-  );
-  stmt.bind([lenQ, ...codes]);
-  const rows: WordRow[] = [];
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject() as WordRow);
-  }
-  stmt.free();
+    [lenQ, ...codes],
+  ) as WordRow[];
   return sortWordRows(rows);
 }
 
@@ -1730,7 +1709,7 @@ function wordSharesLookupLiteral(char: string, literals: string[]): boolean {
 }
 
 /** 漢字 lookup：同碼同韻含字面 → 同碼其他含字面 → 異碼含字面 */
-function appendLookupLiteralTiers(
+async function appendLookupLiteralTiers(
   results: QueryResult[],
   seen: Set<string>,
   opts: {
@@ -1741,7 +1720,7 @@ function appendLookupLiteralTiers(
     db: Database;
     lenQ: number;
   },
-): void {
+): Promise<void> {
   const literals = lookupLiteralChars(opts.q);
   if (!literals.length) {
     return;
@@ -1771,7 +1750,7 @@ function appendLookupLiteralTiers(
   );
   appendLookupWords(results, seen, sortWordRows(sameCodeLiteral));
 
-  const [allLen] = getCandidatesForLength(opts.db, opts.lenQ, { unlimited: true });
+  const [allLen] = await getCandidatesForLength(opts.db, opts.lenQ, { unlimited: true });
   const diffCodeLiteral = allLen.filter((row) => {
     const code = getWordSortCode(row);
     const ch = String(row.char ?? '');
@@ -1780,16 +1759,16 @@ function appendLookupLiteralTiers(
   appendLookupWords(results, seen, sortWordRows(diffCodeLiteral));
 }
 
-function resolveTailRhymeRefFromDb(
+async function resolveTailRhymeRefFromDb(
   db: Database,
   lastCh: string,
   lenQ: number,
-): { ref: string | null; pos: number } {
+): Promise<{ ref: string | null; pos: number }> {
   const refPos = lenQ > 0 ? Math.max(0, lenQ - 1) : 0;
   if (!lastCh) {
     return { ref: null, pos: refPos };
   }
-  const row = equalsAuthoritativeRow(db, lastCh);
+  const row = await equalsAuthoritativeRow(db, lastCh);
   if (!row) {
     return { ref: null, pos: refPos };
   }
@@ -1871,11 +1850,11 @@ function appendTailRhymeSection(
 }
 
 /** Port of lookup_layout.build_lookup_layout — PWA 略過 code／jyutping 標題列（詞條行已內嵌；Portable 保留） */
-function buildLookupLayout(
+async function buildLookupLayout(
   q: string,
   exactMatches: WordRow[],
   db: Database | null,
-): QueryResult[] {
+): Promise<QueryResult[]> {
   if (!exactMatches.length) {
     return [];
   }
@@ -1890,7 +1869,7 @@ function buildLookupLayout(
   }
 
   const codeSet = new Set(codes);
-  const candidates = loadCodeCandidates(db, lenQ, codes);
+  const candidates = await loadCodeCandidates(db, lenQ, codes);
   const candidatesByCode = new Map<string, WordRow[]>();
   for (const row of candidates) {
     const code = getWordSortCode(row);
@@ -1902,7 +1881,7 @@ function buildLookupLayout(
     candidatesByCode.set(code, list);
   }
 
-  appendLookupLiteralTiers(results, seenWords, {
+  await appendLookupLiteralTiers(results, seenWords, {
     q,
     codes,
     exactMatches,
@@ -1918,7 +1897,7 @@ function buildLookupLayout(
     candidatesByCode,
   });
 
-  const { ref, pos } = resolveTailRhymeRefFromDb(db, q.slice(-1) ?? '', lenQ);
+  const { ref, pos } = await resolveTailRhymeRefFromDb(db, q.slice(-1) ?? '', lenQ);
   appendTailRhymeSection(results, seenWords, {
     codes,
     candidatesByCode,
@@ -1936,25 +1915,20 @@ function buildLookupLayout(
 /**
  * Execute word lookup query
  */
-function executeWordLookup(
+async function executeWordLookup(
   parsed: WordLookupQuery,
   db: Database,
   _mode: QueryMode,
   limit: number,
   offset: number,
-): SearchResult {
-  const stmt = db.prepare(
+): Promise<SearchResult> {
+  const matches = await queryRows(
+    db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
+    [parsed.raw_q],
   );
-  stmt.bind([parsed.raw_q]);
 
-  const matches: WordRow[] = [];
-  while (stmt.step()) {
-    matches.push(stmt.getAsObject() as WordRow);
-  }
-  stmt.free();
-
-  const built = buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches), db);
+  const built = await buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches as WordRow[]), db);
   return {
     items: built.slice(offset, offset + limit),
     total: built.length,
@@ -1965,12 +1939,12 @@ function executeWordLookup(
 /**
  * Execute jyutping fragment query
  */
-function executeJyutpingFragment(
+async function executeJyutpingFragment(
   parsed: JyutpingFragmentQuery,
   db: Database,
   limit: number,
   offset: number
-): SearchResult {
+): Promise<SearchResult> {
   const sql = `
     SELECT char, jyutping, code 
     FROM words 
@@ -1979,15 +1953,7 @@ function executeJyutpingFragment(
     LIMIT ? OFFSET ?
   `;
   
-  const stmt = db.prepare(sql);
-  const results: QueryResult[] = [];
-  
-  stmt.bind([`%${parsed.raw_q}%`, limit, offset]);
-  
-  while (stmt.step()) {
-    results.push(rowToResult(stmt.getAsObject()));
-  }
-  stmt.free();
+  const results = (await queryRows(db, sql, [`%${parsed.raw_q}%`, limit, offset])).map(rowToResult);
   
   return { items: results };
 }
@@ -2022,14 +1988,12 @@ function getRhymeFinals(row: WordRow): string[] {
   return jyut ? rhymeFinalsFromJyutping(jyut) : [];
 }
 
-function equalsAuthoritativeRow(db: Database, literal: string): WordRow | null {
-  const stmt = db.prepare(
+async function equalsAuthoritativeRow(db: Database, literal: string): Promise<WordRow | null> {
+  return await queryFirst(
+    db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ? LIMIT 1',
-  );
-  stmt.bind([literal]);
-  const row = stmt.step() ? (stmt.getAsObject() as WordRow) : null;
-  stmt.free();
-  return row;
+    [literal],
+  ) as WordRow | null;
 }
 
 /** MF-6: port of query_dispatch._mask_family_search_result */
@@ -2051,11 +2015,11 @@ async function executeMaskFamilySearchResult(
   let total: number | undefined;
 
   if (spec.extra?.dual_phoneme) {
-    const rows = executeMatchSpec(spec, { ...dbCtx, limit, offset });
+    const rows = await executeMatchSpec(spec, { ...dbCtx, limit, offset });
     items = rows.map((row) => rowToResult(row));
   } else {
-    const allRows = filterMatchSpecRows(spec, dbCtx);
-    const ordered = sortMaskFamilyRows(spec, allRows, db, mode);
+    const allRows = await filterMatchSpecRows(spec, dbCtx);
+    const ordered = await sortMaskFamilyRows(spec, allRows, db, mode);
     const mapped = ordered.map((row) => rowToResult(row));
     const finalSorted = (spec.literal_priority || spec.compound_kind)
       ? mapped
@@ -2074,19 +2038,19 @@ async function executeMaskFamilySearchResult(
   return { items, total, hint };
 }
 
-function executeRelationLookup(
+async function executeRelationLookup(
   parsed: RelationLookupQuery,
   db: Database,
   mode: QueryMode,
   limit: number,
   offset: number,
-): SearchResult {
+): Promise<SearchResult> {
   const seed = parsed.word.trim();
   if (!seed) {
     return { items: [] };
   }
 
-  const rows = relationLookupItems(
+  const rows = await relationLookupItems(
     db,
     seed,
     parsed.relation_kind,
@@ -2183,7 +2147,7 @@ export class QueryEngine {
       };
     }
 
-    const page = relationPoolPage(db, q, limit, offset);
+    const page = await relationPoolPage(db, q, limit, offset);
     return { items: page.map(poolItemToResult) };
   }
 }

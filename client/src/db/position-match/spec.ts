@@ -56,7 +56,7 @@ export interface CandidateSource {
   getCandidates(
     length: number,
     options?: { code?: string | null; mode?: string },
-  ): [unknown[], boolean];
+  ): Promise<[unknown[], boolean]>;
 }
 
 const EQUALS_SPAN_KEY = 'equals_span';

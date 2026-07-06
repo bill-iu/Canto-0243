@@ -30,7 +30,7 @@ declare module '@shared/query-tabs' {
     tabs: QueryTab[];
   }
 
-  export function tabLabel(tab: QueryTab): string;
+  export function tabLabel(tab: QueryTab, lang?: 'zh' | 'en'): string;
   export function findTabByView(tabs: QueryTab[], view: string): QueryTab | null;
   export function createSearchTab(opts?: Partial<QueryTab>): QueryTab;
   export function createGuideTab(opts?: { id?: number }): QueryTab;
@@ -56,6 +56,25 @@ declare module '@shared/query-tabs' {
     existingState: TabState | null,
     parsed: ReturnType<typeof parseUrlSearchParams>,
   ): TabState;
+}
+
+declare module '../../frontend/guide-i18n.mjs' {
+  export function getGuideHero(lang: 'zh' | 'en'): { eyebrow: string; title: string; lede: string };
+  export function getGuideIntro(lang: 'zh' | 'en'): { title: string; paragraphs: string[] };
+  export function getGuideSections(lang: 'zh' | 'en'): Array<{
+    id: string;
+    title: string;
+    intro: string;
+    examples: Array<{ query: string; mode: string; label: string; title?: string }>;
+  }>;
+  export function renderGuideGridHtml(lang: 'zh' | 'en'): string;
+  export function applyGuideLang(lang: 'zh' | 'en'): void;
+}
+
+declare module '../../frontend/about-i18n.mjs' {
+  export const ABOUT_COPY: Record<'zh' | 'en', Record<string, string>>;
+  export function getAboutCopy(lang: 'zh' | 'en'): Record<string, string>;
+  export function applyAboutLang(lang: 'zh' | 'en'): void;
 }
 
 declare module '@shared/search-navigation' {

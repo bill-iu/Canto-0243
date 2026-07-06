@@ -5,6 +5,7 @@ import { usePillTabDrag } from './use-pill-tab-drag';
 export interface QueryTabsBarProps {
   tabs: QueryTab[];
   activeId: number;
+  lang?: 'zh' | 'en';
   onSelect: (id: number) => void;
   onClose: (id: number) => void;
   onAdd: () => void;
@@ -14,6 +15,7 @@ export interface QueryTabsBarProps {
 export function QueryTabsBar({
   tabs,
   activeId,
+  lang = 'zh',
   onSelect,
   onClose,
   onAdd,
@@ -35,10 +37,10 @@ export function QueryTabsBar({
   } = usePillTabDrag({ tabIds, barRef, onSelect, onReorder });
 
   return (
-    <div ref={barRef} className="query-tabs-bar" role="tablist" aria-label="查詢分頁">
+    <div ref={barRef} className="query-tabs-bar" role="tablist" aria-label={lang === 'en' ? 'Query tabs' : '查詢分頁'}>
       {tabs.map((tab, index) => {
         const isActive = tab.id === activeId;
-        const label = tabLabel(tab);
+        const label = tabLabel(tab, lang);
         const isDragging = draggingId === tab.id;
         const isTouchArmed = touchArmId === tab.id;
         const isDropTarget = overIndex === index && draggingId != null && !isDragging;
@@ -63,7 +65,7 @@ export function QueryTabsBar({
               className="query-tab-pill__label"
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
-              title="拖曳以重排（桌面滑鼠；手機長按）"
+              title={lang === 'en' ? 'Drag to reorder (desktop mouse; long-press on mobile)' : '拖曳以重排（桌面滑鼠；手機長按）'}
               onClick={(event) => {
                 handleClick(event);
                 if (!event.defaultPrevented) onSelect(tab.id);
@@ -79,7 +81,7 @@ export function QueryTabsBar({
               <button
                 type="button"
                 className="query-tab-pill__close"
-                aria-label={`關閉「${label}」`}
+                aria-label={lang === 'en' ? `Close “${label}”` : `關閉「${label}」`}
                 onClick={(event) => {
                   event.stopPropagation();
                   onClose(tab.id);
@@ -94,7 +96,7 @@ export function QueryTabsBar({
       <button
         type="button"
         className="query-tab-add"
-        aria-label="新增查詢分頁"
+        aria-label={lang === 'en' ? 'New query tab' : '新增查詢分頁'}
         title="Alt+N"
         onClick={onAdd}
       >

@@ -9,6 +9,7 @@ import {
   initStaticSynIndex,
   resetStaticSynIndex,
 } from '../src/db/thesaurus.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 resetStaticSynIndex();
@@ -16,13 +17,13 @@ initStaticCilinSynIndex({ 悲傷: ['傷心', '難過'] });
 initStaticSynIndex({ 悲傷: ['傷心', '哀愁'] });
 
 const SQL = await initSqlJs();
-const db = new SQL.Database();
-db.run(`
+const native = new SQL.Database();
+native.run(`
   CREATE TABLE words (
     id INTEGER PRIMARY KEY, char TEXT, code TEXT, jyutping TEXT, length INTEGER
   )
 `);
-db.run(`
+native.run(`
   CREATE TABLE word_relations (
     id INTEGER PRIMARY KEY, word_id INTEGER, related_id INTEGER,
     relation_type TEXT, score REAL, source TEXT, group_codes TEXT
@@ -30,7 +31,7 @@ db.run(`
 `);
 const words = [['快樂', 1], ['悲傷', 2], ['傷心', 3], ['哀愁', 4]];
 for (const [ch, id] of words) {
-  db.run('INSERT INTO words (id, char, code, jyutping, length) VALUES (?, ?, ?, ?, ?)', [
+  native.run('INSERT INTO words (id, char, code, jyutping, length) VALUES (?, ?, ?, ?, ?)', [
     id,
     ch,
     '22',
@@ -38,14 +39,15 @@ for (const [ch, id] of words) {
     ch.length,
   ]);
 }
-db.run(
+native.run(
   'INSERT INTO word_relations (id, word_id, related_id, relation_type, score, source) VALUES (1, 1, 2, ?, 0.9, ?)',
   ['ant', 'guotong'],
 );
 
+const db = createSqlJsBackend(native);
 derivedAntLogicSelfCheck(db);
 
-const pool = buildRelationPool(db, '快樂');
+const pool = await buildRelationPool(db, '快樂');
 const bySource = Object.fromEntries(pool.ants.map((r) => [r.char, r.source]));
 if (bySource['傷心'] !== 'ant_cilin_exanded') {
   throw new Error(`derived-ant-self-check: 傷心 source ${bySource['傷心']}`);

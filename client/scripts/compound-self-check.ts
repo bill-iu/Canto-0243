@@ -11,6 +11,7 @@ import {
 } from '../src/db/compound.ts';
 import { loadRankingData } from '../src/db/ranking-loader.node.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 compoundLogicSelfCheck();
@@ -22,10 +23,11 @@ loadStaticRelationData(repoRoot);
 const fixture = path.join(repoRoot, 'tests/fixtures/lyrics.db');
 if (fs.existsSync(fixture)) {
   const SQL = await initSqlJs();
-  const db = new SQL.Database(fs.readFileSync(fixture));
+  const native = new SQL.Database(fs.readFileSync(fixture));
+  const db = createSqlJsBackend(native);
   resetCompoundCaches();
   initCompoundLists({ syn: ['朋友'], ant: [] });
-  const connect = executeCompoundSearch(
+  const connect = await executeCompoundSearch(
     db,
     { compound_kind: 'syn', width: 3, connective: '與' },
     'm1',

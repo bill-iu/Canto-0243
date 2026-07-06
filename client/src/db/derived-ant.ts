@@ -2,6 +2,7 @@
  * Runtime derived ant — port of derived_ant.py + cilin_derived + mirror_ant (subset)
  */
 import type { Database } from './sqljs.ts';
+import { queryRows } from './database-backend.ts';
 import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
 import type { RelationPoolItem } from './relation-pool-snapshot.ts';
 
@@ -64,17 +65,16 @@ function derivedAntItem(char: string, source: string, confidence: number, inDb: 
   };
 }
 
-function loadDbSynAdjacency(db: Database, membership: Set<string>): Map<string, Set<string>> {
+async function loadDbSynAdjacency(db: Database, membership: Set<string>): Promise<Map<string, Set<string>>> {
   const adj = new Map<string, Set<string>>();
-  const stmt = db.prepare(`
+  const rows = await queryRows(db, `
     SELECT w1.char AS a, w2.char AS b
     FROM words w1
     JOIN word_relations wr ON wr.word_id = w1.id
     JOIN words w2 ON w2.id = wr.related_id
     WHERE wr.relation_type = 'syn' AND w1.char != w2.char
   `);
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as Record<string, unknown>;
+  for (const row of rows) {
     const a = String(row.a ?? '');
     const b = String(row.b ?? '');
     if (!a || !b) {
@@ -89,7 +89,6 @@ function loadDbSynAdjacency(db: Database, membership: Set<string>): Map<string, 
     adj.get(a)!.add(b);
     adj.get(b)!.add(a);
   }
-  stmt.free();
   if (membership) {
     for (const ch of membership) {
       for (const syn of getStaticSynonyms(ch)) {
@@ -118,7 +117,7 @@ function directSynNeighbors(
 }
 
 export function directAntSeedsForHead(
-  db: Database,
+  _db: Database,
   head: string,
   membership: Set<string>,
   includeStatic: boolean,
@@ -211,16 +210,16 @@ function mirrorAntPairs(
   return out;
 }
 
-export function appendRuntimeDerivedAntPool(
+export async function appendRuntimeDerivedAntPool(
   query: string,
   antPool: RelationPoolItem[],
   db: Database,
   membership: Set<string>,
   includeStatic: boolean,
-  morphemeChars: Set<string>,
+  _morphemeChars: Set<string>,
   headSyns: Set<string>,
   relAntItems: Array<{ char: string; source: string }>,
-): RelationPoolItem[] {
+): Promise<RelationPoolItem[]> {
   const seeds = directAntSeedsForHead(db, query, membership, includeStatic, relAntItems);
   const present = membership;
   const merged = new Map(antPool.map((item) => [item.char, item]));
@@ -236,7 +235,7 @@ export function appendRuntimeDerivedAntPool(
     }
   }
 
-  const synAdj = loadDbSynAdjacency(db, membership);
+  const synAdj = await loadDbSynAdjacency(db, membership);
   for (const [, tail] of mirrorAntPairs(query, seeds, (s) => directSynNeighbors(synAdj, s), present)) {
     if (!tail || headSyns.has(tail)) {
       continue;

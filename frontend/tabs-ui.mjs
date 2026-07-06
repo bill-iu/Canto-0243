@@ -14,6 +14,7 @@ import {
   reorderTabsByIds,
   closeTabInState,
   tabLabel,
+  getLang,
 } from "./app-context.mjs";
 import {
   activeTab, firstSearchTab, persistTabs, saveActiveTabFromUi,
@@ -35,7 +36,7 @@ function renderTabstrip() {
         shell.tabState.tabs.length > 1
           ? `<button type="button" class="chrome-tab-close" data-close="${t.id}" aria-label="關閉分頁"></button>`
           : "";
-      const label = tabLabel(t);
+      const label = tabLabel(t, getLang());
       return `
         <div class="chrome-tab${isLast ? " chrome-tab-is-last" : ""}" data-tab-id="${t.id}"${isActive ? " active" : ""} role="presentation">
           <div class="chrome-tab-dividers"></div>

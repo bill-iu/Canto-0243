@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { positionMatchSourcesSelfCheck } from '../src/db/position-match/sources.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -13,8 +14,9 @@ if (!fs.existsSync(fixture)) {
 }
 
 const SQL = await initSqlJs();
-const db = new SQL.Database(fs.readFileSync(fixture));
-positionMatchSourcesSelfCheck(db);
-db.close();
+const native = new SQL.Database(fs.readFileSync(fixture));
+const db = createSqlJsBackend(native);
+await positionMatchSourcesSelfCheck(db);
+await db.close();
 
 console.log('position-match sources self-check ok');

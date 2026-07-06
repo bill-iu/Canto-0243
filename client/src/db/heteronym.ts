@@ -2,6 +2,8 @@
  * Heteronym code/code query execution — port of heteronym_code_executor.py
  */
 import type { Database } from './sqljs.ts';
+import { queryRows } from './database-backend.ts';
+import { createSqlJsBackend } from './sqljs-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { sortHeteronymResults } from './ranking.ts';
 
@@ -55,11 +57,10 @@ function matchesCodeTemplate(
   return true;
 }
 
-export function buildHeteronymIndex(db: Database): Map<string, ReadingRow[]> {
+export async function buildHeteronymIndex(db: Database): Promise<Map<string, ReadingRow[]>> {
   const buckets = new Map<string, ReadingRow[]>();
-  const stmt = db.prepare('SELECT char, code, jyutping FROM words');
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  const rows = await queryRows(db, 'SELECT char, code, jyutping FROM words');
+  for (const row of rows) {
     const ch = String(row.char ?? '');
     const jyut = String(row.jyutping ?? '');
     if (!ch || !jyut) {
@@ -69,7 +70,6 @@ export function buildHeteronymIndex(db: Database): Map<string, ReadingRow[]> {
     list.push([String(row.code ?? ''), jyut]);
     buckets.set(ch, list);
   }
-  stmt.free();
 
   const out = new Map<string, ReadingRow[]>();
   for (const [ch, readings] of buckets) {
@@ -81,9 +81,9 @@ export function buildHeteronymIndex(db: Database): Map<string, ReadingRow[]> {
   return out;
 }
 
-function ensureHeteronymIndex(db: Database): Map<string, ReadingRow[]> {
+async function ensureHeteronymIndex(db: Database): Promise<Map<string, ReadingRow[]>> {
   if (!indexCache) {
-    indexCache = buildHeteronymIndex(db);
+    indexCache = await buildHeteronymIndex(db);
   }
   return indexCache;
 }
@@ -104,17 +104,17 @@ function tagsForReading(
   return tags;
 }
 
-export function executeHeteronymCodeSearch(
+export async function executeHeteronymCodeSearch(
   parsed: HeteronymCodeParsed,
   db: Database,
   mode: string,
   limit: number,
   offset: number,
-): HeteronymResult[] {
+): Promise<HeteronymResult[]> {
   const searchMode = mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
   const leftReq = codeTemplateToRequired(parsed.left_template);
   const rightReq = codeTemplateToRequired(parsed.right_template);
-  const index = ensureHeteronymIndex(db);
+  const index = await ensureHeteronymIndex(db);
   const items: HeteronymResult[] = [];
 
   for (const [ch, readings] of index) {
@@ -153,12 +153,12 @@ export function executeHeteronymCodeSearch(
       continue;
     }
 
-    const rowStmt = db.prepare(`
+    const rowStmt = await db.prepare(`
       SELECT char, jyutping, code, length FROM words WHERE char = ?
     `);
-    rowStmt.bind([ch]);
-    while (rowStmt.step()) {
-      const row = rowStmt.getAsObject() as WordRow;
+    await rowStmt.bind([ch]);
+    while (await rowStmt.step()) {
+      const row = await rowStmt.getAsObject() as WordRow;
       const rowChar = String(row.char ?? '');
       const rowLen = Number(row.length ?? rowChar.length);
       if (rowLen !== parsed.width && rowChar.length !== parsed.width) {
@@ -177,7 +177,7 @@ export function executeHeteronymCodeSearch(
         heteronym_tags: tags,
       });
     }
-    rowStmt.free();
+    await rowStmt.free();
   }
 
   return sortHeteronymResults(items).slice(offset, offset + limit);
@@ -200,9 +200,9 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   db.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('AB', '35', 'a1 b1', 2)`);
   db.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('AB', '56', 'a2 b2', 2)`);
   resetHeteronymIndex();
-  const items = executeHeteronymCodeSearch(
+  const items = await executeHeteronymCodeSearch(
     { left_template: '1?', right_template: '?2', width: 2 },
-    db,
+    createSqlJsBackend(db),
     'm1',
     10,
     0,
@@ -225,9 +225,9 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '35', 'a1 b1', 2)`);
   db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '56', 'a2 b2', 2)`);
   resetHeteronymIndex();
-  const hetItems = executeHeteronymCodeSearch(
+  const hetItems = await executeHeteronymCodeSearch(
     { left_template: '1?', right_template: '?2', width: 2 },
-    db2,
+    createSqlJsBackend(db2),
     'm1',
     10,
     0,

@@ -3,6 +3,7 @@
  * ponytail: derived_ant deferred; semantic_related passthrough only
  */
 import type { Database } from './sqljs.ts';
+import { queryRows } from './database-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
 import { getCuratedAntCompounds } from './compound.ts';
@@ -250,7 +251,7 @@ function sortAntPool(
     .sort((a, b) => compareKeys(relevanceKey(query, a, morphemeChars, 'ant'), relevanceKey(query, b, morphemeChars, 'ant')));
 }
 
-function charsPresentInDb(db: Database, chars: Iterable<string>): Set<string> {
+async function charsPresentInDb(db: Database, chars: Iterable<string>): Promise<Set<string>> {
   const unique = [...new Set(chars)].filter(Boolean);
   if (!unique.length) {
     return new Set();
@@ -260,29 +261,26 @@ function charsPresentInDb(db: Database, chars: Iterable<string>): Set<string> {
   for (let i = 0; i < unique.length; i += chunk) {
     const part = unique.slice(i, i + chunk);
     const placeholders = part.map(() => '?').join(',');
-    const stmt = db.prepare(`SELECT DISTINCT char FROM words WHERE char IN (${placeholders})`);
-    stmt.bind(part);
-    while (stmt.step()) {
-      const ch = String((stmt.getAsObject() as { char?: string }).char ?? '');
+    const rows = await queryRows(db, `SELECT DISTINCT char FROM words WHERE char IN (${placeholders})`, part);
+    for (const row of rows) {
+      const ch = String((row as { char?: string }).char ?? '');
       if (ch) {
         present.add(ch);
       }
     }
-    stmt.free();
   }
   return present;
 }
 
-function loadDbCharSet(db: Database): Set<string> {
-  const stmt = db.prepare('SELECT DISTINCT char FROM words');
+async function loadDbCharSet(db: Database): Promise<Set<string>> {
+  const rows = await queryRows(db, 'SELECT DISTINCT char FROM words');
   const out = new Set<string>();
-  while (stmt.step()) {
-    const ch = String((stmt.getAsObject() as { char?: string }).char ?? '');
+  for (const row of rows) {
+    const ch = String((row as { char?: string }).char ?? '');
     if (ch) {
       out.add(ch);
     }
   }
-  stmt.free();
   return out;
 }
 
@@ -301,16 +299,14 @@ const BIDIRECTIONAL_REL_ROWS_SQL = `
   WHERE w2.char = ? AND wr.relation_type IN ('syn','ant','semantic_related')
 `;
 
-function fetchDbRelations(db: Database, query: string): RelationPoolItem[] {
+async function fetchDbRelations(db: Database, query: string): Promise<RelationPoolItem[]> {
   const q = query.trim();
   if (!q) {
     return [];
   }
-  const stmt = db.prepare(BIDIRECTIONAL_REL_ROWS_SQL);
-  stmt.bind([q, q]);
+  const rows = await queryRows(db, BIDIRECTIONAL_REL_ROWS_SQL, [q, q]);
   const items: RelationPoolItem[] = [];
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as Record<string, unknown>;
+  for (const row of rows) {
     const source = String(row.source ?? 'word_relations');
     if (RUNTIME_DERIVED_ANT_SOURCES.has(source)) {
       continue;
@@ -336,8 +332,6 @@ function fetchDbRelations(db: Database, query: string): RelationPoolItem[] {
       _sort: finalScore(source, row.score == null ? null : Number(row.score), false),
     });
   }
-  stmt.free();
-
   const best = new Map<string, RelationPoolItem>();
   for (const item of items) {
     const key = `${item.char}\t${item.relation}`;
@@ -407,11 +401,11 @@ function collectSortedPool(
   return out;
 }
 
-export function buildRelationPool(
+export async function buildRelationPool(
   db: Database,
   query: string,
   options: { includeStatic?: boolean; includeDerivedAnt?: boolean } = {},
-): RelationPoolSnapshot {
+): Promise<RelationPoolSnapshot> {
   const includeStatic = options.includeStatic !== false;
   const includeDerivedAnt = options.includeDerivedAnt !== false;
   const q = query.trim();
@@ -419,7 +413,7 @@ export function buildRelationPool(
     return createRelationPoolSnapshot(q, [], [], []);
   }
 
-  let relItems = fetchDbRelations(db, q);
+  let relItems = await fetchDbRelations(db, q);
   let staticSyns: string[] = [];
   let staticAnts: string[] = [];
   if (includeStatic) {
@@ -455,14 +449,14 @@ export function buildRelationPool(
     candidateChars.add(w);
   }
 
-  const present = charsPresentInDb(db, candidateChars);
+  const present = await charsPresentInDb(db, candidateChars);
   relItems = applyInDbMembership(relItems, present);
 
   const synPool = collectSortedPool(q, 'syn', relItems, staticSyns, present, morphemeChars);
   let antPool = collectSortedPool(q, 'ant', relItems, staticAnts, present, morphemeChars);
 
   if (includeDerivedAnt) {
-    const membership = loadDbCharSet(db);
+    const membership = await loadDbCharSet(db);
     const headSyns = new Set(synPool.map((r) => r.char));
     const relAntRows = relItems
       .filter((i) => i.relation === 'ant')
@@ -470,7 +464,7 @@ export function buildRelationPool(
     const effectiveMorphemes = q.length >= 2 ? morphemeChars : new Set<string>();
     antPool = sortAntPool(
       q,
-      appendRuntimeDerivedAntPool(
+      await appendRuntimeDerivedAntPool(
         q,
         antPool,
         db,
@@ -506,11 +500,11 @@ export function relationPoolPage(
   seed: string,
   limit: number,
   offset: number,
-): RelationPoolItem[] {
-  return buildRelationPool(db, seed).page(limit, offset);
+): Promise<RelationPoolItem[]> {
+  return buildRelationPool(db, seed).then((pool) => pool.page(limit, offset));
 }
 
-export function relationLookupItems(
+export async function relationLookupItems(
   db: Database,
   seed: string,
   relationKind: 'syn' | 'ant',
@@ -518,8 +512,8 @@ export function relationLookupItems(
   codePrefix: string | undefined,
   limit: number,
   offset: number,
-): RelationPoolItem[] {
-  const pool = buildRelationPool(db, seed);
+): Promise<RelationPoolItem[]> {
+  const pool = await buildRelationPool(db, seed);
   const allItems = relationPoolSnapshotItems(pool, relationKind);
 
   const seen = new Set<string>();
@@ -536,17 +530,15 @@ export function relationLookupItems(
       return [];
     }
     const variants = new Set(getCodeVariants(codePrefix, mode === 'm2' || mode === '02493' ? 'm2' : 'm1'));
-    const stmt = db.prepare('SELECT code FROM words WHERE char = ? LIMIT 20');
-    stmt.bind([seed]);
+    const rows = await queryRows(db, 'SELECT code FROM words WHERE char = ? LIMIT 20', [seed]);
     let seedOk = false;
-    while (stmt.step()) {
-      const code = String((stmt.getAsObject() as Record<string, unknown>).code ?? '');
+    for (const row of rows) {
+      const code = String((row as Record<string, unknown>).code ?? '');
       if (variants.has(code)) {
         seedOk = true;
         break;
       }
     }
-    stmt.free();
     if (!seedOk) {
       return [];
     }
@@ -557,8 +549,8 @@ export function relationLookupItems(
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/relation-pool-self-check.ts` */
-export function relationPoolLogicSelfCheck(db: Database): void {
-  const pool = buildRelationPool(db, '開心');
+export async function relationPoolLogicSelfCheck(db: Database): Promise<void> {
+  const pool = await buildRelationPool(db, '開心');
   const chars = pool.syns.filter((i) => i.in_db).map((i) => i.char);
   if (!chars.includes('快樂') || !chars.includes('愉快')) {
     throw new Error(`relationPoolLogicSelfCheck: syns ${chars.join(',')}`);

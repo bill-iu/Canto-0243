@@ -9,6 +9,7 @@ import { buildMatchSpecForParsed } from '../src/db/position-match/match-spec-reg
 import { getWordText } from '../src/db/position-match/word-row.ts';
 import { normalizeAndParse, queryEngine } from '../src/db/query-engine.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -20,7 +21,8 @@ if (!fs.existsSync(fixture)) {
 }
 
 const SQL = await initSqlJs();
-const db = new SQL.Database(fs.readFileSync(fixture));
+const native = new SQL.Database(fs.readFileSync(fixture));
+const db = createSqlJsBackend(native);
 injectDatabaseForTests(db);
 
 const cases = ['33~~你', '33!!你', '$$'] as const;
@@ -31,7 +33,7 @@ for (const q of cases) {
   if (!spec) {
     throw new Error(`position-match filters F5: no spec for ${q}`);
   }
-  const viaFilter = executeMatchSpec(spec, { db, mode: 'm1', limit: 200, offset: 0 })
+  const viaFilter = (await executeMatchSpec(spec, { db, mode: 'm1', limit: 200, offset: 0 }))
     .map((row) => getWordText(row))
     .sort();
   const viaExecutor = (
@@ -47,5 +49,5 @@ for (const q of cases) {
 }
 
 injectDatabaseForTests(null);
-db.close();
+await db.close();
 console.log('position-match filters F5 self-check ok');

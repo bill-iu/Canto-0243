@@ -15,6 +15,7 @@ import { injectDatabaseForTests } from '../src/db/init.ts';
 import { executeMatchSpec } from '../src/db/position-match/engine.ts';
 import { normalizeToMatchSpec } from '../src/db/position-match/match-spec-registry.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -26,7 +27,8 @@ if (!fs.existsSync(fixture)) {
 }
 
 const SQL = await initSqlJs();
-const db = new SQL.Database(fs.readFileSync(fixture));
+const native = new SQL.Database(fs.readFileSync(fixture));
+const db = createSqlJsBackend(native);
 
 type Case = { label: string; parsed: ParsedQuery; expectCount: number };
 
@@ -60,7 +62,7 @@ for (const { label, parsed, expectCount } of cases) {
   if (!spec) {
     throw new Error(`position-match-engine-self-check: no spec for ${label}`);
   }
-  const rows = executeMatchSpec(spec, { db, mode: 'm1', limit: 100, offset: 0 });
+  const rows = await executeMatchSpec(spec, { db, mode: 'm1', limit: 100, offset: 0 });
   if (rows.length !== expectCount) {
     throw new Error(
       `position-match-engine-self-check: ${label} got ${rows.length} rows, want ${expectCount}`,
@@ -90,5 +92,5 @@ if (!hybridSpec?.hybrid_ref_chars) {
   throw new Error('position-match-engine-self-check: hybrid alias rewrite failed');
 }
 
-db.close();
+await db.close();
 console.log('position-match engine self-check ok');

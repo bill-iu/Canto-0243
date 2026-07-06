@@ -10,6 +10,7 @@ import {
   useEffect,
   useLayoutEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from 'react';
 import {
@@ -77,6 +78,7 @@ function useDBState(): UseDBReturn {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [isDbCached, setIsDbCached] = useState<boolean | null>(null);
   const [isValidated, setIsValidated] = useState<boolean>(false);
+  const initializeInFlightRef = useRef<Promise<void> | null>(null);
 
   const dbUrl = getDefaultDbUrl();
 
@@ -89,6 +91,9 @@ function useDBState(): UseDBReturn {
   }, []);
 
   const initialize = useCallback(async () => {
+    if (initializeInFlightRef.current) {
+      return initializeInFlightRef.current;
+    }
     if (status === 'loading') {
       return;
     }
@@ -96,23 +101,34 @@ function useDBState(): UseDBReturn {
       return;
     }
 
+    const run = (async () => {
+      try {
+        setStatus('loading');
+        setError(null);
+        setProgress(0);
+        setIsValidated(false);
+
+        await initializeDatabase();
+        await validateOfflineReadiness();
+        setIsValidated(true);
+
+        setStatus('ready');
+        setProgress(100);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error(String(err)));
+        setStatus('error');
+        setProgress(0);
+        setIsValidated(false);
+      }
+    })();
+
+    initializeInFlightRef.current = run;
     try {
-      setStatus('loading');
-      setError(null);
-      setProgress(0);
-      setIsValidated(false);
-
-      await initializeDatabase();
-      await validateOfflineReadiness();
-      setIsValidated(true);
-
-      setStatus('ready');
-      setProgress(100);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error(String(err)));
-      setStatus('error');
-      setProgress(0);
-      setIsValidated(false);
+      await run;
+    } finally {
+      if (initializeInFlightRef.current === run) {
+        initializeInFlightRef.current = null;
+      }
     }
   }, [status, isValidated]);
 

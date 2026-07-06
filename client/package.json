@@ -14,6 +14,7 @@
     "build-fonts": "npx tsx scripts/build-fonts.ts"
   },
   "dependencies": {
+    "@journeyapps/wa-sqlite": "^1.7.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "sql.js": "^1.14.1"

@@ -2,6 +2,7 @@
  * Equals span execution — port of position_match/filters.query_words_by_equals_spec (MF-5 F4)
  */
 import { getCodeVariants } from '../code-variants.ts';
+import { queryFirst, queryRows } from '../database-backend.ts';
 import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
@@ -22,14 +23,12 @@ function getRhymeFinals(row: WordRow): string[] {
   return jyut ? rhymeFinalsFromJyutping(jyut) : [];
 }
 
-function equalsAuthoritativeRow(db: Database, literal: string): WordRow | null {
-  const stmt = db.prepare(
+async function equalsAuthoritativeRow(db: Database, literal: string): Promise<WordRow | null> {
+  return await queryFirst(
+    db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ? LIMIT 1',
-  );
-  stmt.bind([literal]);
-  const row = stmt.step() ? (stmt.getAsObject() as WordRow) : null;
-  stmt.free();
-  return row;
+    [literal],
+  ) as WordRow | null;
 }
 
 function preferredPronunciationRow(rows: WordRow[]): WordRow | null {
@@ -44,38 +43,34 @@ function preferredPronunciationRow(rows: WordRow[]): WordRow | null {
   return ranked.find((r) => r.rank === best)?.word ?? rows[0]!;
 }
 
-function equalsAuthoritativeRowForCode(
+async function equalsAuthoritativeRowForCode(
   db: Database,
   literal: string,
   codePrefix: string,
   mode: 'm1' | 'm2',
-): WordRow | null {
+): Promise<WordRow | null> {
   const variants = new Set(getCodeVariants(codePrefix, mode));
-  const stmt = db.prepare(
+  const rows = await queryRows(
+    db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
+    [literal],
   );
-  stmt.bind([literal]);
-  const rows: WordRow[] = [];
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject() as WordRow);
-  }
-  stmt.free();
   const matching = rows.filter((row) => variants.has(getWordCode(row)));
   return preferredPronunciationRow(matching);
 }
 
-function inferRefPhonemeParts(
+async function inferRefPhonemeParts(
   db: Database,
   literal: string,
   dimension: EqualsDimension,
-): string[] | null {
-  const stmt = db.prepare(
+): Promise<string[] | null> {
+  const rows = await queryRows(
+    db,
     'SELECT char, initials, finals, jyutping FROM words WHERE char LIKE ? LIMIT 200',
+    [`%${literal}%`],
   );
-  stmt.bind([`%${literal}%`]);
   const isFinal = dimension === 'final' || dimension === 'rhyme';
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  for (const row of rows) {
     const text = getWordText(row);
     const idx = text.indexOf(literal);
     if (idx < 0) {
@@ -86,20 +81,18 @@ function inferRefPhonemeParts(
       continue;
     }
     if (literal.length === 1) {
-      stmt.free();
       return [parts[idx]!];
     }
   }
-  stmt.free();
   return null;
 }
 
-function equalsRefPhonemeParts(
+async function equalsRefPhonemeParts(
   db: Database,
   literal: string,
   dimension: EqualsDimension,
-): string[] | null {
-  const row = equalsAuthoritativeRow(db, literal);
+): Promise<string[] | null> {
+  const row = await equalsAuthoritativeRow(db, literal);
   if (row) {
     const isFinal = dimension === 'final' || dimension === 'rhyme';
     const parts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
@@ -121,27 +114,26 @@ function phonemePartsSuffix(
   return parts.slice(-suffixLen);
 }
 
-function suffixAlignedRefPhonemeParts(
+async function suffixAlignedRefPhonemeParts(
   db: Database,
   literal: string,
   dimension: EqualsDimension,
-): string[] | null {
+): Promise<string[] | null> {
   const refLen = literal.length;
   if (refLen < 2) {
     return equalsRefPhonemeParts(db, literal, dimension);
   }
-  const stmt = db.prepare(
+  const rows = await queryRows(
+    db,
     'SELECT char, initials, finals, jyutping, length FROM words WHERE char LIKE ? LIMIT 500',
+    [`%${literal}`],
   );
-  stmt.bind([`%${literal}`]);
   const suffixRows: WordRow[] = [];
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  for (const row of rows) {
     if (getWordText(row).endsWith(literal)) {
       suffixRows.push(row);
     }
   }
-  stmt.free();
   const longer = suffixRows.filter((r) => getWordText(r).length > refLen);
   const exact = suffixRows.filter((r) => getWordText(r).length === refLen);
   const pool = longer.length ? longer : exact;
@@ -194,14 +186,14 @@ function phonemeStorageKey(row: WordRow, field: 'finals' | 'initials'): string {
   return '';
 }
 
-function equalsWholeWordMatches(
+async function equalsWholeWordMatches(
   spec: MatchSpec,
   db: Database,
   mode: 'm1' | 'm2',
   target: WordRow,
   targetParts: string[],
   isFinal: boolean,
-): WordRow[] {
+): Promise<WordRow[]> {
   const field = isFinal ? 'finals' : 'initials';
   const phonemeKey = phonemeStorageKey(target, field);
   if (!phonemeKey) {
@@ -228,11 +220,9 @@ function equalsWholeWordMatches(
   }
   sql += ' LIMIT 2000';
 
-  const stmt = db.prepare(sql);
-  stmt.bind(params);
+  const rows = await queryRows(db, sql, params);
   const out: WordRow[] = [];
-  while (stmt.step()) {
-    const word = stmt.getAsObject() as WordRow;
+  for (const word of rows) {
     if (!wordMatchesWidth(word, width)) {
       continue;
     }
@@ -241,16 +231,15 @@ function equalsWholeWordMatches(
       out.push(word);
     }
   }
-  stmt.free();
   return out;
 }
 
 /** Port of query_words_by_equals_spec */
-export function queryWordsByEqualsSpec(
+export async function queryWordsByEqualsSpec(
   spec: MatchSpec,
   db: Database,
   mode = 'm1',
-): WordRow[] {
+): Promise<WordRow[]> {
   const span = getEqualsSpan(spec);
   if (!span) {
     return [];
@@ -265,17 +254,17 @@ export function queryWordsByEqualsSpec(
   let target: WordRow | null = null;
 
   if (prefixWildcard) {
-    targetParts = suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
+    targetParts = await suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
     if (!targetParts) {
       return [];
     }
   } else if (span.whole_word) {
     if (fullCode && spec.width === 4) {
       target =
-        equalsAuthoritativeRowForCode(db, span.ref_literal, fullCode, searchMode) ??
-        equalsAuthoritativeRow(db, span.ref_literal);
+        (await equalsAuthoritativeRowForCode(db, span.ref_literal, fullCode, searchMode)) ??
+        (await equalsAuthoritativeRow(db, span.ref_literal));
     } else {
-      target = equalsAuthoritativeRow(db, span.ref_literal);
+      target = await equalsAuthoritativeRow(db, span.ref_literal);
     }
     if (!target) {
       return [];
@@ -286,7 +275,7 @@ export function queryWordsByEqualsSpec(
     }
   } else {
     // ponytail: infer via substring when no standalone row (parity with executeCodeAnchoredEquals / lexicon inject)
-    targetParts = equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
+    targetParts = await equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
     if (!targetParts) {
       return [];
     }
@@ -299,7 +288,7 @@ export function queryWordsByEqualsSpec(
     return equalsWholeWordMatches(spec, db, searchMode, target, targetParts, isFinal);
   }
 
-  const [candidates] = getCandidatesForLength(db, spec.width, {
+  const [candidates] = await getCandidatesForLength(db, spec.width, {
     code: fullCode || null,
     mode: searchMode,
   });

@@ -38,10 +38,10 @@ export type ExecuteMatchSpecContext = {
 };
 
 /** Filter all matching rows — port of PositionMatchEngine.match (no sort/page). */
-export function filterMatchSpecRows(
+export async function filterMatchSpecRows(
   spec: MatchSpec,
   ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code'>,
-): WordRow[] {
+): Promise<WordRow[]> {
   if (!spec || spec.width === 0) {
     return [];
   }
@@ -49,7 +49,7 @@ export function filterMatchSpecRows(
     return applyMatchSpec(spec, [], ctx.db, ctx.mode);
   }
   if (spec.hybrid_ref_chars != null && spec.hybrid_ref_pos != null) {
-    const [candidates] = getCandidatesForLength(ctx.db, spec.width, {
+    const [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
       code: ctx.code ?? spec.code_prefix ?? null,
       mode: ctx.mode,
     });
@@ -71,8 +71,8 @@ export function filterMatchSpecRows(
   const code = ctx.code ?? spec.code_prefix ?? null;
   const [candidates] =
     shouldUseMaskCandidates(spec) && spec.mask
-      ? getLengthMaskCandidates(ctx.db, spec.width, spec.mask)
-      : getCandidatesForLength(ctx.db, spec.width, {
+      ? await getLengthMaskCandidates(ctx.db, spec.width, spec.mask)
+      : await getCandidatesForLength(ctx.db, spec.width, {
           code,
           mode: ctx.mode,
           unlimited: specNeedsFullLengthBucket(spec),
@@ -80,7 +80,7 @@ export function filterMatchSpecRows(
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode);
 }
 
-function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): WordRow[] {
+async function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): Promise<WordRow[]> {
   const initialSpec = spec.extra?.dual_initial_spec;
   const finalSpec = spec.extra?.dual_final_spec;
   if (!initialSpec || !finalSpec) {
@@ -88,8 +88,8 @@ function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecCon
   }
   const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
   const base = { db: ctx.db, mode: ctx.mode, code: ctx.code ?? null };
-  const initialRows = sortWordRows(filterMatchSpecRows(initialSpec, base)).slice(0, unpagedLimit);
-  const finalRows = sortWordRows(filterMatchSpecRows(finalSpec, base)).slice(0, unpagedLimit);
+  const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec as MatchSpec, base)).slice(0, unpagedLimit);
+  const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec as MatchSpec, base)).slice(0, unpagedLimit);
   const tagged: WordRow[] = [
     ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
     ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
@@ -98,20 +98,21 @@ function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecCon
 }
 
 /** Port of run_position_query_tracked — filter, sort, then page. */
-export function executeMatchSpec(
+export async function executeMatchSpec(
   spec: MatchSpec,
   ctx: ExecuteMatchSpecContext,
-): WordRow[] {
+): Promise<WordRow[]> {
   if (!spec || spec.width === 0) {
     return [];
   }
   if (spec.extra?.dual_phoneme) {
     return executeDualPhonemeAnchorSpecs(spec, ctx);
   }
-  const filtered = filterMatchSpecRows(spec, ctx);
+  const filtered = await filterMatchSpecRows(spec, ctx);
   let sorted: WordRow[];
-  if (spec.literal_priority && spec.extra?.literal_positions?.length) {
-    const positions = spec.extra.literal_positions as Array<[number, string]>;
+  const literalPositions = spec.extra?.literal_positions;
+  if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
+    const positions = literalPositions as Array<[number, string]>;
     sorted = [...filtered].sort((a, b) => literalPriorityCompare(a, b, positions));
   } else {
     sorted = sortWordRows(filtered);

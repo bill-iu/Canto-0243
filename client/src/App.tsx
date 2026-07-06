@@ -531,6 +531,7 @@ function App() {
           <QueryTabsBar
             tabs={tabs}
             activeId={tabState.activeId}
+            lang={uiLang}
             onSelect={handleSelectTab}
             onClose={handleCloseTab}
             onAdd={handleAddTab}
@@ -540,9 +541,9 @@ function App() {
 
         <main className="main-wrap">
           {view === 'guide' ? (
-            <GuideView onPick={handleRunExample} />
+            <GuideView lang={uiLang} onPick={handleRunExample} />
           ) : view === 'about' ? (
-            <AboutView lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
+            <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (
             <section className="search-view" aria-labelledby="searchTitle">
               <div className="hero">
@@ -669,7 +670,7 @@ function App() {
           <p>Canto-0243 PWA</p>
           <p>
             離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}
-            {(import.meta as ImportMeta).env?.VITE_DB_BACKEND === 'opfs' ? ' · OPFS' : ''}
+            {['opfs', 'opfs-vfs'].includes((import.meta as ImportMeta).env?.VITE_DB_BACKEND ?? '') ? ' · OPFS' : ''}
           </p>
         </footer>
       </div>

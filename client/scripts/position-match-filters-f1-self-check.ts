@@ -10,6 +10,7 @@ import { getCandidatesForLength } from '../src/db/position-match/sources.ts';
 import { getWordText } from '../src/db/position-match/word-row.ts';
 import { normalizeAndParse, queryEngine } from '../src/db/query-engine.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -21,7 +22,8 @@ if (!fs.existsSync(fixture)) {
 }
 
 const SQL = await initSqlJs();
-const db = new SQL.Database(fs.readFileSync(fixture));
+const native = new SQL.Database(fs.readFileSync(fixture));
+const db = createSqlJsBackend(native);
 injectDatabaseForTests(db);
 
 const cases = ['1?', '門0', '23@就', '?30人'] as const;
@@ -32,8 +34,8 @@ for (const q of cases) {
   if (!spec) {
     throw new Error(`position-match filters F1: no spec for ${q}`);
   }
-  const [candidates] = getCandidatesForLength(db, spec.width, { mode: 'm1' });
-  const viaFilter = applyMatchSpec(spec, candidates, db, 'm1')
+  const [candidates] = await getCandidatesForLength(db, spec.width, { mode: 'm1' });
+  const viaFilter = (await applyMatchSpec(spec, candidates, db, 'm1'))
     .map((row) => getWordText(row))
     .sort();
   const viaExecutor = (
@@ -49,5 +51,5 @@ for (const q of cases) {
 }
 
 injectDatabaseForTests(null);
-db.close();
+await db.close();
 console.log('position-match filters F1 self-check ok');
