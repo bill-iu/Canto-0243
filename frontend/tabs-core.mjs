@@ -9,6 +9,7 @@ import {
   applyUrlToTabs,
   buildUrlSearchParams,
   tabLabel,
+  getLang,
   searchParamsWithoutBoot,
 } from "./app-context.mjs";
 import { relationPayloadFromForm } from "./relation-form.mjs";
@@ -128,7 +129,7 @@ function markActiveTabInStrip(id) {
 function updateActiveTabTitle() {
   const tab = activeTab();
   if (!tab) return;
-  const label = tabLabel(tab);
+  const label = tabLabel(tab, getLang());
   const row = $.tabstrip.querySelector(`.chrome-tab[data-tab-id="${tab.id}"]`);
   if (!row) return;
   const titleEl = row.querySelector(".chrome-tab-title");

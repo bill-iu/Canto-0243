@@ -54,5 +54,5 @@ for (const query of ['?+m?'] as const) {
   await assertDualAnchorPage(query);
 }
 
-db.close();
+await db.close();
 console.log('pwa-p5-anchor-self-check: ok');

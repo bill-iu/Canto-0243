@@ -2,12 +2,13 @@
  * MatchSpec filters — port of position_match/filters.py (MF-4 + MF-5 F1–F5)
  */
 import { getCodeVariants } from '../code-variants.ts';
+import { queryRows } from '../database-backend.ts';
 import { matchesJyutpingAnchorAtPosition } from '../jyutping-anchor.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { queryWordsByEqualsSpec } from './equals-filters.ts';
 import { matchesMaskLiteralChars } from './mask-adapter.ts';
-import { getCandidatesForLength, getCandidatesWithLiteralAt, getCompoundCandidatesForSpec } from './sources.ts';
+import { getCandidatesWithLiteralAt, getCompoundCandidatesForSpec } from './sources.ts';
 import type { MatchSpec, SlotConstraint } from './spec.ts';
 import { getEqualsSpan } from './spec.ts';
 import { getRhymeFinals, getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
@@ -40,45 +41,34 @@ export function matchesCodePositions(
   return true;
 }
 
-function equalsAuthoritativeRow(db: Database, char: string): WordRow | null {
-  const stmt = db.prepare(
-    'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ? LIMIT 1',
-  );
-  stmt.bind([char]);
-  const row = stmt.step() ? (stmt.getAsObject() as WordRow) : null;
-  stmt.free();
-  return row;
-}
-
-export function anchorPhonemeOptions(
+export async function anchorPhonemeOptions(
   db: Database,
   char: string,
   dimension: 'final' | 'initial',
-): Set<string> {
+): Promise<Set<string>> {
   const options = new Set<string>();
-  const stmt = db.prepare(
+  const rows = await queryRows(
+    db,
     'SELECT char, initials, finals, jyutping FROM words WHERE char = ? LIMIT 50',
+    [char],
   );
-  stmt.bind([char]);
-  while (stmt.step()) {
-    const hit = stmt.getAsObject() as WordRow;
+  for (const hit of rows) {
     const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
     if (parts.length) {
       options.add(parts[0]!);
     }
   }
-  stmt.free();
   return options;
 }
 
-export function matchesPhonemeAtPosition(
+export async function matchesPhonemeAtPosition(
   word: WordRow,
   pos: number,
   anchor: string,
   constraint: 'final' | 'initial',
   db: Database,
-): boolean {
-  const options = anchorPhonemeOptions(db, anchor, constraint);
+): Promise<boolean> {
+  const options = await anchorPhonemeOptions(db, anchor, constraint);
   const parts = constraint === 'final' ? getRhymeFinals(word) : getWordParts(word, 'initials');
   if (!options.size || pos >= parts.length) {
     return false;
@@ -113,32 +103,32 @@ function narrowByJyutpingLetterSlots(
   return narrowed;
 }
 
-function contextualPhonemeOptionsAtPosition(
+async function contextualPhonemeOptionsAtPosition(
   db: Database,
   width: number,
   pos: number,
   anchorChar: string,
   dimension: 'final' | 'initial',
-): Set<string> {
+): Promise<Set<string>> {
   const options = new Set<string>();
-  const rows = getCandidatesWithLiteralAt(db, width, pos, anchorChar);
+  const rows = await getCandidatesWithLiteralAt(db, width, pos, anchorChar);
   for (const row of rows) {
     const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
     if (parts.length > pos && parts[pos]) {
       options.add(parts[pos]!);
     }
   }
-  for (const opt of anchorPhonemeOptions(db, anchorChar, dimension)) {
+  for (const opt of await anchorPhonemeOptions(db, anchorChar, dimension)) {
     options.add(opt);
   }
   return options;
 }
 
-function partialMaskSlotOptions(
+async function partialMaskSlotOptions(
   spec: MatchSpec,
   db: Database,
   dimension: 'final' | 'initial',
-): Map<string, Set<string>> {
+): Promise<Map<string, Set<string>>> {
   const kind = dimension === 'final' ? 'final_anchor' : 'initial_anchor';
   const ctx =
     dimension === 'final'
@@ -153,7 +143,7 @@ function partialMaskSlotOptions(
     }
     const key = `${slot.pos}:${slot.value}`;
     if (!out.has(key)) {
-      out.set(key, ctx(slot.pos, String(slot.value ?? '')));
+      out.set(key, await ctx(slot.pos, String(slot.value ?? '')));
     }
   }
   return out;
@@ -216,14 +206,14 @@ function wordPassesPartialInitialMaskSpec(
   return true;
 }
 
-function wordPassesPositionFilters(
+async function wordPassesPositionFilters(
   word: WordRow,
   spec: MatchSpec,
   requiredCodes: Array<string | null>,
   mode: string,
   db: Database,
   literalChar: string | null,
-): boolean {
+): Promise<boolean> {
   const wordChar = getWordText(word);
   if (wordChar.length !== spec.width) {
     return false;
@@ -254,7 +244,7 @@ function wordPassesPositionFilters(
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
       const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
-      if (!matchesPhonemeAtPosition(word, slot.pos, String(slot.value ?? ''), constraint, db)) {
+      if (!(await matchesPhonemeAtPosition(word, slot.pos, String(slot.value ?? ''), constraint, db))) {
         return false;
       }
     }
@@ -310,12 +300,12 @@ function preferredPronunciationRows(rows: WordRow[]): WordRow[] {
   return ranked.filter((r) => r.rank === best).map((r) => r.word);
 }
 
-function filterWordsByCodeAndMask(
+async function filterWordsByCodeAndMask(
   candidates: WordRow[],
   spec: MatchSpec,
   mode: string,
   db: Database,
-): WordRow[] {
+): Promise<WordRow[]> {
   let literalChar: string | null = null;
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'literal_char' && slot.pos === spec.width - 1) {
@@ -328,7 +318,7 @@ function filterWordsByCodeAndMask(
   if (hasCodeDigitConstraints) {
     for (const group of groupCandidatesByChar(candidates).values()) {
       for (const word of preferredPronunciationRows(group)) {
-        if (wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
+        if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
           out.push(word);
           break;
         }
@@ -337,58 +327,62 @@ function filterWordsByCodeAndMask(
     return out;
   }
   for (const word of candidates) {
-    if (wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
+    if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
       out.push(word);
     }
   }
   return out;
 }
 
-function narrowByPhonemeAnchors(candidates: WordRow[], slots: SlotConstraint[], db: Database): WordRow[] {
+async function narrowByPhonemeAnchors(candidates: WordRow[], slots: SlotConstraint[], db: Database): Promise<WordRow[]> {
   let narrowed = candidates;
   for (const slot of slots) {
     if (slot.kind !== 'final_anchor' && slot.kind !== 'initial_anchor') {
       continue;
     }
     const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
-    narrowed = narrowed.filter((w) =>
-      matchesPhonemeAtPosition(w, slot.pos, String(slot.value ?? ''), constraint, db),
-    );
+    const next: WordRow[] = [];
+    for (const w of narrowed) {
+      if (await matchesPhonemeAtPosition(w, slot.pos, String(slot.value ?? ''), constraint, db)) {
+        next.push(w);
+      }
+    }
+    narrowed = next;
   }
   return narrowed;
 }
 
-export function filterCandidatesByMatchSpec(
+export async function filterCandidatesByMatchSpec(
   candidates: WordRow[],
   spec: MatchSpec,
   mode: string,
   db: Database,
-): WordRow[] {
+): Promise<WordRow[]> {
   if (spec.extra?.partial_rhyme_mask) {
-    const slotOptions = partialMaskSlotOptions(spec, db, 'final');
+    const slotOptions = await partialMaskSlotOptions(spec, db, 'final');
     return candidates.filter((w) => wordPassesPartialRhymeMaskSpec(spec, w, slotOptions));
   }
   if (spec.extra?.partial_initial_mask) {
-    const slotOptions = partialMaskSlotOptions(spec, db, 'initial');
+    const slotOptions = await partialMaskSlotOptions(spec, db, 'initial');
     return candidates.filter((w) => wordPassesPartialInitialMaskSpec(spec, w, slotOptions));
   }
 
   let pool = narrowByJyutpingLetterSlots(candidates, spec.slots ?? [], db);
-  pool = narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
+  pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
   return filterWordsByCodeAndMask(pool, spec, mode, db);
 }
 
-function buildFinalOptionsAtPositions(
+async function buildFinalOptionsAtPositions(
   db: Database,
   refChars: string,
   startPos: number,
   width: number,
-): Array<Set<string> | null> {
+): Promise<Array<Set<string> | null>> {
   const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
   for (let i = 0; i < refChars.length; i++) {
     const pos = startPos + i;
     if (pos >= 0 && pos < width) {
-      const opts = anchorPhonemeOptions(db, refChars[i]!, 'final');
+      const opts = await anchorPhonemeOptions(db, refChars[i]!, 'final');
       if (opts.size) {
         target[pos] = opts;
       }
@@ -425,16 +419,16 @@ function matchesHybridRefChars(
   return true;
 }
 
-export function filterHybridRefCandidates(
+export async function filterHybridRefCandidates(
   candidates: WordRow[],
   spec: MatchSpec,
   mode: string,
   db: Database,
-): WordRow[] {
+): Promise<WordRow[]> {
   if (spec.hybrid_ref_chars == null || spec.hybrid_ref_pos == null) {
     return candidates;
   }
-  const targetFinalOptions = buildFinalOptionsAtPositions(
+  const targetFinalOptions = await buildFinalOptionsAtPositions(
     db,
     spec.hybrid_ref_chars,
     spec.hybrid_ref_pos,
@@ -467,17 +461,17 @@ export function filterHybridRefCandidates(
 }
 
 /** ponytail: equals path in equals-filters.ts (MF-5 F4) */
-export function applyMatchSpec(
+export async function applyMatchSpec(
   spec: MatchSpec,
   candidates: WordRow[],
   db: Database,
   mode = 'm1',
-): WordRow[] {
+): Promise<WordRow[]> {
   if (getEqualsSpan(spec)) {
     return queryWordsByEqualsSpec(spec, db, mode);
   }
   if (spec.compound_kind) {
-    const pool = getCompoundCandidatesForSpec(spec, db, mode);
+    const pool = await getCompoundCandidatesForSpec(spec, db, mode);
     return filterCandidatesByMatchSpec(pool, spec, mode, db);
   }
   if (spec.hybrid_ref_chars != null && spec.hybrid_ref_pos != null) {

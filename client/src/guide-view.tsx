@@ -1,25 +1,48 @@
-import { GUIDE_SECTIONS, type GuideExample, type GuideMode } from './guide-examples';
+import { getGuideHero, getGuideIntro } from '../../frontend/guide-i18n.mjs';
+import { getGuideSections, type GuideExample, type GuideLang, type GuideMode } from './guide-examples';
 
 export interface GuideViewProps {
+  lang: GuideLang;
   onPick: (query: string, mode: GuideMode) => void;
 }
 
-export function GuideView({ onPick }: GuideViewProps) {
+function HtmlBlock({ html }: { html: string }) {
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+export function GuideView({ lang, onPick }: GuideViewProps) {
+  const hero = getGuideHero(lang);
+  const intro = getGuideIntro(lang);
+  const sections = getGuideSections(lang);
+
   return (
     <div className="guide-view">
       <header className="guide-hero">
-        <p className="eyebrow">Guide</p>
+        <p className="eyebrow">{hero.eyebrow}</p>
         <h1 id="guideTitle" tabIndex={-1}>
-          搜尋教學
+          {hero.title}
         </h1>
-        <p>0243／粵拼／韻母規則與近反義語法，揀例子即試。</p>
+        <p>
+          <HtmlBlock html={hero.lede} />
+        </p>
       </header>
 
+      <article className="guide-intro" aria-labelledby="guideIntroTitle">
+        <h2 id="guideIntroTitle">{intro.title}</h2>
+        {intro.paragraphs.map((paragraph) => (
+          <p key={paragraph.slice(0, 40)}>
+            <HtmlBlock html={paragraph} />
+          </p>
+        ))}
+      </article>
+
       <div className="guide-grid">
-        {GUIDE_SECTIONS.map((section) => (
+        {sections.map((section) => (
           <article key={section.id} className="guide-card">
             <h3>{section.title}</h3>
-            <p>{section.intro}</p>
+            <p>
+              <HtmlBlock html={section.intro} />
+            </p>
             <div className="guide-examples">
               {section.examples.map((example) => (
                 <GuideExampleButton

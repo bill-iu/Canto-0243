@@ -7,16 +7,14 @@ import type { DatabaseBackend } from './database-backend.ts';
 import { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
 import {
   ensureLexiconInOpfs,
-  readLexiconFromOpfs,
 } from './opfs-lexicon.ts';
 import { opfsAvailable } from './opfs-storage.ts';
 import {
   getLexiconCacheStatus,
   resolveLexiconBytes,
-  type LexiconCacheStatus,
-  type LexiconRestoreSource,
 } from './lexicon-restore.ts';
 import { openSqlJsDatabase } from './sqljs-backend.ts';
+import { openOpfsVfsDatabase } from './opfs-vfs-backend.ts';
 import { initRankingData } from './ranking.ts';
 import { loadCompoundListsFromUrl } from './compound.ts';
 import { applyRuntimeDbPatches } from './db-patch.ts';
@@ -94,20 +92,16 @@ async function initializeSqlJsPath(version: string, dbPath: string): Promise<Dat
 }
 
 async function initializeOpfsLexicon(version: string, dbPath: string): Promise<DatabaseBackend> {
-  const ensured = await ensureLexiconInOpfs({
-    version,
-    fetchBytes: async () => (await resolveLexiconBytes(version, dbPath)).bytes,
-  });
-  const bytes = await readLexiconFromOpfs(version);
-  if (!bytes?.byteLength) {
-    throw new Error('OPFS lexicon missing after ensure');
+  if (!(await opfsAvailable())) {
+    throw new Error('OPFS VFS unavailable');
   }
+  const opened = await openOpfsVfsDatabase({ version, dbUrl: dbPath });
   console.log(
-    ensured.fetched
-      ? `Lexicon imported to OPFS (${ensured.byteSize} bytes)`
-      : `Lexicon loaded from OPFS cache (${ensured.byteSize} bytes)`,
+    opened.fetched
+      ? `Lexicon streamed to OPFS VFS (${opened.byteSize} bytes)`
+      : `Lexicon opened from OPFS VFS (${opened.byteSize} bytes)`,
   );
-  return loadSqlJsFromBytes(bytes);
+  return opened.db;
 }
 
 async function loadBrowserRankingIndex(): Promise<void> {
@@ -192,7 +186,7 @@ export async function isLexiconCachedForBackend(
 }
 
 /**
- * Initialize the database (sql.js default, or OPFS-backed import when VITE_DB_BACKEND=opfs)
+ * Initialize the database (sql.js default, or OPFS VFS when VITE_DB_BACKEND=opfs/opfs-vfs)
  */
 export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promise<DatabaseBackend> {
   if (injectedDb) {
@@ -206,11 +200,11 @@ export async function initializeDatabase(dbPath: string = defaultDbUrl()): Promi
     const mode = getDbBackendMode();
     const version = lexiconVersion();
     db =
-      mode === 'opfs'
+      mode === 'opfs-vfs'
         ? await initializeOpfsLexicon(version, dbPath)
         : await initializeSqlJsPath(version, dbPath);
 
-    applyRuntimeDbPatches(db);
+    await applyRuntimeDbPatches(db);
     isInitialized = true;
     await loadAuxiliaryIndexes();
 
@@ -254,7 +248,7 @@ export function isDatabaseInitialized(): boolean {
 export function resetDatabase(): void {
   injectedDb = null;
   if (db) {
-    db.close();
+    void db.close();
     db = null;
     isInitialized = false;
   }

@@ -35,5 +35,5 @@ if (!page2.items.length) {
   throw new Error('pwa-results-p0-self-check: digit page2 empty');
 }
 
-db.close();
+await db.close();
 console.log('pwa-results-p0 self-check ok:', lookup.items.length, 'lookup rows, digit total', digit.total);

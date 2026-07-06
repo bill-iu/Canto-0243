@@ -18,6 +18,7 @@ import {
   normalizeAndParse,
 } from './query-engine';
 import { getDatabase, initializeDatabase, isDatabaseInitialized, getDefaultDbUrl } from './init';
+import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
 
@@ -144,20 +145,9 @@ export async function executeSQL(sql: string, params: any[] = []): Promise<any[]
   }
   
   const db = getDatabase();
-  
+
   try {
-    const stmt = db.prepare(sql);
-    const results = [];
-    
-    if (params.length > 0) {
-      stmt.bind(params);
-    }
-    
-    while (stmt.step()) {
-      results.push(stmt.getAsObject());
-    }
-    stmt.free();
-    return results;
+    return queryRows(db, sql, params);
   } catch (error) {
     console.error('SQL execution error:', error);
     return [];
@@ -197,8 +187,6 @@ export async function validateOfflineReadiness(): Promise<void> {
  * Get database statistics
  */
 export async function getDatabaseStats(): Promise<{ wordCount: number; tableCount: number }> {
-  const db = getDatabase();
-  
   const wordCountResult = await executeSQL("SELECT COUNT(*) as count FROM words");
   const tables = await executeSQL("SELECT name FROM sqlite_master WHERE type='table'");
   

@@ -3,6 +3,7 @@
  * ponytail: DB syn/ant graph + static cilin/guotong syn (prebuild index)
  */
 import type { Database } from './sqljs.ts';
+import { queryRows } from './database-backend.ts';
 import { ensureConnectiveCompoundRows } from './db-patch.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { compareSearchResults } from './ranking.ts';
@@ -88,49 +89,46 @@ export async function loadCompoundListsFromUrl(baseUrl: string): Promise<void> {
   initCompoundLists({ syn, ant });
 }
 
-function loadTwoCharLiterals(db: Database): Set<string> {
-  const stmt = db.prepare(`
+async function loadTwoCharLiterals(db: Database): Promise<Set<string>> {
+  const rows = await queryRows(db, `
     SELECT DISTINCT char FROM words
     WHERE length = 2 OR ((length IS NULL OR length = 0) AND length(char) = 2)
   `);
   const out = new Set<string>();
-  while (stmt.step()) {
-    const ch = String((stmt.getAsObject() as WordRow).char ?? '');
+  for (const row of rows) {
+    const ch = String((row as WordRow).char ?? '');
     if (ch.length === 2) {
       out.add(ch);
     }
   }
-  stmt.free();
   return out;
 }
 
-function loadSingleCharLiterals(db: Database): Set<string> {
-  const stmt = db.prepare(`
+async function loadSingleCharLiterals(db: Database): Promise<Set<string>> {
+  const rows = await queryRows(db, `
     SELECT DISTINCT char FROM words
     WHERE length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1)
   `);
   const out = new Set<string>();
-  while (stmt.step()) {
-    const ch = String((stmt.getAsObject() as WordRow).char ?? '');
+  for (const row of rows) {
+    const ch = String((row as WordRow).char ?? '');
     if (ch.length === 1) {
       out.add(ch);
     }
   }
-  stmt.free();
   return out;
 }
 
-function loadSynAdjacency(db: Database, membership?: Set<string>): Map<string, Set<string>> {
+async function loadSynAdjacency(db: Database, membership?: Set<string>): Promise<Map<string, Set<string>>> {
   const adj = new Map<string, Set<string>>();
-  const stmt = db.prepare(`
+  const rows = await queryRows(db, `
     SELECT w1.char AS a, w2.char AS b
     FROM words w1
     JOIN word_relations wr ON wr.word_id = w1.id
     JOIN words w2 ON w2.id = wr.related_id
     WHERE wr.relation_type = 'syn' AND w1.char != w2.char
   `);
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  for (const row of rows) {
     const a = String(row.a ?? '');
     const b = String(row.b ?? '');
     if (!a || !b) {
@@ -145,7 +143,6 @@ function loadSynAdjacency(db: Database, membership?: Set<string>): Map<string, S
     adj.get(a)!.add(b);
     adj.get(b)!.add(a);
   }
-  stmt.free();
 
   if (membership) {
     for (const ch of membership) {
@@ -167,24 +164,22 @@ function loadSynAdjacency(db: Database, membership?: Set<string>): Map<string, S
   return adj;
 }
 
-function loadAntOrientedPairs(db: Database): Set<string> {
+async function loadAntOrientedPairs(db: Database): Promise<Set<string>> {
   const pairs = new Set<string>();
-  const stmt = db.prepare(`
+  const rows = await queryRows(db, `
     SELECT w1.char AS a, w2.char AS b
     FROM words w1
     JOIN word_relations wr ON wr.word_id = w1.id
     JOIN words w2 ON w2.id = wr.related_id
     WHERE wr.relation_type = 'ant' AND w1.char != w2.char
   `);
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  for (const row of rows) {
     const a = String(row.a ?? '');
     const b = String(row.b ?? '');
     if (a && b) {
       pairs.add(`${a}\t${b}`);
     }
   }
-  stmt.free();
   return pairs;
 }
 
@@ -272,17 +267,17 @@ function getRhymeFinals(word: WordRow): string[] {
   return jyut.map((s) => syllableLetters(s));
 }
 
-function narrowByRhymeChar(
+async function narrowByRhymeChar(
   db: Database,
   literals: Set<string>,
   width: number,
   rhymeChar: string,
-): Set<string> {
+): Promise<Set<string>> {
   if (!rhymeChar || width < MIN_DOUBLED_WIDTH) {
     return literals;
   }
   const tailPos = width - 1;
-  const stmt = db.prepare(`
+  const stmt = await db.prepare(`
     SELECT char, jyutping, finals FROM words
     WHERE char = ? AND (
       length = ?
@@ -290,47 +285,45 @@ function narrowByRhymeChar(
     )
     LIMIT 20
   `);
-  const anchorStmt = db.prepare(`
+  const anchorRows = await queryRows(db, `
     SELECT finals, jyutping FROM words WHERE char LIKE ? LIMIT 50
-  `);
+  `, [`%${rhymeChar}%`]);
   const allowedFinals = new Set<string>();
-  anchorStmt.bind([`%${rhymeChar}%`]);
-  while (anchorStmt.step()) {
-    const row = anchorStmt.getAsObject() as WordRow;
+  for (const row of anchorRows) {
     for (const f of getRhymeFinals(row)) {
       allowedFinals.add(f);
     }
   }
-  anchorStmt.free();
   if (!allowedFinals.size) {
+    await stmt.free();
     return literals;
   }
 
   const out = new Set<string>();
   for (const literal of literals) {
-    stmt.bind([literal, width, width]);
+    await stmt.bind([literal, width, width]);
     let ok = false;
-    while (stmt.step()) {
-      const finals = getRhymeFinals(stmt.getAsObject() as WordRow);
+    while (await stmt.step()) {
+      const finals = getRhymeFinals(await stmt.getAsObject() as WordRow);
       if (finals.length > tailPos && allowedFinals.has(finals[tailPos]!)) {
         ok = true;
         break;
       }
     }
-    stmt.reset();
+    await stmt.reset();
     if (ok) {
       out.add(literal);
     }
   }
-  stmt.free();
+  await stmt.free();
   return out;
 }
 
-function buildSynTiers(db: Database): TierMap {
-  const twoChar = loadTwoCharLiterals(db);
-  const singles = loadSingleCharLiterals(db);
-  const synAdj = loadSynAdjacency(db, singles);
-  const antPairs = loadAntOrientedPairs(db);
+async function buildSynTiers(db: Database): Promise<TierMap> {
+  const twoChar = await loadTwoCharLiterals(db);
+  const singles = await loadSingleCharLiterals(db);
+  const synAdj = await loadSynAdjacency(db, singles);
+  const antPairs = await loadAntOrientedPairs(db);
   const morpheme = scanMorphemeSynCompounds(twoChar, synAdj, antPairs);
   const curated = new Set([...curatedSyn].filter((ch) => twoChar.has(ch)));
 
@@ -364,10 +357,10 @@ function buildSynTiers(db: Database): TierMap {
   return tiers;
 }
 
-function buildAntTiers(db: Database): TierMap {
-  const twoChar = loadTwoCharLiterals(db);
-  const singles = loadSingleCharLiterals(db);
-  const antPairs = loadAntOrientedPairs(db);
+async function buildAntTiers(db: Database): Promise<TierMap> {
+  const twoChar = await loadTwoCharLiterals(db);
+  const singles = await loadSingleCharLiterals(db);
+  const antPairs = await loadAntOrientedPairs(db);
   const morphemeRaw = scanMorphemeAntCompounds(twoChar, antPairs);
   const curatedRaw = new Set([...curatedAnt].filter((ch) => twoChar.has(ch) && ch.length === 2));
   const curated = expandPairSymmetry(curatedRaw, twoChar);
@@ -419,19 +412,18 @@ function buildAntTiers(db: Database): TierMap {
   return tiers;
 }
 
-function loadThreeCharLiterals(db: Database): Set<string> {
-  const stmt = db.prepare(`
+async function loadThreeCharLiterals(db: Database): Promise<Set<string>> {
+  const rows = await queryRows(db, `
     SELECT DISTINCT char FROM words
     WHERE length = 3 OR ((length IS NULL OR length = 0) AND length(char) = 3)
   `);
   const out = new Set<string>();
-  while (stmt.step()) {
-    const ch = String((stmt.getAsObject() as WordRow).char ?? '');
+  for (const row of rows) {
+    const ch = String((row as WordRow).char ?? '');
     if (ch.length === 3) {
       out.add(ch);
     }
   }
-  stmt.free();
   return out;
 }
 
@@ -450,22 +442,22 @@ function flankTiersFromTwoChar(twoCharTiers: TierMap): Map<string, number> {
 }
 
 /** Port of compound_connect.search_connective_compound */
-function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): TierMap {
+async function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {
   const connective = spec.connective;
   if (!connective || !FILLWORD_CONNECTIVES.has(connective) || spec.width !== 3) {
     return new Map();
   }
-  ensureConnectiveCompoundRows(db);
+  await ensureConnectiveCompoundRows(db);
   const twoCharTiers =
     spec.compound_kind === 'ant'
-      ? (antTiersCache ??= buildAntTiers(db))
-      : (synTiersCache ??= buildSynTiers(db));
+      ? (antTiersCache ??= await buildAntTiers(db))
+      : (synTiersCache ??= await buildSynTiers(db));
   const flankTiers = flankTiersFromTwoChar(twoCharTiers);
   if (!flankTiers.size) {
     return new Map();
   }
   const tiers = new Map<string, number>();
-  for (const w of loadThreeCharLiterals(db)) {
+  for (const w of await loadThreeCharLiterals(db)) {
     if (w[1] !== connective) {
       continue;
     }
@@ -478,25 +470,22 @@ function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): TierM
   return tiers;
 }
 
-function buildDoubledTiers(db: Database, width: number): TierMap {
+async function buildDoubledTiers(db: Database, width: number): Promise<TierMap> {
   const tiers = new Map<string, number>();
-  const stmt = db.prepare(`
+  const rows = await queryRows(db, `
     SELECT char, jyutping FROM words
     WHERE length = ? OR ((length IS NULL OR length = 0) AND length(char) = ?)
-  `);
-  stmt.bind([width, width]);
-  while (stmt.step()) {
-    const row = stmt.getAsObject() as WordRow;
+  `, [width, width]);
+  for (const row of rows) {
     const ch = String(row.char ?? '');
     if (ch.length === width && rowHasUniformSyllableLetters(String(row.jyutping ?? ''), width)) {
       tiers.set(ch, TIER_CURATED);
     }
   }
-  stmt.free();
   return tiers;
 }
 
-function tierMapForSpec(db: Database, spec: CompoundSearchSpec): TierMap {
+async function tierMapForSpec(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {
   if (spec.connective && spec.width === 3) {
     return searchConnectiveCompound(db, spec);
   }
@@ -505,18 +494,18 @@ function tierMapForSpec(db: Database, spec: CompoundSearchSpec): TierMap {
       return new Map();
     }
     if (!doubledCaches.has(spec.width)) {
-      doubledCaches.set(spec.width, buildDoubledTiers(db, spec.width));
+      doubledCaches.set(spec.width, await buildDoubledTiers(db, spec.width));
     }
     return doubledCaches.get(spec.width)!;
   }
   if (spec.compound_kind === 'syn') {
     if (!synTiersCache) {
-      synTiersCache = buildSynTiers(db);
+      synTiersCache = await buildSynTiers(db);
     }
     return synTiersCache;
   }
   if (!antTiersCache) {
-    antTiersCache = buildAntTiers(db);
+    antTiersCache = await buildAntTiers(db);
   }
   return antTiersCache;
 }
@@ -529,31 +518,24 @@ function matchesCodePrefix(code: string, prefix: string, mode: string): boolean 
   return variants.some((v) => code === v || code.startsWith(v));
 }
 
-function fetchCompoundRows(db: Database, literals: Set<string>, width: number): WordRow[] {
+async function fetchCompoundRows(db: Database, literals: Set<string>, width: number): Promise<WordRow[]> {
   if (!literals.size) {
     return [];
   }
   const list = [...literals];
   const placeholders = list.map(() => '?').join(', ');
-  const stmt = db.prepare(`
+  return queryRows(db, `
     SELECT char, jyutping, code, initials, finals, length
     FROM words
     WHERE char IN (${placeholders})
       AND (length = ? OR ((length IS NULL OR length = 0) AND length(char) = ?))
-  `);
-  stmt.bind([...list, width, width]);
-  const rows: WordRow[] = [];
-  while (stmt.step()) {
-    rows.push(stmt.getAsObject() as WordRow);
-  }
-  stmt.free();
-  return rows;
+  `, [...list, width, width]);
 }
 
-export function searchCompoundTiers(db: Database, spec: CompoundSearchSpec): TierMap {
-  let tiers = tierMapForSpec(db, spec);
+export async function searchCompoundTiers(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {
+  let tiers = await tierMapForSpec(db, spec);
   if (spec.rhyme_char) {
-    const allowed = narrowByRhymeChar(db, new Set(tiers.keys()), spec.width, spec.rhyme_char);
+    const allowed = await narrowByRhymeChar(db, new Set(tiers.keys()), spec.width, spec.rhyme_char);
     const narrowed = new Map<string, number>();
     for (const ch of allowed) {
       const t = tiers.get(ch);
@@ -573,18 +555,18 @@ export interface CompoundResult {
   score: number;
 }
 
-export function executeCompoundSearch(
+export async function executeCompoundSearch(
   db: Database,
   spec: CompoundSearchSpec,
   mode: string,
   limit: number,
   offset: number,
-): CompoundResult[] {
-  const tiers = searchCompoundTiers(db, spec);
+): Promise<CompoundResult[]> {
+  const tiers = await searchCompoundTiers(db, spec);
   if (!tiers.size) {
     return [];
   }
-  const rows = fetchCompoundRows(db, new Set(tiers.keys()), spec.width);
+  const rows = await fetchCompoundRows(db, new Set(tiers.keys()), spec.width);
   const filtered = rows.filter((row) => {
     const code = String(row.code ?? '');
     if (spec.code_prefix && !matchesCodePrefix(code, spec.code_prefix, mode)) {
@@ -617,16 +599,16 @@ export function executeCompoundSearch(
 }
 
 /** MF-5 F5: compound candidate rows for position-match source injection */
-export function fetchCompoundWordRows(
+export async function fetchCompoundWordRows(
   db: Database,
   spec: CompoundSearchSpec,
   mode: string,
-): WordRow[] {
-  const tiers = searchCompoundTiers(db, spec);
+): Promise<WordRow[]> {
+  const tiers = await searchCompoundTiers(db, spec);
   if (!tiers.size) {
     return [];
   }
-  const rows = fetchCompoundRows(db, new Set(tiers.keys()), spec.width);
+  const rows = await fetchCompoundRows(db, new Set(tiers.keys()), spec.width);
   return rows.filter((row) => {
     const code = String(row.code ?? '');
     if (spec.code_prefix && !matchesCodePrefix(code, spec.code_prefix, mode)) {

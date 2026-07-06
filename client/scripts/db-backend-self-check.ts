@@ -13,6 +13,6 @@ if (!fs.existsSync(fixture)) {
 }
 
 const db = await openSqlJsDatabase(new Uint8Array(fs.readFileSync(fixture)));
-databaseBackendSelfCheck(db);
-db.close();
+await databaseBackendSelfCheck(db);
+await db.close();
 console.log('db-backend self-check ok');

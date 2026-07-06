@@ -27,43 +27,43 @@ const LIAO_EXTRA_READINGS: WordSeed[] = [
   { char: '潦', jyutping: 'lou6', code: '2' },
 ];
 
-function nextWordId(db: DatabaseBackend): number {
-  const stmt = db.prepare('SELECT COALESCE(MAX(id), 0) + 1 AS n FROM words');
-  stmt.bind([]);
-  const ok = stmt.step();
-  const n = ok ? Number(stmt.getAsObject().n ?? 1) : 1;
-  stmt.free();
+async function nextWordId(db: DatabaseBackend): Promise<number> {
+  const stmt = await db.prepare('SELECT COALESCE(MAX(id), 0) + 1 AS n FROM words');
+  await stmt.bind([]);
+  const ok = await stmt.step();
+  const n = ok ? Number((await stmt.getAsObject()).n ?? 1) : 1;
+  await stmt.free();
   return Number.isFinite(n) ? n : 1;
 }
 
-function charHasFinal(db: DatabaseBackend, char: string, final: string): boolean {
-  const stmt = db.prepare('SELECT finals FROM words WHERE char = ?');
-  stmt.bind([char]);
-  while (stmt.step()) {
-    const raw = String(stmt.getAsObject().finals ?? '');
+async function charHasFinal(db: DatabaseBackend, char: string, final: string): Promise<boolean> {
+  const stmt = await db.prepare('SELECT finals FROM words WHERE char = ?');
+  await stmt.bind([char]);
+  while (await stmt.step()) {
+    const raw = String((await stmt.getAsObject()).finals ?? '');
     if (raw.includes(`"${final}"`) || raw.includes(final)) {
-      stmt.free();
+      await stmt.free();
       return true;
     }
   }
-  stmt.free();
+  await stmt.free();
   return false;
 }
 
-function insertWordRow(db: DatabaseBackend, seed: WordSeed): void {
-  const exists = db.prepare('SELECT 1 FROM words WHERE char = ? AND jyutping = ? LIMIT 1');
-  exists.bind([seed.char, seed.jyutping]);
-  const found = exists.step();
-  exists.free();
+async function insertWordRow(db: DatabaseBackend, seed: WordSeed): Promise<void> {
+  const exists = await db.prepare('SELECT 1 FROM words WHERE char = ? AND jyutping = ? LIMIT 1');
+  await exists.bind([seed.char, seed.jyutping]);
+  const found = await exists.step();
+  await exists.free();
   if (found) {
     return;
   }
   const [initials, finals, tones] = splitJyutping(seed.jyutping);
-  const id = nextWordId(db);
-  const ins = db.prepare(
+  const id = await nextWordId(db);
+  const ins = await db.prepare(
     'INSERT INTO words (id, char, code, jyutping, initials, finals, tones, length) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
   );
-  ins.bind([
+  await ins.bind([
     id,
     seed.char,
     seed.code,
@@ -73,20 +73,20 @@ function insertWordRow(db: DatabaseBackend, seed: WordSeed): void {
     JSON.stringify(tones),
     [...seed.char].length,
   ]);
-  ins.step();
-  ins.free();
+  await ins.step();
+  await ins.free();
 }
 
 /** Port of scripts/patch_lou_dou_readings.py */
-export function patchLouDouReadings(db: DatabaseBackend): number {
-  const sel = db.prepare(
+export async function patchLouDouReadings(db: DatabaseBackend): Promise<number> {
+  const sel = await db.prepare(
     "SELECT id, char, code, jyutping FROM words WHERE char LIKE '%潦倒' AND length(char) >= 3",
   );
-  sel.bind([]);
+  await sel.bind([]);
   const updates: Array<{ id: number; jyutping: string; code: string; initials: string; finals: string; tones: string }> =
     [];
-  while (sel.step()) {
-    const row = sel.getAsObject();
+  while (await sel.step()) {
+    const row = await sel.getAsObject();
     const jyut = String(row.jyutping ?? '').trim();
     if (!WRONG_LIU_TAIL.test(jyut)) {
       continue;
@@ -103,52 +103,52 @@ export function patchLouDouReadings(db: DatabaseBackend): number {
       tones: JSON.stringify(tones),
     });
   }
-  sel.free();
-  const upd = db.prepare(
+  await sel.free();
+  const upd = await db.prepare(
     'UPDATE words SET jyutping = ?, code = ?, initials = ?, finals = ?, tones = ? WHERE id = ?',
   );
   for (const u of updates) {
-    upd.bind([u.jyutping, u.code, u.initials, u.finals, u.tones, u.id]);
-    upd.step();
-    upd.reset();
+    await upd.bind([u.jyutping, u.code, u.initials, u.finals, u.tones, u.id]);
+    await upd.step();
+    await upd.reset();
   }
-  upd.free();
+  await upd.free();
   return updates.length;
 }
 
-function ensureLiaoLouReadings(db: DatabaseBackend): void {
-  if (charHasFinal(db, '潦', 'ou')) {
+async function ensureLiaoLouReadings(db: DatabaseBackend): Promise<void> {
+  if (await charHasFinal(db, '潦', 'ou')) {
     return;
   }
   for (const seed of LIAO_EXTRA_READINGS) {
-    insertWordRow(db, seed);
+    await insertWordRow(db, seed);
   }
 }
 
-export function ensureConnectiveCompoundRows(db: DatabaseBackend): void {
+export async function ensureConnectiveCompoundRows(db: DatabaseBackend): Promise<void> {
   for (const seed of CONNECTIVE_SEEDS) {
-    insertWordRow(db, seed);
+    await insertWordRow(db, seed);
   }
 }
 
 /** Call once after opening lexicon (browser + parity runners). */
-export function applyRuntimeDbPatches(db: DatabaseBackend): { louDou: number } {
-  const louDou = patchLouDouReadings(db);
-  ensureLiaoLouReadings(db);
-  ensureConnectiveCompoundRows(db);
+export async function applyRuntimeDbPatches(db: DatabaseBackend): Promise<{ louDou: number }> {
+  const louDou = await patchLouDouReadings(db);
+  await ensureLiaoLouReadings(db);
+  await ensureConnectiveCompoundRows(db);
   return { louDou };
 }
 
 /** ponytail: runnable self-check — bundled in guide-examples-self-check */
-export function dbPatchSelfCheck(db: DatabaseBackend): void {
-  applyRuntimeDbPatches(db);
-  if (!charHasFinal(db, '潦', 'ou')) {
+export async function dbPatchSelfCheck(db: DatabaseBackend): Promise<void> {
+  await applyRuntimeDbPatches(db);
+  if (!(await charHasFinal(db, '潦', 'ou'))) {
     throw new Error('dbPatchSelfCheck: 潦 missing ou final');
   }
-  const stmt = db.prepare('SELECT 1 FROM words WHERE char = ? LIMIT 1');
-  stmt.bind(['生與死']);
-  const ok = stmt.step();
-  stmt.free();
+  const stmt = await db.prepare('SELECT 1 FROM words WHERE char = ? LIMIT 1');
+  await stmt.bind(['生與死']);
+  const ok = await stmt.step();
+  await stmt.free();
   if (!ok) {
     throw new Error('dbPatchSelfCheck: 生與死 missing');
   }

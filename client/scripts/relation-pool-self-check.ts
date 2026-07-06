@@ -4,19 +4,20 @@ import { fileURLToPath } from 'node:url';
 
 import { buildRelationPool, relationLookupItems, relationPoolLogicSelfCheck } from '../src/db/relation-pool.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 loadStaticRelationData(repoRoot);
 
 const SQL = await initSqlJs();
-const db = new SQL.Database();
-db.run(`
+const native = new SQL.Database();
+native.run(`
   CREATE TABLE words (
     id INTEGER PRIMARY KEY, char TEXT, code TEXT, jyutping TEXT, length INTEGER
   )
 `);
-db.run(`
+native.run(`
   CREATE TABLE word_relations (
     id INTEGER PRIMARY KEY, word_id INTEGER, related_id INTEGER,
     relation_type TEXT, score REAL, source TEXT, group_codes TEXT
@@ -31,7 +32,7 @@ const words = [
 ];
 for (let i = 0; i < words.length; i++) {
   const [ch, code, len] = words[i]!;
-  db.run('INSERT INTO words (id, char, code, jyutping, length) VALUES (?, ?, ?, ?, ?)', [
+  native.run('INSERT INTO words (id, char, code, jyutping, length) VALUES (?, ?, ?, ?, ?)', [
     i + 1,
     ch,
     code,
@@ -47,15 +48,16 @@ const rels = [
 ];
 for (let i = 0; i < rels.length; i++) {
   const [w, r, t, s, src] = rels[i]!;
-  db.run(
+  native.run(
     'INSERT INTO word_relations (id, word_id, related_id, relation_type, score, source) VALUES (?, ?, ?, ?, ?, ?)',
     [i + 1, w, r, t, s, src],
   );
 }
 
-relationPoolLogicSelfCheck(db);
+const db = createSqlJsBackend(native);
+await relationPoolLogicSelfCheck(db);
 
-const snapshot = buildRelationPool(db, '開心');
+const snapshot = await buildRelationPool(db, '開心');
 const snapshotChars = snapshot.chars('syn');
 if (!snapshotChars.includes('快樂') || !snapshotChars.includes('愉快')) {
   throw new Error(`relation-pool-self-check: snapshot chars ${snapshotChars.join(',')}`);
@@ -65,7 +67,7 @@ if (firstPage.length !== 1 || !snapshotChars.includes(firstPage[0] ?? '')) {
   throw new Error(`relation-pool-self-check: snapshot page ${firstPage.join(',')}`);
 }
 
-const items = relationLookupItems(db, '開心', 'syn', 'm1', undefined, 20, 0);
+const items = await relationLookupItems(db, '開心', 'syn', 'm1', undefined, 20, 0);
 const chars = items.map((i) => i.char).sort();
 if (chars.join(',') !== '快樂,愉快') {
   throw new Error(`relation-pool-self-check: ~開心 syns ${chars.join(',')}`);

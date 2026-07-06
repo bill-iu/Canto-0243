@@ -40,7 +40,10 @@ import {
   showRelation,
   showAbout,
   goHome,
+  renderTabstrip,
 } from "./tabs-ui.mjs";
+import { applyAboutLang } from "./about-i18n.mjs";
+import { applyGuideLang } from "./guide-i18n.mjs";
 import {
   updateModeLabel,
   toggleMenu,
@@ -202,8 +205,10 @@ document.querySelectorAll("[data-mode].mode-option").forEach((btn) => {
   btn.addEventListener("click", () => switchMode(btn.dataset.mode));
 });
 
-document.querySelectorAll("[data-query]").forEach((btn) => {
-  btn.addEventListener("click", () => runExample(btn.dataset.query || "", btn.dataset.mode || shell.currentMode));
+$.guideView?.addEventListener("click", (event) => {
+  const btn = event.target.closest(".guide-example[data-query]");
+  if (!btn) return;
+  runExample(btn.dataset.query || "", btn.dataset.mode || shell.currentMode);
 });
 
 const PORTABLE_EXIT_CONFIRM = "將關閉本機服務，未儲存工作唔會遺失。確定退出 Canto-0243？";
@@ -399,6 +404,20 @@ async function refreshPortableChrome() {
         el.textContent = lang === 'zh' ? '顯示' : 'Display';
       }
     });
+
+    const guideName = $.guideMenuBtn?.querySelector('.mode-name');
+    const guideHelp = $.guideMenuBtn?.querySelector('.mode-help');
+    if (guideName) guideName.textContent = t('menu.guide', lang);
+    if (guideHelp) guideHelp.textContent = t('menu.guide.help', lang);
+
+    const aboutName = $.aboutMenuBtn?.querySelector('.mode-name');
+    const aboutHelp = $.aboutMenuBtn?.querySelector('.mode-help');
+    if (aboutName) aboutName.textContent = t('menu.about', lang);
+    if (aboutHelp) aboutHelp.textContent = t('menu.about.help', lang);
+
+    applyAboutLang(lang);
+    applyGuideLang(lang);
+    renderTabstrip();
 
     // portable exit
     if ($.portableExitBtn && !$.portableExitBtn.hidden) {

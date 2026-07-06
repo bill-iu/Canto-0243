@@ -63,7 +63,7 @@ resetDatabase();
 const db = createSqlJsBackend(raw);
 injectDatabaseForTests(db);
 
-const snapshot = buildRelationPool(db, '開心');
+const snapshot = await buildRelationPool(db, '開心');
 if (!snapshot.syns.length || !snapshot.ants.length) {
   throw new Error('pwa-p1-syn-self-check: empty syn/ant pool');
 }
@@ -82,5 +82,5 @@ if (jyut.items.length || jyut.hint !== JYUTPING_SYN_MODE_HINT) {
   throw new Error(`pwa-p1-syn-self-check: jyutping reject hint=${jyut.hint}`);
 }
 
-db.close();
+await db.close();
 console.log('pwa-p1-syn self-check ok:', poolWords.slice(0, 6).join(', '));

@@ -45,7 +45,7 @@ const db = createSqlJsBackend(new SQL.Database(buf));
 const { injectDatabaseForTests } = await import('../src/db/init.ts');
 const { applyRuntimeDbPatches } = await import('../src/db/db-patch.ts');
 injectDatabaseForTests(db);
-applyRuntimeDbPatches(db);
+await applyRuntimeDbPatches(db);
 
 const { queryEngine, normalizeAndParse } = await import('../src/db/query-engine.ts');
 

@@ -9,13 +9,13 @@ export const VIEW = Object.freeze({
   ABOUT: "about",
 });
 
-export function tabLabel(tab) {
-  if (tab.view === VIEW.GUIDE) return "搜尋教學";
-  if (tab.view === VIEW.ABOUT) return "關於 Canto-0243";
-  if (tab.view === VIEW.RELATION) return "補關係";
-  if (tab.view === VIEW.CORRECTIONS) return "詞庫勘誤";
+export function tabLabel(tab, lang = "zh") {
+  if (tab.view === VIEW.GUIDE) return lang === "en" ? "Search Guide" : "搜尋教學";
+  if (tab.view === VIEW.ABOUT) return lang === "en" ? "About Canto-0243" : "關於 Canto-0243";
+  if (tab.view === VIEW.RELATION) return lang === "en" ? "Add relations" : "補關係";
+  if (tab.view === VIEW.CORRECTIONS) return lang === "en" ? "Lexicon corrections" : "詞庫勘誤";
   const q = (tab.q || "").trim();
-  if (!q) return "新查詢";
+  if (!q) return lang === "en" ? "New query" : "新查詢";
   return q.length > TAB_LABEL_MAX ? `${q.slice(0, TAB_LABEL_MAX)}…` : q;
 }
 
