@@ -120,7 +120,8 @@ export function modeI18nSelfCheck() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}`) {
+// ponytail: guard process — bare `process.argv` crashes browser bundles that import this module
+if (typeof process !== 'undefined' && import.meta.url === `file://${process.argv[1]?.replace(/\\/g, '/')}`) {
   modeI18nSelfCheck();
   console.log('mode-i18n self-check: ok');
 }
