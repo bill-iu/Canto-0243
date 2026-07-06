@@ -73,6 +73,7 @@ export interface QueryOptions {
   limit?: number;
   offset?: number;
   fallback_0243_mode?: '0243' | '02493';
+  ui_lang?: 'zh' | 'en';
 }
 
 /**
@@ -117,6 +118,7 @@ export async function searchPage(options: QueryOptions): Promise<SearchPageResul
     limit: options.limit ?? SEARCH_PAGE_SIZE,
     offset: options.offset ?? 0,
     fallback_0243_mode: fallback,
+    ui_lang: options.ui_lang,
   });
   return {
     items: result.items.map(mapEngineResult),

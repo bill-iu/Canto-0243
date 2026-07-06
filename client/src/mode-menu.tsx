@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 
-import { MODE_META, modeMetaFor, uiModeToUrlMode, type UiMode } from './mode-meta';
+import { getModeMeta, modeHelp, modeMetaFor, uiModeToUrlMode, type UiMode } from './mode-meta';
 
 const MODE_OPTIONS: Array<{ uiMode: UiMode; key: string }> = [
   { uiMode: '0243', key: '0243' },
@@ -34,7 +34,7 @@ export function ModeMenu({
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const meta = modeMetaFor(mode);
+  const meta = modeMetaFor(mode, lang);
   const urlMode = uiModeToUrlMode(mode);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ export function ModeMenu({
         <div className="menu-group" role="group" aria-label={lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}>
           <p className="menu-label">{lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}</p>
           {MODE_OPTIONS.map((option) => {
-            const optionMeta = MODE_META[uiModeToUrlMode(option.uiMode)];
+            const optionMeta = getModeMeta(uiModeToUrlMode(option.uiMode), lang);
             const checked = uiModeToUrlMode(option.uiMode) === urlMode;
             return (
               <button
@@ -183,12 +183,6 @@ export function ModeMenu({
   );
 }
 
-function modeHelp(uiMode: UiMode, lang: 'zh' | 'en' = 'zh'): string {
-  if (uiMode === '0243') return lang === 'zh' ? '常用 0243 編碼與混合查詢' : 'Common 0243 codes & mixed queries';
-  if (uiMode === '02493') return lang === 'zh' ? '02493 碼（分清二聲）' : '02493 codes (distinguish 2nd tone)';
-  return lang === 'zh' ? '近義、反義與語意相關' : 'Synonyms, antonyms & semantically related';
-}
-
 export { modeHelp };
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p6-mode-menu-self-check.ts` */
@@ -196,7 +190,10 @@ export function modeMenuSelfCheck(): void {
   if (MODE_OPTIONS.length !== 3) {
     throw new Error('modeMenuSelfCheck: mode options');
   }
-  if (modeHelp('synonym') !== '近義、反義與語意相關') {
+  if (modeHelp('synonym', 'zh') !== '近義、反義與語意相關') {
     throw new Error('modeMenuSelfCheck: syn help');
+  }
+  if (modeHelp('0243', 'en') !== 'Common 0243 codes & mixed queries') {
+    throw new Error('modeMenuSelfCheck: en m1 help');
   }
 }

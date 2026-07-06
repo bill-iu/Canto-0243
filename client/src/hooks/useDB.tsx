@@ -250,10 +250,11 @@ export function useDB(): UseDBReturn {
 export function useSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
-  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' },
+  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493'; ui_lang?: 'zh' | 'en' },
 ) {
   const pageSize = options?.pageSize ?? SEARCH_PAGE_SIZE;
   const fallback0243Mode = options?.fallback_0243_mode;
+  const uiLang = options?.ui_lang ?? 'zh';
   const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
   const [total, setTotal] = useState<number | null>(null);
@@ -293,6 +294,7 @@ export function useSearch(
           limit: pageSize,
           offset: 0,
           fallback_0243_mode: fallback0243Mode,
+          ui_lang: uiLang,
         });
         if (!cancelled) {
           setResults(page.items);
@@ -320,7 +322,7 @@ export function useSearch(
     return () => {
       cancelled = true;
     };
-  }, [trimmed, mode, pageSize, canSearch, fallback0243Mode]);
+  }, [trimmed, mode, pageSize, canSearch, fallback0243Mode, uiLang]);
 
   const loadMore = useCallback(async () => {
     if (!canSearch || loading || loadingMore || !hasMore) {
@@ -335,6 +337,7 @@ export function useSearch(
         limit: pageSize,
         offset: results.length,
         fallback_0243_mode: fallback0243Mode,
+        ui_lang: uiLang,
       });
       setResults((prev) => [...prev, ...page.items]);
       if (page.total != null) {
@@ -346,7 +349,7 @@ export function useSearch(
     } finally {
       setLoadingMore(false);
     }
-  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length, fallback0243Mode]);
+  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length, fallback0243Mode, uiLang]);
 
   return {
     results,

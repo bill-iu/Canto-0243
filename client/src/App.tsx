@@ -15,7 +15,7 @@ import {
   hasAnchorResultLayout,
 } from './anchor-result-list';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isRelationSyntaxQuery, modeRedirectHint } from './db/query-engine';
+import { isRelationSyntaxQuery } from './db/query-engine';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -23,7 +23,7 @@ import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
-import { modeMetaFor, type UiMode } from './mode-meta';
+import { modeMetaFor, modeRedirectHint, type UiMode } from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo, GateInkMeter } from './brand-logo';
@@ -104,7 +104,7 @@ function App() {
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
   const searchKey = `${searchQuery}\0${mode}`;
-  const modeMeta = modeMetaFor(mode);
+  const modeMeta = modeMetaFor(mode, uiLang);
 
   const loadSearchTabUi = useCallback(
     (tab: typeof activeTab, live: boolean) => {
@@ -141,14 +141,14 @@ function App() {
       return;
     }
     if (relationSyntax) {
-      setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1'));
+      setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1', uiLang));
       if (mode === 'synonym') {
         setMode(last0243Mode);
       }
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, relationSyntax, mode, last0243Mode]);
+  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
 
   const {
     isReady,
@@ -219,7 +219,10 @@ function App() {
     error: searchError,
     hasMore,
     loadMore,
-  } = useSearch(useLiveFetch ? searchQuery : '', mode, { fallback_0243_mode: last0243Mode });
+  } = useSearch(useLiveFetch ? searchQuery : '', mode, {
+    fallback_0243_mode: last0243Mode,
+    ui_lang: uiLang,
+  });
 
   const saveLeavingSearchTab = useCallback(() => {
     const leavingId = tabState.activeId;
