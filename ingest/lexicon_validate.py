@@ -46,7 +46,7 @@ def build_mixed_literal_code(literal: str, jyutping: str) -> str:
     if len(syllables) != len(positions):
         return ""
     code_chars: list[str] = []
-    for index, char in enumerate(text):
+    for char in text:
         if not (char.isalnum() or _CJK_CHAR.match(char)):
             continue
         if _CJK_CHAR.match(char):
@@ -57,6 +57,31 @@ def build_mixed_literal_code(literal: str, jyutping: str) -> str:
         else:
             code_chars.append("?")
     return "".join(code_chars)
+
+
+def normalize_lexicon_candidate(
+    literal: str,
+    jyutping: str,
+    *,
+    code: str | None = None,
+) -> tuple[str, str, str] | None:
+    text = str(literal or "").strip()
+    jp = str(jyutping or "").strip()
+    if not text or not jp:
+        return None
+    if _looks_like_mixed_literal(text):
+        if not is_valid_word_lexicon_reading(text, jp, allow_mixed_literal=True):
+            return None
+        normalized_code = str(code or "").strip() or build_mixed_literal_code(text, jp) or ""
+        if not normalized_code:
+            return None
+        return text, jp, normalized_code
+    if len(text) >= 2 and not is_valid_word_lexicon_reading(text, jp):
+        return None
+    normalized_code = str(code or "").strip() or get_0243_code(jp) or ""
+    if not normalized_code:
+        return None
+    return text, jp, normalized_code
 
 
 def is_valid_word_lexicon_reading(char: str, jyutping: str, *, allow_mixed_literal: bool = False) -> bool:

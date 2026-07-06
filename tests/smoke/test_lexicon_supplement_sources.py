@@ -12,6 +12,7 @@ from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_sources import (
     empty_rime_phrase_stats,
     ingest_hsk30_wordlist,
+    ingest_lexicon_json,
     ingest_rime_phrase_yaml,
     ingest_rime_words_yaml,
     ingest_words_hk_wordslist,
@@ -139,6 +140,15 @@ class LexiconSupplementSourceTests(unittest.TestCase):
             )
         )
         self.assertEqual(build_mixed_literal_code("AV女優", "ei1 wi1 neoi5 jau1"), "??43")
+
+    def test_generic_lexicon_json_uses_shared_mixed_literal_path(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "lexicon.json"
+            path.write_text('[{"char": "AV女優", "jyutping": "ei1 wi1 neoi5 jau1", "code": ""}]', encoding="utf-8")
+            rows = ingest_lexicon_json(path, source_id="lexicon_json")
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].code, "??43")
 
     def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]

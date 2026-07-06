@@ -11,9 +11,7 @@ from app.lexicon.candidates import LexiconCandidate
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from ingest.lexicon_validate import (
-    _generate_mixed_literal_jyutping,
-    build_mixed_literal_code,
-    is_valid_word_lexicon_reading,
+    normalize_lexicon_candidate,
 )
 from ingest.lexicon_raw_paths import ROOT, resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
@@ -106,16 +104,25 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
             continue
         char = str(item.get("char") or "").strip()
         jyutping = str(item.get("jyutping") or "").strip()
-        code = str(item.get("code") or "").strip() or (get_0243_code(jyutping) or "")
-        if not char or not jyutping or not code or not _CJK.search(char):
+        code = str(item.get("code") or "").strip() or None
+        if not char or not jyutping or not _CJK.search(char):
             continue
-        if len(char) >= 2 and not is_valid_word_lexicon_reading(char, jyutping):
+        normalized = normalize_lexicon_candidate(char, jyutping, code=code)
+        if not normalized:
             continue
-        key = (char, jyutping)
+        normalized_char, normalized_jyutping, normalized_code = normalized
+        key = (normalized_char, normalized_jyutping)
         if key in seen:
             continue
         seen.add(key)
-        out.append(LexiconCandidate(char=char, jyutping=jyutping, code=code, sources=(source_id,)))
+        out.append(
+            LexiconCandidate(
+                char=normalized_char,
+                jyutping=normalized_jyutping,
+                code=normalized_code,
+                sources=(source_id,),
+            )
+        )
     return out
 
 
@@ -127,16 +134,24 @@ def _append_candidate(
     jyutping: str,
     source_id: str,
 ) -> None:
-    code = get_0243_code(jyutping) or ""
-    if not char or not jyutping or not code or not _CJK.search(char):
+    if not char or not jyutping or not _CJK.search(char):
         return
-    if len(char) >= 2 and not is_valid_word_lexicon_reading(char, jyutping):
+    normalized = normalize_lexicon_candidate(char, jyutping)
+    if not normalized:
         return
-    key = (char, jyutping)
+    normalized_char, normalized_jyutping, normalized_code = normalized
+    key = (normalized_char, normalized_jyutping)
     if key in seen:
         return
     seen.add(key)
-    out.append(LexiconCandidate(char=char, jyutping=jyutping, code=code, sources=(source_id,)))
+    out.append(
+        LexiconCandidate(
+            char=normalized_char,
+            jyutping=normalized_jyutping,
+            code=normalized_code,
+            sources=(source_id,),
+        )
+    )
 
 
 def _full_pycantonese_reading(text: str) -> Optional[str]:
@@ -356,24 +371,23 @@ def ingest_words_hk_wordslist(path: Path | str, *, source_id: str) -> list[Lexic
         for raw_jy in readings:
             jyutping = str(raw_jy or "").strip()
             if not jyutping and re.search(r"[A-Za-z0-9]", literal) and _CJK.search(literal):
-                jyutping = _generate_mixed_literal_jyutping(literal) or ""
-            if not jyutping:
+                jyutping = str(_generate_mixed_literal_jyutping(literal) or "").strip()
+            normalized = normalize_lexicon_candidate(literal, jyutping)
+            if not normalized:
                 continue
-            if re.search(r"[A-Za-z0-9]", literal) and _CJK.search(literal):
-                if not is_valid_word_lexicon_reading(literal, jyutping, allow_mixed_literal=True):
-                    continue
-                code = build_mixed_literal_code(literal, jyutping) or get_0243_code(jyutping) or ""
-            else:
-                if len(literal) >= 2 and not is_valid_word_lexicon_reading(literal, jyutping):
-                    continue
-                code = get_0243_code(jyutping) or ""
-            if not code:
-                continue
-            key = (literal, jyutping)
+            normalized_char, normalized_jyutping, normalized_code = normalized
+            key = (normalized_char, normalized_jyutping)
             if key in seen:
                 continue
             seen.add(key)
-            out.append(LexiconCandidate(char=literal, jyutping=jyutping, code=code, sources=(source_id,)))
+            out.append(
+                LexiconCandidate(
+                    char=normalized_char,
+                    jyutping=normalized_jyutping,
+                    code=normalized_code,
+                    sources=(source_id,),
+                )
+            )
     return out
 
 
