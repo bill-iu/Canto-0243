@@ -72,7 +72,10 @@ export async function writeOpfsFile(name: string, bytes: Uint8Array): Promise<vo
   const root = await rootDir();
   const handle = await root.getFileHandle(name, { create: true });
   const writable = await handle.createWritable();
-  await writable.write(bytes as FileSystemWriteChunkType);
+  const chunkSize = 4 * 1024 * 1024;
+  for (let offset = 0; offset < bytes.byteLength; offset += chunkSize) {
+    await writable.write(bytes.subarray(offset, offset + chunkSize) as FileSystemWriteChunkType);
+  }
   await writable.close();
 }
 
