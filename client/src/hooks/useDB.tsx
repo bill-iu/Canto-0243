@@ -79,6 +79,10 @@ function useDBState(): UseDBReturn {
   const [isDbCached, setIsDbCached] = useState<boolean | null>(null);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const initializeInFlightRef = useRef<Promise<void> | null>(null);
+  const statusRef = useRef(status);
+  const isValidatedRef = useRef(isValidated);
+  statusRef.current = status;
+  isValidatedRef.current = isValidated;
 
   const dbUrl = getDefaultDbUrl();
 
@@ -94,10 +98,7 @@ function useDBState(): UseDBReturn {
     if (initializeInFlightRef.current) {
       return initializeInFlightRef.current;
     }
-    if (status === 'loading') {
-      return;
-    }
-    if (status === 'ready' && isValidated) {
+    if (statusRef.current === 'ready' && isValidatedRef.current) {
       return;
     }
 
@@ -130,7 +131,7 @@ function useDBState(): UseDBReturn {
         initializeInFlightRef.current = null;
       }
     }
-  }, [status, isValidated]);
+  }, []);
 
   const retryOfflineReady = useCallback(async () => {
     resetDatabase();
@@ -171,7 +172,7 @@ function useDBState(): UseDBReturn {
   }, []);
 
   useEffect(() => {
-    if (!isDatabaseInitialized() || status !== 'idle') {
+    if (initializeInFlightRef.current || !isDatabaseInitialized() || status !== 'idle') {
       return;
     }
     void (async () => {

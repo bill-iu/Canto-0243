@@ -12,6 +12,7 @@ import { opfsAvailable } from './opfs-storage.ts';
 import {
   getLexiconCacheStatus,
   resolveLexiconBytes,
+  type LexiconRestoreSource,
 } from './lexicon-restore.ts';
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { openOpfsVfsDatabase } from './opfs-vfs-backend.ts';
@@ -27,6 +28,8 @@ let isInitialized = false;
 let rankingLoaded = false;
 let staticRelationLoaded = false;
 let lexiconTargetPromise: Promise<LexiconTarget> | null = null;
+let databaseInitPromise: Promise<DatabaseBackend> | null = null;
+let lastLexiconRestoreSource: LexiconRestoreSource | null = null;
 
 /** ponytail: parity runner / node probe only — inject pre-loaded backend */
 let injectedDb: DatabaseBackend | null = null;
@@ -155,6 +158,7 @@ async function verifyLexiconIntegrity(
 
 async function initializeSqlJsPath(target: LexiconTarget): Promise<DatabaseBackend> {
   const { bytes, source } = await resolveLexiconBytes(target.version, target.dbUrl);
+  lastLexiconRestoreSource = source;
   console.log(`Lexicon restore (${source}) → sql.js`);
   if (source === 'network') {
     await verifyLexiconIntegrity(bytes, target);
@@ -168,6 +172,7 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
     throw new Error('OPFS VFS unavailable');
   }
   const opened = await openOpfsVfsDatabase({ version: target.version, dbUrl: target.dbUrl });
+  lastLexiconRestoreSource = opened.fetched ? 'network' : 'opfs';
   console.log(
     opened.fetched
       ? `Lexicon streamed to OPFS VFS (${opened.byteSize} bytes)`
@@ -252,6 +257,10 @@ export function getDefaultDbUrl(): string {
 export { ensureLexiconInOpfs, lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
 
 /** DB-4: offline lexicon present in OPFS and/or SW cache */
+export function getLastLexiconRestoreSource(): LexiconRestoreSource | null {
+  return lastLexiconRestoreSource;
+}
+
 export async function isLexiconCachedForBackend(
   _mode: DbBackendMode = getDbBackendMode(),
   version?: string,
@@ -271,32 +280,46 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
   if (db && isInitialized) {
     return db;
   }
-
-  try {
-    const mode = getDbBackendMode();
-    const target: LexiconTarget = dbPath
-      ? { version: lexiconVersion(), dbUrl: dbPath }
-      : await getCurrentLexiconTarget();
-    db =
-      mode === 'opfs-vfs'
-        ? await initializeOpfsLexicon(target)
-        : await initializeSqlJsPath(target);
-
-    await applyRuntimeDbPatches(db);
-    isInitialized = true;
-    await loadAuxiliaryIndexes();
-
-    console.log(`Database initialized (${mode})`);
-    return db;
-  } catch (error) {
-    console.error('Failed to initialize database:', error);
-    const offline = typeof navigator !== 'undefined' && !navigator.onLine;
-    throw new Error(
-      offline
-        ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
-        : '無法載入詞庫，請確認網路後重試',
-    );
+  if (databaseInitPromise) {
+    return databaseInitPromise;
   }
+
+  databaseInitPromise = (async () => {
+    try {
+      const mode = getDbBackendMode();
+      const target: LexiconTarget = dbPath
+        ? { version: lexiconVersion(), dbUrl: dbPath }
+        : await getCurrentLexiconTarget();
+      const opened =
+        mode === 'opfs-vfs'
+          ? await initializeOpfsLexicon(target)
+          : await initializeSqlJsPath(target);
+      db = opened;
+
+      await applyRuntimeDbPatches(db);
+      isInitialized = true;
+      await loadAuxiliaryIndexes();
+
+      console.log(`Database initialized (${mode})`);
+      return db;
+    } catch (error) {
+      databaseInitPromise = null;
+      isInitialized = false;
+      if (db) {
+        void db.close();
+        db = null;
+      }
+      console.error('Failed to initialize database:', error);
+      const offline = typeof navigator !== 'undefined' && !navigator.onLine;
+      throw new Error(
+        offline
+          ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
+          : '無法載入詞庫，請確認網路後重試',
+      );
+    }
+  })();
+
+  return databaseInitPromise;
 }
 
 /**
@@ -327,6 +350,8 @@ export function resetDatabase(): void {
   injectedDb = null;
   isInitialized = false;
   lexiconTargetPromise = null;
+  databaseInitPromise = null;
+  lastLexiconRestoreSource = null;
   if (db) {
     void db.close();
     db = null;
