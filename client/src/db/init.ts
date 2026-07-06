@@ -133,18 +133,41 @@ async function persistLexiconForOffline(version: string, bytes: Uint8Array): Pro
   );
 }
 
-async function initializeSqlJsPath(version: string, dbPath: string): Promise<DatabaseBackend> {
-  const { bytes, source } = await resolveLexiconBytes(version, dbPath);
+async function verifyLexiconIntegrity(
+  bytes: Uint8Array,
+  target: { byteSize?: number; sha256?: string },
+): Promise<void> {
+  if (target.byteSize != null && bytes.byteLength !== target.byteSize) {
+    throw new Error(
+      `Lexicon size mismatch: expected ${target.byteSize} bytes, got ${bytes.byteLength}`,
+    );
+  }
+  if (target.sha256 && typeof crypto !== 'undefined' && crypto.subtle) {
+    const hashBuf = await crypto.subtle.digest('SHA-256', bytes);
+    const hex = Array.from(new Uint8Array(hashBuf))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+    if (hex !== target.sha256) {
+      throw new Error(`Lexicon integrity check failed (sha256 mismatch)`);
+    }
+  }
+}
+
+async function initializeSqlJsPath(target: LexiconTarget): Promise<DatabaseBackend> {
+  const { bytes, source } = await resolveLexiconBytes(target.version, target.dbUrl);
   console.log(`Lexicon restore (${source}) → sql.js`);
-  await persistLexiconForOffline(version, bytes);
+  if (source === 'network') {
+    await verifyLexiconIntegrity(bytes, target);
+  }
+  await persistLexiconForOffline(target.version, bytes);
   return loadSqlJsFromBytes(bytes);
 }
 
-async function initializeOpfsLexicon(version: string, dbPath: string): Promise<DatabaseBackend> {
+async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBackend> {
   if (!(await opfsAvailable())) {
     throw new Error('OPFS VFS unavailable');
   }
-  const opened = await openOpfsVfsDatabase({ version, dbUrl: dbPath });
+  const opened = await openOpfsVfsDatabase({ version: target.version, dbUrl: target.dbUrl });
   console.log(
     opened.fetched
       ? `Lexicon streamed to OPFS VFS (${opened.byteSize} bytes)`
@@ -251,13 +274,13 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
 
   try {
     const mode = getDbBackendMode();
-    const target = dbPath
+    const target: LexiconTarget = dbPath
       ? { version: lexiconVersion(), dbUrl: dbPath }
       : await getCurrentLexiconTarget();
     db =
       mode === 'opfs-vfs'
-        ? await initializeOpfsLexicon(target.version, target.dbUrl)
-        : await initializeSqlJsPath(target.version, target.dbUrl);
+        ? await initializeOpfsLexicon(target)
+        : await initializeSqlJsPath(target);
 
     await applyRuntimeDbPatches(db);
     isInitialized = true;
