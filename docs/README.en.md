@@ -16,6 +16,10 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 
 ## Latest release
 
+<!-- version:en -->
+Current version: **v1.0.5**
+<!-- /version:en -->
+
 <!-- words-count:en -->
 Current word entries: **468,438** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->

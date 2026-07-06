@@ -16,6 +16,10 @@
 
 ## 最新版本
 
+<!-- version:zh-Hans -->
+目前版本：**v1.0.5**
+<!-- /version:zh-Hans -->
+
 <!-- words-count:zh-Hans -->
 目前总词条列数：**468,438**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
