@@ -319,6 +319,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
         error instanceof Error && error.message && !/無法載入詞庫/.test(error.message)
           ? `（${error.message}）`
           : '';
+      console.error('PWA lexicon init error detail:', error);
       throw new Error(
         offline
           ? '離線無法載入詞庫；請連網開啟一次，待顯示「離線就緒」後再試飛航模式'
