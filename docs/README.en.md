@@ -9,7 +9,7 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 **Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench I built with several AI agents (Cursor, Codex, Grok Build, GitHub Copilot). It lists matching **word entries** in seconds using **0243／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. For example: type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or switch to **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine, no internet required.
 
 **License**: Full bundle (program, `lyrics.db`, `words-lexicon.json`) under [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **open source**). Upstream data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
-**Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · vanilla HTML/JS frontend (SQLite-only)  
+**Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · PWA frontend (Service Worker / Web App Manifest; Vite + vanilla HTML/JS, with OPFS / wa-sqlite for offline database access)  
 **Domain glossary**: [`CONTEXT.md`](../CONTEXT.md) · Contributing: [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
@@ -115,7 +115,7 @@ Canto-0243 integrates several open dictionaries, corpora, and near／antonym res
 * **Cilin synonyms**: via [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin), **MIT**.
 * **Guotong near／antonym dictionary**: [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) (`dict_synonym.txt`, `dict_antonym.txt`), [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)—primary **antonym** source for this project.
 * **words.hk Cantonese word list**: [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/), **public domain** (thanks [words.hk](https://words.hk/)).
-* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/) (public domain), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)), Rime single-char and maintainer curated (`data/lexicon/sources.yaml`).
+* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/) (public domain), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)), Rime single-char, `jyut6ping3.words`, restricted `jyut6ping3.phrase` supplements, HSK 3.0, and maintainer curated (`data/lexicon/sources.yaml`).
 
 Building or redistributing lexicons from these sources requires complying with each license; some impose **non-commercial** or **attribution** terms. Optional sources (e.g. COW) are off by default—see `data/syn_ant/sources.yaml`.
 
