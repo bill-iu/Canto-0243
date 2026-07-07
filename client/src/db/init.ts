@@ -64,7 +64,9 @@ export function getDbBackendMode(): DbBackendMode {
 }
 
 function lexiconVersion(): string {
-  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  const v = (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  console.log('lexiconVersion resolved:', v);
+  return v;
 }
 
 function publicAssetUrl(file: string): string {
@@ -73,14 +75,18 @@ function publicAssetUrl(file: string): string {
 }
 
 function defaultDbUrl(): string {
-  return publicAssetUrl(`lyrics.${lexiconVersion()}.db`);
+  const url = publicAssetUrl(`lyrics.${lexiconVersion()}.db`);
+  console.log('defaultDbUrl resolved:', url);
+  return url;
 }
 
 function fallbackLexiconTarget(): LexiconTarget {
-  return {
+  const target = {
     version: lexiconVersion(),
     dbUrl: defaultDbUrl(),
   };
+  console.warn('lexicon load falling back to static target', target);
+  return target;
 }
 
 async function loadLexiconTarget(): Promise<LexiconTarget> {
@@ -90,7 +96,10 @@ async function loadLexiconTarget(): Promise<LexiconTarget> {
       return fallbackLexiconTarget();
     }
     const manifest = (await res.json()) as LexiconManifest;
+    const manifestTrace = { lexiconVersion: manifest.lexiconVersion, dbFile: manifest.dbFile, byteSize: manifest.byteSize, sha256: manifest.sha256 ? 'set' : 'unset' };
+    console.log('lexicon-manifest.json loaded', manifestTrace);
     if (!manifest.lexiconVersion || !manifest.dbFile) {
+      console.warn('lexicon-manifest.json missing required fields, falling back to static target');
       return fallbackLexiconTarget();
     }
     return {
