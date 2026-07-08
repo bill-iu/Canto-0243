@@ -20,6 +20,7 @@ import {
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { openOpfsVfsDatabase, prewarmOpfsVfsWorker, resetOpfsVfsWorker } from './opfs-vfs-backend.ts';
 import { applyRuntimeDbPatches } from './db-patch.ts';
+import { ensureGateAuxiliaryIndexes, resetGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 import { reportGatePhase } from './startup-progress.ts';
 
@@ -237,8 +238,10 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
         : await getCurrentLexiconTarget();
 
       db = await openLexiconDatabase(target);
-      reportGatePhase('open', 0.5);
+      reportGatePhase('open', 0.4);
       await applyRuntimeDbPatches(db);
+      reportGatePhase('open', 0.6);
+      await ensureGateAuxiliaryIndexes();
       reportGatePhase('open', 1);
       isInitialized = true;
 
@@ -282,6 +285,7 @@ export function resetDatabase(): void {
   injectedDb = null;
   isInitialized = false;
   staticRelationLoaded = false;
+  resetGateAuxiliaryIndexes();
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;

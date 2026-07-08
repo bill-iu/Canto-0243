@@ -7,7 +7,7 @@ PWA 首次冷啟動長時間卡在就緒閘，主因是閘前同步完成詞庫�
 我們決定 PWA 引入與 Portable **平行語意**、**渠道專用實作**的雙階啟動：
 
 1. **就緒閘解鎖**（閘前）— 阻塞 overlay 與搜尋，直至：詞庫開庫 + `validateOfflineReadiness` 探針（`事業`）成功；**不**引入「跳過探針早解閘」或 client 端降級逾時（維持 `offline-readiness.md` Ready 定義）。
-2. **啟動完畢**（tail）— **就緒閘解鎖**後背景載入：輔助索引（韻母字母表、複合詞表、排序 JSON）+ **靜態詞林埠**索引預熱（`ensureStaticRelationIndexes`）。未 **啟動完畢**時**查詢分派**全放行，依既有 fallback 降級；**不**做語法級阻擋。
+2. **啟動完畢**（tail）— **就緒閘解鎖**後背景載入：**靜態詞林埠**索引預熱（`ensureStaticRelationIndexes`）。**韻母字母表**、複合詞表、排序 JSON 已移入閘前（**粵拼錨**與搜尋教學範例依賴，見 CONTEXT § **啟動完畢**）。未 **啟動完畢**時近反義池等依既有 fallback 降級。
 3. **背景預載標示** — tail 進行中向創作者傳達進度（對齊 Portable warmup badge 職責）；不阻搜尋。
 4. **閘前進度** — 首次須下載詞庫時回報 byte 比例與分階標籤（下載／開庫／驗證）；**詞庫暖啟動**快徑：有本機副本且開庫＋驗證於短閾值（約 500ms）內完成可跳過 overlay，否則 minimal 閘前進度（無 landing 儀式）。
 5. **本輪一併優化** — **詞庫預取**（SW install／activate，省流量／metered 跳過）、下載與 WASM 並行預熱、多 Tab 下載進度廣播、**詞庫壓縮傳輸**（見下）。**詞庫分包**（H）另開 PR／ADR，本輪不做。

@@ -452,14 +452,6 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"export failed: {exc}", file=sys.stderr)
         return 1
-    if args.copy_public:
-        import shutil
-        src = REPO_ROOT / "lyrics.db"
-        dest = REPO_ROOT / "client" / "public" / "lyrics.db"
-        if src.is_file():
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dest)
-            print(f"    copied -> {dest}")
     # ADR-0027: page_size=16384 + VACUUM — defragment and optimise page layout
     print("==> VACUUM (page_size=16384, defragment)")
     try:
@@ -516,6 +508,22 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"release gate failed: {exc}", file=sys.stderr)
         return 1
+    if args.copy_public:
+        import subprocess
+
+        print("==> copy-db (public manifest + gzip)")
+        copy_db = REPO_ROOT / "client" / "copy-db.js"
+        if not copy_db.is_file():
+            print(f"copy-db missing: {copy_db}", file=sys.stderr)
+            return 1
+        proc = subprocess.run(
+            ["node", str(copy_db)],
+            cwd=REPO_ROOT / "client",
+            check=False,
+        )
+        if proc.returncode != 0:
+            print(f"copy-db failed with exit {proc.returncode}", file=sys.stderr)
+            return proc.returncode
     return 0
 
 

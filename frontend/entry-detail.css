@@ -60,6 +60,13 @@ html.has-entry-detail-open {
   min-width: 0;
 }
 
+/* ponytail: infinite-scroll IO root — scrollable even without entry detail */
+.search-results-scroll {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
 .entry-detail-panel {
   position: fixed;
   top: var(--entry-detail-inset-top, 0px);

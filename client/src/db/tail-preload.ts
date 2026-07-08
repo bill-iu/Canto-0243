@@ -1,18 +1,13 @@
 /** ADR-0032: 啟動完畢 tail — 輔助索引 + 靜態詞林埠預熱 */
 
-import { loadCompoundListsFromUrl } from './compound.ts';
+import { ensureGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { ensureStaticRelationIndexes } from './init.ts';
-import { publicAssetUrl } from './lexicon-manifest.ts';
-import { initRankingData } from './ranking.ts';
-import { initRhymeLetterIndex } from './rime-index.ts';
 
 type TailListener = (progress: number) => void;
 
 let tailPromise: Promise<void> | null = null;
 let tailComplete = false;
 let tailProgress = 0;
-let rankingLoaded = false;
-
 const tailListeners = new Set<TailListener>();
 
 function setTailProgress(value: number): void {
@@ -20,45 +15,9 @@ function setTailProgress(value: number): void {
   for (const fn of tailListeners) fn(tailProgress);
 }
 
-async function loadBrowserRankingIndex(): Promise<void> {
-  if (rankingLoaded) return;
-  try {
-    const res = await fetch(publicAssetUrl('ranking-index.json'));
-    if (res.ok) initRankingData(await res.json());
-  } catch {
-    /* ponytail: lexical fallback */
-  }
-  rankingLoaded = true;
-}
-
-async function loadBrowserRhymeLetterIndex(): Promise<void> {
-  try {
-    const res = await fetch(publicAssetUrl('rhyme-letter-index.json'));
-    if (res.ok) initRhymeLetterIndex(await res.json());
-  } catch {
-    /* ponytail: empty rhyme_letters options */
-  }
-}
-
-async function loadBrowserCompoundLists(): Promise<void> {
-  try {
-    await loadCompoundListsFromUrl(import.meta.env.BASE_URL);
-  } catch {
-    /* optional curated lists */
-  }
-}
-
 async function loadAuxiliaryIndexes(onSlice: (p: number) => void): Promise<void> {
-  let done = 0;
-  const tick = () => {
-    done += 1;
-    onSlice(done / 2);
-  };
-  await Promise.all([
-    loadBrowserRhymeLetterIndex().then(tick),
-    loadBrowserCompoundLists().then(tick),
-  ]);
-  void loadBrowserRankingIndex();
+  await ensureGateAuxiliaryIndexes();
+  onSlice(1);
 }
 
 export function isStartupComplete(): boolean {

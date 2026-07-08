@@ -27,6 +27,7 @@ export function useInfiniteResultWindow({
   const itemCountAtLoadRef = useRef(0);
 
   useEffect(() => {
+    itemCountAtLoadRef.current = 0;
     setVisibleCount(Math.min(RESULT_RENDER_BATCH, itemCount || RESULT_RENDER_BATCH));
   }, [resetKey]);
 

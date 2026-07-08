@@ -633,7 +633,7 @@ function App() {
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
-  const infiniteScrollRoot = detailOpen ? scrollRootEl : null;
+  const infiniteScrollRoot = scrollRootEl;
 
   const resultItemCount = useMemo(() => {
     if (!displayResults.length) return 0;
