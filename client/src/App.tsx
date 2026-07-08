@@ -729,6 +729,14 @@ function App() {
                 theme={uiTheme}
               />
             </button>
+            <div className="header-hero">
+              <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
+              <p className="header-hero__tagline">
+                {uiLang === 'en'
+                  ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
+                  : '格律／協音／押韻／近反義，一步搵到。'}
+              </p>
+            </div>
             {headerPreparing && (
               <div className="header-load-status" role="status" aria-live="polite" aria-busy="true">
                 <GateInkMeter inkProgress={headerInkProgress} theme={uiTheme} />
@@ -769,12 +777,6 @@ function App() {
               aria-labelledby="searchTitle"
             >
               <div className="search-view__main" onClick={handleSearchMainClick}>
-              <div className="hero">
-                <p className="eyebrow">Cantonese Lyrics Writing Workbench</p>
-                <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
-                <p>{uiLang === 'en' ? 'Meter / sound match / rhyme / near-antonyms — find in one step.' : '格律／協音／押韻／近反義，一步搵到。'}</p>
-              </div>
-
               <form onSubmit={handleSubmit} className="search-panel" role="search">
                 <div className="field-label-row">
                   <label className="field-label" htmlFor="searchInput">

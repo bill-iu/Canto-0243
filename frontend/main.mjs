@@ -371,7 +371,7 @@ async function refreshPortableChrome() {
     // hero
     const h1 = document.getElementById('searchTitle');
     if (h1) h1.textContent = t('hero.title', lang);
-    const tag = document.querySelector('.hero p:not(.eyebrow)');
+    const tag = document.querySelector('.header-hero__tagline');
     if (tag) tag.textContent = t('hero.tagline', lang);
 
     // search form

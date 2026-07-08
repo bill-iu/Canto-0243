@@ -238,7 +238,7 @@ html.fonts-ready .gate-brand {
       pointer-events: auto;
     }
 
-.landing-b-pending .hero {
+.landing-b-pending .header-hero {
       opacity: 0;
     }
 
@@ -249,7 +249,7 @@ html.fonts-ready .gate-brand {
       pointer-events: none;
     }
 
-.landing-b-revealed .hero {
+.landing-b-revealed .header-hero {
       animation: hero-settle-in 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
@@ -275,9 +275,35 @@ html.fonts-ready .gate-brand {
       }
     }
 
-.hero {
-      margin: 0 0 40px;
-      padding-bottom: 0;
+.header-hero {
+      flex: 1 1 auto;
+      align-self: center;
+      min-width: 0;
+      padding: 2px 0;
+    }
+
+.header-hero h1 {
+      margin: 0;
+      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
+      font-size: clamp(18px, 2.4vw, 26px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+.header-hero__tagline {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+      text-wrap: pretty;
+    }
+
+.app-bar .app-actions,
+    .app-bar .mode-menu-root {
+      flex-shrink: 0;
+      margin-left: auto;
     }
 
 .eyebrow {
@@ -290,8 +316,7 @@ html.fonts-ready .gate-brand {
       text-transform: uppercase;
     }
 
-.hero h1,
-    .guide-hero h1 {
+.guide-hero h1 {
       margin: 0;
       font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
       font-size: clamp(48px, 8vw, 96px);
@@ -301,19 +326,11 @@ html.fonts-ready .gate-brand {
       text-wrap: balance;
     }
 
-.hero p,
-    .guide-hero p,
+.guide-hero p,
     .guide-card p,
     .info {
       color: var(--muted);
       text-wrap: pretty;
-    }
-
-.hero p {
-      max-width: 620px;
-      margin: 20px 0 0;
-      font-size: 17px;
-      line-height: 1.65;
     }
 
 .guide-view {
@@ -795,8 +812,8 @@ html.fonts-ready .gate-brand {
       }
       .app-shell { transition: none; }
       .warmup-badge.is-exiting { opacity: 0; }
-      .landing-b-pending .hero,
-      .landing-b-revealed .hero { opacity: 1; }
+      .landing-b-pending .header-hero,
+      .landing-b-revealed .header-hero { opacity: 1; }
       use[filter="url(#brush-roughen-brand)"] { filter: none !important; }
     }
 
@@ -815,9 +832,18 @@ html.fonts-ready .gate-brand {
       .search-actions { width: 100%; }
       .primary-button { flex: 1; }
       .guide-grid { grid-template-columns: 1fr; }
-      .hero h1,
+      .header-hero h1 {
+        font-size: clamp(16px, 4.5vw, 22px);
+      }
+
       .guide-hero h1 {
         font-size: clamp(34px, 12vw, 54px);
+      }
+    }
+
+@media (max-width: 640px) {
+      .header-hero__tagline {
+        display: none;
       }
     }
 
