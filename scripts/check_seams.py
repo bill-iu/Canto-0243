@@ -17,7 +17,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # --- paths ---
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+READY_GATE_CSS_PATH = REPO_ROOT / "frontend" / "ready-gate.css"
 CLIENT_INDEX_PATH = REPO_ROOT / "client" / "index.html"
+PWA_BOOT_GATE_CSS_PATH = REPO_ROOT / "client" / "public" / "pwa-boot-gate.css"
 CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
 BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
@@ -573,7 +575,25 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("a.result-item", workbench)
         self.assertNotIn("relation-entry.css", source)
         self.assertIn("display=swap", source)
-        self.assertIn('use[filter="url(#brush-roughen-brand)"]', shell)
+
+    def test_ready_gate_css_ssot(self):
+        self.assertTrue(READY_GATE_CSS_PATH.is_file())
+        self.assertFalse(PWA_BOOT_GATE_CSS_PATH.is_file())
+        ready_gate = READY_GATE_CSS_PATH.read_text(encoding="utf-8")
+        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        index = INDEX_PATH.read_text(encoding="utf-8")
+        client_index = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
+        main_tsx = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
+        self.assertIn(".ready-gate", ready_gate)
+        self.assertIn(".preload-overlay", ready_gate)
+        self.assertIn('use[filter=\'url(#brush-roughen-brand)\']', ready_gate)
+        self.assertNotIn(".preload-overlay {", shell)
+        self.assertNotIn(".gate-brand {", shell)
+        self.assertIn('href="ready-gate.css"', index)
+        self.assertIn("ready-gate.css", client_index)
+        self.assertIn("../../frontend/ready-gate.css", main_tsx)
+        self.assertIn('class="ready-gate preload-overlay"', index)
+        self.assertIn('class="ready-gate pwa-boot-gate"', client_index)
 
     def test_shared_css_single_source_in_frontend(self):
         client_src = REPO_ROOT / "client" / "src"
@@ -586,7 +606,12 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_pwa_main_imports_frontend_css(self):
         source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
-        for path in ("../../frontend/open-design.css", "../../frontend/shell.css", "../../frontend/workbench.css"):
+        for path in (
+            "../../frontend/open-design.css",
+            "../../frontend/ready-gate.css",
+            "../../frontend/shell.css",
+            "../../frontend/workbench.css",
+        ):
             with self.subTest(import_path=path):
                 self.assertIn(path, source)
         self.assertIn("./root.css", source)
@@ -657,7 +682,7 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_index_html_links_shared_css(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
-        for href in ("shell.css", "workbench.css"):
+        for href in ("ready-gate.css", "shell.css", "workbench.css"):
             with self.subTest(href=href):
                 self.assertIn(f'href="{href}"', source)
         self.assertNotIn('href="index.css"', source)
