@@ -21,7 +21,7 @@ const cases: Array<[string, Record<string, unknown>]> = [
   ['就=', { width: 1, anchor: '就' }],
   ['?yut?', { width: 3, jyutping_slot: true }],
   ['3m4', { width: 2, dual_phoneme: true }],
-  ['23就', { width: 2, hybrid_ref: '就' }],
+  ['23就', { width: 2, ref_literal: '就', code_prefix: '23' }],
   ['門0', { width: 2, literal_priority: true }],
   ['33~~你', { width: 2, compound_kind: 'syn', code_prefix: '33' }],
   ['$$', { width: 2, compound_kind: 'doubled_syllable' }],

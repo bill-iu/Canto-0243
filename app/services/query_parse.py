@@ -206,9 +206,6 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     if serial_parsed:
         return SerialPhonemeAnchorQuery(**serial_parsed)
 
-    if is_hybrid_tail_equals_alias(q):
-        return HybridTailEqualsAliasQuery(raw_q=q, hybrid_q=hybrid_query_from_tail_equals(q))
-
     if is_framed_equals_query(q):
         return EqualsQuery(raw_q=q)
 

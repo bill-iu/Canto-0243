@@ -610,6 +610,38 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         candidates = cached if cached is not None else query.all()
     else:
         candidates = query.limit(2000).all()
+
+    tail_rhyme_union = (
+        is_final
+        and full_code
+        and not span.whole_word
+        and not span.phoneme_anchor_only
+    )
+    if tail_rhyme_union:
+        bucket = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+        if bucket is not None:
+            pool = bucket
+        else:
+            from app.services.position_match.sources import get_candidates_for_length
+
+            pool, _ = get_candidates_for_length(
+                db, spec.width, code=full_code or None, mode=mode, fallback_limit=None
+            )
+        target_final_options = build_final_options_at_positions(
+            span.ref_literal, span.start_pos, spec.width, db
+        )
+        return [
+            word
+            for word in pool
+            if matches_hybrid_ref_chars(
+                get_word_text(word),
+                get_rhyme_finals(word),
+                span.ref_literal,
+                span.start_pos,
+                target_final_options,
+            )
+        ]
+
     return [
         word
         for word in candidates

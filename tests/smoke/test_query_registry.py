@@ -79,6 +79,11 @@ class QueryRegistrySmokeTests(unittest.TestCase):
                     self.assertEqual(spec.compound_kind, expected["compound_kind"])
                 if "hybrid_ref" in expected:
                     self.assertEqual(spec.hybrid_ref_chars, expected["hybrid_ref"])
+                if "code_prefix" in expected and "ref_literal" in expected:
+                    self.assertEqual(spec.code_prefix, expected["code_prefix"])
+                    span = get_equals_span(spec)
+                    self.assertIsNotNone(span)
+                    self.assertEqual(span.ref_literal, expected["ref_literal"])
                 if expected.get("literal_priority"):
                     self.assertTrue(spec.literal_priority)
                 if "anchor" in expected:

@@ -6,6 +6,7 @@ import { queryFirst, queryRows } from '../database-backend.ts';
 import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
+import { anchorPhonemeOptions } from './filters.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
 import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
@@ -142,6 +143,53 @@ async function suffixAlignedRefPhonemeParts(
   }
   const row = preferredPronunciationRow(pool);
   return row ? phonemePartsSuffix(row, dimension, refLen) : equalsRefPhonemeParts(db, literal, dimension);
+}
+
+async function buildFinalOptionsAtPositions(
+  db: Database,
+  refChars: string,
+  startPos: number,
+  width: number,
+): Promise<Array<Set<string> | null>> {
+  const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
+  for (let i = 0; i < refChars.length; i++) {
+    const pos = startPos + i;
+    if (pos >= 0 && pos < width) {
+      const opts = await anchorPhonemeOptions(db, refChars[i]!, 'final');
+      if (opts.size) {
+        target[pos] = opts;
+      }
+    }
+  }
+  return target;
+}
+
+function matchesHybridRefChars(
+  wordChar: string,
+  wordFinals: string[],
+  refChars: string,
+  startPos: number,
+  targetFinalOptions: Array<Set<string> | null>,
+): boolean {
+  const width = targetFinalOptions.length;
+  if (wordChar.length !== width || wordFinals.length !== width) {
+    return false;
+  }
+  for (let i = 0; i < refChars.length; i++) {
+    const pos = startPos + i;
+    if (pos < 0 || pos >= width) {
+      return false;
+    }
+    if (wordChar[pos] === refChars[i]) {
+      continue;
+    }
+    const options = targetFinalOptions[pos];
+    if (options?.size && wordFinals[pos] && options.has(wordFinals[pos]!)) {
+      continue;
+    }
+    return false;
+  }
+  return true;
 }
 
 export function matchesEqualsPhonemeSpan(
@@ -288,10 +336,38 @@ export async function queryWordsByEqualsSpec(
     return equalsWholeWordMatches(spec, db, searchMode, target, targetParts, isFinal);
   }
 
+  const tailRhymeUnion =
+    isFinal &&
+    Boolean(fullCode) &&
+    !span.whole_word &&
+    !span.phoneme_anchor_only;
+
   const [candidates] = await getCandidatesForLength(db, spec.width, {
     code: fullCode || null,
     mode: searchMode,
+    unlimited: tailRhymeUnion,
   });
+
+  if (tailRhymeUnion) {
+    const targetFinalOptions = await buildFinalOptionsAtPositions(
+      db,
+      span.ref_literal,
+      span.start_pos,
+      spec.width,
+    );
+    return candidates.filter(
+      (word) =>
+        wordMatchesWidth(word, spec.width) &&
+        matchesHybridRefChars(
+          getWordText(word),
+          getRhymeFinals(word),
+          span.ref_literal,
+          span.start_pos,
+          targetFinalOptions,
+        ),
+    );
+  }
+
   return candidates.filter(
     (word) =>
       wordMatchesWidth(word, spec.width) &&

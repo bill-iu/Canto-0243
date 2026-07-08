@@ -152,7 +152,19 @@ export function normalizeQuery(q: string): string {
   normalized = normalized.replace(/[！＠＃＄％＆＊（）＋－＝７８？、。]/g, (match) => fullToHalf[match] || match);
   normalized = normalized.replace(/～～/g, '~~').replace(/！！/g, '!!');
 
-  return normalizeHanziDollarSyllableAnchors(normalized);
+  normalized = normalizeHanziDollarSyllableAnchors(normalized);
+  return normalizeCodeSandwichTailEquals(normalized);
+}
+
+/** Port of query_lexer.normalize_code_sandwich_tail_equals (ADR-0028) */
+function normalizeCodeSandwichTailEquals(q: string): string {
+  if (!q || q.includes('=')) {
+    return q;
+  }
+  if (/^(\d+)([\u4e00-\u9fff]+)$/.test(q)) {
+    return `${q}=`;
+  }
+  return q;
 }
 
 /** Port of jyutping_anchor.normalize_hanzi_dollar_syllable_anchors (連續 $ 保留) */
@@ -615,14 +627,6 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
   const serialPhoneme = parseSerialPhonemeAnchorQuery(q);
   if (serialPhoneme) {
     return serialPhoneme;
-  }
-
-  if (isHybridTailEqualsAlias(q)) {
-    return {
-      kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
-      raw_q: q,
-      hybrid_q: hybridQueryFromTailEquals(q),
-    } as HybridTailEqualsAliasQuery;
   }
 
   if (isFramedEqualsQuery(q)) {
@@ -1182,6 +1186,9 @@ function framedEqualsBlocksSerial(q: string): boolean {
   if (m[4] && (m[3]?.length ?? 0) >= 2) {
     return true;
   }
+  if (m[4] && m[1] && !m[5]) {
+    return true;
+  }
   return false;
 }
 
@@ -1416,7 +1423,7 @@ export function hybridQueryFromTailEquals(q: string): string {
  * e.g., "香港=", "2=我3", "=香", "就="
  */
 export function isFramedEqualsQuery(q: string): boolean {
-  if (q.includes(CODE_TAIL_MIDDLE) || q.includes('@') || isHybridTailEqualsAlias(q)) {
+  if (q.includes(CODE_TAIL_MIDDLE) || q.includes('@')) {
     return false;
   }
   
