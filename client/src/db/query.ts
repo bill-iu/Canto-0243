@@ -69,7 +69,7 @@ export interface SearchPageResult {
   lookupLayout?: boolean;
 }
 
-export const SEARCH_PAGE_SIZE = 200;
+export const SEARCH_PAGE_SIZE = 400;
 
 /**
  * Legacy QueryOptions interface

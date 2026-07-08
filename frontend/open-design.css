@@ -569,3 +569,26 @@ a.mode-option {
   font-size: 16px;
   line-height: 1;
 }
+
+@media (min-width: 768px) {
+  /* 全寬左對齊：清單佔滿視窗，詞條詳情仍 overlay 右側 */
+  .app-bar {
+    max-width: none;
+    margin: 0;
+  }
+
+  .main-wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+
+  .app-footer {
+    max-width: none;
+    margin: 0;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+}

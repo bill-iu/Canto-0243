@@ -326,4 +326,15 @@ a.result-item:active,
       font-size: 14px;
     }
 
+@media (min-width: 768px) {
+  .app-footer,
+  .db-stats {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+}
+
 

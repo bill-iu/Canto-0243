@@ -195,8 +195,8 @@
   margin-top: 8px;
 }
 
-@media (min-width: 1121px) {
-  /* 寬屏：logo／tab 貼齊視窗左緣（沿用 app-header page padding），不跟 main-wrap 置中 */
+@media (min-width: 768px) {
+  /* ≥768px：header／主內容全寬左對齊（沿用 app-header page padding） */
   .app-header .app-bar {
     max-width: none;
     margin: 0;
