@@ -3,6 +3,7 @@ import * as SQLite from '@journeyapps/wa-sqlite';
 import { OPFSCoopSyncVFS } from '@journeyapps/wa-sqlite/src/examples/OPFSCoopSyncVFS.js';
 
 import type { SqlBindParams } from './database-backend.ts';
+import { bodyStreamForLexiconFetch } from './lexicon-gunzip.ts';
 
 const VFS_NAME = 'canto-opfs-coop';
 const DB_RELATED_SUFFIXES = ['', '-journal', '-wal'] as const;
@@ -128,16 +129,11 @@ async function streamUrlIntoOpfs(
   if (!response.ok) {
     throw new Error(`Failed to fetch lexicon package (${response.status})`);
   }
-  if (!response.body) {
-    throw new Error('ReadableStream unavailable for lexicon fetch');
-  }
   const total =
     progressTotal && progressTotal > 0
       ? progressTotal
       : Number(response.headers.get('Content-Length')) || 0;
-  const input = gzip
-    ? response.body.pipeThrough(new DecompressionStream('gzip'))
-    : response.body;
+  const input = bodyStreamForLexiconFetch(response, gzip);
   return writeStreamToOpfs(fileName, input, total);
 }
 

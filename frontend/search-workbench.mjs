@@ -311,7 +311,7 @@ let disconnectInfiniteScroll = null;
 
 function remountInfiniteScroll() {
   disconnectInfiniteScroll?.();
-  const root = $.searchView?.classList.contains("has-entry-detail") ? $.searchResultsScroll : null;
+  const root = $.searchResultsScroll || null;
   disconnectInfiniteScroll = wireInfiniteScroll({
     root,
     sentinel: $.resultsScrollSentinel,
@@ -680,14 +680,16 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const staleResults = !isLoadMore && (tab.results?.length > 0);
   setButtonLoading(true, { staleResults });
 
-  if (!isLoadMore && !staleResults) {
-    $.results.innerHTML = "";
-    $.stats.textContent = "";
-    tab.results = [];
-    tab.offset = 0;
-    tab.total = null;
+  if (!isLoadMore) {
     tab.renderedCount = RESULT_RENDER_BATCH;
-    updateScrollSentinel(tab);
+    if (!staleResults) {
+      $.results.innerHTML = "";
+      $.stats.textContent = "";
+      tab.results = [];
+      tab.offset = 0;
+      tab.total = null;
+      updateScrollSentinel(tab);
+    }
   }
 
   if (!input) {

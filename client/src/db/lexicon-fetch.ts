@@ -1,5 +1,6 @@
 /** 詞庫下載（含 gzip 解壓 + 閘前進度） */
 
+import { bodyStreamForLexiconFetch } from './lexicon-gunzip.ts';
 import { reportDownloadBytes } from './startup-progress.ts';
 
 async function readStreamToBytes(
@@ -35,18 +36,11 @@ export async function fetchLexiconBytesFromUrl(
   if (!response.ok) {
     throw new Error(`Failed to fetch lexicon package (${response.status})`);
   }
-  if (!response.body) {
-    throw new Error('ReadableStream unavailable for lexicon fetch');
-  }
   const progressTotal =
     opts?.progressTotal && opts.progressTotal > 0
       ? opts.progressTotal
       : Number(response.headers.get('Content-Length')) || 0;
 
-  if (opts?.gzip && typeof DecompressionStream !== 'undefined') {
-    const decompressed = response.body.pipeThrough(new DecompressionStream('gzip'));
-    return readStreamToBytes(decompressed, progressTotal);
-  }
-
-  return readStreamToBytes(response.body, progressTotal);
+  const body = bodyStreamForLexiconFetch(response, Boolean(opts?.gzip));
+  return readStreamToBytes(body, progressTotal);
 }

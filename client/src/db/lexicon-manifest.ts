@@ -47,7 +47,10 @@ export function resolveTargetFromManifest(manifest: LexiconManifest, version: st
     return fallbackTarget(version);
   }
   const dbUrl = publicAssetUrl(manifest.dbFile);
+  const devPlain =
+    typeof import.meta !== 'undefined' && Boolean((import.meta as ImportMeta).env?.DEV);
   const canGzip =
+    !devPlain &&
     Boolean(manifest.preferCompressed && manifest.dbFileGz && supportsGzipDecompression());
   if (!canGzip) {
     return {
