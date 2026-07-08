@@ -130,19 +130,69 @@ function buildFinalOptions(entries: RimeEntry[], candidates: Set<string>): Recor
   return sorted;
 }
 
+/** Port of jyutping_anchor.default_syllable_letters_for_anchor_char — preset 單字音節字母 */
+export function buildAnchorCharLetters(repoRoot: string): Record<string, string> {
+  const csvPath = path.join(path.resolve(repoRoot), 'data/rime/char.csv');
+  if (!fs.existsSync(csvPath)) {
+    return {};
+  }
+  const lines = fs.readFileSync(csvPath, 'utf8').split(/\r?\n/);
+  if (!lines.length) {
+    return {};
+  }
+  const header = lines[0]!.split(',');
+  const charIdx = header.indexOf('char');
+  const jyutIdx = header.indexOf('jyutping');
+  const rankIdx = header.indexOf('pron_rank');
+  if (jyutIdx < 0) {
+    return {};
+  }
+  const rowsByChar = new Map<string, Array<{ rank: number; jyut: string }>>();
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i]!.trim();
+    if (!line) {
+      continue;
+    }
+    const cols = line.split(',');
+    const ch = (cols[charIdx] ?? '').trim();
+    const jyut = (cols[jyutIdx] ?? '').trim();
+    const pronRank = rankIdx >= 0 ? (cols[rankIdx] ?? '').trim() : '預設';
+    if (!ch || !/^[\u4e00-\u9fff]$/.test(ch) || !jyut) {
+      continue;
+    }
+    const bucket = rowsByChar.get(ch) ?? [];
+    bucket.push({ rank: rankValue(pronRank), jyut });
+    rowsByChar.set(ch, bucket);
+  }
+  const out: Record<string, string> = {};
+  for (const [ch, rows] of rowsByChar) {
+    const preset = rows.filter((r) => r.rank === 0);
+    const minRank = Math.min(...rows.map((r) => r.rank));
+    const pickFrom = preset.length ? preset : rows.filter((r) => r.rank === minRank);
+    const token = pickFrom[0]?.jyut.split(/\s+/)[0] ?? '';
+    const letters = syllableLetters(token);
+    if (letters) {
+      out[ch] = letters;
+    }
+  }
+  return out;
+}
+
 export function buildRhymeLetterIndex(repoRoot: string): {
   finalOptions: Record<string, string[]>;
   completeSyllables: string[];
+  anchorCharLetters: Record<string, string>;
 } {
   const csvPath = path.join(path.resolve(repoRoot), 'data/rime/char.csv');
   if (!fs.existsSync(csvPath)) {
-    return { finalOptions: {}, completeSyllables: [] };
+    return { finalOptions: {}, completeSyllables: [], anchorCharLetters: {} };
   }
   const entries = parseCharCsvEntries(fs.readFileSync(csvPath, 'utf8'));
   const completeSyllables = [...new Set(entries.map((e) => e.letters))].sort();
   const candidates = collectFragmentCandidates(entries);
   const finalOptions = buildFinalOptions(entries, candidates);
-  return { finalOptions, completeSyllables };
+  const anchorCharLetters = buildAnchorCharLetters(repoRoot);
+  return { finalOptions, completeSyllables, anchorCharLetters };
 }
 
 export function loadRhymeLetterData(repoRoot: string): void {

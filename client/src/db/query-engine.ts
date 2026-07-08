@@ -43,6 +43,7 @@ import { isWildcardChar } from './position-match/mask-grammar.ts';
 import { compoundSearchSpecFromMatchSpec, getCandidatesForLength } from './position-match/sources.ts';
 import { executeMatchSpec, filterMatchSpecRows } from './position-match/engine.ts';
 import { maskFromCanonicalPlusQuery } from './plus-grammar.ts';
+import { defaultSyllableLettersForAnchorChar } from './rime-index.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
@@ -179,7 +180,7 @@ function normalizeCodeSandwichTailEquals(q: string): string {
   return q;
 }
 
-/** Port of jyutping_anchor.normalize_hanzi_dollar_syllable_anchors (連續 $ 保留) */
+/** Port of jyutping_anchor.normalize_hanzi_dollar_syllable_anchors */
 function normalizeHanziDollarSyllableAnchors(q: string): string {
   if (!q || !q.includes('$')) {
     return q;
@@ -195,6 +196,18 @@ function normalizeHanziDollarSyllableAnchors(q: string): string {
       if (j - i >= 2) {
         out.push(q.slice(i, j));
         i = j;
+        continue;
+      }
+    }
+    if (
+      q[i] === '$' &&
+      i + 1 < q.length &&
+      /^[\u4e00-\u9fff]$/.test(q[i + 1]!)
+    ) {
+      const letters = defaultSyllableLettersForAnchorChar(q[i + 1]!);
+      if (letters) {
+        out.push(letters);
+        i += 2;
         continue;
       }
     }
@@ -901,6 +914,9 @@ export function parserLogicSelfCheck(): void {
     ['3+hon4', QueryKind.JYUTPING_ANCHOR],
     ['23o', QueryKind.JYUTPING_ANCHOR],
     ['3hon4', QueryKind.JYUTPING_ANCHOR],
+    ['3$漢4', QueryKind.JYUTPING_ANCHOR],
+    ['3+ngo4', QueryKind.JYUTPING_ANCHOR],
+    ['23+o', QueryKind.JYUTPING_ANCHOR],
     ['就=', QueryKind.RHYME_ANCHOR],
     ['?+就=', QueryKind.RHYME_ANCHOR],
     ['?+人=?', QueryKind.TRIPLE_RHYME_ANCHOR],

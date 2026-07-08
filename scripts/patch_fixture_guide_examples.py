@@ -30,6 +30,8 @@ GUIDE_CHARS = frozenset({
     "弄不好", "十分好", "未諗好",
     "仲好講", "仲好咩", "仲好啦",
     "門牙", "門人",
+    # jyutping-anchor guide parity (3+ngo4 / 3$漢4 / 23+o)
+    "倒我米", "罕見", "下一個",
 })
 
 

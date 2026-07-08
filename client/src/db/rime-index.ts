@@ -14,6 +14,7 @@ const STANDALONE_NG = 'ng';
 
 let finalOptions: Record<string, string[]> = {};
 let completeSyllables = new Set<string>();
+let anchorCharLetters: Record<string, string> = {};
 const optionsCache = new Map<string, Set<string>>();
 
 export function normalizeRhymeLetters(letters: string): string {
@@ -24,10 +25,18 @@ export function normalizeRhymeLetters(letters: string): string {
 export function initRhymeLetterIndex(data: {
   finalOptions?: Record<string, string[]>;
   completeSyllables?: string[];
+  anchorCharLetters?: Record<string, string>;
 }): void {
   finalOptions = data.finalOptions ?? {};
   completeSyllables = new Set(data.completeSyllables ?? []);
+  anchorCharLetters = data.anchorCharLetters ?? {};
   optionsCache.clear();
+}
+
+/** `$`+單漢字錨 → 預設音節字母（parity with Python default_syllable_letters_for_anchor_char） */
+export function defaultSyllableLettersForAnchorChar(char: string): string | null {
+  const letters = anchorCharLetters[char];
+  return letters ?? null;
 }
 
 export function isCompleteSyllableInRime(letters: string): boolean {
@@ -134,5 +143,6 @@ export function matchesRhymeLettersAtPosition(
 export function resetRhymeLetterIndex(): void {
   finalOptions = {};
   completeSyllables = new Set();
+  anchorCharLetters = {};
   optionsCache.clear();
 }
