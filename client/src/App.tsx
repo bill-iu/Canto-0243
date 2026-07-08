@@ -114,7 +114,9 @@ function App() {
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
-  const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
+  const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
+    () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
+  );
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
   const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);

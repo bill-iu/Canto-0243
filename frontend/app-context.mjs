@@ -116,9 +116,11 @@ export function t(key, lang = getLang()) {
   return MESSAGES[lang]?.[key] ?? MESSAGES.zh[key] ?? key;
 }
 
-export function getTheme() {
+export function getTheme(options = {}) {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'light' || saved === 'dark') return saved;
+  const fallback = options.defaultTheme;
+  if (fallback === 'light' || fallback === 'dark') return fallback;
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
@@ -132,7 +134,7 @@ export function setTheme(theme) {
 
 export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";
 
-export const PAGE_SIZE = 160;
+export const PAGE_SIZE = 200;
 export const WARMUP_DONE_HOLD_MS = 2000;
 export const WARMUP_DONE_FADE_MS = 420;
 export const SEARCH_RING_BLUR_MS = 320;
