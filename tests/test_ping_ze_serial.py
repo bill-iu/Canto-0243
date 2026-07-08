@@ -19,7 +19,7 @@ class PingZakClassTests(unittest.TestCase):
         self.assertEqual(ping_zak_class("3"), "ping")
 
     def test_ze_digits(self):
-        for d in ("2", "4", "9"):
+        for d in ("2", "4", "5", "9"):
             self.assertEqual(ping_zak_class(d), "ze")
 
 

@@ -14,7 +14,7 @@ const LEXICON_VERSION =
   process.env.VITE_LEXICON_VERSION ||
   process.env.RELEASE_TAG ||
   process.argv[2] ||
-  'dev';
+  '394052';
 const TARGET_DB_FILE = `lyrics.${LEXICON_VERSION}.db`;
 const TARGET_DB = path.resolve(`./public/${TARGET_DB_FILE}`);
 const TARGET_WASM = path.resolve('./public/sql-wasm-browser.wasm');

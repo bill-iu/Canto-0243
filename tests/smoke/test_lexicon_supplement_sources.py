@@ -135,7 +135,7 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0].char, "AV女優")
         self.assertEqual(rows[0].jyutping, "ei1 wi1 neoi5 jau1")
-        self.assertEqual(rows[0].code, "??43")
+        self.assertEqual(rows[0].code, "??53")
         self.assertTrue(
             is_valid_word_lexicon_reading(
                 "AV女優",
@@ -143,7 +143,7 @@ class LexiconSupplementSourceTests(unittest.TestCase):
                 allow_mixed_literal=True,
             )
         )
-        self.assertEqual(build_mixed_literal_code("AV女優", "ei1 wi1 neoi5 jau1"), "??43")
+        self.assertEqual(build_mixed_literal_code("AV女優", "ei1 wi1 neoi5 jau1"), "??53")
 
     def test_generic_lexicon_json_uses_shared_mixed_literal_path(self):
         with tempfile.TemporaryDirectory() as d:
@@ -152,7 +152,7 @@ class LexiconSupplementSourceTests(unittest.TestCase):
             rows = ingest_lexicon_json(path, source_id="lexicon_json")
 
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0].code, "??43")
+        self.assertEqual(rows[0].code, "??53")
 
     def test_candidate_normalizer_exposes_single_interface_for_mixed_literals(self):
         normalizer = LexiconCandidateNormalizer()
@@ -160,7 +160,7 @@ class LexiconSupplementSourceTests(unittest.TestCase):
 
         self.assertIsNotNone(candidate)
         self.assertEqual(candidate.char, "AV女優")
-        self.assertEqual(candidate.code, "??43")
+        self.assertEqual(candidate.code, "??53")
 
     def test_candidate_normalizer_allows_strategy_override_per_source(self):
         class PrefixStrategy(DefaultLexiconCandidateStrategy):

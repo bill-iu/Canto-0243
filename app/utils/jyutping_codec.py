@@ -1,16 +1,17 @@
 import json
 from typing import FrozenSet, List, Set, Tuple
 
-TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "4", 6: "2"}
+TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "5", 6: "2"}
 VOWELS = "aeiou"
 M1_MAPPING = {"5": "4", "4": "5", "6": "2", "2": "6", "9": "3", "3": "9"}
-# ponytail: CONTEXT § 02493 碼 — query-only digits → stored 0243 碼
-M02493_TO_0243 = {"1": "3", "5": "4", "6": "2", "7": "3", "8": "4"}
+M2_LOOSE_MAPPING = {"4": "5", "5": "4"}
+# ponytail: CONTEXT § 02493 碼 — query-only digits → stored 394052 碼（函數名保留）
+M02493_TO_0243 = {"1": "3", "5": "5", "6": "2", "7": "3", "8": "4"}
 STANDALONE_NASAL_FINALS = frozenset({"m", "ng"})
 
 
 def get_0243_code(jyutping: str) -> str:
-    """根據 jyutping 產生 0243 code（逐音節聲調 → TONE_MAP digit，非韻母鍵盤）。"""
+    """根據 jyutping 產生 394052 碼（逐音節聲調 → TONE_MAP digit，非韻母鍵盤）。"""
     if not jyutping:
         return ""
 
@@ -71,34 +72,39 @@ def rhyme_finals_from_jyutping(jyutping: str) -> list[str]:
 
 
 def normalize_02493_code(code: str) -> str:
-    """02493 碼逐位正規化為詞庫 0243 碼（CONTEXT § 02493 碼）。"""
+    """02493 碼逐位正規化為詞庫 394052 碼（CONTEXT § 02493 碼）。"""
     if not code or not code.isdigit():
         return code
     return "".join(M02493_TO_0243.get(digit, digit) for digit in code)
 
 
-def _loose_digit_options(digit: str) -> tuple[str, ...]:
-    if digit in M1_MAPPING:
-        return tuple(sorted({digit, M1_MAPPING[digit]}))
+def _loose_digit_options(digit: str, mapping: dict[str, str]) -> tuple[str, ...]:
+    if digit in mapping:
+        return tuple(sorted({digit, mapping[digit]}))
     return (digit,)
 
 
-def _is_loose_code_mode(mode: str) -> bool:
-    return mode in ("m1", "0243")
+def _loose_mapping_for_mode(mode: str) -> dict[str, str] | None:
+    if mode in ("m1", "0243"):
+        return M1_MAPPING
+    if mode in ("m2", "02493"):
+        return M2_LOOSE_MAPPING
+    return None
 
 
 def get_code_variants(code: str, mode: str = "m2") -> List[str]:
-    """生成 m1 / m2 的 code 等價變體（先 02493→0243 正規化，m1 再逐位鬆檔笛卡爾積）。"""
+    """生成 m1 / m2 / m3 的 code 等價變體（先 02493→394052 正規化，再按模式鬆檔）。"""
     if not code or not code.isdigit():
         return [code]
 
     code = normalize_02493_code(code)
-    if not _is_loose_code_mode(mode):
+    mapping = _loose_mapping_for_mode(mode)
+    if mapping is None:
         return [code]
 
     from itertools import product
 
-    return sorted({"".join(combo) for combo in product(*(_loose_digit_options(d) for d in code))})
+    return sorted({"".join(combo) for combo in product(*(_loose_digit_options(d, mapping) for d in code))})
 
 
 def _syllable_letters(token: str) -> str:
@@ -167,6 +173,8 @@ if __name__ == "__main__":
     assert normalize_02493_code("021") == "023"
     assert set(get_code_variants("021", "m1")) == {"023", "029", "063", "069"}
     assert get_code_variants("021", "m2") == ["023"]
+    assert set(get_code_variants("4", "m2")) == {"4", "5"}
+    assert get_code_variants("45", "m3") == ["45"]
     assert "93" in get_code_variants("39", "m1")
     assert STANDALONE_NASAL_FINALS <= expand_standalone_nasal_final_options({"m"})
     assert rhyme_final_tuples_compatible("m4", "ng5")

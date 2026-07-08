@@ -16,7 +16,7 @@ const HAS_PZ_RE = /[PZ]/i;
 
 const M02493_TO_0243: Record<string, string> = {
   '1': '3',
-  '5': '4',
+  '5': '5',
   '6': '2',
   '7': '3',
   '8': '4',
