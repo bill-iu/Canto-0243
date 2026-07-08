@@ -48,13 +48,9 @@ def ensure_length_column() -> None:
                 conn.commit()
             print("[DB] 已為本地 SQLite 資料表自動新增 'length' 欄位。")
 
-        with engine.connect() as conn:
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_words_length ON words(length)"))
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code ON words(length, code)"))
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code_finals ON words(length, code, finals)"))
-            conn.commit()
+        # ponytail: I2 — composite idx_length_code_finals comes from SQLAlchemy model only
         if not column_existed:
-            print("[DB] length 相關 index 已確保。")
+            print("[DB] length 欄位已確保（索引由 build-db finalize 管理）。")
     except Exception as e:
         err = str(e)
         if "database is locked" in err.lower() or "operationalerror" in err.lower():

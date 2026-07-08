@@ -476,6 +476,46 @@ def _build_db_exports(args: argparse.Namespace) -> int:
               f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)")
     except Exception as exc:
         print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> finalize lexicon indexes (I2 allowlist)")
+    try:
+        from ingest.lexicon_indexes import finalize_lexicon_indexes
+
+        db_path = REPO_ROOT / "lyrics.db"
+        dropped = finalize_lexicon_indexes(db_path)
+        if dropped:
+            print(f"    dropped: {', '.join(dropped)}")
+        else:
+            print("    no forbidden indexes")
+        import os
+        import sqlite3
+
+        size_mb = os.path.getsize(db_path) / 1024 / 1024
+        with sqlite3.connect(db_path) as conn:
+            idx_mb = (
+                conn.execute(
+                    "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
+                    "(SELECT name FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_%')"
+                ).fetchone()[0]
+                or 0
+            ) / 1024 / 1024
+        print(f"    post-finalize: db={size_mb:.1f} MB indexes={idx_mb:.1f} MB")
+        with sqlite3.connect(db_path) as conn:
+            conn.execute("VACUUM")
+    except Exception as exc:
+        print(f"index finalize failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> lexicon release gate (I2)")
+    try:
+        from ingest.lexicon_release_gate import check_lexicon_release_gate
+
+        gate = check_lexicon_release_gate(REPO_ROOT / "lyrics.db")
+        for line in gate.messages:
+            print(f"    {line}")
+        if not gate.ok:
+            print("lexicon release gate FAILED", file=sys.stderr)
+            return 1
+    except Exception as exc:
+        print(f"release gate failed: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 

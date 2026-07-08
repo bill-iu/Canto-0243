@@ -10,14 +10,14 @@ class Word(Base):
 
     id = Column(_id_type, primary_key=True)  # INTEGER PRIMARY KEY = rowid; no extra index needed (ADR-0027)
     char = Column(String(50), index=True)
-    code = Column(String(20), index=True)
+    code = Column(String(20))
     jyutping = Column(String(100))  # jyutping index removed — only used in ORDER BY, never in WHERE (ADR-0027)
 
     # Explicit length column for fast indexed filtering on word length
-    length = Column(Integer, index=True, nullable=True)
+    length = Column(Integer, nullable=True)
 
-    initials = Column(String(200), index=True)
-    finals = Column(String(200), index=True)
+    initials = Column(String(200))
+    finals = Column(String(200))
     # tones removed — derivable from jyutping via split_jyutping(), zero runtime queries (ADR-0027)
 
     # Bitmask encoding ingest provenance: hsk30=1 kaifang=2 rime=4 rime_phrase=8 rime_words=16 words_hk=32
@@ -28,8 +28,8 @@ class Word(Base):
 
 
 # Composite index: covers length-only, length+code, and length+code+finals queries.
-# idx_length_code dropped — its prefix is fully covered by this index (ADR-0027).
-Index('idx_length_code_finals_model', Word.length, Word.code, Word.finals)
+# idx_length_code dropped — its prefix is fully covered by this index (ADR-0027 / I2).
+Index('idx_length_code_finals', Word.length, Word.code, Word.finals)
 
 
 # ============================================================
@@ -59,10 +59,10 @@ class WordRelation(Base):
 
     # FKs to words.id (now BigInteger per best practices)
     id = Column(_id_type, primary_key=True)
-    word_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
-    related_id = Column(_id_type, ForeignKey("words.id"), index=True, nullable=False)
+    word_id = Column(_id_type, ForeignKey("words.id"), nullable=False)
+    related_id = Column(_id_type, ForeignKey("words.id"), nullable=False)
 
-    relation_type = Column(String(16), index=True, nullable=False)  # syn / ant / semantic_related
+    relation_type = Column(String(16), nullable=False)  # syn / ant / semantic_related
     score = Column(Float, nullable=True)                            # 可選信心分數（cosine 或人工）
     source = Column(String(32), nullable=True)                      # cilin / antisem / embedding_cosine ...
     # Cilin hierarchy codes (JSON array): ["A", "Aa", "Aa01", "Aa01A", "Aa01A01="] for later sort/rank
