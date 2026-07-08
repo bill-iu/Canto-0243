@@ -200,25 +200,6 @@
   padding-bottom: 56px;
 }
 
-/* ponytail: lightningcss 曾把多行 selector 壓成 .gate-brand{display:none}；明確還原就緒閘品牌區 */
-.preload-overlay:not(.preload-overlay--minimal) .gate-brand {
-  display: block;
-}
-
-/* 加強確保就緒閘的 icon (brand-wordmark) 和 ink (ink-blob/flicks) 不被隱藏
-   防止 lightningcss 或其他 selector 壓縮導致 display:none 回歸 */
-.preload-overlay:not(.preload-overlay--minimal) .gate-brand,
-.preload-overlay:not(.preload-overlay--minimal) .gate-brand .brand-logo,
-.preload-overlay:not(.preload-overlay--minimal) .gate-brand svg,
-.preload-overlay--minimal .gate-ink-meter {
-  display: block !important;
-  visibility: visible !important;
-}
-
-.preload-overlay .primary-button {
-  margin-top: 8px;
-}
-
 @media (min-width: 768px) {
   /* ≥768px：header／主內容全寬左對齊（沿用 app-header page padding） */
   .app-header .app-bar {

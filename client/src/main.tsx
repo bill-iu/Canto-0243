@@ -2,6 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import '../../frontend/open-design.css';
+import '../../frontend/ready-gate.css';
 import '../../frontend/shell.css';
 import '../../frontend/workbench.css';
 import '../../frontend/entry-detail.css';

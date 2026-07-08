@@ -175,6 +175,7 @@ export function ReadyGate({
     offlineStatus === 'failed' || (offlineStatus === 'not_ready' && (!isOnline || isDbCached));
 
   const overlayClass = [
+    'ready-gate',
     'preload-overlay',
     !playLanding || isDbCached ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',

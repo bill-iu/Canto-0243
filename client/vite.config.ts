@@ -1,10 +1,39 @@
+import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import type { Plugin } from 'vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 const repoRoot = path.dirname(fileURLToPath(import.meta.url))
+const readyGateCssPath = path.resolve(repoRoot, '../frontend/ready-gate.css')
+
+function readyGateCssPlugin(): Plugin {
+  const serve = () => {
+    const css = fs.readFileSync(readyGateCssPath)
+    return (_req: unknown, res: { setHeader: (k: string, v: string) => void; end: (b: Buffer) => void }) => {
+      res.setHeader('Content-Type', 'text/css; charset=utf-8')
+      res.end(css)
+    }
+  }
+
+  return {
+    name: 'ready-gate-css',
+    configureServer(server) {
+      server.middlewares.use('/ready-gate.css', serve())
+      const base = server.config.base.replace(/\/$/, '')
+      if (base) server.middlewares.use(`${base}/ready-gate.css`, serve())
+    },
+    generateBundle() {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'ready-gate.css',
+        source: fs.readFileSync(readyGateCssPath),
+      })
+    },
+  }
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
@@ -19,6 +48,7 @@ export default defineConfig(({ command }) => ({
   base: command === 'serve' ? '/' : '/Canto-0243/',
   plugins: [
     react(),
+    readyGateCssPlugin(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: [

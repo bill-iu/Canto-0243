@@ -1,123 +1,4 @@
-/* Canto-0243 · gate / hero / results / guide */
-
-.preload-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: var(--z-preload);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 28px;
-      padding: 24px;
-      background: color-mix(in srgb, var(--bg) 96%, transparent);
-      backdrop-filter: blur(8px);
-      transition: opacity 420ms ease, visibility 420ms ease;
-    }
-
-.preload-overlay.is-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-
-.preload-overlay.is-exiting {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-.preload-overlay--minimal {
-      gap: 0;
-    }
-
-.preload-overlay--minimal .gate-brand, .preload-overlay--minimal .gate-hero {
-      display: none;
-    }
-
-html[data-landing="a"] .gate-hero {
-      display: none;
-    }
-
-.gate-brand {
-      text-align: center;
-      max-width: min(520px, 92vw);
-      opacity: 0;
-    }
-
-html.fonts-ready .gate-brand {
-      animation: gate-brand-in 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    }
-
-.gate-ink-meter {
-      display: none;
-      width: min(240px, 72vw);
-      height: auto;
-    }
-
-.preload-overlay--minimal .gate-ink-meter {
-      display: block;
-    }
-
-.gate-status {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      text-align: center;
-    }
-
-.gate-ink-track {
-      opacity: 0.22;
-    }
-
-.gate-ink-clip-rect {
-      transition: width 180ms ease-out;
-    }
-
-.preload-overlay.is-degraded .gate-status {
-      color: var(--accent-strong);
-    }
-
-.gate-title,
-    .gate-hero-title {
-      margin: 0;
-      font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
-      font-size: clamp(2.1rem, 6vw, 3.2rem);
-      font-weight: 600;
-      line-height: 1.02;
-      letter-spacing: -0.03em;
-      text-wrap: balance;
-    }
-
-.gate-hero-tagline {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-      line-height: 1.55;
-      text-wrap: pretty;
-      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
-    }
-
-.gate-hero {
-      transition:
-        transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 420ms ease-out;
-    }
-
-.preload-overlay.is-handoff .gate-hero {
-      transform: translateY(-8vh) scale(0.88);
-      opacity: 0;
-    }
-
-@keyframes gate-brand-in {
-      from {
-        opacity: 0;
-        transform: translateY(14px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+/* Canto-0243 · shell / hero / results / guide — 就緒閘見 ready-gate.css */
 
 .app-shell {
       min-height: 100dvh;
@@ -802,10 +683,6 @@ html.fonts-ready .gate-brand {
         scroll-behavior: auto !important;
         transition-duration: 1ms !important;
       }
-      .preload-overlay { transition: none; }
-      .gate-ink-clip-rect { transition: none; }
-      .gate-brand,
-      .gate-hero,
       .search-panel.is-landing-in {
         animation: none !important;
         opacity: 1 !important;
@@ -814,13 +691,13 @@ html.fonts-ready .gate-brand {
       .warmup-badge.is-exiting { opacity: 0; }
       .landing-b-pending .header-hero,
       .landing-b-revealed .header-hero { opacity: 1; }
-      use[filter="url(#brush-roughen-brand)"] { filter: none !important; }
     }
 
 @media (max-width: 760px) {
       .app-bar { align-items: center; flex-wrap: wrap; }
       .menu-trigger { min-width: 168px; }
-      .main-wrap { padding-top: 32px; }
+      .main-wrap { padding-top: 16px; }
+      .header-hero { display: none; }
       .search-panel { border-radius: 22px; padding: 16px; }
       .field-label-row,
       .status-row {
@@ -832,18 +709,9 @@ html.fonts-ready .gate-brand {
       .search-actions { width: 100%; }
       .primary-button { flex: 1; }
       .guide-grid { grid-template-columns: 1fr; }
-      .header-hero h1 {
-        font-size: clamp(16px, 4.5vw, 22px);
-      }
 
       .guide-hero h1 {
         font-size: clamp(34px, 12vw, 54px);
-      }
-    }
-
-@media (max-width: 640px) {
-      .header-hero__tagline {
-        display: none;
       }
     }
 

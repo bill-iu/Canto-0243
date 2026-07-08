@@ -1,0 +1,210 @@
+/* Canto-0243 · 就緒閘 overlay（SSOT）— 勿搬入 shell.css / pwa-app.css */
+
+/* Instant boot fallbacks (before open-design.css hydrates) */
+:root {
+  color-scheme: light dark;
+  --pwa-boot-bg: #ebdfd0;
+  --pwa-boot-muted: #5c6159;
+  --pwa-boot-ink: #9f1239;
+}
+
+html[data-theme='dark'] {
+  --pwa-boot-bg: #1c1917;
+  --pwa-boot-muted: #8f8577;
+  --pwa-boot-ink: #fb7185;
+}
+
+html:not(.pwa-shell-revealed) .app-shell {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.pwa-shell-revealed #pwaBootGate {
+  display: none;
+}
+
+/* Overlay shells */
+.ready-gate.preload-overlay,
+.preload-overlay.ready-gate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preload, 200);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  background: color-mix(in srgb, var(--bg, var(--pwa-boot-bg)) 96%, transparent);
+  backdrop-filter: blur(8px);
+  transition: opacity 420ms ease, visibility 420ms ease;
+}
+
+.ready-gate.pwa-boot-gate,
+.pwa-boot-gate.ready-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  background: color-mix(in srgb, var(--pwa-boot-bg) 96%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.preload-overlay.ready-gate.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preload-overlay.ready-gate.is-exiting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.preload-overlay.ready-gate.preload-overlay--minimal {
+  gap: 0;
+}
+
+.preload-overlay.ready-gate.preload-overlay--minimal .gate-brand,
+.preload-overlay.ready-gate.preload-overlay--minimal .gate-hero {
+  display: none;
+}
+
+html[data-landing='a'] .ready-gate .gate-hero {
+  display: none;
+}
+
+.ready-gate .gate-brand {
+  text-align: center;
+  max-width: min(520px, 92vw);
+  opacity: 0;
+}
+
+html.fonts-ready .ready-gate .gate-brand {
+  animation: gate-brand-in 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ready-gate .gate-ink-meter {
+  display: none;
+  width: min(240px, 72vw);
+  height: auto;
+}
+
+.preload-overlay.ready-gate.preload-overlay--minimal .gate-ink-meter,
+.pwa-boot-gate.ready-gate .gate-ink-meter {
+  display: block;
+}
+
+.ready-gate .gate-status,
+.ready-gate .pwa-boot-gate__status {
+  margin: 0;
+  color: var(--muted, var(--pwa-boot-muted));
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.ready-gate .pwa-boot-gate__status {
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+  opacity: 0;
+}
+
+html.fonts-ready .ready-gate .pwa-boot-gate__status {
+  opacity: 1;
+  transition: opacity 200ms ease-out;
+}
+
+.ready-gate .gate-ink-track {
+  opacity: 0.22;
+}
+
+.ready-gate .gate-ink-clip-rect {
+  transition: width 180ms ease-out;
+}
+
+.preload-overlay.ready-gate.is-degraded .gate-status {
+  color: var(--accent-strong);
+}
+
+.ready-gate .gate-title,
+.ready-gate .gate-hero-title {
+  margin: 0;
+  font-family: 'Playfair Display', 'Canto Critical Serif', 'Noto Serif TC', serif;
+  font-size: clamp(2.1rem, 6vw, 3.2rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.ready-gate .gate-hero-tagline {
+  margin: 14px 0 0;
+  color: var(--muted, var(--pwa-boot-muted));
+  font-size: 15px;
+  line-height: 1.55;
+  text-wrap: pretty;
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', system-ui, sans-serif;
+}
+
+.ready-gate .gate-hero {
+  transition:
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 420ms ease-out;
+}
+
+.preload-overlay.ready-gate.is-handoff .gate-hero {
+  transform: translateY(-8vh) scale(0.88);
+  opacity: 0;
+}
+
+.ready-gate .primary-button {
+  margin-top: 8px;
+}
+
+/* ponytail: lightningcss 曾壓 selector 令 logo/ink display:none；.ready-gate 命名空間防回歸 */
+.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand,
+.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand .brand-logo,
+.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand svg,
+.ready-gate.pwa-boot-gate .gate-brand,
+.ready-gate.pwa-boot-gate .gate-brand .brand-logo,
+.ready-gate.pwa-boot-gate .gate-brand svg,
+.ready-gate.preload-overlay.preload-overlay--minimal .gate-ink-meter,
+.ready-gate.pwa-boot-gate .gate-ink-meter {
+  display: block !important;
+  visibility: visible !important;
+}
+
+@keyframes gate-brand-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ready-gate.preload-overlay {
+    transition: none;
+  }
+
+  .ready-gate .gate-ink-clip-rect {
+    transition: none;
+  }
+
+  .ready-gate .gate-brand,
+  .ready-gate .gate-hero {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .ready-gate use[filter='url(#brush-roughen-brand)'] {
+    filter: none !important;
+  }
+}
