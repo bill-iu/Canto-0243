@@ -195,6 +195,20 @@
   margin-top: 8px;
 }
 
+@media (min-width: 1121px) {
+  /* 寬屏：logo／tab 貼齊視窗左緣（沿用 app-header page padding），不跟 main-wrap 置中 */
+  .app-header .app-bar {
+    max-width: none;
+    margin: 0;
+  }
+
+  .query-tabs-bar {
+    max-width: none;
+    margin: 0;
+    padding-inline: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .header-load-status {
     order: 3;
