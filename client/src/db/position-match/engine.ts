@@ -52,6 +52,7 @@ export async function filterMatchSpecRows(
     const [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
       code: ctx.code ?? spec.code_prefix ?? null,
       mode: ctx.mode,
+      unlimited: true,
     });
     return filterHybridRefCandidates(candidates, spec, ctx.mode, ctx.db);
   }

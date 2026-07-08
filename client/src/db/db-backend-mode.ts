@@ -8,7 +8,7 @@ export function resolveDbBackendMode(
     readonly VITE_DB_BACKEND?: string;
   },
 ): DbBackendMode {
-  const raw = env.VITE_DB_BACKEND?.trim().toLowerCase();
+  const raw = env?.VITE_DB_BACKEND?.trim().toLowerCase();
   if (raw === 'sqljs') return 'sqljs';
   return 'opfs-vfs';
 }

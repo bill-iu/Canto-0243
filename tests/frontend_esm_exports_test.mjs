@@ -161,6 +161,8 @@ describe("PWA ready-gate assets", () => {
     assert.match(initSrc, /openLexiconDatabase/);
     assert.match(initSrc, /markOpfsVfsSessionSkip/);
     assert.match(initSrc, /getActiveDbBackendMode/);
+    const engineSrc = readFileSync(new URL("../client/src/db/position-match/engine.ts", import.meta.url), "utf8");
+    assert.match(engineSrc, /hybrid_ref_chars[\s\S]*unlimited:\s*true/);
     const appSrc = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
     assert.match(appSrc, /getActiveDbBackendMode\(\) === 'opfs-vfs'/);
   });
