@@ -26,6 +26,22 @@ import {
   commitSearchHistoryFrame,
   withResultClickQuery,
 } from "./search-navigation.mjs";
+import {
+  mergeResultsByLiteral,
+  mergePickLookupResults,
+  pickReadingsToQueryRows,
+  anchorOnlyQueryRow,
+  resolveListClickAction,
+  isListableWordRow,
+  buildEntryDetailModelFromPick,
+} from "./entry-detail-core.mjs";
+import {
+  createEntryDetailPanel,
+  fetchEntryDetail,
+  renderMergedResultList,
+  appendPickLookupTail,
+  createMergedResultButton,
+} from "./entry-detail-portable.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
   const q = escapeHtml(input);
@@ -41,10 +57,28 @@ function shouldShowLoadMore(tab) {
   return (total != null && results.length < total) || results.length >= PAGE_SIZE;
 }
 
-function setButtonLoading(loading) {
+const SEARCH_LOADING_LABEL_DELAY_MS = 150;
+let searchLoadingLabelTimer = null;
+
+function clearSearchLoadingLabelTimer() {
+  if (searchLoadingLabelTimer) {
+    clearTimeout(searchLoadingLabelTimer);
+    searchLoadingLabelTimer = null;
+  }
+}
+
+function setButtonLoading(loading, { staleResults = false } = {}) {
   shell.isSearching = loading;
   $.searchBtn.disabled = loading || !shell.appSearchReady;
-  $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
+  clearSearchLoadingLabelTimer();
+  if (!loading) {
+    $.searchBtn.textContent = "搜尋";
+    return;
+  }
+  if (staleResults) return;
+  searchLoadingLabelTimer = setTimeout(() => {
+    if (shell.isSearching) $.searchBtn.textContent = "搜尋中…";
+  }, SEARCH_LOADING_LABEL_DELAY_MS);
 }
 
 function updateModeLabel(lang = getLang()) {
@@ -148,6 +182,122 @@ function runExample(query, mode = shell.currentMode) {
   persistTabs();
   syncViewPanels();
   searchDict(false);
+}
+
+let entryDetailUi = null;
+let entryDetailInsetBound = false;
+
+function syncEntryDetailInset() {
+  const header = document.querySelector(".app-header");
+  document.documentElement.style.setProperty(
+    "--entry-detail-inset-top",
+    header ? `${header.getBoundingClientRect().bottom}px` : "0px",
+  );
+}
+
+function bindEntryDetailInset() {
+  if (entryDetailInsetBound) return;
+  entryDetailInsetBound = true;
+  window.addEventListener("resize", syncEntryDetailInset);
+  window.addEventListener("scroll", syncEntryDetailInset, { passive: true });
+}
+
+function unbindEntryDetailInset() {
+  if (!entryDetailInsetBound) return;
+  entryDetailInsetBound = false;
+  window.removeEventListener("resize", syncEntryDetailInset);
+  window.removeEventListener("scroll", syncEntryDetailInset);
+  document.documentElement.style.removeProperty("--entry-detail-inset-top");
+}
+
+function ensureEntryDetailUi() {
+  if (entryDetailUi) return entryDetailUi;
+  const host = document.getElementById("entryDetailHost") || $.searchView;
+  entryDetailUi = createEntryDetailPanel(host, {
+    lang: getLang(),
+    onClose: () => closeEntryDetail(),
+    onRelationPick: (literal) => handleEntryPick({ literal, fromRelationChip: true }),
+  });
+  return entryDetailUi;
+}
+
+function syncEntryDetailLayout() {
+  $.searchView?.classList.toggle("has-entry-detail", Boolean(shell.entryDetail.open));
+}
+
+function closeEntryDetail() {
+  shell.entryDetail.open = false;
+  shell.entryDetail.activeLiteral = null;
+  shell.entryDetail.preferredJyutping = null;
+  ensureEntryDetailUi().close();
+  syncEntryDetailLayout();
+  unbindEntryDetailInset();
+}
+
+function openEntryDetail(literal, preferredJyutping, readings) {
+  shell.entryDetail.open = true;
+  shell.entryDetail.activeLiteral = literal;
+  shell.entryDetail.preferredJyutping = preferredJyutping ?? null;
+  syncEntryDetailLayout();
+  bindEntryDetailInset();
+  syncEntryDetailInset();
+  const ui = ensureEntryDetailUi();
+  const instant = readings?.length ? buildEntryDetailModelFromPick(literal, readings) : null;
+  if (instant) ui.setModel(instant, preferredJyutping);
+  else ui.showPending(literal);
+  void fetchEntryDetail(literal).then((model) => {
+    if (model && shell.entryDetail.activeLiteral === literal) {
+      ensureEntryDetailUi().setModel(model, preferredJyutping);
+    }
+  });
+}
+
+async function handleEntryPick(payload) {
+  if (shell.currentMode === "syn") {
+    handleResultClick(payload.literal);
+    return;
+  }
+  const action = resolveListClickAction({
+    panelOpen: shell.entryDetail.open,
+    activeLiteral: shell.entryDetail.activeLiteral,
+    targetLiteral: payload.literal,
+    fromRelationChip: payload.fromRelationChip,
+  });
+  if (action === "close") {
+    closeEntryDetail();
+    return;
+  }
+  if (action === "open_only") {
+    shell.entryDetail.open = true;
+    shell.entryDetail.activeLiteral = payload.literal;
+    shell.entryDetail.preferredJyutping = payload.jyutping ?? null;
+    syncEntryDetailLayout();
+    return;
+  }
+  const tab = ensureActiveSearchTab();
+  if (!tab) return;
+  const literal = payload.literal.trim();
+  shell.pickAnchor = literal;
+  shell.pickAnchorRows = payload.readings?.length
+    ? pickReadingsToQueryRows(literal, payload.readings)
+    : anchorOnlyQueryRow(literal);
+  Object.assign(tab, withResultClickQuery(tab, literal));
+  tab.results = shell.pickAnchorRows;
+  tab.offset = 0;
+  tab.total = null;
+  $.searchInput.value = literal;
+  persistTabs();
+  $.results.className = "results";
+  renderMergedResultList($.results, tab.results, {
+    lang: getLang(),
+    activeLiteral: shell.entryDetail.activeLiteral,
+    onPick: handleEntryPick,
+  });
+  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  $.stats.textContent = `1 個結果（${statsLabel}）`;
+  updateShuffleButton();
+  searchDict();
+  openEntryDetail(literal, payload.jyutping, payload.readings);
 }
 
 function createResultLink(text, query, title = "") {
@@ -260,37 +410,62 @@ function renderSearchResults(data, total = null) {
   const finalHits = data.filter((r) => r.anchor_dimension === "final");
   if (initialHits.length || finalHits.length) {
     $.results.className = "syn-container";
-    $.results.appendChild(createSynSection("聲母", initialHits));
-    $.results.appendChild(createSynSection("韻母", finalHits));
+    $.results.appendChild(createAnchorSection("聲母", initialHits));
+    $.results.appendChild(createAnchorSection("韻母", finalHits));
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
     return;
   }
 
-  const frag = document.createDocumentFragment();
-  const seen = new Set();
-  const deduped = [];
-  data.forEach((word) => {
-    const ch = word.display_text || word.char;
-    if (!ch || seen.has(ch)) return;
-    seen.add(ch);
-    deduped.push(word);
-  });
-
-  deduped.forEach((word) => {
-    const display = word.display_text || word.char;
-    const qtext = word.query_text || word.char;
-    frag.appendChild(createResultLink(display, qtext, word.jyutping || ""));
-  });
-  $.results.appendChild(frag);
+  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
+  const merged = mergeResultsByLiteral(
+    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
+  );
+  const ul = document.createElement("ul");
+  ul.className = "results-list-items";
+  const lang = getLang();
+  merged.forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+  $.results.appendChild(ul);
   const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-  $.stats.textContent = `${deduped.length} 個結果（${statsLabel}）`;
-  if (total != null && total > deduped.length) {
-    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${statsLabel}）`;
+  $.stats.textContent = `${merged.length} 個結果（${statsLabel}）`;
+  if (total != null && total > merged.length) {
+    $.stats.textContent = `已載入 ${merged.length} / ${total} 個結果（${statsLabel}）`;
   } else if (total != null) {
     $.stats.textContent = `${total} 個結果（${statsLabel}）`;
   }
   updateShuffleButton();
+}
+
+function createAnchorSection(title, items) {
+  const section = document.createElement("section");
+  section.className = "syn-section";
+  const heading = document.createElement("h2");
+  heading.textContent = `${title}${items.length ? ` (${items.length})` : ""}`;
+  section.appendChild(heading);
+  const ul = document.createElement("ul");
+  ul.className = "results-list-items";
+  const lang = getLang();
+  mergeResultsByLiteral(
+    items.map((row) => ({ ...row, word: row.char || row.display_text })),
+  ).forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+  section.appendChild(ul);
+  return section;
 }
 
 function createSynSection(title, items) {
@@ -335,7 +510,35 @@ function toggleLoadMoreButton(show) {
 }
 
 function finishSearchWithData(tab, data, { append = false, total = null } = {}) {
-  const displayData = append ? (tab.results || []).concat(data) : data;
+  let displayData;
+  const pickAnchor = shell.pickAnchor;
+  if (!append && pickAnchor && (tab.q || "").trim() === pickAnchor) {
+    displayData = mergePickLookupResults(pickAnchor, shell.pickAnchorRows || [], data);
+    tab.results = displayData;
+    tab.offset = displayData.length;
+    if (total != null) tab.total = total;
+    persistTabs();
+    appendPickLookupTail($.results, pickAnchor, displayData, {
+      lang: getLang(),
+      activeLiteral: shell.entryDetail.activeLiteral,
+      onPick: handleEntryPick,
+    });
+    const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+    if (tab.total != null && tab.total > displayData.length) {
+      $.stats.textContent = `已載入 ${displayData.length} / ${tab.total} 個結果（${statsLabel}）`;
+    } else if (tab.total != null) {
+      $.stats.textContent = `${tab.total} 個結果（${statsLabel}）`;
+    } else {
+      $.stats.textContent = `${displayData.length} 個結果（${statsLabel}）`;
+    }
+    shell.pickAnchor = null;
+    shell.pickAnchorRows = null;
+    updateShuffleButton();
+    const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
+    toggleLoadMoreButton(hasMore);
+    return;
+  }
+  displayData = append ? (tab.results || []).concat(data) : data;
   tab.results = displayData;
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
@@ -355,11 +558,16 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const { signal } = shell.searchAbort;
 
   const input = $.searchInput.value.trim();
+  if (!isLoadMore && input && input !== shell.pickAnchor) {
+    shell.pickAnchor = null;
+    shell.pickAnchorRows = null;
+  }
   if (!isLoadMore && input) tab.q = input;
   if (!restoreFromHistory) showSearch({ replace: true });
-  setButtonLoading(true);
+  const staleResults = !isLoadMore && (tab.results?.length > 0);
+  setButtonLoading(true, { staleResults });
 
-  if (!isLoadMore) {
+  if (!isLoadMore && !staleResults) {
     $.results.innerHTML = "";
     $.stats.textContent = "";
     tab.results = [];
@@ -474,9 +682,27 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
 }
 
+function wireEntryDetailKeyboard() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && shell.entryDetail.open) {
+      closeEntryDetail();
+    }
+  });
+  $.searchViewMain?.addEventListener("click", (event) => {
+    if (!shell.entryDetail.open) return;
+    if (event.target.closest(".entry-detail-panel")) return;
+    if (event.target.closest(".result-link")) return;
+    closeEntryDetail();
+  });
+}
+
+wireEntryDetailKeyboard();
+
 export {
   applyEffectiveModeFromResponse,
+  closeEntryDetail,
   finishSearchWithData,
+  handleEntryPick,
   renderSearchResults,
   runExample,
   searchDict,

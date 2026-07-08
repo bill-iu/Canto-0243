@@ -45,10 +45,17 @@ function sanitizePwaTabState(state: TabState): TabState {
   return { ...state, tabs, activeId };
 }
 
-function loadInitialTabState(): TabState {
-  if (typeof window === 'undefined') {
-    return { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
-  }
+export interface InitialTabBootstrap {
+  isHome: boolean;
+  forceLive: boolean;
+}
+
+function emptySearchSnapshot(tab: QueryTab): QueryTab {
+  if (tab.view !== VIEW.SEARCH) return tab;
+  return { ...tab, q: '', results: [], offset: 0, total: null };
+}
+
+function loadSessionTabState(): TabState | null {
   try {
     const raw = sessionStorage.getItem(SESSION_KEY);
     if (raw) {
@@ -57,29 +64,67 @@ function loadInitialTabState(): TabState {
   } catch {
     /* invalid session */
   }
-  const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
-  let state = applyUrlToTabs(null, parsed);
-  if (!state.tabs.length) {
-    state = { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
-  }
-  const urlTab = state.tabs.find((t) => {
-    if (parsed.view === VIEW.GUIDE) return t.view === VIEW.GUIDE;
-    if (parsed.view === VIEW.ABOUT) return t.view === VIEW.ABOUT;
-    return t.view === VIEW.SEARCH;
+  return null;
+}
+
+function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstrap } {
+  const fallback = (): TabState => ({
+    activeId: 1,
+    nextTabId: 2,
+    tabs: [createSearchTab({ id: 1 })],
   });
-  if (urlTab) {
-    state = { ...state, activeId: urlTab.id };
+
+  if (typeof window === 'undefined') {
+    return { state: fallback(), bootstrap: { isHome: true, forceLive: false } };
   }
-  if (parsed.view === VIEW.SEARCH && parsed.q) {
+
+  const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+  const urlHasQ = parsed.view === VIEW.SEARCH && Boolean(parsed.q?.trim());
+  const isHome = parsed.view === VIEW.SEARCH && !parsed.q?.trim();
+  const forceLive = urlHasQ;
+
+  let state = loadSessionTabState() ?? fallback();
+
+  if (parsed.view === VIEW.GUIDE || parsed.view === VIEW.ABOUT) {
+    state = applyUrlToTabs(state, parsed);
+    const urlTab = state.tabs.find((t) =>
+      parsed.view === VIEW.GUIDE ? t.view === VIEW.GUIDE : t.view === VIEW.ABOUT,
+    );
+    if (urlTab) {
+      state = { ...state, activeId: urlTab.id };
+    }
+    return { state: sanitizePwaTabState(state), bootstrap: { isHome: false, forceLive: false } };
+  }
+
+  if (urlHasQ) {
     const searchTab =
       state.tabs.find((t) => t.id === state.activeId && t.view === VIEW.SEARCH) ||
-      state.tabs.find((t) => t.view === VIEW.SEARCH);
+      state.tabs.find((t) => t.view === VIEW.SEARCH) ||
+      createSearchTab({ id: state.nextTabId });
+    const tabs = state.tabs.some((t) => t.id === searchTab.id) ? state.tabs : [...state.tabs, searchTab];
+    const nextTabId = state.tabs.some((t) => t.id === searchTab.id) ? state.nextTabId : state.nextTabId + 1;
+    const cleared = emptySearchSnapshot({ ...searchTab, q: parsed.q! });
+    state = {
+      activeId: cleared.id,
+      nextTabId,
+      tabs: tabs.map((t) => (t.id === cleared.id ? cleared : t)),
+    };
+    return { state: sanitizePwaTabState(state), bootstrap: { isHome: false, forceLive: true } };
+  }
+
+  if (isHome) {
+    state = {
+      ...state,
+      tabs: state.tabs.map((t) => emptySearchSnapshot(t)),
+    };
+    const searchTab = state.tabs.find((t) => t.view === VIEW.SEARCH);
     if (searchTab) {
-      searchTab.q = parsed.q;
       state = { ...state, activeId: searchTab.id };
     }
+    return { state: sanitizePwaTabState(state), bootstrap: { isHome: true, forceLive: false } };
   }
-  return sanitizePwaTabState(state);
+
+  return { state: sanitizePwaTabState(state), bootstrap: { isHome: false, forceLive: false } };
 }
 
 function historySeqFromState(state: unknown): number {
@@ -109,7 +154,8 @@ export interface UseQueryTabsOptions {
 }
 
 export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions) {
-  const [tabState, setTabState] = useState<TabState>(loadInitialTabState);
+  const [initialLoad] = useState(loadInitialTabState);
+  const [tabState, setTabState] = useState<TabState>(initialLoad.state);
   const [popstateFrame, setPopstateFrame] = useState<PopstateSearchFrame | null>(null);
   const tabStateRef = useRef(tabState);
   tabStateRef.current = tabState;
@@ -416,9 +462,10 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
   const needsInitialSearch =
     activeTab?.view === VIEW.SEARCH &&
     Boolean((activeTab.q || '').trim()) &&
-    !(activeTab.results as QueryResult[])?.length;
+    (initialLoad.bootstrap.forceLive || !(activeTab.results as QueryResult[])?.length);
 
   return {
+    initialBootstrap: initialLoad.bootstrap,
     tabState,
     activeTab,
     tabs: tabState.tabs,

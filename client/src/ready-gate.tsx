@@ -3,8 +3,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { BrandLogo, GateInkMeter } from './brand-logo';
 import { formatPwaGateLabel } from './gate-label';
 import type { OfflineReadinessStatus } from './hooks/useDB.tsx';
+import {
+  hasPwaGateLanded,
+  PWA_GATE_LANDED_KEY,
+  revealPwaShell,
+} from './pwa-shell-boot';
 
-const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
 const GATE_BRAND_INTRO_MS = 700;
 const LANDING_REVEAL_MS = 420;
 const GATE_INK_INDETERMINATE = 0.12;
@@ -48,9 +52,6 @@ export interface ReadyGateProps {
   onRetry: () => void | Promise<void>;
   onOpenChange: (open: boolean) => void;
   theme?: 'light' | 'dark';
-  // For hybrid A+D: detect PWA cold launch to handle iOS airplane home-screen launch gracefully
-  isPwaLaunch?: boolean;
-  isColdPwaOfflineLaunch?: boolean;
 }
 
 export function ReadyGate({
@@ -63,33 +64,33 @@ export function ReadyGate({
   onRetry,
   onOpenChange,
   theme = 'light',
-  isPwaLaunch = false,
-  isColdPwaOfflineLaunch = false,
 }: ReadyGateProps) {
-  const playLanding = useMemo(
-    () => !prefersReducedMotion(),
-    [],
-  );
-  const skipGate = useMemo(
-    () => offlineStatus === 'ready' && Boolean(sessionStorage.getItem(LANDING_SESSION_KEY)),
-    [offlineStatus],
-  );
+  const playLanding = useMemo(() => !prefersReducedMotion() && !hasPwaGateLanded(), []);
+  const skipOverlay = useMemo(() => hasPwaGateLanded(), []);
 
-  // D part: for PWA cold offline launch (iOS home screen in airplane), use minimal gate and faster path
-  // to avoid relying on perfect SW navigation; still show UI shell via A 's navigateFallback
-  const useMinimalForPwa = isPwaLaunch && (isColdPwaOfflineLaunch || !isOnline);
-  const effectiveSkip = skipGate || (isPwaLaunch && offlineStatus === 'ready') || isColdPwaOfflineLaunch;
   const shouldShowGate =
-    !effectiveSkip &&
+    !skipOverlay &&
     (offlineStatus === 'failed' ||
-      (offlineStatus === 'preparing' && Boolean(isDbCached)) ||
-      (!isOnline && (offlineStatus === 'not_ready' || Boolean(isDbCached))));
+      offlineStatus === 'preparing' ||
+      offlineStatus === 'not_ready');
 
-  const [visible, setVisible] = useState(shouldShowGate);
+  const [visible, setVisible] = useState(() => !hasPwaGateLanded());
   const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>(
-    shouldShowGate ? 'loading' : 'hidden',
+    () => (hasPwaGateLanded() ? 'hidden' : 'loading'),
   );
   const handoffStarted = useRef(false);
+
+  useEffect(() => {
+    if (!visible || phase === 'hidden') return;
+    let cancelled = false;
+    const handoff = () => {
+      if (!cancelled) document.getElementById('pwaBootGate')?.remove();
+    };
+    requestAnimationFrame(() => requestAnimationFrame(handoff));
+    return () => {
+      cancelled = true;
+    };
+  }, [visible, phase]);
 
   useEffect(() => {
     if (shouldShowGate && !visible) {
@@ -103,17 +104,6 @@ export function ReadyGate({
     }
   }, [shouldShowGate, visible, offlineStatus]);
 
-  // B: for cold PWA offline launch, force immediate hide of gate
-  // so shell reveals right away (even while DB is still loading in background)
-  // This prevents getting stuck on the pure launch background color.
-  useEffect(() => {
-    if (isColdPwaOfflineLaunch && visible) {
-      setVisible(false);
-      setPhase('hidden');
-      onOpenChange(false);
-    }
-  }, [isColdPwaOfflineLaunch, visible, onOpenChange]);
-
   useEffect(() => {
     if (offlineStatus === 'preparing') {
       handoffStarted.current = false;
@@ -125,15 +115,13 @@ export function ReadyGate({
   }, [visible, phase, onOpenChange]);
 
   useEffect(() => {
-    if (isColdPwaOfflineLaunch) return; // B: cold path already handled by the force-hide effect above
     if (offlineStatus !== 'ready' || handoffStarted.current || !visible) return;
     handoffStarted.current = true;
 
     void (async () => {
-      // D: for cold PWA offline launch, skip heavy animation, use minimal + fast handoff
-      if (useMinimalForPwa) {
-        await sleep(100);
-        sessionStorage.setItem(LANDING_SESSION_KEY, '1');
+      if (skipOverlay) {
+        sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+        revealPwaShell();
         setPhase('hidden');
         setVisible(false);
         return;
@@ -146,11 +134,12 @@ export function ReadyGate({
       }
       setPhase('exiting');
       await sleep(LANDING_REVEAL_MS);
-      sessionStorage.setItem(LANDING_SESSION_KEY, '1');
+      sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+      revealPwaShell();
       setPhase('hidden');
       setVisible(false);
     })();
-  }, [offlineStatus, playLanding, visible, useMinimalForPwa, isColdPwaOfflineLaunch]);
+  }, [offlineStatus, playLanding, visible, skipOverlay]);
 
   if (!visible || phase === 'hidden') return null;
 
@@ -161,20 +150,18 @@ export function ReadyGate({
         ? Math.max(progress / 100, GATE_INK_INDETERMINATE)
         : GATE_INK_INDETERMINATE;
 
-  const label = isColdPwaOfflineLaunch 
-    ? 'iOS 飛航冷啟動 - 載入快取內容中'
-    : formatPwaGateLabel(offlineStatus, progress, {
-        isOnline,
-        isDbCached,
-        errorMessage,
-      });
+  const label = formatPwaGateLabel(offlineStatus, progress, {
+    isOnline,
+    isDbCached,
+    errorMessage,
+  });
 
   const showRetry =
     offlineStatus === 'failed' || (offlineStatus === 'not_ready' && (!isOnline || isDbCached));
 
   const overlayClass = [
     'preload-overlay',
-    (!playLanding || useMinimalForPwa) ? 'preload-overlay--minimal' : '',
+    !playLanding ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
     phase === 'handoff' ? 'is-handoff' : '',
   ]

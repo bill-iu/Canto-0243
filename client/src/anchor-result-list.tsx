@@ -1,5 +1,5 @@
 import type { QueryResult } from './db/query';
-import { ResultList } from './result-list';
+import { ResultList, type EntryPickPayload } from './result-list';
 
 function sectionTitle(title: string, count: number): string {
   return count > 0 ? `${title} (${count})` : title;
@@ -8,17 +8,21 @@ function sectionTitle(title: string, count: number): string {
 function AnchorSection({
   title,
   items,
+  activeLiteral,
+  lang,
   onPick,
 }: {
   title: string;
   items: QueryResult[];
-  onPick: (query: string) => void;
+  activeLiteral?: string | null;
+  lang?: 'zh' | 'en';
+  onPick: (payload: EntryPickPayload) => void;
 }) {
   return (
     <section className="syn-section">
       <h2 className="syn-section__title">{sectionTitle(title, items.length)}</h2>
       {items.length > 0 ? (
-        <ResultList results={items} onPick={onPick} />
+        <ResultList results={items} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
       ) : (
         <p className="syn-empty">無可用結果</p>
       )}
@@ -42,18 +46,22 @@ export function hasAnchorResultLayout(results: QueryResult[]): boolean {
 
 export function AnchorResultList({
   results,
+  activeLiteral,
+  lang,
   onPick,
 }: {
   results: QueryResult[];
-  onPick: (query: string) => void;
+  activeLiteral?: string | null;
+  lang?: 'zh' | 'en';
+  onPick: (payload: EntryPickPayload) => void;
 }) {
   const initial = results.filter((r) => r.anchor_dimension === 'initial');
   const final = results.filter((r) => r.anchor_dimension === 'final');
 
   return (
     <div className="syn-container">
-      <AnchorSection title="聲母" items={initial} onPick={onPick} />
-      <AnchorSection title="韻母" items={final} onPick={onPick} />
+      <AnchorSection title="聲母" items={initial} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
+      <AnchorSection title="韻母" items={final} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
     </div>
   );
 }

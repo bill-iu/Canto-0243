@@ -217,8 +217,29 @@ function wireCorrectionsForm() {
   });
 }
 
+async function loadCorrectionsDbStats() {
+  const el = $.correctionsDbStats;
+  if (!el) return;
+  try {
+    const res = await fetch("/words/db-stats/");
+    if (!res.ok) throw new Error(String(res.status));
+    const { wordCount, tableCount } = await res.json();
+    el.replaceChildren(
+      Object.assign(document.createElement("p"), {
+        textContent: `詞條數量: ${Number(wordCount).toLocaleString()}`,
+      }),
+      Object.assign(document.createElement("p"), {
+        textContent: `資料表數量: ${Number(tableCount).toLocaleString()}`,
+      }),
+    );
+  } catch {
+    el.textContent = "無法載入資料庫統計";
+  }
+}
+
 function mountCorrectionsPanel(tab) {
   if (!tab || tab.view !== VIEW.CORRECTIONS) return;
+  void loadCorrectionsDbStats();
   wireCorrectionsForm();
   const prefetch = (tab.prefetchChar || "").trim();
   if (mountedTabId !== tab.id) {

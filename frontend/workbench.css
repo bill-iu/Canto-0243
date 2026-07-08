@@ -41,11 +41,10 @@
 
 .results,
 .results-list-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-      gap: 9px;
-      content-visibility: auto;
-      contain-intrinsic-size: 600px;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      gap: 6px;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -58,10 +57,10 @@ a.result-item {
 a.result-item,
 .results-list-items .result-link {
       min-width: 0;
-      min-height: 50px;
-      padding: 12px 10px;
+      min-height: 0;
+      padding: 8px 12px;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 10px;
       background: var(--surface);
       color: var(--ink);
       font-size: 15px;
@@ -84,6 +83,7 @@ a.result-item,
     }
 
 .results-list-items > .result-item {
+      flex: 0 0 auto;
       padding: 0;
       margin: 0;
       border: none;
@@ -95,9 +95,16 @@ a.result-item,
       overflow-wrap: normal;
     }
 
+.results-list-items .result-link.result-link--inline {
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
 .results-list-items .result-link .word {
-      font-size: 16px;
-      font-weight: 650;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.5;
     }
 
 .result-meta {
@@ -319,9 +326,4 @@ a.result-item:active,
       font-size: 14px;
     }
 
-@media (max-width: 440px) {
-      .results,
-      .results-list-items {
-        grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
-      }
-    }
+

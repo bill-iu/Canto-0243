@@ -8,7 +8,24 @@ import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
-import { ResultList } from './result-list';
+import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
+import { ResultList, type EntryPickPayload } from './result-list';
+import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
+import {
+  enrichEntryDetailFromDb,
+  enrichEntryDetailRelations,
+  getCachedEntryDetail,
+  hasDirectRelationSources,
+  instantEntryDetailModel,
+  loadEntryDetailCore,
+} from './entry-detail/load-entry-detail';
+import type { EntryDetailModel } from './entry-detail/types';
+import {
+  anchorOnlyQueryRow,
+  mergePickLookupResults,
+  pickReadingsToQueryRows,
+  resolveListClickAction,
+} from '../../frontend/entry-detail-core.mjs';
 import { SynResultList, synResultsStats } from './syn-result-list';
 import {
   AnchorResultList,
@@ -29,6 +46,7 @@ import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo, GateInkMeter } from './brand-logo';
 import { ReadyGate } from './ready-gate';
+import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
@@ -70,6 +88,7 @@ function App() {
     popstateFrame,
     consumePopstateFrame,
     needsInitialSearch,
+    initialBootstrap,
   } = useQueryTabs({ currentMode: mode, onModeChange: setMode });
 
   const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
@@ -90,13 +109,23 @@ function App() {
 
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
-  const [showStats, setShowStats] = useState(false);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
-  const [gateOpen, setGateOpen] = useState(false);
+  const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
+  const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
+  const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
+  const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
+  const detailLoadGenRef = useRef(0);
+  const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
+  const pickAnchorRef = useRef<string | null>(null);
+  const pickAnchorRowsRef = useRef<QueryResult[]>([]);
+
+  useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
@@ -113,16 +142,17 @@ function App() {
       if (!tab || tab.view !== VIEW.SEARCH) return;
       syncedTabIdRef.current = null;
       hydrateSearch(tab.q || '');
-      setUseLiveFetch(live);
+      const useLive = live || initialBootstrap.forceLive;
+      setUseLiveFetch(useLive);
       setResultsShuffled(false);
-      if (!live) {
+      if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
         syncedTabIdRef.current = tab.id;
       }
     },
-    [hydrateSearch],
+    [hydrateSearch, initialBootstrap.forceLive],
   );
 
   useEffect(() => {
@@ -130,12 +160,13 @@ function App() {
     if (activeTabIdRef.current === activeTab.id) return;
     activeTabIdRef.current = activeTab.id;
     if (activeTab.view === VIEW.SEARCH) {
-      const hasCache = ((activeTab.results as QueryResult[]) || []).length > 0;
+      const hasCache =
+        !initialBootstrap.forceLive && ((activeTab.results as QueryResult[]) || []).length > 0;
       loadSearchTabUi(activeTab, !hasCache);
     } else {
       syncedTabIdRef.current = activeTab.id;
     }
-  }, [activeTab, loadSearchTabUi]);
+  }, [activeTab, loadSearchTabUi, initialBootstrap.forceLive]);
 
   useEffect(() => {
     if (!trimmedInput) {
@@ -161,7 +192,6 @@ function App() {
     error: dbError,
     initialize,
     retryOfflineReady,
-    getStats,
   } = useDB();
 
   const { hasNativePrompt, trigger } = usePwaInstallPrompt();
@@ -170,35 +200,14 @@ function App() {
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
 
-  // Strengthened D for hybrid A+D: better detection of cold PWA launch from home screen (iOS specific for airplane cold start)
-  // Use navigation type + no referrer + no landed key to detect fresh icon tap
-  const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
-  const navEntry = window.performance?.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
-  const isColdLaunch = isStandalone && 
-    (navEntry?.type === 'navigate' || !document.referrer) &&
-    !sessionStorage.getItem(LANDING_SESSION_KEY);
-  const isPwaLaunch = isStandalone;
-  const isColdPwaOfflineLaunch = isColdLaunch && !isOnline;
-
   const [installDismissed, setInstallDismissed] = useState(
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
-  const shouldShowInstallBanner =
-    !gateOpen && !isStandalone && !installDismissed;
+  const shellGated = offlineStatus !== 'ready' || gateOpen;
 
-  // For cold PWA offline launch, force show the main shell immediately (D strengthening)
-  // so user doesn't get stuck on gate or Safari error page
-  if (isColdPwaOfflineLaunch) {
-    // Immediately mark as "landed" and force reveal
-    if (!sessionStorage.getItem(LANDING_SESSION_KEY)) {
-      sessionStorage.setItem(LANDING_SESSION_KEY, '1');
-    }
-    // Ensure gate is not blocking the shell
-    if (gateOpen) {
-      setGateOpen(false);
-    }
-  }
+  const shouldShowInstallBanner =
+    !shellGated && !isStandalone && !installDismissed;
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
@@ -217,6 +226,7 @@ function App() {
     total,
     hint: searchHint,
     loading: searchLoading,
+    loadingVisible: searchLoadingVisible,
     loadingMore,
     error: searchError,
     hasMore,
@@ -263,12 +273,23 @@ function App() {
 
   useEffect(() => {
     if (!useLiveFetch) return;
+    const anchor = pickAnchorRef.current;
+    if (anchor && searchQuery.trim() === anchor && !resultsShuffled) {
+      if (!searchLoading) {
+        setDisplayResults(
+          mergePickLookupResults(anchor, pickAnchorRowsRef.current, results) as QueryResult[],
+        );
+        pickAnchorRef.current = null;
+        pickAnchorRowsRef.current = [];
+      }
+      return;
+    }
     if (!resultsShuffled) {
       setDisplayResults(results);
       return;
     }
     setDisplayResults((prev) => mergeShuffledResults(prev, results));
-  }, [results, resultsShuffled, useLiveFetch]);
+  }, [results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
 
   useEffect(() => {
     if (!useLiveFetch || view !== 'search' || searchLoading) return;
@@ -292,12 +313,11 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (gateOpen || isReady || offlineStatus === 'error') return;
-    const wantsLexicon = Boolean(searchQuery.trim()) || needsInitialSearch;
-    if (!wantsLexicon || lexiconLoadStartedRef.current) return;
+    if (isReady || offlineStatus === 'error') return;
+    if (lexiconLoadStartedRef.current) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
-  }, [gateOpen, isReady, offlineStatus, searchQuery, needsInitialSearch, initialize]);
+  }, [isReady, offlineStatus, initialize]);
 
   useEffect(() => {
     if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen || !isReady) return;
@@ -307,28 +327,12 @@ function App() {
     flushSearchQuery(activeSearchTab?.q || '');
   }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
-  useEffect(() => {
-    if (!popstateFrame) return;
-    setMode(popstateFrame.mode);
-    if (popstateFrame.q) {
-      setUseLiveFetch(true);
-      hydrateSearch(popstateFrame.q);
-      flushSearchQuery(popstateFrame.q);
-    } else {
-      setUseLiveFetch(false);
-      hydrateSearch('');
-      setDisplayResults([]);
-      setCachedTotal(null);
-    }
-    consumePopstateFrame();
-  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame]);
-
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const headerPreparing = offlineStatus === 'preparing';
+  const headerPreparing = offlineStatus === 'preparing' && !gateOpen;
   const headerInkProgress = headerPreparing ? Math.max(progress / 100, 0.12) : 1;
   const headerStatusLabel =
     uiLang === 'en'
@@ -336,22 +340,14 @@ function App() {
       : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
 
   useEffect(() => {
-    // Warm start: local lexicon copy exists → open from OPFS/SW (no network). Cold PWA offline: same, no implicit fetch.
-    if (lexiconLoadStartedRef.current || isReady) return;
-    if (!isColdPwaOfflineLaunch && isDbCached !== true) return;
-    lexiconLoadStartedRef.current = true;
-    void initialize();
-  }, [initialize, isDbCached, isColdPwaOfflineLaunch, isReady]);
-
-  const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
-  useEffect(() => {
-    if (isReady && showStats && !stats) {
-      getStats().then(setStats).catch(console.error);
-    }
-  }, [isReady, showStats, stats, getStats]);
-
-  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && detailOpen) {
+        setDetailOpen(false);
+        setActiveDetailLiteral(null);
+        setDetailModel(null);
+        setPreferredJyutping(null);
+        return;
+      }
       if (!event.altKey || event.ctrlKey || event.metaKey) return;
       const key = event.key.toLowerCase();
       if (key === 'n') {
@@ -369,11 +365,139 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId]);
+  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen]);
+
+  const closeEntryDetail = useCallback(() => {
+    detailLoadGenRef.current += 1;
+    setDetailOpen(false);
+    setActiveDetailLiteral(null);
+    setDetailModel(null);
+    setDetailRelationsLoading(false);
+    setPreferredJyutping(null);
+  }, []);
+
+  const waitForPickMerge = useCallback(async (gen: number) => {
+    while (pickAnchorRef.current && gen === detailLoadGenRef.current) {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }, []);
+
+  const scheduleEntryDetailEnrich = useCallback((base: EntryDetailModel, gen: number) => {
+    const run = () => {
+      void (async () => {
+        await waitForPickMerge(gen);
+        if (gen !== detailLoadGenRef.current || !isReady) return;
+        const hasRelations = await hasDirectRelationSources(base.literal);
+        if (gen !== detailLoadGenRef.current) return;
+        const fromDb = await enrichEntryDetailFromDb(base);
+        if (gen !== detailLoadGenRef.current) return;
+        setDetailModel(fromDb);
+        if (!hasRelations) {
+          setDetailRelationsLoading(false);
+          return;
+        }
+        setDetailRelationsLoading(true);
+        const full = await enrichEntryDetailRelations(fromDb);
+        if (gen !== detailLoadGenRef.current) return;
+        setDetailModel(full);
+        setDetailRelationsLoading(false);
+      })();
+    };
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(run, { timeout: 800 });
+    } else {
+      setTimeout(run, 32);
+    }
+  }, [isReady, waitForPickMerge]);
+
+  const openEntryDetailFromPick = useCallback(
+    (payload: EntryPickPayload) => {
+      const gen = ++detailLoadGenRef.current;
+      const literal = payload.literal.trim();
+      lastPickReadingsRef.current = payload.readings;
+
+      const cached = getCachedEntryDetail(literal);
+      const instant = cached
+        ? cached
+        : payload.readings?.length
+          ? instantEntryDetailModel(literal, payload.readings)
+          : null;
+
+      setDetailOpen(true);
+      setActiveDetailLiteral(literal);
+      setPreferredJyutping(payload.jyutping ?? null);
+      setDetailModel(instant);
+      setDetailRelationsLoading(false);
+
+      if (cached || !isReady) {
+        if (cached) setDetailRelationsLoading(false);
+        return;
+      }
+
+      if (instant) {
+        scheduleEntryDetailEnrich(instant, gen);
+        return;
+      }
+
+      queueMicrotask(() => {
+        void (async () => {
+          const core = await loadEntryDetailCore(literal);
+          if (gen !== detailLoadGenRef.current) return;
+          setDetailModel(core);
+          if (!core) {
+            setDetailRelationsLoading(false);
+            return;
+          }
+          scheduleEntryDetailEnrich(core, gen);
+        })();
+      });
+    },
+    [isReady, scheduleEntryDetailEnrich],
+  );
+
+  useEffect(() => {
+    if (!detailOpen || !activeDetailLiteral || !isReady) return;
+    if (detailModel?.literal === activeDetailLiteral) return;
+    openEntryDetailFromPick({
+      literal: activeDetailLiteral,
+      jyutping: preferredJyutping ?? undefined,
+      readings: lastPickReadingsRef.current,
+    });
+  }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailFromPick]);
+
+  useEffect(() => {
+    if (!initialBootstrap.isHome) return;
+    closeEntryDetail();
+    hydrateSearch('');
+    setUseLiveFetch(false);
+    setDisplayResults([]);
+    setCachedTotal(null);
+  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail]);
+
+  useEffect(() => {
+    if (!popstateFrame) return;
+    setMode(popstateFrame.mode);
+    if (popstateFrame.q) {
+      setUseLiveFetch(true);
+      hydrateSearch(popstateFrame.q);
+      flushSearchQuery(popstateFrame.q);
+    } else {
+      closeEntryDetail();
+      setUseLiveFetch(false);
+      hydrateSearch('');
+      setDisplayResults([]);
+      setCachedTotal(null);
+    }
+    consumePopstateFrame();
+  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
       const q = (nextQuery ?? inputQuery).trim();
+      if (pickAnchorRef.current && pickAnchorRef.current !== q) {
+        pickAnchorRef.current = null;
+        pickAnchorRowsRef.current = [];
+      }
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
@@ -387,14 +511,27 @@ function App() {
     [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
   );
 
+  const beginPickSearch = useCallback(
+    (payload: EntryPickPayload) => {
+      const literal = payload.literal.trim();
+      const anchorRows = payload.readings?.length
+        ? (pickReadingsToQueryRows(literal, payload.readings) as QueryResult[])
+        : (anchorOnlyQueryRow(literal) as QueryResult[]);
+      pickAnchorRef.current = literal;
+      pickAnchorRowsRef.current = anchorRows;
+      setDisplayResults(anchorRows);
+      setCachedTotal(null);
+      runCommittedSearch(literal);
+      hydrateSearch(literal);
+      openEntryDetailFromPick(payload);
+    },
+    [hydrateSearch, openEntryDetailFromPick, runCommittedSearch],
+  );
+
   const handleRetryOfflineReady = useCallback(async () => {
     lexiconLoadStartedRef.current = false;
     await retryOfflineReady();
   }, [retryOfflineReady]);
-
-  const handlePickResult = (nextQuery: string) => {
-    runCommittedSearch(nextQuery);
-  };
 
   const handleModeChange = (next: UiMode) => {
     if (next === '0243' || next === '02493') {
@@ -471,6 +608,49 @@ function App() {
 
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
+
+  const handleEntryPick = useCallback(
+    (payload: EntryPickPayload) => {
+      if (mode === 'synonym') {
+        runCommittedSearch(payload.literal);
+        return;
+      }
+      const action = resolveListClickAction({
+        panelOpen: detailOpen,
+        activeLiteral: activeDetailLiteral,
+        targetLiteral: payload.literal,
+      });
+      if (action === 'close') {
+        closeEntryDetail();
+        return;
+      }
+      if (action === 'open_only') {
+        setDetailOpen(true);
+        setActiveDetailLiteral(payload.literal);
+        setPreferredJyutping(payload.jyutping ?? null);
+        return;
+      }
+      beginPickSearch(payload);
+    },
+    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch],
+  );
+
+  const handleRelationPick = useCallback(
+    (literal: string) => {
+      beginPickSearch({ literal });
+    },
+    [beginPickSearch],
+  );
+
+  const handleSearchMainClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (!detailOpen) return;
+      const target = event.target as HTMLElement;
+      if (target.closest('.entry-detail-panel') || target.closest('.result-link')) return;
+      closeEntryDetail();
+    },
+    [detailOpen, closeEntryDetail],
+  );
   const statsSuffix = `（${modeMeta.statsLabel}）`;
 
   const resultsLabel = useMemo(() => {
@@ -497,12 +677,8 @@ function App() {
     return formatEmptySearchMessage(searchQuery, displayHint, mode);
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
-  const toggleStats = () => {
-    setShowStats(!showStats);
-  };
-
   const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
-  const canSearch = !gateOpen && offlineStatus !== 'preparing';
+  const canSearch = !shellGated;
 
   const handleHome = () => {
     saveLeavingSearchTab();
@@ -528,10 +704,8 @@ function App() {
         onRetry={handleRetryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
-        isPwaLaunch={isPwaLaunch}
-        isColdPwaOfflineLaunch={isColdPwaOfflineLaunch}
       />
-      <div className={`app-shell${(gateOpen && !isColdPwaOfflineLaunch) ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
+      <div className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
@@ -549,7 +723,7 @@ function App() {
             )}
             <ModeMenu
               mode={mode}
-              disabled={gateOpen || offlineStatus === 'preparing'}
+              disabled={shellGated}
               onModeChange={handleModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}
@@ -576,7 +750,11 @@ function App() {
           ) : view === 'about' ? (
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (
-            <section className="search-view" aria-labelledby="searchTitle">
+            <section
+              className={`search-view${detailOpen ? ' has-entry-detail' : ''}`}
+              aria-labelledby="searchTitle"
+            >
+              <div className="search-view__main" onClick={handleSearchMainClick}>
               <div className="hero">
                 <p className="eyebrow">Cantonese Lyrics Writing Workbench</p>
                 <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
@@ -600,7 +778,7 @@ function App() {
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
                       placeholder={modeMeta.placeholder}
-                      disabled={gateOpen || offlineStatus === 'preparing'}
+                      disabled={shellGated}
                       autoComplete="off"
                       spellCheck={false}
                       enterKeyHint="search"
@@ -639,24 +817,13 @@ function App() {
                 </p>
               )}
 
-              <div style={{ textAlign: 'center' }}>
-                <button type="button" onClick={toggleStats} className="stats-toggle">
-                  {showStats ? '隱藏統計' : '顯示資料庫統計'}
-                </button>
-              </div>
-
-              {showStats && stats && (
-                <div className="db-stats">
-                  <p>詞條數量: {stats.wordCount.toLocaleString()}</p>
-                  <p>資料表數量: {stats.tableCount}</p>
-                </div>
-              )}
-
               <div className="search-results">
                 {displayHint && displayResults.length > 0 && (
                   <p className="search-hint">{displayHint}</p>
                 )}
-                {useLiveFetch && searchLoading && <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>}
+                {useLiveFetch && searchLoadingVisible && (
+                  <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
+                )}
                 {useLiveFetch && searchError && (
                   <p className="error">錯誤: {searchError.message}</p>
                 )}
@@ -665,11 +832,24 @@ function App() {
                   <div className="results-list">
                     {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
                     {synLayout ? (
-                      <SynResultList results={displayResults} onPick={handlePickResult} />
+                      <SynResultList
+                        results={displayResults}
+                        onPick={(word) => runCommittedSearch(word)}
+                      />
                     ) : anchorLayout ? (
-                      <AnchorResultList results={displayResults} onPick={handlePickResult} />
+                      <AnchorResultList
+                        results={displayResults}
+                        activeLiteral={activeDetailLiteral}
+                        lang={uiLang}
+                        onPick={handleEntryPick}
+                      />
                     ) : (
-                      <ResultList results={displayResults} onPick={handlePickResult} />
+                      <ResultList
+                        results={displayResults}
+                        activeLiteral={activeDetailLiteral}
+                        lang={uiLang}
+                        onPick={handleEntryPick}
+                      />
                     )}
                     {useLiveFetch && hasMore && (
                       <button
@@ -693,6 +873,20 @@ function App() {
                   </div>
                 )}
               </div>
+              </div>
+              {detailOpen && activeDetailLiteral ? (
+                <EntryDetailPanel
+                  key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
+                  literal={activeDetailLiteral}
+                  model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
+                  loading={!detailModel}
+                  relationsLoading={detailRelationsLoading}
+                  lang={uiLang}
+                  preferredJyutping={preferredJyutping}
+                  onClose={closeEntryDetail}
+                  onRelationPick={handleRelationPick}
+                />
+              ) : null}
             </section>
           )}
         </main>

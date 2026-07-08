@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="workbench.css">
   <link rel="stylesheet" href="chrome-tabs.css">
   <link rel="stylesheet" href="query-tabs.css">
+  <link rel="stylesheet" href="entry-detail.css">
 </head>
 <body class="query-tabs-app">
   <svg class="svg-defs" aria-hidden="true" width="0" height="0" style="position:absolute;overflow:hidden" focusable="false">
@@ -252,6 +253,7 @@
 
     <main class="main-wrap" id="mainContent">
       <section class="search-view" id="searchView" aria-labelledby="searchTitle">
+        <div class="search-view__main" id="searchViewMain">
         <div class="hero">
           <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
           <h1 id="searchTitle">ONE·搵·韻</h1>
@@ -291,6 +293,8 @@
         </div>
 
         <div id="results" class="results" aria-live="polite"></div>
+        </div>
+        <div id="entryDetailHost"></div>
       </section>
 
     <section class="guide-view is-hidden" id="guideView" aria-labelledby="guideTitle" hidden>
@@ -648,6 +652,7 @@
       <header class="relation-hero">
         <h1 id="correctionsTitle">詞庫勘誤</h1>
         <p class="relation-lede">維護者專用：在搜尋框輸入 <code translate="no">debug</code> 開此分頁。記錄標音或 0243 碼問題至 pending 清單；搜尋結果待批次套用後才更新。</p>
+        <div class="db-stats" id="correctionsDbStats" aria-live="polite"></div>
       </header>
 
       <form class="relation-form" id="correctionsLookupForm">

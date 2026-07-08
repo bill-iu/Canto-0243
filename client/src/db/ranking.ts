@@ -71,6 +71,10 @@ function essayFrequency(char: string): number {
   return essayFreq.get((char || '').trim()) ?? 0;
 }
 
+export function getEssayFrequency(char: string): number {
+  return essayFrequency(char);
+}
+
 function curatedBoost(char: string): number {
   return curated.has((char || '').trim()) ? 1 : 0;
 }
