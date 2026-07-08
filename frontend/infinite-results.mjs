@@ -1,4 +1,4 @@
-/** ponytail: shared infinite-scroll batch size — 200 chips per user scroll step */
+/** ponytail: shared infinite-scroll batch size — 200 chips per scroll step */
 export const RESULT_RENDER_BATCH = 200;
 export const SCROLL_ROOT_MARGIN = "200px";
 
@@ -18,9 +18,9 @@ export function isSentinelIntersecting(root, sentinel, margin = marginPx) {
   return rect.top <= rootRect.bottom + margin && rect.bottom >= rootRect.top - margin;
 }
 
-/** Scroll-root only — one batch per scroll step; no IO (avoids pre-scroll auto chain). */
+/** Scroll-root + IO; one batch per frame (no pump). */
 export function wireInfiniteScroll({ root, sentinel, onNeedMore }) {
-  if (!sentinel || !onNeedMore || !root) return () => {};
+  if (!sentinel || !onNeedMore) return () => {};
   let cooldown = false;
   const maybeLoad = () => {
     if (cooldown || sentinel.hidden) return;
@@ -31,8 +31,22 @@ export function wireInfiniteScroll({ root, sentinel, onNeedMore }) {
       cooldown = false;
     });
   };
-  root.addEventListener("scroll", maybeLoad, { passive: true });
-  return () => root.removeEventListener("scroll", maybeLoad);
+  const cleanups = [];
+  if (root) {
+    root.addEventListener("scroll", maybeLoad, { passive: true });
+    cleanups.push(() => root.removeEventListener("scroll", maybeLoad));
+  }
+  if (root && typeof IntersectionObserver !== "undefined") {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) maybeLoad();
+      },
+      { root, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
+    );
+    observer.observe(sentinel);
+    cleanups.push(() => observer.disconnect());
+  }
+  return () => cleanups.forEach((fn) => fn());
 }
 
 export function effectiveRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH) {

@@ -57,10 +57,22 @@ html.has-entry-detail-open {
 }
 
 /* ponytail: bounded results column — wheel scrolls list, not whole page */
+body.query-tabs-app {
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .app-shell {
   display: flex;
   flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
   min-height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell > .app-header {
+  flex-shrink: 0;
 }
 
 .app-shell > .main-wrap {
@@ -69,6 +81,21 @@ html.has-entry-detail-open {
   flex-direction: column;
   min-height: 0;
   overflow: hidden;
+  padding-bottom: 16px;
+}
+
+.main-wrap > section:not([hidden]):not(.is-hidden) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-view:not([hidden]):not(.is-hidden),
+.about-view:not([hidden]):not(.is-hidden),
+.relation-view:not([hidden]):not(.is-hidden),
+.corrections-view:not([hidden]):not(.is-hidden) {
+  overflow-y: auto;
 }
 
 .search-view {

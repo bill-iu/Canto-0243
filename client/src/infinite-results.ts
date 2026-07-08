@@ -50,12 +50,22 @@ export function useInfiniteResultWindow({
     const sentinel = sentinelRef.current;
     const root = scrollRoot;
     if (!sentinel || !root || itemCount === 0) return;
-    const onScroll = () => {
+    const maybeLoad = () => {
       if (!isSentinelIntersecting(root, sentinel, SCROLL_MARGIN)) return;
       onNeedMore();
     };
-    root.addEventListener('scroll', onScroll, { passive: true });
-    return () => root.removeEventListener('scroll', onScroll);
+    root.addEventListener('scroll', maybeLoad, { passive: true });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) maybeLoad();
+      },
+      { root, rootMargin: `${SCROLL_MARGIN}px`, threshold: 0 },
+    );
+    observer.observe(sentinel);
+    return () => {
+      root.removeEventListener('scroll', maybeLoad);
+      observer.disconnect();
+    };
   }, [itemCount, onNeedMore, scrollRoot]);
 
   const canExpand = visibleCount < itemCount;
