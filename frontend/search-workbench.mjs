@@ -4,7 +4,7 @@ import { escapeHtml, escapeHtmlAttr } from "./dom-escape.mjs";
 import {
   $,
   MODE_META,
-  PAGE_SIZE,
+  searchPageSizeForMode,
   shell,
   searchCache,
   VIEW,
@@ -55,7 +55,8 @@ function emptySearchResultsHtml(input, hint, _mode) {
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
-  return (total != null && results.length < total) || results.length >= PAGE_SIZE;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  return (total != null && results.length < total) || results.length >= pageSize;
 }
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
@@ -556,7 +557,8 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
     shell.pickAnchor = null;
     shell.pickAnchorRows = null;
     updateShuffleButton();
-    const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
+    const pageSize = searchPageSizeForMode(shell.currentMode);
+    const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === pageSize;
     toggleLoadMoreButton(hasMore);
     return;
   }
@@ -566,7 +568,8 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   if (!append && total != null) tab.total = total;
   persistTabs();
   renderSearchResults(displayData, tab.total);
-  const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === pageSize;
   toggleLoadMoreButton(hasMore);
 }
 
@@ -646,7 +649,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     searchCache.delete(cacheKey);
   }
 
-  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${tab.offset || 0}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }

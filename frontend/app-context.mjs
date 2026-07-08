@@ -134,7 +134,17 @@ export function setTheme(theme) {
 
 export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";
 
-export const PAGE_SIZE = 400;
+/** 0243搜尋模式（m1／m2）分頁筆數 */
+export const SEARCH_PAGE_SIZE = 1200;
+/** 近反義模式分頁筆數 */
+export const RELATION_PAGE_SIZE = 400;
+
+export function searchPageSizeForMode(mode) {
+  return mode === "syn" ? RELATION_PAGE_SIZE : SEARCH_PAGE_SIZE;
+}
+
+/** @deprecated use searchPageSizeForMode(mode) */
+export const PAGE_SIZE = SEARCH_PAGE_SIZE;
 export const WARMUP_DONE_HOLD_MS = 2000;
 export const WARMUP_DONE_FADE_MS = 420;
 export const SEARCH_RING_BLUR_MS = 320;

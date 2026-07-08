@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 import { openSqlJsDatabase } from '../src/db/sqljs-backend.ts';
 import { injectDatabaseForTests, resetDatabase } from '../src/db/init.ts';
-import { searchPage, SEARCH_PAGE_SIZE } from '../src/db/query.ts';
+import { searchPage } from '../src/db/query.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dbPath = path.join(repoRoot, 'lyrics.db');
@@ -17,7 +17,7 @@ resetDatabase();
 const db = await openSqlJsDatabase(new Uint8Array(fs.readFileSync(dbPath)));
 injectDatabaseForTests(db);
 
-const lookup = await searchPage({ query: '事業', mode: '0243', limit: SEARCH_PAGE_SIZE });
+const lookup = await searchPage({ query: '事業', mode: '0243', limit: 50 });
 const kinds = lookup.items.map((r) => r.resultType);
 if (!kinds.includes('code') || !kinds.includes('jyutping') || !kinds.includes('word')) {
   throw new Error(`pwa-results-p0-self-check: lookup missing sections: ${kinds.join(',')}`);
