@@ -21,9 +21,9 @@ export const MODE_META = {
   },
   m3: {
     title: '394052模式',
-    note: '矩陣',
-    readout: '394052模式（矩陣）',
-    statsLabel: '394052模式 · 矩陣',
+    note: '六聲',
+    readout: '394052模式（六聲）',
+    statsLabel: '394052模式 · 六聲',
     placeholder: '搵嘢：394052／漢字／粵拼',
   },
   syn: {
@@ -53,9 +53,9 @@ const MODE_META_EN = {
   },
   m3: {
     title: '394052 Mode',
-    note: 'Matrix',
-    readout: '394052 Mode (Matrix)',
-    statsLabel: '394052 Mode · Matrix',
+    note: '6 tones',
+    readout: '394052 Mode (6 tones)',
+    statsLabel: '394052 Mode · 6 tones',
     placeholder: 'Search: 394052 / characters / Jyutping',
   },
   syn: {
@@ -89,7 +89,7 @@ export function modeHelp(mode, lang = 'zh') {
     return lang === 'en' ? '02493 codes (distinguish 2nd tone)' : '02493 碼（分清二聲）';
   }
   if (mode === 'm3') {
-    return lang === 'en' ? '394052 matrix — strict tone digits' : '394052 矩陣碼（三／五聲分明）';
+    return lang === 'en' ? '394052 — strict 6-tone digits' : '394052 六聲碼（三／五聲分明）';
   }
   return lang === 'en' ? 'Synonyms, antonyms & semantically related' : '近義、反義與語意相關';
 }
@@ -136,7 +136,7 @@ export function modeI18nSelfCheck() {
   if (!modeRedirectHint('m1', 'en').includes('0243 Mode (Loose)')) {
     throw new Error('modeI18nSelfCheck: en redirect hint');
   }
-  if (getModeMeta('m3').readout !== '394052模式（矩陣）') {
+  if (getModeMeta('m3').readout !== '394052模式（六聲）') {
     throw new Error('modeI18nSelfCheck: zh m3 readout');
   }
 }

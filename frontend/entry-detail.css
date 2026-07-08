@@ -5,7 +5,7 @@
   /* full-width list; panel overlays via fixed positioning */
 }
 
-/* 面板開啟：鎖頁面捲動；hero／搜尋固定；結果區獨立捲；footer 隱藏 */
+/* 面板開啟：鎖頁面捲動；hero／搜尋固定；結果區獨立捲 */
 html.has-entry-detail-open {
   overflow: hidden;
   height: 100%;
@@ -17,10 +17,6 @@ html.has-entry-detail-open {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
-}
-
-.app-shell.has-entry-detail .app-footer {
-  display: none;
 }
 
 .app-shell.has-entry-detail .main-wrap {

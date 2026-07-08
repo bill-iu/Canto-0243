@@ -2,6 +2,31 @@
 
 .mode-menu-root {
   position: relative;
+  align-self: flex-start;
+}
+
+.mode-menu-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.mode-menu-anchor {
+  position: relative;
+}
+
+.mode-menu-meta {
+  margin: 4px 0 0;
+  padding: 0 2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .query-tabs-bar {
@@ -171,8 +196,7 @@
   color: var(--ink);
 }
 
-.app-shell.has-install-banner .main-wrap,
-.app-shell.has-install-banner .app-footer {
+.app-shell.has-install-banner .main-wrap {
   padding-bottom: 56px;
 }
 

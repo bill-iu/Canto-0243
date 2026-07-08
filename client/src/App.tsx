@@ -783,6 +783,8 @@ function App() {
               lang={uiLang}
               onThemeChange={(next) => setUiTheme(next)}
               onLangChange={(next) => setUiLang(next)}
+              lexiconVersion={lexiconVersion}
+              showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
             />
           </div>
           <QueryTabsBar
@@ -922,14 +924,6 @@ function App() {
             </section>
           )}
         </main>
-
-        <footer className="app-footer">
-          <p>Canto-0243 PWA</p>
-          <p>
-            離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}
-            {isReady && getActiveDbBackendMode() === 'opfs-vfs' ? ' · OPFS' : ''}
-          </p>
-        </footer>
       </div>
 
       {shouldShowInstallBanner && (

@@ -65,7 +65,7 @@ export function modeMetaSelfCheck(): void {
   if (modeMetaFor('02493', 'en').readout !== '02493 Mode (Strict)') {
     throw new Error('modeMetaSelfCheck: en m2 readout');
   }
-  if (modeMetaFor('394052').readout !== '394052模式（矩陣）') {
+  if (modeMetaFor('394052').readout !== '394052模式（六聲）') {
     throw new Error('modeMetaSelfCheck: zh m3 readout');
   }
   if (modeMetaFor('synonym', 'en').title !== 'Near-Antonyms') {

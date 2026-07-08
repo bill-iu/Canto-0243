@@ -19,6 +19,8 @@ export interface ModeMenuProps {
   lang?: 'zh' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
   onLangChange?: (lang: 'zh' | 'en') => void;
+  lexiconVersion?: string;
+  showOpfsBackend?: boolean;
 }
 
 export function ModeMenu({
@@ -31,6 +33,8 @@ export function ModeMenu({
   lang = 'zh',
   onThemeChange,
   onLangChange,
+  lexiconVersion,
+  showOpfsBackend = false,
 }: ModeMenuProps) {
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -65,31 +69,38 @@ export function ModeMenu({
     close();
   };
 
+  const metaLabel =
+    lexiconVersion != null
+      ? `${lang === 'en' ? 'Lexicon version: ' : '詞庫版本：'}${lexiconVersion}${showOpfsBackend ? ' · OPFS' : ''}`
+      : null;
+
   return (
     <div className="app-actions mode-menu-root" ref={rootRef}>
-      <button
-        type="button"
-        className="menu-trigger"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        aria-controls={menuId}
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        <span className="mode-trigger-text">
-          <span className="mode-trigger-primary">{meta.title}</span>
-          <span className="mode-trigger-note">{meta.note}</span>
-        </span>
-        <span className="menu-chevron" aria-hidden="true">
-          ▾
-        </span>
-      </button>
+      <div className="mode-menu-stack">
+        <div className="mode-menu-anchor">
+          <button
+            type="button"
+            className="menu-trigger"
+            aria-haspopup="menu"
+            aria-expanded={open}
+            aria-controls={menuId}
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            <span className="mode-trigger-text">
+              <span className="mode-trigger-primary">{meta.title}</span>
+              <span className="mode-trigger-note">{meta.note}</span>
+            </span>
+            <span className="menu-chevron" aria-hidden="true">
+              ▾
+            </span>
+          </button>
 
-      <div
-        id={menuId}
-        className={`mode-menu${open ? ' is-open' : ''}`}
-        role="menu"
-        hidden={!open}
-      >
+          <div
+            id={menuId}
+            className={`mode-menu${open ? ' is-open' : ''}`}
+            role="menu"
+            hidden={!open}
+          >
         <div className="menu-group" role="group" aria-label={lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}>
           <p className="menu-label">{lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}</p>
           {MODE_OPTIONS.map((option) => {
@@ -179,6 +190,13 @@ export function ModeMenu({
             </button>
           </div>
         </div>
+          </div>
+        </div>
+        {metaLabel ? (
+          <p className="mode-menu-meta" aria-label={metaLabel}>
+            {metaLabel}
+          </p>
+        ) : null}
       </div>
     </div>
   );
@@ -191,7 +209,7 @@ export function modeMenuSelfCheck(): void {
   if (MODE_OPTIONS.length !== 4) {
     throw new Error('modeMenuSelfCheck: mode options');
   }
-  if (modeHelp('394052', 'zh') !== '394052 矩陣碼（三／五聲分明）') {
+  if (modeHelp('394052', 'zh') !== '394052 六聲碼（三／五聲分明）') {
     throw new Error('modeMenuSelfCheck: m3 help');
   }
   if (modeHelp('synonym', 'zh') !== '近義、反義與語意相關') {
