@@ -69,7 +69,7 @@ export interface SearchPageResult {
   lookupLayout?: boolean;
 }
 
-export const SEARCH_PAGE_SIZE = 50;
+export const SEARCH_PAGE_SIZE = 200;
 
 /**
  * Legacy QueryOptions interface
@@ -230,21 +230,21 @@ export async function getDatabaseStats(): Promise<{ wordCount: number; tableCoun
 /**
  * Search by 0243 code pattern
  */
-export async function searchByCode(pattern: string, limit: number = 50): Promise<QueryResult[]> {
+export async function searchByCode(pattern: string, limit: number = SEARCH_PAGE_SIZE): Promise<QueryResult[]> {
   return search({ query: pattern, mode: '0243', limit });
 }
 
 /**
  * Search by jyutping pattern
  */
-export async function searchByJyutping(pattern: string, limit: number = 50): Promise<QueryResult[]> {
+export async function searchByJyutping(pattern: string, limit: number = SEARCH_PAGE_SIZE): Promise<QueryResult[]> {
   return search({ query: pattern, mode: '0243', limit });
 }
 
 /**
  * Search by Chinese text
  */
-export async function searchByText(text: string, limit: number = 50): Promise<QueryResult[]> {
+export async function searchByText(text: string, limit: number = SEARCH_PAGE_SIZE): Promise<QueryResult[]> {
   return search({ query: text, mode: '0243', limit });
 }
 
