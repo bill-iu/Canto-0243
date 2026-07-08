@@ -56,10 +56,25 @@ html.has-entry-detail-open {
   -webkit-overflow-scrolling: touch;
 }
 
-.search-view {
+/* ponytail: bounded results column — wheel scrolls list, not whole page */
+.app-shell {
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 220px);
+}
+
+.app-shell .main-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.search-view {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .search-view__main {

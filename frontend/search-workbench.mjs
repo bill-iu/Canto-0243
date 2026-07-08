@@ -54,7 +54,7 @@ import {
   canExpandRenderedCount,
   expandRenderedCount,
   resetRenderedCount,
-  revealFetchedPage,
+  scheduleScrollPump,
 } from "./infinite-results.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
@@ -107,6 +107,49 @@ function takeSynBudget(syns, ants, related, budget) {
 
 let scrollGate = false;
 
+function isStandardWordListLayout(data) {
+  if (shell.currentMode === "syn") return false;
+  return !data.some((r) => r.anchor_dimension === "initial" || r.anchor_dimension === "final");
+}
+
+function mergedWordGroups(data) {
+  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
+  return mergeResultsByLiteral(
+    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
+  );
+}
+
+function updateWordListStats(mergedLen, total, loadedLen) {
+  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  if (total != null && total > loadedLen) {
+    $.stats.textContent = `已載入 ${loadedLen} / ${total} 個結果（${statsLabel}）`;
+  } else if (total != null) {
+    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
+  } else {
+    $.stats.textContent = `${mergedLen} 個結果（${statsLabel}）`;
+  }
+}
+
+function appendWordListSlice(ul, merged, from, to, lang) {
+  merged.slice(from, to).forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+}
+
+function pumpSearchScroll() {
+  scheduleScrollPump({
+    root: $.searchResultsScroll || null,
+    sentinel: $.resultsScrollSentinel,
+    onStep: () => handleInfiniteScrollNeed(),
+  });
+}
+
 function updateScrollSentinel(tab) {
   const sentinel = $.resultsScrollSentinel;
   if (!sentinel) return;
@@ -124,10 +167,12 @@ function handleInfiniteScrollNeed() {
   const itemCount = countSearchResultItems(data);
   if (canExpandRenderedCount(tab, itemCount)) {
     scrollGate = true;
+    const prevRendered = effectiveRenderedCount(tab, itemCount);
     expandRenderedCount(tab, itemCount);
     persistTabs();
-    renderSearchResults(data, tab.total);
+    renderSearchResults(data, tab.total, { expandFrom: prevRendered });
     scrollGate = false;
+    pumpSearchScroll();
     return;
   }
   if (shouldShowLoadMore(tab)) searchDict(true);
@@ -444,7 +489,7 @@ function shuffleResults() {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   tab.results = shuffled;
-  revealFetchedPage(tab, countSearchResultItems(shuffled));
+  resetRenderedCount(tab, countSearchResultItems(shuffled));
   persistTabs();
   renderSearchResults(tab.results);
 }
@@ -494,9 +539,35 @@ function applyEffectiveModeFromResponse(res, searchHint) {
   return searchHint || modeRedirectHint(effectiveMode, getLang());
 }
 
-function renderSearchResults(data, total = null) {
-  $.results.innerHTML = "";
+function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
   const tab = activeTab();
+  const itemCount = countSearchResultItems(data);
+  if (tab && tab.renderedCount == null) resetRenderedCount(tab, itemCount);
+  const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
+
+  if (
+    expandFrom != null &&
+    expandFrom < budget &&
+    isStandardWordListLayout(data) &&
+    !tab?.redirectHint
+  ) {
+    const ul = $.results.querySelector("ul.results-list-items");
+    const merged = mergedWordGroups(data);
+    if (
+      ul &&
+      ul.dataset.resultLen === String(data.length) &&
+      Number(ul.dataset.mergedLen) === merged.length
+    ) {
+      appendWordListSlice(ul, merged, expandFrom, budget, getLang());
+      updateWordListStats(merged.length, total, data.length);
+      updateShuffleButton();
+      updateScrollSentinel(tab);
+      pumpSearchScroll();
+      return;
+    }
+  }
+
+  $.results.innerHTML = "";
   const redirectHint = tab?.redirectHint;
   if (redirectHint) {
     const banner = document.createElement("p");
@@ -506,9 +577,6 @@ function renderSearchResults(data, total = null) {
     tab.redirectHint = null;
   }
   $.results.className = shell.currentMode === "syn" ? "syn-container" : "results";
-  const itemCount = countSearchResultItems(data);
-  if (tab && tab.renderedCount == null) revealFetchedPage(tab, itemCount);
-  const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
 
   if (shell.currentMode === "syn") {
     const syns = data.filter((r) => r.relation === "syn");
@@ -521,7 +589,7 @@ function renderSearchResults(data, total = null) {
     $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ""}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    remountInfiniteScroll();
+    pumpSearchScroll();
     return;
   }
 
@@ -542,38 +610,21 @@ function renderSearchResults(data, total = null) {
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    remountInfiniteScroll();
+    pumpSearchScroll();
     return;
   }
 
-  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
-  const merged = mergeResultsByLiteral(
-    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
-  );
+  const merged = mergedWordGroups(data);
   const ul = document.createElement("ul");
   ul.className = "results-list-items";
-  const lang = getLang();
-  merged.slice(0, budget).forEach((group) =>
-    ul.appendChild(
-      createMergedResultButton(group, {
-        lang,
-        activeLiteral: shell.entryDetail.activeLiteral,
-        onPick: handleEntryPick,
-      }),
-    ),
-  );
+  ul.dataset.resultLen = String(data.length);
+  ul.dataset.mergedLen = String(merged.length);
+  appendWordListSlice(ul, merged, 0, budget, getLang());
   $.results.appendChild(ul);
-  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-  const loaded = data.length;
-  $.stats.textContent = `${merged.length} 個結果（${statsLabel}）`;
-  if (total != null && total > loaded) {
-    $.stats.textContent = `已載入 ${loaded} / ${total} 個結果（${statsLabel}）`;
-  } else if (total != null) {
-    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
-  }
+  updateWordListStats(merged.length, total, data.length);
   updateShuffleButton();
   updateScrollSentinel(tab);
-  remountInfiniteScroll();
+  pumpSearchScroll();
 }
 
 function createAnchorSectionFromGroups(title, groups) {
@@ -650,15 +701,25 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
     shell.pickAnchorRows = null;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    remountInfiniteScroll();
+    pumpSearchScroll();
     return;
   }
-  displayData = append ? (tab.results || []).concat(data) : data;
+  const prevResults = tab.results || [];
+  const prevItemCount = countSearchResultItems(prevResults);
+  displayData = append ? prevResults.concat(data) : data;
   tab.results = displayData;
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
   const itemCount = countSearchResultItems(displayData);
-  revealFetchedPage(tab, itemCount);
+  if (append) {
+    const prevRendered = tab.renderedCount ?? RESULT_RENDER_BATCH;
+    const added = itemCount - prevItemCount;
+    tab.renderedCount = Math.min(prevRendered + added, itemCount);
+    persistTabs();
+    renderSearchResults(displayData, tab.total, { expandFrom: prevRendered });
+    return;
+  }
+  resetRenderedCount(tab, itemCount);
   persistTabs();
   renderSearchResults(displayData, tab.total);
 }

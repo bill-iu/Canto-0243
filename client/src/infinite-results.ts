@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { scheduleScrollPump } from '../../frontend/infinite-results.mjs';
 
 export const RESULT_RENDER_BATCH = 50;
 const SCROLL_ROOT_MARGIN = '200px';
@@ -67,6 +68,16 @@ export function useInfiniteResultWindow({
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [itemCount, onNeedMore, scrollRoot]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || itemCount === 0) return;
+    scheduleScrollPump({
+      root: scrollRoot,
+      sentinel,
+      onStep: onNeedMore,
+    });
+  }, [itemCount, visibleCount, scrollRoot, onNeedMore]);
 
   const canExpand = visibleCount < itemCount;
   const showSentinel = itemCount > 0 && (canExpand || hasMore);
