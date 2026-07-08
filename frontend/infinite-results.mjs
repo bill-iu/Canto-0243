@@ -32,3 +32,9 @@ export function expandRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH)
 export function resetRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH) {
   tab.renderedCount = Math.min(batch, itemCount);
 }
+
+/** Show every row already fetched for this tab (up to SEARCH_PAGE_SIZE). */
+export function revealFetchedPage(tab, itemCount) {
+  tab.renderedCount = itemCount;
+  return itemCount;
+}

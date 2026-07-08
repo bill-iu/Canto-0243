@@ -54,6 +54,7 @@ import {
   canExpandRenderedCount,
   expandRenderedCount,
   resetRenderedCount,
+  revealFetchedPage,
 } from "./infinite-results.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
@@ -443,7 +444,7 @@ function shuffleResults() {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   tab.results = shuffled;
-  resetRenderedCount(tab, countSearchResultItems(shuffled));
+  revealFetchedPage(tab, countSearchResultItems(shuffled));
   persistTabs();
   renderSearchResults(tab.results);
 }
@@ -506,7 +507,7 @@ function renderSearchResults(data, total = null) {
   }
   $.results.className = shell.currentMode === "syn" ? "syn-container" : "results";
   const itemCount = countSearchResultItems(data);
-  if (tab && tab.renderedCount == null) resetRenderedCount(tab, itemCount);
+  if (tab && tab.renderedCount == null) revealFetchedPage(tab, itemCount);
   const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
 
   if (shell.currentMode === "syn") {
@@ -520,6 +521,7 @@ function renderSearchResults(data, total = null) {
     $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ""}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
+    remountInfiniteScroll();
     return;
   }
 
@@ -540,6 +542,7 @@ function renderSearchResults(data, total = null) {
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
+    remountInfiniteScroll();
     return;
   }
 
@@ -570,6 +573,7 @@ function renderSearchResults(data, total = null) {
   }
   updateShuffleButton();
   updateScrollSentinel(tab);
+  remountInfiniteScroll();
 }
 
 function createAnchorSectionFromGroups(title, groups) {
@@ -646,6 +650,7 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
     shell.pickAnchorRows = null;
     updateShuffleButton();
     updateScrollSentinel(tab);
+    remountInfiniteScroll();
     return;
   }
   displayData = append ? (tab.results || []).concat(data) : data;
@@ -653,14 +658,7 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
   const itemCount = countSearchResultItems(displayData);
-  if (append) {
-    tab.renderedCount = Math.min(
-      (tab.renderedCount ?? RESULT_RENDER_BATCH) + RESULT_RENDER_BATCH,
-      itemCount,
-    );
-  } else {
-    resetRenderedCount(tab, itemCount);
-  }
+  revealFetchedPage(tab, itemCount);
   persistTabs();
   renderSearchResults(displayData, tab.total);
 }
@@ -721,7 +719,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     updateBrowserUrlFromActiveTab(!pushed);
   }
 
-  const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}`;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}:${pageSize}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {
     const cached = searchCache.get(cacheKey);
     if (Array.isArray(cached)) {
@@ -744,7 +743,6 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     searchCache.delete(cacheKey);
   }
 
-  const pageSize = searchPageSizeForMode(shell.currentMode);
   let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${tab.offset || 0}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
