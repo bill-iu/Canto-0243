@@ -40,6 +40,7 @@ import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo, GateInkMeter } from './brand-logo';
 import { ReadyGate } from './ready-gate';
+import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
@@ -105,7 +106,7 @@ function App() {
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
-  const [gateOpen, setGateOpen] = useState(false);
+  const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
   const [detailOpen, setDetailOpen] = useState(false);
@@ -190,35 +191,14 @@ function App() {
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
 
-  // Strengthened D for hybrid A+D: better detection of cold PWA launch from home screen (iOS specific for airplane cold start)
-  // Use navigation type + no referrer + no landed key to detect fresh icon tap
-  const LANDING_SESSION_KEY = 'canto-pwa-gate-landed';
-  const navEntry = window.performance?.getEntriesByType?.('navigation')?.[0] as PerformanceNavigationTiming | undefined;
-  const isColdLaunch = isStandalone && 
-    (navEntry?.type === 'navigate' || !document.referrer) &&
-    !sessionStorage.getItem(LANDING_SESSION_KEY);
-  const isPwaLaunch = isStandalone;
-  const isColdPwaOfflineLaunch = isColdLaunch && !isOnline;
-
   const [installDismissed, setInstallDismissed] = useState(
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
-  const shouldShowInstallBanner =
-    !gateOpen && !isStandalone && !installDismissed;
+  const shellGated = gateOpen || offlineStatus !== 'ready';
 
-  // For cold PWA offline launch, force show the main shell immediately (D strengthening)
-  // so user doesn't get stuck on gate or Safari error page
-  if (isColdPwaOfflineLaunch) {
-    // Immediately mark as "landed" and force reveal
-    if (!sessionStorage.getItem(LANDING_SESSION_KEY)) {
-      sessionStorage.setItem(LANDING_SESSION_KEY, '1');
-    }
-    // Ensure gate is not blocking the shell
-    if (gateOpen) {
-      setGateOpen(false);
-    }
-  }
+  const shouldShowInstallBanner =
+    !shellGated && !isStandalone && !installDismissed;
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
@@ -313,12 +293,11 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (gateOpen || isReady || offlineStatus === 'error') return;
-    const wantsLexicon = Boolean(searchQuery.trim()) || needsInitialSearch;
-    if (!wantsLexicon || lexiconLoadStartedRef.current) return;
+    if (isReady || offlineStatus === 'error') return;
+    if (lexiconLoadStartedRef.current) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
-  }, [gateOpen, isReady, offlineStatus, searchQuery, needsInitialSearch, initialize]);
+  }, [isReady, offlineStatus, initialize]);
 
   useEffect(() => {
     if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen || !isReady) return;
@@ -349,20 +328,12 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const headerPreparing = offlineStatus === 'preparing';
+  const headerPreparing = offlineStatus === 'preparing' && !gateOpen;
   const headerInkProgress = headerPreparing ? Math.max(progress / 100, 0.12) : 1;
   const headerStatusLabel =
     uiLang === 'en'
       ? `Preparing lexicon${progress > 0 ? ` ${Math.round(progress)}%` : ''}`
       : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
-
-  useEffect(() => {
-    // Warm start: local lexicon copy exists → open from OPFS/SW (no network). Cold PWA offline: same, no implicit fetch.
-    if (lexiconLoadStartedRef.current || isReady) return;
-    if (!isColdPwaOfflineLaunch && isDbCached !== true) return;
-    lexiconLoadStartedRef.current = true;
-    void initialize();
-  }, [initialize, isDbCached, isColdPwaOfflineLaunch, isReady]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
@@ -665,7 +636,7 @@ function App() {
   };
 
   const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
-  const canSearch = !gateOpen && offlineStatus !== 'preparing';
+  const canSearch = !shellGated;
 
   const handleHome = () => {
     saveLeavingSearchTab();
@@ -691,10 +662,8 @@ function App() {
         onRetry={handleRetryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
-        isPwaLaunch={isPwaLaunch}
-        isColdPwaOfflineLaunch={isColdPwaOfflineLaunch}
       />
-      <div className={`app-shell${(gateOpen && !isColdPwaOfflineLaunch) ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
+      <div className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
@@ -712,7 +681,7 @@ function App() {
             )}
             <ModeMenu
               mode={mode}
-              disabled={gateOpen || offlineStatus === 'preparing'}
+              disabled={shellGated}
               onModeChange={handleModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}
@@ -767,7 +736,7 @@ function App() {
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
                       placeholder={modeMeta.placeholder}
-                      disabled={gateOpen || offlineStatus === 'preparing'}
+                      disabled={shellGated}
                       autoComplete="off"
                       spellCheck={false}
                       enterKeyHint="search"

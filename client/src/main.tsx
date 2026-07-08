@@ -10,6 +10,12 @@ import './pwa-app.css';
 import App from './App.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/useDB.tsx';
+import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './pwa-shell-boot';
+
+applyBootThemeFromStorage();
+if (hasPwaGateLanded()) {
+  revealPwaShell();
+}
 
 const benchmark = new URLSearchParams(location.search).has('benchmark');
 

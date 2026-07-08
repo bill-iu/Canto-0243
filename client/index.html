@@ -13,6 +13,22 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Canto-0243 ONE·搵·韻</title>
     <link rel="stylesheet" href="/fonts/fonts.css" />
+    <link rel="stylesheet" href="/pwa-boot-gate.css" />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('canto-theme');
+          if (theme === 'dark' || theme === 'light') {
+            document.documentElement.dataset.theme = theme;
+          }
+        } catch (_) {}
+        try {
+          if (sessionStorage.getItem('canto-pwa-gate-landed')) {
+            document.documentElement.classList.add('pwa-shell-revealed');
+          }
+        } catch (_) {}
+      })();
+    </script>
     <!-- Preload critical display fonts for hero and about slogans to prevent system fallback -->
     <link rel="preload" href="/fonts/PlayfairDisplay-600.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/CantoCriticalSerif-500.woff2" as="font" type="font/woff2" crossorigin />
@@ -36,6 +52,9 @@
     </script>
   </head>
   <body class="query-tabs-app">
+    <div id="pwaBootGate" class="pwa-boot-gate" role="status" aria-live="polite" aria-busy="true">
+      <p class="pwa-boot-gate__status">執緊啲字…</p>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
