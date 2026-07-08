@@ -76,7 +76,7 @@ export function createEntryDetailPanel(host, { lang, onClose, onRelationPick }) 
   const panel = document.createElement('aside');
   panel.className = 'entry-detail-panel';
   panel.hidden = true;
-  host.appendChild(panel);
+  (host ?? document.body).appendChild(panel);
 
   function render() {
     if (!model) {

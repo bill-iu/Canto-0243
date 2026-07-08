@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
@@ -716,7 +717,9 @@ function App() {
         onOpenChange={setGateOpen}
         theme={uiTheme}
       />
-      <div className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
+      <div
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+      >
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
@@ -885,19 +888,6 @@ function App() {
                 )}
               </div>
               </div>
-              {detailOpen && activeDetailLiteral ? (
-                <EntryDetailPanel
-                  key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
-                  literal={activeDetailLiteral}
-                  model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
-                  loading={!detailModel}
-                  relationsLoading={detailRelationsLoading}
-                  lang={uiLang}
-                  preferredJyutping={preferredJyutping}
-                  onClose={closeEntryDetail}
-                  onRelationPick={handleRelationPick}
-                />
-              ) : null}
             </section>
           )}
         </main>
@@ -918,6 +908,22 @@ function App() {
           onDismiss={() => setInstallDismissed(true)}
         />
       )}
+      {detailOpen && activeDetailLiteral
+        ? createPortal(
+            <EntryDetailPanel
+              key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
+              literal={activeDetailLiteral}
+              model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
+              loading={!detailModel}
+              relationsLoading={detailRelationsLoading}
+              lang={uiLang}
+              preferredJyutping={preferredJyutping}
+              onClose={closeEntryDetail}
+              onRelationPick={handleRelationPick}
+            />,
+            document.body,
+          )
+        : null}
     </>
   );
 }

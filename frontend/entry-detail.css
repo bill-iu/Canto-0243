@@ -5,6 +5,57 @@
   /* full-width list; panel overlays via fixed positioning */
 }
 
+/* 面板開啟：鎖頁面捲動；hero／搜尋固定；結果區獨立捲；footer 隱藏 */
+html.has-entry-detail-open {
+  overflow: hidden;
+  height: 100%;
+}
+
+.app-shell.has-entry-detail {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell.has-entry-detail .app-footer {
+  display: none;
+}
+
+.app-shell.has-entry-detail .main-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search-view.has-entry-detail {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search-view.has-entry-detail .search-view__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search-view.has-entry-detail .search-results,
+.search-view.has-entry-detail .search-results-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
 .search-view__main {
   min-width: 0;
 }

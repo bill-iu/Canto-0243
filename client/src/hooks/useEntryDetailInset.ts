@@ -8,6 +8,8 @@ export function useEntryDetailInset(active: boolean): void {
     const header = document.querySelector<HTMLElement>('.app-header');
     if (!header) return;
 
+    root.classList.add('has-entry-detail-open');
+
     const sync = () => {
       root.style.setProperty('--entry-detail-inset-top', `${header.getBoundingClientRect().bottom}px`);
     };
@@ -16,12 +18,11 @@ export function useEntryDetailInset(active: boolean): void {
     const ro = new ResizeObserver(sync);
     ro.observe(header);
     window.addEventListener('resize', sync);
-    window.addEventListener('scroll', sync, { passive: true });
 
     return () => {
       ro.disconnect();
       window.removeEventListener('resize', sync);
-      window.removeEventListener('scroll', sync);
+      root.classList.remove('has-entry-detail-open');
       root.style.removeProperty('--entry-detail-inset-top');
     };
   }, [active]);

@@ -199,22 +199,30 @@ function syncEntryDetailInset() {
 function bindEntryDetailInset() {
   if (entryDetailInsetBound) return;
   entryDetailInsetBound = true;
+  document.documentElement.classList.add("has-entry-detail-open");
   window.addEventListener("resize", syncEntryDetailInset);
-  window.addEventListener("scroll", syncEntryDetailInset, { passive: true });
+  const header = document.querySelector(".app-header");
+  if (header && typeof ResizeObserver !== "undefined") {
+    entryDetailInsetRo = new ResizeObserver(syncEntryDetailInset);
+    entryDetailInsetRo.observe(header);
+  }
 }
+
+let entryDetailInsetRo = null;
 
 function unbindEntryDetailInset() {
   if (!entryDetailInsetBound) return;
   entryDetailInsetBound = false;
   window.removeEventListener("resize", syncEntryDetailInset);
-  window.removeEventListener("scroll", syncEntryDetailInset);
+  entryDetailInsetRo?.disconnect();
+  entryDetailInsetRo = null;
+  document.documentElement.classList.remove("has-entry-detail-open");
   document.documentElement.style.removeProperty("--entry-detail-inset-top");
 }
 
 function ensureEntryDetailUi() {
   if (entryDetailUi) return entryDetailUi;
-  const host = document.getElementById("entryDetailHost") || $.searchView;
-  entryDetailUi = createEntryDetailPanel(host, {
+  entryDetailUi = createEntryDetailPanel(document.body, {
     lang: getLang(),
     onClose: () => closeEntryDetail(),
     onRelationPick: (literal) => handleEntryPick({ literal, fromRelationChip: true }),
@@ -223,7 +231,9 @@ function ensureEntryDetailUi() {
 }
 
 function syncEntryDetailLayout() {
-  $.searchView?.classList.toggle("has-entry-detail", Boolean(shell.entryDetail.open));
+  const open = Boolean(shell.entryDetail.open);
+  $.searchView?.classList.toggle("has-entry-detail", open);
+  $.appShell?.classList.toggle("has-entry-detail", open);
 }
 
 function closeEntryDetail() {
