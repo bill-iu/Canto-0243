@@ -561,9 +561,10 @@ function renderSearchResults(data, total = null) {
   );
   $.results.appendChild(ul);
   const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  const loaded = data.length;
   $.stats.textContent = `${merged.length} 個結果（${statsLabel}）`;
-  if (total != null && total > merged.length) {
-    $.stats.textContent = `已載入 ${merged.length} / ${total} 個結果（${statsLabel}）`;
+  if (total != null && total > loaded) {
+    $.stats.textContent = `已載入 ${loaded} / ${total} 個結果（${statsLabel}）`;
   } else if (total != null) {
     $.stats.textContent = `${total} 個結果（${statsLabel}）`;
   }
@@ -653,7 +654,10 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   if (!append && total != null) tab.total = total;
   const itemCount = countSearchResultItems(displayData);
   if (append) {
-    tab.renderedCount = Math.min((tab.renderedCount ?? RESULT_RENDER_BATCH) + data.length, itemCount);
+    tab.renderedCount = Math.min(
+      (tab.renderedCount ?? RESULT_RENDER_BATCH) + RESULT_RENDER_BATCH,
+      itemCount,
+    );
   } else {
     resetRenderedCount(tab, itemCount);
   }

@@ -42,7 +42,7 @@ def serialize_word(
         char_value = word.get("char") or ""
         jyutping_value = word.get("jyutping") or ""
         code_value = word.get("code") or get_0243_code(jyutping_value) or ""
-        return {
+        out = {
             "char": char_value,
             "code": code_value or "",
             "jyutping": jyutping_value,
@@ -51,6 +51,9 @@ def serialize_word(
             "result_type": result_type,
             "id": word.get("id"),
         }
+        if word.get("anchor_dimension") in ("initial", "final"):
+            out["anchor_dimension"] = word["anchor_dimension"]
+        return out
 
     code_value = word.code or get_0243_code(word.jyutping or "") or ""
     return {

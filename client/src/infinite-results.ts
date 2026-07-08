@@ -37,7 +37,8 @@ export function useInfiniteResultWindow({
       return;
     }
     const added = itemCount - itemCountAtLoadRef.current;
-    if (added > 0) {
+    // ponytail: 首頁只顯示 RESULT_RENDER_BATCH；僅 loadMore 追加時自動展開新頁
+    if (added > 0 && itemCountAtLoadRef.current > 0) {
       setVisibleCount((prev) => Math.min(prev + added, itemCount));
     }
     itemCountAtLoadRef.current = itemCount;

@@ -46,12 +46,12 @@ const SOURCE_FLAG_LABELS = [
 ];
 
 export function rowLiteral(row) {
-  return String(row?.word ?? row?.char ?? '').trim();
+  return String(row?.word ?? row?.char ?? row?.display_text ?? '').trim();
 }
 
 export function isListableWordRow(row) {
   if (!row || typeof row !== 'object') return false;
-  const type = row.resultType;
+  const type = row.resultType ?? row.result_type;
   if (type && type !== 'word') return false;
   return Boolean(rowLiteral(row));
 }
