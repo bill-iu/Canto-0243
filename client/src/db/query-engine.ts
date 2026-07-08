@@ -24,6 +24,11 @@ import { relationLookupItems, relationPoolPage, type RelationPoolItem } from './
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from './jyutping-anchor.ts';
 import { rhymeFinalsFromJyutping } from './jyutping-codec.ts';
 import {
+  expectedWordLength,
+  isJyutpingQuery,
+  matchesJyutpingQuery,
+} from './jyutping-match.ts';
+import {
   getEqualsSpan,
   type CandidateSource,
   type CompoundKind,
@@ -695,14 +700,7 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
 export const JYUTPING_SYN_MODE_HINT =
   '近反義模式只支援漢字查詢。請改打漢字，或切換至 0243模式／02493模式 查粵拼。';
 
-/** Port of jyutping_match.is_jyutping_query */
-export function isJyutpingQuery(q: string): boolean {
-  const t = (q || '').trim();
-  if (!t || /[\u4e00-\u9fff]/.test(t)) {
-    return false;
-  }
-  return /[a-zA-Z]/.test(t) && /^[a-zA-Z0-9\s]+$/.test(t);
-}
+export { isJyutpingQuery } from './jyutping-match.ts';
 
 /** Port of query_parse.is_relation_syntax_query */
 export { isPingZeSerialQuery };
@@ -1858,19 +1856,27 @@ async function executeJyutpingFragment(
   parsed: JyutpingFragmentQuery,
   db: Database,
   limit: number,
-  offset: number
+  offset: number,
 ): Promise<SearchResult> {
+  const wordLen = expectedWordLength(parsed.raw_q);
+  if (wordLen == null) {
+    return { items: [] };
+  }
+
   const sql = `
-    SELECT char, jyutping, code 
-    FROM words 
-    WHERE jyutping LIKE ?
-    ORDER BY char 
-    LIMIT ? OFFSET ?
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
   `;
-  
-  const results = (await queryRows(db, sql, [`%${parsed.raw_q}%`, limit, offset])).map(rowToResult);
-  
-  return { items: results };
+  const rows = (await queryRows(db, sql, [wordLen, wordLen])) as WordRow[];
+  const matched = deduplicateWordRows(rows).filter((row) =>
+    matchesJyutpingQuery(String(row.jyutping ?? ''), parsed.raw_q),
+  );
+  const sorted = sortQueryResults(matched.map((row) => rowToResult(row)));
+  return { items: sorted.slice(offset, offset + limit), total: sorted.length };
 }
 
 type WordRow = Record<string, unknown>;
