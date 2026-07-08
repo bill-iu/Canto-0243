@@ -3,7 +3,7 @@ const SECTIONS = [
     id: 'basic',
     zh: {
       title: '基本查詢',
-      intro: '漢字、詞語、0243 碼或粵拼。',
+      intro: '漢字、詞語、394052 碼或粵拼。',
       examples: [
         { label: '查呢個字嘅所有讀音' },
         { label: '查呢個詞語' },
@@ -13,7 +13,7 @@ const SECTIONS = [
     },
     en: {
       title: 'Basic lookup',
-      intro: 'Chinese characters, words, 0243 codes, or Jyutping.',
+      intro: 'Chinese characters, words, 394052 codes, or Jyutping.',
       examples: [
         { label: 'All readings for this character' },
         { label: 'Look up this word' },
@@ -453,7 +453,7 @@ const SECTIONS = [
     zh: {
       title: '近義 / 反義',
       intro:
-        '<code translate="no">~</code> 近義、<code translate="no">!</code> 反義；可加碼前綴。僅 0243／02493 模式。',
+        '<code translate="no">~</code> 近義、<code translate="no">!</code> 反義；可加碼前綴。僅 0243搜尋三檔（唔包括近反義模式）。',
       examples: [
         { label: '近義於「開心」' },
         { label: '反義於「你」（含鏡像近義）' },
@@ -463,7 +463,7 @@ const SECTIONS = [
     en: {
       title: 'Synonym / antonym',
       intro:
-        '<code translate="no">~</code> near-synonym, <code translate="no">!</code> antonym; optional code prefix. 0243 / 02493 modes only.',
+        '<code translate="no">~</code> near-synonym, <code translate="no">!</code> antonym; optional code prefix. 0243 search tiers only (not synonym/antonym mode).',
       examples: [
         { label: 'Near-synonyms of 開心' },
         { label: 'Antonyms of 你 (includes mirrored near-synonyms)' },
@@ -590,7 +590,7 @@ const SECTIONS = [
     zh: {
       title: '同音異讀',
       intro:
-        '<code translate="no">{左碼}/{右碼}</code> 搵同一字面、至少兩個唔同粵拼讀音；<code translate="no">?</code> 通配碼位。僅 0243／02493 模式。',
+        '<code translate="no">{左碼}/{右碼}</code> 搵同一字面、至少兩個唔同粵拼讀音；<code translate="no">?</code> 通配碼位。僅 0243搜尋三檔。',
       examples: [
         { label: '二字異讀（如「今晚」gam1 maan1／gam1 maan5）' },
         { label: '只約束第 2 字碼 3／4' },
@@ -600,7 +600,7 @@ const SECTIONS = [
     en: {
       title: 'Heteronym (variant readings)',
       intro:
-        '<code translate="no">{leftCode}/{rightCode}</code> finds the same written form with at least two Jyutping readings; <code translate="no">?</code> wildcards a code slot. 0243 / 02493 modes only.',
+        '<code translate="no">{leftCode}/{rightCode}</code> finds the same written form with at least two Jyutping readings; <code translate="no">?</code> wildcards a code slot. 0243 search tiers only.',
       examples: [
         { label: 'Two-char variant (e.g. 今晚 gam1 maan1 / gam1 maan5)' },
         { label: 'Only constrain 2nd character code 3 / 4' },
@@ -660,14 +660,14 @@ const GUIDE_INTRO = {
     title: '基本說明',
     paragraphs: [
       '<strong>打數字，搵 394052 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（394052 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>鬆檔；<strong>02493模式</strong>僅 <code translate="no">4↔5</code> 鬆檔；<strong>394052模式</strong>矩陣碼逐位精確（三聲 <code translate="no">4</code>、五聲 <code translate="no">5</code> 唔互通）。<strong>平仄串列</strong>用 <code translate="no">P</code>／<code translate="no">Z</code> 同數字混寫（如 <code translate="no">PZ3</code>），會自動切換 394052模式（唔出提示）。',
-      '<strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。',
+      '<strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、394052 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。',
       '<strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。',
       '<strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">+</code>，例 <code translate="no">+香??</code>、<code translate="no">23+就</code>、<code translate="no">?30+人</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。',
-      '<strong>打幾個漢字加等號，搵「同韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同「開心」同韻嘅詞。打「=最好」會搵整詞逐音節同「最好」同聲嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 0243 碼同一格聲或韻。',
+      '<strong>打幾個漢字加等號，搵「同韻」或「同聲」。</strong>打「開心=」會搵整詞逐音節同「開心」同韻嘅詞。打「=最好」會搵整詞逐音節同「最好」同聲嘅詞。單格聲母錨打「=我?」、「?=就」。碼夾等號如「2我=3」、「2=我3」，可同時約束 394052 碼同一格聲或韻。',
       '<strong>打一個漢字加等號，搵「同韻」或「同聲」詞。</strong>打「就=?」會搵首字同「就」同韻嘅二字詞；打「就=」會搵同「就」同韻嘅單字。聲母錨打「=就?」、「?=你」。<strong>口訣：</strong>「=」在錨字後比韻母，在錨字前比聲母。',
-      '<strong>打粵拼，精準搵漢字。</strong>冇聲調如「syut」，搵粵拼相同嘅單字（忽略聲調）；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243模式／02493模式。',
+      '<strong>打粵拼，精準搵漢字。</strong>冇聲調如「syut」，搵粵拼相同嘅單字（忽略聲調）；有聲調「ming4 baak6」會搵準確讀音嘅字「明白」。近反義模式唔收粵拼，請改打漢字或切換 0243搜尋三檔之一。',
       '<strong>打粵拼錨，唔使打漢字參考字。</strong>規範形如 <code translate="no">?+yut?</code>、<code translate="no">?+hon</code>、<code translate="no">3+ngo4</code>、<code translate="no">23o</code>（二字韻母）／<code translate="no">23+o</code>（三字碼尾韻母）。<code translate="no">?+m?</code>、<code translate="no">3m4</code> 會分聲母／韻母兩列。',
-      '<strong>近義、反義同複合詞（0243模式／02493模式）。</strong>打「~開心」搵同「開心」近義嘅詞；打「!開心」搵反義詞。可加前綴0243碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>。',
+      '<strong>近義、反義同複合詞（0243搜尋三檔）。</strong>打「~開心」搵同「開心」近義嘅詞；打「!開心」搵反義詞。可加前綴碼，例如「33!開心」。打「~~」搵二字<strong>近義複合</strong>（如「朋友」「恐懼」）；打「!!」搵二字<strong>反義複合</strong>（如「生死」「是非」）。語法對稱：<code translate="no">~~</code>／<code translate="no">33~~</code>／<code translate="no">~~你</code>／<code translate="no">33~~你</code>，與 <code translate="no">!!</code> 系列相同。以上複合詞查詢<strong>不適用近反義模式</strong>；從近反義切換時會還原你上次選嘅搜尋檔（含 394052模式）。',
       '下面每張卡有<strong>可點擊例子</strong>，撳一下就會回到搜尋頁並自動執行。',
     ],
   },
@@ -675,14 +675,14 @@ const GUIDE_INTRO = {
     title: 'Basics',
     paragraphs: [
       '<strong>Type digits to find entries sharing a 394052 tone code.</strong> Each digit is one syllable’s tone; as many digits as you type, that many syllables are matched. <strong>0243 mode</strong> is loose; <strong>02493 mode</strong> only loosens <code translate="no">4↔5</code>; <strong>394052 mode</strong> is strict (tone 3 digit <code translate="no">4</code> vs tone 5 digit <code translate="no">5</code>). <strong>Ping–ze serial</strong> mixes <code translate="no">P</code> / <code translate="no">Z</code> with digits and switches to 394052 mode silently.',
-      '<strong>Type Chinese characters to look up readings and codes.</strong> Enter 開心, 明白, 食飯 to see Jyutping, 0243 codes, and same-tone candidates. Switch to <strong>synonym/antonym mode</strong> to list near-synonyms, antonyms, and semantically related words.',
+      '<strong>Type Chinese characters to look up readings and codes.</strong> Enter 開心, 明白, 食飯 to see Jyutping, 394052 codes, and same-tone candidates. Switch to <strong>synonym/antonym mode</strong> to list near-synonyms, antonyms, and semantically related words.',
       '<strong>Digits plus anchor characters constrain rhyme or initial per slot.</strong> Serial scan: one code digit per syllable; <code translate="no">{code}{char}=</code> rhyme anchor, <code translate="no">{code}={char}</code> initial anchor. E.g. <code translate="no">23就=</code> (two chars: last rhymes with 就), <code translate="no">04困=49倒=</code> (four-char rhyme anchors). Extra slots use <code translate="no">+</code>, e.g. <code translate="no">23+就=</code> (three chars: last rhymes); fix the last literal with <code translate="no">23@就</code>.',
       '<strong>Missing characters and extra slots.</strong> Wildcards: <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code>; extra slots: <code translate="no">+</code>, e.g. <code translate="no">+香??</code>, <code translate="no">23+就</code>, <code translate="no">?30+人</code>. <code translate="no">*</code> is still accepted (same as <code translate="no">+</code>).',
-      '<strong>Several characters plus <code translate="no">=</code> for whole-word rhyme or initial.</strong> <code translate="no">開心=</code> finds words where each syllable rhymes with 開心. <code translate="no">=最好</code> finds words sharing initials with 最好. Single-slot initial anchors: <code translate="no">=我?</code>, <code translate="no">?=就</code>. Code sandwiches like <code translate="no">2我=3</code>, <code translate="no">2=我3</code> constrain both 0243 code and one slot’s rhyme or initial.',
+      '<strong>Several characters plus <code translate="no">=</code> for whole-word rhyme or initial.</strong> <code translate="no">開心=</code> finds words where each syllable rhymes with 開心. <code translate="no">=最好</code> finds words sharing initials with 最好. Single-slot initial anchors: <code translate="no">=我?</code>, <code translate="no">?=就</code>. Code sandwiches like <code translate="no">2我=3</code>, <code translate="no">2=我3</code> constrain both 394052 code and one slot’s rhyme or initial.',
       '<strong>One character plus <code translate="no">=</code> for rhyme- or initial-matched words.</strong> <code translate="no">就=?</code> finds two-character words whose first syllable rhymes with 就; <code translate="no">就=</code> finds single characters rhyming with 就. Initial anchors: <code translate="no">=就?</code>, <code translate="no">?=你</code>. <strong>Mnemonic:</strong> <code translate="no">=</code> after the anchor compares rhyme; before the anchor compares initial.',
-      '<strong>Type Jyutping for precise character lookup.</strong> Without tones (e.g. <code translate="no">syut</code>) matches any tone with the same spelling; with tones (<code translate="no">ming4 baak6</code>) matches 明白 exactly. Synonym/antonym mode does not accept Jyutping—use characters or switch to 0243 / 02493 mode.',
+      '<strong>Type Jyutping for precise character lookup.</strong> Without tones (e.g. <code translate="no">syut</code>) matches any tone with the same spelling; with tones (<code translate="no">ming4 baak6</code>) matches 明白 exactly. Synonym/antonym mode does not accept Jyutping—use characters or switch to one of the three 0243 search tiers.',
       '<strong>Jyutping anchors without a Hanzi reference.</strong> Forms like <code translate="no">?+yut?</code>, <code translate="no">?+hon</code>, <code translate="no">3+ngo4</code>, <code translate="no">23o</code> (two-char final) / <code translate="no">23+o</code> (three-char trailing final). <code translate="no">?+m?</code>, <code translate="no">3m4</code> split into m / ng dual columns.',
-      '<strong>Synonyms, antonyms, and compounds (0243 / 02493 modes).</strong> <code translate="no">~開心</code> finds near-synonyms of 開心; <code translate="no">!開心</code> finds antonyms. Optional code prefix, e.g. <code translate="no">33!開心</code>. <code translate="no">~~</code> finds two-character <strong>near-synonym compounds</strong> (e.g. 朋友, 恐懼); <code translate="no">!!</code> finds <strong>antonym compounds</strong> (e.g. 生死, 是非). Symmetric forms: <code translate="no">~~</code> / <code translate="no">33~~</code> / <code translate="no">~~你</code> / <code translate="no">33~~你</code>, same as the <code translate="no">!!</code> family. Compound queries <strong>do not apply in synonym/antonym mode</strong>.',
+      '<strong>Synonyms, antonyms, and compounds (0243 search tiers).</strong> <code translate="no">~開心</code> finds near-synonyms of 開心; <code translate="no">!開心</code> finds antonyms. Optional code prefix, e.g. <code translate="no">33!開心</code>. <code translate="no">~~</code> finds two-character <strong>near-synonym compounds</strong> (e.g. 朋友, 恐懼); <code translate="no">!!</code> finds <strong>antonym compounds</strong> (e.g. 生死, 是非). Symmetric forms: <code translate="no">~~</code> / <code translate="no">33~~</code> / <code translate="no">~~你</code> / <code translate="no">33~~你</code>, same as the <code translate="no">!!</code> family. Compound queries <strong>do not apply in synonym/antonym mode</strong>; leaving synonym mode restores your last search tier (including 394052 mode).',
       'Each card below has <strong>clickable examples</strong>—tap to return to search and run automatically.',
     ],
   },
