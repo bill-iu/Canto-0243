@@ -113,6 +113,12 @@
   cursor: pointer;
 }
 
+.entry-detail-panel__loading {
+  margin: 0.5rem 0 0;
+  font-size: 0.875rem;
+  color: var(--muted, #6b7280);
+}
+
 .entry-detail-panel__jyutping {
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 14px;

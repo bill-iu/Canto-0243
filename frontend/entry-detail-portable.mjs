@@ -159,6 +159,23 @@ export function createEntryDetailPanel(host, { lang, onClose, onRelationPick }) 
   }
 
   return {
+    showPending(literal) {
+      model = null;
+      readingIdx = 0;
+      panel.hidden = false;
+      panel.innerHTML = `
+        <header class="entry-detail-panel__header">
+          <h2 class="entry-detail-panel__title">${escapeHtml(tDetail('detail.title', lang))}</h2>
+          <button type="button" class="entry-detail-panel__close" aria-label="${escapeHtml(tDetail('detail.close', lang))}">×</button>
+        </header>
+        <div class="entry-detail-panel__body">
+          <div class="entry-detail-panel__hero">
+            <div class="entry-detail-panel__literal">${escapeHtml(literal)}</div>
+          </div>
+          <p class="entry-detail-panel__loading">${escapeHtml(lang === 'en' ? 'Loading…' : '載入中…')}</p>
+        </div>`;
+      panel.querySelector('.entry-detail-panel__close')?.addEventListener('click', onClose);
+    },
     setModel(next, preferredJyutping) {
       model = next;
       readingIdx = pickPreferredReadingIndex(model?.readings ?? [], preferredJyutping);

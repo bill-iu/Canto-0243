@@ -185,15 +185,17 @@ function closeEntryDetail() {
   syncEntryDetailLayout();
 }
 
-async function openEntryDetail(literal, preferredJyutping) {
+function openEntryDetail(literal, preferredJyutping) {
   shell.entryDetail.open = true;
   shell.entryDetail.activeLiteral = literal;
   shell.entryDetail.preferredJyutping = preferredJyutping ?? null;
   syncEntryDetailLayout();
-  const model = await fetchEntryDetail(literal);
-  if (model && shell.entryDetail.activeLiteral === literal) {
-    ensureEntryDetailUi().setModel(model, preferredJyutping);
-  }
+  ensureEntryDetailUi().showPending(literal);
+  void fetchEntryDetail(literal).then((model) => {
+    if (model && shell.entryDetail.activeLiteral === literal) {
+      ensureEntryDetailUi().setModel(model, preferredJyutping);
+    }
+  });
 }
 
 async function handleEntryPick(payload) {
@@ -212,11 +214,7 @@ async function handleEntryPick(payload) {
     return;
   }
   if (action === "open_only") {
-    shell.entryDetail.open = true;
-    shell.entryDetail.preferredJyutping = payload.jyutping ?? null;
-    syncEntryDetailLayout();
-    const model = await fetchEntryDetail(payload.literal);
-    if (model) ensureEntryDetailUi().setModel(model, payload.jyutping);
+    openEntryDetail(payload.literal, payload.jyutping);
     return;
   }
   const tab = ensureActiveSearchTab();
@@ -224,8 +222,8 @@ async function handleEntryPick(payload) {
   Object.assign(tab, withResultClickQuery(tab, payload.literal));
   $.searchInput.value = payload.literal;
   persistTabs();
-  await openEntryDetail(payload.literal, payload.jyutping);
   searchDict();
+  openEntryDetail(payload.literal, payload.jyutping);
 }
 
 function createResultLink(text, query, title = "") {
@@ -446,13 +444,6 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   renderSearchResults(displayData, tab.total);
   const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
   toggleLoadMoreButton(hasMore);
-  if (shell.entryDetail.open && shell.entryDetail.activeLiteral) {
-    void fetchEntryDetail(shell.entryDetail.activeLiteral).then((model) => {
-      if (model && shell.entryDetail.activeLiteral === model.literal) {
-        ensureEntryDetailUi().setModel(model, shell.entryDetail.preferredJyutping);
-      }
-    });
-  }
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {

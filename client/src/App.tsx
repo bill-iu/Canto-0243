@@ -10,7 +10,10 @@ import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { ResultList, type EntryPickPayload } from './result-list';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
-import { loadEntryDetail } from './entry-detail/load-entry-detail';
+import {
+  enrichEntryDetailRelations,
+  loadEntryDetailCore,
+} from './entry-detail/load-entry-detail';
 import type { EntryDetailModel } from './entry-detail/types';
 import { resolveListClickAction } from '../../frontend/entry-detail-core.mjs';
 import { SynResultList, synResultsStats } from './syn-result-list';
@@ -103,8 +106,10 @@ function App() {
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
+  const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
   const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
   const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
+  const detailLoadGenRef = useRef(0);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
@@ -387,30 +392,51 @@ function App() {
   }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen]);
 
   const closeEntryDetail = useCallback(() => {
+    detailLoadGenRef.current += 1;
     setDetailOpen(false);
     setActiveDetailLiteral(null);
     setDetailModel(null);
+    setDetailRelationsLoading(false);
     setPreferredJyutping(null);
   }, []);
 
   const openEntryDetailForLiteral = useCallback(
     async (literal: string, jyutping?: string | null) => {
+      const gen = ++detailLoadGenRef.current;
       setDetailOpen(true);
       setActiveDetailLiteral(literal);
       setPreferredJyutping(jyutping ?? null);
-      if (isReady) {
-        const model = await loadEntryDetail(literal);
-        setDetailModel(model);
+      if (!isReady) {
+        setDetailModel(null);
+        setDetailRelationsLoading(false);
+        return;
       }
+      setDetailRelationsLoading(true);
+      const core = await loadEntryDetailCore(literal);
+      if (gen !== detailLoadGenRef.current) return;
+      setDetailModel(core);
+      if (!core) {
+        setDetailRelationsLoading(false);
+        return;
+      }
+      if (core.syns.length || core.ants.length) {
+        setDetailRelationsLoading(false);
+        return;
+      }
+      void enrichEntryDetailRelations(core).then((full) => {
+        if (gen !== detailLoadGenRef.current) return;
+        setDetailModel(full);
+        setDetailRelationsLoading(false);
+      });
     },
     [isReady],
   );
 
   useEffect(() => {
-    if (!detailOpen || !activeDetailLiteral || !isReady || searchLoading) return;
-    if (searchQuery.trim() !== activeDetailLiteral) return;
-    void loadEntryDetail(activeDetailLiteral).then(setDetailModel);
-  }, [detailOpen, activeDetailLiteral, searchQuery, isReady, searchLoading]);
+    if (!detailOpen || !activeDetailLiteral || !isReady) return;
+    if (detailModel?.literal === activeDetailLiteral) return;
+    void openEntryDetailForLiteral(activeDetailLiteral, preferredJyutping);
+  }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailForLiteral]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
@@ -529,8 +555,8 @@ function App() {
         return;
       }
       hydrateSearch(payload.literal);
-      void openEntryDetailForLiteral(payload.literal, payload.jyutping);
       runCommittedSearch(payload.literal);
+      void openEntryDetailForLiteral(payload.literal, payload.jyutping);
     },
     [
       mode,
@@ -546,8 +572,8 @@ function App() {
   const handleRelationPick = useCallback(
     (literal: string) => {
       hydrateSearch(literal);
-      void openEntryDetailForLiteral(literal, null);
       runCommittedSearch(literal);
+      void openEntryDetailForLiteral(literal, null);
     },
     [hydrateSearch, openEntryDetailForLiteral, runCommittedSearch],
   );
@@ -801,10 +827,13 @@ function App() {
                 )}
               </div>
               </div>
-              {detailOpen && detailModel ? (
+              {detailOpen && activeDetailLiteral ? (
                 <EntryDetailPanel
-                  key={`${detailModel.literal}-${preferredJyutping ?? ''}`}
-                  model={detailModel}
+                  key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
+                  literal={activeDetailLiteral}
+                  model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
+                  loading={!detailModel || detailModel.literal !== activeDetailLiteral}
+                  relationsLoading={detailRelationsLoading}
                   lang={uiLang}
                   preferredJyutping={preferredJyutping}
                   onClose={closeEntryDetail}
