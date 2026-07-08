@@ -28,6 +28,7 @@ import {
 import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
+import { DEFAULT_RELATION_POOL_PAGE_SIZE } from './relation-pool-snapshot.ts';
 
 // Re-export the query engine types
 export type { 
@@ -69,7 +70,8 @@ export interface SearchPageResult {
   lookupLayout?: boolean;
 }
 
-export const SEARCH_PAGE_SIZE = 200;
+/** 0243搜尋模式（0243／02493）首頁／載入更多筆數；probe 顯示 SQL 至 2000 仍穩，1200 兼顧 DOM */
+export const SEARCH_PAGE_SIZE = 1200;
 
 /**
  * Legacy QueryOptions interface
@@ -79,8 +81,12 @@ export interface QueryOptions {
   mode?: '0243' | '02493' | 'synonym';
   limit?: number;
   offset?: number;
-  fallback_0243_mode?: '0243' | '02493';
+  fallback_0243_mode?: '0243' | '02493' | '394052';
   ui_lang?: 'zh' | 'en';
+}
+
+export function searchPageSizeForMode(mode?: QueryOptions['mode']): number {
+  return mode === 'synonym' ? DEFAULT_RELATION_POOL_PAGE_SIZE : SEARCH_PAGE_SIZE;
 }
 
 /**
@@ -92,6 +98,8 @@ function mapLegacyMode(mode?: string): QueryMode {
       return 'm1';
     case '02493':
       return 'm2';
+    case '394052':
+      return 'm3';
     case 'synonym':
       return 'syn';
     default:

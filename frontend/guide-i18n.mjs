@@ -31,21 +31,53 @@ const SECTIONS = [
   {
     id: 'digit',
     zh: {
-      title: '0243 / 02493 數字',
-      intro: '純數字搵同碼詞條；02493 分清二聲。',
-      examples: [{ label: '找同音字' }, { label: '02493模式 分清二聲' }],
+      title: '0243 / 02493 / 394052 數字',
+      intro: '純數字搵同碼詞條；02493 分清二聲；394052 矩陣碼三／五聲分明。',
+      examples: [
+        { label: '找同音字' },
+        { label: '02493模式 分清二聲' },
+        { label: '394052模式 三／五聲分明' },
+      ],
     },
     en: {
-      title: '0243 / 02493 digits',
-      intro: 'Digits only: find entries sharing the code; 02493 separates the second tone.',
+      title: '0243 / 02493 / 394052 digits',
+      intro:
+        'Digits only: find entries sharing the code; 02493 separates the second tone; 394052 matrix keeps tones 3 and 5 distinct.',
       examples: [
         { label: 'Same-tone matches' },
         { label: '02493 mode — finer second-tone distinction' },
+        { label: '394052 mode — strict tone-3 vs tone-5 digits' },
       ],
     },
     examples: [
       { query: '23', mode: 'm1' },
       { query: '93', mode: 'm2' },
+      { query: '45', mode: 'm3' },
+    ],
+  },
+  {
+    id: 'ping-ze',
+    zh: {
+      title: '平仄串列',
+      intro:
+        '<code translate="no">P</code>＝平（394052 碼 0／3）、<code translate="no">Z</code>＝仄（其餘）；數字＝該格同音。自動切換 <strong>394052模式（矩陣）</strong>（唔出提示）。',
+      examples: [
+        { label: '二字：平＋仄（如「自己」）' },
+        { label: '三字：平仄＋與 3 同音' },
+      ],
+    },
+    en: {
+      title: 'Ping–ze serial',
+      intro:
+        '<code translate="no">P</code> = ping (394052 digits 0/3), <code translate="no">Z</code> = ze (others); a digit = same tone at that slot. Switches to <strong>394052 Mode (Matrix)</strong> silently.',
+      examples: [
+        { label: 'Two chars: ping + ze (e.g. 自己)' },
+        { label: 'Three chars: ping, ze, same as 3' },
+      ],
+    },
+    examples: [
+      { query: 'ZP', mode: 'm3' },
+      { query: 'PZ3', mode: 'm3' },
     ],
   },
   {
@@ -627,7 +659,7 @@ const GUIDE_INTRO = {
   zh: {
     title: '基本說明',
     paragraphs: [
-      '<strong>打數字，搵 0243 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（0243 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞 0243 碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>用 0243 碼；<strong>02493模式</strong>用 02493，調值更細（分清二聲）。',
+      '<strong>打數字，搵 394052 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（394052 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>鬆檔；<strong>02493模式</strong>僅 <code translate="no">4↔5</code> 鬆檔；<strong>394052模式</strong>矩陣碼逐位精確（三聲 <code translate="no">4</code>、五聲 <code translate="no">5</code> 唔互通）。<strong>平仄串列</strong>用 <code translate="no">P</code>／<code translate="no">Z</code> 同數字混寫（如 <code translate="no">PZ3</code>），會自動切換 394052模式（唔出提示）。',
       '<strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、0243 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。',
       '<strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。',
       '<strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">+</code>，例 <code translate="no">+香??</code>、<code translate="no">23+就</code>、<code translate="no">?30+人</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。',
@@ -642,7 +674,7 @@ const GUIDE_INTRO = {
   en: {
     title: 'Basics',
     paragraphs: [
-      '<strong>Type digits to find entries sharing a 0243 tone code.</strong> Each digit is one syllable’s tone (0243 code); as many digits as you type, that many syllables are matched. For example <code translate="no">23</code> finds two-character words whose full 0243 code matches <code translate="no">23</code>—such as 自己, 第一, 做好. <code translate="no">232</code> finds three-syllable matches like 是不是, 自己做, 沒關係. <strong>0243 mode</strong> uses 0243 codes; <strong>02493 mode</strong> uses 02493 for finer distinction (separates the second tone).',
+      '<strong>Type digits to find entries sharing a 394052 tone code.</strong> Each digit is one syllable’s tone; as many digits as you type, that many syllables are matched. <strong>0243 mode</strong> is loose; <strong>02493 mode</strong> only loosens <code translate="no">4↔5</code>; <strong>394052 mode</strong> is strict (tone 3 digit <code translate="no">4</code> vs tone 5 digit <code translate="no">5</code>). <strong>Ping–ze serial</strong> mixes <code translate="no">P</code> / <code translate="no">Z</code> with digits and switches to 394052 mode silently.',
       '<strong>Type Chinese characters to look up readings and codes.</strong> Enter 開心, 明白, 食飯 to see Jyutping, 0243 codes, and same-tone candidates. Switch to <strong>synonym/antonym mode</strong> to list near-synonyms, antonyms, and semantically related words.',
       '<strong>Digits plus anchor characters constrain rhyme or initial per slot.</strong> Serial scan: one code digit per syllable; <code translate="no">{code}{char}=</code> rhyme anchor, <code translate="no">{code}={char}</code> initial anchor. E.g. <code translate="no">23就=</code> (two chars: last rhymes with 就), <code translate="no">04困=49倒=</code> (four-char rhyme anchors). Extra slots use <code translate="no">+</code>, e.g. <code translate="no">23+就=</code> (three chars: last rhymes); fix the last literal with <code translate="no">23@就</code>.',
       '<strong>Missing characters and extra slots.</strong> Wildcards: <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code>; extra slots: <code translate="no">+</code>, e.g. <code translate="no">+香??</code>, <code translate="no">23+就</code>, <code translate="no">?30+人</code>. <code translate="no">*</code> is still accepted (same as <code translate="no">+</code>).',

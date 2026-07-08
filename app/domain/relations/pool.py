@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List
 
-DEFAULT_PAGE_SIZE = 160
+DEFAULT_PAGE_SIZE = 400
 
 
 @dataclass(frozen=True)

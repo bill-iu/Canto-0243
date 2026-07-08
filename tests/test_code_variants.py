@@ -1,4 +1,4 @@
-"""0243模式逐位鬆檔變體 — ADR-0028 P0。"""
+"""0243／02493／394052 模式 code 變體 — ADR-0028 + ADR-0031。"""
 from __future__ import annotations
 
 import unittest
@@ -20,9 +20,15 @@ class CodeVariantsPerDigitLooseTests(unittest.TestCase):
         variants = set(get_code_variants("021", "m1"))
         self.assertEqual(variants, {"023", "029", "063", "069"})
 
-    def test_m2_strict_single_variant(self):
+    def test_m2_partial_loose_45_only(self):
         self.assertEqual(get_code_variants("39", "m2"), ["39"])
         self.assertEqual(get_code_variants("021", "m2"), ["023"])
+        self.assertEqual(set(get_code_variants("4", "m2")), {"4", "5"})
+
+    def test_m3_strict_single_variant(self):
+        self.assertEqual(get_code_variants("39", "m3"), ["39"])
+        self.assertEqual(get_code_variants("45", "m3"), ["45"])
+        self.assertEqual(get_code_variants("021", "m3"), ["023"])
 
     def test_m1_single_digit_flip(self):
         self.assertEqual(get_code_variants("3", "m1"), ["3", "9"])

@@ -109,6 +109,14 @@ export function searchUrlSelfCheck(): void {
   if (m2.mode !== '02493' || m2.q !== '23' || m2.view !== 'search') {
     throw new Error('searchUrlSelfCheck: m2 parse');
   }
+  const m3 = parseSearchUrl('?mode=m3&q=45');
+  if (m3.mode !== '394052' || m3.q !== '45') {
+    throw new Error('searchUrlSelfCheck: m3 parse');
+  }
+  const m3qs = buildSearchQueryString('45', '394052');
+  if (!m3qs.includes('mode=m3')) {
+    throw new Error(`searchUrlSelfCheck: m3 qs ${m3qs}`);
+  }
   const guideQs = buildAppQueryString({ view: 'guide' });
   if (guideQs !== 'view=guide') {
     throw new Error(`searchUrlSelfCheck: guide qs ${guideQs}`);

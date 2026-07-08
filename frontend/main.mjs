@@ -327,7 +327,7 @@ async function refreshPortableChrome() {
   $.modeMenu.hidden = true;
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
   shell.currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
-  if (shell.currentMode === "m1" || shell.currentMode === "m2") {
+  if (shell.currentMode === "m1" || shell.currentMode === "m2" || shell.currentMode === "m3") {
     shell.last0243Mode = shell.currentMode;
   }
   updateModeLabel();
@@ -371,7 +371,7 @@ async function refreshPortableChrome() {
     // hero
     const h1 = document.getElementById('searchTitle');
     if (h1) h1.textContent = t('hero.title', lang);
-    const tag = document.querySelector('.hero p:not(.eyebrow)');
+    const tag = document.querySelector('.header-hero__tagline');
     if (tag) tag.textContent = t('hero.tagline', lang);
 
     // search form

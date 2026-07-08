@@ -1,6 +1,7 @@
 /** QueryKind enum — extracted to avoid circular imports with position-match registry */
 
 export enum QueryKind {
+  PING_ZE_SERIAL = 'ping_ze_serial',
   DIGIT_CODE = 'digit_code',
   WORD_LOOKUP = 'word_lookup',
   JYUTPING_FRAGMENT = 'jyutping_fragment',

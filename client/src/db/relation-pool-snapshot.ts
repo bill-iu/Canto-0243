@@ -1,6 +1,6 @@
 /** 近反義池快照: fixed relation results, not tied to DB or static indexes. */
 
-export const DEFAULT_RELATION_POOL_PAGE_SIZE = 160;
+export const DEFAULT_RELATION_POOL_PAGE_SIZE = 400;
 
 export type RelationKind = 'syn' | 'ant' | 'semantic_related';
 

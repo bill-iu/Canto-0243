@@ -195,6 +195,20 @@
   margin-top: 8px;
 }
 
+@media (min-width: 768px) {
+  /* ≥768px：header／主內容全寬左對齊（沿用 app-header page padding） */
+  .app-header .app-bar {
+    max-width: none;
+    margin: 0;
+  }
+
+  .query-tabs-bar {
+    max-width: none;
+    margin: 0;
+    padding-inline: 0;
+  }
+}
+
 @media (max-width: 640px) {
   .header-load-status {
     order: 3;

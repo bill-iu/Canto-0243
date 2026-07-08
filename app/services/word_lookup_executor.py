@@ -13,6 +13,7 @@ from app.domain.lexicon.ranking import search_result_sort_key, sort_search_resul
 from app.services.word_db_filters import apply_code_filter, length_filter
 from app.services.word_ensure_service import ensure_word_in_db, warm_ref_char_for_lookup
 from app.services.jyutping_match import expected_word_length, matches_jyutping_query
+from app.services.ping_zak import code_matches_ping_ze_pattern
 from app.services.word_serializer import (
     deduplicate_words,
     paginate,
@@ -45,6 +46,22 @@ class WordLookupExecutor:
         words = self._sorted_pure_digit_words(q, mode)
         page = paginate(words, offset, limit)
         return [serialize_word(w) for w in page], len(words)
+
+    def ping_ze_serial(
+        self,
+        pattern: str,
+        limit: int,
+        offset: int,
+    ) -> tuple[List[dict], int]:
+        width = len(pattern)
+        query = self._db.query(Word).filter(length_filter(width))
+        words = deduplicate_words(query.all())
+        matched = [
+            w for w in words if code_matches_ping_ze_pattern(w.code or "", pattern)
+        ]
+        matched.sort(key=search_result_sort_key)
+        page = paginate(matched, offset, limit)
+        return [serialize_word(w) for w in page], len(matched)
 
     def pure_canto(
         self,

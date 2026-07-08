@@ -1,9 +1,14 @@
 import type { QueryKind } from './query-kind.ts';
 
-export type QueryMode = 'm1' | 'm2' | '0243' | '02493' | 'syn';
+export type QueryMode = 'm1' | 'm2' | 'm3' | '0243' | '02493' | '394052' | 'syn';
 
 export interface ParsedQuery {
   kind: QueryKind;
+  raw_q: string;
+}
+
+export interface PingZeSerialQuery extends ParsedQuery {
+  kind: QueryKind.PING_ZE_SERIAL;
   raw_q: string;
 }
 

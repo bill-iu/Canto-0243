@@ -152,8 +152,8 @@ html[data-theme="dark"] .app-header {
       margin: 0 auto;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 22px;
+      justify-content: flex-start;
+      gap: 16px;
     }
 
 .brand {
@@ -349,11 +349,11 @@ a.mode-option {
 .main-wrap {
       width: min(1120px, 100%);
       margin: 0 auto;
-      padding: 48px max(20px, env(safe-area-inset-right)) 80px max(20px, env(safe-area-inset-left));
+      padding: 28px max(20px, env(safe-area-inset-right)) 80px max(20px, env(safe-area-inset-left));
     }
 
 .search-panel {
-      margin-top: 26px;
+      margin-top: 16px;
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 28px;
@@ -568,4 +568,27 @@ a.mode-option {
 .menu-switches .theme-icon {
   font-size: 16px;
   line-height: 1;
+}
+
+@media (min-width: 768px) {
+  /* 全寬左對齊：清單佔滿視窗，詞條詳情仍 overlay 右側 */
+  .app-bar {
+    max-width: none;
+    margin: 0;
+  }
+
+  .main-wrap {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
+
+  .app-footer {
+    max-width: none;
+    margin: 0;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+  }
 }

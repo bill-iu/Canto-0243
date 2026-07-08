@@ -31,7 +31,7 @@ import {
   normalizeQuery,
   parseQuery,
   normalizeAndParse,
-  SEARCH_PAGE_SIZE,
+  searchPageSizeForMode,
 } from '../db/query';
 import type {
   QueryOptions,
@@ -43,7 +43,7 @@ import type {
 
 // Re-export query engine types and functions for convenience
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
-export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE };
+export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE, searchPageSizeForMode } from '../db/query.ts';
 
 /**
  * Database status type
@@ -258,14 +258,14 @@ export function useDB(): UseDBReturn {
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
 /**
- * Hook for a specific query with loading state and load-more pagination.
+ * Hook for a specific query with loading state and offset pagination (infinite scroll).
  */
 export function useSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
-  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493'; ui_lang?: 'zh' | 'en' },
+  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' | '394052'; ui_lang?: 'zh' | 'en' },
 ) {
-  const pageSize = options?.pageSize ?? SEARCH_PAGE_SIZE;
+  const pageSize = options?.pageSize ?? searchPageSizeForMode(mode);
   const fallback0243Mode = options?.fallback_0243_mode;
   const uiLang = options?.ui_lang ?? 'zh';
   const { isReady, status } = useDB();

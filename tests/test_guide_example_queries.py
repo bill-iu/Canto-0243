@@ -6,14 +6,14 @@ import os
 import unittest
 from pathlib import Path
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_DB = REPO_ROOT / "tests" / "fixtures" / "lyrics.db"
 
-os.environ.setdefault("READINESS_GATE_ENFORCE", "0")
-if not os.environ.get("DATABASE_URL") and FIXTURE_DB.is_file():
-    os.environ["DATABASE_URL"] = f"sqlite:///{FIXTURE_DB.as_posix()}"
+os.environ["READINESS_GATE_ENFORCE"] = "0"
 
-from app.database import SessionLocal
 from app.services.query_dispatch import search_words
 
 
@@ -29,7 +29,10 @@ GUIDE_ZERO_CASES = (
 class GuideExampleQueryTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.db = SessionLocal()
+        if not FIXTURE_DB.is_file():
+            raise unittest.SkipTest(f"missing fixture db: {FIXTURE_DB}")
+        engine = create_engine(f"sqlite:///{FIXTURE_DB.as_posix()}")
+        cls.db = sessionmaker(bind=engine)()
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -1,4 +1,6 @@
 /** Shared SVG defs for Canto-0243 wordmark + ink (Portable parity). */
+const LOGO_SERIF = "'Canto Logo Serif', 'Noto Serif TC', serif";
+
 export function BrandSvgDefs() {
   // Single source of truth for the ink blob path (used by both light and dark symbols)
   const INK_BLOB_D =
@@ -31,15 +33,15 @@ export function BrandSvgDefs() {
           />
         </filter>
         <symbol id="brand-wordmark" viewBox="0 0 200 72" overflow="visible">
-          <text x="4" y="50" fontFamily="'Noto Serif TC', serif" fontSize="44" fontWeight="900" fill="#1C1917">
+          <text x="4" y="50" fontFamily={LOGO_SERIF} fontSize="44" fontWeight="700" fill="#1C1917">
             粵
           </text>
           <text
             x="62"
             y="28"
-            fontFamily="'Noto Serif TC', serif"
+            fontFamily={LOGO_SERIF}
             fontSize="12"
-            fontWeight="900"
+            fontWeight="700"
             fill="#9F1239"
             letterSpacing="2.2"
           >
@@ -70,15 +72,15 @@ export function BrandSvgDefs() {
 
         {/* Dark mode symbols (based on canto-0243-logo-a-dark.svg) */}
         <symbol id="brand-wordmark-dark" viewBox="0 0 200 72" overflow="visible">
-          <text x="4" y="50" fontFamily="'Noto Serif TC', 'Songti TC', serif" fontSize="44" fontWeight="900" fill="#EBDFD0">
+          <text x="4" y="50" fontFamily={LOGO_SERIF} fontSize="44" fontWeight="700" fill="#EBDFD0">
             粵
           </text>
           <text
             x="62"
             y="28"
-            fontFamily="'Noto Serif TC', 'Songti TC', serif"
+            fontFamily={LOGO_SERIF}
             fontSize="12"
-            fontWeight="900"
+            fontWeight="700"
             fill="#FB7185"
             letterSpacing="2.2"
           >

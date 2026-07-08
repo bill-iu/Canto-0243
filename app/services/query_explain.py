@@ -7,6 +7,7 @@ from typing import Optional
 
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.query_parse import normalize_and_parse
+from app.services.ping_zak import slot_label
 from app.services.query_types import (
     CompoundDoubledSyllableQuery,
     DigitCodeQuery,
@@ -14,6 +15,7 @@ from app.services.query_types import (
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     ParsedQuery,
+    PingZeSerialQuery,
     RelationLookupQuery,
     UnmatchedQuery,
     WordLookupQuery,
@@ -93,6 +95,9 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
         return f"查詢詞條「{parsed.raw_q}」"
     if isinstance(parsed, DigitCodeQuery):
         return f"查同{parsed.raw_q}同音嘅字"
+    if isinstance(parsed, PingZeSerialQuery):
+        parts = [slot_label(ch) for ch in parsed.raw_q]
+        return f"查{'、'.join(parts)}嘅{_width_label(len(parsed.raw_q))}詞"
     if isinstance(parsed, RelationLookupQuery):
         label = "近義詞" if parsed.relation_kind == "syn" else "反義詞"
         prefix = f"碼 {parsed.code_prefix} " if parsed.code_prefix else ""

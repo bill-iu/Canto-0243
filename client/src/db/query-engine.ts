@@ -10,6 +10,13 @@ import { ensureStaticRelationIndexes, getDatabase, initializeDatabase, isDatabas
 import type { Database } from './sqljs.ts';
 import { queryFirst, queryRows } from './database-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
+import {
+  codeMatchesPingZePattern,
+  isPingZeSerialQuery,
+  pingZeEffectiveMode,
+  pingZeModeRedirectHint,
+  tryParsePingZeSerial,
+} from './ping-zak.ts';
 import { sortQueryResults, sortWordRows, compareSearchResults, literalPriorityCompare } from './ranking.ts';
 import { searchCompoundTiers } from './compound.ts';
 import { executeHeteronymCodeSearch } from './heteronym.ts';
@@ -40,6 +47,7 @@ import type {
   CompoundDoubledSyllableQuery,
   CompoundSynQuery,
   DigitCodeQuery,
+  PingZeSerialQuery,
   HeteronymCodeQuery,
   JyutpingAnchorQuery,
   JyutpingFragmentQuery,
@@ -697,6 +705,8 @@ export function isJyutpingQuery(q: string): boolean {
 }
 
 /** Port of query_parse.is_relation_syntax_query */
+export { isPingZeSerialQuery };
+
 export function isRelationSyntaxQuery(q: string): boolean {
   const parsed = normalizeAndParse(q);
   if (parsed.kind === QueryKind.RELATION_LOOKUP) {
@@ -709,7 +719,10 @@ export function isRelationSyntaxQuery(q: string): boolean {
   );
 }
 
-function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
+function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' | 'm3' {
+  if (fallback === 'm3' || fallback === '394052') {
+    return 'm3';
+  }
   if (fallback === 'm2' || fallback === '02493') {
     return 'm2';
   }
@@ -732,6 +745,11 @@ export function parseQuery(q: string): ParsedQuery {
 
   if (looksLikeMaskQuery(normalized)) {
     return { kind: QueryKind.MASK, raw_q: normalized };
+  }
+
+  const pingZeParsed = tryParsePingZeSerial(normalized);
+  if (pingZeParsed) {
+    return pingZeParsed;
   }
 
   if (isPureDigits(normalized)) {
@@ -1412,6 +1430,9 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
   
   switch (routeKind) {
     case RouteKind.DIGIT:
+      if (parsed.kind === QueryKind.PING_ZE_SERIAL) {
+        return executePingZeSerialQuery(parsed as PingZeSerialQuery, db, limit, offset);
+      }
       if (parsed.kind === QueryKind.DIGIT_CODE) {
         return executeDigitCodeQuery(parsed as DigitCodeQuery, db, mode, limit, offset);
       }
@@ -1464,6 +1485,30 @@ function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' {
 /**
  * Execute digit code query (pure digits only — P0 scope A)
  */
+async function executePingZeSerialQuery(
+  parsed: PingZeSerialQuery,
+  db: Database,
+  limit: number,
+  offset: number,
+): Promise<SearchResult> {
+  const pattern = parsed.raw_q;
+  const len = pattern.length;
+  const sql = `
+    SELECT char, jyutping, code
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+  `;
+  const rows = (await queryRows(db, sql, [len, len])) as WordRow[];
+  const matched = deduplicateWordRows(rows).filter((row) =>
+    codeMatchesPingZePattern(String(row.code ?? ''), pattern),
+  );
+  const sorted = sortQueryResults(matched.map((row) => rowToResult(row)));
+  return { items: sorted.slice(offset, offset + limit), total: sorted.length };
+}
+
 async function executeDigitCodeQuery(
   parsed: DigitCodeQuery,
   db: Database,
@@ -1992,10 +2037,34 @@ export class QueryEngine {
 
     // Parse and dispatch
     const parsed = normalizeAndParse(ctx.q);
+    const redirected = this.maybeRedirectPingZe(parsed, dbCtx);
+    if (redirected) {
+      return redirected;
+    }
     if (parsed.kind === QueryKind.RELATION_LOOKUP) {
       await ensureStaticRelationIndexes();
     }
     return await dispatch(parsed, dbCtx);
+  }
+
+  private maybeRedirectPingZe(
+    parsed: ParsedQuery,
+    ctx: SearchContext & { db: Database },
+  ): Promise<SearchResult> | null {
+    if (parsed.kind !== QueryKind.PING_ZE_SERIAL) {
+      return null;
+    }
+    const effective = pingZeEffectiveMode();
+    if (ctx.mode === 'm2' || ctx.mode === '02493' || ctx.mode === effective) {
+      return null;
+    }
+    return dispatch(parsed, { ...ctx, mode: effective, offset: 0 }).then((result) => ({
+      items: result.items,
+      total: result.total,
+      hint: pingZeModeRedirectHint(effective, ctx.ui_lang ?? 'zh') ?? undefined,
+      effective_mode: effective,
+      cache_path: result.cache_path,
+    }));
   }
   
   /**
@@ -2016,6 +2085,19 @@ export class QueryEngine {
         items: result.items,
         total: result.total,
         hint: modeRedirectHint(effective, ctx.ui_lang ?? 'zh'),
+        effective_mode: effective,
+        cache_path: result.cache_path,
+      };
+    }
+
+    if (isPingZeSerialQuery(q)) {
+      const effective = pingZeEffectiveMode();
+      const parsed = normalizeAndParse(q);
+      const result = await dispatch(parsed, { ...dbCtx, mode: effective, offset: 0 });
+      return {
+        items: result.items,
+        total: result.total,
+        hint: pingZeModeRedirectHint(effective, ctx.ui_lang ?? 'zh') ?? undefined,
         effective_mode: effective,
         cache_path: result.cache_path,
       };

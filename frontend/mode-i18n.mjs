@@ -1,6 +1,6 @@
 /** Shared search-mode labels — portable + PWA (zh default + en i18n). */
 
-/** @typedef {'m1' | 'm2' | 'syn'} UrlMode */
+/** @typedef {'m1' | 'm2' | 'm3' | 'syn'} UrlMode */
 /** @typedef {'zh' | 'en'} UiLang */
 
 /** @type {Record<UrlMode, { title: string; note: string; readout: string; statsLabel: string; placeholder: string }>} */
@@ -18,6 +18,13 @@ export const MODE_META = {
     readout: '02493模式（緊）',
     statsLabel: '02493模式 · 緊',
     placeholder: '搵嘢：02493／漢字／粵拼',
+  },
+  m3: {
+    title: '394052模式',
+    note: '矩陣',
+    readout: '394052模式（矩陣）',
+    statsLabel: '394052模式 · 矩陣',
+    placeholder: '搵嘢：394052／漢字／粵拼',
   },
   syn: {
     title: '近反義',
@@ -43,6 +50,13 @@ const MODE_META_EN = {
     readout: '02493 Mode (Strict)',
     statsLabel: '02493 Mode · Strict',
     placeholder: 'Search: 02493 / characters / Jyutping',
+  },
+  m3: {
+    title: '394052 Mode',
+    note: 'Matrix',
+    readout: '394052 Mode (Matrix)',
+    statsLabel: '394052 Mode · Matrix',
+    placeholder: 'Search: 394052 / characters / Jyutping',
   },
   syn: {
     title: 'Near-Antonyms',
@@ -74,15 +88,19 @@ export function modeHelp(mode, lang = 'zh') {
   if (mode === 'm2') {
     return lang === 'en' ? '02493 codes (distinguish 2nd tone)' : '02493 碼（分清二聲）';
   }
+  if (mode === 'm3') {
+    return lang === 'en' ? '394052 matrix — strict tone digits' : '394052 矩陣碼（三／五聲分明）';
+  }
   return lang === 'en' ? 'Synonyms, antonyms & semantically related' : '近義、反義與語意相關';
 }
 
 /**
- * @param {'m1' | 'm2'} mode
+ * @param {'m1' | 'm2' | 'm3'} mode
  * @param {UiLang} [lang]
  */
 export function modeRedirectHint(mode, lang = 'zh') {
-  const meta = getModeMeta(mode === 'm2' ? 'm2' : 'm1', lang);
+  const key = mode === 'm2' ? 'm2' : mode === 'm3' ? 'm3' : 'm1';
+  const meta = getModeMeta(key, lang);
   if (lang === 'en') {
     return `This syntax switched to ${meta.readout} for search`;
   }
@@ -91,7 +109,7 @@ export function modeRedirectHint(mode, lang = 'zh') {
 
 /** @param {UiLang} [lang] */
 export function syncPortableModeMenu(lang = 'zh') {
-  for (const mode of /** @type {UrlMode[]} */ (['m1', 'm2', 'syn'])) {
+  for (const mode of /** @type {UrlMode[]} */ (['m1', 'm2', 'm3', 'syn'])) {
     const btn = document.querySelector(`[data-mode="${mode}"].mode-option`);
     if (!btn) continue;
     const meta = getModeMeta(mode, lang);
@@ -117,6 +135,9 @@ export function modeI18nSelfCheck() {
   }
   if (!modeRedirectHint('m1', 'en').includes('0243 Mode (Loose)')) {
     throw new Error('modeI18nSelfCheck: en redirect hint');
+  }
+  if (getModeMeta('m3').readout !== '394052模式（矩陣）') {
+    throw new Error('modeI18nSelfCheck: zh m3 readout');
   }
 }
 

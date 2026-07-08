@@ -47,8 +47,8 @@
       <!-- Single source of truth for the ink blob shape (DRY for light/dark variants) -->
       <path id="brand-ink-blob-path" d="M4 55.5 C14 54.9 24 55.1 34 55.7 C44 56.3 52 56.7 60 56.5 C68 57.9 76 58.5 84 57.3 C92 55.2 98 52.8 104 51.2 C106.5 50.4 110 49.6 114 48.8 C118 47.6 122 47.2 126 46.8 C128 46.5 130 46.2 132 45.9 C133.5 45.6 134.5 45.4 135 45.2 L135.1 45.8 L134.6 46.3 L133.8 46.8 L132.6 47.3 L130.8 47.8 L128.5 48.2 C96 55.3 80 60.5 62 61.8 C46 62.3 30 60.3 18 57.3 C10 55.3 5 53.5 4 55.5 Z"/>
       <symbol id="brand-wordmark" viewBox="0 0 200 72" overflow="visible">
-        <text x="4" y="50" font-family="'Noto Serif TC', serif" font-size="44" font-weight="900" fill="#1C1917">粵</text>
-        <text x="62" y="28" font-family="'Noto Serif TC', serif" font-size="12" font-weight="900" fill="#9F1239" letter-spacing="2.2">CANTO</text>
+        <text x="4" y="50" font-family="'Canto Logo Serif', 'Noto Serif TC', serif" font-size="44" font-weight="700" fill="#1C1917">粵</text>
+        <text x="62" y="28" font-family="'Canto Logo Serif', 'Noto Serif TC', serif" font-size="12" font-weight="700" fill="#9F1239" letter-spacing="2.2">CANTO</text>
         <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#1C1917" letter-spacing="1">0243</text>
       </symbol>
       <symbol id="brand-ink-blob" viewBox="0 0 200 72" overflow="visible">
@@ -71,8 +71,8 @@
 
       <!-- Dark mode logo symbols (referenced from canto-0243-logo-a-dark.svg) -->
       <symbol id="brand-wordmark-dark" viewBox="0 0 200 72" overflow="visible">
-        <text x="4" y="50" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="44" font-weight="900" fill="#EBDFD0">粵</text>
-        <text x="62" y="28" font-family="'Noto Serif TC', 'Songti TC', serif" font-size="12" font-weight="900" fill="#FB7185" letter-spacing="2.2">CANTO</text>
+        <text x="4" y="50" font-family="'Canto Logo Serif', 'Noto Serif TC', serif" font-size="44" font-weight="700" fill="#EBDFD0">粵</text>
+        <text x="62" y="28" font-family="'Canto Logo Serif', 'Noto Serif TC', serif" font-size="12" font-weight="700" fill="#FB7185" letter-spacing="2.2">CANTO</text>
         <text x="62" y="48" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="600" fill="#EBDFD0" letter-spacing="1">0243</text>
       </symbol>
       <symbol id="brand-ink-blob-dark" viewBox="0 0 200 72" overflow="visible">
@@ -144,6 +144,10 @@
             </g>
           </svg>
         </button>
+        <div class="header-hero">
+          <h1 id="searchTitle">ONE·搵·韻</h1>
+          <p class="header-hero__tagline">格律／協音／押韻／近反義，一步搵到。</p>
+        </div>
         <div class="warmup-badge" id="warmupBadge" hidden aria-live="polite" aria-atomic="true">
           <span class="warmup-badge__label" id="warmupBadgeLabel">執埋啲手尾</span>
           <svg class="warmup-badge__ink" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
@@ -187,6 +191,13 @@
                     <span class="mode-help">02493 碼（分清二聲）</span>
                   </span>
                   <span class="mode-key">02493</span>
+                </button>
+                <button class="mode-option" id="btn-m3" type="button" role="menuitemradio" aria-checked="false" data-mode="m3">
+                  <span>
+                    <span class="mode-name">394052模式<span class="mode-note">矩陣</span></span>
+                    <span class="mode-help">394052 矩陣碼（三／五聲分明）</span>
+                  </span>
+                  <span class="mode-key">394052</span>
                 </button>
                 <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
                   <span>
@@ -254,12 +265,6 @@
     <main class="main-wrap" id="mainContent">
       <section class="search-view" id="searchView" aria-labelledby="searchTitle">
         <div class="search-view__main" id="searchViewMain">
-        <div class="hero">
-          <p class="eyebrow">Cantonese Lyrics Writing Workbench</p>
-          <h1 id="searchTitle">ONE·搵·韻</h1>
-          <p>格律/協音/押韻/近反義，一步搵到。</p>
-        </div>
-
         <form class="search-panel" id="searchForm" role="search">
           <div class="field-label-row">
             <label class="field-label" for="searchInput">搜尋內容</label>
@@ -288,13 +293,15 @@
           </p>
         </form>
 
-        <div class="status-row">
-          <div id="stats" class="stats" aria-live="polite"></div>
-        </div>
+        <div class="search-results-scroll" id="searchResultsScroll">
+          <div class="status-row">
+            <div id="stats" class="stats" aria-live="polite"></div>
+          </div>
 
-        <div id="results" class="results" aria-live="polite"></div>
+          <div id="results" class="results" aria-live="polite"></div>
+          <div id="resultsScrollSentinel" class="results-scroll-sentinel" aria-hidden="true"></div>
         </div>
-        <div id="entryDetailHost"></div>
+        </div>
       </section>
 
     <section class="guide-view is-hidden" id="guideView" aria-labelledby="guideTitle" hidden>

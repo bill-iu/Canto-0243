@@ -16,6 +16,8 @@ const outDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../pu
 const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const criticalDisplayText = '·搵韻即使離線亦完全可用呢一次拎返你嘅創作主導權關於，。';
 const criticalCssUrl = `https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&display=block&text=${encodeURIComponent(criticalDisplayText)}`;
+const logoText = '粵CANTO';
+const logoCssUrl = `https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&display=block&text=${encodeURIComponent(logoText)}`;
 
 async function fetchText(url: string, headers: Record<string, string> = {}): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -58,6 +60,7 @@ async function main() {
   console.log('Fetching Google Fonts CSS...');
   const css = await fetchText(cssUrl, { 'User-Agent': ua });
   const criticalCss = await fetchText(criticalCssUrl, { 'User-Agent': ua });
+  const logoCss = await fetchText(logoCssUrl, { 'User-Agent': ua });
 
   // Parse @font-face for woff2
   const faceRegex = /@font-face\s*\{([^}]+)\}/g;
@@ -87,6 +90,17 @@ async function main() {
     }
   }
 
+  const logoFaces: Array<{ weight: string; url: string; block: string }> = [];
+  faceRegex.lastIndex = 0;
+  while ((m = faceRegex.exec(logoCss)) !== null) {
+    const block = m[1];
+    const weight = (block.match(/font-weight:\s*(\d+)/) || [])[1];
+    const src = (block.match(/src:\s*url\((https:[^)]+)\)\s*format\(['"]woff2['"]\)/) || [])[1];
+    if (weight && src) {
+      logoFaces.push({ weight, url: src, block });
+    }
+  }
+
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
@@ -95,6 +109,13 @@ async function main() {
     const fileName = `CantoCriticalSerif-${face.weight}.woff2`;
     const dest = path.join(outDir, fileName);
     console.log(`Downloading Canto Critical Serif ${face.weight} -> ${fileName}`);
+    await download(face.url, dest);
+  }
+
+  for (const face of logoFaces) {
+    const fileName = `CantoLogoSerif-${face.weight}.woff2`;
+    const dest = path.join(outDir, fileName);
+    console.log(`Downloading Canto Logo Serif ${face.weight} -> ${fileName}`);
     await download(face.url, dest);
   }
 
@@ -125,7 +146,16 @@ async function main() {
     return `@font-face {${localBlock}}`;
   }).join('\n\n');
 
-  const completeCss = `${criticalLocalCss}\n\n${localCss}`;
+  const logoLocalCss = logoFaces.map((face) => {
+    const fileName = `CantoLogoSerif-${face.weight}.woff2`;
+    const localBlock = face.block
+      .replace(/font-family:\s*['"][^'"]+['"];/, "font-family: 'Canto Logo Serif';")
+      .replace(/src:\s*url\((https:[^)]+)\)\s*format\(['"]woff2['"]\);/, `src: url(./${fileName}) format('woff2');`)
+      .replace(/font-display:\s*[^;]+;/, 'font-display: block;');
+    return `@font-face {${localBlock}}`;
+  }).join('\n\n');
+
+  const completeCss = [criticalLocalCss, logoLocalCss, localCss].filter(Boolean).join('\n\n');
   if (completeCss.includes('fonts.gstatic.com')) {
     throw new Error('fonts.css still contains remote Google font URLs');
   }
@@ -133,7 +163,7 @@ async function main() {
   fs.writeFileSync(path.join(outDir, 'fonts.css'), completeCss);
   console.log('✓ fonts.css generated (with local src urls)');
 
-  console.log(`✓ ${faces.length + criticalFaces.length} unique font files (woff2) to public/fonts/`);
+  console.log(`✓ ${faces.length + criticalFaces.length + logoFaces.length} unique font files (woff2) to public/fonts/`);
 }
 
 main().catch((err) => {

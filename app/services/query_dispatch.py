@@ -1,7 +1,7 @@
 """Query dispatch for 詞條搜尋 — registry + SearchResult (no global total state)."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
@@ -90,7 +90,31 @@ class QueryEngine:
             return dispatch_syn_mode(ctx, q, self)
 
         parsed = normalize_and_parse(ctx.q)
+        redirected = self._maybe_redirect_ping_ze(parsed, ctx)
+        if redirected is not None:
+            return redirected
         return self._dispatch(parsed, ctx)
+
+    def _maybe_redirect_ping_ze(
+        self, parsed: ParsedQuery, ctx: SearchContext
+    ) -> Optional[SearchResult]:
+        from app.services.ping_zak import ping_ze_effective_mode, ping_ze_mode_redirect_hint
+        from app.services.query_types import PingZeSerialQuery
+
+        if not isinstance(parsed, PingZeSerialQuery):
+            return None
+        effective = ping_ze_effective_mode()
+        if ctx.mode == effective:
+            return None
+        redirected = replace(ctx, mode=effective, offset=0)
+        result = self._dispatch(parsed, redirected)
+        return SearchResult(
+            items=result.items,
+            total=result.total,
+            hint=ping_ze_mode_redirect_hint(effective),
+            cache_path=result.cache_path,
+            effective_mode=effective,
+        )
 
     def _execute_list_filter(self, ctx: SearchContext) -> list:
         query = ctx.db.query(Word)
@@ -116,6 +140,13 @@ class QueryEngine:
         route_kind = route_kind_for(parsed.kind)
 
         if route_kind == RouteKind.DIGIT:
+            from app.services.query_types import PingZeSerialQuery
+
+            if isinstance(parsed, PingZeSerialQuery):
+                items, total = lookup_executor.ping_ze_serial(
+                    parsed.raw_q, limit, offset
+                )
+                return SearchResult(items=items, total=total)
             assert isinstance(parsed, DigitCodeQuery)
             items, total = lookup_executor.pure_digit(parsed.raw_q, code, mode, limit, offset)
             return SearchResult(items=items, total=total)

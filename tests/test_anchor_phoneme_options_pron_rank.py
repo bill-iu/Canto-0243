@@ -27,7 +27,7 @@ class AnchorPhonemeOptionsPronRankTests(unittest.TestCase):
         with Session() as db:
             db.add_all([
                 Word(char="潦", code="9", jyutping="liu2", finals='["iu"]', length=1),
-                Word(char="潦", code="4", jyutping="lou5", finals='["ou"]', length=1),
+                Word(char="潦", code="5", jyutping="lou5", finals='["ou"]', length=1),
             ])
             db.commit()
             opts = anchor_phoneme_options("潦", "final", db, allow_inject=False)

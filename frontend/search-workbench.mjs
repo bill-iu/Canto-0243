@@ -1,9 +1,14 @@
 import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
+import {
+  isPingZeSerialQuery,
+  pingZeEffectiveMode,
+  pingZeModeRedirectHint,
+} from "./ping-ze-syntax.mjs";
 import { escapeHtml, escapeHtmlAttr } from "./dom-escape.mjs";
 import {
   $,
   MODE_META,
-  PAGE_SIZE,
+  searchPageSizeForMode,
   shell,
   searchCache,
   VIEW,
@@ -42,6 +47,14 @@ import {
   appendPickLookupTail,
   createMergedResultButton,
 } from "./entry-detail-portable.mjs";
+import {
+  RESULT_RENDER_BATCH,
+  wireInfiniteScroll,
+  effectiveRenderedCount,
+  canExpandRenderedCount,
+  expandRenderedCount,
+  resetRenderedCount,
+} from "./infinite-results.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
   const q = escapeHtml(input);
@@ -54,7 +67,69 @@ function emptySearchResultsHtml(input, hint, _mode) {
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
-  return (total != null && results.length < total) || results.length >= PAGE_SIZE;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  return (total != null && results.length < total) || results.length >= pageSize;
+}
+
+function countSearchResultItems(data) {
+  if (!data?.length) return 0;
+  if (shell.currentMode === "syn") {
+    return data.filter(
+      (r) => r.relation === "syn" || r.relation === "ant" || r.relation === "semantic_related",
+    ).length;
+  }
+  const initialHits = data.filter((r) => r.anchor_dimension === "initial");
+  const finalHits = data.filter((r) => r.anchor_dimension === "final");
+  if (initialHits.length || finalHits.length) {
+    const initialMerged = mergeResultsByLiteral(
+      initialHits.map((row) => ({ ...row, word: row.char || row.display_text })),
+    );
+    const finalMerged = mergeResultsByLiteral(
+      finalHits.map((row) => ({ ...row, word: row.char || row.display_text })),
+    );
+    return initialMerged.length + finalMerged.length;
+  }
+  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
+  return mergeResultsByLiteral(
+    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
+  ).length;
+}
+
+function takeSynBudget(syns, ants, related, budget) {
+  const synsShown = syns.slice(0, budget);
+  let left = budget - synsShown.length;
+  const antsShown = ants.slice(0, Math.max(0, left));
+  left -= antsShown.length;
+  const relatedShown = related.slice(0, Math.max(0, left));
+  return { synsShown, antsShown, relatedShown };
+}
+
+let scrollGate = false;
+
+function updateScrollSentinel(tab) {
+  const sentinel = $.resultsScrollSentinel;
+  if (!sentinel) return;
+  const itemCount = countSearchResultItems(tab?.results || []);
+  const canExpand = tab && canExpandRenderedCount(tab, itemCount);
+  const canFetch = tab && shouldShowLoadMore(tab);
+  sentinel.hidden = itemCount === 0 || (!canExpand && !canFetch);
+}
+
+function handleInfiniteScrollNeed() {
+  if (scrollGate || shell.isSearching) return;
+  const tab = activeTab();
+  if (!tab || tab.view !== VIEW.SEARCH) return;
+  const data = tab.results || [];
+  const itemCount = countSearchResultItems(data);
+  if (canExpandRenderedCount(tab, itemCount)) {
+    scrollGate = true;
+    expandRenderedCount(tab, itemCount);
+    persistTabs();
+    renderSearchResults(data, tab.total);
+    scrollGate = false;
+    return;
+  }
+  if (shouldShowLoadMore(tab)) searchDict(true);
 }
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
@@ -156,7 +231,10 @@ function toggleMenu(open, { returnFocus = false } = {}) {
 
 function switchMode(mode, { runSearch = true, replace = true } = {}) {
   if (!MODE_META[mode]) return;
-  if (mode === "syn" && (shell.currentMode === "m1" || shell.currentMode === "m2")) {
+  if (
+    mode === "syn" &&
+    (shell.currentMode === "m1" || shell.currentMode === "m2" || shell.currentMode === "m3")
+  ) {
     shell.last0243Mode = shell.currentMode;
   }
   shell.currentMode = mode;
@@ -198,22 +276,30 @@ function syncEntryDetailInset() {
 function bindEntryDetailInset() {
   if (entryDetailInsetBound) return;
   entryDetailInsetBound = true;
+  document.documentElement.classList.add("has-entry-detail-open");
   window.addEventListener("resize", syncEntryDetailInset);
-  window.addEventListener("scroll", syncEntryDetailInset, { passive: true });
+  const header = document.querySelector(".app-header");
+  if (header && typeof ResizeObserver !== "undefined") {
+    entryDetailInsetRo = new ResizeObserver(syncEntryDetailInset);
+    entryDetailInsetRo.observe(header);
+  }
 }
+
+let entryDetailInsetRo = null;
 
 function unbindEntryDetailInset() {
   if (!entryDetailInsetBound) return;
   entryDetailInsetBound = false;
   window.removeEventListener("resize", syncEntryDetailInset);
-  window.removeEventListener("scroll", syncEntryDetailInset);
+  entryDetailInsetRo?.disconnect();
+  entryDetailInsetRo = null;
+  document.documentElement.classList.remove("has-entry-detail-open");
   document.documentElement.style.removeProperty("--entry-detail-inset-top");
 }
 
 function ensureEntryDetailUi() {
   if (entryDetailUi) return entryDetailUi;
-  const host = document.getElementById("entryDetailHost") || $.searchView;
-  entryDetailUi = createEntryDetailPanel(host, {
+  entryDetailUi = createEntryDetailPanel(document.body, {
     lang: getLang(),
     onClose: () => closeEntryDetail(),
     onRelationPick: (literal) => handleEntryPick({ literal, fromRelationChip: true }),
@@ -221,8 +307,23 @@ function ensureEntryDetailUi() {
   return entryDetailUi;
 }
 
+let disconnectInfiniteScroll = null;
+
+function remountInfiniteScroll() {
+  disconnectInfiniteScroll?.();
+  const root = $.searchView?.classList.contains("has-entry-detail") ? $.searchResultsScroll : null;
+  disconnectInfiniteScroll = wireInfiniteScroll({
+    root,
+    sentinel: $.resultsScrollSentinel,
+    onNeedMore: handleInfiniteScrollNeed,
+  });
+}
+
 function syncEntryDetailLayout() {
-  $.searchView?.classList.toggle("has-entry-detail", Boolean(shell.entryDetail.open));
+  const open = Boolean(shell.entryDetail.open);
+  $.searchView?.classList.toggle("has-entry-detail", open);
+  $.appShell?.classList.toggle("has-entry-detail", open);
+  remountInfiniteScroll();
 }
 
 function closeEntryDetail() {
@@ -342,6 +443,7 @@ function shuffleResults() {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   tab.results = shuffled;
+  resetRenderedCount(tab, countSearchResultItems(shuffled));
   persistTabs();
   renderSearchResults(tab.results);
 }
@@ -355,6 +457,16 @@ function maybeModeRedirectForRelationSyntax(input, tab) {
     shell.currentMode = target;
     updateModeLabel();
   }
+}
+
+function maybeModeRedirectForPingZeSerial(input, tab) {
+  if (!isPingZeSerialQuery(input)) return;
+  const effective = pingZeEffectiveMode();
+  if (shell.currentMode === effective) return;
+  tab.offset = 0;
+  tab.redirectHint = pingZeModeRedirectHint(getLang());
+  shell.currentMode = effective;
+  updateModeLabel();
 }
 
 function decodeSearchHintHeader(raw) {
@@ -393,16 +505,21 @@ function renderSearchResults(data, total = null) {
     tab.redirectHint = null;
   }
   $.results.className = shell.currentMode === "syn" ? "syn-container" : "results";
+  const itemCount = countSearchResultItems(data);
+  if (tab && tab.renderedCount == null) resetRenderedCount(tab, itemCount);
+  const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
 
   if (shell.currentMode === "syn") {
     const syns = data.filter((r) => r.relation === "syn");
     const ants = data.filter((r) => r.relation === "ant");
     const related = data.filter((r) => r.relation === "semantic_related");
-    $.results.appendChild(createSynSection("近義詞", syns));
-    $.results.appendChild(createSynSection("反義詞", ants));
-    if (related.length) $.results.appendChild(createSynSection("語意相關", related));
+    const { synsShown, antsShown, relatedShown } = takeSynBudget(syns, ants, related, budget);
+    $.results.appendChild(createSynSection("近義詞", synsShown));
+    $.results.appendChild(createSynSection("反義詞", antsShown));
+    if (related.length) $.results.appendChild(createSynSection("語意相關", relatedShown));
     $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ""}（已載入 ${data.length}）`;
     updateShuffleButton();
+    updateScrollSentinel(tab);
     return;
   }
 
@@ -410,10 +527,19 @@ function renderSearchResults(data, total = null) {
   const finalHits = data.filter((r) => r.anchor_dimension === "final");
   if (initialHits.length || finalHits.length) {
     $.results.className = "syn-container";
-    $.results.appendChild(createAnchorSection("聲母", initialHits));
-    $.results.appendChild(createAnchorSection("韻母", finalHits));
+    const initialMerged = mergeResultsByLiteral(
+      initialHits.map((row) => ({ ...row, word: row.char || row.display_text })),
+    );
+    const finalMerged = mergeResultsByLiteral(
+      finalHits.map((row) => ({ ...row, word: row.char || row.display_text })),
+    );
+    const initialShown = initialMerged.slice(0, budget);
+    const finalShown = finalMerged.slice(0, Math.max(0, budget - initialShown.length));
+    $.results.appendChild(createAnchorSectionFromGroups("聲母", initialShown));
+    $.results.appendChild(createAnchorSectionFromGroups("韻母", finalShown));
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
+    updateScrollSentinel(tab);
     return;
   }
 
@@ -424,7 +550,7 @@ function renderSearchResults(data, total = null) {
   const ul = document.createElement("ul");
   ul.className = "results-list-items";
   const lang = getLang();
-  merged.forEach((group) =>
+  merged.slice(0, budget).forEach((group) =>
     ul.appendChild(
       createMergedResultButton(group, {
         lang,
@@ -442,20 +568,19 @@ function renderSearchResults(data, total = null) {
     $.stats.textContent = `${total} 個結果（${statsLabel}）`;
   }
   updateShuffleButton();
+  updateScrollSentinel(tab);
 }
 
-function createAnchorSection(title, items) {
+function createAnchorSectionFromGroups(title, groups) {
   const section = document.createElement("section");
   section.className = "syn-section";
   const heading = document.createElement("h2");
-  heading.textContent = `${title}${items.length ? ` (${items.length})` : ""}`;
+  heading.textContent = `${title}${groups.length ? ` (${groups.length})` : ""}`;
   section.appendChild(heading);
   const ul = document.createElement("ul");
   ul.className = "results-list-items";
   const lang = getLang();
-  mergeResultsByLiteral(
-    items.map((row) => ({ ...row, word: row.char || row.display_text })),
-  ).forEach((group) =>
+  groups.forEach((group) =>
     ul.appendChild(
       createMergedResultButton(group, {
         lang,
@@ -494,21 +619,6 @@ function createSynSection(title, items) {
   return section;
 }
 
-function toggleLoadMoreButton(show) {
-  let btn = document.getElementById("loadMoreBtn");
-  if (!btn) {
-    btn = document.createElement("button");
-    btn.id = "loadMoreBtn";
-    btn.type = "button";
-    btn.textContent = "載入更多";
-    btn.className = "load-more";
-    btn.addEventListener("click", () => searchDict(true));
-    $.results.after(btn);
-  }
-  const tab = activeTab();
-  btn.hidden = !show || tab?.view !== VIEW.SEARCH;
-}
-
 function finishSearchWithData(tab, data, { append = false, total = null } = {}) {
   let displayData;
   const pickAnchor = shell.pickAnchor;
@@ -534,18 +644,21 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
     shell.pickAnchor = null;
     shell.pickAnchorRows = null;
     updateShuffleButton();
-    const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
-    toggleLoadMoreButton(hasMore);
+    updateScrollSentinel(tab);
     return;
   }
   displayData = append ? (tab.results || []).concat(data) : data;
   tab.results = displayData;
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
+  const itemCount = countSearchResultItems(displayData);
+  if (append) {
+    tab.renderedCount = Math.min((tab.renderedCount ?? RESULT_RENDER_BATCH) + data.length, itemCount);
+  } else {
+    resetRenderedCount(tab, itemCount);
+  }
   persistTabs();
   renderSearchResults(displayData, tab.total);
-  const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
-  toggleLoadMoreButton(hasMore);
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
@@ -573,7 +686,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     tab.results = [];
     tab.offset = 0;
     tab.total = null;
-    toggleLoadMoreButton(false);
+    tab.renderedCount = RESULT_RENDER_BATCH;
+    updateScrollSentinel(tab);
   }
 
   if (!input) {
@@ -594,6 +708,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   tab.q = input;
   if (!isLoadMore) {
     maybeModeRedirectForRelationSyntax(input, tab);
+    maybeModeRedirectForPingZeSerial(input, tab);
   }
   if (!restoreFromHistory && !isLoadMore) {
     const { pushed } = commitSearchHistoryFrame(tab, { q: input, mode: shell.currentMode });
@@ -613,7 +728,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
         $.results.innerHTML = emptySearchResultsHtml(input, cached.hint, shell.currentMode);
         updateShuffleButton();
         setButtonLoading(false);
-        toggleLoadMoreButton(false);
+        updateScrollSentinel(tab);
         return;
       }
       finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
@@ -623,7 +738,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     searchCache.delete(cacheKey);
   }
 
-  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${PAGE_SIZE}&offset=${tab.offset || 0}`;
+  const pageSize = searchPageSizeForMode(shell.currentMode);
+  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${tab.offset || 0}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }
@@ -637,7 +753,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
         const pct = Math.round(wordCacheProgress(snap) * 100);
         $.results.innerHTML = `<p class="info"><strong>仲未開得工…</strong><br>詞庫快取索引載入中（${pct}%）。請稍候再搜。</p>`;
         updateShuffleButton();
-        toggleLoadMoreButton(false);
+        updateScrollSentinel(tab);
         return;
       }
     }
@@ -661,7 +777,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       tab.redirectHint = null;
       $.results.innerHTML = emptySearchResultsHtml(input, hint, shell.currentMode);
       updateShuffleButton();
-      toggleLoadMoreButton(false);
+      updateScrollSentinel(tab);
       return;
     }
 
@@ -676,7 +792,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       $.results.innerHTML = '<p class="info info-error"><strong>無法連接到後端。</strong><br>請確認已執行 <code translate="no">start.sh</code> 並透過 <code translate="no">http://127.0.0.1:8000/frontend/index.html</code> 開啟（勿直接開檔案）。</p>';
     }
     updateShuffleButton();
-    toggleLoadMoreButton(false);
+    updateScrollSentinel(tab);
   } finally {
     if (!signal.aborted) setButtonLoading(false);
   }
@@ -698,6 +814,9 @@ function wireEntryDetailKeyboard() {
 
 wireEntryDetailKeyboard();
 
+document.getElementById("loadMoreBtn")?.remove();
+remountInfiniteScroll();
+
 export {
   applyEffectiveModeFromResponse,
   closeEntryDetail,
@@ -709,7 +828,6 @@ export {
   shouldShowLoadMore,
   shuffleResults,
   switchMode,
-  toggleLoadMoreButton,
   toggleMenu,
   updateModeLabel,
   updateShuffleButton,

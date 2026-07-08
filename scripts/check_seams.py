@@ -19,6 +19,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
 CLIENT_INDEX_PATH = REPO_ROOT / "client" / "index.html"
 CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
+BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
 RELEASE_WINDOWS_PATH = REPO_ROOT / "scripts" / "release-windows-local.ps1"
 RELEASE_MACOS_PATH = REPO_ROOT / "scripts" / "release-macos-local.sh"
@@ -594,6 +595,7 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_pwa_preloads_critical_display_subset(self):
         source = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
         self.assertIn("/fonts/PlayfairDisplay-600.woff2", source)
+        self.assertIn("/fonts/CantoLogoSerif-700.woff2", source)
         for weight in ("500", "600", "700"):
             with self.subTest(weight=weight):
                 self.assertIn(f"/fonts/CantoCriticalSerif-{weight}.woff2", source)
@@ -608,11 +610,32 @@ class TestQueryTabsSeam(unittest.TestCase):
     def test_pwa_font_builder_generates_critical_subset(self):
         source = CLIENT_FONT_BUILD_PATH.read_text(encoding="utf-8")
         self.assertIn("criticalDisplayText", source)
+        self.assertIn("logoText", source)
         self.assertIn("Canto Critical Serif", source)
+        self.assertIn("Canto Logo Serif", source)
         self.assertIn("CantoCriticalSerif-", source)
+        self.assertIn("CantoLogoSerif-", source)
         self.assertIn("text=", source)
         self.assertIn("display=block", source)
         self.assertIn("fonts.css still contains remote Google font URLs", source)
+
+    def test_brand_wordmark_spec_parity(self):
+        logo_serif = "'Canto Logo Serif', 'Noto Serif TC', serif"
+        sources = {
+            "brand-svg-defs.tsx": BRAND_SVG_DEFS_PATH.read_text(encoding="utf-8"),
+            "client/index.html": CLIENT_INDEX_PATH.read_text(encoding="utf-8"),
+            "frontend/index.html": INDEX_PATH.read_text(encoding="utf-8"),
+        }
+        for name, source in sources.items():
+            normalized = source.replace('fontWeight="700"', 'font-weight="700"').replace('fontWeight="900"', 'font-weight="900"')
+            with self.subTest(file=name):
+                self.assertIn('font-weight="700"', normalized)
+                self.assertNotIn('font-weight="900"', normalized)
+                self.assertNotIn("Songti TC", source)
+        self.assertIn(logo_serif, sources["client/index.html"])
+        self.assertIn(logo_serif, sources["frontend/index.html"])
+        self.assertIn("LOGO_SERIF", sources["brand-svg-defs.tsx"])
+        self.assertIn('fontWeight="700"', sources["brand-svg-defs.tsx"])
 
     def test_pages_workflow_requires_merged_release_source(self):
         source = PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")

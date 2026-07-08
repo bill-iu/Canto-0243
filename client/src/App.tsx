@@ -4,12 +4,13 @@
  */
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
-import { ResultList, type EntryPickPayload } from './result-list';
+import { ResultList, mergedResultCount, type EntryPickPayload } from './result-list';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -26,14 +27,17 @@ import {
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../frontend/entry-detail-core.mjs';
-import { SynResultList, synResultsStats } from './syn-result-list';
+import { SynResultList, synResultItemCount, synResultsStats } from './syn-result-list';
 import {
   AnchorResultList,
+  anchorResultItemCount,
   anchorResultsStats,
   hasAnchorResultLayout,
 } from './anchor-result-list';
+import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isRelationSyntaxQuery } from './db/query-engine';
+import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
+import { pingZeEffectiveMode, pingZeModeRedirectHint } from './db/ping-zak';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -41,7 +45,13 @@ import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
-import { modeMetaFor, modeRedirectHint, type UiMode } from './mode-meta';
+import {
+  last0243UiToUrlMode,
+  modeMetaFor,
+  modeRedirectHint,
+  type Last0243SearchMode,
+  type UiMode,
+} from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo, GateInkMeter } from './brand-logo';
@@ -66,9 +76,11 @@ function App() {
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
   const [mode, setMode] = useState<UiMode>(initialUrl.mode);
-  const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>(() =>
-    initialUrl.mode === '02493' ? '02493' : '0243',
-  );
+  const [last0243Mode, setLast0243Mode] = useState<Last0243SearchMode>(() => {
+    if (initialUrl.mode === '02493') return '02493';
+    if (initialUrl.mode === '394052') return '394052';
+    return '0243';
+  });
 
   const {
     tabState,
@@ -112,6 +124,7 @@ function App() {
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
+  const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
@@ -136,6 +149,7 @@ function App() {
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
+  const pingZeSyntax = trimmedInput ? isPingZeSerialQuery(trimmedInput) : false;
   const searchKey = `${searchQuery}\0${mode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
 
@@ -175,15 +189,23 @@ function App() {
       setRedirectHint(null);
       return;
     }
+    if (pingZeSyntax) {
+      const effective = pingZeEffectiveMode();
+      setRedirectHint(pingZeModeRedirectHint(effective, uiLang));
+      if (mode !== '394052') {
+        setMode('394052');
+      }
+      return;
+    }
     if (relationSyntax) {
-      setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1', uiLang));
+      setRedirectHint(modeRedirectHint(last0243UiToUrlMode(last0243Mode), uiLang));
       if (mode === 'synonym') {
         setMode(last0243Mode);
       }
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
+  }, [trimmedInput, pingZeSyntax, relationSyntax, mode, last0243Mode, uiLang]);
 
   const {
     isReady,
@@ -536,7 +558,7 @@ function App() {
   }, [retryOfflineReady]);
 
   const handleModeChange = (next: UiMode) => {
-    if (next === '0243' || next === '02493') {
+    if (next === '0243' || next === '02493' || next === '394052') {
       setLast0243Mode(next);
     }
     setMode(next);
@@ -553,7 +575,7 @@ function App() {
   };
 
   const handleRunExample = (nextQuery: string, exampleMode: GuideMode) => {
-    if (exampleMode === '0243' || exampleMode === '02493') {
+    if (exampleMode === '0243' || exampleMode === '02493' || exampleMode === '394052') {
       setLast0243Mode(exampleMode);
     }
     setMode(exampleMode);
@@ -564,6 +586,7 @@ function App() {
   const handleShuffle = () => {
     setDisplayResults(shuffleResults(results));
     setResultsShuffled(true);
+    setShuffleGeneration((n) => n + 1);
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -610,6 +633,25 @@ function App() {
 
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
+  const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
+  const infiniteScrollRoot = detailOpen ? scrollRootEl : null;
+
+  const resultItemCount = useMemo(() => {
+    if (!displayResults.length) return 0;
+    if (synLayout) return synResultItemCount(displayResults);
+    if (anchorLayout) return anchorResultItemCount(displayResults);
+    return mergedResultCount(displayResults);
+  }, [displayResults, synLayout, anchorLayout]);
+
+  const { visibleCount, sentinelRef, showSentinel } = useInfiniteResultWindow({
+    itemCount: resultItemCount,
+    hasMore: Boolean(useLiveFetch && hasMore),
+    loading: searchLoading,
+    loadingMore,
+    onLoadMore: () => void loadMore(),
+    resetKey: `${searchKey}\0${shuffleGeneration}`,
+    scrollRoot: infiniteScrollRoot,
+  });
 
   const handleEntryPick = useCallback(
     (payload: EntryPickPayload) => {
@@ -707,7 +749,9 @@ function App() {
         onOpenChange={setGateOpen}
         theme={uiTheme}
       />
-      <div className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}`}>
+      <div
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+      >
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
@@ -717,6 +761,14 @@ function App() {
                 theme={uiTheme}
               />
             </button>
+            <div className="header-hero">
+              <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
+              <p className="header-hero__tagline">
+                {uiLang === 'en'
+                  ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
+                  : '格律／協音／押韻／近反義，一步搵到。'}
+              </p>
+            </div>
             {headerPreparing && (
               <div className="header-load-status" role="status" aria-live="polite" aria-busy="true">
                 <GateInkMeter inkProgress={headerInkProgress} theme={uiTheme} />
@@ -757,12 +809,6 @@ function App() {
               aria-labelledby="searchTitle"
             >
               <div className="search-view__main" onClick={handleSearchMainClick}>
-              <div className="hero">
-                <p className="eyebrow">Cantonese Lyrics Writing Workbench</p>
-                <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
-                <p>{uiLang === 'en' ? 'Meter / sound match / rhyme / near-antonyms — find in one step.' : '格律／協音／押韻／近反義，一步搵到。'}</p>
-              </div>
-
               <form onSubmit={handleSubmit} className="search-panel" role="search">
                 <div className="field-label-row">
                   <label className="field-label" htmlFor="searchInput">
@@ -820,75 +866,61 @@ function App() {
               )}
 
               <div className="search-results">
-                {displayHint && displayResults.length > 0 && (
-                  <p className="search-hint">{displayHint}</p>
-                )}
-                {useLiveFetch && searchLoadingVisible && (
-                  <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
-                )}
-                {useLiveFetch && searchError && (
-                  <p className="error">錯誤: {searchError.message}</p>
-                )}
+                <div className="search-results-scroll" ref={setScrollRootEl}>
+                  {displayHint && displayResults.length > 0 && (
+                    <p className="search-hint">{displayHint}</p>
+                  )}
+                  {useLiveFetch && searchLoadingVisible && (
+                    <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
+                  )}
+                  {useLiveFetch && searchError && (
+                    <p className="error">錯誤: {searchError.message}</p>
+                  )}
 
-                {displayResults.length > 0 && (
-                  <div className="results-list">
-                    {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
-                    {synLayout ? (
-                      <SynResultList
-                        results={displayResults}
-                        onPick={(word) => runCommittedSearch(word)}
-                      />
-                    ) : anchorLayout ? (
-                      <AnchorResultList
-                        results={displayResults}
-                        activeLiteral={activeDetailLiteral}
-                        lang={uiLang}
-                        onPick={handleEntryPick}
-                      />
-                    ) : (
-                      <ResultList
-                        results={displayResults}
-                        activeLiteral={activeDetailLiteral}
-                        lang={uiLang}
-                        onPick={handleEntryPick}
-                      />
-                    )}
-                    {useLiveFetch && hasMore && (
-                      <button
-                        type="button"
-                        className="load-more"
-                        onClick={() => void loadMore()}
-                        disabled={loadingMore || searchLoading}
-                      >
-                        {loadingMore ? '載入中…' : '載入更多'}
-                      </button>
-                    )}
-                  </div>
-                )}
+                  {displayResults.length > 0 && (
+                    <div className="results-list">
+                      {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
+                      {synLayout ? (
+                        <SynResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          onPick={(word) => runCommittedSearch(word)}
+                        />
+                      ) : anchorLayout ? (
+                        <AnchorResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          activeLiteral={activeDetailLiteral}
+                          lang={uiLang}
+                          onPick={handleEntryPick}
+                        />
+                      ) : (
+                        <ResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          activeLiteral={activeDetailLiteral}
+                          lang={uiLang}
+                          onPick={handleEntryPick}
+                        />
+                      )}
+                    </div>
+                  )}
 
-                {emptyMessage && (
-                  <div className="no-results info">
-                    <p>
-                      <strong>{emptyMessage.primary}</strong>
-                    </p>
-                    {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
-                  </div>
-                )}
+                  {emptyMessage && (
+                    <div className="no-results info">
+                      <p>
+                        <strong>{emptyMessage.primary}</strong>
+                      </p>
+                      {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
+                    </div>
+                  )}
+
+                  {showSentinel ? (
+                    <div ref={sentinelRef} className="results-scroll-sentinel" aria-hidden />
+                  ) : null}
+                </div>
               </div>
               </div>
-              {detailOpen && activeDetailLiteral ? (
-                <EntryDetailPanel
-                  key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
-                  literal={activeDetailLiteral}
-                  model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
-                  loading={!detailModel}
-                  relationsLoading={detailRelationsLoading}
-                  lang={uiLang}
-                  preferredJyutping={preferredJyutping}
-                  onClose={closeEntryDetail}
-                  onRelationPick={handleRelationPick}
-                />
-              ) : null}
             </section>
           )}
         </main>
@@ -909,6 +941,22 @@ function App() {
           onDismiss={() => setInstallDismissed(true)}
         />
       )}
+      {detailOpen && activeDetailLiteral
+        ? createPortal(
+            <EntryDetailPanel
+              key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
+              literal={activeDetailLiteral}
+              model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
+              loading={!detailModel}
+              relationsLoading={detailRelationsLoading}
+              lang={uiLang}
+              preferredJyutping={preferredJyutping}
+              onClose={closeEntryDetail}
+              onRelationPick={handleRelationPick}
+            />,
+            document.body,
+          )
+        : null}
     </>
   );
 }

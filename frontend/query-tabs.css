@@ -155,7 +155,7 @@ body.query-tabs-app {
 }
 
 .query-tabs-app .brand-logo {
-  height: clamp(44px, 10vw, 56px);
+  height: 62px;
   width: auto;
   display: block;
   flex-shrink: 0;
@@ -485,7 +485,7 @@ body.query-tabs-app {
   }
 
   .query-tabs-app .brand-logo {
-    height: 38px;
+    height: 48px;
   }
 
   .query-tabs-app .tabdeck-strip .chrome-tabs {

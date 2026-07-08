@@ -44,6 +44,7 @@ from app.services.query_types import (
     HeteronymCodeQuery,
     CompoundSynQuery,
     DigitCodeQuery,
+    PingZeSerialQuery,
     EqualsQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
@@ -277,6 +278,12 @@ def parse_query(q: str) -> ParsedQuery:
     if looks_like_mask_query(q):
         return MaskQuery(raw_q=q)
 
+    from app.services.ping_zak import try_parse_ping_ze_serial
+
+    ping_ze_parsed = try_parse_ping_ze_serial(q)
+    if ping_ze_parsed is not None:
+        return ping_ze_parsed
+
     if q.isdigit():
         return DigitCodeQuery(raw_q=q)
 
@@ -296,7 +303,7 @@ def uses_match_spec(parsed: Any) -> bool:
     return _uses(parsed)
 
 
-VALID_FALLBACK_0243_MODES = frozenset({"m1", "m2"})
+VALID_FALLBACK_0243_MODES = frozenset({"m1", "m2", "m3"})
 
 
 def resolve_fallback_0243_mode(fallback: str | None) -> str:
@@ -324,7 +331,8 @@ def is_relation_syntax_query(q: str) -> bool:
 
 def mode_redirect_hint(mode: str) -> str:
     """轉接提示文案（介面／API 保險一致）。"""
-    label = "02493模式（緊）" if mode == "m2" else "0243模式（鬆）"
+    labels = {"m2": "02493模式（緊）", "m3": "394052模式（矩陣）"}
+    label = labels.get(mode, "0243模式（鬆）")
     return f"此語法已切換至 {label} 查詢"
 
 

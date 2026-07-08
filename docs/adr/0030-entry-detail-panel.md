@@ -6,7 +6,7 @@
 
 **清單點擊搜尋反饋**：提交搜尋與詳情載入解耦；有舊結果時 **stale-while-revalidate**（清單唔清空、唔顯示「搜尋中…」）；僅清單空且查詢逾 **150ms** 未返先顯示 loading。PWA 與 Portable 搜尋掣同一規則。
 
-**佈局（overlay freeze）**：所有寬度搜尋主欄維持**全寬**，詞條詳情以 `position: fixed` **覆蓋右側**（z 軸），唔用 grid 擠壓清單。詳情 `top` 對齊主內容區（tabs 以下，`--entry-detail-inset-top`）；`bottom: 0` 釘住視窗底；主欄照常捲動／點擊，無 scrim；被面板遮蓋區域點擊歸面板。闊度：`<768px` → `min(320px, 88vw)`；`≥768px` → `min(400px, 32vw)`。無入場動畫。首屏內容同步自清單 readings，DB／近反義背景補全。
+**佈局（overlay freeze + split scroll）**：所有寬度搜尋主欄維持**全寬**，詞條詳情以 `position: fixed` **覆蓋右側**（掛 `document.body`，z 軸），唔用 grid 擠壓清單。詳情 `top` 對齊主內容區（tabs 以下，`--entry-detail-inset-top`）；`bottom: 0` 釘住視窗底；詳情內容過長時 `.entry-detail-panel__body` 獨立捲動。面板開啟時：**鎖頁面捲動**（`html.has-entry-detail-open`）；hero／搜尋框／explain **固定**；`.search-results`／`.search-results-scroll` **獨立捲動**；`app-footer` **隱藏**。關閉面板恢復整頁捲動。無 scrim；被面板遮蓋區域點擊歸面板。闊度：`<768px` → `min(320px, 88vw)`；`≥768px` → `min(400px, 32vw)`。無入場動畫。首屏內容同步自清單 readings，DB／近反義背景補全。
 
 **雙端共享**：業務邏輯放 `frontend/entry-detail-core.mjs`；PWA（React）與 Portable（vanilla DOM）各自渲染；樣式共用 `frontend/entry-detail.css`。DB 查詢留各端資料層，core 只收 plain object。首版 i18n 繁中 + `entry-detail-i18n.mjs` 架構，英文獨立 PR。
 

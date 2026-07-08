@@ -31,6 +31,7 @@ class QueryKind(str, Enum):
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
     JYUTPING_ANCHOR = "jyutping_anchor"
     MASK = "mask"
+    PING_ZE_SERIAL = "ping_ze_serial"
     DIGIT_CODE = "digit_code"
     WORD_LOOKUP = "word_lookup"
     JYUTPING_FRAGMENT = "jyutping_fragment"
@@ -297,6 +298,15 @@ class MaskQuery:
 
 
 @dataclass(frozen=True)
+class PingZeSerialQuery:
+    raw_q: str
+
+    @property
+    def kind(self) -> QueryKind:
+        return QueryKind.PING_ZE_SERIAL
+
+
+@dataclass(frozen=True)
 class DigitCodeQuery:
     raw_q: str
 
@@ -354,6 +364,7 @@ ParsedQuery = Union[
     TripleRhymeAnchorQuery,
     JyutpingAnchorQuery,
     MaskQuery,
+    PingZeSerialQuery,
     DigitCodeQuery,
     WordLookupQuery,
     JyutpingFragmentQuery,
