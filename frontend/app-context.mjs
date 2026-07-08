@@ -156,6 +156,7 @@ export const shell = {
   chromeLayout: null,
   pendingNewTabAnimation: null,
   lastHistSeq: 0,
+  entryDetail: { open: false, activeLiteral: null, preferredJyutping: null },
 };
 export function setAppSearchReady(ready) {
   shell.appSearchReady = ready;
@@ -172,6 +173,7 @@ export const $ = {
   currentModeLabel: document.getElementById("currentModeLabel"),
   modeReadout: document.getElementById("modeReadout"),
   searchView: document.getElementById("searchView"),
+  searchViewMain: document.getElementById("searchViewMain"),
   guideView: document.getElementById("guideView"),
   aboutView: document.getElementById("aboutView"),
   relationView: document.getElementById("relationView"),

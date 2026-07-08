@@ -26,6 +26,16 @@ import {
   commitSearchHistoryFrame,
   withResultClickQuery,
 } from "./search-navigation.mjs";
+import {
+  mergeResultsByLiteral,
+  resolveListClickAction,
+  isListableWordRow,
+} from "./entry-detail-core.mjs";
+import {
+  createEntryDetailPanel,
+  fetchEntryDetail,
+  createMergedResultButton,
+} from "./entry-detail-portable.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
   const q = escapeHtml(input);
@@ -150,6 +160,74 @@ function runExample(query, mode = shell.currentMode) {
   searchDict(false);
 }
 
+let entryDetailUi = null;
+
+function ensureEntryDetailUi() {
+  if (entryDetailUi) return entryDetailUi;
+  const host = document.getElementById("entryDetailHost") || $.searchView;
+  entryDetailUi = createEntryDetailPanel(host, {
+    lang: getLang(),
+    onClose: () => closeEntryDetail(),
+    onRelationPick: (literal) => handleEntryPick({ literal, fromRelationChip: true }),
+  });
+  return entryDetailUi;
+}
+
+function syncEntryDetailLayout() {
+  $.searchView?.classList.toggle("has-entry-detail", Boolean(shell.entryDetail.open));
+}
+
+function closeEntryDetail() {
+  shell.entryDetail.open = false;
+  shell.entryDetail.activeLiteral = null;
+  shell.entryDetail.preferredJyutping = null;
+  ensureEntryDetailUi().close();
+  syncEntryDetailLayout();
+}
+
+async function openEntryDetail(literal, preferredJyutping) {
+  shell.entryDetail.open = true;
+  shell.entryDetail.activeLiteral = literal;
+  shell.entryDetail.preferredJyutping = preferredJyutping ?? null;
+  syncEntryDetailLayout();
+  const model = await fetchEntryDetail(literal);
+  if (model && shell.entryDetail.activeLiteral === literal) {
+    ensureEntryDetailUi().setModel(model, preferredJyutping);
+  }
+}
+
+async function handleEntryPick(payload) {
+  if (shell.currentMode === "syn") {
+    handleResultClick(payload.literal);
+    return;
+  }
+  const action = resolveListClickAction({
+    panelOpen: shell.entryDetail.open,
+    activeLiteral: shell.entryDetail.activeLiteral,
+    targetLiteral: payload.literal,
+    fromRelationChip: payload.fromRelationChip,
+  });
+  if (action === "close") {
+    closeEntryDetail();
+    return;
+  }
+  if (action === "open_only") {
+    shell.entryDetail.open = true;
+    shell.entryDetail.preferredJyutping = payload.jyutping ?? null;
+    syncEntryDetailLayout();
+    const model = await fetchEntryDetail(payload.literal);
+    if (model) ensureEntryDetailUi().setModel(model, payload.jyutping);
+    return;
+  }
+  const tab = ensureActiveSearchTab();
+  if (!tab) return;
+  Object.assign(tab, withResultClickQuery(tab, payload.literal));
+  $.searchInput.value = payload.literal;
+  persistTabs();
+  await openEntryDetail(payload.literal, payload.jyutping);
+  searchDict();
+}
+
 function createResultLink(text, query, title = "") {
   const link = document.createElement("a");
   link.className = "result-item";
@@ -260,37 +338,62 @@ function renderSearchResults(data, total = null) {
   const finalHits = data.filter((r) => r.anchor_dimension === "final");
   if (initialHits.length || finalHits.length) {
     $.results.className = "syn-container";
-    $.results.appendChild(createSynSection("聲母", initialHits));
-    $.results.appendChild(createSynSection("韻母", finalHits));
+    $.results.appendChild(createAnchorSection("聲母", initialHits));
+    $.results.appendChild(createAnchorSection("韻母", finalHits));
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
     return;
   }
 
-  const frag = document.createDocumentFragment();
-  const seen = new Set();
-  const deduped = [];
-  data.forEach((word) => {
-    const ch = word.display_text || word.char;
-    if (!ch || seen.has(ch)) return;
-    seen.add(ch);
-    deduped.push(word);
-  });
-
-  deduped.forEach((word) => {
-    const display = word.display_text || word.char;
-    const qtext = word.query_text || word.char;
-    frag.appendChild(createResultLink(display, qtext, word.jyutping || ""));
-  });
-  $.results.appendChild(frag);
+  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
+  const merged = mergeResultsByLiteral(
+    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
+  );
+  const ul = document.createElement("ul");
+  ul.className = "results-list-items";
+  const lang = getLang();
+  merged.forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+  $.results.appendChild(ul);
   const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-  $.stats.textContent = `${deduped.length} 個結果（${statsLabel}）`;
-  if (total != null && total > deduped.length) {
-    $.stats.textContent = `已載入 ${deduped.length} / ${total} 個結果（${statsLabel}）`;
+  $.stats.textContent = `${merged.length} 個結果（${statsLabel}）`;
+  if (total != null && total > merged.length) {
+    $.stats.textContent = `已載入 ${merged.length} / ${total} 個結果（${statsLabel}）`;
   } else if (total != null) {
     $.stats.textContent = `${total} 個結果（${statsLabel}）`;
   }
   updateShuffleButton();
+}
+
+function createAnchorSection(title, items) {
+  const section = document.createElement("section");
+  section.className = "syn-section";
+  const heading = document.createElement("h2");
+  heading.textContent = `${title}${items.length ? ` (${items.length})` : ""}`;
+  section.appendChild(heading);
+  const ul = document.createElement("ul");
+  ul.className = "results-list-items";
+  const lang = getLang();
+  mergeResultsByLiteral(
+    items.map((row) => ({ ...row, word: row.char || row.display_text })),
+  ).forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+  section.appendChild(ul);
+  return section;
 }
 
 function createSynSection(title, items) {
@@ -343,6 +446,13 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   renderSearchResults(displayData, tab.total);
   const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
   toggleLoadMoreButton(hasMore);
+  if (shell.entryDetail.open && shell.entryDetail.activeLiteral) {
+    void fetchEntryDetail(shell.entryDetail.activeLiteral).then((model) => {
+      if (model && shell.entryDetail.activeLiteral === model.literal) {
+        ensureEntryDetailUi().setModel(model, shell.entryDetail.preferredJyutping);
+      }
+    });
+  }
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
@@ -474,9 +584,27 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
 }
 
+function wireEntryDetailKeyboard() {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && shell.entryDetail.open) {
+      closeEntryDetail();
+    }
+  });
+  $.searchViewMain?.addEventListener("click", (event) => {
+    if (!shell.entryDetail.open) return;
+    if (event.target.closest(".entry-detail-panel")) return;
+    if (event.target.closest(".result-link")) return;
+    closeEntryDetail();
+  });
+}
+
+wireEntryDetailKeyboard();
+
 export {
   applyEffectiveModeFromResponse,
+  closeEntryDetail,
   finishSearchWithData,
+  handleEntryPick,
   renderSearchResults,
   runExample,
   searchDict,

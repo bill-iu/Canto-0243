@@ -8,7 +8,11 @@ import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
-import { ResultList } from './result-list';
+import { ResultList, type EntryPickPayload } from './result-list';
+import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
+import { loadEntryDetail } from './entry-detail/load-entry-detail';
+import type { EntryDetailModel } from './entry-detail/types';
+import { resolveListClickAction } from '../../frontend/entry-detail-core.mjs';
 import { SynResultList, synResultsStats } from './syn-result-list';
 import {
   AnchorResultList,
@@ -97,6 +101,10 @@ function App() {
   const [gateOpen, setGateOpen] = useState(false);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => getTheme() as 'light' | 'dark');
+  const [detailOpen, setDetailOpen] = useState(false);
+  const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
+  const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
+  const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
@@ -352,6 +360,13 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && detailOpen) {
+        setDetailOpen(false);
+        setActiveDetailLiteral(null);
+        setDetailModel(null);
+        setPreferredJyutping(null);
+        return;
+      }
       if (!event.altKey || event.ctrlKey || event.metaKey) return;
       const key = event.key.toLowerCase();
       if (key === 'n') {
@@ -369,7 +384,33 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId]);
+  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen]);
+
+  const closeEntryDetail = useCallback(() => {
+    setDetailOpen(false);
+    setActiveDetailLiteral(null);
+    setDetailModel(null);
+    setPreferredJyutping(null);
+  }, []);
+
+  const openEntryDetailForLiteral = useCallback(
+    async (literal: string, jyutping?: string | null) => {
+      setDetailOpen(true);
+      setActiveDetailLiteral(literal);
+      setPreferredJyutping(jyutping ?? null);
+      if (isReady) {
+        const model = await loadEntryDetail(literal);
+        setDetailModel(model);
+      }
+    },
+    [isReady],
+  );
+
+  useEffect(() => {
+    if (!detailOpen || !activeDetailLiteral || !isReady || searchLoading) return;
+    if (searchQuery.trim() !== activeDetailLiteral) return;
+    void loadEntryDetail(activeDetailLiteral).then(setDetailModel);
+  }, [detailOpen, activeDetailLiteral, searchQuery, isReady, searchLoading]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
@@ -391,10 +432,6 @@ function App() {
     lexiconLoadStartedRef.current = false;
     await retryOfflineReady();
   }, [retryOfflineReady]);
-
-  const handlePickResult = (nextQuery: string) => {
-    runCommittedSearch(nextQuery);
-  };
 
   const handleModeChange = (next: UiMode) => {
     if (next === '0243' || next === '02493') {
@@ -471,6 +508,59 @@ function App() {
 
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
+
+  const handleEntryPick = useCallback(
+    (payload: EntryPickPayload) => {
+      if (mode === 'synonym') {
+        runCommittedSearch(payload.literal);
+        return;
+      }
+      const action = resolveListClickAction({
+        panelOpen: detailOpen,
+        activeLiteral: activeDetailLiteral,
+        targetLiteral: payload.literal,
+      });
+      if (action === 'close') {
+        closeEntryDetail();
+        return;
+      }
+      if (action === 'open_only') {
+        void openEntryDetailForLiteral(payload.literal, payload.jyutping);
+        return;
+      }
+      hydrateSearch(payload.literal);
+      void openEntryDetailForLiteral(payload.literal, payload.jyutping);
+      runCommittedSearch(payload.literal);
+    },
+    [
+      mode,
+      detailOpen,
+      activeDetailLiteral,
+      closeEntryDetail,
+      openEntryDetailForLiteral,
+      hydrateSearch,
+      runCommittedSearch,
+    ],
+  );
+
+  const handleRelationPick = useCallback(
+    (literal: string) => {
+      hydrateSearch(literal);
+      void openEntryDetailForLiteral(literal, null);
+      runCommittedSearch(literal);
+    },
+    [hydrateSearch, openEntryDetailForLiteral, runCommittedSearch],
+  );
+
+  const handleSearchMainClick = useCallback(
+    (event: React.MouseEvent) => {
+      if (!detailOpen) return;
+      const target = event.target as HTMLElement;
+      if (target.closest('.entry-detail-panel') || target.closest('.result-link')) return;
+      closeEntryDetail();
+    },
+    [detailOpen, closeEntryDetail],
+  );
   const statsSuffix = `（${modeMeta.statsLabel}）`;
 
   const resultsLabel = useMemo(() => {
@@ -576,7 +666,11 @@ function App() {
           ) : view === 'about' ? (
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (
-            <section className="search-view" aria-labelledby="searchTitle">
+            <section
+              className={`search-view${detailOpen ? ' has-entry-detail' : ''}`}
+              aria-labelledby="searchTitle"
+            >
+              <div className="search-view__main" onClick={handleSearchMainClick}>
               <div className="hero">
                 <p className="eyebrow">Cantonese Lyrics Writing Workbench</p>
                 <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
@@ -665,11 +759,24 @@ function App() {
                   <div className="results-list">
                     {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
                     {synLayout ? (
-                      <SynResultList results={displayResults} onPick={handlePickResult} />
+                      <SynResultList
+                        results={displayResults}
+                        onPick={(word) => runCommittedSearch(word)}
+                      />
                     ) : anchorLayout ? (
-                      <AnchorResultList results={displayResults} onPick={handlePickResult} />
+                      <AnchorResultList
+                        results={displayResults}
+                        activeLiteral={activeDetailLiteral}
+                        lang={uiLang}
+                        onPick={handleEntryPick}
+                      />
                     ) : (
-                      <ResultList results={displayResults} onPick={handlePickResult} />
+                      <ResultList
+                        results={displayResults}
+                        activeLiteral={activeDetailLiteral}
+                        lang={uiLang}
+                        onPick={handleEntryPick}
+                      />
                     )}
                     {useLiveFetch && hasMore && (
                       <button
@@ -693,6 +800,17 @@ function App() {
                   </div>
                 )}
               </div>
+              </div>
+              {detailOpen && detailModel ? (
+                <EntryDetailPanel
+                  key={`${detailModel.literal}-${preferredJyutping ?? ''}`}
+                  model={detailModel}
+                  lang={uiLang}
+                  preferredJyutping={preferredJyutping}
+                  onClose={closeEntryDetail}
+                  onRelationPick={handleRelationPick}
+                />
+              ) : null}
             </section>
           )}
         </main>

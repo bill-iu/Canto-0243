@@ -1,20 +1,22 @@
 import type { QueryResult } from './db/query';
+import { mergeResultsByLiteral, isListableWordRow } from '../../frontend/entry-detail-core.mjs';
+import { tDetail } from '../../frontend/entry-detail-i18n.mjs';
 
-/** ponytail: PWA 只渲染 word 列；碼／粵拼內嵌於詞條行（唔出 Portable 標題列） */
 export function displayResults(results: QueryResult[]): QueryResult[] {
   const seen = new Set<string>();
   return results.filter((row) => {
-    if (row.resultType && row.resultType !== 'word') {
-      return false;
-    }
+    if (!isListableWordRow(row)) return false;
     const key = `${row.word}\0${row.jyutping ?? ''}\0${row.code ?? ''}`;
-    if (!row.word || seen.has(key)) {
-      return false;
-    }
+    if (!row.word || seen.has(key)) return false;
     seen.add(key);
     return true;
   });
 }
+
+export type EntryPickPayload = {
+  literal: string;
+  jyutping?: string;
+};
 
 function resultKey(row: QueryResult, index: number): string {
   return `word-${row.word}-${row.code}-${row.jyutping}-${index}`;
@@ -22,35 +24,39 @@ function resultKey(row: QueryResult, index: number): string {
 
 export function ResultList({
   results,
+  activeLiteral,
+  lang = 'zh',
   onPick,
 }: {
   results: QueryResult[];
-  onPick: (query: string) => void;
+  activeLiteral?: string | null;
+  lang?: 'zh' | 'en';
+  onPick: (payload: EntryPickPayload) => void;
 }) {
   const rows = displayResults(results);
-  if (!rows.length) {
-    return null;
-  }
+  const merged = mergeResultsByLiteral(rows);
+  if (!merged.length) return null;
 
   return (
     <ul className="results-list-items">
-      {rows.map((row, index) => {
-        const pick = row.word;
+      {merged.map((group) => {
+        const primary = group.readings[0];
+        const pickJyutping = primary?.jyutping;
+        const isActive = activeLiteral === group.literal;
         return (
-          <li key={resultKey(row, index)} className="result-item">
+          <li key={group.literal} className={`result-item${isActive ? ' is-detail-active' : ''}`}>
             <button
               type="button"
               className="result-link"
-              onClick={() => onPick(pick)}
-              aria-label={`搜尋 ${pick}${row.jyutping ? ` ${row.jyutping}` : ''}${row.code ? ` ${row.code}` : ''}`}
+              onClick={() => onPick({ literal: group.literal, jyutping: pickJyutping })}
+              aria-label={`${group.literal}${group.readingCount > 1 ? ` ${tDetail('detail.readings.n', lang, { n: group.readingCount })}` : ''}`}
             >
-              <span className="word">{row.word}</span>
-              {(row.jyutping || row.code) && (
-                <span className="result-meta">
-                  {row.jyutping ? <span className="jyutping">{row.jyutping}</span> : null}
-                  {row.code ? <span className="code">{row.code}</span> : null}
+              <span className="word result-literal-only">{group.literal}</span>
+              {group.readingCount > 1 ? (
+                <span className="result-reading-badge">
+                  {tDetail('detail.readings.n', lang, { n: group.readingCount })}
                 </span>
-              )}
+              ) : null}
             </button>
           </li>
         );
@@ -58,3 +64,5 @@ export function ResultList({
     </ul>
   );
 }
+
+export { resultKey };

@@ -8,6 +8,7 @@ from app.models.word import Word
 from app.schemas.word_schema import WordCreate, WordRead
 from app.services.query_dispatch import SearchContext, execute_search, search_words
 from app.services.query_explain import explain_query
+from app.services.entry_detail import build_entry_detail
 from app.utils.search_hint_header import encode_search_hint
 
 router = APIRouter(prefix="/words", tags=["words"])
@@ -80,6 +81,18 @@ def query_explain_endpoint(q: str = "", mode: str = "m1"):
         "warning": result.warning,
         "kind": result.kind,
     }
+
+
+@router.get("/entry-detail")
+@router.get("/entry-detail/")
+def entry_detail_endpoint(char: str, db: Session = Depends(get_db)):
+    literal = (char or "").strip()
+    if not literal:
+        raise HTTPException(status_code=400, detail="請提供字面")
+    detail = build_entry_detail(db, literal)
+    if detail is None:
+        raise HTTPException(status_code=404, detail="字詞未找到")
+    return detail
 
 
 @router.get("/rows", response_model=list[WordRead])
