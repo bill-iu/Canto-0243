@@ -1,4 +1,4 @@
-/** Probe every 搜尋教學 example on the browser query engine (repo lyrics.db). */
+/** 教學探針全量閘 — PWA 端（預設 repo lyrics.db；CI 用 guide-examples-self-check）。 */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,9 +13,9 @@ import { warmGuideProbeReadiness } from '../src/probe-readiness.node.ts';
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
 const defaultDb = [
-  path.join(repoRoot, 'tests/fixtures/lyrics.db'),
   path.join(repoRoot, 'lyrics.db'),
   path.join(repoRoot, 'client/public/lyrics.db'),
+  path.join(repoRoot, 'tests/fixtures/lyrics.db'),
 ].find((p) => fs.existsSync(p));
 const dbPath = process.argv[2] ?? defaultDb;
 if (!dbPath) {

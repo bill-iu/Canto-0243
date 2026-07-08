@@ -467,8 +467,20 @@ _Avoid_：整頁捲動當結果捲動、用 padding 假裝有捲動
 _Avoid_：只驗一端、用合併後 DOM 詞條數當探針、教學例子各寫各唔對齊
 
 **探針暖機**：
-教學回歸探針斷言前須達 **就緒閘解鎖** 同等引擎狀態（唔等 **啟動完畢** tail）。Portable：`warm_guide_probe_readiness`（**詞庫快取索引** + `事業` 探針）；PWA Node：`warmGuideProbeReadiness`（閘前輔助索引 + `事業` 探針）。兩端共用契約，CI 以 `tests/fixtures/lyrics.db` 為準。
+教學回歸探針斷言前須達 **就緒閘解鎖** 同等引擎狀態（唔等 **啟動完畢** tail）。Portable：`warm_guide_probe_readiness`（**詞庫快取索引** + `事業` 探針）；PWA Node：`warmGuideProbeReadiness`（閘前輔助索引 + `事業` 探針）。兩端共用契約。
 _Avoid_：冷索引直接 assert、探針繞過 gate 卻唔暖機、把 tail 靜態詞林埠當教學探針前置
+
+**教學探針 CI 閘**：
+`tests/fixtures/lyrics.db` + **探針暖機** + 精選零結果回歸（唔跑全量 manifest）。CI 預設層。
+_Avoid_：用細 fixture 判斷全量 parity、省略暖機
+
+**教學探針全量閘**：
+repo 解壓後 **`lyrics.db`** 上對 manifest 每例雙端探針（Portable + PWA）；維護者與發佈前必綠。
+_Avoid_：只跑 CI 閘當 parity 完成、雙端用唔同詞庫卻當通過
+
+**教學 parity 切片**：
+PWA 對齊 **瀏覽器查詢引擎** 與後端時，按搜尋教學語法族逐 PR 修復（粵拼 lookup → mask／prefix → 加號錨 → 粵拼錨 → 關係查詢）；每片紅→綠後併入全量閘計數。
+_Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 
 ---
 
