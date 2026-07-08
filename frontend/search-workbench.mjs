@@ -162,6 +162,30 @@ function runExample(query, mode = shell.currentMode) {
 }
 
 let entryDetailUi = null;
+let entryDetailInsetBound = false;
+
+function syncEntryDetailInset() {
+  const header = document.querySelector(".app-header");
+  document.documentElement.style.setProperty(
+    "--entry-detail-inset-top",
+    header ? `${header.getBoundingClientRect().bottom}px` : "0px",
+  );
+}
+
+function bindEntryDetailInset() {
+  if (entryDetailInsetBound) return;
+  entryDetailInsetBound = true;
+  window.addEventListener("resize", syncEntryDetailInset);
+  window.addEventListener("scroll", syncEntryDetailInset, { passive: true });
+}
+
+function unbindEntryDetailInset() {
+  if (!entryDetailInsetBound) return;
+  entryDetailInsetBound = false;
+  window.removeEventListener("resize", syncEntryDetailInset);
+  window.removeEventListener("scroll", syncEntryDetailInset);
+  document.documentElement.style.removeProperty("--entry-detail-inset-top");
+}
 
 function ensureEntryDetailUi() {
   if (entryDetailUi) return entryDetailUi;
@@ -184,6 +208,7 @@ function closeEntryDetail() {
   shell.entryDetail.preferredJyutping = null;
   ensureEntryDetailUi().close();
   syncEntryDetailLayout();
+  unbindEntryDetailInset();
 }
 
 function openEntryDetail(literal, preferredJyutping, readings) {
@@ -191,6 +216,8 @@ function openEntryDetail(literal, preferredJyutping, readings) {
   shell.entryDetail.activeLiteral = literal;
   shell.entryDetail.preferredJyutping = preferredJyutping ?? null;
   syncEntryDetailLayout();
+  bindEntryDetailInset();
+  syncEntryDetailInset();
   const ui = ensureEntryDetailUi();
   const instant = readings?.length ? buildEntryDetailModelFromPick(literal, readings) : null;
   if (instant) ui.setModel(instant, preferredJyutping);

@@ -4,10 +4,12 @@
  */
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { flushSync } from 'react-dom';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
+import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList, type EntryPickPayload } from './result-list';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
@@ -113,6 +115,9 @@ function App() {
   const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
   const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
   const detailLoadGenRef = useRef(0);
+  const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
+
+  useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const syncedTabIdRef = useRef<number | null>(null);
@@ -422,24 +427,27 @@ function App() {
     (payload: EntryPickPayload) => {
       const gen = ++detailLoadGenRef.current;
       const literal = payload.literal.trim();
-      setDetailOpen(true);
-      setActiveDetailLiteral(literal);
-      setPreferredJyutping(payload.jyutping ?? null);
+      lastPickReadingsRef.current = payload.readings;
 
       const cached = getCachedEntryDetail(literal);
-      if (cached) {
-        setDetailModel(cached);
-        setDetailRelationsLoading(false);
+      const instant = cached
+        ? cached
+        : payload.readings?.length
+          ? instantEntryDetailModel(literal, payload.readings)
+          : null;
+
+      flushSync(() => {
+        setDetailOpen(true);
+        setActiveDetailLiteral(literal);
+        setPreferredJyutping(payload.jyutping ?? null);
+        setDetailModel(instant);
+        setDetailRelationsLoading(!cached && Boolean(instant));
+      });
+
+      if (cached || !isReady) {
+        if (cached) setDetailRelationsLoading(false);
         return;
       }
-
-      const instant = payload.readings?.length
-        ? instantEntryDetailModel(literal, payload.readings)
-        : null;
-      setDetailModel(instant);
-      setDetailRelationsLoading(true);
-
-      if (!isReady) return;
 
       if (instant) {
         scheduleEntryDetailEnrich(instant, gen);
@@ -468,6 +476,7 @@ function App() {
     openEntryDetailFromPick({
       literal: activeDetailLiteral,
       jyutping: preferredJyutping ?? undefined,
+      readings: lastPickReadingsRef.current,
     });
   }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailFromPick]);
 

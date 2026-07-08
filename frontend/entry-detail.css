@@ -1,16 +1,8 @@
 /* Entry detail panel — shared PWA + Portable (ADR-0030) */
 
+/* ponytail: has-entry-detail is state-only; never squeeze search-view layout */
 .search-view.has-entry-detail {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-}
-
-@media (min-width: 768px) {
-  .search-view.has-entry-detail {
-    grid-template-columns: minmax(0, 1fr) min(360px, 32vw);
-    align-items: start;
-  }
+  /* full-width list; panel overlays via fixed positioning */
 }
 
 .search-view__main {
@@ -19,12 +11,11 @@
 
 .entry-detail-panel {
   position: fixed;
-  top: 0;
+  top: var(--entry-detail-inset-top, 0px);
   right: 0;
+  bottom: 0;
   z-index: 40;
-  width: min(100%, 420px);
-  height: 100vh;
-  height: 100dvh;
+  width: min(320px, 88vw);
   display: flex;
   flex-direction: column;
   background: var(--surface);
@@ -35,14 +26,7 @@
 
 @media (min-width: 768px) {
   .entry-detail-panel {
-    position: sticky;
-    top: 12px;
-    height: calc(100vh - 24px);
-    height: calc(100dvh - 24px);
-    width: 100%;
-    box-shadow: none;
-    border-radius: 12px;
-    z-index: 2;
+    width: min(400px, 32vw);
   }
 }
 
