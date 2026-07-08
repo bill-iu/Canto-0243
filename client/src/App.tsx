@@ -19,7 +19,12 @@ import {
   loadEntryDetailCore,
 } from './entry-detail/load-entry-detail';
 import type { EntryDetailModel } from './entry-detail/types';
-import { resolveListClickAction } from '../../frontend/entry-detail-core.mjs';
+import {
+  anchorOnlyQueryRow,
+  mergePickLookupResults,
+  pickReadingsToQueryRows,
+  resolveListClickAction,
+} from '../../frontend/entry-detail-core.mjs';
 import { SynResultList, synResultsStats } from './syn-result-list';
 import {
   AnchorResultList,
@@ -102,7 +107,6 @@ function App() {
 
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
-  const [showStats, setShowStats] = useState(false);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
@@ -116,6 +120,8 @@ function App() {
   const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
   const detailLoadGenRef = useRef(0);
   const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
+  const pickAnchorRef = useRef<string | null>(null);
+  const pickAnchorRowsRef = useRef<QueryResult[]>([]);
 
   useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
@@ -182,7 +188,6 @@ function App() {
     error: dbError,
     initialize,
     retryOfflineReady,
-    getStats,
   } = useDB();
 
   const { hasNativePrompt, trigger } = usePwaInstallPrompt();
@@ -264,12 +269,23 @@ function App() {
 
   useEffect(() => {
     if (!useLiveFetch) return;
+    const anchor = pickAnchorRef.current;
+    if (anchor && searchQuery.trim() === anchor && !resultsShuffled) {
+      if (!searchLoading) {
+        setDisplayResults(
+          mergePickLookupResults(anchor, pickAnchorRowsRef.current, results) as QueryResult[],
+        );
+        pickAnchorRef.current = null;
+        pickAnchorRowsRef.current = [];
+      }
+      return;
+    }
     if (!resultsShuffled) {
       setDisplayResults(results);
       return;
     }
     setDisplayResults((prev) => mergeShuffledResults(prev, results));
-  }, [results, resultsShuffled, useLiveFetch]);
+  }, [results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
 
   useEffect(() => {
     if (!useLiveFetch || view !== 'search' || searchLoading) return;
@@ -335,13 +351,6 @@ function App() {
       ? `Preparing lexicon${progress > 0 ? ` ${Math.round(progress)}%` : ''}`
       : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
 
-  const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
-  useEffect(() => {
-    if (isReady && showStats && !stats) {
-      getStats().then(setStats).catch(console.error);
-    }
-  }, [isReady, showStats, stats, getStats]);
-
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && detailOpen) {
@@ -379,9 +388,16 @@ function App() {
     setPreferredJyutping(null);
   }, []);
 
+  const waitForPickMerge = useCallback(async (gen: number) => {
+    while (pickAnchorRef.current && gen === detailLoadGenRef.current) {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }, []);
+
   const scheduleEntryDetailEnrich = useCallback((base: EntryDetailModel, gen: number) => {
     const run = () => {
       void (async () => {
+        await waitForPickMerge(gen);
         if (gen !== detailLoadGenRef.current || !isReady) return;
         const fromDb = await enrichEntryDetailFromDb(base);
         if (gen !== detailLoadGenRef.current) return;
@@ -397,7 +413,7 @@ function App() {
     } else {
       setTimeout(run, 32);
     }
-  }, [isReady]);
+  }, [isReady, waitForPickMerge]);
 
   const openEntryDetailFromPick = useCallback(
     (payload: EntryPickPayload) => {
@@ -457,6 +473,10 @@ function App() {
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
       const q = (nextQuery ?? inputQuery).trim();
+      if (pickAnchorRef.current && pickAnchorRef.current !== q) {
+        pickAnchorRef.current = null;
+        pickAnchorRowsRef.current = [];
+      }
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
@@ -468,6 +488,23 @@ function App() {
       }
     },
     [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
+  );
+
+  const beginPickSearch = useCallback(
+    (payload: EntryPickPayload) => {
+      const literal = payload.literal.trim();
+      const anchorRows = payload.readings?.length
+        ? (pickReadingsToQueryRows(literal, payload.readings) as QueryResult[])
+        : (anchorOnlyQueryRow(literal) as QueryResult[]);
+      pickAnchorRef.current = literal;
+      pickAnchorRowsRef.current = anchorRows;
+      setDisplayResults(anchorRows);
+      setCachedTotal(null);
+      runCommittedSearch(literal);
+      hydrateSearch(literal);
+      openEntryDetailFromPick(payload);
+    },
+    [hydrateSearch, openEntryDetailFromPick, runCommittedSearch],
   );
 
   const handleRetryOfflineReady = useCallback(async () => {
@@ -572,28 +609,16 @@ function App() {
         setPreferredJyutping(payload.jyutping ?? null);
         return;
       }
-      runCommittedSearch(payload.literal);
-      hydrateSearch(payload.literal);
-      openEntryDetailFromPick(payload);
+      beginPickSearch(payload);
     },
-    [
-      mode,
-      detailOpen,
-      activeDetailLiteral,
-      closeEntryDetail,
-      openEntryDetailFromPick,
-      hydrateSearch,
-      runCommittedSearch,
-    ],
+    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch],
   );
 
   const handleRelationPick = useCallback(
     (literal: string) => {
-      runCommittedSearch(literal);
-      hydrateSearch(literal);
-      openEntryDetailFromPick({ literal });
+      beginPickSearch({ literal });
     },
-    [openEntryDetailFromPick, hydrateSearch, runCommittedSearch],
+    [beginPickSearch],
   );
 
   const handleSearchMainClick = useCallback(
@@ -630,10 +655,6 @@ function App() {
     if (!useLiveFetch) return null;
     return formatEmptySearchMessage(searchQuery, displayHint, mode);
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
-
-  const toggleStats = () => {
-    setShowStats(!showStats);
-  };
 
   const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
   const canSearch = !shellGated;
@@ -773,19 +794,6 @@ function App() {
                     <span className="query-explain__warning">{explainWarning}</span>
                   ) : null}
                 </p>
-              )}
-
-              <div style={{ textAlign: 'center' }}>
-                <button type="button" onClick={toggleStats} className="stats-toggle">
-                  {showStats ? '隱藏統計' : '顯示資料庫統計'}
-                </button>
-              </div>
-
-              {showStats && stats && (
-                <div className="db-stats">
-                  <p>詞條數量: {stats.wordCount.toLocaleString()}</p>
-                  <p>資料表數量: {stats.tableCount}</p>
-                </div>
               )}
 
               <div className="search-results">

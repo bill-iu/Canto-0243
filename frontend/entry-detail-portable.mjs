@@ -44,6 +44,25 @@ export function renderMergedResultList(container, rows, options) {
   container.replaceChildren(ul);
 }
 
+/** Append lookup tail after pinned anchor — avoids full list DOM rebuild (ADR-0030 path A). */
+export function appendPickLookupTail(container, anchorLiteral, mergedRows, options) {
+  const anchor = String(anchorLiteral ?? '').trim();
+  const rows = (mergedRows ?? []).map((row) => ({ ...row, word: row.word ?? row.char }));
+  let ul = container.querySelector('.results-list-items');
+  if (!ul) {
+    renderMergedResultList(container, rows.filter((row) => String(row.word ?? '').trim() === anchor), options);
+    ul = container.querySelector('.results-list-items');
+    if (!ul) return;
+  }
+  const existing = new Set(
+    [...ul.querySelectorAll('.result-literal-only')].map((el) => el.textContent?.trim() ?? ''),
+  );
+  for (const group of mergeResultsByLiteral(rows)) {
+    if (group.literal === anchor || existing.has(group.literal)) continue;
+    ul.appendChild(createMergedResultButton(group, options));
+  }
+}
+
 export async function fetchEntryDetail(literal) {
   const res = await fetch(`/words/entry-detail/?char=${encodeURIComponent(literal)}`);
   if (!res.ok) return null;

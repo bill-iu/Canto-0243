@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
@@ -93,6 +94,14 @@ def entry_detail_endpoint(char: str, db: Session = Depends(get_db)):
     if detail is None:
         raise HTTPException(status_code=404, detail="字詞未找到")
     return detail
+
+
+@router.get("/db-stats")
+@router.get("/db-stats/")
+def db_stats_endpoint(db: Session = Depends(get_db)):
+    word_count = db.execute(text("SELECT COUNT(*) FROM words")).scalar() or 0
+    table_count = db.execute(text("SELECT COUNT(*) FROM sqlite_master WHERE type='table'")).scalar() or 0
+    return {"wordCount": int(word_count), "tableCount": int(table_count)}
 
 
 @router.get("/rows", response_model=list[WordRead])

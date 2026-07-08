@@ -28,6 +28,9 @@ import {
 } from "./search-navigation.mjs";
 import {
   mergeResultsByLiteral,
+  mergePickLookupResults,
+  pickReadingsToQueryRows,
+  anchorOnlyQueryRow,
   resolveListClickAction,
   isListableWordRow,
   buildEntryDetailModelFromPick,
@@ -35,6 +38,8 @@ import {
 import {
   createEntryDetailPanel,
   fetchEntryDetail,
+  renderMergedResultList,
+  appendPickLookupTail,
   createMergedResultButton,
 } from "./entry-detail-portable.mjs";
 
@@ -271,11 +276,28 @@ async function handleEntryPick(payload) {
   }
   const tab = ensureActiveSearchTab();
   if (!tab) return;
-  Object.assign(tab, withResultClickQuery(tab, payload.literal));
-  $.searchInput.value = payload.literal;
+  const literal = payload.literal.trim();
+  shell.pickAnchor = literal;
+  shell.pickAnchorRows = payload.readings?.length
+    ? pickReadingsToQueryRows(literal, payload.readings)
+    : anchorOnlyQueryRow(literal);
+  Object.assign(tab, withResultClickQuery(tab, literal));
+  tab.results = shell.pickAnchorRows;
+  tab.offset = 0;
+  tab.total = null;
+  $.searchInput.value = literal;
   persistTabs();
+  $.results.className = "results";
+  renderMergedResultList($.results, tab.results, {
+    lang: getLang(),
+    activeLiteral: shell.entryDetail.activeLiteral,
+    onPick: handleEntryPick,
+  });
+  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  $.stats.textContent = `1 個結果（${statsLabel}）`;
+  updateShuffleButton();
   searchDict();
-  openEntryDetail(payload.literal, payload.jyutping, payload.readings);
+  openEntryDetail(literal, payload.jyutping, payload.readings);
 }
 
 function createResultLink(text, query, title = "") {
@@ -488,7 +510,35 @@ function toggleLoadMoreButton(show) {
 }
 
 function finishSearchWithData(tab, data, { append = false, total = null } = {}) {
-  const displayData = append ? (tab.results || []).concat(data) : data;
+  let displayData;
+  const pickAnchor = shell.pickAnchor;
+  if (!append && pickAnchor && (tab.q || "").trim() === pickAnchor) {
+    displayData = mergePickLookupResults(pickAnchor, shell.pickAnchorRows || [], data);
+    tab.results = displayData;
+    tab.offset = displayData.length;
+    if (total != null) tab.total = total;
+    persistTabs();
+    appendPickLookupTail($.results, pickAnchor, displayData, {
+      lang: getLang(),
+      activeLiteral: shell.entryDetail.activeLiteral,
+      onPick: handleEntryPick,
+    });
+    const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+    if (tab.total != null && tab.total > displayData.length) {
+      $.stats.textContent = `已載入 ${displayData.length} / ${tab.total} 個結果（${statsLabel}）`;
+    } else if (tab.total != null) {
+      $.stats.textContent = `${tab.total} 個結果（${statsLabel}）`;
+    } else {
+      $.stats.textContent = `${displayData.length} 個結果（${statsLabel}）`;
+    }
+    shell.pickAnchor = null;
+    shell.pickAnchorRows = null;
+    updateShuffleButton();
+    const hasMore = (tab.total != null && displayData.length < tab.total) || data.length === PAGE_SIZE;
+    toggleLoadMoreButton(hasMore);
+    return;
+  }
+  displayData = append ? (tab.results || []).concat(data) : data;
   tab.results = displayData;
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
@@ -508,6 +558,10 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const { signal } = shell.searchAbort;
 
   const input = $.searchInput.value.trim();
+  if (!isLoadMore && input && input !== shell.pickAnchor) {
+    shell.pickAnchor = null;
+    shell.pickAnchorRows = null;
+  }
   if (!isLoadMore && input) tab.q = input;
   if (!restoreFromHistory) showSearch({ replace: true });
   const staleResults = !isLoadMore && (tab.results?.length > 0);

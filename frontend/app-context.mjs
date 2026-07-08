@@ -157,6 +157,8 @@ export const shell = {
   pendingNewTabAnimation: null,
   lastHistSeq: 0,
   entryDetail: { open: false, activeLiteral: null, preferredJyutping: null },
+  pickAnchor: null,
+  pickAnchorRows: null,
 };
 export function setAppSearchReady(ready) {
   shell.appSearchReady = ready;
@@ -197,6 +199,7 @@ export const $ = {
   relationOkStatus: document.getElementById("relationOkStatus"),
   relationErrStatus: document.getElementById("relationErrStatus"),
   correctionsView: document.getElementById("correctionsView"),
+  correctionsDbStats: document.getElementById("correctionsDbStats"),
   correctionsLookupForm: document.getElementById("correctionsLookupForm"),
   correctionChar: document.getElementById("correctionChar"),
   correctionLookupBtn: document.getElementById("correctionLookupBtn"),

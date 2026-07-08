@@ -202,6 +202,33 @@ export function pickPreferredReadingIndex(readings, clickedJyutping) {
   return idx >= 0 ? idx : 0;
 }
 
+/** List-click optimistic rows — collapse to anchor literal only (ADR-0030 path A). */
+export function pickReadingsToQueryRows(literal, readings) {
+  const text = String(literal ?? '').trim();
+  if (!text) return [];
+  const rows = readings?.length ? readings : [{}];
+  return rows.map((r) => ({
+    word: text,
+    char: text,
+    jyutping: r.jyutping ?? '',
+    code: r.code ?? '',
+    resultType: 'word',
+  }));
+}
+
+export function anchorOnlyQueryRow(literal) {
+  const text = String(literal ?? '').trim();
+  return text ? [{ word: text, char: text, resultType: 'word' }] : [];
+}
+
+/** Pin anchor literal; append lookup tail without reordering anchor (no flicker). */
+export function mergePickLookupResults(anchorLiteral, anchorRows, lookupRows) {
+  const anchor = String(anchorLiteral ?? '').trim();
+  const pinned = (anchorRows ?? []).filter((r) => rowLiteral(r) === anchor);
+  const tail = (lookupRows ?? []).filter((r) => rowLiteral(r) !== anchor);
+  return [...pinned, ...tail];
+}
+
 /** ponytail: runnable self-check — `node frontend/entry-detail-core.mjs` */
 export function entryDetailCoreSelfCheck() {
   const rows = [
@@ -224,6 +251,14 @@ export function entryDetailCoreSelfCheck() {
   }
   if (code0243FromJyutping('hoeng1 gong2') !== '39') {
     throw new Error('code0243FromJyutping');
+  }
+  const anchor = pickReadingsToQueryRows('就', [{ jyutping: 'zau6', code: '42' }]);
+  const pickMerged = mergePickLookupResults('就', anchor, [
+    { word: '就', jyutping: 'zau6', code: '42' },
+    { word: '舊', jyutping: 'zau6', code: '42' },
+  ]);
+  if (pickMerged.length !== 2 || rowLiteral(pickMerged[0]) !== '就' || rowLiteral(pickMerged[1]) !== '舊') {
+    throw new Error('mergePickLookupResults');
   }
 }
 
