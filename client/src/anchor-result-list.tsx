@@ -1,4 +1,5 @@
 import type { QueryResult } from './db/query';
+import { mergeResultsByLiteral } from '../../frontend/entry-detail-core.mjs';
 import { ResultList, type EntryPickPayload } from './result-list';
 
 function sectionTitle(title: string, count: number): string {
@@ -44,24 +45,61 @@ export function hasAnchorResultLayout(results: QueryResult[]): boolean {
   return results.some((r) => r.anchor_dimension === 'initial' || r.anchor_dimension === 'final');
 }
 
+export function anchorResultItemCount(results: QueryResult[]): number {
+  const initial = results.filter((r) => r.anchor_dimension === 'initial');
+  const final = results.filter((r) => r.anchor_dimension === 'final');
+  const initialMerged = mergeResultsByLiteral(
+    initial.map((row) => ({ ...row, word: row.char || row.display_text || row.word })),
+  );
+  const finalMerged = mergeResultsByLiteral(
+    final.map((row) => ({ ...row, word: row.char || row.display_text || row.word })),
+  );
+  return initialMerged.length + finalMerged.length;
+}
+
 export function AnchorResultList({
   results,
+  visibleLimit,
   activeLiteral,
   lang,
   onPick,
 }: {
   results: QueryResult[];
+  visibleLimit?: number;
   activeLiteral?: string | null;
   lang?: 'zh' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
   const initial = results.filter((r) => r.anchor_dimension === 'initial');
   const final = results.filter((r) => r.anchor_dimension === 'final');
+  const budget = visibleLimit ?? anchorResultItemCount(results);
+  const initialMerged = mergeResultsByLiteral(
+    initial.map((row) => ({ ...row, word: row.char || row.display_text || row.word })),
+  );
+  const finalMerged = mergeResultsByLiteral(
+    final.map((row) => ({ ...row, word: row.char || row.display_text || row.word })),
+  );
+  const initialShown = initialMerged.slice(0, budget);
+  const finalShown = finalMerged.slice(0, Math.max(0, budget - initialShown.length));
+  const initialRows = initialShown.map((group) => ({
+    word: group.literal,
+    char: group.literal,
+    jyutping: group.readings[0]?.jyutping,
+    code: group.readings[0]?.code,
+    anchor_dimension: 'initial' as const,
+  }));
+  const finalRows = finalShown.map((group) => ({
+    word: group.literal,
+    char: group.literal,
+    jyutping: group.readings[0]?.jyutping,
+    code: group.readings[0]?.code,
+    anchor_dimension: 'final' as const,
+  }));
 
   return (
     <div className="syn-container">
-      <AnchorSection title="聲母" items={initial} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
-      <AnchorSection title="韻母" items={final} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
+      <AnchorSection title="聲母" items={initialRows} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
+      <AnchorSection title="韻母" items={finalRows} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
     </div>
   );
 }

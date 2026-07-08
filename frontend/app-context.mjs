@@ -202,6 +202,8 @@ export const $ = {
   searchBtn: document.getElementById("searchBtn"),
   shuffleBtn: document.getElementById("shuffleBtn"),
   results: document.getElementById("results"),
+  searchResultsScroll: document.getElementById("searchResultsScroll"),
+  resultsScrollSentinel: document.getElementById("resultsScrollSentinel"),
   stats: document.getElementById("stats"),
   relationForm: document.getElementById("relationForm"),
   seedChar: document.getElementById("seedChar"),

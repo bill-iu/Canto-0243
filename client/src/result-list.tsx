@@ -28,13 +28,19 @@ function resultKey(row: QueryResult, index: number): string {
   return `word-${row.word}-${row.code}-${row.jyutping}-${index}`;
 }
 
+export function mergedResultCount(results: QueryResult[]): number {
+  return mergeResultsByLiteral(displayResults(results)).length;
+}
+
 export function ResultList({
   results,
+  visibleLimit,
   activeLiteral,
   lang = 'zh',
   onPick,
 }: {
   results: QueryResult[];
+  visibleLimit?: number;
   activeLiteral?: string | null;
   lang?: 'zh' | 'en';
   onPick: (payload: EntryPickPayload) => void;
@@ -42,10 +48,11 @@ export function ResultList({
   const rows = displayResults(results);
   const merged = mergeResultsByLiteral(rows);
   if (!merged.length) return null;
+  const shown = visibleLimit != null ? merged.slice(0, visibleLimit) : merged;
 
   return (
     <ul className="results-list-items">
-      {merged.map((group) => {
+      {shown.map((group) => {
         const primary = group.readings[0];
         const pickJyutping = primary?.jyutping;
         const isActive = activeLiteral === group.literal;

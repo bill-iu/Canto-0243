@@ -258,7 +258,7 @@ export function useDB(): UseDBReturn {
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
 /**
- * Hook for a specific query with loading state and load-more pagination.
+ * Hook for a specific query with loading state and offset pagination (infinite scroll).
  */
 export function useSearch(
   query: string,

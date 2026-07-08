@@ -10,7 +10,7 @@ import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
-import { ResultList, type EntryPickPayload } from './result-list';
+import { ResultList, mergedResultCount, type EntryPickPayload } from './result-list';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -27,12 +27,14 @@ import {
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../frontend/entry-detail-core.mjs';
-import { SynResultList, synResultsStats } from './syn-result-list';
+import { SynResultList, synResultItemCount, synResultsStats } from './syn-result-list';
 import {
   AnchorResultList,
+  anchorResultItemCount,
   anchorResultsStats,
   hasAnchorResultLayout,
 } from './anchor-result-list';
+import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
 import { pingZeModeRedirectHint } from './db/ping-zak';
@@ -114,6 +116,7 @@ function App() {
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
+  const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
@@ -574,6 +577,7 @@ function App() {
   const handleShuffle = () => {
     setDisplayResults(shuffleResults(results));
     setResultsShuffled(true);
+    setShuffleGeneration((n) => n + 1);
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -620,6 +624,25 @@ function App() {
 
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
+  const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
+  const infiniteScrollRoot = detailOpen ? scrollRootEl : null;
+
+  const resultItemCount = useMemo(() => {
+    if (!displayResults.length) return 0;
+    if (synLayout) return synResultItemCount(displayResults);
+    if (anchorLayout) return anchorResultItemCount(displayResults);
+    return mergedResultCount(displayResults);
+  }, [displayResults, synLayout, anchorLayout]);
+
+  const { visibleCount, sentinelRef, showSentinel } = useInfiniteResultWindow({
+    itemCount: resultItemCount,
+    hasMore: Boolean(useLiveFetch && hasMore),
+    loading: searchLoading,
+    loadingMore,
+    onLoadMore: () => void loadMore(),
+    resetKey: `${searchKey}\0${shuffleGeneration}`,
+    scrollRoot: infiniteScrollRoot,
+  });
 
   const handleEntryPick = useCallback(
     (payload: EntryPickPayload) => {
@@ -834,60 +857,59 @@ function App() {
               )}
 
               <div className="search-results">
-                {displayHint && displayResults.length > 0 && (
-                  <p className="search-hint">{displayHint}</p>
-                )}
-                {useLiveFetch && searchLoadingVisible && (
-                  <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
-                )}
-                {useLiveFetch && searchError && (
-                  <p className="error">錯誤: {searchError.message}</p>
-                )}
+                <div className="search-results-scroll" ref={setScrollRootEl}>
+                  {displayHint && displayResults.length > 0 && (
+                    <p className="search-hint">{displayHint}</p>
+                  )}
+                  {useLiveFetch && searchLoadingVisible && (
+                    <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
+                  )}
+                  {useLiveFetch && searchError && (
+                    <p className="error">錯誤: {searchError.message}</p>
+                  )}
 
-                {displayResults.length > 0 && (
-                  <div className="results-list">
-                    {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
-                    {synLayout ? (
-                      <SynResultList
-                        results={displayResults}
-                        onPick={(word) => runCommittedSearch(word)}
-                      />
-                    ) : anchorLayout ? (
-                      <AnchorResultList
-                        results={displayResults}
-                        activeLiteral={activeDetailLiteral}
-                        lang={uiLang}
-                        onPick={handleEntryPick}
-                      />
-                    ) : (
-                      <ResultList
-                        results={displayResults}
-                        activeLiteral={activeDetailLiteral}
-                        lang={uiLang}
-                        onPick={handleEntryPick}
-                      />
-                    )}
-                    {useLiveFetch && hasMore && (
-                      <button
-                        type="button"
-                        className="load-more"
-                        onClick={() => void loadMore()}
-                        disabled={loadingMore || searchLoading}
-                      >
-                        {loadingMore ? '載入中…' : '載入更多'}
-                      </button>
-                    )}
-                  </div>
-                )}
+                  {displayResults.length > 0 && (
+                    <div className="results-list">
+                      {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
+                      {synLayout ? (
+                        <SynResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          onPick={(word) => runCommittedSearch(word)}
+                        />
+                      ) : anchorLayout ? (
+                        <AnchorResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          activeLiteral={activeDetailLiteral}
+                          lang={uiLang}
+                          onPick={handleEntryPick}
+                        />
+                      ) : (
+                        <ResultList
+                          results={displayResults}
+                          visibleLimit={visibleCount}
+                          activeLiteral={activeDetailLiteral}
+                          lang={uiLang}
+                          onPick={handleEntryPick}
+                        />
+                      )}
+                    </div>
+                  )}
 
-                {emptyMessage && (
-                  <div className="no-results info">
-                    <p>
-                      <strong>{emptyMessage.primary}</strong>
-                    </p>
-                    {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
-                  </div>
-                )}
+                  {emptyMessage && (
+                    <div className="no-results info">
+                      <p>
+                        <strong>{emptyMessage.primary}</strong>
+                      </p>
+                      {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
+                    </div>
+                  )}
+
+                  {showSentinel ? (
+                    <div ref={sentinelRef} className="results-scroll-sentinel" aria-hidden />
+                  ) : null}
+                </div>
               </div>
               </div>
             </section>

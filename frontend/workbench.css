@@ -239,40 +239,12 @@ a.result-item:active,
       margin: 0;
     }
 
-.load-more {
-      display: block;
-      width: min(320px, 100%);
-      min-height: 46px;
-      margin: 24px auto 0;
-      padding: 11px 18px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--surface);
-      color: var(--ink);
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition:
-        border-color 140ms ease-out,
-        box-shadow 140ms ease-out,
-        color 140ms ease-out,
-        background-color 140ms ease-out,
-        transform 120ms ease-out;
+.results-scroll-sentinel {
+      width: 100%;
+      height: 1px;
+      margin: 0;
+      pointer-events: none;
     }
-
-.load-more:hover {
-      border-color: var(--accent);
-      color: var(--accent-strong);
-      box-shadow: var(--control-shadow-hover);
-    }
-
-.load-more:focus-visible {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: var(--focus-ring);
-    }
-
-.load-more:active { transform: translateY(1px); }
 
 .stats-toggle {
       display: inline-flex;

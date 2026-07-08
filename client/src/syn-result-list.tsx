@@ -50,22 +50,46 @@ function SynSection({
   );
 }
 
+function takeSynBudget(
+  syns: QueryResult[],
+  ants: QueryResult[],
+  related: QueryResult[],
+  budget: number,
+) {
+  const synsShown = syns.slice(0, budget);
+  let left = budget - synsShown.length;
+  const antsShown = ants.slice(0, Math.max(0, left));
+  left -= antsShown.length;
+  const relatedShown = related.slice(0, Math.max(0, left));
+  return { synsShown, antsShown, relatedShown };
+}
+
+export function synResultItemCount(results: QueryResult[]): number {
+  return results.filter(
+    (r) => r.relation === 'syn' || r.relation === 'ant' || r.relation === 'semantic_related',
+  ).length;
+}
+
 export function SynResultList({
   results,
+  visibleLimit,
   onPick,
 }: {
   results: QueryResult[];
+  visibleLimit?: number;
   onPick: (query: string) => void;
 }) {
   const syns = results.filter((r) => r.relation === 'syn');
   const ants = results.filter((r) => r.relation === 'ant');
   const related = results.filter((r) => r.relation === 'semantic_related');
+  const budget = visibleLimit ?? synResultItemCount(results);
+  const { synsShown, antsShown, relatedShown } = takeSynBudget(syns, ants, related, budget);
 
   return (
     <div className="syn-container">
-      <SynSection title="近義詞" items={syns} onPick={onPick} />
-      <SynSection title="反義詞" items={ants} onPick={onPick} />
-      {related.length > 0 ? <SynSection title="語意相關" items={related} onPick={onPick} /> : null}
+      <SynSection title="近義詞" items={synsShown} onPick={onPick} />
+      <SynSection title="反義詞" items={antsShown} onPick={onPick} />
+      {related.length > 0 ? <SynSection title="語意相關" items={relatedShown} onPick={onPick} /> : null}
     </div>
   );
 }

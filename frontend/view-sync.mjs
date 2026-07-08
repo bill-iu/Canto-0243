@@ -1,9 +1,7 @@
 import { $, VIEW, shell } from "./app-context.mjs";
 import { activeTab, scrollActiveTabIntoView } from "./tabs-core.mjs";
 import { renderTabstrip } from "./tabs-ui.mjs";
-import {
-  shouldShowLoadMore, renderSearchResults, toggleLoadMoreButton, updateShuffleButton,
-} from "./search-workbench.mjs";
+import { renderSearchResults, updateShuffleButton } from "./search-workbench.mjs";
 import { applyRelationForm } from "./relation-form.mjs";
 import { mountCorrectionsPanel } from "./lexicon-corrections.mjs";
 import { clearQueryExplain, refreshQueryExplain } from "./query-explain.mjs";
@@ -29,7 +27,6 @@ function syncViewPanels({ renderTabstrip: shouldRenderTabstrip = true } = {}) {
   if (isSearch) {
     $.searchInput.value = tab.q || "";
     renderSearchResults(tab.results || [], tab.total);
-    toggleLoadMoreButton(shouldShowLoadMore(tab));
     updateShuffleButton();
     refreshQueryExplain(tab.q || "");
   } else {

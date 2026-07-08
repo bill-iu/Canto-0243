@@ -23,9 +23,7 @@ import {
 } from "./tabs-core.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import { resetSearchTabHistory } from "./search-navigation.mjs";
-import {
-  toggleLoadMoreButton, updateShuffleButton, toggleMenu,
-} from "./search-workbench.mjs";
+import { updateShuffleButton, toggleMenu } from "./search-workbench.mjs";
 
 function renderTabstrip() {
   const tabsHtml = shell.tabState.tabs
@@ -318,7 +316,6 @@ function goHome() {
   $.results.innerHTML = "";
   $.results.className = "results";
   $.stats.textContent = "";
-  toggleLoadMoreButton(false);
   updateShuffleButton();
   persistTabs();
   syncViewPanels();
