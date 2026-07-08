@@ -13,9 +13,12 @@ import { warmGuideProbeReadiness } from '../src/probe-readiness.node.ts';
 const CASES = ['nei hou', 'ming4 baak6'] as const;
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const dbPath = path.join(repoRoot, 'lyrics.db');
-if (!fs.existsSync(dbPath)) {
-  throw new Error(`missing lyrics.db: ${dbPath}`);
+const dbPath = [
+  path.join(repoRoot, 'tests/fixtures/lyrics.db'),
+  path.join(repoRoot, 'lyrics.db'),
+].find((p) => fs.existsSync(p));
+if (!dbPath) {
+  throw new Error('missing lyrics.db (tried tests/fixtures/lyrics.db and repo root)');
 }
 
 jyutpingMatchSelfCheck();

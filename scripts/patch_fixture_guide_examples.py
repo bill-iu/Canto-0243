@@ -24,6 +24,8 @@ GUIDE_CHARS = frozenset({
     "生死", "是非", "男女", "天地", "夫妻", "父母", "父子", "兄弟",
     "生與死", "天與地", "男與女", "父與子",
     "兄與弟", "夫與婦", "妻與夫", "師與徒", "父與母", "公與婆",
+    # jyutping_lookup self-check (nei hou / ming4 baak6)
+    "你好", "明白",
 })
 
 
@@ -38,7 +40,7 @@ def _copy_rows(src: Path, dest: Path) -> int:
     inserted = 0
     for char in sorted(GUIDE_CHARS):
         rows = s.execute(
-            "SELECT char, code, jyutping, initials, finals, tones, length FROM words WHERE char = ?",
+            "SELECT char, code, jyutping, initials, finals, length FROM words WHERE char = ?",
             (char,),
         ).fetchall()
         for row in rows:
@@ -50,8 +52,8 @@ def _copy_rows(src: Path, dest: Path) -> int:
                 continue
             next_id = d.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM words").fetchone()[0]
             d.execute(
-                "INSERT INTO words (id, char, code, jyutping, initials, finals, tones, length) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO words (id, char, code, jyutping, initials, finals, length) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
                 (next_id, *row),
             )
             inserted += 1
