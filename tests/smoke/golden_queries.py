@@ -8,10 +8,11 @@ from dataclasses import dataclass
 class QueryJourneyCase:
     query: str
     mode: str = "m1"
-    db: str = "fixture"  # fixture | memory
+    db: str = "fixture"  # fixture | memory | lyrics
     min_words: int = 0
     must_include: tuple[str, ...] = ()
     seed: str = ""
+    parity: bool = True  # False for lyrics-only rows (fixture parity skips)
 
 
 @dataclass(frozen=True)
@@ -26,7 +27,7 @@ class ParityCase:
     suite: str = "journey"  # journey | match_spec
 
 
-# enforce_bench critical + registry representatives; deduped ~18
+# enforce_bench critical + registry representatives; deduped ~19 (1 lyrics-gated)
 GOLDEN_QUERY_JOURNEYS: tuple[QueryJourneyCase, ...] = (
     QueryJourneyCase("事業", "m1", min_words=1),
     QueryJourneyCase("事業", "m2", min_words=1),
@@ -37,6 +38,13 @@ GOLDEN_QUERY_JOURNEYS: tuple[QueryJourneyCase, ...] = (
     QueryJourneyCase("23就", "m1"),
     QueryJourneyCase("23@就", "m1"),
     QueryJourneyCase("2=我3", "m1"),
+    QueryJourneyCase(
+        "39起",
+        "m1",
+        db="lyrics",
+        must_include=("飛起", "飛機"),
+        parity=False,
+    ),
     QueryJourneyCase("2我=3", "m1"),
     QueryJourneyCase("23+就", "m1"),
     QueryJourneyCase("?困潦倒=", "m1"),
@@ -69,6 +77,7 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("?yut?", {"width": 3, "jyutping_slot": True}),
     ("3m4", {"width": 2, "dual_phoneme": True}),
     ("23就", {"width": 2, "ref_literal": "就", "code_prefix": "23"}),
+    ("39起", {"width": 2, "ref_literal": "起", "code_prefix": "39"}),
     ("門0", {"width": 2, "literal_priority": True}),
     ("33~~你", {"width": 2, "compound_kind": "syn", "code_prefix": "33"}),
     ("$$", {"width": 2, "compound_kind": "doubled_syllable"}),
@@ -125,6 +134,7 @@ def parity_cases_from_journeys() -> tuple[ParityCase, ...]:
             suite="journey",
         )
         for c in GOLDEN_QUERY_JOURNEYS
+        if c.parity
     )
 
 

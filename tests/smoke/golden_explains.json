@@ -48,6 +48,12 @@
     "kind": "equals"
   },
   {
+    "query": "39起",
+    "summary": "碼夾等號查詢「39起=」：第 1 個字同 3 同音，第 2 個字同 9 同音且同「起」同韻",
+    "warning": null,
+    "kind": "equals"
+  },
+  {
     "query": "香=?",
     "summary": "兩個字：第 1 個字同「香」同韻，第 2 個字任意字",
     "warning": null,

@@ -12,6 +12,7 @@ from app.models.word import Word, WordRelation
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FIXTURE_DB = REPO_ROOT / "tests" / "fixtures" / "lyrics.db"
+LYRICS_DB = REPO_ROOT / "lyrics.db"
 CILIN_SAMPLE = REPO_ROOT / "data" / "syn_ant" / "fixtures" / "cilin_sample.txt"
 
 
@@ -23,6 +24,13 @@ def skip_without_fixture_db() -> None:
 def fixture_sessionmaker():
     skip_without_fixture_db()
     engine = create_engine(f"sqlite:///{FIXTURE_DB.as_posix()}")
+    return sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+
+def lyrics_sessionmaker():
+    if not LYRICS_DB.is_file():
+        raise unittest.SkipTest(f"missing {LYRICS_DB}")
+    engine = create_engine(f"sqlite:///{LYRICS_DB.as_posix()}")
     return sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 

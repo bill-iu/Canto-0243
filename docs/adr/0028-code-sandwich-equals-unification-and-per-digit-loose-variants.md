@@ -48,9 +48,9 @@
   1. **P0**：`get_code_variants` 逐位笛卡爾積 + 雙端 self-check／smoke。
   2. **P1**：`normalizeQuery`（或等價層）補 `{碼}{字}` → `{碼}{字}=`；分派：單錨脫離串列；`build_equals_match_spec` + 碼夾 strategy fork。
   3. **P2**：刪 `HYBRID_CODE`／`HYBRID_TAIL_EQUALS_ALIAS`／`specHybridCode`／`filterHybridRefCandidates`；`query-explain`：`code_prefix` 有無分整詞／碼夾文案。
-  4. **P3**：golden journey（`23就`、`39起`、`2=我3`、`飛機`／`飛起`）與 `test_hybrid_candidate_pool` 改名對齊新家族。
+  4. **P3**：golden journey（`23就`、`39起`、`2=我3`、`飛機`／`飛起`）與 `test_code_sandwich_candidate_pool` 對齊碼夾等號家族。
 - **Explain**：`query-explain` 唔再單靠 `whole_word` 標「整詞」；有 `code_prefix` 嘅 `32就起=` 等須出**碼夾等號**文案，唔誤標整詞等號。
 
 ## Status
 
-`accepted`（Grill 定案；待實作）
+`implemented`（P0–P3 已落地於 Python + PWA）
