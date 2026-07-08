@@ -14,6 +14,7 @@ import { warmGuideProbeReadiness } from '../src/probe-readiness.node.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 
 const GUIDE_ZERO_CASES = [
+  '?困潦倒=',
   '?4困=4潦=9倒=',
   '!你',
   '33!開心',

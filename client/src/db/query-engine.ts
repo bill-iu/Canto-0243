@@ -42,6 +42,7 @@ import {
 import { isWildcardChar } from './position-match/mask-grammar.ts';
 import { compoundSearchSpecFromMatchSpec, getCandidatesForLength } from './position-match/sources.ts';
 import { executeMatchSpec, filterMatchSpecRows } from './position-match/engine.ts';
+import { maskFromCanonicalPlusQuery } from './plus-grammar.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
@@ -642,6 +643,11 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
 
   if (isFramedEqualsQuery(q)) {
     return { kind: QueryKind.EQUALS, raw_q: q } as EqualsQuery;
+  }
+
+  const maskLiteral = maskFromCanonicalPlusQuery(q);
+  if (maskLiteral) {
+    return { kind: QueryKind.MASK, raw_q: maskLiteral };
   }
 
   const plusAnchor = parsePlusAnchorQuery(q);

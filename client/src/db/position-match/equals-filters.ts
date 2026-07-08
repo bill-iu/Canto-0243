@@ -345,7 +345,7 @@ export async function queryWordsByEqualsSpec(
   const [candidates] = await getCandidatesForLength(db, spec.width, {
     code: fullCode || null,
     mode: searchMode,
-    unlimited: tailRhymeUnion,
+    unlimited: prefixWildcard || tailRhymeUnion,
   });
 
   if (tailRhymeUnion) {
