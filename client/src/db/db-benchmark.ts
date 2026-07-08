@@ -4,7 +4,7 @@
  */
 import type { DbBackendMode } from './db-backend-mode.ts';
 import {
-  getDbBackendMode,
+  getActiveDbBackendMode,
   getDefaultDbUrl,
   getLexiconCacheStatus,
   initializeDatabase,
@@ -106,7 +106,7 @@ export async function runDbBenchmark(opts?: { resetFirst?: boolean }): Promise<D
   const storage = await readStorageEstimate();
 
   return {
-    backend: getDbBackendMode(),
+    backend: getActiveDbBackendMode(),
     lexiconVersion: version,
     dbUrl,
     online: navigator.onLine,

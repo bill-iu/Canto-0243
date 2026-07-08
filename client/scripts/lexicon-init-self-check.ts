@@ -12,8 +12,8 @@ if (getLastLexiconRestoreSource() !== null) {
   throw new Error('lexicon-init-self-check: restore source cleared on reset');
 }
 
-if (resolveDbBackendMode({}) !== 'sqljs') {
-  throw new Error('lexicon-init-self-check: default sqljs backend');
+if (resolveDbBackendMode({}) !== 'opfs-vfs') {
+  throw new Error('lexicon-init-self-check: default opfs-vfs backend');
 }
 
 const integrity: LexiconIntegrity = { byteSize: 3 };

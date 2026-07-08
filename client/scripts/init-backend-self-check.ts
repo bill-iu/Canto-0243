@@ -1,8 +1,8 @@
 /** ponytail: DB-3 — resolveDbBackendMode defaults */
 import { resolveDbBackendMode } from '../src/db/db-backend-mode.ts';
 
-if (resolveDbBackendMode({}) !== 'sqljs') {
-  throw new Error('init-backend-self-check: default mode must be sqljs');
+if (resolveDbBackendMode({}) !== 'opfs-vfs') {
+  throw new Error('init-backend-self-check: default mode must be opfs-vfs');
 }
 if (resolveDbBackendMode({ VITE_DB_BACKEND: 'opfs' }) !== 'opfs-vfs') {
   throw new Error('init-backend-self-check: opfs env');

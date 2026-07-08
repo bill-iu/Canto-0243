@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
+import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { ResultList } from './result-list';
@@ -700,7 +701,7 @@ function App() {
           <p>Canto-0243 PWA</p>
           <p>
             離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}
-            {['opfs', 'opfs-vfs'].includes((import.meta as ImportMeta).env?.VITE_DB_BACKEND ?? '') ? ' · OPFS' : ''}
+            {isReady && getActiveDbBackendMode() === 'opfs-vfs' ? ' · OPFS' : ''}
           </p>
         </footer>
       </div>

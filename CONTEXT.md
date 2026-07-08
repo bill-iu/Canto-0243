@@ -385,6 +385,18 @@ _Avoid_：把「未安裝 PWA」說成關掉 PWA 交付頻道、未安裝即每�
 **詞庫暖啟動**：本機已有該版本詞庫副本時，開頁即從本機開庫（不經網路）；**就緒閘** overlay 覆蓋該段等待，完成後可直接搜尋。
 _Avoid_：暖啟動、warm start（作領域正名）、把暖啟動說成重新下載詞庫
 
+**詞庫開庫後端**：PWA 開啟詞庫嘅執行路徑；**預設**用 OPFS 直開 SQLite（`opfs-vfs`），唔可用時**開庫降級**至整檔 sql.js。維護者可用 build env 強制 `sqljs` 做對照，產品語境只講預設與降級。
+_Avoid_：backend、VITE_DB_BACKEND（作領域正名）、把開庫降級說成重新發佈詞庫
+
+**開庫降級**：`opfs-vfs` 開庫失敗時，同一 init 內改走 sql.js；仍走 OPFS→SW→網路復原順序，唔額外發起第二輪懶觸發。
+_Avoid_：fallback backend、自動換 pipeline
+
+**靜態詞庫帶寬風險**：公開 `lyrics*.db` URL 可被直接反覆下載；client 緩存與 session 黏性只減正常重訪與同 session 濫用，**擋唔住**跨無痕／腳本直打靜態檔；邊緣限速屬交付跟進，唔算開庫降級範圍。
+_Avoid_：話 PWA 快取可防 DDoS、把帶寬問題當開庫 bug
+
+**開庫後端標示**：footer 按**實際開庫後端**顯示「· OPFS」；**開庫降級**至 sql.js 時唔顯示，避免誤導。
+_Avoid_：用 build env 標示後端、降級時仍顯示 OPFS
+
 **就緒閘**：詞庫快取索引就緒前阻所有分派搜尋；傳進度；降級逾時後放行。
 
 **離線啟動預載**：essay/curated/複合快照/同音異讀索引/詞庫快取；就緒以索引為準。

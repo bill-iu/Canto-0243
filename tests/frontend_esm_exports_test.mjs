@@ -153,6 +153,18 @@ describe("PWA ready-gate assets", () => {
     assert.match(appSrc, /isDbCached !== true/);
   });
 
+  it("lexicon open defaults to opfs-vfs with sqljs degrade hooks", () => {
+    const modeSrc = readFileSync(new URL("../client/src/db/db-backend-mode.ts", import.meta.url), "utf8");
+    assert.match(modeSrc, /if \(raw === 'sqljs'\) return 'sqljs'/);
+    assert.match(modeSrc, /return 'opfs-vfs'/);
+    const initSrc = readFileSync(new URL("../client/src/db/init.ts", import.meta.url), "utf8");
+    assert.match(initSrc, /openLexiconDatabase/);
+    assert.match(initSrc, /markOpfsVfsSessionSkip/);
+    assert.match(initSrc, /getActiveDbBackendMode/);
+    const appSrc = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
+    assert.match(appSrc, /getActiveDbBackendMode\(\) === 'opfs-vfs'/);
+  });
+
   it("shell.css has rules to show gate-brand in non-minimal mode", () => {
     const shellSrc = readFileSync(new URL("../frontend/shell.css", import.meta.url), "utf8");
     assert.match(shellSrc, /:not\(.minimal.\) .gate-brand/);

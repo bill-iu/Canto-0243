@@ -30,9 +30,41 @@ let staticRelationLoaded = false;
 let lexiconTargetPromise: Promise<LexiconTarget> | null = null;
 let databaseInitPromise: Promise<DatabaseBackend> | null = null;
 let lastLexiconRestoreSource: LexiconRestoreSource | null = null;
+let activeDbBackendMode: DbBackendMode | null = null;
+
+const SKIP_OPFS_VFS_SESSION_KEY = 'canto-skip-opfs-vfs';
 
 /** ponytail: parity runner / node probe only — inject pre-loaded backend */
 let injectedDb: DatabaseBackend | null = null;
+
+export function clearOpfsVfsSessionSkip(): void {
+  try {
+    sessionStorage.removeItem(SKIP_OPFS_VFS_SESSION_KEY);
+  } catch {
+    // sessionStorage unavailable
+  }
+}
+
+function shouldSkipOpfsVfsThisSession(): boolean {
+  try {
+    return sessionStorage.getItem(SKIP_OPFS_VFS_SESSION_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function markOpfsVfsSessionSkip(): void {
+  try {
+    sessionStorage.setItem(SKIP_OPFS_VFS_SESSION_KEY, '1');
+  } catch {
+    // sessionStorage unavailable
+  }
+}
+
+/** Configured preference (build env); use getActiveDbBackendMode() after init. */
+export function getActiveDbBackendMode(): DbBackendMode {
+  return activeDbBackendMode ?? getDbBackendMode();
+}
 
 type LexiconManifest = {
   lexiconVersion?: string;
@@ -194,6 +226,27 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
   return opened.db;
 }
 
+async function openLexiconDatabase(target: LexiconTarget): Promise<DatabaseBackend> {
+  const preferred = getDbBackendMode();
+  if (preferred !== 'opfs-vfs' || shouldSkipOpfsVfsThisSession()) {
+    if (preferred === 'opfs-vfs' && shouldSkipOpfsVfsThisSession()) {
+      console.log('Lexicon open: skipping opfs-vfs this session (sticky degrade)');
+    }
+    activeDbBackendMode = 'sqljs';
+    return initializeSqlJsPath(target);
+  }
+  try {
+    const opened = await initializeOpfsLexicon(target);
+    activeDbBackendMode = 'opfs-vfs';
+    return opened;
+  } catch (error) {
+    console.warn('OPFS VFS lexicon open failed, degrading to sql.js', error);
+    markOpfsVfsSessionSkip();
+    activeDbBackendMode = 'sqljs';
+    return initializeSqlJsPath(target);
+  }
+}
+
 async function loadBrowserRankingIndex(): Promise<void> {
   if (rankingLoaded) {
     return;
@@ -284,7 +337,7 @@ export async function isLexiconCachedForBackend(
 }
 
 /**
- * Initialize the database (sql.js default, or OPFS VFS when VITE_DB_BACKEND=opfs/opfs-vfs)
+ * Initialize the database (opfs-vfs default; sql.js via VITE_DB_BACKEND=sqljs or open degrade)
  */
 export async function initializeDatabase(dbPath?: string): Promise<DatabaseBackend> {
   if (injectedDb) {
@@ -299,21 +352,16 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
 
   databaseInitPromise = (async () => {
     try {
-      const mode = getDbBackendMode();
       const target: LexiconTarget = dbPath
         ? { version: lexiconVersion(), dbUrl: dbPath }
         : await getCurrentLexiconTarget();
-      const opened =
-        mode === 'opfs-vfs'
-          ? await initializeOpfsLexicon(target)
-          : await initializeSqlJsPath(target);
-      db = opened;
+      db = await openLexiconDatabase(target);
 
       await applyRuntimeDbPatches(db);
       isInitialized = true;
       await loadAuxiliaryIndexes();
 
-      console.log(`Database initialized (${mode})`);
+      console.log(`Database initialized (${getActiveDbBackendMode()})`);
       return db;
     } catch (error) {
       databaseInitPromise = null;
@@ -370,6 +418,7 @@ export function resetDatabase(): void {
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;
+  activeDbBackendMode = null;
   if (db) {
     void db.close();
     db = null;
