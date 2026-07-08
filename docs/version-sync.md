@@ -55,7 +55,7 @@ README 中使用 HTML 注釋標記來標識版本欄位：
 
 ```markdown
 <!-- version:zh-Hant -->
-目前版本：**v1.0.5**
+目前版本：**v1.0.6**
 <!-- /version:zh-Hant -->
 ```
 
