@@ -784,6 +784,42 @@ class TestGateFrontendSeam(unittest.TestCase):
         self.assertIn("data.gate_ready", gate)
 
 
+class TestGuideManifestSync(unittest.TestCase):
+    """guide-i18n.mjs manifest ↔ index.html guide buttons (搜尋教學驗收)."""
+
+    def test_manifest_matches_html_guide_buttons(self):
+        from scripts.guide_manifest import (
+            load_html_examples,
+            load_manifest_examples,
+            manifest_html_diff,
+        )
+
+        manifest = load_manifest_examples()
+        html = load_html_examples()
+        self.assertGreater(len(manifest), 0, "empty guide manifest")
+        only_manifest, only_html = manifest_html_diff()
+        self.assertEqual(
+            only_manifest,
+            set(),
+            f"manifest-only examples missing from index.html: {sorted(only_manifest)}",
+        )
+        self.assertEqual(
+            only_html,
+            set(),
+            f"index.html-only examples missing from manifest: {sorted(only_html)}",
+        )
+        self.assertEqual(
+            len(manifest),
+            len(set(manifest)),
+            f"duplicate manifest entries: {manifest}",
+        )
+        self.assertEqual(
+            len(html),
+            len(set(html)),
+            f"duplicate html entries: {html}",
+        )
+
+
 if __name__ == "__main__":
     import sys
 
