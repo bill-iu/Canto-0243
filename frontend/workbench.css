@@ -44,7 +44,7 @@
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
-      gap: 4px;
+      gap: 6px;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -58,7 +58,7 @@ a.result-item,
 .results-list-items .result-link {
       min-width: 0;
       min-height: 0;
-      padding: 6px 10px;
+      padding: 8px 12px;
       border: 1px solid var(--line);
       border-radius: 10px;
       background: var(--surface);
@@ -102,7 +102,7 @@ a.result-item,
     }
 
 .results-list-items .result-link .word {
-      font-size: 16px;
+      font-size: 22px;
       font-weight: 650;
     }
 
