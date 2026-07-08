@@ -39,6 +39,10 @@
       margin: 0.35rem 0;
     }
 
+.results-list--more {
+  padding-bottom: min(50vh, 480px);
+}
+
 .results,
 .results-list-items {
       display: flex;

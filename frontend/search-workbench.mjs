@@ -54,7 +54,6 @@ import {
   canExpandRenderedCount,
   expandRenderedCount,
   resetRenderedCount,
-  scheduleScrollPump,
 } from "./infinite-results.mjs";
 
 function emptySearchResultsHtml(input, hint, _mode) {
@@ -142,21 +141,16 @@ function appendWordListSlice(ul, merged, from, to, lang) {
   );
 }
 
-function pumpSearchScroll() {
-  scheduleScrollPump({
-    root: $.searchResultsScroll || null,
-    sentinel: $.resultsScrollSentinel,
-    onStep: () => handleInfiniteScrollNeed(),
-  });
-}
-
 function updateScrollSentinel(tab) {
   const sentinel = $.resultsScrollSentinel;
   if (!sentinel) return;
   const itemCount = countSearchResultItems(tab?.results || []);
   const canExpand = tab && canExpandRenderedCount(tab, itemCount);
   const canFetch = tab && shouldShowLoadMore(tab);
-  sentinel.hidden = itemCount === 0 || (!canExpand && !canFetch);
+  const needsMore = itemCount > 0 && (canExpand || canFetch);
+  sentinel.hidden = !needsMore;
+  // ponytail: pad list so sentinel starts below fold — avoids auto chain-load on short pages
+  if ($.results) $.results.style.paddingBottom = needsMore ? "min(50vh, 480px)" : "";
 }
 
 function handleInfiniteScrollNeed() {
@@ -172,7 +166,6 @@ function handleInfiniteScrollNeed() {
     persistTabs();
     renderSearchResults(data, tab.total, { expandFrom: prevRendered });
     scrollGate = false;
-    pumpSearchScroll();
     return;
   }
   if (shouldShowLoadMore(tab)) searchDict(true);
@@ -562,7 +555,6 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
       updateWordListStats(merged.length, total, data.length);
       updateShuffleButton();
       updateScrollSentinel(tab);
-      pumpSearchScroll();
       return;
     }
   }
@@ -589,7 +581,6 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
     $.stats.textContent = `近義 ${syns.length}　反義 ${ants.length}${related.length ? `　語意相關 ${related.length}` : ""}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    pumpSearchScroll();
     return;
   }
 
@@ -610,7 +601,6 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
     $.stats.textContent = `聲母 ${initialHits.length}　韻母 ${finalHits.length}（已載入 ${data.length}）`;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    pumpSearchScroll();
     return;
   }
 
@@ -624,7 +614,6 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
   updateWordListStats(merged.length, total, data.length);
   updateShuffleButton();
   updateScrollSentinel(tab);
-  pumpSearchScroll();
 }
 
 function createAnchorSectionFromGroups(title, groups) {
@@ -701,22 +690,26 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
     shell.pickAnchorRows = null;
     updateShuffleButton();
     updateScrollSentinel(tab);
-    pumpSearchScroll();
     return;
   }
-  const prevResults = tab.results || [];
-  const prevItemCount = countSearchResultItems(prevResults);
-  displayData = append ? prevResults.concat(data) : data;
+  displayData = append ? (tab.results || []).concat(data) : data;
   tab.results = displayData;
   tab.offset = (tab.offset || 0) + data.length;
   if (!append && total != null) tab.total = total;
   const itemCount = countSearchResultItems(displayData);
   if (append) {
-    const prevRendered = tab.renderedCount ?? RESULT_RENDER_BATCH;
-    const added = itemCount - prevItemCount;
-    tab.renderedCount = Math.min(prevRendered + added, itemCount);
     persistTabs();
-    renderSearchResults(displayData, tab.total, { expandFrom: prevRendered });
+    const ul = $.results.querySelector("ul.results-list-items");
+    if (ul && isStandardWordListLayout(displayData)) {
+      const merged = mergedWordGroups(displayData);
+      ul.dataset.resultLen = String(displayData.length);
+      ul.dataset.mergedLen = String(merged.length);
+      updateWordListStats(merged.length, tab.total, displayData.length);
+      updateShuffleButton();
+      updateScrollSentinel(tab);
+      return;
+    }
+    renderSearchResults(displayData, tab.total);
     return;
   }
   resetRenderedCount(tab, itemCount);

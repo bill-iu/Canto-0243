@@ -1,21 +1,12 @@
 /** ponytail: shared infinite-scroll batch size (0243.hk uses +50 per scroll). */
 export const RESULT_RENDER_BATCH = 50;
 export const SCROLL_ROOT_MARGIN = "200px";
-export const SCROLL_PUMP_MAX_STEPS = 8;
 
-export function wireInfiniteScroll({ root, sentinel, onNeedMore }) {
-  if (!sentinel || !onNeedMore) return () => {};
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0]?.isIntersecting) onNeedMore();
-    },
-    { root: root || null, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
-  );
-  observer.observe(sentinel);
-  return () => observer.disconnect();
-}
+const nextFrame =
+  typeof requestAnimationFrame === "function"
+    ? requestAnimationFrame
+    : (fn) => setTimeout(fn, 16);
 
-/** IO fires once per enter; pump while sentinel stays in the scroll root. */
 export function isSentinelIntersecting(root, sentinel, marginPx = 200) {
   if (!sentinel || sentinel.hidden) return false;
   const rect = sentinel.getBoundingClientRect();
@@ -27,21 +18,33 @@ export function isSentinelIntersecting(root, sentinel, marginPx = 200) {
   );
 }
 
-const nextFrame =
-  typeof requestAnimationFrame === "function"
-    ? requestAnimationFrame
-    : (fn) => setTimeout(fn, 16);
-
-export function scheduleScrollPump({ root, sentinel, onStep, maxSteps = SCROLL_PUMP_MAX_STEPS }) {
-  if (!sentinel || !onStep) return;
-  let steps = 0;
-  const tick = () => {
-    if (steps >= maxSteps || !isSentinelIntersecting(root, sentinel)) return;
-    onStep();
-    steps += 1;
-    if (isSentinelIntersecting(root, sentinel)) nextFrame(tick);
+/** One expand/fetch per frame; scroll listener backs up IO when sentinel stays visible. */
+export function wireInfiniteScroll({ root, sentinel, onNeedMore }) {
+  if (!sentinel || !onNeedMore) return () => {};
+  let armed = true;
+  const trigger = () => {
+    if (!armed) return;
+    armed = false;
+    onNeedMore();
+    nextFrame(() => {
+      armed = true;
+    });
   };
-  nextFrame(tick);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0]?.isIntersecting) trigger();
+    },
+    { root: root || null, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
+  );
+  observer.observe(sentinel);
+  const onScroll = () => {
+    if (isSentinelIntersecting(root, sentinel, 0)) trigger();
+  };
+  root?.addEventListener("scroll", onScroll, { passive: true });
+  return () => {
+    observer.disconnect();
+    root?.removeEventListener("scroll", onScroll);
+  };
 }
 
 export function effectiveRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH) {
@@ -61,10 +64,4 @@ export function expandRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH)
 
 export function resetRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH) {
   tab.renderedCount = Math.min(batch, itemCount);
-}
-
-/** Show every row already fetched for this tab (up to SEARCH_PAGE_SIZE). */
-export function revealFetchedPage(tab, itemCount) {
-  tab.renderedCount = itemCount;
-  return itemCount;
 }

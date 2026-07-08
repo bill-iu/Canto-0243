@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { scheduleScrollPump } from '../../frontend/infinite-results.mjs';
+import { isSentinelIntersecting } from '../../frontend/infinite-results.mjs';
 
 export const RESULT_RENDER_BATCH = 50;
 const SCROLL_ROOT_MARGIN = '200px';
@@ -25,28 +25,18 @@ export function useInfiniteResultWindow({
 }: UseInfiniteResultWindowOptions) {
   const [visibleCount, setVisibleCount] = useState(RESULT_RENDER_BATCH);
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const itemCountAtLoadRef = useRef(0);
+  const armedRef = useRef(true);
 
   useEffect(() => {
-    itemCountAtLoadRef.current = 0;
     setVisibleCount(Math.min(RESULT_RENDER_BATCH, itemCount || RESULT_RENDER_BATCH));
   }, [resetKey]);
 
-  useEffect(() => {
-    if (loadingMore) {
-      itemCountAtLoadRef.current = itemCount;
-      return;
-    }
-    const added = itemCount - itemCountAtLoadRef.current;
-    // ponytail: 首頁只顯示 RESULT_RENDER_BATCH；僅 loadMore 追加時自動展開新頁
-    if (added > 0 && itemCountAtLoadRef.current > 0) {
-      setVisibleCount((prev) => Math.min(prev + added, itemCount));
-    }
-    itemCountAtLoadRef.current = itemCount;
-  }, [loadingMore, itemCount]);
-
   const onNeedMore = useCallback(() => {
-    if (loading || loadingMore) return;
+    if (loading || loadingMore || !armedRef.current) return;
+    armedRef.current = false;
+    requestAnimationFrame(() => {
+      armedRef.current = true;
+    });
     setVisibleCount((prev) => {
       if (prev < itemCount) {
         return Math.min(prev + RESULT_RENDER_BATCH, itemCount);
@@ -66,18 +56,15 @@ export function useInfiniteResultWindow({
       { root: scrollRoot, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
     );
     observer.observe(sentinel);
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (isSentinelIntersecting(scrollRoot, sentinel, 0)) onNeedMore();
+    };
+    scrollRoot?.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      observer.disconnect();
+      scrollRoot?.removeEventListener('scroll', onScroll);
+    };
   }, [itemCount, onNeedMore, scrollRoot]);
-
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel || itemCount === 0) return;
-    scheduleScrollPump({
-      root: scrollRoot,
-      sentinel,
-      onStep: onNeedMore,
-    });
-  }, [itemCount, visibleCount, scrollRoot, onNeedMore]);
 
   const canExpand = visibleCount < itemCount;
   const showSentinel = itemCount > 0 && (canExpand || hasMore);
