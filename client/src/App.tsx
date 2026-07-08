@@ -335,13 +335,12 @@ function App() {
       : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
 
   useEffect(() => {
-    // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
-    // This prevents any implicit network attempt that could trigger Safari error
-    if (!isColdPwaOfflineLaunch && (isOnline || !isDbCached)) return;
+    // Warm start: local lexicon copy exists → open from OPFS/SW (no network). Cold PWA offline: same, no implicit fetch.
     if (lexiconLoadStartedRef.current || isReady) return;
+    if (!isColdPwaOfflineLaunch && isDbCached !== true) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
-  }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch, isReady]);
+  }, [initialize, isDbCached, isColdPwaOfflineLaunch, isReady]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
