@@ -8,6 +8,7 @@ import { queryRows } from '../db/database-backend.ts';
 import { getEssayFrequency, initRankingData } from '../db/ranking.ts';
 import { buildRelationPool } from '../db/relation-pool.ts';
 import { relationPoolSnapshotItems } from '../db/relation-pool-snapshot.ts';
+import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from '../db/thesaurus.ts';
 
 export type { EntryDetailModel } from './types.ts';
 
@@ -22,7 +23,35 @@ export type EntryPickReading = {
 const WORDS_SQL =
   'SELECT char, jyutping, code, initials, finals, length, source_flags FROM words WHERE char = ?';
 
+const DIRECT_REL_PROBE_SQL = `
+  SELECT 1
+  FROM words w1
+  JOIN word_relations wr ON wr.word_id = w1.id
+  WHERE w1.char = ? AND wr.relation_type IN ('syn','ant','semantic_related')
+    AND wr.source NOT IN ('ant_syn_mirror', 'ant_cilin_exanded')
+  LIMIT 1
+`;
+
 const fullCache = new Map<string, EntryDetailModel>();
+
+function hasStaticDirectSources(text: string): boolean {
+  const q = text.trim();
+  if (!q) return false;
+  return (
+    getStaticSynonyms(q).length > 0 ||
+    getStaticAntonyms(q).length > 0 ||
+    getCilinSynonyms(q).length > 0
+  );
+}
+
+/** Fast probe: skip ~2s buildRelationPool when no direct syn/ant sources exist. */
+export async function hasDirectRelationSources(literal: string): Promise<boolean> {
+  const text = literal.trim();
+  if (!text || !isDatabaseInitialized()) return false;
+  if (hasStaticDirectSources(text)) return true;
+  const rows = await queryRows(getDatabase(), DIRECT_REL_PROBE_SQL, [text]);
+  return rows.length > 0;
+}
 
 function coreFromRows(text: string, rows: Record<string, unknown>[]): EntryDetailModel | null {
   if (!rows.length) return null;

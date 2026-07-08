@@ -81,8 +81,16 @@ export function ReadyGate({
   const handoffStarted = useRef(false);
 
   useEffect(() => {
-    document.getElementById('pwaBootGate')?.remove();
-  }, []);
+    if (visible && phase !== 'hidden') {
+      document.getElementById('pwaBootGate')?.remove();
+    }
+  }, [visible, phase]);
+
+  useEffect(() => {
+    if (offlineStatus === 'ready') {
+      revealPwaShell();
+    }
+  }, [offlineStatus]);
 
   useEffect(() => {
     if (shouldShowGate && !visible) {

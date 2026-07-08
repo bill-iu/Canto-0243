@@ -15,6 +15,7 @@ import {
   enrichEntryDetailFromDb,
   enrichEntryDetailRelations,
   getCachedEntryDetail,
+  hasDirectRelationSources,
   instantEntryDetailModel,
   loadEntryDetailCore,
 } from './entry-detail/load-entry-detail';
@@ -87,6 +88,7 @@ function App() {
     popstateFrame,
     consumePopstateFrame,
     needsInitialSearch,
+    initialBootstrap,
   } = useQueryTabs({ currentMode: mode, onModeChange: setMode });
 
   const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
@@ -140,16 +142,17 @@ function App() {
       if (!tab || tab.view !== VIEW.SEARCH) return;
       syncedTabIdRef.current = null;
       hydrateSearch(tab.q || '');
-      setUseLiveFetch(live);
+      const useLive = live || initialBootstrap.forceLive;
+      setUseLiveFetch(useLive);
       setResultsShuffled(false);
-      if (!live) {
+      if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
         syncedTabIdRef.current = tab.id;
       }
     },
-    [hydrateSearch],
+    [hydrateSearch, initialBootstrap.forceLive],
   );
 
   useEffect(() => {
@@ -157,12 +160,13 @@ function App() {
     if (activeTabIdRef.current === activeTab.id) return;
     activeTabIdRef.current = activeTab.id;
     if (activeTab.view === VIEW.SEARCH) {
-      const hasCache = ((activeTab.results as QueryResult[]) || []).length > 0;
+      const hasCache =
+        !initialBootstrap.forceLive && ((activeTab.results as QueryResult[]) || []).length > 0;
       loadSearchTabUi(activeTab, !hasCache);
     } else {
       syncedTabIdRef.current = activeTab.id;
     }
-  }, [activeTab, loadSearchTabUi]);
+  }, [activeTab, loadSearchTabUi, initialBootstrap.forceLive]);
 
   useEffect(() => {
     if (!trimmedInput) {
@@ -200,7 +204,7 @@ function App() {
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
-  const shellGated = gateOpen || offlineStatus !== 'ready';
+  const shellGated = offlineStatus !== 'ready';
 
   const shouldShowInstallBanner =
     !shellGated && !isStandalone && !installDismissed;
@@ -316,28 +320,12 @@ function App() {
   }, [isReady, offlineStatus, initialize]);
 
   useEffect(() => {
-    if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen || !isReady) return;
+    if (initialSearchDoneRef.current || !needsInitialSearch || !isReady) return;
     initialSearchDoneRef.current = true;
     setUseLiveFetch(true);
     hydrateSearch(activeSearchTab?.q || '');
     flushSearchQuery(activeSearchTab?.q || '');
-  }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
-
-  useEffect(() => {
-    if (!popstateFrame) return;
-    setMode(popstateFrame.mode);
-    if (popstateFrame.q) {
-      setUseLiveFetch(true);
-      hydrateSearch(popstateFrame.q);
-      flushSearchQuery(popstateFrame.q);
-    } else {
-      setUseLiveFetch(false);
-      hydrateSearch('');
-      setDisplayResults([]);
-      setCachedTotal(null);
-    }
-    consumePopstateFrame();
-  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame]);
+  }, [needsInitialSearch, isReady, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
@@ -399,9 +387,16 @@ function App() {
       void (async () => {
         await waitForPickMerge(gen);
         if (gen !== detailLoadGenRef.current || !isReady) return;
+        const hasRelations = await hasDirectRelationSources(base.literal);
+        if (gen !== detailLoadGenRef.current) return;
         const fromDb = await enrichEntryDetailFromDb(base);
         if (gen !== detailLoadGenRef.current) return;
         setDetailModel(fromDb);
+        if (!hasRelations) {
+          setDetailRelationsLoading(false);
+          return;
+        }
+        setDetailRelationsLoading(true);
         const full = await enrichEntryDetailRelations(fromDb);
         if (gen !== detailLoadGenRef.current) return;
         setDetailModel(full);
@@ -432,7 +427,7 @@ function App() {
       setActiveDetailLiteral(literal);
       setPreferredJyutping(payload.jyutping ?? null);
       setDetailModel(instant);
-      setDetailRelationsLoading(!cached && Boolean(instant));
+      setDetailRelationsLoading(false);
 
       if (cached || !isReady) {
         if (cached) setDetailRelationsLoading(false);
@@ -469,6 +464,32 @@ function App() {
       readings: lastPickReadingsRef.current,
     });
   }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailFromPick]);
+
+  useEffect(() => {
+    if (!initialBootstrap.isHome) return;
+    closeEntryDetail();
+    hydrateSearch('');
+    setUseLiveFetch(false);
+    setDisplayResults([]);
+    setCachedTotal(null);
+  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail]);
+
+  useEffect(() => {
+    if (!popstateFrame) return;
+    setMode(popstateFrame.mode);
+    if (popstateFrame.q) {
+      setUseLiveFetch(true);
+      hydrateSearch(popstateFrame.q);
+      flushSearchQuery(popstateFrame.q);
+    } else {
+      closeEntryDetail();
+      setUseLiveFetch(false);
+      hydrateSearch('');
+      setDisplayResults([]);
+      setCachedTotal(null);
+    }
+    consumePopstateFrame();
+  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
