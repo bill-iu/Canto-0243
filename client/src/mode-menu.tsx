@@ -5,6 +5,7 @@ import { getModeMeta, modeHelp, modeMetaFor, uiModeToUrlMode, type UiMode } from
 const MODE_OPTIONS: Array<{ uiMode: UiMode; key: string }> = [
   { uiMode: '0243', key: '0243' },
   { uiMode: '02493', key: '02493' },
+  { uiMode: '394052', key: '394052' },
   { uiMode: 'synonym', key: '~ / !' },
 ];
 
@@ -187,8 +188,11 @@ export { modeHelp };
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p6-mode-menu-self-check.ts` */
 export function modeMenuSelfCheck(): void {
-  if (MODE_OPTIONS.length !== 3) {
+  if (MODE_OPTIONS.length !== 4) {
     throw new Error('modeMenuSelfCheck: mode options');
+  }
+  if (modeHelp('394052', 'zh') !== '394052 矩陣碼（三／五聲分明）') {
+    throw new Error('modeMenuSelfCheck: m3 help');
   }
   if (modeHelp('synonym', 'zh') !== '近義、反義與語意相關') {
     throw new Error('modeMenuSelfCheck: syn help');

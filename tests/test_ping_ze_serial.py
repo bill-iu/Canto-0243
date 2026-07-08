@@ -4,8 +4,11 @@ from __future__ import annotations
 import unittest
 
 from app.services.ping_zak import (
+    MATRIX_394052_MODE,
     code_matches_ping_ze_pattern,
     is_ping_ze_serial_query,
+    ping_ze_effective_mode,
+    ping_ze_mode_redirect_hint,
     ping_zak_class,
     try_parse_ping_ze_serial,
 )
@@ -46,6 +49,15 @@ class PingZeParseTests(unittest.TestCase):
     def test_is_ping_ze_serial_query(self):
         self.assertTrue(is_ping_ze_serial_query("ZP"))
         self.assertFalse(is_ping_ze_serial_query("23"))
+
+
+class PingZeModeRedirectTests(unittest.TestCase):
+    def test_ping_ze_effective_mode_is_m3(self):
+        self.assertEqual(MATRIX_394052_MODE, "m3")
+        self.assertEqual(ping_ze_effective_mode(), "m3")
+
+    def test_ping_ze_m3_redirect_silent(self):
+        self.assertIsNone(ping_ze_mode_redirect_hint("m3"))
 
 
 class PingZeMatchTests(unittest.TestCase):

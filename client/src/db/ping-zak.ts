@@ -5,8 +5,7 @@ import { QueryKind } from './query-kind.ts';
 
 export type PingZak = 'ping' | 'ze';
 
-// ponytail: set when 394052 matrix mode ships — silent redirect, no hint
-export const MATRIX_394052_MODE: string | null = null;
+export const MATRIX_394052_MODE: string | null = 'm3';
 
 export const PING_ZE_INVALID_HINT =
   '平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；字面請改用缺字語法（如 ?+就=）。';

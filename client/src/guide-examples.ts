@@ -8,6 +8,7 @@ export const GUIDE_FAMILY_IDS = [
   'jyutping_lookup',
   'digit_code',
   'mode_02493',
+  'mode_394052',
   'code_char',
   'literal_ref',
   'wildcard_code_anchor',
@@ -35,7 +36,7 @@ export const GUIDE_FAMILY_IDS = [
 ] as const;
 
 export type GuideFamilyId = (typeof GUIDE_FAMILY_IDS)[number];
-export type GuideMode = '0243' | '02493' | 'synonym';
+export type GuideMode = '0243' | '02493' | '394052' | 'synonym';
 export type GuideLang = 'zh' | 'en';
 
 export interface GuideExample {
@@ -59,6 +60,7 @@ const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
   'basic:nei hou': 'jyutping_lookup',
   'digit:23': 'digit_code',
   'digit:93': 'mode_02493',
+  'digit:45': 'mode_394052',
   'serial:23就=': 'code_char',
   'serial:04困=49倒=': 'serial_phoneme',
   'partial:窮?潦倒=': 'partial_rhyme',
@@ -87,6 +89,7 @@ const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
 
 function uiModeToGuideMode(mode: string): GuideMode {
   if (mode === 'm2') return '02493';
+  if (mode === 'm3') return '394052';
   if (mode === 'syn') return 'synonym';
   return '0243';
 }

@@ -719,7 +719,10 @@ export function isRelationSyntaxQuery(q: string): boolean {
   );
 }
 
-function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' {
+function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' | 'm3' {
+  if (fallback === 'm3' || fallback === '394052') {
+    return 'm3';
+  }
   if (fallback === 'm2' || fallback === '02493') {
     return 'm2';
   }

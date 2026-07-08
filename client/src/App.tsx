@@ -37,7 +37,7 @@ import {
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
-import { pingZeModeRedirectHint } from './db/ping-zak';
+import { pingZeEffectiveMode, pingZeModeRedirectHint } from './db/ping-zak';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -45,7 +45,13 @@ import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
-import { modeMetaFor, modeRedirectHint, type UiMode } from './mode-meta';
+import {
+  last0243UiToUrlMode,
+  modeMetaFor,
+  modeRedirectHint,
+  type Last0243SearchMode,
+  type UiMode,
+} from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo, GateInkMeter } from './brand-logo';
@@ -70,9 +76,11 @@ function App() {
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
   const [mode, setMode] = useState<UiMode>(initialUrl.mode);
-  const [last0243Mode, setLast0243Mode] = useState<'0243' | '02493'>(() =>
-    initialUrl.mode === '02493' ? '02493' : '0243',
-  );
+  const [last0243Mode, setLast0243Mode] = useState<Last0243SearchMode>(() => {
+    if (initialUrl.mode === '02493') return '02493';
+    if (initialUrl.mode === '394052') return '394052';
+    return '0243';
+  });
 
   const {
     tabState,
@@ -182,14 +190,15 @@ function App() {
       return;
     }
     if (pingZeSyntax) {
-      setRedirectHint(pingZeModeRedirectHint('m2', uiLang));
-      if (mode === 'synonym' || mode === '0243') {
-        setMode('02493');
+      const effective = pingZeEffectiveMode();
+      setRedirectHint(pingZeModeRedirectHint(effective, uiLang));
+      if (mode !== '394052') {
+        setMode('394052');
       }
       return;
     }
     if (relationSyntax) {
-      setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1', uiLang));
+      setRedirectHint(modeRedirectHint(last0243UiToUrlMode(last0243Mode), uiLang));
       if (mode === 'synonym') {
         setMode(last0243Mode);
       }
@@ -549,7 +558,7 @@ function App() {
   }, [retryOfflineReady]);
 
   const handleModeChange = (next: UiMode) => {
-    if (next === '0243' || next === '02493') {
+    if (next === '0243' || next === '02493' || next === '394052') {
       setLast0243Mode(next);
     }
     setMode(next);
@@ -566,7 +575,7 @@ function App() {
   };
 
   const handleRunExample = (nextQuery: string, exampleMode: GuideMode) => {
-    if (exampleMode === '0243' || exampleMode === '02493') {
+    if (exampleMode === '0243' || exampleMode === '02493' || exampleMode === '394052') {
       setLast0243Mode(exampleMode);
     }
     setMode(exampleMode);

@@ -327,7 +327,7 @@ async function refreshPortableChrome() {
   $.modeMenu.hidden = true;
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
   shell.currentMode = MODE_META[parsed.mode] ? parsed.mode : "m1";
-  if (shell.currentMode === "m1" || shell.currentMode === "m2") {
+  if (shell.currentMode === "m1" || shell.currentMode === "m2" || shell.currentMode === "m3") {
     shell.last0243Mode = shell.currentMode;
   }
   updateModeLabel();

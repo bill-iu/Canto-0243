@@ -81,7 +81,7 @@ export interface QueryOptions {
   mode?: '0243' | '02493' | 'synonym';
   limit?: number;
   offset?: number;
-  fallback_0243_mode?: '0243' | '02493';
+  fallback_0243_mode?: '0243' | '02493' | '394052';
   ui_lang?: 'zh' | 'en';
 }
 
@@ -98,6 +98,8 @@ function mapLegacyMode(mode?: string): QueryMode {
       return 'm1';
     case '02493':
       return 'm2';
+    case '394052':
+      return 'm3';
     case 'synonym':
       return 'syn';
     default:

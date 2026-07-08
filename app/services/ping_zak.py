@@ -8,8 +8,7 @@ from app.utils.jyutping_codec import M02493_TO_0243, normalize_02493_code
 
 PingZak = Literal["ping", "ze"]
 
-# ponytail: set when 394052 matrix mode ships — silent redirect, no hint
-MATRIX_394052_MODE: Optional[str] = None
+MATRIX_394052_MODE: Optional[str] = "m3"
 
 PING_ZE_INVALID_HINT = (
     "平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；"

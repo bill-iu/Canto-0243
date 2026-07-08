@@ -1,5 +1,9 @@
 import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
-import { isPingZeSerialQuery, pingZeModeRedirectHint } from "./ping-ze-syntax.mjs";
+import {
+  isPingZeSerialQuery,
+  pingZeEffectiveMode,
+  pingZeModeRedirectHint,
+} from "./ping-ze-syntax.mjs";
 import { escapeHtml, escapeHtmlAttr } from "./dom-escape.mjs";
 import {
   $,
@@ -227,7 +231,10 @@ function toggleMenu(open, { returnFocus = false } = {}) {
 
 function switchMode(mode, { runSearch = true, replace = true } = {}) {
   if (!MODE_META[mode]) return;
-  if (mode === "syn" && (shell.currentMode === "m1" || shell.currentMode === "m2")) {
+  if (
+    mode === "syn" &&
+    (shell.currentMode === "m1" || shell.currentMode === "m2" || shell.currentMode === "m3")
+  ) {
     shell.last0243Mode = shell.currentMode;
   }
   shell.currentMode = mode;
@@ -454,13 +461,12 @@ function maybeModeRedirectForRelationSyntax(input, tab) {
 
 function maybeModeRedirectForPingZeSerial(input, tab) {
   if (!isPingZeSerialQuery(input)) return;
-  if (shell.currentMode === "m2") return;
+  const effective = pingZeEffectiveMode();
+  if (shell.currentMode === effective) return;
   tab.offset = 0;
   tab.redirectHint = pingZeModeRedirectHint(getLang());
-  if (shell.currentMode !== "m2") {
-    shell.currentMode = "m2";
-    updateModeLabel();
-  }
+  shell.currentMode = effective;
+  updateModeLabel();
 }
 
 function decodeSearchHintHeader(raw) {
