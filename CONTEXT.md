@@ -466,6 +466,10 @@ _Avoid_：整頁捲動當結果捲動、用 padding 假裝有捲動
 `frontend/guide-i18n.mjs` 內每個可執行範例，喺 **Portable**（後端 `search_words`）同 **PWA**（**瀏覽器查詢引擎**）對同一 **詞條庫** 皆須回傳 ≥1 列；零結果視為回歸。兩端範例清單以 i18n manifest 為準，HTML 按鈕須與之同步。
 _Avoid_：只驗一端、用合併後 DOM 詞條數當探針、教學例子各寫各唔對齊
 
+**探針暖機**：
+教學回歸探針斷言前須達 **就緒閘解鎖** 同等引擎狀態（唔等 **啟動完畢** tail）。Portable：`warm_guide_probe_readiness`（**詞庫快取索引** + `事業` 探針）；PWA Node：`warmGuideProbeReadiness`（閘前輔助索引 + `事業` 探針）。兩端共用契約，CI 以 `tests/fixtures/lyrics.db` 為準。
+_Avoid_：冷索引直接 assert、探針繞過 gate 卻唔暖機、把 tail 靜態詞林埠當教學探針前置
+
 ---
 
 ## 產品邊界

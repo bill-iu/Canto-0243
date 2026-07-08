@@ -3,7 +3,8 @@
 Smoke-check: every guide example query returns at least 1 result.
 
 Reads `frontend/guide-i18n.mjs` manifest (`query` + `mode`).
-Runs `search_words` against local `lyrics.db` (DATABASE_URL fallback applies).
+Warms probe readiness (`warm_guide_probe_readiness`) then runs `search_words`.
+Uses `DATABASE_URL` when set (CI: `tests/fixtures/lyrics.db`).
 """
 
 from __future__ import annotations
@@ -31,6 +32,7 @@ except Exception:
 from app.database import SessionLocal  # noqa: E402
 from app.services.query_dispatch import search_words  # noqa: E402
 from scripts.guide_manifest import load_manifest_examples  # noqa: E402
+from scripts.guide_probe_readiness import warm_guide_probe_readiness  # noqa: E402
 
 
 def main() -> int:
@@ -42,6 +44,7 @@ def main() -> int:
     failures: list[tuple[str, str]] = []
     db = SessionLocal()
     try:
+        warm_guide_probe_readiness(db)
         for q, mode in examples:
             try:
                 items = search_words(q=q, code=None, char=None, mode=mode, limit=1, offset=0, db=db)
