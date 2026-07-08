@@ -610,6 +610,38 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         candidates = cached if cached is not None else query.all()
     else:
         candidates = query.limit(2000).all()
+
+    tail_rhyme_union = (
+        is_final
+        and full_code
+        and not span.whole_word
+        and not span.phoneme_anchor_only
+    )
+    if tail_rhyme_union:
+        bucket = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+        if bucket is not None:
+            pool = bucket
+        else:
+            from app.services.position_match.sources import get_candidates_for_length
+
+            pool, _ = get_candidates_for_length(
+                db, spec.width, code=full_code or None, mode=mode, fallback_limit=None
+            )
+        target_final_options = build_final_options_at_positions(
+            span.ref_literal, span.start_pos, spec.width, db
+        )
+        return [
+            word
+            for word in pool
+            if matches_hybrid_ref_chars(
+                get_word_text(word),
+                get_rhyme_finals(word),
+                span.ref_literal,
+                span.start_pos,
+                target_final_options,
+            )
+        ]
+
     return [
         word
         for word in candidates
@@ -624,48 +656,16 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     ]
 
 
-def filter_hybrid_ref_candidates(
-    candidates: list,
-    spec: MatchSpec,
-    mode: str,
-    db,
-) -> list:
-    """碼夾 hybrid 查詢：參考字韻母選項比對。"""
-    if spec.hybrid_ref_chars is None or spec.hybrid_ref_pos is None:
-        return candidates
-    target_final_options = build_final_options_at_positions(
-        spec.hybrid_ref_chars, spec.hybrid_ref_pos, spec.width, db
-    )
-    filtered = []
-    allowed_full_codes = (
-        set(get_code_variants(spec.code_prefix or "", mode)) if spec.code_prefix else set()
-    )
-    for word in candidates:
-        word_code_str = get_word_sort_code(word)
-        if spec.code_prefix and word_code_str not in allowed_full_codes:
-            continue
-        word_finals = get_rhyme_finals(word)
-        word_char = get_word_text(word)
-        if matches_hybrid_ref_chars(
-            word_char, word_finals, spec.hybrid_ref_chars, spec.hybrid_ref_pos, target_final_options
-        ):
-            filtered.append(word)
-    return filtered
-
-
 def apply_match_spec(
     spec: MatchSpec,
     candidates: list,
     db: Any,
     mode: str = "m1",
 ) -> list[Any]:
-    """MatchSpec 單一過濾管線（equals／hybrid／slot；ADR-0004 #6）。"""
+    """MatchSpec 單一過濾管線（equals／slot；ADR-0004 #6）。"""
     if get_equals_span(spec):
         return query_words_by_equals_spec(spec, db, mode)
-    if spec.hybrid_ref_chars is not None and spec.hybrid_ref_pos is not None:
-        filtered = filter_hybrid_ref_candidates(candidates, spec, mode, db)
-    else:
-        filtered = filter_candidates_by_match_spec(candidates, spec, mode, db)
+    filtered = filter_candidates_by_match_spec(candidates, spec, mode, db)
     if spec.compound_kind == "doubled_syllable":
         from app.domain.relations.compound_doubled_syllable import (
             row_has_uniform_syllable_letters,

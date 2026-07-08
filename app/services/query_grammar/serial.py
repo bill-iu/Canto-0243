@@ -125,6 +125,8 @@ def framed_equals_blocks_serial(q: str) -> bool:
         return True
     if m.group(4) and len(m.group(3)) >= 2:
         return True
+    if m.group(4) and m.group(1) and not m.group(5):
+        return True
     return False
 
 

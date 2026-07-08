@@ -5,21 +5,9 @@ import re
 
 from app.services.query_tokens import CODE_TAIL_MIDDLE
 
-HYBRID_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥])=$")
-
-
-def is_hybrid_tail_equals_alias(q: str) -> bool:
-    """True for 23就= style queries that alias hybrid tail-rhyme (23就)."""
-    return bool(HYBRID_TAIL_EQUALS_RE.match(q))
-
-
-def hybrid_query_from_tail_equals(q: str) -> str:
-    return q[:-1]
-
-
 def is_framed_equals_query(q: str) -> bool:
     """Legacy framed equals: 香港=, 2=我3 — not query-level rhyme anchors or hybrid tail alias."""
-    if CODE_TAIL_MIDDLE in q or "@" in q or is_hybrid_tail_equals_alias(q):
+    if CODE_TAIL_MIDDLE in q or "@" in q:
         return False
     match = re.match(r"^(\d*)(=)?([一-龥]+)(=)?(\d*)$", q)
     if not match:
@@ -47,7 +35,7 @@ def is_framed_equals_query(q: str) -> bool:
 def build_equals_match_spec(q: str):
     """查詢字串 → 等號 MatchSpec（純函式，無 DB）。語意見 CONTEXT § 碼夾等號查詢。"""
     from app.services.position_match import MatchSpec
-    from app.services.position_match.spec import EqualsSpan
+    from app.services.position_match.spec import EqualsSpan, SlotConstraint
 
     match = re.match(r"^(\d*)(=)?([一-龥]+)?(=)?(\d*)$", q)
     if not match:
@@ -72,9 +60,14 @@ def build_equals_match_spec(q: str):
         phoneme_anchor_only=bool(left_code and (right_code or inner_equal)),
         whole_word=(start_pos == 0 and target_length == expected_length),
     )
+    slots = [
+        SlotConstraint(pos=i, kind="code_digit", value=d)
+        for i, d in enumerate(full_code)
+    ]
     return MatchSpec(
         width=expected_length,
         code_prefix=full_code if full_code else None,
+        slots=slots,
         extra={"equals_span": span},
     )
 

@@ -33,7 +33,6 @@ QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.COMPOUND_DOUBLED_SYLLABLE: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.HETERONYM_CODE: QueryKindMeta(RouteKind.HETERONYM),
     QueryKind.COMPOUND_ANT: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
-    QueryKind.HYBRID_TAIL_EQUALS_ALIAS: QueryKindMeta(RouteKind.MASK_FAMILY),
     QueryKind.EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.PREFIX_WILDCARD_EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.PARTIAL_RHYME_MASK: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
@@ -46,7 +45,6 @@ QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.RHYME_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.TRIPLE_RHYME_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.JYUTPING_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
-    QueryKind.HYBRID_CODE: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.MASK: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.DIGIT_CODE: QueryKindMeta(RouteKind.DIGIT),
     QueryKind.WORD_LOOKUP: QueryKindMeta(RouteKind.LOOKUP),
@@ -74,9 +72,7 @@ def uses_match_spec(parsed: "ParsedQuery") -> bool:
     meta = QUERY_KIND_META.get(parsed.kind)
     if meta is None:
         return False
-    if meta.match_spec:
-        return True
-    return parsed.kind == QueryKind.HYBRID_TAIL_EQUALS_ALIAS
+    return meta.match_spec
 
 
 __all__ = [

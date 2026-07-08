@@ -76,7 +76,7 @@ class LengthCodeCandidateSource:
     db: Any
     code: Optional[str] = None
     mode: str = "m1"
-    fallback_limit: int = 2000
+    fallback_limit: Optional[int] = 2000
 
     def get_candidates(
         self,
@@ -192,11 +192,11 @@ def get_candidates_for_length(
     *,
     code: Optional[str] = None,
     mode: str = "m1",
-    fallback_limit: int = 2000,
+    fallback_limit: Optional[int] = 2000,
 ):
     """
     通用長度候選取得（無 mask 預過濾）。
-    用於 hybrid 等情境。
+    用於 hybrid 等情境。fallback_limit=None 表示唔截斷（碼夾 hybrid 需全桶）。
     """
     candidates = get_words_for_length(length)
     if candidates:
@@ -204,7 +204,10 @@ def get_candidates_for_length(
     query = db.query(Word).filter(length_filter(length))
     if code:
         query = apply_code_filter(query, code, mode)
-    return query.order_by(Word.char, Word.jyutping).limit(fallback_limit).all(), False
+    query = query.order_by(Word.char, Word.jyutping)
+    if fallback_limit is not None:
+        query = query.limit(fallback_limit)
+    return query.all(), False
 
 
 def _phoneme_anchor_slot(spec: MatchSpec) -> Optional[SlotConstraint]:
@@ -350,10 +353,6 @@ def _resolve_mask_family_source(
         literal_positions = spec.extra.get("literal_positions", [])
         sort_key = lambda w: literal_priority_sort_key(w, literal_positions)
         return source, sort_key
-
-    if spec.hybrid_ref_chars:
-        source = LengthCodeCandidateSource(db, code=spec.code_prefix, mode=mode)
-        return source, None
 
     anchor = _phoneme_anchor_slot(spec)
     if anchor and spec.mask and not spec.literal_priority:

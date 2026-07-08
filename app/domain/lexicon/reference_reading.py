@@ -22,6 +22,16 @@ from app.utils.jyutping_codec import (
 PhonemeDimension = Literal["initial", "final"]
 
 
+def _eligible_anchor_reading(char: str, jyutping_syllable: str) -> bool:
+    """錨點 union：預設／常用／未知入選；罕見剔除（ADR-0029）。"""
+    from app.lexicon.rime_char_index import PRON_RANK_SORT, pron_rank_sort_value
+
+    syllable = (jyutping_syllable or "").strip()
+    if not syllable:
+        return True
+    return pron_rank_sort_value(char, syllable) != PRON_RANK_SORT["罕見"]
+
+
 def _initials_from_entries(entries: list[LexiconEntry]) -> set[str]:
     options: set[str] = set()
     for ent in entries:
@@ -78,13 +88,20 @@ def anchor_phoneme_options(
     """錨點音素選項：多讀音 union；allow_inject 控制是否 ensure。"""
     admission = resolve_admission(char)
     extract = _initials_from_entries if dimension == "initial" else _finals_from_entries
-    result: set[str] = set(extract(admission.entries))
+    eligible_entries = [
+        ent
+        for ent in admission.entries
+        if _eligible_anchor_reading(char, ent.jyutping.split()[0] if ent.jyutping else "")
+    ]
+    result: set[str] = set(extract(eligible_entries))
 
     rows = _db_rows_for_literal(char, db, allow_inject=allow_inject)
     for row in rows:
+        jyut = get_word_jyutping(row) or getattr(row, "jyutping", "") or ""
+        token = jyut.split()[0] if jyut else ""
+        if not _eligible_anchor_reading(char, token):
+            continue
         if dimension == "initial":
-            jyut = get_word_jyutping(row) or getattr(row, "jyutping", "") or ""
-            token = jyut.split()[0] if jyut else ""
             if is_standalone_nasal_syllable_token(token):
                 continue
             initials = load_json_list(getattr(row, "initials", None))

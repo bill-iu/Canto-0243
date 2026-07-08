@@ -5,7 +5,6 @@ import type {
   CompoundDoubledSyllableQuery,
   DigitCodeQuery,
   HeteronymCodeQuery,
-  HybridTailEqualsAliasQuery,
   JyutpingAnchorQuery,
   JyutpingFragmentQuery,
   ParsedQuery,
@@ -104,9 +103,6 @@ function summaryFor(parsed: ParsedQuery): string | null {
   if (parsed.kind === QueryKind.JYUTPING_FRAGMENT) {
     return `粵拼查詢「${(parsed as JyutpingFragmentQuery).raw_q}」`;
   }
-  if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
-    return `碼夾等號查詢「${(parsed as HybridTailEqualsAliasQuery).raw_q}」`;
-  }
   if (parsed.kind === QueryKind.HETERONYM_CODE) {
     const h = parsed as HeteronymCodeQuery;
     return (
@@ -135,11 +131,10 @@ function summaryFromMatchSpec(spec: MatchSpec, _parsed: ParsedQuery): string | n
     }
   }
 
-  if (working.hybrid_ref_chars && working.hybrid_ref_chars.length > 1) {
-    return hybridMultiCharSummary(working);
-  }
-
   const equals = getEqualsSpan(working);
+  if (equals && working.code_prefix) {
+    return codeSandwichEqualsSummary(working, equals, _parsed);
+  }
   if (equals && working.extra?.prefix_wildcard_equals) {
     return prefixWildcardEqualsSummary(working, equals);
   }
@@ -168,17 +163,22 @@ function prefixWildcardEqualsSummary(spec: MatchSpec, equals: EqualsSpan): strin
   return `首個字任意；${posLabel}同「${equals.ref_literal}」${dim}（${label}）`;
 }
 
-function hybridMultiCharSummary(spec: MatchSpec): string {
-  const ref = spec.hybrid_ref_chars || '';
-  const parts = [widthLabel(spec.width)];
-  const scan = slotScanDetails(spec, null);
-  if (scan) {
-    parts.push(scan);
+function codeSandwichEqualsSummary(
+  spec: MatchSpec,
+  equals: EqualsSpan,
+  parsed: ParsedQuery,
+): string {
+  const raw = parsed.raw_q || '';
+  if (equals.whole_word) {
+    const dim = rhymeOrInitial(equals.dimension);
+    const label = rhymeLabel(equals.ref_literal.length);
+    const rhymeLine = `同「${equals.ref_literal}」${dim}（${label}）`;
+    const codePhrase = codePrefixPhrase(spec);
+    const body = codePhrase ? `${rhymeLine}；${codePhrase}` : rhymeLine;
+    return `碼夾等號查詢「${raw}」：${body}`;
   }
-  parts.push(`字面含「${ref}」`);
-  return parts.length > 2
-    ? `${parts[0]}：${parts[1]}，${parts.slice(2).join('，')}`
-    : `${parts[0]}：${parts[1] ?? ''}`;
+  const details = slotScanDetails(spec, equals);
+  return details ? `碼夾等號查詢「${raw}」：${details}` : `碼夾等號查詢「${raw}」`;
 }
 
 function compoundSummary(spec: MatchSpec): string {
@@ -303,7 +303,13 @@ function effectiveConstraints(
         spec.code_prefix && pos < spec.code_prefix.length
           ? spec.code_prefix[pos]
           : undefined;
-      if (equals.phoneme_anchor_only && digit != null) {
+      if (
+        digit != null &&
+        (equals.dimension === 'final' || equals.dimension === 'rhyme') &&
+        !equals.phoneme_anchor_only
+      ) {
+        result.set(pos, ['hybrid_tail_rhyme', `${digit}|${equals.ref_literal[i]}`]);
+      } else if (equals.phoneme_anchor_only && digit != null) {
         const kind =
           equals.dimension === 'final' || equals.dimension === 'rhyme'
             ? 'hybrid_tail_rhyme'
@@ -312,17 +318,6 @@ function effectiveConstraints(
       } else {
         result.set(pos, [dimKind, equals.ref_literal[i]!]);
       }
-    }
-  }
-
-  if (spec.hybrid_ref_chars && spec.hybrid_ref_chars.length === 1) {
-    const pos = spec.hybrid_ref_pos ?? 0;
-    const ref = spec.hybrid_ref_chars;
-    const existing = result.get(pos);
-    if (existing?.[0] === 'code_digit') {
-      result.set(pos, ['hybrid_tail_rhyme', `${existing[1]}|${ref}`]);
-    } else {
-      result.set(pos, ['final_anchor', ref]);
     }
   }
 

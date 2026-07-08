@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useDB, useSearch } from './hooks/useDB.tsx';
+import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { ResultList } from './result-list';
@@ -335,13 +336,12 @@ function App() {
       : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
 
   useEffect(() => {
-    // Hybrid A+D: for cold PWA offline launch (iOS home screen in airplane), attempt init ONLY from cache (no network)
-    // This prevents any implicit network attempt that could trigger Safari error
-    if (!isColdPwaOfflineLaunch && (isOnline || !isDbCached)) return;
+    // Warm start: local lexicon copy exists → open from OPFS/SW (no network). Cold PWA offline: same, no implicit fetch.
     if (lexiconLoadStartedRef.current || isReady) return;
+    if (!isColdPwaOfflineLaunch && isDbCached !== true) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
-  }, [initialize, isOnline, isDbCached, isColdPwaOfflineLaunch, isReady]);
+  }, [initialize, isDbCached, isColdPwaOfflineLaunch, isReady]);
 
   const [stats, setStats] = useState<{ wordCount: number; tableCount: number } | null>(null);
   useEffect(() => {
@@ -701,7 +701,7 @@ function App() {
           <p>Canto-0243 PWA</p>
           <p>
             離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}
-            {['opfs', 'opfs-vfs'].includes((import.meta as ImportMeta).env?.VITE_DB_BACKEND ?? '') ? ' · OPFS' : ''}
+            {isReady && getActiveDbBackendMode() === 'opfs-vfs' ? ' · OPFS' : ''}
           </p>
         </footer>
       </div>

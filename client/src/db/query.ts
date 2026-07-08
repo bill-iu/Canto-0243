@@ -20,7 +20,7 @@ import {
 import {
   getCurrentLexiconTarget,
   getDatabase,
-  getDbBackendMode,
+  getActiveDbBackendMode,
   getLastLexiconRestoreSource,
   initializeDatabase,
   isDatabaseInitialized,
@@ -195,7 +195,7 @@ export async function validateOfflineReadiness(): Promise<void> {
     throw new Error('離線就緒驗證失敗：基本查詢無結果');
   }
 
-  const mode = getDbBackendMode();
+  const mode = getActiveDbBackendMode();
   const restoreSource = getLastLexiconRestoreSource();
   // ponytail: OPFS VFS / OPFS restore already proved local lexicon this session
   if (mode === 'opfs-vfs' || restoreSource === 'opfs') {

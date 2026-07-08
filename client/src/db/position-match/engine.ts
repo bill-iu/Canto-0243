@@ -3,7 +3,7 @@
  */
 import type { Database } from '../sqljs.ts';
 import { sortWordRows, literalPriorityCompare } from '../ranking.ts';
-import { applyMatchSpec, filterHybridRefCandidates } from './filters.ts';
+import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getEqualsSpan, type MatchSpec } from './spec.ts';
 import type { WordRow } from './word-row.ts';
@@ -48,14 +48,6 @@ export async function filterMatchSpecRows(
   if (getEqualsSpan(spec) || spec.compound_kind) {
     return applyMatchSpec(spec, [], ctx.db, ctx.mode);
   }
-  if (spec.hybrid_ref_chars != null && spec.hybrid_ref_pos != null) {
-    const [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
-      code: ctx.code ?? spec.code_prefix ?? null,
-      mode: ctx.mode,
-    });
-    return filterHybridRefCandidates(candidates, spec, ctx.mode, ctx.db);
-  }
-
   const hasPositionFilters =
     Boolean(spec.mask) ||
     (spec.slots ?? []).some(

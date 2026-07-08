@@ -119,6 +119,7 @@ describe("frontend ESM public API", () => {
   });
 });
 
+describe("PWA ready-gate assets", () => {
   // PWA 就緒閘 icon (brand-wordmark) 和 ink (brand-ink-*) 防止消失的 source 檢查
   // 未來改動若移除 <use> 或 <symbol> 會 fail，保護動畫元素
   it("pwa ready-gate brand defs contain icon and ink symbols", () => {
@@ -143,6 +144,27 @@ describe("frontend ESM public API", () => {
     assert.match(gateSrc, /<div className="gate-brand">/);
     assert.match(gateSrc, /<BrandLogo variant="gate"/);
     assert.match(gateSrc, /<GateInkMeter/);
+  });
+
+  it("ready-gate shows overlay during warm lexicon open from local cache", () => {
+    const gateSrc = readFileSync(new URL("../client/src/ready-gate.tsx", import.meta.url), "utf8");
+    assert.match(gateSrc, /offlineStatus === 'preparing' && Boolean\(isDbCached\)/);
+    const appSrc = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
+    assert.match(appSrc, /isDbCached !== true/);
+  });
+
+  it("lexicon open defaults to opfs-vfs with sqljs degrade hooks", () => {
+    const modeSrc = readFileSync(new URL("../client/src/db/db-backend-mode.ts", import.meta.url), "utf8");
+    assert.match(modeSrc, /if \(raw === 'sqljs'\) return 'sqljs'/);
+    assert.match(modeSrc, /return 'opfs-vfs'/);
+    const initSrc = readFileSync(new URL("../client/src/db/init.ts", import.meta.url), "utf8");
+    assert.match(initSrc, /openLexiconDatabase/);
+    assert.match(initSrc, /markOpfsVfsSessionSkip/);
+    assert.match(initSrc, /getActiveDbBackendMode/);
+    const engineSrc = readFileSync(new URL("../client/src/db/position-match/engine.ts", import.meta.url), "utf8");
+    assert.match(engineSrc, /hybrid_ref_chars[\s\S]*unlimited:\s*true/);
+    const appSrc = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
+    assert.match(appSrc, /getActiveDbBackendMode\(\) === 'opfs-vfs'/);
   });
 
   it("shell.css has rules to show gate-brand in non-minimal mode", () => {

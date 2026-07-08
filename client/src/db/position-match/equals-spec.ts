@@ -36,6 +36,11 @@ export function buildEqualsMatchSpec(q: string): MatchSpec | null {
 
   const spec = createMatchSpec(expected_length, {
     code_prefix: full_code || undefined,
+    slots: [...full_code].map((d, i) => ({
+      pos: i,
+      kind: 'code_digit' as const,
+      value: d,
+    })),
   });
   attachEqualsSpan(spec, span);
   return spec;

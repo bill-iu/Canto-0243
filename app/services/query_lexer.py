@@ -87,6 +87,18 @@ def normalize_middle_rhyme_triple(q: str) -> str:
     return q
 
 
+CODE_SANDWICH_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥]+)$")
+
+
+def normalize_code_sandwich_tail_equals(q: str) -> str:
+    """碼夾等號：{碼}{字} → {碼}{字}=（ADR-0028；全串唔含 =）。"""
+    if "=" in q:
+        return q
+    if CODE_SANDWICH_TAIL_EQUALS_RE.fullmatch(q):
+        return f"{q}="
+    return q
+
+
 def normalize_search_query_core(q: str) -> str:
     """normalize 主鏈（不含 canonical plus）。"""
     from app.services.query_grammar.rhyme import (
@@ -104,6 +116,7 @@ def normalize_search_query_core(q: str) -> str:
     q = normalize_redundant_single_char_rhyme(q)
     q = normalize_redundant_single_char_initial(q)
     q = normalize_middle_rhyme_triple(q)
+    q = normalize_code_sandwich_tail_equals(q)
     return q
 
 

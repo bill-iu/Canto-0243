@@ -77,24 +77,28 @@ def normalize_02493_code(code: str) -> str:
     return "".join(M02493_TO_0243.get(digit, digit) for digit in code)
 
 
+def _loose_digit_options(digit: str) -> tuple[str, ...]:
+    if digit in M1_MAPPING:
+        return tuple(sorted({digit, M1_MAPPING[digit]}))
+    return (digit,)
+
+
+def _is_loose_code_mode(mode: str) -> bool:
+    return mode in ("m1", "0243")
+
+
 def get_code_variants(code: str, mode: str = "m2") -> List[str]:
-    """生成 m1 / m2 的 code 等價變體（先 02493→0243 正規化，m1 再鬆檔展開）。"""
+    """生成 m1 / m2 的 code 等價變體（先 02493→0243 正規化，m1 再逐位鬆檔笛卡爾積）。"""
     if not code or not code.isdigit():
         return [code]
 
     code = normalize_02493_code(code)
-    variants = {code}
+    if not _is_loose_code_mode(mode):
+        return [code]
 
-    if mode == "m1":
-        for old, new in M1_MAPPING.items():
-            if old in code:
-                variants.add(code.replace(old, new))
+    from itertools import product
 
-        for index, digit in enumerate(code):
-            if digit in M1_MAPPING:
-                variants.add(code[:index] + M1_MAPPING[digit] + code[index + 1 :])
-
-    return sorted(variants)
+    return sorted({"".join(combo) for combo in product(*(_loose_digit_options(d) for d in code))})
 
 
 def _syllable_letters(token: str) -> str:
@@ -161,8 +165,9 @@ def rhyme_final_tuples_compatible(jyutping_a: str, jyutping_b: str) -> bool:
 
 if __name__ == "__main__":
     assert normalize_02493_code("021") == "023"
-    assert "023" in get_code_variants("021", "m1")
+    assert set(get_code_variants("021", "m1")) == {"023", "029", "063", "069"}
     assert get_code_variants("021", "m2") == ["023"]
+    assert "93" in get_code_variants("39", "m1")
     assert STANDALONE_NASAL_FINALS <= expand_standalone_nasal_final_options({"m"})
     assert rhyme_final_tuples_compatible("m4", "ng5")
     assert rhyme_final_key_sets_compatible(

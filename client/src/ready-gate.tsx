@@ -82,6 +82,7 @@ export function ReadyGate({
   const shouldShowGate =
     !effectiveSkip &&
     (offlineStatus === 'failed' ||
+      (offlineStatus === 'preparing' && Boolean(isDbCached)) ||
       (!isOnline && (offlineStatus === 'not_ready' || Boolean(isDbCached))));
 
   const [visible, setVisible] = useState(shouldShowGate);

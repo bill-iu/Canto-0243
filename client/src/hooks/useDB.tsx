@@ -21,6 +21,7 @@ import {
   isLexiconCachedForBackend,
   removeLexiconFromOpfs,
   resetDatabase,
+  clearOpfsVfsSessionSkip,
 } from '../db/init';
 import {
   search,
@@ -141,6 +142,7 @@ function useDBState(): UseDBReturn {
     setProgress(0);
     setError(null);
     setIsValidated(false);
+    clearOpfsVfsSessionSkip();
     try {
       const target = await getCurrentLexiconTarget();
       await removeLexiconFromOpfs(target.version);
