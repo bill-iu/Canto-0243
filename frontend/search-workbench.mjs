@@ -256,8 +256,8 @@ async function handleEntryPick(payload) {
   Object.assign(tab, withResultClickQuery(tab, payload.literal));
   $.searchInput.value = payload.literal;
   persistTabs();
-  openEntryDetail(payload.literal, payload.jyutping, payload.readings);
   searchDict();
+  openEntryDetail(payload.literal, payload.jyutping, payload.readings);
 }
 
 function createResultLink(text, query, title = "") {

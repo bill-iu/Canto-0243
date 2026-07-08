@@ -53,7 +53,7 @@ export function ResultList({
           <li key={group.literal} className={`result-item${isActive ? ' is-detail-active' : ''}`}>
             <button
               type="button"
-              className="result-link"
+              className="result-link result-link--inline"
               onClick={() =>
                 onPick({
                   literal: group.literal,

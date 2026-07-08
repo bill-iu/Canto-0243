@@ -12,7 +12,7 @@ export function createMergedResultButton(group, { lang, activeLiteral, onPick })
   li.className = `result-item${activeLiteral === group.literal ? ' is-detail-active' : ''}`;
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'result-link';
+  btn.className = 'result-link result-link--inline';
   const word = document.createElement('span');
   word.className = 'word result-literal-only';
   word.textContent = group.literal;

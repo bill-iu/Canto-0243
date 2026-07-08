@@ -4,7 +4,6 @@
  */
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
-import { flushSync } from 'react-dom';
 import { useDB, useSearch } from './hooks/useDB.tsx';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
@@ -409,7 +408,7 @@ function App() {
   }, []);
 
   const scheduleEntryDetailEnrich = useCallback((base: EntryDetailModel, gen: number) => {
-    queueMicrotask(() => {
+    const run = () => {
       void (async () => {
         if (gen !== detailLoadGenRef.current || !isReady) return;
         const fromDb = await enrichEntryDetailFromDb(base);
@@ -420,7 +419,12 @@ function App() {
         setDetailModel(full);
         setDetailRelationsLoading(false);
       })();
-    });
+    };
+    if (typeof requestIdleCallback !== 'undefined') {
+      requestIdleCallback(run, { timeout: 800 });
+    } else {
+      setTimeout(run, 32);
+    }
   }, [isReady]);
 
   const openEntryDetailFromPick = useCallback(
@@ -436,13 +440,11 @@ function App() {
           ? instantEntryDetailModel(literal, payload.readings)
           : null;
 
-      flushSync(() => {
-        setDetailOpen(true);
-        setActiveDetailLiteral(literal);
-        setPreferredJyutping(payload.jyutping ?? null);
-        setDetailModel(instant);
-        setDetailRelationsLoading(!cached && Boolean(instant));
-      });
+      setDetailOpen(true);
+      setActiveDetailLiteral(literal);
+      setPreferredJyutping(payload.jyutping ?? null);
+      setDetailModel(instant);
+      setDetailRelationsLoading(!cached && Boolean(instant));
 
       if (cached || !isReady) {
         if (cached) setDetailRelationsLoading(false);
@@ -598,9 +600,9 @@ function App() {
         setPreferredJyutping(payload.jyutping ?? null);
         return;
       }
-      openEntryDetailFromPick(payload);
-      hydrateSearch(payload.literal);
       runCommittedSearch(payload.literal);
+      hydrateSearch(payload.literal);
+      openEntryDetailFromPick(payload);
     },
     [
       mode,
@@ -615,9 +617,9 @@ function App() {
 
   const handleRelationPick = useCallback(
     (literal: string) => {
-      openEntryDetailFromPick({ literal });
-      hydrateSearch(literal);
       runCommittedSearch(literal);
+      hydrateSearch(literal);
+      openEntryDetailFromPick({ literal });
     },
     [openEntryDetailFromPick, hydrateSearch, runCommittedSearch],
   );

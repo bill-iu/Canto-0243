@@ -249,15 +249,15 @@
   background: color-mix(in srgb, var(--accent) 10%, var(--surface));
 }
 
+/* ponytail: literal chips inherit workbench .word (Noto Sans) — match Pages */
 .result-literal-only {
-  font-family: var(--font-serif, 'Noto Serif TC', serif);
-  font-size: 1.05rem;
+  font: inherit;
 }
 
 .result-reading-badge {
   display: inline-block;
-  margin-left: 6px;
+  margin-left: 4px;
   font-size: 11px;
   color: var(--muted);
-  font-family: var(--font-sans, 'Noto Sans TC', sans-serif);
+  font-weight: 500;
 }
