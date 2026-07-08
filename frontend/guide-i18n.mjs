@@ -273,7 +273,7 @@ const SECTIONS = [
       intro:
         '<code translate="no">+</code> 連接碼同錨字，標明邊一格。<code translate="no">錨字=</code> 同韻母；<code translate="no">+=錨字</code> 同聲母；無 <code translate="no">=</code> 則字面固定。輸入 <code translate="no">*</code> 等同 <code translate="no">+</code>。',
       examples: [
-        { label: '二字：尾字字面固定「手」' },
+        { label: '二字：首字同 2 同音，次字同 3 同音且限定為手' },
         { label: '三字：尾格字面「好」' },
         { label: '三字：尾格同「好」同韻母' },
         { label: '三字：尾格同「好」同聲母' },
@@ -288,7 +288,7 @@ const SECTIONS = [
       intro:
         '<code translate="no">+</code> links codes and anchor characters to mark which slot. <code translate="no">anchor=</code> matches rhyme; <code translate="no">+=anchor</code> matches initial; without <code translate="no">=</code> the literal is fixed. <code translate="no">*</code> is accepted as <code translate="no">+</code>.',
       examples: [
-        { label: 'Two chars: fixed literal 手 on last slot' },
+        { label: 'Two chars: slot 1 code 2, slot 2 code 3 fixed as 手' },
         { label: 'Three chars: last slot literal 好' },
         { label: 'Three chars: last slot rhymes with 好' },
         { label: 'Three chars: last slot shares initial with 好' },

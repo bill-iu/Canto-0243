@@ -287,6 +287,10 @@ function effectiveConstraints(
       result.set(slot.pos, ['hybrid_tail_initial', `${existing[1]}|${value}`]);
       continue;
     }
+    if (slot.kind === 'literal_char' && existing?.[0] === 'code_digit') {
+      result.set(slot.pos, ['hybrid_code_literal', `${existing[1]}|${value}`]);
+      continue;
+    }
     if (
       existing &&
       (SLOT_PRIORITY[existing[0]] ?? 0) >= (SLOT_PRIORITY[slot.kind] ?? 0)
@@ -348,6 +352,10 @@ function constraintPhrase(pos: number, kind: string, value: string): string {
   if (kind === 'hybrid_tail_initial') {
     const [digit, ref] = value.split('|', 2);
     return `${label}同 ${digit} 同音且同「${ref}」同聲`;
+  }
+  if (kind === 'hybrid_code_literal') {
+    const [digit, ref] = value.split('|', 2);
+    return `${label}同 ${digit} 同音且限定為${ref}`;
   }
   if (kind === 'final_anchor') {
     return `${label}同「${value}」同韻`;

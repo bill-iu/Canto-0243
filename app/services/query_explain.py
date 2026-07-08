@@ -257,6 +257,9 @@ def _effective_constraints(
         if slot.kind == "initial_anchor" and existing and existing[0] == "code_digit":
             result[slot.pos] = ("hybrid_tail_initial", f"{existing[1]}|{value}")
             continue
+        if slot.kind == "literal_char" and existing and existing[0] == "code_digit":
+            result[slot.pos] = ("hybrid_code_literal", f"{existing[1]}|{value}")
+            continue
         if existing and _SLOT_PRIORITY.get(existing[0], 0) >= _SLOT_PRIORITY.get(
             slot.kind, 0
         ):
@@ -304,6 +307,9 @@ def _constraint_phrase(pos: int, kind: str, value: str) -> str:
     if kind == "hybrid_tail_initial":
         digit, ref = value.split("|", 1)
         return f"{label}同 {digit} 同音且同「{ref}」同聲"
+    if kind == "hybrid_code_literal":
+        digit, ref = value.split("|", 1)
+        return f"{label}同 {digit} 同音且限定為{ref}"
     if kind == "final_anchor":
         return f"{label}同「{value}」同韻"
     if kind == "initial_anchor":
