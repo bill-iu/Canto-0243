@@ -1,6 +1,5 @@
 /**
  * React Hook for Database Management
- * Provides easy access to the SQL.js database in React components
  */
 
 import {
@@ -40,21 +39,23 @@ import type {
   QueryKind,
   SearchPageResult,
 } from '../db/query';
+import { reportGatePhase, subscribeGateProgress, resetGateProgressListeners } from '../db/startup-progress.ts';
+import {
+  getTailProgress,
+  isStartupComplete,
+  startTailPreload,
+  subscribeTailProgress,
+  resetTailPreload,
+} from '../db/tail-preload.ts';
 
-// Re-export query engine types and functions for convenience
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
 export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE, searchPageSizeForMode } from '../db/query.ts';
 
-/**
- * Database status type
- */
 export type DatabaseStatus = 'idle' | 'loading' | 'ready' | 'error';
-
 export type OfflineReadinessStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
 
-/**
- * Database hook return type
- */
+const WARM_FAST_PATH_MS = 500;
+
 export interface UseDBReturn {
   status: DatabaseStatus;
   offlineStatus: OfflineReadinessStatus;
@@ -63,6 +64,9 @@ export interface UseDBReturn {
   isDbCached: boolean | null;
   dbUrl: string;
   progress: number;
+  tailProgress: number;
+  startupComplete: boolean;
+  suppressGateOverlay: boolean;
   error: Error | null;
   isReady: boolean;
   initialize: () => Promise<void>;
@@ -77,11 +81,16 @@ const DBContext = createContext<UseDBReturn | null>(null);
 function useDBState(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
+  const [tailProgress, setTailProgress] = useState<number>(0);
+  const [startupComplete, setStartupComplete] = useState<boolean>(false);
+  const [suppressGateOverlay, setSuppressGateOverlay] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
   const [isDbCached, setIsDbCached] = useState<boolean | null>(null);
   const [isValidated, setIsValidated] = useState<boolean>(false);
   const initializeInFlightRef = useRef<Promise<void> | null>(null);
+  const initStartedAtRef = useRef<number | null>(null);
+  const hadCacheAtInitRef = useRef(false);
   const statusRef = useRef(status);
   const isValidatedRef = useRef(isValidated);
   statusRef.current = status;
@@ -95,6 +104,18 @@ function useDBState(): UseDBReturn {
     } catch {
       setIsDbCached(false);
     }
+  }, []);
+
+  useEffect(() => {
+    const unsubGate = subscribeGateProgress(setProgress);
+    const unsubTail = subscribeTailProgress((p) => {
+      setTailProgress(p);
+      if (p >= 100) setStartupComplete(true);
+    });
+    return () => {
+      unsubGate();
+      unsubTail();
+    };
   }, []);
 
   const initialize = useCallback(async () => {
@@ -111,13 +132,25 @@ function useDBState(): UseDBReturn {
         setError(null);
         setProgress(0);
         setIsValidated(false);
+        setStartupComplete(false);
+        setSuppressGateOverlay(false);
+        initStartedAtRef.current = performance.now();
+        hadCacheAtInitRef.current = await isLexiconCachedForBackend();
 
         await initializeDatabase();
+        reportGatePhase('validate', 0.3);
         await validateOfflineReadiness();
+        reportGatePhase('validate', 1);
         setIsValidated(true);
+
+        const elapsed = performance.now() - (initStartedAtRef.current ?? performance.now());
+        if (hadCacheAtInitRef.current && elapsed < WARM_FAST_PATH_MS) {
+          setSuppressGateOverlay(true);
+        }
 
         setStatus('ready');
         setProgress(100);
+        void startTailPreload();
       } catch (err) {
         setError(err instanceof Error ? err : new Error(String(err)));
         setStatus('error');
@@ -138,8 +171,13 @@ function useDBState(): UseDBReturn {
 
   const retryOfflineReady = useCallback(async () => {
     resetDatabase();
+    resetGateProgressListeners();
+    resetTailPreload();
     setStatus('idle');
     setProgress(0);
+    setTailProgress(0);
+    setStartupComplete(false);
+    setSuppressGateOverlay(false);
     setError(null);
     setIsValidated(false);
     clearOpfsVfsSessionSkip();
@@ -147,7 +185,7 @@ function useDBState(): UseDBReturn {
       const target = await getCurrentLexiconTarget();
       await removeLexiconFromOpfs(target.version);
     } catch {
-      // ponytail: purge stale OPFS copy best-effort before re-fetch
+      /* ponytail: purge stale OPFS best-effort */
     }
     await checkDbCached();
     await initialize();
@@ -175,8 +213,12 @@ function useDBState(): UseDBReturn {
 
   const reset = useCallback(() => {
     resetDatabase();
+    resetGateProgressListeners();
     setStatus('idle');
     setProgress(0);
+    setTailProgress(0);
+    setStartupComplete(false);
+    setSuppressGateOverlay(false);
     setError(null);
     setIsValidated(false);
   }, []);
@@ -187,12 +229,15 @@ function useDBState(): UseDBReturn {
     }
     void (async () => {
       try {
+        reportGatePhase('validate', 0.3);
         await validateOfflineReadiness();
+        reportGatePhase('validate', 1);
         setIsValidated(true);
         setStatus('ready');
         setProgress(100);
+        void startTailPreload();
       } catch {
-        // ponytail: let App auto-initialize on online/cache
+        /* ponytail: let App auto-initialize */
       }
     })();
   }, [status]);
@@ -229,6 +274,9 @@ function useDBState(): UseDBReturn {
     isDbCached,
     dbUrl,
     progress,
+    tailProgress,
+    startupComplete: startupComplete || isStartupComplete(),
+    suppressGateOverlay,
     error,
     isReady: offlineStatus === 'ready',
     initialize,
@@ -244,9 +292,6 @@ export function DBProvider({ children }: { children: ReactNode }) {
   return <DBContext.Provider value={value}>{children}</DBContext.Provider>;
 }
 
-/**
- * Custom hook for managing the SQL.js database (shared via DBProvider)
- */
 export function useDB(): UseDBReturn {
   const ctx = useContext(DBContext);
   if (!ctx) {
@@ -257,9 +302,6 @@ export function useDB(): UseDBReturn {
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
-/**
- * Hook for a specific query with loading state and offset pagination (infinite scroll).
- */
 export function useSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
@@ -322,7 +364,6 @@ export function useSearch(
           setResults([]);
           setTotal(null);
           setHint(null);
-          setLookupLayout(false);
           setLastPageSize(0);
         }
       } finally {

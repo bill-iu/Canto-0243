@@ -1,7 +1,8 @@
 /**
  * DB-4 lexicon dual-path restore — OPFS first, then SW CacheFirst / network
- * ADR-0024 §7.2 DB-4; contract: specs/001-pwa-offline-coexist/contracts/offline-readiness.md
  */
+import type { LexiconTarget } from './lexicon-manifest.ts';
+import { fetchLexiconBytesFromUrl } from './lexicon-fetch.ts';
 import { lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
 import { opfsFileSize } from './opfs-storage.ts';
 
@@ -10,7 +11,6 @@ export type LexiconRestoreSource = 'opfs' | 'sw-cache' | 'network';
 export type LexiconCacheStatus = {
   opfs: boolean;
   swCache: boolean;
-  /** true when either local copy exists (offline init may succeed) */
   any: boolean;
 };
 
@@ -18,60 +18,25 @@ export async function isOpfsLexiconCached(version: string): Promise<boolean> {
   return (await opfsFileSize(lexiconOpfsFileName(version))) > 0;
 }
 
-export async function isSwLexiconCached(dbUrl: string): Promise<boolean> {
-  if (!('caches' in globalThis)) {
-    return false;
-  }
+export async function isSwLexiconCached(url: string): Promise<boolean> {
+  if (!('caches' in globalThis)) return false;
   try {
-    return Boolean(await caches.match(dbUrl));
+    return Boolean(await caches.match(url));
   } catch {
     return false;
   }
 }
 
-export async function getLexiconCacheStatus(
-  version: string,
-  dbUrl: string,
-): Promise<LexiconCacheStatus> {
-  const [opfs, swCache] = await Promise.all([
-    isOpfsLexiconCached(version),
-    isSwLexiconCached(dbUrl),
+export async function getLexiconCacheStatus(target: LexiconTarget): Promise<LexiconCacheStatus> {
+  const [opfs, swFetch, swPlain] = await Promise.all([
+    isOpfsLexiconCached(target.version),
+    isSwLexiconCached(target.fetchUrl),
+    target.fetchUrl !== target.dbUrl ? isSwLexiconCached(target.dbUrl) : Promise.resolve(false),
   ]);
+  const swCache = swFetch || swPlain;
   return { opfs, swCache, any: opfs || swCache };
 }
 
-/** @deprecated use getLexiconCacheStatus().any */
-export async function isLexiconCachedAnywhere(version: string, dbUrl: string): Promise<boolean> {
-  return (await getLexiconCacheStatus(version, dbUrl)).any;
-}
-
-async function fetchLexiconFromUrl(dbUrl: string): Promise<Uint8Array> {
-  // Use Web Locks to serialise concurrent downloads across tabs.
-  // The tab that wins the lock fetches once; the SW CacheFirst strategy caches the
-  // response. Subsequent tabs that acquire the lock call fetch() and are served
-  // instantly from SW cache — no additional network request.
-  const doFetch = async (): Promise<Uint8Array> => {
-    const response = await fetch(dbUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch lexicon package (${response.status})`);
-    }
-    return new Uint8Array(await response.arrayBuffer());
-  };
-
-  if (typeof navigator !== 'undefined' && 'locks' in navigator) {
-    const safeName = dbUrl.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80);
-    return (navigator as Navigator & { locks: LockManager }).locks.request(
-      `lexicon-fetch-${safeName}`,
-      doFetch,
-    );
-  }
-  return doFetch();
-}
-
-/**
- * Restore lexicon bytes: OPFS → fetch (SW CacheFirst when installed, else network).
- * ponytail: fetch cannot distinguish SW vs network; use hadSwCache + navigator.onLine heuristic.
- */
 export type LexiconIntegrity = {
   byteSize?: number;
   sha256?: string;
@@ -82,9 +47,7 @@ async function purgeBadOpfsLexicon(
   bytes: Uint8Array | null,
   expected?: LexiconIntegrity,
 ): Promise<void> {
-  if (!bytes?.byteLength || expected?.byteSize == null) {
-    return;
-  }
+  if (!bytes?.byteLength || expected?.byteSize == null) return;
   if (bytes.byteLength !== expected.byteSize) {
     console.warn(
       `OPFS lexicon size mismatch (${bytes.byteLength} vs ${expected.byteSize}); purging stale copy`,
@@ -93,29 +56,46 @@ async function purgeBadOpfsLexicon(
   }
 }
 
+async function fetchWithLock(fetchUrl: string, target: LexiconTarget): Promise<Uint8Array> {
+  const run = () =>
+    fetchLexiconBytesFromUrl(fetchUrl, {
+      gzip: target.useGzip,
+      progressTotal: target.fetchByteSize,
+    });
+
+  if (typeof navigator !== 'undefined' && 'locks' in navigator) {
+    const safeName = fetchUrl.replace(/[^a-zA-Z0-9._-]+/g, '_').slice(-80);
+    return (navigator as Navigator & { locks: LockManager }).locks.request(
+      `lexicon-fetch-${safeName}`,
+      run,
+    );
+  }
+  return run();
+}
+
 export async function resolveLexiconBytes(
-  version: string,
-  dbUrl: string,
-  expected?: LexiconIntegrity,
+  target: LexiconTarget,
 ): Promise<{ bytes: Uint8Array; source: LexiconRestoreSource }> {
-  const fromOpfs = await readLexiconFromOpfs(version);
+  const fromOpfs = await readLexiconFromOpfs(target.version);
   if (fromOpfs?.byteLength) {
-    if (expected?.byteSize != null && fromOpfs.byteLength !== expected.byteSize) {
-      await purgeBadOpfsLexicon(version, fromOpfs, expected);
+    if (target.byteSize != null && fromOpfs.byteLength !== target.byteSize) {
+      await purgeBadOpfsLexicon(target.version, fromOpfs, target);
     } else {
       return { bytes: fromOpfs, source: 'opfs' };
     }
   }
 
   const offline = typeof navigator !== 'undefined' && !navigator.onLine;
-  const hadSwCache = await isSwLexiconCached(dbUrl);
-  if (offline && !hadSwCache) {
+  const cache = await getLexiconCacheStatus(target);
+  if (offline && !cache.any) {
     throw new Error('Lexicon not cached for offline use (OPFS and SW both missing)');
   }
-  const bytes = await fetchLexiconFromUrl(dbUrl);
-  if (expected?.byteSize != null && bytes.byteLength !== expected.byteSize) {
+
+  const hadSwCache = cache.swCache;
+  const bytes = await fetchWithLock(target.fetchUrl, target);
+  if (target.byteSize != null && bytes.byteLength !== target.byteSize) {
     throw new Error(
-      `Lexicon size mismatch after fetch: expected ${expected.byteSize} bytes, got ${bytes.byteLength}`,
+      `Lexicon size mismatch after fetch: expected ${target.byteSize} bytes, got ${bytes.byteLength}`,
     );
   }
   const source: LexiconRestoreSource =

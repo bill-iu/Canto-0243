@@ -54,11 +54,12 @@ import {
 } from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
-import { BrandLogo, GateInkMeter } from './brand-logo';
+import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
+import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-context.mjs';
@@ -213,6 +214,9 @@ function App() {
     isOnline,
     isDbCached,
     progress,
+    tailProgress,
+    startupComplete,
+    suppressGateOverlay,
     error: dbError,
     initialize,
     retryOfflineReady,
@@ -356,12 +360,7 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const headerPreparing = offlineStatus === 'preparing' && !gateOpen;
-  const headerInkProgress = headerPreparing ? Math.max(progress / 100, 0.12) : 1;
-  const headerStatusLabel =
-    uiLang === 'en'
-      ? `Preparing lexicon${progress > 0 ? ` ${Math.round(progress)}%` : ''}`
-      : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
+  const showTailBadge = !shellGated && !startupComplete;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -745,6 +744,7 @@ function App() {
         isOnline={isOnline}
         isDbCached={isDbCached}
         isLikelyMetered={isLikelyMetered}
+        suppressGateOverlay={suppressGateOverlay}
         onRetry={handleRetryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
@@ -755,11 +755,7 @@ function App() {
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
-              <BrandLogo
-                variant={headerPreparing ? 'gate' : 'header'}
-                inkProgress={headerInkProgress}
-                theme={uiTheme}
-              />
+              <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
             </button>
             <div className="header-hero">
               <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
@@ -769,11 +765,13 @@ function App() {
                   : '格律／協音／押韻／近反義，一步搵到。'}
               </p>
             </div>
-            {headerPreparing && (
-              <div className="header-load-status" role="status" aria-live="polite" aria-busy="true">
-                <GateInkMeter inkProgress={headerInkProgress} theme={uiTheme} />
-                <span>{headerStatusLabel}</span>
-              </div>
+            {showTailBadge && (
+              <TailPreloadBadge
+                tailProgress={tailProgress}
+                startupComplete={startupComplete}
+                theme={uiTheme}
+                lang={uiLang}
+              />
             )}
             <ModeMenu
               mode={mode}

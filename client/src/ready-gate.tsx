@@ -49,6 +49,7 @@ export interface ReadyGateProps {
   isOnline: boolean;
   isDbCached: boolean | null;
   isLikelyMetered: boolean;
+  suppressGateOverlay?: boolean;
   onRetry: () => void | Promise<void>;
   onOpenChange: (open: boolean) => void;
   theme?: 'light' | 'dark';
@@ -61,14 +62,19 @@ export function ReadyGate({
   isOnline,
   isDbCached,
   isLikelyMetered,
+  suppressGateOverlay = false,
   onRetry,
   onOpenChange,
   theme = 'light',
 }: ReadyGateProps) {
-  const playLanding = useMemo(() => !prefersReducedMotion() && !hasPwaGateLanded(), []);
+  const playLanding = useMemo(
+    () => !prefersReducedMotion() && !hasPwaGateLanded() && !isDbCached,
+    [isDbCached],
+  );
   const skipOverlay = useMemo(() => hasPwaGateLanded(), []);
 
   const shouldShowGate =
+    !suppressGateOverlay &&
     !skipOverlay &&
     (offlineStatus === 'failed' ||
       offlineStatus === 'preparing' ||
@@ -109,6 +115,15 @@ export function ReadyGate({
       handoffStarted.current = false;
     }
   }, [offlineStatus]);
+
+  useEffect(() => {
+    if (!suppressGateOverlay || offlineStatus !== 'ready') return;
+    handoffStarted.current = true;
+    sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+    revealPwaShell();
+    setPhase('hidden');
+    setVisible(false);
+  }, [suppressGateOverlay, offlineStatus]);
 
   useEffect(() => {
     onOpenChange(visible && phase !== 'hidden');
@@ -161,7 +176,7 @@ export function ReadyGate({
 
   const overlayClass = [
     'preload-overlay',
-    !playLanding ? 'preload-overlay--minimal' : '',
+    !playLanding || isDbCached ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
     phase === 'handoff' ? 'is-handoff' : '',
   ]

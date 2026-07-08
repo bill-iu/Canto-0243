@@ -5,6 +5,7 @@
 import type { DbBackendMode } from './db-backend-mode.ts';
 import {
   getActiveDbBackendMode,
+  getCurrentLexiconTarget,
   getDefaultDbUrl,
   getLexiconCacheStatus,
   initializeDatabase,
@@ -87,7 +88,8 @@ export async function runDbBenchmark(opts?: { resetFirst?: boolean }): Promise<D
 
   const version = lexiconVersion();
   const dbUrl = getDefaultDbUrl();
-  const cache = await getLexiconCacheStatus(version, dbUrl);
+  const target = await getCurrentLexiconTarget();
+  const cache = await getLexiconCacheStatus(target);
 
   const tInit0 = performance.now();
   await initializeDatabase(dbUrl);

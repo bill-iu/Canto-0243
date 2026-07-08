@@ -1,5 +1,6 @@
 import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './database-backend.ts';
 import { lexiconOpfsFileName } from './opfs-lexicon.ts';
+import { reportDownloadBytes } from './startup-progress.ts';
 import type { OpfsVfsWorkerRequest, OpfsVfsWorkerResponse } from './opfs-vfs-worker.ts';
 
 type Pending = {
@@ -9,6 +10,9 @@ type Pending = {
 
 type InitResult = Extract<OpfsVfsWorkerResponse, { type: 'init-ok' }>;
 type QueryResult = Extract<OpfsVfsWorkerResponse, { type: 'query-ok' }>;
+
+let sharedWorker: Worker | null = null;
+let sharedBackend: OpfsVfsBackend | null = null;
 
 class OpfsVfsBackend implements DatabaseBackend {
   private nextId = 1;
@@ -20,10 +24,12 @@ class OpfsVfsBackend implements DatabaseBackend {
     this.worker = worker;
     worker.addEventListener('message', (event: MessageEvent<OpfsVfsWorkerResponse>) => {
       const res = event.data;
-      const pending = this.pending.get(res.id);
-      if (!pending) {
+      if (res.type === 'progress') {
+        reportDownloadBytes(res.loaded, res.total);
         return;
       }
+      const pending = this.pending.get(res.id);
+      if (!pending) return;
       this.pending.delete(res.id);
       if (res.type === 'error') {
         pending.reject(new Error(res.message));
@@ -36,26 +42,35 @@ class OpfsVfsBackend implements DatabaseBackend {
     });
   }
 
-  async init(fileName: string, dbUrl: string): Promise<InitResult> {
-    return this.ask({ type: 'init', fileName, dbUrl });
+  async prewarm(): Promise<void> {
+    return this.ask({ type: 'prewarm' });
+  }
+
+  async init(
+    fileName: string,
+    dbUrl: string,
+    opts?: { gzip?: boolean; progressTotal?: number },
+  ): Promise<InitResult> {
+    return this.ask({
+      type: 'init',
+      fileName,
+      dbUrl,
+      gzip: opts?.gzip,
+      progressTotal: opts?.progressTotal,
+    });
   }
 
   async prepare(sql: string): Promise<DatabaseStatement> {
-    if (this.closed) {
-      throw new Error('OPFS VFS database is closed');
-    }
+    if (this.closed) throw new Error('OPFS VFS database is closed');
     return new OpfsVfsStatement(this, sql);
   }
 
   async close(): Promise<void> {
-    if (this.closed) {
-      return;
-    }
+    if (this.closed) return;
     this.closed = true;
     try {
       await this.ask({ type: 'close' });
     } finally {
-      this.worker.terminate();
       this.rejectAll(new Error('OPFS VFS database closed'));
     }
   }
@@ -86,6 +101,7 @@ class OpfsVfsBackend implements DatabaseBackend {
 }
 
 type ExtractResponse<T extends OpfsVfsWorkerRequest['type']> =
+  T extends 'prewarm' ? Extract<OpfsVfsWorkerResponse, { type: 'prewarm-ok' }> :
   T extends 'init' ? InitResult :
   T extends 'query' ? QueryResult :
   Extract<OpfsVfsWorkerResponse, { type: 'close-ok' }>;
@@ -134,6 +150,26 @@ class OpfsVfsStatement implements DatabaseStatement {
   }
 }
 
+function getSharedBackend(): OpfsVfsBackend {
+  if (typeof Worker === 'undefined') {
+    throw new Error('OPFS VFS requires Worker support');
+  }
+  if (!sharedBackend) {
+    sharedWorker = new Worker(new URL('./opfs-vfs-worker.ts', import.meta.url), { type: 'module' });
+    sharedBackend = new OpfsVfsBackend(sharedWorker);
+  }
+  return sharedBackend;
+}
+
+/** E: 下載前預熱 wa-sqlite + OPFS VFS */
+export function prewarmOpfsVfsWorker(): void {
+  try {
+    void getSharedBackend().prewarm();
+  } catch {
+    /* ponytail: prewarm best-effort */
+  }
+}
+
 export type OpenOpfsVfsDatabaseResult = {
   db: DatabaseBackend;
   fileName: string;
@@ -141,17 +177,26 @@ export type OpenOpfsVfsDatabaseResult = {
   fetched: boolean;
 };
 
+export function resetOpfsVfsWorker(): void {
+  if (sharedWorker) {
+    sharedWorker.terminate();
+    sharedWorker = null;
+    sharedBackend = null;
+  }
+}
+
 export async function openOpfsVfsDatabase(opts: {
   version: string;
-  dbUrl: string;
+  fetchUrl: string;
+  gzip?: boolean;
+  progressTotal?: number;
 }): Promise<OpenOpfsVfsDatabaseResult> {
-  if (typeof Worker === 'undefined') {
-    throw new Error('OPFS VFS requires Worker support');
-  }
-  const worker = new Worker(new URL('./opfs-vfs-worker.ts', import.meta.url), { type: 'module' });
-  const backend = new OpfsVfsBackend(worker);
+  const backend = getSharedBackend();
   const fileName = lexiconOpfsFileName(opts.version);
-  const init = await backend.init(fileName, opts.dbUrl);
+  const init = await backend.init(fileName, opts.fetchUrl, {
+    gzip: opts.gzip,
+    progressTotal: opts.progressTotal,
+  });
   return {
     db: backend,
     fileName: init.fileName,

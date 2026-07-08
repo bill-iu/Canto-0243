@@ -178,18 +178,17 @@ export const OFFLINE_READINESS_PROBE_QUERY = '事業';
  * Validate DB can run a minimal real query (not COUNT-only).
  */
 async function waitForLexiconCache(
-  version: string,
-  dbUrl: string,
+  target: Awaited<ReturnType<typeof getCurrentLexiconTarget>>,
   attempts = 8,
 ): Promise<Awaited<ReturnType<typeof getLexiconCacheStatus>>> {
   for (let i = 0; i < attempts; i++) {
-    const cache = await getLexiconCacheStatus(version, dbUrl);
+    const cache = await getLexiconCacheStatus(target);
     if (cache.any) {
       return cache;
     }
     await new Promise((resolve) => setTimeout(resolve, 150));
   }
-  return getLexiconCacheStatus(version, dbUrl);
+  return getLexiconCacheStatus(target);
 }
 
 export async function validateOfflineReadiness(): Promise<void> {
@@ -211,7 +210,7 @@ export async function validateOfflineReadiness(): Promise<void> {
   }
 
   const target = await getCurrentLexiconTarget();
-  const cache = await waitForLexiconCache(target.version, target.dbUrl);
+  const cache = await waitForLexiconCache(target);
   const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
   if (hasOpfs && !cache.opfs) {
