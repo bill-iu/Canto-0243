@@ -42,6 +42,11 @@ function pronRankSortValue(char: string, jyutping: string): number {
   return pronRankByCharJyut.get(key) ?? UNKNOWN_PRON_RANK;
 }
 
+/** ADR-0029: 錨點 union 剔罕見；未知仍入選 */
+export function eligibleForAnchorPhonemeUnion(char: string, jyutping: string): boolean {
+  return pronRankSortValueForWord(char, jyutping) !== PRON_RANK_SORT['罕見'];
+}
+
 export function pronRankSortValueForWord(char: string, jyutping: string): number {
   const text = (char || '').trim();
   const jyut = (jyutping || '').trim();
@@ -213,6 +218,30 @@ export function rankingLogicSelfCheck(): void {
     .join(',');
   if (hWithin !== 'gou1 pan4,gou2 pan4') {
     throw new Error(`heteronymSortKey within jyut: ${hWithin}`);
+  }
+}
+
+/** ponytail: runnable self-check — `npx tsx client/scripts/anchor-phoneme-options-self-check.ts` */
+export function anchorPhonemeUnionEligibilitySelfCheck(): void {
+  initRankingData({
+    pronRank: {
+      '難\tnaan4': 0,
+      '難\tno4': 2,
+      '潦\tliu2': 0,
+      '潦\tlou5': 1,
+    },
+  });
+  if (!eligibleForAnchorPhonemeUnion('難', 'naan4')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: naan4 should be eligible');
+  }
+  if (eligibleForAnchorPhonemeUnion('難', 'no4')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: no4 should be excluded');
+  }
+  if (!eligibleForAnchorPhonemeUnion('潦', 'lou5')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: lou5 should be eligible');
+  }
+  if (!eligibleForAnchorPhonemeUnion('測', 'mak6')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: unknown rank should be eligible');
   }
 }
 

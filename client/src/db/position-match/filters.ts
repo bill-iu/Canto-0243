@@ -5,7 +5,7 @@ import { getCodeVariants } from '../code-variants.ts';
 import { queryRows } from '../database-backend.ts';
 import { matchesJyutpingAnchorAtPosition } from '../jyutping-anchor.ts';
 import type { Database } from '../sqljs.ts';
-import { pronRankSortValueForWord } from '../ranking.ts';
+import { eligibleForAnchorPhonemeUnion, pronRankSortValueForWord } from '../ranking.ts';
 import { queryWordsByEqualsSpec } from './equals-filters.ts';
 import { matchesMaskLiteralChars } from './mask-adapter.ts';
 import { getCandidatesWithLiteralAt, getCompoundCandidatesForSpec } from './sources.ts';
@@ -53,6 +53,10 @@ export async function anchorPhonemeOptions(
     [char],
   );
   for (const hit of rows) {
+    const jyut = String(hit.jyutping ?? '').trim();
+    if (jyut && !eligibleForAnchorPhonemeUnion(char, jyut)) {
+      continue;
+    }
     const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
     if (parts.length) {
       options.add(parts[0]!);

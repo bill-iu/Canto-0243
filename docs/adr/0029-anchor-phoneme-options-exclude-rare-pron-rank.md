@@ -25,4 +25,4 @@ Grill 共識（2026-07）：`39難`（碼夾等號尾韻）因「難」詞庫列
 
 ## Status
 
-`accepted`（Grill 定案；待實作）
+`implemented`
