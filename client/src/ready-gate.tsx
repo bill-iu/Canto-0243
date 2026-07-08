@@ -81,16 +81,16 @@ export function ReadyGate({
   const handoffStarted = useRef(false);
 
   useEffect(() => {
-    if (visible && phase !== 'hidden') {
-      document.getElementById('pwaBootGate')?.remove();
-    }
+    if (!visible || phase === 'hidden') return;
+    let cancelled = false;
+    const handoff = () => {
+      if (!cancelled) document.getElementById('pwaBootGate')?.remove();
+    };
+    requestAnimationFrame(() => requestAnimationFrame(handoff));
+    return () => {
+      cancelled = true;
+    };
   }, [visible, phase]);
-
-  useEffect(() => {
-    if (offlineStatus === 'ready') {
-      revealPwaShell();
-    }
-  }, [offlineStatus]);
 
   useEffect(() => {
     if (shouldShowGate && !visible) {

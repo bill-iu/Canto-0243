@@ -204,7 +204,7 @@ function App() {
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
-  const shellGated = offlineStatus !== 'ready';
+  const shellGated = offlineStatus !== 'ready' || gateOpen;
 
   const shouldShowInstallBanner =
     !shellGated && !isStandalone && !installDismissed;
@@ -320,12 +320,12 @@ function App() {
   }, [isReady, offlineStatus, initialize]);
 
   useEffect(() => {
-    if (initialSearchDoneRef.current || !needsInitialSearch || !isReady) return;
+    if (initialSearchDoneRef.current || !needsInitialSearch || gateOpen || !isReady) return;
     initialSearchDoneRef.current = true;
     setUseLiveFetch(true);
     hydrateSearch(activeSearchTab?.q || '');
     flushSearchQuery(activeSearchTab?.q || '');
-  }, [needsInitialSearch, isReady, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
+  }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
