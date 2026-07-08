@@ -69,7 +69,7 @@ const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
   'prefix-wildcard:?=困潦倒': 'prefix_wildcard_initial',
   'wildcard-code:?30人': 'wildcard_code_anchor',
   'mask:+香??': 'mask_query',
-  'plus:23@就': 'literal_ref',
+  'plus:23@手': 'literal_ref',
   'plus:23+好=': 'plus_anchor',
   'rhyme-initial:就=': 'rhyme_initial_anchor',
   'jyutping-anchor:3hon4': 'jyutping_anchor_syllable',

@@ -26,7 +26,7 @@ const native = new SQL.Database(fs.readFileSync(fixture));
 const db = createSqlJsBackend(native);
 injectDatabaseForTests(db);
 
-const cases = ['1?', '門0', '23@就', '?30人'] as const;
+const cases = ['1?', '門0', '23@手', '?30人'] as const;
 
 for (const q of cases) {
   const parsed = normalizeAndParse(q);

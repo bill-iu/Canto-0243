@@ -790,7 +790,7 @@ function looksLikeMaskQuery(q: string): boolean {
   return hasWild || (hasDigit && hasCanto);
 }
 
-/** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@就） */
+/** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@手） */
 export function parseAtTailQuery(q: string): LiteralRefQuery | null {
   const m = q.match(/^(\d+)@([\u4e00-\u9fff])$/);
   if (!m) {

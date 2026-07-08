@@ -321,7 +321,7 @@
           <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、394052 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
         </p>
         <p>
-          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。
+          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@手</code>。
         </p>
         <p>
           <strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">+</code>，例 <code translate="no">+香??</code>、<code translate="no">23+就</code>、<code translate="no">?30+人</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。
@@ -438,6 +438,7 @@
           <h2>加號錨（<code translate="no">+</code>）</h2>
           <p><code translate="no">+</code> 連接碼同錨字，標明邊一格。<code translate="no">錨字=</code> 同韻母；<code translate="no">+=錨字</code> 同聲母；無 <code translate="no">=</code> 則字面固定。輸入 <code translate="no">*</code> 等同 <code translate="no">+</code>。</p>
           <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="23@手" data-mode="m1"><code translate="no">23@手</code><span>二字：尾字字面固定「手」</span></button>
             <button class="guide-example" type="button" data-query="23+好" data-mode="m1"><code translate="no">23+好</code><span>三字：尾格字面「好」</span></button>
             <button class="guide-example" type="button" data-query="23+好=" data-mode="m1"><code translate="no">23+好=</code><span>三字：尾格同「好」同韻母</span></button>
             <button class="guide-example" type="button" data-query="23+=好" data-mode="m1"><code translate="no">23+=好</code><span>三字：尾格同「好」同聲母</span></button>
