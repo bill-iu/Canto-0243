@@ -1,4 +1,4 @@
-/** ponytail: first page shows RESULT_RENDER_BATCH only — user scroll expands */
+/** ponytail: first page shows RESULT_RENDER_BATCH only */
 import { RESULT_RENDER_BATCH } from '../src/infinite-results.ts';
 
 function visibleAfterReset(itemCount: number): number {
@@ -6,8 +6,8 @@ function visibleAfterReset(itemCount: number): number {
 }
 
 const cases = [
-  { itemCount: 1200, expect: 50 },
-  { itemCount: 5501, expect: 50 },
+  { itemCount: 1200, expect: 200 },
+  { itemCount: 5501, expect: 200 },
   { itemCount: 50, expect: 50 },
   { itemCount: 12, expect: 12 },
 ];

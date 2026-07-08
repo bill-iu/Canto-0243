@@ -60,13 +60,15 @@ html.has-entry-detail-open {
 .app-shell {
   display: flex;
   flex-direction: column;
+  min-height: 100dvh;
 }
 
-.app-shell .main-wrap {
+.app-shell > .main-wrap {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 .search-view {
@@ -83,13 +85,28 @@ html.has-entry-detail-open {
   flex-direction: column;
   min-height: 0;
   min-width: 0;
+  overflow: hidden;
 }
 
-/* ponytail: infinite-scroll IO root — bounded height so wheel + sentinel work */
+.search-panel,
+form.search-panel {
+  flex-shrink: 0;
+}
+
+.search-results {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ponytail: scroll root for 呈現批次 — must have bounded height */
 .search-results-scroll {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
 }

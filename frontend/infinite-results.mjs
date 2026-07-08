@@ -1,5 +1,5 @@
-/** ponytail: shared infinite-scroll batch size (0243.hk uses +50 per scroll). */
-export const RESULT_RENDER_BATCH = 50;
+/** ponytail: shared infinite-scroll batch size — 200 chips per user scroll step */
+export const RESULT_RENDER_BATCH = 200;
 export const SCROLL_ROOT_MARGIN = "200px";
 
 const nextFrame =
@@ -7,44 +7,32 @@ const nextFrame =
     ? requestAnimationFrame
     : (fn) => setTimeout(fn, 16);
 
-export function isSentinelIntersecting(root, sentinel, marginPx = 200) {
+const marginPx = Number.parseInt(SCROLL_ROOT_MARGIN, 10) || 200;
+
+export function isSentinelIntersecting(root, sentinel, margin = marginPx) {
   if (!sentinel || sentinel.hidden) return false;
   const rect = sentinel.getBoundingClientRect();
   const rootRect = root
     ? root.getBoundingClientRect()
     : { top: 0, left: 0, right: globalThis.innerWidth, bottom: globalThis.innerHeight };
-  return (
-    rect.top <= rootRect.bottom + marginPx && rect.bottom >= rootRect.top - marginPx
-  );
+  return rect.top <= rootRect.bottom + margin && rect.bottom >= rootRect.top - margin;
 }
 
-/** One expand/fetch per frame; scroll listener backs up IO when sentinel stays visible. */
+/** Scroll-root only — one batch per scroll step; no IO (avoids pre-scroll auto chain). */
 export function wireInfiniteScroll({ root, sentinel, onNeedMore }) {
-  if (!sentinel || !onNeedMore) return () => {};
-  let armed = true;
-  const trigger = () => {
-    if (!armed) return;
-    armed = false;
+  if (!sentinel || !onNeedMore || !root) return () => {};
+  let cooldown = false;
+  const maybeLoad = () => {
+    if (cooldown || sentinel.hidden) return;
+    if (!isSentinelIntersecting(root, sentinel)) return;
+    cooldown = true;
     onNeedMore();
     nextFrame(() => {
-      armed = true;
+      cooldown = false;
     });
   };
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0]?.isIntersecting) trigger();
-    },
-    { root: root || null, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
-  );
-  observer.observe(sentinel);
-  const onScroll = () => {
-    if (isSentinelIntersecting(root, sentinel, 0)) trigger();
-  };
-  root?.addEventListener("scroll", onScroll, { passive: true });
-  return () => {
-    observer.disconnect();
-    root?.removeEventListener("scroll", onScroll);
-  };
+  root.addEventListener("scroll", maybeLoad, { passive: true });
+  return () => root.removeEventListener("scroll", maybeLoad);
 }
 
 export function effectiveRenderedCount(tab, itemCount, batch = RESULT_RENDER_BATCH) {

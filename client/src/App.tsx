@@ -876,7 +876,7 @@ function App() {
                   )}
 
                   {displayResults.length > 0 && (
-                    <div className={`results-list${showSentinel ? ' results-list--more' : ''}`}>
+                    <div className="results-list">
                       {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
                       {synLayout ? (
                         <SynResultList

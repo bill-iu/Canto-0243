@@ -147,10 +147,7 @@ function updateScrollSentinel(tab) {
   const itemCount = countSearchResultItems(tab?.results || []);
   const canExpand = tab && canExpandRenderedCount(tab, itemCount);
   const canFetch = tab && shouldShowLoadMore(tab);
-  const needsMore = itemCount > 0 && (canExpand || canFetch);
-  sentinel.hidden = !needsMore;
-  // ponytail: pad list so sentinel starts below fold — avoids auto chain-load on short pages
-  if ($.results) $.results.style.paddingBottom = needsMore ? "min(50vh, 480px)" : "";
+  sentinel.hidden = itemCount === 0 || (!canExpand && !canFetch);
 }
 
 function handleInfiniteScrollNeed() {
@@ -166,6 +163,7 @@ function handleInfiniteScrollNeed() {
     persistTabs();
     renderSearchResults(data, tab.total, { expandFrom: prevRendered });
     scrollGate = false;
+    remountInfiniteScroll();
     return;
   }
   if (shouldShowLoadMore(tab)) searchDict(true);
@@ -715,6 +713,7 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   resetRenderedCount(tab, itemCount);
   persistTabs();
   renderSearchResults(displayData, tab.total);
+  remountInfiniteScroll();
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
@@ -737,7 +736,6 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   setButtonLoading(true, { staleResults });
 
   if (!isLoadMore) {
-    tab.renderedCount = RESULT_RENDER_BATCH;
     if (!staleResults) {
       $.results.innerHTML = "";
       $.stats.textContent = "";
