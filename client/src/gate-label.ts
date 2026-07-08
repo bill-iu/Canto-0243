@@ -17,11 +17,8 @@ export function formatPwaGateLabel(
     }
     return '執緊啲字…';
   }
-  const warmOpen = Boolean(opts.isDbCached);
   const pct = Math.max(0, Math.min(100, Math.round(progress)));
   if (pct >= GATE_NEAR_DONE_PCT) return `差啲就齊… ${pct}%`;
-  if (pct > 0) {
-    return warmOpen ? `載入本機詞庫… ${pct}%` : `執緊啲字… ${pct}%`;
-  }
-  return warmOpen ? '載入本機詞庫…' : '執緊啲字…';
+  if (pct > 0) return `執緊啲字… ${pct}%`;
+  return '執緊啲字…';
 }
