@@ -76,7 +76,7 @@ const SECTIONS = [
       ],
     },
     examples: [
-      { query: 'ZP', mode: 'm3' },
+      { query: 'PZ', mode: 'm3' },
       { query: 'PZ3', mode: 'm3' },
     ],
   },
