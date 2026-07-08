@@ -5,18 +5,6 @@ import re
 
 from app.services.query_tokens import CODE_TAIL_MIDDLE
 
-HYBRID_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥])=$")
-
-
-def is_hybrid_tail_equals_alias(q: str) -> bool:
-    """True for 23就= style queries that alias hybrid tail-rhyme (23就)."""
-    return bool(HYBRID_TAIL_EQUALS_RE.match(q))
-
-
-def hybrid_query_from_tail_equals(q: str) -> str:
-    return q[:-1]
-
-
 def is_framed_equals_query(q: str) -> bool:
     """Legacy framed equals: 香港=, 2=我3 — not query-level rhyme anchors or hybrid tail alias."""
     if CODE_TAIL_MIDDLE in q or "@" in q:

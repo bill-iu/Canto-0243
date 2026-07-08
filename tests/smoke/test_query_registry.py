@@ -16,7 +16,6 @@ from app.services.position_match.spec import get_equals_span
 from app.services.query_parse import (
     CompoundAntQuery,
     CompoundSynQuery,
-    HybridTailEqualsAliasQuery,
     QueryKind,
     normalize_and_parse,
     parse_query,
@@ -43,12 +42,7 @@ class QueryRegistrySmokeTests(unittest.TestCase):
         self.assertTrue(
             uses_match_spec(CompoundSynQuery(code_prefix="33", rhyme_char="你"))
         )
-        self.assertTrue(
-            uses_match_spec(HybridTailEqualsAliasQuery(raw_q="23就=", hybrid_q="23就"))
-        )
         self.assertFalse(uses_match_spec(normalize_and_parse("開心")))
-        self.assertIn(QueryKind.HYBRID_TAIL_EQUALS_ALIAS, MASK_FAMILY_KINDS)
-        self.assertNotIn(QueryKind.HYBRID_TAIL_EQUALS_ALIAS, MATCH_SPEC_KINDS)
         missing = set(MATCH_SPEC_BUILDERS) - {
             getattr(QueryKind, name) for name in BUILDER_KINDS_WITH_REPRESENTATIVE_QUERY
         }
@@ -77,8 +71,6 @@ class QueryRegistrySmokeTests(unittest.TestCase):
                     self.assertEqual(spec.mask, expected["mask"])
                 if "compound_kind" in expected:
                     self.assertEqual(spec.compound_kind, expected["compound_kind"])
-                if "hybrid_ref" in expected:
-                    self.assertEqual(spec.hybrid_ref_chars, expected["hybrid_ref"])
                 if "code_prefix" in expected and "ref_literal" in expected:
                     self.assertEqual(spec.code_prefix, expected["code_prefix"])
                     span = get_equals_span(spec)

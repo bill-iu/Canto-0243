@@ -30,7 +30,6 @@ import {
 import { isWildcardChar } from './position-match/mask-grammar.ts';
 import { compoundSearchSpecFromMatchSpec, getCandidatesForLength } from './position-match/sources.ts';
 import { executeMatchSpec, filterMatchSpecRows } from './position-match/engine.ts';
-import { anchorPhonemeOptions } from './position-match/filters.ts';
 import { normalizeToMatchSpec } from './position-match/match-spec-registry.ts';
 import { getWordText } from './position-match/word-row.ts';
 import { QueryKind, RouteKind } from './query-kind.ts';
@@ -42,7 +41,6 @@ import type {
   CompoundSynQuery,
   DigitCodeQuery,
   HeteronymCodeQuery,
-  HybridCodeQuery,
   JyutpingAnchorQuery,
   JyutpingFragmentQuery,
   LiteralRefQuery,
@@ -410,7 +408,7 @@ function parseDoubleWildcardInitialQuery(q: string): RhymeAnchorQuery | null {
 
 /** Port of rhyme.parse_triple_rhyme_anchor_query */
 export function parseTripleRhymeAnchorQuery(q: string): TripleRhymeAnchorQuery | null {
-  if (!q || q.includes('@') || isFramedEqualsQuery(q) || isHybridTailEqualsAlias(q)) {
+  if (!q || q.includes('@') || isFramedEqualsQuery(q)) {
     return null;
   }
 
@@ -683,11 +681,6 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
     return rhymeAnchor;
   }
 
-  const hybridCode = parseHybridCodeQuery(q);
-  if (hybridCode) {
-    return hybridCode;
-  }
-
   return null;
 }
 
@@ -777,15 +770,6 @@ function looksLikeMaskQuery(q: string): boolean {
   const hasDigit = /\d/.test(q);
   const hasCanto = [...q].some((c) => !/\d/.test(c) && !isWildcardChar(c));
   return hasWild || (hasDigit && hasCanto);
-}
-
-/** Port of HYBRID_CODE_RE — must run before looksLikeMaskQuery */
-export function parseHybridCodeQuery(q: string): HybridCodeQuery | null {
-  const m = q.match(/^(\d+)([\u4e00-\u9fff]+)(\d*)$/);
-  if (!m || m[3]) {
-    return null;
-  }
-  return { kind: QueryKind.HYBRID_CODE, raw_q: q };
 }
 
 /** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@就） */
@@ -884,81 +868,6 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
   return null;
 }
 
-const HYBRID_CODE_MATCH_RE = /^(\d+)([\u4e00-\u9fff]+)(\d*)$/;
-
-type HybridMatchSpec = {
-  width: number;
-  codePrefix: string;
-  hybridRefChars: string;
-  hybridRefPos: number;
-};
-
-function buildHybridMatchSpec(rawQ: string): HybridMatchSpec | null {
-  const m = rawQ.match(HYBRID_CODE_MATCH_RE);
-  if (!m) {
-    return null;
-  }
-  const numPrefix = m[1]!;
-  const refChars = m[2]!;
-  const numSuffix = m[3] ?? '';
-  const fullCode = numPrefix + numSuffix;
-  return {
-    width: fullCode.length,
-    codePrefix: fullCode,
-    hybridRefChars: refChars,
-    hybridRefPos: Math.max(0, numPrefix.length - 1),
-  };
-}
-
-/** Port of filters.build_final_options_at_positions */
-async function buildFinalOptionsAtPositions(
-  db: Database,
-  refChars: string,
-  startPos: number,
-  width: number,
-): Promise<Array<Set<string> | null>> {
-  const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
-  for (let i = 0; i < refChars.length; i++) {
-    const pos = startPos + i;
-    if (pos >= 0 && pos < width) {
-      const opts = await anchorPhonemeOptions(db, refChars[i]!, 'final');
-      if (opts.size) {
-        target[pos] = opts;
-      }
-    }
-  }
-  return target;
-}
-
-/** Port of filters.matches_hybrid_ref_chars */
-function matchesHybridRefChars(
-  wordChar: string,
-  wordFinals: string[],
-  refChars: string,
-  startPos: number,
-  targetFinalOptions: Array<Set<string> | null>,
-): boolean {
-  const width = targetFinalOptions.length;
-  if (wordChar.length !== width || wordFinals.length !== width) {
-    return false;
-  }
-  for (let i = 0; i < refChars.length; i++) {
-    const pos = startPos + i;
-    if (pos < 0 || pos >= width) {
-      return false;
-    }
-    if (wordChar[pos] === refChars[i]) {
-      continue;
-    }
-    const options = targetFinalOptions[pos];
-    if (options?.size && wordFinals[pos] && options.has(wordFinals[pos]!)) {
-      continue;
-    }
-    return false;
-  }
-  return true;
-}
-
 /** ponytail: runnable self-check — `npx tsx client/scripts/parser-self-check.ts` */
 export function parserLogicSelfCheck(): void {
   const cases: Array<[string, QueryKind]> = [
@@ -1007,21 +916,6 @@ export async function lookupLayoutSelfCheck(): Promise<void> {
   }
   if (layout.some((r) => r.resultType === 'code' || r.resultType === 'jyutping')) {
     throw new Error('lookupLayoutSelfCheck: must not emit code/jyutping headers');
-  }
-}
-
-/** ponytail: runnable self-check — `npx tsx client/scripts/hybrid-self-check.ts` */
-export function hybridLogicSelfCheck(): void {
-  const spec = buildHybridMatchSpec('23就');
-  if (!spec || spec.width !== 2 || spec.codePrefix !== '23' || spec.hybridRefPos !== 1) {
-    throw new Error('hybridLogicSelfCheck: spec parse');
-  }
-  const target: Array<Set<string> | null> = [null, new Set(['au'])];
-  if (!matchesHybridRefChars('成就', ['ing', 'au'], '就', 1, target)) {
-    throw new Error('hybridLogicSelfCheck: literal tail match');
-  }
-  if (matchesHybridRefChars('走先', ['au', 'in'], '就', 1, target)) {
-    throw new Error('hybridLogicSelfCheck: rhyme-only reject');
   }
 }
 
@@ -1382,40 +1276,11 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
 export const CODE_TAIL_MIDDLE = '\u2215'; // Division slash (∕)
 
 /**
- * Regex for hybrid tail equals alias (e.g., 23就=)
- */
-const HYBRID_TAIL_EQUALS_RE = /^(\d+)([\u4e00-\u9fff])=$/;
-
-/**
  * Equals query interface
  */
 export interface EqualsQuery extends ParsedQuery {
   kind: QueryKind.EQUALS;
   raw_q: string;
-}
-
-/**
- * Hybrid tail equals alias query interface
- */
-export interface HybridTailEqualsAliasQuery extends ParsedQuery {
-  kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS;
-  raw_q: string;
-  hybrid_q: string;
-}
-
-/**
- * Check if query is a hybrid tail equals alias (e.g., 23就=)
- */
-export function isHybridTailEqualsAlias(q: string): boolean {
-  return HYBRID_TAIL_EQUALS_RE.test(q);
-}
-
-/**
- * Convert hybrid tail equals query to hybrid query
- * e.g., "23就=" -> "23就"
- */
-export function hybridQueryFromTailEquals(q: string): string {
-  return q.slice(0, -1);
 }
 
 /**
@@ -2233,7 +2098,6 @@ export {
   buildMatchSpecForParsed,
   MATCH_SPEC_BUILDERS,
   normalizeToMatchSpec,
-  rewriteMaskFamilyAliases,
 } from './position-match/match-spec-registry.ts';
 export {
   executeMatchSpec,

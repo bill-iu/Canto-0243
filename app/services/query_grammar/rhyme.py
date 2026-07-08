@@ -4,10 +4,7 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from app.services.query_grammar.equals import (
-    is_framed_equals_query,
-    is_hybrid_tail_equals_alias,
-)
+from app.services.query_grammar.equals import is_framed_equals_query
 from app.services.query_tokens import CODE_TAIL_MIDDLE, SLOT_CHARS_RE, WILDCARD_CHARS
 
 _RHYME_ANCHOR_SHAPE_RE = re.compile(
@@ -219,8 +216,6 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
 def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
     """中格同韻三字：規範形 ?*{參考字}=?（?{字}=? normalize 後）。"""
     if not q or "@" in q or is_framed_equals_query(q):
-        return None
-    if is_hybrid_tail_equals_alias(q):
         return None
 
     m = re.match(rf"^(\?{re.escape(CODE_TAIL_MIDDLE)})([一-龥])=\?$", q)

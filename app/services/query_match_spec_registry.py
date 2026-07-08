@@ -6,14 +6,12 @@ from typing import Callable, Optional
 from app.services.position_match import MatchSpec, SlotConstraint
 from app.services.position_match.spec import EqualsSpan, attach_equals_span, get_equals_span
 from app.services.query_types import (
-    HYBRID_CODE_RE,
     CodeRefMiddleRhymeQuery,
     CompoundAntQuery,
     CompoundConnectAntQuery,
     CompoundConnectSynQuery,
     CompoundSynQuery,
     EqualsQuery,
-    HybridCodeQuery,
     JyutpingAnchorQuery,
     LiteralRefQuery,
     MaskQuery,
@@ -246,24 +244,6 @@ def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return _build_jyutping_anchor_match_spec(q)
 
 
-def _spec_hybrid_code(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.HYBRID_CODE
-    q = parsed  # type: HybridCodeQuery
-    hybrid_match = HYBRID_CODE_RE.match(q.raw_q)
-    if not hybrid_match:
-        return MatchSpec(width=0)
-    num_prefix = hybrid_match.group(1)
-    ref_chars = hybrid_match.group(2)
-    num_suffix = hybrid_match.group(3)
-    full_code = num_prefix + num_suffix
-    return MatchSpec(
-        width=len(full_code),
-        code_prefix=full_code,
-        hybrid_ref_chars=ref_chars,
-        hybrid_ref_pos=max(0, len(num_prefix) - 1),
-    )
-
-
 def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.MASK
     q = parsed  # type: MaskQuery
@@ -347,7 +327,6 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.RHYME_ANCHOR: _spec_rhyme_anchor,
     QueryKind.TRIPLE_RHYME_ANCHOR: _spec_triple_rhyme_anchor,
     QueryKind.JYUTPING_ANCHOR: _spec_jyutping_anchor,
-    QueryKind.HYBRID_CODE: _spec_hybrid_code,
     QueryKind.MASK: _spec_mask,
     QueryKind.COMPOUND_SYN: _spec_compound_syn,
     QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_compound_doubled_syllable,

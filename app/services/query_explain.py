@@ -11,7 +11,6 @@ from app.services.query_types import (
     CompoundDoubledSyllableQuery,
     DigitCodeQuery,
     HeteronymCodeQuery,
-    HybridTailEqualsAliasQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     ParsedQuery,
@@ -100,8 +99,6 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
         return f"查「{parsed.word}」嘅{prefix}{label}"
     if isinstance(parsed, JyutpingFragmentQuery):
         return f"粵拼查詢「{parsed.raw_q}」"
-    if isinstance(parsed, HybridTailEqualsAliasQuery):
-        return f"碼夾等號查詢「{parsed.raw_q}」"
     if isinstance(parsed, HeteronymCodeQuery):
         return (
             f"查同字面異讀（{parsed.left_template}/{parsed.right_template}）："
@@ -123,10 +120,9 @@ def _summary_from_match_spec(spec: MatchSpec, parsed: ParsedQuery) -> Optional[s
         if isinstance(dual, MatchSpec):
             spec = dual
 
-    if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) > 1:
-        return _hybrid_multi_char_summary(spec)
-
     equals = get_equals_span(spec)
+    if equals and spec.code_prefix:
+        return _code_sandwich_equals_summary(spec, equals, parsed)
     if equals and spec.extra.get("prefix_wildcard_equals"):
         return _prefix_wildcard_equals_summary(spec, equals)
     if equals and equals.whole_word:
@@ -156,14 +152,21 @@ def _prefix_wildcard_equals_summary(spec: MatchSpec, equals) -> str:
     )
 
 
-def _hybrid_multi_char_summary(spec: MatchSpec) -> str:
-    ref = spec.hybrid_ref_chars or ""
-    parts = [_width_label(spec.width)]
-    scan = _slot_scan_details(spec, None)
-    if scan:
-        parts.append(scan)
-    parts.append(f"字面含「{ref}」")
-    return "：".join(parts[:2]) + ("，" + "，".join(parts[2:]) if len(parts) > 2 else "")
+def _code_sandwich_equals_summary(
+    spec: MatchSpec, equals, parsed: ParsedQuery
+) -> str:
+    raw = getattr(parsed, "raw_q", "") or ""
+    if equals.whole_word:
+        dim = _rhyme_or_initial(equals.dimension)
+        label = _rhyme_label(len(equals.ref_literal))
+        rhyme_line = f"同「{equals.ref_literal}」{dim}（{label}）"
+        code_phrase = _code_prefix_phrase(spec)
+        body = rhyme_line if not code_phrase else f"{rhyme_line}；{code_phrase}"
+        return f"碼夾等號查詢「{raw}」：{body}"
+    details = _slot_scan_details(spec, equals)
+    if details:
+        return f"碼夾等號查詢「{raw}」：{details}"
+    return f"碼夾等號查詢「{raw}」"
 
 
 def _compound_summary(spec: MatchSpec) -> str:
@@ -267,7 +270,9 @@ def _effective_constraints(
                     if spec.code_prefix and pos < len(spec.code_prefix)
                     else None
                 )
-                if equals.phoneme_anchor_only and digit is not None:
+                if digit is not None and equals.dimension == "final" and not equals.phoneme_anchor_only:
+                    result[pos] = ("hybrid_tail_rhyme", f"{digit}|{ch}")
+                elif equals.phoneme_anchor_only and digit is not None:
                     kind = (
                         "hybrid_tail_rhyme"
                         if equals.dimension == "final"
@@ -276,15 +281,6 @@ def _effective_constraints(
                     result[pos] = (kind, f"{digit}|{ch}")
                 else:
                     result[pos] = (dim_kind, ch)
-
-    if spec.hybrid_ref_chars and len(spec.hybrid_ref_chars) == 1:
-        pos = spec.hybrid_ref_pos if spec.hybrid_ref_pos is not None else 0
-        ref = spec.hybrid_ref_chars
-        existing = result.get(pos)
-        if existing and existing[0] == "code_digit":
-            result[pos] = ("hybrid_tail_rhyme", f"{existing[1]}|{ref}")
-        else:
-            result[pos] = ("final_anchor", ref)
 
     return result
 

@@ -69,9 +69,6 @@ class MatchSpec:
     # 額外全域約束
     code_prefix: Optional[str] = None          # 例如 code_tail 的 code_digits
     literal_priority: bool = False             # mask 類查詢常用（literal 數量優先排序）
-    # 預留給 hybrid 等特殊語意
-    hybrid_ref_chars: Optional[str] = None
-    hybrid_ref_pos: Optional[int] = None
 
     # 為 mask 等
     mask: str = ""

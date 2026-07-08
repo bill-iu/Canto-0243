@@ -1,19 +1,18 @@
-/** ponytail: MF-4 executeMatchSpec vertical slice — 4 stub kinds on fixture db */
+/** ponytail: MF-4 executeMatchSpec vertical slice — stub kinds on fixture db */
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
-  QueryKind,
   normalizeAndParse,
   parseCodeRefMiddleRhymeQuery,
   queryEngine,
-  type HybridTailEqualsAliasQuery,
   type ParsedQuery,
 } from '../src/db/query-engine.ts';
 import { injectDatabaseForTests } from '../src/db/init.ts';
 import { executeMatchSpec } from '../src/db/position-match/engine.ts';
 import { normalizeToMatchSpec } from '../src/db/position-match/match-spec-registry.ts';
+import { getEqualsSpan } from '../src/db/position-match/spec.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
@@ -50,12 +49,8 @@ if (codeRef) {
   cases.push({ label: 'CODE_REF_MIDDLE_RHYME', parsed: codeRef, expectCount: 0 });
 }
 
-const hybridAlias: HybridTailEqualsAliasQuery = {
-  kind: QueryKind.HYBRID_TAIL_EQUALS_ALIAS,
-  raw_q: '23就=',
-  hybrid_q: '23就',
-};
-cases.push({ label: 'HYBRID_TAIL_EQUALS_ALIAS', parsed: hybridAlias, expectCount: 0 });
+const equalsParsed = normalizeAndParse('23就=');
+cases.push({ label: 'EQUALS code sandwich', parsed: equalsParsed, expectCount: 0 });
 
 for (const { label, parsed, expectCount } of cases) {
   const spec = normalizeToMatchSpec(parsed);
@@ -87,9 +82,9 @@ if (dispatchWildcard.items.length !== 0) {
   throw new Error('position-match-engine-self-check: dispatch ?30人 should be empty on fixture');
 }
 
-const hybridSpec = normalizeToMatchSpec(hybridAlias);
-if (!hybridSpec?.hybrid_ref_chars) {
-  throw new Error('position-match-engine-self-check: hybrid alias rewrite failed');
+const equalsSpec = normalizeToMatchSpec(equalsParsed);
+if (!equalsSpec || !getEqualsSpan(equalsSpec)) {
+  throw new Error('position-match-engine-self-check: 23就= equals spec missing span');
 }
 
 await db.close();

@@ -5,11 +5,7 @@ import re
 from typing import Any, Optional
 
 from app.services.jyutping_anchor import parse_jyutping_anchor_query, rhyme_letters_resolve_ok
-from app.services.query_grammar.equals import (
-    hybrid_query_from_tail_equals,
-    is_framed_equals_query,
-    is_hybrid_tail_equals_alias,
-)
+from app.services.query_grammar.equals import is_framed_equals_query
 from app.services.query_grammar.mask import looks_like_mask_query
 from app.services.query_grammar.heteronym import parse_heteronym_code_query
 from app.services.query_grammar.relation import parse_doubled_syllable_syntax, parse_relation_syntax
@@ -39,7 +35,6 @@ from app.services.query_grammar.wca import parse_wildcard_code_anchor_query
 from app.services.query_lexer import normalize_search_query, slot_connector_syntax_error
 from app.services.query_tokens import CODE_TAIL_MIDDLE
 from app.services.query_types import (
-    HYBRID_CODE_RE,
     JYUTPING_ANCHOR_INVALID_HINT,
     CodeRefMiddleRhymeQuery,
     CompoundAntQuery,
@@ -50,8 +45,6 @@ from app.services.query_types import (
     CompoundSynQuery,
     DigitCodeQuery,
     EqualsQuery,
-    HybridCodeQuery,
-    HybridTailEqualsAliasQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
     LiteralRefQuery,
@@ -73,7 +66,6 @@ from app.services.query_types import (
 
 # ponytail: 過渡 re-export；新 code 請 from query_types
 __all__ = [
-    "HYBRID_CODE_RE",
     "JYUTPING_ANCHOR_INVALID_HINT",
     "CodeRefMiddleRhymeQuery",
     "CompoundAntQuery",
@@ -82,8 +74,6 @@ __all__ = [
     "CompoundSynQuery",
     "DigitCodeQuery",
     "EqualsQuery",
-    "HybridCodeQuery",
-    "HybridTailEqualsAliasQuery",
     "JyutpingAnchorQuery",
     "JyutpingFragmentQuery",
     "LiteralRefQuery",
@@ -275,10 +265,6 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     if rhyme_anchor_parsed:
         return RhymeAnchorQuery(**rhyme_anchor_parsed)
 
-    hybrid_match = HYBRID_CODE_RE.match(q)
-    if hybrid_match and not hybrid_match.group(3):
-        return HybridCodeQuery(raw_q=q)
-
     return None
 
 
@@ -342,13 +328,6 @@ def mode_redirect_hint(mode: str) -> str:
     return f"此語法已切換至 {label} 查詢"
 
 
-def _rewrite_mask_family_aliases(parsed: ParsedQuery) -> ParsedQuery:
-    """別名改寫（如 HybridTailEqualsAlias → HybridCode），在正規化開頭完成。"""
-    if isinstance(parsed, HybridTailEqualsAliasQuery):
-        return HybridCodeQuery(raw_q=parsed.hybrid_q)
-    return parsed
-
-
 def build_equals_match_spec(q: str) -> Optional["MatchSpec"]:
     """Re-export：實作於 query_grammar.equals。"""
     from app.services.query_grammar.equals import build_equals_match_spec as _build
@@ -367,7 +346,6 @@ def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
     """查詢分派：ParsedQuery → MatchSpec（含別名改寫）。無 DB。"""
     from app.services.query_match_spec_registry import build_match_spec_for_parsed
 
-    parsed = _rewrite_mask_family_aliases(parsed)
     return build_match_spec_for_parsed(parsed)
 
 

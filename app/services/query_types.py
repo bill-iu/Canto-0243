@@ -1,12 +1,9 @@
 """查詢分派型別 — QueryKind 與 ParsedQuery 家族（#4 自 query_parse 抽出）。"""
 from __future__ import annotations
 
-import re
 from dataclasses import asdict, dataclass
 from enum import Enum
 from typing import Literal, Optional, Union
-
-HYBRID_CODE_RE = re.compile(r"^(\d+)([一-龥]+)(\d*)$")
 
 JYUTPING_ANCHOR_INVALID_HINT = (
     "粵拼錨無效：韻母片段喺收錄讀音中搵唔到對應。請檢查拼寫或改用漢字錨。"
@@ -21,7 +18,6 @@ class QueryKind(str, Enum):
     COMPOUND_SYN = "compound_syn"
     COMPOUND_DOUBLED_SYLLABLE = "compound_doubled_syllable"
     HETERONYM_CODE = "heteronym_code"
-    HYBRID_TAIL_EQUALS_ALIAS = "hybrid_tail_equals_alias"
     EQUALS = "equals"
     PLUS_ANCHOR = "plus_anchor"
     WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
@@ -34,7 +30,6 @@ class QueryKind(str, Enum):
     RHYME_ANCHOR = "rhyme_anchor"
     TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
     JYUTPING_ANCHOR = "jyutping_anchor"
-    HYBRID_CODE = "hybrid_code"
     MASK = "mask"
     DIGIT_CODE = "digit_code"
     WORD_LOOKUP = "word_lookup"
@@ -122,16 +117,6 @@ class CompoundConnectAntQuery:
     @property
     def kind(self) -> QueryKind:
         return QueryKind.COMPOUND_ANT
-
-
-@dataclass(frozen=True)
-class HybridTailEqualsAliasQuery:
-    raw_q: str
-    hybrid_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.HYBRID_TAIL_EQUALS_ALIAS
 
 
 @dataclass(frozen=True)
@@ -303,15 +288,6 @@ class TripleRhymeAnchorQuery:
 
 
 @dataclass(frozen=True)
-class HybridCodeQuery:
-    raw_q: str
-
-    @property
-    def kind(self) -> QueryKind:
-        return QueryKind.HYBRID_CODE
-
-
-@dataclass(frozen=True)
 class MaskQuery:
     raw_q: str
 
@@ -365,7 +341,6 @@ ParsedQuery = Union[
     CompoundAntQuery,
     CompoundConnectSynQuery,
     CompoundConnectAntQuery,
-    HybridTailEqualsAliasQuery,
     EqualsQuery,
     PrefixWildcardEqualsQuery,
     PartialRhymeMaskQuery,
@@ -378,7 +353,6 @@ ParsedQuery = Union[
     RhymeAnchorQuery,
     TripleRhymeAnchorQuery,
     JyutpingAnchorQuery,
-    HybridCodeQuery,
     MaskQuery,
     DigitCodeQuery,
     WordLookupQuery,

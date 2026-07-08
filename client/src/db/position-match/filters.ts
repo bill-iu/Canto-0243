@@ -372,94 +372,6 @@ export async function filterCandidatesByMatchSpec(
   return filterWordsByCodeAndMask(pool, spec, mode, db);
 }
 
-async function buildFinalOptionsAtPositions(
-  db: Database,
-  refChars: string,
-  startPos: number,
-  width: number,
-): Promise<Array<Set<string> | null>> {
-  const target: Array<Set<string> | null> = Array.from({ length: width }, () => null);
-  for (let i = 0; i < refChars.length; i++) {
-    const pos = startPos + i;
-    if (pos >= 0 && pos < width) {
-      const opts = await anchorPhonemeOptions(db, refChars[i]!, 'final');
-      if (opts.size) {
-        target[pos] = opts;
-      }
-    }
-  }
-  return target;
-}
-
-function matchesHybridRefChars(
-  wordChar: string,
-  wordFinals: string[],
-  refChars: string,
-  startPos: number,
-  targetFinalOptions: Array<Set<string> | null>,
-): boolean {
-  const width = targetFinalOptions.length;
-  if (wordChar.length !== width || wordFinals.length !== width) {
-    return false;
-  }
-  for (let i = 0; i < refChars.length; i++) {
-    const pos = startPos + i;
-    if (pos < 0 || pos >= width) {
-      return false;
-    }
-    if (wordChar[pos] === refChars[i]) {
-      continue;
-    }
-    const options = targetFinalOptions[pos];
-    if (options?.size && wordFinals[pos] && options.has(wordFinals[pos]!)) {
-      continue;
-    }
-    return false;
-  }
-  return true;
-}
-
-export async function filterHybridRefCandidates(
-  candidates: WordRow[],
-  spec: MatchSpec,
-  mode: string,
-  db: Database,
-): Promise<WordRow[]> {
-  if (spec.hybrid_ref_chars == null || spec.hybrid_ref_pos == null) {
-    return candidates;
-  }
-  const targetFinalOptions = await buildFinalOptionsAtPositions(
-    db,
-    spec.hybrid_ref_chars,
-    spec.hybrid_ref_pos,
-    spec.width,
-  );
-  const allowedCodes = spec.code_prefix
-    ? new Set(getCodeVariants(spec.code_prefix, normalizeMode(mode)))
-    : null;
-  const out: WordRow[] = [];
-  for (const word of candidates) {
-    const wordCode = getWordCode(word);
-    if (allowedCodes && !allowedCodes.has(wordCode)) {
-      continue;
-    }
-    const wordChar = getWordText(word);
-    const wordFinals = getRhymeFinals(word);
-    if (
-      matchesHybridRefChars(
-        wordChar,
-        wordFinals,
-        spec.hybrid_ref_chars,
-        spec.hybrid_ref_pos,
-        targetFinalOptions,
-      )
-    ) {
-      out.push(word);
-    }
-  }
-  return out;
-}
-
 /** ponytail: equals path in equals-filters.ts (MF-5 F4) */
 export async function applyMatchSpec(
   spec: MatchSpec,
@@ -473,9 +385,6 @@ export async function applyMatchSpec(
   if (spec.compound_kind) {
     const pool = await getCompoundCandidatesForSpec(spec, db, mode);
     return filterCandidatesByMatchSpec(pool, spec, mode, db);
-  }
-  if (spec.hybrid_ref_chars != null && spec.hybrid_ref_pos != null) {
-    return filterHybridRefCandidates(candidates, spec, mode, db);
   }
   return filterCandidatesByMatchSpec(candidates, spec, mode, db);
 }

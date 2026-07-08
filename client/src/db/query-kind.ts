@@ -10,7 +10,6 @@ export enum QueryKind {
   COMPOUND_SYN = 'compound_syn',
   COMPOUND_ANT = 'compound_ant',
   COMPOUND_DOUBLED_SYLLABLE = 'compound_doubled_syllable',
-  HYBRID_TAIL_EQUALS_ALIAS = 'hybrid_tail_equals_alias',
   EQUALS = 'equals',
   PREFIX_WILDCARD_EQUALS = 'prefix_wildcard_equals',
   PARTIAL_RHYME_MASK = 'partial_rhyme_mask',
@@ -23,7 +22,6 @@ export enum QueryKind {
   RHYME_ANCHOR = 'rhyme_anchor',
   TRIPLE_RHYME_ANCHOR = 'triple_rhyme_anchor',
   JYUTPING_ANCHOR = 'jyutping_anchor',
-  HYBRID_CODE = 'hybrid_code',
   HETERONYM_CODE = 'heteronym_code',
 }
 

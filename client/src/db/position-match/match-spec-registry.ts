@@ -21,7 +21,6 @@ import type {
   CompoundDoubledSyllableQuery,
   CompoundSynQuery,
   EqualsQuery,
-  HybridCodeQuery,
   JyutpingAnchorQuery,
   LiteralRefQuery,
   MaskQuery,
@@ -34,10 +33,8 @@ import type {
   SerialPhonemeAnchorQuery,
   TripleRhymeAnchorQuery,
   WildcardCodeAnchorQuery,
-  HybridTailEqualsAliasQuery,
 } from '../query-engine.ts';
 
-const HYBRID_CODE_RE = /^(\d+)([\u4e00-\u9fff]+)(\d*)$/;
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
 const CONNECT_SYN_RE = new RegExp(`^(\\d*)~([${FILLWORD_CONNECTIVES}])~`);
 const CONNECT_ANT_RE = new RegExp(`^(\\d*)!([${FILLWORD_CONNECTIVES}])!`);
@@ -262,23 +259,6 @@ function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
   return buildJyutpingAnchorMatchSpec(q);
 }
 
-function specHybridCode(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as HybridCodeQuery;
-  const hybridMatch = HYBRID_CODE_RE.exec(q.raw_q);
-  if (!hybridMatch) {
-    return createMatchSpec(0);
-  }
-  const numPrefix = hybridMatch[1]!;
-  const refChars = hybridMatch[2]!;
-  const numSuffix = hybridMatch[3] ?? '';
-  const fullCode = numPrefix + numSuffix;
-  return createMatchSpec(fullCode.length, {
-    code_prefix: fullCode,
-    hybrid_ref_chars: refChars,
-    hybrid_ref_pos: Math.max(0, numPrefix.length - 1),
-  });
-}
-
 function specMask(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as MaskQuery;
   const { literalPositions } = parseMaskQuery(q.raw_q);
@@ -363,7 +343,6 @@ export const MATCH_SPEC_BUILDERS: Partial<Record<QueryKind, MatchSpecBuilder>> =
   [QueryKind.RHYME_ANCHOR]: specRhymeAnchor,
   [QueryKind.TRIPLE_RHYME_ANCHOR]: specTripleRhymeAnchor,
   [QueryKind.JYUTPING_ANCHOR]: specJyutpingAnchor,
-  [QueryKind.HYBRID_CODE]: specHybridCode,
   [QueryKind.MASK]: specMask,
   [QueryKind.COMPOUND_SYN]: specCompoundSyn,
   [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: specCompoundDoubledSyllable,
@@ -379,18 +358,9 @@ export function buildMatchSpecForParsed(parsed: ParsedQuery): MatchSpec | null {
   return builder(parsed);
 }
 
-/** Port of query_parse._rewrite_mask_family_aliases */
-export function rewriteMaskFamilyAliases(parsed: ParsedQuery): ParsedQuery {
-  if (parsed.kind === QueryKind.HYBRID_TAIL_EQUALS_ALIAS) {
-    const q = parsed as HybridTailEqualsAliasQuery;
-    return { kind: QueryKind.HYBRID_CODE, raw_q: q.hybrid_q };
-  }
-  return parsed;
-}
-
 /** Alias — port of normalize_to_match_spec */
 export function normalizeToMatchSpec(parsed: ParsedQuery): MatchSpec | null {
-  return buildMatchSpecForParsed(rewriteMaskFamilyAliases(parsed));
+  return buildMatchSpecForParsed(parsed);
 }
 
 function anchorSlots(spec: MatchSpec): SlotConstraint[] {
@@ -438,9 +408,6 @@ export function validateRepresentativeMatchSpec(
   }
   if ('compound_kind' in expected && spec.compound_kind !== expected.compound_kind) {
     throw new Error(`match-spec registry: ${q} compound_kind`);
-  }
-  if ('hybrid_ref' in expected && spec.hybrid_ref_chars !== expected.hybrid_ref) {
-    throw new Error(`match-spec registry: ${q} hybrid_ref`);
   }
   if (expected.literal_priority && !spec.literal_priority) {
     throw new Error(`match-spec registry: ${q} literal_priority`);

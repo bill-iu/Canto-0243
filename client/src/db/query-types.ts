@@ -86,11 +86,6 @@ export interface JyutpingAnchorQuery extends ParsedQuery {
   dual_initial_value?: string;
 }
 
-export interface HybridCodeQuery extends ParsedQuery {
-  kind: QueryKind.HYBRID_CODE;
-  raw_q: string;
-}
-
 export interface LiteralRefQuery extends ParsedQuery {
   kind: QueryKind.LITERAL_REF;
   raw_q: string;

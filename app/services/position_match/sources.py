@@ -354,12 +354,6 @@ def _resolve_mask_family_source(
         sort_key = lambda w: literal_priority_sort_key(w, literal_positions)
         return source, sort_key
 
-    if spec.hybrid_ref_chars:
-        source = LengthCodeCandidateSource(
-            db, code=spec.code_prefix, mode=mode, fallback_limit=None
-        )
-        return source, None
-
     anchor = _phoneme_anchor_slot(spec)
     if anchor and spec.mask and not spec.literal_priority:
         constraint = "final" if anchor.kind == "final_anchor" else "initial"

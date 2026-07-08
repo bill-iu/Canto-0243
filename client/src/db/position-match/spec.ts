@@ -40,8 +40,6 @@ export interface MatchSpec {
   slots?: SlotConstraint[];
   code_prefix?: string | null;
   literal_priority?: boolean;
-  hybrid_ref_chars?: string | null;
-  hybrid_ref_pos?: number | null;
   mask?: string;
   compound_kind?: CompoundKind | null;
   extra?: Record<string, unknown>;
