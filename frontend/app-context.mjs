@@ -116,9 +116,11 @@ export function t(key, lang = getLang()) {
   return MESSAGES[lang]?.[key] ?? MESSAGES.zh[key] ?? key;
 }
 
-export function getTheme() {
+export function getTheme(options = {}) {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'light' || saved === 'dark') return saved;
+  const fallback = options.defaultTheme;
+  if (fallback === 'light' || fallback === 'dark') return fallback;
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 

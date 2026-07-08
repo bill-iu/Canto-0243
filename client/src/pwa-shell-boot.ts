@@ -16,10 +16,9 @@ export function revealPwaShell(): void {
 export function applyBootThemeFromStorage(): void {
   try {
     const theme = localStorage.getItem('canto-theme');
-    if (theme === 'dark' || theme === 'light') {
-      document.documentElement.dataset.theme = theme;
-    }
+    document.documentElement.dataset.theme =
+      theme === 'dark' || theme === 'light' ? theme : 'dark';
   } catch {
-    /* storage unavailable */
+    document.documentElement.dataset.theme = 'dark';
   }
 }
