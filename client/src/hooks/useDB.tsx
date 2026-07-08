@@ -255,6 +255,8 @@ export function useDB(): UseDBReturn {
   return ctx;
 }
 
+const SEARCH_LOADING_LABEL_DELAY_MS = 150;
+
 /**
  * Hook for a specific query with loading state and load-more pagination.
  */
@@ -271,6 +273,7 @@ export function useSearch(
   const [total, setTotal] = useState<number | null>(null);
   const [hint, setHint] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingVisible, setLoadingVisible] = useState<boolean>(false);
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
   const [lastPageSize, setLastPageSize] = useState(0);
@@ -335,6 +338,21 @@ export function useSearch(
     };
   }, [trimmed, mode, pageSize, canSearch, fallback0243Mode, uiLang]);
 
+  const isLoading = loading || status === 'loading';
+
+  useEffect(() => {
+    if (!isLoading) {
+      setLoadingVisible(false);
+      return;
+    }
+    if (results.length > 0) {
+      setLoadingVisible(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setLoadingVisible(true), SEARCH_LOADING_LABEL_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [isLoading, results.length]);
+
   const loadMore = useCallback(async () => {
     if (!canSearch || loading || loadingMore || !hasMore) {
       return;
@@ -366,7 +384,8 @@ export function useSearch(
     results,
     total,
     hint,
-    loading: loading || status === 'loading',
+    loading: isLoading,
+    loadingVisible,
     loadingMore,
     error: searchError,
     isReady,

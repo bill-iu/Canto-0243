@@ -52,10 +52,28 @@ function shouldShowLoadMore(tab) {
   return (total != null && results.length < total) || results.length >= PAGE_SIZE;
 }
 
-function setButtonLoading(loading) {
+const SEARCH_LOADING_LABEL_DELAY_MS = 150;
+let searchLoadingLabelTimer = null;
+
+function clearSearchLoadingLabelTimer() {
+  if (searchLoadingLabelTimer) {
+    clearTimeout(searchLoadingLabelTimer);
+    searchLoadingLabelTimer = null;
+  }
+}
+
+function setButtonLoading(loading, { staleResults = false } = {}) {
   shell.isSearching = loading;
   $.searchBtn.disabled = loading || !shell.appSearchReady;
-  $.searchBtn.textContent = loading ? "搜尋中…" : "搜尋";
+  clearSearchLoadingLabelTimer();
+  if (!loading) {
+    $.searchBtn.textContent = "搜尋";
+    return;
+  }
+  if (staleResults) return;
+  searchLoadingLabelTimer = setTimeout(() => {
+    if (shell.isSearching) $.searchBtn.textContent = "搜尋中…";
+  }, SEARCH_LOADING_LABEL_DELAY_MS);
 }
 
 function updateModeLabel(lang = getLang()) {
@@ -492,9 +510,10 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const input = $.searchInput.value.trim();
   if (!isLoadMore && input) tab.q = input;
   if (!restoreFromHistory) showSearch({ replace: true });
-  setButtonLoading(true);
+  const staleResults = !isLoadMore && (tab.results?.length > 0);
+  setButtonLoading(true, { staleResults });
 
-  if (!isLoadMore) {
+  if (!isLoadMore && !staleResults) {
     $.results.innerHTML = "";
     $.stats.textContent = "";
     tab.results = [];

@@ -237,6 +237,7 @@ function App() {
     total,
     hint: searchHint,
     loading: searchLoading,
+    loadingVisible: searchLoadingVisible,
     loadingMore,
     error: searchError,
     hasMore,
@@ -822,7 +823,9 @@ function App() {
                 {displayHint && displayResults.length > 0 && (
                   <p className="search-hint">{displayHint}</p>
                 )}
-                {useLiveFetch && searchLoading && <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>}
+                {useLiveFetch && searchLoadingVisible && (
+                  <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
+                )}
                 {useLiveFetch && searchError && (
                   <p className="error">錯誤: {searchError.message}</p>
                 )}
