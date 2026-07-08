@@ -44,6 +44,7 @@ from app.services.query_types import (
     HeteronymCodeQuery,
     CompoundSynQuery,
     DigitCodeQuery,
+    PingZeSerialQuery,
     EqualsQuery,
     JyutpingAnchorQuery,
     JyutpingFragmentQuery,
@@ -276,6 +277,12 @@ def parse_query(q: str) -> ParsedQuery:
 
     if looks_like_mask_query(q):
         return MaskQuery(raw_q=q)
+
+    from app.services.ping_zak import try_parse_ping_ze_serial
+
+    ping_ze_parsed = try_parse_ping_ze_serial(q)
+    if ping_ze_parsed is not None:
+        return ping_ze_parsed
 
     if q.isdigit():
         return DigitCodeQuery(raw_q=q)

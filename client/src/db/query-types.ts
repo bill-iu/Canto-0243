@@ -7,6 +7,11 @@ export interface ParsedQuery {
   raw_q: string;
 }
 
+export interface PingZeSerialQuery extends ParsedQuery {
+  kind: QueryKind.PING_ZE_SERIAL;
+  raw_q: string;
+}
+
 export interface DigitCodeQuery extends ParsedQuery {
   kind: QueryKind.DIGIT_CODE;
   raw_q: string;

@@ -33,7 +33,8 @@ import {
   hasAnchorResultLayout,
 } from './anchor-result-list';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isRelationSyntaxQuery } from './db/query-engine';
+import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
+import { pingZeModeRedirectHint } from './db/ping-zak';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -136,6 +137,7 @@ function App() {
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
+  const pingZeSyntax = trimmedInput ? isPingZeSerialQuery(trimmedInput) : false;
   const searchKey = `${searchQuery}\0${mode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
 
@@ -175,6 +177,13 @@ function App() {
       setRedirectHint(null);
       return;
     }
+    if (pingZeSyntax) {
+      setRedirectHint(pingZeModeRedirectHint('m2', uiLang));
+      if (mode === 'synonym' || mode === '0243') {
+        setMode('02493');
+      }
+      return;
+    }
     if (relationSyntax) {
       setRedirectHint(modeRedirectHint(last0243Mode === '02493' ? 'm2' : 'm1', uiLang));
       if (mode === 'synonym') {
@@ -183,7 +192,7 @@ function App() {
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
+  }, [trimmedInput, pingZeSyntax, relationSyntax, mode, last0243Mode, uiLang]);
 
   const {
     isReady,

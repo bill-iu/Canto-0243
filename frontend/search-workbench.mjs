@@ -1,4 +1,5 @@
 import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
+import { isPingZeSerialQuery, pingZeModeRedirectHint } from "./ping-ze-syntax.mjs";
 import { escapeHtml, escapeHtmlAttr } from "./dom-escape.mjs";
 import {
   $,
@@ -357,6 +358,17 @@ function maybeModeRedirectForRelationSyntax(input, tab) {
   }
 }
 
+function maybeModeRedirectForPingZeSerial(input, tab) {
+  if (!isPingZeSerialQuery(input)) return;
+  if (shell.currentMode === "m2") return;
+  tab.offset = 0;
+  tab.redirectHint = pingZeModeRedirectHint(getLang());
+  if (shell.currentMode !== "m2") {
+    shell.currentMode = "m2";
+    updateModeLabel();
+  }
+}
+
 function decodeSearchHintHeader(raw) {
   if (!raw) return raw;
   const prefix = "UTF-8''";
@@ -594,6 +606,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   tab.q = input;
   if (!isLoadMore) {
     maybeModeRedirectForRelationSyntax(input, tab);
+    maybeModeRedirectForPingZeSerial(input, tab);
   }
   if (!restoreFromHistory && !isLoadMore) {
     const { pushed } = commitSearchHistoryFrame(tab, { q: input, mode: shell.currentMode });

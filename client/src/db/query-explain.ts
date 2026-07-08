@@ -13,6 +13,7 @@ import type {
   WordLookupQuery,
 } from './query-engine.ts';
 import { QueryKind, normalizeAndParse } from './query-engine.ts';
+import { slotLabel } from './ping-zak.ts';
 import { buildMatchSpecForParsed } from './position-match/match-spec-registry.ts';
 import { getEqualsSpan, type EqualsSpan, type MatchSpec } from './position-match/spec.ts';
 
@@ -93,6 +94,11 @@ function summaryFor(parsed: ParsedQuery): string | null {
   }
   if (parsed.kind === QueryKind.DIGIT_CODE) {
     return `查同${(parsed as DigitCodeQuery).raw_q}同音嘅字`;
+  }
+  if (parsed.kind === QueryKind.PING_ZE_SERIAL) {
+    const pz = parsed as import('./query-types.ts').PingZeSerialQuery;
+    const parts = [...pz.raw_q].map((ch) => slotLabel(ch));
+    return `查${parts.join('、')}嘅${widthLabel(pz.raw_q.length)}詞`;
   }
   if (parsed.kind === QueryKind.RELATION_LOOKUP) {
     const rel = parsed as RelationLookupQuery;
