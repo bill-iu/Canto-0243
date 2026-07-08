@@ -15,6 +15,9 @@ import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 
 const GUIDE_ZERO_CASES = [
   '?困潦倒=',
+  '23+好',
+  '2+好3',
+  '+門0',
   '?4困=4潦=9倒=',
   '!你',
   '33!開心',

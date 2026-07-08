@@ -26,6 +26,10 @@ GUIDE_CHARS = frozenset({
     "兄與弟", "夫與婦", "妻與夫", "師與徒", "父與母", "公與婆",
     # jyutping_lookup self-check (nei hou / ming4 baak6)
     "你好", "明白",
+    # plus-anchor guide parity (23+好 / 2+好3 / +門0)
+    "弄不好", "十分好", "未諗好",
+    "仲好講", "仲好咩", "仲好啦",
+    "門牙", "門人",
 })
 
 

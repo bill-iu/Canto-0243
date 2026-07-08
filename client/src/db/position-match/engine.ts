@@ -11,18 +11,11 @@ import type { WordRow } from './word-row.ts';
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
 
 function shouldUseMaskCandidates(spec: MatchSpec): boolean {
-  if (spec.extra?.partial_rhyme_mask || spec.extra?.partial_initial_mask) {
-    return Boolean(spec.mask);
-  }
+  // ponytail: parity with Python _resolve_mask_family_source — any mask → LengthMaskCandidateSource
   if (!spec.mask || spec.compound_kind || getEqualsSpan(spec)) {
     return false;
   }
-  if (spec.literal_priority) {
-    return true;
-  }
-  return (spec.slots ?? []).some(
-    (s) => s.kind === 'final_anchor' || s.kind === 'initial_anchor',
-  );
+  return true;
 }
 
 function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
