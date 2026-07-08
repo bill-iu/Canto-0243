@@ -172,6 +172,30 @@ export function buildEntryDetailModel(payload) {
   };
 }
 
+/** Sync model from list-click rows — no DB round-trip. */
+export function buildEntryDetailModelFromPick(literal, readings, options = {}) {
+  const text = String(literal ?? '').trim();
+  if (!text || !readings?.length) return null;
+  const rows = readings.map((r) => ({
+    word: text,
+    char: text,
+    jyutping: r.jyutping ?? '',
+    code: r.code ?? '',
+    initials: r.initials,
+    finals: r.finals,
+    source_flags: r.source_flags,
+  }));
+  return buildEntryDetailModel({
+    literal: text,
+    length: options.length ?? [...text].length,
+    corpusWeight: options.corpusWeight ?? 0,
+    readings: rows,
+    syns: [],
+    ants: [],
+    signals: options.signals ?? {},
+  });
+}
+
 export function pickPreferredReadingIndex(readings, clickedJyutping) {
   if (!clickedJyutping || !readings?.length) return 0;
   const idx = readings.findIndex((r) => r.jyutping === clickedJyutping);

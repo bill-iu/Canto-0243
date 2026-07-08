@@ -13,9 +13,15 @@ export function displayResults(results: QueryResult[]): QueryResult[] {
   });
 }
 
+export type EntryPickReading = {
+  jyutping?: string;
+  code?: string;
+};
+
 export type EntryPickPayload = {
   literal: string;
   jyutping?: string;
+  readings?: EntryPickReading[];
 };
 
 function resultKey(row: QueryResult, index: number): string {
@@ -48,7 +54,16 @@ export function ResultList({
             <button
               type="button"
               className="result-link"
-              onClick={() => onPick({ literal: group.literal, jyutping: pickJyutping })}
+              onClick={() =>
+                onPick({
+                  literal: group.literal,
+                  jyutping: pickJyutping,
+                  readings: group.readings.map((r) => ({
+                    jyutping: r.jyutping,
+                    code: r.code,
+                  })),
+                })
+              }
               aria-label={`${group.literal}${group.readingCount > 1 ? ` ${tDetail('detail.readings.n', lang, { n: group.readingCount })}` : ''}`}
             >
               <span className="word result-literal-only">{group.literal}</span>

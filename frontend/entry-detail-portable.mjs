@@ -4,6 +4,7 @@ import {
   mergeResultsByLiteral,
   resolveListClickAction,
   pickPreferredReadingIndex,
+  buildEntryDetailModelFromPick,
 } from './entry-detail-core.mjs';
 
 export function createMergedResultButton(group, { lang, activeLiteral, onPick }) {
@@ -24,7 +25,11 @@ export function createMergedResultButton(group, { lang, activeLiteral, onPick })
   }
   btn.addEventListener('click', (event) => {
     event.preventDefault();
-    onPick({ literal: group.literal, jyutping: group.readings[0]?.jyutping });
+    onPick({
+      literal: group.literal,
+      jyutping: group.readings[0]?.jyutping,
+      readings: group.readings.map((r) => ({ jyutping: r.jyutping, code: r.code })),
+    });
   });
   li.appendChild(btn);
   return li;

@@ -1,4 +1,7 @@
-import { buildEntryDetailModel } from '../../../frontend/entry-detail-core.mjs';
+import {
+  buildEntryDetailModel,
+  buildEntryDetailModelFromPick,
+} from '../../../frontend/entry-detail-core.mjs';
 import type { EntryDetailModel } from './types.ts';
 import { getDatabase, isDatabaseInitialized } from '../db/init.ts';
 import { queryRows } from '../db/database-backend.ts';
@@ -7,6 +10,14 @@ import { buildRelationPool } from '../db/relation-pool.ts';
 import { relationPoolSnapshotItems } from '../db/relation-pool-snapshot.ts';
 
 export type { EntryDetailModel } from './types.ts';
+
+export type EntryPickReading = {
+  jyutping?: string;
+  code?: string;
+  initials?: unknown;
+  finals?: unknown;
+  source_flags?: number;
+};
 
 const WORDS_SQL =
   'SELECT char, jyutping, code, initials, finals, length, source_flags FROM words WHERE char = ?';
@@ -46,6 +57,22 @@ async function fetchRelations(text: string): Promise<{ syns: string[]; ants: str
   return { syns, ants };
 }
 
+/** Zero-latency model from search-result rows already in memory. */
+export function instantEntryDetailModel(
+  literal: string,
+  readings: EntryPickReading[],
+): EntryDetailModel | null {
+  const text = literal.trim();
+  if (!text || !readings.length) return null;
+  return buildEntryDetailModelFromPick(text, readings, {
+    corpusWeight: getEssayFrequency(text),
+  }) as EntryDetailModel;
+}
+
+export function getCachedEntryDetail(literal: string): EntryDetailModel | null {
+  return fullCache.get(literal.trim()) ?? null;
+}
+
 /** Fast path: words row only (~10ms). */
 export async function loadEntryDetailCore(literal: string): Promise<EntryDetailModel | null> {
   const text = literal.trim();
@@ -56,6 +83,20 @@ export async function loadEntryDetailCore(literal: string): Promise<EntryDetailM
 
   const rows = await fetchWordRows(text);
   return coreFromRows(text, rows);
+}
+
+/** Merge DB fields (phonetic, sources, corpus) into an existing model. */
+export async function enrichEntryDetailFromDb(model: EntryDetailModel): Promise<EntryDetailModel> {
+  const text = model.literal.trim();
+  if (!text || !isDatabaseInitialized()) return model;
+
+  const cached = fullCache.get(text);
+  if (cached) return cached;
+
+  const rows = await fetchWordRows(text);
+  const dbModel = coreFromRows(text, rows);
+  if (!dbModel) return model;
+  return { ...dbModel, syns: model.syns, ants: model.ants };
 }
 
 /** Slow path: near/antonym pool (~2s). */

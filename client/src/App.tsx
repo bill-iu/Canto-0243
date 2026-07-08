@@ -11,7 +11,10 @@ import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { ResultList, type EntryPickPayload } from './result-list';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
+  enrichEntryDetailFromDb,
   enrichEntryDetailRelations,
+  getCachedEntryDetail,
+  instantEntryDetailModel,
   loadEntryDetailCore,
 } from './entry-detail/load-entry-detail';
 import type { EntryDetailModel } from './entry-detail/types';
@@ -400,43 +403,73 @@ function App() {
     setPreferredJyutping(null);
   }, []);
 
-  const openEntryDetailForLiteral = useCallback(
-    async (literal: string, jyutping?: string | null) => {
-      const gen = ++detailLoadGenRef.current;
-      setDetailOpen(true);
-      setActiveDetailLiteral(literal);
-      setPreferredJyutping(jyutping ?? null);
-      if (!isReady) {
-        setDetailModel(null);
-        setDetailRelationsLoading(false);
-        return;
-      }
-      setDetailRelationsLoading(true);
-      const core = await loadEntryDetailCore(literal);
-      if (gen !== detailLoadGenRef.current) return;
-      setDetailModel(core);
-      if (!core) {
-        setDetailRelationsLoading(false);
-        return;
-      }
-      if (core.syns.length || core.ants.length) {
-        setDetailRelationsLoading(false);
-        return;
-      }
-      void enrichEntryDetailRelations(core).then((full) => {
+  const scheduleEntryDetailEnrich = useCallback((base: EntryDetailModel, gen: number) => {
+    queueMicrotask(() => {
+      void (async () => {
+        if (gen !== detailLoadGenRef.current || !isReady) return;
+        const fromDb = await enrichEntryDetailFromDb(base);
+        if (gen !== detailLoadGenRef.current) return;
+        setDetailModel(fromDb);
+        const full = await enrichEntryDetailRelations(fromDb);
         if (gen !== detailLoadGenRef.current) return;
         setDetailModel(full);
         setDetailRelationsLoading(false);
+      })();
+    });
+  }, [isReady]);
+
+  const openEntryDetailFromPick = useCallback(
+    (payload: EntryPickPayload) => {
+      const gen = ++detailLoadGenRef.current;
+      const literal = payload.literal.trim();
+      setDetailOpen(true);
+      setActiveDetailLiteral(literal);
+      setPreferredJyutping(payload.jyutping ?? null);
+
+      const cached = getCachedEntryDetail(literal);
+      if (cached) {
+        setDetailModel(cached);
+        setDetailRelationsLoading(false);
+        return;
+      }
+
+      const instant = payload.readings?.length
+        ? instantEntryDetailModel(literal, payload.readings)
+        : null;
+      setDetailModel(instant);
+      setDetailRelationsLoading(true);
+
+      if (!isReady) return;
+
+      if (instant) {
+        scheduleEntryDetailEnrich(instant, gen);
+        return;
+      }
+
+      queueMicrotask(() => {
+        void (async () => {
+          const core = await loadEntryDetailCore(literal);
+          if (gen !== detailLoadGenRef.current) return;
+          setDetailModel(core);
+          if (!core) {
+            setDetailRelationsLoading(false);
+            return;
+          }
+          scheduleEntryDetailEnrich(core, gen);
+        })();
       });
     },
-    [isReady],
+    [isReady, scheduleEntryDetailEnrich],
   );
 
   useEffect(() => {
     if (!detailOpen || !activeDetailLiteral || !isReady) return;
     if (detailModel?.literal === activeDetailLiteral) return;
-    void openEntryDetailForLiteral(activeDetailLiteral, preferredJyutping);
-  }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailForLiteral]);
+    openEntryDetailFromPick({
+      literal: activeDetailLiteral,
+      jyutping: preferredJyutping ?? undefined,
+    });
+  }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailFromPick]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string) => {
@@ -551,19 +584,21 @@ function App() {
         return;
       }
       if (action === 'open_only') {
-        void openEntryDetailForLiteral(payload.literal, payload.jyutping);
+        setDetailOpen(true);
+        setActiveDetailLiteral(payload.literal);
+        setPreferredJyutping(payload.jyutping ?? null);
         return;
       }
+      openEntryDetailFromPick(payload);
       hydrateSearch(payload.literal);
       runCommittedSearch(payload.literal);
-      void openEntryDetailForLiteral(payload.literal, payload.jyutping);
     },
     [
       mode,
       detailOpen,
       activeDetailLiteral,
       closeEntryDetail,
-      openEntryDetailForLiteral,
+      openEntryDetailFromPick,
       hydrateSearch,
       runCommittedSearch,
     ],
@@ -571,11 +606,11 @@ function App() {
 
   const handleRelationPick = useCallback(
     (literal: string) => {
+      openEntryDetailFromPick({ literal });
       hydrateSearch(literal);
       runCommittedSearch(literal);
-      void openEntryDetailForLiteral(literal, null);
     },
-    [hydrateSearch, openEntryDetailForLiteral, runCommittedSearch],
+    [openEntryDetailFromPick, hydrateSearch, runCommittedSearch],
   );
 
   const handleSearchMainClick = useCallback(
@@ -832,7 +867,7 @@ function App() {
                   key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
                   literal={activeDetailLiteral}
                   model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
-                  loading={!detailModel || detailModel.literal !== activeDetailLiteral}
+                  loading={!detailModel}
                   relationsLoading={detailRelationsLoading}
                   lang={uiLang}
                   preferredJyutping={preferredJyutping}

@@ -3,6 +3,7 @@ import {
   resolveListClickAction,
   code0243FromJyutping,
   buildEntryDetailModel,
+  buildEntryDetailModelFromPick,
 } from '../../frontend/entry-detail-core.mjs';
 
 const rows = [
@@ -35,6 +36,11 @@ const model = buildEntryDetailModel({
 
 if (model.readings[0]?.initials.join(' ') !== 'h g') {
   throw new Error('buildEntryDetailModel phonetic');
+}
+
+const instant = buildEntryDetailModelFromPick('香港', [{ jyutping: 'hoeng1 gong2', code: '39' }]);
+if (instant?.readings[0]?.code0243 !== '39') {
+  throw new Error('buildEntryDetailModelFromPick');
 }
 
 console.log('entry-detail-core self-check ok');

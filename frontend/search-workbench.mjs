@@ -30,6 +30,7 @@ import {
   mergeResultsByLiteral,
   resolveListClickAction,
   isListableWordRow,
+  buildEntryDetailModelFromPick,
 } from "./entry-detail-core.mjs";
 import {
   createEntryDetailPanel,
@@ -185,12 +186,15 @@ function closeEntryDetail() {
   syncEntryDetailLayout();
 }
 
-function openEntryDetail(literal, preferredJyutping) {
+function openEntryDetail(literal, preferredJyutping, readings) {
   shell.entryDetail.open = true;
   shell.entryDetail.activeLiteral = literal;
   shell.entryDetail.preferredJyutping = preferredJyutping ?? null;
   syncEntryDetailLayout();
-  ensureEntryDetailUi().showPending(literal);
+  const ui = ensureEntryDetailUi();
+  const instant = readings?.length ? buildEntryDetailModelFromPick(literal, readings) : null;
+  if (instant) ui.setModel(instant, preferredJyutping);
+  else ui.showPending(literal);
   void fetchEntryDetail(literal).then((model) => {
     if (model && shell.entryDetail.activeLiteral === literal) {
       ensureEntryDetailUi().setModel(model, preferredJyutping);
@@ -214,7 +218,10 @@ async function handleEntryPick(payload) {
     return;
   }
   if (action === "open_only") {
-    openEntryDetail(payload.literal, payload.jyutping);
+    shell.entryDetail.open = true;
+    shell.entryDetail.activeLiteral = payload.literal;
+    shell.entryDetail.preferredJyutping = payload.jyutping ?? null;
+    syncEntryDetailLayout();
     return;
   }
   const tab = ensureActiveSearchTab();
@@ -222,8 +229,8 @@ async function handleEntryPick(payload) {
   Object.assign(tab, withResultClickQuery(tab, payload.literal));
   $.searchInput.value = payload.literal;
   persistTabs();
+  openEntryDetail(payload.literal, payload.jyutping, payload.readings);
   searchDict();
-  openEntryDetail(payload.literal, payload.jyutping);
 }
 
 function createResultLink(text, query, title = "") {
