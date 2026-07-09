@@ -3,7 +3,7 @@
 領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 粵拼錨、獨立鼻音韻母、歧義粵拼錨雙列結果、錨點選項、語境錨點選項、等號參考讀音。
 
 整合並取代：[0005](./0005-jyutping-anchor-query-syntax.md)、[0009](./0009-ambiguous-jyutping-anchor-dual-results.md)、[0029](./0029-anchor-phoneme-options-exclude-rare-pron-rank.md)。  
-相關但**獨立**：通配碼錨 [0012](./0012-wildcard-code-anchor-query-syntax-v2.md)、`+` 連接符 [0013](./0013-plus-slot-connector-alias-normalize.md)、串列／前綴等號 [0014](./0014-serial-phoneme-anchor-and-prefix-wildcard-equals.md)、碼夾等號 [0028](./0028-code-sandwich-equals-unification-and-per-digit-loose-variants.md)。分派 seam 見 [0046](./0046-query-dispatch-seams-and-ssot.md)。
+相關但**獨立**：位置錨語法（通配碼錨／slot 連接符／串列）見 [0052](./0052-positional-anchor-query-syntax.md)；碼夾等號 [0028](./0028-code-sandwich-equals-unification-and-per-digit-loose-variants.md)。分派 seam 見 [0046](./0046-query-dispatch-seams-and-ssot.md)。
 
 ## 1. 粵拼錨與三格韻錨（語法）
 
