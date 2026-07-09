@@ -42,7 +42,7 @@ export type DbBenchmarkSample = {
 };
 
 function lexiconVersion(): string {
-  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'v1.0.7';
 }
 
 function readJsHeap(): DbBenchmarkMemory {

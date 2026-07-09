@@ -9,7 +9,7 @@ from app.domain.lexicon.lookup_layout import build_lookup_layout
 from app.lexicon.essay_index import ensure_essay_loaded
 from app.models.word import Word
 
-DEV_DB = "client/public/lyrics.394052.db"
+DEV_DB = "client/public/lyrics.db"
 
 PWA_TOP10_事業 = [
     "事業",

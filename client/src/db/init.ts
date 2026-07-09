@@ -202,8 +202,7 @@ export async function ensureStaticRelationIndexes(): Promise<void> {
 }
 
 export function getDefaultDbUrl(): string {
-  const v = lexiconVersionFromEnv();
-  return publicAssetUrl(`lyrics.${v}.db`);
+  return publicAssetUrl('lyrics.db');
 }
 
 export { ensureLexiconInOpfs, lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';

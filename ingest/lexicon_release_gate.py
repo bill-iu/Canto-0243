@@ -18,12 +18,16 @@ class ReleaseGateResult:
     messages: tuple[str, ...]
 
 
-def _index_bytes(conn: sqlite3.Connection) -> int:
-    row = conn.execute(
-        "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
-        "(SELECT name FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_%')"
-    ).fetchone()
-    return int(row[0] or 0)
+def _index_bytes(conn: sqlite3.Connection) -> int | None:
+    """Index payload via dbstat when available (not on all Windows sqlite builds)."""
+    try:
+        row = conn.execute(
+            "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
+            "(SELECT name FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_%')"
+        ).fetchone()
+        return int(row[0] or 0)
+    except sqlite3.OperationalError:
+        return None
 
 
 def check_lexicon_release_gate(
@@ -46,7 +50,9 @@ def check_lexicon_release_gate(
 
     with sqlite3.connect(path) as conn:
         idx = _index_bytes(conn)
-        if idx > MAX_INDEX_BYTES:
+        if idx is None:
+            msgs.append("indexes n/a (sqlite build has no dbstat; skipped)")
+        elif idx > MAX_INDEX_BYTES:
             ok = False
             msgs.append(f"indexes {idx / 1024 / 1024:.1f} MB > {MAX_INDEX_BYTES / 1024 / 1024:.0f} MB cap")
         else:

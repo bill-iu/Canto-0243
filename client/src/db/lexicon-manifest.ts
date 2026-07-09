@@ -24,7 +24,7 @@ export type LexiconTarget = {
 };
 
 export function lexiconVersionFromEnv(): string {
-  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'dev';
+  return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'v1.0.7';
 }
 
 export function publicAssetUrl(file: string): string {
@@ -37,8 +37,8 @@ export function supportsGzipDecompression(): boolean {
 }
 
 function fallbackTarget(version: string): LexiconTarget {
-  const dbFile = `lyrics.${version}.db`;
-  const dbUrl = publicAssetUrl(dbFile);
+  // plain lyrics.db; version lives in manifest / OPFS key (ADR-0035 era naming)
+  const dbUrl = publicAssetUrl('lyrics.db');
   return { version, dbUrl, fetchUrl: dbUrl, useGzip: false };
 }
 

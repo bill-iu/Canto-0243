@@ -482,15 +482,23 @@ def _build_db_exports(args: argparse.Namespace) -> int:
         import sqlite3
 
         size_mb = os.path.getsize(db_path) / 1024 / 1024
+        idx_mb: float | None
         with sqlite3.connect(db_path) as conn:
-            idx_mb = (
-                conn.execute(
-                    "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
-                    "(SELECT name FROM sqlite_master WHERE type='index' AND name NOT LIKE 'sqlite_%')"
-                ).fetchone()[0]
-                or 0
-            ) / 1024 / 1024
-        print(f"    post-finalize: db={size_mb:.1f} MB indexes={idx_mb:.1f} MB")
+            try:
+                idx_mb = (
+                    conn.execute(
+                        "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
+                        "(SELECT name FROM sqlite_master WHERE type='index' "
+                        "AND name NOT LIKE 'sqlite_%')"
+                    ).fetchone()[0]
+                    or 0
+                ) / 1024 / 1024
+            except Exception:
+                idx_mb = None
+        if idx_mb is None:
+            print(f"    post-finalize: db={size_mb:.1f} MB indexes=n/a (no dbstat)")
+        else:
+            print(f"    post-finalize: db={size_mb:.1f} MB indexes={idx_mb:.1f} MB")
         with sqlite3.connect(db_path) as conn:
             conn.execute("VACUUM")
     except Exception as exc:
@@ -509,6 +517,7 @@ def _build_db_exports(args: argparse.Namespace) -> int:
         print(f"release gate failed: {exc}", file=sys.stderr)
         return 1
     if args.copy_public:
+        import os
         import subprocess
 
         print("==> copy-db (public manifest + gzip)")
@@ -516,10 +525,12 @@ def _build_db_exports(args: argparse.Namespace) -> int:
         if not copy_db.is_file():
             print(f"copy-db missing: {copy_db}", file=sys.stderr)
             return 1
+        env = {**os.environ, "LEXICON_VERSION": os.environ.get("LEXICON_VERSION", "v1.0.7")}
         proc = subprocess.run(
             ["node", str(copy_db)],
             cwd=REPO_ROOT / "client",
             check=False,
+            env=env,
         )
         if proc.returncode != 0:
             print(f"copy-db failed with exit {proc.returncode}", file=sys.stderr)

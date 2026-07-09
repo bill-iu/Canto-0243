@@ -11,13 +11,14 @@ import { pipeline } from 'stream/promises';
 import { createGzip } from 'zlib';
 
 const SOURCE_DB = path.resolve('../lyrics.db');
+// manifest lexiconVersion (cache / OPFS key); file on disk is always lyrics.db
 const LEXICON_VERSION =
   process.env.LEXICON_VERSION ||
   process.env.VITE_LEXICON_VERSION ||
   process.env.RELEASE_TAG ||
   process.argv[2] ||
-  '394052';
-const TARGET_DB_FILE = `lyrics.${LEXICON_VERSION}.db`;
+  'v1.0.7';
+const TARGET_DB_FILE = 'lyrics.db';
 const TARGET_DB = path.resolve(`./public/${TARGET_DB_FILE}`);
 const TARGET_GZ = `${TARGET_DB}.gz`;
 const SOURCE_WASM = path.resolve('./node_modules/sql.js/dist/sql-wasm-browser.wasm');
