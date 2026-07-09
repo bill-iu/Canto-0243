@@ -6,9 +6,13 @@ import re
 from pathlib import Path
 from typing import Dict, Iterator, List, Optional, Set, Tuple
 
+from app.domain.relations.cilin_codes import (
+    CILIN_LEAF_CODE_RE,
+    is_cilin_leaf_code,
+    leaf_code_to_hierarchy_codes,
+)
+
 CJK_RE = re.compile(r"[\u4e00-\u9fff]")
-# Leaf synonym code: Aa01A01=, Ca01B01=, etc.
-CILIN_LEAF_CODE_RE = re.compile(r"^[A-Z][a-z]\d{2}[A-Z]\d{2}=$")
 
 
 def patch_opencc_for_cilin() -> None:
@@ -31,31 +35,16 @@ def _key_to_code(key: tuple) -> str:
     return "".join(str(part) for part in key)
 
 
-def is_cilin_leaf_code(code: str) -> bool:
-    return bool(CILIN_LEAF_CODE_RE.match(code or ""))
-
-
-def leaf_code_to_hierarchy_codes(leaf_code: str) -> List[str]:
-    """Expand a level-5 leaf code into all ancestor group codes (A → Aa → … → leaf).
-
-    Example: ``Aa01A01=`` → ``["A", "Aa", "Aa01", "Aa01A", "Aa01A01="]``.
-    Non-leaf or malformed codes are returned as a single-element list when possible.
-    """
-    code = (leaf_code or "").strip()
-    if not code:
-        return []
-    m = re.match(r"^([A-Z])([a-z])(\d{2})([A-Z])(\d{2})=$", code)
-    if not m:
-        return [code]
-    a, b, d, e, f = m.groups()
-    return [a, a + b, a + b + d, a + b + d + e, a + b + d + e + f + "="]
-
-
 def hierarchy_codes_json(leaf_code: str) -> str:
-    """JSON array string of all group codes for a leaf synonym group."""
+    """Legacy full hierarchy JSON — prefer storing leaf only (ADR-0039 GC1)."""
     import json
 
     return json.dumps(leaf_code_to_hierarchy_codes(leaf_code), ensure_ascii=False)
+
+
+def leaf_code_storage(leaf_code: str) -> str:
+    """Compact storage: leaf code string only."""
+    return (leaf_code or "").strip()
 
 
 def export_leaf_lines_from_api(trad: bool = True) -> List[str]:
@@ -185,6 +174,6 @@ def groups_to_word_id_pairs(
                 "relation_type": "syn",
                 "score": 0.85,
                 "source": "cilin",
-                "group_codes": hierarchy_codes_json(code),
+                "group_codes": leaf_code_storage(code),
             })
     return out

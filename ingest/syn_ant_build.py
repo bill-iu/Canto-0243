@@ -50,6 +50,8 @@ def ingest_cilin_leaf_direct(
         for c in candidates:
             c["source"] = source[:32]
             c["score"] = confidence
+        # CAP applied in build_word_relations full path; direct path: cap per batch is weak.
+        # Prefer build_word_relations for release; still insert leaf-only group_codes.
         stats["candidate_pairs"] += len(candidates)
 
         if candidates:

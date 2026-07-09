@@ -136,19 +136,10 @@ def _core_ant_compound_boost(query: str, char: str) -> int:
 
 
 def parse_group_codes(raw) -> List[str]:
-    if not raw:
-        return []
-    if isinstance(raw, list):
-        return [str(c) for c in raw if c]
-    if isinstance(raw, str):
-        try:
-            parsed = json.loads(raw)
-            if isinstance(parsed, list):
-                return [str(c) for c in parsed if c]
-        except (json.JSONDecodeError, TypeError):
-            return [raw]
-    return []
+    """Normalize storage → hierarchy list (leaf-only expand, ADR-0039 GC1)."""
+    from app.domain.relations.cilin_codes import expand_group_codes_field
 
+    return expand_group_codes_field(raw)
 
 _parse_group_codes = parse_group_codes
 

@@ -14,7 +14,8 @@ from app.domain.relations.store import insert_relation_records
 from app.domain.thesaurus.port import StaticThesaurusPort
 from app.lexicon.compound_antonyms import load_compound_antonyms
 from app.models.word import Word
-from ingest.cilin_leaf import hierarchy_codes_json, parse_leaf_groups
+from app.domain.relations.degree_cap import cap_undirected_syn_tuples
+from ingest.cilin_leaf import leaf_code_storage, parse_leaf_groups
 from ingest.compound_antonyms import _compound_exists
 from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
@@ -81,7 +82,7 @@ def collect_cilin_relation_tuples(
         ids = [char_to_id[w] for w in words if w in char_to_id]
         if len(ids) < 2:
             continue
-        gc = hierarchy_codes_json(code)
+        gc = leaf_code_storage(code)
         for id_a, id_b in itertools.combinations(ids, 2):
             row = normalize_relation_tuple(
                 id_a, id_b, "syn", confidence, source, gc,
@@ -201,7 +202,9 @@ def collect_static_relation_tuples(
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
     ]
-    return merge_relation_tuples(itertools.chain.from_iterable(parts))
+    merged = merge_relation_tuples(itertools.chain.from_iterable(parts))
+    # ADR-0039 S1 CAP-U@20
+    return cap_undirected_syn_tuples(merged)
 
 
 def build_word_relations(

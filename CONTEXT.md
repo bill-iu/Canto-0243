@@ -125,8 +125,8 @@ _Avoid_：toast、彈窗確認
 _Avoid_：相關詞（不區分類型時）、semantic_related
 
 **近反義池**：
-合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。投影統一讀取入口。
-_Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT
+合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。投影統一讀取入口。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。
+_Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT、假設 DB 有無限 syn 鄰居
 
 **近反義池快照**：
 單字面建池後定格（三池+計數）。供投影與分頁。

@@ -31,6 +31,16 @@ export function poolLiteral(text: string): string | null {
   }
   return t;
 }
+/** Cilin leaf: Aa01A01= → hierarchy (ADR-0039 GC1; port of leaf_code_to_hierarchy_codes) */
+const CILIN_LEAF_RE = /^[A-Z][a-z]\d{2}[A-Z]\d{2}=$/;
+
+export function leafCodeToHierarchy(leaf: string): string[] {
+  const m = leaf.trim().match(/^([A-Z])([a-z])(\d{2})([A-Z])(\d{2})=$/);
+  if (!m) return leaf ? [leaf] : [];
+  const [, a, b, d, e, f] = m;
+  return [a!, a! + b!, a! + b! + d!, a! + b! + d! + e!, a! + b! + d! + e! + f! + '='];
+}
+
 export function parseGroupCodes(raw: unknown): string[] {
   if (!raw) {
     return [];
@@ -39,14 +49,24 @@ export function parseGroupCodes(raw: unknown): string[] {
     return raw.map(String).filter(Boolean);
   }
   if (typeof raw === 'string') {
-    try {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        return parsed.map(String).filter(Boolean);
+    const s = raw.trim();
+    if (!s) return [];
+    if (s[0] === '[') {
+      try {
+        const parsed = JSON.parse(s);
+        if (Array.isArray(parsed)) {
+          return parsed.map(String).filter(Boolean);
+        }
+      } catch {
+        return [s];
       }
-    } catch {
-      return raw ? [raw] : [];
+      return [];
     }
+    // ADR-0039: leaf-only storage
+    if (CILIN_LEAF_RE.test(s)) {
+      return leafCodeToHierarchy(s);
+    }
+    return [s];
   }
   return [];
 }
