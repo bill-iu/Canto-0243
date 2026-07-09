@@ -34,11 +34,8 @@ import type {
   WordLookupQuery,
 } from '../query-types.ts';
 import type { WordRow } from '../position-match/word-row.ts';
-import {
-  codePrefixedWholeWordEqualsEmptyHint,
-  rowToResult,
-  sortMaskFamilyRows,
-} from './parse.ts';
+import { codePrefixedWholeWordEqualsEmptyHint } from './equals-empty-hint.ts';
+import { rowToResult, sortMaskFamilyRows } from './result-map.ts';
 import { buildLookupLayout, deduplicateWordRows } from './lookup-layout.ts';
 
 // Query Execution

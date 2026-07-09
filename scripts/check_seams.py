@@ -553,6 +553,36 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         self.assertIn("relation-syntax-detect-cases.json", src)
         self.assertNotIn('CASES_RELATION = [', src)
 
+    def test_pwa_query_grammar_mirrors_python_families(self):
+        """P1 #2: PWA parse split into grammar/* families (mirror query_grammar)."""
+        grammar = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
+        for name in (
+            "shared.ts",
+            "normalize.ts",
+            "heteronym.ts",
+            "relation.ts",
+            "rhyme.ts",
+            "wca.ts",
+            "serial.ts",
+            "plus.ts",
+            "mask.ts",
+            "index.ts",
+        ):
+            with self.subTest(file=name):
+                self.assertTrue((grammar / name).is_file(), msg=f"missing {name}")
+        parse_ts = REPO_ROOT / "client" / "src" / "db" / "query" / "parse.ts"
+        parse_src = parse_ts.read_text(encoding="utf-8")
+        self.assertIn("tryParseBeforeMask", parse_src)
+        self.assertIn("./grammar/index.ts", parse_src)
+        # thin entry — not the old mega bag
+        self.assertLess(len(parse_src.splitlines()), 400)
+        self.assertTrue(
+            (REPO_ROOT / "client" / "src" / "db" / "query" / "result-map.ts").is_file()
+        )
+        self.assertTrue(
+            (REPO_ROOT / "client" / "src" / "db" / "query" / "equals-empty-hint.ts").is_file()
+        )
+
 
 class TestQueryTabsSeam(unittest.TestCase):
     FRONTEND_ASSETS = (

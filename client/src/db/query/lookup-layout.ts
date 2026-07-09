@@ -6,7 +6,7 @@ import { getCandidatesForLength } from '../position-match/sources.ts';
 import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
 import type { QueryResult } from '../query-types.ts';
 import type { WordRow } from '../position-match/word-row.ts';
-import { rowToResult } from './parse.ts';
+import { rowToResult } from './result-map.ts';
 
 export function deduplicateWordRows(rows: WordRow[]): WordRow[] {
   const seen = new Set<string>();
