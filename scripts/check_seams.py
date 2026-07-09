@@ -347,6 +347,25 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         self.assertNotIn("CompoundAntQuery", source)
 
 
+class TestPwaQueryDispatchSeam(unittest.TestCase):
+    """PWA dispatch routes only — search entry is query/engine.ts."""
+
+    PWA_DISPATCH = REPO_ROOT / "client" / "src" / "db" / "query" / "dispatch.ts"
+    PWA_ENGINE = REPO_ROOT / "client" / "src" / "db" / "query" / "engine.ts"
+
+    def test_dispatch_has_no_shadow_execute_search(self):
+        source = self.PWA_DISPATCH.read_text(encoding="utf-8")
+        self.assertNotIn("export async function executeSearch", source)
+        self.assertNotIn("export function executeSearch", source)
+        self.assertIn("export async function dispatchParsed", source)
+        self.assertIn("export async function executeListFilter", source)
+
+    def test_engine_owns_execute_search(self):
+        source = self.PWA_ENGINE.read_text(encoding="utf-8")
+        self.assertIn("export async function executeSearch", source)
+        self.assertIn("class QueryEngine", source)
+
+
 class TestSynAntIngestModulesSeam(unittest.TestCase):
     """#6: syn_ant_merge removed; direct / build / expand split by command."""
 

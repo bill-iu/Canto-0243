@@ -1,6 +1,7 @@
-/** Dispatch + execute routes (port of query_dispatch). */
+/** Dispatch + execute routes (port of query_dispatch).
+ *  Search entry is QueryEngine.execute / engine.executeSearch only — no shadow executeSearch here.
+ */
 import type { Database } from '../sqljs.ts';
-import { getDatabase, initializeDatabase, isDatabaseInitialized } from '../init.ts';
 import { queryRows } from '../database-backend.ts';
 import { getCodeVariants } from '../code-variants.ts';
 import {
@@ -42,27 +43,6 @@ import { buildLookupLayout, deduplicateWordRows } from './lookup-layout.ts';
 
 // Query Execution
 // ============================================================================
-
-/**
- * Execute a search query using the SQL.js database
- */
-export async function executeSearch(ctx: SearchContext): Promise<SearchResult> {
-  // Ensure database is initialized
-  if (!isDatabaseInitialized()) {
-    await initializeDatabase();
-  }
-  
-  const db = getDatabase();
-  
-  // Parse the query
-  if (!ctx.q) {
-    // Empty query - return all words with filters
-    return executeListFilter(db, ctx);
-  }
-  
-  const parsed = normalizeAndParse(ctx.q);
-  return await dispatchParsed(parsed, { ...ctx, db });
-}
 
 /**
  * Execute list filter (when query is empty)
