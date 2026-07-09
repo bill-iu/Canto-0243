@@ -249,6 +249,20 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
 
       db = await openLexiconDatabase(target);
       reportGatePhase('open', 0.4);
+      // C1 ADR-0038: refuse legacy JSON phoneme columns; purge channel caches
+      {
+        const { assertPhonemeStorageContract } = await import('./phoneme-contract.ts');
+        const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
+        await assertPhonemeStorageContract(db, async () => {
+          await purgeStaleLexiconCaches(target, 'phoneme storage contract');
+          try {
+            await db?.close();
+          } catch {
+            /* ignore */
+          }
+          db = null;
+        });
+      }
       await applyRuntimeDbPatches(db);
       reportGatePhase('open', 0.6);
       await ensureGateAuxiliaryIndexes();

@@ -62,6 +62,11 @@ def _seed_polluted_db(db_path: Path) -> None:
         )
         for _name, sql in _POLLUTION_INDEXES:
             conn.execute(sql)
+        # ADR-0038: explicit UNIQUE on top of table CONSTRAINT (duplicate to drop)
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation "
+            "ON word_relations(word_id, related_id, relation_type)"
+        )
 
 
 class LexiconIndexPolicyTests(unittest.TestCase):
@@ -71,13 +76,51 @@ class LexiconIndexPolicyTests(unittest.TestCase):
         try:
             _seed_polluted_db(db_path)
             before = list_user_indexes(db_path)
-            self.assertTrue(FORBIDDEN_LEXICON_INDEXES & before)
+            # uq is forbidden only when table already has UNIQUE constraint
+            self.assertTrue((FORBIDDEN_LEXICON_INDEXES - {"uq_word_relation"}) & before)
 
             finalize_lexicon_indexes(db_path)
 
             after = list_user_indexes(db_path)
-            self.assertFalse(FORBIDDEN_LEXICON_INDEXES & after)
+            self.assertFalse((FORBIDDEN_LEXICON_INDEXES - {"uq_word_relation"}) & after)
             self.assertTrue(REQUIRED_LEXICON_INDEXES <= after)
+            # seed has table UNIQUE + explicit uq → explicit dropped
+            self.assertNotIn("uq_word_relation", after)
+        finally:
+            try:
+                db_path.unlink(missing_ok=True)
+            except PermissionError:
+                pass
+
+    def test_finalize_drops_duplicate_uq_when_table_constraint(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as fh:
+            db_path = Path(fh.name)
+        try:
+            with sqlite3.connect(db_path) as conn:
+                conn.executescript(
+                    """
+                    CREATE TABLE word_relations (
+                      id INTEGER PRIMARY KEY,
+                      word_id INTEGER NOT NULL,
+                      related_id INTEGER NOT NULL,
+                      relation_type VARCHAR(16) NOT NULL,
+                      UNIQUE(word_id, related_id, relation_type)
+                    );
+                    CREATE UNIQUE INDEX uq_word_relation
+                      ON word_relations(word_id, related_id, relation_type);
+                    CREATE TABLE words (
+                      id INTEGER PRIMARY KEY, char TEXT, code TEXT, length INTEGER,
+                      initials TEXT, finals TEXT
+                    );
+                    CREATE INDEX ix_words_char ON words(char);
+                    CREATE INDEX idx_length_code_finals ON words(length, code, finals);
+                    CREATE INDEX idx_word_rel_word_type ON word_relations(word_id, relation_type);
+                    CREATE INDEX idx_word_rel_related_type ON word_relations(related_id, relation_type);
+                    """
+                )
+            dropped = finalize_lexicon_indexes(db_path)
+            self.assertIn("uq_word_relation", dropped)
+            self.assertNotIn("uq_word_relation", list_user_indexes(db_path))
         finally:
             try:
                 db_path.unlink(missing_ok=True)
