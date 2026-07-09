@@ -1,0 +1,37 @@
+{
+  "description": "查詢語意解釋 dual-port parity (ADR-0021). Portable Python + PWA TS must both satisfy. Prefer contains over full-string eq.",
+  "cases": [
+    {
+      "q": "香港=",
+      "kind": "equals",
+      "summary_contains": ["整詞", "雙押"],
+      "summary_not_contains": ["碼夾等號"]
+    },
+    {
+      "q": "23+好=",
+      "kind": "plus_anchor",
+      "summary_contains": ["同韻", "好"]
+    },
+    {
+      "q": "23ng",
+      "kind": "jyutping_anchor",
+      "warning_contains": ["易混"]
+    },
+    {
+      "q": "23就",
+      "kind": "equals",
+      "summary_contains": ["碼夾等號"],
+      "summary_not_contains": ["整詞"]
+    },
+    {
+      "q": "0449窮困潦倒=",
+      "kind": "equals",
+      "summary_contains": ["碼夾等號", "四押"]
+    },
+    {
+      "q": "?+就=",
+      "kind": "rhyme_anchor",
+      "summary_contains": ["任意字", "就"]
+    }
+  ]
+}

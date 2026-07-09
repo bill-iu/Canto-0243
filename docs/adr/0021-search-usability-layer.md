@@ -1,15 +1,28 @@
 # Search usability layer (查詢語意解釋)
 
-Creators face powerful but position-sensitive anchor syntax (`+`, `=`). Phase C adds a **search usability layer**: server-authoritative **查詢語意解釋** driven by `normalize_and_parse` → `build_match_spec` → **left-to-right slot scan** of `MatchSpec`, rendered below the search field (debounced live input). Parser and dispatch behavior are unchanged (100% backward compatible).
+Creators face powerful but position-sensitive anchor syntax (`+`, `=`). A **search usability layer** provides **查詢語意解釋** driven by `normalize_and_parse` → `build_match_spec` → **left-to-right slot scan** of `MatchSpec`, rendered below the search field (debounced live input). Parser and dispatch behavior are unchanged (100% backward compatible).
 
 ## Architecture
 
 1. **Parse** — `normalize_and_parse(q)` → `ParsedQuery` (unchanged).
 2. **Spec** — `build_match_spec_for_parsed(parsed)` → `MatchSpec` (same registry as **查詢分派** / position match).
-3. **Explain** — walk `width` slots 0..n−1; merge `mask` wildcards/literals with `slots` constraints; special branches for `EqualsSpan`, prefix-wildcard equals, hybrid ref, compounds, and no-spec fallbacks.
+3. **Explain** — walk `width` slots 0..n−1; merge `mask` wildcards/literals with `slots` constraints; special branches for `EqualsSpan`, prefix-wildcard equals, compounds, and no-spec fallbacks.
 4. **Warnings** — positional confusion hints (e.g. `23o` vs `23+o`) stay **below** the summary; never replace it.
 
-Kinds without `MatchSpec` (word lookup, digit code, relation lookup, jyutping fragment, hybrid-tail equals alias, unmatched) use the shortest action sentence from `ParsedQuery` alone.
+Kinds without `MatchSpec` (word lookup, digit code, relation lookup, jyutping fragment, unmatched) use the shortest action sentence from `ParsedQuery` alone.
+
+### Dual delivery (amended — Phase D / dual engines)
+
+**Creator copy rules** in this ADR remain the single product SSOT. Implementation is dual-port (aligned with ADR-0024 dual engines):
+
+| Channel | Path | Why |
+|---------|------|-----|
+| **Portable** | UI → `GET /words/query/explain` → Python `explain_query` | Server process always available |
+| **PWA** | Local `explainQuery` (TS port); no DB required | Offline / pure static; no explain API host |
+
+Both ports **must** share the same algorithm shape (parse → MatchSpec → slot scan + copy rules). Drift is gated by the neutral contract `contracts/query-explain-parity.json` (contains-style cases; optional full-string eq), exercised by Python smoke and TS self-check.
+
+**Not allowed:** a third client-only parser or ad-hoc slot language that bypasses **比對規格建構**.
 
 ## Creator copy rules
 
@@ -22,4 +35,4 @@ Kinds without `MatchSpec` (word lookup, digit code, relation lookup, jyutping fr
 - Left-code whole-word equals (e.g. `0449窮困潦倒=`): rhyme label follows reference word length; code constraints in a separate clause.
 - Relation lookup: **近義詞** / **反義詞** (not 近義關係／反義關係).
 
-**Considered:** per-`ParsedQuery` isinstance handlers — rejected after grill (drift from **比對規格建構**). Client-side parse duplicate — rejected. Natural-language intent input — deferred. Visual anchor builder (phase B) — deferred; will reuse this endpoint.
+**Considered:** per-`ParsedQuery` isinstance handlers — rejected after grill (drift from **比對規格建構**). **Python-only / ban PWA port** — rejected for offline dual-channel (ADR-0024); dual port + parity contract preferred over thin shared template until copy drift forces extraction. Natural-language intent input — deferred. Visual anchor builder — deferred; will reuse this endpoint.

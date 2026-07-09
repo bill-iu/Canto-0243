@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import ast
+import json
 import unittest
 import urllib.error
 import urllib.request
@@ -561,6 +562,16 @@ class TestQueryTabsSeam(unittest.TestCase):
         source = (REPO_ROOT / "app" / "routers" / "word.py").read_text(encoding="utf-8")
         self.assertIn("/query/explain", source)
         self.assertIn("explain_query", source)
+
+    def test_query_explain_parity_contract_exists(self):
+        """Phase D: dual-port explain gated by neutral parity contract (ADR-0021)."""
+        path = REPO_ROOT / "contracts" / "query-explain-parity.json"
+        self.assertTrue(path.is_file(), msg=str(path))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        cases = data.get("cases") or []
+        self.assertGreaterEqual(len(cases), 4)
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "query-explain.ts").is_file())
+        self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain.py").is_file())
 
     def test_tab_geometry_js_shim_removed(self):
         path = REPO_ROOT / "frontend" / "tab-geometry.js"
