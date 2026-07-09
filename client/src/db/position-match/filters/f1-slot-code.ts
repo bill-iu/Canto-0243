@@ -80,8 +80,9 @@ export async function wordPassesPositionFilters(
       return false;
     }
   }
+  const skipPhoneme = Boolean(spec.extra?.phoneme_index_prefiltered);
   for (const slot of spec.slots ?? []) {
-    if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
+    if (!skipPhoneme && (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor')) {
       const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
       if (
         !(await matchesPhonemeAtPosition(
@@ -207,15 +208,18 @@ export async function filterWordsByCodeAndMask(
   }
   const requiredCodes = buildRequiredCodes(spec);
   const hasCodeDigitConstraints = requiredCodes.some((req) => req != null);
+  const skipPhoneme = Boolean(spec.extra?.phoneme_index_prefiltered);
   // One phoneme-options SQL per anchor char, shared across all candidates
   const phonemeOptCache = new Map<string, Set<string>>();
-  for (const slot of spec.slots ?? []) {
-    if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
-      const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
-      const anchor = String(slot.value ?? '');
-      const key = `${constraint}\0${anchor}`;
-      if (!phonemeOptCache.has(key)) {
-        phonemeOptCache.set(key, await anchorPhonemeOptions(db, anchor, constraint));
+  if (!skipPhoneme) {
+    for (const slot of spec.slots ?? []) {
+      if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
+        const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
+        const anchor = String(slot.value ?? '');
+        const key = `${constraint}\0${anchor}`;
+        if (!phonemeOptCache.has(key)) {
+          phonemeOptCache.set(key, await anchorPhonemeOptions(db, anchor, constraint));
+        }
       }
     }
   }

@@ -12,6 +12,23 @@ import {
 } from './relation-pool-snapshot.ts';
 import { buildRelationPool } from './relation-pool-builder.ts';
 
+/** Seed-scoped LRU — repeat ~開心 / 近反義 mode hits without rebuild. */
+const POOL_CACHE_MAX = 48;
+const poolCache = new Map<string, RelationPoolSnapshot>();
+
+function poolCacheKey(
+  seed: string,
+  options: { includeStatic?: boolean; includeDerivedAnt?: boolean },
+): string {
+  const st = options.includeStatic === false ? '0' : '1';
+  const der = options.includeDerivedAnt === false ? '0' : '1';
+  return `${seed.trim()}\0${st}\0${der}`;
+}
+
+export function invalidateRelationPoolCache(): void {
+  poolCache.clear();
+}
+
 /**
  * Unified read entry — port of project_relation_pool.
  * PWA never injects word rows (Portable may allow_inject); policy is asymmetric by design.
@@ -21,7 +38,21 @@ export async function projectRelationPool(
   seedChar: string,
   options: { includeStatic?: boolean; includeDerivedAnt?: boolean } = {},
 ): Promise<RelationPoolSnapshot> {
-  return buildRelationPool(db, seedChar, options);
+  const key = poolCacheKey(seedChar, options);
+  const hit = poolCache.get(key);
+  if (hit) {
+    // refresh LRU order
+    poolCache.delete(key);
+    poolCache.set(key, hit);
+    return hit;
+  }
+  const snap = await buildRelationPool(db, seedChar, options);
+  if (poolCache.size >= POOL_CACHE_MAX) {
+    const oldest = poolCache.keys().next().value;
+    if (oldest !== undefined) poolCache.delete(oldest);
+  }
+  poolCache.set(key, snap);
+  return snap;
 }
 
 /** Port of pool_projection.relation_pool_page — flat syns+ants+semantic slice */

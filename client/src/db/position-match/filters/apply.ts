@@ -36,7 +36,10 @@ export async function filterCandidatesByMatchSpec(
 
   let pool = narrowByJyutpingLetterSlots(candidates, spec.slots ?? [], db);
   throwIfSearchCancelled(shouldCancel);
-  pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
+  // Engine phoneme inverted-index already narrowed single-slot anchors
+  if (!spec.extra?.phoneme_index_prefiltered) {
+    pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
+  }
   return filterWordsByCodeAndMask(pool, spec, mode, db, shouldCancel);
 }
 

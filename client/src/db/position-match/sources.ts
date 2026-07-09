@@ -40,6 +40,8 @@ export type GetCandidatesOptions = {
   fallbackLimit?: number;
   /** ponytail: jyutping letter anchors need full length bucket (desktop word_cache parity) */
   unlimited?: boolean;
+  /** Sparse per-position code digits (e.g. ?30+人) — SQL substr filter when full code absent */
+  codePositions?: Array<{ pos: number; digit: string }>;
 };
 
 /**
@@ -70,6 +72,15 @@ export async function getCandidatesForLength(
     const variants = getCodeVariants(code, mode);
     if (variants.length) {
       sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
+  } else if (options.codePositions?.length) {
+    for (const { pos, digit } of options.codePositions) {
+      if (pos < 0 || !/^\d$/.test(digit)) continue;
+      const variants = getCodeVariants(digit, mode);
+      if (!variants.length) continue;
+      // SQLite substr is 1-based
+      sql += ` AND substr(code, ${pos + 1}, 1) IN (${variants.map(() => '?').join(', ')})`;
       params.push(...variants);
     }
   }

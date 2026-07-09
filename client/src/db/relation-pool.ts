@@ -22,4 +22,12 @@ export {
   relationPoolPage,
   relationLookupItems,
   relationPoolLogicSelfCheck,
+  invalidateRelationPoolCache,
 } from './relation-pool-projection.ts';
+
+export { buildRelationPool, loadDbCharSet } from './relation-pool-builder.ts';
+export {
+  getLexiconMembership,
+  invalidateLexiconMembership,
+  isLexiconMembershipReady,
+} from './lexicon-membership.ts';

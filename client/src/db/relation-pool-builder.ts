@@ -4,6 +4,7 @@ import { queryRows } from './database-backend.ts';
 import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
 import { getCuratedAntCompounds } from './compound.ts';
 import { appendRuntimeDerivedAntPool } from './derived-ant.ts';
+import { getLexiconMembership } from './lexicon-membership.ts';
 import {
   createRelationPoolSnapshot,
   type RelationKind,
@@ -104,16 +105,9 @@ export async function charsPresentInDb(db: Database, chars: Iterable<string>): P
   return present;
 }
 
+/** Alias — process-level cache lives in lexicon-membership.ts */
 export async function loadDbCharSet(db: Database): Promise<Set<string>> {
-  const rows = await queryRows(db, 'SELECT DISTINCT char FROM words');
-  const out = new Set<string>();
-  for (const row of rows) {
-    const ch = String((row as { char?: string }).char ?? '');
-    if (ch) {
-      out.add(ch);
-    }
-  }
-  return out;
+  return getLexiconMembership(db);
 }
 
 const BIDIRECTIONAL_REL_ROWS_SQL = `
@@ -288,7 +282,7 @@ export async function buildRelationPool(
   let antPool = collectSortedPool(q, 'ant', relItems, staticAnts, present, morphemeChars);
 
   if (includeDerivedAnt) {
-    const membership = await loadDbCharSet(db);
+    const membership = await getLexiconMembership(db);
     const headSyns = new Set(synPool.map((r) => r.char));
     const relAntRows = relItems
       .filter((i) => i.relation === 'ant')

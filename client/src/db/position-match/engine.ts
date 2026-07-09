@@ -7,8 +7,12 @@ import { throwIfSearchCancelled, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getPhonemeAnchorCandidates } from './phoneme-index.ts';
+import {
+  buildRequiredCodes,
+  matchesCodePositions,
+} from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type MatchSpec, type SlotConstraint } from './spec.ts';
-import type { WordRow } from './word-row.ts';
+import { getWordCode, type WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
 const PHONEME_ANCHOR_KINDS = new Set(['final_anchor', 'initial_anchor']);
@@ -20,6 +24,27 @@ function firstPhonemeAnchorSlot(spec: MatchSpec): SlotConstraint | null {
     }
   }
   return null;
+}
+
+function countPhonemeAnchorSlots(spec: MatchSpec): number {
+  let n = 0;
+  for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') n += 1;
+  }
+  return n;
+}
+
+/** Early sync shrink after inverted-index load (code digits on ?30+人 etc.). */
+function filterByRequiredCodes(
+  rows: WordRow[],
+  spec: MatchSpec,
+  mode: string,
+): WordRow[] {
+  const required = buildRequiredCodes(spec);
+  if (!required.some((r) => r != null)) {
+    return rows;
+  }
+  return rows.filter((w) => matchesCodePositions(getWordCode(w), required, mode));
 }
 
 function shouldUseMaskCandidates(spec: MatchSpec): boolean {
@@ -110,12 +135,14 @@ export async function filterMatchSpecRows(
   // C1: full-width code first (SQL IN); else phoneme anchors prefer runtime inverted index
   const code = narrowingCodeFromSpec(spec, ctx.code);
   let candidates: WordRow[];
+  let fromPhonemeIndex = false;
   if (shouldUseMaskCandidates(spec) && spec.mask) {
     [candidates] = await getLengthMaskCandidates(ctx.db, spec.width, spec.mask, {
       code,
       mode: ctx.mode,
     });
   } else {
+    // Prefer phoneme index even when partial code digits exist (only dense code skips it)
     const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null;
     let indexed: WordRow[] | null = null;
     if (phonemeSlot) {
@@ -129,14 +156,24 @@ export async function filterMatchSpecRows(
       );
     }
     if (indexed) {
-      candidates = indexed;
+      candidates = filterByRequiredCodes(indexed, spec, ctx.mode);
+      fromPhonemeIndex = countPhonemeAnchorSlots(spec) === 1;
     } else {
       [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
         code,
         mode: ctx.mode,
         unlimited: specNeedsFullLengthBucket(spec) && !code,
+        codePositions: code
+          ? undefined
+          : buildRequiredCodes(spec)
+              .map((digit, pos) => (digit != null ? { pos, digit } : null))
+              .filter((x): x is { pos: number; digit: string } => x != null),
       });
     }
+  }
+  if (fromPhonemeIndex) {
+    if (!spec.extra) spec.extra = {};
+    spec.extra.phoneme_index_prefiltered = true;
   }
   throwIfSearchCancelled(ctx.shouldCancel);
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);

@@ -26,6 +26,8 @@ import { reportGatePhase } from './startup-progress.ts';
 import { invalidatePhonemeIndex } from './position-match/phoneme-index.ts';
 import { resetCompoundCaches } from './compound.ts';
 import { invalidateRelationGraph } from './relation-graph.ts';
+import { invalidateLexiconMembership } from './lexicon-membership.ts';
+import { invalidateRelationPoolCache } from './relation-pool-projection.ts';
 
 
 let db: DatabaseBackend | null = null;
@@ -73,6 +75,8 @@ export function injectDatabaseForTests(candidate: DatabaseBackend | null): void 
   invalidatePhonemeIndex();
   invalidateRelationGraph();
   resetCompoundCaches();
+  invalidateLexiconMembership();
+  invalidateRelationPoolCache();
 }
 
 export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
@@ -278,6 +282,8 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       invalidatePhonemeIndex();
       invalidateRelationGraph();
       resetCompoundCaches();
+      invalidateLexiconMembership();
+      invalidateRelationPoolCache();
       reportGatePhase('open', 0.6);
       await ensureGateAuxiliaryIndexes();
       reportGatePhase('open', 1);
@@ -327,6 +333,8 @@ export function resetDatabase(): void {
   invalidatePhonemeIndex();
   invalidateRelationGraph();
   resetCompoundCaches();
+  invalidateLexiconMembership();
+  invalidateRelationPoolCache();
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;
