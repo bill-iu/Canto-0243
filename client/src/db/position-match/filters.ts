@@ -6,6 +6,7 @@ import { queryRows } from '../database-backend.ts';
 import { matchesJyutpingAnchorAtPosition } from '../jyutping-anchor.ts';
 import type { Database } from '../sqljs.ts';
 import { eligibleForAnchorPhonemeUnion, pronRankSortValueForWord } from '../ranking.ts';
+import { throwIfSearchCancelled, type ShouldCancel } from '../search-cancel.ts';
 import { queryWordsByEqualsSpec } from './equals-filters.ts';
 import { matchesMaskLiteralChars } from './mask-adapter.ts';
 import { getCandidatesWithLiteralAt, getCompoundCandidatesForSpec } from './sources.ts';
@@ -309,6 +310,7 @@ async function filterWordsByCodeAndMask(
   spec: MatchSpec,
   mode: string,
   db: Database,
+  shouldCancel?: ShouldCancel,
 ): Promise<WordRow[]> {
   let literalChar: string | null = null;
   for (const slot of spec.slots ?? []) {
@@ -319,9 +321,12 @@ async function filterWordsByCodeAndMask(
   const requiredCodes = buildRequiredCodes(spec);
   const hasCodeDigitConstraints = requiredCodes.some((req) => req != null);
   const out: WordRow[] = [];
+  let n = 0;
   if (hasCodeDigitConstraints) {
     for (const group of groupCandidatesByChar(candidates).values()) {
       for (const word of preferredPronunciationRows(group)) {
+        n += 1;
+        if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
         if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
           out.push(word);
           break;
@@ -331,6 +336,8 @@ async function filterWordsByCodeAndMask(
     return out;
   }
   for (const word of candidates) {
+    n += 1;
+    if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
     if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
       out.push(word);
     }
@@ -361,7 +368,9 @@ export async function filterCandidatesByMatchSpec(
   spec: MatchSpec,
   mode: string,
   db: Database,
+  shouldCancel?: ShouldCancel,
 ): Promise<WordRow[]> {
+  throwIfSearchCancelled(shouldCancel);
   if (spec.extra?.partial_rhyme_mask) {
     const slotOptions = await partialMaskSlotOptions(spec, db, 'final');
     return candidates.filter((w) => wordPassesPartialRhymeMaskSpec(spec, w, slotOptions));
@@ -372,8 +381,9 @@ export async function filterCandidatesByMatchSpec(
   }
 
   let pool = narrowByJyutpingLetterSlots(candidates, spec.slots ?? [], db);
+  throwIfSearchCancelled(shouldCancel);
   pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
-  return filterWordsByCodeAndMask(pool, spec, mode, db);
+  return filterWordsByCodeAndMask(pool, spec, mode, db, shouldCancel);
 }
 
 /** ponytail: equals path in equals-filters.ts (MF-5 F4) */
@@ -382,13 +392,15 @@ export async function applyMatchSpec(
   candidates: WordRow[],
   db: Database,
   mode = 'm1',
+  shouldCancel?: ShouldCancel,
 ): Promise<WordRow[]> {
+  throwIfSearchCancelled(shouldCancel);
   if (getEqualsSpan(spec)) {
     return queryWordsByEqualsSpec(spec, db, mode);
   }
   if (spec.compound_kind) {
     const pool = await getCompoundCandidatesForSpec(spec, db, mode);
-    return filterCandidatesByMatchSpec(pool, spec, mode, db);
+    return filterCandidatesByMatchSpec(pool, spec, mode, db, shouldCancel);
   }
-  return filterCandidatesByMatchSpec(candidates, spec, mode, db);
+  return filterCandidatesByMatchSpec(candidates, spec, mode, db, shouldCancel);
 }

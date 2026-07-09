@@ -80,7 +80,7 @@ def run_position_query_tracked(
     pre_candidates: list[Any] | None = None,
     sort_key: Callable[[Any], Any] | None = None,
 ) -> tuple[list, bool]:
-    from app.services.word_serializer import serialize_page
+    from app.services.word_serializer import deduplicate_words, serialize_word
 
     from_cache = False
     if get_equals_span(spec):
@@ -95,7 +95,10 @@ def run_position_query_tracked(
 
     key = sort_key or search_result_sort_key
     filtered.sort(key=key)
-    return serialize_page(filtered, offset, limit), from_cache
+    # E3: dedupe once then window only (serialize_page would re-dedupe the full list)
+    unique = deduplicate_words(filtered)
+    page = unique[offset : offset + limit]
+    return [serialize_word(w) for w in page], from_cache
 
 
 def execute_dual_phoneme_anchor_specs(

@@ -846,9 +846,16 @@ function App() {
                     <button
                       type="submit"
                       className="primary-button"
-                      disabled={!canSearch || !trimmedInput}
+                      disabled={!canSearch || !trimmedInput || (useLiveFetch && searchLoading)}
+                      aria-busy={useLiveFetch && searchLoading}
                     >
-                      {uiLang === 'en' ? 'Search' : '搜尋'}
+                      {useLiveFetch && searchLoading
+                        ? uiLang === 'en'
+                          ? 'Searching…'
+                          : '搜尋中…'
+                        : uiLang === 'en'
+                          ? 'Search'
+                          : '搜尋'}
                     </button>
                   </div>
                 </div>

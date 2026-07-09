@@ -207,6 +207,8 @@ export interface SearchContext {
   offset: number;
   fallback_0243_mode?: QueryMode;
   ui_lang?: 'zh' | 'en';
+  /** Cooperative cancel — engine hot paths throw SearchCancelledError when true */
+  shouldCancel?: () => boolean;
 }
 
 export interface SearchResult {

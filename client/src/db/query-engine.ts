@@ -1468,7 +1468,15 @@ async function dispatch(parsed: ParsedQuery, ctx: SearchContext & { db: Database
       break;
     
     case RouteKind.MASK_FAMILY:
-      return executeMaskFamilySearchResult(parsed, db, mode, limit, offset, ctx.code);
+      return executeMaskFamilySearchResult(
+        parsed,
+        db,
+        mode,
+        limit,
+        offset,
+        ctx.code,
+        ctx.shouldCancel,
+      );
     
     case RouteKind.RELATION:
       if (parsed.kind === QueryKind.RELATION_LOOKUP) {
@@ -1947,13 +1955,14 @@ async function executeMaskFamilySearchResult(
   limit: number,
   offset: number,
   code?: string,
+  shouldCancel?: () => boolean,
 ): Promise<SearchResult> {
   const spec = normalizeToMatchSpec(parsed);
   if (!spec) {
     return { items: [] };
   }
   const searchMode = normalizeSearchMode(mode);
-  const dbCtx = { db, mode: searchMode, code: code ?? null };
+  const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
   let items: QueryResult[];
   let total: number | undefined;
 
@@ -1961,14 +1970,14 @@ async function executeMaskFamilySearchResult(
     const rows = await executeMatchSpec(spec, { ...dbCtx, limit, offset });
     items = rows.map((row) => rowToResult(row));
   } else {
+    // E3: rank on WordRow, map only the page window
     const allRows = await filterMatchSpecRows(spec, dbCtx);
     const ordered = await sortMaskFamilyRows(spec, allRows, db, mode);
-    const mapped = ordered.map((row) => rowToResult(row));
     const finalSorted = (spec.literal_priority || spec.compound_kind)
-      ? mapped
-      : sortQueryResults(mapped);
+      ? ordered
+      : sortWordRows(ordered);
     total = finalSorted.length;
-    items = finalSorted.slice(offset, offset + limit);
+    items = finalSorted.slice(offset, offset + limit).map((row) => rowToResult(row));
   }
 
   let hint: string | undefined;

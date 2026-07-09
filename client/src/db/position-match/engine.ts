@@ -3,6 +3,7 @@
  */
 import type { Database } from '../sqljs.ts';
 import { sortWordRows, literalPriorityCompare } from '../ranking.ts';
+import { throwIfSearchCancelled, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getEqualsSpan, type MatchSpec } from './spec.ts';
@@ -28,18 +29,20 @@ export type ExecuteMatchSpecContext = {
   limit: number;
   offset: number;
   code?: string | null;
+  shouldCancel?: ShouldCancel;
 };
 
 /** Filter all matching rows — port of PositionMatchEngine.match (no sort/page). */
 export async function filterMatchSpecRows(
   spec: MatchSpec,
-  ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code'>,
+  ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code' | 'shouldCancel'>,
 ): Promise<WordRow[]> {
   if (!spec || spec.width === 0) {
     return [];
   }
+  throwIfSearchCancelled(ctx.shouldCancel);
   if (getEqualsSpan(spec) || spec.compound_kind) {
-    return applyMatchSpec(spec, [], ctx.db, ctx.mode);
+    return applyMatchSpec(spec, [], ctx.db, ctx.mode, ctx.shouldCancel);
   }
   const hasPositionFilters =
     Boolean(spec.mask) ||
@@ -62,7 +65,8 @@ export async function filterMatchSpecRows(
           mode: ctx.mode,
           unlimited: specNeedsFullLengthBucket(spec),
         });
-  return applyMatchSpec(spec, candidates, ctx.db, ctx.mode);
+  throwIfSearchCancelled(ctx.shouldCancel);
+  return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);
 }
 
 async function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): Promise<WordRow[]> {
@@ -72,9 +76,21 @@ async function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchS
     return [];
   }
   const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
-  const base = { db: ctx.db, mode: ctx.mode, code: ctx.code ?? null };
-  const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec as MatchSpec, base)).slice(0, unpagedLimit);
-  const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec as MatchSpec, base)).slice(0, unpagedLimit);
+  const base = {
+    db: ctx.db,
+    mode: ctx.mode,
+    code: ctx.code ?? null,
+    shouldCancel: ctx.shouldCancel,
+  };
+  const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec as MatchSpec, base)).slice(
+    0,
+    unpagedLimit,
+  );
+  throwIfSearchCancelled(ctx.shouldCancel);
+  const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec as MatchSpec, base)).slice(
+    0,
+    unpagedLimit,
+  );
   const tagged: WordRow[] = [
     ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
     ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
@@ -94,6 +110,7 @@ export async function executeMatchSpec(
     return executeDualPhonemeAnchorSpecs(spec, ctx);
   }
   const filtered = await filterMatchSpecRows(spec, ctx);
+  throwIfSearchCancelled(ctx.shouldCancel);
   let sorted: WordRow[];
   const literalPositions = spec.extra?.literal_positions;
   if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
@@ -102,5 +119,6 @@ export async function executeMatchSpec(
   } else {
     sorted = sortWordRows(filtered);
   }
+  // E3: only return the requested window
   return sorted.slice(ctx.offset, ctx.offset + ctx.limit);
 }

@@ -9,6 +9,8 @@ import {
   $,
   MODE_META,
   searchPageSizeForMode,
+  searchLimitForOffset,
+  SEARCH_FIRST_PAGE_SIZE,
   shell,
   searchCache,
   VIEW,
@@ -67,8 +69,12 @@ function emptySearchResultsHtml(input, hint, _mode) {
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
-  const pageSize = searchPageSizeForMode(shell.currentMode);
-  return (total != null && results.length < total) || results.length >= pageSize;
+  // 首屏 400 已滿亦視為可能仲有；續頁用上限 1200
+  const threshold =
+    shell.currentMode === "syn"
+      ? searchPageSizeForMode(shell.currentMode)
+      : SEARCH_FIRST_PAGE_SIZE;
+  return (total != null && results.length < total) || results.length >= threshold;
 }
 
 function countSearchResultItems(data) {
@@ -771,8 +777,9 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     updateBrowserUrlFromActiveTab(!pushed);
   }
 
-  const pageSize = searchPageSizeForMode(shell.currentMode);
-  const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}:${pageSize}`;
+  const offset = tab.offset || 0;
+  const pageSize = searchLimitForOffset(shell.currentMode, offset);
+  const cacheKey = `${shell.currentMode}:${input}:${offset}:${pageSize}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {
     const cached = searchCache.get(cacheKey);
     if (Array.isArray(cached)) {
@@ -795,7 +802,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     searchCache.delete(cacheKey);
   }
 
-  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${tab.offset || 0}`;
+  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${offset}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }

@@ -31,6 +31,8 @@ import {
   parseQuery,
   normalizeAndParse,
   searchPageSizeForMode,
+  searchLimitForOffset,
+  SEARCH_FIRST_PAGE_SIZE,
 } from '../db/query';
 import type {
   QueryOptions,
@@ -39,6 +41,7 @@ import type {
   QueryKind,
   SearchPageResult,
 } from '../db/query';
+import { isSearchCancelledError } from '../db/search-cancel.ts';
 import { reportGatePhase, subscribeGateProgress, resetGateProgressListeners } from '../db/startup-progress.ts';
 import {
   getTailProgress,
@@ -49,7 +52,15 @@ import {
 } from '../db/tail-preload.ts';
 
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
-export { normalizeQuery, parseQuery, normalizeAndParse, SEARCH_PAGE_SIZE, searchPageSizeForMode } from '../db/query.ts';
+export {
+  normalizeQuery,
+  parseQuery,
+  normalizeAndParse,
+  SEARCH_PAGE_SIZE,
+  SEARCH_FIRST_PAGE_SIZE,
+  searchPageSizeForMode,
+  searchLimitForOffset,
+} from '../db/query.ts';
 
 export type DatabaseStatus = 'idle' | 'loading' | 'ready' | 'error';
 export type OfflineReadinessStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
@@ -307,7 +318,6 @@ export function useSearch(
   mode: QueryOptions['mode'] = '0243',
   options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' | '394052'; ui_lang?: 'zh' | 'en' },
 ) {
-  const pageSize = options?.pageSize ?? searchPageSizeForMode(mode);
   const fallback0243Mode = options?.fallback_0243_mode;
   const uiLang = options?.ui_lang ?? 'zh';
   const { isReady, status } = useDB();
@@ -319,17 +329,23 @@ export function useSearch(
   const [loadingMore, setLoadingMore] = useState<boolean>(false);
   const [searchError, setSearchError] = useState<Error | null>(null);
   const [lastPageSize, setLastPageSize] = useState(0);
+  const genRef = useRef(0);
 
   const trimmed = query.trim();
   const canSearch = Boolean(trimmed) && isReady;
+  const firstPageLimit = options?.pageSize ?? searchLimitForOffset(mode, 0);
+  const morePageLimit = options?.pageSize ?? searchLimitForOffset(mode, 1);
+  // 首屏滿頁或已知 total 未取完 → 可 load-more
+  const hasMoreThreshold = mode === 'synonym' ? morePageLimit : SEARCH_FIRST_PAGE_SIZE;
 
   const hasMore =
     canSearch &&
     ((total != null && results.length < total) ||
-      (total == null && lastPageSize >= pageSize));
+      (total == null && lastPageSize >= hasMoreThreshold));
 
   useLayoutEffect(() => {
     if (!canSearch) {
+      genRef.current += 1;
       setResults([]);
       setTotal(null);
       setHint(null);
@@ -338,7 +354,9 @@ export function useSearch(
       return;
     }
 
-    let cancelled = false;
+    const gen = ++genRef.current;
+    const shouldCancel = () => gen !== genRef.current;
+    // P3: keep prior results (stale) while loading; do not clear here
     setLoading(true);
     setSearchError(null);
 
@@ -347,27 +365,26 @@ export function useSearch(
         const page = await searchPage({
           query: trimmed,
           mode,
-          limit: pageSize,
+          limit: firstPageLimit,
           offset: 0,
           fallback_0243_mode: fallback0243Mode,
           ui_lang: uiLang,
+          shouldCancel,
         });
-        if (!cancelled) {
-          setResults(page.items);
-          setTotal(page.total ?? null);
-          setHint(page.hint ?? null);
-          setLastPageSize(page.items.length);
-        }
+        if (shouldCancel()) return;
+        setResults(page.items);
+        setTotal(page.total ?? null);
+        setHint(page.hint ?? null);
+        setLastPageSize(page.items.length);
       } catch (err) {
-        if (!cancelled) {
-          setSearchError(err instanceof Error ? err : new Error(String(err)));
-          setResults([]);
-          setTotal(null);
-          setHint(null);
-          setLastPageSize(0);
-        }
+        if (shouldCancel() || isSearchCancelledError(err)) return;
+        setSearchError(err instanceof Error ? err : new Error(String(err)));
+        setResults([]);
+        setTotal(null);
+        setHint(null);
+        setLastPageSize(0);
       } finally {
-        if (!cancelled) {
+        if (!shouldCancel()) {
           setLoading(false);
         }
       }
@@ -375,51 +392,66 @@ export function useSearch(
 
     void run();
     return () => {
-      cancelled = true;
+      genRef.current += 1;
     };
-  }, [trimmed, mode, pageSize, canSearch, fallback0243Mode, uiLang]);
+  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, uiLang]);
 
   const isLoading = loading || status === 'loading';
 
+  // P3: show "搜尋中" even when stale prior results are still on screen
   useEffect(() => {
     if (!isLoading) {
       setLoadingVisible(false);
       return;
     }
-    if (results.length > 0) {
-      setLoadingVisible(false);
-      return;
-    }
     const timer = window.setTimeout(() => setLoadingVisible(true), SEARCH_LOADING_LABEL_DELAY_MS);
     return () => window.clearTimeout(timer);
-  }, [isLoading, results.length]);
+  }, [isLoading]);
 
   const loadMore = useCallback(async () => {
     if (!canSearch || loading || loadingMore || !hasMore) {
       return;
     }
+    const gen = genRef.current;
+    const shouldCancel = () => gen !== genRef.current;
     setLoadingMore(true);
     setSearchError(null);
     try {
       const page = await searchPage({
         query: trimmed,
         mode,
-        limit: pageSize,
+        limit: morePageLimit,
         offset: results.length,
         fallback_0243_mode: fallback0243Mode,
         ui_lang: uiLang,
+        shouldCancel,
       });
+      if (shouldCancel()) return;
       setResults((prev) => [...prev, ...page.items]);
       if (page.total != null) {
         setTotal(page.total);
       }
       setLastPageSize(page.items.length);
     } catch (err) {
+      if (shouldCancel() || isSearchCancelledError(err)) return;
       setSearchError(err instanceof Error ? err : new Error(String(err)));
     } finally {
-      setLoadingMore(false);
+      if (!shouldCancel()) {
+        setLoadingMore(false);
+      }
     }
-  }, [canSearch, loading, loadingMore, hasMore, trimmed, mode, pageSize, results.length, fallback0243Mode, uiLang]);
+  }, [
+    canSearch,
+    loading,
+    loadingMore,
+    hasMore,
+    trimmed,
+    mode,
+    morePageLimit,
+    results.length,
+    fallback0243Mode,
+    uiLang,
+  ]);
 
   return {
     results,
