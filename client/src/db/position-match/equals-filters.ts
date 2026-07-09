@@ -15,6 +15,7 @@ import {
   requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
+import { CANDIDATE_FALLBACK_LIMIT } from './candidate-policy.ts';
 import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
 
@@ -321,7 +322,7 @@ async function equalsWholeWordMatches(
     sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
     params.push(...variants);
   }
-  sql += ' LIMIT 2000';
+  sql += ` LIMIT ${CANDIDATE_FALLBACK_LIMIT}`;
 
   const rows = await queryRows(db, sql, params);
   const out: WordRow[] = [];

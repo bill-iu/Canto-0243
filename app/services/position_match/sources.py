@@ -23,10 +23,7 @@ from app.utils.word_cache import (
     get_words_for_length,
     is_word_cache_ready,
 )
-
-# CandidateSource truncation contract (Phase C PR3) — keep in sync with
-# client/src/db/position-match/candidate-policy.ts
-CANDIDATE_FALLBACK_LIMIT = 2000
+from app.services._generated.candidate_source_policy import CANDIDATE_FALLBACK_LIMIT
 
 
 @dataclass

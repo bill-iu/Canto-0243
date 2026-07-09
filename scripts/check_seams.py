@@ -515,6 +515,46 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
 
+    def test_candidate_source_policy_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_candidate_source_policy.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_candidate_fallback_limit_not_hand_copied(self):
+        """P3 #7: 2000 only from contract/generated (+ docs)."""
+        allow = {
+            REPO_ROOT / "contracts" / "candidate-source-policy.json",
+            REPO_ROOT / "app" / "services" / "_generated" / "candidate_source_policy.py",
+            REPO_ROOT / "client" / "src" / "db" / "_generated" / "candidate-source-policy.ts",
+            REPO_ROOT / "scripts" / "codegen_candidate_source_policy.py",
+        }
+        # Literal LIMIT 2000 / = 2000 in sources is forbidden outside allowlist
+        roots = [
+            REPO_ROOT / "app" / "services" / "position_match",
+            REPO_ROOT / "client" / "src" / "db" / "position-match",
+        ]
+        hits: list[str] = []
+        for root in roots:
+            if not root.is_dir():
+                continue
+            for path in root.rglob("*"):
+                if not path.is_file() or path.suffix not in {".py", ".ts"}:
+                    continue
+                if path in allow:
+                    continue
+                text = path.read_text(encoding="utf-8")
+                if "CANDIDATE_FALLBACK_LIMIT = 2000" in text or "LIMIT 2000" in text:
+                    hits.append(str(path.relative_to(REPO_ROOT)))
+        self.assertEqual(hits, [], msg=f"hand-copied fallback limit: {hits}")
+
     def test_fillword_alphabet_not_hand_copied(self):
         """P1 #1: alphabet only in contract + generated + mode-detect inline."""
         alphabet = "與和或共同及跟而且並向"

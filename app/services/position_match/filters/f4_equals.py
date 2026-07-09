@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 from app.domain.lexicon.reference_reading import anchor_phoneme_options
+from app.services._generated.candidate_source_policy import CANDIDATE_FALLBACK_LIMIT
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.word_serializer import (
     get_rhyme_finals,
@@ -263,7 +264,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
         candidates = cached if cached is not None else query.all()
     else:
-        candidates = query.limit(2000).all()
+        candidates = query.limit(CANDIDATE_FALLBACK_LIMIT).all()
 
     tail_rhyme_union = (
         is_final

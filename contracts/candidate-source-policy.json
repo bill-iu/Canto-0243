@@ -1,0 +1,4 @@
+{
+  "$comment": "缺字型查詢執行 — candidate source truncation policy (P3 #7). Codegen: scripts/codegen_candidate_source_policy.py. Unlimited length-bucket is adapter-flagged (lengthBucketNeedsUnlimited), not enumerated here.",
+  "candidateFallbackLimit": 2000
+}
