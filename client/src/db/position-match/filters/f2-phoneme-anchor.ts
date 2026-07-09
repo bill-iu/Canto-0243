@@ -4,7 +4,7 @@ import type { Database } from '../../sqljs.ts';
 import { eligibleForAnchorPhonemeUnion } from '../../ranking.ts';
 import { getCandidatesWithLiteralAt } from '../sources.ts';
 import type { MatchSpec } from '../spec.ts';
-import { getRhymeFinals, getWordParts, type WordRow } from '../word-row.ts';
+import { getRhymeFinals, getWordParts, getWordText, type WordRow } from '../word-row.ts';
 
 /** Cache anchor → phoneme options (one SQL per anchor/char, not per candidate). */
 const anchorPhonemeOptionsCache = new Map<string, Set<string>>();

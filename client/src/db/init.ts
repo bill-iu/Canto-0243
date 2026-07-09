@@ -24,6 +24,7 @@ import { ensureGateAuxiliaryIndexes, resetGateAuxiliaryIndexes } from './auxilia
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 import { reportGatePhase } from './startup-progress.ts';
 import { invalidatePhonemeIndex } from './position-match/phoneme-index.ts';
+import { resetCompoundCaches } from './compound.ts';
 import { invalidateRelationGraph } from './relation-graph.ts';
 
 
@@ -71,6 +72,7 @@ export function injectDatabaseForTests(candidate: DatabaseBackend | null): void 
   injectedDb = candidate;
   invalidatePhonemeIndex();
   invalidateRelationGraph();
+  resetCompoundCaches();
 }
 
 export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
@@ -272,6 +274,10 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
         }
       }
       await applyRuntimeDbPatches(db);
+      // Lexicon identity may have changed (re-open after contract purge)
+      invalidatePhonemeIndex();
+      invalidateRelationGraph();
+      resetCompoundCaches();
       reportGatePhase('open', 0.6);
       await ensureGateAuxiliaryIndexes();
       reportGatePhase('open', 1);
@@ -320,6 +326,7 @@ export function resetDatabase(): void {
   resetGateAuxiliaryIndexes();
   invalidatePhonemeIndex();
   invalidateRelationGraph();
+  resetCompoundCaches();
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;

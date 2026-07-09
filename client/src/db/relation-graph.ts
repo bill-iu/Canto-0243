@@ -109,32 +109,43 @@ async function buildGraph(
  * Lazy ensure process-level syn adjacency for this Database.
  * Dual consumers (近反義 pool + `!` ant path) share one open.
  */
+const ENSURE_GRAPH_MAX_ATTEMPTS = 3;
+
 export async function ensureRelationGraph(
   db: Database,
   membership: Set<string> | null = null,
   includeStatic = true,
 ): Promise<void> {
   const memSize = membership?.size ?? 0;
-  if (
-    graphReady &&
-    builtForDb === db &&
-    (!includeStatic || memSize === lastMembershipSize || memSize === 0)
-  ) {
-    return;
+  for (let attempt = 0; attempt < ENSURE_GRAPH_MAX_ATTEMPTS; attempt++) {
+    if (
+      graphReady &&
+      builtForDb === db &&
+      (!includeStatic || memSize === lastMembershipSize || memSize === 0)
+    ) {
+      return;
+    }
+    if (builtForDb !== db) {
+      adjacency = new Map();
+      builtForDb = null;
+      lastMembershipSize = -1;
+      graphReady = false;
+    }
+    if (!buildPromise) {
+      const generation = buildGeneration;
+      buildPromise = buildGraph(db, membership, includeStatic, generation).finally(() => {
+        buildPromise = null;
+      });
+    }
+    await buildPromise;
+    if (
+      graphReady &&
+      builtForDb === db &&
+      (!includeStatic || memSize === lastMembershipSize || memSize === 0)
+    ) {
+      return;
+    }
   }
-  if (builtForDb !== db) {
-    adjacency = new Map();
-    builtForDb = null;
-    lastMembershipSize = -1;
-    graphReady = false;
-  }
-  if (!buildPromise) {
-    const generation = buildGeneration;
-    buildPromise = buildGraph(db, membership, includeStatic, generation).finally(() => {
-      buildPromise = null;
-    });
-  }
-  await buildPromise;
 }
 
 /** Direct syn neighbors from the cached graph (empty if not ready). */

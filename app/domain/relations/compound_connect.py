@@ -1,4 +1,4 @@
-"""填詞連接詞複合（!{連接}!／~{連接}~）。"""
+"""填詞連接詞複合（!{連接}!／~{連接}~）— ADR-0053：詞庫 ∪ 合成 + syn/ant 互斥。"""
 
 from __future__ import annotations
 
@@ -10,10 +10,13 @@ from app.domain.relations.compound_syn import narrow_compound_syn_literals
 from app.models.word import Word
 from app.services._generated.fillword_connectives import FILLWORD_CONNECTIVES
 
-# ponytail: guide／essay 常見填詞連接詞三字詞 — 查詢時 ensure 入庫（CONTEXT § 連接詞複合查詢）
+# ponytail: guide／essay 常見填詞連接詞三字詞 — ensure 入庫（CONTEXT § 連接詞複合查詢）
 CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {
     "與": ("生與死", "天與地", "男與女", "父與子"),
 }
+
+# Lexicon flank tiers 0–2; synthetic always ranks after
+TIER_CONNECTIVE_SYNTH = 3
 
 
 def _flank_tiers_from_two_char(two_char_tiers: Dict[str, int]) -> Dict[tuple[str, str], int]:
@@ -28,6 +31,17 @@ def _flank_tiers_from_two_char(two_char_tiers: Dict[str, int]) -> Dict[tuple[str
     return out
 
 
+def exclusive_two_char_tiers(
+    primary: Dict[str, int],
+    opposite: Dict[str, int],
+    kind: Literal["syn", "ant"],
+) -> Dict[str, int]:
+    """Strict mutual exclusion with ant-wins: syn drops ant pairs; ant keeps full primary."""
+    if kind == "ant":
+        return dict(primary)
+    return {w: t for w, t in primary.items() if w not in opposite}
+
+
 def _three_char_literals(db: Session) -> set[str]:
     rows = db.query(Word.char).filter(Word.length == 3).distinct().all()
     return {row[0] for row in rows if row[0] and len(row[0]) == 3}
@@ -40,26 +54,26 @@ def search_connective_compound(
     connective: str,
     rhyme_char: str | None = None,
 ) -> Dict[str, int]:
-    """!與!／~與~：三字詞庫掃描，首尾沿用 !!／~~ 候選規則。"""
+    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B。"""
     if connective not in FILLWORD_CONNECTIVES:
         return {}
 
     from app.domain.lexicon.port import default_word_inject_port
+    from app.domain.relations.compound_ant import search_compound_ant
+    from app.domain.relations.compound_syn import search_compound_syn
 
     inject = default_word_inject_port()
     for literal in CONNECTIVE_LITERAL_SEEDS.get(connective, ()):
         inject.ensure_word_rows(db, literal)
 
+    syn_tiers = search_compound_syn(db)
+    ant_tiers = search_compound_ant(db)
     if compound_kind == "ant":
-        from app.domain.relations.compound_ant import search_compound_ant
-
-        two_char_tiers = search_compound_ant(db)
+        exclusive = exclusive_two_char_tiers(ant_tiers, syn_tiers, "ant")
     else:
-        from app.domain.relations.compound_syn import search_compound_syn
+        exclusive = exclusive_two_char_tiers(syn_tiers, ant_tiers, "syn")
 
-        two_char_tiers = search_compound_syn(db)
-
-    flank_tiers = _flank_tiers_from_two_char(two_char_tiers)
+    flank_tiers = _flank_tiers_from_two_char(exclusive)
     if not flank_tiers:
         return {}
 
@@ -72,6 +86,14 @@ def search_connective_compound(
             continue
         tiers[w] = tier
 
+    for (a, b), _flank in flank_tiers.items():
+        compound = f"{a}{connective}{b}"
+        if compound in tiers:
+            continue
+        rows = inject.ensure_word_rows(db, compound)
+        if rows:
+            tiers[compound] = TIER_CONNECTIVE_SYNTH
+
     if not rhyme_char:
         return tiers
     allowed = narrow_compound_syn_literals(
@@ -80,4 +102,9 @@ def search_connective_compound(
     return {ch: tiers[ch] for ch in allowed if ch in tiers}
 
 
-__all__ = ["FILLWORD_CONNECTIVES", "search_connective_compound"]
+__all__ = [
+    "FILLWORD_CONNECTIVES",
+    "TIER_CONNECTIVE_SYNTH",
+    "exclusive_two_char_tiers",
+    "search_connective_compound",
+]

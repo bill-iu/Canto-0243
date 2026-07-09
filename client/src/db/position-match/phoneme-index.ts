@@ -16,7 +16,10 @@ let finalIndex: Map<string, number[]> = new Map();
 let initialIndex: Map<string, number[]> = new Map();
 let builtForDb: Database | null = null;
 let buildPromise: Promise<void> | null = null;
+/** DB identity the in-flight build targets (avoid await wrong rebuild). */
+let buildingForDb: Database | null = null;
 let buildGeneration = 0;
+const ENSURE_MAX_ATTEMPTS = 3;
 
 function phonemeKey(length: number, pos: number, phoneme: string): string {
   return `${length}\0${pos}\0${phoneme}`;
@@ -28,6 +31,7 @@ function resetState(): void {
   initialIndex = new Map();
   builtForDb = null;
   buildPromise = null;
+  buildingForDb = null;
 }
 
 /** Call when lexicon DB is closed / replaced. */
@@ -114,25 +118,47 @@ async function buildIndex(db: Database, generation: number): Promise<void> {
   builtForDb = db;
 }
 
-/** Lazy ensure index for this Database instance. */
+/** Lazy ensure index for this Database instance. Retry if invalidate cancelled build. */
 export async function ensurePhonemeIndex(db: Database): Promise<void> {
-  if (builtForDb === db && lengthBuckets.size > 0) {
-    return;
-  }
-  if (builtForDb !== db) {
-    // New DB identity — drop stale maps but keep generation for in-flight cancel
-    lengthBuckets = new Map();
-    finalIndex = new Map();
-    initialIndex = new Map();
-    builtForDb = null;
-  }
-  if (!buildPromise) {
+  for (let attempt = 0; attempt < ENSURE_MAX_ATTEMPTS; attempt++) {
+    if (builtForDb === db && lengthBuckets.size > 0) {
+      return;
+    }
+
+    if (buildPromise && buildingForDb === db) {
+      await buildPromise;
+      if (builtForDb === db && lengthBuckets.size > 0) {
+        return;
+      }
+      continue;
+    }
+
+    if (buildPromise && buildingForDb !== db) {
+      await buildPromise;
+      if (builtForDb === db && lengthBuckets.size > 0) {
+        return;
+      }
+    }
+
+    if (builtForDb !== db) {
+      lengthBuckets = new Map();
+      finalIndex = new Map();
+      initialIndex = new Map();
+      builtForDb = null;
+    }
+
+    if (builtForDb === db && lengthBuckets.size > 0) {
+      return;
+    }
+
     const generation = buildGeneration;
+    buildingForDb = db;
     buildPromise = buildIndex(db, generation).finally(() => {
       buildPromise = null;
+      buildingForDb = null;
     });
+    await buildPromise;
   }
-  await buildPromise;
 }
 
 /**

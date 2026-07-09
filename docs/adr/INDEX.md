@@ -20,6 +20,7 @@
 | [0050](./0050-relation-runtime.md) | 近反義 runtime |
 | [0051](./0051-jyutping-and-anchor-phoneme.md) | 粵拼錨 + 歧義雙列 + 錨點選項 |
 | [0052](./0052-positional-anchor-query-syntax.md) | **位置錨語法**（通配碼錨／`+`／串列） |
+| [0053](./0053-connective-compound-hybrid.md) | **連接詞複合**：詞庫∪合成 + syn/ant 互斥 |
 
 ## Stubs
 

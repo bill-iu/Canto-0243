@@ -43,6 +43,11 @@ export function isCompleteSyllableInRime(letters: string): boolean {
   return completeSyllables.has(letters.trim().toLowerCase());
 }
 
+/** False until gate loads rhyme-letter-index (or node inject). */
+export function isRhymeLetterIndexReady(): boolean {
+  return completeSyllables.size > 0;
+}
+
 export function syllableMatchesRhymeFragment(sylLetters: string, fragment: string): boolean {
   const frag = normalizeRhymeLetters(fragment);
   const syl = sylLetters.toLowerCase();
