@@ -42,27 +42,39 @@ export function matchesCodePositions(
   return true;
 }
 
+/** Cache anchor → phoneme options (one SQL per anchor/char, not per candidate). */
+const anchorPhonemeOptionsCache = new Map<string, Set<string>>();
+
+export function clearAnchorPhonemeOptionsCache(): void {
+  anchorPhonemeOptionsCache.clear();
+}
+
 export async function anchorPhonemeOptions(
   db: Database,
   char: string,
   dimension: 'final' | 'initial',
 ): Promise<Set<string>> {
+  const key = `${dimension}\0${char}`;
+  const hit = anchorPhonemeOptionsCache.get(key);
+  if (hit) return hit;
+
   const options = new Set<string>();
   const rows = await queryRows(
     db,
     'SELECT char, initials, finals, jyutping FROM words WHERE char = ? LIMIT 50',
     [char],
   );
-  for (const hit of rows) {
-    const jyut = String(hit.jyutping ?? '').trim();
+  for (const row of rows) {
+    const jyut = String(row.jyutping ?? '').trim();
     if (jyut && !eligibleForAnchorPhonemeUnion(char, jyut)) {
       continue;
     }
-    const parts = dimension === 'final' ? getRhymeFinals(hit) : getWordParts(hit, 'initials');
+    const parts = dimension === 'final' ? getRhymeFinals(row) : getWordParts(row, 'initials');
     if (parts.length) {
       options.add(parts[0]!);
     }
   }
+  anchorPhonemeOptionsCache.set(key, options);
   return options;
 }
 
@@ -72,8 +84,14 @@ export async function matchesPhonemeAtPosition(
   anchor: string,
   constraint: 'final' | 'initial',
   db: Database,
+  optionsCache?: Map<string, Set<string>>,
 ): Promise<boolean> {
-  const options = await anchorPhonemeOptions(db, anchor, constraint);
+  const cacheKey = `${constraint}\0${anchor}`;
+  let options = optionsCache?.get(cacheKey);
+  if (!options) {
+    options = await anchorPhonemeOptions(db, anchor, constraint);
+    optionsCache?.set(cacheKey, options);
+  }
   const parts = constraint === 'final' ? getRhymeFinals(word) : getWordParts(word, 'initials');
   if (!options.size || pos >= parts.length) {
     return false;
@@ -218,6 +236,7 @@ async function wordPassesPositionFilters(
   mode: string,
   db: Database,
   literalChar: string | null,
+  phonemeOptCache?: Map<string, Set<string>>,
 ): Promise<boolean> {
   const wordChar = getWordText(word);
   if (wordChar.length !== spec.width) {
@@ -249,7 +268,16 @@ async function wordPassesPositionFilters(
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
       const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
-      if (!(await matchesPhonemeAtPosition(word, slot.pos, String(slot.value ?? ''), constraint, db))) {
+      if (
+        !(await matchesPhonemeAtPosition(
+          word,
+          slot.pos,
+          String(slot.value ?? ''),
+          constraint,
+          db,
+          phonemeOptCache,
+        ))
+      ) {
         return false;
       }
     }
@@ -320,6 +348,18 @@ async function filterWordsByCodeAndMask(
   }
   const requiredCodes = buildRequiredCodes(spec);
   const hasCodeDigitConstraints = requiredCodes.some((req) => req != null);
+  // One phoneme-options SQL per anchor char, shared across all candidates
+  const phonemeOptCache = new Map<string, Set<string>>();
+  for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
+      const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
+      const anchor = String(slot.value ?? '');
+      const key = `${constraint}\0${anchor}`;
+      if (!phonemeOptCache.has(key)) {
+        phonemeOptCache.set(key, await anchorPhonemeOptions(db, anchor, constraint));
+      }
+    }
+  }
   const out: WordRow[] = [];
   let n = 0;
   if (hasCodeDigitConstraints) {
@@ -327,7 +367,17 @@ async function filterWordsByCodeAndMask(
       for (const word of preferredPronunciationRows(group)) {
         n += 1;
         if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
-        if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
+        if (
+          await wordPassesPositionFilters(
+            word,
+            spec,
+            requiredCodes,
+            mode,
+            db,
+            literalChar,
+            phonemeOptCache,
+          )
+        ) {
           out.push(word);
           break;
         }
@@ -338,7 +388,17 @@ async function filterWordsByCodeAndMask(
   for (const word of candidates) {
     n += 1;
     if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
-    if (await wordPassesPositionFilters(word, spec, requiredCodes, mode, db, literalChar)) {
+    if (
+      await wordPassesPositionFilters(
+        word,
+        spec,
+        requiredCodes,
+        mode,
+        db,
+        literalChar,
+        phonemeOptCache,
+      )
+    ) {
       out.push(word);
     }
   }
@@ -347,14 +407,22 @@ async function filterWordsByCodeAndMask(
 
 async function narrowByPhonemeAnchors(candidates: WordRow[], slots: SlotConstraint[], db: Database): Promise<WordRow[]> {
   let narrowed = candidates;
+  const phonemeOptCache = new Map<string, Set<string>>();
   for (const slot of slots) {
     if (slot.kind !== 'final_anchor' && slot.kind !== 'initial_anchor') {
       continue;
     }
     const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
+    const anchor = String(slot.value ?? '');
+    const key = `${constraint}\0${anchor}`;
+    if (!phonemeOptCache.has(key)) {
+      phonemeOptCache.set(key, await anchorPhonemeOptions(db, anchor, constraint));
+    }
+    const options = phonemeOptCache.get(key)!;
     const next: WordRow[] = [];
     for (const w of narrowed) {
-      if (await matchesPhonemeAtPosition(w, slot.pos, String(slot.value ?? ''), constraint, db)) {
+      const parts = constraint === 'final' ? getRhymeFinals(w) : getWordParts(w, 'initials');
+      if (options.size && slot.pos < parts.length && options.has(parts[slot.pos]!)) {
         next.push(w);
       }
     }

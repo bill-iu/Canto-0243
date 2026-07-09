@@ -89,6 +89,7 @@ function App() {
     tabs,
     selectTab,
     addSearchTab,
+    openSearchTabWithQuery,
     closeTab,
     reorderTabs,
     openGuide,
@@ -167,6 +168,10 @@ function App() {
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
         syncedTabIdRef.current = tab.id;
+      } else {
+        // New / live tab: clear prior tab's chips until results arrive
+        setDisplayResults([]);
+        setCachedTotal(null);
       }
     },
     [hydrateSearch, initialBootstrap.forceLive],
@@ -578,8 +583,11 @@ function App() {
       setLast0243Mode(exampleMode);
     }
     setMode(exampleMode);
-    ensureActiveSearchTab();
-    runCommittedSearch(nextQuery);
+    // 教學例子：開新搜尋 tab，唔覆蓋當前 tab
+    saveLeavingSearchTab();
+    openSearchTabWithQuery(nextQuery, exampleMode as UiMode);
+    setUseLiveFetch(true);
+    setResultsShuffled(false);
   };
 
   const handleShuffle = () => {
