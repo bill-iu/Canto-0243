@@ -13,7 +13,7 @@ from app.domain.relations.cilin_derived import direct_ant_seeds_for_head
 from app.domain.relations.graph import CharRelationGraph, get_process_cached_graph
 from app.domain.relations.valid_term import normalize_literal
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 
 MIRROR_SOURCE = "ant_syn_mirror"
 MIRROR_CONFIDENCE = 0.72

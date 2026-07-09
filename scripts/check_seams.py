@@ -427,13 +427,30 @@ class TestQueryParseTypesSeam(unittest.TestCase):
     def test_types_live_in_query_types_module(self):
         self.assertTrue(TYPES_PATH.is_file())
         types_src = TYPES_PATH.read_text(encoding="utf-8")
-        self.assertIn("class QueryKind", types_src)
+        # QueryKind SSOT is codegen (ADR-0035); query_types re-exports via import
+        self.assertIn("QueryKind", types_src)
         self.assertIn("class MaskQuery", types_src)
+        gen = REPO_ROOT / "app" / "services" / "_generated" / "query_kind_registry.py"
+        self.assertTrue(gen.is_file())
+        self.assertIn("class QueryKind", gen.read_text(encoding="utf-8"))
 
     def test_query_parse_does_not_define_query_kind(self):
         src = PARSE_PATH.read_text(encoding="utf-8")
         self.assertNotIn("class QueryKind", src)
         self.assertIn("from app.services.query_types import", src)
+
+    def test_query_kind_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_query_kind_manifest.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
 
 
 class TestQueryTabsSeam(unittest.TestCase):

@@ -10,13 +10,11 @@ from sqlalchemy.orm import Session
 
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.models.word import Word
+from app.domain.lexicon.word_row import get_word_jyutping, get_word_parts, get_word_text
 from app.services.word_db_filters import length_filter
 from app.services.word_serializer import (
     deduplicate_words,
-    get_word_jyutping,
-    get_word_parts,
     get_word_sort_code,
-    get_word_text,
     serialize_word,
 )
 from app.utils.embedding import cosine_similarity, get_text_embedding

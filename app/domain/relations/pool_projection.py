@@ -24,9 +24,9 @@ def project_relation_pool(
     """Runtime 近反義池投影：統一 build_pool 讀取入口（規則不變）。"""
     q = (seed_char or "").strip()
     if allow_inject and q and re.search(r"[\u4e00-\u9fff]", q):
-        from app.services.word_ensure_service import ensure_word_in_db
+        from app.domain.lexicon.port import default_word_inject_port
 
-        ensure_word_in_db(db, q)
+        default_word_inject_port().ensure_word_rows(db, q)
     return build_pool(
         db,
         q,

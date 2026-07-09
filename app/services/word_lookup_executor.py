@@ -11,7 +11,8 @@ from app.models.word import Word
 from app.domain.lexicon.lookup_layout import build_lookup_layout
 from app.domain.lexicon.ranking import search_result_sort_key, sort_search_results
 from app.services.word_db_filters import apply_code_filter, length_filter
-from app.services.word_ensure_service import ensure_word_in_db, warm_ref_char_for_lookup
+from app.domain.lexicon.port import default_word_inject_port
+from app.domain.lexicon.word_inject import warm_ref_char_for_lookup
 from app.services.jyutping_match import expected_word_length, matches_jyutping_query
 from app.services.ping_zak import code_matches_ping_ze_pattern
 from app.services.word_serializer import (
@@ -73,7 +74,7 @@ class WordLookupExecutor:
     ) -> List[dict]:
         raw_targets: List[Word] = []
         if re.search(r"[\u4e00-\u9fff]", q):
-            raw_targets = ensure_word_in_db(self._db, q)
+            raw_targets = default_word_inject_port().ensure_word_rows(self._db, q)
         if not raw_targets:
             raw_targets = self._db.query(Word).filter(Word.char == q).all()
         target_words = deduplicate_words(raw_targets)

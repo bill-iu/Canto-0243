@@ -19,7 +19,7 @@ from ingest.compound_antonyms import _compound_exists
 from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "syn_ant" / "sources.yaml"

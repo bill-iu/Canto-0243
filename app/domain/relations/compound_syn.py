@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from app.domain.relations.graph import CharRelationGraph, default_char_relation_graph
 from app.lexicon.compound_synonyms import load_compound_synonyms
 from app.models.word import Word
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 from app.domain.lexicon.ranking import search_result_sort_key
 
 TIER_CURATED = 0
@@ -192,8 +192,8 @@ def narrow_compound_syn_literals(
     """韻／聲錨查詢前縮小候選字面（如 ~~港、$$$你）。"""
     if not rhyme_char or width < 2:
         return frozenset(literals)
+    from app.domain.lexicon.word_row import get_word_text
     from app.utils.word_cache_index import get_phoneme_index_candidates
-    from app.services.word_serializer import get_word_text
 
     phoneme_rows = get_phoneme_index_candidates(width, width - 1, rhyme_char, "final", db)
     if phoneme_rows:

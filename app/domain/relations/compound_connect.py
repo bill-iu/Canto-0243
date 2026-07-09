@@ -45,10 +45,11 @@ def search_connective_compound(
     if connective not in FILLWORD_CONNECTIVES:
         return {}
 
-    from app.services.word_ensure_service import ensure_word_in_db
+    from app.domain.lexicon.port import default_word_inject_port
 
+    inject = default_word_inject_port()
     for literal in CONNECTIVE_LITERAL_SEEDS.get(connective, ()):
-        ensure_word_in_db(db, literal)
+        inject.ensure_word_rows(db, literal)
 
     if compound_kind == "ant":
         from app.domain.relations.compound_ant import search_compound_ant
