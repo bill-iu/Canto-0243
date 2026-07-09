@@ -5,7 +5,7 @@
 import type { Database } from './sqljs.ts';
 import { queryRows } from './database-backend.ts';
 import { ensureConnectiveCompoundRows } from './db-patch.ts';
-import { getCodeVariants } from './code-variants.ts';
+import { matchesCodePositions, requiredCodesFromDigitString } from './position-match/filters/f1-slot-code.ts';
 import { compareSearchResults } from './ranking.ts';
 import { getStaticSynonyms } from './thesaurus.ts';
 
@@ -514,8 +514,9 @@ function matchesCodePrefix(code: string, prefix: string, mode: string): boolean 
   if (!prefix) {
     return true;
   }
-  const variants = getCodeVariants(prefix, mode === 'm2' || mode === '02493' ? 'm2' : 'm1');
-  return variants.some((v) => code === v || code.startsWith(v));
+  // PR-A: serial per-digit (prefix length may be < word code length)
+  const required = requiredCodesFromDigitString(prefix);
+  return matchesCodePositions(code, required, mode);
 }
 
 async function fetchCompoundRows(db: Database, literals: Set<string>, width: number): Promise<WordRow[]> {

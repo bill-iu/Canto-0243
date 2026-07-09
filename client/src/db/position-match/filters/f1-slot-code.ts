@@ -21,7 +21,11 @@ export function matchesCodePositions(
   requiredCodes: Array<string | null>,
   mode: string,
 ): boolean {
-  if (codeStr.length !== requiredCodes.length) {
+  /** 逐格 digit 鬆檔；required 可短於 code（前綴）；null 格跳過。 */
+  if (!requiredCodes.length) {
+    return true;
+  }
+  if (!codeStr && requiredCodes.some((r) => r != null)) {
     return false;
   }
   const searchMode = normalizeMode(mode);
@@ -29,6 +33,9 @@ export function matchesCodePositions(
     const req = requiredCodes[idx];
     if (!req) {
       continue;
+    }
+    if (idx >= codeStr.length) {
+      return false;
     }
     const variants = new Set(getCodeVariants(req, searchMode));
     if (!variants.has(codeStr[idx]!)) {
@@ -97,13 +104,8 @@ export async function wordPassesPositionFilters(
 }
 
 export function buildRequiredCodes(spec: MatchSpec): Array<string | null> {
+  /** PR-A: mask digit + code_digit slots only — never code_prefix blob. */
   const required: Array<string | null> = Array(spec.width).fill(null);
-  const hasSlotDigits = (spec.slots ?? []).some((s) => s.kind === 'code_digit');
-  if (spec.code_prefix && !hasSlotDigits) {
-    for (let i = 0; i < spec.code_prefix.length && i < spec.width; i++) {
-      required[i] = spec.code_prefix[i]!;
-    }
-  }
   const mask = spec.mask ?? '';
   for (let i = 0; i < mask.length && i < spec.width; i++) {
     if (/\d/.test(mask[i]!)) {
@@ -116,6 +118,27 @@ export function buildRequiredCodes(spec: MatchSpec): Array<string | null> {
     }
   }
   return required;
+}
+
+export function denseCodeFromRequired(required: Array<string | null>): string | null {
+  if (!required.length) {
+    return null;
+  }
+  const parts: string[] = [];
+  for (const d of required) {
+    if (d == null || !/^\d$/.test(d)) {
+      return null;
+    }
+    parts.push(d);
+  }
+  return parts.join('');
+}
+
+export function requiredCodesFromDigitString(digits: string): Array<string | null> {
+  if (!digits || !/^\d+$/.test(digits)) {
+    return [];
+  }
+  return [...digits];
 }
 
 export function groupCandidatesByChar(candidates: WordRow[]): Map<string, WordRow[]> {

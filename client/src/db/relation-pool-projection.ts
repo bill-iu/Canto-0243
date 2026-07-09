@@ -1,7 +1,10 @@
 /** 近反義池投影 — thin entry (port of pool_projection; Phase C PR4). */
 import type { Database } from './sqljs.ts';
 import { queryRows } from './database-backend.ts';
-import { getCodeVariants } from './code-variants.ts';
+import {
+  matchesCodePositions,
+  requiredCodesFromDigitString,
+} from './position-match/filters/f1-slot-code.ts';
 import {
   relationPoolSnapshotItems,
   type RelationPoolItem,
@@ -50,15 +53,15 @@ export async function relationLookupItems(
   });
 
   if (codePrefix) {
-    if (seed.length !== codePrefix.length) {
+    const required = requiredCodesFromDigitString(codePrefix);
+    if (seed.length !== required.length) {
       return [];
     }
-    const variants = new Set(getCodeVariants(codePrefix, mode === 'm2' || mode === '02493' ? 'm2' : 'm1'));
     const rows = await queryRows(db, 'SELECT code FROM words WHERE char = ? LIMIT 20', [seed]);
     let seedOk = false;
     for (const row of rows) {
       const code = String((row as Record<string, unknown>).code ?? '');
-      if (variants.has(code)) {
+      if (matchesCodePositions(code, required, mode)) {
         seedOk = true;
         break;
       }

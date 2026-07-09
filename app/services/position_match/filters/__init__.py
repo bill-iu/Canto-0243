@@ -10,6 +10,12 @@ from app.services.position_match.filters.f1_slot_code import (
     matches_code_positions,
     preferred_pronunciation_rows,
 )
+from app.services.position_match.mask_adapter import (
+    dense_code_from_required,
+    dense_code_from_spec,
+    required_codes_from_digit_string,
+    required_codes_from_spec,
+)
 from app.services.position_match.filters.f2_phoneme_anchor import (
     contextual_final_options_at_position,
     contextual_initial_options_at_position,
@@ -32,6 +38,8 @@ __all__ = [
     "build_final_options_at_positions",
     "contextual_final_options_at_position",
     "contextual_initial_options_at_position",
+    "dense_code_from_required",
+    "dense_code_from_spec",
     "filter_candidates_by_match_spec",
     "filter_words_by_code_and_mask",
     "matches_code_positions",
@@ -41,6 +49,8 @@ __all__ = [
     "matches_phoneme_at_position",
     "preferred_pronunciation_rows",
     "query_words_by_equals_spec",
+    "required_codes_from_digit_string",
+    "required_codes_from_spec",
     "slot_constraint_matches",
     "word_matches_last_final",
     "word_passes_partial_initial_mask",

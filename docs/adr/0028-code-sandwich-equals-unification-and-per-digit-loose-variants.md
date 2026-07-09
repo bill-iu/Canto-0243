@@ -54,3 +54,12 @@
 ## Status
 
 `implemented`（P0–P3 已落地於 Python + PWA）
+
+### PR-A amend（執行層：禁止以 `code_prefix` 做比對）
+
+Grill 2026-07：在 P0–P3 之上，**所有執行／比對路徑**唔再以 `MatchSpec.code_prefix` 全碼字串驅動約束。
+
+1. **約束 SSOT**：`mask` 內 digit + `code_digit` slots → `required_codes_from_spec`／`buildRequiredCodes`；逐格 `matches_code_positions`（`get_code_variants(單 digit)`）。
+2. **Dense 候選池**：僅當每位皆有 digit 時 `dense_code_from_spec` 合成全碼，再 `get_code_variants` 笛卡爾 + `code IN (...)`（加速，語意與逐格等價）。
+3. **仍可暫存 `code_prefix` 欄**：builder／explain／golden 可填；**filter／engine／equals／compound／relation seed 比對忽略**（PR-C 再停寫／刪欄）。
+4. **前綴碼**（compound 短於詞碼）：前 N 格逐格鬆檔，保留 `startsWith` 等價語意。

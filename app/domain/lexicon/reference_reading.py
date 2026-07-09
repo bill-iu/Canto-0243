@@ -128,16 +128,29 @@ def equals_authoritative_row_for_code(
     *,
     allow_inject: bool = True,
 ) -> Optional[Any]:
-    """整詞等號 + 左碼前綴：參考讀音對齊該碼（詞級標音可補庫內 stale 列）。"""
+    """整詞等號 + 左碼：參考讀音對齊該碼（詞級標音可補庫內 stale 列）。PR-A：逐格 digit。"""
     from app.lexicon.static_index import get_lexicon_entries
+    from app.services.position_match.filters.f1_slot_code import matches_code_positions
+    from app.services.position_match.mask_adapter import required_codes_from_digit_string
     from app.utils.jyutping_codec import get_code_variants
 
-    variants = set(get_code_variants(code_prefix, mode))
-    lexicon_hits = [e for e in get_lexicon_entries(literal) if e.code in variants]
+    required = required_codes_from_digit_string(code_prefix)
+    # inject still uses dense variants (candidate pool for lexicon rows)
+    variants = set(get_code_variants(code_prefix, mode)) if code_prefix else set()
+    lexicon_hits = [
+        e
+        for e in get_lexicon_entries(literal)
+        if matches_code_positions(e.code or "", required, mode)
+        or (e.code in variants)
+    ]
     if lexicon_hits and allow_inject:
         default_word_inject_port().inject_lexicon_rows(db, literal, lexicon_hits)
     rows = db.query(Word).filter(Word.char == literal).all()
-    matching = [r for r in rows if (getattr(r, "code", None) or "") in variants]
+    matching = [
+        r
+        for r in rows
+        if matches_code_positions(getattr(r, "code", None) or "", required, mode)
+    ]
     if matching:
         return select_authoritative_pronunciation_row(matching)
     return None

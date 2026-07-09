@@ -16,12 +16,17 @@ from app.services.word_serializer import (
 from app.utils.jyutping_codec import get_code_variants
 
 def matches_code_positions(code_str: str, required_codes: list[Optional[str]], mode: str) -> bool:
-    if len(code_str) != len(required_codes):
+    """逐格 digit 鬆檔比對。required 可短於 code（前綴）；None 格跳過。"""
+    if not required_codes:
+        return True
+    if not code_str and any(r is not None for r in required_codes):
         return False
     for idx, req_digit in enumerate(required_codes):
         if req_digit is None:
             continue
-        if code_str[idx] not in set(get_code_variants(req_digit, mode)):
+        if idx >= len(code_str):
+            return False
+        if code_str[idx] not in set(get_code_variants(str(req_digit), mode)):
             return False
     return True
 
@@ -105,24 +110,24 @@ def filter_words_by_code_and_mask(
     constraint: Optional[str] = None,
     literal_char: Optional[str] = None,
     slots: Optional[list] = None,
+    required_codes: Optional[list] = None,
 ) -> list:
-    required_codes: list[Optional[str]] = [None] * width
-    has_slot_code_digits = bool(slots) and any(
-        getattr(slot, "kind", None) == "code_digit" for slot in slots
-    )
-    # ponytail: code_prefix concatenation is not positional when code_digit slots are sparse (3+jan4)
-    if code_digits and not has_slot_code_digits:
-        for i, d in enumerate(code_digits):
-            if i < width:
-                required_codes[i] = d
-    if mask:
-        for i, ch in enumerate(mask):
-            if i < width and ch.isdigit():
-                required_codes[i] = ch
-    if slots:
-        for slot in slots:
-            if getattr(slot, "kind", None) == "code_digit" and slot.pos < width and slot.value is not None:
-                required_codes[slot.pos] = str(slot.value)
+    # PR-A: prefer explicit required_codes (slots/mask); ignore legacy code_digits blob
+    if required_codes is None:
+        required_codes = [None] * width
+        if mask:
+            for i, ch in enumerate(mask):
+                if i < width and ch.isdigit():
+                    required_codes[i] = ch
+        if slots:
+            for slot in slots:
+                if getattr(slot, "kind", None) == "code_digit" and slot.pos < width and slot.value is not None:
+                    required_codes[slot.pos] = str(slot.value)
+        # legacy: only if no slot/mask digits at all (callers should pass required_codes)
+        if code_digits and not any(r is not None for r in required_codes):
+            for i, d in enumerate(code_digits):
+                if i < width and str(d).isdigit():
+                    required_codes[i] = str(d)
 
     filtered = []
     has_code_digit_constraints = any(req is not None for req in required_codes)

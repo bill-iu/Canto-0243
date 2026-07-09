@@ -47,11 +47,9 @@ function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
  * Partial codes (not every position) return null so phoneme path can take unlimited bucket.
  */
 export function narrowingCodeFromSpec(spec: MatchSpec, ctxCode?: string | null): string | null {
+  /** PR-A: dense code only from ctx / mask digits / code_digit slots — never code_prefix. */
   if (ctxCode && /^\d+$/.test(ctxCode) && ctxCode.length === spec.width) {
     return ctxCode;
-  }
-  if (spec.code_prefix && /^\d+$/.test(spec.code_prefix) && spec.code_prefix.length === spec.width) {
-    return spec.code_prefix;
   }
   if (spec.mask && spec.mask.length === spec.width && /^\d+$/.test(spec.mask)) {
     return spec.mask;

@@ -7,6 +7,9 @@ export {
   filterWordsByCodeAndMask,
   narrowByPhonemeAnchors,
   preferredPronunciationRows,
+  buildRequiredCodes,
+  denseCodeFromRequired,
+  requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
 export {
   anchorPhonemeOptions,

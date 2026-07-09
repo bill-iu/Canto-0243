@@ -174,7 +174,8 @@ def ensure_word_relations_canonical_unique() -> None:
                     )
                 )
             conn.commit()
-            print("[DB] word_relations 已正規化為 (min_id, max_id, relation_type) 唯一。")    except Exception as e:
+            print("[DB] word_relations 已正規化為 (min_id, max_id, relation_type) 唯一。")
+    except Exception as e:
         print(f"[DB] 更新 word_relations 唯一約束時發生錯誤：{type(e).__name__}: {e}")
 
 

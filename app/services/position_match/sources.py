@@ -346,7 +346,9 @@ def _resolve_mask_family_source(
         return source, sort_key
 
     if spec.literal_priority and spec.mask:
-        effective_code = query_code or spec.code_prefix
+        from app.services.position_match.mask_adapter import dense_code_from_spec
+
+        effective_code = query_code or dense_code_from_spec(spec)
         source = MaskWildcardCandidateSource(
             db,
             spec.mask,

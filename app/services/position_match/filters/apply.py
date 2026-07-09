@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from typing import Any
 
+from typing import Optional
+
 from app.services.position_match.filters.f1_slot_code import filter_words_by_code_and_mask
 from app.services.position_match.filters.f2_phoneme_anchor import (
     word_passes_partial_initial_mask,
@@ -11,6 +13,7 @@ from app.services.position_match.filters.f2_phoneme_anchor import (
 )
 from app.services.position_match.filters.f3_letters import slot_constraint_matches
 from app.services.position_match.filters.f4_equals import query_words_by_equals_spec
+from app.services.position_match.mask_adapter import required_codes_from_spec
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.word_serializer import get_word_jyutping
 from app.utils.word_cache import narrow_candidates_by_phoneme_anchor
@@ -52,12 +55,13 @@ def filter_candidates_by_match_spec(
     return filter_words_by_code_and_mask(
         candidates,
         width=spec.width,
-        code_digits=spec.code_prefix or "",
+        code_digits="",  # PR-A: constraints only via required_codes (slots/mask)
         mode=mode,
         mask=spec.mask or "",
         db=db,
         literal_char=literal_char,
         slots=spec.slots,
+        required_codes=required_codes_from_spec(spec),
     )
 
 def apply_match_spec(

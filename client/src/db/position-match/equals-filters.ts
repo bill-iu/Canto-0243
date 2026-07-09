@@ -8,9 +8,19 @@ import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts'
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { anchorPhonemeOptions } from './filters.ts';
+import {
+  buildRequiredCodes,
+  denseCodeFromRequired,
+  matchesCodePositions,
+  requiredCodesFromDigitString,
+} from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
 import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
+
+function denseCodeFromSpec(spec: MatchSpec): string {
+  return denseCodeFromRequired(buildRequiredCodes(spec)) || '';
+}
 
 function normalizeMode(mode: string): 'm1' | 'm2' {
   return mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
@@ -51,13 +61,13 @@ async function equalsAuthoritativeRowForCode(
   codePrefix: string,
   mode: 'm1' | 'm2',
 ): Promise<WordRow | null> {
-  const variants = new Set(getCodeVariants(codePrefix, mode));
+  const required = requiredCodesFromDigitString(codePrefix);
   const rows = await queryRows(
     db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
     [literal],
   );
-  const matching = rows.filter((row) => variants.has(getWordCode(row)));
+  const matching = rows.filter((row) => matchesCodePositions(getWordCode(row), required, mode));
   return preferredPronunciationRow(matching);
 }
 
@@ -293,7 +303,7 @@ async function equalsWholeWordMatches(
     return [];
   }
   const width = spec.width;
-  const fullCode = spec.code_prefix || '';
+  const fullCode = denseCodeFromSpec(spec);
   const variants = fullCode ? getCodeVariants(fullCode, mode) : [];
   const targetKey = targetParts.join('\0');
 
@@ -341,7 +351,7 @@ export async function queryWordsByEqualsSpec(
   const searchMode = normalizeMode(mode);
   const isFinal = span.dimension === 'final' || span.dimension === 'rhyme';
   const prefixWildcard = Boolean(spec.extra?.prefix_wildcard_equals);
-  const fullCode = spec.code_prefix || '';
+  const fullCode = denseCodeFromSpec(spec);
 
   let targetParts: string[] | null;
   let target: WordRow | null = null;

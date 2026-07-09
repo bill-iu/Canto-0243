@@ -130,7 +130,7 @@ def _equals_length_bucket_candidates(
     code_prefix: Optional[str],
     mode: str,
 ) -> Optional[list]:
-    from app.utils.jyutping_codec import get_code_variants
+    from app.services.position_match.filters.f1_slot_code import matches_code_positions
     from app.utils.word_cache import get_words_for_length, is_word_cache_ready
 
     if not is_word_cache_ready():
@@ -138,8 +138,13 @@ def _equals_length_bucket_candidates(
     candidates = get_words_for_length(width)
     if not code_prefix:
         return candidates
-    variants = set(get_code_variants(code_prefix, mode))
-    return [w for w in candidates if get_word_sort_code(w) in variants]
+    # PR-A: per-digit constraints (dense get_code_variants IN is candidate-pool only)
+    required = list(code_prefix)
+    return [
+        w
+        for w in candidates
+        if matches_code_positions(get_word_sort_code(w) or "", required, mode)
+    ]
 
 
 def _equals_whole_word_matches(
@@ -154,7 +159,9 @@ def _equals_whole_word_matches(
     from app.models.word import Word
     from app.services.word_db_filters import apply_code_filter, length_filter
 
-    full_code = spec.code_prefix or ""
+    from app.services.position_match.mask_adapter import dense_code_from_spec
+
+    full_code = dense_code_from_spec(spec) or ""
     target_key = tuple(target_parts)
     cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
     storage_field = "finals" if is_final else "initials"
@@ -207,8 +214,10 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     assert span is not None
     is_final = span.dimension == "final"
     dimension = "final" if is_final else "initial"
+    from app.services.position_match.mask_adapter import dense_code_from_spec
+
     prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
-    full_code = spec.code_prefix or ""
+    full_code = dense_code_from_spec(spec) or ""
 
     if prefix_wildcard:
         target_parts = suffix_aligned_ref_phoneme_parts(
