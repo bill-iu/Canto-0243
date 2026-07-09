@@ -117,9 +117,14 @@ async function persistLexiconForOffline(version: string, bytes: Uint8Array): Pro
 
 async function verifyLexiconIntegrity(
   bytes: Uint8Array,
-  target: { byteSize?: number; sha256?: string },
+  target: LexiconTarget,
 ): Promise<void> {
   if (target.byteSize != null && bytes.byteLength !== target.byteSize) {
+    const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
+    await purgeStaleLexiconCaches(
+      target,
+      `size ${bytes.byteLength} != ${target.byteSize}`,
+    );
     throw new Error(
       `Lexicon size mismatch: expected ${target.byteSize} bytes, got ${bytes.byteLength}`,
     );
@@ -130,6 +135,8 @@ async function verifyLexiconIntegrity(
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
     if (hex !== target.sha256) {
+      const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
+      await purgeStaleLexiconCaches(target, 'sha256 mismatch');
       throw new Error('Lexicon integrity check failed (sha256 mismatch)');
     }
   }

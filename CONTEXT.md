@@ -364,6 +364,18 @@ _Avoid_：把 app tag 同詞庫標籤混為一談（兩者可以獨立）、只�
 維持同一 **詞庫版本** 標籤，替換詞條庫字節（如同一 tag 內容修正）；須更新 manifest `byteSize`／`sha256`，令已快取客戶端淘汰舊副本並重拉。
 _Avoid_：刷新而不跑發佈閘、刷新而不做煙霧驗收
 
+**詞庫掛載**：
+將 SSOT **詞條庫**發佈物同步到各交付渠道可讀位置（含完整性 metadata），令 **PWA 交付頻道** 與 **免安裝交付** 唔各自維護漂移副本；runtime 仍可分渠開庫。
+_Avoid_：mount（作領域正名）、把掛載當單一 live 共用連線、把只下載唔校驗當掛載完成
+
+**詞庫渠道同步**：
+**詞條庫建置流程** 成功且 **詞庫發佈閘** 通過後，將根目錄 SSOT `lyrics.db` **複製**（唔 hardlink）到 PWA public 樹並刷新 `lexicon-manifest`（含可選 gzip）；閘紅唔自動同步。
+_Avoid_：把 hardlink 當預設、閘失敗仍當 ship 就緒、略過 manifest 完整性
+
+**詞庫開發掛載**：
+本機 dev 優先讀 repo 根 SSOT **詞條庫**字節（中介層 stream），唔依賴過期 public 副本；**唔**取代 **詞庫渠道同步** 產物（build／Pages 仍用同步後 public）。
+_Avoid_：只靠人手 copy 先可 dev、dev 同 prod 混為同一掛載路徑
+
 **詞庫埠**：
 詞庫資料的抽象邊界：**raw lookup**（rime 單字表、詞級標音 JSON，不帶收錄判斷）與**排序信號**（essay 詞頻、curated、pron_rank）。**收錄門檻**（能否注入、讀音歸哪一類）由**收錄決策**單獨判定，不由埠的 lookup 方法隱含決定。
 _Avoid_：把 runtime 詞條庫本身稱作詞庫、把收錄決策塞進 raw lookup 回傳值

@@ -516,11 +516,12 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"release gate failed: {exc}", file=sys.stderr)
         return 1
-    if args.copy_public:
+    # 詞庫渠道同步（ADR-0036）：閘綠後預設 copy → public + manifest
+    if not getattr(args, "no_copy_public", False):
         import os
         import subprocess
 
-        print("==> copy-db (public manifest + gzip)")
+        print("==> copy-db (詞庫渠道同步 → public manifest + gzip)")
         copy_db = REPO_ROOT / "client" / "copy-db.js"
         if not copy_db.is_file():
             print(f"copy-db missing: {copy_db}", file=sys.stderr)
@@ -820,7 +821,12 @@ def main(argv: list[str] | None = None) -> int:
     p_build_db.add_argument(
         "--copy-public",
         action="store_true",
-        help="Copy lyrics.db to client/public/ after build",
+        help="Deprecated no-op: 詞庫渠道同步 is the default after a green release gate",
+    )
+    p_build_db.add_argument(
+        "--no-copy-public",
+        action="store_true",
+        help="Skip 詞庫渠道同步 (copy-db to client/public after green gate)",
     )
     p_build_db.add_argument(
         "--min-multi-char",

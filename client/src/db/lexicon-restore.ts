@@ -27,6 +27,27 @@ export async function isSwLexiconCached(url: string): Promise<boolean> {
   }
 }
 
+/** C1 / ADR-0036: fixed-URL CacheFirst — drop stale SW db entries after integrity fail */
+export async function purgeSwLexiconCache(urls: string[]): Promise<void> {
+  if (!('caches' in globalThis)) return;
+  try {
+    const keys = await caches.keys();
+    const dbCaches = keys.filter((k) => k.includes('database-cache') || k.includes('workbox'));
+    for (const name of dbCaches) {
+      const cache = await caches.open(name);
+      for (const url of urls) {
+        try {
+          await cache.delete(url, { ignoreSearch: true });
+        } catch {
+          /* best-effort */
+        }
+      }
+    }
+  } catch {
+    /* best-effort */
+  }
+}
+
 export async function getLexiconCacheStatus(target: LexiconTarget): Promise<LexiconCacheStatus> {
   const [opfs, swFetch, swPlain] = await Promise.all([
     isOpfsLexiconCached(target.version),
@@ -56,6 +77,20 @@ async function purgeBadOpfsLexicon(
   }
 }
 
+export async function purgeStaleLexiconCaches(
+  target: LexiconTarget,
+  reason: string,
+): Promise<void> {
+  console.warn(`Lexicon integrity: ${reason}; purging OPFS + SW database-cache`);
+  try {
+    await removeLexiconFromOpfs(target.version);
+  } catch {
+    /* best-effort */
+  }
+  const urls = [target.fetchUrl, target.dbUrl].filter(Boolean);
+  await purgeSwLexiconCache([...new Set(urls)]);
+}
+
 async function fetchWithLock(fetchUrl: string, target: LexiconTarget): Promise<Uint8Array> {
   const run = () =>
     fetchLexiconBytesFromUrl(fetchUrl, {
@@ -80,6 +115,7 @@ export async function resolveLexiconBytes(
   if (fromOpfs?.byteLength) {
     if (target.byteSize != null && fromOpfs.byteLength !== target.byteSize) {
       await purgeBadOpfsLexicon(target.version, fromOpfs, target);
+      await purgeSwLexiconCache([target.fetchUrl, target.dbUrl].filter(Boolean));
     } else {
       return { bytes: fromOpfs, source: 'opfs' };
     }
@@ -94,6 +130,10 @@ export async function resolveLexiconBytes(
   const hadSwCache = cache.swCache;
   const bytes = await fetchWithLock(target.fetchUrl, target);
   if (target.byteSize != null && bytes.byteLength !== target.byteSize) {
+    await purgeStaleLexiconCaches(
+      target,
+      `fetch size ${bytes.byteLength} != ${target.byteSize}`,
+    );
     throw new Error(
       `Lexicon size mismatch after fetch: expected ${target.byteSize} bytes, got ${bytes.byteLength}`,
     );

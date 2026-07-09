@@ -1,6 +1,7 @@
 /**
- * Copy the release lexicon into public/ and write lexicon-manifest.json
+ * 詞庫渠道同步（ADR-0036 S3）：root lyrics.db → public/ + lexicon-manifest.json
  * ADR-0032 G: optional gzip when savings >= 15%
+ * Called by default after green `python -m ingest build-db` (unless --no-copy-public).
  */
 
 import { createHash } from 'crypto';
