@@ -38,8 +38,6 @@ export type CompoundKind = 'syn' | 'ant' | 'doubled_syllable';
 export interface MatchSpec {
   width: number;
   slots?: SlotConstraint[];
-  /** @deprecated PR-C: unused for match; prefer code_digit slots. Optional for compat. */
-  code_prefix?: string | null;
   literal_priority?: boolean;
   mask?: string;
   compound_kind?: CompoundKind | null;

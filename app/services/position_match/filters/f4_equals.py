@@ -127,7 +127,7 @@ def _phoneme_db_literal(word: Any, field: str) -> str:
 
 def _equals_length_bucket_candidates(
     width: int,
-    code_prefix: Optional[str],
+    dense_code: Optional[str],
     mode: str,
 ) -> Optional[list]:
     from app.services.position_match.filters.f1_slot_code import matches_code_positions
@@ -136,10 +136,9 @@ def _equals_length_bucket_candidates(
     if not is_word_cache_ready():
         return None
     candidates = get_words_for_length(width)
-    if not code_prefix:
+    if not dense_code:
         return candidates
-    # PR-A: per-digit constraints (dense get_code_variants IN is candidate-pool only)
-    required = list(code_prefix)
+    required = list(dense_code)
     return [
         w
         for w in candidates

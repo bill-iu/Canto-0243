@@ -66,9 +66,6 @@ class MatchSpec:
     width: int                                 # 目標詞長度
     slots: list[SlotConstraint] = field(default_factory=list)
 
-    # PR-C: code_prefix retired from execution/builders — use code_digit slots.
-    # Field kept optional only so old call sites/tests don't explode; never read for match.
-    code_prefix: Optional[str] = None  # deprecated: ignore; prefer slots + mask_adapter
     literal_priority: bool = False             # mask 類查詢常用（literal 數量優先排序）
 
     # 為 mask 等

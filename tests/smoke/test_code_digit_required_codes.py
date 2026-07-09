@@ -13,10 +13,9 @@ from app.services.position_match.spec import MatchSpec, SlotConstraint
 
 
 class CodeDigitRequiredCodesTests(unittest.TestCase):
-    def test_required_codes_ignores_code_prefix_blob(self):
+    def test_required_codes_from_slots_only(self):
         spec = MatchSpec(
             width=2,
-            code_prefix="99",
             slots=[
                 SlotConstraint(pos=0, kind="code_digit", value="3"),
                 SlotConstraint(pos=1, kind="code_digit", value="9"),
@@ -28,7 +27,6 @@ class CodeDigitRequiredCodesTests(unittest.TestCase):
     def test_sparse_slots_no_dense(self):
         spec = MatchSpec(
             width=3,
-            code_prefix="349",
             mask="?a?",
             slots=[
                 SlotConstraint(pos=0, kind="code_digit", value="3"),

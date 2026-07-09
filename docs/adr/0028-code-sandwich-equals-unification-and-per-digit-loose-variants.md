@@ -70,3 +70,7 @@ Grill 2026-07：在 P0–P3 之上，**所有執行／比對路徑**唔再以 `M
 2. **Explain／hint／golden**：用 `code_digit_string_from_spec`／`has_code_digit_constraints`（slots／mask），唔讀欄位。
 3. **ParsedQuery** 仍可有 `code_prefix`（創作者輸入語法，如 `33!開心`、compound 前綴碼）——僅 parse 產物，唔再抄入 MatchSpec。
 4. **欄位**：dataclass／TS interface 暫留 optional deprecated，**禁止再依賴**；PR 後新 code 唔賦值。
+
+### Cleanup（刪 MatchSpec.code_prefix）
+
+`MatchSpec` **已移除** `code_prefix` 欄位。碼串只由 slots／mask 還原（`code_digit_string_from_spec`）。**ParsedQuery**／compound／relation 輸入上的 `code_prefix` 仍係創作者語法欄位，唔屬 MatchSpec。
