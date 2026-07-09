@@ -1,7 +1,9 @@
 /**
- * Pure 搜尋模式轉接 detect (介面轉接 / early UI).
+ * Pure 搜尋模式轉接 detect (介面轉接 / early UI) — regex adapter.
  * FILLWORD alphabet inlined from contracts/fillword-connectives.json
  * (python scripts/codegen_fillword_connectives.py).
+ * Parity cases: contracts/relation-syntax-detect-cases.json
+ * (vs Python is_relation_syntax_query full-parse adapter).
  * Codegen mjs: python scripts/codegen_query_mode_detect.py
  * Do not hand-edit frontend/query-mode-detect.mjs.
  */

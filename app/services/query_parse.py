@@ -312,7 +312,11 @@ def resolve_fallback_0243_mode(fallback: str | None) -> str:
 
 
 def is_relation_syntax_query(q: str) -> bool:
-    """是否為近反義關係查詢語法（觸發搜尋模式轉接）。"""
+    """是否為近反義關係查詢語法（觸發搜尋模式轉接）。
+
+    Full-parse adapter; regex peer is frontend/query-mode-detect.mjs.
+    Parity SSOT: contracts/relation-syntax-detect-cases.json.
+    """
     parsed = normalize_and_parse(q)
     if isinstance(parsed, RelationLookupQuery):
         return True

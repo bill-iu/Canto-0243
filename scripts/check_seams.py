@@ -538,6 +538,21 @@ class TestQueryParseTypesSeam(unittest.TestCase):
                     hits.append(str(path.relative_to(REPO_ROOT)))
         self.assertEqual(hits, [], msg=f"hand-copied FILLWORD alphabet: {hits}")
 
+    def test_relation_syntax_detect_cases_contract(self):
+        """P1 #3: shared detect case table exists and is non-empty."""
+        path = REPO_ROOT / "contracts" / "relation-syntax-detect-cases.json"
+        self.assertTrue(path.is_file())
+        data = json.loads(path.read_text(encoding="utf-8"))
+        self.assertIsInstance(data.get("relation"), list)
+        self.assertIsInstance(data.get("ping_ze"), list)
+        self.assertGreaterEqual(len(data["relation"]), 20)
+        self.assertGreaterEqual(len(data["ping_ze"]), 5)
+        smoke = REPO_ROOT / "tests" / "smoke" / "test_mode_detect_parity.py"
+        self.assertTrue(smoke.is_file())
+        src = smoke.read_text(encoding="utf-8")
+        self.assertIn("relation-syntax-detect-cases.json", src)
+        self.assertNotIn('CASES_RELATION = [', src)
+
 
 class TestQueryTabsSeam(unittest.TestCase):
     FRONTEND_ASSETS = (
