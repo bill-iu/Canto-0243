@@ -48,6 +48,7 @@ import { normalizeToMatchSpec } from '../position-match/match-spec-registry.ts';
 import { getWordText } from '../position-match/word-row.ts';
 import { QueryKind, RouteKind } from '../query-kind.ts';
 import { routeKindFor } from '../query-kind-registry.ts';
+import { FILLWORD_CONNECTIVES } from '../_generated/fillword-connectives.ts';
 import type {
   CodeRefMiddleRhymeQuery,
   CompoundAntQuery,
@@ -240,7 +241,6 @@ function hasJyutpingChars(q: string): boolean {
   return /[a-zA-Z]/.test(q);
 }
 
-const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
 /** ponytail: Python CODE_TAIL_MIDDLE is `+`; TS legacy uses ∕ for plus-anchor only */
 const GRAMMAR_PLUS = '+';
 

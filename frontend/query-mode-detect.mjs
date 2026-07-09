@@ -4,7 +4,6 @@
  */
 
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
-
 const COMPOUND_CONNECT_SYN_RE = new RegExp(
   `^(\\d*)~([${FILLWORD_CONNECTIVES}])~([\\u4e00-\\u9fff])?$`,
 );

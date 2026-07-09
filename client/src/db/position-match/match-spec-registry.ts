@@ -36,7 +36,8 @@ import type {
   WildcardCodeAnchorQuery,
 } from '../query-engine.ts';
 
-const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
+import { FILLWORD_CONNECTIVES } from '../_generated/fillword-connectives.ts';
+
 const CONNECT_SYN_RE = new RegExp(`^(\\d*)~([${FILLWORD_CONNECTIVES}])~`);
 const CONNECT_ANT_RE = new RegExp(`^(\\d*)!([${FILLWORD_CONNECTIVES}])!`);
 

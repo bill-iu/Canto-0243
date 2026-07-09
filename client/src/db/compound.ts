@@ -8,6 +8,7 @@ import { ensureConnectiveCompoundRows } from './db-patch.ts';
 import { matchesCodePositions, requiredCodesFromDigitString } from './position-match/filters/f1-slot-code.ts';
 import { compareSearchResults } from './ranking.ts';
 import { getStaticSynonyms } from './thesaurus.ts';
+import { FILLWORD_CONNECTIVES_SET as FILLWORD_CONNECTIVES } from './_generated/fillword-connectives.ts';
 
 export type CompoundKind = 'syn' | 'ant' | 'doubled_syllable';
 
@@ -26,8 +27,6 @@ const TIER_CURATED = 0;
 const TIER_MORPHEME = 1;
 const TIER_SYNTHESIZED = 2;
 const NEIGHBOR_K = 12;
-
-const FILLWORD_CONNECTIVES = new Set('與和或共同及跟而且並向'.split(''));
 
 let curatedSyn = new Set<string>();
 let curatedAnt = new Set<string>();

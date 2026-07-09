@@ -8,8 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.compound_syn import narrow_compound_syn_literals
 from app.models.word import Word
-
-FILLWORD_CONNECTIVES = frozenset("與和或共同及跟而且並向")
+from app.services._generated.fillword_connectives import FILLWORD_CONNECTIVES
 
 # ponytail: guide／essay 常見填詞連接詞三字詞 — 查詢時 ensure 入庫（CONTEXT § 連接詞複合查詢）
 CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {

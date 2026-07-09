@@ -1,11 +1,12 @@
 /**
- * Pure 搜尋模式轉接 detect (介面轉接 / early UI) — SSOT for codegen.
- * Codegen: python scripts/codegen_query_mode_detect.py
+ * Pure 搜尋模式轉接 detect (介面轉接 / early UI).
+ * FILLWORD alphabet inlined from contracts/fillword-connectives.json
+ * (python scripts/codegen_fillword_connectives.py).
+ * Codegen mjs: python scripts/codegen_query_mode_detect.py
  * Do not hand-edit frontend/query-mode-detect.mjs.
  */
 
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
-
 const COMPOUND_CONNECT_SYN_RE = new RegExp(
   `^(\\d*)~([${FILLWORD_CONNECTIVES}])~([\\u4e00-\\u9fff])?$`,
 );

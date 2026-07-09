@@ -1,0 +1,4 @@
+{
+  "$comment": "連接詞複合查詢 fillword alphabet — single write point (P1 #1). Codegen: scripts/codegen_fillword_connectives.py",
+  "connectives": "與和或共同及跟而且並向"
+}

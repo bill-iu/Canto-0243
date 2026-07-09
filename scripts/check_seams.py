@@ -487,6 +487,57 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
 
+    def test_fillword_connectives_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_fillword_connectives.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_fillword_alphabet_not_hand_copied(self):
+        """P1 #1: alphabet only in contract + generated + mode-detect inline."""
+        alphabet = "與和或共同及跟而且並向"
+        allow = {
+            REPO_ROOT / "contracts" / "fillword-connectives.json",
+            REPO_ROOT / "app" / "services" / "_generated" / "fillword_connectives.py",
+            REPO_ROOT / "client" / "src" / "db" / "_generated" / "fillword-connectives.ts",
+            REPO_ROOT / "client" / "src" / "db" / "query" / "mode-detect.ts",
+            REPO_ROOT / "frontend" / "query-mode-detect.mjs",
+            REPO_ROOT / "scripts" / "codegen_fillword_connectives.py",
+        }
+        roots = [
+            REPO_ROOT / "app",
+            REPO_ROOT / "client" / "src",
+            REPO_ROOT / "frontend",
+            REPO_ROOT / "ingest",
+        ]
+        hits: list[str] = []
+        for root in roots:
+            if not root.is_dir():
+                continue
+            for path in root.rglob("*"):
+                if not path.is_file():
+                    continue
+                if path.suffix not in {".py", ".ts", ".tsx", ".mjs", ".js", ".json"}:
+                    continue
+                if "node_modules" in path.parts or "__pycache__" in path.parts:
+                    continue
+                if path in allow:
+                    continue
+                try:
+                    text = path.read_text(encoding="utf-8")
+                except OSError:
+                    continue
+                if alphabet in text:
+                    hits.append(str(path.relative_to(REPO_ROOT)))
+        self.assertEqual(hits, [], msg=f"hand-copied FILLWORD alphabet: {hits}")
+
 
 class TestQueryTabsSeam(unittest.TestCase):
     FRONTEND_ASSETS = (
