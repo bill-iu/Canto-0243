@@ -741,13 +741,14 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const staleResults = !isLoadMore && (tab.results?.length > 0);
   setButtonLoading(true, { staleResults });
 
+  // 新搜尋：API 窗口永遠 offset=0（P3 可保留舊列 UI，但唔沿用上一查嘅已擷取位移）
   if (!isLoadMore) {
+    tab.offset = 0;
+    tab.total = null;
     if (!staleResults) {
       $.results.innerHTML = "";
       $.stats.textContent = "";
       tab.results = [];
-      tab.offset = 0;
-      tab.total = null;
       updateScrollSentinel(tab);
     }
   }
@@ -777,29 +778,31 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     updateBrowserUrlFromActiveTab(!pushed);
   }
 
-  const offset = tab.offset || 0;
+  const offset = isLoadMore ? tab.offset || 0 : 0;
   const pageSize = searchLimitForOffset(shell.currentMode, offset);
   const cacheKey = `${shell.currentMode}:${input}:${offset}:${pageSize}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {
     const cached = searchCache.get(cacheKey);
     if (Array.isArray(cached)) {
-      finishSearchWithData(tab, cached, { append: false });
-      setButtonLoading(false);
-      return;
-    }
-    if (cached && Array.isArray(cached.data)) {
-      if (cached.data.length === 0) {
-        $.results.innerHTML = emptySearchResultsHtml(input, cached.hint, shell.currentMode);
-        updateShuffleButton();
+      if (cached.length === 0) {
+        searchCache.delete(cacheKey);
+      } else {
+        finishSearchWithData(tab, cached, { append: false });
         setButtonLoading(false);
-        updateScrollSentinel(tab);
         return;
       }
-      finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
-      setButtonLoading(false);
-      return;
+    } else if (cached && Array.isArray(cached.data)) {
+      // F2: 唔信空 cache（可能係錯 offset 時代寫入嘅假空）
+      if (cached.data.length === 0) {
+        searchCache.delete(cacheKey);
+      } else {
+        finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
+        setButtonLoading(false);
+        return;
+      }
+    } else {
+      searchCache.delete(cacheKey);
     }
-    searchCache.delete(cacheKey);
   }
 
   let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${offset}`;
@@ -830,7 +833,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       searchHint = tab.redirectHint;
     }
 
-    if (!isLoadMore) {
+    // F2: 只 cache 非空首頁，避免假空結果卡死
+    if (!isLoadMore && data.length > 0) {
       searchCache.set(cacheKey, { data, total, hint: searchHint });
       if (searchCache.size > 50) searchCache.delete(searchCache.keys().next().value);
     }
@@ -838,6 +842,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     if (data.length === 0 && !isLoadMore) {
       const hint = tab.redirectHint || searchHint;
       tab.redirectHint = null;
+      tab.results = [];
+      tab.offset = 0;
       $.results.innerHTML = emptySearchResultsHtml(input, hint, shell.currentMode);
       updateShuffleButton();
       updateScrollSentinel(tab);

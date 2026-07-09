@@ -30,4 +30,16 @@ if (hook.includes('if (results.length > 0)') && hook.includes('setLoadingVisible
 if (!cancel.includes('SearchCancelledError')) throw new Error('search-cancel missing');
 if (!cancel.includes('throwIfSearchCancelled')) throw new Error('throwIf missing');
 
+// F2: new search always offset 0; do not cache empty pages
+const workbench = readFileSync(join(root, 'frontend/search-workbench.mjs'), 'utf8');
+if (!workbench.includes('const offset = isLoadMore ? tab.offset || 0 : 0')) {
+  throw new Error('searchDict: new search must force offset 0');
+}
+if (!workbench.includes('!isLoadMore && data.length > 0')) {
+  throw new Error('searchDict: must only cache non-empty first pages');
+}
+if (workbench.includes('if (cached.data.length === 0) {\n        $.results.innerHTML = emptySearchResultsHtml')) {
+  throw new Error('searchDict: must not trust empty cache entries');
+}
+
 console.log('search-page-limit-self-check: ok');
