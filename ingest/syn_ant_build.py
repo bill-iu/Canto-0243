@@ -21,7 +21,7 @@ def ingest_cilin_leaf_direct(
     confidence: float = 0.85,
     dedupe_existing: bool = True,
 ) -> dict:
-    """Ingest leaf Cilin groups directly into word_relations with canonical dedupe."""
+    """Test/legacy chunked cilin write. Release CLI uses build_word_relations only."""
     _ = dedupe_existing  # ponytail: no-op; INSERT OR IGNORE replaces pre-fetch dedupe
     from ingest.cilin_leaf import iter_cilin_leaf_line_chunks
 
@@ -50,8 +50,7 @@ def ingest_cilin_leaf_direct(
         for c in candidates:
             c["source"] = source[:32]
             c["score"] = confidence
-        # CAP applied in build_word_relations full path; direct path: cap per batch is weak.
-        # Prefer build_word_relations for release; still insert leaf-only group_codes.
+        # CAP-U@20 only on build_word_relations full path; this helper is tests/legacy.
         stats["candidate_pairs"] += len(candidates)
 
         if candidates:

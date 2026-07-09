@@ -14,10 +14,7 @@ from app.database import SessionLocal, ensure_word_relations_table
 from app.models.word import WordRelation
 from ingest.ingest_lock import IngestLockError, ingest_lock
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
-from ingest.syn_ant_build import (
-    clear_word_relations_source,
-    ingest_cilin_leaf_direct,
-)
+from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_direct import ingest_static_relations
 from ingest.word_relations_build import build_word_relations
 from ingest.syn_ant_expand import (
@@ -98,35 +95,30 @@ def _resolve_cilin_path(args: argparse.Namespace, src: dict) -> Path | None:
 
 
 def cmd_ingest_cilin(args: argparse.Namespace) -> int:
+    """Legacy alias → 關係直寫 (`build_word_relations`); not a second write path."""
+    # Validate cilin still present in manifest / on disk (compat with old flags).
     manifest = load_manifest(args.manifest)
     sources = select_sources(manifest, source_ids=["cilin"])
     if not sources:
         print("Cilin source not found in manifest.")
         return 1
-    src = sources[0]
-    path = _resolve_cilin_path(args, src)
+    path = _resolve_cilin_path(args, sources[0])
     if path is None:
-        print(f"Cilin file missing: {args.source_path or resolve_source_path(src)}")
+        print(f"Cilin file missing: {args.source_path or resolve_source_path(sources[0])}")
         return 1
 
-    chunk_size = args.chunk_size
-    source_id = src["id"]
-
-    ensure_word_relations_table()
-    print(f"Cilin direct ingest from {path} (chunk={chunk_size}, dedupe={args.dedupe_existing})")
-    with SessionLocal() as db:
-        if args.replace_relations:
-            removed = clear_word_relations_source(db, source_id)
-            print(f"Cleared {removed} existing word_relations with source={source_id!r}")
-        stats = ingest_cilin_leaf_direct(
-            db,
-            path,
-            source=source_id,
-            chunk_size=chunk_size,
-            dedupe_existing=args.dedupe_existing,
+    _ = (args.chunk_size, args.dedupe_existing)  # ponytail: legacy flags ignored after delegate
+    print(
+        "ingest-cilin: delegating to build-word-relations "
+        f"(cilin={path}; full static 關係直寫, not leaf_direct)"
+    )
+    return cmd_build_word_relations(
+        argparse.Namespace(
+            manifest=args.manifest,
+            compound_path=None,
+            append=not args.replace_relations,
         )
-        print("ingest-cilin stats:", stats)
-    return 0
+    )
 
 
 def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
@@ -602,7 +594,10 @@ def main(argv: list[str] | None = None) -> int:
         help="Do not clear static sources before insert (default: replace cilin/guotong/compound_ant)",
     )
 
-    p_cilin = sub.add_parser("ingest-cilin", help="Ingest Cilin leaf synonym groups (direct)")
+    p_cilin = sub.add_parser(
+        "ingest-cilin",
+        help="Deprecated alias: full static 關係直寫 via build-word-relations",
+    )
     p_cilin.add_argument("--chunk-size", type=int, default=300, help="Leaf groups per chunk (default 300)")
     p_cilin.add_argument("--source-path", help="Override Cilin file path (e.g. Desktop/new_cilin.txt)")
     p_cilin.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing canonical syn pairs")

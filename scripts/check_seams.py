@@ -429,6 +429,21 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
         self.assertNotIn("def persist_staging_edges", source)
         self.assertNotIn("def build_word_relations_from_staging", source)
 
+    def test_release_hot_path_is_build_word_relations(self):
+        """P2 #6: build-db + legacy ingest-cilin CLI use 關係直寫 only."""
+        cli = (REPO_ROOT / "ingest" / "cli.py").read_text(encoding="utf-8")
+        self.assertIn('("build-word-relations"', cli)
+        # ingest-cilin must delegate, not call leaf_direct
+        self.assertIn("def cmd_ingest_cilin", cli)
+        self.assertIn("cmd_build_word_relations", cli)
+        # body of cmd_ingest_cilin should not invoke direct writer
+        start = cli.index("def cmd_ingest_cilin")
+        end = cli.index("\ndef cmd_", start + 1)
+        body = cli[start:end]
+        self.assertIn("cmd_build_word_relations", body)
+        self.assertNotIn("ingest_cilin_leaf_direct", body)
+        self.assertIn("def build_word_relations", self.WORD_REL_BUILD_PATH.read_text(encoding="utf-8"))
+
 
 class TestQueryModeDispatchSeam(unittest.TestCase):
     """#4: syn-mode branches live in query_mode_dispatch, not nested in execute."""
