@@ -1,5 +1,5 @@
 /**
- * PWA process-level relation graph (syn adjacency) — ADR-0043 § 關係圖快取.
+ * PWA process-level relation graph (syn adjacency) — ADR-0050 § 關係圖快取.
  * Lazy build on first derived_ant / mirror use; invalidate when lexicon DB identity changes.
  */
 import { queryRows } from './database-backend.ts';

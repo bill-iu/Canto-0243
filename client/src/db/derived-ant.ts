@@ -1,6 +1,6 @@
 /**
  * Runtime derived ant — port of derived_ant.py + cilin_derived + mirror_ant (subset)
- * Mirror path uses process-level relation graph (ADR-0043 § 關係圖快取).
+ * Mirror path uses process-level relation graph (ADR-0050 § 關係圖快取).
  */
 import type { Database } from './sqljs.ts';
 import { getCilinSynonyms, getStaticAntonyms } from './thesaurus.ts';
