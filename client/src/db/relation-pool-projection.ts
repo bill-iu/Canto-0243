@@ -12,7 +12,10 @@ import {
 } from './relation-pool-snapshot.ts';
 import { buildRelationPool } from './relation-pool-builder.ts';
 
-/** Unified read entry — mirrors project_relation_pool (no inject on PWA). */
+/**
+ * Unified read entry — port of project_relation_pool.
+ * PWA never injects word rows (Portable may allow_inject); policy is asymmetric by design.
+ */
 export async function projectRelationPool(
   db: Database,
   seedChar: string,

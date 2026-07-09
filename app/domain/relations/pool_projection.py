@@ -21,7 +21,11 @@ def project_relation_pool(
     thesaurus: Optional[ThesaurusPort] = None,
     membership: Optional[Set[str]] = None,
 ) -> PoolSnapshot:
-    """Runtime 近反義池投影：統一 build_pool 讀取入口（規則不變）。"""
+    """Runtime 近反義池投影：統一讀取入口。
+
+    Portable may inject missing word rows when allow_inject=True.
+    PWA peer never injects (asymmetric by design — see ADR-0041).
+    """
     q = (seed_char or "").strip()
     if allow_inject and q and re.search(r"[\u4e00-\u9fff]", q):
         from app.domain.lexicon.port import default_word_inject_port

@@ -16,7 +16,8 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
             "relation-pool-ranking.ts": ("finalScore", "mergeRelationPools", "sortSynPool", "sortAntPool"),
             "relation-pool-builder.ts": ("buildRelationPool", "fetchDbRelations"),
             "relation-pool-projection.ts": ("projectRelationPool", "relationPoolPage"),
-            "relation-pool.ts": ("buildRelationPool", "projectRelationPool", "relationPoolPage"),
+            # P2 #4: facade exposes projection only (not builder)
+            "relation-pool.ts": ("projectRelationPool", "relationPoolPage"),
         }
         for name, symbols in expected.items():
             path = DB / name
@@ -35,9 +36,26 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
     def test_facade_reexports_from_layers(self):
         src = (DB / "relation-pool.ts").read_text(encoding="utf-8")
         self.assertIn("relation-pool-projection", src)
-        self.assertIn("relation-pool-builder", src)
+        self.assertNotIn("relation-pool-builder", src)
+        self.assertNotIn("buildRelationPool", src)
         # facade should stay thin
         self.assertLess(src.count("\n") + 1, 80)
+
+    def test_runtime_callers_use_projection_not_builder(self):
+        entry = (
+            REPO / "client" / "src" / "entry-detail" / "load-entry-detail.ts"
+        ).read_text(encoding="utf-8")
+        self.assertIn("projectRelationPool", entry)
+        self.assertNotIn("buildRelationPool", entry)
+        # only projection module may import builder
+        for path in (REPO / "client" / "src").rglob("*.ts"):
+            if path.name in ("relation-pool-builder.ts", "relation-pool-projection.ts"):
+                continue
+            if "node_modules" in path.parts:
+                continue
+            text = path.read_text(encoding="utf-8")
+            if "buildRelationPool" in text or "relation-pool-builder" in text:
+                self.fail(f"runtime must not import builder: {path.relative_to(REPO)}")
 
     def test_builder_not_inline_ranking_tables(self):
         """Ranking SOURCE_BASE_RANK lives in ranking module, not builder."""

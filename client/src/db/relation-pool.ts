@@ -1,5 +1,6 @@
 /**
- * 近反義池 facade — ranking / builder / projection (Phase C PR4).
+ * 近反義池 facade — ranking + 近反義池投影 read entry (P2 #4).
+ * Runtime callers use projectRelationPool only; builder is internal.
  */
 export type {
   RelationKind,
@@ -15,8 +16,6 @@ export {
   morphemeCharsFromWordLists,
   RUNTIME_DERIVED_ANT_SOURCES,
 } from './relation-pool-ranking.ts';
-
-export { buildRelationPool } from './relation-pool-builder.ts';
 
 export {
   projectRelationPool,

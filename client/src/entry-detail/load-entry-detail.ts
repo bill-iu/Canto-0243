@@ -6,7 +6,7 @@ import type { EntryDetailModel } from './types.ts';
 import { getDatabase, isDatabaseInitialized } from '../db/init.ts';
 import { queryRows } from '../db/database-backend.ts';
 import { getEssayFrequency, initRankingData } from '../db/ranking.ts';
-import { buildRelationPool } from '../db/relation-pool.ts';
+import { projectRelationPool } from '../db/relation-pool.ts';
 import { relationPoolSnapshotItems } from '../db/relation-pool-snapshot.ts';
 import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from '../db/thesaurus.ts';
 
@@ -44,7 +44,7 @@ function hasStaticDirectSources(text: string): boolean {
   );
 }
 
-/** Fast probe: skip ~2s buildRelationPool when no direct syn/ant sources exist. */
+/** Fast probe: skip ~2s projectRelationPool when no direct syn/ant sources exist. */
 export async function hasDirectRelationSources(literal: string): Promise<boolean> {
   const text = literal.trim();
   if (!text || !isDatabaseInitialized()) return false;
@@ -74,7 +74,7 @@ async function fetchWordRows(text: string): Promise<Record<string, unknown>[]> {
 
 async function fetchRelations(text: string): Promise<{ syns: string[]; ants: string[] }> {
   const db = getDatabase();
-  const pool = await buildRelationPool(db, text);
+  const pool = await projectRelationPool(db, text);
   const syns = relationPoolSnapshotItems(pool, 'syn')
     .filter((i) => i.in_db && i.char && i.char !== text)
     .map((i) => i.char!)
