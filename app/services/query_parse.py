@@ -92,12 +92,10 @@ __all__ = [
     "WordLookupQuery",
     "build_equals_match_spec",
     "build_jyutping_dual_match_specs",
-    "build_match_spec",
     "is_relation_syntax_query",
     "mode_redirect_hint",
     "normalize_and_parse",
     "normalize_query",
-    "normalize_to_match_spec",
     "parse_query",
     "resolve_fallback_0243_mode",
     "try_parse_before_mask",
@@ -348,15 +346,3 @@ def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple["Match
     from app.services.query_match_spec_registry import build_jyutping_dual_match_specs as _build
 
     return _build(parsed)
-
-
-def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
-    """查詢分派：ParsedQuery → MatchSpec（含別名改寫）。無 DB。"""
-    from app.services.query_match_spec_registry import build_match_spec_for_parsed
-
-    return build_match_spec_for_parsed(parsed)
-
-
-def build_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
-    """Alias for normalize_to_match_spec（過渡期）。"""
-    return normalize_to_match_spec(parsed)

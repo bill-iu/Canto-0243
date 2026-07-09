@@ -1,15 +1,7 @@
-/** ponytail: keep in sync with app/services/ping_zak.py */
-
-const SLOT_RE = /^[PZ0-9]+$/i;
-const HAS_PZ = /[PZ]/i;
+/** Thin re-export — detect SSOT: query-mode-detect.mjs (Phase B). */
+import { isPingZeSerialQuery } from "./query-mode-detect.mjs";
 
 const MATRIX_394052_MODE = "m3";
-
-function isPingZeSerialQuery(q) {
-  const n = (q || "").trim();
-  if (!n || !HAS_PZ.test(n)) return false;
-  return SLOT_RE.test(n);
-}
 
 function pingZeEffectiveMode() {
   return MATRIX_394052_MODE || "m2";

@@ -38,7 +38,7 @@ def _handle_relation_redirect(ctx: SearchContext, q: str, engine: QueryEngine) -
     effective = resolve_fallback_0243_mode(ctx.fallback_0243_mode)
     redirected = replace(ctx, mode=effective, offset=0)
     parsed = normalize_and_parse(ctx.q)
-    result = engine._dispatch(parsed, redirected)
+    result = engine.dispatch_parsed(parsed, redirected)
     return SearchResult(
         items=result.items,
         total=result.total,
@@ -74,7 +74,7 @@ def _handle_ping_ze_redirect(ctx: SearchContext, q: str, engine: QueryEngine) ->
     effective = ping_ze_effective_mode()
     redirected = replace(ctx, mode=effective, offset=0)
     parsed = normalize_and_parse(ctx.q)
-    result = engine._dispatch(parsed, redirected)
+    result = engine.dispatch_parsed(parsed, redirected)
     return SearchResult(
         items=result.items,
         total=result.total,

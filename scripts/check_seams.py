@@ -304,7 +304,6 @@ class TestCompoundSynSeam(unittest.TestCase):
 
 class TestMaskFamilyDispatchSeam(unittest.TestCase):
     FORBIDDEN = (
-        "build_match_spec",
         "build_equals_match_spec",
         "execute_mask_family_search",
         "CandidateSource",
@@ -318,10 +317,12 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         "_dispatch_position_query",
         "anchor_dimension",
         "_dual_phoneme_anchor_search_result",
+        "normalize_to_match_spec",
     )
     ALLOWED = (
         "execute_match_spec",
-        "normalize_to_match_spec",
+        "build_match_spec_for_parsed",
+        "dispatch_parsed",
         "_mask_family_search_result",
         "route_kind_for",
     )
@@ -331,6 +332,7 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         for symbol in self.FORBIDDEN:
             with self.subTest(symbol=symbol):
                 self.assertNotIn(symbol, source)
+        self.assertNotIn("def build_match_spec(", source)
 
     def test_query_dispatch_uses_single_mask_family_entry(self):
         source = DISPATCH_PATH.read_text(encoding="utf-8")
