@@ -1,6 +1,6 @@
 # PWA 雙階啟動：就緒閘解鎖與 tail 背景預載
 
-領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 就緒閘解鎖、啟動完畢、背景預載標示、閘前進度、詞庫暖啟動、詞庫預取、離線啟動預載。使用者契約：[`specs/001-pwa-offline-coexist/contracts/offline-readiness.md`](../../specs/001-pwa-offline-coexist/contracts/offline-readiness.md)。Portable 對照：ADR-0001、ADR-0003、ADR-0017。
+領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 就緒閘解鎖、啟動完畢、背景預載標示、閘前進度、詞庫暖啟動、詞庫預取、離線啟動預載。使用者契約：[`specs/001-pwa-offline-coexist/contracts/offline-readiness.md`](../../specs/001-pwa-offline-coexist/contracts/offline-readiness.md)。Portable 對照：ADR-0001、ADR-0003、ADR-0044 §4（詞庫快取預暖）。
 
 PWA 首次冷啟動長時間卡在就緒閘，主因是閘前同步完成詞庫下載／開庫、輔助 JSON 載入與離線驗證，且 `progress` 長時間無 byte 比例。Portable 已採雙階模型（`gate_ready` 後搜尋、tail 以 header 標示背景完成），但 PWA 無 **詞庫快取索引**，閘前條件不同，不能照搬 server snapshot。
 

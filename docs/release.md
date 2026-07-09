@@ -6,7 +6,7 @@ Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `ori
 
 This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
 
-決策背景：[ADR-0008](adr/0008-release-publishing-tiers.md)、[ADR-0018](adr/0018-split-channel-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
+決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)（Portable 交付 + 分渠道發佈）。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**分平台可交付**、**發佈詞庫快照**、**全量發佈**、**詞庫發佈**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。貢獻者用邊部 OS 開發無關。
 
@@ -125,7 +125,7 @@ gh release upload v1.7.0 dist/words-lexicon.json --clobber
 | `ci.yml` | push `main`、PR | unit tests |
 | `release-lexicon.yml` | `workflow_dispatch` | 詞庫 export + 上傳 db/json（備援） |
 
-已停用：`release-full.yml`、`release-macos-intel-beta.yml`（見 ADR-0018）。
+已停用：`release-full.yml`、`release-macos-intel-beta.yml`（見 ADR-0044 §5）。
 
 ## 手動 fallback（無腳本）
 

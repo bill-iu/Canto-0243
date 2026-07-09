@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# macOS portable build + tar-only upload to an existing upstream Release (ADR-0018).
+# macOS portable build + tar-only upload to an existing upstream Release (ADR-0044 §5).
 # ponytail: one machine = one native arch; publisher channel is Windows.
 set -eu
 [[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]] && set -o pipefail

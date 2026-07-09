@@ -1,4 +1,4 @@
-# Local Windows portable build + optional GitHub Release upload (ADR-0018).
+# Local Windows portable build + optional GitHub Release upload (ADR-0044 §5).
 param(
     [Parameter(Mandatory = $true)]
     [string]$Tag,
