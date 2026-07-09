@@ -12,8 +12,13 @@ import type { WordRow } from './word-row.ts';
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
 
 function shouldUseMaskCandidates(spec: MatchSpec): boolean {
-  // ponytail: parity with Python _resolve_mask_family_source — any mask → LengthMaskCandidateSource
+  // ponytail: only when mask has fixed CJK literals (not pure ?? / digit masks)
   if (!spec.mask || spec.compound_kind || getEqualsSpan(spec)) {
+    return false;
+  }
+  // Pure ? or code-digit masks have no char GLOB value — use length+code path instead
+  // (fixes 3$漢4 etc. loading all width-N rows via GLOB ??)
+  if (!/[^\d?]/.test(spec.mask)) {
     return false;
   }
   return true;
@@ -59,11 +64,15 @@ export async function filterMatchSpecRows(
   const code = ctx.code ?? spec.code_prefix ?? null;
   const [candidates] =
     shouldUseMaskCandidates(spec) && spec.mask
-      ? await getLengthMaskCandidates(ctx.db, spec.width, spec.mask)
+      ? await getLengthMaskCandidates(ctx.db, spec.width, spec.mask, {
+          code,
+          mode: ctx.mode,
+        })
       : await getCandidatesForLength(ctx.db, spec.width, {
           code,
           mode: ctx.mode,
-          unlimited: specNeedsFullLengthBucket(spec),
+          // Only force unlimited when no code can narrow the set
+          unlimited: specNeedsFullLengthBucket(spec) && !code,
         });
   throwIfSearchCancelled(ctx.shouldCancel);
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);

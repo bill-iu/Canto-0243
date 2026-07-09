@@ -342,11 +342,24 @@ export async function queryWordsByEqualsSpec(
     !span.whole_word &&
     !span.phoneme_anchor_only;
 
-  const [candidates] = await getCandidatesForLength(db, spec.width, {
-    code: fullCode || null,
-    mode: searchMode,
-    unlimited: prefixWildcard || tailRhymeUnion,
-  });
+  // 前綴通配等號：用 finals JSON 預過濾，避免掃晒 ~10 萬個四字詞
+  let candidates: WordRow[];
+  if (prefixWildcard && targetParts?.length && isFinal) {
+    candidates = await prefixWildcardCandidatesByFinals(
+      db,
+      spec.width,
+      targetParts,
+      fullCode || null,
+      searchMode,
+    );
+  } else {
+    const [rows] = await getCandidatesForLength(db, spec.width, {
+      code: fullCode || null,
+      mode: searchMode,
+      unlimited: prefixWildcard || tailRhymeUnion,
+    });
+    candidates = rows;
+  }
 
   if (tailRhymeUnion) {
     const targetFinalOptions = await buildFinalOptionsAtPositions(
@@ -377,4 +390,54 @@ export async function queryWordsByEqualsSpec(
         dimension: span.dimension,
       }),
   );
+}
+
+/** SQL prefilter for prefix-wildcard equals — AND finals LIKE %\"final\"% for each ref slot */
+async function prefixWildcardCandidatesByFinals(
+  db: Database,
+  width: number,
+  targetParts: string[],
+  code: string | null,
+  mode: 'm1' | 'm2',
+): Promise<WordRow[]> {
+  let sql = `
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+  `;
+  const params: Array<string | number> = [width, width];
+  for (const part of targetParts) {
+    if (!part) continue;
+    // finals stored as JSON array e.g. ["an","iu","ou"]
+    sql += ' AND finals LIKE ?';
+    params.push(`%"${part}"%`);
+  }
+  if (code) {
+    const variants = getCodeVariants(code, mode);
+    if (variants.length) {
+      sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
+  }
+  sql += ' ORDER BY char, jyutping';
+  const resultRows = await queryRows(db, sql, params);
+  const rows: WordRow[] = [];
+  for (const row of resultRows) {
+    if (wordMatchesWidth(row, width)) {
+      rows.push(row);
+    }
+  }
+  // Fallback: if JSON prefilter too strict / empty finals, scan length bucket with cap
+  if (!rows.length) {
+    const [fallback] = await getCandidatesForLength(db, width, {
+      code,
+      mode,
+      unlimited: true,
+    });
+    return fallback;
+  }
+  return rows;
 }

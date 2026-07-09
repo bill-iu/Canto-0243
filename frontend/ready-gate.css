@@ -68,10 +68,10 @@ html.shell-revealed #pwaBootGate {
 }
 
 .preload-overlay.ready-gate.preload-overlay--minimal {
-  gap: 0;
+  gap: 16px;
 }
 
-.preload-overlay.ready-gate.preload-overlay--minimal .gate-brand,
+/* 熱啓 minimal：仍顯示 logo + ink（只略過 landing 大儀式／hero 文案） */
 .preload-overlay.ready-gate.preload-overlay--minimal .gate-hero {
   display: none;
 }
@@ -167,13 +167,13 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
 }
 
 /* ponytail: lightningcss 曾壓 selector 令 logo/ink display:none；.ready-gate 命名空間防回歸 */
-.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand,
-.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand .brand-logo,
-.ready-gate.preload-overlay:not(.preload-overlay--minimal) .gate-brand svg,
+.ready-gate.preload-overlay .gate-brand,
+.ready-gate.preload-overlay .gate-brand .brand-logo,
+.ready-gate.preload-overlay .gate-brand svg,
 .ready-gate.pwa-boot-gate .gate-brand,
 .ready-gate.pwa-boot-gate .gate-brand .brand-logo,
 .ready-gate.pwa-boot-gate .gate-brand svg,
-.ready-gate.preload-overlay.preload-overlay--minimal .gate-ink-meter,
+.ready-gate.preload-overlay .gate-ink-meter,
 .ready-gate.pwa-boot-gate .gate-ink-meter {
   display: block !important;
   visibility: visible !important;

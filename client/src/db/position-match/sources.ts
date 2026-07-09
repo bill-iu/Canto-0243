@@ -83,7 +83,9 @@ export async function getLengthMaskCandidates(
   db: Database,
   length: number,
   mask: string,
+  options: { code?: string | null; mode?: string } = {},
 ): Promise<[WordRow[], boolean]> {
+  const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
   const globPat = maskCharGlobPattern(mask);
   const prefix = maskFixedLiteralPrefix(mask);
   let sql = `
@@ -99,6 +101,14 @@ export async function getLengthMaskCandidates(
   if (prefix) {
     sql += ' AND char LIKE ?';
     params.push(`${prefix}%`);
+  }
+  const code = options.code ?? null;
+  if (code) {
+    const variants = getCodeVariants(code, mode);
+    if (variants.length) {
+      sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
   }
   sql += ' ORDER BY char, jyutping';
 

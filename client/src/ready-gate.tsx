@@ -67,23 +67,23 @@ export function ReadyGate({
   onOpenChange,
   theme = 'light',
 }: ReadyGateProps) {
+  // 冷啓 full landing；熱啓／cached 用 minimal 但仍顯示 logo+ink
   const playLanding = useMemo(
     () => !prefersReducedMotion() && !hasPwaGateLanded() && !isDbCached,
     [isDbCached],
   );
   const skipOverlay = useMemo(() => hasPwaGateLanded(), []);
 
+  // preparing／not_ready／failed 一律顯示閘（含熱啓）；suppress 只用於 ready 後即時收起
   const shouldShowGate =
     !suppressGateOverlay &&
-    !skipOverlay &&
     (offlineStatus === 'failed' ||
       offlineStatus === 'preparing' ||
       offlineStatus === 'not_ready');
 
-  const [visible, setVisible] = useState(() => !hasPwaGateLanded());
-  const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>(
-    () => (hasPwaGateLanded() ? 'hidden' : 'loading'),
-  );
+  // 熱啓重開：session 已 landed 仍可喺 preparing 顯示 minimal 閘
+  const [visible, setVisible] = useState(true);
+  const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>('loading');
   const handoffStarted = useRef(false);
 
   useEffect(() => {
@@ -177,7 +177,8 @@ export function ReadyGate({
   const overlayClass = [
     'ready-gate',
     'preload-overlay',
-    !playLanding || isDbCached ? 'preload-overlay--minimal' : '',
+    // 熱啓／已 landed session：minimal（短儀式）但 CSS 仍顯示 logo+ink
+    !playLanding || isDbCached || hasPwaGateLanded() ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
     phase === 'handoff' ? 'is-handoff' : '',
   ]
