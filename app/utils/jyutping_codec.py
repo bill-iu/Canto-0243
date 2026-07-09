@@ -1,5 +1,5 @@
 import json
-from typing import FrozenSet, List, Set, Tuple
+from typing import FrozenSet, List, Optional, Set, Tuple
 
 TONE_MAP = {1: "3", 2: "9", 3: "4", 4: "0", 5: "5", 6: "2"}
 VOWELS = "aeiou"
@@ -19,17 +19,17 @@ def get_0243_code(jyutping: str) -> str:
     return "".join(TONE_MAP.get(int(syl[-1]), "?") if syl and syl[-1].isdigit() else "?" for syl in syllables)
 
 
-def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
-    """將 jyutping 拆分成 initials, finals, tones 三個 list"""
+def split_jyutping_parts(jyutping: str) -> Tuple[List[str], List[str], List[Optional[int]]]:
+    """Jyutping → (initials, finals, tones) token lists (not storage encoding)."""
     if not isinstance(jyutping, str) or not jyutping.strip():
-        return "[]", "[]", "[]"
+        return [], [], []
 
     initials_list: List[str] = []
     finals_list: List[str] = []
-    tones_list: List[int] = []
+    tones_list: List[Optional[int]] = []
 
     for syllable_text in jyutping.strip().split():
-        tone = None
+        tone: Optional[int] = None
         syllable = syllable_text
         for index in range(len(syllable_text) - 1, -1, -1):
             if syllable_text[index].isdigit():
@@ -56,20 +56,32 @@ def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
         finals_list.append(final)
         tones_list.append(tone)
 
-    return json.dumps(initials_list), json.dumps(finals_list), json.dumps(tones_list)
+    return initials_list, finals_list, tones_list
+
+
+def split_jyutping(jyutping: str) -> Tuple[str, str, str]:
+    """
+    Jyutping → storage strings for initials/finals + tones JSON.
+    ADR-0037: initials/finals are compact id strings (S1), not JSON arrays.
+    """
+    from app.domain.lexicon.phoneme_codec import encode_phoneme_list
+
+    initials_list, finals_list, tones_list = split_jyutping_parts(jyutping)
+    if not initials_list and not finals_list:
+        return "", "", "[]"
+    return (
+        encode_phoneme_list(initials_list, "initial"),
+        encode_phoneme_list(finals_list, "final"),
+        json.dumps(tones_list),
+    )
 
 
 def rhyme_finals_from_jyutping(jyutping: str) -> list[str]:
-    """韻母 list for rhyme compare; uses split_jyutping (y- 韻核規則)."""
+    """韻母 list for rhyme compare; uses split_jyutping_parts (y- 韻核規則)."""
     if not jyutping or not str(jyutping).strip():
         return []
-    _, finals_json, _ = split_jyutping(jyutping)
-    try:
-        parsed = json.loads(finals_json)
-        return parsed if isinstance(parsed, list) else []
-    except (TypeError, json.JSONDecodeError):
-        return []
-
+    _ini, finals_list, _tones = split_jyutping_parts(jyutping)
+    return list(finals_list)
 
 def normalize_02493_code(code: str) -> str:
     """02493 碼逐位正規化為詞庫 394052 碼（CONTEXT § 02493 碼）。"""
@@ -143,12 +155,8 @@ def rhyme_final_index_keys_per_position(jyutping: str) -> list[FrozenSet[str]]:
         if letters in STANDALONE_NASAL_FINALS:
             keys.append(STANDALONE_NASAL_FINALS)
             continue
-        _, finals_json, _ = split_jyutping(token)
-        try:
-            arr = json.loads(finals_json)
-        except (TypeError, json.JSONDecodeError):
-            arr = []
-        final = str(arr[0]) if arr else ""
+        _ini, fins, _tones = split_jyutping_parts(token)
+        final = str(fins[0]) if fins else ""
         keys.append(frozenset({final}) if final else frozenset())
     return keys
 
@@ -182,6 +190,8 @@ if __name__ == "__main__":
         rhyme_final_index_keys_per_position("m4")[0],
         rhyme_final_index_keys_per_position("ng5")[0],
     )
-    assert json.loads(split_jyutping("zyu6")[1]) == ["yu"]
-    assert json.loads(split_jyutping("fu6")[1]) == ["u"]
+    from app.domain.lexicon.phoneme_codec import decode_phoneme_field
+
+    assert decode_phoneme_field(split_jyutping("zyu6")[1], "final") == ["yu"]
+    assert decode_phoneme_field(split_jyutping("fu6")[1], "final") == ["u"]
     print("OK")

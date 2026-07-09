@@ -14,6 +14,7 @@ dist-ssr
 
 # Database files
 *.db
+*.db.gz
 *.sqlite
 
 # Generated at prebuild (scripts/build-ranking-index.ts)

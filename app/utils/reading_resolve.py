@@ -20,12 +20,10 @@ def cjk_literal(text: str) -> str:
 def phoneme_slot_count(jyutping: str) -> int:
     if not (jyutping or "").strip():
         return 0
-    _, finals_json, _ = split_jyutping(jyutping)
-    try:
-        finals = json.loads(finals_json)
-        return len(finals) if isinstance(finals, list) else 0
-    except (TypeError, json.JSONDecodeError):
-        return 0
+    from app.utils.jyutping_codec import split_jyutping_parts
+
+    _ini, finals, _tones = split_jyutping_parts(jyutping)
+    return len(finals)
 
 
 def _entry_if_slots_match(literal: str, jyutping: str, code: str, target: int) -> Optional[LexiconEntry]:

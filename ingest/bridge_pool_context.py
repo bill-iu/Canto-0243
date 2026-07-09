@@ -9,7 +9,7 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from app.domain.relations.pool_projection import project_relation_pool
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 REPO_ROOT = Path(__file__).resolve().parents[1]

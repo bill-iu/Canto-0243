@@ -186,7 +186,7 @@ def _bump(stats: dict[str, int] | None, key: str) -> None:
         stats[key] = int(stats.get(key, 0)) + 1
 
 
-def _load_phrase_allowlist(path: Path | str | None) -> set[str]:
+def _load_phrase_line_set(path: Path | str | None) -> set[str]:
     if not path:
         return set()
     allow_path = Path(path)
@@ -203,11 +203,27 @@ def _load_phrase_allowlist(path: Path | str | None) -> set[str]:
     }
 
 
-def _looks_like_phrase_place_or_org(literal: str) -> bool:
-    return any(literal.endswith(suffix) for suffix in _PHRASE_ORG_PLACE_SUFFIXES)
+def _load_phrase_allowlist(path: Path | str | None) -> set[str]:
+    return _load_phrase_line_set(path)
 
 
-def _rime_phrase_rejection(literal: str, allowlist_8: set[str]) -> str | None:
+def _load_phrase_reject_suffixes(path: Path | str | None) -> frozenset[str]:
+    extra = _load_phrase_line_set(path)
+    return frozenset(_PHRASE_ORG_PLACE_SUFFIXES | extra)
+
+
+def _looks_like_phrase_place_or_org(literal: str, reject_suffixes: frozenset[str]) -> bool:
+    if any(literal.endswith(suffix) for suffix in reject_suffixes):
+        return True
+    # ponytail: ≥4 字且「路」結尾先拒（保留「套路」「出路」等二字詞）
+    return len(literal) >= 4 and literal.endswith("路")
+
+
+def _rime_phrase_rejection(
+    literal: str,
+    allowlist_8: set[str],
+    reject_suffixes: frozenset[str],
+) -> str | None:
     if not _CJK_ONLY.match(literal):
         return "rejected_mixed"
     length = len(literal)
@@ -215,7 +231,7 @@ def _rime_phrase_rejection(literal: str, allowlist_8: set[str]) -> str | None:
         return "rejected_short"
     if length > 8:
         return "rejected_long"
-    if _looks_like_phrase_place_or_org(literal):
+    if _looks_like_phrase_place_or_org(literal, reject_suffixes):
         return "rejected_place_or_org"
     if length == 8 and literal not in allowlist_8:
         return "rejected_8_char_needs_review"
@@ -282,6 +298,7 @@ def ingest_rime_phrase_yaml(
     *,
     source_id: str,
     allowlist_path: Path | str | None = None,
+    reject_suffixes_path: Path | str | None = None,
     stats: dict[str, int] | None = None,
 ) -> list[LexiconCandidate]:
     yaml_path = Path(path)
@@ -293,6 +310,7 @@ def ingest_rime_phrase_yaml(
         return []
 
     allowlist_8 = _load_phrase_allowlist(allowlist_path)
+    reject_suffixes = _load_phrase_reject_suffixes(reject_suffixes_path)
     out: list[LexiconCandidate] = []
     seen_literals: set[str] = set()
     seen_pairs: set[tuple[str, str]] = set()
@@ -311,7 +329,7 @@ def ingest_rime_phrase_yaml(
             _bump(stats, "duplicate_literal")
             continue
         seen_literals.add(literal)
-        rejection = _rime_phrase_rejection(literal, allowlist_8)
+        rejection = _rime_phrase_rejection(literal, allowlist_8, reject_suffixes)
         if rejection:
             _bump(stats, rejection)
             continue
@@ -443,9 +461,14 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
         allowlist_path = Path(allowlist_raw) if allowlist_raw else None
         if allowlist_path and not allowlist_path.is_absolute():
             allowlist_path = ROOT / allowlist_path
+        reject_raw = src.get("reject_suffixes_path") or ""
+        reject_path = Path(reject_raw) if reject_raw else None
+        if reject_path and not reject_path.is_absolute():
+            reject_path = ROOT / reject_path
         return ingest_rime_phrase_yaml(
             path,
             source_id=source_id,
             allowlist_path=allowlist_path,
+            reject_suffixes_path=reject_path,
         )
     return []

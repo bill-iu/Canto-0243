@@ -82,5 +82,9 @@ export async function readLexiconFromOpfs(version: string): Promise<Uint8Array |
 }
 
 export async function removeLexiconFromOpfs(version: string): Promise<void> {
-  await removeOpfsFile(lexiconOpfsFileName(version));
+  const base = lexiconOpfsFileName(version);
+  // OPFS VFS may leave -journal/-wal siblings; purge all.
+  for (const suffix of ['', '-journal', '-wal'] as const) {
+    await removeOpfsFile(base + suffix);
+  }
 }

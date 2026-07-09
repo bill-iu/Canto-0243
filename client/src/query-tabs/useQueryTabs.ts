@@ -271,6 +271,27 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
     });
   }, [setAndPersist]);
 
+  /** Guide example / deep-link: new search tab with q (does not overwrite current tab). */
+  const openSearchTabWithQuery = useCallback(
+    (q: string, mode: UiMode) => {
+      const trimmed = q.trim();
+      const urlMode = uiModeToUrlMode(mode);
+      setAndPersist((prev) => {
+        const tab = createSearchTab({ id: prev.nextTabId, q: trimmed });
+        ensureSearchTabHistory(tab, urlMode);
+        if (trimmed) {
+          commitSearchHistoryFrame(tab, { q: trimmed, mode: urlMode });
+        }
+        return {
+          activeId: tab.id,
+          nextTabId: prev.nextTabId + 1,
+          tabs: [...prev.tabs, tab],
+        };
+      });
+    },
+    [setAndPersist],
+  );
+
   const closeTab = useCallback(
     (tabId: number) => {
       setAndPersist((prev) => closeTabReducer(prev, tabId));
@@ -471,6 +492,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
     tabs: tabState.tabs,
     selectTab,
     addSearchTab,
+    openSearchTabWithQuery,
     closeTab,
     reorderTabs,
     openGuide,

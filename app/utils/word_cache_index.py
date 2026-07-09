@@ -4,7 +4,7 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Callable
 
-from app.utils.json_helpers import load_json_list
+from app.domain.lexicon.phoneme_codec import decode_phoneme_field
 
 _COLD_BUILD_MIN_ROWS = 500
 
@@ -89,8 +89,8 @@ def _row_to_entry(r) -> dict | None:
             length = len(char)
     if not char:
         return None
-    finals = load_json_list(finals_raw)
-    inits = load_json_list(inits_raw)
+    finals = decode_phoneme_field(finals_raw, "final")
+    inits = decode_phoneme_field(inits_raw, "initial")
     length = int(length) if length is not None else len(char or "")
     return {
         "char": char,
@@ -422,8 +422,8 @@ def update_entry(
 ) -> None:
     if not char:
         return
-    f = load_json_list(finals)
-    i = load_json_list(initials)
+    f = decode_phoneme_field(finals, "final")
+    i = decode_phoneme_field(initials, "initial")
     ln = int(length) if length is not None else len(char)
     entry = {
         "char": char,

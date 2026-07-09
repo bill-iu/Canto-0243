@@ -4,13 +4,14 @@ from __future__ import annotations
 import re
 from typing import Optional
 
+from app.services._generated.fillword_connectives import FILLWORD_CONNECTIVES_STR
+
 RELATION_LOOKUP_RE = re.compile(r"^(\d*)([~!])([\u4e00-\u9fff]+)$")
-FILLWORD_CONNECTIVES = "與和或共同及跟而且並向"
 COMPOUND_CONNECT_ANT_RE = re.compile(
-    rf"^(\d*)!([{FILLWORD_CONNECTIVES}])!([\u4e00-\u9fff])?$"
+    rf"^(\d*)!([{FILLWORD_CONNECTIVES_STR}])!([\u4e00-\u9fff])?$"
 )
 COMPOUND_CONNECT_SYN_RE = re.compile(
-    rf"^(\d*)~([{FILLWORD_CONNECTIVES}])~([\u4e00-\u9fff])?$"
+    rf"^(\d*)~([{FILLWORD_CONNECTIVES_STR}])~([\u4e00-\u9fff])?$"
 )
 COMPOUND_SYN_RE = re.compile(r"^(\d*)~~([\u4e00-\u9fff])?$")
 COMPOUND_ANT_RE = re.compile(r"^(\d*)!!([\u4e00-\u9fff])?$")

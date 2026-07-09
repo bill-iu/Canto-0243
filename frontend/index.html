@@ -31,6 +31,7 @@
     })();
   </script>
   <link rel="stylesheet" href="open-design.css">
+  <link rel="stylesheet" href="ready-gate.css">
   <link rel="stylesheet" href="shell.css">
   <link rel="stylesheet" href="workbench.css">
   <link rel="stylesheet" href="chrome-tabs.css">
@@ -94,9 +95,11 @@
       </symbol>
     </defs>
   </svg>
-  <div class="preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
+  <div class="ready-gate preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
+    <!-- Single column: logo ink + status (Portable SSOT with ready-gate.css) -->
     <div class="gate-brand" id="gateBrand">
-      <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
+      <!-- viewBox trims empty right of wordmark so geometric centre ≈ visual 粵+0243 mass -->
+      <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="148" height="72" viewBox="0 0 148 72" aria-hidden="true" focusable="false">
         <defs>
           <clipPath id="gate-ink-clip">
             <rect id="gateInkClipRect" class="gate-ink-clip-rect" x="0" y="0" width="0" height="72"/>
@@ -112,8 +115,10 @@
           <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
         </g>
       </svg>
+      <p class="gate-status" id="preloadLabel">執緊啲字…</p>
     </div>
-    <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
+    <!-- Legacy meter kept for gate.mjs clip refs; CSS display:none -->
+    <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false" hidden>
       <defs>
         <clipPath id="gate-ink-clip-mini">
           <rect id="gateInkClipRectMini" class="gate-ink-clip-rect" x="0" y="38" width="0" height="34"/>
@@ -128,7 +133,6 @@
         <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
       </g>
     </svg>
-    <p class="gate-status" id="preloadLabel">執緊啲字…</p>
   </div>
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 
@@ -194,8 +198,8 @@
                 </button>
                 <button class="mode-option" id="btn-m3" type="button" role="menuitemradio" aria-checked="false" data-mode="m3">
                   <span>
-                    <span class="mode-name">394052模式<span class="mode-note">矩陣</span></span>
-                    <span class="mode-help">394052 矩陣碼（三／五聲分明）</span>
+                    <span class="mode-name">394052模式<span class="mode-note">六聲</span></span>
+                    <span class="mode-help">394052 六聲碼（三／五聲分明）</span>
                   </span>
                   <span class="mode-key">394052</span>
                 </button>
@@ -314,13 +318,13 @@
       <article class="guide-intro" aria-labelledby="guideIntroTitle">
         <h2 id="guideIntroTitle">基本說明</h2>
         <div id="guideIntroBody"><p>
-          <strong>打數字，搵 394052 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（394052 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>鬆檔；<strong>02493模式</strong>僅 <code translate="no">4↔5</code> 鬆檔；<strong>394052模式</strong>矩陣碼逐位精確（三聲 <code translate="no">4</code>、五聲 <code translate="no">5</code> 唔互通）。<strong>平仄串列</strong>（如 <code translate="no">PZ</code>）會自動切換 394052模式。
+          <strong>打數字，搵 394052 碼同音嘅詞條。</strong>每個數字對應一個音節嘅聲調（394052 碼），查詢有幾個數字就搵幾個音節嘅詞。例如打「23」，會搵整詞碼同「23」同音嘅二字詞，包括「自己」、「第一」、「做好」。打「232」會搵三字同音詞，例如「是不是」、「自己做」、「沒關係」。<strong>0243模式</strong>鬆檔；<strong>02493模式</strong>僅 <code translate="no">4↔5</code> 鬆檔；<strong>394052模式</strong>六聲碼逐位精確（三聲 <code translate="no">4</code>、五聲 <code translate="no">5</code> 唔互通）。<strong>平仄串列</strong>（如 <code translate="no">PZ</code>）會自動切換 394052模式。
         </p>
         <p>
           <strong>打漢字，查詞條讀音同編碼。</strong>例如打「開心」、「明白」、「食飯」，會見到粵拼、394052 碼，以及同音候選。切換<strong>近反義模式</strong>，可以直接列出該詞嘅近義、反義同語意相關字。
         </p>
         <p>
-          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@就</code>。
+          <strong>打數字加錨字，逐格約束韻或聲。</strong>串列掃描：每位數字一音節碼，<code translate="no">{碼}{字}=</code> 韻錨、<code translate="no">{碼}={字}</code> 聲錨。例 <code translate="no">23就=</code>（二字尾格同「就」韻）、<code translate="no">04困=49倒=</code>（四字韻錨）。加槽用 <code translate="no">+</code>，如 <code translate="no">23+就=</code>（三字尾格同韻）；尾字字面固定用 <code translate="no">23@手</code>。
         </p>
         <p>
           <strong>缺字同加長位置。</strong>通配用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加槽用 <code translate="no">+</code>，例 <code translate="no">+香??</code>、<code translate="no">23+就</code>、<code translate="no">?30+人</code>。輸入 <code translate="no">*</code> 仍接受（等同 <code translate="no">+</code>）。
@@ -369,7 +373,7 @@
 
         <article class="guide-card">
           <h2>平仄串列</h2>
-          <p><code translate="no">P</code>＝平、<code translate="no">Z</code>＝仄；數字＝該格同音。自動切換 <strong>394052模式（矩陣）</strong>。</p>
+          <p><code translate="no">P</code>＝平、<code translate="no">Z</code>＝仄；數字＝該格同音。自動切換 <strong>394052模式（六聲）</strong>。</p>
           <div class="guide-examples">
             <button class="guide-example" type="button" data-query="PZ" data-mode="m3"><code translate="no">PZ</code><span>二字：平＋仄（如「自己」）</span></button>
             <button class="guide-example" type="button" data-query="PZ3" data-mode="m3"><code translate="no">PZ3</code><span>三字：平仄＋與 3 同音</span></button>
@@ -437,6 +441,7 @@
           <h2>加號錨（<code translate="no">+</code>）</h2>
           <p><code translate="no">+</code> 連接碼同錨字，標明邊一格。<code translate="no">錨字=</code> 同韻母；<code translate="no">+=錨字</code> 同聲母；無 <code translate="no">=</code> 則字面固定。輸入 <code translate="no">*</code> 等同 <code translate="no">+</code>。</p>
           <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="23@手" data-mode="m1"><code translate="no">23@手</code><span>二字：首字同 2 同音，次字同 3 同音且限定為手</span></button>
             <button class="guide-example" type="button" data-query="23+好" data-mode="m1"><code translate="no">23+好</code><span>三字：尾格字面「好」</span></button>
             <button class="guide-example" type="button" data-query="23+好=" data-mode="m1"><code translate="no">23+好=</code><span>三字：尾格同「好」同韻母</span></button>
             <button class="guide-example" type="button" data-query="23+=好" data-mode="m1"><code translate="no">23+=好</code><span>三字：尾格同「好」同聲母</span></button>
@@ -502,6 +507,14 @@
             <button class="guide-example" type="button" data-query="~開心" data-mode="m1"><code translate="no">~開心</code><span>近義於「開心」</span></button>
             <button class="guide-example" type="button" data-query="!你" data-mode="m1"><code translate="no">!你</code><span>反義於「你」（含鏡像近義）</span></button>
             <button class="guide-example" type="button" data-query="33!開心" data-mode="m1"><code translate="no">33!開心</code><span>33同音 + 反義於「開心」</span></button>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <h2>近反義池</h2>
+          <p>近反義模式：輸入漢字瀏覽近義、反義與語意相關詞條。</p>
+          <div class="guide-examples">
+            <button class="guide-example" type="button" data-query="開心" data-mode="syn"><code translate="no">開心</code><span>瀏覽「開心」嘅近反義池</span></button>
           </div>
         </article>
 

@@ -146,6 +146,64 @@ export async function ensureConnectiveCompoundRows(db: DatabaseBackend): Promise
   }
 }
 
+/** First single-char reading in words table (for 音節拼接). */
+async function firstSingleCharReading(
+  db: DatabaseBackend,
+  char: string,
+): Promise<{ jyutping: string; code: string } | null> {
+  const stmt = await db.prepare(
+    `SELECT jyutping, code FROM words
+     WHERE char = ?
+       AND (length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1))
+     LIMIT 5`,
+  );
+  await stmt.bind([char]);
+  let best: { jyutping: string; code: string } | null = null;
+  while (await stmt.step()) {
+    const row = await stmt.getAsObject();
+    const jyutping = String(row.jyutping ?? '').trim();
+    const code = String(row.code ?? '').trim();
+    if (jyutping) {
+      best = { jyutping, code: code || '0' };
+      break;
+    }
+  }
+  await stmt.free();
+  return best;
+}
+
+/**
+ * Ensure multi-char row exists via syllable compose from single-char readings.
+ * Returns false if any char lacks a reading (skip synthetic).
+ */
+export async function ensureComposedWordRow(
+  db: DatabaseBackend,
+  text: string,
+): Promise<boolean> {
+  const chars = [...text];
+  if (chars.length < 2) return false;
+  const exists = await db.prepare('SELECT 1 FROM words WHERE char = ? LIMIT 1');
+  await exists.bind([text]);
+  const found = await exists.step();
+  await exists.free();
+  if (found) return true;
+
+  const parts: string[] = [];
+  const codes: string[] = [];
+  for (const ch of chars) {
+    const r = await firstSingleCharReading(db, ch);
+    if (!r) return false;
+    parts.push(r.jyutping);
+    codes.push(r.code || '0');
+  }
+  await insertWordRow(db, {
+    char: text,
+    jyutping: parts.join(' '),
+    code: codes.join(''),
+  });
+  return true;
+}
+
 /** Call once after opening lexicon (browser + parity runners). */
 export async function applyRuntimeDbPatches(db: DatabaseBackend): Promise<{ louDou: number }> {
   const louDou = await patchLouDouReadings(db);

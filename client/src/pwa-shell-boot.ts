@@ -8,8 +8,9 @@ export function hasPwaGateLanded(): boolean {
   }
 }
 
+/** 就緒閘解鎖後露出 App shell（與 Portable gate.mjs 共用 class `shell-revealed`） */
 export function revealPwaShell(): void {
-  document.documentElement.classList.add('pwa-shell-revealed');
+  document.documentElement.classList.add('shell-revealed');
   document.getElementById('pwaBootGate')?.remove();
 }
 

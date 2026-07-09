@@ -90,6 +90,8 @@ a.result-item,
       background: transparent;
       box-shadow: none;
       display: block;
+      content-visibility: auto;
+      contain-intrinsic-size: auto 40px;
       min-height: 0;
       font-weight: inherit;
       overflow-wrap: normal;

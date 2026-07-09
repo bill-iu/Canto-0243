@@ -92,12 +92,10 @@ __all__ = [
     "WordLookupQuery",
     "build_equals_match_spec",
     "build_jyutping_dual_match_specs",
-    "build_match_spec",
     "is_relation_syntax_query",
     "mode_redirect_hint",
     "normalize_and_parse",
     "normalize_query",
-    "normalize_to_match_spec",
     "parse_query",
     "resolve_fallback_0243_mode",
     "try_parse_before_mask",
@@ -314,7 +312,11 @@ def resolve_fallback_0243_mode(fallback: str | None) -> str:
 
 
 def is_relation_syntax_query(q: str) -> bool:
-    """是否為近反義關係查詢語法（觸發搜尋模式轉接）。"""
+    """是否為近反義關係查詢語法（觸發搜尋模式轉接）。
+
+    Full-parse adapter; regex peer is frontend/query-mode-detect.mjs.
+    Parity SSOT: contracts/relation-syntax-detect-cases.json.
+    """
     parsed = normalize_and_parse(q)
     if isinstance(parsed, RelationLookupQuery):
         return True
@@ -331,7 +333,7 @@ def is_relation_syntax_query(q: str) -> bool:
 
 def mode_redirect_hint(mode: str) -> str:
     """轉接提示文案（介面／API 保險一致）。"""
-    labels = {"m2": "02493模式（緊）", "m3": "394052模式（矩陣）"}
+    labels = {"m2": "02493模式（緊）", "m3": "394052模式（六聲）"}
     label = labels.get(mode, "0243模式（鬆）")
     return f"此語法已切換至 {label} 查詢"
 
@@ -348,15 +350,3 @@ def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple["Match
     from app.services.query_match_spec_registry import build_jyutping_dual_match_specs as _build
 
     return _build(parsed)
-
-
-def normalize_to_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
-    """查詢分派：ParsedQuery → MatchSpec（含別名改寫）。無 DB。"""
-    from app.services.query_match_spec_registry import build_match_spec_for_parsed
-
-    return build_match_spec_for_parsed(parsed)
-
-
-def build_match_spec(parsed: ParsedQuery) -> Optional["MatchSpec"]:
-    """Alias for normalize_to_match_spec（過渡期）。"""
-    return normalize_to_match_spec(parsed)

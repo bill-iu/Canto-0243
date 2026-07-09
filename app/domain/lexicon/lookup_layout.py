@@ -10,13 +10,11 @@ from sqlalchemy.orm import Session
 
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.models.word import Word
+from app.domain.lexicon.word_row import get_word_jyutping, get_word_parts, get_word_text
 from app.services.word_db_filters import length_filter
 from app.services.word_serializer import (
     deduplicate_words,
-    get_word_jyutping,
-    get_word_parts,
     get_word_sort_code,
-    get_word_text,
     serialize_word,
 )
 from app.utils.embedding import cosine_similarity, get_text_embedding
@@ -142,7 +140,9 @@ def resolve_tail_rhyme_ref_from_db(
     ref_row = db.query(Word).filter(Word.char == last_ch).first()
     if not ref_row:
         return None, ref_pos
-    ref_fins = load_json_list(ref_row.finals)
+    from app.domain.lexicon.phoneme_codec import decode_phoneme_field
+
+    ref_fins = decode_phoneme_field(ref_row.finals, "final")
     return (ref_fins[0] if ref_fins else None), ref_pos
 
 
@@ -183,7 +183,9 @@ def _append_lookup_literal_tiers(
         fin_json = _finals_json_for_code(exact_matches, code)
         if not fin_json:
             continue
-        target_finals = load_json_list(fin_json)
+        from app.domain.lexicon.phoneme_codec import decode_phoneme_field
+
+        target_finals = decode_phoneme_field(fin_json, "final")
         same_rhyme_literal = [
             w
             for w in same_code_candidates
@@ -232,7 +234,9 @@ def _append_per_code_rhyme_sections(
         fin_json = _finals_json_for_code(exact_matches, code)
         if not fin_json:
             continue
-        target_finals = load_json_list(fin_json)
+        from app.domain.lexicon.phoneme_codec import decode_phoneme_field
+
+        target_finals = decode_phoneme_field(fin_json, "final")
         pool = [
             w for w in candidates_by_code.get(code, [])
             if get_word_parts(w, "finals") == target_finals

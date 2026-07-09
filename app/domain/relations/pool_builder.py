@@ -24,7 +24,7 @@ from app.domain.relations.ranking import (
 from app.domain.relations.valid_term import normalize_literal
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.models.word import Word
-from app.repositories.word_relation_repo import (
+from app.domain.relations.word_relation_queries import (
     chars_present_in_db,
     fetch_bidirectional_relations,
     load_db_char_set,

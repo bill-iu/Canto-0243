@@ -7,7 +7,7 @@ from typing import Any, Iterable, List, TypeVar
 from app.lexicon.curated_index import curated_sort_boost
 from app.lexicon.essay_index import get_essay_frequency
 from app.lexicon.rime_char_index import pron_rank_sort_value_for_word
-from app.services.word_serializer import get_word_jyutping, get_word_text
+from app.domain.lexicon.word_row import get_word_jyutping, get_word_text
 
 T = TypeVar("T")
 

@@ -5,7 +5,7 @@
   /* full-width list; panel overlays via fixed positioning */
 }
 
-/* 面板開啟：鎖頁面捲動；hero／搜尋固定；結果區獨立捲；footer 隱藏 */
+/* 面板開啟：鎖頁面捲動；hero／搜尋固定；結果區獨立捲 */
 html.has-entry-detail-open {
   overflow: hidden;
   height: 100%;
@@ -17,10 +17,6 @@ html.has-entry-detail-open {
   height: 100dvh;
   max-height: 100dvh;
   overflow: hidden;
-}
-
-.app-shell.has-entry-detail .app-footer {
-  display: none;
 }
 
 .app-shell.has-entry-detail .main-wrap {
@@ -56,8 +52,86 @@ html.has-entry-detail-open {
   -webkit-overflow-scrolling: touch;
 }
 
+/* ponytail: bounded results column — wheel scrolls list, not whole page */
+body.query-tabs-app {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell > .app-header {
+  flex-shrink: 0;
+}
+
+.app-shell > .main-wrap {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 16px;
+}
+
+.main-wrap > section:not([hidden]):not(.is-hidden) {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-view:not([hidden]):not(.is-hidden),
+.about-view:not([hidden]):not(.is-hidden),
+.relation-view:not([hidden]):not(.is-hidden),
+.corrections-view:not([hidden]):not(.is-hidden) {
+  overflow-y: auto;
+}
+
+.search-view {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .search-view__main {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
   min-width: 0;
+  overflow: hidden;
+}
+
+.search-panel,
+form.search-panel {
+  flex-shrink: 0;
+}
+
+.search-results {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ponytail: scroll root for 呈現批次 — must have bounded height */
+.search-results-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .entry-detail-panel {

@@ -20,7 +20,7 @@ _HAS_PZ_RE = re.compile(r"[PZ]", re.IGNORECASE)
 
 
 def ping_zak_class(code_digit: str) -> PingZak:
-    """v1: 0243 碼位 → 平／仄；矩陣模式就緒後可擴展。"""
+    """v1: 0243 碼位 → 平／仄；六聲模式就緒後可擴展。"""
     return "ping" if code_digit in ("0", "3") else "ze"
 
 

@@ -70,23 +70,33 @@ export interface SearchPageResult {
   lookupLayout?: boolean;
 }
 
-/** 0243搜尋模式（0243／02493）首頁／載入更多筆數；probe 顯示 SQL 至 2000 仍穩，1200 兼顧 DOM */
-export const SEARCH_PAGE_SIZE = 1200;
+/** 擷取頁上限（load-more／續頁）；ADR-0034 / CONTEXT § 擷取頁 */
+export const SEARCH_PAGE_SIZE = 800;
+/** 0243 家族首屏擷取（offset=0） */
+export const SEARCH_FIRST_PAGE_SIZE = 400;
 
 /**
  * Legacy QueryOptions interface
  */
 export interface QueryOptions {
   query: string;
-  mode?: '0243' | '02493' | 'synonym';
+  mode?: '0243' | '02493' | 'synonym' | '394052';
   limit?: number;
   offset?: number;
   fallback_0243_mode?: '0243' | '02493' | '394052';
   ui_lang?: 'zh' | 'en';
+  /** Cooperative cancel (PWA); checked in engine hot paths */
+  shouldCancel?: () => boolean;
 }
 
 export function searchPageSizeForMode(mode?: QueryOptions['mode']): number {
   return mode === 'synonym' ? DEFAULT_RELATION_POOL_PAGE_SIZE : SEARCH_PAGE_SIZE;
+}
+
+/** 首屏 400／續頁 800；近反義沿用池頁 */
+export function searchLimitForOffset(mode: QueryOptions['mode'] | undefined, offset: number): number {
+  if (mode === 'synonym') return DEFAULT_RELATION_POOL_PAGE_SIZE;
+  return (offset || 0) <= 0 ? SEARCH_FIRST_PAGE_SIZE : SEARCH_PAGE_SIZE;
 }
 
 /**
@@ -127,13 +137,16 @@ function mapEngineResult(r: SearchResult['items'][number]): QueryResult {
 export async function searchPage(options: QueryOptions): Promise<SearchPageResult> {
   const mode = mapLegacyMode(options.mode);
   const fallback = options.fallback_0243_mode ? mapLegacyMode(options.fallback_0243_mode) : undefined;
+  const offset = options.offset ?? 0;
+  const limit = options.limit ?? searchLimitForOffset(options.mode, offset);
   const result = await queryEngine.execute({
     q: options.query,
     mode,
-    limit: options.limit ?? SEARCH_PAGE_SIZE,
-    offset: options.offset ?? 0,
+    limit,
+    offset,
     fallback_0243_mode: fallback,
     ui_lang: options.ui_lang,
+    shouldCancel: options.shouldCancel,
   });
   return {
     items: result.items.map(mapEngineResult),
@@ -178,18 +191,17 @@ export const OFFLINE_READINESS_PROBE_QUERY = '事業';
  * Validate DB can run a minimal real query (not COUNT-only).
  */
 async function waitForLexiconCache(
-  version: string,
-  dbUrl: string,
+  target: Awaited<ReturnType<typeof getCurrentLexiconTarget>>,
   attempts = 8,
 ): Promise<Awaited<ReturnType<typeof getLexiconCacheStatus>>> {
   for (let i = 0; i < attempts; i++) {
-    const cache = await getLexiconCacheStatus(version, dbUrl);
+    const cache = await getLexiconCacheStatus(target);
     if (cache.any) {
       return cache;
     }
     await new Promise((resolve) => setTimeout(resolve, 150));
   }
-  return getLexiconCacheStatus(version, dbUrl);
+  return getLexiconCacheStatus(target);
 }
 
 export async function validateOfflineReadiness(): Promise<void> {
@@ -211,7 +223,7 @@ export async function validateOfflineReadiness(): Promise<void> {
   }
 
   const target = await getCurrentLexiconTarget();
-  const cache = await waitForLexiconCache(target.version, target.dbUrl);
+  const cache = await waitForLexiconCache(target);
   const hasOpfs = await opfsAvailable();
   // ponytail: iOS 飛航依賴 OPFS；僅 SW 命中不足以保證冷啟
   if (hasOpfs && !cache.opfs) {

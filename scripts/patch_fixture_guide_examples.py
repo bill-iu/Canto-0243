@@ -24,6 +24,16 @@ GUIDE_CHARS = frozenset({
     "生死", "是非", "男女", "天地", "夫妻", "父母", "父子", "兄弟",
     "生與死", "天與地", "男與女", "父與子",
     "兄與弟", "夫與婦", "妻與夫", "師與徒", "父與母", "公與婆",
+    # jyutping_lookup self-check (nei hou / ming4 baak6)
+    "你好", "明白",
+    # plus-anchor guide parity (23+好 / 2+好3 / +門0)
+    "弄不好", "十分好", "未諗好",
+    "仲好講", "仲好咩", "仲好啦",
+    "門牙", "門人",
+    # jyutping-anchor guide parity (3+ngo4 / 3$漢4 / 23+o)
+    "倒我米", "罕見", "下一個",
+    # relation guide parity (~開心 needs in_db syn; compound/connective already covered)
+    "愉快",
 })
 
 
@@ -38,7 +48,7 @@ def _copy_rows(src: Path, dest: Path) -> int:
     inserted = 0
     for char in sorted(GUIDE_CHARS):
         rows = s.execute(
-            "SELECT char, code, jyutping, initials, finals, tones, length FROM words WHERE char = ?",
+            "SELECT char, code, jyutping, initials, finals, length FROM words WHERE char = ?",
             (char,),
         ).fetchall()
         for row in rows:
@@ -50,8 +60,8 @@ def _copy_rows(src: Path, dest: Path) -> int:
                 continue
             next_id = d.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM words").fetchone()[0]
             d.execute(
-                "INSERT INTO words (id, char, code, jyutping, initials, finals, tones, length) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO words (id, char, code, jyutping, initials, finals, length) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
                 (next_id, *row),
             )
             inserted += 1

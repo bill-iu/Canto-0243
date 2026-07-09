@@ -14,10 +14,7 @@ from app.database import SessionLocal, ensure_word_relations_table
 from app.models.word import WordRelation
 from ingest.ingest_lock import IngestLockError, ingest_lock
 from ingest.syn_ant_manifest import load_manifest, manifest_report, resolve_source_path, select_sources
-from ingest.syn_ant_build import (
-    clear_word_relations_source,
-    ingest_cilin_leaf_direct,
-)
+from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_direct import ingest_static_relations
 from ingest.word_relations_build import build_word_relations
 from ingest.syn_ant_expand import (
@@ -98,35 +95,30 @@ def _resolve_cilin_path(args: argparse.Namespace, src: dict) -> Path | None:
 
 
 def cmd_ingest_cilin(args: argparse.Namespace) -> int:
+    """Legacy alias → 關係直寫 (`build_word_relations`); not a second write path."""
+    # Validate cilin still present in manifest / on disk (compat with old flags).
     manifest = load_manifest(args.manifest)
     sources = select_sources(manifest, source_ids=["cilin"])
     if not sources:
         print("Cilin source not found in manifest.")
         return 1
-    src = sources[0]
-    path = _resolve_cilin_path(args, src)
+    path = _resolve_cilin_path(args, sources[0])
     if path is None:
-        print(f"Cilin file missing: {args.source_path or resolve_source_path(src)}")
+        print(f"Cilin file missing: {args.source_path or resolve_source_path(sources[0])}")
         return 1
 
-    chunk_size = args.chunk_size
-    source_id = src["id"]
-
-    ensure_word_relations_table()
-    print(f"Cilin direct ingest from {path} (chunk={chunk_size}, dedupe={args.dedupe_existing})")
-    with SessionLocal() as db:
-        if args.replace_relations:
-            removed = clear_word_relations_source(db, source_id)
-            print(f"Cleared {removed} existing word_relations with source={source_id!r}")
-        stats = ingest_cilin_leaf_direct(
-            db,
-            path,
-            source=source_id,
-            chunk_size=chunk_size,
-            dedupe_existing=args.dedupe_existing,
+    _ = (args.chunk_size, args.dedupe_existing)  # ponytail: legacy flags ignored after delegate
+    print(
+        "ingest-cilin: delegating to build-word-relations "
+        f"(cilin={path}; full static 關係直寫, not leaf_direct)"
+    )
+    return cmd_build_word_relations(
+        argparse.Namespace(
+            manifest=args.manifest,
+            compound_path=None,
+            append=not args.replace_relations,
         )
-        print("ingest-cilin stats:", stats)
-    return 0
+    )
 
 
 def cmd_expand_antonyms_cilin(args: argparse.Namespace) -> int:
@@ -452,14 +444,6 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"export failed: {exc}", file=sys.stderr)
         return 1
-    if args.copy_public:
-        import shutil
-        src = REPO_ROOT / "lyrics.db"
-        dest = REPO_ROOT / "client" / "public" / "lyrics.db"
-        if src.is_file():
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(src, dest)
-            print(f"    copied -> {dest}")
     # ADR-0027: page_size=16384 + VACUUM — defragment and optimise page layout
     print("==> VACUUM (page_size=16384, defragment)")
     try:
@@ -476,6 +460,82 @@ def _build_db_exports(args: argparse.Namespace) -> int:
               f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)")
     except Exception as exc:
         print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> phoneme vocab meta (J2 / ADR-0037)")
+    try:
+        from ingest.lexicon_meta import write_phoneme_vocab_meta
+
+        write_phoneme_vocab_meta(REPO_ROOT / "lyrics.db")
+        print("    lexicon_meta phoneme fingerprint written")
+    except Exception as exc:
+        print(f"phoneme meta failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> finalize lexicon indexes (I2 allowlist)")
+    try:
+        from ingest.lexicon_indexes import finalize_lexicon_indexes
+
+        db_path = REPO_ROOT / "lyrics.db"
+        dropped = finalize_lexicon_indexes(db_path)
+        if dropped:
+            print(f"    dropped: {', '.join(dropped)}")
+        else:
+            print("    no forbidden indexes")
+        import os
+        import sqlite3
+
+        size_mb = os.path.getsize(db_path) / 1024 / 1024
+        idx_mb: float | None
+        with sqlite3.connect(db_path) as conn:
+            try:
+                idx_mb = (
+                    conn.execute(
+                        "SELECT SUM(pgsize) FROM dbstat WHERE name IN "
+                        "(SELECT name FROM sqlite_master WHERE type='index' "
+                        "AND name NOT LIKE 'sqlite_%')"
+                    ).fetchone()[0]
+                    or 0
+                ) / 1024 / 1024
+            except Exception:
+                idx_mb = None
+        if idx_mb is None:
+            print(f"    post-finalize: db={size_mb:.1f} MB indexes=n/a (no dbstat)")
+        else:
+            print(f"    post-finalize: db={size_mb:.1f} MB indexes={idx_mb:.1f} MB")
+        with sqlite3.connect(db_path) as conn:
+            conn.execute("VACUUM")
+    except Exception as exc:
+        print(f"index finalize failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> lexicon release gate (I2)")
+    try:
+        from ingest.lexicon_release_gate import check_lexicon_release_gate
+
+        gate = check_lexicon_release_gate(REPO_ROOT / "lyrics.db")
+        for line in gate.messages:
+            print(f"    {line}")
+        if not gate.ok:
+            print("lexicon release gate FAILED", file=sys.stderr)
+            return 1
+    except Exception as exc:
+        print(f"release gate failed: {exc}", file=sys.stderr)
+        return 1
+    # 詞庫渠道同步（ADR-0036）：閘綠後預設 copy → public + manifest
+    if not getattr(args, "no_copy_public", False):
+        import os
+        import subprocess
+
+        print("==> copy-db (詞庫渠道同步 → public manifest + gzip)")
+        copy_db = REPO_ROOT / "client" / "copy-db.js"
+        if not copy_db.is_file():
+            print(f"copy-db missing: {copy_db}", file=sys.stderr)
+            return 1
+        env = {**os.environ, "LEXICON_VERSION": os.environ.get("LEXICON_VERSION", "v1.0.7")}
+        proc = subprocess.run(
+            ["node", str(copy_db)],
+            cwd=REPO_ROOT / "client",
+            check=False,
+            env=env,
+        )
+        if proc.returncode != 0:
+            print(f"copy-db failed with exit {proc.returncode}", file=sys.stderr)
+            return proc.returncode
     return 0
 
 
@@ -534,7 +594,10 @@ def main(argv: list[str] | None = None) -> int:
         help="Do not clear static sources before insert (default: replace cilin/guotong/compound_ant)",
     )
 
-    p_cilin = sub.add_parser("ingest-cilin", help="Ingest Cilin leaf synonym groups (direct)")
+    p_cilin = sub.add_parser(
+        "ingest-cilin",
+        help="Deprecated alias: full static 關係直寫 via build-word-relations",
+    )
     p_cilin.add_argument("--chunk-size", type=int, default=300, help="Leaf groups per chunk (default 300)")
     p_cilin.add_argument("--source-path", help="Override Cilin file path (e.g. Desktop/new_cilin.txt)")
     p_cilin.add_argument("--dedupe-existing", action="store_true", default=True, help="Skip existing canonical syn pairs")
@@ -761,7 +824,12 @@ def main(argv: list[str] | None = None) -> int:
     p_build_db.add_argument(
         "--copy-public",
         action="store_true",
-        help="Copy lyrics.db to client/public/ after build",
+        help="Deprecated no-op: 詞庫渠道同步 is the default after a green release gate",
+    )
+    p_build_db.add_argument(
+        "--no-copy-public",
+        action="store_true",
+        help="Skip 詞庫渠道同步 (copy-db to client/public after green gate)",
     )
     p_build_db.add_argument(
         "--min-multi-char",

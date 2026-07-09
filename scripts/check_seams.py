@@ -8,6 +8,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import ast
+import json
 import unittest
 import urllib.error
 import urllib.request
@@ -17,7 +18,9 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # --- paths ---
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+READY_GATE_CSS_PATH = REPO_ROOT / "frontend" / "ready-gate.css"
 CLIENT_INDEX_PATH = REPO_ROOT / "client" / "index.html"
+PWA_BOOT_GATE_CSS_PATH = REPO_ROOT / "client" / "public" / "pwa-boot-gate.css"
 CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
 BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
@@ -302,7 +305,6 @@ class TestCompoundSynSeam(unittest.TestCase):
 
 class TestMaskFamilyDispatchSeam(unittest.TestCase):
     FORBIDDEN = (
-        "build_match_spec",
         "build_equals_match_spec",
         "execute_mask_family_search",
         "CandidateSource",
@@ -316,10 +318,12 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         "_dispatch_position_query",
         "anchor_dimension",
         "_dual_phoneme_anchor_search_result",
+        "normalize_to_match_spec",
     )
     ALLOWED = (
         "execute_match_spec",
-        "normalize_to_match_spec",
+        "build_match_spec_for_parsed",
+        "dispatch_parsed",
         "_mask_family_search_result",
         "route_kind_for",
     )
@@ -329,6 +333,7 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         for symbol in self.FORBIDDEN:
             with self.subTest(symbol=symbol):
                 self.assertNotIn(symbol, source)
+        self.assertNotIn("def build_match_spec(", source)
 
     def test_query_dispatch_uses_single_mask_family_entry(self):
         source = DISPATCH_PATH.read_text(encoding="utf-8")
@@ -340,6 +345,25 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         source = DISPATCH_PATH.read_text(encoding="utf-8")
         self.assertNotIn("CompoundSynQuery", source)
         self.assertNotIn("CompoundAntQuery", source)
+
+
+class TestPwaQueryDispatchSeam(unittest.TestCase):
+    """PWA dispatch routes only — search entry is query/engine.ts."""
+
+    PWA_DISPATCH = REPO_ROOT / "client" / "src" / "db" / "query" / "dispatch.ts"
+    PWA_ENGINE = REPO_ROOT / "client" / "src" / "db" / "query" / "engine.ts"
+
+    def test_dispatch_has_no_shadow_execute_search(self):
+        source = self.PWA_DISPATCH.read_text(encoding="utf-8")
+        self.assertNotIn("export async function executeSearch", source)
+        self.assertNotIn("export function executeSearch", source)
+        self.assertIn("export async function dispatchParsed", source)
+        self.assertIn("export async function executeListFilter", source)
+
+    def test_engine_owns_execute_search(self):
+        source = self.PWA_ENGINE.read_text(encoding="utf-8")
+        self.assertIn("export async function executeSearch", source)
+        self.assertIn("class QueryEngine", source)
 
 
 class TestSynAntIngestModulesSeam(unittest.TestCase):
@@ -405,6 +429,21 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
         self.assertNotIn("def persist_staging_edges", source)
         self.assertNotIn("def build_word_relations_from_staging", source)
 
+    def test_release_hot_path_is_build_word_relations(self):
+        """P2 #6: build-db + legacy ingest-cilin CLI use 關係直寫 only."""
+        cli = (REPO_ROOT / "ingest" / "cli.py").read_text(encoding="utf-8")
+        self.assertIn('("build-word-relations"', cli)
+        # ingest-cilin must delegate, not call leaf_direct
+        self.assertIn("def cmd_ingest_cilin", cli)
+        self.assertIn("cmd_build_word_relations", cli)
+        # body of cmd_ingest_cilin should not invoke direct writer
+        start = cli.index("def cmd_ingest_cilin")
+        end = cli.index("\ndef cmd_", start + 1)
+        body = cli[start:end]
+        self.assertIn("cmd_build_word_relations", body)
+        self.assertNotIn("ingest_cilin_leaf_direct", body)
+        self.assertIn("def build_word_relations", self.WORD_REL_BUILD_PATH.read_text(encoding="utf-8"))
+
 
 class TestQueryModeDispatchSeam(unittest.TestCase):
     """#4: syn-mode branches live in query_mode_dispatch, not nested in execute."""
@@ -425,13 +464,179 @@ class TestQueryParseTypesSeam(unittest.TestCase):
     def test_types_live_in_query_types_module(self):
         self.assertTrue(TYPES_PATH.is_file())
         types_src = TYPES_PATH.read_text(encoding="utf-8")
-        self.assertIn("class QueryKind", types_src)
+        # QueryKind SSOT is codegen (ADR-0035); query_types re-exports via import
+        self.assertIn("QueryKind", types_src)
         self.assertIn("class MaskQuery", types_src)
+        gen = REPO_ROOT / "app" / "services" / "_generated" / "query_kind_registry.py"
+        self.assertTrue(gen.is_file())
+        self.assertIn("class QueryKind", gen.read_text(encoding="utf-8"))
 
     def test_query_parse_does_not_define_query_kind(self):
         src = PARSE_PATH.read_text(encoding="utf-8")
         self.assertNotIn("class QueryKind", src)
         self.assertIn("from app.services.query_types import", src)
+
+    def test_query_kind_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_query_kind_manifest.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_query_mode_detect_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_query_mode_detect.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_fillword_connectives_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_fillword_connectives.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_candidate_source_policy_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_candidate_source_policy.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
+    def test_candidate_fallback_limit_not_hand_copied(self):
+        """P3 #7: 2000 only from contract/generated (+ docs)."""
+        allow = {
+            REPO_ROOT / "contracts" / "candidate-source-policy.json",
+            REPO_ROOT / "app" / "services" / "_generated" / "candidate_source_policy.py",
+            REPO_ROOT / "client" / "src" / "db" / "_generated" / "candidate-source-policy.ts",
+            REPO_ROOT / "scripts" / "codegen_candidate_source_policy.py",
+        }
+        # Literal LIMIT 2000 / = 2000 in sources is forbidden outside allowlist
+        roots = [
+            REPO_ROOT / "app" / "services" / "position_match",
+            REPO_ROOT / "client" / "src" / "db" / "position-match",
+        ]
+        hits: list[str] = []
+        for root in roots:
+            if not root.is_dir():
+                continue
+            for path in root.rglob("*"):
+                if not path.is_file() or path.suffix not in {".py", ".ts"}:
+                    continue
+                if path in allow:
+                    continue
+                text = path.read_text(encoding="utf-8")
+                if "CANDIDATE_FALLBACK_LIMIT = 2000" in text or "LIMIT 2000" in text:
+                    hits.append(str(path.relative_to(REPO_ROOT)))
+        self.assertEqual(hits, [], msg=f"hand-copied fallback limit: {hits}")
+
+    def test_fillword_alphabet_not_hand_copied(self):
+        """P1 #1: alphabet only in contract + generated + mode-detect inline."""
+        alphabet = "與和或共同及跟而且並向"
+        allow = {
+            REPO_ROOT / "contracts" / "fillword-connectives.json",
+            REPO_ROOT / "app" / "services" / "_generated" / "fillword_connectives.py",
+            REPO_ROOT / "client" / "src" / "db" / "_generated" / "fillword-connectives.ts",
+            REPO_ROOT / "client" / "src" / "db" / "query" / "mode-detect.ts",
+            REPO_ROOT / "frontend" / "query-mode-detect.mjs",
+            REPO_ROOT / "scripts" / "codegen_fillword_connectives.py",
+        }
+        roots = [
+            REPO_ROOT / "app",
+            REPO_ROOT / "client" / "src",
+            REPO_ROOT / "frontend",
+            REPO_ROOT / "ingest",
+        ]
+        hits: list[str] = []
+        for root in roots:
+            if not root.is_dir():
+                continue
+            for path in root.rglob("*"):
+                if not path.is_file():
+                    continue
+                if path.suffix not in {".py", ".ts", ".tsx", ".mjs", ".js", ".json"}:
+                    continue
+                if "node_modules" in path.parts or "__pycache__" in path.parts:
+                    continue
+                if path in allow:
+                    continue
+                try:
+                    text = path.read_text(encoding="utf-8")
+                except OSError:
+                    continue
+                if alphabet in text:
+                    hits.append(str(path.relative_to(REPO_ROOT)))
+        self.assertEqual(hits, [], msg=f"hand-copied FILLWORD alphabet: {hits}")
+
+    def test_relation_syntax_detect_cases_contract(self):
+        """P1 #3: shared detect case table exists and is non-empty."""
+        path = REPO_ROOT / "contracts" / "relation-syntax-detect-cases.json"
+        self.assertTrue(path.is_file())
+        data = json.loads(path.read_text(encoding="utf-8"))
+        self.assertIsInstance(data.get("relation"), list)
+        self.assertIsInstance(data.get("ping_ze"), list)
+        self.assertGreaterEqual(len(data["relation"]), 20)
+        self.assertGreaterEqual(len(data["ping_ze"]), 5)
+        smoke = REPO_ROOT / "tests" / "smoke" / "test_mode_detect_parity.py"
+        self.assertTrue(smoke.is_file())
+        src = smoke.read_text(encoding="utf-8")
+        self.assertIn("relation-syntax-detect-cases.json", src)
+        self.assertNotIn('CASES_RELATION = [', src)
+
+    def test_pwa_query_grammar_mirrors_python_families(self):
+        """P1 #2: PWA parse split into grammar/* families (mirror query_grammar)."""
+        grammar = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
+        for name in (
+            "shared.ts",
+            "normalize.ts",
+            "heteronym.ts",
+            "relation.ts",
+            "rhyme.ts",
+            "wca.ts",
+            "serial.ts",
+            "plus.ts",
+            "mask.ts",
+            "index.ts",
+        ):
+            with self.subTest(file=name):
+                self.assertTrue((grammar / name).is_file(), msg=f"missing {name}")
+        parse_ts = REPO_ROOT / "client" / "src" / "db" / "query" / "parse.ts"
+        parse_src = parse_ts.read_text(encoding="utf-8")
+        self.assertIn("tryParseBeforeMask", parse_src)
+        self.assertIn("./grammar/index.ts", parse_src)
+        # thin entry — not the old mega bag
+        self.assertLess(len(parse_src.splitlines()), 400)
+        self.assertTrue(
+            (REPO_ROOT / "client" / "src" / "db" / "query" / "result-map.ts").is_file()
+        )
+        self.assertTrue(
+            (REPO_ROOT / "client" / "src" / "db" / "query" / "equals-empty-hint.ts").is_file()
+        )
 
 
 class TestQueryTabsSeam(unittest.TestCase):
@@ -528,6 +733,16 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("/query/explain", source)
         self.assertIn("explain_query", source)
 
+    def test_query_explain_parity_contract_exists(self):
+        """Phase D: dual-port explain gated by neutral parity contract (ADR-0021)."""
+        path = REPO_ROOT / "contracts" / "query-explain-parity.json"
+        self.assertTrue(path.is_file(), msg=str(path))
+        data = json.loads(path.read_text(encoding="utf-8"))
+        cases = data.get("cases") or []
+        self.assertGreaterEqual(len(cases), 4)
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "query-explain.ts").is_file())
+        self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain.py").is_file())
+
     def test_tab_geometry_js_shim_removed(self):
         path = REPO_ROOT / "frontend" / "tab-geometry.js"
         self.assertFalse(path.is_file())
@@ -573,7 +788,34 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("a.result-item", workbench)
         self.assertNotIn("relation-entry.css", source)
         self.assertIn("display=swap", source)
-        self.assertIn('use[filter="url(#brush-roughen-brand)"]', shell)
+
+    def test_ready_gate_css_ssot(self):
+        self.assertTrue(READY_GATE_CSS_PATH.is_file())
+        self.assertFalse(PWA_BOOT_GATE_CSS_PATH.is_file())
+        ready_gate = READY_GATE_CSS_PATH.read_text(encoding="utf-8")
+        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        index = INDEX_PATH.read_text(encoding="utf-8")
+        client_index = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
+        main_tsx = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
+        self.assertIn(".ready-gate", ready_gate)
+        self.assertIn(".preload-overlay", ready_gate)
+        self.assertIn('use[filter=\'url(#brush-roughen-brand)\']', ready_gate)
+        # 雙渠道 shell 露出：渠道中立 class（唔再用 pwa-shell-revealed）
+        self.assertIn("html:not(.shell-revealed) .app-shell", ready_gate)
+        self.assertNotIn("pwa-shell-revealed", ready_gate)
+        self.assertNotIn(".preload-overlay {", shell)
+        self.assertNotIn(".gate-brand {", shell)
+        self.assertIn('href="ready-gate.css"', index)
+        self.assertIn("ready-gate.css", client_index)
+        self.assertIn("../../frontend/ready-gate.css", main_tsx)
+        self.assertIn('class="ready-gate preload-overlay"', index)
+        self.assertIn('class="ready-gate pwa-boot-gate"', client_index)
+        gate_mjs = (REPO_ROOT / "frontend" / "gate.mjs").read_text(encoding="utf-8")
+        pwa_boot = (REPO_ROOT / "client" / "src" / "pwa-shell-boot.ts").read_text(encoding="utf-8")
+        self.assertIn('classList.add("shell-revealed")', gate_mjs)
+        self.assertIn("shell-revealed", pwa_boot)
+        self.assertNotIn("pwa-shell-revealed", pwa_boot)
+        self.assertNotIn("pwa-shell-revealed", client_index)
 
     def test_shared_css_single_source_in_frontend(self):
         client_src = REPO_ROOT / "client" / "src"
@@ -586,7 +828,12 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_pwa_main_imports_frontend_css(self):
         source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
-        for path in ("../../frontend/open-design.css", "../../frontend/shell.css", "../../frontend/workbench.css"):
+        for path in (
+            "../../frontend/open-design.css",
+            "../../frontend/ready-gate.css",
+            "../../frontend/shell.css",
+            "../../frontend/workbench.css",
+        ):
             with self.subTest(import_path=path):
                 self.assertIn(path, source)
         self.assertIn("./root.css", source)
@@ -657,7 +904,7 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_index_html_links_shared_css(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
-        for href in ("shell.css", "workbench.css"):
+        for href in ("ready-gate.css", "shell.css", "workbench.css"):
             with self.subTest(href=href):
                 self.assertIn(f'href="{href}"', source)
         self.assertNotIn('href="index.css"', source)
@@ -782,6 +1029,42 @@ class TestGateFrontendSeam(unittest.TestCase):
         gate = _fetch_served("gate.mjs")
         self.assertIn("GATE_INK_CLIP_MAX = 200", ctx)
         self.assertIn("data.gate_ready", gate)
+
+
+class TestGuideManifestSync(unittest.TestCase):
+    """guide-i18n.mjs manifest ↔ index.html guide buttons (搜尋教學驗收)."""
+
+    def test_manifest_matches_html_guide_buttons(self):
+        from scripts.guide_manifest import (
+            load_html_examples,
+            load_manifest_examples,
+            manifest_html_diff,
+        )
+
+        manifest = load_manifest_examples()
+        html = load_html_examples()
+        self.assertGreater(len(manifest), 0, "empty guide manifest")
+        only_manifest, only_html = manifest_html_diff()
+        self.assertEqual(
+            only_manifest,
+            set(),
+            f"manifest-only examples missing from index.html: {sorted(only_manifest)}",
+        )
+        self.assertEqual(
+            only_html,
+            set(),
+            f"index.html-only examples missing from manifest: {sorted(only_html)}",
+        )
+        self.assertEqual(
+            len(manifest),
+            len(set(manifest)),
+            f"duplicate manifest entries: {manifest}",
+        )
+        self.assertEqual(
+            len(html),
+            len(set(html)),
+            f"duplicate html entries: {html}",
+        )
 
 
 if __name__ == "__main__":

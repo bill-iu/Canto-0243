@@ -1,17 +1,21 @@
-"""就緒閘 policy — CONTEXT § 就緒閘、降級逾時；ADR-0001."""
+"""就緒閘 policy — CONTEXT § 就緒閘；ADR-0049 / ADR-0055."""
 
 from __future__ import annotations
 
 import os
 import sys
-import time
 import threading
-from typing import Any
+from typing import Any, Callable
 
-DEFAULT_DEGRADE_MS = 30_000
+# DB probe literal — guide / offline contract
+DB_PROBE_CHAR = "事業"
+
+# word_cache dominates cold tail wall time — weight for honest badge progress
+_WORD_CACHE_TAIL_WEIGHT = 0.72
+_OTHER_TAIL_WEIGHT = 0.28
 
 _lock = threading.Lock()
-_loading_started_at: float | None = None
+_db_probe_override: Callable[[], bool] | None = None
 
 
 class SearchGateBlocked(Exception):
@@ -23,10 +27,17 @@ class SearchGateBlocked(Exception):
 
 
 def reset_readiness_gate_for_tests() -> None:
-    """測試用：重設降級逾時起算。"""
-    global _loading_started_at
+    """測試用：清 probe override。"""
+    global _db_probe_override
     with _lock:
-        _loading_started_at = None
+        _db_probe_override = None
+
+
+def set_db_probe_for_tests(fn: Callable[[], bool] | None) -> None:
+    """測試注入 DB 探針（唔開真庫）。"""
+    global _db_probe_override
+    with _lock:
+        _db_probe_override = fn
 
 
 def _running_unittest_cli() -> bool:
@@ -42,16 +53,36 @@ def _enforcement_enabled() -> bool:
     return True
 
 
-def _degrade_timeout_ms() -> int:
-    raw = os.getenv("GATE_DEGRADE_MS", str(DEFAULT_DEGRADE_MS))
-    try:
-        return max(0, int(raw))
-    except ValueError:
-        return DEFAULT_DEGRADE_MS
-
-
 def _phase_done(snapshot: dict) -> bool:
     return snapshot.get("status") in ("ready", "failed")
+
+
+def _db_searchable() -> bool:
+    """詞條庫可查探針（ADR-0055）。"""
+    with _lock:
+        override = _db_probe_override
+    if override is not None:
+        try:
+            return bool(override())
+        except Exception:
+            return False
+    try:
+        from app.database import SessionLocal
+        from app.models.word import Word
+
+        db = SessionLocal()
+        try:
+            row = (
+                db.query(Word.id)
+                .filter(Word.char == DB_PROBE_CHAR)
+                .limit(1)
+                .first()
+            )
+            return row is not None
+        finally:
+            db.close()
+    except Exception:
+        return False
 
 
 def _collect_phases() -> tuple[dict, dict, dict, dict]:
@@ -66,61 +97,55 @@ def _collect_phases() -> tuple[dict, dict, dict, dict]:
     )
 
 
-def _tail_phases(static_resources: dict, compound_syn: dict, compound_ant: dict) -> tuple[dict, ...]:
-    return (static_resources, compound_syn, compound_ant)
-
-
-def _sync_loading_clock(wc_status: str) -> None:
-    global _loading_started_at
-    with _lock:
-        if wc_status == "loading":
-            if _loading_started_at is None:
-                _loading_started_at = time.monotonic()
-        elif wc_status in ("ready", "failed", "pending"):
-            _loading_started_at = None
-
-
-def _gate_open_reason(word_cache: dict) -> str | None:
-    wc_status = word_cache.get("status") or "pending"
-    if wc_status == "ready":
-        return "ready"
-    if wc_status == "failed":
-        return "failed"
-    if wc_status == "loading":
-        timeout_s = _degrade_timeout_ms() / 1000.0
-        with _lock:
-            started = _loading_started_at
-        if started is not None and timeout_s > 0 and time.monotonic() - started >= timeout_s:
-            return "degraded"
-    return None
+def _honest_tail_progress(word_cache: dict, others: tuple[dict, ...]) -> float:
+    """Badge progress: heavy weight on word_cache so UI does not jump past indexing."""
+    wc = max(0.0, min(1.0, float(word_cache.get("progress") or 0.0)))
+    if others:
+        o = sum(max(0.0, min(1.0, float(p.get("progress") or 0.0))) for p in others) / len(
+            others
+        )
+    else:
+        o = 1.0
+    # If word_cache done, don't under-report other tail leftovers
+    if word_cache.get("status") in ("ready", "failed"):
+        return max(wc, o) if o < 1.0 else 1.0
+    return _WORD_CACHE_TAIL_WEIGHT * wc + _OTHER_TAIL_WEIGHT * o
 
 
 def snapshot() -> dict[str, Any]:
     """就緒閘契約：/ready 與 503 body 共用此 flat JSON。"""
     word_cache, static_resources, compound_syn, compound_ant = _collect_phases()
-    wc_status = word_cache.get("status") or "pending"
-    _sync_loading_clock(wc_status)
+    other_tail = (static_resources, compound_syn, compound_ant)
 
-    tail = _tail_phases(static_resources, compound_syn, compound_ant)
-    phases = [word_cache, *tail]
-    aggregate_progress = sum(float(p.get("progress") or 0.0) for p in phases) / len(phases)
-    tail_progress = sum(float(p.get("progress") or 0.0) for p in tail) / len(tail)
-
+    db_ready = _db_searchable()
     word_cache_ready = bool(word_cache.get("ready"))
-    gate_open_reason = _gate_open_reason(word_cache)
-    gate_ready = gate_open_reason is not None
-    degraded = gate_open_reason == "degraded"
-    startup_complete = word_cache_ready and all(_phase_done(p) for p in tail)
-    tail_pending = not all(_phase_done(p) for p in tail)
+    # ADR-0055: gate opens on DB probe — not full word_cache
+    gate_ready = db_ready
+    gate_open_reason = "ready" if db_ready else None
+    degraded = False
 
+    startup_complete = word_cache_ready and all(_phase_done(p) for p in other_tail)
+    tail_pending = not startup_complete
+
+    wc_status = word_cache.get("status") or "pending"
     status = wc_status
     if startup_complete:
         status = "ready"
-    elif status == "pending" and any(p.get("status") == "loading" for p in tail):
+    elif gate_ready and (wc_status == "loading" or any(p.get("status") == "loading" for p in other_tail)):
         status = "loading"
+    elif not gate_ready:
+        status = "pending"
+
+    tail_progress = _honest_tail_progress(word_cache, other_tail)
+    # Aggregate: pre-gate little weight; once open, mirror tail honesty
+    if not gate_ready:
+        aggregate_progress = 0.08 if not db_ready else 0.5
+    else:
+        aggregate_progress = 0.35 + 0.65 * tail_progress
 
     return {
         "gate_ready": gate_ready,
+        "db_ready": db_ready,
         "degraded": degraded,
         "gate_open_reason": gate_open_reason,
         "ready": word_cache_ready,
@@ -149,10 +174,16 @@ def require_search_ready() -> None:
         raise SearchGateBlocked(snap)
 
 
+# Backward-compat name (deprecated for gate policy)
+DEFAULT_DEGRADE_MS = 30_000
+
+
 __all__ = [
+    "DB_PROBE_CHAR",
     "DEFAULT_DEGRADE_MS",
     "SearchGateBlocked",
     "require_search_ready",
     "reset_readiness_gate_for_tests",
+    "set_db_probe_for_tests",
     "snapshot",
 ]

@@ -2,40 +2,15 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from enum import Enum
 from typing import Literal, Optional, Union
+
+from app.services._generated.query_kind_registry import QueryKind
 
 JYUTPING_ANCHOR_INVALID_HINT = (
     "粵拼錨無效：韻母片段喺收錄讀音中搵唔到對應。請檢查拼寫或改用漢字錨。"
 )
 
-
-class QueryKind(str, Enum):
-    """Parsed query classification (domain syntax types)."""
-
-    RELATION_LOOKUP = "relation_lookup"
-    COMPOUND_ANT = "compound_ant"
-    COMPOUND_SYN = "compound_syn"
-    COMPOUND_DOUBLED_SYLLABLE = "compound_doubled_syllable"
-    HETERONYM_CODE = "heteronym_code"
-    EQUALS = "equals"
-    PLUS_ANCHOR = "plus_anchor"
-    WILDCARD_CODE_ANCHOR = "wildcard_code_anchor"
-    CODE_REF_MIDDLE_RHYME = "code_ref_middle_rhyme"
-    SERIAL_PHONEME = "serial_phoneme"
-    PREFIX_WILDCARD_EQUALS = "prefix_wildcard_equals"
-    PARTIAL_RHYME_MASK = "partial_rhyme_mask"
-    PARTIAL_INITIAL_MASK = "partial_initial_mask"
-    LITERAL_REF = "literal_ref"
-    RHYME_ANCHOR = "rhyme_anchor"
-    TRIPLE_RHYME_ANCHOR = "triple_rhyme_anchor"
-    JYUTPING_ANCHOR = "jyutping_anchor"
-    MASK = "mask"
-    PING_ZE_SERIAL = "ping_ze_serial"
-    DIGIT_CODE = "digit_code"
-    WORD_LOOKUP = "word_lookup"
-    JYUTPING_FRAGMENT = "jyutping_fragment"
-    UNMATCHED = "unmatched"
+# QueryKind SSOT: contracts/query-kind-manifest.json → codegen (ADR-0035)
 
 
 @dataclass(frozen=True)

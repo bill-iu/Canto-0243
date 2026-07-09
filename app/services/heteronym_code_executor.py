@@ -1,4 +1,4 @@
-"""同音異讀 code/code 查詢執行。"""
+"""同音異讀 code/code 查詢執行（Portable）。"""
 from __future__ import annotations
 
 from typing import List
@@ -42,7 +42,7 @@ def execute_heteronym_code_search(
     right_req = code_template_to_required(parsed.right_template)
     index = ensure_heteronym_index(db)
     width = parsed.width
-    items: list[dict] = []
+    matched_chars: list[str] = []
 
     for char, readings in index.items():
         if len(char) != width:
@@ -53,33 +53,34 @@ def execute_heteronym_code_search(
             continue
         if left_jyuts == right_jyuts and len(left_jyuts) == 1:
             continue
-        paired = any(
-            j1 != j2
-            for j1 in left_jyuts
-            for j2 in right_jyuts
-        )
-        if not paired:
-            continue
+        paired = any(j1 != j2 for j1 in left_jyuts for j2 in right_jyuts)
+        if paired:
+            matched_chars.append(char)
 
-        rows = (
-            db.query(Word)
-            .filter(Word.char == char, Word.length == width)
-            .order_by(Word.jyutping, Word.code)
-            .all()
+    if not matched_chars:
+        return []
+
+    # One batched query instead of per-char .all() (was freezing 33/34)
+    rows = (
+        db.query(Word)
+        .filter(Word.char.in_(matched_chars), Word.length == width)
+        .order_by(Word.char, Word.jyutping, Word.code)
+        .all()
+    )
+    items: list[dict] = []
+    for row in rows:
+        tags = _tags_for_reading(
+            row.code or "",
+            row.jyutping or "",
+            left_req=left_req,
+            right_req=right_req,
+            mode=mode,
         )
-        for row in rows:
-            tags = _tags_for_reading(
-                row.code or "",
-                row.jyutping or "",
-                left_req=left_req,
-                right_req=right_req,
-                mode=mode,
-            )
-            if not tags:
-                continue
-            payload = serialize_word(row)
-            payload["heteronym_tags"] = tags
-            items.append(payload)
+        if not tags:
+            continue
+        payload = serialize_word(row)
+        payload["heteronym_tags"] = tags
+        items.append(payload)
 
     items.sort(key=heteronym_sort_key)
     return paginate(items, offset, limit)

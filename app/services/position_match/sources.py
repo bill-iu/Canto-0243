@@ -23,6 +23,7 @@ from app.utils.word_cache import (
     get_words_for_length,
     is_word_cache_ready,
 )
+from app.services._generated.candidate_source_policy import CANDIDATE_FALLBACK_LIMIT
 
 
 @dataclass
@@ -76,7 +77,7 @@ class LengthCodeCandidateSource:
     db: Any
     code: Optional[str] = None
     mode: str = "m1"
-    fallback_limit: Optional[int] = 2000
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT
 
     def get_candidates(
         self,
@@ -141,7 +142,11 @@ class MaskWildcardCandidateSource:
             query = apply_code_filter(query, code_filter, effective_mode)
         elif effective_code:
             query = apply_code_filter(query, effective_code, effective_mode)
-        return query.order_by(Word.char, Word.jyutping).all(), False
+        # Cold DB: never materialize full length bucket (Portable hang on mask family)
+        return (
+            query.order_by(Word.char, Word.jyutping).limit(CANDIDATE_FALLBACK_LIMIT).all(),
+            False,
+        )
 
 
 def get_length_candidates(db, width: int, mask: str):
@@ -164,7 +169,10 @@ def get_length_candidates(db, width: int, mask: str):
     prefix = mask_fixed_literal_prefix(mask)
     if prefix:
         query = query.filter(Word.char.like(f"{prefix}%"))
-    return query.order_by(Word.char, Word.jyutping).all(), False
+    return (
+        query.order_by(Word.char, Word.jyutping).limit(CANDIDATE_FALLBACK_LIMIT).all(),
+        False,
+    )
 
 
 def get_rhyme_anchor_length_candidates(
@@ -183,6 +191,7 @@ def get_rhyme_anchor_length_candidates(
             if matches_mask_literal_chars(get_word_text(w), mask)
         ]
         return narrowed, True
+    # Cold path still GLOB+cap — full width bucket was hanging Portable searches
     return get_length_candidates(db, width, mask)
 
 
@@ -192,7 +201,7 @@ def get_candidates_for_length(
     *,
     code: Optional[str] = None,
     mode: str = "m1",
-    fallback_limit: Optional[int] = 2000,
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT,
 ):
     """
     通用長度候選取得（無 mask 預過濾）。
@@ -226,11 +235,12 @@ def _compound_rhyme_char(spec: MatchSpec) -> Optional[str]:
 
 @dataclass
 class CompoundCandidateSource:
-    """近義／反義複合：字面容許集 + char IN（cache-first）。"""
+    """近義／反義／連接詞複合：字面容許集 + char IN；缺庫字面記憶體合成（ADR-0054）。"""
 
     db: Any
     compounds: frozenset[str]
     expected_length: int = 2
+    allow_transient: bool = False
 
     def get_candidates(
         self,
@@ -242,20 +252,34 @@ class CompoundCandidateSource:
         if length != self.expected_length or not self.compounds:
             return [], True
 
+        rows: list[Any] = []
+        from_cache = False
         if is_word_cache_ready():
             rows = [
                 w for w in get_words_for_length(self.expected_length)
                 if get_word_text(w) in self.compounds
             ]
-            if rows:
-                return rows, True
+            from_cache = True
+        if not rows:
+            query = self.db.query(Word).filter(
+                Word.char.in_(list(self.compounds)),
+                length_filter(self.expected_length),
+            )
+            rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+            from_cache = False
 
-        query = self.db.query(Word).filter(
-            Word.char.in_(list(self.compounds)),
-            length_filter(self.expected_length),
-        )
-        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
-        return rows, False
+        if self.allow_transient:
+            have = {get_word_text(w) for w in rows}
+            missing = [ch for ch in self.compounds if ch not in have]
+            if missing:
+                from app.domain.relations.compound_connect import compose_transient_word
+
+                for ch in missing:
+                    transient = compose_transient_word(ch)
+                    if transient is not None:
+                        rows.append(transient)
+
+        return rows, from_cache
 
 
 CompoundSynCandidateSource = CompoundCandidateSource
@@ -299,7 +323,10 @@ def _resolve_mask_family_source(
             if not tiers:
                 return None, None
             source = CompoundCandidateSource(
-                db, frozenset(tiers.keys()), expected_length=3
+                db,
+                frozenset(tiers.keys()),
+                expected_length=3,
+                allow_transient=True,
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
             return source, sort_key
@@ -327,7 +354,10 @@ def _resolve_mask_family_source(
             if not tiers:
                 return None, None
             source = CompoundCandidateSource(
-                db, frozenset(tiers.keys()), expected_length=3
+                db,
+                frozenset(tiers.keys()),
+                expected_length=3,
+                allow_transient=True,
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
             return source, sort_key
@@ -342,7 +372,9 @@ def _resolve_mask_family_source(
         return source, sort_key
 
     if spec.literal_priority and spec.mask:
-        effective_code = query_code or spec.code_prefix
+        from app.services.position_match.mask_adapter import dense_code_from_spec
+
+        effective_code = query_code or dense_code_from_spec(spec)
         source = MaskWildcardCandidateSource(
             db,
             spec.mask,

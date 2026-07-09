@@ -41,7 +41,10 @@ class IngestSmokeTests(unittest.TestCase):
             rel = db.query(WordRelation).filter(WordRelation.relation_type == "syn").first()
             self.assertIsNotNone(rel)
             self.assertLess(rel.word_id, rel.related_id)
-            codes = json.loads(rel.group_codes)
+            # ADR-0039: leaf code string or legacy JSON hierarchy
+            from app.domain.relations.cilin_codes import expand_group_codes_field
+
+            codes = expand_group_codes_field(rel.group_codes)
             self.assertTrue(codes)
 
     def test_normalize_relation_tuple_sorts_ids(self):

@@ -54,11 +54,12 @@ import {
 } from './mode-meta';
 import { parseSearchUrl } from './search-url';
 import { BrandSvgDefs } from './brand-svg-defs';
-import { BrandLogo, GateInkMeter } from './brand-logo';
+import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
+import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-context.mjs';
@@ -88,6 +89,7 @@ function App() {
     tabs,
     selectTab,
     addSearchTab,
+    openSearchTabWithQuery,
     closeTab,
     reorderTabs,
     openGuide,
@@ -166,6 +168,10 @@ function App() {
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
         syncedTabIdRef.current = tab.id;
+      } else {
+        // New / live tab: clear prior tab's chips until results arrive
+        setDisplayResults([]);
+        setCachedTotal(null);
       }
     },
     [hydrateSearch, initialBootstrap.forceLive],
@@ -213,6 +219,9 @@ function App() {
     isOnline,
     isDbCached,
     progress,
+    tailProgress,
+    startupComplete,
+    suppressGateOverlay,
     error: dbError,
     initialize,
     retryOfflineReady,
@@ -356,12 +365,7 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const headerPreparing = offlineStatus === 'preparing' && !gateOpen;
-  const headerInkProgress = headerPreparing ? Math.max(progress / 100, 0.12) : 1;
-  const headerStatusLabel =
-    uiLang === 'en'
-      ? `Preparing lexicon${progress > 0 ? ` ${Math.round(progress)}%` : ''}`
-      : `準備詞庫${progress > 0 ? ` ${Math.round(progress)}%` : ''}`;
+  const showTailBadge = !shellGated && !startupComplete;
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -579,8 +583,11 @@ function App() {
       setLast0243Mode(exampleMode);
     }
     setMode(exampleMode);
-    ensureActiveSearchTab();
-    runCommittedSearch(nextQuery);
+    // 教學例子：開新搜尋 tab，唔覆蓋當前 tab
+    saveLeavingSearchTab();
+    openSearchTabWithQuery(nextQuery, exampleMode as UiMode);
+    setUseLiveFetch(true);
+    setResultsShuffled(false);
   };
 
   const handleShuffle = () => {
@@ -634,7 +641,7 @@ function App() {
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
-  const infiniteScrollRoot = detailOpen ? scrollRootEl : null;
+  const infiniteScrollRoot = scrollRootEl;
 
   const resultItemCount = useMemo(() => {
     if (!displayResults.length) return 0;
@@ -745,6 +752,7 @@ function App() {
         isOnline={isOnline}
         isDbCached={isDbCached}
         isLikelyMetered={isLikelyMetered}
+        suppressGateOverlay={suppressGateOverlay}
         onRetry={handleRetryOfflineReady}
         onOpenChange={setGateOpen}
         theme={uiTheme}
@@ -755,11 +763,7 @@ function App() {
         <header className="app-header">
           <div className="app-bar">
             <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
-              <BrandLogo
-                variant={headerPreparing ? 'gate' : 'header'}
-                inkProgress={headerInkProgress}
-                theme={uiTheme}
-              />
+              <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
             </button>
             <div className="header-hero">
               <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
@@ -769,11 +773,13 @@ function App() {
                   : '格律／協音／押韻／近反義，一步搵到。'}
               </p>
             </div>
-            {headerPreparing && (
-              <div className="header-load-status" role="status" aria-live="polite" aria-busy="true">
-                <GateInkMeter inkProgress={headerInkProgress} theme={uiTheme} />
-                <span>{headerStatusLabel}</span>
-              </div>
+            {showTailBadge && (
+              <TailPreloadBadge
+                tailProgress={tailProgress}
+                startupComplete={startupComplete}
+                theme={uiTheme}
+                lang={uiLang}
+              />
             )}
             <ModeMenu
               mode={mode}
@@ -785,6 +791,8 @@ function App() {
               lang={uiLang}
               onThemeChange={(next) => setUiTheme(next)}
               onLangChange={(next) => setUiLang(next)}
+              lexiconVersion={lexiconVersion}
+              showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
             />
           </div>
           <QueryTabsBar
@@ -846,9 +854,16 @@ function App() {
                     <button
                       type="submit"
                       className="primary-button"
-                      disabled={!canSearch || !trimmedInput}
+                      disabled={!canSearch || !trimmedInput || (useLiveFetch && searchLoading)}
+                      aria-busy={useLiveFetch && searchLoading}
                     >
-                      {uiLang === 'en' ? 'Search' : '搜尋'}
+                      {useLiveFetch && searchLoading
+                        ? uiLang === 'en'
+                          ? 'Searching…'
+                          : '搜尋中…'
+                        : uiLang === 'en'
+                          ? 'Search'
+                          : '搜尋'}
                     </button>
                   </div>
                 </div>
@@ -924,14 +939,6 @@ function App() {
             </section>
           )}
         </main>
-
-        <footer className="app-footer">
-          <p>Canto-0243 PWA</p>
-          <p>
-            離線粵語填詞查詢工具 · 詞庫版本：{lexiconVersion}
-            {isReady && getActiveDbBackendMode() === 'opfs-vfs' ? ' · OPFS' : ''}
-          </p>
-        </footer>
       </div>
 
       {shouldShowInstallBanner && (

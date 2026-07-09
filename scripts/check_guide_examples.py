@@ -2,14 +2,14 @@
 """
 Smoke-check: every guide example query returns at least 1 result.
 
-Reads frontend/index.html buttons: `data-query` + `data-mode`.
-Runs `search_words` against local `lyrics.db` (DATABASE_URL fallback applies).
+Reads `frontend/guide-i18n.mjs` manifest (`query` + `mode`).
+Warms probe readiness (`warm_guide_probe_readiness`) then runs `search_words`.
+教學探針全量閘（Portable）；預設 repo `lyrics.db`，`DATABASE_URL` 可覆寫。
 """
 
 from __future__ import annotations
 
 import os
-import re
 import sys
 from pathlib import Path
 
@@ -31,29 +31,20 @@ except Exception:
 
 from app.database import SessionLocal  # noqa: E402
 from app.services.query_dispatch import search_words  # noqa: E402
-
-
-DATA_ATTR_RE = re.compile(r'data-query="([^"]+)"\s+data-mode="([^"]+)"')
-
-
-def extract_examples(html: str) -> list[tuple[str, str]]:
-    examples: list[tuple[str, str]] = []
-    for q, mode in DATA_ATTR_RE.findall(html):
-        examples.append((q, mode))
-    return examples
+from scripts.guide_manifest import load_manifest_examples  # noqa: E402
+from scripts.guide_probe_readiness import warm_guide_probe_readiness  # noqa: E402
 
 
 def main() -> int:
-    html_path = _project_root() / "frontend" / "index.html"
-    html = html_path.read_text(encoding="utf-8")
-    examples = extract_examples(html)
+    examples = load_manifest_examples()
     if not examples:
-        print("No guide examples found.")
+        print("No guide examples found in manifest.")
         return 2
 
     failures: list[tuple[str, str]] = []
     db = SessionLocal()
     try:
+        warm_guide_probe_readiness(db)
         for q, mode in examples:
             try:
                 items = search_words(q=q, code=None, char=None, mode=mode, limit=1, offset=0, db=db)
@@ -78,4 +69,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

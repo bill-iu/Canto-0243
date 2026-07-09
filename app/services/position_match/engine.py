@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional
 
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.services.position_match.filters import apply_match_spec
+from app.services.position_match.mask_adapter import dense_code_from_spec
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
     get_candidates_for_length,
@@ -32,12 +33,13 @@ class PositionMatchEngine:
         offset: int = 0,
         pre_candidates: Optional[list] = None,
     ) -> list[Any]:
+        dense = dense_code_from_spec(spec)
         if pre_candidates is not None:
             candidates = pre_candidates
         elif source is None:
-            candidates, _ = get_candidates_for_length(db, spec.width, code=spec.code_prefix, mode=mode)
+            candidates, _ = get_candidates_for_length(db, spec.width, code=dense, mode=mode)
         else:
-            candidates, _ = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
+            candidates, _ = source.get_candidates(spec.width, code=dense, mode=mode)
 
         return apply_match_spec(spec, candidates, db, mode)
 
@@ -80,7 +82,7 @@ def run_position_query_tracked(
     pre_candidates: list[Any] | None = None,
     sort_key: Callable[[Any], Any] | None = None,
 ) -> tuple[list, bool]:
-    from app.services.word_serializer import serialize_page
+    from app.services.word_serializer import deduplicate_words, serialize_word
 
     from_cache = False
     if get_equals_span(spec):
@@ -88,14 +90,19 @@ def run_position_query_tracked(
     elif pre_candidates is not None:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=pre_candidates)
     elif source is not None:
-        candidates, from_cache = source.get_candidates(spec.width, code=spec.code_prefix, mode=mode)
+        candidates, from_cache = source.get_candidates(
+            spec.width, code=dense_code_from_spec(spec), mode=mode
+        )
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=candidates)
     else:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode)
 
     key = sort_key or search_result_sort_key
     filtered.sort(key=key)
-    return serialize_page(filtered, offset, limit), from_cache
+    # E3: dedupe once then window only (serialize_page would re-dedupe the full list)
+    unique = deduplicate_words(filtered)
+    page = unique[offset : offset + limit]
+    return [serialize_word(w) for w in page], from_cache
 
 
 def execute_dual_phoneme_anchor_specs(

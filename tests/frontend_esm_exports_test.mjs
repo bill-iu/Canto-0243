@@ -153,6 +153,17 @@ describe("PWA ready-gate assets", () => {
     assert.match(appSrc, /isDbCached !== true/);
   });
 
+  it("shell-revealed is channel-neutral for gate unlock (Portable + PWA)", () => {
+    const css = readFileSync(new URL("../frontend/ready-gate.css", import.meta.url), "utf8");
+    assert.match(css, /html:not\(\.shell-revealed\) \.app-shell/);
+    assert.ok(!css.includes("pwa-shell-revealed"));
+    const gate = readFileSync(new URL("../frontend/gate.mjs", import.meta.url), "utf8");
+    assert.match(gate, /classList\.add\("shell-revealed"\)/);
+    const boot = readFileSync(new URL("../client/src/pwa-shell-boot.ts", import.meta.url), "utf8");
+    assert.match(boot, /shell-revealed/);
+    assert.ok(!boot.includes("pwa-shell-revealed"));
+  });
+
   it("lexicon open defaults to opfs-vfs with sqljs degrade hooks", () => {
     const modeSrc = readFileSync(new URL("../client/src/db/db-backend-mode.ts", import.meta.url), "utf8");
     assert.match(modeSrc, /if \(raw === 'sqljs'\) return 'sqljs'/);

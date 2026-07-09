@@ -68,5 +68,6 @@ sources:
     local_only: true
     raw_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.dict.yaml
     allowlist_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.8char-allowlist.txt
+    reject_suffixes_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.reject-suffixes.txt
     source_rank: 3
     attribution: rime/rime-cantonese jyut6ping3.phrase.dict.yaml

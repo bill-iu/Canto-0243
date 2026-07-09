@@ -3,6 +3,7 @@
  */
 import { fetchCompoundWordRows, type CompoundSearchSpec } from '../compound.ts';
 import { getCodeVariants } from '../code-variants.ts';
+import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import { queryRows } from '../database-backend.ts';
 import type { Database } from '../sqljs.ts';
 import {
@@ -11,8 +12,19 @@ import {
   matchesMaskLiteralChars,
 } from './mask-adapter.ts';
 import type { CandidateSource, MatchSpec } from './spec.ts';
-
+import {
+  CANDIDATE_FALLBACK_LIMIT,
+  lengthBucketNeedsUnlimited,
+} from './candidate-policy.ts';
 export type WordRow = Record<string, unknown>;
+export { CANDIDATE_FALLBACK_LIMIT, lengthBucketNeedsUnlimited } from './candidate-policy.ts';
+export {
+  ensurePhonemeIndex,
+  getPhonemeAnchorCandidates,
+  getPhonemeIndexCandidates,
+  invalidatePhonemeIndex,
+  isPhonemeIndexReady,
+} from './phoneme-index.ts';
 
 export function wordMatchesWidth(row: WordRow, width: number): boolean {
   const stored = Number(row.length ?? 0);
@@ -28,6 +40,8 @@ export type GetCandidatesOptions = {
   fallbackLimit?: number;
   /** ponytail: jyutping letter anchors need full length bucket (desktop word_cache parity) */
   unlimited?: boolean;
+  /** Sparse per-position code digits (e.g. ?30+人) — SQL substr filter when full code absent */
+  codePositions?: Array<{ pos: number; digit: string }>;
 };
 
 /**
@@ -40,8 +54,8 @@ export async function getCandidatesForLength(
   options: GetCandidatesOptions = {},
 ): Promise<[WordRow[], boolean]> {
   const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
-  const limit = options.fallbackLimit ?? 2000;
-  const unlimited = options.unlimited === true;
+  const limit = options.fallbackLimit ?? CANDIDATE_FALLBACK_LIMIT;
+  const unlimited = lengthBucketNeedsUnlimited(options);
   const code = options.code ?? null;
 
   let sql = `
@@ -58,6 +72,15 @@ export async function getCandidatesForLength(
     const variants = getCodeVariants(code, mode);
     if (variants.length) {
       sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
+  } else if (options.codePositions?.length) {
+    for (const { pos, digit } of options.codePositions) {
+      if (pos < 0 || !/^\d$/.test(digit)) continue;
+      const variants = getCodeVariants(digit, mode);
+      if (!variants.length) continue;
+      // SQLite substr is 1-based
+      sql += ` AND substr(code, ${pos + 1}, 1) IN (${variants.map(() => '?').join(', ')})`;
       params.push(...variants);
     }
   }
@@ -83,7 +106,9 @@ export async function getLengthMaskCandidates(
   db: Database,
   length: number,
   mask: string,
+  options: { code?: string | null; mode?: string } = {},
 ): Promise<[WordRow[], boolean]> {
+  const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
   const globPat = maskCharGlobPattern(mask);
   const prefix = maskFixedLiteralPrefix(mask);
   let sql = `
@@ -99,6 +124,14 @@ export async function getLengthMaskCandidates(
   if (prefix) {
     sql += ' AND char LIKE ?';
     params.push(`${prefix}%`);
+  }
+  const code = options.code ?? null;
+  if (code) {
+    const variants = getCodeVariants(code, mode);
+    if (variants.length) {
+      sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
   }
   sql += ' ORDER BY char, jyutping';
 
@@ -133,7 +166,7 @@ export class LengthCodeCandidateSource implements CandidateSource {
     private readonly db: Database,
     private readonly code: string | null = null,
     private readonly mode = 'm1',
-    private readonly fallbackLimit = 2000,
+    private readonly fallbackLimit = CANDIDATE_FALLBACK_LIMIT,
   ) {}
 
   async getCandidates(
@@ -168,7 +201,7 @@ export function compoundSearchSpecFromMatchSpec(spec: MatchSpec): CompoundSearch
   return {
     compound_kind: spec.compound_kind,
     width: spec.width,
-    code_prefix: spec.code_prefix ?? undefined,
+    code_prefix: codeDigitStringFromSpec(spec) ?? undefined,
     rhyme_char: compoundRhymeChar(spec),
     connective: typeof connective === 'string' ? connective : undefined,
   };

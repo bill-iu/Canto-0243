@@ -20,21 +20,24 @@ from tests.smoke.helpers import (
 class QueryJourneySmokeTests(unittest.TestCase):
     def _seed_memory(self, db, seed: str) -> None:
         if seed == "left_code":
+            # ADR-0037: runtime only accepts j2 compact phoneme fields
+            from app.domain.lexicon.phoneme_codec import encode_phoneme_list
+
             db.add_all([
                 Word(
                     char="好我",
                     code="34",
                     jyutping="hou2 ngo5",
-                    finals='["ou", "o"]',
-                    initials='["h", "ng"]',
+                    finals=encode_phoneme_list(["ou", "o"], "final"),
+                    initials=encode_phoneme_list(["h", "ng"], "initial"),
                     length=2,
                 ),
                 Word(
                     char="小馬騮",
                     code="944",
                     jyutping="siu2 maa5 ngau4",
-                    finals='["iu", "aa", "au"]',
-                    initials='["s", "m", "ng"]',
+                    finals=encode_phoneme_list(["iu", "aa", "au"], "final"),
+                    initials=encode_phoneme_list(["s", "m", "ng"], "initial"),
                     length=3,
                 ),
             ])

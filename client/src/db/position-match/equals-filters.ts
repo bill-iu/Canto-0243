@@ -4,12 +4,24 @@
 import { getCodeVariants } from '../code-variants.ts';
 import { queryFirst, queryRows } from '../database-backend.ts';
 import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
+import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { anchorPhonemeOptions } from './filters.ts';
+import {
+  buildRequiredCodes,
+  denseCodeFromRequired,
+  matchesCodePositions,
+  requiredCodesFromDigitString,
+} from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
+import { CANDIDATE_FALLBACK_LIMIT } from './candidate-policy.ts';
 import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
+
+function denseCodeFromSpec(spec: MatchSpec): string {
+  return denseCodeFromRequired(buildRequiredCodes(spec)) || '';
+}
 
 function normalizeMode(mode: string): 'm1' | 'm2' {
   return mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
@@ -50,13 +62,13 @@ async function equalsAuthoritativeRowForCode(
   codePrefix: string,
   mode: 'm1' | 'm2',
 ): Promise<WordRow | null> {
-  const variants = new Set(getCodeVariants(codePrefix, mode));
+  const required = requiredCodesFromDigitString(codePrefix);
   const rows = await queryRows(
     db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
     [literal],
   );
-  const matching = rows.filter((row) => variants.has(getWordCode(row)));
+  const matching = rows.filter((row) => matchesCodePositions(getWordCode(row), required, mode));
   return preferredPronunciationRow(matching);
 }
 
@@ -100,6 +112,47 @@ async function equalsRefPhonemeParts(
     return parts.length ? parts : null;
   }
   return inferRefPhonemeParts(db, literal, dimension);
+}
+
+/** L1: multi-char ref with no headword — assemble one phoneme per canto via authoritative single-char rows */
+async function refPhonemePartsPerChar(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+): Promise<string[] | null> {
+  if (literal.length < 2) {
+    return null;
+  }
+  const isFinal = dimension === 'final' || dimension === 'rhyme';
+  const parts: string[] = [];
+  for (const ch of literal) {
+    const row = await equalsAuthoritativeRow(db, ch);
+    if (!row) {
+      return null;
+    }
+    const slotParts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
+    if (!slotParts.length) {
+      return null;
+    }
+    parts.push(slotParts[0]!);
+  }
+  return parts;
+}
+
+async function resolveEqualsTargetParts(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+  mode: 'prefix' | 'plain',
+): Promise<string[] | null> {
+  const primary =
+    mode === 'prefix'
+      ? await suffixAlignedRefPhonemeParts(db, literal, dimension)
+      : await equalsRefPhonemeParts(db, literal, dimension);
+  if (primary?.length) {
+    return primary;
+  }
+  return refPhonemePartsPerChar(db, literal, dimension);
 }
 
 function phonemePartsSuffix(
@@ -229,7 +282,10 @@ function phonemeStorageKey(row: WordRow, field: 'finals' | 'initials'): string {
     return raw;
   }
   if (Array.isArray(raw)) {
-    return JSON.stringify(raw);
+    return encodePhonemeList(
+      raw.map((x) => (x == null ? '' : String(x))),
+      field === 'finals' ? 'final' : 'initial',
+    );
   }
   return '';
 }
@@ -248,7 +304,7 @@ async function equalsWholeWordMatches(
     return [];
   }
   const width = spec.width;
-  const fullCode = spec.code_prefix || '';
+  const fullCode = denseCodeFromSpec(spec);
   const variants = fullCode ? getCodeVariants(fullCode, mode) : [];
   const targetKey = targetParts.join('\0');
 
@@ -266,7 +322,7 @@ async function equalsWholeWordMatches(
     sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
     params.push(...variants);
   }
-  sql += ' LIMIT 2000';
+  sql += ` LIMIT ${CANDIDATE_FALLBACK_LIMIT}`;
 
   const rows = await queryRows(db, sql, params);
   const out: WordRow[] = [];
@@ -296,13 +352,13 @@ export async function queryWordsByEqualsSpec(
   const searchMode = normalizeMode(mode);
   const isFinal = span.dimension === 'final' || span.dimension === 'rhyme';
   const prefixWildcard = Boolean(spec.extra?.prefix_wildcard_equals);
-  const fullCode = spec.code_prefix || '';
+  const fullCode = denseCodeFromSpec(spec);
 
   let targetParts: string[] | null;
   let target: WordRow | null = null;
 
   if (prefixWildcard) {
-    targetParts = await suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
+    targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'prefix');
     if (!targetParts) {
       return [];
     }
@@ -322,8 +378,8 @@ export async function queryWordsByEqualsSpec(
       return [];
     }
   } else {
-    // ponytail: infer via substring when no standalone row (parity with executeCodeAnchoredEquals / lexicon inject)
-    targetParts = await equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
+    // ponytail: infer via substring / per-char when no standalone multi-char row
+    targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'plain');
     if (!targetParts) {
       return [];
     }
@@ -342,11 +398,24 @@ export async function queryWordsByEqualsSpec(
     !span.whole_word &&
     !span.phoneme_anchor_only;
 
-  const [candidates] = await getCandidatesForLength(db, spec.width, {
-    code: fullCode || null,
-    mode: searchMode,
-    unlimited: tailRhymeUnion,
-  });
+  // 前綴通配等號：用 finals JSON 預過濾，避免掃晒 ~10 萬個四字詞
+  let candidates: WordRow[];
+  if (prefixWildcard && targetParts?.length && isFinal) {
+    candidates = await prefixWildcardCandidatesByFinals(
+      db,
+      spec.width,
+      targetParts,
+      fullCode || null,
+      searchMode,
+    );
+  } else {
+    const [rows] = await getCandidatesForLength(db, spec.width, {
+      code: fullCode || null,
+      mode: searchMode,
+      unlimited: prefixWildcard || tailRhymeUnion,
+    });
+    candidates = rows;
+  }
 
   if (tailRhymeUnion) {
     const targetFinalOptions = await buildFinalOptionsAtPositions(
@@ -377,4 +446,57 @@ export async function queryWordsByEqualsSpec(
         dimension: span.dimension,
       }),
   );
+}
+
+/** SQL prefilter for prefix-wildcard equals — P1 compact span LIKE (ADR-0037) */
+async function prefixWildcardCandidatesByFinals(
+  db: Database,
+  width: number,
+  targetParts: string[],
+  code: string | null,
+  mode: 'm1' | 'm2',
+): Promise<WordRow[]> {
+  let sql = `
+    SELECT char, jyutping, code, initials, finals, length
+    FROM words
+    WHERE (
+      length = ?
+      OR ((length IS NULL OR length = 0) AND length(char) = ?)
+    )
+  `;
+  const params: Array<string | number> = [width, width];
+  try {
+    const encoded = encodePhonemeList(targetParts, 'final');
+    const likes = compactSpanLikePatterns(encoded);
+    if (likes.length) {
+      sql += ` AND (${likes.map(() => 'finals LIKE ?').join(' OR ')})`;
+      params.push(...likes);
+    }
+  } catch {
+    // unknown token — fall through to unlimited scan
+  }
+  if (code) {
+    const variants = getCodeVariants(code, mode);
+    if (variants.length) {
+      sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
+      params.push(...variants);
+    }
+  }
+  sql += ' ORDER BY char, jyutping';
+  const resultRows = await queryRows(db, sql, params);
+  const rows: WordRow[] = [];
+  for (const row of resultRows) {
+    if (wordMatchesWidth(row, width)) {
+      rows.push(row);
+    }
+  }
+  if (!rows.length) {
+    const [fallback] = await getCandidatesForLength(db, width, {
+      code,
+      mode,
+      unlimited: true,
+    });
+    return fallback;
+  }
+  return rows;
 }

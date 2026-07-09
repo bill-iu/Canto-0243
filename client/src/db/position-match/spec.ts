@@ -38,7 +38,6 @@ export type CompoundKind = 'syn' | 'ant' | 'doubled_syllable';
 export interface MatchSpec {
   width: number;
   slots?: SlotConstraint[];
-  code_prefix?: string | null;
   literal_priority?: boolean;
   mask?: string;
   compound_kind?: CompoundKind | null;
@@ -80,8 +79,14 @@ export function createMatchSpec(width: number, fields: Omit<MatchSpec, 'width'> 
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/position-match-spec-self-check.ts` */
 export function positionMatchSpecSelfCheck(): void {
-  const spec = createMatchSpec(2, { code_prefix: '23', mask: '?就' });
-  if (spec.width !== 2 || spec.code_prefix !== '23') {
+  const spec = createMatchSpec(2, {
+    mask: '?就',
+    slots: [
+      { pos: 0, kind: 'code_digit', value: '2' },
+      { pos: 1, kind: 'code_digit', value: '3' },
+    ],
+  });
+  if (spec.width !== 2 || !(spec.slots?.length === 2)) {
     throw new Error('positionMatchSpecSelfCheck: createMatchSpec');
   }
 

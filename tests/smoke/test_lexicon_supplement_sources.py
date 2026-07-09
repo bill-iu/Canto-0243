@@ -71,6 +71,43 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertEqual(rows[0].jyutping, "hoeng1 gong2")
         self.assertEqual(rows[0].sources, ("rime_words",))
 
+    def test_rime_phrase_reject_suffixes_file_blocks_shop_names_keeps_idiom_words(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = Path(d) / "jyut6ping3.phrase.dict.yaml"
+            allowlist = Path(d) / "allowlist.txt"
+            reject = Path(d) / "reject-suffixes.txt"
+            path.write_text(
+                "\n".join(
+                    [
+                        "---",
+                        "...",
+                        "德馨茗茶",
+                        "套路",
+                        "高速公路",
+                        "出路",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            reject.write_text("茗茶\n建材\n", encoding="utf-8")
+            readings = {
+                "德馨茗茶": "dak1 hing1 ming4 caa4",
+                "套路": "tou3 lou6",
+                "高速公路": "gou1 suk6 gung1 lou6",
+                "出路": "ceot1 lou6",
+            }
+            stats = empty_rime_phrase_stats()
+            with patch("ingest.lexicon_sources.resolve_generated_jyutping", side_effect=readings.get):
+                rows = ingest_rime_phrase_yaml(
+                    path,
+                    source_id="rime_phrase",
+                    reject_suffixes_path=reject,
+                    stats=stats,
+                )
+        by_char = {row.char: row for row in rows}
+        self.assertEqual(set(by_char), {"套路", "出路"})
+        self.assertEqual(stats["rejected_place_or_org"], 2)
+
     def test_rime_phrase_parser_filters_noise_and_uses_8_char_allowlist(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / "jyut6ping3.phrase.dict.yaml"
@@ -224,6 +261,12 @@ class LexiconSupplementSourceTests(unittest.TestCase):
                 self.assertTrue(
                     allowlist_path.startswith("data/lexicon/raw/"),
                     f"{src['id']} allowlist_path must stay maintainer-local: {allowlist_path}",
+                )
+            reject_path = str(src.get("reject_suffixes_path") or "")
+            if reject_path:
+                self.assertTrue(
+                    reject_path.startswith("data/lexicon/raw/"),
+                    f"{src['id']} reject_suffixes_path must stay maintainer-local: {reject_path}",
                 )
         self.assertGreaterEqual(checked, 5)
 

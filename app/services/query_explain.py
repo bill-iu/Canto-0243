@@ -125,8 +125,10 @@ def _summary_from_match_spec(spec: MatchSpec, parsed: ParsedQuery) -> Optional[s
         if isinstance(dual, MatchSpec):
             spec = dual
 
+    from app.services.position_match.mask_adapter import has_code_digit_constraints
+
     equals = get_equals_span(spec)
-    if equals and spec.code_prefix:
+    if equals and has_code_digit_constraints(spec):
         return _code_sandwich_equals_summary(spec, equals, parsed)
     if equals and spec.extra.get("prefix_wildcard_equals"):
         return _prefix_wildcard_equals_summary(spec, equals)
@@ -180,12 +182,15 @@ def _compound_summary(spec: MatchSpec) -> str:
             (s.value for s in spec.slots if s.kind == "final_anchor" and isinstance(s.value, str)),
             None,
         )
+        from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
         n = spec.width
+        code = code_digit_string_from_spec(spec)
         base = f"查{n}字雙聲疊韻字（各字音節相同，聲調不限）"
-        if spec.code_prefix and rhyme:
-            return f"查{n}字雙聲疊韻字（碼 {spec.code_prefix}，尾字同「{rhyme}」同韻）"
-        if spec.code_prefix:
-            return f"查{n}字雙聲疊韻字（碼 {spec.code_prefix}）"
+        if code and rhyme:
+            return f"查{n}字雙聲疊韻字（碼 {code}，尾字同「{rhyme}」同韻）"
+        if code:
+            return f"查{n}字雙聲疊韻字（碼 {code}）"
         if rhyme:
             return f"查{n}字雙聲疊韻字（尾字同「{rhyme}」同韻）"
         return base
@@ -197,15 +202,22 @@ def _compound_summary(spec: MatchSpec) -> str:
 
 
 def _code_prefix_phrase(spec: MatchSpec) -> Optional[str]:
-    if not spec.code_prefix:
+    from app.services.position_match.mask_adapter import (
+        code_digit_string_from_spec,
+        required_codes_from_spec,
+    )
+
+    code = code_digit_string_from_spec(spec)
+    if not code:
         return None
-    if spec.width == len(spec.code_prefix):
+    required = required_codes_from_spec(spec)
+    if all(d is not None for d in required) and len(required) == spec.width:
         parts = [
             f"{_word_pos(i)}同 {digit} 同音"
-            for i, digit in enumerate(spec.code_prefix)
+            for i, digit in enumerate(code)
         ]
         return "，".join(parts)
-    return f"前 {len(spec.code_prefix)} 個字為碼 {spec.code_prefix}"
+    return f"前 {len(code)} 個字為碼 {code}"
 
 
 def _slot_scan_summary(spec: MatchSpec, equals) -> str:
@@ -228,11 +240,13 @@ def _effective_constraints(
     spec: MatchSpec,
     equals,
 ) -> dict[int, tuple[str, str]]:
-    result: dict[int, tuple[str, str]] = {}
+    from app.services.position_match.mask_adapter import required_codes_from_spec
 
-    if spec.code_prefix and spec.width == len(spec.code_prefix):
-        for i, digit in enumerate(spec.code_prefix):
-            result.setdefault(i, ("code_digit", digit))
+    result: dict[int, tuple[str, str]] = {}
+    required = required_codes_from_spec(spec)
+    for i, digit in enumerate(required):
+        if digit is not None:
+            result.setdefault(i, ("code_digit", str(digit)))
 
     if spec.mask:
         for i, ch in enumerate(spec.mask):
@@ -257,6 +271,9 @@ def _effective_constraints(
         if slot.kind == "initial_anchor" and existing and existing[0] == "code_digit":
             result[slot.pos] = ("hybrid_tail_initial", f"{existing[1]}|{value}")
             continue
+        if slot.kind == "literal_char" and existing and existing[0] == "code_digit":
+            result[slot.pos] = ("hybrid_code_literal", f"{existing[1]}|{value}")
+            continue
         if existing and _SLOT_PRIORITY.get(existing[0], 0) >= _SLOT_PRIORITY.get(
             slot.kind, 0
         ):
@@ -270,11 +287,7 @@ def _effective_constraints(
         for i, ch in enumerate(equals.ref_literal):
             pos = equals.start_pos + i
             if 0 <= pos < spec.width:
-                digit = (
-                    spec.code_prefix[pos]
-                    if spec.code_prefix and pos < len(spec.code_prefix)
-                    else None
-                )
+                digit = required[pos] if pos < len(required) else None
                 if digit is not None and equals.dimension == "final" and not equals.phoneme_anchor_only:
                     result[pos] = ("hybrid_tail_rhyme", f"{digit}|{ch}")
                 elif equals.phoneme_anchor_only and digit is not None:
@@ -304,6 +317,9 @@ def _constraint_phrase(pos: int, kind: str, value: str) -> str:
     if kind == "hybrid_tail_initial":
         digit, ref = value.split("|", 1)
         return f"{label}同 {digit} 同音且同「{ref}」同聲"
+    if kind == "hybrid_code_literal":
+        digit, ref = value.split("|", 1)
+        return f"{label}同 {digit} 同音且限定為{ref}"
     if kind == "final_anchor":
         return f"{label}同「{value}」同韻"
     if kind == "initial_anchor":

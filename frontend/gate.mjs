@@ -29,25 +29,31 @@ function wordCacheProgress(data) {
     : (wc.progress ?? 0);
 }
 
+/** Prefer server tail_progress (includes weighted word_cache — ADR-0055). */
 function tailPreloadProgress(data) {
-  if (typeof data?.tail_progress === "number") return data.tail_progress;
+  if (typeof data?.tail_progress === "number" && Number.isFinite(data.tail_progress)) {
+    return Math.max(0, Math.min(1, data.tail_progress));
+  }
   const phases = data?.phases || {};
+  const wc = wordCacheProgress(data);
   const sr = phases.static_resources?.progress ?? 0;
   const cs = phases.compound_syn?.progress ?? 0;
   const ca = phases.compound_ant?.progress ?? 0;
-  return (sr + cs + ca) / 3;
+  const other = (sr + cs + ca) / 3;
+  // Client-side fallback weights match server honesty
+  if (phases.word_cache?.status === "ready" || phases.word_cache?.status === "failed") {
+    return Math.max(wc, other);
+  }
+  return 0.72 * wc + 0.28 * other;
 }
 
 function formatGateStatusLabel(data, { connecting = false } = {}) {
-  if (connecting || !data) return "執緊啲字…";
+  if (connecting || !data) return "開緊字庫…";
   if (data.degraded) return "字庫執唔切，照用得，可能慢啲";
   if (data.gate_ready) return "開得工！";
-  const pct = Math.max(0, Math.min(100, Math.round(wordCacheProgress(data) * 100)));
-  const wcStatus = data.phases?.word_cache?.status;
-  if (wcStatus === "loading" || wordCacheProgress(data) > 0) {
-    return pct >= GATE_NEAR_DONE_PCT ? `差啲就齊… ${pct}%` : `執緊啲字… ${pct}%`;
-  }
-  return "執緊啲字…";
+  // Pre-gate: DB probe only — no fake word_cache %
+  if (data.db_ready === false) return "連緊字庫…";
+  return "開緊字庫…";
 }
 
 function clearWarmupDismissTimer() {
@@ -180,9 +186,21 @@ function startWarmupBadgePoll() {
 }
 
 function setGateInkProgress(progress01) {
-  const w = (Math.max(0, Math.min(1, progress01)) * GATE_INK_CLIP_MAX).toFixed(1);
-  if ($.gateInkClipRect) $.gateInkClipRect.setAttribute("width", w);
-  if ($.gateInkClipRectMini) $.gateInkClipRectMini.setAttribute("width", w);
+  const p = Math.max(0, Math.min(1, progress01));
+  // Gate logo may use cropped viewBox (e.g. 148); don't force full 200 wordmark frame
+  if ($.gateInkClipRect) {
+    const svg = $.gateInkClipRect.ownerSVGElement;
+    const max =
+      (svg && (Number(svg.viewBox?.baseVal?.width) || Number(svg.getAttribute("width")))) ||
+      GATE_INK_CLIP_MAX;
+    $.gateInkClipRect.setAttribute("width", (p * max).toFixed(1));
+  }
+  if ($.gateInkClipRectMini) {
+    $.gateInkClipRectMini.setAttribute(
+      "width",
+      (p * GATE_INK_CLIP_MAX).toFixed(1),
+    );
+  }
 }
 
 function shouldPlayLanding() {
@@ -222,6 +240,8 @@ function setSearchControlsEnabled(enabled) {
 }
 
 async function revealFromGate({ playLanding }) {
+  // 就緒閘解鎖：與 PWA 共用 ready-gate.css 的 shell 露出 class（唔用 pwa- 前綴）
+  document.documentElement.classList.add("shell-revealed");
   document.body.classList.remove("landing-a-pending", "landing-b-pending");
   if (playLanding) {
     markLandingDone();
@@ -280,11 +300,12 @@ async function waitForPreloadReady() {
         await syncWarmupBadgeAfterSearchVisible();
         return;
       }
-      setGateInkProgress(wordCacheProgress(data));
+      // Short gate: indeterminate-ish ink until DB probe passes
+      setGateInkProgress(data.db_ready ? 0.85 : 0.2);
       $.preloadLabel.textContent = formatGateStatusLabel(data);
     } catch {
       if (lastReadySnapshot) {
-        setGateInkProgress(wordCacheProgress(lastReadySnapshot));
+        setGateInkProgress(lastReadySnapshot.db_ready ? 0.85 : 0.2);
         $.preloadLabel.textContent = formatGateStatusLabel(lastReadySnapshot);
       } else {
         $.preloadLabel.textContent = formatGateStatusLabel(null, { connecting: true });

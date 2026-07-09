@@ -6,7 +6,7 @@
 
 Writing Cantonese lyrics often means not knowing which characters are available, or needing to swap characters quickly among **same-tone, rhyming, and near-synonym** options while matching 0243 codes and Jyutping. The traditional approach—flipping through dictionaries, rhyme books, and thesaurus tables, manually trying whether another character fits—is slow and easy to miss good options. [0243.hk](https://0243.hk) is one of the best Cantonese lyric lookup sites in recent years, but it can still hit 502 Bad Gateway, spin forever while loading, or lack a feature you need—all of which slow you down.
 
-**Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench I built with several AI agents (Cursor, Codex, Grok Build, GitHub Copilot). It lists matching **word entries** in seconds using **394052／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. **0243 search** has three tiers: **0243 mode** (loose), **02493 mode** (strict, `4↔5` only), and **394052 mode** (matrix—strict tone-3 digit `4` vs tone-5 digit `5`). For example: type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or switch to **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine, no internet required.
+**Canto-0243** (**ONE·搵·韻**) is an offline Cantonese lyric lookup workbench I built with several AI agents (Cursor, Codex, Grok Build, GitHub Copilot). It lists matching **word entries** in seconds using **394052／02493 tone codes**, **Jyutping**, **rhyme／initial rules**, and **synonym／antonym relations**. **0243 search** has three tiers: **0243 mode** (loose), **02493 mode** (strict, `4↔5` only), and **394052 mode** (6 tones—strict tone-3 digit `4` vs tone-5 digit `5`). For example: type `23就` for same-code syllables with a rhyme match on 「就」; `香港=` for whole-word rhyme with 「香港」; `~開心` or switch to **near／antonym mode** for synonyms and antonyms; `~~`／`!!` for common two-character near-synonym／antonym compounds. Unzip and run—lexicon and relation data stay on your machine, no internet required.
 
 **License**: Full bundle (program, `lyrics.db`, `words-lexicon.json`) under [Canto-0243 License](../LICENSE) (CC BY-NC-SA 4.0 + additional terms; **open source**). Upstream data: [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md).  
 **Stack**: FastAPI · SQLAlchemy · SQLite (offline single-machine) · PWA frontend (Service Worker / Web App Manifest; Vite + vanilla HTML/JS, with OPFS / wa-sqlite for offline database access)  
@@ -21,7 +21,7 @@ Current version: **v1.0.6**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **468,438** (`lyrics.db` · `words` table)
+Current word entries: **439,435** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**
@@ -39,7 +39,7 @@ Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues
 
 ## Features
 
-* **0243 search (three tiers)**: **0243 mode** `mode=m1` (full loose variants) · **02493 mode** `mode=m2` (`4↔5` loose only) · **394052 mode** `mode=m3` (strict matrix codes; lexicon stores 394052 with tone 3=`4`, tone 5=`5`).
+* **0243 search (three tiers)**: **0243 mode** `mode=m1` (full loose variants) · **02493 mode** `mode=m2` (`4↔5` loose only) · **394052 mode** `mode=m3` (strict 6-tone codes; lexicon stores 394052 with tone 3=`4`, tone 5=`5`).
 * **Rich query syntax**: plain Chinese · plain digits · **Jyutping queries** · **plus anchors** (`23+好=`) · **rhyme／initial anchors** (`就=`) · **serial rhyme／initial anchors** · **four-character partial rhyme／initial anchors** (`窮?潦倒=`) · **prefix wildcard equals** · whole-word equals／code sandwich.
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in **0243 search mode** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`.
 

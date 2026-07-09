@@ -13,7 +13,7 @@ from app.domain.lexicon.ranking import search_result_sort_key
 from app.domain.relations.compound_syn import narrow_compound_syn_literals
 from app.lexicon.compound_antonyms import load_compound_antonyms
 from app.models.word import Word
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 
 TIER_CURATED = 0
 TIER_MORPHEME = 1

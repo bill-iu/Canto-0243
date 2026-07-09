@@ -12,9 +12,9 @@ if TYPE_CHECKING:
 from app.domain.relations.pool_projection import project_relation_pool, relation_pool_page
 from app.domain.relations.pool import PoolSnapshot
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
-from app.utils.jyutping_codec import get_code_variants
-
 from app.models.word import Word
+from app.services.position_match.filters.f1_slot_code import matches_code_positions
+from app.services.position_match.mask_adapter import required_codes_from_digit_string
 
 
 def _seed_has_code_prefix(
@@ -23,13 +23,13 @@ def _seed_has_code_prefix(
     code_prefix: str,
     mode: str,
 ) -> bool:
-    """碼前綴約束種子字面讀音（如 33!開心），唔篩結果詞碼。"""
+    """碼前綴約束種子字面讀音（如 33!開心），唔篩結果詞碼。PR-A：逐格 digit。"""
     text = (seed or "").strip()
-    if not text or len(text) != len(code_prefix):
+    required = required_codes_from_digit_string(code_prefix)
+    if not text or not required or len(text) != len(required):
         return False
-    variants = set(get_code_variants(code_prefix, mode))
     rows = db.query(Word).filter(Word.char == text).all()
-    return any((row.code or "") in variants for row in rows)
+    return any(matches_code_positions(row.code or "", required, mode) for row in rows)
 
 
 def _pool_item_to_word_dict(item: dict, query_text: str) -> dict:

@@ -4,6 +4,7 @@
 import { isStandaloneNasalSyllableToken, syllableLetters } from './jyutping-codec.ts';
 import {
   isCompleteSyllableInRime,
+  isRhymeLetterIndexReady,
   matchesRhymeLettersAtPosition,
   normalizeRhymeLetters,
   rhymeLettersResolveOk,
@@ -185,13 +186,37 @@ function parseTripleJyutpingSlotQuery(q: string): JyutpingAnchorParsed | null {
   };
 }
 
+/**
+ * End-slot syllable (`?+hon` / `?hon`). Prefer rime completeSyllables;
+ * when rime index still empty (gate race), accept multi-letter latin as syllable
+ * so cold-tab search does not flaky-miss.
+ */
+function looksLikeEndSyllableLetters(letters: string): boolean {
+  const text = letters.trim().toLowerCase();
+  if (!text || !/^[a-z]+$/.test(text)) {
+    return false;
+  }
+  if (classifyLatinAnchor(text) === 'syllable_letters') {
+    return true;
+  }
+  if (
+    !isRhymeLetterIndexReady() &&
+    text.length >= 2 &&
+    !VOWEL_RHYME_LETTERS.has(text) &&
+    !AMBIGUOUS_PHONEME_LETTERS.has(text)
+  ) {
+    return true;
+  }
+  return false;
+}
+
 function parseEndJyutpingSyllableQuery(q: string): JyutpingAnchorParsed | null {
   const m = q.match(/^\?\+?([a-zA-Z]+)$/i);
   if (!m) {
     return null;
   }
   const letters = m[1]!.toLowerCase();
-  if (classifyLatinAnchor(letters) !== 'syllable_letters') {
+  if (!looksLikeEndSyllableLetters(letters)) {
     return null;
   }
   return {

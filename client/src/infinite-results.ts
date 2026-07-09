@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { isSentinelIntersecting } from '../../frontend/infinite-results.mjs';
 
-export const RESULT_RENDER_BATCH = 50;
-const SCROLL_ROOT_MARGIN = '200px';
+export const RESULT_RENDER_BATCH = 400;
+const SCROLL_MARGIN = 200;
 
 type UseInfiniteResultWindowOptions = {
   itemCount: number;
@@ -24,26 +25,18 @@ export function useInfiniteResultWindow({
 }: UseInfiniteResultWindowOptions) {
   const [visibleCount, setVisibleCount] = useState(RESULT_RENDER_BATCH);
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const itemCountAtLoadRef = useRef(0);
+  const cooldownRef = useRef(false);
 
   useEffect(() => {
     setVisibleCount(Math.min(RESULT_RENDER_BATCH, itemCount || RESULT_RENDER_BATCH));
   }, [resetKey]);
 
-  useEffect(() => {
-    if (loadingMore) {
-      itemCountAtLoadRef.current = itemCount;
-      return;
-    }
-    const added = itemCount - itemCountAtLoadRef.current;
-    if (added > 0) {
-      setVisibleCount((prev) => Math.min(prev + added, itemCount));
-    }
-    itemCountAtLoadRef.current = itemCount;
-  }, [loadingMore, itemCount]);
-
   const onNeedMore = useCallback(() => {
-    if (loading || loadingMore) return;
+    if (loading || loadingMore || cooldownRef.current) return;
+    cooldownRef.current = true;
+    requestAnimationFrame(() => {
+      cooldownRef.current = false;
+    });
     setVisibleCount((prev) => {
       if (prev < itemCount) {
         return Math.min(prev + RESULT_RENDER_BATCH, itemCount);
@@ -55,15 +48,24 @@ export function useInfiniteResultWindow({
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel || itemCount === 0) return;
+    const root = scrollRoot;
+    if (!sentinel || !root || itemCount === 0) return;
+    const maybeLoad = () => {
+      if (!isSentinelIntersecting(root, sentinel, SCROLL_MARGIN)) return;
+      onNeedMore();
+    };
+    root.addEventListener('scroll', maybeLoad, { passive: true });
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0]?.isIntersecting) onNeedMore();
+        if (entries[0]?.isIntersecting) maybeLoad();
       },
-      { root: scrollRoot, rootMargin: SCROLL_ROOT_MARGIN, threshold: 0 },
+      { root, rootMargin: `${SCROLL_MARGIN}px`, threshold: 0 },
     );
     observer.observe(sentinel);
-    return () => observer.disconnect();
+    return () => {
+      root.removeEventListener('scroll', maybeLoad);
+      observer.disconnect();
+    };
   }, [itemCount, onNeedMore, scrollRoot]);
 
   const canExpand = visibleCount < itemCount;

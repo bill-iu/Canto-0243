@@ -27,6 +27,7 @@ from app.services.query_types import (
 )
 from app.services.query_grammar.equals import build_equals_match_spec
 from app.services.query_grammar.mask import build_mask_from_slots, parse_mask_query
+from app.services.position_match.mask_adapter import append_code_digit_slots
 
 
 def _apply_jyutping_anchor_code_slots(spec: MatchSpec, parsed: JyutpingAnchorQuery) -> None:
@@ -34,12 +35,11 @@ def _apply_jyutping_anchor_code_slots(spec: MatchSpec, parsed: JyutpingAnchorQue
         for pos, digit in parsed.code_slots:
             spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
     elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
-        for i, d in enumerate(parsed.code_prefix):
-            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))
+        append_code_digit_slots(spec, parsed.code_prefix)
 
 
 def _build_jyutping_anchor_match_spec(parsed: JyutpingAnchorQuery) -> MatchSpec:
-    spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+    spec = MatchSpec(width=parsed.width)
     spec.mask = "?" * parsed.width
     spec.slots.append(
         SlotConstraint(
@@ -56,7 +56,7 @@ def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple[MatchS
     """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
 
     def _base() -> MatchSpec:
-        spec = MatchSpec(width=parsed.width, code_prefix=parsed.code_prefix)
+        spec = MatchSpec(width=parsed.width)
         spec.mask = "?" * parsed.width
         _apply_jyutping_anchor_code_slots(spec, parsed)
         return spec
@@ -149,10 +149,12 @@ def _spec_serial_phoneme(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_plus_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.PLUS_ANCHOR
     q = parsed  # type: PlusAnchorQuery
-    spec = MatchSpec(width=q.width, code_prefix=q.code_prefix)
+    spec = MatchSpec(width=q.width)
     spec.mask = "?" * q.width
     for pos, d in q.code_slots:
         spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=d))
+    if not q.code_slots:
+        append_code_digit_slots(spec, q.code_prefix)
     if q.constraint == "literal":
         spec.slots.append(
             SlotConstraint(pos=q.anchor_pos, kind="literal_char", value=q.anchor)
@@ -174,7 +176,8 @@ def _spec_plus_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_literal_ref(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.LITERAL_REF
     q = parsed  # type: LiteralRefQuery
-    spec = MatchSpec(width=q.width, code_prefix=q.code_digits)
+    spec = MatchSpec(width=q.width)
+    append_code_digit_slots(spec, q.code_digits)
     spec.slots.append(
         SlotConstraint(pos=q.width - 1, kind="literal_char", value=q.literal_char)
     )
@@ -236,7 +239,8 @@ def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
     q = parsed  # type: JyutpingAnchorQuery
     if q.dual_phoneme:
         initial, final = build_jyutping_dual_match_specs(q)
-        carrier = MatchSpec(width=q.width, code_prefix=q.code_prefix)
+        carrier = MatchSpec(width=q.width)
+        _apply_jyutping_anchor_code_slots(carrier, q)
         carrier.extra["dual_phoneme"] = True
         carrier.extra["dual_initial_spec"] = initial
         carrier.extra["dual_final_spec"] = final
@@ -268,9 +272,9 @@ def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
         return None
     spec = MatchSpec(
         width=parsed.width,
-        code_prefix=parsed.code_prefix,
         compound_kind="doubled_syllable",
     )
+    append_code_digit_slots(spec, parsed.code_prefix)
     if parsed.rhyme_char:
         spec.slots.append(
             SlotConstraint(pos=parsed.width - 1, kind="final_anchor", value=parsed.rhyme_char)
@@ -281,14 +285,15 @@ def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_compound_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.COMPOUND_SYN
     if isinstance(parsed, CompoundConnectSynQuery):
-        spec = MatchSpec(width=3, code_prefix=parsed.code_prefix, compound_kind="syn")
+        spec = MatchSpec(width=3, compound_kind="syn")
         spec.extra["connective"] = parsed.connective
         anchor_pos = 2
     elif isinstance(parsed, CompoundSynQuery):
-        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="syn")
+        spec = MatchSpec(width=2, compound_kind="syn")
         anchor_pos = 1
     else:
         return None
+    append_code_digit_slots(spec, parsed.code_prefix)
     if parsed.rhyme_char:
         spec.slots.append(
             SlotConstraint(pos=anchor_pos, kind="final_anchor", value=parsed.rhyme_char)
@@ -299,14 +304,15 @@ def _spec_compound_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
 def _spec_compound_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.COMPOUND_ANT
     if isinstance(parsed, CompoundConnectAntQuery):
-        spec = MatchSpec(width=3, code_prefix=parsed.code_prefix, compound_kind="ant")
+        spec = MatchSpec(width=3, compound_kind="ant")
         spec.extra["connective"] = parsed.connective
         anchor_pos = 2
     elif isinstance(parsed, CompoundAntQuery):
-        spec = MatchSpec(width=2, code_prefix=parsed.code_prefix, compound_kind="ant")
+        spec = MatchSpec(width=2, compound_kind="ant")
         anchor_pos = 1
     else:
         return None
+    append_code_digit_slots(spec, parsed.code_prefix)
     if parsed.rhyme_char:
         spec.slots.append(
             SlotConstraint(pos=anchor_pos, kind="final_anchor", value=parsed.rhyme_char)

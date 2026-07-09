@@ -13,7 +13,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <title>Canto-0243 ONE·搵·韻</title>
     <link rel="stylesheet" href="/fonts/fonts.css" />
-    <link rel="stylesheet" href="/pwa-boot-gate.css" />
+    <link rel="stylesheet" href="%BASE_URL%ready-gate.css" />
     <script>
       (function () {
         try {
@@ -25,7 +25,7 @@
         }
         try {
           if (sessionStorage.getItem('canto-pwa-gate-landed')) {
-            document.documentElement.classList.add('pwa-shell-revealed');
+            document.documentElement.classList.add('shell-revealed');
           }
         } catch (_) {}
       })();
@@ -78,7 +78,7 @@
         </symbol>
       </defs>
     </svg>
-    <div id="pwaBootGate" class="pwa-boot-gate" role="status" aria-live="polite" aria-busy="true">
+    <div id="pwaBootGate" class="ready-gate pwa-boot-gate" role="status" aria-live="polite" aria-busy="true">
       <div class="gate-brand">
         <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
           <defs>

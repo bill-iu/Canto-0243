@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "kinds": {
+    "relation_lookup": { "route": "relation", "match_spec": false },
+    "compound_syn": { "route": "mask_family", "match_spec": true },
+    "compound_ant": { "route": "mask_family", "match_spec": true },
+    "compound_doubled_syllable": { "route": "mask_family", "match_spec": true },
+    "heteronym_code": { "route": "heteronym", "match_spec": false },
+    "equals": { "route": "mask_family", "match_spec": true },
+    "prefix_wildcard_equals": { "route": "mask_family", "match_spec": true },
+    "partial_rhyme_mask": { "route": "mask_family", "match_spec": true },
+    "partial_initial_mask": { "route": "mask_family", "match_spec": true },
+    "serial_phoneme": { "route": "mask_family", "match_spec": true },
+    "plus_anchor": { "route": "mask_family", "match_spec": true },
+    "wildcard_code_anchor": { "route": "mask_family", "match_spec": true },
+    "code_ref_middle_rhyme": { "route": "mask_family", "match_spec": true },
+    "literal_ref": { "route": "mask_family", "match_spec": true },
+    "rhyme_anchor": { "route": "mask_family", "match_spec": true },
+    "triple_rhyme_anchor": { "route": "mask_family", "match_spec": true },
+    "jyutping_anchor": { "route": "mask_family", "match_spec": true },
+    "mask": { "route": "mask_family", "match_spec": true },
+    "ping_ze_serial": { "route": "digit", "match_spec": false },
+    "digit_code": { "route": "digit", "match_spec": false },
+    "word_lookup": { "route": "lookup", "match_spec": false },
+    "jyutping_fragment": { "route": "lookup", "match_spec": false },
+    "unmatched": { "route": "unmatched", "match_spec": false }
+  }
+}

@@ -22,6 +22,7 @@ class WordRead(WordBase):
     source: Optional[str] = None
     score: Optional[float] = None
     in_db: Optional[bool] = None
+    anchor_dimension: Optional[str] = None  # initial | final（粵拼錨雙欄）
 
     class Config:
         from_attributes = True

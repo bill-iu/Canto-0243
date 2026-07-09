@@ -66,8 +66,6 @@ class MatchSpec:
     width: int                                 # 目標詞長度
     slots: list[SlotConstraint] = field(default_factory=list)
 
-    # 額外全域約束
-    code_prefix: Optional[str] = None          # 例如 code_tail 的 code_digits
     literal_priority: bool = False             # mask 類查詢常用（literal 數量優先排序）
 
     # 為 mask 等

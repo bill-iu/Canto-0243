@@ -2,7 +2,16 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { buildRelationPool, relationLookupItems, relationPoolLogicSelfCheck } from '../src/db/relation-pool.ts';
+import {
+  buildRelationPool,
+  getLexiconMembership,
+  invalidateLexiconMembership,
+  invalidateRelationPoolCache,
+  isLexiconMembershipReady,
+  projectRelationPool,
+  relationLookupItems,
+  relationPoolLogicSelfCheck,
+} from '../src/db/relation-pool.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
@@ -71,6 +80,20 @@ const items = await relationLookupItems(db, '開心', 'syn', 'm1', undefined, 20
 const chars = items.map((i) => i.char).sort();
 if (chars.join(',') !== '快樂,愉快') {
   throw new Error(`relation-pool-self-check: ~開心 syns ${chars.join(',')}`);
+}
+
+// PR2: membership + pool cache
+invalidateLexiconMembership();
+invalidateRelationPoolCache();
+const mem1 = await getLexiconMembership(db);
+const mem2 = await getLexiconMembership(db);
+if (mem1 !== mem2 || !isLexiconMembershipReady(db)) {
+  throw new Error('relation-pool-self-check: membership cache miss');
+}
+const p1 = await projectRelationPool(db, '開心');
+const p2 = await projectRelationPool(db, '開心');
+if (p1 !== p2) {
+  throw new Error('relation-pool-self-check: pool LRU should return same snapshot');
 }
 
 console.log('relation-pool self-check ok');

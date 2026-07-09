@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { BrandLogo, GateInkMeter } from './brand-logo';
+import { BrandLogo } from './brand-logo';
 import { formatPwaGateLabel } from './gate-label';
 import type { OfflineReadinessStatus } from './hooks/useDB.tsx';
 import {
@@ -49,6 +49,7 @@ export interface ReadyGateProps {
   isOnline: boolean;
   isDbCached: boolean | null;
   isLikelyMetered: boolean;
+  suppressGateOverlay?: boolean;
   onRetry: () => void | Promise<void>;
   onOpenChange: (open: boolean) => void;
   theme?: 'light' | 'dark';
@@ -61,23 +62,28 @@ export function ReadyGate({
   isOnline,
   isDbCached,
   isLikelyMetered,
+  suppressGateOverlay = false,
   onRetry,
   onOpenChange,
   theme = 'light',
 }: ReadyGateProps) {
-  const playLanding = useMemo(() => !prefersReducedMotion() && !hasPwaGateLanded(), []);
+  // 冷啓 full landing；熱啓／cached 用 minimal 但仍顯示 logo+ink
+  const playLanding = useMemo(
+    () => !prefersReducedMotion() && !hasPwaGateLanded() && !isDbCached,
+    [isDbCached],
+  );
   const skipOverlay = useMemo(() => hasPwaGateLanded(), []);
 
+  // preparing／not_ready／failed 一律顯示閘（含熱啓）；suppress 只用於 ready 後即時收起
   const shouldShowGate =
-    !skipOverlay &&
+    !suppressGateOverlay &&
     (offlineStatus === 'failed' ||
       offlineStatus === 'preparing' ||
       offlineStatus === 'not_ready');
 
-  const [visible, setVisible] = useState(() => !hasPwaGateLanded());
-  const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>(
-    () => (hasPwaGateLanded() ? 'hidden' : 'loading'),
-  );
+  // 熱啓重開：session 已 landed 仍可喺 preparing 顯示 minimal 閘
+  const [visible, setVisible] = useState(true);
+  const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>('loading');
   const handoffStarted = useRef(false);
 
   useEffect(() => {
@@ -109,6 +115,15 @@ export function ReadyGate({
       handoffStarted.current = false;
     }
   }, [offlineStatus]);
+
+  useEffect(() => {
+    if (!suppressGateOverlay || offlineStatus !== 'ready') return;
+    handoffStarted.current = true;
+    sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+    revealPwaShell();
+    setPhase('hidden');
+    setVisible(false);
+  }, [suppressGateOverlay, offlineStatus]);
 
   useEffect(() => {
     onOpenChange(visible && phase !== 'hidden');
@@ -160,8 +175,10 @@ export function ReadyGate({
     offlineStatus === 'failed' || (offlineStatus === 'not_ready' && (!isOnline || isDbCached));
 
   const overlayClass = [
+    'ready-gate',
     'preload-overlay',
-    !playLanding ? 'preload-overlay--minimal' : '',
+    // 熱啓／已 landed session：minimal（短儀式）但 CSS 仍顯示 logo+ink
+    !playLanding || isDbCached || hasPwaGateLanded() ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
     phase === 'handoff' ? 'is-handoff' : '',
   ]
@@ -170,18 +187,18 @@ export function ReadyGate({
 
   return (
     <div className={overlayClass} role="status" aria-live="polite" aria-busy={offlineStatus !== 'ready'}>
+      {/* Single ink: logo wordmark + fill only (no separate GateInkMeter) */}
       <div className="gate-brand">
         <BrandLogo variant="gate" inkProgress={inkProgress} theme={theme} />
+        <p className="gate-status">{label}</p>
       </div>
-      <GateInkMeter inkProgress={inkProgress} theme={theme} />
-      <p className="gate-status">{label}</p>
       {showRetry && (
         <button type="button" className="primary-button" onClick={() => void onRetry()}>
           重試離線就緒
         </button>
       )}
       {offlineStatus === 'not_ready' && isOnline && !isDbCached && (
-        <p className="gate-status" style={{ maxWidth: 'min(420px, 90vw)', fontSize: '0.85rem' }}>
+        <p className="gate-status gate-status--hint">
           首次離線就緒需下載較大資料包，建議用 Wi‑Fi。
           {isLikelyMetered ? '（偵測到可能為省流量／慢速網路）' : ''}
         </p>

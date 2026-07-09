@@ -48,13 +48,9 @@ def ensure_length_column() -> None:
                 conn.commit()
             print("[DB] 已為本地 SQLite 資料表自動新增 'length' 欄位。")
 
-        with engine.connect() as conn:
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_words_length ON words(length)"))
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code ON words(length, code)"))
-            conn.execute(text("CREATE INDEX IF NOT EXISTS idx_length_code_finals ON words(length, code, finals)"))
-            conn.commit()
+        # ponytail: I2 — composite idx_length_code_finals comes from SQLAlchemy model only
         if not column_existed:
-            print("[DB] length 相關 index 已確保。")
+            print("[DB] length 欄位已確保（索引由 build-db finalize 管理）。")
     except Exception as e:
         err = str(e)
         if "database is locked" in err.lower() or "operationalerror" in err.lower():
@@ -137,6 +133,21 @@ def ensure_word_relations_canonical_unique() -> None:
                     text("SELECT name, sql FROM sqlite_master WHERE type='index' AND tbl_name='word_relations'")
                 ).fetchall()
             }
+            # ADR-0038 U1: prefer table CONSTRAINT autoindex; avoid second UNIQUE index
+            table_sql = conn.execute(
+                text("SELECT sql FROM sqlite_master WHERE type='table' AND name='word_relations'")
+            ).fetchone()
+            has_table_unique = bool(
+                table_sql
+                and table_sql[0]
+                and "UNIQUE" in str(table_sql[0]).upper()
+                and "WORD_ID" in str(table_sql[0]).upper()
+            )
+            if has_table_unique and "uq_word_relation" in indexes:
+                conn.execute(text("DROP INDEX IF EXISTS uq_word_relation"))
+                conn.commit()
+                print("[DB] dropped duplicate uq_word_relation (table UNIQUE already present).")
+                return
             if "uq_word_relation" in indexes and "uq_word_relation_pair" not in indexes:
                 return
             conn.execute(text("DELETE FROM word_relations WHERE word_id > related_id"))
@@ -153,14 +164,15 @@ def ensure_word_relations_canonical_unique() -> None:
             )
             conn.execute(text("DROP INDEX IF EXISTS uq_word_relation_pair"))
             conn.execute(text("DROP INDEX IF EXISTS uq_word_relation"))
-            conn.execute(
-                text(
-                    """
-                CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
-                ON word_relations (word_id, related_id, relation_type)
-            """
+            if not has_table_unique:
+                conn.execute(
+                    text(
+                        """
+                    CREATE UNIQUE INDEX IF NOT EXISTS uq_word_relation
+                    ON word_relations (word_id, related_id, relation_type)
+                """
+                    )
                 )
-            )
             conn.commit()
             print("[DB] word_relations 已正規化為 (min_id, max_id, relation_type) 唯一。")
     except Exception as e:
@@ -272,10 +284,28 @@ def ensure_word_relations_table() -> None:
             )
 
 
+def ensure_phoneme_compact_contract() -> None:
+    """C1: local SQLite must use compact phoneme fields (auto-migrate when possible)."""
+    from app.db.connection import PROJECT_ROOT
+    from ingest.lexicon_meta import ensure_phoneme_storage_contract
+
+    db_path = PROJECT_ROOT / "lyrics.db"
+    if not db_path.is_file():
+        return
+    try:
+        status = ensure_phoneme_storage_contract(db_path, allow_migrate=True)
+        if status == "migrated":
+            print(f"[DB] 已自動遷移音素欄位緊湊化: {db_path}")
+    except Exception as e:
+        print(f"[DB] 音素欄位契約: {e}")
+        raise
+
+
 def bootstrap_local_db() -> None:
     """一次執行本地 SQLite dev bootstrap（schema 補丁 + length 背景回填）。"""
     ensure_embedding_column()
     ensure_length_column()
     ensure_word_relations_table()
     ensure_word_relations_canonical_unique()
+    ensure_phoneme_compact_contract()
     start_length_backfill()

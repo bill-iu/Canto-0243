@@ -9,6 +9,8 @@ import {
   $,
   MODE_META,
   searchPageSizeForMode,
+  searchLimitForOffset,
+  SEARCH_FIRST_PAGE_SIZE,
   shell,
   searchCache,
   VIEW,
@@ -22,7 +24,7 @@ import {
   activeTab, persistTabs, updateBrowserUrlFromActiveTab,
 } from "./tabs-core.mjs";
 import {
-  ensureActiveSearchTab, showSearch, showCorrections,
+  ensureActiveSearchTab, showSearch, showCorrections, addSearchTab,
 } from "./tabs-ui.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import { isCorrectionsSearchCommand } from "./query-tabs-state.mjs";
@@ -67,8 +69,12 @@ function emptySearchResultsHtml(input, hint, _mode) {
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
-  const pageSize = searchPageSizeForMode(shell.currentMode);
-  return (total != null && results.length < total) || results.length >= pageSize;
+  // 首屏 400 已滿亦視為可能仲有；續頁用上限 800
+  const threshold =
+    shell.currentMode === "syn"
+      ? searchPageSizeForMode(shell.currentMode)
+      : SEARCH_FIRST_PAGE_SIZE;
+  return (total != null && results.length < total) || results.length >= threshold;
 }
 
 function countSearchResultItems(data) {
@@ -106,6 +112,41 @@ function takeSynBudget(syns, ants, related, budget) {
 
 let scrollGate = false;
 
+function isStandardWordListLayout(data) {
+  if (shell.currentMode === "syn") return false;
+  return !data.some((r) => r.anchor_dimension === "initial" || r.anchor_dimension === "final");
+}
+
+function mergedWordGroups(data) {
+  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
+  return mergeResultsByLiteral(
+    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
+  );
+}
+
+function updateWordListStats(mergedLen, total, loadedLen) {
+  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
+  if (total != null && total > loadedLen) {
+    $.stats.textContent = `已載入 ${loadedLen} / ${total} 個結果（${statsLabel}）`;
+  } else if (total != null) {
+    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
+  } else {
+    $.stats.textContent = `${mergedLen} 個結果（${statsLabel}）`;
+  }
+}
+
+function appendWordListSlice(ul, merged, from, to, lang) {
+  merged.slice(from, to).forEach((group) =>
+    ul.appendChild(
+      createMergedResultButton(group, {
+        lang,
+        activeLiteral: shell.entryDetail.activeLiteral,
+        onPick: handleEntryPick,
+      }),
+    ),
+  );
+}
+
 function updateScrollSentinel(tab) {
   const sentinel = $.resultsScrollSentinel;
   if (!sentinel) return;
@@ -123,10 +164,12 @@ function handleInfiniteScrollNeed() {
   const itemCount = countSearchResultItems(data);
   if (canExpandRenderedCount(tab, itemCount)) {
     scrollGate = true;
+    const prevRendered = effectiveRenderedCount(tab, itemCount);
     expandRenderedCount(tab, itemCount);
     persistTabs();
-    renderSearchResults(data, tab.total);
+    renderSearchResults(data, tab.total, { expandFrom: prevRendered });
     scrollGate = false;
+    remountInfiniteScroll();
     return;
   }
   if (shouldShowLoadMore(tab)) searchDict(true);
@@ -251,10 +294,12 @@ function switchMode(mode, { runSearch = true, replace = true } = {}) {
   }
 }
 
+/** 搜尋教學例子：開新搜尋 tab，唔覆寫當前 tab 查詢 */
 function runExample(query, mode = shell.currentMode) {
+  addSearchTab();
   switchMode(mode, { runSearch: false, replace: true });
-  const tab = ensureActiveSearchTab();
-  if (!tab) return;
+  const tab = activeTab();
+  if (!tab || tab.view !== VIEW.SEARCH) return;
   tab.q = query;
   $.searchInput.value = query;
   persistTabs();
@@ -311,7 +356,7 @@ let disconnectInfiniteScroll = null;
 
 function remountInfiniteScroll() {
   disconnectInfiniteScroll?.();
-  const root = $.searchView?.classList.contains("has-entry-detail") ? $.searchResultsScroll : null;
+  const root = $.searchResultsScroll || null;
   disconnectInfiniteScroll = wireInfiniteScroll({
     root,
     sentinel: $.resultsScrollSentinel,
@@ -493,9 +538,34 @@ function applyEffectiveModeFromResponse(res, searchHint) {
   return searchHint || modeRedirectHint(effectiveMode, getLang());
 }
 
-function renderSearchResults(data, total = null) {
-  $.results.innerHTML = "";
+function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
   const tab = activeTab();
+  const itemCount = countSearchResultItems(data);
+  if (tab && tab.renderedCount == null) resetRenderedCount(tab, itemCount);
+  const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
+
+  if (
+    expandFrom != null &&
+    expandFrom < budget &&
+    isStandardWordListLayout(data) &&
+    !tab?.redirectHint
+  ) {
+    const ul = $.results.querySelector("ul.results-list-items");
+    const merged = mergedWordGroups(data);
+    if (
+      ul &&
+      ul.dataset.resultLen === String(data.length) &&
+      Number(ul.dataset.mergedLen) === merged.length
+    ) {
+      appendWordListSlice(ul, merged, expandFrom, budget, getLang());
+      updateWordListStats(merged.length, total, data.length);
+      updateShuffleButton();
+      updateScrollSentinel(tab);
+      return;
+    }
+  }
+
+  $.results.innerHTML = "";
   const redirectHint = tab?.redirectHint;
   if (redirectHint) {
     const banner = document.createElement("p");
@@ -505,9 +575,6 @@ function renderSearchResults(data, total = null) {
     tab.redirectHint = null;
   }
   $.results.className = shell.currentMode === "syn" ? "syn-container" : "results";
-  const itemCount = countSearchResultItems(data);
-  if (tab && tab.renderedCount == null) resetRenderedCount(tab, itemCount);
-  const budget = tab ? effectiveRenderedCount(tab, itemCount) : itemCount;
 
   if (shell.currentMode === "syn") {
     const syns = data.filter((r) => r.relation === "syn");
@@ -543,30 +610,14 @@ function renderSearchResults(data, total = null) {
     return;
   }
 
-  const rows = data.filter((row) => isListableWordRow({ ...row, word: row.char }));
-  const merged = mergeResultsByLiteral(
-    rows.map((row) => ({ ...row, word: row.display_text || row.char })),
-  );
+  const merged = mergedWordGroups(data);
   const ul = document.createElement("ul");
   ul.className = "results-list-items";
-  const lang = getLang();
-  merged.slice(0, budget).forEach((group) =>
-    ul.appendChild(
-      createMergedResultButton(group, {
-        lang,
-        activeLiteral: shell.entryDetail.activeLiteral,
-        onPick: handleEntryPick,
-      }),
-    ),
-  );
+  ul.dataset.resultLen = String(data.length);
+  ul.dataset.mergedLen = String(merged.length);
+  appendWordListSlice(ul, merged, 0, budget, getLang());
   $.results.appendChild(ul);
-  const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-  $.stats.textContent = `${merged.length} 個結果（${statsLabel}）`;
-  if (total != null && total > merged.length) {
-    $.stats.textContent = `已載入 ${merged.length} / ${total} 個結果（${statsLabel}）`;
-  } else if (total != null) {
-    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
-  }
+  updateWordListStats(merged.length, total, data.length);
   updateShuffleButton();
   updateScrollSentinel(tab);
 }
@@ -653,12 +704,24 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
   if (!append && total != null) tab.total = total;
   const itemCount = countSearchResultItems(displayData);
   if (append) {
-    tab.renderedCount = Math.min((tab.renderedCount ?? RESULT_RENDER_BATCH) + data.length, itemCount);
-  } else {
-    resetRenderedCount(tab, itemCount);
+    persistTabs();
+    const ul = $.results.querySelector("ul.results-list-items");
+    if (ul && isStandardWordListLayout(displayData)) {
+      const merged = mergedWordGroups(displayData);
+      ul.dataset.resultLen = String(displayData.length);
+      ul.dataset.mergedLen = String(merged.length);
+      updateWordListStats(merged.length, tab.total, displayData.length);
+      updateShuffleButton();
+      updateScrollSentinel(tab);
+      return;
+    }
+    renderSearchResults(displayData, tab.total);
+    return;
   }
+  resetRenderedCount(tab, itemCount);
   persistTabs();
   renderSearchResults(displayData, tab.total);
+  remountInfiniteScroll();
 }
 
 async function searchDict(isLoadMore = false, restoreFromHistory = false) {
@@ -680,14 +743,16 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   const staleResults = !isLoadMore && (tab.results?.length > 0);
   setButtonLoading(true, { staleResults });
 
-  if (!isLoadMore && !staleResults) {
-    $.results.innerHTML = "";
-    $.stats.textContent = "";
-    tab.results = [];
+  // 新搜尋：API 窗口永遠 offset=0（P3 可保留舊列 UI，但唔沿用上一查嘅已擷取位移）
+  if (!isLoadMore) {
     tab.offset = 0;
     tab.total = null;
-    tab.renderedCount = RESULT_RENDER_BATCH;
-    updateScrollSentinel(tab);
+    if (!staleResults) {
+      $.results.innerHTML = "";
+      $.stats.textContent = "";
+      tab.results = [];
+      updateScrollSentinel(tab);
+    }
   }
 
   if (!input) {
@@ -715,31 +780,34 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     updateBrowserUrlFromActiveTab(!pushed);
   }
 
-  const cacheKey = `${shell.currentMode}:${input}:${tab.offset || 0}`;
+  const offset = isLoadMore ? tab.offset || 0 : 0;
+  const pageSize = searchLimitForOffset(shell.currentMode, offset);
+  const cacheKey = `${shell.currentMode}:${input}:${offset}:${pageSize}`;
   if (!isLoadMore && searchCache.has(cacheKey)) {
     const cached = searchCache.get(cacheKey);
     if (Array.isArray(cached)) {
-      finishSearchWithData(tab, cached, { append: false });
-      setButtonLoading(false);
-      return;
-    }
-    if (cached && Array.isArray(cached.data)) {
-      if (cached.data.length === 0) {
-        $.results.innerHTML = emptySearchResultsHtml(input, cached.hint, shell.currentMode);
-        updateShuffleButton();
+      if (cached.length === 0) {
+        searchCache.delete(cacheKey);
+      } else {
+        finishSearchWithData(tab, cached, { append: false });
         setButtonLoading(false);
-        updateScrollSentinel(tab);
         return;
       }
-      finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
-      setButtonLoading(false);
-      return;
+    } else if (cached && Array.isArray(cached.data)) {
+      // F2: 唔信空 cache（可能係錯 offset 時代寫入嘅假空）
+      if (cached.data.length === 0) {
+        searchCache.delete(cacheKey);
+      } else {
+        finishSearchWithData(tab, cached.data, { append: false, total: cached.total });
+        setButtonLoading(false);
+        return;
+      }
+    } else {
+      searchCache.delete(cacheKey);
     }
-    searchCache.delete(cacheKey);
   }
 
-  const pageSize = searchPageSizeForMode(shell.currentMode);
-  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${tab.offset || 0}`;
+  let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${offset}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }
@@ -767,7 +835,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
       searchHint = tab.redirectHint;
     }
 
-    if (!isLoadMore) {
+    // F2: 只 cache 非空首頁，避免假空結果卡死
+    if (!isLoadMore && data.length > 0) {
       searchCache.set(cacheKey, { data, total, hint: searchHint });
       if (searchCache.size > 50) searchCache.delete(searchCache.keys().next().value);
     }
@@ -775,6 +844,8 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     if (data.length === 0 && !isLoadMore) {
       const hint = tab.redirectHint || searchHint;
       tab.redirectHint = null;
+      tab.results = [];
+      tab.offset = 0;
       $.results.innerHTML = emptySearchResultsHtml(input, hint, shell.currentMode);
       updateShuffleButton();
       updateScrollSentinel(tab);

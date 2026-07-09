@@ -9,9 +9,9 @@ from sqlalchemy.orm import Session
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
 from app.services.position_match import execute_match_spec
+from app.services.query_match_spec_registry import build_match_spec_for_parsed
 from app.services.query_parse import (
     DigitCodeQuery,
-    JYUTPING_ANCHOR_INVALID_HINT,
     JyutpingFragmentQuery,
     ParsedQuery,
     QueryKind,
@@ -20,7 +20,6 @@ from app.services.query_parse import (
     WordLookupQuery,
     normalize_and_parse,
     normalize_query,
-    normalize_to_match_spec,
 )
 from app.services.word_db_filters import apply_code_filter
 from app.services.word_serializer import deduplicate_words
@@ -54,7 +53,7 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
-    spec = normalize_to_match_spec(parsed)
+    spec = build_match_spec_for_parsed(parsed)
     if spec is None:
         return SearchResult(items=[])
 
@@ -93,7 +92,7 @@ class QueryEngine:
         redirected = self._maybe_redirect_ping_ze(parsed, ctx)
         if redirected is not None:
             return redirected
-        return self._dispatch(parsed, ctx)
+        return self.dispatch_parsed(parsed, ctx)
 
     def _maybe_redirect_ping_ze(
         self, parsed: ParsedQuery, ctx: SearchContext
@@ -107,7 +106,7 @@ class QueryEngine:
         if ctx.mode == effective:
             return None
         redirected = replace(ctx, mode=effective, offset=0)
-        result = self._dispatch(parsed, redirected)
+        result = self.dispatch_parsed(parsed, redirected)
         return SearchResult(
             items=result.items,
             total=result.total,
@@ -124,7 +123,8 @@ class QueryEngine:
         results = query.all()
         return sort_search_results(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
 
-    def _dispatch(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
+    def dispatch_parsed(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
+        """Public route after classify — mode redirects must call this (not private hooks)."""
         from app.services.relation_syntax_executor import RelationSyntaxExecutor
         from app.services.word_lookup_executor import WordLookupExecutor
         from app.services.query_kind_registry import RouteKind, route_kind_for

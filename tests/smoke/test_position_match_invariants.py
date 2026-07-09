@@ -29,7 +29,9 @@ class PositionMatchInvariantTests(unittest.TestCase):
         self.assertEqual(span.ref_literal, "我")
         self.assertEqual(span.dimension, "initial")
         self.assertTrue(span.phoneme_anchor_only)
-        self.assertEqual(spec.code_prefix, "23")
+        from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
+        self.assertEqual(code_digit_string_from_spec(spec), "23")
 
     def test_prefix_wildcard_equals_flag(self):
         parsed = parse_query(normalize_search_query("?困潦倒="))

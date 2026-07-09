@@ -7,7 +7,7 @@ from typing import Dict, Optional, Set, Tuple
 from sqlalchemy.orm import Session, aliased
 
 from app.models.word import Word, WordRelation
-from app.repositories.word_relation_repo import load_db_char_set
+from app.domain.relations.word_relation_queries import load_db_char_set
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 ANT_SYN_MIRROR_SOURCE = "ant_syn_mirror"

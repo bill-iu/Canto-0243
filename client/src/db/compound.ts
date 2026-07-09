@@ -4,8 +4,11 @@
  */
 import type { Database } from './sqljs.ts';
 import { queryRows } from './database-backend.ts';
-import { ensureConnectiveCompoundRows } from './db-patch.ts';
-import { getCodeVariants } from './code-variants.ts';
+import {
+  resetConnectiveCompoundCache,
+  searchConnectiveCompoundTiers,
+} from './compound-connect.ts';
+import { matchesCodePositions, requiredCodesFromDigitString } from './position-match/filters/f1-slot-code.ts';
 import { compareSearchResults } from './ranking.ts';
 import { getStaticSynonyms } from './thesaurus.ts';
 
@@ -26,8 +29,6 @@ const TIER_CURATED = 0;
 const TIER_MORPHEME = 1;
 const TIER_SYNTHESIZED = 2;
 const NEIGHBOR_K = 12;
-
-const FILLWORD_CONNECTIVES = new Set('與和或共同及跟而且並向'.split(''));
 
 let curatedSyn = new Set<string>();
 let curatedAnt = new Set<string>();
@@ -57,6 +58,7 @@ export function resetCompoundCaches(): void {
   synTiersCache = null;
   antTiersCache = null;
   doubledCaches.clear();
+  resetConnectiveCompoundCache();
 }
 
 export function parseCompoundList(text: string): string[] {
@@ -412,64 +414,6 @@ async function buildAntTiers(db: Database): Promise<TierMap> {
   return tiers;
 }
 
-async function loadThreeCharLiterals(db: Database): Promise<Set<string>> {
-  const rows = await queryRows(db, `
-    SELECT DISTINCT char FROM words
-    WHERE length = 3 OR ((length IS NULL OR length = 0) AND length(char) = 3)
-  `);
-  const out = new Set<string>();
-  for (const row of rows) {
-    const ch = String((row as WordRow).char ?? '');
-    if (ch.length === 3) {
-      out.add(ch);
-    }
-  }
-  return out;
-}
-
-function flankTiersFromTwoChar(twoCharTiers: TierMap): Map<string, number> {
-  const out = new Map<string, number>();
-  for (const [w, tier] of twoCharTiers) {
-    if (w.length !== 2) {
-      continue;
-    }
-    for (const pair of [`${w[0]}\t${w[1]}`, `${w[1]}\t${w[0]}`]) {
-      const prev = out.get(pair);
-      out.set(pair, prev === undefined ? tier : Math.min(prev, tier));
-    }
-  }
-  return out;
-}
-
-/** Port of compound_connect.search_connective_compound */
-async function searchConnectiveCompound(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {
-  const connective = spec.connective;
-  if (!connective || !FILLWORD_CONNECTIVES.has(connective) || spec.width !== 3) {
-    return new Map();
-  }
-  await ensureConnectiveCompoundRows(db);
-  const twoCharTiers =
-    spec.compound_kind === 'ant'
-      ? (antTiersCache ??= await buildAntTiers(db))
-      : (synTiersCache ??= await buildSynTiers(db));
-  const flankTiers = flankTiersFromTwoChar(twoCharTiers);
-  if (!flankTiers.size) {
-    return new Map();
-  }
-  const tiers = new Map<string, number>();
-  for (const w of await loadThreeCharLiterals(db)) {
-    if (w[1] !== connective) {
-      continue;
-    }
-    const tier = flankTiers.get(`${w[0]}\t${w[2]}`);
-    if (tier !== undefined) {
-      tiers.set(w, tier);
-    }
-  }
-  // ponytail: Python narrow_compound_syn_literals no-op at width 3 — rhyme_char unchanged
-  return tiers;
-}
-
 async function buildDoubledTiers(db: Database, width: number): Promise<TierMap> {
   const tiers = new Map<string, number>();
   const rows = await queryRows(db, `
@@ -485,9 +429,25 @@ async function buildDoubledTiers(db: Database, width: number): Promise<TierMap> 
   return tiers;
 }
 
+async function ensureSynAntCaches(db: Database): Promise<{ syn: TierMap; ant: TierMap }> {
+  if (!synTiersCache) {
+    synTiersCache = await buildSynTiers(db);
+  }
+  if (!antTiersCache) {
+    antTiersCache = await buildAntTiers(db);
+  }
+  return { syn: synTiersCache, ant: antTiersCache };
+}
+
 async function tierMapForSpec(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {
-  if (spec.connective && spec.width === 3) {
-    return searchConnectiveCompound(db, spec);
+  if (spec.connective && spec.width === 3 && (spec.compound_kind === 'syn' || spec.compound_kind === 'ant')) {
+    const { syn, ant } = await ensureSynAntCaches(db);
+    return searchConnectiveCompoundTiers(db, {
+      compoundKind: spec.compound_kind,
+      connective: spec.connective,
+      synTiers: syn,
+      antTiers: ant,
+    });
   }
   if (spec.compound_kind === 'doubled_syllable') {
     if (spec.width < MIN_DOUBLED_WIDTH || spec.width > MAX_DOUBLED_WIDTH) {
@@ -499,23 +459,18 @@ async function tierMapForSpec(db: Database, spec: CompoundSearchSpec): Promise<T
     return doubledCaches.get(spec.width)!;
   }
   if (spec.compound_kind === 'syn') {
-    if (!synTiersCache) {
-      synTiersCache = await buildSynTiers(db);
-    }
-    return synTiersCache;
+    return (await ensureSynAntCaches(db)).syn;
   }
-  if (!antTiersCache) {
-    antTiersCache = await buildAntTiers(db);
-  }
-  return antTiersCache;
+  return (await ensureSynAntCaches(db)).ant;
 }
 
 function matchesCodePrefix(code: string, prefix: string, mode: string): boolean {
   if (!prefix) {
     return true;
   }
-  const variants = getCodeVariants(prefix, mode === 'm2' || mode === '02493' ? 'm2' : 'm1');
-  return variants.some((v) => code === v || code.startsWith(v));
+  // PR-A: serial per-digit (prefix length may be < word code length)
+  const required = requiredCodesFromDigitString(prefix);
+  return matchesCodePositions(code, required, mode);
 }
 
 async function fetchCompoundRows(db: Database, literals: Set<string>, width: number): Promise<WordRow[]> {

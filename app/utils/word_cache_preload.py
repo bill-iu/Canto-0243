@@ -1,4 +1,4 @@
-"""詞庫快取預載 adapter — 背景載入編排與進度回報。"""
+"""詞庫快取預載 adapter — 背景載入編排與進度回報（Portable 就緒閘）。"""
 from __future__ import annotations
 
 import threading
@@ -16,8 +16,13 @@ _preload_state = {
     "error": None,
 }
 
-_POPULATE_BASE = 0.55
-_POPULATE_SPAN = 0.44
+# Honest continuous progress for badge (ADR-0055 tail):
+# 0–0.05 restore try · 0.05–0.50 DB stream · 0.50–0.99 populate · 1.0 done
+_DB_LOAD_BASE = 0.05
+_DB_LOAD_SPAN = 0.45
+_POPULATE_BASE = 0.50
+_POPULATE_SPAN = 0.49
+_DB_YIELD_EVERY = 1000
 
 
 def _set_status(*, status: str | None = None, progress: float | None = None, error: str | None = None) -> None:
@@ -85,6 +90,46 @@ def reset_preload_for_tests() -> None:
         _preload_state["error"] = None
 
 
+def _load_word_rows(db) -> list:
+    """Stream words with progress so Portable gate does not stick at 15%."""
+    from sqlalchemy import func
+
+    from app.models.word import Word
+
+    set_preload_progress(_DB_LOAD_BASE)
+    total = (
+        db.query(func.count())
+        .select_from(Word)
+        .filter(Word.length <= 10)
+        .scalar()
+    )
+    total_n = int(total or 0)
+
+    q = db.query(
+        Word.char,
+        Word.code,
+        Word.jyutping,
+        Word.finals,
+        Word.initials,
+        Word.length,
+    ).filter(Word.length <= 10)
+
+    rows: list = []
+    # yield_per keeps memory bounded and allows progress ticks
+    for i, row in enumerate(q.yield_per(_DB_YIELD_EVERY)):
+        rows.append(row)
+        if total_n > 0 and (i % _DB_YIELD_EVERY == 0 or i + 1 == total_n):
+            frac = min(1.0, (i + 1) / total_n)
+            set_preload_progress(_DB_LOAD_BASE + frac * _DB_LOAD_SPAN)
+        elif total_n <= 0 and i > 0 and i % _DB_YIELD_EVERY == 0:
+            # unknown count: soft log advance under populate base
+            soft = min(_POPULATE_BASE - 0.01, _DB_LOAD_BASE + 0.08 * (1 + i // _DB_YIELD_EVERY))
+            set_preload_progress(soft)
+
+    set_preload_progress(_POPULATE_BASE)
+    return rows
+
+
 def start_background_preload() -> None:
     """Start word-cache preload in the current process (uvicorn worker / lifespan)."""
     global _preload_thread_started
@@ -96,37 +141,31 @@ def start_background_preload() -> None:
 
     def _run() -> None:
         from app.database import SessionLocal
-        from app.models.word import Word
 
         begin_preload()
         try:
-            if disk.disk_cache_enabled() and disk.try_restore(on_progress=set_preload_progress):
-                complete_preload()
-                return
+            if disk.disk_cache_enabled():
+                set_preload_progress(0.05)
+                if disk.try_restore(on_progress=set_preload_progress):
+                    complete_preload()
+                    print("[word_cache] restored from disk snapshot (.cache/word_meta.bin)")
+                    return
+                print("[word_cache] disk restore miss — cold build from SQLite")
 
             db = SessionLocal()
             try:
-                set_preload_progress(0.15)
-                rows = (
-                    db.query(
-                        Word.char,
-                        Word.code,
-                        Word.jyutping,
-                        Word.finals,
-                        Word.initials,
-                        Word.length,
-                    )
-                    .filter(Word.length <= 10)
-                    .all()
-                )
+                rows = _load_word_rows(db)
             finally:
                 db.close()
 
-            set_preload_progress(_POPULATE_BASE)
             populate_from_rows(rows)
             complete_preload()
             if disk.disk_cache_enabled():
-                disk.persist()
+                try:
+                    disk.persist()
+                    print("[word_cache] persisted disk snapshot for next warm start")
+                except Exception as pe:
+                    print(f"[word_cache] persist failed (next start will cold-build): {pe}")
         except Exception as e:
             fail_preload(str(e))
             print(
