@@ -11,8 +11,13 @@ import {
   matchesMaskLiteralChars,
 } from './mask-adapter.ts';
 import type { CandidateSource, MatchSpec } from './spec.ts';
+import {
+  CANDIDATE_FALLBACK_LIMIT,
+  lengthBucketNeedsUnlimited,
+} from './candidate-policy.ts';
 
 export type WordRow = Record<string, unknown>;
+export { CANDIDATE_FALLBACK_LIMIT, lengthBucketNeedsUnlimited } from './candidate-policy.ts';
 
 export function wordMatchesWidth(row: WordRow, width: number): boolean {
   const stored = Number(row.length ?? 0);
@@ -40,8 +45,8 @@ export async function getCandidatesForLength(
   options: GetCandidatesOptions = {},
 ): Promise<[WordRow[], boolean]> {
   const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
-  const limit = options.fallbackLimit ?? 2000;
-  const unlimited = options.unlimited === true;
+  const limit = options.fallbackLimit ?? CANDIDATE_FALLBACK_LIMIT;
+  const unlimited = lengthBucketNeedsUnlimited(options);
   const code = options.code ?? null;
 
   let sql = `
@@ -143,7 +148,7 @@ export class LengthCodeCandidateSource implements CandidateSource {
     private readonly db: Database,
     private readonly code: string | null = null,
     private readonly mode = 'm1',
-    private readonly fallbackLimit = 2000,
+    private readonly fallbackLimit = CANDIDATE_FALLBACK_LIMIT,
   ) {}
 
   async getCandidates(

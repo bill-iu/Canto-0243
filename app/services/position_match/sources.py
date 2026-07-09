@@ -24,6 +24,10 @@ from app.utils.word_cache import (
     is_word_cache_ready,
 )
 
+# CandidateSource truncation contract (Phase C PR3) — keep in sync with
+# client/src/db/position-match/candidate-policy.ts
+CANDIDATE_FALLBACK_LIMIT = 2000
+
 
 @dataclass
 class LengthMaskCandidateSource:
@@ -76,7 +80,7 @@ class LengthCodeCandidateSource:
     db: Any
     code: Optional[str] = None
     mode: str = "m1"
-    fallback_limit: Optional[int] = 2000
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT
 
     def get_candidates(
         self,
@@ -192,7 +196,7 @@ def get_candidates_for_length(
     *,
     code: Optional[str] = None,
     mode: str = "m1",
-    fallback_limit: Optional[int] = 2000,
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT,
 ):
     """
     通用長度候選取得（無 mask 預過濾）。
