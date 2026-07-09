@@ -48,6 +48,13 @@ export function phonemeIndexBuildCount(): number {
   return buildGeneration;
 }
 
+/** Yield so badge / input stay responsive during large builds (tail prewarm). */
+function yieldToMain(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
+const BUILD_YIELD_EVERY = 2500;
+
 async function buildIndex(db: Database, generation: number): Promise<void> {
   const rows = await queryRows(
     db,
@@ -62,6 +69,7 @@ async function buildIndex(db: Database, generation: number): Promise<void> {
   const finals = new Map<string, number[]>();
   const initials = new Map<string, number[]>();
 
+  let n = 0;
   for (const raw of rows) {
     const row = raw as WordRow;
     const char = String(row.char ?? '');
@@ -106,6 +114,14 @@ async function buildIndex(db: Database, generation: number): Promise<void> {
       const list = initials.get(key) ?? [];
       list.push(idx);
       initials.set(key, list);
+    }
+
+    n += 1;
+    if (n % BUILD_YIELD_EVERY === 0) {
+      if (generation !== buildGeneration) {
+        return;
+      }
+      await yieldToMain();
     }
   }
 

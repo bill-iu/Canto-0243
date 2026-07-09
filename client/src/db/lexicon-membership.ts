@@ -53,9 +53,7 @@ export async function getLexiconMembership(db: Database): Promise<Set<string>> {
   return buildPromise;
 }
 
-/** Fire-and-forget warm after lexicon open (tail / post-gate). */
-export function prewarmLexiconMembership(db: Database): void {
-  void getLexiconMembership(db).catch(() => {
-    /* degraded: first pool rebuild will retry */
-  });
+/** Alias for tail stage — await getLexiconMembership (no fire-and-forget). */
+export async function prewarmLexiconMembership(db: Database): Promise<void> {
+  await getLexiconMembership(db);
 }

@@ -1,8 +1,10 @@
-/** ADR-0032: 啟動完畢 tail — 輔助索引 + 靜態詞林埠 + 搜尋熱路徑 prewarm */
-
+/**
+ * ADR-0032 / CONTEXT § 離線啟動預載 tail + 背景預載標示.
+ * After 就緒閘解鎖 only: 靜態詞林 → 詞庫字面集 → 音素倒排 (await; no gate block).
+ */
 import { ensureGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { ensureStaticRelationIndexes, getDatabase, isDatabaseInitialized } from './init.ts';
-import { prewarmLexiconMembership } from './lexicon-membership.ts';
+import { getLexiconMembership } from './lexicon-membership.ts';
 import { ensurePhonemeIndex } from './position-match/phoneme-index.ts';
 import type { Database } from './sqljs.ts';
 
@@ -18,23 +20,31 @@ function setTailProgress(value: number): void {
   for (const fn of tailListeners) fn(tailProgress);
 }
 
-async function loadAuxiliaryIndexes(onSlice: (p: number) => void): Promise<void> {
-  await ensureGateAuxiliaryIndexes();
-  onSlice(1);
+function getDbOrNull(): Database | null {
+  if (!isDatabaseInitialized()) return null;
+  try {
+    return getDatabase() as unknown as Database;
+  } catch {
+    return null;
+  }
 }
 
-/** Non-blocking: phoneme inverted index + DISTINCT char set for 近反義. */
-function prewarmSearchHotPaths(): void {
-  if (!isDatabaseInitialized()) return;
+/**
+ * One stage: catch → warn → continue (badge still completes; search lazy-rebuilds).
+ */
+async function runStage(
+  label: string,
+  from: number,
+  to: number,
+  work: () => Promise<void>,
+): Promise<void> {
+  setTailProgress(from);
   try {
-    const db = getDatabase() as unknown as Database;
-    prewarmLexiconMembership(db);
-    void ensurePhonemeIndex(db).catch(() => {
-      /* first query rebuilds */
-    });
-  } catch {
-    /* db not ready */
+    await work();
+  } catch (err) {
+    console.warn(`Tail preload stage «${label}» failed (degraded):`, err);
   }
+  setTailProgress(to);
 }
 
 export function isStartupComplete(): boolean {
@@ -51,17 +61,38 @@ export function subscribeTailProgress(fn: TailListener): () => void {
   return () => tailListeners.delete(fn);
 }
 
+/**
+ * Post-gate only. Never call from initializeDatabase gate path.
+ * Progress: 0–40 靜態詞林 · 40–70 詞庫字面集 · 70–100 音素倒排.
+ */
 export function startTailPreload(): Promise<void> {
   if (tailComplete) return Promise.resolve();
   if (tailPromise) return tailPromise;
 
   tailPromise = (async () => {
-    setTailProgress(5);
-    await loadAuxiliaryIndexes((p) => setTailProgress(5 + p * 0.45));
-    setTailProgress(55);
-    await ensureStaticRelationIndexes();
-    setTailProgress(85);
-    prewarmSearchHotPaths();
+    setTailProgress(2);
+
+    // Idempotent; gate already loaded these — cheap hit if warm
+    await runStage('gate-aux', 2, 10, async () => {
+      await ensureGateAuxiliaryIndexes();
+    });
+
+    await runStage('static-relation', 10, 40, async () => {
+      await ensureStaticRelationIndexes();
+    });
+
+    await runStage('lexicon-membership', 40, 70, async () => {
+      const db = getDbOrNull();
+      if (!db) return;
+      await getLexiconMembership(db);
+    });
+
+    await runStage('phoneme-index', 70, 100, async () => {
+      const db = getDbOrNull();
+      if (!db) return;
+      await ensurePhonemeIndex(db);
+    });
+
     setTailProgress(100);
     tailComplete = true;
   })().catch((err) => {
