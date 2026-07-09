@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Literal
+from typing import Dict, Literal, Optional, Tuple
 
 from sqlalchemy.orm import Session
 
@@ -17,8 +17,16 @@ CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {
 
 # Lexicon flank tiers 0–2; synthetic always ranks after
 TIER_CONNECTIVE_SYNTH = 3
-# Grill: avoid freezing Portable search on first !與! / ~與~
+# First-hit cost: cap synth + process cache for full result map
 CONNECTIVE_SYNTH_CAP = 500
+
+# (compound_kind, connective, rhyme_char|None) → tiers
+_connective_result_cache: dict[Tuple[str, str, Optional[str]], Dict[str, int]] = {}
+
+
+def reset_connective_compound_cache_for_tests() -> None:
+    global _connective_result_cache
+    _connective_result_cache = {}
 
 
 def _flank_tiers_from_two_char(two_char_tiers: Dict[str, int]) -> Dict[tuple[str, str], int]:
@@ -44,9 +52,16 @@ def exclusive_two_char_tiers(
     return {w: t for w, t in primary.items() if w not in opposite}
 
 
-def _three_char_literals(db: Session) -> set[str]:
-    rows = db.query(Word.char).filter(Word.length == 3).distinct().all()
-    return {row[0] for row in rows if row[0] and len(row[0]) == 3}
+def _three_char_with_connective(db: Session, connective: str) -> set[str]:
+    """SQL-narrow to length-3 with fixed middle connective (SQLite LIKE `_連_`)."""
+    pattern = f"_{connective}_"
+    rows = (
+        db.query(Word.char)
+        .filter(Word.length == 3, Word.char.like(pattern))
+        .distinct()
+        .all()
+    )
+    return {row[0] for row in rows if row[0] and len(row[0]) == 3 and row[0][1] == connective}
 
 
 def search_connective_compound(
@@ -56,9 +71,14 @@ def search_connective_compound(
     connective: str,
     rhyme_char: str | None = None,
 ) -> Dict[str, int]:
-    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B（cap）。"""
+    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B（cap + process cache）。"""
     if connective not in FILLWORD_CONNECTIVES:
         return {}
+
+    cache_key = (compound_kind, connective, rhyme_char)
+    hit = _connective_result_cache.get(cache_key)
+    if hit is not None:
+        return dict(hit)
 
     from app.domain.lexicon.port import default_word_inject_port
     from app.domain.relations.compound_ant import search_compound_ant
@@ -68,6 +88,7 @@ def search_connective_compound(
     for literal in CONNECTIVE_LITERAL_SEEDS.get(connective, ()):
         inject.ensure_word_rows(db, literal)
 
+    # shared process caches inside search_compound_syn / ant
     syn_tiers = search_compound_syn(db)
     ant_tiers = search_compound_ant(db)
     if compound_kind == "ant":
@@ -77,16 +98,14 @@ def search_connective_compound(
 
     flank_tiers = _flank_tiers_from_two_char(exclusive)
     if not flank_tiers:
+        _connective_result_cache[cache_key] = {}
         return {}
 
     tiers: Dict[str, int] = {}
-    for w in _three_char_literals(db):
-        if len(w) != 3 or w[1] != connective:
-            continue
+    for w in _three_char_with_connective(db, connective):
         tier = flank_tiers.get((w[0], w[2]))
-        if tier is None:
-            continue
-        tiers[w] = tier
+        if tier is not None:
+            tiers[w] = tier
 
     synth_n = 0
     for (a, b), _flank in flank_tiers.items():
@@ -100,12 +119,14 @@ def search_connective_compound(
             tiers[compound] = TIER_CONNECTIVE_SYNTH
             synth_n += 1
 
-    if not rhyme_char:
-        return tiers
-    allowed = narrow_compound_syn_literals(
-        frozenset(tiers.keys()), width=3, rhyme_char=rhyme_char, db=db
-    )
-    return {ch: tiers[ch] for ch in allowed if ch in tiers}
+    if rhyme_char:
+        allowed = narrow_compound_syn_literals(
+            frozenset(tiers.keys()), width=3, rhyme_char=rhyme_char, db=db
+        )
+        tiers = {ch: tiers[ch] for ch in allowed if ch in tiers}
+
+    _connective_result_cache[cache_key] = tiers
+    return dict(tiers)
 
 
 __all__ = [
@@ -113,5 +134,6 @@ __all__ = [
     "FILLWORD_CONNECTIVES",
     "TIER_CONNECTIVE_SYNTH",
     "exclusive_two_char_tiers",
+    "reset_connective_compound_cache_for_tests",
     "search_connective_compound",
 ]

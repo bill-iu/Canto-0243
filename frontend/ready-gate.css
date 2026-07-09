@@ -24,18 +24,21 @@ html.shell-revealed #pwaBootGate {
   display: none;
 }
 
-/* Overlay shells */
+/* Overlay shells — one centred cluster (logo+status); min 100dvh so group is viewport-middle */
 .ready-gate.preload-overlay,
 .preload-overlay.ready-gate {
   position: fixed;
   inset: 0;
   z-index: var(--z-preload, 200);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  padding: 24px;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  min-height: 100dvh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: max(24px, env(safe-area-inset-top, 0px)) 24px max(24px, env(safe-area-inset-bottom, 0px));
+  gap: 0;
   background: color-mix(in srgb, var(--bg, var(--pwa-boot-bg)) 96%, transparent);
   backdrop-filter: blur(8px);
   transition: opacity 420ms ease, visibility 420ms ease;
@@ -46,12 +49,15 @@ html.shell-revealed #pwaBootGate {
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  padding: 24px;
+  display: grid;
+  place-items: center;
+  place-content: center;
+  min-height: 100dvh;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: max(24px, env(safe-area-inset-top, 0px)) 24px max(24px, env(safe-area-inset-bottom, 0px));
+  gap: 0;
   background: color-mix(in srgb, var(--pwa-boot-bg) 96%, transparent);
   backdrop-filter: blur(8px);
 }
@@ -88,8 +94,11 @@ html[data-landing='a'] .ready-gate .gate-hero {
   gap: 14px;
   width: min(240px, 72vw);
   max-width: min(520px, 92vw);
+  /* Optical: wordmark sits top of SVG; nudge cluster slightly down so mass feels centred */
+  transform: translateY(4vh);
   text-align: center;
   opacity: 0;
+  grid-area: 1 / 1;
 }
 
 html.fonts-ready .ready-gate .gate-brand {
@@ -182,27 +191,33 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
   margin-top: 8px;
 }
 
-/* ponytail: lightningcss 曾壓 selector 令 logo/ink display:none；.ready-gate 命名空間防回歸 */
+/* ponytail: force brand/logo visible; never resurrect dual ink meter */
 .ready-gate.preload-overlay .gate-brand,
+.ready-gate.pwa-boot-gate .gate-brand {
+  visibility: visible !important;
+}
 .ready-gate.preload-overlay .gate-brand .brand-logo,
+.ready-gate.preload-overlay .gate-brand .brand-logo--gate,
 .ready-gate.preload-overlay .gate-brand svg,
-.ready-gate.pwa-boot-gate .gate-brand,
 .ready-gate.pwa-boot-gate .gate-brand .brand-logo,
-.ready-gate.pwa-boot-gate .gate-brand svg,
-.ready-gate.preload-overlay .gate-ink-meter,
-.ready-gate.pwa-boot-gate .gate-ink-meter {
+.ready-gate.pwa-boot-gate .gate-brand .brand-logo--gate,
+.ready-gate.pwa-boot-gate .gate-brand svg {
   display: block !important;
   visibility: visible !important;
+}
+.ready-gate.preload-overlay .gate-ink-meter,
+.ready-gate.pwa-boot-gate .gate-ink-meter {
+  display: none !important;
 }
 
 @keyframes gate-brand-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(calc(4vh + 14px));
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(4vh);
   }
 }
 
@@ -215,7 +230,12 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
     transition: none;
   }
 
-  .ready-gate .gate-brand,
+  .ready-gate .gate-brand {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: translateY(4vh);
+  }
+
   .ready-gate .gate-hero {
     animation: none !important;
     opacity: 1 !important;

@@ -142,7 +142,11 @@ class MaskWildcardCandidateSource:
             query = apply_code_filter(query, code_filter, effective_mode)
         elif effective_code:
             query = apply_code_filter(query, effective_code, effective_mode)
-        return query.order_by(Word.char, Word.jyutping).all(), False
+        # Cold DB: never materialize full length bucket (Portable hang on mask family)
+        return (
+            query.order_by(Word.char, Word.jyutping).limit(CANDIDATE_FALLBACK_LIMIT).all(),
+            False,
+        )
 
 
 def get_length_candidates(db, width: int, mask: str):
@@ -165,7 +169,10 @@ def get_length_candidates(db, width: int, mask: str):
     prefix = mask_fixed_literal_prefix(mask)
     if prefix:
         query = query.filter(Word.char.like(f"{prefix}%"))
-    return query.order_by(Word.char, Word.jyutping).all(), False
+    return (
+        query.order_by(Word.char, Word.jyutping).limit(CANDIDATE_FALLBACK_LIMIT).all(),
+        False,
+    )
 
 
 def get_rhyme_anchor_length_candidates(
@@ -184,6 +191,7 @@ def get_rhyme_anchor_length_candidates(
             if matches_mask_literal_chars(get_word_text(w), mask)
         ]
         return narrowed, True
+    # Cold path still GLOB+cap — full width bucket was hanging Portable searches
     return get_length_candidates(db, width, mask)
 
 

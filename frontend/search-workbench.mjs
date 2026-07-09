@@ -24,7 +24,7 @@ import {
   activeTab, persistTabs, updateBrowserUrlFromActiveTab,
 } from "./tabs-core.mjs";
 import {
-  ensureActiveSearchTab, showSearch, showCorrections,
+  ensureActiveSearchTab, showSearch, showCorrections, addSearchTab,
 } from "./tabs-ui.mjs";
 import { syncViewPanels } from "./view-sync.mjs";
 import { isCorrectionsSearchCommand } from "./query-tabs-state.mjs";
@@ -294,10 +294,12 @@ function switchMode(mode, { runSearch = true, replace = true } = {}) {
   }
 }
 
+/** 搜尋教學例子：開新搜尋 tab，唔覆寫當前 tab 查詢 */
 function runExample(query, mode = shell.currentMode) {
+  addSearchTab();
   switchMode(mode, { runSearch: false, replace: true });
-  const tab = ensureActiveSearchTab();
-  if (!tab) return;
+  const tab = activeTab();
+  if (!tab || tab.view !== VIEW.SEARCH) return;
   tab.q = query;
   $.searchInput.value = query;
   persistTabs();

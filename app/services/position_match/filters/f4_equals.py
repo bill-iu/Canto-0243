@@ -279,8 +279,13 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         else:
             from app.services.position_match.sources import get_candidates_for_length
 
+            # Prefer code-narrowed bucket; cap when no dense code (Portable hang)
             pool, _ = get_candidates_for_length(
-                db, spec.width, code=full_code or None, mode=mode, fallback_limit=None
+                db,
+                spec.width,
+                code=full_code or None,
+                mode=mode,
+                fallback_limit=None if full_code else CANDIDATE_FALLBACK_LIMIT,
             )
         target_final_options = build_final_options_at_positions(
             span.ref_literal, span.start_pos, spec.width, db
