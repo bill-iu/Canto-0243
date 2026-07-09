@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isSentinelIntersecting } from '../../frontend/infinite-results.mjs';
 
-export const RESULT_RENDER_BATCH = 200;
+export const RESULT_RENDER_BATCH = 400;
 const SCROLL_MARGIN = 200;
 
 type UseInfiniteResultWindowOptions = {

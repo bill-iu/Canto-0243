@@ -14,7 +14,7 @@ for (const [label, src] of [
   ['query.ts', q],
 ]) {
   if (!src.includes('SEARCH_FIRST_PAGE_SIZE = 400')) throw new Error(`${label}: first 400`);
-  if (!src.includes('SEARCH_PAGE_SIZE = 1200')) throw new Error(`${label}: max 1200`);
+  if (!src.includes('SEARCH_PAGE_SIZE = 800')) throw new Error(`${label}: max 800`);
   if (!src.includes('searchLimitForOffset')) throw new Error(`${label}: searchLimitForOffset`);
 }
 

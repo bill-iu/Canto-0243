@@ -71,7 +71,7 @@ export interface SearchPageResult {
 }
 
 /** 擷取頁上限（load-more／續頁）；ADR-0034 / CONTEXT § 擷取頁 */
-export const SEARCH_PAGE_SIZE = 1200;
+export const SEARCH_PAGE_SIZE = 800;
 /** 0243 家族首屏擷取（offset=0） */
 export const SEARCH_FIRST_PAGE_SIZE = 400;
 
@@ -93,7 +93,7 @@ export function searchPageSizeForMode(mode?: QueryOptions['mode']): number {
   return mode === 'synonym' ? DEFAULT_RELATION_POOL_PAGE_SIZE : SEARCH_PAGE_SIZE;
 }
 
-/** 首屏 400／續頁 1200；近反義沿用池頁 */
+/** 首屏 400／續頁 800；近反義沿用池頁 */
 export function searchLimitForOffset(mode: QueryOptions['mode'] | undefined, offset: number): number {
   if (mode === 'synonym') return DEFAULT_RELATION_POOL_PAGE_SIZE;
   return (offset || 0) <= 0 ? SEARCH_FIRST_PAGE_SIZE : SEARCH_PAGE_SIZE;

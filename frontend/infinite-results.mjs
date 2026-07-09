@@ -1,5 +1,5 @@
 /** ponytail: shared infinite-scroll batch size — 200 chips per scroll step */
-export const RESULT_RENDER_BATCH = 200;
+export const RESULT_RENDER_BATCH = 400;
 export const SCROLL_ROOT_MARGIN = "200px";
 
 const nextFrame =

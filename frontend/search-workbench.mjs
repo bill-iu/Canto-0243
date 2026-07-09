@@ -69,7 +69,7 @@ function emptySearchResultsHtml(input, hint, _mode) {
 function shouldShowLoadMore(tab) {
   const results = tab.results || [];
   const total = tab.total;
-  // 首屏 400 已滿亦視為可能仲有；續頁用上限 1200
+  // 首屏 400 已滿亦視為可能仲有；續頁用上限 800
   const threshold =
     shell.currentMode === "syn"
       ? searchPageSizeForMode(shell.currentMode)

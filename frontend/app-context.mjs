@@ -135,7 +135,7 @@ export function setTheme(theme) {
 export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";
 
 /** 擷取頁上限（load-more／續頁） */
-export const SEARCH_PAGE_SIZE = 1200;
+export const SEARCH_PAGE_SIZE = 800;
 /** 0243 家族首屏擷取（offset=0） */
 export const SEARCH_FIRST_PAGE_SIZE = 400;
 /** 近反義模式分頁筆數 */
@@ -145,7 +145,7 @@ export function searchPageSizeForMode(mode) {
   return mode === "syn" ? RELATION_PAGE_SIZE : SEARCH_PAGE_SIZE;
 }
 
-/** 首屏 400／續頁 1200；近反義沿用池頁 */
+/** 首屏 400／續頁 800；近反義沿用池頁 */
 export function searchLimitForOffset(mode, offset) {
   if (mode === "syn") return RELATION_PAGE_SIZE;
   return (offset || 0) <= 0 ? SEARCH_FIRST_PAGE_SIZE : SEARCH_PAGE_SIZE;
