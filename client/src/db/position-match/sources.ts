@@ -15,9 +15,15 @@ import {
   CANDIDATE_FALLBACK_LIMIT,
   lengthBucketNeedsUnlimited,
 } from './candidate-policy.ts';
-
 export type WordRow = Record<string, unknown>;
 export { CANDIDATE_FALLBACK_LIMIT, lengthBucketNeedsUnlimited } from './candidate-policy.ts';
+export {
+  ensurePhonemeIndex,
+  getPhonemeAnchorCandidates,
+  getPhonemeIndexCandidates,
+  invalidatePhonemeIndex,
+  isPhonemeIndexReady,
+} from './phoneme-index.ts';
 
 export function wordMatchesWidth(row: WordRow, width: number): boolean {
   const stored = Number(row.length ?? 0);

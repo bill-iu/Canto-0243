@@ -23,6 +23,7 @@ import { applyRuntimeDbPatches } from './db-patch.ts';
 import { ensureGateAuxiliaryIndexes, resetGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 import { reportGatePhase } from './startup-progress.ts';
+import { invalidatePhonemeIndex } from './position-match/phoneme-index.ts';
 
 
 let db: DatabaseBackend | null = null;
@@ -67,6 +68,7 @@ export function getActiveDbBackendMode(): DbBackendMode {
 
 export function injectDatabaseForTests(candidate: DatabaseBackend | null): void {
   injectedDb = candidate;
+  invalidatePhonemeIndex();
 }
 
 export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
@@ -292,6 +294,7 @@ export function resetDatabase(): void {
   isInitialized = false;
   staticRelationLoaded = false;
   resetGateAuxiliaryIndexes();
+  invalidatePhonemeIndex();
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;

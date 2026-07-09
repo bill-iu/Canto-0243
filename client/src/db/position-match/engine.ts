@@ -6,11 +6,21 @@ import { sortWordRows, literalPriorityCompare } from '../ranking.ts';
 import { throwIfSearchCancelled, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
-import { getEqualsSpan, type MatchSpec } from './spec.ts';
+import { getPhonemeAnchorCandidates } from './phoneme-index.ts';
+import { getEqualsSpan, type MatchSpec, type SlotConstraint } from './spec.ts';
 import type { WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
 const PHONEME_ANCHOR_KINDS = new Set(['final_anchor', 'initial_anchor']);
+
+function firstPhonemeAnchorSlot(spec: MatchSpec): SlotConstraint | null {
+  for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
+      return slot;
+    }
+  }
+  return null;
+}
 
 function shouldUseMaskCandidates(spec: MatchSpec): boolean {
   // ponytail: only when mask has fixed CJK literals (not pure ?? / digit masks)
@@ -99,19 +109,37 @@ export async function filterMatchSpecRows(
     return [];
   }
 
-  // C1: full-width code first (SQL IN); else phoneme/jyutping anchors take unlimited length bucket
+  // C1: full-width code first (SQL IN); else phoneme anchors prefer runtime inverted index
   const code = narrowingCodeFromSpec(spec, ctx.code);
-  const [candidates] =
-    shouldUseMaskCandidates(spec) && spec.mask
-      ? await getLengthMaskCandidates(ctx.db, spec.width, spec.mask, {
-          code,
-          mode: ctx.mode,
-        })
-      : await getCandidatesForLength(ctx.db, spec.width, {
-          code,
-          mode: ctx.mode,
-          unlimited: specNeedsFullLengthBucket(spec) && !code,
-        });
+  let candidates: WordRow[];
+  if (shouldUseMaskCandidates(spec) && spec.mask) {
+    [candidates] = await getLengthMaskCandidates(ctx.db, spec.width, spec.mask, {
+      code,
+      mode: ctx.mode,
+    });
+  } else {
+    const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null;
+    let indexed: WordRow[] | null = null;
+    if (phonemeSlot) {
+      const constraint = phonemeSlot.kind === 'final_anchor' ? 'final' : 'initial';
+      indexed = await getPhonemeAnchorCandidates(
+        ctx.db,
+        spec.width,
+        phonemeSlot.pos,
+        String(phonemeSlot.value ?? ''),
+        constraint,
+      );
+    }
+    if (indexed) {
+      candidates = indexed;
+    } else {
+      [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
+        code,
+        mode: ctx.mode,
+        unlimited: specNeedsFullLengthBucket(spec) && !code,
+      });
+    }
+  }
   throwIfSearchCancelled(ctx.shouldCancel);
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);
 }
