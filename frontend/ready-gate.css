@@ -86,15 +86,20 @@ html[data-landing='a'] .ready-gate .gate-hero {
   display: none;
 }
 
+/*
+ * Wordmark ink is left-heavy in full 200 viewBox (粵+CANTO≈x4–140).
+ * Gate SVG uses viewBox 0 0 148 72 so geometric centre ≈ visual mass;
+ * brand column + status share that width (text-align:center on same axis).
+ */
 .ready-gate .gate-brand {
+  --gate-brand-content-width: 148px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  /* Same width for logo + status → shared horizontal axis */
-  width: 200px;
-  max-width: min(200px, 88vw);
+  width: var(--gate-brand-content-width);
+  max-width: min(var(--gate-brand-content-width), 88vw);
   transform: translateY(3vh);
   text-align: center;
   opacity: 0;
@@ -115,8 +120,8 @@ html.fonts-ready .ready-gate .gate-brand {
 .ready-gate .gate-brand .brand-logo,
 .ready-gate .gate-brand .brand-logo--gate {
   display: block;
-  width: 200px;
-  max-width: 100%;
+  width: 100%;
+  max-width: var(--gate-brand-content-width);
   height: auto;
   margin: 0 auto;
   flex-shrink: 0;
@@ -125,15 +130,15 @@ html.fonts-ready .ready-gate .gate-brand {
 .ready-gate .gate-status,
 .ready-gate .pwa-boot-gate__status {
   margin: 0;
-  width: 200px;
+  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   color: var(--muted, var(--pwa-boot-muted));
   font-size: 0.92rem;
   text-align: center;
   line-height: 1.4;
-  /* Keep multi-line status centred on same axis as logo */
-  align-self: center;
+  align-self: stretch;
+  padding: 0;
 }
 
 .ready-gate .gate-status--hint {

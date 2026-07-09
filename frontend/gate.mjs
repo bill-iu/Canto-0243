@@ -180,9 +180,21 @@ function startWarmupBadgePoll() {
 }
 
 function setGateInkProgress(progress01) {
-  const w = (Math.max(0, Math.min(1, progress01)) * GATE_INK_CLIP_MAX).toFixed(1);
-  if ($.gateInkClipRect) $.gateInkClipRect.setAttribute("width", w);
-  if ($.gateInkClipRectMini) $.gateInkClipRectMini.setAttribute("width", w);
+  const p = Math.max(0, Math.min(1, progress01));
+  // Gate logo may use cropped viewBox (e.g. 148); don't force full 200 wordmark frame
+  if ($.gateInkClipRect) {
+    const svg = $.gateInkClipRect.ownerSVGElement;
+    const max =
+      (svg && (Number(svg.viewBox?.baseVal?.width) || Number(svg.getAttribute("width")))) ||
+      GATE_INK_CLIP_MAX;
+    $.gateInkClipRect.setAttribute("width", (p * max).toFixed(1));
+  }
+  if ($.gateInkClipRectMini) {
+    $.gateInkClipRectMini.setAttribute(
+      "width",
+      (p * GATE_INK_CLIP_MAX).toFixed(1),
+    );
+  }
 }
 
 function shouldPlayLanding() {
