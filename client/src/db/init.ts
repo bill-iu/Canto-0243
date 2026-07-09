@@ -296,6 +296,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       resetCompoundCaches();
       invalidateLexiconMembership();
       invalidateRelationPoolCache();
+      resetHeteronymIndex();
       reportGatePhase('open', 0.6);
       await ensureGateAuxiliaryIndexes();
       reportGatePhase('open', 1);
