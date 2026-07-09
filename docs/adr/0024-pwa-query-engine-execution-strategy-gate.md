@@ -286,6 +286,19 @@ client/src/db/position-match/
 - 已有獨立 executor 的 kind **暫不動**，直到 MF-6 證明 `executeMatchSpec` 等價
 - 每步附 **最小 runnable check**（`client/scripts/*-self-check.ts` 或 parity 子集）
 
+### 6.3 PWA 長度候選桶（無 word_cache）— 碼先、全桶後
+
+桌面 **詞庫快取索引** 就緒時，`get_candidates_for_length` 回全長度桶；PWA 無此索引，預設 `LIMIT 2000` 會令 **加號錨**（`+門=0`）與 **串列韻／聲錨**（`04困=49倒=`）在 JS filter 前已漏掉真命中。
+
+| 規則 | 行為 |
+|------|------|
+| **完整寬度碼可導出** | 由 `code_prefix`、純數字 mask、或每位皆有之 `code_digit` slots 砌出完整碼 → SQL `code IN (variants)` 收窄（例 mask `0449`） |
+| **有 phoneme／jyutping 字母錨且無完整碼** | `unlimited` 全長度桶（對齊桌面 word_cache；唔用 2000 截斷） |
+| **等號 span 路徑** | 仍走 `queryWordsByEqualsSpec`，唔經上述長度桶 |
+| **多字等號參考缺 headword** | 前綴／非整詞：可逐字權威列砌韻／聲；**整詞等號**仍要求參考字面列存在 |
+
+Self-check：`client/scripts/equals-family-self-check.ts`（`?困潦倒=`、`+門=0`、`0449窮困潦倒=`、`04困=49倒=`）。
+
 ---
 
 ## 7. wasm-sqlite + OPFS（D-G4）分階段實作

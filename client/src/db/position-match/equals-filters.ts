@@ -102,6 +102,47 @@ async function equalsRefPhonemeParts(
   return inferRefPhonemeParts(db, literal, dimension);
 }
 
+/** L1: multi-char ref with no headword — assemble one phoneme per canto via authoritative single-char rows */
+async function refPhonemePartsPerChar(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+): Promise<string[] | null> {
+  if (literal.length < 2) {
+    return null;
+  }
+  const isFinal = dimension === 'final' || dimension === 'rhyme';
+  const parts: string[] = [];
+  for (const ch of literal) {
+    const row = await equalsAuthoritativeRow(db, ch);
+    if (!row) {
+      return null;
+    }
+    const slotParts = isFinal ? getRhymeFinals(row) : getWordParts(row, 'initials');
+    if (!slotParts.length) {
+      return null;
+    }
+    parts.push(slotParts[0]!);
+  }
+  return parts;
+}
+
+async function resolveEqualsTargetParts(
+  db: Database,
+  literal: string,
+  dimension: EqualsDimension,
+  mode: 'prefix' | 'plain',
+): Promise<string[] | null> {
+  const primary =
+    mode === 'prefix'
+      ? await suffixAlignedRefPhonemeParts(db, literal, dimension)
+      : await equalsRefPhonemeParts(db, literal, dimension);
+  if (primary?.length) {
+    return primary;
+  }
+  return refPhonemePartsPerChar(db, literal, dimension);
+}
+
 function phonemePartsSuffix(
   row: WordRow,
   dimension: EqualsDimension,
@@ -302,7 +343,7 @@ export async function queryWordsByEqualsSpec(
   let target: WordRow | null = null;
 
   if (prefixWildcard) {
-    targetParts = await suffixAlignedRefPhonemeParts(db, span.ref_literal, span.dimension);
+    targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'prefix');
     if (!targetParts) {
       return [];
     }
@@ -322,8 +363,8 @@ export async function queryWordsByEqualsSpec(
       return [];
     }
   } else {
-    // ponytail: infer via substring when no standalone row (parity with executeCodeAnchoredEquals / lexicon inject)
-    targetParts = await equalsRefPhonemeParts(db, span.ref_literal, span.dimension);
+    // ponytail: infer via substring / per-char when no standalone multi-char row
+    targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'plain');
     if (!targetParts) {
       return [];
     }

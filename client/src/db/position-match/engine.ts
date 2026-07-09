@@ -10,6 +10,7 @@ import { getEqualsSpan, type MatchSpec } from './spec.ts';
 import type { WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
+const PHONEME_ANCHOR_KINDS = new Set(['final_anchor', 'initial_anchor']);
 
 function shouldUseMaskCandidates(spec: MatchSpec): boolean {
   // ponytail: only when mask has fixed CJK literals (not pure ?? / digit masks)
@@ -24,8 +25,45 @@ function shouldUseMaskCandidates(spec: MatchSpec): boolean {
   return true;
 }
 
+/** True when filter needs the full length bucket (desktop word_cache parity; no 2000 cap). */
 function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
-  return (spec.slots ?? []).some((s) => JYUTPING_LETTER_KINDS.has(s.kind));
+  return (spec.slots ?? []).some(
+    (s) => JYUTPING_LETTER_KINDS.has(s.kind) || PHONEME_ANCHOR_KINDS.has(s.kind),
+  );
+}
+
+/**
+ * Complete width-digit code for SQL IN variants — from ctx/prefix, pure digit mask, or dense code_digit slots.
+ * Partial codes (not every position) return null so phoneme path can take unlimited bucket.
+ */
+export function narrowingCodeFromSpec(spec: MatchSpec, ctxCode?: string | null): string | null {
+  if (ctxCode && /^\d+$/.test(ctxCode) && ctxCode.length === spec.width) {
+    return ctxCode;
+  }
+  if (spec.code_prefix && /^\d+$/.test(spec.code_prefix) && spec.code_prefix.length === spec.width) {
+    return spec.code_prefix;
+  }
+  if (spec.mask && spec.mask.length === spec.width && /^\d+$/.test(spec.mask)) {
+    return spec.mask;
+  }
+  const digits: Array<string | null> = Array.from({ length: spec.width }, () => null);
+  if (spec.mask && spec.mask.length === spec.width) {
+    for (let i = 0; i < spec.width; i++) {
+      const ch = spec.mask[i]!;
+      if (/\d/.test(ch)) {
+        digits[i] = ch;
+      }
+    }
+  }
+  for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'code_digit' && slot.pos >= 0 && slot.pos < spec.width && slot.value != null) {
+      digits[slot.pos] = String(slot.value);
+    }
+  }
+  if (digits.every((d) => d != null && /^\d$/.test(d))) {
+    return digits.join('');
+  }
+  return null;
 }
 
 export type ExecuteMatchSpecContext = {
@@ -61,7 +99,8 @@ export async function filterMatchSpecRows(
     return [];
   }
 
-  const code = ctx.code ?? spec.code_prefix ?? null;
+  // C1: full-width code first (SQL IN); else phoneme/jyutping anchors take unlimited length bucket
+  const code = narrowingCodeFromSpec(spec, ctx.code);
   const [candidates] =
     shouldUseMaskCandidates(spec) && spec.mask
       ? await getLengthMaskCandidates(ctx.db, spec.width, spec.mask, {
@@ -71,7 +110,6 @@ export async function filterMatchSpecRows(
       : await getCandidatesForLength(ctx.db, spec.width, {
           code,
           mode: ctx.mode,
-          // Only force unlimited when no code can narrow the set
           unlimited: specNeedsFullLengthBucket(spec) && !code,
         });
   throwIfSearchCancelled(ctx.shouldCancel);
