@@ -16,12 +16,13 @@ _preload_state = {
     "error": None,
 }
 
-# 0–0.15: start · 0.15–0.54: DB row stream · 0.55–0.99: populate · 1.0: done
-_DB_LOAD_BASE = 0.15
-_DB_LOAD_SPAN = 0.39
-_POPULATE_BASE = 0.55
-_POPULATE_SPAN = 0.44
-_DB_YIELD_EVERY = 2000
+# Honest continuous progress for badge (ADR-0055 tail):
+# 0–0.05 restore try · 0.05–0.50 DB stream · 0.50–0.99 populate · 1.0 done
+_DB_LOAD_BASE = 0.05
+_DB_LOAD_SPAN = 0.45
+_POPULATE_BASE = 0.50
+_POPULATE_SPAN = 0.49
+_DB_YIELD_EVERY = 1000
 
 
 def _set_status(*, status: str | None = None, progress: float | None = None, error: str | None = None) -> None:

@@ -23,3 +23,5 @@
 2. 唔在啟動時預算全 `~~` 三源。
 
 **Consequences** — policy 測集中 `readiness_gate`；PWA 閘語意平行但無 word_cache（見 0045）。
+
+Portable 閘解鎖改 **DB 探針**、word_cache 入 tail：見 [ADR-0055](./0055-portable-gate-db-probe-word-cache-tail.md)。

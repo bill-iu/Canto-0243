@@ -13,6 +13,7 @@ from app.startup.readiness_gate import (
     SearchGateBlocked,
     require_search_ready,
     reset_readiness_gate_for_tests,
+    set_db_probe_for_tests,
     snapshot,
 )
 from app.utils.word_cache import (
@@ -37,7 +38,18 @@ class StartupSmokeTests(unittest.TestCase):
         reset_background_preload_state_for_tests()
         reset_readiness_gate_for_tests()
 
-    def test_snapshot_opens_on_ready(self):
+    def test_snapshot_opens_on_db_probe_without_word_cache(self):
+        """ADR-0055: gate_ready when DB probe ok; ready still tracks word_cache."""
+        set_db_probe_for_tests(lambda: True)
+        payload = snapshot()
+        self.assertTrue(payload["gate_ready"])
+        self.assertTrue(payload["db_ready"])
+        self.assertFalse(payload["ready"])
+        self.assertEqual(payload["gate_open_reason"], "ready")
+        self.assertTrue(payload["tail_pending"])
+
+    def test_snapshot_word_cache_ready_flag(self):
+        set_db_probe_for_tests(lambda: True)
         populate_word_cache_from_rows(
             [
                 {
@@ -54,17 +66,29 @@ class StartupSmokeTests(unittest.TestCase):
         payload = snapshot()
         self.assertTrue(payload["gate_ready"])
         self.assertTrue(payload["ready"])
-        self.assertEqual(payload["gate_open_reason"], "ready")
 
     def test_require_search_ready_gate(self):
+        set_db_probe_for_tests(lambda: False)
         with self.assertRaises(SearchGateBlocked):
             require_search_ready()
-        complete_preload()
+        set_db_probe_for_tests(lambda: True)
         require_search_ready()
+
+    def test_tail_progress_weights_word_cache(self):
+        set_db_probe_for_tests(lambda: True)
+        from app.utils import word_cache_preload as preload
+
+        preload.begin_preload()
+        preload.set_preload_progress(0.25)
+        payload = snapshot()
+        # Should sit near 0.72*0.25 ≈ 0.18, not jump to ~0.67 from other phases alone
+        self.assertGreaterEqual(payload["tail_progress"], 0.1)
+        self.assertLess(payload["tail_progress"], 0.45)
 
     def test_compound_ant_failed_still_startup_complete(self):
         from app.startup import offline_preload as mod
 
+        set_db_probe_for_tests(lambda: True)
         populate_word_cache_from_rows(
             [
                 {
