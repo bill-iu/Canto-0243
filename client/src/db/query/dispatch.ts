@@ -254,7 +254,10 @@ async function executeJyutpingFragment(
   return { items: sorted.slice(offset, offset + limit), total: sorted.length };
 }
 
-/** MF-6: port of query_dispatch._mask_family_search_result */
+/**
+ * MF-6 / Phase C1: mask_family only via MatchSpec → filter/execute → page.
+ * C1.1: both dual_phoneme and normal paths expose total + windowed items.
+ */
 async function executeMaskFamilySearchResult(
   parsed: ParsedQuery,
   db: Database,
@@ -270,22 +273,24 @@ async function executeMaskFamilySearchResult(
   }
   const searchMode = normalizeSearchMode(mode);
   const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
-  let items: QueryResult[];
-  let total: number | undefined;
 
+  let ordered: Awaited<ReturnType<typeof filterMatchSpecRows>>;
   if (spec.extra?.dual_phoneme) {
-    const rows = await executeMatchSpec(spec, { ...dbCtx, limit, offset });
-    items = rows.map((row) => rowToResult(row));
+    // Engine merges dual dimensions; pull a large window then page once for total.
+    ordered = await executeMatchSpec(spec, {
+      ...dbCtx,
+      limit: Math.max(offset + limit, limit) + 10_000,
+      offset: 0,
+    });
   } else {
-    // E3: rank on WordRow, map only the page window
     const allRows = await filterMatchSpecRows(spec, dbCtx);
-    const ordered = await sortMaskFamilyRows(spec, allRows, db, mode);
-    const finalSorted = (spec.literal_priority || spec.compound_kind)
-      ? ordered
-      : sortWordRows(ordered);
-    total = finalSorted.length;
-    items = finalSorted.slice(offset, offset + limit).map((row) => rowToResult(row));
+    const ranked = await sortMaskFamilyRows(spec, allRows, db, mode);
+    ordered =
+      spec.literal_priority || spec.compound_kind ? ranked : sortWordRows(ranked);
   }
+
+  const total = ordered.length;
+  const items = ordered.slice(offset, offset + limit).map((row) => rowToResult(row));
 
   let hint: string | undefined;
   if (!items.length && getEqualsSpan(spec)) {
