@@ -50,12 +50,23 @@ class PhaseCPr3TsFilters(unittest.TestCase):
 
 class PhaseCPr3CandidateTruncation(unittest.TestCase):
     def test_shared_fallback_limit_constant(self):
+        """P3 #7: limit SSOT is contracts/ + _generated; modules import it."""
         py = (REPO / "app" / "services" / "position_match" / "sources.py").read_text(
             encoding="utf-8"
         )
         ts = (PM / "candidate-policy.ts").read_text(encoding="utf-8")
-        self.assertIn("CANDIDATE_FALLBACK_LIMIT=2000", py.replace(" ", ""))
-        self.assertIn("CANDIDATE_FALLBACK_LIMIT=2000", ts.replace(" ", ""))
+        gen_py = (
+            REPO / "app" / "services" / "_generated" / "candidate_source_policy.py"
+        ).read_text(encoding="utf-8")
+        gen_ts = (
+            REPO / "client" / "src" / "db" / "_generated" / "candidate-source-policy.ts"
+        ).read_text(encoding="utf-8")
+        self.assertIn("CANDIDATE_FALLBACK_LIMIT = 2000", gen_py)
+        self.assertIn("export const CANDIDATE_FALLBACK_LIMIT = 2000", gen_ts)
+        self.assertIn("candidate_source_policy", py)
+        self.assertIn("CANDIDATE_FALLBACK_LIMIT", py)
+        self.assertIn("candidate-source-policy", ts)
+        self.assertIn("CANDIDATE_FALLBACK_LIMIT", ts)
 
         from app.services.position_match.sources import CANDIDATE_FALLBACK_LIMIT
 
