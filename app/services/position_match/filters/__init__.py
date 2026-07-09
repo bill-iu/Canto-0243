@@ -11,8 +11,11 @@ from app.services.position_match.filters.f1_slot_code import (
     preferred_pronunciation_rows,
 )
 from app.services.position_match.mask_adapter import (
+    append_code_digit_slots,
+    code_digit_string_from_spec,
     dense_code_from_required,
     dense_code_from_spec,
+    has_code_digit_constraints,
     required_codes_from_digit_string,
     required_codes_from_spec,
 )
@@ -34,14 +37,17 @@ from app.services.position_match.filters.f4_equals import (
 )
 
 __all__ = [
+    "append_code_digit_slots",
     "apply_match_spec",
     "build_final_options_at_positions",
+    "code_digit_string_from_spec",
     "contextual_final_options_at_position",
     "contextual_initial_options_at_position",
     "dense_code_from_required",
     "dense_code_from_spec",
     "filter_candidates_by_match_spec",
     "filter_words_by_code_and_mask",
+    "has_code_digit_constraints",
     "matches_code_positions",
     "matches_equals_phoneme_span",
     "matches_final_options",

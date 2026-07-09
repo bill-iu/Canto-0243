@@ -24,7 +24,9 @@ class CodeSandwichGoldenParseTests(unittest.TestCase):
         self.assertEqual(span.ref_literal, "起")
         self.assertEqual(span.dimension, "final")
         self.assertFalse(span.phoneme_anchor_only)
-        self.assertEqual(spec.code_prefix, "39")
+        from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
+        self.assertEqual(code_digit_string_from_spec(spec), "39")
 
     def test_explain_39起_labels_code_sandwich(self):
         result = explain_query("39起")

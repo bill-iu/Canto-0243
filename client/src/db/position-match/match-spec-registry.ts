@@ -2,6 +2,7 @@
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
 import { buildEqualsMatchSpec } from './equals-spec.ts';
+import { appendCodeDigitSlots, codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import { buildMaskFromSlots, parseMaskQuery } from './mask-grammar.ts';
 import {
   attachEqualsSpan,
@@ -65,7 +66,7 @@ function applyJyutpingAnchorCodeSlots(spec: MatchSpec, parsed: JyutpingAnchorQue
 }
 
 function buildJyutpingAnchorMatchSpec(parsed: JyutpingAnchorQuery): MatchSpec {
-  const spec = createMatchSpec(parsed.width, { code_prefix: parsed.code_prefix });
+  const spec = createMatchSpec(parsed.width);
   spec.mask = '?'.repeat(parsed.width);
   slots(spec).push({
     pos: parsed.anchor_pos,
@@ -80,7 +81,7 @@ export function buildJyutpingDualMatchSpecs(
   parsed: JyutpingAnchorQuery,
 ): [MatchSpec, MatchSpec] {
   const base = (): MatchSpec => {
-    const spec = createMatchSpec(parsed.width, { code_prefix: parsed.code_prefix });
+    const spec = createMatchSpec(parsed.width);
     spec.mask = '?'.repeat(parsed.width);
     applyJyutpingAnchorCodeSlots(spec, parsed);
     return spec;
@@ -174,10 +175,13 @@ function specSerialPhoneme(parsed: ParsedQuery): MatchSpec | null {
 
 function specPlusAnchor(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as PlusAnchorQuery;
-  const spec = createMatchSpec(q.width, { code_prefix: q.code_prefix });
+  const spec = createMatchSpec(q.width);
   spec.mask = '?'.repeat(q.width);
   for (const [pos, d] of q.code_slots) {
     slots(spec).push({ pos, kind: 'code_digit', value: d });
+  }
+  if (!q.code_slots?.length && q.code_prefix) {
+    appendCodeDigitSlots(spec, q.code_prefix);
   }
   if (q.constraint === 'literal') {
     slots(spec).push({ pos: q.anchor_pos, kind: 'literal_char', value: q.anchor });
@@ -196,7 +200,8 @@ function specPlusAnchor(parsed: ParsedQuery): MatchSpec | null {
 
 function specLiteralRef(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as LiteralRefQuery;
-  const spec = createMatchSpec(q.width, { code_prefix: q.code_digits });
+  const spec = createMatchSpec(q.width);
+  appendCodeDigitSlots(spec, q.code_digits);
   slots(spec).push({ pos: q.width - 1, kind: 'literal_char', value: q.literal_char });
   spec.mask = '?'.repeat(q.width - 1) + q.literal_char;
   return spec;
@@ -247,7 +252,8 @@ function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as JyutpingAnchorQuery;
   if (q.dual_phoneme) {
     const [initial, final] = buildJyutpingDualMatchSpecs(q);
-    const carrier = createMatchSpec(q.width, { code_prefix: q.code_prefix });
+    const carrier = createMatchSpec(q.width);
+    applyJyutpingAnchorCodeSlots(carrier, q);
     if (!carrier.extra) {
       carrier.extra = {};
     }
@@ -279,9 +285,9 @@ function specMask(parsed: ParsedQuery): MatchSpec | null {
 function specCompoundDoubledSyllable(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as CompoundDoubledSyllableQuery;
   const spec = createMatchSpec(q.width, {
-    code_prefix: q.code_prefix,
     compound_kind: 'doubled_syllable',
   });
+  appendCodeDigitSlots(spec, q.code_prefix);
   if (q.rhyme_char) {
     slots(spec).push({ pos: q.width - 1, kind: 'final_anchor', value: q.rhyme_char });
   }
@@ -292,17 +298,19 @@ function specCompoundSyn(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as CompoundSynQuery;
   const connect = CONNECT_SYN_RE.exec(q.raw_q);
   if (connect) {
-    const spec = createMatchSpec(3, { code_prefix: q.code_prefix, compound_kind: 'syn' });
+    const spec = createMatchSpec(3, { compound_kind: 'syn' });
     if (!spec.extra) {
       spec.extra = {};
     }
     spec.extra.connective = connect[2];
+    appendCodeDigitSlots(spec, q.code_prefix);
     if (q.rhyme_char) {
       slots(spec).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
     }
     return spec;
   }
-  const spec = createMatchSpec(2, { code_prefix: q.code_prefix, compound_kind: 'syn' });
+  const spec = createMatchSpec(2, { compound_kind: 'syn' });
+  appendCodeDigitSlots(spec, q.code_prefix);
   if (q.rhyme_char) {
     slots(spec).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
   }
@@ -313,17 +321,19 @@ function specCompoundAnt(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as CompoundAntQuery;
   const connect = CONNECT_ANT_RE.exec(q.raw_q);
   if (connect) {
-    const spec = createMatchSpec(3, { code_prefix: q.code_prefix, compound_kind: 'ant' });
+    const spec = createMatchSpec(3, { compound_kind: 'ant' });
     if (!spec.extra) {
       spec.extra = {};
     }
     spec.extra.connective = connect[2];
+    appendCodeDigitSlots(spec, q.code_prefix);
     if (q.rhyme_char) {
       slots(spec).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
     }
     return spec;
   }
-  const spec = createMatchSpec(2, { code_prefix: q.code_prefix, compound_kind: 'ant' });
+  const spec = createMatchSpec(2, { compound_kind: 'ant' });
+  appendCodeDigitSlots(spec, q.code_prefix);
   if (q.rhyme_char) {
     slots(spec).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
   }
@@ -400,8 +410,11 @@ export function validateRepresentativeMatchSpec(
       throw new Error(`match-spec registry: ${q} prefix_wildcard`);
     }
   }
-  if ('code_prefix' in expected && spec.code_prefix !== expected.code_prefix) {
-    throw new Error(`match-spec registry: ${q} code_prefix`);
+  if ('code_prefix' in expected) {
+    const got = codeDigitStringFromSpec(spec);
+    if (got !== expected.code_prefix) {
+      throw new Error(`match-spec registry: ${q} code_prefix ${got} != ${expected.code_prefix}`);
+    }
   }
   if ('mask' in expected && spec.mask !== expected.mask) {
     throw new Error(`match-spec registry: ${q} mask`);

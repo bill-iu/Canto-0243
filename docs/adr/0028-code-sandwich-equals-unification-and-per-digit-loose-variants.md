@@ -63,3 +63,10 @@ Grill 2026-07：在 P0–P3 之上，**所有執行／比對路徑**唔再以 `M
 2. **Dense 候選池**：僅當每位皆有 digit 時 `dense_code_from_spec` 合成全碼，再 `get_code_variants` 笛卡爾 + `code IN (...)`（加速，語意與逐格等價）。
 3. **仍可暫存 `code_prefix` 欄**：builder／explain／golden 可填；**filter／engine／equals／compound／relation seed 比對忽略**（PR-C 再停寫／刪欄）。
 4. **前綴碼**（compound 短於詞碼）：前 N 格逐格鬆檔，保留 `startsWith` 等價語意。
+
+### PR-C amend（停寫／退役 MatchSpec.code_prefix）
+
+1. **Builders**（`query_match_spec_registry`／equals／TS 對照）**唔再寫** `MatchSpec.code_prefix`；碼約束只經 **`code_digit` slots**（`append_code_digit_slots`）。
+2. **Explain／hint／golden**：用 `code_digit_string_from_spec`／`has_code_digit_constraints`（slots／mask），唔讀欄位。
+3. **ParsedQuery** 仍可有 `code_prefix`（創作者輸入語法，如 `33!開心`、compound 前綴碼）——僅 parse 產物，唔再抄入 MatchSpec。
+4. **欄位**：dataclass／TS interface 暫留 optional deprecated，**禁止再依賴**；PR 後新 code 唔賦值。

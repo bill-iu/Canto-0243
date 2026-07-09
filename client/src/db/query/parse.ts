@@ -1379,7 +1379,8 @@ export async function codePrefixedWholeWordEqualsEmptyHint(
     return null;
   }
   
-  const code = spec.code_prefix || '';
+  const { codeDigitStringFromSpec } = await import('../position-match/filters/f1-slot-code.ts');
+  const code = codeDigitStringFromSpec(spec) || '';
   const literal = span.ref_literal;
   
   if (!code || code.length !== literal.length) {

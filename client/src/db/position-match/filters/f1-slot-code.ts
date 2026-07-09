@@ -141,6 +141,34 @@ export function requiredCodesFromDigitString(digits: string): Array<string | nul
   return [...digits];
 }
 
+export function codeDigitStringFromSpec(spec: MatchSpec): string | null {
+  const dense = denseCodeFromRequired(buildRequiredCodes(spec));
+  if (dense) {
+    return dense;
+  }
+  const parts = buildRequiredCodes(spec).filter((d): d is string => d != null && /^\d$/.test(d));
+  return parts.length ? parts.join('') : null;
+}
+
+export function hasCodeDigitConstraints(spec: MatchSpec): boolean {
+  return buildRequiredCodes(spec).some((d) => d != null);
+}
+
+export function appendCodeDigitSlots(spec: MatchSpec, digits: string | null | undefined): void {
+  if (!digits || !/^\d+$/.test(digits)) {
+    return;
+  }
+  if (!spec.slots) {
+    spec.slots = [];
+  }
+  for (let i = 0; i < digits.length && i < spec.width; i++) {
+    if (spec.slots.some((s) => s.kind === 'code_digit' && s.pos === i)) {
+      continue;
+    }
+    spec.slots.push({ pos: i, kind: 'code_digit', value: digits[i]! });
+  }
+}
+
 export function groupCandidatesByChar(candidates: WordRow[]): Map<string, WordRow[]> {
   const grouped = new Map<string, WordRow[]>();
   for (const word of candidates) {

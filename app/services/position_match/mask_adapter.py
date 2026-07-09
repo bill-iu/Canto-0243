@@ -76,3 +76,32 @@ def required_codes_from_digit_string(digits: str) -> list[Optional[str]]:
     if not digits or not str(digits).isdigit():
         return []
     return [ch for ch in str(digits)]
+
+
+def code_digit_string_from_spec(spec: MatchSpec) -> Optional[str]:
+    """Explain／hint：由 slots／mask 還原碼數字串（dense 優先；否則按位串非空 digit）。"""
+    dense = dense_code_from_spec(spec)
+    if dense:
+        return dense
+    required = required_codes_from_spec(spec)
+    parts = [d for d in required if d is not None and str(d).isdigit()]
+    return "".join(str(d) for d in parts) if parts else None
+
+
+def has_code_digit_constraints(spec: MatchSpec) -> bool:
+    return any(d is not None for d in required_codes_from_spec(spec))
+
+
+def append_code_digit_slots(spec: MatchSpec, digits: Optional[str]) -> None:
+    """將 digit 字串寫入 code_digit slots（唔寫 code_prefix 欄）。"""
+    if not digits or not str(digits).isdigit():
+        return
+    from app.services.position_match.spec import SlotConstraint
+
+    for i, d in enumerate(str(digits)):
+        if i >= spec.width:
+            break
+        # skip if slot already has code_digit at pos
+        if any(s.kind == "code_digit" and s.pos == i for s in spec.slots):
+            continue
+        spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=d))

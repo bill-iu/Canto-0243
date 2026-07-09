@@ -47,7 +47,9 @@ class CodeSandwichEqualsSpecTests(unittest.TestCase):
         self.assertEqual(span.dimension, "final")
         self.assertFalse(span.phoneme_anchor_only)
         self.assertEqual(spec.width, 2)
-        self.assertEqual(spec.code_prefix, "23")
+        from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
+        self.assertEqual(code_digit_string_from_spec(spec), "23")
         digits = [s for s in spec.slots if s.kind == "code_digit"]
         self.assertEqual(digits, [
             SlotConstraint(pos=0, kind="code_digit", value="2"),
@@ -55,12 +57,17 @@ class CodeSandwichEqualsSpecTests(unittest.TestCase):
         ])
 
     def test_normalized_23就_builds_same_spec(self):
+        from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
         q = normalize_search_query("23就")
         direct = build_equals_match_spec(q)
         parsed = normalize_and_parse("23就")
         via_parsed = build_match_spec_for_parsed(parsed)
         self.assertEqual(direct.width, via_parsed.width)
-        self.assertEqual(direct.code_prefix, via_parsed.code_prefix)
+        self.assertEqual(
+            code_digit_string_from_spec(direct),
+            code_digit_string_from_spec(via_parsed),
+        )
         self.assertEqual(
             get_equals_span(direct).ref_literal,
             get_equals_span(via_parsed).ref_literal,

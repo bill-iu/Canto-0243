@@ -10,6 +10,9 @@ export {
   buildRequiredCodes,
   denseCodeFromRequired,
   requiredCodesFromDigitString,
+  codeDigitStringFromSpec,
+  hasCodeDigitConstraints,
+  appendCodeDigitSlots,
 } from './filters/f1-slot-code.ts';
 export {
   anchorPhonemeOptions,

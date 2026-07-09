@@ -66,7 +66,6 @@ def build_equals_match_spec(q: str):
     ]
     return MatchSpec(
         width=expected_length,
-        code_prefix=full_code if full_code else None,
         slots=slots,
         extra={"equals_span": span},
     )
@@ -83,10 +82,12 @@ def code_prefixed_whole_word_equals_empty_hint(spec, db) -> str | None:
     from app.models.word import Word
     from app.services.position_match.spec import get_equals_span
 
+    from app.services.position_match.mask_adapter import code_digit_string_from_spec
+
     span = get_equals_span(spec)
     if not span or not span.whole_word:
         return None
-    code = spec.code_prefix or ""
+    code = code_digit_string_from_spec(spec) or ""
     literal = span.ref_literal
     if not code or len(code) != len(literal):
         return None

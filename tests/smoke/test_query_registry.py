@@ -66,13 +66,25 @@ class QueryRegistrySmokeTests(unittest.TestCase):
                 if expected.get("prefix_wildcard"):
                     self.assertTrue(spec.extra.get("prefix_wildcard_equals"))
                 if "code_prefix" in expected:
-                    self.assertEqual(spec.code_prefix, expected["code_prefix"])
+                    from app.services.position_match.mask_adapter import (
+                        code_digit_string_from_spec,
+                    )
+
+                    self.assertEqual(
+                        code_digit_string_from_spec(spec), expected["code_prefix"]
+                    )
                 if "mask" in expected:
                     self.assertEqual(spec.mask, expected["mask"])
                 if "compound_kind" in expected:
                     self.assertEqual(spec.compound_kind, expected["compound_kind"])
                 if "code_prefix" in expected and "ref_literal" in expected:
-                    self.assertEqual(spec.code_prefix, expected["code_prefix"])
+                    from app.services.position_match.mask_adapter import (
+                        code_digit_string_from_spec,
+                    )
+
+                    self.assertEqual(
+                        code_digit_string_from_spec(spec), expected["code_prefix"]
+                    )
                     span = get_equals_span(spec)
                     self.assertIsNotNone(span)
                     self.assertEqual(span.ref_literal, expected["ref_literal"])

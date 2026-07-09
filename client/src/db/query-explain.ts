@@ -14,6 +14,11 @@ import type {
 } from './query-engine.ts';
 import { QueryKind, normalizeAndParse } from './query-engine.ts';
 import { slotLabel } from './ping-zak.ts';
+import {
+  buildRequiredCodes,
+  codeDigitStringFromSpec,
+  hasCodeDigitConstraints,
+} from './position-match/filters/f1-slot-code.ts';
 import { buildMatchSpecForParsed } from './position-match/match-spec-registry.ts';
 import { getEqualsSpan, type EqualsSpan, type MatchSpec } from './position-match/spec.ts';
 
@@ -138,7 +143,7 @@ function summaryFromMatchSpec(spec: MatchSpec, _parsed: ParsedQuery): string | n
   }
 
   const equals = getEqualsSpan(working);
-  if (equals && working.code_prefix) {
+  if (equals && hasCodeDigitConstraints(working)) {
     return codeSandwichEqualsSummary(working, equals, _parsed);
   }
   if (equals && working.extra?.prefix_wildcard_equals) {
@@ -193,12 +198,13 @@ function compoundSummary(spec: MatchSpec): string {
       (s) => s.kind === 'final_anchor' && typeof s.value === 'string',
     )?.value as string | undefined;
     const n = spec.width;
+    const code = codeDigitStringFromSpec(spec);
     const base = `查${n}字雙聲疊韻字（各字音節相同，聲調不限）`;
-    if (spec.code_prefix && rhyme) {
-      return `查${n}字雙聲疊韻字（碼 ${spec.code_prefix}，尾字同「${rhyme}」同韻）`;
+    if (code && rhyme) {
+      return `查${n}字雙聲疊韻字（碼 ${code}，尾字同「${rhyme}」同韻）`;
     }
-    if (spec.code_prefix) {
-      return `查${n}字雙聲疊韻字（碼 ${spec.code_prefix}）`;
+    if (code) {
+      return `查${n}字雙聲疊韻字（碼 ${code}）`;
     }
     if (rhyme) {
       return `查${n}字雙聲疊韻字（尾字同「${rhyme}」同韻）`;
@@ -214,14 +220,16 @@ function compoundSummary(spec: MatchSpec): string {
 }
 
 function codePrefixPhrase(spec: MatchSpec): string | null {
-  if (!spec.code_prefix) {
+  const code = codeDigitStringFromSpec(spec);
+  if (!code) {
     return null;
   }
-  if (spec.width === spec.code_prefix.length) {
-    const parts = [...spec.code_prefix].map((digit, i) => `${wordPos(i)}同 ${digit} 同音`);
+  const required = buildRequiredCodes(spec);
+  if (required.every((d) => d != null) && required.length === spec.width) {
+    const parts = [...code].map((digit, i) => `${wordPos(i)}同 ${digit} 同音`);
     return parts.join('，');
   }
-  return `前 ${spec.code_prefix.length} 個字為碼 ${spec.code_prefix}`;
+  return `前 ${code.length} 個字為碼 ${code}`;
 }
 
 function slotScanSummary(spec: MatchSpec, equals: EqualsSpan | null): string {
@@ -246,9 +254,9 @@ function effectiveConstraints(
 ): Map<number, [string, string]> {
   const result = new Map<number, [string, string]>();
 
-  if (spec.code_prefix && spec.width === spec.code_prefix.length) {
-    for (let i = 0; i < spec.code_prefix.length; i++) {
-      result.set(i, ['code_digit', spec.code_prefix[i]!]);
+  for (const [i, digit] of buildRequiredCodes(spec).entries()) {
+    if (digit != null) {
+      result.set(i, ['code_digit', digit]);
     }
   }
 
@@ -301,6 +309,7 @@ function effectiveConstraints(
   }
 
   if (equals && !equals.whole_word) {
+    const required = buildRequiredCodes(spec);
     const dimKind = equals.dimension === 'final' || equals.dimension === 'rhyme'
       ? 'final_anchor'
       : 'initial_anchor';
@@ -309,10 +318,7 @@ function effectiveConstraints(
       if (pos < 0 || pos >= spec.width) {
         continue;
       }
-      const digit =
-        spec.code_prefix && pos < spec.code_prefix.length
-          ? spec.code_prefix[pos]
-          : undefined;
+      const digit = pos < required.length ? required[pos] ?? undefined : undefined;
       if (
         digit != null &&
         (equals.dimension === 'final' || equals.dimension === 'rhyme') &&

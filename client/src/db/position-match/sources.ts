@@ -3,6 +3,7 @@
  */
 import { fetchCompoundWordRows, type CompoundSearchSpec } from '../compound.ts';
 import { getCodeVariants } from '../code-variants.ts';
+import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import { queryRows } from '../database-backend.ts';
 import type { Database } from '../sqljs.ts';
 import {
@@ -189,7 +190,7 @@ export function compoundSearchSpecFromMatchSpec(spec: MatchSpec): CompoundSearch
   return {
     compound_kind: spec.compound_kind,
     width: spec.width,
-    code_prefix: spec.code_prefix ?? undefined,
+    code_prefix: codeDigitStringFromSpec(spec) ?? undefined,
     rhyme_char: compoundRhymeChar(spec),
     connective: typeof connective === 'string' ? connective : undefined,
   };
