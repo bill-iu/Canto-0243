@@ -1,16 +1,16 @@
 /** 搜尋模式轉接 — port of query_mode_dispatch (predicate table). */
 import type { Database } from '../sqljs.ts';
-import { isPingZeSerialQuery, pingZeEffectiveMode, pingZeModeRedirectHint } from '../ping-zak.ts';
+import { pingZeEffectiveMode, pingZeModeRedirectHint } from '../ping-zak.ts';
 import { isJyutpingQuery } from '../jyutping-match.ts';
 import { relationPoolPage } from '../relation-pool.ts';
 import type { SearchContext, SearchResult } from '../query-types.ts';
 import {
   JYUTPING_SYN_MODE_HINT,
-  isRelationSyntaxQuery,
   modeRedirectHint,
   normalizeAndParse,
   resolveFallback0243Mode,
 } from './parse.ts';
+import { isPingZeSerialQuery, isRelationSyntaxQuery } from './mode-detect.ts';
 import { dispatchParsed, poolItemToResult } from './dispatch.ts';
 
 export type SynModeCtx = SearchContext & { q: string };

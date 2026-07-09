@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const db = path.join(root, 'src', 'db');
 const queryDir = path.join(db, 'query');
-const required = ['parse.ts', 'mode-dispatch.ts', 'dispatch.ts', 'engine.ts'];
+const required = ['parse.ts', 'mode-dispatch.ts', 'dispatch.ts', 'engine.ts', 'lookup-layout.ts', 'mode-detect.ts'];
 
 function fail(msg) {
   console.error(`phase-b-query-layout: ${msg}`);

@@ -25,6 +25,7 @@ export {
   parseRhymeAnchorQuery,
   isFramedEqualsQuery,
   isPingZeSerialQuery,
+  normalizeQuerySyntax,
   JYUTPING_SYN_MODE_HINT,
   CODE_TAIL_MIDDLE,
   parserLogicSelfCheck,
@@ -34,6 +35,7 @@ export {
 } from './query/parse.ts';
 export { dispatchParsed, executeListFilter } from './query/dispatch.ts';
 export { dispatchSynMode } from './query/mode-dispatch.ts';
+export { buildLookupLayout } from './query/lookup-layout.ts';
 export { QueryEngine, queryEngine, searchWords, executeSearch } from './query/engine.ts';
 
 export type {

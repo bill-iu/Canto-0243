@@ -1,6 +1,7 @@
 /**
- * AUTO-GENERATED from client/src/db/query/mode-detect.ts — do not edit.
- * Run: python scripts/codegen_query_mode_detect.py
+ * Pure 搜尋模式轉接 detect (介面轉接 / early UI) — SSOT for codegen.
+ * Codegen: python scripts/codegen_query_mode_detect.py
+ * Do not hand-edit frontend/query-mode-detect.mjs.
  */
 
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';
@@ -18,7 +19,7 @@ const RELATION_LOOKUP_RE = /^(\d*)([~!])([\u4e00-\u9fff]+)$/;
 const PING_ZE_SLOT_RE = /^[PZ0-9]+$/i;
 const PING_ZE_HAS_PZ = /[PZ]/i;
 
-export function normalizeQuerySyntax(q) {
+export function normalizeQuerySyntax(q: string): string {
   return String(q || '')
     .replace(/＊/g, '*')
     .replace(/﹡/g, '*')
@@ -30,7 +31,7 @@ export function normalizeQuerySyntax(q) {
 }
 
 /** Pure regex detect — Portable 介面轉接 + PWA early detect. */
-export function isRelationSyntaxQuery(q) {
+export function isRelationSyntaxQuery(q: string): boolean {
   const n = normalizeQuerySyntax(String(q || '').trim());
   if (!n) return false;
   return (
@@ -42,7 +43,7 @@ export function isRelationSyntaxQuery(q) {
   );
 }
 
-export function isPingZeSerialQuery(q) {
+export function isPingZeSerialQuery(q: string): boolean {
   const n = String(q || '').trim();
   if (!n || !PING_ZE_HAS_PZ.test(n)) return false;
   return PING_ZE_SLOT_RE.test(n);

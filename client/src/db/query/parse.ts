@@ -723,20 +723,12 @@ export const JYUTPING_SYN_MODE_HINT =
 
 export { isJyutpingQuery } from '../jyutping-match.ts';
 
-/** Port of query_parse.is_relation_syntax_query */
-export { isPingZeSerialQuery };
-
-export function isRelationSyntaxQuery(q: string): boolean {
-  const parsed = normalizeAndParse(q);
-  if (parsed.kind === QueryKind.RELATION_LOOKUP) {
-    return true;
-  }
-  return (
-    parsed.kind === QueryKind.COMPOUND_SYN ||
-    parsed.kind === QueryKind.COMPOUND_ANT ||
-    parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE
-  );
-}
+/** Pure detect SSOT — codegen to frontend/query-mode-detect.mjs */
+export {
+  isPingZeSerialQuery,
+  isRelationSyntaxQuery,
+  normalizeQuerySyntax,
+} from './mode-detect.ts';
 
 export function resolveFallback0243Mode(fallback?: QueryMode): 'm1' | 'm2' | 'm3' {
   if (fallback === 'm3' || fallback === '394052') {
@@ -946,7 +938,7 @@ export function parserLogicSelfCheck(): void {
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/lookup-layout-self-check.ts` */
 export async function lookupLayoutSelfCheck(): Promise<void> {
-  const { buildLookupLayout } = await import('./dispatch.ts');
+  const { buildLookupLayout } = await import('./lookup-layout.ts');
   const rows: WordRow[] = [
     { char: '事業', code: '22', jyutping: 'si6 jip6' },
   ];

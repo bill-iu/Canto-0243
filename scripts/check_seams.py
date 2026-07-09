@@ -454,6 +454,19 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
 
+    def test_query_mode_detect_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_query_mode_detect.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
 
 class TestQueryTabsSeam(unittest.TestCase):
     FRONTEND_ASSETS = (
