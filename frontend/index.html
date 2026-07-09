@@ -96,6 +96,7 @@
     </defs>
   </svg>
   <div class="ready-gate preload-overlay" id="preloadOverlay" role="status" aria-live="polite" aria-busy="true">
+    <!-- Single column: logo ink + status (Portable SSOT with ready-gate.css) -->
     <div class="gate-brand" id="gateBrand">
       <svg class="brand-logo brand-logo--gate" xmlns="http://www.w3.org/2000/svg" width="200" height="72" viewBox="0 0 200 72" aria-hidden="true" focusable="false">
         <defs>
@@ -113,8 +114,10 @@
           <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
         </g>
       </svg>
+      <p class="gate-status" id="preloadLabel">執緊啲字…</p>
     </div>
-    <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false">
+    <!-- Legacy meter kept for gate.mjs clip refs; CSS display:none -->
+    <svg class="gate-ink-meter" id="gateInkMeter" xmlns="http://www.w3.org/2000/svg" viewBox="0 38 200 34" aria-hidden="true" focusable="false" hidden>
       <defs>
         <clipPath id="gate-ink-clip-mini">
           <rect id="gateInkClipRectMini" class="gate-ink-clip-rect" x="0" y="38" width="0" height="34"/>
@@ -129,7 +132,6 @@
         <use href="#brand-ink-flicks" filter="url(#brush-roughen-brand)"/>
       </g>
     </svg>
-    <p class="gate-status" id="preloadLabel">執緊啲字…</p>
   </div>
   <a class="skip-link" href="#searchInput">跳到搜尋</a>
 

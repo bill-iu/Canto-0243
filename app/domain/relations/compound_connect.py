@@ -17,6 +17,8 @@ CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {
 
 # Lexicon flank tiers 0–2; synthetic always ranks after
 TIER_CONNECTIVE_SYNTH = 3
+# Grill: avoid freezing Portable search on first !與! / ~與~
+CONNECTIVE_SYNTH_CAP = 500
 
 
 def _flank_tiers_from_two_char(two_char_tiers: Dict[str, int]) -> Dict[tuple[str, str], int]:
@@ -54,7 +56,7 @@ def search_connective_compound(
     connective: str,
     rhyme_char: str | None = None,
 ) -> Dict[str, int]:
-    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B。"""
+    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B（cap）。"""
     if connective not in FILLWORD_CONNECTIVES:
         return {}
 
@@ -86,13 +88,17 @@ def search_connective_compound(
             continue
         tiers[w] = tier
 
+    synth_n = 0
     for (a, b), _flank in flank_tiers.items():
+        if synth_n >= CONNECTIVE_SYNTH_CAP:
+            break
         compound = f"{a}{connective}{b}"
         if compound in tiers:
             continue
         rows = inject.ensure_word_rows(db, compound)
         if rows:
             tiers[compound] = TIER_CONNECTIVE_SYNTH
+            synth_n += 1
 
     if not rhyme_char:
         return tiers
@@ -103,6 +109,7 @@ def search_connective_compound(
 
 
 __all__ = [
+    "CONNECTIVE_SYNTH_CAP",
     "FILLWORD_CONNECTIVES",
     "TIER_CONNECTIVE_SYNTH",
     "exclusive_two_char_tiers",
