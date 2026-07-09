@@ -164,6 +164,7 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
     fetchUrl: target.fetchUrl,
     gzip: target.useGzip,
     progressTotal: target.fetchByteSize,
+    expectedByteSize: target.byteSize,
   });
   lastLexiconRestoreSource = opened.fetched ? 'network' : 'opfs';
   console.log(
@@ -249,19 +250,26 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
 
       db = await openLexiconDatabase(target);
       reportGatePhase('open', 0.4);
-      // C1 ADR-0038: refuse legacy JSON phoneme columns; purge channel caches
+      // C1 ADR-0038: refuse legacy JSON phoneme columns.
+      // Close + reset worker *before* purge (OPFS lock), then re-open once from channel.
       {
-        const { assertPhonemeStorageContract } = await import('./phoneme-contract.ts');
+        const {
+          assertPhonemeStorageContract,
+          phonemeStorageContractOk,
+        } = await import('./phoneme-contract.ts');
         const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
-        await assertPhonemeStorageContract(db, async () => {
-          await purgeStaleLexiconCaches(target, 'phoneme storage contract');
+        if (!(await phonemeStorageContractOk(db))) {
           try {
-            await db?.close();
+            await db.close();
           } catch {
             /* ignore */
           }
           db = null;
-        });
+          resetOpfsVfsWorker();
+          await purgeStaleLexiconCaches(target, 'phoneme storage contract');
+          db = await openLexiconDatabase(target);
+          await assertPhonemeStorageContract(db);
+        }
       }
       await applyRuntimeDbPatches(db);
       reportGatePhase('open', 0.6);

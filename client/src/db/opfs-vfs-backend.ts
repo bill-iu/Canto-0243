@@ -49,7 +49,7 @@ class OpfsVfsBackend implements DatabaseBackend {
   async init(
     fileName: string,
     dbUrl: string,
-    opts?: { gzip?: boolean; progressTotal?: number },
+    opts?: { gzip?: boolean; progressTotal?: number; expectedByteSize?: number },
   ): Promise<InitResult> {
     return this.ask({
       type: 'init',
@@ -57,6 +57,7 @@ class OpfsVfsBackend implements DatabaseBackend {
       dbUrl,
       gzip: opts?.gzip,
       progressTotal: opts?.progressTotal,
+      expectedByteSize: opts?.expectedByteSize,
     });
   }
 
@@ -190,12 +191,14 @@ export async function openOpfsVfsDatabase(opts: {
   fetchUrl: string;
   gzip?: boolean;
   progressTotal?: number;
+  expectedByteSize?: number;
 }): Promise<OpenOpfsVfsDatabaseResult> {
   const backend = getSharedBackend();
   const fileName = lexiconOpfsFileName(opts.version);
   const init = await backend.init(fileName, opts.fetchUrl, {
     gzip: opts.gzip,
     progressTotal: opts.progressTotal,
+    expectedByteSize: opts.expectedByteSize,
   });
   return {
     db: backend,

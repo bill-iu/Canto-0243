@@ -19,6 +19,8 @@ export type OpfsVfsWorkerRequest =
       dbUrl: string;
       gzip?: boolean;
       progressTotal?: number;
+      /** When set, existing OPFS file is dropped if size differs (stale channel cache). */
+      expectedByteSize?: number;
     }
   | { id: number; type: 'query'; sql: string; params: SqlBindParams }
   | { id: number; type: 'close' };
@@ -142,10 +144,15 @@ async function ensureDbFile(
   dbUrl: string,
   gzip: boolean,
   progressTotal?: number,
+  expectedByteSize?: number,
 ): Promise<{ byteSize: number; fetched: boolean }> {
   const existing = await opfsFileSize(fileName);
   if (existing > 0) {
-    return { byteSize: existing, fetched: false };
+    if (expectedByteSize == null || existing === expectedByteSize) {
+      return { byteSize: existing, fetched: false };
+    }
+    // Same version key, different package (e.g. j2 compact slim vs legacy JSON).
+    await removeRelatedFiles(fileName);
   }
 
   const db = await ensureSqlite();
@@ -154,6 +161,11 @@ async function ensureDbFile(
   const byteSize = await streamUrlIntoOpfs(fileName, dbUrl, gzip, progressTotal);
   if (byteSize <= 0) {
     throw new Error(`Empty lexicon payload for ${fileName}`);
+  }
+  if (expectedByteSize != null && byteSize !== expectedByteSize) {
+    throw new Error(
+      `Lexicon size mismatch after fetch: expected ${expectedByteSize}, got ${byteSize}`,
+    );
   }
   return { byteSize, fetched: true };
 }
@@ -219,6 +231,7 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
         msg.dbUrl,
         Boolean(msg.gzip),
         msg.progressTotal,
+        msg.expectedByteSize,
       );
       await ensureOpenDb(msg.fileName);
       self.postMessage({
