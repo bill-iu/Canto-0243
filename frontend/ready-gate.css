@@ -91,14 +91,16 @@ html[data-landing='a'] .ready-gate .gate-hero {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  width: min(240px, 72vw);
-  max-width: min(520px, 92vw);
-  /* Optical: wordmark sits top of SVG; nudge cluster slightly down so mass feels centred */
-  transform: translateY(4vh);
+  gap: 12px;
+  /* Same width for logo + status → shared horizontal axis */
+  width: 200px;
+  max-width: min(200px, 88vw);
+  transform: translateY(3vh);
   text-align: center;
   opacity: 0;
   grid-area: 1 / 1;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 html.fonts-ready .ready-gate .gate-brand {
@@ -113,20 +115,25 @@ html.fonts-ready .ready-gate .gate-brand {
 .ready-gate .gate-brand .brand-logo,
 .ready-gate .gate-brand .brand-logo--gate {
   display: block;
-  width: 100%;
-  max-width: 200px;
+  width: 200px;
+  max-width: 100%;
   height: auto;
   margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .ready-gate .gate-status,
 .ready-gate .pwa-boot-gate__status {
   margin: 0;
-  width: 100%;
+  width: 200px;
+  max-width: 100%;
+  box-sizing: border-box;
   color: var(--muted, var(--pwa-boot-muted));
   font-size: 0.92rem;
   text-align: center;
   line-height: 1.4;
+  /* Keep multi-line status centred on same axis as logo */
+  align-self: center;
 }
 
 .ready-gate .gate-status--hint {
@@ -213,11 +220,11 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
 @keyframes gate-brand-in {
   from {
     opacity: 0;
-    transform: translateY(calc(4vh + 14px));
+    transform: translateY(calc(3vh + 12px));
   }
   to {
     opacity: 1;
-    transform: translateY(4vh);
+    transform: translateY(3vh);
   }
 }
 
@@ -233,7 +240,7 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
   .ready-gate .gate-brand {
     animation: none !important;
     opacity: 1 !important;
-    transform: translateY(4vh);
+    transform: translateY(3vh);
   }
 
   .ready-gate .gate-hero {

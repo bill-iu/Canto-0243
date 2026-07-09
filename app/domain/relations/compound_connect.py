@@ -1,8 +1,9 @@
-"""填詞連接詞複合（!{連接}!／~{連接}~）— ADR-0053：詞庫 ∪ 合成 + syn/ant 互斥。"""
+"""填詞連接詞複合 — ADR-0053 混合 + ADR-0054 Portable 請求路徑零寫庫。"""
 
 from __future__ import annotations
 
-from typing import Dict, Literal, Optional, Tuple
+from types import SimpleNamespace
+from typing import Dict, List, Literal, Optional, Tuple
 
 from sqlalchemy.orm import Session
 
@@ -10,17 +11,13 @@ from app.domain.relations.compound_syn import narrow_compound_syn_literals
 from app.models.word import Word
 from app.services._generated.fillword_connectives import FILLWORD_CONNECTIVES
 
-# ponytail: guide／essay 常見填詞連接詞三字詞 — ensure 入庫（CONTEXT § 連接詞複合查詢）
 CONNECTIVE_LITERAL_SEEDS: dict[str, tuple[str, ...]] = {
     "與": ("生與死", "天與地", "男與女", "父與子"),
 }
 
-# Lexicon flank tiers 0–2; synthetic always ranks after
 TIER_CONNECTIVE_SYNTH = 3
-# First-hit cost: cap synth + process cache for full result map
 CONNECTIVE_SYNTH_CAP = 500
 
-# (compound_kind, connective, rhyme_char|None) → tiers
 _connective_result_cache: dict[Tuple[str, str, Optional[str]], Dict[str, int]] = {}
 
 
@@ -46,14 +43,12 @@ def exclusive_two_char_tiers(
     opposite: Dict[str, int],
     kind: Literal["syn", "ant"],
 ) -> Dict[str, int]:
-    """Strict mutual exclusion with ant-wins: syn drops ant pairs; ant keeps full primary."""
     if kind == "ant":
         return dict(primary)
     return {w: t for w, t in primary.items() if w not in opposite}
 
 
 def _three_char_with_connective(db: Session, connective: str) -> set[str]:
-    """SQL-narrow to length-3 with fixed middle connective (SQLite LIKE `_連_`)."""
     pattern = f"_{connective}_"
     rows = (
         db.query(Word.char)
@@ -64,6 +59,36 @@ def _three_char_with_connective(db: Session, connective: str) -> set[str]:
     return {row[0] for row in rows if row[0] and len(row[0]) == 3 and row[0][1] == connective}
 
 
+def compose_transient_word(text: str) -> Optional[SimpleNamespace]:
+    """Memory-only row (ADR-0054) — syllable compose / static lexicon, no DB write."""
+    from app.domain.lexicon.admission import resolve_admission
+    from app.utils.jyutping_codec import split_jyutping
+
+    text = (text or "").strip()
+    if len(text) < 2:
+        return None
+    adm = resolve_admission(text)
+    if not adm.entries:
+        return None
+    ent = adm.entries[0]
+    jyut = (ent.jyutping or "").strip()
+    if not jyut:
+        return None
+    try:
+        initials, finals, _tones = split_jyutping(jyut)
+    except Exception:
+        initials, finals = [], []
+    return SimpleNamespace(
+        id=None,
+        char=text,
+        code=ent.code or "",
+        jyutping=jyut,
+        initials=initials,
+        finals=finals,
+        length=len(text),
+    )
+
+
 def search_connective_compound(
     db: Session,
     *,
@@ -71,7 +96,7 @@ def search_connective_compound(
     connective: str,
     rhyme_char: str | None = None,
 ) -> Dict[str, int]:
-    """!與!／~與~：詞庫三字 ∩ exclusive flank ∪ 合成缺席 A連B（cap + process cache）。"""
+    """詞庫三字 ∩ exclusive flank ∪ 合成字面（tiers only；上榜由 CandidateSource 記憶體合成）。"""
     if connective not in FILLWORD_CONNECTIVES:
         return {}
 
@@ -80,15 +105,12 @@ def search_connective_compound(
     if hit is not None:
         return dict(hit)
 
-    from app.domain.lexicon.port import default_word_inject_port
     from app.domain.relations.compound_ant import search_compound_ant
     from app.domain.relations.compound_syn import search_compound_syn
 
-    inject = default_word_inject_port()
-    for literal in CONNECTIVE_LITERAL_SEEDS.get(connective, ()):
-        inject.ensure_word_rows(db, literal)
+    # Seeds: mark as curated tier if present in DB or composable — never ensure_word_rows
+    seed_set = set(CONNECTIVE_LITERAL_SEEDS.get(connective, ()))
 
-    # shared process caches inside search_compound_syn / ant
     syn_tiers = search_compound_syn(db)
     ant_tiers = search_compound_ant(db)
     if compound_kind == "ant":
@@ -97,7 +119,7 @@ def search_connective_compound(
         exclusive = exclusive_two_char_tiers(syn_tiers, ant_tiers, "syn")
 
     flank_tiers = _flank_tiers_from_two_char(exclusive)
-    if not flank_tiers:
+    if not flank_tiers and not seed_set:
         _connective_result_cache[cache_key] = {}
         return {}
 
@@ -107,6 +129,15 @@ def search_connective_compound(
         if tier is not None:
             tiers[w] = tier
 
+    for seed in seed_set:
+        if len(seed) == 3 and seed[1] == connective:
+            pair_tier = flank_tiers.get((seed[0], seed[2]))
+            if pair_tier is not None:
+                tiers.setdefault(seed, pair_tier)
+            elif compound_kind == "ant":
+                # guide seeds are typically ant flanks even if graph lagging
+                tiers.setdefault(seed, 0)
+
     synth_n = 0
     for (a, b), _flank in flank_tiers.items():
         if synth_n >= CONNECTIVE_SYNTH_CAP:
@@ -114,10 +145,11 @@ def search_connective_compound(
         compound = f"{a}{connective}{b}"
         if compound in tiers:
             continue
-        rows = inject.ensure_word_rows(db, compound)
-        if rows:
-            tiers[compound] = TIER_CONNECTIVE_SYNTH
-            synth_n += 1
+        # Admit only if we can compose a reading without DB write
+        if compose_transient_word(compound) is None:
+            continue
+        tiers[compound] = TIER_CONNECTIVE_SYNTH
+        synth_n += 1
 
     if rhyme_char:
         allowed = narrow_compound_syn_literals(
@@ -133,6 +165,7 @@ __all__ = [
     "CONNECTIVE_SYNTH_CAP",
     "FILLWORD_CONNECTIVES",
     "TIER_CONNECTIVE_SYNTH",
+    "compose_transient_word",
     "exclusive_two_char_tiers",
     "reset_connective_compound_cache_for_tests",
     "search_connective_compound",

@@ -235,11 +235,12 @@ def _compound_rhyme_char(spec: MatchSpec) -> Optional[str]:
 
 @dataclass
 class CompoundCandidateSource:
-    """近義／反義複合：字面容許集 + char IN（cache-first）。"""
+    """近義／反義／連接詞複合：字面容許集 + char IN；缺庫字面記憶體合成（ADR-0054）。"""
 
     db: Any
     compounds: frozenset[str]
     expected_length: int = 2
+    allow_transient: bool = False
 
     def get_candidates(
         self,
@@ -251,20 +252,34 @@ class CompoundCandidateSource:
         if length != self.expected_length or not self.compounds:
             return [], True
 
+        rows: list[Any] = []
+        from_cache = False
         if is_word_cache_ready():
             rows = [
                 w for w in get_words_for_length(self.expected_length)
                 if get_word_text(w) in self.compounds
             ]
-            if rows:
-                return rows, True
+            from_cache = True
+        if not rows:
+            query = self.db.query(Word).filter(
+                Word.char.in_(list(self.compounds)),
+                length_filter(self.expected_length),
+            )
+            rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
+            from_cache = False
 
-        query = self.db.query(Word).filter(
-            Word.char.in_(list(self.compounds)),
-            length_filter(self.expected_length),
-        )
-        rows = query.order_by(Word.char, Word.code, Word.jyutping).all()
-        return rows, False
+        if self.allow_transient:
+            have = {get_word_text(w) for w in rows}
+            missing = [ch for ch in self.compounds if ch not in have]
+            if missing:
+                from app.domain.relations.compound_connect import compose_transient_word
+
+                for ch in missing:
+                    transient = compose_transient_word(ch)
+                    if transient is not None:
+                        rows.append(transient)
+
+        return rows, from_cache
 
 
 CompoundSynCandidateSource = CompoundCandidateSource
@@ -308,7 +323,10 @@ def _resolve_mask_family_source(
             if not tiers:
                 return None, None
             source = CompoundCandidateSource(
-                db, frozenset(tiers.keys()), expected_length=3
+                db,
+                frozenset(tiers.keys()),
+                expected_length=3,
+                allow_transient=True,
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
             return source, sort_key
@@ -336,7 +354,10 @@ def _resolve_mask_family_source(
             if not tiers:
                 return None, None
             source = CompoundCandidateSource(
-                db, frozenset(tiers.keys()), expected_length=3
+                db,
+                frozenset(tiers.keys()),
+                expected_length=3,
+                allow_transient=True,
             )
             sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
             return source, sort_key

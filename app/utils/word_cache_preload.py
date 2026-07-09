@@ -143,9 +143,13 @@ def start_background_preload() -> None:
 
         begin_preload()
         try:
-            if disk.disk_cache_enabled() and disk.try_restore(on_progress=set_preload_progress):
-                complete_preload()
-                return
+            if disk.disk_cache_enabled():
+                set_preload_progress(0.05)
+                if disk.try_restore(on_progress=set_preload_progress):
+                    complete_preload()
+                    print("[word_cache] restored from disk snapshot (.cache/word_meta.bin)")
+                    return
+                print("[word_cache] disk restore miss — cold build from SQLite")
 
             db = SessionLocal()
             try:
@@ -156,7 +160,11 @@ def start_background_preload() -> None:
             populate_from_rows(rows)
             complete_preload()
             if disk.disk_cache_enabled():
-                disk.persist()
+                try:
+                    disk.persist()
+                    print("[word_cache] persisted disk snapshot for next warm start")
+                except Exception as pe:
+                    print(f"[word_cache] persist failed (next start will cold-build): {pe}")
         except Exception as e:
             fail_preload(str(e))
             print(
