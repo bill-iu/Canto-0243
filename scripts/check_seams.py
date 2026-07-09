@@ -604,6 +604,9 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn(".ready-gate", ready_gate)
         self.assertIn(".preload-overlay", ready_gate)
         self.assertIn('use[filter=\'url(#brush-roughen-brand)\']', ready_gate)
+        # 雙渠道 shell 露出：渠道中立 class（唔再用 pwa-shell-revealed）
+        self.assertIn("html:not(.shell-revealed) .app-shell", ready_gate)
+        self.assertNotIn("pwa-shell-revealed", ready_gate)
         self.assertNotIn(".preload-overlay {", shell)
         self.assertNotIn(".gate-brand {", shell)
         self.assertIn('href="ready-gate.css"', index)
@@ -611,6 +614,12 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("../../frontend/ready-gate.css", main_tsx)
         self.assertIn('class="ready-gate preload-overlay"', index)
         self.assertIn('class="ready-gate pwa-boot-gate"', client_index)
+        gate_mjs = (REPO_ROOT / "frontend" / "gate.mjs").read_text(encoding="utf-8")
+        pwa_boot = (REPO_ROOT / "client" / "src" / "pwa-shell-boot.ts").read_text(encoding="utf-8")
+        self.assertIn('classList.add("shell-revealed")', gate_mjs)
+        self.assertIn("shell-revealed", pwa_boot)
+        self.assertNotIn("pwa-shell-revealed", pwa_boot)
+        self.assertNotIn("pwa-shell-revealed", client_index)
 
     def test_shared_css_single_source_in_frontend(self):
         client_src = REPO_ROOT / "client" / "src"

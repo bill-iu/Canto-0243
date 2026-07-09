@@ -222,6 +222,8 @@ function setSearchControlsEnabled(enabled) {
 }
 
 async function revealFromGate({ playLanding }) {
+  // 就緒閘解鎖：與 PWA 共用 ready-gate.css 的 shell 露出 class（唔用 pwa- 前綴）
+  document.documentElement.classList.add("shell-revealed");
   document.body.classList.remove("landing-a-pending", "landing-b-pending");
   if (playLanding) {
     markLandingDone();
