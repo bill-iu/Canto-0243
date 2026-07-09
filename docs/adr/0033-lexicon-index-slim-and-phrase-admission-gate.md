@@ -10,7 +10,7 @@ We will not split the lexicon into multiple files for v1.0.7 (S0). Instead:
 
 3. **Release gate** — `check_lexicon_release_gate`: db ≤95 MB, indexes ≤45 MB, rime_phrase rows ↓≥50% vs baseline, golden parity and G benchmark enforced separately.
 
-**I3 (phoneme compact encoding, J2)** remains a separate PR after I2 dual-channel stability (S-B + maintainer sign-off).
+**I3 (phoneme compact encoding, J2)** — see **[ADR-0037](./0037-phoneme-field-compact-encoding.md)** (S1 compact fields + vocab meta; after I2 dual-channel stability).
 
 **Consequences**
 

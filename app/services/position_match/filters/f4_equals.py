@@ -101,24 +101,27 @@ def _word_stored_phoneme_json(word: Any, field: str):
 
 
 def _phoneme_storage_key(word: Any, field: str) -> tuple:
+    from app.domain.lexicon.phoneme_codec import decode_phoneme_field
+
+    dim = "final" if field == "finals" else "initial"
     raw = _word_stored_phoneme_json(word, field)
     if isinstance(raw, list):
-        return tuple(raw)
+        return tuple(str(x) if x is not None else "" for x in raw)
     if isinstance(raw, str) and raw:
-        from app.utils.json_helpers import load_json_list
-
-        return tuple(load_json_list(raw))
+        return tuple(decode_phoneme_field(raw, dim))
     return ()
 
 
 def _phoneme_db_literal(word: Any, field: str) -> str:
-    import json
+    from app.domain.lexicon.phoneme_codec import encode_phoneme_list
 
     raw = _word_stored_phoneme_json(word, field)
     if isinstance(raw, str):
+        # already compact (or legacy JSON — equality will miss until migrate)
         return raw
     if isinstance(raw, list):
-        return json.dumps(raw, ensure_ascii=False, separators=(", ", ": "))
+        dim = "final" if field == "finals" else "initial"
+        return encode_phoneme_list([str(x) if x is not None else "" for x in raw], dim)
     return ""
 
 
@@ -196,7 +199,6 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     )
     from app.models.word import Word
     from app.services.word_db_filters import apply_code_filter, length_filter
-    from app.utils.json_helpers import load_json_list
 
     if not get_equals_span(spec):
         return []
@@ -232,7 +234,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         target_parts = (
             get_rhyme_finals(target)
             if is_final
-            else load_json_list(target.initials)
+            else get_word_parts(target, "initials")
         )
 
     query = db.query(Word)

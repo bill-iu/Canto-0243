@@ -4,6 +4,7 @@
 import { getCodeVariants } from '../code-variants.ts';
 import { queryFirst, queryRows } from '../database-backend.ts';
 import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
+import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { anchorPhonemeOptions } from './filters.ts';
@@ -270,7 +271,10 @@ function phonemeStorageKey(row: WordRow, field: 'finals' | 'initials'): string {
     return raw;
   }
   if (Array.isArray(raw)) {
-    return JSON.stringify(raw);
+    return encodePhonemeList(
+      raw.map((x) => (x == null ? '' : String(x))),
+      field === 'finals' ? 'final' : 'initial',
+    );
   }
   return '';
 }
@@ -433,7 +437,7 @@ export async function queryWordsByEqualsSpec(
   );
 }
 
-/** SQL prefilter for prefix-wildcard equals — AND finals LIKE %\"final\"% for each ref slot */
+/** SQL prefilter for prefix-wildcard equals — P1 compact span LIKE (ADR-0037) */
 async function prefixWildcardCandidatesByFinals(
   db: Database,
   width: number,
@@ -450,11 +454,15 @@ async function prefixWildcardCandidatesByFinals(
     )
   `;
   const params: Array<string | number> = [width, width];
-  for (const part of targetParts) {
-    if (!part) continue;
-    // finals stored as JSON array e.g. ["an","iu","ou"]
-    sql += ' AND finals LIKE ?';
-    params.push(`%"${part}"%`);
+  try {
+    const encoded = encodePhonemeList(targetParts, 'final');
+    const likes = compactSpanLikePatterns(encoded);
+    if (likes.length) {
+      sql += ` AND (${likes.map(() => 'finals LIKE ?').join(' OR ')})`;
+      params.push(...likes);
+    }
+  } catch {
+    // unknown token — fall through to unlimited scan
   }
   if (code) {
     const variants = getCodeVariants(code, mode);
@@ -471,7 +479,6 @@ async function prefixWildcardCandidatesByFinals(
       rows.push(row);
     }
   }
-  // Fallback: if JSON prefilter too strict / empty finals, scan length bucket with cap
   if (!rows.length) {
     const [fallback] = await getCandidatesForLength(db, width, {
       code,

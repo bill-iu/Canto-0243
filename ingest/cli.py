@@ -468,6 +468,14 @@ def _build_db_exports(args: argparse.Namespace) -> int:
               f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)")
     except Exception as exc:
         print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
+    print("==> phoneme vocab meta (J2 / ADR-0037)")
+    try:
+        from ingest.lexicon_meta import write_phoneme_vocab_meta
+
+        write_phoneme_vocab_meta(REPO_ROOT / "lyrics.db")
+        print("    lexicon_meta phoneme fingerprint written")
+    except Exception as exc:
+        print(f"phoneme meta failed (non-fatal): {exc}", file=sys.stderr)
     print("==> finalize lexicon indexes (I2 allowlist)")
     try:
         from ingest.lexicon_indexes import finalize_lexicon_indexes

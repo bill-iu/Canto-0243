@@ -10,7 +10,7 @@ from app.domain.lexicon.ranking import authoritative_reading_sort_key
 from app.domain.lexicon.word_row import get_rhyme_finals, get_word_jyutping, get_word_text
 from app.models.word import Word
 from app.lexicon.static_index import LexiconEntry
-from app.utils.json_helpers import load_json_list
+from app.domain.lexicon.phoneme_codec import decode_phoneme_field
 from app.utils.jyutping_codec import (
     expand_standalone_nasal_final_options,
     is_standalone_nasal_syllable_token,
@@ -41,7 +41,7 @@ def _initials_from_entries(entries: list[LexiconEntry]) -> set[str]:
         if is_standalone_nasal_syllable_token(token):
             continue
         initials, _, _ = split_jyutping(ent.jyutping)
-        parsed = load_json_list(initials)
+        parsed = decode_phoneme_field(initials, "initial")
         if parsed:
             options.add(parsed[0])
     return options
@@ -104,7 +104,7 @@ def anchor_phoneme_options(
         if dimension == "initial":
             if is_standalone_nasal_syllable_token(token):
                 continue
-            initials = load_json_list(getattr(row, "initials", None))
+            initials = decode_phoneme_field(getattr(row, "initials", None), "initial")
             if initials:
                 result.add(initials[0])
         else:
@@ -156,7 +156,7 @@ def equals_ref_phoneme_parts(
     if dimension == "final":
         parts = get_rhyme_finals(row)
         return parts if parts else None
-    parts = load_json_list(getattr(row, "initials", None))
+    parts = decode_phoneme_field(getattr(row, "initials", None), "initial")
     return parts if parts else None
 
 
@@ -166,7 +166,7 @@ def _phoneme_parts_suffix(row: Any, dimension: PhonemeDimension, suffix_len: int
     if dimension == "final":
         parts = get_rhyme_finals(row)
     else:
-        parts = load_json_list(getattr(row, "initials", None))
+        parts = decode_phoneme_field(getattr(row, "initials", None), "initial")
     if not parts or len(parts) < suffix_len:
         return None
     return parts[-suffix_len:]

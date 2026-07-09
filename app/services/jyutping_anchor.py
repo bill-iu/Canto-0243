@@ -393,11 +393,9 @@ def syllable_matches_rhyme_fragment(syl_letters: str, fragment: str) -> bool:
     if fragment == STANDALONE_NG:
         return syl_letters in ("m", "ng")
     if len(fragment) == 1:
-        finals_json = split_jyutping(syl_letters)[1]
-        try:
-            arr = json.loads(finals_json)
-        except (TypeError, json.JSONDecodeError):
-            arr = []
+        from app.utils.jyutping_codec import split_jyutping_parts
+
+        _ini, arr, _t = split_jyutping_parts(syl_letters)
         return bool(arr) and str(arr[0]) == fragment
     return syl_letters == fragment or syl_letters.endswith(fragment)
 
@@ -422,10 +420,10 @@ def rhyme_letter_final_options(letters: str) -> frozenset[str]:
             if is_standalone_nasal_syllable_token(token):
                 finals |= set(STANDALONE_NASAL_FINALS)
                 continue
-            finals_json = split_jyutping(token)[1]
-            try:
-                arr = json.loads(finals_json)
-            except (json.JSONDecodeError, TypeError):
+            from app.utils.jyutping_codec import split_jyutping_parts
+
+            _ini, arr, _t = split_jyutping_parts(token)
+            if not arr:
                 continue
             if arr:
                 finals.add(str(arr[0]))

@@ -37,7 +37,7 @@ def _word_from_entry(text: str, jyut_str: str, code_val: str) -> Word:
     try:
         initials, finals, _ = split_jyutping(jyut_str)
     except Exception:
-        initials = finals = "[]"
+        initials = finals = ""
     return Word(
         char=text,
         code=code_val,

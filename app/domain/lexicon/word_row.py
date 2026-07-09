@@ -2,8 +2,8 @@
 
 from __future__ import annotations
 
+from app.domain.lexicon.phoneme_codec import decode_phoneme_field
 from app.utils.jyutping_codec import rhyme_finals_from_jyutping
-from app.utils.json_helpers import load_json_list
 
 
 def get_word_text(word) -> str:
@@ -19,10 +19,14 @@ def get_word_jyutping(word) -> str:
 
 
 def get_word_parts(word, field: str) -> list:
+    dim = "final" if field == "finals" else "initial"
     if isinstance(word, dict):
-        return word.get(field) or []
-    return load_json_list(getattr(word, field, None))
-
+        raw = word.get(field)
+        # word_cache may store already-decoded lists
+        if isinstance(raw, list):
+            return [str(x) if x is not None else "" for x in raw]
+        return decode_phoneme_field(raw, dim)  # type: ignore[arg-type]
+    return decode_phoneme_field(getattr(word, field, None), dim)  # type: ignore[arg-type]
 
 def get_rhyme_finals(word) -> list:
     """Rhyme finals from jyutping when available; else stored finals."""
