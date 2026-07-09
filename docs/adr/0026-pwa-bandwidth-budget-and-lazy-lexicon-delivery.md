@@ -1,7 +1,5 @@
-# PWA bandwidth budget and lazy lexicon delivery
+# ADR-0026（stub）→ 見 ADR-0045
 
-The GitHub Pages PWA has a limited monthly bandwidth budget, while the full lexicon database is large enough that automatic first-page downloads would quickly exhaust it. We will keep full offline lexicon support, but the app shell must not download the database on initial page load; the full database is fetched only when the user first searches or explicitly asks to prepare offline use, with visible progress/status, then persisted through OPFS/service-worker caching for later launches.
+**Status:** superseded by [ADR-0045](./0045-pwa-delivery-and-lexicon-channel.md)
 
-App releases and lexicon releases are versioned separately: changing the app must not change the database URL or OPFS key unless the lexicon bytes changed. The app discovers the current lexicon through a small `lexicon-manifest.json` that names the lexicon version, database file, byte size, and integrity metadata instead of deriving the database URL from the app release tag. The manifest uses a network-first, short-cache policy so metadata can update cheaply, while database files use cache-first, long-lived OPFS/service-worker storage and must not be refreshed in the background just because the app opened.
-
-Large auxiliary JSON indexes, especially `static-syn-index.json`, are loaded lazily by the features that need them rather than during ordinary database initialization; the first version focuses on JSON reduction/compression/lazy loading, not a custom compressed database package. The Pages build must fail if the deploy artifact contains more than one `lyrics*.db`, so stale development or release databases cannot silently consume bandwidth.
+PWA 帶寬預算、manifest 發現、懶載入之活決策見 ADR-0045 §2。

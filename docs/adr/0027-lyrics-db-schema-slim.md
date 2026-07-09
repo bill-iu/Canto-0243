@@ -1,15 +1,3 @@
-# lyrics.db schema optimisation — remove redundant data and slim release artifact
+# ADR-0027（stub）→ 見 ADR-0047
 
-The distributed `lyrics.db` had grown to 172 MB after the v1.0.5 lexicon rebuild (468 K word entries). Analysis showed roughly 49 MB attributable to data and indexes that are either completely unused at runtime, derivable from other stored columns, or made redundant by a more specific composite index. Because `lyrics.db` is downloaded by PWA users on first search and shipped inside the Windows portable bundle, reducing its size directly improves both bandwidth cost and download time.
-
-Four categories of redundancy were identified and removed:
-
-**Dead columns.** `words.meaning` and `words.embedding` have been `NULL` for every row since the embedding pipeline was abandoned. `words.tones` stores the raw jyutping tone digits (e.g. `[1, 2]` for `hoeng1 gong2`) but is never queried at runtime; the same information is recoverable from `words.jyutping` via `split_jyutping()`.
-
-**Provenance table replaced by bitmask.** `word_sources` (568 K rows, ~24 MB) recorded which ingest source contributed each word entry but was never read by any runtime query path. It is replaced by a single `words.source_flags INTEGER` column that encodes the same information as a 6-bit bitmask: `hsk30=1 · kaifang=2 · rime=4 · rime_phrase=8 · rime_words=16 · words_hk=32`. The per-source query `WHERE source_flags & 8 > 0` (rime\_phrase) is equivalent to the old JOIN. All 468 K entries retain their origin information.
-
-**Redundant indexes.** Three indexes were removed after `EXPLAIN QUERY PLAN` verification: `ix_words_id` (4 MB) is never selected by the query planner because `INTEGER PRIMARY KEY` in SQLite IS the rowid B-tree; `ix_words_jyutping` (11 MB) is selected only for bare `ORDER BY jyutping` scans with no WHERE clause, a pattern that does not exist in the runtime query paths (jyutping matching is done in Python after fetching by length); `idx_length_code` (5 MB) is completely covered by the prefix of the existing `idx_length_code_finals (length, code, finals)` composite index, which the query planner consistently prefers. The indexes `ix_words_char`, `ix_words_code`, `idx_words_length`, `idx_length_code_finals`, and the two `word_relations` composite indexes are retained.
-
-**Page layout.** After the schema changes, `PRAGMA page_size = 16384; VACUUM;` is run as the final step of `python -m ingest build-db`. Increasing the page size from the SQLite default of 4096 reduces per-page header overhead for medium-length text columns (`jyutping` avg 19 chars, `finals` avg 24 chars) and eliminates all page fragmentation in a single pass. The VACUUM also serves as a defragmentation step after the full ingest.
-
-`initials` and `finals` are intentionally kept: `finals` backs the primary query index `idx_length_code_finals` for rhyme lookups; `initials` is used in the m/ng dual-phoneme anchor logic (`execute_dual_phoneme_anchor_specs`) where standalone nasal syllables require special handling that would be non-trivial to replicate at query time without the pre-parsed column.
+**Status:** superseded by [ADR-0047](./0047-lexicon-volume-and-phoneme-contract.md)
