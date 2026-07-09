@@ -130,8 +130,10 @@ def equals_authoritative_row_for_code(
 ) -> Optional[Any]:
     """整詞等號 + 左碼：參考讀音對齊該碼（詞級標音可補庫內 stale 列）。PR-A：逐格 digit。"""
     from app.lexicon.static_index import get_lexicon_entries
-    from app.services.position_match.filters.f1_slot_code import matches_code_positions
-    from app.services.position_match.mask_adapter import required_codes_from_digit_string
+    from app.utils.code_positions import (
+        matches_code_positions,
+        required_codes_from_digit_string,
+    )
     from app.utils.jyutping_codec import get_code_variants
 
     required = required_codes_from_digit_string(code_prefix)

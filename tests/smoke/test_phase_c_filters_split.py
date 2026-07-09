@@ -39,10 +39,18 @@ class PhaseCFiltersSplit(unittest.TestCase):
                 self.assertLessEqual(lines, MAX_LINES, msg=f"{name} too large ({lines})")
 
     def test_symbols_live_in_family_modules(self):
+        # matches_code_positions: pure helper lives in app.utils (domain must not import services)
+        utils_code = REPO / "app" / "utils" / "code_positions.py"
+        self.assertTrue(utils_code.is_file())
+        self.assertIn("def matches_code_positions", utils_code.read_text(encoding="utf-8"))
+
         for name, symbols in EXPECTED.items():
             src = (FILTERS_PKG / name).read_text(encoding="utf-8")
             for sym in symbols:
                 with self.subTest(name=name, sym=sym):
+                    if name == "f1_slot_code.py" and sym == "matches_code_positions":
+                        self.assertIn("matches_code_positions", src)
+                        continue
                     self.assertIn(f"def {sym}", src)
 
     def test_public_import_path(self):

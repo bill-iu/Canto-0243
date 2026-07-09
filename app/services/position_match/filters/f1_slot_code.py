@@ -13,22 +13,7 @@ from app.services.word_serializer import (
     get_word_sort_code,
     get_word_text,
 )
-from app.utils.jyutping_codec import get_code_variants
-
-def matches_code_positions(code_str: str, required_codes: list[Optional[str]], mode: str) -> bool:
-    """逐格 digit 鬆檔比對。required 可短於 code（前綴）；None 格跳過。"""
-    if not required_codes:
-        return True
-    if not code_str and any(r is not None for r in required_codes):
-        return False
-    for idx, req_digit in enumerate(required_codes):
-        if req_digit is None:
-            continue
-        if idx >= len(code_str):
-            return False
-        if code_str[idx] not in set(get_code_variants(str(req_digit), mode)):
-            return False
-    return True
+from app.utils.code_positions import matches_code_positions
 
 def _group_candidates_by_char(candidates: list) -> dict[str, list]:
     grouped: dict[str, list] = {}

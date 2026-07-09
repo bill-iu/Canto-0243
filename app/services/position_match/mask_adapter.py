@@ -5,6 +5,7 @@ from typing import Optional
 
 from app.services.position_match.spec import MatchSpec
 from app.services.query_tokens import is_wildcard_char
+from app.utils.code_positions import required_codes_from_digit_string  # re-export
 
 
 def matches_mask_literal_chars(word_char: str, mask: str) -> bool:
@@ -69,13 +70,6 @@ def dense_code_from_required(required: list[Optional[str]]) -> Optional[str]:
 def dense_code_from_spec(spec: MatchSpec) -> Optional[str]:
     """MatchSpec → dense 全碼（只 slots／mask；唔用 code_prefix）。"""
     return dense_code_from_required(required_codes_from_spec(spec))
-
-
-def required_codes_from_digit_string(digits: str) -> list[Optional[str]]:
-    """短碼前綴字串 → 逐格 required（compound／近反義種子）。"""
-    if not digits or not str(digits).isdigit():
-        return []
-    return [ch for ch in str(digits)]
 
 
 def code_digit_string_from_spec(spec: MatchSpec) -> Optional[str]:
