@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { BrandLogo, GateInkMeter } from './brand-logo';
+import { BrandLogo } from './brand-logo';
 import { formatPwaGateLabel } from './gate-label';
 import type { OfflineReadinessStatus } from './hooks/useDB.tsx';
 import {
@@ -187,18 +187,18 @@ export function ReadyGate({
 
   return (
     <div className={overlayClass} role="status" aria-live="polite" aria-busy={offlineStatus !== 'ready'}>
+      {/* Single ink: logo wordmark + fill only (no separate GateInkMeter) */}
       <div className="gate-brand">
         <BrandLogo variant="gate" inkProgress={inkProgress} theme={theme} />
+        <p className="gate-status">{label}</p>
       </div>
-      <GateInkMeter inkProgress={inkProgress} theme={theme} />
-      <p className="gate-status">{label}</p>
       {showRetry && (
         <button type="button" className="primary-button" onClick={() => void onRetry()}>
           重試離線就緒
         </button>
       )}
       {offlineStatus === 'not_ready' && isOnline && !isDbCached && (
-        <p className="gate-status" style={{ maxWidth: 'min(420px, 90vw)', fontSize: '0.85rem' }}>
+        <p className="gate-status gate-status--hint">
           首次離線就緒需下載較大資料包，建議用 Wi‑Fi。
           {isLikelyMetered ? '（偵測到可能為省流量／慢速網路）' : ''}
         </p>

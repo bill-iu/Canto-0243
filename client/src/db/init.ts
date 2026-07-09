@@ -28,6 +28,7 @@ import { resetCompoundCaches } from './compound.ts';
 import { invalidateRelationGraph } from './relation-graph.ts';
 import { invalidateLexiconMembership } from './lexicon-membership.ts';
 import { invalidateRelationPoolCache } from './relation-pool-projection.ts';
+import { resetHeteronymIndex } from './heteronym.ts';
 
 
 let db: DatabaseBackend | null = null;
@@ -77,6 +78,7 @@ export function injectDatabaseForTests(candidate: DatabaseBackend | null): void 
   resetCompoundCaches();
   invalidateLexiconMembership();
   invalidateRelationPoolCache();
+  resetHeteronymIndex();
 }
 
 export { resolveDbBackendMode, type DbBackendMode } from './db-backend-mode.ts';
@@ -156,15 +158,23 @@ async function initializeSqlJsPath(target: LexiconTarget): Promise<DatabaseBacke
   const { bytes, source } = await resolveLexiconBytes(target);
   lastLexiconRestoreSource = source;
   console.log(`Lexicon restore (${source}) → sql.js`);
+  // Honest open phase: don't sit on download % while verifying / sql.js inflate
+  reportGatePhase('download', 1);
+  reportGatePhase('open', 0.15);
   await verifyLexiconIntegrity(bytes, target);
+  reportGatePhase('open', 0.4);
   await persistLexiconForOffline(target.version, bytes);
-  return loadSqlJsFromBytes(bytes);
+  reportGatePhase('open', 0.65);
+  const opened = await loadSqlJsFromBytes(bytes);
+  reportGatePhase('open', 0.95);
+  return opened;
 }
 
 async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBackend> {
   if (!(await opfsAvailable())) {
     throw new Error('OPFS VFS unavailable');
   }
+  reportGatePhase('open', 0.2);
   const opened = await openOpfsVfsDatabase({
     version: target.version,
     fetchUrl: target.fetchUrl,
@@ -178,6 +188,8 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
       ? `Lexicon streamed to OPFS VFS (${opened.byteSize} bytes)`
       : `Lexicon opened from OPFS VFS (${opened.byteSize} bytes)`,
   );
+  reportGatePhase('download', 1);
+  reportGatePhase('open', 0.9);
   return opened.db;
 }
 
@@ -335,6 +347,7 @@ export function resetDatabase(): void {
   resetCompoundCaches();
   invalidateLexiconMembership();
   invalidateRelationPoolCache();
+  resetHeteronymIndex();
   lexiconTargetPromise = null;
   databaseInitPromise = null;
   lastLexiconRestoreSource = null;

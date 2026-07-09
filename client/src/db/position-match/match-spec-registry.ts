@@ -246,6 +246,9 @@ function specTripleRhymeAnchor(parsed: ParsedQuery): MatchSpec | null {
   const spec = createMatchSpec(q.width);
   slots(spec).push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
   spec.mask = '?'.repeat(q.width);
+  // Prefer inverted-index path (engine) over unlimited width-3 scan
+  if (!spec.extra) spec.extra = {};
+  spec.extra.triple_rhyme_anchor = true;
   return spec;
 }
 

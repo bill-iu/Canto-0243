@@ -41,7 +41,14 @@ export function reportDownloadBytes(loaded: number, total: number): void {
     reportGatePhase('download', loaded / total);
     return;
   }
-  reportGatePhase('download', 0.12);
+  // Unknown Content-Length: log-scale advance so UI doesn't stick at ~12% forever
+  // (still caps under 0.92 until download phase ends explicitly).
+  if (loaded <= 0) {
+    reportGatePhase('download', 0.05);
+    return;
+  }
+  const soft = Math.min(0.92, 0.12 + Math.log10(loaded + 10) / 8);
+  reportGatePhase('download', soft);
 }
 
 export function subscribeGateProgress(fn: Listener): () => void {

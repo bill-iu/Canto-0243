@@ -12,7 +12,15 @@ export type ConnectiveCompoundKind = 'syn' | 'ant';
 /** Lexicon hits keep flank tier 0–2; synthetic always ranks after. */
 export const TIER_CONNECTIVE_SYNTH = 3;
 
+/** Grill: cap synth so first !與! / ~與~ does not freeze main thread. */
+export const CONNECTIVE_SYNTH_CAP = 500;
+const SYNTH_YIELD_EVERY = 25;
+
 type TierMap = Map<string, number>;
+
+function yieldToMain(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
 
 function flankTiersFromTwoChar(twoCharTiers: TierMap): Map<string, number> {
   const out = new Map<string, number>();
@@ -115,9 +123,10 @@ export async function searchConnectiveCompoundTiers(
     }
   }
 
-  // Batch: only compose missing compounds (skip if already lexicon-hit)
+  // Lexicon hits first (already in `tiers`); synth up to CAP with main-thread yields
   const pending: string[] = [];
   for (const [pair] of flankTiers) {
+    if (pending.length >= CONNECTIVE_SYNTH_CAP) break;
     const tab = pair.indexOf('\t');
     if (tab < 0) continue;
     const a = pair.slice(0, tab);
@@ -128,10 +137,15 @@ export async function searchConnectiveCompoundTiers(
       pending.push(compound);
     }
   }
+  let n = 0;
   for (const compound of pending) {
     const ok = await ensureComposedWordRow(db, compound);
     if (ok) {
       tiers.set(compound, TIER_CONNECTIVE_SYNTH);
+    }
+    n += 1;
+    if (n % SYNTH_YIELD_EVERY === 0) {
+      await yieldToMain();
     }
   }
 

@@ -81,8 +81,14 @@ html[data-landing='a'] .ready-gate .gate-hero {
 }
 
 .ready-gate .gate-brand {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: min(240px, 72vw);
   max-width: min(520px, 92vw);
+  text-align: center;
   opacity: 0;
 }
 
@@ -90,23 +96,33 @@ html.fonts-ready .ready-gate .gate-brand {
   animation: gate-brand-in 680ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Logo + status share brand column; hide legacy separate ink meter */
 .ready-gate .gate-ink-meter {
-  display: none;
-  width: min(240px, 72vw);
-  height: auto;
+  display: none !important;
 }
 
-.preload-overlay.ready-gate.preload-overlay--minimal .gate-ink-meter,
-.pwa-boot-gate.ready-gate .gate-ink-meter {
+.ready-gate .gate-brand .brand-logo,
+.ready-gate .gate-brand .brand-logo--gate {
   display: block;
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .ready-gate .gate-status,
 .ready-gate .pwa-boot-gate__status {
   margin: 0;
+  width: 100%;
   color: var(--muted, var(--pwa-boot-muted));
   font-size: 0.92rem;
   text-align: center;
+  line-height: 1.4;
+}
+
+.ready-gate .gate-status--hint {
+  max-width: min(420px, 90vw);
+  font-size: 0.85rem;
 }
 
 .ready-gate .pwa-boot-gate__status {

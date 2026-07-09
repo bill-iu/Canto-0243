@@ -57,9 +57,14 @@ function matchesCodeTemplate(
   return true;
 }
 
+function yieldToMain(): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, 0));
+}
+
 export async function buildHeteronymIndex(db: Database): Promise<Map<string, ReadingRow[]>> {
   const buckets = new Map<string, ReadingRow[]>();
   const rows = await queryRows(db, 'SELECT char, code, jyutping FROM words');
+  let n = 0;
   for (const row of rows) {
     const ch = String(row.char ?? '');
     const jyut = String(row.jyutping ?? '');
@@ -69,6 +74,10 @@ export async function buildHeteronymIndex(db: Database): Promise<Map<string, Rea
     const list = buckets.get(ch) ?? [];
     list.push([String(row.code ?? ''), jyut]);
     buckets.set(ch, list);
+    n += 1;
+    if (n % 4000 === 0) {
+      await yieldToMain();
+    }
   }
 
   const out = new Map<string, ReadingRow[]>();
@@ -115,9 +124,14 @@ export async function executeHeteronymCodeSearch(
   const leftReq = codeTemplateToRequired(parsed.left_template);
   const rightReq = codeTemplateToRequired(parsed.right_template);
   const index = await ensureHeteronymIndex(db);
-  const items: HeteronymResult[] = [];
+  const matchedChars: string[] = [];
 
+  let scan = 0;
   for (const [ch, readings] of index) {
+    scan += 1;
+    if (scan % 800 === 0) {
+      await yieldToMain();
+    }
     if (ch.length !== parsed.width) {
       continue;
     }
@@ -145,20 +159,29 @@ export async function executeHeteronymCodeSearch(
           break;
         }
       }
-      if (paired) {
-        break;
-      }
+      if (paired) break;
     }
-    if (!paired) {
-      continue;
+    if (paired) {
+      matchedChars.push(ch);
     }
+  }
 
-    const rowStmt = await db.prepare(`
-      SELECT char, jyutping, code, length FROM words WHERE char = ?
-    `);
-    await rowStmt.bind([ch]);
-    while (await rowStmt.step()) {
-      const row = await rowStmt.getAsObject() as WordRow;
+  if (!matchedChars.length) {
+    return [];
+  }
+
+  // Batch load readings — avoid per-char prepare (was freezing 33/34 on full lexicon)
+  const items: HeteronymResult[] = [];
+  const chunk = 200;
+  for (let i = 0; i < matchedChars.length; i += chunk) {
+    const part = matchedChars.slice(i, i + chunk);
+    const placeholders = part.map(() => '?').join(',');
+    const rows = await queryRows(
+      db,
+      `SELECT char, jyutping, code, length FROM words WHERE char IN (${placeholders})`,
+      part,
+    );
+    for (const row of rows) {
       const rowChar = String(row.char ?? '');
       const rowLen = Number(row.length ?? rowChar.length);
       if (rowLen !== parsed.width && rowChar.length !== parsed.width) {
@@ -170,14 +193,14 @@ export async function executeHeteronymCodeSearch(
         continue;
       }
       items.push({
-        word: ch,
+        word: rowChar,
         jyutping: String(row.jyutping ?? ''),
         code,
         score: 0,
         heteronym_tags: tags,
       });
     }
-    await rowStmt.free();
+    await yieldToMain();
   }
 
   return sortHeteronymResults(items).slice(offset, offset + limit);
