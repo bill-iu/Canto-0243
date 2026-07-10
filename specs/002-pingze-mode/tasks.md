@@ -11,8 +11,8 @@
 **Purpose**: Establish the authoritative contracts and focused test entry points.
 
 - [ ] T001 Add pingze cases and expected non-pingze isolation cases to `contracts/relation-syntax-detect-cases.json`
-- [ ] T002 [P] Add dedicated pingze grammar/slot test scaffolding in `tests/test_ping_ze_serial.py` and `client/scripts/parser-self-check.ts`
-- [ ] T003 [P] Add pingze URL/history fixture cases in `tests/query_tabs_state_test.mjs` and `client/src/search-url.ts`
+- [X] T002 [P] Add dedicated pingze grammar/slot test scaffolding in `tests/test_ping_ze_serial.py` and `client/scripts/parser-self-check.ts`
+- [X] T003 [P] Add pingze URL/history fixture cases in `tests/query_tabs_state_test.mjs` and `client/src/search-url.ts`
 
 ---
 
@@ -20,14 +20,14 @@
 
 **Purpose**: Add shared mode/state and MatchSpec primitives that block every user story.
 
-- [ ] T004 Extend UI/URL mode metadata and localized mode labels for `pz` in `client/src/mode-meta.ts`, `client/src/mode-menu.tsx`, and `frontend/mode-i18n.mjs`
-- [ ] T005 Extend portable URL, browser-history and tab-frame schemas with optional `pzmode` in `frontend/query-tabs-state.mjs`, `frontend/search-navigation.mjs`, and `client/src/shared-portable.d.ts`
-- [ ] T006 Extend client URL helpers and tab restore plumbing for `mode=pz&pzmode=m1|m2|m3` in `client/src/search-url.ts` and `client/src/query-tabs/useQueryTabs.ts`
-- [ ] T007 [P] Add Python `tone_class` slot constraint and selected-mode numeric comparison support in `app/services/position_match/spec.py`, `app/services/position_match/filters/f1_slot_code.py`, and `app/utils/code_positions.py`
-- [ ] T008 [P] Add TypeScript `tone_class` slot constraint and selected-mode numeric comparison support in `client/src/db/position-match/spec.ts` and `client/src/db/position-match/filters/f1-slot-code.ts`
-- [ ] T009 Register a MatchSpec-backed pingze query kind through `contracts/query-kind-manifest.json`, `app/services/query_match_spec_registry.py`, and `client/src/db/position-match/match-spec-registry.ts`; regenerate `app/services/_generated/query_kind_registry.py` and `client/src/db/_generated/query-kind-registry.ts` with `scripts/codegen_query_kind_manifest.py`
-- [ ] T010 Extend Python and TypeScript candidate-filter planning so `tone_class` selects the correct length/position candidates in `app/services/position_match/` and `client/src/db/position-match/`
-- [ ] T011 Run foundational parser, registry and position-match checks from `tests/smoke/test_query_registry.py`, `tests/smoke/test_position_match_invariants.py`, and `client/scripts/match-spec-registry-self-check.ts`
+- [X] T004 Extend UI/URL mode metadata and localized mode labels for `pz` in `client/src/mode-meta.ts`, `client/src/mode-menu.tsx`, and `frontend/mode-i18n.mjs`
+- [X] T005 Extend portable URL, browser-history and tab-frame schemas with optional `pzmode` in `frontend/query-tabs-state.mjs`, `frontend/search-navigation.mjs`, and `client/src/shared-portable.d.ts`
+- [X] T006 Extend client URL helpers and tab restore plumbing for `mode=pz&pzmode=m1|m2|m3` in `client/src/search-url.ts` and `client/src/query-tabs/useQueryTabs.ts`
+- [X] T007 [P] Add Python `tone_class` slot constraint and selected-mode numeric comparison support in `app/services/position_match/spec.py`, `app/services/position_match/filters/f1_slot_code.py`, and `app/utils/code_positions.py`
+- [X] T008 [P] Add TypeScript `tone_class` slot constraint and selected-mode numeric comparison support in `client/src/db/position-match/spec.ts` and `client/src/db/position-match/filters/f1-slot-code.ts`
+- [X] T009 Register a MatchSpec-backed pingze query kind through `contracts/query-kind-manifest.json`, `app/services/query_match_spec_registry.py`, and `client/src/db/position-match/match-spec-registry.ts`; regenerate `app/services/_generated/query_kind_registry.py` and `client/src/db/_generated/query-kind-registry.ts` with `scripts/codegen_query_kind_manifest.py`
+- [X] T010 Extend Python and TypeScript candidate-filter planning so `tone_class` selects the correct length/position candidates in `app/services/position_match/` and `client/src/db/position-match/`
+- [X] T011 Run foundational parser, registry and position-match checks from `tests/smoke/test_query_registry.py`, `tests/smoke/test_position_match_invariants.py`, and `client/scripts/match-spec-registry-self-check.ts`
 
 **Checkpoint**: `pz` state can be represented and a MatchSpec can express P/Z without changing normal-mode behavior.
 
@@ -41,16 +41,16 @@
 
 ### Tests for User Story 1
 
-- [ ] T012 [P] [US1] Replace legacy global P/Z parser tests with mode-isolation and P/Z/? slot tests in `tests/test_ping_ze_serial.py`
+- [X] T012 [P] [US1] Replace legacy global P/Z parser tests with mode-isolation and P/Z/? slot tests in `tests/test_ping_ze_serial.py`
 - [ ] T013 [P] [US1] Update Python/PWA mode-detect parity coverage in `tests/smoke/test_mode_detect_parity.py` and `frontend/query-mode-detect.mjs`
-- [ ] T014 [P] [US1] Add TypeScript parse and MatchSpec shape assertions to `client/scripts/parser-self-check.ts` and `client/scripts/match-spec-registry-self-check.ts`
+- [X] T014 [P] [US1] Add TypeScript parse and MatchSpec shape assertions to `client/scripts/parser-self-check.ts` and `client/scripts/match-spec-registry-self-check.ts`
 
 ### Implementation for User Story 1
 
-- [ ] T015 [US1] Replace global pingze parsing with a mode-aware parser entry in `app/services/query_parse.py`, `app/services/query_dispatch.py`, `app/services/query_explain.py`, `app/services/ping_zak.py`, and `app/services/query_types.py`
-- [ ] T016 [US1] Port mode-aware pingze parsing and explanation to `client/src/db/query/parse.ts`, `client/src/db/query/engine.ts`, `client/src/db/ping-zak.ts`, `client/src/db/query-types.ts`, and `client/src/db/query-explain.ts`
-- [ ] T017 [US1] Remove automatic P/Z-to-394052 redirects from `app/services/query_mode_dispatch.py`, `app/services/query_dispatch.py`, `client/src/db/query/mode-dispatch.ts`, and `client/src/db/query/engine.ts`
-- [ ] T018 [US1] Add pingze mode/sub-mode controls and explicit query execution context to `client/src/App.tsx`, `client/src/mode-menu.tsx`, and the search hook call chain under `client/src/`
+- [X] T015 [US1] Replace global pingze parsing with a mode-aware parser entry in `app/services/query_parse.py`, `app/services/query_dispatch.py`, `app/services/query_explain.py`, `app/services/ping_zak.py`, and `app/services/query_types.py`
+- [X] T016 [US1] Port mode-aware pingze parsing and explanation to `client/src/db/query/parse.ts`, `client/src/db/query/engine.ts`, `client/src/db/ping-zak.ts`, `client/src/db/query-types.ts`, and `client/src/db/query-explain.ts`
+- [X] T017 [US1] Remove automatic P/Z-to-394052 redirects from `app/services/query_mode_dispatch.py`, `app/services/query_dispatch.py`, `client/src/db/query/mode-dispatch.ts`, and `client/src/db/query/engine.ts`
+- [X] T018 [US1] Add pingze mode/sub-mode controls and explicit query execution context to `client/src/App.tsx`, `client/src/mode-menu.tsx`, and the search hook call chain under `client/src/`
 - [ ] T019 [US1] Add fixture-backed mixed-slot journey and pagination coverage in `tests/smoke/test_query_journey.py` plus a client execution self-check under `client/scripts/`
 - [ ] T020 [US1] Run the US1 focused Python and client checks listed in `specs/002-pingze-mode/quickstart.md`
 
@@ -67,14 +67,14 @@
 ### Tests for User Story 2
 
 - [ ] T021 [P] [US2] Add three-sub-mode numeric-slot parity cases to `tests/test_ping_ze_serial.py` and `client/scripts/parser-self-check.ts`
-- [ ] T022 [P] [US2] Add URL, tab-selection, browser-history and missing-`pzmode` default cases to `tests/query_tabs_state_test.mjs` and `client/src/search-url.ts`
+- [X] T022 [P] [US2] Add URL, tab-selection, browser-history and missing-`pzmode` default cases to `tests/query_tabs_state_test.mjs` and `client/src/search-url.ts`
 
 ### Implementation for User Story 2
 
-- [ ] T023 [US2] Thread `pzmode` through Python search context, MatchSpec building and numeric slot execution in `app/services/query_dispatch.py`, `app/services/query_match_spec_registry.py`, and `app/services/position_match/`
-- [ ] T024 [US2] Thread `pzmode` through TypeScript search context, MatchSpec execution and mode aliases in `client/src/db/query-types.ts`, `client/src/db/query/engine.ts`, `client/src/db/query/dispatch.ts`, and `client/src/db/position-match/`
-- [ ] T025 [US2] Restore per-tab pingze mode and pzmode and prevent stale mode commits on sub-mode changes in `client/src/App.tsx` and `client/src/query-tabs/useQueryTabs.ts`
-- [ ] T026 [US2] Verify selected sub-mode behavior and share/back-forward restoration with the quickstart scenarios in `specs/002-pingze-mode/quickstart.md`
+- [X] T023 [US2] Thread `pzmode` through Python search context, MatchSpec building and numeric slot execution in `app/services/query_dispatch.py`, `app/services/query_match_spec_registry.py`, and `app/services/position_match/`
+- [X] T024 [US2] Thread `pzmode` through TypeScript search context, MatchSpec execution and mode aliases in `client/src/db/query-types.ts`, `client/src/db/query/engine.ts`, `client/src/db/query/dispatch.ts`, and `client/src/db/position-match/`
+- [X] T025 [US2] Restore per-tab pingze mode and pzmode and prevent stale mode commits on sub-mode changes in `client/src/App.tsx` and `client/src/query-tabs/useQueryTabs.ts`
+- [X] T026 [US2] Verify selected sub-mode behavior and share/back-forward restoration with the quickstart scenarios in `specs/002-pingze-mode/quickstart.md`
 
 **Checkpoint**: Pingze mode preserves its chosen sub-mode across tabs, history and shared URLs, with correct numeric semantics.
 
@@ -105,7 +105,7 @@
 ## Phase 6: Polish & Cross-Cutting Concerns
 
 - [ ] T033 [P] Update approved terminology and examples in `CONTEXT.md`, `README.md`, `docs/README.en.md`, `docs/README.zh-Hans.md`, and `frontend/guide-i18n.mjs`
-- [ ] T034 [P] Add an ADR for dedicated pingze mode and mixed-slot MatchSpec under `docs/adr/`
+- [X] T034 [P] Add an ADR for dedicated pingze mode and mixed-slot MatchSpec under `docs/adr/`
 - [ ] T035 Run the complete focused Python, Node and client checks in `specs/002-pingze-mode/quickstart.md`, plus the relevant client lint/build commands
 - [ ] T036 Verify generated query-kind registry files match `contracts/query-kind-manifest.json`, review the final diff for normal-mode regressions, and update this checklist in `specs/002-pingze-mode/tasks.md`
 
