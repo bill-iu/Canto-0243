@@ -483,12 +483,12 @@ _Avoid_：只驗一端、用合併後 DOM 詞條數當探針、教學例子各�
 _Avoid_：冷索引直接 assert、探針繞過 gate 卻唔暖機、把 tail 靜態詞林埠當教學探針前置
 
 **教學探針 CI 閘**：
-`tests/fixtures/lyrics.db` + **探針暖機** + 精選零結果回歸（唔跑全量 manifest）。CI 預設層。
-_Avoid_：用細 fixture 判斷全量 parity、省略暖機
+固定 **詞條庫** + **近反義池快照** + **探針暖機**；**搜尋教學驗收** manifest 每例在 Portable 與 PWA 都須回傳 ≥1 列。另設小型 **relation runtime probe**，由原始關係資料重建／刷新快照，覆蓋近義、反義、連接詞複合、fallback 與失效。CI 預設層。
+_Avoid_：只驗精選例子、每例重建 runtime、用冷快照、省略 runtime probe
 
 **教學探針全量閘**：
-repo 解壓後 **`lyrics.db`** 上對 manifest 每例雙端探針（Portable + PWA）；維護者與發佈前必綠。
-_Avoid_：只跑 CI 閘當 parity 完成、雙端用唔同詞庫卻當通過
+repo 解壓後 **`lyrics.db`** 上以完整 relation runtime 對 manifest 每例雙端探針（Portable + PWA）；維護者與發佈前必綠。
+_Avoid_：只跑 CI 閘當 parity 完成、雙端用唔同詞庫卻當通過、把快照驗收當完整 runtime 驗收
 
 **教學 parity 切片**：
 PWA 對齊 **瀏覽器查詢引擎** 與後端時，按搜尋教學語法族逐 PR 修復（粵拼 lookup → mask／prefix → 加號錨 → 粵拼錨 → 關係查詢）；每片紅→綠後併入全量閘計數。
