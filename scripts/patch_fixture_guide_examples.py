@@ -32,8 +32,8 @@ GUIDE_CHARS = frozenset({
     "門牙", "門人",
     # jyutping-anchor guide parity (3+ngo4 / 3$漢4 / 23+o)
     "倒我米", "罕見", "下一個",
-    # relation guide parity (~開心 needs in_db syn; compound/connective already covered)
-    "愉快",
+    # relation guide parity; 休／息 is a curated static synonym flank for ~與~.
+    "愉快", "休", "息", "休息", "休與息",
 })
 
 
