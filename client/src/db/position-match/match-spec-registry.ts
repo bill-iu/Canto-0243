@@ -289,6 +289,29 @@ function specMask(parsed: ParsedQuery): MatchSpec | null {
 
 function specPingZeSerial(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as PingZeSerialQuery;
+  if (q.base) {
+    const spec = buildMatchSpecForParsed(q.base);
+    if (!spec) return null;
+    if (!spec.extra) spec.extra = {};
+    spec.extra.code_mode = q.pzmode;
+    const codeDigitPositions = new Set((spec.slots ?? []).filter((slot) => slot.kind === 'code_digit').map((slot) => slot.pos));
+    const fixed = new Set(
+      (spec.slots ?? [])
+        .filter((slot) => slot.kind !== 'code_digit' && slot.kind !== 'tone_class' && !codeDigitPositions.has(slot.pos))
+        .map((slot) => slot.pos),
+    );
+    const codePositions = Array.from({ length: spec.width }, (_, pos) => pos).filter((pos) => !fixed.has(pos));
+    const tokens = [...q.raw_q].filter((token) => /[PZ?0-9]/.test(token));
+    tokens.forEach((token, index) => {
+      if (token !== 'P' && token !== 'Z') return;
+      const pos = codePositions[index];
+      if (pos == null) return;
+      spec.slots = (spec.slots ?? []).filter((slot) => !(slot.pos === pos && slot.kind === 'code_digit'));
+      spec.mask = `${spec.mask.slice(0, pos)}?${spec.mask.slice(pos + 1)}`;
+      slots(spec).push({ pos, kind: 'tone_class', value: token === 'P' ? 'ping' : 'ze' });
+    });
+    return spec;
+  }
   const spec = createMatchSpec(q.raw_q.length, { mask: '?'.repeat(q.raw_q.length) });
   if (!spec.extra) spec.extra = {};
   spec.extra.code_mode = q.pzmode;

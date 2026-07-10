@@ -36,4 +36,13 @@ for (const [q, expected] of cases) {
   validateRepresentativeMatchSpec(q, spec, expected);
 }
 
+const pingzeSpec = buildMatchSpecForParsed(normalizeAndParse('PZ+就=', { mode: 'pz' }));
+if (
+  !pingzeSpec ||
+  !pingzeSpec.slots?.some((slot) => slot.pos === 0 && slot.kind === 'tone_class' && slot.value === 'ping') ||
+  !pingzeSpec.slots?.some((slot) => slot.pos === 1 && slot.kind === 'tone_class' && slot.value === 'ze')
+) {
+  throw new Error('match-spec registry: pingze existing anchor slots');
+}
+
 console.log('match-spec registry self-check ok');

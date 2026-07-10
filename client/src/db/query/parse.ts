@@ -4,7 +4,7 @@
  */
 import { maskFromCanonicalPlusQuery } from '../plus-grammar.ts';
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from '../jyutping-anchor.ts';
-import { tryParsePingZeSerial } from '../ping-zak.ts';
+import { normalizePzmode, tryParsePingZeSerial } from '../ping-zak.ts';
 import { QueryKind } from '../query-kind.ts';
 import type {
   JyutpingAnchorQuery,
@@ -218,15 +218,36 @@ export function parseQuery(q: string, opts?: { mode?: QueryMode; pzmode?: 'm1' |
   const normalized = normalizeQuery(q);
 
   if (opts?.mode === 'pz') {
-    const pingZeRhyme = normalized.match(/^([PZ0-9?]+)([\u4e00-\u9fff])=$/);
-    if (pingZeRhyme) {
-      const parsed = tryParsePingZeSerial(pingZeRhyme[1]!, opts.pzmode);
-      if (parsed?.kind === QueryKind.PING_ZE_SERIAL) {
-        return { ...parsed, anchor: pingZeRhyme[2]! };
+    if (/[PZ]/.test(normalized)) {
+      const plainRhyme = normalized.match(/^([PZ0-9?]+)([\u4e00-\u9fff])=$/);
+      if (plainRhyme) {
+        const serial = tryParsePingZeSerial(plainRhyme[1]!, opts.pzmode);
+        if (serial?.kind === QueryKind.PING_ZE_SERIAL) {
+          return { ...serial, anchor: plainRhyme[2]! };
+        }
       }
+      const masked = normalized.replace(/[PZ]/g, '0');
+      const base = tryParseBeforeMask(masked) ?? (looksLikeMaskQuery(masked)
+        ? { kind: QueryKind.MASK, raw_q: masked }
+        : null);
+      if (base?.kind === QueryKind.JYUTPING_ANCHOR) {
+        return {
+          kind: QueryKind.UNMATCHED,
+          raw_q: normalized,
+          hint: '平仄模式不支援粵拼錨，請切換 0243搜尋模式。',
+        };
+      }
+      if (base && base.kind !== QueryKind.UNMATCHED) {
+        return {
+          kind: QueryKind.PING_ZE_SERIAL,
+          raw_q: normalized,
+          pzmode: normalizePzmode(opts.pzmode),
+          base,
+        };
+      }
+      const pingZeParsed = tryParsePingZeSerial(normalized, opts.pzmode);
+      if (pingZeParsed) return pingZeParsed;
     }
-    const pingZeParsed = tryParsePingZeSerial(normalized, opts.pzmode);
-    if (pingZeParsed) return pingZeParsed;
     if (parseJyutpingAnchorQuery(normalized)) {
       return {
         kind: QueryKind.UNMATCHED,
@@ -309,6 +330,10 @@ export function parserLogicSelfCheck(): void {
   const pingzeRhyme = normalizeAndParse('PZ好=', { mode: 'pz', pzmode: 'm1' });
   if (pingzeRhyme.kind !== QueryKind.PING_ZE_SERIAL || pingzeRhyme.anchor !== '好') {
     throw new Error('parserLogicSelfCheck: pingze rhyme anchor parse');
+  }
+  const pingzePlus = normalizeAndParse('PZ+好=', { mode: 'pz', pzmode: 'm1' });
+  if (pingzePlus.kind !== QueryKind.PING_ZE_SERIAL || !pingzePlus.base) {
+    throw new Error('parserLogicSelfCheck: pingze existing anchor parse');
   }
 }
 

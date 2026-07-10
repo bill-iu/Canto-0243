@@ -54,6 +54,30 @@ class PingZeParseTests(unittest.TestCase):
         self.assertIsInstance(parsed, UnmatchedQuery)
         self.assertIn("不支援粵拼錨", parsed.hint or "")
 
+    def test_existing_non_jyutping_anchor_families_accept_pingze_slots(self):
+        cases = {
+            "PZ好=": "final_anchor",
+            "=好PZ": "initial_anchor",
+            "PZ+好": "literal_char",
+            "PZ+好=": "final_anchor",
+            "PZ@手": "literal_char",
+            "?PZ好=": "final_anchor",
+            "?PZ人": "final_anchor",
+            "PZ困=49倒=": "final_anchor",
+            "PZ人=?": "final_anchor",
+        }
+        for query, anchor_kind in cases.items():
+            with self.subTest(query=query):
+                parsed = normalize_and_parse(query, mode="pz")
+                self.assertIsInstance(parsed, PingZeSerialQuery)
+                spec = build_match_spec_for_parsed(parsed)
+                self.assertIsNotNone(spec)
+                assert spec is not None
+                kinds = {(slot.pos, slot.kind, slot.value) for slot in spec.slots}
+                self.assertTrue(any(slot.kind == "tone_class" and slot.value == "ping" for slot in spec.slots))
+                self.assertTrue(any(slot.kind == "tone_class" and slot.value == "ze" for slot in spec.slots))
+                self.assertTrue(any(slot.kind == anchor_kind for slot in spec.slots))
+
 
 class PingZeMatchTests(unittest.TestCase):
     def test_pz_is_fixed_while_numeric_slot_uses_pzmode(self):

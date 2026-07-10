@@ -277,6 +277,7 @@ class PingZeSerialQuery:
     raw_q: str
     pzmode: Literal["m1", "m2", "m3"] = "m1"
     anchor: Optional[str] = None
+    base: Any = None
 
     @property
     def kind(self) -> QueryKind:

@@ -29,6 +29,40 @@
   max-width: 100%;
 }
 
+.pingze-submodes {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 2px;
+  margin-top: 7px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-input);
+}
+
+.pingze-submode {
+  min-height: 24px;
+  border: 0;
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pingze-submode.is-active {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent-strong);
+}
+
+.pingze-submode:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
 .query-tabs-bar {
   display: flex;
   align-items: center;

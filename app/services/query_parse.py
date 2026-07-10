@@ -271,16 +271,28 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
 def parse_query(q: str, *, mode: str = "m1", pzmode: str | None = None) -> ParsedQuery:
     """Classify a normalized query string. No DB access."""
     if mode == "pz":
-        from app.services.ping_zak import try_parse_ping_ze_serial
+        from app.services.ping_zak import normalize_pzmode, try_parse_ping_ze_serial
 
-        ping_ze_rhyme = re.match(r"^([PZ0-9?]+)([\u4e00-\u9fff])=$", q)
-        if ping_ze_rhyme:
-            ping_ze_parsed = try_parse_ping_ze_serial(ping_ze_rhyme.group(1), pzmode)
-            if ping_ze_parsed is not None and isinstance(ping_ze_parsed, PingZeSerialQuery):
-                return replace(ping_ze_parsed, anchor=ping_ze_rhyme.group(2))
-        ping_ze_parsed = try_parse_ping_ze_serial(q, pzmode)
-        if ping_ze_parsed is not None:
-            return ping_ze_parsed
+        if "P" in q or "Z" in q:
+            plain_rhyme = re.match(r"^([PZ0-9?]+)([\u4e00-\u9fff])=$", q)
+            if plain_rhyme:
+                serial = try_parse_ping_ze_serial(plain_rhyme.group(1), pzmode)
+                if isinstance(serial, PingZeSerialQuery):
+                    return replace(serial, anchor=plain_rhyme.group(2))
+            masked = re.sub(r"[PZ]", "0", q)
+            base = try_parse_before_mask(masked)
+            if base is None and looks_like_mask_query(masked):
+                base = MaskQuery(raw_q=masked)
+            if isinstance(base, JyutpingAnchorQuery):
+                return UnmatchedQuery(
+                    raw_q=q,
+                    hint="平仄模式不支援粵拼錨，請切換 0243搜尋模式。",
+                )
+            if base is not None and not isinstance(base, UnmatchedQuery):
+                return PingZeSerialQuery(raw_q=q, pzmode=normalize_pzmode(pzmode), base=base)
+            ping_ze_parsed = try_parse_ping_ze_serial(q, pzmode)
+            if ping_ze_parsed is not None:
+                return ping_ze_parsed
         if parse_jyutping_anchor_query(q):
             return UnmatchedQuery(
                 raw_q=q,

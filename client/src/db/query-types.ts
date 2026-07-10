@@ -12,6 +12,7 @@ export interface PingZeSerialQuery extends ParsedQuery {
   raw_q: string;
   pzmode: 'm1' | 'm2' | 'm3';
   anchor?: string;
+  base?: ParsedQuery;
 }
 
 export interface DigitCodeQuery extends ParsedQuery {

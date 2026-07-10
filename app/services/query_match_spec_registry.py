@@ -16,6 +16,7 @@ from app.services.query_types import (
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
+    PingZeSerialQuery,
     PartialRhymeMaskQuery,
     PrefixWildcardEqualsQuery,
     QueryKind,
@@ -264,12 +265,37 @@ def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
+def _apply_ping_ze_slots(spec: MatchSpec, raw_q: str) -> None:
+    code_digit_positions = {slot.pos for slot in spec.slots if slot.kind == "code_digit"}
+    fixed_positions = {
+        slot.pos
+        for slot in spec.slots
+        if slot.kind not in ("code_digit", "tone_class") and slot.pos not in code_digit_positions
+    }
+    code_positions = [pos for pos in range(spec.width) if pos not in fixed_positions]
+    tokens = [token for token in raw_q if token in "PZ?" or token.isdigit()]
+    for index, token in enumerate(tokens):
+        if token not in "PZ" or index >= len(code_positions):
+            continue
+        pos = code_positions[index]
+        spec.slots = [slot for slot in spec.slots if not (slot.pos == pos and slot.kind == "code_digit")]
+        spec.mask = spec.mask[:pos] + "?" + spec.mask[pos + 1 :]
+        spec.slots.append(
+            SlotConstraint(pos=pos, kind="tone_class", value="ping" if token == "P" else "ze")
+        )
+
+
 def _spec_ping_ze_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.PING_ZE_SERIAL
-    from app.services.query_types import PingZeSerialQuery
-
     if not isinstance(parsed, PingZeSerialQuery):
         return None
+    if parsed.base is not None:
+        spec = build_match_spec_for_parsed(parsed.base)
+        if spec is None:
+            return None
+        spec.extra["code_mode"] = parsed.pzmode
+        _apply_ping_ze_slots(spec, parsed.raw_q)
+        return spec
     spec = MatchSpec(width=len(parsed.raw_q), mask="?" * len(parsed.raw_q))
     spec.extra["code_mode"] = parsed.pzmode
     for pos, token in enumerate(parsed.raw_q):

@@ -46,6 +46,7 @@ import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
 import {
   last0243UiToUrlMode,
+  getModeMeta,
   modeMetaFor,
   modeRedirectHint,
   type PingzeSubMode,
@@ -791,10 +792,8 @@ function App() {
             )}
             <ModeMenu
               mode={mode}
-              pzmode={pzMode}
               disabled={shellGated}
               onModeChange={handleModeChange}
-              onPzModeChange={handlePzModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}
               theme={uiTheme}
@@ -877,6 +876,22 @@ function App() {
                     </button>
                   </div>
                 </div>
+                {mode === 'pingze' ? (
+                  <div className="pingze-submodes" role="group" aria-label={uiLang === 'en' ? 'Ping-ze digit sub-mode' : '平仄數字子模式'}>
+                    {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                      <button
+                        key={subMode}
+                        type="button"
+                        className={`pingze-submode${pzMode === subMode ? ' is-active' : ''}`}
+                        aria-pressed={pzMode === subMode}
+                        disabled={shellGated}
+                        onClick={() => handlePzModeChange(subMode)}
+                      >
+                        {getModeMeta(subMode, uiLang).title}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </form>
 
               {showExplain && (
