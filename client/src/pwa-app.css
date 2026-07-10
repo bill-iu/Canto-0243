@@ -30,10 +30,12 @@
 }
 
 .pingze-submodes {
-  display: inline-flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-self: flex-start;
   gap: 2px;
   margin-top: 7px;
+  width: min(100%, 360px);
   padding: 2px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -52,6 +54,8 @@
   line-height: 1;
   cursor: pointer;
 }
+.profile-pill__narrow { display: none; }
+@media (max-width: 640px) { .profile-pill__wide { display: none; } .profile-pill__narrow { display: inline; } }
 
 .pingze-submode.is-active {
   background: color-mix(in srgb, var(--accent) 14%, var(--surface));

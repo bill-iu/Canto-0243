@@ -1,19 +1,18 @@
 import { useEffect, useId, useRef, useState } from 'react';
 
-import { getModeMeta, modeHelp, modeMetaFor, uiModeToUrlMode, type UiMode } from './mode-meta';
+import { getModeMeta, modeHelp, modeMetaFor, type UiMode } from './mode-meta';
+import { searchFamilyForUiMode } from '../../contracts/search-mode-manifest.mjs';
 
-const MODE_OPTIONS: Array<{ uiMode: UiMode; key: string }> = [
-  { uiMode: '0243', key: '0243' },
-  { uiMode: '02493', key: '02493' },
-  { uiMode: '394052', key: '394052' },
-  { uiMode: 'synonym', key: '~ / !' },
-  { uiMode: 'pingze', key: 'P / Z' },
+const MODE_OPTIONS: Array<{ family: 'basic' | 'pingze' | 'synonym'; uiMode: UiMode; key: string }> = [
+  { family: 'basic', uiMode: '0243', key: '0243' },
+  { family: 'pingze', uiMode: 'pingze', key: 'P / Z' },
+  { family: 'synonym', uiMode: 'synonym', key: '~ / !' },
 ];
 
 export interface ModeMenuProps {
   mode: UiMode;
   disabled?: boolean;
-  onModeChange: (mode: UiMode) => void;
+  onModeChange: (family: 'basic' | 'pingze' | 'synonym') => void;
   onOpenGuide: () => void;
   onOpenAbout: () => void;
   theme?: 'light' | 'dark';
@@ -41,7 +40,7 @@ export function ModeMenu({
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const meta = modeMetaFor(mode, lang);
-  const urlMode = uiModeToUrlMode(mode);
+  const family = searchFamilyForUiMode(mode);
 
   useEffect(() => {
     if (!open) return;
@@ -65,7 +64,7 @@ export function ModeMenu({
 
   const close = () => setOpen(false);
 
-  const pickMode = (next: UiMode) => {
+  const pickMode = (next: 'basic' | 'pingze' | 'synonym') => {
     onModeChange(next);
     close();
   };
@@ -102,11 +101,11 @@ export function ModeMenu({
             role="menu"
             hidden={!open}
           >
-        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}>
-          <p className="menu-label">{lang === 'zh' ? '0243搜尋模式' : '0243 Search Modes'}</p>
+        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '搜尋模式' : 'Search modes'}>
+          <p className="menu-label">{lang === 'zh' ? '搜尋模式' : 'Search modes'}</p>
           {MODE_OPTIONS.map((option) => {
-            const optionMeta = getModeMeta(uiModeToUrlMode(option.uiMode), lang);
-            const checked = uiModeToUrlMode(option.uiMode) === urlMode;
+            const optionMeta = getModeMeta(option.uiMode === '0243' ? 'm1' : option.uiMode === 'pingze' ? 'pz' : 'syn', lang);
+            const checked = option.family === family;
             return (
               <button
                 key={option.uiMode}
@@ -115,7 +114,7 @@ export function ModeMenu({
                 role="menuitemradio"
                 aria-checked={checked}
                 disabled={disabled}
-                onClick={() => pickMode(option.uiMode)}
+                onClick={() => pickMode(option.family)}
               >
                 <span>
                   <span className="mode-name">
@@ -207,7 +206,7 @@ export { modeHelp };
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p6-mode-menu-self-check.ts` */
 export function modeMenuSelfCheck(): void {
-  if (MODE_OPTIONS.length !== 5) {
+  if (MODE_OPTIONS.length !== 3) {
     throw new Error('modeMenuSelfCheck: mode options');
   }
   if (modeHelp('394052', 'zh') !== '394052 六聲碼（三／五聲分明）') {

@@ -54,6 +54,7 @@ import {
   type UiMode,
 } from './mode-meta';
 import { parseSearchUrl } from './search-url';
+import { profileToUiMode, searchFamilyForUiMode, uiModeToProfile } from '../../contracts/search-mode-manifest.mjs';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
@@ -522,7 +523,7 @@ function App() {
   }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
-    (nextQuery?: string, nextPzMode = pzMode) => {
+    (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
       const q = (nextQuery ?? inputQuery).trim();
       if (pickAnchorRef.current && pickAnchorRef.current !== q) {
         pickAnchorRef.current = null;
@@ -531,7 +532,7 @@ function App() {
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      const pushed = commitActiveSearch(q, mode, nextPzMode);
+      const pushed = commitActiveSearch(q, nextMode, nextPzMode);
       pushBrowserUrl(tabState, !pushed);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
         lexiconLoadStartedRef.current = true;
@@ -563,16 +564,14 @@ function App() {
     await retryOfflineReady();
   }, [retryOfflineReady]);
 
-  const handleModeChange = (next: UiMode) => {
-    if (next === '0243' || next === '02493' || next === '394052') {
-      setLast0243Mode(next);
-    }
+  const handleModeChange = (family: 'basic' | 'pingze' | 'synonym') => {
+    const next = family === 'basic' ? last0243Mode : family === 'pingze' ? 'pingze' : 'synonym';
     setMode(next);
     if (view === 'guide') {
       ensureActiveSearchTab();
     }
     if (trimmedInput) {
-      runCommittedSearch();
+      runCommittedSearch(undefined, pzMode, next);
     }
   };
 
@@ -581,6 +580,14 @@ function App() {
     if (mode === 'pingze' && trimmedInput) {
       runCommittedSearch(undefined, next);
     }
+  };
+
+  const handleProfileChange = (profile: PingzeSubMode) => {
+    if (mode === 'pingze') return handlePzModeChange(profile);
+    const next = profileToUiMode(profile) as UiMode;
+    setLast0243Mode(next as Last0243SearchMode);
+    setMode(next);
+    if (trimmedInput) runCommittedSearch(undefined, pzMode, next);
   };
 
   const handleBackToSearch = () => {
@@ -876,18 +883,18 @@ function App() {
                     </button>
                   </div>
                 </div>
-                {mode === 'pingze' ? (
+                {searchFamilyForUiMode(mode) !== 'synonym' ? (
                   <div className="pingze-submodes" role="group" aria-label={uiLang === 'en' ? 'Ping-ze digit sub-mode' : '平仄數字子模式'}>
                     {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
                       <button
                         key={subMode}
                         type="button"
-                        className={`pingze-submode${pzMode === subMode ? ' is-active' : ''}`}
-                        aria-pressed={pzMode === subMode}
+                        className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
+                        aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
                         disabled={shellGated}
-                        onClick={() => handlePzModeChange(subMode)}
+                        onClick={() => handleProfileChange(subMode)}
                       >
-                        {getModeMeta(subMode, uiLang).title}
+                        <><span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span><span className="profile-pill__narrow">{subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}</span></>
                       </button>
                     ))}
                   </div>
