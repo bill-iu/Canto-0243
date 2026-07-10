@@ -141,6 +141,12 @@ See [data-model.md](data-model.md), [query grammar contract](contracts/pingze-qu
 
 PASS — the design uses existing query and storage paths, preserves dual-port parity, and confines new behavior to an explicit mode. The added state is small, serializable search context; no complexity exception is required.
 
+## Approved Follow-up: Complete Anchors and Minimal UI
+
+Extend the current pingze parser by broadening each existing non-Jyutping anchor grammar's code-slot alphabet from digits/wildcards to digits/wildcards/P/Z. Preserve each grammar's established anchor position, `+`, `=`, literal, rhyme and initial semantics; only the admitted slot token changes. Pure Hanzi and relation grammars remain unchanged because they expose no code slots. Jyutping-anchor grammar remains explicitly rejected in pingze mode.
+
+Move the three pzmode controls out of the mode dropdown. The header dropdown gains only the 平仄模式 entry, matching the existing mode-option format. When that mode is active, render three compact segmented pills immediately below the search field, using existing Open Design tokens (`--surface-input`, `--line`, `--accent`, `--focus-ring`) and no new visual system or surrounding layout changes.
+
 ## Complexity Tracking
 
 No constitution violations or additional project layers require justification.

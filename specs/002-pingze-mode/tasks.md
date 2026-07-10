@@ -111,6 +111,19 @@
 
 ---
 
+## Phase 7: Complete Anchors and Minimal UI
+
+**Purpose**: Complete the approved non-Jyutping anchor coverage and align the visible controls with the existing Open Design shell.
+
+- [ ] T037 [P] Add Python parser/MatchSpec tests covering P/Z substitution in rhyme, initial (`=你`), literal, plus, wildcard, partial and serial phoneme anchor families in `tests/test_ping_ze_serial.py` and `tests/smoke/test_query_journey.py`
+- [ ] T038 [P] Add mirrored TypeScript parser/MatchSpec cases for every supported non-Jyutping anchor family in `client/scripts/parser-self-check.ts` and `client/scripts/match-spec-registry-self-check.ts`
+- [ ] T039 Extend Python grammar token handling and MatchSpec builders so P/Z substitute only code slots across supported anchor families in `app/services/query_grammar/`, `app/services/query_parse.py`, and `app/services/query_match_spec_registry.py`
+- [ ] T040 Port the anchor-family P/Z substitution contract to `client/src/db/query/grammar/`, `client/src/db/query/parse.ts`, and `client/src/db/position-match/match-spec-registry.ts`
+- [ ] T041 Move pzmode controls from the dropdown to compact segmented pills immediately below the search field in `client/src/App.tsx`, `client/src/mode-menu.tsx`, and the existing Open Design stylesheet consumed by the PWA shell
+- [ ] T042 Verify dark/light token fidelity, keyboard access, mobile wrapping, normal-mode isolation and Python/PWA parity with focused checks and production build commands
+
+---
+
 ## Dependencies & Execution Order
 
 ```text
