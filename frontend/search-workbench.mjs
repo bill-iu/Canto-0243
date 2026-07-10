@@ -206,10 +206,16 @@ function updateModeLabel(lang = getLang()) {
   $.modeReadout.textContent = `${t('mode.readout.prefix', lang)}${meta.readout}`;
   $.searchInput.placeholder = meta.placeholder;
   syncPortableModeMenu(lang);
-  document.querySelectorAll("[data-mode]").forEach((btn) => {
+  const family = shell.currentMode === "pz" ? "pingze" : shell.currentMode === "syn" ? "synonym" : "basic";
+  document.querySelectorAll("[data-family]").forEach((btn) => {
     if (!btn.classList.contains("mode-option")) return;
-    btn.setAttribute("aria-checked", btn.dataset.mode === shell.currentMode ? "true" : "false");
+    btn.setAttribute("aria-checked", btn.dataset.family === family ? "true" : "false");
   });
+  if ($.modeProfiles) {
+    $.modeProfiles.hidden = family === "synonym";
+    const profile = shell.currentMode === "pz" ? shell.currentPzMode : shell.currentMode;
+    $.modeProfiles.querySelectorAll("[data-profile]").forEach((btn) => btn.classList.toggle("is-active", btn.dataset.profile === profile));
+  }
 }
 
 let modeMenuKeyboardWired = false;
@@ -292,6 +298,25 @@ function switchMode(mode, { runSearch = true, replace = true } = {}) {
   } else {
     updateBrowserUrlFromActiveTab(replace);
   }
+}
+
+function switchModeFamily(family) {
+  const mode = family === "basic" ? shell.last0243Mode : family === "pingze" ? "pz" : "syn";
+  switchMode(mode);
+}
+
+function switchProfile(profile) {
+  if (!['m1', 'm2', 'm3'].includes(profile)) return;
+  if (shell.currentMode === "pz") shell.currentPzMode = profile;
+  else shell.currentMode = shell.last0243Mode = profile;
+  updateModeLabel();
+  const tab = activeTab();
+  if (tab?.view === VIEW.SEARCH && $.searchInput.value.trim()) {
+    const { pushed } = commitSearchHistoryFrame(tab, { q: $.searchInput.value.trim(), mode: shell.currentMode, pzmode: shell.currentPzMode });
+    updateBrowserUrlFromActiveTab(!pushed);
+    searchDict(false, true);
+  }
+  else updateBrowserUrlFromActiveTab(true);
 }
 
 /** 搜尋教學例子：開新搜尋 tab，唔覆寫當前 tab 查詢 */
@@ -776,7 +801,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
     maybeModeRedirectForPingZeSerial(input, tab);
   }
   if (!restoreFromHistory && !isLoadMore) {
-    const { pushed } = commitSearchHistoryFrame(tab, { q: input, mode: shell.currentMode });
+    const { pushed } = commitSearchHistoryFrame(tab, { q: input, mode: shell.currentMode, pzmode: shell.currentPzMode });
     updateBrowserUrlFromActiveTab(!pushed);
   }
 
@@ -808,6 +833,7 @@ async function searchDict(isLoadMore = false, restoreFromHistory = false) {
   }
 
   let url = `/words/search/?q=${encodeURIComponent(input)}&mode=${encodeURIComponent(shell.currentMode)}&limit=${pageSize}&offset=${offset}`;
+  if (shell.currentMode === "pz") url += `&pzmode=${encodeURIComponent(shell.currentPzMode)}`;
   if (shell.currentMode === "syn" && MODE_META[shell.last0243Mode]) {
     url += `&fallback_0243_mode=${encodeURIComponent(shell.last0243Mode)}`;
   }
@@ -899,6 +925,8 @@ export {
   shouldShowLoadMore,
   shuffleResults,
   switchMode,
+  switchModeFamily,
+  switchProfile,
   toggleMenu,
   updateModeLabel,
   updateShuffleButton,

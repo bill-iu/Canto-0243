@@ -180,30 +180,17 @@
           <button class="ghost-button portable-exit-btn" id="portableExitBtn" type="button" hidden>退出 Canto-0243</button>
 
           <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
-              <div class="menu-group" role="group" aria-label="0243搜尋模式">
-                <p class="menu-label">0243搜尋模式</p>
-                <button class="mode-option" id="btn-m1" type="button" role="menuitemradio" aria-checked="true" data-mode="m1">
+              <div class="menu-group" role="group" aria-label="搜尋模式">
+                <p class="menu-label">搜尋模式</p>
+                <button class="mode-option" type="button" role="menuitemradio" aria-checked="true" data-family="basic">
                   <span>
                     <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
                     <span class="mode-help">常用 0243 編碼與混合查詢</span>
                   </span>
                   <span class="mode-key">0243</span>
                 </button>
-                <button class="mode-option" id="btn-m2" type="button" role="menuitemradio" aria-checked="false" data-mode="m2">
-                  <span>
-                    <span class="mode-name">02493模式<span class="mode-note">緊</span></span>
-                    <span class="mode-help">02493 碼（分清二聲）</span>
-                  </span>
-                  <span class="mode-key">02493</span>
-                </button>
-                <button class="mode-option" id="btn-m3" type="button" role="menuitemradio" aria-checked="false" data-mode="m3">
-                  <span>
-                    <span class="mode-name">394052模式<span class="mode-note">六聲</span></span>
-                    <span class="mode-help">394052 六聲碼（三／五聲分明）</span>
-                  </span>
-                  <span class="mode-key">394052</span>
-                </button>
-                <button class="mode-option" id="btn-syn" type="button" role="menuitemradio" aria-checked="false" data-mode="syn">
+                <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="pingze"><span><span class="mode-name">平仄<span class="mode-note">格律</span></span><span class="mode-help">平（P）、仄（Z）、數字與通配碼</span></span><span class="mode-key">P / Z</span></button>
+                <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="synonym">
                   <span>
                     <span class="mode-name">近反義<span class="mode-note">查</span></span>
                     <span class="mode-help">近義、反義與語意相關 (BETA)</span>
@@ -274,10 +261,15 @@
             <label class="field-label" for="searchInput">搜尋內容</label>
             <span class="mode-readout" id="modeReadout">目前模式：0243模式（鬆）</span>
           </div>
-          <div class="search-row">
+                <div class="search-row">
             <div class="search-input-wrap" id="searchInputWrap">
               <input type="search" id="searchInput" name="q" placeholder="輸入 香??、23+就=、~=開心、!!、~~…" autocomplete="off" spellcheck="false" enterkeyhint="search">
-            </div>
+                </div>
+                <div class="pingze-submodes" id="modeProfiles" role="group" aria-label="數字規則">
+                  <button type="button" class="pingze-submode" data-profile="m1"><span class="profile-pill__wide">0243模式</span><span class="profile-pill__narrow">四聲</span></button>
+                  <button type="button" class="pingze-submode" data-profile="m2"><span class="profile-pill__wide">02493模式</span><span class="profile-pill__narrow">五聲</span></button>
+                  <button type="button" class="pingze-submode" data-profile="m3"><span class="profile-pill__wide">394052模式</span><span class="profile-pill__narrow">六聲</span></button>
+                </div>
             <div class="search-actions">
               <button class="icon-button" id="shuffleBtn" type="button" aria-label="隨機打亂結果" title="隨機打亂結果" disabled>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

@@ -168,6 +168,7 @@ export const GATE_INK_CLIP_MAX = 200;
 // ponytail: const shell — importers cannot assign to export let live bindings in browsers
 export const shell = {
   currentMode: "m1",
+  currentPzMode: "m1",
   last0243Mode: "m1",
   isSearching: false,
   searchAbort: null,
@@ -194,6 +195,7 @@ export const $ = {
   modeMenu: document.getElementById("modeMenu"),
   currentModeLabel: document.getElementById("currentModeLabel"),
   modeReadout: document.getElementById("modeReadout"),
+  modeProfiles: document.getElementById("modeProfiles"),
   searchView: document.getElementById("searchView"),
   searchViewMain: document.getElementById("searchViewMain"),
   guideView: document.getElementById("guideView"),
