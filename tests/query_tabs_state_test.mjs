@@ -99,6 +99,14 @@ describe("query-tabs-state", () => {
     assert.equal(parsed.view, VIEW.CORRECTIONS);
   });
 
+  it("round-trips pingze URL state and defaults its missing sub-mode to m1", () => {
+    const parsed = parseUrlSearchParams(new URLSearchParams("mode=pz&q=PZ%3F"));
+    assert.equal(parsed.mode, "pz");
+    assert.equal(parsed.pzmode, "m1");
+    const params = buildUrlSearchParams({ view: VIEW.SEARCH, q: "PZ3" }, "pz", "m2");
+    assert.equal(params.toString(), "mode=pz&pzmode=m2&q=PZ3");
+  });
+
   it("isCorrectionsSearchCommand matches builder debug entry", () => {
     assert.equal(isCorrectionsSearchCommand("debug"), true);
     assert.equal(isCorrectionsSearchCommand(" DEBUG "), true);

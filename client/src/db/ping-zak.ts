@@ -1,17 +1,17 @@
 /** 平仄串列查詢 — port of app/services/ping_zak.py */
-import { normalize02493Code } from './code-variants.ts';
+import { getCodeVariants } from './code-variants.ts';
 import type { ParsedQuery, UnmatchedQuery } from './query-types.ts';
 import { QueryKind } from './query-kind.ts';
 
 export type PingZak = 'ping' | 'ze';
 
-export const MATRIX_394052_MODE: string | null = 'm3';
+export type PingZeSubMode = 'm1' | 'm2' | 'm3';
 
 export const PING_ZE_INVALID_HINT =
   '平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；字面請改用缺字語法（如 ?+就=）。';
 
-const PING_ZE_SLOT_RE = /^[PZ0-9]+$/i;
-const HAS_PZ_RE = /[PZ]/i;
+const PING_ZE_SLOT_RE = /^[PZ0-9?]+$/;
+const HAS_PZ_RE = /[PZ]/;
 
 const M02493_TO_0243: Record<string, string> = {
   '1': '3',
@@ -29,28 +29,15 @@ export function normalizePingZePattern(q: string): string {
   return q.toUpperCase();
 }
 
-export function pingZeEffectiveMode(): 'm2' | string {
-  if (MATRIX_394052_MODE) {
-    return MATRIX_394052_MODE;
-  }
-  return 'm2';
+export function normalizePzmode(mode?: string): PingZeSubMode {
+  return mode === 'm2' || mode === 'm3' ? mode : 'm1';
 }
 
-export function pingZeModeRedirectHint(effective: string, lang: 'zh' | 'en' = 'zh'): string | null {
-  if (MATRIX_394052_MODE && effective === MATRIX_394052_MODE) {
-    return null;
-  }
-  if (lang === 'en') {
-    return 'Ping–ze serial query switched to 02493 Mode (Strict)';
-  }
-  return '平仄串列查詢已切換至 02493模式（緊）';
+export function digitSlotMatches(queryDigit: string, codeDigit: string, pzmode: PingZeSubMode = 'm1'): boolean {
+  return getCodeVariants(queryDigit, pzmode).includes(codeDigit);
 }
 
-export function digitSlotMatches(queryDigit: string, codeDigit: string): boolean {
-  return normalize02493Code(queryDigit) === codeDigit;
-}
-
-export function codeMatchesPingZePattern(code: string, pattern: string): boolean {
+export function codeMatchesPingZePattern(code: string, pattern: string, pzmode: PingZeSubMode = 'm1'): boolean {
   const pat = normalizePingZePattern(pattern);
   if (code.length !== pat.length) {
     return false;
@@ -63,7 +50,9 @@ export function codeMatchesPingZePattern(code: string, pattern: string): boolean
     } else if (slot === 'Z') {
       if (pingZakClass(cd) !== 'ze') return false;
     } else if (/\d/.test(slot)) {
-      if (!digitSlotMatches(slot, cd)) return false;
+      if (!digitSlotMatches(slot, cd, pzmode)) return false;
+    } else if (slot === '?') {
+      continue;
     } else {
       return false;
     }
@@ -71,18 +60,22 @@ export function codeMatchesPingZePattern(code: string, pattern: string): boolean
   return true;
 }
 
-export function tryParsePingZeSerial(q: string): ParsedQuery | null {
+export function tryParsePingZeSerial(q: string, pzmode?: string): ParsedQuery | null {
   if (!q || !HAS_PZ_RE.test(q)) {
     return null;
   }
   if (!PING_ZE_SLOT_RE.test(q)) {
     return { kind: QueryKind.UNMATCHED, raw_q: q, hint: PING_ZE_INVALID_HINT } satisfies UnmatchedQuery;
   }
-  return { kind: QueryKind.PING_ZE_SERIAL, raw_q: normalizePingZePattern(q) };
+  return {
+    kind: QueryKind.PING_ZE_SERIAL,
+    raw_q: normalizePingZePattern(q),
+    pzmode: normalizePzmode(pzmode),
+  };
 }
 
-export function isPingZeSerialQuery(q: string): boolean {
-  const parsed = tryParsePingZeSerial(q);
+export function isPingZeSerialQuery(q: string, pzmode?: string): boolean {
+  const parsed = tryParsePingZeSerial(q, pzmode);
   return parsed?.kind === QueryKind.PING_ZE_SERIAL;
 }
 

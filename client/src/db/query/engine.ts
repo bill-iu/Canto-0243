@@ -6,9 +6,8 @@ import {
   isDatabaseInitialized,
 } from '../init.ts';
 import type { Database } from '../sqljs.ts';
-import { pingZeEffectiveMode, pingZeModeRedirectHint } from '../ping-zak.ts';
 import { QueryKind } from '../query-kind.ts';
-import type { ParsedQuery, QueryMode, QueryResult, SearchContext, SearchResult } from '../query-types.ts';
+import type { QueryMode, QueryResult, SearchContext, SearchResult } from '../query-types.ts';
 import { normalizeAndParse, normalizeQuery } from './parse.ts';
 import { dispatchParsed, executeListFilter } from './dispatch.ts';
 import { dispatchSynMode } from './mode-dispatch.ts';
@@ -39,36 +38,13 @@ export class QueryEngine {
       return dispatchSynMode({ ...ctx, q }, dbCtx);
     }
 
-    const parsed = normalizeAndParse(ctx.q);
-    const redirected = this.maybeRedirectPingZe(parsed, dbCtx);
-    if (redirected) {
-      return redirected;
-    }
+    const parsed = normalizeAndParse(ctx.q, { mode: ctx.mode, pzmode: ctx.pzmode });
     if (parsed.kind === QueryKind.RELATION_LOOKUP) {
       await ensureStaticRelationIndexes();
     }
     return await dispatchParsed(parsed, dbCtx);
   }
 
-  private maybeRedirectPingZe(
-    parsed: ParsedQuery,
-    ctx: SearchContext & { db: Database },
-  ): Promise<SearchResult> | null {
-    if (parsed.kind !== QueryKind.PING_ZE_SERIAL) {
-      return null;
-    }
-    const effective = pingZeEffectiveMode();
-    if (ctx.mode === 'm2' || ctx.mode === '02493' || ctx.mode === effective) {
-      return null;
-    }
-    return dispatchParsed(parsed, { ...ctx, mode: effective, offset: 0 }).then((result) => ({
-      items: result.items,
-      total: result.total,
-      hint: pingZeModeRedirectHint(effective, ctx.ui_lang ?? 'zh') ?? undefined,
-      effective_mode: effective,
-      cache_path: result.cache_path,
-    }));
-  }
 }
 
 export const queryEngine = new QueryEngine();

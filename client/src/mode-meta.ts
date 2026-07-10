@@ -6,8 +6,9 @@ import {
   modeRedirectHint as sharedModeRedirectHint,
 } from '../../frontend/mode-i18n.mjs';
 
-export type UiMode = '0243' | '02493' | '394052' | 'synonym';
-export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn';
+export type UiMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';
+export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
+export type PingzeSubMode = 'm1' | 'm2' | 'm3';
 export type UiLang = 'zh' | 'en';
 export type Last0243SearchMode = '0243' | '02493' | '394052';
 
@@ -25,6 +26,7 @@ export function uiModeToUrlMode(mode: UiMode): UrlMode {
   if (mode === '02493') return 'm2';
   if (mode === '394052') return 'm3';
   if (mode === 'synonym') return 'syn';
+  if (mode === 'pingze') return 'pz';
   return 'm1';
 }
 
@@ -32,6 +34,7 @@ export function urlModeToUiMode(mode: string | null | undefined): UiMode {
   if (mode === 'm2') return '02493';
   if (mode === 'm3') return '394052';
   if (mode === 'syn') return 'synonym';
+  if (mode === 'pz') return 'pingze';
   return '0243';
 }
 

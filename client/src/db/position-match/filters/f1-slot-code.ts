@@ -12,8 +12,10 @@ import {
 } from './f2-phoneme-anchor.ts';
 import { JYUTPING_LETTER_KINDS, slotConstraintMatches } from './f3-letters.ts';
 
-export function normalizeMode(mode: string): 'm1' | 'm2' {
-  return mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
+export function normalizeMode(mode: string): 'm1' | 'm2' | 'm3' {
+  if (mode === 'm2' || mode === '02493') return 'm2';
+  if (mode === 'm3' || mode === '394052') return 'm3';
+  return 'm1';
 }
 
 export function matchesCodePositions(
@@ -76,12 +78,19 @@ export async function wordPassesPositionFilters(
     return false;
   }
   if (requiredCodes.some((req) => req != null)) {
-    if (!matchesCodePositions(code, requiredCodes, mode)) {
+    if (!matchesCodePositions(code, requiredCodes, String(spec.extra?.code_mode ?? mode))) {
       return false;
     }
   }
   const skipPhoneme = Boolean(spec.extra?.phoneme_index_prefiltered);
   for (const slot of spec.slots ?? []) {
+    if (slot.kind === 'tone_class') {
+      const digit = code[slot.pos];
+      const isPing = digit === '0' || digit === '3';
+      if ((slot.value === 'ping' && !isPing) || (slot.value === 'ze' && isPing)) {
+        return false;
+      }
+    }
     if (!skipPhoneme && (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor')) {
       const constraint = slot.kind === 'final_anchor' ? 'final' : 'initial';
       if (

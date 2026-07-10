@@ -19,7 +19,7 @@
     "triple_rhyme_anchor": { "route": "mask_family", "match_spec": true },
     "jyutping_anchor": { "route": "mask_family", "match_spec": true },
     "mask": { "route": "mask_family", "match_spec": true },
-    "ping_ze_serial": { "route": "digit", "match_spec": false },
+    "ping_ze_serial": { "route": "mask_family", "match_spec": true },
     "digit_code": { "route": "digit", "match_spec": false },
     "word_lookup": { "route": "lookup", "match_spec": false },
     "jyutping_fragment": { "route": "lookup", "match_spec": false },

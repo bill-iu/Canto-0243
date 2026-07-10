@@ -13,6 +13,7 @@ from app.services.word_serializer import (
     get_word_sort_code,
     get_word_text,
 )
+from app.services.ping_zak import ping_zak_class
 from app.utils.code_positions import matches_code_positions
 
 def _group_candidates_by_char(candidates: list) -> dict[str, list]:
@@ -62,6 +63,10 @@ def _word_passes_position_filters(
     if any(req is not None for req in required_codes):
         if not matches_code_positions(word_code_str, required_codes, mode):
             return False
+    for slot in slots or []:
+        if slot.kind == "tone_class":
+            if slot.pos >= len(word_code_str) or ping_zak_class(word_code_str[slot.pos]) != slot.value:
+                return False
     anchor_slots = [s for s in (slots or []) if s.kind in ("final_anchor", "initial_anchor")]
     if anchor_slots:
         for slot in anchor_slots:

@@ -36,8 +36,7 @@ import {
 } from './anchor-result-list';
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
-import { pingZeEffectiveMode, pingZeModeRedirectHint } from './db/ping-zak';
+import { isRelationSyntaxQuery } from './db/query-engine';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -49,6 +48,7 @@ import {
   last0243UiToUrlMode,
   modeMetaFor,
   modeRedirectHint,
+  type PingzeSubMode,
   type Last0243SearchMode,
   type UiMode,
 } from './mode-meta';
@@ -67,7 +67,7 @@ import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-cont
 const initialUrl =
   typeof window !== 'undefined'
     ? parseSearchUrl(window.location.search)
-    : { q: '', mode: '0243' as UiMode, view: 'search' as const };
+    : { q: '', mode: '0243' as UiMode, pzmode: 'm1' as PingzeSubMode, view: 'search' as const };
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -77,6 +77,7 @@ function App() {
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
   const [mode, setMode] = useState<UiMode>(initialUrl.mode);
+  const [pzMode, setPzMode] = useState<PingzeSubMode>(initialUrl.pzmode);
   const [last0243Mode, setLast0243Mode] = useState<Last0243SearchMode>(() => {
     if (initialUrl.mode === '02493') return '02493';
     if (initialUrl.mode === '394052') return '394052';
@@ -103,7 +104,14 @@ function App() {
     consumePopstateFrame,
     needsInitialSearch,
     initialBootstrap,
-  } = useQueryTabs({ currentMode: mode, onModeChange: setMode });
+  } = useQueryTabs({
+    currentMode: mode,
+    currentPzMode: pzMode,
+    onModeChange: (next, nextPzMode) => {
+      setMode(next);
+      if (nextPzMode) setPzMode(nextPzMode);
+    },
+  });
 
   const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
   const view =
@@ -151,8 +159,7 @@ function App() {
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
-  const pingZeSyntax = trimmedInput ? isPingZeSerialQuery(trimmedInput) : false;
-  const searchKey = `${searchQuery}\0${mode}`;
+  const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
 
   const loadSearchTabUi = useCallback(
@@ -195,14 +202,6 @@ function App() {
       setRedirectHint(null);
       return;
     }
-    if (pingZeSyntax) {
-      const effective = pingZeEffectiveMode();
-      setRedirectHint(pingZeModeRedirectHint(effective, uiLang));
-      if (mode !== '394052') {
-        setMode('394052');
-      }
-      return;
-    }
     if (relationSyntax) {
       setRedirectHint(modeRedirectHint(last0243UiToUrlMode(last0243Mode), uiLang));
       if (mode === 'synonym') {
@@ -211,7 +210,7 @@ function App() {
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, pingZeSyntax, relationSyntax, mode, last0243Mode, uiLang]);
+  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
 
   const {
     isReady,
@@ -266,6 +265,7 @@ function App() {
     loadMore,
   } = useSearch(useLiveFetch ? searchQuery : '', mode, {
     fallback_0243_mode: last0243Mode,
+    pzmode: pzMode,
     ui_lang: uiLang,
   });
 
@@ -505,6 +505,7 @@ function App() {
   useEffect(() => {
     if (!popstateFrame) return;
     setMode(popstateFrame.mode);
+    setPzMode(popstateFrame.pzmode);
     if (popstateFrame.q) {
       setUseLiveFetch(true);
       hydrateSearch(popstateFrame.q);
@@ -520,7 +521,7 @@ function App() {
   }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
-    (nextQuery?: string) => {
+    (nextQuery?: string, nextPzMode = pzMode) => {
       const q = (nextQuery ?? inputQuery).trim();
       if (pickAnchorRef.current && pickAnchorRef.current !== q) {
         pickAnchorRef.current = null;
@@ -529,14 +530,14 @@ function App() {
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      const pushed = commitActiveSearch(q, mode);
+      const pushed = commitActiveSearch(q, mode, nextPzMode);
       pushBrowserUrl(tabState, !pushed);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
   );
 
   const beginPickSearch = useCallback(
@@ -571,6 +572,13 @@ function App() {
     }
     if (trimmedInput) {
       runCommittedSearch();
+    }
+  };
+
+  const handlePzModeChange = (next: PingzeSubMode) => {
+    setPzMode(next);
+    if (mode === 'pingze' && trimmedInput) {
+      runCommittedSearch(undefined, next);
     }
   };
 
@@ -783,8 +791,10 @@ function App() {
             )}
             <ModeMenu
               mode={mode}
+              pzmode={pzMode}
               disabled={shellGated}
               onModeChange={handleModeChange}
+              onPzModeChange={handlePzModeChange}
               onOpenGuide={handleOpenGuide}
               onOpenAbout={handleOpenAbout}
               theme={uiTheme}

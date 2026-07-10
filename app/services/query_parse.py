@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import re
+from dataclasses import replace
 from typing import Any, Optional
 
 from app.services.jyutping_anchor import parse_jyutping_anchor_query, rhyme_letters_resolve_ok
@@ -108,9 +109,9 @@ def normalize_query(q: str) -> str:
     return normalize_search_query(q)
 
 
-def normalize_and_parse(q: str) -> ParsedQuery:
+def normalize_and_parse(q: str, *, mode: str = "m1", pzmode: str | None = None) -> ParsedQuery:
     """正規化後分類查詢字串。無 DB access。"""
-    return parse_query(normalize_query(q))
+    return parse_query(normalize_query(q), mode=mode, pzmode=pzmode)
 
 
 def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
@@ -267,20 +268,30 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     return None
 
 
-def parse_query(q: str) -> ParsedQuery:
+def parse_query(q: str, *, mode: str = "m1", pzmode: str | None = None) -> ParsedQuery:
     """Classify a normalized query string. No DB access."""
+    if mode == "pz":
+        from app.services.ping_zak import try_parse_ping_ze_serial
+
+        ping_ze_rhyme = re.match(r"^([PZ0-9?]+)([\u4e00-\u9fff])=$", q)
+        if ping_ze_rhyme:
+            ping_ze_parsed = try_parse_ping_ze_serial(ping_ze_rhyme.group(1), pzmode)
+            if ping_ze_parsed is not None and isinstance(ping_ze_parsed, PingZeSerialQuery):
+                return replace(ping_ze_parsed, anchor=ping_ze_rhyme.group(2))
+        ping_ze_parsed = try_parse_ping_ze_serial(q, pzmode)
+        if ping_ze_parsed is not None:
+            return ping_ze_parsed
+        if parse_jyutping_anchor_query(q):
+            return UnmatchedQuery(
+                raw_q=q,
+                hint="平仄模式不支援粵拼錨，請切換 0243搜尋模式。",
+            )
     parsed = try_parse_before_mask(q)
     if parsed is not None:
         return parsed
 
     if looks_like_mask_query(q):
         return MaskQuery(raw_q=q)
-
-    from app.services.ping_zak import try_parse_ping_ze_serial
-
-    ping_ze_parsed = try_parse_ping_ze_serial(q)
-    if ping_ze_parsed is not None:
-        return ping_ze_parsed
 
     if q.isdigit():
         return DigitCodeQuery(raw_q=q)

@@ -264,6 +264,30 @@ def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
+def _spec_ping_ze_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    assert parsed.kind == QueryKind.PING_ZE_SERIAL
+    from app.services.query_types import PingZeSerialQuery
+
+    if not isinstance(parsed, PingZeSerialQuery):
+        return None
+    spec = MatchSpec(width=len(parsed.raw_q), mask="?" * len(parsed.raw_q))
+    spec.extra["code_mode"] = parsed.pzmode
+    for pos, token in enumerate(parsed.raw_q):
+        if token == "P":
+            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ping"))
+        elif token == "Z":
+            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ze"))
+        elif token.isdigit():
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=token))
+    if parsed.anchor:
+        spec.width += 1
+        spec.mask = "?" * spec.width
+        spec.slots.append(
+            SlotConstraint(pos=len(parsed.raw_q), kind="final_anchor", value=parsed.anchor)
+        )
+    return spec
+
+
 def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
     assert parsed.kind == QueryKind.COMPOUND_DOUBLED_SYLLABLE
     from app.services.query_types import CompoundDoubledSyllableQuery
@@ -334,6 +358,7 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.TRIPLE_RHYME_ANCHOR: _spec_triple_rhyme_anchor,
     QueryKind.JYUTPING_ANCHOR: _spec_jyutping_anchor,
     QueryKind.MASK: _spec_mask,
+    QueryKind.PING_ZE_SERIAL: _spec_ping_ze_serial,
     QueryKind.COMPOUND_SYN: _spec_compound_syn,
     QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_compound_doubled_syllable,
     QueryKind.COMPOUND_ANT: _spec_compound_ant,

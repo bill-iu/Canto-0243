@@ -1,78 +1,69 @@
-"""平仄串列查詢 — parse, classify, match."""
+"""Explicit pingze mode parser and mixed-slot matching."""
 from __future__ import annotations
 
 import unittest
 
-from app.services.ping_zak import (
-    MATRIX_394052_MODE,
-    code_matches_ping_ze_pattern,
-    is_ping_ze_serial_query,
-    ping_ze_effective_mode,
-    ping_ze_mode_redirect_hint,
-    ping_zak_class,
-    try_parse_ping_ze_serial,
-)
+from app.services.ping_zak import code_matches_ping_ze_pattern, ping_zak_class
+from app.services.query_match_spec_registry import build_match_spec_for_parsed
 from app.services.query_parse import normalize_and_parse
-from app.services.query_types import DigitCodeQuery, PingZeSerialQuery, QueryKind, UnmatchedQuery
+from app.services.query_types import JyutpingFragmentQuery, PingZeSerialQuery, QueryKind, UnmatchedQuery
 
 
 class PingZakClassTests(unittest.TestCase):
-    def test_ping_digits(self):
+    def test_ping_is_fixed_to_stored_394052_digits(self):
         self.assertEqual(ping_zak_class("0"), "ping")
         self.assertEqual(ping_zak_class("3"), "ping")
-
-    def test_ze_digits(self):
-        for d in ("2", "4", "5", "9"):
-            self.assertEqual(ping_zak_class(d), "ze")
+        self.assertEqual(ping_zak_class("9"), "ze")
 
 
 class PingZeParseTests(unittest.TestCase):
-    def test_pure_ping_ze(self):
-        parsed = normalize_and_parse("PZP")
+    def test_only_explicit_mode_claims_pingze_tokens(self):
+        parsed = normalize_and_parse("PZ3", mode="pz", pzmode="m2")
         self.assertIsInstance(parsed, PingZeSerialQuery)
-        self.assertEqual(parsed.raw_q, "PZP")
-
-    def test_mixed_digit(self):
-        parsed = normalize_and_parse("pz3")
-        self.assertIsInstance(parsed, PingZeSerialQuery)
+        self.assertEqual(parsed.pzmode, "m2")
         self.assertEqual(parsed.raw_q, "PZ3")
 
-    def test_pure_digits_stays_digit_code(self):
-        parsed = normalize_and_parse("333")
-        self.assertIsInstance(parsed, DigitCodeQuery)
+        normal = normalize_and_parse("pz3", mode="m1")
+        self.assertIsInstance(normal, JyutpingFragmentQuery)
 
-    def test_invalid_mixed_hint(self):
-        parsed = normalize_and_parse("PZ3開")
+    def test_question_mark_is_one_unconstrained_slot(self):
+        parsed = normalize_and_parse("PZ?", mode="pz")
+        self.assertIsInstance(parsed, PingZeSerialQuery)
+        spec = build_match_spec_for_parsed(parsed)
+        self.assertIsNotNone(spec)
+        assert spec is not None
+        self.assertEqual(spec.width, 3)
+        self.assertEqual(spec.mask, "???")
+        self.assertEqual([(s.pos, s.kind, s.value) for s in spec.slots], [
+            (0, "tone_class", "ping"),
+            (1, "tone_class", "ze"),
+        ])
+        self.assertEqual(parsed.kind, QueryKind.PING_ZE_SERIAL)
+
+    def test_rhyme_anchor_composes_after_pingze_slots(self):
+        parsed = normalize_and_parse("PZ好=", mode="pz")
+        self.assertIsInstance(parsed, PingZeSerialQuery)
+        spec = build_match_spec_for_parsed(parsed)
+        self.assertIsNotNone(spec)
+        assert spec is not None
+        self.assertEqual(spec.width, 3)
+        self.assertIn((2, "final_anchor", "好"), [(s.pos, s.kind, s.value) for s in spec.slots])
+
+    def test_jyutping_anchor_is_rejected_only_in_pingze_mode(self):
+        parsed = normalize_and_parse("?hon", mode="pz")
         self.assertIsInstance(parsed, UnmatchedQuery)
-        self.assertIn("平仄串列", parsed.hint or "")
-
-    def test_is_ping_ze_serial_query(self):
-        self.assertTrue(is_ping_ze_serial_query("ZP"))
-        self.assertFalse(is_ping_ze_serial_query("23"))
-
-
-class PingZeModeRedirectTests(unittest.TestCase):
-    def test_ping_ze_effective_mode_is_m3(self):
-        self.assertEqual(MATRIX_394052_MODE, "m3")
-        self.assertEqual(ping_ze_effective_mode(), "m3")
-
-    def test_ping_ze_m3_redirect_silent(self):
-        self.assertIsNone(ping_ze_mode_redirect_hint("m3"))
+        self.assertIn("不支援粵拼錨", parsed.hint or "")
 
 
 class PingZeMatchTests(unittest.TestCase):
-    def test_zp_matches_23(self):
-        self.assertTrue(code_matches_ping_ze_pattern("23", "ZP"))
+    def test_pz_is_fixed_while_numeric_slot_uses_pzmode(self):
+        self.assertTrue(code_matches_ping_ze_pattern("399", "PZ3", "m1"))
+        self.assertFalse(code_matches_ping_ze_pattern("399", "PZ3", "m2"))
+        self.assertFalse(code_matches_ping_ze_pattern("999", "PZ3", "m1"))
 
-    def test_pzp_rejects_23(self):
-        self.assertFalse(code_matches_ping_ze_pattern("23", "PZP"))
-
-    def test_pz3_third_digit(self):
-        self.assertTrue(code_matches_ping_ze_pattern("023", "PZ3"))
-        self.assertFalse(code_matches_ping_ze_pattern("022", "PZ3"))
-
-    def test_digit_normalizes_02493(self):
-        self.assertTrue(code_matches_ping_ze_pattern("023", "PZ7"))
+    def test_wildcard_is_exactly_one_slot(self):
+        self.assertTrue(code_matches_ping_ze_pattern("029", "PZ?", "m3"))
+        self.assertFalse(code_matches_ping_ze_pattern("02", "PZ?", "m3"))
 
 
 if __name__ == "__main__":

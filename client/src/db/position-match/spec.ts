@@ -10,6 +10,7 @@ export type ConstraintKind =
   | 'rhyme_letters'
   | 'syllable_letters'
   | 'initial_letters'
+  | 'tone_class'
   | 'wildcard';
 
 export type SlotConstraintValue = string | ReadonlySet<string>;

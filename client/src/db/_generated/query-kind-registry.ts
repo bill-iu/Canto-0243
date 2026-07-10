@@ -62,7 +62,7 @@ export const QUERY_KIND_META: Record<QueryKind, QueryKindMeta> = {
   [QueryKind.TRIPLE_RHYME_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.JYUTPING_ANCHOR]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.MASK]: { route: RouteKind.MASK_FAMILY, match_spec: true },
-  [QueryKind.PING_ZE_SERIAL]: { route: RouteKind.DIGIT },
+  [QueryKind.PING_ZE_SERIAL]: { route: RouteKind.MASK_FAMILY, match_spec: true },
   [QueryKind.DIGIT_CODE]: { route: RouteKind.DIGIT },
   [QueryKind.WORD_LOOKUP]: { route: RouteKind.LOOKUP },
   [QueryKind.JYUTPING_FRAGMENT]: { route: RouteKind.LOOKUP },

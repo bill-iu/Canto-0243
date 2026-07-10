@@ -1,18 +1,21 @@
 import { useEffect, useId, useRef, useState } from 'react';
 
-import { getModeMeta, modeHelp, modeMetaFor, uiModeToUrlMode, type UiMode } from './mode-meta';
+import { getModeMeta, modeHelp, modeMetaFor, uiModeToUrlMode, type PingzeSubMode, type UiMode } from './mode-meta';
 
 const MODE_OPTIONS: Array<{ uiMode: UiMode; key: string }> = [
   { uiMode: '0243', key: '0243' },
   { uiMode: '02493', key: '02493' },
   { uiMode: '394052', key: '394052' },
   { uiMode: 'synonym', key: '~ / !' },
+  { uiMode: 'pingze', key: 'P / Z' },
 ];
 
 export interface ModeMenuProps {
   mode: UiMode;
   disabled?: boolean;
   onModeChange: (mode: UiMode) => void;
+  pzmode?: PingzeSubMode;
+  onPzModeChange?: (mode: PingzeSubMode) => void;
   onOpenGuide: () => void;
   onOpenAbout: () => void;
   theme?: 'light' | 'dark';
@@ -27,6 +30,8 @@ export function ModeMenu({
   mode,
   disabled = false,
   onModeChange,
+  pzmode = 'm1',
+  onPzModeChange,
   onOpenGuide,
   onOpenAbout,
   theme = 'light',
@@ -190,6 +195,25 @@ export function ModeMenu({
             </button>
           </div>
         </div>
+        {mode === 'pingze' ? (
+          <div className="menu-group" role="group" aria-label={lang === 'zh' ? '平仄數字子模式' : 'Ping-ze digit sub-mode'}>
+            <p className="menu-label">{lang === 'zh' ? '數字子模式' : 'Digit sub-mode'}</p>
+            {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+              <button
+                key={subMode}
+                type="button"
+                className="mode-option"
+                role="menuitemradio"
+                aria-checked={pzmode === subMode}
+                disabled={disabled}
+                onClick={() => onPzModeChange?.(subMode)}
+              >
+                <span className="mode-name">{getModeMeta(subMode, lang).title}</span>
+                <span className="mode-key">{subMode}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
           </div>
         </div>
         {metaLabel ? (
@@ -206,7 +230,7 @@ export { modeHelp };
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/pwa-p6-mode-menu-self-check.ts` */
 export function modeMenuSelfCheck(): void {
-  if (MODE_OPTIONS.length !== 4) {
+  if (MODE_OPTIONS.length !== 5) {
     throw new Error('modeMenuSelfCheck: mode options');
   }
   if (modeHelp('394052', 'zh') !== '394052 六聲碼（三／五聲分明）') {

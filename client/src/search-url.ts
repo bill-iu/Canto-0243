@@ -5,13 +5,14 @@ import {
   searchParamsWithoutBoot,
   type QueryTab,
 } from '../../frontend/query-tabs-state.mjs';
-import { uiModeToUrlMode, urlModeToUiMode, type UiMode } from './mode-meta';
+import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from './mode-meta';
 
 export type AppView = 'search' | 'guide' | 'about';
 
 export interface ParsedSearchUrl {
   q: string;
   mode: UiMode;
+  pzmode: PingzeSubMode;
   view: AppView;
 }
 
@@ -27,6 +28,7 @@ export function parseSearchUrl(search: string): ParsedSearchUrl {
   return {
     q: parsed.view === VIEW.SEARCH ? parsed.q : '',
     mode: urlModeToUiMode(parsed.mode),
+    pzmode: parsed.pzmode as PingzeSubMode,
     view: appViewFromShared(parsed.view),
   };
 }
@@ -34,6 +36,7 @@ export function parseSearchUrl(search: string): ParsedSearchUrl {
 export function tabForAppUrl(options: {
   q?: string;
   mode?: UiMode;
+  pzmode?: PingzeSubMode;
   view?: AppView;
 }): QueryTab {
   const view = options.view ?? 'search';
@@ -56,18 +59,19 @@ export function tabForAppUrl(options: {
 export function buildAppQueryString(options: {
   q?: string;
   mode?: UiMode;
+  pzmode?: PingzeSubMode;
   view?: AppView;
 }): string {
   const tab = tabForAppUrl(options);
-  const params = buildUrlSearchParams(tab, uiModeToUrlMode(options.mode ?? '0243'));
+  const params = buildUrlSearchParams(tab, uiModeToUrlMode(options.mode ?? '0243'), options.pzmode);
   return params.toString();
 }
 
-export function buildSearchQueryString(q: string, mode: UiMode): string {
-  return buildAppQueryString({ q, mode, view: 'search' });
+export function buildSearchQueryString(q: string, mode: UiMode, pzmode?: PingzeSubMode): string {
+  return buildAppQueryString({ q, mode, pzmode, view: 'search' });
 }
 
-export function replaceAppUrl(options: { q: string; mode: UiMode; view: AppView }): void {
+export function replaceAppUrl(options: { q: string; mode: UiMode; pzmode?: PingzeSubMode; view: AppView }): void {
   if (typeof window === 'undefined') return;
   const qs = buildAppQueryString(options);
   const suffix = qs ? `?${qs}` : '';
@@ -75,8 +79,8 @@ export function replaceAppUrl(options: { q: string; mode: UiMode; view: AppView 
   window.history.replaceState(window.history.state, '', next);
 }
 
-export function replaceSearchUrl(q: string, mode: UiMode): void {
-  replaceAppUrl({ q, mode, view: 'search' });
+export function replaceSearchUrl(q: string, mode: UiMode, pzmode?: PingzeSubMode): void {
+  replaceAppUrl({ q, mode, pzmode, view: 'search' });
 }
 
 export function stripLauncherBootFromUrl(): void {
@@ -116,6 +120,14 @@ export function searchUrlSelfCheck(): void {
   const m3qs = buildSearchQueryString('45', '394052');
   if (!m3qs.includes('mode=m3')) {
     throw new Error(`searchUrlSelfCheck: m3 qs ${m3qs}`);
+  }
+  const pz = parseSearchUrl('?mode=pz&q=PZ%3F');
+  if (pz.mode !== 'pingze' || pz.pzmode !== 'm1' || pz.q !== 'PZ?') {
+    throw new Error('searchUrlSelfCheck: pz default parse');
+  }
+  const pzqs = buildSearchQueryString('PZ3', 'pingze', 'm2');
+  if (!pzqs.includes('mode=pz') || !pzqs.includes('pzmode=m2')) {
+    throw new Error(`searchUrlSelfCheck: pz qs ${pzqs}`);
   }
   const guideQs = buildAppQueryString({ view: 'guide' });
   if (guideQs !== 'view=guide') {

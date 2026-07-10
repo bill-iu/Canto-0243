@@ -6,7 +6,6 @@ import { queryRows } from '../database-backend.ts';
 import { getCodeVariants } from '../code-variants.ts';
 import {
   codeMatchesPingZePattern,
-  isPingZeSerialQuery,
 } from '../ping-zak.ts';
 import { sortQueryResults, sortWordRows } from '../ranking.ts';
 import { executeHeteronymCodeSearch } from '../heteronym.ts';

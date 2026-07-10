@@ -14,6 +14,7 @@ ConstraintKind = Literal[
     "rhyme_letters",     # 韻母粵拼錨（拉丁片段）
     "syllable_letters",  # 完整音節粵拼錨
     "initial_letters",   # 聲母粵拼錨（單輔音）
+    "tone_class",        # 平／仄（固定按 stored 394052 碼）
     "wildcard",          # 萬用字元（_ ? %），不做約束
 ]
 

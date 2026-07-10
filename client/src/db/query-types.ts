@@ -1,6 +1,6 @@
 import type { QueryKind } from './query-kind.ts';
 
-export type QueryMode = 'm1' | 'm2' | 'm3' | '0243' | '02493' | '394052' | 'syn';
+export type QueryMode = 'm1' | 'm2' | 'm3' | '0243' | '02493' | '394052' | 'syn' | 'pz';
 
 export interface ParsedQuery {
   kind: QueryKind;
@@ -10,6 +10,8 @@ export interface ParsedQuery {
 export interface PingZeSerialQuery extends ParsedQuery {
   kind: QueryKind.PING_ZE_SERIAL;
   raw_q: string;
+  pzmode: 'm1' | 'm2' | 'm3';
+  anchor?: string;
 }
 
 export interface DigitCodeQuery extends ParsedQuery {
@@ -203,6 +205,7 @@ export interface SearchContext {
   code?: string;
   char?: string;
   mode: QueryMode;
+  pzmode?: 'm1' | 'm2' | 'm3';
   limit: number;
   offset: number;
   fallback_0243_mode?: QueryMode;

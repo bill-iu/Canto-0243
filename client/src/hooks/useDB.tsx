@@ -316,9 +316,15 @@ const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 export function useSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
-  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' | '394052'; ui_lang?: 'zh' | 'en' },
+  options?: {
+    pageSize?: number;
+    fallback_0243_mode?: '0243' | '02493' | '394052';
+    pzmode?: 'm1' | 'm2' | 'm3';
+    ui_lang?: 'zh' | 'en';
+  },
 ) {
   const fallback0243Mode = options?.fallback_0243_mode;
+  const pzmode = options?.pzmode;
   const uiLang = options?.ui_lang ?? 'zh';
   const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
@@ -368,6 +374,7 @@ export function useSearch(
           limit: firstPageLimit,
           offset: 0,
           fallback_0243_mode: fallback0243Mode,
+          pzmode,
           ui_lang: uiLang,
           shouldCancel,
         });
@@ -394,7 +401,7 @@ export function useSearch(
     return () => {
       genRef.current += 1;
     };
-  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, uiLang]);
+  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode, uiLang]);
 
   const isLoading = loading || status === 'loading';
 
@@ -423,6 +430,7 @@ export function useSearch(
         limit: morePageLimit,
         offset: results.length,
         fallback_0243_mode: fallback0243Mode,
+        pzmode,
         ui_lang: uiLang,
         shouldCancel,
       });
@@ -450,6 +458,7 @@ export function useSearch(
     morePageLimit,
     results.length,
     fallback0243Mode,
+    pzmode,
     uiLang,
   ]);
 
