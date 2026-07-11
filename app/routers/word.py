@@ -46,6 +46,7 @@ def search_words_endpoint(
     limit: int = 100,
     offset: int = 0,
     fallback_0243_mode: str = None,
+    pzmode: str = None,
     x_fallback_0243_mode: str = Header(None, alias="X-Fallback-0243-Mode"),
     db: Session = Depends(get_db),
 ):
@@ -60,6 +61,7 @@ def search_words_endpoint(
             offset=offset,
             db=db,
             fallback_0243_mode=fallback,
+            pzmode=pzmode,
         )
     )
     if result.total is not None:
@@ -75,8 +77,8 @@ def search_words_endpoint(
 
 @router.get("/query/explain")
 @router.get("/query/explain/")
-def query_explain_endpoint(q: str = "", mode: str = "m1"):
-    result = explain_query(q or "", mode)
+def query_explain_endpoint(q: str = "", mode: str = "m1", pzmode: str = None):
+    result = explain_query(q or "", mode, pzmode)
     return {
         "summary": result.summary,
         "warning": result.warning,

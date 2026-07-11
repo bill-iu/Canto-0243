@@ -53,7 +53,7 @@ export const ABOUT_COPY = {
       '" target="_blank" rel="noopener noreferrer">提交 Issue</a>（建議使用錯誤回報範本）。非常感謝您的協助！',
     reportBtn: '前往 GitHub 回報',
     backBtn: '回到搜尋',
-    sloganBottom: '這一次，\n重奪你的創作主導權。',
+    sloganBottom: '呢一次，\n拎返你嘅創作主導權。',
   },
   en: {
     sloganTop: 'Fully usable—\neven offline.',
@@ -159,4 +159,11 @@ export function applyAboutLang(lang) {
   const backBtn = document.getElementById('aboutBackToSearchBtn');
   if (backBtn) backBtn.textContent = c.backBtn;
   setSlogan('aboutSloganBottom', c.sloganBottom);
+}
+
+/** Copy regression guard: this Cantonese slogan stays within the display font's Canto glyph set. */
+export function aboutI18nSelfCheck() {
+  if (ABOUT_COPY.zh.sloganBottom !== '呢一次，\n拎返你嘅創作主導權。') {
+    throw new Error('aboutI18nSelfCheck: zh sloganBottom');
+  }
 }

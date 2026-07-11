@@ -2,7 +2,6 @@
  * 查詢語意解釋 — port of app/services/query_explain.py (ADR-0021)
  */
 import type {
-  CompoundDoubledSyllableQuery,
   DigitCodeQuery,
   HeteronymCodeQuery,
   JyutpingAnchorQuery,

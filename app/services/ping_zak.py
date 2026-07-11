@@ -8,15 +8,15 @@ from app.utils.jyutping_codec import M02493_TO_0243, normalize_02493_code
 
 PingZak = Literal["ping", "ze"]
 
-MATRIX_394052_MODE: Optional[str] = "m3"
+VALID_PZ_MODES = frozenset({"m1", "m2", "m3"})
 
 PING_ZE_INVALID_HINT = (
     "平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；"
     "字面請改用缺字語法（如 ?+就=）。"
 )
 
-_PING_ZE_SLOT_RE = re.compile(r"^[PZ0-9]+$", re.IGNORECASE)
-_HAS_PZ_RE = re.compile(r"[PZ]", re.IGNORECASE)
+_PING_ZE_SLOT_RE = re.compile(r"^[PZ0-9?]+$")
+_HAS_PZ_RE = re.compile(r"[PZ]")
 
 
 def ping_zak_class(code_digit: str) -> PingZak:
@@ -28,27 +28,25 @@ def normalize_ping_ze_pattern(q: str) -> str:
     return q.upper()
 
 
-def ping_ze_effective_mode() -> str:
-    if MATRIX_394052_MODE:
-        return MATRIX_394052_MODE
-    return "m2"
+def normalize_pzmode(mode: str | None) -> str:
+    return mode if mode in VALID_PZ_MODES else "m1"
 
 
 def ping_ze_mode_redirect_hint(effective: str, *, lang: str = "zh") -> Optional[str]:
     """394052 就緒後轉該檔時唔出提示（Q9 修正）。"""
-    if MATRIX_394052_MODE and effective == MATRIX_394052_MODE:
-        return None
+    return None
     if lang == "en":
         return "Ping–ze serial query switched to 02493 Mode (Strict)"
     return "平仄串列查詢已切換至 02493模式（緊）"
 
 
-def digit_slot_matches(query_digit: str, code_digit: str) -> bool:
-    normalized = normalize_02493_code(query_digit)
-    return normalized == code_digit
+def digit_slot_matches(query_digit: str, code_digit: str, pzmode: str = "m1") -> bool:
+    from app.utils.jyutping_codec import get_code_variants
+
+    return code_digit in get_code_variants(query_digit, normalize_pzmode(pzmode))
 
 
-def code_matches_ping_ze_pattern(code: str, pattern: str) -> bool:
+def code_matches_ping_ze_pattern(code: str, pattern: str, pzmode: str = "m1") -> bool:
     pat = normalize_ping_ze_pattern(pattern)
     if len(code) != len(pat):
         return False
@@ -60,14 +58,16 @@ def code_matches_ping_ze_pattern(code: str, pattern: str) -> bool:
             if ping_zak_class(cd) != "ze":
                 return False
         elif slot.isdigit():
-            if not digit_slot_matches(slot, cd):
+            if not digit_slot_matches(slot, cd, pzmode):
                 return False
+        elif slot == "?":
+            continue
         else:
             return False
     return True
 
 
-def try_parse_ping_ze_serial(q: str):
+def try_parse_ping_ze_serial(q: str, pzmode: str | None = None):
     """Return PingZeSerialQuery, UnmatchedQuery, or None (not a ping-ze attempt)."""
     from app.services.query_types import PingZeSerialQuery, UnmatchedQuery
 
@@ -75,7 +75,7 @@ def try_parse_ping_ze_serial(q: str):
         return None
     if not _PING_ZE_SLOT_RE.match(q):
         return UnmatchedQuery(raw_q=q, hint=PING_ZE_INVALID_HINT)
-    return PingZeSerialQuery(raw_q=normalize_ping_ze_pattern(q))
+    return PingZeSerialQuery(raw_q=normalize_ping_ze_pattern(q), pzmode=normalize_pzmode(pzmode))
 
 
 def is_ping_ze_serial_query(q: str) -> bool:
@@ -97,14 +97,12 @@ def slot_label(slot: str, *, lang: str = "zh") -> str:
 
 
 __all__ = [
-    "MATRIX_394052_MODE",
     "PING_ZE_INVALID_HINT",
     "code_matches_ping_ze_pattern",
     "digit_slot_matches",
     "is_ping_ze_serial_query",
     "normalize_ping_ze_pattern",
-    "ping_ze_effective_mode",
-    "ping_ze_mode_redirect_hint",
+    "normalize_pzmode",
     "ping_zak_class",
     "slot_label",
     "try_parse_ping_ze_serial",

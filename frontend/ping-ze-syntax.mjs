@@ -1,10 +1,10 @@
 /** Thin re-export — detect SSOT: query-mode-detect.mjs (Phase B). */
 import { isPingZeSerialQuery } from "./query-mode-detect.mjs";
 
-const MATRIX_394052_MODE = "m3";
+const MATRIX_394052_MODE = "pz";
 
 function pingZeEffectiveMode() {
-  return MATRIX_394052_MODE || "m2";
+  return MATRIX_394052_MODE;
 }
 
 /** @param {'zh' | 'en'} [lang] */

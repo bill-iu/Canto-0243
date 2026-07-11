@@ -1,6 +1,5 @@
 /** 搜尋模式轉接 — port of query_mode_dispatch (predicate table). */
 import type { Database } from '../sqljs.ts';
-import { pingZeEffectiveMode, pingZeModeRedirectHint } from '../ping-zak.ts';
 import { isJyutpingQuery } from '../jyutping-match.ts';
 import { relationPoolPage } from '../relation-pool.ts';
 import type { SearchContext, SearchResult } from '../query-types.ts';
@@ -10,7 +9,7 @@ import {
   normalizeAndParse,
   resolveFallback0243Mode,
 } from './parse.ts';
-import { isPingZeSerialQuery, isRelationSyntaxQuery } from './mode-detect.ts';
+import { isRelationSyntaxQuery } from './mode-detect.ts';
 import { dispatchParsed, poolItemToResult } from './dispatch.ts';
 
 export type SynModeCtx = SearchContext & { q: string };
@@ -34,19 +33,6 @@ export async function dispatchSynMode(
       items: result.items,
       total: result.total,
       hint: modeRedirectHint(effective, ctx.ui_lang ?? 'zh'),
-      effective_mode: effective,
-      cache_path: result.cache_path,
-    };
-  }
-
-  if (isPingZeSerialQuery(q)) {
-    const effective = pingZeEffectiveMode();
-    const parsed = normalizeAndParse(q);
-    const result = await dispatchParsed(parsed, { ...dbCtx, mode: effective, offset: 0 });
-    return {
-      items: result.items,
-      total: result.total,
-      hint: pingZeModeRedirectHint(effective, ctx.ui_lang ?? 'zh') ?? undefined,
       effective_mode: effective,
       cache_path: result.cache_path,
     };

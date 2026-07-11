@@ -36,7 +36,7 @@ export const GUIDE_FAMILY_IDS = [
 ] as const;
 
 export type GuideFamilyId = (typeof GUIDE_FAMILY_IDS)[number];
-export type GuideMode = '0243' | '02493' | '394052' | 'synonym';
+export type GuideMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';
 export type GuideLang = 'zh' | 'en';
 
 export interface GuideExample {
@@ -91,6 +91,7 @@ function uiModeToGuideMode(mode: string): GuideMode {
   if (mode === 'm2') return '02493';
   if (mode === 'm3') return '394052';
   if (mode === 'syn') return 'synonym';
+  if (mode === 'pz') return 'pingze';
   return '0243';
 }
 

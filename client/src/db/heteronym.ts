@@ -7,7 +7,6 @@ import { createSqlJsBackend } from './sqljs-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
 import { sortHeteronymResults } from './ranking.ts';
 
-type WordRow = Record<string, unknown>;
 type ReadingRow = [string, string];
 
 export interface HeteronymCodeParsed {

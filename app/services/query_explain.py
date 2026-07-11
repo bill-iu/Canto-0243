@@ -45,12 +45,11 @@ class QueryExplainResult:
     kind: Optional[str]
 
 
-def explain_query(q: str, mode: str = "m1") -> QueryExplainResult:
-    del mode  # ponytail: reserved for mode-specific copy; parse is mode-agnostic today
+def explain_query(q: str, mode: str = "m1", pzmode: str | None = None) -> QueryExplainResult:
     text = (q or "").strip()
     if not text:
         return QueryExplainResult(None, None, None)
-    parsed = normalize_and_parse(text)
+    parsed = normalize_and_parse(text, mode=mode, pzmode=pzmode)
     warning = _warning_for(parsed)
     if isinstance(parsed, UnmatchedQuery):
         return QueryExplainResult(None, parsed.hint or warning, parsed.kind.value)

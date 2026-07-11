@@ -9,9 +9,7 @@ import {
   createMatchSpec,
   getEqualsSpan,
   type AnchorKind,
-  type CompoundKind,
   type ConstraintKind,
-  type EqualsSpan,
   type MatchSpec,
   type SlotConstraint,
 } from './spec.ts';
@@ -28,6 +26,7 @@ import type {
   ParsedQuery,
   PartialInitialMaskQuery,
   PartialRhymeMaskQuery,
+  PingZeSerialQuery,
   PlusAnchorQuery,
   PrefixWildcardEqualsQuery,
   RhymeAnchorQuery,
@@ -286,6 +285,48 @@ function specMask(parsed: ParsedQuery): MatchSpec | null {
   return spec;
 }
 
+function specPingZeSerial(parsed: ParsedQuery): MatchSpec | null {
+  const q = parsed as PingZeSerialQuery;
+  if (q.base) {
+    const spec = buildMatchSpecForParsed(q.base);
+    if (!spec) return null;
+    if (!spec.extra) spec.extra = {};
+    spec.extra.code_mode = q.pzmode;
+    const codeDigitPositions = new Set((spec.slots ?? []).filter((slot) => slot.kind === 'code_digit').map((slot) => slot.pos));
+    const fixed = new Set(
+      (spec.slots ?? [])
+        .filter((slot) => slot.kind !== 'code_digit' && slot.kind !== 'tone_class' && !codeDigitPositions.has(slot.pos))
+        .map((slot) => slot.pos),
+    );
+    const codePositions = Array.from({ length: spec.width }, (_, pos) => pos).filter((pos) => !fixed.has(pos));
+    const tokens = [...q.raw_q].filter((token) => /[PZ?0-9]/.test(token));
+    tokens.forEach((token, index) => {
+      if (token !== 'P' && token !== 'Z') return;
+      const pos = codePositions[index];
+      if (pos == null) return;
+      spec.slots = (spec.slots ?? []).filter((slot) => !(slot.pos === pos && slot.kind === 'code_digit'));
+      spec.mask = `${spec.mask.slice(0, pos)}?${spec.mask.slice(pos + 1)}`;
+      slots(spec).push({ pos, kind: 'tone_class', value: token === 'P' ? 'ping' : 'ze' });
+    });
+    return spec;
+  }
+  const spec = createMatchSpec(q.raw_q.length, { mask: '?'.repeat(q.raw_q.length) });
+  if (!spec.extra) spec.extra = {};
+  spec.extra.code_mode = q.pzmode;
+  for (let pos = 0; pos < q.raw_q.length; pos += 1) {
+    const token = q.raw_q[pos]!;
+    if (token === 'P') slots(spec).push({ pos, kind: 'tone_class', value: 'ping' });
+    else if (token === 'Z') slots(spec).push({ pos, kind: 'tone_class', value: 'ze' });
+    else if (/\d/.test(token)) slots(spec).push({ pos, kind: 'code_digit', value: token });
+  }
+  if (q.anchor) {
+    spec.width += 1;
+    spec.mask = '?'.repeat(spec.width);
+    slots(spec).push({ pos: q.raw_q.length, kind: 'final_anchor', value: q.anchor });
+  }
+  return spec;
+}
+
 function specCompoundDoubledSyllable(parsed: ParsedQuery): MatchSpec | null {
   const q = parsed as CompoundDoubledSyllableQuery;
   const spec = createMatchSpec(q.width, {
@@ -358,6 +399,7 @@ export const MATCH_SPEC_BUILDERS: Partial<Record<QueryKind, MatchSpecBuilder>> =
   [QueryKind.TRIPLE_RHYME_ANCHOR]: specTripleRhymeAnchor,
   [QueryKind.JYUTPING_ANCHOR]: specJyutpingAnchor,
   [QueryKind.MASK]: specMask,
+  [QueryKind.PING_ZE_SERIAL]: specPingZeSerial,
   [QueryKind.COMPOUND_SYN]: specCompoundSyn,
   [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: specCompoundDoubledSyllable,
   [QueryKind.COMPOUND_ANT]: specCompoundAnt,

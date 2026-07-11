@@ -70,7 +70,7 @@ QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.TRIPLE_RHYME_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.JYUTPING_ANCHOR: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.MASK: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
-    QueryKind.PING_ZE_SERIAL: QueryKindMeta(RouteKind.DIGIT),
+    QueryKind.PING_ZE_SERIAL: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.DIGIT_CODE: QueryKindMeta(RouteKind.DIGIT),
     QueryKind.WORD_LOOKUP: QueryKindMeta(RouteKind.LOOKUP),
     QueryKind.JYUTPING_FRAGMENT: QueryKindMeta(RouteKind.LOOKUP),

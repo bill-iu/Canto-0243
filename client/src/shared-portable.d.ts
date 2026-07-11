@@ -18,7 +18,7 @@ declare module '@shared/query-tabs' {
     results: unknown[];
     offset: number;
     total: number | null;
-    historyStack?: { q: string; mode: string }[];
+    historyStack?: { q: string; mode: string; pzmode?: string }[];
     historyIndex?: number;
     relation?: Record<string, string>;
     prefetchChar?: string;
@@ -40,10 +40,11 @@ declare module '@shared/query-tabs' {
     view: string,
     createTab: (opts: { id: number }) => QueryTab,
   ): TabState;
-  export function buildUrlSearchParams(tab: QueryTab, mode?: string): URLSearchParams;
+  export function buildUrlSearchParams(tab: QueryTab, mode?: string, pzmode?: string): URLSearchParams;
   export function parseUrlSearchParams(params: URLSearchParams): {
     q: string;
     mode: string;
+    pzmode: string;
     view: string;
   };
   export function searchParamsWithoutBoot(params: URLSearchParams): URLSearchParams | null;
@@ -78,7 +79,7 @@ declare module '../../frontend/about-i18n.mjs' {
 }
 
 declare module '../../frontend/mode-i18n.mjs' {
-  export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn';
+  export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
   export interface ModeMeta {
     title: string;
     note: string;
@@ -96,19 +97,44 @@ declare module '../../frontend/mode-i18n.mjs' {
 declare module '@shared/search-navigation' {
   import type { QueryTab } from '@shared/query-tabs';
 
-  export function ensureSearchTabHistory(tab: QueryTab, defaultMode?: string): QueryTab;
-  export function currentSearchHistoryFrame(tab: QueryTab): { q: string; mode: string };
+  export function ensureSearchTabHistory(tab: QueryTab, defaultMode?: string, defaultPzMode?: string): QueryTab;
+  export function currentSearchHistoryFrame(tab: QueryTab): { q: string; mode: string; pzmode?: string };
   export function commitSearchHistoryFrame(
     tab: QueryTab,
-    frame: { q: string; mode: string },
-  ): { pushed: boolean; frame: { q: string; mode: string } };
-  export function stepSearchTabBack(tab: QueryTab): { q: string; mode: string } | null;
+    frame: { q: string; mode: string; pzmode?: string },
+  ): { pushed: boolean; frame: { q: string; mode: string; pzmode?: string } };
+  export function stepSearchTabBack(tab: QueryTab): { q: string; mode: string; pzmode?: string } | null;
   export function isHistoryForward(lastSeq: number | undefined, state: unknown): boolean;
   export function shouldApplySearchPopstate(activeTab: QueryTab | null, state: unknown): boolean;
-  export function resetSearchTabHistory(tab: QueryTab, mode?: string): QueryTab;
+  export function resetSearchTabHistory(tab: QueryTab, mode?: string, pzmode?: string): QueryTab;
   export function buildHistoryStateForTab(
     tab: QueryTab,
     mode?: string,
-  ): { tabId: number; view: string; query: string; mode: string };
+  ): { tabId: number; view: string; query: string; mode: string; pzmode?: string };
   export function shouldPushSearchHistory(next: unknown, prev: unknown): boolean;
+}
+
+declare module '../../../frontend/committed-search.mjs' {
+  import type { QueryTab, TabState } from '@shared/query-tabs';
+
+  export interface CommittedSearchFrame {
+    q: string;
+    mode: string;
+    pzmode: string;
+  }
+
+  export interface CommittedSearchTransaction {
+    state: TabState;
+    pushed: boolean;
+  }
+
+  export function commitActiveSearchTransaction(
+    state: TabState,
+    frame: CommittedSearchFrame,
+  ): CommittedSearchTransaction;
+  export function openCommittedSearchTabTransaction(
+    state: TabState,
+    frame: CommittedSearchFrame,
+    createSearchTab: (options: Partial<QueryTab>) => QueryTab,
+  ): CommittedSearchTransaction;
 }

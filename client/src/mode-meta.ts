@@ -5,9 +5,11 @@ import {
   modeHelp as sharedModeHelp,
   modeRedirectHint as sharedModeRedirectHint,
 } from '../../frontend/mode-i18n.mjs';
+import { uiModeToUrlMode as contractUiModeToUrlMode, urlModeToUiMode as contractUrlModeToUiMode } from '../../contracts/search-mode-manifest.mjs';
 
-export type UiMode = '0243' | '02493' | '394052' | 'synonym';
-export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn';
+export type UiMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';
+export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
+export type PingzeSubMode = 'm1' | 'm2' | 'm3';
 export type UiLang = 'zh' | 'en';
 export type Last0243SearchMode = '0243' | '02493' | '394052';
 
@@ -22,17 +24,11 @@ export interface ModeMeta {
 export const MODE_META: Record<UrlMode, ModeMeta> = MODE_META_ZH;
 
 export function uiModeToUrlMode(mode: UiMode): UrlMode {
-  if (mode === '02493') return 'm2';
-  if (mode === '394052') return 'm3';
-  if (mode === 'synonym') return 'syn';
-  return 'm1';
+  return contractUiModeToUrlMode(mode) as UrlMode;
 }
 
 export function urlModeToUiMode(mode: string | null | undefined): UiMode {
-  if (mode === 'm2') return '02493';
-  if (mode === 'm3') return '394052';
-  if (mode === 'syn') return 'synonym';
-  return '0243';
+  return contractUrlModeToUiMode(mode) as UiMode;
 }
 
 export function last0243UiToUrlMode(mode: Last0243SearchMode): 'm1' | 'm2' | 'm3' {

@@ -6,12 +6,6 @@ import type {
 } from '../../query-types.ts';
 import { CODE_TAIL_MIDDLE, isFramedEqualsQuery } from './shared.ts';
 
-const SLOT_CHAR_RE = /[0-9_?%]/;
-
-function isSlotChar(ch: string): boolean {
-  return ch.length === 1 && SLOT_CHAR_RE.test(ch);
-}
-
 /** Port of query_grammar/serial.parse_prefix_wildcard_equals_query */
 export function parsePrefixWildcardEqualsQuery(q: string): PrefixWildcardEqualsQuery | null {
   const m = q.match(/^\?([\u4e00-\u9fff]{2,})=$/);

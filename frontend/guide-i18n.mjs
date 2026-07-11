@@ -60,24 +60,30 @@ const SECTIONS = [
     zh: {
       title: '平仄串列',
       intro:
-        '<code translate="no">P</code>＝平（394052 碼 0／3）、<code translate="no">Z</code>＝仄（其餘）；數字＝該格同音。自動切換 <strong>394052模式（六聲）</strong>（唔出提示）。',
+        '<code translate="no">P</code>＝平（394052 碼 0／3）、<code translate="no">Z</code>＝仄（其餘）；數字＝該格同音。平仄模式下可在搜尋欄下方切換 <strong>0243</strong>、<strong>02493</strong>、<strong>394052</strong> 三個子模式；P／Z 永遠按 394052 判定。',
       examples: [
         { label: '二字：平＋仄（如「自己」）' },
         { label: '三字：平仄＋與 3 同音' },
+        { label: '韻母錨：PZ＋「好」' },
+        { label: '聲母錨：「好」＋PZ' },
       ],
     },
     en: {
       title: 'Ping–ze serial',
       intro:
-        '<code translate="no">P</code> = ping (394052 digits 0/3), <code translate="no">Z</code> = ze (others); a digit = same tone at that slot. Switches to <strong>394052 Mode (6 tones)</strong> silently.',
+        '<code translate="no">P</code> = ping (394052 digits 0/3), <code translate="no">Z</code> = ze (others); a digit matches that slot using the selected sub-mode. Choose <strong>0243</strong>, <strong>02493</strong>, or <strong>394052</strong> from the compact pills below the search field; P/Z always use 394052.',
       examples: [
         { label: 'Two chars: ping + ze (e.g. 自己)' },
         { label: 'Three chars: ping, ze, same as 3' },
+        { label: 'Rhyme anchor: PZ before 好' },
+        { label: 'Initial anchor: PZ after 好' },
       ],
     },
     examples: [
-      { query: 'PZ', mode: 'm3' },
-      { query: 'PZ3', mode: 'm3' },
+      { query: 'PZ', mode: 'pz' },
+      { query: 'PZ3', mode: 'pz' },
+      { query: 'PZ好=', mode: 'pz' },
+      { query: '=好PZ', mode: 'pz' },
     ],
   },
   {

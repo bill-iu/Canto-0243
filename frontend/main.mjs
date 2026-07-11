@@ -48,6 +48,8 @@ import {
   updateModeLabel,
   toggleMenu,
   switchMode,
+  switchModeFamily,
+  switchProfile,
   runExample,
   shuffleResults,
   searchDict,
@@ -149,6 +151,8 @@ $.searchInput.addEventListener("input", () => {
 
 $.homeBtn.addEventListener("click", goHome);
 $.modeMenuButton.addEventListener("click", () => toggleMenu());
+document.querySelectorAll("[data-family]").forEach((button) => button.addEventListener("click", () => switchModeFamily(button.dataset.family)));
+document.querySelectorAll("[data-profile]").forEach((button) => button.addEventListener("click", () => switchProfile(button.dataset.profile)));
 $.guideMenuBtn.addEventListener("click", () => showGuide());
 $.relationMenuBtn.addEventListener("click", () => showRelation());
 $.aboutMenuBtn.addEventListener("click", () => showAbout());

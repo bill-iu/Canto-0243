@@ -87,7 +87,6 @@ def _handle_ping_ze_redirect(ctx: SearchContext, q: str, engine: QueryEngine) ->
 SYN_MODE_STEPS: tuple[tuple[str, SynModePredicate, SynModeHandler], ...] = (
     ("jyutping_reject", _pred_jyutping_reject, _handle_jyutping_reject),
     ("relation_redirect", _pred_relation_redirect, _handle_relation_redirect),
-    ("ping_ze_redirect", _pred_ping_ze_redirect, _handle_ping_ze_redirect),
     ("pool_page", _pred_pool_page, _handle_pool_page),
 )
 

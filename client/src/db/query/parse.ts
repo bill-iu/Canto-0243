@@ -4,7 +4,7 @@
  */
 import { maskFromCanonicalPlusQuery } from '../plus-grammar.ts';
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from '../jyutping-anchor.ts';
-import { tryParsePingZeSerial } from '../ping-zak.ts';
+import { normalizePzmode, tryParsePingZeSerial } from '../ping-zak.ts';
 import { QueryKind } from '../query-kind.ts';
 import type {
   JyutpingAnchorQuery,
@@ -12,7 +12,6 @@ import type {
   QueryMode,
 } from '../query-types.ts';
 import {
-  CODE_TAIL_MIDDLE,
   hasChineseChars,
   hasJyutpingChars,
   isFramedEqualsQuery,
@@ -214,8 +213,48 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
 }
 
 /** Parse query and classify into QueryKind */
-export function parseQuery(q: string): ParsedQuery {
+export function parseQuery(q: string, opts?: { mode?: QueryMode; pzmode?: 'm1' | 'm2' | 'm3' }): ParsedQuery {
   const normalized = normalizeQuery(q);
+
+  if (opts?.mode === 'pz') {
+    if (/[PZ]/.test(normalized)) {
+      const plainRhyme = normalized.match(/^([PZ0-9?]+)([\u4e00-\u9fff])=$/);
+      if (plainRhyme) {
+        const serial = tryParsePingZeSerial(plainRhyme[1]!, opts.pzmode);
+        if (serial?.kind === QueryKind.PING_ZE_SERIAL) {
+          return { ...serial, anchor: plainRhyme[2]! };
+        }
+      }
+      const masked = normalized.replace(/[PZ]/g, '0');
+      const base = tryParseBeforeMask(masked) ?? (looksLikeMaskQuery(masked)
+        ? { kind: QueryKind.MASK, raw_q: masked }
+        : null);
+      if (base?.kind === QueryKind.JYUTPING_ANCHOR) {
+        return {
+          kind: QueryKind.UNMATCHED,
+          raw_q: normalized,
+          hint: '平仄模式不支援粵拼錨，請切換 0243搜尋模式。',
+        };
+      }
+      if (base && base.kind !== QueryKind.UNMATCHED) {
+        return {
+          kind: QueryKind.PING_ZE_SERIAL,
+          raw_q: normalized,
+          pzmode: normalizePzmode(opts.pzmode),
+          base,
+        };
+      }
+      const pingZeParsed = tryParsePingZeSerial(normalized, opts.pzmode);
+      if (pingZeParsed) return pingZeParsed;
+    }
+    if (parseJyutpingAnchorQuery(normalized)) {
+      return {
+        kind: QueryKind.UNMATCHED,
+        raw_q: normalized,
+        hint: '平仄模式不支援粵拼錨，請切換 0243搜尋模式。',
+      };
+    }
+  }
 
   const beforeMask = tryParseBeforeMask(normalized);
   if (beforeMask) {
@@ -224,11 +263,6 @@ export function parseQuery(q: string): ParsedQuery {
 
   if (looksLikeMaskQuery(normalized)) {
     return { kind: QueryKind.MASK, raw_q: normalized };
-  }
-
-  const pingZeParsed = tryParsePingZeSerial(normalized);
-  if (pingZeParsed) {
-    return pingZeParsed;
   }
 
   if (isPureDigits(normalized)) {
@@ -247,8 +281,8 @@ export function parseQuery(q: string): ParsedQuery {
 }
 
 /** Normalize and parse query */
-export function normalizeAndParse(q: string): ParsedQuery {
-  return parseQuery(normalizeQuery(q));
+export function normalizeAndParse(q: string, opts?: { mode?: QueryMode; pzmode?: 'm1' | 'm2' | 'm3' }): ParsedQuery {
+  return parseQuery(normalizeQuery(q), opts);
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/parser-self-check.ts` */
@@ -287,6 +321,18 @@ export function parserLogicSelfCheck(): void {
   const missingEq = normalizeAndParse('?困潦倒');
   if (missingEq.kind !== QueryKind.UNMATCHED || !missingEq.hint?.includes('尾格')) {
     throw new Error('parserLogicSelfCheck: prefix wildcard missing = hint');
+  }
+  const pingze = normalizeAndParse('PZ?', { mode: 'pz', pzmode: 'm1' });
+  if (pingze.kind !== QueryKind.PING_ZE_SERIAL || pingze.raw_q !== 'PZ?') {
+    throw new Error('parserLogicSelfCheck: pingze slot parse');
+  }
+  const pingzeRhyme = normalizeAndParse('PZ好=', { mode: 'pz', pzmode: 'm1' });
+  if (pingzeRhyme.kind !== QueryKind.PING_ZE_SERIAL || pingzeRhyme.anchor !== '好') {
+    throw new Error('parserLogicSelfCheck: pingze rhyme anchor parse');
+  }
+  const pingzePlus = normalizeAndParse('PZ+好=', { mode: 'pz', pzmode: 'm1' });
+  if (pingzePlus.kind !== QueryKind.PING_ZE_SERIAL || !pingzePlus.base) {
+    throw new Error('parserLogicSelfCheck: pingze existing anchor parse');
   }
 }
 

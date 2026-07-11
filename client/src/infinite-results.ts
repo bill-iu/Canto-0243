@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isSentinelIntersecting } from '../../frontend/infinite-results.mjs';
-
-export const RESULT_RENDER_BATCH = 400;
+import { RESULT_RENDER_BATCH, clampVisibleCount, resetVisibleCount } from './infinite-results-logic.ts';
 const SCROLL_MARGIN = 200;
 
 type UseInfiniteResultWindowOptions = {
@@ -28,8 +27,12 @@ export function useInfiniteResultWindow({
   const cooldownRef = useRef(false);
 
   useEffect(() => {
-    setVisibleCount(Math.min(RESULT_RENDER_BATCH, itemCount || RESULT_RENDER_BATCH));
+    setVisibleCount(resetVisibleCount());
   }, [resetKey]);
+
+  useEffect(() => {
+    setVisibleCount((current) => clampVisibleCount(current, itemCount));
+  }, [itemCount]);
 
   const onNeedMore = useCallback(() => {
     if (loading || loadingMore || cooldownRef.current) return;

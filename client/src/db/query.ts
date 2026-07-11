@@ -80,7 +80,8 @@ export const SEARCH_FIRST_PAGE_SIZE = 400;
  */
 export interface QueryOptions {
   query: string;
-  mode?: '0243' | '02493' | 'synonym' | '394052';
+  mode?: '0243' | '02493' | 'synonym' | '394052' | 'pingze';
+  pzmode?: 'm1' | 'm2' | 'm3';
   limit?: number;
   offset?: number;
   fallback_0243_mode?: '0243' | '02493' | '394052';
@@ -112,6 +113,8 @@ function mapLegacyMode(mode?: string): QueryMode {
       return 'm3';
     case 'synonym':
       return 'syn';
+    case 'pingze':
+      return 'pz';
     default:
       return 'm1';
   }
@@ -145,6 +148,7 @@ export async function searchPage(options: QueryOptions): Promise<SearchPageResul
     limit,
     offset,
     fallback_0243_mode: fallback,
+    pzmode: options.pzmode,
     ui_lang: options.ui_lang,
     shouldCancel: options.shouldCancel,
   });

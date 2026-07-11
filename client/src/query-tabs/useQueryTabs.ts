@@ -27,9 +27,13 @@ import {
   shouldPushSearchHistory,
   stepSearchTabBack,
 } from '@shared/search-navigation';
-import { uiModeToUrlMode, urlModeToUiMode, type UiMode } from '../mode-meta';
+import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from '../mode-meta';
 import { stripLauncherBootFromUrl } from '../search-url';
 import type { QueryResult } from '../db/query';
+import {
+  commitActiveSearchTransaction,
+  openCommittedSearchTabTransaction,
+} from '../../../frontend/committed-search.mjs';
 
 export type { QueryTab, TabState };
 export { tabLabel, VIEW };
@@ -81,7 +85,6 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
   const urlHasQ = parsed.view === VIEW.SEARCH && Boolean(parsed.q?.trim());
   const isHome = parsed.view === VIEW.SEARCH && !parsed.q?.trim();
-  const forceLive = urlHasQ;
 
   let state = loadSessionTabState() ?? fallback();
 
@@ -104,6 +107,9 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
     const tabs = state.tabs.some((t) => t.id === searchTab.id) ? state.tabs : [...state.tabs, searchTab];
     const nextTabId = state.tabs.some((t) => t.id === searchTab.id) ? state.nextTabId : state.nextTabId + 1;
     const cleared = emptySearchSnapshot({ ...searchTab, q: parsed.q! });
+    const pzmode = (parsed.pzmode === 'm2' || parsed.pzmode === 'm3' ? parsed.pzmode : 'm1') as PingzeSubMode;
+    resetSearchTabHistory(cleared, parsed.mode, pzmode);
+    commitSearchHistoryFrame(cleared, { q: parsed.q!, mode: parsed.mode, pzmode });
     state = {
       activeId: cleared.id,
       nextTabId,
@@ -139,6 +145,7 @@ function firstSearchTab(state: TabState): QueryTab | null {
 export interface PopstateSearchFrame {
   q: string;
   mode: UiMode;
+  pzmode: PingzeSubMode;
 }
 
 export interface SearchTabSnapshot {
@@ -150,10 +157,11 @@ export interface SearchTabSnapshot {
 
 export interface UseQueryTabsOptions {
   currentMode: UiMode;
-  onModeChange: (mode: UiMode) => void;
+  currentPzMode: PingzeSubMode;
+  onModeChange: (mode: UiMode, pzmode?: PingzeSubMode) => void;
 }
 
-export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions) {
+export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQueryTabsOptions) {
   const [initialLoad] = useState(loadInitialTabState);
   const [tabState, setTabState] = useState<TabState>(initialLoad.state);
   const [popstateFrame, setPopstateFrame] = useState<PopstateSearchFrame | null>(null);
@@ -183,6 +191,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
     (updater: TabState | ((prev: TabState) => TabState)) => {
       setTabState((prev) => {
         const next = typeof updater === 'function' ? updater(prev) : updater;
+        tabStateRef.current = next;
         persistTabs(next);
         return next;
       });
@@ -196,13 +205,14 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       const tab = state.tabs.find((t) => t.id === state.activeId) ?? state.tabs[0];
       if (!tab) return;
       if (tab.view === VIEW.SEARCH) {
-        ensureSearchTabHistory(tab, uiModeToUrlMode(currentMode));
+        ensureSearchTabHistory(tab, uiModeToUrlMode(currentMode), currentPzMode);
       }
       const urlMode =
         tab.view === VIEW.SEARCH
           ? currentSearchHistoryFrame(tab).mode
           : uiModeToUrlMode(currentMode);
-      const params = buildUrlSearchParams(tab, urlMode);
+      const pzmode = tab.view === VIEW.SEARCH ? currentSearchHistoryFrame(tab).pzmode : currentPzMode;
+      const params = buildUrlSearchParams(tab, urlMode, pzmode);
       const suffix = params.toString() ? `?${params.toString()}` : '';
       const url = `${window.location.pathname}${suffix}`;
       const histState = buildHistoryStateForTab(tab, urlMode) as ReturnType<
@@ -222,7 +232,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       }
       lastHistSeqRef.current = histState._histSeq;
     },
-    [currentMode],
+    [currentMode, currentPzMode],
   );
 
   const patchSearchTab = useCallback(
@@ -254,9 +264,15 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
   const selectTab = useCallback(
     (id: number) => {
       if (tabStateRef.current.activeId === id) return;
+      const tab = tabStateRef.current.tabs.find((candidate) => candidate.id === id);
+      if (tab?.view === VIEW.SEARCH) {
+        const frame = currentSearchHistoryFrame(tab);
+        const pzmode = (frame.pzmode === 'm2' || frame.pzmode === 'm3' ? frame.pzmode : 'm1') as PingzeSubMode;
+        onModeChange(urlModeToUiMode(frame.mode), pzmode);
+      }
       setAndPersist((prev) => ({ ...prev, activeId: id }));
     },
-    [setAndPersist],
+    [setAndPersist, onModeChange],
   );
 
   const addSearchTab = useCallback(() => {
@@ -273,23 +289,18 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
 
   /** Guide example / deep-link: new search tab with q (does not overwrite current tab). */
   const openSearchTabWithQuery = useCallback(
-    (q: string, mode: UiMode) => {
-      const trimmed = q.trim();
-      const urlMode = uiModeToUrlMode(mode);
-      setAndPersist((prev) => {
-        const tab = createSearchTab({ id: prev.nextTabId, q: trimmed });
-        ensureSearchTabHistory(tab, urlMode);
-        if (trimmed) {
-          commitSearchHistoryFrame(tab, { q: trimmed, mode: urlMode });
-        }
-        return {
-          activeId: tab.id,
-          nextTabId: prev.nextTabId + 1,
-          tabs: [...prev.tabs, tab],
-        };
-      });
+    (q: string, mode: UiMode, pzmode: PingzeSubMode) => {
+      const transaction = openCommittedSearchTabTransaction(
+        tabStateRef.current,
+        { q: q.trim(), mode: uiModeToUrlMode(mode), pzmode },
+        createSearchTab,
+      );
+      tabStateRef.current = transaction.state;
+      persistTabs(transaction.state);
+      setTabState(transaction.state);
+      queueMicrotask(() => pushBrowserUrl(transaction.state, !transaction.pushed));
     },
-    [setAndPersist],
+    [persistTabs, pushBrowserUrl],
   );
 
   const closeTab = useCallback(
@@ -365,7 +376,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       }
       const active = state.tabs.find((t) => t.id === state.activeId);
       if (!active || active.view !== VIEW.SEARCH) return state;
-      resetSearchTabHistory(active, uiModeToUrlMode(currentMode));
+      resetSearchTabHistory(active, uiModeToUrlMode(currentMode), currentPzMode);
       const next = {
         ...state,
         tabs: state.tabs.map((t) => (t.id === active.id ? active : t)),
@@ -373,24 +384,21 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       queueMicrotask(() => pushBrowserUrl(next, true));
       return next;
     });
-  }, [currentMode, setAndPersist, pushBrowserUrl]);
+  }, [currentMode, currentPzMode, setAndPersist, pushBrowserUrl]);
 
   const commitActiveSearch = useCallback(
-    (q: string, mode: UiMode) => {
-      const urlMode = uiModeToUrlMode(mode);
-      let pushed = false;
-      setAndPersist((prev) => {
-        const tabs = prev.tabs.map((t) => {
-          if (t.id !== prev.activeId || t.view !== VIEW.SEARCH) return t;
-          const result = commitSearchHistoryFrame(t, { q, mode: urlMode });
-          pushed = result.pushed;
-          return t;
-        });
-        return { ...prev, tabs };
+    (q: string, mode: UiMode, pzmode: PingzeSubMode) => {
+      const transaction = commitActiveSearchTransaction(tabStateRef.current, {
+        q,
+        mode: uiModeToUrlMode(mode),
+        pzmode,
       });
-      return pushed;
+      tabStateRef.current = transaction.state;
+      persistTabs(transaction.state);
+      setTabState(transaction.state);
+      queueMicrotask(() => pushBrowserUrl(transaction.state, !transaction.pushed));
     },
-    [setAndPersist],
+    [persistTabs, pushBrowserUrl],
   );
 
   const consumePopstateFrame = useCallback(() => {
@@ -400,10 +408,10 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
   useEffect(() => {
     tabState.tabs.forEach((t) => {
       if (t.view === VIEW.SEARCH) {
-        ensureSearchTabHistory(t, uiModeToUrlMode(currentMode));
+        ensureSearchTabHistory(t, uiModeToUrlMode(currentMode), currentPzMode);
       }
     });
-  }, [tabState.tabs, currentMode]);
+  }, [tabState.tabs, currentMode, currentPzMode]);
 
   useEffect(() => {
     if (initDoneRef.current) return;
@@ -455,7 +463,8 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       }
 
       const nextMode = urlModeToUiMode(frame.mode);
-      onModeChange(nextMode);
+      const nextPzMode = (frame.pzmode === 'm2' || frame.pzmode === 'm3' ? frame.pzmode : 'm1') as PingzeSubMode;
+      onModeChange(nextMode, nextPzMode);
       setAndPersist((prev) => ({
         ...prev,
         tabs: prev.tabs.map((t) => (t.id === tab.id ? tab : t)),
@@ -463,7 +472,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
       pushBrowserUrl(tabStateRef.current, true);
 
       if (frame.q) {
-        setPopstateFrame({ q: frame.q, mode: nextMode });
+        setPopstateFrame({ q: frame.q, mode: nextMode, pzmode: nextPzMode });
       } else {
         tab.results = [];
         tab.offset = 0;
@@ -472,7 +481,7 @@ export function useQueryTabs({ currentMode, onModeChange }: UseQueryTabsOptions)
           ...prev,
           tabs: prev.tabs.map((t) => (t.id === tab.id ? tab : t)),
         }));
-        setPopstateFrame({ q: '', mode: nextMode });
+        setPopstateFrame({ q: '', mode: nextMode, pzmode: nextPzMode });
       }
     };
 

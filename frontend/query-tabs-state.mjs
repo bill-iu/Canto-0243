@@ -110,9 +110,10 @@ export function openSingletonView(state, view, createTab) {
   };
 }
 
-export function buildUrlSearchParams(tab, mode = "m1") {
+export function buildUrlSearchParams(tab, mode = "m1", pzmode = "m1") {
   const params = new URLSearchParams();
   if (mode && mode !== "m1") params.set("mode", mode);
+  if (mode === "pz") params.set("pzmode", ["m1", "m2", "m3"].includes(pzmode) ? pzmode : "m1");
   if (tab.view === VIEW.GUIDE) {
     params.set("view", "guide");
     return params;
@@ -143,6 +144,7 @@ export function parseUrlSearchParams(params) {
   return {
     q: params.get("q") || "",
     mode: params.get("mode") || "m1",
+    pzmode: ["m1", "m2", "m3"].includes(params.get("pzmode")) ? params.get("pzmode") : "m1",
     view,
   };
 }

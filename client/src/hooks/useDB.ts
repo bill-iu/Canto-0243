@@ -1,16 +1,14 @@
 /**
- * React Hook for Database Management
+ * React hooks for Database Management
  */
 
 import {
-  createContext,
   useContext,
   useState,
   useEffect,
   useLayoutEffect,
   useCallback,
   useRef,
-  type ReactNode,
 } from 'react';
 import {
   initializeDatabase,
@@ -27,10 +25,6 @@ import {
   searchPage,
   getDatabaseStats,
   validateOfflineReadiness,
-  normalizeQuery,
-  parseQuery,
-  normalizeAndParse,
-  searchPageSizeForMode,
   searchLimitForOffset,
   SEARCH_FIRST_PAGE_SIZE,
 } from '../db/query';
@@ -44,12 +38,17 @@ import type {
 import { isSearchCancelledError } from '../db/search-cancel.ts';
 import { reportGatePhase, subscribeGateProgress, resetGateProgressListeners } from '../db/startup-progress.ts';
 import {
-  getTailProgress,
   isStartupComplete,
   startTailPreload,
   subscribeTailProgress,
   resetTailPreload,
 } from '../db/tail-preload.ts';
+import {
+  DBContext,
+  type DatabaseStatus,
+  type OfflineReadinessStatus,
+  type UseDBReturn,
+} from './db-context.ts';
 
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
 export {
@@ -62,34 +61,9 @@ export {
   searchLimitForOffset,
 } from '../db/query.ts';
 
-export type DatabaseStatus = 'idle' | 'loading' | 'ready' | 'error';
-export type OfflineReadinessStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
-
 const WARM_FAST_PATH_MS = 500;
 
-export interface UseDBReturn {
-  status: DatabaseStatus;
-  offlineStatus: OfflineReadinessStatus;
-  isOfflineReady: boolean;
-  isOnline: boolean;
-  isDbCached: boolean | null;
-  dbUrl: string;
-  progress: number;
-  tailProgress: number;
-  startupComplete: boolean;
-  suppressGateOverlay: boolean;
-  error: Error | null;
-  isReady: boolean;
-  initialize: () => Promise<void>;
-  retryOfflineReady: () => Promise<void>;
-  search: (options: QueryOptions) => Promise<QueryResult[]>;
-  getStats: () => Promise<{ wordCount: number; tableCount: number }>;
-  reset: () => void;
-}
-
-const DBContext = createContext<UseDBReturn | null>(null);
-
-function useDBState(): UseDBReturn {
+export function useDBState(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [tailProgress, setTailProgress] = useState<number>(0);
@@ -298,11 +272,6 @@ function useDBState(): UseDBReturn {
   };
 }
 
-export function DBProvider({ children }: { children: ReactNode }) {
-  const value = useDBState();
-  return <DBContext.Provider value={value}>{children}</DBContext.Provider>;
-}
-
 export function useDB(): UseDBReturn {
   const ctx = useContext(DBContext);
   if (!ctx) {
@@ -316,9 +285,15 @@ const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 export function useSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
-  options?: { pageSize?: number; fallback_0243_mode?: '0243' | '02493' | '394052'; ui_lang?: 'zh' | 'en' },
+  options?: {
+    pageSize?: number;
+    fallback_0243_mode?: '0243' | '02493' | '394052';
+    pzmode?: 'm1' | 'm2' | 'm3';
+    ui_lang?: 'zh' | 'en';
+  },
 ) {
   const fallback0243Mode = options?.fallback_0243_mode;
+  const pzmode = options?.pzmode;
   const uiLang = options?.ui_lang ?? 'zh';
   const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
@@ -368,6 +343,7 @@ export function useSearch(
           limit: firstPageLimit,
           offset: 0,
           fallback_0243_mode: fallback0243Mode,
+          pzmode,
           ui_lang: uiLang,
           shouldCancel,
         });
@@ -394,7 +370,7 @@ export function useSearch(
     return () => {
       genRef.current += 1;
     };
-  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, uiLang]);
+  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode, uiLang]);
 
   const isLoading = loading || status === 'loading';
 
@@ -423,6 +399,7 @@ export function useSearch(
         limit: morePageLimit,
         offset: results.length,
         fallback_0243_mode: fallback0243Mode,
+        pzmode,
         ui_lang: uiLang,
         shouldCancel,
       });
@@ -450,6 +427,7 @@ export function useSearch(
     morePageLimit,
     results.length,
     fallback0243Mode,
+    pzmode,
     uiLang,
   ]);
 

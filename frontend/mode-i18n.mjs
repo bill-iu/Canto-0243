@@ -1,6 +1,6 @@
 /** Shared search-mode labels — portable + PWA (zh default + en i18n). */
 
-/** @typedef {'m1' | 'm2' | 'm3' | 'syn'} UrlMode */
+/** @typedef {'m1' | 'm2' | 'm3' | 'syn' | 'pz'} UrlMode */
 /** @typedef {'zh' | 'en'} UiLang */
 
 /** @type {Record<UrlMode, { title: string; note: string; readout: string; statsLabel: string; placeholder: string }>} */
@@ -32,6 +32,9 @@ export const MODE_META = {
     readout: '近反義模式（查）',
     statsLabel: '近反義 · 查',
     placeholder: '打字搵同義／反義',
+  },
+  pz: {
+    title: '平仄', note: '格律', readout: '平仄模式', statsLabel: '平仄', placeholder: '搵嘢：P／Z／數字／?／漢字錨',
   },
 };
 
@@ -65,6 +68,9 @@ const MODE_META_EN = {
     statsLabel: 'Near-Antonyms · Browse',
     placeholder: 'Type synonyms / antonyms',
   },
+  pz: {
+    title: 'Ping-ze', note: 'Meter', readout: 'Ping-ze mode', statsLabel: 'Ping-ze', placeholder: 'Search: P / Z / digits / ? / character anchors',
+  },
 };
 
 /**
@@ -91,6 +97,7 @@ export function modeHelp(mode, lang = 'zh') {
   if (mode === 'm3') {
     return lang === 'en' ? '394052 — strict 6-tone digits' : '394052 六聲碼（三／五聲分明）';
   }
+  if (mode === 'pz') return lang === 'en' ? 'Ping (P), ze (Z), digits and wildcards' : '平（P）、仄（Z）、數字與通配碼';
   return lang === 'en' ? 'Synonyms, antonyms & semantically related' : '近義、反義與語意相關';
 }
 
@@ -109,7 +116,7 @@ export function modeRedirectHint(mode, lang = 'zh') {
 
 /** @param {UiLang} [lang] */
 export function syncPortableModeMenu(lang = 'zh') {
-  for (const mode of /** @type {UrlMode[]} */ (['m1', 'm2', 'm3', 'syn'])) {
+  for (const mode of /** @type {UrlMode[]} */ (['m1', 'm2', 'm3', 'syn', 'pz'])) {
     const btn = document.querySelector(`[data-mode="${mode}"].mode-option`);
     if (!btn) continue;
     const meta = getModeMeta(mode, lang);

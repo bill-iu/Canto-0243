@@ -17,11 +17,11 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 ## Latest release
 
 <!-- version:en -->
-Current version: **v1.0.6**
+Current version: **v1.0.7**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **439,435** (`lyrics.db` · `words` table)
+Current word entries: **445,022** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**
@@ -141,4 +141,4 @@ Building or redistributing lexicons from these sources requires complying with e
 
 ---
 
-**Last updated**: 2026-07-04 (README refactor: added Canto-0243 mobile and offline portable; greatly simplified content)
+**Last updated**: 2026-07-11 (v1.0.7: pingze search mode, unified search-mode profiles, mobile/portable alignment)

@@ -1,4 +1,5 @@
 import type { QueryResult } from './db/query';
+import { synResultItemCount } from './syn-result-logic.ts';
 
 function sectionTitle(title: string, count: number): string {
   return count > 0 ? `${title} (${count})` : title;
@@ -64,12 +65,6 @@ function takeSynBudget(
   return { synsShown, antsShown, relatedShown };
 }
 
-export function synResultItemCount(results: QueryResult[]): number {
-  return results.filter(
-    (r) => r.relation === 'syn' || r.relation === 'ant' || r.relation === 'semantic_related',
-  ).length;
-}
-
 export function SynResultList({
   results,
   visibleLimit,
@@ -92,15 +87,4 @@ export function SynResultList({
       {related.length > 0 ? <SynSection title="語意相關" items={relatedShown} onPick={onPick} /> : null}
     </div>
   );
-}
-
-export function synResultsStats(results: QueryResult[]): string {
-  const syns = results.filter((r) => r.relation === 'syn').length;
-  const ants = results.filter((r) => r.relation === 'ant').length;
-  const related = results.filter((r) => r.relation === 'semantic_related').length;
-  let text = `近義 ${syns}　反義 ${ants}`;
-  if (related > 0) {
-    text += `　語意相關 ${related}`;
-  }
-  return `${text}（已載入 ${results.length}）`;
 }

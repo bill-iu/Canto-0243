@@ -175,4 +175,14 @@ describe("search-navigation", () => {
     assert.deepEqual(currentSearchHistoryFrame(tab), { q: "", mode: "m2" });
     assert.equal(tab.q, "");
   });
+
+  it("preserves pingze sub-mode in history and URL state", () => {
+    const tab = createSearchTab({ id: 7, q: "" });
+    ensureSearchTabHistory(tab, "pz", "m1");
+    commitSearchHistoryFrame(tab, { q: "PZ3", mode: "pz", pzmode: "m2" });
+    assert.deepEqual(currentSearchHistoryFrame(tab), { q: "PZ3", mode: "pz", pzmode: "m2" });
+    assert.deepEqual(buildHistoryStateForTab(tab), {
+      tabId: 7, view: VIEW.SEARCH, query: "PZ3", mode: "pz", pzmode: "m2",
+    });
+  });
 });

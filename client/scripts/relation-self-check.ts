@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { applyRuntimeDbPatches } from '../src/db/db-patch.ts';
+import { resetCompoundCaches } from '../src/db/compound.ts';
 import { injectDatabaseForTests, resetDatabase } from '../src/db/init.ts';
 import { QueryKind } from '../src/db/query-kind.ts';
 import { normalizeAndParse } from '../src/db/query-engine.ts';
@@ -63,6 +64,11 @@ const failures: string[] = [];
 for (const q of SEARCH_CASES) {
   const page = await searchPage({ query: q, mode: 'm1', limit: 5 });
   if (!page.items.length) failures.push(q);
+}
+// Regression: relation snapshots must not leak across DB/runtime probes.
+resetCompoundCaches();
+if (!(await searchPage({ query: '~與~', mode: 'm1', limit: 1 })).items.length) {
+  failures.push('~與~ (after cache reset)');
 }
 await db.close();
 

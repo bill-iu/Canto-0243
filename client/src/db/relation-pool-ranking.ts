@@ -1,7 +1,6 @@
 /** 近反義池 ranking / merge — port of domain/relations/ranking.py (Phase C PR4). */
 import type { RelationPoolItem } from './relation-pool-snapshot.ts';
 
-const CJK_RE = /[\u4e00-\u9fff]/;
 export const RUNTIME_DERIVED_ANT_SOURCES = new Set(['ant_syn_mirror', 'ant_cilin_exanded']);
 
 const QUERY_SYNONYM_PRIORITY: Record<string, string[]> = {

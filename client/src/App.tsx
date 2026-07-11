@@ -5,12 +5,13 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useDB, useSearch } from './hooks/useDB.tsx';
+import { useDB, useSearch } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
-import { ResultList, mergedResultCount, type EntryPickPayload } from './result-list';
+import { ResultList } from './result-list';
+import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -27,17 +28,17 @@ import {
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../frontend/entry-detail-core.mjs';
-import { SynResultList, synResultItemCount, synResultsStats } from './syn-result-list';
+import { SynResultList } from './syn-result-list';
+import { synResultItemCount, synResultsStats } from './syn-result-logic.ts';
+import { AnchorResultList } from './anchor-result-list';
 import {
-  AnchorResultList,
   anchorResultItemCount,
   anchorResultsStats,
   hasAnchorResultLayout,
-} from './anchor-result-list';
+} from './anchor-result-logic.ts';
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isPingZeSerialQuery, isRelationSyntaxQuery } from './db/query-engine';
-import { pingZeEffectiveMode, pingZeModeRedirectHint } from './db/ping-zak';
+import { isRelationSyntaxQuery } from './db/query-engine';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -47,12 +48,15 @@ import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
 import {
   last0243UiToUrlMode,
+  getModeMeta,
   modeMetaFor,
   modeRedirectHint,
+  type PingzeSubMode,
   type Last0243SearchMode,
   type UiMode,
 } from './mode-meta';
 import { parseSearchUrl } from './search-url';
+import { profileToUiMode, searchFamilyForUiMode, uiModeToProfile } from '../../contracts/search-mode-manifest.mjs';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { ReadyGate } from './ready-gate';
@@ -62,12 +66,12 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme } from '../../frontend/app-context.mjs';
 
 const initialUrl =
   typeof window !== 'undefined'
     ? parseSearchUrl(window.location.search)
-    : { q: '', mode: '0243' as UiMode, view: 'search' as const };
+    : { q: '', mode: '0243' as UiMode, pzmode: 'm1' as PingzeSubMode, view: 'search' as const };
 
 function App() {
   const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
@@ -77,6 +81,7 @@ function App() {
     (typeof conn?.effectiveType === 'string' && /(^|-)2g$/.test(conn.effectiveType));
 
   const [mode, setMode] = useState<UiMode>(initialUrl.mode);
+  const [pzMode, setPzMode] = useState<PingzeSubMode>(initialUrl.pzmode);
   const [last0243Mode, setLast0243Mode] = useState<Last0243SearchMode>(() => {
     if (initialUrl.mode === '02493') return '02493';
     if (initialUrl.mode === '394052') return '394052';
@@ -98,12 +103,18 @@ function App() {
     ensureActiveSearchTab,
     patchSearchTab,
     commitActiveSearch,
-    pushBrowserUrl,
     popstateFrame,
     consumePopstateFrame,
     needsInitialSearch,
     initialBootstrap,
-  } = useQueryTabs({ currentMode: mode, onModeChange: setMode });
+  } = useQueryTabs({
+    currentMode: mode,
+    currentPzMode: pzMode,
+    onModeChange: (next, nextPzMode) => {
+      setMode(next);
+      if (nextPzMode) setPzMode(nextPzMode);
+    },
+  });
 
   const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
   const view =
@@ -151,8 +162,7 @@ function App() {
 
   const trimmedInput = inputQuery.trim();
   const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
-  const pingZeSyntax = trimmedInput ? isPingZeSerialQuery(trimmedInput) : false;
-  const searchKey = `${searchQuery}\0${mode}`;
+  const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
 
   const loadSearchTabUi = useCallback(
@@ -195,14 +205,6 @@ function App() {
       setRedirectHint(null);
       return;
     }
-    if (pingZeSyntax) {
-      const effective = pingZeEffectiveMode();
-      setRedirectHint(pingZeModeRedirectHint(effective, uiLang));
-      if (mode !== '394052') {
-        setMode('394052');
-      }
-      return;
-    }
     if (relationSyntax) {
       setRedirectHint(modeRedirectHint(last0243UiToUrlMode(last0243Mode), uiLang));
       if (mode === 'synonym') {
@@ -211,7 +213,7 @@ function App() {
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, pingZeSyntax, relationSyntax, mode, last0243Mode, uiLang]);
+  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
 
   const {
     isReady,
@@ -266,6 +268,7 @@ function App() {
     loadMore,
   } = useSearch(useLiveFetch ? searchQuery : '', mode, {
     fallback_0243_mode: last0243Mode,
+    pzmode: pzMode,
     ui_lang: uiLang,
   });
 
@@ -505,6 +508,7 @@ function App() {
   useEffect(() => {
     if (!popstateFrame) return;
     setMode(popstateFrame.mode);
+    setPzMode(popstateFrame.pzmode);
     if (popstateFrame.q) {
       setUseLiveFetch(true);
       hydrateSearch(popstateFrame.q);
@@ -520,7 +524,7 @@ function App() {
   }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
-    (nextQuery?: string) => {
+    (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
       const q = (nextQuery ?? inputQuery).trim();
       if (pickAnchorRef.current && pickAnchorRef.current !== q) {
         pickAnchorRef.current = null;
@@ -529,14 +533,13 @@ function App() {
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      const pushed = commitActiveSearch(q, mode);
-      pushBrowserUrl(tabState, !pushed);
+      commitActiveSearch(q, nextMode, nextPzMode);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, isReady, offlineStatus, initialize],
   );
 
   const beginPickSearch = useCallback(
@@ -561,17 +564,30 @@ function App() {
     await retryOfflineReady();
   }, [retryOfflineReady]);
 
-  const handleModeChange = (next: UiMode) => {
-    if (next === '0243' || next === '02493' || next === '394052') {
-      setLast0243Mode(next);
-    }
+  const handleModeChange = (family: 'basic' | 'pingze' | 'synonym') => {
+    const next = family === 'basic' ? last0243Mode : family === 'pingze' ? 'pingze' : 'synonym';
     setMode(next);
     if (view === 'guide') {
       ensureActiveSearchTab();
     }
     if (trimmedInput) {
-      runCommittedSearch();
+      runCommittedSearch(undefined, pzMode, next);
     }
+  };
+
+  const handlePzModeChange = (next: PingzeSubMode) => {
+    setPzMode(next);
+    if (mode === 'pingze' && trimmedInput) {
+      runCommittedSearch(undefined, next);
+    }
+  };
+
+  const handleProfileChange = (profile: PingzeSubMode) => {
+    if (mode === 'pingze') return handlePzModeChange(profile);
+    const next = profileToUiMode(profile) as UiMode;
+    setLast0243Mode(next as Last0243SearchMode);
+    setMode(next);
+    if (trimmedInput) runCommittedSearch(undefined, pzMode, next);
   };
 
   const handleBackToSearch = () => {
@@ -585,7 +601,7 @@ function App() {
     setMode(exampleMode);
     // 教學例子：開新搜尋 tab，唔覆蓋當前 tab
     saveLeavingSearchTab();
-    openSearchTabWithQuery(nextQuery, exampleMode as UiMode);
+    openSearchTabWithQuery(nextQuery, exampleMode as UiMode, pzMode);
     setUseLiveFetch(true);
     setResultsShuffled(false);
   };
@@ -683,7 +699,7 @@ function App() {
       }
       beginPickSearch(payload);
     },
-    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch],
+    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch, runCommittedSearch],
   );
 
   const handleRelationPick = useCallback(
@@ -867,6 +883,22 @@ function App() {
                     </button>
                   </div>
                 </div>
+                {searchFamilyForUiMode(mode) !== 'synonym' ? (
+                  <div className="pingze-submodes" role="group" aria-label={uiLang === 'en' ? 'Ping-ze digit sub-mode' : '平仄數字子模式'}>
+                    {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                      <button
+                        key={subMode}
+                        type="button"
+                        className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
+                        aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
+                        disabled={shellGated}
+                        onClick={() => handleProfileChange(subMode)}
+                      >
+                        <><span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span><span className="profile-pill__narrow">{subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}</span></>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
               </form>
 
               {showExplain && (

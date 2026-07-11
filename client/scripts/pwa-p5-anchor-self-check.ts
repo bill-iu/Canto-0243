@@ -8,7 +8,7 @@ import { injectDatabaseForTests, resetDatabase } from '../src/db/init.ts';
 import {
   anchorResultListSelfCheck,
   hasAnchorResultLayout,
-} from '../src/anchor-result-list.tsx';
+} from '../src/anchor-result-logic.ts';
 import { searchPage } from '../src/db/query.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
