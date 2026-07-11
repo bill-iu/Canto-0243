@@ -233,6 +233,27 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
   }
 }
 
+@keyframes gate-brand-in-narrow {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .ready-gate .gate-brand {
+    transform: none;
+  }
+
+  html.fonts-ready .ready-gate .gate-brand {
+    animation-name: gate-brand-in-narrow;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ready-gate.preload-overlay {
     transition: none;
@@ -246,6 +267,12 @@ html.fonts-ready .ready-gate .pwa-boot-gate__status {
     animation: none !important;
     opacity: 1 !important;
     transform: translateY(3vh);
+  }
+
+  @media (max-width: 760px) {
+    .ready-gate .gate-brand {
+      transform: none;
+    }
   }
 
   .ready-gate .gate-hero {
