@@ -1,6 +1,6 @@
 # ADR-0044: Portable 免安裝交付與分渠道發佈
 
-領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 免安裝交付、Portable 套件、macOS 應用程式套件、全量發佈、詞庫發佈、分渠道發佈、本機啟動、詞庫快取索引。
+領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 免安裝交付、Portable 套件、macOS 應用程式套件、全量發佈、發佈詞庫快照、分渠道發佈、本機啟動、詞庫快取索引。
 
 整合並取代下列 stub 之**活決策**（歷史全文見 git）：[0006](./0006-portable-zero-install-delivery.md)、[0008](./0008-release-publishing-tiers.md)、[0011](./0011-local-launch-unified-startup.md)、[0016](./0016-macos-dual-arch-quarantine.md)、[0017](./0017-portable-word-cache-prewarm.md)、[0018](./0018-split-channel-release.md)。
 
