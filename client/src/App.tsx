@@ -39,6 +39,7 @@ import {
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isRelationSyntaxQuery } from './db/query-engine';
+import { GuideQuick } from './guide-quick';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
 import { ModeMenu } from './mode-menu';
@@ -745,6 +746,13 @@ function App() {
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
   const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
+  const showGuideQuick =
+    view === 'search' &&
+    !trimmedInput &&
+    !searchQuery.trim() &&
+    displayResults.length === 0 &&
+    !searchLoading &&
+    !emptyMessage;
   const canSearch = !shellGated;
 
   const handleHome = () => {
@@ -961,6 +969,15 @@ function App() {
                       {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
                     </div>
                   )}
+
+                  {showGuideQuick ? (
+                    <GuideQuick
+                      lang={uiLang}
+                      disabled={shellGated || offlineStatus !== 'ready'}
+                      onPick={handleRunExample}
+                      onOpenFullGuide={handleOpenGuide}
+                    />
+                  ) : null}
 
                   {showSentinel ? (
                     <div ref={sentinelRef} className="results-scroll-sentinel" aria-hidden />
