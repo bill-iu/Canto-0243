@@ -2,6 +2,7 @@
  * Jyutping anchor matching — port of app/services/jyutping_anchor.py
  */
 import { isStandaloneNasalSyllableToken, syllableLetters } from './jyutping-codec.ts';
+import { decodePhonemeField } from './phoneme-codec.ts';
 import {
   isCompleteSyllableInRime,
   isRhymeLetterIndexReady,
@@ -96,15 +97,7 @@ function matchesInitialLettersAtPosition(
   if (pos < tokens.length && isStandaloneNasalSyllableToken(tokens[pos]!)) {
     return false;
   }
-  let parts: string[] = [];
-  try {
-    const raw = word.initials;
-    if (typeof raw === 'string' && raw.startsWith('[')) {
-      parts = JSON.parse(raw) as string[];
-    }
-  } catch {
-    parts = [];
-  }
+  const parts = decodePhonemeField(word.initials, 'initial');
   return pos < parts.length && parts[pos] === letter.toLowerCase();
 }
 
