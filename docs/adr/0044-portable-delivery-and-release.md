@@ -38,7 +38,7 @@
 2. **程式刷新同一 tag** — 行為／介面不變嘅打包或 bugfix：`git tag -f` 後重打 zip／tar；**本機優先**有 `lyrics.db`，缺則從該 tag Release **下載**（**唔**跑 `build-db`）；**唔**覆寫／重傳獨立庫資產（Pages 繼續用 Release 上既有 `lyrics.db`）。逃生：Windows `-WithLexicon`。
 3. **分渠道本機上傳**  
    - **Windows 渠道**：`release-windows-local.ps1`（主理：建 Release、zip；新 tag 先傳庫）。  
-   - **macOS 渠道**：`release-macos-local.sh` 建 **x86_64** tar，上傳同一 tag。  
+   - **macOS 渠道**：`release-macos-local.sh` 建 **x86_64** tar，上傳同一 tag；**補 tar 必從 Release 下載 `lyrics.db`**（唔用 stale 本機 copy）。  
 4. **停用** tag 觸發全量 CI matrix；保留 `ci.yml`；**唔**再維護詞庫-only workflow。
 5. **操作手冊** — [docs/release.md](../release.md) 為唯一 checklist。
 

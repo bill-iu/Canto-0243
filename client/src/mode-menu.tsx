@@ -187,12 +187,12 @@ export function ModeMenu({
         </div>
           </div>
         </div>
-        {metaLabel ? (
-          <p className="mode-menu-meta" aria-label={metaLabel}>
-            {metaLabel}
-          </p>
-        ) : null}
       </div>
+      {metaLabel ? (
+        <p className="mode-menu-meta" aria-label={metaLabel}>
+          {metaLabel}
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -67,7 +67,7 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, getTheme, setTheme } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -140,6 +140,7 @@ function App() {
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
+  const [warmupBadgeClear, setWarmupBadgeClear] = useState(false);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
@@ -149,6 +150,8 @@ function App() {
   const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
   const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
   const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
+  const [searchRingClass, setSearchRingClass] = useState('');
+  const searchRingBlurTimerRef = useRef<number | null>(null);
   const detailLoadGenRef = useRef(0);
   const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
   const pickAnchorRef = useRef<string | null>(null);
@@ -364,12 +367,17 @@ function App() {
     flushSearchQuery(activeSearchTab?.q || '');
   }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
-  const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
+  const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery, mode);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const showTailBadge = !shellGated && !startupComplete;
+  const mountWarmupBadge = !shellGated && !warmupBadgeClear;
+  const handleWarmupBadgeDismiss = useCallback(() => setWarmupBadgeClear(true), []);
+
+  useEffect(() => {
+    if (shellGated) setWarmupBadgeClear(false);
+  }, [shellGated]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -655,6 +663,34 @@ function App() {
     }
   };
 
+  const handleSearchFocus = () => {
+    if (searchRingBlurTimerRef.current != null) {
+      window.clearTimeout(searchRingBlurTimerRef.current);
+      searchRingBlurTimerRef.current = null;
+    }
+    setSearchRingClass('is-focused');
+  };
+
+  const handleSearchBlur = () => {
+    setSearchRingClass('is-blurring');
+    if (searchRingBlurTimerRef.current != null) {
+      window.clearTimeout(searchRingBlurTimerRef.current);
+    }
+    searchRingBlurTimerRef.current = window.setTimeout(() => {
+      setSearchRingClass('');
+      searchRingBlurTimerRef.current = null;
+    }, SEARCH_RING_BLUR_MS);
+  };
+
+  useEffect(
+    () => () => {
+      if (searchRingBlurTimerRef.current != null) {
+        window.clearTimeout(searchRingBlurTimerRef.current);
+      }
+    },
+    [],
+  );
+
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
@@ -782,7 +818,7 @@ function App() {
         theme={uiTheme}
       />
       <div
-        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${warmupBadgeClear && !shellGated ? ' is-header-brand-ready' : ''}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
           <div className="app-bar">
@@ -797,12 +833,13 @@ function App() {
                   : '格律／協音／押韻／近反義，一步搵到。'}
               </p>
             </div>
-            {showTailBadge && (
+            {mountWarmupBadge && (
               <TailPreloadBadge
                 tailProgress={tailProgress}
                 startupComplete={startupComplete}
                 theme={uiTheme}
                 lang={uiLang}
+                onDismiss={handleWarmupBadgeDismiss}
               />
             )}
             <ModeMenu
@@ -837,7 +874,7 @@ function App() {
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (
             <section
-              className={`search-view${detailOpen ? ' has-entry-detail' : ''}`}
+              className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
               aria-labelledby="searchTitle"
             >
               <div className="search-view__main" onClick={handleSearchMainClick}>
@@ -851,12 +888,14 @@ function App() {
                   </span>
                 </div>
                 <div className="search-row">
-                  <div className="search-input-wrap">
+                  <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
                     <input
                       id="searchInput"
                       type="search"
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
                       placeholder={modeMeta.placeholder}
                       disabled={shellGated}
                       autoComplete="off"

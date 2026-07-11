@@ -312,12 +312,37 @@ def _apply_revoke(db: Session, validated: ValidatedManualRelation, plan: frozens
     return {"direct": direct_removed, "expand": expand_removed}
 
 
+def _apply_expand_only(
+    db: Session,
+    validated: ValidatedManualRelation,
+    plan: frozenset[str],
+) -> dict:
+    """Insert one-hop expansions for an existing direct edge."""
+    _direct_key, _direct_row, expand_candidates = _build_create_candidates(
+        validated, plan
+    )
+    try:
+        expand_inserted, expand_skipped = insert_relation_candidates(
+            db,
+            expand_candidates,
+            dedupe_existing=True,
+            batch_size=500,
+            commit=False,
+        )
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise
+    return {"direct": 0, "expand": expand_inserted, "expand_skipped": expand_skipped}
+
+
 def create_creator_manual_relation(
     db: Session,
     *,
     seed_char: str,
     opposite_char: str,
     relation_type: RelationType,
+    expand: bool = True,
 ) -> dict:
     validated = validate_manual_relation_request(
         db,
@@ -325,8 +350,30 @@ def create_creator_manual_relation(
         opposite_char=opposite_char,
         relation_type=relation_type,
     )
-    plan = build_expand_plan(db, validated)
+    plan = build_expand_plan(db, validated) if expand else frozenset()
     return _apply_create(db, validated, plan)
+
+
+def expand_creator_manual_relation(
+    db: Session,
+    *,
+    seed_char: str,
+    opposite_char: str,
+    relation_type: RelationType,
+) -> dict:
+    """一跳擴展（直連已存在時用；熱套用第二階段）。"""
+    validated = validate_manual_relation_request(
+        db,
+        seed_char=seed_char,
+        opposite_char=opposite_char,
+        relation_type=relation_type,
+    )
+    if not _direct_relation_exists(
+        db, validated.seed_id, validated.opposite_id, validated.relation_type
+    ):
+        raise ManualRelationError("not_found", "找不到可擴展的直連關係")
+    plan = build_expand_plan(db, validated)
+    return _apply_expand_only(db, validated, plan)
 
 
 def revoke_creator_manual_relation(
@@ -406,6 +453,7 @@ __all__ = [
     "validate_manual_relation_request",
     "build_expand_plan",
     "create_creator_manual_relation",
+    "expand_creator_manual_relation",
     "prune_conflicting_manual_expansions",
     "revoke_creator_manual_relation",
 ]

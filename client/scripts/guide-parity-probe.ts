@@ -22,7 +22,7 @@ const FAILS = [
   '3+ngo4',
   '3$漢4',
   '23+o',
-  '!你',
+  '!苦悶',
 ] as const;
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');

@@ -1,1 +1,27 @@
 seed_char	opposite_char	relation_type	note
+健壯	衰老	ant	
+年輕	年老	ant	
+年輕	衰老	ant	
+健壯	瘦弱	ant	
+年輕	健壯	syn	
+肥	瘦	ant	
+赤裸	裸體	syn	
+全裸	裸體	syn	
+全裸	赤裸	syn	
+全裸	穿着	ant	
+無恥	羞恥	ant	
+高尚	卑鄙	ant	
+高尚	清高	syn	
+幸運	不幸	ant	
+好運	不幸	ant	
+殘缺	完整	ant	
+圓	缺	ant	
+老化	衰老	syn	
+烏雲	陰天	syn	
+夢想成真	心想事成	syn	
+天際	天空	syn	
+仙	魔	ant	
+自作多情	一廂情願	syn	
+自作多情	自欺欺人	syn	
+自作多情	不切實際	syn	
+寂寞	孤獨	syn	

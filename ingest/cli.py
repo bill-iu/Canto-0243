@@ -378,7 +378,6 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
     from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST, build_lexicon_words
     from ingest.lexicon_truncate import truncate_lexicon_core
     from ingest.bridge_snapshot import ingest_bridge_snapshot
-    from ingest.manual_relations_apply import apply_manual_relations
 
     from ingest.lexicon_stats import check_min_multi_char, lexicon_word_stats
 
@@ -427,10 +426,11 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
         bstats = ingest_bridge_snapshot(db)
         db.commit()
         print(f"    bridge: {bstats}")
-        print("==> manual relations")
-        mcount = apply_manual_relations(db)
-        db.commit()
-        print(f"    manual rows: {mcount}")
+        print("==> manual relations (熱套用)")
+        from ingest.manual_relations_apply import hot_apply_manual_relations
+
+        mstats = hot_apply_manual_relations(db)
+        print(f"    manual: {mstats}")
 
     return _build_db_exports(args)
 
@@ -855,6 +855,21 @@ def main(argv: list[str] | None = None) -> int:
         help="Manual relations TSV output",
     )
 
+    p_manual = sub.add_parser(
+        "apply-manual-relations",
+        help="關係補錄熱套用：clear manual* then apply data/relations/manual_relations.tsv",
+    )
+    p_manual.add_argument(
+        "--tsv",
+        default="data/relations/manual_relations.tsv",
+        help="關係補錄清單 path",
+    )
+    p_manual.add_argument(
+        "--no-clear",
+        action="store_true",
+        help="Only append from TSV (skip clear manual*)",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
@@ -884,7 +899,29 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_build_db(args)
     if args.command == "migrate-legacy-snapshots":
         return cmd_migrate_legacy_snapshots(args)
+    if args.command == "apply-manual-relations":
+        return cmd_apply_manual_relations(args)
     return 1
+
+
+def cmd_apply_manual_relations(args: argparse.Namespace) -> int:
+    from ingest.manual_relations_apply import (
+        apply_manual_relations,
+        hot_apply_manual_relations,
+    )
+
+    ensure_word_relations_table()
+    tsv = Path(args.tsv)
+    if not tsv.is_file():
+        print(f"tsv not found: {tsv}", file=sys.stderr)
+        return 1
+    with SessionLocal() as db:
+        if args.no_clear:
+            stats = apply_manual_relations(db, tsv)
+        else:
+            stats = hot_apply_manual_relations(db, tsv)
+    print(f"apply-manual-relations: {stats}")
+    return 0 if stats.get("errors", 0) == 0 else 1
 
 
 def cmd_migrate_legacy_snapshots(args: argparse.Namespace) -> int:

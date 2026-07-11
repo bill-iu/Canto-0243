@@ -1,5 +1,5 @@
 /**
- * TDD: relation guide parity (~開心, !你, 33!開心, ~~, !!, !與!, ~與~).
+ * TDD: relation guide parity (~開心, !苦悶, 33!開心, ~~, !!, !與!, ~與~).
  * Run: npx tsx client/scripts/relation-self-check.ts [db-path]
  */
 import fs from 'node:fs';
@@ -18,7 +18,7 @@ import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 
 const PARSE_CASES: Array<[string, QueryKind]> = [
   ['~開心', QueryKind.RELATION_LOOKUP],
-  ['!你', QueryKind.RELATION_LOOKUP],
+  ['!苦悶', QueryKind.RELATION_LOOKUP],
   ['33!開心', QueryKind.RELATION_LOOKUP],
   ['~~', QueryKind.COMPOUND_SYN],
   ['!!', QueryKind.COMPOUND_ANT],
@@ -28,7 +28,7 @@ const PARSE_CASES: Array<[string, QueryKind]> = [
 
 const SEARCH_CASES = [
   '~開心',
-  '!你',
+  '!苦悶',
   '33!開心',
   '~~',
   '!!',

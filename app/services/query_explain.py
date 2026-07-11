@@ -102,7 +102,8 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
         prefix = f"碼 {parsed.code_prefix} " if parsed.code_prefix else ""
         return f"查「{parsed.word}」嘅{prefix}{label}"
     if isinstance(parsed, JyutpingFragmentQuery):
-        return f"粵拼查詢「{parsed.raw_q}」"
+        tone = "（有聲調）" if any(ch in "123456" for ch in parsed.raw_q) else "（不需聲調）"
+        return f"粵拼查詢「{parsed.raw_q}」{tone}"
     if isinstance(parsed, HeteronymCodeQuery):
         return (
             f"查同字面異讀（{parsed.left_template}/{parsed.right_template}）："
@@ -168,11 +169,11 @@ def _code_sandwich_equals_summary(
         rhyme_line = f"同「{equals.ref_literal}」{dim}（{label}）"
         code_phrase = _code_prefix_phrase(spec)
         body = rhyme_line if not code_phrase else f"{rhyme_line}；{code_phrase}"
-        return f"碼夾等號查詢「{raw}」：{body}"
+        return f"數字夾字「{raw}」：{body}"
     details = _slot_scan_details(spec, equals)
     if details:
-        return f"碼夾等號查詢「{raw}」：{details}"
-    return f"碼夾等號查詢「{raw}」"
+        return f"數字夾字「{raw}」：{details}"
+    return f"數字夾字「{raw}」"
 
 
 def _compound_summary(spec: MatchSpec) -> str:

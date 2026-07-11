@@ -19,7 +19,7 @@ from app.services.query_dispatch import search_words
 
 GUIDE_ZERO_CASES = (
     "?4困=4潦=9倒=",
-    "!你",
+    "!苦悶",
     "33!開心",
     "!與!",
     "~與~",

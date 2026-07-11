@@ -45,12 +45,17 @@ export interface QueryExplainResult {
   kind: string | null;
 }
 
-export function explainQuery(q: string, _mode: string = 'm1'): QueryExplainResult {
+export function explainQuery(q: string, mode: string = 'm1'): QueryExplainResult {
   const text = (q || '').trim();
   if (!text) {
     return { summary: null, warning: null, kind: null };
   }
-  const parsed = normalizeAndParse(text);
+  const queryMode = mode === '0243' || mode === '02493' || mode === '394052'
+    ? (mode === '02493' ? 'm2' : mode === '394052' ? 'm3' : 'm1')
+    : mode;
+  const parsed = normalizeAndParse(text, {
+    mode: queryMode as import('./query-types.ts').QueryMode,
+  });
   const warning = warningFor(parsed);
   if (parsed.kind === QueryKind.UNMATCHED) {
     const unmatched = parsed as UnmatchedQuery;
@@ -111,7 +116,9 @@ function summaryFor(parsed: ParsedQuery): string | null {
     return `查「${rel.word}」嘅${prefix}${label}`;
   }
   if (parsed.kind === QueryKind.JYUTPING_FRAGMENT) {
-    return `粵拼查詢「${(parsed as JyutpingFragmentQuery).raw_q}」`;
+    const raw = (parsed as JyutpingFragmentQuery).raw_q;
+    const tone = /[1-6]/.test(raw) ? '（有聲調）' : '（不需聲調）';
+    return `粵拼查詢「${raw}」${tone}`;
   }
   if (parsed.kind === QueryKind.HETERONYM_CODE) {
     const h = parsed as HeteronymCodeQuery;
@@ -185,10 +192,10 @@ function codeSandwichEqualsSummary(
     const rhymeLine = `同「${equals.ref_literal}」${dim}（${label}）`;
     const codePhrase = codePrefixPhrase(spec);
     const body = codePhrase ? `${rhymeLine}；${codePhrase}` : rhymeLine;
-    return `碼夾等號查詢「${raw}」：${body}`;
+    return `數字夾字「${raw}」：${body}`;
   }
   const details = slotScanDetails(spec, equals);
-  return details ? `碼夾等號查詢「${raw}」：${details}` : `碼夾等號查詢「${raw}」`;
+  return details ? `數字夾字「${raw}」：${details}` : `數字夾字「${raw}」`;
 }
 
 function compoundSummary(spec: MatchSpec): string {
@@ -408,5 +415,17 @@ export function queryExplainLogicSelfCheck(): void {
   const warn = explainQuery('23ng');
   if (!warn.warning?.includes('易混')) {
     throw new Error(`queryExplainLogicSelfCheck: 23ng warning ${warn.warning}`);
+  }
+  const noTone = explainQuery('nei hou');
+  if (!noTone.summary?.includes('不需聲調')) {
+    throw new Error(`queryExplainLogicSelfCheck: nei hou ${noTone.summary}`);
+  }
+  const withTone = explainQuery('ming4 baak6');
+  if (!withTone.summary?.includes('有聲調')) {
+    throw new Error(`queryExplainLogicSelfCheck: ming4 baak6 ${withTone.summary}`);
+  }
+  const pz = explainQuery('PZ', 'pz');
+  if (!pz.summary?.includes('平')) {
+    throw new Error(`queryExplainLogicSelfCheck: PZ pz ${pz.summary}`);
   }
 }
