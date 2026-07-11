@@ -102,7 +102,8 @@ def _summary_for(parsed: ParsedQuery) -> Optional[str]:
         prefix = f"碼 {parsed.code_prefix} " if parsed.code_prefix else ""
         return f"查「{parsed.word}」嘅{prefix}{label}"
     if isinstance(parsed, JyutpingFragmentQuery):
-        return f"粵拼查詢「{parsed.raw_q}」"
+        tone = "（有聲調）" if any(ch in "123456" for ch in parsed.raw_q) else "（不需聲調）"
+        return f"粵拼查詢「{parsed.raw_q}」{tone}"
     if isinstance(parsed, HeteronymCodeQuery):
         return (
             f"查同字面異讀（{parsed.left_template}/{parsed.right_template}）："

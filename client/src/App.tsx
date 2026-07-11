@@ -67,7 +67,7 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, getTheme, setTheme } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -150,6 +150,8 @@ function App() {
   const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
   const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
   const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
+  const [searchRingClass, setSearchRingClass] = useState('');
+  const searchRingBlurTimerRef = useRef<number | null>(null);
   const detailLoadGenRef = useRef(0);
   const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
   const pickAnchorRef = useRef<string | null>(null);
@@ -365,7 +367,7 @@ function App() {
     flushSearchQuery(activeSearchTab?.q || '');
   }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
-  const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery);
+  const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery, mode);
   const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
 
   const displayHint = redirectHint || searchHint;
@@ -661,6 +663,34 @@ function App() {
     }
   };
 
+  const handleSearchFocus = () => {
+    if (searchRingBlurTimerRef.current != null) {
+      window.clearTimeout(searchRingBlurTimerRef.current);
+      searchRingBlurTimerRef.current = null;
+    }
+    setSearchRingClass('is-focused');
+  };
+
+  const handleSearchBlur = () => {
+    setSearchRingClass('is-blurring');
+    if (searchRingBlurTimerRef.current != null) {
+      window.clearTimeout(searchRingBlurTimerRef.current);
+    }
+    searchRingBlurTimerRef.current = window.setTimeout(() => {
+      setSearchRingClass('');
+      searchRingBlurTimerRef.current = null;
+    }, SEARCH_RING_BLUR_MS);
+  };
+
+  useEffect(
+    () => () => {
+      if (searchRingBlurTimerRef.current != null) {
+        window.clearTimeout(searchRingBlurTimerRef.current);
+      }
+    },
+    [],
+  );
+
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
@@ -858,12 +888,14 @@ function App() {
                   </span>
                 </div>
                 <div className="search-row">
-                  <div className="search-input-wrap">
+                  <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
                     <input
                       id="searchInput"
                       type="search"
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
                       placeholder={modeMeta.placeholder}
                       disabled={shellGated}
                       autoComplete="off"

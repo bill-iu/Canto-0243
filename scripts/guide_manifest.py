@@ -9,13 +9,20 @@ MANIFEST_PATH = REPO_ROOT / "frontend" / "guide-i18n.mjs"
 INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
 
 MANIFEST_EXAMPLE_RE = re.compile(
-    r"\{\s*query:\s*'((?:\\'|[^'])*)',\s*mode:\s*'([^']+)'\s*\}"
+    r"\{\s*query:\s*(['\"])((?:\\.|(?!\1).)*)\1,\s*mode:\s*(['\"])((?:\\.|(?!\3).)*)\3\s*\}"
 )
 
 
 def load_manifest_examples() -> list[tuple[str, str]]:
+    import json
+
     text = MANIFEST_PATH.read_text(encoding="utf-8")
-    return [(m.group(1), m.group(2)) for m in MANIFEST_EXAMPLE_RE.finditer(text)]
+    out: list[tuple[str, str]] = []
+    for m in MANIFEST_EXAMPLE_RE.finditer(text):
+        q = json.loads(m.group(1) + m.group(2) + m.group(1))
+        mode = json.loads(m.group(3) + m.group(4) + m.group(3))
+        out.append((q, mode))
+    return out
 
 
 def load_html_examples() -> list[tuple[str, str]]:

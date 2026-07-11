@@ -2,6 +2,7 @@
  * PWA 搜尋教學 — 範例 manifest（對齊桌面 guide-card + family 覆蓋）
  */
 import { getGuideSections as getI18nSections } from '../../frontend/guide-i18n.mjs';
+import { explainQuery } from './db/query-explain.ts';
 
 export const GUIDE_FAMILY_IDS = [
   'word_lookup',
@@ -57,27 +58,26 @@ export interface GuideSection {
 
 /** Self-check family tags keyed by section id + query */
 const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
-  'basic:就': 'word_lookup',
+  'basic:香港': 'word_lookup',
   'basic:nei hou': 'jyutping_lookup',
   'digit:23': 'digit_code',
   'digit:93': 'mode_02493',
   'digit:45': 'mode_394052',
-  'serial:23就=': 'code_char',
-  'serial:04困=49倒=': 'serial_phoneme',
-  'partial:窮?潦倒=': 'partial_rhyme',
-  'partial:=窮?潦倒': 'partial_initial',
-  'prefix-wildcard:?香港=': 'prefix_wildcard_equals',
-  'prefix-wildcard:?=困潦倒': 'prefix_wildcard_initial',
+  'multi:23香=': 'code_char',
+  'multi:04困=49倒=': 'serial_phoneme',
+  'multi:窮?潦倒=': 'partial_rhyme',
+  'multi:=窮?潦倒': 'partial_initial',
+  'multi:?香港=': 'prefix_wildcard_equals',
+  'multi:?=困潦倒': 'prefix_wildcard_initial',
   'wildcard-code:?30人': 'wildcard_code_anchor',
   'mask:+香??': 'mask_query',
   'plus:23@手': 'literal_ref',
   'plus:23+好=': 'plus_anchor',
-  'rhyme-initial:就=': 'rhyme_initial_anchor',
   'jyutping-anchor:3hon4': 'jyutping_anchor_syllable',
   'jyutping-anchor:3$漢4': 'hanzi_syllable_anchor',
   'jyutping-anchor:3h4': 'jyutping_anchor_initial',
   'jyutping-anchor:23o': 'jyutping_anchor_final',
-  'equals:就=': 'rhyme_initial_anchor',
+  'equals:香=': 'rhyme_initial_anchor',
   'equals:香港=': 'equals_query',
   'equals:2我=3': 'code_sandwich_equals',
   'relation:!苦悶': 'relation_lookup',
@@ -104,10 +104,11 @@ export function getGuideSections(lang: GuideLang = 'zh'): GuideSection[] {
     title: section.title,
     intro: section.intro,
     examples: section.examples.map((ex) => {
+      const explained = explainQuery(ex.query, ex.mode).summary;
       const item: GuideExample = {
         query: ex.query,
         mode: uiModeToGuideMode(ex.mode),
-        label: ex.label,
+        label: explained || ex.label,
       };
       const familyId = FAMILY_BY_KEY[`${section.id}:${ex.query}`];
       if (familyId) item.familyId = familyId;

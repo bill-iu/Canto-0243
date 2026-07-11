@@ -1,617 +1,568 @@
 const SECTIONS = [
   {
-    id: 'basic',
-    group: 'common',
+    id: "basic",
+    group: "common",
     zh: {
-      title: '基本查詢',
+      title: "基本查詢",
       intro:
-        '漢字、詞語、394052 碼或粵拼。',
+        "漢字、詞語、394052 碼或粵拼。",
       examples: [
-        { label: '查呢個字嘅所有讀音' },
-        { label: '查呢個詞語' },
-        { label: '粵拼查詢（冇聲調）' },
-        { label: '粵拼查詢（有聲調）' },
+        { label: "查詢詞條「香港」" },
+        { label: "粵拼查詢「nei hou」（不需聲調）" },
+        { label: "粵拼查詢「ming4 baak6」（有聲調）" },
       ],
     },
     en: {
-      title: 'Basic lookup',
+      title: "Basic lookup",
       intro:
-        'Chinese characters, words, 394052 codes, or Jyutping.',
+        "Chinese characters, words, 394052 codes, or Jyutping.",
       examples: [
-        { label: 'All readings for this character' },
-        { label: 'Look up this word' },
-        { label: 'Jyutping lookup (no tone numbers)' },
-        { label: 'Jyutping lookup (with tone numbers)' },
+        { label: "查詢詞條「香港」" },
+        { label: "粵拼查詢「nei hou」（不需聲調）" },
+        { label: "粵拼查詢「ming4 baak6」（有聲調）" },
       ],
     },
     examples: [
-      { query: '就', mode: 'm1' },
-      { query: '你好', mode: 'm1' },
-      { query: 'nei hou', mode: 'm1' },
-      { query: 'ming4 baak6', mode: 'm1' },
+      { query: "香港", mode: "m1" },
+      { query: "nei hou", mode: "m1" },
+      { query: "ming4 baak6", mode: "m1" },
     ],
   },
   {
-    id: 'digit',
-    group: 'common',
+    id: "digit",
+    group: "common",
     zh: {
-      title: '0243 / 02493 / 394052 數字',
+      title: "0243 / 02493 / 394052 數字",
       intro:
-        '純數字搵同碼詞條；02493 分清二聲；394052 六聲碼三／五聲分明。',
+        "純數字搵同碼詞條；02493 分清二聲；394052 六聲碼三／五聲分明。",
       examples: [
-        { label: '找同音字' },
-        { label: '02493模式 分清二聲' },
-        { label: '394052模式 三／五聲分明' },
+        { label: "查同23同音嘅字" },
+        { label: "查同93同音嘅字" },
+        { label: "查同45同音嘅字" },
       ],
     },
     en: {
-      title: '0243 / 02493 / 394052 digits',
+      title: "0243 / 02493 / 394052 digits",
       intro:
-        'Digits only: find entries sharing the code; 02493 separates the second tone; 394052 6-tone codes keep tones 3 and 5 distinct.',
+        "Digits only: find entries sharing the code; 02493 separates the second tone; 394052 6-tone codes keep tones 3 and 5 distinct.",
       examples: [
-        { label: 'Same-tone matches' },
-        { label: '02493 mode — finer second-tone distinction' },
-        { label: '394052 mode — strict tone-3 vs tone-5 digits' },
+        { label: "查同23同音嘅字" },
+        { label: "查同93同音嘅字" },
+        { label: "查同45同音嘅字" },
       ],
     },
     examples: [
-      { query: '23', mode: 'm1' },
-      { query: '93', mode: 'm2' },
-      { query: '45', mode: 'm3' },
+      { query: "23", mode: "m1" },
+      { query: "93", mode: "m2" },
+      { query: "45", mode: "m3" },
     ],
   },
   {
-    id: 'equals',
-    group: 'common',
+    id: "equals",
+    group: "common",
     zh: {
-      title: '同韻／同聲（=）',
+      title: "同韻／同聲（=）",
       intro:
-        '字後面加 <code translate="no">=</code> → 同韻；字前面加 <code translate="no">=</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。',
+        "字後面加 <code translate=\"no\">=</code> → 同韻；字前面加 <code translate=\"no\">=</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。",
       examples: [
-        { label: '單字，同「就」同韻' },
-        { label: '二字，首字同「香」同韻' },
-        { label: '二字，尾字同「就」同聲' },
-        { label: '二字，整詞同「香港」同韻' },
-        { label: '二字，整詞同「香港」同聲' },
-        { label: '二字：聲調 23，頭字同「我」同韻' },
-        { label: '二字：聲調 23，頭字同「我」同聲' },
-        { label: '二字，尾字同「就」同韻' },
+        { label: "一個字：第 1 個字同「香」同韻" },
+        { label: "兩個字：第 1 個字同「香」同韻，第 2 個字任意字" },
+        { label: "一個字：第 1 個字同「香」同聲" },
+        { label: "整詞同「香港」同韻（雙押）" },
+        { label: "整詞同「香港」同聲（雙押）" },
+        { label: "數字夾字「2我=3」：第 1 個字同 2 同音且同「我」同韻，第 2 個字同 3 同音" },
+        { label: "數字夾字「2=我3」：第 1 個字同 2 同音且同「我」同聲，第 2 個字同 3 同音" },
+        { label: "兩個字：第 1 個字任意字，第 2 個字同「香」同韻" },
       ],
     },
     en: {
-      title: 'Same rhyme / initial (=)',
+      title: "Same rhyme / initial (=)",
       intro:
-        'Put <code translate="no">=</code> after a character for rhyme; before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.',
+        "Put <code translate=\"no\">=</code> after a character for rhyme; before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.",
       examples: [
-        { label: 'Single character rhyming with 就' },
-        { label: 'Two chars: first rhymes with 香' },
-        { label: 'Two chars: last shares initial with 就' },
-        { label: 'Two chars: whole word rhymes like 香港' },
-        { label: 'Two chars: whole word shares initials with 香港' },
-        { label: 'Two chars: tones 23; first rhymes with 我' },
-        { label: 'Two chars: tones 23; first shares initial with 我' },
-        { label: 'Two chars: last rhymes with 就' },
+        { label: "一個字：第 1 個字同「香」同韻" },
+        { label: "兩個字：第 1 個字同「香」同韻，第 2 個字任意字" },
+        { label: "一個字：第 1 個字同「香」同聲" },
+        { label: "整詞同「香港」同韻（雙押）" },
+        { label: "整詞同「香港」同聲（雙押）" },
+        { label: "數字夾字「2我=3」：第 1 個字同 2 同音且同「我」同韻，第 2 個字同 3 同音" },
+        { label: "數字夾字「2=我3」：第 1 個字同 2 同音且同「我」同聲，第 2 個字同 3 同音" },
+        { label: "兩個字：第 1 個字任意字，第 2 個字同「香」同韻" },
       ],
     },
     examples: [
-      { query: '就=', mode: 'm1' },
-      { query: '香=?', mode: 'm1' },
-      { query: '?=就', mode: 'm1' },
-      { query: '香港=', mode: 'm1' },
-      { query: '=香港', mode: 'm1' },
-      { query: '2我=3', mode: 'm1' },
-      { query: '2=我3', mode: 'm1' },
-      { query: '?+就=', mode: 'm1' },
+      { query: "香=", mode: "m1" },
+      { query: "香=?", mode: "m1" },
+      { query: "?=香", mode: "m1" },
+      { query: "香港=", mode: "m1" },
+      { query: "=香港", mode: "m1" },
+      { query: "2我=3", mode: "m1" },
+      { query: "2=我3", mode: "m1" },
+      { query: "?+香=", mode: "m1" },
     ],
   },
   {
-    id: 'mask',
-    group: 'common',
+    id: "mask",
+    group: "common",
     zh: {
-      title: '有啲字定死、有啲留空',
+      title: "有啲字限定、有啲留空",
       intro:
-        '寫死你要嘅漢字或聲調數字；唔知嘅位用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>（三個一樣）。開頭嘅 <code translate="no">+</code> 可以唔打。',
+        "定實你要嘅漢字或聲調數字；唔知嘅位用 <code translate=\"no\">?</code>／<code translate=\"no\">_</code>／<code translate=\"no\">%</code>（三個一樣）。開頭嘅 <code translate=\"no\">+</code> 可以唔打。",
       examples: [
-        { label: '三字，第一個字一定係「香」' },
-        { label: '三字，中間一定係「你」' },
-        { label: '三字，中間一定係「識」' },
-        { label: '二字：頭字同 3 同音，尾字隨便' },
-        { label: '三字：頭兩字聲調 23，尾字隨便' },
-        { label: '二字：頭字「門」，尾字同 0 同音' },
+        { label: "三個字：第 1 個字為「香」，第 2 個字任意字，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字為「你」，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字為「識」，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字同 3 同音，第 2 個字任意字" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字為「門」，第 2 個字同 0 同音" },
       ],
     },
     en: {
-      title: 'Fix some characters, leave others open',
+      title: "Lock some characters, leave others open",
       intro:
-        'Lock the characters or tone digits you know; fill unknowns with <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code> (all the same). A leading <code translate="no">+</code> is optional.',
+        "Set the characters or tone digits you need; fill unknowns with <code translate=\"no\">?</code> / <code translate=\"no\">_</code> / <code translate=\"no\">%</code> (all the same). A leading <code translate=\"no\">+</code> is optional.",
       examples: [
-        { label: 'Three chars: first must be 香' },
-        { label: 'Three chars: middle must be 你' },
-        { label: 'Three chars: middle must be 識' },
-        { label: 'Two chars: first tone 3; last free' },
-        { label: 'Three chars: first two tones 23; last free' },
-        { label: 'Two chars: first 門; last tone 0' },
+        { label: "三個字：第 1 個字為「香」，第 2 個字任意字，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字為「你」，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字為「識」，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字同 3 同音，第 2 個字任意字" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字為「門」，第 2 個字同 0 同音" },
       ],
     },
     examples: [
-      { query: '+香??', mode: 'm1' },
-      { query: '?+你?', mode: 'm1' },
-      { query: '_識_', mode: 'm1' },
-      { query: '3_', mode: 'm1' },
-      { query: '23?', mode: 'm1' },
-      { query: '門0', mode: 'm1' },
+      { query: "+香??", mode: "m1" },
+      { query: "?+你?", mode: "m1" },
+      { query: "_識_", mode: "m1" },
+      { query: "3_", mode: "m1" },
+      { query: "23?", mode: "m1" },
+      { query: "門0", mode: "m1" },
     ],
   },
   {
-    id: 'plus',
-    group: 'common',
+    id: "plus",
+    group: "common",
     zh: {
-      title: '用 + 加長或標明位置',
+      title: "用 + 加長或標明位置",
       intro:
-        '用 <code translate="no">+</code> 加多一個字，或者標明邊個位置。<code translate="no">字=</code>＝同韻；<code translate="no">+=字</code>＝同聲；冇 <code translate="no">=</code> 就係要呢個字本身。打 <code translate="no">*</code> 等同 <code translate="no">+</code>。',
+        "用 <code translate=\"no\">+</code> 加多一個字，或者標明邊個位置。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+=字</code>＝同聲；冇 <code translate=\"no\">=</code> 就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
       examples: [
-        { label: '二字：聲調 23，第二個字一定係「手」' },
-        { label: '三字：尾字一定係「好」' },
-        { label: '三字：尾字同「好」同韻' },
-        { label: '三字：尾字同「好」同聲' },
-        { label: '三字：中間係「好」，頭尾用數字碼' },
-        { label: '三字：中間同「好」同韻，頭尾用數字碼' },
-        { label: '二字：頭字「門」，尾字同 0 同音' },
-        { label: '二字：頭字同「門」同韻，尾字同 0 同音' },
+        { label: "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且限定為手" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字為「好」" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同「好」同韻" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同「好」同聲" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字為「好」，第 3 個字同 3 同音" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同「好」同韻，第 3 個字同 3 同音" },
+        { label: "兩個字：第 1 個字為「門」，第 2 個字同 0 同音" },
+        { label: "兩個字：第 1 個字同「門」同韻，第 2 個字同 0 同音" },
       ],
     },
     en: {
-      title: 'Use + to lengthen or mark a position',
+      title: "Use + to lengthen or mark a position",
       intro:
-        'Use <code translate="no">+</code> to add a character or mark a position. <code translate="no">char=</code> = same rhyme; <code translate="no">+=char</code> = same initial; without <code translate="no">=</code> that exact character is required. <code translate="no">*</code> works like <code translate="no">+</code>.',
+        "Use <code translate=\"no\">+</code> to add a character or mark a position. <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+=char</code> = same initial; without <code translate=\"no\">=</code> that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
       examples: [
-        { label: 'Two chars: tones 23; second must be 手' },
-        { label: 'Three chars: last must be 好' },
-        { label: 'Three chars: last rhymes with 好' },
-        { label: 'Three chars: last shares initial with 好' },
-        { label: 'Three chars: middle literal 好 + first/last codes' },
-        { label: 'Three chars: middle rhymes with 好 + first/last codes' },
-        { label: 'Two chars: first literal 門 + trailing code 0' },
-        { label: 'Two chars: first rhymes with 門 + trailing code 0' },
+        { label: "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且限定為手" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字為「好」" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同「好」同韻" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同「好」同聲" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字為「好」，第 3 個字同 3 同音" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同「好」同韻，第 3 個字同 3 同音" },
+        { label: "兩個字：第 1 個字為「門」，第 2 個字同 0 同音" },
+        { label: "兩個字：第 1 個字同「門」同韻，第 2 個字同 0 同音" },
       ],
     },
     examples: [
-      { query: '23@手', mode: 'm1' },
-      { query: '23+好', mode: 'm1' },
-      { query: '23+好=', mode: 'm1' },
-      { query: '23+=好', mode: 'm1' },
-      { query: '2+好3', mode: 'm1' },
-      { query: '2+好=3', mode: 'm1' },
-      { query: '+門0', mode: 'm1' },
-      { query: '+門=0', mode: 'm1' },
+      { query: "23@手", mode: "m1" },
+      { query: "23+好", mode: "m1" },
+      { query: "23+好=", mode: "m1" },
+      { query: "23+=好", mode: "m1" },
+      { query: "2+好3", mode: "m1" },
+      { query: "2+好=3", mode: "m1" },
+      { query: "+門0", mode: "m1" },
+      { query: "+門=0", mode: "m1" },
     ],
   },
   {
-    id: 'serial',
-    group: 'advanced',
+    id: "multi",
+    group: "advanced",
     zh: {
-      title: '數字＋參考字：同韻／同聲',
+      title: "多重同韻／同聲",
       intro:
-        '連續打數字＝每個字一個聲調碼。字後面加 <code translate="no">=</code> → 同韻；字前面加 <code translate="no">=</code> → 同聲。',
+        "用數字規定聲調，用參考字規定同韻或同聲；可用 <code translate=\"no\">?</code> 留空某個字，或令第一個字任意、其餘跟某詞逐字同韻／同聲。",
       examples: [
-        { label: '二字：聲調 23，尾字同「就」同韻' },
-        { label: '四字：只規定第 2、第 4 個字同韻', title: '只卡住第 2、第 4 個字嘅韻。同「0449窮困潦倒=」唔同（嗰個係四個字全部同韻）。' },
-        { label: '四字：只規定第 2、第 4 個字同聲' },
-        { label: '四字：第一個字任意，其餘跟韻' },
-        { label: '三字：中間同 3 同音，尾字同「人」同韻' },
+        { label: "數字夾字「23香=」：第 1 個字同 2 同音，第 2 個字同 3 同音且同「香」同韻" },
+        { label: "四個字：第 1 個字同 0 同音，第 2 個字同 4 同音且同「困」同韻，第 3 個字同 4 同音，第 4 個字同 9 同音且同「倒」同韻" },
+        { label: "四個字：第 1 個字同 0 同音，第 2 個字同 4 同音且同「困」同聲，第 3 個字同 4 同音，第 4 個字同 9 同音且同「倒」同聲" },
+        { label: "四個字：第 1 個字任意字，第 2 個字同 4 同音且同「困」同韻，第 3 個字同 4 同音且同「潦」同韻，第 4 個字同 9 同音且同「倒」同韻" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音且同「人」同韻，第 3 個字任意字" },
+        { label: "四個字：第 1 個字同「窮」同韻，第 2 個字任意字，第 3 個字同「潦」同韻，第 4 個字同「倒」同韻" },
+        { label: "四個字：第 1 個字同「窮」同韻，第 2 個字同「困」同韻，第 3 個字任意字，第 4 個字同「倒」同韻" },
+        { label: "四個字：第 1 個字同「窮」同聲，第 2 個字任意字，第 3 個字同「潦」同聲，第 4 個字同「倒」同聲" },
+        { label: "四個字：第 1 個字同「窮」同聲，第 2 個字同「困」同聲，第 3 個字任意字，第 4 個字同「倒」同聲" },
+        { label: "首個字任意；第 2、第 3 個字同「香港」同韻（雙押）" },
+        { label: "首個字任意；第 2、第 3、第 4 個字同「困潦倒」同韻（三押）" },
+        { label: "首個字任意；第 2、第 3、第 4 個字同「困潦倒」同聲（三押）" },
       ],
     },
     en: {
-      title: 'Digits + reference char: rhyme / initial',
+      title: "Multi-slot rhyme / initial",
       intro:
-        'Type digits in a row — one tone code per character. Put <code translate="no">=</code> after a character for rhyme; before it for initial.',
+        "Use digits for tone codes and reference characters for rhyme or initial; leave a slot open with <code translate=\"no\">?</code>, or free the first character while the rest follow a sample word.",
       examples: [
-        { label: 'Two chars: tones 23; last rhymes with 就' },
-        { label: 'Four chars: only 2nd and 4th must rhyme', title: 'Only the 2nd and 4th characters are rhyme-locked. Unlike 0449窮困潦倒= (that needs all four to rhyme).' },
-        { label: 'Four chars: only 2nd and 4th share initials' },
-        { label: 'Four chars: first anything; others rhyme' },
-        { label: 'Three chars: middle tone 3; last rhymes with 人' },
+        { label: "數字夾字「23香=」：第 1 個字同 2 同音，第 2 個字同 3 同音且同「香」同韻" },
+        { label: "四個字：第 1 個字同 0 同音，第 2 個字同 4 同音且同「困」同韻，第 3 個字同 4 同音，第 4 個字同 9 同音且同「倒」同韻" },
+        { label: "四個字：第 1 個字同 0 同音，第 2 個字同 4 同音且同「困」同聲，第 3 個字同 4 同音，第 4 個字同 9 同音且同「倒」同聲" },
+        { label: "四個字：第 1 個字任意字，第 2 個字同 4 同音且同「困」同韻，第 3 個字同 4 同音且同「潦」同韻，第 4 個字同 9 同音且同「倒」同韻" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音且同「人」同韻，第 3 個字任意字" },
+        { label: "四個字：第 1 個字同「窮」同韻，第 2 個字任意字，第 3 個字同「潦」同韻，第 4 個字同「倒」同韻" },
+        { label: "四個字：第 1 個字同「窮」同韻，第 2 個字同「困」同韻，第 3 個字任意字，第 4 個字同「倒」同韻" },
+        { label: "四個字：第 1 個字同「窮」同聲，第 2 個字任意字，第 3 個字同「潦」同聲，第 4 個字同「倒」同聲" },
+        { label: "四個字：第 1 個字同「窮」同聲，第 2 個字同「困」同聲，第 3 個字任意字，第 4 個字同「倒」同聲" },
+        { label: "首個字任意；第 2、第 3 個字同「香港」同韻（雙押）" },
+        { label: "首個字任意；第 2、第 3、第 4 個字同「困潦倒」同韻（三押）" },
+        { label: "首個字任意；第 2、第 3、第 4 個字同「困潦倒」同聲（三押）" },
       ],
     },
     examples: [
-      { query: '23就=', mode: 'm1' },
-      { query: '04困=49倒=', mode: 'm1' },
-      { query: '04=困49=倒', mode: 'm1' },
-      { query: '?4困=4潦=9倒=', mode: 'm1' },
-      { query: '?3人=?', mode: 'm1' },
+      { query: "23香=", mode: "m1" },
+      { query: "04困=49倒=", mode: "m1" },
+      { query: "04=困49=倒", mode: "m1" },
+      { query: "?4困=4潦=9倒=", mode: "m1" },
+      { query: "?3人=?", mode: "m1" },
+      { query: "窮?潦倒=", mode: "m1" },
+      { query: "窮困?倒=", mode: "m1" },
+      { query: "=窮?潦倒", mode: "m1" },
+      { query: "=窮困?倒", mode: "m1" },
+      { query: "?香港=", mode: "m1" },
+      { query: "?困潦倒=", mode: "m1" },
+      { query: "?=困潦倒", mode: "m1" },
     ],
   },
   {
-    id: 'partial',
-    group: 'advanced',
+    id: "wildcard-code",
+    group: "advanced",
     zh: {
-      title: '四字：有啲字跟韻／聲，有啲留空',
+      title: "任意字＋數字碼＋尾字同韻",
       intro:
-        '用 <code translate="no">?</code> 留空某個字；其餘漢字只要求同韻或同聲（結果唔使同你打嘅字一模一樣）。',
+        "開頭用 <code translate=\"no\">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。想再多一個字就加 <code translate=\"no\">+</code>。",
       examples: [
-        { label: '四字：第二個字留空，其餘同韻', title: '第二個字隨便；窮／潦／倒 各位要同韻。' },
-        { label: '四字：第三個字留空，其餘同韻' },
-        { label: '四字：第四個字留空，其餘同韻' },
-        { label: '四字：第二個字留空，其餘同聲' },
-        { label: '四字：第三個字留空，其餘同聲' },
-        { label: '四字：第四個字留空，其餘同聲' },
+        { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音且同「人」同韻" },
+        { label: "四個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音，第 4 個字同「人」同韻" },
       ],
     },
     en: {
-      title: 'Four chars: some rhyme/initial, some open',
+      title: "Any char + tone digits + last rhymes",
       intro:
-        'Use <code translate="no">?</code> to leave a character open; other characters only need matching rhyme or initial (results need not equal your skeleton word).',
+        "Leading <code translate=\"no\">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Add <code translate=\"no\">+</code> for one more character.",
       examples: [
-        { label: 'Four chars: leave 2nd open; others rhyme', title: '2nd character free; 窮 / 潦 / 倒 each set the rhyme.' },
-        { label: 'Four chars: leave 3rd open; others rhyme' },
-        { label: 'Four chars: leave 4th open; others rhyme' },
-        { label: 'Four chars: leave 2nd open; others same initial' },
-        { label: 'Four chars: leave 3rd open; others same initial' },
-        { label: 'Four chars: leave 4th open; others same initial' },
+        { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音且同「人」同韻" },
+        { label: "四個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音，第 4 個字同「人」同韻" },
       ],
     },
     examples: [
-      { query: '窮?潦倒=', mode: 'm1' },
-      { query: '窮困?倒=', mode: 'm1' },
-      { query: '窮困潦=?', mode: 'm1' },
-      { query: '=窮?潦倒', mode: 'm1' },
-      { query: '=窮困?倒', mode: 'm1' },
-      { query: '=窮困潦?', mode: 'm1' },
+      { query: "?30人", mode: "m1" },
+      { query: "?30+人", mode: "m1" },
     ],
   },
   {
-    id: 'prefix-wildcard',
-    group: 'advanced',
+    id: "jyutping-anchor",
+    group: "advanced",
     zh: {
-      title: '第一個字任意，其餘跟某詞同韻／同聲',
+      title: "用粵拼指定某個字",
       intro:
-        '第一個字隨便；後面幾個字跟你寫嘅詞逐字同韻（詞尾要有 <code translate="no">=</code>）或同聲（詞頭 <code translate="no">=</code>）。',
+        "唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母；位置之間用 <code translate=\"no\">+</code>（如 <code translate=\"no\">?+hon</code>、<code translate=\"no\">3+ngo4</code>）。",
       examples: [
-        { label: '三字：頭字任意，其餘同「香港」同韻' },
-        { label: '四字：頭字任意，其餘同「困潦倒」同韻', title: '第一個字隨便；第 2–4 個字同「困潦倒」逐字同韻。' },
-        { label: '四字：頭字任意，其餘同「困潦倒」同聲', title: '第一個字隨便；其餘同「困潦倒」逐字同聲母。' },
+        { label: "兩個字：第 1 個字任意字，第 2 個字粵拼音節 hon" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同韻母 yut，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字粵拼音節 syut，第 3 個字任意字" },
+        { label: "三個字：第 1 個字同 3 同音，第 2 個字粵拼音節 ngo，第 3 個字同 4 同音" },
+        { label: "兩個字：第 1 個字粵拼音節 hon，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字粵拼音節 hon，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同聲母 h，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同聲母 gw，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同 2 同音，第 2 個字同韻母 o" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同韻母 o" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同韻母 ei，第 3 個字同 0 同音" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同韻母 ng，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字同韻母 ng，第 2 個字同 4 同音" },
       ],
     },
     en: {
-      title: 'Any first character; rest follow a word',
+      title: "Specify a syllable with Jyutping",
       intro:
-        'First character free; the rest follow your sample word for rhyme (trailing <code translate="no">=</code>) or initial (leading <code translate="no">=</code>).',
+        "Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial; join positions with <code translate=\"no\">+</code> (e.g. <code translate=\"no\">?+hon</code>, <code translate=\"no\">3+ngo4</code>).",
       examples: [
-        { label: 'Three chars: any first; rest rhyme like 香港' },
-        { label: 'Four chars: any first; rest rhyme like 困潦倒', title: 'First character free; chars 2–4 rhyme with 困潦倒 one-by-one.' },
-        { label: 'Four chars: any first; rest share initials with 困潦倒', title: 'First character free; the rest match 困潦倒 initials.' },
+        { label: "兩個字：第 1 個字任意字，第 2 個字粵拼音節 hon" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同韻母 yut，第 3 個字任意字" },
+        { label: "三個字：第 1 個字任意字，第 2 個字粵拼音節 syut，第 3 個字任意字" },
+        { label: "三個字：第 1 個字同 3 同音，第 2 個字粵拼音節 ngo，第 3 個字同 4 同音" },
+        { label: "兩個字：第 1 個字粵拼音節 hon，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字粵拼音節 hon，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同聲母 h，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同聲母 gw，第 2 個字同 4 同音" },
+        { label: "兩個字：第 1 個字同 2 同音，第 2 個字同韻母 o" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字同韻母 o" },
+        { label: "三個字：第 1 個字同 2 同音，第 2 個字同韻母 ei，第 3 個字同 0 同音" },
+        { label: "三個字：第 1 個字任意字，第 2 個字同韻母 ng，第 3 個字任意字" },
+        { label: "兩個字：第 1 個字同韻母 ng，第 2 個字同 4 同音" },
       ],
     },
     examples: [
-      { query: '?香港=', mode: 'm1' },
-      { query: '?困潦倒=', mode: 'm1' },
-      { query: '?=困潦倒', mode: 'm1' },
+      { query: "?+hon", mode: "m1" },
+      { query: "?+yut?", mode: "m1" },
+      { query: "?+syut?", mode: "m1" },
+      { query: "3+ngo4", mode: "m1" },
+      { query: "3hon4", mode: "m1" },
+      { query: "3$漢4", mode: "m1" },
+      { query: "3h4", mode: "m1" },
+      { query: "3gw4", mode: "m1" },
+      { query: "23o", mode: "m1" },
+      { query: "23+o", mode: "m1" },
+      { query: "23ei0", mode: "m1" },
+      { query: "?+m?", mode: "m1" },
+      { query: "3m4", mode: "m1" },
     ],
   },
   {
-    id: 'wildcard-code',
-    group: 'advanced',
+    id: "ping-ze",
+    group: "advanced",
     zh: {
-      title: '任意字＋數字碼＋尾字同韻',
+      title: "平仄（平／仄）",
       intro:
-        '開頭用 <code translate="no">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。想再多一個字就加 <code translate="no">+</code>。',
+        "<code translate=\"no\">P</code>＝平、<code translate=\"no\">Z</code>＝仄；數字＝嗰個字要同呢個聲調同音。平仄模式下可喺搜尋欄下切換 <strong>0243</strong>／<strong>02493</strong>／<strong>394052</strong>；P／Z 一律按六聲判定。",
       examples: [
-        { label: '三字：聲調 30，尾字同「人」同韻' },
-        { label: '四字：頭字任意＋30，再加多一個字，尾同「人」韻' },
+        { label: "查平、仄嘅兩個字詞" },
+        { label: "查平、仄、與 3 同音嘅三個字詞" },
+        { label: "查平、仄嘅兩個字詞" },
+        { label: "查與 = 同音、與 好 同音、平、仄嘅四個字詞" },
       ],
     },
     en: {
-      title: 'Any char + tone digits + last rhymes',
+      title: "Ping / ze pattern",
       intro:
-        'Leading <code translate="no">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Add <code translate="no">+</code> for one more character.',
+        "<code translate=\"no\">P</code> = ping, <code translate=\"no\">Z</code> = ze; a digit means that character must match that tone. In ping–ze mode, pick <strong>0243</strong> / <strong>02493</strong> / <strong>394052</strong> under the search box; P/Z always use the 6-tone scale.",
       examples: [
-        { label: 'Three chars: tones 30; last rhymes with 人' },
-        { label: 'Four chars: any first + 30 + one more; last rhymes with 人' },
+        { label: "查平、仄嘅兩個字詞" },
+        { label: "查平、仄、與 3 同音嘅三個字詞" },
+        { label: "查平、仄嘅兩個字詞" },
+        { label: "查與 = 同音、與 好 同音、平、仄嘅四個字詞" },
       ],
     },
     examples: [
-      { query: '?30人', mode: 'm1' },
-      { query: '?30+人', mode: 'm1' },
+      { query: "PZ", mode: "pz" },
+      { query: "PZ3", mode: "pz" },
+      { query: "PZ好=", mode: "pz" },
+      { query: "=好PZ", mode: "pz" },
     ],
   },
   {
-    id: 'jyutping-anchor',
-    group: 'advanced',
+    id: "relation",
+    group: "advanced",
     zh: {
-      title: '用粵拼指定某個字',
+      title: "近義 / 反義",
       intro:
-        '唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母；位置之間用 <code translate="no">+</code>（如 <code translate="no">?+hon</code>、<code translate="no">3+ngo4</code>）。',
+        "<code translate=\"no\">~</code> 近義、<code translate=\"no\">!</code> 反義；可加碼前綴。僅 0243搜尋三檔（唔包括近反義模式）。",
       examples: [
-        { label: '二字，尾字音節 hon' },
-        { label: '三字，中間韻母 yut' },
-        { label: '三字，中間音節 syut' },
-        { label: '三字，首碼＋音節＋末碼' },
-        { label: '二字，聲調 34，頭字音節 hon' },
-        { label: '同上（用漢字標音節，等同 3hon4）' },
-        { label: '二字，聲調 34，頭字聲母 h' },
-        { label: '二字，聲調 34，頭字聲母 gw' },
-        { label: '二字，聲調 23，尾字韻母 o' },
-        { label: '三字，聲調 23＋尾字韻母 o' },
-        { label: '三字，聲調 230，中間韻母 ei' },
-        { label: '三字，中間 m／ng 兩種讀法' },
-        { label: '二字聲調 34，頭字 m／ng 兩種讀法' },
+        { label: "查「開心」嘅近義詞" },
+        { label: "查「苦悶」嘅反義詞" },
+        { label: "查「開心」嘅碼 33 反義詞" },
       ],
     },
     en: {
-      title: 'Specify a syllable with Jyutping',
+      title: "Synonym / antonym",
       intro:
-        'Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial; join positions with <code translate="no">+</code> (e.g. <code translate="no">?+hon</code>, <code translate="no">3+ngo4</code>).',
+        "<code translate=\"no\">~</code> near-synonym, <code translate=\"no\">!</code> antonym; optional code prefix. 0243 search tiers only (not synonym/antonym mode).",
       examples: [
-        { label: 'Two chars: last syllable hon' },
-        { label: 'Three chars: middle final yut' },
-        { label: 'Three chars: middle syllable syut' },
-        { label: 'Three chars: leading code + syllable + trailing code' },
-        { label: 'Two chars: tones 34, first syllable hon' },
-        { label: 'Same (Hanzi marks the syllable, ≡ 3hon4)' },
-        { label: 'Two chars: code 34, first initial h' },
-        { label: 'Two chars: code 34, first digraph initial gw' },
-        { label: 'Two chars: code 23, last final o' },
-        { label: 'Three chars: code 23 + last final o' },
-        { label: 'Three chars: code 230, middle final ei' },
-        { label: 'Three chars: middle m / ng dual column' },
-        { label: 'Two-char code 34, first m / ng dual column' },
+        { label: "查「開心」嘅近義詞" },
+        { label: "查「苦悶」嘅反義詞" },
+        { label: "查「開心」嘅碼 33 反義詞" },
       ],
     },
     examples: [
-      { query: '?+hon', mode: 'm1' },
-      { query: '?+yut?', mode: 'm1' },
-      { query: '?+syut?', mode: 'm1' },
-      { query: '3+ngo4', mode: 'm1' },
-      { query: '3hon4', mode: 'm1' },
-      { query: '3$漢4', mode: 'm1' },
-      { query: '3h4', mode: 'm1' },
-      { query: '3gw4', mode: 'm1' },
-      { query: '23o', mode: 'm1' },
-      { query: '23+o', mode: 'm1' },
-      { query: '23ei0', mode: 'm1' },
-      { query: '?+m?', mode: 'm1' },
-      { query: '3m4', mode: 'm1' },
+      { query: "~開心", mode: "m1" },
+      { query: "!苦悶", mode: "m1" },
+      { query: "33!開心", mode: "m1" },
     ],
   },
   {
-    id: 'ping-ze',
-    group: 'advanced',
+    id: "syn-pool",
+    group: "advanced",
     zh: {
-      title: '平仄（平／仄）',
+      title: "近反義模式（瀏覽相關詞）",
       intro:
-        '<code translate="no">P</code>＝平、<code translate="no">Z</code>＝仄；數字＝嗰個字要同呢個聲調同音。平仄模式下可喺搜尋欄下切換 <strong>0243</strong>／<strong>02493</strong>／<strong>394052</strong>；P／Z 一律按六聲判定。',
+        "切換近反義模式，打一個詞就列出近義、反義同相關詞。",
       examples: [
-        { label: '二字：平＋仄（如「自己」）' },
-        { label: '三字：平仄＋第三個字同 3 同音' },
-        { label: '平仄之後，尾字同「好」同韻' },
-        { label: '頭字同「好」同聲，再接平仄' },
+        { label: "查詢詞條「開心」" },
       ],
     },
     en: {
-      title: 'Ping / ze pattern',
+      title: "Synonym/antonym mode (browse related words)",
       intro:
-        '<code translate="no">P</code> = ping, <code translate="no">Z</code> = ze; a digit means that character must match that tone. In ping–ze mode, pick <strong>0243</strong> / <strong>02493</strong> / <strong>394052</strong> under the search box; P/Z always use the 6-tone scale.',
+        "Switch to synonym/antonym mode and type a word to list near-synonyms, antonyms, and related words.",
       examples: [
-        { label: 'Two chars: ping + ze (e.g. 自己)' },
-        { label: 'Three chars: ping, ze, then tone 3' },
-        { label: 'After PZ, last char rhymes with 好' },
-        { label: 'First shares initial with 好, then PZ' },
+        { label: "查詢詞條「開心」" },
       ],
     },
     examples: [
-      { query: 'PZ', mode: 'pz' },
-      { query: 'PZ3', mode: 'pz' },
-      { query: 'PZ好=', mode: 'pz' },
-      { query: '=好PZ', mode: 'pz' },
+      { query: "開心", mode: "syn" },
     ],
   },
   {
-    id: 'relation',
-    group: 'advanced',
+    id: "compound-syn",
+    group: "advanced",
     zh: {
-      title: '近義 / 反義',
+      title: "近義複合詞",
       intro:
-        '<code translate="no">~</code> 近義、<code translate="no">!</code> 反義；可加碼前綴。僅 0243搜尋三檔（唔包括近反義模式）。',
+        "<code translate=\"no\">~~</code> 搵二字近義複合；可加碼前綴或尾韻字。",
       examples: [
-        { label: '近義於「開心」' },
-        { label: '反義於「苦悶」' },
-        { label: '33同音 + 反義於「開心」' },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
       ],
     },
     en: {
-      title: 'Synonym / antonym',
+      title: "Near-synonym compounds",
       intro:
-        '<code translate="no">~</code> near-synonym, <code translate="no">!</code> antonym; optional code prefix. 0243 search tiers only (not synonym/antonym mode).',
+        "<code translate=\"no\">~~</code> finds two-character near-synonym compounds; optional code prefix or trailing rhyme character.",
       examples: [
-        { label: 'Near-synonyms of 開心' },
-        { label: 'Antonyms of 苦悶' },
-        { label: 'Code 33 homophone + antonyms of 開心' },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
+        { label: "查詢近義複合詞" },
       ],
     },
     examples: [
-      { query: '~開心', mode: 'm1' },
-      { query: '!苦悶', mode: 'm1' },
-      { query: '33!開心', mode: 'm1' },
+      { query: "~~", mode: "m1" },
+      { query: "33~~", mode: "m1" },
+      { query: "~~你", mode: "m1" },
+      { query: "33~~你", mode: "m1" },
     ],
   },
   {
-    id: 'syn-pool',
-    group: 'advanced',
+    id: "compound-ant",
+    group: "advanced",
     zh: {
-      title: '近反義模式（瀏覽相關詞）',
+      title: "反義複合詞",
       intro:
-        '切換近反義模式，打一個詞就列出近義、反義同相關詞。',
+        "<code translate=\"no\">!!</code> 搵二字反義複合；可加碼前綴或尾韻字。",
       examples: [
-        { label: '睇「開心」嘅近義／反義' },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
       ],
     },
     en: {
-      title: 'Synonym/antonym mode (browse related words)',
+      title: "Antonym compounds",
       intro:
-        'Switch to synonym/antonym mode and type a word to list near-synonyms, antonyms, and related words.',
+        "<code translate=\"no\">!!</code> finds two-character antonym compounds; optional code prefix or trailing rhyme character.",
       examples: [
-        { label: 'See near-synonyms / antonyms of 開心' },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
+        { label: "查詢反義複合詞" },
       ],
     },
     examples: [
-      { query: '開心', mode: 'syn' },
+      { query: "!!", mode: "m1" },
+      { query: "33!!", mode: "m1" },
+      { query: "!!你", mode: "m1" },
+      { query: "33!!你", mode: "m1" },
     ],
   },
   {
-    id: 'compound-syn',
-    group: 'advanced',
+    id: "doubled",
+    group: "advanced",
     zh: {
-      title: '近義複合詞',
+      title: "雙聲疊韻字",
       intro:
-        '<code translate="no">~~</code> 搵二字近義複合；可加碼前綴或尾韻字。',
+        "連續 <code translate=\"no\">$</code> 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；可加碼前綴或尾韻字。語法鏡像 <code translate=\"no\">~~</code>。",
       examples: [
-        { label: '二字近義複合（如朋友、恐懼）' },
-        { label: '33同音 + 近義複合' },
-        { label: '近義複合，尾字同「你」同韻' },
-        { label: '33同音 + 近義複合 + 尾字同「你」同韻' },
+        { label: "查2字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查3字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查4字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查2字雙聲疊韻字（碼 33）" },
+        { label: "查3字雙聲疊韻字（碼 333）" },
+        { label: "查2字雙聲疊韻字（尾字同「你」同韻）" },
       ],
     },
     en: {
-      title: 'Near-synonym compounds',
+      title: "Reduplicated same-syllable words",
       intro:
-        '<code translate="no">~~</code> finds two-character near-synonym compounds; optional code prefix or trailing rhyme character.',
+        "Count of consecutive <code translate=\"no\">$</code> = word length (2–4); each character shares the same syllable (any tone); optional code prefix or trailing rhyme char. Syntax mirrors <code translate=\"no\">~~</code>.",
       examples: [
-        { label: 'Two-char near-synonym compound (e.g. 朋友, 恐懼)' },
-        { label: 'Code 33 homophone + near-synonym compound' },
-        { label: 'Near-synonym compound; last char rhymes with 你' },
-        { label: 'Code 33 + near-synonym compound + last rhymes with 你' },
+        { label: "查2字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查3字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查4字雙聲疊韻字（各字音節相同，聲調不限）" },
+        { label: "查2字雙聲疊韻字（碼 33）" },
+        { label: "查3字雙聲疊韻字（碼 333）" },
+        { label: "查2字雙聲疊韻字（尾字同「你」同韻）" },
       ],
     },
     examples: [
-      { query: '~~', mode: 'm1' },
-      { query: '33~~', mode: 'm1' },
-      { query: '~~你', mode: 'm1' },
-      { query: '33~~你', mode: 'm1' },
+      { query: "$$", mode: "m1" },
+      { query: "$$$", mode: "m1" },
+      { query: "$$$$", mode: "m1" },
+      { query: "33$$", mode: "m1" },
+      { query: "333$$$", mode: "m1" },
+      { query: "$$你", mode: "m1" },
     ],
   },
   {
-    id: 'compound-ant',
-    group: 'advanced',
+    id: "heteronym",
+    group: "advanced",
     zh: {
-      title: '反義複合詞',
+      title: "同音異讀",
       intro:
-        '<code translate="no">!!</code> 搵二字反義複合；可加碼前綴或尾韻字。',
+        "<code translate=\"no\">{左碼}/{右碼}</code> 搵同一個寫法、至少兩個唔同讀音；某個聲調位唔限可以用 <code translate=\"no\">?</code>。只喺 0243 搜尋三檔用。",
       examples: [
-        { label: '二字反義複合（如生死、是非）' },
-        { label: '33同音 + 反義複合' },
-        { label: '反義複合，尾字同「你」同韻' },
-        { label: '33同音 + 反義複合 + 尾字同「你」同韻' },
+        { label: "查同字面異讀（33/34）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
+        { label: "查同字面異讀（?3/?4）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
+        { label: "查同字面異讀（3/4）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
       ],
     },
     en: {
-      title: 'Antonym compounds',
+      title: "Heteronym (variant readings)",
       intro:
-        '<code translate="no">!!</code> finds two-character antonym compounds; optional code prefix or trailing rhyme character.',
+        "<code translate=\"no\">{leftCode}/{rightCode}</code> finds the same spelling with at least two readings; use <code translate=\"no\">?</code> where a tone digit can be anything. 0243 search tiers only.",
       examples: [
-        { label: 'Two-char antonym compound (e.g. 生死, 是非)' },
-        { label: 'Code 33 homophone + antonym compound' },
-        { label: 'Antonym compound; last char rhymes with 你' },
-        { label: 'Code 33 + antonym compound + last rhymes with 你' },
+        { label: "查同字面異讀（33/34）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
+        { label: "查同字面異讀（?3/?4）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
+        { label: "查同字面異讀（3/4）：搵至少兩個唔同讀音，分別符合左右碼位模板" },
       ],
     },
     examples: [
-      { query: '!!', mode: 'm1' },
-      { query: '33!!', mode: 'm1' },
-      { query: '!!你', mode: 'm1' },
-      { query: '33!!你', mode: 'm1' },
+      { query: "33/34", mode: "m1" },
+      { query: "?3/?4", mode: "m1" },
+      { query: "3/4", mode: "m1" },
     ],
   },
   {
-    id: 'doubled',
-    group: 'advanced',
+    id: "connective",
+    group: "advanced",
     zh: {
-      title: '雙聲疊韻字',
+      title: "連接詞複合詞",
       intro:
-        '連續 <code translate="no">$</code> 的個數 = 詞長（2–4）；各字音節相同（聲調不限）；可加碼前綴或尾韻字。語法鏡像 <code translate="no">~~</code>。',
+        "三個字、中間係連接詞（與、和、或…）；<code translate=\"no\">~與~</code> 近義、<code translate=\"no\">!與!</code> 反義。",
       examples: [
-        { label: '二字（如慢慢、識食）' },
-        { label: '三字（如哈哈哈）' },
-        { label: '四字同音節詞' },
-        { label: '碼 33 + 二字雙聲疊韻字' },
-        { label: '碼 333 + 三字雙聲疊韻字' },
-        { label: '二字，尾字同「你」同韻' },
+        { label: "查詢含「與」嘅反義複合詞" },
+        { label: "查詢含「與」嘅近義複合詞" },
       ],
     },
     en: {
-      title: 'Reduplicated same-syllable words',
+      title: "Connective compounds",
       intro:
-        'Count of consecutive <code translate="no">$</code> = word length (2–4); each character shares the same syllable (any tone); optional code prefix or trailing rhyme char. Syntax mirrors <code translate="no">~~</code>.',
+        "Three-character compounds with a connective in the middle (與, 和, 或…); <code translate=\"no\">~與~</code> near-synonym, <code translate=\"no\">!與!</code> antonym.",
       examples: [
-        { label: 'Two chars (e.g. 慢慢, 識食)' },
-        { label: 'Three chars (e.g. 哈哈哈)' },
-        { label: 'Four-char same-syllable word' },
-        { label: 'Code 33 + two-char reduplication' },
-        { label: 'Code 333 + three-char reduplication' },
-        { label: 'Two chars; last rhymes with 你' },
+        { label: "查詢含「與」嘅反義複合詞" },
+        { label: "查詢含「與」嘅近義複合詞" },
       ],
     },
     examples: [
-      { query: '$$', mode: 'm1' },
-      { query: '$$$', mode: 'm1' },
-      { query: '$$$$', mode: 'm1' },
-      { query: '33$$', mode: 'm1' },
-      { query: '333$$$', mode: 'm1' },
-      { query: '$$你', mode: 'm1' },
-    ],
-  },
-  {
-    id: 'heteronym',
-    group: 'advanced',
-    zh: {
-      title: '同音異讀',
-      intro:
-        '<code translate="no">{左碼}/{右碼}</code> 搵同一個寫法、至少兩個唔同讀音；某個聲調位唔限可以用 <code translate="no">?</code>。只喺 0243 搜尋三檔用。',
-      examples: [
-        { label: '二字異讀（如「今晚」gam1 maan1／gam1 maan5）' },
-        { label: '只約束第 2 字碼 3／4' },
-        { label: '單字異讀（如「上」soeng5／soeng6）' },
-      ],
-    },
-    en: {
-      title: 'Heteronym (variant readings)',
-      intro:
-        '<code translate="no">{leftCode}/{rightCode}</code> finds the same spelling with at least two readings; use <code translate="no">?</code> where a tone digit can be anything. 0243 search tiers only.',
-      examples: [
-        { label: 'Two-char variant (e.g. 今晚 gam1 maan1 / gam1 maan5)' },
-        { label: 'Only constrain 2nd character code 3 / 4' },
-        { label: 'Single-character variant (e.g. 上 soeng5 / soeng6)' },
-      ],
-    },
-    examples: [
-      { query: '33/34', mode: 'm1' },
-      { query: '?3/?4', mode: 'm1' },
-      { query: '3/4', mode: 'm1' },
-    ],
-  },
-  {
-    id: 'connective',
-    group: 'advanced',
-    zh: {
-      title: '連接詞複合詞',
-      intro:
-        '三個字、中間係連接詞（與、和、或…）；<code translate="no">~與~</code> 近義、<code translate="no">!與!</code> 反義。',
-      examples: [
-        { label: '反義連接詞複合（如生與死）' },
-        { label: '近義連接詞複合' },
-      ],
-    },
-    en: {
-      title: 'Connective compounds',
-      intro:
-        'Three-character compounds with a connective in the middle (與, 和, 或…); <code translate="no">~與~</code> near-synonym, <code translate="no">!與!</code> antonym.',
-      examples: [
-        { label: 'Antonym connective compound (e.g. 生與死)' },
-        { label: 'Near-synonym connective compound' },
-      ],
-    },
-    examples: [
-      { query: '!與!', mode: 'm1' },
-      { query: '~與~', mode: 'm1' },
+      { query: "!與!", mode: "m1" },
+      { query: "~與~", mode: "m1" },
     ],
   },
 ];
@@ -634,9 +585,9 @@ const GUIDE_INTRO = {
   zh: {
     title: '點樣睇呢頁',
     paragraphs: [
-      '下面按<strong>常用</strong>同<strong>進階</strong>分組。每張卡嘅例子都可以撳一下直接搜尋。',
+      '下面按<strong>常用</strong>同<strong>進階</strong>分組。每章嘅例子都可以撳一下直接搜尋；說明字同搜尋欄下嘅語法解釋一樣。',
       '<strong>口訣：</strong><code translate="no">=</code> 喺參考字<strong>後面</strong> → 同韻；喺參考字<strong>前面</strong> → 同聲。留空用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加長用 <code translate="no">+</code>。',
-      '數字碼搵同音；近反義用 <code translate="no">~</code>／<code translate="no">!</code>（或切換近反義模式）。更細嘅組合見各卡說明。',
+      '數字碼搵同音；近反義用 <code translate="no">~</code>／<code translate="no">!</code>（或切換近反義模式）。更細嘅組合見各章說明。',
     ],
   },
   en: {
@@ -644,7 +595,7 @@ const GUIDE_INTRO = {
     paragraphs: [
       'Cards are grouped into <strong>Common</strong> and <strong>Advanced</strong>. Every example is clickable and runs a search.',
       '<strong>Mnemonic:</strong> <code translate="no">=</code> <strong>after</strong> a reference character → rhyme; <strong>before</strong> it → initial. Gaps use <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code>; lengthen with <code translate="no">+</code>.',
-      'Tone digits find same-tone words; synonyms/antonyms use <code translate="no">~</code> / <code translate="no">!</code> (or synonym mode). See each card for finer patterns.',
+      'Tone digits find same-tone words; synonyms/antonyms use <code translate="no">~</code> / <code translate="no">!</code> (or synonym mode). See each chapter for finer patterns.',
     ],
   },
 };
@@ -676,6 +627,19 @@ export function getGuideGroupLabel(group, lang) {
   return GUIDE_GROUP_LABEL[l][group] || group;
 }
 
+const GUIDE_TOC_COPY = {
+  zh: { label: '目錄', open: '顯示目錄', close: '收起目錄' },
+  en: { label: 'Contents', open: 'Show contents', close: 'Hide contents' },
+};
+
+export function getGuideTocCopy(lang) {
+  return GUIDE_TOC_COPY[resolveLang(lang)];
+}
+
+export function guideSectionDomId(id) {
+  return `guide-sec-${id}`;
+}
+
 export function getGuideSections(lang) {
   const l = resolveLang(lang);
   return SECTIONS.map((section) => ({
@@ -696,7 +660,7 @@ export function getGuideSections(lang) {
   }));
 }
 
-export function renderGuideGridHtml(lang) {
+function renderGuideChaptersHtml(lang) {
   const l = resolveLang(lang);
   const parts = [];
   let lastGroup = null;
@@ -721,15 +685,120 @@ export function renderGuideGridHtml(lang) {
         );
       })
       .join('\n            ');
+    const secId = guideSectionDomId(section.id);
     parts.push(
-      `<article class="guide-card">` +
+      `<section class="guide-chapter" id="${secId}">` +
         `<h3>${renderCardTitle(copy.title)}</h3>` +
         `<p>${copy.intro}</p>` +
         `<div class="guide-examples">\n            ${buttons}\n          </div>` +
-        `</article>`,
+        `</section>`,
     );
   }
   return parts.join('\n\n        ');
+}
+
+function renderGuideTocHtml(lang) {
+  const l = resolveLang(lang);
+  const toc = getGuideTocCopy(l);
+  const links = SECTIONS.map((section) => {
+    const title = section[l].title.replace(/<[^>]+>/g, '');
+    return (
+      `<li><a class="guide-toc__link" href="#${guideSectionDomId(section.id)}">${title}</a></li>`
+    );
+  }).join('');
+  return (
+    `<nav class="guide-toc" aria-label="${toc.label}">` +
+      `<button type="button" class="guide-toc__toggle" aria-expanded="false" aria-controls="guideTocPanel">` +
+        `${toc.label}` +
+      `</button>` +
+      `<div class="guide-toc__panel" id="guideTocPanel">` +
+        `<p class="guide-toc__title">${toc.label}</p>` +
+        `<ol class="guide-toc__list">${links}</ol>` +
+      `</div>` +
+    `</nav>`
+  );
+}
+
+/** @deprecated prefer renderGuideLayoutHtml; kept for seam checks */
+export function renderGuideGridHtml(lang) {
+  return renderGuideChaptersHtml(lang);
+}
+
+export function renderGuideLayoutHtml(lang) {
+  return (
+    `${renderGuideTocHtml(lang)}` +
+    `<div class="guide-chapters" id="guideGrid">\n        ${renderGuideChaptersHtml(lang)}\n      </div>`
+  );
+}
+
+/** Scroll-spy + mobile TOC toggle. Root must be the scrolling .guide-view. */
+export function bindGuideNav(root) {
+  if (!root) return () => {};
+  const prev = root._guideNavCleanup;
+  if (typeof prev === 'function') prev();
+
+  const toc = root.querySelector('.guide-toc');
+  const chapters = [...root.querySelectorAll('.guide-chapter[id]')];
+  if (!toc || !chapters.length) return () => {};
+
+  const toggle = toc.querySelector('.guide-toc__toggle');
+  const links = [...toc.querySelectorAll('.guide-toc__link')];
+  const byId = new Map(chapters.map((el) => [el.id, el]));
+
+  const setOpen = (open) => {
+    toc.classList.toggle('is-open', open);
+    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+
+  const onToggle = () => setOpen(!toc.classList.contains('is-open'));
+  toggle?.addEventListener('click', onToggle);
+
+  const onLinkClick = (event) => {
+    const href = event.currentTarget.getAttribute('href');
+    if (!href?.startsWith('#')) return;
+    const target = byId.get(href.slice(1));
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setOpen(false);
+    links.forEach((a) => a.removeAttribute('aria-current'));
+    event.currentTarget.setAttribute('aria-current', 'true');
+  };
+  links.forEach((a) => a.addEventListener('click', onLinkClick));
+
+  let activeId = '';
+  const setActive = (id) => {
+    if (!id || id === activeId) return;
+    activeId = id;
+    links.forEach((a) => {
+      const match = a.getAttribute('href') === `#${id}`;
+      if (match) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  };
+
+  let observer = null;
+  if (typeof IntersectionObserver !== 'undefined') {
+    observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]?.target?.id) setActive(visible[0].target.id);
+      },
+      { root, rootMargin: '-12% 0px -55% 0px', threshold: [0, 0.15, 0.4] },
+    );
+    chapters.forEach((ch) => observer.observe(ch));
+  }
+
+  const cleanup = () => {
+    toggle?.removeEventListener('click', onToggle);
+    links.forEach((a) => a.removeEventListener('click', onLinkClick));
+    observer?.disconnect();
+    root._guideNavCleanup = null;
+  };
+  root._guideNavCleanup = cleanup;
+  return cleanup;
 }
 
 function setText(id, text) {
@@ -751,6 +820,14 @@ export function applyGuideLang(lang) {
   setHtml('guideLede', hero.lede);
   setText('guideIntroTitle', intro.title);
   setHtml('guideIntroBody', intro.paragraphs.map((p) => `<p>${p}</p>`).join(''));
+  const layout = document.getElementById('guideLayout');
+  const guideView = document.getElementById('guideView');
+  if (layout) {
+    layout.innerHTML = renderGuideLayoutHtml(l);
+    bindGuideNav(guideView);
+    return;
+  }
   const grid = document.getElementById('guideGrid');
-  if (grid) grid.innerHTML = renderGuideGridHtml(l);
+  if (grid) grid.innerHTML = renderGuideChaptersHtml(l);
+  bindGuideNav(guideView);
 }

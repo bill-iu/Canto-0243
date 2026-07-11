@@ -201,6 +201,14 @@ form.search-panel {
   .search-view.has-entry-detail .search-results-scroll::-webkit-scrollbar {
     display: none;
   }
+
+  .guide-view:not([hidden]):not(.is-hidden) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .guide-view:not([hidden]):not(.is-hidden)::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .entry-detail-panel {

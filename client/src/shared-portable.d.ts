@@ -63,6 +63,8 @@ declare module '../../frontend/guide-i18n.mjs' {
   export function getGuideHero(lang: 'zh' | 'en'): { eyebrow: string; title: string; lede: string };
   export function getGuideIntro(lang: 'zh' | 'en'): { title: string; paragraphs: string[] };
   export function getGuideGroupLabel(group: string, lang: 'zh' | 'en'): string;
+  export function getGuideTocCopy(lang: 'zh' | 'en'): { label: string; open: string; close: string };
+  export function guideSectionDomId(id: string): string;
   export function getGuideSections(lang: 'zh' | 'en'): Array<{
     id: string;
     group?: 'common' | 'advanced';
@@ -71,6 +73,8 @@ declare module '../../frontend/guide-i18n.mjs' {
     examples: Array<{ query: string; mode: string; label: string; title?: string }>;
   }>;
   export function renderGuideGridHtml(lang: 'zh' | 'en'): string;
+  export function renderGuideLayoutHtml(lang: 'zh' | 'en'): string;
+  export function bindGuideNav(root: HTMLElement | null): () => void;
   export function applyGuideLang(lang: 'zh' | 'en'): void;
 }
 
