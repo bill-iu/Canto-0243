@@ -84,7 +84,7 @@ const GUIDE_QUICK_ROWS: GuideQuickRow[] = [
       { query: '!苦悶', mode: '0243', labelZh: '反義', labelEn: 'Antonym' },
       { query: '~~', mode: '0243', labelZh: '近義複合', labelEn: 'Syn compound' },
       { query: '!!', mode: '0243', labelZh: '反義複合', labelEn: 'Ant compound' },
-      { query: '33~~', mode: '0243', labelZh: '同音＋近義複合', labelEn: 'Code + syn compound' },
+      { query: '~開心', mode: '0243', labelZh: '近義', labelEn: 'Near-synonym' },
     ],
   },
 ];
@@ -195,6 +195,7 @@ const GUIDE_QUICK_WIDE_COLUMNS: GuideQuickWideColumn[] = [
           { query: '!苦悶', mode: '0243', labelZh: '反義', labelEn: 'Antonym' },
           { query: '~~', mode: '0243', labelZh: '近義複合', labelEn: 'Syn compound' },
           { query: '!!', mode: '0243', labelZh: '反義複合', labelEn: 'Ant compound' },
+          { query: '~開心', mode: '0243', labelZh: '近義', labelEn: 'Near-synonym' },
         ],
       },
     ],
