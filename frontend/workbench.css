@@ -112,12 +112,22 @@ a.result-item,
 @media (max-width: 760px) {
   .results,
   .results-list-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.2em, 1fr));
     gap: 6px;
+    align-content: start;
+  }
+
+  .results-list-items > .result-item {
+    width: 100%;
+    min-width: 0;
   }
 
   a.result-item,
   .results-list-items .result-link {
-    padding: 5px 7px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px 4px;
     border-radius: 8px;
     font-size: 12px;
     gap: 2px;
