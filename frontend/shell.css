@@ -36,8 +36,8 @@
         opacity 420ms ease-out;
     }
 
-.pingze-submodes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; width: min(100%, 360px); margin-top: 7px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-input); }
-.pingze-submode { min-height: 24px; border: 0; border-radius: 999px; padding: 3px 8px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 650; cursor: pointer; }
+.pingze-submodes { display: grid; grid-template-columns: repeat(3, max-content); justify-content: start; gap: 2px; width: min(100%, 360px); margin-top: 7px; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-input); }
+.pingze-submode { min-height: 24px; border: 0; border-radius: 999px; padding: 3px 8px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 650; cursor: pointer; white-space: nowrap; }
 .pingze-submode.is-active { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent-strong); }
 .profile-pill__narrow { display: none; }
 @media (max-width: 640px) { .profile-pill__wide { display: none; } .profile-pill__narrow { display: inline; } }
@@ -700,40 +700,73 @@
     }
 
 @media (max-width: 760px) {
-      .app-bar { align-items: center; flex-wrap: wrap; }
-      .menu-trigger { min-width: 168px; }
-      .main-wrap { padding-top: 16px; }
+      .app-header {
+        padding-top: calc(6px + env(safe-area-inset-top));
+        padding-bottom: 6px;
+        padding-left: max(12px, env(safe-area-inset-left));
+        padding-right: max(12px, env(safe-area-inset-right));
+      }
+      .app-bar { align-items: center; flex-wrap: wrap; gap: 8px; }
+      .brand { padding: 2px 0; }
+      .brand-logo { height: 36px; }
+      .menu-trigger {
+        min-width: auto;
+        max-width: 148px;
+        min-height: 36px;
+        padding: 6px 12px;
+        font-size: 13px;
+      }
+      .main-wrap { padding-top: 8px; }
       .header-hero { display: none; }
-      .search-panel { border-radius: 18px; padding: 12px; }
-      .field-label-row,
+      .search-panel {
+        margin-top: 8px;
+        border-radius: 14px;
+        padding: 8px;
+        box-shadow: none;
+      }
+      /* 窄屏藏「搜尋內容／目前模式」標籤列；模式靠頂欄＋pill */
+      .field-label-row { display: none; }
       .status-row {
         align-items: flex-start;
         flex-direction: column;
-        gap: 6px;
+        gap: 4px;
       }
       .search-row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
       .search-input-wrap input {
-        min-height: 44px;
-        padding: 10px 12px;
+        min-height: 40px;
+        padding: 8px 10px;
         font-size: 16px;
-        border-radius: 12px;
+        border-radius: 10px;
       }
       .search-actions { width: auto; flex: 0 0 auto; flex-wrap: nowrap; gap: 6px; }
       .search-actions .icon-button {
-        min-width: 44px;
-        min-height: 44px;
-        border-radius: 12px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 10px;
       }
-      .search-actions .icon-button svg { width: 18px; height: 18px; }
+      .search-actions .icon-button svg { width: 16px; height: 16px; }
       .search-actions .primary-button {
         flex: 0 0 auto;
-        min-height: 44px;
-        padding-inline: 12px;
-        font-size: 14px;
+        min-height: 40px;
+        padding-inline: 10px;
+        font-size: 13px;
         white-space: nowrap;
-        border-radius: 12px;
+        border-radius: 10px;
       }
       .primary-button { flex: 1; }
+      /* 數字規則 pill：左邊約 1/4，三粒 pack 緊 */
+      .pingze-submodes {
+        width: max-content;
+        max-width: 25%;
+        margin-top: 6px;
+        gap: 1px;
+        padding: 1px;
+      }
+      .pingze-submode {
+        min-height: 20px;
+        padding: 2px 5px;
+        font-size: 10px;
+      }
       .guide-grid { grid-template-columns: 1fr; }
 
       .guide-hero h1 {
@@ -742,26 +775,25 @@
     }
 
 @media (max-width: 440px) {
-      .app-header {
-        padding-left: 12px;
-        padding-right: 12px;
-      }
-      .brand-logo { height: 48px; }
+      .brand-logo { height: 32px; }
       .menu-trigger,
       .ghost-button {
-        min-height: 50px;
-        padding: 10px 16px;
-        font-size: 15px;
+        min-height: 34px;
+        padding: 5px 10px;
+        font-size: 12px;
       }
       .guide-top-link { display: none; }
       .menu-trigger {
         min-width: auto;
-        max-width: 160px;
+        max-width: 140px;
       }
       .mode-trigger-text {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .pingze-submodes {
+        max-width: 28%;
       }
     }
 
