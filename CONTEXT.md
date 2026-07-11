@@ -576,11 +576,16 @@ _Avoid_: 閘前阻塞建表、當**韻母字母表**本身
 
 **創作者**：用本工具搜韻換字填詞者。
 
-**全量發佈**：同 semver 整包（zip+tar+db+json）；同一 tag；可刷新；須 bump 可感知變更。
+**全量發佈**：同 semver 整包（Portable zip／tar；新 tag 首次上傳時一併帶 **發佈詞庫快照** `lyrics.db`／`words-lexicon.json`）。換庫或可感知產品變更須 bump 新 tag；程式修正可 **刷新同一 tag** 重打套件而**唔**重跑 **詞條從源重建**、**唔**覆寫既有庫資產。
+_Avoid_：每次刷新都 `build-db`、刪掉 Release 上嘅 `lyrics.db`、把庫 commit 入 git 當預設
 
-**分渠道發佈**：發佈主理（建 tag、Win zip+db）與發佈補件（mac tar 對齊 tag）；補件不建 release。
+**分渠道發佈**：發佈主理（建 tag、Win zip；新 tag 先上傳庫）與發佈補件（mac tar 對齊 tag）；補件不建 release。
 
-**詞庫發佈**：db/json 單獨更新；須既有 Win+mac 資產後由主理執行。
+**詞庫發佈**（已退役）：舊指只換同 semver Release 上 db／json、唔換程式嘅獨立層；已取消。換庫改走 **全量發佈** 新 tag。
+_Avoid_：再開 `release-lexicon` 類 workflow、把 **詞庫發佈閘**（量度）當成發佈層
+
+**發佈詞庫快照**：某 release tag 上供 Pages／補件對齊嘅 `lyrics.db`（及可選 `words-lexicon.json`）；由該 tag **首次全量發佈**寫入，程式刷新預設保留唔覆寫。
+_Avoid_：假設 tag commit 內必有 db、刷新時刪庫資產
 
 **煙霧測試套件**：PR 必過；fixture 核心旅程 + 就緒 + 近反義不變量。
 

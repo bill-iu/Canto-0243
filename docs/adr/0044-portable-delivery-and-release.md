@@ -34,13 +34,12 @@
 
 ## 5. 發佈分層與渠道
 
-1. **兩層** — **全量發佈**（程式 + Portable + 詞庫資產）vs **詞庫發佈**（只換同 semver Release 上的 `lyrics.db`／`words-lexicon.json`）。
-2. **分渠道本機上傳（取代 tag 全量 CI）**  
-   - **Windows 渠道**：本機 `release-windows-local.ps1` 上傳 zip／db／lexicon。  
-   - **macOS 渠道**：Intel MacBook `release-macos-local.sh` 建 **x86_64** tar，上傳**同一 upstream tag**（`GH_REPO` 指上游）。  
-   - Windows zip 齊可先 **Publish**；macOS 後補；notes 註明 arm64 過渡期可不提供。
-3. **停用** tag 觸發 `release-full.yml` 類全量 matrix；保留 `ci.yml` 與 `release-lexicon.yml`。
-4. **詞庫 workflow 前置** — 該 tag 已有 **Windows zip + macOS x86_64 tar**（arm64 不強制）。
+1. **單層全量** — 換庫或可感知產品變更 → **新 semver 全量發佈**（Portable zip／tar + 首次上傳 `lyrics.db`／`words-lexicon.json`）。**取消**獨立「只換庫唔換程式」嘅 **詞庫發佈** 層（舊 `release-lexicon.yml` 已停用）。
+2. **程式刷新同一 tag** — 行為／介面不變嘅打包或 bugfix：`git tag -f` 後重打 zip／tar；**本機優先**有 `lyrics.db`，缺則從該 tag Release **下載**（**唔**跑 `build-db`）；**唔**覆寫／重傳獨立庫資產（Pages 繼續用 Release 上既有 `lyrics.db`）。逃生：Windows `-WithLexicon`。
+3. **分渠道本機上傳**  
+   - **Windows 渠道**：`release-windows-local.ps1`（主理：建 Release、zip；新 tag 先傳庫）。  
+   - **macOS 渠道**：`release-macos-local.sh` 建 **x86_64** tar，上傳同一 tag。  
+4. **停用** tag 觸發全量 CI matrix；保留 `ci.yml`；**唔**再維護詞庫-only workflow。
 5. **操作手冊** — [docs/release.md](../release.md) 為唯一 checklist。
 
 **Considered Options（摘要）**
@@ -50,9 +49,12 @@
 - 五件套齊才 Publish — 拒（阻塞 Windows）；改 Windows 先發。
 - 單一 arm64 + Rosetta — 拒（Intel 風險）。
 - 只冷建不打包 word cache — 拒（首次過慢）。
+- 將 `lyrics.db` 納入 git／LFS 以加快發佈 — 拒（主目標係程式-only 重用庫；庫仍本機＋Release 資產）。
+- 保留獨立詞庫發佈層 — 拒（維護者換庫幾乎都開新 semver；程式修正多用 refresh tag）。
 
 **Consequences**
 
 - 套件體積含 venv + 可選 `.cache`。
 - 維護者須維護 Windows +（過渡期）Intel Mac 兩條上傳腳本。
-- 詞庫發佈不得在未有 zip+x86_64 的 semver 上單獨進行。
+- 刷新 tag **唔好刪** Release 上既有 `lyrics.db`（Pages 依賴）。
+- 換庫必須新 tag 全量；唔再靠 `release-lexicon.yml`。

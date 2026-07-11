@@ -1,11 +1,15 @@
 # Local Windows portable build + optional GitHub Release upload (ADR-0044 §5).
+# Program-only tag refresh: reuse lyrics.db (local → Release download); do not re-upload lexicon assets.
+# New semver with new lexicon: local build-db first; first publish uploads zip + lyrics.db + words-lexicon.json.
 param(
     [Parameter(Mandatory = $true)]
     [string]$Tag,
     [switch]$Upload,
     [switch]$Draft,
     [string]$NotesFile = "",
-    [switch]$SkipReadmeSync
+    [switch]$SkipReadmeSync,
+    # Escape hatch: upload/replace lyrics.db + words-lexicon.json even when Release already exists.
+    [switch]$WithLexicon
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,8 +52,37 @@ function Assert-ReleaseSource {
     }
 }
 
-if (-not (Test-Path $DbPath)) {
-    throw "lyrics.db not found at repo root. Run: python scripts/bootstrap_data.py && python -m ingest build-db"
+function Test-ReleaseExists {
+    if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { return $false }
+    $viewArgs = @("release", "view", $Tag)
+    try {
+        Invoke-Gh $viewArgs | Out-Null
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+function Ensure-LyricsDb {
+    if (Test-Path $DbPath) {
+        Write-Host "==> lyrics.db: using local file"
+        return
+    }
+    if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
+        throw "lyrics.db missing and gh unavailable. Place lyrics.db at repo root, or install gh to download from Release $Tag."
+    }
+    if (-not (Test-ReleaseExists)) {
+        throw @"
+lyrics.db not found at repo root and Release $Tag does not exist yet.
+For a new lexicon tag: python scripts/bootstrap_data.py && python -m ingest build-db
+For a tag refresh: ensure the Release still has lyrics.db, or copy a previous lyrics.db to repo root.
+"@
+    }
+    Write-Host "==> lyrics.db: downloading from Release $Tag (no build-db)..."
+    Invoke-Gh @("release", "download", $Tag, "-p", "lyrics.db", "--clobber")
+    if (-not (Test-Path $DbPath)) {
+        throw "failed to download lyrics.db from Release $Tag (asset missing?). Do not delete lexicon assets on tag refresh."
+    }
 }
 
 Write-Host "==> Canto-0243 local Windows release"
@@ -57,6 +90,7 @@ Write-Host "    tag:  $Tag"
 Write-Host "    root: $Root"
 if ($env:GH_REPO) { Write-Host "    repo: $env:GH_REPO" }
 Assert-ReleaseSource
+Ensure-LyricsDb
 
 $buildArgs = @()
 if ($SkipReadmeSync) { $buildArgs += "-SkipReadmeSync" }
@@ -67,18 +101,26 @@ if (-not (Test-Path $ZipPath)) {
     throw "expected $ZipPath"
 }
 
-Write-Host "==> Export words-lexicon.json..."
-New-Item -ItemType Directory -Path (Split-Path $LexiconPath) -Force | Out-Null
-$BundlePy = Join-Path $Root "dist\canto-0243-portable\venv\Scripts\python.exe"
-if (-not (Test-Path $BundlePy)) { throw "bundled python missing: $BundlePy" }
-& $BundlePy (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
-if ($LASTEXITCODE -ne 0) { throw "export_words_lexicon.py failed" }
+$releaseExists = Test-ReleaseExists
+# First publish of a tag always ships lexicon (Pages + mac sync). Refresh skips unless -WithLexicon.
+$uploadLexicon = $WithLexicon -or (-not $releaseExists)
+
+if ($uploadLexicon) {
+    Write-Host "==> Export words-lexicon.json..."
+    New-Item -ItemType Directory -Path (Split-Path $LexiconPath) -Force | Out-Null
+    $BundlePy = Join-Path $Root "dist\canto-0243-portable\venv\Scripts\python.exe"
+    if (-not (Test-Path $BundlePy)) { throw "bundled python missing: $BundlePy" }
+    & $BundlePy (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
+    if ($LASTEXITCODE -ne 0) { throw "export_words_lexicon.py failed" }
+} else {
+    Write-Host "==> Skip lexicon export/upload (tag refresh; use -WithLexicon to force)"
+}
 
 $zipMb = [math]::Round((Get-Item $ZipPath).Length / 1MB, 1)
 Write-Host ""
 Write-Host "Built:"
 Write-Host "  $ZipPath ($zipMb MB)"
-Write-Host "  $LexiconPath"
+if ($uploadLexicon) { Write-Host "  $LexiconPath" }
 
 if (-not $Upload) {
     Write-Host ""
@@ -89,10 +131,6 @@ if (-not $Upload) {
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
     throw "gh CLI required for -Upload"
 }
-
-$viewArgs = @("release", "view", $Tag)
-$releaseExists = $true
-try { Invoke-Gh $viewArgs | Out-Null } catch { $releaseExists = $false }
 
 if (-not $releaseExists) {
     $title = "Canto-0243 $Tag"
@@ -117,15 +155,17 @@ if (-not $releaseExists) {
         Remove-Item $tmp -Force
     }
 } else {
-    Write-Host "==> Release $Tag already exists; uploading assets..."
+    Write-Host "==> Release $Tag already exists; uploading zip$(if ($uploadLexicon) { ' + lexicon' } else { ' only' })..."
 }
 
 Write-Host "==> Upload to GitHub Release $Tag..."
-Invoke-Gh @("release", "upload", $Tag, $DbPath, "--clobber")
-Invoke-Gh @("release", "upload", $Tag, $LexiconPath, "--clobber")
+if ($uploadLexicon) {
+    Invoke-Gh @("release", "upload", $Tag, $DbPath, "--clobber")
+    Invoke-Gh @("release", "upload", $Tag, $LexiconPath, "--clobber")
+}
 Invoke-Gh @("release", "upload", $Tag, $ZipPath, "--clobber")
 
 $repo = if ($env:GH_REPO) { $env:GH_REPO } else { (gh repo view --json nameWithOwner -q .nameWithOwner) }
 Write-Host ""
 Write-Host "Uploaded: https://github.com/$repo/releases/tag/$Tag"
-Write-Host 'Next: Intel MacBook sync fork, build x86_64, upload tar (--tar-only).'
+Write-Host 'Next: Intel MacBook sync fork, build x86_64, upload tar (--upload).'

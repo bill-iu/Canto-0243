@@ -39,7 +39,7 @@ Options:
 Prerequisites:
   --upload: gh auth, GH_REPO=bill-iu/Canto-0243 (fork clone), git checkout at TAG,
             Release must already exist (publisher role)
-  build: lyrics.db at repo root (upload syncs from Release before build)
+  build: lyrics.db — local file preferred; else download from Release $TAG (no build-db)
   python3; optional .build-python/ via scripts/fetch-macos-build-python.sh
 
 Examples:
@@ -134,7 +134,11 @@ _assert_release_source() {
 }
 
 _sync_published_lexicon() {
-  echo "==> Sync 發佈詞庫快照 from Release $TAG..."
+  echo "==> Sync lyrics.db from Release $TAG (local preferred; no build-db)..."
+  if [[ -f "$ROOT/lyrics.db" ]]; then
+    echo "    using local lyrics.db"
+    return 0
+  fi
   _gh release download "$TAG" -p "lyrics.db" -D "$ROOT" --clobber
 }
 
@@ -151,10 +155,15 @@ if [[ "$UPLOAD" -eq 1 ]]; then
     exit 1
   fi
   _sync_published_lexicon
+elif [[ ! -f "$ROOT/lyrics.db" ]]; then
+  # Program-only local build: try Release download when gh/tag available
+  if command -v gh >/dev/null 2>&1 && _gh release view "$TAG" >/dev/null 2>&1; then
+    _sync_published_lexicon
+  fi
 fi
 
 [[ -f "$ROOT/lyrics.db" ]] || {
-  echo "error: lyrics.db not found at repo root" >&2
+  echo "error: lyrics.db not found at repo root (local or Release $TAG)" >&2
   exit 1
 }
 
