@@ -55,7 +55,7 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 
 | 檔案 | 用途 |
 |------|------|
-| `lyrics.db` | 開發／打包用詞條庫（Release 下載或 maintainer 自建） |
+| `lyrics.db` | 開發／打包用詞條庫（本機 `build-db`，或從 GitHub Release 下載；**唔**入 git） |
 | `.env.local` · `.env` · `.env.prod` | 本機環境變數 |
 
 **不得堆在根目錄**：

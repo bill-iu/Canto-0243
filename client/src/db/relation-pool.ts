@@ -25,7 +25,6 @@ export {
   invalidateRelationPoolCache,
 } from './relation-pool-projection.ts';
 
-export { buildRelationPool, loadDbCharSet } from './relation-pool-builder.ts';
 export {
   getLexiconMembership,
   invalidateLexiconMembership,

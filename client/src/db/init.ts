@@ -22,7 +22,7 @@ import { openOpfsVfsDatabase, prewarmOpfsVfsWorker, resetOpfsVfsWorker } from '.
 import { applyRuntimeDbPatches } from './db-patch.ts';
 import { ensureGateAuxiliaryIndexes, resetGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
-import { reportGatePhase } from './startup-progress.ts';
+import { reportGatePhase, resetGateProgress } from './startup-progress.ts';
 import { invalidatePhonemeIndex } from './position-match/phoneme-index.ts';
 import { resetCompoundCaches } from './compound.ts';
 import { invalidateRelationGraph } from './relation-graph.ts';
@@ -255,6 +255,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
   databaseInitPromise = (async () => {
     try {
       prewarmOpfsVfsWorker();
+      resetGateProgress();
       reportGatePhase('download', 0);
 
       const target: LexiconTarget = dbPath
@@ -267,7 +268,8 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
         : await getCurrentLexiconTarget();
 
       db = await openLexiconDatabase(target);
-      reportGatePhase('open', 0.4);
+      // openLexicon 已報 open@0.9（OPFS）或 open@0.95（sql.js）；唔好再報較低 open@0.4。
+      reportGatePhase('open', 0.92);
       // C1 ADR-0038: refuse legacy JSON phoneme columns.
       // Close + reset worker *before* purge (OPFS lock), then re-open once from channel.
       {
@@ -297,7 +299,7 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
       invalidateLexiconMembership();
       invalidateRelationPoolCache();
       resetHeteronymIndex();
-      reportGatePhase('open', 0.6);
+      reportGatePhase('open', 0.96);
       await ensureGateAuxiliaryIndexes();
       reportGatePhase('open', 1);
       isInitialized = true;

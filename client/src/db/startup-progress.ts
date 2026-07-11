@@ -12,6 +12,8 @@ type Listener = (percent: number) => void;
 
 const listeners = new Set<Listener>();
 let channel: BroadcastChannel | null = null;
+/** 單次 init 內墨水只進唔退（開庫降級／階段重報唔縮返）。 */
+let highWaterPercent = 0;
 
 function phaseToPercent(phase: GatePhase, phase01: number): number {
   const t = Math.max(0, Math.min(1, phase01));
@@ -26,14 +28,25 @@ function ensureChannel(): BroadcastChannel | null {
   return channel;
 }
 
-export function reportGatePhase(phase: GatePhase, phase01: number): void {
-  const percent = phaseToPercent(phase, phase01);
+function applyPercent(raw: number, broadcast: boolean): void {
+  const percent = Math.max(highWaterPercent, Math.max(0, Math.min(100, raw)));
+  highWaterPercent = percent;
   for (const fn of listeners) fn(percent);
+  if (!broadcast) return;
   try {
     ensureChannel()?.postMessage({ type: 'gate-progress', percent });
   } catch {
     /* ponytail: BC optional */
   }
+}
+
+/** 新一輪閘前 init／重試前清高水位。 */
+export function resetGateProgress(): void {
+  highWaterPercent = 0;
+}
+
+export function reportGatePhase(phase: GatePhase, phase01: number): void {
+  applyPercent(phaseToPercent(phase, phase01), true);
 }
 
 export function reportDownloadBytes(loaded: number, total: number): void {
@@ -57,7 +70,7 @@ export function subscribeGateProgress(fn: Listener): () => void {
   const onMessage = (event: MessageEvent) => {
     const data = event.data as { type?: string; percent?: number };
     if (data?.type === 'gate-progress' && typeof data.percent === 'number') {
-      fn(data.percent);
+      applyPercent(data.percent, false);
     }
   };
   bc?.addEventListener('message', onMessage);
@@ -69,6 +82,7 @@ export function subscribeGateProgress(fn: Listener): () => void {
 
 export function resetGateProgressListeners(): void {
   listeners.clear();
+  highWaterPercent = 0;
   try {
     channel?.close();
   } catch {

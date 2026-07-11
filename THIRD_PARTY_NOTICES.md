@@ -9,6 +9,7 @@ upstream license.
 | Dataset | Path | Upstream | License / terms |
 |---------|------|----------|-----------------|
 | Rime single-char | `data/rime/char.csv` | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| Rime categorized lexicon | `data/lexicon/raw/rime-cantonese-upstream/*.csv`（不含 `proper_nouns.csv`） | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Essay frequency | `data/essay/essay-cantonese.txt` | [rime/rime-cantonese](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
 | Curated compound antonyms | `data/syn_ant/compound_antonyms.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
 | Curated common words | `data/lexicon/curated_common.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
@@ -38,8 +39,8 @@ Verify upstream terms before enabling additional sources.
 | Upstream | Link | License / terms |
 |----------|------|-----------------|
 | Rime single-char | [rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
-| Rime words | [rime/rime-cantonese `jyut6ping3.words`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
-| Rime phrase supplements | [rime/rime-cantonese `jyut6ping3.phrase`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
+| Rime categorized words | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+| Rime phrase supplements（legacy、非預設） | [rime/rime-cantonese `jyut6ping3.phrase`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
 | HSK 3.0 word list | [elkmovie/hsk30](https://github.com/elkmovie/hsk30) | [MIT](https://github.com/elkmovie/hsk30/blob/main/LICENSE) |
 | words.hk 粵典詞表 | [wordslist](https://words.hk/faiman/analysis/wordslist/) | **Public domain** (credit [words.hk](https://words.hk/) appreciated) |
 | 開放詞典 · 粵語詞典 | [下載](https://kaifangcidian.com/xiazai/) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |

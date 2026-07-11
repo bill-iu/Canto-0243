@@ -134,6 +134,18 @@ form.search-panel {
   -webkit-overflow-scrolling: touch;
 }
 
+@media (max-width: 760px) {
+  .search-results-scroll,
+  .search-view.has-entry-detail .search-results-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .search-results-scroll::-webkit-scrollbar,
+  .search-view.has-entry-detail .search-results-scroll::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .entry-detail-panel {
   position: fixed;
   top: var(--entry-detail-inset-top, 0px);

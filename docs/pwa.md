@@ -6,7 +6,7 @@
 
 - PWA 部署位置：GitHub Pages（Project Pages）`/Canto-0243/`
 - 詞庫版本：跟 release tag（semver，例如 `v1.0.3`）
-- DB 更新：只喺 release 更新（PWA 站點單一 URL，內容隨 release 更新）
+- DB 更新：跟 **新 semver 全量發佈**（換庫開新 tag）；程式刷新同一 tag **唔**覆寫 Release 上嘅 `lyrics.db`
 
 ## 發佈順序（必做）
 
@@ -16,10 +16,10 @@
 
 ### 1) 確保 tag release 已有 `lyrics.db`
 
-- 建立/更新對應嘅 release tag（例如 `v1.0.3`）
-- 將 `lyrics.db` 上傳到該 tag 嘅 GitHub Release（同 tag 對齊）
+- **新 tag（換庫）**：發佈主理用 `release-windows-local.ps1 -Upload` 首次建立 Release 時會上傳 `lyrics.db`
+- **刷新同一 tag（程式-only）**：保留既有 `lyrics.db` 資產；**唔好刪**
 
-> 註：repo 內已有「詞庫更新」相關 workflow/腳本，可用於更新 release 上嘅 `lyrics.db` 與相關副件（視當前維護流程而定）。
+獨立「只換庫」workflow 已退役；見 [release.md](release.md)。
 
 ### 2) 部署 PWA 到 GitHub Pages（手動觸發）
 
@@ -38,6 +38,3 @@ workflow 會：
 部署完成後，用手機：
 - 開站一次（在線）→ 等「離線就緒」
 - 切飛航模式 → 從主畫面開啟 → 查詢仍可用
-- 飛航冷啟後檢查 hero `ONE·搵·韻`、About 頂部 `即使離線，亦完全可用。`、About 底部 `呢一次，拎返你嘅創作主導權。` 仍使用與在線一致的 display serif 字體，沒有退回系統字體
-- UI 應顯示「詞庫版本：vX.Y.Z」
-

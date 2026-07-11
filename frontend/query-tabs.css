@@ -463,9 +463,11 @@ body.query-tabs-app {
   :root {
     --brand-rail: 118px;
     --chrome-tab-width: min(200px, 46vw);
-    --chrome-tabs-padding-top: 10px;
-    --chrome-tab-height: 46px;
-    --header-capsule-scale: 0.68;
+    --chrome-tabs-padding-top: 6px;
+    --chrome-tab-height: 36px;
+    --chrome-tabs-bottom-bar-height: 3px;
+    --chrome-tab-title-font-size: 12px;
+    --header-capsule-scale: 0.62;
   }
 
   .query-tabs-app .app-header__chrome {
@@ -482,10 +484,13 @@ body.query-tabs-app {
 @media (max-width: 480px) {
   :root {
     --brand-rail: 88px;
+    --chrome-tabs-padding-top: 4px;
+    --chrome-tab-height: 32px;
+    --chrome-tab-title-font-size: 11.5px;
   }
 
   .query-tabs-app .brand-logo {
-    height: 48px;
+    height: 32px;
   }
 
   .query-tabs-app .tabdeck-strip .chrome-tabs {

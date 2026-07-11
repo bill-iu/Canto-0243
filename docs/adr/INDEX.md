@@ -23,6 +23,7 @@
 | [0053](./0053-connective-compound-hybrid.md) | **連接詞複合**：詞庫∪合成 + syn/ant 互斥 |
 | [0054](./0054-portable-read-path-no-write-connective.md) | **Portable**：連接詞合成唔寫庫 + word_cache disk 暖啟 |
 | [0055](./0055-portable-gate-db-probe-word-cache-tail.md) | **Portable 閘**：DB 探針解鎖；word_cache→tail |
+| [0057](./0057-categorized-rime-lexicon-source.md) | **Rime 分類詞語來源**取代 legacy phrase |
 
 ## Stubs
 

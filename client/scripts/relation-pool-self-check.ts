@@ -2,8 +2,8 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { buildRelationPool } from '../src/db/relation-pool-builder.ts';
 import {
-  buildRelationPool,
   getLexiconMembership,
   invalidateLexiconMembership,
   invalidateRelationPoolCache,

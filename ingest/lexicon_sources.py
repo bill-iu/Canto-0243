@@ -27,6 +27,7 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "中學",
         "小學",
         "幼稚園",
+        "幼兒園",
         "學校",
         "大學",
         "醫院",
@@ -35,6 +36,17 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "車站",
         "分行",
         "銀行",
+        "大廈",
+        "商店",
+        "百貨",
+        "超市",
+        "藥店",
+        "藥房",
+        "酒家",
+        "實業",
+        "市場",
+        "商行",
+        "便利店",
         "餐館",
         "酒樓",
         "酒店",
@@ -44,7 +56,23 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "羽毛球館",
         "中心",
         "公司",
+        "委員會",
+        "聯合會",
+        "基金會",
+        "管理局",
+        "辦公室",
+        "共和國",
+        "自治縣",
+        "自治州",
+        "行政區",
     }
+)
+_RIME_UPSTREAM_WORD_FILES = (
+    "word.csv",
+    "fixed_expressions.csv",
+    "phrase_fragment.csv",
+    "onomatopoeia.csv",
+    "trending.csv",
 )
 _RIME_PHRASE_STAT_KEYS = (
     "body_rows",
@@ -57,6 +85,7 @@ _RIME_PHRASE_STAT_KEYS = (
     "rejected_long",
     "rejected_mixed",
     "rejected_place_or_org",
+    "rejected_literal",
     "rejected_8_char_needs_review",
 )
 
@@ -212,6 +241,10 @@ def _load_phrase_reject_suffixes(path: Path | str | None) -> frozenset[str]:
     return frozenset(_PHRASE_ORG_PLACE_SUFFIXES | extra)
 
 
+def _load_phrase_reject_literals(path: Path | str | None) -> frozenset[str]:
+    return frozenset(_load_phrase_line_set(path))
+
+
 def _looks_like_phrase_place_or_org(literal: str, reject_suffixes: frozenset[str]) -> bool:
     if any(literal.endswith(suffix) for suffix in reject_suffixes):
         return True
@@ -223,6 +256,7 @@ def _rime_phrase_rejection(
     literal: str,
     allowlist_8: set[str],
     reject_suffixes: frozenset[str],
+    reject_literals: frozenset[str] | None = None,
 ) -> str | None:
     if not _CJK_ONLY.match(literal):
         return "rejected_mixed"
@@ -231,6 +265,8 @@ def _rime_phrase_rejection(
         return "rejected_short"
     if length > 8:
         return "rejected_long"
+    if reject_literals and literal in reject_literals:
+        return "rejected_literal"
     if _looks_like_phrase_place_or_org(literal, reject_suffixes):
         return "rejected_place_or_org"
     if length == 8 and literal not in allowlist_8:
@@ -293,12 +329,46 @@ def ingest_rime_words_yaml(path: Path | str, *, source_id: str) -> list[LexiconC
     return out
 
 
+def ingest_rime_upstream_csvs(
+    word_csv_path: Path | str,
+    *,
+    source_id: str,
+) -> list[LexiconCandidate]:
+    """Read the upstream lexical categories; proper_nouns.csv is intentionally excluded."""
+    root = Path(word_csv_path).parent
+    out: list[LexiconCandidate] = []
+    seen: set[tuple[str, str]] = set()
+    for name in _RIME_UPSTREAM_WORD_FILES:
+        path = root / name
+        if not path.is_file():
+            continue
+        try:
+            with path.open(encoding="utf-8-sig", newline="") as f:
+                for row in csv.DictReader(f):
+                    literal = str(row.get("char") or "").strip()
+                    if _looks_like_phrase_place_or_org(
+                        literal, _PHRASE_ORG_PLACE_SUFFIXES
+                    ):
+                        continue
+                    _append_candidate(
+                        out,
+                        seen,
+                        char=literal,
+                        jyutping=str(row.get("jyutping") or "").strip(),
+                        source_id=source_id,
+                    )
+        except OSError:
+            continue
+    return out
+
+
 def ingest_rime_phrase_yaml(
     path: Path | str,
     *,
     source_id: str,
     allowlist_path: Path | str | None = None,
     reject_suffixes_path: Path | str | None = None,
+    reject_literals_path: Path | str | None = None,
     stats: dict[str, int] | None = None,
 ) -> list[LexiconCandidate]:
     yaml_path = Path(path)
@@ -311,6 +381,7 @@ def ingest_rime_phrase_yaml(
 
     allowlist_8 = _load_phrase_allowlist(allowlist_path)
     reject_suffixes = _load_phrase_reject_suffixes(reject_suffixes_path)
+    reject_literals = _load_phrase_reject_literals(reject_literals_path)
     out: list[LexiconCandidate] = []
     seen_literals: set[str] = set()
     seen_pairs: set[tuple[str, str]] = set()
@@ -329,7 +400,9 @@ def ingest_rime_phrase_yaml(
             _bump(stats, "duplicate_literal")
             continue
         seen_literals.add(literal)
-        rejection = _rime_phrase_rejection(literal, allowlist_8, reject_suffixes)
+        rejection = _rime_phrase_rejection(
+            literal, allowlist_8, reject_suffixes, reject_literals
+        )
         if rejection:
             _bump(stats, rejection)
             continue
@@ -455,6 +528,9 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
     if parser == "rime_words_yaml":
         path = resolve_lexicon_raw_path(src) or Path("")
         return ingest_rime_words_yaml(path, source_id=source_id)
+    if parser == "rime_upstream_csv":
+        path = resolve_lexicon_raw_path(src) or Path("")
+        return ingest_rime_upstream_csvs(path, source_id=source_id)
     if parser == "rime_phrase_yaml":
         path = resolve_lexicon_raw_path(src) or Path("")
         allowlist_raw = src.get("allowlist_path") or ""
@@ -465,10 +541,15 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
         reject_path = Path(reject_raw) if reject_raw else None
         if reject_path and not reject_path.is_absolute():
             reject_path = ROOT / reject_path
+        lit_raw = src.get("reject_literals_path") or ""
+        lit_path = Path(lit_raw) if lit_raw else None
+        if lit_path and not lit_path.is_absolute():
+            lit_path = ROOT / lit_path
         return ingest_rime_phrase_yaml(
             path,
             source_id=source_id,
             allowlist_path=allowlist_path,
             reject_suffixes_path=reject_path,
+            reject_literals_path=lit_path,
         )
     return []
