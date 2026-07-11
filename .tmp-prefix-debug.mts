@@ -1,0 +1,32 @@
+﻿import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { applyRuntimeDbPatches } from './client/src/db/db-patch.ts';
+import { injectDatabaseForTests, resetDatabase } from './client/src/db/init.ts';
+import { openSqlJsDatabase } from './client/src/db/sqljs-backend.ts';
+import { normalizeAndParse } from './client/src/db/query-engine.ts';
+import { buildMatchSpecForParsed } from './client/src/db/position-match/match-spec-registry.ts';
+import { queryWordsByEqualsSpec } from './client/src/db/position-match/equals-filters.ts';
+import { getEqualsSpan } from './client/src/db/position-match/spec.ts';
+import { getCandidatesForLength } from './client/src/db/position-match/sources.ts';
+import { warmGuideProbeReadiness } from './client/src/probe-readiness.node.ts';
+
+const repoRoot = process.cwd();
+const dbPath = path.join(repoRoot, 'lyrics.db');
+resetDatabase();
+const db = await openSqlJsDatabase(new Uint8Array(fs.readFileSync(dbPath)));
+injectDatabaseForTests(db);
+await applyRuntimeDbPatches(db);
+await warmGuideProbeReadiness(repoRoot);
+
+const q = '?困潦倒=';
+const parsed = normalizeAndParse(q);
+const spec = buildMatchSpecForParsed(parsed);
+console.log('parsed', parsed);
+console.log('span', getEqualsSpan(spec!));
+console.log('extra', spec?.extra);
+const [cands] = await getCandidatesForLength(db, 4, { mode: 'm1' });
+console.log('candidates width4', cands.length);
+const rows = await queryWordsByEqualsSpec(spec!, db, 'm1');
+console.log('equals rows', rows.length, rows.slice(0,5).map(r => r.char));
+await db.close();

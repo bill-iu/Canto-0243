@@ -2,7 +2,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { buildRelationPool } from '../src/db/relation-pool.ts';
+import { buildRelationPool } from '../src/db/relation-pool-builder.ts';
 import { derivedAntLogicSelfCheck } from '../src/db/derived-ant.ts';
 import {
   initStaticCilinSynIndex,
