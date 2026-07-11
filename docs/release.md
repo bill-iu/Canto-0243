@@ -71,7 +71,7 @@ git fetch upstream --tags
 git checkout v1.7.0
 
 bash scripts/release-macos-local.sh --tag v1.7.0 --test
-# 上傳：本機優先 lyrics.db，缺則從 Release 下載；只上傳 tar
+# 上傳：必從 Release 下載 lyrics.db（唔用 stale 本機 copy）；只上傳 tar
 bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ```
 
