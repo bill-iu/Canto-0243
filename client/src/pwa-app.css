@@ -90,20 +90,24 @@
   }
   .mode-menu-root {
     position: static;
-    align-self: center;
+    align-self: flex-end;
+    flex-shrink: 0;
+    margin-left: auto;
+    max-width: min(48vw, 168px);
   }
 
   .mode-menu-meta {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0;
-    padding: 0;
-    text-align: left;
+    position: static;
+    margin: 3px 0 0;
+    padding: 0 2px;
+    text-align: right;
     font-size: 10px;
     line-height: 1.2;
-    max-width: min(42vw, 140px);
-    z-index: 2;
+    max-width: 100%;
+  }
+
+  .app-bar > .brand {
+    z-index: 3;
   }
 
   .menu-trigger {
