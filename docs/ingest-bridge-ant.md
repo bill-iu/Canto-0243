@@ -2,7 +2,7 @@
 
 領域詞彙：[CONTEXT.md](../CONTEXT.md) § **近義橋反義**、**近義橋重跑**、**發佈主理**、**發佈詞庫快照**。
 
-**執行者**：**發佈主理**（納入 **詞庫發佈**；貢獻者 PR 唔包含此步）。**發佈補件**唔參與。
+**執行者**：**發佈主理**（換庫開新 semver **全量發佈**；貢獻者 PR 唔包含此步）。**發佈補件**唔參與。
 
 **環境**：**發佈主理機**須能安裝 dev 依賴（`pip install -r requirements-dev.txt`）；橋接會載入 embedding 模型（首次需網絡下載）。**發佈補件**機唔跑橋接 ingest。
 
@@ -11,19 +11,19 @@
 - 近義橋品質閘門（橋接語意門檻、借入上限、多橋合併）變更後
 - 其他 ingest 已更新近義／反義池，需以新池重算 `ant_syn_bridge`
 
-**唔係每次詞庫發佈都必跑**：若當次發佈只上傳既有 `lyrics.db`、未做 `build-relations`／expand、池與上次 **發佈詞庫快照** 一致，唔單獨為發佈而重跑橋接。若當次發佈有做 § 詞庫發佈前順序 步驟 1–2，且符合上述條件，先跑步驟 3 再驗收上傳。
+**唔係每次上傳庫都必跑**：若當次只重用既有 `lyrics.db`、未做 `build-relations`／expand、池與上次 **發佈詞庫快照** 一致，唔單獨為發佈而重跑橋接。若當次有做下方「換庫前順序」步驟 1–2，且符合上述條件，先跑步驟 3 再驗收、再開新 tag 全量發佈。
 
-## 詞庫發佈前順序
+## 換庫前順序（近義橋）
 
-**發佈主理**在要上傳 `lyrics.db` 當日，若需重跑近義橋，固定次序如下（橋接**永遠**在 `build-relations` 之後、上傳 db 之前）：
+**發佈主理**在要開新 semver 上傳 `lyrics.db` 當日，若需重跑近義橋，固定次序如下（橋接**永遠**在 `build-relations` 之後、上傳 db 之前）：
 
 1. `python -m ingest normalize` → `python -m ingest build-relations`（更新近反義池）
 2. 其他 expand（如 `expand-antonyms-cilin`、`expand-antonyms-mirror`；按當次 ingest 需要）
 3. **`python -m ingest expand-antonyms-syn-bridge --fresh`**（或 **`python -m ingest bake-syn-bridge`** 同時匯出 `data/syn_ant/ant_syn_bridge_pairs.tsv` 供 commit）
 4. 下方 § 驗收
-5. [release.md](release.md) § 步驟 3 上傳 **發佈詞庫快照**
+5. [release.md](release.md) § 步驟 1（新 tag **全量發佈**，含 **發佈詞庫快照**）
 
-`lyrics.db` 須在 repo 根目錄（可為本機 ingest 產物，唔一定要 commit）。
+`lyrics.db` 須在 repo 根目錄（本機 ingest 產物；**唔**入 git）。
 
 ## 全量重跑
 
@@ -97,8 +97,8 @@ print([r[0] for r in rows]); db.close()"
 
 在查韻介面對每字執行 `字面!`，確認反義含 `ant_syn_bridge` 來源且語意合理（無明顯 hub 噪音 outlier）。
 
-### 3. 詞庫發佈
+### 3. 全量發佈（換庫）
 
-驗收通過後，依 [release.md](release.md) § 步驟 3 上傳 **發佈詞庫快照**（`lyrics.db`、`words-lexicon.json`）。
+驗收通過後，依 [release.md](release.md) § 步驟 1 開**新 semver** 上傳 **發佈詞庫快照**（`lyrics.db`、`words-lexicon.json`）同 Portable 套件。
 
-**semver**：僅橋接重跑、詞庫內容變而程式不變 → **詞庫發佈**（同一 semver 覆寫 db／json），唔單為橋接 bump 新 tag。若同次尚有創作者可感知嘅程式或介面變更，先 bump 新 semver 做 **全量發佈**。
+**semver**：橋接重跑令詞庫內容變 → **新 tag 全量發佈**（獨立「只換庫」層已退役）。程式-only 修正用刷新同一 tag，唔經本文件。
