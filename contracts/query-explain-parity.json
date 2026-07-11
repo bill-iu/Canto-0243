@@ -5,7 +5,7 @@
       "q": "香港=",
       "kind": "equals",
       "summary_contains": ["整詞", "雙押"],
-      "summary_not_contains": ["碼夾等號"]
+      "summary_not_contains": ["數字夾字"]
     },
     {
       "q": "23+好=",
@@ -20,13 +20,13 @@
     {
       "q": "23就",
       "kind": "equals",
-      "summary_contains": ["碼夾等號"],
+      "summary_contains": ["數字夾字"],
       "summary_not_contains": ["整詞"]
     },
     {
       "q": "0449窮困潦倒=",
       "kind": "equals",
-      "summary_contains": ["碼夾等號", "四押"]
+      "summary_contains": ["數字夾字", "四押"]
     },
     {
       "q": "?+就=",

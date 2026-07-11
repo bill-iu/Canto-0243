@@ -168,11 +168,11 @@ def _code_sandwich_equals_summary(
         rhyme_line = f"同「{equals.ref_literal}」{dim}（{label}）"
         code_phrase = _code_prefix_phrase(spec)
         body = rhyme_line if not code_phrase else f"{rhyme_line}；{code_phrase}"
-        return f"碼夾等號查詢「{raw}」：{body}"
+        return f"數字夾字「{raw}」：{body}"
     details = _slot_scan_details(spec, equals)
     if details:
-        return f"碼夾等號查詢「{raw}」：{details}"
-    return f"碼夾等號查詢「{raw}」"
+        return f"數字夾字「{raw}」：{details}"
+    return f"數字夾字「{raw}」"
 
 
 def _compound_summary(spec: MatchSpec) -> str:

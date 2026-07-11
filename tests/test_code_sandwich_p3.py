@@ -1,4 +1,4 @@
-"""碼夾等號 P3 — golden journey 代表查詢與尾韻回歸（ADR-0028）。"""
+"""數字夾字 P3 — golden journey 代表查詢與尾韻回歸（ADR-0028）。"""
 from __future__ import annotations
 
 import unittest
@@ -31,7 +31,7 @@ class CodeSandwichGoldenParseTests(unittest.TestCase):
     def test_explain_39起_labels_code_sandwich(self):
         result = explain_query("39起")
         self.assertEqual(result.kind, "equals")
-        self.assertIn("碼夾等號", result.summary or "")
+        self.assertIn("數字夾字", result.summary or "")
         self.assertIn("起", result.summary or "")
 
     def test_explain_framed_equals_labels_initial_phoneme(self):

@@ -49,6 +49,7 @@ export interface GuideExample {
 
 export interface GuideSection {
   id: string;
+  group?: 'common' | 'advanced';
   title: string;
   intro: string;
   examples: GuideExample[];
@@ -76,6 +77,7 @@ const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
   'jyutping-anchor:3$漢4': 'hanzi_syllable_anchor',
   'jyutping-anchor:3h4': 'jyutping_anchor_initial',
   'jyutping-anchor:23o': 'jyutping_anchor_final',
+  'equals:就=': 'rhyme_initial_anchor',
   'equals:香港=': 'equals_query',
   'equals:2我=3': 'code_sandwich_equals',
   'relation:!苦悶': 'relation_lookup',
@@ -98,6 +100,7 @@ function uiModeToGuideMode(mode: string): GuideMode {
 export function getGuideSections(lang: GuideLang = 'zh'): GuideSection[] {
   return getI18nSections(lang).map((section) => ({
     id: section.id,
+    group: section.group,
     title: section.title,
     intro: section.intro,
     examples: section.examples.map((ex) => {

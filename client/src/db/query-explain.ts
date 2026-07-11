@@ -185,10 +185,10 @@ function codeSandwichEqualsSummary(
     const rhymeLine = `同「${equals.ref_literal}」${dim}（${label}）`;
     const codePhrase = codePrefixPhrase(spec);
     const body = codePhrase ? `${rhymeLine}；${codePhrase}` : rhymeLine;
-    return `碼夾等號查詢「${raw}」：${body}`;
+    return `數字夾字「${raw}」：${body}`;
   }
   const details = slotScanDetails(spec, equals);
-  return details ? `碼夾等號查詢「${raw}」：${details}` : `碼夾等號查詢「${raw}」`;
+  return details ? `數字夾字「${raw}」：${details}` : `數字夾字「${raw}」`;
 }
 
 function compoundSummary(spec: MatchSpec): string {
