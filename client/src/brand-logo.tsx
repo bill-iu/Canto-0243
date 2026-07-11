@@ -1,6 +1,6 @@
 const LIGHT_INK = '#9F1239';
 const DARK_INK = '#FB7185';
-const GATE_INK_CLIP_MAX = 200;
+const GATE_INK_CLIP_MAX = 148;
 
 export interface BrandLogoProps {
   className?: string;
@@ -34,9 +34,9 @@ export function BrandLogo({ className = 'brand-logo', variant = 'header', inkPro
       <svg
         className={`${className} brand-logo--gate`}
         xmlns="http://www.w3.org/2000/svg"
-        width="200"
+        width="148"
         height="72"
-        viewBox="0 0 200 72"
+        viewBox="0 0 148 72"
         aria-hidden="true"
         focusable="false"
       >
