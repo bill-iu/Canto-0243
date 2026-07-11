@@ -5,12 +5,13 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useDB, useSearch } from './hooks/useDB.tsx';
+import { useDB, useSearch } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
-import { ResultList, mergedResultCount, type EntryPickPayload } from './result-list';
+import { ResultList } from './result-list';
+import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -27,13 +28,14 @@ import {
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../frontend/entry-detail-core.mjs';
-import { SynResultList, synResultItemCount, synResultsStats } from './syn-result-list';
+import { SynResultList } from './syn-result-list';
+import { synResultItemCount, synResultsStats } from './syn-result-logic.ts';
+import { AnchorResultList } from './anchor-result-list';
 import {
-  AnchorResultList,
   anchorResultItemCount,
   anchorResultsStats,
   hasAnchorResultLayout,
-} from './anchor-result-list';
+} from './anchor-result-logic.ts';
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { isRelationSyntaxQuery } from './db/query-engine';

@@ -9,7 +9,7 @@ import { loadRankingData } from '../src/db/ranking-loader.node.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
 import { searchPage } from '../src/db/query.ts';
 import { openSqlJsDatabase } from '../src/db/sqljs-backend.ts';
-import { mergedResultCount } from '../src/result-list.tsx';
+import { mergedResultCount } from '../src/result-list-logic.ts';
 import { allGuideExamples } from '../src/guide-examples.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');

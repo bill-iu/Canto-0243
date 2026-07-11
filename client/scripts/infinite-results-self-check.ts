@@ -1,22 +1,17 @@
-/** ponytail: first page shows RESULT_RENDER_BATCH only */
-import { RESULT_RENDER_BATCH } from '../src/infinite-results.ts';
+import {
+  RESULT_RENDER_BATCH,
+  clampVisibleCount,
+  resetVisibleCount,
+} from '../src/infinite-results-logic.ts';
 
-function visibleAfterReset(itemCount: number): number {
-  return Math.min(RESULT_RENDER_BATCH, itemCount || RESULT_RENDER_BATCH);
+if (clampVisibleCount(RESULT_RENDER_BATCH, 800) !== RESULT_RENDER_BATCH) {
+  throw new Error('infinite-results: load-more must preserve expanded window');
+}
+if (clampVisibleCount(800, 300) !== 300) {
+  throw new Error('infinite-results: shrink must clamp window');
+}
+if (resetVisibleCount() !== RESULT_RENDER_BATCH) {
+  throw new Error('infinite-results: new reset must restore first batch');
 }
 
-const cases = [
-  { itemCount: 1200, expect: 200 },
-  { itemCount: 5501, expect: 200 },
-  { itemCount: 50, expect: 50 },
-  { itemCount: 12, expect: 12 },
-];
-
-for (const { itemCount, expect } of cases) {
-  const got = visibleAfterReset(itemCount);
-  if (got !== expect) {
-    throw new Error(`infinite-results-self-check: itemCount=${itemCount} → ${got}, expected ${expect}`);
-  }
-}
-
-console.log('infinite-results-self-check ok');
+console.log('infinite-results self-check ok');

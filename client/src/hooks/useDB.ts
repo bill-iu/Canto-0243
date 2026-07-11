@@ -1,16 +1,14 @@
 /**
- * React Hook for Database Management
+ * React hooks for Database Management
  */
 
 import {
-  createContext,
   useContext,
   useState,
   useEffect,
   useLayoutEffect,
   useCallback,
   useRef,
-  type ReactNode,
 } from 'react';
 import {
   initializeDatabase,
@@ -45,6 +43,12 @@ import {
   subscribeTailProgress,
   resetTailPreload,
 } from '../db/tail-preload.ts';
+import {
+  DBContext,
+  type DatabaseStatus,
+  type OfflineReadinessStatus,
+  type UseDBReturn,
+} from './db-context.ts';
 
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
 export {
@@ -57,34 +61,9 @@ export {
   searchLimitForOffset,
 } from '../db/query.ts';
 
-export type DatabaseStatus = 'idle' | 'loading' | 'ready' | 'error';
-export type OfflineReadinessStatus = 'not_ready' | 'preparing' | 'ready' | 'failed';
-
 const WARM_FAST_PATH_MS = 500;
 
-export interface UseDBReturn {
-  status: DatabaseStatus;
-  offlineStatus: OfflineReadinessStatus;
-  isOfflineReady: boolean;
-  isOnline: boolean;
-  isDbCached: boolean | null;
-  dbUrl: string;
-  progress: number;
-  tailProgress: number;
-  startupComplete: boolean;
-  suppressGateOverlay: boolean;
-  error: Error | null;
-  isReady: boolean;
-  initialize: () => Promise<void>;
-  retryOfflineReady: () => Promise<void>;
-  search: (options: QueryOptions) => Promise<QueryResult[]>;
-  getStats: () => Promise<{ wordCount: number; tableCount: number }>;
-  reset: () => void;
-}
-
-const DBContext = createContext<UseDBReturn | null>(null);
-
-function useDBState(): UseDBReturn {
+export function useDBState(): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [tailProgress, setTailProgress] = useState<number>(0);
@@ -291,11 +270,6 @@ function useDBState(): UseDBReturn {
     getStats,
     reset,
   };
-}
-
-export function DBProvider({ children }: { children: ReactNode }) {
-  const value = useDBState();
-  return <DBContext.Provider value={value}>{children}</DBContext.Provider>;
 }
 
 export function useDB(): UseDBReturn {

@@ -12,7 +12,7 @@ import { registerSW } from 'virtual:pwa-register';
 
 import App from './App.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
-import { DBProvider } from './hooks/useDB.tsx';
+import { DBProvider } from './hooks/db-provider.tsx';
 import { scheduleLexiconPrecache } from './lexicon-precache.ts';
 import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './pwa-shell-boot';
 
