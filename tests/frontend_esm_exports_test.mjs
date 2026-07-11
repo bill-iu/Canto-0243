@@ -153,6 +153,13 @@ describe("PWA ready-gate assets", () => {
     assert.match(appSrc, /isDbCached !== true/);
   });
 
+  it("ready-gate narrow uses upward optical offset and full-viewport flex center", () => {
+    const css = readFileSync(new URL("../frontend/ready-gate.css", import.meta.url), "utf8");
+    assert.match(css, /padding-top: 0/);
+    assert.match(css, /justify-content: center/);
+    assert.match(css, /@media \(max-width: 760px\)[\s\S]*translateY\(calc\(-4vh/);
+  });
+
   it("shell-revealed is channel-neutral for gate unlock (Portable + PWA)", () => {
     const css = readFileSync(new URL("../frontend/ready-gate.css", import.meta.url), "utf8");
     assert.match(css, /html:not\(\.shell-revealed\) \.app-shell/);
