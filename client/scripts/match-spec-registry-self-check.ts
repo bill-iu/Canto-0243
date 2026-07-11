@@ -7,6 +7,8 @@ import {
   buildMatchSpecForParsed,
   validateRepresentativeMatchSpec,
 } from '../src/db/position-match/match-spec-registry.ts';
+import { QueryKind, RouteKind } from '../src/db/query-kind.ts';
+import { routeKindFor } from '../src/db/query-kind-registry.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -36,7 +38,15 @@ for (const [q, expected] of cases) {
   validateRepresentativeMatchSpec(q, spec, expected);
 }
 
-const pingzeSpec = buildMatchSpecForParsed(normalizeAndParse('PZ+就=', { mode: 'pz' }));
+const pingzeParsed = normalizeAndParse('PZ?', { mode: 'pz' });
+if (
+  pingzeParsed.kind !== QueryKind.PING_ZE_SERIAL ||
+  routeKindFor(pingzeParsed.kind) !== RouteKind.MASK_FAMILY
+) {
+  throw new Error('match-spec registry: pingze must route through mask family');
+}
+
+const pingzeSpec = buildMatchSpecForParsed(pingzeParsed);
 if (
   !pingzeSpec ||
   !pingzeSpec.slots?.some((slot) => slot.pos === 0 && slot.kind === 'tone_class' && slot.value === 'ping') ||

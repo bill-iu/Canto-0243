@@ -4,9 +4,6 @@
 import type { Database } from '../sqljs.ts';
 import { queryRows } from '../database-backend.ts';
 import { getCodeVariants } from '../code-variants.ts';
-import {
-  codeMatchesPingZePattern,
-} from '../ping-zak.ts';
 import { sortQueryResults, sortWordRows } from '../ranking.ts';
 import { executeHeteronymCodeSearch } from '../heteronym.ts';
 import { relationLookupItems, type RelationPoolItem } from '../relation-pool.ts';
@@ -21,7 +18,6 @@ import { QueryKind, RouteKind } from '../query-kind.ts';
 import { routeKindFor } from '../query-kind-registry.ts';
 import type {
   DigitCodeQuery,
-  PingZeSerialQuery,
   HeteronymCodeQuery,
   JyutpingFragmentQuery,
   ParsedQuery,
@@ -60,9 +56,6 @@ export async function dispatchParsed(parsed: ParsedQuery, ctx: SearchContext & {
   
   switch (routeKind) {
     case RouteKind.DIGIT:
-      if (parsed.kind === QueryKind.PING_ZE_SERIAL) {
-        return executePingZeSerialQuery(parsed as PingZeSerialQuery, db, limit, offset);
-      }
       if (parsed.kind === QueryKind.DIGIT_CODE) {
         return executeDigitCodeQuery(parsed as DigitCodeQuery, db, mode, limit, offset);
       }
@@ -118,33 +111,6 @@ function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' {
     return 'm2';
   }
   return 'm1';
-}
-
-/**
- * Execute digit code query (pure digits only — P0 scope A)
- */
-async function executePingZeSerialQuery(
-  parsed: PingZeSerialQuery,
-  db: Database,
-  limit: number,
-  offset: number,
-): Promise<SearchResult> {
-  const pattern = parsed.raw_q;
-  const len = pattern.length;
-  const sql = `
-    SELECT char, jyutping, code
-    FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
-  `;
-  const rows = (await queryRows(db, sql, [len, len])) as WordRow[];
-  const matched = deduplicateWordRows(rows).filter((row) =>
-    codeMatchesPingZePattern(String(row.code ?? ''), pattern),
-  );
-  const sorted = sortQueryResults(matched.map((row) => rowToResult(row)));
-  return { items: sorted.slice(offset, offset + limit), total: sorted.length };
 }
 
 async function executeDigitCodeQuery(
