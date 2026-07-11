@@ -462,7 +462,7 @@ const SECTIONS = [
         '<code translate="no">~</code> 近義、<code translate="no">!</code> 反義；可加碼前綴。僅 0243搜尋三檔（唔包括近反義模式）。',
       examples: [
         { label: '近義於「開心」' },
-        { label: '反義於「你」（含鏡像近義）' },
+        { label: '反義於「苦悶」' },
         { label: '33同音 + 反義於「開心」' },
       ],
     },
@@ -472,13 +472,13 @@ const SECTIONS = [
         '<code translate="no">~</code> near-synonym, <code translate="no">!</code> antonym; optional code prefix. 0243 search tiers only (not synonym/antonym mode).',
       examples: [
         { label: 'Near-synonyms of 開心' },
-        { label: 'Antonyms of 你 (includes mirrored near-synonyms)' },
+        { label: 'Antonyms of 苦悶' },
         { label: 'Code 33 homophone + antonyms of 開心' },
       ],
     },
     examples: [
       { query: '~開心', mode: 'm1' },
-      { query: '!你', mode: 'm1' },
+      { query: '!苦悶', mode: 'm1' },
       { query: '33!開心', mode: 'm1' },
     ],
   },

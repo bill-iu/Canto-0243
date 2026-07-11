@@ -78,7 +78,7 @@ const FAMILY_BY_KEY: Partial<Record<string, GuideFamilyId>> = {
   'jyutping-anchor:23o': 'jyutping_anchor_final',
   'equals:香港=': 'equals_query',
   'equals:2我=3': 'code_sandwich_equals',
-  'relation:~開心': 'relation_lookup',
+  'relation:!苦悶': 'relation_lookup',
   'syn-pool:開心': 'syn_pool',
   'compound-syn:~~': 'compound_syn',
   'compound-ant:!!': 'compound_ant',

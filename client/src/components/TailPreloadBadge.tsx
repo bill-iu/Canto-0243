@@ -8,16 +8,31 @@ type Props = {
   startupComplete: boolean;
   theme?: 'light' | 'dark';
   lang?: 'zh' | 'en';
+  /** Fires after badge fully hidden (or when tail skipped / already complete). */
+  onDismiss?: () => void;
 };
 
-export function TailPreloadBadge({ tailProgress, startupComplete, lang = 'zh' }: Props) {
+export function TailPreloadBadge({ tailProgress, startupComplete, lang = 'zh', onDismiss }: Props) {
   const [visible, setVisible] = useState(false);
   const [done, setDone] = useState(false);
   const [exiting, setExiting] = useState(false);
   const shownRef = useRef(false);
   const dismissTimer = useRef<number | null>(null);
+  const dismissedRef = useRef(false);
+  const onDismissRef = useRef(onDismiss);
+  onDismissRef.current = onDismiss;
+
+  const fireDismiss = () => {
+    if (dismissedRef.current) return;
+    dismissedRef.current = true;
+    onDismissRef.current?.();
+  };
 
   useEffect(() => {
+    if (startupComplete && !shownRef.current) {
+      fireDismiss();
+      return;
+    }
     if (startupComplete && shownRef.current) {
       setDone(true);
       if (dismissTimer.current) window.clearTimeout(dismissTimer.current);
@@ -28,6 +43,7 @@ export function TailPreloadBadge({ tailProgress, startupComplete, lang = 'zh' }:
           setDone(false);
           setExiting(false);
           shownRef.current = false;
+          fireDismiss();
         }, WARMUP_DONE_FADE_MS);
       }, WARMUP_DONE_HOLD_MS);
       return;

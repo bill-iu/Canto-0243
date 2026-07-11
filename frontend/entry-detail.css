@@ -116,6 +116,63 @@ form.search-panel {
   flex-shrink: 0;
 }
 
+/* 空搜尋首頁：搜尋在上、速覽在下，主區不捲動 */
+.search-view.is-empty-landing .search-results-scroll {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-view.is-empty-landing .guide-quick {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.search-view.is-empty-landing .guide-quick__rows {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.search-view.is-empty-landing .guide-quick__columns {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.main-wrap:has(.search-view.is-empty-landing) {
+  padding-top: 12px;
+  padding-bottom: 10px;
+}
+
+.search-view.is-empty-landing .search-panel {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .main-wrap:has(.search-view.is-empty-landing) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .search-view.is-empty-landing .search-panel {
+    padding: 10px;
+    border-radius: 14px;
+  }
+}
+
+@media (min-width: 761px) {
+  .search-view.is-empty-landing .search-panel {
+    padding: 14px 16px;
+  }
+}
+
 .search-results {
   display: flex;
   flex: 1 1 auto;

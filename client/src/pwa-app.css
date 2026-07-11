@@ -3,12 +3,13 @@
 .mode-menu-root {
   position: relative;
   align-self: flex-start;
-}
-
-.mode-menu-stack {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-width: 0;
+}
+
+.mode-menu-stack {
   min-width: 0;
 }
 
@@ -36,7 +37,8 @@
   align-self: flex-start;
   gap: 2px;
   margin-top: 7px;
-  width: min(100%, 360px);
+  width: max-content;
+  max-width: 100%;
   padding: 2px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -47,7 +49,7 @@
   min-height: 24px;
   border: 0;
   border-radius: 999px;
-  padding: 3px 8px;
+  padding: 3px 6px;
   background: transparent;
   color: var(--muted);
   font-size: 11px;
@@ -57,38 +59,111 @@
   white-space: nowrap;
 }
 .profile-pill__narrow { display: none; }
-@media (max-width: 640px) { .profile-pill__wide { display: none; } .profile-pill__narrow { display: inline; } }
 
 @media (max-width: 760px) {
+  .profile-pill__wide { display: none; }
+  .profile-pill__narrow { display: inline; }
   .pingze-submodes {
-    width: max-content;
-    max-width: 25%;
+    width: min(100%, 8.6em);
+    max-width: 30%;
     min-width: 0;
     margin-top: 6px;
     gap: 1px;
     padding: 1px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .pingze-submode {
+    min-width: 0;
     min-height: 20px;
-    padding: 2px 5px;
+    padding: 2px 3px;
     font-size: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    overflow: hidden;
   }
+  .pingze-submode .profile-pill__narrow {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+  }
+  .mode-menu-root {
+    position: static;
+    align-self: center;
+  }
+
+  .mode-menu-meta {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    font-size: 10px;
+    line-height: 1.2;
+    max-width: min(42vw, 140px);
+    z-index: 2;
+  }
+
+  .menu-trigger {
+    min-height: 32px;
+    padding: 5px 10px;
+  }
+
+  .mode-trigger-primary {
+    font-size: 14px;
+  }
+
+  .mode-trigger-note {
+    margin-left: 5px;
+    font-size: 11px;
+  }
+
   .query-tabs-bar {
     gap: 4px;
-    padding: 0 0 6px;
+    padding: 0 0 4px;
   }
   .query-tab-pill__label {
-    font-size: 12px;
-    padding: 4px 8px 4px 10px;
+    font-size: 11px;
+    padding: 3px 7px 3px 9px;
   }
   .query-tab-pill__close {
-    font-size: 14px;
-    padding: 2px 6px 2px 0;
+    font-size: 13px;
+    padding: 2px 5px 2px 0;
   }
   .query-tab-add {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1023px) {
+  .mode-menu-meta {
+    max-width: min(48vw, 220px);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
+  }
+
+  .menu-trigger {
+    max-width: min(44vw, 220px);
+    height: auto;
+  }
+
+  .mode-trigger-text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .query-tab-pill__label {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-break: break-word;
   }
 }
 
@@ -100,6 +175,57 @@
 .pingze-submode:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
+}
+
+/* PWA header brand: wide = top-left; narrow = centered after warmup badge dismisses */
+@media (max-width: 760px) {
+  .app-bar {
+    position: relative;
+    min-height: 62px;
+    gap: 6px;
+  }
+  .app-bar > .brand {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1;
+    transition: opacity 420ms ease-out, visibility 420ms ease-out;
+  }
+  .app-shell.is-header-brand-ready .app-bar > .brand {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+}
+
+@media (min-width: 761px) {
+  .mode-menu-meta {
+    position: static;
+    max-width: 100%;
+    font-size: 11px;
+    text-align: right;
+    margin: 4px 0 0;
+    padding: 0 2px;
+  }
+
+  .app-bar > .brand {
+    position: static;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell.is-header-brand-ready .app-bar > .brand {
+    transition: none;
+  }
 }
 
 .query-tabs-bar {

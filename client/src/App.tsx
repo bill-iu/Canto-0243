@@ -140,6 +140,7 @@ function App() {
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
+  const [warmupBadgeClear, setWarmupBadgeClear] = useState(false);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
@@ -369,7 +370,12 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
-  const showTailBadge = !shellGated && !startupComplete;
+  const mountWarmupBadge = !shellGated && !warmupBadgeClear;
+  const handleWarmupBadgeDismiss = useCallback(() => setWarmupBadgeClear(true), []);
+
+  useEffect(() => {
+    if (shellGated) setWarmupBadgeClear(false);
+  }, [shellGated]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -782,7 +788,7 @@ function App() {
         theme={uiTheme}
       />
       <div
-        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${warmupBadgeClear && !shellGated ? ' is-header-brand-ready' : ''}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
           <div className="app-bar">
@@ -797,12 +803,13 @@ function App() {
                   : '格律／協音／押韻／近反義，一步搵到。'}
               </p>
             </div>
-            {showTailBadge && (
+            {mountWarmupBadge && (
               <TailPreloadBadge
                 tailProgress={tailProgress}
                 startupComplete={startupComplete}
                 theme={uiTheme}
                 lang={uiLang}
+                onDismiss={handleWarmupBadgeDismiss}
               />
             )}
             <ModeMenu
@@ -837,7 +844,7 @@ function App() {
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
           ) : (
             <section
-              className={`search-view${detailOpen ? ' has-entry-detail' : ''}`}
+              className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
               aria-labelledby="searchTitle"
             >
               <div className="search-view__main" onClick={handleSearchMainClick}>
