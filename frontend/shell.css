@@ -711,8 +711,9 @@
         flex-direction: column;
         gap: 6px;
       }
-      .search-row { grid-template-columns: 1fr; }
-      .search-actions { width: 100%; }
+      .search-row { grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+      .search-actions { width: auto; flex: 0 0 auto; flex-wrap: nowrap; }
+      .search-actions .primary-button { flex: 0 0 auto; padding-inline: 16px; white-space: nowrap; }
       .primary-button { flex: 1; }
       .guide-grid { grid-template-columns: 1fr; }
 
