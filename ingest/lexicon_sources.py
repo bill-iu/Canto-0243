@@ -57,6 +57,7 @@ _RIME_PHRASE_STAT_KEYS = (
     "rejected_long",
     "rejected_mixed",
     "rejected_place_or_org",
+    "rejected_literal",
     "rejected_8_char_needs_review",
 )
 
@@ -212,6 +213,10 @@ def _load_phrase_reject_suffixes(path: Path | str | None) -> frozenset[str]:
     return frozenset(_PHRASE_ORG_PLACE_SUFFIXES | extra)
 
 
+def _load_phrase_reject_literals(path: Path | str | None) -> frozenset[str]:
+    return frozenset(_load_phrase_line_set(path))
+
+
 def _looks_like_phrase_place_or_org(literal: str, reject_suffixes: frozenset[str]) -> bool:
     if any(literal.endswith(suffix) for suffix in reject_suffixes):
         return True
@@ -223,6 +228,7 @@ def _rime_phrase_rejection(
     literal: str,
     allowlist_8: set[str],
     reject_suffixes: frozenset[str],
+    reject_literals: frozenset[str] | None = None,
 ) -> str | None:
     if not _CJK_ONLY.match(literal):
         return "rejected_mixed"
@@ -231,6 +237,8 @@ def _rime_phrase_rejection(
         return "rejected_short"
     if length > 8:
         return "rejected_long"
+    if reject_literals and literal in reject_literals:
+        return "rejected_literal"
     if _looks_like_phrase_place_or_org(literal, reject_suffixes):
         return "rejected_place_or_org"
     if length == 8 and literal not in allowlist_8:
@@ -299,6 +307,7 @@ def ingest_rime_phrase_yaml(
     source_id: str,
     allowlist_path: Path | str | None = None,
     reject_suffixes_path: Path | str | None = None,
+    reject_literals_path: Path | str | None = None,
     stats: dict[str, int] | None = None,
 ) -> list[LexiconCandidate]:
     yaml_path = Path(path)
@@ -311,6 +320,7 @@ def ingest_rime_phrase_yaml(
 
     allowlist_8 = _load_phrase_allowlist(allowlist_path)
     reject_suffixes = _load_phrase_reject_suffixes(reject_suffixes_path)
+    reject_literals = _load_phrase_reject_literals(reject_literals_path)
     out: list[LexiconCandidate] = []
     seen_literals: set[str] = set()
     seen_pairs: set[tuple[str, str]] = set()
@@ -329,7 +339,9 @@ def ingest_rime_phrase_yaml(
             _bump(stats, "duplicate_literal")
             continue
         seen_literals.add(literal)
-        rejection = _rime_phrase_rejection(literal, allowlist_8, reject_suffixes)
+        rejection = _rime_phrase_rejection(
+            literal, allowlist_8, reject_suffixes, reject_literals
+        )
         if rejection:
             _bump(stats, rejection)
             continue
@@ -465,10 +477,15 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
         reject_path = Path(reject_raw) if reject_raw else None
         if reject_path and not reject_path.is_absolute():
             reject_path = ROOT / reject_path
+        lit_raw = src.get("reject_literals_path") or ""
+        lit_path = Path(lit_raw) if lit_raw else None
+        if lit_path and not lit_path.is_absolute():
+            lit_path = ROOT / lit_path
         return ingest_rime_phrase_yaml(
             path,
             source_id=source_id,
             allowlist_path=allowlist_path,
             reject_suffixes_path=reject_path,
+            reject_literals_path=lit_path,
         )
     return []

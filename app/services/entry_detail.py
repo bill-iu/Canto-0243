@@ -5,6 +5,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
+from app.domain.lexicon.phoneme_codec import decode_phoneme_field
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.lexicon.essay_index import get_essay_frequency
 from app.models.word import Word
@@ -33,15 +34,19 @@ def _code0243_from_jyutping(jyutping: str) -> str:
     return "".join(out)
 
 
-def _parse_json_list(raw: Any) -> list[str]:
+def _parse_phoneme_list(raw: Any, dim: str) -> list[str]:
+    """Display phonemes: compact (j2) → legacy JSON → empty."""
     if isinstance(raw, list):
         return [str(x) for x in raw]
-    if isinstance(raw, str) and raw:
-        try:
-            parsed = json.loads(raw)
-            return [str(x) for x in parsed] if isinstance(parsed, list) else []
-        except json.JSONDecodeError:
-            return []
+    if isinstance(raw, str) and raw.strip():
+        s = raw.strip()
+        if s.startswith("["):
+            try:
+                parsed = json.loads(s)
+                return [str(x) for x in parsed] if isinstance(parsed, list) else []
+            except json.JSONDecodeError:
+                return []
+        return decode_phoneme_field(s, dim)  # type: ignore[arg-type]
     return []
 
 
@@ -83,8 +88,8 @@ def build_entry_detail(db: Session, literal: str) -> dict[str, Any] | None:
                 "jyutping": jyut,
                 "code0243": row.code or "",
                 "code02493": _code0243_from_jyutping(jyut) or (row.code or ""),
-                "initials": _parse_json_list(row.initials),
-                "finals": _parse_json_list(row.finals),
+                "initials": _parse_phoneme_list(row.initials, "initial"),
+                "finals": _parse_phoneme_list(row.finals, "final"),
             }
         )
 

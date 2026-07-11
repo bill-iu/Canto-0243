@@ -1,5 +1,7 @@
 /** @typedef {'open_search' | 'open_only' | 'close' | 'noop'} ClickAction */
 
+import { decodePhonemeField } from './phoneme-codec.mjs';
+
 /** @typedef {Object} RawResultRow
  * @property {string} [word]
  * @property {string} [char]
@@ -115,6 +117,15 @@ export function parseJsonStringList(raw) {
   return [];
 }
 
+/** Display phonemes: compact (j2) → legacy JSON → empty. */
+export function parsePhonemeList(raw, dim) {
+  if (Array.isArray(raw)) return raw.map((x) => (x == null ? '' : String(x)));
+  if (typeof raw !== 'string' || !raw.trim()) return [];
+  const s = raw.trim();
+  if (s[0] === '[') return parseJsonStringList(s);
+  return decodePhonemeField(s, dim);
+}
+
 export function decodeSourceFlags(flags) {
   const n = Number(flags) || 0;
   if (!n) return [];
@@ -152,8 +163,8 @@ export function buildEntryReading(row) {
     jyutping,
     code0243,
     code02493: code0243FromJyutping(jyutping) || code0243,
-    initials: parseJsonStringList(row.initials),
-    finals: parseJsonStringList(row.finals),
+    initials: parsePhonemeList(row.initials, 'initial'),
+    finals: parsePhonemeList(row.finals, 'final'),
   };
 }
 
