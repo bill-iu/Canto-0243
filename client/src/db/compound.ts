@@ -252,10 +252,6 @@ export function rowHasUniformSyllableLetters(jyutping: string, width: number): b
   return Boolean(letters[0]) && letters.every((x) => x === letters[0]);
 }
 
-function rowHasDoubledSyllables(jyutping: string): boolean {
-  return rowHasUniformSyllableLetters(jyutping, MIN_DOUBLED_WIDTH);
-}
-
 function getRhymeFinals(word: WordRow): string[] {
   const raw = word.finals;
   if (typeof raw === 'string' && raw.startsWith('[')) {

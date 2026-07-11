@@ -12,7 +12,6 @@ import type {
   QueryMode,
 } from '../query-types.ts';
 import {
-  CODE_TAIL_MIDDLE,
   hasChineseChars,
   hasJyutpingChars,
   isFramedEqualsQuery,

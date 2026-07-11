@@ -27,10 +27,6 @@ import {
   searchPage,
   getDatabaseStats,
   validateOfflineReadiness,
-  normalizeQuery,
-  parseQuery,
-  normalizeAndParse,
-  searchPageSizeForMode,
   searchLimitForOffset,
   SEARCH_FIRST_PAGE_SIZE,
 } from '../db/query';
@@ -44,7 +40,6 @@ import type {
 import { isSearchCancelledError } from '../db/search-cancel.ts';
 import { reportGatePhase, subscribeGateProgress, resetGateProgressListeners } from '../db/startup-progress.ts';
 import {
-  getTailProgress,
   isStartupComplete,
   startTailPreload,
   subscribeTailProgress,

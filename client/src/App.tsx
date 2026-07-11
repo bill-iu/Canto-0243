@@ -64,7 +64,7 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { QueryTabsBar } from './query-tabs/query-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, t, getTheme, setTheme } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme } from '../../frontend/app-context.mjs';
 
 const initialUrl =
   typeof window !== 'undefined'

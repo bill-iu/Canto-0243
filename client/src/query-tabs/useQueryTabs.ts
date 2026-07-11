@@ -85,7 +85,6 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
   const urlHasQ = parsed.view === VIEW.SEARCH && Boolean(parsed.q?.trim());
   const isHome = parsed.view === VIEW.SEARCH && !parsed.q?.trim();
-  const forceLive = urlHasQ;
 
   let state = loadSessionTabState() ?? fallback();
 
@@ -252,7 +251,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
         return { ...prev, tabs };
       });
     },
-    [setAndPersist, currentPzMode],
+    [setAndPersist],
   );
 
   const patchActiveSearchTab = useCallback(

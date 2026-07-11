@@ -9,9 +9,7 @@ import {
   createMatchSpec,
   getEqualsSpan,
   type AnchorKind,
-  type CompoundKind,
   type ConstraintKind,
-  type EqualsSpan,
   type MatchSpec,
   type SlotConstraint,
 } from './spec.ts';
