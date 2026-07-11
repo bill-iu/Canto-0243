@@ -27,6 +27,7 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "中學",
         "小學",
         "幼稚園",
+        "幼兒園",
         "學校",
         "大學",
         "醫院",
@@ -35,6 +36,17 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "車站",
         "分行",
         "銀行",
+        "大廈",
+        "商店",
+        "百貨",
+        "超市",
+        "藥店",
+        "藥房",
+        "酒家",
+        "實業",
+        "市場",
+        "商行",
+        "便利店",
         "餐館",
         "酒樓",
         "酒店",
@@ -44,7 +56,23 @@ _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
         "羽毛球館",
         "中心",
         "公司",
+        "委員會",
+        "聯合會",
+        "基金會",
+        "管理局",
+        "辦公室",
+        "共和國",
+        "自治縣",
+        "自治州",
+        "行政區",
     }
+)
+_RIME_UPSTREAM_WORD_FILES = (
+    "word.csv",
+    "fixed_expressions.csv",
+    "phrase_fragment.csv",
+    "onomatopoeia.csv",
+    "trending.csv",
 )
 _RIME_PHRASE_STAT_KEYS = (
     "body_rows",
@@ -301,6 +329,39 @@ def ingest_rime_words_yaml(path: Path | str, *, source_id: str) -> list[LexiconC
     return out
 
 
+def ingest_rime_upstream_csvs(
+    word_csv_path: Path | str,
+    *,
+    source_id: str,
+) -> list[LexiconCandidate]:
+    """Read the upstream lexical categories; proper_nouns.csv is intentionally excluded."""
+    root = Path(word_csv_path).parent
+    out: list[LexiconCandidate] = []
+    seen: set[tuple[str, str]] = set()
+    for name in _RIME_UPSTREAM_WORD_FILES:
+        path = root / name
+        if not path.is_file():
+            continue
+        try:
+            with path.open(encoding="utf-8-sig", newline="") as f:
+                for row in csv.DictReader(f):
+                    literal = str(row.get("char") or "").strip()
+                    if _looks_like_phrase_place_or_org(
+                        literal, _PHRASE_ORG_PLACE_SUFFIXES
+                    ):
+                        continue
+                    _append_candidate(
+                        out,
+                        seen,
+                        char=literal,
+                        jyutping=str(row.get("jyutping") or "").strip(),
+                        source_id=source_id,
+                    )
+        except OSError:
+            continue
+    return out
+
+
 def ingest_rime_phrase_yaml(
     path: Path | str,
     *,
@@ -467,6 +528,9 @@ def ingest_source(src: Dict[str, Any]) -> list[LexiconCandidate]:
     if parser == "rime_words_yaml":
         path = resolve_lexicon_raw_path(src) or Path("")
         return ingest_rime_words_yaml(path, source_id=source_id)
+    if parser == "rime_upstream_csv":
+        path = resolve_lexicon_raw_path(src) or Path("")
+        return ingest_rime_upstream_csvs(path, source_id=source_id)
     if parser == "rime_phrase_yaml":
         path = resolve_lexicon_raw_path(src) or Path("")
         allowlist_raw = src.get("allowlist_path") or ""

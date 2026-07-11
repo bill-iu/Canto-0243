@@ -14,6 +14,7 @@ from ingest.lexicon_sources import (
     ingest_hsk30_wordlist,
     ingest_lexicon_json,
     ingest_rime_phrase_yaml,
+    ingest_rime_upstream_csvs,
     ingest_rime_words_yaml,
     ingest_words_hk_wordslist,
     resolve_generated_jyutping,
@@ -30,12 +31,41 @@ SUPPLEMENT_RAW_PARSERS = {
     "hsk30_wordlist",
     "kaifang_txt",
     "rime_phrase_yaml",
+    "rime_upstream_csv",
     "rime_words_yaml",
     "words_hk_wordslist",
 }
 
 
 class LexiconSupplementSourceTests(unittest.TestCase):
+    def test_rime_upstream_csvs_keep_words_and_exclude_proper_nouns(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / "word.csv").write_text(
+                "char,jyutping\n三字詞,saam1 zi6 ci4\n四字成語,sei3 zi6 sing4 jyu5\n"
+                "某某公司,mau5 mau5 gung1 si1\n某某銀行,mau5 mau5 ngan4 hong4\n"
+                "某某中心,mau5 mau5 zung1 sam1\n某某委員會,mau5 mau5 wai2 jyun4 wui2\n",
+                encoding="utf-8",
+            )
+            (root / "fixed_expressions.csv").write_text(
+                "char,jyutping\n畫蛇添足,waak6 se4 tim1 zuk1\n",
+                encoding="utf-8",
+            )
+            (root / "proper_nouns.csv").write_text(
+                "category,char,jyutping\n機構,某某公司,mau5 mau5 gung1 si1\n"
+                "機構,某某銀行,mau5 mau5 ngan4 hong4\n"
+                "機構,某某中心,mau5 mau5 zung1 sam1\n",
+                encoding="utf-8",
+            )
+
+            rows = ingest_rime_upstream_csvs(root / "word.csv", source_id="rime_words")
+
+        self.assertEqual(
+            {row.char for row in rows},
+            {"三字詞", "四字成語", "畫蛇添足"},
+        )
+        self.assertTrue(all(row.sources == ("rime_words",) for row in rows))
+
     def test_hsk30_wordlist_converts_traditional_and_uses_pycantonese(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d) / "wordlist.txt"
@@ -313,6 +343,18 @@ class LexiconSupplementSourceTests(unittest.TestCase):
                     f"{src['id']} reject_literals_path must stay maintainer-local: {lit_path}",
                 )
         self.assertGreaterEqual(checked, 5)
+
+    def test_default_manifest_uses_categorized_rime_source_not_legacy_phrase(self):
+        manifest = load_manifest(DEFAULT_LEXICON_MANIFEST)
+        by_id = {str(src["id"]): src for src in manifest}
+
+        self.assertEqual(by_id["rime_words"]["parser"], "rime_upstream_csv")
+        self.assertTrue(
+            str(by_id["rime_words"]["raw_path"]).endswith(
+                "rime-cantonese-upstream/word.csv"
+            )
+        )
+        self.assertFalse(by_id["rime_phrase"]["enabled_by_default"])
 
 
 if __name__ == "__main__":

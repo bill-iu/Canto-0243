@@ -13,6 +13,7 @@ _LEXICON_RAW_PARSERS = frozenset(
         "lexicon_json",
         "hsk30_wordlist",
         "rime_phrase_yaml",
+        "rime_upstream_csv",
         "rime_words_yaml",
     }
 )

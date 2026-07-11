@@ -56,6 +56,10 @@ def main(argv: list[str] | None = None) -> int:
 
     steps: list[tuple[str, list[str]]] = [
         ("rime char.csv (CC BY 4.0)", [PYTHON, "scripts/fetch/fetch_rime_data.py"]),
+        (
+            "rime categorized lexicon (CC BY 4.0; proper nouns excluded)",
+            [PYTHON, "scripts/fetch/fetch_rime_lexicon_data.py"],
+        ),
         ("guotong thesaurus (Anti-996)", [PYTHON, "scripts/fetch/fetch_guotong_thesaurus.py"]),
         ("words.hk wordslist manifest", [PYTHON, "scripts/fetch/fetch_words_hk_wordslist.py"]),
     ]

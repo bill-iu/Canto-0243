@@ -41,14 +41,14 @@ sources:
     attribution: Maintainer curated lexicon readings
 
   - id: rime_words
-    type: rime_dict
-    parser: rime_words_yaml
+    type: lexicon_csv
+    parser: rime_upstream_csv
     license: CC-BY-4.0
     enabled_by_default: true
     local_only: true
-    raw_path: data/lexicon/raw/rime-cantonese/jyut6ping3.words.dict.yaml
+    raw_path: data/lexicon/raw/rime-cantonese-upstream/word.csv
     source_rank: 10
-    attribution: rime/rime-cantonese jyut6ping3.words.dict.yaml
+    attribution: CanCLID/rime-cantonese-upstream lexical CSV categories (proper nouns excluded)
 
   - id: hsk30
     type: wordlist
@@ -64,7 +64,7 @@ sources:
     type: rime_dict
     parser: rime_phrase_yaml
     license: CC-BY-4.0
-    enabled_by_default: true
+    enabled_by_default: false
     local_only: true
     raw_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.dict.yaml
     allowlist_path: data/lexicon/raw/rime-cantonese/jyut6ping3.phrase.8char-allowlist.txt
