@@ -30,6 +30,10 @@ import {
 import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from '../mode-meta';
 import { stripLauncherBootFromUrl } from '../search-url';
 import type { QueryResult } from '../db/query';
+import {
+  commitActiveSearchTransaction,
+  openCommittedSearchTabTransaction,
+} from '../../../frontend/committed-search.mjs';
 
 export type { QueryTab, TabState };
 export { tabLabel, VIEW };
@@ -188,6 +192,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     (updater: TabState | ((prev: TabState) => TabState)) => {
       setTabState((prev) => {
         const next = typeof updater === 'function' ? updater(prev) : updater;
+        tabStateRef.current = next;
         persistTabs(next);
         return next;
       });
@@ -285,23 +290,18 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
 
   /** Guide example / deep-link: new search tab with q (does not overwrite current tab). */
   const openSearchTabWithQuery = useCallback(
-    (q: string, mode: UiMode) => {
-      const trimmed = q.trim();
-      const urlMode = uiModeToUrlMode(mode);
-      setAndPersist((prev) => {
-        const tab = createSearchTab({ id: prev.nextTabId, q: trimmed });
-        ensureSearchTabHistory(tab, urlMode, currentPzMode);
-        if (trimmed) {
-          commitSearchHistoryFrame(tab, { q: trimmed, mode: urlMode, pzmode: currentPzMode });
-        }
-        return {
-          activeId: tab.id,
-          nextTabId: prev.nextTabId + 1,
-          tabs: [...prev.tabs, tab],
-        };
-      });
+    (q: string, mode: UiMode, pzmode: PingzeSubMode) => {
+      const transaction = openCommittedSearchTabTransaction(
+        tabStateRef.current,
+        { q: q.trim(), mode: uiModeToUrlMode(mode), pzmode },
+        createSearchTab,
+      );
+      tabStateRef.current = transaction.state;
+      persistTabs(transaction.state);
+      setTabState(transaction.state);
+      queueMicrotask(() => pushBrowserUrl(transaction.state, !transaction.pushed));
     },
-    [setAndPersist, currentPzMode],
+    [persistTabs, pushBrowserUrl],
   );
 
   const closeTab = useCallback(
@@ -389,20 +389,17 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
 
   const commitActiveSearch = useCallback(
     (q: string, mode: UiMode, pzmode: PingzeSubMode) => {
-      const urlMode = uiModeToUrlMode(mode);
-      let pushed = false;
-      setAndPersist((prev) => {
-        const tabs = prev.tabs.map((t) => {
-          if (t.id !== prev.activeId || t.view !== VIEW.SEARCH) return t;
-          const result = commitSearchHistoryFrame(t, { q, mode: urlMode, pzmode });
-          pushed = result.pushed;
-          return t;
-        });
-        return { ...prev, tabs };
+      const transaction = commitActiveSearchTransaction(tabStateRef.current, {
+        q,
+        mode: uiModeToUrlMode(mode),
+        pzmode,
       });
-      return pushed;
+      tabStateRef.current = transaction.state;
+      persistTabs(transaction.state);
+      setTabState(transaction.state);
+      queueMicrotask(() => pushBrowserUrl(transaction.state, !transaction.pushed));
     },
-    [setAndPersist],
+    [persistTabs, pushBrowserUrl],
   );
 
   const consumePopstateFrame = useCallback(() => {

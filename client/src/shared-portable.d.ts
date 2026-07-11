@@ -113,3 +113,28 @@ declare module '@shared/search-navigation' {
   ): { tabId: number; view: string; query: string; mode: string; pzmode?: string };
   export function shouldPushSearchHistory(next: unknown, prev: unknown): boolean;
 }
+
+declare module '../../../frontend/committed-search.mjs' {
+  import type { QueryTab, TabState } from '@shared/query-tabs';
+
+  export interface CommittedSearchFrame {
+    q: string;
+    mode: string;
+    pzmode: string;
+  }
+
+  export interface CommittedSearchTransaction {
+    state: TabState;
+    pushed: boolean;
+  }
+
+  export function commitActiveSearchTransaction(
+    state: TabState,
+    frame: CommittedSearchFrame,
+  ): CommittedSearchTransaction;
+  export function openCommittedSearchTabTransaction(
+    state: TabState,
+    frame: CommittedSearchFrame,
+    createSearchTab: (options: Partial<QueryTab>) => QueryTab,
+  ): CommittedSearchTransaction;
+}

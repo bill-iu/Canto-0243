@@ -101,7 +101,6 @@ function App() {
     ensureActiveSearchTab,
     patchSearchTab,
     commitActiveSearch,
-    pushBrowserUrl,
     popstateFrame,
     consumePopstateFrame,
     needsInitialSearch,
@@ -532,14 +531,13 @@ function App() {
       flushSearchQuery(q);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      const pushed = commitActiveSearch(q, nextMode, nextPzMode);
-      pushBrowserUrl(tabState, !pushed);
+      commitActiveSearch(q, nextMode, nextPzMode);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, pushBrowserUrl, tabState, isReady, offlineStatus, initialize],
+    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, isReady, offlineStatus, initialize],
   );
 
   const beginPickSearch = useCallback(
@@ -601,7 +599,7 @@ function App() {
     setMode(exampleMode);
     // 教學例子：開新搜尋 tab，唔覆蓋當前 tab
     saveLeavingSearchTab();
-    openSearchTabWithQuery(nextQuery, exampleMode as UiMode);
+    openSearchTabWithQuery(nextQuery, exampleMode as UiMode, pzMode);
     setUseLiveFetch(true);
     setResultsShuffled(false);
   };
@@ -699,7 +697,7 @@ function App() {
       }
       beginPickSearch(payload);
     },
-    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch],
+    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch, runCommittedSearch],
   );
 
   const handleRelationPick = useCallback(
