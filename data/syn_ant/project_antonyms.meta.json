@@ -1,3 +1,21 @@
 {
-  "batches": {}
+  "batches": {
+    "batch-20260713": {
+      "k": 500,
+      "git_commit": "ff94e078631fcb9c176403b0964150f9b8260374",
+      "db_sha256": "a05b7ea541ddde7f1f0380744f55c37dde0a76caf6f7c7b9f3a486a4d13a3aa3",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "Cursor agent blind draft (chunked); maintainer A–D sample review",
+      "sample_seed": 20260713,
+      "sample_n": 50,
+      "sample_ok": 44,
+      "ok_rate": 0.88,
+      "accepted_pairs": 108,
+      "filtered_before_review": 153,
+      "removed_in_review": 45,
+      "created_at": "2026-07-12T18:42:02.367165+00:00"
+    }
+  }
 }
