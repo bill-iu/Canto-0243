@@ -38,6 +38,7 @@ function poolLiteral(text: string): string | null {
 function finalScore(source: string, confidence: number, inDb: boolean): number {
   const ranks: Record<string, number> = {
     guotong: 15,
+    project_ant: 12,
     cilin: 10,
     ant_cilin_exanded: 25,
     ant_syn_mirror: 28,

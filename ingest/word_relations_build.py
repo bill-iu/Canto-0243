@@ -20,16 +20,22 @@ from ingest.compound_antonyms import _compound_exists
 from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
+from ingest.project_antonyms import collect_project_ant_tuples
 from app.domain.relations.word_relation_queries import load_db_char_set
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "syn_ant" / "sources.yaml"
 DEFAULT_COMPOUND_PATH = ROOT / "data" / "syn_ant" / "compound_antonyms.txt"
-STATIC_SOURCES = ("cilin", "guotong", "compound_ant")
+STATIC_SOURCES = ("cilin", "guotong", "compound_ant", "project_ant")
 LEGACY_SOURCES = ("antisem",)
 
 # ponytail: lower = wins when same (word_id, related_id, relation_type) from multiple static sources
-_SOURCE_RANK = {"cilin": 10, "guotong": 20, "compound_ant": 30}
+_SOURCE_RANK = {
+    "cilin": 10,
+    "project_ant": 12,
+    "guotong": 20,
+    "compound_ant": 30,
+}
 
 
 def collect_guotong_flat_edges(port: StaticThesaurusPort, *, source_rank: int) -> List[dict]:
@@ -201,6 +207,7 @@ def collect_static_relation_tuples(
         collect_cilin_relation_tuples(char_to_id, cilin_path) if cilin_path else [],
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
+        collect_project_ant_tuples(db),
     ]
     merged = merge_relation_tuples(itertools.chain.from_iterable(parts))
     # ADR-0039 S1 CAP-U@20
