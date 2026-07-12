@@ -221,20 +221,26 @@ def build_word_relations(
     compound_path: Path | str | None = None,
     replace_static: bool = True,
 ) -> dict[str, Any]:
-    """Collect static syn/ant rows in memory, then one bulk insert."""
+    """Collect+validate static/project tuples first, then clear and bulk insert.
+
+    P0: never delete committed sources before project TSV validation succeeds;
+    syn-conflict checks need the pre-replace DB graph.
+    """
     t0 = time.perf_counter()
     stats: dict[str, Any] = {"cleared": 0, "candidates": 0, "inserted": 0}
 
-    if replace_static:
-        for source_id in (*STATIC_SOURCES, *LEGACY_SOURCES):
-            stats["cleared"] += clear_word_relations_source(db, source_id)
-
+    # Collect while existing syn/ant rows are still present (fail-closed).
     rows = collect_static_relation_tuples(
         db,
         manifest_path=manifest_path,
         compound_path=compound_path,
     )
     stats["candidates"] = len(rows)
+
+    if replace_static:
+        for source_id in (*STATIC_SOURCES, *LEGACY_SOURCES):
+            stats["cleared"] += clear_word_relations_source(db, source_id)
+
     ins = insert_relation_records(db, rows)
     stats["inserted"] = ins["attempted"]
     stats["chunks"] = ins["chunks"]

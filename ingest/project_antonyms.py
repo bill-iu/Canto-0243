@@ -68,7 +68,9 @@ def ok_rate(ok_count: int, sample_n: int) -> float:
 
 
 def passes_quality_gate(ok_count: int, sample_n: int, *, threshold: float = OK_RATE_THRESHOLD) -> bool:
-    return sample_n > 0 and ok_rate(ok_count, sample_n) >= threshold
+    if sample_n <= 0 or ok_count < 0 or ok_count > sample_n:
+        return False
+    return ok_rate(ok_count, sample_n) >= threshold
 
 
 def _chars_with_relation_type(
@@ -258,6 +260,85 @@ def sample_pairs(
     return [ordered[i] for i in idxs]
 
 
+def static_ant_heads_from_port(port: Any = None) -> Set[str]:
+    """Heads with **靜態詞林埠** antonyms (CONTEXT § 直連反義)."""
+    if port is None:
+        from app.domain.thesaurus.port import StaticThesaurusPort
+
+        port = StaticThesaurusPort(auto_load=True)
+    port.ensure_loaded()
+    heads: Set[str] = set()
+    for head, _tail in port.iter_antonym_edges():
+        h = normalize_literal(head)
+        if h:
+            heads.add(h)
+    return heads
+
+
+def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
+    """Fail-closed: referenced batch must carry auditable fields."""
+    if not isinstance(entry, dict) or not entry:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] must be a non-empty object"
+        )
+    required = ("k", "sample_seed", "sample_n", "sample_ok", "model_note")
+    missing = [k for k in required if k not in entry]
+    if missing:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] missing fields: {', '.join(missing)}"
+        )
+    try:
+        k = int(entry["k"])
+        sample_seed = int(entry["sample_seed"])
+        sample_n = int(entry["sample_n"])
+        sample_ok = int(entry["sample_ok"])
+    except (TypeError, ValueError) as exc:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] numeric fields invalid: {exc}"
+        ) from exc
+    if k < 0 or sample_n <= 0 or sample_ok < 0 or sample_ok > sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] impossible sample counts "
+            f"(ok={sample_ok}, n={sample_n}, k={k})"
+        )
+    if not str(entry.get("model_note") or "").strip():
+        raise ProjectAntonymsError(f"{path}: batches[{batch_id!r}] model_note empty")
+    verdicts = entry.get("sample_verdicts")
+    if verdicts is None:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] missing sample_verdicts"
+        )
+    if not isinstance(verdicts, list) or len(verdicts) != sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_verdicts must be a list "
+            f"of length sample_n={sample_n}"
+        )
+    ok_n = 0
+    for i, row in enumerate(verdicts):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] not object"
+            )
+        for key in ("head", "tail", "verdict"):
+            if key not in row:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] missing {key}"
+                )
+        verdict = str(row["verdict"]).strip().lower()
+        if verdict not in ("ok", "fail"):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] "
+                f"verdict must be ok|fail"
+            )
+        if verdict == "ok":
+            ok_n += 1
+    if ok_n != sample_ok:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_ok={sample_ok} != "
+            f"verdicts ok count {ok_n}"
+        )
+
+
 def load_meta(path: Path | str = DEFAULT_META) -> dict[str, Any]:
     p = Path(path)
     if not p.is_file():
@@ -318,6 +399,7 @@ def parse_project_antonyms_tsv(
     out: List[ProjectAntPair] = []
     seen: Set[Tuple[str, str]] = set()
     per_head: Dict[str, int] = {}
+    validated_batches: Set[str] = set()
 
     for lineno, row in enumerate(reader, start=2):
         if not row or all(not c.strip() for c in row):
@@ -329,6 +411,9 @@ def parse_project_antonyms_tsv(
             raise ProjectAntonymsError(f"{p}:{lineno}: relation_type must be 'ant', got {rtype!r}")
         if not batch_id or batch_id not in batches:
             raise ProjectAntonymsError(f"{p}:{lineno}: unknown or empty batch_id {batch_id!r}")
+        if batch_id not in validated_batches:
+            validate_batch_meta_entry(batch_id, batches[batch_id], path=p)
+            validated_batches.add(batch_id)
         head = normalize_literal(head_raw)
         tail = normalize_literal(tail_raw)
         if not head or not tail:
@@ -445,7 +530,9 @@ __all__ = [
     "sample_pairs",
     "sample_size_for",
     "save_meta",
+    "static_ant_heads_from_port",
     "syn_pairs_from_db",
+    "validate_batch_meta_entry",
     "write_proposals_tsv",
     "write_seed_export",
 ]

@@ -187,3 +187,38 @@ export function sortAntPool(
     .filter((i) => shouldIncludeSynonym(query, i.char))
     .sort((a, b) => compareKeys(relevanceKey(query, a, morphemeChars, 'ant'), relevanceKey(query, b, morphemeChars, 'ant')));
 }
+
+/** ponytail: project_ant beats guotong on merge/_sort — `npx tsx client/scripts/relation-pool-self-check.ts` */
+export function projectAntRankingSelfCheck(): void {
+  if (!(sourceRank('project_ant') < sourceRank('guotong'))) {
+    throw new Error('projectAntRankingSelfCheck: project_ant must rank above guotong');
+  }
+  const base = {
+    relation: 'ant' as const,
+    in_db: true,
+    jyutping: '',
+    code: '',
+    group_codes: [] as string[],
+  };
+  const guotong: RelationPoolItem = {
+    ...base,
+    char: '留',
+    source: 'guotong',
+    score: 0.85,
+    _sort: finalScore('guotong', 0.85, true),
+  };
+  const project: RelationPoolItem = {
+    ...base,
+    char: '留',
+    source: 'project_ant',
+    score: 0.85,
+    _sort: finalScore('project_ant', 0.85, true),
+  };
+  if (!(project._sort < guotong._sort)) {
+    throw new Error(`projectAntRankingSelfCheck: _sort ${project._sort} vs ${guotong._sort}`);
+  }
+  const merged = mergeRelationPools([guotong], [project]);
+  if (merged.get('留')?.source !== 'project_ant') {
+    throw new Error(`projectAntRankingSelfCheck: merge kept ${merged.get('留')?.source}`);
+  }
+}

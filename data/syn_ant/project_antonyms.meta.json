@@ -2,20 +2,383 @@
   "batches": {
     "batch-20260713": {
       "k": 500,
-      "git_commit": "ff94e078631fcb9c176403b0964150f9b8260374",
-      "db_sha256": "a05b7ea541ddde7f1f0380744f55c37dde0a76caf6f7c7b9f3a486a4d13a3aa3",
+      "git_commit": "180e6ca2c9cfa57162cfdab5042524161dd80448",
+      "db_sha256": "3089d3f05b46c93560a7fc04f5754558dc9fbbad608d00198fe90f8a72cd04a1",
       "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
       "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
       "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
-      "model_note": "Cursor agent blind draft (chunked); maintainer A–D sample review",
+      "model_note": "Cursor agent blind draft (5 chunks, Grok/Cursor); maintainer A–D sample review",
+      "model": "cursor-agent-blind-draft",
+      "model_params": {
+        "chunks": 5,
+        "max_proposals_per_head": 3,
+        "seed_k": 500
+      },
       "sample_seed": 20260713,
       "sample_n": 50,
       "sample_ok": 44,
       "ok_rate": 0.88,
-      "accepted_pairs": 108,
+      "sample_parent": "filtered.tsv@batch-20260713 (N=153 before review)",
+      "sample_verdicts": [
+        {
+          "head": "不停",
+          "tail": "停止",
+          "verdict": "fail",
+          "reasons": [
+            "B: aspect/continuity not antonym"
+          ]
+        },
+        {
+          "head": "中間",
+          "tail": "兩邊",
+          "verdict": "fail",
+          "reasons": [
+            "B: spatial related not antonym"
+          ]
+        },
+        {
+          "head": "乾淨",
+          "tail": "骯髒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "以前",
+          "tail": "以後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "以前",
+          "tail": "將來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "似",
+          "tail": "唔似",
+          "verdict": "fail",
+          "reasons": [
+            "B: simple negation"
+          ]
+        },
+        {
+          "head": "似乎",
+          "tail": "確實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "凍",
+          "tail": "熱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "只有",
+          "tail": "不只",
+          "verdict": "fail",
+          "reasons": [
+            "B: simple negation"
+          ]
+        },
+        {
+          "head": "可",
+          "tail": "否",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹",
+          "tail": "吸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "周圍",
+          "tail": "中央",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "周圍",
+          "tail": "中心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大聲",
+          "tail": "細聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "姐姐",
+          "tail": "妹妹",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嬲",
+          "tail": "平靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "完全",
+          "tail": "部分",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "定",
+          "tail": "動",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "已經",
+          "tail": "尚未",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "得意",
+          "tail": "失意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怪",
+          "tail": "正常",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "成日",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "戴",
+          "tail": "除",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拜拜",
+          "tail": "你好",
+          "verdict": "fail",
+          "reasons": [
+            "A/B: greetings not antonyms"
+          ]
+        },
+        {
+          "head": "插",
+          "tail": "拔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搭",
+          "tail": "拆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "攬",
+          "tail": "推開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "放",
+          "tail": "捉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "放",
+          "tail": "收",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "最後",
+          "tail": "最初",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "決定",
+          "tail": "猶豫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爛",
+          "tail": "完整",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爸爸",
+          "tail": "媽媽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "眼前",
+          "tail": "背後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "着",
+          "tail": "脫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "突然",
+          "tail": "逐漸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "立即",
+          "tail": "稍後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第一",
+          "tail": "最後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繼續",
+          "tail": "停止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老師",
+          "tail": "學生",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落",
+          "tail": "上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "記得",
+          "tail": "遺忘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "走",
+          "tail": "留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "跟",
+          "tail": "帶領",
+          "verdict": "fail",
+          "reasons": [
+            "B: complementary roles not antonym"
+          ]
+        },
+        {
+          "head": "辛苦",
+          "tail": "輕鬆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "連",
+          "tail": "斷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過去",
+          "tail": "未來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "閂",
+          "tail": "開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面",
+          "tail": "背",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面前",
+          "tail": "背後",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "accepted_pairs": 100,
       "filtered_before_review": 153,
-      "removed_in_review": 45,
-      "created_at": "2026-07-12T18:42:02.367165+00:00"
+      "removed_sample_fails": 6,
+      "removed_post_sample_reaudit": [
+        {
+          "head": "姐姐",
+          "tail": "妹妹",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "仔",
+          "tail": "女",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "爸爸",
+          "tail": "媽媽",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "男人",
+          "tail": "女人",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "男朋友",
+          "tail": "女朋友",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "先生",
+          "tail": "女士",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "老師",
+          "tail": "學生",
+          "reason": "role/gradable re-audit"
+        },
+        {
+          "head": "得意",
+          "tail": "失意",
+          "reason": "role/gradable re-audit"
+        }
+      ],
+      "created_at": "2026-07-12T19:10:36.233335+00:00"
     }
   }
 }
