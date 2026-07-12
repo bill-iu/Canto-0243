@@ -1,0 +1,30 @@
+{
+  "baseline_commit": "89edbb39c855e84bb36063bdd86ed8e717332bed",
+  "freeze_git_commit": "89edbb39c855e84bb36063bdd86ed8e717332bed",
+  "k": 5000,
+  "batch_size": 500,
+  "batch_count": 10,
+  "exclude_sources": [
+    "ant_cilin_exanded",
+    "ant_syn_bridge",
+    "ant_syn_mirror",
+    "manual_ant_mirror",
+    "project_ant"
+  ],
+  "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+  "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+  "thesaurus_ant_sha256": "85563b52c718eb7f04cf1fde616b0e1e0865aac6bc8725c3843a05a3741d4e13",
+  "batch_counts": {
+    "1": 500,
+    "2": 500,
+    "3": 500,
+    "4": 500,
+    "5": 500,
+    "6": 500,
+    "7": 500,
+    "8": 500,
+    "9": 500,
+    "10": 500
+  },
+  "manifest_sha256": "edb069af5806c59d28b664e060c0251aa42e689fc877f404eb659c68b0efac54"
+}

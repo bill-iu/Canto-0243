@@ -368,6 +368,122 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
+def cmd_campaign_freeze(args: argparse.Namespace) -> int:
+    """Freeze Top-5000 campaign manifest (exclude project_ant from ranking)."""
+    from ingest.project_antonyms_campaign import (
+        CAMPAIGN_BASELINE_COMMIT,
+        assert_first_batch_matches_seeds,
+        build_campaign_meta,
+        ensure_no_natural_tsv,
+        rank_campaign_heads,
+        write_campaign_manifest,
+    )
+
+    load_essay_corpus()
+    db = _session(Path(args.db))
+    try:
+        membership = load_db_char_set(db)
+        static_heads = static_ant_heads_from_port()
+        heads = rank_campaign_heads(
+            db,
+            essay_freq=get_essay_frequency,
+            membership=membership,
+            static_ant_heads=static_heads,
+        )
+    finally:
+        db.close()
+
+    if args.reference_seeds:
+        seeds = [
+            ln.strip()
+            for ln in Path(args.reference_seeds).read_text(encoding="utf-8").splitlines()
+            if ln.strip()
+        ]
+        try:
+            assert_first_batch_matches_seeds(heads, seeds)
+        except ProjectAntonymsError as exc:
+            print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+            return 1
+
+    meta = build_campaign_meta(
+        heads=heads,
+        db_path=args.db,
+        baseline_commit=args.baseline_commit or CAMPAIGN_BASELINE_COMMIT,
+    )
+    write_campaign_manifest(
+        heads,
+        meta,
+        tsv_path=args.out_tsv,
+        meta_path=args.out_meta,
+    )
+    no_natural_created = False
+    if args.init_no_natural:
+        # ponytail: create-if-missing only — never wipe reviewed no-natural rows
+        no_natural_created = ensure_no_natural_tsv(args.no_natural)
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "k": len(heads),
+                "first_head": heads[0].head if heads else None,
+                "last_head": heads[-1].head if heads else None,
+                "manifest_sha256": load_campaign_meta_sha(args.out_meta),
+                "out_tsv": str(args.out_tsv),
+                "out_meta": str(args.out_meta),
+                "no_natural_created": no_natural_created,
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
+def load_campaign_meta_sha(meta_path: str) -> str:
+    from ingest.project_antonyms_campaign import load_campaign_meta
+
+    return str(load_campaign_meta(meta_path).get("manifest_sha256") or "")
+
+
+def cmd_campaign_validate(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms_campaign import (
+        accepted_coverage_heads,
+        assert_no_terminal_conflict,
+        parse_campaign_manifest,
+        parse_no_natural_tsv,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        campaign = {h.head for h in heads}
+        no_nat = parse_no_natural_tsv(
+            args.no_natural,
+            campaign_heads=campaign,
+            require_file=True,
+        )
+        covered = accepted_coverage_heads(args.accepted_tsv)
+        assert_no_terminal_conflict(
+            accepted_heads=covered & campaign,
+            no_natural_heads={h for h, _, _ in no_nat},
+        )
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "manifest_heads": len(heads),
+                "no_natural_rows": len(no_nat),
+                "accepted_covered_in_campaign": len(covered & campaign),
+                "batch_1_first": heads[0].head,
+                "batch_1_last": heads[499].head,
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="專案自建反義 batch tools")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -414,6 +530,48 @@ def main(argv: list[str] | None = None) -> int:
         help="Re-run build-word-relations twice and compare project_ant fingerprint",
     )
     p_rep.set_defaults(func=cmd_report)
+
+    from ingest.project_antonyms_campaign import (
+        DEFAULT_MANIFEST_META,
+        DEFAULT_MANIFEST_TSV,
+        DEFAULT_NO_NATURAL_TSV,
+        CAMPAIGN_BASELINE_COMMIT,
+    )
+
+    p_cf = sub.add_parser(
+        "campaign-freeze",
+        help="Freeze Top-5000 campaign manifest (exclude project_ant)",
+    )
+    p_cf.add_argument("--db", default=str(ROOT / "lyrics.db"))
+    p_cf.add_argument("--out-tsv", default=str(DEFAULT_MANIFEST_TSV))
+    p_cf.add_argument("--out-meta", default=str(DEFAULT_MANIFEST_META))
+    p_cf.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_cf.add_argument(
+        "--init-no-natural",
+        action="store_true",
+        default=True,
+        help="Create empty no-natural TSV only if missing (default; never overwrite)",
+    )
+    p_cf.add_argument(
+        "--no-init-no-natural",
+        action="store_false",
+        dest="init_no_natural",
+        help="Do not create no-natural TSV even if missing",
+    )
+    p_cf.add_argument("--baseline-commit", default=CAMPAIGN_BASELINE_COMMIT)
+    p_cf.add_argument(
+        "--reference-seeds",
+        default="",
+        help="Optional seeds.txt; first 500 must match exactly",
+    )
+    p_cf.set_defaults(func=cmd_campaign_freeze)
+
+    p_cv = sub.add_parser("campaign-validate", help="Validate frozen campaign + no-natural")
+    p_cv.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
+    p_cv.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
+    p_cv.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_cv.add_argument("--accepted-tsv", default=str(DEFAULT_TSV))
+    p_cv.set_defaults(func=cmd_campaign_validate)
 
     args = parser.parse_args(argv)
     return int(args.func(args))

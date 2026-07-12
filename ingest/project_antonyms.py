@@ -133,12 +133,16 @@ def chars_with_direct_ant(
     db: Session,
     *,
     static_ant_heads: Optional[Iterable[str]] = None,
+    exclude_sources: Optional[Iterable[str]] = None,
 ) -> Set[str]:
-    """直連反義頭（排除 DERIVED_ANT_SOURCES）；可合併靜態詞林埠有反義嘅頭。"""
+    """直連反義頭（排除 DERIVED_ANT_SOURCES ± extra）；可合併靜態詞林埠有反義嘅頭。"""
+    excluded = set(DERIVED_ANT_SOURCES)
+    if exclude_sources:
+        excluded |= {s for s in exclude_sources if s}
     chars = _chars_with_relation_type(
         db,
         "ant",
-        exclude_sources=set(DERIVED_ANT_SOURCES),
+        exclude_sources=excluded,
     )
     if static_ant_heads:
         chars |= {h for h in static_ant_heads if h}
