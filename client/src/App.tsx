@@ -172,6 +172,8 @@ function App() {
   const loadSearchTabUi = useCallback(
     (tab: typeof activeTab, live: boolean) => {
       if (!tab || tab.view !== VIEW.SEARCH) return;
+      // Keep unsynced until searchQuery catches up — marking synced here lets a
+      // stale empty query from the previous tab overwrite this tab's title/q.
       syncedTabIdRef.current = null;
       hydrateSearch(tab.q || '');
       const useLive = live || initialBootstrap.forceLive;
@@ -181,7 +183,6 @@ function App() {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
         setCachedTotal(tab.total ?? null);
-        syncedTabIdRef.current = tab.id;
       } else {
         // New / live tab: clear prior tab's chips until results arrive
         setDisplayResults([]);
@@ -333,8 +334,12 @@ function App() {
 
   useEffect(() => {
     if (!useLiveFetch || view !== 'search' || searchLoading) return;
-    if (syncedTabIdRef.current !== activeTab?.id) return;
-    patchSearchTab(activeTab!.id, {
+    if (!activeTab || activeTab.view !== VIEW.SEARCH) return;
+    if (syncedTabIdRef.current !== activeTab.id) return;
+    // Guard tab-switch race: searchQuery may still be the previous tab's value
+    // for one render while activeTab already points at the restored tab.
+    if (searchQuery !== (activeTab.q || '').trim()) return;
+    patchSearchTab(activeTab.id, {
       q: searchQuery,
       results,
       total,
