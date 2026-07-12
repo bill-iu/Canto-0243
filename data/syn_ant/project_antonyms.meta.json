@@ -2,14 +2,19 @@
   "batches": {
     "batch-20260713": {
       "k": 500,
-      "git_commit": "c9ad32846dc3946342da1e4ea8d8704aa723ba11",
-      "db_sha256": "d459f40b97911777c68f43b4b58ff869ba7210170b3caf4e81b3f8f41225814f",
+      "git_commit": "d8f0db6c53167981e9a1d091a5c9fa7bd1fc8bce",
+      "db_sha256": "268e340e359f7e5739861379ad806b3c497c6f9cb5ef2704cd7cefdb8b000141",
       "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
       "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
       "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
-      "model_note": "Cursor agent blind draft; final-list A–D sample review",
-      "model": "cursor-agent-blind-draft",
+      "model_note": "Blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=100; generation temperature/top_p not exposed by Cursor agent UI",
+      "model": "xai/grok-4.5",
       "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
         "chunks": 5,
         "max_proposals_per_head": 3,
         "seed_k": 500,
@@ -343,7 +348,9 @@
           ]
         }
       ],
-      "created_at": "2026-07-12T19:26:55.378821+00:00"
+      "created_at": "2026-07-12T19:26:55.378821+00:00",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5"
     }
   }
 }

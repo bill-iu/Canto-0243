@@ -62,8 +62,10 @@ def _batch_meta(
                 "sample_n": sample_n,
                 "sample_ok": sample_ok,
                 "model_note": "test fixture",
-                "model": "test-model",
-                "model_params": {"seed_k": 500},
+                "model": "xai/grok-test",
+                "model_provider": "xAI",
+                "model_version": "grok-test",
+                "model_params": {"temperature": None, "top_p": None, "seed_k": 500},
                 "git_commit": "deadbeef",
                 "db_sha256": "a" * 64,
                 "essay_sha256": "b" * 64,
@@ -466,8 +468,52 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
                 "ingest.word_relations_build.cap_undirected_syn_tuples",
                 side_effect=lambda rows: list(rows),
             ):
-                collect_static_relation_tuples(db)
+                collect_static_relation_tuples(db, replace_static=True)
             self.assertIn(pair_undirected_key("大", "小"), captured["syn"])
+
+    def test_append_mode_includes_preserved_static_db_syn(self):
+        """P1: --append keeps static DB syn, so they must join conflict validation."""
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="大", code="0", jyutping="", length=1),
+                Word(id=2, char="小", code="2", jyutping="", length=1),
+            ])
+            db.add(
+                WordRelation(
+                    word_id=1, related_id=2, relation_type="syn", source="cilin", score=0.9
+                )
+            )
+            db.commit()
+            captured: dict = {}
+
+            def capture_project(db, *, syn_pairs=None, **_k):
+                captured["syn"] = set(syn_pairs or ())
+                return []
+
+            patches = dict(
+                load_manifest=mock.Mock(return_value={}),
+                select_sources=mock.Mock(
+                    return_value=[{"parser": "current_static", "paths": {}, "source_rank": 70}]
+                ),
+                StaticThesaurusPort=mock.Mock(),
+                collect_guotong_flat_edges=mock.Mock(return_value=[]),
+                normalize_edges=mock.Mock(return_value=[]),
+                merge_staging_edges=mock.Mock(return_value=[]),
+                load_compound_antonyms=mock.Mock(return_value=[]),
+                collect_flat_relation_tuples=mock.Mock(return_value=[]),
+                collect_compound_ant_tuples=mock.Mock(return_value=[]),
+                collect_project_ant_tuples=capture_project,
+                cap_undirected_syn_tuples=lambda rows: list(rows),
+            )
+            with mock.patch.multiple("ingest.word_relations_build", **patches):
+                collect_static_relation_tuples(db, replace_static=False)
+            self.assertIn(pair_undirected_key("大", "小"), captured["syn"])
+
+            with mock.patch.multiple("ingest.word_relations_build", **patches):
+                collect_static_relation_tuples(db, replace_static=True)
+            # Replace mode excludes preserved cilin DB syn (cleared later).
+            self.assertNotIn(pair_undirected_key("大", "小"), captured["syn"])
 
 
 class ProjectAntonymsLiveReportTests(unittest.TestCase):

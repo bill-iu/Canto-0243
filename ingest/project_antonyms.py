@@ -312,6 +312,8 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         "sample_ok",
         "model_note",
         "model",
+        "model_provider",
+        "model_version",
         "model_params",
         "git_commit",
         "db_sha256",
@@ -338,13 +340,34 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
             f"{path}: batches[{batch_id!r}] impossible sample counts "
             f"(ok={sample_ok}, n={sample_n}, k={k})"
         )
-    for key in ("model_note", "model", "git_commit", "db_sha256", "essay_sha256", "prompt_path", "prompt_sha256"):
+    for key in (
+        "model_note",
+        "model",
+        "model_provider",
+        "model_version",
+        "git_commit",
+        "db_sha256",
+        "essay_sha256",
+        "prompt_path",
+        "prompt_sha256",
+    ):
         if not str(entry.get(key) or "").strip():
             raise ProjectAntonymsError(f"{path}: batches[{batch_id!r}] {key} empty")
+    model = str(entry["model"]).strip()
+    if "/" not in model or model.lower().startswith("cursor-agent"):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] model must be provider/model "
+            f"(not a workflow label), got {model!r}"
+        )
     params = entry.get("model_params")
     if not isinstance(params, dict) or not params:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] model_params must be a non-empty object"
+        )
+    if not any(k in params for k in ("temperature", "top_p", "max_output_tokens")):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] model_params must record generation "
+            f"controls (temperature/top_p/max_output_tokens; null allowed)"
         )
     verdicts = entry.get("sample_verdicts")
     if verdicts is None:

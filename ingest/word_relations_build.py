@@ -175,6 +175,7 @@ def collect_static_relation_tuples(
     *,
     manifest_path: Path | str | None = None,
     compound_path: Path | str | None = None,
+    replace_static: bool = True,
 ) -> List[RelationTuple]:
     manifest = load_manifest(manifest_path or DEFAULT_MANIFEST)
     sources = select_sources(manifest, defaults_only=True)
@@ -208,16 +209,15 @@ def collect_static_relation_tuples(
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
     ]
-    # P0: project syn-conflict must see same-round static syn, not only pre-build DB.
+    # P0/P1: same-round static syn ∪ DB syn that will still exist after this build.
+    # Replace mode clears static/legacy, so those DB rows are excluded; append keeps them.
     id_to_char = {int(i): c for c, i in char_to_id.items()}
     new_static_syn = syn_pairs_from_tuples(
         itertools.chain.from_iterable(static_parts),
         id_to_char,
     )
-    kept_db_syn = syn_pairs_from_db(
-        db,
-        exclude_sources=(*STATIC_SOURCES, *LEGACY_SOURCES),
-    )
+    exclude_db = (*STATIC_SOURCES, *LEGACY_SOURCES) if replace_static else ()
+    kept_db_syn = syn_pairs_from_db(db, exclude_sources=exclude_db)
     project_rows = collect_project_ant_tuples(
         db,
         syn_pairs=new_static_syn | kept_db_syn,
@@ -239,7 +239,7 @@ def build_word_relations(
     """Collect+validate static/project tuples first, then clear and bulk insert.
 
     P0: never delete committed sources before project TSV validation succeeds;
-    syn-conflict checks use same-round static syn ∪ non-replaced DB syn.
+    syn-conflict checks use same-round static syn ∪ DB syn retained by this mode.
     """
     t0 = time.perf_counter()
     stats: dict[str, Any] = {"cleared": 0, "candidates": 0, "inserted": 0}
@@ -249,6 +249,7 @@ def build_word_relations(
         db,
         manifest_path=manifest_path,
         compound_path=compound_path,
+        replace_static=replace_static,
     )
     stats["candidates"] = len(rows)
 

@@ -306,10 +306,11 @@ def cmd_report(args: argparse.Namespace) -> int:
                     str(rtype),
                     str(src or ""),
                     float(score) if score is not None else None,
+                    str(group_codes or ""),
                 )
-                for a, b, rtype, src, score in session.execute(
+                for a, b, rtype, src, score, group_codes in session.execute(
                     text(
-                        "SELECT word_id, related_id, relation_type, source, score "
+                        "SELECT word_id, related_id, relation_type, source, score, group_codes "
                         f"FROM word_relations WHERE source IN ({placeholders}) "
                         "ORDER BY word_id, related_id, relation_type, source"
                     ),
