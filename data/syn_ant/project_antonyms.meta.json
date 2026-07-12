@@ -351,7 +351,7 @@
       "model_provider": "xAI",
       "model_version": "grok-4.5",
       "sample_parent_commit": "c9ad32846dc3946342da1e4ea8d8704aa723ba11",
-      "sample_parent_tsv_sha256": "01675f8859e8b864685ecd6fe4912c104ecaf7d12de8933c87b1243e2a067d1a",
+      "sample_parent_tsv_sha256": "14f19cfca9bb4ada1d20f09ea4650872f3758e4bdfdbb457384af3c867bf78b4",
       "sample_parent_n": 100
     }
   }

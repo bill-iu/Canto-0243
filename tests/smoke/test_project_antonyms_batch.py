@@ -43,6 +43,7 @@ def _batch_meta(
     verdict: str = "ok",
     sample_ok: int | None = None,
     sample_n: int = 1,
+    removed_sample_fails: list | None = None,
 ) -> dict:
     """Minimal auditable batch object for fixtures."""
     if sample_ok is None:
@@ -54,6 +55,8 @@ def _batch_meta(
     if sample_n > 1 and sample_ok < sample_n:
         for i in range(sample_ok, sample_n):
             verdicts[i]["verdict"] = "fail"
+    removed = list(removed_sample_fails or [])
+    parent_n = sample_n if sample_n > 1 else 1 + len(removed)
     return {
         "batches": {
             batch_id: {
@@ -61,10 +64,10 @@ def _batch_meta(
                 "sample_seed": 1,
                 "sample_n": sample_n,
                 "sample_ok": sample_ok,
-                "sample_parent_n": sample_n,
+                "sample_parent_n": parent_n,
                 "sample_parent_commit": "a" * 40,
-                "sample_parent_tsv_sha256": "b" * 64,
-                "removed_sample_fails": [],
+                "sample_parent_tsv_sha256": "b" * 64,  # filled by _with_fixture_git_blob
+                "removed_sample_fails": removed,
                 "model_note": "test fixture",
                 "model": "xai/grok-test",
                 "model_provider": "xAI",
@@ -84,6 +87,31 @@ def _batch_meta(
             }
         }
     }
+
+
+def _fixture_parent_blob(meta: dict, *, accepted: list[tuple[str, str]] | None = None) -> bytes:
+    batch_id, batch = next(iter(meta["batches"].items()))
+    removed = [
+        (str(r["head"]).strip(), str(r["tail"]).strip())
+        for r in batch["removed_sample_fails"]
+    ]
+    if accepted is None:
+        v0 = batch["sample_verdicts"][0]
+        accepted_n = int(batch["sample_parent_n"]) - len(removed)
+        accepted = [(v0["head"], v0["tail"])] * accepted_n
+    pairs = list(accepted) + removed
+    body = "head\ttail\trelation_type\tbatch_id\n" + "".join(
+        f"{h}\t{t}\tant\t{batch_id}\n" for h, t in pairs
+    )
+    return body.encode("utf-8")
+
+
+def _with_fixture_git_blob(meta: dict, *, accepted: list[tuple[str, str]] | None = None):
+    """Patch git blob reader; stamp sample_parent_tsv_sha256 to match fixture blob."""
+    blob = _fixture_parent_blob(meta, accepted=accepted)
+    batch = next(iter(meta["batches"].values()))
+    batch["sample_parent_tsv_sha256"] = __import__("hashlib").sha256(blob).hexdigest()
+    return mock.patch("ingest.project_antonyms._read_git_blob", return_value=blob)
 
 
 class ProjectAntonymsBatchTests(unittest.TestCase):
@@ -246,6 +274,42 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
             validate_batch_meta_entry("batch-1", weak_hash, path=path)
         self.assertIn("40-hex", str(ctx.exception))
 
+    def test_fail_verdict_must_be_removed_from_accepted(self):
+        """P1: sampled fail pairs cannot remain in the authoritative TSV."""
+        with tempfile.TemporaryDirectory() as tmp:
+            tsv = Path(tmp) / "p.tsv"
+            tsv.write_text(
+                "head\ttail\trelation_type\tbatch_id\n"
+                "好\t壞\tant\tbatch-1\n"
+                "大\t小\tant\tbatch-1\n",
+                encoding="utf-8",
+            )
+            meta = _batch_meta(head="好", tail="壞")
+            batch = meta["batches"]["batch-1"]
+            batch["sample_n"] = 2
+            batch["sample_ok"] = 1
+            batch["sample_parent_n"] = 2
+            batch["sample_seed"] = 1
+            batch["sample_verdicts"] = [
+                {"head": "好", "tail": "壞", "verdict": "ok", "reasons": []},
+                {"head": "大", "tail": "小", "verdict": "fail", "reasons": ["B"]},
+            ]
+            batch["removed_sample_fails"] = []
+            with mock.patch(
+                "ingest.project_antonyms.passes_quality_gate", return_value=True
+            ), _with_fixture_git_blob(meta, accepted=[("好", "壞"), ("大", "小")]):
+                with self.assertRaises(ProjectAntonymsError) as ctx:
+                    parse_project_antonyms_tsv(tsv, meta=meta)
+            self.assertIn("removed_sample_fails", str(ctx.exception))
+
+            batch["removed_sample_fails"] = [{"head": "大", "tail": "小", "reasons": ["B"]}]
+            with mock.patch(
+                "ingest.project_antonyms.passes_quality_gate", return_value=True
+            ), _with_fixture_git_blob(meta, accepted=[("好", "壞")]):
+                with self.assertRaises(ProjectAntonymsError) as ctx:
+                    parse_project_antonyms_tsv(tsv, meta=meta)
+            self.assertIn("still in accepted", str(ctx.exception))
+
     def test_proposal_parser_rejects_stripped_empty_columns(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "prop.tsv"
@@ -267,15 +331,17 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 tsv = Path(tmp) / "project_antonyms.tsv"
                 meta_path = Path(tmp) / "project_antonyms.meta.json"
-                meta_path.write_text(
-                    json.dumps(_batch_meta(head="小", tail="大"), ensure_ascii=False),
-                    encoding="utf-8",
-                )
-                tsv.write_text(
-                    "head\ttail\trelation_type\tbatch_id\n小\t大\tant\tbatch-1\n",
-                    encoding="utf-8",
-                )
-                rows = collect_project_ant_tuples(db, tsv_path=tsv, meta_path=meta_path)
+                meta = _batch_meta(head="小", tail="大")
+                with _with_fixture_git_blob(meta, accepted=[("小", "大")]):
+                    meta_path.write_text(
+                        json.dumps({"batches": meta["batches"]}, ensure_ascii=False),
+                        encoding="utf-8",
+                    )
+                    tsv.write_text(
+                        "head\ttail\trelation_type\tbatch_id\n小\t大\tant\tbatch-1\n",
+                        encoding="utf-8",
+                    )
+                    rows = collect_project_ant_tuples(db, tsv_path=tsv, meta_path=meta_path)
                 self.assertEqual(len(rows), 1)
                 self.assertEqual(rows[0][0], 1)
                 self.assertEqual(rows[0][1], 2)
@@ -351,22 +417,24 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 tsv = Path(tmp) / "project_antonyms.tsv"
                 meta_path = Path(tmp) / "project_antonyms.meta.json"
-                meta_path.write_text(
-                    json.dumps(_batch_meta(head="大", tail="小"), ensure_ascii=False),
-                    encoding="utf-8",
-                )
-                tsv.write_text(
-                    "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
-                    encoding="utf-8",
-                )
-                with mock.patch(
-                    "ingest.word_relations_build.collect_static_relation_tuples",
-                    side_effect=lambda db, **_k: collect_project_ant_tuples(
-                        db, tsv_path=tsv, meta_path=meta_path
-                    ),
-                ):
-                    with self.assertRaises(ProjectAntonymsError):
-                        build_word_relations(db)
+                meta = _batch_meta(head="大", tail="小")
+                with _with_fixture_git_blob(meta, accepted=[("大", "小")]):
+                    meta_path.write_text(
+                        json.dumps({"batches": meta["batches"]}, ensure_ascii=False),
+                        encoding="utf-8",
+                    )
+                    tsv.write_text(
+                        "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
+                        encoding="utf-8",
+                    )
+                    with mock.patch(
+                        "ingest.word_relations_build.collect_static_relation_tuples",
+                        side_effect=lambda db, **_k: collect_project_ant_tuples(
+                            db, tsv_path=tsv, meta_path=meta_path
+                        ),
+                    ):
+                        with self.assertRaises(ProjectAntonymsError):
+                            build_word_relations(db)
             after = {
                 (r.word_id, r.related_id, r.relation_type, r.source)
                 for r in db.query(WordRelation).all()
@@ -428,26 +496,27 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
             with tempfile.TemporaryDirectory() as tmp:
                 tsv = Path(tmp) / "project_antonyms.tsv"
                 meta_path = Path(tmp) / "project_antonyms.meta.json"
-                meta_path.write_text(
-                    json.dumps(_batch_meta(head="大", tail="小"), ensure_ascii=False),
-                    encoding="utf-8",
-                )
-                tsv.write_text(
-                    "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
-                    encoding="utf-8",
-                )
-                with self.assertRaises(ProjectAntonymsError) as ctx:
-                    collect_project_ant_tuples(
-                        db,
-                        tsv_path=tsv,
-                        meta_path=meta_path,
-                        syn_pairs=new_syn,
+                meta = _batch_meta(head="大", tail="小")
+                with _with_fixture_git_blob(meta, accepted=[("大", "小")]):
+                    meta_path.write_text(
+                        json.dumps({"batches": meta["batches"]}, ensure_ascii=False),
+                        encoding="utf-8",
                     )
-                self.assertIn("syn conflict", str(ctx.exception))
-                # Without same-round syn, empty DB would accept the pair.
-                rows = collect_project_ant_tuples(
-                    db, tsv_path=tsv, meta_path=meta_path, syn_pairs=set()
-                )
+                    tsv.write_text(
+                        "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
+                        encoding="utf-8",
+                    )
+                    with self.assertRaises(ProjectAntonymsError) as ctx:
+                        collect_project_ant_tuples(
+                            db,
+                            tsv_path=tsv,
+                            meta_path=meta_path,
+                            syn_pairs=new_syn,
+                        )
+                    self.assertIn("syn conflict", str(ctx.exception))
+                    rows = collect_project_ant_tuples(
+                        db, tsv_path=tsv, meta_path=meta_path, syn_pairs=set()
+                    )
                 self.assertEqual(len(rows), 1)
 
     def test_collect_static_passes_same_round_syn_union(self):

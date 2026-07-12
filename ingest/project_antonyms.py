@@ -10,6 +10,7 @@ import json
 import math
 import random
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Set, Tuple
@@ -475,6 +476,36 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         )
 
 
+def _read_git_blob(commit: str, rel_path: str) -> Optional[bytes]:
+    """Return `git show commit:path` bytes when the object is available."""
+    if not (ROOT / ".git").exists():
+        return None
+    try:
+        return subprocess.check_output(
+            ["git", "-C", str(ROOT), "show", f"{commit}:{rel_path}"],
+            stderr=subprocess.DEVNULL,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        return None
+
+
+def _tsv_pair_rows(raw: bytes) -> List[Tuple[str, str]]:
+    text = raw.decode("utf-8")
+    if text.startswith("\ufeff"):
+        text = text[1:]
+    rows: List[Tuple[str, str]] = []
+    for i, line in enumerate(text.splitlines()):
+        if not line.strip():
+            continue
+        if i == 0 and line == "head\ttail\trelation_type\tbatch_id":
+            continue
+        parts = line.split("\t")
+        if len(parts) < 2:
+            continue
+        rows.append((parts[0].strip(), parts[1].strip()))
+    return rows
+
+
 def assert_sample_replayable(
     batch_id: str,
     entry: dict[str, Any],
@@ -482,8 +513,33 @@ def assert_sample_replayable(
     *,
     path: Path,
 ) -> None:
-    """Replay sample from accepted TSV ∪ removed_sample_fails (self-contained)."""
+    """Replay sample + enforce fail removal + bind parent hash when git blob exists."""
     removed = entry["removed_sample_fails"]
+    removed_keys = {
+        pair_undirected_key(str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed
+    }
+    accepted_keys = {pair_undirected_key(p.head, p.tail) for p in accepted}
+    fail_keys: Set[Tuple[str, str]] = set()
+    for i, row in enumerate(entry["sample_verdicts"]):
+        if str(row["verdict"]).strip().lower() != "fail":
+            continue
+        key = pair_undirected_key(str(row["head"]).strip(), str(row["tail"]).strip())
+        fail_keys.add(key)
+        if key not in removed_keys:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] sample_verdicts[{i}] fail "
+                f"{key} missing from removed_sample_fails"
+            )
+        if key in accepted_keys:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] fail pair {key} still in accepted TSV"
+            )
+    if removed_keys - fail_keys:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] removed_sample_fails has pairs "
+            f"not marked fail in sample_verdicts: {sorted(removed_keys - fail_keys)}"
+        )
+
     parent: List[Tuple[str, str]] = [(p.head, p.tail) for p in accepted]
     parent.extend((str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed)
     parent_n = int(entry["sample_parent_n"])
@@ -492,6 +548,34 @@ def assert_sample_replayable(
             f"{path}: batches[{batch_id!r}] reconstructed parent size "
             f"{len(parent)} != sample_parent_n={parent_n}"
         )
+    parent_keys = {pair_undirected_key(h, t) for h, t in parent}
+    if len(parent_keys) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent has duplicates"
+        )
+
+    expected_hash = str(entry["sample_parent_tsv_sha256"]).strip().lower()
+    commit = str(entry["sample_parent_commit"]).strip().lower()
+    blob = _read_git_blob(commit, "data/syn_ant/project_antonyms.tsv")
+    if blob is None:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] cannot read git blob "
+            f"{commit}:data/syn_ant/project_antonyms.tsv to verify "
+            f"sample_parent_tsv_sha256"
+        )
+    got_hash = hashlib.sha256(blob).hexdigest()
+    if got_hash != expected_hash:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_parent_tsv_sha256 mismatch: "
+            f"meta={expected_hash} git={got_hash}"
+        )
+    git_keys = {pair_undirected_key(h, t) for h, t in _tsv_pair_rows(blob)}
+    if git_keys != parent_keys:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent set != "
+            f"git TSV at sample_parent_commit"
+        )
+
     sampled = sample_pairs(parent, seed=int(entry["sample_seed"]))
     expected = [
         (str(v["head"]).strip(), str(v["tail"]).strip()) for v in entry["sample_verdicts"]
