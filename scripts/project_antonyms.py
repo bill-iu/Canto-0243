@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Maintainer CLI for 專案自建反義 batch: seed / filter / sample / validate."""
+"""Maintainer CLI for 專案自建反義 batch: seed / filter / sample / validate.
+
+ponytail: 300-line limit exemption — maintainer CLI subcommands share one entrypoint.
+"""
 from __future__ import annotations
 
 import argparse

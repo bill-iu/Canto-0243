@@ -1,4 +1,7 @@
-"""專案自建反義：種子／過濾／抽樣／清單 loader（CONTEXT § 專案自建反義*）。"""
+"""專案自建反義：種子／過濾／抽樣／清單 loader（CONTEXT § 專案自建反義*）。
+
+ponytail: 300-line limit exemption — batch meta fail-closed audit + TSV loader stay co-located for one trust boundary.
+"""
 from __future__ import annotations
 
 import csv
@@ -6,6 +9,7 @@ import hashlib
 import json
 import math
 import random
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Set, Tuple
@@ -33,6 +37,13 @@ MAX_PROPOSALS_PER_HEAD = 3
 MAX_ACCEPTED_PER_HEAD = 5
 DEFAULT_SEED_K = 500
 OK_RATE_THRESHOLD = 0.85
+
+_GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_MODEL_PROVIDER_RE = re.compile(r"^[a-z][a-z0-9-]{1,31}$")
+_MODEL_NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._+-]{0,63}$")
+_WORKFLOW_MODEL_TOKENS = ("agent", "blind", "draft", "workflow", "cursor")
+_GEN_CONTROL_KEYS = ("temperature", "top_p", "max_output_tokens")
 
 
 class ProjectAntonymsError(ValueError):
@@ -299,6 +310,35 @@ def static_ant_heads_from_port(port: Any = None) -> Set[str]:
     return heads
 
 
+def _is_auditable_model_id(model: str) -> bool:
+    """provider/model vendor id — reject workflow labels like 'Cursor Agent/blind-draft'."""
+    if " " in model or model.count("/") != 1:
+        return False
+    provider, name = model.split("/", 1)
+    if not _MODEL_PROVIDER_RE.fullmatch(provider) or not _MODEL_NAME_RE.fullmatch(name):
+        return False
+    blob = model.lower()
+    return not any(tok in blob for tok in _WORKFLOW_MODEL_TOKENS)
+
+
+def _require_sha1(value: Any, *, field: str, path: Path, batch_id: str) -> str:
+    text = str(value or "").strip().lower()
+    if not _GIT_SHA1_RE.fullmatch(text):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] {field} must be 40-hex git sha1"
+        )
+    return text
+
+
+def _require_sha256(value: Any, *, field: str, path: Path, batch_id: str) -> str:
+    text = str(value or "").strip().lower()
+    if not _SHA256_RE.fullmatch(text):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] {field} must be 64-hex sha256"
+        )
+    return text
+
+
 def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
     """Fail-closed: referenced batch must carry auditable fields + ≥85% gate."""
     if not isinstance(entry, dict) or not entry:
@@ -310,6 +350,10 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         "sample_seed",
         "sample_n",
         "sample_ok",
+        "sample_parent_n",
+        "sample_parent_commit",
+        "sample_parent_tsv_sha256",
+        "removed_sample_fails",
         "model_note",
         "model",
         "model_provider",
@@ -331,6 +375,7 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         sample_seed = int(entry["sample_seed"])
         sample_n = int(entry["sample_n"])
         sample_ok = int(entry["sample_ok"])
+        sample_parent_n = int(entry["sample_parent_n"])
     except (TypeError, ValueError) as exc:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] numeric fields invalid: {exc}"
@@ -340,35 +385,55 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
             f"{path}: batches[{batch_id!r}] impossible sample counts "
             f"(ok={sample_ok}, n={sample_n}, k={k})"
         )
-    for key in (
-        "model_note",
-        "model",
-        "model_provider",
-        "model_version",
-        "git_commit",
-        "db_sha256",
-        "essay_sha256",
-        "prompt_path",
-        "prompt_sha256",
-    ):
+    if sample_parent_n < sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_parent_n={sample_parent_n} "
+            f"< sample_n={sample_n}"
+        )
+    for key in ("model_note", "model", "model_provider", "model_version", "prompt_path"):
         if not str(entry.get(key) or "").strip():
             raise ProjectAntonymsError(f"{path}: batches[{batch_id!r}] {key} empty")
     model = str(entry["model"]).strip()
-    if "/" not in model or model.lower().startswith("cursor-agent"):
+    if not _is_auditable_model_id(model):
         raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] model must be provider/model "
-            f"(not a workflow label), got {model!r}"
+            f"{path}: batches[{batch_id!r}] model must be auditable "
+            f"provider/model id, got {model!r}"
         )
+    _require_sha1(entry["git_commit"], field="git_commit", path=path, batch_id=batch_id)
+    _require_sha1(
+        entry["sample_parent_commit"],
+        field="sample_parent_commit",
+        path=path,
+        batch_id=batch_id,
+    )
+    for field in ("db_sha256", "essay_sha256", "prompt_sha256", "sample_parent_tsv_sha256"):
+        _require_sha256(entry[field], field=field, path=path, batch_id=batch_id)
     params = entry.get("model_params")
     if not isinstance(params, dict) or not params:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] model_params must be a non-empty object"
         )
-    if not any(k in params for k in ("temperature", "top_p", "max_output_tokens")):
+    missing_controls = [k for k in _GEN_CONTROL_KEYS if k not in params]
+    if missing_controls:
         raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] model_params must record generation "
-            f"controls (temperature/top_p/max_output_tokens; null allowed)"
+            f"{path}: batches[{batch_id!r}] model_params missing generation "
+            f"controls: {', '.join(missing_controls)} (null values allowed)"
         )
+    removed = entry.get("removed_sample_fails")
+    if not isinstance(removed, list):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] removed_sample_fails must be a list"
+        )
+    for i, row in enumerate(removed):
+        if not isinstance(row, dict) or "head" not in row or "tail" not in row:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].removed_sample_fails[{i}] "
+                f"needs head/tail"
+            )
+        if not str(row["head"]).strip() or not str(row["tail"]).strip():
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].removed_sample_fails[{i}] empty literal"
+            )
     verdicts = entry.get("sample_verdicts")
     if verdicts is None:
         raise ProjectAntonymsError(
@@ -407,6 +472,34 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] quality gate failed: "
             f"{sample_ok}/{sample_n} < {OK_RATE_THRESHOLD:.0%}"
+        )
+
+
+def assert_sample_replayable(
+    batch_id: str,
+    entry: dict[str, Any],
+    accepted: Sequence[ProjectAntPair],
+    *,
+    path: Path,
+) -> None:
+    """Replay sample from accepted TSV ∪ removed_sample_fails (self-contained)."""
+    removed = entry["removed_sample_fails"]
+    parent: List[Tuple[str, str]] = [(p.head, p.tail) for p in accepted]
+    parent.extend((str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed)
+    parent_n = int(entry["sample_parent_n"])
+    if len(parent) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent size "
+            f"{len(parent)} != sample_parent_n={parent_n}"
+        )
+    sampled = sample_pairs(parent, seed=int(entry["sample_seed"]))
+    expected = [
+        (str(v["head"]).strip(), str(v["tail"]).strip()) for v in entry["sample_verdicts"]
+    ]
+    if sampled != expected:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample replay mismatch "
+            f"(seed={entry['sample_seed']}, parent_n={parent_n})"
         )
 
 
@@ -503,6 +596,8 @@ def parse_project_antonyms_tsv(
         seen.add(key)
         per_head[head] = per_head.get(head, 0) + 1
         out.append(ProjectAntPair(head=head, tail=tail, batch_id=batch_id))
+    for batch_id in validated_batches:
+        assert_sample_replayable(batch_id, batches[batch_id], [p for p in out if p.batch_id == batch_id], path=p)
     return out
 
 
@@ -593,6 +688,7 @@ __all__ = [
     "ProjectAntPair",
     "ProjectAntonymsError",
     "TSV_HEADER",
+    "assert_sample_replayable",
     "chars_with_direct_ant",
     "chars_with_syn",
     "collect_project_ant_tuples",

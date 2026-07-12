@@ -61,16 +61,25 @@ def _batch_meta(
                 "sample_seed": 1,
                 "sample_n": sample_n,
                 "sample_ok": sample_ok,
+                "sample_parent_n": sample_n,
+                "sample_parent_commit": "a" * 40,
+                "sample_parent_tsv_sha256": "b" * 64,
+                "removed_sample_fails": [],
                 "model_note": "test fixture",
                 "model": "xai/grok-test",
                 "model_provider": "xAI",
                 "model_version": "grok-test",
-                "model_params": {"temperature": None, "top_p": None, "seed_k": 500},
-                "git_commit": "deadbeef",
-                "db_sha256": "a" * 64,
-                "essay_sha256": "b" * 64,
+                "model_params": {
+                    "temperature": None,
+                    "top_p": None,
+                    "max_output_tokens": None,
+                    "seed_k": 500,
+                },
+                "git_commit": "c" * 40,
+                "db_sha256": "d" * 64,
+                "essay_sha256": "e" * 64,
                 "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
-                "prompt_sha256": "c" * 64,
+                "prompt_sha256": "f" * 64,
                 "sample_verdicts": verdicts,
             }
         }
@@ -215,6 +224,27 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
             with self.assertRaises(ProjectAntonymsError) as ctx:
                 parse_project_antonyms_tsv(tsv, meta=meta)
             self.assertIn("quality gate", str(ctx.exception))
+
+    def test_meta_rejects_weak_audit_fields(self):
+        from ingest.project_antonyms import validate_batch_meta_entry
+
+        base = _batch_meta()["batches"]["batch-1"]
+        path = Path("meta-test")
+
+        bad_model = dict(base, model="Cursor Agent/blind-draft")
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("batch-1", bad_model, path=path)
+        self.assertIn("auditable", str(ctx.exception))
+
+        weak_params = dict(base, model_params={"temperature": None, "seed_k": 1})
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("batch-1", weak_params, path=path)
+        self.assertIn("generation", str(ctx.exception))
+
+        weak_hash = dict(base, git_commit="x", db_sha256="x")
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("batch-1", weak_hash, path=path)
+        self.assertIn("40-hex", str(ctx.exception))
 
     def test_proposal_parser_rejects_stripped_empty_columns(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -555,6 +585,11 @@ class ProjectAntonymsLiveReportTests(unittest.TestCase):
             int(batch["sample_ok"]),
         )
         self.assertIn("final N=100", str(batch.get("sample_parent") or ""))
+        self.assertEqual(
+            batch.get("sample_parent_commit"),
+            "c9ad32846dc3946342da1e4ea8d8704aa723ba11",
+        )
+        self.assertEqual(int(batch["sample_parent_n"]), 100)
         self.assertTrue(passes_quality_gate(int(batch["sample_ok"]), int(batch["sample_n"])))
         final_keys = {(p.head, p.tail) if p.head <= p.tail else (p.tail, p.head) for p in pairs}
         ok_in_final = sum(
@@ -569,6 +604,10 @@ class ProjectAntonymsLiveReportTests(unittest.TestCase):
             in final_keys
         )
         self.assertEqual(ok_in_final, int(batch["sample_ok"]))
+        # Self-contained replay: accepted ∪ removed_sample_fails → same 50 verdicts
+        from ingest.project_antonyms import assert_sample_replayable
+
+        assert_sample_replayable("batch-20260713", batch, pairs, path=DEFAULT_META)
 
         engine = create_engine(f"sqlite:///{db_path.as_posix()}")
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
