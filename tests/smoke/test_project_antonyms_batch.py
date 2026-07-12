@@ -197,5 +197,60 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
         self.assertNotIn(PROJECT_ANT_SOURCE, DERIVED_ANT_SOURCES)
 
 
+class ProjectAntonymsLiveReportTests(unittest.TestCase):
+    """Requires repo-root lyrics.db after build-word-relations (WP-06)."""
+
+    def test_live_tsv_db_parity_and_seed_exit(self):
+        from pathlib import Path
+
+        from sqlalchemy import create_engine, text
+        from sqlalchemy.orm import sessionmaker
+
+        from app.domain.relations.word_relation_queries import load_db_char_set
+        from app.lexicon.essay_index import get_essay_frequency
+        from ingest.project_antonyms import (
+            DEFAULT_META,
+            DEFAULT_TSV,
+            collect_project_ant_tuples,
+            export_seed_literals,
+            load_meta,
+            parse_project_antonyms_tsv,
+        )
+
+        db_path = Path(__file__).resolve().parents[2] / "lyrics.db"
+        if not db_path.is_file():
+            self.skipTest("lyrics.db missing")
+        if not DEFAULT_TSV.is_file() or not DEFAULT_META.is_file():
+            self.skipTest("project antonyms list missing")
+
+        meta = load_meta(DEFAULT_META)
+        pairs = parse_project_antonyms_tsv(DEFAULT_TSV, meta=meta)
+        if not pairs:
+            self.skipTest("empty project antonyms list")
+
+        engine = create_engine(f"sqlite:///{db_path.as_posix()}")
+        Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+        with Session() as db:
+            n = db.execute(
+                text(
+                    "SELECT COUNT(*) FROM word_relations "
+                    "WHERE source=:s AND relation_type='ant'"
+                ),
+                {"s": PROJECT_ANT_SOURCE},
+            ).scalar()
+            self.assertEqual(int(n or 0), len(pairs))
+            t1 = collect_project_ant_tuples(db)
+            t2 = collect_project_ant_tuples(db)
+            self.assertEqual(t1, t2)
+            membership = load_db_char_set(db)
+            seeds = set(
+                export_seed_literals(
+                    db, k=500, essay_freq=get_essay_frequency, membership=membership
+                )
+            )
+            for p in pairs:
+                self.assertNotIn(p.head, seeds)
+
+
 if __name__ == "__main__":
     unittest.main()

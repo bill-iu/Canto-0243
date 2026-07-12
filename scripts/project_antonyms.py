@@ -158,6 +158,86 @@ def cmd_quality_check(args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
+def cmd_report(args: argparse.Namespace) -> int:
+    """Print accepted TSV vs DB ant source stats (WP-06)."""
+    from collections import Counter
+
+    from sqlalchemy import text
+
+    from app.domain.relations.ranking import DERIVED_ANT_SOURCES, SOURCE_BASE_RANK
+    from app.domain.thesaurus.port import StaticThesaurusPort
+    from app.lexicon.essay_index import get_essay_frequency
+    from app.domain.relations.word_relation_queries import load_db_char_set
+    from ingest.project_antonyms import (
+        PROJECT_ANT_SOURCE,
+        collect_project_ant_tuples,
+        export_seed_literals,
+        load_meta,
+        parse_project_antonyms_tsv,
+    )
+    from ingest.word_relations_build import _SOURCE_RANK
+
+    meta = load_meta(args.meta)
+    pairs = parse_project_antonyms_tsv(args.tsv, meta=meta, require_file=True)
+    covered_heads = {p.head for p in pairs}
+    port = StaticThesaurusPort(auto_load=True)
+    overlap = sum(
+        1 for p in pairs if p.tail in set(port.get_antonyms(p.head) or [])
+    )
+
+    db = _session(Path(args.db))
+    try:
+        project_rows = db.execute(
+            text(
+                "SELECT COUNT(*) FROM word_relations "
+                "WHERE source=:s AND relation_type='ant'"
+            ),
+            {"s": PROJECT_ANT_SOURCE},
+        ).scalar()
+        by_src = Counter(
+            r[0]
+            for r in db.execute(
+                text("SELECT source FROM word_relations WHERE relation_type='ant'")
+            )
+        )
+        membership = load_db_char_set(db)
+        seeds = set(
+            export_seed_literals(
+                db, k=500, essay_freq=get_essay_frequency, membership=membership
+            )
+        )
+        seed_hits = sorted(h for h in covered_heads if h in seeds)
+        t1 = collect_project_ant_tuples(db, tsv_path=args.tsv, meta_path=args.meta)
+        t2 = collect_project_ant_tuples(db, tsv_path=args.tsv, meta_path=args.meta)
+    finally:
+        db.close()
+
+    report = {
+        "accepted_pairs_tsv": len(pairs),
+        "unique_db_project_ant_rows": int(project_rows or 0),
+        "guotong_static_overlap_with_tsv": overlap,
+        "covered_heads": len(covered_heads),
+        "bridge_ant_rows": int(by_src.get("ant_syn_bridge", 0)),
+        "ant_source_counts": dict(sorted(by_src.items())),
+        "covered_heads_still_in_top500_seeds": len(seed_hits),
+        "rank_project": SOURCE_BASE_RANK.get("project_ant"),
+        "rank_guotong": SOURCE_BASE_RANK.get("guotong"),
+        "merge_rank_project": _SOURCE_RANK.get("project_ant"),
+        "project_not_derived": PROJECT_ANT_SOURCE not in DERIVED_ANT_SOURCES,
+        "collect_idempotent": t1 == t2,
+    }
+    print(json.dumps(report, ensure_ascii=False, indent=2))
+    ok = (
+        report["rank_project"] == 12
+        and report["merge_rank_project"] == 12
+        and report["project_not_derived"]
+        and report["collect_idempotent"]
+        and report["covered_heads_still_in_top500_seeds"] == 0
+        and report["accepted_pairs_tsv"] == report["unique_db_project_ant_rows"]
+    )
+    return 0 if ok else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="專案自建反義 batch tools")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -191,6 +271,12 @@ def main(argv: list[str] | None = None) -> int:
     p_q.add_argument("--ok", type=int, required=True)
     p_q.add_argument("--sample-n", type=int, required=True)
     p_q.set_defaults(func=cmd_quality_check)
+
+    p_rep = sub.add_parser("report", help="WP-06 stats: TSV vs DB ant sources")
+    p_rep.add_argument("--db", default=str(ROOT / "lyrics.db"))
+    p_rep.add_argument("--tsv", default=str(DEFAULT_TSV))
+    p_rep.add_argument("--meta", default=str(DEFAULT_META))
+    p_rep.set_defaults(func=cmd_report)
 
     args = parser.parse_args(argv)
     return int(args.func(args))
