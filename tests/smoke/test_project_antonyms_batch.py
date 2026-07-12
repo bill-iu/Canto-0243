@@ -17,13 +17,22 @@ from ingest.project_antonyms import (
     collect_project_ant_tuples,
     export_seed_literals,
     filter_proposals,
+    pair_undirected_key,
     parse_project_antonyms_tsv,
     passes_quality_gate,
     sample_pairs,
     sample_size_for,
+    syn_pairs_from_db,
+    syn_pairs_from_tuples,
 )
-from ingest.word_relations_build import _SOURCE_RANK, build_word_relations, merge_relation_tuples
+from ingest.word_relations_build import (
+    _SOURCE_RANK,
+    build_word_relations,
+    collect_static_relation_tuples,
+    merge_relation_tuples,
+)
 from tests.smoke.helpers import memory_sessionmaker
+from scripts.project_antonyms import _read_pair_lines
 
 
 def _batch_meta(
@@ -32,20 +41,35 @@ def _batch_meta(
     head: str = "大",
     tail: str = "小",
     verdict: str = "ok",
+    sample_ok: int | None = None,
+    sample_n: int = 1,
 ) -> dict:
     """Minimal auditable batch object for fixtures."""
-    ok = 1 if verdict == "ok" else 0
+    if sample_ok is None:
+        sample_ok = 1 if verdict == "ok" else 0
+    verdicts = [
+        {"head": head, "tail": tail, "verdict": verdict, "reasons": []}
+        for _ in range(sample_n)
+    ]
+    if sample_n > 1 and sample_ok < sample_n:
+        for i in range(sample_ok, sample_n):
+            verdicts[i]["verdict"] = "fail"
     return {
         "batches": {
             batch_id: {
                 "k": 500,
                 "sample_seed": 1,
-                "sample_n": 1,
-                "sample_ok": ok,
+                "sample_n": sample_n,
+                "sample_ok": sample_ok,
                 "model_note": "test fixture",
-                "sample_verdicts": [
-                    {"head": head, "tail": tail, "verdict": verdict, "reasons": []}
-                ],
+                "model": "test-model",
+                "model_params": {"seed_k": 500},
+                "git_commit": "deadbeef",
+                "db_sha256": "a" * 64,
+                "essay_sha256": "b" * 64,
+                "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+                "prompt_sha256": "c" * 64,
+                "sample_verdicts": verdicts,
             }
         }
     }
@@ -176,6 +200,29 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
                 parse_project_antonyms_tsv(
                     tsv, meta=_batch_meta(batch_id="batch-1")
                 )
+
+    def test_meta_rejects_below_quality_gate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tsv = Path(tmp) / "p.tsv"
+            tsv.write_text(
+                "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
+                encoding="utf-8",
+            )
+            # 42/50 < 85%
+            meta = _batch_meta(sample_n=50, sample_ok=42, verdict="ok")
+            with self.assertRaises(ProjectAntonymsError) as ctx:
+                parse_project_antonyms_tsv(tsv, meta=meta)
+            self.assertIn("quality gate", str(ctx.exception))
+
+    def test_proposal_parser_rejects_stripped_empty_columns(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "prop.tsv"
+            for text in ("大\t小\t", "\t大\t小", "head\ttail\textra\n大\t小\n"):
+                path.write_text(text, encoding="utf-8")
+                with self.assertRaises(ProjectAntonymsError):
+                    _read_pair_lines(path)
+            path.write_text("head\ttail\n大\t小\n", encoding="utf-8")
+            self.assertEqual(_read_pair_lines(path), [("大", "小")])
 
     def test_collect_canonical_single_row_both_ends(self):
         Session = memory_sessionmaker()
@@ -331,6 +378,97 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
             self.assertEqual(len(snap1), 1)
             self.assertEqual(snap1[0][3], "project_ant")
 
+    def test_fresh_empty_db_blocks_same_round_static_syn(self):
+        """P0: empty DB still rejects project ant colliding with new static syn."""
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="大", code="0", jyutping="", length=1),
+                Word(id=2, char="小", code="2", jyutping="", length=1),
+            ])
+            db.commit()
+            self.assertEqual(syn_pairs_from_db(db), set())
+            new_syn = syn_pairs_from_tuples(
+                [(1, 2, "syn", 0.85, "cilin", None)],
+                {1: "大", 2: "小"},
+            )
+            self.assertEqual(new_syn, {pair_undirected_key("大", "小")})
+            with tempfile.TemporaryDirectory() as tmp:
+                tsv = Path(tmp) / "project_antonyms.tsv"
+                meta_path = Path(tmp) / "project_antonyms.meta.json"
+                meta_path.write_text(
+                    json.dumps(_batch_meta(head="大", tail="小"), ensure_ascii=False),
+                    encoding="utf-8",
+                )
+                tsv.write_text(
+                    "head\ttail\trelation_type\tbatch_id\n大\t小\tant\tbatch-1\n",
+                    encoding="utf-8",
+                )
+                with self.assertRaises(ProjectAntonymsError) as ctx:
+                    collect_project_ant_tuples(
+                        db,
+                        tsv_path=tsv,
+                        meta_path=meta_path,
+                        syn_pairs=new_syn,
+                    )
+                self.assertIn("syn conflict", str(ctx.exception))
+                # Without same-round syn, empty DB would accept the pair.
+                rows = collect_project_ant_tuples(
+                    db, tsv_path=tsv, meta_path=meta_path, syn_pairs=set()
+                )
+                self.assertEqual(len(rows), 1)
+
+    def test_collect_static_passes_same_round_syn_union(self):
+        """P0 wiring: collect_static_relation_tuples feeds new static syn into project."""
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add_all([
+                Word(id=1, char="大", code="0", jyutping="", length=1),
+                Word(id=2, char="小", code="2", jyutping="", length=1),
+            ])
+            db.commit()
+            captured: dict = {}
+
+            def capture_project(db, *, syn_pairs=None, **_k):
+                captured["syn"] = set(syn_pairs or ())
+                return []
+
+            with mock.patch(
+                "ingest.word_relations_build.load_manifest",
+                return_value={},
+            ), mock.patch(
+                "ingest.word_relations_build.select_sources",
+                return_value=[{"parser": "current_static", "paths": {}, "source_rank": 70}],
+            ), mock.patch(
+                "ingest.word_relations_build.StaticThesaurusPort",
+            ), mock.patch(
+                "ingest.word_relations_build.collect_guotong_flat_edges",
+                return_value=[],
+            ), mock.patch(
+                "ingest.word_relations_build.normalize_edges",
+                return_value=[],
+            ), mock.patch(
+                "ingest.word_relations_build.merge_staging_edges",
+                return_value=[],
+            ), mock.patch(
+                "ingest.word_relations_build.load_compound_antonyms",
+                return_value=[],
+            ), mock.patch(
+                "ingest.word_relations_build.collect_flat_relation_tuples",
+                return_value=[(1, 2, "syn", 0.85, "guotong", None)],
+            ), mock.patch(
+                "ingest.word_relations_build.collect_compound_ant_tuples",
+                return_value=[],
+            ), mock.patch(
+                "ingest.word_relations_build.collect_project_ant_tuples",
+                side_effect=capture_project,
+            ), mock.patch(
+                "ingest.word_relations_build.cap_undirected_syn_tuples",
+                side_effect=lambda rows: list(rows),
+            ):
+                collect_static_relation_tuples(db)
+            self.assertIn(pair_undirected_key("大", "小"), captured["syn"])
+
 
 class ProjectAntonymsLiveReportTests(unittest.TestCase):
     """Requires repo-root lyrics.db after build-word-relations (WP-06)."""
@@ -350,6 +488,7 @@ class ProjectAntonymsLiveReportTests(unittest.TestCase):
             export_seed_literals,
             load_meta,
             parse_project_antonyms_tsv,
+            passes_quality_gate,
             static_ant_heads_from_port,
         )
 
@@ -369,6 +508,21 @@ class ProjectAntonymsLiveReportTests(unittest.TestCase):
             sum(1 for v in batch["sample_verdicts"] if v["verdict"] == "ok"),
             int(batch["sample_ok"]),
         )
+        self.assertIn("final N=100", str(batch.get("sample_parent") or ""))
+        self.assertTrue(passes_quality_gate(int(batch["sample_ok"]), int(batch["sample_n"])))
+        final_keys = {(p.head, p.tail) if p.head <= p.tail else (p.tail, p.head) for p in pairs}
+        ok_in_final = sum(
+            1
+            for v in batch["sample_verdicts"]
+            if v["verdict"] == "ok"
+            and (
+                (v["head"], v["tail"])
+                if v["head"] <= v["tail"]
+                else (v["tail"], v["head"])
+            )
+            in final_keys
+        )
+        self.assertEqual(ok_in_final, int(batch["sample_ok"]))
 
         engine = create_engine(f"sqlite:///{db_path.as_posix()}")
         Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)

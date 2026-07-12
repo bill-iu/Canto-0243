@@ -27,7 +27,6 @@ head	tail	relation_type	batch_id
 放	捉	ant	batch-20260713
 面	背	ant	batch-20260713
 爛	完整	ant	batch-20260713
-喊	笑	ant	batch-20260713
 完全	部分	ant	batch-20260713
 搭	拆	ant	batch-20260713
 定	動	ant	batch-20260713
@@ -80,7 +79,6 @@ head	tail	relation_type	batch_id
 小心	大意	ant	batch-20260713
 勤	懶	ant	batch-20260713
 辛苦	輕鬆	ant	batch-20260713
-周圍	中央	ant	batch-20260713
 擠	鬆	ant	batch-20260713
 立即	稍後	ant	batch-20260713
 舒服	難受	ant	batch-20260713

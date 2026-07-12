@@ -20,7 +20,7 @@ from ingest.compound_antonyms import _compound_exists
 from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
-from ingest.project_antonyms import collect_project_ant_tuples
+from ingest.project_antonyms import collect_project_ant_tuples, syn_pairs_from_db, syn_pairs_from_tuples
 from app.domain.relations.word_relation_queries import load_db_char_set
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -203,13 +203,28 @@ def collect_static_relation_tuples(
     )
 
     compounds = load_compound_antonyms(compound_path or DEFAULT_COMPOUND_PATH)
-    parts = [
+    static_parts = [
         collect_cilin_relation_tuples(char_to_id, cilin_path) if cilin_path else [],
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
-        collect_project_ant_tuples(db),
     ]
-    merged = merge_relation_tuples(itertools.chain.from_iterable(parts))
+    # P0: project syn-conflict must see same-round static syn, not only pre-build DB.
+    id_to_char = {int(i): c for c, i in char_to_id.items()}
+    new_static_syn = syn_pairs_from_tuples(
+        itertools.chain.from_iterable(static_parts),
+        id_to_char,
+    )
+    kept_db_syn = syn_pairs_from_db(
+        db,
+        exclude_sources=(*STATIC_SOURCES, *LEGACY_SOURCES),
+    )
+    project_rows = collect_project_ant_tuples(
+        db,
+        syn_pairs=new_static_syn | kept_db_syn,
+    )
+    merged = merge_relation_tuples(
+        itertools.chain.from_iterable([*static_parts, project_rows])
+    )
     # ADR-0039 S1 CAP-U@20
     return cap_undirected_syn_tuples(merged)
 
@@ -224,7 +239,7 @@ def build_word_relations(
     """Collect+validate static/project tuples first, then clear and bulk insert.
 
     P0: never delete committed sources before project TSV validation succeeds;
-    syn-conflict checks need the pre-replace DB graph.
+    syn-conflict checks use same-round static syn ∪ non-replaced DB syn.
     """
     t0 = time.perf_counter()
     stats: dict[str, Any] = {"cleared": 0, "candidates": 0, "inserted": 0}

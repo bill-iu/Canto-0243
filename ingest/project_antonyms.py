@@ -154,19 +154,43 @@ def export_seed_literals(
     return ranked[:k]
 
 
-def syn_pairs_from_db(db: Session) -> Set[Tuple[str, str]]:
+def syn_pairs_from_db(
+    db: Session,
+    *,
+    exclude_sources: Optional[Iterable[str]] = None,
+) -> Set[Tuple[str, str]]:
+    """Undirected syn literal pairs from DB; optionally skip sources about to be replaced."""
+    exclude = {s for s in (exclude_sources or ()) if s}
     pairs: Set[Tuple[str, str]] = set()
     w_head = aliased(Word)
     w_tail = aliased(Word)
     rows = (
-        db.query(w_head.char, w_tail.char)
+        db.query(w_head.char, w_tail.char, WordRelation.source)
         .select_from(WordRelation)
         .join(w_head, WordRelation.word_id == w_head.id)
         .join(w_tail, WordRelation.related_id == w_tail.id)
         .filter(WordRelation.relation_type == "syn")
         .all()
     )
-    for a, b in rows:
+    for a, b, source in rows:
+        if exclude and (source or "") in exclude:
+            continue
+        if a and b:
+            pairs.add(pair_undirected_key(a, b))
+    return pairs
+
+
+def syn_pairs_from_tuples(
+    rows: Iterable[RelationTuple],
+    id_to_char: Dict[int, str],
+) -> Set[Tuple[str, str]]:
+    """Undirected syn literal pairs from in-memory RelationTuples (same-round collect)."""
+    pairs: Set[Tuple[str, str]] = set()
+    for word_id, related_id, rtype, _score, _source, _gc in rows:
+        if rtype != "syn":
+            continue
+        a = id_to_char.get(int(word_id))
+        b = id_to_char.get(int(related_id))
         if a and b:
             pairs.add(pair_undirected_key(a, b))
     return pairs
@@ -276,12 +300,25 @@ def static_ant_heads_from_port(port: Any = None) -> Set[str]:
 
 
 def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
-    """Fail-closed: referenced batch must carry auditable fields."""
+    """Fail-closed: referenced batch must carry auditable fields + ≥85% gate."""
     if not isinstance(entry, dict) or not entry:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] must be a non-empty object"
         )
-    required = ("k", "sample_seed", "sample_n", "sample_ok", "model_note")
+    required = (
+        "k",
+        "sample_seed",
+        "sample_n",
+        "sample_ok",
+        "model_note",
+        "model",
+        "model_params",
+        "git_commit",
+        "db_sha256",
+        "essay_sha256",
+        "prompt_path",
+        "prompt_sha256",
+    )
     missing = [k for k in required if k not in entry]
     if missing:
         raise ProjectAntonymsError(
@@ -301,8 +338,14 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
             f"{path}: batches[{batch_id!r}] impossible sample counts "
             f"(ok={sample_ok}, n={sample_n}, k={k})"
         )
-    if not str(entry.get("model_note") or "").strip():
-        raise ProjectAntonymsError(f"{path}: batches[{batch_id!r}] model_note empty")
+    for key in ("model_note", "model", "git_commit", "db_sha256", "essay_sha256", "prompt_path", "prompt_sha256"):
+        if not str(entry.get(key) or "").strip():
+            raise ProjectAntonymsError(f"{path}: batches[{batch_id!r}] {key} empty")
+    params = entry.get("model_params")
+    if not isinstance(params, dict) or not params:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] model_params must be a non-empty object"
+        )
     verdicts = entry.get("sample_verdicts")
     if verdicts is None:
         raise ProjectAntonymsError(
@@ -336,6 +379,11 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] sample_ok={sample_ok} != "
             f"verdicts ok count {ok_n}"
+        )
+    if not passes_quality_gate(sample_ok, sample_n):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] quality gate failed: "
+            f"{sample_ok}/{sample_n} < {OK_RATE_THRESHOLD:.0%}"
         )
 
 
@@ -440,10 +488,16 @@ def collect_project_ant_tuples(
     *,
     tsv_path: Path | str = DEFAULT_TSV,
     meta_path: Path | str = DEFAULT_META,
+    syn_pairs: Optional[Set[Tuple[str, str]]] = None,
 ) -> List[RelationTuple]:
-    """Load authoritative list into canonical RelationTuples (fail-closed)."""
+    """Load authoritative list into canonical RelationTuples (fail-closed).
+
+    Pass ``syn_pairs`` from the same-round static collect when building, so fresh
+    Cilin/guotong synonyms are visible before DB replacement.
+    """
     membership = {c for (c,) in db.query(Word.char).distinct().all() if c}
-    syn_pairs = syn_pairs_from_db(db)
+    if syn_pairs is None:
+        syn_pairs = syn_pairs_from_db(db)
     meta = load_meta(meta_path)
     pairs = parse_project_antonyms_tsv(
         tsv_path,
@@ -532,6 +586,7 @@ __all__ = [
     "save_meta",
     "static_ant_heads_from_port",
     "syn_pairs_from_db",
+    "syn_pairs_from_tuples",
     "validate_batch_meta_entry",
     "write_proposals_tsv",
     "write_seed_export",

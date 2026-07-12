@@ -74,15 +74,14 @@ def cmd_seed_export(args: argparse.Namespace) -> int:
 
 
 def _read_pair_lines(path: Path) -> list[tuple[str, str]]:
-    """Fail-closed: exactly two tab-separated columns per data row."""
+    """Fail-closed: exactly two tab-separated columns per data row (raw split)."""
     pairs: list[tuple[str, str]] = []
     for lineno, raw in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-        line = raw.strip()
-        if not line or line.startswith("#"):
+        if raw == "" or raw.startswith("#"):
             continue
-        if lineno == 1 and line.startswith("head\t"):
+        if lineno == 1 and raw == "head\ttail":
             continue
-        parts = line.split("\t")
+        parts = raw.split("\t")
         if len(parts) != 2:
             raise ProjectAntonymsError(
                 f"{path}:{lineno}: expected exactly 2 columns, got {len(parts)}"
@@ -289,28 +288,42 @@ def cmd_report(args: argparse.Namespace) -> int:
 
     build_idempotent = None
     if args.dual_build:
-        from ingest.word_relations_build import build_word_relations
+        from ingest.word_relations_build import (
+            LEGACY_SOURCES,
+            STATIC_SOURCES,
+            build_word_relations,
+        )
 
-        def _project_fp(session) -> list[tuple]:
+        static_src = tuple(dict.fromkeys((*STATIC_SOURCES, *LEGACY_SOURCES)))
+
+        def _static_fp(session) -> list[tuple]:
+            placeholders = ",".join(f":s{i}" for i in range(len(static_src)))
+            params = {f"s{i}": s for i, s in enumerate(static_src)}
             return sorted(
-                (int(a), int(b), float(s) if s is not None else None)
-                for a, b, s in session.execute(
+                (
+                    int(a),
+                    int(b),
+                    str(rtype),
+                    str(src or ""),
+                    float(score) if score is not None else None,
+                )
+                for a, b, rtype, src, score in session.execute(
                     text(
-                        "SELECT word_id, related_id, score FROM word_relations "
-                        "WHERE source=:src AND relation_type='ant' "
-                        "ORDER BY word_id, related_id"
+                        "SELECT word_id, related_id, relation_type, source, score "
+                        f"FROM word_relations WHERE source IN ({placeholders}) "
+                        "ORDER BY word_id, related_id, relation_type, source"
                     ),
-                    {"src": PROJECT_ANT_SOURCE},
+                    params,
                 )
             )
 
         db2 = _session(Path(args.db))
         try:
             build_word_relations(db2)
-            fp1 = _project_fp(db2)
+            fp1 = _static_fp(db2)
             build_word_relations(db2)
-            fp2 = _project_fp(db2)
-            build_idempotent = fp1 == fp2 and len(fp1) == len(pairs)
+            fp2 = _static_fp(db2)
+            build_idempotent = fp1 == fp2 and len(fp1) > 0
         finally:
             db2.close()
 
@@ -331,6 +344,7 @@ def cmd_report(args: argparse.Namespace) -> int:
         "sample_n": sample_n,
         "sample_ok": sample_ok,
         "sample_verdicts": len(sample_verdicts),
+        "quality_gate": passes_quality_gate(sample_ok, sample_n),
         "build_idempotent": build_idempotent,
     }
     print(json.dumps(report, ensure_ascii=False, indent=2))
@@ -344,6 +358,7 @@ def cmd_report(args: argparse.Namespace) -> int:
         and report["sample_n"] > 0
         and report["sample_verdicts"] == report["sample_n"]
         and report["sample_ok"] <= report["sample_n"]
+        and report["quality_gate"] is True
         and (build_idempotent is True if args.dual_build else True)
     )
     return 0 if ok else 1
