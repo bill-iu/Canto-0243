@@ -238,13 +238,109 @@ class NoNaturalContractTests(unittest.TestCase):
         self.assertIn("conflict", str(ctx.exception))
 
 
+class CampaignProgressTests(unittest.TestCase):
+    def _heads(self, k: int = 20, batch_size: int = 10):
+        _d = "零一二三四五六七八九"
+
+        def _h(i: int) -> str:
+            return "標" + "".join(_d[int(c)] for c in f"{i:04d}")
+
+        return [
+            CampaignHead(
+                rank=i,
+                head=_h(i),
+                essay_frequency=100 - i,
+                batch_index=(i - 1) // batch_size + 1,
+            )
+            for i in range(1, k + 1)
+        ]
+
+    def test_full_resolved_and_require_complete(self):
+        from ingest.project_antonyms_campaign import (
+            assert_campaign_complete,
+            compute_campaign_progress,
+        )
+
+        heads = self._heads()
+        accepted = {h.head for h in heads[:12]}
+        no_nat = {h.head for h in heads[12:]}
+        progress = compute_campaign_progress(
+            heads,
+            accepted_heads=accepted,
+            no_natural_heads=no_nat,
+            unresolved_sample_n=5,
+        )
+        self.assertTrue(progress["complete"])
+        self.assertEqual(progress["resolved"], 20)
+        self.assertEqual(progress["unresolved"], 0)
+        self.assertEqual(progress["batches"][0]["accepted_covered"], 10)
+        self.assertEqual(progress["batches"][1]["no_natural"], 8)
+        assert_campaign_complete(progress)
+
+    def test_miss_one_ok_until_require_complete(self):
+        from ingest.project_antonyms_campaign import (
+            assert_campaign_complete,
+            compute_campaign_progress,
+        )
+
+        heads = self._heads()
+        accepted = {h.head for h in heads[:10]}
+        no_nat = {h.head for h in heads[10:-1]}
+        progress = compute_campaign_progress(
+            heads,
+            accepted_heads=accepted,
+            no_natural_heads=no_nat,
+            unresolved_sample_n=5,
+        )
+        self.assertFalse(progress["complete"])
+        self.assertEqual(progress["unresolved"], 1)
+        self.assertEqual(progress["batches"][1]["unresolved_sample"], [heads[-1].head])
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            assert_campaign_complete(progress)
+        self.assertIn("incomplete", str(ctx.exception))
+
+    def test_conflict_and_out_of_manifest_fail(self):
+        from ingest.project_antonyms_campaign import compute_campaign_progress
+
+        heads = self._heads()
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            compute_campaign_progress(
+                heads,
+                accepted_heads={heads[0].head},
+                no_natural_heads={heads[0].head},
+            )
+        self.assertIn("conflict", str(ctx.exception))
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            compute_campaign_progress(
+                heads,
+                accepted_heads=set(),
+                no_natural_heads={"庫外字"},
+            )
+        self.assertIn("outside campaign", str(ctx.exception))
+
+    def test_rejects_negative_unresolved_sample(self):
+        from ingest.project_antonyms_campaign import compute_campaign_progress
+
+        heads = self._heads(k=4, batch_size=2)
+        with self.assertRaises(ProjectAntonymsError):
+            compute_campaign_progress(
+                heads,
+                accepted_heads=set(),
+                no_natural_heads=set(),
+                unresolved_sample_n=-1,
+            )
+
+
 class CampaignLiveFreezeTests(unittest.TestCase):
     def test_live_manifest_present_and_first500_matches_reference(self):
         from ingest.project_antonyms_campaign import (
             DEFAULT_MANIFEST_META,
             DEFAULT_MANIFEST_TSV,
             DEFAULT_NO_NATURAL_TSV,
+            accepted_coverage_heads,
+            compute_campaign_progress,
         )
+        from ingest.project_antonyms import DEFAULT_TSV
 
         if not DEFAULT_MANIFEST_TSV.is_file():
             self.skipTest("campaign manifest missing")
@@ -260,7 +356,19 @@ class CampaignLiveFreezeTests(unittest.TestCase):
                 if ln.strip()
             ]
             assert_first_batch_matches_seeds(heads, seeds)
-        parse_no_natural_tsv(DEFAULT_NO_NATURAL_TSV, campaign_heads={h.head for h in heads})
+        no_nat = parse_no_natural_tsv(
+            DEFAULT_NO_NATURAL_TSV, campaign_heads={h.head for h in heads}
+        )
+        progress = compute_campaign_progress(
+            heads,
+            accepted_heads=accepted_coverage_heads(DEFAULT_TSV),
+            no_natural_heads={h for h, _, _ in no_nat},
+            unresolved_sample_n=3,
+        )
+        self.assertEqual(progress["k"], CAMPAIGN_K)
+        self.assertFalse(progress["complete"])
+        self.assertGreater(progress["accepted_covered"], 0)
+        self.assertEqual(progress["unresolved"] + progress["resolved"], CAMPAIGN_K)
 
 
 if __name__ == "__main__":

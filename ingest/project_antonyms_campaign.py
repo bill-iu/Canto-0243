@@ -532,6 +532,116 @@ def assert_no_terminal_conflict(
         )
 
 
+DEFAULT_UNRESOLVED_SAMPLE = 20
+
+
+def compute_campaign_progress(
+    heads: Sequence[CampaignHead],
+    *,
+    accepted_heads: Set[str],
+    no_natural_heads: Set[str],
+    unresolved_sample_n: int = DEFAULT_UNRESOLVED_SAMPLE,
+) -> dict[str, Any]:
+    """Partition campaign heads into accepted / no-natural / unresolved by manifest batch.
+
+    Fail-closed on terminal conflict, out-of-manifest no-natural, or impossible counts.
+    """
+    if unresolved_sample_n < 0:
+        raise ProjectAntonymsError("unresolved_sample_n must be >= 0")
+    k = len(heads)
+    if k == 0:
+        raise ProjectAntonymsError("campaign progress requires at least one head")
+    campaign = {h.head for h in heads}
+    if len(campaign) != k:
+        raise ProjectAntonymsError("duplicate heads in campaign progress input")
+
+    extra_nn = no_natural_heads - campaign
+    if extra_nn:
+        sample = ", ".join(sorted(extra_nn)[:5])
+        raise ProjectAntonymsError(
+            f"no-natural outside campaign ({len(extra_nn)}): {sample}"
+        )
+
+    accepted_in = accepted_heads & campaign
+    assert_no_terminal_conflict(
+        accepted_heads=accepted_in, no_natural_heads=no_natural_heads
+    )
+
+    by_batch: Dict[int, List[CampaignHead]] = {}
+    for h in heads:
+        by_batch.setdefault(h.batch_index, []).append(h)
+
+    batches: List[dict[str, Any]] = []
+    total_accepted = 0
+    total_nn = 0
+    total_unresolved = 0
+    for batch_index in sorted(by_batch):
+        rows = by_batch[batch_index]
+        acc = [h.head for h in rows if h.head in accepted_in]
+        nn = [h.head for h in rows if h.head in no_natural_heads]
+        unresolved = [
+            h.head
+            for h in rows
+            if h.head not in accepted_in and h.head not in no_natural_heads
+        ]
+        n_acc, n_nn, n_un = len(acc), len(nn), len(unresolved)
+        if n_acc + n_nn + n_un != len(rows):
+            raise ProjectAntonymsError(
+                f"impossible batch {batch_index} counts: "
+                f"accepted={n_acc} no_natural={n_nn} unresolved={n_un} "
+                f"heads={len(rows)}"
+            )
+        total_accepted += n_acc
+        total_nn += n_nn
+        total_unresolved += n_un
+        sample_n = min(unresolved_sample_n, n_un)
+        batches.append(
+            {
+                "batch_index": batch_index,
+                "heads": len(rows),
+                "accepted_covered": n_acc,
+                "no_natural": n_nn,
+                "unresolved": n_un,
+                "resolved": n_acc + n_nn,
+                "unresolved_sample": unresolved[:sample_n],
+            }
+        )
+
+    if total_accepted + total_nn + total_unresolved != k:
+        raise ProjectAntonymsError(
+            f"impossible campaign counts: accepted={total_accepted} "
+            f"no_natural={total_nn} unresolved={total_unresolved} k={k}"
+        )
+    if total_accepted != len(accepted_in) or total_nn != len(no_natural_heads):
+        raise ProjectAntonymsError(
+            "impossible coverage totals vs set sizes "
+            f"(accepted {total_accepted}/{len(accepted_in)}, "
+            f"no_natural {total_nn}/{len(no_natural_heads)})"
+        )
+
+    resolved = total_accepted + total_nn
+    return {
+        "k": k,
+        "accepted_covered": total_accepted,
+        "no_natural": total_nn,
+        "unresolved": total_unresolved,
+        "resolved": resolved,
+        "complete": total_unresolved == 0 and resolved == k,
+        "batches": batches,
+    }
+
+
+def assert_campaign_complete(progress: dict[str, Any]) -> None:
+    """Fail unless every campaign head has a terminal verdict."""
+    k = int(progress.get("k") or 0)
+    resolved = int(progress.get("resolved") or 0)
+    unresolved = int(progress.get("unresolved") or 0)
+    if k <= 0 or resolved != k or unresolved != 0 or not progress.get("complete"):
+        raise ProjectAntonymsError(
+            f"campaign incomplete: resolved={resolved}/{k} unresolved={unresolved}"
+        )
+
+
 __all__ = [
     "CAMPAIGN_BASELINE_COMMIT",
     "CAMPAIGN_BATCH_SIZE",
@@ -544,11 +654,14 @@ __all__ = [
     "NO_NATURAL_HEADER",
     "NO_NATURAL_REASONS",
     "accepted_coverage_heads",
+    "assert_campaign_complete",
     "assert_first_batch_matches_seeds",
     "assert_no_terminal_conflict",
     "build_campaign_meta",
     "campaign_exclude_sources",
     "chars_with_direct_ant_excluding_project",
+    "compute_campaign_progress",
+    "DEFAULT_UNRESOLVED_SAMPLE",
     "ensure_no_natural_tsv",
     "load_campaign_meta",
     "parse_campaign_manifest",

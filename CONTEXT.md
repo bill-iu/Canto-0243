@@ -243,6 +243,22 @@ _Avoid_：全庫有近無直連反一次生成、以 Essay 作收錄門檻、同
 用生成式 AI 為 **專案自建反義種子** 提候選時採 **盲生成**：prompt 以種子字面為主，可附該頭之近義鄰作語境；**禁止**將 guotong 或其他第三方反義全文／逐頭答案作 few-shot 或擴寫來源。生成後可對 guotong 做重合率統計，只作品質監控。
 _Avoid_：以 guotong 作正負例 few-shot、先複製上游反義再 LLM 潤飾、把重合率當「准許複製」
 
+**高頻反義 campaign**：
+一次凍結嘅 Essay Top-5000 **有近無直連反** 目標集（邏輯排除已有 **專案自建反義** 以免母體滑動）；每個 **campaign 目標詞** 最終須有 **終局判定**。完成前唔發佈以「高頻全 resolved」為閘嘅版本。
+_Avoid_：把 campaign 叫「種子」、與單批 Top-K 種子匯出混稱、未完成就當 v1.0.9 已過完整詞庫門檻
+
+**campaign 目標詞**：
+凍結 manifest 內一個 head（固定 rank 與 batch 槽）；進度與完成閘只對此集合計數。
+_Avoid_：把清單 tail、庫外字面、或非 manifest 字面當目標
+
+**終局判定**：
+每個 **campaign 目標詞** 恰好一個可稽核收斂：`accepted`（**專案自建反義清單** 無向覆蓋該字面）或 `no_natural_antonym`（審核確認無自然、同詞性、同義層嘅 context-free 反義）。兩者互斥。
+_Avoid_：pending／deferred 當完成、把硬過濾 reject 當 no-natural、兩終局並存於同一目標詞
+
+**已裁定／未裁定**：
+**已裁定（resolved）**＝該目標詞已有 **終局判定**；**未裁定（unresolved）**＝尚無。campaign 完成＝全部已裁定且無終局衝突。
+_Avoid_：用 DB 列數或種子退出數代替已裁定計數
+
 **近義橋反義**：
 有近無反字面（無任何 ant 列）→ 語意向量找橋接近義（達門檻）→ 多橋合併借 **直連反義**（投影讀，排序橋分）。快照注入，僅 ingest。
 _Avoid_：runtime 猜、預設 embedding、ingest 繞投影、同 **有近無直連反** 混作同一種子集

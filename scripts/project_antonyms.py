@@ -447,7 +447,8 @@ def load_campaign_meta_sha(meta_path: str) -> str:
 def cmd_campaign_validate(args: argparse.Namespace) -> int:
     from ingest.project_antonyms_campaign import (
         accepted_coverage_heads,
-        assert_no_terminal_conflict,
+        assert_campaign_complete,
+        compute_campaign_progress,
         parse_campaign_manifest,
         parse_no_natural_tsv,
     )
@@ -461,10 +462,14 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
             require_file=True,
         )
         covered = accepted_coverage_heads(args.accepted_tsv)
-        assert_no_terminal_conflict(
-            accepted_heads=covered & campaign,
+        progress = compute_campaign_progress(
+            heads,
+            accepted_heads=covered,
             no_natural_heads={h for h, _, _ in no_nat},
+            unresolved_sample_n=args.unresolved_sample,
         )
+        if args.require_complete:
+            assert_campaign_complete(progress)
     except ProjectAntonymsError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
         return 1
@@ -472,11 +477,12 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
         json.dumps(
             {
                 "ok": True,
+                "require_complete": bool(args.require_complete),
                 "manifest_heads": len(heads),
                 "no_natural_rows": len(no_nat),
-                "accepted_covered_in_campaign": len(covered & campaign),
                 "batch_1_first": heads[0].head,
-                "batch_1_last": heads[499].head,
+                "batch_1_last": heads[min(499, len(heads) - 1)].head,
+                **progress,
             },
             ensure_ascii=False,
         )
@@ -535,6 +541,7 @@ def main(argv: list[str] | None = None) -> int:
         DEFAULT_MANIFEST_META,
         DEFAULT_MANIFEST_TSV,
         DEFAULT_NO_NATURAL_TSV,
+        DEFAULT_UNRESOLVED_SAMPLE,
         CAMPAIGN_BASELINE_COMMIT,
     )
 
@@ -571,6 +578,17 @@ def main(argv: list[str] | None = None) -> int:
     p_cv.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
     p_cv.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
     p_cv.add_argument("--accepted-tsv", default=str(DEFAULT_TSV))
+    p_cv.add_argument(
+        "--require-complete",
+        action="store_true",
+        help="Fail unless every campaign head is resolved (accepted or no-natural)",
+    )
+    p_cv.add_argument(
+        "--unresolved-sample",
+        type=int,
+        default=DEFAULT_UNRESOLVED_SAMPLE,
+        help=f"Max unresolved heads listed per batch (default {DEFAULT_UNRESOLVED_SAMPLE})",
+    )
     p_cv.set_defaults(func=cmd_campaign_validate)
 
     args = parser.parse_args(argv)
