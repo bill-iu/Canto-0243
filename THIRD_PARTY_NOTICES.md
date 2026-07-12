@@ -12,6 +12,7 @@ upstream license.
 | Rime categorized lexicon | `data/lexicon/raw/rime-cantonese-upstream/*.csv`（不含 `proper_nouns.csv`） | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Essay frequency | `data/essay/essay-cantonese.txt` | [rime/rime-cantonese](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
 | Curated compound antonyms | `data/syn_ant/compound_antonyms.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
+| Project antonym pairs (AI-assisted) | `data/syn_ant/project_antonyms.tsv` (+ `project_antonyms.meta.json`) | Canto-0243 project; drafted with generative AI assistance (e.g. Grok via Cursor), maintainer-reviewed before release | Same as program (Canto-0243 License). Output attributed per xAI Brand Guidelines / applicable Cursor terms. **Not** a redistribution of guotong or other third-party antonym lexicons. |
 | Curated common words | `data/lexicon/curated_common.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
 
 ## Fetched by bootstrap (tier 2)
@@ -46,8 +47,19 @@ Verify upstream terms before enabling additional sources.
 | 開放詞典 · 粵語詞典 | [下載](https://kaifangcidian.com/xiazai/) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
 | Maintainer curated | `data/lexicon/curated_lexicon.json` | Same as program (Canto-0243 License) |
 
+## Project-owned antonym pairs (AI-assisted)
+
+Direct antonym edges may also come from the project-owned list above
+(`source=project_ant` in `word_relations`). Seeds are lexicon literals
+(priority: has-synonym / no-direct-antonym, essay Top-K); upstream antonym
+files are **not** used as few-shot expansion sources. Overlap with third-party
+antonym lists may be measured for quality monitoring only. Guotong antonyms
+and project antonyms **coexist**; when the same pair appears in both, build
+merge prefers `project_ant`.
+
 ## Optional syn/ant sources
 
-Default ingest uses `current_static` in `data/syn_ant/sources.yaml`. Additional
-sources (e.g. Chinese Open Wordnet / COW) are **disabled by default** and require
-maintainer-local raw files; see manifest for license and `local_only` flags.
+Default ingest uses `current_static` in `data/syn_ant/sources.yaml` plus the
+project antonym list when present. Additional sources (e.g. Chinese Open
+Wordnet / COW) are **disabled by default** and require maintainer-local raw
+files; see manifest for license and `local_only` flags.
