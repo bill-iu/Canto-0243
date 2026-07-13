@@ -851,11 +851,8 @@ head	tail	relation_type	batch_id
 真實	虛假	ant	campaign-b04-20260714
 真實	虛構	ant	campaign-b04-20260714
 鎖	開	ant	campaign-b04-20260714
-偏偏	恰好	ant	campaign-b04-20260714
 分享	獨佔	ant	campaign-b04-20260714
 有用	沒用	ant	campaign-b04-20260714
-力量	無力	ant	campaign-b04-20260714
-多少	半數	ant	campaign-b04-20260714
 插入	拔出	ant	campaign-b04-20260714
 過來	過去	ant	campaign-b04-20260714
 顯示	隱藏	ant	campaign-b04-20260714
@@ -916,7 +913,6 @@ head	tail	relation_type	batch_id
 交代	隱瞞	ant	campaign-b04-20260714
 快速	緩慢	ant	campaign-b04-20260714
 快速	慢	ant	campaign-b04-20260714
-探	藏	ant	campaign-b04-20260714
 無法	能夠	ant	campaign-b04-20260714
 預備	即興	ant	campaign-b04-20260714
 加油	氣餒	ant	campaign-b04-20260714
@@ -959,7 +955,6 @@ head	tail	relation_type	batch_id
 公平	偏私	ant	campaign-b04-20260714
 復	往	ant	campaign-b04-20260714
 成長	衰退	ant	campaign-b04-20260714
-揮	收	ant	campaign-b04-20260714
 欲	厭	ant	campaign-b04-20260714
 爆炸	熄滅	ant	campaign-b04-20260714
 羞	豪放	ant	campaign-b04-20260714

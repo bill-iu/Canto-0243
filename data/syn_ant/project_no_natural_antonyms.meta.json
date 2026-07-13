@@ -362,6 +362,14 @@
         {
           "head": "隔離",
           "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "識",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "整",
+          "reason": "polysemous_no_stable_sense"
         }
       ]
     },
@@ -687,6 +695,14 @@
         {
           "head": "的確",
           "reason": "function_word"
+        },
+        {
+          "head": "嚇",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "扶",
+          "reason": "polysemous_no_stable_sense"
         }
       ]
     },
@@ -1004,6 +1020,321 @@
       ],
       "created_at": "2026-07-13T14:14:35.462828+00:00",
       "note": "Human formal sample seed=20260726 was 49/50 (其它→proper_name_or_deixis); amendment applied to TSV; parent then grew by accepted-cleanup orphans ['可憐', '壓力', '啜']; lock sample seed=20260728 all-ok on final amended parent."
+    },
+    "campaign-b04-20260714": {
+      "sample_seed": 20260731,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 308,
+      "git_commit": "0c5d3cbd15cef05d5cb55f99394e28cbb747ffc3",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "之類",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "人士",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "人間",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "作出",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "傳出",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "公衆",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "力量",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "可樂",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "喉嚨",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "多少",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "大堂",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "威",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "家長",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "對象",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "廳",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "引起",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "彼此",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "手下",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "打招呼",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "招呼",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "拳",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "提醒",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "撫摸",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "擁",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "數學",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "文字",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "旗",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "日後",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "星期日",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "時空",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "樹葉",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "橙色",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "泳衣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "滑梯",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "澄",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "現場",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "等待",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "箭",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "縣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "臨",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "行李",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "衣櫃",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "視覺",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "責任",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "途中",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "造成",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "陰道",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "電梯",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "願望",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "鳳",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        }
+      ],
+      "created_at": "2026-07-13T18:17:35.195344+00:00",
+      "note": "Human full census seed review was 261/290=90% with reason amendments + promotions 短短/類似 applied to TSV; 平衡 kept as no_gradable_opposite; lock sample seed=20260731 all-ok on final amended parent; orphans=['偏偏', '力量', '多少', '探', '揮']; census_removed_promotes=[{'head': '短短', 'reason': 'polysemous_no_stable_sense'}, {'head': '類似', 'reason': 'function_word'}]"
     }
   }
 }

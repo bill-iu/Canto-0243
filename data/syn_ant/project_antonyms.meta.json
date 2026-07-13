@@ -1458,6 +1458,389 @@
       ],
       "accepted_pairs": 300,
       "created_at": "2026-07-13T14:14:35.462828+00:00"
+    },
+    "campaign-b04-20260714": {
+      "k": 500,
+      "git_commit": "0c5d3cbd15cef05d5cb55f99394e28cbb747ffc3",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=4 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=208 (R3); generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 470
+      },
+      "sample_seed": 20260730,
+      "sample_n": 50,
+      "sample_ok": 45,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.9,
+      "sample_parent": "project_antonyms.tsv campaign-b04 parent N=208 (pre sample-fail removal)",
+      "sample_parent_n": 208,
+      "sample_parent_commit": "0c5d3cbd15cef05d5cb55f99394e28cbb747ffc3",
+      "sample_parent_tsv_sha256": "133aa2b19a0d54dc585ab377da6f25f1d4936bfecf376c320f763cbe9443a245",
+      "sample_verdicts": [
+        {
+          "head": "不得",
+          "tail": "可以",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "人工",
+          "tail": "自然",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "低頭",
+          "tail": "抬頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "來到",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "依舊",
+          "tail": "改變",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "偏偏",
+          "tail": "恰好",
+          "verdict": "fail",
+          "reasons": [
+            "逆預期語氣與恰巧發生不構成反義"
+          ]
+        },
+        {
+          "head": "凌晨",
+          "tail": "黃昏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "力量",
+          "tail": "無力",
+          "verdict": "fail",
+          "reasons": [
+            "名詞與形容詞／狀態不一致"
+          ]
+        },
+        {
+          "head": "加快",
+          "tail": "放慢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "回到",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "回想",
+          "tail": "前瞻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "多少",
+          "tail": "半數",
+          "verdict": "fail",
+          "reasons": [
+            "疑問數量詞與固定比例不在同一語義層"
+          ]
+        },
+        {
+          "head": "好看",
+          "tail": "醜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好看",
+          "tail": "難看",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "峻",
+          "tail": "平緩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "崩潰",
+          "tail": "振作",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "幫助",
+          "tail": "阻撓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "平日",
+          "tail": "假日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "強烈",
+          "tail": "溫和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "得罪",
+          "tail": "討好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "快速",
+          "tail": "慢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "應當",
+          "tail": "不該",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "扁",
+          "tail": "圓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "承諾",
+          "tail": "違約",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "承諾",
+          "tail": "食言",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拗",
+          "tail": "順",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "探",
+          "tail": "藏",
+          "verdict": "fail",
+          "reasons": [
+            "探尋與隱藏是對抗性互補行為，非反義"
+          ]
+        },
+        {
+          "head": "提起",
+          "tail": "放下",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "插入",
+          "tail": "拔出",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "揮",
+          "tail": "收",
+          "verdict": "fail",
+          "reasons": [
+            "兩字皆多義，缺乏穩定同一動作軸"
+          ]
+        },
+        {
+          "head": "斜",
+          "tail": "正",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "歡樂",
+          "tail": "哀傷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "浮現",
+          "tail": "消失",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "混亂",
+          "tail": "秩序",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無力",
+          "tail": "有力",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爭",
+          "tail": "讓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "痛楚",
+          "tail": "愉快",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相反",
+          "tail": "相同",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "真實",
+          "tail": "虛假",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "真實",
+          "tail": "虛構",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "破",
+          "tail": "完好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碎",
+          "tail": "完好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碎",
+          "tail": "整",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "移",
+          "tail": "定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "移動",
+          "tail": "靜止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "追問",
+          "tail": "迴避",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "逃走",
+          "tail": "歸來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "邋遢",
+          "tail": "整潔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隱約",
+          "tail": "清晰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "飲酒",
+          "tail": "戒酒",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "偏偏",
+          "tail": "恰好",
+          "reasons": [
+            "逆預期語氣與恰巧發生不構成反義"
+          ]
+        },
+        {
+          "head": "力量",
+          "tail": "無力",
+          "reasons": [
+            "名詞與形容詞／狀態不一致"
+          ]
+        },
+        {
+          "head": "多少",
+          "tail": "半數",
+          "reasons": [
+            "疑問數量詞與固定比例不在同一語義層"
+          ]
+        },
+        {
+          "head": "探",
+          "tail": "藏",
+          "reasons": [
+            "探尋與隱藏是對抗性互補行為，非反義"
+          ]
+        },
+        {
+          "head": "揮",
+          "tail": "收",
+          "reasons": [
+            "兩字皆多義，缺乏穩定同一動作軸"
+          ]
+        }
+      ],
+      "accepted_pairs": 203,
+      "created_at": "2026-07-13T18:17:35.195344+00:00"
     }
   }
 }
