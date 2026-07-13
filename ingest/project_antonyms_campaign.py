@@ -20,13 +20,16 @@ from app.domain.relations.ranking import DERIVED_ANT_SOURCES
 from app.domain.relations.valid_term import is_valid_term, normalize_literal
 from app.lexicon.essay_index import get_essay_frequency
 from ingest.project_antonyms import (
+    OK_RATE_THRESHOLD_CAMPAIGN,
     PROJECT_ANT_SOURCE,
     ProjectAntonymsError,
     chars_with_direct_ant,
     chars_with_syn,
     file_sha256,
+    pair_undirected_key,
     parse_ok_rate_threshold,
     passes_quality_gate,
+    sample_pairs,
     sample_size_for,
 )
 
@@ -40,8 +43,10 @@ DEFAULT_MANIFEST_TSV = ROOT / "data" / "syn_ant" / "campaign_top5000.tsv"
 DEFAULT_MANIFEST_META = ROOT / "data" / "syn_ant" / "campaign_top5000.meta.json"
 DEFAULT_NO_NATURAL_TSV = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.tsv"
 DEFAULT_NO_NATURAL_META = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.meta.json"
+DEFAULT_FINAL_AUDIT_META = ROOT / "data" / "syn_ant" / "campaign_final_audit.meta.json"
 DEFAULT_THESAURUS_ANT = ROOT / "data" / "thesaurus" / "dict_antonym.txt"
 DEFAULT_ESSAY = ROOT / "data" / "essay" / "essay-cantonese.txt"
+FINAL_AUDIT_OK_RATE_THRESHOLD = OK_RATE_THRESHOLD_CAMPAIGN
 
 CAMPAIGN_K = 5000
 CAMPAIGN_BATCH_SIZE = 500
@@ -933,21 +938,623 @@ def validate_no_natural_ledger(
     return rows
 
 
+def head_to_batch_index(heads: Sequence[CampaignHead]) -> Dict[str, int]:
+    return {h.head: h.batch_index for h in heads}
+
+
+def pair_campaign_batch_index(
+    head: str,
+    tail: str,
+    head_batch: Dict[str, int],
+) -> Optional[int]:
+    """Attribute an undirected pair to the lowest campaign batch_index among endpoints."""
+    batches = [head_batch[x] for x in (head, tail) if x in head_batch]
+    return min(batches) if batches else None
+
+
+def _sample_stratum_pairs(
+    population: Sequence[Tuple[str, str]],
+    *,
+    seed: int,
+) -> List[Tuple[str, str]]:
+    return sample_pairs(population, seed=seed)
+
+
+def _sample_stratum_no_natural(
+    population: Sequence[Tuple[str, str, str]],
+    *,
+    seed: int,
+) -> List[Tuple[str, str, str]]:
+    return sample_no_natural_rows(population, seed=seed)
+
+
+def stratified_sample_accepted(
+    pairs: Sequence[Tuple[str, str]],
+    head_batch: Dict[str, int],
+    *,
+    seed: int,
+    batch_count: int = _CAMPAIGN_BATCH_COUNT,
+) -> dict[str, Any]:
+    """Per-batch_index sample of accepted pairs; empty layers skipped; total = sum(strata)."""
+    by_batch: Dict[int, List[Tuple[str, str]]] = {
+        i: [] for i in range(1, batch_count + 1)
+    }
+    seen: Set[Tuple[str, str]] = set()
+    for raw_h, raw_t in pairs:
+        key = pair_undirected_key(str(raw_h).strip(), str(raw_t).strip())
+        if key in seen:
+            continue
+        bi = pair_campaign_batch_index(key[0], key[1], head_batch)
+        if bi is None:
+            continue
+        seen.add(key)
+        by_batch[bi].append(key)
+
+    sampled: List[Tuple[str, str]] = []
+    strata: List[dict[str, int]] = []
+    for bi in range(1, batch_count + 1):
+        pop = by_batch[bi]
+        n = len(pop)
+        if n == 0:
+            continue
+        layer_seed = seed + bi
+        layer = _sample_stratum_pairs(pop, seed=layer_seed)
+        sampled.extend(layer)
+        strata.append(
+            {
+                "batch_index": bi,
+                "parent_n": n,
+                "sample_n": len(layer),
+                "sample_seed": layer_seed,
+            }
+        )
+    if not strata:
+        return {
+            "status": "skipped_empty",
+            "sample_seed": seed,
+            "sample_n": 0,
+            "sample_parent_n": 0,
+            "sampled": [],
+            "strata": [],
+        }
+    return {
+        "status": "ok",
+        "sample_seed": seed,
+        "sample_n": len(sampled),
+        "sample_parent_n": sum(s["parent_n"] for s in strata),
+        "sampled": sampled,
+        "strata": strata,
+    }
+
+
+def stratified_sample_no_natural(
+    rows: Sequence[Tuple[str, str, str]],
+    head_batch: Dict[str, int],
+    *,
+    seed: int,
+    batch_count: int = _CAMPAIGN_BATCH_COUNT,
+) -> dict[str, Any]:
+    """Per-batch_index sample of no-natural rows; empty layers skipped."""
+    by_batch: Dict[int, List[Tuple[str, str, str]]] = {
+        i: [] for i in range(1, batch_count + 1)
+    }
+    seen: Set[str] = set()
+    for raw_h, raw_r, raw_b in rows:
+        head = normalize_literal(str(raw_h).strip()) or str(raw_h).strip()
+        if not head or head in seen:
+            continue
+        bi = head_batch.get(head)
+        if bi is None:
+            continue
+        seen.add(head)
+        by_batch[bi].append((head, str(raw_r).strip(), str(raw_b).strip()))
+
+    sampled: List[Tuple[str, str, str]] = []
+    strata: List[dict[str, int]] = []
+    for bi in range(1, batch_count + 1):
+        pop = by_batch[bi]
+        n = len(pop)
+        if n == 0:
+            continue
+        layer_seed = seed + bi
+        layer = _sample_stratum_no_natural(pop, seed=layer_seed)
+        sampled.extend(layer)
+        strata.append(
+            {
+                "batch_index": bi,
+                "parent_n": n,
+                "sample_n": len(layer),
+                "sample_seed": layer_seed,
+            }
+        )
+    if not strata:
+        return {
+            "status": "skipped_empty",
+            "sample_seed": seed,
+            "sample_n": 0,
+            "sample_parent_n": 0,
+            "sampled": [],
+            "strata": [],
+        }
+    return {
+        "status": "ok",
+        "sample_seed": seed,
+        "sample_n": len(sampled),
+        "sample_parent_n": sum(s["parent_n"] for s in strata),
+        "sampled": sampled,
+        "strata": strata,
+    }
+
+
+def load_final_audit_meta(path: Path | str = DEFAULT_FINAL_AUDIT_META) -> dict[str, Any]:
+    p = Path(path)
+    if not p.is_file():
+        raise ProjectAntonymsError(f"missing final audit meta: {p}")
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ProjectAntonymsError(f"invalid final audit meta JSON: {p}: {exc}") from exc
+    if not isinstance(data, dict) or not data:
+        raise ProjectAntonymsError(f"final audit meta must be a non-empty object: {p}")
+    return data
+
+
+def _validate_final_audit_class_shape(
+    class_name: str,
+    entry: Any,
+    *,
+    path: Path,
+    threshold: float,
+    unit: str,
+) -> None:
+    """unit: 'pair' (head/tail) or 'head' (head/reason)."""
+    if not isinstance(entry, dict) or not entry:
+        raise ProjectAntonymsError(f"{path}: {class_name} must be a non-empty object")
+    status = str(entry.get("status") or "").strip()
+    if status not in ("ok", "skipped_empty"):
+        raise ProjectAntonymsError(
+            f"{path}: {class_name}.status must be ok|skipped_empty, got {status!r}"
+        )
+    required = (
+        "sample_seed",
+        "sample_n",
+        "sample_ok",
+        "sample_parent_n",
+        "strata",
+        "sample_verdicts",
+        "removed_sample_fails",
+    )
+    missing = [k for k in required if k not in entry]
+    if missing:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} missing fields: {', '.join(missing)}"
+        )
+    try:
+        sample_seed = int(entry["sample_seed"])
+        sample_n = int(entry["sample_n"])
+        sample_ok = int(entry["sample_ok"])
+        sample_parent_n = int(entry["sample_parent_n"])
+    except (TypeError, ValueError) as exc:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} numeric fields invalid: {exc}"
+        ) from exc
+    _ = sample_seed
+    strata = entry.get("strata")
+    if not isinstance(strata, list):
+        raise ProjectAntonymsError(f"{path}: {class_name}.strata must be a list")
+    verdicts = entry.get("sample_verdicts")
+    removed = entry.get("removed_sample_fails")
+    if not isinstance(verdicts, list):
+        raise ProjectAntonymsError(f"{path}: {class_name}.sample_verdicts must be a list")
+    if not isinstance(removed, list):
+        raise ProjectAntonymsError(
+            f"{path}: {class_name}.removed_sample_fails must be a list"
+        )
+
+    if status == "skipped_empty":
+        if sample_n != 0 or sample_ok != 0 or sample_parent_n != 0:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name} skipped_empty requires zero sample counts"
+            )
+        if strata or verdicts or removed:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name} skipped_empty requires empty strata/verdicts/removed"
+            )
+        return
+
+    if sample_n <= 0 or sample_ok < 0 or sample_ok > sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} impossible sample counts "
+            f"(ok={sample_ok}, n={sample_n})"
+        )
+    if sample_parent_n < sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} sample_parent_n={sample_parent_n} < sample_n={sample_n}"
+        )
+    if not strata:
+        raise ProjectAntonymsError(f"{path}: {class_name} ok status needs non-empty strata")
+    if len(verdicts) != sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} sample_verdicts length {len(verdicts)} != sample_n={sample_n}"
+        )
+
+    strata_sample_sum = 0
+    strata_parent_sum = 0
+    seen_bi: Set[int] = set()
+    for i, layer in enumerate(strata):
+        if not isinstance(layer, dict):
+            raise ProjectAntonymsError(f"{path}: {class_name}.strata[{i}] not object")
+        try:
+            bi = int(layer["batch_index"])
+            pn = int(layer["parent_n"])
+            sn = int(layer["sample_n"])
+            ls = int(layer["sample_seed"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.strata[{i}] invalid: {exc}"
+            ) from exc
+        if bi < 1 or bi in seen_bi:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.strata[{i}] bad/duplicate batch_index={bi}"
+            )
+        seen_bi.add(bi)
+        if pn <= 0 or sn <= 0 or sn > pn:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.strata[{i}] impossible parent/sample counts"
+            )
+        if sn != sample_size_for(pn):
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.strata[{i}] sample_n={sn} != "
+                f"sample_size_for({pn})={sample_size_for(pn)}"
+            )
+        if ls != int(entry["sample_seed"]) + bi:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.strata[{i}] sample_seed must be "
+                f"base+batch_index ({int(entry['sample_seed']) + bi})"
+            )
+        strata_sample_sum += sn
+        strata_parent_sum += pn
+    if strata_sample_sum != sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} sample_n={sample_n} != sum(strata)={strata_sample_sum}"
+        )
+    if strata_parent_sum != sample_parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} sample_parent_n={sample_parent_n} != "
+            f"sum(strata parent)={strata_parent_sum}"
+        )
+
+    ok_n = 0
+    for i, row in enumerate(verdicts):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.sample_verdicts[{i}] not object"
+            )
+        keys = ("head", "tail", "verdict") if unit == "pair" else ("head", "reason", "verdict")
+        for key in keys:
+            if key not in row:
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.sample_verdicts[{i}] missing {key}"
+                )
+        if unit == "head" and str(row["reason"]).strip() not in NO_NATURAL_REASONS:
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.sample_verdicts[{i}] unknown reason"
+            )
+        verdict = str(row["verdict"]).strip().lower()
+        if verdict not in ("ok", "fail"):
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.sample_verdicts[{i}] verdict must be ok|fail"
+            )
+        if verdict == "ok":
+            ok_n += 1
+    if ok_n != sample_ok:
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} sample_ok={sample_ok} != verdicts ok count {ok_n}"
+        )
+
+    for i, row in enumerate(removed):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: {class_name}.removed_sample_fails[{i}] not object"
+            )
+        if unit == "pair":
+            if "head" not in row or "tail" not in row:
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.removed_sample_fails[{i}] needs head/tail"
+                )
+            if not str(row["head"]).strip() or not str(row["tail"]).strip():
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.removed_sample_fails[{i}] empty"
+                )
+        else:
+            if "head" not in row or "reason" not in row:
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.removed_sample_fails[{i}] needs head/reason"
+                )
+            if not str(row["head"]).strip() or not str(row["reason"]).strip():
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.removed_sample_fails[{i}] empty"
+                )
+            if str(row["reason"]).strip() not in NO_NATURAL_REASONS:
+                raise ProjectAntonymsError(
+                    f"{path}: {class_name}.removed_sample_fails[{i}] unknown reason"
+                )
+
+    if not passes_quality_gate(sample_ok, sample_n, threshold=threshold):
+        raise ProjectAntonymsError(
+            f"{path}: {class_name} quality gate failed: "
+            f"{sample_ok}/{sample_n} < {threshold:.0%}"
+        )
+
+
+def assert_final_audit_accepted_replayable(
+    entry: dict[str, Any],
+    pairs: Sequence[Tuple[str, str]],
+    head_batch: Dict[str, int],
+    *,
+    path: Path,
+    batch_count: int = _CAMPAIGN_BATCH_COUNT,
+) -> None:
+    if str(entry.get("status")) == "skipped_empty":
+        return
+    removed = entry["removed_sample_fails"]
+    removed_keys = {
+        pair_undirected_key(str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed
+    }
+    current = {pair_undirected_key(h, t) for h, t in pairs}
+    fail_keys: Set[Tuple[str, str]] = set()
+    for i, row in enumerate(entry["sample_verdicts"]):
+        if str(row["verdict"]).strip().lower() != "fail":
+            continue
+        key = pair_undirected_key(str(row["head"]).strip(), str(row["tail"]).strip())
+        fail_keys.add(key)
+        if key not in removed_keys:
+            raise ProjectAntonymsError(
+                f"{path}: accepted sample_verdicts[{i}] fail {key} "
+                f"missing from removed_sample_fails"
+            )
+        if key in current:
+            raise ProjectAntonymsError(
+                f"{path}: accepted fail pair {key} still in accepted TSV"
+            )
+    if removed_keys - fail_keys:
+        raise ProjectAntonymsError(
+            f"{path}: accepted removed_sample_fails has pairs not marked fail: "
+            f"{sorted(removed_keys - fail_keys)}"
+        )
+
+    parent = list(current | removed_keys)
+    parent_n = int(entry["sample_parent_n"])
+    # Only campaign-attributed pairs count toward stratified parent.
+    attributed = [
+        (h, t)
+        for h, t in parent
+        if pair_campaign_batch_index(h, t, head_batch) is not None
+    ]
+    if len(attributed) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: accepted reconstructed campaign parent size "
+            f"{len(attributed)} != sample_parent_n={parent_n}"
+        )
+    result = stratified_sample_accepted(
+        attributed, head_batch, seed=int(entry["sample_seed"]), batch_count=batch_count
+    )
+    expected = [
+        pair_undirected_key(str(v["head"]).strip(), str(v["tail"]).strip())
+        for v in entry["sample_verdicts"]
+    ]
+    got = [pair_undirected_key(h, t) for h, t in result["sampled"]]
+    if got != expected:
+        raise ProjectAntonymsError(
+            f"{path}: accepted stratified sample replay mismatch "
+            f"(seed={entry['sample_seed']}, parent_n={parent_n})"
+        )
+    meta_strata = [
+        {
+            "batch_index": int(s["batch_index"]),
+            "parent_n": int(s["parent_n"]),
+            "sample_n": int(s["sample_n"]),
+            "sample_seed": int(s["sample_seed"]),
+        }
+        for s in entry["strata"]
+    ]
+    if meta_strata != result["strata"]:
+        raise ProjectAntonymsError(f"{path}: accepted strata replay mismatch")
+
+
+def assert_final_audit_no_natural_replayable(
+    entry: dict[str, Any],
+    rows: Sequence[Tuple[str, str, str]],
+    head_batch: Dict[str, int],
+    *,
+    path: Path,
+    batch_count: int = _CAMPAIGN_BATCH_COUNT,
+) -> None:
+    if str(entry.get("status")) == "skipped_empty":
+        return
+    removed = entry["removed_sample_fails"]
+    removed_heads = {
+        normalize_literal(str(r["head"]).strip()) or str(r["head"]).strip() for r in removed
+    }
+    removed_heads = {h for h in removed_heads if h}
+    current_by_head = {
+        (normalize_literal(h) or h): (normalize_literal(h) or h, r, b) for h, r, b in rows
+    }
+    fail_heads: Set[str] = set()
+    for i, row in enumerate(entry["sample_verdicts"]):
+        if str(row["verdict"]).strip().lower() != "fail":
+            continue
+        head = normalize_literal(str(row["head"]).strip()) or str(row["head"]).strip()
+        fail_heads.add(head)
+        if head not in removed_heads:
+            raise ProjectAntonymsError(
+                f"{path}: no_natural sample_verdicts[{i}] fail {head} "
+                f"missing from removed_sample_fails"
+            )
+        if head in current_by_head:
+            raise ProjectAntonymsError(
+                f"{path}: no_natural fail head {head} still in no-natural TSV"
+            )
+    if removed_heads - fail_heads:
+        raise ProjectAntonymsError(
+            f"{path}: no_natural removed_sample_fails has heads not marked fail: "
+            f"{sorted(removed_heads - fail_heads)}"
+        )
+
+    parent: List[Tuple[str, str, str]] = list(current_by_head.values())
+    for r in removed:
+        head = normalize_literal(str(r["head"]).strip()) or str(r["head"]).strip()
+        reason = str(r["reason"]).strip()
+        if head:
+            parent.append((head, reason, ""))
+    attributed = [row for row in parent if row[0] in head_batch]
+    parent_n = int(entry["sample_parent_n"])
+    if len(attributed) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: no_natural reconstructed campaign parent size "
+            f"{len(attributed)} != sample_parent_n={parent_n}"
+        )
+    if len({h for h, _, _ in attributed}) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: no_natural reconstructed parent has duplicate heads"
+        )
+    result = stratified_sample_no_natural(
+        attributed, head_batch, seed=int(entry["sample_seed"]), batch_count=batch_count
+    )
+    expected = [
+        (
+            normalize_literal(str(v["head"]).strip()) or str(v["head"]).strip(),
+            str(v["reason"]).strip(),
+        )
+        for v in entry["sample_verdicts"]
+    ]
+    got = [(h, r) for h, r, _ in result["sampled"]]
+    if got != expected:
+        raise ProjectAntonymsError(
+            f"{path}: no_natural stratified sample replay mismatch "
+            f"(seed={entry['sample_seed']}, parent_n={parent_n})"
+        )
+    meta_strata = [
+        {
+            "batch_index": int(s["batch_index"]),
+            "parent_n": int(s["parent_n"]),
+            "sample_n": int(s["sample_n"]),
+            "sample_seed": int(s["sample_seed"]),
+        }
+        for s in entry["strata"]
+    ]
+    if meta_strata != result["strata"]:
+        raise ProjectAntonymsError(f"{path}: no_natural strata replay mismatch")
+
+
+def validate_final_audit_meta(
+    meta: dict[str, Any],
+    *,
+    path: Path | str,
+    manifest_sha256: str,
+    accepted_pairs: Sequence[Tuple[str, str]],
+    no_natural_rows: Sequence[Tuple[str, str, str]],
+    heads: Sequence[CampaignHead],
+) -> None:
+    """Fail-closed final audit contract + stratified replay for both classes."""
+    p = Path(path)
+    if not isinstance(meta, dict) or not meta:
+        raise ProjectAntonymsError(f"{p}: final audit meta must be a non-empty object")
+    meta_manifest = _require_sha256(
+        meta.get("manifest_sha256"), field="manifest_sha256", path=p
+    )
+    got = str(manifest_sha256 or "").strip().lower()
+    if not _SHA256_RE.fullmatch(got) or meta_manifest != got:
+        raise ProjectAntonymsError(
+            f"{p}: manifest_sha256 mismatch meta={meta_manifest!r} file={got!r}"
+        )
+    _require_git_sha1(meta.get("git_commit"), field="git_commit", path=p)
+    threshold = parse_ok_rate_threshold(
+        meta.get("ok_rate_threshold", FINAL_AUDIT_OK_RATE_THRESHOLD),
+        field="ok_rate_threshold",
+        path=p,
+        batch_id="final-audit",
+    )
+    if threshold != FINAL_AUDIT_OK_RATE_THRESHOLD:
+        raise ProjectAntonymsError(
+            f"{p}: ok_rate_threshold must be {FINAL_AUDIT_OK_RATE_THRESHOLD}, got {threshold}"
+        )
+    accepted = meta.get("accepted")
+    no_natural = meta.get("no_natural")
+    _validate_final_audit_class_shape(
+        "accepted", accepted, path=p, threshold=threshold, unit="pair"
+    )
+    _validate_final_audit_class_shape(
+        "no_natural", no_natural, path=p, threshold=threshold, unit="head"
+    )
+    head_batch = head_to_batch_index(heads)
+    assert_final_audit_accepted_replayable(
+        accepted, accepted_pairs, head_batch, path=p
+    )
+    assert_final_audit_no_natural_replayable(
+        no_natural, no_natural_rows, head_batch, path=p
+    )
+
+
+def accepted_pairs_light(tsv_path: Path | str) -> List[Tuple[str, str]]:
+    """ponytail: head/tail only for final-audit sampling; full pair audit stays in parse_project_antonyms_tsv."""
+    from ingest.project_antonyms import DEFAULT_TSV, TSV_HEADER
+
+    p = Path(tsv_path) if tsv_path else DEFAULT_TSV
+    if not p.is_file():
+        return []
+    text = p.read_text(encoding="utf-8")
+    if text.startswith("\ufeff"):
+        raise ProjectAntonymsError(f"accepted TSV must be UTF-8 without BOM: {p}")
+    lines = text.splitlines()
+    if not lines:
+        return []
+    reader = csv.reader(lines, delimiter="\t")
+    header = tuple(next(reader, ()))
+    if header != TSV_HEADER:
+        raise ProjectAntonymsError(
+            f"bad accepted header {header!r}; expected {TSV_HEADER!r}"
+        )
+    out: List[Tuple[str, str]] = []
+    seen: Set[Tuple[str, str]] = set()
+    for lineno, row in enumerate(reader, start=2):
+        if not row or all(not c.strip() for c in row):
+            continue
+        if len(row) < 2:
+            raise ProjectAntonymsError(f"{p}:{lineno}: expected head/tail columns")
+        key = pair_undirected_key(
+            normalize_literal(row[0].strip()) or row[0].strip(),
+            normalize_literal(row[1].strip()) or row[1].strip(),
+        )
+        if not key[0] or not key[1]:
+            raise ProjectAntonymsError(f"{p}:{lineno}: invalid literal")
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(key)
+    return out
+
+
 __all__ = [
     "CAMPAIGN_BASELINE_COMMIT",
     "CAMPAIGN_BATCH_SIZE",
     "CAMPAIGN_K",
     "CampaignHead",
+    "DEFAULT_FINAL_AUDIT_META",
     "DEFAULT_MANIFEST_META",
     "DEFAULT_MANIFEST_TSV",
     "DEFAULT_NO_NATURAL_META",
     "DEFAULT_NO_NATURAL_TSV",
     "DEFAULT_UNRESOLVED_SAMPLE",
+    "FINAL_AUDIT_OK_RATE_THRESHOLD",
     "MANIFEST_HEADER",
     "NO_NATURAL_HEADER",
     "NO_NATURAL_REASONS",
     "accepted_coverage_heads",
+    "accepted_pairs_light",
     "assert_campaign_complete",
+    "assert_final_audit_accepted_replayable",
+    "assert_final_audit_no_natural_replayable",
     "assert_first_batch_matches_seeds",
     "assert_no_natural_sample_replayable",
     "assert_no_terminal_conflict",
@@ -956,15 +1563,21 @@ __all__ = [
     "chars_with_direct_ant_excluding_project",
     "compute_campaign_progress",
     "ensure_no_natural_tsv",
+    "head_to_batch_index",
     "load_campaign_meta",
+    "load_final_audit_meta",
     "load_no_natural_meta",
+    "pair_campaign_batch_index",
     "parse_campaign_manifest",
     "parse_no_natural_tsv",
     "rank_campaign_heads",
     "render_manifest_tsv",
     "sample_no_natural_rows",
+    "stratified_sample_accepted",
+    "stratified_sample_no_natural",
     "unresolved_heads_for_batch",
     "validate_campaign_meta",
+    "validate_final_audit_meta",
     "validate_no_natural_batch_meta",
     "validate_no_natural_ledger",
     "write_campaign_manifest",

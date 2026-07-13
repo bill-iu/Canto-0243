@@ -263,6 +263,10 @@ _Avoid_：把 allowlist 格式通過當語意 OK、同 pair A–D 硬套、無 m
 **已裁定（resolved）**＝該目標詞已有 **終局判定**；**未裁定（unresolved）**＝尚無。campaign 完成＝全部已裁定且無終局衝突。
 _Avoid_：用 DB 列數或種子退出數代替已裁定計數
 
+**campaign 最終稽核**：
+**高頻反義 campaign** 全部 **已裁定** 之後，對 accepted 與 no-natural 各自按 batch 分層重抽並過 ≥90% 閘嘅收官品質稽核；紀錄獨立於單批 meta。
+_Avoid_：把單批 sample 當最終稽核、未全部已裁定就當已過最終閘
+
 **近義橋反義**：
 有近無反字面（無任何 ant 列）→ 語意向量找橋接近義（達門檻）→ 多橋合併借 **直連反義**（投影讀，排序橋分）。快照注入，僅 ingest。
 _Avoid_：runtime 猜、預設 embedding、ingest 繞投影、同 **有近無直連反** 混作同一種子集

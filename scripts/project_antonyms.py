@@ -621,6 +621,144 @@ def cmd_no_natural_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_campaign_final_sample(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms_campaign import (
+        accepted_coverage_heads,
+        accepted_pairs_light,
+        assert_campaign_complete,
+        compute_campaign_progress,
+        file_sha256,
+        head_to_batch_index,
+        load_campaign_meta,
+        parse_campaign_manifest,
+        parse_no_natural_tsv,
+        stratified_sample_accepted,
+        stratified_sample_no_natural,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        campaign = {h.head for h in heads}
+        no_nat = parse_no_natural_tsv(
+            args.no_natural, campaign_heads=campaign, require_file=True
+        )
+        pairs = accepted_pairs_light(args.accepted_tsv)
+        if args.require_complete:
+            progress = compute_campaign_progress(
+                heads,
+                accepted_heads=accepted_coverage_heads(args.accepted_tsv),
+                no_natural_heads={h for h, _, _ in no_nat},
+                unresolved_sample_n=0,
+            )
+            assert_campaign_complete(progress)
+        head_batch = head_to_batch_index(heads)
+        accepted = stratified_sample_accepted(pairs, head_batch, seed=args.seed)
+        no_natural = stratified_sample_no_natural(no_nat, head_batch, seed=args.seed)
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+
+    if args.out_accepted:
+        out = Path(args.out_accepted)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        lines = ["head\ttail"] + [f"{h}\t{t}" for h, t in accepted["sampled"]]
+        out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    if args.out_no_natural:
+        out = Path(args.out_no_natural)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        lines = ["head\treason\tbatch_id"] + [
+            f"{h}\t{r}\t{b}" for h, r, b in no_natural["sampled"]
+        ]
+        out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    def _public(result: dict) -> dict:
+        return {
+            "status": result["status"],
+            "sample_seed": result["sample_seed"],
+            "sample_n": result["sample_n"],
+            "sample_parent_n": result["sample_parent_n"],
+            "strata": result["strata"],
+            "sampled": result["sampled"] if args.list_sampled else None,
+        }
+
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "require_complete": bool(args.require_complete),
+                "manifest_sha256": load_campaign_meta(args.meta).get("manifest_sha256")
+                or file_sha256(args.tsv),
+                "seed": args.seed,
+                "accepted": _public(accepted),
+                "no_natural": _public(no_natural),
+                "out_accepted": str(args.out_accepted) if args.out_accepted else None,
+                "out_no_natural": str(args.out_no_natural) if args.out_no_natural else None,
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
+def cmd_campaign_final_validate(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms_campaign import (
+        accepted_coverage_heads,
+        accepted_pairs_light,
+        assert_campaign_complete,
+        compute_campaign_progress,
+        file_sha256,
+        load_campaign_meta,
+        load_final_audit_meta,
+        parse_campaign_manifest,
+        parse_no_natural_tsv,
+        validate_final_audit_meta,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        campaign = {h.head for h in heads}
+        no_nat = parse_no_natural_tsv(
+            args.no_natural, campaign_heads=campaign, require_file=True
+        )
+        if args.require_complete:
+            progress = compute_campaign_progress(
+                heads,
+                accepted_heads=accepted_coverage_heads(args.accepted_tsv),
+                no_natural_heads={h for h, _, _ in no_nat},
+                unresolved_sample_n=0,
+            )
+            assert_campaign_complete(progress)
+        meta = load_final_audit_meta(args.audit_meta)
+        manifest_sha = str(
+            load_campaign_meta(args.meta).get("manifest_sha256") or file_sha256(args.tsv) or ""
+        )
+        validate_final_audit_meta(
+            meta,
+            path=args.audit_meta,
+            manifest_sha256=manifest_sha,
+            accepted_pairs=accepted_pairs_light(args.accepted_tsv),
+            no_natural_rows=no_nat,
+            heads=heads,
+        )
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "require_complete": bool(args.require_complete),
+                "accepted_status": meta["accepted"]["status"],
+                "no_natural_status": meta["no_natural"]["status"],
+                "accepted_sample_n": meta["accepted"]["sample_n"],
+                "no_natural_sample_n": meta["no_natural"]["sample_n"],
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="專案自建反義 batch tools")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -675,6 +813,7 @@ def main(argv: list[str] | None = None) -> int:
     p_rep.set_defaults(func=cmd_report)
 
     from ingest.project_antonyms_campaign import (
+        DEFAULT_FINAL_AUDIT_META,
         DEFAULT_MANIFEST_META,
         DEFAULT_MANIFEST_TSV,
         DEFAULT_NO_NATURAL_META,
@@ -765,6 +904,47 @@ def main(argv: list[str] | None = None) -> int:
     p_nv.add_argument("--manifest", default=str(DEFAULT_MANIFEST_TSV))
     p_nv.add_argument("--manifest-meta", default=str(DEFAULT_MANIFEST_META))
     p_nv.set_defaults(func=cmd_no_natural_validate)
+
+    p_fs = sub.add_parser(
+        "campaign-final-sample",
+        help="Stratified final-audit sample (accepted + no-natural by batch_index)",
+    )
+    p_fs.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
+    p_fs.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
+    p_fs.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_fs.add_argument("--accepted-tsv", default=str(DEFAULT_TSV))
+    p_fs.add_argument("--seed", type=int, required=True)
+    p_fs.add_argument("--out-accepted", default="", help="Optional accepted sample TSV")
+    p_fs.add_argument(
+        "--out-no-natural", default="", help="Optional no-natural sample TSV"
+    )
+    p_fs.add_argument(
+        "--list-sampled",
+        action="store_true",
+        help="Include full sampled rows in JSON (default: strata stats only)",
+    )
+    p_fs.add_argument(
+        "--require-complete",
+        action="store_true",
+        help="Fail unless campaign is structurally complete before sampling",
+    )
+    p_fs.set_defaults(func=cmd_campaign_final_sample)
+
+    p_fv = sub.add_parser(
+        "campaign-final-validate",
+        help="Fail-closed validate campaign final audit meta + stratified replay",
+    )
+    p_fv.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
+    p_fv.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
+    p_fv.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_fv.add_argument("--accepted-tsv", default=str(DEFAULT_TSV))
+    p_fv.add_argument("--audit-meta", default=str(DEFAULT_FINAL_AUDIT_META))
+    p_fv.add_argument(
+        "--require-complete",
+        action="store_true",
+        help="Also require campaign-validate --require-complete",
+    )
+    p_fv.set_defaults(func=cmd_campaign_final_validate)
 
     args = parser.parse_args(argv)
     return int(args.func(args))

@@ -418,6 +418,200 @@ class CampaignProgressTests(unittest.TestCase):
             )
             self.assertEqual(len(rows), 59)
 
+    def test_stratified_final_audit_sample_and_gate(self):
+        from ingest.project_antonyms_campaign import (
+            FINAL_AUDIT_OK_RATE_THRESHOLD,
+            assert_campaign_complete,
+            compute_campaign_progress,
+            head_to_batch_index,
+            stratified_sample_accepted,
+            stratified_sample_no_natural,
+            validate_final_audit_meta,
+        )
+        from ingest.project_antonyms import pair_undirected_key
+
+        # Parametric tiny campaign: batch1=60 heads, batch2=10, batch3=60.
+        heads: list[CampaignHead] = []
+        rank = 0
+        for i in range(60):
+            rank += 1
+            heads.append(
+                CampaignHead(
+                    rank=rank, head=f"甲{i:02d}", essay_frequency=200 - i, batch_index=1
+                )
+            )
+        for i in range(10):
+            rank += 1
+            heads.append(
+                CampaignHead(
+                    rank=rank, head=f"乙{i:02d}", essay_frequency=100 - i, batch_index=2
+                )
+            )
+        for i in range(60):
+            rank += 1
+            heads.append(
+                CampaignHead(
+                    rank=rank, head=f"丙{i:02d}", essay_frequency=50 - i, batch_index=3
+                )
+            )
+        # Extra unresolved head in batch 3
+        rank += 1
+        heads.append(
+            CampaignHead(rank=rank, head="未決頭", essay_frequency=1, batch_index=3)
+        )
+        head_batch = head_to_batch_index(heads)
+        pairs = [(f"甲{i:02d}", f"尾甲{i:02d}") for i in range(60)]
+        pairs += [(f"乙{i:02d}", f"尾乙{i:02d}") for i in range(10)]
+        # batch 3 has no accepted pairs → skip
+        seed = 11
+        accepted = stratified_sample_accepted(pairs, head_batch, seed=seed, batch_count=3)
+        self.assertEqual(accepted["status"], "ok")
+        self.assertEqual(len(accepted["strata"]), 2)
+        self.assertEqual(accepted["strata"][0]["batch_index"], 1)
+        self.assertEqual(accepted["strata"][0]["parent_n"], 60)
+        self.assertEqual(accepted["strata"][0]["sample_n"], 50)
+        self.assertEqual(accepted["strata"][1]["batch_index"], 2)
+        self.assertEqual(accepted["strata"][1]["parent_n"], 10)
+        self.assertEqual(accepted["strata"][1]["sample_n"], 10)
+        self.assertEqual(accepted["sample_n"], 60)
+
+        # Empty no-natural → skipped_empty
+        empty_nn = stratified_sample_no_natural([], head_batch, seed=seed, batch_count=3)
+        self.assertEqual(empty_nn["status"], "skipped_empty")
+
+        reason = next(iter(NO_NATURAL_REASONS))
+        nn_rows = [(f"丙{i:02d}", reason, "b3") for i in range(60)]
+        no_nat = stratified_sample_no_natural(
+            nn_rows, head_batch, seed=seed, batch_count=3
+        )
+        self.assertEqual(no_nat["status"], "ok")
+        self.assertEqual(len(no_nat["strata"]), 1)
+        self.assertEqual(no_nat["strata"][0]["batch_index"], 3)
+        self.assertEqual(no_nat["sample_n"], 50)
+
+        fail_h, fail_t = accepted["sampled"][-1]
+        fail_key = pair_undirected_key(fail_h, fail_t)
+        kept_pairs = [p for p in pairs if pair_undirected_key(*p) != fail_key]
+        verdicts_acc = [
+            {"head": h, "tail": t, "verdict": "ok"} for h, t in accepted["sampled"][:-1]
+        ] + [{"head": fail_h, "tail": fail_t, "verdict": "fail"}]
+        accepted_entry = {
+            "status": "ok",
+            "sample_seed": seed,
+            "sample_n": accepted["sample_n"],
+            "sample_ok": accepted["sample_n"] - 1,
+            "sample_parent_n": accepted["sample_parent_n"],
+            "strata": accepted["strata"],
+            "sample_verdicts": verdicts_acc,
+            "removed_sample_fails": [{"head": fail_h, "tail": fail_t}],
+        }
+        nn_verdicts = [
+            {"head": h, "reason": r, "verdict": "ok"} for h, r, _ in no_nat["sampled"]
+        ]
+        no_nat_entry = {
+            "status": "ok",
+            "sample_seed": seed,
+            "sample_n": no_nat["sample_n"],
+            "sample_ok": no_nat["sample_n"],
+            "sample_parent_n": no_nat["sample_parent_n"],
+            "strata": no_nat["strata"],
+            "sample_verdicts": nn_verdicts,
+            "removed_sample_fails": [],
+        }
+        meta = {
+            "manifest_sha256": "b" * 64,
+            "ok_rate_threshold": FINAL_AUDIT_OK_RATE_THRESHOLD,
+            "git_commit": "c" * 40,
+            "accepted": accepted_entry,
+            "no_natural": no_nat_entry,
+        }
+        validate_final_audit_meta(
+            meta,
+            path=Path("final-audit"),
+            manifest_sha256="b" * 64,
+            accepted_pairs=kept_pairs,
+            no_natural_rows=nn_rows,
+            heads=heads,
+        )
+
+        # Replay mismatch
+        bad = json.loads(json.dumps(meta))
+        bad["accepted"]["sample_verdicts"][0]["head"] = "錯頭"
+        with self.assertRaises(ProjectAntonymsError):
+            validate_final_audit_meta(
+                bad,
+                path=Path("final-audit"),
+                manifest_sha256="b" * 64,
+                accepted_pairs=kept_pairs,
+                no_natural_rows=nn_rows,
+                heads=heads,
+            )
+
+        # 90% gate fail: only 50/60 ok
+        low = json.loads(json.dumps(meta))
+        low["accepted"]["sample_ok"] = 50
+        for row in low["accepted"]["sample_verdicts"][50:]:
+            row["verdict"] = "fail"
+            low["accepted"]["removed_sample_fails"].append(
+                {"head": row["head"], "tail": row["tail"]}
+            )
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_final_audit_meta(
+                low,
+                path=Path("final-audit"),
+                manifest_sha256="b" * 64,
+                accepted_pairs=kept_pairs,
+                no_natural_rows=nn_rows,
+                heads=heads,
+            )
+        self.assertIn("quality gate failed", str(ctx.exception))
+
+        # require-complete fails while unresolved
+        progress = compute_campaign_progress(
+            heads,
+            accepted_heads={h for h, _ in pairs},
+            no_natural_heads={h for h, _, _ in nn_rows},
+            unresolved_sample_n=0,
+        )
+        self.assertFalse(progress["complete"])
+        with self.assertRaises(ProjectAntonymsError):
+            assert_campaign_complete(progress)
+
+        # Both empty → skipped_empty ok
+        empty_meta = {
+            "manifest_sha256": "b" * 64,
+            "ok_rate_threshold": FINAL_AUDIT_OK_RATE_THRESHOLD,
+            "git_commit": "c" * 40,
+            "accepted": {
+                "status": "skipped_empty",
+                "sample_seed": seed,
+                "sample_n": 0,
+                "sample_ok": 0,
+                "sample_parent_n": 0,
+                "strata": [],
+                "sample_verdicts": [],
+                "removed_sample_fails": [],
+            },
+            "no_natural": {
+                "status": "skipped_empty",
+                "sample_seed": seed,
+                "sample_n": 0,
+                "sample_ok": 0,
+                "sample_parent_n": 0,
+                "strata": [],
+                "sample_verdicts": [],
+                "removed_sample_fails": [],
+            },
+        }
+        validate_final_audit_meta(
+            empty_meta,
+            path=Path("final-audit"),
+            manifest_sha256="b" * 64,
+            accepted_pairs=[],
+            no_natural_rows=[],
+            heads=heads,
+        )
+
 
 class CampaignLiveFreezeTests(unittest.TestCase):
     def test_live_manifest_present_and_first500_matches_reference(self):
