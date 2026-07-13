@@ -710,6 +710,371 @@
       ],
       "accepted_pairs": 74,
       "created_at": "2026-07-13T11:50:23.831181+00:00"
+    },
+    "campaign-b02-20260713": {
+      "k": 500,
+      "git_commit": "cc1c424cd36a637acdda7195b98b9541a90288b3",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=2 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=332 (R3); generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 484
+      },
+      "sample_seed": 20260724,
+      "sample_n": 50,
+      "sample_ok": 47,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.94,
+      "sample_parent": "project_antonyms.tsv campaign-b02 parent N=332 (pre sample-fail removal)",
+      "sample_parent_n": 332,
+      "sample_parent_commit": "cc1c424cd36a637acdda7195b98b9541a90288b3",
+      "sample_parent_tsv_sha256": "8361d074bb13ed51bee00b76aad9988b025e254e5b436e59391b17c3b127f633",
+      "sample_verdicts": [
+        {
+          "head": "上次",
+          "tail": "下次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "乾",
+          "tail": "潤",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "乾",
+          "tail": "濕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "伸手",
+          "tail": "收手",
+          "verdict": "fail",
+          "reasons": [
+            "伸手可指援助，收手指停止；非穩定同義軸"
+          ]
+        },
+        {
+          "head": "保護",
+          "tail": "破壞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冷靜",
+          "tail": "急躁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出面",
+          "tail": "裏面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "分手",
+          "tail": "結合",
+          "verdict": "fail",
+          "reasons": [
+            "關係事件與一般結合動作不在同一穩定語境"
+          ]
+        },
+        {
+          "head": "刺激",
+          "tail": "平淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "剩",
+          "tail": "光",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "外面",
+          "tail": "裡面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大話",
+          "tail": "實話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大話",
+          "tail": "真話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好玩",
+          "tail": "沉悶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "存在",
+          "tail": "消失",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "對話",
+          "tail": "獨白",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "尷尬",
+          "tail": "自在",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "左手",
+          "tail": "右手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "左邊",
+          "tail": "右邊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "愛情",
+          "tail": "仇恨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "慘",
+          "tail": "開心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "應承",
+          "tail": "推辭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "揭",
+          "tail": "蓋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搶",
+          "tail": "讓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擒",
+          "tail": "縱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明顯",
+          "tail": "隱晦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "最多",
+          "tail": "最少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樓下",
+          "tail": "樓上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "毫無",
+          "tail": "充滿",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "永遠",
+          "tail": "暫時",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "滿足",
+          "tail": "不滿",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "激動",
+          "tail": "鎮定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "熄",
+          "tail": "點",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "生存",
+          "tail": "死亡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "留意",
+          "tail": "忽略",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發出",
+          "tail": "收回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發覺",
+          "tail": "忽略",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "結婚",
+          "tail": "離婚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "綁",
+          "tail": "鬆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自然",
+          "tail": "刻意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "解",
+          "tail": "結",
+          "verdict": "fail",
+          "reasons": [
+            "兩字皆高度多義，只在解結／打結語境相反"
+          ]
+        },
+        {
+          "head": "記憶",
+          "tail": "失憶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "記憶",
+          "tail": "遺忘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "跪",
+          "tail": "站",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "錄",
+          "tail": "刪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "開口",
+          "tail": "閉口",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "關心",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面對",
+          "tail": "背對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面對",
+          "tail": "迴避",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "馬上",
+          "tail": "稍後",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "伸手",
+          "tail": "收手",
+          "reasons": [
+            "伸手可指援助，收手指停止；非穩定同義軸"
+          ]
+        },
+        {
+          "head": "分手",
+          "tail": "結合",
+          "reasons": [
+            "關係事件與一般結合動作不在同一穩定語境"
+          ]
+        },
+        {
+          "head": "解",
+          "tail": "結",
+          "reasons": [
+            "兩字皆高度多義，只在解結／打結語境相反"
+          ]
+        }
+      ],
+      "accepted_pairs": 329,
+      "created_at": "2026-07-13T13:24:00.212119+00:00"
     }
   }
 }

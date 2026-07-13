@@ -333,7 +333,344 @@
           "notes": ""
         }
       ],
-      "created_at": "2026-07-13T11:50:23.831181+00:00"
+      "created_at": "2026-07-13T11:50:23.831181+00:00",
+      "superseded_heads": [
+        {
+          "head": "不如",
+          "reason": "function_word"
+        },
+        {
+          "head": "抹",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "結果",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "鬼",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "點",
+          "reason": "function_word"
+        }
+      ]
+    },
+    "campaign-b02-20260713": {
+      "sample_seed": 20260725,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 305,
+      "git_commit": "cc1c424cd36a637acdda7195b98b9541a90288b3",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "一半",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "一口氣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "七",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "使",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "八",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "包",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "十分",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "反正",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "叔叔",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "吻",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "地點",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "垃圾",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "基本上",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "場",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "大哥",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "夾",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "對面",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "尿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "影響",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "才",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "扶",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "方面",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "旁邊",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "日子",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "早餐",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "書包",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "杞",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "棵",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "槍",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "樓梯",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "氣氛",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "沙",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "的確",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "穿過",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "筆",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "答案",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "米",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "紙",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "能夠",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "花",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "茵",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "蘋果",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "譬如",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "身上",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "轉頭",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "醫院",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "金",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "阿爸",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "雪糕",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "鼻",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        }
+      ],
+      "created_at": "2026-07-13T13:24:00.212119+00:00",
+      "note": "Full census 230 ok/74 fail then reason fixes+promotions applied to TSV; formal sample seed=20260725 all-ok on amended parent; orphans=[]"
     }
   }
 }

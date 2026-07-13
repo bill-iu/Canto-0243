@@ -945,8 +945,42 @@ def assert_no_natural_sample_replayable(
             f"not marked fail: {sorted(set(amended) - fail_heads)}"
         )
 
+    # Later batches may cover earlier no-natural heads via accepted head∪tail.
+    # Keep those heads out of the live TSV but restore them for sample-parent replay.
+    superseded_raw = entry.get("superseded_heads") or []
+    if not isinstance(superseded_raw, list):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] superseded_heads must be a list"
+        )
+    superseded: Dict[str, str] = {}
+    for i, row in enumerate(superseded_raw):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].superseded_heads[{i}] not object"
+            )
+        head = normalize_literal(str(row.get("head") or "").strip())
+        reason = str(row.get("reason") or "").strip()
+        if not head or reason not in NO_NATURAL_REASONS:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].superseded_heads[{i}] needs head/reason"
+            )
+        if head in superseded:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].superseded_heads duplicate {head}"
+            )
+        if head in current_by_head:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] superseded head {head} still in TSV"
+            )
+        if head in removed_heads or head in amended:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] superseded head {head} overlaps "
+                f"removed/amended"
+            )
+        superseded[head] = reason
+
     # Reconstruct sample-time parent: current rows with amended heads rolled back,
-    # plus removed fails.
+    # plus removed fails, plus later-superseded heads.
     parent: List[Tuple[str, str, str]] = []
     for h, r, b in batch_rows:
         if h in amended:
@@ -958,6 +992,8 @@ def assert_no_natural_sample_replayable(
         reason = str(r["reason"]).strip()
         if head:
             parent.append((head, reason, batch_id))
+    for head, reason in superseded.items():
+        parent.append((head, reason, batch_id))
     parent_n = int(entry["sample_parent_n"])
     if len(parent) != parent_n:
         raise ProjectAntonymsError(

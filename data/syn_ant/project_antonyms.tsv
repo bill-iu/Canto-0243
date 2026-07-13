@@ -310,7 +310,6 @@ head	tail	relation_type	batch_id
 記憶	忘記	ant	campaign-b02-20260713
 記憶	失憶	ant	campaign-b02-20260713
 分手	復合	ant	campaign-b02-20260713
-分手	結合	ant	campaign-b02-20260713
 分手	和好	ant	campaign-b02-20260713
 錄	刪	ant	campaign-b02-20260713
 錄	抹	ant	campaign-b02-20260713
@@ -336,7 +335,6 @@ head	tail	relation_type	batch_id
 光	暗	ant	campaign-b02-20260713
 光	黑暗	ant	campaign-b02-20260713
 解	綁	ant	campaign-b02-20260713
-解	結	ant	campaign-b02-20260713
 終點	開端	ant	campaign-b02-20260713
 嘗試	放棄	ant	campaign-b02-20260713
 搶	讓	ant	campaign-b02-20260713
@@ -497,7 +495,6 @@ head	tail	relation_type	batch_id
 支持	抵制	ant	campaign-b02-20260713
 支持	抗拒	ant	campaign-b02-20260713
 伸手	縮手	ant	campaign-b02-20260713
-伸手	收手	ant	campaign-b02-20260713
 安慰	折磨	ant	campaign-b02-20260713
 安慰	傷害	ant	campaign-b02-20260713
 安慰	打擊	ant	campaign-b02-20260713
