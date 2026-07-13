@@ -1721,7 +1721,6 @@ head	tail	relation_type	batch_id
 低落	興奮	ant	campaign-b08-20260714
 低落	振奮	ant	campaign-b08-20260714
 傳送	接收	ant	campaign-b08-20260714
-冒險	保險	ant	campaign-b08-20260714
 冒險	穩妥	ant	campaign-b08-20260714
 冒險	謹慎	ant	campaign-b08-20260714
 出血	止血	ant	campaign-b08-20260714
@@ -1861,7 +1860,6 @@ head	tail	relation_type	batch_id
 清純	世故	ant	campaign-b08-20260714
 清純	妖冶	ant	campaign-b08-20260714
 烏	白	ant	campaign-b08-20260714
-癮	戒	ant	campaign-b08-20260714
 管理員	用戶	ant	campaign-b08-20260714
 耐煩	急躁	ant	campaign-b08-20260714
 耐煩	煩躁	ant	campaign-b08-20260714
@@ -1898,7 +1896,6 @@ head	tail	relation_type	batch_id
 一剎那	永恆	ant	campaign-b08-20260714
 人望	惡名	ant	campaign-b08-20260714
 人望	臭名	ant	campaign-b08-20260714
-伴侶	仇敵	ant	campaign-b08-20260714
 依稀	清晰	ant	campaign-b08-20260714
 依稀	分明	ant	campaign-b08-20260714
 冠軍	墊底	ant	campaign-b08-20260714

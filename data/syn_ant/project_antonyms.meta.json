@@ -2945,6 +2945,371 @@
       ],
       "accepted_pairs": 230,
       "created_at": "2026-07-13T19:36:02.622597+00:00"
+    },
+    "campaign-b08-20260714": {
+      "k": 500,
+      "git_commit": "35eb00d2c0643e9cd7bdeb4c77413a1ef3347788",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=8 blind draft via Cursor Agent (xAI Grok); maintainer R1 47/50 on N=341; lock parent N=343 adds 優勢↔劣勢、高效↔低效 (curated 低效; cleared spurious guotong syn); replay seed=20260848 embeds same 3 fails; generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 459
+      },
+      "sample_seed": 20260848,
+      "sample_n": 50,
+      "sample_ok": 47,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.94,
+      "sample_parent": "project_antonyms.tsv campaign-b08 parent N=343 (R1+promotions, pre fail removal)",
+      "sample_parent_n": 343,
+      "sample_parent_commit": "35eb00d2c0643e9cd7bdeb4c77413a1ef3347788",
+      "sample_parent_tsv_sha256": "6f93289a9e7fa37af8c46f68c0a71f57bcde607ca029606ffdadbcf6d3890dba",
+      "sample_verdicts": [
+        {
+          "head": "伴侶",
+          "tail": "仇敵",
+          "verdict": "fail",
+          "reasons": [
+            "關係角色類別不同，非反義"
+          ]
+        },
+        {
+          "head": "低落",
+          "tail": "高漲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "佔有",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "來不及",
+          "tail": "來得及",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保障",
+          "tail": "危害",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傷感",
+          "tail": "愉快",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傷感",
+          "tail": "開心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "充斥",
+          "tail": "稀少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "兇",
+          "tail": "溫和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入侵",
+          "tail": "撤離",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冒險",
+          "tail": "保險",
+          "verdict": "fail",
+          "reasons": [
+            "押韻相關概念，非反義"
+          ]
+        },
+        {
+          "head": "冒險",
+          "tail": "謹慎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "到來",
+          "tail": "離去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "友善",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "受害",
+          "tail": "受益",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "可見",
+          "tail": "隱形",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "外貌",
+          "tail": "內心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大於",
+          "tail": "少於",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天黑",
+          "tail": "天亮",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "委屈",
+          "tail": "得意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "幫忙",
+          "tail": "妨礙",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年青",
+          "tail": "年老",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "必然",
+          "tail": "偶然",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "必然",
+          "tail": "可能",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "必需",
+          "tail": "多餘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "探索",
+          "tail": "固守",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "探索",
+          "tail": "忽視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "撕",
+          "tail": "貼",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "改善",
+          "tail": "惡化",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有意思",
+          "tail": "沒意思",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樣品",
+          "tail": "成品",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樹立",
+          "tail": "摧毀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "民警",
+          "tail": "罪犯",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "波動",
+          "tail": "穩定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "淫蕩",
+          "tail": "端莊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "灰色",
+          "tail": "彩色",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無聲",
+          "tail": "喧鬧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無聲",
+          "tail": "有聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當場",
+          "tail": "後來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "癮",
+          "tail": "戒",
+          "verdict": "fail",
+          "reasons": [
+            "成癮名詞／狀態與戒除動作詞性不一致"
+          ]
+        },
+        {
+          "head": "睡着",
+          "tail": "醒來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "童年",
+          "tail": "老年",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "背叛",
+          "tail": "忠誠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "開朗",
+          "tail": "憂鬱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "防治",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "集合",
+          "tail": "解散",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "順手",
+          "tail": "棘手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "體貼",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "高效",
+          "tail": "低效",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "高速",
+          "tail": "慢速",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "伴侶",
+          "tail": "仇敵",
+          "reasons": [
+            "關係角色類別不同，非反義"
+          ]
+        },
+        {
+          "head": "冒險",
+          "tail": "保險",
+          "reasons": [
+            "押韻相關概念，非反義"
+          ]
+        },
+        {
+          "head": "癮",
+          "tail": "戒",
+          "reasons": [
+            "成癮名詞／狀態與戒除動作詞性不一致"
+          ]
+        }
+      ],
+      "accepted_pairs": 340,
+      "created_at": "2026-07-13T20:01:11.067175+00:00"
     }
   }
 }
