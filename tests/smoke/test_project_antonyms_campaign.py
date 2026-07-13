@@ -330,6 +330,94 @@ class CampaignProgressTests(unittest.TestCase):
                 unresolved_sample_n=-1,
             )
 
+    def test_unresolved_heads_for_batch(self):
+        from ingest.project_antonyms_campaign import unresolved_heads_for_batch
+
+        heads = self._heads(k=20, batch_size=10)
+        accepted = {heads[0].head, heads[10].head}
+        no_nat = {heads[1].head}
+        b1 = unresolved_heads_for_batch(
+            heads,
+            batch_index=1,
+            accepted_heads=accepted,
+            no_natural_heads=no_nat,
+        )
+        self.assertEqual(len(b1), 8)
+        self.assertNotIn(heads[0].head, b1)
+        self.assertNotIn(heads[1].head, b1)
+
+    def test_no_natural_sample_replay_and_gate(self):
+        from ingest.project_antonyms_campaign import (
+            NO_NATURAL_REASONS,
+            assert_no_natural_sample_replayable,
+            sample_no_natural_rows,
+            validate_no_natural_batch_meta,
+            validate_no_natural_ledger,
+        )
+
+        reason = next(iter(NO_NATURAL_REASONS))
+        # Build parent of 60 heads so sample_size_for = 50
+        parent = [(f"詞{i:02d}", reason, "campaign-b01-20260713") for i in range(60)]
+        # Use CJK-only heads
+        _d = "零一二三四五六七八九"
+        parent = [
+            (
+                "無" + "".join(_d[int(c)] for c in f"{i:02d}"),
+                reason,
+                "campaign-b01-20260713",
+            )
+            for i in range(60)
+        ]
+        seed = 7
+        sampled = sample_no_natural_rows(parent, seed=seed)
+        self.assertEqual(len(sampled), 50)
+        # Mark last sampled as fail and remove from accepted rows
+        fail_h, fail_r, _ = sampled[-1]
+        kept = [r for r in parent if r[0] != fail_h]
+        verdicts = [
+            {"head": h, "reason": r, "verdict": "ok"} for h, r, _ in sampled[:-1]
+        ] + [{"head": fail_h, "reason": fail_r, "verdict": "fail"}]
+        entry = {
+            "sample_seed": seed,
+            "sample_n": 50,
+            "sample_ok": 49,
+            "ok_rate_threshold": 0.90,
+            "sample_parent_n": 60,
+            "removed_sample_fails": [{"head": fail_h, "reason": fail_r}],
+            "sample_verdicts": verdicts,
+            "git_commit": "a" * 40,
+        }
+        path = Path("nn-meta")
+        validate_no_natural_batch_meta("campaign-b01-20260713", entry, path=path)
+        assert_no_natural_sample_replayable(
+            "campaign-b01-20260713", entry, kept, path=path
+        )
+        # Still in TSV → fail
+        with self.assertRaises(ProjectAntonymsError):
+            assert_no_natural_sample_replayable(
+                "campaign-b01-20260713", entry, parent, path=path
+            )
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tsv = Path(tmp) / "nn.tsv"
+            meta_path = Path(tmp) / "nn.meta.json"
+            lines = ["head\treason\tbatch_id"] + [
+                f"{h}\t{r}\t{b}" for h, r, b in kept
+            ]
+            tsv.write_text("\n".join(lines) + "\n", encoding="utf-8")
+            meta_path.write_text(
+                json.dumps(
+                    {"batches": {"campaign-b01-20260713": entry}},
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            campaign = {h for h, _, _ in kept} | {fail_h}
+            rows = validate_no_natural_ledger(
+                tsv_path=tsv, meta_path=meta_path, campaign_heads=campaign
+            )
+            self.assertEqual(len(rows), 59)
+
 
 class CampaignLiveFreezeTests(unittest.TestCase):
     def test_live_manifest_present_and_first500_matches_reference(self):

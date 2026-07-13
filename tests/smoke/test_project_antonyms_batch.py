@@ -64,6 +64,7 @@ def _batch_meta(
                 "sample_seed": 1,
                 "sample_n": sample_n,
                 "sample_ok": sample_ok,
+                "ok_rate_threshold": 0.85,
                 "sample_parent_n": parent_n,
                 "sample_parent_commit": "a" * 40,
                 "sample_parent_tsv_sha256": "b" * 64,  # filled by _with_fixture_git_blob
@@ -252,6 +253,28 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
             with self.assertRaises(ProjectAntonymsError) as ctx:
                 parse_project_antonyms_tsv(tsv, meta=meta)
             self.assertIn("quality gate", str(ctx.exception))
+
+    def test_meta_ok_rate_threshold_required_and_campaign_90(self):
+        from ingest.project_antonyms import validate_batch_meta_entry
+
+        path = Path("fixture")
+        base = _batch_meta()["batches"]["batch-1"]
+        missing = dict(base)
+        del missing["ok_rate_threshold"]
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("batch-1", missing, path=path)
+        self.assertIn("ok_rate_threshold", str(ctx.exception))
+
+        # 45/50 = 0.90 passes campaign gate
+        ok90 = _batch_meta(sample_n=50, sample_ok=45, verdict="ok")["batches"]["batch-1"]
+        ok90["ok_rate_threshold"] = 0.90
+        validate_batch_meta_entry("batch-1", ok90, path=path)
+        # 44/50 = 0.88 fails 0.90
+        bad90 = _batch_meta(sample_n=50, sample_ok=44, verdict="ok")["batches"]["batch-1"]
+        bad90["ok_rate_threshold"] = 0.90
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("batch-1", bad90, path=path)
+        self.assertIn("quality gate", str(ctx.exception))
 
     def test_meta_rejects_weak_audit_fields(self):
         from ingest.project_antonyms import validate_batch_meta_entry

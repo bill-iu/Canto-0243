@@ -22,6 +22,7 @@
       "sample_seed": 20260713,
       "sample_n": 50,
       "sample_ok": 48,
+      "ok_rate_threshold": 0.85,
       "ok_rate": 0.96,
       "sample_parent": "project_antonyms.tsv final N=100 (pre sample-fail removal)",
       "sample_verdicts": [

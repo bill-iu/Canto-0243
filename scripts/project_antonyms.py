@@ -193,6 +193,23 @@ def cmd_validate(args: argparse.Namespace) -> int:
 
 
 def cmd_quality_check(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms import OK_RATE_THRESHOLD, parse_ok_rate_threshold
+
+    threshold = (
+        float(args.threshold)
+        if args.threshold is not None
+        else OK_RATE_THRESHOLD
+    )
+    try:
+        threshold = parse_ok_rate_threshold(
+            threshold,
+            field="threshold",
+            path=Path("<cli>"),
+            batch_id="quality-check",
+        )
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
     if args.sample_n <= 0 or args.ok < 0 or args.ok > args.sample_n:
         print(
             json.dumps(
@@ -201,20 +218,20 @@ def cmd_quality_check(args: argparse.Namespace) -> int:
                     "sample_n": args.sample_n,
                     "passes": False,
                     "error": "impossible counts",
-                    "threshold": 0.85,
+                    "threshold": threshold,
                 },
                 ensure_ascii=False,
             )
         )
         return 1
-    ok = passes_quality_gate(args.ok, args.sample_n)
+    ok = passes_quality_gate(args.ok, args.sample_n, threshold=threshold)
     print(
         json.dumps(
             {
                 "ok_count": args.ok,
                 "sample_n": args.sample_n,
                 "passes": ok,
-                "threshold": 0.85,
+                "threshold": threshold,
             },
             ensure_ascii=False,
         )
@@ -490,6 +507,120 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_campaign_unresolved(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms_campaign import (
+        accepted_coverage_heads,
+        parse_campaign_manifest,
+        parse_no_natural_tsv,
+        unresolved_heads_for_batch,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        campaign = {h.head for h in heads}
+        no_nat = parse_no_natural_tsv(
+            args.no_natural, campaign_heads=campaign, require_file=True
+        )
+        covered = accepted_coverage_heads(args.accepted_tsv)
+        unresolved = unresolved_heads_for_batch(
+            heads,
+            batch_index=args.batch_index,
+            accepted_heads=covered,
+            no_natural_heads={h for h, _, _ in no_nat},
+        )
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    if args.out:
+        out = Path(args.out)
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text("\n".join(unresolved) + ("\n" if unresolved else ""), encoding="utf-8")
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "batch_index": args.batch_index,
+                "unresolved": len(unresolved),
+                "heads": unresolved if args.list_heads else unresolved[: args.preview],
+                "preview": args.preview if not args.list_heads else None,
+                "out": str(args.out) if args.out else None,
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
+def cmd_no_natural_sample(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms import sample_size_for
+    from ingest.project_antonyms_campaign import (
+        parse_campaign_manifest,
+        parse_no_natural_tsv,
+        sample_no_natural_rows,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.manifest, meta_path=args.manifest_meta)
+        campaign = {h.head for h in heads}
+        rows = parse_no_natural_tsv(
+            args.tsv, campaign_heads=campaign, require_file=True
+        )
+        if args.batch_id:
+            rows = [r for r in rows if r[2] == args.batch_id]
+        sampled = sample_no_natural_rows(rows, seed=args.seed)
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["head\treason\tbatch_id"] + [f"{h}\t{r}\t{b}" for h, r, b in sampled]
+    out.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "n": len(rows),
+                "sample_size": sample_size_for(len(rows)),
+                "sampled": len(sampled),
+                "seed": args.seed,
+                "batch_id": args.batch_id or None,
+                "out": str(out),
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
+def cmd_no_natural_validate(args: argparse.Namespace) -> int:
+    from ingest.project_antonyms_campaign import (
+        parse_campaign_manifest,
+        validate_no_natural_ledger,
+    )
+
+    try:
+        heads = parse_campaign_manifest(args.manifest, meta_path=args.manifest_meta)
+        rows = validate_no_natural_ledger(
+            tsv_path=args.tsv,
+            meta_path=args.meta,
+            campaign_heads={h.head for h in heads},
+        )
+    except ProjectAntonymsError as exc:
+        print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        return 1
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "rows": len(rows),
+                "batch_ids": sorted({b for _, _, b in rows}),
+            },
+            ensure_ascii=False,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="專案自建反義 batch tools")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -524,6 +655,12 @@ def main(argv: list[str] | None = None) -> int:
     p_q = sub.add_parser("quality-check", help="Check OK-rate gate")
     p_q.add_argument("--ok", type=int, required=True)
     p_q.add_argument("--sample-n", type=int, required=True)
+    p_q.add_argument(
+        "--threshold",
+        type=float,
+        default=None,
+        help="ok_rate_threshold (0.85 or 0.90; default 0.85)",
+    )
     p_q.set_defaults(func=cmd_quality_check)
 
     p_rep = sub.add_parser("report", help="WP-06 stats: TSV vs DB ant sources")
@@ -540,6 +677,7 @@ def main(argv: list[str] | None = None) -> int:
     from ingest.project_antonyms_campaign import (
         DEFAULT_MANIFEST_META,
         DEFAULT_MANIFEST_TSV,
+        DEFAULT_NO_NATURAL_META,
         DEFAULT_NO_NATURAL_TSV,
         DEFAULT_UNRESOLVED_SAMPLE,
         CAMPAIGN_BASELINE_COMMIT,
@@ -590,6 +728,43 @@ def main(argv: list[str] | None = None) -> int:
         help=f"Max unresolved heads listed per batch (default {DEFAULT_UNRESOLVED_SAMPLE})",
     )
     p_cv.set_defaults(func=cmd_campaign_validate)
+
+    p_cu = sub.add_parser(
+        "campaign-unresolved",
+        help="List unresolved campaign heads for one batch_index",
+    )
+    p_cu.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
+    p_cu.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
+    p_cu.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_cu.add_argument("--accepted-tsv", default=str(DEFAULT_TSV))
+    p_cu.add_argument("--batch-index", type=int, required=True)
+    p_cu.add_argument("--out", default="", help="Optional plaintext heads file")
+    p_cu.add_argument(
+        "--list-heads",
+        action="store_true",
+        help="Include full unresolved head list in JSON (default: preview only)",
+    )
+    p_cu.add_argument("--preview", type=int, default=20)
+    p_cu.set_defaults(func=cmd_campaign_unresolved)
+
+    p_ns = sub.add_parser("no-natural-sample", help="Sample no-natural rows for quality gate")
+    p_ns.add_argument("--tsv", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_ns.add_argument("--manifest", default=str(DEFAULT_MANIFEST_TSV))
+    p_ns.add_argument("--manifest-meta", default=str(DEFAULT_MANIFEST_META))
+    p_ns.add_argument("--batch-id", default="", help="Optional filter to one batch_id")
+    p_ns.add_argument("--seed", type=int, required=True)
+    p_ns.add_argument("--out", required=True)
+    p_ns.set_defaults(func=cmd_no_natural_sample)
+
+    p_nv = sub.add_parser(
+        "no-natural-validate",
+        help="Fail-closed validate no-natural TSV + meta sample replay",
+    )
+    p_nv.add_argument("--tsv", default=str(DEFAULT_NO_NATURAL_TSV))
+    p_nv.add_argument("--meta", default=str(DEFAULT_NO_NATURAL_META))
+    p_nv.add_argument("--manifest", default=str(DEFAULT_MANIFEST_TSV))
+    p_nv.add_argument("--manifest-meta", default=str(DEFAULT_MANIFEST_META))
+    p_nv.set_defaults(func=cmd_no_natural_validate)
 
     args = parser.parse_args(argv)
     return int(args.func(args))

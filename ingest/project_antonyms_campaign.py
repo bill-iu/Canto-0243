@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import random
 import re
 import subprocess
 from dataclasses import dataclass
@@ -24,6 +25,9 @@ from ingest.project_antonyms import (
     chars_with_direct_ant,
     chars_with_syn,
     file_sha256,
+    parse_ok_rate_threshold,
+    passes_quality_gate,
+    sample_size_for,
 )
 
 _GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
@@ -35,6 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST_TSV = ROOT / "data" / "syn_ant" / "campaign_top5000.tsv"
 DEFAULT_MANIFEST_META = ROOT / "data" / "syn_ant" / "campaign_top5000.meta.json"
 DEFAULT_NO_NATURAL_TSV = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.tsv"
+DEFAULT_NO_NATURAL_META = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.meta.json"
 DEFAULT_THESAURUS_ANT = ROOT / "data" / "thesaurus" / "dict_antonym.txt"
 DEFAULT_ESSAY = ROOT / "data" / "essay" / "essay-cantonese.txt"
 
@@ -642,6 +647,292 @@ def assert_campaign_complete(progress: dict[str, Any]) -> None:
         )
 
 
+def unresolved_heads_for_batch(
+    heads: Sequence[CampaignHead],
+    *,
+    batch_index: int,
+    accepted_heads: Set[str],
+    no_natural_heads: Set[str],
+) -> List[str]:
+    """Manifest-ordered unresolved heads in one campaign batch slot."""
+    if batch_index < 1:
+        raise ProjectAntonymsError(f"batch_index must be >= 1, got {batch_index}")
+    progress = compute_campaign_progress(
+        heads,
+        accepted_heads=accepted_heads,
+        no_natural_heads=no_natural_heads,
+        unresolved_sample_n=0,
+    )
+    batch_ids = {b["batch_index"] for b in progress["batches"]}
+    if batch_index not in batch_ids:
+        raise ProjectAntonymsError(
+            f"batch_index {batch_index} not in campaign batches {sorted(batch_ids)}"
+        )
+    accepted_in = accepted_heads & {h.head for h in heads}
+    return [
+        h.head
+        for h in heads
+        if h.batch_index == batch_index
+        and h.head not in accepted_in
+        and h.head not in no_natural_heads
+    ]
+
+
+def sample_no_natural_rows(
+    rows: Sequence[Tuple[str, str, str]],
+    *,
+    seed: int,
+) -> List[Tuple[str, str, str]]:
+    """Stable head-ASC sample of no-natural rows (head, reason, batch_id)."""
+    ordered = sorted(rows, key=lambda r: r[0])
+    n = len(ordered)
+    size = sample_size_for(n)
+    if size == 0:
+        return []
+    if size >= n:
+        return list(ordered)
+    rng = random.Random(seed)
+    idxs = sorted(rng.sample(range(n), size))
+    return [ordered[i] for i in idxs]
+
+
+def load_no_natural_meta(path: Path | str = DEFAULT_NO_NATURAL_META) -> dict[str, Any]:
+    p = Path(path)
+    if not p.is_file():
+        raise ProjectAntonymsError(f"missing no-natural meta: {p}")
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ProjectAntonymsError(f"invalid no-natural meta JSON: {p}: {exc}") from exc
+    if not isinstance(data, dict):
+        raise ProjectAntonymsError(f"no-natural meta root must be object: {p}")
+    return data
+
+
+def write_empty_no_natural_meta(path: Path | str = DEFAULT_NO_NATURAL_META) -> None:
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(
+        json.dumps({"batches": {}}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def validate_no_natural_batch_meta(
+    batch_id: str,
+    entry: Any,
+    *,
+    path: Path,
+) -> None:
+    """Fail-closed audit for one no-natural batch (head+reason sample gate)."""
+    if not isinstance(entry, dict) or not entry:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] must be a non-empty object"
+        )
+    required = (
+        "sample_seed",
+        "sample_n",
+        "sample_ok",
+        "ok_rate_threshold",
+        "sample_parent_n",
+        "removed_sample_fails",
+        "sample_verdicts",
+        "git_commit",
+    )
+    missing = [k for k in required if k not in entry]
+    if missing:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] missing fields: {', '.join(missing)}"
+        )
+    try:
+        sample_seed = int(entry["sample_seed"])
+        sample_n = int(entry["sample_n"])
+        sample_ok = int(entry["sample_ok"])
+        sample_parent_n = int(entry["sample_parent_n"])
+    except (TypeError, ValueError) as exc:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] numeric fields invalid: {exc}"
+        ) from exc
+    _ = sample_seed  # validated via int(); used at replay time
+    if sample_n <= 0 or sample_ok < 0 or sample_ok > sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] impossible sample counts "
+            f"(ok={sample_ok}, n={sample_n})"
+        )
+    if sample_parent_n < sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_parent_n={sample_parent_n} "
+            f"< sample_n={sample_n}"
+        )
+    _require_git_sha1(entry["git_commit"], field="git_commit", path=path)
+    threshold = parse_ok_rate_threshold(
+        entry["ok_rate_threshold"],
+        field="ok_rate_threshold",
+        path=path,
+        batch_id=batch_id,
+    )
+    removed = entry.get("removed_sample_fails")
+    if not isinstance(removed, list):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] removed_sample_fails must be a list"
+        )
+    for i, row in enumerate(removed):
+        if not isinstance(row, dict) or "head" not in row or "reason" not in row:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].removed_sample_fails[{i}] "
+                f"needs head/reason"
+            )
+        if not str(row["head"]).strip() or not str(row["reason"]).strip():
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].removed_sample_fails[{i}] empty"
+            )
+        if str(row["reason"]).strip() not in NO_NATURAL_REASONS:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].removed_sample_fails[{i}] "
+                f"unknown reason"
+            )
+    verdicts = entry.get("sample_verdicts")
+    if not isinstance(verdicts, list) or len(verdicts) != sample_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_verdicts must be a list "
+            f"of length sample_n={sample_n}"
+        )
+    ok_n = 0
+    for i, row in enumerate(verdicts):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] not object"
+            )
+        for key in ("head", "reason", "verdict"):
+            if key not in row:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] missing {key}"
+                )
+        if str(row["reason"]).strip() not in NO_NATURAL_REASONS:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] unknown reason"
+            )
+        verdict = str(row["verdict"]).strip().lower()
+        if verdict not in ("ok", "fail"):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] "
+                f"verdict must be ok|fail"
+            )
+        if verdict == "ok":
+            ok_n += 1
+    if ok_n != sample_ok:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] sample_ok={sample_ok} != "
+            f"verdicts ok count {ok_n}"
+        )
+    if not passes_quality_gate(sample_ok, sample_n, threshold=threshold):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] quality gate failed: "
+            f"{sample_ok}/{sample_n} < {threshold:.0%}"
+        )
+
+
+def assert_no_natural_sample_replayable(
+    batch_id: str,
+    entry: dict[str, Any],
+    rows: Sequence[Tuple[str, str, str]],
+    *,
+    path: Path,
+) -> None:
+    """Replay no-natural sample; fails must be removed from TSV rows for batch."""
+    batch_rows = [(h, r, b) for h, r, b in rows if b == batch_id]
+    removed = entry["removed_sample_fails"]
+    removed_heads = {normalize_literal(str(r["head"]).strip()) for r in removed}
+    removed_heads = {h for h in removed_heads if h}
+    current_heads = {h for h, _, _ in batch_rows}
+    fail_heads: Set[str] = set()
+    for i, row in enumerate(entry["sample_verdicts"]):
+        if str(row["verdict"]).strip().lower() != "fail":
+            continue
+        head = normalize_literal(str(row["head"]).strip())
+        if not head:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] invalid head"
+            )
+        fail_heads.add(head)
+        if head not in removed_heads:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] sample_verdicts[{i}] fail "
+                f"{head} missing from removed_sample_fails"
+            )
+        if head in current_heads:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}] fail head {head} still in no-natural TSV"
+            )
+    if removed_heads - fail_heads:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] removed_sample_fails has heads "
+            f"not marked fail: {sorted(removed_heads - fail_heads)}"
+        )
+
+    parent: List[Tuple[str, str, str]] = list(batch_rows)
+    for r in removed:
+        head = normalize_literal(str(r["head"]).strip())
+        reason = str(r["reason"]).strip()
+        if head:
+            parent.append((head, reason, batch_id))
+    parent_n = int(entry["sample_parent_n"])
+    if len(parent) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent size "
+            f"{len(parent)} != sample_parent_n={parent_n}"
+        )
+    if len({h for h, _, _ in parent}) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent has duplicate heads"
+        )
+    sampled = sample_no_natural_rows(parent, seed=int(entry["sample_seed"]))
+    expected = [
+        (
+            normalize_literal(str(v["head"]).strip()) or "",
+            str(v["reason"]).strip(),
+            batch_id,
+        )
+        for v in entry["sample_verdicts"]
+    ]
+    # Compare head+reason only (batch_id fixed).
+    got = [(h, r) for h, r, _ in sampled]
+    exp = [(h, r) for h, r, _ in expected]
+    if got != exp:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] no-natural sample replay mismatch "
+            f"(seed={entry['sample_seed']}, parent_n={parent_n})"
+        )
+
+
+def validate_no_natural_ledger(
+    *,
+    tsv_path: Path | str = DEFAULT_NO_NATURAL_TSV,
+    meta_path: Path | str = DEFAULT_NO_NATURAL_META,
+    campaign_heads: Optional[Set[str]] = None,
+) -> List[Tuple[str, str, str]]:
+    """Parse no-natural TSV and fail-closed validate referenced batch meta + replay."""
+    meta = load_no_natural_meta(meta_path)
+    batches = meta.get("batches") or {}
+    if not isinstance(batches, dict):
+        raise ProjectAntonymsError(f"{meta_path}: batches must be an object")
+    rows = parse_no_natural_tsv(
+        tsv_path, campaign_heads=campaign_heads, require_file=True
+    )
+    used = {b for _, _, b in rows}
+    for batch_id in sorted(used):
+        if batch_id not in batches:
+            raise ProjectAntonymsError(
+                f"{tsv_path}: unknown batch_id {batch_id!r} (missing no-natural meta)"
+            )
+        validate_no_natural_batch_meta(batch_id, batches[batch_id], path=Path(meta_path))
+        assert_no_natural_sample_replayable(
+            batch_id, batches[batch_id], rows, path=Path(meta_path)
+        )
+    return rows
+
+
 __all__ = [
     "CAMPAIGN_BASELINE_COMMIT",
     "CAMPAIGN_BATCH_SIZE",
@@ -649,26 +940,34 @@ __all__ = [
     "CampaignHead",
     "DEFAULT_MANIFEST_META",
     "DEFAULT_MANIFEST_TSV",
+    "DEFAULT_NO_NATURAL_META",
     "DEFAULT_NO_NATURAL_TSV",
+    "DEFAULT_UNRESOLVED_SAMPLE",
     "MANIFEST_HEADER",
     "NO_NATURAL_HEADER",
     "NO_NATURAL_REASONS",
     "accepted_coverage_heads",
     "assert_campaign_complete",
     "assert_first_batch_matches_seeds",
+    "assert_no_natural_sample_replayable",
     "assert_no_terminal_conflict",
     "build_campaign_meta",
     "campaign_exclude_sources",
     "chars_with_direct_ant_excluding_project",
     "compute_campaign_progress",
-    "DEFAULT_UNRESOLVED_SAMPLE",
     "ensure_no_natural_tsv",
     "load_campaign_meta",
+    "load_no_natural_meta",
     "parse_campaign_manifest",
     "parse_no_natural_tsv",
     "rank_campaign_heads",
     "render_manifest_tsv",
+    "sample_no_natural_rows",
+    "unresolved_heads_for_batch",
     "validate_campaign_meta",
+    "validate_no_natural_batch_meta",
+    "validate_no_natural_ledger",
     "write_campaign_manifest",
+    "write_empty_no_natural_meta",
     "write_empty_no_natural_tsv",
 ]

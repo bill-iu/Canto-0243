@@ -37,7 +37,9 @@ TSV_HEADER = ("head", "tail", "relation_type", "batch_id")
 MAX_PROPOSALS_PER_HEAD = 3
 MAX_ACCEPTED_PER_HEAD = 5
 DEFAULT_SEED_K = 500
-OK_RATE_THRESHOLD = 0.85
+OK_RATE_THRESHOLD = 0.85  # legacy default; batch meta must declare ok_rate_threshold
+OK_RATE_THRESHOLD_CAMPAIGN = 0.90
+ALLOWED_OK_RATE_THRESHOLDS = frozenset({OK_RATE_THRESHOLD, OK_RATE_THRESHOLD_CAMPAIGN})
 
 _GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -79,10 +81,33 @@ def ok_rate(ok_count: int, sample_n: int) -> float:
     return ok_count / sample_n
 
 
-def passes_quality_gate(ok_count: int, sample_n: int, *, threshold: float = OK_RATE_THRESHOLD) -> bool:
+def passes_quality_gate(
+    ok_count: int,
+    sample_n: int,
+    *,
+    threshold: float = OK_RATE_THRESHOLD,
+) -> bool:
     if sample_n <= 0 or ok_count < 0 or ok_count > sample_n:
         return False
     return ok_rate(ok_count, sample_n) >= threshold
+
+
+def parse_ok_rate_threshold(value: Any, *, field: str, path: Path, batch_id: str) -> float:
+    """Fail-closed: batch must declare an allowed ok_rate_threshold."""
+    try:
+        threshold = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] {field} must be a float"
+        ) from exc
+    # Normalize -0 / 0.850000 quirks via round to 2 decimals for allowlist match.
+    normalized = round(threshold, 2)
+    if normalized not in ALLOWED_OK_RATE_THRESHOLDS:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] {field} must be one of "
+            f"{sorted(ALLOWED_OK_RATE_THRESHOLDS)}, got {value!r}"
+        )
+    return normalized
 
 
 def _chars_with_relation_type(
@@ -345,7 +370,7 @@ def _require_sha256(value: Any, *, field: str, path: Path, batch_id: str) -> str
 
 
 def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
-    """Fail-closed: referenced batch must carry auditable fields + ≥85% gate."""
+    """Fail-closed: referenced batch must carry auditable fields + declared OK-rate gate."""
     if not isinstance(entry, dict) or not entry:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] must be a non-empty object"
@@ -355,6 +380,7 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         "sample_seed",
         "sample_n",
         "sample_ok",
+        "ok_rate_threshold",
         "sample_parent_n",
         "sample_parent_commit",
         "sample_parent_tsv_sha256",
@@ -473,10 +499,16 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
             f"{path}: batches[{batch_id!r}] sample_ok={sample_ok} != "
             f"verdicts ok count {ok_n}"
         )
-    if not passes_quality_gate(sample_ok, sample_n):
+    threshold = parse_ok_rate_threshold(
+        entry["ok_rate_threshold"],
+        field="ok_rate_threshold",
+        path=path,
+        batch_id=batch_id,
+    )
+    if not passes_quality_gate(sample_ok, sample_n, threshold=threshold):
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] quality gate failed: "
-            f"{sample_ok}/{sample_n} < {OK_RATE_THRESHOLD:.0%}"
+            f"{sample_ok}/{sample_n} < {threshold:.0%}"
         )
 
 
@@ -769,6 +801,8 @@ __all__ = [
     "MAX_ACCEPTED_PER_HEAD",
     "MAX_PROPOSALS_PER_HEAD",
     "OK_RATE_THRESHOLD",
+    "OK_RATE_THRESHOLD_CAMPAIGN",
+    "ALLOWED_OK_RATE_THRESHOLDS",
     "PROJECT_ANT_MERGE_RANK",
     "PROJECT_ANT_RUNTIME_RANK",
     "PROJECT_ANT_SCORE",
@@ -786,6 +820,7 @@ __all__ = [
     "load_meta",
     "ok_rate",
     "pair_undirected_key",
+    "parse_ok_rate_threshold",
     "parse_project_antonyms_tsv",
     "passes_quality_gate",
     "sample_pairs",
