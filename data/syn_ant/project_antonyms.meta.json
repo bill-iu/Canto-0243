@@ -1841,6 +1841,389 @@
       ],
       "accepted_pairs": 203,
       "created_at": "2026-07-13T18:17:35.195344+00:00"
+    },
+    "campaign-b05-20260714": {
+      "k": 500,
+      "git_commit": "70015fcdf5234c1f397aa24a2404b17b906b77f2",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=5 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=201 (R3); generation controls not exposed; 未成年 added to curated_lexicon for 成年↔未成年",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 478
+      },
+      "sample_seed": 20260803,
+      "sample_n": 50,
+      "sample_ok": 45,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.9,
+      "sample_parent": "project_antonyms.tsv campaign-b05 parent N=201 (pre sample-fail removal)",
+      "sample_parent_n": 201,
+      "sample_parent_commit": "70015fcdf5234c1f397aa24a2404b17b906b77f2",
+      "sample_parent_tsv_sha256": "05c8ab4c4bee3a57c8a9d735b0b8ce1f082206d0fd6450ebe3a76dc20c20e62b",
+      "sample_verdicts": [
+        {
+          "head": "不是",
+          "tail": "正是",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "以往",
+          "tail": "現在",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "停留",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "優化",
+          "tail": "惡化",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冰",
+          "tail": "熱",
+          "verdict": "fail",
+          "reasons": [
+            "名詞「冰」與形容詞「熱」詞性不一致"
+          ]
+        },
+        {
+          "head": "創造",
+          "tail": "摧毀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包圍",
+          "tail": "突圍",
+          "verdict": "fail",
+          "reasons": [
+            "不同角色的對抗性互補行為，非反義"
+          ]
+        },
+        {
+          "head": "即時",
+          "tail": "遲緩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "合作",
+          "tail": "對抗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "單身",
+          "tail": "已婚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "在場",
+          "tail": "缺席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "在意",
+          "tail": "漠視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天生",
+          "tail": "後天",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "失眠",
+          "tail": "熟睡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "威脅",
+          "tail": "安撫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "往往",
+          "tail": "罕有",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "愁",
+          "tail": "喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打破",
+          "tail": "修復",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "持續",
+          "tail": "停止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "提出",
+          "tail": "收回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "改造",
+          "tail": "維持",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "柔軟",
+          "tail": "堅硬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "極度",
+          "tail": "稍微",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "湧",
+          "tail": "退",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無所謂",
+          "tail": "在乎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "甜蜜",
+          "tail": "痛苦",
+          "verdict": "fail",
+          "reasons": [
+            "甜蜜感與痛苦並非同一穩定情緒軸"
+          ]
+        },
+        {
+          "head": "甜蜜",
+          "tail": "苦澀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "疑問",
+          "tail": "確信",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "疑問",
+          "tail": "確定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "砍",
+          "tail": "接",
+          "verdict": "fail",
+          "reasons": [
+            "砍劈與接合範圍不對等；較自然為切／接"
+          ]
+        },
+        {
+          "head": "穩定",
+          "tail": "動盪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "突",
+          "tail": "漸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "累",
+          "tail": "精神",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "美好",
+          "tail": "糟糕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "美好",
+          "tail": "醜惡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聽話",
+          "tail": "反抗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自私",
+          "tail": "慷慨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自私",
+          "tail": "無私",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "蕩",
+          "tail": "穩",
+          "verdict": "fail",
+          "reasons": [
+            "「蕩」高度多義，只在搖蕩語境與穩定相反"
+          ]
+        },
+        {
+          "head": "衝擊",
+          "tail": "緩和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "補充",
+          "tail": "刪減",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "認同",
+          "tail": "否定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "躺",
+          "tail": "企",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "躺",
+          "tail": "站",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "辣",
+          "tail": "清淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "重視",
+          "tail": "忽視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "限制",
+          "tail": "自由",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "頹",
+          "tail": "振",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "願",
+          "tail": "拒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鼓勵",
+          "tail": "潑冷水",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "冰",
+          "tail": "熱",
+          "reasons": [
+            "名詞「冰」與形容詞「熱」詞性不一致"
+          ]
+        },
+        {
+          "head": "包圍",
+          "tail": "突圍",
+          "reasons": [
+            "不同角色的對抗性互補行為，非反義"
+          ]
+        },
+        {
+          "head": "甜蜜",
+          "tail": "痛苦",
+          "reasons": [
+            "甜蜜感與痛苦並非同一穩定情緒軸"
+          ]
+        },
+        {
+          "head": "砍",
+          "tail": "接",
+          "reasons": [
+            "砍劈與接合範圍不對等；較自然為切／接"
+          ]
+        },
+        {
+          "head": "蕩",
+          "tail": "穩",
+          "reasons": [
+            "「蕩」高度多義，只在搖蕩語境與穩定相反"
+          ]
+        }
+      ],
+      "accepted_pairs": 196,
+      "created_at": "2026-07-13T18:45:27.288864+00:00"
     }
   }
 }

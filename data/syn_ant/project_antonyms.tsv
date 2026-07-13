@@ -1011,7 +1011,6 @@ head	tail	relation_type	batch_id
 極度	輕微	ant	campaign-b05-20260714
 極度	稍微	ant	campaign-b05-20260714
 激	平	ant	campaign-b05-20260714
-包圍	突圍	ant	campaign-b05-20260714
 寄	收	ant	campaign-b05-20260714
 愁	喜	ant	campaign-b05-20260714
 愁	樂	ant	campaign-b05-20260714
@@ -1086,7 +1085,6 @@ head	tail	relation_type	batch_id
 愕然	淡定	ant	campaign-b05-20260714
 憂	喜	ant	campaign-b05-20260714
 理會	無視	ant	campaign-b05-20260714
-砍	接	ant	campaign-b05-20260714
 衝擊	緩和	ant	campaign-b05-20260714
 走開	留下	ant	campaign-b05-20260714
 走開	靠近	ant	campaign-b05-20260714
@@ -1126,7 +1124,6 @@ head	tail	relation_type	batch_id
 詳細	粗略	ant	campaign-b05-20260714
 高大	矮小	ant	campaign-b05-20260714
 高大	矮	ant	campaign-b05-20260714
-冰	熱	ant	campaign-b05-20260714
 收拾	弄亂	ant	campaign-b05-20260714
 晏	早	ant	campaign-b05-20260714
 濫	節	ant	campaign-b05-20260714
@@ -1178,7 +1175,6 @@ head	tail	relation_type	batch_id
 停留	離開	ant	campaign-b05-20260714
 妥	不妥	ant	campaign-b05-20260714
 甜蜜	苦澀	ant	campaign-b05-20260714
-甜蜜	痛苦	ant	campaign-b05-20260714
 穩定	動盪	ant	campaign-b05-20260714
 累	精神	ant	campaign-b05-20260714
 累	輕鬆	ant	campaign-b05-20260714
@@ -1189,7 +1185,6 @@ head	tail	relation_type	batch_id
 失眠	安睡	ant	campaign-b05-20260714
 捧	摔	ant	campaign-b05-20260714
 播	停	ant	campaign-b05-20260714
-蕩	穩	ant	campaign-b05-20260714
 轉彎	直行	ant	campaign-b05-20260714
 辣	淡	ant	campaign-b05-20260714
 辣	清淡	ant	campaign-b05-20260714
