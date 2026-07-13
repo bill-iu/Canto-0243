@@ -255,6 +255,10 @@ _Avoid_：把清單 tail、庫外字面、或非 manifest 字面當目標
 每個 **campaign 目標詞** 恰好一個可稽核收斂：`accepted`（**專案自建反義清單** 無向覆蓋該字面）或 `no_natural_antonym`（審核確認無自然、同詞性、同義層嘅 context-free 反義）。兩者互斥。
 _Avoid_：pending／deferred 當完成、把硬過濾 reject 當 no-natural、兩終局並存於同一目標詞
 
+**能配則配**：
+對未裁定 **campaign 目標詞**：若有可過品質閘嘅自然、同詞性、同義層 context-free 反義 → 入帳 `accepted`；否則裁定 `no_natural_antonym`。唔為覆蓋硬砌弱反義，亦唔用配額湊 accepted。
+_Avoid_：先全判 no-natural 再回頭補、為達比例放寬 A–D
+
 **no-natural 品質閘**：
 對準備入帳嘅 `no_natural_antonym` 列抽樣；單位係 head＋reason。樣本須同時：(1) reason 屬受控清單且貼合該頭；(2) 確認無自然、同詞性、同義層 context-free 反義；(3) 唔應改判 `accepted`。樣本數公式同 pair 閘；新 campaign 批門檻 ≥90%，舊已過閘批可自述較低門檻。
 _Avoid_：把 allowlist 格式通過當語意 OK、同 pair A–D 硬套、無 meta 抽樣就當批完成
