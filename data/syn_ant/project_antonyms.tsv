@@ -2325,7 +2325,6 @@ head	tail	relation_type	batch_id
 哭泣	微笑	ant	campaign-b09-20260714
 噓	喝彩	ant	campaign-b09-20260714
 噓	鼓掌	ant	campaign-b09-20260714
-女士	男士	ant	campaign-b09-20260714
 察覺	忽略	ant	campaign-b09-20260714
 察覺	忽視	ant	campaign-b09-20260714
 小腿	大腿	ant	campaign-b09-20260714
@@ -2389,7 +2388,6 @@ head	tail	relation_type	batch_id
 連接	切斷	ant	campaign-b09-20260714
 連接	分離	ant	campaign-b09-20260714
 達成	失敗	ant	campaign-b09-20260714
-達成	破裂	ant	campaign-b09-20260714
 野獸	家畜	ant	campaign-b09-20260714
 閃避	迎擊	ant	campaign-b09-20260714
 閃避	直擊	ant	campaign-b09-20260714
@@ -2408,5 +2406,4 @@ head	tail	relation_type	batch_id
 僞裝	現身	ant	campaign-b09-20260714
 處在	脫離	ant	campaign-b09-20260714
 處在	離開	ant	campaign-b09-20260714
-勞動者	僱主	ant	campaign-b09-20260714
 向上	向下	ant	campaign-b09-20260714

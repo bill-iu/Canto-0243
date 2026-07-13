@@ -3310,6 +3310,371 @@
       ],
       "accepted_pairs": 340,
       "created_at": "2026-07-13T20:01:11.067175+00:00"
+    },
+    "campaign-b09-20260714": {
+      "k": 500,
+      "git_commit": "23fcba1ab1f2be3720b07ccb77fbd399ceb503fb",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=9 blind draft via Cursor Agent (xAI Grok); maintainer R5 47/50 on N=451; lock parent N=447 drops 4 sister role pairs (勞動者/資本家、女士/先生、獄警/犯人、志願者/僱員); replay seed=20261284 embeds same 3 R5 fails; curated 向下 for 向上↔向下; generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 465
+      },
+      "sample_seed": 20261284,
+      "sample_n": 50,
+      "sample_ok": 47,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.94,
+      "sample_parent": "project_antonyms.tsv campaign-b09 parent N=447 (R5 minus sister roles, pre fail removal)",
+      "sample_parent_n": 447,
+      "sample_parent_commit": "23fcba1ab1f2be3720b07ccb77fbd399ceb503fb",
+      "sample_parent_tsv_sha256": "c8a2b7b665fddb00f86a014e8e9c346f0e8041250424a9ac5f92b49a84739c06",
+      "sample_verdicts": [
+        {
+          "head": "不妙",
+          "tail": "妙",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "仇",
+          "tail": "恩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保守",
+          "tail": "激進",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "僞裝",
+          "tail": "暴露",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "先行",
+          "tail": "殿後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "公交車",
+          "tail": "私家車",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出租",
+          "tail": "自用",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勞動者",
+          "tail": "僱主",
+          "verdict": "fail",
+          "reasons": [
+            "僱傭關係互補角色，非反義"
+          ]
+        },
+        {
+          "head": "匿",
+          "tail": "露",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "周邊",
+          "tail": "核心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "呼叫",
+          "tail": "沉默",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "商量",
+          "tail": "獨斷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "國內",
+          "tail": "海外",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夥伴",
+          "tail": "敵人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "女士",
+          "tail": "男士",
+          "verdict": "fail",
+          "reasons": [
+            "性別稱謂類別對應，非反義"
+          ]
+        },
+        {
+          "head": "妒忌",
+          "tail": "欣賞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "孤單",
+          "tail": "熱鬧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "忌",
+          "tail": "喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搶先",
+          "tail": "殿後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搶先",
+          "tail": "落後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "深夜",
+          "tail": "黎明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "狩獵",
+          "tail": "放生",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "獲悉",
+          "tail": "不知",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "甜美",
+          "tail": "酸楚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "留心",
+          "tail": "大意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "留心",
+          "tail": "疏忽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發表",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相見",
+          "tail": "離別",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "終結",
+          "tail": "起始",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "緊身",
+          "tail": "寬大",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "緊身",
+          "tail": "鬆身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老老實實",
+          "tail": "偷偷摸摸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老老實實",
+          "tail": "鬼鬼祟祟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "致力",
+          "tail": "敷衍",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "舊年",
+          "tail": "新年",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "覈實",
+          "tail": "猜測",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "詭異",
+          "tail": "平常",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "豐富",
+          "tail": "單調",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "豐富",
+          "tail": "貧乏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起頭",
+          "tail": "結尾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "跟手",
+          "tail": "事後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "轉型",
+          "tail": "守舊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "逃跑",
+          "tail": "歸來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "連接",
+          "tail": "分離",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "連接",
+          "tail": "切斷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遇見",
+          "tail": "錯過",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "運用",
+          "tail": "廢棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "達成",
+          "tail": "破裂",
+          "verdict": "fail",
+          "reasons": [
+            "達成結果與破裂狀態須依賴特定協議語境"
+          ]
+        },
+        {
+          "head": "選",
+          "tail": "捨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "閃避",
+          "tail": "迎擊",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "勞動者",
+          "tail": "僱主",
+          "reasons": [
+            "僱傭關係互補角色，非反義"
+          ]
+        },
+        {
+          "head": "女士",
+          "tail": "男士",
+          "reasons": [
+            "性別稱謂類別對應，非反義"
+          ]
+        },
+        {
+          "head": "達成",
+          "tail": "破裂",
+          "reasons": [
+            "達成結果與破裂狀態須依賴特定協議語境"
+          ]
+        }
+      ],
+      "accepted_pairs": 444,
+      "created_at": "2026-07-13T22:05:13.330858+00:00"
     }
   }
 }
