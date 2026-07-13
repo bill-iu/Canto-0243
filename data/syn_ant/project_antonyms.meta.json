@@ -3675,6 +3675,362 @@
       ],
       "accepted_pairs": 444,
       "created_at": "2026-07-13T22:05:13.330858+00:00"
+    },
+    "campaign-b10-20260714": {
+      "k": 500,
+      "git_commit": "526a127707d60b9eb6e0674e68dc8f7032c5c967",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=10 blind draft in-chat; maintainer R3 48/50 on N=244; lock parent N=251 embeds R3 fails via seed=20260903; nn promotions; OpenCC fortune-霉 restore; curated OOV tails",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 5,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 458
+      },
+      "sample_seed": 20260903,
+      "sample_n": 50,
+      "sample_ok": 48,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.96,
+      "sample_parent": "project_antonyms.tsv campaign-b10 parent N=251 (R3+promos, pre fail removal)",
+      "sample_parent_n": 251,
+      "sample_parent_commit": "526a127707d60b9eb6e0674e68dc8f7032c5c967",
+      "sample_parent_tsv_sha256": "35d8a8d1a400e6cb4b7338b53f34da9153fc917ca9896d18fee9a391732e682a",
+      "sample_verdicts": [
+        {
+          "head": "上心",
+          "tail": "漠然",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不行",
+          "tail": "可行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "催眠",
+          "tail": "喚醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出動",
+          "tail": "撤回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出場",
+          "tail": "離場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出頭",
+          "tail": "縮頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出頭",
+          "tail": "退避",
+          "verdict": "fail",
+          "reasons": [
+            "出頭多義（出面／出人頭地）與退避不穩對軸；縮頭更貼"
+          ]
+        },
+        {
+          "head": "刺耳",
+          "tail": "悅耳",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "卓越",
+          "tail": "普通",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吵",
+          "tail": "靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "困擾",
+          "tail": "安心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "困擾",
+          "tail": "舒心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "報道",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "安全性",
+          "tail": "危險性",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "寒意",
+          "tail": "暖意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "對外",
+          "tail": "對內",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後者",
+          "tail": "前者",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "心虛",
+          "tail": "坦蕩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "承擔",
+          "tail": "拒絕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "承擔",
+          "tail": "推卸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "教導",
+          "tail": "誤導",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "文明",
+          "tail": "野蠻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晴天",
+          "tail": "陰天",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "歡呼",
+          "tail": "哀號",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "殘廢",
+          "tail": "健全",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "消化",
+          "tail": "積食",
+          "verdict": "fail",
+          "reasons": [
+            "消化過程與積食病理結果不完全對軸"
+          ]
+        },
+        {
+          "head": "清除",
+          "tail": "保留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "減肥",
+          "tail": "發胖",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發言",
+          "tail": "沉默",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "穿上",
+          "tail": "卸下",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細節",
+          "tail": "大綱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細節",
+          "tail": "概要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "苦惱",
+          "tail": "愉快",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "表露",
+          "tail": "隱藏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "複合",
+          "tail": "單純",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "變革",
+          "tail": "維持",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "貧困",
+          "tail": "富裕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "貪心",
+          "tail": "廉潔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起伏",
+          "tail": "平穩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起伏",
+          "tail": "穩定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "趕到",
+          "tail": "遲到",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "趕走",
+          "tail": "挽留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "趕走",
+          "tail": "收留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "踊躍",
+          "tail": "冷淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "辭職",
+          "tail": "就職",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "進展",
+          "tail": "停滯",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "防護",
+          "tail": "攻擊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "驚人",
+          "tail": "平凡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "默契",
+          "tail": "齟齬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "龐大",
+          "tail": "細小",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "出頭",
+          "tail": "退避",
+          "reasons": [
+            "出頭多義（出面／出人頭地）與退避不穩對軸；縮頭更貼"
+          ]
+        },
+        {
+          "head": "消化",
+          "tail": "積食",
+          "reasons": [
+            "消化過程與積食病理結果不完全對軸"
+          ]
+        }
+      ],
+      "accepted_pairs": 249,
+      "created_at": "2026-07-13T22:52:15.633569+00:00"
     }
   }
 }
