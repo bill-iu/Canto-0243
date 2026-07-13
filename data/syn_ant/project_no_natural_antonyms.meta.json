@@ -370,6 +370,10 @@
         {
           "head": "整",
           "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "需要",
+          "reason": "polysemous_no_stable_sense"
         }
       ]
     },
@@ -1338,7 +1342,13 @@
         }
       ],
       "created_at": "2026-07-13T18:17:35.195344+00:00",
-      "note": "Human full census seed review was 261/290=90% with reason amendments + promotions 短短/類似 applied to TSV; 平衡 kept as no_gradable_opposite; lock sample seed=20260731 all-ok on final amended parent; orphans=['偏偏', '力量', '多少', '探', '揮']; census_removed_promotes=[{'head': '短短', 'reason': 'polysemous_no_stable_sense'}, {'head': '類似', 'reason': 'function_word'}]"
+      "note": "Human full census seed review was 261/290=90% with reason amendments + promotions 短短/類似 applied to TSV; 平衡 kept as no_gradable_opposite; lock sample seed=20260731 all-ok on final amended parent; orphans=['偏偏', '力量', '多少', '探', '揮']; census_removed_promotes=[{'head': '短短', 'reason': 'polysemous_no_stable_sense'}, {'head': '類似', 'reason': 'function_word'}]",
+      "superseded_heads": [
+        {
+          "head": "作",
+          "reason": "polysemous_no_stable_sense"
+        }
+      ]
     },
     "campaign-b05-20260714": {
       "sample_seed": 20260804,
@@ -1653,7 +1663,328 @@
         }
       ],
       "created_at": "2026-07-13T18:45:27.288864+00:00",
-      "note": "Human formal nn gate seed=20260802 was 50/50 after census amendments; lock sample seed=20260804 all-ok on final parent; orphans=['包圍', '砍', '冰', '蕩']; prior_formal_parent_n=327"
+      "note": "Human formal nn gate seed=20260802 was 50/50 after census amendments; lock sample seed=20260804 all-ok on final parent; orphans=['包圍', '砍', '冰', '蕩']; prior_formal_parent_n=327",
+      "superseded_heads": [
+        {
+          "head": "西方",
+          "reason": "no_gradable_opposite"
+        }
+      ]
+    },
+    "campaign-b06-20260714": {
+      "sample_seed": 20260808,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 338,
+      "git_commit": "f32c66d5ba4d5a66c5f0f72da6730cd5349f9773",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "主意",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "事物",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "人羣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "代",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "備份",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "刷牙",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "動力",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "否則",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "員工",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "國際",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "圖片",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "地區",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "墓",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "大師",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "大腿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "工具",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "弦",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "抑或",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "挑逗",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "新疆",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "時鐘",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "朵",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "民衆",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "求救",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "沙灘",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "注意力",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "液體",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "游水",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "爺",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "盤",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "租",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "稱呼",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "穴",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "等到",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "籃",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "索",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "羨慕",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "菠蘿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "論",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "警方",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "賊",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "跑車",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "週一",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "邀請",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "鍛鍊",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "長頸鹿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "開發商",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "雙方",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "頭腦",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "風扇",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        }
+      ],
+      "created_at": "2026-07-13T19:18:22.406996+00:00",
+      "note": "Human formal nn gate seed=20260806 was 49/50 (萬一→function_word); lock sample seed=20260808 all-ok on final parent; orphans=['保證', '羨慕', '刺']; prior_formal_ok_rate=0.98"
     }
   }
 }

@@ -1199,7 +1199,6 @@ head	tail	relation_type	batch_id
 在場	缺席	ant	campaign-b05-20260714
 水平	垂直	ant	campaign-b05-20260714
 成年	未成年	ant	campaign-b05-20260714
-保證	否認	ant	campaign-b06-20260714
 唯獨	全部	ant	campaign-b06-20260714
 失戀	戀愛	ant	campaign-b06-20260714
 展開	收起	ant	campaign-b06-20260714
@@ -1225,7 +1224,6 @@ head	tail	relation_type	batch_id
 禁	許	ant	campaign-b06-20260714
 緩緩	急速	ant	campaign-b06-20260714
 緩緩	飛快	ant	campaign-b06-20260714
-羨慕	鄙視	ant	campaign-b06-20260714
 聚集	分散	ant	campaign-b06-20260714
 聚集	散開	ant	campaign-b06-20260714
 遮住	露出	ant	campaign-b06-20260714
@@ -1289,7 +1287,6 @@ head	tail	relation_type	batch_id
 雪白	烏黑	ant	campaign-b06-20260714
 面向	背向	ant	campaign-b06-20260714
 頭痛	暢快	ant	campaign-b06-20260714
-刺	撫	ant	campaign-b06-20260714
 外人	自己人	ant	campaign-b06-20260714
 學會	忘掉	ant	campaign-b06-20260714
 感染	痊癒	ant	campaign-b06-20260714
@@ -1316,7 +1313,6 @@ head	tail	relation_type	batch_id
 更新	過時	ant	campaign-b06-20260714
 更新	陳舊	ant	campaign-b06-20260714
 早已	尚未	ant	campaign-b06-20260714
-早已	剛剛	ant	campaign-b06-20260714
 一心	二心	ant	campaign-b06-20260714
 伴隨	離開	ant	campaign-b06-20260714
 全日	半日	ant	campaign-b06-20260714

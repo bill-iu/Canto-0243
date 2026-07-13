@@ -2224,6 +2224,380 @@
       ],
       "accepted_pairs": 196,
       "created_at": "2026-07-13T18:45:27.288864+00:00"
+    },
+    "campaign-b06-20260714": {
+      "k": 500,
+      "git_commit": "f32c66d5ba4d5a66c5f0f72da6730cd5349f9773",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=6 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=198 (R3); generation controls not exposed; 難喫/門內 added to curated_lexicon for 好喫↔難喫、門外↔門內",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 472
+      },
+      "sample_seed": 20260807,
+      "sample_n": 50,
+      "sample_ok": 46,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.92,
+      "sample_parent": "project_antonyms.tsv campaign-b06 parent N=198 (pre sample-fail removal)",
+      "sample_parent_n": 198,
+      "sample_parent_commit": "f32c66d5ba4d5a66c5f0f72da6730cd5349f9773",
+      "sample_parent_tsv_sha256": "3541256871a8c7fb7fc9c4b9518d3f98d035b36e47249d3f7c0daec089a20c0e",
+      "sample_verdicts": [
+        {
+          "head": "不用",
+          "tail": "必須",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "中央",
+          "tail": "外圍",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保證",
+          "tail": "否認",
+          "verdict": "fail",
+          "reasons": [
+            "承諾與否認是不同言語行為，非反義"
+          ]
+        },
+        {
+          "head": "全日",
+          "tail": "半日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出席",
+          "tail": "缺席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "刺",
+          "tail": "撫",
+          "verdict": "fail",
+          "reasons": [
+            "傷害與撫摸是對比動作，非直接反義"
+          ]
+        },
+        {
+          "head": "剩下",
+          "tail": "耗盡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吸收",
+          "tail": "釋放",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唯獨",
+          "tail": "全部",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "報答",
+          "tail": "忘恩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大笑",
+          "tail": "痛哭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好處",
+          "tail": "壞處",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好處",
+          "tail": "害處",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "容許",
+          "tail": "禁止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "小事",
+          "tail": "大事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "小心翼翼",
+          "tail": "莽撞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "展開",
+          "tail": "收起",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "應付",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "捨得",
+          "tail": "捨不得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "提升",
+          "tail": "降級",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擁抱",
+          "tail": "推開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "早已",
+          "tail": "剛剛",
+          "verdict": "fail",
+          "reasons": [
+            "已然狀態與近期時間副詞可同時成立，非反義"
+          ]
+        },
+        {
+          "head": "早已",
+          "tail": "尚未",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "毀滅",
+          "tail": "建設",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "流出",
+          "tail": "流入",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "流血",
+          "tail": "止血",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "消耗",
+          "tail": "儲存",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爭取",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "猛",
+          "tail": "柔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "猜",
+          "tail": "知曉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "獲",
+          "tail": "失",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發燒",
+          "tail": "退燒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "禁",
+          "tail": "準",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "笨",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "約定",
+          "tail": "違約",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "約定",
+          "tail": "食言",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "索性",
+          "tail": "猶豫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "總是",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "羨慕",
+          "tail": "鄙視",
+          "verdict": "fail",
+          "reasons": [
+            "兩種不同態度，非同一語義軸的反義"
+          ]
+        },
+        {
+          "head": "裂",
+          "tail": "合",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "親密",
+          "tail": "疏遠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "賺錢",
+          "tail": "虧本",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "轉變",
+          "tail": "維持",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "進攻",
+          "tail": "防守",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遲早",
+          "tail": "永不",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "重複",
+          "tail": "一次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "重複",
+          "tail": "創新",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "門外",
+          "tail": "門內",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面向",
+          "tail": "背向",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "顯然",
+          "tail": "模糊",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "保證",
+          "tail": "否認",
+          "reasons": [
+            "承諾與否認是不同言語行為，非反義"
+          ]
+        },
+        {
+          "head": "刺",
+          "tail": "撫",
+          "reasons": [
+            "傷害與撫摸是對比動作，非直接反義"
+          ]
+        },
+        {
+          "head": "早已",
+          "tail": "剛剛",
+          "reasons": [
+            "已然狀態與近期時間副詞可同時成立，非反義"
+          ]
+        },
+        {
+          "head": "羨慕",
+          "tail": "鄙視",
+          "reasons": [
+            "兩種不同態度，非同一語義軸的反義"
+          ]
+        }
+      ],
+      "accepted_pairs": 194,
+      "created_at": "2026-07-13T19:18:22.406996+00:00"
     }
   }
 }
