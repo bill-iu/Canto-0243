@@ -304,6 +304,39 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
             validate_batch_meta_entry("batch-1", weak_hash, path=path)
         self.assertIn("40-hex", str(ctx.exception))
 
+    def test_sample_parent_blob_filters_by_batch_id(self):
+        """Multi-batch TSV: parent replay compares only this batch_id slice."""
+        from ingest.project_antonyms import (
+            ProjectAntPair,
+            assert_sample_replayable,
+            sample_pairs,
+        )
+
+        batch_id = "campaign-b01-20260713"
+        parent = [("甲", "乙"), ("丙", "丁")]
+        seed = 3
+        sampled = sample_pairs(parent, seed=seed)
+        self.assertEqual(len(sampled), 2)
+        meta = _batch_meta(batch_id=batch_id, head=sampled[0][0], tail=sampled[0][1])
+        batch = meta["batches"][batch_id]
+        batch["sample_seed"] = seed
+        batch["sample_n"] = 2
+        batch["sample_ok"] = 2
+        batch["sample_parent_n"] = 2
+        batch["sample_verdicts"] = [
+            {"head": h, "tail": t, "verdict": "ok", "reasons": []} for h, t in sampled
+        ]
+        batch["removed_sample_fails"] = []
+        blob = (
+            "head\ttail\trelation_type\tbatch_id\n"
+            "舊\t新\tant\tbatch-20260713\n"
+            + "".join(f"{h}\t{t}\tant\t{batch_id}\n" for h, t in parent)
+        ).encode("utf-8")
+        batch["sample_parent_tsv_sha256"] = __import__("hashlib").sha256(blob).hexdigest()
+        accepted = [ProjectAntPair(head=h, tail=t, batch_id=batch_id) for h, t in parent]
+        with mock.patch("ingest.project_antonyms._read_git_blob", return_value=blob):
+            assert_sample_replayable(batch_id, batch, accepted, path=Path("multi-batch"))
+
     def test_fail_verdict_must_be_removed_from_accepted(self):
         """P1: sampled fail pairs cannot remain in the authoritative TSV."""
         with tempfile.TemporaryDirectory() as tmp:

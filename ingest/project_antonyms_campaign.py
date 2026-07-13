@@ -850,12 +850,53 @@ def assert_no_natural_sample_replayable(
     *,
     path: Path,
 ) -> None:
-    """Replay no-natural sample; fails must be removed from TSV rows for batch."""
+    """Replay no-natural sample.
+
+    Sample fails are either removed from the TSV, or kept with a corrected reason
+    listed in ``reason_amendments`` (from_reason = sample-time reason).
+    """
     batch_rows = [(h, r, b) for h, r, b in rows if b == batch_id]
+    current_by_head = {h: r for h, r, _ in batch_rows}
     removed = entry["removed_sample_fails"]
     removed_heads = {normalize_literal(str(r["head"]).strip()) for r in removed}
     removed_heads = {h for h in removed_heads if h}
-    current_heads = {h for h, _, _ in batch_rows}
+
+    amendments_raw = entry.get("reason_amendments") or []
+    if not isinstance(amendments_raw, list):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reason_amendments must be a list"
+        )
+    amended: Dict[str, Tuple[str, str]] = {}
+    for i, row in enumerate(amendments_raw):
+        if not isinstance(row, dict):
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].reason_amendments[{i}] not object"
+            )
+        head = normalize_literal(str(row.get("head") or "").strip())
+        from_r = str(row.get("from_reason") or "").strip()
+        to_r = str(row.get("to_reason") or "").strip()
+        if not head or from_r not in NO_NATURAL_REASONS or to_r not in NO_NATURAL_REASONS:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].reason_amendments[{i}] "
+                f"needs head/from_reason/to_reason"
+            )
+        if from_r == to_r:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].reason_amendments[{i}] "
+                f"from_reason == to_reason"
+            )
+        if head in amended:
+            raise ProjectAntonymsError(
+                f"{path}: batches[{batch_id!r}].reason_amendments duplicate {head}"
+            )
+        amended[head] = (from_r, to_r)
+
+    if removed_heads & set(amended):
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] head cannot be both removed and amended: "
+            f"{sorted(removed_heads & set(amended))}"
+        )
+
     fail_heads: Set[str] = set()
     for i, row in enumerate(entry["sample_verdicts"]):
         if str(row["verdict"]).strip().lower() != "fail":
@@ -866,22 +907,52 @@ def assert_no_natural_sample_replayable(
                 f"{path}: batches[{batch_id!r}].sample_verdicts[{i}] invalid head"
             )
         fail_heads.add(head)
-        if head not in removed_heads:
+        sample_reason = str(row["reason"]).strip()
+        if head in removed_heads:
+            if head in current_by_head:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}] fail head {head} still in no-natural TSV"
+                )
+        elif head in amended:
+            from_r, to_r = amended[head]
+            if sample_reason != from_r:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}] sample_verdicts[{i}] reason "
+                    f"{sample_reason!r} != amendment from_reason {from_r!r}"
+                )
+            if head not in current_by_head:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}] amended fail {head} missing from TSV"
+                )
+            if current_by_head[head] != to_r:
+                raise ProjectAntonymsError(
+                    f"{path}: batches[{batch_id!r}] amended fail {head} TSV reason "
+                    f"{current_by_head[head]!r} != to_reason {to_r!r}"
+                )
+        else:
             raise ProjectAntonymsError(
                 f"{path}: batches[{batch_id!r}] sample_verdicts[{i}] fail "
-                f"{head} missing from removed_sample_fails"
-            )
-        if head in current_heads:
-            raise ProjectAntonymsError(
-                f"{path}: batches[{batch_id!r}] fail head {head} still in no-natural TSV"
+                f"{head} missing from removed_sample_fails and reason_amendments"
             )
     if removed_heads - fail_heads:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] removed_sample_fails has heads "
             f"not marked fail: {sorted(removed_heads - fail_heads)}"
         )
+    if set(amended) - fail_heads:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reason_amendments has heads "
+            f"not marked fail: {sorted(set(amended) - fail_heads)}"
+        )
 
-    parent: List[Tuple[str, str, str]] = list(batch_rows)
+    # Reconstruct sample-time parent: current rows with amended heads rolled back,
+    # plus removed fails.
+    parent: List[Tuple[str, str, str]] = []
+    for h, r, b in batch_rows:
+        if h in amended:
+            parent.append((h, amended[h][0], b))
+        else:
+            parent.append((h, r, b))
     for r in removed:
         head = normalize_literal(str(r["head"]).strip())
         reason = str(r["reason"]).strip()

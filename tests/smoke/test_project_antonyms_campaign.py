@@ -403,6 +403,20 @@ class CampaignProgressTests(unittest.TestCase):
                 "campaign-b01-20260713", entry, parent, path=path
             )
 
+        # Reason amendment: fail stays in TSV with corrected reason
+        other = next(r for r in NO_NATURAL_REASONS if r != reason)
+        amended_kept = [
+            (h, other if h == fail_h else r, b) for h, r, b in parent
+        ]
+        amend_entry = dict(entry)
+        amend_entry["removed_sample_fails"] = []
+        amend_entry["reason_amendments"] = [
+            {"head": fail_h, "from_reason": fail_r, "to_reason": other}
+        ]
+        assert_no_natural_sample_replayable(
+            "campaign-b01-20260713", amend_entry, amended_kept, path=path
+        )
+
         with tempfile.TemporaryDirectory() as tmp:
             tsv = Path(tmp) / "nn.tsv"
             meta_path = Path(tmp) / "nn.meta.json"

@@ -553,6 +553,26 @@ def _tsv_pair_rows(raw: bytes) -> List[Tuple[str, str]]:
     return rows
 
 
+def _tsv_pair_rows_for_batch(raw: bytes, batch_id: str) -> List[Tuple[str, str]]:
+    """Pairs in a parent TSV blob belonging to one batch_id (multi-batch safe)."""
+    text = raw.decode("utf-8")
+    if text.startswith("\ufeff"):
+        text = text[1:]
+    rows: List[Tuple[str, str]] = []
+    for i, line in enumerate(text.splitlines()):
+        if not line.strip():
+            continue
+        if i == 0 and line == "head\ttail\trelation_type\tbatch_id":
+            continue
+        parts = line.split("\t")
+        if len(parts) < 4:
+            continue
+        if parts[3].strip() != batch_id:
+            continue
+        rows.append((parts[0].strip(), parts[1].strip()))
+    return rows
+
+
 def assert_sample_replayable(
     batch_id: str,
     entry: dict[str, Any],
@@ -616,11 +636,14 @@ def assert_sample_replayable(
             f"{path}: batches[{batch_id!r}] sample_parent_tsv_sha256 mismatch: "
             f"meta={expected_hash} git={got_hash}"
         )
-    git_keys = {pair_undirected_key(h, t) for h, t in _tsv_pair_rows(blob)}
+    # ponytail: multi-batch parent lives inside the shared TSV — compare this batch only
+    git_keys = {
+        pair_undirected_key(h, t) for h, t in _tsv_pair_rows_for_batch(blob, batch_id)
+    }
     if git_keys != parent_keys:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] reconstructed parent set != "
-            f"git TSV at sample_parent_commit"
+            f"git TSV batch slice at sample_parent_commit"
         )
 
     sampled = sample_pairs(parent, seed=int(entry["sample_seed"]))
