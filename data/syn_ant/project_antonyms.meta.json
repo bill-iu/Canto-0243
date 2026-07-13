@@ -2598,6 +2598,353 @@
       ],
       "accepted_pairs": 194,
       "created_at": "2026-07-13T19:18:22.406996+00:00"
+    },
+    "campaign-b07-20260714": {
+      "k": 500,
+      "git_commit": "52c3f7104e925d15a766d17e1b4485a254826229",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=7 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=231 (R2); generation controls not exposed; 上行/已知 added to curated_lexicon for 下行↔上行、未知↔已知",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 462
+      },
+      "sample_seed": 20260810,
+      "sample_n": 50,
+      "sample_ok": 49,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.98,
+      "sample_parent": "project_antonyms.tsv campaign-b07 parent N=231 (pre sample-fail removal)",
+      "sample_parent_n": 231,
+      "sample_parent_commit": "52c3f7104e925d15a766d17e1b4485a254826229",
+      "sample_parent_tsv_sha256": "2554d4886eed340a806756d96ec73216faeee589ce3fb5b44c7e85ead73a9866",
+      "sample_verdicts": [
+        {
+          "head": "一生一世",
+          "tail": "一時半刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "一生一世",
+          "tail": "片刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "中途",
+          "tail": "全程",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "任性",
+          "tail": "乖",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "任性",
+          "tail": "剋制",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保留",
+          "tail": "廢棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傳統",
+          "tail": "創新",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "兒童",
+          "tail": "大人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "去掉",
+          "tail": "加上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "同情",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "呈現",
+          "tail": "隱藏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "外部",
+          "tail": "內部",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "多多",
+          "tail": "少少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "如常",
+          "tail": "異常",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "幹活",
+          "tail": "歇息",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "建立",
+          "tail": "摧毀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "強行",
+          "tail": "自願",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "感興趣",
+          "tail": "討厭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "懷念",
+          "tail": "遺忘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "抱怨",
+          "tail": "稱讚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "掩飾",
+          "tail": "揭露",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "摩擦",
+          "tail": "和諧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "支援",
+          "tail": "阻撓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "數碼",
+          "tail": "模擬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "數碼",
+          "tail": "類比",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "新型",
+          "tail": "老式",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "正義",
+          "tail": "邪惡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "殘忍",
+          "tail": "仁慈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "殘酷",
+          "tail": "仁慈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "治理",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爽快",
+          "tail": "拖沓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "猶疑",
+          "tail": "乾脆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "猶疑",
+          "tail": "果斷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相遇",
+          "tail": "離別",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "瞞",
+          "tail": "公開",
+          "verdict": "fail",
+          "reasons": [
+            "隱瞞動作與公開形容／狀態詞性不一致"
+          ]
+        },
+        {
+          "head": "知會",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "祝福",
+          "tail": "詛咒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "神奇",
+          "tail": "平凡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "羣體",
+          "tail": "個體",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起牀",
+          "tail": "瞓覺",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "超越",
+          "tail": "不及",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "蹲",
+          "tail": "站",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "近年來",
+          "tail": "早年",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過多",
+          "tail": "不足",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "達到",
+          "tail": "落空",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鄉下",
+          "tail": "都會",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "降價",
+          "tail": "漲價",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陷入",
+          "tail": "擺脫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "順帶",
+          "tail": "特意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "驚慌",
+          "tail": "鎮定",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "瞞",
+          "tail": "公開",
+          "reasons": [
+            "隱瞞動作與公開形容／狀態詞性不一致"
+          ]
+        }
+      ],
+      "accepted_pairs": 230,
+      "created_at": "2026-07-13T19:36:02.622597+00:00"
     }
   }
 }

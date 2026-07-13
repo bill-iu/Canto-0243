@@ -374,6 +374,10 @@
         {
           "head": "需要",
           "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "都會",
+          "reason": "function_word"
         }
       ]
     },
@@ -711,6 +715,10 @@
         {
           "head": "逼",
           "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "十分",
+          "reason": "polysemous_no_stable_sense"
         }
       ]
     },
@@ -1027,7 +1035,13 @@
         }
       ],
       "created_at": "2026-07-13T14:14:35.462828+00:00",
-      "note": "Human formal sample seed=20260726 was 49/50 (其它→proper_name_or_deixis); amendment applied to TSV; parent then grew by accepted-cleanup orphans ['可憐', '壓力', '啜']; lock sample seed=20260728 all-ok on final amended parent."
+      "note": "Human formal sample seed=20260726 was 49/50 (其它→proper_name_or_deixis); amendment applied to TSV; parent then grew by accepted-cleanup orphans ['可憐', '壓力', '啜']; lock sample seed=20260728 all-ok on final amended parent.",
+      "superseded_heads": [
+        {
+          "head": "城市",
+          "reason": "no_gradable_opposite"
+        }
+      ]
     },
     "campaign-b04-20260714": {
       "sample_seed": 20260731,
@@ -1346,6 +1360,10 @@
       "superseded_heads": [
         {
           "head": "作",
+          "reason": "polysemous_no_stable_sense"
+        },
+        {
+          "head": "正面",
           "reason": "polysemous_no_stable_sense"
         }
       ]
@@ -1668,6 +1686,14 @@
         {
           "head": "西方",
           "reason": "no_gradable_opposite"
+        },
+        {
+          "head": "外套",
+          "reason": "no_gradable_opposite"
+        },
+        {
+          "head": "神仙",
+          "reason": "no_gradable_opposite"
         }
       ]
     },
@@ -1984,7 +2010,336 @@
         }
       ],
       "created_at": "2026-07-13T19:18:22.406996+00:00",
-      "note": "Human formal nn gate seed=20260806 was 49/50 (萬一→function_word); lock sample seed=20260808 all-ok on final parent; orphans=['保證', '羨慕', '刺']; prior_formal_ok_rate=0.98"
+      "note": "Human formal nn gate seed=20260806 was 49/50 (萬一→function_word); lock sample seed=20260808 all-ok on final parent; orphans=['保證', '羨慕', '刺']; prior_formal_ok_rate=0.98",
+      "superseded_heads": [
+        {
+          "head": "全程",
+          "reason": "no_gradable_opposite"
+        },
+        {
+          "head": "極爲",
+          "reason": "function_word"
+        },
+        {
+          "head": "深入",
+          "reason": "polysemous_no_stable_sense"
+        }
+      ]
+    },
+    "campaign-b07-20260714": {
+      "sample_seed": 20260811,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 319,
+      "git_commit": "52c3f7104e925d15a766d17e1b4485a254826229",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "不僅僅",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "世界盃",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "亞",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "人數",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "例子",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "供應商",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "假如",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "八月",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "公務員",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "公子",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "到家",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "反擊",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "受不了",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "名單",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "太空船",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "子宮",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "心事",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "悲劇",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "捏",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "政治",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "教書",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "敲門",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "春節",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "時機",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "普通話",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "服侍",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "機構",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "正方形",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "比例",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "水平線",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "水面",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "河",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "漢",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "澳洲",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "環保",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "睡衣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "私家車",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "累計",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "綠燈",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "編程",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "考研",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "臉頰",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "臨牀",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "袖",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "週日",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "酒樓",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "院",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "陰莖",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "預感",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "風格",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        }
+      ],
+      "created_at": "2026-07-13T19:36:02.622597+00:00",
+      "note": "Human formal nn gate seed=20260810 was 49/50 (看上去→function_word); lock sample seed=20260811 all-ok on final parent; orphans=[]"
     }
   }
 }
