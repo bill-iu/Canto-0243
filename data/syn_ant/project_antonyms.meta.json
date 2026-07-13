@@ -354,6 +354,362 @@
       "sample_parent_commit": "c9ad32846dc3946342da1e4ea8d8704aa723ba11",
       "sample_parent_tsv_sha256": "14f19cfca9bb4ada1d20f09ea4650872f3758e4bdfdbb457384af3c867bf78b4",
       "sample_parent_n": 100
+    },
+    "campaign-b01-20260713": {
+      "k": 500,
+      "git_commit": "ba9ecad097de29a7bfec3e0db1b10ba5630d730a",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=1 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=76 (R7); generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 8,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 395
+      },
+      "sample_seed": 20260719,
+      "sample_n": 50,
+      "sample_ok": 48,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.96,
+      "sample_parent": "project_antonyms.tsv campaign-b01 parent N=76 (pre sample-fail removal)",
+      "sample_parent_n": 76,
+      "sample_parent_commit": "ba9ecad097de29a7bfec3e0db1b10ba5630d730a",
+      "sample_parent_tsv_sha256": "986a3478d7ab3ef2ecdf88753fc9462f4b61799a159f5c905dd769d24b322e13",
+      "sample_verdicts": [
+        {
+          "head": "一切",
+          "tail": "局部",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不停",
+          "tail": "停低",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "中間",
+          "tail": "邊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "今日",
+          "tail": "往日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "今晚",
+          "tail": "今朝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "住",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "個人",
+          "tail": "集體",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "倒",
+          "tail": "正",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "再次",
+          "tail": "首次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "到",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "可以",
+          "tail": "禁止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "向",
+          "tail": "背",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "喊",
+          "tail": "笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "在",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "埋",
+          "tail": "掘出",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "得意",
+          "tail": "沮喪",
+          "verdict": "fail",
+          "reasons": [
+            "粵語「得意」多指可愛，與沮喪非反義"
+          ]
+        },
+        {
+          "head": "心",
+          "tail": "身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕",
+          "tail": "勇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "感覺",
+          "tail": "麻木",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "所有",
+          "tail": "部分",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "揀",
+          "tail": "棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "敢",
+          "tail": "怕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "早上",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明白",
+          "tail": "誤會",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "最尾",
+          "tail": "第一",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有時",
+          "tail": "成日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝早",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "果然",
+          "tail": "竟然",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "熱情",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "生活",
+          "tail": "死亡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "男人",
+          "tail": "女人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當時",
+          "tail": "而家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當然",
+          "tail": "未必",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相似",
+          "tail": "相異",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相對",
+          "tail": "絕對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "砌",
+          "tail": "拆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聲",
+          "tail": "靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聲音",
+          "tail": "寂靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "能力",
+          "tail": "無能",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自己",
+          "tail": "他人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自己",
+          "tail": "別人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "著",
+          "tail": "脫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "著",
+          "tail": "除",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "虛構",
+          "tail": "現實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "裝",
+          "tail": "拆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "說話",
+          "tail": "沉默",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "跟",
+          "tail": "離",
+          "verdict": "fail",
+          "reasons": [
+            "跟隨與離開不是直接反義"
+          ]
+        },
+        {
+          "head": "身體",
+          "tail": "心靈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遊戲",
+          "tail": "工作",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "邊",
+          "tail": "中",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "得意",
+          "tail": "沮喪",
+          "reasons": [
+            "粵語「得意」多指可愛，與沮喪非反義"
+          ]
+        },
+        {
+          "head": "跟",
+          "tail": "離",
+          "reasons": [
+            "跟隨與離開不是直接反義"
+          ]
+        }
+      ],
+      "accepted_pairs": 74,
+      "created_at": "2026-07-13T11:50:23.831181+00:00"
     }
   }
 }
