@@ -118,7 +118,6 @@ head	tail	relation_type	batch_id
 個人	集體	ant	campaign-b01-20260713
 感覺	麻木	ant	campaign-b01-20260713
 邊	中	ant	campaign-b01-20260713
-喊	笑	ant	campaign-b01-20260713
 痛	舒服	ant	campaign-b01-20260713
 錢	債	ant	campaign-b01-20260713
 駛	停	ant	campaign-b01-20260713
@@ -138,7 +137,6 @@ head	tail	relation_type	batch_id
 明白	誤會	ant	campaign-b01-20260713
 揀	棄	ant	campaign-b01-20260713
 剪	接	ant	campaign-b01-20260713
-今晚	今朝	ant	campaign-b01-20260713
 生活	死亡	ant	campaign-b01-20260713
 錫	憎	ant	campaign-b01-20260713
 不停	停低	ant	campaign-b01-20260713
@@ -151,7 +149,6 @@ head	tail	relation_type	batch_id
 非常	稍微	ant	campaign-b01-20260713
 認爲	懷疑	ant	campaign-b01-20260713
 當時	而家	ant	campaign-b01-20260713
-只是	不僅	ant	campaign-b01-20260713
 大概	精確	ant	campaign-b01-20260713
 再次	首次	ant	campaign-b01-20260713
 一切	局部	ant	campaign-b01-20260713
@@ -302,7 +299,6 @@ head	tail	relation_type	batch_id
 之下	之上	ant	campaign-b02-20260713
 之下	以上	ant	campaign-b02-20260713
 意識	無意識	ant	campaign-b02-20260713
-意識	潛意識	ant	campaign-b02-20260713
 瞬間	永恆	ant	campaign-b02-20260713
 瞬間	長久	ant	campaign-b02-20260713
 瞬間	永遠	ant	campaign-b02-20260713
@@ -433,7 +429,6 @@ head	tail	relation_type	batch_id
 出來	進去	ant	campaign-b02-20260713
 出來	入去	ant	campaign-b02-20260713
 處理	擱置	ant	campaign-b02-20260713
-處理	放任	ant	campaign-b02-20260713
 大力	輕輕	ant	campaign-b02-20260713
 乾	濕	ant	campaign-b02-20260713
 乾	潤	ant	campaign-b02-20260713
@@ -466,7 +461,6 @@ head	tail	relation_type	batch_id
 易	難	ant	campaign-b02-20260713
 曦	暮	ant	campaign-b02-20260713
 立刻	稍後	ant	campaign-b02-20260713
-立刻	後來	ant	campaign-b02-20260713
 至少	至多	ant	campaign-b02-20260713
 無聊	有趣	ant	campaign-b02-20260713
 無聊	精彩	ant	campaign-b02-20260713
@@ -694,7 +688,6 @@ head	tail	relation_type	batch_id
 燒	凍	ant	campaign-b03-20260713
 燒	冷	ant	campaign-b03-20260713
 燒	熄	ant	campaign-b03-20260713
-尤其	一般	ant	campaign-b03-20260713
 參加	缺席	ant	campaign-b03-20260713
 參加	退出	ant	campaign-b03-20260713
 參加	旁觀	ant	campaign-b03-20260713
@@ -867,10 +860,8 @@ head	tail	relation_type	batch_id
 強烈	微弱	ant	campaign-b04-20260714
 強烈	溫和	ant	campaign-b04-20260714
 抓	放	ant	campaign-b04-20260714
-透明	不透明	ant	campaign-b04-20260714
 透明	渾濁	ant	campaign-b04-20260714
 大部分	少數	ant	campaign-b04-20260714
-大部分	半數	ant	campaign-b04-20260714
 加快	減慢	ant	campaign-b04-20260714
 加快	放慢	ant	campaign-b04-20260714
 斜	正	ant	campaign-b04-20260714
@@ -1047,7 +1038,6 @@ head	tail	relation_type	batch_id
 私人	公共	ant	campaign-b05-20260714
 空白	填滿	ant	campaign-b05-20260714
 空白	充實	ant	campaign-b05-20260714
-舉	放	ant	campaign-b05-20260714
 落地	起飛	ant	campaign-b05-20260714
 單純	複雜	ant	campaign-b05-20260714
 投入	抽離	ant	campaign-b05-20260714
@@ -1278,7 +1268,6 @@ head	tail	relation_type	batch_id
 咆哮	低語	ant	campaign-b06-20260714
 小心翼翼	粗心大意	ant	campaign-b06-20260714
 小心翼翼	莽撞	ant	campaign-b06-20260714
-待	走	ant	campaign-b06-20260714
 流血	止血	ant	campaign-b06-20260714
 輸入	輸出	ant	campaign-b06-20260714
 通過	否決	ant	campaign-b06-20260714
@@ -1403,7 +1392,6 @@ head	tail	relation_type	batch_id
 開啓	關上	ant	campaign-b07-20260714
 羣體	個體	ant	campaign-b07-20260714
 峯	谷	ant	campaign-b07-20260714
-七彩	黑白	ant	campaign-b07-20260714
 任由	約束	ant	campaign-b07-20260714
 任由	管束	ant	campaign-b07-20260714
 反射	吸收	ant	campaign-b07-20260714
@@ -1440,7 +1428,6 @@ head	tail	relation_type	batch_id
 兒童	大人	ant	campaign-b07-20260714
 利益	損害	ant	campaign-b07-20260714
 利益	損失	ant	campaign-b07-20260714
-手心	手背	ant	campaign-b07-20260714
 擺動	靜止	ant	campaign-b07-20260714
 深刻	膚淺	ant	campaign-b07-20260714
 無常	恆常	ant	campaign-b07-20260714
@@ -1491,7 +1478,6 @@ head	tail	relation_type	batch_id
 關鍵	次要	ant	campaign-b07-20260714
 關鍵	枝節	ant	campaign-b07-20260714
 青年	老年	ant	campaign-b07-20260714
-分公司	總公司	ant	campaign-b07-20260714
 降價	漲價	ant	campaign-b07-20260714
 降價	加價	ant	campaign-b07-20260714
 新型	舊型	ant	campaign-b07-20260714
@@ -1561,7 +1547,6 @@ head	tail	relation_type	batch_id
 全名	簡稱	ant	campaign-b07-20260714
 嚴正	輕率	ant	campaign-b07-20260714
 嚴正	隨便	ant	campaign-b07-20260714
-明星	路人	ant	campaign-b07-20260714
 發動	停止	ant	campaign-b07-20260714
 發動	熄火	ant	campaign-b07-20260714
 祝福	詛咒	ant	campaign-b07-20260714
@@ -1661,7 +1646,6 @@ head	tail	relation_type	batch_id
 彈性	僵硬	ant	campaign-b08-20260714
 撕	貼	ant	campaign-b08-20260714
 撕	黏	ant	campaign-b08-20260714
-日頭	月亮	ant	campaign-b08-20260714
 有成	失敗	ant	campaign-b08-20260714
 深信	懷疑	ant	campaign-b08-20260714
 碎片	整體	ant	campaign-b08-20260714
@@ -1699,7 +1683,6 @@ head	tail	relation_type	batch_id
 幫忙	妨礙	ant	campaign-b08-20260714
 幫忙	阻撓	ant	campaign-b08-20260714
 應聲	沉默	ant	campaign-b08-20260714
-戰場	後方	ant	campaign-b08-20260714
 擔憂	放心	ant	campaign-b08-20260714
 擔憂	安心	ant	campaign-b08-20260714
 救人	害人	ant	campaign-b08-20260714
@@ -1746,13 +1729,11 @@ head	tail	relation_type	batch_id
 誘惑	抵制	ant	campaign-b08-20260714
 降臨	離去	ant	campaign-b08-20260714
 降臨	離開	ant	campaign-b08-20260714
-陸	海	ant	campaign-b08-20260714
 陸	洋	ant	campaign-b08-20260714
 關機	開機	ant	campaign-b08-20260714
 大於	小於	ant	campaign-b08-20260714
 大於	少於	ant	campaign-b08-20260714
 中小企業	大型企業	ant	campaign-b08-20260714
-中小企業	大企業	ant	campaign-b08-20260714
 殺毒	中毒	ant	campaign-b08-20260714
 殺毒	感染	ant	campaign-b08-20260714
 虧損	盈利	ant	campaign-b08-20260714
@@ -1860,7 +1841,6 @@ head	tail	relation_type	batch_id
 清純	世故	ant	campaign-b08-20260714
 清純	妖冶	ant	campaign-b08-20260714
 烏	白	ant	campaign-b08-20260714
-管理員	用戶	ant	campaign-b08-20260714
 耐煩	急躁	ant	campaign-b08-20260714
 耐煩	煩躁	ant	campaign-b08-20260714
 腹	背	ant	campaign-b08-20260714
@@ -1874,7 +1854,6 @@ head	tail	relation_type	batch_id
 集合	解散	ant	campaign-b08-20260714
 集合	分散	ant	campaign-b08-20260714
 老外	本地人	ant	campaign-b08-20260714
-老外	國人	ant	campaign-b08-20260714
 民警	罪犯	ant	campaign-b08-20260714
 民警	匪徒	ant	campaign-b08-20260714
 開盤	收盤	ant	campaign-b08-20260714
@@ -1883,10 +1862,8 @@ head	tail	relation_type	batch_id
 來不及	來得及	ant	campaign-b08-20260714
 錄取	拒收	ant	campaign-b08-20260714
 防治	放任	ant	campaign-b08-20260714
-老總	員工	ant	campaign-b08-20260714
 老總	下屬	ant	campaign-b08-20260714
 低價	高價	ant	campaign-b08-20260714
-樣品	成品	ant	campaign-b08-20260714
 詩歌	散文	ant	campaign-b08-20260714
 驗收	拒收	ant	campaign-b08-20260714
 驗收	退貨	ant	campaign-b08-20260714
@@ -2113,7 +2090,6 @@ head	tail	relation_type	batch_id
 單人	雙人	ant	campaign-b09-20260714
 大雨	小雨	ant	campaign-b09-20260714
 大雨	細雨	ant	campaign-b09-20260714
-宜	不宜	ant	campaign-b09-20260714
 宜	忌	ant	campaign-b09-20260714
 導致	阻止	ant	campaign-b09-20260714
 導致	防止	ant	campaign-b09-20260714
@@ -2127,7 +2103,6 @@ head	tail	relation_type	batch_id
 懦弱	勇敢	ant	campaign-b09-20260714
 懦弱	剛強	ant	campaign-b09-20260714
 懦弱	堅強	ant	campaign-b09-20260714
-打車	步行	ant	campaign-b09-20260714
 搶先	落後	ant	campaign-b09-20260714
 搶先	殿後	ant	campaign-b09-20260714
 望見	忽視	ant	campaign-b09-20260714
@@ -2183,7 +2158,6 @@ head	tail	relation_type	batch_id
 難以置信	可信	ant	campaign-b09-20260714
 默	語	ant	campaign-b09-20260714
 默	響	ant	campaign-b09-20260714
-外國人	本地人	ant	campaign-b09-20260714
 來回	單向	ant	campaign-b09-20260714
 升值	貶值	ant	campaign-b09-20260714
 制約	放任	ant	campaign-b09-20260714
@@ -2310,7 +2284,6 @@ head	tail	relation_type	batch_id
 要素	枝節	ant	campaign-b09-20260714
 要素	次要	ant	campaign-b09-20260714
 獲悉	不知	ant	campaign-b09-20260714
-作者	讀者	ant	campaign-b09-20260714
 保守	激進	ant	campaign-b09-20260714
 保守	開放	ant	campaign-b09-20260714
 保守	進取	ant	campaign-b09-20260714
@@ -2327,7 +2300,6 @@ head	tail	relation_type	batch_id
 噓	鼓掌	ant	campaign-b09-20260714
 察覺	忽略	ant	campaign-b09-20260714
 察覺	忽視	ant	campaign-b09-20260714
-小腿	大腿	ant	campaign-b09-20260714
 少有	常見	ant	campaign-b09-20260714
 帶頭	殿後	ant	campaign-b09-20260714
 帶頭	落後	ant	campaign-b09-20260714
@@ -2337,7 +2309,6 @@ head	tail	relation_type	batch_id
 惡鬼	天使	ant	campaign-b09-20260714
 惡鬼	神仙	ant	campaign-b09-20260714
 意料	意外	ant	campaign-b09-20260714
-打工	創業	ant	campaign-b09-20260714
 抵抗	屈服	ant	campaign-b09-20260714
 抵抗	投降	ant	campaign-b09-20260714
 抵抗	順從	ant	campaign-b09-20260714
@@ -2393,7 +2364,6 @@ head	tail	relation_type	batch_id
 閃避	直擊	ant	campaign-b09-20260714
 隊伍	個人	ant	campaign-b09-20260714
 隊伍	單人	ant	campaign-b09-20260714
-集團	個人	ant	campaign-b09-20260714
 集團	個體	ant	campaign-b09-20260714
 需求	供應	ant	campaign-b09-20260714
 順眼	礙眼	ant	campaign-b09-20260714
@@ -2475,7 +2445,6 @@ head	tail	relation_type	batch_id
 報道	隱瞞	ant	campaign-b10-20260714
 幽默	枯燥	ant	campaign-b10-20260714
 幽默	嚴肅	ant	campaign-b10-20260714
-後者	前者	ant	campaign-b10-20260714
 承擔	推卸	ant	campaign-b10-20260714
 承擔	拒絕	ant	campaign-b10-20260714
 投票	棄權	ant	campaign-b10-20260714

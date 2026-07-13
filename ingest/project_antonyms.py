@@ -573,6 +573,29 @@ def _tsv_pair_rows_for_batch(raw: bytes, batch_id: str) -> List[Tuple[str, str]]
     return rows
 
 
+def _final_audit_removed_pair_keys() -> Set[Tuple[str, str]]:
+    """Pairs dropped by campaign final audit (may post-date per-batch sample parents)."""
+    p = ROOT / "data" / "syn_ant" / "campaign_final_audit.meta.json"
+    if not p.is_file():
+        return set()
+    try:
+        data = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    removed = (data.get("accepted") or {}).get("removed_sample_fails") or []
+    out: Set[Tuple[str, str]] = set()
+    if not isinstance(removed, list):
+        return out
+    for row in removed:
+        if not isinstance(row, dict):
+            continue
+        h = str(row.get("head") or "").strip()
+        t = str(row.get("tail") or "").strip()
+        if h and t:
+            out.add(pair_undirected_key(h, t))
+    return out
+
+
 def assert_sample_replayable(
     batch_id: str,
     entry: dict[str, Any],
@@ -607,20 +630,6 @@ def assert_sample_replayable(
             f"not marked fail in sample_verdicts: {sorted(removed_keys - fail_keys)}"
         )
 
-    parent: List[Tuple[str, str]] = [(p.head, p.tail) for p in accepted]
-    parent.extend((str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed)
-    parent_n = int(entry["sample_parent_n"])
-    if len(parent) != parent_n:
-        raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] reconstructed parent size "
-            f"{len(parent)} != sample_parent_n={parent_n}"
-        )
-    parent_keys = {pair_undirected_key(h, t) for h, t in parent}
-    if len(parent_keys) != parent_n:
-        raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] reconstructed parent has duplicates"
-        )
-
     expected_hash = str(entry["sample_parent_tsv_sha256"]).strip().lower()
     commit = str(entry["sample_parent_commit"]).strip().lower()
     blob = _read_git_blob(commit, "data/syn_ant/project_antonyms.tsv")
@@ -636,10 +645,30 @@ def assert_sample_replayable(
             f"{path}: batches[{batch_id!r}] sample_parent_tsv_sha256 mismatch: "
             f"meta={expected_hash} git={got_hash}"
         )
-    # ponytail: multi-batch parent lives inside the shared TSV — compare this batch only
-    git_keys = {
-        pair_undirected_key(h, t) for h, t in _tsv_pair_rows_for_batch(blob, batch_id)
-    }
+    parent: List[Tuple[str, str]] = [(p.head, p.tail) for p in accepted]
+    parent.extend((str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed)
+    # ponytail: final-audit may drop pairs after batch land — restore directional
+    # rows from the sample-parent git blob so sample_pairs order/replay match.
+    parent_keys = {pair_undirected_key(h, t) for h, t in parent}
+    git_rows = _tsv_pair_rows_for_batch(blob, batch_id)
+    for h, t in git_rows:
+        key = pair_undirected_key(h, t)
+        if key in _final_audit_removed_pair_keys() and key not in parent_keys:
+            parent.append((h, t))
+            parent_keys.add(key)
+
+    parent_n = int(entry["sample_parent_n"])
+    if len(parent) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent size "
+            f"{len(parent)} != sample_parent_n={parent_n}"
+        )
+    if len(parent_keys) != parent_n:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] reconstructed parent has duplicates"
+        )
+
+    git_keys = {pair_undirected_key(h, t) for h, t in git_rows}
     if git_keys != parent_keys:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] reconstructed parent set != "

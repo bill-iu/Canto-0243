@@ -716,7 +716,9 @@ class CampaignLiveFreezeTests(unittest.TestCase):
             unresolved_sample_n=3,
         )
         self.assertEqual(progress["k"], CAMPAIGN_K)
-        self.assertFalse(progress["complete"])
+        self.assertTrue(progress["complete"])
+        self.assertEqual(progress["unresolved"], 0)
+        self.assertEqual(progress["resolved"], CAMPAIGN_K)
         self.assertGreater(progress["accepted_covered"], 0)
         self.assertEqual(progress["unresolved"] + progress["resolved"], CAMPAIGN_K)
 

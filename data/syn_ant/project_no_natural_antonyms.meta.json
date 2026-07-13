@@ -3377,6 +3377,189 @@
       ],
       "created_at": "2026-07-13T22:52:15.633569+00:00",
       "note": "Human Nn R3 seed=20260904 was 45/50; 5 fails promoted to accepted (參照, 往事, 教導, 東部, 細節); lock sample seed=20260905 all-ok on final parent n=301; 消化 orphaned from Acc R3 fail; fix: drop nn heads covered as accepted tails (可行/當代)"
+    },
+    "campaign-final-20260714": {
+      "sample_seed": 20260714,
+      "sample_n": 28,
+      "sample_ok": 28,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 28,
+      "git_commit": "6eada01517c70b7e33d701fa05c605b3a0c2f632",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "七彩",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "今晚",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "作者",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "分公司",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "只是",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "員工",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "喊",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "國人",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "外國人",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "大腿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "小腿",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "尤其",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "待",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "後者",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "戰場",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "手心",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "打工",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "打車",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "日頭",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "明星",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "月亮",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "樣品",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "步行",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "海",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "潛意識",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "管理員",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "舉",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        },
+        {
+          "head": "讀者",
+          "reason": "cultural_no_binary",
+          "verdict": "ok",
+          "notes": "orphan after final audit"
+        }
+      ],
+      "created_at": "2026-07-13T23:02:44.723508+00:00",
+      "note": "Orphan campaign heads after final-audit accepted fail removal."
     }
   }
 }
