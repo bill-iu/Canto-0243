@@ -389,6 +389,11 @@ class CampaignProgressTests(unittest.TestCase):
         }
         path = Path("nn-meta")
         validate_no_natural_batch_meta("campaign-b01-20260713", entry, path=path)
+        weak = dict(entry)
+        weak["ok_rate_threshold"] = 0.85
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_no_natural_batch_meta("campaign-b01-20260713", weak, path=path)
+        self.assertIn("must be 0.90", str(ctx.exception))
         assert_no_natural_sample_replayable(
             "campaign-b01-20260713", entry, kept, path=path
         )
@@ -417,6 +422,18 @@ class CampaignProgressTests(unittest.TestCase):
                 tsv_path=tsv, meta_path=meta_path, campaign_heads=campaign
             )
             self.assertEqual(len(rows), 59)
+            bad_meta_path = Path(tmp) / "bad.meta.json"
+            bad_meta_path.write_text(
+                json.dumps({"batches": {"unused": {}}}), encoding="utf-8"
+            )
+            empty_tsv = Path(tmp) / "empty.tsv"
+            empty_tsv.write_text("head\treason\tbatch_id\n", encoding="utf-8")
+            with self.assertRaises(ProjectAntonymsError):
+                validate_no_natural_ledger(
+                    tsv_path=empty_tsv,
+                    meta_path=bad_meta_path,
+                    campaign_heads=set(),
+                )
 
     def test_stratified_final_audit_sample_and_gate(self):
         from ingest.project_antonyms_campaign import (
@@ -611,6 +628,43 @@ class CampaignProgressTests(unittest.TestCase):
             no_natural_rows=[],
             heads=heads,
         )
+
+        bad_empty = json.loads(json.dumps(empty_meta))
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_final_audit_meta(
+                bad_empty,
+                path=Path("final-audit"),
+                manifest_sha256="b" * 64,
+                accepted_pairs=kept_pairs,
+                no_natural_rows=[],
+                heads=heads,
+            )
+        self.assertIn("skipped_empty", str(ctx.exception))
+
+        bad_empty_nn = json.loads(json.dumps(empty_meta))
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_final_audit_meta(
+                bad_empty_nn,
+                path=Path("final-audit"),
+                manifest_sha256="b" * 64,
+                accepted_pairs=[],
+                no_natural_rows=nn_rows,
+                heads=heads,
+            )
+        self.assertIn("skipped_empty", str(ctx.exception))
+
+        missing_threshold = json.loads(json.dumps(empty_meta))
+        del missing_threshold["ok_rate_threshold"]
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_final_audit_meta(
+                missing_threshold,
+                path=Path("final-audit"),
+                manifest_sha256="b" * 64,
+                accepted_pairs=[],
+                no_natural_rows=[],
+                heads=heads,
+            )
+        self.assertIn("ok_rate_threshold", str(ctx.exception))
 
 
 class CampaignLiveFreezeTests(unittest.TestCase):

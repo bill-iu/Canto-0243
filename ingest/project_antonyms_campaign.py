@@ -777,6 +777,11 @@ def validate_no_natural_batch_meta(
         path=path,
         batch_id=batch_id,
     )
+    if threshold != OK_RATE_THRESHOLD_CAMPAIGN:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] ok_rate_threshold must be "
+            f"{OK_RATE_THRESHOLD_CAMPAIGN:.2f}, got {threshold:.2f}"
+        )
     removed = entry.get("removed_sample_fails")
     if not isinstance(removed, list):
         raise ProjectAntonymsError(
@@ -919,18 +924,22 @@ def validate_no_natural_ledger(
 ) -> List[Tuple[str, str, str]]:
     """Parse no-natural TSV and fail-closed validate referenced batch meta + replay."""
     meta = load_no_natural_meta(meta_path)
-    batches = meta.get("batches") or {}
+    batches = meta.get("batches")
     if not isinstance(batches, dict):
         raise ProjectAntonymsError(f"{meta_path}: batches must be an object")
+    if any(not isinstance(batch_id, str) or not batch_id.strip() for batch_id in batches):
+        raise ProjectAntonymsError(f"{meta_path}: batch ids must be non-empty strings")
     rows = parse_no_natural_tsv(
         tsv_path, campaign_heads=campaign_heads, require_file=True
     )
     used = {b for _, _, b in rows}
-    for batch_id in sorted(used):
-        if batch_id not in batches:
-            raise ProjectAntonymsError(
-                f"{tsv_path}: unknown batch_id {batch_id!r} (missing no-natural meta)"
-            )
+    unknown = used - set(batches)
+    if unknown:
+        batch_id = sorted(unknown)[0]
+        raise ProjectAntonymsError(
+            f"{tsv_path}: unknown batch_id {batch_id!r} (missing no-natural meta)"
+        )
+    for batch_id in sorted(batches):
         validate_no_natural_batch_meta(batch_id, batches[batch_id], path=Path(meta_path))
         assert_no_natural_sample_replayable(
             batch_id, batches[batch_id], rows, path=Path(meta_path)
@@ -1296,6 +1305,16 @@ def assert_final_audit_accepted_replayable(
     batch_count: int = _CAMPAIGN_BATCH_COUNT,
 ) -> None:
     if str(entry.get("status")) == "skipped_empty":
+        attributed = [
+            (h, t)
+            for h, t in pairs
+            if pair_campaign_batch_index(h, t, head_batch) is not None
+        ]
+        if attributed:
+            raise ProjectAntonymsError(
+                f"{path}: accepted skipped_empty but campaign parent has "
+                f"{len(attributed)} pairs"
+            )
         return
     removed = entry["removed_sample_fails"]
     removed_keys = {
@@ -1371,6 +1390,16 @@ def assert_final_audit_no_natural_replayable(
     batch_count: int = _CAMPAIGN_BATCH_COUNT,
 ) -> None:
     if str(entry.get("status")) == "skipped_empty":
+        attributed = [
+            row
+            for row in rows
+            if (normalize_literal(str(row[0]).strip()) or str(row[0]).strip()) in head_batch
+        ]
+        if attributed:
+            raise ProjectAntonymsError(
+                f"{path}: no_natural skipped_empty but campaign parent has "
+                f"{len(attributed)} heads"
+            )
         return
     removed = entry["removed_sample_fails"]
     removed_heads = {
@@ -1469,8 +1498,10 @@ def validate_final_audit_meta(
             f"{p}: manifest_sha256 mismatch meta={meta_manifest!r} file={got!r}"
         )
     _require_git_sha1(meta.get("git_commit"), field="git_commit", path=p)
+    if "ok_rate_threshold" not in meta:
+        raise ProjectAntonymsError(f"{p}: missing ok_rate_threshold")
     threshold = parse_ok_rate_threshold(
-        meta.get("ok_rate_threshold", FINAL_AUDIT_OK_RATE_THRESHOLD),
+        meta["ok_rate_threshold"],
         field="ok_rate_threshold",
         path=p,
         batch_id="final-audit",
@@ -1497,42 +1528,11 @@ def validate_final_audit_meta(
 
 
 def accepted_pairs_light(tsv_path: Path | str) -> List[Tuple[str, str]]:
-    """ponytail: head/tail only for final-audit sampling; full pair audit stays in parse_project_antonyms_tsv."""
-    from ingest.project_antonyms import DEFAULT_TSV, TSV_HEADER
+    """Final-audit input must pass the authoritative project TSV validator."""
+    from ingest.project_antonyms import parse_project_antonyms_tsv
 
-    p = Path(tsv_path) if tsv_path else DEFAULT_TSV
-    if not p.is_file():
-        return []
-    text = p.read_text(encoding="utf-8")
-    if text.startswith("\ufeff"):
-        raise ProjectAntonymsError(f"accepted TSV must be UTF-8 without BOM: {p}")
-    lines = text.splitlines()
-    if not lines:
-        return []
-    reader = csv.reader(lines, delimiter="\t")
-    header = tuple(next(reader, ()))
-    if header != TSV_HEADER:
-        raise ProjectAntonymsError(
-            f"bad accepted header {header!r}; expected {TSV_HEADER!r}"
-        )
-    out: List[Tuple[str, str]] = []
-    seen: Set[Tuple[str, str]] = set()
-    for lineno, row in enumerate(reader, start=2):
-        if not row or all(not c.strip() for c in row):
-            continue
-        if len(row) < 2:
-            raise ProjectAntonymsError(f"{p}:{lineno}: expected head/tail columns")
-        key = pair_undirected_key(
-            normalize_literal(row[0].strip()) or row[0].strip(),
-            normalize_literal(row[1].strip()) or row[1].strip(),
-        )
-        if not key[0] or not key[1]:
-            raise ProjectAntonymsError(f"{p}:{lineno}: invalid literal")
-        if key in seen:
-            continue
-        seen.add(key)
-        out.append(key)
-    return out
+    pairs = parse_project_antonyms_tsv(tsv_path)
+    return [pair.canonical_key() for pair in pairs]
 
 
 __all__ = [

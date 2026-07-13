@@ -40,6 +40,7 @@ DEFAULT_SEED_K = 500
 OK_RATE_THRESHOLD = 0.85  # legacy default; batch meta must declare ok_rate_threshold
 OK_RATE_THRESHOLD_CAMPAIGN = 0.90
 ALLOWED_OK_RATE_THRESHOLDS = frozenset({OK_RATE_THRESHOLD, OK_RATE_THRESHOLD_CAMPAIGN})
+LEGACY_BATCH_ID = "batch-20260713"
 
 _GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
@@ -505,6 +506,16 @@ def validate_batch_meta_entry(batch_id: str, entry: Any, *, path: Path) -> None:
         path=path,
         batch_id=batch_id,
     )
+    expected_threshold = (
+        OK_RATE_THRESHOLD
+        if batch_id == LEGACY_BATCH_ID
+        else OK_RATE_THRESHOLD_CAMPAIGN
+    )
+    if threshold != expected_threshold:
+        raise ProjectAntonymsError(
+            f"{path}: batches[{batch_id!r}] ok_rate_threshold must be "
+            f"{expected_threshold:.2f}, got {threshold:.2f}"
+        )
     if not passes_quality_gate(sample_ok, sample_n, threshold=threshold):
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] quality gate failed: "
@@ -803,6 +814,7 @@ __all__ = [
     "OK_RATE_THRESHOLD",
     "OK_RATE_THRESHOLD_CAMPAIGN",
     "ALLOWED_OK_RATE_THRESHOLDS",
+    "LEGACY_BATCH_ID",
     "PROJECT_ANT_MERGE_RANK",
     "PROJECT_ANT_RUNTIME_RANK",
     "PROJECT_ANT_SCORE",

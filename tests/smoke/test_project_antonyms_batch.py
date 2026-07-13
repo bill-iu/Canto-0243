@@ -64,7 +64,7 @@ def _batch_meta(
                 "sample_seed": 1,
                 "sample_n": sample_n,
                 "sample_ok": sample_ok,
-                "ok_rate_threshold": 0.85,
+                "ok_rate_threshold": 0.85 if batch_id == "batch-20260713" else 0.90,
                 "sample_parent_n": parent_n,
                 "sample_parent_commit": "a" * 40,
                 "sample_parent_tsv_sha256": "b" * 64,  # filled by _with_fixture_git_blob
@@ -269,6 +269,13 @@ class ProjectAntonymsLoaderTests(unittest.TestCase):
         ok90 = _batch_meta(sample_n=50, sample_ok=45, verdict="ok")["batches"]["batch-1"]
         ok90["ok_rate_threshold"] = 0.90
         validate_batch_meta_entry("batch-1", ok90, path=path)
+        legacy85 = _batch_meta(batch_id="batch-20260713")["batches"]["batch-20260713"]
+        validate_batch_meta_entry("batch-20260713", legacy85, path=path)
+        new85 = _batch_meta(batch_id="campaign-b02-20260713")["batches"]["campaign-b02-20260713"]
+        new85["ok_rate_threshold"] = 0.85
+        with self.assertRaises(ProjectAntonymsError) as ctx:
+            validate_batch_meta_entry("campaign-b02-20260713", new85, path=path)
+        self.assertIn("must be 0.90", str(ctx.exception))
         # 44/50 = 0.88 fails 0.90
         bad90 = _batch_meta(sample_n=50, sample_ok=44, verdict="ok")["batches"]["batch-1"]
         bad90["ok_rate_threshold"] = 0.90
