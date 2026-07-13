@@ -523,7 +523,6 @@ head	tail	relation_type	batch_id
 接觸	隔離	ant	campaign-b03-20260713
 接觸	疏遠	ant	campaign-b03-20260713
 接觸	隔絕	ant	campaign-b03-20260713
-可憐	幸福	ant	campaign-b03-20260713
 提	放	ant	campaign-b03-20260713
 提	降	ant	campaign-b03-20260713
 提	壓	ant	campaign-b03-20260713
@@ -604,7 +603,6 @@ head	tail	relation_type	batch_id
 戀	恨	ant	campaign-b03-20260713
 疑惑	確信	ant	campaign-b03-20260713
 疑惑	肯定	ant	campaign-b03-20260713
-壓力	輕鬆	ant	campaign-b03-20260713
 意外	故意	ant	campaign-b03-20260713
 意外	預期	ant	campaign-b03-20260713
 一起	分開	ant	campaign-b03-20260713
@@ -660,7 +658,6 @@ head	tail	relation_type	batch_id
 擋	通	ant	campaign-b03-20260713
 放開	抓住	ant	campaign-b03-20260713
 放開	握住	ant	campaign-b03-20260713
-啜	吐	ant	campaign-b03-20260713
 狂	穩	ant	campaign-b03-20260713
 狂	冷靜	ant	campaign-b03-20260713
 使用	停用	ant	campaign-b03-20260713
@@ -698,7 +695,6 @@ head	tail	relation_type	batch_id
 燒	冷	ant	campaign-b03-20260713
 燒	熄	ant	campaign-b03-20260713
 尤其	一般	ant	campaign-b03-20260713
-尤其	普通	ant	campaign-b03-20260713
 參加	缺席	ant	campaign-b03-20260713
 參加	退出	ant	campaign-b03-20260713
 參加	旁觀	ant	campaign-b03-20260713
@@ -711,7 +707,6 @@ head	tail	relation_type	batch_id
 原諒	記恨	ant	campaign-b03-20260713
 原諒	埋怨	ant	campaign-b03-20260713
 出名	無名	ant	campaign-b03-20260713
-出名	低調	ant	campaign-b03-20260713
 出名	默默無聞	ant	campaign-b03-20260713
 次次	偶爾	ant	campaign-b03-20260713
 次次	間中	ant	campaign-b03-20260713

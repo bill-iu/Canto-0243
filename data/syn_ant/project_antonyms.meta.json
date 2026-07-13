@@ -1075,6 +1075,389 @@
       ],
       "accepted_pairs": 329,
       "created_at": "2026-07-13T13:24:00.212119+00:00"
+    },
+    "campaign-b03-20260713": {
+      "k": 500,
+      "git_commit": "aa2a75e2d143f15c5cfe94bd017480d5d66b4084",
+      "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "WP-12 batch_index=3 blind draft via Cursor Agent (xAI Grok); maintainer A–D sample on final N=305 (R3); generation controls not exposed",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "interface": "Cursor Agent",
+        "generation_mode": "blind_draft_chunked",
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "chunks": 10,
+        "max_proposals_per_head": 3,
+        "seed_k": 500,
+        "unresolved_heads": 478
+      },
+      "sample_seed": 20260727,
+      "sample_n": 50,
+      "sample_ok": 45,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 0.9,
+      "sample_parent": "project_antonyms.tsv campaign-b03 parent N=305 (pre sample-fail removal)",
+      "sample_parent_n": 305,
+      "sample_parent_commit": "aa2a75e2d143f15c5cfe94bd017480d5d66b4084",
+      "sample_parent_tsv_sha256": "0afad1542bc30a11bd366777fc84d55ac3f7253d08e1cd41baf3ebdf39bc3c76",
+      "sample_verdicts": [
+        {
+          "head": "不可",
+          "tail": "可以",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不能",
+          "tail": "可以",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不能",
+          "tail": "能",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "使用",
+          "tail": "閒置",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出名",
+          "tail": "低調",
+          "verdict": "fail",
+          "reasons": [
+            "名聲狀態與行事風格不在同一語義軸"
+          ]
+        },
+        {
+          "head": "出手",
+          "tail": "收手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初",
+          "tail": "末",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "加入",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勉強",
+          "tail": "情願",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "千秋",
+          "tail": "片刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "參加",
+          "tail": "退出",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "反抗",
+          "tail": "服從",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "可憐",
+          "tail": "幸福",
+          "verdict": "fail",
+          "reasons": [
+            "他人評價與主觀福祉不在同一語義軸"
+          ]
+        },
+        {
+          "head": "啜",
+          "tail": "吐",
+          "verdict": "fail",
+          "reasons": [
+            "吸啜與吐出只屬方向互補行為，且「啜」多義"
+          ]
+        },
+        {
+          "head": "塞",
+          "tail": "暢通",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "壓力",
+          "tail": "輕鬆",
+          "verdict": "fail",
+          "reasons": [
+            "名詞與形容詞／狀態不一致"
+          ]
+        },
+        {
+          "head": "好像",
+          "tail": "的確",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好像",
+          "tail": "確實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "專心",
+          "tail": "散漫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "尤其",
+          "tail": "普通",
+          "verdict": "fail",
+          "reasons": [
+            "強調副詞與一般性形容詞不一致"
+          ]
+        },
+        {
+          "head": "必須",
+          "tail": "不必",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "恐懼",
+          "tail": "安心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "捉住",
+          "tail": "放走",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "捉住",
+          "tail": "釋放",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "掙扎",
+          "tail": "順從",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "接觸",
+          "tail": "隔離",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "提",
+          "tail": "壓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "握",
+          "tail": "放",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "日日",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "早晨",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "柒",
+          "tail": "醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樂",
+          "tail": "哀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樂",
+          "tail": "苦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "次次",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "注意",
+          "tail": "忽略",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "渣",
+          "tail": "精品",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爽",
+          "tail": "慘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當初",
+          "tail": "如今",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發展",
+          "tail": "倒退",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "答應",
+          "tail": "推辭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老實",
+          "tail": "奸詐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "考慮",
+          "tail": "忽視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聯絡",
+          "tail": "失聯",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聯絡",
+          "tail": "斷絕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自信",
+          "tail": "氣餒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "衝",
+          "tail": "退",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "避開",
+          "tail": "面對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "開門",
+          "tail": "關門",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "集中",
+          "tail": "分散",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "養",
+          "tail": "棄",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [
+        {
+          "head": "出名",
+          "tail": "低調",
+          "reasons": [
+            "名聲狀態與行事風格不在同一語義軸"
+          ]
+        },
+        {
+          "head": "可憐",
+          "tail": "幸福",
+          "reasons": [
+            "他人評價與主觀福祉不在同一語義軸"
+          ]
+        },
+        {
+          "head": "啜",
+          "tail": "吐",
+          "reasons": [
+            "吸啜與吐出只屬方向互補行為，且「啜」多義"
+          ]
+        },
+        {
+          "head": "壓力",
+          "tail": "輕鬆",
+          "reasons": [
+            "名詞與形容詞／狀態不一致"
+          ]
+        },
+        {
+          "head": "尤其",
+          "tail": "普通",
+          "reasons": [
+            "強調副詞與一般性形容詞不一致"
+          ]
+        }
+      ],
+      "accepted_pairs": 300,
+      "created_at": "2026-07-13T14:14:35.462828+00:00"
     }
   }
 }
