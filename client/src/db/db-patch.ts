@@ -173,6 +173,53 @@ async function firstSingleCharReading(
 }
 
 /**
+ * Memory-only syllable compose from single-char DB readings (no INSERT).
+ * Port of compose_transient_words／音節拼接 — 詞條 lookup 缺庫時用。
+ */
+export async function composeTransientWordRows(
+  db: DatabaseBackend,
+  text: string,
+): Promise<Array<{ char: string; jyutping: string; code: string; initials: string; finals: string; length: number }>> {
+  const chars = [...text];
+  if (chars.length < 1) return [];
+  if (chars.length === 1) {
+    const r = await firstSingleCharReading(db, chars[0]!);
+    if (!r) return [];
+    const [initials, finals] = splitJyutping(r.jyutping);
+    return [
+      {
+        char: text,
+        jyutping: r.jyutping,
+        code: r.code || '0',
+        initials: JSON.stringify(initials),
+        finals: JSON.stringify(finals),
+        length: 1,
+      },
+    ];
+  }
+  const parts: string[] = [];
+  const codes: string[] = [];
+  for (const ch of chars) {
+    const r = await firstSingleCharReading(db, ch);
+    if (!r) return [];
+    parts.push(r.jyutping);
+    codes.push(r.code || '0');
+  }
+  const jyutping = parts.join(' ');
+  const [initials, finals] = splitJyutping(jyutping);
+  return [
+    {
+      char: text,
+      jyutping,
+      code: codes.join(''),
+      initials: JSON.stringify(initials),
+      finals: JSON.stringify(finals),
+      length: chars.length,
+    },
+  ];
+}
+
+/**
  * Ensure multi-char row exists via syllable compose from single-char readings.
  * Returns false if any char lacks a reading (skip synthetic).
  */
@@ -188,18 +235,13 @@ export async function ensureComposedWordRow(
   await exists.free();
   if (found) return true;
 
-  const parts: string[] = [];
-  const codes: string[] = [];
-  for (const ch of chars) {
-    const r = await firstSingleCharReading(db, ch);
-    if (!r) return false;
-    parts.push(r.jyutping);
-    codes.push(r.code || '0');
-  }
+  const rows = await composeTransientWordRows(db, text);
+  if (!rows.length) return false;
+  const seed = rows[0]!;
   await insertWordRow(db, {
-    char: text,
-    jyutping: parts.join(' '),
-    code: codes.join(''),
+    char: seed.char,
+    jyutping: seed.jyutping,
+    code: seed.code,
   });
   return true;
 }

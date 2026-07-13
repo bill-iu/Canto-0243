@@ -59,34 +59,42 @@ def _three_char_with_connective(db: Session, connective: str) -> set[str]:
     return {row[0] for row in rows if row[0] and len(row[0]) == 3 and row[0][1] == connective}
 
 
-def compose_transient_word(text: str) -> Optional[SimpleNamespace]:
-    """Memory-only row (ADR-0054) — syllable compose / static lexicon, no DB write."""
+def compose_transient_words(text: str) -> list[SimpleNamespace]:
+    """Memory-only rows (ADR-0054) — admission／音節拼接，唔寫庫。len≥1。"""
     from app.domain.lexicon.admission import resolve_admission
     from app.utils.jyutping_codec import split_jyutping
 
     text = (text or "").strip()
-    if len(text) < 2:
-        return None
+    if not text:
+        return []
     adm = resolve_admission(text)
-    if not adm.entries:
-        return None
-    ent = adm.entries[0]
-    jyut = (ent.jyutping or "").strip()
-    if not jyut:
-        return None
-    try:
-        initials, finals, _tones = split_jyutping(jyut)
-    except Exception:
-        initials, finals = [], []
-    return SimpleNamespace(
-        id=None,
-        char=text,
-        code=ent.code or "",
-        jyutping=jyut,
-        initials=initials,
-        finals=finals,
-        length=len(text),
-    )
+    out: list[SimpleNamespace] = []
+    for ent in adm.entries:
+        jyut = (ent.jyutping or "").strip()
+        if not jyut:
+            continue
+        try:
+            initials, finals, _tones = split_jyutping(jyut)
+        except Exception:
+            initials, finals = [], []
+        out.append(
+            SimpleNamespace(
+                id=None,
+                char=text,
+                code=ent.code or "",
+                jyutping=jyut,
+                initials=initials,
+                finals=finals,
+                length=len(text),
+            )
+        )
+    return out
+
+
+def compose_transient_word(text: str) -> Optional[SimpleNamespace]:
+    """First memory-only row (連接詞合成／單位查詢)；多讀取 compose_transient_words。"""
+    rows = compose_transient_words(text)
+    return rows[0] if rows else None
 
 
 def search_connective_compound(
@@ -166,6 +174,7 @@ __all__ = [
     "FILLWORD_CONNECTIVES",
     "TIER_CONNECTIVE_SYNTH",
     "compose_transient_word",
+    "compose_transient_words",
     "exclusive_two_char_tiers",
     "reset_connective_compound_cache_for_tests",
     "search_connective_compound",
