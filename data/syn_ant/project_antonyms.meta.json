@@ -1456,7 +1456,7 @@
           ]
         }
       ],
-      "accepted_pairs": 300,
+      "accepted_pairs": 299,
       "created_at": "2026-07-13T14:14:35.462828+00:00"
     },
     "campaign-b04-20260714": {
@@ -2943,7 +2943,7 @@
           ]
         }
       ],
-      "accepted_pairs": 230,
+      "accepted_pairs": 229,
       "created_at": "2026-07-13T19:36:02.622597+00:00"
     },
     "campaign-b08-20260714": {
@@ -3308,7 +3308,7 @@
           ]
         }
       ],
-      "accepted_pairs": 340,
+      "accepted_pairs": 337,
       "created_at": "2026-07-13T20:01:11.067175+00:00"
     },
     "campaign-b09-20260714": {
@@ -3683,7 +3683,7 @@
       "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
       "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
       "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
-      "model_note": "WP-12 batch_index=10 blind draft in-chat; maintainer R3 48/50 on N=244; lock parent N=251 embeds R3 fails via seed=20260903; nn promotions; OpenCC fortune-霉 restore; curated OOV tails",
+      "model_note": "WP-12 batch_index=10 blind draft in-chat; maintainer R3 48/50 on N=244; lock parent N=251 embeds R3 fails via seed=20260903; nn promotions; OpenCC fortune-霉 restore; curated OOV tails; post-land drop 5 cilin-syn pairs (3 sample→fail)",
       "model": "xai/grok-4.5",
       "model_provider": "xAI",
       "model_version": "grok-4.5",
@@ -3700,9 +3700,9 @@
       },
       "sample_seed": 20260903,
       "sample_n": 50,
-      "sample_ok": 48,
+      "sample_ok": 45,
       "ok_rate_threshold": 0.9,
-      "ok_rate": 0.96,
+      "ok_rate": 0.9,
       "sample_parent": "project_antonyms.tsv campaign-b10 parent N=251 (R3+promos, pre fail removal)",
       "sample_parent_n": 251,
       "sample_parent_commit": "526a127707d60b9eb6e0674e68dc8f7032c5c967",
@@ -3791,20 +3791,26 @@
         {
           "head": "安全性",
           "tail": "危險性",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
         },
         {
           "head": "寒意",
           "tail": "暖意",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
         },
         {
           "head": "對外",
           "tail": "對內",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
         },
         {
           "head": "後者",
@@ -4027,10 +4033,149 @@
           "reasons": [
             "消化過程與積食病理結果不完全對軸"
           ]
+        },
+        {
+          "head": "安全性",
+          "tail": "危險性",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
+        },
+        {
+          "head": "寒意",
+          "tail": "暖意",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
+        },
+        {
+          "head": "對外",
+          "tail": "對內",
+          "reasons": [
+            "靜態詞林葉組視為近義（build-db 同輪 syn），唔可作專案自建反義"
+          ]
         }
       ],
-      "accepted_pairs": 249,
+      "accepted_pairs": 244,
       "created_at": "2026-07-13T22:52:15.633569+00:00"
+    },
+    "campaign-b11-synfix-20260714": {
+      "k": 8,
+      "git_commit": "26c48b52116dddc55b30dbf3236fba5ad137f6e2",
+      "db_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "v1.0.9 release unblock: replace static-cilin-syn conflict ants with non-syn tails",
+      "model": "human/synfix",
+      "model_provider": "human",
+      "model_version": "synfix",
+      "model_params": {
+        "generation_mode": "release_syn_conflict_replace",
+        "max_proposals_per_head": 1,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null
+      },
+      "sample_seed": 20260714,
+      "sample_n": 8,
+      "sample_ok": 8,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv campaign-b11-synfix-20260714 parent N=8 (no fails)",
+      "sample_parent_n": 8,
+      "sample_parent_commit": "26c48b52116dddc55b30dbf3236fba5ad137f6e2",
+      "sample_parent_tsv_sha256": "378a8b98a6f6a6dcfe3455816a225e5b6e9724eadccce41aff122c91c9de46af",
+      "accepted_pairs": 8,
+      "created_at": "2026-07-14",
+      "sample_verdicts": [
+        {
+          "head": "下行",
+          "tail": "上升",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "優勢",
+          "tail": "弱點",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "售價",
+          "tail": "成本",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "安全性",
+          "tail": "危險",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "寒意",
+          "tail": "溫暖",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "對外",
+          "tail": "內部",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無形",
+          "tail": "實體",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "牛市",
+          "tail": "跌市",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": []
     }
-  }
+  },
+  "post_land_removed_pairs": [
+    {
+      "head": "好感",
+      "tail": "惡感",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "下行",
+      "tail": "上行",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "彈性",
+      "tail": "剛性",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "售價",
+      "tail": "進價",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "優勢",
+      "tail": "劣勢",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "無形",
+      "tail": "有形",
+      "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "牛市",
+      "tail": "熊市",
+      "reason": "static cilin syn leaf co-member"
+    }
+  ]
 }

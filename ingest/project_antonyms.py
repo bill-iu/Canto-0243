@@ -573,16 +573,7 @@ def _tsv_pair_rows_for_batch(raw: bytes, batch_id: str) -> List[Tuple[str, str]]
     return rows
 
 
-def _final_audit_removed_pair_keys() -> Set[Tuple[str, str]]:
-    """Pairs dropped by campaign final audit (may post-date per-batch sample parents)."""
-    p = ROOT / "data" / "syn_ant" / "campaign_final_audit.meta.json"
-    if not p.is_file():
-        return set()
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return set()
-    removed = (data.get("accepted") or {}).get("removed_sample_fails") or []
+def _pair_keys_from_removed_rows(removed: object) -> Set[Tuple[str, str]]:
     out: Set[Tuple[str, str]] = set()
     if not isinstance(removed, list):
         return out
@@ -593,6 +584,29 @@ def _final_audit_removed_pair_keys() -> Set[Tuple[str, str]]:
         t = str(row.get("tail") or "").strip()
         if h and t:
             out.add(pair_undirected_key(h, t))
+    return out
+
+
+def _final_audit_removed_pair_keys() -> Set[Tuple[str, str]]:
+    """Pairs dropped after batch land that must be restored for sample-parent replay."""
+    out: Set[Tuple[str, str]] = set()
+    audit = ROOT / "data" / "syn_ant" / "campaign_final_audit.meta.json"
+    if audit.is_file():
+        try:
+            data = json.loads(audit.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        out |= _pair_keys_from_removed_rows(
+            (data.get("accepted") or {}).get("removed_sample_fails")
+        )
+    # Release/build blockers (e.g. static cilin syn) may drop pairs after sample lock.
+    meta_path = ROOT / "data" / "syn_ant" / "project_antonyms.meta.json"
+    if meta_path.is_file():
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            meta = {}
+        out |= _pair_keys_from_removed_rows(meta.get("post_land_removed_pairs"))
     return out
 
 
