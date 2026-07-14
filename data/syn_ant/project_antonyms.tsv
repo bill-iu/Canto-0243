@@ -662,7 +662,6 @@ head	tail	relation_type	batch_id
 聯絡	斷絕	ant	campaign-b03-20260713
 聯絡	失聯	ant	campaign-b03-20260713
 聯絡	隔離	ant	campaign-b03-20260713
-好感	惡感	ant	campaign-b03-20260713
 好感	厭惡	ant	campaign-b03-20260713
 專心	分心	ant	campaign-b03-20260713
 專心	散漫	ant	campaign-b03-20260713
@@ -1606,7 +1605,6 @@ head	tail	relation_type	batch_id
 其後	之前	ant	campaign-b07-20260714
 出力	偷懶	ant	campaign-b07-20260714
 出力	懈怠	ant	campaign-b07-20260714
-下行	上行	ant	campaign-b07-20260714
 未知	已知	ant	campaign-b07-20260714
 友誼	敵意	ant	campaign-b08-20260714
 友誼	仇恨	ant	campaign-b08-20260714
@@ -1642,7 +1640,6 @@ head	tail	relation_type	batch_id
 專一	花心	ant	campaign-b08-20260714
 專一	三心兩意	ant	campaign-b08-20260714
 山頂	山腳	ant	campaign-b08-20260714
-彈性	剛性	ant	campaign-b08-20260714
 彈性	僵硬	ant	campaign-b08-20260714
 撕	貼	ant	campaign-b08-20260714
 撕	黏	ant	campaign-b08-20260714
@@ -1918,7 +1915,6 @@ head	tail	relation_type	batch_id
 專項	常規	ant	campaign-b08-20260714
 亮點	敗筆	ant	campaign-b08-20260714
 亮點	污點	ant	campaign-b08-20260714
-售價	進價	ant	campaign-b08-20260714
 藉助	獨力	ant	campaign-b08-20260714
 藉助	無需	ant	campaign-b08-20260714
 不明	清楚	ant	campaign-b08-20260714
@@ -1938,7 +1934,6 @@ head	tail	relation_type	batch_id
 參與	旁觀	ant	campaign-b08-20260714
 參與	缺席	ant	campaign-b08-20260714
 參與	退出	ant	campaign-b08-20260714
-優勢	劣勢	ant	campaign-b08-20260714
 高效	低效	ant	campaign-b08-20260714
 哀求	命令	ant	campaign-b09-20260714
 哀求	威逼	ant	campaign-b09-20260714
@@ -2426,7 +2421,6 @@ head	tail	relation_type	batch_id
 貧困	富有	ant	campaign-b10-20260714
 騙人	誠實	ant	campaign-b10-20260714
 騙人	坦白	ant	campaign-b10-20260714
-安全性	危險性	ant	campaign-b10-20260714
 崛起	衰落	ant	campaign-b10-20260714
 崛起	沒落	ant	campaign-b10-20260714
 積極性	消極性	ant	campaign-b10-20260714
@@ -2458,7 +2452,6 @@ head	tail	relation_type	batch_id
 歡呼	悲泣	ant	campaign-b10-20260714
 歧視	平等	ant	campaign-b10-20260714
 歧視	尊重	ant	campaign-b10-20260714
-無形	有形	ant	campaign-b10-20260714
 無言	開口	ant	campaign-b10-20260714
 熱氣	冷氣	ant	campaign-b10-20260714
 熱氣	寒氣	ant	campaign-b10-20260714
@@ -2499,7 +2492,6 @@ head	tail	relation_type	batch_id
 啓用	停用	ant	campaign-b10-20260714
 啓用	禁用	ant	campaign-b10-20260714
 大幅度	小幅度	ant	campaign-b10-20260714
-牛市	熊市	ant	campaign-b10-20260714
 一流	二流	ant	campaign-b10-20260714
 一流	末流	ant	campaign-b10-20260714
 丟	撿	ant	campaign-b10-20260714
@@ -2507,7 +2499,6 @@ head	tail	relation_type	batch_id
 出頭	縮頭	ant	campaign-b10-20260714
 合適	不當	ant	campaign-b10-20260714
 奇蹟	常事	ant	campaign-b10-20260714
-寒意	暖意	ant	campaign-b10-20260714
 平民	貴族	ant	campaign-b10-20260714
 平民	權貴	ant	campaign-b10-20260714
 引導	誤導	ant	campaign-b10-20260714
@@ -2565,7 +2556,6 @@ head	tail	relation_type	batch_id
 吵	安靜	ant	campaign-b10-20260714
 困擾	舒心	ant	campaign-b10-20260714
 困擾	安心	ant	campaign-b10-20260714
-對外	對內	ant	campaign-b10-20260714
 打氣	洩氣	ant	campaign-b10-20260714
 效率	低效	ant	campaign-b10-20260714
 文明	野蠻	ant	campaign-b10-20260714
@@ -2625,3 +2615,11 @@ head	tail	relation_type	batch_id
 東部	西部	ant	campaign-b10-20260714
 細節	大綱	ant	campaign-b10-20260714
 細節	概要	ant	campaign-b10-20260714
+下行	上升	ant	campaign-b11-synfix-20260714
+優勢	弱點	ant	campaign-b11-synfix-20260714
+售價	成本	ant	campaign-b11-synfix-20260714
+安全性	危險	ant	campaign-b11-synfix-20260714
+無形	實體	ant	campaign-b11-synfix-20260714
+牛市	跌市	ant	campaign-b11-synfix-20260714
+寒意	溫暖	ant	campaign-b11-synfix-20260714
+對外	內部	ant	campaign-b11-synfix-20260714

@@ -170,13 +170,13 @@ def merge_relation_tuples(rows: Iterable[RelationTuple]) -> List[RelationTuple]:
     return list(bucket.values())
 
 
-def collect_static_relation_tuples(
+def same_round_static_parts(
     db: Session,
     *,
     manifest_path: Path | str | None = None,
     compound_path: Path | str | None = None,
-    replace_static: bool = True,
-) -> List[RelationTuple]:
+) -> tuple[list[RelationTuple], set[tuple[str, str]]]:
+    """Collect static relation tuples + undirected syn keys used for project_ant gate."""
     manifest = load_manifest(manifest_path or DEFAULT_MANIFEST)
     sources = select_sources(manifest, defaults_only=True)
     static_src = next((s for s in sources if s.get("parser") == "current_static"), None)
@@ -209,13 +209,27 @@ def collect_static_relation_tuples(
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
     ]
-    # P0/P1: same-round static syn ∪ DB syn that will still exist after this build.
-    # Replace mode clears static/legacy, so those DB rows are excluded; append keeps them.
     id_to_char = {int(i): c for c, i in char_to_id.items()}
     new_static_syn = syn_pairs_from_tuples(
         itertools.chain.from_iterable(static_parts),
         id_to_char,
     )
+    flat: list[RelationTuple] = list(itertools.chain.from_iterable(static_parts))
+    return flat, new_static_syn
+
+
+def collect_static_relation_tuples(
+    db: Session,
+    *,
+    manifest_path: Path | str | None = None,
+    compound_path: Path | str | None = None,
+    replace_static: bool = True,
+) -> List[RelationTuple]:
+    static_flat, new_static_syn = same_round_static_parts(
+        db, manifest_path=manifest_path, compound_path=compound_path
+    )
+    # P0/P1: same-round static syn ∪ DB syn that will still exist after this build.
+    # Replace mode clears static/legacy, so those DB rows are excluded; append keeps them.
     exclude_db = (*STATIC_SOURCES, *LEGACY_SOURCES) if replace_static else ()
     kept_db_syn = syn_pairs_from_db(db, exclude_sources=exclude_db)
     project_rows = collect_project_ant_tuples(
@@ -223,7 +237,7 @@ def collect_static_relation_tuples(
         syn_pairs=new_static_syn | kept_db_syn,
     )
     merged = merge_relation_tuples(
-        itertools.chain.from_iterable([*static_parts, project_rows])
+        itertools.chain.from_iterable([static_flat, project_rows])
     )
     # ADR-0039 S1 CAP-U@20
     return cap_undirected_syn_tuples(merged)
