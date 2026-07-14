@@ -1,4 +1,5 @@
 import os
+import re
 from typing import Iterator, List, Tuple
 
 from app.domain.relations.valid_term import normalize_literal
@@ -10,6 +11,16 @@ _thesaurus_loaded = False
 
 _syn_chars: List[str] = []
 _syn_emb_mat = None
+
+# guotong uses ASCII `--`, em/horizontal dashes, commas, spaces, …
+_GUOTONG_SEP = re.compile(r"[^\u4e00-\u9fff]+")
+
+
+def _guotong_line_parts(line: str) -> List[str]:
+    """Split a guotong syn/ant line into CJK tokens (handles `--` and dash variants)."""
+    if "=" in line:
+        line = line.split("=", 1)[1]
+    return [p for p in _GUOTONG_SEP.split(line) if p]
 
 
 def set_synonym_index(chars: List[str], mat) -> None:
@@ -125,10 +136,7 @@ def load_thesaurus_dicts(
             line = line.strip()
             if not line or line.startswith("#"):
                 continue
-            if "=" in line:
-                line = line.split("=", 1)[1]
-            parts = [x.strip() for x in line.replace("——", " ").replace("—", " ").replace("–", " ").split() if x.strip()]
-            words = _literal_tokens_from_parts(parts)
+            words = _literal_tokens_from_parts(_guotong_line_parts(line))
             if len(words) < 2:
                 continue
             if target is _syn_dict:
