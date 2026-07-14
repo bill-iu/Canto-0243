@@ -1,4 +1,7 @@
-"""詞條 lookup 缺庫時記憶體拼接（唔寫庫）。"""
+"""詞條 lookup 缺庫時記憶體拼接（唔寫庫）。
+
+CI 只 bootstrap `data/rime/fixtures/char_sample.csv`；查詢字面必須可由該 fixture 音節拼接。
+"""
 
 from __future__ import annotations
 
@@ -13,6 +16,9 @@ from app.domain.relations.compound_connect import compose_transient_words
 from app.models.word import Word
 from app.services.word_lookup_executor import WordLookupExecutor
 
+# 各字 ∈ char_sample.csv；整串唔喺靜態詞庫 → SYLLABLE_COMPOSE
+_CI_COMPOSE_Q = "香雪就死"
+
 
 class LookupTransientComposeTests(unittest.TestCase):
     @classmethod
@@ -24,30 +30,20 @@ class LookupTransientComposeTests(unittest.TestCase):
         Base.metadata.create_all(engine)
         self.Session = sessionmaker(bind=engine)
         self.db = self.Session()
-        # 單字讀音足以拼接「未收錄詞」類查詢；唔預插多字列
-        for ch, jyut, code in (
-            ("未", "mei6", "2"),
-            ("收", "sau1", "3"),
-            ("錄", "luk6", "2"),
-            ("詞", "ci4", "0"),
-        ):
-            self.db.add(
-                Word(char=ch, jyutping=jyut, code=code, initials="[]", finals="[]", length=1)
-            )
-        self.db.commit()
+        # 空庫：證明結果來自 admission 合成，唔係 DB 命中
 
     def tearDown(self) -> None:
         self.db.close()
 
     def test_compose_transient_no_db_write(self) -> None:
-        q = "未收錄詞"
+        q = _CI_COMPOSE_Q
         self.assertIsNone(self.db.query(Word).filter(Word.char == q).first())
         rows = compose_transient_words(q)
         self.assertTrue(rows, "expected syllable-compose transient rows")
         self.assertIsNone(self.db.query(Word).filter(Word.char == q).first())
 
     def test_pure_canto_lookup_layout_without_persist(self) -> None:
-        q = "未收錄詞"
+        q = _CI_COMPOSE_Q
         ex = WordLookupExecutor(self.db)
         items = ex.pure_canto(q, None, "m1", limit=50, offset=0)
         self.assertTrue(items, "lookup must not be empty for composable literal")
