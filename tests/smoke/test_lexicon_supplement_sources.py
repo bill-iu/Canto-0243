@@ -72,13 +72,14 @@ class LexiconSupplementSourceTests(unittest.TestCase):
             path.write_text("后台\n一级词汇表\n", encoding="utf-8")
 
             def fake_reading(text: str) -> str | None:
-                return "hau6 toi4" if text == "後臺" else None
+                # s2hk: 后台 → 後台 (HK 台, not TW 臺)
+                return "hau6 toi4" if text == "後台" else None
 
             with patch("ingest.lexicon_sources._full_pycantonese_reading", side_effect=fake_reading):
                 rows = ingest_hsk30_wordlist(path, source_id="hsk30")
 
         self.assertEqual(len(rows), 1)
-        self.assertEqual(rows[0].char, "後臺")
+        self.assertEqual(rows[0].char, "後台")
         self.assertEqual(rows[0].jyutping, "hau6 toi4")
         self.assertEqual(rows[0].sources, ("hsk30",))
 

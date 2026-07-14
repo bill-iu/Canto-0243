@@ -1,5 +1,5 @@
 {
-  "manifest_sha256": "edb069af5806c59d28b664e060c0251aa42e689fc877f404eb659c68b0efac54",
+  "manifest_sha256": "805c0b7088b2d2690683601412a52d0025d26fb732fe490880313c4b0a658add",
   "ok_rate_threshold": 0.9,
   "git_commit": "6eada01517c70b7e33d701fa05c605b3a0c2f632",
   "created_at": "2026-07-13T23:02:44.862508+00:00",
