@@ -49,12 +49,13 @@ function parseEssayCorpus(text: string): Record<string, number> {
     if (parts.length < 2) {
       continue;
     }
-    const word = parts[0]!.trim();
+    // HK orthography: 覈 → 核 (matches OpenCC HKVariants / app.utils.trad_chinese)
+    const word = parts[0]!.trim().replace(/覈/g, '核');
     const freq = Number.parseInt(parts[1]!.trim(), 10);
     if (!word || Number.isNaN(freq) || freq < 0) {
       continue;
     }
-    out[word] = freq;
+    out[word] = Math.max(out[word] ?? 0, freq);
   }
   return out;
 }

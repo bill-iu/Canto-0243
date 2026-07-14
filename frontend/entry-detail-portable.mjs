@@ -7,7 +7,12 @@ import {
   buildEntryDetailModelFromPick,
 } from './entry-detail-core.mjs';
 
-export function createMergedResultButton(group, { lang, activeLiteral, onPick }) {
+/** ponytail: badge when committed query contains `/` (同音異讀) */
+export function resultsShowReadingBadge(committedQuery) {
+  return Boolean(committedQuery && String(committedQuery).includes('/'));
+}
+
+export function createMergedResultButton(group, { lang, activeLiteral, onPick, showReadingBadge = false }) {
   const li = document.createElement('li');
   li.className = `result-item${activeLiteral === group.literal ? ' is-detail-active' : ''}`;
   const btn = document.createElement('button');
@@ -17,10 +22,11 @@ export function createMergedResultButton(group, { lang, activeLiteral, onPick })
   word.className = 'word result-literal-only';
   word.textContent = group.literal;
   btn.appendChild(word);
-  if (group.readingCount > 1) {
+  const badgeN = showReadingBadge && group.readingCount > 1 ? group.readingCount : 0;
+  if (badgeN) {
     const badge = document.createElement('span');
     badge.className = 'result-reading-badge';
-    badge.textContent = tDetail('detail.readings.n', lang, { n: group.readingCount });
+    badge.textContent = tDetail('detail.readings.n', lang, { n: badgeN });
     btn.appendChild(badge);
   }
   btn.addEventListener('click', (event) => {
@@ -37,10 +43,14 @@ export function createMergedResultButton(group, { lang, activeLiteral, onPick })
 
 export function renderMergedResultList(container, rows, options) {
   const { lang, activeLiteral, onPick } = options;
+  const showReadingBadge =
+    options.showReadingBadge ?? resultsShowReadingBadge(options.committedQuery);
   const merged = mergeResultsByLiteral(rows);
   const ul = document.createElement('ul');
   ul.className = 'results-list-items';
-  merged.forEach((group) => ul.appendChild(createMergedResultButton(group, { lang, activeLiteral, onPick })));
+  merged.forEach((group) =>
+    ul.appendChild(createMergedResultButton(group, { lang, activeLiteral, onPick, showReadingBadge })),
+  );
   container.replaceChildren(ul);
 }
 

@@ -449,6 +449,7 @@ form.search-panel {
 .results-list-items .result-item.is-detail-active .result-link {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  transform: none;
 }
 
 /* ponytail: literal chips inherit workbench .word (Noto Sans) — match Pages */
@@ -462,4 +463,6 @@ form.search-panel {
   font-size: 12px;
   color: var(--muted);
   font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
 }

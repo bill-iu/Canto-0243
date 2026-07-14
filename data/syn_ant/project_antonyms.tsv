@@ -2254,9 +2254,9 @@ head	tail	relation_type	batch_id
 城區	郊區	ant	campaign-b09-20260714
 城區	鄉村	ant	campaign-b09-20260714
 城區	農村	ant	campaign-b09-20260714
-覈實	臆測	ant	campaign-b09-20260714
-覈實	猜測	ant	campaign-b09-20260714
-覈實	捏造	ant	campaign-b09-20260714
+核實	臆測	ant	campaign-b09-20260714
+核實	猜測	ant	campaign-b09-20260714
+核實	捏造	ant	campaign-b09-20260714
 便於	不便	ant	campaign-b09-20260714
 便於	不利於	ant	campaign-b09-20260714
 上報	下達	ant	campaign-b09-20260714

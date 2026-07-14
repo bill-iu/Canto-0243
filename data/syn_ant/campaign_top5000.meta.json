@@ -12,7 +12,7 @@
     "project_ant"
   ],
   "db_sha256": "54476a6381b9f6b0f411374c8e8ff884bc51914a3ffd44973e147b64348c5acc",
-  "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+  "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
   "thesaurus_ant_sha256": "85563b52c718eb7f04cf1fde616b0e1e0865aac6bc8725c3843a05a3741d4e13",
   "batch_counts": {
     "1": 500,
@@ -26,5 +26,5 @@
     "9": 500,
     "10": 500
   },
-  "manifest_sha256": "edb069af5806c59d28b664e060c0251aa42e689fc877f404eb659c68b0efac54"
+  "manifest_sha256": "805c0b7088b2d2690683601412a52d0025d26fb732fe490880313c4b0a658add"
 }

@@ -157,6 +157,8 @@ def _append_candidate(
 ) -> None:
     if not char or not jyutping or not _CJK.search(char):
         return
+    # HK orthography: 覈→核 (rime words.yaml over-uses 覈)
+    char = to_traditional(char)
     candidate = _NORMALIZER.normalize_candidate(char, jyutping, source_id=source_id)
     if not candidate:
         return

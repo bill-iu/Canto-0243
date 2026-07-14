@@ -189,8 +189,13 @@
 .app-bar .app-actions,
     .app-bar .mode-menu-root {
       flex-shrink: 0;
-      margin-left: auto;
     }
+
+/* Menu sits in header-chrome grid / wide menu column — don't steal the row */
+.app-bar > .mode-menu-root,
+.app-bar .header-chrome .mode-menu-root {
+  margin-left: 0;
+}
 
 .eyebrow {
       margin: 0 0 16px;
@@ -817,14 +822,17 @@
         padding-left: max(12px, env(safe-area-inset-left));
         padding-right: max(12px, env(safe-area-inset-right));
       }
-      .app-bar { align-items: center; flex-wrap: wrap; gap: 6px; }
       .brand { padding: 2px 0; }
       .menu-trigger {
         min-width: auto;
-        max-width: 148px;
+        max-width: min(72vw, 260px);
+        width: max-content;
         min-height: 32px;
         padding: 5px 10px;
         font-size: 13px;
+      }
+      .mode-trigger-text {
+        white-space: nowrap;
       }
       .mode-trigger-primary { font-size: 14px; }
       .mode-trigger-note { margin-left: 5px; font-size: 11px; }
@@ -954,11 +962,12 @@
       .guide-top-link { display: none; }
       .menu-trigger {
         min-width: auto;
-        max-width: 140px;
+        max-width: min(78vw, 260px);
+        width: max-content;
       }
       .mode-trigger-text {
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: visible;
+        text-overflow: clip;
         white-space: nowrap;
       }
     }
