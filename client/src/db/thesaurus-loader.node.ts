@@ -36,6 +36,15 @@ function literalTokens(parts: string[]): string[] {
   return out;
 }
 
+/** guotong uses ASCII `--`, em/horizontal dashes, commas, spaces, … */
+function guotongLineParts(line: string): string[] {
+  let body = line;
+  if (body.includes('=')) {
+    body = body.split('=', 2)[1] ?? '';
+  }
+  return body.split(/[^\u4e00-\u9fff]+/).filter(Boolean);
+}
+
 function parseCilin(text: string): Record<string, string[]> {
   const groups: string[][] = [];
   for (const line of text.split(/\r?\n/)) {
@@ -89,20 +98,11 @@ function parseCilin(text: string): Record<string, string[]> {
 function parseGuotongSyn(text: string): Record<string, string[]> {
   const dict: Record<string, Set<string>> = {};
   for (const line of text.split(/\r?\n/)) {
-    let trimmed = line.trim();
+    const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#')) {
       continue;
     }
-    if (trimmed.includes('=')) {
-      trimmed = trimmed.split('=', 2)[1]!;
-    }
-    const parts = trimmed
-      .replace(/——/g, ' ')
-      .replace(/—/g, ' ')
-      .replace(/–/g, ' ')
-      .split(/\s+/)
-      .filter(Boolean);
-    const words = literalTokens(parts);
+    const words = literalTokens(guotongLineParts(trimmed));
     if (words.length < 2) {
       continue;
     }
@@ -145,20 +145,11 @@ function mergeSynMaps(...maps: Array<Record<string, string[]>>): Record<string, 
 function parseGuotongAnt(text: string): Record<string, string[]> {
   const dict: Record<string, Set<string>> = {};
   for (const line of text.split(/\r?\n/)) {
-    let trimmed = line.trim();
+    const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#')) {
       continue;
     }
-    if (trimmed.includes('=')) {
-      trimmed = trimmed.split('=', 2)[1]!;
-    }
-    const parts = trimmed
-      .replace(/——/g, ' ')
-      .replace(/—/g, ' ')
-      .replace(/–/g, ' ')
-      .split(/\s+/)
-      .filter(Boolean);
-    const words = literalTokens(parts);
+    const words = literalTokens(guotongLineParts(trimmed));
     if (words.length < 2) {
       continue;
     }
