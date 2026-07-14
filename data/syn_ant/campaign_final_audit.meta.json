@@ -1,0 +1,6431 @@
+{
+  "manifest_sha256": "edb069af5806c59d28b664e060c0251aa42e689fc877f404eb659c68b0efac54",
+  "ok_rate_threshold": 0.9,
+  "git_commit": "6eada01517c70b7e33d701fa05c605b3a0c2f632",
+  "created_at": "2026-07-13T23:02:44.862508+00:00",
+  "note": "Formal final audit seed=20260714; Acc 469/500 (31 fails removed); Nn human 500/500 then lock-resampled after +28 orphans.",
+  "accepted": {
+    "status": "ok",
+    "sample_seed": 20260714,
+    "sample_n": 500,
+    "sample_ok": 469,
+    "sample_parent_n": 2656,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 234,
+        "sample_n": 50,
+        "sample_seed": 20260715
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 413,
+        "sample_n": 50,
+        "sample_seed": 20260716
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 318,
+        "sample_n": 50,
+        "sample_seed": 20260717
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 234,
+        "sample_n": 50,
+        "sample_seed": 20260718
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 195,
+        "sample_n": 50,
+        "sample_seed": 20260719
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 194,
+        "sample_n": 50,
+        "sample_seed": 20260720
+      },
+      {
+        "batch_index": 7,
+        "parent_n": 224,
+        "sample_n": 50,
+        "sample_seed": 20260721
+      },
+      {
+        "batch_index": 8,
+        "parent_n": 301,
+        "sample_n": 50,
+        "sample_seed": 20260722
+      },
+      {
+        "batch_index": 9,
+        "parent_n": 351,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 10,
+        "parent_n": 192,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "一直",
+        "tail": "偶爾",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上去",
+        "tail": "下來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不僅",
+        "tail": "只是",
+        "verdict": "fail",
+        "reasons": [
+          "遞進／限定並列，非反義"
+        ]
+      },
+      {
+        "head": "不斷",
+        "tail": "間斷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不解",
+        "tail": "明白",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "之中",
+        "tail": "之外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "之內",
+        "tail": "之外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乖",
+        "tail": "任性",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "今日",
+        "tail": "往日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "今晚",
+        "tail": "今朝",
+        "verdict": "fail",
+        "reasons": [
+          "時段並列，非反義"
+        ]
+      },
+      {
+        "head": "他人",
+        "tail": "自己",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "以前",
+        "tail": "以後",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "企",
+        "tail": "蹲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "俊",
+        "tail": "醜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "個人",
+        "tail": "集團",
+        "verdict": "fail",
+        "reasons": [
+          "個體／組織相關，非反義"
+        ]
+      },
+      {
+        "head": "個人",
+        "tail": "集體",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "倒",
+        "tail": "正",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停",
+        "tail": "播",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停止",
+        "tail": "繼續",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停頓",
+        "tail": "繼續",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "全部",
+        "tail": "部分",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凍",
+        "tail": "熱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凝",
+        "tail": "融",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "加上",
+        "tail": "去掉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勁",
+        "tail": "弱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "動",
+        "tail": "定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "喊",
+        "tail": "笑",
+        "verdict": "fail",
+        "reasons": [
+          "言行相關，非反義"
+        ]
+      },
+      {
+        "head": "回應",
+        "tail": "沉默",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "坐",
+        "tail": "站",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "委屈",
+        "tail": "得意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "待",
+        "tail": "走",
+        "verdict": "fail",
+        "reasons": [
+          "弱／多義"
+        ]
+      },
+      {
+        "head": "從未",
+        "tail": "曾經",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "打開",
+        "tail": "關閉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "抹",
+        "tail": "錄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拆",
+        "tail": "砌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拎",
+        "tail": "放",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "揀",
+        "tail": "棄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "握",
+        "tail": "放",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "撞",
+        "tail": "避",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放",
+        "tail": "舉",
+        "verdict": "fail",
+        "reasons": [
+          "弱配"
+        ]
+      },
+      {
+        "head": "敵人",
+        "tail": "朋友",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "新鮮",
+        "tail": "陳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明白",
+        "tail": "誤會",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明白",
+        "tail": "迷惘",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "未來",
+        "tail": "過去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "熄",
+        "tail": "點",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "當時",
+        "tail": "而家",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "肯定",
+        "tail": "說不定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "肯定",
+        "tail": "質疑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "過來",
+        "tail": "過去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上次",
+        "tail": "下次",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "下班",
+        "tail": "返工",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "主動",
+        "tail": "被動",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "享受",
+        "tail": "受苦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "享受",
+        "tail": "煎熬",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "今朝",
+        "tail": "往事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保護",
+        "tail": "欺凌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偶爾",
+        "tail": "通常",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "兇狠",
+        "tail": "溫柔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "入去",
+        "tail": "出來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冷靜",
+        "tail": "發火",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出發",
+        "tail": "抵達",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "分別",
+        "tail": "重逢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "前方",
+        "tail": "背後",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "剩",
+        "tail": "盡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "十分",
+        "tail": "稍爲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "取得",
+        "tail": "失去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可喜",
+        "tail": "可惜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可惜",
+        "tail": "幸好",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "哭",
+        "tail": "微笑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唯一",
+        "tail": "眾多",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "外面",
+        "tail": "裏面",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "外面",
+        "tail": "裡面",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大個",
+        "tail": "細個",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大約",
+        "tail": "正好",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "存在",
+        "tail": "消失",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安慰",
+        "tail": "折磨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "尷尬",
+        "tail": "自在",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "差",
+        "tail": "棒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "年老",
+        "tail": "後生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "後來",
+        "tail": "立刻",
+        "verdict": "fail",
+        "reasons": [
+          "時間軸不同維度"
+        ]
+      },
+      {
+        "head": "忽視",
+        "tail": "留意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "意識",
+        "tail": "潛意識",
+        "verdict": "fail",
+        "reasons": [
+          "層級／下位，非反義"
+        ]
+      },
+      {
+        "head": "應承",
+        "tail": "拒絕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掙扎",
+        "tail": "放棄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掛",
+        "tail": "摘",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "接近",
+        "tail": "遠離",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "改變",
+        "tail": "照舊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放任",
+        "tail": "處理",
+        "verdict": "fail",
+        "reasons": [
+          "互補處置，非反義"
+        ]
+      },
+      {
+        "head": "放棄",
+        "tail": "追",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明顯",
+        "tail": "隱蔽",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有趣",
+        "tail": "無聊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "沉寂",
+        "tail": "響起",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "活動",
+        "tail": "靜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "浮現",
+        "tail": "消失",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無法",
+        "tail": "能夠",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "特殊",
+        "tail": "通常",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "癡",
+        "tail": "醒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "聯繫",
+        "tail": "隔絕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "遇到",
+        "tail": "錯過",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一般",
+        "tail": "尤其",
+        "verdict": "fail",
+        "reasons": [
+          "程度副詞並列，非穩定反義"
+        ]
+      },
+      {
+        "head": "不安",
+        "tail": "安心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不用",
+        "tail": "必須",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中意",
+        "tail": "厭惡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "作對",
+        "tail": "配合",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偶爾",
+        "tail": "日日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "優",
+        "tail": "廢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "兒童",
+        "tail": "大人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出手",
+        "tail": "收手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勇氣",
+        "tail": "膽小",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勉強",
+        "tail": "甘心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "包括",
+        "tail": "除外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "原諒",
+        "tail": "埋怨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "反抗",
+        "tail": "屈服",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "反抗",
+        "tail": "順從",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "反目",
+        "tail": "要好",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "受傷",
+        "tail": "無恙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "叫喊",
+        "tail": "沉默",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吐",
+        "tail": "含",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好人",
+        "tail": "惡人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好多",
+        "tail": "好少",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安心",
+        "tail": "恐懼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "封",
+        "tail": "開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "少年",
+        "tail": "老人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "廢",
+        "tail": "精",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "張開",
+        "tail": "收攏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "往事",
+        "tail": "未來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "微",
+        "tail": "盛",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "微微",
+        "tail": "狠狠",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悲",
+        "tail": "樂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "慢",
+        "tail": "趕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拒絕",
+        "tail": "肯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拖延",
+        "tail": "趕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拘束",
+        "tail": "自由",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "捉住",
+        "tail": "放開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "接觸",
+        "tail": "隔絕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "推辭",
+        "tail": "答應",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "擋",
+        "tail": "通",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "改",
+        "tail": "維持",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "故意",
+        "tail": "無意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日頭",
+        "tail": "月亮",
+        "verdict": "fail",
+        "reasons": [
+          "天體互補"
+        ]
+      },
+      {
+        "head": "有限",
+        "tail": "無數",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "柒",
+        "tail": "聰明",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "沉默",
+        "tail": "發言",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "海",
+        "tail": "陸",
+        "verdict": "fail",
+        "reasons": [
+          "地理互補"
+        ]
+      },
+      {
+        "head": "無視",
+        "tail": "考慮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "煩",
+        "tail": "輕鬆",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "爽",
+        "tail": "難受",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "見面",
+        "tail": "道別",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "陰暗",
+        "tail": "陽光",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不同",
+        "tail": "類似",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不對",
+        "tail": "正確",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不由自主",
+        "tail": "刻意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不透明",
+        "tail": "透明",
+        "verdict": "fail",
+        "reasons": [
+          "單純否定構詞"
+        ]
+      },
+      {
+        "head": "世故",
+        "tail": "天真",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偏私",
+        "tail": "公平",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停留",
+        "tail": "前進",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偶爾",
+        "tail": "經常",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偷偷",
+        "tail": "公開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凌晨",
+        "tail": "黃昏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出事",
+        "tail": "平安",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "半數",
+        "tail": "大部分",
+        "verdict": "fail",
+        "reasons": [
+          "數量並列，非對軸"
+        ]
+      },
+      {
+        "head": "厭",
+        "tail": "欲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "參照",
+        "tail": "無視",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "友人",
+        "tail": "敵人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可有可無",
+        "tail": "必要",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "合理",
+        "tail": "荒謬",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "坦白",
+        "tail": "忽悠",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "坦白",
+        "tail": "掩飾",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "增加",
+        "tail": "減少",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "壓",
+        "tail": "撩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大部分",
+        "tail": "少數",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好意",
+        "tail": "惡意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安心",
+        "tail": "煩惱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "完好",
+        "tail": "碎",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "幫助",
+        "tail": "阻撓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "幼稚",
+        "tail": "成熟",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "強烈",
+        "tail": "溫和",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悲傷",
+        "tail": "歡樂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "戒酒",
+        "tail": "飲酒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "打斷",
+        "tail": "接續",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "承諾",
+        "tail": "違約",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拗",
+        "tail": "順",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "撕",
+        "tail": "黏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放工",
+        "tail": "開工",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "整齊",
+        "tail": "混亂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "最終",
+        "tail": "起初",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有償",
+        "tail": "白白",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "望見",
+        "tail": "無視",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "浪費",
+        "tail": "節省",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "消滅",
+        "tail": "產生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "留下",
+        "tail": "逃走",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "省事",
+        "tail": "費事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "真實",
+        "tail": "虛假",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "純",
+        "tail": "雜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "維持",
+        "tail": "轉變",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "縮小",
+        "tail": "長大",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "蝕",
+        "tail": "賺",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "遠離",
+        "tail": "靠近",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "鎖",
+        "tail": "開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不及",
+        "tail": "超越",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不時",
+        "tail": "從不",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中斷",
+        "tail": "持續",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "久",
+        "tail": "短",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "事後",
+        "tail": "跟手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保障",
+        "tail": "威脅",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "優化",
+        "tail": "惡化",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "內衣",
+        "tail": "外套",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "全力",
+        "tail": "敷衍",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "公開",
+        "tail": "私人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "刪減",
+        "tail": "補充",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "前往",
+        "tail": "回來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "創建",
+        "tail": "毀滅",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "動盪",
+        "tail": "穩定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "和平",
+        "tail": "戰爭",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唱歌",
+        "tail": "靜默",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "單純",
+        "tail": "複雜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "單身",
+        "tail": "已婚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "在乎",
+        "tail": "無所謂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "地道",
+        "tail": "外行",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "垂",
+        "tail": "翹",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "外邊",
+        "tail": "裏邊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "多事",
+        "tail": "安分",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大膽",
+        "tail": "膽小",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "天生",
+        "tail": "後天",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "定居",
+        "tail": "流浪",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "弄亂",
+        "tail": "收拾",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "張揚",
+        "tail": "默默",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "形成",
+        "tail": "瓦解",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心急",
+        "tail": "耐心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "惡鬼",
+        "tail": "神仙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "愕然",
+        "tail": "淡定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "打擊",
+        "tail": "鼓勵",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "扭曲",
+        "tail": "正直",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "扭曲",
+        "tail": "端正",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "投入",
+        "tail": "抽離",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "提供",
+        "tail": "收回",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "撫",
+        "tail": "敲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放手",
+        "tail": "緊握",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "敷衍",
+        "tail": "盡力",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明亮",
+        "tail": "漆黑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "暈",
+        "tail": "醒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "清淡",
+        "tail": "辣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "潑冷水",
+        "tail": "鼓勵",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "看見",
+        "tail": "錯過",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "精明",
+        "tail": "蠢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "累",
+        "tail": "輕鬆",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "聽話",
+        "tail": "違抗",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "迷",
+        "tail": "醒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "預料",
+        "tail": "驚喜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一心",
+        "tail": "二心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上方",
+        "tail": "下方",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上課",
+        "tail": "停課",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中央",
+        "tail": "周邊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "低於",
+        "tail": "高於",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "作者",
+        "tail": "讀者",
+        "verdict": "fail",
+        "reasons": [
+          "角色互補"
+        ]
+      },
+      {
+        "head": "保全",
+        "tail": "犧牲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "健全",
+        "tail": "殘",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偶爾",
+        "tail": "總是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "公共",
+        "tail": "私家",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出席",
+        "tail": "缺席",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "分心",
+        "tail": "專注",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "分散",
+        "tail": "聚集",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "判斷",
+        "tail": "猜測",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吵",
+        "tail": "安靜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "員工",
+        "tail": "老總",
+        "verdict": "fail",
+        "reasons": [
+          "職級互補"
+        ]
+      },
+      {
+        "head": "固定",
+        "tail": "轉移",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "報答",
+        "tail": "辜負",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "壓抑",
+        "tail": "發揮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大腿",
+        "tail": "小腿",
+        "verdict": "fail",
+        "reasons": [
+          "身體部位，無反義"
+        ]
+      },
+      {
+        "head": "失戀",
+        "tail": "熱戀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好喫",
+        "tail": "難喫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "婚姻",
+        "tail": "離婚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "孤獨",
+        "tail": "陪伴",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "守",
+        "tail": "攻",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "容許",
+        "tail": "禁止",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實際",
+        "tail": "空想",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實際",
+        "tail": "虛構",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "專",
+        "tail": "漫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "專注",
+        "tail": "發呆",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "尚未",
+        "tail": "早已",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "常",
+        "tail": "罕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悲",
+        "tail": "欣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "感染",
+        "tail": "消毒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "應對",
+        "tail": "逃避",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拒絕",
+        "tail": "通過",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "提高",
+        "tail": "減少",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "昏迷",
+        "tail": "醒來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "止血",
+        "tail": "流血",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "永不",
+        "tail": "遲早",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "消耗",
+        "tail": "積蓄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "爭取",
+        "tail": "退讓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "猜",
+        "tail": "知曉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "理所當然",
+        "tail": "難以置信",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "禁",
+        "tail": "許",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "蛀",
+        "tail": "補",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "親密",
+        "tail": "陌生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "進攻",
+        "tail": "防守",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "進攻",
+        "tail": "防護",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "門內",
+        "tail": "門外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一生一世",
+        "tail": "片刻",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "七彩",
+        "tail": "黑白",
+        "verdict": "fail",
+        "reasons": [
+          "色彩集合／對比，非穩定反義"
+        ]
+      },
+      {
+        "head": "上升",
+        "tail": "下降",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不知所措",
+        "tail": "處之泰然",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "仁慈",
+        "tail": "殘酷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "任由",
+        "tail": "約束",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保留",
+        "tail": "去掉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偶爾",
+        "tail": "向來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "催",
+        "tail": "緩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "傳統",
+        "tail": "創新",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "優點",
+        "tail": "缺點",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "充實",
+        "tail": "空洞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "內部",
+        "tail": "外部",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冰冷",
+        "tail": "火熱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "分公司",
+        "tail": "總公司",
+        "verdict": "fail",
+        "reasons": [
+          "組織層級，非反義"
+        ]
+      },
+      {
+        "head": "分解",
+        "tail": "組成",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "利益",
+        "tail": "損失",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "利益",
+        "tail": "損害",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可能性",
+        "tail": "必然性",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "善良",
+        "tail": "殘忍",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嚴正",
+        "tail": "輕率",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "墜",
+        "tail": "飄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "太少",
+        "tail": "過多",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "奇妙",
+        "tail": "普通",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實心",
+        "tail": "空洞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "已知",
+        "tail": "未知",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "廢止",
+        "tail": "立法",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "後期",
+        "tail": "早期",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "忘卻",
+        "tail": "懷念",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "手心",
+        "tail": "手背",
+        "verdict": "fail",
+        "reasons": [
+          "部位互補"
+        ]
+      },
+      {
+        "head": "扭捏",
+        "tail": "爽快",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掩飾",
+        "tail": "揭露",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掩飾",
+        "tail": "流露",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "擊中",
+        "tail": "錯過",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "擴張",
+        "tail": "收縮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "支援",
+        "tail": "阻撓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "收縮",
+        "tail": "膨脹",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放任",
+        "tail": "治理",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "敷衍",
+        "tail": "用心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明星",
+        "tail": "路人",
+        "verdict": "fail",
+        "reasons": [
+          "社會角色互補"
+        ]
+      },
+      {
+        "head": "流露",
+        "tail": "隱藏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "熄滅",
+        "tail": "燃燒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "相同",
+        "tail": "相差",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "睡着",
+        "tail": "醒來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "經典",
+        "tail": "通俗",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "缺點",
+        "tail": "長處",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "落後",
+        "tail": "超前",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "落空",
+        "tail": "達到",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "貼近",
+        "tail": "遠離",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "連續",
+        "tail": "間斷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不必",
+        "tail": "免得",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中小企業",
+        "tail": "大企業",
+        "verdict": "fail",
+        "reasons": [
+          "規模梯度，非嚴格反義"
+        ]
+      },
+      {
+        "head": "亮相",
+        "tail": "隱退",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "仇恨",
+        "tail": "友誼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "今生",
+        "tail": "前世",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "低落",
+        "tail": "高漲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "侏儒",
+        "tail": "巨人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "優勢",
+        "tail": "劣勢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "入侵",
+        "tail": "退出",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "兼容",
+        "tail": "排斥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "分拆",
+        "tail": "彙總",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "前期",
+        "tail": "後續",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "參與",
+        "tail": "退出",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "友善",
+        "tail": "敵意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "合攏",
+        "tail": "撥開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "名牌",
+        "tail": "山寨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "喧鬧",
+        "tail": "無聲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嚴格",
+        "tail": "寬容",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "國人",
+        "tail": "老外",
+        "verdict": "fail",
+        "reasons": [
+          "身份類別互補"
+        ]
+      },
+      {
+        "head": "圍繞",
+        "tail": "離開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "基層",
+        "tail": "高層",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "壓制",
+        "tail": "釋放",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "孩子",
+        "tail": "成人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "定期",
+        "tail": "臨時",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "少數",
+        "tail": "許多",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平靜",
+        "tail": "怒火",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "年邁",
+        "tail": "年青",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "後方",
+        "tail": "戰場",
+        "verdict": "fail",
+        "reasons": [
+          "空間／場景相關，非反義"
+        ]
+      },
+      {
+        "head": "忠誠",
+        "tail": "背叛",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "忽視",
+        "tail": "注視",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "急躁",
+        "tail": "耐煩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "惡化",
+        "tail": "緩解",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "憂鬱",
+        "tail": "開朗",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "應對",
+        "tail": "迴避",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "成品",
+        "tail": "樣品",
+        "verdict": "fail",
+        "reasons": [
+          "產品形態相關，非反義"
+        ]
+      },
+      {
+        "head": "打車",
+        "tail": "步行",
+        "verdict": "fail",
+        "reasons": [
+          "出行方式並列"
+        ]
+      },
+      {
+        "head": "抵制",
+        "tail": "誘惑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拒收",
+        "tail": "驗收",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "效忠",
+        "tail": "背叛",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明示",
+        "tail": "暗示",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "晚",
+        "tail": "晨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "晨",
+        "tail": "暮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "歡笑",
+        "tail": "流淚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "灰色",
+        "tail": "鮮豔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "甜",
+        "tail": "酸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "用戶",
+        "tail": "管理員",
+        "verdict": "fail",
+        "reasons": [
+          "系統角色互補"
+        ]
+      },
+      {
+        "head": "相差",
+        "tail": "相等",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "童年",
+        "tail": "老年",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "負擔",
+        "tail": "輕鬆",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "鎮定",
+        "tail": "顫抖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "下降",
+        "tail": "攀升",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不宜",
+        "tail": "宜",
+        "verdict": "fail",
+        "reasons": [
+          "單純否定構詞"
+        ]
+      },
+      {
+        "head": "世故",
+        "tail": "純真",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "仇人",
+        "tail": "友人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "佔用",
+        "tail": "釋放",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保守",
+        "tail": "激進",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保守",
+        "tail": "進取",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "制約",
+        "tail": "放縱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "創業",
+        "tail": "打工",
+        "verdict": "fail",
+        "reasons": [
+          "就業形態並列"
+        ]
+      },
+      {
+        "head": "包容",
+        "tail": "拒絕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "包裝",
+        "tail": "拆開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "升空",
+        "tail": "降落",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "反對",
+        "tail": "推薦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "周邊",
+        "tail": "核心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "堅強",
+        "tail": "懦弱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "夕陽",
+        "tail": "旭日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "外國人",
+        "tail": "本地人",
+        "verdict": "fail",
+        "reasons": [
+          "身份類別互補"
+        ]
+      },
+      {
+        "head": "守舊",
+        "tail": "改革",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "守舊",
+        "tail": "轉型",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "察覺",
+        "tail": "忽略",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "寬大",
+        "tail": "緊身",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "寬鬆",
+        "tail": "緊身",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "少數",
+        "tail": "絕大多數",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平凡",
+        "tail": "突出",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "延遲",
+        "tail": "跟手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "從容",
+        "tail": "急促",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "從容",
+        "tail": "慌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "從容",
+        "tail": "焦急",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "從容",
+        "tail": "緊急",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "忽略",
+        "tail": "監視",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "捏造",
+        "tail": "覈實",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "捨",
+        "tail": "選",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "揮霍",
+        "tail": "節約",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "敷衍",
+        "tail": "致力",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "正常",
+        "tail": "詭異",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "氣力",
+        "tail": "疲乏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "決斷",
+        "tail": "遲疑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "淡薄",
+        "tail": "濃烈",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "清淡",
+        "tail": "濃烈",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "猜測",
+        "tail": "計算",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "發誓",
+        "tail": "食言",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "絕非",
+        "tail": "近乎",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "緊身",
+        "tail": "鬆身",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "緘默",
+        "tail": "談",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "葷",
+        "tail": "齋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "解除",
+        "tail": "設立",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "谷底",
+        "tail": "高峯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "豐富",
+        "tail": "貧乏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "踏入",
+        "tail": "退出",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "透露",
+        "tail": "隱瞞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上樓",
+        "tail": "下樓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不合",
+        "tail": "默契",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "世俗",
+        "tail": "神聖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "丟",
+        "tail": "撿",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保存",
+        "tail": "清除",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "倒退",
+        "tail": "進展",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停滯",
+        "tail": "進展",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停滯",
+        "tail": "開發",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "健全",
+        "tail": "殘廢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出動",
+        "tail": "撤回",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出衆",
+        "tail": "平庸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "刺耳",
+        "tail": "動聽",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "前者",
+        "tail": "後者",
+        "verdict": "fail",
+        "reasons": [
+          "指示對舉／語序，非穩定反義"
+        ]
+      },
+      {
+        "head": "卓越",
+        "tail": "平庸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "卸下",
+        "tail": "穿上",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "厭棄",
+        "tail": "留戀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "單薄",
+        "tail": "豐滿",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "固定",
+        "tail": "調動",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "增肥",
+        "tail": "減肥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大幅度",
+        "tail": "小幅度",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大綱",
+        "tail": "細節",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "富裕",
+        "tail": "貧困",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "寒氣",
+        "tail": "熱氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "對內",
+        "tail": "對外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "就職",
+        "tail": "辭職",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "崛起",
+        "tail": "沒落",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平民",
+        "tail": "貴族",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平穩",
+        "tail": "起伏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "引導",
+        "tail": "誤導",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "微弱",
+        "tail": "響亮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "批發",
+        "tail": "零售",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "承擔",
+        "tail": "推卸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "抄襲",
+        "tail": "發明",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "推遲",
+        "tail": "提早",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掩護",
+        "tail": "揭發",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "收回",
+        "tail": "頒發",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "文明",
+        "tail": "野蠻",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "新手",
+        "tail": "熟手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "新手",
+        "tail": "老手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "普遍",
+        "tail": "特殊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "最佳",
+        "tail": "最差",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "消瘦",
+        "tail": "豐滿",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "溫暖",
+        "tail": "陰森",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "漂亮",
+        "tail": "醜陋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "知足",
+        "tail": "貪心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "確信",
+        "tail": "質疑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "神聖",
+        "tail": "褻瀆",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "索取",
+        "tail": "給予",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "細小",
+        "tail": "龐大",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "負債",
+        "tail": "資產",
+        "verdict": "ok",
+        "reasons": []
+      }
+    ],
+    "removed_sample_fails": [
+      {
+        "head": "不僅",
+        "tail": "只是",
+        "reasons": [
+          "遞進／限定並列，非反義"
+        ]
+      },
+      {
+        "head": "今晚",
+        "tail": "今朝",
+        "reasons": [
+          "時段並列，非反義"
+        ]
+      },
+      {
+        "head": "個人",
+        "tail": "集團",
+        "reasons": [
+          "個體／組織相關，非反義"
+        ]
+      },
+      {
+        "head": "喊",
+        "tail": "笑",
+        "reasons": [
+          "言行相關，非反義"
+        ]
+      },
+      {
+        "head": "待",
+        "tail": "走",
+        "reasons": [
+          "弱／多義"
+        ]
+      },
+      {
+        "head": "放",
+        "tail": "舉",
+        "reasons": [
+          "弱配"
+        ]
+      },
+      {
+        "head": "後來",
+        "tail": "立刻",
+        "reasons": [
+          "時間軸不同維度"
+        ]
+      },
+      {
+        "head": "意識",
+        "tail": "潛意識",
+        "reasons": [
+          "層級／下位，非反義"
+        ]
+      },
+      {
+        "head": "放任",
+        "tail": "處理",
+        "reasons": [
+          "互補處置，非反義"
+        ]
+      },
+      {
+        "head": "一般",
+        "tail": "尤其",
+        "reasons": [
+          "程度副詞並列，非穩定反義"
+        ]
+      },
+      {
+        "head": "日頭",
+        "tail": "月亮",
+        "reasons": [
+          "天體互補"
+        ]
+      },
+      {
+        "head": "海",
+        "tail": "陸",
+        "reasons": [
+          "地理互補"
+        ]
+      },
+      {
+        "head": "不透明",
+        "tail": "透明",
+        "reasons": [
+          "單純否定構詞"
+        ]
+      },
+      {
+        "head": "半數",
+        "tail": "大部分",
+        "reasons": [
+          "數量並列，非對軸"
+        ]
+      },
+      {
+        "head": "作者",
+        "tail": "讀者",
+        "reasons": [
+          "角色互補"
+        ]
+      },
+      {
+        "head": "員工",
+        "tail": "老總",
+        "reasons": [
+          "職級互補"
+        ]
+      },
+      {
+        "head": "大腿",
+        "tail": "小腿",
+        "reasons": [
+          "身體部位，無反義"
+        ]
+      },
+      {
+        "head": "七彩",
+        "tail": "黑白",
+        "reasons": [
+          "色彩集合／對比，非穩定反義"
+        ]
+      },
+      {
+        "head": "分公司",
+        "tail": "總公司",
+        "reasons": [
+          "組織層級，非反義"
+        ]
+      },
+      {
+        "head": "手心",
+        "tail": "手背",
+        "reasons": [
+          "部位互補"
+        ]
+      },
+      {
+        "head": "明星",
+        "tail": "路人",
+        "reasons": [
+          "社會角色互補"
+        ]
+      },
+      {
+        "head": "中小企業",
+        "tail": "大企業",
+        "reasons": [
+          "規模梯度，非嚴格反義"
+        ]
+      },
+      {
+        "head": "國人",
+        "tail": "老外",
+        "reasons": [
+          "身份類別互補"
+        ]
+      },
+      {
+        "head": "後方",
+        "tail": "戰場",
+        "reasons": [
+          "空間／場景相關，非反義"
+        ]
+      },
+      {
+        "head": "成品",
+        "tail": "樣品",
+        "reasons": [
+          "產品形態相關，非反義"
+        ]
+      },
+      {
+        "head": "打車",
+        "tail": "步行",
+        "reasons": [
+          "出行方式並列"
+        ]
+      },
+      {
+        "head": "用戶",
+        "tail": "管理員",
+        "reasons": [
+          "系統角色互補"
+        ]
+      },
+      {
+        "head": "不宜",
+        "tail": "宜",
+        "reasons": [
+          "單純否定構詞"
+        ]
+      },
+      {
+        "head": "創業",
+        "tail": "打工",
+        "reasons": [
+          "就業形態並列"
+        ]
+      },
+      {
+        "head": "外國人",
+        "tail": "本地人",
+        "reasons": [
+          "身份類別互補"
+        ]
+      },
+      {
+        "head": "前者",
+        "tail": "後者",
+        "reasons": [
+          "指示對舉／語序，非穩定反義"
+        ]
+      }
+    ]
+  },
+  "no_natural": {
+    "status": "ok",
+    "sample_seed": 20260714,
+    "sample_n": 500,
+    "sample_ok": 500,
+    "sample_parent_n": 3060,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 323,
+        "sample_n": 50,
+        "sample_seed": 20260715
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 296,
+        "sample_n": 50,
+        "sample_seed": 20260716
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 328,
+        "sample_n": 50,
+        "sample_seed": 20260717
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 305,
+        "sample_n": 50,
+        "sample_seed": 20260718
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 329,
+        "sample_n": 50,
+        "sample_seed": 20260719
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 333,
+        "sample_n": 50,
+        "sample_seed": 20260720
+      },
+      {
+        "batch_index": 7,
+        "parent_n": 323,
+        "sample_n": 50,
+        "sample_seed": 20260721
+      },
+      {
+        "batch_index": 8,
+        "parent_n": 271,
+        "sample_n": 50,
+        "sample_seed": 20260722
+      },
+      {
+        "batch_index": 9,
+        "parent_n": 252,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 10,
+        "parent_n": 300,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "不過",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "九",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "他",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "令",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "但",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "便",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兜",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "公司",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "刷",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "即",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "口",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吧",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "呢",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "味",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咬",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "唉",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喫",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗯",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘞",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "四",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "因爲",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "奶奶",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "如果",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "妹妹",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巴士",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "幾",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "廁所",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "或者",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "房",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手指",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "拜拜",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "是不是",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "更",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "比",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "比較",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "洗",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "然",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "爬",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "番",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "發現",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "究竟",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "表情",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "見",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "跳",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "辦法",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "間",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "陣",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電視",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鞋",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "飛機",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "串",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人類",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "個個",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "全身",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "及",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "叔叔",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "同人",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吻",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "味道",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "園",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "基本上",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "女神",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "好好",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "媽",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "室",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "意",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "戲",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "才",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "搬",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "方面",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "旅行",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "日子",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "星期",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "期待",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "朱古力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "某",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "樓",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "樽",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "汁",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "汗",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "流",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "照",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "的士",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "目光",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "秒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "穿過",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "筆",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "答案",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "紙",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蚊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "血",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "解釋",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "走廊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "距離",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "這個",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "隊",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電腦",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "震",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "靈",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "靠",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一面",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "何況",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "值得",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "其它",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "只好",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "商場",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘿",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噗",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "地球",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "家庭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "小丑",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "就要",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巴",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "廟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "形容",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "心口",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "心跳",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "怎麼樣",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "意義",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "星期六",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "會話",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "枕頭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "檢查",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "比起",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "測試",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "湖",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "溝通",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "灰",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "炒",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "球場",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "當年",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "皮膚",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "直至",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "相處",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "石頭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "禮堂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "禮拜",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "粥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "精靈",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "綠",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "考試",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "腳步",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自從",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蛋",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蟲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "討論",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "認",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "調查",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鋪",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "顏色",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "假設",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "傳說",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "內存",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "區",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "原",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "可樂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "命運",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "報",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大戰",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "天氣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "天津",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "如何",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "姑娘",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "寧願",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "工人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "廣告",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "心意",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "憑",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "成都",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手下",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手勢",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "打招呼",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "拳",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "搓",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "更是",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "殭屍",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "泥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "澄",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "無比",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "爲何",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "琪",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "甚麼",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "空氣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "筆記本",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "纜車",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "職員",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "肌肉",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "背心",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "藥水",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "視覺",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "賴",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "這麼",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "那個",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "重點",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "陰道",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "願望",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "風景",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "魂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鳳",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鼻涕",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "上年",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人心",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "付款",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "以及",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "保安",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "假期",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "函數",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吳",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喘氣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "四周",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "囡",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "國旗",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大半",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大衆",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "她們",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "審覈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "慘叫",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "房價",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "挨",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "攤",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "教堂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "日常",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "景點",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "期",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "氣息",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "水塘",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "沒關係",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "泡",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "淚水",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "爲人",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "相比",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "眼角",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "穎",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "紅綠燈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "繩",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "老虎",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "舅母",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "舉動",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "舌頭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "草",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "表",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "視",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "觀",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "設計",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "語言",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "誠",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "豪",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "資訊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "跑步",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "隧道",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "上門",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "主意",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "之所以",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "乳房",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "信息",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "分爲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "動力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "化妝",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "口供",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "員工",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "圖畫",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大班",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "夫人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "女子",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "威力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "存儲",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "家族",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "待",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "怎樣",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "提示",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "擲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "新人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "施工",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "杖",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "東京",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "案",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "權",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "氣味",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "河南",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "注意力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "湖南",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "溫度",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "瀏覽器",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "灘",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "炸彈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "物體",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "申請",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "稱呼",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "考覈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "胸口",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "菊花",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "衆",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "託",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "賊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "酒吧",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "金屬",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "長沙",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "開發商",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "髀",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鳳凰",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一系列",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "丁",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "七彩",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "上司",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人權",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "代替",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兔子",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兼",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "名爲",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大樓",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "太空船",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "學業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "學習",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "對門",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "屏幕",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巨響",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "心事",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "投",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "文件",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "斯",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "星際",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "普通話",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "景",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "江西",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "潛意識",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "照片",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "牛仔褲",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "玉",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "病房",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "盯",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "眨眼",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "福建",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "管",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "綠燈",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "膜",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "與其",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "虎",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "袖",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "謝謝",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "豆腐",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "走勢",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "運作",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鄭州",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "院",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "陰莖",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "面容",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鞋帶",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "預感",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "頗爲",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "體會",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人情",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "再者",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "分子",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "動機",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "區域",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "口味",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喳",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "塑料",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "外貿",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "導演",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "小學生",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "思緒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手續",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "打牌",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "指甲",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "教師",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "教程",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "查找",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "棚",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "椅",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "歌詞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "法國",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "浩",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "源",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "矣",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "礦",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "祈禱",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "結算",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "絕",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "編譯",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "肖",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "臂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自此",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自行車",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "藉",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "衣物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "衣着",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "訂",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "試點",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "詩人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "貢",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蹤",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "道德",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "郵票",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "配",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "長城",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "雷電",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "霸",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "題目",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "魅力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "世事",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "五官",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "交通",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "作者",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "倉庫",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "僕人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "區區",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "商業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "單詞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘍",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "天色",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "奏",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "婷",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "尚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "屋頂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "屬",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "市場經濟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "店員",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "志願者",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "念",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手足",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "教員",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "景色",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "況且",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "法庭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "海灘",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "演示",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "火燒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "猶如",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "由頭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "申購",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "白紙",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "相愛",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "真實性",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "研製",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "禮拜六",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "紀錄",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "網球",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "羊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "耍",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "聽筒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "肉色",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蟻",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "要不然",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "身子",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "遊樂場",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "長春",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "頭緒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "驚呼",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鹿",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不住",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "中華民族",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "乾杯",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "交換機",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "倫",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "元氣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "剃",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "化爲",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "博物館",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吸引力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "售",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘖",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "好不容易",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "尼",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "居",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "廂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "後人",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "態勢",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "截",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "截至",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "手續費",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "本事",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "歐元",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "武術",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "演唱",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "演唱會",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "照樣",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "皆",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "瞭解",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "立場",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "童話",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "第三者",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "箍",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "繼而",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "老人家",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "色彩",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "菲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "薪水",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "街坊",
+        "reason": "cultural_no_binary",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "襟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "親口",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "週三",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "進出",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鎖鏈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "雖則",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "難免",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "音頻",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "頭頂",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鮮",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "黑衣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      }
+    ],
+    "removed_sample_fails": []
+  }
+}

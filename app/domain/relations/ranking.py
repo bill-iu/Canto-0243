@@ -28,6 +28,7 @@ SOURCE_BASE_RANK: Dict[str, int] = {
     "manual_ant_mirror": 20,
     "cilin": 10,
     "antisem": 10,
+    "project_ant": 12,
     "guotong": 15,
     "ant_cilin_exanded": 25,
     "ant_syn_bridge": 28,

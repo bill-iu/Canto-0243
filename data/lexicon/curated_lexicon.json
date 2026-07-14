@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "char": "未成年",
+    "jyutping": "mei6 sing4 nin4",
+    "code": "200"
+  },
+  {
+    "char": "難喫",
+    "jyutping": "naan4 hek3",
+    "code": "04"
+  },
+  {
+    "char": "門內",
+    "jyutping": "mun4 noi6",
+    "code": "02"
+  },
+  {
+    "char": "上行",
+    "jyutping": "soeng6 hang4",
+    "code": "20"
+  },
+  {
+    "char": "已知",
+    "jyutping": "ji5 zi1",
+    "code": "53"
+  },
+  {
+    "char": "低效",
+    "jyutping": "dai1 haau6",
+    "code": "32"
+  },
+  {
+    "char": "向下",
+    "jyutping": "hoeng3 haa6",
+    "code": "42"
+  },
+  {
+    "char": "最差",
+    "jyutping": "zeoi3 caa1",
+    "code": "40"
+  },
+  {
+    "char": "脫下",
+    "jyutping": "tyut3 haa6",
+    "code": "42"
+  },
+  {
+    "char": "異步",
+    "jyutping": "ji6 bou6",
+    "code": "22"
+  },
+  {
+    "char": "消極性",
+    "jyutping": "siu1 gik6 sing3",
+    "code": "322"
+  },
+  {
+    "char": "暖意",
+    "jyutping": "nyun5 ji3",
+    "code": "53"
+  },
+  {
+    "char": "洩氣",
+    "jyutping": "sit3 hei3",
+    "code": "33"
+  },
+  {
+    "char": "延後",
+    "jyutping": "jin4 hau6",
+    "code": "42"
+  },
+  {
+    "char": "二流",
+    "jyutping": "ji6 lau4",
+    "code": "24"
+  },
+  {
+    "char": "有愧",
+    "jyutping": "jau5 kwai5",
+    "code": "25"
+  },
+  {
+    "char": "小幅度",
+    "jyutping": "siu2 fuk1 dou6",
+    "code": "312"
+  },
+  {
+    "char": "霉運",
+    "jyutping": "mui4 wan6",
+    "code": "22"
+  }
+]

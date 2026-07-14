@@ -20,16 +20,22 @@ from ingest.compound_antonyms import _compound_exists
 from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
+from ingest.project_antonyms import collect_project_ant_tuples, syn_pairs_from_db, syn_pairs_from_tuples
 from app.domain.relations.word_relation_queries import load_db_char_set
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "syn_ant" / "sources.yaml"
 DEFAULT_COMPOUND_PATH = ROOT / "data" / "syn_ant" / "compound_antonyms.txt"
-STATIC_SOURCES = ("cilin", "guotong", "compound_ant")
+STATIC_SOURCES = ("cilin", "guotong", "compound_ant", "project_ant")
 LEGACY_SOURCES = ("antisem",)
 
 # ponytail: lower = wins when same (word_id, related_id, relation_type) from multiple static sources
-_SOURCE_RANK = {"cilin": 10, "guotong": 20, "compound_ant": 30}
+_SOURCE_RANK = {
+    "cilin": 10,
+    "project_ant": 12,
+    "guotong": 20,
+    "compound_ant": 30,
+}
 
 
 def collect_guotong_flat_edges(port: StaticThesaurusPort, *, source_rank: int) -> List[dict]:
@@ -169,6 +175,7 @@ def collect_static_relation_tuples(
     *,
     manifest_path: Path | str | None = None,
     compound_path: Path | str | None = None,
+    replace_static: bool = True,
 ) -> List[RelationTuple]:
     manifest = load_manifest(manifest_path or DEFAULT_MANIFEST)
     sources = select_sources(manifest, defaults_only=True)
@@ -197,12 +204,27 @@ def collect_static_relation_tuples(
     )
 
     compounds = load_compound_antonyms(compound_path or DEFAULT_COMPOUND_PATH)
-    parts = [
+    static_parts = [
         collect_cilin_relation_tuples(char_to_id, cilin_path) if cilin_path else [],
         collect_flat_relation_tuples(char_to_id, flat_edges),
         collect_compound_ant_tuples(db, char_to_id, compounds),
     ]
-    merged = merge_relation_tuples(itertools.chain.from_iterable(parts))
+    # P0/P1: same-round static syn ∪ DB syn that will still exist after this build.
+    # Replace mode clears static/legacy, so those DB rows are excluded; append keeps them.
+    id_to_char = {int(i): c for c, i in char_to_id.items()}
+    new_static_syn = syn_pairs_from_tuples(
+        itertools.chain.from_iterable(static_parts),
+        id_to_char,
+    )
+    exclude_db = (*STATIC_SOURCES, *LEGACY_SOURCES) if replace_static else ()
+    kept_db_syn = syn_pairs_from_db(db, exclude_sources=exclude_db)
+    project_rows = collect_project_ant_tuples(
+        db,
+        syn_pairs=new_static_syn | kept_db_syn,
+    )
+    merged = merge_relation_tuples(
+        itertools.chain.from_iterable([*static_parts, project_rows])
+    )
     # ADR-0039 S1 CAP-U@20
     return cap_undirected_syn_tuples(merged)
 
@@ -214,20 +236,27 @@ def build_word_relations(
     compound_path: Path | str | None = None,
     replace_static: bool = True,
 ) -> dict[str, Any]:
-    """Collect static syn/ant rows in memory, then one bulk insert."""
+    """Collect+validate static/project tuples first, then clear and bulk insert.
+
+    P0: never delete committed sources before project TSV validation succeeds;
+    syn-conflict checks use same-round static syn ∪ DB syn retained by this mode.
+    """
     t0 = time.perf_counter()
     stats: dict[str, Any] = {"cleared": 0, "candidates": 0, "inserted": 0}
+
+    # Collect while existing syn/ant rows are still present (fail-closed).
+    rows = collect_static_relation_tuples(
+        db,
+        manifest_path=manifest_path,
+        compound_path=compound_path,
+        replace_static=replace_static,
+    )
+    stats["candidates"] = len(rows)
 
     if replace_static:
         for source_id in (*STATIC_SOURCES, *LEGACY_SOURCES):
             stats["cleared"] += clear_word_relations_source(db, source_id)
 
-    rows = collect_static_relation_tuples(
-        db,
-        manifest_path=manifest_path,
-        compound_path=compound_path,
-    )
-    stats["candidates"] = len(rows)
     ins = insert_relation_records(db, rows)
     stats["inserted"] = ins["attempted"]
     stats["chunks"] = ins["chunks"]

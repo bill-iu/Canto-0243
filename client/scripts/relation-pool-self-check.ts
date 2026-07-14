@@ -12,9 +12,12 @@ import {
   relationLookupItems,
   relationPoolLogicSelfCheck,
 } from '../src/db/relation-pool.ts';
+import { projectAntRankingSelfCheck } from '../src/db/relation-pool-ranking.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
+
+projectAntRankingSelfCheck();
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 loadStaticRelationData(repoRoot);
@@ -38,6 +41,8 @@ const words = [
   ['愉快', '22', 2],
   ['悲傷', '22', 2],
   ['傷心', '22', 2],
+  ['走', '22', 1],
+  ['留', '22', 1],
 ];
 for (let i = 0; i < words.length; i++) {
   const [ch, code, len] = words[i]!;
@@ -54,6 +59,8 @@ const rels = [
   [1, 3, 'syn', 0.8, 'test'],
   [2, 4, 'ant', 0.9, 'guotong'],
   [2, 5, 'ant', 0.7, 'ant_syn_bridge'],
+  // project_ant row present; same-char guotong vs project_ant merge covered by ranking self-check
+  [6, 7, 'ant', 0.85, 'project_ant'],
 ];
 for (let i = 0; i < rels.length; i++) {
   const [w, r, t, s, src] = rels[i]!;
@@ -70,6 +77,13 @@ const snapshot = await buildRelationPool(db, '開心');
 const snapshotChars = snapshot.chars('syn');
 if (!snapshotChars.includes('快樂') || !snapshotChars.includes('愉快')) {
   throw new Error(`relation-pool-self-check: snapshot chars ${snapshotChars.join(',')}`);
+}
+const walkPool = await buildRelationPool(db, '走');
+const walkAnt = walkPool.ants.find((i) => i.char === '留');
+if (!walkAnt || walkAnt.source !== 'project_ant') {
+  throw new Error(
+    `relation-pool-self-check: project_ant 走→留 got ${walkAnt?.source ?? 'missing'}`,
+  );
 }
 const firstPage = snapshot.page(1, 0).map((i) => i.char);
 if (firstPage.length !== 1 || !snapshotChars.includes(firstPage[0] ?? '')) {

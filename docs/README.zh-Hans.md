@@ -117,7 +117,8 @@ Canto-0243 整合多个开源词典、语料与近反义资源。我们明确感
 
 * **Rime 粤语（单字读音 `char.csv`、分类词语 CSV〔排除 proper nouns〕、essay 词频）**：来自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 与 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。欢迎为上述项目点 star！
 * **词林同义词（Cilin）**：经 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 汇出，采用 **MIT** 授权。
-* **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；本项目**反义词主来源**。
+* **国语辞典近义／反义（guotong）**：来自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；与专案自建反义**并存**的反义来源之一。
+* **专案自建反义（AI 辅助）**：`data/syn_ant/project_antonyms.tsv`（及 `project_antonyms.meta.json`）；生成式 AI 起草、维护者审定后纳入；采用 [Canto-0243 License](../LICENSE)。**不是** guotong 或其他第三方反义词典的再分发。
 * **words.hk 粤典词表**：来自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，采用**非商業開放授權**（詳見 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
 * **多字词级标音上游**（maintainer 自建 `lyrics.db` 时）：[words.hk 粤典词表](https://words.hk/faiman/analysis/wordslist/)（非商業開放授權）、[开放词典 · 粤语词典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 粤语分类词语来源（排除 `proper_nouns.csv`；CC BY 4.0）、[HSK 3.0 word list](https://github.com/elkmovie/hsk30)（MIT）以及 maintainer curated 词库来源。
 

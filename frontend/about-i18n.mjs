@@ -38,7 +38,10 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 詞表</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">開放詞典 · 粵語詞典（Kaifangcidian）</a>：採用 <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>。</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">詞林同義詞（Cilin）</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
-      '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：<code>dict_synonym.txt</code>、<code>dict_antonym.txt</code>；採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>（反義詞主來源）。</li>',
+      '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：<code>dict_synonym.txt</code>、<code>dict_antonym.txt</code>；採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>（與專案自建反義並存的反義來源之一）。</li>' +
+      '<li><a href="https://github.com/bill-iu/Canto-0243/blob/dev/data/syn_ant/project_antonyms.tsv" target="_blank" rel="noopener noreferrer">專案自建反義（AI 輔助）</a>：<code>project_antonyms.tsv</code>；生成式 AI 起草、維護者審定；採用 <a href="' +
+      LICENSE_URL +
+      '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>（非 guotong 再分發）。</li>',
     sourcesFooter:
       '完整第三方授權清單見 <a href="' +
       NOTICES_URL +
@@ -89,7 +92,10 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 word list</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">Kaifang Dictionary · Cantonese</a>: <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">Cilin synonyms</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
-      '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <code>dict_synonym.txt</code>, <code>dict_antonym.txt</code>; <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a> (primary antonym source).</li>',
+      '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <code>dict_synonym.txt</code>, <code>dict_antonym.txt</code>; <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a> (one antonym source coexisting with project-owned antonyms).</li>' +
+      '<li><a href="https://github.com/bill-iu/Canto-0243/blob/dev/data/syn_ant/project_antonyms.tsv" target="_blank" rel="noopener noreferrer">Project-owned antonyms (AI-assisted)</a>: <code>project_antonyms.tsv</code>; drafted with generative AI, maintainer-reviewed; <a href="' +
+      LICENSE_URL +
+      '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a> (not a guotong redistribution).</li>',
     sourcesFooter:
       'Full third-party license list: <a href="' +
       NOTICES_URL +

@@ -32,6 +32,7 @@ import type { WordRow } from '../position-match/word-row.ts';
 import { codePrefixedWholeWordEqualsEmptyHint } from './equals-empty-hint.ts';
 import { rowToResult, sortMaskFamilyRows } from './result-map.ts';
 import { buildLookupLayout, deduplicateWordRows } from './lookup-layout.ts';
+import { composeTransientWordRows } from '../db-patch.ts';
 
 // Query Execution
 // ============================================================================
@@ -152,13 +153,18 @@ async function executeWordLookup(
   limit: number,
   offset: number,
 ): Promise<SearchResult> {
-  const matches = await queryRows(
+  let matches = (await queryRows(
     db,
     'SELECT char, jyutping, code, initials, finals, length FROM words WHERE char = ?',
     [parsed.raw_q],
-  );
+  )) as WordRow[];
 
-  const built = await buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches as WordRow[]), db);
+  // 缺庫：記憶體音節拼接（唔寫庫）— 對齊 Portable compose_transient_words
+  if (!matches.length && /[\u4e00-\u9fff]/.test(parsed.raw_q)) {
+    matches = (await composeTransientWordRows(db, parsed.raw_q)) as WordRow[];
+  }
+
+  const built = await buildLookupLayout(parsed.raw_q, deduplicateWordRows(matches), db);
   return {
     items: built.slice(offset, offset + limit),
     total: built.length,
