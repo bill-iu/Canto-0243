@@ -12,6 +12,7 @@ import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
+import { formatStandardResultCountLabel } from '../../frontend/result-stats.mjs';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -791,14 +792,21 @@ function App() {
     if (anchorLayout && displayResults.length > 0) {
       return `${anchorResultsStats(displayResults, effectiveTotal)}${statsSuffix}`;
     }
-    if (effectiveTotal != null && effectiveTotal > displayResults.length) {
-      return `已載入 ${displayResults.length} / ${effectiveTotal} 個結果${statsSuffix}`;
-    }
-    if (displayResults.length > 0) {
-      return `${displayResults.length} 個結果${statsSuffix}`;
-    }
-    return '';
-  }, [synLayout, anchorLayout, displayResults, effectiveTotal, statsSuffix]);
+    if (!displayResults.length || resultItemCount <= 0) return '';
+    // 標準列表：「結果」＝合併字面；未完頁唔寫假字面總數（擷取列 total 唔直接當 Y）
+    const hasMorePages = Boolean(useLiveFetch && hasMore);
+    const body = formatStandardResultCountLabel(resultItemCount, hasMorePages);
+    return body ? `${body}${statsSuffix}` : '';
+  }, [
+    synLayout,
+    anchorLayout,
+    displayResults,
+    effectiveTotal,
+    resultItemCount,
+    useLiveFetch,
+    hasMore,
+    statsSuffix,
+  ]);
 
   const emptyMessage = useMemo(() => {
     if (!searchQuery || searchLoading || displayResults.length > 0 || offlineStatus !== 'ready') {

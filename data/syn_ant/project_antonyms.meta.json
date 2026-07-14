@@ -4176,6 +4176,11 @@
       "head": "牛市",
       "tail": "熊市",
       "reason": "static cilin syn leaf co-member"
+    },
+    {
+      "head": "人爲",
+      "tail": "自然",
+      "reason": "duplicate/reverse of 自然/人為 after s2hk normalize (為/爲)"
     }
   ]
 }

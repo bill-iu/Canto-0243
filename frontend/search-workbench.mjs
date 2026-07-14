@@ -33,6 +33,7 @@ import {
   commitSearchHistoryFrame,
   withResultClickQuery,
 } from "./search-navigation.mjs";
+import { formatStandardResultCountLabel } from "./result-stats.mjs";
 import {
   mergeResultsByLiteral,
   mergePickLookupResults,
@@ -127,13 +128,9 @@ function mergedWordGroups(data) {
 
 function updateWordListStats(mergedLen, total, loadedLen) {
   const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-  if (total != null && total > loadedLen) {
-    $.stats.textContent = `已載入 ${loadedLen} / ${total} 個結果（${statsLabel}）`;
-  } else if (total != null) {
-    $.stats.textContent = `${total} 個結果（${statsLabel}）`;
-  } else {
-    $.stats.textContent = `${mergedLen} 個結果（${statsLabel}）`;
-  }
+  const hasMore = total != null && total > loadedLen;
+  const body = formatStandardResultCountLabel(mergedLen, hasMore);
+  $.stats.textContent = body ? `${body}（${statsLabel}）` : '';
 }
 
 function appendWordListSlice(ul, merged, from, to, lang, showReadingBadge = false) {
@@ -719,13 +716,10 @@ function finishSearchWithData(tab, data, { append = false, total = null } = {}) 
       onPick: handleEntryPick,
     });
     const statsLabel = getModeMeta(shell.currentMode, getLang()).statsLabel;
-    if (tab.total != null && tab.total > displayData.length) {
-      $.stats.textContent = `已載入 ${displayData.length} / ${tab.total} 個結果（${statsLabel}）`;
-    } else if (tab.total != null) {
-      $.stats.textContent = `${tab.total} 個結果（${statsLabel}）`;
-    } else {
-      $.stats.textContent = `${displayData.length} 個結果（${statsLabel}）`;
-    }
+    const mergedLen = countSearchResultItems(displayData);
+    const hasMore = tab.total != null && tab.total > displayData.length;
+    const body = formatStandardResultCountLabel(mergedLen, hasMore);
+    $.stats.textContent = body ? `${body}（${statsLabel}）` : "";
     shell.pickAnchor = null;
     shell.pickAnchorRows = null;
     updateShuffleButton();
