@@ -17,11 +17,11 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 ## Latest release
 
 <!-- version:en -->
-Current version: **v1.0.8**
+Current version: **v1.0.9**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **168,408** (`lyrics.db` · `words` table)
+Current word entries: **168,425** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**
@@ -142,4 +142,4 @@ Building or redistributing lexicons from these sources requires complying with e
 
 ---
 
-**Last updated**: 2026-07-12 (v1.0.8: categorized Rime lexicon rebuild, phrase rejects, narrow UI, release policy)
+**Last updated**: 2026-07-14 (v1.0.9: high-frequency antonym campaign complete)
