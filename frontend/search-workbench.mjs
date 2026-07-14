@@ -48,6 +48,7 @@ import {
   renderMergedResultList,
   appendPickLookupTail,
   createMergedResultButton,
+  resultsShowReadingBadge,
 } from "./entry-detail-portable.mjs";
 import {
   RESULT_RENDER_BATCH,
@@ -135,13 +136,14 @@ function updateWordListStats(mergedLen, total, loadedLen) {
   }
 }
 
-function appendWordListSlice(ul, merged, from, to, lang) {
+function appendWordListSlice(ul, merged, from, to, lang, showReadingBadge = false) {
   merged.slice(from, to).forEach((group) =>
     ul.appendChild(
       createMergedResultButton(group, {
         lang,
         activeLiteral: shell.entryDetail.activeLiteral,
         onPick: handleEntryPick,
+        showReadingBadge,
       }),
     ),
   );
@@ -582,7 +584,14 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
       ul.dataset.resultLen === String(data.length) &&
       Number(ul.dataset.mergedLen) === merged.length
     ) {
-      appendWordListSlice(ul, merged, expandFrom, budget, getLang());
+      appendWordListSlice(
+        ul,
+        merged,
+        expandFrom,
+        budget,
+        getLang(),
+        resultsShowReadingBadge(tab?.q),
+      );
       updateWordListStats(merged.length, total, data.length);
       updateShuffleButton();
       updateScrollSentinel(tab);
@@ -640,7 +649,7 @@ function renderSearchResults(data, total = null, { expandFrom = null } = {}) {
   ul.className = "results-list-items";
   ul.dataset.resultLen = String(data.length);
   ul.dataset.mergedLen = String(merged.length);
-  appendWordListSlice(ul, merged, 0, budget, getLang());
+  appendWordListSlice(ul, merged, 0, budget, getLang(), resultsShowReadingBadge(tab?.q));
   $.results.appendChild(ul);
   updateWordListStats(merged.length, total, data.length);
   updateShuffleButton();

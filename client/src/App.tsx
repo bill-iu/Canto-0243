@@ -129,6 +129,7 @@ function App() {
     inputQuery,
     searchQuery,
     setInputQueryDebounced,
+    setInputQueryLive,
     flushSearchQuery,
     hydrateSearch,
   } = useDebouncedSearchQuery(activeSearchTab?.q ?? '');
@@ -373,7 +374,8 @@ function App() {
   }, [needsInitialSearch, isReady, gateOpen, activeSearchTab?.q, hydrateSearch, flushSearchQuery]);
 
   const { summary: explainSummary, warning: explainWarning } = useQueryExplain(inputQuery, mode);
-  const showExplain = view === 'search' && Boolean(explainSummary || explainWarning);
+  const showExplain = Boolean(explainSummary || explainWarning);
+  const searchFamily = searchFamilyForUiMode(mode);
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
@@ -604,6 +606,20 @@ function App() {
     if (trimmedInput) runCommittedSearch(undefined, pzMode, next);
   };
 
+  const openLiveSearchTab = useCallback(
+    (q: string, nextMode: UiMode = mode) => {
+      saveLeavingSearchTab();
+      openSearchTabWithQuery(q, nextMode, pzMode);
+      setUseLiveFetch(true);
+      setResultsShuffled(false);
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+        lexiconLoadStartedRef.current = true;
+        void initialize();
+      }
+    },
+    [saveLeavingSearchTab, openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
+  );
+
   const handleBackToSearch = () => {
     ensureActiveSearchTab();
   };
@@ -614,10 +630,7 @@ function App() {
     }
     setMode(exampleMode);
     // 教學例子：開新搜尋 tab，唔覆蓋當前 tab
-    saveLeavingSearchTab();
-    openSearchTabWithQuery(nextQuery, exampleMode as UiMode, pzMode);
-    setUseLiveFetch(true);
-    setResultsShuffled(false);
+    openLiveSearchTab(nextQuery, exampleMode as UiMode);
   };
 
   const handleShuffle = () => {
@@ -628,6 +641,11 @@ function App() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    // 教學／關於：送出開新搜尋 tab（同教學範例），保留原 tab；唔共用 ensureActive→commit 嘅 race
+    if (view === 'guide' || view === 'about') {
+      openLiveSearchTab(inputQuery.trim());
+      return;
+    }
     runCommittedSearch();
   };
 
@@ -662,6 +680,10 @@ function App() {
   };
 
   const handleSearchInput = (value: string) => {
+    if (view !== 'search') {
+      setInputQueryLive(value);
+      return;
+    }
     setInputQueryDebounced(value);
     if (activeTab?.view === VIEW.SEARCH) {
       patchSearchTab(tabState.activeId, { q: value });
@@ -794,7 +816,6 @@ function App() {
     displayResults.length === 0 &&
     !searchLoading &&
     !emptyMessage;
-  const canSearch = !shellGated;
 
   const handleHome = () => {
     saveLeavingSearchTab();
@@ -827,39 +848,122 @@ function App() {
       >
         <header className="app-header">
           <div className="app-bar">
-            <button className="brand" type="button" aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'} onClick={handleHome}>
-              <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
-            </button>
-            <div className="header-hero">
-              <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
-              <p className="header-hero__tagline">
-                {uiLang === 'en'
-                  ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
-                  : '格律／協音／押韻／近反義，一步搵到。'}
-              </p>
-            </div>
-            {mountWarmupBadge && (
-              <TailPreloadBadge
-                tailProgress={tailProgress}
-                startupComplete={startupComplete}
+            <div className="header-chrome">
+              <div className="header-chrome__center">
+                <button
+                  className="brand"
+                  type="button"
+                  aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
+                  onClick={handleHome}
+                >
+                  <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
+                </button>
+                {mountWarmupBadge ? (
+                  <TailPreloadBadge
+                    tailProgress={tailProgress}
+                    startupComplete={startupComplete}
+                    theme={uiTheme}
+                    lang={uiLang}
+                    onDismiss={handleWarmupBadgeDismiss}
+                  />
+                ) : null}
+              </div>
+              <ModeMenu
+                mode={mode}
+                disabled={shellGated}
+                onModeChange={handleModeChange}
+                onOpenGuide={handleOpenGuide}
+                onOpenAbout={handleOpenAbout}
                 theme={uiTheme}
                 lang={uiLang}
-                onDismiss={handleWarmupBadgeDismiss}
+                onThemeChange={(next) => setUiTheme(next)}
+                onLangChange={(next) => setUiLang(next)}
+                lexiconVersion={lexiconVersion}
+                showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
               />
-            )}
-            <ModeMenu
-              mode={mode}
-              disabled={shellGated}
-              onModeChange={handleModeChange}
-              onOpenGuide={handleOpenGuide}
-              onOpenAbout={handleOpenAbout}
-              theme={uiTheme}
-              lang={uiLang}
-              onThemeChange={(next) => setUiTheme(next)}
-              onLangChange={(next) => setUiLang(next)}
-              lexiconVersion={lexiconVersion}
-              showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
-            />
+            </div>
+            <form className="header-search" onSubmit={handleSubmit} role="search">
+              <h1 id="searchTitle" className="sr-only">
+                {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
+              </h1>
+              <div className="header-search__row">
+                <div className="header-search__main">
+                  <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
+                    <label className="sr-only" htmlFor="searchInput">
+                      {uiLang === 'en' ? 'Search' : '搜尋內容'}
+                    </label>
+                    <input
+                      id="searchInput"
+                      type="search"
+                      value={inputQuery}
+                      onChange={(e) => handleSearchInput(e.target.value)}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
+                      placeholder={modeMeta.placeholder}
+                      disabled={shellGated}
+                      autoComplete="off"
+                      spellCheck={false}
+                      enterKeyHint="search"
+                    />
+                  </div>
+                  <div className="header-search__meta">
+                    {searchFamily !== 'synonym' ? (
+                      <div
+                        className="pingze-submodes"
+                        role="group"
+                        aria-label={uiLang === 'en' ? 'Tone-digit profile' : '聲調數字檔'}
+                      >
+                        {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                          <button
+                            key={subMode}
+                            type="button"
+                            className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
+                            aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
+                            title={getModeMeta(subMode, uiLang).title}
+                            disabled={shellGated}
+                            onClick={() => handleProfileChange(subMode)}
+                          >
+                            <span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span>
+                            <span className="profile-pill__narrow">
+                              {subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                    {showExplain ? (
+                      <p className="query-explain" aria-live="polite">
+                        {explainSummary ? (
+                          <span className="query-explain__summary">{explainSummary}</span>
+                        ) : null}
+                        {explainWarning ? (
+                          <span className="query-explain__warning">{explainWarning}</span>
+                        ) : null}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="header-search__actions">
+                  <button
+                    type="submit"
+                    className="primary-button header-search__submit"
+                    disabled={shellGated}
+                  >
+                    {uiLang === 'en' ? 'Search' : '搜尋'}
+                  </button>
+                  <button
+                    type="button"
+                    className="icon-button header-search__shuffle"
+                    onClick={handleShuffle}
+                    disabled={!canShuffle}
+                    aria-label={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
+                    title={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
+                  >
+                    <ShuffleIcon />
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
           <QueryTabsBar
             tabs={tabs}
@@ -883,87 +987,6 @@ function App() {
               aria-labelledby="searchTitle"
             >
               <div className="search-view__main" onClick={handleSearchMainClick}>
-              <form onSubmit={handleSubmit} className="search-panel" role="search">
-                <div className="field-label-row">
-                  <label className="field-label" htmlFor="searchInput">
-                    {uiLang === 'en' ? 'Search' : '搜尋內容'}
-                  </label>
-                  <span className="mode-readout" aria-live="polite">
-                    {(uiLang === 'en' ? 'Current mode: ' : '目前模式：')}{modeMeta.readout}
-                  </span>
-                </div>
-                <div className="search-row">
-                  <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
-                    <input
-                      id="searchInput"
-                      type="search"
-                      value={inputQuery}
-                      onChange={(e) => handleSearchInput(e.target.value)}
-                      onFocus={handleSearchFocus}
-                      onBlur={handleSearchBlur}
-                      placeholder={modeMeta.placeholder}
-                      disabled={shellGated}
-                      autoComplete="off"
-                      spellCheck={false}
-                      enterKeyHint="search"
-                    />
-                  </div>
-                  <div className="search-actions">
-                    <button
-                      type="button"
-                      className="icon-button"
-                      onClick={handleShuffle}
-                      disabled={!canShuffle}
-                      aria-label={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
-                      title={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
-                    >
-                      <ShuffleIcon />
-                    </button>
-                    <button
-                      type="submit"
-                      className="primary-button"
-                      disabled={!canSearch || !trimmedInput || (useLiveFetch && searchLoading)}
-                      aria-busy={useLiveFetch && searchLoading}
-                    >
-                      {useLiveFetch && searchLoading
-                        ? uiLang === 'en'
-                          ? 'Searching…'
-                          : '搜尋中…'
-                        : uiLang === 'en'
-                          ? 'Search'
-                          : '搜尋'}
-                    </button>
-                  </div>
-                </div>
-                {searchFamilyForUiMode(mode) !== 'synonym' ? (
-                  <div className="pingze-submodes" role="group" aria-label={uiLang === 'en' ? 'Ping-ze digit sub-mode' : '平仄數字子模式'}>
-                    {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
-                      <button
-                        key={subMode}
-                        type="button"
-                        className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
-                        aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
-                        disabled={shellGated}
-                        onClick={() => handleProfileChange(subMode)}
-                      >
-                        <><span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span><span className="profile-pill__narrow">{subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}</span></>
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-              </form>
-
-              {showExplain && (
-                <p className="query-explain" aria-live="polite">
-                  {explainSummary ? (
-                    <span className="query-explain__summary">{explainSummary}</span>
-                  ) : null}
-                  {explainWarning ? (
-                    <span className="query-explain__warning">{explainWarning}</span>
-                  ) : null}
-                </p>
-              )}
-
               <div className="search-results">
                 <div className="search-results-scroll" ref={setScrollRootEl}>
                   {displayHint && displayResults.length > 0 && (
@@ -996,6 +1019,7 @@ function App() {
                       ) : (
                         <ResultList
                           results={displayResults}
+                          committedQuery={inputQuery}
                           visibleLimit={visibleCount}
                           activeLiteral={activeDetailLiteral}
                           lang={uiLang}

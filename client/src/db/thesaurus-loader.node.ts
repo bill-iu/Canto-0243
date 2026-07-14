@@ -16,7 +16,7 @@ function cleanTerm(text: string): string {
 }
 
 function normalizeLiteral(text: string): string | null {
-  const t = cleanTerm(text);
+  const t = cleanTerm(text).replace(/覈/g, '核');
   if (!t || t.length > 12 || !CJK_RE.test(t) || /[0-9A-Za-z_]/.test(t)) {
     return null;
   }

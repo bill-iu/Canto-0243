@@ -26,3 +26,18 @@ export function displayResults(results: QueryResult[]): QueryResult[] {
 export function mergedResultCount(results: QueryResult[]): number {
   return mergeResultsByLiteral(displayResults(results)).length;
 }
+
+/** 「N個讀音」徽章：已送出查詢含 `/`（同音異讀）。 */
+export function resultsShowReadingBadge(committedQuery: string | null | undefined): boolean {
+  return Boolean(committedQuery && committedQuery.includes('/'));
+}
+
+/** ponytail: `npx tsx client/scripts/result-list-badge-self-check.ts` */
+export function resultListBadgeSelfCheck(): void {
+  if (resultsShowReadingBadge('23') || resultsShowReadingBadge('好') || resultsShowReadingBadge('')) {
+    throw new Error('resultListBadgeSelfCheck: non-slash query');
+  }
+  if (!resultsShowReadingBadge('33/34') || !resultsShowReadingBadge('??/??')) {
+    throw new Error('resultListBadgeSelfCheck: slash query');
+  }
+}

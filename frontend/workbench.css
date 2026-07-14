@@ -133,9 +133,26 @@ a.result-item,
     gap: 2px;
   }
 
+  /* 字面一行、多讀音徽章第二行 — 避免窄格把字擠成豎排 */
+  .results-list-items .result-link.result-link--inline {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+
   .results-list-items .result-link .word {
     font-size: 14px;
     line-height: 1.3;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .results-list-items .result-reading-badge {
+    margin-left: 0;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 }
 
@@ -153,7 +170,7 @@ a.result-item:hover,
       border-color: var(--accent);
       color: var(--accent-strong);
       box-shadow: var(--control-shadow-hover);
-      transform: translateY(-1px);
+      /* ponytail: no translateY — parent overflow clips top border when active */
     }
 
 a.result-item:focus-visible,
@@ -164,7 +181,9 @@ a.result-item:focus-visible,
     }
 
 a.result-item:active,
-.results-list-items .result-link:active { transform: translateY(1px); }
+.results-list-items .result-link:active {
+      box-shadow: var(--control-shadow-hover);
+    }
 
 .result-item .jyutping,
 .results-list-items .result-link .jyutping {

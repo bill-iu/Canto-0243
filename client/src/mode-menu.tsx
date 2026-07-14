@@ -37,22 +37,38 @@ export function ModeMenu({
   const meta = modeMetaFor(mode, lang);
   const family = searchFamilyForUiMode(mode);
 
+  // ponytail: mirror entry-detail first-tap-closes — swallow outside click so list picks don't fire
   useEffect(() => {
     if (!open) return;
-    const onPointerDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
+    let suppressClick = false;
+    const outside = (target: EventTarget | null) =>
+      !rootRef.current?.contains(target as Node);
+
+    const onPointerDown = (event: PointerEvent) => {
+      if (!outside(event.target)) return;
+      suppressClick = true;
+      setOpen(false);
+    };
+    const onClickCapture = (event: MouseEvent) => {
+      if (!suppressClick) return;
+      if (!outside(event.target)) {
+        suppressClick = false;
+        return;
       }
+      event.preventDefault();
+      event.stopPropagation();
+      suppressClick = false;
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
-      }
+      if (event.key === 'Escape') setOpen(false);
     };
-    document.addEventListener('mousedown', onPointerDown);
+
+    document.addEventListener('pointerdown', onPointerDown, true);
+    document.addEventListener('click', onClickCapture, true);
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('pointerdown', onPointerDown, true);
+      document.removeEventListener('click', onClickCapture, true);
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [open]);
@@ -96,95 +112,97 @@ export function ModeMenu({
             role="menu"
             hidden={!open}
           >
-        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '搜尋模式' : 'Search modes'}>
-          <p className="menu-label">{lang === 'zh' ? '搜尋模式' : 'Search modes'}</p>
-          {MODE_OPTIONS.map((option) => {
-            const optionMeta = getModeMeta(option.uiMode === '0243' ? 'm1' : option.uiMode === 'pingze' ? 'pz' : 'syn', lang);
-            const checked = option.family === family;
-            return (
+            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '搜尋模式' : 'Search modes'}>
+              <p className="menu-label">{lang === 'zh' ? '搜尋模式' : 'Search modes'}</p>
+              {MODE_OPTIONS.map((option) => {
+                const optionMeta = getModeMeta(
+                  option.uiMode === '0243' ? 'm1' : option.uiMode === 'pingze' ? 'pz' : 'syn',
+                  lang,
+                );
+                const checked = option.family === family;
+                return (
+                  <button
+                    key={option.uiMode}
+                    type="button"
+                    className="mode-option"
+                    role="menuitemradio"
+                    aria-checked={checked}
+                    disabled={disabled}
+                    onClick={() => pickMode(option.family)}
+                  >
+                    <span>
+                      <span className="mode-name">
+                        {optionMeta.title}
+                        <span className="mode-note">{optionMeta.note}</span>
+                      </span>
+                      <span className="mode-help">{modeHelp(option.uiMode, lang)}</span>
+                    </span>
+                    <span className="mode-key">{option.key}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '工具' : 'Tools'}>
+              <p className="menu-label">{lang === 'zh' ? '工具' : 'Tools'}</p>
               <button
-                key={option.uiMode}
                 type="button"
                 className="mode-option"
-                role="menuitemradio"
-                aria-checked={checked}
-                disabled={disabled}
-                onClick={() => pickMode(option.family)}
+                role="menuitem"
+                onClick={() => {
+                  onOpenGuide();
+                  close();
+                }}
               >
                 <span>
-                  <span className="mode-name">
-                    {optionMeta.title}
-                    <span className="mode-note">{optionMeta.note}</span>
-                  </span>
-                  <span className="mode-help">{modeHelp(option.uiMode, lang)}</span>
+                  <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
+                  <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
                 </span>
-                <span className="mode-key">{option.key}</span>
+                <span className="mode-key">?</span>
               </button>
-            );
-          })}
-        </div>
-        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '工具' : 'Tools'}>
-          <p className="menu-label">{lang === 'zh' ? '工具' : 'Tools'}</p>
-          <button
-            type="button"
-            className="mode-option"
-            role="menuitem"
-            onClick={() => {
-              onOpenGuide();
-              close();
-            }}
-          >
-            <span>
-              <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
-              <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
-            </span>
-            <span className="mode-key">?</span>
-          </button>
-          <button
-            type="button"
-            className="mode-option"
-            role="menuitem"
-            onClick={() => {
-              onOpenAbout();
-              close();
-            }}
-          >
-            <span>
-              <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
-              <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
-            </span>
-            <span className="mode-key">i</span>
-          </button>
-        </div>
+              <button
+                type="button"
+                className="mode-option"
+                role="menuitem"
+                onClick={() => {
+                  onOpenAbout();
+                  close();
+                }}
+              >
+                <span>
+                  <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
+                  <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
+                </span>
+                <span className="mode-key">i</span>
+              </button>
+            </div>
 
-        {/* Compact switches row inside dropdown: theme icon + single lang toggle (side-by-side to shorten menu) */}
-        <div className="menu-group" role="group" aria-label={lang === 'zh' ? '顯示' : 'Display'}>
-          <p className="menu-label">{lang === 'zh' ? '顯示' : 'Display'}</p>
-          <div className="menu-switches">
-            <button
-              type="button"
-              className="mode-option mode-switch"
-              onClick={() => {
-                onThemeChange?.(theme === 'dark' ? 'light' : 'dark');
-                close();
-              }}
-              aria-label={lang === 'zh' ? '切換主題' : 'Toggle theme'}
-            >
-              <span aria-hidden="true">{theme === 'dark' ? '🌙' : '☀️'}</span>
-            </button>
-            <button
-              type="button"
-              className="mode-option mode-switch"
-              onClick={() => {
-                onLangChange?.(lang === 'zh' ? 'en' : 'zh');
-                close();
-              }}
-              aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
-            >
-              <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
-            </button>
-          </div>
-        </div>
+            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '顯示' : 'Display'}>
+              <p className="menu-label">{lang === 'zh' ? '顯示' : 'Display'}</p>
+              <div className="menu-switches">
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  onClick={() => {
+                    onThemeChange?.(theme === 'dark' ? 'light' : 'dark');
+                    close();
+                  }}
+                  aria-label={lang === 'zh' ? '切換主題' : 'Toggle theme'}
+                >
+                  <span aria-hidden="true">{theme === 'dark' ? '🌙' : '☀️'}</span>
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  onClick={() => {
+                    onLangChange?.(lang === 'zh' ? 'en' : 'zh');
+                    close();
+                  }}
+                  aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
+                >
+                  <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -1,5 +1,155 @@
 /* PWA-only: pill tabs, mode menu root, gate button tweak */
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* —— Wide: brand | search | menu —— */
+.app-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "brand search menu"
+    ". search menu";
+  column-gap: 12px;
+  row-gap: 0;
+  align-items: start;
+}
+
+.header-chrome {
+  display: contents;
+}
+
+.header-chrome__center {
+  display: contents;
+}
+
+.header-chrome .brand {
+  grid-area: brand;
+  align-self: start;
+}
+
+.header-chrome .warmup-badge {
+  grid-area: search;
+  justify-self: center;
+  align-self: start;
+  z-index: 2;
+  margin-top: 8px;
+  flex: 0 1 auto;
+  max-width: min(280px, 40vw);
+}
+
+.header-chrome .mode-menu-root {
+  grid-area: menu;
+  margin-left: 0;
+}
+
+.header-search {
+  grid-area: search;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.header-search__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.header-search__main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.header-search__meta {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Shuffle: accent stroke so it reads clearly on light + dark */
+button.icon-button.header-search__shuffle {
+  flex-shrink: 0;
+  color: var(--accent-strong, var(--accent));
+}
+
+button.icon-button.header-search__shuffle svg {
+  stroke: currentColor;
+  stroke-width: 2.25;
+}
+
+button.icon-button.header-search__shuffle:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+button.icon-button.header-search__shuffle:disabled {
+  color: var(--ink-soft);
+  opacity: 0.72;
+}
+
+.header-search__meta .query-explain {
+  flex: 1 1 auto;
+  margin: 0;
+  min-width: 0;
+  text-align: left;
+}
+
+.header-search__meta .pingze-submodes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-top: 0;
+  flex-shrink: 0;
+  width: max-content;
+  max-width: none;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-input);
+  min-height: 30px;
+  box-sizing: border-box;
+}
+
+.header-search__meta .pingze-submode {
+  min-height: 26px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+  text-align: center;
+  border-radius: 999px;
+}
+
+.header-search__actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* Wide: no explicit search button — Enter + debounce */
+.header-search__submit {
+  display: none;
+}
+
 .mode-menu-root {
   position: relative;
   align-self: flex-start;
@@ -38,7 +188,7 @@
   gap: 2px;
   margin-top: 7px;
   width: max-content;
-  max-width: 100%;
+  max-width: none;
   padding: 2px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -61,39 +211,190 @@
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
+  /* Top chrome: [logo|warmup left][menu right] — search second row */
+  .app-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    row-gap: 8px;
+    position: relative;
+    min-height: 0;
+  }
+
+  .header-chrome {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    column-gap: 6px;
+  }
+
+  .header-chrome__center {
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 1;
+    min-height: 44px;
+    align-items: center;
+    justify-content: flex-start;
+    pointer-events: none;
+    position: relative;
+  }
+
+  /* Left-aligned brand + warmup share the left slot */
+  .header-chrome .brand {
+    grid-area: unset;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: min(180px, 48vw);
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 420ms ease-out, visibility 420ms ease-out;
+  }
+
+  .header-chrome .brand .brand-logo {
+    height: 40px;
+    width: auto;
+  }
+
+  .header-chrome .warmup-badge {
+    grid-area: unset;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+    max-width: min(220px, 60vw);
+    pointer-events: auto;
+    justify-self: unset;
+    align-self: unset;
+  }
+
+  .app-shell.is-header-brand-ready .header-chrome .brand {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .header-search {
+    grid-area: unset;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .header-search__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .header-search__main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .header-search__actions {
+    gap: 6px;
+  }
+
+  .header-search__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    min-width: 0;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 650;
+    flex-shrink: 0;
+  }
+
+  .header-search__shuffle {
+    flex-shrink: 0;
+    min-width: 36px;
+    min-height: 40px;
+    border-radius: 12px;
+  }
+
+  .header-search__shuffle svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .header-search__meta {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px 6px;
+    margin-top: 0;
+  }
+
+  .header-search__meta .query-explain {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 100%;
+    overflow: visible;
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .header-search__meta .query-explain__summary,
+  .header-search__meta .query-explain__warning {
+    display: block;
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+  }
+
   .profile-pill__wide { display: none; }
   .profile-pill__narrow { display: inline; }
-  .pingze-submodes {
-    width: min(100%, 8.6em);
-    max-width: 30%;
+  .header-search__meta .pingze-submodes {
+    display: flex;
+    width: max-content;
+    max-width: none;
     min-width: 0;
-    margin-top: 6px;
+    min-height: 24px;
+    margin-top: 0;
     gap: 1px;
     padding: 1px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .pingze-submode {
+  .header-search__meta .pingze-submode {
     min-width: 0;
-    min-height: 20px;
-    padding: 2px 3px;
-    font-size: 10px;
+    min-height: 22px;
+    padding: 3px 7px;
+    font-size: 11px;
     text-align: center;
     box-sizing: border-box;
     overflow: hidden;
+    white-space: nowrap;
   }
   .pingze-submode .profile-pill__narrow {
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: inline;
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
     vertical-align: top;
   }
-  .mode-menu-root {
-    position: static;
-    align-self: flex-end;
-    flex-shrink: 0;
-    margin-left: auto;
-    max-width: min(48vw, 168px);
+
+  .header-chrome .mode-menu-root {
+    grid-column: 2;
+    grid-row: 1;
+    z-index: 2;
+    margin-left: 0;
+    max-width: min(72vw, 260px);
+    align-self: center;
   }
 
   .mode-menu-meta {
@@ -106,13 +407,16 @@
     max-width: 100%;
   }
 
-  .app-bar > .brand {
-    z-index: 3;
-  }
-
   .menu-trigger {
     min-height: 32px;
     padding: 5px 10px;
+    min-width: 0;
+    max-width: none;
+    width: max-content;
+  }
+
+  .mode-trigger-text {
+    white-space: nowrap;
   }
 
   .mode-trigger-primary {
@@ -126,7 +430,8 @@
 
   .query-tabs-bar {
     gap: 4px;
-    padding: 0 0 4px;
+    padding: 8px 0 6px;
+    margin-top: 2px;
   }
   .query-tab-pill__label {
     font-size: 11px;
@@ -141,24 +446,27 @@
     height: 24px;
     font-size: 14px;
   }
+
+  /* Narrow: still show heteronym-only reading badge (gated in JS) */
 }
 
 @media (min-width: 761px) and (max-width: 1023px) {
   .mode-menu-meta {
-    max-width: min(48vw, 220px);
-    white-space: normal;
-    overflow: visible;
-    text-overflow: clip;
-    word-break: break-word;
+    max-width: min(48vw, 260px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .menu-trigger {
-    max-width: min(44vw, 220px);
+    max-width: min(90vw, 280px);
+    min-width: max-content;
+    width: max-content;
     height: auto;
   }
 
   .mode-trigger-text {
-    white-space: normal;
+    white-space: nowrap;
     overflow: visible;
     text-overflow: clip;
   }
@@ -181,31 +489,6 @@
   outline-offset: 1px;
 }
 
-/* PWA header brand: wide = top-left; narrow = centered after warmup badge dismisses */
-@media (max-width: 760px) {
-  .app-bar {
-    position: relative;
-    min-height: 62px;
-    gap: 6px;
-  }
-  .app-bar > .brand {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    z-index: 1;
-    transition: opacity 420ms ease-out, visibility 420ms ease-out;
-  }
-  .app-shell.is-header-brand-ready .app-bar > .brand {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-}
-
 @media (min-width: 761px) {
   .mode-menu-meta {
     position: static;
@@ -216,9 +499,7 @@
     padding: 0 2px;
   }
 
-  .app-bar > .brand {
-    position: static;
-    transform: none;
+  .header-chrome .brand {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -227,7 +508,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .app-shell.is-header-brand-ready .app-bar > .brand {
+  .header-chrome .brand {
     transition: none;
   }
 }
@@ -238,7 +519,7 @@
   gap: 8px;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 20px 12px;
+  padding: 10px 0 12px;
   overflow-x: auto;
   scrollbar-width: thin;
 }

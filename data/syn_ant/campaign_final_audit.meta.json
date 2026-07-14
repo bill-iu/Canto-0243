@@ -2715,7 +2715,7 @@
       },
       {
         "head": "捏造",
-        "tail": "覈實",
+        "tail": "核實",
         "verdict": "ok",
         "reasons": []
       },
@@ -4716,7 +4716,7 @@
         "notes": ""
       },
       {
-        "head": "審覈",
+        "head": "審核",
         "reason": "no_gradable_opposite",
         "verdict": "ok",
         "notes": ""
@@ -5154,7 +5154,7 @@
         "notes": ""
       },
       {
-        "head": "考覈",
+        "head": "考核",
         "reason": "no_gradable_opposite",
         "verdict": "ok",
         "notes": ""

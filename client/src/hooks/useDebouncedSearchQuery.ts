@@ -33,6 +33,12 @@ export function useDebouncedSearchQuery(initialQuery = '') {
     [scheduleSearchQuery],
   );
 
+  /** 只改輸入框；取消未送出 debounce（教學／關於頁打字唔觸發查詢）。 */
+  const setInputQueryLive = useCallback((next: string) => {
+    clearTimer();
+    setInputQuery(next);
+  }, []);
+
   const flushSearchQuery = useCallback((next?: string) => {
     clearTimer();
     const value = (next ?? inputQuery).trim();
@@ -54,6 +60,7 @@ export function useDebouncedSearchQuery(initialQuery = '') {
     inputQuery,
     searchQuery,
     setInputQueryDebounced,
+    setInputQueryLive,
     flushSearchQuery,
     hydrateSearch,
   };

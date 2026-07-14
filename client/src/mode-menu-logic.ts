@@ -10,6 +10,9 @@ export function modeMenuSelfCheck(): void {
   if (MODE_OPTIONS.length !== 3) {
     throw new Error('modeMenuSelfCheck: mode options');
   }
+  if (MODE_OPTIONS.map((o) => o.family).join(',') !== 'basic,pingze,synonym') {
+    throw new Error('modeMenuSelfCheck: family order');
+  }
   if (modeHelp('394052', 'zh') !== '394052 六聲碼（三／五聲分明）') {
     throw new Error('modeMenuSelfCheck: m3 help');
   }
