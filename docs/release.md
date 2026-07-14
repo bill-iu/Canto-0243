@@ -21,12 +21,15 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 
 **arm64** tar 過渡期**不提供**；Release notes 寫清楚。
 
-### semver：新 tag vs 刷新
+### semver：新 tag vs 刷新（分級）
+
+見 CONTEXT **全量發佈**。摘要：
 
 | 情況 | 做法 |
 |------|------|
-| 換庫或創作者可感知變更 | bump **新 semver**；本機 `build-db` 後全量上傳（含 **發佈詞庫快照**） |
-| 程式 bugfix／打包修正（庫不變） | **刷新同一 tag**（`git tag -f` + 重傳 zip／tar）；**唔** `build-db`；**唔**覆寫 Release 上 `lyrics.db` |
+| **必須新 tag**（schema／查詢行為大改、大規模刪收錄、破壞快取假設、刻意大改；例 `v1.0.9`→`v1.1.0`） | bump **新 semver**；本機 `build-db` 後全量上傳（含 **發佈詞庫快照**） |
+| **可同一 tag 換庫快照**（標音／合併修正、少量增刪讀音或字面、短窗熱修） | **刷新同一 tag** + `build-db` + `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json` |
+| 程式 bugfix／打包修正（庫不變） | **刷新同一 tag**（`git tag -f` + 重傳 zip／tar）；**唔** `build-db`；**唔**覆寫庫資產 |
 | 主理刷新 tag 後 | 發佈補件 **必須** checkout 該 tag、重 build、覆寫 tar |
 
 `lyrics.db` **唔**入 git；以本機檔或 Release **發佈詞庫快照** 為準。獨立「只換庫」workflow **已退役**。
@@ -57,8 +60,8 @@ git push -f origin v1.0.0
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.0.0 -Upload -SkipReadmeSync
 ```
 
-會：重打 zip 並 **只上傳 zip**；**唔**覆寫 `lyrics.db`／`words-lexicon.json`（Pages 繼續用舊庫資產）。  
-逃生（罕見）：`-WithLexicon` 強制重傳庫。
+會：重打 zip；預設 **只上傳 zip**（程式-only）。  
+同 tag 換庫快照：加 `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`（須本機已 `build-db`）。
 
 **唔好**喺刷新時刪除 Release 上嘅 `lyrics.db`。
 
@@ -79,7 +82,7 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 
 ## 步驟 3 — Pages（PWA）
 
-見 [pwa.md](pwa.md)：從 **同一 tag** Release 下載既有 `lyrics.db` 再 deploy。換庫用新 tag；程式刷新唔改庫資產。
+見 [pwa.md](pwa.md)：從 **同一 tag** Release 下載 `lyrics.db` 再 deploy。同 tag 換庫快照後須 redeploy Pages；大換庫用新 tag。
 
 ## 驗收（macOS）
 
@@ -88,4 +91,4 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ## 退役說明
 
 - **詞庫發佈**（只換 db／json）：已取消；勿再跑 `release-lexicon.yml`。
-- 換庫 = 新 semver **全量發佈**。
+- 大換庫 = 新 semver **全量發佈**；細換庫 = 同 tag + `-WithLexicon`（見分級表）。

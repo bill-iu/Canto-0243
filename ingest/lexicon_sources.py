@@ -136,6 +136,8 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
         code = str(item.get("code") or "").strip() or None
         if not char or not jyutping or not _CJK.search(char):
             continue
+        # same HK fold as _append_candidate (curated JSON previously skipped s2hk)
+        char = to_traditional(char)
         candidate = _NORMALIZER.normalize_candidate(char, jyutping, source_id=source_id, code=code)
         if not candidate:
             continue

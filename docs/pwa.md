@@ -6,7 +6,7 @@
 
 - PWA 部署位置：GitHub Pages（Project Pages）`/Canto-0243/`
 - 詞庫版本：跟 release tag（semver，例如 `v1.0.3`）
-- DB 更新：跟 **新 semver 全量發佈**（換庫開新 tag）；程式刷新同一 tag **唔**覆寫 Release 上嘅 `lyrics.db`
+- DB 更新：大換庫跟 **新 semver 全量發佈**；細換庫可同一 tag `-WithLexicon` 覆寫；程式-only 刷新 **唔**覆寫庫
 
 ## 發佈順序（必做）
 
@@ -17,7 +17,7 @@
 ### 1) 確保 tag release 已有 `lyrics.db`
 
 - **新 tag（換庫）**：發佈主理用 `release-windows-local.ps1 -Upload` 首次建立 Release 時會上傳 `lyrics.db`
-- **刷新同一 tag（程式-only）**：保留既有 `lyrics.db` 資產；**唔好刪**
+- **刷新同一 tag（程式-only）**：保留既有 `lyrics.db`；細換庫加 `-WithLexicon` 先覆寫；**唔好刪**後無得下載
 
 獨立「只換庫」workflow 已退役；見 [release.md](release.md)。
 

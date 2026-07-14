@@ -70,6 +70,13 @@ def pair_undirected_key(head: str, tail: str) -> Tuple[str, str]:
     return (head, tail) if head <= tail else (tail, head)
 
 
+def _normalized_pair_key(head: str, tail: str) -> Tuple[str, str]:
+    """Undirected key after s2hk — sample-parent git blobs may predate HK variant folds."""
+    nh = normalize_literal(str(head).strip()) or str(head).strip()
+    nt = normalize_literal(str(tail).strip()) or str(tail).strip()
+    return pair_undirected_key(nh, nt)
+
+
 def sample_size_for(n: int) -> int:
     if n <= 0:
         return 0
@@ -620,14 +627,14 @@ def assert_sample_replayable(
     """Replay sample + enforce fail removal + bind parent hash when git blob exists."""
     removed = entry["removed_sample_fails"]
     removed_keys = {
-        pair_undirected_key(str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed
+        _normalized_pair_key(str(r["head"]), str(r["tail"])) for r in removed
     }
-    accepted_keys = {pair_undirected_key(p.head, p.tail) for p in accepted}
+    accepted_keys = {_normalized_pair_key(p.head, p.tail) for p in accepted}
     fail_keys: Set[Tuple[str, str]] = set()
     for i, row in enumerate(entry["sample_verdicts"]):
         if str(row["verdict"]).strip().lower() != "fail":
             continue
-        key = pair_undirected_key(str(row["head"]).strip(), str(row["tail"]).strip())
+        key = _normalized_pair_key(str(row["head"]), str(row["tail"]))
         fail_keys.add(key)
         if key not in removed_keys:
             raise ProjectAntonymsError(
@@ -659,41 +666,45 @@ def assert_sample_replayable(
             f"{path}: batches[{batch_id!r}] sample_parent_tsv_sha256 mismatch: "
             f"meta={expected_hash} git={got_hash}"
         )
-    parent: List[Tuple[str, str]] = [(p.head, p.tail) for p in accepted]
-    parent.extend((str(r["head"]).strip(), str(r["tail"]).strip()) for r in removed)
-    # ponytail: final-audit may drop pairs after batch land — restore directional
-    # rows from the sample-parent git blob so sample_pairs order/replay match.
-    parent_keys = {pair_undirected_key(h, t) for h, t in parent}
     git_rows = _tsv_pair_rows_for_batch(blob, batch_id)
-    for h, t in git_rows:
-        key = pair_undirected_key(h, t)
-        if key in _final_audit_removed_pair_keys() and key not in parent_keys:
-            parent.append((h, t))
-            parent_keys.add(key)
+    git_keys = {_normalized_pair_key(h, t) for h, t in git_rows}
+    audit_keys = {
+        _normalized_pair_key(h, t) for h, t in _final_audit_removed_pair_keys()
+    }
+    # Current TSV + sample-fail removals + post-land drops must cover locked parent.
+    parent_keys = set(accepted_keys) | removed_keys | (git_keys & audit_keys)
 
     parent_n = int(entry["sample_parent_n"])
-    if len(parent) != parent_n:
+    if len(git_rows) != parent_n:
         raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] reconstructed parent size "
-            f"{len(parent)} != sample_parent_n={parent_n}"
+            f"{path}: batches[{batch_id!r}] git parent size "
+            f"{len(git_rows)} != sample_parent_n={parent_n}"
         )
     if len(parent_keys) != parent_n:
         raise ProjectAntonymsError(
-            f"{path}: batches[{batch_id!r}] reconstructed parent has duplicates"
+            f"{path}: batches[{batch_id!r}] reconstructed parent size "
+            f"{len(parent_keys)} != sample_parent_n={parent_n}"
         )
-
-    git_keys = {pair_undirected_key(h, t) for h, t in git_rows}
-    if git_keys != parent_keys:
+    if parent_keys != git_keys:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] reconstructed parent set != "
             f"git TSV batch slice at sample_parent_commit"
         )
 
-    sampled = sample_pairs(parent, seed=int(entry["sample_seed"]))
+    # ponytail: sample against locked git ordering; compare after s2hk (覈→核, 脫→脱…).
+    sampled = sample_pairs(git_rows, seed=int(entry["sample_seed"]))
     expected = [
         (str(v["head"]).strip(), str(v["tail"]).strip()) for v in entry["sample_verdicts"]
     ]
-    if sampled != expected:
+    def _dir_norm(h: str, t: str) -> Tuple[str, str]:
+        return (
+            normalize_literal(h) or h,
+            normalize_literal(t) or t,
+        )
+
+    sampled_n = [_dir_norm(h, t) for h, t in sampled]
+    expected_n = [_dir_norm(h, t) for h, t in expected]
+    if sampled_n != expected_n:
         raise ProjectAntonymsError(
             f"{path}: batches[{batch_id!r}] sample replay mismatch "
             f"(seed={entry['sample_seed']}, parent_n={parent_n})"

@@ -298,17 +298,24 @@ class LexiconSupplementSourceTests(unittest.TestCase):
         self.assertIsNotNone(candidate)
         self.assertEqual(candidate.code, "AV")
 
-    def test_low_rank_source_does_not_add_alternate_claimed_multi_reading(self):
+    def test_low_rank_source_may_add_alternate_reading_but_not_rewrite(self):
         high = [LexiconCandidate("一行", "jat1 hong4", "30", ("words_hk",))]
         low = [
             LexiconCandidate("一行", "jat1 hang4", "30", ("rime_words",)),
+            # same jyutping, different code — must keep high-rank code, merge provenance
+            LexiconCandidate("一行", "jat1 hong4", "99", ("rime_words",)),
             LexiconCandidate("新詞", "san1 ci4", "30", ("rime_words",)),
         ]
         rows = merge_lexicon_candidates([(90, high), (10, low)])
 
         by_pair = {(r.char, r.jyutping): r for r in rows}
         self.assertIn(("一行", "jat1 hong4"), by_pair)
-        self.assertNotIn(("一行", "jat1 hang4"), by_pair)
+        self.assertIn(("一行", "jat1 hang4"), by_pair)
+        self.assertEqual(by_pair[("一行", "jat1 hong4")].code, "30")
+        self.assertEqual(
+            set(by_pair[("一行", "jat1 hong4")].sources),
+            {"words_hk", "rime_words"},
+        )
         self.assertIn(("新詞", "san1 ci4"), by_pair)
 
     def test_supplement_sources_are_local_only_raw_files(self):
