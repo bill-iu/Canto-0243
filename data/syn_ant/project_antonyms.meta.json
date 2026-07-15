@@ -4925,6 +4925,341 @@
       ],
       "accepted_pairs": 576,
       "created_at": "2026-07-15T09:15:11Z"
+    },
+    "len4-b03-20260715": {
+      "k": 309,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
+      "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+      "model_note": "len4-b03 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260718; soft-prefer 4-char tails [parent land provisional]",
+      "model": "xai/grok-4",
+      "model_provider": "xAI",
+      "model_version": "grok-4",
+      "model_params": {
+        "generation_mode": "maintainer_curated_blind_style",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "len4",
+        "batch_index": 3
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv len4-b03-20260715 parent N=635",
+      "sample_parent_n": 635,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_verdicts": [
+        {
+          "head": "久經考驗",
+          "tail": "稚嫩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "互通有無",
+          "tail": "各自為政",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "亡命之徒",
+          "tail": "良民",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "付之東流",
+          "tail": "落袋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "以此類推",
+          "tail": "特例",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "停薪留職",
+          "tail": "全職",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "刨根問底",
+          "tail": "不求甚解",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "千夫所指",
+          "tail": "眾望所歸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "只爭朝夕",
+          "tail": "虛度光陰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "名噪一時",
+          "tail": "無名",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吶喊助威",
+          "tail": "冷眼旁觀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吶喊助威",
+          "tail": "喝倒彩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大興土木",
+          "tail": "停工",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "奇裝異服",
+          "tail": "中規中矩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "寸土寸金",
+          "tail": "不毛之地",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "憨態可掬",
+          "tail": "精明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打入冷宮",
+          "tail": "重用",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "抓耳撓腮",
+          "tail": "淡定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拂袖而去",
+          "tail": "依依不捨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拉拉扯扯",
+          "tail": "乾脆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "挑三揀四",
+          "tail": "隨意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "攜手並肩",
+          "tail": "分道揚鑣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "東拼西湊",
+          "tail": "完整",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "混世魔王",
+          "tail": "救世主",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "混世魔王",
+          "tail": "賢人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無恥之徒",
+          "tail": "義士",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "物盡其用",
+          "tail": "暴殄天物",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "玲瓏剔透",
+          "tail": "遲鈍",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當頭棒喝",
+          "tail": "輕描淡寫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "痛快淋漓",
+          "tail": "憋悶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "痛快淋漓",
+          "tail": "扭扭捏捏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "直來直去",
+          "tail": "含蓄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "看家本領",
+          "tail": "三腳貓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "經久不息",
+          "tail": "轉瞬即逝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老大不小",
+          "tail": "年幼",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "胸懷大志",
+          "tail": "碌碌",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "胸懷大志",
+          "tail": "胸無大志",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "草草收場",
+          "tail": "善始善終",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "言外之意",
+          "tail": "明説",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "超額利潤",
+          "tail": "赤字",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "迷惑不解",
+          "tail": "恍然大悟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "通風報信",
+          "tail": "守口如瓶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過街老鼠",
+          "tail": "有口皆碑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "閉口不談",
+          "tail": "暢所欲言",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "頭昏眼花",
+          "tail": "神清氣爽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "頭昏腦脹",
+          "tail": "清醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "飄飄欲仙",
+          "tail": "沮喪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "飽經滄桑",
+          "tail": "稚嫩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "騰雲駕霧",
+          "tail": "寸步難行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "魚死網破",
+          "tail": "和平共處",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [],
+      "accepted_pairs": 635,
+      "created_at": "2026-07-15T09:17:44Z"
     }
   },
   "post_land_removed_pairs": [
