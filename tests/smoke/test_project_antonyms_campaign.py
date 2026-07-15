@@ -723,5 +723,147 @@ class CampaignLiveFreezeTests(unittest.TestCase):
         self.assertEqual(progress["unresolved"] + progress["resolved"], CAMPAIGN_K)
 
 
+class Len4CampaignTests(unittest.TestCase):
+    """campaign_len4: full_set + residual batch + no-natural inherit."""
+
+    def test_rank_length_filter_four(self):
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add_all(
+                [
+                    Word(id=1, char="甲乙丙丁", code="3333", jyutping="", length=4),
+                    Word(id=2, char="近義四字", code="3333", jyutping="", length=4),
+                    Word(id=3, char="二字", code="33", jyutping="", length=2),
+                    Word(id=4, char="近二字", code="33", jyutping="", length=2),
+                ]
+            )
+            db.add_all(
+                [
+                    WordRelation(
+                        word_id=1, related_id=2, relation_type="syn", source="cilin"
+                    ),
+                    WordRelation(
+                        word_id=3, related_id=4, relation_type="syn", source="cilin"
+                    ),
+                ]
+            )
+            db.commit()
+            from ingest.project_antonyms_campaign import LEN4_SPEC, rank_campaign_heads
+
+            heads = rank_campaign_heads(
+                db,
+                essay_freq=lambda ch: 100 if ch == "甲乙丙丁" else 1,
+                membership={"甲乙丙丁", "近義四字", "二字", "近二字"},
+                static_ant_heads=set(),
+                spec=LEN4_SPEC,
+            )
+            self.assertTrue(heads)
+            self.assertTrue(all(len(h.head) == 4 for h in heads))
+            self.assertEqual(heads[0].head, "甲乙丙丁")
+            self.assertNotIn("二字", {h.head for h in heads})
+
+    def test_residual_batch_meta_roundtrip(self):
+        from ingest.project_antonyms_campaign import (
+            LEN4_SPEC,
+            build_campaign_meta,
+            expected_batch_count,
+            parse_campaign_manifest,
+            write_campaign_manifest,
+        )
+
+        # k=1234 → 2×500 + 234 residual (use batch_size 500)
+        k = 1234
+        batch_size = 500
+        _d = "零一二三四五六七八九"
+
+        def _head(i: int) -> str:
+            # always 4 CJK digit chars
+            return "".join(_d[int(c)] for c in f"{i:04d}")
+
+        heads = [
+            CampaignHead(
+                rank=i,
+                head=_head(i),
+                essay_frequency=2000 - i,
+                batch_index=(i - 1) // batch_size + 1,
+            )
+            for i in range(1, k + 1)
+        ]
+        self.assertTrue(all(len(h.head) == 4 for h in heads))
+        self.assertEqual(expected_batch_count(k, batch_size), 3)
+        self.assertEqual(heads[-1].batch_index, 3)
+        with tempfile.TemporaryDirectory() as tmp:
+            tsv = Path(tmp) / "m.tsv"
+            meta_path = Path(tmp) / "m.meta.json"
+            db = Path(tmp) / "x.db"
+            db.write_bytes(b"sqlite")
+            essay = Path(tmp) / "essay.txt"
+            essay.write_text("a", encoding="utf-8")
+            ant = Path(tmp) / "ant.txt"
+            ant.write_text("b", encoding="utf-8")
+            with mock.patch(
+                "ingest.project_antonyms_campaign._git_rev_parse",
+                return_value="b" * 40,
+            ):
+                meta = build_campaign_meta(
+                    heads=heads,
+                    db_path=db,
+                    essay_path=essay,
+                    thesaurus_ant_path=ant,
+                    baseline_commit="b" * 40,
+                    spec=LEN4_SPEC,
+                    inherited_no_natural_count=2,
+                    inherited_no_natural_source="data/syn_ant/project_no_natural_antonyms.tsv",
+                )
+            self.assertEqual(meta["k"], k)
+            self.assertEqual(meta["batch_count"], 3)
+            self.assertEqual(meta["batch_counts"]["1"], 500)
+            self.assertEqual(meta["batch_counts"]["2"], 500)
+            self.assertEqual(meta["batch_counts"]["3"], 234)
+            self.assertEqual(meta["campaign_id"], "len4")
+            self.assertEqual(meta["length_filter"], 4)
+            write_campaign_manifest(heads, meta, tsv_path=tsv, meta_path=meta_path)
+            parsed = parse_campaign_manifest(tsv, meta_path=meta_path, spec=LEN4_SPEC)
+            self.assertEqual(len(parsed), k)
+            self.assertEqual(parsed[-1].batch_index, 3)
+
+    def test_inherit_no_natural_filters_to_campaign(self):
+        from ingest.project_antonyms_campaign import (
+            NO_NATURAL_REASONS,
+            inherit_no_natural_rows,
+            parse_no_natural_tsv,
+        )
+
+        reason = next(iter(NO_NATURAL_REASONS))
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "src.tsv"
+            dest = Path(tmp) / "dest.tsv"
+            src.write_text(
+                "head\treason\tbatch_id\n"
+                f"不知不覺\t{reason}\tb1\n"
+                f"二字詞\t{reason}\tb1\n"
+                f"小心翼翼\t{reason}\tb2\n",
+                encoding="utf-8",
+            )
+            n, rows = inherit_no_natural_rows(
+                source_path=src,
+                campaign_heads={"不知不覺", "小心翼翼", "其他四字"},
+                dest_path=dest,
+            )
+            self.assertEqual(n, 2)
+            self.assertEqual({r[0] for r in rows}, {"不知不覺", "小心翼翼"})
+            loaded = parse_no_natural_tsv(
+                dest, campaign_heads={"不知不覺", "小心翼翼"}
+            )
+            self.assertEqual(len(loaded), 2)
+            with self.assertRaises(ProjectAntonymsError):
+                inherit_no_natural_rows(
+                    source_path=src,
+                    campaign_heads={"不知不覺"},
+                    dest_path=dest,
+                    overwrite=False,
+                )
+
+
 if __name__ == "__main__":
     unittest.main()
