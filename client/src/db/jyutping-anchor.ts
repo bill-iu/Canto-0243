@@ -42,6 +42,22 @@ function isHybridRhymeLetters(letters: string): boolean {
   return classifyLatinAnchor(text) === 'rhyme_letters';
 }
 
+/** 碼尾／中格聲母：單輔音或 gw／kw；ng／m 走 dual／韻。 */
+function isHybridInitialLetters(letters: string): boolean {
+  const text = letters.trim().toLowerCase();
+  if (text === 'gw' || text === 'kw') {
+    return true;
+  }
+  if (AMBIGUOUS_PHONEME_LETTERS.has(text) || VOWEL_RHYME_LETTERS.has(text)) {
+    return false;
+  }
+  return text.length === 1 && classifyLatinAnchor(text) === 'initial_letters';
+}
+
+function denseCodeSlots(prefix: string): Array<[number, string]> {
+  return [...prefix].map((d, i) => [i, d] as [number, string]);
+}
+
 function anchorValueForKind(kind: AnchorKind, letters: string): string | null {
   const lower = letters.toLowerCase();
   if (kind === 'rhyme_letters') {
@@ -58,6 +74,9 @@ export function classifyLatinAnchor(letters: string): AnchorKind | null {
   const text = (letters ?? '').trim().toLowerCase();
   if (!text || !/^[a-z]+$/.test(text)) {
     return null;
+  }
+  if (text === 'gw' || text === 'kw') {
+    return 'initial_letters';
   }
   if (VOWEL_RHYME_LETTERS.has(text) || text === 'ng') {
     return 'rhyme_letters';
@@ -141,13 +160,15 @@ function parseDualPhonemeAnchorQuery(q: string): JyutpingAnchorParsed | null {
     const left = m[1]!;
     const letters = m[2]!.toLowerCase();
     const right = m[3]!;
+    const prefix = left + right;
     return {
       raw_q: q,
-      width: left.length + right.length,
+      width: prefix.length,
       anchor_pos: Math.max(0, left.length - 1),
       anchor_kind: 'rhyme_letters',
       anchor_value: normalizeRhymeLetters(letters),
-      code_prefix: left + right,
+      code_prefix: prefix,
+      code_slots: denseCodeSlots(prefix),
       equals_style: true,
       dual_phoneme: true,
       dual_initial_value: letters,
@@ -280,13 +301,15 @@ function parseCodeClusterInitialQuery(q: string): JyutpingAnchorParsed | null {
   if (cluster === 'ng') {
     return null;
   }
+  const prefix = m[1]! + m[3]!;
   return {
     raw_q: q,
     width: 2,
     anchor_pos: 0,
     anchor_kind: 'initial_letters',
     anchor_value: cluster,
-    code_prefix: m[1]! + m[3]!,
+    code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
     equals_style: true,
   };
 }
@@ -300,13 +323,39 @@ function parseCodeInitialQuery(q: string): JyutpingAnchorParsed | null {
   if (classifyLatinAnchor(letter) !== 'initial_letters') {
     return null;
   }
+  const prefix = m[1]! + m[3]!;
   return {
     raw_q: q,
     width: 2,
     anchor_pos: 0,
     anchor_kind: 'initial_letters',
     anchor_value: letter,
+    code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
+    equals_style: true,
+  };
+}
+
+function parseCodeInitialThreeQuery(q: string): JyutpingAnchorParsed | null {
+  const m = q.match(/^(\d)[?+]([a-zA-Z]+)(\d)$/i);
+  if (!m) {
+    return null;
+  }
+  const letters = m[2]!.toLowerCase();
+  if (!isHybridInitialLetters(letters)) {
+    return null;
+  }
+  return {
+    raw_q: q,
+    width: 3,
+    anchor_pos: 1,
+    anchor_kind: 'initial_letters',
+    anchor_value: letters,
     code_prefix: m[1]! + m[3]!,
+    code_slots: [
+      [0, m[1]!],
+      [2, m[3]!],
+    ],
     equals_style: true,
   };
 }
@@ -320,13 +369,15 @@ function parseCodeSyllableTwoQuery(q: string): JyutpingAnchorParsed | null {
   if (classifyLatinAnchor(letters) !== 'syllable_letters') {
     return null;
   }
+  const prefix = m[1]! + m[3]!;
   return {
     raw_q: q,
     width: 2,
     anchor_pos: 0,
     anchor_kind: 'syllable_letters',
     anchor_value: letters,
-    code_prefix: m[1]! + m[3]!,
+    code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
   };
 }
 
@@ -348,13 +399,15 @@ function parseCodeRhymeEqualsQuery(q: string): JyutpingAnchorParsed | null {
   if (!value) {
     return null;
   }
+  const prefix = left + right;
   return {
     raw_q: q,
-    width: left.length + right.length,
+    width: prefix.length,
     anchor_pos: Math.max(0, left.length - 1),
     anchor_kind: 'rhyme_letters',
     anchor_value: value,
-    code_prefix: left + right,
+    code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
     equals_style: true,
   };
 }
@@ -379,6 +432,7 @@ function parseHybridJyutpingSyllableQuery(q: string): JyutpingAnchorParsed | nul
     anchor_kind: 'syllable_letters',
     anchor_value: letters,
     code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
   };
 }
 
@@ -406,7 +460,33 @@ function parseRhymeVowelHybridQuery(q: string): JyutpingAnchorParsed | null {
     anchor_kind: 'rhyme_letters',
     anchor_value: value,
     code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
     hybrid_rhyme: true,
+  };
+}
+
+function parseHybridInitialQuery(q: string): JyutpingAnchorParsed | null {
+  if (q.includes('?') || q.includes(CODE_SLOT)) {
+    return null;
+  }
+  const m = q.match(/^(\d+)([a-zA-Z]+)$/i);
+  if (!m) {
+    return null;
+  }
+  const letters = m[2]!.toLowerCase();
+  if (!isHybridInitialLetters(letters)) {
+    return null;
+  }
+  const prefix = m[1]!;
+  return {
+    raw_q: q,
+    width: prefix.length,
+    anchor_pos: prefix.length - 1,
+    anchor_kind: 'initial_letters',
+    anchor_value: letters,
+    code_prefix: prefix,
+    code_slots: denseCodeSlots(prefix),
+    equals_style: true,
   };
 }
 
@@ -431,8 +511,30 @@ function parseCodeRhymePlusTailQuery(q: string): JyutpingAnchorParsed | null {
     anchor_kind: 'rhyme_letters',
     anchor_value: value,
     code_prefix: code,
-    code_slots: [...code].map((d, i) => [i, d] as [number, string]),
+    code_slots: denseCodeSlots(code),
     hybrid_rhyme: true,
+  };
+}
+
+function parseCodeInitialPlusTailQuery(q: string): JyutpingAnchorParsed | null {
+  const m = q.match(/^(\d+)\+([a-zA-Z]+)$/i);
+  if (!m) {
+    return null;
+  }
+  const letters = m[2]!.toLowerCase();
+  if (!isHybridInitialLetters(letters)) {
+    return null;
+  }
+  const code = m[1]!;
+  return {
+    raw_q: q,
+    width: code.length + 1,
+    anchor_pos: code.length,
+    anchor_kind: 'initial_letters',
+    anchor_value: letters,
+    code_prefix: code,
+    code_slots: denseCodeSlots(code),
+    equals_style: true,
   };
 }
 
@@ -447,13 +549,16 @@ export function parseJyutpingAnchorQuery(q: string): JyutpingAnchorParsed | null
     parseEndJyutpingSyllableQuery,
     parseCodeSyllableThreeQuery,
     parseCodeRhymeThreeQuery,
+    parseCodeInitialThreeQuery,
     parseCodeClusterInitialQuery,
     parseCodeInitialQuery,
     parseCodeSyllableTwoQuery,
     parseCodeRhymeEqualsQuery,
     parseCodeRhymePlusTailQuery,
+    parseCodeInitialPlusTailQuery,
     parseHybridJyutpingSyllableQuery,
     parseRhymeVowelHybridQuery,
+    parseHybridInitialQuery,
   ];
   for (const parser of parsers) {
     const parsed = parser(q);

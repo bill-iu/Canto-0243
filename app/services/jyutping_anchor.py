@@ -50,6 +50,8 @@ def classify_latin_anchor(letters: str) -> Optional[AnchorKind]:
     text = (letters or "").strip().lower()
     if not text or not text.isalpha():
         return None
+    if text in ("gw", "kw"):
+        return "initial_letters"
     if text in VOWEL_RHYME_LETTERS or text == STANDALONE_NG:
         return "rhyme_letters"
     if len(text) == 1:
@@ -64,6 +66,20 @@ def _is_hybrid_rhyme_letters(letters: str) -> bool:
     if text in VOWEL_RHYME_LETTERS or text in AMBIGUOUS_PHONEME_LETTERS:
         return True
     return classify_latin_anchor(text) == "rhyme_letters"
+
+
+def _is_hybrid_initial_letters(letters: str) -> bool:
+    """碼尾／中格聲母：單輔音或 gw／kw；ng／m 走 dual／韻，唔入呢條。"""
+    text = (letters or "").strip().lower()
+    if text in ("gw", "kw"):
+        return True
+    if text in AMBIGUOUS_PHONEME_LETTERS or text in VOWEL_RHYME_LETTERS:
+        return False
+    return len(text) == 1 and classify_latin_anchor(text) == "initial_letters"
+
+
+def _dense_code_slots(prefix: str) -> list[tuple[int, str]]:
+    return [(i, d) for i, d in enumerate(prefix)]
 
 
 def default_syllable_letters_for_anchor_char(char: str) -> Optional[str]:
@@ -122,13 +138,15 @@ def parse_dual_phoneme_anchor_query(q: str) -> Optional[dict]:
     m = re.match(r"^(\d+)(m|ng)(\d+)$", q, re.IGNORECASE)
     if m:
         left, letters, right = m.group(1), m.group(2).lower(), m.group(3)
+        prefix = left + right
         return {
             "raw_q": q,
-            "width": len(left) + len(right),
+            "width": len(prefix),
             "anchor_pos": max(0, len(left) - 1),
             "anchor_kind": "rhyme_letters",
             "anchor_value": normalize_rhyme_letters(letters),
-            "code_prefix": left + right,
+            "code_prefix": prefix,
+            "code_slots": _dense_code_slots(prefix),
             "equals_style": True,
             "dual_phoneme": True,
             "dual_initial_value": letters,
@@ -144,13 +162,15 @@ def parse_code_cluster_initial_query(q: str) -> Optional[dict]:
     cluster = m.group(2).lower()
     if cluster == "ng":
         return None
+    prefix = m.group(1) + m.group(3)
     return {
         "raw_q": q,
         "width": 2,
         "anchor_pos": 0,
         "anchor_kind": "initial_letters",
         "anchor_value": cluster,
-        "code_prefix": m.group(1) + m.group(3),
+        "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
         "equals_style": True,
     }
 
@@ -244,13 +264,15 @@ def parse_code_syllable_two_query(q: str) -> Optional[dict]:
     letters = m.group(2).lower()
     if classify_latin_anchor(letters) != "syllable_letters":
         return None
+    prefix = m.group(1) + m.group(3)
     return {
         "raw_q": q,
         "width": 2,
         "anchor_pos": 0,
         "anchor_kind": "syllable_letters",
         "anchor_value": letters,
-        "code_prefix": m.group(1) + m.group(3),
+        "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
     }
 
 
@@ -262,13 +284,35 @@ def parse_code_initial_query(q: str) -> Optional[dict]:
     letter = m.group(2).lower()
     if classify_latin_anchor(letter) != "initial_letters":
         return None
+    prefix = m.group(1) + m.group(3)
     return {
         "raw_q": q,
         "width": 2,
         "anchor_pos": 0,
         "anchor_kind": "initial_letters",
         "anchor_value": letter,
+        "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
+        "equals_style": True,
+    }
+
+
+def parse_code_initial_three_query(q: str) -> Optional[dict]:
+    """{首碼}+{聲母}{末碼} / {首碼}?{聲母}{末碼} — 三字中格聲母（3+p4 ≡ 3?p4；gw／kw 同）。"""
+    m = re.match(rf"^(\d)[\?{_SLOT}]([a-zA-Z]+)(\d)$", q)
+    if not m:
+        return None
+    letters = m.group(2).lower()
+    if not _is_hybrid_initial_letters(letters):
+        return None
+    return {
+        "raw_q": q,
+        "width": 3,
+        "anchor_pos": 1,
+        "anchor_kind": "initial_letters",
+        "anchor_value": letters,
         "code_prefix": m.group(1) + m.group(3),
+        "code_slots": [(0, m.group(1)), (2, m.group(3))],
         "equals_style": True,
     }
 
@@ -283,14 +327,16 @@ def parse_code_rhyme_equals_query(q: str) -> Optional[dict]:
         return None
     if classify_latin_anchor(letters) != "rhyme_letters":
         return None
-    width = len(left) + len(right)
+    prefix = left + right
+    width = len(prefix)
     return {
         "raw_q": q,
         "width": width,
         "anchor_pos": max(0, len(left) - 1),
         "anchor_kind": "rhyme_letters",
         "anchor_value": normalize_rhyme_letters(letters),
-        "code_prefix": left + right,
+        "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
         "equals_style": True,
     }
 
@@ -311,6 +357,7 @@ def parse_hybrid_jyutping_syllable_query(q: str) -> Optional[dict]:
         "anchor_kind": "syllable_letters",
         "anchor_value": letters,
         "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
     }
 
 
@@ -330,7 +377,29 @@ def parse_rhyme_vowel_hybrid_query(q: str) -> Optional[dict]:
         "anchor_kind": "rhyme_letters",
         "anchor_value": normalize_rhyme_letters(letters),
         "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
         "hybrid_rhyme": True,
+    }
+
+
+def parse_hybrid_initial_query(q: str) -> Optional[dict]:
+    """{碼}{聲母} — 碼後聲母錨末格（34p／34gw，對 23o）。"""
+    m = re.match(r"^(\d+)([a-zA-Z]+)$", q)
+    if not m or "?" in q or CODE_TAIL_MIDDLE in q:
+        return None
+    letters = m.group(2).lower()
+    if not _is_hybrid_initial_letters(letters):
+        return None
+    prefix = m.group(1)
+    return {
+        "raw_q": q,
+        "width": len(prefix),
+        "anchor_pos": len(prefix) - 1,
+        "anchor_kind": "initial_letters",
+        "anchor_value": letters,
+        "code_prefix": prefix,
+        "code_slots": _dense_code_slots(prefix),
+        "equals_style": True,
     }
 
 
@@ -350,8 +419,29 @@ def parse_code_rhyme_plus_tail_query(q: str) -> Optional[dict]:
         "anchor_kind": "rhyme_letters",
         "anchor_value": normalize_rhyme_letters(letters),
         "code_prefix": code,
-        "code_slots": [(i, d) for i, d in enumerate(code)],
+        "code_slots": _dense_code_slots(code),
         "hybrid_rhyme": True,
+    }
+
+
+def parse_code_initial_plus_tail_query(q: str) -> Optional[dict]:
+    """{碼}+{聲母} — 三字碼尾聲母錨（34+p／34+gw，對 23+o）。"""
+    m = re.match(rf"^(\d+){_SLOT}([a-zA-Z]+)$", q)
+    if not m:
+        return None
+    letters = m.group(2).lower()
+    if not _is_hybrid_initial_letters(letters):
+        return None
+    code = m.group(1)
+    return {
+        "raw_q": q,
+        "width": len(code) + 1,
+        "anchor_pos": len(code),
+        "anchor_kind": "initial_letters",
+        "anchor_value": letters,
+        "code_prefix": code,
+        "code_slots": _dense_code_slots(code),
+        "equals_style": True,
     }
 
 
@@ -367,13 +457,16 @@ def parse_jyutping_anchor_query(q: str) -> Optional[dict]:
         parse_end_jyutping_syllable_query,
         parse_code_syllable_three_query,
         parse_code_rhyme_three_query,
+        parse_code_initial_three_query,
         parse_code_cluster_initial_query,
         parse_code_initial_query,
         parse_code_syllable_two_query,
         parse_code_rhyme_equals_query,
         parse_code_rhyme_plus_tail_query,
+        parse_code_initial_plus_tail_query,
         parse_hybrid_jyutping_syllable_query,
         parse_rhyme_vowel_hybrid_query,
+        parse_hybrid_initial_query,
     ):
         parsed = parser(q)
         if parsed:
