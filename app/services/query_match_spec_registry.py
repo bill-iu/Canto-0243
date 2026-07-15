@@ -7,16 +7,11 @@ from app.services.position_match import MatchSpec, SlotConstraint
 from app.services.position_match.spec import EqualsSpan, attach_equals_span, get_equals_span
 from app.services.query_types import (
     CodeRefMiddleRhymeQuery,
-    CompoundAntQuery,
-    CompoundConnectAntQuery,
-    CompoundConnectSynQuery,
-    CompoundSynQuery,
     EqualsQuery,
     JyutpingAnchorQuery,
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
-    PingZeSerialQuery,
     PartialRhymeMaskQuery,
     PrefixWildcardEqualsQuery,
     QueryKind,
@@ -265,121 +260,16 @@ def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return spec
 
 
-def _apply_ping_ze_slots(spec: MatchSpec, raw_q: str) -> None:
-    code_digit_positions = {slot.pos for slot in spec.slots if slot.kind == "code_digit"}
-    fixed_positions = {
-        slot.pos
-        for slot in spec.slots
-        if slot.kind not in ("code_digit", "tone_class") and slot.pos not in code_digit_positions
-    }
-    code_positions = [pos for pos in range(spec.width) if pos not in fixed_positions]
-    tokens = [token for token in raw_q if token in "PZ?" or token.isdigit()]
-    for index, token in enumerate(tokens):
-        if token not in "PZ" or index >= len(code_positions):
-            continue
-        pos = code_positions[index]
-        spec.slots = [slot for slot in spec.slots if not (slot.pos == pos and slot.kind == "code_digit")]
-        spec.mask = spec.mask[:pos] + "?" + spec.mask[pos + 1 :]
-        spec.slots.append(
-            SlotConstraint(pos=pos, kind="tone_class", value="ping" if token == "P" else "ze")
-        )
-
-
 def _spec_ping_ze_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.PING_ZE_SERIAL
-    if not isinstance(parsed, PingZeSerialQuery):
-        return None
-    if parsed.base is not None:
-        spec = build_match_spec_for_parsed(parsed.base)
-        if spec is None:
-            return None
-        spec.extra["code_mode"] = parsed.pzmode
-        _apply_ping_ze_slots(spec, parsed.raw_q)
-        return spec
-    spec = MatchSpec(width=len(parsed.raw_q), mask="?" * len(parsed.raw_q))
-    spec.extra["code_mode"] = parsed.pzmode
-    for pos, token in enumerate(parsed.raw_q):
-        if token == "P":
-            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ping"))
-        elif token == "Z":
-            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ze"))
-        elif token.isdigit():
-            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=token))
-    if parsed.anchor:
-        spec.width += 1
-        spec.mask = "?" * spec.width
-        spec.slots.append(
-            SlotConstraint(pos=len(parsed.raw_q), kind="final_anchor", value=parsed.anchor)
-        )
-    return spec
+    from app.services.ping_zak import to_match_spec as pingze_to_match_spec
+
+    return pingze_to_match_spec(parsed)
 
 
-def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.COMPOUND_DOUBLED_SYLLABLE
-    from app.services.query_types import CompoundDoubledSyllableQuery
+def _spec_relation(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    from app.services.query_grammar.relation import to_match_spec as relation_to_match_spec
 
-    if not isinstance(parsed, CompoundDoubledSyllableQuery):
-        return None
-    spec = MatchSpec(
-        width=parsed.width,
-        compound_kind="doubled_syllable",
-    )
-    append_code_digit_slots(spec, parsed.code_prefix)
-    if parsed.rhyme_char:
-        spec.slots.append(
-            SlotConstraint(pos=parsed.width - 1, kind="final_anchor", value=parsed.rhyme_char)
-        )
-    return spec
-
-
-def _spec_compound_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    if not isinstance(parsed, CompoundSynQuery):
-        return None
-    spec = MatchSpec(width=2, compound_kind="syn")
-    append_code_digit_slots(spec, parsed.code_prefix)
-    if parsed.rhyme_char:
-        spec.slots.append(
-            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
-        )
-    return spec
-
-
-def _spec_compound_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    if not isinstance(parsed, CompoundAntQuery):
-        return None
-    spec = MatchSpec(width=2, compound_kind="ant")
-    append_code_digit_slots(spec, parsed.code_prefix)
-    if parsed.rhyme_char:
-        spec.slots.append(
-            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
-        )
-    return spec
-
-
-def _spec_compound_connect_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    if not isinstance(parsed, CompoundConnectSynQuery):
-        return None
-    spec = MatchSpec(width=3, compound_kind="syn")
-    spec.extra["connective"] = parsed.connective
-    append_code_digit_slots(spec, parsed.code_prefix)
-    if parsed.rhyme_char:
-        spec.slots.append(
-            SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
-        )
-    return spec
-
-
-def _spec_compound_connect_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    if not isinstance(parsed, CompoundConnectAntQuery):
-        return None
-    spec = MatchSpec(width=3, compound_kind="ant")
-    spec.extra["connective"] = parsed.connective
-    append_code_digit_slots(spec, parsed.code_prefix)
-    if parsed.rhyme_char:
-        spec.slots.append(
-            SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
-        )
-    return spec
+    return relation_to_match_spec(parsed)
 
 
 MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
@@ -397,11 +287,11 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.JYUTPING_ANCHOR: _spec_jyutping_anchor,
     QueryKind.MASK: _spec_mask,
     QueryKind.PING_ZE_SERIAL: _spec_ping_ze_serial,
-    QueryKind.COMPOUND_SYN: _spec_compound_syn,
-    QueryKind.COMPOUND_CONNECT_SYN: _spec_compound_connect_syn,
-    QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_compound_doubled_syllable,
-    QueryKind.COMPOUND_ANT: _spec_compound_ant,
-    QueryKind.COMPOUND_CONNECT_ANT: _spec_compound_connect_ant,
+    QueryKind.COMPOUND_SYN: _spec_relation,
+    QueryKind.COMPOUND_CONNECT_SYN: _spec_relation,
+    QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_relation,
+    QueryKind.COMPOUND_ANT: _spec_relation,
+    QueryKind.COMPOUND_CONNECT_ANT: _spec_relation,
 }
 
 

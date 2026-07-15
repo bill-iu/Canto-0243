@@ -8,7 +8,7 @@ export {
   hasJyutpingChars,
 } from './normalize.ts';
 export { parseHeteronymCodeQuery } from './heteronym.ts';
-export { parseDoubledSyllableSyntax, parseRelationSyntax } from './relation.ts';
+export { parseDoubledSyllableSyntax, parseRelationSyntax, toMatchSpec as relationToMatchSpec } from './relation.ts';
 export {
   parseCodeRefMiddleRhymeQuery,
   parseTripleRhymeAnchorQuery,

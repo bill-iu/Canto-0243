@@ -90,6 +90,7 @@ def slot_label(slot: str, *, lang: str = "zh") -> str:
 
 __all__ = [
     "PING_ZE_INVALID_HINT",
+    "apply_ping_ze_slots",
     "code_matches_ping_ze_pattern",
     "digit_slot_matches",
     "is_ping_ze_serial_query",
@@ -97,5 +98,64 @@ __all__ = [
     "normalize_pzmode",
     "ping_zak_class",
     "slot_label",
+    "to_match_spec",
     "try_parse_ping_ze_serial",
 ]
+
+
+def apply_ping_ze_slots(spec, raw_q: str) -> None:
+    """Overlay P/Z tone_class slots onto an existing MatchSpec (base query)."""
+    from app.services.position_match import SlotConstraint
+
+    code_digit_positions = {slot.pos for slot in spec.slots if slot.kind == "code_digit"}
+    fixed_positions = {
+        slot.pos
+        for slot in spec.slots
+        if slot.kind not in ("code_digit", "tone_class") and slot.pos not in code_digit_positions
+    }
+    code_positions = [pos for pos in range(spec.width) if pos not in fixed_positions]
+    tokens = [token for token in raw_q if token in "PZ?" or token.isdigit()]
+    for index, token in enumerate(tokens):
+        if token not in "PZ" or index >= len(code_positions):
+            continue
+        pos = code_positions[index]
+        spec.slots = [slot for slot in spec.slots if not (slot.pos == pos and slot.kind == "code_digit")]
+        spec.mask = spec.mask[:pos] + "?" + spec.mask[pos + 1 :]
+        spec.slots.append(
+            SlotConstraint(pos=pos, kind="tone_class", value="ping" if token == "P" else "ze")
+        )
+
+
+def to_match_spec(parsed):
+    """PingZeSerialQuery → MatchSpec (plain serial, rhyme anchor, or base overlay)."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.query_types import PingZeSerialQuery
+
+    if not isinstance(parsed, PingZeSerialQuery):
+        return None
+    if parsed.base is not None:
+        # Lazy import: registry ↔ ping_zak cycle otherwise
+        from app.services.query_match_spec_registry import build_match_spec_for_parsed
+
+        spec = build_match_spec_for_parsed(parsed.base)
+        if spec is None:
+            return None
+        spec.extra["code_mode"] = parsed.pzmode
+        apply_ping_ze_slots(spec, parsed.raw_q)
+        return spec
+    spec = MatchSpec(width=len(parsed.raw_q), mask="?" * len(parsed.raw_q))
+    spec.extra["code_mode"] = parsed.pzmode
+    for pos, token in enumerate(parsed.raw_q):
+        if token == "P":
+            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ping"))
+        elif token == "Z":
+            spec.slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ze"))
+        elif token.isdigit():
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=token))
+    if parsed.anchor:
+        spec.width += 1
+        spec.mask = "?" * spec.width
+        spec.slots.append(
+            SlotConstraint(pos=len(parsed.raw_q), kind="final_anchor", value=parsed.anchor)
+        )
+    return spec

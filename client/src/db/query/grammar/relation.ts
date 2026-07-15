@@ -11,6 +11,8 @@ import type {
   RelationLookupQuery,
   UnmatchedQuery,
 } from '../../query-types.ts';
+import { appendCodeDigitSlots } from '../../position-match/filters/f1-slot-code.ts';
+import { createMatchSpec, type MatchSpec } from '../../position-match/spec.ts';
 
 const DOUBLED_SYLLABLE_MIN_DOLLARS = 2;
 const DOUBLED_SYLLABLE_MAX_DOLLARS = 4;
@@ -109,5 +111,64 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
     } satisfies RelationLookupQuery;
   }
 
+  return null;
+}
+
+
+/** Port of query_grammar.relation.to_match_spec */
+export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
+  if (parsed.kind === QueryKind.COMPOUND_SYN) {
+    const q = parsed as CompoundSynQuery;
+    const spec = createMatchSpec(2, { compound_kind: 'syn' });
+    appendCodeDigitSlots(spec, q.code_prefix);
+    if (q.rhyme_char) {
+      (spec.slots ??= []).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.COMPOUND_ANT) {
+    const q = parsed as CompoundAntQuery;
+    const spec = createMatchSpec(2, { compound_kind: 'ant' });
+    appendCodeDigitSlots(spec, q.code_prefix);
+    if (q.rhyme_char) {
+      (spec.slots ??= []).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.COMPOUND_CONNECT_SYN) {
+    const q = parsed as CompoundConnectSynQuery;
+    const spec = createMatchSpec(3, { compound_kind: 'syn' });
+    if (!spec.extra) spec.extra = {};
+    spec.extra.connective = q.connective;
+    appendCodeDigitSlots(spec, q.code_prefix);
+    if (q.rhyme_char) {
+      (spec.slots ??= []).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.COMPOUND_CONNECT_ANT) {
+    const q = parsed as CompoundConnectAntQuery;
+    const spec = createMatchSpec(3, { compound_kind: 'ant' });
+    if (!spec.extra) spec.extra = {};
+    spec.extra.connective = q.connective;
+    appendCodeDigitSlots(spec, q.code_prefix);
+    if (q.rhyme_char) {
+      (spec.slots ??= []).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) {
+    const q = parsed as CompoundDoubledSyllableQuery;
+    const spec = createMatchSpec(q.width, { compound_kind: 'doubled_syllable' });
+    appendCodeDigitSlots(spec, q.code_prefix);
+    if (q.rhyme_char) {
+      (spec.slots ??= []).push({
+        pos: q.width - 1,
+        kind: 'final_anchor',
+        value: q.rhyme_char,
+      });
+    }
+    return spec;
+  }
   return null;
 }
