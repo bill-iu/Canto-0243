@@ -12,15 +12,15 @@
   border: 0;
 }
 
-/* —— Wide: brand | search | menu —— */
+/* —— Wide: brand | hero | menu ；搜尋全寬第二行 —— */
 .app-bar {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
-    "brand search menu"
-    ". search menu";
+    "brand hero menu"
+    "search search search";
   column-gap: 12px;
-  row-gap: 0;
+  row-gap: 8px;
   align-items: start;
 }
 
@@ -34,7 +34,38 @@
 
 .header-chrome .brand {
   grid-area: brand;
-  align-self: start;
+  align-self: center;
+}
+
+.app-bar > .header-hero {
+  grid-area: hero;
+  align-self: center;
+  min-width: 0;
+  max-width: none;
+  flex: 1 1 auto;
+  padding: 2px 0;
+  /* 蓋過 shell landing-b-pending／窄屏 display:none */
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  text-align: left;
+}
+
+.app-bar > .header-hero .header-hero__title {
+  margin: 0;
+  font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.app-bar > .header-hero .header-hero__tagline {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 /*
@@ -52,6 +83,7 @@
 .header-chrome .mode-menu-root {
   grid-area: menu;
   margin-left: 0;
+  align-self: center;
 }
 
 .header-search {
@@ -219,41 +251,33 @@ button.icon-button.header-search__shuffle:disabled {
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
-  /* Top chrome: [logo left][menu right] — search second row */
+  /* 窄屏：brand|hero|menu 同行；搜尋全寬下一行（唔另開 hero 列） */
   .app-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand hero menu"
+      "search search search";
+    column-gap: 6px;
     row-gap: 8px;
+    align-items: center;
     position: relative;
     min-height: 0;
   }
 
   .header-chrome {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    width: 100%;
-    min-height: 44px;
-    column-gap: 6px;
+    display: contents;
   }
 
   .header-chrome__center {
-    display: flex;
-    grid-column: 1;
-    grid-row: 1;
-    z-index: 1;
-    min-height: 44px;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
+    display: contents;
   }
 
   .header-chrome .brand {
-    grid-area: unset;
+    grid-area: brand;
+    align-self: center;
     position: static;
-    max-width: min(180px, 48vw);
+    max-width: min(120px, 28vw);
     padding: 0;
     opacity: 1;
     visibility: visible;
@@ -262,8 +286,54 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-chrome .brand .brand-logo {
-    height: 40px;
+    height: 36px;
     width: auto;
+    display: block;
+  }
+
+  /* 同行、水平置中；放大 title＋顯示 tagline；唔改 search 尺寸 */
+  .app-bar > .header-hero {
+    display: block;
+    grid-area: hero;
+    align-self: center;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 6px;
+    text-align: center;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .app-bar > .header-hero .header-hero__title {
+    font-size: clamp(15px, 4.2vw, 19px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .app-bar > .header-hero .header-hero__tagline {
+    display: block;
+    margin: 2px 0 0;
+    font-size: clamp(10px, 2.8vw, 12px);
+    line-height: 1.25;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header-chrome .mode-menu-root {
+    grid-area: menu;
+    grid-column: unset;
+    grid-row: unset;
+    z-index: 2;
+    margin-left: 0;
+    max-width: min(46vw, 200px);
+    align-self: center;
   }
 
   .header-search__meta .warmup-badge {
@@ -277,7 +347,7 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-search {
-    grid-area: unset;
+    grid-area: search;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -384,15 +454,6 @@ button.icon-button.header-search__shuffle:disabled {
     overflow: visible;
     text-overflow: clip;
     vertical-align: top;
-  }
-
-  .header-chrome .mode-menu-root {
-    grid-column: 2;
-    grid-row: 1;
-    z-index: 2;
-    margin-left: 0;
-    max-width: min(72vw, 260px);
-    align-self: center;
   }
 
   .mode-menu-meta {

@@ -46,7 +46,8 @@ export {
 };
 
 export const APP_TITLE_BASE = "Canto-0243 ONE·搵·韻";
-export const APP_TITLE_BASE_EN = "Canto-0243 ONE-RUN-RHYME";
+/** Portable／PWA EN hero／title */
+export const APP_TITLE_BASE_EN = "Canto-0243 WRITE·RIGHT·RHYME";
 export const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
 export const LANG_KEY = 'canto-lang';
@@ -68,6 +69,7 @@ const MESSAGES = {
     'menu.guide.help': '完整語法與例子',
     'menu.about': '關於',
     'menu.about.help': '授權、致謝與回報',
+    'menu.lexicon': '詞庫版本：',
     'about.title': '關於 Canto-0243',
     'about.lede': 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
     'about.back': '返回搜尋',
@@ -77,7 +79,7 @@ const MESSAGES = {
     'theme.toggle': '切換主題',
   },
   en: {
-    'hero.title': 'ONE-RUN-RHYME',
+    'hero.title': 'WRITE·RIGHT·RHYME',
     'hero.tagline': 'Meter / sound match / rhyme / near-antonyms — find in one step.',
     'search.label': 'Search',
     'search.button': 'Search',
@@ -91,8 +93,9 @@ const MESSAGES = {
     'menu.guide.help': 'Full syntax & examples',
     'menu.about': 'About',
     'menu.about.help': 'License, credits & feedback',
+    'menu.lexicon': 'Lexicon version: ',
     'about.title': 'About Canto-0243',
-    'about.lede': 'ONE-RUN-RHYME — Offline Cantonese lyric rhyme workbench.',
+    'about.lede': 'WRITE·RIGHT·RHYME — Offline Cantonese lyric rhyme workbench.',
     'about.back': 'Back to search',
     'gate.preparing': 'Loading…',
     'empty.notfound': 'No matches',
@@ -254,6 +257,34 @@ export const searchCache = new Map();
 
 export function readPortableBootstrapFlag() {
   return document.querySelector('meta[name="canto-portable"]')?.content === "1";
+}
+
+/** @returns {string | null} */
+export function readLexiconVersionMeta() {
+  const fromMeta = document.querySelector('meta[name="canto-lexicon-version"]')?.content?.trim();
+  return fromMeta || null;
+}
+
+/**
+ * @param {string | null | undefined} version
+ * @param {ReturnType<typeof getLang>} [lang]
+ */
+export function applyLexiconVersionMeta(version, lang = getLang()) {
+  const el = document.getElementById("lexiconVersionMeta");
+  if (!el) return;
+  const v = (version || el.dataset.version || "").trim();
+  if (!v) {
+    el.hidden = true;
+    el.textContent = "";
+    el.removeAttribute("aria-label");
+    delete el.dataset.version;
+    return;
+  }
+  el.dataset.version = v;
+  const label = `${t("menu.lexicon", lang)}${v}`;
+  el.hidden = false;
+  el.textContent = label;
+  el.setAttribute("aria-label", label);
 }
 
 export function applyAppTitle(portable = false, lang = getLang()) {
