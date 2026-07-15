@@ -1,0 +1,3840 @@
+{
+  "manifest_sha256": "68d5a89b18d3f6df5bb2645125b71201c6e35137ffc35d649dabd9f6122ade6d",
+  "ok_rate_threshold": 0.9,
+  "git_commit": "e044090c26d0408eded600b80f4b3045ac2b46a5",
+  "created_at": "2026-07-15T09:44:15.171061+00:00",
+  "note": "campaign_len4 formal final audit seed=20260722; Acc 285/300 (15 fails removed); Nn 300/300 (0 fails)",
+  "campaign_id": "len4",
+  "accepted": {
+    "status": "ok",
+    "sample_seed": 20260722,
+    "sample_n": 300,
+    "sample_ok": 285,
+    "sample_parent_n": 3388,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 496,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 597,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 645,
+        "sample_n": 50,
+        "sample_seed": 20260725
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 609,
+        "sample_n": 50,
+        "sample_seed": 20260726
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 552,
+        "sample_n": 50,
+        "sample_seed": 20260727
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 489,
+        "sample_n": 50,
+        "sample_seed": 20260728
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "一動不動",
+        "tail": "翩翩起舞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一方",
+        "tail": "四面八方",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一枝獨秀",
+        "tail": "平分秋色",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一氣之下",
+        "tail": "心平氣和",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一生一世",
+        "tail": "片刻",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "一笑置之",
+        "tail": "耿耿於懷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不冷不熱",
+        "tail": "熱情洋溢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不堪設想",
+        "tail": "安然無恙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不絕於耳",
+        "tail": "寂靜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不費吹灰之力",
+        "tail": "辛辛苦苦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "人來人往",
+        "tail": "門可羅雀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "以防萬一",
+        "tail": "大意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偃旗息鼓",
+        "tail": "緊鑼密鼓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "價廉物美",
+        "tail": "昂貴",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "光明正大",
+        "tail": "見不得人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冠冕堂皇",
+        "tail": "鬼鬼祟祟",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "切實有效",
+        "tail": "形同虛設",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "十有八九",
+        "tail": "鮮有",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "南轅北轍",
+        "tail": "異曲同工",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "危在旦夕",
+        "tail": "平平安安",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "原封不動",
+        "tail": "蕩然無存",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "各奔東西",
+        "tail": "抱成一團",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "埋沒",
+        "tail": "發揚光大",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "埋頭苦幹",
+        "tail": "舞文弄墨",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "多姿多彩",
+        "tail": "枯燥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "娓娓道來",
+        "tail": "語無倫次",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "存疑",
+        "tail": "毫無疑問",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "孤注一擲",
+        "tail": "穩紮穩打",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實實在在",
+        "tail": "海市蜃樓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "局部",
+        "tail": "方方面面",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平淡無奇",
+        "tail": "驚世駭俗",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "徹頭徹尾",
+        "tail": "有頭無尾",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心安理得",
+        "tail": "過意不去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "忙裏偷閒",
+        "tail": "連軸轉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "怨天尤人",
+        "tail": "無怨無悔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悄無聲息",
+        "tail": "撼天動地",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "情有獨鍾",
+        "tail": "見異思遷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "意料之中",
+        "tail": "意料之外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "所剩無幾",
+        "tail": "豐富",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "接踵而至",
+        "tail": "門可羅雀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日日夜夜",
+        "tail": "短暫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "時至今日",
+        "tail": "起初",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "晶瑩剔透",
+        "tail": "渾濁",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "暈頭轉向",
+        "tail": "鎮定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "沒落",
+        "tail": "異軍突起",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "海闊天空",
+        "tail": "鼠目寸光",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無足輕重",
+        "tail": "至關重要",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "絞盡腦汁",
+        "tail": "脱口而出",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "輕鬆",
+        "tail": "辛辛苦苦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "風口浪尖",
+        "tail": "風平浪靜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一年一度",
+        "tail": "天天",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "一時半刻",
+        "tail": "朝朝暮暮",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一步之遙",
+        "tail": "長途跋涉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一見傾心",
+        "tail": "無動於衷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一顰一笑",
+        "tail": "冷麪",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "不求甚解",
+        "tail": "咬文嚼字",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "並肩作戰",
+        "tail": "單打獨鬥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "事不關己",
+        "tail": "多管閒事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "人滿為患",
+        "tail": "虛位以待",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "今生今世",
+        "tail": "前世",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "借刀殺人",
+        "tail": "單刀直入",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "初出茅廬",
+        "tail": "曾經滄海",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勤儉節約",
+        "tail": "鋪張浪費",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "區區小事",
+        "tail": "終身大事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "十之八九",
+        "tail": "鮮有",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可歌可泣",
+        "tail": "平淡無奇",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "含垢忍辱",
+        "tail": "揚眉吐氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "哭喪着臉",
+        "tail": "嫣然一笑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "啟程",
+        "tail": "打道回府",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "啼笑皆非",
+        "tail": "泰然自若",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "善罷甘休",
+        "tail": "窮追不捨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "天下無雙",
+        "tail": "比比皆是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "天高地厚",
+        "tail": "淺薄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "如坐針氈",
+        "tail": "如沐春風",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安然無恙",
+        "tail": "落花流水",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "安然無恙",
+        "tail": "鼻青臉腫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "完好",
+        "tail": "滿目瘡痍",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "容光煥發",
+        "tail": "風塵僕僕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平靜",
+        "tail": "翻江倒海",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "引蛇出洞",
+        "tail": "打草驚蛇",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "心平氣和",
+        "tail": "怒火中燒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心肝寶貝",
+        "tail": "眼中釘",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "志在必得",
+        "tail": "隨意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "恭恭敬敬",
+        "tail": "輕慢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "投其所好",
+        "tail": "掃興",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "振奮人心",
+        "tail": "灰心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "春風化雨",
+        "tail": "疾言厲色",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "晴空萬裏",
+        "tail": "雷轟電閃",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "暴露無遺",
+        "tail": "遮風擋雨",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "本地",
+        "tail": "遠道而來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "標新立異",
+        "tail": "約定俗成",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "樸素",
+        "tail": "雍容華貴",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "狐朋狗友",
+        "tail": "良師益友",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "環環相扣",
+        "tail": "脱節",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "知足常樂",
+        "tail": "貪婪無厭",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "紛紛揚揚",
+        "tail": "靜悄悄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "臨陣脱逃",
+        "tail": "赴湯蹈火",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "自尋煩惱",
+        "tail": "自得其樂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "興高采烈",
+        "tail": "黯然神傷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "遠近聞名",
+        "tail": "默默無聞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一來二去",
+        "tail": "忽然",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一命嗚呼",
+        "tail": "借屍還魂",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一哄而上",
+        "tail": "退去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一唱一和",
+        "tail": "對立",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一錘定音",
+        "tail": "夜長夢多",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不可告人",
+        "tail": "光明正大",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不堪入耳",
+        "tail": "百聽不厭",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不檢點",
+        "tail": "守身如玉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乒乒乓乓",
+        "tail": "靜悄悄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "來路不明",
+        "tail": "正當",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "侵佔",
+        "tail": "物歸原主",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "偃旗息鼓",
+        "tail": "敲鑼打鼓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "停筆",
+        "tail": "奮筆疾書",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "傑出",
+        "tail": "等閒之輩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "光明正大",
+        "tail": "探頭探腦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "刨根問底",
+        "tail": "淺嘗輒止",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "剛愎自用",
+        "tail": "剛柔相濟",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "匆匆離去",
+        "tail": "留連忘返",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "各自為政",
+        "tail": "榮辱與共",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "問心無愧",
+        "tail": "心中有鬼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "善始善終",
+        "tail": "草草收場",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "喝西北風",
+        "tail": "飽食",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嗲聲嗲氣",
+        "tail": "義正詞嚴",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "因小失大",
+        "tail": "權衡",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "垂頭喪氣",
+        "tail": "洋洋自得",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大張旗鼓",
+        "tail": "悄然無聲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大難臨頭",
+        "tail": "安然",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "大雪紛飛",
+        "tail": "烈日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安居",
+        "tail": "闖蕩江湖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "寢食難安",
+        "tail": "心安理得",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "恰如其分",
+        "tail": "言過其實",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "改弦易轍",
+        "tail": "重操舊業",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "整齊",
+        "tail": "衣冠不整",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日以繼夜",
+        "tail": "朝九晚五",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日曬雨淋",
+        "tail": "足不出户",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "明哲保身",
+        "tail": "自找麻煩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有口皆碑",
+        "tail": "過街老鼠",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "欺軟怕硬",
+        "tail": "見義勇為",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "歡聲笑語",
+        "tail": "鬼哭狼嚎",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "正色",
+        "tail": "笑掉大牙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "滴酒不沾",
+        "tail": "酩酊大醉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "物盡其用",
+        "tail": "騎馬找馬",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "百無禁忌",
+        "tail": "謹小慎微",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "盡忠職守",
+        "tail": "監守自盜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "知根知底",
+        "tail": "素昧平生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "秘而不宣",
+        "tail": "通風報信",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "自取滅亡",
+        "tail": "自救",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "貽笑大方",
+        "tail": "驚豔",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "遊人如織",
+        "tail": "門可羅雀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "鬼哭狼嚎",
+        "tail": "鶯歌燕舞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一時一刻",
+        "tail": "經年累月",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一目十行",
+        "tail": "細讀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "下屬",
+        "tail": "第一把手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不如",
+        "tail": "無出其右",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不求甚解",
+        "tail": "逐字逐句",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不謀私利",
+        "tail": "惟利是圖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不足為奇",
+        "tail": "咄咄怪事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不足為怪",
+        "tail": "咄咄怪事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乘興而來",
+        "tail": "敗興而歸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "事不關己",
+        "tail": "天下興亡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "五毒俱全",
+        "tail": "純潔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "五短身材",
+        "tail": "偉岸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "作惡多端",
+        "tail": "行善積德",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "俯拾皆是",
+        "tail": "鳳毛麟角",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "傷身",
+        "tail": "益壽延年",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "傾城傾國",
+        "tail": "其貌不揚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "光風霽月",
+        "tail": "烏煙瘴氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冷若冰霜",
+        "tail": "滿腔熱忱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "力透紙背",
+        "tail": "無力",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "十指連心",
+        "tail": "麻木不仁",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "半老徐娘",
+        "tail": "黃花閨女",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "反咬一口",
+        "tail": "認錯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "同工不同酬",
+        "tail": "同工同酬",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "名不符實",
+        "tail": "名副其實",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "單方面",
+        "tail": "有來有往",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "固守",
+        "tail": "蠶食鯨吞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "地靈人傑",
+        "tail": "窮山惡水",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "地靈人傑",
+        "tail": "荒涼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "守口如瓶",
+        "tail": "街談巷議",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安然無恙",
+        "tail": "皮開肉綻",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "官樣文章",
+        "tail": "實際",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "富國強兵",
+        "tail": "貧弱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實事求是",
+        "tail": "誇大其辭",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "幫倒忙",
+        "tail": "礙手礙腳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心滿意足",
+        "tail": "滿腹牢騷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悲喜交集",
+        "tail": "無動於衷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "愛民如子",
+        "tail": "魚肉百姓",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "指指點點",
+        "tail": "默不作聲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "改弦易轍",
+        "tail": "故伎重演",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "數九寒天",
+        "tail": "炎熱",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "望風而逃",
+        "tail": "迎頭痛擊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "本地",
+        "tail": "遠渡重洋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "浩然之氣",
+        "tail": "邪氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無出其右",
+        "tail": "相形見絀",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "煩惱",
+        "tail": "賞心樂事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "疏遠",
+        "tail": "親如一家",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "直言不諱",
+        "tail": "話裏有話",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "耳聽八方",
+        "tail": "閉塞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "膀大腰圓",
+        "tail": "骨頭架子",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "足不出户",
+        "tail": "遠渡重洋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一表人材",
+        "tail": "平庸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "七扭八歪",
+        "tail": "筆直",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "下車伊始",
+        "tail": "老資格",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不相上下",
+        "tail": "判若雲泥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中規中矩",
+        "tail": "怪聲怪氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "事與願違",
+        "tail": "遂心如意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "他鄉",
+        "tail": "本鄉本土",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "俗人",
+        "tail": "善男信女",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "保命",
+        "tail": "飛蛾投火",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "借古諷今",
+        "tail": "明説",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "光前裕後",
+        "tail": "敗家",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冷淡",
+        "tail": "卿卿我我",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凡夫俗子",
+        "tail": "瓊枝玉葉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凹凸不平",
+        "tail": "平整",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "判若雲泥",
+        "tail": "半斤八兩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勇敢",
+        "tail": "鴕鳥政策",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "務實",
+        "tail": "戴盆望天",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勞碌",
+        "tail": "逍遙自得",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "司空見慣",
+        "tail": "蜀犬吠日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吃喝玩樂",
+        "tail": "吃苦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吃喝玩樂",
+        "tail": "艱苦奮鬥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嘰嘰嘎嘎",
+        "tail": "安靜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "土生土長",
+        "tail": "移民",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "太平盛世",
+        "tail": "腥風血雨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "夾七夾八",
+        "tail": "有條有理",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嬌弱",
+        "tail": "銅筋鐵骨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "安全",
+        "tail": "萬死一生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "完勝",
+        "tail": "片甲不存",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "寡言",
+        "tail": "輕嘴薄舌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "實事求是",
+        "tail": "聽風是雨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "尋常",
+        "tail": "怪誕不經",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "怪聲怪氣",
+        "tail": "正常",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "悍然不顧",
+        "tail": "瞻前顧後",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "懸樑刺股",
+        "tail": "遊手好閒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "手足情深",
+        "tail": "煮豆燃萁",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "抱殘守缺",
+        "tail": "棄舊圖新",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "拐彎抹角",
+        "tail": "直抒己見",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "推本溯源",
+        "tail": "淺嘗輒止",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "擠擠插插",
+        "tail": "空空蕩蕩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有眼無珠",
+        "tail": "鑑貌辨色",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "求證",
+        "tail": "聽風是雨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "清醒",
+        "tail": "看朱成碧",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "滴水成冰",
+        "tail": "鑠石流金",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無動於衷",
+        "tail": "驚喜交集",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無緣",
+        "tail": "適逢其會",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "熄滅",
+        "tail": "薪盡火傳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "生疏",
+        "tail": "目無全牛",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "語無倫次",
+        "tail": "錦心繡口",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "謹言慎行",
+        "tail": "輕嘴薄舌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "頭角崢嶸",
+        "tail": "默默無聞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一仍舊貫",
+        "tail": "推陳出新",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一得之愚",
+        "tail": "卓見",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一般來説",
+        "tail": "例外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一般説來",
+        "tail": "罕見",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不卑不亢",
+        "tail": "看人眉睫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不堪一擊",
+        "tail": "萬裏長城",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不成文",
+        "tail": "明文規定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不足為怪",
+        "tail": "奇怪",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不足為訓",
+        "tail": "可取",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中規中矩",
+        "tail": "怪裏怪氣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "久慕盛名",
+        "tail": "素昧平生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乞哀告憐",
+        "tail": "強硬",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "令人生畏",
+        "tail": "可親",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "全面",
+        "tail": "管窺所及",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "公正",
+        "tail": "無私有弊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冷清",
+        "tail": "肩摩踵接",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "利落",
+        "tail": "滴裏嘟嚕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "勢均力敵",
+        "tail": "敵眾我寡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "化為烏有",
+        "tail": "實存",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "化為烏有",
+        "tail": "應運而生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "博學多才",
+        "tail": "略識之無",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "即景生情",
+        "tail": "無情",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "和平",
+        "tail": "白色恐怖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大手大腳",
+        "tail": "數米而炊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "天差地別",
+        "tail": "彼此彼此",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "如醉如痴",
+        "tail": "漠然",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "如魚得水",
+        "tail": "魚遊釜中",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "察察為明",
+        "tail": "寬容",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "工力悉敵",
+        "tail": "懸殊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "平庸",
+        "tail": "美若天仙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "弱",
+        "tail": "船堅炮利",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心平氣和",
+        "tail": "悲憤填膺",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "忘我工作",
+        "tail": "敷衍",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "指鹿為馬",
+        "tail": "指點迷津",
+        "verdict": "fail",
+        "reasons": [
+          "B: not stable context-free antonym / wrong axis"
+        ]
+      },
+      {
+        "head": "揮霍無度",
+        "tail": "數米而炊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "數米而炊",
+        "tail": "闊綽",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有限",
+        "tail": "莫可指數",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "望風捕影",
+        "tail": "真憑實據",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "格格不入",
+        "tail": "隨鄉入鄉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "機靈",
+        "tail": "渾頭渾腦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "殃及池魚",
+        "tail": "雞犬昇天",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "毫髮無傷",
+        "tail": "遍體鱗傷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "水米無交",
+        "tail": "親密",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無理",
+        "tail": "説得過去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "畫蛇添足",
+        "tail": "畫龍點睛",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "發人深醒",
+        "tail": "麻木不仁",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "磕頭碰腦",
+        "tail": "順風順水",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "稚氣未脱",
+        "tail": "老成持重",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "説來話長",
+        "tail": "長話短説",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "走馬赴任",
+        "tail": "離職",
+        "verdict": "ok",
+        "reasons": []
+      }
+    ],
+    "removed_sample_fails": [
+      {
+        "head": "一生一世",
+        "tail": "片刻",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "埋頭苦幹",
+        "tail": "舞文弄墨",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "一年一度",
+        "tail": "天天",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "一顰一笑",
+        "tail": "冷麪",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "安然無恙",
+        "tail": "落花流水",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "引蛇出洞",
+        "tail": "打草驚蛇",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "暴露無遺",
+        "tail": "遮風擋雨",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "來路不明",
+        "tail": "正當",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "因小失大",
+        "tail": "權衡",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "大難臨頭",
+        "tail": "安然",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "物盡其用",
+        "tail": "騎馬找馬",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "貽笑大方",
+        "tail": "驚豔",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "勇敢",
+        "tail": "鴕鳥政策",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "生疏",
+        "tail": "目無全牛",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      },
+      {
+        "head": "指鹿為馬",
+        "tail": "指點迷津",
+        "reasons": [
+          "B: final audit fail"
+        ]
+      }
+    ]
+  },
+  "no_natural": {
+    "status": "ok",
+    "sample_seed": 20260722,
+    "sample_n": 300,
+    "sample_ok": 300,
+    "sample_parent_n": 1124,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 277,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 193,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 182,
+        "sample_n": 50,
+        "sample_seed": 20260725
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 168,
+        "sample_n": 50,
+        "sample_seed": 20260726
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 185,
+        "sample_n": 50,
+        "sample_seed": 20260727
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 119,
+        "sample_n": 50,
+        "sample_seed": 20260728
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "不怎麼樣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不法分子",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "交通事故",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "交通工具",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人事部門",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人工流產",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "保護主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "公用事業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "冬蟲夏草",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "勤工儉學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "十字路口",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "古典文學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘻嘻哈哈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "城市居民",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "基本建設",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "夢寐以求",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大千世界",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大街小巷",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大言不慚",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "太平天國",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "如此這般",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "官僚主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "愛國主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "政府部門",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "斯里蘭卡",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "格魯吉亞",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "歸根結底",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "水利工程",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "流動資金",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "物價指數",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "理想主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "生產關係",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "百科全書",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "百貨公司",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "皮下組織",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "相對而言",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "相比之下",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "知己知彼",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "知識產權",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "神經系統",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "義務教育",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "胡蘿蔔素",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自古以來",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "茶餘飯後",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "複合材料",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "西班牙語",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "遙遙領先",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "除此之外",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "高爾夫球",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "高空作業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "主治醫生",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "二十四史",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "交感神經",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人文科學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩小無猜",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "出土文物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "加勒比海",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "動態平衡",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "勢力範圍",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "原班人馬",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "同等學歷",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "圓桌會議",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "在天之靈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "報告文學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "墨西哥城",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大腦皮層",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "家庭作業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巡迴演出",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "感性認識",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "成本會計",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "扁桃體炎",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "時隱時現",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "有增無減",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "機會主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "殖民主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "殺身之禍",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "油鹽醬醋",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "波多黎各",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "海洋生物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "營養元素",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "王母娘娘",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "珠穆朗瑪",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "琴棋書畫",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "神經細胞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "稀土元素",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "第二產業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "經驗之談",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "維吾爾族",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "總參謀部",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "纖維蛋白",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "羅曼蒂克",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "英雄主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "草本植物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "莫桑比克",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "萬有引力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "軍事科學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "農民起義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "長治久安",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電子器件",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "飲食療法",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一國兩制",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "七七事變",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "三姑六婆",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "亞歐大陸",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "伊斯蘭堡",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "個體經濟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩棲動物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "勝利果實",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "勞動改造",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "勾股定理",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "化學武器",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "化學變化",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吉普賽人",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "君主專制",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "因小失大",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "多彩多姿",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "奴隸社會",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "好景不長",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "安享晚年",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "完全小學",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "定性分析",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "小農經濟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巴巴多斯",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "巴甫洛夫",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "幾何級數",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "徹夜不眠",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "新聞公報",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "武裝部隊",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "油料作物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "泱泱大國",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "浮動匯率",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "滾珠軸承",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "燃氣輪機",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "牛鬼蛇神",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "由此看來",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "硝酸甘油",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "空空導彈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "節肢動物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "納米比亞",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "線性規劃",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "聯合政府",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自治機關",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自然經濟",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "花邊新聞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蠅頭小利",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "計件工資",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "赤腳醫生",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "軍事法庭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "隨行人員",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "飲食起居",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不知進退",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "主觀主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "亞馬孫河",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "伽馬射線",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "低等動物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "俄羅斯族",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "傷殘人員",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "全權代表",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "共同綱領",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "化學肥料",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "合久必分",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "哈雷彗星",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嚴以律己",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "國際公法",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "地下鐵道",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "城市貧民",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "威士忌酒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "宇宙速度",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "宮廷政變",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "寬以待人",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "惺惺作態",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "愛麗捨宮",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "技壓羣雄",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "拉丁字母",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "末梢神經",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "桃色新聞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "楔形文字",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "民生主義",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "無庸置疑",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "物理變化",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "狗皮膏藥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "玉潔冰清",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "立法委員",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "等比數列",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "精神衰弱",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "羅馬數字",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自動鉛筆",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "自賣自誇",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "計時工資",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "語氣助詞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "課外作業",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "遺傳學家",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "遺傳工程",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "醋酸纖維",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鏈式反應",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "陰極射線",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "靜電感應",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "風俗人情",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "高山反應",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "黃袍加身",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不咎既往",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不碎玻璃",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "五色繽紛",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "仁人君子",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "保留劇目",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "備而不用",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "傳真電報",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "元元本本",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩性生殖",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "動眼神經",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "升堂入室",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "名義工資",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "固定資金",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "外交特權",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "小生產者",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "常綠植物",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "抽象勞動",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "捲舌元音",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "撐竿跳高",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "放熱反應",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "旋渦星雲",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "會厭軟骨",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "有形損耗",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "橡皮圖章",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "毛細現象",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "消費資料",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "渙然冰釋",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "渺無音信",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "火山地震",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "炒買炒賣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "瓦釜雷鳴",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "票房價值",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "稀有元素",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "稍勝一籌",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "等比級數",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "萬事俱備",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "薩克森州",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蘭因絮果",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "複合元音",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "超羣絕倫",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "輕機關槍",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "過渡內閣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "間接選舉",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "障礙賽跑",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "雌雄異體",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "非黨人士",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "馬路新聞",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "黃色炸藥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "黑色火藥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "齊東野語",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一概而論",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不祧之祖",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "丙種射線",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人工智能",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "以人為本",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "仰卧起坐",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "個人衞生",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "借酒消愁",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "偵探小説",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "全勞動力",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "力排眾議",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "卧薪嚐膽",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "國際公制",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大年初一",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大政方針",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "定海神針",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "扭力天平",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "扭虧為盈",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "格林威治",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "氣象衞星",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "深受其害",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "為時過早",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "烏魯木齊",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "無名腫毒",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "無線電台",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "犁庭掃閭",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "環狀軟骨",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "生花之筆",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "直屬機關",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "看守政府",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "矢口抵賴",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "短篇小説",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "祖傳秘方",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "細菌肥料",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "經濟雜交",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "見稜見角",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "言情小説",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "象形文字",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "趙公元帥",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "輔助貨幣",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "轉氨基酶",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "通訊衞星",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "造謠惑眾",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "開放電路",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "隨遇平衡",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "雀巢咖啡",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電弧焊接",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電熱水壺",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "高氣壓區",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "麟角鳳觜",
+        "reason": "no_gradable_opposite",
+        "verdict": "ok",
+        "notes": ""
+      }
+    ],
+    "removed_sample_fails": []
+  }
+}

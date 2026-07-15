@@ -1,0 +1,92 @@
+{
+  "seed": 20260722,
+  "manifest_sha256": "68d5a89b18d3f6df5bb2645125b71201c6e35137ffc35d649dabd9f6122ade6d",
+  "accepted": {
+    "status": "ok",
+    "sample_seed": 20260722,
+    "sample_n": 300,
+    "sample_parent_n": 3388,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 496,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 597,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 645,
+        "sample_n": 50,
+        "sample_seed": 20260725
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 609,
+        "sample_n": 50,
+        "sample_seed": 20260726
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 552,
+        "sample_n": 50,
+        "sample_seed": 20260727
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 489,
+        "sample_n": 50,
+        "sample_seed": 20260728
+      }
+    ]
+  },
+  "no_natural": {
+    "status": "ok",
+    "sample_seed": 20260722,
+    "sample_n": 300,
+    "sample_parent_n": 1122,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 277,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 193,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 181,
+        "sample_n": 50,
+        "sample_seed": 20260725
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 168,
+        "sample_n": 50,
+        "sample_seed": 20260726
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 184,
+        "sample_n": 50,
+        "sample_seed": 20260727
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 119,
+        "sample_n": 50,
+        "sample_seed": 20260728
+      }
+    ]
+  }
+}

@@ -1509,7 +1509,6 @@ head	tail	relation_type	batch_id
 複習	預習	ant	campaign-b07-20260714
 傳輸	接收	ant	campaign-b07-20260714
 一生一世	一時半刻	ant	campaign-b07-20260714
-一生一世	片刻	ant	campaign-b07-20260714
 向來	從不	ant	campaign-b07-20260714
 向來	偶爾	ant	campaign-b07-20260714
 奇妙	平凡	ant	campaign-b07-20260714
@@ -3003,7 +3002,6 @@ head	tail	relation_type	batch_id
 舉一反三	生搬硬套	ant	len4-b01-20260715
 舒舒服服	辛苦	ant	len4-b01-20260715
 舒舒服服	難受	ant	len4-b01-20260715
-舞文弄墨	埋頭苦幹	ant	len4-b01-20260715
 舞文弄墨	身體力行	ant	len4-b01-20260715
 花花綠綠	單調	ant	len4-b01-20260715
 花花綠綠	素淨	ant	len4-b01-20260715
@@ -3075,7 +3073,6 @@ head	tail	relation_type	batch_id
 高高興興	愁眉苦臉	ant	len4-b01-20260715
 高高興興	沮喪	ant	len4-b01-20260715
 黃金時代	低潮	ant	len4-b01-20260715
-一年一度	天天	ant	len4-b02-20260715
 一年一度	日復一日	ant	len4-b02-20260715
 一年一度	經常	ant	len4-b02-20260715
 一年到頭	一時半刻	ant	len4-b02-20260715
@@ -3096,7 +3093,6 @@ head	tail	relation_type	batch_id
 一語道破	閃爍其詞	ant	len4-b02-20260715
 一路平安	凶多吉少	ant	len4-b02-20260715
 一門心思	三心兩意	ant	len4-b02-20260715
-一顰一笑	冷麪	ant	len4-b02-20260715
 一顰一笑	木然	ant	len4-b02-20260715
 一飛沖天	一落千丈	ant	len4-b02-20260715
 一飛沖天	一蹶不振	ant	len4-b02-20260715
@@ -3280,7 +3276,6 @@ head	tail	relation_type	batch_id
 座無虛席	門可羅雀	ant	len4-b02-20260715
 建功立業	一事無成	ant	len4-b02-20260715
 引蛇出洞	打草	ant	len4-b02-20260715
-引蛇出洞	打草驚蛇	ant	len4-b02-20260715
 弦外之音	明説	ant	len4-b02-20260715
 弦外之音	直言不諱	ant	len4-b02-20260715
 張牙舞爪	和顏悦色	ant	len4-b02-20260715
@@ -3548,7 +3543,6 @@ head	tail	relation_type	batch_id
 萬般無奈	心甘情願	ant	len4-b02-20260715
 萬般無奈	樂意	ant	len4-b02-20260715
 萬般無奈	欣然	ant	len4-b02-20260715
-落花流水	安然無恙	ant	len4-b02-20260715
 落花流水	完好如初	ant	len4-b02-20260715
 落花流水	旗開得勝	ant	len4-b02-20260715
 虛位以待	人滿為患	ant	len4-b02-20260715
@@ -3721,7 +3715,6 @@ head	tail	relation_type	batch_id
 你追我趕	停滯	ant	len4-b03-20260715
 你追我趕	安步當車	ant	len4-b03-20260715
 來路不明	名正言順	ant	len4-b03-20260715
-來路不明	正當	ant	len4-b03-20260715
 俯首稱臣	不屈	ant	len4-b03-20260715
 俯首稱臣	揭竿而起	ant	len4-b03-20260715
 借屍還魂	一命嗚呼	ant	len4-b03-20260715
@@ -3793,7 +3786,6 @@ head	tail	relation_type	batch_id
 喝西北風	酒足飯飽	ant	len4-b03-20260715
 喝西北風	錦衣玉食	ant	len4-b03-20260715
 喝西北風	飽食	ant	len4-b03-20260715
-因小失大	權衡	ant	len4-b03-20260715
 坦白從寬	隱瞞	ant	len4-b03-20260715
 夜長夢多	一錘定音	ant	len4-b03-20260715
 夜長夢多	及時	ant	len4-b03-20260715
@@ -3804,7 +3796,6 @@ head	tail	relation_type	batch_id
 大快朵頤	難吃	ant	len4-b03-20260715
 大興土木	停工	ant	len4-b03-20260715
 大興土木	按兵不動	ant	len4-b03-20260715
-大難臨頭	安然	ant	len4-b03-20260715
 大難臨頭	平安無事	ant	len4-b03-20260715
 大難臨頭	福星高照	ant	len4-b03-20260715
 大雪紛飛	晴空萬裏	ant	len4-b03-20260715
@@ -4183,7 +4174,6 @@ head	tail	relation_type	batch_id
 誇大其詞	輕描淡寫	ant	len4-b03-20260715
 負債累累	腰纏萬貫	ant	len4-b03-20260715
 貽笑大方	出色	ant	len4-b03-20260715
-貽笑大方	驚豔	ant	len4-b03-20260715
 超額利潤	虧損	ant	len4-b03-20260715
 超額利潤	赤字	ant	len4-b03-20260715
 足智多謀	愚笨	ant	len4-b03-20260715
@@ -5283,7 +5273,6 @@ head	tail	relation_type	batch_id
 目不見睫	清醒	ant	len4-b05-20260715
 目不見睫	自知之明	ant	len4-b05-20260715
 目無全牛	一知半解	ant	len4-b05-20260715
-目無全牛	生疏	ant	len4-b05-20260715
 直抒己見	拐彎抹角	ant	len4-b05-20260715
 眉高眼低	一視同仁	ant	len4-b05-20260715
 眉高眼低	平等	ant	len4-b05-20260715
@@ -5465,7 +5454,6 @@ head	tail	relation_type	batch_id
 馬仰人翻	安然無恙	ant	len4-b05-20260715
 馬仰人翻	平穩	ant	len4-b05-20260715
 騎馬找馬	得心應手	ant	len4-b05-20260715
-騎馬找馬	物盡其用	ant	len4-b05-20260715
 驚喜交集	平淡	ant	len4-b05-20260715
 驚喜交集	無動於衷	ant	len4-b05-20260715
 驚喜交集	麻木	ant	len4-b05-20260715
@@ -5473,7 +5461,6 @@ head	tail	relation_type	batch_id
 鬧着玩兒	當真	ant	len4-b05-20260715
 鱷魚眼淚	同情	ant	len4-b05-20260715
 鱷魚眼淚	真情	ant	len4-b05-20260715
-鴕鳥政策	勇敢	ant	len4-b05-20260715
 黔驢之技	多才多藝	ant	len4-b05-20260715
 黔驢之技	神通廣大	ant	len4-b05-20260715
 鼎足之勢	一枝獨秀	ant	len4-b05-20260715
@@ -5693,7 +5680,6 @@ head	tail	relation_type	batch_id
 拿腔作勢	真實	ant	len4-b06-20260715
 指腹為婚	自由戀愛	ant	len4-b06-20260715
 指腹為婚	自選	ant	len4-b06-20260715
-指點迷津	指鹿為馬	ant	len4-b06-20260715
 指點迷津	誤導	ant	len4-b06-20260715
 指點迷津	迷惑	ant	len4-b06-20260715
 挑三窩四	和稀泥	ant	len4-b06-20260715
@@ -5954,7 +5940,6 @@ head	tail	relation_type	batch_id
 違禁物品	合規	ant	len4-b06-20260715
 違禁物品	準許	ant	len4-b06-20260715
 遮風擋雨	敞開	ant	len4-b06-20260715
-遮風擋雨	暴露無遺	ant	len4-b06-20260715
 避坑落井	化險為夷	ant	len4-b06-20260715
 金睛火眼	有眼無珠	ant	len4-b06-20260715
 金睛火眼	盲目	ant	len4-b06-20260715

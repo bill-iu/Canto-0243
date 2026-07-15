@@ -1565,6 +1565,27 @@
         }
       ],
       "git_commit": "fc374f161cf937564abc665d92d7e734fd6328e0"
+    },
+    "len4-final-audit-20260722": {
+      "sample_seed": 20260722,
+      "sample_n": 2,
+      "sample_ok": 2,
+      "ok_rate_threshold": 0.9,
+      "sample_parent_n": 2,
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "因小失大",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "鴕鳥政策",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        }
+      ],
+      "git_commit": "e044090c26d0408eded600b80f4b3045ac2b46a5"
     }
   }
 }

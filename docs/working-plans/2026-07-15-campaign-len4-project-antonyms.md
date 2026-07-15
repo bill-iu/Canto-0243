@@ -358,7 +358,7 @@ python scripts/project_antonyms.py campaign-final-validate --campaign len4 --req
 - [x] WP-06 測試綠（PR-A；Len4CampaignTests + top5000 回歸）
 - [x] Freeze commit（manifest + meta + inherited nn）— **PR-B**（k=2898，6 批，繼承 nn=15）
 - [x] WP-05 各批 accepted / no_natural + 閘 — **b01–b06 done** — campaign-validate --require-complete **passed**（2026-07-15）
-- [ ] WP-08 最終稽核（結構 complete 已過；分層 final-sample 可另開）
+- [x] WP-08 最終稽核 — Acc 285/300 (0.95)、Nn 300/300；campaign_len4_final_audit.meta.json
 - [ ] Release note（可選版本）
 
 ---

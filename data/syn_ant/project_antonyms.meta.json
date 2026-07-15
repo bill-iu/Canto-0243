@@ -6410,6 +6410,81 @@
       "head": "人爲",
       "tail": "自然",
       "reason": "duplicate/reverse of 自然/人為 after s2hk normalize (為/爲)"
+    },
+    {
+      "head": "一生一世",
+      "tail": "片刻",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "舞文弄墨",
+      "tail": "埋頭苦幹",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "一年一度",
+      "tail": "天天",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "一顰一笑",
+      "tail": "冷麪",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "引蛇出洞",
+      "tail": "打草驚蛇",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "落花流水",
+      "tail": "安然無恙",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "來路不明",
+      "tail": "正當",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "因小失大",
+      "tail": "權衡",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "大難臨頭",
+      "tail": "安然",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "貽笑大方",
+      "tail": "驚豔",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "目無全牛",
+      "tail": "生疏",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "騎馬找馬",
+      "tail": "物盡其用",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "鴕鳥政策",
+      "tail": "勇敢",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "指點迷津",
+      "tail": "指鹿為馬",
+      "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "遮風擋雨",
+      "tail": "暴露無遺",
+      "reason": "campaign_len4 final audit fail"
     }
   ]
 }

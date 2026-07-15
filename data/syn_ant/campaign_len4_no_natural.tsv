@@ -266,6 +266,7 @@ head	reason	batch_id
 嚴以律己	no_gradable_opposite	len4-b04-20260715
 四則運算	no_gradable_opposite	len4-b04-20260715
 四氯化碳	no_gradable_opposite	len4-b03-20260715
+因小失大	no_gradable_opposite	len4-final-audit-20260722
 固定資產	no_gradable_opposite	len4-b01-20260715
 固定資金	no_gradable_opposite	len4-b05-20260715
 國家機關	no_gradable_opposite	len4-b01-20260715
@@ -1107,6 +1108,7 @@ head	reason	batch_id
 魯魚亥豕	no_gradable_opposite	len4-b05-20260715
 鳥類學家	no_gradable_opposite	len4-b05-20260715
 鴉片戰爭	proper_name_or_deixis	len4-b01-20260715
+鴕鳥政策	no_gradable_opposite	len4-final-audit-20260722
 鷸蚌相爭	no_gradable_opposite	len4-b03-20260715
 麟角鳳觜	no_gradable_opposite	len4-b06-20260715
 黃巢起義	proper_name_or_deixis	len4-b04-20260715
