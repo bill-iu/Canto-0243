@@ -4190,6 +4190,341 @@
         }
       ],
       "removed_sample_fails": []
+    },
+    "len4-b01-20260715": {
+      "k": 212,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
+      "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+      "model_note": "len4-b01 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260716; soft-prefer 4-char tails [parent land provisional]",
+      "model": "xai/grok-4",
+      "model_provider": "xAI",
+      "model_version": "grok-4",
+      "model_params": {
+        "generation_mode": "maintainer_curated_blind_style",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "len4",
+        "batch_index": 1
+      },
+      "sample_seed": 20260716,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv len4-b01-20260715 parent N=453",
+      "sample_parent_n": 453,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_verdicts": [
+        {
+          "head": "一天到晚",
+          "tail": "一時半刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "一氣之下",
+          "tail": "心平氣和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "下落不明",
+          "tail": "安然無恙",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不切實際",
+          "tail": "務實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不顧一切",
+          "tail": "小心翼翼",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "乾乾淨淨",
+          "tail": "污穢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "令人髮指",
+          "tail": "欽佩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "來來往往",
+          "tail": "冷清",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原汁原味",
+          "tail": "面目全非",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嚴嚴實實",
+          "tail": "鬆散",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "堂而皇之",
+          "tail": "見不得人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "塵埃落定",
+          "tail": "懸而未決",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "多愁善感",
+          "tail": "無動於衷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夜深人靜",
+          "tail": "喧鬧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夜深人靜",
+          "tail": "熱鬧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大大咧咧",
+          "tail": "謹小慎微",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大行其道",
+          "tail": "沒落",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大行其道",
+          "tail": "銷聲匿跡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天馬行空",
+          "tail": "按部就班",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "奄奄一息",
+          "tail": "活蹦亂跳",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "婆婆媽媽",
+          "tail": "簡潔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "實實在在",
+          "tail": "空洞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "忙忙碌碌",
+          "tail": "清閒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "忙裏偷閒",
+          "tail": "馬不停蹄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "感激不盡",
+          "tail": "恩將仇報",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "成百上千",
+          "tail": "寥寥無幾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "所剩無幾",
+          "tail": "綽綽有餘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拳打腳踢",
+          "tail": "好言相勸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "時時刻刻",
+          "tail": "有時",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "時至今日",
+          "tail": "起初",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "更新換代",
+          "tail": "墨守成規",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "欲哭無淚",
+          "tail": "喜極而泣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "欲哭無淚",
+          "tail": "歡喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "毋庸置疑",
+          "tail": "存疑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "火上加油",
+          "tail": "息事寧人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無所不在",
+          "tail": "罕見",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無緣無故",
+          "tail": "事出有因",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "異想天開",
+          "tail": "實事求是",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡收眼底",
+          "tail": "一葉障目",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡收眼底",
+          "tail": "管中窺豹",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相輔相成",
+          "tail": "對立",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "空穴來風",
+          "tail": "言之有據",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自作多情",
+          "tail": "冷酷無情",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "萬事如意",
+          "tail": "事與願違",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "諸如此類",
+          "tail": "與眾不同",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "輕輕鬆鬆",
+          "tail": "吃力",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "輕輕鬆鬆",
+          "tail": "辛苦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "難得一見",
+          "tail": "常見",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "風風雨雨",
+          "tail": "平靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "驚世駭俗",
+          "tail": "普通",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [],
+      "accepted_pairs": 453,
+      "created_at": "2026-07-15T08:34:07Z"
     }
   },
   "post_land_removed_pairs": [
