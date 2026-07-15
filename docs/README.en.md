@@ -21,7 +21,7 @@ Current version: **v1.0.9**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **170,882** (`lyrics.db` · `words` table)
+Current word entries: **170,883** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**
