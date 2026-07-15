@@ -2,7 +2,7 @@
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
 import { appendCodeDigitSlots, codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
-import { buildMaskFromSlots, parseMaskQuery } from './mask-grammar.ts';
+import { parseMaskQuery } from './mask-grammar.ts';
 import {
   createMatchSpec,
   getEqualsSpan,
@@ -14,19 +14,14 @@ import {
 import { QueryKind } from '../query-kind.ts';
 import { toMatchSpec as equalsToMatchSpec } from '../query/grammar/equals.ts';
 import { toMatchSpec as serialToMatchSpec } from '../query/grammar/serial.ts';
+import { toMatchSpec as rhymeToMatchSpec } from '../query/grammar/rhyme.ts';
+import { toMatchSpec as plusToMatchSpec } from '../query/grammar/plus.ts';
 import { toMatchSpec as relationToMatchSpec } from '../query/grammar/relation.ts';
 import { toMatchSpec as pingZeToMatchSpec } from '../ping-zak.ts';
 import type {
-  CodeRefMiddleRhymeQuery,
   JyutpingAnchorQuery,
-  LiteralRefQuery,
   MaskQuery,
   ParsedQuery,
-  PartialInitialMaskQuery,
-  PartialRhymeMaskQuery,
-  PlusAnchorQuery,
-  RhymeAnchorQuery,
-  TripleRhymeAnchorQuery,
   WildcardCodeAnchorQuery,
 } from '../query-types.ts';
 
@@ -102,64 +97,12 @@ function specSerial(parsed: ParsedQuery): MatchSpec | null {
   return serialToMatchSpec(parsed);
 }
 
-function specPartialRhymeMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PartialRhymeMaskQuery;
-  const spec = createMatchSpec(q.width, { mask: q.pattern });
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.partial_rhyme_mask = true;
-  for (const [pos, ch] of q.anchors) {
-    slots(spec).push({ pos, kind: 'final_anchor', value: ch });
-  }
-  return spec;
+function specRhyme(parsed: ParsedQuery): MatchSpec | null {
+  return rhymeToMatchSpec(parsed);
 }
 
-function specPartialInitialMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PartialInitialMaskQuery;
-  const spec = createMatchSpec(q.width, { mask: q.pattern });
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.partial_initial_mask = true;
-  for (const [pos, ch] of q.anchors) {
-    slots(spec).push({ pos, kind: 'initial_anchor', value: ch });
-  }
-  return spec;
-}
-
-function specPlusAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PlusAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const [pos, d] of q.code_slots) {
-    slots(spec).push({ pos, kind: 'code_digit', value: d });
-  }
-  if (!q.code_slots?.length && q.code_prefix) {
-    appendCodeDigitSlots(spec, q.code_prefix);
-  }
-  if (q.constraint === 'literal') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'literal_char', value: q.anchor });
-    spec.mask = spec.mask.slice(0, q.anchor_pos) + q.anchor + spec.mask.slice(q.anchor_pos + 1);
-    return spec;
-  }
-  if (q.constraint === 'final') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
-    return spec;
-  }
-  if (q.constraint === 'initial') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'initial_anchor', value: q.anchor });
-  }
-  return spec;
-}
-
-function specLiteralRef(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as LiteralRefQuery;
-  const spec = createMatchSpec(q.width);
-  appendCodeDigitSlots(spec, q.code_digits);
-  slots(spec).push({ pos: q.width - 1, kind: 'literal_char', value: q.literal_char });
-  spec.mask = '?'.repeat(q.width - 1) + q.literal_char;
-  return spec;
+function specPlus(parsed: ParsedQuery): MatchSpec | null {
+  return plusToMatchSpec(parsed);
 }
 
 function specWildcardCodeAnchor(parsed: ParsedQuery): MatchSpec | null {
@@ -173,36 +116,6 @@ function specWildcardCodeAnchor(parsed: ParsedQuery): MatchSpec | null {
       spec.mask = spec.mask.slice(0, slot.pos) + slot.value + spec.mask.slice(slot.pos + 1);
     }
   }
-  return spec;
-}
-
-function specCodeRefMiddleRhyme(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as CodeRefMiddleRhymeQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const slot of q.slots) {
-    slots(spec).push({ pos: slot.pos, kind: asKind(slot.kind), value: slot.value });
-  }
-  return spec;
-}
-
-function specRhymeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as RhymeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
-  slots(spec).push({ pos: q.anchor_pos, kind, value: q.anchor });
-  spec.mask = buildMaskFromSlots(q.slots, q.width, q.anchor_pos);
-  return spec;
-}
-
-function specTripleRhymeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as TripleRhymeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  slots(spec).push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
-  spec.mask = '?'.repeat(q.width);
-  // Prefer inverted-index path (engine) over unlimited width-3 scan
-  if (!spec.extra) spec.extra = {};
-  spec.extra.triple_rhyme_anchor = true;
   return spec;
 }
 
@@ -251,15 +164,15 @@ function specRelation(parsed: ParsedQuery): MatchSpec | null {
 export const MATCH_SPEC_BUILDERS: Partial<Record<QueryKind, MatchSpecBuilder>> = {
   [QueryKind.EQUALS]: specEquals,
   [QueryKind.PREFIX_WILDCARD_EQUALS]: specSerial,
-  [QueryKind.PARTIAL_RHYME_MASK]: specPartialRhymeMask,
-  [QueryKind.PARTIAL_INITIAL_MASK]: specPartialInitialMask,
+  [QueryKind.PARTIAL_RHYME_MASK]: specRhyme,
+  [QueryKind.PARTIAL_INITIAL_MASK]: specRhyme,
   [QueryKind.SERIAL_PHONEME]: specSerial,
-  [QueryKind.PLUS_ANCHOR]: specPlusAnchor,
-  [QueryKind.LITERAL_REF]: specLiteralRef,
+  [QueryKind.PLUS_ANCHOR]: specPlus,
+  [QueryKind.LITERAL_REF]: specPlus,
   [QueryKind.WILDCARD_CODE_ANCHOR]: specWildcardCodeAnchor,
-  [QueryKind.CODE_REF_MIDDLE_RHYME]: specCodeRefMiddleRhyme,
-  [QueryKind.RHYME_ANCHOR]: specRhymeAnchor,
-  [QueryKind.TRIPLE_RHYME_ANCHOR]: specTripleRhymeAnchor,
+  [QueryKind.CODE_REF_MIDDLE_RHYME]: specRhyme,
+  [QueryKind.RHYME_ANCHOR]: specRhyme,
+  [QueryKind.TRIPLE_RHYME_ANCHOR]: specRhyme,
   [QueryKind.JYUTPING_ANCHOR]: specJyutpingAnchor,
   [QueryKind.MASK]: specMask,
   [QueryKind.PING_ZE_SERIAL]: specPingZeSerial,

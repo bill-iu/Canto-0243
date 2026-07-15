@@ -23,6 +23,7 @@ export {
   parseDoubleWildcardRhymeQuery,
   parseDoubleWildcardInitialQuery,
   parseCodeRefRhymeContradictionHint,
+  toMatchSpec as rhymeToMatchSpec,
 } from './rhyme.ts';
 export { parseWildcardCodeAnchorQuery } from './wca.ts';
 export {
@@ -33,5 +34,5 @@ export {
   parsePureCharsSerialHint,
   toMatchSpec as serialToMatchSpec,
 } from './serial.ts';
-export { parseAtTailQuery, parsePlusAnchorQuery } from './plus.ts';
+export { parseAtTailQuery, parsePlusAnchorQuery, toMatchSpec as plusToMatchSpec } from './plus.ts';
 export { looksLikeMaskQuery } from './mask.ts';

@@ -1,4 +1,7 @@
-"""韻／聲錨 grammar（#3 第三輪）。"""
+"""韻／聲錨 grammar（#3 第三輪）。
+
+ponytail: 300-line limit exemption — rhyme family parse+to_match_spec locality
+"""
 from __future__ import annotations
 
 import re
@@ -249,3 +252,59 @@ def parse_triple_rhyme_anchor_query(q: str) -> Optional[dict]:
         "leading_slots": leading,
         "constraint": "final",
     }
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for rhyme-family kinds."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.query_grammar.mask import build_mask_from_slots
+    from app.services.query_types import (
+        CodeRefMiddleRhymeQuery,
+        PartialInitialMaskQuery,
+        PartialRhymeMaskQuery,
+        QueryKind,
+        RhymeAnchorQuery,
+        TripleRhymeAnchorQuery,
+    )
+
+    if isinstance(parsed, PartialRhymeMaskQuery) and parsed.kind == QueryKind.PARTIAL_RHYME_MASK:
+        spec = MatchSpec(width=parsed.width, mask=parsed.pattern)
+        spec.extra["partial_rhyme_mask"] = True
+        for pos, ch in parsed.anchors:
+            spec.slots.append(SlotConstraint(pos=pos, kind="final_anchor", value=ch))
+        return spec
+
+    if isinstance(parsed, PartialInitialMaskQuery) and parsed.kind == QueryKind.PARTIAL_INITIAL_MASK:
+        spec = MatchSpec(width=parsed.width, mask=parsed.pattern)
+        spec.extra["partial_initial_mask"] = True
+        for pos, ch in parsed.anchors:
+            spec.slots.append(SlotConstraint(pos=pos, kind="initial_anchor", value=ch))
+        return spec
+
+    if isinstance(parsed, CodeRefMiddleRhymeQuery) and parsed.kind == QueryKind.CODE_REF_MIDDLE_RHYME:
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = "?" * parsed.width
+        for slot in parsed.slots:
+            spec.slots.append(
+                SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
+            )
+        return spec
+
+    if isinstance(parsed, RhymeAnchorQuery) and parsed.kind == QueryKind.RHYME_ANCHOR:
+        spec = MatchSpec(width=parsed.width)
+        kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
+        spec.slots.append(
+            SlotConstraint(pos=parsed.anchor_pos, kind=kind, value=parsed.anchor)
+        )
+        spec.mask = build_mask_from_slots(parsed.slots, parsed.width, parsed.anchor_pos)
+        return spec
+
+    if isinstance(parsed, TripleRhymeAnchorQuery) and parsed.kind == QueryKind.TRIPLE_RHYME_ANCHOR:
+        spec = MatchSpec(width=parsed.width)
+        spec.slots.append(
+            SlotConstraint(pos=parsed.anchor_pos, kind="final_anchor", value=parsed.anchor)
+        )
+        spec.mask = "?" * parsed.width
+        return spec
+
+    return None
