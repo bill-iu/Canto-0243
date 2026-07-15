@@ -852,7 +852,7 @@ function App() {
         theme={uiTheme}
       />
       <div
-        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${warmupBadgeClear && !shellGated ? ' is-header-brand-ready' : ''}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
           <div className="app-bar">
@@ -866,15 +866,6 @@ function App() {
                 >
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
-                {mountWarmupBadge ? (
-                  <TailPreloadBadge
-                    tailProgress={tailProgress}
-                    startupComplete={startupComplete}
-                    theme={uiTheme}
-                    lang={uiLang}
-                    onDismiss={handleWarmupBadgeDismiss}
-                  />
-                ) : null}
               </div>
               <ModeMenu
                 mode={mode}
@@ -914,42 +905,6 @@ function App() {
                       enterKeyHint="search"
                     />
                   </div>
-                  <div className="header-search__meta">
-                    {searchFamily !== 'synonym' ? (
-                      <div
-                        className="pingze-submodes"
-                        role="group"
-                        aria-label={uiLang === 'en' ? 'Tone-digit profile' : '聲調數字檔'}
-                      >
-                        {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
-                          <button
-                            key={subMode}
-                            type="button"
-                            className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
-                            aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
-                            title={getModeMeta(subMode, uiLang).title}
-                            disabled={shellGated}
-                            onClick={() => handleProfileChange(subMode)}
-                          >
-                            <span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span>
-                            <span className="profile-pill__narrow">
-                              {subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : null}
-                    {showExplain ? (
-                      <p className="query-explain" aria-live="polite">
-                        {explainSummary ? (
-                          <span className="query-explain__summary">{explainSummary}</span>
-                        ) : null}
-                        {explainWarning ? (
-                          <span className="query-explain__warning">{explainWarning}</span>
-                        ) : null}
-                      </p>
-                    ) : null}
-                  </div>
                 </div>
                 <div className="header-search__actions">
                   <button
@@ -970,6 +925,51 @@ function App() {
                     <ShuffleIcon />
                   </button>
                 </div>
+              </div>
+              <div className="header-search__meta">
+                {searchFamily !== 'synonym' ? (
+                  <div
+                    className="pingze-submodes"
+                    role="group"
+                    aria-label={uiLang === 'en' ? 'Tone-digit profile' : '聲調數字檔'}
+                  >
+                    {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                      <button
+                        key={subMode}
+                        type="button"
+                        className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
+                        aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
+                        title={getModeMeta(subMode, uiLang).title}
+                        disabled={shellGated}
+                        onClick={() => handleProfileChange(subMode)}
+                      >
+                        <span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span>
+                        <span className="profile-pill__narrow">
+                          {subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {showExplain ? (
+                  <p className="query-explain" aria-live="polite">
+                    {explainSummary ? (
+                      <span className="query-explain__summary">{explainSummary}</span>
+                    ) : null}
+                    {explainWarning ? (
+                      <span className="query-explain__warning">{explainWarning}</span>
+                    ) : null}
+                  </p>
+                ) : null}
+                {mountWarmupBadge ? (
+                  <TailPreloadBadge
+                    tailProgress={tailProgress}
+                    startupComplete={startupComplete}
+                    theme={uiTheme}
+                    lang={uiLang}
+                    onDismiss={handleWarmupBadgeDismiss}
+                  />
+                ) : null}
               </div>
             </form>
           </div>
