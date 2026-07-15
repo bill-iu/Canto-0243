@@ -251,7 +251,7 @@ button.icon-button.header-search__shuffle:disabled {
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
-  /* 窄屏：與寬屏同一骨架 brand|hero|menu／search；唔另開 hero 行擠壓 header */
+  /* 窄屏：brand|hero|menu 同行；搜尋全寬下一行（唔另開 hero 列） */
   .app-bar {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
@@ -291,32 +291,39 @@ button.icon-button.header-search__shuffle:disabled {
     display: block;
   }
 
-  /* 與 logo 同行置中；縮字＋藏 tagline，唔加高 header */
+  /* 同行、水平置中；放大 title＋顯示 tagline；唔改 search 尺寸 */
   .app-bar > .header-hero {
     display: block;
     grid-area: hero;
     align-self: center;
-    justify-self: center;
+    justify-self: stretch;
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    padding: 0 4px;
+    padding: 0 6px;
     text-align: center;
     opacity: 1;
     visibility: visible;
   }
 
   .app-bar > .header-hero .header-hero__title {
-    font-size: clamp(11px, 3.2vw, 15px);
-    line-height: 36px; /* 同 logo 高 */
-    letter-spacing: -0.03em;
+    font-size: clamp(15px, 4.2vw, 19px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .app-bar > .header-hero .header-hero__tagline {
-    display: none;
+    display: block;
+    margin: 2px 0 0;
+    font-size: clamp(10px, 2.8vw, 12px);
+    line-height: 1.25;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .header-chrome .mode-menu-root {
