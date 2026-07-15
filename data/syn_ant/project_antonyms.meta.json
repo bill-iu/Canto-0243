@@ -4927,13 +4927,13 @@
       "created_at": "2026-07-15T09:15:11Z"
     },
     "len4-b03-20260715": {
-      "k": 309,
-      "git_commit": "0000000000000000000000000000000000000000",
+      "k": 308,
+      "git_commit": "3abc6ac5c4bc3d359fce42baa405f0fa8cd791d7",
       "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
       "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
       "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
       "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
-      "model_note": "len4-b03 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260718; soft-prefer 4-char tails [parent land provisional]",
+      "model_note": "len4-b03 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260718; soft-prefer 4-char tails",
       "model": "xai/grok-4",
       "model_provider": "xAI",
       "model_version": "grok-4",
@@ -4948,13 +4948,13 @@
       },
       "sample_seed": 20260718,
       "sample_n": 50,
-      "sample_ok": 50,
+      "sample_ok": 48,
       "ok_rate_threshold": 0.9,
-      "ok_rate": 1.0,
+      "ok_rate": 0.96,
       "sample_parent": "project_antonyms.tsv len4-b03-20260715 parent N=635",
       "sample_parent_n": 635,
-      "sample_parent_commit": "0000000000000000000000000000000000000000",
-      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_parent_commit": "3abc6ac5c4bc3d359fce42baa405f0fa8cd791d7",
+      "sample_parent_tsv_sha256": "7fdb09bd89699eb54136a47f19d9068109b2ed4f4f28702c0dad45cde05465f0",
       "sample_verdicts": [
         {
           "head": "久經考驗",
@@ -4977,8 +4977,10 @@
         {
           "head": "付之東流",
           "tail": "落袋",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "以此類推",
@@ -5235,8 +5237,10 @@
         {
           "head": "飄飄欲仙",
           "tail": "沮喪",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "飽經滄桑",
@@ -5257,9 +5261,24 @@
           "reasons": []
         }
       ],
-      "removed_sample_fails": [],
-      "accepted_pairs": 635,
-      "created_at": "2026-07-15T09:17:44Z"
+      "removed_sample_fails": [
+        {
+          "head": "付之東流",
+          "tail": "落袋",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        },
+        {
+          "head": "飄飄欲仙",
+          "tail": "沮喪",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        }
+      ],
+      "accepted_pairs": 633,
+      "created_at": "2026-07-15T09:17:49Z"
     }
   },
   "post_land_removed_pairs": [
