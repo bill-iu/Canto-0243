@@ -884,7 +884,7 @@ function App() {
                 showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
               />
             </div>
-            {/* 寬屏：grid 置於 logo｜menu 之間；窄屏：搜尋欄上方置中 */}
+            {/* 寬／窄屏共用：grid 置於 logo｜menu 之間；窄屏縮字同行唔另開列 */}
             <div className="header-hero" aria-hidden="true">
               <p className="header-hero__title">
                 {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}

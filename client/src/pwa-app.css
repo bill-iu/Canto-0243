@@ -251,41 +251,33 @@ button.icon-button.header-search__shuffle:disabled {
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
-  /* Top chrome: [logo left][menu right] — search second row */
+  /* 窄屏：與寬屏同一骨架 brand|hero|menu／search；唔另開 hero 行擠壓 header */
   .app-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand hero menu"
+      "search search search";
+    column-gap: 6px;
     row-gap: 8px;
+    align-items: center;
     position: relative;
     min-height: 0;
   }
 
   .header-chrome {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-    width: 100%;
-    min-height: 44px;
-    column-gap: 6px;
+    display: contents;
   }
 
   .header-chrome__center {
-    display: flex;
-    grid-column: 1;
-    grid-row: 1;
-    z-index: 1;
-    min-height: 44px;
-    align-items: center;
-    justify-content: flex-start;
-    position: relative;
+    display: contents;
   }
 
   .header-chrome .brand {
-    grid-area: unset;
+    grid-area: brand;
+    align-self: center;
     position: static;
-    max-width: min(180px, 48vw);
+    max-width: min(120px, 28vw);
     padding: 0;
     opacity: 1;
     visibility: visible;
@@ -294,34 +286,47 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-chrome .brand .brand-logo {
-    height: 40px;
+    height: 36px;
     width: auto;
+    display: block;
   }
 
-  /* 窄屏：hero 喺搜尋欄上方置中（覆寫 shell.css display:none） */
+  /* 與 logo 同行置中；縮字＋藏 tagline，唔加高 header */
   .app-bar > .header-hero {
     display: block;
-    order: 2;
+    grid-area: hero;
+    align-self: center;
+    justify-self: center;
     width: 100%;
-    max-width: none;
-    padding: 4px 8px 2px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0 4px;
     text-align: center;
+    opacity: 1;
+    visibility: visible;
   }
 
   .app-bar > .header-hero .header-hero__title {
-    font-size: clamp(20px, 5.5vw, 24px);
+    font-size: clamp(11px, 3.2vw, 15px);
+    line-height: 36px; /* 同 logo 高 */
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .app-bar > .header-hero .header-hero__tagline {
-    font-size: 12px;
+    display: none;
   }
 
-  .header-chrome {
-    order: 1;
-  }
-
-  .header-search {
-    order: 3;
+  .header-chrome .mode-menu-root {
+    grid-area: menu;
+    grid-column: unset;
+    grid-row: unset;
+    z-index: 2;
+    margin-left: 0;
+    max-width: min(46vw, 200px);
+    align-self: center;
   }
 
   .header-search__meta .warmup-badge {
@@ -335,7 +340,7 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-search {
-    grid-area: unset;
+    grid-area: search;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -442,15 +447,6 @@ button.icon-button.header-search__shuffle:disabled {
     overflow: visible;
     text-overflow: clip;
     vertical-align: top;
-  }
-
-  .header-chrome .mode-menu-root {
-    grid-column: 2;
-    grid-row: 1;
-    z-index: 2;
-    margin-left: 0;
-    max-width: min(72vw, 260px);
-    align-self: center;
   }
 
   .mode-menu-meta {
