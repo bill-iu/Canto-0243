@@ -37,14 +37,16 @@
   align-self: start;
 }
 
-.header-chrome .warmup-badge {
-  grid-area: search;
-  justify-self: center;
-  align-self: start;
-  z-index: 2;
-  margin-top: 8px;
-  flex: 0 1 auto;
-  max-width: min(280px, 40vw);
+/*
+ * 背景預載標示（PWA）：與三檔 pill 同一行、貼整段搜尋控件右緣（含按鈕）。
+ * 語意解釋可另起一行（flex-basis 100%）；shell.css 的 flex:1／margin:auto 喺呢度覆寫。
+ */
+.header-search__meta .warmup-badge {
+  order: 2;
+  margin: 0 0 0 auto;
+  flex: 0 0 auto;
+  max-width: min(220px, 36vw);
+  align-self: center;
 }
 
 .header-chrome .mode-menu-root {
@@ -70,18 +72,21 @@
 .header-search__main {
   flex: 1 1 auto;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .header-search__meta {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
   min-width: 0;
   width: 100%;
+}
+
+.header-search__meta .pingze-submodes {
+  order: 1;
+  margin-top: 0;
+  flex: 0 0 auto;
 }
 
 /* Shuffle: accent stroke so it reads clearly on light + dark */
@@ -106,9 +111,11 @@ button.icon-button.header-search__shuffle:disabled {
 }
 
 .header-search__meta .query-explain {
-  flex: 1 1 auto;
+  order: 3;
+  flex: 1 1 100%;
+  width: 100%;
+  min-width: 100%;
   margin: 0;
-  min-width: 0;
   text-align: left;
 }
 
@@ -117,6 +124,7 @@ button.icon-button.header-search__shuffle:disabled {
   align-items: center;
   gap: 2px;
   margin-top: 0;
+  flex: 0 0 auto;
   flex-shrink: 0;
   width: max-content;
   max-width: none;
@@ -211,7 +219,7 @@ button.icon-button.header-search__shuffle:disabled {
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
-  /* Top chrome: [logo|warmup left][menu right] — search second row */
+  /* Top chrome: [logo left][menu right] — search second row */
   .app-bar {
     display: flex;
     flex-direction: column;
@@ -239,23 +247,18 @@ button.icon-button.header-search__shuffle:disabled {
     min-height: 44px;
     align-items: center;
     justify-content: flex-start;
-    pointer-events: none;
     position: relative;
   }
 
-  /* Left-aligned brand + warmup share the left slot */
   .header-chrome .brand {
     grid-area: unset;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    position: static;
     max-width: min(180px, 48vw);
     padding: 0;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: opacity 420ms ease-out, visibility 420ms ease-out;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
   }
 
   .header-chrome .brand .brand-logo {
@@ -263,23 +266,14 @@ button.icon-button.header-search__shuffle:disabled {
     width: auto;
   }
 
-  .header-chrome .warmup-badge {
-    grid-area: unset;
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: 0;
-    max-width: min(220px, 60vw);
-    pointer-events: auto;
-    justify-self: unset;
-    align-self: unset;
-  }
-
-  .app-shell.is-header-brand-ready .header-chrome .brand {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+  .header-search__meta .warmup-badge {
+    position: static;
+    transform: none;
+    order: 2;
+    margin: 0 0 0 auto;
+    flex: 0 0 auto;
+    max-width: min(200px, 50vw);
+    z-index: auto;
   }
 
   .header-search {
@@ -299,9 +293,6 @@ button.icon-button.header-search__shuffle:disabled {
   .header-search__main {
     flex: 1 1 auto;
     min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
   }
 
   .header-search__actions {
@@ -333,14 +324,21 @@ button.icon-button.header-search__shuffle:disabled {
     height: 16px;
   }
 
+  /* 窄屏：硬保 pill＋badge 同排；解釋可另起一行 */
   .header-search__meta {
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     gap: 4px 6px;
     margin-top: 0;
   }
 
+  .header-search__meta .pingze-submodes {
+    order: 1;
+    flex: 0 0 auto;
+  }
+
   .header-search__meta .query-explain {
+    order: 3;
     flex: 1 1 100%;
     width: 100%;
     min-width: 100%;
