@@ -177,6 +177,36 @@ html[data-theme="dark"] .app-header {
       overflow: visible;
     }
 
+/* Portable／PWA 共用：menu 觸發＋下方詞庫版本 meta */
+.mode-menu-root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  max-width: min(100%, 280px);
+}
+
+.mode-menu-stack {
+  min-width: 0;
+}
+
+.mode-menu-anchor {
+  position: relative;
+}
+
+.mode-menu-meta {
+  margin: 4px 0 0;
+  padding: 0 2px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 .menu-trigger,
 .ghost-button,
 .primary-button,
