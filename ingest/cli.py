@@ -388,6 +388,13 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
     ensure_word_relations_table()
 
     with SessionLocal() as db:
+        # Wipe 前先把未入清單嘅 manual 直連合併入 TSV（cluster/mirror 唔寫入）。
+        from ingest.manual_relations_apply import merge_orphan_manual_directs_into_tsv
+
+        print("==> merge orphan manual directs → 關係補錄清單")
+        ostats = merge_orphan_manual_directs_into_tsv(db)
+        print(f"    orphan-merge: {ostats}")
+
         print("==> truncate words / relations")
         truncate_lexicon_core(db)
         print("==> lexicon SSOT ingest + overlay")
