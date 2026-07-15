@@ -200,8 +200,8 @@ _Avoid_：parse 後仍用 dataclass isinstance 梯做 spec／dispatch、把查�
 _Avoid_：registry 內再寫一份家族槽位規則、執行層重做 ParsedQuery→規格
 
 **查詢語意解釋**：
-創作者即時說明意圖；與 **搜尋教學**、**搜尋教學速覽** 同屬**創作者教學文案**面，用語須填詞人一眼睇明（見 **搜尋教學**）。**文案規則單一**（見 ADR-0021）。演算法形狀：正規化解析 → **比對規格** → 由左至右字位掃描（等號一句概+押韻標；缺字逐字約束；無規格最短句；位置混加警告）。**Portable 與 PWA 各一解釋實作**（雙引擎）；以中立 parity 契約防文案漂移。
-_Avoid_：格槽音節、第三套 parse／自創槽語、解釋當規格、「同音」泛同韻、押韻標用於逐字/疊韻句、只准一邊寫死而另一邊自由改 copy、標題／摘要用串列／通配／錨／遮罩／碼夾等號等技術譯名
+創作者即時說明意圖；與 **搜尋教學**、**搜尋教學速覽** 同屬**創作者教學文案**面，用語須填詞人一眼睇明（見 **搜尋教學**）。**文案規則單一**（見 ADR-0021）。**比對規格**路徑演算法形狀：`build_match_spec` → **結構型 Explain IR**（字位索引、slot kind、dimension、ref_literal 等；唔夾「第 N 個字／雙押／同韻」creator copy）→ **render** 成摘要；lookup／近反義／平仄等短回路仍 ParsedQuery 直出最短句。位置易混 **warning** 仍 ParsedQuery 側。**Portable 與 PWA 各一解釋實作**（雙引擎）；IR schema 見 `contracts/query-explain-ir.schema.json`；parity 以 `query-explain-parity.json` 字串 contains + optional `ir_assert` 防漂移。
+_Avoid_：格槽音節、第三套 parse／自創槽語、解釋當規格、「同音」泛同韻、押韻標用於逐字/疊韻句、只准一邊寫死而另一邊自由改 copy、標題／摘要用串列／通配／錨／遮罩／碼夾等號等技術譯名、IR 夾已組好 creator 片語
 
 **押韻標註**：
 等號/前綴等號句尾標參考詞字數（單/雙/三/四押...）。碼約束另補。

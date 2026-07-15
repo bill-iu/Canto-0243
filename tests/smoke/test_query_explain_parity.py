@@ -38,6 +38,35 @@ def _assert_case(case: dict, summary: str | None, warning: str | None, kind: str
         assert text_w == (case["warning_eq"] or ""), f"{q!r}: warning_eq"
 
 
+def _assert_ir(q: str, expected: dict, actual: dict | None) -> None:
+    assert actual is not None, f"{q!r}: missing Explain IR"
+    if "variant" in expected:
+        assert actual.get("variant") == expected["variant"], (
+            f"{q!r}: variant {actual.get('variant')!r} != {expected['variant']!r}"
+        )
+    if "width" in expected:
+        assert actual.get("width") == expected["width"], (
+            f"{q!r}: width {actual.get('width')!r} != {expected['width']!r}"
+        )
+    if "raw_q" in expected:
+        assert actual.get("raw_q") == expected["raw_q"], (
+            f"{q!r}: raw_q {actual.get('raw_q')!r} != {expected['raw_q']!r}"
+        )
+    if "equals" in expected:
+        actual_eq = actual.get("equals") or {}
+        for key, value in expected["equals"].items():
+            assert actual_eq.get(key) == value, (
+                f"{q!r}: equals.{key} {actual_eq.get(key)!r} != {value!r}"
+            )
+    if "constraints" in expected:
+        actual_cs = actual.get("constraints") or []
+        for exp_c in expected["constraints"]:
+            found = any(
+                all(item.get(k) == v for k, v in exp_c.items()) for item in actual_cs
+            )
+            assert found, f"{q!r}: constraint {exp_c!r} not in {actual_cs!r}"
+
+
 class QueryExplainParity(unittest.TestCase):
     def test_contract_file_shape(self):
         self.assertTrue(CONTRACT.is_file(), msg=str(CONTRACT))
@@ -55,12 +84,15 @@ class QueryExplainParity(unittest.TestCase):
                 )
 
     def test_python_explain_matches_contract(self):
-        from app.services.query_explain import explain_query
+        from app.services.query_explain import explain_ir_for_query, explain_query
 
         for case in _load_cases():
             with self.subTest(q=case["q"]):
                 r = explain_query(case["q"])
                 _assert_case(case, r.summary, r.warning, r.kind)
+                if case.get("ir_assert"):
+                    ir = explain_ir_for_query(case["q"])
+                    _assert_ir(case["q"], case["ir_assert"], ir)
 
     def test_ts_self_check_when_available(self):
         if not TS_SCRIPT.is_file():

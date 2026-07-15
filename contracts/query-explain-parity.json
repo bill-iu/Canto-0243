@@ -1,16 +1,32 @@
 {
-  "description": "查詢語意解釋 dual-port parity (ADR-0021). Portable Python + PWA TS must both satisfy. Prefer contains over full-string eq.",
+  "description": "查詢語意解釋 dual-port parity (ADR-0021). Portable Python + PWA TS must both satisfy. Prefer contains over full-string eq. Optional ir_assert soft-checks structural Explain IR (MatchSpec path).",
   "cases": [
     {
       "q": "香港=",
       "kind": "equals",
       "summary_contains": ["整詞", "雙押"],
-      "summary_not_contains": ["數字夾字"]
+      "summary_not_contains": ["數字夾字"],
+      "ir_assert": {
+        "variant": "whole_word_equals",
+        "width": 2,
+        "equals": {
+          "ref_literal": "香港",
+          "dimension": "final",
+          "whole_word": true
+        }
+      }
     },
     {
       "q": "23+好=",
       "kind": "plus_anchor",
-      "summary_contains": ["同韻", "好"]
+      "summary_contains": ["同韻", "好"],
+      "ir_assert": {
+        "variant": "slot_scan",
+        "width": 3,
+        "constraints": [
+          { "pos": 2, "kind": "final_anchor", "ref": "好" }
+        ]
+      }
     },
     {
       "q": "23ng",
@@ -21,17 +37,33 @@
       "q": "23就",
       "kind": "equals",
       "summary_contains": ["數字夾字"],
-      "summary_not_contains": ["整詞"]
+      "summary_not_contains": ["整詞"],
+      "ir_assert": {
+        "variant": "code_sandwich_scan",
+        "raw_q": "23就="
+      }
     },
     {
       "q": "0449窮困潦倒=",
       "kind": "equals",
-      "summary_contains": ["數字夾字", "四押"]
+      "summary_contains": ["數字夾字", "四押"],
+      "ir_assert": {
+        "variant": "code_sandwich_whole_word",
+        "equals": { "ref_literal": "窮困潦倒" }
+      }
     },
     {
       "q": "?+就=",
       "kind": "rhyme_anchor",
-      "summary_contains": ["任意字", "就"]
+      "summary_contains": ["任意字", "就"],
+      "ir_assert": {
+        "variant": "slot_scan",
+        "width": 2,
+        "constraints": [
+          { "pos": 0, "kind": "wildcard", "symbol": "?" },
+          { "pos": 1, "kind": "final_anchor", "ref": "就" }
+        ]
+      }
     }
   ]
 }

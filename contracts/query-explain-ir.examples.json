@@ -1,0 +1,41 @@
+{
+  "description": "Example Explain IR payloads (MatchSpec path). See query-explain-ir.schema.json.",
+  "examples": [
+    {
+      "label": "whole_word_equals — 香港=",
+      "ir": {
+        "variant": "whole_word_equals",
+        "width": 2,
+        "equals": {
+          "dimension": "final",
+          "ref_literal": "香港",
+          "whole_word": true,
+          "start_pos": 0
+        }
+      }
+    },
+    {
+      "label": "slot_scan — 23+好=",
+      "ir": {
+        "variant": "slot_scan",
+        "width": 2,
+        "constraints": [
+          { "pos": 0, "kind": "code_digit", "digit": "2" },
+          { "pos": 1, "kind": "final_anchor", "ref": "好" }
+        ]
+      }
+    },
+    {
+      "label": "code_sandwich_scan — 23就",
+      "ir": {
+        "variant": "code_sandwich_scan",
+        "width": 2,
+        "raw_q": "23就",
+        "constraints": [
+          { "pos": 0, "kind": "code_digit", "digit": "2" },
+          { "pos": 1, "kind": "hybrid_tail_rhyme", "digit": "3", "ref": "就" }
+        ]
+      }
+    }
+  ]
+}
