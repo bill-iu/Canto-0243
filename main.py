@@ -11,6 +11,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import FileResponse, HTMLResponse, JSONResponse, Response
 
+from app.lexicon_version import lexicon_version
 from app.routers.lexicon import router as lexicon_router
 from app.routers.relation import router as relation_router
 from app.routers.word import router
@@ -55,8 +56,12 @@ def _is_portable() -> bool:
 
 @app.get("/frontend/index.html", include_in_schema=False)
 async def serve_frontend_index() -> HTMLResponse:
-    """Portable 模式注入 meta，令 reload 後即刻顯示退出按鈕。"""
+    """Portable 模式注入 meta，令 reload 後即刻顯示退出按鈕／詞庫版本。"""
     html = FRONTEND_INDEX.read_text(encoding="utf-8")
+    ver = lexicon_version()
+    ver_tag = f'<meta name="canto-lexicon-version" content="{ver}">'
+    if 'name="canto-lexicon-version"' not in html:
+        html = html.replace("<head>", f"<head>\n  {ver_tag}", 1)
     if _is_portable():
         tag = '<meta name="canto-portable" content="1">'
         if 'name="canto-portable"' not in html:
@@ -90,6 +95,7 @@ async def home():
     return {
         "status": "running",
         "portable": _is_portable(),
+        "lexiconVersion": lexicon_version(),
         "port": port,
         "frontend": f"{base}/frontend/index.html",
         "api_test": f"{base}/words/search/?q=23",
@@ -105,6 +111,7 @@ async def root_favicon() -> FileResponse:
 async def preload_ready():
     snap = get_readiness_snapshot()
     snap["portable"] = _is_portable()
+    snap["lexiconVersion"] = lexicon_version()
     return snap
 
 

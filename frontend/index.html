@@ -173,67 +173,73 @@
         </div>
 
         <nav class="app-actions" aria-label="主要操作">
-          <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
-            <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
-            <span class="menu-chevron" aria-hidden="true">▾</span>
-          </button>
-          <button class="ghost-button portable-exit-btn" id="portableExitBtn" type="button" hidden>退出 Canto-0243</button>
-
-          <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
-              <div class="menu-group" role="group" aria-label="搜尋模式">
-                <p class="menu-label">搜尋模式</p>
-                <button class="mode-option" type="button" role="menuitemradio" aria-checked="true" data-family="basic">
-                  <span>
-                    <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
-                    <span class="mode-help">常用 0243 編碼與混合查詢</span>
-                  </span>
-                  <span class="mode-key">0243</span>
+          <div class="mode-menu-root">
+            <div class="mode-menu-stack">
+              <div class="mode-menu-anchor">
+                <button class="menu-trigger" id="modeMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="modeMenu">
+                  <span class="mode-trigger-text" id="currentModeLabel"><span class="mode-trigger-primary">0243模式</span><span class="mode-trigger-note">鬆</span></span>
+                  <span class="menu-chevron" aria-hidden="true">▾</span>
                 </button>
-                <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="pingze"><span><span class="mode-name">平仄<span class="mode-note">格律</span></span><span class="mode-help">平（P）、仄（Z）、數字與通配碼</span></span><span class="mode-key">P / Z</span></button>
-                <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="synonym">
-                  <span>
-                    <span class="mode-name">近反義<span class="mode-note">查</span></span>
-                    <span class="mode-help">近義、反義與語意相關 (BETA)</span>
-                  </span>
-                  <span class="mode-key">~ / !</span>
-                </button>
-              </div>
-              <div class="menu-group" role="group" aria-label="工具">
-                <p class="menu-label">工具</p>
-                <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
-                  <span>
-                    <span class="mode-name">搜尋教學</span>
-                    <span class="mode-help">完整語法與例子</span>
-                  </span>
-                  <span class="mode-key">?</span>
-                </button>
-                <button class="mode-option" id="relationMenuBtn" type="button" role="menuitem">
-                  <span>
-                    <span class="mode-name">補關係</span>
-                    <span class="mode-help">為已收錄字面補近義或反義</span>
-                  </span>
-                  <span class="mode-key">+</span>
-                </button>
-                <button class="mode-option" id="aboutMenuBtn" type="button" role="menuitem">
-                  <span>
-                    <span class="mode-name">關於</span>
-                    <span class="mode-help">版本、授權與資料來源</span>
-                  </span>
-                  <span class="mode-key">i</span>
-                </button>
-              </div>
-              <div class="menu-group" role="group" aria-label="顯示">
-                <p class="menu-label" id="displayMenuLabel">顯示</p>
-                <div class="menu-switches">
-                  <button class="mode-option mode-switch" id="theme-switch" type="button">
-                    <span class="theme-icon" aria-hidden="true">☀️</span>
-                  </button>
-                  <button class="mode-option mode-switch" id="lang-switch" type="button">
-                    <span id="lang-switch-text">中 / EN</span>
-                  </button>
+                <div class="mode-menu" id="modeMenu" role="menu" aria-labelledby="modeMenuButton">
+                  <div class="menu-group" role="group" aria-label="搜尋模式">
+                    <p class="menu-label">搜尋模式</p>
+                    <button class="mode-option" type="button" role="menuitemradio" aria-checked="true" data-family="basic">
+                      <span>
+                        <span class="mode-name">0243模式<span class="mode-note">鬆</span></span>
+                        <span class="mode-help">常用 0243 編碼與混合查詢</span>
+                      </span>
+                      <span class="mode-key">0243</span>
+                    </button>
+                    <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="pingze"><span><span class="mode-name">平仄<span class="mode-note">格律</span></span><span class="mode-help">平（P）、仄（Z）、數字與通配碼</span></span><span class="mode-key">P / Z</span></button>
+                    <button class="mode-option" type="button" role="menuitemradio" aria-checked="false" data-family="synonym">
+                      <span>
+                        <span class="mode-name">近反義<span class="mode-note">查</span></span>
+                        <span class="mode-help">近義、反義與語意相關 (BETA)</span>
+                      </span>
+                      <span class="mode-key">~ / !</span>
+                    </button>
+                  </div>
+                  <div class="menu-group" role="group" aria-label="工具">
+                    <p class="menu-label">工具</p>
+                    <button class="mode-option" id="guideMenuBtn" type="button" role="menuitem">
+                      <span>
+                        <span class="mode-name">搜尋教學</span>
+                        <span class="mode-help">完整語法與例子</span>
+                      </span>
+                      <span class="mode-key">?</span>
+                    </button>
+                    <button class="mode-option" id="relationMenuBtn" type="button" role="menuitem">
+                      <span>
+                        <span class="mode-name">補關係</span>
+                        <span class="mode-help">為已收錄字面補近義或反義</span>
+                      </span>
+                      <span class="mode-key">+</span>
+                    </button>
+                    <button class="mode-option" id="aboutMenuBtn" type="button" role="menuitem">
+                      <span>
+                        <span class="mode-name">關於</span>
+                        <span class="mode-help">版本、授權與資料來源</span>
+                      </span>
+                      <span class="mode-key">i</span>
+                    </button>
+                  </div>
+                  <div class="menu-group" role="group" aria-label="顯示">
+                    <p class="menu-label" id="displayMenuLabel">顯示</p>
+                    <div class="menu-switches">
+                      <button class="mode-option mode-switch" id="theme-switch" type="button">
+                        <span class="theme-icon" aria-hidden="true">☀️</span>
+                      </button>
+                      <button class="mode-option mode-switch" id="lang-switch" type="button">
+                        <span id="lang-switch-text">中 / EN</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            <p class="mode-menu-meta" id="lexiconVersionMeta" hidden></p>
+          </div>
+          <button class="ghost-button portable-exit-btn" id="portableExitBtn" type="button" hidden>退出 Canto-0243</button>
         </nav>
       </div>
       <div class="app-header__tabdeck" aria-label="查詢分頁">
