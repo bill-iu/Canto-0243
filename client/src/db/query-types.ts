@@ -127,6 +127,22 @@ export interface CompoundAntQuery extends ParsedQuery {
   rhyme_char?: string;
 }
 
+export interface CompoundConnectSynQuery extends ParsedQuery {
+  kind: QueryKind.COMPOUND_CONNECT_SYN;
+  raw_q: string;
+  code_prefix?: string;
+  connective: string;
+  rhyme_char?: string;
+}
+
+export interface CompoundConnectAntQuery extends ParsedQuery {
+  kind: QueryKind.COMPOUND_CONNECT_ANT;
+  raw_q: string;
+  code_prefix?: string;
+  connective: string;
+  rhyme_char?: string;
+}
+
 export interface CompoundDoubledSyllableQuery extends ParsedQuery {
   kind: QueryKind.COMPOUND_DOUBLED_SYLLABLE;
   raw_q: string;

@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import re
-from typing import Literal, Optional
+from typing import Literal
 
 from app.utils.jyutping_codec import M02493_TO_0243, normalize_02493_code
 
@@ -30,14 +30,6 @@ def normalize_ping_ze_pattern(q: str) -> str:
 
 def normalize_pzmode(mode: str | None) -> str:
     return mode if mode in VALID_PZ_MODES else "m1"
-
-
-def ping_ze_mode_redirect_hint(effective: str, *, lang: str = "zh") -> Optional[str]:
-    """394052 就緒後轉該檔時唔出提示（Q9 修正）。"""
-    return None
-    if lang == "en":
-        return "Ping–ze serial query switched to 02493 Mode (Strict)"
-    return "平仄串列查詢已切換至 02493模式（緊）"
 
 
 def digit_slot_matches(query_digit: str, code_digit: str, pzmode: str = "m1") -> bool:

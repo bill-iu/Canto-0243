@@ -13,6 +13,8 @@ class QueryKind(str, Enum):
     RELATION_LOOKUP = "relation_lookup"
     COMPOUND_SYN = "compound_syn"
     COMPOUND_ANT = "compound_ant"
+    COMPOUND_CONNECT_SYN = "compound_connect_syn"
+    COMPOUND_CONNECT_ANT = "compound_connect_ant"
     COMPOUND_DOUBLED_SYLLABLE = "compound_doubled_syllable"
     HETERONYM_CODE = "heteronym_code"
     EQUALS = "equals"
@@ -55,6 +57,8 @@ QUERY_KIND_META: dict[QueryKind, QueryKindMeta] = {
     QueryKind.RELATION_LOOKUP: QueryKindMeta(RouteKind.RELATION),
     QueryKind.COMPOUND_SYN: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.COMPOUND_ANT: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
+    QueryKind.COMPOUND_CONNECT_SYN: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
+    QueryKind.COMPOUND_CONNECT_ANT: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.COMPOUND_DOUBLED_SYLLABLE: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),
     QueryKind.HETERONYM_CODE: QueryKindMeta(RouteKind.HETERONYM),
     QueryKind.EQUALS: QueryKindMeta(RouteKind.MASK_FAMILY, match_spec=True),

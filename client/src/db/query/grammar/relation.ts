@@ -3,6 +3,8 @@ import { FILLWORD_CONNECTIVES } from '../../_generated/fillword-connectives.ts';
 import { QueryKind } from '../../query-kind.ts';
 import type {
   CompoundAntQuery,
+  CompoundConnectAntQuery,
+  CompoundConnectSynQuery,
   CompoundDoubledSyllableQuery,
   CompoundSynQuery,
   ParsedQuery,
@@ -13,7 +15,7 @@ import type {
 const DOUBLED_SYLLABLE_MIN_DOLLARS = 2;
 const DOUBLED_SYLLABLE_MAX_DOLLARS = 4;
 const DOUBLED_SYLLABLE_DOLLAR_COUNT_HINT = '雙聲疊韻字查詢須用 2 至 4 個連續 $。';
-const DOUBLED_SYLLABLE_CODE_WIDTH_HINT = '碼位數須與 $ 個數一致（如 333$$$）。';
+const DOUBLED_SYLLABLE_CODE_WIDTH_HINT = '碼長度須與 $ 個數一致（如 333$$$）。';
 
 /** Port of relation.parse_doubled_syllable_syntax */
 export function parseDoubledSyllableSyntax(
@@ -55,11 +57,12 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
   );
   if (m) {
     return {
-      kind: QueryKind.COMPOUND_SYN,
+      kind: QueryKind.COMPOUND_CONNECT_SYN,
       raw_q: q,
       code_prefix: m[1] || undefined,
+      connective: m[2]!,
       rhyme_char: m[3] || undefined,
-    } as CompoundSynQuery;
+    } satisfies CompoundConnectSynQuery;
   }
 
   m = q.match(
@@ -67,11 +70,12 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
   );
   if (m) {
     return {
-      kind: QueryKind.COMPOUND_ANT,
+      kind: QueryKind.COMPOUND_CONNECT_ANT,
       raw_q: q,
       code_prefix: m[1] || undefined,
+      connective: m[2]!,
       rhyme_char: m[3] || undefined,
-    } as CompoundAntQuery;
+    } satisfies CompoundConnectAntQuery;
   }
 
   m = q.match(/^(\d*)~~([\u4e00-\u9fff])?$/);
@@ -81,7 +85,7 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
       raw_q: q,
       code_prefix: m[1] || undefined,
       rhyme_char: m[2] || undefined,
-    } as CompoundSynQuery;
+    } satisfies CompoundSynQuery;
   }
 
   m = q.match(/^(\d*)!!([\u4e00-\u9fff])?$/);
@@ -91,7 +95,7 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
       raw_q: q,
       code_prefix: m[1] || undefined,
       rhyme_char: m[2] || undefined,
-    } as CompoundAntQuery;
+    } satisfies CompoundAntQuery;
   }
 
   m = q.match(/^(\d*)([~!])([\u4e00-\u9fff]+)$/);
@@ -102,7 +106,7 @@ export function parseRelationSyntax(q: string): ParsedQuery | null {
       relation_kind: m[2] === '~' ? 'syn' : 'ant',
       word: m[3]!,
       code_prefix: m[1] || undefined,
-    } as RelationLookupQuery;
+    } satisfies RelationLookupQuery;
   }
 
   return null;

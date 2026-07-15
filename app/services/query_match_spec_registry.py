@@ -333,39 +333,51 @@ def _spec_compound_doubled_syllable(parsed: ParsedQuery) -> Optional[MatchSpec]:
 
 
 def _spec_compound_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.COMPOUND_SYN
-    if isinstance(parsed, CompoundConnectSynQuery):
-        spec = MatchSpec(width=3, compound_kind="syn")
-        spec.extra["connective"] = parsed.connective
-        anchor_pos = 2
-    elif isinstance(parsed, CompoundSynQuery):
-        spec = MatchSpec(width=2, compound_kind="syn")
-        anchor_pos = 1
-    else:
+    if not isinstance(parsed, CompoundSynQuery):
         return None
+    spec = MatchSpec(width=2, compound_kind="syn")
     append_code_digit_slots(spec, parsed.code_prefix)
     if parsed.rhyme_char:
         spec.slots.append(
-            SlotConstraint(pos=anchor_pos, kind="final_anchor", value=parsed.rhyme_char)
+            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
         )
     return spec
 
 
 def _spec_compound_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.COMPOUND_ANT
-    if isinstance(parsed, CompoundConnectAntQuery):
-        spec = MatchSpec(width=3, compound_kind="ant")
-        spec.extra["connective"] = parsed.connective
-        anchor_pos = 2
-    elif isinstance(parsed, CompoundAntQuery):
-        spec = MatchSpec(width=2, compound_kind="ant")
-        anchor_pos = 1
-    else:
+    if not isinstance(parsed, CompoundAntQuery):
         return None
+    spec = MatchSpec(width=2, compound_kind="ant")
     append_code_digit_slots(spec, parsed.code_prefix)
     if parsed.rhyme_char:
         spec.slots.append(
-            SlotConstraint(pos=anchor_pos, kind="final_anchor", value=parsed.rhyme_char)
+            SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
+        )
+    return spec
+
+
+def _spec_compound_connect_syn(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    if not isinstance(parsed, CompoundConnectSynQuery):
+        return None
+    spec = MatchSpec(width=3, compound_kind="syn")
+    spec.extra["connective"] = parsed.connective
+    append_code_digit_slots(spec, parsed.code_prefix)
+    if parsed.rhyme_char:
+        spec.slots.append(
+            SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
+        )
+    return spec
+
+
+def _spec_compound_connect_ant(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    if not isinstance(parsed, CompoundConnectAntQuery):
+        return None
+    spec = MatchSpec(width=3, compound_kind="ant")
+    spec.extra["connective"] = parsed.connective
+    append_code_digit_slots(spec, parsed.code_prefix)
+    if parsed.rhyme_char:
+        spec.slots.append(
+            SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
         )
     return spec
 
@@ -386,8 +398,10 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.MASK: _spec_mask,
     QueryKind.PING_ZE_SERIAL: _spec_ping_ze_serial,
     QueryKind.COMPOUND_SYN: _spec_compound_syn,
+    QueryKind.COMPOUND_CONNECT_SYN: _spec_compound_connect_syn,
     QueryKind.COMPOUND_DOUBLED_SYLLABLE: _spec_compound_doubled_syllable,
     QueryKind.COMPOUND_ANT: _spec_compound_ant,
+    QueryKind.COMPOUND_CONNECT_ANT: _spec_compound_connect_ant,
 }
 
 

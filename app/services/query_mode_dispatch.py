@@ -61,29 +61,6 @@ def _handle_pool_page(ctx: SearchContext, q: str, engine: QueryEngine) -> Search
     return SearchResult(items=items)
 
 
-def _pred_ping_ze_redirect(q: str, ctx: SearchContext) -> bool:
-    from app.services.ping_zak import is_ping_ze_serial_query
-
-    return is_ping_ze_serial_query(q)
-
-
-def _handle_ping_ze_redirect(ctx: SearchContext, q: str, engine: QueryEngine) -> SearchResult:
-    from app.services.ping_zak import ping_ze_effective_mode, ping_ze_mode_redirect_hint
-    from app.services.query_parse import normalize_and_parse
-
-    effective = ping_ze_effective_mode()
-    redirected = replace(ctx, mode=effective, offset=0)
-    parsed = normalize_and_parse(ctx.q)
-    result = engine.dispatch_parsed(parsed, redirected)
-    return SearchResult(
-        items=result.items,
-        total=result.total,
-        hint=ping_ze_mode_redirect_hint(effective),
-        cache_path=result.cache_path,
-        effective_mode=effective,
-    )
-
-
 SYN_MODE_STEPS: tuple[tuple[str, SynModePredicate, SynModeHandler], ...] = (
     ("jyutping_reject", _pred_jyutping_reject, _handle_jyutping_reject),
     ("relation_redirect", _pred_relation_redirect, _handle_relation_redirect),
