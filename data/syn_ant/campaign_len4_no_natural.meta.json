@@ -1304,6 +1304,267 @@
         }
       ],
       "git_commit": "09e1294ee56f218914a03129a0c41d03f0ba2afa"
+    },
+    "len4-b06-20260715": {
+      "sample_seed": 20260716,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "sample_parent_n": 119,
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "一身兩役",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "不祧之祖",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "不負眾望",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "中華民國",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "乙種射線",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "人工免疫",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "仰卧起坐",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "個人衞生",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "偵探小説",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "全勞動力",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "勢利小人",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "嘉年華會",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "國際公制",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "土木工程",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "地震震級",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "大政方針",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "天然免疫",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "太平龍頭",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "定海神針",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "引人入勝",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "户樞不蠹",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "扭力天平",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "有理函數",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "朋比為奸",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "武俠小説",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "氣象衞星",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "法蘭克福",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "烏蘭巴託",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "烏魯木齊",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "無線電台",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "特惠關税",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "犁庭掃閭",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "環境衞生",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "白熾電燈",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "相對濕度",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "短篇小説",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "空地導彈",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "空氣軸承",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "細菌肥料",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "言情小説",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "象形文字",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "趙公元帥",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "過冬作物",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "長線產品",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "開放電路",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "隨遇平衡",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "電弧焊接",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "飛潛動植",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "高氣壓區",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "高温作業",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        }
+      ],
+      "git_commit": "fc374f161cf937564abc665d92d7e734fd6328e0"
     }
   }
 }
