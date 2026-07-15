@@ -309,7 +309,7 @@ export function parserLogicSelfCheck(): void {
     ['?+人=?', QueryKind.TRIPLE_RHYME_ANCHOR],
     ['?30人', QueryKind.WILDCARD_CODE_ANCHOR],
     ['12/12', QueryKind.HETERONYM_CODE],
-    ['33~與~你', QueryKind.COMPOUND_SYN],
+    ['33~與~你', QueryKind.COMPOUND_CONNECT_SYN],
     ['?=困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
     ['$$$', QueryKind.COMPOUND_DOUBLED_SYLLABLE],
   ];

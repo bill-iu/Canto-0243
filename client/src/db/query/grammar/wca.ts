@@ -1,7 +1,12 @@
 /** Port of query_grammar/wca. */
-import { isWildcardChar } from '../../position-match/mask-grammar.ts';
+import {
+  createMatchSpec,
+  type ConstraintKind,
+  type MatchSpec,
+} from '../../position-match/spec.ts';
 import { QueryKind } from '../../query-kind.ts';
-import type { WildcardCodeAnchorQuery } from '../../query-types.ts';
+import type { ParsedQuery, WildcardCodeAnchorQuery } from '../../query-types.ts';
+import { isWildcardChar } from './mask.ts';
 import { CODE_TAIL_MIDDLE, GRAMMAR_PLUS } from './shared.ts';
 
 function wcaTokenize(body: string): Array<[string, string]> | null {
@@ -124,4 +129,25 @@ export function parseWildcardCodeAnchorQuery(q: string): WildcardCodeAnchorQuery
     return null;
   }
   return { kind: QueryKind.WILDCARD_CODE_ANCHOR, raw_q: q, ...spec };
+}
+
+/** Port of query_grammar.wca.to_match_spec */
+export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
+  if (parsed.kind !== QueryKind.WILDCARD_CODE_ANCHOR) {
+    return null;
+  }
+  const q = parsed as WildcardCodeAnchorQuery;
+  const spec = createMatchSpec(q.width);
+  spec.mask = '?'.repeat(q.width);
+  if (!spec.slots) {
+    spec.slots = [];
+  }
+  for (const slot of q.slots) {
+    const kind = slot.kind as ConstraintKind;
+    spec.slots.push({ pos: slot.pos, kind, value: slot.value });
+    if (kind === 'literal_char' && slot.value) {
+      spec.mask = spec.mask.slice(0, slot.pos) + slot.value + spec.mask.slice(slot.pos + 1);
+    }
+  }
+  return spec;
 }

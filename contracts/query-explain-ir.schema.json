@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "query-explain-ir.schema.json",
+  "title": "QueryExplainIr",
+  "description": "Structural Explain IR for MatchSpec-path query explanations (ADR-0048 §4). Creator-facing copy is produced only by render.",
+  "type": "object",
+  "required": ["variant", "width"],
+  "additionalProperties": false,
+  "properties": {
+    "variant": {
+      "type": "string",
+      "enum": [
+        "whole_word_equals",
+        "prefix_wildcard_equals",
+        "code_sandwich_whole_word",
+        "code_sandwich_scan",
+        "compound",
+        "slot_scan",
+        "fallback"
+      ]
+    },
+    "width": { "type": "integer", "minimum": 1 },
+    "raw_q": { "type": "string" },
+    "equals": { "$ref": "#/$defs/EqualsIr" },
+    "code_prefix": { "$ref": "#/$defs/CodePrefixIr" },
+    "compound": { "$ref": "#/$defs/CompoundIr" },
+    "constraints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/PositionConstraint" }
+    }
+  },
+  "$defs": {
+    "EqualsIr": {
+      "type": "object",
+      "required": ["dimension", "ref_literal", "whole_word", "start_pos"],
+      "additionalProperties": false,
+      "properties": {
+        "dimension": { "type": "string", "enum": ["final", "initial"] },
+        "ref_literal": { "type": "string", "minLength": 1 },
+        "whole_word": { "type": "boolean" },
+        "start_pos": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "CodePrefixIr": {
+      "type": "object",
+      "required": ["digits", "per_digit_full"],
+      "additionalProperties": false,
+      "properties": {
+        "digits": { "type": "string", "pattern": "^[0-9]+$" },
+        "per_digit_full": { "type": "boolean" }
+      }
+    },
+    "CompoundIr": {
+      "type": "object",
+      "required": ["kind", "width"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["syn", "ant", "doubled_syllable"]
+        },
+        "width": { "type": "integer", "minimum": 1 },
+        "connective": { "type": "string" },
+        "code": { "type": "string" },
+        "tail_rhyme": { "type": "string" }
+      }
+    },
+    "PositionConstraint": {
+      "type": "object",
+      "required": ["pos", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "pos": { "type": "integer", "minimum": 0 },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "wildcard",
+            "code_digit",
+            "literal_char",
+            "final_anchor",
+            "initial_anchor",
+            "rhyme_letters",
+            "initial_letters",
+            "syllable_letters",
+            "hybrid_tail_rhyme",
+            "hybrid_tail_initial",
+            "hybrid_code_literal"
+          ]
+        },
+        "digit": { "type": "string", "pattern": "^[0-9]$" },
+        "ref": { "type": "string" },
+        "char": { "type": "string", "minLength": 1 },
+        "letters": { "type": "string", "minLength": 1 },
+        "symbol": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "wildcard" } } },
+          "then": { "required": ["symbol"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "code_digit" } } },
+          "then": { "required": ["digit"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "literal_char" } } },
+          "then": { "required": ["char"] }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": { "enum": ["final_anchor", "initial_anchor"] }
+            }
+          },
+          "then": { "required": ["ref"] }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": ["rhyme_letters", "initial_letters", "syllable_letters"]
+              }
+            }
+          },
+          "then": { "required": ["letters"] }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "hybrid_tail_rhyme",
+                  "hybrid_tail_initial",
+                  "hybrid_code_literal"
+                ]
+              }
+            }
+          },
+          "then": { "required": ["digit", "ref"] }
+        }
+      ]
+    }
+  }
+}

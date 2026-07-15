@@ -7,7 +7,8 @@ from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.pool import DEFAULT_PAGE_SIZE, PoolSnapshot, build_pool
+from app.domain.relations.pool import DEFAULT_PAGE_SIZE, PoolSnapshot
+from app.domain.relations.pool_builder import build_pool
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 
 

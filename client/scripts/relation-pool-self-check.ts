@@ -4,14 +4,16 @@ import { fileURLToPath } from 'node:url';
 
 import { buildRelationPool } from '../src/db/relation-pool-builder.ts';
 import {
-  getLexiconMembership,
-  invalidateLexiconMembership,
   invalidateRelationPoolCache,
-  isLexiconMembershipReady,
   projectRelationPool,
   relationLookupItems,
   relationPoolLogicSelfCheck,
-} from '../src/db/relation-pool.ts';
+} from '../src/db/relation-pool-projection.ts';
+import {
+  getLexiconMembership,
+  invalidateLexiconMembership,
+  isLexiconMembershipReady,
+} from '../src/db/lexicon-membership.ts';
 import { projectAntRankingSelfCheck } from '../src/db/relation-pool-ranking.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';

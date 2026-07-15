@@ -1,7 +1,11 @@
 /** 近反義池 ranking / merge — port of domain/relations/ranking.py (Phase C PR4). */
 import type { RelationPoolItem } from './relation-pool-snapshot.ts';
+import {
+  RUNTIME_DERIVED_ANT_SOURCES,
+  SOURCE_BASE_RANK,
+} from './_generated/relation-pool-ranking.ts';
 
-export const RUNTIME_DERIVED_ANT_SOURCES = new Set(['ant_syn_mirror', 'ant_cilin_exanded']);
+export { RUNTIME_DERIVED_ANT_SOURCES, SOURCE_BASE_RANK };
 
 const QUERY_SYNONYM_PRIORITY: Record<string, string[]> = {
   快樂: ['開心', '愉快', '高興', '歡樂', '快活', '喜悅', '稱快'],
@@ -9,24 +13,6 @@ const QUERY_SYNONYM_PRIORITY: Record<string, string[]> = {
 
 const QUERY_ANTONYM_PRIORITY: Record<string, string[]> = {
   快樂: ['悲傷', '傷心', '難過', '痛苦', '哀傷', '憂愁', '沮喪'],
-};
-
-const SOURCE_BASE_RANK: Record<string, number> = {
-  manual: 0,
-  manual_syn_cluster: 18,
-  manual_ant_mirror: 20,
-  cilin: 10,
-  antisem: 10,
-  project_ant: 12,
-  guotong: 15,
-  ant_cilin_exanded: 25,
-  ant_syn_bridge: 28,
-  cow: 20,
-  current_static: 15,
-  runtime_static: 80,
-  static_thesaurus: 80,
-  embedding_cosine: 60,
-  word_relations: 50,
 };
 export function sourceRank(source: string | null | undefined): number {
   if (!source) {

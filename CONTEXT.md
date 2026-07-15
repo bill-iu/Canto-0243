@@ -117,8 +117,8 @@ _Avoid_：syn、查模式（作為模式正名）、關係模式
 _Avoid_：lastMode、m1/m2/m3（實作名）
 
 **搜尋模式轉接**：
-在**近反義模式**下，若查詢串屬**近反義關係查詢**語法，自動切換至**近反義前次0243搜尋模式**（無則 **0243模式**），更新頂欄模式與 URL，並以該檔執行查詢；純漢字池查詢（如「開心」）仍留喺近反義模式。轉接時重設分頁並顯示**轉接提示**。執行分兩層：**介面轉接**（送出前先切模式）與 **API 保險轉接**（後端改檔並回傳 `hint`／`X-Effective-Mode`）。
-_Avoid_：模式偷換（UI 仍顯示近反義）、把缺字／碼字查詢一併轉接、僅後端轉接而介面唔更新、轉接後沿用舊 offset
+在**近反義模式**下，若查詢串屬**近反義關係查詢**語法，自動切換至**近反義前次0243搜尋模式**（無則 **0243模式**），更新頂欄模式與 URL，並以該檔執行查詢；純漢字池查詢（如「開心」）仍留喺近反義模式。轉接時重設分頁並顯示**轉接提示**。執行分兩層：**介面轉接**（送出前先切模式）與 **API 保險轉接**（後端改檔並回傳 `hint`／`X-Effective-Mode`）。決策單一出口：ModePolicy `plan_redirect`／`planRedirect`（should_redirect／effective_mode／hint／reset_offset）；detect 可走 full-parse 或 regex adapter，結果形狀相同。UI commit 經薄 SearchSession（mode／pzmode／fallback／hint／offset），唔吞 tabs／就緒閘。
+_Avoid_：模式偷換（UI 仍顯示近反義）、把缺字／碼字查詢一併轉接、僅後端轉接而介面唔更新、轉接後沿用舊 offset、UI 與引擎各自拼 hint／fallback／offset
 
 **轉接提示**：
 **搜尋模式轉接**發生時，於結果區頂部顯示嘅一行說明（如「此語法已切換至 0243模式（鬆）查詢」）；與查無結果、粵拼在近反義模式被拒等既有 `hint` 同列，唔阻塞結果展示。**介面轉接**由前端本地生成；**API 保險轉接**由後端 `hint` 回傳；兩層文案一致。
@@ -129,8 +129,8 @@ _Avoid_：toast、彈窗確認
 _Avoid_：相關詞（不區分類型時）、semantic_related
 
 **近反義池**：
-合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。投影統一讀取入口。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。
-_Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT、假設 DB 有無限 syn 鄰居
+合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。**投影統一讀取入口**（`project_relation_pool`／`projectRelationPool`）；建池為內部。source 順位／runtime 衍生反義來源 id 以 `contracts/relation-pool-ranking.json` 為 SSOT（codegen 雙端）。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。
+_Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT、假設 DB 有無限 syn 鄰居、PWA shallow barrel re-export、runtime 繞過投影直呼 builder、兩邊手抄 SOURCE_BASE_RANK
 
 **近反義池快照**：
 單字面建池後定格（三池+計數）。供投影與分頁。
@@ -195,9 +195,13 @@ _Avoid_：parser、handler chain（實作細節）、在 position_match 各處�
 `parse_query` 產出後，每條查詢歸一類（等號、串列韻／聲錨、前綴通配等號、詞條 lookup…）。**比對規格建構**與**搜尋路由**須以同一**查詢種類**驅動，唔再各自維護第二套型別分支；**parse_query** 優先序鏈可維持現狀。
 _Avoid_：parse 後仍用 dataclass isinstance 梯做 spec／dispatch、把查詢種類當實作 enum 名寫進領域文案
 
+**比對規格建構**：
+語法家族 module 負責該家族嘅 `parse` 與 `to_match_spec`（ParsedQuery → **比對規格**）；查詢種類註冊表只做 kind→fn 委派，唔內嵌槽位／overlay 邏輯。樣板：近反義 relation、平仄、equals、serial、rhyme、plus、mask、wca、**jyutping**（`jyutping_anchor`；含 dual carrier）。heteronym 係 `match_spec: false`，只 parse＋獨立路由。
+_Avoid_：registry 內再寫一份家族槽位規則、執行層重做 ParsedQuery→規格
+
 **查詢語意解釋**：
-創作者即時說明意圖；與 **搜尋教學**、**搜尋教學速覽** 同屬**創作者教學文案**面，用語須填詞人一眼睇明（見 **搜尋教學**）。**文案規則單一**（見 ADR-0021）。演算法形狀：正規化解析 → **比對規格** → 由左至右字位掃描（等號一句概+押韻標；缺字逐字約束；無規格最短句；位置混加警告）。**Portable 與 PWA 各一解釋實作**（雙引擎）；以中立 parity 契約防文案漂移。
-_Avoid_：格槽音節、第三套 parse／自創槽語、解釋當規格、「同音」泛同韻、押韻標用於逐字/疊韻句、只准一邊寫死而另一邊自由改 copy、標題／摘要用串列／通配／錨／遮罩／碼夾等號等技術譯名
+創作者即時說明意圖；與 **搜尋教學**、**搜尋教學速覽** 同屬**創作者教學文案**面，用語須填詞人一眼睇明（見 **搜尋教學**）。**文案規則單一**（見 ADR-0021）。**比對規格**路徑演算法形狀：`build_match_spec` → **結構型 Explain IR**（字位索引、slot kind、dimension、ref_literal 等；唔夾「第 N 個字／雙押／同韻」creator copy）→ **render** 成摘要；lookup／近反義／平仄等短回路仍 ParsedQuery 直出最短句。位置易混 **warning** 仍 ParsedQuery 側。**Portable 與 PWA 各一解釋實作**（雙引擎）；IR schema 見 `contracts/query-explain-ir.schema.json`；parity 以 `query-explain-parity.json` 字串 contains + optional `ir_assert` 防漂移。
+_Avoid_：格槽音節、第三套 parse／自創槽語、解釋當規格、「同音」泛同韻、押韻標用於逐字/疊韻句、只准一邊寫死而另一邊自由改 copy、標題／摘要用串列／通配／錨／遮罩／碼夾等號等技術譯名、IR 夾已組好 creator 片語
 
 **押韻標註**：
 等號/前綴等號句尾標參考詞字數（單/雙/三/四押...）。碼約束另補。
@@ -217,8 +221,8 @@ _Avoid_：稱為開啟近反義模式、把「! 無結果」一律歸因詞庫�
 _Avoid_：一般雙字詞
 
 **連接詞複合查詢**：
-三字，中格固定連接詞（與和或…）。首尾互為近/反（對應 ~~／!! 規則）。候選＝詞庫已有三字 ∪ 由雙字複合 flank 合成（缺庫者拼單字＋連接詞讀音）；詞庫優先、合成殿後。~ 與 ! 嚴格互斥（**ant-wins**：反義對唔入 ~；! 保留完整反義 primary）；flank 雙向（AB 可出 A連B 與 B連A）。雙端一致。**Portable** 搜尋請求路徑合成結果可只在記憶體上榜，唔為合成寫入詞條庫（免鎖庫拖垮並行查詢）。
-_Avoid_：任意虛詞、當整詞 lookup、~ 混入反義對、只掃詞庫而當數量應等於 ~~、請求路徑逐條寫庫合成
+三字，中格固定連接詞（與和或…）。首尾互為近/反（對應 ~~／!! 規則）。**查詢種類**獨立為 `compound_connect_syn`／`compound_connect_ant`（唔再與 `~~`／`!!` 的 `compound_syn`／`compound_ant` 共用 kind）。候選＝詞庫已有三字 ∪ 由雙字複合 flank 合成（缺庫者拼單字＋連接詞讀音）；詞庫優先、合成殿後。~ 與 ! 嚴格互斥（**ant-wins**：反義對唔入 ~；! 保留完整反義 primary）；flank 雙向（AB 可出 A連B 與 B連A）。雙端一致。**Portable** 搜尋請求路徑合成結果可只在記憶體上榜，唔為合成寫入詞條庫（免鎖庫拖垮並行查詢）。
+_Avoid_：任意虛詞、當整詞 lookup、~ 混入反義對、只掃詞庫而當數量應等於 ~~、請求路徑逐條寫庫合成、用 dataclass isinstance 分辨連接詞與 ~~／!!
 
 **源 3 tier 快取**：
 ~~ lazy 單字近義合成 tier。效能用。
@@ -409,8 +413,8 @@ _Avoid_：fragment
 _Avoid_：WordLookup、缺庫就 runtime INSERT、把記憶體合成當已收錄 SSOT
 
 **平仄串列查詢**：
-逐音節聲調類別串列：每格為 **平**（`P`）、**仄**（`Z`）或 **同音碼位**（**394052 碼**字母表內數字）；串長等於詞語音節數。觸發時**搜尋模式轉接**至 **394052模式（六聲）**且**唔出轉接提示**（**394052模式**未就緒前暫轉 **02493模式**）。v1 只收 `P`／`Z`／數字；通配或漢字混寫留待後續擴展。
-_Avoid_：用「平仄模式」稱呼本查詢類型、PZ 模式、把平仄串列當缺字型查詢、把 **搜尋模式家族** 嘅 **平仄** 當成只有串列一種語法
+逐音節聲調類別串列：每格為 **平**（`P`）、**仄**（`Z`）或 **同音碼位**（**394052 碼**字母表內數字，並依當前 **平仄** 子檔 `pzmode` 鬆檔）；在 **搜尋模式家族** 嘅 **平仄** 下輸入。規格由平仄 module 嘅 `to_match_spec` 產出（純串列、韻錨、或 mask／缺字 base 上疊 P/Z）。v1 只收 `P`／`Z`／數字／`?`；與其他錨／缺字混寫經 base overlay。
+_Avoid_：用「平仄模式」稱呼本查詢類型、PZ 模式、把平仄串列當缺字型查詢、把 **搜尋模式家族** 嘅 **平仄** 當成只有串列一種語法、恢復舊全域自動轉接至 02493／394052
 
 **平**（平仄）：
 **平仄串列查詢**中，該音節 **0243 碼** 為 `0` 或 `3` 之聲調類別；輸入字母 `P`（大小寫等價）。

@@ -151,3 +151,48 @@ def parse_serial_phoneme_anchor_query(q: str) -> Optional[dict]:
         return None
     parsed["raw_q"] = q
     return parsed
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for PREFIX_WILDCARD_EQUALS / SERIAL_PHONEME."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.position_match.spec import EqualsSpan, attach_equals_span, get_equals_span
+    from app.services.query_grammar.equals import build_equals_match_spec
+    from app.services.query_types import (
+        PrefixWildcardEqualsQuery,
+        QueryKind,
+        SerialPhonemeAnchorQuery,
+    )
+
+    if isinstance(parsed, PrefixWildcardEqualsQuery) and parsed.kind == QueryKind.PREFIX_WILDCARD_EQUALS:
+        spec = build_equals_match_spec(parsed.inner_q)
+        if spec is None:
+            return MatchSpec(width=0)
+        spec.width = parsed.width
+        span = get_equals_span(spec)
+        if span:
+            attach_equals_span(
+                spec,
+                EqualsSpan(
+                    ref_literal=span.ref_literal,
+                    start_pos=1,
+                    dimension=span.dimension,
+                    phoneme_anchor_only=True,
+                    whole_word=False,
+                ),
+            )
+        spec.mask = "?" * parsed.width
+        spec.extra["prefix_wildcard_equals"] = True
+        return spec
+
+    if isinstance(parsed, SerialPhonemeAnchorQuery) and parsed.kind == QueryKind.SERIAL_PHONEME:
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = parsed.mask if len(parsed.mask) == parsed.width else "?" * parsed.width
+        for pos, digit in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+        kind = "final_anchor" if parsed.constraint == "final" else "initial_anchor"
+        for pos, anchor in parsed.anchors:
+            spec.slots.append(SlotConstraint(pos=pos, kind=kind, value=anchor))
+        return spec
+
+    return None

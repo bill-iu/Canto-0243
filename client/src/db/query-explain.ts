@@ -39,6 +39,55 @@ const SLOT_PRIORITY: Record<string, number> = {
   hybrid_tail_initial: 3,
 };
 
+export type ExplainIrVariant =
+  | 'whole_word_equals'
+  | 'prefix_wildcard_equals'
+  | 'code_sandwich_whole_word'
+  | 'code_sandwich_scan'
+  | 'compound'
+  | 'slot_scan'
+  | 'fallback';
+
+export interface EqualsIr {
+  dimension: 'final' | 'initial';
+  ref_literal: string;
+  whole_word: boolean;
+  start_pos: number;
+}
+
+export interface CodePrefixIr {
+  digits: string;
+  per_digit_full: boolean;
+}
+
+export interface CompoundIr {
+  kind: string;
+  width: number;
+  connective?: string;
+  code?: string;
+  tail_rhyme?: string;
+}
+
+export interface PositionConstraintIr {
+  pos: number;
+  kind: string;
+  digit?: string;
+  ref?: string;
+  char?: string;
+  letters?: string;
+  symbol?: string;
+}
+
+export interface ExplainIr {
+  variant: ExplainIrVariant;
+  width: number;
+  raw_q?: string;
+  equals?: EqualsIr;
+  code_prefix?: CodePrefixIr;
+  compound?: CompoundIr;
+  constraints?: PositionConstraintIr[];
+}
+
 export interface QueryExplainResult {
   summary: string | null;
   warning: string | null;
@@ -70,6 +119,82 @@ export function explainQuery(q: string, mode: string = 'm1'): QueryExplainResult
     warning,
     kind: parsed.kind,
   };
+}
+
+export function buildExplainIr(spec: MatchSpec, parsed: ParsedQuery): ExplainIr {
+  let working = spec;
+  if (working.extra?.dual_phoneme) {
+    const dual = working.extra.dual_final_spec;
+    if (dual && typeof dual === 'object') {
+      working = dual as MatchSpec;
+    }
+  }
+
+  const equals = getEqualsSpan(working);
+  if (equals && hasCodeDigitConstraints(working)) {
+    return irCodeSandwich(working, equals, parsed);
+  }
+  if (equals && working.extra?.prefix_wildcard_equals) {
+    return irPrefixWildcardEquals(working, equals);
+  }
+  if (equals?.whole_word) {
+    return irWholeWordEquals(working, equals);
+  }
+  if (working.compound_kind) {
+    return irCompound(working);
+  }
+  return irSlotScan(working, equals);
+}
+
+export function renderExplainIr(ir: ExplainIr): string {
+  switch (ir.variant) {
+    case 'whole_word_equals':
+      return renderWholeWordEquals(ir);
+    case 'prefix_wildcard_equals':
+      return renderPrefixWildcardEquals(ir);
+    case 'code_sandwich_whole_word':
+      return renderCodeSandwichWholeWord(ir);
+    case 'code_sandwich_scan':
+      return renderCodeSandwichScan(ir);
+    case 'compound':
+      return renderCompound(ir);
+    case 'slot_scan':
+      return renderSlotScan(ir);
+    default:
+      return widthLabel(ir.width);
+  }
+}
+
+export function explainIrForQuery(q: string, mode: string = 'm1'): ExplainIr | null {
+  const text = (q || '').trim();
+  if (!text) {
+    return null;
+  }
+  const queryMode = mode === '0243' || mode === '02493' || mode === '394052'
+    ? (mode === '02493' ? 'm2' : mode === '394052' ? 'm3' : 'm1')
+    : mode;
+  const parsed = normalizeAndParse(text, {
+    mode: queryMode as import('./query-types.ts').QueryMode,
+  });
+  if (parsed.kind === QueryKind.UNMATCHED || isShortCircuit(parsed)) {
+    return null;
+  }
+  const spec = buildMatchSpecForParsed(parsed);
+  if (!spec) {
+    return null;
+  }
+  return buildExplainIr(spec, parsed);
+}
+
+function isShortCircuit(parsed: ParsedQuery): boolean {
+  return (
+    parsed.kind === QueryKind.WORD_LOOKUP
+    || parsed.kind === QueryKind.DIGIT_CODE
+    || parsed.kind === QueryKind.PING_ZE_SERIAL
+    || parsed.kind === QueryKind.RELATION_LOOKUP
+    || parsed.kind === QueryKind.JYUTPING_FRAGMENT
+    || parsed.kind === QueryKind.HETERONYM_CODE
+  );
 }
 
 function wordPos(n: number): string {
@@ -136,122 +261,261 @@ function summaryFor(parsed: ParsedQuery): string | null {
     const raw = parsed.raw_q;
     return raw ? `查詢「${raw}」` : '查詢';
   }
-  return summaryFromMatchSpec(spec, parsed);
+  return renderExplainIr(buildExplainIr(spec, parsed));
 }
 
-function summaryFromMatchSpec(spec: MatchSpec, _parsed: ParsedQuery): string | null {
-  let working = spec;
-  if (working.extra?.dual_phoneme) {
-    const dual = working.extra.dual_final_spec;
-    if (dual && typeof dual === 'object') {
-      working = dual as MatchSpec;
-    }
-  }
-
-  const equals = getEqualsSpan(working);
-  if (equals && hasCodeDigitConstraints(working)) {
-    return codeSandwichEqualsSummary(working, equals, _parsed);
-  }
-  if (equals && working.extra?.prefix_wildcard_equals) {
-    return prefixWildcardEqualsSummary(working, equals);
-  }
-  if (equals?.whole_word) {
-    return wholeWordEqualsSummary(working, equals);
-  }
-  if (working.compound_kind) {
-    return compoundSummary(working);
-  }
-  return slotScanSummary(working, equals);
+function equalsIr(equals: EqualsSpan): EqualsIr {
+  const dimension = equals.dimension === 'final' || equals.dimension === 'rhyme'
+    ? 'final'
+    : 'initial';
+  return {
+    dimension,
+    ref_literal: equals.ref_literal,
+    whole_word: Boolean(equals.whole_word),
+    start_pos: equals.start_pos,
+  };
 }
 
-function wholeWordEqualsSummary(spec: MatchSpec, equals: EqualsSpan): string {
-  const dim = rhymeOrInitial(equals.dimension);
-  const label = rhymeLabel(equals.ref_literal.length);
-  const line = `整詞同「${equals.ref_literal}」${dim}（${label}）`;
-  const codePhrase = codePrefixPhrase(spec);
-  return codePhrase ? `${line}；${codePhrase}` : line;
-}
-
-function prefixWildcardEqualsSummary(spec: MatchSpec, equals: EqualsSpan): string {
-  const dim = rhymeOrInitial(equals.dimension);
-  const label = rhymeLabel(equals.ref_literal.length);
-  const positions = Array.from({ length: spec.width - equals.start_pos }, (_, i) => equals.start_pos + i);
-  const posLabel = posListLabel(positions);
-  return `首個字任意；${posLabel}同「${equals.ref_literal}」${dim}（${label}）`;
-}
-
-function codeSandwichEqualsSummary(
-  spec: MatchSpec,
-  equals: EqualsSpan,
-  parsed: ParsedQuery,
-): string {
-  const raw = parsed.raw_q || '';
-  if (equals.whole_word) {
-    const dim = rhymeOrInitial(equals.dimension);
-    const label = rhymeLabel(equals.ref_literal.length);
-    const rhymeLine = `同「${equals.ref_literal}」${dim}（${label}）`;
-    const codePhrase = codePrefixPhrase(spec);
-    const body = codePhrase ? `${rhymeLine}；${codePhrase}` : rhymeLine;
-    return `數字夾字「${raw}」：${body}`;
-  }
-  const details = slotScanDetails(spec, equals);
-  return details ? `數字夾字「${raw}」：${details}` : `數字夾字「${raw}」`;
-}
-
-function compoundSummary(spec: MatchSpec): string {
-  if (spec.compound_kind === 'doubled_syllable') {
-    const rhyme = (spec.slots ?? []).find(
-      (s) => s.kind === 'final_anchor' && typeof s.value === 'string',
-    )?.value as string | undefined;
-    const n = spec.width;
-    const code = codeDigitStringFromSpec(spec);
-    const base = `查${n}字雙聲疊韻字（各字音節相同，聲調不限）`;
-    if (code && rhyme) {
-      return `查${n}字雙聲疊韻字（碼 ${code}，尾字同「${rhyme}」同韻）`;
-    }
-    if (code) {
-      return `查${n}字雙聲疊韻字（碼 ${code}）`;
-    }
-    if (rhyme) {
-      return `查${n}字雙聲疊韻字（尾字同「${rhyme}」同韻）`;
-    }
-    return base;
-  }
-  const label = spec.compound_kind === 'syn' ? '近義' : '反義';
-  const connective = spec.extra?.connective;
-  if (typeof connective === 'string' && connective) {
-    return `查詢含「${connective}」嘅${label}複合詞`;
-  }
-  return `查詢${label}複合詞`;
-}
-
-function codePrefixPhrase(spec: MatchSpec): string | null {
+function codePrefixIr(spec: MatchSpec): CodePrefixIr | null {
   const code = codeDigitStringFromSpec(spec);
   if (!code) {
     return null;
   }
   const required = buildRequiredCodes(spec);
-  if (required.every((d) => d != null) && required.length === spec.width) {
-    const parts = [...code].map((digit, i) => `${wordPos(i)}同 ${digit} 同音`);
+  const perDigitFull = required.every((d) => d != null) && required.length === spec.width;
+  return { digits: code, per_digit_full: perDigitFull };
+}
+
+function constraintsToIr(constraints: Map<number, [string, string]>): PositionConstraintIr[] {
+  return [...constraints.entries()]
+    .sort(([a], [b]) => a - b)
+    .map(([pos, [kind, value]]) => {
+      const entry: PositionConstraintIr = { pos, kind };
+      if (kind === 'code_digit') {
+        entry.digit = value;
+      } else if (kind === 'literal_char') {
+        entry.char = value;
+      } else if (kind === 'wildcard') {
+        entry.symbol = value;
+      } else if (kind === 'final_anchor' || kind === 'initial_anchor') {
+        entry.ref = value;
+      } else if (kind === 'rhyme_letters' || kind === 'initial_letters' || kind === 'syllable_letters') {
+        entry.letters = value;
+      } else if (
+        kind === 'hybrid_tail_rhyme'
+        || kind === 'hybrid_tail_initial'
+        || kind === 'hybrid_code_literal'
+      ) {
+        const [digit, ref] = value.split('|', 2);
+        entry.digit = digit;
+        entry.ref = ref;
+      } else {
+        entry.ref = value;
+      }
+      return entry;
+    });
+}
+
+function irWholeWordEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr {
+  const ir: ExplainIr = {
+    variant: 'whole_word_equals',
+    width: spec.width,
+    equals: equalsIr(equals),
+  };
+  const codePrefix = codePrefixIr(spec);
+  if (codePrefix) {
+    ir.code_prefix = codePrefix;
+  }
+  return ir;
+}
+
+function irPrefixWildcardEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr {
+  return {
+    variant: 'prefix_wildcard_equals',
+    width: spec.width,
+    equals: equalsIr(equals),
+  };
+}
+
+function irCodeSandwich(spec: MatchSpec, equals: EqualsSpan, parsed: ParsedQuery): ExplainIr {
+  const raw = parsed.raw_q || '';
+  if (equals.whole_word) {
+    const ir: ExplainIr = {
+      variant: 'code_sandwich_whole_word',
+      width: spec.width,
+      raw_q: raw,
+      equals: equalsIr(equals),
+    };
+    const codePrefix = codePrefixIr(spec);
+    if (codePrefix) {
+      ir.code_prefix = codePrefix;
+    }
+    return ir;
+  }
+  const constraints = effectiveConstraints(spec, equals);
+  return {
+    variant: 'code_sandwich_scan',
+    width: spec.width,
+    raw_q: raw,
+    constraints: constraintsToIr(constraints),
+  };
+}
+
+function irCompound(spec: MatchSpec): ExplainIr {
+  const compound: CompoundIr = {
+    kind: spec.compound_kind!,
+    width: spec.width,
+  };
+  if (spec.compound_kind === 'doubled_syllable') {
+    const rhyme = (spec.slots ?? []).find(
+      (s) => s.kind === 'final_anchor' && typeof s.value === 'string',
+    )?.value as string | undefined;
+    const code = codeDigitStringFromSpec(spec);
+    if (code) {
+      compound.code = code;
+    }
+    if (rhyme) {
+      compound.tail_rhyme = rhyme;
+    }
+  } else {
+    const connective = spec.extra?.connective;
+    if (typeof connective === 'string' && connective) {
+      compound.connective = connective;
+    }
+  }
+  return { variant: 'compound', width: spec.width, compound };
+}
+
+function irSlotScan(spec: MatchSpec, equals: EqualsSpan | null): ExplainIr {
+  const constraints = effectiveConstraints(spec, equals);
+  return {
+    variant: 'slot_scan',
+    width: spec.width,
+    constraints: constraintsToIr(constraints),
+  };
+}
+
+function renderCodePrefixPhrase(codePrefix: CodePrefixIr): string {
+  if (codePrefix.per_digit_full) {
+    const parts = [...codePrefix.digits].map((digit, i) => `${wordPos(i)}同 ${digit} 同音`);
     return parts.join('，');
   }
-  return `前 ${code.length} 個字為碼 ${code}`;
+  return `前 ${codePrefix.digits.length} 個字為碼 ${codePrefix.digits}`;
 }
 
-function slotScanSummary(spec: MatchSpec, equals: EqualsSpan | null): string {
-  const details = slotScanDetails(spec, equals);
-  if (!details) {
-    return widthLabel(spec.width);
+function renderWholeWordEquals(ir: ExplainIr): string {
+  const equals = ir.equals!;
+  const dim = rhymeOrInitial(equals.dimension);
+  const label = rhymeLabel(equals.ref_literal.length);
+  const line = `整詞同「${equals.ref_literal}」${dim}（${label}）`;
+  if (ir.code_prefix) {
+    return `${line}；${renderCodePrefixPhrase(ir.code_prefix)}`;
   }
-  return `${widthLabel(spec.width)}：${details}`;
+  return line;
 }
 
-function slotScanDetails(spec: MatchSpec, equals: EqualsSpan | null): string {
-  const constraints = effectiveConstraints(spec, equals);
-  const phrases = [...constraints.entries()]
-    .sort(([a], [b]) => a - b)
-    .map(([pos, [kind, value]]) => constraintPhrase(pos, kind, value));
-  return phrases.join('，');
+function renderPrefixWildcardEquals(ir: ExplainIr): string {
+  const equals = ir.equals!;
+  const dim = rhymeOrInitial(equals.dimension);
+  const label = rhymeLabel(equals.ref_literal.length);
+  const positions = Array.from(
+    { length: ir.width - equals.start_pos },
+    (_, i) => equals.start_pos + i,
+  );
+  const posLabel = posListLabel(positions);
+  return `首個字任意；${posLabel}同「${equals.ref_literal}」${dim}（${label}）`;
+}
+
+function renderCodeSandwichWholeWord(ir: ExplainIr): string {
+  const equals = ir.equals!;
+  const dim = rhymeOrInitial(equals.dimension);
+  const label = rhymeLabel(equals.ref_literal.length);
+  const rhymeLine = `同「${equals.ref_literal}」${dim}（${label}）`;
+  const body = ir.code_prefix
+    ? `${rhymeLine}；${renderCodePrefixPhrase(ir.code_prefix)}`
+    : rhymeLine;
+  return `數字夾字「${ir.raw_q}」：${body}`;
+}
+
+function renderConstraintPhrase(c: PositionConstraintIr): string {
+  const label = wordPos(c.pos);
+  if (c.kind === 'code_digit') {
+    return `${label}同 ${c.digit} 同音`;
+  }
+  if (c.kind === 'literal_char') {
+    return `${label}為「${c.char}」`;
+  }
+  if (c.kind === 'wildcard') {
+    return `${label}任意字`;
+  }
+  if (c.kind === 'hybrid_tail_rhyme') {
+    return `${label}同 ${c.digit} 同音且同「${c.ref}」同韻`;
+  }
+  if (c.kind === 'hybrid_tail_initial') {
+    return `${label}同 ${c.digit} 同音且同「${c.ref}」同聲`;
+  }
+  if (c.kind === 'hybrid_code_literal') {
+    return `${label}同 ${c.digit} 同音且限定為${c.ref}`;
+  }
+  if (c.kind === 'final_anchor') {
+    return `${label}同「${c.ref}」同韻`;
+  }
+  if (c.kind === 'initial_anchor') {
+    return `${label}同「${c.ref}」同聲`;
+  }
+  if (c.kind === 'rhyme_letters') {
+    return `${label}同韻母 ${c.letters}`;
+  }
+  if (c.kind === 'initial_letters') {
+    return `${label}同聲母 ${c.letters}`;
+  }
+  if (c.kind === 'syllable_letters') {
+    return `${label}粵拼音節 ${c.letters}`;
+  }
+  return `${label}為「${c.ref ?? ''}」`;
+}
+
+function renderConstraints(constraints: PositionConstraintIr[]): string {
+  return constraints.map((c) => renderConstraintPhrase(c)).join('，');
+}
+
+function renderCodeSandwichScan(ir: ExplainIr): string {
+  const constraints = ir.constraints ?? [];
+  if (constraints.length) {
+    return `數字夾字「${ir.raw_q}」：${renderConstraints(constraints)}`;
+  }
+  return `數字夾字「${ir.raw_q}」`;
+}
+
+function renderCompound(ir: ExplainIr): string {
+  const compound = ir.compound!;
+  if (compound.kind === 'doubled_syllable') {
+    const n = compound.width;
+    const base = `查${n}字雙聲疊韻字（各字音節相同，聲調不限）`;
+    if (compound.code && compound.tail_rhyme) {
+      return `查${n}字雙聲疊韻字（碼 ${compound.code}，尾字同「${compound.tail_rhyme}」同韻）`;
+    }
+    if (compound.code) {
+      return `查${n}字雙聲疊韻字（碼 ${compound.code}）`;
+    }
+    if (compound.tail_rhyme) {
+      return `查${n}字雙聲疊韻字（尾字同「${compound.tail_rhyme}」同韻）`;
+    }
+    return base;
+  }
+  const label = compound.kind === 'syn' ? '近義' : '反義';
+  if (compound.connective) {
+    return `查詢含「${compound.connective}」嘅${label}複合詞`;
+  }
+  return `查詢${label}複合詞`;
+}
+
+function renderSlotScan(ir: ExplainIr): string {
+  const constraints = ir.constraints ?? [];
+  if (!constraints.length) {
+    return widthLabel(ir.width);
+  }
+  return `${widthLabel(ir.width)}：${renderConstraints(constraints)}`;
 }
 
 function effectiveConstraints(
@@ -306,8 +570,8 @@ function effectiveConstraints(
       continue;
     }
     if (
-      existing &&
-      (SLOT_PRIORITY[existing[0]] ?? 0) >= (SLOT_PRIORITY[slot.kind] ?? 0)
+      existing
+      && (SLOT_PRIORITY[existing[0]] ?? 0) >= (SLOT_PRIORITY[slot.kind] ?? 0)
     ) {
       continue;
     }
@@ -326,9 +590,9 @@ function effectiveConstraints(
       }
       const digit = pos < required.length ? required[pos] ?? undefined : undefined;
       if (
-        digit != null &&
-        (equals.dimension === 'final' || equals.dimension === 'rhyme') &&
-        !equals.phoneme_anchor_only
+        digit != null
+        && (equals.dimension === 'final' || equals.dimension === 'rhyme')
+        && !equals.phoneme_anchor_only
       ) {
         result.set(pos, ['hybrid_tail_rhyme', `${digit}|${equals.ref_literal[i]}`]);
       } else if (equals.phoneme_anchor_only && digit != null) {
@@ -344,47 +608,6 @@ function effectiveConstraints(
   }
 
   return result;
-}
-
-function constraintPhrase(pos: number, kind: string, value: string): string {
-  const label = wordPos(pos);
-  if (kind === 'code_digit') {
-    return `${label}同 ${value} 同音`;
-  }
-  if (kind === 'literal_char') {
-    return `${label}為「${value}」`;
-  }
-  if (kind === 'wildcard') {
-    return `${label}任意字`;
-  }
-  if (kind === 'hybrid_tail_rhyme') {
-    const [digit, ref] = value.split('|', 2);
-    return `${label}同 ${digit} 同音且同「${ref}」同韻`;
-  }
-  if (kind === 'hybrid_tail_initial') {
-    const [digit, ref] = value.split('|', 2);
-    return `${label}同 ${digit} 同音且同「${ref}」同聲`;
-  }
-  if (kind === 'hybrid_code_literal') {
-    const [digit, ref] = value.split('|', 2);
-    return `${label}同 ${digit} 同音且限定為${ref}`;
-  }
-  if (kind === 'final_anchor') {
-    return `${label}同「${value}」同韻`;
-  }
-  if (kind === 'initial_anchor') {
-    return `${label}同「${value}」同聲`;
-  }
-  if (kind === 'rhyme_letters') {
-    return `${label}同韻母 ${value}`;
-  }
-  if (kind === 'initial_letters') {
-    return `${label}同聲母 ${value}`;
-  }
-  if (kind === 'syllable_letters') {
-    return `${label}粵拼音節 ${value}`;
-  }
-  return `${label}為「${value}」`;
 }
 
 function warningFor(parsed: ParsedQuery): string | null {

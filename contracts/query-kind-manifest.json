@@ -4,6 +4,8 @@
     "relation_lookup": { "route": "relation", "match_spec": false },
     "compound_syn": { "route": "mask_family", "match_spec": true },
     "compound_ant": { "route": "mask_family", "match_spec": true },
+    "compound_connect_syn": { "route": "mask_family", "match_spec": true },
+    "compound_connect_ant": { "route": "mask_family", "match_spec": true },
     "compound_doubled_syllable": { "route": "mask_family", "match_spec": true },
     "heteronym_code": { "route": "heteronym", "match_spec": false },
     "equals": { "route": "mask_family", "match_spec": true },

@@ -1,16 +1,11 @@
 /** 搜尋模式轉接 — port of query_mode_dispatch (predicate table). */
 import type { Database } from '../sqljs.ts';
 import { isJyutpingQuery } from '../jyutping-match.ts';
-import { relationPoolPage } from '../relation-pool.ts';
+import { relationPoolPage } from '../relation-pool-projection.ts';
 import type { SearchContext, SearchResult } from '../query-types.ts';
-import {
-  JYUTPING_SYN_MODE_HINT,
-  modeRedirectHint,
-  normalizeAndParse,
-  resolveFallback0243Mode,
-} from './parse.ts';
-import { isRelationSyntaxQuery } from './mode-detect.ts';
+import { JYUTPING_SYN_MODE_HINT, normalizeAndParse } from './parse.ts';
 import { dispatchParsed, poolItemToResult } from './dispatch.ts';
+import { planRedirect } from './mode-policy.ts';
 
 export type SynModeCtx = SearchContext & { q: string };
 export type SynModeDbCtx = SearchContext & { db: Database };
@@ -25,14 +20,24 @@ export async function dispatchSynMode(
     return { items: [], hint: JYUTPING_SYN_MODE_HINT };
   }
 
-  if (isRelationSyntaxQuery(q)) {
-    const effective = resolveFallback0243Mode(ctx.fallback_0243_mode);
+  const plan = planRedirect(q, {
+    currentMode: 'syn',
+    fallback0243Mode: ctx.fallback_0243_mode,
+    detect: 'full',
+    lang: ctx.ui_lang ?? 'zh',
+  });
+  if (plan.should_redirect) {
+    const effective = plan.effective_mode ?? 'm1';
     const parsed = normalizeAndParse(q);
-    const result = await dispatchParsed(parsed, { ...dbCtx, mode: effective, offset: 0 });
+    const result = await dispatchParsed(parsed, {
+      ...dbCtx,
+      mode: effective,
+      offset: plan.reset_offset ? 0 : offset,
+    });
     return {
       items: result.items,
       total: result.total,
-      hint: modeRedirectHint(effective, ctx.ui_lang ?? 'zh'),
+      hint: plan.hint ?? undefined,
       effective_mode: effective,
       cache_path: result.cache_path,
     };

@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import json
 from typing import Dict, List, Optional, Set
 
-RUNTIME_DERIVED_ANT_SOURCES = frozenset({
-    "ant_syn_mirror",
-    "ant_cilin_exanded",
-})
+from app.domain.relations._generated.relation_pool_ranking import (
+    RUNTIME_DERIVED_ANT_SOURCES,
+    SOURCE_BASE_RANK,
+)
 
 DERIVED_ANT_SOURCES = frozenset({
     *RUNTIME_DERIVED_ANT_SOURCES,
@@ -20,24 +19,6 @@ QUERY_SYNONYM_PRIORITY: Dict[str, List[str]] = {
 
 QUERY_ANTONYM_PRIORITY: Dict[str, List[str]] = {
     "快樂": ["悲傷", "傷心", "難過", "痛苦", "哀傷", "憂愁", "沮喪"],
-}
-
-SOURCE_BASE_RANK: Dict[str, int] = {
-    "manual": 0,
-    "manual_syn_cluster": 18,
-    "manual_ant_mirror": 20,
-    "cilin": 10,
-    "antisem": 10,
-    "project_ant": 12,
-    "guotong": 15,
-    "ant_cilin_exanded": 25,
-    "ant_syn_bridge": 28,
-    "cow": 20,
-    "current_static": 15,
-    "runtime_static": 80,
-    "static_thesaurus": 80,
-    "embedding_cosine": 60,
-    "word_relations": 50,
 }
 
 

@@ -81,7 +81,7 @@ class CompoundConnectSynQuery:
 
     @property
     def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_SYN
+        return QueryKind.COMPOUND_CONNECT_SYN
 
 
 @dataclass(frozen=True)
@@ -92,7 +92,7 @@ class CompoundConnectAntQuery:
 
     @property
     def kind(self) -> QueryKind:
-        return QueryKind.COMPOUND_ANT
+        return QueryKind.COMPOUND_CONNECT_ANT
 
 
 @dataclass(frozen=True)

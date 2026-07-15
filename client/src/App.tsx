@@ -39,7 +39,7 @@ import {
 } from './anchor-result-logic.ts';
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
-import { isRelationSyntaxQuery } from './db/query-engine';
+import { planCommitSearch } from './db/query/search-session.ts';
 import { GuideQuick } from './guide-quick';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
@@ -52,7 +52,8 @@ import {
   last0243UiToUrlMode,
   getModeMeta,
   modeMetaFor,
-  modeRedirectHint,
+  uiModeToUrlMode,
+  urlModeToUiMode,
   type PingzeSubMode,
   type Last0243SearchMode,
   type UiMode,
@@ -167,7 +168,6 @@ function App() {
   const lexiconLoadStartedRef = useRef(false);
 
   const trimmedInput = inputQuery.trim();
-  const relationSyntax = trimmedInput ? isRelationSyntaxQuery(trimmedInput) : false;
   const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
 
@@ -212,15 +212,22 @@ function App() {
       setRedirectHint(null);
       return;
     }
-    if (relationSyntax) {
-      setRedirectHint(modeRedirectHint(last0243UiToUrlMode(last0243Mode), uiLang));
-      if (mode === 'synonym') {
-        setMode(last0243Mode);
+    const commit = planCommitSearch({
+      q: trimmedInput,
+      mode: uiModeToUrlMode(mode),
+      last0243Mode: last0243UiToUrlMode(last0243Mode),
+      pzmode: pzMode,
+      lang: uiLang,
+    });
+    if (commit.redirectHint) {
+      setRedirectHint(commit.redirectHint);
+      if (mode === 'synonym' && commit.mode !== 'syn') {
+        setMode(urlModeToUiMode(commit.mode));
       }
       return;
     }
     setRedirectHint(null);
-  }, [trimmedInput, relationSyntax, mode, last0243Mode, uiLang]);
+  }, [trimmedInput, mode, last0243Mode, pzMode, uiLang]);
 
   const {
     isReady,

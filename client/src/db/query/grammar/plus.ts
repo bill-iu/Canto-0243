@@ -1,6 +1,12 @@
 /** Port of query_grammar/plus. */
+import { appendCodeDigitSlots } from '../../position-match/filters/f1-slot-code.ts';
+import { createMatchSpec, type MatchSpec } from '../../position-match/spec.ts';
 import { QueryKind } from '../../query-kind.ts';
-import type { LiteralRefQuery, PlusAnchorQuery } from '../../query-types.ts';
+import type {
+  LiteralRefQuery,
+  ParsedQuery,
+  PlusAnchorQuery,
+} from '../../query-types.ts';
 
 /** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@手） */
 export function parseAtTailQuery(q: string): LiteralRefQuery | null {
@@ -95,5 +101,48 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
     });
   }
 
+  return null;
+}
+
+/** Port of query_grammar.plus.to_match_spec */
+export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
+  if (parsed.kind === QueryKind.PLUS_ANCHOR) {
+    const q = parsed as PlusAnchorQuery;
+    const spec = createMatchSpec(q.width);
+    spec.mask = '?'.repeat(q.width);
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    for (const [pos, d] of q.code_slots) {
+      spec.slots.push({ pos, kind: 'code_digit', value: d });
+    }
+    if (!q.code_slots?.length && q.code_prefix) {
+      appendCodeDigitSlots(spec, q.code_prefix);
+    }
+    if (q.constraint === 'literal') {
+      spec.slots.push({ pos: q.anchor_pos, kind: 'literal_char', value: q.anchor });
+      spec.mask = spec.mask.slice(0, q.anchor_pos) + q.anchor + spec.mask.slice(q.anchor_pos + 1);
+      return spec;
+    }
+    if (q.constraint === 'final') {
+      spec.slots.push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
+      return spec;
+    }
+    if (q.constraint === 'initial') {
+      spec.slots.push({ pos: q.anchor_pos, kind: 'initial_anchor', value: q.anchor });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.LITERAL_REF) {
+    const q = parsed as LiteralRefQuery;
+    const spec = createMatchSpec(q.width);
+    appendCodeDigitSlots(spec, q.code_digits);
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    spec.slots.push({ pos: q.width - 1, kind: 'literal_char', value: q.literal_char });
+    spec.mask = '?'.repeat(q.width - 1) + q.literal_char;
+    return spec;
+  }
   return null;
 }

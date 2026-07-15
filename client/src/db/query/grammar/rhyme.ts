@@ -1,14 +1,24 @@
-/** Port of query_grammar/rhyme (partial + anchors + double wild + code-ref). */
-import { isWildcardChar } from '../../position-match/mask-grammar.ts';
+/**
+ * Port of query_grammar/rhyme (partial + anchors + double wild + code-ref).
+ *
+ * ponytail: 300-line limit exemption — rhyme family parse+toMatchSpec locality
+ */
+import { buildMaskFromSlots, isWildcardChar } from './mask.ts';
+import {
+  createMatchSpec,
+  type MatchSpec,
+} from '../../position-match/spec.ts';
 import { QueryKind } from '../../query-kind.ts';
 import type {
   CodeRefMiddleRhymeQuery,
+  ParsedQuery,
   PartialInitialMaskQuery,
   PartialRhymeMaskQuery,
   RhymeAnchorQuery,
   TripleRhymeAnchorQuery,
 } from '../../query-types.ts';
-import { CODE_TAIL_MIDDLE, isFramedEqualsQuery } from './shared.ts';
+import { CODE_TAIL_MIDDLE } from './shared.ts';
+import { isFramedEqualsQuery } from './equals.ts';
 
 /** Port of rhyme.parse_code_ref_rhyme_contradiction_hint */
 export function parseCodeRefRhymeContradictionHint(q: string): string | null {
@@ -287,5 +297,81 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
     });
   }
 
+  return null;
+}
+
+/** Port of query_grammar.rhyme.to_match_spec */
+export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
+  if (parsed.kind === QueryKind.PARTIAL_RHYME_MASK) {
+    const q = parsed as PartialRhymeMaskQuery;
+    const spec = createMatchSpec(q.width, { mask: q.pattern });
+    if (!spec.extra) {
+      spec.extra = {};
+    }
+    spec.extra.partial_rhyme_mask = true;
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    for (const [pos, ch] of q.anchors) {
+      spec.slots.push({ pos, kind: 'final_anchor', value: ch });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.PARTIAL_INITIAL_MASK) {
+    const q = parsed as PartialInitialMaskQuery;
+    const spec = createMatchSpec(q.width, { mask: q.pattern });
+    if (!spec.extra) {
+      spec.extra = {};
+    }
+    spec.extra.partial_initial_mask = true;
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    for (const [pos, ch] of q.anchors) {
+      spec.slots.push({ pos, kind: 'initial_anchor', value: ch });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.CODE_REF_MIDDLE_RHYME) {
+    const q = parsed as CodeRefMiddleRhymeQuery;
+    const spec = createMatchSpec(q.width);
+    spec.mask = '?'.repeat(q.width);
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    for (const slot of q.slots) {
+      spec.slots.push({
+        pos: slot.pos,
+        kind: slot.kind as import('../../position-match/spec.ts').ConstraintKind,
+        value: slot.value,
+      });
+    }
+    return spec;
+  }
+  if (parsed.kind === QueryKind.RHYME_ANCHOR) {
+    const q = parsed as RhymeAnchorQuery;
+    const spec = createMatchSpec(q.width);
+    const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    spec.slots.push({ pos: q.anchor_pos, kind, value: q.anchor });
+    spec.mask = buildMaskFromSlots(q.slots, q.width, q.anchor_pos);
+    return spec;
+  }
+  if (parsed.kind === QueryKind.TRIPLE_RHYME_ANCHOR) {
+    const q = parsed as TripleRhymeAnchorQuery;
+    const spec = createMatchSpec(q.width);
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    spec.slots.push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
+    spec.mask = '?'.repeat(q.width);
+    if (!spec.extra) {
+      spec.extra = {};
+    }
+    spec.extra.triple_rhyme_anchor = true;
+    return spec;
+  }
   return null;
 }

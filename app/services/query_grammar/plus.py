@@ -169,3 +169,57 @@ def parse_at_tail_query(q: str) -> Optional[dict]:
         "literal_char": m.group(2),
         "width": len(m.group(1)),
     }
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for PLUS_ANCHOR / LITERAL_REF."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.position_match.mask_adapter import append_code_digit_slots
+    from app.services.query_types import LiteralRefQuery, PlusAnchorQuery, QueryKind
+
+    if isinstance(parsed, PlusAnchorQuery) and parsed.kind == QueryKind.PLUS_ANCHOR:
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = "?" * parsed.width
+        for pos, d in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=d))
+        if not parsed.code_slots:
+            append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.constraint == "literal":
+            spec.slots.append(
+                SlotConstraint(
+                    pos=parsed.anchor_pos, kind="literal_char", value=parsed.anchor
+                )
+            )
+            spec.mask = (
+                spec.mask[: parsed.anchor_pos]
+                + parsed.anchor
+                + spec.mask[parsed.anchor_pos + 1 :]
+            )
+            return spec
+        if parsed.constraint == "final":
+            spec.slots.append(
+                SlotConstraint(
+                    pos=parsed.anchor_pos, kind="final_anchor", value=parsed.anchor
+                )
+            )
+            return spec
+        if parsed.constraint == "initial":
+            spec.slots.append(
+                SlotConstraint(
+                    pos=parsed.anchor_pos, kind="initial_anchor", value=parsed.anchor
+                )
+            )
+        return spec
+
+    if isinstance(parsed, LiteralRefQuery) and parsed.kind == QueryKind.LITERAL_REF:
+        spec = MatchSpec(width=parsed.width)
+        append_code_digit_slots(spec, parsed.code_digits)
+        spec.slots.append(
+            SlotConstraint(
+                pos=parsed.width - 1, kind="literal_char", value=parsed.literal_char
+            )
+        )
+        spec.mask = "?" * (parsed.width - 1) + parsed.literal_char
+        return spec
+
+    return None

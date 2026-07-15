@@ -1,7 +1,8 @@
 /** 平仄串列查詢 — port of app/services/ping_zak.py */
 import { getCodeVariants } from './code-variants.ts';
-import type { ParsedQuery, UnmatchedQuery } from './query-types.ts';
+import type { ParsedQuery, PingZeSerialQuery, UnmatchedQuery } from './query-types.ts';
 import { QueryKind } from './query-kind.ts';
+import { createMatchSpec, type MatchSpec } from './position-match/spec.ts';
 
 export type PingZak = 'ping' | 'ze';
 
@@ -91,4 +92,79 @@ export function slotLabel(slot: string, lang: 'zh' | 'en' = 'zh'): string {
     return mapped !== slot ? `與 ${slot} 同音（→${mapped}）` : `與 ${slot} 同音`;
   }
   return mapped !== slot ? `same tone as ${slot} (→${mapped})` : `same tone as ${slot}`;
+}
+
+
+function applyPingZeSlots(spec: MatchSpec, rawQ: string): void {
+  const codeDigitPositions = new Set(
+    (spec.slots ?? []).filter((slot) => slot.kind === 'code_digit').map((slot) => slot.pos),
+  );
+  const fixed = new Set(
+    (spec.slots ?? [])
+      .filter(
+        (slot) =>
+          slot.kind !== 'code_digit' &&
+          slot.kind !== 'tone_class' &&
+          !codeDigitPositions.has(slot.pos),
+      )
+      .map((slot) => slot.pos),
+  );
+  const codePositions = Array.from({ length: spec.width }, (_, pos) => pos).filter(
+    (pos) => !fixed.has(pos),
+  );
+  const tokens = [...rawQ].filter((token) => /[PZ?0-9]/.test(token));
+  tokens.forEach((token, index) => {
+    if (token !== 'P' && token !== 'Z') return;
+    const pos = codePositions[index];
+    if (pos == null) return;
+    spec.slots = (spec.slots ?? []).filter(
+      (slot) => !(slot.pos === pos && slot.kind === 'code_digit'),
+    );
+    spec.mask = `${spec.mask.slice(0, pos)}?${spec.mask.slice(pos + 1)}`;
+    (spec.slots ??= []).push({
+      pos,
+      kind: 'tone_class',
+      value: token === 'P' ? 'ping' : 'ze',
+    });
+  });
+}
+
+/** Port of ping_zak.to_match_spec — buildBaseSpec breaks registry cycle. */
+export function toMatchSpec(
+  parsed: ParsedQuery,
+  buildBaseSpec: (p: ParsedQuery) => MatchSpec | null,
+): MatchSpec | null {
+  if (parsed.kind !== QueryKind.PING_ZE_SERIAL) return null;
+  const q = parsed as PingZeSerialQuery;
+  if (q.base) {
+    const spec = buildBaseSpec(q.base);
+    if (!spec) return null;
+    if (!spec.extra) spec.extra = {};
+    spec.extra.code_mode = q.pzmode;
+    applyPingZeSlots(spec, q.raw_q);
+    return spec;
+  }
+  const spec = createMatchSpec(q.raw_q.length, { mask: '?'.repeat(q.raw_q.length) });
+  if (!spec.extra) spec.extra = {};
+  spec.extra.code_mode = q.pzmode;
+  for (let pos = 0; pos < q.raw_q.length; pos += 1) {
+    const token = q.raw_q[pos]!;
+    if (token === 'P') {
+      (spec.slots ??= []).push({ pos, kind: 'tone_class', value: 'ping' });
+    } else if (token === 'Z') {
+      (spec.slots ??= []).push({ pos, kind: 'tone_class', value: 'ze' });
+    } else if (/\d/.test(token)) {
+      (spec.slots ??= []).push({ pos, kind: 'code_digit', value: token });
+    }
+  }
+  if (q.anchor) {
+    spec.width += 1;
+    spec.mask = '?'.repeat(spec.width);
+    (spec.slots ??= []).push({
+      pos: q.raw_q.length,
+      kind: 'final_anchor',
+      value: q.anchor,
+    });
+  }
+  return spec;
 }

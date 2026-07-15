@@ -97,3 +97,68 @@ def parse_relation_syntax(q: str) -> Optional[dict]:
             "word": word,
         }
     return None
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for relation-family kinds (~~/!!/connect/$)."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.position_match.mask_adapter import append_code_digit_slots
+    from app.services.query_types import (
+        CompoundAntQuery,
+        CompoundConnectAntQuery,
+        CompoundConnectSynQuery,
+        CompoundDoubledSyllableQuery,
+        CompoundSynQuery,
+        QueryKind,
+    )
+
+    if isinstance(parsed, CompoundSynQuery) and parsed.kind == QueryKind.COMPOUND_SYN:
+        spec = MatchSpec(width=2, compound_kind="syn")
+        append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
+            )
+        return spec
+
+    if isinstance(parsed, CompoundAntQuery) and parsed.kind == QueryKind.COMPOUND_ANT:
+        spec = MatchSpec(width=2, compound_kind="ant")
+        append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(pos=1, kind="final_anchor", value=parsed.rhyme_char)
+            )
+        return spec
+
+    if isinstance(parsed, CompoundConnectSynQuery):
+        spec = MatchSpec(width=3, compound_kind="syn")
+        spec.extra["connective"] = parsed.connective
+        append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
+            )
+        return spec
+
+    if isinstance(parsed, CompoundConnectAntQuery):
+        spec = MatchSpec(width=3, compound_kind="ant")
+        spec.extra["connective"] = parsed.connective
+        append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(pos=2, kind="final_anchor", value=parsed.rhyme_char)
+            )
+        return spec
+
+    if isinstance(parsed, CompoundDoubledSyllableQuery):
+        spec = MatchSpec(width=parsed.width, compound_kind="doubled_syllable")
+        append_code_digit_slots(spec, parsed.code_prefix)
+        if parsed.rhyme_char:
+            spec.slots.append(
+                SlotConstraint(
+                    pos=parsed.width - 1, kind="final_anchor", value=parsed.rhyme_char
+                )
+            )
+        return spec
+
+    return None

@@ -22,8 +22,8 @@ const PARSE_CASES: Array<[string, QueryKind]> = [
   ['33!開心', QueryKind.RELATION_LOOKUP],
   ['~~', QueryKind.COMPOUND_SYN],
   ['!!', QueryKind.COMPOUND_ANT],
-  ['!與!', QueryKind.COMPOUND_ANT],
-  ['~與~', QueryKind.COMPOUND_SYN],
+  ['!與!', QueryKind.COMPOUND_CONNECT_ANT],
+  ['~與~', QueryKind.COMPOUND_CONNECT_SYN],
 ];
 
 const SEARCH_CASES = [

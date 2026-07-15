@@ -1,409 +1,89 @@
 /**
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
-import { buildEqualsMatchSpec } from './equals-spec.ts';
-import { appendCodeDigitSlots, codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
-import { buildMaskFromSlots, parseMaskQuery } from './mask-grammar.ts';
+import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import {
-  attachEqualsSpan,
-  createMatchSpec,
   getEqualsSpan,
-  type AnchorKind,
-  type ConstraintKind,
   type MatchSpec,
   type SlotConstraint,
 } from './spec.ts';
 import { QueryKind } from '../query-kind.ts';
-import type {
-  CodeRefMiddleRhymeQuery,
-  CompoundAntQuery,
-  CompoundDoubledSyllableQuery,
-  CompoundSynQuery,
-  EqualsQuery,
-  JyutpingAnchorQuery,
-  LiteralRefQuery,
-  MaskQuery,
-  ParsedQuery,
-  PartialInitialMaskQuery,
-  PartialRhymeMaskQuery,
-  PingZeSerialQuery,
-  PlusAnchorQuery,
-  PrefixWildcardEqualsQuery,
-  RhymeAnchorQuery,
-  SerialPhonemeAnchorQuery,
-  TripleRhymeAnchorQuery,
-  WildcardCodeAnchorQuery,
-} from '../query-engine.ts';
-
-import { FILLWORD_CONNECTIVES } from '../_generated/fillword-connectives.ts';
-
-const CONNECT_SYN_RE = new RegExp(`^(\\d*)~([${FILLWORD_CONNECTIVES}])~`);
-const CONNECT_ANT_RE = new RegExp(`^(\\d*)!([${FILLWORD_CONNECTIVES}])!`);
+import { toMatchSpec as equalsToMatchSpec } from '../query/grammar/equals.ts';
+import { toMatchSpec as serialToMatchSpec } from '../query/grammar/serial.ts';
+import { toMatchSpec as rhymeToMatchSpec } from '../query/grammar/rhyme.ts';
+import { toMatchSpec as plusToMatchSpec } from '../query/grammar/plus.ts';
+import { toMatchSpec as maskToMatchSpec } from '../query/grammar/mask.ts';
+import { toMatchSpec as wcaToMatchSpec } from '../query/grammar/wca.ts';
+import { toMatchSpec as relationToMatchSpec } from '../query/grammar/relation.ts';
+import { toMatchSpec as pingZeToMatchSpec } from '../ping-zak.ts';
+import {
+  buildJyutpingDualMatchSpecs,
+  toMatchSpec as jyutpingToMatchSpec,
+} from '../jyutping-anchor.ts';
+import type { ParsedQuery } from '../query-types.ts';
 
 export type MatchSpecBuilder = (parsed: ParsedQuery) => MatchSpec | null;
 
-function slots(spec: MatchSpec): SlotConstraint[] {
-  if (!spec.slots) {
-    spec.slots = [];
-  }
-  return spec.slots;
-}
-
-function asKind(kind: string): ConstraintKind {
-  return kind as ConstraintKind;
-}
-
-function applyJyutpingAnchorCodeSlots(spec: MatchSpec, parsed: JyutpingAnchorQuery): void {
-  if (parsed.code_slots?.length) {
-    for (const [pos, digit] of parsed.code_slots) {
-      slots(spec).push({ pos, kind: 'code_digit', value: digit });
-    }
-  } else if (parsed.code_prefix && parsed.width === parsed.code_prefix.length) {
-    for (let i = 0; i < parsed.code_prefix.length; i++) {
-      slots(spec).push({ pos: i, kind: 'code_digit', value: parsed.code_prefix[i]! });
-    }
-  }
-}
-
-function buildJyutpingAnchorMatchSpec(parsed: JyutpingAnchorQuery): MatchSpec {
-  const spec = createMatchSpec(parsed.width);
-  spec.mask = '?'.repeat(parsed.width);
-  slots(spec).push({
-    pos: parsed.anchor_pos,
-    kind: parsed.anchor_kind as AnchorKind,
-    value: parsed.anchor_value,
-  });
-  applyJyutpingAnchorCodeSlots(spec, parsed);
-  return spec;
-}
-
-export function buildJyutpingDualMatchSpecs(
-  parsed: JyutpingAnchorQuery,
-): [MatchSpec, MatchSpec] {
-  const base = (): MatchSpec => {
-    const spec = createMatchSpec(parsed.width);
-    spec.mask = '?'.repeat(parsed.width);
-    applyJyutpingAnchorCodeSlots(spec, parsed);
-    return spec;
-  };
-
-  const initial = base();
-  slots(initial).push({
-    pos: parsed.anchor_pos,
-    kind: 'initial_letters',
-    value: parsed.dual_initial_value || parsed.anchor_value,
-  });
-
-  const final = base();
-  slots(final).push({
-    pos: parsed.anchor_pos,
-    kind: 'rhyme_letters',
-    value: parsed.anchor_value,
-  });
-
-  return [initial, final];
-}
+export { buildJyutpingDualMatchSpecs };
 
 function specEquals(parsed: ParsedQuery): MatchSpec | null {
-  return buildEqualsMatchSpec((parsed as EqualsQuery).raw_q);
+  return equalsToMatchSpec(parsed);
 }
 
-function specPrefixWildcardEquals(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PrefixWildcardEqualsQuery;
-  const spec = buildEqualsMatchSpec(q.inner_q);
-  if (!spec) {
-    return createMatchSpec(0);
-  }
-  spec.width = q.width;
-  const span = getEqualsSpan(spec);
-  if (span) {
-    attachEqualsSpan(spec, {
-      ref_literal: span.ref_literal,
-      start_pos: 1,
-      dimension: span.dimension,
-      phoneme_anchor_only: true,
-      whole_word: false,
-    });
-  }
-  spec.mask = '?'.repeat(q.width);
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.prefix_wildcard_equals = true;
-  return spec;
+function specSerial(parsed: ParsedQuery): MatchSpec | null {
+  return serialToMatchSpec(parsed);
 }
 
-function specPartialRhymeMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PartialRhymeMaskQuery;
-  const spec = createMatchSpec(q.width, { mask: q.pattern });
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.partial_rhyme_mask = true;
-  for (const [pos, ch] of q.anchors) {
-    slots(spec).push({ pos, kind: 'final_anchor', value: ch });
-  }
-  return spec;
+function specRhyme(parsed: ParsedQuery): MatchSpec | null {
+  return rhymeToMatchSpec(parsed);
 }
 
-function specPartialInitialMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PartialInitialMaskQuery;
-  const spec = createMatchSpec(q.width, { mask: q.pattern });
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.partial_initial_mask = true;
-  for (const [pos, ch] of q.anchors) {
-    slots(spec).push({ pos, kind: 'initial_anchor', value: ch });
-  }
-  return spec;
-}
-
-function specSerialPhoneme(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as SerialPhonemeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = q.mask.length === q.width ? q.mask : '?'.repeat(q.width);
-  for (const [pos, digit] of q.code_slots) {
-    slots(spec).push({ pos, kind: 'code_digit', value: digit });
-  }
-  const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
-  for (const [pos, anchor] of q.anchors) {
-    slots(spec).push({ pos, kind, value: anchor });
-  }
-  return spec;
-}
-
-function specPlusAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PlusAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const [pos, d] of q.code_slots) {
-    slots(spec).push({ pos, kind: 'code_digit', value: d });
-  }
-  if (!q.code_slots?.length && q.code_prefix) {
-    appendCodeDigitSlots(spec, q.code_prefix);
-  }
-  if (q.constraint === 'literal') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'literal_char', value: q.anchor });
-    spec.mask = spec.mask.slice(0, q.anchor_pos) + q.anchor + spec.mask.slice(q.anchor_pos + 1);
-    return spec;
-  }
-  if (q.constraint === 'final') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
-    return spec;
-  }
-  if (q.constraint === 'initial') {
-    slots(spec).push({ pos: q.anchor_pos, kind: 'initial_anchor', value: q.anchor });
-  }
-  return spec;
-}
-
-function specLiteralRef(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as LiteralRefQuery;
-  const spec = createMatchSpec(q.width);
-  appendCodeDigitSlots(spec, q.code_digits);
-  slots(spec).push({ pos: q.width - 1, kind: 'literal_char', value: q.literal_char });
-  spec.mask = '?'.repeat(q.width - 1) + q.literal_char;
-  return spec;
+function specPlus(parsed: ParsedQuery): MatchSpec | null {
+  return plusToMatchSpec(parsed);
 }
 
 function specWildcardCodeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as WildcardCodeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const slot of q.slots) {
-    const kind = asKind(slot.kind);
-    slots(spec).push({ pos: slot.pos, kind, value: slot.value });
-    if (kind === 'literal_char' && slot.value) {
-      spec.mask = spec.mask.slice(0, slot.pos) + slot.value + spec.mask.slice(slot.pos + 1);
-    }
-  }
-  return spec;
-}
-
-function specCodeRefMiddleRhyme(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as CodeRefMiddleRhymeQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const slot of q.slots) {
-    slots(spec).push({ pos: slot.pos, kind: asKind(slot.kind), value: slot.value });
-  }
-  return spec;
-}
-
-function specRhymeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as RhymeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
-  slots(spec).push({ pos: q.anchor_pos, kind, value: q.anchor });
-  spec.mask = buildMaskFromSlots(q.slots, q.width, q.anchor_pos);
-  return spec;
-}
-
-function specTripleRhymeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as TripleRhymeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  slots(spec).push({ pos: q.anchor_pos, kind: 'final_anchor', value: q.anchor });
-  spec.mask = '?'.repeat(q.width);
-  // Prefer inverted-index path (engine) over unlimited width-3 scan
-  if (!spec.extra) spec.extra = {};
-  spec.extra.triple_rhyme_anchor = true;
-  return spec;
+  return wcaToMatchSpec(parsed);
 }
 
 function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as JyutpingAnchorQuery;
-  if (q.dual_phoneme) {
-    const [initial, final] = buildJyutpingDualMatchSpecs(q);
-    const carrier = createMatchSpec(q.width);
-    applyJyutpingAnchorCodeSlots(carrier, q);
-    if (!carrier.extra) {
-      carrier.extra = {};
-    }
-    carrier.extra.dual_phoneme = true;
-    carrier.extra.dual_initial_spec = initial;
-    carrier.extra.dual_final_spec = final;
-    return carrier;
-  }
-  return buildJyutpingAnchorMatchSpec(q);
+  return jyutpingToMatchSpec(parsed);
 }
 
 function specMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as MaskQuery;
-  const { literalPositions } = parseMaskQuery(q.raw_q);
-  const spec = createMatchSpec(q.raw_q.length, { literal_priority: true, mask: q.raw_q });
-  for (let i = 0; i < q.raw_q.length; i++) {
-    const ch = q.raw_q[i]!;
-    if (/\d/.test(ch)) {
-      slots(spec).push({ pos: i, kind: 'code_digit', value: ch });
-    }
-  }
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.literal_positions = literalPositions;
-  return spec;
+  return maskToMatchSpec(parsed);
 }
 
 function specPingZeSerial(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PingZeSerialQuery;
-  if (q.base) {
-    const spec = buildMatchSpecForParsed(q.base);
-    if (!spec) return null;
-    if (!spec.extra) spec.extra = {};
-    spec.extra.code_mode = q.pzmode;
-    const codeDigitPositions = new Set((spec.slots ?? []).filter((slot) => slot.kind === 'code_digit').map((slot) => slot.pos));
-    const fixed = new Set(
-      (spec.slots ?? [])
-        .filter((slot) => slot.kind !== 'code_digit' && slot.kind !== 'tone_class' && !codeDigitPositions.has(slot.pos))
-        .map((slot) => slot.pos),
-    );
-    const codePositions = Array.from({ length: spec.width }, (_, pos) => pos).filter((pos) => !fixed.has(pos));
-    const tokens = [...q.raw_q].filter((token) => /[PZ?0-9]/.test(token));
-    tokens.forEach((token, index) => {
-      if (token !== 'P' && token !== 'Z') return;
-      const pos = codePositions[index];
-      if (pos == null) return;
-      spec.slots = (spec.slots ?? []).filter((slot) => !(slot.pos === pos && slot.kind === 'code_digit'));
-      spec.mask = `${spec.mask.slice(0, pos)}?${spec.mask.slice(pos + 1)}`;
-      slots(spec).push({ pos, kind: 'tone_class', value: token === 'P' ? 'ping' : 'ze' });
-    });
-    return spec;
-  }
-  const spec = createMatchSpec(q.raw_q.length, { mask: '?'.repeat(q.raw_q.length) });
-  if (!spec.extra) spec.extra = {};
-  spec.extra.code_mode = q.pzmode;
-  for (let pos = 0; pos < q.raw_q.length; pos += 1) {
-    const token = q.raw_q[pos]!;
-    if (token === 'P') slots(spec).push({ pos, kind: 'tone_class', value: 'ping' });
-    else if (token === 'Z') slots(spec).push({ pos, kind: 'tone_class', value: 'ze' });
-    else if (/\d/.test(token)) slots(spec).push({ pos, kind: 'code_digit', value: token });
-  }
-  if (q.anchor) {
-    spec.width += 1;
-    spec.mask = '?'.repeat(spec.width);
-    slots(spec).push({ pos: q.raw_q.length, kind: 'final_anchor', value: q.anchor });
-  }
-  return spec;
+  return pingZeToMatchSpec(parsed, buildMatchSpecForParsed);
 }
 
-function specCompoundDoubledSyllable(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as CompoundDoubledSyllableQuery;
-  const spec = createMatchSpec(q.width, {
-    compound_kind: 'doubled_syllable',
-  });
-  appendCodeDigitSlots(spec, q.code_prefix);
-  if (q.rhyme_char) {
-    slots(spec).push({ pos: q.width - 1, kind: 'final_anchor', value: q.rhyme_char });
-  }
-  return spec;
-}
-
-function specCompoundSyn(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as CompoundSynQuery;
-  const connect = CONNECT_SYN_RE.exec(q.raw_q);
-  if (connect) {
-    const spec = createMatchSpec(3, { compound_kind: 'syn' });
-    if (!spec.extra) {
-      spec.extra = {};
-    }
-    spec.extra.connective = connect[2];
-    appendCodeDigitSlots(spec, q.code_prefix);
-    if (q.rhyme_char) {
-      slots(spec).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
-    }
-    return spec;
-  }
-  const spec = createMatchSpec(2, { compound_kind: 'syn' });
-  appendCodeDigitSlots(spec, q.code_prefix);
-  if (q.rhyme_char) {
-    slots(spec).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
-  }
-  return spec;
-}
-
-function specCompoundAnt(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as CompoundAntQuery;
-  const connect = CONNECT_ANT_RE.exec(q.raw_q);
-  if (connect) {
-    const spec = createMatchSpec(3, { compound_kind: 'ant' });
-    if (!spec.extra) {
-      spec.extra = {};
-    }
-    spec.extra.connective = connect[2];
-    appendCodeDigitSlots(spec, q.code_prefix);
-    if (q.rhyme_char) {
-      slots(spec).push({ pos: 2, kind: 'final_anchor', value: q.rhyme_char });
-    }
-    return spec;
-  }
-  const spec = createMatchSpec(2, { compound_kind: 'ant' });
-  appendCodeDigitSlots(spec, q.code_prefix);
-  if (q.rhyme_char) {
-    slots(spec).push({ pos: 1, kind: 'final_anchor', value: q.rhyme_char });
-  }
-  return spec;
+function specRelation(parsed: ParsedQuery): MatchSpec | null {
+  return relationToMatchSpec(parsed);
 }
 
 export const MATCH_SPEC_BUILDERS: Partial<Record<QueryKind, MatchSpecBuilder>> = {
   [QueryKind.EQUALS]: specEquals,
-  [QueryKind.PREFIX_WILDCARD_EQUALS]: specPrefixWildcardEquals,
-  [QueryKind.PARTIAL_RHYME_MASK]: specPartialRhymeMask,
-  [QueryKind.PARTIAL_INITIAL_MASK]: specPartialInitialMask,
-  [QueryKind.SERIAL_PHONEME]: specSerialPhoneme,
-  [QueryKind.PLUS_ANCHOR]: specPlusAnchor,
-  [QueryKind.LITERAL_REF]: specLiteralRef,
+  [QueryKind.PREFIX_WILDCARD_EQUALS]: specSerial,
+  [QueryKind.PARTIAL_RHYME_MASK]: specRhyme,
+  [QueryKind.PARTIAL_INITIAL_MASK]: specRhyme,
+  [QueryKind.SERIAL_PHONEME]: specSerial,
+  [QueryKind.PLUS_ANCHOR]: specPlus,
+  [QueryKind.LITERAL_REF]: specPlus,
   [QueryKind.WILDCARD_CODE_ANCHOR]: specWildcardCodeAnchor,
-  [QueryKind.CODE_REF_MIDDLE_RHYME]: specCodeRefMiddleRhyme,
-  [QueryKind.RHYME_ANCHOR]: specRhymeAnchor,
-  [QueryKind.TRIPLE_RHYME_ANCHOR]: specTripleRhymeAnchor,
+  [QueryKind.CODE_REF_MIDDLE_RHYME]: specRhyme,
+  [QueryKind.RHYME_ANCHOR]: specRhyme,
+  [QueryKind.TRIPLE_RHYME_ANCHOR]: specRhyme,
   [QueryKind.JYUTPING_ANCHOR]: specJyutpingAnchor,
   [QueryKind.MASK]: specMask,
   [QueryKind.PING_ZE_SERIAL]: specPingZeSerial,
-  [QueryKind.COMPOUND_SYN]: specCompoundSyn,
-  [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: specCompoundDoubledSyllable,
-  [QueryKind.COMPOUND_ANT]: specCompoundAnt,
+  [QueryKind.COMPOUND_SYN]: specRelation,
+  [QueryKind.COMPOUND_CONNECT_SYN]: specRelation,
+  [QueryKind.COMPOUND_DOUBLED_SYLLABLE]: specRelation,
+  [QueryKind.COMPOUND_ANT]: specRelation,
+  [QueryKind.COMPOUND_CONNECT_ANT]: specRelation,
 };
+
 
 /** Port of build_match_spec_for_parsed */
 export function buildMatchSpecForParsed(parsed: ParsedQuery): MatchSpec | null {

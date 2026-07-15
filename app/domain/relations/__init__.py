@@ -7,7 +7,8 @@ from app.domain.relations.canonical import (
 )
 from app.domain.relations.char_index import get_char_to_ids, get_char_to_primary_id
 from app.domain.relations.graph import CharRelationGraph, ANT_SYN_MIRROR_SOURCE
-from app.domain.relations.pool import PoolSnapshot, build_pool, DEFAULT_PAGE_SIZE
+from app.domain.relations.pool import PoolSnapshot, DEFAULT_PAGE_SIZE
+from app.domain.relations.pool_builder import build_pool
 from app.domain.relations.pool_projection import (
     project_relation_pool,
     relation_chars_for_seed,
