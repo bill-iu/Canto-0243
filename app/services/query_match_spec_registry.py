@@ -6,12 +6,9 @@ from typing import Callable, Optional
 from app.services.position_match import MatchSpec, SlotConstraint
 from app.services.query_types import (
     JyutpingAnchorQuery,
-    MaskQuery,
     ParsedQuery,
     QueryKind,
-    WildcardCodeAnchorQuery,
 )
-from app.services.query_grammar.mask import parse_mask_query
 from app.services.position_match.mask_adapter import append_code_digit_slots
 
 
@@ -92,20 +89,16 @@ def _spec_plus(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return plus_to_match_spec(parsed)
 
 
-def _spec_wildcard_code_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.WILDCARD_CODE_ANCHOR
-    q = parsed  # type: WildcardCodeAnchorQuery
-    spec = MatchSpec(width=q.width)
-    spec.mask = "?" * q.width
-    for slot in q.slots:
-        spec.slots.append(
-            SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
-        )
-        if slot["kind"] == "literal_char":
-            spec.mask = (
-                spec.mask[: slot["pos"]] + slot["value"] + spec.mask[slot["pos"] + 1 :]
-            )
-    return spec
+def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    from app.services.query_grammar.mask import to_match_spec as mask_to_match_spec
+
+    return mask_to_match_spec(parsed)
+
+
+def _spec_wca(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    from app.services.query_grammar.wca import to_match_spec as wca_to_match_spec
+
+    return wca_to_match_spec(parsed)
 
 
 def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
@@ -120,22 +113,6 @@ def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
         carrier.extra["dual_final_spec"] = final
         return carrier
     return _build_jyutping_anchor_match_spec(q)
-
-
-def _spec_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.MASK
-    q = parsed  # type: MaskQuery
-    expected_len, _, literal_positions = parse_mask_query(q.raw_q)
-    spec = MatchSpec(
-        width=expected_len,
-        literal_priority=True,
-        mask=q.raw_q,
-    )
-    for i, ch in enumerate(q.raw_q):
-        if ch.isdigit():
-            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=ch))
-    spec.extra["literal_positions"] = literal_positions
-    return spec
 
 
 def _spec_ping_ze_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
@@ -158,7 +135,7 @@ MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.SERIAL_PHONEME: _spec_serial,
     QueryKind.PLUS_ANCHOR: _spec_plus,
     QueryKind.LITERAL_REF: _spec_plus,
-    QueryKind.WILDCARD_CODE_ANCHOR: _spec_wildcard_code_anchor,
+    QueryKind.WILDCARD_CODE_ANCHOR: _spec_wca,
     QueryKind.CODE_REF_MIDDLE_RHYME: _spec_rhyme,
     QueryKind.RHYME_ANCHOR: _spec_rhyme,
     QueryKind.TRIPLE_RHYME_ANCHOR: _spec_rhyme,

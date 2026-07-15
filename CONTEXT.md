@@ -196,7 +196,7 @@ _Avoid_：parser、handler chain（實作細節）、在 position_match 各處�
 _Avoid_：parse 後仍用 dataclass isinstance 梯做 spec／dispatch、把查詢種類當實作 enum 名寫進領域文案
 
 **比對規格建構**：
-語法家族 module 負責該家族嘅 `parse` 與 `to_match_spec`（ParsedQuery → **比對規格**）；查詢種類註冊表只做 kind→fn 委派，唔內嵌槽位／overlay 邏輯。樣板：近反義 relation、平仄、equals、serial、**rhyme**、**plus**。其餘家族（mask／wca／jyutping）仍可待搬；heteronym 係 `match_spec: false`，只 parse＋獨立路由。
+語法家族 module 負責該家族嘅 `parse` 與 `to_match_spec`（ParsedQuery → **比對規格**）；查詢種類註冊表只做 kind→fn 委派，唔內嵌槽位／overlay 邏輯。樣板：近反義 relation、平仄、equals、serial、rhyme、plus、**mask**、**wca**。其餘家族（jyutping）仍可待搬；heteronym 係 `match_spec: false`，只 parse＋獨立路由。
 _Avoid_：registry 內再寫一份家族槽位規則、執行層重做 ParsedQuery→規格
 
 **查詢語意解釋**：

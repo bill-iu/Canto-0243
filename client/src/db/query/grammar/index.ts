@@ -25,7 +25,10 @@ export {
   parseCodeRefRhymeContradictionHint,
   toMatchSpec as rhymeToMatchSpec,
 } from './rhyme.ts';
-export { parseWildcardCodeAnchorQuery } from './wca.ts';
+export {
+  parseWildcardCodeAnchorQuery,
+  toMatchSpec as wcaToMatchSpec,
+} from './wca.ts';
 export {
   parsePrefixWildcardEqualsQuery,
   parsePrefixWildcardInitialQuery,
@@ -35,4 +38,10 @@ export {
   toMatchSpec as serialToMatchSpec,
 } from './serial.ts';
 export { parseAtTailQuery, parsePlusAnchorQuery, toMatchSpec as plusToMatchSpec } from './plus.ts';
-export { looksLikeMaskQuery } from './mask.ts';
+export {
+  looksLikeMaskQuery,
+  parseMaskQuery,
+  buildMaskFromSlots,
+  isWildcardChar,
+  toMatchSpec as maskToMatchSpec,
+} from './mask.ts';

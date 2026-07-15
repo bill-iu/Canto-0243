@@ -48,3 +48,23 @@ def build_mask_from_slots(slots: str, width: int, anchor_pos: int) -> str:
         for i, ch in enumerate(slots):
             chars[i] = ch
     return "".join(chars)
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for MASK."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.query_types import MaskQuery, QueryKind
+
+    if not isinstance(parsed, MaskQuery) or parsed.kind != QueryKind.MASK:
+        return None
+    expected_len, _, literal_positions = parse_mask_query(parsed.raw_q)
+    spec = MatchSpec(
+        width=expected_len,
+        literal_priority=True,
+        mask=parsed.raw_q,
+    )
+    for i, ch in enumerate(parsed.raw_q):
+        if ch.isdigit():
+            spec.slots.append(SlotConstraint(pos=i, kind="code_digit", value=ch))
+    spec.extra["literal_positions"] = literal_positions
+    return spec

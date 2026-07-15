@@ -1,13 +1,11 @@
 /**
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
-import { appendCodeDigitSlots, codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
-import { parseMaskQuery } from './mask-grammar.ts';
+import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import {
   createMatchSpec,
   getEqualsSpan,
   type AnchorKind,
-  type ConstraintKind,
   type MatchSpec,
   type SlotConstraint,
 } from './spec.ts';
@@ -16,13 +14,13 @@ import { toMatchSpec as equalsToMatchSpec } from '../query/grammar/equals.ts';
 import { toMatchSpec as serialToMatchSpec } from '../query/grammar/serial.ts';
 import { toMatchSpec as rhymeToMatchSpec } from '../query/grammar/rhyme.ts';
 import { toMatchSpec as plusToMatchSpec } from '../query/grammar/plus.ts';
+import { toMatchSpec as maskToMatchSpec } from '../query/grammar/mask.ts';
+import { toMatchSpec as wcaToMatchSpec } from '../query/grammar/wca.ts';
 import { toMatchSpec as relationToMatchSpec } from '../query/grammar/relation.ts';
 import { toMatchSpec as pingZeToMatchSpec } from '../ping-zak.ts';
 import type {
   JyutpingAnchorQuery,
-  MaskQuery,
   ParsedQuery,
-  WildcardCodeAnchorQuery,
 } from '../query-types.ts';
 
 export type MatchSpecBuilder = (parsed: ParsedQuery) => MatchSpec | null;
@@ -32,10 +30,6 @@ function slots(spec: MatchSpec): SlotConstraint[] {
     spec.slots = [];
   }
   return spec.slots;
-}
-
-function asKind(kind: string): ConstraintKind {
-  return kind as ConstraintKind;
 }
 
 function applyJyutpingAnchorCodeSlots(spec: MatchSpec, parsed: JyutpingAnchorQuery): void {
@@ -106,17 +100,7 @@ function specPlus(parsed: ParsedQuery): MatchSpec | null {
 }
 
 function specWildcardCodeAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as WildcardCodeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = '?'.repeat(q.width);
-  for (const slot of q.slots) {
-    const kind = asKind(slot.kind);
-    slots(spec).push({ pos: slot.pos, kind, value: slot.value });
-    if (kind === 'literal_char' && slot.value) {
-      spec.mask = spec.mask.slice(0, slot.pos) + slot.value + spec.mask.slice(slot.pos + 1);
-    }
-  }
-  return spec;
+  return wcaToMatchSpec(parsed);
 }
 
 function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
@@ -137,20 +121,7 @@ function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
 }
 
 function specMask(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as MaskQuery;
-  const { literalPositions } = parseMaskQuery(q.raw_q);
-  const spec = createMatchSpec(q.raw_q.length, { literal_priority: true, mask: q.raw_q });
-  for (let i = 0; i < q.raw_q.length; i++) {
-    const ch = q.raw_q[i]!;
-    if (/\d/.test(ch)) {
-      slots(spec).push({ pos: i, kind: 'code_digit', value: ch });
-    }
-  }
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.literal_positions = literalPositions;
-  return spec;
+  return maskToMatchSpec(parsed);
 }
 
 function specPingZeSerial(parsed: ParsedQuery): MatchSpec | null {

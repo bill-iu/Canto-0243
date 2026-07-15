@@ -107,3 +107,25 @@ def parse_wildcard_code_anchor_query(q: str) -> Optional[dict]:
 
 def looks_like_wildcard_code_anchor_query(q: str) -> bool:
     return parse_wildcard_code_anchor_query(q) is not None
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for WILDCARD_CODE_ANCHOR."""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.query_types import QueryKind, WildcardCodeAnchorQuery
+
+    if not isinstance(parsed, WildcardCodeAnchorQuery):
+        return None
+    if parsed.kind != QueryKind.WILDCARD_CODE_ANCHOR:
+        return None
+    spec = MatchSpec(width=parsed.width)
+    spec.mask = "?" * parsed.width
+    for slot in parsed.slots:
+        spec.slots.append(
+            SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot["value"])
+        )
+        if slot["kind"] == "literal_char":
+            spec.mask = (
+                spec.mask[: slot["pos"]] + slot["value"] + spec.mask[slot["pos"] + 1 :]
+            )
+    return spec

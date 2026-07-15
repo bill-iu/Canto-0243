@@ -3,7 +3,7 @@
  *
  * ponytail: 300-line limit exemption — rhyme family parse+toMatchSpec locality
  */
-import { buildMaskFromSlots, isWildcardChar } from '../../position-match/mask-grammar.ts';
+import { buildMaskFromSlots, isWildcardChar } from './mask.ts';
 import {
   createMatchSpec,
   type MatchSpec,
