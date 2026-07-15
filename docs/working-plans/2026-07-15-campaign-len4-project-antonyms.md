@@ -357,7 +357,7 @@ python scripts/project_antonyms.py campaign-final-validate --campaign len4 --req
 - [x] WP-04 prompt-len4（PR-A）
 - [x] WP-06 測試綠（PR-A；Len4CampaignTests + top5000 回歸）
 - [x] Freeze commit（manifest + meta + inherited nn）— **PR-B**（k=2898，6 批，繼承 nn=15）
-- [x] WP-05 各批 accepted / no_natural + 閘 — **b01–b04 done**（batch_index 1–4 resolved；b05–b06 pending）
+- [x] WP-05 各批 accepted / no_natural + 閘 — **b01–b05 done**（batch_index 1–5 resolved；b06 pending）
 - [ ] WP-08 最終稽核
 - [ ] Release note（可選版本）
 
