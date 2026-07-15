@@ -4553,6 +4553,341 @@
       ],
       "accepted_pairs": 450,
       "created_at": "2026-07-15T08:34:15Z"
+    },
+    "len4-b02-20260715": {
+      "k": 298,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
+      "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+      "model_note": "len4-b02 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260717; soft-prefer 4-char tails [parent land provisional]",
+      "model": "xai/grok-4",
+      "model_provider": "xAI",
+      "model_version": "grok-4",
+      "model_params": {
+        "generation_mode": "maintainer_curated_blind_style",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "len4",
+        "batch_index": 2
+      },
+      "sample_seed": 20260717,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv len4-b02-20260715 parent N=580",
+      "sample_parent_n": 580,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_verdicts": [
+        {
+          "head": "一年到頭",
+          "tail": "一時半刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "三更半夜",
+          "tail": "光天化日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不知死活",
+          "tail": "謹小慎微",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "久負盛名",
+          "tail": "初出茅廬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冷眼旁觀",
+          "tail": "挺身而出",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "千山萬水",
+          "tail": "咫尺天涯",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "各抒己見",
+          "tail": "人云亦云",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吊兒郎當",
+          "tail": "兢兢業業",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "哭喪着臉",
+          "tail": "眉開眼笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天荒地老",
+          "tail": "曇花一現",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "如此而已",
+          "tail": "豈止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "如花似玉",
+          "tail": "平庸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "孤軍奮戰",
+          "tail": "並肩作戰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "將心比心",
+          "tail": "自私自利",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "弦外之音",
+          "tail": "直言不諱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "從早到晚",
+          "tail": "一時半刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "心神不寧",
+          "tail": "心如止水",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "心肝寶貝",
+          "tail": "肉中刺",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "必爭之地",
+          "tail": "無關緊要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怒火中燒",
+          "tail": "心平氣和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怒髮衝冠",
+          "tail": "心平氣和",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有生以來",
+          "tail": "從未",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有血有肉",
+          "tail": "空洞無物",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝朝暮暮",
+          "tail": "片刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "模稜兩可",
+          "tail": "斬釘截鐵",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "浮想聯翩",
+          "tail": "一片空白",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "漸入佳境",
+          "tail": "每況愈下",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "潸然淚下",
+          "tail": "破涕為笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "無業遊民",
+          "tail": "上班族",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爭論不休",
+          "tail": "一言為定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "牽線搭橋",
+          "tail": "拆台",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "登堂入室",
+          "tail": "一知半解",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "矇在鼓裏",
+          "tail": "知情",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "移花接木",
+          "tail": "原汁原味",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "童心未泯",
+          "tail": "少年老成",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "童心未泯",
+          "tail": "老氣橫秋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "粉身碎骨",
+          "tail": "完好無損",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "紅男綠女",
+          "tail": "清一色",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "紛紛揚揚",
+          "tail": "寥寥無幾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "羣雄逐鹿",
+          "tail": "一枝獨秀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "翻山越嶺",
+          "tail": "一馬平川",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "翻江倒海",
+          "tail": "風平浪靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "舉步維艱",
+          "tail": "一帆風順",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "蠻不講理",
+          "tail": "講理",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "行色匆匆",
+          "tail": "悠閒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過關斬將",
+          "tail": "一敗塗地",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遠近聞名",
+          "tail": "默默無聞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "難上加難",
+          "tail": "易如反掌",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "雨過天晴",
+          "tail": "雪上加霜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "靈機一動",
+          "tail": "一籌莫展",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [],
+      "accepted_pairs": 580,
+      "created_at": "2026-07-15T09:15:03Z"
     }
   },
   "post_land_removed_pairs": [
