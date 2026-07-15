@@ -37,20 +37,21 @@
   align-self: center;
 }
 
-.header-chrome .header-hero {
+.app-bar > .header-hero {
   grid-area: hero;
   align-self: center;
   min-width: 0;
   max-width: none;
   flex: 1 1 auto;
   padding: 2px 0;
-  /* 蓋過 landing-b-pending opacity:0（PWA 唔用呢套 landing 儀式） */
+  /* 蓋過 shell landing-b-pending／窄屏 display:none */
+  display: block;
   opacity: 1;
   visibility: visible;
+  text-align: left;
 }
 
-.header-chrome .header-hero h1,
-.header-chrome .header-hero__title {
+.app-bar > .header-hero .header-hero__title {
   margin: 0;
   font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
   font-size: clamp(22px, 2.4vw, 28px);
@@ -60,7 +61,7 @@
   color: var(--ink);
 }
 
-.header-chrome .header-hero__tagline {
+.app-bar > .header-hero .header-hero__tagline {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 13px;
@@ -297,9 +298,30 @@ button.icon-button.header-search__shuffle:disabled {
     width: auto;
   }
 
-  /* 窄屏：hero 交 shell.css 隱藏；唔佔 header-chrome 格 */
-  .header-chrome .header-hero {
-    display: none;
+  /* 窄屏：hero 喺搜尋欄上方置中（覆寫 shell.css display:none） */
+  .app-bar > .header-hero {
+    display: block;
+    order: 2;
+    width: 100%;
+    max-width: none;
+    padding: 4px 8px 2px;
+    text-align: center;
+  }
+
+  .app-bar > .header-hero .header-hero__title {
+    font-size: clamp(20px, 5.5vw, 24px);
+  }
+
+  .app-bar > .header-hero .header-hero__tagline {
+    font-size: 12px;
+  }
+
+  .header-chrome {
+    order: 1;
+  }
+
+  .header-search {
+    order: 3;
   }
 
   .header-search__meta .warmup-badge {

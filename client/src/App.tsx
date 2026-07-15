@@ -856,7 +856,7 @@ function App() {
       >
         <header className="app-header">
           <h1 id="searchTitle" className="sr-only">
-            {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
+            {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}
           </h1>
           <div className="app-bar">
             <div className="header-chrome">
@@ -869,16 +869,6 @@ function App() {
                 >
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
-              </div>
-              <div className="header-hero" aria-hidden="true">
-                <p className="header-hero__title">
-                  {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
-                </p>
-                <p className="header-hero__tagline">
-                  {uiLang === 'en'
-                    ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
-                    : '格律／協音／押韻／近反義，一步搵到。'}
-                </p>
               </div>
               <ModeMenu
                 mode={mode}
@@ -893,6 +883,17 @@ function App() {
                 lexiconVersion={lexiconVersion}
                 showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
               />
+            </div>
+            {/* 寬屏：grid 置於 logo｜menu 之間；窄屏：搜尋欄上方置中 */}
+            <div className="header-hero" aria-hidden="true">
+              <p className="header-hero__title">
+                {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}
+              </p>
+              <p className="header-hero__tagline">
+                {uiLang === 'en'
+                  ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
+                  : '格律／協音／押韻／近反義，一步搵到。'}
+              </p>
             </div>
             <form className="header-search" onSubmit={handleSubmit} role="search">
               <div className="header-search__row">

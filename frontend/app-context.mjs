@@ -46,8 +46,8 @@ export {
 };
 
 export const APP_TITLE_BASE = "Canto-0243 ONE·搵·韻";
-/** Portable EN hero／title（PWA EN 仍用 ONE-RUN-RHYME） */
-export const APP_TITLE_BASE_EN = "Canto-0243 Write·Right·Rhyme";
+/** Portable／PWA EN hero／title */
+export const APP_TITLE_BASE_EN = "Canto-0243 WRITE·RIGHT·RHYME";
 export const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
 
 export const LANG_KEY = 'canto-lang';
@@ -79,7 +79,7 @@ const MESSAGES = {
     'theme.toggle': '切換主題',
   },
   en: {
-    'hero.title': 'Write·Right·Rhyme',
+    'hero.title': 'WRITE·RIGHT·RHYME',
     'hero.tagline': 'Meter / sound match / rhyme / near-antonyms — find in one step.',
     'search.label': 'Search',
     'search.button': 'Search',
@@ -95,7 +95,7 @@ const MESSAGES = {
     'menu.about.help': 'License, credits & feedback',
     'menu.lexicon': 'Lexicon version: ',
     'about.title': 'About Canto-0243',
-    'about.lede': 'Write·Right·Rhyme — Offline Cantonese lyric rhyme workbench.',
+    'about.lede': 'WRITE·RIGHT·RHYME — Offline Cantonese lyric rhyme workbench.',
     'about.back': 'Back to search',
     'gate.preparing': 'Loading…',
     'empty.notfound': 'No matches',
