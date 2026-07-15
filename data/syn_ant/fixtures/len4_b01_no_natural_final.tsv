@@ -5,7 +5,6 @@ head	reason	batch_id
 一見鍾情	no_gradable_opposite	len4-b01-20260715
 一言一行	no_gradable_opposite	len4-b01-20260715
 不大不小	no_gradable_opposite	len4-b01-20260715
-不好意思	no_gradable_opposite	campaign-b04-20260714
 不怎麼樣	no_gradable_opposite	len4-b01-20260715
 不思進取	no_gradable_opposite	len4-b01-20260715
 不法分子	no_gradable_opposite	len4-b01-20260715
@@ -13,9 +12,7 @@ head	reason	batch_id
 中央銀行	no_gradable_opposite	len4-b01-20260715
 中樞神經	no_gradable_opposite	len4-b01-20260715
 中產階級	no_gradable_opposite	len4-b01-20260715
-中華民族	proper_name_or_deixis	campaign-b10-20260714
 主治醫師	no_gradable_opposite	len4-b01-20260715
-也就是説	function_word	campaign-b08-20260714
 二氧化碳	no_gradable_opposite	len4-b01-20260715
 五星紅旗	proper_name_or_deixis	len4-b01-20260715
 交通事故	no_gradable_opposite	len4-b01-20260715
@@ -29,7 +26,6 @@ head	reason	batch_id
 使用價值	no_gradable_opposite	len4-b01-20260715
 保加利亞	proper_name_or_deixis	len4-b01-20260715
 保護主義	no_gradable_opposite	len4-b01-20260715
-保險公司	no_gradable_opposite	campaign-b10-20260714
 先決條件	no_gradable_opposite	len4-b01-20260715
 光合作用	no_gradable_opposite	len4-b01-20260715
 克羅地亞	proper_name_or_deixis	len4-b01-20260715
@@ -46,14 +42,12 @@ head	reason	batch_id
 化學工業	no_gradable_opposite	len4-b01-20260715
 十二指腸	no_gradable_opposite	len4-b01-20260715
 十二生肖	no_gradable_opposite	len4-b01-20260715
-十字路口	no_gradable_opposite	campaign-b09-20260714
 南斯拉夫	proper_name_or_deixis	len4-b01-20260715
 印第安人	proper_name_or_deixis	len4-b01-20260715
 危言聳聽	no_gradable_opposite	len4-b01-20260715
 厄瓜多爾	proper_name_or_deixis	len4-b01-20260715
 古典文學	no_gradable_opposite	len4-b01-20260715
 古往今來	no_gradable_opposite	len4-b01-20260715
-另一方面	function_word	campaign-b08-20260714
 可口可樂	proper_name_or_deixis	len4-b01-20260715
 各奔東西	no_gradable_opposite	len4-b01-20260715
 各行各業	no_gradable_opposite	len4-b01-20260715
@@ -74,7 +68,6 @@ head	reason	batch_id
 基本建設	no_gradable_opposite	len4-b01-20260715
 基礎教育	no_gradable_opposite	len4-b01-20260715
 塞爾維亞	proper_name_or_deixis	len4-b01-20260715
-士多啤梨	no_gradable_opposite	campaign-b05-20260714
 外交部長	no_gradable_opposite	len4-b01-20260715
 夢寐以求	no_gradable_opposite	len4-b01-20260715
 夢想成真	no_gradable_opposite	len4-b01-20260715
@@ -88,7 +81,6 @@ head	reason	batch_id
 天文數字	no_gradable_opposite	len4-b01-20260715
 太平天國	proper_name_or_deixis	len4-b01-20260715
 太陽眼鏡	no_gradable_opposite	len4-b01-20260715
-好不容易	no_gradable_opposite	campaign-b10-20260714
 如此這般	no_gradable_opposite	len4-b01-20260715
 委內瑞拉	proper_name_or_deixis	len4-b01-20260715
 學前教育	no_gradable_opposite	len4-b01-20260715
@@ -103,7 +95,6 @@ head	reason	batch_id
 工業革命	proper_name_or_deixis	len4-b01-20260715
 工藝美術	no_gradable_opposite	len4-b01-20260715
 巴基斯坦	proper_name_or_deixis	len4-b01-20260715
-市場經濟	no_gradable_opposite	campaign-b09-20260714
 師範大學	no_gradable_opposite	len4-b01-20260715
 師範學校	no_gradable_opposite	len4-b01-20260715
 師範學院	no_gradable_opposite	len4-b01-20260715
@@ -153,6 +144,7 @@ head	reason	batch_id
 水利工程	no_gradable_opposite	len4-b01-20260715
 水土保持	no_gradable_opposite	len4-b01-20260715
 洪都拉斯	proper_name_or_deixis	len4-b01-20260715
+活蹦亂跳	no_gradable_opposite	len4-b01-20260715
 流動資金	no_gradable_opposite	len4-b01-20260715
 消化系統	no_gradable_opposite	len4-b01-20260715
 淚流滿面	no_gradable_opposite	len4-b01-20260715
@@ -183,7 +175,6 @@ head	reason	batch_id
 白俄羅斯	proper_name_or_deixis	len4-b01-20260715
 百事可樂	proper_name_or_deixis	len4-b01-20260715
 百科全書	no_gradable_opposite	len4-b01-20260715
-百貨公司	no_gradable_opposite	campaign-b10-20260714
 皮下組織	no_gradable_opposite	len4-b01-20260715
 直升飛機	no_gradable_opposite	len4-b01-20260715
 相對而言	no_gradable_opposite	len4-b01-20260715
@@ -191,7 +182,6 @@ head	reason	batch_id
 知名人士	no_gradable_opposite	len4-b01-20260715
 知己知彼	no_gradable_opposite	len4-b01-20260715
 知識分子	no_gradable_opposite	len4-b01-20260715
-知識產權	no_gradable_opposite	campaign-b10-20260714
 社會效益	no_gradable_opposite	len4-b01-20260715
 神經末梢	no_gradable_opposite	len4-b01-20260715
 神經系統	no_gradable_opposite	len4-b01-20260715
@@ -225,8 +215,6 @@ head	reason	batch_id
 自然災害	no_gradable_opposite	len4-b01-20260715
 自然環境	no_gradable_opposite	len4-b01-20260715
 自由主義	no_gradable_opposite	len4-b01-20260715
-自言自語	no_gradable_opposite	campaign-b04-20260714
-與此同時	function_word	campaign-b07-20260714
 航天飛機	no_gradable_opposite	len4-b01-20260715
 航空公司	no_gradable_opposite	len4-b01-20260715
 航空母艦	no_gradable_opposite	len4-b01-20260715
@@ -242,7 +230,6 @@ head	reason	batch_id
 諾貝爾獎	proper_name_or_deixis	len4-b01-20260715
 財政部長	no_gradable_opposite	len4-b01-20260715
 超級大國	no_gradable_opposite	len4-b01-20260715
-超級市場	no_gradable_opposite	campaign-b09-20260714
 跨國公司	no_gradable_opposite	len4-b01-20260715
 跳蚤市場	no_gradable_opposite	len4-b01-20260715
 身心健康	no_gradable_opposite	len4-b01-20260715
