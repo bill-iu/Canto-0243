@@ -5279,6 +5279,341 @@
       ],
       "accepted_pairs": 633,
       "created_at": "2026-07-15T09:17:49Z"
+    },
+    "len4-b04-20260715": {
+      "k": 323,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
+      "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+      "model_note": "len4-b04 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260719; soft-prefer 4-char tails [parent land provisional]",
+      "model": "xai/grok-4",
+      "model_provider": "xAI",
+      "model_version": "grok-4",
+      "model_params": {
+        "generation_mode": "maintainer_curated_blind_style",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "len4",
+        "batch_index": 4
+      },
+      "sample_seed": 20260719,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv len4-b04-20260715 parent N=623",
+      "sample_parent_n": 623,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_verdicts": [
+        {
+          "head": "一衣帶水",
+          "tail": "遠隔重洋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "修修補補",
+          "tail": "全新",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傾城傾國",
+          "tail": "平庸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傾城傾國",
+          "tail": "醜陋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "兩面三刀",
+          "tail": "表裏如一",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出謀獻策",
+          "tail": "束手無策",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "口服心服",
+          "tail": "口服心不服",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "地靈人傑",
+          "tail": "荒涼",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "坐冷板凳",
+          "tail": "紅人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夢幻泡影",
+          "tail": "實實在在",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大有文章",
+          "tail": "平淡無奇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大紅大綠",
+          "tail": "清淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天姿國色",
+          "tail": "其貌不揚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "寶貝疙瘩",
+          "tail": "累贅",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "小偷小摸",
+          "tail": "江洋大盜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "山水相連",
+          "tail": "阻隔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "恃強凌弱",
+          "tail": "鋤強扶弱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "於心何忍",
+          "tail": "心安理得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "日行千里",
+          "tail": "緩慢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "期期艾艾",
+          "tail": "對答如流",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "枉費心機",
+          "tail": "心想事成",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "條分縷析",
+          "tail": "囫圇吞棗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "條分縷析",
+          "tail": "混亂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "榮歸故里",
+          "tail": "背井離鄉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "此起彼落",
+          "tail": "偃旗息鼓",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "氣度不凡",
+          "tail": "小肚雞腸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "溝溝坎坎",
+          "tail": "一馬平川",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "溝溝坎坎",
+          "tail": "順遂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "滿腔熱忱",
+          "tail": "漠不關心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "火燒眉毛",
+          "tail": "從容不迫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "爭名奪利",
+          "tail": "不爭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "生拉硬拽",
+          "tail": "水到渠成",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "礙手礙腳",
+          "tail": "順手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細聲細氣",
+          "tail": "高聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "耍嘴皮子",
+          "tail": "身體力行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "花紅柳綠",
+          "tail": "荒蕪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "蓬萊仙境",
+          "tail": "人間地獄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "虎口拔牙",
+          "tail": "知難而退",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "言之有物",
+          "tail": "言之無物",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "諄諄告誡",
+          "tail": "不管",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "諄諄告誡",
+          "tail": "放任自流",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "賊頭賊腦",
+          "tail": "坦蕩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "逐字逐句",
+          "tail": "囫圇吞棗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "酒池肉林",
+          "tail": "節儉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "金雞獨立",
+          "tail": "四平八穩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鐵板一塊",
+          "tail": "四分五裂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隔牆有耳",
+          "tail": "密不透風",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "雁過拔毛",
+          "tail": "廉潔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "震古爍今",
+          "tail": "尋常",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面無血色",
+          "tail": "紅光滿面",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [],
+      "accepted_pairs": 623,
+      "created_at": "2026-07-15T09:22:05Z"
     }
   },
   "post_land_removed_pairs": [
