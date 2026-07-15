@@ -108,7 +108,24 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("local_launch.py", source)
         self.assertIn("--gui", source)
         self.assertIn("_ensure_env_local", source)
+        self.assertIn("_patch_pyvenv_home", source)
+        self.assertIn("python-home", source)
         self.assertIn("查韻介面未能啟動", source)
+
+    def test_portable_win_start_bat_patches_pyvenv_home(self):
+        source = START_BAT.read_text(encoding="utf-8")
+        self.assertIn("python-home", source)
+        self.assertIn("pyvenv.cfg", source)
+        self.assertIn("home = ", source)
+
+    def test_portable_venv_materializes_windows_runtime(self):
+        source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
+        self.assertIn("materialize_windows_python_home", source)
+        self.assertIn("_assert_cfg_home_local", source)
+        self.assertIn("base_prefix", source)
+        win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
+        self.assertIn("python-home", win_rt)
+        self.assertIn("materialize_windows_python_home", win_rt)
 
     def test_main_exposes_portable_shutdown(self):
         source = MAIN_PATH.read_text(encoding="utf-8")

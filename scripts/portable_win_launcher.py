@@ -36,6 +36,20 @@ def _ensure_env_local(root: Path) -> None:
         shutil.copy2(env_portable, env_local)
 
 
+def _patch_pyvenv_home(root: Path) -> None:
+    """Point pyvenv.cfg home at this extract (build-machine paths break on other PCs, #66)."""
+    # Frozen PyInstaller has no scripts/ on sys.path — keep patch inline.
+    cfg = root / "venv" / "pyvenv.cfg"
+    home = (root / "venv" / "python-home").resolve()
+    if not cfg.is_file() or not (home / "python.exe").is_file():
+        return
+    lines = [
+        f"home = {home}" if line.startswith("home = ") else line
+        for line in cfg.read_text(encoding="utf-8").splitlines()
+    ]
+    cfg.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def _resolve_python(root: Path) -> Path | None:
     for name in ("pythonw.exe", "python.exe"):
         candidate = root / "venv" / "Scripts" / name
@@ -57,6 +71,7 @@ def main() -> int:
         _win_message("Canto-0243", "找不到內建執行環境。請重新下載完整免安裝套件。")
         return 1
 
+    _patch_pyvenv_home(root)
     _ensure_env_local(root)
 
     env = os.environ.copy()

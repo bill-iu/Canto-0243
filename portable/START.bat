@@ -17,6 +17,14 @@ if not exist "lyrics.db" (
   exit /b 1
 )
 
+rem #66: rewrite pyvenv.cfg home to this extract before any venv python runs
+set "PYHOME=%~dp0venv\python-home"
+set "PYCFG=%~dp0venv\pyvenv.cfg"
+if exist "%PYHOME%\python.exe" if exist "%PYCFG%" (
+  powershell -NoProfile -ExecutionPolicy Bypass -Command ^
+    "$cfg = $env:PYCFG; $h = (Resolve-Path -LiteralPath $env:PYHOME).Path; $lines = Get-Content -LiteralPath $cfg; $out = foreach ($line in $lines) { if ($line -match '^home = ') { 'home = ' + $h } else { $line } }; Set-Content -LiteralPath $cfg -Value $out -Encoding ascii"
+)
+
 set PORTABLE=1
 set ENV=local
 if not exist ".env.local" copy /Y "env.portable" ".env.local" >nul
