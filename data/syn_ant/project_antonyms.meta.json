@@ -5633,6 +5633,341 @@
       ],
       "accepted_pairs": 621,
       "created_at": "2026-07-15T09:22:11Z"
+    },
+    "len4-b05-20260715": {
+      "k": 311,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
+      "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
+      "model_note": "len4-b05 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260720; soft-prefer 4-char tails [parent land provisional]",
+      "model": "xai/grok-4",
+      "model_provider": "xAI",
+      "model_version": "grok-4",
+      "model_params": {
+        "generation_mode": "maintainer_curated_blind_style",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "len4",
+        "batch_index": 5
+      },
+      "sample_seed": 20260720,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv len4-b05-20260715 parent N=584",
+      "sample_parent_n": 584,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_verdicts": [
+        {
+          "head": "一枕黃粱",
+          "tail": "美夢成真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不平則鳴",
+          "tail": "忍氣吞聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不稂不莠",
+          "tail": "優秀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不避艱險",
+          "tail": "臨陣脱逃",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "倔頭倔腦",
+          "tail": "通情達理",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "判若雲泥",
+          "tail": "相當",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "加油添醋",
+          "tail": "原原本本",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "加油添醋",
+          "tail": "實事求是",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吃喝玩樂",
+          "tail": "吃苦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "含垢忍辱",
+          "tail": "不忍",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嗜殺成性",
+          "tail": "慈悲為懷",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "堯天舜日",
+          "tail": "暗無天日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天香國色",
+          "tail": "其貌不揚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夾七夾八",
+          "tail": "有條有理",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "如蟻附羶",
+          "tail": "敬而遠之",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "妙語如珠",
+          "tail": "語無倫次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "官報私仇",
+          "tail": "公事公辦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "平地風波",
+          "tail": "無事生非",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "情文並茂",
+          "tail": "枯燥乏味",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "手急眼快",
+          "tail": "笨手笨腳",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "招災惹禍",
+          "tail": "平安無事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "掀風鼓浪",
+          "tail": "平靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "文風不動",
+          "tail": "動盪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "旋轉乾坤",
+          "tail": "無奈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有史以來",
+          "tail": "未來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有志竟成",
+          "tail": "一事無成",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "歸真返璞",
+          "tail": "虛飾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "殺富濟貧",
+          "tail": "為富不仁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "永誌不忘",
+          "tail": "拋諸腦後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "泰山鴻毛",
+          "tail": "並重",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "深藏若虛",
+          "tail": "誇誇其談",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "激昂慷慨",
+          "tail": "萎靡不振",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "狼奔豕突",
+          "tail": "井然有序",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "率爾操觚",
+          "tail": "慎重",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "璞玉渾金",
+          "tail": "虛飾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "異化作用",
+          "tail": "合成",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "病病歪歪",
+          "tail": "生龍活虎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "白紙黑字",
+          "tail": "空口無憑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "皓首窮經",
+          "tail": "不學無術",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盤根究底",
+          "tail": "淺嘗輒止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "目不見睫",
+          "tail": "自知之明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "瞞上欺下",
+          "tail": "開誠佈公",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "神工鬼斧",
+          "tail": "粗製濫造",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "背城借一",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "虛應故事",
+          "tail": "當真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "見風是雨",
+          "tail": "實事求是",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "賣身投靠",
+          "tail": "堅貞不屈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "追本窮源",
+          "tail": "淺嘗輒止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "長幼有序",
+          "tail": "亂序",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鬧着玩兒",
+          "tail": "當真",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": [],
+      "accepted_pairs": 584,
+      "created_at": "2026-07-15T09:33:48Z"
     }
   },
   "post_land_removed_pairs": [
