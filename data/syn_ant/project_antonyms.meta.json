@@ -4139,6 +4139,57 @@
         }
       ],
       "removed_sample_fails": []
+    },
+    "campaign-b12-nianchang-20260715": {
+      "k": 3,
+      "git_commit": "b9e6ce82486e9ead33e287129a5f216167ab7536",
+      "db_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "essay_sha256": "e26551486a42aad3ee6d4cb12d3422d78f3b9be35ba4b0b12c6ee7f283d24d53",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "maintainer micro-batch: !年長 ant coverage (年輕/後生/後輩); age + seniority frames",
+      "model": "human/nianchang-hotfix",
+      "model_provider": "human",
+      "model_version": "nianchang-hotfix",
+      "model_params": {
+        "generation_mode": "maintainer_direct_accept",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null
+      },
+      "sample_seed": 20260715,
+      "sample_n": 3,
+      "sample_ok": 3,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv campaign-b12-nianchang-20260715 parent N=3 (no fails)",
+      "sample_parent_n": 3,
+      "sample_parent_commit": "b9e6ce82486e9ead33e287129a5f216167ab7536",
+      "sample_parent_tsv_sha256": "b95fbe748d2ab99e1eb37435d7c5e1062f0c2913d8f1205a9b620a630483c58c",
+      "accepted_pairs": 3,
+      "created_at": "2026-07-15",
+      "sample_verdicts": [
+        {
+          "head": "年長",
+          "tail": "年輕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年長",
+          "tail": "後生",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年長",
+          "tail": "後輩",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ],
+      "removed_sample_fails": []
     }
   },
   "post_land_removed_pairs": [
