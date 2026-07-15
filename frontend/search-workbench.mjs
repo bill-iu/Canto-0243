@@ -1,4 +1,5 @@
-import { isRelationSyntaxQuery, modeRedirectHint } from "./relation-syntax.mjs";
+import { modeRedirectHint } from "./relation-syntax.mjs";
+import { planRedirect } from "./mode-policy.mjs";
 import {
   isPingZeSerialQuery,
   pingZeEffectiveMode,
@@ -518,12 +519,16 @@ function shuffleResults() {
 }
 
 function maybeModeRedirectForRelationSyntax(input, tab) {
-  if (shell.currentMode !== "syn" || !isRelationSyntaxQuery(input)) return;
-  const target = MODE_META[shell.last0243Mode] ? shell.last0243Mode : "m1";
-  tab.offset = 0;
-  tab.redirectHint = modeRedirectHint(target, getLang());
-  if (shell.currentMode !== target) {
-    shell.currentMode = target;
+  const plan = planRedirect(input, {
+    currentMode: shell.currentMode,
+    fallback0243Mode: shell.last0243Mode,
+    lang: getLang(),
+  });
+  if (!plan.should_redirect) return;
+  if (plan.reset_offset) tab.offset = 0;
+  tab.redirectHint = plan.hint;
+  if (shell.currentMode !== plan.effective_mode) {
+    shell.currentMode = plan.effective_mode;
     updateModeLabel();
   }
 }

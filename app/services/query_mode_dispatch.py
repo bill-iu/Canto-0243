@@ -23,26 +23,35 @@ def _handle_jyutping_reject(ctx: SearchContext, q: str, engine: QueryEngine) -> 
 
 
 def _pred_relation_redirect(q: str, ctx: SearchContext) -> bool:
-    from app.services.query_parse import is_relation_syntax_query
+    from app.services.query_mode_policy import plan_redirect
 
-    return is_relation_syntax_query(q)
+    return plan_redirect(
+        q,
+        current_mode="syn",
+        fallback_0243_mode=ctx.fallback_0243_mode,
+        detect="full",
+    ).should_redirect
 
 
 def _handle_relation_redirect(ctx: SearchContext, q: str, engine: QueryEngine) -> SearchResult:
-    from app.services.query_parse import (
-        mode_redirect_hint,
-        normalize_and_parse,
-        resolve_fallback_0243_mode,
-    )
+    from app.services.query_mode_policy import plan_redirect
+    from app.services.query_parse import normalize_and_parse
 
-    effective = resolve_fallback_0243_mode(ctx.fallback_0243_mode)
-    redirected = replace(ctx, mode=effective, offset=0)
+    plan = plan_redirect(
+        q,
+        current_mode="syn",
+        fallback_0243_mode=ctx.fallback_0243_mode,
+        detect="full",
+        lang="zh",
+    )
+    effective = plan.effective_mode or "m1"
+    redirected = replace(ctx, mode=effective, offset=0 if plan.reset_offset else ctx.offset)
     parsed = normalize_and_parse(ctx.q)
     result = engine.dispatch_parsed(parsed, redirected)
     return SearchResult(
         items=result.items,
         total=result.total,
-        hint=mode_redirect_hint(effective),
+        hint=plan.hint,
         cache_path=result.cache_path,
         effective_mode=effective,
     )
