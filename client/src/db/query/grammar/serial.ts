@@ -1,10 +1,18 @@
 /** Port of query_grammar/serial. */
 import { QueryKind } from '../../query-kind.ts';
 import type {
+  ParsedQuery,
   PrefixWildcardEqualsQuery,
   SerialPhonemeAnchorQuery,
 } from '../../query-types.ts';
-import { CODE_TAIL_MIDDLE, isFramedEqualsQuery } from './shared.ts';
+import {
+  attachEqualsSpan,
+  createMatchSpec,
+  getEqualsSpan,
+  type MatchSpec,
+} from '../../position-match/spec.ts';
+import { buildEqualsMatchSpec, isFramedEqualsQuery } from './equals.ts';
+import { CODE_TAIL_MIDDLE } from './shared.ts';
 
 /** Port of query_grammar/serial.parse_prefix_wildcard_equals_query */
 export function parsePrefixWildcardEqualsQuery(q: string): PrefixWildcardEqualsQuery | null {
@@ -173,4 +181,49 @@ export function parseSerialPhonemeAnchorQuery(q: string): SerialPhonemeAnchorQue
     return null;
   }
   return { kind: QueryKind.SERIAL_PHONEME, raw_q: q, ...parsed };
+}
+
+/** Port of query_grammar.serial.to_match_spec */
+export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
+  if (parsed.kind === QueryKind.PREFIX_WILDCARD_EQUALS) {
+    const q = parsed as PrefixWildcardEqualsQuery;
+    const spec = buildEqualsMatchSpec(q.inner_q);
+    if (!spec) {
+      return createMatchSpec(0);
+    }
+    spec.width = q.width;
+    const span = getEqualsSpan(spec);
+    if (span) {
+      attachEqualsSpan(spec, {
+        ref_literal: span.ref_literal,
+        start_pos: 1,
+        dimension: span.dimension,
+        phoneme_anchor_only: true,
+        whole_word: false,
+      });
+    }
+    spec.mask = '?'.repeat(q.width);
+    if (!spec.extra) {
+      spec.extra = {};
+    }
+    spec.extra.prefix_wildcard_equals = true;
+    return spec;
+  }
+  if (parsed.kind === QueryKind.SERIAL_PHONEME) {
+    const q = parsed as SerialPhonemeAnchorQuery;
+    const spec = createMatchSpec(q.width);
+    spec.mask = q.mask.length === q.width ? q.mask : '?'.repeat(q.width);
+    if (!spec.slots) {
+      spec.slots = [];
+    }
+    for (const [pos, digit] of q.code_slots) {
+      spec.slots.push({ pos, kind: 'code_digit', value: digit });
+    }
+    const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
+    for (const [pos, anchor] of q.anchors) {
+      spec.slots.push({ pos, kind, value: anchor });
+    }
+    return spec;
+  }
+  return null;
 }

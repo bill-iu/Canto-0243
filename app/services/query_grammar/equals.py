@@ -1,9 +1,11 @@
-"""等號查詢 grammar stub（#3 下一輪；完整 equals 家族待搬）。"""
+"""等號查詢 grammar — framed equals + MatchSpec（CONTEXT § 等號／碼夾等號）。"""
 from __future__ import annotations
 
 import re
+from typing import Optional
 
 from app.services.query_tokens import CODE_TAIL_MIDDLE
+
 
 def is_framed_equals_query(q: str) -> bool:
     """Legacy framed equals: 香港=, 2=我3 — not query-level rhyme anchors or hybrid tail alias."""
@@ -69,6 +71,15 @@ def build_equals_match_spec(q: str):
         slots=slots,
         extra={"equals_span": span},
     )
+
+
+def to_match_spec(parsed) -> Optional[object]:
+    """ParsedQuery → MatchSpec for EQUALS."""
+    from app.services.query_types import EqualsQuery, QueryKind
+
+    if not isinstance(parsed, EqualsQuery) or parsed.kind != QueryKind.EQUALS:
+        return None
+    return build_equals_match_spec(parsed.raw_q)
 
 
 CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT = (

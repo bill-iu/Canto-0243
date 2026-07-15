@@ -627,6 +627,7 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         for name in (
             "shared.ts",
             "normalize.ts",
+            "equals.ts",
             "heteronym.ts",
             "relation.ts",
             "rhyme.ts",

@@ -1,11 +1,9 @@
 /**
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
-import { buildEqualsMatchSpec } from './equals-spec.ts';
 import { appendCodeDigitSlots, codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import { buildMaskFromSlots, parseMaskQuery } from './mask-grammar.ts';
 import {
-  attachEqualsSpan,
   createMatchSpec,
   getEqualsSpan,
   type AnchorKind,
@@ -14,11 +12,12 @@ import {
   type SlotConstraint,
 } from './spec.ts';
 import { QueryKind } from '../query-kind.ts';
+import { toMatchSpec as equalsToMatchSpec } from '../query/grammar/equals.ts';
+import { toMatchSpec as serialToMatchSpec } from '../query/grammar/serial.ts';
 import { toMatchSpec as relationToMatchSpec } from '../query/grammar/relation.ts';
 import { toMatchSpec as pingZeToMatchSpec } from '../ping-zak.ts';
 import type {
   CodeRefMiddleRhymeQuery,
-  EqualsQuery,
   JyutpingAnchorQuery,
   LiteralRefQuery,
   MaskQuery,
@@ -26,9 +25,7 @@ import type {
   PartialInitialMaskQuery,
   PartialRhymeMaskQuery,
   PlusAnchorQuery,
-  PrefixWildcardEqualsQuery,
   RhymeAnchorQuery,
-  SerialPhonemeAnchorQuery,
   TripleRhymeAnchorQuery,
   WildcardCodeAnchorQuery,
 } from '../query-types.ts';
@@ -98,32 +95,11 @@ export function buildJyutpingDualMatchSpecs(
 }
 
 function specEquals(parsed: ParsedQuery): MatchSpec | null {
-  return buildEqualsMatchSpec((parsed as EqualsQuery).raw_q);
+  return equalsToMatchSpec(parsed);
 }
 
-function specPrefixWildcardEquals(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as PrefixWildcardEqualsQuery;
-  const spec = buildEqualsMatchSpec(q.inner_q);
-  if (!spec) {
-    return createMatchSpec(0);
-  }
-  spec.width = q.width;
-  const span = getEqualsSpan(spec);
-  if (span) {
-    attachEqualsSpan(spec, {
-      ref_literal: span.ref_literal,
-      start_pos: 1,
-      dimension: span.dimension,
-      phoneme_anchor_only: true,
-      whole_word: false,
-    });
-  }
-  spec.mask = '?'.repeat(q.width);
-  if (!spec.extra) {
-    spec.extra = {};
-  }
-  spec.extra.prefix_wildcard_equals = true;
-  return spec;
+function specSerial(parsed: ParsedQuery): MatchSpec | null {
+  return serialToMatchSpec(parsed);
 }
 
 function specPartialRhymeMask(parsed: ParsedQuery): MatchSpec | null {
@@ -148,20 +124,6 @@ function specPartialInitialMask(parsed: ParsedQuery): MatchSpec | null {
   spec.extra.partial_initial_mask = true;
   for (const [pos, ch] of q.anchors) {
     slots(spec).push({ pos, kind: 'initial_anchor', value: ch });
-  }
-  return spec;
-}
-
-function specSerialPhoneme(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as SerialPhonemeAnchorQuery;
-  const spec = createMatchSpec(q.width);
-  spec.mask = q.mask.length === q.width ? q.mask : '?'.repeat(q.width);
-  for (const [pos, digit] of q.code_slots) {
-    slots(spec).push({ pos, kind: 'code_digit', value: digit });
-  }
-  const kind = q.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
-  for (const [pos, anchor] of q.anchors) {
-    slots(spec).push({ pos, kind, value: anchor });
   }
   return spec;
 }
@@ -288,10 +250,10 @@ function specRelation(parsed: ParsedQuery): MatchSpec | null {
 
 export const MATCH_SPEC_BUILDERS: Partial<Record<QueryKind, MatchSpecBuilder>> = {
   [QueryKind.EQUALS]: specEquals,
-  [QueryKind.PREFIX_WILDCARD_EQUALS]: specPrefixWildcardEquals,
+  [QueryKind.PREFIX_WILDCARD_EQUALS]: specSerial,
   [QueryKind.PARTIAL_RHYME_MASK]: specPartialRhymeMask,
   [QueryKind.PARTIAL_INITIAL_MASK]: specPartialInitialMask,
-  [QueryKind.SERIAL_PHONEME]: specSerialPhoneme,
+  [QueryKind.SERIAL_PHONEME]: specSerial,
   [QueryKind.PLUS_ANCHOR]: specPlusAnchor,
   [QueryKind.LITERAL_REF]: specLiteralRef,
   [QueryKind.WILDCARD_CODE_ANCHOR]: specWildcardCodeAnchor,

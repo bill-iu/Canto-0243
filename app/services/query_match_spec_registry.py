@@ -4,24 +4,19 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 from app.services.position_match import MatchSpec, SlotConstraint
-from app.services.position_match.spec import EqualsSpan, attach_equals_span, get_equals_span
 from app.services.query_types import (
     CodeRefMiddleRhymeQuery,
-    EqualsQuery,
     JyutpingAnchorQuery,
     LiteralRefQuery,
     MaskQuery,
     ParsedQuery,
     PartialRhymeMaskQuery,
-    PrefixWildcardEqualsQuery,
     QueryKind,
     RhymeAnchorQuery,
-    SerialPhonemeAnchorQuery,
     PlusAnchorQuery,
     TripleRhymeAnchorQuery,
     WildcardCodeAnchorQuery,
 )
-from app.services.query_grammar.equals import build_equals_match_spec
 from app.services.query_grammar.mask import build_mask_from_slots, parse_mask_query
 from app.services.position_match.mask_adapter import append_code_digit_slots
 
@@ -80,33 +75,15 @@ MatchSpecBuilder = Callable[[ParsedQuery], Optional[MatchSpec]]
 
 
 def _spec_equals(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.EQUALS
-    q = parsed  # type: EqualsQuery
-    return build_equals_match_spec(q.raw_q)
+    from app.services.query_grammar.equals import to_match_spec as equals_to_match_spec
+
+    return equals_to_match_spec(parsed)
 
 
-def _spec_prefix_wildcard_equals(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.PREFIX_WILDCARD_EQUALS
-    q = parsed  # type: PrefixWildcardEqualsQuery
-    spec = build_equals_match_spec(q.inner_q)
-    if spec is None:
-        return MatchSpec(width=0)
-    spec.width = q.width
-    span = get_equals_span(spec)
-    if span:
-        attach_equals_span(
-            spec,
-            EqualsSpan(
-                ref_literal=span.ref_literal,
-                start_pos=1,
-                dimension=span.dimension,
-                phoneme_anchor_only=True,
-                whole_word=False,
-            ),
-        )
-    spec.mask = "?" * q.width
-    spec.extra["prefix_wildcard_equals"] = True
-    return spec
+def _spec_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
+    from app.services.query_grammar.serial import to_match_spec as serial_to_match_spec
+
+    return serial_to_match_spec(parsed)
 
 
 def _spec_partial_rhyme_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
@@ -126,19 +103,6 @@ def _spec_partial_initial_mask(parsed: ParsedQuery) -> Optional[MatchSpec]:
     spec.extra["partial_initial_mask"] = True
     for pos, ch in q.anchors:
         spec.slots.append(SlotConstraint(pos=pos, kind="initial_anchor", value=ch))
-    return spec
-
-
-def _spec_serial_phoneme(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.SERIAL_PHONEME
-    q = parsed  # type: SerialPhonemeAnchorQuery
-    spec = MatchSpec(width=q.width)
-    spec.mask = q.mask if len(q.mask) == q.width else "?" * q.width
-    for pos, digit in q.code_slots:
-        spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
-    kind = "final_anchor" if q.constraint == "final" else "initial_anchor"
-    for pos, anchor in q.anchors:
-        spec.slots.append(SlotConstraint(pos=pos, kind=kind, value=anchor))
     return spec
 
 
@@ -274,10 +238,10 @@ def _spec_relation(parsed: ParsedQuery) -> Optional[MatchSpec]:
 
 MATCH_SPEC_BUILDERS: dict[QueryKind, MatchSpecBuilder] = {
     QueryKind.EQUALS: _spec_equals,
-    QueryKind.PREFIX_WILDCARD_EQUALS: _spec_prefix_wildcard_equals,
+    QueryKind.PREFIX_WILDCARD_EQUALS: _spec_serial,
     QueryKind.PARTIAL_RHYME_MASK: _spec_partial_rhyme_mask,
     QueryKind.PARTIAL_INITIAL_MASK: _spec_partial_initial_mask,
-    QueryKind.SERIAL_PHONEME: _spec_serial_phoneme,
+    QueryKind.SERIAL_PHONEME: _spec_serial,
     QueryKind.PLUS_ANCHOR: _spec_plus_anchor,
     QueryKind.LITERAL_REF: _spec_literal_ref,
     QueryKind.WILDCARD_CODE_ANCHOR: _spec_wildcard_code_anchor,

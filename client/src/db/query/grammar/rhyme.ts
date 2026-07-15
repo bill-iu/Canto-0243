@@ -8,7 +8,8 @@ import type {
   RhymeAnchorQuery,
   TripleRhymeAnchorQuery,
 } from '../../query-types.ts';
-import { CODE_TAIL_MIDDLE, isFramedEqualsQuery } from './shared.ts';
+import { CODE_TAIL_MIDDLE } from './shared.ts';
+import { isFramedEqualsQuery } from './equals.ts';
 
 /** Port of rhyme.parse_code_ref_rhyme_contradiction_hint */
 export function parseCodeRefRhymeContradictionHint(q: string): string | null {
