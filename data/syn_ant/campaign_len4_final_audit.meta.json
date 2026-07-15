@@ -1,7 +1,7 @@
 {
   "manifest_sha256": "68d5a89b18d3f6df5bb2645125b71201c6e35137ffc35d649dabd9f6122ade6d",
   "ok_rate_threshold": 0.9,
-  "git_commit": "e044090c26d0408eded600b80f4b3045ac2b46a5",
+  "git_commit": "8db5279157c83e4b024fd721ac32ccd1cbc6ccca",
   "created_at": "2026-07-15T09:44:15.171061+00:00",
   "note": "campaign_len4 formal final audit seed=20260722; Acc 285/300 (15 fails removed); Nn 300/300 (0 fails)",
   "campaign_id": "len4",
