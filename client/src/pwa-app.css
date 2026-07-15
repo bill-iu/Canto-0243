@@ -12,15 +12,15 @@
   border: 0;
 }
 
-/* —— Wide: brand+hero | search | menu —— */
+/* —— Wide: brand | hero | menu ；搜尋全寬第二行 —— */
 .app-bar {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
-    "brand search menu"
-    "hero search menu";
+    "brand hero menu"
+    "search search search";
   column-gap: 12px;
-  row-gap: 0;
+  row-gap: 8px;
   align-items: start;
 }
 
@@ -34,23 +34,37 @@
 
 .header-chrome .brand {
   grid-area: brand;
-  align-self: start;
+  align-self: center;
 }
 
 .header-chrome .header-hero {
   grid-area: hero;
-  align-self: start;
+  align-self: center;
   min-width: 0;
-  max-width: 220px;
-  padding: 0 0 2px;
+  max-width: none;
+  flex: 1 1 auto;
+  padding: 2px 0;
+  /* 蓋過 landing-b-pending opacity:0（PWA 唔用呢套 landing 儀式） */
+  opacity: 1;
+  visibility: visible;
 }
 
-.header-chrome .header-hero h1 {
-  font-size: 22px;
+.header-chrome .header-hero h1,
+.header-chrome .header-hero__title {
+  margin: 0;
+  font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
 .header-chrome .header-hero__tagline {
-  font-size: 12px;
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 /*
@@ -68,6 +82,7 @@
 .header-chrome .mode-menu-root {
   grid-area: menu;
   margin-left: 0;
+  align-self: center;
 }
 
 .header-search {

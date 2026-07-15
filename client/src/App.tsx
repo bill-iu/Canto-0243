@@ -855,6 +855,9 @@ function App() {
         className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
+          <h1 id="searchTitle" className="sr-only">
+            {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
+          </h1>
           <div className="app-bar">
             <div className="header-chrome">
               <div className="header-chrome__center">
@@ -867,8 +870,10 @@ function App() {
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
               </div>
-              <div className="header-hero">
-                <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
+              <div className="header-hero" aria-hidden="true">
+                <p className="header-hero__title">
+                  {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
+                </p>
                 <p className="header-hero__tagline">
                   {uiLang === 'en'
                     ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
