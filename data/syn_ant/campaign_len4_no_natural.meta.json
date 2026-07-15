@@ -260,6 +260,267 @@
         }
       ],
       "git_commit": "cdc174807392987d2d1fc04f9af56f85b8a88ff0"
+    },
+    "len4-b02-20260715": {
+      "sample_seed": 20260716,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "sample_parent_n": 195,
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "世界市場",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "中心思想",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "二十四史",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "五四運動",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "以權謀私",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "侵略戰爭",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "兩小無猜",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "勞動強度",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "化學纖維",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "博茨瓦納",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "原始社會",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "地心引力",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "報告文學",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "墨西哥城",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "天時地利",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "太上老君",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "宇宙飛船",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "客座教授",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "家庭作業",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "尼加拉瓜",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "布達佩斯",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "年久失修",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "感性認識",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "拳頭產品",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "文房四寶",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "正月初一",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "殺身之禍",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "油鹽醬醋",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "泡沫塑料",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "波羅的海",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "津巴布韋",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "王母娘娘",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "珠穆朗瑪",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "生物防治",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "百貨商店",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "知識青年",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "社會教育",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "紈絝子弟",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "經驗之談",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "維吾爾族",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "繁榮昌盛",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "自動步槍",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "莫桑比克",
+          "reason": "proper_name_or_deixis",
+          "verdict": "ok"
+        },
+        {
+          "head": "變態反應",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "軍事科學",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "農民起義",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "電化教育",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "電磁感應",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "風俗習慣",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        },
+        {
+          "head": "飲食療法",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok"
+        }
+      ],
+      "git_commit": "d1dd4b2a17ef185d3772113143b6758b97f18bf0"
     }
   }
 }

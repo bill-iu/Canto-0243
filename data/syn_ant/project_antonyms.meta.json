@@ -4556,12 +4556,12 @@
     },
     "len4-b02-20260715": {
       "k": 298,
-      "git_commit": "0000000000000000000000000000000000000000",
+      "git_commit": "d1dd4b2a17ef185d3772113143b6758b97f18bf0",
       "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
       "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
       "prompt_path": "data/syn_ant/project-antonyms-prompt-len4.txt",
       "prompt_sha256": "c53c95966f0caefb50daeff3da5826ef473b0150f09f8461fa040306cc96a6cc",
-      "model_note": "len4-b02 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260717; soft-prefer 4-char tails [parent land provisional]",
+      "model_note": "len4-b02 blind draft (maintainer-curated pairs + no_natural for opaque heads); A–D sample seed=20260717; soft-prefer 4-char tails",
       "model": "xai/grok-4",
       "model_provider": "xAI",
       "model_version": "grok-4",
@@ -4576,13 +4576,13 @@
       },
       "sample_seed": 20260717,
       "sample_n": 50,
-      "sample_ok": 50,
+      "sample_ok": 46,
       "ok_rate_threshold": 0.9,
-      "ok_rate": 1.0,
+      "ok_rate": 0.92,
       "sample_parent": "project_antonyms.tsv len4-b02-20260715 parent N=580",
       "sample_parent_n": 580,
-      "sample_parent_commit": "0000000000000000000000000000000000000000",
-      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_parent_commit": "d1dd4b2a17ef185d3772113143b6758b97f18bf0",
+      "sample_parent_tsv_sha256": "b2dbc7aa76cdcd790330dd8578adb3d054caeb81c539e29dab33f286b1844ef2",
       "sample_verdicts": [
         {
           "head": "一年到頭",
@@ -4617,8 +4617,10 @@
         {
           "head": "千山萬水",
           "tail": "咫尺天涯",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "各抒己見",
@@ -4713,8 +4715,10 @@
         {
           "head": "有生以來",
           "tail": "從未",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "有血有肉",
@@ -4749,8 +4753,10 @@
         {
           "head": "潸然淚下",
           "tail": "破涕為笑",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "無業遊民",
@@ -4809,8 +4815,10 @@
         {
           "head": "紅男綠女",
           "tail": "清一色",
-          "verdict": "ok",
-          "reasons": []
+          "verdict": "fail",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
         },
         {
           "head": "紛紛揚揚",
@@ -4885,9 +4893,38 @@
           "reasons": []
         }
       ],
-      "removed_sample_fails": [],
-      "accepted_pairs": 580,
-      "created_at": "2026-07-15T09:15:03Z"
+      "removed_sample_fails": [
+        {
+          "head": "千山萬水",
+          "tail": "咫尺天涯",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        },
+        {
+          "head": "有生以來",
+          "tail": "從未",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        },
+        {
+          "head": "潸然淚下",
+          "tail": "破涕為笑",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        },
+        {
+          "head": "紅男綠女",
+          "tail": "清一色",
+          "reasons": [
+            "B: not stable context-free antonym"
+          ]
+        }
+      ],
+      "accepted_pairs": 576,
+      "created_at": "2026-07-15T09:15:11Z"
     }
   },
   "post_land_removed_pairs": [
