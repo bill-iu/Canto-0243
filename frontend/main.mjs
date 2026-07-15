@@ -3,6 +3,8 @@
   SEARCH_RING_BLUR_MS,
   shell,
   applyAppTitle,
+  applyLexiconVersionMeta,
+  readLexiconVersionMeta,
   readPortableBootstrapFlag,
   parseUrlSearchParams,
   createGuideTab,
@@ -316,13 +318,16 @@ async function refreshPortableChrome() {
     if (!res.ok) return;
     const data = await res.json();
     applyAppTitle(Boolean(data?.portable));
+    applyLexiconVersionMeta(data?.lexiconVersion || readLexiconVersionMeta(), getLang());
   } catch {
     /* ponytail: meta tag from /frontend/index.html is the reload fallback */
+    applyLexiconVersionMeta(readLexiconVersionMeta(), getLang());
   }
 }
 
 (async function init() {
   applyAppTitle(readPortableBootstrapFlag());
+  applyLexiconVersionMeta(readLexiconVersionMeta(), getLang());
   void refreshPortableChrome();
   await waitForPreloadReady();
   stripLauncherBootFromUrl();
@@ -420,6 +425,11 @@ async function refreshPortableChrome() {
     if (aboutHelp) aboutHelp.textContent = t('menu.about.help', lang);
 
     applyAboutLang(lang);
+    // Portable EN brand：Write·Right·Rhyme（PWA About 仍用 about-i18n ONE-RUN-RHYME）
+    if (readPortableBootstrapFlag() && lang === "en") {
+      const aboutLede = document.getElementById("aboutLede");
+      if (aboutLede) aboutLede.textContent = t("about.lede", lang);
+    }
     applyGuideLang(lang);
     updateModeLabel(lang);
     renderTabstrip();
@@ -430,6 +440,7 @@ async function refreshPortableChrome() {
     }
 
     applyAppTitle(readPortableBootstrapFlag(), lang);
+    applyLexiconVersionMeta(readLexiconVersionMeta(), lang);
 
     // update theme/lang menu checks and labels
     updateThemeLangMenuUI(lang);

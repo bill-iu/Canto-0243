@@ -867,6 +867,14 @@ function App() {
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
               </div>
+              <div className="header-hero">
+                <h1 id="searchTitle">{uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}</h1>
+                <p className="header-hero__tagline">
+                  {uiLang === 'en'
+                    ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
+                    : '格律／協音／押韻／近反義，一步搵到。'}
+                </p>
+              </div>
               <ModeMenu
                 mode={mode}
                 disabled={shellGated}
@@ -882,9 +890,6 @@ function App() {
               />
             </div>
             <form className="header-search" onSubmit={handleSubmit} role="search">
-              <h1 id="searchTitle" className="sr-only">
-                {uiLang === 'en' ? 'ONE-RUN-RHYME' : 'ONE·搵·韻'}
-              </h1>
               <div className="header-search__row">
                 <div className="header-search__main">
                   <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>

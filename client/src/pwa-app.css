@@ -12,13 +12,13 @@
   border: 0;
 }
 
-/* —— Wide: brand | search | menu —— */
+/* —— Wide: brand+hero | search | menu —— */
 .app-bar {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   grid-template-areas:
     "brand search menu"
-    ". search menu";
+    "hero search menu";
   column-gap: 12px;
   row-gap: 0;
   align-items: start;
@@ -35,6 +35,22 @@
 .header-chrome .brand {
   grid-area: brand;
   align-self: start;
+}
+
+.header-chrome .header-hero {
+  grid-area: hero;
+  align-self: start;
+  min-width: 0;
+  max-width: 220px;
+  padding: 0 0 2px;
+}
+
+.header-chrome .header-hero h1 {
+  font-size: 22px;
+}
+
+.header-chrome .header-hero__tagline {
+  font-size: 12px;
 }
 
 /*
@@ -264,6 +280,11 @@ button.icon-button.header-search__shuffle:disabled {
   .header-chrome .brand .brand-logo {
     height: 40px;
     width: auto;
+  }
+
+  /* 窄屏：hero 交 shell.css 隱藏；唔佔 header-chrome 格 */
+  .header-chrome .header-hero {
+    display: none;
   }
 
   .header-search__meta .warmup-badge {
