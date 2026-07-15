@@ -1,5 +1,7 @@
-"""粵拼錨：缺字家族內拉丁錨解析與比對（CONTEXT § 粵拼錨）。"""
+"""粵拼錨：缺字家族內拉丁錨解析與比對（CONTEXT § 粵拼錨）。
 
+ponytail: 300-line limit exemption — jyutping_anchor parse+to_match_spec locality
+"""
 from __future__ import annotations
 
 import json
@@ -577,3 +579,71 @@ def matches_jyutping_anchor_at_position(
     if kind == "initial_letters":
         return matches_initial_letters_at_position(word, pos, value, db)
     return False
+
+
+def _apply_jyutping_anchor_code_slots(spec, parsed) -> None:
+    from app.services.position_match import SlotConstraint
+    from app.services.position_match.mask_adapter import append_code_digit_slots
+
+    if parsed.code_slots:
+        for pos, digit in parsed.code_slots:
+            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
+    elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
+        append_code_digit_slots(spec, parsed.code_prefix)
+
+
+def build_jyutping_dual_match_specs(parsed) -> tuple:
+    """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
+    from app.services.position_match import MatchSpec, SlotConstraint
+
+    def _base():
+        spec = MatchSpec(width=parsed.width)
+        spec.mask = "?" * parsed.width
+        _apply_jyutping_anchor_code_slots(spec, parsed)
+        return spec
+
+    initial = _base()
+    initial.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="initial_letters",
+            value=(parsed.dual_initial_value or parsed.anchor_value),
+        )
+    )
+    final = _base()
+    final.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind="rhyme_letters",
+            value=parsed.anchor_value,
+        )
+    )
+    return initial, final
+
+
+def to_match_spec(parsed):
+    """ParsedQuery → MatchSpec for JYUTPING_ANCHOR（含 dual carrier）。"""
+    from app.services.position_match import MatchSpec, SlotConstraint
+    from app.services.query_types import JyutpingAnchorQuery, QueryKind
+
+    if not isinstance(parsed, JyutpingAnchorQuery) or parsed.kind != QueryKind.JYUTPING_ANCHOR:
+        return None
+    if parsed.dual_phoneme:
+        initial, final = build_jyutping_dual_match_specs(parsed)
+        carrier = MatchSpec(width=parsed.width)
+        _apply_jyutping_anchor_code_slots(carrier, parsed)
+        carrier.extra["dual_phoneme"] = True
+        carrier.extra["dual_initial_spec"] = initial
+        carrier.extra["dual_final_spec"] = final
+        return carrier
+    spec = MatchSpec(width=parsed.width)
+    spec.mask = "?" * parsed.width
+    spec.slots.append(
+        SlotConstraint(
+            pos=parsed.anchor_pos,
+            kind=parsed.anchor_kind,
+            value=parsed.anchor_value,
+        )
+    )
+    _apply_jyutping_anchor_code_slots(spec, parsed)
+    return spec

@@ -3,9 +3,7 @@
  */
 import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
 import {
-  createMatchSpec,
   getEqualsSpan,
-  type AnchorKind,
   type MatchSpec,
   type SlotConstraint,
 } from './spec.ts';
@@ -18,70 +16,15 @@ import { toMatchSpec as maskToMatchSpec } from '../query/grammar/mask.ts';
 import { toMatchSpec as wcaToMatchSpec } from '../query/grammar/wca.ts';
 import { toMatchSpec as relationToMatchSpec } from '../query/grammar/relation.ts';
 import { toMatchSpec as pingZeToMatchSpec } from '../ping-zak.ts';
-import type {
-  JyutpingAnchorQuery,
-  ParsedQuery,
-} from '../query-types.ts';
+import {
+  buildJyutpingDualMatchSpecs,
+  toMatchSpec as jyutpingToMatchSpec,
+} from '../jyutping-anchor.ts';
+import type { ParsedQuery } from '../query-types.ts';
 
 export type MatchSpecBuilder = (parsed: ParsedQuery) => MatchSpec | null;
 
-function slots(spec: MatchSpec): SlotConstraint[] {
-  if (!spec.slots) {
-    spec.slots = [];
-  }
-  return spec.slots;
-}
-
-function applyJyutpingAnchorCodeSlots(spec: MatchSpec, parsed: JyutpingAnchorQuery): void {
-  if (parsed.code_slots?.length) {
-    for (const [pos, digit] of parsed.code_slots) {
-      slots(spec).push({ pos, kind: 'code_digit', value: digit });
-    }
-  } else if (parsed.code_prefix && parsed.width === parsed.code_prefix.length) {
-    for (let i = 0; i < parsed.code_prefix.length; i++) {
-      slots(spec).push({ pos: i, kind: 'code_digit', value: parsed.code_prefix[i]! });
-    }
-  }
-}
-
-function buildJyutpingAnchorMatchSpec(parsed: JyutpingAnchorQuery): MatchSpec {
-  const spec = createMatchSpec(parsed.width);
-  spec.mask = '?'.repeat(parsed.width);
-  slots(spec).push({
-    pos: parsed.anchor_pos,
-    kind: parsed.anchor_kind as AnchorKind,
-    value: parsed.anchor_value,
-  });
-  applyJyutpingAnchorCodeSlots(spec, parsed);
-  return spec;
-}
-
-export function buildJyutpingDualMatchSpecs(
-  parsed: JyutpingAnchorQuery,
-): [MatchSpec, MatchSpec] {
-  const base = (): MatchSpec => {
-    const spec = createMatchSpec(parsed.width);
-    spec.mask = '?'.repeat(parsed.width);
-    applyJyutpingAnchorCodeSlots(spec, parsed);
-    return spec;
-  };
-
-  const initial = base();
-  slots(initial).push({
-    pos: parsed.anchor_pos,
-    kind: 'initial_letters',
-    value: parsed.dual_initial_value || parsed.anchor_value,
-  });
-
-  const final = base();
-  slots(final).push({
-    pos: parsed.anchor_pos,
-    kind: 'rhyme_letters',
-    value: parsed.anchor_value,
-  });
-
-  return [initial, final];
-}
+export { buildJyutpingDualMatchSpecs };
 
 function specEquals(parsed: ParsedQuery): MatchSpec | null {
   return equalsToMatchSpec(parsed);
@@ -104,20 +47,7 @@ function specWildcardCodeAnchor(parsed: ParsedQuery): MatchSpec | null {
 }
 
 function specJyutpingAnchor(parsed: ParsedQuery): MatchSpec | null {
-  const q = parsed as JyutpingAnchorQuery;
-  if (q.dual_phoneme) {
-    const [initial, final] = buildJyutpingDualMatchSpecs(q);
-    const carrier = createMatchSpec(q.width);
-    applyJyutpingAnchorCodeSlots(carrier, q);
-    if (!carrier.extra) {
-      carrier.extra = {};
-    }
-    carrier.extra.dual_phoneme = true;
-    carrier.extra.dual_initial_spec = initial;
-    carrier.extra.dual_final_spec = final;
-    return carrier;
-  }
-  return buildJyutpingAnchorMatchSpec(q);
+  return jyutpingToMatchSpec(parsed);
 }
 
 function specMask(parsed: ParsedQuery): MatchSpec | null {

@@ -369,7 +369,7 @@ def build_equals_match_spec(q: str) -> Optional["MatchSpec"]:
 
 
 def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple["MatchSpec", "MatchSpec"]:
-    """Re-export：實作於 query_match_spec_registry。"""
-    from app.services.query_match_spec_registry import build_jyutping_dual_match_specs as _build
+    """Re-export：實作於 jyutping_anchor。"""
+    from app.services.jyutping_anchor import build_jyutping_dual_match_specs as _build
 
     return _build(parsed)

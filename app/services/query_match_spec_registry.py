@@ -3,63 +3,12 @@ from __future__ import annotations
 
 from typing import Callable, Optional
 
-from app.services.position_match import MatchSpec, SlotConstraint
-from app.services.query_types import (
-    JyutpingAnchorQuery,
-    ParsedQuery,
-    QueryKind,
+from app.services.jyutping_anchor import (
+    build_jyutping_dual_match_specs,
+    to_match_spec as jyutping_to_match_spec,
 )
-from app.services.position_match.mask_adapter import append_code_digit_slots
-
-
-def _apply_jyutping_anchor_code_slots(spec: MatchSpec, parsed: JyutpingAnchorQuery) -> None:
-    if parsed.code_slots:
-        for pos, digit in parsed.code_slots:
-            spec.slots.append(SlotConstraint(pos=pos, kind="code_digit", value=digit))
-    elif parsed.code_prefix and parsed.width == len(parsed.code_prefix):
-        append_code_digit_slots(spec, parsed.code_prefix)
-
-
-def _build_jyutping_anchor_match_spec(parsed: JyutpingAnchorQuery) -> MatchSpec:
-    spec = MatchSpec(width=parsed.width)
-    spec.mask = "?" * parsed.width
-    spec.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind=parsed.anchor_kind,
-            value=parsed.anchor_value,
-        )
-    )
-    _apply_jyutping_anchor_code_slots(spec, parsed)
-    return spec
-
-
-def build_jyutping_dual_match_specs(parsed: JyutpingAnchorQuery) -> tuple[MatchSpec, MatchSpec]:
-    """歧義粵拼錨 → 聲母維與韻母維 MatchSpec（ADR-0009）。"""
-
-    def _base() -> MatchSpec:
-        spec = MatchSpec(width=parsed.width)
-        spec.mask = "?" * parsed.width
-        _apply_jyutping_anchor_code_slots(spec, parsed)
-        return spec
-
-    initial = _base()
-    initial.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind="initial_letters",
-            value=(parsed.dual_initial_value or parsed.anchor_value),
-        )
-    )
-    final = _base()
-    final.slots.append(
-        SlotConstraint(
-            pos=parsed.anchor_pos,
-            kind="rhyme_letters",
-            value=parsed.anchor_value,
-        )
-    )
-    return initial, final
+from app.services.position_match import MatchSpec
+from app.services.query_types import ParsedQuery, QueryKind
 
 
 MatchSpecBuilder = Callable[[ParsedQuery], Optional[MatchSpec]]
@@ -102,17 +51,7 @@ def _spec_wca(parsed: ParsedQuery) -> Optional[MatchSpec]:
 
 
 def _spec_jyutping_anchor(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    assert parsed.kind == QueryKind.JYUTPING_ANCHOR
-    q = parsed  # type: JyutpingAnchorQuery
-    if q.dual_phoneme:
-        initial, final = build_jyutping_dual_match_specs(q)
-        carrier = MatchSpec(width=q.width)
-        _apply_jyutping_anchor_code_slots(carrier, q)
-        carrier.extra["dual_phoneme"] = True
-        carrier.extra["dual_initial_spec"] = initial
-        carrier.extra["dual_final_spec"] = final
-        return carrier
-    return _build_jyutping_anchor_match_spec(q)
+    return jyutping_to_match_spec(parsed)
 
 
 def _spec_ping_ze_serial(parsed: ParsedQuery) -> Optional[MatchSpec]:
@@ -158,4 +97,9 @@ def build_match_spec_for_parsed(parsed: ParsedQuery) -> Optional[MatchSpec]:
     return builder(parsed)
 
 
-__all__ = ["MATCH_SPEC_BUILDERS", "MatchSpecBuilder", "build_jyutping_dual_match_specs", "build_match_spec_for_parsed"]
+__all__ = [
+    "MATCH_SPEC_BUILDERS",
+    "MatchSpecBuilder",
+    "build_jyutping_dual_match_specs",
+    "build_match_spec_for_parsed",
+]
