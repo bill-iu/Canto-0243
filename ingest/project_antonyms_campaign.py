@@ -1,4 +1,4 @@
-"""高頻 Top-5000 專案自建反義 campaign（WP-07）。
+"""專案自建反義 campaign：Top-5000 高頻 + len4 四字缺直連（平行資產）。
 
 ponytail: 300-line limit exemption — campaign freeze/validate contracts stay together.
 """
@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import math
 import random
 import re
 import subprocess
@@ -35,7 +36,7 @@ from ingest.project_antonyms import (
 
 _GIT_SHA1_RE = re.compile(r"^[0-9a-f]{40}$")
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
-_CAMPAIGN_BATCH_COUNT = 10
+_CAMPAIGN_BATCH_COUNT = 10  # top5000 fixed shape
 _FINGERPRINT_FIELDS = ("db_sha256", "essay_sha256", "thesaurus_ant_sha256")
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,8 +45,18 @@ DEFAULT_MANIFEST_META = ROOT / "data" / "syn_ant" / "campaign_top5000.meta.json"
 DEFAULT_NO_NATURAL_TSV = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.tsv"
 DEFAULT_NO_NATURAL_META = ROOT / "data" / "syn_ant" / "project_no_natural_antonyms.meta.json"
 DEFAULT_FINAL_AUDIT_META = ROOT / "data" / "syn_ant" / "campaign_final_audit.meta.json"
+DEFAULT_LEN4_MANIFEST_TSV = ROOT / "data" / "syn_ant" / "campaign_len4.tsv"
+DEFAULT_LEN4_MANIFEST_META = ROOT / "data" / "syn_ant" / "campaign_len4.meta.json"
+DEFAULT_LEN4_NO_NATURAL_TSV = ROOT / "data" / "syn_ant" / "campaign_len4_no_natural.tsv"
+DEFAULT_LEN4_NO_NATURAL_META = (
+    ROOT / "data" / "syn_ant" / "campaign_len4_no_natural.meta.json"
+)
+DEFAULT_LEN4_FINAL_AUDIT_META = (
+    ROOT / "data" / "syn_ant" / "campaign_len4_final_audit.meta.json"
+)
 DEFAULT_THESAURUS_ANT = ROOT / "data" / "thesaurus" / "dict_antonym.txt"
 DEFAULT_ESSAY = ROOT / "data" / "essay" / "essay-cantonese.txt"
+DEFAULT_LEN4_PROMPT = ROOT / "data" / "syn_ant" / "project-antonyms-prompt-len4.txt"
 FINAL_AUDIT_OK_RATE_THRESHOLD = OK_RATE_THRESHOLD_CAMPAIGN
 
 CAMPAIGN_K = 5000
@@ -76,6 +87,74 @@ class CampaignHead:
     batch_index: int
 
 
+@dataclass(frozen=True, slots=True)
+class CampaignSpec:
+    """Parallel campaign identity + freeze/validate paths (top5000 | len4)."""
+
+    campaign_id: str
+    batch_size: int
+    # "top_k" → fixed_k required; "full_set" → take all ranked candidates
+    k_mode: str
+    fixed_k: Optional[int]
+    length_filter: Optional[int]
+    # If set, meta.baseline_commit must equal this; if None, any valid sha1
+    baseline_commit: Optional[str]
+    manifest_tsv: Path
+    manifest_meta: Path
+    no_natural_tsv: Path
+    no_natural_meta: Path
+    final_audit_meta: Path
+    # Seed no-natural rows from this ledger at freeze (len4 ← top5000 nn)
+    inherit_no_natural_from: Optional[Path] = None
+
+
+TOP5000_SPEC = CampaignSpec(
+    campaign_id="top5000",
+    batch_size=CAMPAIGN_BATCH_SIZE,
+    k_mode="top_k",
+    fixed_k=CAMPAIGN_K,
+    length_filter=None,
+    baseline_commit=CAMPAIGN_BASELINE_COMMIT,
+    manifest_tsv=DEFAULT_MANIFEST_TSV,
+    manifest_meta=DEFAULT_MANIFEST_META,
+    no_natural_tsv=DEFAULT_NO_NATURAL_TSV,
+    no_natural_meta=DEFAULT_NO_NATURAL_META,
+    final_audit_meta=DEFAULT_FINAL_AUDIT_META,
+    inherit_no_natural_from=None,
+)
+
+LEN4_SPEC = CampaignSpec(
+    campaign_id="len4",
+    batch_size=CAMPAIGN_BATCH_SIZE,
+    k_mode="full_set",
+    fixed_k=None,
+    length_filter=4,
+    baseline_commit=None,
+    manifest_tsv=DEFAULT_LEN4_MANIFEST_TSV,
+    manifest_meta=DEFAULT_LEN4_MANIFEST_META,
+    no_natural_tsv=DEFAULT_LEN4_NO_NATURAL_TSV,
+    no_natural_meta=DEFAULT_LEN4_NO_NATURAL_META,
+    final_audit_meta=DEFAULT_LEN4_FINAL_AUDIT_META,
+    inherit_no_natural_from=DEFAULT_NO_NATURAL_TSV,
+)
+
+_CAMPAIGN_SPECS: Dict[str, CampaignSpec] = {
+    TOP5000_SPEC.campaign_id: TOP5000_SPEC,
+    LEN4_SPEC.campaign_id: LEN4_SPEC,
+}
+
+
+def get_campaign_spec(campaign_id: str) -> CampaignSpec:
+    key = (campaign_id or "").strip().lower()
+    spec = _CAMPAIGN_SPECS.get(key)
+    if spec is None:
+        raise ProjectAntonymsError(
+            f"unknown campaign_id {campaign_id!r}; "
+            f"allowed={sorted(_CAMPAIGN_SPECS)}"
+        )
+    return spec
+
+
 def campaign_exclude_sources() -> Set[str]:
     """Direct-ant sources ignored when ranking the frozen campaign."""
     return set(DERIVED_ANT_SOURCES) | {PROJECT_ANT_SOURCE}
@@ -94,15 +173,78 @@ def chars_with_direct_ant_excluding_project(
     )
 
 
+def expected_batch_count(k: int, batch_size: int) -> int:
+    if k < 1:
+        raise ProjectAntonymsError(f"campaign k must be >= 1, got {k}")
+    if batch_size < 1:
+        raise ProjectAntonymsError(f"batch_size must be >= 1, got {batch_size}")
+    return int(math.ceil(k / batch_size))
+
+
+def expected_batch_size_for_index(
+    batch_index: int, *, k: int, batch_size: int
+) -> int:
+    """Full batches = batch_size; last batch may be residual 1..batch_size."""
+    n_batches = expected_batch_count(k, batch_size)
+    if batch_index < 1 or batch_index > n_batches:
+        raise ProjectAntonymsError(
+            f"batch_index {batch_index} out of range 1..{n_batches} (k={k})"
+        )
+    if batch_index < n_batches:
+        return batch_size
+    return k - (n_batches - 1) * batch_size
+
+
+def batch_counts_from_heads(
+    heads: Sequence[CampaignHead], *, batch_size: int
+) -> Dict[int, int]:
+    k = len(heads)
+    if k == 0:
+        return {}
+    counts: Dict[int, int] = {}
+    for h in heads:
+        counts[h.batch_index] = counts.get(h.batch_index, 0) + 1
+    n_batches = expected_batch_count(k, batch_size)
+    if sorted(counts) != list(range(1, n_batches + 1)):
+        raise ProjectAntonymsError(
+            f"batch_index set {sorted(counts)} != 1..{n_batches}"
+        )
+    for bi in range(1, n_batches + 1):
+        want = expected_batch_size_for_index(bi, k=k, batch_size=batch_size)
+        got = counts[bi]
+        if got != want:
+            raise ProjectAntonymsError(
+                f"batch {bi} size {got} != expected {want} (k={k}, batch_size={batch_size})"
+            )
+    return counts
+
+
+_RANK_K_UNSET: Any = object()
+
+
 def rank_campaign_heads(
     db: Session,
     *,
-    k: int = CAMPAIGN_K,
+    k: Any = _RANK_K_UNSET,
     essay_freq: Callable[[str], int] = get_essay_frequency,
     membership: Optional[Set[str]] = None,
     static_ant_heads: Optional[Iterable[str]] = None,
+    length_filter: Optional[int] = None,
+    batch_size: int = CAMPAIGN_BATCH_SIZE,
+    spec: Optional[CampaignSpec] = None,
 ) -> List[CampaignHead]:
-    """有近無直連反 ∩ Essay Top-K；排除 project_ant 以免母體滑動。"""
+    """有近無直連反 ∩ Essay 序；排除 project_ant 以免母體滑動。
+
+    k=None → 全取（full_set）；否則截 Top-k。spec 可覆寫 length_filter／batch_size／k 預設。
+    """
+    if spec is not None:
+        if length_filter is None:
+            length_filter = spec.length_filter
+        batch_size = spec.batch_size
+        if k is _RANK_K_UNSET:
+            k = None if spec.k_mode == "full_set" else spec.fixed_k
+    elif k is _RANK_K_UNSET:
+        k = CAMPAIGN_K
     syns = chars_with_syn(db)
     directs = chars_with_direct_ant_excluding_project(
         db, static_ant_heads=static_ant_heads
@@ -111,17 +253,21 @@ def rank_campaign_heads(
     if membership is not None:
         candidates &= membership
     candidates = {c for c in candidates if is_valid_term(c)}
+    if length_filter is not None:
+        candidates = {c for c in candidates if len(c) == length_filter}
     ranked = sorted(candidates, key=lambda ch: (-int(essay_freq(ch)), ch))
-    if k <= 0:
-        return []
+    if k is not None:
+        if k <= 0:
+            return []
+        ranked = ranked[:k]
     out: List[CampaignHead] = []
-    for i, head in enumerate(ranked[:k], start=1):
+    for i, head in enumerate(ranked, start=1):
         out.append(
             CampaignHead(
                 rank=i,
                 head=head,
                 essay_frequency=int(essay_freq(head)),
-                batch_index=(i - 1) // CAMPAIGN_BATCH_SIZE + 1,
+                batch_index=(i - 1) // batch_size + 1,
             )
         )
     return out
@@ -161,18 +307,26 @@ def validate_campaign_meta(
     *,
     path: Path | str,
     manifest_sha256: str,
+    spec: Optional[CampaignSpec] = None,
 ) -> None:
     """Fail-closed audit of frozen campaign meta (fingerprints + shape)."""
     p = Path(path)
     if not isinstance(meta, dict) or not meta:
         raise ProjectAntonymsError(f"{p}: campaign meta must be a non-empty object")
+    sp = spec or TOP5000_SPEC
 
     baseline = _require_git_sha1(meta.get("baseline_commit"), field="baseline_commit", path=p)
-    if baseline != CAMPAIGN_BASELINE_COMMIT.lower():
+    if sp.baseline_commit is not None and baseline != sp.baseline_commit.lower():
         raise ProjectAntonymsError(
-            f"{p}: baseline_commit {baseline!r} != {CAMPAIGN_BASELINE_COMMIT}"
+            f"{p}: baseline_commit {baseline!r} != {sp.baseline_commit}"
         )
     _require_git_sha1(meta.get("freeze_git_commit"), field="freeze_git_commit", path=p)
+
+    cid = meta.get("campaign_id")
+    if cid is not None and str(cid) != sp.campaign_id:
+        raise ProjectAntonymsError(
+            f"{p}: campaign_id {cid!r} != spec {sp.campaign_id!r}"
+        )
 
     try:
         k = int(meta.get("k"))
@@ -182,16 +336,25 @@ def validate_campaign_meta(
         raise ProjectAntonymsError(
             f"{p}: k/batch_size/batch_count must be integers"
         ) from exc
-    if k != CAMPAIGN_K:
-        raise ProjectAntonymsError(f"{p}: k must be {CAMPAIGN_K}, got {k}")
-    if batch_size != CAMPAIGN_BATCH_SIZE:
+    if k < 1:
+        raise ProjectAntonymsError(f"{p}: k must be >= 1, got {k}")
+    if sp.fixed_k is not None and k != sp.fixed_k:
+        raise ProjectAntonymsError(f"{p}: k must be {sp.fixed_k}, got {k}")
+    if batch_size != sp.batch_size:
         raise ProjectAntonymsError(
-            f"{p}: batch_size must be {CAMPAIGN_BATCH_SIZE}, got {batch_size}"
+            f"{p}: batch_size must be {sp.batch_size}, got {batch_size}"
         )
-    if batch_count != _CAMPAIGN_BATCH_COUNT:
+    want_batches = expected_batch_count(k, batch_size)
+    if batch_count != want_batches:
         raise ProjectAntonymsError(
-            f"{p}: batch_count must be {_CAMPAIGN_BATCH_COUNT}, got {batch_count}"
+            f"{p}: batch_count must be {want_batches}, got {batch_count}"
         )
+    if sp.length_filter is not None:
+        lf = meta.get("length_filter")
+        if lf is not None and int(lf) != sp.length_filter:
+            raise ProjectAntonymsError(
+                f"{p}: length_filter must be {sp.length_filter}, got {lf!r}"
+            )
 
     excl = meta.get("exclude_sources")
     expected_excl = sorted(campaign_exclude_sources())
@@ -215,11 +378,13 @@ def validate_campaign_meta(
     counts = meta.get("batch_counts")
     if not isinstance(counts, dict):
         raise ProjectAntonymsError(f"{p}: batch_counts must be an object")
-    expected_keys = {str(i) for i in range(1, _CAMPAIGN_BATCH_COUNT + 1)}
+    expected_keys = {str(i) for i in range(1, want_batches + 1)}
     if set(counts) != expected_keys:
         raise ProjectAntonymsError(
-            f"{p}: batch_counts keys must be {sorted(expected_keys)}, got {sorted(counts)}"
+            f"{p}: batch_counts keys must be {sorted(expected_keys, key=int)}, "
+            f"got {sorted(counts)}"
         )
+    total = 0
     for key in sorted(expected_keys, key=int):
         try:
             n = int(counts[key])
@@ -227,41 +392,51 @@ def validate_campaign_meta(
             raise ProjectAntonymsError(
                 f"{p}: batch_counts[{key!r}] must be int"
             ) from exc
-        if n != CAMPAIGN_BATCH_SIZE:
+        want_n = expected_batch_size_for_index(
+            int(key), k=k, batch_size=batch_size
+        )
+        if n != want_n:
             raise ProjectAntonymsError(
-                f"{p}: batch_counts[{key!r}] must be {CAMPAIGN_BATCH_SIZE}, got {n}"
+                f"{p}: batch_counts[{key!r}] must be {want_n}, got {n}"
             )
+        total += n
+    if total != k:
+        raise ProjectAntonymsError(
+            f"{p}: sum(batch_counts)={total} != k={k}"
+        )
 
 
 def build_campaign_meta(
     *,
     heads: Sequence[CampaignHead],
     db_path: Path | str,
-    baseline_commit: str = CAMPAIGN_BASELINE_COMMIT,
+    baseline_commit: Optional[str] = None,
     essay_path: Path | str = DEFAULT_ESSAY,
     thesaurus_ant_path: Path | str = DEFAULT_THESAURUS_ANT,
+    spec: Optional[CampaignSpec] = None,
+    inherited_no_natural_count: int = 0,
+    inherited_no_natural_source: Optional[str] = None,
 ) -> dict[str, Any]:
-    if len(heads) != CAMPAIGN_K:
+    sp = spec or TOP5000_SPEC
+    k = len(heads)
+    if k < 1:
+        raise ProjectAntonymsError("campaign freeze requires at least one head")
+    if sp.fixed_k is not None and k != sp.fixed_k:
         raise ProjectAntonymsError(
-            f"campaign freeze requires exactly {CAMPAIGN_K} heads, got {len(heads)}"
+            f"campaign freeze requires exactly {sp.fixed_k} heads, got {k}"
         )
-    batch_counts: Dict[int, int] = {}
-    for h in heads:
-        batch_counts[h.batch_index] = batch_counts.get(h.batch_index, 0) + 1
-    if (
-        sorted(batch_counts) != list(range(1, _CAMPAIGN_BATCH_COUNT + 1))
-        or set(batch_counts.values()) != {CAMPAIGN_BATCH_SIZE}
-    ):
-        raise ProjectAntonymsError(
-            f"expected {_CAMPAIGN_BATCH_COUNT}×{CAMPAIGN_BATCH_SIZE} batches, "
-            f"got {batch_counts}"
-        )
+    batch_counts = batch_counts_from_heads(heads, batch_size=sp.batch_size)
+    n_batches = expected_batch_count(k, sp.batch_size)
+
+    freeze_git = _git_rev_parse("HEAD")
+    if baseline_commit is None:
+        baseline_commit = sp.baseline_commit or freeze_git
     baseline = _require_git_sha1(
         baseline_commit, field="baseline_commit", path=Path("<build>")
     )
-    if baseline != CAMPAIGN_BASELINE_COMMIT.lower():
+    if sp.baseline_commit is not None and baseline != sp.baseline_commit.lower():
         raise ProjectAntonymsError(
-            f"baseline_commit {baseline!r} != {CAMPAIGN_BASELINE_COMMIT}"
+            f"baseline_commit {baseline!r} != {sp.baseline_commit}"
         )
     fingerprints = {
         "db_sha256": file_sha256(db_path),
@@ -272,18 +447,27 @@ def build_campaign_meta(
         if not digest:
             raise ProjectAntonymsError(f"missing fingerprint source for {field}")
         _require_sha256(digest, field=field, path=Path("<build>"))
-    return {
+    meta: dict[str, Any] = {
+        "campaign_id": sp.campaign_id,
         "baseline_commit": baseline,
-        "freeze_git_commit": _git_rev_parse("HEAD"),
-        "k": CAMPAIGN_K,
-        "batch_size": CAMPAIGN_BATCH_SIZE,
-        "batch_count": _CAMPAIGN_BATCH_COUNT,
+        "freeze_git_commit": freeze_git,
+        "k": k,
+        "batch_size": sp.batch_size,
+        "batch_count": n_batches,
         "exclude_sources": sorted(campaign_exclude_sources()),
         **fingerprints,
         "batch_counts": {
-            str(i): batch_counts[i] for i in range(1, _CAMPAIGN_BATCH_COUNT + 1)
+            str(i): batch_counts[i] for i in range(1, n_batches + 1)
         },
     }
+    if sp.length_filter is not None:
+        meta["length_filter"] = sp.length_filter
+        meta["seed_predicate"] = "has_syn_no_direct_ant_excluding_project_ant"
+    if inherited_no_natural_count or inherited_no_natural_source:
+        meta["inherited_no_natural_count"] = int(inherited_no_natural_count)
+        if inherited_no_natural_source:
+            meta["inherited_no_natural_source"] = inherited_no_natural_source
+    return meta
 
 
 def render_manifest_tsv(heads: Sequence[CampaignHead]) -> str:
@@ -322,12 +506,20 @@ def parse_campaign_manifest(
     meta: Optional[dict[str, Any]] = None,
     meta_path: Path | str = DEFAULT_MANIFEST_META,
     require_file: bool = True,
+    spec: Optional[CampaignSpec] = None,
 ) -> List[CampaignHead]:
     p = Path(path)
     if not p.is_file():
         if require_file:
             raise ProjectAntonymsError(f"missing campaign manifest: {p}")
         return []
+    if meta is None:
+        meta = load_campaign_meta(meta_path)
+    sp = spec or _spec_from_meta(meta)
+    # Use spec.batch_size for row shape checks so corrupted meta.batch_size
+    # still fails closed in validate_campaign_meta (not mid-row).
+    batch_size = sp.batch_size
+
     raw = p.read_bytes()
     if raw.startswith(b"\xef\xbb\xbf"):
         raise ProjectAntonymsError(f"manifest must be UTF-8 without BOM: {p}")
@@ -371,9 +563,13 @@ def parse_campaign_manifest(
             raise ProjectAntonymsError(
                 f"{p}:{lineno}: rank {rank} out of order (want {len(out) + 1})"
             )
-        if batch_index != (rank - 1) // CAMPAIGN_BATCH_SIZE + 1:
+        if batch_index != (rank - 1) // batch_size + 1:
             raise ProjectAntonymsError(
                 f"{p}:{lineno}: batch_index {batch_index} mismatch for rank {rank}"
+            )
+        if sp.length_filter is not None and len(head) != sp.length_filter:
+            raise ProjectAntonymsError(
+                f"{p}:{lineno}: head len {len(head)} != length_filter {sp.length_filter}"
             )
         seen.add(head)
         out.append(
@@ -381,18 +577,35 @@ def parse_campaign_manifest(
                 rank=rank, head=head, essay_frequency=freq, batch_index=batch_index
             )
         )
-    if len(out) != CAMPAIGN_K:
+    if not out:
+        raise ProjectAntonymsError(f"{p}: expected at least one head, got 0")
+    if sp.fixed_k is not None and len(out) != sp.fixed_k:
         raise ProjectAntonymsError(
-            f"{p}: expected {CAMPAIGN_K} heads, got {len(out)}"
+            f"{p}: expected {sp.fixed_k} heads, got {len(out)}"
         )
-    if meta is None:
-        meta = load_campaign_meta(meta_path)
+    try:
+        meta_k = int(meta.get("k"))
+    except (TypeError, ValueError) as exc:
+        raise ProjectAntonymsError(f"{meta_path}: k must be int") from exc
+    if len(out) != meta_k:
+        raise ProjectAntonymsError(
+            f"{p}: head count {len(out)} != meta k {meta_k}"
+        )
     validate_campaign_meta(
         meta,
         path=meta_path,
         manifest_sha256=hashlib.sha256(raw).hexdigest(),
+        spec=sp,
     )
     return out
+
+
+def _spec_from_meta(meta: dict[str, Any]) -> CampaignSpec:
+    """Map meta.campaign_id → spec; default top5000 for legacy meta without id."""
+    cid = meta.get("campaign_id")
+    if cid is None:
+        return TOP5000_SPEC
+    return get_campaign_spec(str(cid))
 
 
 def load_campaign_meta(path: Path | str = DEFAULT_MANIFEST_META) -> dict[str, Any]:
@@ -488,13 +701,68 @@ def ensure_no_natural_tsv(path: Path | str = DEFAULT_NO_NATURAL_TSV) -> bool:
 def assert_first_batch_matches_seeds(
     heads: Sequence[CampaignHead],
     seeds: Sequence[str],
+    *,
+    batch_size: int = CAMPAIGN_BATCH_SIZE,
 ) -> None:
-    first = [h.head for h in heads[:CAMPAIGN_BATCH_SIZE]]
+    first = [h.head for h in heads[:batch_size]]
     if list(seeds) != first:
         raise ProjectAntonymsError(
-            "campaign first-500 heads != reference seeds.txt "
+            "campaign first-batch heads != reference seeds.txt "
             f"(len seeds={len(seeds)}, first={first[:3]!r}, seeds={list(seeds)[:3]!r})"
         )
+
+
+def write_no_natural_rows(
+    path: Path | str,
+    rows: Sequence[Tuple[str, str, str]],
+) -> None:
+    """Overwrite path with header + rows (head, reason, batch_id)."""
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["\t".join(NO_NATURAL_HEADER)]
+    for head, reason, batch_id in rows:
+        lines.append(f"{head}\t{reason}\t{batch_id}")
+    p.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+
+
+def no_natural_tsv_has_data(path: Path | str) -> bool:
+    p = Path(path)
+    if not p.is_file():
+        return False
+    rows = parse_no_natural_tsv(p, require_file=True)
+    return len(rows) > 0
+
+
+def inherit_no_natural_rows(
+    *,
+    source_path: Path | str,
+    campaign_heads: Set[str],
+    dest_path: Path | str,
+    overwrite: bool = False,
+) -> Tuple[int, List[Tuple[str, str, str]]]:
+    """Copy no-natural rows whose head ∈ campaign_heads into dest.
+
+    Returns (count, rows). Refuses to overwrite non-empty dest unless overwrite=True.
+    Missing source → empty inheritance (count 0).
+    """
+    dest = Path(dest_path)
+    if no_natural_tsv_has_data(dest) and not overwrite:
+        raise ProjectAntonymsError(
+            f"refuse to overwrite non-empty no-natural ledger: {dest} "
+            "(pass overwrite=True / --force-reseed-no-natural)"
+        )
+    src = Path(source_path)
+    if not src.is_file():
+        write_no_natural_rows(dest, [])
+        return 0, []
+    all_rows = parse_no_natural_tsv(src, require_file=True)
+    kept = [
+        (h, r, b) for h, r, b in all_rows if h in campaign_heads
+    ]
+    # stable: by head
+    kept.sort(key=lambda t: t[0])
+    write_no_natural_rows(dest, kept)
+    return len(kept), kept
 
 
 def accepted_coverage_heads(tsv_path: Path | str) -> Set[str]:
@@ -1647,16 +1915,25 @@ __all__ = [
     "CAMPAIGN_BATCH_SIZE",
     "CAMPAIGN_K",
     "CampaignHead",
+    "CampaignSpec",
     "DEFAULT_FINAL_AUDIT_META",
+    "DEFAULT_LEN4_FINAL_AUDIT_META",
+    "DEFAULT_LEN4_MANIFEST_META",
+    "DEFAULT_LEN4_MANIFEST_TSV",
+    "DEFAULT_LEN4_NO_NATURAL_META",
+    "DEFAULT_LEN4_NO_NATURAL_TSV",
+    "DEFAULT_LEN4_PROMPT",
     "DEFAULT_MANIFEST_META",
     "DEFAULT_MANIFEST_TSV",
     "DEFAULT_NO_NATURAL_META",
     "DEFAULT_NO_NATURAL_TSV",
     "DEFAULT_UNRESOLVED_SAMPLE",
     "FINAL_AUDIT_OK_RATE_THRESHOLD",
+    "LEN4_SPEC",
     "MANIFEST_HEADER",
     "NO_NATURAL_HEADER",
     "NO_NATURAL_REASONS",
+    "TOP5000_SPEC",
     "accepted_coverage_heads",
     "accepted_pairs_light",
     "assert_campaign_complete",
@@ -1665,15 +1942,21 @@ __all__ = [
     "assert_first_batch_matches_seeds",
     "assert_no_natural_sample_replayable",
     "assert_no_terminal_conflict",
+    "batch_counts_from_heads",
     "build_campaign_meta",
     "campaign_exclude_sources",
     "chars_with_direct_ant_excluding_project",
     "compute_campaign_progress",
     "ensure_no_natural_tsv",
+    "expected_batch_count",
+    "expected_batch_size_for_index",
+    "get_campaign_spec",
     "head_to_batch_index",
+    "inherit_no_natural_rows",
     "load_campaign_meta",
     "load_final_audit_meta",
     "load_no_natural_meta",
+    "no_natural_tsv_has_data",
     "pair_campaign_batch_index",
     "parse_campaign_manifest",
     "parse_no_natural_tsv",
@@ -1690,4 +1973,5 @@ __all__ = [
     "write_campaign_manifest",
     "write_empty_no_natural_meta",
     "write_empty_no_natural_tsv",
+    "write_no_natural_rows",
 ]

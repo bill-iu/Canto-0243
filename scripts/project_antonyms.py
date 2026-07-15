@@ -385,16 +385,108 @@ def cmd_report(args: argparse.Namespace) -> int:
     return 0 if ok else 1
 
 
+def _campaign_spec(args: argparse.Namespace):
+    from ingest.project_antonyms_campaign import get_campaign_spec
+
+    return get_campaign_spec(getattr(args, "campaign", "top5000") or "top5000")
+
+
+def _remap_if_top5000_default(
+    args: argparse.Namespace,
+    *,
+    attr: str,
+    top_default: str,
+    new_value: str,
+) -> None:
+    """When --campaign switches, replace still-top5000 argparse defaults."""
+    if not hasattr(args, attr):
+        return
+    cur = getattr(args, attr)
+    if cur is None or cur == "" or cur == top_default:
+        setattr(args, attr, new_value)
+
+
+def _apply_campaign_path_defaults(
+    args: argparse.Namespace,
+    *,
+    mode: str = "manifest",
+) -> None:
+    """Bind path args to CampaignSpec when still on top5000 defaults.
+
+    mode:
+      - manifest: --tsv/--meta are campaign manifest
+      - no_natural: --tsv/--meta are no-natural ledger
+      - freeze: --out-tsv/--out-meta manifest; --no-natural ledger
+    """
+    from ingest.project_antonyms_campaign import TOP5000_SPEC
+
+    spec = _campaign_spec(args)
+    top = TOP5000_SPEC
+    if mode == "manifest":
+        _remap_if_top5000_default(
+            args, attr="tsv", top_default=str(top.manifest_tsv),
+            new_value=str(spec.manifest_tsv),
+        )
+        _remap_if_top5000_default(
+            args, attr="meta", top_default=str(top.manifest_meta),
+            new_value=str(spec.manifest_meta),
+        )
+        _remap_if_top5000_default(
+            args, attr="no_natural", top_default=str(top.no_natural_tsv),
+            new_value=str(spec.no_natural_tsv),
+        )
+        _remap_if_top5000_default(
+            args, attr="audit_meta", top_default=str(top.final_audit_meta),
+            new_value=str(spec.final_audit_meta),
+        )
+    elif mode == "no_natural":
+        _remap_if_top5000_default(
+            args, attr="tsv", top_default=str(top.no_natural_tsv),
+            new_value=str(spec.no_natural_tsv),
+        )
+        _remap_if_top5000_default(
+            args, attr="meta", top_default=str(top.no_natural_meta),
+            new_value=str(spec.no_natural_meta),
+        )
+        _remap_if_top5000_default(
+            args, attr="manifest", top_default=str(top.manifest_tsv),
+            new_value=str(spec.manifest_tsv),
+        )
+        _remap_if_top5000_default(
+            args, attr="manifest_meta", top_default=str(top.manifest_meta),
+            new_value=str(spec.manifest_meta),
+        )
+    elif mode == "freeze":
+        _remap_if_top5000_default(
+            args, attr="out_tsv", top_default=str(top.manifest_tsv),
+            new_value=str(spec.manifest_tsv),
+        )
+        _remap_if_top5000_default(
+            args, attr="out_meta", top_default=str(top.manifest_meta),
+            new_value=str(spec.manifest_meta),
+        )
+        _remap_if_top5000_default(
+            args, attr="no_natural", top_default=str(top.no_natural_tsv),
+            new_value=str(spec.no_natural_tsv),
+        )
+    else:
+        raise ValueError(f"unknown path default mode {mode!r}")
+
+
 def cmd_campaign_freeze(args: argparse.Namespace) -> int:
-    """Freeze Top-5000 campaign manifest (exclude project_ant from ranking)."""
+    """Freeze campaign manifest (exclude project_ant from ranking)."""
     from ingest.project_antonyms_campaign import (
-        CAMPAIGN_BASELINE_COMMIT,
         assert_first_batch_matches_seeds,
         build_campaign_meta,
         ensure_no_natural_tsv,
+        inherit_no_natural_rows,
         rank_campaign_heads,
         write_campaign_manifest,
+        write_empty_no_natural_meta,
     )
+
+    _apply_campaign_path_defaults(args, mode="freeze")
+    spec = _campaign_spec(args)
 
     load_essay_corpus()
     db = _session(Path(args.db))
@@ -406,9 +498,19 @@ def cmd_campaign_freeze(args: argparse.Namespace) -> int:
             essay_freq=get_essay_frequency,
             membership=membership,
             static_ant_heads=static_heads,
+            spec=spec,
         )
     finally:
         db.close()
+
+    if not heads:
+        print(
+            json.dumps(
+                {"ok": False, "error": f"no heads for campaign {spec.campaign_id}"},
+                ensure_ascii=False,
+            )
+        )
+        return 1
 
     if args.reference_seeds:
         seeds = [
@@ -417,15 +519,44 @@ def cmd_campaign_freeze(args: argparse.Namespace) -> int:
             if ln.strip()
         ]
         try:
-            assert_first_batch_matches_seeds(heads, seeds)
+            assert_first_batch_matches_seeds(
+                heads, seeds, batch_size=spec.batch_size
+            )
         except ProjectAntonymsError as exc:
             print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
             return 1
 
+    inherited_n = 0
+    inherited_src: str | None = None
+    no_natural_created = False
+    force = bool(getattr(args, "force_reseed_no_natural", False))
+    if spec.inherit_no_natural_from is not None:
+        try:
+            inherited_n, _ = inherit_no_natural_rows(
+                source_path=spec.inherit_no_natural_from,
+                campaign_heads={h.head for h in heads},
+                dest_path=args.no_natural,
+                overwrite=force,
+            )
+            inherited_src = str(spec.inherit_no_natural_from)
+        except ProjectAntonymsError as exc:
+            print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+            return 1
+    elif args.init_no_natural:
+        # ponytail: create-if-missing only — never wipe reviewed no-natural rows
+        no_natural_created = ensure_no_natural_tsv(args.no_natural)
+
+    baseline = (args.baseline_commit or "").strip() or None
+    if baseline is None and spec.baseline_commit:
+        baseline = spec.baseline_commit
+
     meta = build_campaign_meta(
         heads=heads,
         db_path=args.db,
-        baseline_commit=args.baseline_commit or CAMPAIGN_BASELINE_COMMIT,
+        baseline_commit=baseline,
+        spec=spec,
+        inherited_no_natural_count=inherited_n,
+        inherited_no_natural_source=inherited_src,
     )
     write_campaign_manifest(
         heads,
@@ -433,21 +564,27 @@ def cmd_campaign_freeze(args: argparse.Namespace) -> int:
         tsv_path=args.out_tsv,
         meta_path=args.out_meta,
     )
-    no_natural_created = False
-    if args.init_no_natural:
-        # ponytail: create-if-missing only — never wipe reviewed no-natural rows
-        no_natural_created = ensure_no_natural_tsv(args.no_natural)
+    nn_meta = Path(str(args.no_natural).replace(".tsv", ".meta.json"))
+    if spec.campaign_id == "len4":
+        nn_meta = Path(str(spec.no_natural_meta))
+    if args.init_no_natural and not nn_meta.is_file():
+        write_empty_no_natural_meta(nn_meta)
+
     print(
         json.dumps(
             {
                 "ok": True,
+                "campaign_id": spec.campaign_id,
                 "k": len(heads),
+                "batch_count": meta.get("batch_count"),
                 "first_head": heads[0].head if heads else None,
                 "last_head": heads[-1].head if heads else None,
                 "manifest_sha256": load_campaign_meta_sha(args.out_meta),
                 "out_tsv": str(args.out_tsv),
                 "out_meta": str(args.out_meta),
+                "no_natural": str(args.no_natural),
                 "no_natural_created": no_natural_created,
+                "inherited_no_natural_count": inherited_n,
             },
             ensure_ascii=False,
         )
@@ -470,8 +607,12 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
         parse_no_natural_tsv,
     )
 
+    _apply_campaign_path_defaults(args, mode="manifest")
+    spec = _campaign_spec(args)
     try:
-        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        heads = parse_campaign_manifest(
+            args.tsv, meta_path=args.meta, spec=spec
+        )
         campaign = {h.head for h in heads}
         no_nat = parse_no_natural_tsv(
             args.no_natural,
@@ -490,15 +631,17 @@ def cmd_campaign_validate(args: argparse.Namespace) -> int:
     except ProjectAntonymsError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
         return 1
+    batch1_last = min(spec.batch_size, len(heads)) - 1
     print(
         json.dumps(
             {
                 "ok": True,
+                "campaign_id": spec.campaign_id,
                 "require_complete": bool(args.require_complete),
                 "manifest_heads": len(heads),
                 "no_natural_rows": len(no_nat),
                 "batch_1_first": heads[0].head,
-                "batch_1_last": heads[min(499, len(heads) - 1)].head,
+                "batch_1_last": heads[batch1_last].head,
                 **progress,
             },
             ensure_ascii=False,
@@ -515,8 +658,12 @@ def cmd_campaign_unresolved(args: argparse.Namespace) -> int:
         unresolved_heads_for_batch,
     )
 
+    _apply_campaign_path_defaults(args, mode="manifest")
+    spec = _campaign_spec(args)
     try:
-        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        heads = parse_campaign_manifest(
+            args.tsv, meta_path=args.meta, spec=spec
+        )
         campaign = {h.head for h in heads}
         no_nat = parse_no_natural_tsv(
             args.no_natural, campaign_heads=campaign, require_file=True
@@ -559,8 +706,13 @@ def cmd_no_natural_sample(args: argparse.Namespace) -> int:
         sample_no_natural_rows,
     )
 
+    _apply_campaign_path_defaults(args, mode="no_natural")
+    spec = _campaign_spec(args)
+
     try:
-        heads = parse_campaign_manifest(args.manifest, meta_path=args.manifest_meta)
+        heads = parse_campaign_manifest(
+            args.manifest, meta_path=args.manifest_meta, spec=spec
+        )
         campaign = {h.head for h in heads}
         rows = parse_no_natural_tsv(
             args.tsv, campaign_heads=campaign, require_file=True
@@ -579,6 +731,7 @@ def cmd_no_natural_sample(args: argparse.Namespace) -> int:
         json.dumps(
             {
                 "ok": True,
+                "campaign_id": spec.campaign_id,
                 "n": len(rows),
                 "sample_size": sample_size_for(len(rows)),
                 "sampled": len(sampled),
@@ -598,8 +751,13 @@ def cmd_no_natural_validate(args: argparse.Namespace) -> int:
         validate_no_natural_ledger,
     )
 
+    _apply_campaign_path_defaults(args, mode="no_natural")
+    spec = _campaign_spec(args)
+
     try:
-        heads = parse_campaign_manifest(args.manifest, meta_path=args.manifest_meta)
+        heads = parse_campaign_manifest(
+            args.manifest, meta_path=args.manifest_meta, spec=spec
+        )
         rows = validate_no_natural_ledger(
             tsv_path=args.tsv,
             meta_path=args.meta,
@@ -612,6 +770,7 @@ def cmd_no_natural_validate(args: argparse.Namespace) -> int:
         json.dumps(
             {
                 "ok": True,
+                "campaign_id": spec.campaign_id,
                 "rows": len(rows),
                 "batch_ids": sorted({b for _, _, b in rows}),
             },
@@ -636,8 +795,12 @@ def cmd_campaign_final_sample(args: argparse.Namespace) -> int:
         stratified_sample_no_natural,
     )
 
+    _apply_campaign_path_defaults(args, mode="manifest")
+    spec = _campaign_spec(args)
     try:
-        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        heads = parse_campaign_manifest(
+            args.tsv, meta_path=args.meta, spec=spec
+        )
         campaign = {h.head for h in heads}
         no_nat = parse_no_natural_tsv(
             args.no_natural, campaign_heads=campaign, require_file=True
@@ -652,8 +815,13 @@ def cmd_campaign_final_sample(args: argparse.Namespace) -> int:
             )
             assert_campaign_complete(progress)
         head_batch = head_to_batch_index(heads)
-        accepted = stratified_sample_accepted(pairs, head_batch, seed=args.seed)
-        no_natural = stratified_sample_no_natural(no_nat, head_batch, seed=args.seed)
+        batch_count = max((h.batch_index for h in heads), default=0)
+        accepted = stratified_sample_accepted(
+            pairs, head_batch, seed=args.seed, batch_count=batch_count
+        )
+        no_natural = stratified_sample_no_natural(
+            no_nat, head_batch, seed=args.seed, batch_count=batch_count
+        )
     except ProjectAntonymsError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
         return 1
@@ -714,8 +882,12 @@ def cmd_campaign_final_validate(args: argparse.Namespace) -> int:
         validate_final_audit_meta,
     )
 
+    _apply_campaign_path_defaults(args, mode="manifest")
+    spec = _campaign_spec(args)
     try:
-        heads = parse_campaign_manifest(args.tsv, meta_path=args.meta)
+        heads = parse_campaign_manifest(
+            args.tsv, meta_path=args.meta, spec=spec
+        )
         campaign = {h.head for h in heads}
         no_nat = parse_no_natural_tsv(
             args.no_natural, campaign_heads=campaign, require_file=True
@@ -822,10 +994,19 @@ def main(argv: list[str] | None = None) -> int:
         CAMPAIGN_BASELINE_COMMIT,
     )
 
+    def _add_campaign_flag(p: argparse.ArgumentParser) -> None:
+        p.add_argument(
+            "--campaign",
+            default="top5000",
+            choices=("top5000", "len4"),
+            help="Campaign id (default top5000; len4 = 四字缺直連)",
+        )
+
     p_cf = sub.add_parser(
         "campaign-freeze",
-        help="Freeze Top-5000 campaign manifest (exclude project_ant)",
+        help="Freeze campaign manifest (top5000 or len4; exclude project_ant)",
     )
+    _add_campaign_flag(p_cf)
     p_cf.add_argument("--db", default=str(ROOT / "lyrics.db"))
     p_cf.add_argument("--out-tsv", default=str(DEFAULT_MANIFEST_TSV))
     p_cf.add_argument("--out-meta", default=str(DEFAULT_MANIFEST_META))
@@ -842,15 +1023,25 @@ def main(argv: list[str] | None = None) -> int:
         dest="init_no_natural",
         help="Do not create no-natural TSV even if missing",
     )
-    p_cf.add_argument("--baseline-commit", default=CAMPAIGN_BASELINE_COMMIT)
+    p_cf.add_argument(
+        "--force-reseed-no-natural",
+        action="store_true",
+        help="Overwrite existing no-natural ledger when inheriting (len4)",
+    )
+    p_cf.add_argument(
+        "--baseline-commit",
+        default="",
+        help="Git sha1 baseline (top5000 defaults to fixed baseline; len4 defaults to HEAD)",
+    )
     p_cf.add_argument(
         "--reference-seeds",
         default="",
-        help="Optional seeds.txt; first 500 must match exactly",
+        help="Optional seeds.txt; first batch must match exactly",
     )
     p_cf.set_defaults(func=cmd_campaign_freeze)
 
     p_cv = sub.add_parser("campaign-validate", help="Validate frozen campaign + no-natural")
+    _add_campaign_flag(p_cv)
     p_cv.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
     p_cv.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
     p_cv.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
@@ -872,6 +1063,7 @@ def main(argv: list[str] | None = None) -> int:
         "campaign-unresolved",
         help="List unresolved campaign heads for one batch_index",
     )
+    _add_campaign_flag(p_cu)
     p_cu.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
     p_cu.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
     p_cu.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
@@ -887,6 +1079,7 @@ def main(argv: list[str] | None = None) -> int:
     p_cu.set_defaults(func=cmd_campaign_unresolved)
 
     p_ns = sub.add_parser("no-natural-sample", help="Sample no-natural rows for quality gate")
+    _add_campaign_flag(p_ns)
     p_ns.add_argument("--tsv", default=str(DEFAULT_NO_NATURAL_TSV))
     p_ns.add_argument("--manifest", default=str(DEFAULT_MANIFEST_TSV))
     p_ns.add_argument("--manifest-meta", default=str(DEFAULT_MANIFEST_META))
@@ -899,6 +1092,7 @@ def main(argv: list[str] | None = None) -> int:
         "no-natural-validate",
         help="Fail-closed validate no-natural TSV + meta sample replay",
     )
+    _add_campaign_flag(p_nv)
     p_nv.add_argument("--tsv", default=str(DEFAULT_NO_NATURAL_TSV))
     p_nv.add_argument("--meta", default=str(DEFAULT_NO_NATURAL_META))
     p_nv.add_argument("--manifest", default=str(DEFAULT_MANIFEST_TSV))
@@ -909,6 +1103,7 @@ def main(argv: list[str] | None = None) -> int:
         "campaign-final-sample",
         help="Stratified final-audit sample (accepted + no-natural by batch_index)",
     )
+    _add_campaign_flag(p_fs)
     p_fs.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
     p_fs.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
     p_fs.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))
@@ -934,6 +1129,7 @@ def main(argv: list[str] | None = None) -> int:
         "campaign-final-validate",
         help="Fail-closed validate campaign final audit meta + stratified replay",
     )
+    _add_campaign_flag(p_fv)
     p_fv.add_argument("--tsv", default=str(DEFAULT_MANIFEST_TSV))
     p_fv.add_argument("--meta", default=str(DEFAULT_MANIFEST_META))
     p_fv.add_argument("--no-natural", default=str(DEFAULT_NO_NATURAL_TSV))

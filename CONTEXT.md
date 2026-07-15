@@ -252,6 +252,14 @@ _Avoid_：以 guotong 作正負例 few-shot、先複製上游反義再 LLM 潤�
 一次凍結嘅 Essay Top-5000 **有近無直連反** 目標集（邏輯排除已有 **專案自建反義** 以免母體滑動）；每個 **campaign 目標詞** 最終須有 **終局判定**。完成前唔發佈以「高頻全 resolved」為閘嘅版本。
 _Avoid_：把 campaign 叫「種子」、與單批 Top-K 種子匯出混稱、未完成就當 v1.0.9 已過完整詞庫門檻
 
+**四字缺直連反義 campaign**：
+一次凍結嘅 **有近無直連反** 且字面長度為 4 的目標集（邏輯排除已有 **專案自建反義**；與 **高頻反義 campaign** 平行、唔混同一 freeze 帳）。每個 **campaign 目標詞** 須有 **終局判定**；完成＝該母體全數 **已裁定**，**唔**宣稱「全部成語／全部四字都有反義」。未裁定頭按 **Essay 詞頻** 降序分批推進。他 campaign 已入帳之 `no_natural_antonym` 對同字面 **繼承為已裁定**（唔強制重審；翻案僅維護者手動）。起草用四字專用盲生成稿（契約同 **專案自建反義起草**，另偏好見 **四字尾軟偏好**）。品質閘同其他新 campaign 批（≥90%）。產品面仍只係清單＋套入；**唔**因本 campaign 完成而關閉近義橋／runtime 衍生，亦 **唔**改近反義池 ant 排序。
+_Avoid_：叫成「成語 campaign」或「全四字／全成語有反義」、與高頻 Top-5000 freeze 混帳、把完成當全局直連覆蓋閘、runtime 為四字另訂排序、不繼承舊 no-natural 又重跑全量、MOE 相反詞當本 campaign 源
+
+**四字尾軟偏好**：
+**四字缺直連反義 campaign** 起草與審定時，優先收同長（四字）反義尾；短尾仍可入 **專案自建反義清單**（有效字面契約不變），每頭多候選時優先保留四字尾。唔因「只有短尾」改判 `no_natural_antonym`。
+_Avoid_：硬性要求至少一條四字尾先算 accepted、改有效字面長度上限、把軟偏好做成 runtime 硬分層
+
 **campaign 目標詞**：
 凍結 manifest 內一個 head（固定 rank 與 batch 槽）；進度與完成閘只對此集合計數。
 _Avoid_：把清單 tail、庫外字面、或非 manifest 字面當目標
@@ -273,8 +281,8 @@ _Avoid_：把 allowlist 格式通過當語意 OK、同 pair A–D 硬套、無 m
 _Avoid_：用 DB 列數或種子退出數代替已裁定計數、把待 membership 草稿當已裁定
 
 **campaign 最終稽核**：
-**高頻反義 campaign** 全部 **已裁定** 之後，對 accepted 與 no-natural 各自按 batch 分層重抽並過 ≥90% 閘嘅收官品質稽核；紀錄獨立於單批 meta。
-_Avoid_：把單批 sample 當最終稽核、未全部已裁定就當已過最終閘
+某一反義 campaign（**高頻反義 campaign**、**四字缺直連反義 campaign** 等）全部 **已裁定** 之後，對該 campaign 的 accepted 與 no-natural 各自按 batch 分層重抽並過 ≥90% 閘嘅收官品質稽核；紀錄獨立於單批 meta。
+_Avoid_：把單批 sample 當最終稽核、未全部已裁定就當已過最終閘、用高頻收官代替四字收官（或相反）
 
 **近義橋反義**：
 有近無反字面（無任何 ant 列）→ 語意向量找橋接近義（達門檻）→ 多橋合併借 **直連反義**（投影讀，排序橋分）。快照注入，僅 ingest。
