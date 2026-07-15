@@ -22,7 +22,7 @@ head	reason	batch_id
 講	polysemous_no_stable_sense	campaign-b01-20260713
 知	polysemous_no_stable_sense	campaign-b01-20260713
 想	polysemous_no_stable_sense	campaign-b01-20260713
-因爲	function_word	campaign-b01-20260713
+因為	function_word	campaign-b01-20260713
 一個	no_gradable_opposite	campaign-b01-20260713
 比	function_word	campaign-b01-20260713
 見	polysemous_no_stable_sense	campaign-b01-20260713
@@ -71,14 +71,14 @@ head	reason	batch_id
 就是	function_word	campaign-b01-20260713
 帶	polysemous_no_stable_sense	campaign-b01-20260713
 時間	no_gradable_opposite	campaign-b01-20260713
-說	polysemous_no_stable_sense	campaign-b01-20260713
+説	polysemous_no_stable_sense	campaign-b01-20260713
 電話	no_gradable_opposite	campaign-b01-20260713
 不	function_word	campaign-b01-20260713
 即	function_word	campaign-b01-20260713
 她	proper_name_or_deixis	campaign-b01-20260713
 三	no_gradable_opposite	campaign-b01-20260713
 大家	polysemous_no_stable_sense	campaign-b01-20260713
-爲	function_word	campaign-b01-20260713
+為	function_word	campaign-b01-20260713
 時	function_word	campaign-b01-20260713
 條	polysemous_no_stable_sense	campaign-b01-20260713
 把	function_word	campaign-b01-20260713
@@ -111,7 +111,7 @@ head	reason	batch_id
 年	no_gradable_opposite	campaign-b01-20260713
 咋	function_word	campaign-b01-20260713
 另	function_word	campaign-b01-20260713
-以爲	polysemous_no_stable_sense	campaign-b01-20260713
+以為	polysemous_no_stable_sense	campaign-b01-20260713
 耐	polysemous_no_stable_sense	campaign-b01-20260713
 太	function_word	campaign-b01-20260713
 就算	function_word	campaign-b01-20260713
@@ -167,7 +167,7 @@ head	reason	batch_id
 咬	polysemous_no_stable_sense	campaign-b01-20260713
 請	polysemous_no_stable_sense	campaign-b01-20260713
 似	polysemous_no_stable_sense	campaign-b01-20260713
-成爲	polysemous_no_stable_sense	campaign-b01-20260713
+成為	polysemous_no_stable_sense	campaign-b01-20260713
 更加	function_word	campaign-b01-20260713
 嘞	function_word	campaign-b01-20260713
 經過	function_word	campaign-b01-20260713
@@ -189,14 +189,14 @@ head	reason	batch_id
 究竟	polysemous_no_stable_sense	campaign-b01-20260713
 之	function_word	campaign-b01-20260713
 兜	polysemous_no_stable_sense	campaign-b01-20260713
-作爲	function_word	campaign-b01-20260713
+作為	function_word	campaign-b01-20260713
 歲	function_word	campaign-b01-20260713
 關係	polysemous_no_stable_sense	campaign-b01-20260713
 變	polysemous_no_stable_sense	campaign-b01-20260713
 幾時	function_word	campaign-b01-20260713
 鞋	no_gradable_opposite	campaign-b01-20260713
 吾	proper_name_or_deixis	campaign-b01-20260713
-喫	polysemous_no_stable_sense	campaign-b01-20260713
+吃	polysemous_no_stable_sense	campaign-b01-20260713
 辦法	polysemous_no_stable_sense	campaign-b01-20260713
 飛	polysemous_no_stable_sense	campaign-b01-20260713
 男朋友	cultural_no_binary	campaign-b01-20260713
@@ -238,7 +238,7 @@ head	reason	batch_id
 女朋友	cultural_no_binary	campaign-b01-20260713
 機會	polysemous_no_stable_sense	campaign-b01-20260713
 哥	cultural_no_binary	campaign-b01-20260713
-爲什麼	function_word	campaign-b01-20260713
+為什麼	function_word	campaign-b01-20260713
 哈哈	function_word	campaign-b01-20260713
 路	no_gradable_opposite	campaign-b01-20260713
 哇	function_word	campaign-b01-20260713
@@ -276,7 +276,7 @@ head	reason	batch_id
 阿媽	cultural_no_binary	campaign-b01-20260713
 阿妹	cultural_no_binary	campaign-b01-20260713
 故事	polysemous_no_stable_sense	campaign-b01-20260713
-爲了	function_word	campaign-b01-20260713
+為了	function_word	campaign-b01-20260713
 爬	polysemous_no_stable_sense	campaign-b01-20260713
 對方	polysemous_no_stable_sense	campaign-b01-20260713
 本來	no_gradable_opposite	campaign-b01-20260713
@@ -340,7 +340,7 @@ head	reason	batch_id
 手上	polysemous_no_stable_sense	campaign-b02-20260713
 個個	function_word	campaign-b02-20260713
 無論	function_word	campaign-b02-20260713
-行爲	no_gradable_opposite	campaign-b02-20260713
+行為	no_gradable_opposite	campaign-b02-20260713
 血	no_gradable_opposite	campaign-b02-20260713
 警察	no_gradable_opposite	campaign-b02-20260713
 筆	no_gradable_opposite	campaign-b02-20260713
@@ -586,7 +586,7 @@ head	reason	batch_id
 有點	function_word	campaign-b02-20260713
 池	no_gradable_opposite	campaign-b02-20260713
 鼻	no_gradable_opposite	campaign-b02-20260713
-溫書	no_gradable_opposite	campaign-b02-20260713
+温書	no_gradable_opposite	campaign-b02-20260713
 走廊	no_gradable_opposite	campaign-b02-20260713
 還是	function_word	campaign-b02-20260713
 可是	function_word	campaign-b02-20260713
@@ -622,7 +622,6 @@ head	reason	batch_id
 皮	no_gradable_opposite	campaign-b03-20260713
 幾乎	function_word	campaign-b03-20260713
 林	no_gradable_opposite	campaign-b03-20260713
-茅屋	no_gradable_opposite	campaign-b03-20260713
 重新	function_word	campaign-b03-20260713
 家裏	no_gradable_opposite	campaign-b03-20260713
 他們	proper_name_or_deixis	campaign-b03-20260713
@@ -737,7 +736,7 @@ head	reason	batch_id
 經驗	no_gradable_opposite	campaign-b03-20260713
 誰	proper_name_or_deixis	campaign-b03-20260713
 雪	no_gradable_opposite	campaign-b03-20260713
-臺灣	proper_name_or_deixis	campaign-b03-20260713
+台灣	proper_name_or_deixis	campaign-b03-20260713
 一面	function_word	campaign-b03-20260713
 死人	no_gradable_opposite	campaign-b03-20260713
 關於	function_word	campaign-b03-20260713
@@ -755,7 +754,7 @@ head	reason	batch_id
 身材	no_gradable_opposite	campaign-b03-20260713
 們	function_word	campaign-b03-20260713
 馬戲	no_gradable_opposite	campaign-b03-20260713
-平臺	no_gradable_opposite	campaign-b03-20260713
+平台	no_gradable_opposite	campaign-b03-20260713
 圖	no_gradable_opposite	campaign-b03-20260713
 森林	no_gradable_opposite	campaign-b03-20260713
 女生	cultural_no_binary	campaign-b03-20260713
@@ -796,7 +795,7 @@ head	reason	batch_id
 碼頭	no_gradable_opposite	campaign-b03-20260713
 韻	polysemous_no_stable_sense	campaign-b03-20260713
 思考	no_gradable_opposite	campaign-b03-20260713
-觀衆	no_gradable_opposite	campaign-b03-20260713
+觀眾	no_gradable_opposite	campaign-b03-20260713
 交換	polysemous_no_stable_sense	campaign-b03-20260713
 宅	polysemous_no_stable_sense	campaign-b03-20260713
 條件	polysemous_no_stable_sense	campaign-b03-20260713
@@ -836,13 +835,13 @@ head	reason	batch_id
 款	polysemous_no_stable_sense	campaign-b03-20260713
 石	polysemous_no_stable_sense	campaign-b03-20260713
 要點	no_gradable_opposite	campaign-b03-20260713
-爲止	function_word	campaign-b03-20260713
+為止	function_word	campaign-b03-20260713
 外國	no_gradable_opposite	campaign-b03-20260713
 巴	polysemous_no_stable_sense	campaign-b03-20260713
 幼稚園	no_gradable_opposite	campaign-b03-20260713
 老公	no_gradable_opposite	campaign-b03-20260713
 長老	cultural_no_binary	campaign-b03-20260713
-身爲	function_word	campaign-b03-20260713
+身為	function_word	campaign-b03-20260713
 引	polysemous_no_stable_sense	campaign-b03-20260713
 調查	polysemous_no_stable_sense	campaign-b03-20260713
 就要	function_word	campaign-b03-20260713
@@ -856,14 +855,13 @@ head	reason	batch_id
 態度	polysemous_no_stable_sense	campaign-b03-20260713
 此時	proper_name_or_deixis	campaign-b03-20260713
 球場	no_gradable_opposite	campaign-b03-20260713
-英雄	cultural_no_binary	campaign-b03-20260713
 證明	polysemous_no_stable_sense	campaign-b03-20260713
 車站	no_gradable_opposite	campaign-b03-20260713
 呻吟	no_gradable_opposite	campaign-b03-20260713
 國	polysemous_no_stable_sense	campaign-b03-20260713
 超人	no_gradable_opposite	campaign-b03-20260713
 遞	polysemous_no_stable_sense	campaign-b03-20260713
-爲主	polysemous_no_stable_sense	campaign-b03-20260713
+為主	polysemous_no_stable_sense	campaign-b03-20260713
 價值	polysemous_no_stable_sense	campaign-b03-20260713
 溝通	polysemous_no_stable_sense	campaign-b03-20260713
 角度	polysemous_no_stable_sense	campaign-b03-20260713
@@ -905,7 +903,7 @@ head	reason	batch_id
 百	no_gradable_opposite	campaign-b03-20260713
 精靈	polysemous_no_stable_sense	campaign-b03-20260713
 討論	no_gradable_opposite	campaign-b03-20260713
-再說	polysemous_no_stable_sense	campaign-b03-20260713
+再説	polysemous_no_stable_sense	campaign-b03-20260713
 喔	function_word	campaign-b03-20260713
 報紙	no_gradable_opposite	campaign-b03-20260713
 工廠	no_gradable_opposite	campaign-b03-20260713
@@ -941,7 +939,6 @@ head	reason	batch_id
 隊長	cultural_no_binary	campaign-b03-20260713
 咱們	proper_name_or_deixis	campaign-b03-20260713
 洲	no_gradable_opposite	campaign-b04-20260714
-相當	polysemous_no_stable_sense	campaign-b04-20260714
 練	polysemous_no_stable_sense	campaign-b04-20260714
 臨	polysemous_no_stable_sense	campaign-b04-20260714
 華	proper_name_or_deixis	campaign-b04-20260714
@@ -1025,13 +1022,13 @@ head	reason	batch_id
 煲	no_gradable_opposite	campaign-b04-20260714
 脾氣	no_gradable_opposite	campaign-b04-20260714
 那個	proper_name_or_deixis	campaign-b04-20260714
-爲何	proper_name_or_deixis	campaign-b04-20260714
+為何	proper_name_or_deixis	campaign-b04-20260714
 心態	no_gradable_opposite	campaign-b04-20260714
 搓	polysemous_no_stable_sense	campaign-b04-20260714
 無比	function_word	campaign-b04-20260714
 積木	no_gradable_opposite	campaign-b04-20260714
 用於	function_word	campaign-b04-20260714
-稱爲	function_word	campaign-b04-20260714
+稱為	function_word	campaign-b04-20260714
 命運	no_gradable_opposite	campaign-b04-20260714
 如何	proper_name_or_deixis	campaign-b04-20260714
 指示	no_gradable_opposite	campaign-b04-20260714
@@ -1075,7 +1072,7 @@ head	reason	batch_id
 現場	no_gradable_opposite	campaign-b04-20260714
 窗口	no_gradable_opposite	campaign-b04-20260714
 莊	proper_name_or_deixis	campaign-b04-20260714
-羣衆	no_gradable_opposite	campaign-b04-20260714
+羣眾	no_gradable_opposite	campaign-b04-20260714
 大腦	no_gradable_opposite	campaign-b04-20260714
 天地	no_gradable_opposite	campaign-b04-20260714
 彭	proper_name_or_deixis	campaign-b04-20260714
@@ -1095,7 +1092,6 @@ head	reason	batch_id
 靈魂	no_gradable_opposite	campaign-b04-20260714
 魔鬼	no_gradable_opposite	campaign-b04-20260714
 美元	no_gradable_opposite	campaign-b04-20260714
-人間	no_gradable_opposite	campaign-b04-20260714
 地盤	no_gradable_opposite	campaign-b04-20260714
 天空	no_gradable_opposite	campaign-b04-20260714
 心臟	no_gradable_opposite	campaign-b04-20260714
@@ -1123,8 +1119,8 @@ head	reason	batch_id
 獅子	no_gradable_opposite	campaign-b04-20260714
 造成	no_gradable_opposite	campaign-b04-20260714
 武漢	proper_name_or_deixis	campaign-b04-20260714
-衆人	no_gradable_opposite	campaign-b04-20260714
-傳說	no_gradable_opposite	campaign-b04-20260714
+眾人	no_gradable_opposite	campaign-b04-20260714
+傳説	no_gradable_opposite	campaign-b04-20260714
 樹葉	no_gradable_opposite	campaign-b04-20260714
 甚麼	function_word	campaign-b04-20260714
 笪	no_gradable_opposite	campaign-b04-20260714
@@ -1144,7 +1140,6 @@ head	reason	batch_id
 慶祝	no_gradable_opposite	campaign-b04-20260714
 戲院	no_gradable_opposite	campaign-b04-20260714
 會長	cultural_no_binary	campaign-b04-20260714
-男性	cultural_no_binary	campaign-b04-20260714
 經濟	no_gradable_opposite	campaign-b04-20260714
 部落	no_gradable_opposite	campaign-b04-20260714
 鼻涕	no_gradable_opposite	campaign-b04-20260714
@@ -1214,7 +1209,7 @@ head	reason	batch_id
 狐狸	no_gradable_opposite	campaign-b04-20260714
 處於	function_word	campaign-b04-20260714
 除非	function_word	campaign-b04-20260714
-公衆	cultural_no_binary	campaign-b04-20260714
+公眾	cultural_no_binary	campaign-b04-20260714
 可怕	polysemous_no_stable_sense	campaign-b04-20260714
 喉嚨	no_gradable_opposite	campaign-b04-20260714
 婚	polysemous_no_stable_sense	campaign-b04-20260714
@@ -1290,7 +1285,7 @@ head	reason	batch_id
 規則	no_gradable_opposite	campaign-b05-20260714
 農莊	no_gradable_opposite	campaign-b05-20260714
 鍾	polysemous_no_stable_sense	campaign-b05-20260714
-爲啥	function_word	campaign-b05-20260714
+為啥	function_word	campaign-b05-20260714
 一些	function_word	campaign-b05-20260714
 中年	no_gradable_opposite	campaign-b05-20260714
 伯	cultural_no_binary	campaign-b05-20260714
@@ -1307,7 +1302,7 @@ head	reason	batch_id
 麻	polysemous_no_stable_sense	campaign-b05-20260714
 對不起	no_gradable_opposite	campaign-b05-20260714
 房價	no_gradable_opposite	campaign-b05-20260714
-大衆	no_gradable_opposite	campaign-b05-20260714
+大眾	no_gradable_opposite	campaign-b05-20260714
 報價	no_gradable_opposite	campaign-b05-20260714
 兩邊	proper_name_or_deixis	campaign-b05-20260714
 地址	no_gradable_opposite	campaign-b05-20260714
@@ -1409,7 +1404,7 @@ head	reason	batch_id
 前後	polysemous_no_stable_sense	campaign-b05-20260714
 半空	no_gradable_opposite	campaign-b05-20260714
 器	no_gradable_opposite	campaign-b05-20260714
-小說	no_gradable_opposite	campaign-b05-20260714
+小説	no_gradable_opposite	campaign-b05-20260714
 年齡	no_gradable_opposite	campaign-b05-20260714
 念頭	no_gradable_opposite	campaign-b05-20260714
 挑	polysemous_no_stable_sense	campaign-b05-20260714
@@ -1507,7 +1502,6 @@ head	reason	batch_id
 姿勢	no_gradable_opposite	campaign-b05-20260714
 娟	proper_name_or_deixis	campaign-b05-20260714
 成員	no_gradable_opposite	campaign-b05-20260714
-直線	polysemous_no_stable_sense	campaign-b05-20260714
 眼光	no_gradable_opposite	campaign-b05-20260714
 眼色	no_gradable_opposite	campaign-b05-20260714
 肺	no_gradable_opposite	campaign-b05-20260714
@@ -1541,9 +1535,9 @@ head	reason	batch_id
 這些	proper_name_or_deixis	campaign-b05-20260714
 郵差	no_gradable_opposite	campaign-b05-20260714
 面色	no_gradable_opposite	campaign-b05-20260714
-溫	polysemous_no_stable_sense	campaign-b05-20260714
+温	polysemous_no_stable_sense	campaign-b05-20260714
 簡歷	no_gradable_opposite	campaign-b05-20260714
-爲人	no_gradable_opposite	campaign-b05-20260714
+為人	no_gradable_opposite	campaign-b05-20260714
 審核	no_gradable_opposite	campaign-b05-20260714
 伯母	cultural_no_binary	campaign-b05-20260714
 保險	no_gradable_opposite	campaign-b05-20260714
@@ -1552,7 +1546,7 @@ head	reason	batch_id
 報告	no_gradable_opposite	campaign-b05-20260714
 士多啤梨	no_gradable_opposite	campaign-b05-20260714
 姑	cultural_no_binary	campaign-b05-20260714
-守衛	no_gradable_opposite	campaign-b05-20260714
+守衞	no_gradable_opposite	campaign-b05-20260714
 市	no_gradable_opposite	campaign-b05-20260714
 心底	no_gradable_opposite	campaign-b05-20260714
 感應	no_gradable_opposite	campaign-b05-20260714
@@ -1611,10 +1605,10 @@ head	reason	batch_id
 風扇	no_gradable_opposite	campaign-b06-20260714
 骨頭	no_gradable_opposite	campaign-b06-20260714
 黑人	cultural_no_binary	campaign-b06-20260714
-出臺	polysemous_no_stable_sense	campaign-b06-20260714
-分爲	polysemous_no_stable_sense	campaign-b06-20260714
+出台	polysemous_no_stable_sense	campaign-b06-20260714
+分為	polysemous_no_stable_sense	campaign-b06-20260714
 職工	no_gradable_opposite	campaign-b06-20260714
-較爲	function_word	campaign-b06-20260714
+較為	function_word	campaign-b06-20260714
 備份	no_gradable_opposite	campaign-b06-20260714
 人羣	no_gradable_opposite	campaign-b06-20260714
 一絲	function_word	campaign-b06-20260714
@@ -1634,7 +1628,6 @@ head	reason	batch_id
 牛肉	no_gradable_opposite	campaign-b06-20260714
 眉	no_gradable_opposite	campaign-b06-20260714
 稱呼	polysemous_no_stable_sense	campaign-b06-20260714
-萬一	function_word	campaign-b06-20260714
 街道	no_gradable_opposite	campaign-b06-20260714
 訓導	polysemous_no_stable_sense	campaign-b06-20260714
 也好	function_word	campaign-b06-20260714
@@ -1648,7 +1641,7 @@ head	reason	batch_id
 警方	no_gradable_opposite	campaign-b06-20260714
 電筒	no_gradable_opposite	campaign-b06-20260714
 老百姓	cultural_no_binary	campaign-b06-20260714
-改爲	function_word	campaign-b06-20260714
+改為	function_word	campaign-b06-20260714
 候	polysemous_no_stable_sense	campaign-b06-20260714
 四圍	polysemous_no_stable_sense	campaign-b06-20260714
 圖畫	no_gradable_opposite	campaign-b06-20260714
@@ -1698,12 +1691,11 @@ head	reason	batch_id
 那時候	function_word	campaign-b06-20260714
 廠家	no_gradable_opposite	campaign-b06-20260714
 湖南	proper_name_or_deixis	campaign-b06-20260714
-後臺	no_gradable_opposite	campaign-b06-20260714
+後台	no_gradable_opposite	campaign-b06-20260714
 倒數	polysemous_no_stable_sense	campaign-b06-20260714
 光線	no_gradable_opposite	campaign-b06-20260714
 刷牙	no_gradable_opposite	campaign-b06-20260714
 刺	polysemous_no_stable_sense	campaign-b06-20260714
-前輩	cultural_no_binary	campaign-b06-20260714
 化妝	polysemous_no_stable_sense	campaign-b06-20260714
 否則	function_word	campaign-b06-20260714
 宣傳	polysemous_no_stable_sense	campaign-b06-20260714
@@ -1762,8 +1754,7 @@ head	reason	batch_id
 順勢	function_word	campaign-b06-20260714
 走向	polysemous_no_stable_sense	campaign-b06-20260714
 研究生	no_gradable_opposite	campaign-b06-20260714
-祕書	cultural_no_binary	campaign-b06-20260714
-遠程	no_gradable_opposite	campaign-b06-20260714
+秘書	cultural_no_binary	campaign-b06-20260714
 考核	no_gradable_opposite	campaign-b06-20260714
 貿易	no_gradable_opposite	campaign-b06-20260714
 長沙	proper_name_or_deixis	campaign-b06-20260714
@@ -1790,7 +1781,7 @@ head	reason	batch_id
 酒吧	no_gradable_opposite	campaign-b06-20260714
 金屬	no_gradable_opposite	campaign-b06-20260714
 新疆	proper_name_or_deixis	campaign-b06-20260714
-衆	polysemous_no_stable_sense	campaign-b06-20260714
+眾	polysemous_no_stable_sense	campaign-b06-20260714
 國務院	proper_name_or_deixis	campaign-b06-20260714
 週五	no_gradable_opposite	campaign-b06-20260714
 一行	no_gradable_opposite	campaign-b06-20260714
@@ -1808,7 +1799,7 @@ head	reason	batch_id
 步伐	no_gradable_opposite	campaign-b06-20260714
 沿途	no_gradable_opposite	campaign-b06-20260714
 泡泡	no_gradable_opposite	campaign-b06-20260714
-溫度	no_gradable_opposite	campaign-b06-20260714
+温度	no_gradable_opposite	campaign-b06-20260714
 申請	polysemous_no_stable_sense	campaign-b06-20260714
 紀念	polysemous_no_stable_sense	campaign-b06-20260714
 膠布	no_gradable_opposite	campaign-b06-20260714
@@ -1845,9 +1836,9 @@ head	reason	batch_id
 郵局	no_gradable_opposite	campaign-b06-20260714
 髀	no_gradable_opposite	campaign-b06-20260714
 接下來	function_word	campaign-b06-20260714
-民衆	no_gradable_opposite	campaign-b06-20260714
+民眾	no_gradable_opposite	campaign-b06-20260714
 註明	polysemous_no_stable_sense	campaign-b06-20260714
-最爲	function_word	campaign-b06-20260714
+最為	function_word	campaign-b06-20260714
 全世界	no_gradable_opposite	campaign-b06-20260714
 乞	polysemous_no_stable_sense	campaign-b06-20260714
 佈滿	polysemous_no_stable_sense	campaign-b06-20260714
@@ -2025,7 +2016,7 @@ head	reason	batch_id
 反饋	no_gradable_opposite	campaign-b07-20260714
 黨員	cultural_no_binary	campaign-b07-20260714
 得了	polysemous_no_stable_sense	campaign-b07-20260714
-名爲	function_word	campaign-b07-20260714
+名為	function_word	campaign-b07-20260714
 彙報	no_gradable_opposite	campaign-b07-20260714
 上司	cultural_no_binary	campaign-b07-20260714
 下場	polysemous_no_stable_sense	campaign-b07-20260714
@@ -2056,7 +2047,7 @@ head	reason	batch_id
 審計	no_gradable_opposite	campaign-b07-20260714
 話費	no_gradable_opposite	campaign-b07-20260714
 濟南	proper_name_or_deixis	campaign-b07-20260714
-電視臺	no_gradable_opposite	campaign-b07-20260714
+電視台	no_gradable_opposite	campaign-b07-20260714
 臨牀	no_gradable_opposite	campaign-b07-20260714
 國慶	proper_name_or_deixis	campaign-b07-20260714
 再也	function_word	campaign-b07-20260714
@@ -2094,7 +2085,7 @@ head	reason	batch_id
 傢俱	no_gradable_opposite	campaign-b07-20260714
 監測	no_gradable_opposite	campaign-b07-20260714
 即便	function_word	campaign-b07-20260714
-聽衆	cultural_no_binary	campaign-b07-20260714
+聽眾	cultural_no_binary	campaign-b07-20260714
 人權	no_gradable_opposite	campaign-b07-20260714
 儘管	function_word	campaign-b07-20260714
 公路	no_gradable_opposite	campaign-b07-20260714
@@ -2167,10 +2158,10 @@ head	reason	batch_id
 膜	no_gradable_opposite	campaign-b07-20260714
 臉頰	no_gradable_opposite	campaign-b07-20260714
 親生	cultural_no_binary	campaign-b07-20260714
-體溫	no_gradable_opposite	campaign-b07-20260714
+體温	no_gradable_opposite	campaign-b07-20260714
 鳥	no_gradable_opposite	campaign-b07-20260714
 編程	no_gradable_opposite	campaign-b07-20260714
-頗爲	function_word	campaign-b07-20260714
+頗為	function_word	campaign-b07-20260714
 出於	function_word	campaign-b07-20260714
 眼裏	proper_name_or_deixis	campaign-b07-20260714
 總理	cultural_no_binary	campaign-b07-20260714
@@ -2258,7 +2249,7 @@ head	reason	batch_id
 斑竹	polysemous_no_stable_sense	campaign-b08-20260714
 得以	function_word	campaign-b08-20260714
 教程	no_gradable_opposite	campaign-b08-20260714
-視爲	function_word	campaign-b08-20260714
+視為	function_word	campaign-b08-20260714
 紅包	no_gradable_opposite	campaign-b08-20260714
 機子	no_gradable_opposite	campaign-b08-20260714
 查找	no_gradable_opposite	campaign-b08-20260714
@@ -2355,7 +2346,7 @@ head	reason	batch_id
 顧	polysemous_no_stable_sense	campaign-b08-20260714
 香腸	no_gradable_opposite	campaign-b08-20260714
 影響力	no_gradable_opposite	campaign-b08-20260714
-爲此	function_word	campaign-b08-20260714
+為此	function_word	campaign-b08-20260714
 若干	function_word	campaign-b08-20260714
 腳本	no_gradable_opposite	campaign-b08-20260714
 結算	polysemous_no_stable_sense	campaign-b08-20260714
@@ -2363,7 +2354,7 @@ head	reason	batch_id
 嘎嘎	function_word	campaign-b08-20260714
 編譯	polysemous_no_stable_sense	campaign-b08-20260714
 長江	proper_name_or_deixis	campaign-b08-20260714
-溼地	no_gradable_opposite	campaign-b08-20260714
+濕地	no_gradable_opposite	campaign-b08-20260714
 人格	no_gradable_opposite	campaign-b08-20260714
 作用	polysemous_no_stable_sense	campaign-b08-20260714
 勢	polysemous_no_stable_sense	campaign-b08-20260714
@@ -2394,11 +2385,10 @@ head	reason	batch_id
 霧	no_gradable_opposite	campaign-b08-20260714
 霸	polysemous_no_stable_sense	campaign-b08-20260714
 運動員	cultural_no_binary	campaign-b08-20260714
-衛星	no_gradable_opposite	campaign-b08-20260714
+衞星	no_gradable_opposite	campaign-b08-20260714
 央行	no_gradable_opposite	campaign-b08-20260714
 節能	no_gradable_opposite	campaign-b08-20260714
 電路	no_gradable_opposite	campaign-b08-20260714
-也就是說	function_word	campaign-b08-20260714
 上帝	proper_name_or_deixis	campaign-b08-20260714
 不論	function_word	campaign-b08-20260714
 以免	function_word	campaign-b08-20260714
@@ -2419,7 +2409,7 @@ head	reason	batch_id
 歐陽	proper_name_or_deixis	campaign-b08-20260714
 水壺	no_gradable_opposite	campaign-b08-20260714
 混	polysemous_no_stable_sense	campaign-b08-20260714
-溫泉	no_gradable_opposite	campaign-b08-20260714
+温泉	no_gradable_opposite	campaign-b08-20260714
 用品	no_gradable_opposite	campaign-b08-20260714
 癮	polysemous_no_stable_sense	campaign-b08-20260714
 短褲	polysemous_no_stable_sense	campaign-b08-20260714
@@ -2442,7 +2432,7 @@ head	reason	batch_id
 魏	proper_name_or_deixis	campaign-b08-20260714
 外貿	no_gradable_opposite	campaign-b08-20260714
 塑料	no_gradable_opposite	campaign-b08-20260714
-比如說	function_word	campaign-b08-20260714
+比如説	function_word	campaign-b08-20260714
 維生素	no_gradable_opposite	campaign-b08-20260714
 一度	polysemous_no_stable_sense	campaign-b08-20260714
 伴侶	cultural_no_binary	campaign-b08-20260714
@@ -2516,7 +2506,7 @@ head	reason	batch_id
 蜈蚣	no_gradable_opposite	campaign-b09-20260714
 記性	no_gradable_opposite	campaign-b09-20260714
 話音	no_gradable_opposite	campaign-b09-20260714
-說道	no_gradable_opposite	campaign-b09-20260714
+説道	no_gradable_opposite	campaign-b09-20260714
 遊樂場	no_gradable_opposite	campaign-b09-20260714
 工商	no_gradable_opposite	campaign-b09-20260714
 商標	no_gradable_opposite	campaign-b09-20260714
@@ -2609,7 +2599,7 @@ head	reason	batch_id
 祭	no_gradable_opposite	campaign-b09-20260714
 紅豆	no_gradable_opposite	campaign-b09-20260714
 腹部	no_gradable_opposite	campaign-b09-20260714
-臺	polysemous_no_stable_sense	campaign-b09-20260714
+台	polysemous_no_stable_sense	campaign-b09-20260714
 訊	polysemous_no_stable_sense	campaign-b09-20260714
 身子	no_gradable_opposite	campaign-b09-20260714
 遊	polysemous_no_stable_sense	campaign-b09-20260714
@@ -2620,7 +2610,7 @@ head	reason	batch_id
 長春	proper_name_or_deixis	campaign-b09-20260714
 錄像	no_gradable_opposite	campaign-b09-20260714
 重要性	no_gradable_opposite	campaign-b09-20260714
-前臺	polysemous_no_stable_sense	campaign-b09-20260714
+前台	polysemous_no_stable_sense	campaign-b09-20260714
 評審	cultural_no_binary	campaign-b09-20260714
 份額	no_gradable_opposite	campaign-b09-20260714
 賈	proper_name_or_deixis	campaign-b09-20260714
@@ -2667,7 +2657,7 @@ head	reason	batch_id
 面積	no_gradable_opposite	campaign-b09-20260714
 面試	polysemous_no_stable_sense	campaign-b09-20260714
 鹿	no_gradable_opposite	campaign-b09-20260714
-稱之爲	function_word	campaign-b09-20260714
+稱之為	function_word	campaign-b09-20260714
 捐款	no_gradable_opposite	campaign-b09-20260714
 凡是	function_word	campaign-b09-20260714
 志願者	cultural_no_binary	campaign-b09-20260714
@@ -2737,7 +2727,6 @@ head	reason	batch_id
 上路	polysemous_no_stable_sense	campaign-b10-20260714
 不但	function_word	campaign-b10-20260714
 不住	function_word	campaign-b10-20260714
-不約而同	no_gradable_opposite	campaign-b10-20260714
 並用	no_gradable_opposite	campaign-b10-20260714
 中秋節	no_gradable_opposite	campaign-b10-20260714
 中華民族	proper_name_or_deixis	campaign-b10-20260714
@@ -2777,7 +2766,7 @@ head	reason	batch_id
 務	polysemous_no_stable_sense	campaign-b10-20260714
 勞動力	no_gradable_opposite	campaign-b10-20260714
 化工	no_gradable_opposite	campaign-b10-20260714
-化爲	function_word	campaign-b10-20260714
+化為	function_word	campaign-b10-20260714
 匯率	no_gradable_opposite	campaign-b10-20260714
 南寧	proper_name_or_deixis	campaign-b10-20260714
 博物館	no_gradable_opposite	campaign-b10-20260714
@@ -2912,10 +2901,9 @@ head	reason	batch_id
 知識產權	no_gradable_opposite	campaign-b10-20260714
 短裙	no_gradable_opposite	campaign-b10-20260714
 磁盤	no_gradable_opposite	campaign-b10-20260714
-祕書長	cultural_no_binary	campaign-b10-20260714
+秘書長	cultural_no_binary	campaign-b10-20260714
 票	polysemous_no_stable_sense	campaign-b10-20260714
 福利	no_gradable_opposite	campaign-b10-20260714
-移民	no_gradable_opposite	campaign-b10-20260714
 種種	function_word	campaign-b10-20260714
 立場	no_gradable_opposite	campaign-b10-20260714
 竟	function_word	campaign-b10-20260714
@@ -2976,7 +2964,7 @@ head	reason	batch_id
 請勿	function_word	campaign-b10-20260714
 請柬	no_gradable_opposite	campaign-b10-20260714
 講法	no_gradable_opposite	campaign-b10-20260714
-變爲	function_word	campaign-b10-20260714
+變為	function_word	campaign-b10-20260714
 跡象	no_gradable_opposite	campaign-b10-20260714
 踏上	no_gradable_opposite	campaign-b10-20260714
 車尾	no_gradable_opposite	campaign-b10-20260714
@@ -3002,7 +2990,7 @@ head	reason	batch_id
 門檻	no_gradable_opposite	campaign-b10-20260714
 關鍵字	no_gradable_opposite	campaign-b10-20260714
 闡述	no_gradable_opposite	campaign-b10-20260714
-陽臺	no_gradable_opposite	campaign-b10-20260714
+陽台	no_gradable_opposite	campaign-b10-20260714
 隨口	no_gradable_opposite	campaign-b10-20260714
 雀	no_gradable_opposite	campaign-b10-20260714
 集	polysemous_no_stable_sense	campaign-b10-20260714
@@ -3011,7 +2999,7 @@ head	reason	batch_id
 雜誌	no_gradable_opposite	campaign-b10-20260714
 難免	no_gradable_opposite	campaign-b10-20260714
 雯	proper_name_or_deixis	campaign-b10-20260714
-電臺	no_gradable_opposite	campaign-b10-20260714
+電台	no_gradable_opposite	campaign-b10-20260714
 霞	no_gradable_opposite	campaign-b10-20260714
 霸王	cultural_no_binary	campaign-b10-20260714
 音頻	no_gradable_opposite	campaign-b10-20260714
