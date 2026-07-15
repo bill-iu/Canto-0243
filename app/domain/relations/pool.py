@@ -37,10 +37,7 @@ class PoolSnapshot:
         return [r["char"] for r in rows if r.get("char")]
 
 
-from app.domain.relations.pool_builder import build_pool  # noqa: E402
-
 __all__ = [
     "DEFAULT_PAGE_SIZE",
     "PoolSnapshot",
-    "build_pool",
 ]

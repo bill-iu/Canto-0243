@@ -528,6 +528,19 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         )
         self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
 
+    def test_relation_pool_ranking_codegen_clean(self):
+        import subprocess
+
+        script = REPO_ROOT / "scripts" / "codegen_relation_pool_ranking.py"
+        proc = subprocess.run(
+            [sys.executable, str(script), "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(proc.returncode, 0, msg=proc.stderr or proc.stdout)
+
     def test_candidate_fallback_limit_not_hand_copied(self):
         """P3 #7: 2000 only from contract/generated (+ docs)."""
         allow = {

@@ -1,4 +1,4 @@
-"""Phase C PR4: TS 近反義池 project → build → ranking (grill C4)."""
+"""Phase C PR4: TS 近反義池 project → build → ranking (grill C4 + Phase 4 pool locality)."""
 from __future__ import annotations
 
 import re
@@ -16,36 +16,30 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
             "relation-pool-ranking.ts": ("finalScore", "mergeRelationPools", "sortSynPool", "sortAntPool"),
             "relation-pool-builder.ts": ("buildRelationPool", "fetchDbRelations"),
             "relation-pool-projection.ts": ("projectRelationPool", "relationPoolPage"),
-            # P2 #4: facade exposes projection only (not builder)
-            "relation-pool.ts": ("projectRelationPool", "relationPoolPage"),
         }
         for name, symbols in expected.items():
             path = DB / name
             with self.subTest(name=name):
                 self.assertTrue(path.is_file(), msg=f"missing {name}")
                 src = path.read_text(encoding="utf-8")
-                if name != "relation-pool.ts":
-                    lines = src.count("\n") + 1
-                    self.assertLessEqual(lines, MAX_LINES, msg=f"{name}={lines}")
+                lines = src.count("\n") + 1
+                self.assertLessEqual(lines, MAX_LINES, msg=f"{name}={lines}")
                 for sym in symbols:
                     self.assertTrue(
                         re.search(rf"\b{sym}\b", src),
                         msg=f"{name} missing {sym}",
                     )
-
-    def test_facade_reexports_from_layers(self):
-        src = (DB / "relation-pool.ts").read_text(encoding="utf-8")
-        self.assertIn("relation-pool-projection", src)
-        self.assertNotIn("relation-pool-builder", src)
-        self.assertNotIn("buildRelationPool", src)
-        # facade should stay thin
-        self.assertLess(src.count("\n") + 1, 80)
+        self.assertFalse(
+            (DB / "relation-pool.ts").is_file(),
+            msg="shallow relation-pool.ts barrel must stay deleted",
+        )
 
     def test_runtime_callers_use_projection_not_builder(self):
         entry = (
             REPO / "client" / "src" / "entry-detail" / "load-entry-detail.ts"
         ).read_text(encoding="utf-8")
         self.assertIn("projectRelationPool", entry)
+        self.assertIn("relation-pool-projection", entry)
         self.assertNotIn("buildRelationPool", entry)
         # only projection module may import builder
         for path in (REPO / "client" / "src").rglob("*.ts"):
@@ -58,11 +52,18 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
                 self.fail(f"runtime must not import builder: {path.relative_to(REPO)}")
 
     def test_builder_not_inline_ranking_tables(self):
-        """Ranking SOURCE_BASE_RANK lives in ranking module, not builder."""
+        """SOURCE_BASE_RANK SSOT is contracts → _generated; ranking module imports it."""
         builder = (DB / "relation-pool-builder.ts").read_text(encoding="utf-8")
         ranking = (DB / "relation-pool-ranking.ts").read_text(encoding="utf-8")
-        self.assertIn("SOURCE_BASE_RANK", ranking)
+        generated = (DB / "_generated" / "relation-pool-ranking.ts").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("SOURCE_BASE_RANK", generated)
+        self.assertIn("_generated/relation-pool-ranking", ranking)
         self.assertNotIn("SOURCE_BASE_RANK", builder)
+        # ranking must not hand-copy the rank table
+        self.assertNotIn("'project_ant': 12", ranking)
+        self.assertIn("'project_ant': 12", generated)
 
 
 if __name__ == "__main__":

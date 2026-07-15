@@ -1,0 +1,24 @@
+{
+  "description": "Near/antonym pool ranking SSOT — source precedence for merge/finalScore (lower = better). Sort comparators stay dual-engine; this file locks source ranks and runtime-derived ant source ids only.",
+  "source_base_rank": {
+    "manual": 0,
+    "manual_syn_cluster": 18,
+    "manual_ant_mirror": 20,
+    "cilin": 10,
+    "antisem": 10,
+    "project_ant": 12,
+    "guotong": 15,
+    "ant_cilin_exanded": 25,
+    "ant_syn_bridge": 28,
+    "cow": 20,
+    "current_static": 15,
+    "runtime_static": 80,
+    "static_thesaurus": 80,
+    "embedding_cosine": 60,
+    "word_relations": 50
+  },
+  "runtime_derived_ant_sources": [
+    "ant_syn_mirror",
+    "ant_cilin_exanded"
+  ]
+}

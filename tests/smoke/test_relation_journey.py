@@ -4,7 +4,7 @@ from __future__ import annotations
 import unittest
 from unittest.mock import MagicMock
 
-from app.domain.relations.pool import build_pool
+from app.domain.relations.pool_builder import build_pool
 from app.domain.relations.pool_projection import (
     project_relation_pool,
     relation_pool_chars,
