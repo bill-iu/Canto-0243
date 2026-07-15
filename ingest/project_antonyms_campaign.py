@@ -252,10 +252,19 @@ def rank_campaign_heads(
     candidates = syns - directs
     if membership is not None:
         candidates &= membership
-    candidates = {c for c in candidates if is_valid_term(c)}
-    if length_filter is not None:
-        candidates = {c for c in candidates if len(c) == length_filter}
-    ranked = sorted(candidates, key=lambda ch: (-int(essay_freq(ch)), ch))
+    # Normalize (s2t) + dedupe so 如痴/如癡 etc. don't double-rank after freeze.
+    best_freq: Dict[str, int] = {}
+    for raw in candidates:
+        lit = normalize_literal(raw)
+        if not lit:
+            continue
+        if length_filter is not None and len(lit) != length_filter:
+            continue
+        f = max(int(essay_freq(raw)), int(essay_freq(lit)))
+        prev = best_freq.get(lit)
+        if prev is None or f > prev:
+            best_freq[lit] = f
+    ranked = sorted(best_freq.keys(), key=lambda ch: (-best_freq[ch], ch))
     if k is not None:
         if k <= 0:
             return []
@@ -266,7 +275,7 @@ def rank_campaign_heads(
             CampaignHead(
                 rank=i,
                 head=head,
-                essay_frequency=int(essay_freq(head)),
+                essay_frequency=int(best_freq[head]),
                 batch_index=(i - 1) // batch_size + 1,
             )
         )

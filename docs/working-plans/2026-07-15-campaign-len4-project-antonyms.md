@@ -356,7 +356,7 @@ python scripts/project_antonyms.py campaign-final-validate --campaign len4 --req
 - [x] WP-03 len4 no-natural 平行檔 + 繼承 helper（PR-A；freeze 產物待首次 freeze commit）
 - [x] WP-04 prompt-len4（PR-A）
 - [x] WP-06 測試綠（PR-A；Len4CampaignTests + top5000 回歸）
-- [ ] Freeze commit（manifest + meta + inherited nn）— **PR-B 起手**
+- [x] Freeze commit（manifest + meta + inherited nn）— **PR-B**（k=2898，6 批，繼承 nn=15）
 - [ ] WP-05 各批 accepted / no_natural + 閘
 - [ ] WP-08 最終稽核
 - [ ] Release note（可選版本）

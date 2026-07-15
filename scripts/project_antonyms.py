@@ -538,7 +538,13 @@ def cmd_campaign_freeze(args: argparse.Namespace) -> int:
                 dest_path=args.no_natural,
                 overwrite=force,
             )
-            inherited_src = str(spec.inherit_no_natural_from)
+            # Prefer repo-relative path in meta (portable across machines).
+            try:
+                inherited_src = str(
+                    Path(spec.inherit_no_natural_from).resolve().relative_to(ROOT)
+                ).replace("\\", "/")
+            except ValueError:
+                inherited_src = str(spec.inherit_no_natural_from).replace("\\", "/")
         except ProjectAntonymsError as exc:
             print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
             return 1

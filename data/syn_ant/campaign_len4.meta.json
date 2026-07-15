@@ -1,0 +1,31 @@
+{
+  "campaign_id": "len4",
+  "baseline_commit": "26ddacd862d097be297f0dd88b88f294731042a2",
+  "freeze_git_commit": "26ddacd862d097be297f0dd88b88f294731042a2",
+  "k": 2898,
+  "batch_size": 500,
+  "batch_count": 6,
+  "exclude_sources": [
+    "ant_cilin_exanded",
+    "ant_syn_bridge",
+    "ant_syn_mirror",
+    "manual_ant_mirror",
+    "project_ant"
+  ],
+  "db_sha256": "1e354cc25c0bea3faab7cbfbd1e7398128ff5e2122b109da0ee98624b960fbee",
+  "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+  "thesaurus_ant_sha256": "85563b52c718eb7f04cf1fde616b0e1e0865aac6bc8725c3843a05a3741d4e13",
+  "batch_counts": {
+    "1": 500,
+    "2": 500,
+    "3": 500,
+    "4": 500,
+    "5": 500,
+    "6": 398
+  },
+  "length_filter": 4,
+  "seed_predicate": "has_syn_no_direct_ant_excluding_project_ant",
+  "inherited_no_natural_count": 15,
+  "inherited_no_natural_source": "data/syn_ant/project_no_natural_antonyms.tsv",
+  "manifest_sha256": "68d5a89b18d3f6df5bb2645125b71201c6e35137ffc35d649dabd9f6122ade6d"
+}
