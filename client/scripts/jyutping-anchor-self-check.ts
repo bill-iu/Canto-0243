@@ -18,9 +18,15 @@ const PARSE_CASES: Array<[string, QueryKind]> = [
   ['3+ngo4', QueryKind.JYUTPING_ANCHOR],
   ['3$漢4', QueryKind.JYUTPING_ANCHOR],
   ['23+o', QueryKind.JYUTPING_ANCHOR],
+  ['34p', QueryKind.JYUTPING_ANCHOR],
+  ['34+p', QueryKind.JYUTPING_ANCHOR],
+  ['3+p4', QueryKind.JYUTPING_ANCHOR],
+  ['3?p4', QueryKind.JYUTPING_ANCHOR],
+  ['34gw', QueryKind.JYUTPING_ANCHOR],
+  ['3+gw4', QueryKind.JYUTPING_ANCHOR],
 ];
 
-const SEARCH_CASES = ['3+ngo4', '3$漢4', '23+o'] as const;
+const SEARCH_CASES = ['3+ngo4', '3$漢4', '23+o', '34p', '3+p4'] as const;
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const defaultDb = [
