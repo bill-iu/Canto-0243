@@ -780,6 +780,15 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertGreaterEqual(len(cases), 4)
         self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "query-explain.ts").is_file())
         self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain.py").is_file())
+        # #87: IR / render split (thin facade stays)
+        self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain_ir.py").is_file())
+        self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain_render.py").is_file())
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "query-explain-ir.ts").is_file())
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "query-explain-render.ts").is_file())
+        self.assertTrue((REPO_ROOT / "app" / "services" / "jyutping_anchor_parse.py").is_file())
+        self.assertTrue((REPO_ROOT / "app" / "services" / "jyutping_anchor_match.py").is_file())
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "jyutping-anchor-parse.ts").is_file())
+        self.assertTrue((REPO_ROOT / "client" / "src" / "db" / "jyutping-anchor-match.ts").is_file())
 
     def test_tab_geometry_js_shim_removed(self):
         path = REPO_ROOT / "shared" / "tab-geometry.js"
