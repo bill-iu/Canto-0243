@@ -122,9 +122,12 @@ def resolve_favicon(ui_dir: Path | None = None) -> Path | None:
 
 if FRONTEND_DIR.is_dir():
 
+    # Transitional: serve shared SSOT under /frontend for seam live-checks.
+    # Product launch opens /app/ only (local_launch HTML_SUFFIX); do not document
+    # /frontend/index.html as the Portable UI.
     @app.get("/frontend/index.html", include_in_schema=False)
     async def serve_frontend_index() -> HTMLResponse:
-        """Transitional: legacy shell for unmigrated tests. Product entry is /app/."""
+        """Legacy shell HTML for unmigrated tests. Product entry is /app/."""
         index = FRONTEND_DIR / "index.html"
         if not index.is_file():
             raise HTTPException(status_code=404, detail="frontend index not found")

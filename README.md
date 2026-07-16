@@ -82,6 +82,8 @@
 
 詞庫重建、發佈等詳見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) 及 [`docs/release.md`](docs/release.md)。
 
+Portable 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client && npm run build:portable`）。`frontend/` 暫留共享 SSOT，**唔**再開 `frontend/index.html` 當創作者入口。
+
 ---
 
 ## 關於開發者

@@ -92,7 +92,7 @@ function showFileFallback() {
 
   const link = document.createElement("a");
   link.className = "primary-button";
-  link.href = "http://127.0.0.1:8000/frontend/index.html";
+  link.href = "http://127.0.0.1:8000/app/index.html";
   link.textContent = "開啟應用程式";
 
   card.append(title, copy, note, link);
@@ -320,7 +320,7 @@ async function refreshPortableChrome() {
     applyAppTitle(Boolean(data?.portable));
     applyLexiconVersionMeta(data?.lexiconVersion || readLexiconVersionMeta(), getLang());
   } catch {
-    /* ponytail: meta tag from /frontend/index.html is the reload fallback */
+    /* ponytail: meta tag from /app/index.html is the reload fallback */
     applyLexiconVersionMeta(readLexiconVersionMeta(), getLang());
   }
 }

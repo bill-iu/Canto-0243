@@ -63,7 +63,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         open_idx = source.find("webbrowser.open")
         self.assertGreater(open_idx, 0)
         before_open = source[:open_idx]
-        self.assertIn("frontend/index.html", before_open)
+        self.assertIn('HTML_SUFFIX = "/app/index.html"', source)
+        self.assertIn("/app/index.html", before_open)
         self.assertIn("wait_for_url.py", before_open)
         gate_idx = source.find("--gate")
         self.assertGreater(gate_idx, open_idx)
@@ -131,7 +132,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertIn('"/shutdown"', source)
         self.assertIn("PORTABLE", source)
-        self.assertIn("serve_frontend_index", source)
+        self.assertIn("serve_app_index", source)
+        self.assertIn('"/app/index.html"', source)
         self.assertIn('name="canto-portable"', source)
 
     def test_ready_includes_portable_flag(self):

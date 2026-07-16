@@ -38,12 +38,24 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 
 主理已 Publish zip、macOS tar 未補時：Windows 創作者可下載 zip；跨平台驗收仍須 zip + x86_64 tar 齊。
 
+## 步驟 0 — Portable 產品 UI（每次打 zip／tar 前）
+
+下一正式 portable release **只**帶 `/app` client 殼（`client/dist-portable`），**唔**再以 `frontend/index.html` 作創作者入口。`frontend/` 仍留 repo 作共享 SSOT。
+
+```bash
+cd client && npm ci && npm run build:portable
+# 可選：node scripts/portable-host-build-self-check.mjs
+```
+
+`scripts/portable_bundle.ps1`／`build-portable.sh` 會檢查 `client/dist-portable/index.html`；缺則失敗。
+
 ## 步驟 1 — 新 tag（換庫／可感知變更）
 
 ```powershell
 # 前置：本機重建詞庫（只喺庫有變時）
 #   python scripts/bootstrap_data.py
 #   python -m ingest build-db
+# 前置：步驟 0（build:portable）已成功
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 

@@ -56,6 +56,14 @@ jobs:
         run: npm ci
         working-directory: client
 
+      - name: Build portable host (/app)
+        run: npm run build:portable
+        working-directory: client
+
+      - name: Portable host build self-check
+        run: node scripts/portable-host-build-self-check.mjs
+        working-directory: client
+
       - name: Guide probe readiness (PWA)
         run: npx tsx scripts/guide-probe-readiness-self-check.ts
         working-directory: client

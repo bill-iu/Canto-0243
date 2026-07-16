@@ -378,10 +378,10 @@ git commit -m "build(portable): ship client dist-portable instead of frontend tr
 - `main.py`：若仍 mount 舊 `/frontend` 作產品入口 → **移除產品入口**（共享檔仍留 repo）
 - 地圖 #83 或實作 epic 留言「第 (1) 段完成」
 
-- [ ] **Step 1:** ripgrep `frontend/index.html`／`HTML_SUFFIX`／bundle `frontend` UI 複製，清掉產品路徑
-- [ ] **Step 2:** 跑 #86 第 (1) 段綠燈：parity／guide／就緒＋核心搜尋；chrome-tabs＋維護者可用
-- [ ] **Step 3:** Commit `chore: cut over portable release to /app client host`
-- [ ] **Step 4:** 在 [地圖 #83](https://github.com/bill-iu/Canto-0243/issues/83) 留言第 (1) 段完成；開後續票給第 (2) 段／#87（可另 plan）
+- [x] **Step 1:** ripgrep `frontend/index.html`／`HTML_SUFFIX`／bundle `frontend` UI 複製，清掉產品路徑（文件／CI／seam／舊殼提示 → `/app/`；`frontend/` 仍留共享 SSOT）
+- [ ] **Step 2:** 跑 #86 第 (1) 段綠燈：parity／guide／就緒＋核心搜尋；chrome-tabs＋維護者可用 — **待維護者手動綠燈**（見 #83／#92）
+- [x] **Step 3:** Commit `chore: cut over portable docs and paths to /app client host`
+- [x] **Step 4:** 在 [地圖 #83](https://github.com/bill-iu/Canto-0243/issues/83) 留言：第 (1) 段實作已上 `dev`，待維護者手動綠燈（parity／guide＋chrome-tabs＋維護者工具手動 QA）；第 (2) 段／#87 另開
 
 ---
 

@@ -600,7 +600,7 @@ _Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 **免安裝交付**：無 pip；Portable 內建詞條庫；Win/Mac 雙擊即用。Linux 需 Python。內建執行環境須**可搬移**——任意解壓路徑、另一台電腦均可啟動，**唔**依賴建置機或系統已安裝嘅 Python。
 _Avoid_：要求創作者安裝 Python／uv、只在建置機驗證啟動即當交付完成
 
-**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。
+**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`frontend/`** 暫留共享 SSOT（mjs／CSS），**唔**當創作者入口殼。
 
 **Canto-0243 License**：整包 CC BY-NC-SA 4.0 + 附加；署名見 THIRD_PARTY_NOTICES。
 
