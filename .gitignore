@@ -53,6 +53,8 @@ data/locks/
 .cursor/
 !.cursor/rules/
 !.cursor/rules/**
+.cursorignore
+.cursorrules
 .codegraph/
 agent-tools/
 mcps/
