@@ -8,12 +8,11 @@ import '../../frontend/workbench.css';
 import '../../frontend/entry-detail.css';
 import './root.css';
 import './pwa-app.css';
-import { registerSW } from 'virtual:pwa-register';
 
 import App from './App.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/db-provider.tsx';
-import { scheduleLexiconPrecache } from './lexicon-precache.ts';
+import { isPortableHost } from './host-mode.ts';
 import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './pwa-shell-boot';
 
 applyBootThemeFromStorage();
@@ -21,12 +20,9 @@ if (hasPwaGateLanded()) {
   revealPwaShell();
 }
 
-registerSW({
-  immediate: true,
-  onRegisteredSW() {
-    void scheduleLexiconPrecache();
-  },
-});
+if (!isPortableHost()) {
+  void import('./pwa-register.ts');
+}
 
 const benchmark = new URLSearchParams(location.search).has('benchmark');
 

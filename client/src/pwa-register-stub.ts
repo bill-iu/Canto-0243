@@ -1,4 +1,4 @@
-// Task 2 removes SW from portable entry; stub satisfies main.tsx until then.
+// Satisfies pwa-register.ts lazy chunk when Rolldown still emits it in portable builds.
 export function registerSW(_options?: unknown): (reload?: boolean) => Promise<void> {
   return async () => {};
 }
