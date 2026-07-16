@@ -43,6 +43,8 @@ import { planCommitSearch } from './db/query/search-session.ts';
 import { GuideQuick } from './guide-quick';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
+import { RelationView } from './views/relation-view';
+import { CorrectionsView } from './views/corrections-view';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
@@ -70,6 +72,8 @@ import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
+import { isCorrectionsSearchCommand } from '@shared/query-tabs';
+import { isPortableHost } from './host-mode';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -103,6 +107,9 @@ function App() {
     reorderTabsByIdList,
     openGuide,
     openAbout,
+    openRelation,
+    openCorrections,
+    patchActiveRelation,
     goHome,
     ensureActiveSearchTab,
     patchSearchTab,
@@ -126,7 +133,11 @@ function App() {
       ? 'guide'
       : activeTab?.view === VIEW.ABOUT
         ? 'about'
-        : 'search';
+        : activeTab?.view === VIEW.RELATION
+          ? 'relation'
+          : activeTab?.view === VIEW.CORRECTIONS
+            ? 'corrections'
+            : 'search';
 
   const {
     inputQuery,
@@ -551,6 +562,12 @@ function App() {
   const runCommittedSearch = useCallback(
     (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
       const q = (nextQuery ?? inputQuery).trim();
+      // ponytail: portable maintainer — `debug` opens corrections, not a search
+      if (isPortableHost() && isCorrectionsSearchCommand(q)) {
+        saveLeavingSearchTab();
+        openCorrections();
+        return;
+      }
       if (pickAnchorRef.current && pickAnchorRef.current !== q) {
         pickAnchorRef.current = null;
         pickAnchorRowsRef.current = [];
@@ -564,7 +581,18 @@ function App() {
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, isReady, offlineStatus, initialize],
+    [
+      inputQuery,
+      flushSearchQuery,
+      commitActiveSearch,
+      mode,
+      pzMode,
+      isReady,
+      offlineStatus,
+      initialize,
+      saveLeavingSearchTab,
+      openCorrections,
+    ],
   );
 
   const beginPickSearch = useCallback(
@@ -650,9 +678,14 @@ function App() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // 教學／關於：送出開新搜尋 tab（同教學範例），保留原 tab；唔共用 ensureActive→commit 嘅 race
-    if (view === 'guide' || view === 'about') {
-      openLiveSearchTab(inputQuery.trim());
+    // 教學／關於／維護者：送出開新搜尋 tab（同教學範例），保留原 tab；唔共用 ensureActive→commit 嘅 race
+    if (view === 'guide' || view === 'about' || view === 'relation' || view === 'corrections') {
+      const q = inputQuery.trim();
+      if (isPortableHost() && isCorrectionsSearchCommand(q)) {
+        openCorrections();
+        return;
+      }
+      openLiveSearchTab(q);
       return;
     }
     runCommittedSearch();
@@ -691,6 +724,11 @@ function App() {
   const handleOpenAbout = () => {
     saveLeavingSearchTab();
     openAbout();
+  };
+
+  const handleOpenRelation = () => {
+    saveLeavingSearchTab();
+    openRelation();
   };
 
   const handleSearchInput = (value: string) => {
@@ -889,6 +927,7 @@ function App() {
                 onModeChange={handleModeChange}
                 onOpenGuide={handleOpenGuide}
                 onOpenAbout={handleOpenAbout}
+                onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                 theme={uiTheme}
                 lang={uiLang}
                 onThemeChange={(next) => setUiTheme(next)}
@@ -1014,6 +1053,14 @@ function App() {
             <GuideView lang={uiLang} onPick={handleRunExample} />
           ) : view === 'about' ? (
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
+          ) : view === 'relation' && isPortableHost() ? (
+            <RelationView
+              lang={uiLang}
+              initial={activeTab?.relation}
+              onFormChange={(next) => patchActiveRelation(next)}
+            />
+          ) : view === 'corrections' && isPortableHost() ? (
+            <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
           ) : (
             <section
               className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}

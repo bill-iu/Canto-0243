@@ -10,6 +10,8 @@ export interface ModeMenuProps {
   onModeChange: (family: 'basic' | 'pingze' | 'synonym') => void;
   onOpenGuide: () => void;
   onOpenAbout: () => void;
+  /** Portable host only — 關係補錄 */
+  onOpenRelation?: () => void;
   theme?: 'light' | 'dark';
   lang?: 'zh' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
@@ -24,6 +26,7 @@ export function ModeMenu({
   onModeChange,
   onOpenGuide,
   onOpenAbout,
+  onOpenRelation,
   theme = 'light',
   lang = 'zh',
   onThemeChange,
@@ -159,6 +162,25 @@ export function ModeMenu({
                 </span>
                 <span className="mode-key">?</span>
               </button>
+              {onOpenRelation ? (
+                <button
+                  type="button"
+                  className="mode-option"
+                  role="menuitem"
+                  onClick={() => {
+                    onOpenRelation();
+                    close();
+                  }}
+                >
+                  <span>
+                    <span className="mode-name">{lang === 'zh' ? '補關係' : 'Add relations'}</span>
+                    <span className="mode-help">
+                      {lang === 'zh' ? '為已收錄字面補近義或反義' : 'Add synonym or antonym links'}
+                    </span>
+                  </span>
+                  <span className="mode-key">+</span>
+                </button>
+              ) : null}
               <button
                 type="button"
                 className="mode-option"

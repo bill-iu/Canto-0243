@@ -35,6 +35,12 @@ declare module '@shared/query-tabs' {
   export function createSearchTab(opts?: Partial<QueryTab>): QueryTab;
   export function createGuideTab(opts?: { id?: number }): QueryTab;
   export function createAboutTab(opts?: { id?: number }): QueryTab;
+  export function createRelationTab(opts?: {
+    id?: number;
+    relation?: { seed_char?: string; opposite_char?: string; relation_type?: string };
+  }): QueryTab;
+  export function createCorrectionsTab(opts?: { id?: number; prefetchChar?: string }): QueryTab;
+  export function isCorrectionsSearchCommand(q: string): boolean;
   export function openSingletonView(
     state: TabState,
     view: string,

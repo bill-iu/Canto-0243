@@ -7,6 +7,8 @@ import {
   createSearchTab,
   createGuideTab,
   createAboutTab,
+  createRelationTab,
+  createCorrectionsTab,
   applyUrlToTabs,
   openSingletonView,
   closeTab as closeTabReducer,
@@ -35,13 +37,16 @@ import {
   commitActiveSearchTransaction,
   openCommittedSearchTabTransaction,
 } from '../../../frontend/committed-search.mjs';
+import { isPortableHost } from '../host-mode';
 
 export type { QueryTab, TabState };
 export { tabLabel, VIEW };
 
+/** PWA keeps search/guide/about only; portable host allows maintainer views. */
 const PWA_VIEWS = new Set([VIEW.SEARCH, VIEW.GUIDE, VIEW.ABOUT]);
 
 function sanitizePwaTabState(state: TabState): TabState {
+  if (isPortableHost()) return state;
   const tabs = state.tabs.filter((t) => PWA_VIEWS.has(t.view));
   if (!tabs.length) {
     return { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };
@@ -89,11 +94,33 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
 
   let state = loadSessionTabState() ?? fallback();
 
-  if (parsed.view === VIEW.GUIDE || parsed.view === VIEW.ABOUT) {
+  if (
+    parsed.view === VIEW.GUIDE ||
+    parsed.view === VIEW.ABOUT ||
+    parsed.view === VIEW.RELATION ||
+    parsed.view === VIEW.CORRECTIONS
+  ) {
+    // PWA sanitize drops relation/corrections; portable keeps them.
+    if (
+      !isPortableHost() &&
+      (parsed.view === VIEW.RELATION || parsed.view === VIEW.CORRECTIONS)
+    ) {
+      return { state: sanitizePwaTabState(state), bootstrap: { isHome: true, forceLive: false } };
+    }
     state = applyUrlToTabs(state, parsed);
-    const urlTab = state.tabs.find((t) =>
-      parsed.view === VIEW.GUIDE ? t.view === VIEW.GUIDE : t.view === VIEW.ABOUT,
-    );
+    let urlTab = state.tabs.find((t) => t.view === parsed.view);
+    if (!urlTab) {
+      const create =
+        parsed.view === VIEW.GUIDE
+          ? createGuideTab
+          : parsed.view === VIEW.ABOUT
+            ? createAboutTab
+            : parsed.view === VIEW.RELATION
+              ? createRelationTab
+              : createCorrectionsTab;
+      state = openSingletonView(state, parsed.view, create);
+      urlTab = state.tabs.find((t) => t.view === parsed.view) ?? undefined;
+    }
     if (urlTab) {
       state = { ...state, activeId: urlTab.id };
     }
@@ -341,6 +368,37 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     });
   }, [setAndPersist]);
 
+  const openRelation = useCallback(() => {
+    if (!isPortableHost()) return;
+    setAndPersist((prev) => {
+      const next = openSingletonView(prev, VIEW.RELATION, createRelationTab);
+      const singleton = next.tabs.find((t) => t.view === VIEW.RELATION);
+      return singleton ? { ...next, activeId: singleton.id } : next;
+    });
+  }, [setAndPersist]);
+
+  const openCorrections = useCallback(() => {
+    if (!isPortableHost()) return;
+    setAndPersist((prev) => {
+      const next = openSingletonView(prev, VIEW.CORRECTIONS, createCorrectionsTab);
+      const singleton = next.tabs.find((t) => t.view === VIEW.CORRECTIONS);
+      return singleton ? { ...next, activeId: singleton.id } : next;
+    });
+  }, [setAndPersist]);
+
+  const patchActiveRelation = useCallback(
+    (relation: Record<string, string>) => {
+      setAndPersist((prev) => {
+        const tabs = prev.tabs.map((t) => {
+          if (t.id !== prev.activeId || t.view !== VIEW.RELATION) return t;
+          return { ...t, relation: { ...relation } };
+        });
+        return { ...prev, tabs };
+      });
+    },
+    [setAndPersist],
+  );
+
   const ensureActiveSearchTab = useCallback(() => {
     let picked: QueryTab | null = null;
     setAndPersist((prev) => {
@@ -515,6 +573,9 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     reorderTabsByIdList,
     openGuide,
     openAbout,
+    openRelation,
+    openCorrections,
+    patchActiveRelation,
     goHome,
     ensureActiveSearchTab,
     patchActiveSearchTab,

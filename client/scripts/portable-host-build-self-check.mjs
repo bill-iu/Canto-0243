@@ -84,4 +84,17 @@ if (!jsBundle.includes('chrome-tab') && !jsBundle.includes('ChromeTabs')) {
   }
 }
 
+// PR3: maintainer API paths must ship in portable host
+const allJs = fs
+  .readdirSync(assetsDir)
+  .filter((n) => n.endsWith('.js'))
+  .map((n) => fs.readFileSync(path.join(assetsDir, n), 'utf8'))
+  .join('\n');
+for (const marker of ['/relations/manual', '/lexicon/corrections']) {
+  if (!allJs.includes(marker)) {
+    console.error(`portable-host-build-self-check: missing maintainer API path ${marker}`);
+    process.exit(1);
+  }
+}
+
 console.log('portable-host-build-self-check: ok');
