@@ -205,6 +205,13 @@ export default defineConfig(({ command, mode }) => {
       alias: {
         '@shared/query-tabs': path.resolve(clientRoot, '../frontend/query-tabs-state.mjs'),
         '@shared/search-navigation': path.resolve(clientRoot, '../frontend/search-navigation.mjs'),
+        // PR2: chrome-tabs only in portable; PWA keeps pill QueryTabsBar
+        '@host-tabs-bar': path.resolve(
+          clientRoot,
+          portableHost
+            ? 'src/query-tabs/host-tabs-bar.portable.tsx'
+            : 'src/query-tabs/host-tabs-bar.tsx',
+        ),
         ...(portableHost
           ? { 'virtual:pwa-register': path.resolve(clientRoot, 'src/pwa-register-stub.ts') }
           : {}),

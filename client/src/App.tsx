@@ -67,7 +67,7 @@ import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
-import { QueryTabsBar } from './query-tabs/query-tabs-bar';
+import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
 
@@ -100,6 +100,7 @@ function App() {
     openSearchTabWithQuery,
     closeTab,
     reorderTabs,
+    reorderTabsByIdList,
     openGuide,
     openAbout,
     goHome,
@@ -662,6 +663,11 @@ function App() {
     reorderTabs(fromIndex, toIndex);
   };
 
+  const handleReorderTabsByIds = (orderedIds: number[]) => {
+    saveLeavingSearchTab();
+    reorderTabsByIdList(orderedIds);
+  };
+
   const handleSelectTab = (id: number) => {
     saveLeavingSearchTab();
     selectTab(id);
@@ -991,7 +997,7 @@ function App() {
               </div>
             </form>
           </div>
-          <QueryTabsBar
+          <HostTabsBar
             tabs={tabs}
             activeId={tabState.activeId}
             lang={uiLang}
@@ -999,6 +1005,7 @@ function App() {
             onClose={handleCloseTab}
             onAdd={handleAddTab}
             onReorder={handleReorderTabs}
+            onReorderByIds={handleReorderTabsByIds}
           />
         </header>
 

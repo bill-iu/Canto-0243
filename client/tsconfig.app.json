@@ -18,7 +18,8 @@
     "baseUrl": ".",
     "paths": {
       "@shared/query-tabs": ["../frontend/query-tabs-state.mjs"],
-      "@shared/search-navigation": ["../frontend/search-navigation.mjs"]
+      "@shared/search-navigation": ["../frontend/search-navigation.mjs"],
+      "@host-tabs-bar": ["./src/query-tabs/host-tabs-bar.tsx"]
     },
 
     /* Linting */

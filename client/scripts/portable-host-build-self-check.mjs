@@ -49,4 +49,39 @@ for (const name of fs.readdirSync(distDir)) {
   }
 }
 
+let chromeTabsCss = false;
+let draggabillyAsset = false;
+for (const name of fs.readdirSync(assetsDir)) {
+  const content = fs.readFileSync(path.join(assetsDir, name), 'utf8');
+  if (name.endsWith('.css') && content.includes('.chrome-tabs')) chromeTabsCss = true;
+  if (name.includes('draggabilly') || content.includes('Draggabilly PACKAGED')) {
+    draggabillyAsset = true;
+  }
+}
+if (!chromeTabsCss) {
+  console.error('portable-host-build-self-check: missing chrome-tabs CSS in assets');
+  process.exit(1);
+}
+if (!draggabillyAsset) {
+  const all = fs.readdirSync(assetsDir).join(' ');
+  if (!/draggabilly/i.test(all)) {
+    console.error('portable-host-build-self-check: missing Draggabilly asset');
+    process.exit(1);
+  }
+}
+
+const jsBundle = fs
+  .readdirSync(assetsDir)
+  .filter((n) => n.endsWith('.js') && n.startsWith('index-'))
+  .map((n) => fs.readFileSync(path.join(assetsDir, n), 'utf8'))
+  .join('\n');
+if (!jsBundle.includes('chrome-tab') && !jsBundle.includes('ChromeTabs')) {
+  // chrome-tabs may live in a split chunk named chrome-tabs-bar-*.js
+  const split = fs.readdirSync(assetsDir).some((n) => n.includes('chrome-tabs'));
+  if (!split) {
+    console.error('portable-host-build-self-check: chrome-tabs JS not found in portable bundle');
+    process.exit(1);
+  }
+}
+
 console.log('portable-host-build-self-check: ok');

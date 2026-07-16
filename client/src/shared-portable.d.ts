@@ -144,3 +144,32 @@ declare module '../../../frontend/committed-search.mjs' {
     createSearchTab: (options: Partial<QueryTab>) => QueryTab,
   ): CommittedSearchTransaction;
 }
+
+declare module '../../../frontend/tab-geometry.mjs' {
+  export const TAB_GEOMETRY_SVG: string;
+}
+
+declare module '../../../frontend/chrome-tabs-layout.mjs' {
+  export class QueryChromeTabsLayout {
+    rootEl: HTMLElement;
+    contentEl: HTMLElement;
+    constructor(rootEl: HTMLElement);
+    layout(): void;
+    setupDraggabilly(callbacks?: {
+      onPointerDown?: (id: number) => void;
+      onReorderEnd?: (orderedIds: number[]) => void;
+    }): void;
+    getTabIdsFromDom(): number[];
+  }
+}
+
+declare module '*.js?url' {
+  const url: string;
+  export default url;
+}
+
+declare module '@host-tabs-bar' {
+  import type { QueryTabsBarProps } from './query-tabs/query-tabs-bar';
+  import type { ComponentType } from 'react';
+  export const HostTabsBar: ComponentType<QueryTabsBarProps>;
+}

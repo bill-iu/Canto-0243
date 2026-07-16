@@ -11,6 +11,7 @@ import {
   openSingletonView,
   closeTab as closeTabReducer,
   reorderTab,
+  reorderTabsByIds,
   parseUrlSearchParams,
   buildUrlSearchParams,
   tabLabel,
@@ -317,6 +318,13 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     [setAndPersist],
   );
 
+  const reorderTabsByIdList = useCallback(
+    (orderedIds: number[]) => {
+      setAndPersist((prev) => reorderTabsByIds(prev, orderedIds));
+    },
+    [setAndPersist],
+  );
+
   const openGuide = useCallback(() => {
     setAndPersist((prev) => {
       const next = openSingletonView(prev, VIEW.GUIDE, createGuideTab);
@@ -504,6 +512,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     openSearchTabWithQuery,
     closeTab,
     reorderTabs,
+    reorderTabsByIdList,
     openGuide,
     openAbout,
     goHome,
