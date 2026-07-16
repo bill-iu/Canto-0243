@@ -48,7 +48,7 @@ def main() -> int:
             print("[e2e] FAIL backend never ready")
             return 1
 
-        url = f"{base}/frontend/index.html?boot=e2e"
+        url = f"{base}/app/index.html?boot=e2e"
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page()

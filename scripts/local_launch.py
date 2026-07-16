@@ -11,7 +11,7 @@ import time
 import webbrowser
 from pathlib import Path
 
-HTML_SUFFIX = "/frontend/index.html"
+HTML_SUFFIX = "/app/index.html"
 WAIT_INTERVAL = "0.1"
 WAIT_TIMEOUT = "90"
 
