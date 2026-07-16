@@ -91,6 +91,24 @@ export default defineConfig(({ command, mode }) => {
   if (command === 'serve') {
     plugins.push(lexiconDevMountPlugin())
   }
+  if (portableHost) {
+    plugins.push({
+      name: 'portable-favicon',
+      closeBundle() {
+        const out = path.resolve(clientRoot, 'dist-portable')
+        const candidates = [
+          path.resolve(repoRoot, 'frontend/favicon.ico'),
+          path.resolve(clientRoot, 'public/icon-32.png'),
+        ]
+        for (const src of candidates) {
+          if (fs.existsSync(src)) {
+            fs.copyFileSync(src, path.join(out, 'favicon.ico'))
+            return
+          }
+        }
+      },
+    })
+  }
   if (!portableHost) {
     plugins.push(
       VitePWA({

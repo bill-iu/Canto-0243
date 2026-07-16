@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from main import inject_app_index_meta, require_app_ui_dir
+from main import inject_app_index_meta, require_app_ui_dir, resolve_favicon
 
 
 class PortableAppMountTests(unittest.TestCase):
@@ -78,6 +78,46 @@ class PortableAppMountTests(unittest.TestCase):
             self.assertIn("fixture-ver", body)
             self.assertIn("canto-portable", body)
             self.assertIn("fixture", body)
+
+    def test_resolve_favicon_prefers_app_ui_dir(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ui = Path(tmp)
+            fav = ui / "favicon.ico"
+            fav.write_bytes(b"ico")
+            self.assertEqual(resolve_favicon(ui), fav)
+
+    def test_resolve_favicon_falls_back_to_icon_32(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ui = Path(tmp)
+            icon = ui / "icon-32.png"
+            icon.write_bytes(b"png")
+            self.assertEqual(resolve_favicon(ui), icon)
+
+    def test_resolve_favicon_none_when_missing(self):
+        import tempfile
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ui = Path(tmp)
+            with patch("main.FRONTEND_DIR", Path("definitely-missing-frontend-dir")):
+                self.assertIsNone(resolve_favicon(ui))
+
+    def test_root_favicon_404_when_no_asset(self):
+        import asyncio
+        import tempfile
+
+        from main import root_favicon
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ui = Path(tmp)
+            with patch("main.FRONTEND_DIR", Path("definitely-missing-frontend-dir")):
+                with patch("main.APP_UI_DIR", ui):
+                    with self.assertRaises(Exception) as ctx:
+                        asyncio.run(root_favicon())
+                    self.assertEqual(getattr(ctx.exception, "status_code", None), 404)
 
 
 if __name__ == "__main__":

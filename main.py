@@ -78,7 +78,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FRONTEND_INDEX = Path("frontend/index.html")
+FRONTEND_DIR = Path("frontend")
 
 
 def _is_portable() -> bool:
@@ -106,17 +106,40 @@ app.mount(
 )
 
 
-@app.get("/frontend/index.html", include_in_schema=False)
-async def serve_frontend_index() -> HTMLResponse:
-    """Transitional: legacy shell for unmigrated tests. Product entry is /app/."""
-    html = FRONTEND_INDEX.read_text(encoding="utf-8")
-    return HTMLResponse(
-        inject_app_index_meta(html),
-        headers={"Cache-Control": "no-cache, must-revalidate", "Pragma": "no-cache"},
+def resolve_favicon(ui_dir: Path | None = None) -> Path | None:
+    """Best favicon for /favicon.ico; None when no asset is available."""
+    base = ui_dir if ui_dir is not None else APP_UI_DIR
+    for candidate in (
+        base / "favicon.ico",
+        base / "favicon.svg",
+        base / "icon-32.png",
+        FRONTEND_DIR / "favicon.ico",
+    ):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+if FRONTEND_DIR.is_dir():
+
+    @app.get("/frontend/index.html", include_in_schema=False)
+    async def serve_frontend_index() -> HTMLResponse:
+        """Transitional: legacy shell for unmigrated tests. Product entry is /app/."""
+        index = FRONTEND_DIR / "index.html"
+        if not index.is_file():
+            raise HTTPException(status_code=404, detail="frontend index not found")
+        html = index.read_text(encoding="utf-8")
+        return HTMLResponse(
+            inject_app_index_meta(html),
+            headers={"Cache-Control": "no-cache, must-revalidate", "Pragma": "no-cache"},
+        )
+
+    app.mount(
+        "/frontend",
+        StaticFiles(directory=str(FRONTEND_DIR), html=True),
+        name="frontend",
     )
 
-
-app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
 app.include_router(router)
 app.include_router(relation_router)
 app.include_router(lexicon_router)
@@ -150,7 +173,10 @@ async def home():
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def root_favicon() -> FileResponse:
-    return FileResponse("frontend/favicon.ico")
+    fav = resolve_favicon()
+    if fav is None:
+        raise HTTPException(status_code=404, detail="favicon not found")
+    return FileResponse(fav)
 
 
 @app.get("/ready")
