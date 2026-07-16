@@ -76,6 +76,16 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertGreater(starting_idx, 0)
         self.assertGreater(free_idx, starting_idx)
 
+    def test_local_launch_ensures_app_ui_before_server(self):
+        source = LAUNCH_PATH.read_text(encoding="utf-8")
+        ensure_idx = source.find("ensure_app_ui(")
+        main_py_idx = source.find('["main.py"]')
+        self.assertGreater(ensure_idx, 0)
+        self.assertGreater(main_py_idx, ensure_idx)
+        self.assertIn("client/dist-portable", source)
+        start_sh = (REPO_ROOT / "start.sh").read_text(encoding="utf-8")
+        self.assertIn("dist-portable/index.html", start_sh)
+
     def test_start_sh_delegates_to_local_launch(self):
         source = START_SH.read_text(encoding="utf-8")
         self.assertIn("local_launch.py", source)

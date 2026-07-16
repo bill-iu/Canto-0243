@@ -66,6 +66,16 @@ def main() -> int:
         _win_message("Canto-0243", "找不到 lyrics.db。請確認已完整解壓套件。")
         return 1
 
+    ui_index = root / "client" / "dist-portable" / "index.html"
+    if not ui_index.is_file():
+        _win_message(
+            "Canto-0243",
+            "找不到查韻介面（client/dist-portable）。\n\n"
+            "請重新下載完整免安裝套件並完整解壓；"
+            "或改用 START.bat 查看詳情。",
+        )
+        return 1
+
     python = _resolve_python(root)
     if python is None:
         _win_message("Canto-0243", "找不到內建執行環境。請重新下載完整免安裝套件。")

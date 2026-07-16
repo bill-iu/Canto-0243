@@ -15,6 +15,12 @@ if [[ ! -f lyrics.db ]]; then
   exit 1
 fi
 
+if [[ ! -f client/dist-portable/index.html ]]; then
+  echo "[錯誤] 找不到查韻介面 client/dist-portable/index.html"
+  echo "請重新下載完整免安裝套件；開發目錄請先：cd client && npm run build:portable"
+  exit 1
+fi
+
 RUN_PY="$ROOT/venv/bin/python"
 if [[ ! -x "$RUN_PY" ]]; then
   if [[ "$(uname -s)" == "Linux" ]]; then
