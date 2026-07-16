@@ -40,7 +40,7 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 
 ## 步驟 0 — Portable 產品 UI（每次打 zip／tar 前）
 
-下一正式 portable release **只**帶 `/app` client 殼（`client/dist-portable`），**唔**再以 `frontend/index.html` 作創作者入口。`frontend/` 仍留 repo 作共享 SSOT。
+下一正式 portable release **只**帶 `/app` client 殼（`client/dist-portable`）。共享 mjs／CSS SSOT 在 repo 的 **`shared/`**，唔當創作者入口。
 
 ```bash
 cd client && npm ci && npm run build:portable

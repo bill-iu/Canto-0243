@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { isRelationSyntaxQuery, normalizeQuerySyntax } from "../frontend/relation-syntax.mjs";
+import { isRelationSyntaxQuery, normalizeQuerySyntax } from "../shared/relation-syntax.mjs";
 
 describe("relation-syntax", () => {
   it("detects compound and lookup shapes", () => {

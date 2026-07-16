@@ -8,7 +8,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 const clientRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(clientRoot, '..')
-const readyGateCssPath = path.resolve(repoRoot, 'frontend/ready-gate.css')
+const readyGateCssPath = path.resolve(repoRoot, 'shared/ready-gate.css')
 const rootLyricsDb = path.resolve(repoRoot, 'lyrics.db')
 const publicLyricsDb = path.resolve(clientRoot, 'public/lyrics.db')
 
@@ -97,7 +97,7 @@ export default defineConfig(({ command, mode }) => {
       closeBundle() {
         const out = path.resolve(clientRoot, 'dist-portable')
         const candidates = [
-          path.resolve(repoRoot, 'frontend/favicon.ico'),
+          path.resolve(repoRoot, 'shared/favicon.ico'),
           path.resolve(clientRoot, 'public/icon-32.png'),
         ]
         for (const src of candidates) {
@@ -203,8 +203,8 @@ export default defineConfig(({ command, mode }) => {
   return {
     resolve: {
       alias: {
-        '@shared/query-tabs': path.resolve(clientRoot, '../frontend/query-tabs-state.mjs'),
-        '@shared/search-navigation': path.resolve(clientRoot, '../frontend/search-navigation.mjs'),
+        '@shared/query-tabs': path.resolve(clientRoot, '../shared/query-tabs-state.mjs'),
+        '@shared/search-navigation': path.resolve(clientRoot, '../shared/search-navigation.mjs'),
         // PR2: chrome-tabs only in portable; PWA keeps pill QueryTabsBar
         '@host-tabs-bar': path.resolve(
           clientRoot,

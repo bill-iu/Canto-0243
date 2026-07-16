@@ -17,8 +17,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # --- paths ---
-INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
-READY_GATE_CSS_PATH = REPO_ROOT / "frontend" / "ready-gate.css"
+READY_GATE_CSS_PATH = REPO_ROOT / "shared" / "ready-gate.css"
+FRONTEND_DIR = REPO_ROOT / "frontend"
 CLIENT_INDEX_PATH = REPO_ROOT / "client" / "index.html"
 PWA_BOOT_GATE_CSS_PATH = REPO_ROOT / "client" / "public" / "pwa-boot-gate.css"
 CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
@@ -26,8 +26,8 @@ BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
 RELEASE_WINDOWS_PATH = REPO_ROOT / "scripts" / "release-windows-local.ps1"
 RELEASE_MACOS_PATH = REPO_ROOT / "scripts" / "release-macos-local.sh"
-APP_CONTEXT_PATH = REPO_ROOT / "frontend" / "app-context.mjs"
-LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.mjs"
+APP_CONTEXT_PATH = REPO_ROOT / "shared" / "app-context.mjs"
+LAYOUT_PATH = REPO_ROOT / "shared" / "chrome-tabs-layout.mjs"
 CLIENT_APP_PATH = REPO_ROOT / "client" / "src" / "App.tsx"
 PORTABLE_READY_PATH = REPO_ROOT / "client" / "src" / "hooks" / "use-portable-ready.ts"
 PORTABLE_EXIT_PATH = REPO_ROOT / "client" / "src" / "portable-exit.ts"
@@ -46,17 +46,17 @@ START_SH = REPO_ROOT / "start.sh"
 START_BAT = REPO_ROOT / "portable" / "START.bat"
 START_SH_PORTABLE = REPO_ROOT / "portable" / "START.sh"
 MACOS_LAUNCHER = REPO_ROOT / "portable" / "macos" / "launcher"
-RELATION_ENTRY_PATH = REPO_ROOT / "frontend" / "relation-entry.html"
-RELATION_ENTRY_CSS_PATH = REPO_ROOT / "frontend" / "relation-entry.css"
-SERVED_BASE = "http://127.0.0.1:8000/frontend"
+RELATION_ENTRY_PATH = REPO_ROOT / "shared" / "relation-entry.html"
+RELATION_ENTRY_CSS_PATH = REPO_ROOT / "shared" / "relation-entry.css"
+SERVED_APP_BASE = "http://127.0.0.1:8000/app"
 
 
-def _fetch_served(path: str) -> str:
-    url = f"{SERVED_BASE}/{path.lstrip('/')}"
+def _fetch_served(path: str, *, base: str = SERVED_APP_BASE) -> str:
+    url = f"{base.rstrip('/')}/{path.lstrip('/')}"
     try:
         return urllib.request.urlopen(url, timeout=5).read().decode("utf-8", "replace")
     except (urllib.error.URLError, OSError) as exc:
-        raise unittest.SkipTest(f"no server at {SERVED_BASE}: {exc}") from exc
+        raise unittest.SkipTest(f"no server at {base}: {exc}") from exc
 
 
 class TestLocalLaunchSeam(unittest.TestCase):
@@ -153,19 +153,20 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn('snap["portable"]', source)
 
     def test_portable_host_menu_plus_exit(self):
-        """Product chrome lives in client; frontend/index.html is only a /app redirect stub."""
+        """Product chrome lives in client; legacy /frontend redirects in main.py."""
         app = CLIENT_APP_PATH.read_text(encoding="utf-8")
         menu = (REPO_ROOT / "client" / "src" / "mode-menu.tsx").read_text(encoding="utf-8")
         exit_src = PORTABLE_EXIT_PATH.read_text(encoding="utf-8")
-        stub = INDEX_PATH.read_text(encoding="utf-8")
+        main = MAIN_PATH.read_text(encoding="utf-8")
         self.assertIn('id="portableExitBtn"', menu)
         self.assertIn("onExitPortable", app)
         self.assertIn("header-chrome__actions", app)
         self.assertIn("exitPortable", app)
         self.assertIn("onOpenAbout", menu)
         self.assertIn('fetch("/shutdown"', exit_src)
-        self.assertIn('location.replace("/app/")', stub)
-        self.assertNotIn('src="./main.mjs"', stub)
+        self.assertIn('"/frontend/index.html"', main)
+        self.assertIn('RedirectResponse(url="/app/"', main)
+        self.assertNotIn("StaticFiles(directory=str(FRONTEND_DIR)", main)
         self.assertIn("!isPortableHost() && isReady && getActiveDbBackendMode()", app)
         self.assertIn("!isPortableHost() && !shellGated", app)
 
@@ -617,13 +618,13 @@ class TestQueryParseTypesSeam(unittest.TestCase):
             REPO_ROOT / "app" / "services" / "_generated" / "fillword_connectives.py",
             REPO_ROOT / "client" / "src" / "db" / "_generated" / "fillword-connectives.ts",
             REPO_ROOT / "client" / "src" / "db" / "query" / "mode-detect.ts",
-            REPO_ROOT / "frontend" / "query-mode-detect.mjs",
+            REPO_ROOT / "shared" / "query-mode-detect.mjs",
             REPO_ROOT / "scripts" / "codegen_fillword_connectives.py",
         }
         roots = [
             REPO_ROOT / "app",
             REPO_ROOT / "client" / "src",
-            REPO_ROOT / "frontend",
+            REPO_ROOT / "shared",
             REPO_ROOT / "ingest",
         ]
         hits: list[str] = []
@@ -695,7 +696,7 @@ class TestQueryParseTypesSeam(unittest.TestCase):
 
 
 class TestQueryTabsSeam(unittest.TestCase):
-    """Shared SSOT + chrome-tabs remain under frontend/; product chrome is client."""
+    """Shared SSOT + chrome-tabs remain under shared/; product chrome is client."""
 
     SHARED_ASSETS = (
         "chrome-tabs.css",
@@ -723,40 +724,32 @@ class TestQueryTabsSeam(unittest.TestCase):
         "ping-ze-syntax.mjs",
         "dom-escape.mjs",
     )
-    INDEX_FORBIDDEN = (
-        "prototype-ribbon",
-        "prototype-state-toggle",
-        "prototype-query-tabs",
-        "canto0243:prototype:query-tabs",
-        "relation-entry.html",
-        "relation-entry.css",
-        "PROTOTYPE ·",
-        'src="./main.mjs"',
-    )
     MAIN_FORBIDDEN = (
         '@app.get("/prototype")',
         "prototype/query-tabs.html",
     )
 
-    def test_shared_frontend_assets_remain(self):
+    def test_shared_assets_remain(self):
         for name in self.SHARED_ASSETS:
-            path = REPO_ROOT / "frontend" / name
+            path = REPO_ROOT / "shared" / name
             with self.subTest(asset=name):
-                self.assertTrue(path.is_file(), f"missing frontend/{name}")
+                self.assertTrue(path.is_file(), f"missing shared/{name}")
 
     def test_portable_shell_modules_removed(self):
         for name in self.REMOVED_SHELL:
-            path = REPO_ROOT / "frontend" / name
+            path = REPO_ROOT / "shared" / name
             with self.subTest(removed=name):
                 self.assertFalse(path.is_file(), f"shell module still present: {name}")
 
-    def test_frontend_index_is_app_redirect_stub(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn('location.replace("/app/")', source)
-        self.assertIn('url=/app/', source)
-        for symbol in self.INDEX_FORBIDDEN:
-            with self.subTest(symbol=symbol):
-                self.assertNotIn(symbol, source)
+    def test_frontend_directory_retired(self):
+        """#86 stage (3): no frontend/ tree; legacy URL redirects in main.py."""
+        self.assertFalse(FRONTEND_DIR.exists(), "frontend/ must be deleted")
+        main = MAIN_PATH.read_text(encoding="utf-8")
+        self.assertIn("redirect_legacy_frontend", main)
+        self.assertIn('RedirectResponse(url="/app/"', main)
+        self.assertIn('"/frontend/index.html"', main)
+        self.assertNotIn('StaticFiles(directory=str(FRONTEND_DIR)', main)
+        self.assertNotIn('name="frontend"', main)
 
     def test_client_wires_chrome_tabs_and_portable_ready(self):
         bar = CHROME_TABS_BAR_PATH.read_text(encoding="utf-8")
@@ -789,18 +782,18 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertTrue((REPO_ROOT / "app" / "services" / "query_explain.py").is_file())
 
     def test_tab_geometry_js_shim_removed(self):
-        path = REPO_ROOT / "frontend" / "tab-geometry.js"
+        path = REPO_ROOT / "shared" / "tab-geometry.js"
         self.assertFalse(path.is_file())
 
     def test_tab_geometry_mjs_self_contained(self):
-        path = REPO_ROOT / "frontend" / "tab-geometry.mjs"
+        path = REPO_ROOT / "shared" / "tab-geometry.mjs"
         source = path.read_text(encoding="utf-8")
         self.assertIn("export const TAB_GEOMETRY_SVG", source)
         self.assertIn("#query-tab-geometry", source)
         self.assertNotIn("globalThis.TAB_GEOMETRY", source)
 
     def test_chrome_tabs_layout_js_shim_removed(self):
-        path = REPO_ROOT / "frontend" / "chrome-tabs-layout.js"
+        path = REPO_ROOT / "shared" / "chrome-tabs-layout.js"
         self.assertFalse(path.is_file())
 
     def test_chrome_tabs_layout_mjs_esm(self):
@@ -815,8 +808,8 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_relation_entry_css_merged_into_shell(self):
         self.assertFalse(RELATION_ENTRY_CSS_PATH.exists())
-        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
-        workbench = (REPO_ROOT / "frontend" / "workbench.css").read_text(encoding="utf-8")
+        shell = (REPO_ROOT / "shared" / "shell.css").read_text(encoding="utf-8")
+        workbench = (REPO_ROOT / "shared" / "workbench.css").read_text(encoding="utf-8")
         self.assertIn(".relation-main", shell)
         self.assertIn("a.result-item", workbench)
 
@@ -824,7 +817,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertTrue(READY_GATE_CSS_PATH.is_file())
         self.assertFalse(PWA_BOOT_GATE_CSS_PATH.is_file())
         ready_gate = READY_GATE_CSS_PATH.read_text(encoding="utf-8")
-        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        shell = (REPO_ROOT / "shared" / "shell.css").read_text(encoding="utf-8")
         client_index = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
         main_tsx = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
         pwa_boot = (REPO_ROOT / "client" / "src" / "pwa-shell-boot.ts").read_text(encoding="utf-8")
@@ -837,7 +830,7 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertNotIn(".preload-overlay {", shell)
         self.assertNotIn(".gate-brand {", shell)
         self.assertIn("ready-gate.css", client_index)
-        self.assertIn("../../frontend/ready-gate.css", main_tsx)
+        self.assertIn("../../shared/ready-gate.css", main_tsx)
         self.assertIn('class="ready-gate pwa-boot-gate"', client_index)
         self.assertIn("shell-revealed", pwa_boot)
         self.assertIn("gate_ready", portable_ready)
@@ -849,17 +842,17 @@ class TestQueryTabsSeam(unittest.TestCase):
         for name in ("open-design.css", "shell.css"):
             with self.subTest(duplicate=name):
                 self.assertFalse((client_src / name).is_file(), f"remove duplicate client/src/{name}")
-        self.assertTrue((REPO_ROOT / "frontend" / "shell.css").is_file())
-        self.assertTrue((REPO_ROOT / "frontend" / "workbench.css").is_file())
-        self.assertFalse((REPO_ROOT / "frontend" / "index.css").is_file())
+        self.assertTrue((REPO_ROOT / "shared" / "shell.css").is_file())
+        self.assertTrue((REPO_ROOT / "shared" / "workbench.css").is_file())
+        self.assertFalse((REPO_ROOT / "shared" / "index.css").is_file())
 
     def test_pwa_main_imports_frontend_css(self):
         source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
         for path in (
-            "../../frontend/open-design.css",
-            "../../frontend/ready-gate.css",
-            "../../frontend/shell.css",
-            "../../frontend/workbench.css",
+            "../../shared/open-design.css",
+            "../../shared/ready-gate.css",
+            "../../shared/shell.css",
+            "../../shared/workbench.css",
         ):
             with self.subTest(import_path=path):
                 self.assertIn(path, source)
@@ -878,7 +871,7 @@ class TestQueryTabsSeam(unittest.TestCase):
                 self.assertNotIn(f'NotoSerifTC-{weight}.woff2" as="font"', source)
 
     def test_pwa_display_css_uses_critical_serif(self):
-        shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
+        shell = (REPO_ROOT / "shared" / "shell.css").read_text(encoding="utf-8")
         stack = '"Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif'
         self.assertIn(stack, shell)
         self.assertNotIn('"Playfair Display", "Noto Serif TC", serif', shell)
@@ -989,7 +982,7 @@ class TestQueryTabsSeam(unittest.TestCase):
             "query-tabs-state.mjs": ("openSingletonView", "createSearchTab"),
             "chrome-tabs-layout.mjs": ("QueryChromeTabsLayout",),
         }
-        frontend = REPO_ROOT / "frontend"
+        frontend = REPO_ROOT / "shared"
         for name, symbols in exports_required.items():
             source = (frontend / name).read_text(encoding="utf-8")
             with self.subTest(module=name):
@@ -1026,17 +1019,17 @@ class TestGateFrontendSeam(unittest.TestCase):
 
     def test_portable_ready_uses_server_gate_contract(self):
         ready = PORTABLE_READY_PATH.read_text(encoding="utf-8")
+        main = MAIN_PATH.read_text(encoding="utf-8")
         self.assertIn("gate_ready", ready)
         self.assertIn("degraded", ready)
         self.assertIn("fetch('/ready'", ready)
-        self.assertIn('location.replace("/app/")', INDEX_PATH.read_text(encoding="utf-8"))
+        self.assertIn('RedirectResponse(url="/app/"', main)
 
-    def test_served_frontend_shared_modules_match_disk(self):
-        html = _fetch_served("index.html")
-        self.assertIn("/app/", html)
-        self.assertNotIn('src="./main.mjs"', html)
-        ctx = _fetch_served("app-context.mjs")
+    def test_shared_modules_on_disk_and_app_entry(self):
+        ctx = APP_CONTEXT_PATH.read_text(encoding="utf-8")
         self.assertIn("GATE_INK_CLIP_MAX = 200", ctx)
+        html = _fetch_served("index.html")
+        self.assertNotIn('src="./main.mjs"', html)
 
 
 class TestGuideManifestSync(unittest.TestCase):
@@ -1051,7 +1044,7 @@ class TestGuideManifestSync(unittest.TestCase):
         manifest = load_manifest_examples()
         self.assertGreater(len(manifest), 0, "empty guide manifest")
         self.assertEqual(load_html_examples(), [], "index.html must not duplicate guide examples")
-        source = (REPO_ROOT / "frontend" / "guide-i18n.mjs").read_text(encoding="utf-8")
+        source = (REPO_ROOT / "shared" / "guide-i18n.mjs").read_text(encoding="utf-8")
         self.assertIn("renderGuideGridHtml", source)
         self.assertEqual(
             len(manifest),

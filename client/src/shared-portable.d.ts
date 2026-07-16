@@ -65,7 +65,7 @@ declare module '@shared/query-tabs' {
   ): TabState;
 }
 
-declare module '../../frontend/guide-i18n.mjs' {
+declare module '../../shared/guide-i18n.mjs' {
   export function getGuideHero(lang: 'zh' | 'en'): { eyebrow: string; title: string; lede: string };
   export function getGuideIntro(lang: 'zh' | 'en'): { title: string; paragraphs: string[] };
   export function getGuideGroupLabel(group: string, lang: 'zh' | 'en'): string;
@@ -84,13 +84,13 @@ declare module '../../frontend/guide-i18n.mjs' {
   export function applyGuideLang(lang: 'zh' | 'en'): void;
 }
 
-declare module '../../frontend/about-i18n.mjs' {
+declare module '../../shared/about-i18n.mjs' {
   export const ABOUT_COPY: Record<'zh' | 'en', Record<string, string>>;
   export function getAboutCopy(lang: 'zh' | 'en'): Record<string, string>;
   export function applyAboutLang(lang: 'zh' | 'en'): void;
 }
 
-declare module '../../frontend/mode-i18n.mjs' {
+declare module '../../shared/mode-i18n.mjs' {
   export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
   export interface ModeMeta {
     title: string;
@@ -126,7 +126,7 @@ declare module '@shared/search-navigation' {
   export function shouldPushSearchHistory(next: unknown, prev: unknown): boolean;
 }
 
-declare module '../../../frontend/committed-search.mjs' {
+declare module '../../../shared/committed-search.mjs' {
   import type { QueryTab, TabState } from '@shared/query-tabs';
 
   export interface CommittedSearchFrame {
@@ -151,11 +151,11 @@ declare module '../../../frontend/committed-search.mjs' {
   ): CommittedSearchTransaction;
 }
 
-declare module '../../../frontend/tab-geometry.mjs' {
+declare module '../../../shared/tab-geometry.mjs' {
   export const TAB_GEOMETRY_SVG: string;
 }
 
-declare module '../../../frontend/chrome-tabs-layout.mjs' {
+declare module '../../../shared/chrome-tabs-layout.mjs' {
   export class QueryChromeTabsLayout {
     rootEl: HTMLElement;
     contentEl: HTMLElement;

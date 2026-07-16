@@ -1,7 +1,7 @@
 /**
  * PWA 搜尋教學 — 範例 manifest（對齊桌面 guide-card + family 覆蓋）
  */
-import { getGuideSections as getI18nSections } from '../../frontend/guide-i18n.mjs';
+import { getGuideSections as getI18nSections } from '../../shared/guide-i18n.mjs';
 import { explainQuery } from './db/query-explain.ts';
 
 export const GUIDE_FAMILY_IDS = [

@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import FileResponse, HTMLResponse, JSONResponse, Response
+from starlette.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 
 from app.lexicon_version import lexicon_version
 from app.routers.lexicon import router as lexicon_router
@@ -23,7 +23,7 @@ APP_UI_DIR = Path(os.getenv("CANTO_APP_UI", "client/dist-portable"))
 
 
 def require_app_ui_dir(ui_dir: Path | None = None) -> Path:
-    """Hard-fail if portable UI dist is missing — never fall back to frontend/."""
+    """Hard-fail if portable UI dist is missing — never fall back to a non-/app tree."""
     path = ui_dir if ui_dir is not None else Path(os.getenv("CANTO_APP_UI", "client/dist-portable"))
     if not path.is_dir() or not (path / "index.html").is_file():
         raise RuntimeError(
@@ -54,7 +54,7 @@ class UiNoCacheMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         response = await call_next(request)
         path = request.url.path
-        if path.startswith("/app") or path.startswith("/frontend/"):
+        if path.startswith("/app") or path.startswith("/frontend"):
             response.headers["Cache-Control"] = "no-cache, must-revalidate"
             response.headers["Pragma"] = "no-cache"
         return response
@@ -78,7 +78,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FRONTEND_DIR = Path("frontend")
+SHARED_DIR = Path("shared")
 
 
 def _is_portable() -> bool:
@@ -113,34 +113,19 @@ def resolve_favicon(ui_dir: Path | None = None) -> Path | None:
         base / "favicon.ico",
         base / "favicon.svg",
         base / "icon-32.png",
-        FRONTEND_DIR / "favicon.ico",
+        SHARED_DIR / "favicon.ico",
     ):
         if candidate.is_file():
             return candidate
     return None
 
 
-if FRONTEND_DIR.is_dir():
-
-    # Transitional: serve shared SSOT under /frontend (mjs/CSS). index.html is a
-    # /app redirect stub (#86 stage 2) — not the Portable product UI.
-    @app.get("/frontend/index.html", include_in_schema=False)
-    async def serve_frontend_index() -> HTMLResponse:
-        """Redirect stub only. Product entry is /app/."""
-        index = FRONTEND_DIR / "index.html"
-        if not index.is_file():
-            raise HTTPException(status_code=404, detail="frontend index not found")
-        html = index.read_text(encoding="utf-8")
-        return HTMLResponse(
-            html,
-            headers={"Cache-Control": "no-cache, must-revalidate", "Pragma": "no-cache"},
-        )
-
-    app.mount(
-        "/frontend",
-        StaticFiles(directory=str(FRONTEND_DIR), html=True),
-        name="frontend",
-    )
+# #86 stage (3): no static /frontend tree. Bookmarks → /app/.
+@app.get("/frontend", include_in_schema=False)
+@app.get("/frontend/", include_in_schema=False)
+@app.get("/frontend/index.html", include_in_schema=False)
+async def redirect_legacy_frontend() -> RedirectResponse:
+    return RedirectResponse(url="/app/", status_code=307)
 
 app.include_router(router)
 app.include_router(relation_router)

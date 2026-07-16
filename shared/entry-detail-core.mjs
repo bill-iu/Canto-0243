@@ -240,7 +240,7 @@ export function mergePickLookupResults(anchorLiteral, anchorRows, lookupRows) {
   return [...pinned, ...tail];
 }
 
-/** ponytail: runnable self-check — `node frontend/entry-detail-core.mjs` */
+/** ponytail: runnable self-check — `node shared/entry-detail-core.mjs` */
 export function entryDetailCoreSelfCheck() {
   const rows = [
     { word: '就', jyutping: 'zau6', code: '42' },

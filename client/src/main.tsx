@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import '../../frontend/open-design.css';
-import '../../frontend/ready-gate.css';
-import '../../frontend/shell.css';
-import '../../frontend/workbench.css';
-import '../../frontend/entry-detail.css';
+import '../../shared/open-design.css';
+import '../../shared/ready-gate.css';
+import '../../shared/shell.css';
+import '../../shared/workbench.css';
+import '../../shared/entry-detail.css';
 import './root.css';
 import './pwa-app.css';
 

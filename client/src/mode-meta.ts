@@ -1,10 +1,10 @@
-/** 模式文案 — shared with frontend/mode-i18n.mjs */
+/** 模式文案 — shared with shared/mode-i18n.mjs */
 import {
   MODE_META as MODE_META_ZH,
   getModeMeta as getSharedModeMeta,
   modeHelp as sharedModeHelp,
   modeRedirectHint as sharedModeRedirectHint,
-} from '../../frontend/mode-i18n.mjs';
+} from '../../shared/mode-i18n.mjs';
 import { uiModeToUrlMode as contractUiModeToUrlMode, urlModeToUiMode as contractUrlModeToUiMode } from '../../contracts/search-mode-manifest.mjs';
 
 export type UiMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';

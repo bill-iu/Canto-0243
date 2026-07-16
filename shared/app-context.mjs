@@ -1,4 +1,4 @@
-/** 共享狀態、DOM 引用、常數（frontend 模組根）。 */
+/** 共享狀態、DOM 引用、常數（shared/ 模組根）。 */
 import {
   SESSION_KEY,
   VIEW,

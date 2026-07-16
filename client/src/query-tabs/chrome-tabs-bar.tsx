@@ -1,16 +1,16 @@
 /**
- * Portable-only chrome-tabs strip — wraps frontend/chrome-tabs-layout.mjs.
+ * Portable-only chrome-tabs strip — wraps shared/chrome-tabs-layout.mjs.
  * PWA keeps QueryTabsBar pills; do not import this module from the PWA path.
  */
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { tabLabel, type QueryTab } from '@shared/query-tabs';
-import { TAB_GEOMETRY_SVG } from '../../../frontend/tab-geometry.mjs';
-import { QueryChromeTabsLayout } from '../../../frontend/chrome-tabs-layout.mjs';
+import { TAB_GEOMETRY_SVG } from '../../../shared/tab-geometry.mjs';
+import { QueryChromeTabsLayout } from '../../../shared/chrome-tabs-layout.mjs';
 import { ensureDraggabilly } from './ensure-draggabilly';
 import type { QueryTabsBarProps } from './query-tabs-bar';
 
-import '../../../frontend/chrome-tabs.css';
-import '../../../frontend/query-tabs.css';
+import '../../../shared/chrome-tabs.css';
+import '../../../shared/query-tabs.css';
 
 function applyActiveNeighborDividerHides(contentEl: Element) {
   contentEl.querySelectorAll('.chrome-tab').forEach((t) => {

@@ -1,5 +1,5 @@
 import type { QueryResult } from './db/query';
-import { mergeResultsByLiteral } from '../../frontend/entry-detail-core.mjs';
+import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { ResultList } from './result-list';
 import { type EntryPickPayload } from './result-list-logic.ts';
 import { anchorResultItemCount } from './anchor-result-logic.ts';

@@ -1,5 +1,5 @@
 import type { QueryResult } from './db/query';
-import { mergeResultsByLiteral, isListableWordRow } from '../../frontend/entry-detail-core.mjs';
+import { mergeResultsByLiteral, isListableWordRow } from '../../shared/entry-detail-core.mjs';
 
 export type EntryPickReading = {
   jyutping?: string;

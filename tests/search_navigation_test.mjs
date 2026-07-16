@@ -6,7 +6,7 @@ import {
   VIEW,
   serializeSession,
   deserializeSession,
-} from "../frontend/query-tabs-state.mjs";
+} from "../shared/query-tabs-state.mjs";
 import {
   withResultClickQuery,
   shouldPushSearchHistory,
@@ -21,7 +21,7 @@ import {
   isHistoryForward,
   shouldApplySearchPopstate,
   resetSearchTabHistory,
-} from "../frontend/search-navigation.mjs";
+} from "../shared/search-navigation.mjs";
 
 describe("search-navigation", () => {
   it("withResultClickQuery sets tab.q to clicked literal before view sync", () => {

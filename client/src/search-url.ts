@@ -4,7 +4,7 @@ import {
   parseUrlSearchParams,
   searchParamsWithoutBoot,
   type QueryTab,
-} from '../../frontend/query-tabs-state.mjs';
+} from '../../shared/query-tabs-state.mjs';
 import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from './mode-meta';
 
 export type AppView = 'search' | 'guide' | 'about';

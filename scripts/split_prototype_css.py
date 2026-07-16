@@ -6,7 +6,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-proto = (ROOT / "frontend" / "prototype.html").read_text(encoding="utf-8")
+proto = (ROOT / "shared" / "prototype.html").read_text(encoding="utf-8")
 css = re.search(r"<style>(.*?)</style>", proto, re.S).group(1)
 
 INDEX_ROOTS = (
@@ -129,6 +129,6 @@ index_css = (
     + "\n"
 )
 
-(ROOT / "frontend" / "open-design.css").write_text(open_css, encoding="utf-8")
-(ROOT / "frontend" / "shell.css").write_text(index_css, encoding="utf-8")
+(ROOT / "shared" / "open-design.css").write_text(open_css, encoding="utf-8")
+(ROOT / "shared" / "shell.css").write_text(index_css, encoding="utf-8")
 print(f"rules={len(rules)} open={len(open_rules)} index={len(index_rules)}")

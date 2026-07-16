@@ -129,7 +129,7 @@ export function syncPortableModeMenu(lang = 'zh') {
   }
 }
 
-/** ponytail: runnable self-check — `node frontend/mode-i18n.mjs` */
+/** ponytail: runnable self-check — `node shared/mode-i18n.mjs` */
 export function modeI18nSelfCheck() {
   if (getModeMeta('m1').readout !== '0243模式（鬆）') {
     throw new Error('modeI18nSelfCheck: zh m1 readout');

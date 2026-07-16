@@ -1,5 +1,5 @@
 import type { QueryResult } from './db/query';
-import { mergeResultsByLiteral } from '../../frontend/entry-detail-core.mjs';
+import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 
 export function anchorResultsStats(results: QueryResult[], total?: number | null): string {
   const initial = results.filter((r) => r.anchor_dimension === 'initial').length;

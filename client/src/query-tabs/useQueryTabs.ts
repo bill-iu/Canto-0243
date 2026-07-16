@@ -36,7 +36,7 @@ import type { QueryResult } from '../db/query';
 import {
   commitActiveSearchTransaction,
   openCommittedSearchTabTransaction,
-} from '../../../frontend/committed-search.mjs';
+} from '../../../shared/committed-search.mjs';
 import { isPortableHost } from '../host-mode';
 
 export type { QueryTab, TabState };

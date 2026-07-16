@@ -11,7 +11,7 @@ export function formatStandardResultCountLabel(mergedCount, hasMore) {
   return `${n} 個結果`;
 }
 
-/** ponytail: `node frontend/scripts/result-stats-self-check.mjs` */
+/** ponytail: `node shared/scripts/result-stats-self-check.mjs` */
 export function resultStatsSelfCheck() {
   if (formatStandardResultCountLabel(25, false) !== '25 個結果') {
     throw new Error('result-stats: complete');

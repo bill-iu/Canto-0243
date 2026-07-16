@@ -1,4 +1,4 @@
-"""Install frontend favicon assets from favicon-source.png (or bootstrap from raw PNG)."""
+"""Install shared/ favicon assets from favicon-source.png (or bootstrap from raw PNG)."""
 
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import numpy as np
 from PIL import Image
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-FRONTEND = REPO_ROOT / "frontend"
-SOURCE_PNG = FRONTEND / "favicon-source.png"
+SHARED = REPO_ROOT / "shared"
+SOURCE_PNG = SHARED / "favicon-source.png"
 
 MASTER = 512
 BASE = 64
@@ -64,7 +64,7 @@ def write_master(source_png: Path, dest: Path = SOURCE_PNG, *, size: int = MASTE
 
 def install_favicons(
     source_png: Path = SOURCE_PNG,
-    frontend_dir: Path = FRONTEND,
+    shared_dir: Path = SHARED,
     *,
     style: str = DEFAULT_STYLE,
 ) -> None:
@@ -77,11 +77,11 @@ def install_favicons(
         ico_16 = render_rgba(src, 16, style=style)
         ico_32 = render_rgba(src, 32, style=style)
 
-    frontend_dir.mkdir(parents=True, exist_ok=True)
-    favicon_png.save(frontend_dir / "favicon-32.png", format="PNG", optimize=True)
-    apple_touch.save(frontend_dir / "apple-touch-icon.png", format="PNG", optimize=True)
+    shared_dir.mkdir(parents=True, exist_ok=True)
+    favicon_png.save(shared_dir / "favicon-32.png", format="PNG", optimize=True)
+    apple_touch.save(shared_dir / "apple-touch-icon.png", format="PNG", optimize=True)
     ico_32.save(
-        frontend_dir / "favicon.ico",
+        shared_dir / "favicon.ico",
         format="ICO",
         sizes=[(32, 32), (16, 16)],
         append_images=[ico_16],
@@ -165,7 +165,7 @@ analyze_icon_brightness_bytes = analyze_icon_content_bytes
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Build frontend favicon assets from favicon-source.png")
+    parser = argparse.ArgumentParser(description="Build shared favicon assets from favicon-source.png")
     parser.add_argument(
         "--from",
         dest="from_path",
@@ -187,13 +187,13 @@ def main(argv: list[str] | None = None) -> int:
     install_favicons(style=args.style)
 
     if args.from_path:
-        with Image.open(args.from_path) as raw, Image.open(FRONTEND / "favicon-32.png") as out:
+        with Image.open(args.from_path) as raw, Image.open(SHARED / "favicon-32.png") as out:
             iou = mask_iou(raw, out)
             print(f"shape IoU vs source @64: {iou:.3f}")
 
     ok = True
     for name in ("favicon-32.png", "apple-touch-icon.png", "favicon.ico"):
-        stats = analyze_icon_content(FRONTEND / name)
+        stats = analyze_icon_content(SHARED / name)
         visible = icon_has_visible_mark(stats)
         print(name, stats, "ok" if visible else "BAD")
         ok = ok and visible

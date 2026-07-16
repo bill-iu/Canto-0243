@@ -1,4 +1,4 @@
-/** Portable host: POST /shutdown then close tab (legacy frontend/main.mjs). */
+/** Portable host: POST /shutdown then close tab (legacy shared/main.mjs). */
 
 const CONFIRM_ZH =
   "\u5c07\u95dc\u9589\u672c\u6a5f\u670d\u52d9\uff0c\u672a\u5132\u5b58\u5de5\u4f5c\u5514\u6703\u907a\u5931\u3002\u78ba\u5b9a\u9000\u51fa Canto-0243\uff1f";

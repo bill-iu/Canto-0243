@@ -5,7 +5,7 @@
  * Parity cases: contracts/relation-syntax-detect-cases.json
  * (vs Python is_relation_syntax_query full-parse adapter).
  * Codegen mjs: python scripts/codegen_query_mode_detect.py
- * Do not hand-edit frontend/query-mode-detect.mjs.
+ * Do not hand-edit shared/query-mode-detect.mjs.
  */
 
 const FILLWORD_CONNECTIVES = '與和或共同及跟而且並向';

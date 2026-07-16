@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-ABOUT_I18N = ROOT / "frontend" / "about-i18n.mjs"
+ABOUT_I18N = ROOT / "shared" / "about-i18n.mjs"
 ABOUT_VIEW = ROOT / "client" / "src" / "about-view.tsx"
 FORBIDDEN = (
     "dict_synonym.txt",
@@ -24,7 +24,7 @@ class AboutAntonymSourceCopyTests(unittest.TestCase):
         self.assertIn("Project antonym lexicon", text)
 
     def test_client_about_uses_i18n_ssot(self) -> None:
-        """Product About is client + about-i18n; frontend/index.html is only /app redirect."""
+        """Product About is client + about-i18n; shared/index.html is only /app redirect."""
         view = ABOUT_VIEW.read_text(encoding="utf-8")
         self.assertIn("getAboutCopy", view)
         self.assertIn("about-i18n.mjs", view)

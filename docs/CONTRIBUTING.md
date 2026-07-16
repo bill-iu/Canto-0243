@@ -27,10 +27,10 @@ python scripts/bootstrap_data.py
 cd client && npm ci && npm run build:portable && cd ..
 python -m unittest discover -s tests/smoke -q
 python scripts/check_seams.py -q
-./start.sh   # 開啟 http://127.0.0.1:8000/app/index.html（唔再開 frontend/index.html）
+./start.sh   # 開啟 http://127.0.0.1:8000/app/index.html
 ```
 
-Portable 創作者入口係 **`/app/`**（`client/dist-portable`，`npm run build:portable`）。Repo 內 **`frontend/`** 暫留作共享 SSOT（mjs／CSS／教學 manifest），**唔**當產品 UI 殼。
+Portable 創作者入口係 **`/app/`**（`client/dist-portable`，`npm run build:portable`）。Repo 內 **`shared/`** 暫留作共享 SSOT（mjs／CSS／教學 manifest），**唔**當產品 UI 殼。
 
 `__pycache__/` 與 `*.pyc` 為 Python 自動產生的 bytecode 快取，已在 `.gitignore`；**可隨時刪除**，下次 `import` 會重建。請勿提交至 git。
 

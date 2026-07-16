@@ -1,5 +1,5 @@
 /**
- * Portable maintainer: 詞庫勘誤 — mirrors frontend/lexicon-corrections.mjs main path.
+ * Portable maintainer: 詞庫勘誤 — mirrors shared/lexicon-corrections.mjs main path.
  */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 

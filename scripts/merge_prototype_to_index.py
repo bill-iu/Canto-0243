@@ -10,5 +10,5 @@ if __name__ == "__main__":
     raise SystemExit(1)
 
 ROOT = Path(__file__).resolve().parents[1]
-src_path = ROOT / "frontend" / "prototype.html"
-out_path = ROOT / "frontend" / "index.html"
+src_path = ROOT / "shared" / "prototype.html"
+out_path = ROOT / "shared" / "index.html"

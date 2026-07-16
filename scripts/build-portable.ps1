@@ -46,7 +46,7 @@ if ($LASTEXITCODE -ne 0) { throw "pip install pyinstaller failed" }
 $PyiWork = Join-Path $Root "dist\_pyi_work"
 $PyiSpec = Join-Path $Root "dist\_pyi_spec"
 $Launcher = Join-Path $Root "scripts\portable_win_launcher.py"
-$Icon = Join-Path $Root "frontend\favicon.ico"
+$Icon = Join-Path $Root "shared\favicon.ico"
 if (Test-Path $PyiWork) { Remove-Item $PyiWork -Recurse -Force }
 if (Test-Path $PyiSpec) { Remove-Item $PyiSpec -Recurse -Force }
 $PyiArgs = @(

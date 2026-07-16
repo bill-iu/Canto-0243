@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Codegen frontend/query-mode-detect.mjs from client/src/db/query/mode-detect.ts.
+"""Codegen shared/query-mode-detect.mjs from client/src/db/query/mode-detect.ts.
 
 Usage:
   python scripts/codegen_query_mode_detect.py
@@ -14,7 +14,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 TS_SRC = REPO / "client" / "src" / "db" / "query" / "mode-detect.ts"
-MJS_OUT = REPO / "frontend" / "query-mode-detect.mjs"
+MJS_OUT = REPO / "shared" / "query-mode-detect.mjs"
 
 HEADER = """\
 /**

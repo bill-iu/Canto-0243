@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { isSentinelIntersecting } from '../../frontend/infinite-results.mjs';
+import { isSentinelIntersecting } from '../../shared/infinite-results.mjs';
 import { RESULT_RENDER_BATCH, clampVisibleCount, resetVisibleCount } from './infinite-results-logic.ts';
 const SCROLL_MARGIN = 200;
 

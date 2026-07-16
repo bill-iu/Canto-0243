@@ -1,5 +1,5 @@
 /** Load vendored Draggabilly onto globalThis (classic UMD; Vite ESM would hit CJS require). */
-import draggabillyUrl from '../../../frontend/vendor/draggabilly.pkgd.min.js?url';
+import draggabillyUrl from '../../../shared/vendor/draggabilly.pkgd.min.js?url';
 
 declare global {
   var Draggabilly:

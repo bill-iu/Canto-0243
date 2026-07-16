@@ -70,10 +70,10 @@ def _app_ui_stale(root: Path) -> bool:
         root / "client" / "src" / "mode-menu.tsx",
         root / "client" / "src" / "pwa-app.css",
         root / "client" / "index.html",
-        root / "frontend" / "open-design.css",
-        root / "frontend" / "chrome-tabs.css",
-        root / "frontend" / "shell.css",
-        root / "frontend" / "ready-gate.css",
+        root / "shared" / "open-design.css",
+        root / "shared" / "chrome-tabs.css",
+        root / "shared" / "shell.css",
+        root / "shared" / "ready-gate.css",
     )
     return any(p.is_file() and p.stat().st_mtime > dist_mtime for p in markers)
 

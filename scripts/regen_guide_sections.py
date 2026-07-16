@@ -267,7 +267,7 @@ def main() -> None:
     parts.append("];")
     blob = "\n".join(parts) + "\n"
 
-    path = REPO / "frontend" / "guide-i18n.mjs"
+    path = REPO / "shared" / "guide-i18n.mjs"
     text = path.read_text(encoding="utf-8")
     m = re.match(r"(?s)const SECTIONS = \[.*?\n\];\n", text)
     if not m:

@@ -1,4 +1,4 @@
-/** Desktop parity shuffle icon (frontend/index.html #shuffleBtn) */
+/** Desktop parity shuffle icon (shared/index.html #shuffleBtn) */
 export function ShuffleIcon() {
   return (
     <svg

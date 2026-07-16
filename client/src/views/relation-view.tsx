@@ -1,5 +1,5 @@
 /**
- * Portable maintainer: 關係補錄 — mirrors frontend/relation-form.mjs main path.
+ * Portable maintainer: 關係補錄 — mirrors shared/relation-form.mjs main path.
  */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 

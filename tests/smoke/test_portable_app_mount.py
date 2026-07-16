@@ -102,7 +102,7 @@ class PortableAppMountTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             ui = Path(tmp)
-            with patch("main.FRONTEND_DIR", Path("definitely-missing-frontend-dir")):
+            with patch("main.SHARED_DIR", Path("definitely-missing-shared-dir")):
                 self.assertIsNone(resolve_favicon(ui))
 
     def test_root_favicon_404_when_no_asset(self):
@@ -113,7 +113,7 @@ class PortableAppMountTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as tmp:
             ui = Path(tmp)
-            with patch("main.FRONTEND_DIR", Path("definitely-missing-frontend-dir")):
+            with patch("main.SHARED_DIR", Path("definitely-missing-shared-dir")):
                 with patch("main.APP_UI_DIR", ui):
                     with self.assertRaises(Exception) as ctx:
                         asyncio.run(root_favicon())

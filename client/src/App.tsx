@@ -12,7 +12,7 @@ import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
-import { formatStandardResultCountLabel } from '../../frontend/result-stats.mjs';
+import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -28,7 +28,7 @@ import {
   mergePickLookupResults,
   pickReadingsToQueryRows,
   resolveListClickAction,
-} from '../../frontend/entry-detail-core.mjs';
+} from '../../shared/entry-detail-core.mjs';
 import { SynResultList } from './syn-result-list';
 import { synResultItemCount, synResultsStats } from './syn-result-logic.ts';
 import { AnchorResultList } from './anchor-result-list';
@@ -71,7 +71,7 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { exitPortable } from './portable-exit';

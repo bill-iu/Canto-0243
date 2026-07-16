@@ -3,7 +3,7 @@ import {
   createSearchTab,
   reorderTabsByIds,
   type TabState,
-} from '../../frontend/query-tabs-state.mjs';
+} from '../../shared/query-tabs-state.mjs';
 
 const state: TabState = {
   activeId: 1,
