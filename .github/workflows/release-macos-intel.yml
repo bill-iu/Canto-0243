@@ -34,6 +34,19 @@ jobs:
           cache: pip
           cache-dependency-path: requirements.txt
 
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Build portable UI (/app)
+        working-directory: client
+        run: |
+          npm ci
+          npm run build:portable
+          test -f dist-portable/index.html
+
       - name: Build macOS x86_64 portable tar.gz
         run: |
           export SKIP_README_SYNC=1
