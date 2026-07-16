@@ -15,10 +15,15 @@ if (!fs.existsSync(indexHtml)) {
 const html = fs.readFileSync(indexHtml, 'utf8');
 for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   const url = match[1];
+  // SVG fragment refs (#…) are fine; all root-absolute assets must sit under /app/
   if (url.startsWith('/') && !url.startsWith('/app/')) {
     console.error(`portable-host-build-self-check: asset not under /app/: ${url}`);
     process.exit(1);
   }
+}
+if (!html.includes('/app/fonts/')) {
+  console.error('portable-host-build-self-check: expected /app/fonts/ links (use %BASE_URL%fonts/ in index.html)');
+  process.exit(1);
 }
 
 const assetsDir = path.join(distDir, 'assets');

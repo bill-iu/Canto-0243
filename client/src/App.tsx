@@ -74,6 +74,7 @@ import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
+import { exitPortable } from './portable-exit';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -935,6 +936,16 @@ function App() {
                 lexiconVersion={lexiconVersion}
                 showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
               />
+              {isPortableHost() ? (
+                <button
+                  className="ghost-button portable-exit-btn"
+                  id="portableExitBtn"
+                  type="button"
+                  onClick={() => void exitPortable(uiLang)}
+                >
+                  {uiLang === 'en' ? 'Exit Canto-0243' : '退出 Canto-0243'}
+                </button>
+              ) : null}
             </div>
             {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏放大＋tagline、水平置中 */}
             <div className="header-hero" aria-hidden="true">

@@ -26,11 +26,13 @@ BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
 RELEASE_WINDOWS_PATH = REPO_ROOT / "scripts" / "release-windows-local.ps1"
 RELEASE_MACOS_PATH = REPO_ROOT / "scripts" / "release-macos-local.sh"
-MAIN_MJS_PATH = REPO_ROOT / "frontend" / "main.mjs"
 APP_CONTEXT_PATH = REPO_ROOT / "frontend" / "app-context.mjs"
-GATE_MJS_PATH = REPO_ROOT / "frontend" / "gate.mjs"
-SEARCH_MJS_PATH = REPO_ROOT / "frontend" / "search-workbench.mjs"
 LAYOUT_PATH = REPO_ROOT / "frontend" / "chrome-tabs-layout.mjs"
+CLIENT_APP_PATH = REPO_ROOT / "client" / "src" / "App.tsx"
+PORTABLE_READY_PATH = REPO_ROOT / "client" / "src" / "hooks" / "use-portable-ready.ts"
+PORTABLE_EXIT_PATH = REPO_ROOT / "client" / "src" / "portable-exit.ts"
+CHROME_TABS_BAR_PATH = REPO_ROOT / "client" / "src" / "query-tabs" / "chrome-tabs-bar.tsx"
+READINESS_GATE_PATH = REPO_ROOT / "app" / "startup" / "readiness_gate.py"
 MAIN_PATH = REPO_ROOT / "main.py"
 DISPATCH_PATH = REPO_ROOT / "app" / "services" / "query_dispatch.py"
 PARSE_PATH = REPO_ROOT / "app" / "services" / "query_parse.py"
@@ -150,12 +152,18 @@ class TestLocalLaunchSeam(unittest.TestCase):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertIn('snap["portable"]', source)
 
-    def test_index_header_menu_only_plus_portable_exit(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn('id="aboutMenuBtn"', source)
-        self.assertIn('id="portableExitBtn"', source)
-        self.assertNotIn('id="guideTopBtn"', source)
-        self.assertNotIn('id="aboutTopBtn"', source)
+    def test_portable_host_menu_plus_exit(self):
+        """Product chrome lives in client; frontend/index.html is only a /app redirect stub."""
+        app = CLIENT_APP_PATH.read_text(encoding="utf-8")
+        menu = (REPO_ROOT / "client" / "src" / "mode-menu.tsx").read_text(encoding="utf-8")
+        exit_src = PORTABLE_EXIT_PATH.read_text(encoding="utf-8")
+        stub = INDEX_PATH.read_text(encoding="utf-8")
+        self.assertIn('id="portableExitBtn"', app)
+        self.assertIn("exitPortable", app)
+        self.assertIn("onOpenAbout", menu)
+        self.assertIn('fetch("/shutdown"', exit_src)
+        self.assertIn('location.replace("/app/")', stub)
+        self.assertNotIn('src="./main.mjs"', stub)
 
     def test_local_launch_supports_gui_reuse(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
@@ -683,46 +691,33 @@ class TestQueryParseTypesSeam(unittest.TestCase):
 
 
 class TestQueryTabsSeam(unittest.TestCase):
-    FRONTEND_ASSETS = (
+    """Shared SSOT + chrome-tabs remain under frontend/; product chrome is client."""
+
+    SHARED_ASSETS = (
         "chrome-tabs.css",
         "chrome-tabs-layout.mjs",
         "query-tabs.css",
         "query-tabs-state.mjs",
         "tab-geometry.mjs",
-        "main.mjs",
         "app-context.mjs",
+        "search-navigation.mjs",
+        "committed-search.mjs",
         "vendor/draggabilly.pkgd.min.js",
     )
-    INDEX_REQUIRED = (
-        'href="chrome-tabs.css"',
-        'href="query-tabs.css"',
-        'src="vendor/draggabilly.pkgd.min.js"',
-        'src="./main.mjs"',
-        'id="queryChromeTabs"',
-        'id="queryTabstrip"',
-        'id="queryExplain"',
-        'id="queryExplainSummary"',
-        'id="queryExplainWarning"',
-        "app-header--tabs",
-        "view=relation",
-    )
-    MAIN_MJS_REQUIRED = (
-        'from "./gate.mjs"',
-        "waitForPreloadReady",
-        "syncViewPanels",
-        "openSingletonView",
-        "reorderTabsByIds",
-        "setupTabDrag",
-        "activateTabOnPress",
-        "wireTabstripKeyboard",
-        "wireModeMenuKeyboard",
-        "stripLauncherBootFromUrl",
-        'fetch("/ready"',
-        'from "./query-explain.mjs"',
-    )
-    APP_CONTEXT_REQUIRED = (
-        'from "./query-tabs-state.mjs"',
-        "SESSION_KEY",
+    REMOVED_SHELL = (
+        "main.mjs",
+        "gate.mjs",
+        "search-workbench.mjs",
+        "tabs-core.mjs",
+        "tabs-ui.mjs",
+        "view-sync.mjs",
+        "relation-form.mjs",
+        "lexicon-corrections.mjs",
+        "entry-detail-portable.mjs",
+        "query-explain.mjs",
+        "mode-policy.mjs",
+        "ping-ze-syntax.mjs",
+        "dom-escape.mjs",
     )
     INDEX_FORBIDDEN = (
         "prototype-ribbon",
@@ -731,45 +726,48 @@ class TestQueryTabsSeam(unittest.TestCase):
         "canto0243:prototype:query-tabs",
         "relation-entry.html",
         "relation-entry.css",
-        "display=block",
         "PROTOTYPE ·",
+        'src="./main.mjs"',
     )
     MAIN_FORBIDDEN = (
         '@app.get("/prototype")',
         "prototype/query-tabs.html",
     )
 
-    def test_frontend_assets_promoted_to_root(self):
-        for name in self.FRONTEND_ASSETS:
+    def test_shared_frontend_assets_remain(self):
+        for name in self.SHARED_ASSETS:
             path = REPO_ROOT / "frontend" / name
             with self.subTest(asset=name):
                 self.assertTrue(path.is_file(), f"missing frontend/{name}")
 
-    def test_index_html_wires_query_tabs(self):
+    def test_portable_shell_modules_removed(self):
+        for name in self.REMOVED_SHELL:
+            path = REPO_ROOT / "frontend" / name
+            with self.subTest(removed=name):
+                self.assertFalse(path.is_file(), f"shell module still present: {name}")
+
+    def test_frontend_index_is_app_redirect_stub(self):
         source = INDEX_PATH.read_text(encoding="utf-8")
-        for symbol in self.INDEX_REQUIRED:
+        self.assertIn('location.replace("/app/")', source)
+        self.assertIn('url=/app/', source)
+        for symbol in self.INDEX_FORBIDDEN:
             with self.subTest(symbol=symbol):
-                self.assertIn(symbol, source)
+                self.assertNotIn(symbol, source)
 
-    def test_main_mjs_wires_query_tabs(self):
-        source = MAIN_MJS_PATH.read_text(encoding="utf-8")
+    def test_client_wires_chrome_tabs_and_portable_ready(self):
+        bar = CHROME_TABS_BAR_PATH.read_text(encoding="utf-8")
+        app = CLIENT_APP_PATH.read_text(encoding="utf-8")
+        ready = PORTABLE_READY_PATH.read_text(encoding="utf-8")
         app_ctx = APP_CONTEXT_PATH.read_text(encoding="utf-8")
-        gate = GATE_MJS_PATH.read_text(encoding="utf-8")
-        tabs_ui = (REPO_ROOT / "frontend" / "tabs-ui.mjs").read_text(encoding="utf-8")
         layout = LAYOUT_PATH.read_text(encoding="utf-8")
-        bundle = source + app_ctx + gate + tabs_ui + layout
-        for symbol in self.MAIN_MJS_REQUIRED:
-            with self.subTest(symbol=symbol):
-                self.assertIn(symbol, bundle)
-        for symbol in self.APP_CONTEXT_REQUIRED:
-            with self.subTest(symbol=symbol):
-                self.assertIn(symbol, app_ctx)
-        self.assertIn("data.gate_ready", gate)
+        self.assertIn("QueryChromeTabsLayout", bar)
+        self.assertIn("chrome-tabs-layout.mjs", bar)
+        self.assertIn("isPortableHost", app)
+        self.assertIn("fetch('/ready'", ready)
+        self.assertIn("gate_ready", ready)
+        self.assertIn('from "./query-tabs-state.mjs"', app_ctx)
+        self.assertIn("SESSION_KEY", app_ctx)
         self.assertIn("setupDraggabilly", layout)
-
-    def test_view_sync_does_not_mutate_browser_history(self):
-        source = (REPO_ROOT / "frontend" / "view-sync.mjs").read_text(encoding="utf-8")
-        self.assertNotIn("updateBrowserUrlFromActiveTab", source)
 
     def test_word_router_exposes_query_explain(self):
         source = (REPO_ROOT / "app" / "routers" / "word.py").read_text(encoding="utf-8")
@@ -807,56 +805,38 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("globalThis.Draggabilly", source)
         self.assertNotIn("global.QueryChromeTabsLayout", source)
 
-    def test_main_mjs_imports_chrome_tabs_layout(self):
-        source = MAIN_MJS_PATH.read_text(encoding="utf-8")
-        self.assertIn('from "./chrome-tabs-layout.mjs"', source)
-        self.assertIn("QueryChromeTabsLayout", source)
-
-    def test_index_html_has_no_prototype_or_relation_entry_links(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
-        for symbol in self.INDEX_FORBIDDEN:
-            with self.subTest(symbol=symbol):
-                self.assertNotIn(symbol, source)
-
     def test_relation_entry_page_removed(self):
         with self.subTest(path=str(RELATION_ENTRY_PATH.relative_to(REPO_ROOT))):
             self.assertFalse(RELATION_ENTRY_PATH.exists())
 
     def test_relation_entry_css_merged_into_shell(self):
         self.assertFalse(RELATION_ENTRY_CSS_PATH.exists())
-        source = INDEX_PATH.read_text(encoding="utf-8")
         shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
         workbench = (REPO_ROOT / "frontend" / "workbench.css").read_text(encoding="utf-8")
         self.assertIn(".relation-main", shell)
         self.assertIn("a.result-item", workbench)
-        self.assertNotIn("relation-entry.css", source)
-        self.assertIn("display=swap", source)
 
     def test_ready_gate_css_ssot(self):
         self.assertTrue(READY_GATE_CSS_PATH.is_file())
         self.assertFalse(PWA_BOOT_GATE_CSS_PATH.is_file())
         ready_gate = READY_GATE_CSS_PATH.read_text(encoding="utf-8")
         shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
-        index = INDEX_PATH.read_text(encoding="utf-8")
         client_index = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
         main_tsx = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
+        pwa_boot = (REPO_ROOT / "client" / "src" / "pwa-shell-boot.ts").read_text(encoding="utf-8")
+        portable_ready = PORTABLE_READY_PATH.read_text(encoding="utf-8")
         self.assertIn(".ready-gate", ready_gate)
         self.assertIn(".preload-overlay", ready_gate)
         self.assertIn('use[filter=\'url(#brush-roughen-brand)\']', ready_gate)
-        # 雙渠道 shell 露出：渠道中立 class（唔再用 pwa-shell-revealed）
         self.assertIn("html:not(.shell-revealed) .app-shell", ready_gate)
         self.assertNotIn("pwa-shell-revealed", ready_gate)
         self.assertNotIn(".preload-overlay {", shell)
         self.assertNotIn(".gate-brand {", shell)
-        self.assertIn('href="ready-gate.css"', index)
         self.assertIn("ready-gate.css", client_index)
         self.assertIn("../../frontend/ready-gate.css", main_tsx)
-        self.assertIn('class="ready-gate preload-overlay"', index)
         self.assertIn('class="ready-gate pwa-boot-gate"', client_index)
-        gate_mjs = (REPO_ROOT / "frontend" / "gate.mjs").read_text(encoding="utf-8")
-        pwa_boot = (REPO_ROOT / "client" / "src" / "pwa-shell-boot.ts").read_text(encoding="utf-8")
-        self.assertIn('classList.add("shell-revealed")', gate_mjs)
         self.assertIn("shell-revealed", pwa_boot)
+        self.assertIn("gate_ready", portable_ready)
         self.assertNotIn("pwa-shell-revealed", pwa_boot)
         self.assertNotIn("pwa-shell-revealed", client_index)
 
@@ -884,12 +864,14 @@ class TestQueryTabsSeam(unittest.TestCase):
 
     def test_pwa_preloads_critical_display_subset(self):
         source = CLIENT_INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn("/fonts/PlayfairDisplay-600.woff2", source)
-        self.assertIn("/fonts/CantoLogoSerif-700.woff2", source)
+        # %BASE_URL% so portable (/app/) and Pages (/Canto-0243/) both resolve
+        self.assertIn("%BASE_URL%fonts/PlayfairDisplay-600.woff2", source)
+        self.assertIn("%BASE_URL%fonts/CantoLogoSerif-700.woff2", source)
+        self.assertIn("%BASE_URL%fonts/fonts.css", source)
         for weight in ("500", "600", "700"):
             with self.subTest(weight=weight):
-                self.assertIn(f"/fonts/CantoCriticalSerif-{weight}.woff2", source)
-                self.assertNotIn(f'/fonts/NotoSerifTC-{weight}.woff2" as="font"', source)
+                self.assertIn(f"%BASE_URL%fonts/CantoCriticalSerif-{weight}.woff2", source)
+                self.assertNotIn(f'NotoSerifTC-{weight}.woff2" as="font"', source)
 
     def test_pwa_display_css_uses_critical_serif(self):
         shell = (REPO_ROOT / "frontend" / "shell.css").read_text(encoding="utf-8")
@@ -914,7 +896,6 @@ class TestQueryTabsSeam(unittest.TestCase):
         sources = {
             "brand-svg-defs.tsx": BRAND_SVG_DEFS_PATH.read_text(encoding="utf-8"),
             "client/index.html": CLIENT_INDEX_PATH.read_text(encoding="utf-8"),
-            "frontend/index.html": INDEX_PATH.read_text(encoding="utf-8"),
         }
         for name, source in sources.items():
             normalized = source.replace('fontWeight="700"', 'font-weight="700"').replace('fontWeight="900"', 'font-weight="900"')
@@ -923,7 +904,6 @@ class TestQueryTabsSeam(unittest.TestCase):
                 self.assertNotIn('font-weight="900"', normalized)
                 self.assertNotIn("Songti TC", source)
         self.assertIn(logo_serif, sources["client/index.html"])
-        self.assertIn(logo_serif, sources["frontend/index.html"])
         self.assertIn("LOGO_SERIF", sources["brand-svg-defs.tsx"])
         self.assertIn('fontWeight="700"', sources["brand-svg-defs.tsx"])
 
@@ -945,11 +925,11 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("merge-base --is-ancestor origin/dev origin/main", source)
         self.assertIn('merge-base --is-ancestor "${TAG}^{commit}" origin/main', source)
 
-    def test_index_html_links_shared_css(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
+    def test_client_imports_shared_css_ssot(self):
+        source = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
         for href in ("ready-gate.css", "shell.css", "workbench.css"):
             with self.subTest(href=href):
-                self.assertIn(f'href="{href}"', source)
+                self.assertIn(href, source)
         self.assertNotIn('href="index.css"', source)
 
     def test_main_py_has_no_prototype_route(self):
@@ -973,15 +953,15 @@ class TestQueryTabsSeam(unittest.TestCase):
         )
 
     def test_brand_ink_svg_symbols_dry(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
+        source = BRAND_SVG_DEFS_PATH.read_text(encoding="utf-8")
+        logo = (REPO_ROOT / "client" / "src" / "brand-logo.tsx").read_text(encoding="utf-8")
         self.assertIn('id="brand-ink-blob"', source)
         self.assertIn('id="brand-ink-blob-dark"', source)
         self.assertIn('id="brush-roughen-brand"', source)
-        self.assertIn('href="#brand-ink-blob"', source)
-        # DRY: the blob path data lives in one place only (shared via <use> for light/dark)
+        self.assertIn("#brand-ink-blob", logo)
         ink_blob_path = "M4 55.5 C14 54.9 24 55.1 34 55.7"
         self.assertEqual(source.count(ink_blob_path), 1)
-        self.assertIn('id="brand-ink-blob-path"', source)
+        self.assertIn("INK_BLOB_D", source)
         for legacy in (
             "brush-roughen-brand-gate",
             "brush-roughen-brand-meter",
@@ -990,35 +970,25 @@ class TestQueryTabsSeam(unittest.TestCase):
             with self.subTest(filter=legacy):
                 self.assertNotIn(legacy, source)
 
-    def test_mode_menu_keyboard_wired(self):
-        search = SEARCH_MJS_PATH.read_text(encoding="utf-8")
-        main = MAIN_MJS_PATH.read_text(encoding="utf-8")
-        self.assertIn("function wireModeMenuKeyboard", search)
-        self.assertIn("ArrowDown", search)
-        self.assertIn("wireModeMenuKeyboard", main)
+    def test_mode_menu_escape_closes(self):
+        menu = (REPO_ROOT / "client" / "src" / "mode-menu.tsx").read_text(encoding="utf-8")
+        self.assertIn("Escape", menu)
+        self.assertIn("setOpen(false)", menu)
 
-    def test_gate_mjs_exports_public_api(self):
-        source = GATE_MJS_PATH.read_text(encoding="utf-8")
-        self.assertIn("export {", source)
-        self.assertIn("waitForPreloadReady", source)
-        self.assertIn("setAppSearchReady(true)", source)
-        self.assertRegex(source, r"\nlet lastReadySnapshot\s*=")
-        self.assertNotIn("lastReadySnapshot,", source.split("from \"./app-context.mjs\"")[0])
-
-    def test_frontend_esm_modules_export_public_api(self):
+    def test_shared_esm_modules_export_public_api(self):
         exports_required = {
-            "relation-form.mjs": ("relationPayloadFromForm", "postRelation"),
-            "search-navigation.mjs": ("withResultClickQuery", "commitSearchHistoryFrame", "shouldApplySearchPopstate"),
-            "tabs-core.mjs": ("activeTab", "persistTabs"),
-            "tabs-ui.mjs": ("renderTabstrip", "showSearch"),
-            "view-sync.mjs": ("syncViewPanels",),
-            "search-workbench.mjs": ("searchDict", "toggleMenu"),
+            "search-navigation.mjs": (
+                "withResultClickQuery",
+                "commitSearchHistoryFrame",
+                "shouldApplySearchPopstate",
+            ),
+            "query-tabs-state.mjs": ("openSingletonView", "createSearchTab"),
+            "chrome-tabs-layout.mjs": ("QueryChromeTabsLayout",),
         }
         frontend = REPO_ROOT / "frontend"
         for name, symbols in exports_required.items():
             source = (frontend / name).read_text(encoding="utf-8")
             with self.subTest(module=name):
-                self.assertIn("export {", source)
                 for symbol in symbols:
                     self.assertIn(symbol, source)
 
@@ -1033,21 +1003,15 @@ class TestGateFrontendSeam(unittest.TestCase):
         "resumeBudget",
         "data.ready ||",
     )
-    REQUIRED = (
-        "data.gate_ready",
-        "data.degraded",
-        "formatGateStatusLabel",
-        'fetch("/ready"',
-        "仲未開得工",
-    )
 
-    def test_gate_mjs_tail_progress_includes_compound_ant(self):
-        source = GATE_MJS_PATH.read_text(encoding="utf-8")
+    def test_readiness_gate_includes_compound_ant_phase(self):
+        source = READINESS_GATE_PATH.read_text(encoding="utf-8")
         self.assertIn("compound_ant", source)
-        self.assertIn("/ 3", source)
+        preload = (REPO_ROOT / "app" / "startup" / "offline_preload.py").read_text(encoding="utf-8")
+        self.assertIn("compound_ant", preload)
 
-    def test_index_html_has_no_client_gate_policy(self):
-        source = INDEX_PATH.read_text(encoding="utf-8")
+    def test_portable_ready_hook_has_no_client_gate_policy(self):
+        source = PORTABLE_READY_PATH.read_text(encoding="utf-8")
         for symbol in self.FORBIDDEN:
             with self.subTest(symbol=symbol):
                 self.assertNotIn(symbol, source)
@@ -1056,22 +1020,19 @@ class TestGateFrontendSeam(unittest.TestCase):
         source = APP_CONTEXT_PATH.read_text(encoding="utf-8")
         self.assertIn("GATE_INK_CLIP_MAX = 200", source)
 
-    def test_index_html_uses_server_gate_contract(self):
-        gate = GATE_MJS_PATH.read_text(encoding="utf-8")
-        search = SEARCH_MJS_PATH.read_text(encoding="utf-8")
-        bundle = gate + search
-        for symbol in self.REQUIRED:
-            with self.subTest(symbol=symbol):
-                self.assertIn(symbol, bundle)
-        self.assertIn('src="./main.mjs"', INDEX_PATH.read_text(encoding="utf-8"))
+    def test_portable_ready_uses_server_gate_contract(self):
+        ready = PORTABLE_READY_PATH.read_text(encoding="utf-8")
+        self.assertIn("gate_ready", ready)
+        self.assertIn("degraded", ready)
+        self.assertIn("fetch('/ready'", ready)
+        self.assertIn('location.replace("/app/")', INDEX_PATH.read_text(encoding="utf-8"))
 
-    def test_served_frontend_gate_modules_match_disk(self):
-        html = _fetch_served("index.html?boot=test-ink")
-        self.assertIn('src="./main.mjs"', html)
+    def test_served_frontend_shared_modules_match_disk(self):
+        html = _fetch_served("index.html")
+        self.assertIn("/app/", html)
+        self.assertNotIn('src="./main.mjs"', html)
         ctx = _fetch_served("app-context.mjs")
-        gate = _fetch_served("gate.mjs")
         self.assertIn("GATE_INK_CLIP_MAX = 200", ctx)
-        self.assertIn("data.gate_ready", gate)
 
 
 class TestGuideManifestSync(unittest.TestCase):

@@ -133,7 +133,7 @@ function usePortableDBState(enabled: boolean): UseDBReturn {
   const progress = Math.round(Math.max(0, Math.min(1, progress01)) * 100);
   const tailProgress = Math.round(Math.max(0, Math.min(1, tail01)) * 100);
 
-  // ponytail: stay preparing on transient /ready errors (gate.mjs keeps polling)
+  // ponytail: stay preparing on transient /ready errors (use-portable-ready keeps polling)
   const status: DatabaseStatus = isReady ? 'ready' : 'loading';
   const offlineStatus: OfflineReadinessStatus = isReady ? 'ready' : 'preparing';
 

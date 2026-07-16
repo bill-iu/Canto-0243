@@ -14,7 +14,7 @@ html[data-theme='dark'] {
   --pwa-boot-ink: #fb7185;
 }
 
-/* 雙渠道 SSOT：就緒閘解鎖後才露出 shell（class 由 Portable gate.mjs / PWA pwa-shell-boot 設置） */
+/* 雙渠道 SSOT：就緒閘解鎖後才露出 shell（class 由 Portable /ready 閘 / PWA pwa-shell-boot 設置） */
 html:not(.shell-revealed) .app-shell {
   opacity: 0;
   pointer-events: none;
