@@ -158,12 +158,16 @@ class TestLocalLaunchSeam(unittest.TestCase):
         menu = (REPO_ROOT / "client" / "src" / "mode-menu.tsx").read_text(encoding="utf-8")
         exit_src = PORTABLE_EXIT_PATH.read_text(encoding="utf-8")
         stub = INDEX_PATH.read_text(encoding="utf-8")
-        self.assertIn('id="portableExitBtn"', app)
+        self.assertIn('id="portableExitBtn"', menu)
+        self.assertIn("onExitPortable", app)
+        self.assertIn("header-chrome__actions", app)
         self.assertIn("exitPortable", app)
         self.assertIn("onOpenAbout", menu)
         self.assertIn('fetch("/shutdown"', exit_src)
         self.assertIn('location.replace("/app/")', stub)
         self.assertNotIn('src="./main.mjs"', stub)
+        self.assertIn("!isPortableHost() && isReady && getActiveDbBackendMode()", app)
+        self.assertIn("!isPortableHost() && !shellGated", app)
 
     def test_local_launch_supports_gui_reuse(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")

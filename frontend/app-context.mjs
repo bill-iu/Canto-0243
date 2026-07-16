@@ -132,7 +132,7 @@ export function setTheme(theme) {
   document.documentElement.dataset.theme = theme;
   // update meta theme-color
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = theme === 'dark' ? '#1C1917' : '#EBDFD0';
+  if (meta) meta.content = theme === 'dark' ? '#1C1917' : '#DFD2C2';
 }
 
 export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";

@@ -8,7 +8,7 @@
   --chrome-tab-inactive-fill: color-mix(in srgb, var(--chrome-tabs-strip-bg) 68%, var(--surface) 32%);
   --chrome-tab-active-fill: var(--bg);
   --chrome-tab-active-glow: rgba(138, 90, 32, 0.12);
-  /* divider / +：白色 */
+  /* divider：深色帶上用淺色；+ 預設跟 --ink（見 chrome-tabs.css），有色帶再覆寫 */
   --chrome-tab-divider: rgba(255, 255, 255, 0.88);
   --chrome-tab-title: color-mix(in srgb, var(--muted) 88%, var(--surface) 12%);
   --chrome-tab-title-active: var(--ink);
@@ -62,6 +62,7 @@ html[data-theme="dark"] {
   --chrome-tab-active-fill: #1C1917;         /* active tab blends to main content bg */
   --chrome-tab-active-glow: rgba(179, 125, 62, 0.12);
   --chrome-tab-divider: rgba(255, 255, 255, 0.12);
+  --chrome-tab-add: rgba(245, 240, 230, 0.9);
   --chrome-tab-title: #8F8577;
   --chrome-tab-title-active: #F5F0E6;
 
@@ -109,6 +110,8 @@ body.query-tabs-app {
   top: 0;
   z-index: var(--z-header);
   padding: 0;
+  /* light: + = shuffle accent; dark overrides below */
+  --chrome-tab-add: var(--accent-strong);
   background:
     linear-gradient(180deg, var(--chrome-tabs-strip-highlight) 0%, transparent 38%),
     radial-gradient(ellipse 120% 90% at 12% -20%, rgba(255, 255, 255, 0.08), transparent 58%),
@@ -337,7 +340,8 @@ body.query-tabs-app {
 /* U1：+ 左側也有 divider 小長方形（並跟隨 S2 被蓋住/顯示） */
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
   position: relative;
-  color: #fff;
+  /* match shuffle: accent-strong / accent hover */
+  color: var(--accent-strong);
   transition:
     color 200ms cubic-bezier(0.32, 0.72, 0, 1),
     background-color 200ms cubic-bezier(0.32, 0.72, 0, 1),
@@ -345,9 +349,18 @@ body.query-tabs-app {
 }
 
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  transform: scale(1.04);
+}
+
+html[data-theme="dark"] .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit {
+  color: #fff;
+}
+
+html[data-theme="dark"] .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
-  transform: scale(1.04);
 }
 
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:active {
@@ -357,6 +370,10 @@ body.query-tabs-app {
 .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+html[data-theme="dark"] .query-tabs-app .chrome-tabs .chrome-tab-add .chrome-tab-add-hit:focus-visible {
   background: rgba(255, 255, 255, 0.1);
 }
 

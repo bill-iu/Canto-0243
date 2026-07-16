@@ -319,6 +319,17 @@
   display: none !important;
 }
 
+/* Match menu-trigger capsule when exit sits beside ModeMenu */
+.header-chrome__actions .portable-exit-btn,
+.app-actions .portable-exit-btn {
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
 .portable-exit-note {
   margin: 48px auto;
   max-width: 28rem;

@@ -41,7 +41,8 @@
   place-items: center;
   font-size: 24px;
   font-weight: 800;
-  color: var(--bg);
+  /* light: same accent as shuffle; dark: ink on strip */
+  color: var(--accent-strong);
   background: transparent;
   border: none;
   box-shadow: none;
@@ -51,9 +52,18 @@
   line-height: 1;
 }
 
+html[data-theme="dark"] .chrome-tabs .chrome-tab-add-hit {
+  color: #f5f0e6;
+}
+
 .chrome-tabs .chrome-tab-add-hit:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+}
+
+html[data-theme="dark"] .chrome-tabs .chrome-tab-add-hit:hover {
+  background: rgba(245, 240, 230, 0.12);
+  color: #f5f0e6;
 }
 
 .chrome-tabs .chrome-tab-add-hit:active {
@@ -63,7 +73,11 @@
 .chrome-tabs .chrome-tab-add-hit:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+html[data-theme="dark"] .chrome-tabs .chrome-tab-add-hit:focus-visible {
+  background: rgba(245, 240, 230, 0.1);
 }
 
 .chrome-tabs .chrome-tab {

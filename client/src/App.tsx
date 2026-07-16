@@ -71,7 +71,7 @@ import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../frontend/app-context.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { exitPortable } from './portable-exit';
@@ -82,7 +82,10 @@ const initialUrl =
     : { q: '', mode: '0243' as UiMode, pzmode: 'm1' as PingzeSubMode, view: 'search' as const };
 
 function App() {
-  const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
+  const lexiconVersion =
+    (isPortableHost() ? readLexiconVersionMeta() : null) ||
+    (import.meta as any).env?.VITE_LEXICON_VERSION ||
+    'dev';
   const conn = (navigator as any).connection;
   const isLikelyMetered =
     Boolean(conn?.saveData) ||
@@ -268,14 +271,15 @@ function App() {
 
   const shellGated = offlineStatus !== 'ready' || gateOpen;
 
+  // Portable is a local desktop host — never show PWA install chrome
   const shouldShowInstallBanner =
-    !shellGated && !isStandalone && !installDismissed;
+    !isPortableHost() && !shellGated && !isStandalone && !installDismissed;
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
     setTheme(uiTheme);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#EBDFD0');
+    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#DFD2C2');
   }, [uiTheme]);
 
   useEffect(() => {
@@ -922,30 +926,25 @@ function App() {
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
               </div>
-              <ModeMenu
-                mode={mode}
-                disabled={shellGated}
-                onModeChange={handleModeChange}
-                onOpenGuide={handleOpenGuide}
-                onOpenAbout={handleOpenAbout}
-                onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
-                theme={uiTheme}
-                lang={uiLang}
-                onThemeChange={(next) => setUiTheme(next)}
-                onLangChange={(next) => setUiLang(next)}
-                lexiconVersion={lexiconVersion}
-                showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
-              />
-              {isPortableHost() ? (
-                <button
-                  className="ghost-button portable-exit-btn"
-                  id="portableExitBtn"
-                  type="button"
-                  onClick={() => void exitPortable(uiLang)}
-                >
-                  {uiLang === 'en' ? 'Exit Canto-0243' : '退出 Canto-0243'}
-                </button>
-              ) : null}
+              <div className="header-chrome__actions">
+                <ModeMenu
+                  mode={mode}
+                  disabled={shellGated}
+                  onModeChange={handleModeChange}
+                  onOpenGuide={handleOpenGuide}
+                  onOpenAbout={handleOpenAbout}
+                  onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
+                  onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                  theme={uiTheme}
+                  lang={uiLang}
+                  onThemeChange={(next) => setUiTheme(next)}
+                  onLangChange={(next) => setUiLang(next)}
+                  lexiconVersion={lexiconVersion}
+                  showOpfsBackend={
+                    !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
+                  }
+                />
+              </div>
             </div>
             {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏放大＋tagline、水平置中 */}
             <div className="header-hero" aria-hidden="true">

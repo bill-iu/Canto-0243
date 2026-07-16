@@ -3,7 +3,7 @@
 /* Instant boot fallbacks (before open-design.css hydrates) */
 :root {
   color-scheme: light dark;
-  --pwa-boot-bg: #ebdfd0;
+  --pwa-boot-bg: #dfd2c2;
   --pwa-boot-muted: #5c6159;
   --pwa-boot-ink: #9f1239;
 }

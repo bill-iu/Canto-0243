@@ -59,6 +59,25 @@ def app_ui_ready(root: Path) -> bool:
     return (root / APP_UI_INDEX).is_file()
 
 
+def _app_ui_stale(root: Path) -> bool:
+    """True when source UI is newer than dist-portable (dev checkout only)."""
+    index = root / APP_UI_INDEX
+    if not index.is_file():
+        return True
+    dist_mtime = index.stat().st_mtime
+    markers = (
+        root / "client" / "src" / "App.tsx",
+        root / "client" / "src" / "mode-menu.tsx",
+        root / "client" / "src" / "pwa-app.css",
+        root / "client" / "index.html",
+        root / "frontend" / "open-design.css",
+        root / "frontend" / "chrome-tabs.css",
+        root / "frontend" / "shell.css",
+        root / "frontend" / "ready-gate.css",
+    )
+    return any(p.is_file() and p.stat().st_mtime > dist_mtime for p in markers)
+
+
 def _npm_cmd() -> str | None:
     return shutil.which("npm.cmd") or shutil.which("npm")
 
@@ -82,13 +101,17 @@ def try_build_portable_ui(root: Path, *, silent: bool = False) -> bool:
 
 
 def ensure_app_ui(root: Path, *, lang: str = "zh", silent: bool = False) -> None:
-    """Guarantee product UI exists before starting main.py (start.sh / START.* / .exe)."""
-    if app_ui_ready(root):
-        return
+    """Guarantee product UI exists (and is fresh) before starting main.py."""
     msgs = _messages(lang)
+    needs_build = not app_ui_ready(root) or _app_ui_stale(root)
+    if not needs_build:
+        return
     if not silent:
         print(msgs["building_ui"], flush=True)
     if try_build_portable_ui(root, silent=silent):
+        return
+    if app_ui_ready(root):
+        # Stale rebuild failed but an older dist exists — keep going.
         return
     raise SystemExit(msgs["ui_missing"])
 

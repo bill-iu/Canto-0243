@@ -12,6 +12,8 @@ export interface ModeMenuProps {
   onOpenAbout: () => void;
   /** Portable host only — 關係補錄 */
   onOpenRelation?: () => void;
+  /** Portable host only — 退出本機服務 */
+  onExitPortable?: () => void;
   theme?: 'light' | 'dark';
   lang?: 'zh' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
@@ -27,6 +29,7 @@ export function ModeMenu({
   onOpenGuide,
   onOpenAbout,
   onOpenRelation,
+  onExitPortable,
   theme = 'light',
   lang = 'zh',
   onThemeChange,
@@ -196,6 +199,25 @@ export function ModeMenu({
                 </span>
                 <span className="mode-key">i</span>
               </button>
+              {onExitPortable ? (
+                <button
+                  type="button"
+                  className="mode-option"
+                  id="portableExitBtn"
+                  role="menuitem"
+                  onClick={() => {
+                    close();
+                    onExitPortable();
+                  }}
+                >
+                  <span>
+                    <span className="mode-name">{lang === 'zh' ? '退出 Canto-0243' : 'Exit Canto-0243'}</span>
+                    <span className="mode-help">
+                      {lang === 'zh' ? '關閉本機查韻服務' : 'Stop the local server'}
+                    </span>
+                  </span>
+                </button>
+              ) : null}
             </div>
 
             <div className="menu-group" role="group" aria-label={lang === 'zh' ? '顯示' : 'Display'}>
