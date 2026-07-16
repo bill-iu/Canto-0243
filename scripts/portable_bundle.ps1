@@ -17,9 +17,15 @@ function Copy-PortableBundle {
         if ($LASTEXITCODE -ge 8) { throw "robocopy failed for $Src -> $Dst" }
     }
 
-    Write-Host "==> Copy app, data, frontend, portable launchers..."
+    $DistPortable = Join-Path $Root "client\dist-portable"
+    $DistIndex = Join-Path $DistPortable "index.html"
+    if (-not (Test-Path $DistIndex)) {
+        throw "client/dist-portable/index.html not found. Run: cd client && npm run build:portable"
+    }
+
+    Write-Host "==> Copy app, data, client/dist-portable, portable launchers..."
     Copy-PortableTree (Join-Path $Root "app") (Join-Path $OutDir "app")
-    Copy-PortableTree (Join-Path $Root "frontend") (Join-Path $OutDir "frontend")
+    Copy-PortableTree $DistPortable (Join-Path $OutDir "client\dist-portable")
     Copy-PortableTree (Join-Path $Root "data") (Join-Path $OutDir "data")
     Copy-PortableTree (Join-Path $Root "portable") $OutDir
 
