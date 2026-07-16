@@ -43,12 +43,15 @@ import {
   subscribeTailProgress,
   resetTailPreload,
 } from '../db/tail-preload.ts';
+import { isPortableHost } from '../host-mode.ts';
 import {
   DBContext,
   type DatabaseStatus,
   type OfflineReadinessStatus,
   type UseDBReturn,
 } from './db-context.ts';
+import { usePortableReady } from './use-portable-ready.ts';
+import { usePortableSearch } from './use-portable-search.ts';
 
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
 export {
@@ -63,7 +66,99 @@ export {
 
 const WARM_FAST_PATH_MS = 500;
 
-export function useDBState(): UseDBReturn {
+const IDLE_DB_RETURN: UseDBReturn = {
+  status: 'idle',
+  offlineStatus: 'not_ready',
+  isOfflineReady: false,
+  isOnline: typeof navigator !== 'undefined' ? navigator.onLine : true,
+  isDbCached: null,
+  dbUrl: '',
+  progress: 0,
+  tailProgress: 0,
+  startupComplete: false,
+  suppressGateOverlay: false,
+  error: null,
+  isReady: false,
+  initialize: async () => {},
+  retryOfflineReady: async () => {},
+  search: async () => [],
+  getStats: async () => ({ wordCount: 0, tableCount: 0 }),
+  reset: () => {},
+};
+
+function usePortableDBState(enabled: boolean): UseDBReturn {
+  const { isReady, snapshot, error } = usePortableReady(enabled);
+  const [isOnline, setIsOnline] = useState(
+    () => (typeof navigator !== 'undefined' ? navigator.onLine : true),
+  );
+
+  useEffect(() => {
+    if (!enabled) return;
+    const onOnline = () => setIsOnline(true);
+    const onOffline = () => setIsOnline(false);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('offline', onOffline);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('offline', onOffline);
+    };
+  }, [enabled]);
+
+  const initialize = useCallback(async () => {
+    /* ponytail: portable readiness is /ready poll — no OPFS init */
+  }, []);
+
+  const retryOfflineReady = useCallback(async () => {
+    /* ponytail: next /ready poll refreshes; no OPFS purge */
+  }, []);
+
+  const searchQuery = useCallback(async (_options: QueryOptions) => {
+    throw new Error('portable host: use useSearch (API) instead of db.search');
+  }, []);
+
+  const getStats = useCallback(async () => {
+    const res = await fetch('/words/db-stats/', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`db-stats ${res.status}`);
+    return res.json() as Promise<{ wordCount: number; tableCount: number }>;
+  }, []);
+
+  const reset = useCallback(() => {
+    /* no local db */
+  }, []);
+
+  if (!enabled) return IDLE_DB_RETURN;
+
+  const progress01 = typeof snapshot?.progress === 'number' ? snapshot.progress : 0;
+  const tail01 = typeof snapshot?.tail_progress === 'number' ? snapshot.tail_progress : 0;
+  const progress = Math.round(Math.max(0, Math.min(1, progress01)) * 100);
+  const tailProgress = Math.round(Math.max(0, Math.min(1, tail01)) * 100);
+
+  // ponytail: stay preparing on transient /ready errors (gate.mjs keeps polling)
+  const status: DatabaseStatus = isReady ? 'ready' : 'loading';
+  const offlineStatus: OfflineReadinessStatus = isReady ? 'ready' : 'preparing';
+
+  return {
+    status,
+    offlineStatus,
+    isOfflineReady: offlineStatus === 'ready',
+    isOnline,
+    isDbCached: null,
+    dbUrl: '',
+    progress,
+    tailProgress,
+    startupComplete: Boolean(snapshot?.startup_complete),
+    suppressGateOverlay: false,
+    error,
+    isReady: offlineStatus === 'ready',
+    initialize,
+    retryOfflineReady,
+    search: searchQuery,
+    getStats,
+    reset,
+  };
+}
+
+function useEngineDBState(enabled: boolean): UseDBReturn {
   const [status, setStatus] = useState<DatabaseStatus>('idle');
   const [progress, setProgress] = useState<number>(0);
   const [tailProgress, setTailProgress] = useState<number>(0);
@@ -84,14 +179,16 @@ export function useDBState(): UseDBReturn {
   const dbUrl = getDefaultDbUrl();
 
   const checkDbCached = useCallback(async () => {
+    if (!enabled) return;
     try {
       setIsDbCached(await isLexiconCachedForBackend());
     } catch {
       setIsDbCached(false);
     }
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
+    if (!enabled) return;
     const unsubGate = subscribeGateProgress(setProgress);
     const unsubTail = subscribeTailProgress((p) => {
       setTailProgress(p);
@@ -101,9 +198,10 @@ export function useDBState(): UseDBReturn {
       unsubGate();
       unsubTail();
     };
-  }, []);
+  }, [enabled]);
 
   const initialize = useCallback(async () => {
+    if (!enabled) return;
     if (initializeInFlightRef.current) {
       return initializeInFlightRef.current;
     }
@@ -152,9 +250,10 @@ export function useDBState(): UseDBReturn {
         initializeInFlightRef.current = null;
       }
     }
-  }, []);
+  }, [enabled]);
 
   const retryOfflineReady = useCallback(async () => {
+    if (!enabled) return;
     resetDatabase();
     resetGateProgressListeners();
     resetTailPreload();
@@ -174,7 +273,7 @@ export function useDBState(): UseDBReturn {
     }
     await checkDbCached();
     await initialize();
-  }, [checkDbCached, initialize]);
+  }, [checkDbCached, enabled, initialize]);
 
   const searchQuery = useCallback(async (options: QueryOptions) => {
     if (!isDatabaseInitialized()) {
@@ -197,6 +296,7 @@ export function useDBState(): UseDBReturn {
   }, [initialize]);
 
   const reset = useCallback(() => {
+    if (!enabled) return;
     resetDatabase();
     resetGateProgressListeners();
     setStatus('idle');
@@ -206,9 +306,10 @@ export function useDBState(): UseDBReturn {
     setSuppressGateOverlay(false);
     setError(null);
     setIsValidated(false);
-  }, []);
+  }, [enabled]);
 
   useEffect(() => {
+    if (!enabled) return;
     if (initializeInFlightRef.current || !isDatabaseInitialized() || status !== 'idle') {
       return;
     }
@@ -225,13 +326,15 @@ export function useDBState(): UseDBReturn {
         /* ponytail: let App auto-initialize */
       }
     })();
-  }, [status]);
+  }, [enabled, status]);
 
   useEffect(() => {
+    if (!enabled) return;
     checkDbCached();
-  }, [checkDbCached]);
+  }, [checkDbCached, enabled]);
 
   useEffect(() => {
+    if (!enabled) return;
     const onOnline = () => setIsOnline(true);
     const onOffline = () => setIsOnline(false);
     window.addEventListener('online', onOnline);
@@ -240,7 +343,9 @@ export function useDBState(): UseDBReturn {
       window.removeEventListener('online', onOnline);
       window.removeEventListener('offline', onOffline);
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return IDLE_DB_RETURN;
 
   const offlineStatus: OfflineReadinessStatus =
     status === 'ready' && isValidated
@@ -272,6 +377,13 @@ export function useDBState(): UseDBReturn {
   };
 }
 
+export function useDBState(): UseDBReturn {
+  const portable = isPortableHost();
+  const portableState = usePortableDBState(portable);
+  const engineState = useEngineDBState(!portable);
+  return portable ? portableState : engineState;
+}
+
 export function useDB(): UseDBReturn {
   const ctx = useContext(DBContext);
   if (!ctx) {
@@ -282,7 +394,7 @@ export function useDB(): UseDBReturn {
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
-export function useSearch(
+export function useEngineSearch(
   query: string,
   mode: QueryOptions['mode'] = '0243',
   options?: {
@@ -443,6 +555,22 @@ export function useSearch(
     hasMore,
     loadMore,
   };
+}
+
+export function useSearch(
+  query: string,
+  mode: QueryOptions['mode'] = '0243',
+  options?: {
+    pageSize?: number;
+    fallback_0243_mode?: '0243' | '02493' | '394052';
+    pzmode?: 'm1' | 'm2' | 'm3';
+    ui_lang?: 'zh' | 'en';
+  },
+) {
+  const portable = isPortableHost();
+  const portableResult = usePortableSearch(portable ? query : '', mode, options);
+  const engineResult = useEngineSearch(!portable ? query : '', mode, options);
+  return portable ? portableResult : engineResult;
 }
 
 export default useDB;
