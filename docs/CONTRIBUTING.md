@@ -36,10 +36,10 @@ Portable 創作者入口係 **`/app/`**（`client/dist-portable`，`npm run buil
 
 ## Pull requests
 
+- Open pull requests against **`main`** (repository default branch).
 - Keep changes focused; match existing style.
 - Add or update tests for behaviour changes.
-- Do not commit secrets, `.env.local`, `*.db`, maintainer-built **詞級標音** import files, or other gitignored data artifacts (see README § 資料來源).
-- Do not commit `skills-lock.json` churn unless intentionally updating agent skills.
+- Do not commit secrets, `.env.local`, `*.db`, maintainer-built **詞級標音** import files, or other gitignored data artifacts (see README § 資料與語料致謝).
 - **發佈唔屬 PR 範圍**：合併後由具 upstream 權限嘅維護者依 [release.md](release.md) 執行 **發佈主理**／**發佈補件**；contributor 無需跑 `release-windows-local.ps1` 或 `release-macos-local.sh`，亦唔論用邊部 OS 開發。
 
 ## Issues
@@ -52,9 +52,7 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 
 ## 源碼根目錄（維護者）
 
-領域定義見 [CONTEXT.md](../CONTEXT.md) § 源碼根目錄。
-
-**應留在根目錄的追蹤檔**：產品入口（`main.py`、`start.sh`、`requirements*.txt`）、`README.md`（繁體中文，GitHub 首頁）、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`CONTEXT.md`、`WORKLOG.md`、`AGENTS.md`（stub）、`skills-lock.json`、`.env.example`、`.gitignore`。英文／简体中文 README 見 `docs/README.en.md`、`docs/README.zh-Hans.md`。
+**應留在根目錄的追蹤檔**：產品入口（`main.py`、`start.sh`、`requirements*.txt`）、`README.md`（繁體中文，GitHub 首頁）、`LICENSE`、`THIRD_PARTY_NOTICES.md`、`CONTEXT.md`、`WORKLOG.md`、`.env.example`、`.gitignore`。英文／简体中文 README 見 `docs/README.en.md`、`docs/README.zh-Hans.md`。
 
 **允許的本機檔（通常 gitignore）**：
 
@@ -67,7 +65,7 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 
 - 任何 `*.log`、`debug-*.log`、`ingest-*.log`
 - 建置產物（用 `dist/`；Release 後可整目錄刪除，見 [release.md](release.md)）
-- Cursor 暫存（`agent-tools/`、`mcps/`、`commit-msg.txt` 等；已 gitignore）
+- Cursor／IDE 暫存（`agent-tools/`、`mcps/`、`commit-msg.txt`、`.cursorignore`、`.cursorrules` 等；已 gitignore）
 - 未列入允許清單的資料 dump
 
 日誌請寫入 `logs/`（若腳本支援）或系統暫存區，並定期清理。Portable 交付腳本見 `portable/START.*`（套件含 `client/dist-portable/`，啟動開 `/app/`）；clone 開發用 `./start.sh`（與 Portable 職責分開；同樣開 `/app/`）。

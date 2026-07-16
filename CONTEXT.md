@@ -695,6 +695,4 @@ _Avoid_：假設 tag commit 內必有 db、刷新時刪庫資產
 
 **效能優化門檻**（維護者）：雙路證據驅動；創作者（就緒/查詢）+ build ≤10min；梯：SQLite→快照→純py→新依賴（最後）。
 
-**源碼根目錄**（維護者）：CONTEXT / docs / AGENTS；本機只 lyrics.db + .env；dist/ 暫存不版控。
-
 **開發容器環境**：維護者用；非創作者交付。

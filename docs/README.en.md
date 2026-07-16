@@ -107,22 +107,23 @@ Please keep the name **Canto-0243** in any future fork or distribution!
 
 ### Project thanks
 
-Early in development—with almost no programming background—the author benefited from **[ivorhoulker](https://github.com/ivorhoulker)** as advisor: design and implementation guidance plus many valuable suggestions. Without that help, **Canto-0243** would not exist.
+Early in development—with almost no programming background—the author benefited from [ivorhoulker](https://github.com/ivorhoulker) as advisor, with design and implementation guidance plus many valuable suggestions.
 
-Thanks also to **Professor Wong Chi-wah**, inventor of **0243 theory**, for the theoretical foundation of digitized Cantonese lyric writing; and to **Daniel Tam**, developer of [0243.hk](https://0243.hk), whose site solved many lyricists’ problems and inspired this tool.
+Thanks also to **Professor Wong Chi-wah**, inventor of **0243 theory** (whose support we are honoured to have), for the theoretical foundation of digitized Cantonese lyric writing; and to **Daniel Tam**, developer of [0243.hk](https://0243.hk), whose site solved many lyricists’ problems and inspired this tool.
 
 ### Data & corpus thanks
 
-Canto-0243 integrates several open dictionaries, corpora, and near／antonym resources. We thank the teams and projects below (read each upstream license before redistribution; summary in [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)):
+This app exists thanks to outstanding work by linguists, open-source maintainers, and community contributors. We are proud to integrate data from the following (aligned with the in-app About page; read each upstream license before redistribution):
 
-* **Rime Cantonese** (single-char `char.csv`, categorized lexical CSVs excluding proper nouns, essay frequency): [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) and [rime/rime-cantonese](https://github.com/rime/rime-cantonese), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Give them a star!
-* **Cilin synonyms**: via [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin), **MIT**.
-* **Guotong near／antonym dictionary**: [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary) (`dict_synonym.txt`, `dict_antonym.txt`), [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)—one antonym source that **coexists** with project-owned antonyms.
-* **Project-owned antonyms (AI-assisted)**: `data/syn_ant/project_antonyms.tsv` (and `project_antonyms.meta.json`); drafted with generative AI, maintainer-reviewed; [Canto-0243 License](../LICENSE). **Not** a redistribution of guotong or other third-party antonym lexicons.
-* **words.hk Cantonese word list**: [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/), **non-commercial open license** (see [words.hk /hoifong](https://words.hk/base/hoifong/)).
-* **Multi-character reading upstream** (maintainer-built `lyrics.db`): [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/) (non-commercial open license), [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/) ([CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)), categorized Rime Cantonese lexical sources excluding `proper_nouns.csv` ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)), [HSK 3.0 word list](https://github.com/elkmovie/hsk30) (MIT), and maintainer curated sources.
+* [words.hk (粵典)](https://words.hk/): **non-commercial open license** (see [words.hk /hoifong](https://words.hk/base/hoifong/)).
+* [Rime Cantonese supplement sources](https://github.com/CanCLID/rime-cantonese-upstream): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+* [HSK 3.0 word list](https://github.com/elkmovie/hsk30): [MIT](https://opensource.org/licenses/MIT).
+* [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/): [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+* [Cilin synonyms](https://github.com/yaleimeng/Final_word_Similarity): [MIT](https://opensource.org/licenses/MIT).
+* [Guotong near／antonym dictionary](https://github.com/guotong1988/chinese_dictionary): [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE).
+* [Project antonym lexicon](../LICENSE): LLM-assisted generation; [Canto-0243 License](../LICENSE).
 
-Building or redistributing lexicons from these sources requires complying with each license; some impose **non-commercial** or **attribution** terms. Optional sources (e.g. COW) are off by default—see `data/syn_ant/sources.yaml`.
+Full third-party license list: [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md).
 
 ---
 
@@ -138,8 +139,7 @@ Building or redistributing lexicons from these sources requires complying with e
 | [`docs/CONTRIBUTING.md`](CONTRIBUTING.md) | Contributing & repo-root conventions |
 | [`CONTEXT.md`](../CONTEXT.md) | Domain glossary |
 | [`WORKLOG.md`](../WORKLOG.md) | Change log |
-| [`AGENTS.md`](../AGENTS.md) | Agent collaboration notes |
 
 ---
 
-**Last updated**: 2026-07-14 (v1.0.9: high-frequency antonym campaign complete)
+**Last updated**: 2026-07-17 (README／About data credits aligned; contributing guide no longer mandates agent files)

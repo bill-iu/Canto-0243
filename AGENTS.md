@@ -2,6 +2,8 @@
 
 Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)。
 
+唔好無意識改 `skills-lock.json`；只喺有意更新 agent skills 時先改同提交。
+
 ### Git Workflow (Dev Branch)
 **所有代碼改動必須先 commit+push 到 `dev`，確認後 PR 入 `main`**（見 [`docs/agents/git-workflow.md`](docs/agents/git-workflow.md)）。
 

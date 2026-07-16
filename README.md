@@ -125,22 +125,23 @@ Portable 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &
 
 ### 專案致謝
 
-本專案喺作者幾乎零程式背景嘅起步階段，得益於 **[ivorhoulker](https://github.com/ivorhoulker)** 做我嘅Advisor：喺設計同實行上俾咗好多意見同指導，並且提出許多寶貴嘅修改建議。冇呢啲協助，**Canto-0243** 唔會出現。
+本專案喺作者幾乎零程式背景嘅起步階段，得益於 [ivorhoulker（艾浩家）](https://github.com/ivorhoulker) 擔任 Advisor，喺設計同實行上給予許多指導與寶貴建議。
 
-亦要多謝 **「0243理論」發明人黃志華老師**，奠定粵語填詞數碼化嘅理論基礎。多謝 [0243.hk](https://0243.hk) 開發者 **Daniel Tam** 先生開發呢個網站，解決咗好多人嘅填詞問題，並啟發作者開發本工具。
+亦要多謝 **「0243 理論」發明人黃志華老師**（很榮幸得到他的支持），奠定粵語填詞數碼化嘅理論基礎。多謝 [0243.hk](https://0243.hk) 開發者 **Daniel Tam** 先生開發該網站，解決許多填詞難題，並啟發本工具嘅開發。
 
 ### 資料與語料致謝
 
-Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感謝以下團隊與專案（再分發前請閱讀各上游完整條款；授權總表見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)）：
+本應用程式得以實現，全賴語言學家、開源維護者及社群貢獻者的出色工作。我們十分榮幸能整合以下項目的數據（與產品「關於」頁一致；再分發前請閱讀各上游完整條款）：
 
-* **Rime 粵語（單字讀音 `char.csv`、分類詞語 CSV〔排除 proper nouns〕、essay 詞頻）**：來自 [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) 與 [rime/rime-cantonese](https://github.com/rime/rime-cantonese)，採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。去畀佢哋一個 star！
-* **詞林同義詞（Cilin）**：經 [yaleimeng/Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)／[liao961120/cilin](https://github.com/liao961120/cilin) 匯出，採用 **MIT** 授權。
-* **國語辭典近義／反義（guotong）**：來自 [guotong1988/chinese_dictionary](https://github.com/guotong1988/chinese_dictionary)（`dict_synonym.txt`、`dict_antonym.txt`），採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)；與專案自建反義**並存**嘅反義來源之一。
-* **專案自建反義（AI 輔助）**：`data/syn_ant/project_antonyms.tsv`（及 `project_antonyms.meta.json`）；生成式 AI 起草、維護者審定後納入；採用 [Canto-0243 License](LICENSE)。**唔係** guotong 或其他第三方反義詞典嘅再分發。
-* **words.hk 粵典詞表**：來自 [words.hk wordslist](https://words.hk/faiman/analysis/wordslist/)，採用**非商業開放授權**（詳見 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
-* **多字詞級標音上游**（maintainer 自建 `lyrics.db` 時）：[words.hk 粵典詞表](https://words.hk/faiman/analysis/wordslist/)（非商業開放授權）、[開放詞典 · 粵語詞典](https://kaifangcidian.com/xiazai/)（[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)）、Rime 粵語分類詞語來源（排除 `proper_nouns.csv`；CC BY 4.0）、[HSK 3.0 word list](https://github.com/elkmovie/hsk30)（MIT）以及 maintainer curated 詞庫來源。
+* [words.hk（粵典）](https://words.hk/)：採用**非商業開放授權**（詳見 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
+* [Rime 粵語詞典補缺來源](https://github.com/CanCLID/rime-cantonese-upstream)：採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+* [HSK 3.0 詞表](https://github.com/elkmovie/hsk30)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
+* [開放詞典 · 粵語詞典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：採用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
+* [詞林同義詞（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
+* [國語辭典近義／反義（guotong）](https://github.com/guotong1988/chinese_dictionary)：採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
+* [自建反義詞庫](LICENSE)：大模型輔助生成，採用 [Canto-0243 License](LICENSE)。
 
-使用上述資料建構或再分發詞庫時，你同意遵守各自授權；部分來源含**非商業**或**署名**要求。可選近反義來源（如 COW）預設關閉，見 `data/syn_ant/sources.yaml`。
+完整第三方授權清單見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 
 ---
 
@@ -156,8 +157,7 @@ Canto-0243 整合多個開源詞典、語料與近反義資源。我們明確感
 | [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | 貢獻與 PR · 源碼根目錄約定 |
 | [`CONTEXT.md`](CONTEXT.md) | 領域詞彙表 |
 | [`WORKLOG.md`](WORKLOG.md) | 變更紀錄 |
-| [`AGENTS.md`](AGENTS.md) | Agent 協作指引 |
 
 ---
 
-**最後更新**：2026-07-14（v1.0.9：高頻反義 campaign 達標）
+**最後更新**：2026-07-17（README／關於頁資料致謝對齊；貢獻指引唔再規定 agent 檔）
