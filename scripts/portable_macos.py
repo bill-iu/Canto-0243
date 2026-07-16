@@ -30,12 +30,24 @@ def clear_download_quarantine(
     return True
 
 
-def patch_portable_venv_cfg(bundle_root: str | Path) -> bool:
-    """Rewrite venv/pyvenv.cfg home to this extract path (build-time paths break on other Macs)."""
+def patch_portable_venv_cfg(
+    bundle_root: str | Path,
+    *,
+    platform: str | None = None,
+) -> bool:
+    """Rewrite venv/pyvenv.cfg home to this extract path (build-time paths break off-machine)."""
     root = Path(bundle_root).resolve()
     cfg = root / "venv" / "pyvenv.cfg"
     if not cfg.is_file():
         return False
+    plat = platform if platform is not None else sys.platform
+    if plat == "win32":
+        try:
+            from portable_win_runtime import patch_windows_pyvenv_home
+        except ImportError:  # pragma: no cover
+            from scripts.portable_win_runtime import patch_windows_pyvenv_home
+
+        return patch_windows_pyvenv_home(root)
     venv_bin = (root / "venv" / "bin").resolve()
     lines: list[str] = []
     for line in cfg.read_text().splitlines():
@@ -48,12 +60,11 @@ def patch_portable_venv_cfg(bundle_root: str | Path) -> bool:
 
 
 def prepare_portable_bundle(bundle_root: str | Path, *, platform: str | None = None) -> None:
-    """Creator launch prep: clear quarantine + point venv cfg at this extract folder."""
+    """Creator launch prep: clear quarantine (macOS) + point venv cfg at this extract folder."""
     root = Path(bundle_root).resolve()
-    clear_download_quarantine(root, platform=platform)
     plat = platform if platform is not None else sys.platform
-    if plat == "darwin":
-        patch_portable_venv_cfg(root)
+    clear_download_quarantine(root, platform=plat)
+    patch_portable_venv_cfg(root, platform=plat)
 
 
 def macos_portable_tar_name(machine_arch: str) -> str:

@@ -279,7 +279,7 @@ def _parse_pyvenv_cfg(text: str) -> dict[str, str]:
 
 def _venv_home_is_local(home: Path, venv_dir: Path) -> bool:
     try:
-        home.resolve().relative_to((venv_dir / "bin").resolve())
+        home.resolve().relative_to(venv_dir.resolve())
         return True
     except ValueError:
         return False
@@ -291,12 +291,23 @@ def _stdlib_source_prefix(cfg: dict[str, str], home: Path) -> Path | None:
         candidate = Path(base)
         if candidate.is_dir():
             return candidate
+    # Prefix root (has Lib/ or python.exe) — common on Windows uv installs.
+    if (home / "Lib").is_dir() or (home / "lib").is_dir() or (home / "python.exe").is_file():
+        return home if home.is_dir() else None
     parent = home.parent
     return parent if parent.is_dir() else None
 
 
 def _materialize_portable_stdlib(venv_dir: Path) -> None:
     """Embed build-time stdlib in venv so 免安裝 bundle runs off any extract path."""
+    if sys.platform == "win32":
+        try:
+            from portable_win_runtime import materialize_windows_python_home
+        except ImportError:  # pragma: no cover — script dir not on path
+            from scripts.portable_win_runtime import materialize_windows_python_home
+
+        materialize_windows_python_home(venv_dir)
+        return
     if sys.platform != "darwin":
         return
     cfg_path = venv_dir / "pyvenv.cfg"
@@ -345,20 +356,40 @@ def _materialize_portable_stdlib(venv_dir: Path) -> None:
     cfg_path.write_text("\n".join(lines) + "\n")
 
 
+def _assert_cfg_home_local(venv_dir: Path) -> None:
+    """pyvenv.cfg home must resolve under the bundle (not build-machine uv path)."""
+    cfg_path = venv_dir / "pyvenv.cfg"
+    if not cfg_path.is_file():
+        raise RuntimeError(f"missing {cfg_path}")
+    cfg = _parse_pyvenv_cfg(cfg_path.read_text(encoding="utf-8"))
+    home_raw = cfg.get("home")
+    if not home_raw:
+        raise RuntimeError("pyvenv.cfg missing home")
+    home = Path(home_raw)
+    if not _venv_home_is_local(home, venv_dir):
+        raise RuntimeError(f"pyvenv.cfg home not under venv: {home}")
+    if sys.platform == "win32" and not (home / "python.exe").is_file():
+        raise RuntimeError(f"Windows portable home missing python.exe: {home}")
+
+
 def _assert_venv_relocatable(venv_dir: Path) -> None:
     """Fail build if venv python still resolves stdlib outside the bundle."""
+    _assert_cfg_home_local(venv_dir)
     py = _venv_python(venv_dir)
     root = str(venv_dir.resolve())
-    code = f"""import sys
+    # Absolute paths outside the bundle fail — including Windows drive letters (#66).
+    code = f"""import os, sys
 root = {root!r}
 if not sys.prefix.startswith(root):
     raise SystemExit(f"prefix {{sys.prefix!r}} not under {{root!r}}")
+if not sys.base_prefix.startswith(root):
+    raise SystemExit(f"base_prefix {{sys.base_prefix!r}} not under {{root!r}}")
 for entry in sys.path:
     if not entry or entry.startswith(root):
         continue
     if entry.startswith("/usr") or entry.startswith("/System"):
         continue
-    if entry.startswith("/"):
+    if os.path.isabs(entry):
         raise SystemExit(f"non-portable sys.path entry: {{entry!r}}")
 """
     proc = subprocess.run([str(py), "-c", code], capture_output=True, text=True)
@@ -366,11 +397,11 @@ for entry in sys.path:
         detail = (proc.stderr or proc.stdout or "").strip()
         raise RuntimeError(f"venv not relocatable: {detail}")
 
-    # macOS START.sh sets PYTHONHOME to venv; Windows portable does not — skip there.
+    # Stale pyvenv.cfg home (build-machine absolute path) must not be required.
+    # macOS: PYTHONHOME recovers. Windows redirector needs {{home}}\\python.exe — local only.
     if sys.platform == "win32":
         return
 
-    # Stale pyvenv.cfg home (build-machine absolute path) must not break creators.
     bogus_home = venv_dir / "pyvenv.cfg"
     text = bogus_home.read_text()
     lines = []

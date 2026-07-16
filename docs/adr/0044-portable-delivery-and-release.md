@@ -13,6 +13,17 @@
 5. **Docker** — 僅維護者開發，非創作者交付。
 6. **跨 OS 建置** — Windows zip 在 Windows 建；macOS `.app` 在對應架構 macOS 建。
 
+## 1b. 可搬移 runtime（Win／Mac 對稱）
+
+1. **建置物化** — 唔依賴建置機絕對路徑上嘅系統／uv Python。  
+   - **macOS**：stdlib／libpython 物化入 venv；`pyvenv.cfg` `home` 指 venv 內。  
+   - **Windows**：物化完整前綴到 `venv/python-home/`（含 `python.exe`、`python*.dll`、`DLLs/`、`Lib/`）；`home` 指該目錄。Windows `Scripts/python.exe` 係 redirector，**必須**有 `{home}\python.exe`（只拷 stdlib 不足；#66）。
+2. **啟動改 home** — 解壓路徑異於建置路徑時，啟動前改寫 `pyvenv.cfg`：  
+   - macOS：`portable_macos.py`／launcher。  
+   - Windows：`START.bat`（PowerShell，先於 venv python）與 `Canto-0243.exe`（`portable_win_launcher` inline patch）。
+3. **建置硬閘** — `_assert_venv_relocatable`：`prefix`／`base_prefix`／`sys.path` 唔得指套件外（含 Windows 盤符路徑）；`pyvenv.cfg` `home` 必須在 venv 下。失敗則 build fail。
+4. **拒** — 文件要求創作者裝 Python／uv；只在建置機 smoke 當「可搬移」。
+
 ## 2. macOS 下載隔離與簽章
 
 1. **清除 quarantine** — `portable/macos/launcher`／`START.sh` 經 `portable_macos.py` 清 `com.apple.quarantine`；**唔**要求創作者手動 `xattr`。
@@ -51,10 +62,13 @@
 - 只冷建不打包 word cache — 拒（首次過慢）。
 - 將 `lyrics.db` 納入 git／LFS 以加快發佈 — 拒（主目標係程式-only 重用庫；庫仍本機＋Release 資產）。
 - 保留獨立詞庫發佈層 — 拒（維護者換庫幾乎都開新 semver；程式修正多用 refresh tag）。
+- Windows 改用官方 embeddable Python 取代 venv — 拒（與 macOS venv 管線斷裂；#66 用物化 python-home 即可）。
+- 只改 `home`／`PYTHONHOME`、唔物化 runtime — 拒（另一台 PC 無建置機 uv 路徑則 redirector 找不到 `python.exe`）。
 
 **Consequences**
 
-- 套件體積含 venv + 可選 `.cache`。
+- 套件體積含 venv + 可選 `.cache`；Windows 另含 `python-home` 完整前綴（體積上升，換可搬移）。
 - 維護者須維護 Windows +（過渡期）Intel Mac 兩條上傳腳本。
 - 刷新 tag **唔好刪** Release 上既有 `lyrics.db`（Pages 依賴）。
 - 換庫必須新 tag 全量；唔再靠 `release-lexicon.yml`。
+- 發佈前建議整夾搬移 smoke（L3）；CI 靠 L1 硬閘 + L2 接縫。
