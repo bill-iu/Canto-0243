@@ -1,7 +1,7 @@
 # Portable 餵 client 宿主 — 設計
 
 **日期**：2026-07-16  
-**狀態**：草案待審（brainstorming 已口頭核准 §1–§3）  
+**狀態**：已核准（2026-07-16）· 實作計劃見 [`../plans/2026-07-16-portable-client-host.md`](../plans/2026-07-16-portable-client-host.md)  
 **地圖**：[維護成本地圖：UI 收斂與後段引擎熱檔](https://github.com/bill-iu/Canto-0243/issues/83)  
 **決策依據**：[#84](https://github.com/bill-iu/Canto-0243/issues/84)、[#85](https://github.com/bill-iu/Canto-0243/issues/85)、[#86](https://github.com/bill-iu/Canto-0243/issues/86)、[#87](https://github.com/bill-iu/Canto-0243/issues/87)
 
