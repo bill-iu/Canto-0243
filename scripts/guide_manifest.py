@@ -1,12 +1,11 @@
-"""搜尋教學 execution manifest — `frontend/guide-i18n.mjs` 是唯一來源。"""
+"""搜尋教學 execution manifest — `shared/guide-i18n.mjs` 是唯一來源。"""
 from __future__ import annotations
 
 import re
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_PATH = REPO_ROOT / "frontend" / "guide-i18n.mjs"
-INDEX_PATH = REPO_ROOT / "frontend" / "index.html"
+MANIFEST_PATH = REPO_ROOT / "shared" / "guide-i18n.mjs"
 
 MANIFEST_EXAMPLE_RE = re.compile(
     r"\{\s*query:\s*(['\"])((?:\\.|(?!\1).)*)\1,\s*mode:\s*(['\"])((?:\\.|(?!\3).)*)\3\s*\}"

@@ -1,6 +1,6 @@
 import type { QueryResult } from './db/query';
 
-/** Fisher-Yates shuffle — port of frontend/search-workbench.mjs shuffleResults */
+/** Fisher-Yates shuffle — port of shared/search-workbench.mjs shuffleResults */
 export function shuffleResults<T>(items: T[]): T[] {
   const out = items.slice();
   for (let i = out.length - 1; i > 0; i--) {

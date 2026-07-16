@@ -2,7 +2,7 @@
 """
 Smoke-check: every guide example query returns at least 1 result.
 
-Reads `frontend/guide-i18n.mjs` manifest (`query` + `mode`).
+Reads `shared/guide-i18n.mjs` manifest (`query` + `mode`).
 Warms probe readiness (`warm_guide_probe_readiness`) then runs `search_words`.
 教學探針全量閘（Portable）；預設 repo `lyrics.db`，`DATABASE_URL` 可覆寫。
 """

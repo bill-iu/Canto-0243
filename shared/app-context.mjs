@@ -1,0 +1,297 @@
+/** 共享狀態、DOM 引用、常數（shared/ 模組根）。 */
+import {
+  SESSION_KEY,
+  VIEW,
+  tabLabel,
+  findTabByView,
+  openSingletonView,
+  createSearchTab,
+  createGuideTab,
+  createRelationTab,
+  createCorrectionsTab,
+  createAboutTab,
+  isCorrectionsSearchCommand,
+  buildUrlSearchParams,
+  parseUrlSearchParams,
+  searchParamsWithoutBoot,
+  LAUNCHER_BOOT_PARAM,
+  serializeSession,
+  deserializeSession,
+  closeTab as closeTabInState,
+  reorderTabsByIds,
+  applyUrlToTabs,
+} from "./query-tabs-state.mjs";
+
+export {
+  SESSION_KEY,
+  VIEW,
+  tabLabel,
+  findTabByView,
+  openSingletonView,
+  createSearchTab,
+  createGuideTab,
+  createRelationTab,
+  createCorrectionsTab,
+  createAboutTab,
+  isCorrectionsSearchCommand,
+  buildUrlSearchParams,
+  parseUrlSearchParams,
+  searchParamsWithoutBoot,
+  LAUNCHER_BOOT_PARAM,
+  serializeSession,
+  deserializeSession,
+  closeTabInState,
+  reorderTabsByIds,
+  applyUrlToTabs,
+};
+
+export const APP_TITLE_BASE = "Canto-0243 ONE·搵·韻";
+/** Portable／PWA EN hero／title */
+export const APP_TITLE_BASE_EN = "Canto-0243 WRITE·RIGHT·RHYME";
+export const APP_TITLE_PORTABLE_SUFFIX = " (移動版)";
+
+export const LANG_KEY = 'canto-lang';
+export const THEME_KEY = 'canto-theme';
+
+const MESSAGES = {
+  zh: {
+    'hero.title': 'ONE·搵·韻',
+    'hero.tagline': '格律／協音／押韻／近反義，一步搵到。',
+    'search.label': '搜尋內容',
+    'search.button': '搜尋',
+    'search.placeholder.default': '輸入 香??、23+就=、~=開心、!!、~~…',
+    'mode.readout.prefix': '目前模式：',
+    'shuffle.aria': '隨機打亂結果',
+    'brand.aria': '返回搜尋首頁',
+    'menu.0243.group': '0243搜尋模式',
+    'menu.tools': '工具',
+    'menu.guide': '搜尋教學',
+    'menu.guide.help': '完整語法與例子',
+    'menu.about': '關於',
+    'menu.about.help': '授權、致謝與回報',
+    'menu.lexicon': '詞庫版本：',
+    'about.title': '關於 Canto-0243',
+    'about.lede': 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
+    'about.back': '返回搜尋',
+    'gate.preparing': '執緊啲字…',
+    'empty.notfound': '搵唔到',
+    'lang.toggle': '中 / EN',
+    'theme.toggle': '切換主題',
+  },
+  en: {
+    'hero.title': 'WRITE·RIGHT·RHYME',
+    'hero.tagline': 'Meter / sound match / rhyme / near-antonyms — find in one step.',
+    'search.label': 'Search',
+    'search.button': 'Search',
+    'search.placeholder.default': 'Try 香??, 23+就=, ~=happy, !!, ~~…',
+    'mode.readout.prefix': 'Current mode: ',
+    'shuffle.aria': 'Shuffle results',
+    'brand.aria': 'Back to search home',
+    'menu.0243.group': '0243 Search Modes',
+    'menu.tools': 'Tools',
+    'menu.guide': 'Search Guide',
+    'menu.guide.help': 'Full syntax & examples',
+    'menu.about': 'About',
+    'menu.about.help': 'License, credits & feedback',
+    'menu.lexicon': 'Lexicon version: ',
+    'about.title': 'About Canto-0243',
+    'about.lede': 'WRITE·RIGHT·RHYME — Offline Cantonese lyric rhyme workbench.',
+    'about.back': 'Back to search',
+    'gate.preparing': 'Loading…',
+    'empty.notfound': 'No matches',
+    'lang.toggle': 'EN / 中',
+    'theme.toggle': 'Toggle theme',
+  },
+};
+
+export function getLang() {
+  const saved = localStorage.getItem(LANG_KEY);
+  if (saved === 'zh' || saved === 'en') return saved;
+  return (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+}
+
+export function setLang(lang) {
+  localStorage.setItem(LANG_KEY, lang);
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+}
+
+export function t(key, lang = getLang()) {
+  return MESSAGES[lang]?.[key] ?? MESSAGES.zh[key] ?? key;
+}
+
+export function getTheme(options = {}) {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === 'light' || saved === 'dark') return saved;
+  const fallback = options.defaultTheme;
+  if (fallback === 'light' || fallback === 'dark') return fallback;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+export function setTheme(theme) {
+  localStorage.setItem(THEME_KEY, theme);
+  document.documentElement.dataset.theme = theme;
+  // update meta theme-color
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = theme === 'dark' ? '#1C1917' : '#DFD2C2';
+}
+
+export { MODE_META, getModeMeta, modeHelp, modeRedirectHint, syncPortableModeMenu } from "./mode-i18n.mjs";
+
+/** 擷取頁上限（load-more／續頁） */
+export const SEARCH_PAGE_SIZE = 800;
+/** 0243 家族首屏擷取（offset=0） */
+export const SEARCH_FIRST_PAGE_SIZE = 400;
+/** 近反義模式分頁筆數 */
+export const RELATION_PAGE_SIZE = 400;
+
+export function searchPageSizeForMode(mode) {
+  return mode === "syn" ? RELATION_PAGE_SIZE : SEARCH_PAGE_SIZE;
+}
+
+/** 首屏 400／續頁 800；近反義沿用池頁 */
+export function searchLimitForOffset(mode, offset) {
+  if (mode === "syn") return RELATION_PAGE_SIZE;
+  return (offset || 0) <= 0 ? SEARCH_FIRST_PAGE_SIZE : SEARCH_PAGE_SIZE;
+}
+
+/** @deprecated use searchPageSizeForMode(mode) */
+export const PAGE_SIZE = SEARCH_PAGE_SIZE;
+export const WARMUP_DONE_HOLD_MS = 2000;
+export const WARMUP_DONE_FADE_MS = 420;
+export const SEARCH_RING_BLUR_MS = 320;
+export const LANDING_VARIANT = document.documentElement.dataset.landing || "a";
+export const LANDING_SESSION_KEY = "canto0243:landing-done";
+export const REDUCED_MOTION = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export const LANDING_REVEAL_MS = 420;
+export const LANDING_HANDOFF_MS = 640;
+export const GATE_BRAND_INTRO_MS = 700;
+export const GATE_NEAR_DONE_PCT = 85;
+export const GATE_INK_CLIP_MAX = 200;
+
+// ponytail: const shell — importers cannot assign to export let live bindings in browsers
+export const shell = {
+  currentMode: "m1",
+  currentPzMode: "m1",
+  last0243Mode: "m1",
+  isSearching: false,
+  searchAbort: null,
+  appSearchReady: false,
+  tabState: { activeId: 1, nextTabId: 2, tabs: [] },
+  chromeLayout: null,
+  pendingNewTabAnimation: null,
+  lastHistSeq: 0,
+  entryDetail: { open: false, activeLiteral: null, preferredJyutping: null },
+  pickAnchor: null,
+  pickAnchorRows: null,
+};
+export function setAppSearchReady(ready) {
+  shell.appSearchReady = ready;
+}
+
+export const $ = {
+  homeBtn: document.getElementById("homeBtn"),
+  portableExitBtn: document.getElementById("portableExitBtn"),
+  guideMenuBtn: document.getElementById("guideMenuBtn"),
+  relationMenuBtn: document.getElementById("relationMenuBtn"),
+  aboutMenuBtn: document.getElementById("aboutMenuBtn"),
+  modeMenuButton: document.getElementById("modeMenuButton"),
+  modeMenu: document.getElementById("modeMenu"),
+  currentModeLabel: document.getElementById("currentModeLabel"),
+  modeReadout: document.getElementById("modeReadout"),
+  modeProfiles: document.getElementById("modeProfiles"),
+  searchView: document.getElementById("searchView"),
+  searchViewMain: document.getElementById("searchViewMain"),
+  guideView: document.getElementById("guideView"),
+  aboutView: document.getElementById("aboutView"),
+  relationView: document.getElementById("relationView"),
+  chromeTabs: document.getElementById("queryChromeTabs"),
+  tabstrip: document.getElementById("queryTabstrip"),
+  searchForm: document.getElementById("searchForm"),
+  searchInputWrap: document.getElementById("searchInputWrap"),
+  searchInput: document.getElementById("searchInput"),
+  queryExplain: document.getElementById("queryExplain"),
+  queryExplainSummary: document.getElementById("queryExplainSummary"),
+  queryExplainWarning: document.getElementById("queryExplainWarning"),
+  searchBtn: document.getElementById("searchBtn"),
+  shuffleBtn: document.getElementById("shuffleBtn"),
+  results: document.getElementById("results"),
+  searchResultsScroll: document.getElementById("searchResultsScroll"),
+  resultsScrollSentinel: document.getElementById("resultsScrollSentinel"),
+  stats: document.getElementById("stats"),
+  relationForm: document.getElementById("relationForm"),
+  seedChar: document.getElementById("seedChar"),
+  oppositeChar: document.getElementById("oppositeChar"),
+  relationSubmitBtn: document.getElementById("relationSubmitBtn"),
+  relationRevokeBtn: document.getElementById("relationRevokeBtn"),
+  relationOkStatus: document.getElementById("relationOkStatus"),
+  relationErrStatus: document.getElementById("relationErrStatus"),
+  correctionsView: document.getElementById("correctionsView"),
+  correctionsDbStats: document.getElementById("correctionsDbStats"),
+  correctionsLookupForm: document.getElementById("correctionsLookupForm"),
+  correctionChar: document.getElementById("correctionChar"),
+  correctionLookupBtn: document.getElementById("correctionLookupBtn"),
+  correctionRowsPanel: document.getElementById("correctionRowsPanel"),
+  correctionRowList: document.getElementById("correctionRowList"),
+  correctionsSubmitForm: document.getElementById("correctionsSubmitForm"),
+  correctionNewJyutping: document.getElementById("correctionNewJyutping"),
+  correctionNote: document.getElementById("correctionNote"),
+  correctionCodePreview: document.getElementById("correctionCodePreview"),
+  correctionJyutpingBtn: document.getElementById("correctionJyutpingBtn"),
+  correctionRecalcCodeBtn: document.getElementById("correctionRecalcCodeBtn"),
+  correctionOkStatus: document.getElementById("correctionOkStatus"),
+  correctionErrStatus: document.getElementById("correctionErrStatus"),
+  correctionSessionPanel: document.getElementById("correctionSessionPanel"),
+  correctionSessionList: document.getElementById("correctionSessionList"),
+  preloadOverlay: document.getElementById("preloadOverlay"),
+  preloadLabel: document.getElementById("preloadLabel"),
+  gateInkClipRect: document.getElementById("gateInkClipRect"),
+  gateInkClipRectMini: document.getElementById("gateInkClipRectMini"),
+  appShell: document.getElementById("appShell"),
+  warmupBadge: document.getElementById("warmupBadge"),
+  warmupBadgeLabel: document.getElementById("warmupBadgeLabel"),
+  warmupBadgePct: document.getElementById("warmupBadgePct"),
+  warmupInkClipRect: document.getElementById("warmupInkClipRect"),
+};
+
+export const searchCache = new Map();
+
+export function readPortableBootstrapFlag() {
+  return document.querySelector('meta[name="canto-portable"]')?.content === "1";
+}
+
+/** @returns {string | null} */
+export function readLexiconVersionMeta() {
+  const fromMeta = document.querySelector('meta[name="canto-lexicon-version"]')?.content?.trim();
+  return fromMeta || null;
+}
+
+/**
+ * @param {string | null | undefined} version
+ * @param {ReturnType<typeof getLang>} [lang]
+ */
+export function applyLexiconVersionMeta(version, lang = getLang()) {
+  const el = document.getElementById("lexiconVersionMeta");
+  if (!el) return;
+  const v = (version || el.dataset.version || "").trim();
+  if (!v) {
+    el.hidden = true;
+    el.textContent = "";
+    el.removeAttribute("aria-label");
+    delete el.dataset.version;
+    return;
+  }
+  el.dataset.version = v;
+  const label = `${t("menu.lexicon", lang)}${v}`;
+  el.hidden = false;
+  el.textContent = label;
+  el.setAttribute("aria-label", label);
+}
+
+export function applyAppTitle(portable = false, lang = getLang()) {
+  const base = lang === 'en' ? APP_TITLE_BASE_EN : APP_TITLE_BASE;
+  const title = portable ? `${base}${APP_TITLE_PORTABLE_SUFFIX}` : base;
+  document.title = title;
+  if ($.portableExitBtn) {
+    $.portableExitBtn.hidden = !portable;
+  }
+}

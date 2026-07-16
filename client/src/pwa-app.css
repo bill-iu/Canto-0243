@@ -22,6 +22,9 @@
   column-gap: 12px;
   row-gap: 8px;
   align-items: start;
+  /* Above chrome-tabs (sibling under header) so mode menu isn’t covered */
+  position: relative;
+  z-index: var(--z-menu);
 }
 
 .header-chrome {
@@ -84,6 +87,37 @@
   grid-area: menu;
   margin-left: 0;
   align-self: center;
+}
+
+/* Exit + mode menu share the menu grid cell (Portable: exit left of trigger) */
+.header-chrome__actions {
+  grid-area: menu;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+  /* Above chrome-tabs strip (sibling below app-bar) so open menu isn’t clipped */
+  position: relative;
+  z-index: var(--z-menu);
+}
+
+.header-chrome__actions .mode-menu-root {
+  grid-area: unset;
+  margin-left: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.header-chrome__actions .portable-exit-btn {
+  flex: 0 0 auto;
+  align-self: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .header-search {
@@ -326,11 +360,32 @@ button.icon-button.header-search__shuffle:disabled {
     text-overflow: ellipsis;
   }
 
+  .header-chrome__actions {
+    grid-area: menu;
+    grid-column: unset;
+    grid-row: unset;
+    z-index: var(--z-menu);
+    margin-left: 0;
+    max-width: min(58vw, 260px);
+    align-self: center;
+    gap: 6px;
+  }
+
+  .header-chrome__actions .mode-menu-root {
+    max-width: 100%;
+  }
+
+  .header-chrome__actions .portable-exit-btn {
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
   .header-chrome .mode-menu-root {
     grid-area: menu;
     grid-column: unset;
     grid-row: unset;
-    z-index: 2;
+    z-index: var(--z-menu);
     margin-left: 0;
     max-width: min(46vw, 200px);
     align-self: center;

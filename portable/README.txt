@@ -66,7 +66,7 @@ Linux
 - venv/ — 內建 Python 執行環境（WM 免安裝） / bundled runtime (WM)
 - lyrics.db — 主詞庫 / main word database
 - data/ — 靜態同義/反義詞典 / static dictionaries
-- frontend/ — 網頁介面 / web UI
+- client/dist-portable/ — 網頁介面（PORTABLE_HOST 建置產物）/ web UI (PORTABLE_HOST build)
 - app/、main.py — 後端 API / backend API
 
 
@@ -87,5 +87,8 @@ Linux
 
 重新打包（開發者）/ Rebuild (developers)
 ----------------------------------------
+  先建 UI：cd client && npm run build:portable（須成功；bundle 腳本會檢查 index.html）
+  Build UI first: cd client && npm run build:portable (must succeed; bundle scripts check index.html)
+
   Windows:  powershell -ExecutionPolicy Bypass -File scripts\build-portable.ps1
   macOS:    bash scripts/build-portable.sh

@@ -35,6 +35,12 @@ declare module '@shared/query-tabs' {
   export function createSearchTab(opts?: Partial<QueryTab>): QueryTab;
   export function createGuideTab(opts?: { id?: number }): QueryTab;
   export function createAboutTab(opts?: { id?: number }): QueryTab;
+  export function createRelationTab(opts?: {
+    id?: number;
+    relation?: { seed_char?: string; opposite_char?: string; relation_type?: string };
+  }): QueryTab;
+  export function createCorrectionsTab(opts?: { id?: number; prefetchChar?: string }): QueryTab;
+  export function isCorrectionsSearchCommand(q: string): boolean;
   export function openSingletonView(
     state: TabState,
     view: string,
@@ -59,7 +65,7 @@ declare module '@shared/query-tabs' {
   ): TabState;
 }
 
-declare module '../../frontend/guide-i18n.mjs' {
+declare module '../../shared/guide-i18n.mjs' {
   export function getGuideHero(lang: 'zh' | 'en'): { eyebrow: string; title: string; lede: string };
   export function getGuideIntro(lang: 'zh' | 'en'): { title: string; paragraphs: string[] };
   export function getGuideGroupLabel(group: string, lang: 'zh' | 'en'): string;
@@ -78,13 +84,13 @@ declare module '../../frontend/guide-i18n.mjs' {
   export function applyGuideLang(lang: 'zh' | 'en'): void;
 }
 
-declare module '../../frontend/about-i18n.mjs' {
+declare module '../../shared/about-i18n.mjs' {
   export const ABOUT_COPY: Record<'zh' | 'en', Record<string, string>>;
   export function getAboutCopy(lang: 'zh' | 'en'): Record<string, string>;
   export function applyAboutLang(lang: 'zh' | 'en'): void;
 }
 
-declare module '../../frontend/mode-i18n.mjs' {
+declare module '../../shared/mode-i18n.mjs' {
   export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
   export interface ModeMeta {
     title: string;
@@ -120,7 +126,7 @@ declare module '@shared/search-navigation' {
   export function shouldPushSearchHistory(next: unknown, prev: unknown): boolean;
 }
 
-declare module '../../../frontend/committed-search.mjs' {
+declare module '../../../shared/committed-search.mjs' {
   import type { QueryTab, TabState } from '@shared/query-tabs';
 
   export interface CommittedSearchFrame {
@@ -143,4 +149,33 @@ declare module '../../../frontend/committed-search.mjs' {
     frame: CommittedSearchFrame,
     createSearchTab: (options: Partial<QueryTab>) => QueryTab,
   ): CommittedSearchTransaction;
+}
+
+declare module '../../../shared/tab-geometry.mjs' {
+  export const TAB_GEOMETRY_SVG: string;
+}
+
+declare module '../../../shared/chrome-tabs-layout.mjs' {
+  export class QueryChromeTabsLayout {
+    rootEl: HTMLElement;
+    contentEl: HTMLElement;
+    constructor(rootEl: HTMLElement);
+    layout(): void;
+    setupDraggabilly(callbacks?: {
+      onPointerDown?: (id: number) => void;
+      onReorderEnd?: (orderedIds: number[]) => void;
+    }): void;
+    getTabIdsFromDom(): number[];
+  }
+}
+
+declare module '*.js?url' {
+  const url: string;
+  export default url;
+}
+
+declare module '@host-tabs-bar' {
+  import type { QueryTabsBarProps } from './query-tabs/query-tabs-bar';
+  import type { ComponentType } from 'react';
+  export const HostTabsBar: ComponentType<QueryTabsBarProps>;
 }

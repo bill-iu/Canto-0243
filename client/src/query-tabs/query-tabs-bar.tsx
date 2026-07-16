@@ -10,6 +10,8 @@ export interface QueryTabsBarProps {
   onClose: (id: number) => void;
   onAdd: () => void;
   onReorder: (fromIndex: number, toIndex: number) => void;
+  /** Portable chrome-tabs: full order after drag (preferred over onReorder). */
+  onReorderByIds?: (orderedIds: number[]) => void;
 }
 
 export function QueryTabsBar({

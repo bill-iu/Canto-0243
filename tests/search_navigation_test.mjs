@@ -6,7 +6,7 @@ import {
   VIEW,
   serializeSession,
   deserializeSession,
-} from "../frontend/query-tabs-state.mjs";
+} from "../shared/query-tabs-state.mjs";
 import {
   withResultClickQuery,
   shouldPushSearchHistory,
@@ -21,7 +21,7 @@ import {
   isHistoryForward,
   shouldApplySearchPopstate,
   resetSearchTabHistory,
-} from "../frontend/search-navigation.mjs";
+} from "../shared/search-navigation.mjs";
 
 describe("search-navigation", () => {
   it("withResultClickQuery sets tab.q to clicked literal before view sync", () => {
@@ -45,11 +45,11 @@ describe("search-navigation", () => {
 
   it("buildResultSearchHref encodes q and mode for anchor fallback", () => {
     const href = buildResultSearchHref({
-      pathname: "/frontend/index.html",
+      pathname: "/app/index.html",
       query: "可以",
       mode: "m2",
     });
-    assert.equal(href, "/frontend/index.html?mode=m2&q=%E5%8F%AF%E4%BB%A5");
+    assert.equal(href, "/app/index.html?mode=m2&q=%E5%8F%AF%E4%BB%A5");
   });
 
   it("resolveSearchRestore prefers cache when key exists", () => {

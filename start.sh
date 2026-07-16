@@ -21,6 +21,18 @@ else
   echo "🚀 正在啟動 Canto-0243（開發版）..."
 fi
 
+# Product UI is /app ← client/dist-portable (local_launch also ensures / auto-builds).
+if [[ ! -f client/dist-portable/index.html ]]; then
+  if [[ -f client/package.json ]] && command -v npm >/dev/null 2>&1; then
+    echo "🧱 未找到查韻介面，正在建置 portable UI…"
+    (cd client && npm run build:portable)
+  else
+    echo "[錯誤] 找不到 client/dist-portable/index.html"
+    echo "請先：cd client && npm run build:portable"
+    exit 1
+  fi
+fi
+
 if [[ -d venv ]]; then
   # shellcheck disable=SC1091
   if [[ -f venv/bin/activate ]]; then

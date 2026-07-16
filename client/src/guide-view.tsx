@@ -6,7 +6,7 @@ import {
   getGuideGroupLabel,
   getGuideTocCopy,
   guideSectionDomId,
-} from '../../frontend/guide-i18n.mjs';
+} from '../../shared/guide-i18n.mjs';
 import { getGuideSections, type GuideExample, type GuideLang, type GuideMode } from './guide-examples';
 
 export interface GuideViewProps {

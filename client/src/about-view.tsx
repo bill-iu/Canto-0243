@@ -1,4 +1,4 @@
-import { getAboutCopy } from '../../frontend/about-i18n.mjs';
+import { getAboutCopy } from '../../shared/about-i18n.mjs';
 
 export interface AboutViewProps {
   lang: 'zh' | 'en';

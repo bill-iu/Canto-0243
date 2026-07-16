@@ -22,7 +22,7 @@ import {
   reorderTab,
   reorderTabsByIds,
   applyUrlToTabs,
-} from "../frontend/query-tabs-state.mjs";
+} from "../shared/query-tabs-state.mjs";
 
 describe("query-tabs-state", () => {
   it("exports production session key", () => {

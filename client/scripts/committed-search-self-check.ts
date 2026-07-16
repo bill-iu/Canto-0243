@@ -1,8 +1,8 @@
-import { createSearchTab, VIEW } from '../../frontend/query-tabs-state.mjs';
+import { createSearchTab, VIEW } from '../../shared/query-tabs-state.mjs';
 import {
   commitActiveSearchTransaction,
   openCommittedSearchTabTransaction,
-} from '../../frontend/committed-search.mjs';
+} from '../../shared/committed-search.mjs';
 
 function state() {
   return { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1 })] };

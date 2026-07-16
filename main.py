@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
-from starlette.responses import FileResponse, HTMLResponse, JSONResponse, Response
+from starlette.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 
 from app.lexicon_version import lexicon_version
 from app.routers.lexicon import router as lexicon_router
@@ -18,13 +18,43 @@ from app.routers.word import router
 from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup
 from app.startup.readiness_gate import SearchGateBlocked
 
+# Product UI (portable client). Import does not require the dir; lifespan does.
+APP_UI_DIR = Path(os.getenv("CANTO_APP_UI", "client/dist-portable"))
 
-class FrontendNoCacheMiddleware(BaseHTTPMiddleware):
-    """避免瀏覽器快取 frontend HTML（內嵌就緒閘文案與邏輯）。"""
+
+def require_app_ui_dir(ui_dir: Path | None = None) -> Path:
+    """Hard-fail if portable UI dist is missing — never fall back to a non-/app tree."""
+    path = ui_dir if ui_dir is not None else Path(os.getenv("CANTO_APP_UI", "client/dist-portable"))
+    if not path.is_dir() or not (path / "index.html").is_file():
+        raise RuntimeError(
+            f"Portable UI not found at {path.resolve()}. "
+            "Run: cd client && npm run build:portable "
+            "(or set CANTO_APP_UI to a directory containing index.html)."
+        )
+    return path
+
+
+def inject_app_index_meta(html: str, *, portable: bool | None = None) -> str:
+    """Inject lexicon-version and optional canto-portable meta into index HTML."""
+    ver = lexicon_version()
+    ver_tag = f'<meta name="canto-lexicon-version" content="{ver}">'
+    if 'name="canto-lexicon-version"' not in html:
+        html = html.replace("<head>", f"<head>\n  {ver_tag}", 1)
+    use_portable = _is_portable() if portable is None else portable
+    if use_portable:
+        tag = '<meta name="canto-portable" content="1">'
+        if 'name="canto-portable"' not in html:
+            html = html.replace("<head>", f"<head>\n  {tag}", 1)
+    return html
+
+
+class UiNoCacheMiddleware(BaseHTTPMiddleware):
+    """Avoid caching product/legacy UI HTML (ready-gate copy + logic)."""
 
     async def dispatch(self, request: Request, call_next) -> Response:
         response = await call_next(request)
-        if request.url.path.startswith("/frontend/"):
+        path = request.url.path
+        if path.startswith("/app") or path.startswith("/frontend"):
             response.headers["Cache-Control"] = "no-cache, must-revalidate"
             response.headers["Pragma"] = "no-cache"
         return response
@@ -32,13 +62,14 @@ class FrontendNoCacheMiddleware(BaseHTTPMiddleware):
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    require_app_ui_dir()
     run_lifespan_startup()
     yield
 
 
 app = FastAPI(title="Canto-0243", lifespan=lifespan)
 
-app.add_middleware(FrontendNoCacheMiddleware)
+app.add_middleware(UiNoCacheMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
@@ -47,32 +78,55 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FRONTEND_INDEX = Path("frontend/index.html")
+SHARED_DIR = Path("shared")
 
 
 def _is_portable() -> bool:
     return os.getenv("PORTABLE", "").lower() not in ("", "0", "false", "no")
 
 
-@app.get("/frontend/index.html", include_in_schema=False)
-async def serve_frontend_index() -> HTMLResponse:
-    """Portable 模式注入 meta，令 reload 後即刻顯示退出按鈕／詞庫版本。"""
-    html = FRONTEND_INDEX.read_text(encoding="utf-8")
-    ver = lexicon_version()
-    ver_tag = f'<meta name="canto-lexicon-version" content="{ver}">'
-    if 'name="canto-lexicon-version"' not in html:
-        html = html.replace("<head>", f"<head>\n  {ver_tag}", 1)
-    if _is_portable():
-        tag = '<meta name="canto-portable" content="1">'
-        if 'name="canto-portable"' not in html:
-            html = html.replace("<head>", f"<head>\n  {tag}", 1)
+@app.get("/app/", include_in_schema=False)
+@app.get("/app/index.html", include_in_schema=False)
+async def serve_app_index() -> HTMLResponse:
+    """Product UI entry: inject meta so reload shows exit control / lexicon version."""
+    ui_dir = require_app_ui_dir()
+    html = inject_app_index_meta((ui_dir / "index.html").read_text(encoding="utf-8"))
     return HTMLResponse(
         html,
         headers={"Cache-Control": "no-cache, must-revalidate", "Pragma": "no-cache"},
     )
 
 
-app.mount("/frontend", StaticFiles(directory="frontend", html=True), name="frontend")
+# check_dir=False: import-time mount must not crash unit tests without dist;
+# lifespan + serve_app_index call require_app_ui_dir() for a clear hard fail.
+app.mount(
+    "/app",
+    StaticFiles(directory=str(APP_UI_DIR), html=True, check_dir=False),
+    name="app_ui",
+)
+
+
+def resolve_favicon(ui_dir: Path | None = None) -> Path | None:
+    """Best favicon for /favicon.ico; None when no asset is available."""
+    base = ui_dir if ui_dir is not None else APP_UI_DIR
+    for candidate in (
+        base / "favicon.ico",
+        base / "favicon.svg",
+        base / "icon-32.png",
+        SHARED_DIR / "favicon.ico",
+    ):
+        if candidate.is_file():
+            return candidate
+    return None
+
+
+# #86 stage (3): no static /frontend tree. Bookmarks → /app/.
+@app.get("/frontend", include_in_schema=False)
+@app.get("/frontend/", include_in_schema=False)
+@app.get("/frontend/index.html", include_in_schema=False)
+async def redirect_legacy_frontend() -> RedirectResponse:
+    return RedirectResponse(url="/app/", status_code=307)
+
 app.include_router(router)
 app.include_router(relation_router)
 app.include_router(lexicon_router)
@@ -92,19 +146,24 @@ async def home():
     host = os.getenv("HOST", "127.0.0.1")
     port = int(os.getenv("PORT", "8000"))
     base = f"http://{host}:{port}"
+    app_url = f"{base}/app/index.html"
     return {
         "status": "running",
         "portable": _is_portable(),
         "lexiconVersion": lexicon_version(),
         "port": port,
-        "frontend": f"{base}/frontend/index.html",
+        "app": app_url,
+        "frontend": app_url,
         "api_test": f"{base}/words/search/?q=23",
     }
 
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def root_favicon() -> FileResponse:
-    return FileResponse("frontend/favicon.ico")
+    fav = resolve_favicon()
+    if fav is None:
+        raise HTTPException(status_code=404, detail="favicon not found")
+    return FileResponse(fav)
 
 
 @app.get("/ready")

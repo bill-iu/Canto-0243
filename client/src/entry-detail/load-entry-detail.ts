@@ -1,7 +1,7 @@
 import {
   buildEntryDetailModel,
   buildEntryDetailModelFromPick,
-} from '../../../frontend/entry-detail-core.mjs';
+} from '../../../shared/entry-detail-core.mjs';
 import type { EntryDetailModel } from './types.ts';
 import { getDatabase, isDatabaseInitialized } from '../db/init.ts';
 import { queryRows } from '../db/database-backend.ts';

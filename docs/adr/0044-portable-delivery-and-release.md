@@ -33,10 +33,11 @@
 
 ## 3. 本機啟動編排
 
-1. **`scripts/local_launch.py` 單點** — 終端即時回饋 → free_port → 背景 `main.py` → HTML 200 → 開瀏覽器 → 背景 gate 輪詢。
+1. **`scripts/local_launch.py` 單點** — 終端即時回饋 → free_port → 背景 `main.py` → HTML 200 → 開瀏覽器 → 背景 gate 輪詢。`HTML_SUFFIX = "/app/index.html"`（產品 UI＝`client/dist-portable`）。
 2. **入口委派** — `start.sh`、`portable/START.bat`、`portable/START.sh`、`portable/macos/launcher`。
 3. **bootstrap** — lifespan 單次 schema／bootstrap；Portable 永不 pip；dev `start.sh` 僅 requirements hash 變時 pip。
 4. **體感** — 維護者在開發路徑用 `bench_startup.py` 驗 Portable 級 HTML／終端回饋（不進 CI）。
+5. **產品 UI 束** — 發佈／本機啟動前須 `cd client && npm run build:portable`；FastAPI 掛 `/app/` → `client/dist-portable`。共享 mjs／CSS SSOT 在 **`shared/`**（唔掛產品入口）。
 
 ## 4. 詞庫快取預暖（Portable）
 

@@ -1,6 +1,6 @@
 import type { QueryResult } from './db/query';
-import { mergeResultsByLiteral } from '../../frontend/entry-detail-core.mjs';
-import { tDetail } from '../../frontend/entry-detail-i18n.mjs';
+import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
+import { tDetail } from '../../shared/entry-detail-i18n.mjs';
 import {
   displayResults,
   resultsShowReadingBadge,

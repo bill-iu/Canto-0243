@@ -17,8 +17,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@shared/query-tabs": ["../frontend/query-tabs-state.mjs"],
-      "@shared/search-navigation": ["../frontend/search-navigation.mjs"]
+      "@shared/query-tabs": ["../shared/query-tabs-state.mjs"],
+      "@shared/search-navigation": ["../shared/search-navigation.mjs"],
+      "@host-tabs-bar": ["./src/query-tabs/host-tabs-bar.tsx"]
     },
 
     /* Linting */

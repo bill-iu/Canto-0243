@@ -4,7 +4,7 @@ import {
   code0243FromJyutping,
   buildEntryDetailModel,
   buildEntryDetailModelFromPick,
-} from '../../frontend/entry-detail-core.mjs';
+} from '../../shared/entry-detail-core.mjs';
 
 const rows = [
   { word: '就', jyutping: 'zau6', code: '42' },

@@ -17,6 +17,14 @@ if not exist "lyrics.db" (
   exit /b 1
 )
 
+if not exist "client\dist-portable\index.html" (
+  echo [ERROR] Product UI missing: client\dist-portable\index.html
+  echo Re-download the full portable zip, or from a source checkout run:
+  echo   cd client ^&^& npm run build:portable
+  pause
+  exit /b 1
+)
+
 rem #66: rewrite pyvenv.cfg home to this extract before any venv python runs
 set "PYHOME=%~dp0venv\python-home"
 set "PYCFG=%~dp0venv\pyvenv.cfg"

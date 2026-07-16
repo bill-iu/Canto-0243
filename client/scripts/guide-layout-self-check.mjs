@@ -6,7 +6,7 @@ import {
   bindGuideNav,
   guideSectionDomId,
   renderGuideLayoutHtml,
-} from '../../frontend/guide-i18n.mjs';
+} from '../../shared/guide-i18n.mjs';
 
 const html = renderGuideLayoutHtml('zh');
 const checks = [

@@ -8,7 +8,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 const clientRoot = path.dirname(fileURLToPath(import.meta.url))
 const repoRoot = path.resolve(clientRoot, '..')
-const readyGateCssPath = path.resolve(repoRoot, 'frontend/ready-gate.css')
+const readyGateCssPath = path.resolve(repoRoot, 'shared/ready-gate.css')
 const rootLyricsDb = path.resolve(repoRoot, 'lyrics.db')
 const publicLyricsDb = path.resolve(clientRoot, 'public/lyrics.db')
 
@@ -80,112 +80,159 @@ function lexiconDevMountPlugin(): Plugin {
 }
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => ({
-  resolve: {
-    alias: {
-      '@shared/query-tabs': path.resolve(clientRoot, '../frontend/query-tabs-state.mjs'),
-      '@shared/search-navigation': path.resolve(clientRoot, '../frontend/search-navigation.mjs'),
-    },
-  },
-  // Project Pages: https://<user>.github.io/Canto-0243/
-  // Serve locally at / to keep dev ergonomics.
-  base: command === 'serve' ? '/' : '/Canto-0243/',
-  plugins: [
+export default defineConfig(({ command, mode }) => {
+  const portableHost =
+    mode === 'portable' || process.env.VITE_PORTABLE_HOST === '1'
+
+  const plugins: Plugin[] = [
     react(),
     readyGateCssPlugin(),
-    lexiconDevMountPlugin(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: [
-        'icon-32.png',
-        'icon-180.png',
-        'icon-192.png',
-        'icon-512.png',
-        'sql-wasm-browser.wasm',
-        'fonts/fonts.css',
-        'fonts/*.woff2',
-      ],
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
-        navigateFallback: 'index.html',
-        navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
-        skipWaiting: true,
-        clientsClaim: true,
-        maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
-        runtimeCaching: [
-          {
-            urlPattern: /\/lexicon-manifest\.json$/,
-            handler: 'NetworkFirst',
-            options: {
-              cacheName: 'lexicon-manifest-cache',
-              networkTimeoutSeconds: 3,
-              expiration: {
-                maxEntries: 1,
-                maxAgeSeconds: 24 * 60 * 60
-              }
-            }
-          },
-          {
-            urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'database-cache',
-              expiration: {
-                maxEntries: 1,
-                maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
-              }
-            }
-          },
-          {
-            urlPattern: /\/sql-wasm-browser\.wasm$/,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'sqljs-wasm-cache',
-              expiration: {
-                maxEntries: 1,
-                maxAgeSeconds: 90 * 24 * 60 * 60
-              }
-            }
-          }
+  ]
+  if (command === 'serve') {
+    plugins.push(lexiconDevMountPlugin())
+  }
+  if (portableHost) {
+    plugins.push({
+      name: 'portable-favicon',
+      closeBundle() {
+        const out = path.resolve(clientRoot, 'dist-portable')
+        const candidates = [
+          path.resolve(repoRoot, 'shared/favicon.ico'),
+          path.resolve(clientRoot, 'public/icon-32.png'),
         ]
+        for (const src of candidates) {
+          if (fs.existsSync(src)) {
+            fs.copyFileSync(src, path.join(out, 'favicon.ico'))
+            return
+          }
+        }
       },
-      manifest: {
-        name: 'Canto-0243 PWA',
-        short_name: 'Canto0243',
-        description: '粵語填詞查詢工具 - 依 0243 數字碼搜尋可替換詞條',
-        theme_color: '#EBDFD0',
-        background_color: '#EBDFD0',
-        display: 'standalone',
-        start_url: '/Canto-0243/',
-        scope: '/Canto-0243/',
-        icons: [
-          {
-            src: 'icon-192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any',
-          },
-          {
-            src: 'icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any',
-          },
-          {
-            src: 'icon-512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable',
-          },
-        ],
-      }
     })
-  ],
-  assetsInclude: ['**/*.db'],
-  server: {
-    headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp'
+  }
+  if (!portableHost) {
+    plugins.push(
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: [
+          'icon-32.png',
+          'icon-180.png',
+          'icon-192.png',
+          'icon-512.png',
+          'sql-wasm-browser.wasm',
+          'fonts/fonts.css',
+          'fonts/*.woff2',
+        ],
+        workbox: {
+          globPatterns: ['**/*.{js,css,html,woff2,wasm}'],
+          navigateFallback: 'index.html',
+          navigateFallbackDenylist: [/^\/_/, /\/[^/?]+\.[^/]+$/],
+          skipWaiting: true,
+          clientsClaim: true,
+          maximumFileSizeToCacheInBytes: 50 * 1024 * 1024, // 50MB precache limit (lyrics.db uses runtimeCaching)
+          runtimeCaching: [
+            {
+              urlPattern: /\/lexicon-manifest\.json$/,
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'lexicon-manifest-cache',
+                networkTimeoutSeconds: 3,
+                expiration: {
+                  maxEntries: 1,
+                  maxAgeSeconds: 24 * 60 * 60
+                }
+              }
+            },
+            {
+              urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'database-cache',
+                expiration: {
+                  maxEntries: 1,
+                  maxAgeSeconds: 90 * 24 * 60 * 60 // 90 days
+                }
+              }
+            },
+            {
+              urlPattern: /\/sql-wasm-browser\.wasm$/,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'sqljs-wasm-cache',
+                expiration: {
+                  maxEntries: 1,
+                  maxAgeSeconds: 90 * 24 * 60 * 60
+                }
+              }
+            }
+          ]
+        },
+        manifest: {
+          name: 'Canto-0243 PWA',
+          short_name: 'Canto0243',
+          description: '粵語填詞查詢工具 - 依 0243 數字碼搜尋可替換詞條',
+          theme_color: '#DFD2C2',
+          background_color: '#DFD2C2',
+          display: 'standalone',
+          start_url: '/Canto-0243/',
+          scope: '/Canto-0243/',
+          icons: [
+            {
+              src: 'icon-192.png',
+              sizes: '192x192',
+              type: 'image/png',
+              purpose: 'any',
+            },
+            {
+              src: 'icon-512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any',
+            },
+            {
+              src: 'icon-512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'maskable',
+            },
+          ],
+        }
+      }),
+    )
+  }
+
+  return {
+    resolve: {
+      alias: {
+        '@shared/query-tabs': path.resolve(clientRoot, '../shared/query-tabs-state.mjs'),
+        '@shared/search-navigation': path.resolve(clientRoot, '../shared/search-navigation.mjs'),
+        // PR2: chrome-tabs only in portable; PWA keeps pill QueryTabsBar
+        '@host-tabs-bar': path.resolve(
+          clientRoot,
+          portableHost
+            ? 'src/query-tabs/host-tabs-bar.portable.tsx'
+            : 'src/query-tabs/host-tabs-bar.tsx',
+        ),
+        ...(portableHost
+          ? { 'virtual:pwa-register': path.resolve(clientRoot, 'src/pwa-register-stub.ts') }
+          : {}),
+      },
+    },
+    // Project Pages: https://<user>.github.io/Canto-0243/
+    // Serve locally at / to keep dev ergonomics.
+    base: portableHost ? '/app/' : command === 'serve' ? '/' : '/Canto-0243/',
+    plugins,
+    build: portableHost
+      ? { outDir: 'dist-portable', emptyOutDir: true }
+      : undefined,
+    define: portableHost
+      ? { 'import.meta.env.VITE_PORTABLE_HOST': JSON.stringify('1') }
+      : undefined,
+    assetsInclude: ['**/*.db'],
+    server: {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp'
+      }
     }
   }
-}))
+})

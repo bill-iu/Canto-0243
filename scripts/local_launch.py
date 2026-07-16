@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import signal
 import subprocess
 import sys
@@ -11,7 +12,9 @@ import time
 import webbrowser
 from pathlib import Path
 
-HTML_SUFFIX = "/frontend/index.html"
+HTML_SUFFIX = "/app/index.html"
+APP_UI_REL = Path("client") / "dist-portable"
+APP_UI_INDEX = APP_UI_REL / "index.html"
 WAIT_INTERVAL = "0.1"
 WAIT_TIMEOUT = "90"
 
@@ -25,6 +28,12 @@ def _messages(lang: str) -> dict[str, str]:
             "running": "Backend:",
             "ui": "UI:",
             "close_hint": "Close this window or press Ctrl+C to stop.",
+            "building_ui": "Portable UI missing — running: cd client && npm run build:portable …",
+            "ui_missing": (
+                "Product UI not found (client/dist-portable/index.html).\n\n"
+                "Dev checkout: cd client && npm run build:portable\n"
+                "Portable zip: re-download the full package (UI must be inside the zip)."
+            ),
         }
     return {
         "starting": "正在啟動 Canto-0243… 查韻介面就緒後將開啟瀏覽器。",
@@ -33,11 +42,78 @@ def _messages(lang: str) -> dict[str, str]:
         "running": "後端：",
         "ui": "前端：",
         "close_hint": "關閉請按 Ctrl+C",
+        "building_ui": "未找到查韻介面，正在建置：cd client && npm run build:portable …",
+        "ui_missing": (
+            "找不到產品介面（client/dist-portable/index.html）。\n\n"
+            "開發目錄：請先執行 cd client && npm run build:portable\n"
+            "免安裝套件：請重新下載完整 zip（套件內須含查韻介面）。"
+        ),
     }
 
 
 def _win_no_window_flags() -> int:
     return getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+
+def app_ui_ready(root: Path) -> bool:
+    return (root / APP_UI_INDEX).is_file()
+
+
+def _app_ui_stale(root: Path) -> bool:
+    """True when source UI is newer than dist-portable (dev checkout only)."""
+    index = root / APP_UI_INDEX
+    if not index.is_file():
+        return True
+    dist_mtime = index.stat().st_mtime
+    markers = (
+        root / "client" / "src" / "App.tsx",
+        root / "client" / "src" / "mode-menu.tsx",
+        root / "client" / "src" / "pwa-app.css",
+        root / "client" / "index.html",
+        root / "shared" / "open-design.css",
+        root / "shared" / "chrome-tabs.css",
+        root / "shared" / "shell.css",
+        root / "shared" / "ready-gate.css",
+    )
+    return any(p.is_file() and p.stat().st_mtime > dist_mtime for p in markers)
+
+
+def _npm_cmd() -> str | None:
+    return shutil.which("npm.cmd") or shutil.which("npm")
+
+
+def try_build_portable_ui(root: Path, *, silent: bool = False) -> bool:
+    """Build client/dist-portable when this is a source checkout with npm."""
+    client = root / "client"
+    if not (client / "package.json").is_file():
+        return False
+    npm = _npm_cmd()
+    if not npm:
+        return False
+    kwargs: dict = {"cwd": client, "check": False}
+    if silent:
+        kwargs["stdout"] = subprocess.DEVNULL
+        kwargs["stderr"] = subprocess.DEVNULL
+        if sys.platform == "win32":
+            kwargs["creationflags"] = _win_no_window_flags()
+    rc = subprocess.run([npm, "run", "build:portable"], **kwargs).returncode
+    return rc == 0 and app_ui_ready(root)
+
+
+def ensure_app_ui(root: Path, *, lang: str = "zh", silent: bool = False) -> None:
+    """Guarantee product UI exists (and is fresh) before starting main.py."""
+    msgs = _messages(lang)
+    needs_build = not app_ui_ready(root) or _app_ui_stale(root)
+    if not needs_build:
+        return
+    if not silent:
+        print(msgs["building_ui"], flush=True)
+    if try_build_portable_ui(root, silent=silent):
+        return
+    if app_ui_ready(root):
+        # Stale rebuild failed but an older dist exists — keep going.
+        return
+    raise SystemExit(msgs["ui_missing"])
 
 
 def _headless_python(python: Path) -> Path:
@@ -184,6 +260,9 @@ def main() -> int:
         if _probe_home_portable(base_url) is not False:
             _open_browser(boot_url)
             return 0
+
+    # Product UI is /app (client/dist-portable). Build on demand for source checkouts.
+    ensure_app_ui(root, lang=args.lang, silent=args.silent)
 
     if not args.silent:
         print(msgs["starting"], flush=True)

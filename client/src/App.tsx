@@ -12,7 +12,7 @@ import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
-import { formatStandardResultCountLabel } from '../../frontend/result-stats.mjs';
+import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import {
   enrichEntryDetailFromDb,
@@ -28,7 +28,7 @@ import {
   mergePickLookupResults,
   pickReadingsToQueryRows,
   resolveListClickAction,
-} from '../../frontend/entry-detail-core.mjs';
+} from '../../shared/entry-detail-core.mjs';
 import { SynResultList } from './syn-result-list';
 import { synResultItemCount, synResultsStats } from './syn-result-logic.ts';
 import { AnchorResultList } from './anchor-result-list';
@@ -43,6 +43,8 @@ import { planCommitSearch } from './db/query/search-session.ts';
 import { GuideQuick } from './guide-quick';
 import { GuideView } from './guide-view';
 import { AboutView } from './about-view';
+import { RelationView } from './views/relation-view';
+import { CorrectionsView } from './views/corrections-view';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
@@ -67,9 +69,12 @@ import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
-import { QueryTabsBar } from './query-tabs/query-tabs-bar';
+import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
-import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS } from '../../frontend/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
+import { isCorrectionsSearchCommand } from '@shared/query-tabs';
+import { isPortableHost } from './host-mode';
+import { exitPortable } from './portable-exit';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -77,7 +82,10 @@ const initialUrl =
     : { q: '', mode: '0243' as UiMode, pzmode: 'm1' as PingzeSubMode, view: 'search' as const };
 
 function App() {
-  const lexiconVersion = (import.meta as any).env?.VITE_LEXICON_VERSION || 'dev';
+  const lexiconVersion =
+    (isPortableHost() ? readLexiconVersionMeta() : null) ||
+    (import.meta as any).env?.VITE_LEXICON_VERSION ||
+    'dev';
   const conn = (navigator as any).connection;
   const isLikelyMetered =
     Boolean(conn?.saveData) ||
@@ -100,8 +108,12 @@ function App() {
     openSearchTabWithQuery,
     closeTab,
     reorderTabs,
+    reorderTabsByIdList,
     openGuide,
     openAbout,
+    openRelation,
+    openCorrections,
+    patchActiveRelation,
     goHome,
     ensureActiveSearchTab,
     patchSearchTab,
@@ -125,7 +137,11 @@ function App() {
       ? 'guide'
       : activeTab?.view === VIEW.ABOUT
         ? 'about'
-        : 'search';
+        : activeTab?.view === VIEW.RELATION
+          ? 'relation'
+          : activeTab?.view === VIEW.CORRECTIONS
+            ? 'corrections'
+            : 'search';
 
   const {
     inputQuery,
@@ -255,14 +271,15 @@ function App() {
 
   const shellGated = offlineStatus !== 'ready' || gateOpen;
 
+  // Portable is a local desktop host — never show PWA install chrome
   const shouldShowInstallBanner =
-    !shellGated && !isStandalone && !installDismissed;
+    !isPortableHost() && !shellGated && !isStandalone && !installDismissed;
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
     setTheme(uiTheme);
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#EBDFD0');
+    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#DFD2C2');
   }, [uiTheme]);
 
   useEffect(() => {
@@ -550,6 +567,12 @@ function App() {
   const runCommittedSearch = useCallback(
     (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
       const q = (nextQuery ?? inputQuery).trim();
+      // ponytail: portable maintainer — `debug` opens corrections, not a search
+      if (isPortableHost() && isCorrectionsSearchCommand(q)) {
+        saveLeavingSearchTab();
+        openCorrections();
+        return;
+      }
       if (pickAnchorRef.current && pickAnchorRef.current !== q) {
         pickAnchorRef.current = null;
         pickAnchorRowsRef.current = [];
@@ -563,7 +586,18 @@ function App() {
         void initialize();
       }
     },
-    [inputQuery, flushSearchQuery, commitActiveSearch, mode, pzMode, isReady, offlineStatus, initialize],
+    [
+      inputQuery,
+      flushSearchQuery,
+      commitActiveSearch,
+      mode,
+      pzMode,
+      isReady,
+      offlineStatus,
+      initialize,
+      saveLeavingSearchTab,
+      openCorrections,
+    ],
   );
 
   const beginPickSearch = useCallback(
@@ -649,9 +683,14 @@ function App() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // 教學／關於：送出開新搜尋 tab（同教學範例），保留原 tab；唔共用 ensureActive→commit 嘅 race
-    if (view === 'guide' || view === 'about') {
-      openLiveSearchTab(inputQuery.trim());
+    // 教學／關於／維護者：送出開新搜尋 tab（同教學範例），保留原 tab；唔共用 ensureActive→commit 嘅 race
+    if (view === 'guide' || view === 'about' || view === 'relation' || view === 'corrections') {
+      const q = inputQuery.trim();
+      if (isPortableHost() && isCorrectionsSearchCommand(q)) {
+        openCorrections();
+        return;
+      }
+      openLiveSearchTab(q);
       return;
     }
     runCommittedSearch();
@@ -660,6 +699,11 @@ function App() {
   const handleReorderTabs = (fromIndex: number, toIndex: number) => {
     saveLeavingSearchTab();
     reorderTabs(fromIndex, toIndex);
+  };
+
+  const handleReorderTabsByIds = (orderedIds: number[]) => {
+    saveLeavingSearchTab();
+    reorderTabsByIdList(orderedIds);
   };
 
   const handleSelectTab = (id: number) => {
@@ -685,6 +729,11 @@ function App() {
   const handleOpenAbout = () => {
     saveLeavingSearchTab();
     openAbout();
+  };
+
+  const handleOpenRelation = () => {
+    saveLeavingSearchTab();
+    openRelation();
   };
 
   const handleSearchInput = (value: string) => {
@@ -877,19 +926,25 @@ function App() {
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
               </div>
-              <ModeMenu
-                mode={mode}
-                disabled={shellGated}
-                onModeChange={handleModeChange}
-                onOpenGuide={handleOpenGuide}
-                onOpenAbout={handleOpenAbout}
-                theme={uiTheme}
-                lang={uiLang}
-                onThemeChange={(next) => setUiTheme(next)}
-                onLangChange={(next) => setUiLang(next)}
-                lexiconVersion={lexiconVersion}
-                showOpfsBackend={isReady && getActiveDbBackendMode() === 'opfs-vfs'}
-              />
+              <div className="header-chrome__actions">
+                <ModeMenu
+                  mode={mode}
+                  disabled={shellGated}
+                  onModeChange={handleModeChange}
+                  onOpenGuide={handleOpenGuide}
+                  onOpenAbout={handleOpenAbout}
+                  onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
+                  onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                  theme={uiTheme}
+                  lang={uiLang}
+                  onThemeChange={(next) => setUiTheme(next)}
+                  onLangChange={(next) => setUiLang(next)}
+                  lexiconVersion={lexiconVersion}
+                  showOpfsBackend={
+                    !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
+                  }
+                />
+              </div>
             </div>
             {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏放大＋tagline、水平置中 */}
             <div className="header-hero" aria-hidden="true">
@@ -991,7 +1046,7 @@ function App() {
               </div>
             </form>
           </div>
-          <QueryTabsBar
+          <HostTabsBar
             tabs={tabs}
             activeId={tabState.activeId}
             lang={uiLang}
@@ -999,6 +1054,7 @@ function App() {
             onClose={handleCloseTab}
             onAdd={handleAddTab}
             onReorder={handleReorderTabs}
+            onReorderByIds={handleReorderTabsByIds}
           />
         </header>
 
@@ -1007,6 +1063,14 @@ function App() {
             <GuideView lang={uiLang} onPick={handleRunExample} />
           ) : view === 'about' ? (
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
+          ) : view === 'relation' && isPortableHost() ? (
+            <RelationView
+              lang={uiLang}
+              initial={activeTab?.relation}
+              onFormChange={(next) => patchActiveRelation(next)}
+            />
+          ) : view === 'corrections' && isPortableHost() ? (
+            <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
           ) : (
             <section
               className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}

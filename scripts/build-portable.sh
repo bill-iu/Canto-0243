@@ -40,12 +40,17 @@ copy_tree() {
 
 copy_portable_bundle() {
   local dst="$1"
+  local dist_portable="$ROOT/client/dist-portable"
+  if [[ ! -f "$dist_portable/index.html" ]]; then
+    echo "client/dist-portable/index.html not found. Run: cd client && npm run build:portable" >&2
+    exit 1
+  fi
   echo "==> Copy bundle into $dst..."
   rm -rf "$dst"
   mkdir -p "$dst"
   copy_tree "$ROOT/portable" "$dst"
   copy_tree "$ROOT/app" "$dst/app"
-  copy_tree "$ROOT/frontend" "$dst/frontend"
+  copy_tree "$dist_portable" "$dst/client/dist-portable"
   copy_tree "$ROOT/data" "$dst/data"
   cp -f "$ROOT/main.py" "$ROOT/requirements.txt" "$dst/"
   cp -f "$DB_PATH" "$dst/lyrics.db"

@@ -65,7 +65,7 @@ class ModeDetectParity(unittest.TestCase):
 
     def _eval_mjs(self, fn: str, q: str) -> bool:
         script = (
-            f"import {{ {fn} }} from './frontend/query-mode-detect.mjs'; "
+            f"import {{ {fn} }} from './shared/query-mode-detect.mjs'; "
             f"console.log({fn}({q!r}) ? '1' : '0');"
         )
         proc = subprocess.run(
