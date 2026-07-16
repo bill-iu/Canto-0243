@@ -5,8 +5,9 @@
 
 type WordRow = Record<string, unknown>;
 
-const PRON_RANK_SORT: Record<string, number> = { 預設: 0, 常用: 1, 罕見: 2 };
+const PRON_RANK_SORT: Record<string, number> = { 預設: 0, 常用: 1, 罕見: 2, 棄用: 3 };
 const UNKNOWN_PRON_RANK = 99;
+const ANCHOR_EXCLUDED_PRON_RANKS = new Set([PRON_RANK_SORT['罕見'], PRON_RANK_SORT['棄用']]);
 
 let essayFreq = new Map<string, number>();
 let curated = new Set<string>();
@@ -42,9 +43,9 @@ function pronRankSortValue(char: string, jyutping: string): number {
   return pronRankByCharJyut.get(key) ?? UNKNOWN_PRON_RANK;
 }
 
-/** ADR-0029: 錨點 union 剔罕見；未知仍入選 */
+/** ADR-0051 §3: 錨點 union 剔罕見／棄用；未知仍入選 */
 export function eligibleForAnchorPhonemeUnion(char: string, jyutping: string): boolean {
-  return pronRankSortValueForWord(char, jyutping) !== PRON_RANK_SORT['罕見'];
+  return !ANCHOR_EXCLUDED_PRON_RANKS.has(pronRankSortValueForWord(char, jyutping));
 }
 
 export function pronRankSortValueForWord(char: string, jyutping: string): number {
@@ -233,6 +234,8 @@ export function anchorPhonemeUnionEligibilitySelfCheck(): void {
       '難\tno4': 2,
       '潦\tliu2': 0,
       '潦\tlou5': 1,
+      '信\tseon3': 0,
+      '信\tsan1': 3,
     },
   });
   if (!eligibleForAnchorPhonemeUnion('難', 'naan4')) {
@@ -246,6 +249,12 @@ export function anchorPhonemeUnionEligibilitySelfCheck(): void {
   }
   if (!eligibleForAnchorPhonemeUnion('測', 'mak6')) {
     throw new Error('anchorPhonemeUnionEligibilitySelfCheck: unknown rank should be eligible');
+  }
+  if (!eligibleForAnchorPhonemeUnion('信', 'seon3')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: seon3 should be eligible');
+  }
+  if (eligibleForAnchorPhonemeUnion('信', 'san1')) {
+    throw new Error('anchorPhonemeUnionEligibilitySelfCheck: deprecated san1 should be excluded');
   }
 }
 
