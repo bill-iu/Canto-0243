@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isSentinelIntersecting } from '../../shared/infinite-results.mjs';
-import { RESULT_RENDER_BATCH, clampVisibleCount, resetVisibleCount } from './infinite-results-logic.ts';
+import {
+  RESULT_RENDER_BATCH,
+  resetVisibleCount,
+  visibleCountAfterItemsGrow,
+} from './infinite-results-logic.ts';
+
 const SCROLL_MARGIN = 200;
 
 type UseInfiniteResultWindowOptions = {
@@ -25,13 +30,17 @@ export function useInfiniteResultWindow({
   const [visibleCount, setVisibleCount] = useState(RESULT_RENDER_BATCH);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const cooldownRef = useRef(false);
+  const prevItemCountRef = useRef(0);
 
   useEffect(() => {
+    prevItemCountRef.current = 0;
     setVisibleCount(resetVisibleCount());
   }, [resetKey]);
 
   useEffect(() => {
-    setVisibleCount((current) => clampVisibleCount(current, itemCount));
+    const prev = prevItemCountRef.current;
+    setVisibleCount((current) => visibleCountAfterItemsGrow(current, prev, itemCount));
+    prevItemCountRef.current = itemCount;
   }, [itemCount]);
 
   const onNeedMore = useCallback(() => {
@@ -40,14 +49,12 @@ export function useInfiniteResultWindow({
     requestAnimationFrame(() => {
       cooldownRef.current = false;
     });
-    setVisibleCount((prev) => {
-      if (prev < itemCount) {
-        return Math.min(prev + RESULT_RENDER_BATCH, itemCount);
-      }
-      if (hasMore) onLoadMore();
-      return prev;
-    });
-  }, [itemCount, hasMore, loading, loadingMore, onLoadMore]);
+    if (visibleCount < itemCount) {
+      setVisibleCount(Math.min(visibleCount + RESULT_RENDER_BATCH, itemCount));
+      return;
+    }
+    if (hasMore) onLoadMore();
+  }, [visibleCount, itemCount, hasMore, loading, loadingMore, onLoadMore]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
