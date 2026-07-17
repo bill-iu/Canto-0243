@@ -150,7 +150,7 @@ export function ConstraintBar({
         />
       </div>
       <p>更改條件只會重新找候選，不會改動句面。</p>
-      <p className="shortcut-hint">捷徑：空白鍵鎖／解鎖 · U 復原 · 1–3 分組 · Enter 首候選 · A 套用</p>
+      <p className="shortcut-hint">捷徑：空白鍵標定／取消 · U 復原 · 1–3 分組 · Enter 首候選 · A 套用</p>
     </section>
   );
 }

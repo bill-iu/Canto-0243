@@ -57,6 +57,7 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         engine = (ROOT / "client" / "src" / "db" / "position-match" / "engine.ts").read_text(encoding="utf-8")
         self.assertIn("consumeIngest", page)
         self.assertIn("toggleLockKeepingSpan", page)
+        self.assertNotIn("slot.locked && slot.surface", page)
         self.assertIn("整段押韻", bar)
         self.assertIn("整段同聲母", bar)
         self.assertNotIn("末格同韻", bar)

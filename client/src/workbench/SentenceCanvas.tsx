@@ -36,7 +36,7 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">點擊鎖定字位；再點取消</h2>
+          <h2 id="sentenceHeading">點擊標定替換段；再點取消</h2>
         </div>
         {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
       </div>
@@ -62,7 +62,7 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
                 className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}${unresolved ? ' has-unread' : ''}`}
                 data-line-slot={pos}
                 aria-pressed={locked}
-                aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已標定' : '未標定'}${spanned && !locked ? '，在替換段內' : ''}`}
                 onClick={() => onToggleLock(pos)}
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {

@@ -31,6 +31,12 @@ if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
 if (!page.includes('hydrateDraftCodes') || !page.includes('pendingResolve')) {
   throw new Error('code hydrate / reading retry missing');
 }
+if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵標定')) {
+  throw new Error('click-span mark / shortcut hint missing');
+}
+if (page.includes('slot.locked && slot.surface')) {
+  throw new Error('lock must not emit literal_char');
+}
 if (!constraints.includes('整段押韻') || !constraints.includes('整段同聲母')) {
   throw new Error('phoneme dim whole labels missing');
 }

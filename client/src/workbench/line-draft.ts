@@ -111,7 +111,7 @@ function applyCandidate(
   for (let offset = 0; offset < selection.width; offset += 1) {
     const pos = selection.start + offset;
     const current = slots[pos];
-    if (!current || (current.locked && current.surface !== literals[offset])) return draft;
+    if (!current) return draft;
     slots[pos] = {
       ...current,
       surface: literals[offset] ?? '',

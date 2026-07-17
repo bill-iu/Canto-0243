@@ -15,10 +15,10 @@ function assert(condition: unknown, message: string): asserts condition {
 assert(page.includes('aria-live="polite"'), 'status regions need aria-live');
 assert(canvas.includes('aria-label={`第 ${pos + 1} 個字'), 'slots need accessible labels');
 assert(canvas.includes("event.key === 'ArrowLeft'") && canvas.includes("event.key === 'ArrowRight'"), 'keyboard focus move missing');
-assert(canvas.includes("event.key === ' '"), 'space lock missing');
+assert(canvas.includes("event.key === ' '"), 'space span-mark missing');
 assert(!page.includes("event.key === 'l'") && !page.includes("event.key === 'L'"), 'legacy L batch-lock must be removed');
 assert(page.includes('Ctrl') || page.includes('ctrlKey'), 'undo shortcut missing');
-assert(constraints.includes('空白鍵鎖'), 'shortcut hint must mention space lock');
+assert(constraints.includes('空白鍵標定'), 'shortcut hint must mention space mark');
 assert(compare.includes('headingRef.current?.focus()'), 'compare panel must move focus on open');
 assert(compare.includes("event.key === 'Escape'"), 'compare panel must close on Escape');
 assert(page.includes('previewOrigin.current?.focus()'), 'closing compare must restore focus');
@@ -33,5 +33,7 @@ assert(seams.includes('writing-mode: horizontal-tb'), 'seam test must guard hori
 assert(canvas.includes('line-slot__warn') || canvas.includes('讀音未收錄'), 'unresolved must stay announced');
 assert(canvas.includes('slot-reading-footer'), 'reading footer row required for equal height');
 assert(!canvas.includes('className="slot-warning"'), 'unresolved must not use footer warning text');
+assert(page.includes('尚未標定替換段'), 'empty span must announce waiting state');
+assert(!page.includes('slot.locked && slot.surface'), 'lock must not emit literal_char');
 
 console.log('workbench accessibility self-check ok');

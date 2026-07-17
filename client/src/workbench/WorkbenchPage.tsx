@@ -181,8 +181,8 @@ export function WorkbenchPage() {
     if (!result.ok) {
       setMessage(
         result.reason === 'span_too_wide'
-          ? '一次最多改連續四格；請先解開較遠的鎖定。'
-          : '空白格不能鎖定；請先有字面。',
+          ? '一次最多改連續四格；請先取消較遠的標定。'
+          : '空白格不能標定；請先有字面。',
       );
       return;
     }
@@ -227,7 +227,7 @@ export function WorkbenchPage() {
             : next;
         }, current);
       });
-      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖字或改用碼起句。' : '已解析逐字讀音；請點擊鎖定字位。');
+      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可標定字位或改用碼起句。' : '已解析逐字讀音；請點擊標定替換段。');
     } catch {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
@@ -290,7 +290,7 @@ export function WorkbenchPage() {
       setActiveRelaxation(null);
       setRelaxedPrevious(null);
       void resolveReadings(next.surface, next);
-      setMessage('已從搜尋放入字面；請點擊鎖定字位。');
+      setMessage('已從搜尋放入字面；請點擊標定替換段。');
       return next;
     });
   // ponytail: mount-once ingest; resolveReadings closes over adapter
@@ -314,8 +314,8 @@ export function WorkbenchPage() {
     setInitialPicks(emptyPhonemeDimPicks());
     setMessage(
       parsed.kind === 'code'
-        ? '已按碼建立空白句格，不會自動填入字面；請點擊有字位以鎖定並查看候選。'
-        : '句格已建立；請點擊鎖定一至四格以查看候選。',
+        ? '已按碼建立空白句格，不會自動填入字面；請點擊有字位以標定並查看候選。'
+        : '句格已建立；請點擊標定一至四格以查看候選。',
     );
     if (parsed.kind === 'surface') void resolveReadings(parsed.slots.map((slot) => slot.surface).join(''), next);
   };
@@ -328,7 +328,7 @@ export function WorkbenchPage() {
       .map((item) => ({ ...item, pos: item.pos - start }));
     for (let offset = 0; offset < width; offset += 1) {
       const slot = draft.slots[start + offset]!;
-      if (slot.locked && slot.surface) slots.push({ pos: offset, kind: 'literal_char', literal: slot.surface });
+      // ponytail: lock only defines 替換段; never emit literal_char (parity with 29稻草=).
       if (slot.code && !slots.some((item) => item.pos === offset && item.kind === 'code_digit')) {
         slots.push({ pos: offset, kind: 'code_digit', digit: slot.code });
       }
@@ -501,7 +501,7 @@ export function WorkbenchPage() {
             />
             <div className="candidate-status" aria-live="polite">
               {!draft.selection
-                ? '尚未鎖定字位；候選會在你鎖定後出現。'
+                ? '尚未標定替換段；候選會在你標定後出現。'
                 : candidates.loading
                   ? '正在整理候選…'
                   : candidates.error
@@ -550,7 +550,7 @@ export function WorkbenchPage() {
               setActiveRelaxation(null);
             }}>復原最近一次套用／放寬</button> : null}
           </>
-        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可鎖定。</p></section>}
+        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可標定替換段。</p></section>}
       </main>
       {preview && draft?.selection ? (
         <ComparePanel
