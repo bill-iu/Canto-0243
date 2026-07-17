@@ -64,6 +64,7 @@ import { parseSearchUrl } from './search-url';
 import { profileToUiMode, searchFamilyForUiMode, uiModeToProfile } from '../../contracts/search-mode-manifest.mjs';
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
+import { HeaderHero } from './header-hero.tsx';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
@@ -946,17 +947,8 @@ function App() {
                 />
               </div>
             </div>
-            {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏放大＋tagline、水平置中 */}
-            <div className="header-hero" aria-hidden="true">
-              <p className="header-hero__title">
-                {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}
-              </p>
-              <p className="header-hero__tagline">
-                {uiLang === 'en'
-                  ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
-                  : '格律／協音／押韻／近反義，一步搵到。'}
-              </p>
-            </div>
+            {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏 tagline 縮字／極窄隱藏 */}
+            <HeaderHero lang={uiLang} />
             <form className="header-search" onSubmit={handleSubmit} role="search">
               <div className="header-search__row">
                 <div className="header-search__main">

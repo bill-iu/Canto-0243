@@ -349,15 +349,20 @@ button.icon-button.header-search__shuffle:disabled {
     text-overflow: ellipsis;
   }
 
+  /* nowrap 單行；唔用 ellipsis — JS 縮字／極窄隱藏（header-hero-tagline-fit） */
   .app-bar > .header-hero .header-hero__tagline {
     display: block;
     margin: 2px 0 0;
+    max-width: 100%;
     font-size: clamp(10px, 2.8vw, 12px);
     line-height: 1.25;
     color: var(--muted);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: hidden; /* 量度用 scrollWidth；縮妥前唔橫向濺出 */
+  }
+
+  .app-bar > .header-hero .header-hero__tagline[hidden] {
+    display: none !important;
   }
 
   .header-chrome__actions {
