@@ -44,7 +44,7 @@ export function WorkbenchPage() {
   const [input, setInput] = useState('');
   const [draft, setDraft] = useState<LineDraft | null>(initialDraft);
   const [readings, setReadings] = useState<PwaLineReadingSlot[]>([]);
-  const [mode, setMode] = useState<ReplacementPlanV1['mode']>('m3');
+  const [mode, setMode] = useState<ReplacementPlanV1['mode']>('m1');
   const [semanticIntent, setSemanticIntent] = useState<ReplacementPlanV1['semanticIntent']>('ranked');
   const [message, setMessage] = useState('');
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
@@ -308,7 +308,8 @@ export function WorkbenchPage() {
               semanticIntent={semanticIntent}
               onModeChange={changeMode}
               onSemanticChange={changeSemantic}
-              anchorsDisabled={!draft.selection || !draft.slots[draft.selection.start]?.surface}
+              finalAnchorDisabled={!draft.selection || !draft.slots[draft.selection.start + draft.selection.width - 1]?.surface}
+              initialAnchorDisabled={!draft.selection || !draft.slots[draft.selection.start]?.surface}
               onAddFinalAnchor={() => setDraft((current) => {
                 if (!current?.selection) return current;
                 const pos = current.selection.start + current.selection.width - 1;

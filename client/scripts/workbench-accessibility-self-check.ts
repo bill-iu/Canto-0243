@@ -25,6 +25,7 @@ assert(page.includes('[data-line-slot=') && page.includes('.focus()'), 'apply mu
 assert(cards.includes('aria-labelledby="candidateHeading"'), 'candidate region needs heading');
 assert(cards.includes('tabIndex={-1}'), 'candidate group headings must be focusable');
 assert(constraints.includes('捷徑：'), 'shortcut hint missing');
+assert(constraints.includes('value="m1">0243</option>') && page.includes("('m1')"), 'tone profile 0243 default missing');
 assert(css.includes('bottom: 0') && css.includes('compare-panel'), 'narrow compare drawer missing');
 assert(!css.includes('writing-mode: vertical'), 'vertical writing mode is forbidden');
 assert(seams.includes('writing-mode: horizontal-tb'), 'seam test must guard horizontal layout');

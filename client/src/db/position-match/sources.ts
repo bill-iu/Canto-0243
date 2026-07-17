@@ -53,7 +53,11 @@ export async function getCandidatesForLength(
   length: number,
   options: GetCandidatesOptions = {},
 ): Promise<[WordRow[], boolean]> {
-  const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
+  const mode = options.mode === 'm2' || options.mode === '02493'
+    ? 'm2'
+    : options.mode === 'm3' || options.mode === '394052'
+      ? 'm3'
+      : 'm1';
   const limit = options.fallbackLimit ?? CANDIDATE_FALLBACK_LIMIT;
   const unlimited = lengthBucketNeedsUnlimited(options);
   const code = options.code ?? null;
@@ -108,7 +112,11 @@ export async function getLengthMaskCandidates(
   mask: string,
   options: { code?: string | null; mode?: string } = {},
 ): Promise<[WordRow[], boolean]> {
-  const mode = options.mode === 'm2' || options.mode === '02493' ? 'm2' : 'm1';
+  const mode = options.mode === 'm2' || options.mode === '02493'
+    ? 'm2'
+    : options.mode === 'm3' || options.mode === '394052'
+      ? 'm3'
+      : 'm1';
   const globPat = maskCharGlobPattern(mask);
   const prefix = maskFixedLiteralPrefix(mask);
   let sql = `
