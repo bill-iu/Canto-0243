@@ -43,10 +43,10 @@ import { composeTransientWordRows } from '../db-patch.ts';
  */
 export async function executeListFilter(db: Database, ctx: SearchContext): Promise<SearchResult> {
   const { limit, offset } = ctx;
-  const sql = `SELECT char, jyutping, code FROM words ORDER BY char LIMIT ? OFFSET ?`;
-  const results = (await queryRows(db, sql, [limit, offset])).map(rowToResult);
-
-  return { items: results };
+  const sql = `SELECT char, jyutping, code FROM words ORDER BY char`;
+  const all = deduplicateWordRows((await queryRows(db, sql, [])) as WordRow[]);
+  const results = all.map(rowToResult);
+  return { items: results.slice(offset, offset + limit), total: results.length };
 }
 
 /**
@@ -92,10 +92,10 @@ export async function dispatchParsed(parsed: ParsedQuery, ctx: SearchContext & {
     case RouteKind.HETERONYM:
       if (parsed.kind === QueryKind.HETERONYM_CODE) {
         const h = parsed as HeteronymCodeQuery;
-        const items = await executeHeteronymCodeSearch(h, db, mode, limit, offset);
-        return { items };
+        const { items, total } = await executeHeteronymCodeSearch(h, db, mode, limit, offset);
+        return { items, total };
       }
-      return { items: [] };
+      return { items: [], total: 0 };
     
     case RouteKind.UNMATCHED:
       if (parsed.kind === QueryKind.UNMATCHED) {
@@ -238,8 +238,20 @@ async function executeMaskFamilySearchResult(
       spec.literal_priority || spec.compound_kind ? ranked : sortWordRows(ranked);
   }
 
-  const total = ordered.length;
-  const items = ordered.slice(offset, offset + limit).map((row) => rowToResult(row));
+  const total = (() => {
+    const seen = new Set<string>();
+    for (const row of ordered) {
+      const c = String((row as WordRow).char ?? (row as { word?: string }).word ?? '');
+      if (c) seen.add(c);
+    }
+    return seen.size;
+  })();
+  const items = ordered.slice(offset, offset + limit).map((row) => {
+    if ((row as QueryResult).word != null && (row as WordRow).char == null) {
+      return row as QueryResult;
+    }
+    return rowToResult(row as WordRow);
+  });
 
   let hint: string | undefined;
   if (!items.length && getEqualsSpan(spec)) {

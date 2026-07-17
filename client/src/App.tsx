@@ -850,9 +850,8 @@ function App() {
       return `${anchorResultsStats(displayResults, effectiveTotal)}${statsSuffix}`;
     }
     if (!displayResults.length || resultItemCount <= 0) return '';
-    // 標準列表：「結果」＝合併字面；未完頁唔寫假字面總數（擷取列 total 唔直接當 Y）
-    const hasMorePages = Boolean(useLiveFetch && hasMore);
-    const body = formatStandardResultCountLabel(resultItemCount, hasMorePages);
+    // 標準列表：有字面總數先顯示「搜到 Y」；未返 total 唔寫
+    const body = formatStandardResultCountLabel(effectiveTotal);
     return body ? `${body}${statsSuffix}` : '';
   }, [
     synLayout,
@@ -860,8 +859,6 @@ function App() {
     displayResults,
     effectiveTotal,
     resultItemCount,
-    useLiveFetch,
-    hasMore,
     statsSuffix,
   ]);
 

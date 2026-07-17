@@ -71,7 +71,7 @@ def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> Searc
         from app.services.query_grammar.equals import code_prefixed_whole_word_equals_empty_hint
 
         hint = code_prefixed_whole_word_equals_empty_hint(spec, ctx.db)
-    return SearchResult(items=result.items, hint=hint, cache_path=result.cache_path)
+    return SearchResult(items=result.items, total=result.total, hint=hint, cache_path=result.cache_path)
 
 
 class QueryEngine:
@@ -79,8 +79,7 @@ class QueryEngine:
 
     def execute(self, ctx: SearchContext) -> SearchResult:
         if not ctx.q:
-            items = self._execute_list_filter(ctx)
-            return SearchResult(items=items)
+            return self._execute_list_filter(ctx)
 
         q = normalize_query(ctx.q)
 
@@ -92,13 +91,15 @@ class QueryEngine:
         parsed = normalize_and_parse(ctx.q, mode=ctx.mode, pzmode=ctx.pzmode)
         return self.dispatch_parsed(parsed, ctx)
 
-    def _execute_list_filter(self, ctx: SearchContext) -> list:
+    def _execute_list_filter(self, ctx: SearchContext) -> SearchResult:
         query = ctx.db.query(Word)
         query = apply_code_filter(query, ctx.code, ctx.mode)
         if ctx.char:
             query = query.filter(Word.char == ctx.char)
-        results = query.all()
-        return sort_search_results(deduplicate_words(results))[ctx.offset : ctx.offset + ctx.limit]
+        results = deduplicate_words(query.all())
+        sorted_rows = sort_search_results(results)
+        page = sorted_rows[ctx.offset : ctx.offset + ctx.limit]
+        return SearchResult(items=page, total=len(sorted_rows))
 
     def dispatch_parsed(self, parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
         """Public route after classify — mode redirects must call this (not private hooks)."""
@@ -129,10 +130,10 @@ class QueryEngine:
             from app.services.query_types import HeteronymCodeQuery
 
             assert isinstance(parsed, HeteronymCodeQuery)
-            items = execute_heteronym_code_search(
+            items, total = execute_heteronym_code_search(
                 parsed, mode=mode, limit=limit, offset=offset, db=db
             )
-            return SearchResult(items=items)
+            return SearchResult(items=items, total=total)
 
         if route_kind == RouteKind.RELATION:
             assert isinstance(parsed, RelationLookupQuery)
@@ -142,12 +143,12 @@ class QueryEngine:
         if route_kind == RouteKind.LOOKUP:
             if parsed.kind == QueryKind.WORD_LOOKUP:
                 assert isinstance(parsed, WordLookupQuery)
-                items = lookup_executor.lookup(parsed.raw_q, code, mode, limit, offset)
-                return SearchResult(items=items)
+                items, total = lookup_executor.lookup(parsed.raw_q, code, mode, limit, offset)
+                return SearchResult(items=items, total=total)
             assert parsed.kind == QueryKind.JYUTPING_FRAGMENT
             assert isinstance(parsed, JyutpingFragmentQuery)
-            items = lookup_executor.jyut_fragment(parsed.raw_q, limit, offset)
-            return SearchResult(items=items)
+            items, total = lookup_executor.jyut_fragment(parsed.raw_q, limit, offset)
+            return SearchResult(items=items, total=total)
 
         if route_kind == RouteKind.UNMATCHED:
             assert isinstance(parsed, UnmatchedQuery)

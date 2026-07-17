@@ -37,7 +37,7 @@ def execute_heteronym_code_search(
     limit: int,
     offset: int,
     db: Session,
-) -> List[dict]:
+) -> tuple[List[dict], int]:
     left_req = code_template_to_required(parsed.left_template)
     right_req = code_template_to_required(parsed.right_template)
     index = ensure_heteronym_index(db)
@@ -58,7 +58,7 @@ def execute_heteronym_code_search(
             matched_chars.append(char)
 
     if not matched_chars:
-        return []
+        return [], 0
 
     # One batched query instead of per-char .all() (was freezing 33/34)
     rows = (
@@ -83,7 +83,8 @@ def execute_heteronym_code_search(
         items.append(payload)
 
     items.sort(key=heteronym_sort_key)
-    return paginate(items, offset, limit)
+    # 清單「結果」＝字面數（matched_chars）；列可多讀音
+    return paginate(items, offset, limit), len(matched_chars)
 
 
 __all__ = ["execute_heteronym_code_search"]
