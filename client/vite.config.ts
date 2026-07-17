@@ -76,7 +76,7 @@ function lexiconDevMountPlugin(): Plugin {
     name: 'lexicon-dev-mount',
     configureServer(server) {
       const handler = (
-        _req: unknown,
+        req: { method?: string },
         res: {
           statusCode: number
           setHeader: (k: string, v: string) => void
@@ -98,6 +98,11 @@ function lexiconDevMountPlugin(): Plugin {
           res.setHeader('Content-Type', 'application/octet-stream')
           res.setHeader('Content-Length', String(stat.size))
           res.setHeader('Cache-Control', 'no-cache')
+          // HEAD：畀 DEV loadLexiconTarget 用 Content-Length 做 OPFS key，唔送 body
+          if (req.method === 'HEAD') {
+            res.end()
+            return
+          }
           fs.createReadStream(src).pipe(res as unknown as NodeJS.WritableStream)
         } catch {
           res.statusCode = 500
