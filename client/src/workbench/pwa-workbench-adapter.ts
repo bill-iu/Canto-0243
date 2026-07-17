@@ -15,11 +15,20 @@ export function createPwaWorkbenchAdapter(): WorkbenchAdapter {
   return {
     resolveLine(input, signal) {
       if (signal?.aborted) return Promise.reject(new DOMException('Aborted', 'AbortError'));
-      return resolvePwaLineReadings(input, database());
+      try {
+        return resolvePwaLineReadings(input, database());
+      } catch (error) {
+        // getDatabase() 係同步 throw；要變 reject 先畀 hook 嘅 .catch 接住，唔好炸 React
+        return Promise.reject(error);
+      }
     },
     findCandidates(plan, signal) {
       if (signal?.aborted) return Promise.reject(new DOMException('Aborted', 'AbortError'));
-      return planPwaReplacements(plan, database());
+      try {
+        return planPwaReplacements(plan, database());
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
   };
 }

@@ -346,7 +346,7 @@ export function WorkbenchPage() {
       limit: 120,
     };
   }, [draft, mode, semanticIntent]);
-  const candidates = useWorkbenchCandidates(plan, adapter);
+  const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter);
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(
