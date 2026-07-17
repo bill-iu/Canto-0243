@@ -266,17 +266,21 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
   const patchSearchTab = useCallback(
     (tabId: number, snapshot: Partial<SearchTabSnapshot>) => {
       setAndPersist((prev) => {
+        let changed = false;
         const tabs = prev.tabs.map((t) => {
           if (t.id !== tabId || t.view !== VIEW.SEARCH) return t;
-          return {
-            ...t,
-            q: snapshot.q !== undefined ? snapshot.q : t.q,
-            results: snapshot.results ?? (t.results as QueryResult[]),
-            offset: snapshot.offset ?? t.offset,
-            total: snapshot.total !== undefined ? snapshot.total : t.total,
-          };
+          const q = snapshot.q !== undefined ? snapshot.q : t.q;
+          const results = snapshot.results ?? (t.results as QueryResult[]);
+          const offset = snapshot.offset ?? t.offset;
+          const total = snapshot.total !== undefined ? snapshot.total : t.total;
+          // 同值唔開新 tab object，否則 App sync effect → setState → activeTab 變 → 無限更新
+          if (q === t.q && results === t.results && offset === t.offset && total === t.total) {
+            return t;
+          }
+          changed = true;
+          return { ...t, q, results, offset, total };
         });
-        return { ...prev, tabs };
+        return changed ? { ...prev, tabs } : prev;
       });
     },
     [setAndPersist],
