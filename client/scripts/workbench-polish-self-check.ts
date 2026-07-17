@@ -50,8 +50,18 @@ if (!page.includes('mode="0243"') || page.includes('onOpenWorkbench')) {
 if (!page.includes('workbench-route') || !css.includes('body.query-tabs-app.workbench-route')) {
   throw new Error('workbench must unlock document scroll');
 }
-if (!css.includes('font-family: inherit')) {
-  throw new Error('workbench fonts must inherit search shell');
+const heroSerif = '"Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif';
+if (!css.includes(heroSerif) || !css.includes('.workbench-header .header-hero .header-hero__title')) {
+  throw new Error('workbench header hero must match search Playfair stack');
+}
+if (!css.includes('.workbench-intro h1') || !css.includes('.workbench-intro h2')) {
+  throw new Error('workbench intro slogans must keep h1/h2 selectors');
+}
+if ((css.match(new RegExp(heroSerif.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length < 3) {
+  throw new Error('workbench hero/intro titles must share search serif stack');
+}
+if (!css.includes('"JetBrains Mono"') || !css.includes('.eyebrow')) {
+  throw new Error('workbench eyebrow must match shell mono');
 }
 if (!bridge.includes('WORKBENCH_NAVIGATE_KEY') || !bridge.includes('writeNavigate') || !bridge.includes('consumeNavigate')) {
   throw new Error('navigate bridge missing');
