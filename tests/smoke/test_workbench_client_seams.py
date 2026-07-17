@@ -44,6 +44,19 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("排序順位", compare)
         self.assertIn("sourceRank", compare)
 
+    def test_phase2_bridge_and_shortcuts(self) -> None:
+        page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
+        compare = (WORKBENCH / "ComparePanel.tsx").read_text(encoding="utf-8")
+        app = (ROOT / "client" / "src" / "App.tsx").read_text(encoding="utf-8")
+        detail = (ROOT / "client" / "src" / "entry-detail" / "EntryDetailPanel.tsx").read_text(encoding="utf-8")
+        self.assertIn("consumeIngest", page)
+        self.assertIn("lock_selection", page)
+        self.assertIn("在搜尋頁查看", compare)
+        self.assertIn("放入句格", detail)
+        self.assertIn("openSearchTabWithQuery", app)
+        self.assertIn("PutInWorkbenchModal", app)
+        self.assertNotRegex(page, r"consumeIngest[\s\S]{0,400}apply_candidate")
+
 
 if __name__ == "__main__":
     unittest.main()

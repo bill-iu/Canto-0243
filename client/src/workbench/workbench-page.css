@@ -76,6 +76,7 @@
 .anchor-actions button { padding: .5rem .7rem; border: 1px solid var(--wb-line); border-radius: .55rem; color: inherit; background: var(--wb-card); font: inherit; cursor: pointer; }
 .anchor-actions button:disabled { cursor: not-allowed; opacity: .45; }
 .constraint-bar p { flex-basis: 100%; margin: 0; color: var(--wb-muted); font-size: .78rem; }
+.shortcut-hint { letter-spacing: .02em; }
 .candidate-status { min-height: 1.5rem; margin: 1rem 0 -.5rem; color: var(--wb-muted); }
 .candidate-group { margin-top: 1.5rem; }
 .candidate-group h3 { display: flex; gap: .5rem; align-items: center; margin-bottom: .65rem; }
@@ -111,6 +112,18 @@
 .compare-panel dt { color: var(--wb-muted); }
 .compare-panel dd { margin: 0; writing-mode: horizontal-tb; overflow-wrap: anywhere; }
 .primary-action { width: 100%; margin-top: 1rem; background: var(--wb-accent); }
+.secondary-action {
+  width: 100%;
+  margin-top: .55rem;
+  border: 1px solid var(--wb-line);
+  border-radius: .8rem;
+  padding: .85rem 1rem;
+  color: inherit;
+  background: var(--wb-paper);
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
 .compare-note { color: var(--wb-muted); font-size: .78rem; text-align: center; }
 
 @media (max-width: 720px) {

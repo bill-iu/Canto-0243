@@ -1,5 +1,5 @@
 import type { WorkbenchSlotConstraintV1 } from './contracts.ts';
-import type { ParsedLineInput } from './line-input.ts';
+import { parseLineInput, type ParsedLineInput } from './line-input.ts';
 
 export interface LineSlot {
   surface: string;
@@ -35,8 +35,11 @@ export interface LineDraft extends DraftSnapshot {
 export type LineDraftAction =
   | { type: 'select'; start: number; width: number }
   | { type: 'toggle_lock'; pos: number }
+  | { type: 'lock_selection' }
   | { type: 'choose_reading'; pos: number; jyutping: string; code: string }
   | { type: 'set_constraint'; constraint: WorkbenchSlotConstraintV1 }
+  | { type: 'replace_surface'; literal: string }
+  | { type: 'insert_literal'; literal: string }
   | {
       type: 'apply_candidate';
       selectionVersion: number;
@@ -139,6 +142,21 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
       slots[action.pos] = { ...current, locked: !current.locked };
       return withEdit(draft, { slots });
     }
+    case 'lock_selection': {
+      const selection = draft.selection;
+      if (!selection) return draft;
+      const slice = draft.slots.slice(selection.start, selection.start + selection.width);
+      if (!slice.length) return draft;
+      const lockAll = slice.some((slot) => !slot.locked);
+      const slots = draft.slots.slice();
+      for (let offset = 0; offset < selection.width; offset += 1) {
+        const pos = selection.start + offset;
+        const current = slots[pos];
+        if (!current) return draft;
+        slots[pos] = { ...current, locked: lockAll };
+      }
+      return withEdit(draft, { slots }, snapshot(draft));
+    }
     case 'choose_reading': {
       const current = draft.slots[action.pos];
       if (!current || !action.jyutping || !action.code) return draft;
@@ -153,6 +171,43 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
       ));
       constraints.push(action.constraint);
       return withEdit(draft, { constraints });
+    }
+    case 'replace_surface': {
+      const parsed = parseLineInput(action.literal);
+      if (!parsed.ok || parsed.kind !== 'surface') return draft;
+      const next = createLineDraft(parsed);
+      return {
+        ...next,
+        version: draft.version + 1,
+        undo: snapshot(draft),
+      };
+    }
+    case 'insert_literal': {
+      const selection = draft.selection;
+      if (!selection) return draft;
+      const literals = Array.from(action.literal.trim());
+      if (literals.length !== selection.width) return draft;
+      const slots = draft.slots.slice();
+      for (let offset = 0; offset < selection.width; offset += 1) {
+        const pos = selection.start + offset;
+        const current = slots[pos];
+        if (!current) return draft;
+        slots[pos] = {
+          ...current,
+          surface: literals[offset] ?? '',
+          reading: undefined,
+          code: undefined,
+        };
+      }
+      return withEdit(
+        draft,
+        {
+          slots,
+          surface: slots.map((slot) => slot.surface).join(''),
+          lastApplied: null,
+        },
+        snapshot(draft),
+      );
     }
     case 'apply_candidate':
       return applyCandidate(draft, action);

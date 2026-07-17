@@ -4,7 +4,7 @@ import { searchPageHref } from '../app-page.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
-import type { RelaxationKind, ReplacementPlanV1, WorkbenchCandidate, WorkbenchSlotConstraintV1 } from './contracts.ts';
+import type { CandidateGroups, RelaxationKind, ReplacementPlanV1, WorkbenchCandidate, WorkbenchSlotConstraintV1 } from './contracts.ts';
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
@@ -12,6 +12,7 @@ import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
 import { selectWorkbenchAdapter } from './workbench-adapter.ts';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
+import { WorkbenchBridgeError, consumeIngest, writeOpenSearch } from './workbench-bridge.ts';
 import './workbench-page.css';
 
 function initialDraft(): LineDraft | null {
@@ -23,6 +24,19 @@ interface ActiveRelaxation {
   kind: RelaxationKind;
   from?: string;
   to?: string;
+}
+
+const GROUP_FOCUS_IDS = ['candidate-direct_syn', 'candidate-semantic_related', 'candidate-sound_only'] as const;
+
+function firstCandidate(groups: CandidateGroups | undefined): WorkbenchCandidate | null {
+  if (!groups) return null;
+  return groups.direct_syn[0] ?? groups.semantic_related[0] ?? groups.sound_only[0] ?? null;
+}
+
+function isTypingTarget(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) return false;
+  const tag = target.tagName;
+  return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
 }
 
 export function WorkbenchPage() {
@@ -37,6 +51,11 @@ export function WorkbenchPage() {
   const [relaxedPrevious, setRelaxedPrevious] = useState<{ mode: ReplacementPlanV1['mode']; semanticIntent: ReplacementPlanV1['semanticIntent'] } | null>(null);
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
+  const draftRef = useRef(draft);
+  const previewRef = useRef(preview);
+  const ingestDone = useRef(false);
+  draftRef.current = draft;
+  previewRef.current = preview;
 
   useEffect(() => {
     if (!draft) return;
@@ -71,6 +90,53 @@ export function WorkbenchPage() {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
   };
+
+  useEffect(() => {
+    if (ingestDone.current) return;
+    ingestDone.current = true;
+    const payload = consumeIngest(sessionStorage);
+    if (!payload) return;
+
+    if (payload.mode === 'insert') {
+      setDraft((current) => {
+        if (!current?.selection) {
+          setMessage('無法插入：工作台沒有選段；請改用取代整句。');
+          return current;
+        }
+        const next = lineDraftReducer(current, { type: 'insert_literal', literal: payload.literal });
+        if (next === current) {
+          setMessage('無法插入：字數與選段不符。');
+          return current;
+        }
+        setPreview(null);
+        setActiveRelaxation(null);
+        void resolveReadings(next.surface, next);
+        setMessage('已插入字面到選段；請確認讀音。');
+        return next;
+      });
+      return;
+    }
+
+    const parsed = parseLineInput(payload.literal);
+    if (!parsed.ok || parsed.kind !== 'surface') {
+      setMessage('放入的字面無法建立句格。');
+      return;
+    }
+    setDraft((current) => {
+      const next = current
+        ? lineDraftReducer(current, { type: 'replace_surface', literal: payload.literal })
+        : createLineDraft(parsed);
+      setReadings([]);
+      setPreview(null);
+      setActiveRelaxation(null);
+      setRelaxedPrevious(null);
+      void resolveReadings(next.surface, next);
+      setMessage('已從搜尋放入字面；請圈選一至四格。');
+      return next;
+    });
+  // ponytail: mount-once ingest; resolveReadings closes over adapter
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -120,6 +186,8 @@ export function WorkbenchPage() {
     };
   }, [draft, mode, semanticIntent]);
   const candidates = useWorkbenchCandidates(plan, adapter);
+  const candidatesRef = useRef(candidates);
+  candidatesRef.current = candidates;
   const semanticGap = Boolean(
     plan
     && plan.semanticIntent !== 'off'
@@ -132,6 +200,82 @@ export function WorkbenchPage() {
     setPreview(null);
     requestAnimationFrame(() => previewOrigin.current?.focus());
   };
+
+  const applyPreview = (candidate: WorkbenchCandidate) => {
+    const current = draftRef.current;
+    if (!current?.selection) return;
+    setDraft(lineDraftReducer(current, {
+      type: 'apply_candidate',
+      selectionVersion: candidatesRef.current.response?.selectionVersion ?? -1,
+      literal: candidate.literal,
+      jyutping: candidate.jyutping,
+      code: candidate.code,
+      relaxationId: candidate.relaxationId ?? activeRelaxation?.id,
+    }));
+    setPreview(null);
+    setActiveRelaxation(null);
+    setTimeout(() => document.querySelector<HTMLButtonElement>(`[data-line-slot="${current.selection!.start}"]`)?.focus(), 0);
+  };
+
+  const openInSearch = (literal: string) => {
+    try {
+      writeOpenSearch(sessionStorage, { literal });
+      window.location.href = searchPageHref();
+    } catch (error) {
+      setMessage(error instanceof WorkbenchBridgeError ? error.message : '無法打開搜尋頁。');
+    }
+  };
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (isTypingTarget(event.target)) return;
+      const current = draftRef.current;
+      const open = previewRef.current;
+
+      if ((event.key === 'a' || event.key === 'A') && open) {
+        event.preventDefault();
+        applyPreview(open);
+        return;
+      }
+      if (event.key === 'Escape' && open) {
+        event.preventDefault();
+        closePreview();
+        return;
+      }
+      if (!current) return;
+
+      if (event.key === 'l' || event.key === 'L') {
+        if (!current.selection) return;
+        event.preventDefault();
+        setDraft(lineDraftReducer(current, { type: 'lock_selection' }));
+        return;
+      }
+      if (event.key === 'u' || event.key === 'U' || (event.key === 'z' && (event.ctrlKey || event.metaKey))) {
+        if (!current.undo) return;
+        event.preventDefault();
+        setDraft(lineDraftReducer(current, { type: 'undo' }));
+        setActiveRelaxation(null);
+        return;
+      }
+      if (event.key === '1' || event.key === '2' || event.key === '3') {
+        const heading = document.getElementById(GROUP_FOCUS_IDS[Number(event.key) - 1]!);
+        if (!heading) return;
+        event.preventDefault();
+        heading.focus();
+        return;
+      }
+      if (event.key === 'Enter') {
+        const candidate = firstCandidate(candidatesRef.current.response?.exact);
+        if (!candidate) return;
+        event.preventDefault();
+        setPreview(candidate);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  // ponytail: handlers read refs; applyPreview uses latest activeRelaxation via closure refresh each draft change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRelaxation]);
 
   return (
     <div className={`workbench-page${preview ? ' has-compare' : ''}`}>
@@ -232,19 +376,13 @@ export function WorkbenchPage() {
         ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格。</p></section>}
       </main>
       {preview && draft?.selection ? (
-        <ComparePanel candidate={preview} draft={draft} onClose={closePreview} onApply={() => {
-          setDraft((current) => current ? lineDraftReducer(current, {
-            type: 'apply_candidate',
-            selectionVersion: candidates.response?.selectionVersion ?? -1,
-            literal: preview.literal,
-            jyutping: preview.jyutping,
-            code: preview.code,
-            relaxationId: preview.relaxationId ?? activeRelaxation?.id,
-          }) : current);
-          setPreview(null);
-          setActiveRelaxation(null);
-          setTimeout(() => document.querySelector<HTMLButtonElement>(`[data-line-slot="${draft.selection!.start}"]`)?.focus(), 0);
-        }} />
+        <ComparePanel
+          candidate={preview}
+          draft={draft}
+          onClose={closePreview}
+          onApply={() => applyPreview(preview)}
+          onOpenInSearch={() => openInSearch(preview.literal)}
+        />
       ) : null}
     </div>
   );

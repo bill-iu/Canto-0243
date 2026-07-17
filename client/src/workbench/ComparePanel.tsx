@@ -9,9 +9,10 @@ interface Props {
   draft: LineDraft;
   onApply: () => void;
   onClose: () => void;
+  onOpenInSearch: () => void;
 }
 
-export function ComparePanel({ candidate, draft, onApply, onClose }: Props) {
+export function ComparePanel({ candidate, draft, onApply, onClose, onOpenInSearch }: Props) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const selection = draft.selection!;
   const preview = [
@@ -22,7 +23,17 @@ export function ComparePanel({ candidate, draft, onApply, onClose }: Props) {
   const relationSource = candidate.reasons.find((reason) => reason.source)?.source;
   useEffect(() => { headingRef.current?.focus(); }, []);
   return (
-    <aside className="compare-panel" aria-labelledby="compareHeading" onKeyDown={(event) => { if (event.key === 'Escape') onClose(); }}>
+    <aside
+      className="compare-panel"
+      aria-labelledby="compareHeading"
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') onClose();
+        if (event.key === 'a' || event.key === 'A') {
+          event.preventDefault();
+          onApply();
+        }
+      }}
+    >
       <button type="button" className="compare-close" onClick={onClose} aria-label="關閉比較">×</button>
       <p className="eyebrow">全句預覽</p>
       <h2 id="compareHeading" ref={headingRef} tabIndex={-1}>{candidate.literal}</h2>
@@ -36,6 +47,7 @@ export function ComparePanel({ candidate, draft, onApply, onClose }: Props) {
       <h3>為何出現</h3>
       <ul>{candidate.reasons.map((reason, index) => <li key={`${reason.kind}-${index}`}>{candidateReasonLabel(reason.kind)}</li>)}</ul>
       <button type="button" className="primary-action" onClick={onApply}>套用這個選擇</button>
+      <button type="button" className="secondary-action" onClick={onOpenInSearch}>在搜尋頁查看</button>
       <p className="compare-note">只有按下「套用」才會改動句面。</p>
     </aside>
   );

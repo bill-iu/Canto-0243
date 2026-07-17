@@ -33,6 +33,7 @@ export function ConstraintBar({ mode, semanticIntent, onModeChange, onSemanticCh
         <button type="button" disabled={anchorsDisabled} onClick={onAddInitialAnchor}>首格同聲</button>
       </div>
       <p>更改條件只會重新找候選，不會改動句面。</p>
+      <p className="shortcut-hint">捷徑：L 鎖選段 · U 復原 · 1–3 分組 · Enter 首候選 · A 套用</p>
     </section>
   );
 }

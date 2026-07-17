@@ -32,7 +32,7 @@ export function CandidateGrid({ groups, relaxed, semanticGap, onPreview }: Props
       ) : null}
       {GROUPS.map(([key, label]) => (
         <section className="candidate-group" key={key} aria-labelledby={`candidate-${key}`}>
-          <h3 id={`candidate-${key}`}>{label}<span>{groups[key].length}</span></h3>
+          <h3 id={`candidate-${key}`} tabIndex={-1}>{label}<span>{groups[key].length}</span></h3>
           {groups[key].length ? (
             <div className="candidate-grid">
               {groups[key].map((candidate) => (

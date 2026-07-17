@@ -14,6 +14,15 @@ import { ResultList } from './result-list';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
+import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
+import {
+  WorkbenchBridgeError,
+  consumeOpenSearch,
+  hasWorkbenchDraft,
+  readWorkbenchSelectionWidth,
+  readWorkbenchSurfacePreview,
+  writeIngest,
+} from './workbench/workbench-bridge.ts';
 import {
   enrichEntryDetailFromDb,
   enrichEntryDetailRelations,
@@ -167,6 +176,7 @@ function App() {
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
   );
   const [detailOpen, setDetailOpen] = useState(false);
+  const [putWorkbenchLiteral, setPutWorkbenchLiteral] = useState<string | null>(null);
   const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
   const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
   const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
@@ -663,6 +673,34 @@ function App() {
     },
     [saveLeavingSearchTab, openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
   );
+
+  const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
+    try {
+      writeIngest(sessionStorage, { literal, mode: ingestMode });
+      window.location.href = workbenchPageHref();
+    } catch (error) {
+      window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
+    }
+  }, []);
+
+  const handlePutInWorkbench = useCallback((literal: string) => {
+    const text = literal.trim();
+    if (!text) return;
+    if (!hasWorkbenchDraft(localStorage)) {
+      navigateWithIngest(text, 'replace');
+      return;
+    }
+    setPutWorkbenchLiteral(text);
+  }, [navigateWithIngest]);
+
+  useEffect(() => {
+    const payload = consumeOpenSearch(sessionStorage);
+    if (!payload) return;
+    openLiveSearchTab(payload.literal);
+    hydrateSearch(payload.literal);
+  // ponytail: one-shot bridge consume on search mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleBackToSearch = () => {
     ensureActiveSearchTab();
@@ -1161,6 +1199,28 @@ function App() {
               preferredJyutping={preferredJyutping}
               onClose={closeEntryDetail}
               onRelationPick={handleRelationPick}
+              onPutInWorkbench={handlePutInWorkbench}
+            />,
+            document.body,
+          )
+        : null}
+      {putWorkbenchLiteral
+        ? createPortal(
+            <PutInWorkbenchModal
+              literal={putWorkbenchLiteral}
+              currentSurface={readWorkbenchSurfacePreview(localStorage)}
+              selectionWidth={readWorkbenchSelectionWidth(localStorage)}
+              onReplace={() => {
+                const literal = putWorkbenchLiteral;
+                setPutWorkbenchLiteral(null);
+                navigateWithIngest(literal, 'replace');
+              }}
+              onInsert={() => {
+                const literal = putWorkbenchLiteral;
+                setPutWorkbenchLiteral(null);
+                navigateWithIngest(literal, 'insert');
+              }}
+              onCancel={() => setPutWorkbenchLiteral(null)}
             />,
             document.body,
           )

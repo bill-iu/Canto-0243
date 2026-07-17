@@ -77,6 +77,24 @@ assert(draft.constraints !== beforeRelaxation && draft.undo != null, 'relaxation
 draft = lineDraftReducer(draft, { type: 'undo' });
 assert(draft.constraints === beforeRelaxation, 'relaxation undo failed');
 
+draft = lineDraftReducer(draft, { type: 'select', start: 2, width: 2 });
+draft = lineDraftReducer(draft, { type: 'lock_selection' });
+assert(draft.slots[2]?.locked && draft.slots[3]?.locked, 'lock_selection did not lock all');
+draft = lineDraftReducer(draft, { type: 'lock_selection' });
+assert(!draft.slots[2]?.locked && !draft.slots[3]?.locked, 'lock_selection did not unlock all');
+
+const beforeInsert = draft.surface;
+draft = lineDraftReducer(draft, { type: 'insert_literal', literal: '香' });
+assert(draft.surface === beforeInsert, 'mismatched insert width changed draft');
+draft = lineDraftReducer(draft, { type: 'insert_literal', literal: '香江' });
+assert(draft.surface === '我愛香江', 'insert_literal failed');
+assert(draft.selection?.width === 2 && draft.undo != null, 'insert should keep selection and undo');
+draft = lineDraftReducer(draft, { type: 'undo' });
+assert(draft.surface === '我愛香港', 'insert undo failed');
+
+const replaced = lineDraftReducer(draft, { type: 'replace_surface', literal: '香江' });
+assert(replaced.surface === '香江' && replaced.selection == null && replaced.undo != null, 'replace_surface failed');
+
 const values = new Map<string, string>();
 const storage = {
   getItem: (key: string) => values.get(key) ?? null,
