@@ -16,6 +16,13 @@ function fail(message) {
 }
 
 async function main() {
+  const workbenchIndex = path.join(distDir, 'workbench', 'index.html');
+  try {
+    await fs.access(workbenchIndex);
+  } catch {
+    fail('Pages artifact is missing workbench/index.html');
+    return;
+  }
   const entries = await fs.readdir(distDir, { withFileTypes: true });
   const dbFiles = entries
     .filter((entry) => entry.isFile() && /^lyrics(?:\..*)?\.db$/.test(entry.name))

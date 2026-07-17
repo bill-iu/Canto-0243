@@ -829,3 +829,24 @@ button.icon-button.header-search__shuffle:disabled {
     min-width: 0;
   }
 }
+
+.workbench-entry {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.workbench-menu-group { display: none; }
+
+@media (max-width: 720px) {
+  .workbench-entry { display: none; }
+  .workbench-menu-group { display: block; }
+}

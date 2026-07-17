@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "workbench-candidate.schema.json",
+  "title": "Line Grid Workbench Contract",
+  "description": "Neutral ReplacementPlan and candidate-reason contract shared by PWA and Portable.",
+  "oneOf": [
+    { "$ref": "#/$defs/ReplacementPlanV1" },
+    { "$ref": "#/$defs/WorkbenchCandidateResponse" }
+  ],
+  "$defs": {
+    "WorkbenchSlotConstraintV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pos", "kind"],
+      "properties": {
+        "pos": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "kind": {
+          "type": "string",
+          "enum": ["code_digit", "literal_char", "final_anchor", "initial_anchor", "tone_class"]
+        },
+        "digit": { "type": "string", "pattern": "^[0-9]$" },
+        "literal": { "type": "string", "minLength": 1, "maxLength": 1 },
+        "ref": { "type": "string", "minLength": 1 },
+        "toneClass": { "type": "string", "enum": ["ping", "ze"] }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "code_digit" } } },
+          "then": { "required": ["digit"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "literal_char" } } },
+          "then": { "required": ["literal"] }
+        },
+        {
+          "if": { "properties": { "kind": { "enum": ["final_anchor", "initial_anchor"] } } },
+          "then": { "required": ["ref"] }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "tone_class" } } },
+          "then": { "required": ["toneClass"] }
+        }
+      ]
+    },
+    "ReplacementPlanV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "selectionVersion", "width", "mode", "slots", "semanticIntent", "limit"],
+      "properties": {
+        "version": { "const": 1 },
+        "selectionVersion": { "type": "integer", "minimum": 0 },
+        "width": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "mode": { "type": "string", "enum": ["m1", "m2", "m3"] },
+        "slots": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/WorkbenchSlotConstraintV1" }
+        },
+        "semanticIntent": { "type": "string", "enum": ["ranked", "direct_only", "off"] },
+        "semanticSeed": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "limit": { "type": "integer", "minimum": 1, "maximum": 120 }
+      }
+    },
+    "CandidateReason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "positions"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "tone_exact",
+            "tone_loose",
+            "literal_match",
+            "same_final",
+            "same_initial",
+            "direct_syn",
+            "semantic_related",
+            "frequency_rank",
+            "relaxed_constraint"
+          ]
+        },
+        "positions": {
+          "type": "array",
+          "maxItems": 4,
+          "items": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "uniqueItems": true
+        },
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "WorkbenchCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["literal", "jyutping", "code", "group", "reasons", "sourceRank"],
+      "properties": {
+        "literal": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "jyutping": { "type": "string" },
+        "code": { "type": "string" },
+        "group": { "type": "string", "enum": ["direct_syn", "semantic_related", "sound_only"] },
+        "reasons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/CandidateReason" }
+        },
+        "sourceRank": { "type": "integer", "minimum": 0 },
+        "relaxationId": { "type": "string", "minLength": 1 }
+      }
+    },
+    "CandidateGroups": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct_syn", "semantic_related", "sound_only"],
+      "properties": {
+        "direct_syn": { "type": "array", "items": { "$ref": "#/$defs/WorkbenchCandidate" } },
+        "semantic_related": { "type": "array", "items": { "$ref": "#/$defs/WorkbenchCandidate" } },
+        "sound_only": { "type": "array", "items": { "$ref": "#/$defs/WorkbenchCandidate" } }
+      }
+    },
+    "RelaxationSuggestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "candidateCount", "plan"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "type": "string",
+          "enum": ["semantic_ranked", "remove_final", "remove_initial", "remove_code", "loosen_mode"]
+        },
+        "positions": {
+          "type": "array",
+          "maxItems": 4,
+          "items": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "uniqueItems": true
+        },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "candidateCount": { "type": "integer", "minimum": 1 },
+        "plan": { "$ref": "#/$defs/ReplacementPlanV1" }
+      }
+    },
+    "WorkbenchCandidateResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "selectionVersion", "exact"],
+      "properties": {
+        "version": { "const": 1 },
+        "selectionVersion": { "type": "integer", "minimum": 0 },
+        "exact": { "$ref": "#/$defs/CandidateGroups" },
+        "relaxation": {
+          "oneOf": [
+            { "$ref": "#/$defs/RelaxationSuggestion" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}

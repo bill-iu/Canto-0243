@@ -79,6 +79,20 @@ function lexiconDevMountPlugin(): Plugin {
   }
 }
 
+function workbenchEntryPlugin(outDir: string): Plugin {
+  return {
+    name: 'workbench-html-entry',
+    closeBundle() {
+      const output = path.resolve(clientRoot, outDir)
+      const source = path.join(output, 'index.html')
+      const targetDir = path.join(output, 'workbench')
+      if (!fs.existsSync(source)) return
+      fs.mkdirSync(targetDir, { recursive: true })
+      fs.copyFileSync(source, path.join(targetDir, 'index.html'))
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const portableHost =
@@ -87,6 +101,7 @@ export default defineConfig(({ command, mode }) => {
   const plugins: Plugin[] = [
     react(),
     readyGateCssPlugin(),
+    workbenchEntryPlugin(portableHost ? 'dist-portable' : 'dist'),
   ]
   if (command === 'serve') {
     plugins.push(lexiconDevMountPlugin())

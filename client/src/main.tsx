@@ -9,7 +9,7 @@ import '../../shared/entry-detail.css';
 import './root.css';
 import './pwa-app.css';
 
-import App from './App.tsx';
+import { ProductRouter } from './ProductRouter.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/db-provider.tsx';
 import { isPortableHost } from './host-mode.ts';
@@ -29,7 +29,7 @@ const benchmark = new URLSearchParams(location.search).has('benchmark');
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DBProvider>
-      {benchmark ? <BenchmarkApp /> : <App />}
+      {benchmark ? <BenchmarkApp /> : <ProductRouter />}
     </DBProvider>
   </StrictMode>,
 );

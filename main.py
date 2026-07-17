@@ -15,6 +15,7 @@ from app.lexicon_version import lexicon_version
 from app.routers.lexicon import router as lexicon_router
 from app.routers.relation import router as relation_router
 from app.routers.word import router
+from app.routers.workbench import router as workbench_router
 from app.startup.offline_preload import get_readiness_snapshot, run_lifespan_startup
 from app.startup.readiness_gate import SearchGateBlocked
 
@@ -87,6 +88,8 @@ def _is_portable() -> bool:
 
 @app.get("/app/", include_in_schema=False)
 @app.get("/app/index.html", include_in_schema=False)
+@app.get("/app/workbench/", include_in_schema=False)
+@app.get("/app/workbench/index.html", include_in_schema=False)
 async def serve_app_index() -> HTMLResponse:
     """Product UI entry: inject meta so reload shows exit control / lexicon version."""
     ui_dir = require_app_ui_dir()
@@ -130,6 +133,7 @@ async def redirect_legacy_frontend() -> RedirectResponse:
 app.include_router(router)
 app.include_router(relation_router)
 app.include_router(lexicon_router)
+app.include_router(workbench_router)
 
 
 @app.exception_handler(SearchGateBlocked)

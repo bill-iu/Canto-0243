@@ -65,6 +65,7 @@ import { profileToUiMode, searchFamilyForUiMode, uiModeToProfile } from '../../c
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { HeaderHero } from './header-hero.tsx';
+import { workbenchPageHref } from './app-page.ts';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
@@ -925,12 +926,16 @@ function App() {
                 </button>
               </div>
               <div className="header-chrome__actions">
+                <a className="workbench-entry" href={workbenchPageHref()}>
+                  {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                </a>
                 <ModeMenu
                   mode={mode}
                   disabled={shellGated}
                   onModeChange={handleModeChange}
                   onOpenGuide={handleOpenGuide}
                   onOpenAbout={handleOpenAbout}
+                  onOpenWorkbench={() => { window.location.href = workbenchPageHref(); }}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                   onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                   theme={uiTheme}
