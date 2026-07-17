@@ -1,6 +1,13 @@
 import { type FormEvent, useMemo, useRef, useState, useEffect } from 'react';
 
+import { getLang, setLang, getTheme, setTheme } from '../../../shared/app-context.mjs';
 import { searchPageHref } from '../app-page.ts';
+import { BrandLogo } from '../brand-logo.tsx';
+import { BrandSvgDefs } from '../brand-svg-defs.tsx';
+import { HeaderHero } from '../header-hero.tsx';
+import { isPortableHost } from '../host-mode.ts';
+import { ModeMenu } from '../mode-menu.tsx';
+import { exitPortable } from '../portable-exit.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
@@ -12,7 +19,13 @@ import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
 import { selectWorkbenchAdapter } from './workbench-adapter.ts';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
-import { WorkbenchBridgeError, consumeIngest, writeOpenSearch } from './workbench-bridge.ts';
+import {
+  WorkbenchBridgeError,
+  consumeIngest,
+  writeNavigate,
+  writeOpenSearch,
+  type SearchModeFamily,
+} from './workbench-bridge.ts';
 import './workbench-page.css';
 
 function initialDraft(): LineDraft | null {
@@ -50,6 +63,11 @@ export function WorkbenchPage() {
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
   const [relaxedPrevious, setRelaxedPrevious] = useState<{ mode: ReplacementPlanV1['mode']; semanticIntent: ReplacementPlanV1['semanticIntent'] } | null>(null);
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
+  const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
+  const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
+    const theme = getTheme();
+    return theme === 'light' || theme === 'dark' ? theme : 'dark';
+  });
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
   const draftRef = useRef(draft);
   const previewRef = useRef(preview);
@@ -58,9 +76,40 @@ export function WorkbenchPage() {
   previewRef.current = preview;
 
   useEffect(() => {
+    document.body.classList.add('workbench-route');
+    return () => document.body.classList.remove('workbench-route');
+  }, []);
+
+  useEffect(() => {
+    setTheme(uiTheme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#DFD2C2');
+  }, [uiTheme]);
+
+  useEffect(() => {
+    setLang(uiLang);
+    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : 'en';
+  }, [uiLang]);
+
+  useEffect(() => {
     if (!draft) return;
     try { saveLineDraft(localStorage, draft); } catch { setMessage('這次未能自動保存；句稿仍可繼續編輯。'); }
   }, [draft]);
+
+  const goSearchHome = () => {
+    window.location.href = searchPageHref();
+  };
+
+  const goSearchWithNavigate = (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => {
+    try {
+      writeNavigate(sessionStorage, input);
+    } catch (error) {
+      if (!(error instanceof WorkbenchBridgeError)) throw error;
+      setMessage('暫時無法回到查韻；請再試一次。');
+      return;
+    }
+    window.location.href = searchPageHref();
+  };
 
   const changeMode = (next: ReplacementPlanV1['mode']) => {
     setMode(next);
@@ -279,14 +328,45 @@ export function WorkbenchPage() {
 
   return (
     <div className={`workbench-page${preview ? ' has-compare' : ''}`}>
+      <BrandSvgDefs />
       <header className="workbench-header">
-        <a className="workbench-brand" href={searchPageHref()} aria-label="返回搜尋首頁">Canto-0243</a>
-        <div><p className="eyebrow">創作主導權在你手上</p><h1>句格工作台</h1></div>
-        <a className="back-search" href={searchPageHref()}>返回查韻</a>
+        <div className="app-bar">
+          <div className="header-chrome">
+            <div className="header-chrome__center">
+              <button
+                className="brand"
+                type="button"
+                aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
+                onClick={goSearchHome}
+              >
+                <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
+              </button>
+            </div>
+            <div className="header-chrome__actions">
+              <ModeMenu
+                mode="0243"
+                onModeChange={(family) => goSearchWithNavigate({ kind: 'mode', family })}
+                onOpenGuide={() => goSearchWithNavigate({ kind: 'guide' })}
+                onOpenAbout={() => goSearchWithNavigate({ kind: 'about' })}
+                onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                theme={uiTheme}
+                lang={uiLang}
+                onThemeChange={setUiTheme}
+                onLangChange={setUiLang}
+              />
+            </div>
+          </div>
+          <HeaderHero lang={uiLang} />
+        </div>
       </header>
       <main className="workbench-main">
         <section className="workbench-intro">
-          <div><h2>把一句拆開，看清每個選擇</h2><p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p></div>
+          <div>
+            <p className="eyebrow">創作主導權在你手上</p>
+            <h1>句格工作台</h1>
+            <h2>把一句拆開，看清每個選擇</h2>
+            <p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p>
+          </div>
           <form className="line-input-form" onSubmit={submit}>
             <label htmlFor="lineInput">原句、394052／0243 碼或平仄</label>
             <div><input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄" /><button type="submit">建立句格</button></div>

@@ -3,8 +3,10 @@ import { loadLineDraft } from './line-draft-storage.ts';
 
 export const WORKBENCH_INGEST_KEY = 'canto-workbench-ingest-v1';
 export const WORKBENCH_OPEN_SEARCH_KEY = 'canto-workbench-open-search-v1';
+export const WORKBENCH_NAVIGATE_KEY = 'canto-workbench-navigate-v1';
 
 export type IngestMode = 'replace' | 'insert';
+export type SearchModeFamily = 'basic' | 'pingze' | 'synonym';
 
 export interface WorkbenchIngestPayload {
   version: 1;
@@ -18,6 +20,12 @@ export interface WorkbenchOpenSearchPayload {
   literal: string;
   createdAt: number;
 }
+
+/** One-shot return-to-search intent from the workbench chrome. */
+export type WorkbenchNavigatePayload =
+  | { version: 1; kind: 'mode'; family: SearchModeFamily; createdAt: number }
+  | { version: 1; kind: 'guide'; createdAt: number }
+  | { version: 1; kind: 'about'; createdAt: number };
 
 export class WorkbenchBridgeError extends Error {
   constructor(message: string) {
@@ -106,6 +114,46 @@ export function consumeOpenSearch(storage: WorkbenchStorage): WorkbenchOpenSearc
       literal: assertLiteral(value.literal),
       createdAt: Number(value.createdAt),
     };
+  } catch {
+    return null;
+  }
+}
+
+export function writeNavigate(
+  storage: WorkbenchStorage,
+  input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' },
+): void {
+  const createdAt = Date.now();
+  const payload: WorkbenchNavigatePayload =
+    input.kind === 'mode'
+      ? { version: 1, kind: 'mode', family: input.family, createdAt }
+      : { version: 1, kind: input.kind, createdAt };
+  try {
+    storage.setItem(WORKBENCH_NAVIGATE_KEY, JSON.stringify(payload));
+  } catch {
+    throw new WorkbenchBridgeError('sessionStorage unavailable for navigate');
+  }
+}
+
+export function consumeNavigate(storage: WorkbenchStorage): WorkbenchNavigatePayload | null {
+  const raw = storage.getItem(WORKBENCH_NAVIGATE_KEY);
+  try { clearKey(storage, WORKBENCH_NAVIGATE_KEY); } catch { /* still parse below */ }
+  if (raw == null || raw === '') return null;
+  try {
+    const value: unknown = JSON.parse(raw);
+    if (!isRecord(value) || value.version !== 1 || !Number.isFinite(value.createdAt)) return null;
+    if (value.kind === 'guide' || value.kind === 'about') {
+      return { version: 1, kind: value.kind, createdAt: Number(value.createdAt) };
+    }
+    if (value.kind === 'mode' && (value.family === 'basic' || value.family === 'pingze' || value.family === 'synonym')) {
+      return {
+        version: 1,
+        kind: 'mode',
+        family: value.family,
+        createdAt: Number(value.createdAt),
+      };
+    }
+    return null;
   } catch {
     return null;
   }

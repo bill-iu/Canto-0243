@@ -5,6 +5,8 @@ const constraints = fs.readFileSync('src/workbench/ConstraintBar.tsx', 'utf8');
 const page = fs.readFileSync('src/workbench/WorkbenchPage.tsx', 'utf8');
 const css = fs.readFileSync('src/workbench/workbench-page.css', 'utf8');
 const entry = fs.readFileSync('src/pwa-app.css', 'utf8');
+const app = fs.readFileSync('src/App.tsx', 'utf8');
+const bridge = fs.readFileSync('src/workbench/workbench-bridge.ts', 'utf8');
 
 if (engine.includes('const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null')) {
   throw new Error('dense code must not skip phoneme anchors');
@@ -32,6 +34,27 @@ if (!entry.includes('.workbench-entry:hover') || !entry.includes('var(--accent-s
 }
 if (!constraints.includes('finalAnchorDisabled') || !constraints.includes('initialAnchorDisabled')) {
   throw new Error('anchor buttons need per-end disable flags');
+}
+if (page.includes('返回查韻') || page.includes('workbench-brand') || page.includes('back-search')) {
+  throw new Error('legacy back-to-search chrome must be removed');
+}
+if (!page.includes('ModeMenu') || !page.includes('HeaderHero') || !page.includes('BrandLogo')) {
+  throw new Error('workbench header must reuse search chrome');
+}
+if (!page.includes('mode="0243"') || page.includes('onOpenWorkbench')) {
+  throw new Error('workbench ModeMenu must default 0243 and omit workbench entry');
+}
+if (!page.includes('workbench-route') || !css.includes('body.query-tabs-app.workbench-route')) {
+  throw new Error('workbench must unlock document scroll');
+}
+if (!css.includes('font-family: inherit')) {
+  throw new Error('workbench fonts must inherit search shell');
+}
+if (!bridge.includes('WORKBENCH_NAVIGATE_KEY') || !bridge.includes('writeNavigate') || !bridge.includes('consumeNavigate')) {
+  throw new Error('navigate bridge missing');
+}
+if (!app.includes('consumeNavigate') || !app.includes("nav?.kind === 'guide'")) {
+  throw new Error('App must consume workbench navigate intents');
 }
 
 console.log('workbench polish self-check ok');

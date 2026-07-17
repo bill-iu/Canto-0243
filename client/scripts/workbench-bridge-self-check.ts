@@ -1,11 +1,14 @@
 import {
   WORKBENCH_INGEST_KEY,
+  WORKBENCH_NAVIGATE_KEY,
   WORKBENCH_OPEN_SEARCH_KEY,
   consumeIngest,
+  consumeNavigate,
   consumeOpenSearch,
   hasWorkbenchDraft,
   readWorkbenchSelectionWidth,
   writeIngest,
+  writeNavigate,
   writeOpenSearch,
 } from '../src/workbench/workbench-bridge.ts';
 import { createLineDraft, lineDraftReducer } from '../src/workbench/line-draft.ts';
@@ -44,6 +47,20 @@ assert(storage.getItem(WORKBENCH_OPEN_SEARCH_KEY)?.includes('香江'), 'open-sea
 const open = consumeOpenSearch(storage);
 assert(open?.literal === '香江', 'open-search consume failed');
 assert(storage.getItem(WORKBENCH_OPEN_SEARCH_KEY) == null, 'open-search key not cleared');
+
+writeNavigate(storage, { kind: 'mode', family: 'synonym' });
+assert(storage.getItem(WORKBENCH_NAVIGATE_KEY)?.includes('synonym'), 'navigate write missing');
+const nav = consumeNavigate(storage);
+assert(nav?.kind === 'mode' && nav.family === 'synonym', 'navigate mode consume failed');
+assert(storage.getItem(WORKBENCH_NAVIGATE_KEY) == null, 'navigate key not cleared');
+
+writeNavigate(storage, { kind: 'guide' });
+assert(consumeNavigate(storage)?.kind === 'guide', 'navigate guide failed');
+writeNavigate(storage, { kind: 'about' });
+assert(consumeNavigate(storage)?.kind === 'about', 'navigate about failed');
+
+storage.setItem(WORKBENCH_NAVIGATE_KEY, JSON.stringify({ version: 1, kind: 'mode', family: 'nope', createdAt: 1 }));
+assert(consumeNavigate(storage) == null, 'invalid navigate family accepted');
 
 storage.setItem(WORKBENCH_INGEST_KEY, JSON.stringify({ version: 2, literal: 'x', mode: 'replace', createdAt: 1 }));
 assert(consumeIngest(storage) == null, 'unknown ingest version accepted');

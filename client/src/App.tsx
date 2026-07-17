@@ -17,6 +17,7 @@ import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
   WorkbenchBridgeError,
+  consumeNavigate,
   consumeOpenSearch,
   hasWorkbenchDraft,
   readWorkbenchSelectionWidth,
@@ -694,6 +695,16 @@ function App() {
   }, [navigateWithIngest]);
 
   useEffect(() => {
+    const nav = consumeNavigate(sessionStorage);
+    if (nav?.kind === 'mode') {
+      const next = nav.family === 'basic' ? last0243Mode : nav.family === 'pingze' ? 'pingze' : 'synonym';
+      setMode(next);
+    } else if (nav?.kind === 'guide') {
+      openGuide();
+    } else if (nav?.kind === 'about') {
+      openAbout();
+    }
+
     const payload = consumeOpenSearch(sessionStorage);
     if (!payload) return;
     openLiveSearchTab(payload.literal);
