@@ -28,8 +28,8 @@ if (page.includes("type: 'select', start: 0, width: 1")) {
 if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
   throw new Error('workbench bridge consume/write missing');
 }
-if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵鎖')) {
-  throw new Error('click-lock / shortcut hint missing');
+if (!page.includes('hydrateDraftCodes') || !page.includes('pendingResolve')) {
+  throw new Error('code hydrate / reading retry missing');
 }
 if (!constraints.includes('整段押韻') || !constraints.includes('整段同聲母')) {
   throw new Error('phoneme dim whole labels missing');

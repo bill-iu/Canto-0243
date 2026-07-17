@@ -30,7 +30,7 @@ export function parseLineInput(raw: string): ParsedLineInput {
     return {
       ok: true,
       kind: 'code',
-      slots: values.map(() => ({ surface: '' })),
+      slots: values.map((digit) => ({ surface: '', code: digit })),
       constraints: values.map((digit, pos) => ({ pos, kind: 'code_digit', digit })),
     };
   }

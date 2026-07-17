@@ -86,8 +86,8 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
                   <select
                     className="reading-choice"
                     aria-label={`第 ${pos + 1} 個字讀音`}
-                    value={slot.reading ?? ''}
-                    title={slot.reading || undefined}
+                    value={slot.reading || reading.choices[0]?.jyutping || ''}
+                    title={slot.reading || reading.choices[0]?.jyutping || undefined}
                     onChange={(event) => {
                       const choice = reading.choices.find((item) => item.jyutping === event.target.value);
                       if (choice) onChooseReading(pos, choice.jyutping, choice.code);

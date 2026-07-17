@@ -5,6 +5,7 @@ import { searchPageHref } from '../app-page.ts';
 import { BrandLogo } from '../brand-logo.tsx';
 import { BrandSvgDefs } from '../brand-svg-defs.tsx';
 import { HeaderHero } from '../header-hero.tsx';
+import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
@@ -37,11 +38,24 @@ import {
 } from './workbench-bridge.ts';
 import './workbench-page.css';
 
+function hydrateDraftCodes(draft: LineDraft): LineDraft {
+  let changed = false;
+  const slots = draft.slots.map((slot, pos) => {
+    if (slot.code) return slot;
+    const digit = draft.constraints.find((item) => item.kind === 'code_digit' && item.pos === pos)?.digit;
+    if (!digit) return slot;
+    changed = true;
+    return { ...slot, code: digit };
+  });
+  if (!changed) return { ...draft, selection: draft.selection ?? replacementSpanFromLocks(draft.slots) };
+  return { ...draft, slots, selection: replacementSpanFromLocks(slots) };
+}
+
 function initialDraft(): LineDraft | null {
   try {
     const draft = loadLineDraft(localStorage);
     if (!draft) return null;
-    return { ...draft, selection: replacementSpanFromLocks(draft.slots) };
+    return hydrateDraftCodes(draft);
   } catch {
     return null;
   }
@@ -69,6 +83,7 @@ function isTypingTarget(target: EventTarget | null): boolean {
 
 export function WorkbenchPage() {
   const adapter = useMemo(() => selectWorkbenchAdapter(), []);
+  const { isReady, initialize } = useDB();
   const [input, setInput] = useState('');
   const [draft, setDraft] = useState<LineDraft | null>(initialDraft);
   const [readings, setReadings] = useState<PwaLineReadingSlot[]>([]);
@@ -89,6 +104,7 @@ export function WorkbenchPage() {
   const draftRef = useRef(draft);
   const previewRef = useRef(preview);
   const ingestDone = useRef(false);
+  const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
   draftRef.current = draft;
   previewRef.current = preview;
 
@@ -96,6 +112,10 @@ export function WorkbenchPage() {
     document.body.classList.add('workbench-route');
     return () => document.body.classList.remove('workbench-route');
   }, []);
+
+  useEffect(() => {
+    void initialize();
+  }, [initialize]);
 
   useEffect(() => {
     setTheme(uiTheme);
@@ -191,8 +211,12 @@ export function WorkbenchPage() {
 
   const resolveReadings = async (surface: string, baseDraft: LineDraft) => {
     if (!surface) return;
+    pendingResolve.current = { surface, version: baseDraft.version };
     try {
+      if (!isReady) await initialize();
       const resolved = await adapter.resolveLine(surface);
+      if (pendingResolve.current?.version !== baseDraft.version) return;
+      pendingResolve.current = null;
       setReadings(resolved);
       setDraft((current) => {
         if (!current || current.version !== baseDraft.version) return current;
@@ -208,6 +232,23 @@ export function WorkbenchPage() {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
   };
+
+  useEffect(() => {
+    if (!isReady || !pendingResolve.current || !draftRef.current) return;
+    const pending = pendingResolve.current;
+    if (draftRef.current.version !== pending.version) return;
+    void resolveReadings(pending.surface, draftRef.current);
+  // ponytail: retry once lexicon becomes ready
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
+
+  useEffect(() => {
+    const current = draftRef.current;
+    if (!isReady || !current?.surface || readings.length > 0) return;
+    void resolveReadings(current.surface, current);
+  // ponytail: hydrate readings for restored surface drafts
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isReady]);
 
   useEffect(() => {
     if (ingestDone.current) return;

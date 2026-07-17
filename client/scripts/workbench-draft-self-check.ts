@@ -20,7 +20,9 @@ assert(surface.slots.every((slot) => slot.reading == null), 'parser invented rea
 const code = parseLineInput('394052');
 assert(code.ok && code.kind === 'code', 'pure code was not classified');
 assert(code.slots.every((slot) => slot.surface === ''), 'code input filled text automatically');
+assert(code.slots.map((slot) => slot.code).join('') === '394052', 'code slots missing digits');
 assert(code.constraints.map((item) => item.digit).join('') === '394052', 'code constraints changed');
+assert(createLineDraft(code).slots.every((slot) => slot.code && !slot.surface), 'draft must keep code-only slots');
 
 const tones = parseLineInput('平仄');
 assert(tones.ok && tones.kind === 'tone', 'ping/ze input was not classified');

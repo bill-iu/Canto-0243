@@ -181,10 +181,12 @@ body.query-tabs-app.workbench-route {
   display: grid;
   place-items: center;
   overflow: hidden;
-  color: var(--muted);
+  color: var(--ink-soft, var(--muted));
   white-space: nowrap;
   text-overflow: ellipsis;
   font: 650 .72rem/1.35 ui-monospace, monospace;
+  border-color: color-mix(in srgb, var(--line) 70%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
 }
 .reading-footer-spacer { visibility: hidden; }
 

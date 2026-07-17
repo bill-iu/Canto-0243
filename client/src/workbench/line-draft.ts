@@ -1,5 +1,5 @@
 import type { WorkbenchSlotConstraintV1 } from './contracts.ts';
-import { parseLineInput, type ParsedLineInput } from './line-input.ts';
+import { parseLineInput, type InputConstraint, type ParsedLineInput } from './line-input.ts';
 
 export interface LineSlot {
   surface: string;
@@ -71,7 +71,17 @@ function withEdit(draft: LineDraft, change: Partial<DraftSnapshot>, undo = draft
 }
 
 export function createLineDraft(parsed: Extract<ParsedLineInput, { ok: true }>): LineDraft {
-  const slots = parsed.slots.map((slot) => ({ ...slot, locked: false }));
+  const slots = parsed.slots.map((slot, pos) => {
+    const digit = parsed.constraints.find(
+      (item): item is Extract<InputConstraint, { kind: 'code_digit' }> =>
+        item.kind === 'code_digit' && item.pos === pos,
+    );
+    return {
+      ...slot,
+      locked: false,
+      code: slot.code || digit?.digit,
+    };
+  });
   return {
     version: 1,
     surface: slots.map((slot) => slot.surface).join(''),
