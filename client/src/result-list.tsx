@@ -3,6 +3,7 @@ import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { tDetail } from '../../shared/entry-detail-i18n.mjs';
 import {
   displayResults,
+  resultItemGridSpan,
   resultsShowReadingBadge,
   type EntryPickPayload,
 } from './result-list-logic.ts';
@@ -38,8 +39,13 @@ export function ResultList({
         const pickJyutping = primary?.jyutping;
         const isActive = activeLiteral === group.literal;
         const badgeN = showReadingBadge && group.readingCount > 1 ? group.readingCount : 0;
+        const span = resultItemGridSpan(group.literal);
         return (
-          <li key={group.literal} className={`result-item${isActive ? ' is-detail-active' : ''}`}>
+          <li
+            key={group.literal}
+            className={`result-item${isActive ? ' is-detail-active' : ''}`}
+            data-literal-span={span}
+          >
             <button
               type="button"
               className="result-link result-link--inline"
