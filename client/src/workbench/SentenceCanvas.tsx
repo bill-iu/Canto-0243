@@ -4,7 +4,6 @@ import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 interface Props {
   draft: LineDraft;
   readings: PwaLineReadingSlot[];
-  onSelect: (start: number, width: number) => void;
   onToggleLock: (pos: number) => void;
   onChooseReading: (pos: number, jyutping: string, code: string) => void;
 }
@@ -15,24 +14,14 @@ function codeSummary(draft: LineDraft): string | null {
   return draft.slots.map((slot) => slot.code).join('');
 }
 
-export function SentenceCanvas({ draft, readings, onSelect, onToggleLock, onChooseReading }: Props) {
+export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading }: Props) {
   const summary = codeSummary(draft);
-  const selected = (pos: number) => Boolean(
-    draft.selection && pos >= draft.selection.start && pos < draft.selection.start + draft.selection.width,
+  const span = draft.selection;
+  const inSpan = (pos: number) => Boolean(
+    span && pos >= span.start && pos < span.start + span.width,
   );
-  const extendTo = (pos: number) => {
-    if (!draft.selection) {
-      onSelect(pos, 1);
-      return;
-    }
-    const start = Math.min(draft.selection.start, pos);
-    const end = Math.max(draft.selection.start + draft.selection.width - 1, pos);
-    if (end - start + 1 <= 4) onSelect(start, end - start + 1);
-  };
-  const move = (pos: number, delta: number, extend: boolean) => {
+  const move = (pos: number, delta: number) => {
     const next = Math.max(0, Math.min(draft.slots.length - 1, pos + delta));
-    if (!extend || !draft.selection) onSelect(next, 1);
-    else extendTo(next);
     document.querySelector<HTMLButtonElement>(`[data-line-slot="${next}"]`)?.focus();
   };
 
@@ -41,7 +30,7 @@ export function SentenceCanvas({ draft, readings, onSelect, onToggleLock, onChoo
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">圈選一至四個相鄰字位</h2>
+          <h2 id="sentenceHeading">點擊鎖定字位；再點取消</h2>
         </div>
         {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
       </div>
@@ -49,23 +38,21 @@ export function SentenceCanvas({ draft, readings, onSelect, onToggleLock, onChoo
       <div className="line-slots" role="list" aria-label="歌詞字位">
         {draft.slots.map((slot, pos) => {
           const reading = readings[pos];
-          const active = selected(pos);
+          const locked = slot.locked;
+          const spanned = inSpan(pos);
           return (
             <div className="line-slot-wrap" role="listitem" key={pos}>
               <button
                 type="button"
-                className={`line-slot${active ? ' is-selected' : ''}${slot.locked ? ' is-locked' : ''}`}
+                className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}`}
                 data-line-slot={pos}
-                aria-pressed={active}
-                aria-label={`第 ${pos + 1} 個字，${slot.surface || '空白'}，${slot.reading || '讀音未定'}，${slot.code || '未有碼'}，${slot.locked ? '已鎖定' : '未鎖定'}${active ? '，已選中' : ''}`}
-                onClick={(event) => {
-                  if (event.shiftKey) extendTo(pos);
-                  else onSelect(pos, 1);
-                }}
+                aria-pressed={locked}
+                aria-label={`第 ${pos + 1} 個字，${slot.surface || '空白'}，${slot.reading || '讀音未定'}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                onClick={() => onToggleLock(pos)}
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
                     event.preventDefault();
-                    move(pos, event.key === 'ArrowLeft' ? -1 : 1, event.shiftKey);
+                    move(pos, event.key === 'ArrowLeft' ? -1 : 1);
                   } else if (event.key === ' ') {
                     event.preventDefault();
                     onToggleLock(pos);
@@ -74,7 +61,7 @@ export function SentenceCanvas({ draft, readings, onSelect, onToggleLock, onChoo
               >
                 <span className="line-slot__surface">{slot.surface || '＿'}</span>
                 <span className="line-slot__code">{slot.code || '·'}</span>
-                <span className="line-slot__lock" aria-hidden="true">{slot.locked ? '鎖' : ''}</span>
+                <span className="line-slot__lock" aria-hidden="true">{locked ? '鎖' : ''}</span>
               </button>
               {reading?.needsChoice ? (
                 <select

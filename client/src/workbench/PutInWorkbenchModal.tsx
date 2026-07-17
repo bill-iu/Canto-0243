@@ -26,15 +26,15 @@ export function PutInWorkbenchModal({
         {!canInsert ? (
           <p className="put-workbench-modal__hint">
             {selectionWidth == null
-              ? '工作台目前沒有選段，只能取代整句。'
-              : `選段是 ${selectionWidth} 格，與放入字數不符，只能取代整句。`}
+              ? '工作台目前沒有已鎖範圍，只能取代整句。'
+              : `已鎖範圍是 ${selectionWidth} 格，與放入字數不符，只能取代整句。`}
           </p>
         ) : (
-          <p className="put-workbench-modal__hint">可插入到目前選段，或取代整句。</p>
+          <p className="put-workbench-modal__hint">可插入到目前已鎖範圍，或取代整句。</p>
         )}
         <div className="put-workbench-modal__actions">
           <button type="button" className="put-workbench-modal__primary" onClick={onReplace}>取代整句</button>
-          <button type="button" disabled={!canInsert} onClick={onInsert}>插入到目前選段</button>
+          <button type="button" disabled={!canInsert} onClick={onInsert}>插入到已鎖範圍</button>
           <button type="button" onClick={onCancel}>取消</button>
         </div>
       </div>

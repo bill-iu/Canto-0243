@@ -6,6 +6,7 @@ import {
   loadLineDraft,
   saveLineDraft,
 } from '../src/workbench/line-draft-storage.ts';
+import { toggleLockKeepingSpan } from '../src/workbench/replacement-span.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`workbench draft: ${message}`);
@@ -77,11 +78,23 @@ assert(draft.constraints !== beforeRelaxation && draft.undo != null, 'relaxation
 draft = lineDraftReducer(draft, { type: 'undo' });
 assert(draft.constraints === beforeRelaxation, 'relaxation undo failed');
 
+draft = lineDraftReducer(draft, { type: 'toggle_lock', pos: 0 });
+assert(!draft.slots[0]?.locked, 'cleanup early lock');
 draft = lineDraftReducer(draft, { type: 'select', start: 2, width: 2 });
-draft = lineDraftReducer(draft, { type: 'lock_selection' });
-assert(draft.slots[2]?.locked && draft.slots[3]?.locked, 'lock_selection did not lock all');
-draft = lineDraftReducer(draft, { type: 'lock_selection' });
-assert(!draft.slots[2]?.locked && !draft.slots[3]?.locked, 'lock_selection did not unlock all');
+{
+  let result = toggleLockKeepingSpan(draft, 2);
+  assert(result.ok && result.draft.slots[2]?.locked, 'toggle lock pos 2 failed');
+  draft = result.draft;
+  result = toggleLockKeepingSpan(draft, 3);
+  assert(result.ok && result.draft.slots[3]?.locked && result.draft.selection?.width === 2, 'span from two locks');
+  draft = result.draft;
+  result = toggleLockKeepingSpan(draft, 2);
+  assert(result.ok && !result.draft.slots[2]?.locked && result.draft.selection?.width === 1, 'unlock shrinks span');
+  draft = result.draft;
+  result = toggleLockKeepingSpan(draft, 2);
+  assert(result.ok && result.draft.slots[2]?.locked && result.draft.selection?.width === 2, 're-lock restores span');
+  draft = result.draft;
+}
 
 const beforeInsert = draft.surface;
 draft = lineDraftReducer(draft, { type: 'insert_literal', literal: '香' });

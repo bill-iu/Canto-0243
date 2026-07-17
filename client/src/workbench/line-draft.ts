@@ -138,24 +138,14 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
     case 'toggle_lock': {
       const current = draft.slots[action.pos];
       if (!current) return draft;
+      // Prefer toggleLockKeepingSpan in UI — kept for keyboard/tests that only flip the flag.
       const slots = draft.slots.slice();
       slots[action.pos] = { ...current, locked: !current.locked };
       return withEdit(draft, { slots });
     }
     case 'lock_selection': {
-      const selection = draft.selection;
-      if (!selection) return draft;
-      const slice = draft.slots.slice(selection.start, selection.start + selection.width);
-      if (!slice.length) return draft;
-      const lockAll = slice.some((slot) => !slot.locked);
-      const slots = draft.slots.slice();
-      for (let offset = 0; offset < selection.width; offset += 1) {
-        const pos = selection.start + offset;
-        const current = slots[pos];
-        if (!current) return draft;
-        slots[pos] = { ...current, locked: lockAll };
-      }
-      return withEdit(draft, { slots }, snapshot(draft));
+      // Deprecated: 圈選已廢；保留 no-op 以免舊草稿／捷徑炸。
+      return draft;
     }
     case 'choose_reading': {
       const current = draft.slots[action.pos];

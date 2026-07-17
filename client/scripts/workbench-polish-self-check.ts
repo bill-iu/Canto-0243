@@ -32,8 +32,11 @@ if (!css.includes('var(--ink)') || !css.includes('var(--surface)') || !css.inclu
 if (!entry.includes('.workbench-entry:hover') || !entry.includes('var(--accent-strong)')) {
   throw new Error('workbench entry button must share accent tokens');
 }
-if (!constraints.includes('finalAnchorDisabled') || !constraints.includes('initialAnchorDisabled')) {
-  throw new Error('anchor buttons need per-end disable flags');
+if (!constraints.includes('整段押韻') || !constraints.includes('phoneme-dim')) {
+  throw new Error('phoneme dimension checklist missing');
+}
+if (constraints.includes('finalAnchorDisabled') || constraints.includes('末格同韻')) {
+  throw new Error('legacy final/initial anchor buttons must be gone');
 }
 if (page.includes('返回查韻') || page.includes('workbench-brand') || page.includes('back-search')) {
   throw new Error('legacy back-to-search chrome must be removed');

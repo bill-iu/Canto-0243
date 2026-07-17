@@ -113,10 +113,14 @@ body.query-tabs-app.workbench-route {
 }
 .line-slot:hover { border-color: var(--accent); }
 .line-slot:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-.line-slot.is-selected {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
-  box-shadow: inset 0 -3px 0 var(--accent);
+.line-slot.is-locked {
+  border-color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  box-shadow: inset 0 -3px 0 var(--accent-strong);
+}
+.line-slot.is-in-span {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
 .line-slot.is-locked::after {
   content: '';
@@ -153,18 +157,33 @@ body.query-tabs-app.workbench-route {
   color: inherit;
   font: inherit;
 }
-.anchor-actions { display: flex; gap: .4rem; }
-.anchor-actions button {
-  padding: .5rem .7rem;
-  border: 1px solid var(--line);
-  border-radius: .55rem;
-  color: inherit;
-  background: var(--surface);
-  font: inherit;
-  cursor: pointer;
+.phoneme-dims {
+  flex-basis: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: .85rem 1.25rem;
 }
-.anchor-actions button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent-strong); }
-.anchor-actions button:disabled { cursor: not-allowed; opacity: .45; }
+.phoneme-dim {
+  margin: 0;
+  padding: .75rem .9rem;
+  border: 1px solid var(--line);
+  border-radius: .85rem;
+  background: var(--surface);
+}
+.phoneme-dim legend {
+  padding: 0 .35rem;
+  font-size: .78rem;
+  font-weight: 800;
+}
+.phoneme-dim__option {
+  display: flex !important;
+  align-items: center;
+  gap: .45rem;
+  margin: .35rem 0 0;
+  font-size: .78rem;
+  font-weight: 650;
+}
+.phoneme-dim__option input { margin: 0; }
 .constraint-bar p { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .78rem; }
 .shortcut-hint { letter-spacing: .02em; }
 .candidate-status { min-height: 1.5rem; margin: 1rem 0 -.5rem; color: var(--muted); }

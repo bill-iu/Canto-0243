@@ -16,6 +16,15 @@ import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
+import {
+  buildPhonemeAnchors,
+  emptyPhonemeDimPicks,
+  replacementSpanFromLocks,
+  sanitizePhonemeDimPicks,
+  toggleLockKeepingSpan,
+  withPhonemeAnchors,
+  type PhonemeDimPicks,
+} from './replacement-span.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
 import { selectWorkbenchAdapter } from './workbench-adapter.ts';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
@@ -29,7 +38,13 @@ import {
 import './workbench-page.css';
 
 function initialDraft(): LineDraft | null {
-  try { return loadLineDraft(localStorage); } catch { return null; }
+  try {
+    const draft = loadLineDraft(localStorage);
+    if (!draft) return null;
+    return { ...draft, selection: replacementSpanFromLocks(draft.slots) };
+  } catch {
+    return null;
+  }
 }
 
 interface ActiveRelaxation {
@@ -63,6 +78,8 @@ export function WorkbenchPage() {
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
   const [relaxedPrevious, setRelaxedPrevious] = useState<{ mode: ReplacementPlanV1['mode']; semanticIntent: ReplacementPlanV1['semanticIntent'] } | null>(null);
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
+  const [rhymePicks, setRhymePicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
+  const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -120,6 +137,58 @@ export function WorkbenchPage() {
     setActiveRelaxation(null);
   };
 
+  const syncPhonemeAnchors = (
+    base: LineDraft,
+    rhyme: PhonemeDimPicks,
+    initial: PhonemeDimPicks,
+  ): LineDraft => {
+    const span = base.selection ?? replacementSpanFromLocks(base.slots);
+    if (!span) {
+      return withPhonemeAnchors(base, []);
+    }
+    const safeRhyme = sanitizePhonemeDimPicks(rhyme, span.width);
+    const safeInitial = sanitizePhonemeDimPicks(initial, span.width);
+    return withPhonemeAnchors(
+      base,
+      buildPhonemeAnchors(span, base.slots, safeRhyme, safeInitial),
+    );
+  };
+
+  const handleToggleLock = (pos: number) => {
+    const current = draftRef.current;
+    if (!current) return;
+    const result = toggleLockKeepingSpan(current, pos);
+    if (!result.ok) {
+      setMessage(
+        result.reason === 'span_too_wide'
+          ? '一次最多改連續四格；請先解開較遠的鎖定。'
+          : '空白格不能鎖定；請先有字面。',
+      );
+      return;
+    }
+    setMessage('');
+    const width = result.draft.selection?.width ?? 0;
+    const nextRhyme = sanitizePhonemeDimPicks(rhymePicks, width);
+    const nextInitial = sanitizePhonemeDimPicks(initialPicks, width);
+    setRhymePicks(nextRhyme);
+    setInitialPicks(nextInitial);
+    setDraft(syncPhonemeAnchors(result.draft, nextRhyme, nextInitial));
+  };
+
+  const changeRhymePicks = (next: PhonemeDimPicks) => {
+    setRhymePicks(next);
+    const current = draftRef.current;
+    if (current) setDraft(syncPhonemeAnchors(current, next, initialPicks));
+    setActiveRelaxation(null);
+  };
+
+  const changeInitialPicks = (next: PhonemeDimPicks) => {
+    setInitialPicks(next);
+    const current = draftRef.current;
+    if (current) setDraft(syncPhonemeAnchors(current, rhymePicks, next));
+    setActiveRelaxation(null);
+  };
+
   const resolveReadings = async (surface: string, baseDraft: LineDraft) => {
     if (!surface) return;
     try {
@@ -134,7 +203,7 @@ export function WorkbenchPage() {
             : next;
         }, current);
       });
-      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖字或改用碼起句。' : '已解析逐字讀音；請圈選一至四格。');
+      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖字或改用碼起句。' : '已解析逐字讀音；請點擊鎖定字位。');
     } catch {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
@@ -149,7 +218,7 @@ export function WorkbenchPage() {
     if (payload.mode === 'insert') {
       setDraft((current) => {
         if (!current?.selection) {
-          setMessage('無法插入：工作台沒有選段；請改用取代整句。');
+          setMessage('無法插入：工作台沒有已鎖範圍；請改用取代整句。');
           return current;
         }
         const next = lineDraftReducer(current, { type: 'insert_literal', literal: payload.literal });
@@ -180,7 +249,7 @@ export function WorkbenchPage() {
       setActiveRelaxation(null);
       setRelaxedPrevious(null);
       void resolveReadings(next.surface, next);
-      setMessage('已從搜尋放入字面；請圈選一至四格。');
+      setMessage('已從搜尋放入字面；請點擊鎖定字位。');
       return next;
     });
   // ponytail: mount-once ingest; resolveReadings closes over adapter
@@ -200,10 +269,12 @@ export function WorkbenchPage() {
     setPreview(null);
     setActiveRelaxation(null);
     setRelaxedPrevious(null);
+    setRhymePicks(emptyPhonemeDimPicks());
+    setInitialPicks(emptyPhonemeDimPicks());
     setMessage(
       parsed.kind === 'code'
-        ? '已按碼建立空白句格，不會自動填入字面；請圈選一至四格。'
-        : '句格已建立；請圈選一至四格以查看候選。',
+        ? '已按碼建立空白句格，不會自動填入字面；請點擊有字位以鎖定並查看候選。'
+        : '句格已建立；請點擊鎖定一至四格以查看候選。',
     );
     if (parsed.kind === 'surface') void resolveReadings(parsed.slots.map((slot) => slot.surface).join(''), next);
   };
@@ -293,12 +364,6 @@ export function WorkbenchPage() {
       }
       if (!current) return;
 
-      if (event.key === 'l' || event.key === 'L') {
-        if (!current.selection) return;
-        event.preventDefault();
-        setDraft(lineDraftReducer(current, { type: 'lock_selection' }));
-        return;
-      }
       if (event.key === 'u' || event.key === 'U' || (event.key === 'z' && (event.ctrlKey || event.metaKey))) {
         if (!current.undo) return;
         event.preventDefault();
@@ -379,8 +444,7 @@ export function WorkbenchPage() {
             <SentenceCanvas
               draft={draft}
               readings={readings}
-              onSelect={(start, width) => setDraft((current) => current ? lineDraftReducer(current, { type: 'select', start, width }) : current)}
-              onToggleLock={(pos) => setDraft((current) => current ? lineDraftReducer(current, { type: 'toggle_lock', pos }) : current)}
+              onToggleLock={handleToggleLock}
               onChooseReading={(pos, jyutping, code) => setDraft((current) => current ? lineDraftReducer(current, { type: 'choose_reading', pos, jyutping, code }) : current)}
             />
             <ConstraintBar
@@ -388,24 +452,15 @@ export function WorkbenchPage() {
               semanticIntent={semanticIntent}
               onModeChange={changeMode}
               onSemanticChange={changeSemantic}
-              finalAnchorDisabled={!draft.selection || !draft.slots[draft.selection.start + draft.selection.width - 1]?.surface}
-              initialAnchorDisabled={!draft.selection || !draft.slots[draft.selection.start]?.surface}
-              onAddFinalAnchor={() => setDraft((current) => {
-                if (!current?.selection) return current;
-                const pos = current.selection.start + current.selection.width - 1;
-                const ref = current.slots[pos]?.surface;
-                return ref ? lineDraftReducer(current, { type: 'set_constraint', constraint: { pos, kind: 'final_anchor', ref } }) : current;
-              })}
-              onAddInitialAnchor={() => setDraft((current) => {
-                if (!current?.selection) return current;
-                const pos = current.selection.start;
-                const ref = current.slots[pos]?.surface;
-                return ref ? lineDraftReducer(current, { type: 'set_constraint', constraint: { pos, kind: 'initial_anchor', ref } }) : current;
-              })}
+              spanWidth={draft.selection?.width ?? 0}
+              rhyme={rhymePicks}
+              initial={initialPicks}
+              onRhymeChange={changeRhymePicks}
+              onInitialChange={changeInitialPicks}
             />
             <div className="candidate-status" aria-live="polite">
               {!draft.selection
-                ? '尚未圈選字位；候選會在你選段後出現。'
+                ? '尚未鎖定字位；候選會在你鎖定後出現。'
                 : candidates.loading
                   ? '正在整理候選…'
                   : candidates.error
@@ -454,7 +509,7 @@ export function WorkbenchPage() {
               setActiveRelaxation(null);
             }}>復原最近一次套用／放寬</button> : null}
           </>
-        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格。</p></section>}
+        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可鎖定。</p></section>}
       </main>
       {preview && draft?.selection ? (
         <ComparePanel

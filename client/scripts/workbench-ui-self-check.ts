@@ -28,8 +28,14 @@ if (page.includes("type: 'select', start: 0, width: 1")) {
 if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
   throw new Error('workbench bridge consume/write missing');
 }
-if (!page.includes("type: 'lock_selection'") || !constraints.includes('L 鎖選段')) {
-  throw new Error('batch lock / shortcut hint missing');
+if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵鎖')) {
+  throw new Error('click-lock / shortcut hint missing');
+}
+if (!constraints.includes('整段押韻') || !constraints.includes('整段同聲母')) {
+  throw new Error('phoneme dim whole labels missing');
+}
+if (constraints.includes('末格同韻') || constraints.includes('首格同聲')) {
+  throw new Error('legacy end-anchor buttons must be removed');
 }
 if (!cards.includes('放寬後結果') || !cards.includes('未有足夠近義資料')) {
   throw new Error('relaxed / semantic-gap copy missing');
@@ -37,8 +43,8 @@ if (!cards.includes('放寬後結果') || !cards.includes('未有足夠近義資
 if (!compare.includes('排序順位') || !compare.includes('sourceRank')) {
   throw new Error('compare metadata missing sourceRank');
 }
-if (!canvas.includes('event.shiftKey') || !canvas.includes('code-summary')) {
-  throw new Error('shift-click selection or code summary missing');
+if (!canvas.includes('onToggleLock') || !canvas.includes('code-summary') || !canvas.includes('is-in-span')) {
+  throw new Error('click-lock canvas or code summary missing');
 }
 if (!detail.includes('放入句格') || !app.includes('PutInWorkbenchModal') || !app.includes('openSearchTabWithQuery')) {
   throw new Error('put-in-workbench / open-search wiring missing');
