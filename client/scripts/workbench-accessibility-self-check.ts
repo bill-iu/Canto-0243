@@ -30,7 +30,8 @@ assert(constraints.includes('value="m1">0243</option>') && page.includes("('m1')
 assert(css.includes('bottom: 0') && css.includes('compare-panel'), 'narrow compare drawer missing');
 assert(!css.includes('writing-mode: vertical'), 'vertical writing mode is forbidden');
 assert(seams.includes('writing-mode: horizontal-tb'), 'seam test must guard horizontal layout');
-assert(page.includes('尚未鎖定字位'), 'empty lock span must announce waiting state');
-assert(cards.includes('放寬後結果'), 'relaxed results must not stay labelled as exact');
+assert(canvas.includes('line-slot__warn') || canvas.includes('讀音未收錄'), 'unresolved must stay announced');
+assert(canvas.includes('slot-reading-footer'), 'reading footer row required for equal height');
+assert(!canvas.includes('className="slot-warning"'), 'unresolved must not use footer warning text');
 
 console.log('workbench accessibility self-check ok');

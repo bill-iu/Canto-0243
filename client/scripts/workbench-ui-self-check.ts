@@ -46,6 +46,18 @@ if (!compare.includes('排序順位') || !compare.includes('sourceRank')) {
 if (!canvas.includes('onToggleLock') || !canvas.includes('code-summary') || !canvas.includes('is-in-span')) {
   throw new Error('click-lock canvas or code summary missing');
 }
+if (!canvas.includes('slot-reading-footer') || !canvas.includes('reading-static') || !canvas.includes('reading-footer-spacer')) {
+  throw new Error('unified reading footer missing');
+}
+if (!canvas.includes('codeAsSurface') || !canvas.includes('is-code-surface')) {
+  throw new Error('code-as-surface display missing');
+}
+if (canvas.includes('slot-warning')) {
+  throw new Error('unresolved warning must be pill badge, not footer text');
+}
+if (!css.includes('.line-slot-wrap') || !css.includes('width: 4.5rem') || css.includes('max-width: 6.2rem')) {
+  throw new Error('slot column width must stay fixed; reading-choice must not widen past pill');
+}
 if (!detail.includes('放入句格') || !app.includes('PutInWorkbenchModal') || !app.includes('openSearchTabWithQuery')) {
   throw new Error('put-in-workbench / open-search wiring missing');
 }

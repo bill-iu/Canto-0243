@@ -14,6 +14,12 @@ function codeSummary(draft: LineDraft): string | null {
   return draft.slots.map((slot) => slot.code).join('');
 }
 
+function surfaceLabel(slot: LineDraft['slots'][number]): string {
+  if (slot.surface) return slot.surface;
+  if (slot.code) return slot.code;
+  return '＿';
+}
+
 export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading }: Props) {
   const summary = codeSummary(draft);
   const span = draft.selection;
@@ -40,14 +46,23 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
           const reading = readings[pos];
           const locked = slot.locked;
           const spanned = inSpan(pos);
+          const codeAsSurface = !slot.surface && Boolean(slot.code);
+          const unresolved = reading?.kind === 'unresolved';
+          const staticJyutping = !reading?.needsChoice
+            ? (slot.reading || reading?.choices[0]?.jyutping || '')
+            : '';
+          const ariaReading = unresolved
+            ? '讀音未收錄'
+            : (slot.reading || reading?.choices[0]?.jyutping || (codeAsSurface ? '碼格' : '讀音未定'));
+
           return (
             <div className="line-slot-wrap" role="listitem" key={pos}>
               <button
                 type="button"
-                className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}`}
+                className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}${unresolved ? ' has-unread' : ''}`}
                 data-line-slot={pos}
                 aria-pressed={locked}
-                aria-label={`第 ${pos + 1} 個字，${slot.surface || '空白'}，${slot.reading || '讀音未定'}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
                 onClick={() => onToggleLock(pos)}
                 onKeyDown={(event) => {
                   if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -59,23 +74,35 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
                   }
                 }}
               >
-                <span className="line-slot__surface">{slot.surface || '＿'}</span>
-                <span className="line-slot__code">{slot.code || '·'}</span>
+                <span className={`line-slot__surface${codeAsSurface ? ' is-code-surface' : ''}`}>
+                  {surfaceLabel(slot)}
+                </span>
+                <span className="line-slot__code">{codeAsSurface ? '·' : (slot.code || '·')}</span>
+                {unresolved ? <span className="line-slot__warn" title="讀音未收錄" aria-hidden="true">!</span> : null}
                 <span className="line-slot__lock" aria-hidden="true">{locked ? '鎖' : ''}</span>
               </button>
-              {reading?.needsChoice ? (
-                <select
-                  className="reading-choice"
-                  aria-label={`第 ${pos + 1} 個字讀音`}
-                  value={slot.reading ?? ''}
-                  onChange={(event) => {
-                    const choice = reading.choices.find((item) => item.jyutping === event.target.value);
-                    if (choice) onChooseReading(pos, choice.jyutping, choice.code);
-                  }}
-                >
-                  {reading.choices.map((choice) => <option key={choice.jyutping} value={choice.jyutping}>{choice.jyutping}</option>)}
-                </select>
-              ) : reading?.kind === 'unresolved' ? <span className="slot-warning">讀音未收錄</span> : null}
+              <div className="slot-reading-footer">
+                {reading?.needsChoice ? (
+                  <select
+                    className="reading-choice"
+                    aria-label={`第 ${pos + 1} 個字讀音`}
+                    value={slot.reading ?? ''}
+                    title={slot.reading || undefined}
+                    onChange={(event) => {
+                      const choice = reading.choices.find((item) => item.jyutping === event.target.value);
+                      if (choice) onChooseReading(pos, choice.jyutping, choice.code);
+                    }}
+                  >
+                    {reading.choices.map((choice) => (
+                      <option key={choice.jyutping} value={choice.jyutping}>{choice.jyutping}</option>
+                    ))}
+                  </select>
+                ) : staticJyutping ? (
+                  <span className="reading-static" title={staticJyutping}>{staticJyutping}</span>
+                ) : (
+                  <span className="reading-footer-spacer" aria-hidden="true" />
+                )}
+              </div>
             </div>
           );
         })}

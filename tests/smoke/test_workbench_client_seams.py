@@ -41,6 +41,8 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("未有足夠近義資料", cards)
         self.assertIn("onToggleLock", canvas)
         self.assertIn("is-in-span", canvas)
+        self.assertIn("slot-reading-footer", canvas)
+        self.assertIn("is-code-surface", canvas)
         self.assertIn("code-summary", canvas)
         self.assertIn("排序順位", compare)
         self.assertIn("sourceRank", compare)

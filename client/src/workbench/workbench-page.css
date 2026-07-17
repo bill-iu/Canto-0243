@@ -96,11 +96,16 @@ body.query-tabs-app.workbench-route {
   background: var(--surface-soft);
 }
 .line-slots { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 2rem; }
-.line-slot-wrap { display: grid; justify-items: center; gap: .35rem; }
+.line-slot-wrap {
+  display: grid;
+  width: 4.5rem;
+  justify-items: stretch;
+  gap: .35rem;
+}
 .line-slot {
   position: relative;
   display: grid;
-  width: 4.5rem;
+  width: 100%;
   min-height: 5.5rem;
   place-items: center;
   padding: .55rem;
@@ -131,10 +136,57 @@ body.query-tabs-app.workbench-route {
   pointer-events: none;
 }
 .line-slot__surface { font-size: 1.7rem; font-weight: 760; line-height: 1; writing-mode: horizontal-tb; word-break: keep-all; }
+.line-slot__surface.is-code-surface {
+  font: 700 1.35rem/1 ui-monospace, monospace;
+  letter-spacing: .02em;
+}
 .line-slot__code { color: var(--muted); font: 700 .82rem/1.2 ui-monospace, monospace; writing-mode: horizontal-tb; }
 .line-slot__lock { position: absolute; top: .3rem; right: .4rem; color: var(--accent-strong); font-size: .65rem; }
-.reading-choice { max-width: 6.2rem; font-size: .75rem; color: inherit; background: var(--surface); border: 1px solid var(--line); }
-.slot-warning { color: var(--danger); font-size: .68rem; }
+.line-slot__warn {
+  position: absolute;
+  top: .3rem;
+  left: .4rem;
+  color: var(--danger);
+  font-size: .7rem;
+  font-weight: 800;
+}
+.slot-reading-footer {
+  display: grid;
+  width: 100%;
+  min-height: 1.55rem;
+  place-items: stretch;
+}
+.reading-choice,
+.reading-static,
+.reading-footer-spacer {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 1.55rem;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 .2rem;
+  border: 1px solid transparent;
+  border-radius: .4rem;
+  font-size: .72rem;
+  line-height: 1.35;
+  writing-mode: horizontal-tb;
+}
+.reading-choice {
+  color: inherit;
+  background: var(--surface);
+  border-color: var(--line);
+  text-overflow: ellipsis;
+}
+.reading-static {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font: 650 .72rem/1.35 ui-monospace, monospace;
+}
+.reading-footer-spacer { visibility: hidden; }
 
 .constraint-bar {
   display: flex;
