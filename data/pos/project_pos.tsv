@@ -1,5 +1,5 @@
 literal	pos	family	voice	note
-、	u			no-source;p1;fallback
+、	x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 㗎	x			no-source;p1;fallback;p1-cleanup;canto-heuristic;review
 一	x			numeral;heuristic
 一一	x			numeral;heuristic
@@ -36,7 +36,7 @@ literal	pos	family	voice	note
 一切	a			cow-single
 一切就緒	u			no-source;fallback
 一到	u			no-source;p1;fallback
-一刻	u			no-source;fallback
+一刻	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一剎那	u			no-source;fallback
 一動不動	u			no-source;fallback
 一勞永逸	u			no-source;fallback
@@ -179,7 +179,7 @@ literal	pos	family	voice	note
 一樓	u			no-source;p1;fallback
 一模一樣	u			no-source;fallback
 一樣	a,r			no-source;fallback;p1-cleanup;canto-heuristic;review
-一次	u			no-source;fallback
+一次	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一次函數	u			no-source;fallback
 一次方程	u			no-source;fallback
 一次方程式	u			no-source;fallback
@@ -281,7 +281,7 @@ literal	pos	family	voice	note
 一腳踢開	u			no-source;fallback
 一臂之力	n			len4-noun-heuristic
 一臉	u			no-source;p1;fallback
-一致	n,v			cow-nv-unreviewed;trust-low
+一致	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 一臺	u			no-source;p1;fallback
 一舉一動	u			no-source;fallback
 一舉兩得	u			no-source;fallback
@@ -333,7 +333,7 @@ literal	pos	family	voice	note
 一貫	u			no-source;fallback
 一起	r			cow-single
 一跌再跌	u			no-source;fallback
-一路	u			no-source;fallback
+一路	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一路平安	u			no-source;fallback
 一路風塵	u			no-source;fallback
 一蹴而就	u			no-source;fallback
@@ -346,7 +346,7 @@ literal	pos	family	voice	note
 一輪	n,x			no-source;p1;fallback;p1-audit;review;一回合／量詞短語
 一連串	u			no-source;fallback
 一道	u			no-source;fallback
-一邊	u			no-source;fallback
+一邊	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一針見血	u			no-source;fallback
 一錘定音	u			no-source;fallback
 一錯再錯	u			no-source;fallback
@@ -356,7 +356,7 @@ literal	pos	family	voice	note
 一閃即逝	u			no-source;fallback
 一閃而過	u			no-source;fallback
 一間	u			no-source;p1;fallback
-一陣	u			no-source;fallback
+一陣	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一陣子	u			no-source;fallback
 一隻	u			no-source;p1;fallback
 一面	u			no-source;fallback
@@ -483,7 +483,7 @@ literal	pos	family	voice	note
 上傳	v			cow-single
 上到	u			no-source;p1;fallback
 上前	u			no-source;fallback
-上升	n,v			cow-nv-unreviewed;trust-low
+上升	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 上午	n			cow-single
 上半年	u			no-source;fallback
 上半部	u			no-source;fallback
@@ -523,7 +523,7 @@ literal	pos	family	voice	note
 上流	u			no-source;fallback
 上流人士	n			len4-noun-heuristic
 上流社會	n			len4-noun-heuristic
-上漲	n,v			cow-nv-unreviewed;trust-low
+上漲	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 上牀	u			no-source;fallback
 上班族	u			no-source;fallback
 上班時間	u			no-source;fallback
@@ -547,7 +547,7 @@ literal	pos	family	voice	note
 上週	u			no-source;fallback
 上門	u			no-source;fallback
 上陣殺敵	u			no-source;fallback
-上面	u			no-source;fallback
+上面	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 下	n,v,x			no-source;p1;fallback;p1-cleanup;canto-heuristic;review
 下一個	u			no-source;fallback
 下下	r,x			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
@@ -586,14 +586,14 @@ literal	pos	family	voice	note
 下落不明	u			no-source;fallback
 下行	u			no-source;fallback
 下課	u			no-source;fallback
-下跌	n,v			cow-nv-unreviewed;trust-low
+下跌	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 下身	n			no-source;fallback;p1-audit;review;身體部位，名詞
 下車	v			cow-single
 下車伊始	u			no-source;fallback
 下載	v			cow-single
 下週	u			no-source;fallback
 下達	u			no-source;fallback
-下降	n,v			cow-nv-unreviewed;trust-low
+下降	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 下集	u			no-source;fallback
 下面	n			cow-single
 下顎	n			cow-single
@@ -698,7 +698,7 @@ literal	pos	family	voice	note
 不失時機	u			no-source;fallback
 不好	a			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 不好意思	u			no-source;fallback
-不如	u			no-source;fallback
+不如	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 不妙	u			no-source;fallback
 不妥	u			no-source;fallback
 不嬲	u			no-source;fallback
@@ -758,7 +758,7 @@ literal	pos	family	voice	note
 不支倒地	u			no-source;fallback
 不敢	v			no-source;fallback;p1-audit;review;情態動詞短語
 不敢苟同	u			no-source;fallback
-不斷	u			no-source;fallback
+不斷	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 不明	u			no-source;fallback
 不明事理	u			no-source;fallback
 不明就裏	u			no-source;fallback
@@ -930,7 +930,7 @@ literal	pos	family	voice	note
 並行計算	u			no-source;fallback
 並非	u			no-source;fallback
 並駕齊驅	r			cow-single
-丫	u			no-source;fallback
+丫	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 丫嘛	u			no-source;p1;fallback
 中	n,v			cow-multi;p1-audit;review;自由形「中」弱；名／方位名＋動「中獎／中計」
 中世紀	n			cow-single
@@ -973,7 +973,7 @@ literal	pos	family	voice	note
 中指	u			no-source;fallback
 中控面板	u			no-source;fallback
 中文	u			no-source;fallback
-中斷	n,v			cow-nv-unreviewed;trust-low
+中斷	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 中樞神經	u			no-source;fallback
 中止	n,v			cow-nv-unreviewed;trust-low
 中毒	n,v			audit-high;review
@@ -1048,7 +1048,7 @@ literal	pos	family	voice	note
 之下	x			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 之中	u			no-source;fallback
 之內	x			no-source;fallback;p1-audit;review;方位／後置虛
-之前	u			no-source;fallback
+之前	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 之外	u			no-source;fallback
 之後	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review
 之所以	u			no-source;fallback
@@ -1066,7 +1066,7 @@ literal	pos	family	voice	note
 乒乒乓乓	u			no-source;fallback
 乒乓球	u			no-source;fallback
 乒乓球拍	u			no-source;fallback
-乖	u			no-source;fallback
+乖	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 乖乖	u			no-source;fallback
 乖仔	u			no-source;fallback
 乘人之危	n			len4-noun-heuristic
@@ -1273,19 +1273,19 @@ literal	pos	family	voice	note
 交互	v			cow-single
 交付	v			cow-single
 交代	u			no-source;fallback
-交叉	n,v			cow-nv-unreviewed;trust-low
+交叉	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 交叉學科	u			no-source;fallback
 交叉火力	u			no-source;fallback
 交惡	u			no-source;fallback
 交感神經	u			no-source;fallback
-交換	n,v			cow-nv-unreviewed;trust-low
+交換	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 交換價值	u			no-source;fallback
 交換技術	n			len4-noun-heuristic
 交換機	u			no-source;fallback
-交易	n,v			cow-nv-unreviewed;trust-low
+交易	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 交易所	n			cow-single
 交易日	n			cow-single
-交流	n,v			cow-nv-unreviewed;trust-low
+交流	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 交流電	n			cow-single
 交相輝映	u			no-source;fallback
 交納	u			no-source;fallback
@@ -1479,23 +1479,23 @@ literal	pos	family	voice	note
 今個	u			no-source;p1;fallback
 今天	u			no-source;fallback
 今年	u			no-source;fallback
-今日	u			no-source;fallback
+今日	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 今時今日	u			no-source;fallback
 今晚	n			cow-single
 今朝	u			no-source;fallback
-今次	u			no-source;fallback
+今次	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 今生	u			no-source;fallback
 今生今世	u			no-source;fallback
 今非昔比	u			no-source;fallback
 介意	v			cow-single
-介紹	n,v			cow-nv-unreviewed;trust-low
+介紹	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 介質	u			no-source;fallback
 仍	u			no-source;fallback
 仍然	u			no-source;fallback
 仔	n			no-source;fallback;p1-cleanup;canto-heuristic;review
 仔女	u			no-source;fallback
 仔細	u			no-source;fallback
-他	u			no-source;fallback
+他	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 他人	u			no-source;fallback
 他們	u			no-source;fallback
 他在	u			no-source;p1;fallback
@@ -1509,7 +1509,7 @@ literal	pos	family	voice	note
 付之一炬	n			len4-noun-heuristic
 付之東流	n			len4-noun-heuristic
 付出	v			cow-single
-付款	n,v			cow-nv-unreviewed;trust-low
+付款	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 付款條件	u			no-source;fallback
 付諸實施	u			no-source;fallback
 付諸東流	u			no-source;fallback
@@ -1528,7 +1528,7 @@ literal	pos	family	voice	note
 代碼	u			no-source;fallback
 代罪羔羊	u			no-source;fallback
 代號	n			cow-single
-代表	n,v			cow-nv-unreviewed;trust-low
+代表	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 代表團	n			cow-single
 代言人	n			cow-single
 代謝	n			cow-single
@@ -1546,7 +1546,7 @@ literal	pos	family	voice	note
 以偏概全	u			no-source;fallback
 以儆效尤	u			no-source;fallback
 以免	u			no-source;fallback
-以前	u			no-source;fallback
+以前	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 以卵擊石	u			no-source;fallback
 以及	u			no-source;fallback
 以嚟	u			no-source;fallback
@@ -1563,7 +1563,7 @@ literal	pos	family	voice	note
 以此類推	u			no-source;fallback
 以毒攻毒	u			no-source;fallback
 以為	v			cow-single
-以爲	u			no-source;fallback
+以爲	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 以牙還牙	n			cow-single
 以理服人	u			no-source;fallback
 以至	u			no-source;fallback
@@ -1585,14 +1585,14 @@ literal	pos	family	voice	note
 仲	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review
 仲好	a			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 仲會	u			no-source;p1;fallback
-仲有	u			no-source;fallback
+仲有	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 仲未	u			no-source;fallback
 仲裁	n			cow-single
-仲要	u			no-source;fallback
+仲要	r,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 仲話	u			no-source;fallback
 仲講	u			no-source;p1;fallback
 仳離	u			no-source;fallback
-件	u			no-source;fallback
+件	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 任	u			no-source;fallback
 任人宰割	u			no-source;fallback
 任何	a			cow-single
@@ -1603,7 +1603,7 @@ literal	pos	family	voice	note
 份子	u			no-source;fallback
 份量	u			no-source;fallback
 份額	n			cow-single
-企	u			no-source;fallback
+企	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 企咗	u			no-source;p1;fallback
 企圖	n,v			cow-nv-unreviewed;trust-low
 企業	n			cow-single
@@ -1620,7 +1620,7 @@ literal	pos	family	voice	note
 伏爾加河	u			no-source;fallback
 伐木工人	u			no-source;fallback
 休假	n,v			cow-nv-unreviewed;trust-low
-休息	n,v			cow-nv-unreviewed;trust-low
+休息	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 休戰	u			no-source;fallback
 休整	u			no-source;fallback
 休閒活動	u			no-source;fallback
@@ -1628,7 +1628,7 @@ literal	pos	family	voice	note
 伯伯	n			cow-single
 伯母	n			cow-single
 伯父	n			cow-single
-估	u			no-source;fallback
+估	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 估到	u			no-source;fallback
 估唔到	u			no-source;fallback
 估計	n			cow-single
@@ -1636,7 +1636,7 @@ literal	pos	family	voice	note
 伴娘	u			no-source;fallback
 伴隨	v			cow-single
 伸	n			cow-single
-伸出	n,v			cow-nv-unreviewed;trust-low
+伸出	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 伸張正義	u			no-source;fallback
 伸懶腰	v			cow-single
 伸手	u			no-source;fallback
@@ -1661,7 +1661,7 @@ literal	pos	family	voice	note
 位於	v			cow-single
 位極人臣	u			no-source;fallback
 位置	n			cow-single
-低	u			no-source;p1;fallback
+低	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 低人一等	u			no-source;fallback
 低俗之風	n			len4-noun-heuristic
 低價	n			cow-single
@@ -1739,7 +1739,7 @@ literal	pos	family	voice	note
 作業環境	u			no-source;fallback
 作業系統	n			len4-noun-heuristic
 作為	n			cow-single
-作爲	u			no-source;fallback
+作爲	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 作物	u			no-source;fallback
 作用	n,v			cow-nv-unreviewed;trust-low
 作者	n			cow-single
@@ -1827,7 +1827,7 @@ literal	pos	family	voice	note
 侍者	n			cow-single
 侏	u			no-source;fallback
 侏儒	u			no-source;fallback
-供應	n,v			cow-nv-unreviewed;trust-low
+供應	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 供應商	u			no-source;fallback
 供書教學	u			no-source;fallback
 供油系統	n			audit-med;review
@@ -1838,10 +1838,10 @@ literal	pos	family	voice	note
 依件	u			no-source;p1;fallback
 依位	u			no-source;p1;fallback
 依依不捨	u			no-source;fallback
-依個	u			no-source;fallback
+依個	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 依到	u			no-source;p1;fallback
 依句	u			no-source;p1;fallback
-依家	u			no-source;fallback
+依家	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 依山傍水	u			no-source;fallback
 依度	u			no-source;fallback
 依次	u			no-source;fallback
@@ -1880,7 +1880,7 @@ literal	pos	family	voice	note
 俄國	u			no-source;fallback
 俄羅斯族	u			no-source;fallback
 俊	u			no-source;fallback
-俊俊	u			no-source;p1;fallback
+俊俊	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 俗	u			no-source;fallback
 俗不可耐	u			no-source;fallback
 俗人	u			no-source;fallback
@@ -1893,7 +1893,7 @@ literal	pos	family	voice	note
 保命	u			no-source;fallback
 保外就醫	u			no-source;fallback
 保姆	n			cow-single
-保存	n,v			cow-nv-unreviewed;trust-low
+保存	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 保守	v			cow-single
 保守主義	n			len4-noun-heuristic
 保安	u			no-source;fallback
@@ -1903,14 +1903,14 @@ literal	pos	family	voice	note
 保持原貌	u			no-source;fallback
 保留	v			cow-single
 保留劇目	n			audit-med;review
-保證	n,v			cow-nv-unreviewed;trust-low
+保證	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 保證金	n			cow-single
-保護	n,v			cow-nv-unreviewed;trust-low
+保護	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 保護主義	n			len4-noun-heuristic
 保護模式	n			audit-med;review
 保護環境	u			no-source;fallback
 保護關税	n			cow-single
-保釋	n,v			cow-nv-unreviewed;trust-low
+保釋	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 保障	n,v			cow-nv-unreviewed;trust-low
 保險	n			cow-single
 保險公司	n			len4-noun-heuristic
@@ -1920,7 +1920,7 @@ literal	pos	family	voice	note
 信	n			cow-single;p1
 信仰	n			cow-single
 信仰自由	u			no-source;fallback
-信任	n,v			cow-nv-unreviewed;trust-low
+信任	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 信封	n			cow-single
 信心	n			cow-single
 信心十足	u			no-source;fallback
@@ -2010,7 +2010,7 @@ literal	pos	family	voice	note
 倦怠	n			cow-single
 倫	u			no-source;fallback
 倫琴射線	u			no-source;fallback
-值	n,v			cow-nv-unreviewed;trust-low
+值	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 值回票價	u			no-source;fallback
 值得	v			cow-multi;p1-audit;review;只係動（值得+VP），非名；n 會毒同名詞閘
 值得品味	u			no-source;fallback
@@ -2029,7 +2029,7 @@ literal	pos	family	voice	note
 假日	n			cow-single
 假期	n			cow-single
 假裝	n,v			cow-nv-unreviewed;trust-low
-假設	n,v			cow-nv-unreviewed;trust-low
+假設	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 偈	u			no-source;fallback
 偉岸	u			no-source;fallback
 偏	u			no-source;p1;fallback
@@ -2048,7 +2048,7 @@ literal	pos	family	voice	note
 做什麼	u			no-source;p1;fallback
 做作	u			no-source;fallback
 做到	v			cow-single
-做咩	u			no-source;fallback
+做咩	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 做唔到	u			no-source;fallback
 做嘢	u			no-source;fallback
 做夢	v			cow-single
@@ -2069,12 +2069,12 @@ literal	pos	family	voice	note
 停戰協定	n			cow-single
 停手	u			no-source;fallback
 停機	v			cow-single
-停止	n,v			cow-nv-unreviewed;trust-low
+停止	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 停泊	v			cow-single
 停滯	n,v			cow-nv-unreviewed;trust-low
 停火	u			no-source;fallback
 停用	u			no-source;fallback
-停留	n,v			cow-nv-unreviewed;trust-low
+停留	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 停筆	u			no-source;fallback
 停薪留職	u			no-source;fallback
 停課	u			no-source;fallback
@@ -2183,7 +2183,7 @@ literal	pos	family	voice	note
 傷勢	u			no-source;fallback
 傷及無辜	u			no-source;fallback
 傷口	n			cow-single
-傷害	n,v			cow-nv-unreviewed;trust-low
+傷害	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 傷心	n			cow-single
 傷心慘目	u			no-source;fallback
 傷心欲絕	u			no-source;fallback
@@ -2232,7 +2232,7 @@ literal	pos	family	voice	note
 僧多粥少	u			no-source;fallback
 僵屍網絡	n			len4-noun-heuristic
 僵硬	u			no-source;fallback
-價值	n,v			cow-nv-unreviewed;trust-low
+價值	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 價值判斷	u			no-source;fallback
 價值工程	n			len4-noun-heuristic
 價值形式	u			no-source;fallback
@@ -2274,7 +2274,7 @@ literal	pos	family	voice	note
 優秀學生	u			no-source;fallback
 優點	n			cow-single
 儲	u			no-source;fallback
-儲存	n,v			cow-nv-unreviewed;trust-low
+儲存	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 儲蓄存款	u			no-source;fallback
 儲蓄機構	n			len4-noun-heuristic
 儲蓄銀行	u			no-source;fallback
@@ -2297,7 +2297,7 @@ literal	pos	family	voice	note
 充分考慮	u			no-source;fallback
 充實	u			no-source;fallback
 充斥	u			no-source;fallback
-充滿	n,v			cow-nv-unreviewed;trust-low
+充滿	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 充耳不聞	u			no-source;fallback
 充要條件	u			no-source;fallback
 充足	n,v			cow-nv-unreviewed;trust-low
@@ -2381,7 +2381,7 @@ literal	pos	family	voice	note
 兔兔	u			no-source;p1;fallback
 兔子	n			cow-single
 兔死狐悲	u			no-source;fallback
-兜	u			no-source;fallback
+兜	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 兜圈子	u			no-source;fallback
 兜過	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 兢兢業業	u			no-source;fallback
@@ -2539,7 +2539,7 @@ literal	pos	family	voice	note
 公之於世	n			len4-noun-heuristic
 公事公辦	u			no-source;fallback
 公交車	u			no-source;fallback
-公仔	u			no-source;fallback
+公仔	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 公佈	v			cow-single
 公元	r			cow-single
 公公	u			no-source;fallback
@@ -2642,7 +2642,7 @@ literal	pos	family	voice	note
 兵臨城下	u			no-source;fallback
 其	x			heuristic
 其中	u			no-source;fallback
-其他	u			no-source;fallback
+其他	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 其他人	u			no-source;fallback
 其他地方	u			no-source;fallback
 其它	a			cow-single
@@ -2761,7 +2761,7 @@ literal	pos	family	voice	note
 凌晨	n			cow-single
 凌雲壯志	u			no-source;fallback
 凍	u			no-source;fallback
-凝	u			no-source;fallback
+凝	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 凝固	n,v			cow-nv-unreviewed;trust-low
 凝望	u			no-source;fallback
 凝結	n,v			cow-nv-unreviewed;trust-low
@@ -2804,7 +2804,7 @@ literal	pos	family	voice	note
 出力	u			no-source;fallback
 出動	u			no-source;fallback
 出去	v			cow-single
-出口	n,v			cow-nv-unreviewed;trust-low
+出口	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 出口傷人	u			no-source;fallback
 出口成章	u			no-source;fallback
 出台	u			no-source;fallback
@@ -2817,7 +2817,7 @@ literal	pos	family	voice	note
 出奇	u			no-source;fallback
 出將入相	u			no-source;fallback
 出師不利	u			no-source;fallback
-出席	n,v			cow-nv-unreviewed;trust-low
+出席	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 出庭作證	u			no-source;fallback
 出手	u			no-source;fallback
 出於	u			no-source;fallback
@@ -2829,9 +2829,9 @@ literal	pos	family	voice	note
 出版	n,v			cow-nv-unreviewed;trust-low
 出版日期	u			no-source;fallback
 出版社	n			cow-single
-出現	n,v			cow-nv-unreviewed;trust-low
+出現	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 出生缺陷	u			no-source;fallback
-出發	n,v			cow-nv-unreviewed;trust-low
+出發	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 出神入化	u			no-source;fallback
 出租	v			cow-single
 出租車	n			cow-single
@@ -2867,9 +2867,9 @@ literal	pos	family	voice	note
 刀山劍林	u			no-source;fallback
 刀槍不入	n			cow-single
 刀耕火種	u			no-source;fallback
-分	n,v			cow-nv-unreviewed;p1;trust-low
+分	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 分一杯羹	u			no-source;fallback
-分享	n,v			cow-nv-unreviewed;trust-low
+分享	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 分公司	u			no-source;fallback
 分分鐘	u			no-source;fallback
 分別	n			cow-single
@@ -2892,7 +2892,7 @@ literal	pos	family	voice	note
 分文不取	u			no-source;fallback
 分明	u			no-source;fallback
 分期付款	n			cow-single
-分析	n,v			cow-nv-unreviewed;trust-low
+分析	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 分析處理	u			no-source;fallback
 分權	u			no-source;fallback
 分權制衡	u			no-source;fallback
@@ -2916,8 +2916,8 @@ literal	pos	family	voice	note
 分部	u			no-source;fallback
 分配	n,v			cow-nv-unreviewed;trust-low
 分鐘	n			cow-single
-分開	n,v			cow-nv-unreviewed;trust-low
-分離	n,v			cow-nv-unreviewed;trust-low
+分開	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+分離	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 分類廣告	u			no-source;fallback
 切	v			cow-multi;p1-audit;review;自由詞只係動「切」；n 假陽
 切中要害	u			no-source;fallback
@@ -2961,7 +2961,7 @@ literal	pos	family	voice	note
 初露頭角	u			no-source;fallback
 初頭	u			no-source;fallback
 判斷	n			cow-single
-判決	n,v			cow-nv-unreviewed;trust-low
+判決	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 判若兩人	u			no-source;fallback
 判若雲泥	u			no-source;fallback
 判處	u			no-source;fallback
@@ -2985,7 +2985,7 @@ literal	pos	family	voice	note
 利於	u			no-source;p1;fallback
 利是	u			no-source;fallback
 利比裏亞	u			no-source;fallback
-利用	n,v			cow-nv-unreviewed;trust-low
+利用	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 利益	n			cow-single
 利益衝突	u			no-source;fallback
 利益輸送	u			no-source;fallback
@@ -3012,13 +3012,13 @@ literal	pos	family	voice	note
 制	v			cow-single
 制動踏板	u			no-source;fallback
 制度	n			cow-single
-制服	n,v			cow-nv-unreviewed;trust-low
+制服	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 制止	n,v			cow-nv-unreviewed;trust-low
 制約	u			no-source;fallback
-刷	n,v			cow-nv-unreviewed;trust-low
+刷	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 刷牙	u			no-source;fallback
-刺	n,v			cow-nv-unreviewed;trust-low
-刺激	n,v			cow-nv-unreviewed;trust-low
+刺	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+刺激	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 刺眼	v			cow-single
 刺耳	v			cow-single
 刺青	u			no-source;fallback
@@ -3034,7 +3034,7 @@ literal	pos	family	voice	note
 剁	u			no-source;fallback
 剃	v			cow-single
 則	u			no-source;fallback
-削減	n,v			cow-nv-unreviewed;trust-low
+削減	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 削足適履	u			no-source;fallback
 削鐵如泥	u			no-source;fallback
 剋制	n,v			cow-nv-unreviewed;trust-low
@@ -3081,7 +3081,7 @@ literal	pos	family	voice	note
 前途	u			no-source;fallback
 前途渺茫	u			no-source;fallback
 前途無量	u			no-source;fallback
-前進	n,v			cow-nv-unreviewed;trust-low
+前進	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 前面	n			cow-single
 剎那間	u			no-source;fallback
 剖白	u			no-source;fallback
@@ -3118,7 +3118,7 @@ literal	pos	family	voice	note
 創建	u			no-source;fallback
 創意	u			no-source;fallback
 創新	u			no-source;fallback
-創造	n,v			cow-nv-unreviewed;trust-low
+創造	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 劃一不二	u			no-source;fallback
 劃清界線	u			no-source;fallback
 劇情	n			cow-single
@@ -3135,7 +3135,7 @@ literal	pos	family	voice	note
 劍拔弩張	u			no-source;fallback
 劍走偏鋒	u			no-source;fallback
 劑量	n			cow-single
-力	u			no-source;fallback
+力	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 力大無比	u			no-source;fallback
 力大無窮	u			no-source;fallback
 力度	u			no-source;fallback
@@ -3164,7 +3164,7 @@ literal	pos	family	voice	note
 加之	u			no-source;fallback
 加人一等	u			no-source;fallback
 加價	u			no-source;fallback
-加入	n,v			cow-nv-unreviewed;trust-low
+加入	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 加冕	n,v			cow-nv-unreviewed;trust-low
 加冕典禮	n			len4-noun-heuristic
 加劇	n,v			cow-nv-unreviewed;trust-low
@@ -3173,7 +3173,7 @@ literal	pos	family	voice	note
 加大油門	u			no-source;fallback
 加工成本	n			audit-med;review
 加工效率	u			no-source;fallback
-加強	n,v			cow-nv-unreviewed;trust-low
+加強	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 加快	v			cow-single
 加拿大	u			no-source;fallback
 加拿大人	u			no-source;fallback
@@ -3195,7 +3195,7 @@ literal	pos	family	voice	note
 助力	u			no-source;fallback
 助學貸款	u			no-source;fallback
 助理	n			cow-single
-努力	n,v			cow-nv-unreviewed;trust-low
+努力	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 劫	u			no-source;fallback
 勁	u			no-source;fallback
 勃然大怒	u			no-source;fallback
@@ -3241,7 +3241,7 @@ literal	pos	family	voice	note
 務實	u			no-source;fallback
 勝人一籌	n			cow-single
 勝任能力	u			no-source;fallback
-勝利	n,v			cow-nv-unreviewed;p1;trust-low
+勝利	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 勝利果實	u			no-source;fallback
 勝券在握	u			no-source;fallback
 勝負	u			no-source;fallback
@@ -3300,14 +3300,14 @@ literal	pos	family	voice	note
 勾起	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 勾魂攝魄	u			no-source;fallback
 勿忘國恥	u			no-source;fallback
-包	n,v			cow-nv-unreviewed;trust-low
+包	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 包住	v			cow-single
 包包	u			no-source;p1;fallback
 包圍	v			cow-single
 包容	u			no-source;fallback
 包庇	u			no-source;fallback
 包打天下	u			no-source;fallback
-包括	n,v			cow-nv-unreviewed;trust-low
+包括	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 包治百病	u			no-source;fallback
 包產到户	u			no-source;fallback
 包皮環切	u			no-source;fallback
@@ -3539,7 +3539,7 @@ literal	pos	family	voice	note
 危辭聳聽	u			no-source;fallback
 危重病人	u			no-source;fallback
 危險	n			cow-single
-即	u			no-source;fallback
+即	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 即使	u			no-source;fallback
 即便	u			no-source;fallback
 即係	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -3659,7 +3659,7 @@ literal	pos	family	voice	note
 反射	n,v			cow-nv-unreviewed;trust-low
 反射作用	n			len4-noun-heuristic
 反射療法	u			no-source;fallback
-反對	n,v			cow-nv-unreviewed;trust-low
+反對	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 反導系統	n			len4-noun-heuristic
 反常	n			cow-single
 反式脂肪	u			no-source;fallback
@@ -3697,7 +3697,7 @@ literal	pos	family	voice	note
 取其精華	u			no-source;fallback
 取得	v			cow-single
 取得一致	u			no-source;fallback
-取消	n,v			cow-nv-unreviewed;trust-low
+取消	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 取笑	n,v			cow-nv-unreviewed;trust-low
 受	v			cow-single;p1
 受不了	v		passive	prefix-passive;heuristic
@@ -3812,7 +3812,7 @@ literal	pos	family	voice	note
 叮叮	u			no-source;fallback
 叮叮噹噹	u			no-source;fallback
 叮囑	u			no-source;fallback
-可	u			no-source;fallback
+可	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 可以	v,x			heuristic
 可供參考	u			no-source;fallback
 可信	u			no-source;fallback
@@ -3872,7 +3872,7 @@ literal	pos	family	voice	note
 司法部長	u			no-source;fallback
 司空見慣	u			no-source;fallback
 司馬	u			no-source;fallback
-叻	u			no-source;fallback
+叻	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 吃	v			cow-single
 吃力	u			no-source;fallback
 吃吃喝喝	u			no-source;fallback
@@ -3922,7 +3922,7 @@ literal	pos	family	voice	note
 合不來	u			no-source;fallback
 合久必分	u			no-source;fallback
 合乎邏輯	u			no-source;fallback
-合作	n,v			cow-nv-unreviewed;trust-low
+合作	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 合作無間	u			no-source;fallback
 合力	u			no-source;fallback
 合唱	u			no-source;fallback
@@ -3964,7 +3964,7 @@ literal	pos	family	voice	note
 同化作用	n			len4-noun-heuristic
 同名同姓	u			no-source;fallback
 同埋	x			heuristic
-同學	u			no-source;fallback
+同學	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 同小貞	u			no-source;p1;fallback
 同居	v			cow-single
 同工不同酬	u			no-source;fallback
@@ -3973,9 +3973,9 @@ literal	pos	family	voice	note
 同性	u			no-source;fallback
 同性相斥	u			no-source;fallback
 同情	n			cow-single
-同意	n,v			cow-nv-unreviewed;p1;trust-low
+同意	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 同感	n			cow-single
-同時	u			no-source;fallback
+同時	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 同業公會	n			cow-single
 同樣	u			no-source;fallback
 同步	n			cow-single
@@ -4048,7 +4048,7 @@ literal	pos	family	voice	note
 向着	u			no-source;fallback
 吓	x			no-source;p1;fallback;p1-cleanup;canto-heuristic;review
 吔	u			no-source;fallback
-吖	u			no-source;fallback
+吖	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 君主專制	u			no-source;fallback
 君主立憲	u			no-source;fallback
 君子	u			no-source;fallback
@@ -4122,7 +4122,7 @@ literal	pos	family	voice	note
 吻	v			cow-single
 吻合	v			cow-single
 吼	v			cow-single
-吾	u			no-source;fallback
+吾	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 呀	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 呃	u			no-source;fallback
 呃人	u			no-source;fallback
@@ -4194,7 +4194,7 @@ literal	pos	family	voice	note
 咁鬼	u			no-source;fallback
 咄咄怪事	u			no-source;fallback
 咆哮	v			cow-single
-咋	u			no-source;fallback
+咋	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 和	x			heuristic;p1
 和你	u			no-source;p1;fallback
 和好	n			cow-single
@@ -4250,7 +4250,7 @@ literal	pos	family	voice	note
 咗陣	u			no-source;p1;fallback
 咗響	u			no-source;p1;fallback
 咚	u			no-source;fallback
-咦	u			no-source;fallback
+咦	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 咧開嘴笑	u			no-source;fallback
 咩	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 咪	v,x			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -4286,7 +4286,7 @@ literal	pos	family	voice	note
 品質管制	u			no-source;fallback
 品質管理	n			cow-single
 品頭論足	u			no-source;fallback
-哂	u			no-source;fallback
+哂	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 哄	u			no-source;fallback
 哄抬	u			no-source;fallback
 哄抬物價	u			no-source;fallback
@@ -4330,7 +4330,7 @@ literal	pos	family	voice	note
 唇	u			no-source;p1;fallback
 唇亡齒寒	u			no-source;fallback
 唇膏	n			cow-single
-唉	u			no-source;fallback
+唉	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唏哩嘩啦	u			no-source;fallback
 唐古拉山	u			no-source;fallback
 唐山	u			no-source;fallback
@@ -4342,7 +4342,7 @@ literal	pos	family	voice	note
 唔切	u			no-source;fallback
 唔到	v,x			no-source;fallback;p1-cleanup;canto-heuristic;review
 唔只	u			no-source;fallback
-唔同	u			no-source;fallback
+唔同	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔多	u			no-source;fallback
 唔多唔少	u			no-source;fallback
 唔好	a,v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
@@ -4359,8 +4359,8 @@ literal	pos	family	voice	note
 唔見	u			no-source;fallback
 唔覺意	u			no-source;fallback
 唔記得	u			no-source;fallback
-唔該	u			no-source;fallback
-唔通	u			no-source;fallback
+唔該	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
+唔通	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔錯	u			no-source;fallback
 唧	u			no-source;fallback
 唧唧喳喳	u			no-source;fallback
@@ -4432,7 +4432,7 @@ literal	pos	family	voice	note
 啡	u			no-source;fallback
 啤	u			no-source;fallback
 啤住	v			verb-suffix;heuristic
-啤啤	u			no-source;fallback
+啤啤	n,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 啤酒	n			cow-single
 啥	u			no-source;fallback
 啥子	u			no-source;p1;fallback
@@ -4441,13 +4441,13 @@ literal	pos	family	voice	note
 啦啦隊員	u			no-source;fallback
 啦啦隊長	u			no-source;fallback
 啪	u			no-source;fallback
-啫	u			no-source;fallback
-啱	u			no-source;fallback
+啫	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
+啱	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 啱啱	u			no-source;fallback
 啲	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 啵	u			no-source;fallback
 啼笑皆非	u			no-source;fallback
-喀	u			no-source;fallback
+喀	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 喂	v,x			cow-single;p1-audit;review;primary 錯：喂主為嘆（虛 x）；餵食義為動；非名
 喃喃	u			no-source;fallback
 喃喃自語	v			cow-single
@@ -4494,11 +4494,11 @@ literal	pos	family	voice	note
 喧嘩	u			no-source;fallback
 喧賓奪主	u			no-source;fallback
 喧鬧	n,v			cow-nv-unreviewed;trust-low
-喪失	n,v			cow-nv-unreviewed;trust-low
+喪失	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 喪失殆盡	u			no-source;fallback
 喪家之犬	n			len4-noun-heuristic
 喪屍	u			no-source;fallback
-喫	u			no-source;fallback
+喫	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 喫了	u			no-source;p1;fallback
 喫飯	u			no-source;fallback
 單	u			no-source;p1;fallback
@@ -4544,7 +4544,7 @@ literal	pos	family	voice	note
 喺度	u			no-source;fallback
 嗄	u			no-source;fallback
 嗌交	u			no-source;fallback
-嗎	u			no-source;fallback
+嗎	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 嗓音	n			cow-single
 嗚	u			no-source;fallback
 嗚乎哀哉	u			no-source;fallback
@@ -4556,7 +4556,7 @@ literal	pos	family	voice	note
 嗜酒成性	u			no-source;fallback
 嗟來之食	n			len4-noun-heuristic
 嗬	u			no-source;fallback
-嗯	u			no-source;fallback
+嗯	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 嗰	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 嗰個	u			no-source;fallback
 嗰啲	u			no-source;fallback
@@ -4586,7 +4586,7 @@ literal	pos	family	voice	note
 嘈吵	u			no-source;fallback
 嘈喧巴閉	u			no-source;fallback
 嘈雜	n			cow-single
-嘉	u			no-source;fallback
+嘉	a,n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 嘉嘉	u			no-source;p1;fallback
 嘉年華會	u			no-source;fallback
 嘉浩	u			no-source;p1;fallback
@@ -4602,7 +4602,7 @@ literal	pos	family	voice	note
 嘖嘖稱奇	u			no-source;fallback
 嘗試	n,v			cow-nv-unreviewed;trust-low
 嘛	x			no-source;fallback;p1-cleanup;canto-heuristic;review
-嘞	u			no-source;fallback
+嘞	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 嘟	u			no-source;fallback
 嘢	n			no-source;fallback;p1-cleanup;canto-heuristic;review
 嘢講	u			no-source;p1;fallback
@@ -4649,7 +4649,7 @@ literal	pos	family	voice	note
 噬臍莫及	u			no-source;fallback
 噴	v			cow-single
 噶	u			no-source;fallback
-噹	u			no-source;fallback
+噹	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 噼	x			no-source;fallback;p1-audit;review;擬聲／嘆
 嚇	v			cow-single
 嚇到	u			no-source;p1;fallback
@@ -4732,17 +4732,17 @@ literal	pos	family	voice	note
 回家	v			cow-single
 回復	u			no-source;fallback
 回想	v			cow-single
-回憶	n,v			cow-nv-unreviewed;trust-low
+回憶	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 回應	u			no-source;fallback
 回收	v			cow-single
 回望	u			no-source;fallback
 回歸	u			no-source;fallback
 回眸一笑	u			no-source;fallback
 回程	u			no-source;fallback
-回答	n,v			cow-nv-unreviewed;trust-low
+回答	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 回落	u			no-source;fallback
 回覆	n			cow-single
-回覆日期	u			no-source;p1;fallback
+回覆日期	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 回頭	u			no-source;fallback
 回顧	n,v			cow-nv-unreviewed;trust-low
 因	u			no-source;p1;fallback
@@ -4891,7 +4891,7 @@ literal	pos	family	voice	note
 圖騰崇拜	u			no-source;fallback
 團	n			cow-single
 團團圍住	u			no-source;fallback
-團結	n,v			cow-nv-unreviewed;trust-low
+團結	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 團結一致	n,v			cow-nv-unreviewed;trust-low
 團長	u			no-source;fallback
 團隊精神	n			cow-single
@@ -5173,11 +5173,11 @@ literal	pos	family	voice	note
 墓地	n			cow-single
 墓碑	n			cow-single
 墜	u			no-source;fallback
-增加	n,v			cow-nv-unreviewed;trust-low
+增加	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 增強	v			cow-single
 增收	u			no-source;fallback
 增肥	u			no-source;fallback
-增長	n,v			cow-nv-unreviewed;trust-low
+增長	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 增長率	n			cow-single
 增長速度	u			no-source;fallback
 墨守成規	u			no-source;fallback
@@ -5314,7 +5314,7 @@ literal	pos	family	voice	note
 多米尼克	u			no-source;fallback
 多胎妊娠	u			no-source;fallback
 多謀善斷	u			no-source;fallback
-多謝	u			no-source;fallback
+多謝	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 多退少補	u			no-source;fallback
 多過	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low
 多邊合作	u			no-source;fallback
@@ -5413,7 +5413,7 @@ literal	pos	family	voice	note
 大嬸	u			no-source;fallback
 大學	n			cow-single
 大學生	u			no-source;fallback
-大家	u			no-source;fallback
+大家	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 大家閨秀	u			no-source;fallback
 大富大貴	u			no-source;fallback
 大寫字母	n			cow-single
@@ -5705,7 +5705,7 @@ literal	pos	family	voice	note
 失戀	v			no-source;fallback;p1-audit;review;失去戀愛
 失控	n,v			cow-nv-unreviewed;trust-low
 失效日期	u			no-source;fallback
-失敗	n,v			cow-nv-unreviewed;trust-low
+失敗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 失明	a,n			cow-multi
 失望	n			cow-single
 失格	u			no-source;fallback
@@ -5741,7 +5741,7 @@ literal	pos	family	voice	note
 奇風異俗	u			no-source;fallback
 奈何	u			no-source;fallback
 奉命行事	u			no-source;fallback
-奉獻	n,v			cow-nv-unreviewed;trust-low
+奉獻	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 奏	u			no-source;fallback
 奏鳴曲式	u			no-source;fallback
 契媽	u			no-source;fallback
@@ -5761,12 +5761,12 @@ literal	pos	family	voice	note
 奪門而出	u			no-source;fallback
 奮勇向前	u			no-source;fallback
 奮筆疾書	u			no-source;fallback
-女	u			no-source;p1;fallback
+女	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 女中豪傑	u			no-source;fallback
 女主人公	u			no-source;fallback
 女主角	u			no-source;fallback
 女人	n			cow-single
-女仔	u			no-source;fallback
+女仔	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 女僕	n			cow-single
 女兒	n			cow-single
 女友	u			no-source;fallback
@@ -5804,7 +5804,7 @@ literal	pos	family	voice	note
 奶頭	u			no-source;fallback
 奸笑	u			no-source;fallback
 奸詐	u			no-source;fallback
-她	u			no-source;fallback
+她	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 她們	u			no-source;fallback
 她的	u			no-source;p1;fallback
 好	a,r			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -5950,10 +5950,10 @@ literal	pos	family	voice	note
 妙齡少女	u			no-source;fallback
 妝	u			no-source;fallback
 妥	u			no-source;fallback
-妥協	n,v			cow-nv-unreviewed;trust-low
+妥協	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 妥善處理	u			no-source;fallback
 妨礙	n,v			cow-nv-unreviewed;trust-low
-妳	u			no-source;fallback
+妳	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 妹	n			cow-single;p1
 妹妹	n			cow-single
 妻兒老小	u			no-source;fallback
@@ -5965,7 +5965,7 @@ literal	pos	family	voice	note
 始終不變	u			no-source;fallback
 始終如一	u			no-source;fallback
 姍姍來遲	u			no-source;fallback
-姐	u			no-source;p1;fallback
+姐	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 姐妹	n			cow-single
 姐姐	n			cow-single;p1-cleanup;canto-heuristic;review
 姑	n			cow-single
@@ -6040,7 +6040,7 @@ literal	pos	family	voice	note
 婷婷玉立	u			no-source;fallback
 媳婦	u			no-source;fallback
 媽	u			no-source;fallback
-媽咪	u			no-source;fallback
+媽咪	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 媽媽	n			cow-single
 嫁	v			cow-single;p1
 嫁狗隨狗	u			no-source;fallback
@@ -6206,7 +6206,7 @@ literal	pos	family	voice	note
 安心	n			cow-single
 安慰	n,v			cow-nv-unreviewed;trust-low
 安慶地區	n			len4-noun-heuristic
-安排	n,v			cow-nv-unreviewed;trust-low
+安排	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 安撫	u			no-source;fallback
 安樂窩	u			no-source;fallback
 安步當車	u			no-source;fallback
@@ -6232,7 +6232,7 @@ literal	pos	family	voice	note
 完好無損	u			no-source;fallback
 完好無缺	u			no-source;fallback
 完完全全	u			no-source;fallback
-完成	n,v			cow-nv-unreviewed;trust-low
+完成	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 完整	n			cow-single
 完整無缺	a	idiom		audit-high;review
 完涼	u			no-source;p1;fallback
@@ -6259,7 +6259,7 @@ literal	pos	family	voice	note
 官樣文章	u			no-source;fallback
 官立學校	u			no-source;fallback
 官逼民反	u			no-source;fallback
-定	u			no-source;fallback
+定	a,v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 定係	u			no-source;fallback
 定向越野	u			no-source;fallback
 定居	n,v			cow-nv-unreviewed;trust-low
@@ -6290,7 +6290,7 @@ literal	pos	family	voice	note
 客觀真理	u			no-source;fallback
 客車	u			no-source;fallback
 宣佈	n,v			cow-nv-unreviewed;trust-low
-宣傳	n,v			cow-nv-unreviewed;trust-low
+宣傳	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 宣傳教育	u			no-source;fallback
 室	n			cow-single
 室內	u			no-source;fallback
@@ -6306,7 +6306,7 @@ literal	pos	family	voice	note
 家人	u			no-source;fallback
 家務	u			no-source;fallback
 家喻户曉	u			no-source;fallback
-家姐	u			no-source;fallback
+家姐	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 家常豆腐	u			no-source;fallback
 家底	u			no-source;fallback
 家庭	n			cow-single
@@ -6408,7 +6408,7 @@ literal	pos	family	voice	note
 實際	u			no-source;fallback
 實際上	u			no-source;fallback
 實際工資	u			no-source;fallback
-實驗	n,v			cow-nv-unreviewed;trust-low
+實驗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 實驗室	n			cow-single
 實體	n			cow-single
 寧夏	u			no-source;fallback
@@ -6583,7 +6583,7 @@ literal	pos	family	voice	note
 導演	n,v			cow-nv-unreviewed;trust-low
 導致	v			cow-single
 導航系統	n			len4-noun-heuristic
-小	u			no-source;p1;fallback
+小	a,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 小丑	n			cow-single
 小事	u			no-source;fallback
 小亞細亞	n			cow-single
@@ -6640,7 +6640,7 @@ literal	pos	family	voice	note
 小說	u			no-source;fallback
 小説	n			cow-single
 小貓	u			no-source;p1;fallback
-小貞	u			no-source;p1;fallback
+小貞	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 小貞同	u			no-source;p1;fallback
 小貞好	u			no-source;p1;fallback
 小路	u			no-source;fallback
@@ -6662,7 +6662,7 @@ literal	pos	family	voice	note
 少兒不宜	u			no-source;fallback
 少女	u			no-source;fallback
 少婦	u			no-source;fallback
-少少	u			no-source;fallback
+少少	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 少年	n			cow-single
 少年老成	u			no-source;fallback
 少數	n			cow-single
@@ -6694,12 +6694,12 @@ literal	pos	family	voice	note
 就將	u			no-source;p1;fallback
 就座	v			cow-single
 就快	u			no-source;fallback
-就是	u			no-source;fallback
+就是	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 就會	u			no-source;p1;fallback
 就有	u			no-source;p1;fallback
 就此	u			no-source;fallback
 就當	u			no-source;p1;fallback
-就算	u			no-source;fallback
+就算	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 就職	v			cow-single
 就職演講	u			no-source;fallback
 就能	u			no-source;p1;fallback
@@ -6745,7 +6745,7 @@ literal	pos	family	voice	note
 屋企人	n			no-source;fallback;p1-audit;review;家人
 屋頂	n			cow-single
 屋頂花園	u			no-source;fallback
-屌	u			no-source;fallback
+屌	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 屍	n			no-source;fallback;p1-audit;review;屍體
 屍橫遍野	u			no-source;fallback
 屍體	n			cow-single
@@ -6761,7 +6761,7 @@ literal	pos	family	voice	note
 展示	n,v			cow-nv-unreviewed;trust-low
 展翅高飛	u			no-source;fallback
 展覽會	n			cow-single
-展開	n,v			cow-nv-unreviewed;trust-low
+展開	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 展露頭角	u			no-source;fallback
 屙	u			no-source;fallback
 屢建奇功	u			no-source;fallback
@@ -6839,7 +6839,7 @@ literal	pos	family	voice	note
 工人	n			cow-single
 工人運動	u			no-source;fallback
 工人階級	n			cow-single
-工作	n,v			cow-nv-unreviewed;trust-low
+工作	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 工作人員	n			len4-noun-heuristic
 工作室	n			cow-single
 工作小組	u			no-source;fallback
@@ -6952,7 +6952,7 @@ literal	pos	family	voice	note
 希伯來人	u			no-source;fallback
 希伯來書	u			no-source;fallback
 希伯來語	u			no-source;fallback
-希望	n,v			cow-nv-unreviewed;trust-low
+希望	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 希臘字母	u			no-source;fallback
 帕金森病	n			cow-single
 帖	u			no-source;fallback
@@ -7014,7 +7014,7 @@ literal	pos	family	voice	note
 幫你	u			no-source;p1;fallback
 幫倒忙	u			no-source;fallback
 幫到	u			no-source;p1;fallback
-幫助	n,v			cow-nv-unreviewed;trust-low
+幫助	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 幫忙	n,v			cow-nv-unreviewed;trust-low
 幫我	u			no-source;p1;fallback
 幫手	n			cow-single
@@ -7051,7 +7051,7 @@ literal	pos	family	voice	note
 平方米	n			cow-single
 平方英尺	n			cow-single
 平日	n			cow-single
-平時	u			no-source;fallback
+平時	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 平板玻璃	u			no-source;fallback
 平步青雲	u			no-source;fallback
 平民	n			cow-single
@@ -7145,12 +7145,12 @@ literal	pos	family	voice	note
 幾句	u			no-source;p1;fallback
 幾可亂真	u			no-source;fallback
 幾咁	u			no-source;fallback
-幾多	u			no-source;fallback
+幾多	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 幾大	u			no-source;fallback
 幾好	a			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；形「幾好」，stative留a
 幾年	u			no-source;fallback
 幾日	u			no-source;fallback
-幾時	u			no-source;fallback
+幾時	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 幾有	u			no-source;p1;fallback
 幾次	u			no-source;fallback
 幾次三番	u			no-source;fallback
@@ -7231,7 +7231,7 @@ literal	pos	family	voice	note
 延安地區	n			len4-noun-heuristic
 延年益壽	u			no-source;fallback
 延後	u			no-source;fallback
-延期	n,v			cow-nv-unreviewed;trust-low
+延期	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 延期付款	u			no-source;fallback
 延續	v			cow-single
 延誤	n,v			cow-nv-unreviewed;trust-low
@@ -7240,13 +7240,13 @@ literal	pos	family	voice	note
 建功立業	u			no-source;fallback
 建國	u			no-source;fallback
 建材	n			cow-single
-建立	n,v			cow-nv-unreviewed;trust-low
+建立	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 建築	n			cow-single
 建築公司	n			len4-noun-heuristic
 建築物	n			cow-single
 建築面積	u			no-source;fallback
 建設	u			no-source;fallback
-建議	n,v			cow-nv-unreviewed;trust-low
+建議	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 廿	u			no-source;fallback
 廿四小時	u			no-source;fallback
 弄	n			cow-single
@@ -7291,7 +7291,7 @@ literal	pos	family	voice	note
 弱智	u			no-source;fallback
 弱肉強食	u			no-source;fallback
 弱點	n			cow-single
-張	u			no-source;p1;fallback
+張	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 張三李四	u			no-source;fallback
 張俊謙	u			no-source;p1;fallback
 張口結舌	u			no-source;fallback
@@ -7374,7 +7374,7 @@ literal	pos	family	voice	note
 影片	n			cow-single
 影相	u			no-source;fallback
 影迷	u			no-source;fallback
-影響	n,v			cow-nv-unreviewed;trust-low
+影響	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 影響力	n			cow-single
 彷彿	u			no-source;fallback
 彼此	u			no-source;fallback
@@ -7396,7 +7396,7 @@ literal	pos	family	voice	note
 待續	u			no-source;fallback
 很	r			heuristic
 很喜歡	u			no-source;p1;fallback
-很多	u			no-source;p1;fallback
+很多	a,r			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 很大的	u			no-source;p1;fallback
 很好	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low
 很好的	u			no-source;p1;fallback
@@ -7729,7 +7729,7 @@ literal	pos	family	voice	note
 忽然	u			no-source;fallback
 忽然之間	n			len4-noun-heuristic
 忽略	v			cow-single
-忽視	n,v			cow-nv-unreviewed;trust-low
+忽視	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 忽隱忽現	u			no-source;fallback
 忽高忽低	u			no-source;fallback
 忿忿不平	u			no-source;fallback
@@ -7747,7 +7747,7 @@ literal	pos	family	voice	note
 怕	a,v			cow-multi
 怕醜	u			no-source;fallback
 怙惡不悛	u			no-source;fallback
-思	u			no-source;fallback
+思	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 思個	u			no-source;p1;fallback
 思前想後	u			no-source;fallback
 思哥	u			no-source;p1;fallback
@@ -7761,7 +7761,7 @@ literal	pos	family	voice	note
 思維	n			cow-single
 思維敏捷	u			no-source;fallback
 思緒	u			no-source;fallback
-思考	n,v			cow-nv-unreviewed;trust-low
+思考	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 思聽	u			no-source;p1;fallback
 思覺失調	u			no-source;fallback
 思語	u			no-source;p1;fallback
@@ -7838,7 +7838,7 @@ literal	pos	family	voice	note
 恐懼	n			cow-single
 恐襲	u			no-source;fallback
 恐龍	u			no-source;fallback
-恢復	n,v			cow-nv-unreviewed;trust-low
+恢復	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 恢復名譽	n,v			cow-nv-unreviewed;trust-low
 恢復常態	u			no-source;fallback
 恤衫	u			no-source;fallback
@@ -7879,7 +7879,7 @@ literal	pos	family	voice	note
 悠閒	n			cow-single
 患難之交	n			len4-noun-heuristic
 患難與共	u			no-source;fallback
-您	u			no-source;fallback
+您	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 您好	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low
 您的	u			no-source;p1;fallback
 悲	u			no-source;fallback
@@ -7925,7 +7925,7 @@ literal	pos	family	voice	note
 惡	n			cow-single;p1
 惡人	u			no-source;fallback
 惡劣	u			no-source;fallback
-惡化	n,v			cow-nv-unreviewed;trust-low
+惡化	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 惡名	u			no-source;fallback
 惡名昭彰	u			no-source;fallback
 惡夢	n			cow-single
@@ -8043,7 +8043,7 @@ literal	pos	family	voice	note
 感激不盡	u			no-source;fallback
 感激萬分	v			cow-single
 感興趣	v			cow-single
-感覺	n,v			cow-nv-unreviewed;trust-low
+感覺	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 感覺器官	u			no-source;fallback
 感觸良多	u			no-source;fallback
 愣頭愣腦	u			no-source;fallback
@@ -8070,7 +8070,7 @@ literal	pos	family	voice	note
 慢吞吞	u			no-source;fallback
 慢性疼痛	u			no-source;fallback
 慢悠悠	u			no-source;fallback
-慢慢	u			no-source;fallback
+慢慢	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 慢慢吞吞	u			no-source;fallback
 慢條斯理	u			no-source;fallback
 慢速	u			no-source;fallback
@@ -8139,7 +8139,7 @@ literal	pos	family	voice	note
 懦弱	u			no-source;fallback
 懲一儆百	u			no-source;fallback
 懲一警百	u			no-source;fallback
-懲罰	n,v			cow-nv-unreviewed;trust-low
+懲罰	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 懵	u			no-source;fallback
 懶	a			cow-single
 懶惰	n			cow-single
@@ -8153,7 +8153,7 @@ literal	pos	family	voice	note
 懷抱	v			cow-single
 懷柔政策	u			no-source;fallback
 懷璧其罪	u			no-source;fallback
-懷疑	n,v			cow-nv-unreviewed;trust-low
+懷疑	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 懷裏	u			no-source;fallback
 懸壺濟世	u			no-source;fallback
 懸崖峭壁	u			no-source;fallback
@@ -8179,7 +8179,7 @@ literal	pos	family	voice	note
 成何體統	u			no-source;fallback
 成個	u			no-source;fallback
 成全	u			no-source;fallback
-成功	n,v			cow-nv-unreviewed;trust-low
+成功	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 成功率	u			no-source;fallback
 成千上萬	u			no-source;fallback
 成千成萬	u			no-source;fallback
@@ -8190,7 +8190,7 @@ literal	pos	family	voice	note
 成年人	n			cow-single
 成年累月	u			no-source;fallback
 成敗得失	u			no-source;fallback
-成日	u			no-source;fallback
+成日	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 成晚	r			no-source;fallback;p1-audit;review;粵整晚
 成本	n			cow-single
 成本會計	u			no-source;fallback
@@ -8311,7 +8311,7 @@ literal	pos	family	voice	note
 戰績	u			no-source;fallback
 戰術導彈	u			no-source;fallback
 戰雲密佈	u			no-source;fallback
-戰鬥	n,v			cow-nv-unreviewed;trust-low
+戰鬥	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 戰鬥力	u			no-source;fallback
 戰鬥意志	u			no-source;fallback
 戰鬥機	u			no-source;fallback
@@ -8324,7 +8324,7 @@ literal	pos	family	voice	note
 戴罪立功	u			no-source;fallback
 户內	u			no-source;fallback
 户樞不蠹	u			no-source;fallback
-房	u			no-source;fallback
+房	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 房價	n			cow-single
 房子	n			cow-single
 房屋中介	u			no-source;fallback
@@ -8332,14 +8332,14 @@ literal	pos	family	voice	note
 房產中介	u			no-source;fallback
 房門	n			no-source;fallback;p1-audit;review;房門
 房間	n			cow-single
-所	u			no-source;fallback
+所	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 所以	x			heuristic
 所作所為	u			no-source;fallback
 所剩無幾	u			no-source;fallback
 所向無敵	u			no-source;fallback
 所在	u			no-source;fallback
 所屬單位	n			len4-noun-heuristic
-所有	u			no-source;fallback
+所有	a,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 所有權	n			cow-single
 所見所聞	u			no-source;fallback
 所見略同	u			no-source;fallback
@@ -8466,7 +8466,7 @@ literal	pos	family	voice	note
 打的	u			no-source;fallback
 打直	u			no-source;fallback
 打破	n,v			cow-nv-unreviewed;trust-low
-打算	n,v			cow-nv-unreviewed;trust-low
+打算	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 打翻身仗	u			no-source;fallback
 打草	u			no-source;fallback
 打草驚蛇	u			no-source;fallback
@@ -8508,7 +8508,7 @@ literal	pos	family	voice	note
 扶貧濟困	u			no-source;fallback
 批	n			cow-single
 批發	v			cow-single
-批評	n,v			cow-nv-unreviewed;trust-low
+批評	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 批量購買	u			no-source;fallback
 找	v			cow-single
 找不自在	u			no-source;fallback
@@ -8518,7 +8518,7 @@ literal	pos	family	voice	note
 承受	v			cow-single
 承擔	v			cow-single
 承租	u			no-source;fallback
-承認	n,v			cow-nv-unreviewed;p1;trust-low
+承認	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 承諾	n,v			cow-nv-unreviewed;trust-low
 承辦	u			no-source;fallback
 技	u			no-source;fallback
@@ -8568,12 +8568,12 @@ literal	pos	family	voice	note
 投機倒把	u			no-source;fallback
 投河自盡	u			no-source;fallback
 投石問路	u			no-source;fallback
-投票	n,v			cow-nv-unreviewed;trust-low
+投票	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 投票表決	u			no-source;fallback
 投筆從戎	u			no-source;fallback
 投行	u			no-source;fallback
 投訴	u			no-source;fallback
-投資	n,v			cow-nv-unreviewed;trust-low
+投資	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 投資組合	u			no-source;fallback
 投資者	u			no-source;fallback
 投資銀行	u			no-source;fallback
@@ -8672,7 +8672,7 @@ literal	pos	family	voice	note
 拒不接受	u			no-source;fallback
 拒之門外	n			len4-noun-heuristic
 拒收	u			no-source;fallback
-拒絕	n,v			cow-nv-unreviewed;trust-low
+拒絕	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 拓寬	n			cow-single
 拓展	u			no-source;fallback
 拔	v			cow-single
@@ -8756,7 +8756,7 @@ literal	pos	family	voice	note
 指手劃腳	u			no-source;fallback
 指手畫腳	u			no-source;fallback
 指指點點	u			no-source;fallback
-指揮	n,v			cow-nv-unreviewed;trust-low
+指揮	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 指教	u			no-source;fallback
 指數	n			cow-single
 指日可待	u			no-source;fallback
@@ -8807,7 +8807,7 @@ literal	pos	family	voice	note
 挽回	v			cow-single
 挽留	u			no-source;fallback
 捅馬蜂窩	u			no-source;fallback
-捉	u			no-source;fallback
+捉	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 捉住	v			verb-suffix;heuristic
 捉實	u			no-source;fallback
 捉拿歸案	u			no-source;fallback
@@ -8894,7 +8894,7 @@ literal	pos	family	voice	note
 接下來	u			no-source;fallback
 接住	v			verb-suffix;heuristic
 接力賽跑	n			audit-med;review
-接受	n,v			cow-nv-unreviewed;p1;trust-low
+接受	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 接吻	v			cow-single
 接手	v			cow-single
 接收	n,v			cow-nv-unreviewed;trust-low
@@ -8907,7 +8907,7 @@ literal	pos	family	voice	note
 接近	n,v			cow-nv-unreviewed;trust-low
 接通	u			no-source;fallback
 接過	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low
-控制	n,v			cow-nv-unreviewed;trust-low
+控制	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 控制板	u			no-source;fallback
 控股	u			no-source;fallback
 控股公司	n			len4-noun-heuristic
@@ -8945,7 +8945,7 @@ literal	pos	family	voice	note
 揉	v			cow-single
 描述	n,v			cow-nv-unreviewed;trust-low
 提	v			cow-single
-提供	n,v			cow-nv-unreviewed;trust-low
+提供	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 提出	v			cow-single
 提到	v			cow-single
 提升	n,v			cow-nv-unreviewed;trust-low
@@ -8959,13 +8959,13 @@ literal	pos	family	voice	note
 提示	v			cow-single
 提綱挈領	u			no-source;fallback
 提線木偶	u			no-source;fallback
-提議	n,v			cow-nv-unreviewed;trust-low
+提議	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 提貨	u			no-source;fallback
 提起	v			cow-single
 提速	u			no-source;fallback
 提醒	v			cow-single
-提高	n,v			cow-nv-unreviewed;trust-low
-插	u			no-source;fallback
+提高	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+插	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 插件	n			no-source;p1;fallback;p1-audit;review;plugin
 插入	v			cow-single
 插嘴	v			cow-single
@@ -9035,7 +9035,7 @@ literal	pos	family	voice	note
 搗蛋	u			no-source;fallback
 搜尋	n,v			cow-nv-unreviewed;trust-low
 搜尋引擎	u			no-source;fallback
-搜索	n,v			cow-nv-unreviewed;trust-low
+搜索	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 搜腸刮肚	u			no-source;fallback
 搞	v			no-source;fallback;p1-cleanup;canto-heuristic;review
 搞到	u			no-source;fallback
@@ -9045,10 +9045,10 @@ literal	pos	family	voice	note
 搞砸	u			no-source;fallback
 搞笑	u			no-source;fallback
 搞錯	u			no-source;fallback
-搣	u			no-source;fallback
+搣	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 搬	u			no-source;fallback
 搬弄是非	u			no-source;fallback
-搭	u			no-source;fallback
+搭	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 搭檔	u			no-source;fallback
 搭車	n			cow-single
 搵	v			no-source;p1;fallback;p1-cleanup;canto-heuristic;review
@@ -9088,7 +9088,7 @@ literal	pos	family	voice	note
 撕心裂肺	u			no-source;fallback
 撕破臉	u			no-source;fallback
 撕破臉皮	u			no-source;fallback
-撚	u			no-source;fallback
+撚	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 撞	v			cow-single
 撞擊	n,v			cow-nv-unreviewed;trust-low
 撤	u			no-source;fallback
@@ -9138,7 +9138,7 @@ literal	pos	family	voice	note
 擒賊擒王	u			no-source;fallback
 擔	n			cow-single
 擔任	v			cow-single
-擔心	n,v			cow-nv-unreviewed;trust-low
+擔心	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 擔憂	n			cow-single
 擘	u			no-source;fallback
 據	a			cow-single
@@ -9193,7 +9193,7 @@ literal	pos	family	voice	note
 支出費用	u			no-source;fallback
 支吾以對	u			no-source;fallback
 支吾其詞	u			no-source;fallback
-支持	n,v			cow-nv-unreviewed;trust-low
+支持	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 支援	n,v			cow-nv-unreviewed;trust-low
 支撐	n,v			cow-nv-unreviewed;trust-low
 支支吾吾	u			no-source;fallback
@@ -9203,7 +9203,7 @@ literal	pos	family	voice	note
 支隊	u			no-source;fallback
 支離破碎	u			no-source;fallback
 攰	u			no-source;fallback
-收	u			no-source;fallback
+收	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 收之桑榆	n			len4-noun-heuristic
 收入	n			cow-single
 收到	v			cow-single
@@ -9251,7 +9251,7 @@ literal	pos	family	voice	note
 改制	u			no-source;fallback
 改名	v			cow-single
 改名換姓	u			no-source;fallback
-改善	n,v			cow-nv-unreviewed;trust-low
+改善	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 改天	u			no-source;fallback
 改弦易轍	u			no-source;fallback
 改換門庭	u			no-source;fallback
@@ -9261,18 +9261,18 @@ literal	pos	family	voice	note
 改爲	u			no-source;fallback
 改良主義	n			len4-noun-heuristic
 改良品種	u			no-source;fallback
-改變	n,v			cow-nv-unreviewed;trust-low
+改變	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 改造	v			cow-single
 改過自新	v			cow-single
 改邪歸正	u			no-source;fallback
-改革	n,v			cow-nv-unreviewed;trust-low
+改革	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 改革開放	u			no-source;fallback
 攻	v			no-source;fallback;p1-audit;review;攻擊
 攻其不備	v			cow-single
 攻勢	n			cow-single
 攻城掠地	u			no-source;fallback
 攻城略地	u			no-source;fallback
-攻擊	n,v			cow-nv-unreviewed;trust-low
+攻擊	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 放	v			cow-single
 放下	v			cow-single
 放下包袱	u			no-source;fallback
@@ -9294,7 +9294,7 @@ literal	pos	family	voice	note
 放手	v			cow-single
 放手一搏	u			no-source;fallback
 放手去做	u			no-source;fallback
-放棄	n,v			cow-nv-unreviewed;trust-low
+放棄	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 放榜	u			no-source;fallback
 放浪不羈	u			no-source;fallback
 放熱反應	n			cow-single
@@ -9351,7 +9351,7 @@ literal	pos	family	voice	note
 敏	u			no-source;fallback
 敏姨	u			no-source;p1;fallback
 敏感	u			no-source;fallback
-救	u			no-source;fallback
+救	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 救世主	u			no-source;fallback
 救人	u			no-source;fallback
 救人一命	u			no-source;fallback
@@ -9397,7 +9397,7 @@ literal	pos	family	voice	note
 教程	u			no-source;fallback
 教練	n			cow-single
 教職員工	u			no-source;fallback
-教育	n,v			cow-nv-unreviewed;trust-low
+教育	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 教育制度	u			no-source;fallback
 教育大學	n			len4-noun-heuristic
 教育學院	n			len4-noun-heuristic
@@ -9435,7 +9435,7 @@ literal	pos	family	voice	note
 敲敲打打	u			no-source;fallback
 敲鑼打鼓	u			no-source;fallback
 敲門	u			no-source;fallback
-整	u			no-source;fallback
+整	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 整個	u			no-source;fallback
 整到	u			no-source;fallback
 整天	u			no-source;fallback
@@ -9555,7 +9555,7 @@ literal	pos	family	voice	note
 斯洛伐克	u			no-source;fallback
 斯科普里	u			no-source;fallback
 斯里蘭卡	u			no-source;fallback
-新	u			no-source;fallback
+新	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 新事物	u			no-source;fallback
 新人	u			no-source;fallback
 新人新事	u			no-source;fallback
@@ -9700,7 +9700,7 @@ literal	pos	family	voice	note
 日趨嚴重	u			no-source;fallback
 日頭	u			no-source;fallback
 旨在	u			no-source;fallback
-早	u			no-source;fallback
+早	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 早上	n			cow-single
 早出晚歸	u			no-source;fallback
 早就	u			no-source;fallback
@@ -9840,7 +9840,7 @@ literal	pos	family	voice	note
 是非	u			no-source;fallback
 是非不分	u			no-source;fallback
 是非之地	n			len4-noun-heuristic
-時	u			no-source;fallback
+時	n,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 時不再來	u			no-source;fallback
 時代	n			cow-single
 時侯	u			no-source;p1;fallback
@@ -9875,7 +9875,7 @@ literal	pos	family	voice	note
 晏	u			no-source;fallback
 晏子春秋	u			no-source;fallback
 晏晝	u			no-source;fallback
-晒	u			no-source;p1;fallback
+晒	v,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 晚	u			no-source;fallback
 晚上	n			cow-single
 晚報	u			no-source;fallback
@@ -9950,7 +9950,7 @@ literal	pos	family	voice	note
 暢通無阻	u			no-source;fallback
 暢順	u			no-source;fallback
 暫且	u			no-source;fallback
-暫停	n,v			cow-nv-unreviewed;trust-low
+暫停	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 暫時	u			no-source;fallback
 暫緩	n,v			cow-nv-unreviewed;trust-low
 暮	u			no-source;fallback
@@ -9988,7 +9988,7 @@ literal	pos	family	voice	note
 曳	u			no-source;fallback
 曳曳	u			no-source;fallback
 更	r			heuristic
-更加	u			no-source;fallback
+更加	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 更勝一籌	u			no-source;fallback
 更多的	u			no-source;p1;fallback
 更好	a			verb-suffix;p1;heuristic;p1-audit;review;verb-suffix假陽；形「更好」
@@ -10152,7 +10152,7 @@ literal	pos	family	voice	note
 有效期	u			no-source;fallback
 有教無類	u			no-source;fallback
 有數	u			no-source;fallback
-有時	u			no-source;fallback
+有時	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 有時候	u			no-source;fallback
 有朝一日	u			no-source;fallback
 有期徒刑	u			no-source;fallback
@@ -10225,7 +10225,7 @@ literal	pos	family	voice	note
 朋比為奸	u			no-source;fallback
 服	u			no-source;fallback
 服侍	v			cow-single
-服務	n,v			cow-nv-unreviewed;trust-low
+服務	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 服務員	n			cow-single
 服務器	u			no-source;fallback
 服務業	u			no-source;fallback
@@ -10314,7 +10314,7 @@ literal	pos	family	voice	note
 末梢神經	u			no-source;fallback
 末流	u			no-source;fallback
 末路	n			cow-single
-本	u			no-source;p1;fallback
+本	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 本事	u			no-source;fallback
 本人	u			no-source;fallback
 本位主義	n			len4-noun-heuristic
@@ -10403,7 +10403,7 @@ literal	pos	family	voice	note
 林布	u			no-source;p1;fallback
 林林總總	u			no-source;fallback
 林芝地區	n			len4-noun-heuristic
-果	u			no-source;p1;fallback
+果	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 果不其然	u			no-source;fallback
 果實累累	u			no-source;fallback
 果斷	u			no-source;fallback
@@ -10532,7 +10532,7 @@ literal	pos	family	voice	note
 植物保護	u			no-source;fallback
 植物纖維	u			no-source;fallback
 椰子	n			cow-single
-楂	u			no-source;fallback
+楂	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 楔形文字	u			no-source;fallback
 楚	u			no-source;fallback
 楚楚	u			no-source;fallback
@@ -10626,7 +10626,7 @@ literal	pos	family	voice	note
 模稜兩可	n			cow-single
 模糊	n			cow-single
 模糊邏輯	u			no-source;fallback
-樣	u			no-source;fallback
+樣	n,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 樣品	n			cow-single
 樣嘢	u			no-source;p1;fallback
 樣子	n			cow-single
@@ -10692,7 +10692,7 @@ literal	pos	family	voice	note
 橫躺豎卧	u			no-source;fallback
 橫過	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 檔	n			cow-single
-檢查	n,v			cow-nv-unreviewed;trust-low
+檢查	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 檢測	u			no-source;fallback
 檢索	n			cow-single
 檯	u			no-source;p1;fallback
@@ -10723,7 +10723,7 @@ literal	pos	family	voice	note
 欠	v			cow-single
 欠債	v			cow-single
 欠缺	u			no-source;fallback
-次	u			no-source;p1;fallback
+次	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 次序	n			cow-single
 次數	n			cow-single
 次次	u			no-source;fallback
@@ -10751,7 +10751,7 @@ literal	pos	family	voice	note
 欺善怕惡	u			no-source;fallback
 欺詐	n,v			cow-nv-unreviewed;trust-low
 欺軟怕硬	u			no-source;fallback
-欺騙	n,v			cow-nv-unreviewed;trust-low
+欺騙	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 欽佩	n,v			cow-nv-unreviewed;trust-low
 款	u			no-source;fallback
 款式	n			cow-single
@@ -10778,7 +10778,7 @@ literal	pos	family	voice	note
 歡笑	u			no-source;fallback
 歡聲笑語	u			no-source;fallback
 歡聲雷動	u			no-source;fallback
-歡迎	n,v			cow-nv-unreviewed;trust-low
+歡迎	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 歡迎光臨	u			no-source;fallback
 止	u			no-source;p1;fallback
 止咳水	u			no-source;fallback
@@ -10787,7 +10787,7 @@ literal	pos	family	voice	note
 止血	v			cow-single
 止跌回升	u			no-source;fallback
 止跌回穩	u			no-source;fallback
-正	u			no-source;fallback
+正	a,r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 正三角形	n			cow-single
 正中	u			no-source;fallback
 正中下懷	u			no-source;fallback
@@ -11223,13 +11223,13 @@ literal	pos	family	voice	note
 污水處理	u			no-source;fallback
 污濁	u			no-source;fallback
 污穢	n			cow-single
-污糟	u			no-source;fallback
+污糟	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 污點	n			cow-single
 汪	u			no-source;fallback
 汪洋大海	u			no-source;fallback
 汲取教訓	u			no-source;fallback
 決勝千里	u			no-source;fallback
-決定	n,v			cow-nv-unreviewed;trust-low
+決定	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 決心	n			cow-single
 決斷	u			no-source;fallback
 決賽	u			no-source;fallback
@@ -11274,7 +11274,7 @@ literal	pos	family	voice	note
 沒錢	u			no-source;p1;fallback
 沒錯	u			no-source;fallback
 沒關係	u			no-source;fallback
-沖	u			no-source;fallback
+沖	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 沖涼	u			no-source;fallback
 沙	n			cow-single
 沙丁胺醇	n			cow-single
@@ -11472,7 +11472,7 @@ literal	pos	family	voice	note
 浪得虛名	u			no-source;fallback
 浪漫	u			no-source;fallback
 浪潮	u			no-source;fallback
-浪費	n,v			cow-nv-unreviewed;trust-low
+浪費	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 浪跡天涯	u			no-source;fallback
 浮	u			no-source;fallback
 浮光掠影	u			no-source;fallback
@@ -11530,7 +11530,7 @@ literal	pos	family	voice	note
 消沉	n,v			cow-nv-unreviewed;trust-low
 消滅	n,v			cow-nv-unreviewed;trust-low
 消瘦	n			cow-single
-消耗	n,v			cow-nv-unreviewed;trust-low
+消耗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 消聲匿跡	u			no-source;fallback
 消腫	u			no-source;fallback
 消費品	n			cow-single
@@ -11553,7 +11553,7 @@ literal	pos	family	voice	note
 液體燃料	u			no-source;fallback
 涵蓋	u			no-source;fallback
 涸澤而漁	u			no-source;fallback
-涼	u			no-source;p1;fallback
+涼	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 涼快	a			cow-single
 涼爽	u			no-source;fallback
 涼鞋	n			cow-single
@@ -11642,7 +11642,7 @@ literal	pos	family	voice	note
 清明	u			no-source;fallback
 清晨	n			cow-single
 清晰	u			no-source;fallback
-清楚	u			no-source;fallback
+清楚	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 清水衙門	u			no-source;fallback
 清洗	u			no-source;fallback
 清涼	u			no-source;fallback
@@ -11675,8 +11675,8 @@ literal	pos	family	voice	note
 渙然冰釋	u			no-source;fallback
 減	u			no-source;fallback
 減免	u			no-source;fallback
-減少	n,v			cow-nv-unreviewed;trust-low
-減弱	n,v			cow-nv-unreviewed;trust-low
+減少	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+減弱	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 減息	u			no-source;fallback
 減慢	v			cow-single
 減產	n			cow-single
@@ -11706,7 +11706,7 @@ literal	pos	family	voice	note
 渴求	u			no-source;fallback
 游	u			no-source;p1;fallback
 游水	v			cow-single
-游泳	n,v			cow-nv-unreviewed;trust-low
+游泳	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 渺小	u			no-source;fallback
 渺無人煙	u			no-source;fallback
 渺無音信	u			no-source;fallback
@@ -11739,7 +11739,7 @@ literal	pos	family	voice	note
 源遠流長	u			no-source;fallback
 源頭	u			no-source;fallback
 準	u			no-source;fallback
-準備	n,v			cow-nv-unreviewed;trust-low
+準備	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 準備就緒	u			no-source;fallback
 準時	u			no-source;fallback
 準許	u			no-source;fallback
@@ -12249,7 +12249,7 @@ literal	pos	family	voice	note
 爆玉米花	u			no-source;fallback
 爆發	n,v			cow-nv-unreviewed;trust-low
 爆米花	u			no-source;fallback
-爛	u			no-source;fallback
+爛	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 爪	n			cow-single
 爬	v			cow-single
 爬山涉水	u			no-source;fallback
@@ -12261,7 +12261,7 @@ literal	pos	family	voice	note
 爭強好勝	u			no-source;fallback
 爭權奪利	u			no-source;fallback
 爭論不休	u			no-source;fallback
-爲	u			no-source;fallback
+爲	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 爲主	u			no-source;fallback
 爲了	u			no-source;fallback
 爲人	u			no-source;fallback
@@ -12366,7 +12366,7 @@ literal	pos	family	voice	note
 物超所值	u			no-source;fallback
 物體	n			cow-single
 特例	u			no-source;fallback
-特別	u			no-source;p1;fallback
+特別	a,r			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 特務組織	n			len4-noun-heuristic
 特地	u			no-source;fallback
 特大	u			no-source;fallback
@@ -12394,7 +12394,7 @@ literal	pos	family	voice	note
 牽頭	u			no-source;fallback
 犀利	u			no-source;fallback
 犁庭掃閭	u			no-source;fallback
-犧牲	n,v			cow-nv-unreviewed;trust-low
+犧牲	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 犬儒主義	n			len4-noun-heuristic
 犬馬之勞	n			len4-noun-heuristic
 犯	v			cow-single
@@ -12500,7 +12500,7 @@ literal	pos	family	voice	note
 獨霸一方	u			no-source;fallback
 獲	v			cow-single
 獲利	v			cow-single
-獲得	n,v			cow-nv-unreviewed;trust-low
+獲得	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 獲悉	u			no-source;fallback
 獲獎	u			no-source;fallback
 獲益良多	u			no-source;fallback
@@ -12588,7 +12588,7 @@ literal	pos	family	voice	note
 球墨鑄鐵	u			no-source;fallback
 球迷	u			no-source;fallback
 球鞋	n			cow-single
-理	u			no-source;fallback
+理	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 理化因素	u			no-source;fallback
 理學博士	u			no-source;fallback
 理屈詞窮	u			no-source;fallback
@@ -12757,7 +12757,7 @@ literal	pos	family	voice	note
 生理鹽水	u			no-source;fallback
 生生不息	u			no-source;fallback
 生生世世	u			no-source;fallback
-生產	n,v			cow-nv-unreviewed;trust-low
+生產	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 生產力	n			cow-single
 生產勞動	u			no-source;fallback
 生產基金	u			no-source;fallback
@@ -12843,14 +12843,14 @@ literal	pos	family	voice	note
 甲骨文	u			no-source;fallback
 甲骨文字	u			no-source;fallback
 申冤	u			no-source;fallback
-申請	n,v			cow-nv-unreviewed;trust-low
+申請	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 申購	u			no-source;fallback
 甴	u			no-source;fallback
-男	u			no-source;p1;fallback
+男	a,n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 男主角	u			no-source;fallback
 男人	n			cow-single
 男人老狗	u			no-source;fallback
-男仔	u			no-source;fallback
+男仔	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 男兒	u			no-source;fallback
 男兒本色	u			no-source;fallback
 男友	u			no-source;fallback
@@ -12912,7 +12912,7 @@ literal	pos	family	voice	note
 略見一斑	u			no-source;fallback
 略識之無	n			len4-noun-heuristic
 略跡原情	u			no-source;fallback
-番	u			no-source;fallback
+番	r,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 番茄紅素	n			cow-single
 番薯	n			cow-single
 番鹼	u			no-source;p1;fallback
@@ -12944,7 +12944,7 @@ literal	pos	family	voice	note
 異軍突起	u			no-source;fallback
 異鄉	u			no-source;fallback
 異香撲鼻	u			no-source;fallback
-當	u			no-source;fallback
+當	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 當下	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 當且僅當	u			no-source;fallback
 當中	u			no-source;fallback
@@ -12966,7 +12966,7 @@ literal	pos	family	voice	note
 當日	u			no-source;fallback
 當時	n			cow-single
 當晚	u			no-source;fallback
-當然	u			no-source;fallback
+當然	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 當真	u			no-source;fallback
 當着	u			no-source;fallback
 當耳邊風	u			no-source;fallback
@@ -13080,7 +13080,7 @@ literal	pos	family	voice	note
 發問	u			no-source;fallback
 發夢	u			no-source;fallback
 發射	n,v			cow-nv-unreviewed;trust-low
-發展	n,v			cow-nv-unreviewed;trust-low
+發展	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 發抖	n,v			cow-nv-unreviewed;trust-low
 發揚	u			no-source;fallback
 發揚光大	u			no-source;fallback
@@ -13093,7 +13093,7 @@ literal	pos	family	voice	note
 發火	n			cow-single
 發燒	n,v			cow-single;p1-audit;review;primary 錯：發燒主為動（我發燒）；病名可附 n
 發狂	n			cow-single
-發現	n,v			cow-nv-unreviewed;trust-low
+發現	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 發生	n,v			cow-nv-unreviewed;trust-low
 發生關係	u			no-source;fallback
 發瘋	u			no-source;fallback
@@ -13205,7 +13205,7 @@ literal	pos	family	voice	note
 皇親國戚	u			no-source;fallback
 皓	u			no-source;fallback
 皓月當空	u			no-source;fallback
-皓臻	u			no-source;p1;fallback
+皓臻	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 皓首窮經	u			no-source;fallback
 皮	n			cow-single
 皮下注射	u			no-source;fallback
@@ -13320,9 +13320,9 @@ literal	pos	family	voice	note
 直選	u			no-source;fallback
 直銷	u			no-source;fallback
 直頭	u			no-source;fallback
-相	u			no-source;fallback
+相	a,n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 相似	n,v			cow-nv-unreviewed;trust-low
-相信	n,v			cow-nv-unreviewed;p1;trust-low
+相信	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
 相反	n			cow-single
 相同	n			cow-single
 相夫教子	u			no-source;fallback
@@ -13620,11 +13620,11 @@ literal	pos	family	voice	note
 石家莊	u			no-source;fallback
 石蕊試紙	u			no-source;fallback
 石頭	n			cow-single
-砌	u			no-source;fallback
+砌	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 砍	n			cow-single
 研發	u			no-source;fallback
 研磨材料	u			no-source;fallback
-研究	n,v			cow-nv-unreviewed;trust-low
+研究	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 研究所	u			no-source;fallback
 研究生	u			no-source;fallback
 研究院	n			cow-single
@@ -13634,13 +13634,13 @@ literal	pos	family	voice	note
 砰	u			no-source;fallback
 破	u			no-source;fallback
 破口大罵	u			no-source;fallback
-破壞	n,v			cow-nv-unreviewed;trust-low
+破壞	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 破敗不堪	u			no-source;fallback
 破曉	n			cow-single
 破案	u			no-source;fallback
 破涕為笑	u			no-source;fallback
 破瓦寒窯	u			no-source;fallback
-破產	n,v			cow-nv-unreviewed;trust-low
+破產	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 破碎	n,v			cow-nv-unreviewed;trust-low
 破竹之勢	n	idiom		audit-med;review
 破綻	u			no-source;fallback
@@ -13880,7 +13880,7 @@ literal	pos	family	voice	note
 秩序	n			cow-single
 移	v			no-source;fallback;p1-audit;review;移動
 移交	v			cow-single
-移動	n,v			cow-nv-unreviewed;trust-low
+移動	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 移動設備	n			len4-noun-heuristic
 移山填海	u			no-source;fallback
 移情別戀	u			no-source;fallback
@@ -13955,7 +13955,7 @@ literal	pos	family	voice	note
 積極反應	u			no-source;fallback
 積極性	n			cow-single
 積羽沉舟	u			no-source;fallback
-積蓄	n,v			cow-nv-unreviewed;trust-low
+積蓄	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 穎	u			no-source;fallback
 穩	u			no-source;fallback
 穩中有降	u			no-source;fallback
@@ -13973,7 +13973,7 @@ literal	pos	family	voice	note
 穩陣	u			no-source;fallback
 穴	n			cow-single
 究其根源	u			no-source;fallback
-究竟	u			no-source;fallback
+究竟	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 空	n			cow-single
 空中	n			cow-single
 空中小姐	u			no-source;fallback
@@ -14024,7 +14024,7 @@ literal	pos	family	voice	note
 突如	u			no-source;p1;fallback
 突如其來	u			no-source;fallback
 突擊	n			cow-single
-突然	u			no-source;fallback
+突然	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 突然之間	n			len4-noun-heuristic
 突發	v			cow-single
 突破	n,v			no-source;fallback;p1-audit;review;breakthrough
@@ -14061,7 +14061,7 @@ literal	pos	family	voice	note
 立於不敗	u			no-source;fallback
 立杆見影	u			no-source;fallback
 立此存照	u			no-source;fallback
-立法	n,v			cow-nv-unreviewed;trust-low
+立法	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 立法委員	u			no-source;fallback
 立法機關	n			cow-single
 立竿見影	u			no-source;fallback
@@ -14078,7 +14078,7 @@ literal	pos	family	voice	note
 站不住腳	u			no-source;fallback
 站在	u			no-source;p1;fallback
 竟	u			no-source;fallback
-竟然	u			no-source;fallback
+竟然	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 章回小説	u			no-source;fallback
 章魚	n			cow-single
 童年	n			cow-single
@@ -14089,7 +14089,7 @@ literal	pos	family	voice	note
 端	n			cow-single
 端正	u			no-source;fallback
 端莊	u			no-source;fallback
-競爭	n,v			cow-nv-unreviewed;trust-low
+競爭	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 競爭模式	n			len4-noun-heuristic
 競爭產品	n			len4-noun-heuristic
 竹	u			no-source;fallback
@@ -14171,7 +14171,7 @@ literal	pos	family	voice	note
 筋	u			no-source;fallback
 筋疲力盡	n			cow-single
 筒	n			cow-single
-答	u			no-source;fallback
+答	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 答應	v			cow-single
 答案	u			no-source;fallback
 答覆	n,v			cow-nv-unreviewed;trust-low
@@ -14189,7 +14189,7 @@ literal	pos	family	voice	note
 管	n			cow-single
 管中窺豹	u			no-source;fallback
 管束	u			no-source;fallback
-管理	n,v			cow-nv-unreviewed;trust-low
+管理	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 管理功能	u			no-source;fallback
 管理員	n			cow-single
 管理接口	u			no-source;fallback
@@ -14344,7 +14344,7 @@ literal	pos	family	voice	note
 系統	n			cow-single
 糾纏	n			cow-single
 糾纏不清	n			cow-single
-紀念	n,v			cow-nv-unreviewed;trust-low
+紀念	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 紀念郵票	u			no-source;fallback
 紀錄	u			no-source;fallback
 約	u			no-source;fallback
@@ -14419,7 +14419,7 @@ literal	pos	family	voice	note
 累積	n			cow-single
 累計	u			no-source;fallback
 累贅	n			cow-single
-細	u			no-source;p1;fallback
+細	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 細佬	u			no-source;fallback
 細個	u			no-source;fallback
 細嚼慢嚥	u			no-source;fallback
@@ -14461,7 +14461,7 @@ literal	pos	family	voice	note
 終審	u			no-source;fallback
 終審法院	u			no-source;fallback
 終年積雪	u			no-source;fallback
-終於	u			no-source;fallback
+終於	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 終極	n			cow-single
 終生伴侶	u			no-source;fallback
 終究	u			no-source;fallback
@@ -14475,7 +14475,7 @@ literal	pos	family	voice	note
 組建	u			no-source;fallback
 組成	n,v			cow-nv-unreviewed;trust-low
 組成部分	n			cow-single
-組織	n,v			cow-nv-unreviewed;trust-low
+組織	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 組織生活	u			no-source;fallback
 組織領導	u			no-source;fallback
 結	n			cow-single
@@ -14489,7 +14489,7 @@ literal	pos	family	voice	note
 結尾	v			cow-single
 結局	n			cow-single
 結拜兄弟	u			no-source;fallback
-結束	n,v			cow-nv-unreviewed;trust-low
+結束	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 結束工作	u			no-source;fallback
 結果	n,v			cow-nv-unreviewed;trust-low
 結核桿菌	u			no-source;fallback
@@ -14502,7 +14502,7 @@ literal	pos	family	voice	note
 結球甘藍	u			no-source;fallback
 結界	u			no-source;fallback
 結社自由	u			no-source;fallback
-結算	n,v			cow-nv-unreviewed;trust-low
+結算	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 結算方式	u			no-source;fallback
 結紮	u			no-source;fallback
 結紮手術	u			no-source;fallback
@@ -14550,13 +14550,13 @@ literal	pos	family	voice	note
 給他	u			no-source;p1;fallback
 給她	u			no-source;p1;fallback
 絮絮叨叨	u			no-source;fallback
-統一	n,v			cow-nv-unreviewed;trust-low
+統一	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 統一戰線	u			no-source;fallback
 統一招生	u			no-source;fallback
 統一發票	u			no-source;fallback
 統一規劃	u			no-source;fallback
 統一資源	u			no-source;fallback
-統治	n,v			cow-nv-unreviewed;trust-low
+統治	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 統治階級	u			no-source;fallback
 統籌兼顧	u			no-source;fallback
 統購統銷	u			no-source;fallback
@@ -14689,7 +14689,7 @@ literal	pos	family	voice	note
 縣長	u			no-source;fallback
 縫縫連連	u			no-source;fallback
 縮	u			no-source;p1;fallback
-縮小	n,v			cow-nv-unreviewed;trust-low
+縮小	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 縮成一團	u			no-source;fallback
 縮手	u			no-source;fallback
 縮減	n			cow-single
@@ -14923,7 +14923,7 @@ literal	pos	family	voice	note
 老於世故	u			no-source;fallback
 老有所養	u			no-source;fallback
 老死不相往來	u			no-source;fallback
-老母	u			no-source;fallback
+老母	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 老氣橫秋	u			no-source;fallback
 老淚縱橫	u			no-source;fallback
 老爺	u			no-source;fallback
@@ -14941,7 +14941,7 @@ literal	pos	family	voice	note
 老蔫	u			no-source;p1;fallback
 老虎	n			cow-single
 老謀深算	u			no-source;fallback
-老豆	u			no-source;fallback
+老豆	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 老資格	n			cow-single
 老鄉	u			no-source;fallback
 老闆	n			cow-single
@@ -14949,7 +14949,7 @@ literal	pos	family	voice	note
 老鼠	n			cow-single
 考	u			no-source;fallback
 考古	u			no-source;fallback
-考慮	n,v			cow-nv-unreviewed;trust-low
+考慮	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 考核	u			no-source;fallback
 考研	u			no-source;fallback
 考試	n			cow-single
@@ -14965,7 +14965,7 @@ literal	pos	family	voice	note
 而立之年	n			len4-noun-heuristic
 耍	u			no-source;fallback
 耍嘴皮子	u			no-source;fallback
-耐	u			no-source;fallback
+耐	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 耐心	u			no-source;fallback
 耐性	n			cow-single
 耐火材料	u			no-source;fallback
@@ -15031,7 +15031,7 @@ literal	pos	family	voice	note
 聯立方程	u			no-source;fallback
 聯絡	n			cow-single
 聯網	u			no-source;fallback
-聯繫	n,v			cow-nv-unreviewed;trust-low
+聯繫	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 聯繫匯率	u			no-source;fallback
 聯繫方式	u			no-source;fallback
 聯邦德國	u			no-source;fallback
@@ -15039,7 +15039,7 @@ literal	pos	family	voice	note
 聰明	a			no-source;fallback;p1-audit;review;smart
 聰明一世	u			no-source;fallback
 聰明絕頂	u			no-source;fallback
-聲	u			no-source;fallback
+聲	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 聲名大噪	u			no-source;fallback
 聲名狼藉	n			cow-single
 聲名遠播	u			no-source;fallback
@@ -15593,11 +15593,11 @@ literal	pos	family	voice	note
 花草樹木	u			no-source;fallback
 花邊新聞	u			no-source;fallback
 花錢	u			no-source;fallback
-芷純	u			no-source;p1;fallback
+芷純	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 苛刻	u			no-source;fallback
 苛捐雜税	u			no-source;fallback
 苛責	u			no-source;fallback
-若	u			no-source;fallback
+若	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 若即若離	u			no-source;fallback
 若干	u			no-source;fallback
 若是	u			no-source;fallback
@@ -15899,7 +15899,7 @@ literal	pos	family	voice	note
 處境	u			no-source;fallback
 處女	n			cow-single
 處於	v			cow-single
-處理	n,v			cow-nv-unreviewed;trust-low
+處理	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 處理器	u			no-source;fallback
 處理方法	n			len4-noun-heuristic
 處處碰壁	u			no-source;fallback
@@ -15931,7 +15931,7 @@ literal	pos	family	voice	note
 號稱	u			no-source;fallback
 虧	u			no-source;fallback
 虧佬	u			no-source;fallback
-虧損	n,v			cow-nv-unreviewed;trust-low
+虧損	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 虧本	n			cow-single
 虧本出售	u			no-source;fallback
 虹吸現象	n			len4-noun-heuristic
@@ -16075,7 +16075,7 @@ literal	pos	family	voice	note
 行開	v			verb-suffix;heuristic
 行雲流水	u			no-source;fallback
 術	u			no-source;fallback
-街	u			no-source;fallback
+街	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 街上	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 街口	u			no-source;fallback
 街坊	u			no-source;fallback
@@ -16096,7 +16096,7 @@ literal	pos	family	voice	note
 衝擊	n,v			cow-nv-unreviewed;trust-low
 衝昏頭腦	u			no-source;fallback
 衝破	u			no-source;fallback
-衝突	n,v			cow-nv-unreviewed;trust-low
+衝突	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 衝鋒	u			no-source;fallback
 衞星	n			cow-single
 衞生設備	n			len4-noun-heuristic
@@ -16124,8 +16124,8 @@ literal	pos	family	voice	note
 表姐	n			cow-single
 表情	u			no-source;fallback
 表意文字	u			no-source;fallback
-表決	n,v			cow-nv-unreviewed;trust-low
-表演	n,v			cow-nv-unreviewed;trust-low
+表決	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+表演	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 表現	n,v			cow-nv-unreviewed;trust-low
 表白	u			no-source;fallback
 表示	v			cow-single
@@ -16176,7 +16176,7 @@ literal	pos	family	voice	note
 補丁	n			cow-single
 補偏救弊	u			no-source;fallback
 補償	n,v			cow-nv-unreviewed;trust-low
-補充	n,v			cow-nv-unreviewed;trust-low
+補充	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 補助	u			no-source;fallback
 補救	v			cow-single
 補習	u			no-source;fallback
@@ -16212,7 +16212,7 @@ literal	pos	family	voice	note
 製成	u			no-source;fallback
 製藥	u			no-source;fallback
 製藥企業	u			no-source;fallback
-製造	n,v			cow-nv-unreviewed;trust-low
+製造	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 製造商	u			no-source;fallback
 製造業	n			cow-single
 複印	v			cow-single
@@ -16266,7 +16266,7 @@ literal	pos	family	voice	note
 要有	u			no-source;p1;fallback
 要死不活	u			no-source;fallback
 要死要活	u			no-source;fallback
-要求	n,v			cow-nv-unreviewed;trust-low
+要求	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 要素	n			cow-single
 要緊	v			cow-single
 要言不煩	u			no-source;fallback
@@ -16304,7 +16304,7 @@ literal	pos	family	voice	note
 見風轉舵	u			no-source;fallback
 見馬克思	u			no-source;fallback
 規則	n			cow-single
-規定	n,v			cow-nv-unreviewed;trust-low
+規定	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 規定動作	u			no-source;fallback
 規律	u			no-source;fallback
 規矩	u			no-source;fallback
@@ -16364,7 +16364,7 @@ literal	pos	family	voice	note
 親身	u			no-source;fallback
 親身經歷	u			no-source;fallback
 親近	v			cow-single
-覺	u			no-source;fallback
+覺	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 覺得	v			cow-single
 觀	v			cow-single
 觀察	v			cow-single
@@ -16382,14 +16382,14 @@ literal	pos	family	voice	note
 解	u			no-source;fallback
 解凍	n,v			cow-nv-unreviewed;trust-low
 解剖	v			cow-single
-解放	n,v			cow-nv-unreviewed;trust-low
+解放	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 解放組織	n			len4-noun-heuristic
 解放運動	n			cow-single
 解散	v			cow-single
 解析	n			cow-single
 解析函數	u			no-source;fallback
 解析幾何	n			cow-single
-解決	n,v			cow-nv-unreviewed;trust-low
+解決	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 解決爭端	u			no-source;fallback
 解禁	u			no-source;fallback
 解答	n,v			cow-nv-unreviewed;trust-low
@@ -16436,7 +16436,7 @@ literal	pos	family	voice	note
 計	n,v			no-source;fallback;p1-audit;review;計策／計算
 計上心來	u			no-source;fallback
 計件工資	u			no-source;fallback
-計劃	n,v			cow-nv-unreviewed;trust-low
+計劃	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 計時工資	u			no-source;fallback
 計時收費	u			no-source;fallback
 計算	n,v			cow-nv-unreviewed;trust-low
@@ -16454,18 +16454,18 @@ literal	pos	family	voice	note
 訓導	v			cow-single
 訓導主任	u			no-source;fallback
 訓教	u			no-source;p1;fallback
-訓練	n,v			cow-nv-unreviewed;trust-low
+訓練	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 訓覺	u			no-source;p1;fallback
 訓醒	u			no-source;p1;fallback
 託	n			cow-single
 託管	v			cow-single
-記	u			no-source;p1;fallback
+記	n,v			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 記事簿	u			no-source;fallback
 記住	v			cow-single
 記得	v			cow-single
 記性	u			no-source;fallback
 記恨	u			no-source;fallback
-記憶	n,v			cow-nv-unreviewed;trust-low
+記憶	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 記者	n			cow-single
 記起	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 記載	u			no-source;fallback
@@ -16477,7 +16477,7 @@ literal	pos	family	voice	note
 設備	n			cow-single
 設施	n			cow-single
 設立	n,v			cow-nv-unreviewed;trust-low
-設計	n,v			cow-nv-unreviewed;trust-low
+設計	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 設計師	n			cow-single
 設計程序	u			no-source;fallback
 設計規範	u			no-source;fallback
@@ -16555,7 +16555,7 @@ literal	pos	family	voice	note
 認識	n,v			cow-nv-unreviewed;trust-low
 認識自己	u			no-source;fallback
 認錯	n,v			cow-nv-unreviewed;trust-low
-誒	u			no-source;fallback
+誒	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 誓不罷休	u			no-source;fallback
 誓師大會	u			no-source;fallback
 誘惑	n,v			cow-nv-unreviewed;trust-low
@@ -16582,7 +16582,7 @@ literal	pos	family	voice	note
 誤會	u			no-source;fallback
 誤解	v			cow-single
 誨人不倦	u			no-source;fallback
-說	u			no-source;fallback
+說	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 說不定	u			no-source;fallback
 說了	u			no-source;p1;fallback
 說明	u			no-source;fallback
@@ -16590,7 +16590,7 @@ literal	pos	family	voice	note
 說服	u			no-source;fallback
 說的	u			no-source;p1;fallback
 說罷	u			no-source;p1;fallback
-說話	u			no-source;fallback
+說話	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 說說	u			no-source;p1;fallback
 說道	u			no-source;fallback
 説	v			cow-single
@@ -16615,7 +16615,7 @@ literal	pos	family	voice	note
 調	u			no-source;fallback
 調動	v			cow-single
 調整	n,v			cow-nv-unreviewed;trust-low
-調查	n,v			cow-nv-unreviewed;trust-low
+調查	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 調用	u			no-source;p1;fallback
 調研	u			no-source;fallback
 調虎離山	u			no-source;fallback
@@ -16660,7 +16660,7 @@ literal	pos	family	voice	note
 謙	u			no-source;fallback
 謙卑	n			cow-single
 謙虛	u			no-source;fallback
-謙謙	u			no-source;p1;fallback
+謙謙	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 謙遜	u			no-source;fallback
 講	v			cow-single;p1-cleanup;canto-heuristic;review
 講下	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
@@ -16712,10 +16712,10 @@ literal	pos	family	voice	note
 證券公司	n			len4-noun-heuristic
 證券市場	n			len4-noun-heuristic
 證券經營	u			no-source;fallback
-證實	n,v			cow-nv-unreviewed;trust-low
+證實	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 證據	n			cow-single
 證據確鑿	u			no-source;fallback
-證明	n,v			cow-nv-unreviewed;trust-low
+證明	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 證明文件	u			no-source;fallback
 識	v			no-source;fallback;p1-audit;review;粵知道／識得
 識得	v			no-source;fallback;p1-audit;review;會／認識
@@ -16726,7 +16726,7 @@ literal	pos	family	voice	note
 識講嘢	u			no-source;fallback
 識趣	u			no-source;fallback
 警備司令	u			no-source;fallback
-警告	n,v			cow-nv-unreviewed;trust-low
+警告	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 警員	u			no-source;fallback
 警報系統	n			len4-noun-heuristic
 警察	n			cow-single
@@ -16753,7 +16753,7 @@ literal	pos	family	voice	note
 變做	u			no-source;fallback
 變分原理	n			audit-med;review
 變到	u			no-source;p1;fallback
-變化	n,v			cow-nv-unreviewed;trust-low
+變化	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 變化無常	u			no-source;fallback
 變化莫測	u			no-source;fallback
 變味	u			no-source;fallback
@@ -17034,7 +17034,7 @@ literal	pos	family	voice	note
 起碼	u			no-source;fallback
 起草	v			cow-single
 起行	u			no-source;fallback
-起身	u			no-source;fallback
+起身	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 起重葫蘆	u			no-source;fallback
 起頭	u			no-source;fallback
 起飛	v			cow-single
@@ -17098,7 +17098,7 @@ literal	pos	family	voice	note
 足足	u			no-source;fallback
 趴	u			no-source;fallback
 跋山涉水	u			no-source;fallback
-跌	u			no-source;fallback
+跌	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 跌倒	v			cow-single
 跌市	u			no-source;fallback
 跌打	u			no-source;fallback
@@ -17107,13 +17107,13 @@ literal	pos	family	voice	note
 跌落	v			cow-single
 跌跌撞撞	u			no-source;fallback
 跑	v			cow-single
-跑步	n,v			cow-nv-unreviewed;trust-low
+跑步	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 跑跑跳跳	u			no-source;fallback
 跑跑顛顛	u			no-source;fallback
 跑車	u			no-source;fallback
 跛	n			cow-single
 距離	n			cow-single
-跟	u			no-source;fallback
+跟	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 跟上	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 跟住	v			verb-suffix;heuristic
 跟你	u			no-source;p1;fallback
@@ -17142,7 +17142,7 @@ literal	pos	family	voice	note
 跳	v			cow-single
 跳動	v			cow-single
 跳樓	u			no-source;fallback
-跳舞	n,v			cow-nv-unreviewed;trust-low
+跳舞	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 跳蚤市場	n			len4-noun-heuristic
 踉踉蹌蹌	u			no-source;fallback
 踊躍	u			no-source;fallback
@@ -17166,7 +17166,7 @@ literal	pos	family	voice	note
 躉	u			no-source;fallback
 躍躍欲試	u			no-source;fallback
 躡手躡腳	v	idiom		audit-high;review
-身	u			no-source;fallback
+身	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 身上	n			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 身不由己	u			no-source;fallback
 身世	u			no-source;fallback
@@ -17197,7 +17197,7 @@ literal	pos	family	voice	note
 身負重任	u			no-source;fallback
 身負重傷	u			no-source;fallback
 身軀	u			no-source;fallback
-身邊	u			no-source;fallback
+身邊	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 身首異處	u			no-source;fallback
 身體	n			cow-single
 身體健康	u			no-source;fallback
@@ -17221,7 +17221,7 @@ literal	pos	family	voice	note
 車程	u			no-source;fallback
 車站	u			no-source;fallback
 車身	n			cow-single
-車車	u			no-source;p1;fallback
+車車	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 車輛	n			cow-single
 車輪	n			cow-single
 車轆	u			no-source;fallback
@@ -17327,7 +17327,7 @@ literal	pos	family	voice	note
 轉	v			cow-single
 轉個	u			no-source;p1;fallback
 轉入地下	u			no-source;fallback
-轉動	n,v			cow-nv-unreviewed;trust-low
+轉動	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 轉動慣量	u			no-source;fallback
 轉化	n,v			cow-nv-unreviewed;trust-low
 轉危為安	u			no-source;fallback
@@ -17523,7 +17523,7 @@ literal	pos	family	voice	note
 逃生	v			cow-single
 逃脱	n,v			cow-nv-unreviewed;trust-low
 逃走	v			cow-single
-逃跑	n,v			cow-nv-unreviewed;trust-low
+逃跑	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 逃避	v			cow-single
 逃避現實	n			cow-single
 逃離	u			no-source;fallback
@@ -17591,7 +17591,7 @@ literal	pos	family	voice	note
 通情達理	u			no-source;fallback
 通明	u			no-source;fallback
 通用電器	u			no-source;fallback
-通知	n,v			cow-nv-unreviewed;trust-low
+通知	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 通縮	u			no-source;fallback
 通融	u			no-source;fallback
 通行無阻	u			no-source;fallback
@@ -17604,7 +17604,7 @@ literal	pos	family	voice	note
 通貨緊縮	n			cow-single
 通貨膨脹	n			cow-single
 通通	u			no-source;fallback
-通過	n,v			cow-nv-unreviewed;trust-low
+通過	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 通道	n			cow-single
 通關	u			no-source;fallback
 通順	u			no-source;fallback
@@ -17682,7 +17682,7 @@ literal	pos	family	voice	note
 進展	n			cow-single
 進度	u			no-source;fallback
 進攻	n,v			cow-nv-unreviewed;trust-low
-進步	n,v			cow-nv-unreviewed;trust-low
+進步	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 進步人士	n			len4-noun-heuristic
 進發	u			no-source;fallback
 進行	v			cow-single
@@ -17708,7 +17708,7 @@ literal	pos	family	voice	note
 遊刃有餘	u			no-source;fallback
 遊吟詩人	u			no-source;fallback
 遊客	n			cow-single
-遊戲	n,v			cow-nv-unreviewed;trust-low
+遊戲	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 遊戲人間	u			no-source;fallback
 遊戲機	u			no-source;fallback
 遊戲規則	n			cow-single
@@ -17781,14 +17781,14 @@ literal	pos	family	voice	note
 過關斬將	u			no-source;fallback
 過頭	u			no-source;fallback
 遏制	v			cow-single
-道	u			no-source;fallback
+道	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 道具	u			no-source;fallback
 道別	u			no-source;fallback
 道士	u			no-source;fallback
 道德	u			no-source;fallback
 道德品質	u			no-source;fallback
 道德認識	u			no-source;fallback
-道歉	n,v			cow-nv-unreviewed;trust-low
+道歉	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 道理	u			no-source;fallback
 道謝	v			cow-single
 道路	n			cow-single
@@ -17861,7 +17861,7 @@ literal	pos	family	voice	note
 選	v			cow-single
 選修	u			no-source;fallback
 選取	u			no-source;fallback
-選擇	n,v			cow-nv-unreviewed;trust-low
+選擇	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 選秀	u			no-source;fallback
 選秀節目	u			no-source;fallback
 選美皇后	u			no-source;fallback
@@ -17958,8 +17958,8 @@ literal	pos	family	voice	note
 都在	u			no-source;p1;fallback
 都市	n			cow-single
 都很	u			no-source;p1;fallback
-都是	u			no-source;p1;fallback
-都會	u			no-source;fallback
+都是	r,v			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
+都會	r,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 都有	u			no-source;p1;fallback
 都沒	u			no-source;p1;fallback
 都能	u			no-source;p1;fallback
@@ -18024,7 +18024,7 @@ literal	pos	family	voice	note
 醬油	u			no-source;fallback
 醺	u			no-source;fallback
 釋	u			no-source;fallback
-釋放	n,v			cow-nv-unreviewed;trust-low
+釋放	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 釋然	u			no-source;fallback
 釋迦牟尼	u			no-source;fallback
 重	v			cow-single;p1
@@ -18182,7 +18182,7 @@ literal	pos	family	voice	note
 錦繡前程	u			no-source;fallback
 錦衣玉食	u			no-source;fallback
 錫	n			cow-single
-錯	u			no-source;fallback
+錯	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 錯失	u			no-source;fallback
 錯愕	u			no-source;fallback
 錯綜複雜	u			no-source;fallback
@@ -18250,7 +18250,7 @@ literal	pos	family	voice	note
 鑽石	n			cow-single
 鑿	u			no-source;fallback
 鑿壁偷光	u			no-source;fallback
-長	u			no-source;p1;fallback
+長	a,v			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 長久	r			cow-single
 長假	u			no-source;fallback
 長命百歲	u			no-source;fallback
@@ -18347,7 +18347,7 @@ literal	pos	family	voice	note
 開啓	v			cow-single
 開國元勳	u			no-source;fallback
 開天闢地	u			no-source;fallback
-開始	n,v			cow-nv-unreviewed;trust-low
+開始	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 開始以前	u			no-source;fallback
 開始比賽	u			no-source;fallback
 開學	u			no-source;fallback
@@ -18364,7 +18364,7 @@ literal	pos	family	voice	note
 開拓創新	u			no-source;fallback
 開採	u			no-source;fallback
 開支	u			no-source;fallback
-開放	n,v			cow-nv-unreviewed;trust-low
+開放	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 開放政策	u			no-source;fallback
 開放系統	n			len4-noun-heuristic
 開放電路	u			no-source;fallback
@@ -18434,7 +18434,7 @@ literal	pos	family	voice	note
 關你屁事	u			no-source;fallback
 關你鬼事	u			no-source;fallback
 關係	n,v			cow-nv-unreviewed;trust-low
-關心	n,v			cow-nv-unreviewed;trust-low
+關心	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 關愛	u			no-source;fallback
 關懷	u			no-source;fallback
 關我事	u			no-source;fallback
@@ -18450,7 +18450,7 @@ literal	pos	family	voice	note
 關門	u			no-source;fallback
 關門大吉	u			no-source;fallback
 關門捉賊	u			no-source;fallback
-關閉	n,v			cow-nv-unreviewed;trust-low
+關閉	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 關頭	n			cow-single
 闡述	n			cow-single
 防	u			no-source;fallback
@@ -18534,7 +18534,7 @@ literal	pos	family	voice	note
 陌生人	u			no-source;fallback
 陌路	u			no-source;fallback
 降	u			no-source;fallback
-降低	n,v			cow-nv-unreviewed;trust-low
+降低	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 降低利率	u			no-source;fallback
 降價	n			cow-single
 降温	u			no-source;fallback
@@ -18548,11 +18548,11 @@ literal	pos	family	voice	note
 院士	n			cow-single
 院子	n			cow-single
 院長	u			no-source;fallback
-陣	u			no-source;fallback
+陣	n,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 陣亡	v			cow-single
 陣間	u			no-source;fallback
 陣陣	u			no-source;fallback
-除	u			no-source;fallback
+除	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 除了	u			no-source;fallback
 除外	u			no-source;fallback
 除此之外	n			len4-noun-heuristic
@@ -18748,7 +18748,7 @@ literal	pos	family	voice	note
 雞飛狗走	u			no-source;fallback
 雞飛狗跳	u			no-source;fallback
 雞鳴狗盜	u			no-source;fallback
-離	u			no-source;fallback
+離	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 離別	n			cow-single
 離去	v			cow-single
 離場	u			no-source;fallback
@@ -18966,7 +18966,7 @@ literal	pos	family	voice	note
 青銅器時代	u			no-source;fallback
 青銅時代	n			cow-single
 青黴素	u			no-source;fallback
-靚	u			no-source;fallback
+靚	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 靚仔	u			no-source;fallback
 靚女	u			no-source;fallback
 靚妹	u			no-source;p1;fallback
@@ -18998,7 +18998,7 @@ literal	pos	family	voice	note
 面	n			cow-single
 面不改色	u			no-source;fallback
 面具	n			cow-single
-面前	u			no-source;fallback
+面前	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 面向	v			cow-single
 面壁思過	u			no-source;fallback
 面孔	u			no-source;fallback
@@ -19126,7 +19126,7 @@ literal	pos	family	voice	note
 頤指氣使	u			no-source;fallback
 頤養天年	u			no-source;fallback
 頭	n			cow-single;p1
-頭先	u			no-source;fallback
+頭先	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 頭型	u			no-source;fallback
 頭昏目眩	u			no-source;fallback
 頭昏眼花	u			no-source;fallback
@@ -19397,7 +19397,7 @@ literal	pos	family	voice	note
 駕駛執照	u			no-source;fallback
 駕鶴西去	u			no-source;fallback
 駕鶴西歸	u			no-source;fallback
-駛	u			no-source;fallback
+駛	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 駝背	n			cow-single
 駭人聽聞	u			no-source;fallback
 騎	v			cow-single
@@ -19700,7 +19700,7 @@ literal	pos	family	voice	note
 麻醉藥	n			cow-single
 麻醉藥品	u			no-source;fallback
 麻雀	u			no-source;fallback
-黃	u			no-source;fallback
+黃	a,n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 黃巢起義	u			no-source;fallback
 黃巾起義	u			no-source;fallback
 黃昏	n			cow-single
@@ -19718,7 +19718,7 @@ literal	pos	family	voice	note
 黃金分割	n			cow-single
 黃金時代	n			cow-single
 黃麴黴菌	u			no-source;fallback
-黎	u			no-source;fallback
+黎	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 黎明	n			cow-single
 黎明時分	u			no-source;fallback
 黏	u			no-source;fallback
@@ -19768,14 +19768,14 @@ literal	pos	family	voice	note
 點幾	u			no-source;p1;fallback
 點心	n			cow-single
 點會	u			no-source;fallback
-點樣	u			no-source;fallback
+點樣	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 點滴	n			cow-single
 點火	n,v			cow-nv-unreviewed;trust-low
 點火開關	n			cow-single
 點球	u			no-source;fallback
 點睇	u			no-source;fallback
 點睛之筆	n			len4-noun-heuristic
-點知	u			no-source;fallback
+點知	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 點石成金	u			no-source;fallback
 點算	u			no-source;fallback
 點解	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review

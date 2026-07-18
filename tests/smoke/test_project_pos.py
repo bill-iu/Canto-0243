@@ -111,6 +111,19 @@ def test_p1_essay_top_k_complete() -> None:
     assert meta.get("p1", {}).get("k") == 5000
 
 
+def test_p1_closeout_metrics() -> None:
+    from ingest.project_pos import load_meta
+    from ingest.project_pos_p1_close import p1_closeout_metrics
+
+    m = p1_closeout_metrics()
+    assert m["top100_gate_pct"] == 1.0
+    assert m["rank101_500_u"] <= 10  # fragments only
+    assert m["true_nv_promoted_rows"] >= 100
+    assert m["p1"]["p1_complete"] is True
+    meta = load_meta()
+    assert meta.get("p1", {}).get("closeout") is True
+
+
 def test_p1_audit_artifacts() -> None:
     from pathlib import Path
 
@@ -169,6 +182,7 @@ def main() -> None:
     test_p0_mother_complete()
     test_p1_essay_top_k_complete()
     test_p1_audit_artifacts()
+    test_p1_closeout_metrics()
     test_trust_tiers()
     print("test_project_pos: ok")
 

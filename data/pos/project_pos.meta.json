@@ -1,5 +1,5 @@
 {
-  "version": "0.1.5",
+  "version": "0.1.6",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -20,12 +20,15 @@
     "k": 5000,
     "mother_body": 5000,
     "tagged": 5000,
-    "gate_formal": 450,
+    "gate_formal": 735,
     "missing": 0,
     "coverage": 1.0,
-    "gate_coverage": 0.09,
+    "gate_coverage": 0.147,
     "complete": true,
-    "undetermined_only": 2766
+    "undetermined_only": 2603,
+    "closeout": true,
+    "top100_gate_pct": 1.0,
+    "rank101_500_gate_pct": 0.6425
   },
   "p1_audit": {
     "seed": 20260718,
@@ -68,5 +71,32 @@
       "promote high-freq Canto particles/verbs from u or low draft",
       "pos_trust uses semicolon tokens so unreviewed does not match review"
     ]
+  },
+  "p1_close": {
+    "metrics": {
+      "top100_gate": 100,
+      "top100_gate_pct": 1.0,
+      "rank101_500": 400,
+      "rank101_500_u": 8,
+      "rank101_500_gate": 257,
+      "rank101_500_gate_pct": 0.6425,
+      "cow_nv_unreviewed_left": 552,
+      "true_nv_promoted_rows": 180,
+      "p1": {
+        "phase": "p1",
+        "k": 5000,
+        "mother_body": 5000,
+        "tagged": 5000,
+        "gate_formal": 735,
+        "low_draft_formal": 1662,
+        "undetermined_only": 2603,
+        "missing": 0,
+        "coverage": 1.0,
+        "gate_coverage": 0.147,
+        "p1_complete": true
+      }
+    },
+    "true_nv_promoted": 180,
+    "cow_nv_left": 552
   }
 }
