@@ -158,23 +158,36 @@ def apply_proposals(
 
 
 def status(*, n: int = DEFAULT_N) -> dict:
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
+
     body = load_body()
+    try:
+        lex = load_lexicon_literals()
+        body_lex = [lit for lit in body if lit in lex]
+    except FileNotFoundError:
+        body_lex = list(body)
     table = parse_project_pos_tsv()
-    still_u = [lit for lit in body if lit in table and table[lit].pos <= frozenset({"u"})]
-    gated = [lit for lit in body if lit in table and table[lit].gate_pos()]
+    # in-lex body members missing from SSOT count as still needing work
+    still_u = [
+        lit
+        for lit in body_lex
+        if lit not in table or table[lit].pos <= frozenset({"u"})
+    ]
+    gated = [lit for lit in body_lex if lit in table and table[lit].gate_pos()]
     formal = [
         lit
-        for lit in body
-        if lit in table and table[lit].formal_pos() and table[lit].pos > frozenset({"u"})
+        for lit in body_lex
+        if lit in table and bool(table[lit].formal_pos())
     ]
     return {
         "n": len(body),
+        "n_in_lexicon": len(body_lex),
         "still_u": len(still_u),
         "formal_any": len(formal),
         "gate_formal": len(gated),
-        "u_rate": round(len(still_u) / len(body), 4) if body else 0.0,
-        "gate_rate": round(len(gated) / len(body), 4) if body else 0.0,
-        "complete_formal": len(still_u) == 0,
+        "u_rate": round(len(still_u) / len(body_lex), 4) if body_lex else 0.0,
+        "gate_rate": round(len(gated) / len(body_lex), 4) if body_lex else 0.0,
+        "complete_formal": len(still_u) == 0 and len(body_lex) > 0,
     }
 
 

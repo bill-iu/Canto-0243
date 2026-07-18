@@ -31,7 +31,7 @@ def test_parse_seed_tsv() -> None:
     assert "開心" in table
     assert "a" in table["開心"].formal_pos()
     assert table["一石二鳥"].family == "idiom"
-    assert table["被打"].voice == "passive"
+    # lexicon-only SSOT: seed passive pair may drop if not in 詞庫
 
 
 def test_same_pos_and_missing() -> None:
@@ -148,9 +148,11 @@ def test_p3_long_tail() -> None:
 
     st = p3_status()
     assert st["mother_body"] == 15000
+    # After lexicon-only prune: complete = all mother∩lexicon tagged
     assert st["p3_complete"] is True
     assert st["missing"] == 0
     assert st["coverage"] == 1.0
+    assert st.get("mother_in_lexicon", 0) >= 1
     meta = load_meta()
     assert meta.get("p3", {}).get("gate_quality_pass") is True
     gq = meta.get("p3_gate_quality") or {}
@@ -161,6 +163,21 @@ def test_p3_long_tail() -> None:
     assert all(r.get("ok_rate", 0) > 0.90 for r in passed)
     assert Path("data/pos/audit/p3_gate_quality_report.md").is_file()
 
+
+def test_pos_ssot_lexicon_only() -> None:
+    import sqlite3
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta, parse_project_pos_tsv
+
+    db = Path("lyrics.db")
+    assert db.is_file()
+    lex = {r[0] for r in sqlite3.connect(str(db)).execute("SELECT DISTINCT char FROM words") if r[0]}
+    table = parse_project_pos_tsv()
+    assert len(table) >= 1000
+    assert all(lit in lex for lit in table)
+    meta = load_meta()
+    assert meta.get("lexicon_only", {}).get("enabled") is True
 
 def test_p2_idiom_quality_pass() -> None:
     from pathlib import Path

@@ -84,11 +84,20 @@ def load_p3_body(path: Path = P3_BODY) -> List[Tuple[int, str]]:
 
 
 def p3_status(*, body_path: Path = P3_BODY, tsv: Path = DEFAULT_TSV) -> dict:
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
+
     body = load_p3_body(body_path)
     lits = [lit for _, lit in body]
+    try:
+        lex = load_lexicon_literals()
+        in_lex = [lit for lit in lits if lit in lex]
+        out_of_lex = len(lits) - len(in_lex)
+    except FileNotFoundError:
+        in_lex = lits
+        out_of_lex = 0
     table = parse_project_pos_tsv(tsv)
-    tagged = [lit for lit in lits if lit in table]
-    missing = [lit for lit in lits if lit not in table]
+    tagged = [lit for lit in in_lex if lit in table]
+    missing = [lit for lit in in_lex if lit not in table]
     gate = sum(1 for lit in tagged if table[lit].gate_pos())
     undet = sum(1 for lit in tagged if table[lit].pos <= frozenset({"u"}))
     low = sum(
@@ -101,14 +110,16 @@ def p3_status(*, body_path: Path = P3_BODY, tsv: Path = DEFAULT_TSV) -> dict:
         "from_rank": body[0][0] if body else None,
         "to_rank": body[-1][0] if body else None,
         "mother_body": len(lits),
+        "mother_in_lexicon": len(in_lex),
+        "mother_out_of_lexicon": out_of_lex,
         "tagged": len(tagged),
         "missing": len(missing),
         "gate_formal": gate,
         "undetermined_only": undet,
         "low_draft_formal": low,
-        "coverage": round(len(tagged) / len(lits), 4) if lits else 0.0,
-        "gate_coverage": round(gate / len(lits), 4) if lits else 0.0,
-        "p3_complete": len(missing) == 0 and len(lits) > 0,
+        "coverage": round(len(tagged) / len(in_lex), 4) if in_lex else 0.0,
+        "gate_coverage": round(gate / len(in_lex), 4) if in_lex else 0.0,
+        "p3_complete": len(missing) == 0 and len(in_lex) > 0,
     }
 
 

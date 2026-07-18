@@ -341,7 +341,16 @@ def merge_proposals_into_ssot(
 
 
 def p0_status(*, body_path: Path = P0_BODY, tsv: Path = DEFAULT_TSV) -> dict:
-    body = set(load_p0_mother_body(body_path))
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
+
+    raw = set(load_p0_mother_body(body_path))
+    try:
+        lex = load_lexicon_literals()
+        body = raw & lex
+        out_of_lex = len(raw) - len(body)
+    except FileNotFoundError:
+        body = raw
+        out_of_lex = 0
     table = parse_project_pos_tsv(tsv)
     tagged = body & set(table.keys())
     gate_formal = {lit for lit in tagged if table[lit].gate_pos()}
@@ -349,16 +358,18 @@ def p0_status(*, body_path: Path = P0_BODY, tsv: Path = DEFAULT_TSV) -> dict:
     low_draft = {
         lit
         for lit in tagged
-        if table[lit].trust() == "low" and table[lit].formal_pos() and lit not in undetermined
+        if table[lit].trust() == "low" and bool(table[lit].formal_pos())
     }
     missing = body - set(table.keys())
-    complete = len(missing) == 0
+    complete = len(missing) == 0 and len(body) > 0
     return {
-        "mother_body": len(body),
+        "mother_body": len(raw),
+        "mother_in_lexicon": len(body),
+        "mother_out_of_lexicon": out_of_lex,
         "tagged": len(tagged),
-        "formal": len(gate_formal),  # 閘用詞類 (high|medium)
+        "formal": len(gate_formal),
         "gate_formal": len(gate_formal),
-        "low_draft_formal": len(low_draft),  # cow-single etc — not gate
+        "low_draft_formal": len(low_draft),
         "undetermined_only": len(undetermined),
         "missing": len(missing),
         "coverage": round(len(tagged) / len(body), 4) if body else 0.0,

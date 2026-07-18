@@ -1,5 +1,5 @@
 {
-  "version": "0.3.5",
+  "version": "0.4.0",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -274,5 +274,17 @@
     },
     "global_u": 18830,
     "global_gate": 6325
+  },
+  "lexicon_only": {
+    "enabled": true,
+    "lexicon_literals": 156716,
+    "ssot_before": 30388,
+    "ssot_after": 22730,
+    "dropped": 7658,
+    "dropped_types": {
+      "gate": 1301,
+      "u": 6336,
+      "other": 21
+    }
   }
 }

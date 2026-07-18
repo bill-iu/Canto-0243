@@ -84,8 +84,17 @@ def load_p1_mother_body(path: Path = P1_BODY) -> List[str]:
 
 
 def p1_status(*, body_path: Path = P1_BODY, tsv: Path = DEFAULT_TSV) -> dict:
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
+
     body = load_p1_mother_body(body_path)
-    body_set = set(body)
+    # Coverage only over mother ∩ 詞庫 (POS SSOT is lexicon-only)
+    try:
+        lex = load_lexicon_literals()
+        body_set = {lit for lit in body if lit in lex}
+        out_of_lex = len(body) - len(body_set)
+    except FileNotFoundError:
+        body_set = set(body)
+        out_of_lex = 0
     table = parse_project_pos_tsv(tsv)
     tagged = body_set & set(table.keys())
     gate_formal = {lit for lit in tagged if table[lit].gate_pos()}
@@ -96,18 +105,20 @@ def p1_status(*, body_path: Path = P1_BODY, tsv: Path = DEFAULT_TSV) -> dict:
         if table[lit].trust() == "low" and table[lit].formal_pos() and lit not in undetermined
     }
     missing = body_set - set(table.keys())
-    complete = len(missing) == 0
+    complete = len(missing) == 0 and len(body_set) > 0
     return {
         "phase": "p1",
         "k": len(body),
         "mother_body": len(body),
+        "mother_in_lexicon": len(body_set),
+        "mother_out_of_lexicon": out_of_lex,
         "tagged": len(tagged),
         "gate_formal": len(gate_formal),
         "low_draft_formal": len(low_draft),
         "undetermined_only": len(undetermined),
         "missing": len(missing),
-        "coverage": round(len(tagged) / len(body), 4) if body else 0.0,
-        "gate_coverage": round(len(gate_formal) / len(body), 4) if body else 0.0,
+        "coverage": round(len(tagged) / len(body_set), 4) if body_set else 0.0,
+        "gate_coverage": round(len(gate_formal) / len(body_set), 4) if body_set else 0.0,
         "p1_complete": complete,
     }
 
