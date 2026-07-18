@@ -3620,6 +3620,284 @@
       ],
       "created_at": "2026-07-13T23:02:44.723508+00:00",
       "note": "Orphan campaign heads after final-audit accepted fail removal."
+    },
+    "post-syn-ant-b01-20260718": {
+      "sample_seed": 20260718,
+      "sample_n": 44,
+      "sample_ok": 44,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent_n": 44,
+      "git_commit": "8383914e96ab22a60964dfb4135c64dd4fbaeaec",
+      "removed_sample_fails": [],
+      "reason_amendments": [],
+      "sample_verdicts": [
+        {
+          "head": "但係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "點解",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "邊個",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "即係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "唔到",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "邊度",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "係咪",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "同埋",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "點樣",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "仲有",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "做咩",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "唔該",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "點知",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "諗住",
+          "reason": "polysemous_no_stable_sense",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "仲要",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "唔通",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "望住",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "淨係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "梗係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "噉樣",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "啱啱",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "喪屍",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "雙手",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "點算",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "轉身",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "定係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "冇乜",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "所謂",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "睇住",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "唔好意思",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "先至",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "姨姨",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "心諗",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "嗰個",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "對於",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "令到",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "一係",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "無啦啦",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "睇嚟",
+          "reason": "function_word",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "鎖匙",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "試過",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "耳仔",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "點鐘",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        },
+        {
+          "head": "屋企人",
+          "reason": "no_gradable_opposite",
+          "verdict": "ok",
+          "notes": ""
+        }
+      ],
+      "model_note": "post-syn gap function/no-opposite heads (top150 open content residual)"
     }
   }
 }
