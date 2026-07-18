@@ -1,5 +1,5 @@
 {
-  "version": "0.1.3",
+  "version": "0.1.5",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -20,11 +20,12 @@
     "k": 5000,
     "mother_body": 5000,
     "tagged": 5000,
-    "gate_formal": 705,
+    "gate_formal": 450,
     "missing": 0,
     "coverage": 1.0,
-    "gate_coverage": 0.141,
-    "complete": true
+    "gate_coverage": 0.09,
+    "complete": true,
+    "undetermined_only": 2766
   },
   "p1_audit": {
     "seed": 20260718,
@@ -56,5 +57,16 @@
     "gate_combined_ok_rate": 0.77,
     "fixes_applied": 150,
     "report": "data/pos/audit/p1_audit_report.md"
+  },
+  "p1_cleanup": {
+    "verb_suffix_fixed_or_demoted": 135,
+    "cow_nv_demoted": 732,
+    "canto_heuristic_promoted": 106,
+    "notes": [
+      "demote exact n,v cow-multi to cow-nv-unreviewed (low trust)",
+      "fix residual verb-suffix weak endings; demote rest to trust-low",
+      "promote high-freq Canto particles/verbs from u or low draft",
+      "pos_trust uses semicolon tokens so unreviewed does not match review"
+    ]
   }
 }

@@ -37,26 +37,33 @@ class ProjectPosError(ValueError):
 
 
 def pos_trust(note: str) -> str:
-    """Infer 詞性信任 from SSOT note provenance."""
+    """Infer 詞性信任 from SSOT note provenance (semicolon tokens)."""
     n = (note or "").strip().lower()
     if not n or n == "seed" or n.startswith("seed"):
         return TRUST_HIGH
-    if "review" in n:
+    tokens = {t.strip() for t in n.split(";") if t.strip()}
+    # Explicit review elevates even if older demotion tags remain
+    if "review" in tokens:
         return TRUST_HIGH
-    if "cow-single" in n:
+    # Explicit demotion (do not substring-match «unreviewed» as review)
+    if tokens & {"trust-low", "verb-suffix-suspect", "cow-nv-unreviewed"}:
         return TRUST_LOW
-    if "cow-multi" in n:
+    if "cow-single" in tokens:
+        return TRUST_LOW
+    if "cow-multi" in tokens:
         return TRUST_MEDIUM
-    if "fallback" in n or "no-source" in n:
+    if tokens & {"fallback", "no-source"}:
         return TRUST_LOW
+    blob = ";".join(tokens)
     if any(
-        k in n
+        k in blob
         for k in (
             "heuristic",
             "numeral",
             "len4-noun",
             "verb-suffix",
             "prefix-passive",
+            "canto-heuristic",
         )
     ):
         return TRUST_HIGH

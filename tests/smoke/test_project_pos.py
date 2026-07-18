@@ -135,6 +135,8 @@ def test_trust_tiers() -> None:
     assert pos_trust("cow-multi") == "medium"
     assert pos_trust("cow-single") == "low"
     assert pos_trust("no-source;fallback") == "low"
+    assert pos_trust("cow-nv-unreviewed;trust-low") == "low"
+    assert pos_trust("cow-nv-unreviewed;trust-low;review") == "high"  # review elevates
 
     table = parse_project_pos_tsv(DEFAULT_TSV)
     # Find a cow-single row if present: gate empty, raw formal may exist
