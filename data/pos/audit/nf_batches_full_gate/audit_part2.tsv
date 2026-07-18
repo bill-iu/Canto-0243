@@ -1,0 +1,101 @@
+batch	literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+u-inlex-nf2b	一無所獲	v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	一言難盡	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	不絕於耳	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	中心地帶	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	乖巧	a			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	乜料	n,x			u-inlex-nf2b;review;agent-label	high	BAD	n	x 假陽；主用名詞（搞乜料／乜料嚟）；疑問口語非助詞
+u-inlex-nf2b	人格魅力	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	保時捷	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	信用等級	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	傷心欲絕	a	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	光譜分析	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	兒子	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	內需	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	全日制	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	兩敗俱傷	a,v	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	公投	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	凡事	n,r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	出氣	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	分道揚鑣	v	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	勞斯萊斯	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	包庇	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	十二生肖	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	半夜三更	n,r	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	只求	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	合規	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	吵吵	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	哈根達斯	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	單身貴族	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	四大名著	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	國家公園	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	增產	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	天真無邪	a	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	好事	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	孤	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	孤陋寡聞	a	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	宣傳教育	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	將要	r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	小三	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	小企業	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	工業設計	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	年邁	a			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	往昔	n,r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	後宮	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	從小到大	r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	復牌	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	心有靈犀	a,n	idiom		u-inlex-nf2b;review;agent-label	high	SOFT		a 主；n 弱（心有靈犀一點通偏 stative）
+u-inlex-nf2b	恐怖襲擊	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	恐襲	n,v			u-inlex-nf2b;review;agent-label	high	SOFT		n 主；v 新聞略語薄（恐襲巴黎）
+u-inlex-nf2b	想方設法	v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	意味深長	a	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	感恩	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	慈善事業	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	懶人	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	援手	n,v			u-inlex-nf2b;review;agent-label	high	BAD	n	v 假陽；主用名詞（伸出援手／予以援手）；動作用援助
+u-inlex-nf2b	搶走	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	明確	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	朝氣蓬勃	a	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	未完待續	a,v			套語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	欲哭無淚	a	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	比較分析	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	污垢	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	海峽兩岸	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	火熱	a			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	燈具	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	物質生活	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	獨資	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	由來已久	a,r	idiom		u-inlex-nf2b;review;agent-label	high	BAD	a	r 假陽；成語偏 predicative stative a（問題由來已久）；非情狀副
+u-inlex-nf2b	登入	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	發揚光大	v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	碌碌	a,r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	稻	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	精神財富	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	精裝	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	紅十字會	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	網絡環境	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	缺一不可	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	股市	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	自嘲	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	自選	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	舞文弄墨	v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	萬家燈火	n	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	衰女	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	褐色	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	觸目驚心	a	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	診療	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	講理	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	資料庫	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	趷	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	身心健康	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	身臨其境	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	輸液	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	逢年過節	r	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	過分	a,r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	過於	r			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	鋪設	v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	集訓	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	雜交	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	雞皮疙瘩	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	響應時間	n			u-inlex-nf2b;review;agent-label	high	OK		
+u-inlex-nf2b	鼓樓	n			u-inlex-nf2b;review;agent-label	high	OK		

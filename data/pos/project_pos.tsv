@@ -149,7 +149,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一望無際	a	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 一本	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 一本正經	a	idiom		u-inlex-nf2b;review;agent-label
-一枕黃粱	n,v	idiom		u-inlex-nf5;review;agent-label
+一枕黃粱	n	idiom		u-inlex-nf5;review;agent-label;p1-audit;review;成語主作名詞（黃粱夢喻／是一枕黃粱）；v 假陽
 一枝獨秀	a,v	idiom		u-inlex-nf2b;review;agent-label
 一柱擎天	a,v	idiom		成語；一柱擎天;u-inlex-nf3;review;agent-label
 一桿入洞	n,v			u-tail533;review;agent-label
@@ -1088,7 +1088,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 久別重逢	n,v	idiom		u-inlex-nf3;review;agent-label
 久唔久	r			u-inlex;review;u-inlex-agent
 久慕盛名	v	idiom		成語；久慕盛名;u-inlex-nf5;review;agent-label
-久病成醫	a,x	idiom		u-inlex-nf5;review;agent-label
+久病成醫	v	idiom		u-inlex-nf5;review;agent-label;p1-audit;review;謂語成語（真係久病成醫）；非形／非 x
 久經考驗	a			u-inlex-nf4;review;agent-label
 久而久之	r			u-inlex;review;u-inlex-agent
 久負盛名	a	idiom		u-inlex-nf3;review;agent-label
@@ -1145,7 +1145,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 乜乜物物	n,x	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → n,x
 乜事	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 乜嘢	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-乜料	n,x			u-inlex-nf2b;review;agent-label
+乜料	n			u-inlex-nf2b;review;agent-label;p1-audit;review;x 假陽；主用名詞（搞乜料／乜料嚟）；疑問口語非助詞
 乜春	n,x			u-inlex;review;u-inlex-agent
 乜水	n,x			u-inlex;review;u-inlex-agent
 乜鬼	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -1267,7 +1267,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 互助	n,v			cow-multi;p3;full-r1-audit;review;互助主名／動；r 假陽會毒副詞閘
 互動	n,v			u-inlex;review;u-inlex-agent
 互斥	a			u-inlex-nf3;review;agent-label
-互有勝負	a,v			u-inlex-nf5;review;agent-label
+互有勝負	v			u-inlex-nf5;review;agent-label;p1-audit;review;主作謂語（雙方互有勝負）；a 假陽
 互相	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r
 互相切磋	v			u-inlex-nf4;review;agent-label
 互相幫助	v			u-inlex-nf2b;review;agent-label
@@ -2111,7 +2111,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 個人資料	n			audit-med;review
 個位	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 個個	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-個別	a,n,r			u-inlex-nf2k;review;agent-label
+個別	a,r			u-inlex-nf2k;review;agent-label;p1-audit;review;n 假陽；形+副常見
 個字	n			u-inlex-nf2k;review;agent-label
 個月	u			no-source;fallback;fragment;clause-slice
 個案	n			u-inlex;review;u-inlex-agent
@@ -2125,7 +2125,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 倒下	v			cow-single
 倒不如	r,x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r,x
 倒影	n			u-inlex;review;u-inlex-agent
-倒後	n,r,v			u-inlex-nf2k;review;agent-label
+倒後	r			u-inlex-nf2k;review;agent-label;p1-audit;review;粵「之後／向後」副；n/v 假陽
 倒打一耙	v	idiom		u-inlex-nf4;review;agent-label
 倒數	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 倒是	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -4443,7 +4443,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 同居	v			cow-single
 同工不同酬	n			u-inlex-nf5;review;agent-label
 同工同酬	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
-同工異曲	a,n	idiom		u-inlex-nf5;review;agent-label
+同工異曲	a	idiom		u-inlex-nf5;review;agent-label;p1-audit;review;成語主形容（異曲同工之妙／兩者同工異曲）；n 假陽
 同性	a,n			u-inlex-nf5;review;agent-label
 同性相斥	a,v			u-inlex-nf5;review;agent-label
 同情	n			cow-single
@@ -5138,7 +5138,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 嘥	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 嘩	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 嘩啦一聲	r			u-inlex-nf4;review;agent-label
-嘩嘩	a,r,x			u-inlex-nf2k;review;agent-label
+嘩嘩	r,x			u-inlex-nf2k;review;agent-label;p1-audit;review;擬聲+情態副；a 假陽
 嘭	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 嘮嘮叨叨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 嘯	v			u-inlex;review;u-inlex-agent
@@ -6137,7 +6137,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大有人在	a,v	idiom		u-inlex-nf5;review;agent-label
 大有可為	a	idiom		u-tail533;review;agent-label
 大有希望	a			u-inlex-nf4;review;agent-label
-大有文章	a,n	idiom		u-inlex-nf4;review;agent-label
+大有文章	a	idiom		u-inlex-nf4;review;agent-label;p1-audit;review;stative 謂語形；n 假陽（同滿意 a,n→a／別有用心 a）
 大材小用	a,v	idiom		u-inlex-nf4;review;agent-label
 大概	n,r			cow-multi
 大樓	n			cow-single
@@ -10134,7 +10134,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 援助之手	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 援助交際	n,v			u-inlex-nf5;review;agent-label
 援助機構	n			len4-noun-heuristic
-援手	n,v			u-inlex-nf2b;review;agent-label
+援手	n			u-inlex-nf2b;review;agent-label;p1-audit;review;v 假陽；主用名詞（伸出援手／予以援手）；動作用援助
 揸	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 揹	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 揹着	v			u-tail533;review;agent-label
@@ -14554,7 +14554,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 由上而下	a,r			u-inlex-nf4;review;agent-label
 由下而上	r			u-tail533;review;agent-label
 由來	n			u-inlex-nf2k;review;agent-label
-由來已久	a,r	idiom		u-inlex-nf2b;review;agent-label
+由來已久	a	idiom		u-inlex-nf2b;review;agent-label;p1-audit;review;r 假陽；成語偏 predicative stative a（問題由來已久）；非情狀副
 由始至終	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r
 由於	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 由此可知	r,x			u-inlex-nf4;review;agent-label
@@ -14890,7 +14890,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 白天	n			cow-single
 白宮	n			u-inlex-nf2k;review;agent-label
 白山黑水	n	idiom		u-inlex-nf4;review;agent-label
-白日見鬼	v,x	idiom		u-inlex-nf5;review;agent-label
+白日見鬼	v	idiom		u-inlex-nf5;review;agent-label;p1-audit;review;動詞成語；x 假陽（非 closed-class）
 白熾電燈	n			u-tail533;review;agent-label
 白璧無瑕	a	idiom		u-inlex-nf5;review;agent-label
 白癡	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -18604,7 +18604,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 見風轉舵	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 見馬克思	v			u-inlex-nf5;review;agent-label
 見鬼	a,v,x			u-inlex-nf2b;review;agent-label
-見點	v			u-inlex-nf2k;review;agent-label
+見點	r			u-inlex-nf2k;review;agent-label;p1-audit;review;粵「差點／快要」副；非動
 規則	n			cow-single
 規定	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 規定動作	n			u-inlex-nf4;review;agent-label
@@ -21303,7 +21303,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 隨手	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 隨時	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 隨時待命	a,v			u-inlex-nf4;review;agent-label
-隨時歡迎	a,v			u-inlex-nf3;review;agent-label
+隨時歡迎	v			u-inlex-nf3;review;agent-label;p1-audit;review;a 假陽；歡迎為動核，不受程度副修飾；套語亦偏 v
 隨機存取	n			random access;u-inlex-nf4;review;agent-label
 隨筆	n			cow-single
 隨處可見	a,v			u-inlex-nf2b;review;agent-label
@@ -21759,7 +21759,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 音箱	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
 音節文字	n			u-inlex-nf5;review;agent-label
 音色	n			u-inlex-nf2b;review;agent-label
-音訊全無	a,v			u-inlex-nf4;review;agent-label
+音訊全無	a			u-inlex-nf4;review;agent-label;p1-audit;review;stative 形（同杳無音訊 a）；v 假陽會毒同動詞閘
 音響	n			u-inlex-nf2k;review;agent-label
 音頻	n			u-inlex;review;u-inlex-agent
 音頻文件	n			u-inlex-nf3;review;agent-label
@@ -22053,7 +22053,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 飲品	n			u-inlex-nf2b;review;agent-label
 飲嘢	v			u-inlex;review;u-inlex-agent
 飲彈自盡	v			u-inlex-nf5;review;agent-label
-飲得	v			u-inlex-nf2k;review;agent-label
+飲得	u			u-inlex-nf2k;review;agent-label;p1-audit;V+得能性殘片；非獨立詞位;fragment;clause-slice;V+得殘片
 飲杯	v			u-inlex;review;u-inlex-agent
 飲水	n,v			u-inlex;review;u-inlex-agent
 飲用水	n			u-inlex-nf2k;review;agent-label

@@ -1,0 +1,101 @@
+batch	literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+u-inlex-nf2k	一陣子	n,r			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	不可或缺	a	idiom		成語式固定;u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	主帥	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	事前	n,r			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	亦有	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	倉儲	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	個別	a,n,r			u-inlex-nf2k;review;agent-label	high	BAD	a,r	n 假陽；形+副常見
+u-inlex-nf2k	倒後	n,r,v			u-inlex-nf2k;review;agent-label	high	BAD	r	粵「之後／向後」副；n/v 假陽
+u-inlex-nf2k	偉	a,n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	偏僻	a			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	做客	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	備	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	兩份	x			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	別看	v,x			別看…其實… 連詞向;u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	剋	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	勞氣	a,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	南無	x			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	叢書	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	合作社	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	向着	v,x			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	吶喊	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	告一段落	v	idiom		u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	嘖嘖	x			擬聲;u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	嘩嘩	a,r,x			u-inlex-nf2k;review;agent-label	high	BAD	r,x	擬聲+情態副；a 假陽
+u-inlex-nf2k	嘲諷	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	嚟喇	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	國度	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	圓通	a,n			圓融／圓通速遞;u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	圖層	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	墜	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	大計	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	天上	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	姥姥	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	尾盤	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	工具欄	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	建國	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	復讀	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	忍笑	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	惠	a,n,v			u-inlex-nf2k;review;agent-label	high	SOFT		三標略寬；a 薄，n/v 較穩
+u-inlex-nf2k	慨嘆	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	應邀	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	戰況	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	扭轉	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	批示	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	掏錢	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	提綱	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	搞清楚	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	搭檔	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	收發	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	斷電	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	方便麪	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	方向盤	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	春運	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	智能	a,n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	期末	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	核武器	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	歉	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	殘廁	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	毆	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	民歌	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	汕頭	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	淆底	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	減排	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	無意中	r			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	熟識	a,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	燈會	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	特定	a			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	玉玲瓏	a,n			u-inlex-nf2k;review;agent-label	high	SOFT		主名／雅稱；a 文言薄
+u-inlex-nf2k	用量	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	疑似	a,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	督導	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	稱得上	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	端午節	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	笑死	a,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	第一名	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	級數	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	編製	n,v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	緬甸	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	繽紛	a			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	翻番	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	胸肌	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	艱鉅	a			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	葵涌	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	裝飯	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	見步行步	v	idiom		u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	見點	v			u-inlex-nf2k;review;agent-label	high	BAD	r	粵「差點／快要」副；非動
+u-inlex-nf2k	貫穿	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	貼上	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	迅猛	a			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	連同	x			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	開路	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	閥門	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	雨天	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	震蛋	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	順德	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	頒佈	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	頸巾	n			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	飲得	v			u-inlex-nf2k;review;agent-label	high	BAD	u	V+得能性殘片；非獨立詞位
+u-inlex-nf2k	餓死	v			u-inlex-nf2k;review;agent-label	high	OK		
+u-inlex-nf2k	驚覺	v			u-inlex-nf2k;review;agent-label	high	OK		

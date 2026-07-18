@@ -543,5 +543,34 @@
       "d4_pass_95": true,
       "alias_n": 15
     }
+  },
+  "nf_batches_full_gate": {
+    "seed": 99,
+    "total_sample": 486,
+    "ok": 461,
+    "soft": 9,
+    "bad": 16,
+    "ok_rate": 0.9671,
+    "pass_90": true,
+    "bads_fixed": 16,
+    "per_batch": {
+      "u-inlex-nf2k": 0.95,
+      "u-inlex-nf2b": 0.97,
+      "u-inlex-nf3": 0.99,
+      "u-inlex-nf4": 0.98,
+      "u-inlex-nf5": 0.9419
+    },
+    "coverage_after": {
+      "rows": 22716,
+      "formal": 22690,
+      "u": 26,
+      "fragment": 26,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22690,
+      "formal_non_fragment": 22690,
+      "d4_pass_95": true,
+      "alias_n": 15
+    }
   }
 }

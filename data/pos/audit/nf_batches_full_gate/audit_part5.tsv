@@ -1,0 +1,87 @@
+batch	literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+u-inlex-nf5	一枕黃粱	n,v	idiom		u-inlex-nf5;review;agent-label	high	BAD	n	成語主作名詞（黃粱夢喻／是一枕黃粱）；v 假陽
+u-inlex-nf5	一觸即潰	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	不平則鳴	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	不當	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	久病成醫	a,x	idiom		u-inlex-nf5;review;agent-label	high	BAD	v	謂語成語（真係久病成醫）；非形／非 x
+u-inlex-nf5	互有勝負	a,v			u-inlex-nf5;review;agent-label	high	BAD	v	主作謂語（雙方互有勝負）；a 假陽
+u-inlex-nf5	五花大綁	n,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	付諸流水	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	以儆效尤	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	侍應生	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	停火	n,v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	凋謝	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	出神入化	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	削足適履	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	動魄驚心	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	勞碌	a,v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	原子半徑	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	可再生能源	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	可親	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	合成石油	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	同工異曲	a,n	idiom		u-inlex-nf5;review;agent-label	high	BAD	a	成語主形容（異曲同工之妙／兩者同工異曲）；n 假陽
+u-inlex-nf5	名聲遠播	a,v			u-inlex-nf5;review;agent-label	high	SOFT		主標動謂；定語 a 薄但閘用 multi 可
+u-inlex-nf5	否	r			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	單調	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	嗜殺成性	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	地區差價	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	姑息養奸	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	娑羅雙樹	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	小試牛刀	v	idiom		成語；小試牛刀;u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	平地	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	年底	n			u-inlex-nf5;review;agent-label	high	SOFT		時間詞常作狀語（年底完成／年底見），宜 n,r
+u-inlex-nf5	年度大會	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	心平氣和	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	惡言傷人	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	成年累月	r	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	拜把兄弟	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	挖肉補瘡	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	掂斤播兩	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	撫躬自問	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	整天	n,r			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	旋轉乾坤	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	有失	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	棄邪歸正	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	標題音樂	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	毛毛雨	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	氣息奄奄	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	烏魯木齊	n			地名;u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	理化因素	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	理論貢獻	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	登報聲明	n,v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	白日見鬼	v,x	idiom		u-inlex-nf5;review;agent-label	high	BAD	v	動詞成語；x 假陽（非 closed-class）
+u-inlex-nf5	相對速度	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	知情不報	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	破案	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	破舊立新	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	福壽雙全	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	窮追猛打	v	idiom		成語；窮追猛打;u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	管窺所及	n	idiom		成語；管窺所及;u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	統一資源	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	綽約多姿	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	縱情聲色	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	耗	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	能幹	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	芙蓉出水	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	荒淫無恥	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	菲力牛排	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	萬死一生	a,n	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	西部	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	見風是雨	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	貓鼠遊戲	n	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	賣身投靠	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	輕機關槍	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	退燒	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	遇害	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	避坑落井	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	金碧輝煌	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	銅管樂器	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	鋤強扶弱	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	防風固沙	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	陰鬱	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	陳橋兵變	n			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	雄心壯志	n	idiom		u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	風吹草動	n	idiom		成語；風吹草動;u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	養家活口	v			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	驚愕	a			u-inlex-nf5;review;agent-label	high	OK		
+u-inlex-nf5	鰥寡孤獨	n	idiom		u-inlex-nf5;review;agent-label	high	OK		
