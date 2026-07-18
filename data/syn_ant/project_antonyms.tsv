@@ -6324,10 +6324,8 @@ head	tail	relation_type	batch_id
 女主角	男主角	ant	post-syn-ant-ring5k10k-b01-20260718
 訂購	退訂	ant	post-syn-ant-ring5k10k-b01-20260718
 租賃	購買	ant	post-syn-ant-ring5k10k-b01-20260718
-租賃	出售	ant	post-syn-ant-ring5k10k-b01-20260718
 陌生人	熟人	ant	post-syn-ant-ring5k10k-b01-20260718
 拷貝	原件	ant	post-syn-ant-ring5k10k-b01-20260718
-選購	退貨	ant	post-syn-ant-ring5k10k-b01-20260718
 不經意	故意	ant	post-syn-ant-ring5k10k-b01-20260718
 不經意	特登	ant	post-syn-ant-ring5k10k-b01-20260718
 不錯	好衰	ant	post-syn-ant-ring5k10k-b01-20260718
@@ -6345,7 +6343,6 @@ head	tail	relation_type	batch_id
 明細	籠統	ant	post-syn-ant-ring5k10k-b01-20260718
 北面	南邊	ant	post-syn-ant-ring5k10k-b01-20260718
 原先	如今	ant	post-syn-ant-ring5k10k-b01-20260718
-入場	出場	ant	post-syn-ant-ring5k10k-b01-20260718
 不錯	差勁	ant	post-syn-ant-ring5k10k-b01-20260718
 不經意	有意	ant	post-syn-ant-ring5k10k-b01-20260718
 陌生人	自己人	ant	post-syn-ant-ring5k10k-b01-20260718
@@ -6415,7 +6412,6 @@ head	tail	relation_type	batch_id
 做工	偷懶	ant	post-syn-ant-ring5k10k-b03-20260718
 隱患	安全	ant	post-syn-ant-ring5k10k-b03-20260718
 絕跡	再現	ant	post-syn-ant-ring5k10k-b04-20260718
-還款	借貸	ant	post-syn-ant-ring5k10k-b04-20260718
 進貨	出貨	ant	post-syn-ant-ring5k10k-b04-20260718
 繁體	簡體	ant	post-syn-ant-ring5k10k-b04-20260718
 湊合	講究	ant	post-syn-ant-ring5k10k-b04-20260718
@@ -6460,7 +6456,6 @@ head	tail	relation_type	batch_id
 摺疊	展開	ant	post-syn-ant-ring5k10k-b04-20260718
 直觀	抽象	ant	post-syn-ant-ring5k10k-b04-20260718
 便捷	麻煩	ant	post-syn-ant-ring5k10k-b04-20260718
-再不	總是	ant	post-syn-ant-ring5k10k-b04-20260718
 開辦	關閉	ant	post-syn-ant-ring5k10k-b04-20260718
 聆聽	充耳不聞	ant	post-syn-ant-ring5k10k-b04-20260718
 替補	主力	ant	post-syn-ant-ring5k10k-b04-20260718
@@ -6533,7 +6528,6 @@ head	tail	relation_type	batch_id
 骨折	康復	ant	post-syn-ant-ring5k10k-b04-20260718
 致富	貧窮	ant	post-syn-ant-ring5k10k-b04-20260718
 入庫	提貨	ant	post-syn-ant-ring5k10k-b04-20260718
-看成	看輕	ant	post-syn-ant-ring5k10k-b04-20260718
 摺疊	攤開	ant	post-syn-ant-ring5k10k-b04-20260718
 直觀	隱晦	ant	post-syn-ant-ring5k10k-b04-20260718
 便捷	繁瑣	ant	post-syn-ant-ring5k10k-b04-20260718
@@ -6562,7 +6556,6 @@ head	tail	relation_type	batch_id
 融入	孤立	ant	post-syn-ant-ring5k10k-b04-20260718
 行禮	失禮	ant	post-syn-ant-ring5k10k-b04-20260718
 調頭	前進	ant	post-syn-ant-ring5k10k-b04-20260718
-變臉	言歡	ant	post-syn-ant-ring5k10k-b04-20260718
 跨過	退縮	ant	post-syn-ant-ring5k10k-b04-20260718
 過火	適中	ant	post-syn-ant-ring5k10k-b04-20260718
 難題	簡單	ant	post-syn-ant-ring5k10k-b04-20260718
@@ -6596,7 +6589,6 @@ head	tail	relation_type	batch_id
 拋開	緊握	ant	post-syn-ant-ring5k10k-b05-20260718
 指出	隱瞞	ant	post-syn-ant-ring5k10k-b05-20260718
 搜尋	放棄	ant	post-syn-ant-ring5k10k-b05-20260718
-散步	奔跑	ant	post-syn-ant-ring5k10k-b05-20260718
 暗自	公開	ant	post-syn-ant-ring5k10k-b05-20260718
 熱身	收工	ant	post-syn-ant-ring5k10k-b05-20260718
 痛心	欣慰	ant	post-syn-ant-ring5k10k-b05-20260718
@@ -6624,12 +6616,10 @@ head	tail	relation_type	batch_id
 泄漏	保密	ant	post-syn-ant-ring5k10k-b05-20260718
 開銷	節省	ant	post-syn-ant-ring5k10k-b05-20260718
 費勁	輕鬆	ant	post-syn-ant-ring5k10k-b05-20260718
-索賠	賠償	ant	post-syn-ant-ring5k10k-b05-20260718
 跟上	落後	ant	post-syn-ant-ring5k10k-b05-20260718
 跟上	脱節	ant	post-syn-ant-ring5k10k-b05-20260718
 保住	失去	ant	post-syn-ant-ring5k10k-b05-20260718
 冰凍	融化	ant	post-syn-ant-ring5k10k-b05-20260718
-叮囑	沉默	ant	post-syn-ant-ring5k10k-b05-20260718
 可笑	莊重	ant	post-syn-ant-ring5k10k-b05-20260718
 同等	不同	ant	post-syn-ant-ring5k10k-b05-20260718
 吶喊	靜默	ant	post-syn-ant-ring5k10k-b05-20260718
@@ -6689,7 +6679,6 @@ head	tail	relation_type	batch_id
 恐嚇	安撫	ant	post-syn-ant-ring5k10k-b05-20260718
 悄悄	高聲	ant	post-syn-ant-ring5k10k-b05-20260718
 收服	對抗	ant	post-syn-ant-ring5k10k-b05-20260718
-湧出	倒灌	ant	post-syn-ant-ring5k10k-b05-20260718
 無意中	有意	ant	post-syn-ant-ring5k10k-b05-20260718
 耀眼	黯淡	ant	post-syn-ant-ring5k10k-b05-20260718
 該死	可愛	ant	post-syn-ant-ring5k10k-b05-20260718
@@ -6738,9 +6727,7 @@ head	tail	relation_type	batch_id
 警示	放任	ant	post-syn-ant-ring5k10k-b06-20260718
 預示	回顧	ant	post-syn-ant-ring5k10k-b06-20260718
 演練	實戰	ant	post-syn-ant-ring5k10k-b06-20260718
-剖析	含糊	ant	post-syn-ant-ring5k10k-b06-20260718
 抽查	放任	ant	post-syn-ant-ring5k10k-b06-20260718
-問世	絕版	ant	post-syn-ant-ring5k10k-b06-20260718
 上當	醒覺	ant	post-syn-ant-ring5k10k-b06-20260718
 下載	上傳	ant	post-syn-ant-ring5k10k-b06-20260718
 保釋	監禁	ant	post-syn-ant-ring5k10k-b06-20260718
@@ -6822,10 +6809,7 @@ head	tail	relation_type	batch_id
 聊天	靜默	ant	post-syn-ant-ring5k10k-b06-20260718
 吹牛	謙遜	ant	post-syn-ant-ring5k10k-b06-20260718
 預示	追溯	ant	post-syn-ant-ring5k10k-b06-20260718
-演練	上陣	ant	post-syn-ant-ring5k10k-b06-20260718
-問世	絕跡	ant	post-syn-ant-ring5k10k-b06-20260718
 上當	清醒	ant	post-syn-ant-ring5k10k-b06-20260718
-下一步	回頭	ant	post-syn-ant-ring5k10k-b06-20260718
 不至於	以至於	ant	post-syn-ant-ring5k10k-b06-20260718
 保釋	收監	ant	post-syn-ant-ring5k10k-b06-20260718
 冤枉	昭雪	ant	post-syn-ant-ring5k10k-b06-20260718
@@ -6847,7 +6831,6 @@ head	tail	relation_type	batch_id
 破綻	完整	ant	post-syn-ant-ring5k10k-b06-20260718
 碰到	避開	ant	post-syn-ant-ring5k10k-b06-20260718
 累積	耗散	ant	post-syn-ant-ring5k10k-b06-20260718
-終究	目前	ant	post-syn-ant-ring5k10k-b06-20260718
 絕育	受孕	ant	post-syn-ant-ring5k10k-b06-20260718
 缺口	補足	ant	post-syn-ant-ring5k10k-b06-20260718
 翌日	當日	ant	post-syn-ant-ring5k10k-b06-20260718

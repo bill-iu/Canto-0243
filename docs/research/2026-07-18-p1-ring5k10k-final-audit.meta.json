@@ -1,0 +1,198 @@
+{
+  "audit_id": "p1-ring5k10k-final-20260718",
+  "date": "2026-07-18",
+  "scope": "P1 Essay rank 5001-10000 post-syn has_syn_no_ant ring batches b01-b06",
+  "git_commit_pre_remediation": "9157970442b77eca8ea09d1acbab6ffaeff4a2f6",
+  "ant": {
+    "population_pairs": 540,
+    "sample_design": "stratified: b01-b03 census; b04-b06 n=50 each seed=20260718+batch",
+    "sample_n": 252,
+    "sample_ok": 235,
+    "sample_fail": 17,
+    "ok_rate": 0.9325,
+    "ok_rate_threshold": 0.9,
+    "passes_gate": true,
+    "by_batch": {
+      "post-syn-ant-ring5k10k-b01-20260718": {
+        "ok": 36,
+        "fail": 3,
+        "n": 39
+      },
+      "post-syn-ant-ring5k10k-b02-20260718": {
+        "ok": 34,
+        "fail": 0,
+        "n": 34
+      },
+      "post-syn-ant-ring5k10k-b03-20260718": {
+        "ok": 29,
+        "fail": 0,
+        "n": 29
+      },
+      "post-syn-ant-ring5k10k-b04-20260718": {
+        "ok": 46,
+        "fail": 4,
+        "n": 50
+      },
+      "post-syn-ant-ring5k10k-b05-20260718": {
+        "ok": 46,
+        "fail": 4,
+        "n": 50
+      },
+      "post-syn-ant-ring5k10k-b06-20260718": {
+        "ok": 44,
+        "fail": 6,
+        "n": 50
+      }
+    },
+    "fails": [
+      {
+        "head": "租賃",
+        "tail": "出售",
+        "reason": "rent_vs_sell_wrong_axis"
+      },
+      {
+        "head": "選購",
+        "tail": "退貨",
+        "reason": "process_related_not_antonym"
+      },
+      {
+        "head": "入場",
+        "tail": "出場",
+        "reason": "出場_ambiguous_enter_stage"
+      },
+      {
+        "head": "再不",
+        "tail": "總是",
+        "reason": "再不_conditional_not_polarity"
+      },
+      {
+        "head": "還款",
+        "tail": "借貸",
+        "reason": "repay_vs_borrow_wrong_axis"
+      },
+      {
+        "head": "看成",
+        "tail": "看輕",
+        "reason": "regard_as_vs_look_down_wrong_axis"
+      },
+      {
+        "head": "變臉",
+        "tail": "言歡",
+        "reason": "tail_rare_weak_antonym"
+      },
+      {
+        "head": "湧出",
+        "tail": "倒灌",
+        "reason": "not_stable_antonym"
+      },
+      {
+        "head": "散步",
+        "tail": "奔跑",
+        "reason": "both_locomotion_not_antonym"
+      },
+      {
+        "head": "索賠",
+        "tail": "賠償",
+        "reason": "claim_vs_compensate_related_not_ant"
+      },
+      {
+        "head": "叮囑",
+        "tail": "沉默",
+        "reason": "advise_vs_silent_wrong_axis"
+      },
+      {
+        "head": "問世",
+        "tail": "絕跡",
+        "reason": "come_out_vs_extinct_wrong_axis"
+      },
+      {
+        "head": "問世",
+        "tail": "絕版",
+        "reason": "come_out_vs_oop_weak"
+      },
+      {
+        "head": "演練",
+        "tail": "上陣",
+        "reason": "practice_vs_battle_related"
+      },
+      {
+        "head": "下一步",
+        "tail": "回頭",
+        "reason": "weak_sequence_not_antonym"
+      },
+      {
+        "head": "終究",
+        "tail": "目前",
+        "reason": "not_antonym"
+      },
+      {
+        "head": "剖析",
+        "tail": "含糊",
+        "reason": "analyze_vs_vague_wrong_axis"
+      }
+    ],
+    "remediation": "removed fail pairs from project_antonyms.tsv",
+    "removed_count": 17
+  },
+  "no_natural": {
+    "population_heads": 1293,
+    "sample_n": 80,
+    "sample_ok": 69,
+    "sample_fail": 11,
+    "ok_rate": 0.8625,
+    "ok_rate_threshold": 0.85,
+    "passes_gate": true,
+    "fails": [
+      {
+        "head": "睡覺",
+        "reason": "should_have_ant_醒"
+      },
+      {
+        "head": "擅長",
+        "reason": "should_have_ant_拙劣"
+      },
+      {
+        "head": "遏制",
+        "reason": "should_have_ant_放任"
+      },
+      {
+        "head": "作嘔",
+        "reason": "should_have_ant_可口"
+      },
+      {
+        "head": "非禮",
+        "reason": "should_have_ant_有禮"
+      },
+      {
+        "head": "發狂",
+        "reason": "should_have_ant_冷靜"
+      },
+      {
+        "head": "好友",
+        "reason": "should_have_ant_敵人"
+      },
+      {
+        "head": "收養",
+        "reason": "should_have_ant_遺棄"
+      },
+      {
+        "head": "自治",
+        "reason": "should_have_ant_受控"
+      },
+      {
+        "head": "查收",
+        "reason": "should_have_ant_拒收"
+      },
+      {
+        "head": "擴容",
+        "reason": "should_have_ant_縮容"
+      }
+    ],
+    "remediation": "removed over-broad no_natural heads so they re-enter open set for later ant/nn",
+    "removed_count": 11
+  },
+  "criteria": {
+    "ant": "context-free natural opposite; same POS/sense layer; fillword-usable; reject related/wrong-axis/ambiguous",
+    "nn": "no stable context-free antonym; fail if clear antonym exists in lexicon"
+  }
+}
