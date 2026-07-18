@@ -286,5 +286,56 @@
       "u": 6336,
       "other": 21
     }
+  },
+  "u_inlex": {
+    "applied_formal": 1977,
+    "keep_u": 23,
+    "upsert": {
+      "rows": 22730,
+      "touched": 1977,
+      "updated": 1977,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "before": {
+      "rows": 22730,
+      "u": 12494,
+      "formal": 10236
+    },
+    "after": {
+      "rows": 22730,
+      "u": 10517,
+      "formal": 12213
+    },
+    "gate_r1": {
+      "sample_n": 99,
+      "ok_rate": 0.9697,
+      "pass_90": true,
+      "bad": 3
+    },
+    "final_u": 10263,
+    "final_formal": 12467
+  },
+  "u_inlex_idiom": {
+    "applied": 254,
+    "upsert": {
+      "rows": 22730,
+      "touched": 254,
+      "updated": 254,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "source": "idiom_u_relabel.tsv",
+    "u_before": 10517,
+    "u_after": 10263,
+    "gate_r1": {
+      "sample_n": 50,
+      "ok_rate": 0.92,
+      "pass_90": true,
+      "bad": 4
+    },
+    "final_u": 10263
   }
 }

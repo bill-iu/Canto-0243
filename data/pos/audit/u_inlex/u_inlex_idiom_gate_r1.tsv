@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	fix_family	audit_note
+一心一意	a,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一房一廳	n	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一手一足	n	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一時三刻	n,r	idiom		p2-idiom:一X?Y;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一望無垠	a	idiom		p2-idiom:一X?Y;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一驚一乍	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+一點一滴	n,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+亦莊亦諧	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+人無完人	a,n	idiom		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+仁者見仁	a,v	idiom		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+倒買倒賣	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			v 主；a 弱
+做牛做馬	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			v 主
+傾國傾城	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			a 主形容容貌
+像模像樣	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			a 主
+全始全終	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	BAD	r		自始至終義；副詞性
+可有可無	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			a 主
+各就各位	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	BAD	v		祈使/動作；非 a
+各色各樣	a,n	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+同班同學	n			p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			非熟語；family 空正確
+多彩多姿	a	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+大吃大喝	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+大徹大悟	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+夾手夾腳	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+學士學位	n			p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			非熟語 n
+屢戰屢敗	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+屢敗屢戰	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+後知後覺	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+成千成萬	a,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+挨門挨户	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+探頭探腦	a	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			a 可；亦 v
+敢作敢為	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+敢作敢當	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+新人新事	n	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+旅進旅退	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+日復一日	r	idiom		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+時大時小	a,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+時斷時續	a,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+沒日沒夜	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	SOFT			a,r 亦可
+活學活用	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+滑頭滑腦	a	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+腳痛醫腳	v	idiom		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+自動自發	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+至始至終	r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+親力親為	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+賊頭賊腦	a	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+逐字逐句	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	BAD	r		方式副；非 a,v
+雙宿雙飛	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
+電子電路	n			p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			術語 n；非熟語
+風言風語	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	BAD	n		閒話名詞；非 a,v
+鬥智鬥力	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel	high	OK			
