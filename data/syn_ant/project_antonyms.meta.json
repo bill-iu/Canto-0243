@@ -7871,6 +7871,273 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-ring5k10k-b01-20260718": {
+      "k": 22,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k content has_syn_no_ant b01; freeze open=1600; maintainer-curated top150; seed fixtures/post_syn_ant_ring5k10k_b01_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 1
+      },
+      "sample_seed": 20260718,
+      "sample_n": 39,
+      "sample_ok": 39,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b01-20260718 parent N=39",
+      "sample_parent_n": 39,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "一味",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "故意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "有意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "特登",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不錯",
+          "tail": "好衰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不錯",
+          "tail": "差勁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "服從",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "聽命",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "聽話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傾向",
+          "tail": "反對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "出場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "退場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "離場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出貨",
+          "tail": "入貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出貨",
+          "tail": "收貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "北面",
+          "tail": "南邊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "如今",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "後來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "而家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "合力",
+          "tail": "各自",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "合力",
+          "tail": "單幹",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "故意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "有意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "特登",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "女主角",
+          "tail": "男主角",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "小夥子",
+          "tail": "老人家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拷貝",
+          "tail": "原件",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明細",
+          "tail": "含糊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明細",
+          "tail": "籠統",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "租賃",
+          "tail": "出售",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "租賃",
+          "tail": "購買",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聽取",
+          "tail": "忽略",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "訂購",
+          "tail": "退訂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "這次",
+          "tail": "上次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "這次",
+          "tail": "下次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "選購",
+          "tail": "退貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陌生人",
+          "tail": "熟人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陌生人",
+          "tail": "自己人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "體內",
+          "tail": "體外",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
