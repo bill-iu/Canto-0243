@@ -1,5 +1,14 @@
 {
   "version": "0.1.0",
-  "p0_hard_gate": false,
-  "description": "專案自建詞性清單 meta — p0_hard_gate 僅 P0 母體完成後改 true"
+  "p0_hard_gate": true,
+  "description": "專案自建詞性清單 meta — p0_hard_gate 僅 P0 母體完成後改 true",
+  "p0": {
+    "mother_body": 18781,
+    "tagged": 18781,
+    "formal": 5595,
+    "missing": 0,
+    "coverage": 1.0,
+    "formal_coverage": 0.2979,
+    "complete": true
+  }
 }

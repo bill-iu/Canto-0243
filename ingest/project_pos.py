@@ -41,7 +41,7 @@ class PosRow:
         return frozenset(p for p in self.pos if p in FORMAL_POS)
 
 
-def _split_pos(raw: str) -> frozenset[str]:
+def split_pos(raw: str) -> frozenset[str]:
     parts = [p.strip().lower() for p in (raw or "").replace("|", ",").split(",") if p.strip()]
     if not parts:
         raise ProjectPosError("pos empty")
@@ -49,6 +49,10 @@ def _split_pos(raw: str) -> frozenset[str]:
     if bad:
         raise ProjectPosError(f"unknown pos {bad}")
     return frozenset(parts)
+
+
+# back-compat
+_split_pos = split_pos
 
 
 def parse_project_pos_tsv(path: Path = DEFAULT_TSV) -> Dict[str, PosRow]:
