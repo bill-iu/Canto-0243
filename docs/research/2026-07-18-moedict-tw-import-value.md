@@ -1,15 +1,16 @@
 # g0v/moedict.tw 引入價值與可能性
 
 **日期**：2026-07-18  
+**狀態**：**已放棄引入**（維護者 2026-07-18 確認；唔開依賴、唔匯入、唔跟進 P1 增量度量，除非另開議題）  
 **對象專案**：ICE-U-code/Canto-0243（離線粵語填詞查韻；近反義經靜態詞林埠 + `word_relations`）  
 **主要 URL**：[https://github.com/g0v/moedict.tw](https://github.com/g0v/moedict.tw)  
 **結論摘要**：
 
 | 引入對象 | 裁決 |
 |----------|------|
-| **moedict.tw 本體**（前端／Worker／線上 API／R2 字典包） | **no** — 產品面與架構面皆不合；唔應當 runtime 依賴或 fork 產品殼 |
-| **經 moedict 生態取教育部《修訂本》相似詞／相反詞欄** | **yes-with-conditions** — 與既有報告一致；資料源應釘**官方 ZIP／XLSX**（或可驗證同源鏡像），**唔**靠 moedict.tw API 當更新管線 |
-| **台語／客語／兩岸詞典包** | **no**（主線）— 唔係粵語 0243 產品；可留作未來「跨語參照」研究，唔進現有詞庫／近反義 SSOT |
+| **moedict.tw 本體**（前端／Worker／線上 API／R2 字典包） | **no — 已放棄**；唔當 runtime 依賴或 fork 產品殼 |
+| **經 moedict 生態取教育部《修訂本》相似詞／相反詞欄** | **研究曾判 yes-with-conditions；產品線已放棄** — 唔為 Canto 開 MOE／moedict 匯入管線 |
+| **台語／客語／兩岸詞典包** | **no**（主線） |
 
 **關聯報告**（已裁決、本篇唔重複展開）：
 
@@ -168,9 +169,16 @@
 
 ## 7. Verdict
 
-### 對「引入 https://github.com/g0v/moedict.tw」本身
+### 維護者終局（2026-07-18）：**放棄引入**
 
-**no。**
+- 唔引入 moedict.tw（依賴、submodule、runtime API、R2 pack、fork UI）。  
+- 唔為 Canto 開教育部／moedict 相似詞／相反詞匯入管線（P1–P6 全停）。  
+- 人手瀏覽 moedict.tw 作審稿對照：**允許**，但唔寫進 ingest／SSOT。  
+- 下文 §7.1–7.2 保留研究時點分析；**唔**再當待辦。
+
+### 7.1 對「引入 https://github.com/g0v/moedict.tw」本身（研究時點）
+
+**no**（其後升級為**已放棄**）。
 
 理由濃縮：
 
@@ -180,23 +188,15 @@
 4. **無粵拼／0243**；台客語包對主線無增益。  
 5. 授權上即便程式 CC0，**字典本文 BY-ND** 仍限制「當自建源／改作後再分發」。
 
-### 對「經萌典生態用教育部資料補近反義」
+### 7.2 對「經萌典生態用教育部資料補近反義」（研究時點；產品已放棄）
 
-**維持既有裁決：yes-with-conditions**（詳見 MOE 報告），並加兩條與 moedict.tw 相關的操作約束：
-
-1. **更新管線釘官方 ZIP 版本號／checksum**；g0v 鏡像可作便利，但可能滯後。  
-2. **唔以** `www.moedict.tw` API 或 moedict.tw R2 pack 當生產 ingest 源（可作 dev 對照）。  
-3. 匯入前先做 **vs guotong／project_ant 無向重疊與增量**；增量不足則 **YAGNI**。  
-4. 獨立 source（如 `moe_revised`），**永遠唔**寫入 project 清單權威。
+研究曾判 **yes-with-conditions**（詳見 MOE 報告）。**產品線已決定唔做**，故唔開增量度量、format-only TSV、或 `moe_revised` source。若將來重開，須新議題 + 重審授權與 vs guotong 增量。
 
 ---
 
-## 8. 建議下一步（若要推進，按序）
+## 8. 建議下一步
 
-1. **唔開** moedict.tw 依賴／submodule／runtime fetch。  
-2. 若產品想補國語書面反義覆蓋：執行 MOE 報告 §7 的增量度量（官方 `2015_*` XLSX「相反詞」「相似詞」∩ 本庫字面 − guotong − project）。  
-3. 增量夠大再做 format-only TSV + NOTICE；過小就關閉議題。  
-4. 維護者文檔可加一句：「審稿可對照 moedict.tw；生產資料只認官方包」。
+**無。** 議題關閉。唔跟進 §6 可行性表中任何「可選／可選做」項。
 
 ---
 
