@@ -1,6 +1,7 @@
 /**
  * 詞性載體 runtime — independent of lyrics.db (ADR-0058).
  * Missing / failed load → 詞性缺標 (no throw, no gate block).
+ * 閘用詞類 = entry.gate (high|medium); 展示 = entry.show (high only).
  */
 import type { PosCode, PosEntry, ProjectPosCarrier } from './types.ts';
 import { FORMAL_POS } from './types.ts';
@@ -26,30 +27,47 @@ export function getPosEntry(literal: string): PosEntry | null {
   return e ?? null;
 }
 
+function formalCodes(codes: readonly string[] | undefined): Set<string> {
+  const out = new Set<string>();
+  for (const p of codes ?? []) {
+    if (FORMAL_POS.has(p)) out.add(p);
+  }
+  return out;
+}
+
+/** 閘用詞類 for workbench filter / campaign same-pos. */
 export function formalPosOf(literal: string): ReadonlySet<string> {
   const e = getPosEntry(literal);
   if (!e) return new Set();
-  return new Set(e.pos.filter((p) => FORMAL_POS.has(p)));
+  if (e.gate != null) return formalCodes(e.gate);
+  if (e.trust === 'low') return new Set();
+  if (e.trust === 'high' || e.trust === 'medium') return formalCodes(e.pos);
+  // legacy carrier without trust/gate: use raw formal pos
+  return formalCodes(e.pos);
 }
 
 export function formalPosMap(): ReadonlyMap<string, ReadonlySet<string>> {
   const map = new Map<string, ReadonlySet<string>>();
   if (!carrier) return map;
-  for (const [lit, entry] of Object.entries(carrier.literals)) {
-    const formal = new Set(entry.pos.filter((p) => FORMAL_POS.has(p)));
+  for (const lit of Object.keys(carrier.literals)) {
+    const formal = formalPosOf(lit);
     if (formal.size) map.set(lit, formal);
   }
   return map;
 }
 
-/** Creator-facing chips; omit 未定. */
+/** Creator-facing chips; high trust only (show / family / voice). */
 export function posDisplayChips(literal: string): string[] {
   const e = getPosEntry(literal);
   if (!e) return [];
   const chips: string[] = [];
-  for (const p of e.pos) {
+  let codes: readonly string[] = [];
+  if (e.show != null) codes = e.show;
+  else if (e.trust === 'high') codes = e.pos;
+  else if (e.trust == null && e.gate == null) codes = e.pos; // legacy
+  for (const p of codes) {
     if (p === 'u') continue;
-    const label = ({ n: '名', v: '動', a: '形', r: '副', x: '虛' } as Record<PosCode, string>)[p];
+    const label = ({ n: '名', v: '動', a: '形', r: '副', x: '虛' } as Record<PosCode, string>)[p as PosCode];
     if (label) chips.push(label);
   }
   if (e.family === 'idiom') chips.push('熟語');

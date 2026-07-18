@@ -1,12 +1,20 @@
-/** 專案自建詞性 — carrier + formal set (CONTEXT § 詞性與分類). */
+/** 專案自建詞性 — carrier + formal set (CONTEXT § 詞性與分類 / 詞性信任). */
 
 export type FormalPos = 'n' | 'v' | 'a' | 'r' | 'x';
 export type PosCode = FormalPos | 'u';
 export type PosFamily = 'idiom';
 export type PosVoice = 'active' | 'passive';
+/** high = 展示+閘; medium = 閘 only; low = 起草/缺標 */
+export type PosTrust = 'high' | 'medium' | 'low';
 
 export type PosEntry = {
+  /** Raw codes on SSOT row (may include low-trust COW drafts). */
   pos: readonly PosCode[];
+  trust?: PosTrust;
+  /** 閘用詞類 (high|medium); omit/empty → 缺標 for gate/filter */
+  gate?: readonly FormalPos[];
+  /** Creator display 詞類 (high only) */
+  show?: readonly FormalPos[];
   family?: PosFamily;
   voice?: PosVoice;
 };

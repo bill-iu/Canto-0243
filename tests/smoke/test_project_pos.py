@@ -20,6 +20,7 @@ from ingest.project_pos import (  # noqa: E402
     build_carrier_payload,
     campaign_pos_hard_reject,
     parse_project_pos_tsv,
+    pos_trust,
     same_pos_literals,
     write_carrier,
 )
@@ -95,6 +96,35 @@ def test_p0_mother_complete() -> None:
     assert meta.get("p0", {}).get("complete") is True
 
 
+def test_trust_tiers() -> None:
+    assert pos_trust("seed") == "high"
+    assert pos_trust("audit-high;review") == "high"
+    assert pos_trust("numeral;heuristic") == "high"
+    assert pos_trust("cow-multi") == "medium"
+    assert pos_trust("cow-single") == "low"
+    assert pos_trust("no-source;fallback") == "low"
+
+    table = parse_project_pos_tsv(DEFAULT_TSV)
+    # Find a cow-single row if present: gate empty, raw formal may exist
+    cow_single = next((r for r in table.values() if "cow-single" in r.note), None)
+    if cow_single:
+        assert cow_single.trust() == "low"
+        assert cow_single.gate_pos() == frozenset()
+        assert same_pos_literals(cow_single.literal, "走", table) is None
+
+    cow_multi = next((r for r in table.values() if "cow-multi" in r.note and r.formal_pos()), None)
+    if cow_multi:
+        assert cow_multi.trust() == "medium"
+        assert cow_multi.gate_pos() == cow_multi.formal_pos()
+
+    payload = build_carrier_payload(table, {"version": "0.1.0", "p0_hard_gate": True})
+    if cow_single:
+        ent = payload["literals"][cow_single.literal]
+        assert ent.get("trust") == "low"
+        assert "gate" not in ent
+        assert "show" not in ent
+
+
 def main() -> None:
     test_parse_seed_tsv()
     test_same_pos_and_missing()
@@ -103,6 +133,7 @@ def main() -> None:
     test_duplicate_literal_fails()
     test_carrier_payload_shape()
     test_p0_mother_complete()
+    test_trust_tiers()
     print("test_project_pos: ok")
 
 

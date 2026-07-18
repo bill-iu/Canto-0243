@@ -343,20 +343,27 @@ def p0_status(*, body_path: Path = P0_BODY, tsv: Path = DEFAULT_TSV) -> dict:
     body = set(load_p0_mother_body(body_path))
     table = parse_project_pos_tsv(tsv)
     tagged = body & set(table.keys())
-    formal = {lit for lit in tagged if table[lit].formal_pos()}
+    gate_formal = {lit for lit in tagged if table[lit].gate_pos()}
     undetermined = {lit for lit in tagged if table[lit].pos <= frozenset({"u"})}
+    low_draft = {
+        lit
+        for lit in tagged
+        if table[lit].trust() == "low" and table[lit].formal_pos() and lit not in undetermined
+    }
     missing = body - set(table.keys())
     complete = len(missing) == 0
     return {
         "mother_body": len(body),
         "tagged": len(tagged),
-        "formal": len(formal),
+        "formal": len(gate_formal),  # 閘用詞類 (high|medium)
+        "gate_formal": len(gate_formal),
+        "low_draft_formal": len(low_draft),  # cow-single etc — not gate
         "undetermined_only": len(undetermined),
         "missing": len(missing),
         "coverage": round(len(tagged) / len(body), 4) if body else 0.0,
-        "formal_coverage": round(len(formal) / len(body), 4) if body else 0.0,
+        "formal_coverage": round(len(gate_formal) / len(body), 4) if body else 0.0,
         "p0_complete": complete,
-        "p0_hard_gate_ready": complete,  # 终局 = formal or u for all
+        "p0_hard_gate_ready": complete,
     }
 
 

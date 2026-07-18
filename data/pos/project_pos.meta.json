@@ -1,14 +1,19 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "p0_hard_gate": true,
-  "description": "專案自建詞性清單 meta — p0_hard_gate 僅 P0 母體完成後改 true",
+  "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
+  "trust": {
+    "high": "review|heuristic|seed",
+    "medium": "cow-multi (gate yes, display no)",
+    "low": "cow-single|fallback (缺標 for gate/display)"
+  },
   "p0": {
     "mother_body": 18781,
     "tagged": 18781,
-    "formal": 5595,
+    "formal": 1791,
     "missing": 0,
     "coverage": 1.0,
-    "formal_coverage": 0.2979,
+    "formal_coverage": 0.0954,
     "complete": true
   }
 }

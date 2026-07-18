@@ -20,6 +20,13 @@ FAMILY_VALUES = frozenset({"", "idiom"})
 VOICE_VALUES = frozenset({"", "active", "passive"})
 TSV_HEADER = ("literal", "pos", "family", "voice", "note")
 
+# high | medium | low — CONTEXT § 詞性信任
+TRUST_HIGH = "high"
+TRUST_MEDIUM = "medium"
+TRUST_LOW = "low"
+GATE_TRUST = frozenset({TRUST_HIGH, TRUST_MEDIUM})  # 閘用詞類
+DISPLAY_TRUST = frozenset({TRUST_HIGH})  # 創作者面板
+
 POS_LABEL_ZH = {"n": "名", "v": "動", "a": "形", "r": "副", "x": "虛", "u": "未定"}
 FAMILY_LABEL_ZH = {"idiom": "熟語"}
 VOICE_LABEL_ZH = {"active": "主動", "passive": "被動"}
@@ -27,6 +34,33 @@ VOICE_LABEL_ZH = {"active": "主動", "passive": "被動"}
 
 class ProjectPosError(ValueError):
     """Fail-closed validation / load error."""
+
+
+def pos_trust(note: str) -> str:
+    """Infer 詞性信任 from SSOT note provenance."""
+    n = (note or "").strip().lower()
+    if not n or n == "seed" or n.startswith("seed"):
+        return TRUST_HIGH
+    if "review" in n:
+        return TRUST_HIGH
+    if "cow-single" in n:
+        return TRUST_LOW
+    if "cow-multi" in n:
+        return TRUST_MEDIUM
+    if "fallback" in n or "no-source" in n:
+        return TRUST_LOW
+    if any(
+        k in n
+        for k in (
+            "heuristic",
+            "numeral",
+            "len4-noun",
+            "verb-suffix",
+            "prefix-passive",
+        )
+    ):
+        return TRUST_HIGH
+    return TRUST_LOW
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,7 +72,23 @@ class PosRow:
     note: str = ""
 
     def formal_pos(self) -> frozenset[str]:
+        """All five-class codes on the row (includes low-trust COW drafts)."""
         return frozenset(p for p in self.pos if p in FORMAL_POS)
+
+    def trust(self) -> str:
+        return pos_trust(self.note)
+
+    def gate_pos(self) -> frozenset[str]:
+        """閘用詞類 — high/medium trust only."""
+        if self.trust() not in GATE_TRUST:
+            return frozenset()
+        return self.formal_pos()
+
+    def display_pos(self) -> frozenset[str]:
+        """Creator-facing 詞類 — high trust only."""
+        if self.trust() not in DISPLAY_TRUST:
+            return frozenset()
+        return self.formal_pos()
 
 
 def split_pos(raw: str) -> frozenset[str]:
@@ -104,9 +154,15 @@ def formal_pos_of(row: Optional[PosRow]) -> frozenset[str]:
     return row.formal_pos()
 
 
+def gate_pos_of(row: Optional[PosRow]) -> frozenset[str]:
+    if row is None:
+        return frozenset()
+    return row.gate_pos()
+
+
 def same_pos(a: Optional[PosRow], b: Optional[PosRow]) -> bool | None:
-    """True same, False clash, None = 詞性缺標 (do not hard-reject)."""
-    fa, fb = formal_pos_of(a), formal_pos_of(b)
+    """True same, False clash, None = 詞性缺標 (閘用詞類; do not hard-reject)."""
+    fa, fb = gate_pos_of(a), gate_pos_of(b)
     if not fa or not fb:
         return None
     return bool(fa & fb)
@@ -127,7 +183,7 @@ def campaign_pos_hard_reject(
     *,
     p0_hard_gate: bool,
 ) -> bool:
-    """True only when hard gate on and formal pos disjoint."""
+    """True only when hard gate on and 閘用詞類 disjoint."""
     if not p0_hard_gate:
         return False
     rel = same_pos_literals(head, tail, table)
@@ -140,10 +196,22 @@ def build_carrier_payload(
 ) -> dict:
     literals: Dict[str, dict] = {}
     for lit, row in sorted(table.items()):
-        entry: dict = {"pos": sorted(row.pos)}
-        if row.family:
+        trust = row.trust()
+        entry: dict = {
+            "pos": sorted(row.pos),
+            "trust": trust,
+        }
+        # Gate set (high|medium formal); empty → runtime 缺標
+        gp = row.gate_pos()
+        if gp:
+            entry["gate"] = sorted(gp)
+        # Display set (high only)
+        dp = row.display_pos()
+        if dp:
+            entry["show"] = sorted(dp)
+        if row.family and trust == TRUST_HIGH:
             entry["family"] = row.family
-        if row.voice:
+        if row.voice and trust == TRUST_HIGH:
             entry["voice"] = row.voice
         literals[lit] = entry
     return {
@@ -173,7 +241,24 @@ def write_carrier(
 def cmd_check(_: argparse.Namespace) -> int:
     table = parse_project_pos_tsv()
     meta = load_meta()
-    print(json.dumps({"rows": len(table), "version": meta.get("version"), "p0_hard_gate": meta.get("p0_hard_gate")}, ensure_ascii=False))
+    by_trust = {"high": 0, "medium": 0, "low": 0}
+    gate_n = 0
+    for row in table.values():
+        by_trust[row.trust()] = by_trust.get(row.trust(), 0) + 1
+        if row.gate_pos():
+            gate_n += 1
+    print(
+        json.dumps(
+            {
+                "rows": len(table),
+                "version": meta.get("version"),
+                "p0_hard_gate": meta.get("p0_hard_gate"),
+                "by_trust": by_trust,
+                "gate_formal": gate_n,
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 

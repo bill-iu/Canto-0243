@@ -42,18 +42,26 @@ assert(cands.length === 2 && cands[0]!.literal === '快樂', 'candidate filter')
 resetProjectPosCarrier();
 initProjectPosCarrier({
   version: '0.1.0',
-  p0HardGate: false,
+  p0HardGate: true,
   literals: {
-    開心: { pos: ['a'] },
-    一石二鳥: { pos: ['v'], family: 'idiom' },
-    被打: { pos: ['v'], voice: 'passive' },
+    開心: { pos: ['a'], trust: 'high', gate: ['a'], show: ['a'] },
+    一石二鳥: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'idiom' },
+    被打: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], voice: 'passive' },
+    // cow-single draft: raw pos present but no gate/show
+    草稿: { pos: ['n'], trust: 'low' },
+    // cow-multi: gate yes, show no
+    雙標: { pos: ['n', 'v'], trust: 'medium', gate: ['n', 'v'] },
   },
 });
 assert(posDisplayChips('開心').join() === '形', 'chip a');
 assert(posDisplayChips('一石二鳥').includes('熟語'), 'chip idiom');
 assert(posDisplayChips('被打').includes('被動'), 'chip passive');
+assert(posDisplayChips('草稿').length === 0, 'low trust no chips');
+assert(posDisplayChips('雙標').length === 0, 'medium no display chips');
 assert(posDisplayChips('無標').length === 0, 'empty chips');
-assert(formalPosMap().get('開心')?.has('a'), 'formal map');
+assert(formalPosMap().get('開心')?.has('a'), 'formal map high');
+assert(formalPosMap().get('雙標')?.has('v'), 'gate includes medium');
+assert(!formalPosMap().has('草稿'), 'low trust not in gate map');
 resetProjectPosCarrier();
 
 console.log('pos-meta-self-check: ok');
