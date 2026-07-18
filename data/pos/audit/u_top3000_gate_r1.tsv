@@ -1,0 +1,133 @@
+literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+一架	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				數+量 封閉類 x
+一次過	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語副「一口氣／一次過」
+一臺	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				數+量 封閉類 x
+一見	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				一見就… 自由動；複合另列
+不會	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				情態否定 v＋虛 x
+不解	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形＋動 true dual
+並無	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				文言存現否定
+之際	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時際名／虛 multi
+亂	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形主標；亂講 r 次要
+仍	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時間／延續副
+佈	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	v			主用動（佈置／分佈）；n 假陽會毒同名詞閘（名物多寫「布」）
+依加	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	r			依家＝而家 時間副；n 假陽會毒同名詞閘
+做嘢	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語動
+內	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				方位名／虛
+冷衫	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語名物
+十個	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				數+量 封閉類 x
+博客	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+卻是	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				轉折副／虛
+吹水	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語動
+呯	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				擬聲 → x
+嚇死	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動＋程度結果
+囡	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+國內外	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+在家	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				處所謂語動
+地標	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+域名	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+外國	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+大部分	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名量＋副 true dual
+大隻	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語 stative 形
+女友	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+好多嘢	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	SOFT				短語型 NP「好多+嘢」；n 閘可
+好睇	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語 stative 形
+嫩	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形
+尚健	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				專名
+就行	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				「就行了」形動 dual
+常	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				形＋副 true dual
+平	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				平／便宜 a；平面等 n
+幾耐	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				疑問時間副／虛
+張床	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	SOFT				量+名作 NP；essay 常見 n 閘可
+形	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+影	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				影相 n；影低 v true dual
+後臺	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+得以	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				文言能願／虛
+快感	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+恥笑	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+意	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+所在	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+所講	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	n			所V 名物化；只 n；v 假陽會毒同動詞閘
+手裏	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				處所名
+打到	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動＋結果／趨向
+抌	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語動
+抽	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+摺	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物＋動 true dual
+擡高	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+放學	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+敲門	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+新浪	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				專名／機構
+易	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形
+是以	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				連／虛
+時侯	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時候異體；名
+晚飯	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+暖	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形
+最好的	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	u			形+的 切段；非獨立詞位 → u
+枕	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				枕頭 n；枕住 v true dual
+構建	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+歌	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+正如	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				比況副／虛
+正面	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				形＋名 true dual
+氣質	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+河南	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				地名
+淡淡	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				重疊情狀 a,r
+湖北	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				地名
+無幾耐	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語時間副
+玉	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物／名用字
+班主任	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				職稱名
+瑞	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名用字／專名片段
+異樣	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				形＋名 true dual
+瘦	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				stative 形
+白波	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				專名／暱稱
+直程	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語副「簡直／直程」
+直落	r,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				情狀副＋動 dual
+知會	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+神仙	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+第一次	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名＋副 dual
+米奇	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				專名
+絡	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	SOFT				自由詞位薄（網絡／聯絡）；multi 閘可
+總係	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語副／虛
+總經理	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				職稱名
+義	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+翹	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+考	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+耳邊	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				處所名
+聖誕	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				節日名
+腿	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				身體部位
+與其	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				連／虛
+落街	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語動
+蘭卡特	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				專名
+號	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物＋量／虛
+螢幕	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+行爲	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+要不	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				選擇／否則 副虛
+視	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				視力 n；視爲 v dual
+觀衆	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+訓教	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動「訓導／管教」
+註明	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+認得	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+請你	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	u			動+代 切段（同 問你／叫我）；非獨立詞位 → u
+講句	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	u			動+量 切段（同 講個）；非獨立詞位 → u
+講多次	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	BAD	u			動+副／量 切段（同 講多）；非獨立詞位 → u
+變得	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動＋得 詞化
+豬豬	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				暱稱重疊名
+走到	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動＋結果／趨向
+身爲	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				身爲… 動／虛
+身處	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				處境 n；身處 v dual
+車頭	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+軒	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名用字／專名片段
+近年來	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時間副
+那天	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時間名＋副 dual
+郁	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				粵語動
+金字塔	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+錄	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	SOFT				主標 v 可；名物「紀錄／名錄」可補 n
+關我事	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				固定口語；非 family=idiom
+阿妹	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				親屬／暱稱
+阿婆	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				親屬／暱稱
+難度	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物
+面上	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				處所名＋副 dual
+頓時	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				時間副
+頭皮	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				身體部位
+食到	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動＋結果／趨向
+餵	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				動
+馬甲	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				名物（衣／馬甲號）
+齊	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u	high	u-top3000|gate	OK				齊整 a；到齊 v true dual
