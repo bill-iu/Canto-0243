@@ -9701,6 +9701,108 @@
       "head": "遮風擋雨",
       "tail": "暴露無遺",
       "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "租賃",
+      "tail": "出售",
+      "reason": "rent_vs_sell_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "選購",
+      "tail": "退貨",
+      "reason": "process_related_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "入場",
+      "tail": "出場",
+      "reason": "出場_ambiguous_enter_stage",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "再不",
+      "tail": "總是",
+      "reason": "再不_conditional_not_polarity",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "還款",
+      "tail": "借貸",
+      "reason": "repay_vs_borrow_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "看成",
+      "tail": "看輕",
+      "reason": "regard_as_vs_look_down_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "變臉",
+      "tail": "言歡",
+      "reason": "tail_rare_weak_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "湧出",
+      "tail": "倒灌",
+      "reason": "not_stable_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "散步",
+      "tail": "奔跑",
+      "reason": "both_locomotion_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "索賠",
+      "tail": "賠償",
+      "reason": "claim_vs_compensate_related_not_ant",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "叮囑",
+      "tail": "沉默",
+      "reason": "advise_vs_silent_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "問世",
+      "tail": "絕跡",
+      "reason": "come_out_vs_extinct_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "問世",
+      "tail": "絕版",
+      "reason": "come_out_vs_oop_weak",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "演練",
+      "tail": "上陣",
+      "reason": "practice_vs_battle_related",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "下一步",
+      "tail": "回頭",
+      "reason": "weak_sequence_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "終究",
+      "tail": "目前",
+      "reason": "not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "剖析",
+      "tail": "含糊",
+      "reason": "analyze_vs_vague_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
     }
   ]
 }
