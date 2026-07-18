@@ -342,35 +342,39 @@
     "dry_run": false,
     "targets_ensured": [],
     "residuals_removed_from_ssot": [
-      "牴"
+      "蝶",
+      "玫",
+      "眶",
+      "咖",
+      "蠱"
     ],
     "fragment_tags": {
       "clause_tagged": 12,
-      "opaque_tagged": 4
+      "opaque_tagged": 3
     },
     "before": {
-      "rows": 22724,
-      "formal": 14465,
-      "u": 8259,
-      "fragment": 24,
-      "formal_over_all": 0.6366,
-      "formal_over_non_fragment": 0.6372,
-      "non_fragment": 22700,
-      "formal_non_fragment": 14465,
-      "d4_pass_95": false,
-      "alias_n": 8
-    },
-    "after": {
       "rows": 22723,
       "formal": 14465,
       "u": 8258,
-      "fragment": 23,
+      "fragment": 27,
       "formal_over_all": 0.6366,
-      "formal_over_non_fragment": 0.6372,
-      "non_fragment": 22700,
+      "formal_over_non_fragment": 0.6373,
+      "non_fragment": 22696,
       "formal_non_fragment": 14465,
       "d4_pass_95": false,
-      "alias_n": 8
+      "alias_n": 13
+    },
+    "after": {
+      "rows": 22718,
+      "formal": 14465,
+      "u": 8253,
+      "fragment": 22,
+      "formal_over_all": 0.6367,
+      "formal_over_non_fragment": 0.6373,
+      "non_fragment": 22696,
+      "formal_non_fragment": 14465,
+      "d4_pass_95": false,
+      "alias_n": 13
     }
   },
   "u_pattern_s2": {

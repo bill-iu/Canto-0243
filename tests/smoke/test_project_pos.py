@@ -194,6 +194,24 @@ def test_pos_alias_and_fragment() -> None:
     assert cov["alias_n"] >= 6
     assert "formal_over_non_fragment" in cov
 
+
+def test_iwp_and_propose() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos_iwp import iwp_of, is_free_morpheme, load_iwp, residual_score
+
+    m = load_iwp()
+    assert len(m) > 1000
+    assert iwp_of("我", m) > 0.5
+    assert is_free_morpheme("我", iwp_map=m)
+    # bound-ish productive char has lower IWP than 我
+    assert iwp_of("潔", m) < iwp_of("我", m)
+    s_free, _ = residual_score("我", "我們", target_formal=True, iwp_map=m)
+    s_bound, note = residual_score("蝶", "蝴蝶", target_formal=True, iwp_map=m)
+    assert "iwp_src" in note
+    assert s_bound > s_free
+    assert Path("data/pos/iwp_char.tsv").is_file()
+
 def test_p2_idiom_quality_pass() -> None:
     from pathlib import Path
 
@@ -304,6 +322,7 @@ def main() -> None:
     test_full_system_gate_audit_pass()
     test_pos_ssot_lexicon_only()
     test_pos_alias_and_fragment()
+    test_iwp_and_propose()
     test_trust_tiers()
     print("test_project_pos: ok")
 

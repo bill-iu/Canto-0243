@@ -4723,7 +4723,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 咔嚓	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 咕	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 咕嚕	x			擬聲;u-inlex;review;u-inlex-agent
-咖	u			no-source;fallback;fragment;opaque
 咖哩	n			u-inlex;review;u-inlex-agent
 咖啡	n			cow-single
 咗	x			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -14232,7 +14231,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 玩笑	n			cow-single
 玩耍	n,v			cow-multi;p3
 玩遊戲	v			u-inlex;review;u-inlex-agent
-玫	u			no-source;p3;fallback
 玫瑰	n			cow-single
 玫瑰花	u			no-source;p3;fallback
 玲	u			no-source;p3;fallback
@@ -15261,7 +15259,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 眨	v			cow-single
 眨眼	v			cow-single
 眯	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-眶	u			no-source;p3;fallback
 眷屬	n			u-inlex;review;u-inlex-agent
 眼	n			cow-single
 眼中	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -18236,7 +18233,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 蝴蝶	n			cow-single
 蝴蝶效應	u			no-source;fallback
 蝴蝶結	n			cow-single;p3
-蝶	u			no-source;fallback
 蝸行牛步	u			no-source;fallback
 融	a,v			u-inlex;review;u-inlex-agent
 融入	v			u-inlex-nf2k;review;agent-label
@@ -18267,7 +18263,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 蠟燭	n			cow-single
 蠟筆	n			cow-single
 蠢	a			cow-single
-蠱	u			no-source;p3;fallback
 蠱惑人心	u			no-source;fallback
 蠶食鯨吞	u			no-source;fallback
 蠻	a,r			u-inlex-nf2k;review;agent-label

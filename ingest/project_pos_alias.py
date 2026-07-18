@@ -15,12 +15,23 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_ALIAS = ROOT / "data" / "pos" / "alias.tsv"
 DEFAULT_PROPOSALS = ROOT / "data" / "pos" / "alias_proposals.tsv"
 ALIAS_HEADER = ("source", "target", "kind", "note")
-PROP_HEADER = ("source", "target", "kind", "score", "note")
+PROP_HEADER = ("source", "target", "kind", "score", "iwp_src", "note")
 FRAGMENT_KINDS = frozenset({"residual", "clause-slice", "opaque"})
 # u_inlex keep-u seeds (residual pairs live in alias.tsv)
 CLAUSE_SLICE_SEED = "我見 將我 你估 我識 總有 個月 講乜 仲話 不知幾 人嚟 我架 你仲記".split()
-OPAQUE_SEED = "然 咖 咇 企響度".split()  # 侏 → alias 侏儒
-TARGET_POS = {"曱甴": "n", "蘿蔔": "n", "骷髏": "n", "侏儒": "n"}
+OPAQUE_SEED = "然 咇 企響度".split()  # 侏/咖 → alias
+TARGET_POS = {
+    "曱甴": "n",
+    "蘿蔔": "n",
+    "骷髏": "n",
+    "侏儒": "n",
+    "牴觸": "n,v",
+    "蝴蝶": "n",
+    "玫瑰": "n",
+    "眼眶": "n",
+    "咖啡": "n",
+    "整蠱": "v",
+}
 
 
 def load_alias(path: Path = DEFAULT_ALIAS) -> List[dict]:
@@ -149,40 +160,70 @@ def tag_fragments(table: dict) -> dict:
     return dict(stats)
 
 
-def propose_residual(path: Path = DEFAULT_PROPOSALS) -> dict:
-    """A2 eye: u-char pairs forming an SSOT literal — report only (no auto apply)."""
+def propose_residual(
+    path: Path = DEFAULT_PROPOSALS,
+    *,
+    free_threshold: float = 0.55,
+    drop_free: bool = True,
+    min_score: float = 0.2,
+) -> dict:
+    """A2 eye: residual proposals with Essay IWP scores — report only (no auto apply).
+
+    High IWP source ≈ free morpheme → dropped when drop_free (default).
+    Score combines formal target + low IWP (paper fragment-filter idea).
+    """
+    from ingest.project_pos_iwp import iwp_of, load_iwp, residual_score
+
     table = parse_project_pos_tsv()
-    u_sing = [lit for lit, r in table.items() if r.pos == frozenset({"u"}) and len(lit) == 1]
+    iwp_map = load_iwp()
     have = {(r["source"], r["target"]) for r in load_alias()}
     best: Dict[Tuple[str, str], dict] = {}
-    for a in u_sing:
-        for b in u_sing:
-            if a == b:
+    skipped_free = 0
+    skipped_low = 0
+    # For each 2-char SSOT literal, propose half→full when half is still pos=u
+    for full, frow in table.items():
+        if len(full) != 2:
+            continue
+        formal = frow.pos != frozenset({"u"})
+        for src in (full[0], full[1]):
+            srow = table.get(src)
+            if not srow or srow.pos != frozenset({"u"}) or len(src) != 1:
                 continue
-            full = a + b
-            if full not in table:
+            key = (src, full)
+            if key in have:
                 continue
-            score = 1.0 if table[full].pos != frozenset({"u"}) else 0.3
-            for src in (a, b):
-                key = (src, full)
-                if key in have:
-                    continue
-                row = {
-                    "source": src,
-                    "target": full,
-                    "kind": "residual",
-                    "score": f"{score:.2f}",
-                    "note": "auto-pair; needs human apply",
-                }
-                if key not in best or score > float(best[key]["score"]):
-                    best[key] = row
+            score, note = residual_score(src, full, target_formal=formal, iwp_map=iwp_map)
+            iwp_s = iwp_of(src, iwp_map)
+            if drop_free and iwp_s >= free_threshold:
+                skipped_free += 1
+                continue
+            if score < min_score:
+                skipped_low += 1
+                continue
+            row = {
+                "source": src,
+                "target": full,
+                "kind": "residual",
+                "score": f"{score:.4f}",
+                "iwp_src": f"{iwp_s:.4f}",
+                "note": note,
+            }
+            if key not in best or score > float(best[key]["score"]):
+                best[key] = row
     rows = sorted(best.values(), key=lambda x: (-float(x["score"]), x["source"], x["target"]))
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(PROP_HEADER), delimiter="\t", lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
-    return {"proposals": len(rows), "out": str(path.relative_to(ROOT)).replace("\\", "/")}
+    return {
+        "proposals": len(rows),
+        "skipped_free_morpheme": skipped_free,
+        "skipped_low_score": skipped_low,
+        "free_threshold": free_threshold,
+        "drop_free": drop_free,
+        "out": str(path.relative_to(ROOT)).replace("\\", "/"),
+    }
 
 
 def apply_pipeline(*, dry_run: bool = False) -> dict:
@@ -219,14 +260,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     p = argparse.ArgumentParser(prog="project_pos_alias")
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("status", help="dual coverage + alias count")
-    sub.add_parser("propose", help="write alias_proposals.tsv (report only)")
+    pr = sub.add_parser("propose", help="write alias_proposals.tsv with IWP scores (report only)")
+    pr.add_argument("--keep-free", action="store_true", help="do not drop high-IWP free morphemes")
+    pr.add_argument("--min-score", type=float, default=0.2)
+    pr.add_argument("--free-threshold", type=float, default=0.55)
     ap = sub.add_parser("apply", help="ensure targets, strip residual sources, tag fragments")
     ap.add_argument("--dry-run", action="store_true")
     args = p.parse_args(argv)
     if args.cmd == "status":
         return cmd_status(args)
     if args.cmd == "propose":
-        print(json.dumps(propose_residual(), ensure_ascii=False, indent=2))
+        print(
+            json.dumps(
+                propose_residual(
+                    free_threshold=args.free_threshold,
+                    drop_free=not args.keep_free,
+                    min_score=args.min_score,
+                ),
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         return 0
     if args.cmd == "apply":
         print(json.dumps(apply_pipeline(dry_run=args.dry_run), ensure_ascii=False, indent=2))
