@@ -1,0 +1,101 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+一脈相承	a,v	idiom		u-inlex-nf2b;review;agent-label	high	BAD	a,r	成語偏 a/r；v 假陽
+不妥	a			u-inlex-nf2b;review;agent-label	high	OK		
+不法	a			u-inlex-nf2b;review;agent-label	high	OK		
+不肯	v			u-inlex-nf2b;review;agent-label	high	OK		
+世界銀行	n			u-inlex-nf2b;review;agent-label	high	OK		
+中產階級	n			u-inlex-nf2b;review;agent-label	high	OK		
+人仔細細	a,r			u-inlex-nf2b;review;agent-label	high	OK		
+人民警察	n			u-inlex-nf2b;review;agent-label	high	OK		
+俠盜飛車	n			遊戲專名 GTA;u-inlex-nf2b;review;agent-label	high	OK		
+信息管理	n			u-inlex-nf2b;review;agent-label	high	OK		
+偏頗	a			u-inlex-nf2b;review;agent-label	high	OK		
+僅此而已	r			u-inlex-nf2b;review;agent-label	high	OK		
+優惠價	n			u-inlex-nf2b;review;agent-label	high	OK		
+先進	a			u-inlex-nf2b;review;agent-label	high	OK		
+兩岸關係	n			u-inlex-nf2b;review;agent-label	high	OK		
+分道揚鑣	v	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+別克	n			u-inlex-nf2b;review;agent-label	high	OK		
+利落	a			u-inlex-nf2b;review;agent-label	high	OK		
+勤工儉學	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+印度	n			u-inlex-nf2b;review;agent-label	high	OK		
+危機四伏	a	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+單幹	v			u-inlex-nf2b;review;agent-label	high	OK		
+單方面	a,n,r			u-inlex-nf2b;review;agent-label	high	SOFT		多標可
+固然	r,x			u-inlex-nf2b;review;agent-label	high	OK		
+型號	n			u-inlex-nf2b;review;agent-label	high	OK		
+墨西哥城	n			地名;u-inlex-nf2b;review;agent-label	high	OK		
+大吉利是	x			u-inlex-nf2b;review;agent-label	high	OK		
+大驚失色	a,v	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+天高地厚	a,n	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+始終如一	a,r	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+安居樂業	v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+寢	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+審美疲勞	n			u-inlex-nf2b;review;agent-label	high	OK		
+小動物	n			u-inlex-nf2b;review;agent-label	high	OK		
+就餐	v			u-inlex-nf2b;review;agent-label	high	OK		
+居高不下	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+平坦	a			u-inlex-nf2b;review;agent-label	high	OK		
+形同虛設	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+從現在起	r			u-inlex-nf2b;review;agent-label	high	OK		
+從頭到尾	r	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+心有靈犀	a,n	idiom		u-inlex-nf2b;review;agent-label	high	SOFT		a 主；n 弱
+意亂情迷	a			u-inlex-nf2b;review;agent-label	high	OK		
+感恩	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+掃興	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+政治權利	n			u-inlex-nf2b;review;agent-label	high	OK		
+敗露	v			u-inlex-nf2b;review;agent-label	high	OK		
+斷層	n			u-inlex-nf2b;review;agent-label	high	OK		
+明確	a,v			u-inlex-nf2b;review;agent-label	high	OK		
+星際爭霸	n			u-inlex-nf2b;review;agent-label	high	OK		
+曝	v			u-inlex-nf2b;review;agent-label	high	OK		
+植物保護	n			u-inlex-nf2b;review;agent-label	high	OK		
+樂在其中	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+機緣巧合	n			u-inlex-nf2b;review;agent-label	high	OK		
+民辦	a			u-inlex-nf2b;review;agent-label	high	OK		
+水到渠成	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+淺淺	a,r			u-inlex-nf2b;review;agent-label	high	OK		
+烏蘭察布	n			u-inlex-nf2b;review;agent-label	high	OK		
+無機化學	n			u-inlex-nf2b;review;agent-label	high	OK		
+無瑕	a			u-inlex-nf2b;review;agent-label	high	OK		
+獨立思考	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+獨資	a,n			u-inlex-nf2b;review;agent-label	high	OK		
+甄	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+生活條件	n			u-inlex-nf2b;review;agent-label	high	OK		
+生物化學	n			u-inlex-nf2b;review;agent-label	high	OK		
+登入	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+眼利	a			u-inlex-nf2b;review;agent-label	high	OK		
+瞧不起	v			u-inlex-nf2b;review;agent-label	high	OK		
+社會工作	n			u-inlex-nf2b;review;agent-label	high	OK		
+福氣	n			u-inlex-nf2b;review;agent-label	high	OK		
+科技成果	n			u-inlex-nf2b;review;agent-label	high	OK		
+稀有金屬	n			u-inlex-nf2b;review;agent-label	high	OK		
+稟	v			u-inlex-nf2b;review;agent-label	high	OK		
+稱職	a			u-inlex-nf2b;review;agent-label	high	OK		
+穿越時空	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+管理功能	n			u-inlex-nf2b;review;agent-label	high	OK		
+簽收	v			u-inlex-nf2b;review;agent-label	high	OK		
+綜藝	n			u-inlex-nf2b;review;agent-label	high	OK		
+綠色植物	n			u-inlex-nf2b;review;agent-label	high	OK		
+網絡環境	n			u-inlex-nf2b;review;agent-label	high	OK		
+缺一不可	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+胰島素	n			u-inlex-nf2b;review;agent-label	high	OK		
+自然環境	n			u-inlex-nf2b;review;agent-label	high	OK		
+自由職業	n			u-inlex-nf2b;review;agent-label	high	OK		
+草本植物	n			u-inlex-nf2b;review;agent-label	high	OK		
+蕩然無存	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+衝破	v			u-inlex-nf2b;review;agent-label	high	OK		
+見怪不怪	a,v	idiom		u-inlex-nf2b;review;agent-label	high	OK		
+視頻點播	n			u-inlex-nf2b;review;agent-label	high	OK		
+觸手可及	a	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+調製	v			u-inlex-nf2b;review;agent-label	high	OK		
+豪宅	n			u-inlex-nf2b;review;agent-label	high	OK		
+財政預算	n			u-inlex-nf2b;review;agent-label	high	OK		
+貳	x			u-inlex-nf2b;review;agent-label	high	SOFT		大寫數／虛
+輕快	a			u-inlex-nf2b;review;agent-label	high	OK		
+降級	n,v			u-inlex-nf2b;review;agent-label	high	OK		
+預咗	v			u-inlex-nf2b;review;agent-label	high	OK		
+驗	v			u-inlex-nf2b;review;agent-label	high	SOFT		v 主；亦可 n
+驛站	n			u-inlex-nf2b;review;agent-label	high	OK		
+鳥語花香	a,n	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		
+黯然失色	a,v	idiom		成語;u-inlex-nf2b;review;agent-label	high	OK		

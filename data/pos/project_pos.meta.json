@@ -409,31 +409,18 @@
     "report": "data/pos/audit/u_inlex/alias_proposals_review_r1.md"
   },
   "u_inlex_nf2k": {
-    "usable": 1992,
-    "keep_u": 8,
+    "usable": 1998,
+    "keep_u": 2,
     "upsert": {
-      "rows": 22724,
-      "touched": 1992,
-      "updated": 1992,
+      "rows": 22716,
+      "touched": 1998,
+      "updated": 1998,
       "added": 0,
       "bad": 0
     },
     "skipped": {},
-    "before_u": 10251,
-    "after_u": 8259,
-    "gate_r1": {
-      "sample_n": 100,
-      "ok_rate": 0.98,
-      "pass_90": true,
-      "bad": 2,
-      "soft": 2
-    },
-    "coverage_after": {
-      "formal": 14465,
-      "u": 8259,
-      "formal_over_all": 0.6366,
-      "formal_over_non_fragment": 0.6372
-    }
+    "before_u": 8245,
+    "after_u": 6247
   },
   "alias_queue_closed": {
     "r4": "6 reject alias + formal free morphemes; propose n=0",
@@ -447,6 +434,27 @@
       "formal_over_non_fragment": 0.6377,
       "non_fragment": 22694,
       "formal_non_fragment": 14471,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
+  },
+  "u_inlex_nf2b": {
+    "applied_formal": 1998,
+    "keep_u": 2,
+    "gate_r1": {
+      "sample_n": 100,
+      "ok_rate": 0.99,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 16469,
+      "u": 6247,
+      "fragment": 24,
+      "formal_over_all": 0.725,
+      "formal_over_non_fragment": 0.7258,
+      "non_fragment": 22692,
+      "formal_non_fragment": 16469,
       "d4_pass_95": false,
       "alias_n": 15
     }
