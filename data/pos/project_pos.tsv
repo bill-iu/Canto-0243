@@ -4958,7 +4958,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 啼笑皆非	u			no-source;fallback
 喀	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 喂	v,x			cow-single;p1-audit;review;primary 錯：喂主為嘆（虛 x）；餵食義為動；非名
-喃	u			no-source;p3;fallback
+喃	x			free morpheme; not residual;u-inlex-alias-r4;review;alias-r4-formal
 喃喃	v,x			u-inlex;review;u-inlex-agent
 喃喃自語	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic
 善	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -6810,7 +6810,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 嫁	v			cow-single;p1
 嫁狗隨狗	u			no-source;fallback
 嫁雞隨雞	u			no-source;fallback
-嫂	u			no-source;p3;fallback
+嫂	n			free kinship address; not only 嫂子;u-inlex-alias-r4;review;alias-r4-formal
 嫂子	n			u-inlex;review;u-inlex-agent
 嫉惡如仇	u			no-source;fallback
 嫉賢妒能	u			no-source;fallback
@@ -10622,7 +10622,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 教育部長	u			no-source;fallback
 教育電視	u			no-source;fallback
 教訓	v			cow-single
-敞	u			no-source;fallback
+敞	a			free stative; 寬敞/敞開;u-inlex-alias-r4;review;alias-r4-formal
 敞開	v			verb-suffix;heuristic
 敢	v			cow-single
 敢作敢為	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
@@ -18072,7 +18072,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 薇	n			cow-single;p3
 薑	n			u-inlex;review;u-inlex-agent
 薛	n			u-inlex;review;u-inlex-agent
-薦	u			no-source;p3;fallback
+薦	v			free; not residual of 推薦;u-inlex-alias-r4;review;alias-r4-formal
 薩克斯管	u			no-source;fallback
 薩克斯風	u			no-source;fallback
 薩克森州	n			audit-med;review
@@ -20556,7 +20556,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 醉	n			cow-single
 醉翁之意	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv
 醉酒駕車	u			no-source;fallback
-醋	u			no-source;p3;fallback
+醋	n			free noun; 呷醋 is VO;u-inlex-alias-r4;review;alias-r4-formal
 醋酸乙酯	u			no-source;fallback
 醋酸纖維	u			no-source;fallback
 醍醐灌頂	u			no-source;fallback
@@ -22196,7 +22196,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 騰出	v			cow-single
 騰雲駕霧	u			no-source;fallback
 騰飛	v			u-inlex-nf2k;review;agent-label
-騷	u			no-source;fallback
+騷	a,v			free; not residual of 騷擾;u-inlex-alias-r4;review;alias-r4-formal
 騷擾	n,v			cow-nv-unreviewed;trust-low
 驀然回首	u			no-source;fallback
 驅使	v			cow-single

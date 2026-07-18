@@ -434,5 +434,21 @@
       "formal_over_all": 0.6366,
       "formal_over_non_fragment": 0.6372
     }
+  },
+  "alias_queue_closed": {
+    "r4": "6 reject alias + formal free morphemes; propose n=0",
+    "alias_n": 15,
+    "coverage": {
+      "rows": 22716,
+      "formal": 14471,
+      "u": 8245,
+      "fragment": 22,
+      "formal_over_all": 0.637,
+      "formal_over_non_fragment": 0.6377,
+      "non_fragment": 22694,
+      "formal_non_fragment": 14471,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
   }
 }

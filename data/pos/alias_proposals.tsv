@@ -1,7 +1,1 @@
 source	target	kind	score	iwp_src	note
-喃	喃喃	residual	0.2570	0.0750	iwp_src=0.075;aff=0.238;iwp_other=0.075;needs human apply;n_bigrams=2
-騷	騷擾	residual	0.2471	0.0203	iwp_src=0.020;aff=0.198;iwp_other=0.030;needs human apply;n_bigrams=1
-薦	推薦	residual	0.2230	0.0638	iwp_src=0.064;aff=0.169;iwp_other=0.191;needs human apply;n_bigrams=1
-醋	呷醋	residual	0.2160	0.0453	iwp_src=0.045;aff=0.150;iwp_other=0.120;needs human apply;n_bigrams=1
-敞	敞開	residual	0.2132	0.0279	iwp_src=0.028;aff=0.139;iwp_other=0.182;needs human apply;n_bigrams=2
-嫂	嫂子	residual	0.2007	0.0782	iwp_src=0.078;aff=0.132;iwp_other=0.014;needs human apply;n_bigrams=1
