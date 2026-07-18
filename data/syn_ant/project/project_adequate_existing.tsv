@@ -1,0 +1,127 @@
+head	note	batch_id
+一國之主	prior project_syn edge covers head	syn-len4-b10-20260718
+一家大小	prior project_syn edge covers head	syn-len4-b06-20260718
+一番苦心	prior project_syn edge covers head	syn-len4-b07-20260718
+一石二鳥	prior project_syn edge covers head	syn-len4-b05-20260718
+一般狀況	within-batch undirected syn edge covers head	syn-len4-b10-20260718
+下一個	prior project_syn edge covers head	syn-top5000-b05-20260718
+不分勝負	within-batch undirected syn edge covers head	syn-len4-b07-20260718
+不成體統	prior project_syn edge covers head	syn-len4-b09-20260718
+中心人物	prior project_syn edge covers head	syn-len4-b06-20260718
+主持正義	prior project_syn edge covers head	syn-len4-b08-20260718
+主頁	prior project_syn edge covers head	syn-top5000-b06-20260718
+乾淨俐落	prior project_syn edge covers head	syn-len4-b10-20260718
+事已至此	prior project_syn edge covers head	syn-len4-b07-20260718
+人工受精	prior project_syn edge covers head	syn-len4-b06-20260718
+人心叵測	within-batch undirected syn edge covers head	syn-len4-b07-20260718
+作業環境	prior project_syn edge covers head	syn-len4-b06-20260718
+信用評級	within-batch undirected syn edge covers head	syn-len4-b02-20260718
+傳動機構	prior project_syn edge covers head	syn-len4-b05-20260718
+先決條件	prior project_syn edge covers head	syn-len4-b02-20260718
+光陰似箭	prior project_syn edge covers head	syn-len4-b05-20260718
+兔子	prior project_syn edge covers head	syn-top5000-b06-20260718
+全身上下	within-batch undirected syn edge covers head	syn-len4-b02-20260718
+公共事業	prior project_syn edge covers head	syn-len4-b02-20260718
+初來乍到	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+利害衝突	prior project_syn edge covers head	syn-len4-b09-20260718
+力大無比	prior project_syn edge covers head	syn-len4-b08-20260718
+化裝舞會	prior project_syn edge covers head	syn-len4-b07-20260718
+十有八九	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+升降機	prior project_syn edge covers head	syn-top5000-b04-20260718
+參考書目	prior project_syn edge covers head	syn-len4-b02-20260718
+反咬一口	within-batch undirected syn edge covers head	syn-len4-b07-20260718
+啦啦隊員	within-batch undirected syn edge covers head	syn-len4-b08-20260718
+嚴以律己	prior project_syn edge covers head	syn-len4-b08-20260718
+國際法院	prior project_syn edge covers head	syn-len4-b08-20260718
+城市居民	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+外交使節	prior project_syn edge covers head	syn-len4-b10-20260718
+天理不容	within-batch undirected syn edge covers head	syn-len4-b08-20260718
+女中豪傑	prior project_syn edge covers head	syn-len4-b06-20260718
+女友	prior project_syn edge covers head	syn-top5000-b04-20260718
+女性主義	within-batch undirected syn edge covers head	syn-len4-b03-20260718
+好管閒事	prior project_syn edge covers head	syn-len4-b09-20260718
+如何是好	prior project_syn edge covers head	syn-len4-b01-20260718
+妙齡女郎	prior project_syn edge covers head	syn-len4-b07-20260718
+威震八方	prior project_syn edge covers head	syn-len4-b10-20260718
+定期儲蓄	prior project_syn edge covers head	syn-len4-b06-20260718
+寧缺勿濫	prior project_syn edge covers head	syn-len4-b06-20260718
+專門知識	prior project_syn edge covers head	syn-len4-b06-20260718
+對門	prior project_syn edge covers head	syn-top5000-b05-20260718
+層層包圍	prior project_syn edge covers head	syn-len4-b10-20260718
+崇拜偶像	prior project_syn edge covers head	syn-len4-b08-20260718
+平庸之輩	prior project_syn edge covers head	syn-len4-b08-20260718
+年老體衰	prior project_syn edge covers head	syn-len4-b08-20260718
+從頭開始	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+心胸狹隘	prior project_syn edge covers head	syn-len4-b07-20260718
+心腹之患	prior project_syn edge covers head	syn-len4-b09-20260718
+忍無可忍	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+志在必得	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+忽然之間	within-batch undirected syn edge covers head	syn-len4-b02-20260718
+思路敏捷	prior project_syn edge covers head	syn-len4-b10-20260718
+惡語傷人	prior project_syn edge covers head	syn-len4-b10-20260718
+愛答不理	prior project_syn edge covers head	syn-len4-b10-20260718
+成雙成對	prior project_syn edge covers head	syn-len4-b03-20260718
+房屋中介	prior project_syn edge covers head	syn-len4-b02-20260718
+抱憾終生	prior project_syn edge covers head	syn-len4-b09-20260718
+政府機構	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+故作高深	prior project_syn edge covers head	syn-len4-b09-20260718
+晨鐘暮鼓	within-batch undirected syn edge covers head	syn-len4-b07-20260718
+暗渡陳倉	within-batch undirected syn edge covers head	syn-len4-b04-20260718
+枕	prior project_syn edge covers head	syn-top5000-b05-20260718
+氣焰囂張	prior project_syn edge covers head	syn-len4-b08-20260718
+活期儲蓄	prior project_syn edge covers head	syn-len4-b06-20260718
+海關官員	prior project_syn edge covers head	syn-len4-b10-20260718
+淡而無味	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+淺顯易懂	prior project_syn edge covers head	syn-len4-b04-20260718
+源源不斷	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+烽火連天	within-batch undirected syn edge covers head	syn-len4-b07-20260718
+燒香拜佛	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+狗血淋頭	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+獲益良多	prior project_syn edge covers head	syn-len4-b06-20260718
+生活水準	prior project_syn edge covers head	syn-len4-b05-20260718
+痛哭失聲	prior project_syn edge covers head	syn-len4-b05-20260718
+直系血親	prior project_syn edge covers head	syn-len4-b08-20260718
+相貌堂堂	within-batch undirected syn edge covers head	syn-len4-b08-20260718
+真槍實彈	prior project_syn edge covers head	syn-len4-b07-20260718
+眼裏	prior project_syn edge covers head	syn-top5000-b06-20260718
+硝化甘油	prior project_syn edge covers head	syn-len4-b10-20260718
+礦物燃料	prior project_syn edge covers head	syn-len4-b10-20260718
+示威遊行	prior project_syn edge covers head	syn-len4-b05-20260718
+社會工作	prior project_syn edge covers head	syn-len4-b01-20260718
+神思恍惚	within-batch undirected syn edge covers head	syn-len4-b09-20260718
+稀有氣體	prior project_syn edge covers head	syn-len4-b09-20260718
+稍等	prior project_syn edge covers head	syn-top5000-b05-20260718
+稱霸全球	prior project_syn edge covers head	syn-len4-b10-20260718
+空中小姐	prior project_syn edge covers head	syn-len4-b05-20260718
+立錐之地	prior project_syn edge covers head	syn-len4-b08-20260718
+精神健康	prior project_syn edge covers head	syn-len4-b05-20260718
+精神奕奕	prior project_syn edge covers head	syn-len4-b06-20260718
+精神錯亂	prior project_syn edge covers head	syn-len4-b05-20260718
+紫	prior project_syn edge covers head	syn-top5000-b06-20260718
+絕世佳人	prior project_syn edge covers head	syn-len4-b09-20260718
+綱舉目張	prior project_syn edge covers head	syn-len4-b10-20260718
+聽不進去	prior project_syn edge covers head	syn-len4-b03-20260718
+聽聞	prior project_syn edge covers head	syn-top5000-b06-20260718
+自強自立	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+舊地重遊	prior project_syn edge covers head	syn-len4-b06-20260718
+蕉	prior project_syn edge covers head	syn-top5000-b05-20260718
+處世原則	prior project_syn edge covers head	syn-len4-b09-20260718
+親戚關係	prior project_syn edge covers head	syn-len4-b05-20260718
+試問	prior project_syn edge covers head	syn-top5000-b06-20260718
+蹉跎歲月	prior project_syn edge covers head	syn-len4-b06-20260718
+身旁	prior project_syn edge covers head	syn-top5000-b05-20260718
+躲躲閃閃	prior project_syn edge covers head	syn-len4-b05-20260718
+辭不達意	prior project_syn edge covers head	syn-len4-b10-20260718
+退役軍人	prior project_syn edge covers head	syn-len4-b06-20260718
+進退自如	prior project_syn edge covers head	syn-len4-b07-20260718
+避重就輕	prior project_syn edge covers head (final-audit rejudge)	syn-len4-final-audit-20260718
+重振旗鼓	prior project_syn edge covers head	syn-len4-b07-20260718
+防毒軟件	prior project_syn edge covers head	syn-len4-b05-20260718
+隨傳隨到	prior project_syn edge covers head	syn-len4-b07-20260718
+難以想像	prior project_syn edge covers head	syn-len4-b07-20260718
+電化教學	prior project_syn edge covers head	syn-len4-b05-20260718
+電視機	prior project_syn edge covers head	syn-top5000-b03-20260718
+頤養天年	prior project_syn edge covers head	syn-len4-b06-20260718
+風流瀟灑	prior project_syn edge covers head	syn-len4-b08-20260718
+高清晰度	prior project_syn edge covers head	syn-len4-b03-20260718
+點頭之交	within-batch undirected syn edge covers head	syn-len4-b09-20260718

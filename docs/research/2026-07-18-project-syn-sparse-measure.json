@@ -1,0 +1,42 @@
+{
+  "contract": {
+    "sparse_lt": 2,
+    "top_k": 5000,
+    "len4_campaign_k": 5000,
+    "direct_syn": "word_relations.syn ∪ cilin ∪ guotong; both ends in lexicon"
+  },
+  "lexicon_literals": 155449,
+  "undirected_syn_pairs": 320633,
+  "db_syn_pairs_approx": 207633,
+  "static_neighbor_add_events": {
+    "cilin": 56572,
+    "guotong": 56428,
+    "note": "directed add events while merging; not unique undirected edges"
+  },
+  "top5000": {
+    "universe": 5000,
+    "tail_hist": {
+      "0": 943,
+      "1": 205,
+      "11+": 2156,
+      "2": 245,
+      "3-5": 642,
+      "6-10": 809
+    },
+    "sparse": 1148,
+    "sparse_pct": 22.96,
+    "sparse_zero": 943,
+    "sparse_one": 205
+  },
+  "len4": {
+    "universe": 28728,
+    "sparse_raw": 23381,
+    "sparse_zero": 22918,
+    "sparse_one": 463,
+    "sparse_deduped": 23368,
+    "overlap_with_top5000_sparse": 13,
+    "campaign_k": 5000,
+    "campaign_zero": 4668,
+    "campaign_one": 332
+  }
+}

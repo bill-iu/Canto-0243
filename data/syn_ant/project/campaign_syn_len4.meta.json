@@ -1,0 +1,31 @@
+{
+  "campaign_id": "syn_len4",
+  "mode": "len4_sparse_top_k",
+  "sparse_lt": 2,
+  "k": 5000,
+  "batch_size": 500,
+  "batch_count": 10,
+  "essay_top_k": null,
+  "campaign_k_cap": 5000,
+  "length_filter": 4,
+  "freeze_git_commit": "0ce4b6d4a953d43393f019362dc7c2a31d948fd2",
+  "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+  "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+  "cilin_sha256": "3e0587bde86d8beb46582ecf95888608068c94498ae3a183133223bb1cb4f554",
+  "guotong_syn_sha256": "b18da47c1666ea2ad1ffefd6d661bee29824932a60ff8cb3fe692b3d83f98312",
+  "batch_counts": {
+    "1": 500,
+    "2": 500,
+    "3": 500,
+    "4": 500,
+    "5": 500,
+    "6": 500,
+    "7": 500,
+    "8": 500,
+    "9": 500,
+    "10": 500
+  },
+  "sparse_zero": 4668,
+  "sparse_one": 332,
+  "manifest_sha256": "0b187a76bc374226ec8ffec5cf37dc1762623de1e5f8573df9f42a59dc2561ca"
+}
