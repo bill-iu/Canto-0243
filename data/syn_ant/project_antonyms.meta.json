@@ -7367,6 +7367,339 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-b04-20260718": {
+      "k": 46,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b04: residual Essay top5k content after b01-b03; maintainer-curated; seed fixtures/post_syn_ant_gap_b04_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 4
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b04-20260718 parent N=89",
+      "sample_parent_n": 89,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "冇幾耐",
+          "tail": "好耐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初初",
+          "tail": "最後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初初",
+          "tail": "結局",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "加埋",
+          "tail": "扣除",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包住",
+          "tail": "打開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包住",
+          "tail": "拆開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "匿埋",
+          "tail": "現身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "繼續",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "進行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "開波",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "呷醋",
+          "tail": "放心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘈交",
+          "tail": "和好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "因住",
+          "tail": "唔小心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "因住",
+          "tail": "大意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "埋位",
+          "tail": "離席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "壓住",
+          "tail": "鬆手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夾住",
+          "tail": "放開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夾住",
+          "tail": "鬆開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多人",
+          "tail": "冇人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多人",
+          "tail": "無人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多時",
+          "tail": "好少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多時",
+          "tail": "從不",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "專登",
+          "tail": "無意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打人",
+          "tail": "保護",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打人",
+          "tail": "救人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擺明",
+          "tail": "遮掩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "攬實",
+          "tail": "鬆手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有嘢",
+          "tail": "冇事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "未夠",
+          "tail": "夠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "未夠",
+          "tail": "足夠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "構建",
+          "tail": "摧毀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樣衰",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相識",
+          "tail": "陌生",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睇見",
+          "tail": "睇唔見",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "稍等",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "稍等",
+          "tail": "馬上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細粒",
+          "tail": "龐大",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "話事",
+          "tail": "聽話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "話唔定",
+          "tail": "肯定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講聲",
+          "tail": "收聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起嚟",
+          "tail": "瞓低",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過份",
+          "tail": "適量",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜怪",
+          "tail": "好睇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜怪",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜樣",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "重啓",
+          "tail": "關閉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "離遠",
+          "tail": "埋嚟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "離遠",
+          "tail": "靠近",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鬆一口氣",
+          "tail": "擔心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鬆一口氣",
+          "tail": "緊張",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
