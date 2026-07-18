@@ -138,6 +138,19 @@ export function EntryDetailPanel({
               <strong>{model.corpusWeight.toLocaleString()}</strong>
             </div>
 
+            {model.posChips && model.posChips.length ? (
+              <section className="entry-detail-section">
+                <h3 className="entry-detail-section__title">{tDetail('detail.pos', lang)}</h3>
+                <div className="entry-detail-chip-row">
+                  {model.posChips.map((chip) => (
+                    <span key={chip} className="entry-detail-source-tag">
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             <section className="entry-detail-section">
               <h3 className="entry-detail-section__title">{tDetail('detail.sources', lang)}</h3>
               {model.sources.length ? (

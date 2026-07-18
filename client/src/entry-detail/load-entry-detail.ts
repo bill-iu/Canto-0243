@@ -9,6 +9,7 @@ import { getEssayFrequency, initRankingData } from '../db/ranking.ts';
 import { projectRelationPool } from '../db/relation-pool-projection.ts';
 import { relationPoolSnapshotItems } from '../db/relation-pool-snapshot.ts';
 import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from '../db/thesaurus.ts';
+import { posDisplayChips } from '../pos/carrier.ts';
 
 export type { EntryDetailModel } from './types.ts';
 
@@ -53,18 +54,25 @@ export async function hasDirectRelationSources(literal: string): Promise<boolean
   return rows.length > 0;
 }
 
+function withPosChips(model: EntryDetailModel): EntryDetailModel {
+  const chips = posDisplayChips(model.literal);
+  return chips.length ? { ...model, posChips: chips } : model;
+}
+
 function coreFromRows(text: string, rows: Record<string, unknown>[]): EntryDetailModel | null {
   if (!rows.length) return null;
   const first = rows[0]!;
-  return buildEntryDetailModel({
-    literal: text,
-    length: Number(first.length) || [...text].length,
-    corpusWeight: getEssayFrequency(text),
-    readings: rows,
-    syns: [],
-    ants: [],
-    signals: {},
-  }) as EntryDetailModel;
+  return withPosChips(
+    buildEntryDetailModel({
+      literal: text,
+      length: Number(first.length) || [...text].length,
+      corpusWeight: getEssayFrequency(text),
+      readings: rows,
+      syns: [],
+      ants: [],
+      signals: {},
+    }) as EntryDetailModel,
+  );
 }
 
 async function fetchWordRows(text: string): Promise<Record<string, unknown>[]> {
@@ -93,9 +101,11 @@ export function instantEntryDetailModel(
 ): EntryDetailModel | null {
   const text = literal.trim();
   if (!text || !readings.length) return null;
-  return buildEntryDetailModelFromPick(text, readings, {
-    corpusWeight: getEssayFrequency(text),
-  }) as EntryDetailModel;
+  return withPosChips(
+    buildEntryDetailModelFromPick(text, readings, {
+      corpusWeight: getEssayFrequency(text),
+    }) as EntryDetailModel,
+  );
 }
 
 export function getCachedEntryDetail(literal: string): EntryDetailModel | null {

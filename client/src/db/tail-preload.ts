@@ -4,9 +4,11 @@
  */
 import { ensureGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { ensureStaticRelationIndexes, getDatabase, isDatabaseInitialized } from './init.ts';
+import { publicAssetUrl } from './lexicon-manifest.ts';
 import { getLexiconMembership } from './lexicon-membership.ts';
 import { ensurePhonemeIndex } from './position-match/phoneme-index.ts';
 import type { Database } from './sqljs.ts';
+import { ensureProjectPosCarrier } from '../pos/carrier.ts';
 
 type TailListener = (progress: number) => void;
 
@@ -77,11 +79,16 @@ export function startTailPreload(): Promise<void> {
       await ensureGateAuxiliaryIndexes();
     });
 
-    await runStage('static-relation', 10, 40, async () => {
+    await runStage('static-relation', 10, 35, async () => {
       await ensureStaticRelationIndexes();
     });
 
-    await runStage('lexicon-membership', 40, 70, async () => {
+    // ADR-0058: 詞性載體 — never blocks gate; missing → 詞性缺標
+    await runStage('project-pos', 35, 42, async () => {
+      await ensureProjectPosCarrier(publicAssetUrl('project-pos-index.json'));
+    });
+
+    await runStage('lexicon-membership', 42, 70, async () => {
       const db = getDbOrNull();
       if (!db) return;
       await getLexiconMembership(db);
