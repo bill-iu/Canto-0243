@@ -6,3 +6,4 @@ char	old_jyutping	old_code	action	value	note
 不斷	but1 dyun6	34	set_code	32	
 半年	bun3 nin4	00	set_code	40	
 半年	bun4 nin4	00	set_jyutping	bun3 nin4	
+冇牙婆穿針	mou5 ngaa4 po4 cyun1 zam1	50033	set_jyutping	mou5 ngaa4 po2 cyun1 zam1	口語：冇牙婆 po2（唔用書面 po4）
