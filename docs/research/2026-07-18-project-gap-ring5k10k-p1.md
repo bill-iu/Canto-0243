@@ -66,11 +66,22 @@
 
 策略：batch 擴大至 **500 詞／批**；可對則 ant，其餘 bulk `no_natural`。
 
+## b05（已落地 · batch=500 頭）
+
+| 項目 | 內容 |
+|------|------|
+| batch_id | `post-syn-ant-ring5k10k-b05-20260718` |
+| 本批處置頭數 | **500／500** |
+| 入帳 ant | **~154–163** 對 |
+| no_natural | **410** 頭 |
+| sample | 50／50 ok |
+
 ## 下一步
 
 1. **rebuild** 關係／`lyrics.db`  
-2. **ring b05**：再 500 頭（剩餘 open 預計 ~650）  
+2. **ring b06**：清尾剩餘 open（b05 後預計 ~150）  
 3. 唔開 UD  
+
 
 
 
