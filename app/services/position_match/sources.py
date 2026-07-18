@@ -149,10 +149,17 @@ class MaskWildcardCandidateSource:
         )
 
 
-def get_length_candidates(db, width: int, mask: str):
+def get_length_candidates(
+    db,
+    width: int,
+    mask: str,
+    *,
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT,
+):
     """
     取得指定長度的候選詞，並對 cache 命中者先做 mask literal 預過濾。
     用於 rhyme-anchor、code-tail、at-tail 等需要 mask 的情境。
+    fallback_limit=None → 語意完整候選宇宙（唔截斷）。
     """
     indexed = get_mask_index_candidates(width, mask)
     if indexed is not None:
@@ -169,10 +176,10 @@ def get_length_candidates(db, width: int, mask: str):
     prefix = mask_fixed_literal_prefix(mask)
     if prefix:
         query = query.filter(Word.char.like(f"{prefix}%"))
-    return (
-        query.order_by(Word.char, Word.jyutping).limit(CANDIDATE_FALLBACK_LIMIT).all(),
-        False,
-    )
+    query = query.order_by(Word.char, Word.jyutping)
+    if fallback_limit is not None:
+        query = query.limit(fallback_limit)
+    return query.all(), False
 
 
 def get_rhyme_anchor_length_candidates(
@@ -183,7 +190,7 @@ def get_rhyme_anchor_length_candidates(
     anchor: str,
     constraint: str,
 ) -> tuple[list[Any], bool]:
-    """韻／聲錨候選：音素索引優先，避免先物化整個 length 桶。"""
+    """韻／聲錨候選：音素索引優先；冷路徑必須語意完整候選宇宙（唔 LIMIT 再濾韻）。"""
     if is_word_cache_ready():
         rows = get_phoneme_index_candidates(width, anchor_pos, anchor, constraint, db)
         narrowed = [
@@ -191,8 +198,9 @@ def get_rhyme_anchor_length_candidates(
             if matches_mask_literal_chars(get_word_text(w), mask)
         ]
         return narrowed, True
-    # Cold path still GLOB+cap — full width bucket was hanging Portable searches
-    return get_length_candidates(db, width, mask)
+    # Cold: mask GLOB without CANDIDATE_FALLBACK_LIMIT — phoneme filter runs in apply_match_spec.
+    # (Repro: 就= with cache cold missed 后／就 when LIMIT 2000 before rhyme filter.)
+    return get_length_candidates(db, width, mask, fallback_limit=None)
 
 
 def get_candidates_for_length(
