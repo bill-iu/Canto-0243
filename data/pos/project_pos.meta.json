@@ -337,5 +337,47 @@
       "bad": 4
     },
     "final_u": 10263
+  },
+  "u_inlex_fragment_alias": {
+    "dry_run": false,
+    "targets_ensured": [
+      "曱甴"
+    ],
+    "residuals_removed_from_ssot": [
+      "曱",
+      "甴",
+      "蘿",
+      "蔔",
+      "骷",
+      "髏"
+    ],
+    "fragment_tags": {
+      "clause_tagged": 12,
+      "opaque_tagged": 5
+    },
+    "before": {
+      "rows": 22730,
+      "formal": 12467,
+      "u": 10263,
+      "fragment": 6,
+      "formal_over_all": 0.5485,
+      "formal_over_non_fragment": 0.5486,
+      "non_fragment": 22724,
+      "formal_non_fragment": 12467,
+      "d4_pass_95": false,
+      "alias_n": 6
+    },
+    "after": {
+      "rows": 22725,
+      "formal": 12468,
+      "u": 10257,
+      "fragment": 17,
+      "formal_over_all": 0.5486,
+      "formal_over_non_fragment": 0.5491,
+      "non_fragment": 22708,
+      "formal_non_fragment": 12468,
+      "d4_pass_95": false,
+      "alias_n": 6
+    }
   }
 }

@@ -22,7 +22,22 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DB = ROOT / "lyrics.db"
 
 
-def load_lexicon_literals(db_path: Path = DEFAULT_DB) -> Set[str]:
+def load_curated_literals() -> Set[str]:
+    """詞級標音 curated 字面（rebuild 前亦算 POS membership 候選）。"""
+    path = ROOT / "data" / "lexicon" / "curated_lexicon.json"
+    if not path.is_file():
+        return set()
+    import json
+
+    try:
+        rows = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return set()
+    return {str(r.get("char") or "").strip() for r in rows if r.get("char")}
+
+
+def load_lexicon_literals(db_path: Path = DEFAULT_DB, *, include_curated: bool = False) -> Set[str]:
+    """詞庫字面集。預設 = lyrics.db；POS SSOT 校驗可 include_curated=True（ADR-0060 K4）。"""
     if not db_path.is_file():
         alt = ROOT / "client" / "public" / "lyrics.db"
         db_path = alt if alt.is_file() else db_path
@@ -30,9 +45,12 @@ def load_lexicon_literals(db_path: Path = DEFAULT_DB) -> Set[str]:
         raise FileNotFoundError(f"missing lyrics.db at {db_path}")
     con = sqlite3.connect(str(db_path))
     try:
-        return {r[0] for r in con.execute("SELECT DISTINCT char FROM words") if r[0]}
+        lex = {r[0] for r in con.execute("SELECT DISTINCT char FROM words") if r[0]}
     finally:
         con.close()
+    if include_curated:
+        lex |= load_curated_literals()
+    return lex
 
 
 def prune(*, db_path: Path = DEFAULT_DB, dry_run: bool = False) -> dict:

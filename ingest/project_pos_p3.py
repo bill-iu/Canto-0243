@@ -96,13 +96,17 @@ def p3_status(*, body_path: Path = P3_BODY, tsv: Path = DEFAULT_TSV) -> dict:
         in_lex = lits
         out_of_lex = 0
     table = parse_project_pos_tsv(tsv)
-    tagged = [lit for lit in in_lex if lit in table]
-    missing = [lit for lit in in_lex if lit not in table]
-    gate = sum(1 for lit in tagged if table[lit].gate_pos())
-    undet = sum(1 for lit in tagged if table[lit].pos <= frozenset({"u"}))
+    from ingest.project_pos_alias import covered_literals
+
+    covered = covered_literals(table)
+    tagged = [lit for lit in in_lex if lit in covered]
+    in_table = [lit for lit in in_lex if lit in table]
+    missing = [lit for lit in in_lex if lit not in covered]
+    gate = sum(1 for lit in in_table if table[lit].gate_pos())
+    undet = sum(1 for lit in in_table if table[lit].pos <= frozenset({"u"}))
     low = sum(
         1
-        for lit in tagged
+        for lit in in_table
         if table[lit].trust() == "low" and bool(table[lit].formal_pos())
     )
     return {

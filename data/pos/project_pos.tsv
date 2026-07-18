@@ -819,7 +819,7 @@ T恤	u			no-source;p3;fallback
 不眠不休	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不知	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 不知不覺	r			no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;固定熟語；副；family 留;full-r1-clear-idiom
-不知幾	u			no-source;fallback
+不知幾	u			no-source;fallback;fragment;clause-slice
 不知廉恥	u			no-source;fallback
 不知所措	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 不知所終	u			no-source;fallback
@@ -1431,7 +1431,7 @@ T恤	u			no-source;p3;fallback
 人品	u			no-source;p3;fallback
 人哋	x			no-source;fallback;u-repair:canto-u-map;review
 人員	n			cow-single
-人嚟	u			no-source;fallback
+人嚟	u			no-source;fallback;fragment;clause-slice
 人地生疏	u			no-source;fallback
 人均收入	n			cow-single
 人士	n			cow-single
@@ -1687,7 +1687,7 @@ T恤	u			no-source;p3;fallback
 仲未	r,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 仲裁	n			cow-single
 仲要	r,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
-仲話	u			no-source;fallback
+仲話	u			no-source;fallback;fragment;clause-slice
 仳離	u			no-source;fallback
 件	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 任	n,v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -1708,7 +1708,7 @@ T恤	u			no-source;p3;fallback
 企業	n			cow-single
 企業家	n			u-inlex;review;u-inlex-agent
 企足而待	u			no-source;fallback
-企響度	u			no-source;p3;fallback
+企響度	u			no-source;p3;fallback;fragment;opaque
 企鵝	n			cow-single;p3
 伉儷情深	u			no-source;fallback
 伊利亞特	u			no-source;fallback
@@ -1874,8 +1874,8 @@ T恤	u			no-source;p3;fallback
 作風正派	u			no-source;fallback
 佟	n			姓;u-inlex;review;u-inlex-agent
 你	x			no-source;fallback;p1-cleanup;canto-heuristic;review
-你仲記	u			no-source;p3;fallback
-你估	u			no-source;fallback
+你仲記	u			no-source;p3;fallback;fragment;clause-slice
+你估	u			no-source;fallback;fragment;clause-slice
 你來我往	u			no-source;fallback
 你們	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 你好	n			cow-single
@@ -1945,7 +1945,7 @@ T恤	u			no-source;p3;fallback
 侍應	v			cow-single
 侍應生	u			no-source;fallback
 侍者	n			cow-single
-侏	u			no-source;fallback
+侏	u			no-source;fallback;fragment;opaque
 侏儒	u			no-source;fallback
 供	u			no-source;p3;fallback
 供應	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
@@ -2114,7 +2114,7 @@ T恤	u			no-source;p3;fallback
 個個	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 個別	u			no-source;fallback
 個字	u			no-source;p3;fallback
-個月	u			no-source;fallback
+個月	u			no-source;fallback;fragment;clause-slice
 個案	n			u-inlex;review;u-inlex-agent
 個鐘	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 個體	n			cow-single
@@ -4691,7 +4691,7 @@ T恤	u			no-source;p3;fallback
 咁鬼	r			no-source;fallback;full-r1-audit;review;程度副
 咄咄怪事	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 咆哮	v			cow-single
-咇	u			no-source;p3;fallback
+咇	u			no-source;p3;fallback;fragment;opaque
 咋	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 和	x			heuristic;p1
 和好	n			cow-single
@@ -4724,7 +4724,7 @@ T恤	u			no-source;p3;fallback
 咔嚓	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 咕	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 咕嚕	x			擬聲;u-inlex;review;u-inlex-agent
-咖	u			no-source;fallback
+咖	u			no-source;fallback;fragment;opaque
 咖哩	n			u-inlex;review;u-inlex-agent
 咖啡	n			cow-single
 咗	x			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -7340,7 +7340,7 @@ T恤	u			no-source;p3;fallback
 將功補過	u			no-source;fallback
 將功贖罪	u			no-source;fallback
 將心比心	u			no-source;fallback
-將我	u			no-source;fallback
+將我	u			no-source;fallback;fragment;clause-slice
 將會	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 將要	u			no-source;p3;fallback
 將計就計	u			no-source;fallback
@@ -9279,11 +9279,11 @@ T恤	u			no-source;p3;fallback
 我們	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 我嘅	u			no-source;fallback
 我愛我家	v			p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
-我架	u			no-source;fallback
+我架	u			no-source;fallback;fragment;clause-slice
 我溝	u			no-source;p3;fallback
-我見	u			no-source;fallback
+我見	u			no-source;fallback;fragment;clause-slice
 我見猶憐	u			no-source;fallback
-我識	u			no-source;fallback
+我識	u			no-source;fallback;fragment;clause-slice
 戒	u			no-source;p3;fallback
 戒備	n,v			u-inlex;review;u-inlex-agent
 戒心	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
@@ -11251,7 +11251,7 @@ T恤	u			no-source;p3;fallback
 曦	n			no-source;fallback;p1-audit;review;晨曦／名用字
 曬	v			cow-single
 曬太陽	u			no-source;p3;fallback
-曱	u			no-source;fallback
+曱甴	n			alias-target;review;u-inlex-residual
 曲	v			cow-single;p1
 曲奇	u			no-source;fallback
 曲奇餅	u			no-source;p3;fallback
@@ -13752,7 +13752,7 @@ T恤	u			no-source;p3;fallback
 焦急	n			cow-single
 焦慮	n			cow-single;p3
 焦點	n			cow-single
-然	u			no-source;fallback
+然	u			no-source;fallback;fragment;opaque
 然後	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review
 然而	r,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 煎	v			cow-single
@@ -14587,7 +14587,6 @@ T恤	u			no-source;p3;fallback
 申請表	n			cow-single;p3
 申購	n,v			u-inlex;review;u-inlex-agent
 申辦	u			no-source;p3;fallback
-甴	u			no-source;fallback
 男	a,n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 男主角	n			u-inlex;review;u-inlex-agent
 男人	n			cow-single
@@ -16764,7 +16763,7 @@ T恤	u			no-source;p3;fallback
 總是	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 總書記	u			no-source;p3;fallback
 總會	a			cow-single
-總有	u			no-source;fallback
+總有	u			no-source;fallback;fragment;clause-slice
 總理	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 總的來説	u			no-source;fallback
 總監	n			u-inlex;review;u-inlex-agent
@@ -18058,7 +18057,6 @@ T恤	u			no-source;p3;fallback
 蓬蓽生輝	u			no-source;fallback
 蓮	n			u-inlex;review;u-inlex-agent
 蔓生植物	n			cow-single
-蔔	u			no-source;fallback
 蔚為大觀	u			no-source;fallback
 蔚然成風	u			no-source;fallback
 蔣	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -18140,7 +18138,6 @@ T恤	u			no-source;p3;fallback
 蘭因絮果	u			no-source;fallback
 蘭州	n			u-inlex;review;u-inlex-agent
 蘭摧玉折	u			no-source;fallback
-蘿	u			no-source;fallback
 蘿蔔	n			u-inlex;review;u-inlex-agent
 虎	n			cow-single
 虎口拔牙	u			no-source;fallback
@@ -19024,7 +19021,7 @@ T恤	u			no-source;p3;fallback
 謙遜	u			no-source;fallback
 講	v			cow-single;p1-cleanup;canto-heuristic;review
 講下	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
-講乜	u			no-source;fallback
+講乜	u			no-source;fallback;fragment;clause-slice
 講出嚟	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 講和	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 講嘢	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -22269,10 +22266,8 @@ T恤	u			no-source;p3;fallback
 骨頭架子	u			no-source;fallback
 骯髒	n			cow-single
 骰	u			no-source;p3;fallback
-骷	u			no-source;p3;fallback
 骷髏	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 髀	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-髏	u			no-source;p3;fallback
 髒話	u			no-source;fallback
 體	n			cow-single
 體位	u			no-source;p3;fallback

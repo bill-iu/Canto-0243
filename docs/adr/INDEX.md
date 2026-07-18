@@ -26,6 +26,7 @@
 | [0057](./0057-categorized-rime-lexicon-source.md) | **Rime 分類詞語來源**取代 legacy phrase |
 | [0058](./0058-project-pos-sidecar-carrier.md) | **專案自建詞性**：獨立 **詞性載體**（唔入 lyrics.db 主表） |
 | [0059](./0059-portable-release-fingerprint-update-notice.md) | **Portable**：**套件發佈指紋**＋**套件更新提示**（唔自動覆蓋） |
+| [0060](./0060-project-pos-inlex-fragment-alias.md) | **庫內難標 u**：fragment 分流 + **詞性字面別名** + 雙軌覆蓋 |
 
 ## Stubs
 

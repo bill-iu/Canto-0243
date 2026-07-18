@@ -165,19 +165,34 @@ def test_p3_long_tail() -> None:
 
 
 def test_pos_ssot_lexicon_only() -> None:
-    import sqlite3
-    from pathlib import Path
-
     from ingest.project_pos import load_meta, parse_project_pos_tsv
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
 
-    db = Path("lyrics.db")
-    assert db.is_file()
-    lex = {r[0] for r in sqlite3.connect(str(db)).execute("SELECT DISTINCT char FROM words") if r[0]}
+    lex = load_lexicon_literals(include_curated=True)  # db ∪ curated (K4)
     table = parse_project_pos_tsv()
     assert len(table) >= 1000
     assert all(lit in lex for lit in table)
     meta = load_meta()
     assert meta.get("lexicon_only", {}).get("enabled") is True
+
+
+def test_pos_alias_and_fragment() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import parse_project_pos_tsv
+    from ingest.project_pos_alias import alias_map, dual_coverage, is_fragment_note
+
+    assert Path("data/pos/alias.tsv").is_file()
+    amap = alias_map()
+    assert amap.get("曱") == "曱甴"
+    assert amap.get("蘿") == "蘿蔔"
+    table = parse_project_pos_tsv()
+    assert "曱" not in table and "蘿" not in table
+    assert table["曱甴"].pos == frozenset({"n"})
+    assert is_fragment_note(table["我見"].note)
+    cov = dual_coverage(table)
+    assert cov["alias_n"] >= 6
+    assert "formal_over_non_fragment" in cov
 
 def test_p2_idiom_quality_pass() -> None:
     from pathlib import Path
@@ -287,6 +302,8 @@ def main() -> None:
     test_p2_idiom_quality_pass()
     test_p3_long_tail()
     test_full_system_gate_audit_pass()
+    test_pos_ssot_lexicon_only()
+    test_pos_alias_and_fragment()
     test_trust_tiers()
     print("test_project_pos: ok")
 

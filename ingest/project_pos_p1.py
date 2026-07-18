@@ -96,15 +96,19 @@ def p1_status(*, body_path: Path = P1_BODY, tsv: Path = DEFAULT_TSV) -> dict:
         body_set = set(body)
         out_of_lex = 0
     table = parse_project_pos_tsv(tsv)
-    tagged = body_set & set(table.keys())
-    gate_formal = {lit for lit in tagged if table[lit].gate_pos()}
-    undetermined = {lit for lit in tagged if table[lit].pos <= frozenset({"u"})}
+    from ingest.project_pos_alias import covered_literals
+
+    covered = covered_literals(table)
+    tagged = body_set & covered
+    in_table = body_set & set(table.keys())
+    gate_formal = {lit for lit in in_table if table[lit].gate_pos()}
+    undetermined = {lit for lit in in_table if table[lit].pos <= frozenset({"u"})}
     low_draft = {
         lit
-        for lit in tagged
+        for lit in in_table
         if table[lit].trust() == "low" and table[lit].formal_pos() and lit not in undetermined
     }
-    missing = body_set - set(table.keys())
+    missing = body_set - covered
     complete = len(missing) == 0 and len(body_set) > 0
     return {
         "phase": "p1",
