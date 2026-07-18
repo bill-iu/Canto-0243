@@ -96,6 +96,21 @@ def test_p0_mother_complete() -> None:
     assert meta.get("p0", {}).get("complete") is True
 
 
+def test_p1_essay_top_k_complete() -> None:
+    from ingest.project_pos import load_meta
+    from ingest.project_pos_p1 import P1_BODY, p1_status
+
+    assert P1_BODY.is_file()
+    st = p1_status()
+    assert st["k"] == 5000
+    assert st["p1_complete"] is True
+    assert st["missing"] == 0
+    assert st["coverage"] == 1.0
+    meta = load_meta()
+    assert meta.get("p1", {}).get("complete") is True
+    assert meta.get("p1", {}).get("k") == 5000
+
+
 def test_trust_tiers() -> None:
     assert pos_trust("seed") == "high"
     assert pos_trust("audit-high;review") == "high"
@@ -133,6 +148,7 @@ def main() -> None:
     test_duplicate_literal_fails()
     test_carrier_payload_shape()
     test_p0_mother_complete()
+    test_p1_essay_top_k_complete()
     test_trust_tiers()
     print("test_project_pos: ok")
 

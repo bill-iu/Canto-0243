@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -14,6 +14,16 @@
     "missing": 0,
     "coverage": 1.0,
     "formal_coverage": 0.0954,
+    "complete": true
+  },
+  "p1": {
+    "k": 5000,
+    "mother_body": 5000,
+    "tagged": 5000,
+    "gate_formal": 579,
+    "missing": 0,
+    "coverage": 1.0,
+    "gate_coverage": 0.1158,
     "complete": true
   }
 }
