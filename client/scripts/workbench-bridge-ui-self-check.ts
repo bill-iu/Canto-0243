@@ -17,8 +17,8 @@ assert(!/consumeIngest[\s\S]{0,400}apply_candidate/.test(page), 'ingest must not
 assert(app.includes('openSearchTabWithQuery'), 'search open must use new query tab API');
 assert(app.includes('consumeOpenSearch(sessionStorage)'), 'search must consume open-search payload');
 assert(app.includes('PutInWorkbenchModal'), 'put confirmation modal missing');
-assert(modal.includes('取代整句') && modal.includes('插入到目前選段'), 'modal actions missing');
-assert(modal.includes('字數不符') || modal.includes('選段是'), 'insert width guard copy missing');
+assert(modal.includes('取代整句') && modal.includes('插入到已鎖範圍'), 'modal actions missing');
+assert(modal.includes('字數不符') || modal.includes('已鎖範圍是'), 'insert width guard copy missing');
 assert(compare.includes('在搜尋頁查看'), 'compare open-in-search missing');
 
 console.log('workbench bridge UI self-check ok');
