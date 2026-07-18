@@ -78,11 +78,26 @@ Essay 詞頻排名、兩端 ∈ 詞庫字面：
 
 ---
 
-## 5. 下一步
+## 5. b02（已落地）
 
-1. **rebuild** `lyrics.db`／Release 關係（`python -m ingest build-db` 或專案 relations 熱路徑）令 runtime 見到新邊。  
-2. 重跑缺口量度：Top-5k content open 應由 ~558 下降（本批覆蓋約 40+ 頭 accepted + 44 nn）。  
-3. **b02**：同一母體下一頻段 100–150 頭（繼續 post-syn gap）。  
+| 項目 | 內容 |
+|------|------|
+| batch_id | `post-syn-ant-b02-20260718` |
+| b01 後殘餘 open | **~457**（由 ~558 下降） |
+| 入帳 ant | **72** 對 |
+| no_natural | **~69** 頭（名詞／功能詞無穩定反義） |
+| 抽樣閘 | sample 50；ok 50；threshold 0.9 |
+| validate | pairs **6120** ok |
+
+代表：`細細聲–大聲`、`搞掂–搞唔掂`、`好靚–核突`、`落車–上車`、`在線–離線`、`老細–下屬`…
+
+---
+
+## 6. 下一步
+
+1. **rebuild** `lyrics.db`／Release 關係令 runtime 見到新邊。  
+2. 重跑缺口量度：Top-5k content open 應再降（b01+b02 合計 ~134 ant 對 + ~113 nn）。  
+3. **b03**：同一母體下一頻段（預計仍剩約 300+ content 頭）。  
 4. 勿開 UD；勿為「完整感」開新外部 treebank。
 
 ---
