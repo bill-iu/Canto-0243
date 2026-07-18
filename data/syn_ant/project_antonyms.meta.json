@@ -9584,6 +9584,178 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-p1-nn-flip-b01-20260718": {
+      "k": 11,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 final audit nn-flip: 11 over-broad no_natural heads get maintainer ant pairs (睡覺/擅長/查收/發狂/非禮/好友/遏制/收養/作嘔/自治/擴容)",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_nn_flip",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "p1_nn_flip",
+        "batch_index": 1,
+        "source_audit": "p1-ring5k10k-final-20260718"
+      },
+      "sample_seed": 20260718,
+      "sample_n": 23,
+      "sample_ok": 23,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-p1-nn-flip-b01-20260718 parent N=23",
+      "sample_parent_n": 23,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "作嘔",
+          "tail": "可口",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "作嘔",
+          "tail": "美味",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好友",
+          "tail": "仇人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好友",
+          "tail": "敵人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擅長",
+          "tail": "拙劣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擅長",
+          "tail": "生疏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擴容",
+          "tail": "壓縮",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擴容",
+          "tail": "縮減",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "收養",
+          "tail": "拋棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "收養",
+          "tail": "遺棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "查收",
+          "tail": "拒收",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "查收",
+          "tail": "退回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發狂",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發狂",
+          "tail": "平靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "起身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "醒來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自治",
+          "tail": "受控",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自治",
+          "tail": "附庸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遏制",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遏制",
+          "tail": "縱容",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "非禮",
+          "tail": "有禮",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "非禮",
+          "tail": "禮貌",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
