@@ -78,7 +78,11 @@ explanation: 用嚟形容人「多此一舉」…
 2. **絕對規模**：~200 字面，對全庫係小補丁；**唔**改變主源（rime／words.hk／kaifang）格局。  
 3. **粵拼帶貨**：缺字面側幾乎都有 `termJyutping`／`answerJyutping` → 可直入 **(字面, 粵拼)** 重建，再算 0243。  
 4. **早期 5 條抽樣全中庫** 有倖存者偏差；**以全量為準**。  
-5. **29 缺讀音**：字面已在、Cantonese.md 粵拼與庫內列唔一致 — 可作**人工勘誤候選**，禁止無審 bulk 蓋寫。
+5. **29 缺讀音**：字面已在、Cantonese.md 粵拼與庫內列唔一致 — **已人工審**（2026-07-18）：
+   - **22** 條寫入 `data/lexicon/lexicon_corrections.tsv`（`set_jyutping`；多數跟 MD 正調／正聲母）
+   - **2** 條非純抄 MD：`神枱桔`→`toi4`；`童子軍跳彈牀`→`taan4`（彈牀）
+   - **7** 條**唔改**（庫較準或 MD 偏）：`冇牙婆穿針`（婆 po4）、`大石砸死蟹`（砸 zaak3）、`太監*`（監 gaam3）、`牀板跳上蓆`（蓆 zek6）、`冇得頂`（頂 ding2）、`暗啞底`（am3 aa2）
+   - 生效仍待 **`build-db`**（與 cantonese_md 補丁同一輪）
 
 缺字面例（len≤12）：`一隻筷子食豆腐`、`搞爛曬`、`三元宮土地`、`上山捉蟹`、`二叔公割禾`、`冇檳榔嚼唔出汁`、`問和尚借梳`…（全表見 JSON）。
 
@@ -201,14 +205,14 @@ extract (term, termJyutping), (answer, answerJyutping)
 | SSOT | `data/lexicon/sources.yaml` → `id: cantonese_md`（`enabled_by_default: true`，`source_rank: 4`） |
 | NOTICE | `THIRD_PARTY_NOTICES.md`（CC0） |
 | smoke | `tests/smoke/test_cantonese_md_lexicon_source.py` |
+| 缺讀音勘誤 | `lexicon_corrections.tsv` +22（§2.2 第 5 點） |
 
-**未做（刻意）**：`python -m ingest build-db` — 等句格工作台 ready 後一次過 rebuild，届時 `lyrics.db` 先見新字面。
+**未做（刻意）**：`python -m ingest build-db` — 等句格工作台 ready 後一次過 rebuild；届時同時食入 cantonese_md 缺字面 **同** 上述勘誤 overlay。
 
 **可選之後**
 
 1. Rebuild 後重跑 membership 差分確認缺口收斂。  
-2. 29 條 missing_reading → 勘誤草稿。  
-3. 上游有新歇後語時重跑 fetch（對當時 `lyrics.db` 再濾缺字面）。
+2. 上游有新歇後語時重跑 fetch（對當時 `lyrics.db` 再濾缺字面）。
 
 ---
 

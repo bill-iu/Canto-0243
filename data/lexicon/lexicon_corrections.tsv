@@ -6,3 +6,25 @@ char	old_jyutping	old_code	action	value	note
 不斷	but1 dyun6	34	set_code	32	
 半年	bun3 nin4	00	set_code	40	
 半年	bun4 nin4	00	set_jyutping	bun3 nin4	
+劉備借荊州	lau4 bei2 ze3 ging1 zau1	09433	set_jyutping	lau4 bei6 ze3 ging1 zau1	cantonese.md：備 bei6（庫誤 bei2）
+半夜食黃瓜	bun3 je2 sik6 wong4 gwaa1	49203	set_jyutping	bun3 je6 sik6 wong4 gwaa1	cantonese.md：夜 je6（庫誤 je2）
+和尚擔遮	wo4 soeng2 daam1 ze1	0933	set_jyutping	wo4 soeng6 daam1 ze1	cantonese.md：尚 soeng6（庫誤 soeng2）
+大笪地賣粥	daai6 daat3 dei2 maai6 zuk1	24923	set_jyutping	daai6 daat3 dei6 maai6 zuk1	cantonese.md：地 dei6（庫誤 dei2）
+寡母婆死仔	gwaa2 mou5 po2 sei2 zai2	95999	set_jyutping	gwaa2 mou5 po4 sei2 zai2	cantonese.md：婆 po4（庫誤 po2）
+靠撞	kaau3 zong2	49	set_jyutping	kaau3 zong6	cantonese.md：撞 zong6（庫誤 zong2）
+打爛沙盆	daa3 laan6 saa1 pun4	4230	set_jyutping	daa2 laan6 saa1 pun4	cantonese.md：打 daa2（庫誤 daa3）
+打齋鶴	daa2 zaai1 hok2	939	set_jyutping	daa2 zaai1 hok6	cantonese.md：鶴 hok6（庫誤 hok2）
+掘尾龍	gwat6 mei5 lung2	259	set_jyutping	gwat6 mei5 lung4	cantonese.md：龍 lung4（庫誤 lung2）
+水溝油	seoi2 kau1 jau4	930	set_jyutping	seoi2 gau1 jau4	cantonese.md：溝 gau1（庫誤 kau1）
+溝唔埋	kau1 m4 maai4	300	set_jyutping	gau1 m4 maai4	cantonese.md：溝 gau1（庫誤 kau1）
+多嚿魚	do1 gau6 jyu2	329	set_jyutping	do1 gau6 jyu4	cantonese.md：魚 jyu4（庫誤 jyu2）
+皇帝女	wong4 dai3 neoi2	049	set_jyutping	wong4 dai3 neoi5	cantonese.md：女 neoi5（庫誤 neoi2）
+神枱貓屎	san4 toi2 maau1 si2	0939	set_jyutping	san4 toi4 maau1 si2	cantonese.md：枱 toi4（庫誤 toi2）
+紙紮下巴	zi2 zaat3 haa6 paa4	9420	set_jyutping	zi2 zaat3 haa6 baa1	cantonese.md：下巴 baa1（庫誤 paa4）
+老公撥扇	lou5 gung1 put3 sin3	5344	set_jyutping	lou5 gung1 but6 sin3	cantonese.md：撥 but6（庫誤 put3）
+幾大就幾大	gei2 daai2 zau6 gei2 daai2	99299	set_jyutping	gei2 daai6 zau6 gei2 daai6	cantonese.md：大 daai6（庫誤 daai2）
+非洲和尚	fei1 zau1 wo4 soeng2	3309	set_jyutping	fei1 zau1 wo4 soeng6	cantonese.md：尚 soeng6（庫誤 soeng2）
+風吹雞蛋殼	fung1 ceoi1 gai1 daan2 hok3	33394	set_jyutping	fung1 ceoi1 gai1 daan6 hok3	cantonese.md：蛋 daan6（庫誤 daan2）
+黃皮樹鷯哥	wong4 pei2 syu6 liu1 go1	09233	set_jyutping	wong4 pei4 syu6 liu1 go1	cantonese.md：皮 pei4（庫誤 pei2）
+神枱桔	san4 toi2 gat1	093	set_jyutping	san4 toi4 gat1	枱 toi4（庫 toi2／MD toi5 皆偏）
+童子軍跳彈牀	tung4 zi2 gwan1 tiu3 daan6 cong4	093420	set_jyutping	tung4 zi2 gwan1 tiu3 taan4 cong4	彈牀 taan4（庫 daan6／MD taan6 皆偏）
