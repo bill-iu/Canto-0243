@@ -398,6 +398,27 @@ def _resolve_mask_family_source(
         )
         return source, None
 
+    # TS parity (specNeedsFullLengthBucket): letter slots need full bucket —
+    # LengthMaskCandidateSource(??) + 2000 LIMIT truncates before letter filter
+    # (repro: 43$獅 → 43si misses 舞獅).
+    has_letter_slots = any(
+        s.kind in ("rhyme_letters", "syllable_letters", "initial_letters")
+        for s in spec.slots
+    )
+    if has_letter_slots:
+        from app.services.position_match.mask_adapter import dense_code_from_spec
+
+        effective_code = query_code or dense_code_from_spec(spec)
+        return (
+            LengthCodeCandidateSource(
+                db,
+                code=effective_code,
+                mode=mode,
+                fallback_limit=None,
+            ),
+            None,
+        )
+
     if spec.mask:
         return LengthMaskCandidateSource(db, spec.mask), None
 

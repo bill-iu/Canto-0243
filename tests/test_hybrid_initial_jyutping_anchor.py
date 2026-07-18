@@ -92,6 +92,30 @@ class HybridInitialJyutpingAnchorTests(unittest.TestCase):
                 self.assertRegex(val, r"^\d$", q)
                 self.assertIsInstance(pos, int)
 
+    def test_dollar_hanzi_syllable_includes_literal_row(self):
+        """$獅 → si syllable anchor；唔排除字面「獅」；唔因 2000 cap 漏 舞獅。"""
+        from app.database import SessionLocal
+        from app.services.query_dispatch import search_words
+
+        db = SessionLocal()
+        try:
+            at_chars = {
+                (r.get("char") if isinstance(r, dict) else r.char)
+                for r in search_words(q="43@獅", mode="m1", limit=50, offset=0, db=db)
+            }
+            dollar_chars = {
+                (r.get("char") if isinstance(r, dict) else r.char)
+                for r in search_words(q="43$獅", mode="m1", limit=200, offset=0, db=db)
+            }
+            self.assertIn("舞獅", at_chars)
+            self.assertIn("舞獅", dollar_chars)
+            parsed = normalize_and_parse("43$獅")
+            self.assertEqual(parsed.kind, QueryKind.JYUTPING_ANCHOR)
+            self.assertEqual(getattr(parsed, "anchor_kind", None), "syllable_letters")
+            self.assertEqual(getattr(parsed, "anchor_value", None), "si")
+        finally:
+            db.close()
+
 
 if __name__ == "__main__":
     unittest.main()

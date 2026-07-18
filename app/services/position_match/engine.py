@@ -174,7 +174,15 @@ def execute_match_spec(
 
     source, sort_key = _resolve_mask_family_source(spec, db, mode, code)
     has_phoneme_anchors = any(
-        s.kind in ("final_anchor", "initial_anchor") for s in spec.slots
+        s.kind
+        in (
+            "final_anchor",
+            "initial_anchor",
+            "rhyme_letters",
+            "syllable_letters",
+            "initial_letters",
+        )
+        for s in spec.slots
     )
     if not get_equals_span(spec) and source is None and not has_phoneme_anchors:
         return MaskFamilySearchResult(items=[])
