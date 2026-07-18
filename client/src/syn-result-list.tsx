@@ -1,5 +1,7 @@
+import { memo } from 'react';
 import type { QueryResult } from './db/query';
 import { synResultItemCount } from './syn-result-logic.ts';
+import { countListRender } from './search-perf.ts';
 
 function sectionTitle(title: string, count: number): string {
   return count > 0 ? `${title} (${count})` : title;
@@ -65,7 +67,7 @@ function takeSynBudget(
   return { synsShown, antsShown, relatedShown };
 }
 
-export function SynResultList({
+export const SynResultList = memo(function SynResultList({
   results,
   visibleLimit,
   onPick,
@@ -74,6 +76,7 @@ export function SynResultList({
   visibleLimit?: number;
   onPick: (query: string) => void;
 }) {
+  countListRender();
   const syns = results.filter((r) => r.relation === 'syn');
   const ants = results.filter((r) => r.relation === 'ant');
   const related = results.filter((r) => r.relation === 'semantic_related');
@@ -87,4 +90,4 @@ export function SynResultList({
       {related.length > 0 ? <SynSection title="語意相關" items={relatedShown} onPick={onPick} /> : null}
     </div>
   );
-}
+});

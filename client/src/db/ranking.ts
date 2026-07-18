@@ -76,6 +76,34 @@ export function getEssayFrequency(char: string): number {
   return essayFrequency(char);
 }
 
+/** Same pronunciation authority policy as app/domain/lexicon/ranking.py. */
+export function compareAuthoritativeReadings(
+  a: { char?: unknown; jyutping?: unknown },
+  b: { char?: unknown; jyutping?: unknown },
+): number {
+  const aChar = String(a.char ?? '');
+  const bChar = String(b.char ?? '');
+  const aJyut = String(a.jyutping ?? '');
+  const bJyut = String(b.jyutping ?? '');
+  const aKey: Array<number | string> = [
+    pronRankSortValueForWord(aChar, aJyut),
+    -essayFrequency(aChar),
+    aJyut.toLowerCase().includes('aa') ? 1 : 0,
+    aJyut,
+  ];
+  const bKey: Array<number | string> = [
+    pronRankSortValueForWord(bChar, bJyut),
+    -essayFrequency(bChar),
+    bJyut.toLowerCase().includes('aa') ? 1 : 0,
+    bJyut,
+  ];
+  for (let index = 0; index < aKey.length; index += 1) {
+    if (aKey[index]! < bKey[index]!) return -1;
+    if (aKey[index]! > bKey[index]!) return 1;
+  }
+  return 0;
+}
+
 function curatedBoost(char: string): number {
   return curated.has((char || '').trim()) ? 1 : 0;
 }

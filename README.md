@@ -139,7 +139,7 @@ Portable 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &
 * [開放詞典 · 粵語詞典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：採用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
 * [詞林同義詞（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
 * [國語辭典近義／反義（guotong）](https://github.com/guotong1988/chinese_dictionary)：採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
-* [自建反義詞庫](LICENSE)：大模型輔助生成，採用 [Canto-0243 License](LICENSE)。
+* [專案自建近反義](LICENSE)：維護者審定近義／反義對（大模型輔助起草），採用 [Canto-0243 License](LICENSE)。
 
 完整第三方授權清單見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
 

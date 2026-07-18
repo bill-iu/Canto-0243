@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { QueryResult } from './db/query';
 import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { tDetail } from '../../shared/entry-detail-i18n.mjs';
@@ -7,30 +8,31 @@ import {
   resultsShowReadingBadge,
   type EntryPickPayload,
 } from './result-list-logic.ts';
+import { countListRender } from './search-perf.ts';
 
 export { resultsShowReadingBadge } from './result-list-logic.ts';
 
-export function ResultList({
+export const ResultList = memo(function ResultList({
   results,
-  committedQuery,
+  showReadingBadge = false,
   visibleLimit,
   activeLiteral,
   lang = 'zh',
   onPick,
 }: {
   results: QueryResult[];
-  /** 輸入框／查詢字串；含 `/` 先顯示多讀音徽章（PWA 跟即時輸入） */
-  committedQuery?: string | null;
+  /** 「N個讀音」徽章；由呼叫端自 inputQuery 衍生，避免整段字串破 memo */
+  showReadingBadge?: boolean;
   visibleLimit?: number;
   activeLiteral?: string | null;
   lang?: 'zh' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
+  countListRender();
   const rows = displayResults(results);
   const merged = mergeResultsByLiteral(rows);
   if (!merged.length) return null;
   const shown = visibleLimit != null ? merged.slice(0, visibleLimit) : merged;
-  const showReadingBadge = resultsShowReadingBadge(committedQuery);
 
   return (
     <ul className="results-list-items">
@@ -73,4 +75,4 @@ export function ResultList({
       })}
     </ul>
   );
-}
+});

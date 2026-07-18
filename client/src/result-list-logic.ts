@@ -27,9 +27,9 @@ export function mergedResultCount(results: QueryResult[]): number {
   return mergeResultsByLiteral(displayResults(results)).length;
 }
 
-/** 「N個讀音」徽章：已送出查詢含 `/`（同音異讀）。 */
-export function resultsShowReadingBadge(committedQuery: string | null | undefined): boolean {
-  return Boolean(committedQuery && committedQuery.includes('/'));
+/** 「N個讀音」徽章：查詢字串含 `/`（同音異讀；PWA 跟即時輸入）。 */
+export function resultsShowReadingBadge(query: string | null | undefined): boolean {
+  return Boolean(query && query.includes('/'));
 }
 
 /**
@@ -51,6 +51,14 @@ export function resultListBadgeSelfCheck(): void {
   }
   if (!resultsShowReadingBadge('33/34') || !resultsShowReadingBadge('??/??')) {
     throw new Error('resultListBadgeSelfCheck: slash query');
+  }
+  // boolean 與 `/` 字串等價：memo 邊界只訂閱 boolean，唔訂閱整段 input
+  const live = '23/';
+  if (resultsShowReadingBadge(live) !== live.includes('/')) {
+    throw new Error('resultListBadgeSelfCheck: boolean parity');
+  }
+  if (resultsShowReadingBadge('232') !== false) {
+    throw new Error('resultListBadgeSelfCheck: no-slash stays false for memo stability');
   }
 }
 

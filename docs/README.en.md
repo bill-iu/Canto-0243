@@ -121,7 +121,7 @@ This app exists thanks to outstanding work by linguists, open-source maintainers
 * [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/): [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 * [Cilin synonyms](https://github.com/yaleimeng/Final_word_Similarity): [MIT](https://opensource.org/licenses/MIT).
 * [Guotong near／antonym dictionary](https://github.com/guotong1988/chinese_dictionary): [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE).
-* [Project antonym lexicon](../LICENSE): LLM-assisted generation; [Canto-0243 License](../LICENSE).
+* [Project near-antonyms](../LICENSE): maintainer-reviewed synonym／antonym pairs (LLM-assisted drafting); [Canto-0243 License](../LICENSE).
 
 Full third-party license list: [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md).
 

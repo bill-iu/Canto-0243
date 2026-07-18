@@ -41,7 +41,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>。</li>' +
       '<li><a href="' +
       LICENSE_URL +
-      '" target="_blank" rel="noopener noreferrer">自建反義詞庫</a>：大模型輔助生成，採用 <a href="' +
+      '" target="_blank" rel="noopener noreferrer">專案自建近反義</a>：維護者審定近義／反義對（大模型輔助起草），採用 <a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>。</li>',
     sourcesFooter:
@@ -97,7 +97,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>.</li>' +
       '<li><a href="' +
       LICENSE_URL +
-      '" target="_blank" rel="noopener noreferrer">Project antonym lexicon</a>: LLM-assisted generation; <a href="' +
+      '" target="_blank" rel="noopener noreferrer">Project near-antonyms</a>: maintainer-reviewed synonym／antonym pairs (LLM-assisted drafting); <a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>.</li>',
     sourcesFooter:

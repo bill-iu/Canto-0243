@@ -6,6 +6,7 @@ import { maskFromCanonicalPlusQuery } from '../plus-grammar.ts';
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from '../jyutping-anchor.ts';
 import { normalizePzmode, tryParsePingZeSerial } from '../ping-zak.ts';
 import { QueryKind } from '../query-kind.ts';
+import { buildLookupLayout } from './lookup-layout.ts';
 import type {
   JyutpingAnchorQuery,
   ParsedQuery,
@@ -343,7 +344,6 @@ export function parserLogicSelfCheck(): void {
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/lookup-layout-self-check.ts` */
 export async function lookupLayoutSelfCheck(): Promise<void> {
-  const { buildLookupLayout } = await import('./lookup-layout.ts');
   const rows = [{ char: '事業', code: '22', jyutping: 'si6 jip6' }];
   const layout = await buildLookupLayout('事業', rows, null);
   const words = layout.map((r) => r.word);

@@ -52,6 +52,7 @@ import {
 } from './db-context.ts';
 import { usePortableReady } from './use-portable-ready.ts';
 import { usePortableSearch } from './use-portable-search.ts';
+import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 
 export type { QueryMode, QueryKind, QueryOptions, QueryResult, SearchPageResult };
 export {
@@ -448,6 +449,7 @@ export function useEngineSearch(
     setSearchError(null);
 
     const run = async () => {
+      markSearchDispatch();
       try {
         const page = await searchPage({
           query: trimmed,
@@ -460,12 +462,14 @@ export function useEngineSearch(
           shouldCancel,
         });
         if (shouldCancel()) return;
+        markSearchResolve();
         setResults(page.items);
         setTotal(page.total ?? null);
         setHint(page.hint ?? null);
         setLastPageSize(page.items.length);
       } catch (err) {
         if (shouldCancel() || isSearchCancelledError(err)) return;
+        markSearchResolve();
         setSearchError(err instanceof Error ? err : new Error(String(err)));
         setResults([]);
         setTotal(null);

@@ -22,6 +22,7 @@ import {
   type UrlMode,
 } from '../mode-meta';
 import { DBContext } from './db-context.ts';
+import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 const HINT_UTF8_PREFIX = "UTF-8''";
@@ -208,6 +209,7 @@ export function usePortableSearch(
     setSearchError(null);
 
     void (async () => {
+      markSearchDispatch();
       try {
         const page = await fetchSearchPage({
           query: trimmed,
@@ -219,12 +221,14 @@ export function usePortableSearch(
           signal: ac.signal,
         });
         if (shouldCancel()) return;
+        markSearchResolve();
         setResults(page.items);
         setTotal(page.total);
         setHint(page.hint);
         setLastPageSize(page.items.length);
       } catch (err) {
         if (shouldCancel() || (err instanceof DOMException && err.name === 'AbortError')) return;
+        markSearchResolve();
         setSearchError(err instanceof Error ? err : new Error(String(err)));
         setResults([]);
         setTotal(null);

@@ -2,10 +2,16 @@ import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './databa
 import { lexiconOpfsFileName } from './opfs-lexicon.ts';
 import { reportDownloadBytes } from './startup-progress.ts';
 import type { OpfsVfsWorkerRequest, OpfsVfsWorkerResponse } from './opfs-vfs-worker.ts';
+import {
+  recordResumeDebug,
+  type ResumeDebugWorkerState,
+} from '../resume-debug.ts';
 
 type Pending = {
   resolve: (value: OpfsVfsWorkerResponse) => void;
   reject: (reason?: unknown) => void;
+  type: OpfsVfsWorkerRequest['type'];
+  startedAt: number;
 };
 
 type InitResult = Extract<OpfsVfsWorkerResponse, { type: 'init-ok' }>;
@@ -31,6 +37,13 @@ class OpfsVfsBackend implements DatabaseBackend {
       const pending = this.pending.get(res.id);
       if (!pending) return;
       this.pending.delete(res.id);
+      recordResumeDebug('worker-response', {
+        id: res.id,
+        requestType: pending.type,
+        responseType: res.type,
+        elapsedMs: Math.round(performance.now() - pending.startedAt),
+        pending: this.pending.size,
+      });
       if (res.type === 'error') {
         pending.reject(new Error(res.message));
         return;
@@ -38,7 +51,11 @@ class OpfsVfsBackend implements DatabaseBackend {
       pending.resolve(res);
     });
     worker.addEventListener('error', (event) => {
+      recordResumeDebug('worker-error', { message: event.message });
       this.rejectAll(event.error ?? new Error(event.message));
+    });
+    worker.addEventListener('messageerror', () => {
+      recordResumeDebug('worker-message-error', { pending: this.pending.size });
     });
   }
 
@@ -80,14 +97,34 @@ class OpfsVfsBackend implements DatabaseBackend {
     return this.ask({ type: 'query', sql, params });
   }
 
+  debugState(): ResumeDebugWorkerState {
+    const now = performance.now();
+    return {
+      exists: true,
+      pending: [...this.pending.entries()].map(([id, request]) => ({
+        id,
+        type: request.type,
+        ageMs: Math.round(now - request.startedAt),
+      })),
+    };
+  }
+
   private ask<T extends Omit<OpfsVfsWorkerRequest, 'id'>>(msg: T): Promise<ExtractResponse<T['type']>> {
     const id = this.nextId;
     this.nextId += 1;
     const request = { ...msg, id } as OpfsVfsWorkerRequest;
     return new Promise((resolve, reject) => {
+      const startedAt = performance.now();
       this.pending.set(id, {
         resolve: (value) => resolve(value as ExtractResponse<T['type']>),
         reject,
+        type: request.type,
+        startedAt,
+      });
+      recordResumeDebug('worker-request', {
+        id,
+        requestType: request.type,
+        pending: this.pending.size,
       });
       this.worker.postMessage(request);
     });
@@ -158,6 +195,7 @@ function getSharedBackend(): OpfsVfsBackend {
   if (!sharedBackend) {
     sharedWorker = new Worker(new URL('./opfs-vfs-worker.ts', import.meta.url), { type: 'module' });
     sharedBackend = new OpfsVfsBackend(sharedWorker);
+    recordResumeDebug('worker-created');
   }
   return sharedBackend;
 }
@@ -180,10 +218,15 @@ export type OpenOpfsVfsDatabaseResult = {
 
 export function resetOpfsVfsWorker(): void {
   if (sharedWorker) {
+    recordResumeDebug('worker-reset');
     sharedWorker.terminate();
     sharedWorker = null;
     sharedBackend = null;
   }
+}
+
+export function getOpfsVfsWorkerDebugState(): ResumeDebugWorkerState {
+  return sharedBackend?.debugState() ?? { exists: false, pending: [] };
 }
 
 export async function openOpfsVfsDatabase(opts: {

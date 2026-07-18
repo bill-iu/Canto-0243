@@ -174,6 +174,44 @@ export function sortAntPool(
     .sort((a, b) => compareKeys(relevanceKey(query, a, morphemeChars, 'ant'), relevanceKey(query, b, morphemeChars, 'ant')));
 }
 
+/** ponytail: project_syn beats cilin on merge/_sort — `npx tsx client/scripts/relation-pool-self-check.ts` */
+export function projectSynRankingSelfCheck(): void {
+  if (!(sourceRank('project_syn') < sourceRank('cilin'))) {
+    throw new Error('projectSynRankingSelfCheck: project_syn must rank above cilin');
+  }
+  if (!(sourceRank('project_syn') < sourceRank('guotong'))) {
+    throw new Error('projectSynRankingSelfCheck: project_syn must rank above guotong');
+  }
+  const base = {
+    relation: 'syn' as const,
+    in_db: true,
+    jyutping: '',
+    code: '',
+    group_codes: [] as string[],
+  };
+  const cilin: RelationPoolItem = {
+    ...base,
+    char: '開心',
+    source: 'cilin',
+    score: 0.85,
+    _sort: finalScore('cilin', 0.85, true),
+  };
+  const project: RelationPoolItem = {
+    ...base,
+    char: '開心',
+    source: 'project_syn',
+    score: 0.85,
+    _sort: finalScore('project_syn', 0.85, true),
+  };
+  if (!(project._sort < cilin._sort)) {
+    throw new Error(`projectSynRankingSelfCheck: _sort ${project._sort} vs ${cilin._sort}`);
+  }
+  const merged = mergeRelationPools([cilin], [project]);
+  if (merged.get('開心')?.source !== 'project_syn') {
+    throw new Error(`projectSynRankingSelfCheck: merge kept ${merged.get('開心')?.source}`);
+  }
+}
+
 /** ponytail: project_ant beats guotong on merge/_sort — `npx tsx client/scripts/relation-pool-self-check.ts` */
 export function projectAntRankingSelfCheck(): void {
   if (!(sourceRank('project_ant') < sourceRank('guotong'))) {

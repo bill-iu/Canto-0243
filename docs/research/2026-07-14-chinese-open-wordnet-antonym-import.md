@@ -4,6 +4,8 @@
 **對象專案**：ICE-U-code/Canto-0243（離線粵語填詞查韻；近反義模式經**靜態詞林埠**）  
 **結論摘要**：**no**（授權本身大致可再分發，但 **COW 下載物不含中文反義關係**；所謂「反義」只能經 Princeton WordNet 英文 lemma 樞紐派生，品質／繁簡／產品價值皆不適合作為低風險反義來源）
 
+**Sibling（近義／POS／語意相關）**：[`2026-07-18-chinese-open-wordnet-syn-pos-value.md`](./2026-07-18-chinese-open-wordnet-syn-pos-value.md)——**唔推翻**本篇 ant＝no；歷史「誤關 cow stub」作廢見該文。
+
 ---
 
 ## 1. Question / scope（問題與範圍）
@@ -28,7 +30,7 @@
 Global WordNet Association「Wordnets in the World」明確：Traditional → Chinese Wordnet；Simplified → Chinese Open Wordnet (COW)。  
 來源：<https://globalwordnet.github.io/resources/wordnets-in-the-world>
 
-**非範圍**：不修改應用程式碼；不實際把資料 commit 進 repo；不評估以 COW 專做近義（synset 內 lemma）是否值得（見第 6 節邊界）。
+**非範圍**：不修改應用程式碼；不實際把資料 commit 進 repo；不評估以 COW 專做近義（synset 內 lemma）是否值得（見第 6 節邊界；**已另開** [`2026-07-18-chinese-open-wordnet-syn-pos-value.md`](./2026-07-18-chinese-open-wordnet-syn-pos-value.md)）。
 
 ---
 

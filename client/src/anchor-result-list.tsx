@@ -1,8 +1,10 @@
+import { memo } from 'react';
 import type { QueryResult } from './db/query';
 import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { ResultList } from './result-list';
 import { type EntryPickPayload } from './result-list-logic.ts';
 import { anchorResultItemCount } from './anchor-result-logic.ts';
+import { countListRender } from './search-perf.ts';
 
 function sectionTitle(title: string, count: number): string {
   return count > 0 ? `${title} (${count})` : title;
@@ -33,7 +35,7 @@ function AnchorSection({
   );
 }
 
-export function AnchorResultList({
+export const AnchorResultList = memo(function AnchorResultList({
   results,
   visibleLimit,
   activeLiteral,
@@ -46,6 +48,7 @@ export function AnchorResultList({
   lang?: 'zh' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
+  countListRender();
   const initial = results.filter((r) => r.anchor_dimension === 'initial');
   const final = results.filter((r) => r.anchor_dimension === 'final');
   const budget = visibleLimit ?? anchorResultItemCount(results);
@@ -78,4 +81,4 @@ export function AnchorResultList({
       <AnchorSection title="韻母" items={finalRows} activeLiteral={activeLiteral} lang={lang} onPick={onPick} />
     </div>
   );
-}
+});

@@ -1,4 +1,4 @@
-"""About 資料來源：反義詞庫條目唔顯示檔名（簡潔格式）。"""
+"""About 資料來源：專案自建近反義條目唔顯示檔名（簡潔格式）。"""
 
 from __future__ import annotations
 
@@ -20,8 +20,8 @@ class AboutAntonymSourceCopyTests(unittest.TestCase):
         text = ABOUT_I18N.read_text(encoding="utf-8")
         for name in FORBIDDEN:
             self.assertNotIn(name, text, f"about-i18n must not cite {name}")
-        self.assertIn("自建反義詞庫", text)
-        self.assertIn("Project antonym lexicon", text)
+        self.assertIn("專案自建近反義", text)
+        self.assertIn("Project near-antonyms", text)
 
     def test_client_about_uses_i18n_ssot(self) -> None:
         """Product About is client + about-i18n; shared/index.html is only /app redirect."""

@@ -1,11 +1,11 @@
 /**
  * Heteronym code/code query execution — port of heteronym_code_executor.py
  */
-import type { Database } from './sqljs.ts';
+import { initSqlJs, type Database } from './sqljs.ts';
 import { queryRows } from './database-backend.ts';
 import { createSqlJsBackend } from './sqljs-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
-import { sortHeteronymResults } from './ranking.ts';
+import { initRankingData, sortHeteronymResults } from './ranking.ts';
 
 type ReadingRow = [string, string];
 
@@ -216,7 +216,6 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
     throw new Error('heteronymLogicSelfCheck: template parse');
   }
 
-  const { initSqlJs } = await import('./sqljs.ts');
   const SQL = await initSqlJs();
   const db = new SQL.Database();
   db.run(
@@ -237,7 +236,6 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   }
 
   // heteronym sort self-check: freq primary across chars, pure jyut lexical within char
-  const { initRankingData } = await import('./ranking.ts');
   initRankingData({
     essay: { '高頻': 100, '低頻': 10 },
   });
