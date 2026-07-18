@@ -409,10 +409,12 @@ export async function queryWordsByEqualsSpec(
       searchMode,
     );
   } else {
+    // Dense fullCode already narrows; LIMIT before phoneme filter drops hits when
+    // m1 variants expand past CANDIDATE_FALLBACK_LIMIT (e.g. 9太=2 → 解毒).
     const [rows] = await getCandidatesForLength(db, spec.width, {
       code: fullCode || null,
       mode: searchMode,
-      unlimited: prefixWildcard || tailRhymeUnion,
+      unlimited: prefixWildcard || tailRhymeUnion || Boolean(fullCode),
     });
     candidates = rows;
   }
