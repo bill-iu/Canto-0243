@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一五一十	x			numeral;heuristic	high	p3|gate	11923	BAD	r			情狀／方式副（一五一十噉講）；非數詞（numeral 假陽會毒同虛詞閘）
+一些問題	n			len4-noun-heuristic;p3	high	p3|gate	13520	OK				
+下降	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	7294	OK				
+不完	v			verb-suffix;p3;heuristic	high	p3|gate	10207	BAD	u			否定+完；非獨立動詞（verb-suffix 假陽，多見於 V 不完）
+世界經濟	n			len4-noun-heuristic	high	p3|gate	16428	OK				
+中國社會	n			len4-noun-heuristic	high	p3|gate	16429	OK				
+什麼問題	n			len4-noun-heuristic;p3	high	p3|gate	11217	OK				
+侵犯	n,v			cow-multi;p3	medium	p3|gate	9448	OK				
+信息技術	n			len4-noun-heuristic;p3	high	p3|gate	10644	OK				
+償還	n,v			cow-multi;p3	medium	p3|gate	13467	OK				
+兩百	x			numeral;p3;heuristic	high	p3|gate	15627	OK				
+具體情況	n			len4-noun-heuristic;p3	high	p3|gate	13443	OK				
+十二	x			numeral;p3;heuristic	high	p3|gate	10786	OK				
+各級政府	n			len4-noun-heuristic;p3	high	p3|gate	14128	OK				
+咬住	v			verb-suffix;p3;heuristic	high	p3|gate	9482	OK				
+售後服務	n			len4-noun-heuristic	high	p3|gate	10124	OK				
+喫掉	v			verb-suffix;p3;heuristic	high	p3|gate	13440	OK				
+回扣	n,v			cow-multi;p3	medium	p3|gate	18415	OK				
+因住	v			verb-suffix;heuristic	high	p3|gate	5142	OK				
+團結	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	10297	OK				
+培養	n,v			cow-multi;p3	medium	p3|gate	14731	OK				
+廢除	v			cow-multi;p3;p1-audit;review;只係動；n 假陽會毒同名詞閘	high	p3|gate	17201	OK				
+廣告公司	n			len4-noun-heuristic;p3	high	p3|gate	16548	OK				
+彈開	v			verb-suffix;p3;heuristic	high	p3|gate	6946	OK				
+循環經濟	n			len4-noun-heuristic;p3	high	p3|gate	18339	OK				
+技術服務	n			len4-noun-heuristic;p3	high	p3|gate	18500	OK				
+投資公司	n			len4-noun-heuristic;p3	high	p3|gate	19537	OK				
+抨擊	n,v			cow-multi;p3	medium	p3|gate	19159	OK				
+抽住	v			verb-suffix;p3;heuristic	high	p3|gate	17798	OK				
+挨住	v			verb-suffix;p3;heuristic	high	p3|gate	6441	OK				
+操作系統	n			len4-noun-heuristic;p3	high	p3|gate	5409	OK				
+支配	n,v			cow-multi;p3	medium	p3|gate	17814	OK				
+新開	v			verb-suffix;p3;heuristic	high	p3|gate	15622	OK				
+減弱	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	13807	OK				
+照住	v			verb-suffix;p3;heuristic	high	p3|gate	10909	OK				
+犯罪	n,v			cow-multi;p3	medium	p3|gate	12132	OK				
+生產成本	n			len4-noun-heuristic;p3	high	p3|gate	19259	OK				
+百貨公司	n			len4-noun-heuristic	high	p3|gate	8865	OK				
+研究中心	n			len4-noun-heuristic;p3	high	p3|gate	10633	OK				
+社會經濟	n			len4-noun-heuristic;p3	high	p3|gate	19185	OK				
+稍後	r			heuristic	high	p3|gate	13171	OK				
+突出問題	n			len4-noun-heuristic;p3	high	p3|gate	19260	OK				
+被告人	v		passive	prefix-passive;heuristic	high	p3|gate	12378	BAD	n			法律名詞「被告一方」；prefix-passive 假陽會毒同動詞閘（對照 r2 被害人）
+貢獻	n,v			cow-multi;p3	medium	p3|gate	13922	OK				
+資本市場	n			len4-noun-heuristic;p3	high	p3|gate	8667	OK				
+購物中心	n			len4-noun-heuristic	high	p3|gate	18707	OK				
+遊覽	n,v			cow-multi;p3	medium	p3|gate	16353	OK				
+釋放	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	7019	OK				
+除此之外	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	p3|gate	16884	BAD	r			連接／附帶說明短語；非名（len4-noun 假陽會毒同名詞閘）
+陪住	v			verb-suffix;heuristic	high	p3|gate	5100	OK				

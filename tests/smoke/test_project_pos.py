@@ -124,6 +124,28 @@ def test_p1_closeout_metrics() -> None:
     assert meta.get("p1", {}).get("closeout") is True
 
 
+def test_p3_long_tail() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta
+    from ingest.project_pos_p3 import p3_status
+
+    st = p3_status()
+    assert st["mother_body"] == 15000
+    assert st["p3_complete"] is True
+    assert st["missing"] == 0
+    assert st["coverage"] == 1.0
+    meta = load_meta()
+    assert meta.get("p3", {}).get("gate_quality_pass") is True
+    gq = meta.get("p3_gate_quality") or {}
+    assert gq.get("pass") is True
+    rounds = gq.get("rounds") or []
+    passed = [r for r in rounds if r.get("pass")]
+    assert len(passed) >= 2
+    assert all(r.get("ok_rate", 0) > 0.90 for r in passed)
+    assert Path("data/pos/audit/p3_gate_quality_report.md").is_file()
+
+
 def test_p2_idiom_quality_pass() -> None:
     from pathlib import Path
 
@@ -219,6 +241,7 @@ def main() -> None:
     test_p1_closeout_metrics()
     test_p1_gate_quality_pass()
     test_p2_idiom_quality_pass()
+    test_p3_long_tail()
     test_trust_tiers()
     print("test_project_pos: ok")
 

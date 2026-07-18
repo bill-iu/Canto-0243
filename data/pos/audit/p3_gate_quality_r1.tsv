@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+三分之一	n			len4-noun-heuristic;p3	high	p3|gate	11909	OK				
+主營業務	n			len4-noun-heuristic;p3	high	p3|gate	18489	OK				
+交易	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	5230	OK				
+人之常情	n			len4-noun-heuristic;p3	high	p3|gate	19792	OK				
+低開	v			verb-suffix;p3;heuristic	high	p3|gate	16530	OK				
+使用方法	n			len4-noun-heuristic;p3	high	p3|gate	17602	OK				
+保釋	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	14652	OK				
+信息中心	n			len4-noun-heuristic;p3	high	p3|gate	14281	OK				
+光明	a,n			cow-multi	medium	p3|gate	6906	OK				
+十一五	x			numeral;p3;heuristic	high	p3|gate	17300	OK				
+受山	v		passive	prefix-passive;p3;heuristic	high	p3|gate	10281	BAD	u			切詞假陽（受山火等）；非獨立被動動詞
+受影響	v		passive	prefix-passive;p3;heuristic	high	p3|gate	17358	OK				
+各級政府	n			len4-noun-heuristic;p3	high	p3|gate	14128	OK				
+呆滯	n,v			cow-multi;p3	medium	p3|gate	9475	BAD	a			stative 形；n/v 假陽會毒閘
+售後服務	n			len4-noun-heuristic	high	p3|gate	10124	OK				
+問完	v			verb-suffix;p3;heuristic	high	p3|gate	14716	OK				
+地方政府	n			len4-noun-heuristic	high	p3|gate	8629	OK				
+培訓中心	n			len4-noun-heuristic;p3	high	p3|gate	16801	OK				
+奉獻	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	12762	OK				
+專業技術	n			len4-noun-heuristic;p3	high	p3|gate	19179	OK				
+手提電話	n			len4-noun-heuristic	high	p3|gate	11427	OK				
+提供服務	n			len4-noun-heuristic;p3	high	p3|gate	18555	BAD	v			VO「提供+服務」，非名詞；n 假陽會毒同名詞閘
+搖擺	n,v			cow-multi;p3	medium	p3|gate	9527	OK				
+搭住	v			verb-suffix;p3;heuristic	high	p3|gate	17808	OK				
+敗壞	n,v			cow-multi;p3	medium	p3|gate	16154	OK				
+新聞中心	n			len4-noun-heuristic;p3	high	p3|gate	18963	OK				
+斷斷續續	n	idiom		cow-single;p2-idiom:AABB;p2-idiom-heuristic;review	high	p3|gate	8521	BAD	a,r			AABB 狀態／情狀；非名（cow-single n 假陽）
+日本政府	n			len4-noun-heuristic;p3	high	p3|gate	19669	OK				
+服務機構	n			len4-noun-heuristic;p3	high	p3|gate	19642	OK				
+減輕	n,v			cow-multi;p3	medium	p3|gate	14905	BAD	v			只係動；n 假陽會毒同名詞閘
+照住	v			verb-suffix;p3;heuristic	high	p3|gate	10909	OK				
+發熱	n,v			cow-multi;p3	medium	p3|gate	13850	OK				
+百貨公司	n			len4-noun-heuristic	high	p3|gate	8865	OK				
+睇開	v			verb-suffix;p3;heuristic	high	p3|gate	8870	OK				
+知識分子	n			len4-noun-heuristic	high	p3|gate	10035	OK				
+禁住	v			verb-suffix;p3;heuristic	high	p3|gate	11525	OK				
+稍後	r			heuristic	high	p3|gate	13171	OK				
+系列產品	n			len4-noun-heuristic;p3	high	p3|gate	13262	OK				
+腐爛	n,v			cow-multi;p3	medium	p3|gate	9588	OK				
+蒸發	n,v			cow-multi;p3	medium	p3|gate	9228	OK				
+被困	v		passive	prefix-passive;p3;heuristic	high	p3|gate	18547	OK				
+被騙	v		passive	prefix-passive;p3;heuristic	high	p3|gate	14154	OK				
+諮詢服務	n			len4-noun-heuristic;p3	high	p3|gate	18745	OK				
+諮詢機構	n			len4-noun-heuristic;p3	high	p3|gate	19728	OK				
+購物	n,v			cow-multi;p3	medium	p3|gate	11568	OK				
+趕住	v			verb-suffix;p3;heuristic	high	p3|gate	6343	OK				
+遵守	n,v			cow-multi;p3	medium	p3|gate	15029	BAD	v			只係動；n 假陽會毒同名詞閘
+部分地區	n			len4-noun-heuristic;p3	high	p3|gate	16703	OK				
+醫療機構	n			len4-noun-heuristic;p3	high	p3|gate	13192	OK				
+關鍵技術	n			len4-noun-heuristic;p3	high	p3|gate	19680	OK				
