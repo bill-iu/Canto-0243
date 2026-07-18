@@ -1,5 +1,5 @@
 {
-  "version": "0.1.6",
+  "version": "0.1.7",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -25,10 +25,8 @@
     "coverage": 1.0,
     "gate_coverage": 0.147,
     "complete": true,
-    "undetermined_only": 2603,
-    "closeout": true,
-    "top100_gate_pct": 1.0,
-    "rank101_500_gate_pct": 0.6425
+    "gate_quality_pass": true,
+    "closeout": true
   },
   "p1_audit": {
     "seed": 20260718,
@@ -98,5 +96,29 @@
     },
     "true_nv_promoted": 180,
     "cow_nv_left": 552
+  },
+  "p1_gate_quality": {
+    "pass": true,
+    "threshold": 0.9,
+    "universe": "p1_mother_body ∩ gate_pos",
+    "formula": "min(n, max(50, ceil(n*0.05)))",
+    "rounds": [
+      {
+        "round": 1,
+        "seed": 20260719,
+        "sample_n": 50,
+        "ok_rate": 0.92,
+        "pass": true
+      },
+      {
+        "round": 2,
+        "seed": 202607192,
+        "sample_n": 50,
+        "ok_rate": 0.92,
+        "pass": true
+      }
+    ],
+    "fixes_applied_total": 8,
+    "report": "data/pos/audit/p1_gate_quality_report.md"
   }
 }

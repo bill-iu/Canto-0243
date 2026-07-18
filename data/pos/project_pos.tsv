@@ -2232,7 +2232,7 @@ literal	pos	family	voice	note
 僧多粥少	u			no-source;fallback
 僵屍網絡	n			len4-noun-heuristic
 僵硬	u			no-source;fallback
-價值	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+價值	n			cow-nv-unreviewed;trust-low;p1-close;true-nv;review;p1-audit;review;只係名；v 假陽會毒同動詞閘
 價值判斷	u			no-source;fallback
 價值工程	n			len4-noun-heuristic
 價值形式	u			no-source;fallback
@@ -3307,7 +3307,7 @@ literal	pos	family	voice	note
 包容	u			no-source;fallback
 包庇	u			no-source;fallback
 包打天下	u			no-source;fallback
-包括	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
+包括	v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review;p1-audit;review;只係動；n 假陽會毒同名詞閘
 包治百病	u			no-source;fallback
 包產到户	u			no-source;fallback
 包皮環切	u			no-source;fallback
@@ -4126,7 +4126,7 @@ literal	pos	family	voice	note
 呀	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 呃	u			no-source;fallback
 呃人	u			no-source;fallback
-呆	a,v			cow-multi
+呆	a			cow-multi;p1-audit;review;stative 形；v 假陽會毒同動詞閘
 呆板	u			no-source;fallback
 呆若木雞	u			no-source;fallback
 呈現	n,v			cow-nv-unreviewed;trust-low
@@ -10787,7 +10787,7 @@ literal	pos	family	voice	note
 止血	v			cow-single
 止跌回升	u			no-source;fallback
 止跌回穩	u			no-source;fallback
-正	a,r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
+正	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review;p1-audit;review;形＋副常見（好正／正係）；x 假陽會毒同虛詞閘
 正三角形	n			cow-single
 正中	u			no-source;fallback
 正中下懷	u			no-source;fallback
@@ -11805,7 +11805,7 @@ literal	pos	family	voice	note
 滿山遍野	u			no-source;fallback
 滿座	u			no-source;fallback
 滿心歡喜	u			no-source;fallback
-滿意	a,n			cow-multi;p1
+滿意	a			cow-multi;p1;p1-audit;review;stative 形；n 假陽會毒同名詞閘
 滿打滿算	u			no-source;fallback
 滿漢全席	u			no-source;fallback
 滿盤皆輸	u			no-source;fallback
@@ -13320,9 +13320,9 @@ literal	pos	family	voice	note
 直選	u			no-source;fallback
 直銷	u			no-source;fallback
 直頭	u			no-source;fallback
-相	a,n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
+相	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review;p1-audit;review;自由詞主要係名「相／影相」；a/v 假陽會毒同形／動詞閘
 相似	n,v			cow-nv-unreviewed;trust-low
-相信	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review
+相信	v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review;p1-audit;review;只係動；n 假陽會毒同名詞閘
 相反	n			cow-single
 相同	n			cow-single
 相夫教子	u			no-source;fallback
@@ -16156,7 +16156,7 @@ literal	pos	family	voice	note
 袖手旁觀	v			cow-single
 被	x			heuristic
 被上訴人	v		passive	prefix-passive;heuristic
-被人	v		passive	prefix-passive;p1;heuristic
+被人	x		passive	prefix-passive;p1;heuristic;p1-audit;review;被+人施事短語／被動標記，非獨立動
 被動	v		passive	prefix-passive;heuristic
 被動免疫	n			cow-single
 被告人	v		passive	prefix-passive;heuristic

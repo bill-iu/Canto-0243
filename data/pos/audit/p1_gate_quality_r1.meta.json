@@ -1,0 +1,8 @@
+{
+  "round": 1,
+  "universe": 735,
+  "sample_n": 50,
+  "seed": 20260719,
+  "out": "data\\pos\\audit\\p1_gate_quality_r1.tsv",
+  "threshold": 0.9
+}

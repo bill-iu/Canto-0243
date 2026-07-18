@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一刻	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	380	OK				
+下下	r,x			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	p1|gate	3289	OK				
+下身	n			no-source;fallback;p1-audit;review;身體部位，名詞	high	p1|gate	2457	OK				
+不敢	v			no-source;fallback;p1-audit;review;情態動詞短語	high	p1|gate	3843	OK				
+之	x			heuristic	high	p1|gate	476	OK				
+之前	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	228	OK				
+亦	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	148	OK				
+以	x			heuristic	high	p1|gate	468	OK				
+係咪	v,x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	159	OK				
+值得	v			cow-multi;p1-audit;review;只係動（值得+VP），非名；n 會毒同名詞閘	high	p1|gate	1782	OK				
+做	v			cow-single;p1-cleanup;canto-heuristic;review	high	p1|gate	45	OK				
+做好	v			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review	high	p1|gate	2278	OK				
+到手	v			no-source;fallback;p1-audit;review;得到	high	p1|gate	3393	OK				
+可	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	334	OK				
+叻	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	415	OK				
+呆	a,v			cow-multi	medium	p1|gate	555	BAD	a			stative 形；v 假陽會毒同動詞閘
+啱	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	266	OK				
+多謝	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	366	OK				
+失戀	v			no-source;fallback;p1-audit;review;失去戀愛	high	p1|gate	4011	OK				
+小貞	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	372	OK				
+希望	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	349	OK				
+幾好	a			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；形「幾好」，stative留a	high	p1|gate	1096	OK				
+忙	a,n			cow-multi	medium	p1|gate	1652	OK				
+情願	a,v			no-source;fallback;p1-audit;review;寧願／甘願	high	p1|gate	4709	OK				
+成爲	v			no-source;fallback;p1-audit;review;成為	high	p1|gate	427	OK				
+或	x			heuristic	high	p1|gate	1553	OK				
+所	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	361	OK				
+把	v,x			heuristic	high	p1|gate	218	OK				
+拖住	v			verb-suffix;p1;heuristic	high	p1|gate	2186	OK				
+搣	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	413	OK				
+支持	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1504	OK				
+放棄	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1149	OK				
+晒	v,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	206	OK				
+正	a,r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	406	BAD	a,r			形＋副常見（好正／正係）；x 假陽會毒同虛詞閘
+淺	a			no-source;p1;fallback;p1-audit;review;不深	high	p1|gate	3118	OK				
+由	x			heuristic	high	p1|gate	220	OK				
+留	v			seed	high	p1|gate	859	OK				
+的確	r			no-source;fallback;p1-audit;review;確實	high	p1|gate	1003	OK				
+相	a,n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	449	BAD	n			自由詞主要係名「相／影相」；a/v 假陽會毒同形／動詞閘
+相信	n,v			cow-nv-unreviewed;p1;trust-low;p1-close;true-nv;review	high	p1|gate	530	BAD	v			只係動；n 假陽會毒同名詞閘
+萬	x			numeral;heuristic	high	p1|gate	2494	OK				
+誒	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	457	OK				
+謙謙	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	473	OK				
+身上	n			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	p1|gate	1041	OK				
+進步	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2967	OK				
+道歉	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2025	OK				
+選擇	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	806	OK				
+邊度	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	147	OK				
+阿南	n			no-source;p1;fallback;p1-audit;review;專名	high	p1|gate	1232	OK				
+電話	n			cow-multi;p1-audit;review;名；口語動邊緣，v 會毒同動詞閘	high	p1|gate	196	OK				

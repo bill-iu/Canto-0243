@@ -124,6 +124,22 @@ def test_p1_closeout_metrics() -> None:
     assert meta.get("p1", {}).get("closeout") is True
 
 
+def test_p1_gate_quality_pass() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta
+
+    meta = load_meta()
+    gq = meta.get("p1_gate_quality") or {}
+    assert gq.get("pass") is True
+    assert gq.get("threshold") == 0.90
+    rounds = gq.get("rounds") or []
+    assert len(rounds) >= 2
+    assert all(r.get("ok_rate", 0) > 0.90 for r in rounds)
+    assert meta.get("p1", {}).get("gate_quality_pass") is True
+    assert Path("data/pos/audit/p1_gate_quality_report.md").is_file()
+
+
 def test_p1_audit_artifacts() -> None:
     from pathlib import Path
 
@@ -183,6 +199,7 @@ def main() -> None:
     test_p1_essay_top_k_complete()
     test_p1_audit_artifacts()
     test_p1_closeout_metrics()
+    test_p1_gate_quality_pass()
     test_trust_tiers()
     print("test_project_pos: ok")
 
