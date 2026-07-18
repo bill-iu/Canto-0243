@@ -4,7 +4,8 @@
 **對象專案**：ICE-U-code/Canto-0243（離線粵語填詞查韻；詞庫字面＋粵拼＋0243；近反義另線）  
 **主要 URL**：[https://github.com/daimaruhk/Cantonese.md](https://github.com/daimaruhk/Cantonese.md)  
 **線上站**：[https://cantonese.md/](https://cantonese.md/)  
-**評估軸**：**唔限近反義** — 主問係「詞庫未擁有字面」是否夠多而值得引入字面＋粵拼。
+**評估軸**：**唔限近反義** — 主問係「詞庫未擁有字面」是否夠多而值得引入字面＋粵拼。  
+**落地狀態（2026-07-18）**：**P2 raw 已入倉**（`data/lexicon/raw/cantonese_md/` + `sources.yaml`）；**全量 `build-db` 刻意未跑**（等句格工作台 ready 後一次 rebuild 再生效）。
 
 **結論摘要**：
 
@@ -188,12 +189,26 @@ extract (term, termJyutping), (answer, answerJyutping)
 
 ---
 
-## 8. 建議下一步
+## 8. 落地與下一步
 
-1. 維護者確認：**是否做 P2**（缺字面 → 詞庫源）。  
-2. 若做：pin 上游 commit、寫 extract 腳本、NOTICE、`sources.yaml`、rebuild 抽樣校粵拼。  
-3. 可選：匯出 29 條 missing_reading 作勘誤草稿。  
-4. 重跑差分：`PYTHONIOENCODING=utf-8 python scripts/research/cantonese_md_membership.py`
+**已做（P2 raw，無 rebuild）**
+
+| 項 | 路徑 |
+|----|------|
+| 缺字面 JSON | `data/lexicon/raw/cantonese_md/lexicon.json`（~195 列） |
+| 抽取 meta | `data/lexicon/raw/cantonese_md/manifest.json` |
+| 刷新腳本 | `python scripts/fetch/fetch_cantonese_md_lexicon.py` |
+| SSOT | `data/lexicon/sources.yaml` → `id: cantonese_md`（`enabled_by_default: true`，`source_rank: 4`） |
+| NOTICE | `THIRD_PARTY_NOTICES.md`（CC0） |
+| smoke | `tests/smoke/test_cantonese_md_lexicon_source.py` |
+
+**未做（刻意）**：`python -m ingest build-db` — 等句格工作台 ready 後一次過 rebuild，届時 `lyrics.db` 先見新字面。
+
+**可選之後**
+
+1. Rebuild 後重跑 membership 差分確認缺口收斂。  
+2. 29 條 missing_reading → 勘誤草稿。  
+3. 上游有新歇後語時重跑 fetch（對當時 `lyrics.db` 再濾缺字面）。
 
 ---
 

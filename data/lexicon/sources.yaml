@@ -60,6 +60,17 @@ sources:
     source_rank: 5
     attribution: elkmovie/hsk30 wordlist.txt
 
+  # 歇後語 term/answer 缺字面補丁（CC0）；全量 rebuild 時再生效
+  - id: cantonese_md
+    type: lexicon_json
+    parser: lexicon_json
+    license: CC0-1.0
+    enabled_by_default: true
+    local_only: false
+    raw_path: data/lexicon/raw/cantonese_md/lexicon.json
+    source_rank: 4
+    attribution: daimaruhk/Cantonese.md (src/contents/; CC0)
+
   - id: rime_phrase
     type: rime_dict
     parser: rime_phrase_yaml
