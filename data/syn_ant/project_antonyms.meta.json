@@ -8918,8 +8918,8 @@
       ]
     },
     "post-syn-ant-ring5k10k-b05-20260718": {
-      "k": 99,
-      "git_commit": "0000000000000000000000000000000000000000",
+      "k": 90,
+      "git_commit": "a5efa8b4c36fbc2f1c3a5476de5e9fc9b76d5ba5",
       "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
       "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
       "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
@@ -8944,26 +8944,14 @@
       "ok_rate_threshold": 0.9,
       "ok_rate": 1.0,
       "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b05-20260718 parent N=163",
-      "sample_parent_n": 163,
-      "sample_parent_commit": "0000000000000000000000000000000000000000",
-      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_parent_n": 154,
+      "sample_parent_commit": "a5efa8b4c36fbc2f1c3a5476de5e9fc9b76d5ba5",
+      "sample_parent_tsv_sha256": "3a7322d5b0e6bc3c0cdd4396e2e72c386a61c04aa78393fa4079b2cd3a86359d",
       "removed_sample_fails": [],
       "sample_verdicts": [
         {
           "head": "冰凍",
-          "tail": "融化",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "冰凍",
           "tail": "解凍",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "前者",
-          "tail": "後者",
           "verdict": "ok",
           "reasons": []
         },
@@ -8980,50 +8968,20 @@
           "reasons": []
         },
         {
-          "head": "午後",
-          "tail": "凌晨",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "午後",
-          "tail": "清晨",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
           "head": "受驚",
           "tail": "冷靜",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "叮囑",
-          "tail": "沉默",
+          "head": "受驚",
+          "tail": "鎮定",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "吶喊",
-          "tail": "沉默",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "回升",
-          "tail": "下跌",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "塗抹",
-          "tail": "擦掉",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "塗抹",
-          "tail": "清除",
+          "tail": "靜默",
           "verdict": "ok",
           "reasons": []
         },
@@ -9040,14 +8998,14 @@
           "reasons": []
         },
         {
-          "head": "威嚴",
-          "tail": "輕浮",
+          "head": "大選",
+          "tail": "落選",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "對得住",
-          "tail": "對不起",
+          "head": "奉獻",
+          "tail": "索取",
           "verdict": "ok",
           "reasons": []
         },
@@ -9058,26 +9016,38 @@
           "reasons": []
         },
         {
-          "head": "復出",
-          "tail": "引退",
+          "head": "年少",
+          "tail": "年邁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年少",
+          "tail": "年長",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "強有力",
+          "tail": "無力",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "從沒",
+          "tail": "常常",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "復出",
-          "tail": "隱退",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "怨氣",
-          "tail": "喜氣",
+          "tail": "退役",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "恐嚇",
-          "tail": "安撫",
+          "tail": "撫慰",
           "verdict": "ok",
           "reasons": []
         },
@@ -9088,26 +9058,38 @@
           "reasons": []
         },
         {
-          "head": "慰藉",
-          "tail": "折磨",
+          "head": "悄悄",
+          "tail": "高聲",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "打消",
-          "tail": "堅持",
+          "head": "應酬",
+          "tail": "獨處",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "抓獲",
-          "tail": "放走",
+          "tail": "逃脱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "抓獲",
+          "tail": "釋放",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "拋開",
-          "tail": "緊握",
+          "tail": "抓緊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "指出",
+          "tail": "隱瞞",
           "verdict": "ok",
           "reasons": []
         },
@@ -9118,92 +9100,86 @@
           "reasons": []
         },
         {
-          "head": "收服",
-          "tail": "對抗",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "散步",
-          "tail": "奔跑",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "治癒",
-          "tail": "惡化",
+          "head": "擅自",
+          "tail": "請示",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "泄漏",
-          "tail": "保密",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "流淌",
-          "tail": "凝結",
+          "tail": "密封",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "湧出",
-          "tail": "倒灌",
+          "tail": "吸入",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "滑落",
-          "tail": "攀升",
+          "head": "漂流",
+          "tail": "停泊",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "無意中",
-          "tail": "有意",
+          "head": "漂流",
+          "tail": "靠岸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "熱身",
+          "tail": "收工",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "當即",
-          "tail": "延後",
+          "tail": "遲緩",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "痛心",
-          "tail": "高興",
+          "tail": "欣慰",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "着實",
-          "tail": "虛假",
+          "tail": "假裝",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "着眼",
-          "tail": "忽視",
+          "head": "耀眼",
+          "tail": "暗淡",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "稍稍",
-          "tail": "大大",
+          "head": "耀眼",
+          "tail": "黯淡",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "終極",
-          "tail": "開始",
+          "head": "胡亂",
+          "tail": "認真",
           "verdict": "ok",
           "reasons": []
         },
         {
-          "head": "舉例",
-          "tail": "概括",
+          "head": "要緊",
+          "tail": "次要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "要緊",
+          "tail": "無關",
           "verdict": "ok",
           "reasons": []
         },
@@ -9214,26 +9190,20 @@
           "reasons": []
         },
         {
-          "head": "越發",
-          "tail": "減少",
+          "head": "鍾情",
+          "tail": "厭棄",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "鍾情",
-          "tail": "厭惡",
-          "verdict": "ok",
-          "reasons": []
-        },
-        {
-          "head": "鑑別",
-          "tail": "混淆",
+          "tail": "討厭",
           "verdict": "ok",
           "reasons": []
         },
         {
           "head": "開花",
-          "tail": "凋謝",
+          "tail": "落花",
           "verdict": "ok",
           "reasons": []
         },
@@ -9244,8 +9214,38 @@
           "reasons": []
         },
         {
+          "head": "關懷",
+          "tail": "漠視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "防備",
+          "tail": "疏忽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "餘下",
+          "tail": "耗盡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
           "head": "點火",
           "tail": "滅火",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "點火",
+          "tail": "熄滅",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "點火",
+          "tail": "熄火",
           "verdict": "ok",
           "reasons": []
         }
