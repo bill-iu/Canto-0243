@@ -11,7 +11,7 @@ class TestCantoneseMdLexiconSource(unittest.TestCase):
     def test_raw_json_ingests(self) -> None:
         from ingest.lexicon_sources import ingest_lexicon_json
 
-        path = ROOT / "data" / "lexicon" / "raw" / "cantonese_md" / "lexicon.json"
+        path = ROOT / "data" / "lexicon" / "cantonese_md_lexicon.json"
         self.assertTrue(path.is_file(), path)
         cands = ingest_lexicon_json(path, source_id="cantonese_md")
         self.assertGreaterEqual(len(cands), 150)

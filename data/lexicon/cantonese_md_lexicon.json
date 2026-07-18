@@ -1,0 +1,977 @@
+[
+  {
+    "char": "一味兜圈",
+    "jyutping": "jat1 mei2 dau1 hyun1",
+    "code": "3933"
+  },
+  {
+    "char": "一扯到口",
+    "jyutping": "jat1 ce2 dou3 hau2",
+    "code": "3949"
+  },
+  {
+    "char": "一眼睇曬",
+    "jyutping": "jat1 ngaan5 tai2 saai3",
+    "code": "3594"
+  },
+  {
+    "char": "一隻筷子食豆腐",
+    "jyutping": "jat1 zek3 faai3 zi2 sik6 dau6 fu6",
+    "code": "3449222"
+  },
+  {
+    "char": "一面灰",
+    "jyutping": "jat1 min6 fui1",
+    "code": "323"
+  },
+  {
+    "char": "三元宮土地",
+    "jyutping": "saam1 jyun4 gung1 tou2 dei6",
+    "code": "30392"
+  },
+  {
+    "char": "三日香",
+    "jyutping": "saam1 jat6 hoeng1",
+    "code": "323"
+  },
+  {
+    "char": "上山捉蟹",
+    "jyutping": "soeng5 saan1 zuk1 haai5",
+    "code": "5335"
+  },
+  {
+    "char": "上香打乞嚏",
+    "jyutping": "soeng5 hoeng1 daa2 hat1 ci1",
+    "code": "53933"
+  },
+  {
+    "char": "乾隆皇契仔",
+    "jyutping": "kin4 lung4 wong4 kai3 zai2",
+    "code": "00049"
+  },
+  {
+    "char": "亂咁散",
+    "jyutping": "lyun6 gam3 saan3",
+    "code": "244"
+  },
+  {
+    "char": "事鳩但",
+    "jyutping": "si6 gau1 daan6",
+    "code": "232"
+  },
+  {
+    "char": "二叔公割禾",
+    "jyutping": "ji6 suk1 gung1 got3 wo4",
+    "code": "23340"
+  },
+  {
+    "char": "二叔公煎糕",
+    "jyutping": "ji6 suk1 gung1 zin1 gou1",
+    "code": "23333"
+  },
+  {
+    "char": "亦得",
+    "jyutping": "jik6 dak1",
+    "code": "23"
+  },
+  {
+    "char": "人家嘅",
+    "jyutping": "jan4 gaa1 ge3",
+    "code": "034"
+  },
+  {
+    "char": "借水",
+    "jyutping": "ze3 seoi2",
+    "code": "49"
+  },
+  {
+    "char": "假嘢",
+    "jyutping": "gaa2 je5",
+    "code": "95"
+  },
+  {
+    "char": "假晶",
+    "jyutping": "gaa2 zing1",
+    "code": "93"
+  },
+  {
+    "char": "假細心",
+    "jyutping": "gaa2 sai3 sam1",
+    "code": "943"
+  },
+  {
+    "char": "僅僅熟",
+    "jyutping": "gan2 gan2 suk6",
+    "code": "992"
+  },
+  {
+    "char": "兩邊擺",
+    "jyutping": "loeng5 bin1 baai2",
+    "code": "539"
+  },
+  {
+    "char": "兩頭瀄",
+    "jyutping": "loeng5 tau4 zit1",
+    "code": "503"
+  },
+  {
+    "char": "冇指望",
+    "jyutping": "mou5 zi2 mong6",
+    "code": "592"
+  },
+  {
+    "char": "冇撚得救",
+    "jyutping": "mou5 laan2 dak1 gau3",
+    "code": "5934"
+  },
+  {
+    "char": "冇撚得頂",
+    "jyutping": "mou5 laan2 dak1 ding2",
+    "code": "5939"
+  },
+  {
+    "char": "冇曬火氣",
+    "jyutping": "mou5 saai3 fo2 hei3",
+    "code": "5494"
+  },
+  {
+    "char": "冇曬聲",
+    "jyutping": "mou5 saai3 seng1",
+    "code": "543"
+  },
+  {
+    "char": "冇檳榔嚼唔出汁",
+    "jyutping": "mou5 ban1 long4 zoek3 m4 ceot1 zap1",
+    "code": "5304033"
+  },
+  {
+    "char": "冇漏罅",
+    "jyutping": "mou5 lau6 laa3",
+    "code": "524"
+  },
+  {
+    "char": "冇炭",
+    "jyutping": "mou5 taan3",
+    "code": "54"
+  },
+  {
+    "char": "冇耳藤篋",
+    "jyutping": "mou5 ji5 tang4 gip1",
+    "code": "5503"
+  },
+  {
+    "char": "冇腸肚",
+    "jyutping": "mou5 coeng4 tou5",
+    "code": "505"
+  },
+  {
+    "char": "冇錢冇得傾",
+    "jyutping": "mou5 cin2 mou5 dak1 king1",
+    "code": "59533"
+  },
+  {
+    "char": "冰跌落醋酲",
+    "jyutping": "bing1 dit3 lok6 cou3 cing4",
+    "code": "34240"
+  },
+  {
+    "char": "冷巷擔竹竿",
+    "jyutping": "laang5 hong2 daam1 zuk1 gon1",
+    "code": "59333"
+  },
+  {
+    "char": "出又刮入又刮",
+    "jyutping": "ceot1 jau6 gwaat3 jap6 jau6 gwaat3",
+    "code": "324224"
+  },
+  {
+    "char": "包好",
+    "jyutping": "baau1 hou2",
+    "code": "39"
+  },
+  {
+    "char": "包穩陣",
+    "jyutping": "baau1 wan2 zan6",
+    "code": "392"
+  },
+  {
+    "char": "十二點半鐘",
+    "jyutping": "sap6 ji6 dim2 bun3 zung1",
+    "code": "22943"
+  },
+  {
+    "char": "十分渺茫",
+    "jyutping": "sap6 fan1 miu5 mong4",
+    "code": "2350"
+  },
+  {
+    "char": "十月蔗頭",
+    "jyutping": "sap6 jyut6 ze3 tau4",
+    "code": "2240"
+  },
+  {
+    "char": "南無佬跌落屎坑",
+    "jyutping": "naam4 mou4 lou2 dit3 lok6 si2 haang1",
+    "code": "0094293"
+  },
+  {
+    "char": "各有各躥",
+    "jyutping": "gok3 jau5 gok3 cyun1",
+    "code": "4543"
+  },
+  {
+    "char": "唔使盲摸摸",
+    "jyutping": "m4 sai2 maang4 mo2 mo2",
+    "code": "09099"
+  },
+  {
+    "char": "唔係人咁味",
+    "jyutping": "m4 hai6 jan4 gam3 mei6",
+    "code": "02042"
+  },
+  {
+    "char": "唔倒唔得",
+    "jyutping": "m4 dou2 m4 dak1",
+    "code": "0903"
+  },
+  {
+    "char": "唔值錢",
+    "jyutping": "m4 zik6 cin2",
+    "code": "029"
+  },
+  {
+    "char": "唔入疊",
+    "jyutping": "m4 jap6 dip6",
+    "code": "022"
+  },
+  {
+    "char": "唔咬線",
+    "jyutping": "m4 ngaau5 sin3",
+    "code": "054"
+  },
+  {
+    "char": "唔妙",
+    "jyutping": "m4 miu6",
+    "code": "02"
+  },
+  {
+    "char": "唔憂嫁",
+    "jyutping": "m4 jau1 gaa3",
+    "code": "034"
+  },
+  {
+    "char": "唔爆唔安樂",
+    "jyutping": "m4 baau3 m4 on1 lok6",
+    "code": "04032"
+  },
+  {
+    "char": "唔知花定草",
+    "jyutping": "m4 zi1 faa1 ding6 cou2",
+    "code": "03329"
+  },
+  {
+    "char": "唔知頭唔知尾",
+    "jyutping": "m4 zi1 tau4 m4 zi1 mei5",
+    "code": "030035"
+  },
+  {
+    "char": "唔聽你支死人笛",
+    "jyutping": "m4 teng1 nei5 zi1 sei2 jan4 dek6",
+    "code": "0353902"
+  },
+  {
+    "char": "唔見一橛",
+    "jyutping": "m4 gin3 jat1 gyut6",
+    "code": "0432"
+  },
+  {
+    "char": "唔識貨",
+    "jyutping": "m4 sik1 fo3",
+    "code": "034"
+  },
+  {
+    "char": "唔食羊肉一身羶",
+    "jyutping": "m4 sik6 joeng4 juk6 jat1 san1 zin1",
+    "code": "0202333"
+  },
+  {
+    "char": "問和尚借梳",
+    "jyutping": "man6 wo4 soeng2 ze3 so1",
+    "code": "20943"
+  },
+  {
+    "char": "單眼佬睇老婆",
+    "jyutping": "daan1 ngaan5 lou2 tai2 lou5 po4",
+    "code": "359950"
+  },
+  {
+    "char": "嘥鳩氣",
+    "jyutping": "saai1 gau1 hei3",
+    "code": "334"
+  },
+  {
+    "char": "嚇死人",
+    "jyutping": "haak3 sei2 jan4",
+    "code": "490"
+  },
+  {
+    "char": "土地燈籠",
+    "jyutping": "tou2 dei6 dang1 lung4",
+    "code": "9230"
+  },
+  {
+    "char": "執正嚟做",
+    "jyutping": "zap1 zeng3 lai4 zou6",
+    "code": "3402"
+  },
+  {
+    "char": "夜不收",
+    "jyutping": "je6 bat1 sau1",
+    "code": "233"
+  },
+  {
+    "char": "大姑娘做媒",
+    "jyutping": "daai6 gu1 noeng4 zou6 mui2",
+    "code": "23029"
+  },
+  {
+    "char": "大家累鬥累",
+    "jyutping": "daai6 gaa1 leoi6 dau3 leoi6",
+    "code": "23242"
+  },
+  {
+    "char": "大家都咁高",
+    "jyutping": "daai6 gaa1 dou1 gam3 gou1",
+    "code": "23343"
+  },
+  {
+    "char": "大極有限",
+    "jyutping": "daai6 gik6 jau5 haan6",
+    "code": "2252"
+  },
+  {
+    "char": "大汗耷細汗",
+    "jyutping": "daai6 hon4 dap3 sai3 hon4",
+    "code": "20440"
+  },
+  {
+    "char": "大肚婆行鋼線",
+    "jyutping": "daai6 tou5 po2 haang4 gong3 sin3",
+    "code": "259044"
+  },
+  {
+    "char": "大花臉抹眼淚",
+    "jyutping": "daai6 faa1 lim5 maat3 ngaan5 leoi6",
+    "code": "235452"
+  },
+  {
+    "char": "奶媽湊仔",
+    "jyutping": "naai5 maa1 cau3 zai2",
+    "code": "5349"
+  },
+  {
+    "char": "好瘀",
+    "jyutping": "hou2 jyu1",
+    "code": "93"
+  },
+  {
+    "char": "好齋",
+    "jyutping": "hou2 zaai1",
+    "code": "93"
+  },
+  {
+    "char": "就係屎",
+    "jyutping": "zau6 hai6 si2",
+    "code": "229"
+  },
+  {
+    "char": "屎坑三姑",
+    "jyutping": "si2 haang1 saam1 gu1",
+    "code": "9333"
+  },
+  {
+    "char": "屎坑石頭",
+    "jyutping": "si2 haang1 sek6 tau4",
+    "code": "9320"
+  },
+  {
+    "char": "屎忽窿生瘡",
+    "jyutping": "si2 fat1 lung1 saang1 cong1",
+    "code": "93333"
+  },
+  {
+    "char": "屙尿入盅",
+    "jyutping": "o1 niu6 jap6 zung1",
+    "code": "3223"
+  },
+  {
+    "char": "屙尿射竹筒",
+    "jyutping": "o1 niu6 se6 zuk1 tung2",
+    "code": "32239"
+  },
+  {
+    "char": "市橋蠟燭",
+    "jyutping": "si5 kiu4 laap6 zuk1",
+    "code": "5023"
+  },
+  {
+    "char": "年三十晚謝灶",
+    "jyutping": "nin4 saam1 sap6 maan5 ze6 zou3",
+    "code": "032524"
+  },
+  {
+    "char": "年晚煎堆",
+    "jyutping": "nin4 maan5 zin1 deoi1",
+    "code": "0533"
+  },
+  {
+    "char": "度人昇仙",
+    "jyutping": "dou6 jan4 sing1 sin1",
+    "code": "2033"
+  },
+  {
+    "char": "廣東涼茶",
+    "jyutping": "gwong2 dung1 loeng4 caa4",
+    "code": "9300"
+  },
+  {
+    "char": "引死人",
+    "jyutping": "jan5 sei2 jan4",
+    "code": "590"
+  },
+  {
+    "char": "得把嘴硬",
+    "jyutping": "dak1 baa2 zeoi2 ngaang6",
+    "code": "3992"
+  },
+  {
+    "char": "急死鬼",
+    "jyutping": "gap1 sei2 gwai2",
+    "code": "399"
+  },
+  {
+    "char": "悶極",
+    "jyutping": "mun6 gik6",
+    "code": "22"
+  },
+  {
+    "char": "投石落屎坑",
+    "jyutping": "tau4 sek6 lok6 si2 haang1",
+    "code": "02293"
+  },
+  {
+    "char": "抬棺材甩褲",
+    "jyutping": "toi4 gun1 coi4 lat1 fu3",
+    "code": "03034"
+  },
+  {
+    "char": "挺而走險",
+    "jyutping": "ting5 ji4 zau2 him2",
+    "code": "5099"
+  },
+  {
+    "char": "揾軟嘅嚟蝦",
+    "jyutping": "wan2 jyun5 ge3 lai4 haa1",
+    "code": "95403"
+  },
+  {
+    "char": "揾鬼做",
+    "jyutping": "wan2 gwai2 zou6",
+    "code": "992"
+  },
+  {
+    "char": "搞爛曬",
+    "jyutping": "gaau2 laan6 saai3",
+    "code": "924"
+  },
+  {
+    "char": "文又唔得武又唔得",
+    "jyutping": "man4 jau6 m4 dak1 mou5 jau6 m4 dak1",
+    "code": "02035203"
+  },
+  {
+    "char": "早知燈係火",
+    "jyutping": "zou2 zi1 dang1 hai6 fo2",
+    "code": "93329"
+  },
+  {
+    "char": "暗中走人",
+    "jyutping": "am3 zung1 zau2 jan4",
+    "code": "4390"
+  },
+  {
+    "char": "曬菲林",
+    "jyutping": "saai3 fei1 lam2",
+    "code": "439"
+  },
+  {
+    "char": "有兩個錢就當當響",
+    "jyutping": "jau5 loeng5 go3 cin2 zau6 dong1 dong1 hoeng2",
+    "code": "55492339"
+  },
+  {
+    "char": "有去冇回",
+    "jyutping": "jau5 heoi3 mou5 wui4",
+    "code": "5450"
+  },
+  {
+    "char": "有條路",
+    "jyutping": "jau5 tiu4 lou6",
+    "code": "502"
+  },
+  {
+    "char": "有苦自己知",
+    "jyutping": "jau5 fu2 zi6 gei2 zi1",
+    "code": "59293"
+  },
+  {
+    "char": "望下截",
+    "jyutping": "mong6 haa6 zit6",
+    "code": "222"
+  },
+  {
+    "char": "未夠斤兩",
+    "jyutping": "mei6 gau3 gan1 loeng5",
+    "code": "2435"
+  },
+  {
+    "char": "棺材鋪拜神",
+    "jyutping": "gun1 coi4 pou3 baai3 san4",
+    "code": "30440"
+  },
+  {
+    "char": "死扭",
+    "jyutping": "sei2 nau2",
+    "code": "99"
+  },
+  {
+    "char": "水浸塔頂",
+    "jyutping": "seoi2 zam3 taap3 ding2",
+    "code": "9449"
+  },
+  {
+    "char": "水盡先見",
+    "jyutping": "seoi2 zeon6 sin1 gin3",
+    "code": "9234"
+  },
+  {
+    "char": "油嘴滑舌",
+    "jyutping": "jau4 zeoi2 waat6 sit3",
+    "code": "0924"
+  },
+  {
+    "char": "漏洞百出",
+    "jyutping": "lau6 dung6 baak3 ceot1",
+    "code": "2243"
+  },
+  {
+    "char": "火燒城隍廟",
+    "jyutping": "fo2 siu1 sing4 wong4 miu2",
+    "code": "93009"
+  },
+  {
+    "char": "火燒旗杆",
+    "jyutping": "fo2 siu1 kei4 gon1",
+    "code": "9303"
+  },
+  {
+    "char": "火燒燈芯",
+    "jyutping": "fo2 siu1 dang1 sam1",
+    "code": "9333"
+  },
+  {
+    "char": "火燒石灰船",
+    "jyutping": "fo2 siu1 sek6 fui1 syun4",
+    "code": "93230"
+  },
+  {
+    "char": "無恥下流",
+    "jyutping": "mou4 ci2 haa6 lau4",
+    "code": "0920"
+  },
+  {
+    "char": "無端受牽連",
+    "jyutping": "mou4 dyun1 sau6 hin1 lin4",
+    "code": "03230"
+  },
+  {
+    "char": "無耳茶壺",
+    "jyutping": "mou4 ji5 caa4 wu2",
+    "code": "0509"
+  },
+  {
+    "char": "照遠唔照近",
+    "jyutping": "ziu3 jyun5 m4 ziu3 gan6",
+    "code": "45042"
+  },
+  {
+    "char": "燒雲",
+    "jyutping": "siu1 wan4",
+    "code": "30"
+  },
+  {
+    "char": "狗咬賊仔",
+    "jyutping": "gau2 ngaau5 caak6 zai2",
+    "code": "9529"
+  },
+  {
+    "char": "珠璣路尾",
+    "jyutping": "zyu1 gei1 lou6 mei5",
+    "code": "3325"
+  },
+  {
+    "char": "璺到篤",
+    "jyutping": "man6 dou3 duk1",
+    "code": "243"
+  },
+  {
+    "char": "瓦荷包",
+    "jyutping": "ngaa5 ho4 baau1",
+    "code": "503"
+  },
+  {
+    "char": "瓦風嶺",
+    "jyutping": "ngaa5 fung1 ling5",
+    "code": "535"
+  },
+  {
+    "char": "甩柄士巴拿",
+    "jyutping": "lat1 beng3 si6 baa1 naa2",
+    "code": "34239"
+  },
+  {
+    "char": "甩頭筆",
+    "jyutping": "lat1 tau4 bat1",
+    "code": "303"
+  },
+  {
+    "char": "由頭甜到尾",
+    "jyutping": "jau4 tau4 tim4 dou3 mei5",
+    "code": "00045"
+  },
+  {
+    "char": "畀雞啄",
+    "jyutping": "bei2 gai1 doek3",
+    "code": "934"
+  },
+  {
+    "char": "番鬼佬睇榜",
+    "jyutping": "faan1 gwai2 lou2 tai2 bong2",
+    "code": "39999"
+  },
+  {
+    "char": "番鬼婆大肚",
+    "jyutping": "faan1 gwai2 po2 daai6 tou5",
+    "code": "39925"
+  },
+  {
+    "char": "白行",
+    "jyutping": "baak6 haang4",
+    "code": "20"
+  },
+  {
+    "char": "白費工夫",
+    "jyutping": "baak6 fai3 gung1 fu1",
+    "code": "2433"
+  },
+  {
+    "char": "皮鞋筋",
+    "jyutping": "pei4 haai4 gan1",
+    "code": "003"
+  },
+  {
+    "char": "盲公開眼",
+    "jyutping": "maang4 gung1 hoi1 ngaan5",
+    "code": "0335"
+  },
+  {
+    "char": "睇錢份上",
+    "jyutping": "tai2 cin2 fan6 soeng6",
+    "code": "9922"
+  },
+  {
+    "char": "石地堂對鐵掃把",
+    "jyutping": "sek6 dei6 tong4 deoi3 tit3 sou3 baa2",
+    "code": "2204449"
+  },
+  {
+    "char": "石灣公仔",
+    "jyutping": "sek6 waan1 gung1 zai2",
+    "code": "2339"
+  },
+  {
+    "char": "石灰鋪路",
+    "jyutping": "sek6 fui1 pou1 lou6",
+    "code": "2332"
+  },
+  {
+    "char": "神仙放屁",
+    "jyutping": "san4 sin1 fong3 pei3",
+    "code": "0344"
+  },
+  {
+    "char": "神仙過鐵橋",
+    "jyutping": "san4 sin1 gwo3 tit3 kiu4",
+    "code": "03440"
+  },
+  {
+    "char": "筲箕兜水",
+    "jyutping": "saau1 gei1 dau1 seoi2",
+    "code": "3339"
+  },
+  {
+    "char": "算鳩數",
+    "jyutping": "syun3 gau1 sou3",
+    "code": "434"
+  },
+  {
+    "char": "細佬哥剃頭",
+    "jyutping": "sai3 lou2 go1 tai3 tau4",
+    "code": "49340"
+  },
+  {
+    "char": "細佬哥玩泥沙",
+    "jyutping": "sai3 lou2 go1 waan2 nai4 saa1",
+    "code": "493903"
+  },
+  {
+    "char": "老公荷包",
+    "jyutping": "lou5 gung1 ho4 baau1",
+    "code": "5303"
+  },
+  {
+    "char": "老火炆鴨",
+    "jyutping": "lou5 fo2 man1 aap3",
+    "code": "5934"
+  },
+  {
+    "char": "聽打",
+    "jyutping": "teng1 daa2",
+    "code": "39"
+  },
+  {
+    "char": "肥佬着笠衫",
+    "jyutping": "fei4 lou2 zoek3 lap1 saam1",
+    "code": "09433"
+  },
+  {
+    "char": "肥婆坐屎塔",
+    "jyutping": "fei4 po4 co5 si2 taap3",
+    "code": "00594"
+  },
+  {
+    "char": "花樣隨時變",
+    "jyutping": "faa1 joeng6 ceoi4 si4 bin3",
+    "code": "32004"
+  },
+  {
+    "char": "落雨擔遮",
+    "jyutping": "lok6 jyu5 daam1 ze1",
+    "code": "2533"
+  },
+  {
+    "char": "裁縫度身",
+    "jyutping": "coi4 fung4 dok6 san1",
+    "code": "0023"
+  },
+  {
+    "char": "試過先知",
+    "jyutping": "si3 gwo3 sin1 zi1",
+    "code": "4433"
+  },
+  {
+    "char": "講人唔講自己",
+    "jyutping": "gong2 jan4 m4 gong2 zi6 gei2",
+    "code": "900929"
+  },
+  {
+    "char": "護照照片",
+    "jyutping": "wu6 ziu3 ziu3 pin2",
+    "code": "2449"
+  },
+  {
+    "char": "貓咪洗面",
+    "jyutping": "maau1 mi1 sai2 min6",
+    "code": "3392"
+  },
+  {
+    "char": "財散人安樂",
+    "jyutping": "coi4 saan3 jan4 on1 lok6",
+    "code": "04032"
+  },
+  {
+    "char": "賣魚佬沖涼",
+    "jyutping": "maai6 jyu4 lou2 cung1 loeng4",
+    "code": "20930"
+  },
+  {
+    "char": "走仁",
+    "jyutping": "zau2 jan4",
+    "code": "90"
+  },
+  {
+    "char": "越叫越走",
+    "jyutping": "jyut6 giu3 jyut6 zau2",
+    "code": "2429"
+  },
+  {
+    "char": "越細越辣",
+    "jyutping": "jyut6 sai3 jyut6 laat6",
+    "code": "2422"
+  },
+  {
+    "char": "跑馬射蚊髭",
+    "jyutping": "paau2 maa5 se6 man1 zi1",
+    "code": "95233"
+  },
+  {
+    "char": "逢賭必啱",
+    "jyutping": "fung4 dou2 bit1 ngaam1",
+    "code": "0933"
+  },
+  {
+    "char": "週日清",
+    "jyutping": "zau1 jat6 cing1",
+    "code": "323"
+  },
+  {
+    "char": "酸得厲害",
+    "jyutping": "syun1 dak1 lei6 hoi6",
+    "code": "3322"
+  },
+  {
+    "char": "長嘆",
+    "jyutping": "coeng4 taan3",
+    "code": "04"
+  },
+  {
+    "char": "閉眼射靶",
+    "jyutping": "bai3 ngaan5 se6 baa2",
+    "code": "4529"
+  },
+  {
+    "char": "閻羅王探病",
+    "jyutping": "jim4 lo4 wong4 taam3 beng6",
+    "code": "00042"
+  },
+  {
+    "char": "閻羅王請人",
+    "jyutping": "jim4 lo4 wong4 ceng2 jan4",
+    "code": "00090"
+  },
+  {
+    "char": "閻羅王開攤",
+    "jyutping": "jim4 lo4 wong4 hoi1 taan1",
+    "code": "00033"
+  },
+  {
+    "char": "阿婆食粥",
+    "jyutping": "aa3 po4 sik6 zuk1",
+    "code": "4023"
+  },
+  {
+    "char": "阿蘭嫁阿瑞",
+    "jyutping": "aa3 laan4 gaa3 aa3 seoi6",
+    "code": "40442"
+  },
+  {
+    "char": "阿超著褲",
+    "jyutping": "aa3 ciu1 zoek3 fu3",
+    "code": "4344"
+  },
+  {
+    "char": "陸雲庭睇相",
+    "jyutping": "luk6 wan4 ting4 tai2 soeng3",
+    "code": "20094"
+  },
+  {
+    "char": "隔夜痰罐",
+    "jyutping": "gaak3 je6 taam4 gun3",
+    "code": "4204"
+  },
+  {
+    "char": "隔年通勝",
+    "jyutping": "gaak3 nin4 tung1 sing3",
+    "code": "4034"
+  },
+  {
+    "char": "隻掕隻",
+    "jyutping": "zek3 lang3 zek3",
+    "code": "444"
+  },
+  {
+    "char": "離行離列",
+    "jyutping": "lei4 hong4 lei4 laat6",
+    "code": "0002"
+  },
+  {
+    "char": "難之又難",
+    "jyutping": "naan4 zi1 jau6 naan4",
+    "code": "0320"
+  },
+  {
+    "char": "難啃",
+    "jyutping": "naan4 kang2",
+    "code": "09"
+  },
+  {
+    "char": "雷公劈豆腐",
+    "jyutping": "leoi4 gung1 pek3 dau6 fu6",
+    "code": "03422"
+  },
+  {
+    "char": "電死人",
+    "jyutping": "din6 sei2 jan4",
+    "code": "290"
+  },
+  {
+    "char": "靠託",
+    "jyutping": "kaau3 tok3",
+    "code": "44"
+  },
+  {
+    "char": "預輸數",
+    "jyutping": "jyu6 syu1 sou3",
+    "code": "234"
+  },
+  {
+    "char": "飛機打交",
+    "jyutping": "fei1 gei1 daa2 gaau1",
+    "code": "3393"
+  },
+  {
+    "char": "飛機火燭",
+    "jyutping": "fei1 gei1 fo2 zuk1",
+    "code": "3393"
+  },
+  {
+    "char": "飛機運茶壺",
+    "jyutping": "fei1 gei1 wan6 caa4 wu2",
+    "code": "33209"
+  },
+  {
+    "char": "食咗成擔蒜頭",
+    "jyutping": "sik6 zo2 sing4 daam3 syun3 tau4",
+    "code": "290440"
+  },
+  {
+    "char": "香蕉樹影",
+    "jyutping": "hoeng1 ziu1 syu6 jing2",
+    "code": "3329"
+  },
+  {
+    "char": "馬騮臭狐",
+    "jyutping": "maa5 lau1 cau3 wu4",
+    "code": "5340"
+  },
+  {
+    "char": "麻鳩煩",
+    "jyutping": "maa4 gau1 faan4",
+    "code": "030"
+  },
+  {
+    "char": "鼎湖上素",
+    "jyutping": "ding2 wu4 soeng6 sou3",
+    "code": "9024"
+  }
+]

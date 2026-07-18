@@ -67,7 +67,7 @@ sources:
     license: CC0-1.0
     enabled_by_default: true
     local_only: false
-    raw_path: data/lexicon/raw/cantonese_md/lexicon.json
+    raw_path: data/lexicon/cantonese_md_lexicon.json
     source_rank: 4
     attribution: daimaruhk/Cantonese.md (src/contents/; CC0)
 

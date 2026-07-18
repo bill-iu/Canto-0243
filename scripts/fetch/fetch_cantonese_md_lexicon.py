@@ -29,9 +29,9 @@ from app.utils.jyutping_codec import get_0243_code  # noqa: E402
 from ingest.lexicon_validate import normalize_lexicon_candidate  # noqa: E402
 
 ARCHIVE = "https://codeload.github.com/daimaruhk/Cantonese.md/zip/refs/heads/main"
-OUT_DIR = ROOT / "data" / "lexicon" / "raw" / "cantonese_md"
-OUT_JSON = OUT_DIR / "lexicon.json"
-OUT_META = OUT_DIR / "manifest.json"
+# Tracked next to curated_lexicon.json (data/lexicon/raw/ is gitignored)
+OUT_JSON = ROOT / "data" / "lexicon" / "cantonese_md_lexicon.json"
+OUT_META = ROOT / "data" / "lexicon" / "cantonese_md.manifest.json"
 FM_RE = re.compile(r"^---\s*\n(.*?)\n---", re.S)
 KV_RE = re.compile(
     r"^(term|termJyutping|answer|answerJyutping):\s*(.*)$", re.M
@@ -127,7 +127,7 @@ def main() -> int:
             }
 
     items = [by_char[k] for k in sorted(by_char)]
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(
         json.dumps(items, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -142,7 +142,7 @@ def main() -> int:
         "n_entries_parsed": len(rows),
         "n_lexicon_rows": len(items),
         "skipped": skipped,
-        "raw_file": "lexicon.json",
+        "raw_file": "cantonese_md_lexicon.json",
         "notes": (
             "Only term/answer + Jyutping; no explanations. "
             "Wire via data/lexicon/sources.yaml id=cantonese_md. "

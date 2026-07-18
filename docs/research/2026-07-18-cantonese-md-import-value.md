@@ -195,8 +195,8 @@ extract (term, termJyutping), (answer, answerJyutping)
 
 | 項 | 路徑 |
 |----|------|
-| 缺字面 JSON | `data/lexicon/raw/cantonese_md/lexicon.json`（~195 列） |
-| 抽取 meta | `data/lexicon/raw/cantonese_md/manifest.json` |
+| 缺字面 JSON | `data/lexicon/cantonese_md_lexicon.json`（~195 列；唔放 gitignored 的 `raw/`） |
+| 抽取 meta | `data/lexicon/cantonese_md.manifest.json` |
 | 刷新腳本 | `python scripts/fetch/fetch_cantonese_md_lexicon.py` |
 | SSOT | `data/lexicon/sources.yaml` → `id: cantonese_md`（`enabled_by_default: true`，`source_rank: 4`） |
 | NOTICE | `THIRD_PARTY_NOTICES.md`（CC0） |
