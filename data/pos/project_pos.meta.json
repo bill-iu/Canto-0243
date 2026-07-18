@@ -254,6 +254,9 @@
       "canto-u-map": 68
     },
     "dry_run": false,
-    "repair_rate": 0.0149
+    "repair_rate": 0.0149,
+    "left_u_after": 21449,
+    "gate_after": 3706,
+    "quality_ok_rate": 0.92
   }
 }
