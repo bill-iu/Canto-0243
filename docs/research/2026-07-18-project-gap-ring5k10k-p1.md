@@ -76,11 +76,33 @@
 | no_natural | **410** 頭 |
 | sample | 50／50 ok |
 
+## b06（已落地 · P1 收官）
+
+| 項目 | 內容 |
+|------|------|
+| batch_id | `post-syn-ant-ring5k10k-b06-20260718` |
+| 本批處置頭數 | **147／147**（全部剩餘 open） |
+| 入帳 ant | **121** 對 |
+| no_natural | **94** 頭 |
+| sample | 50／50 ok |
+| **P1 open 後** | **0** |
+
+## 累計 P1（Essay 5k–10k）
+
+| | open |
+|--|------|
+| freeze | 1600 |
+| 後 b01–b03（小批） | 1150 |
+| 後 b04（500） | 648 |
+| 後 b05（500） | 147 |
+| **後 b06 收官** | **0** |
+
 ## 下一步
 
-1. **rebuild** 關係／`lyrics.db`  
-2. **ring b06**：清尾剩餘 open（b05 後預計 ~150）  
+1. **rebuild** 關係／`lyrics.db` 令 runtime 見新邊  
+2. 可選更低頻 ring（Essay 10k+）— YAGNI 除非有需求  
 3. 唔開 UD  
+
 
 
 

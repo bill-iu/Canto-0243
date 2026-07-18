@@ -9250,6 +9250,340 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-ring5k10k-b06-20260718": {
+      "k": 54,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b06 CLOSEOUT; all remaining open heads; maintainer ant + bulk no_natural; seed fixtures/post_syn_ant_ring5k10k_b06_all.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 6,
+        "batch_target_heads": 147
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b06-20260718 parent N=121",
+      "sample_parent_n": 121,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "下載",
+          "tail": "上傳",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "下載",
+          "tail": "上載",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不至於",
+          "tail": "以至於",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "乃是",
+          "tail": "並非",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "作案",
+          "tail": "破案",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保釋",
+          "tail": "扣押",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冤枉",
+          "tail": "昭雪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冤枉",
+          "tail": "清白",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "可悲",
+          "tail": "可喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹牛",
+          "tail": "務實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "哽咽",
+          "tail": "暢談",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "哽咽",
+          "tail": "歡笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "問世",
+          "tail": "絕版",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "問世",
+          "tail": "絕跡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘆息",
+          "tail": "歡喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘆息",
+          "tail": "歡笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大好",
+          "tail": "糟糕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "彎腰",
+          "tail": "抬頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思索",
+          "tail": "莽撞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思索",
+          "tail": "衝動",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "懂事",
+          "tail": "任性",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "手緊",
+          "tail": "寬裕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打劫",
+          "tail": "援助",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打劫",
+          "tail": "救濟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "招惹",
+          "tail": "迴避",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "招惹",
+          "tail": "避開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "掉轉",
+          "tail": "前進",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "接手",
+          "tail": "放手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "放膽",
+          "tail": "膽小",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "收攏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "聚集",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "集合",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "斷氣",
+          "tail": "甦醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "標明",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "永別",
+          "tail": "重聚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "求情",
+          "tail": "嚴懲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "減弱",
+          "tail": "增強",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "演練",
+          "tail": "實戰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "知己",
+          "tail": "陌路",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "破綻",
+          "tail": "完整",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碰到",
+          "tail": "避開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碰到",
+          "tail": "錯過",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "累積",
+          "tail": "消耗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "累積",
+          "tail": "耗散",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "終究",
+          "tail": "暫且",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "終究",
+          "tail": "暫時",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "缺口",
+          "tail": "補足",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "缺口",
+          "tail": "齊全",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "評判",
+          "tail": "偏袒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "責任心",
+          "tail": "不負責任",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
