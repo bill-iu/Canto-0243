@@ -80,6 +80,10 @@ import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
+import {
+  PortableUpdateBanner,
+  type PortableUpdateInfo,
+} from './components/PortableUpdateBanner';
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
@@ -282,11 +286,48 @@ function App() {
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
   );
 
+  const [portableUpdate, setPortableUpdate] = useState<PortableUpdateInfo | null>(null);
+
+  useEffect(() => {
+    if (!isPortableHost()) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/portable-update');
+        if (!res.ok || cancelled) return;
+        const data = (await res.json()) as PortableUpdateInfo & { skipped?: boolean };
+        if (!cancelled && data.available && !data.skipped) {
+          setPortableUpdate(data);
+        }
+      } catch {
+        /* fail-open */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const dismissPortableUpdate = useCallback(async () => {
+    setPortableUpdate(null);
+    try {
+      await fetch('/portable-update/dismiss', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{}',
+      });
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
   const shellGated = offlineStatus !== 'ready' || gateOpen;
 
   // Portable is a local desktop host — never show PWA install chrome
   const shouldShowInstallBanner =
     !isPortableHost() && !shellGated && !isStandalone && !installDismissed;
+  const shouldShowPortableUpdate =
+    isPortableHost() && !!portableUpdate?.available && !shellGated;
 
   // Apply theme + lang (shared with vanilla via app-context)
   useEffect(() => {
@@ -956,7 +997,7 @@ function App() {
         theme={uiTheme}
       />
       <div
-        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${shouldShowPortableUpdate ? ' has-portable-update-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
           <h1 id="searchTitle" className="sr-only">
@@ -1198,6 +1239,13 @@ function App() {
           onDismiss={() => setInstallDismissed(true)}
         />
       )}
+      {shouldShowPortableUpdate && portableUpdate ? (
+        <PortableUpdateBanner
+          info={portableUpdate}
+          lang={uiLang === 'en' ? 'en' : 'zh'}
+          onDismiss={() => void dismissPortableUpdate()}
+        />
+      ) : null}
       {detailOpen && activeDetailLiteral
         ? createPortal(
             <EntryDetailPanel

@@ -64,6 +64,17 @@ if (-not (Test-Path (Join-Path $OutDir "Canto-0243.exe"))) {
     throw "Canto-0243.exe not produced"
 }
 
+$ReleaseTag = $env:PORTABLE_RELEASE_TAG
+if ($ReleaseTag) {
+    Write-Host "==> Stamp portable-manifest (套件發佈指紋) tag=$ReleaseTag..."
+    $Sidecar = Join-Path $Root "dist\portable-manifest-windows.json"
+    python (Join-Path $Root "scripts\write_portable_manifest.py") `
+        --root $OutDir --tag $ReleaseTag --platform windows --sidecar $Sidecar
+    if ($LASTEXITCODE -ne 0) { throw "write_portable_manifest.py failed" }
+} else {
+    Write-Host "==> Skip portable-manifest (set PORTABLE_RELEASE_TAG for release builds)"
+}
+
 if (Test-Path $ZipPath) { Remove-Item $ZipPath -Force }
 Write-Host "==> Create zip (Windows 免安裝)..."
 Compress-Archive -Path "$OutDir\*" -DestinationPath $ZipPath -CompressionLevel Optimal
@@ -75,5 +86,8 @@ Write-Host "Done."
 Write-Host "  Folder: $OutDir"
 Write-Host "  ZIP:    $ZipPath (${zipMb} MB) - Windows (Canto-0243.exe + START.bat)"
 Write-Host "  db:     ${dbMb} MB"
+if ($ReleaseTag -and (Test-Path (Join-Path $Root "dist\portable-manifest-windows.json"))) {
+    Write-Host "  Manifest sidecar: dist\portable-manifest-windows.json"
+}
 Write-Host "  macOS .app: run scripts/build-portable.sh on macOS"
-Write-Host "  Upload zip + macOS tar.gz + lyrics.db + words-lexicon.json to GitHub Release."
+Write-Host "  Upload zip + macOS tar.gz + lyrics.db + words-lexicon.json (+ portable-manifest-*.json) to GitHub Release."

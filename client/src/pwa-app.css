@@ -803,6 +803,86 @@ button.icon-button.header-search__shuffle:disabled {
   padding-bottom: 56px;
 }
 
+.portable-update-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 210;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.portable-update-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.portable-update-banner__text strong {
+  font-weight: 650;
+}
+
+.portable-update-banner__text span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.portable-update-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.portable-update-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.portable-update-banner__btn:hover {
+  border-color: var(--accent);
+}
+
+.portable-update-banner__close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.portable-update-banner__close:hover {
+  color: var(--ink);
+}
+
+.app-shell.has-portable-update-banner .main-wrap {
+  padding-bottom: 72px;
+}
+
 @media (min-width: 768px) {
   /* ≥768px：header／主內容全寬左對齊（沿用 app-header page padding） */
   .app-header .app-bar {

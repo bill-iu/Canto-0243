@@ -12,6 +12,12 @@ from starlette.requests import Request
 from starlette.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse, Response
 
 from app.lexicon_version import lexicon_version
+from app.portable_update import (
+    fingerprint_id,
+    read_result,
+    write_result,
+    write_skip,
+)
 from app.routers.lexicon import router as lexicon_router
 from app.routers.relation import router as relation_router
 from app.routers.word import router
@@ -176,6 +182,58 @@ async def preload_ready():
     snap["portable"] = _is_portable()
     snap["lexiconVersion"] = lexicon_version()
     return snap
+
+
+@app.get("/portable-update")
+async def portable_update_status():
+    """套件更新提示狀態（local_launch 寫入 .cache；無則 empty）。"""
+    if not _is_portable():
+        return {"checked": False, "available": False, "portable": False}
+    root = Path(".").resolve()
+    data = read_result(root) or {
+        "checked": False,
+        "available": False,
+        "skipped": False,
+        "local": None,
+        "remote": None,
+        "release_url": None,
+        "download_hint": None,
+    }
+    data["portable"] = True
+    return data
+
+
+@app.post("/portable-update/dismiss")
+async def portable_update_dismiss(request: Request):
+    """指紋略過：綁遠端套件發佈指紋。"""
+    if not _is_portable():
+        raise HTTPException(status_code=403, detail="portable only")
+    if not _client_is_localhost(request):
+        raise HTTPException(status_code=403, detail="localhost only")
+    root = Path(".").resolve()
+    body = {}
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    remote = None
+    if isinstance(body, dict) and isinstance(body.get("fingerprint"), str):
+        fp_id = body["fingerprint"].strip()
+    else:
+        cached = read_result(root) or {}
+        remote = cached.get("remote")
+        if not isinstance(remote, dict):
+            raise HTTPException(status_code=400, detail="no remote fingerprint")
+        fp_id = fingerprint_id({k: str(remote.get(k) or "") for k in ("tag", "platform", "lyrics_sha256", "package_digest")})
+    if not fp_id:
+        raise HTTPException(status_code=400, detail="empty fingerprint")
+    write_skip(root, fp_id)
+    # Refresh result so UI stops showing
+    cached = read_result(root) or {}
+    cached["available"] = False
+    cached["skipped"] = True
+    write_result(root, cached)
+    return {"ok": True, "skipped": fp_id}
 
 
 def _client_is_localhost(request: Request) -> bool:

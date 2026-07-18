@@ -16,7 +16,7 @@
 | 搜尋模式 | 搜尋模式家族、0243搜尋、近反義、近反義池、靜態詞林埠 |
 | 查詢語法 | 基礎規則、分派優先序、各語法家族 |
 | 詞庫與排序 | 詞庫埠、收錄決策、參考字讀音解析、詞條從源重建、音節拼接讀音、essay 詞頻、排序用 curated、結果誰靠前、擷取頁／結果數／呈現批次 |
-| 產品邊界 | 離線交付、創作者、分渠道發佈、PWA、就緒閘、搜尋教學速覽 |
+| 產品邊界 | 離線交付、創作者、分渠道發佈、PWA、就緒閘、搜尋教學速覽、套件發佈指紋／套件更新提示 |
 
 ---
 
@@ -709,7 +709,19 @@ _Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 **免安裝交付**：無 pip；Portable 內建詞條庫；Win/Mac 雙擊即用。Linux 需 Python。內建執行環境須**可搬移**——任意解壓路徑、另一台電腦均可啟動，**唔**依賴建置機或系統已安裝嘅 Python。
 _Avoid_：要求創作者安裝 Python／uv、只在建置機驗證啟動即當交付完成
 
-**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`shared/`** 為共享 mjs／CSS SSOT（#86 第 (3) 段）；產品入口為 `/app/`。
+**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`shared/`** 為共享 mjs／CSS SSOT（#86 第 (3) 段）；產品入口為 `/app/`。新打之正式套件應帶 **套件發佈指紋**；無指紋之舊套件唔做更新探測。
+
+**套件發佈指紋**：
+某次**正式** **Portable 套件** 發佈嘅身份：`release tag` ＋ **本平台套件 digest** ＋ **詞條庫**（`lyrics.db`）sha256；三者須同一次發佈寫入套件。用以判別本機套件是否仍對應最新正式遠端發佈（含同 tag 換庫或程式刷新）。
+_Avoid_：git 版本、只 semver／只 **詞庫版本**、update check id、把 prerelease／beta 當正式指紋來源
+
+**套件更新提示**：
+本機 **套件發佈指紋** 與最新**正式**遠端指紋唔一致時，向 **創作者** 顯示嘅通知（啟動終端摘要 ＋ 產品 UI 橫幅）；引導前往 GitHub Release 或複製下載指令，經關閉程式後人手解壓覆蓋；**唔**原地自動覆蓋、**唔**阻 **就緒閘解鎖**。只對非 prerelease 嘅最新正式 Release；遠端 beta／prerelease 唔觸發。無本機指紋則唔檢查、唔提示。短超時失敗當無更新（fail-open）。
+_Avoid_：自動更新、強制升級閘、系統 MessageBox（v1）、把 git pull 當 Portable 更新路徑、穩定軌道提示 beta
+
+**指紋略過**：
+創作者對某一個**遠端套件發佈指紋**選擇稍後／關閉；同一指紋唔再出現 **套件更新提示**，遠端指紋一變則恢復提示。
+_Avoid_：固定 N 日 snooze、永久關閉更新檢查（作預設）、略過「成個 tag」而唔理同 tag 指紋變更
 
 **Canto-0243 License**：整包 CC BY-NC-SA 4.0 + 附加；署名見 THIRD_PARTY_NOTICES。
 
@@ -783,8 +795,8 @@ _Avoid_: 閘前阻塞建表、當**韻母字母表**本身
 
 **創作者**：用本工具搜韻換字填詞者。
 
-**全量發佈**：同 semver 整包（Portable zip／tar；新 tag 首次上傳時一併帶 **發佈詞庫快照** `lyrics.db`／`words-lexicon.json`）。**何時 bump semver（分級）**：**必須新 tag**——schema／查詢語法行為變更、大規模刪收錄、破壞離線快取假設、刻意產品大改（下一個產品 bump 例：`v1.0.9` → `v1.1.0`）。**可同一 tag 換庫快照**（refresh＋`-WithLexicon` 覆寫 Release 庫資產）——標音／來源合併修正、少量增刪讀音或字面、閘／煙霧對齊、發佈後短窗熱修。**程式-only 刷新**——庫不變時重打套件，**唔** `build-db`、預設**唔**覆寫庫資產。
-_Avoid_：細換庫硬逼 bump、程式-only 刷新誤覆寫庫、刪掉 Release 上嘅 `lyrics.db`、把庫 commit 入 git 當預設
+**全量發佈**：同 semver 整包（Portable zip／tar；新 tag 首次上傳時一併帶 **發佈詞庫快照** `lyrics.db`／`words-lexicon.json`）。**何時 bump semver（分級）**：**必須新 tag**——schema／查詢語法行為變更、大規模刪收錄、破壞離線快取假設、刻意產品大改（下一個產品 bump 例：`v1.0.9` → `v1.1.0`）。**可同一 tag 換庫快照**（refresh＋`-WithLexicon` 覆寫 Release 庫資產）——標音／來源合併修正、少量增刪讀音或字面、閘／煙霧對齊、發佈後短窗熱修；**須同時重打並上傳對應 Portable 套件**，令 Release 上庫資產與套件內庫／**套件發佈指紋**一致，禁止只換庫資產而套件仍舊。**程式-only 刷新**——庫不變時重打套件，**唔** `build-db`、預設**唔**覆寫庫資產。
+_Avoid_：細換庫硬逼 bump、程式-only 刷新誤覆寫庫、刪掉 Release 上嘅 `lyrics.db`、把庫 commit 入 git 當預設、同 tag 只傳新庫唔重打包却期望 **套件更新提示** 引導下整包仍正確
 
 **分渠道發佈**：發佈主理（建 tag、Win zip；新 tag 先上傳庫）與發佈補件（mac tar 對齊 tag）；補件不建 release。
 

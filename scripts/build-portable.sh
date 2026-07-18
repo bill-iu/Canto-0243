@@ -89,6 +89,16 @@ if [[ "$(uname -s)" == "Darwin" ]] && command -v codesign >/dev/null 2>&1; then
   codesign --force --sign - "$OUT_DIR/Canto-0243.command"
 fi
 
+if [[ -n "${PORTABLE_RELEASE_TAG:-}" ]]; then
+  PLATFORM="macos-${MAC_ARCH}"
+  SIDECAR="$ROOT/dist/portable-manifest-${PLATFORM}.json"
+  echo "==> Stamp portable-manifest (套件發佈指紋) tag=$PORTABLE_RELEASE_TAG platform=$PLATFORM..."
+  python3 "$ROOT/scripts/write_portable_manifest.py" \
+    --root "$OUT_DIR" --tag "$PORTABLE_RELEASE_TAG" --platform "$PLATFORM" --sidecar "$SIDECAR"
+else
+  echo "==> Skip portable-manifest (set PORTABLE_RELEASE_TAG for release builds)"
+fi
+
 echo "==> Create macOS tar.gz (canto-0243-portable + Canto-0243.command, ${MAC_ARCH})..."
 rm -f "$TAR_PATH"
 tar -czf "$TAR_PATH" -C "$ROOT/dist" "canto-0243-portable"
@@ -102,5 +112,8 @@ echo "  Bundle:     $OUT_DIR"
 echo "  Entry:      $OUT_DIR/Canto-0243.command"
 echo "  tar.gz:     $TAR_PATH (${tar_mb} MB)"
 echo "  db:         ${db_mb} MB"
+if [[ -n "${PORTABLE_RELEASE_TAG:-}" && -f "$ROOT/dist/portable-manifest-macos-${MAC_ARCH}.json" ]]; then
+  echo "  Manifest:   $ROOT/dist/portable-manifest-macos-${MAC_ARCH}.json"
+fi
 echo "  Windows zip: run scripts/build-portable.ps1 on Windows"
-echo "  Upload tar.gz + zip + lyrics.db + words-lexicon.json to GitHub Release."
+echo "  Upload tar.gz + zip + lyrics.db + words-lexicon.json (+ portable-manifest-*.json) to GitHub Release."

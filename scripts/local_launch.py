@@ -34,6 +34,7 @@ def _messages(lang: str) -> dict[str, str]:
                 "Dev checkout: cd client && npm run build:portable\n"
                 "Portable zip: re-download the full package (UI must be inside the zip)."
             ),
+            "checking_update": "Checking for portable updates…",
         }
     return {
         "starting": "正在啟動 Canto-0243… 查韻介面就緒後將開啟瀏覽器。",
@@ -48,6 +49,7 @@ def _messages(lang: str) -> dict[str, str]:
             "開發目錄：請先執行 cd client && npm run build:portable\n"
             "免安裝套件：請重新下載完整 zip（套件內須含查韻介面）。"
         ),
+        "checking_update": "正在檢查套件更新…",
     }
 
 
@@ -202,6 +204,24 @@ def _probe_home_portable(base_url: str) -> bool | None:
         return None
 
 
+def _maybe_check_portable_update(root: Path, *, lang: str, silent: bool) -> None:
+    """ADR-0059: short timeout fingerprint check; fail-open; terminal notice."""
+    try:
+        from app.portable_update import check_update, format_terminal_notice
+    except Exception:
+        return
+    msgs = _messages(lang)
+    if not silent:
+        print(msgs.get("checking_update", ""), flush=True)
+    try:
+        status = check_update(root, timeout=2.0)
+    except Exception:
+        return
+    notice = format_terminal_notice(status, lang=lang)
+    if notice and not silent:
+        print(notice, flush=True)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Canto-0243 local launch (start.sh / START.*)")
     parser.add_argument("--root", type=Path, default=None, help="Repo / portable bundle root")
@@ -258,11 +278,16 @@ def main() -> int:
 
     if args.gui and _html_ready(python, root, html_url, timeout="1"):
         if _probe_home_portable(base_url) is not False:
+            if args.portable:
+                _maybe_check_portable_update(root, lang=args.lang, silent=args.silent)
             _open_browser(boot_url)
             return 0
 
     # Product UI is /app (client/dist-portable). Build on demand for source checkouts.
     ensure_app_ui(root, lang=args.lang, silent=args.silent)
+
+    if args.portable:
+        _maybe_check_portable_update(root, lang=args.lang, silent=args.silent)
 
     if not args.silent:
         print(msgs["starting"], flush=True)

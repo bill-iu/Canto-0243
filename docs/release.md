@@ -6,7 +6,7 @@ Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `ori
 
 This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
 
-決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**。
+決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**、**套件發佈指紋**、**套件更新提示**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。
 
@@ -28,7 +28,7 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 | 情況 | 做法 |
 |------|------|
 | **必須新 tag**（schema／查詢行為大改、大規模刪收錄、破壞快取假設、刻意大改；例 `v1.0.9`→`v1.1.0`） | bump **新 semver**；本機 `build-db` 後全量上傳（含 **發佈詞庫快照**） |
-| **可同一 tag 換庫快照**（標音／合併修正、少量增刪讀音或字面、短窗熱修） | **刷新同一 tag** + `build-db` + `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json` |
+| **可同一 tag 換庫快照**（標音／合併修正、少量增刪讀音或字面、短窗熱修） | **刷新同一 tag** + `build-db` + `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`；**須同時重打並上傳 Portable zip／tar**（寫入 **套件發佈指紋**；見 ADR-0059） |
 | 程式 bugfix／打包修正（庫不變） | **刷新同一 tag**（`git tag -f` + 重傳 zip／tar）；**唔** `build-db`；**唔**覆寫庫資產 |
 | 主理刷新 tag 後 | 發佈補件 **必須** checkout 該 tag、重 build、覆寫 tar |
 
@@ -59,7 +59,7 @@ cd client && npm ci && npm run build:portable
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 
-會：確保有 `lyrics.db` → build zip →（**新 Release**）export lexicon → 建立 Release → 上傳 **zip + lyrics.db + words-lexicon.json**。
+會：確保有 `lyrics.db` → build zip（寫 **套件發佈指紋**）→（**新 Release**）export lexicon → 建立 Release → 上傳 **zip + lyrics.db + words-lexicon.json + portable-manifest-windows.json**。
 
 可選：`-NotesFile path\to\notes.md`、`-SkipReadmeSync`、`-Draft`。
 
@@ -72,8 +72,8 @@ git push -f origin v1.0.0
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.0.0 -Upload -SkipReadmeSync
 ```
 
-會：重打 zip；預設 **只上傳 zip**（程式-only）。  
-同 tag 換庫快照：加 `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`（須本機已 `build-db`）。
+會：重打 zip（刷新指紋）；預設 **上傳 zip + portable-manifest-windows.json**（程式-only；唔覆寫庫）。  
+同 tag 換庫快照：加 `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`（須本機已 `build-db`，且須重打套件）。
 
 **唔好**喺刷新時刪除 Release 上嘅 `lyrics.db`。
 

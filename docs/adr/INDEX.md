@@ -25,6 +25,7 @@
 | [0055](./0055-portable-gate-db-probe-word-cache-tail.md) | **Portable 閘**：DB 探針解鎖；word_cache→tail |
 | [0057](./0057-categorized-rime-lexicon-source.md) | **Rime 分類詞語來源**取代 legacy phrase |
 | [0058](./0058-project-pos-sidecar-carrier.md) | **專案自建詞性**：獨立 **詞性載體**（唔入 lyrics.db 主表） |
+| [0059](./0059-portable-release-fingerprint-update-notice.md) | **Portable**：**套件發佈指紋**＋**套件更新提示**（唔自動覆蓋） |
 
 ## Stubs
 

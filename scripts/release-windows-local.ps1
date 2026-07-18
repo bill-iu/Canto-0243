@@ -92,6 +92,7 @@ if ($env:GH_REPO) { Write-Host "    repo: $env:GH_REPO" }
 Assert-ReleaseSource
 Ensure-LyricsDb
 
+$env:PORTABLE_RELEASE_TAG = $Tag
 $buildArgs = @()
 if ($SkipReadmeSync) { $buildArgs += "-SkipReadmeSync" }
 & (Join-Path $Root "scripts\build-portable.ps1") @buildArgs
@@ -164,6 +165,12 @@ if ($uploadLexicon) {
     Invoke-Gh @("release", "upload", $Tag, $LexiconPath, "--clobber")
 }
 Invoke-Gh @("release", "upload", $Tag, $ZipPath, "--clobber")
+$ManifestSidecar = Join-Path $Root "dist\portable-manifest-windows.json"
+if (Test-Path $ManifestSidecar) {
+    Invoke-Gh @("release", "upload", $Tag, $ManifestSidecar, "--clobber")
+} else {
+    Write-Host "WARN: missing $ManifestSidecar (套件更新提示 will not detect this build)"
+}
 
 $repo = if ($env:GH_REPO) { $env:GH_REPO } else { (gh repo view --json nameWithOwner -q .nameWithOwner) }
 Write-Host ""
