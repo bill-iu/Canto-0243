@@ -1945,8 +1945,7 @@ T恤	u			no-source;p3;fallback
 侍應	v			cow-single
 侍應生	u			no-source;fallback
 侍者	n			cow-single
-侏	u			no-source;fallback;fragment;opaque
-侏儒	u			no-source;fallback
+侏儒	n			no-source;fallback;alias-target;review;u-inlex-residual
 供	u			no-source;p3;fallback
 供應	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 供應商	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -2670,7 +2669,7 @@ T恤	u			no-source;p3;fallback
 全始全終	r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;p1-audit;review;自始至終義；副詞性
 全家	n			u-inlex;review;u-inlex-agent
 全局	n			u-inlex;review;u-inlex-agent
-全心全意	u			no-source;p3;fallback
+全心全意	a,v	idiom		no-source;p3;fallback;u-pattern:ABAC;u-pattern-s2;review
 全心投入	u			no-source;fallback
 全文	u			no-source;fallback
 全文檢索	u			no-source;fallback
@@ -10685,7 +10684,7 @@ T恤	u			no-source;p3;fallback
 敷衍了事	r			cow-single
 敷衍塞責	u			no-source;fallback
 數	n,v			cow-nv-unreviewed;trust-low
-數一數二	u			no-source;p3;fallback
+數一數二	a,v	idiom		no-source;p3;fallback;u-pattern:ABAC;u-pattern-s2;review
 數九寒天	u			no-source;fallback
 數位信號	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 數值分析	u			no-source;fallback
@@ -16560,7 +16559,7 @@ T恤	u			no-source;p3;fallback
 統治者	n			cow-single;p3
 統治階級	u			no-source;fallback
 統籌兼顧	u			no-source;fallback
-統購統銷	u			no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;p2-audit-clear
+統購統銷	n			policy term; not idiom;u-s2;review;u-pattern-s2-manual
 絲	n			cow-single
 絲帶	n			cow-single;p3
 絲毫	n			cow-single
@@ -21597,7 +21596,7 @@ T恤	u			no-source;p3;fallback
 電視直播	u			no-source;fallback
 電視節目	u			no-source;fallback
 電視頻道	u			no-source;fallback
-電解電容	u			no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;p2-audit-clear
+電解電容	n			tech compound; not idiom;u-pattern-s2-fix;review;u-pattern-s2-gate
 電訊	u			no-source;p3;fallback
 電話	n			cow-multi;p1-audit;review;名；口語動邊緣，v 會毒同動詞閘
 電話信號	u			no-source;fallback

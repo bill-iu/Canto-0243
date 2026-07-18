@@ -19,8 +19,8 @@ PROP_HEADER = ("source", "target", "kind", "score", "note")
 FRAGMENT_KINDS = frozenset({"residual", "clause-slice", "opaque"})
 # u_inlex keep-u seeds (residual pairs live in alias.tsv)
 CLAUSE_SLICE_SEED = "我見 將我 你估 我識 總有 個月 講乜 仲話 不知幾 人嚟 我架 你仲記".split()
-OPAQUE_SEED = "然 侏 咖 咇 企響度".split()
-TARGET_POS = {"曱甴": "n", "蘿蔔": "n", "骷髏": "n"}
+OPAQUE_SEED = "然 咖 咇 企響度".split()  # 侏 → alias 侏儒
+TARGET_POS = {"曱甴": "n", "蘿蔔": "n", "骷髏": "n", "侏儒": "n"}
 
 
 def load_alias(path: Path = DEFAULT_ALIAS) -> List[dict]:

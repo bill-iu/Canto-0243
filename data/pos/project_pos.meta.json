@@ -341,33 +341,16 @@
   "u_inlex_fragment_alias": {
     "dry_run": false,
     "targets_ensured": [
-      "曱甴"
+      "侏儒"
     ],
     "residuals_removed_from_ssot": [
-      "曱",
-      "甴",
-      "蘿",
-      "蔔",
-      "骷",
-      "髏"
+      "侏"
     ],
     "fragment_tags": {
       "clause_tagged": 12,
-      "opaque_tagged": 5
+      "opaque_tagged": 4
     },
     "before": {
-      "rows": 22730,
-      "formal": 12467,
-      "u": 10263,
-      "fragment": 6,
-      "formal_over_all": 0.5485,
-      "formal_over_non_fragment": 0.5486,
-      "non_fragment": 22724,
-      "formal_non_fragment": 12467,
-      "d4_pass_95": false,
-      "alias_n": 6
-    },
-    "after": {
       "rows": 22725,
       "formal": 12468,
       "u": 10257,
@@ -377,7 +360,53 @@
       "non_fragment": 22708,
       "formal_non_fragment": 12468,
       "d4_pass_95": false,
-      "alias_n": 6
+      "alias_n": 7
+    },
+    "after": {
+      "rows": 22724,
+      "formal": 12469,
+      "u": 10255,
+      "fragment": 16,
+      "formal_over_all": 0.5487,
+      "formal_over_non_fragment": 0.5491,
+      "non_fragment": 22708,
+      "formal_non_fragment": 12469,
+      "d4_pass_95": false,
+      "alias_n": 7
     }
+  },
+  "u_pattern_s2": {
+    "applied": 3,
+    "by_pattern": {
+      "ABAC": 3
+    },
+    "coverage": {
+      "rows": 22724,
+      "formal": 12473,
+      "u": 10251,
+      "fragment": 16,
+      "formal_over_all": 0.5489,
+      "formal_over_non_fragment": 0.5493,
+      "non_fragment": 22708,
+      "formal_non_fragment": 12473,
+      "d4_pass_95": false,
+      "alias_n": 7
+    },
+    "gate_r1": {
+      "n": 3,
+      "ok": 2,
+      "bad": 1,
+      "full_audit": true,
+      "note": "universe=3; fixed 電解電容"
+    },
+    "manual": [
+      "統購統銷"
+    ]
+  },
+  "alias_proposals_review_r1": {
+    "accept": 1,
+    "reject": 63,
+    "new_alias": "侏->侏儒",
+    "report": "data/pos/audit/u_inlex/alias_proposals_review_r1.md"
   }
 }

@@ -1,0 +1,4 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+全心全意	a,v	idiom		no-source;p3;fallback;u-pattern:ABAC;u-pattern-s2;review	high	OK		
+數一數二	a,v	idiom		no-source;p3;fallback;u-pattern:ABAC;u-pattern-s2;review	high	OK		
+電解電容	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;p2-audit-clear;u-pattern:ABAC;u-pattern-s2;review	high	BAD	n	技術並列 NP；唔係熟語；family 空
