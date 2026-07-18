@@ -16711,7 +16711,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 練	v			no-source;fallback;p1-audit;review;練習
 練波	v			u-inlex;review;u-inlex-agent
 練習	n			cow-single
-緻	u			no-source;p3;fallback
 縣	n			cow-single
 縣城	n			u-inlex;review;u-inlex-agent
 縣委	n			u-inlex-nf2k;review;agent-label
@@ -21921,7 +21920,6 @@ T恤	n			u-inlex-nf2k;review;agent-label
 顧惜	u			no-source;fallback
 顧慮	v			cow-single;p3
 顧此失彼	u			no-source;fallback
-顫	u			no-source;p3;fallback
 顫抖	v			cow-multi;full-r1-audit;review;顫抖＝動；a,n 假陽
 顯	u			no-source;fallback
 顯卡	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u

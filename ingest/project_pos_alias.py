@@ -31,6 +31,8 @@ TARGET_POS = {
     "眼眶": "n",
     "咖啡": "n",
     "整蠱": "v",
+    "顫抖": "v",
+    "精緻": "a,n",
 }
 
 
@@ -180,6 +182,12 @@ def propose_residual(
     best: Dict[Tuple[str, str], dict] = {}
     skipped_free = 0
     skipped_low = 0
+    # productivity: how many 2-char SSOT literals contain each char
+    bigram_n: Counter = Counter()
+    for lit in table:
+        if len(lit) == 2:
+            bigram_n[lit[0]] += 1
+            bigram_n[lit[1]] += 1
     # For each 2-char SSOT literal, propose half→full when half is still pos=u
     for full, frow in table.items():
         if len(full) != 2:
@@ -192,6 +200,11 @@ def propose_residual(
             key = (src, full)
             if key in have:
                 continue
+            nb = int(bigram_n.get(src, 0))
+            # productive morpheme in many compounds — not a single residual
+            if nb > 2:
+                skipped_low += 1
+                continue
             score, note = residual_score(src, full, target_formal=formal, iwp_map=iwp_map)
             iwp_s = iwp_of(src, iwp_map)
             if drop_free and iwp_s >= free_threshold:
@@ -200,6 +213,7 @@ def propose_residual(
             if score < min_score:
                 skipped_low += 1
                 continue
+            note = f"{note};n_bigrams={nb}"
             row = {
                 "source": src,
                 "target": full,
@@ -222,6 +236,7 @@ def propose_residual(
         "skipped_low_score": skipped_low,
         "free_threshold": free_threshold,
         "drop_free": drop_free,
+        "max_bigrams": 2,
         "out": str(path.relative_to(ROOT)).replace("\\", "/"),
     }
 
