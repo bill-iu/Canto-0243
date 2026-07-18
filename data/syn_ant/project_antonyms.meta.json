@@ -7034,6 +7034,339 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-b03-20260718": {
+      "k": 44,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b03: residual Essay top5k content after b01/b02; maintainer-curated; seed fixtures/post_syn_ant_gap_b03_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 3
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b03-20260718 parent N=81",
+      "sample_parent_n": 81,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "不在",
+          "tail": "在場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "交流",
+          "tail": "斷絕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傻妹",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇所謂",
+          "tail": "在乎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇所謂",
+          "tail": "重視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹水",
+          "tail": "正經",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹水",
+          "tail": "講真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔捨得",
+          "tail": "捨得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嚇親",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大部份",
+          "tail": "少數",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大隻",
+          "tail": "瘦削",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好嘢",
+          "tail": "壞事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "尋晚",
+          "tail": "今朝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "就嚟",
+          "tail": "好耐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後尾",
+          "tail": "起初",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後尾",
+          "tail": "首先",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "心裡",
+          "tail": "表面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "忘了",
+          "tail": "記得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "大方",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "大膽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "放肆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "成世",
+          "tail": "一陣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打橫",
+          "tail": "打直",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搞錯",
+          "tail": "正確",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擰頭",
+          "tail": "點頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "是但",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "凌晨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "朝早",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有份",
+          "tail": "冇份",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有份",
+          "tail": "缺席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝頭早",
+          "tail": "晚黑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝頭早",
+          "tail": "深夜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "玩完",
+          "tail": "開始",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發夢",
+          "tail": "現實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡快",
+          "tail": "慢慢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡快",
+          "tail": "遲啲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第日",
+          "tail": "尋日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第時",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第時",
+          "tail": "而家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細細個",
+          "tail": "大個",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細細個",
+          "tail": "長大",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "總有",
+          "tail": "冇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "總有",
+          "tail": "永不",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "肥仔",
+          "tail": "瘦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "行街",
+          "tail": "返屋企",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "衰仔",
+          "tail": "乖",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遲啲",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遲啲",
+          "tail": "馬上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "阿伯",
+          "tail": "阿嬸",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
