@@ -303,10 +303,18 @@ def promote_rank_u(table: Dict[str, PosRow], *, lo: int = 101, hi: int = 500) ->
 
 
 def p1_closeout_metrics() -> dict:
+    from ingest.project_pos_lexicon_prune import load_lexicon_literals
+
     body = load_p1_mother_body()
+    try:
+        lex = load_lexicon_literals()
+    except FileNotFoundError:
+        lex = set(body)
     table = parse_project_pos_tsv()
-    top100_gate = sum(1 for lit in body[:100] if table[lit].gate_pos())
-    r101_500 = body[100:500]
+    # metrics over lexicon members only (POS SSOT is lexicon-only)
+    top100 = [lit for lit in body[:100] if lit in lex and lit in table]
+    top100_gate = sum(1 for lit in top100 if table[lit].gate_pos())
+    r101_500 = [lit for lit in body[100:500] if lit in lex and lit in table]
     r101_500_u = sum(1 for lit in r101_500 if table[lit].pos <= frozenset({"u"}))
     r101_500_gate = sum(1 for lit in r101_500 if table[lit].gate_pos())
     nv_left = sum(
@@ -318,7 +326,7 @@ def p1_closeout_metrics() -> dict:
     st = p1_status()
     return {
         "top100_gate": top100_gate,
-        "top100_gate_pct": round(top100_gate / 100, 4),
+        "top100_gate_pct": round(top100_gate / len(top100), 4) if top100 else 0.0,
         "rank101_500": len(r101_500),
         "rank101_500_u": r101_500_u,
         "rank101_500_gate": r101_500_gate,
