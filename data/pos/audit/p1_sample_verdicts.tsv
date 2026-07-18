@@ -1,0 +1,323 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一齊	r			heuristic	high	high|gate	144	OK				
+下去	v			verb-suffix;heuristic	high	high|gate	2512	OK				
+也好	v			verb-suffix;heuristic	high	high|gate	4173	BAD	x			verb-suffix假陽；讓步／語氣，非動
+五	x			numeral;heuristic	high	high|gate	347	OK				
+以上	v			verb-suffix;heuristic	high	high|gate	2331	BAD	x			verb-suffix假陽；界限／方位虛詞，非動
+做好	v			verb-suffix;p1;heuristic	high	high|gate	2278	OK				
+兜過	v			verb-suffix;heuristic	high	high|gate	1863	OK				
+再	r			heuristic	high	high|gate	73	OK				
+千	x			numeral;heuristic	high	high|gate	3185	OK				
+即刻	r			heuristic	high	high|gate	201	OK				
+原來	v			verb-suffix;heuristic	high	high|gate	171	BAD	r			verb-suffix假陽；副「原先／原來如此」
+及	x			heuristic	high	high|gate	1314	OK				
+句	n,x			audit-high;review	high	high|gate	403	OK				
+只好	v			verb-suffix;heuristic	high	high|gate	1893	BAD	r			verb-suffix假陽；副「唯有／只好」
+可能	a,r			audit-high;review	high	high|gate	143	OK				
+各	x			heuristic	high	high|gate	3159	OK				
+咗下	v			verb-suffix;p1;heuristic	high	high|gate	4006	BAD	x			體貌助／「V咗下」虛，非獨立動
+唔係	v,x			heuristic	high	high|gate	57	OK				
+唔好	v			verb-suffix;heuristic	high	high|gate	71	SOFT	a,v			主標動可；禁令動+形「唔好」兩用常見，可補a
+報仇	v			audit-high;review	high	high|gate	2809	OK				
+多	a,r			heuristic;p1	high	high|gate	65	OK				
+天下	v			verb-suffix;heuristic	high	high|gate	4576	BAD	n			verb-suffix假陽；名「天下」
+對住	v			verb-suffix;p1;heuristic	high	high|gate	1441	OK				
+幾好	v			verb-suffix;heuristic	high	high|gate	1096	BAD	a			verb-suffix假陽；形「幾好」，stative留a
+從來	v			verb-suffix;heuristic	high	high|gate	742	BAD	r			verb-suffix假陽；副「從來」
+我過	v			verb-suffix;p1;heuristic	high	high|gate	4234	BAD	u			verb-suffix假陽；切分殘片，詞類未定
+手上	v			verb-suffix;heuristic	high	high|gate	813	BAD	n			verb-suffix假陽；處所名「手上」
+才	r,x			heuristic	high	high|gate	1453	OK				
+拖住	v			verb-suffix;p1;heuristic	high	high|gate	2186	OK				
+掛住	v			verb-suffix;heuristic	high	high|gate	805	OK				
+是	v,x			heuristic;p1	high	high|gate	139	OK				
+更	r			heuristic	high	high|gate	363	OK				
+更好	v			verb-suffix;p1;heuristic	high	high|gate	3616	BAD	a			verb-suffix假陽；形「更好」
+此	x			heuristic;p1	high	high|gate	2037	OK				
+牀上	v			verb-suffix;p1;heuristic	high	high|gate	4927	BAD	n			verb-suffix假陽；處所名「牀上」
+的	x			heuristic	high	high|gate	42	OK				
+看好	v			verb-suffix;heuristic	high	high|gate	4542	OK				
+真實	a			audit-high;review	high	high|gate	2519	OK				
+社會主義	n			len4-noun-heuristic	high	high|gate	3625	OK				
+而且	x			heuristic	high	high|gate	342	OK				
+能夠	v,x			heuristic	high	high|gate	864	OK				
+與	x			heuristic	high	high|gate	892	OK				
+行開	v			verb-suffix;heuristic	high	high|gate	4392	OK				
+話過	v			verb-suffix;p1;heuristic	high	high|gate	4395	OK				
+諗住	v			verb-suffix;heuristic	high	high|gate	373	OK				
+講完	v			verb-suffix;p1;heuristic	high	high|gate	714	OK				
+越來	v			verb-suffix;p1;heuristic	high	high|gate	3457	BAD	r			verb-suffix假陽；「越來越」副詞幹，非動
+跟住	v			verb-suffix;heuristic	high	high|gate	140	SOFT	v,r			主標動可；粵語接續副「跟住」亦極常見
+返起	v			verb-suffix;p1;heuristic	high	high|gate	1595	OK				
+需要	n,v			heuristic	high	high|gate	420	OK				
+中	a,n			cow-multi	medium	medium|gate	184	BAD	n,v			自由形「中」弱；名／方位名＋動「中獎／中計」
+交換	n,v			cow-multi	medium	medium|gate	1975	OK				
+交流	n,v			cow-multi	medium	medium|gate	2852	OK				
+保證	n,v			cow-multi	medium	medium|gate	4005	OK				
+值得	n,v			cow-multi	medium	medium|gate	1782	BAD	v			只係動（值得+VP），非名；n 會毒同名詞閘
+停留	n,v			cow-multi	medium	medium|gate	3902	OK				
+偵探	n,v			cow-multi	medium	medium|gate	4281	BAD	n			名（職業／角色）；動義用偵查，v 假陽
+傷害	n,v			cow-multi	medium	medium|gate	1246	OK				
+切	n,v			cow-multi	medium	medium|gate	1042	BAD	v			自由詞只係動「切」；n 假陽
+利用	n,v			cow-multi	medium	medium|gate	2133	OK				
+制服	n,v			cow-multi	medium	medium|gate	3546	OK				
+命令	n,v			cow-multi	medium	medium|gate	2660	OK				
+圈	n,v			cow-multi	medium	medium|gate	1599	OK				
+實現	n,v			cow-multi	medium	medium|gate	3818	OK				
+專心	n,v			cow-multi	medium	medium|gate	1995	BAD	a,v			形＋動（好專心／專心做），非名
+希望	n,v			cow-multi	medium	medium|gate	349	OK				
+後悔	n,v			cow-multi	medium	medium|gate	1446	OK				
+微笑	n,v			cow-multi	medium	medium|gate	1073	OK				
+必要	n,v			cow-multi	medium	medium|gate	3138	BAD	a,n			形＋名（必要條件／有必要），非動
+感覺	n,v			cow-multi	medium	medium|gate	192	OK				
+打算	n,v			cow-multi	medium	medium|gate	1052	OK				
+拉	n,v			cow-multi;p1	medium	medium|gate	570	BAD	v			只係動「拉」；n 假陽會毒同名詞閘
+提供	n,v			cow-multi	medium	medium|gate	3643	SOFT			主標動；名物化 n 薄但閘用 multi 可	
+撞擊	n,v			cow-multi	medium	medium|gate	4590	OK				
+整理	n,v			cow-multi	medium	medium|gate	3868	OK				
+數	n,v			cow-multi	medium	medium|gate	1385	OK				
+期待	n,v			cow-multi	medium	medium|gate	1348	OK				
+死	n,v			cow-multi	medium	medium|gate	120	OK				
+派	n,v			cow-multi	medium	medium|gate	1267	OK				
+浪費	n,v			cow-multi	medium	medium|gate	3116	OK				
+深入	n,v			cow-multi	medium	medium|gate	4890	BAD	a,v			形＋動（深入研究／深入敵後），非名
+滑雪	n,v			cow-multi	medium	medium|gate	2475	OK				
+猶豫	n,v			cow-multi	medium	medium|gate	4089	OK				
+申請	n,v			cow-multi	medium	medium|gate	4658	OK				
+破壞	n,v			cow-multi	medium	medium|gate	2043	OK				
+確認	n,v			cow-multi	medium	medium|gate	3170	OK				
+移動	n,v			cow-multi	medium	medium|gate	2432	OK				
+聯繫	n,v			cow-multi	medium	medium|gate	961	OK				
+製造	n,v			cow-multi	medium	medium|gate	3456	OK				
+襲擊	n,v			cow-multi	medium	medium|gate	4603	OK				
+解釋	n,v			cow-multi	medium	medium|gate	784	OK				
+講話	n,v			cow-multi	medium	medium|gate	2620	OK				
+變化	n,v			cow-multi	medium	medium|gate	3884	OK				
+轉變	n,v			cow-multi	medium	medium|gate	4164	OK				
+迎接	n,v			cow-multi;p1	medium	medium|gate	3928	SOFT			主標動；名用薄（熱烈的迎接）閘用 multi 可	
+遊戲	n,v			cow-multi	medium	medium|gate	766	OK				
+道歉	n,v			cow-multi	medium	medium|gate	2025	OK				
+選擇	n,v			cow-multi	medium	medium|gate	806	OK				
+電話	n,v			cow-multi	medium	medium|gate	196	BAD	n			名；口語動邊緣，v 會毒同動詞閘
+類似	n,v			cow-multi	medium	medium|gate	2640	BAD	a,v			形（類似的）／類似於，非名
+一點	n			cow-single	low	low|draft	1264	SOFT				primary n OK for「點／少量」；常見副詞用法「一點也不」→ 日後可 n,r
+不能	v			cow-single	low	low|draft	2180	OK				
+串	n			cow-single	low	low|draft	1213	SOFT				primary n OK（串燒／一串）；亦常作動「串連」→ 日後可 n,v
+今晚	n			cow-single	low	low|draft	523	OK				
+佔	v			cow-single	low	low|draft	3628	OK				
+例外	n			cow-single	low	low|draft	3946	OK				
+信息	n			cow-single	low	low|draft	4773	OK				
+假期	n			cow-single	low	low|draft	3629	OK				
+偷	v			cow-single	low	low|draft	1935	OK				
+先生	n			cow-single	low	low|draft	521	OK				
+內心	n			cow-single	low	low|draft	1187	OK				
+全	r			cow-single	low	low|draft	1346	OK				
+分鐘	n			cow-single	low	low|draft	560	OK				
+判斷	n			cow-single	low	low|draft	4483	SOFT				primary n OK（判斷力／一個判斷）；亦常作動 → 日後可 n,v
+即時	n			cow-single	low	low|draft	3582	BAD	a,r			primary 錯：即時＝形／副（即時消息／即時回覆），非常名；名義用「瞬間」
+受	v			cow-single;p1	low	low|draft	1014	OK				
+叫	v			cow-single	low	low|draft	80	OK				
+喂	n			cow-single	low	low|draft	90	BAD	x,v			primary 錯：喂主為嘆（虛 x）；餵食義為動；非名
+回到	v			cow-single	low	low|draft	2694	OK				
+地位	n			cow-single	low	low|draft	4187	OK				
+基於	v			cow-single	low	low|draft	2999	BAD	x			primary 錯：基於＝介／虛（based on），非動
+報告	n			cow-single	low	low|draft	3951	SOFT				primary n OK（一份報告）；亦常作動「報告長官」→ 日後可 n,v
+報答	v			cow-single	low	low|draft	4780	OK				
+塔	n			cow-single	low	low|draft	1316	OK				
+大多數	n			cow-single	low	low|draft	4781	OK				
+大部份	r			cow-single	low	low|draft	2587	SOFT				primary r OK（大部份都…）；名物「大部份人」近 大多數→ 日後可 n,r
+天堂	n			cow-single	low	low|draft	4231	OK				
+失蹤	v			cow-single	low	low|draft	1278	OK				
+子彈	n			cow-single	low	low|draft	3910	OK				
+守	v			cow-single	low	low|draft	4367	OK				
+將軍	n			cow-single	low	low|draft	1746	OK				
+應付	v			cow-single	low	low|draft	4233	OK				
+星星	n			cow-single	low	low|draft	1799	OK				
+時候	n			cow-single	low	low|draft	129	OK				
+最少	n			cow-single	low	low|draft	3969	BAD	r			primary 錯：最少主為副（at least）；亦可形「最少的」→ 日後 a,r
+氣	n			cow-single	low	low|draft	1180	OK				
+水平	n			cow-single	low	low|draft	3481	OK				
+沉默	n			cow-single	low	low|draft	1809	SOFT				primary n OK（打破沉默）；亦常形／動 → 日後可 n,a 或 n,v
+浴室	n			cow-single	low	low|draft	3337	OK				
+液體	n			cow-single	low	low|draft	4516	OK				
+漏	v			cow-single	low	low|draft	3241	OK				
+炸彈	n			cow-single	low	low|draft	4027	OK				
+無助	n			cow-single	low	low|draft	4722	BAD	a			primary 錯：無助＝形（感到無助），非名
+燈	n			cow-single	low	low|draft	739	OK				
+發燒	n			cow-single	low	low|draft	4244	BAD	v,n			primary 錯：發燒主為動（我發燒）；病名可附 n
+的士	n			cow-single	low	low|draft	942	OK				
+看	v			cow-single	low	low|draft	750	OK				
+瞬間	n			cow-single	low	low|draft	1054	OK				
+程度	n			cow-single	low	low|draft	1826	OK				
+窗口	n			cow-single	low	low|draft	2703	OK				
+站	v			cow-single	low	low|draft	774	SOFT				primary v OK（站立）；站亦可名（車站／站點）→ 日後可 v,n
+算	v			cow-single	low	low|draft	330	OK				
+簡單	n			cow-single	low	low|draft	571	BAD	a			primary 錯：簡單＝形，非名
+終點	n			cow-single	low	low|draft	1130	OK				
+老闆	n			cow-single	low	low|draft	1661	OK				
+聞	v			cow-single	low	low|draft	1542	OK				
+腦	n			cow-single	low	low|draft	1983	OK				
+舐	v			cow-single	low	low|draft	2417	OK				
+茶	n			cow-single	low	low|draft	1320	OK				
+草	n			cow-single	low	low|draft	3527	OK				
+蛇	n			cow-single	low	low|draft	1404	OK				
+蠢	a			cow-single	low	low|draft	3414	OK				
+試	v			cow-single	low	low|draft	699	OK				
+買	v			cow-single;p1	low	low|draft	152	OK				
+路線	n			cow-single	low	low|draft	4998	OK				
+迫	v			cow-single	low	low|draft	3490	OK				
+迷宮	n			cow-single	low	low|draft	2128	OK				
+逐	v			cow-single	low	low|draft	3887	OK				
+錢	n			cow-single	low	low|draft	227	OK				
+陰	n			cow-single;p1	low	low|draft	2174	OK				
+面	n			cow-single	low	low|draft	249	OK				
+鞭	n			cow-single	low	low|draft	4333	OK				
+鼠標	n			cow-single	low	low|draft	4272	OK				
+一句話	u			no-source;fallback	low	low|u	3938	BAD	n,r			NP「一句話」；亦作「總之」副用
+一塊	u			no-source;fallback	low	low|u	2925	BAD	n,x			數量短語／「一塊」指物
+一招	u			no-source;p1;fallback	low	low|u	3358	BAD	n			一着／招式，名詞
+一拳	u			no-source;p1;fallback	low	low|u	2420	BAD	n			一記拳頭，名詞
+一摸	u			no-source;p1;fallback	low	low|u	4420	SOFT				動量短語 vs 動截斷，邊介；u 可接受
+一羣	u			no-source;p1;fallback	low	low|u	4834	BAD	x			數+量結構，虛
+一輪	u			no-source;p1;fallback	low	low|u	3003	BAD	n,x			一回合／量詞短語
+下身	u			no-source;fallback	low	low|u	2457	BAD	n			身體部位，名詞
+不敢	u			no-source;fallback	low	low|u	3843	BAD	v			情態動詞短語
+不禁	u			no-source;fallback	low	low|u	1906	BAD	r			副詞「忍不住」
+中意	u			no-source;fallback	low	low|u	2193	BAD	v			粵「喜歡」
+主要	u			no-source;fallback	low	low|u	1841	BAD	a,r			形＋副兩用
+之內	u			no-source;fallback	low	low|u	2851	BAD	x			方位／後置虛
+乎	u			no-source;fallback	low	low|u	3253	BAD	x			文言語氣／介，虛
+也是	u			no-source;p1;fallback	low	low|u	525	SOFT				也+是連用塊，單一詞類邊介
+也能	u			no-source;p1;fallback	low	low|u	3800	OK				副+能願截斷，非完整詞位
+什麼時候	u			no-source;fallback	low	low|u	3103	BAD	r,x			疑問時間
+住部	u			no-source;p1;fallback	low	low|u	4847	OK				疑似截斷／罕用，詞類難定
+你在	u			no-source;p1;fallback	low	low|u	3426	OK				人稱+在截斷
+依句	u			no-source;p1;fallback	low	low|u	3577	OK				罕／截斷不明
+依間	u			no-source;p1;fallback	low	low|u	3846	BAD	x			粵指示「這一／這陣」類
+傻妹	u			no-source;fallback	low	low|u	2762	BAD	n			指人名詞
+億元	u			no-source;p1;fallback	low	low|u	4836	BAD	n			金額單位詞
+共	u			no-source;fallback	low	low|u	2472	SOFT				形／副／介／動多類，難定主標
+出名	u			no-source;fallback	low	low|u	2082	BAD	a,v			有名；成名
+出嚟	u			no-source;fallback	low	low|u	307	BAD	v			粵「出來」
+到手	u			no-source;fallback	low	low|u	3393	BAD	v			得到
+功夫	u			no-source;fallback	low	low|u	4064	BAD	n			武功／本事／時間
+功課	u			no-source;fallback	low	low|u	1511	BAD	n			作業
+卡通片	u			no-source;fallback	low	low|u	4125	BAD	n			卡通影片
+去邊	u			no-source;p1;fallback	low	low|u	1301	BAD	v			粵「去哪」
+可	u			no-source;fallback	low	low|u	334	SOFT				能願／轉折／許可多類
+同人	u			no-source;fallback	low	low|u	1166	BAD	n			同好／同人誌；同伴
+哼	u			no-source;fallback	low	low|u	1188	BAD	x			嘆詞
+單	u			no-source;p1;fallback	low	low|u	1512	SOFT				形／名／副多類
+單純	u			no-source;fallback	low	low|u	3367	BAD	a			形容詞
+噼	u			no-source;fallback	low	low|u	1103	BAD	x			擬聲／嘆
+埋個	u			no-source;p1;fallback	low	low|u	2950	SOFT				粵「再一個」連用，邊介
+夠啦	u			no-source;p1;fallback	low	low|u	4965	BAD	a,x			「夠了」形／嘆
+大嗌	u			no-source;fallback	low	low|u	1564	BAD	v			大叫
+大師	u			no-source;fallback	low	low|u	4292	BAD	n			師傅／大師
+大把	u			no-source;fallback	low	low|u	2084	BAD	a,r			粵「好多」
+大盤	u			no-source;p1;fallback	low	low|u	2689	BAD	n			股市大盤／大盤子
+大膽	u			no-source;fallback	low	low|u	3857	BAD	a			勇敢
+失戀	u			no-source;fallback	low	low|u	4011	BAD	v			失去戀愛
+奇	u			no-source;fallback	low	low|u	3368	BAD	a			奇怪（主）
+女子	u			no-source;fallback	low	low|u	4860	BAD	n			女性
+女生	u			no-source;fallback	low	low|u	1866	BAD	n			女學生／女性
+好奇	u			no-source;fallback	low	low|u	700	BAD	a			好奇
+好象	u			no-source;p1;fallback	low	low|u	3675	BAD	r,v			同「好像」
+如常	u			no-source;fallback	low	low|u	4968	BAD	a,r			如常／照常
+安	u			no-source;p1;fallback	low	low|u	4294	SOFT				形／動／名多類
+小雪	u			no-source;fallback	low	low|u	2219	BAD	n			節氣／專名
+就在	u			no-source;p1;fallback	low	low|u	2603	SOFT				副+介連用，邊介
+屋企人	u			no-source;fallback	low	low|u	1199	BAD	n			家人
+屍	u			no-source;fallback	low	low|u	3728	BAD	n			屍體
+嵐嵐	u			no-source;p1;fallback	low	low|u	1878	BAD	n			專名
+幼稚園	u			no-source;fallback	low	low|u	2067	BAD	n			幼兒園
+床	u			no-source;p1;fallback	low	low|u	484	BAD	n			床鋪
+得閒	u			no-source;fallback	low	low|u	895	BAD	a,v			粵有空
+心急	u			no-source;fallback	low	low|u	3262	BAD	a			着急
+情願	u			no-source;fallback	low	low|u	4709	BAD	a,v			寧願／甘願
+愈來愈	u			no-source;fallback	low	low|u	3299	BAD	r			越來越
+慢	u			no-source;fallback	low	low|u	1552	BAD	a			緩慢
+應	u			no-source;p1;fallback	low	low|u	1255	SOFT				應須／答應／應聲多類
+成晚	u			no-source;fallback	low	low|u	4078	BAD	r			粵整晚
+成爲	u			no-source;fallback	low	low|u	427	BAD	v			成為
+我度	u			no-source;p1;fallback	low	low|u	3641	BAD	x			粵「我這兒／我處」處所虛
+我怕	u			no-source;p1;fallback	low	low|u	2284	OK				主語+動截斷
+我攬	u			no-source;p1;fallback	low	low|u	4711	OK				主語+動截斷
+房門	u			no-source;fallback	low	low|u	3165	BAD	n			房門
+扁	u			no-source;fallback	low	low|u	2681	BAD	a,v			扁平；弄扁
+打人	u			no-source;fallback	low	low|u	4875	BAD	v			打人
+抽出	u			no-source;p1;fallback	low	low|u	4712	BAD	v			抽出
+插件	u			no-source;p1;fallback	low	low|u	4170	BAD	n			plugin
+換衫	u			no-source;fallback	low	low|u	2570	BAD	v			換衣服
+收埋	u			no-source;fallback	low	low|u	2123	BAD	v			粵收藏／藏起
+攻	u			no-source;fallback	low	low|u	4198	BAD	v			攻擊
+新抱	u			no-source;fallback	low	low|u	4983	BAD	n			粵兒媳
+斷	u			no-source;fallback	low	low|u	1724	BAD	v			斷開（主）
+施工	u			no-source;fallback	low	low|u	4264	BAD	n,v			施工
+是但	u			no-source;fallback	low	low|u	2883	BAD	a,r			粵隨便
+是個	u			no-source;p1;fallback	low	low|u	1544	OK				係+量截斷
+晒	u			no-source;p1;fallback	low	low|u	206	SOFT				粵助詞／曬多類
+曦	u			no-source;fallback	low	low|u	1456	BAD	n			晨曦／名用字
+有了	u			no-source;p1;fallback	low	low|u	2499	OK				動+助截斷
+有事	u			no-source;fallback	low	low|u	1296	BAD	v			有事情
+林布	u			no-source;p1;fallback	low	low|u	2169	OK				罕用／疑專名，難定
+某	u			no-source;fallback	low	low|u	1391	BAD	x			不定指代，虛
+梗係	u			no-source;fallback	low	low|u	537	BAD	r			粵當然
+正在	u			no-source;fallback	low	low|u	2355	BAD	r			進行體副
+歲的	u			no-source;p1;fallback	low	low|u	3989	OK				截斷碎片
+殭屍	u			no-source;fallback	low	low|u	2632	BAD	n			zombie
+沿途	u			no-source;fallback	low	low|u	4653	BAD	n,r			一路上
+淡	u			no-source;fallback	low	low|u	2819	BAD	a			清淡
+淺	u			no-source;p1;fallback	low	low|u	3118	BAD	a			不深
+渣	u			no-source;fallback	low	low|u	1541	BAD	a,n			渣滓；差劣
+熊仔	u			no-source;fallback	low	low|u	1319	BAD	n			小熊
+熱	u			no-source;fallback	low	low|u	701	BAD	a			熱（主）
+熱鬧	u			no-source;fallback	low	low|u	4597	BAD	a			熱鬧
+爽身粉	u			no-source;fallback	low	low|u	3408	BAD	n			talcum powder
+班長	u			no-source;fallback	low	low|u	907	BAD	n			class monitor
+理性	u			no-source;fallback	low	low|u	3380	BAD	a,n			理性的／理性
+的事	u			no-source;p1;fallback	low	low|u	2146	OK				結構助+名截斷
+的確	u			no-source;fallback	low	low|u	1003	BAD	r			確實
+真係	u			no-source;fallback	low	low|u	59	BAD	r			粵真的
+眼光	u			no-source;fallback	low	low|u	3828	BAD	n			眼界／目光
+睇見	u			no-source;fallback	low	low|u	4601	BAD	v			粵看見
+知有	u			no-source;p1;fallback	low	low|u	3204	OK				截斷
+礦場	u			no-source;fallback	low	low|u	3205	BAD	n			mine site
+移	u			no-source;fallback	low	low|u	3064	BAD	v			移動
+突破	u			no-source;fallback	low	low|u	4311	BAD	n,v			breakthrough
+符紙	u			no-source;p1;fallback	low	low|u	4902	BAD	n			符籙
+等陣	u			no-source;fallback	low	low|u	1702	BAD	r,v			粵等一下／待會兒
+算是	u			no-source;fallback	low	low|u	3495	BAD	v			算作
+約	u			no-source;fallback	low	low|u	515	SOFT				約定／大約／約數多類
+紅	u			no-source;p1;fallback	low	low|u	905	BAD	a,n			紅色／紅
+組	u			no-source;fallback	low	low|u	3740	BAD	n,v			小組／組織
+練	u			no-source;fallback	low	low|u	2340	BAD	v			練習
+老土	u			no-source;fallback	low	low|u	3878	BAD	a			粵過時
+者	u			no-source;fallback	low	low|u	683	BAD	x			助／指人後綴，虛
+而家	u			no-source;fallback	low	low|u	114	BAD	r			粵現在
+聰明	u			no-source;fallback	low	low|u	3095	BAD	a			smart
+肚臍	u			no-source;fallback	low	low|u	3413	BAD	n			navel
+自私	u			no-source;fallback	low	low|u	3655	BAD	a			selfish
+舖頭	u			no-source;fallback	low	low|u	4815	BAD	n			粵店鋪
+著	u			no-source;fallback	low	low|u	100	SOFT				着／著多音多類
+衆	u			no-source;fallback	low	low|u	4619	BAD	n			眾人
+行路	u			no-source;fallback	low	low|u	4729	BAD	v			走路
+褲袋	u			no-source;fallback	low	low|u	3979	BAD	n			褲袋
+要不要	u			no-source;p1;fallback	low	low|u	3997	BAD	v			V-not-V
+計	u			no-source;fallback	low	low|u	1470	BAD	n,v			計策／計算
+詩音	u			no-source;p1;fallback	low	low|u	829	BAD	n			專名／詩之音
+識	u			no-source;fallback	low	low|u	112	BAD	v			粵知道／識得
+識得	u			no-source;fallback	low	low|u	4253	BAD	v			會／認識
+迅速	u			no-source;fallback	low	low|u	3458	BAD	a,r			迅速
+這裡	u			no-source;fallback	low	low|u	2522	BAD	r,x			指示處所
+遲早	u			no-source;fallback	low	low|u	4166	BAD	r			早晚
+邊個	u			no-source;fallback	low	low|u	97	BAD	x			粵誰
+部	u			no-source;fallback	low	low|u	636	SOFT				量詞／部門／部隊多類
+都很	u			no-source;p1;fallback	low	low|u	4626	OK				副連用截斷
+都能	u			no-source;p1;fallback	low	low|u	3178	OK				副+能截斷
+阿南	u			no-source;p1;fallback	low	low|u	1232	BAD	n			專名
+阿嘉	u			no-source;p1;fallback	low	low|u	1277	BAD	n			專名
+陳	u			no-source;fallback	low	low|u	554	SOFT				姓氏名 vs 陳列動
+順利	u			no-source;fallback	low	low|u	2434	BAD	a,r			順利
+顯然	u			no-source;fallback	low	low|u	4169	BAD	a,r			顯然
+魔風	u			no-source;p1;fallback	low	low|u	4826	SOFT				域內罕用合成，邊介
+麪	u			no-source;fallback	low	low|u	3181	BAD	n			麵

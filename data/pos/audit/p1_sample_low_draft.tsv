@@ -1,0 +1,74 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一點	n			cow-single	low	low|draft	1264	SOFT				primary n OK for「點／少量」；常見副詞用法「一點也不」→ 日後可 n,r
+不能	v			cow-single	low	low|draft	2180	OK				
+串	n			cow-single	low	low|draft	1213	SOFT				primary n OK（串燒／一串）；亦常作動「串連」→ 日後可 n,v
+今晚	n			cow-single	low	low|draft	523	OK				
+佔	v			cow-single	low	low|draft	3628	OK				
+例外	n			cow-single	low	low|draft	3946	OK				
+信息	n			cow-single	low	low|draft	4773	OK				
+假期	n			cow-single	low	low|draft	3629	OK				
+偷	v			cow-single	low	low|draft	1935	OK				
+先生	n			cow-single	low	low|draft	521	OK				
+內心	n			cow-single	low	low|draft	1187	OK				
+全	r			cow-single	low	low|draft	1346	OK				
+分鐘	n			cow-single	low	low|draft	560	OK				
+判斷	n			cow-single	low	low|draft	4483	SOFT				primary n OK（判斷力／一個判斷）；亦常作動 → 日後可 n,v
+即時	n			cow-single	low	low|draft	3582	BAD	a,r			primary 錯：即時＝形／副（即時消息／即時回覆），非常名；名義用「瞬間」
+受	v			cow-single;p1	low	low|draft	1014	OK				
+叫	v			cow-single	low	low|draft	80	OK				
+喂	n			cow-single	low	low|draft	90	BAD	x,v			primary 錯：喂主為嘆（虛 x）；餵食義為動；非名
+回到	v			cow-single	low	low|draft	2694	OK				
+地位	n			cow-single	low	low|draft	4187	OK				
+基於	v			cow-single	low	low|draft	2999	BAD	x			primary 錯：基於＝介／虛（based on），非動
+報告	n			cow-single	low	low|draft	3951	SOFT				primary n OK（一份報告）；亦常作動「報告長官」→ 日後可 n,v
+報答	v			cow-single	low	low|draft	4780	OK				
+塔	n			cow-single	low	low|draft	1316	OK				
+大多數	n			cow-single	low	low|draft	4781	OK				
+大部份	r			cow-single	low	low|draft	2587	SOFT				primary r OK（大部份都…）；名物「大部份人」近 大多數→ 日後可 n,r
+天堂	n			cow-single	low	low|draft	4231	OK				
+失蹤	v			cow-single	low	low|draft	1278	OK				
+子彈	n			cow-single	low	low|draft	3910	OK				
+守	v			cow-single	low	low|draft	4367	OK				
+將軍	n			cow-single	low	low|draft	1746	OK				
+應付	v			cow-single	low	low|draft	4233	OK				
+星星	n			cow-single	low	low|draft	1799	OK				
+時候	n			cow-single	low	low|draft	129	OK				
+最少	n			cow-single	low	low|draft	3969	BAD	r			primary 錯：最少主為副（at least）；亦可形「最少的」→ 日後 a,r
+氣	n			cow-single	low	low|draft	1180	OK				
+水平	n			cow-single	low	low|draft	3481	OK				
+沉默	n			cow-single	low	low|draft	1809	SOFT				primary n OK（打破沉默）；亦常形／動 → 日後可 n,a 或 n,v
+浴室	n			cow-single	low	low|draft	3337	OK				
+液體	n			cow-single	low	low|draft	4516	OK				
+漏	v			cow-single	low	low|draft	3241	OK				
+炸彈	n			cow-single	low	low|draft	4027	OK				
+無助	n			cow-single	low	low|draft	4722	BAD	a			primary 錯：無助＝形（感到無助），非名
+燈	n			cow-single	low	low|draft	739	OK				
+發燒	n			cow-single	low	low|draft	4244	BAD	v,n			primary 錯：發燒主為動（我發燒）；病名可附 n
+的士	n			cow-single	low	low|draft	942	OK				
+看	v			cow-single	low	low|draft	750	OK				
+瞬間	n			cow-single	low	low|draft	1054	OK				
+程度	n			cow-single	low	low|draft	1826	OK				
+窗口	n			cow-single	low	low|draft	2703	OK				
+站	v			cow-single	low	low|draft	774	SOFT				primary v OK（站立）；站亦可名（車站／站點）→ 日後可 v,n
+算	v			cow-single	low	low|draft	330	OK				
+簡單	n			cow-single	low	low|draft	571	BAD	a			primary 錯：簡單＝形，非名
+終點	n			cow-single	low	low|draft	1130	OK				
+老闆	n			cow-single	low	low|draft	1661	OK				
+聞	v			cow-single	low	low|draft	1542	OK				
+腦	n			cow-single	low	low|draft	1983	OK				
+舐	v			cow-single	low	low|draft	2417	OK				
+茶	n			cow-single	low	low|draft	1320	OK				
+草	n			cow-single	low	low|draft	3527	OK				
+蛇	n			cow-single	low	low|draft	1404	OK				
+蠢	a			cow-single	low	low|draft	3414	OK				
+試	v			cow-single	low	low|draft	699	OK				
+買	v			cow-single;p1	low	low|draft	152	OK				
+路線	n			cow-single	low	low|draft	4998	OK				
+迫	v			cow-single	low	low|draft	3490	OK				
+迷宮	n			cow-single	low	low|draft	2128	OK				
+逐	v			cow-single	low	low|draft	3887	OK				
+錢	n			cow-single	low	low|draft	227	OK				
+陰	n			cow-single;p1	low	low|draft	2174	OK				
+面	n			cow-single	low	low|draft	249	OK				
+鞭	n			cow-single	low	low|draft	4333	OK				
+鼠標	n			cow-single	low	low|draft	4272	OK				

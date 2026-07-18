@@ -198,7 +198,8 @@ _LEN4_N_SUFFIXES = (
     "主義", "分子", "機構", "組織", "部門", "單位", "人員", "人士", "專家", "學者",
 )
 
-_VERBISH_SUFFIX = ("掉", "完", "起", "過", "來", "去", "好", "住", "開", "上", "下")
+# p1-audit: only strong resultative endings (好/上/下/來/過 caused false v on 只好/以上/原來…)
+_VERBISH_SUFFIX = ("掉", "完", "住", "開")
 
 
 def _looks_numeral(lit: str) -> bool:

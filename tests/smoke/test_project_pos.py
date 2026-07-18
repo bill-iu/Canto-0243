@@ -111,6 +111,23 @@ def test_p1_essay_top_k_complete() -> None:
     assert meta.get("p1", {}).get("k") == 5000
 
 
+def test_p1_audit_artifacts() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta
+    from ingest.project_pos_audit import sample_size_for
+
+    assert sample_size_for(0) == 0
+    assert sample_size_for(10) == 10
+    assert sample_size_for(245) == 50
+    assert sample_size_for(2962) == 149
+    meta = load_meta()
+    assert "p1_audit" in meta
+    assert meta["p1_audit"].get("sample_n") == 322
+    assert Path("data/pos/audit/p1_audit_report.md").is_file()
+    assert Path("data/pos/audit/p1_sample_verdicts.tsv").is_file()
+
+
 def test_trust_tiers() -> None:
     assert pos_trust("seed") == "high"
     assert pos_trust("audit-high;review") == "high"
@@ -149,6 +166,7 @@ def main() -> None:
     test_carrier_payload_shape()
     test_p0_mother_complete()
     test_p1_essay_top_k_complete()
+    test_p1_audit_artifacts()
     test_trust_tiers()
     print("test_project_pos: ok")
 
