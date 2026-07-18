@@ -73,3 +73,6 @@ Thumbs.db
 
 # Local-only research notes (keep on disk; never push)
 docs/research/
+
+# Local-only research scripts (keep on disk; never push)
+scripts/research/
