@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -202,5 +202,45 @@
       }
     ],
     "report": "data/pos/audit/p3_gate_quality_report.md"
+  },
+  "full_system_audit": {
+    "seed": 20260720,
+    "mixed_sample_n": 2411,
+    "mixed_ok_rate": 0.4036,
+    "mixed_note": "includes mass u under-tag; not a pass criterion",
+    "gate_reconfirm": {
+      "p0": {
+        "ok_rate": 0.9919,
+        "pass": true,
+        "sample_n": 124
+      },
+      "p1": {
+        "ok_rate": 0.98,
+        "pass": true,
+        "sample_n": 50
+      },
+      "p2": {
+        "ok_rate": 0.98,
+        "pass": true,
+        "rounds": [
+          "r7",
+          "r8"
+        ],
+        "sample_n": 50
+      },
+      "p3": {
+        "ok_rate": 0.95,
+        "pass": true,
+        "sample_n": 60
+      }
+    },
+    "pass": true,
+    "threshold": 0.9,
+    "criterion": "gate-only (or high-trust idiom) ok_rate > 0.90 per phase",
+    "report": "data/pos/audit/full_r1/FULL_SYSTEM_AUDIT_REPORT.md",
+    "fixes": {
+      "full_r1_pos": 1426,
+      "full_r1_family_clear": 39
+    }
   }
 }

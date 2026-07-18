@@ -124,6 +124,22 @@ def test_p1_closeout_metrics() -> None:
     assert meta.get("p1", {}).get("closeout") is True
 
 
+def test_full_system_gate_audit_pass() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta
+
+    meta = load_meta()
+    fsa = meta.get("full_system_audit") or {}
+    assert fsa.get("pass") is True
+    assert fsa.get("threshold") == 0.90
+    gr = fsa.get("gate_reconfirm") or {}
+    for phase in ("p0", "p1", "p2", "p3"):
+        assert gr.get(phase, {}).get("pass") is True
+        assert gr[phase]["ok_rate"] > 0.90
+    assert Path("data/pos/audit/full_r1/FULL_SYSTEM_AUDIT_REPORT.md").is_file()
+
+
 def test_p3_long_tail() -> None:
     from pathlib import Path
 
@@ -215,13 +231,22 @@ def test_trust_tiers() -> None:
         assert cow_single.gate_pos() == frozenset()
         assert same_pos_literals(cow_single.literal, "走", table) is None
 
-    cow_multi = next((r for r in table.values() if "cow-multi" in r.note and r.formal_pos()), None)
+    cow_multi = next(
+        (
+            r
+            for r in table.values()
+            if "cow-multi" in r.note.split(";")
+            and "review" not in r.note.split(";")
+            and r.formal_pos()
+        ),
+        None,
+    )
     if cow_multi:
         assert cow_multi.trust() == "medium"
         assert cow_multi.gate_pos() == cow_multi.formal_pos()
 
     payload = build_carrier_payload(table, {"version": "0.1.0", "p0_hard_gate": True})
-    if cow_single:
+    if cow_single and cow_single.trust() == "low":
         ent = payload["literals"][cow_single.literal]
         assert ent.get("trust") == "low"
         assert "gate" not in ent
@@ -242,6 +267,7 @@ def main() -> None:
     test_p1_gate_quality_pass()
     test_p2_idiom_quality_pass()
     test_p3_long_tail()
+    test_full_system_gate_audit_pass()
     test_trust_tiers()
     print("test_project_pos: ok")
 

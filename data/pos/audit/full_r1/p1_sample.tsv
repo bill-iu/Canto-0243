@@ -1,0 +1,293 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p1	一句話	n,r			no-source;fallback;p1-audit;review;NP「一句話」；亦作「總之」副用	high	high|gate|plain	OK				
+p1	世上	n			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|gate|plain	OK				
+p1	中	n,v			cow-multi;p1-audit;review;自由形「中」弱；名／方位名＋動「中獎／中計」	high	high|gate|plain	OK				
+p1	也好	x			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；讓步／語氣，非動	high	high|gate|plain	OK				
+p1	件	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	但係	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	作爲	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	佢	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	依個	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	值	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	做過	v			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|gate|plain	OK				
+p1	停留	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	傳來	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|gate|plain	OK				
+p1	兜過	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|gate|plain	OK				
+p1	分開	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	原來	r			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；副「原先／原來如此」	high	high|gate|plain	OK				
+p1	同人	n			no-source;fallback;p1-audit;review;同好／同人誌；同伴	high	high|gate|plain	OK				
+p1	哂	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	唔	r,x			heuristic	high	high|gate|plain	OK				
+p1	啊	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	嗯	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	嘉	a,n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	SOFT				自由形主名／專名構件；a 薄，閘用 multi 可
+p1	嘢	n			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	四	x			numeral;heuristic	high	high|gate|plain	OK				
+p1	思考	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	愈來愈	r			no-source;fallback;p1-audit;review;越來越	high	high|gate|plain	OK				
+p1	成日	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	扯	v			audit-high;review	high	high|gate|plain	OK				
+p1	提供	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	SOFT				主標動；名物化 n 薄，閘用 multi 可
+p1	支持	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	有事	v			no-source;fallback;p1-audit;review;有事情	high	high|gate|plain	OK				
+p1	有時	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	消耗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	淺	a			no-source;p1;fallback;p1-audit;review;不深	high	high|gate|plain	OK				
+p1	當	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	的確	r			no-source;fallback;p1-audit;review;確實	high	high|gate|plain	OK				
+p1	相	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review;p1-audit;review;自由詞主要係名「相／影相」；a/v 假陽會毒同形／動詞閘	high	high|gate|plain	OK				
+p1	看完	v			verb-suffix;p1;heuristic	high	high|gate|plain	OK				
+p1	睇住	v			verb-suffix;heuristic	high	high|gate|plain	OK				
+p1	砌	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	移動	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	突然	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	紅	a,n			no-source;p1;fallback;p1-audit;review;紅色／紅	high	high|gate|plain	OK				
+p1	細	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	耐	a,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	聽	v			cow-single;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	若	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p1	處理	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p1	行	n,v			no-source;p1;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p1	這個問題	n			len4-noun-heuristic;p1	high	high|gate|plain	SOFT				短語 NP；閘用當名可，非詞位
+p1	哈哈哈哈	u	idiom		no-source;p1;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD				笑擬聲重疊非固定熟語；u 可留；空 fix_family 清 idiom
+p1	咗去	u			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|u|plain	OK				體貌殘片；u 合理
+p1	咗好	u			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review	high	high|u|plain	OK				體貌殘片；u 合理
+p1	我過	u			verb-suffix;p1;heuristic;p1-audit;review;verb-suffix假陽；切分殘片，詞類未定	high	high|u|plain	OK				切分殘片；u 合理
+p1	一半	n			cow-single	low	low|low|plain	OK				
+p1	事實	n			cow-single	low	low|low|plain	OK				
+p1	享受	v			cow-single	low	low|low|plain	SOFT				主標動可；名物化常見，升 trust 可 n,v
+p1	人物	n			cow-single	low	low|low|plain	OK				
+p1	保持	v			cow-single	low	low|low|plain	OK				
+p1	保險	n			cow-single	low	low|low|plain	OK				
+p1	先生	n			cow-single	low	low|low|plain	OK				
+p1	刀	n			cow-single	low	low|low|plain	OK				
+p1	卡	n			cow-single	low	low|low|plain	SOFT				名可；動「卡住」常見
+p1	原因	n			cow-single	low	low|low|plain	OK				
+p1	叉	n			cow-single	low	low|low|plain	SOFT				名可；動「叉住」常見
+p1	口罩	n			cow-single	low	low|low|plain	OK				
+p1	叮	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	和平	n			cow-single	low	low|low|plain	OK				
+p1	問	v			cow-single;p1	low	low|low|plain	OK				
+p1	回覆	n			cow-single	low	low|low|plain	SOFT				名可；動用法極常見
+p1	圓形	n			cow-single	low	low|low|plain	OK				
+p1	地板	n			cow-single	low	low|low|plain	OK				
+p1	地獄	n			cow-single	low	low|low|plain	OK				
+p1	失望	n			cow-single	low	low|low|plain	BAD	a			stative 形；n 假陽
+p1	學校	n			cow-single	low	low|low|plain	OK				
+p1	學生	n			cow-single	low	low|low|plain	OK				
+p1	尊重	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	尷尬	n			cow-single	low	low|low|plain	BAD	a			stative 形；n 假陽
+p1	巴士	n			cow-single	low	low|low|plain	OK				
+p1	廣場	n			cow-single	low	low|low|plain	OK				
+p1	廣播	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	引起	v			cow-single	low	low|low|plain	OK				
+p1	後退	v			cow-single	low	low|low|plain	OK				
+p1	性格	n			cow-single	low	low|low|plain	OK				
+p1	想起	v			cow-single	low	low|low|plain	OK				
+p1	懶	a			cow-single	low	low|low|plain	OK				
+p1	技能	n			cow-single	low	low|low|plain	OK				
+p1	接近	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	提示	v			cow-single	low	low|low|plain	SOFT				主標動可；名物化常見
+p1	斜	n			cow-single	low	low|low|plain	BAD	a			自由形「斜」；n 假陽
+p1	新聞	n			cow-single	low	low|low|plain	OK				
+p1	方便	n			cow-single	low	low|low|plain	BAD	a			形「方便」；n 假陽
+p1	明白	v			cow-single	low	low|low|plain	OK				
+p1	朱古力	n			cow-single	low	low|low|plain	OK				
+p1	東南	n			cow-single	low	low|low|plain	OK				
+p1	檔	n			cow-single	low	low|low|plain	OK				
+p1	毀滅	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	氣	n			cow-single	low	low|low|plain	OK				
+p1	氣味	n			cow-single	low	low|low|plain	OK				
+p1	液體	n			cow-single	low	low|low|plain	OK				
+p1	港	n			cow-single	low	low|low|plain	OK				
+p1	無能	n			cow-single	low	low|low|plain	BAD	a			形「無能」；n 假陽
+p1	狼	n			cow-single	low	low|low|plain	OK				
+p1	盆	n			cow-single	low	low|low|plain	OK				
+p1	盡力	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	看	v			cow-single	low	low|low|plain	OK				
+p1	矛盾	n			cow-single	low	low|low|plain	SOFT				名可；形「矛盾」常見
+p1	砍	n			cow-single	low	low|low|plain	BAD	v			自由詞係動；n 假陽
+p1	硬盤	n			cow-single	low	low|low|plain	OK				
+p1	磨	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	空氣	n			cow-single	low	low|low|plain	OK				
+p1	筷子	n			cow-single	low	low|low|plain	OK				
+p1	精液	n			cow-single	low	low|low|plain	OK				
+p1	纜車	n			cow-single	low	low|low|plain	OK				
+p1	聲音	n			cow-single	low	low|low|plain	OK				
+p1	聽到	v			cow-single	low	low|low|plain	OK				
+p1	花	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	蛇	n			cow-single	low	low|low|plain	OK				
+p1	西北	n			cow-single	low	low|low|plain	OK				
+p1	觀	v			cow-single	low	low|low|plain	SOFT				主標動可；名構件常見
+p1	講好	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low	low	low|low|plain	OK				結果補語動可
+p1	貓	n			cow-single	low	low|low|plain	OK				
+p1	貓仔	n			cow-single	low	low|low|plain	OK				
+p1	資料	n			cow-single	low	low|low|plain	OK				
+p1	轉變	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	迫	v			cow-single	low	low|low|plain	OK				
+p1	追求	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	過去	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	重複	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p1	鏈接	v			cow-single	low	low|low|plain	SOFT				主標動可；名「鏈接」常見
+p1	門	n			cow-single	low	low|low|plain	OK				
+p1	隔離	n			cow-single	low	low|low|plain	SOFT				名可；動「隔離」極常見
+p1	難以	a			cow-single	low	low|low|plain	BAD	r			副「難以+VP」；非形
+p1	電子	n			cow-single	low	low|low|plain	OK				
+p1	靠	v			cow-single	low	low|low|plain	OK				
+p1	預告	v			cow-single	low	low|low|plain	SOFT				主標動可；名物化常見
+p1	頭髮	n			cow-single	low	low|low|plain	OK				
+p1	飽	a			cow-single	low	low|low|plain	OK				
+p1	一模一樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,r			固定熟語；形／副「完全相同」；family 留
+p1	不知不覺	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	r			固定熟語；副；family 留
+p1	今時今日	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n,r			固定熟語；名／副「現今」；family 留
+p1	自言自語	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v			固定熟語；動；family 留
+p1	越來越多	u	idiom		no-source;p1;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	r			固定熟語模式；副；family 留
+p1	一講	u			no-source;p1;fallback	low	low|u|plain	SOFT				「一講就…」構式；u 暫可
+p1	三星	u			no-source;p1;fallback	low	low|u|plain	BAD	n			專名／星級名
+p1	上課	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	上門	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	下手	u			no-source;fallback	low	low|u|plain	BAD	v			動「動手」
+p1	不好意思	u			no-source;fallback	low	low|u|plain	BAD	a			形／客套
+p1	不得不	u			no-source;fallback	low	low|u|plain	BAD	r			副／情態
+p1	丫嘛	u			no-source;p1;fallback	low	low|u|plain	BAD	x			語氣助
+p1	中年	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	今個	u			no-source;p1;fallback	low	low|u|plain	BAD	x			指示＋量（今個月）
+p1	仔細	u			no-source;fallback	low	low|u|plain	BAD	a			形／副用主 a
+p1	估到	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	你是	u			no-source;p1;fallback	low	low|u|plain	OK				人稱＋係截斷
+p1	個月	u			no-source;fallback	low	low|u|plain	OK				量＋名截斷（缺數）
+p1	優化	u			no-source;fallback	low	low|u|plain	BAD	v			動（可附 n）
+p1	先講	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動短語
+p1	入房	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動
+p1	再次	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	初初	u			no-source;fallback	low	low|u|plain	BAD	r			副「起初」
+p1	勾	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	千祈	u			no-source;fallback	low	low|u|plain	BAD	r			副「務必」
+p1	卒	u			no-source;fallback	low	low|u|plain	SOFT				多類（卒子／卒之／死亡）；u 暫可
+p1	又是	u			no-source;p1;fallback	low	low|u|plain	BAD	r,x			副／連用
+p1	又講	u			no-source;p1;fallback	low	low|u|plain	SOFT				副＋動連用；u 暫可
+p1	口供	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	否則	u			no-source;fallback	low	low|u|plain	BAD	x			連
+p1	咁鬼	u			no-source;fallback	low	low|u|plain	BAD	r			程度副
+p1	喫飯	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	嘆	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	嚟到	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	四圍	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副「四周」
+p1	四川	u			no-source;fallback	low	low|u|plain	BAD	n			地名
+p1	地個	u			no-source;p1;fallback	low	low|u|plain	OK				截斷殘片
+p1	堂	u			no-source;fallback	low	low|u|plain	SOFT				名／量多類；u 暫可
+p1	外賣	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	多次	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	大力	u			no-source;fallback	low	low|u|plain	BAD	a,r			形／副
+p1	大戰	u			no-source;fallback	low	low|u|plain	BAD	n,v			名動兩可
+p1	好話	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	家裏	u			no-source;fallback	low	low|u|plain	BAD	n			處所名
+p1	對面	u			no-source;fallback	low	low|u|plain	BAD	n			處所名
+p1	小海	u			no-source;p1;fallback	low	low|u|plain	BAD	n			專名
+p1	巨哥	u			no-source;p1;fallback	low	low|u|plain	BAD	n			專名／暱稱
+p1	平	u			no-source;fallback	low	low|u|plain	SOFT				形／名／動多類；u 暫可
+p1	廟	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	廢事	u			no-source;fallback	low	low|u|plain	BAD	a,v			形／動「多餘／唔使」
+p1	得多	u			no-source;fallback	low	low|u|plain	BAD	r			程度副
+p1	心裡面	u			no-source;p1;fallback	low	low|u|plain	BAD	n			處所名
+p1	心諗	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	快手	u			no-source;fallback	low	low|u|plain	BAD	n			名（App／手快）
+p1	我入	u			no-source;p1;fallback	low	low|u|plain	OK				主＋動截斷
+p1	我市	u			no-source;p1;fallback	low	low|u|plain	OK				截斷／公文殘片
+p1	我怕	u			no-source;p1;fallback	low	low|u|plain	OK				主＋動截斷
+p1	手掌	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	手腳	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	扶	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	抖	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	捽	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	改	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	政	u			no-source;fallback	low	low|u|plain	OK				黏着語素；自由用弱
+p1	教畜	u			no-source;fallback	low	low|u|plain	BAD	n			名（貶稱）
+p1	星	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	更是	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	最多	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	有意	u			no-source;fallback	low	low|u|plain	BAD	a,v			形／動
+p1	有限	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	朝頭早	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副「早上」
+p1	正常	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	正話	u			no-source;fallback	low	low|u|plain	BAD	r			副「啱啱」（亦可 n）
+p1	死者	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	注定	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動
+p1	淫	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	溝女	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	漢堡包	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	無所謂	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	熟	u			no-source;p1;fallback	low	low|u|plain	BAD	a			形
+p1	特登	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	狗仔	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	琴日	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副「昨天」
+p1	琴晚	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副「昨晚」
+p1	界	u			no-source;fallback	low	low|u|plain	SOFT				名／動多類；u 暫可
+p1	番鹼	u			no-source;p1;fallback	low	low|u|plain	BAD	n			名（肥皂）
+p1	癡線	u			no-source;p1;fallback	low	low|u|plain	BAD	a			形
+p1	發叔	u			no-source;p1;fallback	low	low|u|plain	BAD	n			專名
+p1	皓	u			no-source;fallback	low	low|u|plain	OK				罕／名構件；u 合理
+p1	盡量	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	直至	u			no-source;fallback	low	low|u|plain	BAD	x			介／連
+p1	眼望	u			no-source;p1;fallback	low	low|u|plain	SOFT				疑截斷；亦可 v
+p1	眼色	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	睡	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	神父	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	稱爲	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	立刻	u			no-source;fallback	low	low|u|plain	BAD	r			副
+p1	笨	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	篤	u			no-source;fallback	low	low|u|plain	SOFT				動／量多類；u 暫可
+p1	絲襪	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	老細	u			no-source;fallback	low	low|u|plain	BAD	n			名「老闆」
+p1	而不是	u			no-source;p1;fallback	low	low|u|plain	BAD	x			連
+p1	胸口	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	臺灣	u			no-source;fallback	low	low|u|plain	BAD	n			地名
+p1	舊	u			no-source;p1;fallback	low	low|u|plain	BAD	a			形
+p1	舒服	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	船船	u			no-source;p1;fallback	low	low|u|plain	SOFT				重疊／兒語；u 暫可
+p1	茄	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	表情	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	表白	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	袋袋	u			no-source;p1;fallback	low	low|u|plain	SOFT				重疊；主名，u 暫可
+p1	複雜	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	要有	u			no-source;p1;fallback	low	low|u|plain	OK				能願＋有截斷
+p1	訓	u			no-source;fallback	low	low|u|plain	BAD	v			動（瞓／訓練）
+p1	說了	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動＋體貌
+p1	課室	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	調用	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動
+p1	講解	u			no-source;fallback	low	low|u|plain	BAD	v			動（可附 n）
+p1	賊	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	走入	u			no-source;p1;fallback	low	low|u|plain	BAD	v			動
+p1	輕鬆	u			no-source;fallback	low	low|u|plain	BAD	a			形
+p1	轆	u			no-source;fallback	low	low|u|plain	BAD	n,v			名／動
+p1	途中	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副
+p1	過人	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	過你	u			no-source;p1;fallback	low	low|u|plain	OK				動＋代截斷
+p1	那個	u			no-source;fallback	low	low|u|plain	BAD	x			指示
+p1	閃	u			no-source;fallback	low	low|u|plain	BAD	v			動
+p1	阿玲	u			no-source;p1;fallback	low	low|u|plain	BAD	n			專名
+p1	面紅	u			no-source;fallback	low	low|u|plain	BAD	a,v			形／動
+p1	面色	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	香香	u			no-source;p1;fallback	low	low|u|plain	SOFT				重疊／專名；u 暫可
+p1	馬尾	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	馬戲	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	鬚	u			no-source;fallback	low	low|u|plain	BAD	n			名
+p1	一些	a,n			cow-multi	medium	medium|gate|plain	BAD	x			量／不定指虛；a 假陽會毒同形閘
+p1	不安	a,n			cow-multi	medium	medium|gate|plain	SOFT				主標形；名物化薄，閘用 multi 可
+p1	乾淨	a,n			cow-multi	medium	medium|gate|plain	BAD	a			stative 形；n 假陽會毒同名詞閘
+p1	代	a,n			cow-multi	medium	medium|gate|plain	BAD	n,v			名／動（世代／代替）；a 假陽
+p1	冷	a,n			cow-multi	medium	medium|gate|plain	OK				
+p1	大概	n,r			cow-multi	medium	medium|gate|plain	OK				
+p1	寫	a,v			cow-multi	medium	medium|gate|plain	BAD	v			只係動；a 假陽會毒同形閘
+p1	左右	r,v			cow-multi	medium	medium|gate|plain	OK				
+p1	忙	a,n			cow-multi	medium	medium|gate|plain	OK				
+p1	怕	a,v			cow-multi	medium	medium|gate|plain	OK				
+p1	最後	a,n			cow-multi	medium	medium|gate|plain	BAD	n,r			名／副；a 假陽
+p1	根據	a,n			cow-multi	medium	medium|gate|plain	BAD	n,x			名／介；a 假陽
+p1	滿	a,n			cow-multi	medium	medium|gate|plain	SOFT				主標形；n 薄
+p1	理解	a,n,v			cow-multi	medium	medium|gate|plain	BAD	n,v			真名動；a 假陽會毒同形閘
+p1	經過	r,v			cow-multi	medium	medium|gate|plain	OK				
+p1	轉移	a,n,v			cow-multi	medium	medium|gate|plain	BAD	n,v			真名動；a 假陽
+p1	關	a,v			cow-multi;p1	medium	medium|gate|plain	BAD	n,v			名／動（關閉／關係）；a 假陽
+p1	驚訝	a,n			cow-multi;p1	medium	medium|gate|plain	SOFT				主標形；n 薄
+p1	黑	a,n			cow-multi	medium	medium|gate|plain	OK				

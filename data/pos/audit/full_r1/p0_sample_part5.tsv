@@ -1,0 +1,99 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p0	退還	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	逐鹿中原	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	通俗易懂	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	通宵	u			no-source;fallback	low	low|u|plain	BAD	n,r,v			u 有明確詞類 → n,r,v
+p0	造謠中傷	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	連本帶利	u			no-source;fallback	low	low|u|plain	BAD	r,n			u 有明確詞類 → r,n
+p0	進度	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	運算法則	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	過渡金屬	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	過頭	u			no-source;fallback	low	low|u|plain	BAD	a,r			u 有明確詞類 → a,r
+p0	道德	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	遮風擋雨	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	遲到早退	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	部	u			no-source;fallback	low	low|u|plain	BAD	n,x			u 有明確詞類 → n,x
+p0	酒後失態	u			no-source;fallback	low	low|u|plain	BAD	v,n			u 有明確詞類 → v,n
+p0	野合	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	釘	u			no-source;fallback	low	low|u|plain	BAD	n,v			u 有明確詞類 → n,v
+p0	銀行卡	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	長相	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	長驅直入	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	開源節流	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	閒情逸緻	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	關機	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	關門大吉	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	關門捉賊	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	阻	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	除非	u			no-source;fallback	low	low|u|plain	BAD	x			u 有明確詞類 → x
+p0	陰極射線	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	隔音符號	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	雄心萬丈	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	雖	u			no-source;fallback	low	low|u|plain	BAD	x			u 有明確詞類 → x
+p0	雞毛蒜皮	u			no-source;fallback	low	low|u|plain	BAD	n,a			u 有明確詞類 → n,a
+p0	難以相信	u			no-source;fallback	low	low|u|plain	BAD	a,v			u 有明確詞類 → a,v
+p0	難以解決	u			no-source;fallback	low	low|u|plain	BAD	a,v			u 有明確詞類 → a,v
+p0	難得一見	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	難道	u			no-source;fallback	low	low|u|plain	BAD	r,x			u 有明確詞類 → r,x
+p0	雷	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	電化教育	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	電器	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	電子版	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	電視劇	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	霍爾木茲	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	霹靂啪啦	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	面色	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	頓開茅塞	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	頭疼腦熱	u			no-source;fallback	low	low|u|plain	BAD	n,a			u 有明確詞類 → n,a
+p0	顏面掃地	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	顛倒過來	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	顧全大局	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	風口浪尖	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	風土人情	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	飛車走壁	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	養尊處優	u			no-source;fallback	low	low|u|plain	BAD	v,a			u 有明確詞類 → v,a
+p0	驕傲自大	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	驗孕	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	鬆綁	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	魔鬼	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	鮮血	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	麥蓋提縣	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	黑客帝國	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	齊全	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	龐大	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	一些	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 量／不定
+p0	不安	a,n			cow-multi	medium	medium|gate|plain	OK				a 主；n 薄可
+p0	乾淨	a,n			cow-multi	medium	medium|gate|plain	BAD	a			乾淨＝形；n 假陽毒閘
+p0	代	a,n			cow-multi	medium	medium|gate|plain	SOFT	n,v,x			代＝名／動／虛多類；a 假陽
+p0	光明	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 真 dual
+p0	冷	a,n			cow-multi	medium	medium|gate|plain	OK				a 主；n 冷熱可
+p0	勢均力敵	r,v			cow-multi	medium	medium|gate|plain	BAD	a			勢均力敵＝形；r,v 假陽
+p0	古代	n,r			cow-multi	medium	medium|gate|plain	OK				n,r 可
+p0	古物	a,n			cow-multi	medium	medium|gate|plain	BAD	n			古物＝名；a 假陽
+p0	大概	n,r			cow-multi	medium	medium|gate|plain	OK				n,r 可
+p0	失明	a,n			cow-multi	medium	medium|gate|plain	BAD	a,v			失明＝形／動；n 假陽
+p0	寫	a,v			cow-multi	medium	medium|gate|plain	BAD	v			寫＝動；a 假陽
+p0	左右	r,v			cow-multi	medium	medium|gate|plain	OK				r,v 可
+p0	弄亂	a,v			cow-multi	medium	medium|gate|plain	BAD	v			弄亂＝動；a 假陽
+p0	忙	a,n			cow-multi	medium	medium|gate|plain	BAD	a			忙＝形；n 假陽
+p0	怕	a,v			cow-multi	medium	medium|gate|plain	OK				a,v stative/動可
+p0	昔日	n,r			cow-multi	medium	medium|gate|plain	OK				n,r 可
+p0	最後	a,n			cow-multi	medium	medium|gate|plain	BAD	n,r			最後＝名／副；a 假陽
+p0	根據	a,n			cow-multi	medium	medium|gate|plain	BAD	n,x			根據＝名／介；a 假陽
+p0	概括	a,n,v			cow-multi	medium	medium|gate|plain	BAD	v,n			概括主動；a 假陽
+p0	滿	a,n			cow-multi	medium	medium|gate|plain	OK				a 主；n 薄
+p0	獨身	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 可
+p0	理解	a,n,v			cow-multi	medium	medium|gate|plain	BAD	n,v			理解＝名／動；a 假陽
+p0	瞎	a,n			cow-multi	medium	medium|gate|plain	BAD	a,v			瞎＝形／動；n 假陽
+p0	第十	a,n			cow-multi	medium	medium|gate|plain	BAD	x			序數＝虛；a,n 假陽
+p0	經過	r,v			cow-multi	medium	medium|gate|plain	OK				r,v 可
+p0	繼承	a,v			cow-multi	medium	medium|gate|plain	BAD	v,n			繼承主動；a 假陽
+p0	缺乏	a,n,v			cow-multi	medium	medium|gate|plain	BAD	v			缺乏＝動；a,n 假陽
+p0	老年	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 可
+p0	自始至終	n,r			cow-multi	medium	medium|gate|plain	OK				n,r 可
+p0	超過	r,v			cow-multi	medium	medium|gate|plain	BAD	v			超過＝動；r 假陽
+p0	轉移	a,n,v			cow-multi	medium	medium|gate|plain	BAD	v,n			轉移＝動／名；a 假陽
+p0	遠離	a,n,v			cow-multi	medium	medium|gate|plain	BAD	v			遠離＝動；a,n 假陽
+p0	顫抖	a,n,v			cow-multi	medium	medium|gate|plain	BAD	v			顫抖＝動；a,n 假陽
+p0	驕傲	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 可
+p0	黑	a,n			cow-multi	medium	medium|gate|plain	OK				a,n 可

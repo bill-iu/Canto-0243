@@ -1,0 +1,251 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p0	一個二個	x	idiom		audit-med;review;p2-idiom:一X?Y;p2-idiom-heuristic	high	high|gate|idiom	OK				
+p0	一夕之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	一念之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	一石二鳥	v	idiom		seed	high	high|gate|idiom	OK				
+p0	一臂之力	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	一面之詞	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	不惑之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	不祧之祖	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	中庸之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	乍看之下	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	r	idiom		之字格假陽 n；乍看之下＝副「初看」
+p0	乘人之危	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽會毒同名詞閘
+p0	冥冥之中	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic	high	high|gate|idiom	OK				
+p0	半途而廢	v	idiom		audit-high;review	high	high|gate|idiom	OK				
+p0	可造之材	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	喪家之犬	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	嗟來之食	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	大將之風	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	天作之合	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	天淵之別	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	好事之徒	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	完整無缺	a	idiom		audit-high;review	high	high|gate|idiom	OK				
+p0	平庸之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	彈丸之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	彈指之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	後事之師	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	心腹之患	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	忽然之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	r	idiom		之字格假陽 n；忽然之間＝副
+p0	揮之不去	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽
+p0	有婦之夫	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	權宜之計	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	殺身之禍	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	浩然之氣	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	無稽之談	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	生死之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	生財之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	神來之筆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	禮儀之邦	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	絲綢之路	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	經驗之談	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	致富之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	莫逆之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	處之泰然	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽
+p0	言之過早	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽
+p0	言外之意	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	趁人之危	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽會毒同名詞閘
+p0	趨之若鶩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語；主標 n 假陽
+p0	養育之恩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	鴻鵠之志	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	黔驢之技	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	鼎足之勢	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p0	不禁	r			no-source;fallback;p1-audit;review;副詞「忍不住」	high	high|gate|plain	OK				
+p0	中國社會	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	享樂主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	但	x			heuristic	high	high|gate|plain	OK				
+p0	低落	a			audit-high;review	high	high|gate|plain	OK				
+p0	供油系統	n			audit-med;review	high	high|gate|plain	OK				
+p0	其他	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	分解作用	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	功利主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	區域網絡	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	原核生物	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	句	n,x			audit-high;review	high	high|gate|plain	OK				
+p0	同時	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	呆	a			cow-multi;p1-audit;review;stative 形；v 假陽會毒同動詞閘	high	high|gate|plain	OK				
+p0	唉	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	啓動技術	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	國家機構	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	國立大學	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	大把	a,r			no-source;fallback;p1-audit;review;粵「好多」	high	high|gate|plain	OK				
+p0	姐姐	n			cow-single;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p0	婦科醫生	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	完成	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	就算	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	幫助	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	心理醫生	n			audit-med;review	high	high|gate|plain	OK				
+p0	房	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	所屬單位	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	扁	a,v			no-source;fallback;p1-audit;review;扁平；弄扁	high	high|gate|plain	OK				
+p0	投票	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	投降主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	援助機構	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	教育大學	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	文職人員	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	本本主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	林芝地區	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	槓桿原理	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	樂觀主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	民生主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	氧化作用	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	消耗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	淡	a			no-source;fallback;p1-audit;review;清淡	high	high|gate|plain	OK				
+p0	減少	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	特務組織	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	玩	v			cow-nv-unreviewed;trust-low;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p0	產科醫生	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	發展	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	競爭模式	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	算是	v			no-source;fallback;p1-audit;review;算作	high	high|gate|plain	OK				
+p0	結算	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	給	v,x			heuristic	high	high|gate|plain	OK				
+p0	聯邦政府	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	股票市場	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	自己	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p0	衝突	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	象徵主義	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	軟件技術	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	通訊設備	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	道歉	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				
+p0	陣	n,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	面前	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	high|gate|plain	OK				
+p0	食品工業	n			len4-noun-heuristic	high	high|gate|plain	OK				
+p0	驚	a,v			no-source;fallback;p1-cleanup;canto-heuristic;review	high	high|gate|plain	OK				
+p0	一年四季	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n	idiom		high|u 有明確詞類 → n
+p0	一望無邊	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	一望無際	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	一覽無餘	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	乜乜物物	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n,x	idiom		high|u 有明確詞類 → n,x
+p0	修修補補	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	健健康康	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	勉勉強強	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	原原本本	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	呼哧呼哧	u	idiom		no-source;fallback;p2-idiom:ABAB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	r	idiom		high|u 有明確詞類 → r
+p0	嚴嚴實實	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	大大話話	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	安安心心	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	安安穩穩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	從從容容	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	打打鬧鬧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	指指點點	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	搖搖晃晃	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	敲敲打打	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	方方面面	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n	idiom		high|u 有明確詞類 → n
+p0	昏昏沉沉	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	星星點點	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,n	idiom		high|u 有明確詞類 → a,n
+p0	有增無減	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	有心無力	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	有所不知	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	有教無類	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	有驚無險	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	期期艾艾	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	正正經經	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	求求其其	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	清清爽爽	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	清清白白	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	無惡不作	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	甜甜蜜蜜	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	生生世世	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n,r	idiom		high|u 有明確詞類 → n,r
+p0	病病歪歪	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	瘋瘋癲癲	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	真真假假	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	磕磕撞撞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	稀稀拉拉	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	空空蕩蕩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	罵罵咧咧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	老老實實	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	花花搭搭	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	花花綠綠	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	行行企企	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	v	idiom		high|u 有明確詞類 → v
+p0	輕輕鬆鬆	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	隨隨便便	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r	idiom		high|u 有明確詞類 → a,r
+p0	風風雨雨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n	idiom		high|u 有明確詞類 → n
+p0	鬆鬆垮垮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a	idiom		high|u 有明確詞類 → a
+p0	中規中矩	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow n 假陽；中規中矩＝形
+p0	亞美尼亞	n	idiom		cow-single;p2-idiom:AxxA;p2-idiom-heuristic	low	low|low|idiom	BAD			國名／專名（Armenia）；AxxA 假陽，非熟語
+p0	匆匆離去	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD			普通描寫 VP「匆匆+離去」，非固定說法／成語
+p0	喃喃自語	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	小偷小摸	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	SOFT				n 可；亦有動用；熟語可留
+p0	強買強賣	v	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	彈道導彈	n	idiom		cow-single;p2-idiom:AxxA;p2-idiom-heuristic	low	low|low|idiom	BAD			軍事技術 NP；AxxA 假陽，非熟語
+p0	彬彬有禮	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow n 假陽；彬彬有禮＝形
+p0	怪模怪樣	a	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	或多或少	r	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	搖搖欲墜	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	核糖核酸	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD			生物化學術語 NP（RNA）；ABAC 假陽，非熟語
+p0	無影無蹤	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow n 假陽；無影無蹤＝形
+p0	無拘無束	v	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow v 偏；stative 形
+p0	無法無天	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow n 假陽；無法無天＝形
+p0	空空導彈	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD			軍事技術 NP；AABC 假陽，非熟語
+p0	閃閃發光	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p0	默默無聞	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD	a	idiom		cow n 假陽；默默無聞＝形
+p0	一瞬間	n			cow-single	low	low|low|plain	OK				
+p0	不在場	n			cow-single	low	low|low|plain	BAD	a			缺席狀態＝形，非名
+p0	不辭而別	v			cow-single	low	low|low|plain	OK				
+p0	中世紀	n			cow-single	low	low|low|plain	OK				
+p0	二氧化碳	n			cow-single	low	low|low|plain	OK				
+p0	亞硝酸鈉	n			cow-single	low	low|low|plain	OK				
+p0	交通	n			cow-single	low	low|low|plain	OK				
+p0	介意	v			cow-single	low	low|low|plain	OK				
+p0	似乎	v			cow-single	low	low|low|plain	BAD	r			似乎＝副，非動
+p0	保護關税	n			cow-single	low	low|low|plain	OK				
+p0	保障	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	保齡球	n			cow-single	low	low|low|plain	OK				
+p0	信譽	n			cow-single	low	low|low|plain	OK				
+p0	做法	n			cow-single	low	low|low|plain	OK				
+p0	傳染	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	傳真	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	傷	v			cow-single	low	low|low|plain	SOFT				n,v 傷勢名用常見
+p0	傷風	n			cow-single	low	low|low|plain	SOFT				n,v 傷風＝病名／動
+p0	內褲	n			cow-single	low	low|low|plain	OK				
+p0	共有	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	出去	v			cow-single	low	low|low|plain	OK				
+p0	前夕	n			cow-single	low	low|low|plain	OK				
+p0	剩下	v			cow-single	low	low|low|plain	OK				
+p0	加重	n			cow-single	low	low|low|plain	BAD	v			加重＝動，非名
+p0	匯款	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	博覽會	n			cow-single	low	low|low|plain	OK				
+p0	占卜	v			cow-single	low	low|low|plain	OK				
+p0	原因	n			cow-single	low	low|low|plain	OK				
+p0	原諒	v			cow-single	low	low|low|plain	OK				
+p0	反詰	v			cow-single	low	low|low|plain	OK				
+p0	取代	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	只有	r			cow-single	low	low|low|plain	OK				
+p0	合成代謝	n			cow-single	low	low|low|plain	OK				
+p0	告密	v			cow-single	low	low|low|plain	OK				
+p0	哭	v			cow-single	low	low|low|plain	OK				
+p0	單詞	n			cow-single	low	low|low|plain	OK				
+p0	噪聲污染	n			cow-single	low	low|low|plain	OK				
+p0	圍繞	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	SOFT				主 v；n 薄
+p0	坐下	v			cow-single	low	low|low|plain	OK				
+p0	塞	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	大好	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low	low	low|low|plain	BAD	a			verb-suffix 假陽；大好＝形
+p0	天性	n			cow-single	low	low|low|plain	OK				
+p0	太空	n			cow-single	low	low|low|plain	OK				
+p0	夫婦	n			cow-single	low	low|low|plain	OK				
+p0	好處	n			cow-single	low	low|low|plain	OK				
+p0	婚禮	n			cow-single	low	low|low|plain	OK				
+p0	子虛烏有	n			cow-single	low	low|low|plain	OK				
+p0	安慰	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	完整	n			cow-single	low	low|low|plain	BAD	a			完整＝形，非名
+p0	客人	n			cow-single	low	low|low|plain	OK				
+p0	容易	n			cow-single	low	low|low|plain	BAD	a			容易＝形，非名
+p0	實在	n			cow-single	low	low|low|plain	BAD	a,r			實在＝形／副，非名
+p0	寶寶	n			cow-single	low	low|low|plain	OK				
+p0	尊重	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	尼	n			cow-single	low	low|low|plain	OK				
+p0	崩潰	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	平日	n			cow-single	low	low|low|plain	OK				
+p0	幼稚	n			cow-single	low	low|low|plain	BAD	a			幼稚＝形，非名
+p0	引	v			cow-single	low	low|low|plain	OK				
+p0	強調	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	彩虹	n			cow-single	low	low|low|plain	OK				
+p0	後期	n			cow-single	low	low|low|plain	OK				
+p0	微生物	n			cow-single	low	low|low|plain	OK				
+p0	心情	n			cow-single	low	low|low|plain	OK				
+p0	快餐	n			cow-single	low	low|low|plain	OK				
+p0	怒火	n			cow-single	low	low|low|plain	OK				
+p0	性情	n			cow-single	low	low|low|plain	OK				
+p0	恐懼	n			cow-single	low	low|low|plain	SOFT				n,a,v 多類
+p0	想起	v			cow-single	low	low|low|plain	OK				
+p0	愛人	n			cow-single	low	low|low|plain	OK				

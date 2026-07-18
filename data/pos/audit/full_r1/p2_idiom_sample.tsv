@@ -1,0 +1,169 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p2_idiom	一國之主	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	一夜之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	一己之見	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	一石二鳥	v	idiom		seed	high	high|gate|idiom	OK				
+p2_idiom	一箭之仇	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	一面之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	上上之策	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic	high	high|gate|idiom	OK				
+p2_idiom	乘人之危	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「趁人危難」；主標 n 假陽會毒同名詞閘
+p2_idiom	付之一炬	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「燒掉」；主標 n 假陽會毒同名詞閘
+p2_idiom	付之東流	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「前功盡棄」；主標 n 假陽會毒同名詞閘
+p2_idiom	傳家之寶	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	即興之作	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	SOFT				偏描寫 NP「即興+之作」；固定搭配可留熟語
+p2_idiom	口舌之爭	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	可造之材	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	喪家之犬	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	嗟來之食	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	大雅之堂	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	天作之合	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	天淵之別	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	女流之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	平庸之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	後顧之憂	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	必爭之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	忽然之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	情急之下	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	收之桑榆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語（失東隅收桑榆）；主標 n 假陽會毒同名詞閘
+p2_idiom	明智之舉	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	有婦之夫	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	有生之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	為之動容	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「受感動」；主標 n 假陽會毒同名詞閘
+p2_idiom	無心之失	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	無米之炊	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	生存之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	SOFT				X之道 能產；文學固定式可留
+p2_idiom	相比之下	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	眉宇之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	破竹之勢	n	idiom		audit-med;review	high	high|gate|idiom	OK				
+p2_idiom	神來之筆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	耄耋之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	而立之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	肅殺之氣	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	致富之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	SOFT				X之道 能產；固定搭配可留
+p2_idiom	莫逆之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	葬身之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	覆盆之冤	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	言之尚早	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「言之過早」；主標 n 假陽會毒同名詞閘
+p2_idiom	言之成理	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語「說得通」；主標 n 假陽會毒同名詞閘
+p2_idiom	象牙之塔	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	趁人之危	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	v	idiom		謂語成語（同乘人之危）；主標 n 假陽會毒同名詞閘
+p2_idiom	養育之恩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	點睛之筆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	high|gate|idiom	OK				
+p2_idiom	一年四季	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	一望無垠	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	一望無際	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	一覽無餘	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	乒乒乓乓	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	修修補補	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	含含糊糊	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	哈哈哈哈	u	idiom		no-source;p1;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD			純擬聲重疊笑聲，非固定說法／成語類熟語
+p2_idiom	嘁嘁喳喳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	嘻嘻哈哈	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	坑坑窪窪	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	婆婆媽媽	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	安安穩穩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	密密匝匝	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	實實在在	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	尋尋覓覓	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	彼此彼此	u	idiom		no-source;fallback;p2-idiom:ABAB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	從從容容	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	恩恩怨怨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	悠哉悠哉	u	idiom		no-source;fallback;p2-idiom:ABAB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	慢慢吞吞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	懶懶散散	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	方方面面	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	明明白白	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	有心無力	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	有教無類	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	有氣無力	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	期期艾艾	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	正正經經	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	求求其其	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	渾渾噩噩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	無惡不作	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	無所不能	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	生生世世	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	畏畏縮縮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	疙疙瘩瘩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	真真正正	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	磕磕絆絆	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	磨磨蹭蹭	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	祖祖輩輩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	空空蕩蕩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	紛紛揚揚	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	絮絮叨叨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	縫縫連連	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	罵罵咧咧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	行行企企	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	跑跑顛顛	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	辛辛苦苦	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	閃閃縮縮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	鬼鬼祟祟	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	OK				
+p2_idiom	中規中矩	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	亞美尼亞	n	idiom		cow-single;p2-idiom:AxxA;p2-idiom-heuristic	low	low|low|idiom	BAD			國名／專名（Armenia）；AxxA 假陽，非固定說法
+p2_idiom	匆匆離去	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD			普通描寫 VP「匆匆+離去」，非固定說法／成語
+p2_idiom	喃喃自語	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	小偷小摸	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	強買強賣	v	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	彈道導彈	n	idiom		cow-single;p2-idiom:AxxA;p2-idiom-heuristic	low	low|low|idiom	BAD			軍事技術 NP（ballistic missile）；AxxA 假陽，非熟語
+p2_idiom	彬彬有禮	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	怪模怪樣	a	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	或多或少	r	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	搖搖欲墜	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	核糖核酸	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	BAD			生物化學術語 NP（RNA）；ABAC 假陽，非熟語
+p2_idiom	無影無蹤	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	無拘無束	v	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	無法無天	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	空空導彈	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	BAD			軍事技術 NP（air-to-air missile）；AABC 假陽，非熟語
+p2_idiom	閃閃發光	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	默默無聞	n	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic	low	low|low|idiom	OK				
+p2_idiom	一年一度	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	一言一行	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	不乾不淨	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	不依不饒	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	不慌不忙	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	予取予攜	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	井井有條	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	人來人往	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	仁者見仁	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	何時何地	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	冇人冇物	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	可喜可賀	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	可大可小	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	同工同酬	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	SOFT				勞工原則口號式對舉；固定搭配可留
+p2_idiom	唔多唔少	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	問長問短	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	大吉大利	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	大徹大悟	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	大模大樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	大魚大肉	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	如痴如醉	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	姍姍來遲	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	字字珠玉	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	孰真孰假	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	實報實銷	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	快人快語	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	怪聲怪氣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	息息相關	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	愈演愈烈	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	拼死拼活	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	新人新事	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	SOFT				時代口號式對舉；固定度中等可留
+p2_idiom	晚婚晚育	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	SOFT				計劃生育政策口號式對舉；固定搭配可留
+p2_idiom	有勇有謀	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	有條有理	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	有頭有臉	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	源源不絕	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	百戰百勝	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	真心真意	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	破罐破摔	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	礙手礙腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	老夫老妻	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	要死要活	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	親上加親	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	閒言閒語	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	雙宿雙飛	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	難上加難	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	順風順水	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	飄飄欲仙	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	高高在上	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				
+p2_idiom	鬱鬱而終	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	OK				

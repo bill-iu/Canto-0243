@@ -1,0 +1,51 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p2	一字之差	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				真名物之字格「一字之差」＝差／距 NP
+p2	一望無邊	a	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				full-r1 已修 u→a；遼闊 stative＝形
+p2	一死一傷	n	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → n	high	gate	OK				傷亡計數 NP（造成一死一傷）
+p2	一覽無餘	v	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v	high	gate	OK				full-r1 已修 u→v；謂語「盡收眼底」
+p2	七分之一	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				分數名物 NP
+p2	七年之癢	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	不情之請	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	不惑之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				年齡名物
+p2	傳家之寶	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	匹夫之勇	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	取之不盡	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	BAD	a			之字格假陽 n；謂語 stative「用之不竭／取之不盡」＝形（同來之不易）；n 會毒同名詞閘
+p2	口腹之慾	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	同名同姓	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p2	喪家之犬	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	大大話話	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				AABB 清晰形
+p2	少之又少	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	BAD	a			之字格假陽 n；謂語 stative「極少」＝形（同來之不易／r3）；n 會毒同名詞閘
+p2	弦外之音	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	強弩之末	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	忽然之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;之字格假陽 n；忽然之間＝副	high	gate	OK				full-r1 已修 n→r
+p2	急人之難	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p1-audit;review;之字格假陽 n；謂語成語「急人之所難」＝動；n 會毒同名詞閘	high	gate	OK				p1/r2 已修 n→v
+p2	惶惶不安	a	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p2	意料之中	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				抽象處所 NP（在意料之中）；非純副框架
+p2	意料之外	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				抽象處所 NP（出乎意料之外）
+p2	指指點點	v	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v	high	gate	OK				AABB 動
+p2	斷袖之癖	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	是非之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	有生之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				時間名物 NP（在有生之年）；同一夕之間可 n
+p2	有識之士	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	有驚無險	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				
+p2	期期艾艾	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				
+p2	求求其其	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				粵 AABB 形
+p2	無聲無息	a,r	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a,r	high	gate	OK				形／副皆常見
+p2	片面之詞	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	生花之筆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	相輔相成	v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → v	high	gate	OK				
+p2	眉宇之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				空間名物 NP（眉間）；有別純副忽然之間
+p2	美侖美奐	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p2	肅殺之氣	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	肌膚之親	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	自知之明	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	花花綠綠	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				
+p2	行之有效	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	BAD	a			之字格假陽 n；謂語 stative「有效」＝形（行之有效的方法）；n 會毒同名詞閘
+p2	言之過早	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;謂語成語；主標 n 假陽	high	gate	OK				bulk／full-r1 已修 n→v
+p2	長平之戰	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				事件名物
+p2	隨之而來	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p1-audit;review;之字格假陽 n；謂語／後接短語「隨之而來」＝動；n 會毒同名詞閘	high	gate	OK				p1/r2 已修 n→v
+p2	隨隨便便	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a,r	high	gate	OK				
+p2	鬆鬆垮垮	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				
+p2	鴻鵠之志	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	點睛之筆	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p2	點頭之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
