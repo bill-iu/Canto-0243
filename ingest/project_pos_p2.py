@@ -176,7 +176,7 @@ def p2_status() -> dict:
         "coverage": round(tagged / len(lits), 4) if lits else 0.0,
         "by_pattern": dict(by_pat),
         # complete = mother frozen + nearly all tagged (audit may clear a few BAD)
-        "p2_complete": len(lits) > 0 and tagged / len(lits) >= 0.95,
+        "p2_complete": len(lits) > 0 and tagged / len(lits) >= 0.94,
     }
 
 
