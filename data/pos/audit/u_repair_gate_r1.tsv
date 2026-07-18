@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+不三不四	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review	high	u-repair|gate	SOFT				主標 a（dubious）；v 薄（不X不Y 啓發式 multi 可）
+不吐不快	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review	high	u-repair|gate	OK				不V不A 形動皆見
+不醉不歸	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review	high	u-repair|gate	OK				口號式謂語；a,v multi 可
+中國	n			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				國名 n
+出街	v			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				粵語動
+十分	r			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				程度副
+吃吃喝喝	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB mostly a
+呼呼大睡	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	SOFT				偏動；a,r 情狀 multi 閘可
+唔使	v,x			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				情態 v＋虛 x
+唧唧喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB 擬聲情狀 a
+啊啊啊啊	x			no-source;p3;fallback;u-repair:aabb-u;review	high	u-repair|gate	OK				AAAA 嘆／擬聲 → x
+啱啱	r			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				時間副
+嘖嘖稱奇	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				AABC 情狀 a,r
+嘰嘰喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB a
+好好睇睇	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	SOFT				粵 AABB 偏動能產；a 可
+完完全全	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	SOFT				偏副 r；AABB mostly a 可
+密密麻麻	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB stative a
+層層包圍	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	BAD	v			普通描寫 VP「層層+包圍」；AABC 假陽熟語；pos→v
+巴巴多斯	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	BAD	n			國名 Barbados；AABC 假陽；pos→n、清 family
+忿忿不平	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+息息相關	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+憤憤不平	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+振振有詞	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+振振有辭	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+搞掂	v			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				粵語動
+時時刻刻	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	SOFT				偏副 r；AABB mostly a 可
+有備無患	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u	high	u-repair|gate	OK				有無對 stative a
+有始有終	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review	high	u-repair|gate	OK				有無對／ABAC stative a
+有恃無恐	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u	high	u-repair|gate	OK				有無對 stative a
+歲歲平安	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				祝語／情狀 a,r
+洋洋自得	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+源源不絕	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+溝溝坎坎	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	SOFT				可名物 n；AABB a 情狀可
+無怨無悔	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review	high	u-repair|gate	OK				ABAC stative a
+無私有弊	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u	high	u-repair|gate	OK				有無對 stative a
+爸爸媽媽	a			no-source;p3;fallback;u-repair:aabb-u;review	high	u-repair|gate	BAD	n			親屬並列名；aabb-u 假 a 會毒同形閘
+男男女女	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	BAD	n	idiom		人稱集合名；同 風風雨雨→n；a 假陽會毒同形閘
+着	v,x			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				動＋助／虛
+磕磕巴巴	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB stative a
+紛紛揚揚	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB a
+縫縫連連	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB mostly a
+草草了事	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	SOFT				偏動；情狀 a,r 閘可
+蝦蝦霸霸	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				粵 AABB 形
+躍躍欲試	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				stative a,r
+遙遙領先	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review	high	u-repair|gate	OK				形／副 a,r
+遮遮掩掩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB a
+閃閃縮縮	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB a
+靚仔	a,n			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				形＋名 true dual
+靚女	a,n			no-source;fallback;u-repair:canto-u-map;review	high	u-repair|gate	OK				形＋名 true dual
+高高興興	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u	high	u-repair|gate	OK				AABB stative a

@@ -568,7 +568,7 @@ T恤	u			no-source;p3;fallback
 丁仔	u			no-source;p3;fallback
 丁俊暉	n			no-source;p3;fallback;full-r1-audit;review;專名
 七	x			numeral;heuristic
-七七事變	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+七七事變	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 七七八八	x			numeral;heuristic
 七個	u			no-source;p3;fallback
 七分之一	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r6.tsv
@@ -710,7 +710,7 @@ T恤	u			no-source;p3;fallback
 上一次	n,r			no-source;p3;fallback;full-r1-audit;review;上次
 上一篇	u			no-source;p3;fallback
 上一頁	u			no-source;p3;fallback
-上上下下	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+上上下下	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 上上之策	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic;review;zhi-n-revert
 上下	n,v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 上下班	u			no-source;p3;fallback
@@ -928,13 +928,13 @@ T恤	u			no-source;p3;fallback
 不一	u			no-source;p3;fallback
 不一會	u			no-source;fallback
 不一會兒	u			no-source;fallback
-不三不四	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不三不四	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不上	u			no-source;p3;fallback
 不下	u			no-source;p3;fallback
 不久	r			no-source;fallback;full-r1-audit;review;清晰副詞
 不久前	u			no-source;p3;fallback
 不乖	u			no-source;p1;fallback
-不乾不淨	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不乾不淨	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不了	u			no-source;fallback
 不了了之	u			no-source;fallback
 不予置評	u			no-source;fallback
@@ -944,7 +944,7 @@ T恤	u			no-source;p3;fallback
 不但	u			no-source;fallback
 不住	v			verb-suffix;heuristic
 不佳	u			no-source;p3;fallback
-不依不饒	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不依不饒	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不便	a			cow-single;full-r1-audit;review;形「不方便」；n 假陽
 不信	u			no-source;p3;fallback
 不信任案	u			no-source;fallback
@@ -954,7 +954,7 @@ T恤	u			no-source;p3;fallback
 不值一文	u			no-source;fallback
 不假思索	u			no-source;fallback
 不做	u			no-source;p3;fallback
-不停	u			no-source;fallback
+不停	a,r			no-source;fallback;u-repair:canto-u-map;review
 不停的	u			no-source;p3;fallback
 不僅	u			no-source;fallback
 不僅僅	u			no-source;fallback
@@ -964,7 +964,7 @@ T恤	u			no-source;p3;fallback
 不全	a			no-source;p3;fallback;full-r1-audit;review;清晰形容詞
 不公	u			no-source;fallback
 不再	u			no-source;fallback
-不冷不熱	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不冷不熱	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不出	u			no-source;fallback
 不分伯仲	u			no-source;fallback
 不分勝負	r			cow-single
@@ -986,7 +986,7 @@ T恤	u			no-source;p3;fallback
 不勝酒力	u			no-source;fallback
 不勞而獲	u			no-source;fallback
 不升反降	u			no-source;fallback
-不卑不亢	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不卑不亢	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不及	u			no-source;fallback
 不受	u			no-source;p3;fallback
 不受歡迎	u			no-source;fallback
@@ -1019,10 +1019,10 @@ T恤	u			no-source;p3;fallback
 不同尋常	u			no-source;fallback
 不同程度	n			no-source;p3;fallback;full-r1-audit;review;名
 不同類型	u			no-source;p3;fallback
-不吐不快	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不吐不快	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不含	u			no-source;fallback
 不吭一聲	u			no-source;fallback
-不吵不鬧	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不吵不鬧	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不告而別	u			no-source;fallback
 不和	n,v			cow-nv-unreviewed;trust-low
 不咎既往	u			no-source;fallback
@@ -1102,7 +1102,7 @@ T恤	u			no-source;p3;fallback
 不怕	u			no-source;p3;fallback
 不思進取	u			no-source;fallback
 不急	u			no-source;p3;fallback
-不急不徐	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不急不徐	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不情之請	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 不惑之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 不惜	v			cow-single;p3
@@ -1113,7 +1113,7 @@ T恤	u			no-source;p3;fallback
 不愛	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 不感興趣	u			no-source;p3;fallback
 不愧	u			no-source;fallback
-不慌不忙	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不慌不忙	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不懂	u			no-source;p1;fallback
 不懂裝懂	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 不懷好意	u			no-source;fallback
@@ -1187,7 +1187,7 @@ T恤	u			no-source;p3;fallback
 不爲	u			no-source;p3;fallback
 不玩	u			no-source;p3;fallback
 不理	v			cow-single
-不理不睬	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不理不睬	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不理我	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 不甘	u			no-source;fallback
 不甚了了	u			no-source;fallback
@@ -1199,12 +1199,12 @@ T恤	u			no-source;p3;fallback
 不畏強暴	u			no-source;fallback
 不當	u			no-source;fallback
 不當得利	u			no-source;fallback
-不疾不徐	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不疾不徐	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不發	u			no-source;p3;fallback
 不相上下	r			cow-single
 不相伯仲	u			no-source;fallback
 不看	u			no-source;p3;fallback
-不眠不休	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不眠不休	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不着	u			no-source;p3;fallback
 不睡	u			no-source;p3;fallback
 不知	u			no-source;fallback
@@ -1218,18 +1218,18 @@ T恤	u			no-source;p3;fallback
 不知疲倦	u			no-source;fallback
 不知輕重	u			no-source;fallback
 不知進退	u			no-source;fallback
-不破不立	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不破不立	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不碎玻璃	u			no-source;fallback
 不確定性	u			no-source;p3;fallback
 不祥	v			cow-single;p3
 不祧之祖	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 不禁	r			no-source;fallback;p1-audit;review;副詞「忍不住」
-不稂不莠	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不稂不莠	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不穿	u			no-source;p3;fallback
 不符	v			cow-single
 不算	u			no-source;fallback
 不管	u			no-source;fallback
-不管不顧	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不管不顧	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不約而同	u			no-source;fallback
 不累	u			no-source;p3;fallback
 不絕於耳	u			no-source;fallback
@@ -1238,7 +1238,7 @@ T恤	u			no-source;p3;fallback
 不置可否	u			no-source;fallback
 不義	u			no-source;fallback
 不耐煩	u			no-source;fallback
-不聞不問	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不聞不問	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不聽	u			no-source;p3;fallback
 不肯	u			no-source;p3;fallback
 不能	v			cow-single
@@ -1264,7 +1264,7 @@ T恤	u			no-source;p3;fallback
 不要臉	u			no-source;p3;fallback
 不要錢	u			no-source;p3;fallback
 不見	u			no-source;fallback
-不見不散	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不見不散	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不見天日	u			no-source;fallback
 不見得	u			no-source;fallback
 不覺	u			no-source;fallback
@@ -1322,14 +1322,14 @@ T恤	u			no-source;p3;fallback
 不遠處	u			no-source;p3;fallback
 不避艱險	u			no-source;fallback
 不配	u			no-source;fallback
-不醉不歸	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不醉不歸	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不錯	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 不錯啊	u			no-source;p3;fallback
 不鏽鋼	n			cow-single
 不長	u			no-source;p3;fallback
 不隨意肌	u			no-source;fallback
 不離	u			no-source;p3;fallback
-不離不棄	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+不離不棄	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 不需	u			no-source;p3;fallback
 不願	u			no-source;p3;fallback
 不顧	v			cow-single;p3
@@ -1338,7 +1338,7 @@ T恤	u			no-source;p3;fallback
 且	u			no-source;p3;fallback
 世	u			no-source;fallback
 世上	n			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
-世世代代	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+世世代代	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 世事	u			no-source;fallback
 世人	n			cow-single
 世伯	u			no-source;fallback
@@ -1433,7 +1433,7 @@ T恤	u			no-source;p3;fallback
 中古世紀	u			no-source;fallback
 中古時代	n			cow-single
 中四	u			no-source;p3;fallback
-中國	u			no-source;fallback
+中國	n			no-source;fallback;u-repair:canto-u-map;review
 中國人	u			no-source;fallback
 中國人民	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 中國企業	u			no-source;p3;fallback
@@ -1641,7 +1641,7 @@ T恤	u			no-source;p3;fallback
 之處	u			no-source;p1;fallback
 之行	u			no-source;p3;fallback
 之謎	u			no-source;p3;fallback
-之間	u			no-source;fallback
+之間	n,x			no-source;fallback;u-repair:canto-u-map;review
 之際	u			no-source;fallback
 之類	u			no-source;fallback
 之風	u			no-source;p3;fallback
@@ -1652,7 +1652,7 @@ T恤	u			no-source;p3;fallback
 乏人問津	u			no-source;fallback
 乏味	v			cow-single
 乏善可陳	u			no-source;fallback
-乒乒乓乓	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+乒乒乓乓	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 乒乓	u			no-source;p3;fallback
 乒乓波	u			no-source;p3;fallback
 乒乓球	u			no-source;fallback
@@ -1690,8 +1690,8 @@ T恤	u			no-source;p3;fallback
 乜鬼	u			no-source;fallback
 乜點	u			no-source;p3;fallback
 九	x			numeral;heuristic
-九九歸一	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-九九重陽	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+九九歸一	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+九九重陽	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 九五之尊	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 九個	u			no-source;p3;fallback
 九十度	u			no-source;p3;fallback
@@ -1741,7 +1741,7 @@ T恤	u			no-source;p3;fallback
 也想	u			no-source;p3;fallback
 也應	u			no-source;p3;fallback
 也挺	u			no-source;p3;fallback
-也是	u			no-source;p1;fallback
+也是	r,v			no-source;p1;fallback;u-repair:canto-u-map;review
 也是一種	u			no-source;p3;fallback
 也曾	u			no-source;p3;fallback
 也會	u			no-source;p1;fallback
@@ -1830,7 +1830,7 @@ T恤	u			no-source;p3;fallback
 事已至此	u			no-source;fallback
 事後	u			no-source;fallback
 事必躬親	u			no-source;fallback
-事情	u			no-source;fallback
+事情	n			no-source;fallback;u-repair:canto-u-map;review
 事架	u			no-source;p3;fallback
 事業	n			cow-single
 事業單位	n			len4-noun-heuristic;p3
@@ -1964,7 +1964,7 @@ T恤	u			no-source;p3;fallback
 五馬分屍	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 五點	u			no-source;fallback
 井	n			cow-single
-井井有條	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+井井有條	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 井然有序	u			no-source;fallback
 亙古未有	u			no-source;fallback
 些	a			cow-single
@@ -2050,7 +2050,7 @@ T恤	u			no-source;p3;fallback
 京東	u			no-source;p3;fallback
 京香	u			no-source;p1;fallback
 亭	n			cow-single;p3
-亭亭玉立	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+亭亭玉立	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 亭台樓閣	u			no-source;fallback
 亮	u			no-source;fallback
 亮亮	u			no-source;p3;fallback
@@ -2097,7 +2097,7 @@ T恤	u			no-source;p3;fallback
 人呢	u			no-source;p3;fallback
 人命	u			no-source;fallback
 人品	u			no-source;p3;fallback
-人哋	u			no-source;fallback
+人哋	x			no-source;fallback;u-repair:canto-u-map;review
 人員	n			cow-single
 人啊	u			no-source;p3;fallback
 人問	u			no-source;p3;fallback
@@ -2299,7 +2299,7 @@ T恤	u			no-source;p3;fallback
 今世	u			no-source;fallback
 今個	x			no-source;p1;fallback;full-r1-audit;review;指示＋量（今個月）
 今兒	u			no-source;p3;fallback
-今天	u			no-source;fallback
+今天	n,r			no-source;fallback;u-repair:canto-u-map;review
 今年	u			no-source;fallback
 今年以來	u			no-source;p3;fallback
 今日	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
@@ -2323,7 +2323,7 @@ T恤	u			no-source;p3;fallback
 仍將	u			no-source;p3;fallback
 仍是	v			cow-single;p3
 仍未	u			no-source;p3;fallback
-仍然	u			no-source;fallback
+仍然	r			no-source;fallback;u-repair:canto-u-map;review
 仔	n			no-source;fallback;p1-cleanup;canto-heuristic;review
 仔仔	u			no-source;p3;fallback
 仔到	u			no-source;p3;fallback
@@ -2384,7 +2384,7 @@ T恤	u			no-source;p3;fallback
 仙子	u			no-source;p3;fallback
 仙山瓊閣	u			no-source;fallback
 代	n,v			cow-multi;full-r1-audit;review;名／動（世代／代替）；a 假陽
-代代相傳	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+代代相傳	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 代價	n			cow-single
 代工	u			no-source;p3;fallback
 代數方程	u			no-source;fallback
@@ -2636,7 +2636,7 @@ T恤	u			no-source;p3;fallback
 佈滿	v			cow-single
 佈線	u			no-source;p3;fallback
 佈置	n,v			cow-nv-unreviewed;trust-low
-位	u			no-source;fallback
+位	n,x			no-source;fallback;u-repair:canto-u-map;review
 位居	u			no-source;fallback
 位數	u			no-source;p3;fallback
 位於	v			cow-single
@@ -2897,7 +2897,7 @@ T恤	u			no-source;p3;fallback
 使錢	u			no-source;p3;fallback
 使館	n			cow-single
 侃	u			no-source;p3;fallback
-侃侃而談	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+侃侃而談	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 來	v			cow-single
 來不及	u			no-source;fallback
 來世	n			cow-single
@@ -2905,7 +2905,7 @@ T恤	u			no-source;p3;fallback
 來了	u			no-source;p1;fallback
 來人	u			no-source;p3;fallback
 來來	u			no-source;p3;fallback
-來來往往	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+來來往往	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 來信	u			no-source;fallback
 來個	u			no-source;p3;fallback
 來做	u			no-source;p3;fallback
@@ -3423,7 +3423,7 @@ T恤	u			no-source;p3;fallback
 偶聯反應	u			no-source;fallback
 偷	v			cow-single
 偷偷	u			no-source;fallback
-偷偷摸摸	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+偷偷摸摸	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 偷合苟容	u			no-source;fallback
 偷嘴	u			no-source;fallback
 偷天換日	u			no-source;fallback
@@ -3532,7 +3532,7 @@ T恤	u			no-source;p3;fallback
 傷身	u			no-source;fallback
 傷風	n			cow-single
 傷風感冒	u			no-source;fallback
-傻	u			no-source;fallback
+傻	a			no-source;fallback;u-repair:canto-u-map;review
 傻㗎	u			no-source;p3;fallback
 傻了	u			no-source;p3;fallback
 傻事	u			no-source;fallback
@@ -3550,7 +3550,7 @@ T恤	u			no-source;p3;fallback
 傻豬	u			no-source;fallback
 傻逼	u			no-source;p3;fallback
 傻頭傻腦	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-傾	u			no-source;fallback
+傾	v			no-source;fallback;u-repair:canto-u-map;review
 傾下	v			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review
 傾下計	u			no-source;p3;fallback
 傾偈	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
@@ -3566,7 +3566,7 @@ T恤	u			no-source;p3;fallback
 傾盆大雨	v			cow-single
 傾緊	u			no-source;p3;fallback
 傾聽	v			cow-single
-傾計	u			no-source;fallback
+傾計	v			no-source;fallback;u-repair:canto-u-map;review
 傾訴	u			no-source;p3;fallback
 傾過	u			no-source;p3;fallback
 僅代表	u			no-source;p3;fallback
@@ -3666,7 +3666,7 @@ T恤	u			no-source;p3;fallback
 元人民幣	u			no-source;p3;fallback
 元以上	u			no-source;p3;fallback
 元件	n			cow-single
-元元本本	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+元元本本	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 元寶	u			no-source;fallback
 元左右	u			no-source;p3;fallback
 元帥	u			no-source;p3;fallback
@@ -3736,7 +3736,7 @@ T恤	u			no-source;p3;fallback
 先禮後兵	u			no-source;fallback
 先算	u			no-source;p1;fallback
 先肯	u			no-source;p3;fallback
-先至	u			no-source;fallback
+先至	r,x			no-source;fallback;u-repair:canto-u-map;review
 先行	u			no-source;fallback
 先要	u			no-source;p3;fallback
 先見	n,v			no-source;p3;fallback;full-r1-audit;review;先見
@@ -3832,7 +3832,7 @@ T恤	u			no-source;p3;fallback
 兜返	u			no-source;p3;fallback
 兜過	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 兜頭	u			no-source;p3;fallback
-兢兢業業	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+兢兢業業	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 入	v			cow-single;p1;p1-cleanup;canto-heuristic;review
 入侵	n,v			cow-nv-unreviewed;trust-low
 入到	u			no-source;fallback
@@ -4115,7 +4115,7 @@ T恤	u			no-source;p3;fallback
 公共電話	n			len4-noun-heuristic
 公務人員	n			len4-noun-heuristic
 公務員	n			cow-single
-公司	u			no-source;fallback
+公司	n			no-source;fallback;u-repair:canto-u-map;review
 公司會議	u			no-source;fallback
 公司理財	u			no-source;fallback
 公園	n			cow-single
@@ -4258,7 +4258,7 @@ T恤	u			no-source;p3;fallback
 冇人	u			no-source;fallback
 冇人冇物	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 冇份	u			no-source;fallback
-冇問題	u			no-source;fallback
+冇問題	a,x			no-source;fallback;u-repair:canto-u-map;review
 冇嘢	u			no-source;fallback
 冇幾耐	u			no-source;fallback
 冇得	v,x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v,x
@@ -4269,7 +4269,7 @@ T恤	u			no-source;p3;fallback
 冇種	u			no-source;fallback
 冇行	u			no-source;p3;fallback
 冇計	u			no-source;fallback
-冇錯	u			no-source;fallback
+冇錯	a,x			no-source;fallback;u-repair:canto-u-map;review
 冉	u			no-source;p3;fallback
 再	r			heuristic
 再一次	u			no-source;p3;fallback
@@ -4510,7 +4510,7 @@ T恤	u			no-source;p3;fallback
 出處	u			no-source;p3;fallback
 出血	n,v			cow-nv-unreviewed;trust-low
 出衆	u			no-source;fallback
-出街	u			no-source;fallback
+出街	v			no-source;fallback;u-repair:canto-u-map;review
 出謀劃策	u			no-source;fallback
 出謀獻策	u			no-source;fallback
 出讓	u			no-source;p3;fallback
@@ -4825,7 +4825,7 @@ T恤	u			no-source;p3;fallback
 前列	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
 前列腺炎	n			cow-single
 前列腺素	u			no-source;fallback
-前前後後	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+前前後後	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 前台	n			cow-single
 前呼後應	u			no-source;fallback
 前因後果	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
@@ -4878,7 +4878,7 @@ T恤	u			no-source;p3;fallback
 剛來	u			no-source;p3;fallback
 剛到	u			no-source;p3;fallback
 剛剛	r			cow-single
-剛剛開始	u			no-source;p3;fallback
+剛剛開始	a,r			no-source;p3;fallback;u-repair:aabc-u;review
 剛好	a,r			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review
 剛強	u			no-source;fallback
 剛從	u			no-source;p3;fallback
@@ -5278,7 +5278,7 @@ T恤	u			no-source;p3;fallback
 區	n			cow-single
 區別	v			cow-single
 區區	u			no-source;fallback
-區區小事	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+區區小事	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 區域	n			cow-single
 區域性	u			no-source;p3;fallback
 區域網絡	n			len4-noun-heuristic
@@ -5318,7 +5318,7 @@ T恤	u			no-source;p3;fallback
 十六年	u			no-source;p3;fallback
 十六進位	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 十六進制	u			no-source;fallback
-十分	u			no-source;fallback
+十分	r			no-source;fallback;u-repair:canto-u-map;review
 十分重要	u			no-source;p3;fallback
 十分鐘	u			no-source;p3;fallback
 十四行詩	u			no-source;fallback
@@ -5588,7 +5588,7 @@ T恤	u			no-source;p3;fallback
 卻說	u			no-source;p3;fallback
 卻讓	u			no-source;p3;fallback
 卿	u			no-source;p3;fallback
-卿卿我我	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+卿卿我我	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 厄瓜多爾	u			no-source;fallback
 厘米	u			no-source;p3;fallback
 厚	u			no-source;p3;fallback
@@ -5852,7 +5852,7 @@ T恤	u			no-source;p3;fallback
 口交	v			cow-single
 口供	n			no-source;fallback;full-r1-audit;review;名
 口出狂言	u			no-source;fallback
-口口聲聲	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+口口聲聲	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 口吻	n			cow-single
 口味	u			no-source;fallback
 口岸	u			no-source;fallback
@@ -5996,7 +5996,7 @@ T恤	u			no-source;p3;fallback
 召回	v			cow-single;p3
 叮	n,v			cow-nv-unreviewed;trust-low
 叮叮	u			no-source;fallback
-叮叮噹噹	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+叮叮噹噹	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 叮囑	u			no-source;fallback
 可	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 可不	u			no-source;p3;fallback
@@ -6139,7 +6139,7 @@ T恤	u			no-source;p3;fallback
 叻仔	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 吃	v			cow-single
 吃力	u			no-source;fallback
-吃吃喝喝	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+吃吃喝喝	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 吃啞巴虧	u			no-source;fallback
 吃喝玩樂	u			no-source;fallback
 吃後悔藥	u			no-source;fallback
@@ -6402,7 +6402,7 @@ T恤	u			no-source;p3;fallback
 君臨天下	u			no-source;fallback
 吝嗇	v			cow-single
 吞	v			cow-single
-吞吞吐吐	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+吞吞吐吐	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 吞噬	u			no-source;fallback
 吞噬細胞	n			len4-noun-heuristic
 吞雲吐霧	u			no-source;fallback
@@ -6416,11 +6416,11 @@ T恤	u			no-source;p3;fallback
 否定一切	u			no-source;fallback
 否決	v			cow-single
 否認	n			cow-single
-吧	u			no-source;fallback
+吧	x			no-source;fallback;u-repair:canto-u-map;review
 吩咐	n			cow-single
 含	v			cow-single
 含住	v			verb-suffix;p1;heuristic
-含含糊糊	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+含含糊糊	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 含垢忍辱	u			no-source;fallback
 含情脈脈	u			no-source;fallback
 含意	n			cow-single;p3
@@ -6435,7 +6435,7 @@ T恤	u			no-source;p3;fallback
 含量	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 含飴弄孫	u			no-source;fallback
 吱	u			no-source;fallback
-吱吱喳喳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+吱吱喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 吱喳	u			no-source;p3;fallback
 吳	u			no-source;fallback
 吳儂軟語	u			no-source;fallback
@@ -6445,7 +6445,7 @@ T恤	u			no-source;p3;fallback
 吳非	u			no-source;p1;fallback
 吵	a			cow-single
 吵吵	u			no-source;fallback
-吵吵鬧鬧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+吵吵鬧鬧	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 吵架	n,v			cow-nv-unreviewed;trust-low
 吵鬧	n,v			cow-nv-unreviewed;trust-low
 吶喊	u			no-source;fallback
@@ -6481,7 +6481,7 @@ T恤	u			no-source;p3;fallback
 呀	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 呀傑	u			no-source;p3;fallback
 呀媽	u			no-source;p3;fallback
-呃	u			no-source;fallback
+呃	v,x			no-source;fallback;u-repair:canto-u-map;review
 呃人	u			no-source;fallback
 呆	a			cow-multi;p1-audit;review;stative 形；v 假陽會毒同動詞閘
 呆呆	u			no-source;p3;fallback
@@ -6558,7 +6558,7 @@ T恤	u			no-source;p3;fallback
 呼吸困難	n			cow-single
 呼吸系統	n			len4-noun-heuristic
 呼呼	u			no-source;p3;fallback
-呼呼大睡	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+呼呼大睡	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 呼和浩特	u			no-source;fallback
 呼哧呼哧	r	idiom		no-source;fallback;p2-idiom:ABAB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → r
 呼喚	u			no-source;fallback
@@ -6583,7 +6583,7 @@ T恤	u			no-source;p3;fallback
 咁上下	u			no-source;fallback
 咁滯	u			no-source;fallback
 咁鬼	r			no-source;fallback;full-r1-audit;review;程度副
-咄咄怪事	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+咄咄怪事	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 咆哮	v			cow-single
 咇	u			no-source;p3;fallback
 咋	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
@@ -6756,7 +6756,7 @@ T恤	u			no-source;p3;fallback
 哈利波特	u			no-source;p3;fallback
 哈哈	u			no-source;fallback
 哈哈哈	u			no-source;p1;fallback
-哈哈哈哈	u			no-source;p1;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-clear-idiom
+哈哈哈哈	x			no-source;p1;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-clear-idiom;u-repair:aabb-u
 哈哈哈哈哈	u			no-source;p3;fallback
 哈哈大笑	v			no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;full-r1-audit;review;AABC 大笑;full-r1-clear-idiom
 哈巴雪山	u			no-source;fallback
@@ -6784,7 +6784,7 @@ T恤	u			no-source;p3;fallback
 哩件	u			no-source;p3;fallback
 哩個	u			no-source;fallback
 哩句	u			no-source;p3;fallback
-哩哩羅羅	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+哩哩羅羅	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 哩度	u			no-source;p1;fallback
 哩樣	u			no-source;p1;fallback
 哩種	u			no-source;p3;fallback
@@ -6800,7 +6800,7 @@ T恤	u			no-source;p3;fallback
 哪裡	u			no-source;p3;fallback
 哪邊	u			no-source;p3;fallback
 哭	v			cow-single
-哭哭啼啼	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+哭哭啼啼	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 哭喪着臉	u			no-source;fallback
 哭天抹淚	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 哭泣	v			cow-single
@@ -6811,7 +6811,7 @@ T恤	u			no-source;p3;fallback
 哺乳動物	u			no-source;fallback
 哼	x			no-source;fallback;p1-audit;review;嘆詞
 哼哼	u			no-source;p3;fallback
-哼哼唧唧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+哼哼唧唧	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 哽咽	u			no-source;fallback
 唇	u			no-source;p1;fallback
 唇亡齒寒	u			no-source;fallback
@@ -6829,7 +6829,7 @@ T恤	u			no-source;p3;fallback
 唐樓	u			no-source;p3;fallback
 唐詩詩	u			no-source;p3;fallback
 唔	r,x			heuristic
-唔使	u			no-source;fallback
+唔使	v,x			no-source;fallback;u-repair:canto-u-map;review
 唔使客氣	u			no-source;fallback
 唔係	v,x			heuristic
 唔切	u			no-source;fallback
@@ -6856,12 +6856,12 @@ T恤	u			no-source;p3;fallback
 唔見	u			no-source;fallback
 唔見得	u			no-source;p3;fallback
 唔覺意	u			no-source;fallback
-唔記得	u			no-source;fallback
+唔記得	v			no-source;fallback;u-repair:canto-u-map;review
 唔該	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔通	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔錯	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 唧	u			no-source;fallback
-唧唧喳喳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+唧唧喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 唪	u			no-source;p3;fallback
 售	v			cow-single
 售價	u			no-source;fallback
@@ -6888,7 +6888,7 @@ T恤	u			no-source;p3;fallback
 唱空城計	u			no-source;fallback
 唷	u			no-source;p3;fallback
 唸	u			no-source;fallback
-唸唸有詞	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+唸唸有詞	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 唸書	u			no-source;p3;fallback
 唾手可得	u			no-source;fallback
 唾棄	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
@@ -6927,7 +6927,7 @@ T恤	u			no-source;p3;fallback
 啊哈	u			no-source;p3;fallback
 啊啊	u			no-source;p3;fallback
 啊啊啊	u			no-source;p3;fallback
-啊啊啊啊	u			no-source;p3;fallback
+啊啊啊啊	x			no-source;p3;fallback;u-repair:aabb-u;review
 啊婷	u			no-source;p3;fallback
 啊媽	u			no-source;p3;fallback
 啊燁	u			no-source;p3;fallback
@@ -6997,13 +6997,13 @@ T恤	u			no-source;p3;fallback
 啦啦	u			no-source;p3;fallback
 啦啦啦	u			no-source;p3;fallback
 啦啦隊	u			no-source;fallback
-啦啦隊員	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-啦啦隊長	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+啦啦隊員	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+啦啦隊長	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 啪	u			no-source;fallback
 啫	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 啱	a,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 啱先	u			no-source;p3;fallback
-啱啱	u			no-source;fallback
+啱啱	r			no-source;fallback;u-repair:canto-u-map;review
 啲	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 啵	u			no-source;fallback
 啷	u			no-source;p3;fallback
@@ -7203,7 +7203,7 @@ T恤	u			no-source;p3;fallback
 嗲	u			no-source;fallback
 嗲聲嗲氣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 嗶	u			no-source;p3;fallback
-嘁嘁喳喳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+嘁嘁喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 嘅	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 嘅事	u			no-source;p1;fallback
 嘅人	u			no-source;p1;fallback
@@ -7258,7 +7258,7 @@ T恤	u			no-source;p3;fallback
 嘔心瀝血	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 嘖	u			no-source;fallback
 嘖嘖	u			no-source;p3;fallback
-嘖嘖稱奇	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+嘖嘖稱奇	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 嘗嘗	u			no-source;p3;fallback
 嘗試	n,v			cow-nv-unreviewed;trust-low
 嘛	x			no-source;fallback;p1-cleanup;canto-heuristic;review
@@ -7292,12 +7292,12 @@ T恤	u			no-source;p3;fallback
 嘩嘩	u			no-source;p3;fallback
 嘩好	u			no-source;p3;fallback
 嘭	u			no-source;fallback
-嘮嘮叨叨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+嘮嘮叨叨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 嘯	u			no-source;p3;fallback
 嘰哩咕嚕	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r
-嘰嘰咕咕	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-嘰嘰喳喳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-嘰嘰嘎嘎	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+嘰嘰咕咕	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+嘰嘰喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+嘰嘰嘎嘎	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 嘰裏咕嚕	u			no-source;fallback
 嘲笑	v			cow-single;p3
 嘲諷	u			no-source;p3;fallback
@@ -7318,7 +7318,7 @@ T恤	u			no-source;p3;fallback
 嘿嘿	u			no-source;fallback
 噁心	n			cow-single
 噉	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review
-噉樣	u			no-source;fallback
+噉樣	r,x			no-source;fallback;u-repair:canto-u-map;review
 噉樣樣	u			no-source;p3;fallback
 噏	u			no-source;fallback
 噓	u			no-source;fallback
@@ -7494,7 +7494,7 @@ T恤	u			no-source;p3;fallback
 回復	u			no-source;fallback
 回想	v			cow-single
 回憶	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
-回應	u			no-source;fallback
+回應	n,v			no-source;fallback;u-repair:canto-u-map;review
 回扣	n,v			cow-multi;p3
 回收	v			cow-single
 回放	u			no-source;p3;fallback
@@ -7710,7 +7710,7 @@ T恤	u			no-source;p3;fallback
 圖騰崇拜	u			no-source;fallback
 團	n			cow-single
 團伙	u			no-source;p3;fallback
-團團圍住	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+團團圍住	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 團委	u			no-source;p3;fallback
 團結	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 團結一致	n,v			cow-nv-unreviewed;trust-low
@@ -7932,7 +7932,7 @@ T恤	u			no-source;p3;fallback
 坐騎	u			no-source;p3;fallback
 坐骨神經	u			no-source;fallback
 坑	n			cow-single;p3
-坑坑窪窪	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+坑坑窪窪	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 坑渠	u			no-source;p3;fallback
 坑蒙拐騙	u			no-source;fallback
 坦克	n			cow-single;p3
@@ -8069,7 +8069,7 @@ T恤	u			no-source;p3;fallback
 堂	u			no-source;fallback
 堂吉訶德	u			no-source;fallback
 堂堂	u			no-source;p3;fallback
-堂堂正正	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+堂堂正正	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 堂而皇之	u			no-source;fallback
 堅	u			no-source;fallback
 堅不可摧	u			no-source;fallback
@@ -8129,7 +8129,7 @@ T恤	u			no-source;p3;fallback
 塑料袋	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 塔	n			cow-single
 塔城地區	n			len4-noun-heuristic
-塔塔爾族	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+塔塔爾族	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 塔里木河	u			no-source;fallback
 塗層	n			cow-single;p3
 塗抹	v			cow-single
@@ -8335,13 +8335,13 @@ T恤	u			no-source;p3;fallback
 多士	u			no-source;p3;fallback
 多士爐	u			no-source;fallback
 多多	u			no-source;fallback
-多多少少	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+多多少少	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 多姿多彩	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 多姿多采	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 多子多福	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 多家	n,x			no-source;p3;fallback;full-r1-audit;review;數+量
 多小時	u			no-source;p3;fallback
-多少	u			no-source;fallback
+多少	r,x			no-source;fallback;u-repair:canto-u-map;review
 多少人	u			no-source;p3;fallback
 多少次	u			no-source;p3;fallback
 多少錢	u			no-source;fallback
@@ -8410,7 +8410,7 @@ T恤	u			no-source;p3;fallback
 夜以繼日	u			no-source;fallback
 夜場	u			no-source;fallback
 夜夜	u			no-source;fallback
-夜夜笙歌	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+夜夜笙歌	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 夜宵	u			no-source;p3;fallback
 夜幕低垂	u			no-source;fallback
 夜幕降臨	u			no-source;fallback
@@ -8513,9 +8513,9 @@ T恤	u			no-source;p3;fallback
 大夥	u			no-source;p3;fallback
 大大	u			no-source;fallback
 大大力	u			no-source;fallback
-大大咧咧	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+大大咧咧	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 大大小小	a			no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;AABB 大小不一;full-r1-clear-idiom
-大大提高	u			no-source;p3;fallback
+大大提高	a,r			no-source;p3;fallback;u-repair:aabc-u;review
 大大話話	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 大失所望	u			no-source;fallback
 大好	a			verb-suffix;heuristic;verb-suffix-suspect;trust-low;full-r1-audit;review;verb-suffix 假陽；大好＝形
@@ -9114,7 +9114,7 @@ T恤	u			no-source;p3;fallback
 好地地	a,r			no-source;fallback;full-r1-audit;review;粵好端端
 好地方	u			no-source;p3;fallback
 好型	u			no-source;p3;fallback
-好多	u			no-source;fallback
+好多	a,r			no-source;fallback;u-repair:canto-u-map;review
 好多人	u			no-source;fallback
 好多嘢	u			no-source;p1;fallback
 好多時	u			no-source;fallback
@@ -9130,13 +9130,13 @@ T恤	u			no-source;p3;fallback
 好奇心	u			no-source;fallback
 好好	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 好好地	u			no-source;fallback
-好好學習	u			no-source;p3;fallback
-好好睇睇	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+好好學習	a,r			no-source;p3;fallback;u-repair:aabc-u;review
+好好睇睇	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 好孩子	u			no-source;p3;fallback
 好學	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 好客	n			cow-single;p3
 好實	u			no-source;p3;fallback
-好少	u			no-source;fallback
+好少	a,r			no-source;fallback;u-repair:canto-u-map;review
 好少會	u			no-source;p3;fallback
 好差	u			no-source;p3;fallback
 好平	u			no-source;p3;fallback
@@ -9144,7 +9144,7 @@ T恤	u			no-source;p3;fallback
 好幾天	u			no-source;p3;fallback
 好幾次	u			no-source;p3;fallback
 好強	a			no-source;p3;fallback;full-r1-audit;review;清晰形容詞
-好彩	u			no-source;fallback
+好彩	a,r			no-source;fallback;u-repair:canto-u-map;review
 好心	u			no-source;p1;fallback
 好心人	u			no-source;p3;fallback
 好忙	u			no-source;p3;fallback
@@ -9283,7 +9283,7 @@ T恤	u			no-source;p3;fallback
 妊娠試驗	u			no-source;fallback
 妍	u			no-source;p3;fallback
 妒忌	u			no-source;fallback
-妖	u			no-source;fallback
+妖	a,n			no-source;fallback;u-repair:canto-u-map;review
 妖冶	u			no-source;fallback
 妖塔	u			no-source;p3;fallback
 妖怪	n			cow-single
@@ -9328,7 +9328,7 @@ T恤	u			no-source;p3;fallback
 始終	n			cow-single
 始終不變	u			no-source;fallback
 始終如一	u			no-source;fallback
-姍姍來遲	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+姍姍來遲	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 姐	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 姐妹	n			cow-single
 姐姐	n			cow-single;p1-cleanup;canto-heuristic;review
@@ -9349,7 +9349,7 @@ T恤	u			no-source;p3;fallback
 委	u			no-source;p3;fallback
 委以重任	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 委內瑞拉	u			no-source;fallback
-委委屈屈	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+委委屈屈	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 委屈	v			cow-single
 委屈求全	u			no-source;fallback
 委託	v			cow-single
@@ -9391,8 +9391,8 @@ T恤	u			no-source;p3;fallback
 娃哈哈	u			no-source;p3;fallback
 娃娃	n			cow-single
 娑羅雙樹	u			no-source;fallback
-娓娓而談	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-娓娓道來	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+娓娓而談	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+娓娓道來	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 娘	n			cow-single;p1
 娘娘	u			no-source;p3;fallback
 娘子	u			no-source;p3;fallback
@@ -9432,7 +9432,7 @@ T恤	u			no-source;p3;fallback
 婭	u			no-source;p3;fallback
 婷	u			no-source;fallback
 婷婷	u			no-source;fallback
-婷婷玉立	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+婷婷玉立	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 媒體報道	u			no-source;p3;fallback
 媳婦	u			no-source;fallback
 媽	u			no-source;fallback
@@ -9469,7 +9469,7 @@ T恤	u			no-source;p3;fallback
 嬌生慣養	u			no-source;fallback
 嬰兒	n			cow-single;p3
 嬰幼兒	u			no-source;p3;fallback
-嬲	u			no-source;fallback
+嬲	a,v			no-source;fallback;u-repair:canto-u-map;review
 嬲嬲地	u			no-source;p3;fallback
 嬲爆爆	u			no-source;p3;fallback
 嬴	u			no-source;fallback
@@ -9479,7 +9479,7 @@ T恤	u			no-source;p3;fallback
 子公司	u			no-source;p3;fallback
 子喻	u			no-source;p3;fallback
 子女	u			no-source;p3;fallback
-子子孫孫	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+子子孫孫	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 子孫	n			cow-single;p3
 子孫滿堂	u			no-source;fallback
 子宮	u			no-source;fallback
@@ -9503,8 +9503,8 @@ T恤	u			no-source;p3;fallback
 字	n			cow-single
 字典	n			cow-single
 字型	u			no-source;p3;fallback
-字字珠玉	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-字字珠璣	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+字字珠玉	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+字字珠璣	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 字斟句酌	u			no-source;fallback
 字架	u			no-source;p3;fallback
 字條	u			no-source;p3;fallback
@@ -9728,7 +9728,7 @@ T恤	u			no-source;p3;fallback
 完好如初	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 完好無損	u			no-source;fallback
 完好無缺	u			no-source;fallback
-完完全全	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+完完全全	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 完後	u			no-source;p3;fallback
 完成	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 完成任務	u			no-source;p3;fallback
@@ -9844,7 +9844,7 @@ T恤	u			no-source;p3;fallback
 宵	u			no-source;p3;fallback
 家	n			cow-single
 家下	u			no-source;p3;fallback
-家人	u			no-source;fallback
+家人	n			no-source;fallback;u-repair:canto-u-map;review
 家企業	u			no-source;p3;fallback
 家務	u			no-source;fallback
 家喻户曉	u			no-source;fallback
@@ -9906,9 +9906,9 @@ T恤	u			no-source;p3;fallback
 密切相關	u			no-source;p3;fallback
 密切關注	u			no-source;p3;fallback
 密室	n			cow-single;p3
-密密匝匝	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-密密層層	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-密密麻麻	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+密密匝匝	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+密密層層	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+密密麻麻	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 密封	v			cow-single
 密碼	n			cow-single
 密碼保護	u			no-source;fallback
@@ -9939,7 +9939,7 @@ T恤	u			no-source;p3;fallback
 寒風刺骨	u			no-source;fallback
 寓意深遠	u			no-source;fallback
 察	u			no-source;p3;fallback
-察察為明	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+察察為明	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 察看	v			cow-single;p3
 察覺	v			cow-single
 察言觀色	u			no-source;fallback
@@ -9950,7 +9950,7 @@ T恤	u			no-source;p3;fallback
 寢具	n			cow-single
 寢食難安	u			no-source;fallback
 寥寥	u			no-source;fallback
-寥寥無幾	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+寥寥無幾	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 實	u			no-source;fallback
 實一實	u			no-source;p3;fallback
 實不相瞞	u			no-source;fallback
@@ -10208,10 +10208,10 @@ T恤	u			no-source;p3;fallback
 尋	u			no-source;fallback
 尋人啓事	u			no-source;fallback
 尋人啟事	u			no-source;fallback
-尋尋覓覓	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+尋尋覓覓	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 尋常	u			no-source;fallback
 尋找	n,v			cow-nv-unreviewed;p1;trust-low
-尋日	u			no-source;fallback
+尋日	n,r			no-source;fallback;u-repair:canto-u-map;review
 尋晚	u			no-source;fallback
 尋根問底	u			no-source;fallback
 尋歡作樂	u			no-source;fallback
@@ -10369,7 +10369,7 @@ T恤	u			no-source;p3;fallback
 小明	u			no-source;p1;fallback
 小時	n			cow-single
 小時候	u			no-source;fallback
-小朋友	u			no-source;fallback
+小朋友	n			no-source;fallback;u-repair:canto-u-map;review
 小木魚	u			no-source;p1;fallback
 小李	u			no-source;p3;fallback
 小東西	u			no-source;p3;fallback
@@ -10668,7 +10668,7 @@ T恤	u			no-source;p3;fallback
 屢試不爽	u			no-source;fallback
 層	n			cow-single
 層出不窮	u			no-source;p3;fallback
-層層包圍	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+層層包圍	v	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review;p1-audit;review;普通描寫 VP「層層+包圍」；AABC 假陽熟語；pos→v
 層層疊疊	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv
 層巒疊嶂	u			no-source;fallback
 層次	n			cow-single;p3
@@ -10898,7 +10898,7 @@ T恤	u			no-source;p3;fallback
 巴士站	u			no-source;fallback
 巴山夜雨	u			no-source;fallback
 巴山蜀水	u			no-source;fallback
-巴巴多斯	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+巴巴多斯	n	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review;p1-audit;review;國名 Barbados；AABC 假陽；pos→n、清 family
 巴掌	u			no-source;p3;fallback
 巴甫洛夫	u			no-source;fallback
 巴膠	u			no-source;fallback
@@ -11077,9 +11077,9 @@ T恤	u			no-source;p3;fallback
 平安無事	a			cow-single
 平常	n			cow-single
 平平	u			no-source;fallback
-平平安安	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-平平常常	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-平平無奇	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+平平安安	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+平平常常	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+平平無奇	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 平庸	u			no-source;fallback
 平庸之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 平心而論	u			no-source;fallback
@@ -11138,7 +11138,7 @@ T恤	u			no-source;p3;fallback
 年報	u			no-source;fallback
 年少	u			no-source;fallback
 年年	r			no-source;fallback;full-r1-audit;review;清晰副詞
-年年有餘	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+年年有餘	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 年幼	u			no-source;fallback
 年底	u			no-source;fallback
 年度大會	u			no-source;fallback
@@ -11557,7 +11557,7 @@ T恤	u			no-source;p3;fallback
 彌天大謊	u			no-source;fallback
 彌補	v			cow-single
 彎	n,v			cow-nv-unreviewed;trust-low
-彎彎曲曲	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+彎彎曲曲	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 彎腰	v			cow-single
 彎腰駝背	n			cow-single
 彙報	u			no-source;fallback
@@ -11603,7 +11603,7 @@ T恤	u			no-source;p3;fallback
 影子	n			cow-single
 影完	v			verb-suffix;p3;heuristic
 影張	u			no-source;p3;fallback
-影影綽綽	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+影影綽綽	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 影星	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 影片	n			cow-single
 影相	u			no-source;fallback
@@ -12086,7 +12086,7 @@ T恤	u			no-source;p3;fallback
 忘記密碼	u			no-source;fallback
 忙	a			cow-multi;full-r1-audit;review;忙＝形；n 假陽
 忙得	u			no-source;p3;fallback
-忙忙碌碌	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+忙忙碌碌	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 忙於	v			cow-single;p3
 忙活	u			no-source;p3;fallback
 忙着	u			no-source;p3;fallback
@@ -12132,14 +12132,14 @@ T恤	u			no-source;p3;fallback
 忽冷忽熱	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 忽忽	u			no-source;p3;fallback
 忽悠	u			no-source;fallback
-忽然	u			no-source;fallback
+忽然	r			no-source;fallback;u-repair:canto-u-map;review
 忽然之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;之字格假陽 n；忽然之間＝副
 忽略	v			cow-single
 忽視	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 忽隱忽現	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 忽高忽低	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 忿	u			no-source;p3;fallback
-忿忿不平	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+忿忿不平	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 怎會	u			no-source;p3;fallback
 怎樣	r,x			heuristic
 怎樣才能	u			no-source;p3;fallback
@@ -12268,7 +12268,7 @@ T恤	u			no-source;p3;fallback
 恃才傲物	u			no-source;fallback
 恆常	u			no-source;fallback
 恍如隔世	u			no-source;fallback
-恍恍惚惚	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+恍恍惚惚	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 恍惚	n			cow-single;p3
 恍然大悟	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 恍然醒悟	u			no-source;fallback
@@ -12301,7 +12301,7 @@ T恤	u			no-source;p3;fallback
 恩	u			no-source;fallback
 恩將仇報	u			no-source;fallback
 恩恩	u			no-source;p3;fallback
-恩恩怨怨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+恩恩怨怨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 恩恩愛愛	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv
 恩愛夫妻	u			no-source;fallback
 恩斷義絕	u			no-source;fallback
@@ -12314,11 +12314,11 @@ T恤	u			no-source;p3;fallback
 息	u			no-source;fallback
 息事寧人	u			no-source;fallback
 息怒	u			no-source;fallback
-息息相關	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+息息相關	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 恰	u			no-source;fallback
 恰好	r			cow-single
 恰如其分	u			no-source;fallback
-恰恰相反	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+恰恰相反	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 悄悄	u			no-source;fallback
 悄悄話	u			no-source;p3;fallback
 悄無聲息	u			no-source;fallback
@@ -12361,7 +12361,7 @@ T恤	u			no-source;p3;fallback
 悲觀主義	n			len4-noun-heuristic
 悶	u			no-source;fallback
 悶悶	u			no-source;p3;fallback
-悶悶不樂	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+悶悶不樂	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 悶聲不響	u			no-source;fallback
 情	u			no-source;fallback
 情不自禁	u			no-source;fallback
@@ -12475,7 +12475,7 @@ T恤	u			no-source;p3;fallback
 惹人討厭	u			no-source;fallback
 惹禍上身	u			no-source;fallback
 惺忪	u			no-source;fallback
-惺惺作態	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+惺惺作態	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 惺惺相惜	v	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → v
 愁	u			no-source;fallback
 愁眉	u			no-source;fallback
@@ -12604,7 +12604,7 @@ T恤	u			no-source;p3;fallback
 態度	n			cow-single
 慌	u			no-source;fallback
 慌張	u			no-source;p3;fallback
-慌慌張張	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+慌慌張張	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 慎重	u			no-source;fallback
 慎重其事	u			no-source;fallback
 慕名而來	u			no-source;fallback
@@ -12622,7 +12622,7 @@ T恤	u			no-source;p3;fallback
 慢悠悠	u			no-source;fallback
 慢慢	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 慢慢來	u			no-source;p3;fallback
-慢慢吞吞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+慢慢吞吞	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 慢條斯理	u			no-source;fallback
 慢速	u			no-source;fallback
 慣	u			no-source;fallback
@@ -12664,7 +12664,7 @@ T恤	u			no-source;p3;fallback
 憑證	n			cow-single
 憔悴	v			cow-single
 憤怒	n,v			cow-nv-unreviewed;trust-low
-憤憤不平	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+憤憤不平	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 憨厚	u			no-source;fallback
 憨態可掬	u			no-source;fallback
 憨豆先生	u			no-source;fallback
@@ -12716,7 +12716,7 @@ T恤	u			no-source;p3;fallback
 懶	a			cow-single
 懶人	u			no-source;p3;fallback
 懶惰	n			cow-single
-懶懶散散	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+懶懶散散	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 懶散	n,v			cow-nv-unreviewed;trust-low
 懶洋洋	u			no-source;fallback
 懷	v			cow-single
@@ -13103,7 +13103,7 @@ T恤	u			no-source;p3;fallback
 戰場	n			cow-single
 戰士	n			cow-single
 戰後	u			no-source;p3;fallback
-戰戰兢兢	u			no-source;p3;fallback
+戰戰兢兢	a			no-source;p3;fallback;u-repair:aabb-u;review
 戰機	u			no-source;fallback
 戰歌	u			no-source;p3;fallback
 戰死沙場	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
@@ -13362,7 +13362,7 @@ T恤	u			no-source;p3;fallback
 打暈	u			no-source;p3;fallback
 打架	n			cow-single
 打極	u			no-source;p3;fallback
-打機	u			no-source;fallback
+打機	v			no-source;fallback;u-repair:canto-u-map;review
 打橫	u			no-source;fallback
 打死	u			no-source;p3;fallback
 打氣	u			no-source;fallback
@@ -13421,7 +13421,7 @@ T恤	u			no-source;p3;fallback
 扭	n,v			cow-nv-unreviewed;trust-low
 扭力天平	u			no-source;fallback
 扭動	n,v			cow-nv-unreviewed;trust-low
-扭扭捏捏	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+扭扭捏捏	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 扭捏	u			no-source;fallback
 扭曲	n,v			cow-nv-unreviewed;trust-low
 扭虧為盈	u			no-source;fallback
@@ -13651,9 +13651,9 @@ T恤	u			no-source;p3;fallback
 拉卜楞寺	u			no-source;fallback
 拉屎	u			no-source;p3;fallback
 拉幫結派	u			no-source;fallback
-拉拉扯扯	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-拉拉隊員	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-拉拉隊長	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+拉拉扯扯	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+拉拉隊員	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+拉拉隊長	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 拉昇	u			no-source;p3;fallback
 拉皮	u			no-source;fallback
 拉皮手術	u			no-source;fallback
@@ -13711,7 +13711,7 @@ T恤	u			no-source;p3;fallback
 拖延戰術	u			no-source;fallback
 拖手	u			no-source;p3;fallback
 拖拉機	u			no-source;p3;fallback
-拖拖拉拉	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+拖拖拉拉	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 拖欠	n,v			cow-multi;p3
 拖沓	u			no-source;fallback
 拖鞋	u			no-source;fallback
@@ -13871,8 +13871,8 @@ T恤	u			no-source;p3;fallback
 振奮	u			no-source;fallback
 振奮人心	u			no-source;fallback
 振威	u			no-source;p3;fallback
-振振有詞	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-振振有辭	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+振振有詞	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+振振有辭	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 振盪	n			cow-single;p3
 振臂一呼	u			no-source;fallback
 挺	u			no-source;fallback
@@ -14049,7 +14049,7 @@ T恤	u			no-source;p3;fallback
 推卸責任	u			no-source;fallback
 推崇	u			no-source;fallback
 推拿	u			no-source;fallback
-推推搡搡	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+推推搡搡	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 推斷	u			no-source;p3;fallback
 推本溯源	u			no-source;fallback
 推測	n,v			cow-nv-unreviewed;trust-low
@@ -14225,14 +14225,14 @@ T恤	u			no-source;p3;fallback
 搞好	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 搞得	u			no-source;p3;fallback
 搞成	u			no-source;p3;fallback
-搞掂	u			no-source;fallback
+搞掂	v			no-source;fallback;u-repair:canto-u-map;review
 搞法	u			no-source;p3;fallback
 搞清楚	u			no-source;p3;fallback
 搞的	u			no-source;p3;fallback
 搞砸	u			no-source;fallback
 搞笑	u			no-source;fallback
 搞過	u			no-source;p3;fallback
-搞錯	u			no-source;fallback
+搞錯	v			no-source;fallback;u-repair:canto-u-map;review
 搣	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 搬	u			no-source;fallback
 搬弄是非	u			no-source;fallback
@@ -14380,7 +14380,7 @@ T恤	u			no-source;p3;fallback
 據理力爭	u			no-source;fallback
 擠	n,v			cow-nv-unreviewed;trust-low
 擠來擠去	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-擠擠插插	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+擠擠插插	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 擠眉弄眼	u			no-source;fallback
 擡	u			no-source;p1;fallback
 擡舉	u			no-source;p3;fallback
@@ -14446,7 +14446,7 @@ T恤	u			no-source;p3;fallback
 攪	v			cow-single
 攪到	u			no-source;p3;fallback
 攪成	u			no-source;p3;fallback
-攬	u			no-source;fallback
+攬	v			no-source;fallback;u-repair:canto-u-map;review
 攬住	v			verb-suffix;heuristic
 攬實	u			no-source;fallback
 支	n			cow-single;p1
@@ -14461,7 +14461,7 @@ T恤	u			no-source;p3;fallback
 支持者	u			no-source;p3;fallback
 支援	n,v			cow-nv-unreviewed;trust-low
 支撐	n,v			cow-nv-unreviewed;trust-low
-支支吾吾	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+支支吾吾	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 支槍	n,x			no-source;p3;fallback;full-r1-audit;review;量+名
 支氣管炎	n			cow-single
 支水	u			no-source;p3;fallback
@@ -14475,7 +14475,7 @@ T恤	u			no-source;p3;fallback
 支隊	u			no-source;fallback
 支離破碎	u			no-source;fallback
 支香	u			no-source;p3;fallback
-攰	u			no-source;fallback
+攰	a			no-source;fallback;u-repair:canto-u-map;review
 收	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 收不到	u			no-source;p3;fallback
 收之桑榆	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;謂語成語（失東隅收桑榆）；主標 n 假陽會毒同名詞閘
@@ -14587,7 +14587,7 @@ T恤	u			no-source;p3;fallback
 放寬	v			cow-single;full-r1-audit;review;動「放寬」；非名
 放射治療	u			no-source;fallback
 放射防護	n			cow-single
-放工	u			no-source;fallback
+放工	v			no-source;fallback;u-repair:canto-u-map;review
 放底	u			no-source;p3;fallback
 放得	u			no-source;p3;fallback
 放心	n			cow-single
@@ -14947,7 +14947,7 @@ T恤	u			no-source;p3;fallback
 斜路	u			no-source;fallback
 斟	u			no-source;fallback
 斤	n			cow-single
-斤斤計較	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+斤斤計較	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 斧頭	n			cow-single
 斬	u			no-source;fallback
 斬斷	u			no-source;p3;fallback
@@ -14989,7 +14989,7 @@ T恤	u			no-source;p3;fallback
 新手	u			no-source;fallback
 新抱	n			no-source;fallback;p1-audit;review;粵兒媳
 新政	u			no-source;p3;fallback
-新新人類	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+新新人類	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 新星	u			no-source;fallback
 新春	u			no-source;p3;fallback
 新書	u			no-source;p3;fallback
@@ -15151,7 +15151,7 @@ T恤	u			no-source;p3;fallback
 日文	u			no-source;fallback
 日新月異	u			no-source;fallback
 日日	u			no-source;fallback
-日日夜夜	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+日日夜夜	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 日晚	u			no-source;p3;fallback
 日暮	u			no-source;p3;fallback
 日曬雨淋	u			no-source;fallback
@@ -15159,7 +15159,7 @@ T恤	u			no-source;p3;fallback
 日月如梭	u			no-source;fallback
 日月星辰	u			no-source;fallback
 日期	n			cow-single
-日本	u			no-source;fallback
+日本	n			no-source;fallback;u-repair:canto-u-map;review
 日本人	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 日本妹	u			no-source;p1;fallback
 日本政府	n			len4-noun-heuristic;p3
@@ -15220,7 +15220,7 @@ T恤	u			no-source;p3;fallback
 昇	u			no-source;fallback
 昊	u			no-source;p3;fallback
 昌平	u			no-source;p3;fallback
-明	u			no-source;p1;fallback
+明	a,v			no-source;p1;fallback;u-repair:canto-u-map;review
 明㗎	u			no-source;p3;fallback
 明亮	u			no-source;fallback
 明代	u			no-source;p3;fallback
@@ -15230,7 +15230,7 @@ T恤	u			no-source;p3;fallback
 明升暗降	u			no-source;fallback
 明哲保身	u			no-source;fallback
 明基	u			no-source;p3;fallback
-明天	u			no-source;fallback
+明天	n,r			no-source;fallback;u-repair:canto-u-map;review
 明媒正娶	u			no-source;fallback
 明察	u			no-source;fallback
 明察秋毫	u			no-source;fallback
@@ -15239,8 +15239,8 @@ T恤	u			no-source;p3;fallback
 明日	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 明日之星	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 明早	u			no-source;fallback
-明明	u			no-source;fallback
-明明白白	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+明明	r			no-source;fallback;u-repair:canto-u-map;review
+明明白白	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 明星	u			no-source;fallback
 明晚	u			no-source;fallback
 明智	n			cow-single
@@ -15268,7 +15268,7 @@ T恤	u			no-source;p3;fallback
 明辨是非	u			no-source;fallback
 明顯	v			cow-single
 昏	u			no-source;fallback
-昏昏欲睡	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+昏昏欲睡	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 昏昏沉沉	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 昏暗	n			cow-single
 昏迷	n,v			cow-nv-unreviewed;trust-low
@@ -15328,7 +15328,7 @@ T恤	u			no-source;p3;fallback
 春風一度	u			no-source;fallback
 春風化雨	u			no-source;fallback
 昨	u			no-source;p3;fallback
-昨天	u			no-source;fallback
+昨天	n,r			no-source;fallback;u-repair:canto-u-map;review
 昨日	n			cow-single
 昨晚	u			no-source;fallback
 昭雪	n			cow-single
@@ -15373,7 +15373,7 @@ T恤	u			no-source;p3;fallback
 是我的	u			no-source;p3;fallback
 是把	u			no-source;p3;fallback
 是指	u			no-source;p1;fallback
-是是非非	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+是是非非	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 是最	u			no-source;p3;fallback
 是有	u			no-source;p3;fallback
 是爲	u			no-source;p3;fallback
@@ -15415,7 +15415,7 @@ T恤	u			no-source;p3;fallback
 時才	u			no-source;p3;fallback
 時斷時續	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 時日無多	u			no-source;fallback
-時時刻刻	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+時時刻刻	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 時有所聞	u			no-source;fallback
 時期	n			cow-single
 時機	n			cow-single
@@ -15434,7 +15434,7 @@ T恤	u			no-source;p3;fallback
 時隔不久	u			no-source;fallback
 時隱時現	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 時髦	u			no-source;fallback
-晃晃悠悠	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+晃晃悠悠	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 晌	u			no-source;p3;fallback
 晏	u			no-source;fallback
 晏子春秋	u			no-source;fallback
@@ -15821,12 +15821,12 @@ T恤	u			no-source;p3;fallback
 有份	u			no-source;fallback
 有位	u			no-source;p3;fallback
 有何	u			no-source;p3;fallback
-有何不可	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有何不可	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有何指教	u			no-source;fallback
 有你	u			no-source;p3;fallback
-有來有往	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有來有往	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有個	u			no-source;p1;fallback
-有備無患	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有備無患	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有備而來	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 有傷風化	u			no-source;fallback
 有償	u			no-source;fallback
@@ -15841,17 +15841,17 @@ T恤	u			no-source;p3;fallback
 有力	u			no-source;fallback
 有助	u			no-source;fallback
 有助於	v			cow-single
-有勇有謀	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-有勇無謀	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有勇有謀	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
+有勇無謀	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有口皆碑	u			no-source;fallback
 有史以來	u			no-source;fallback
 有名	u			no-source;p3;fallback
-有名有姓	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有名有姓	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有啊	u			no-source;p3;fallback
 有問題	u			no-source;fallback
 有啥	u			no-source;p3;fallback
 有嘢	u			no-source;fallback
-有嘴無心	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有嘴無心	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有型	a			no-source;fallback;full-r1-audit;review;清晰形容詞
 有增無減	v	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v
 有多	u			no-source;p3;fallback
@@ -15863,8 +15863,8 @@ T恤	u			no-source;p3;fallback
 有失體統	u			no-source;fallback
 有好	u			no-source;p3;fallback
 有如	u			no-source;p3;fallback
-有始有終	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-有始無終	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有始有終	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
+有始無終	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有婦之夫	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 有害	u			no-source;fallback
 有容乃大	u			no-source;fallback
@@ -15883,7 +15883,7 @@ T恤	u			no-source;p3;fallback
 有志竟成	u			no-source;fallback
 有性生殖	n			cow-single
 有性雜交	u			no-source;fallback
-有恃無恐	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有恃無恐	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有情	u			no-source;fallback
 有意	a,v			no-source;fallback;full-r1-audit;review;形／動
 有意思	u			no-source;fallback
@@ -15896,7 +15896,7 @@ T恤	u			no-source;p3;fallback
 有所	u			no-source;fallback
 有所不同	a,v			no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;有所+不同；述謂;full-r1-clear-idiom
 有所不知	v	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v
-有手有腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有手有腳	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有才	u			no-source;p3;fallback
 有排	u			no-source;fallback
 有損壓縮	u			no-source;fallback
@@ -15917,7 +15917,7 @@ T恤	u			no-source;p3;fallback
 有期徒刑	u			no-source;fallback
 有架	u			no-source;p3;fallback
 有核國家	n			len4-noun-heuristic
-有根有據	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有根有據	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有條	u			no-source;p1;fallback
 有條有理	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a
 有樣	u			no-source;p1;fallback
@@ -15931,11 +15931,11 @@ T恤	u			no-source;p3;fallback
 有權有勢	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a
 有次	u			no-source;p3;fallback
 有此	u			no-source;p3;fallback
-有氣無力	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有氣無力	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有氧運動	u			no-source;fallback
 有求於人	u			no-source;fallback
 有沒有	u			no-source;fallback
-有沒有人	u			no-source;p3;fallback
+有沒有人	a			no-source;p3;fallback;u-repair:youwu-u;review
 有無	u			no-source;p3;fallback
 有無人	u			no-source;p3;fallback
 有爲	u			no-source;p3;fallback
@@ -15948,7 +15948,7 @@ T恤	u			no-source;p3;fallback
 有的人	u			no-source;p3;fallback
 有的是	u			no-source;fallback
 有目共賞	u			no-source;fallback
-有眼無珠	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有眼無珠	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有着	u			no-source;fallback
 有礙觀瞻	u			no-source;fallback
 有禮	u			no-source;fallback
@@ -15966,7 +15966,7 @@ T恤	u			no-source;p3;fallback
 有色人種	u			no-source;fallback
 有色眼鏡	u			no-source;fallback
 有色金屬	u			no-source;p3;fallback
-有血有肉	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有血有肉	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有言在先	u			no-source;fallback
 有誤	u			no-source;p3;fallback
 有誰	u			no-source;p3;fallback
@@ -15986,8 +15986,8 @@ T恤	u			no-source;p3;fallback
 有邊	u			no-source;p3;fallback
 有錢	u			no-source;fallback
 有錢人	u			no-source;p3;fallback
-有錢有勢	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-有錢有閒	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+有錢有勢	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
+有錢有閒	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 有鍼對性	u			no-source;p3;fallback
 有鑑於此	u			no-source;fallback
 有鑒於此	u			no-source;fallback
@@ -16005,8 +16005,8 @@ T恤	u			no-source;p3;fallback
 有限公司	n			len4-noun-heuristic
 有限單元	u			no-source;fallback
 有陣	u			no-source;p1;fallback
-有頭有臉	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
-有頭無尾	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+有頭有臉	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
+有頭無尾	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 有餘	u			no-source;fallback
 有驚無險	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 有骨	u			no-source;p3;fallback
@@ -16035,7 +16035,7 @@ T恤	u			no-source;p3;fallback
 朕	u			no-source;p3;fallback
 朗	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 朗朗	u			no-source;fallback
-朗朗上口	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+朗朗上口	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 朗讀	u			no-source;p3;fallback
 望	v			cow-single;p1
 望下	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
@@ -16070,7 +16070,7 @@ T恤	u			no-source;p3;fallback
 朝思暮想	u			no-source;fallback
 朝早	u			no-source;fallback
 朝朝	u			no-source;p3;fallback
-朝朝暮暮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+朝朝暮暮	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 朝氣蓬勃	u			no-source;fallback
 朝陽區	u			no-source;p3;fallback
 朝陽地區	n			len4-noun-heuristic
@@ -16436,7 +16436,7 @@ T恤	u			no-source;p3;fallback
 格林威治	u			no-source;fallback
 格林納達	u			no-source;fallback
 格格	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
-格格不入	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+格格不入	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 格格聲	u			no-source;p3;fallback
 格殺勿論	u			no-source;fallback
 格蘭芬多	u			no-source;fallback
@@ -16488,7 +16488,7 @@ T恤	u			no-source;p3;fallback
 條春	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 條校	u			no-source;p3;fallback
 條條	u			no-source;p3;fallback
-條條框框	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+條條框框	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 條橋	u			no-source;p3;fallback
 條死	u			no-source;p3;fallback
 條氣	u			no-source;p3;fallback
@@ -16509,7 +16509,7 @@ T恤	u			no-source;p3;fallback
 梨	n			cow-single;p3
 梨花	u			no-source;p3;fallback
 梯	u			no-source;fallback
-梳	u			no-source;fallback
+梳	n,v			no-source;fallback;u-repair:canto-u-map;review
 梳化	u			no-source;fallback
 梳洗	u			no-source;fallback
 梳理	u			no-source;fallback
@@ -16559,7 +16559,7 @@ T恤	u			no-source;p3;fallback
 楔形文字	u			no-source;fallback
 楚	u			no-source;fallback
 楚楚	u			no-source;fallback
-楚楚動人	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+楚楚動人	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 楚河漢界	u			no-source;fallback
 楚漢戰爭	u			no-source;fallback
 楚漢相爭	u			no-source;fallback
@@ -16831,7 +16831,7 @@ T恤	u			no-source;p3;fallback
 欣	u			no-source;fallback
 欣喜若狂	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 欣慰	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
-欣欣向榮	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+欣欣向榮	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 欣然	u			no-source;fallback
 欣賞	v			cow-single
 欲	u			no-source;fallback
@@ -16988,7 +16988,7 @@ T恤	u			no-source;p3;fallback
 步伐	u			no-source;fallback
 步入	u			no-source;fallback
 步兵	u			no-source;p3;fallback
-步步高昇	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+步步高昇	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 步行	v			cow-single
 步行街	u			no-source;p3;fallback
 步調一致	u			no-source;fallback
@@ -17028,7 +17028,7 @@ T恤	u			no-source;p3;fallback
 歲時	u			no-source;p3;fallback
 歲月	u			no-source;fallback
 歲月如流	u			no-source;fallback
-歲歲平安	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+歲歲平安	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 歲的	u			no-source;p1;fallback
 歷	n			cow-single;p3
 歷久不衰	u			no-source;fallback
@@ -17045,7 +17045,7 @@ T恤	u			no-source;p3;fallback
 歷史遺產	u			no-source;fallback
 歷史遺跡	u			no-source;fallback
 歷年	n			cow-single;p3
-歷歷在目	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+歷歷在目	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 歷盡滄桑	u			no-source;fallback
 歷盡艱辛	u			no-source;fallback
 歷盡艱難	u			no-source;fallback
@@ -17223,7 +17223,7 @@ T恤	u			no-source;p3;fallback
 比我	u			no-source;p1;fallback
 比擬	u			no-source;p3;fallback
 比方	n,v			no-source;p3;fallback;full-r1-audit;review;名動
-比比皆是	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+比比皆是	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 比比鳥	u			no-source;p3;fallback
 比爾	u			no-source;p3;fallback
 比着	u			no-source;p3;fallback
@@ -17745,7 +17745,7 @@ T恤	u			no-source;p3;fallback
 泰然自若	n			cow-single
 泰米爾語	u			no-source;fallback
 泰達	u			no-source;p3;fallback
-泱泱大國	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+泱泱大國	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 泳	u			no-source;fallback
 泳池	u			no-source;fallback
 泳茹	u			no-source;p1;fallback
@@ -17754,7 +17754,7 @@ T恤	u			no-source;p3;fallback
 洋	n			cow-single
 洋娃娃	n			cow-single
 洋子	u			no-source;p3;fallback
-洋洋自得	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+洋洋自得	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 洋溢	u			no-source;p3;fallback
 洋為中用	u			no-source;fallback
 洗	v			cow-single
@@ -17888,7 +17888,7 @@ T恤	u			no-source;p3;fallback
 浩仔	u			no-source;p3;fallback
 浩方	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 浩氣長存	u			no-source;fallback
-浩浩蕩蕩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+浩浩蕩蕩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 浩然之氣	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore
 浩然正氣	u			no-source;fallback
 浪	n			cow-single
@@ -18030,7 +18030,7 @@ T恤	u			no-source;p3;fallback
 淡薄	u			no-source;fallback
 淨	u			no-source;fallback
 淨低	u			no-source;p3;fallback
-淨係	u			no-source;fallback
+淨係	r,x			no-source;fallback;u-repair:canto-u-map;review
 淨值	u			no-source;fallback
 淨利潤	u			no-source;p3;fallback
 淨化	n			cow-single
@@ -18103,7 +18103,7 @@ T恤	u			no-source;p3;fallback
 混淆	n,v			cow-nv-unreviewed;trust-low
 混淆視聽	u			no-source;fallback
 混淆黑白	u			no-source;fallback
-混混沌沌	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+混混沌沌	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 淹沒	v			cow-single;p3
 淺	a			no-source;p1;fallback;p1-audit;review;不深
 淺嘗輒止	u			no-source;fallback
@@ -18136,7 +18136,7 @@ T恤	u			no-source;p3;fallback
 清涼	u			no-source;fallback
 清淡	u			no-source;fallback
 清淨	u			no-source;p3;fallback
-清清楚楚	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+清清楚楚	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 清清爽爽	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 清清白白	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 清湯寡水	u			no-source;fallback
@@ -18221,7 +18221,7 @@ T恤	u			no-source;p3;fallback
 渺無音信	u			no-source;fallback
 渾	u			no-source;p3;fallback
 渾水摸魚	u			no-source;fallback
-渾渾噩噩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+渾渾噩噩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 渾濁	u			no-source;fallback
 渾然一體	u			no-source;fallback
 渾然天成	u			no-source;fallback
@@ -18257,8 +18257,8 @@ T恤	u			no-source;p3;fallback
 源代碼	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
 源於	u			no-source;fallback
 源泉	n			cow-single;p3
-源源不斷	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-源源不絕	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+源源不斷	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+源源不絕	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 源碼	u			no-source;p3;fallback
 源遠流長	u			no-source;fallback
 源頭	u			no-source;fallback
@@ -18276,7 +18276,7 @@ T恤	u			no-source;p3;fallback
 溝	n			cow-single
 溝到	u			no-source;p3;fallback
 溝女	v			no-source;fallback;full-r1-audit;review;動
-溝溝坎坎	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+溝溝坎坎	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 溝通	u			no-source;fallback
 溢價	u			no-source;p3;fallback
 溢於言表	u			no-source;fallback
@@ -18331,7 +18331,7 @@ T恤	u			no-source;p3;fallback
 滑頭滑腦	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 滑鼠	n			cow-single
 滔天大罪	u			no-source;fallback
-滔滔不絕	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+滔滔不絕	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 滬	u			no-source;fallback
 滬深	u			no-source;p3;fallback
 滯後	u			no-source;fallback
@@ -18342,7 +18342,7 @@ T恤	u			no-source;p3;fallback
 滲出	u			no-source;p3;fallback
 滴	n,v			cow-nv-unreviewed;trust-low
 滴水成冰	u			no-source;fallback
-滴滴答答	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+滴滴答答	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 滴答	u			no-source;p3;fallback
 滴落	u			no-source;p3;fallback
 滴裏嘟嚕	u			no-source;fallback
@@ -18459,7 +18459,7 @@ T恤	u			no-source;p3;fallback
 潮溼	u			no-source;p3;fallback
 潰瘍	n			cow-single;p3
 潸然淚下	u			no-source;fallback
-潺潺流水	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+潺潺流水	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 澀	u			no-source;fallback
 澄	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v
 澄清	v			cow-single
@@ -18494,14 +18494,14 @@ T恤	u			no-source;p3;fallback
 濕	a			cow-single;full-r1-audit;review;濕＝形，非名
 濕地	n			cow-single
 濛	u			no-source;p3;fallback
-濛濛細雨	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+濛濛細雨	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 濟	u			no-source;fallback
 濟南	u			no-source;fallback
 濟南地區	n			len4-noun-heuristic
 濟南市	u			no-source;p3;fallback
 濟困扶危	u			no-source;fallback
 濟寧地區	n			len4-noun-heuristic
-濟濟一堂	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+濟濟一堂	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 濫	u			no-source;fallback
 濫伐林木	u			no-source;fallback
 濫殺	u			no-source;fallback
@@ -18636,14 +18636,14 @@ T恤	u			no-source;p3;fallback
 無人會	u			no-source;p3;fallback
 無人知	u			no-source;p3;fallback
 無人要	u			no-source;p3;fallback
-無仇無怨	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無仇無怨	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無他	u			no-source;p3;fallback
 無以為繼	u			no-source;fallback
 無任何	u			no-source;p3;fallback
-無休無止	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無休無止	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無公害	u			no-source;p3;fallback
 無冕之王	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore
-無冤無仇	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無冤無仇	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無出	u			no-source;p3;fallback
 無出其右	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v
 無利可圖	u			no-source;fallback
@@ -18671,7 +18671,7 @@ T恤	u			no-source;p3;fallback
 無奈	u			no-source;fallback
 無女	u			no-source;p3;fallback
 無妨	u			no-source;fallback
-無孔不入	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+無孔不入	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 無字天書	u			no-source;fallback
 無定形碳	u			no-source;fallback
 無師自通	u			no-source;fallback
@@ -18689,7 +18689,7 @@ T恤	u			no-source;p3;fallback
 無性生殖	n			cow-single
 無性繁殖	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v
 無性雜交	u			no-source;fallback
-無怨無悔	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無怨無悔	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無恙	u			no-source;fallback
 無恥	u			no-source;fallback
 無恥之徒	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r6.tsv
@@ -18701,9 +18701,9 @@ T恤	u			no-source;p3;fallback
 無愧	u			no-source;fallback
 無憂	a			no-source;p3;fallback;full-r1-audit;review;清晰形容詞
 無成	u			no-source;fallback
-無所不在	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
-無所不能	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
-無所不至	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+無所不在	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
+無所不能	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
+無所不至	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 無所事事	v			cow-single
 無所作為	u			no-source;fallback
 無所謂	a			no-source;fallback;full-r1-audit;review;形
@@ -18732,7 +18732,7 @@ T恤	u			no-source;p3;fallback
 無濟於事	u			no-source;fallback
 無煙火藥	n			cow-single
 無爲	u			no-source;p3;fallback
-無牽無掛	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無牽無掛	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無理	u			no-source;fallback
 無理過	u			no-source;p3;fallback
 無瑕	u			no-source;fallback
@@ -18750,10 +18750,10 @@ T恤	u			no-source;p3;fallback
 無禮	n,v			cow-nv-unreviewed;trust-low
 無私	u			no-source;fallback
 無私奉獻	u			no-source;fallback
-無私有弊	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review
+無私有弊	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;u-repair:youwu-u
 無私無畏	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a
 無稽之談	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r6.tsv
-無窮無盡	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無窮無盡	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無端端	u			no-source;fallback
 無米之炊	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv
 無精打採	u			no-source;fallback
@@ -18764,7 +18764,7 @@ T恤	u			no-source;p3;fallback
 無線電波	u			no-source;fallback
 無線電話	n			len4-noun-heuristic
 無緣	u			no-source;fallback
-無緣無故	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無緣無故	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無縫接軌	u			no-source;fallback
 無縫連接	u			no-source;fallback
 無耐	u			no-source;p3;fallback
@@ -18802,7 +18802,7 @@ T恤	u			no-source;p3;fallback
 無軌電車	u			no-source;fallback
 無辜	n			cow-single
 無遠弗屆	u			no-source;fallback
-無邊無際	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
+無邊無際	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
 無量	u			no-source;p3;fallback
 無錢	u			no-source;p3;fallback
 無錫	u			no-source;p3;fallback
@@ -18838,7 +18838,7 @@ T恤	u			no-source;p3;fallback
 煞有介事	u			no-source;fallback
 煞有其事	u			no-source;fallback
 煞費苦心	v			cow-single
-煢煢孑立	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+煢煢孑立	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 煤炭	n			cow-single
 煤礦	n			cow-single;p3
 煥	u			no-source;p3;fallback
@@ -19046,7 +19046,7 @@ T恤	u			no-source;p3;fallback
 爸	n			cow-single
 爸呀媽	u			no-source;p3;fallback
 爸爸	n			cow-single
-爸爸媽媽	u			no-source;p3;fallback
+爸爸媽媽	n			no-source;p3;fallback;u-repair:aabb-u;review;p1-audit;review;親屬並列名；aabb-u 假 a 會毒同形閘
 爹	n			cow-single;p1
 爹地	u			no-source;fallback
 爹爹	n			cow-single
@@ -19091,7 +19091,7 @@ T恤	u			no-source;p3;fallback
 牙	n			cow-single
 牙仔	u			no-source;p3;fallback
 牙刷	u			no-source;fallback
-牙牙學語	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+牙牙學語	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 牙科醫生	n			len4-noun-heuristic
 牙籤	u			no-source;fallback
 牙膏	u			no-source;fallback
@@ -19520,9 +19520,9 @@ T恤	u			no-source;p3;fallback
 瑞士法郎	n			cow-single
 瑞士軍刀	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 瑞星	u			no-source;p3;fallback
-瑟瑟發抖	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+瑟瑟發抖	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 瑣事	u			no-source;fallback
-瑣瑣碎碎	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+瑣瑣碎碎	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 瑣碎	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 璀璨	u			no-source;p3;fallback
 璀璨奪目	u			no-source;fallback
@@ -19541,7 +19541,7 @@ T恤	u			no-source;p3;fallback
 環氧乙烷	u			no-source;fallback
 環氧樹脂	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 環狀軟骨	u			no-source;fallback
-環環相扣	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+環環相扣	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 環節	n			cow-single
 環節動物	n			cow-single
 環視	u			no-source;fallback
@@ -19678,7 +19678,7 @@ T恤	u			no-source;p3;fallback
 生理學家	u			no-source;fallback
 生理時鐘	u			no-source;fallback
 生理鹽水	u			no-source;fallback
-生生不息	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+生生不息	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 生生世世	n,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → n,r
 生產	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 生產企業	u			no-source;p3;fallback
@@ -19860,10 +19860,10 @@ T恤	u			no-source;p3;fallback
 男性	u			no-source;fallback
 男才女貌	u			no-source;fallback
 男扮女裝	u			no-source;fallback
-男朋友	u			no-source;fallback
+男朋友	n			no-source;fallback;u-repair:canto-u-map;review
 男歡女愛	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v
 男生	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
-男男女女	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+男男女女	n	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u;p1-audit;review;人稱集合名；同 風風雨雨→n；a 假陽會毒同形閘
 男盜女娼	u			no-source;fallback
 男神	u			no-source;fallback
 男籃	u			no-source;p3;fallback
@@ -19883,7 +19883,7 @@ T恤	u			no-source;p3;fallback
 界線	n			cow-single
 界面	u			no-source;fallback
 畏懼	v			cow-single;p3
-畏畏縮縮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+畏畏縮縮	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 畏縮	v			cow-single
 畏縮不前	u			no-source;fallback
 畏首畏尾	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
@@ -20025,7 +20025,7 @@ T恤	u			no-source;p3;fallback
 疑難問題	n			len4-noun-heuristic
 疑難解答	u			no-source;fallback
 疑難雜症	u			no-source;fallback
-疙疙瘩瘩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+疙疙瘩瘩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 疙瘩	n			cow-single;p3
 疤痕	n			cow-single
 疲乏	u			no-source;fallback
@@ -20231,7 +20231,7 @@ T恤	u			no-source;p3;fallback
 白璧無瑕	u			no-source;fallback
 白癡	u			no-source;fallback
 白白	u			no-source;fallback
-白白淨淨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+白白淨淨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 白皙	u			no-source;p3;fallback
 白眼	u			no-source;p1;fallback
 白石	u			no-source;p1;fallback
@@ -20698,7 +20698,7 @@ T恤	u			no-source;p3;fallback
 真皮組織	n			len4-noun-heuristic
 真相	n			cow-single
 真真假假	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
-真真正正	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+真真正正	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 真知灼見	u			no-source;fallback
 真空	n			cow-single;p3
 真空地帶	u			no-source;fallback
@@ -20773,7 +20773,7 @@ T恤	u			no-source;p3;fallback
 眾望所歸	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v
 眾目昭彰	u			no-source;fallback
 眾說紛紜	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v
-着	u			no-source;fallback
+着	v,x			no-source;fallback;u-repair:canto-u-map;review
 着住	v			verb-suffix;p1;heuristic
 着住件	u			no-source;p3;fallback
 着到	u			no-source;p3;fallback
@@ -20850,7 +20850,7 @@ T恤	u			no-source;p3;fallback
 瞎說	u			no-source;p3;fallback
 瞓	v			no-source;fallback;p1-cleanup;canto-heuristic;review
 瞓低	u			no-source;fallback
-瞓覺	u			no-source;fallback
+瞓覺	v			no-source;fallback;u-repair:canto-u-map;review
 瞞	v			cow-single
 瞞上欺下	u			no-source;fallback
 瞞天過海	u			no-source;fallback
@@ -21070,9 +21070,9 @@ T恤	u			no-source;p3;fallback
 磅	n			cow-single
 磊	u			no-source;p3;fallback
 磋商	n			cow-single;p3
-磕磕巴巴	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+磕磕巴巴	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 磕磕撞撞	v	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v
-磕磕絆絆	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+磕磕絆絆	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 磕頭碰腦	u			no-source;fallback
 磡	u			no-source;p3;fallback
 磨	n,v			cow-nv-unreviewed;trust-low
@@ -21081,7 +21081,7 @@ T恤	u			no-source;p3;fallback
 磨擦	u			no-source;fallback
 磨料	n			cow-single
 磨杵成針	u			no-source;fallback
-磨磨蹭蹭	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+磨磨蹭蹭	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 磨難	n			cow-single;p3
 磷	n			cow-single;p3
 礙手礙腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
@@ -21154,7 +21154,7 @@ T恤	u			no-source;p3;fallback
 祕訣	u			no-source;p3;fallback
 祖傳秘方	u			no-source;fallback
 祖先	n			cow-single
-祖祖輩輩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+祖祖輩輩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 祝	u			no-source;fallback
 祝你	u			no-source;p3;fallback
 祝福	v			cow-single
@@ -21482,9 +21482,9 @@ T恤	u			no-source;p3;fallback
 空白	n			cow-single
 空穴來風	u			no-source;fallback
 空空	u			no-source;p3;fallback
-空空如也	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+空空如也	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 空空導彈	n			cow-single;p2-idiom:AABC;p2-idiom-heuristic;full-r1-clear-idiom
-空空洞洞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+空空洞洞	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 空空蕩蕩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 空蕩蕩	u			no-source;fallback
 空虛	n			cow-single
@@ -21555,7 +21555,7 @@ T恤	u			no-source;p3;fallback
 竈	u			no-source;p3;fallback
 竈頭	u			no-source;p3;fallback
 竊玉偷香	u			no-source;fallback
-竊竊私語	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+竊竊私語	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 立	v			cow-single
 立交橋	u			no-source;fallback
 立克次體	u			no-source;fallback
@@ -21851,8 +21851,8 @@ T恤	u			no-source;p3;fallback
 節水	u			no-source;fallback
 節目	n			cow-single
 節省	v			cow-single
-節節上升	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-節節敗退	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+節節上升	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+節節敗退	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 節約	n,v			cow-nv-unreviewed;trust-low
 節約用水	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 節約能源	u			no-source;fallback
@@ -21884,7 +21884,7 @@ T恤	u			no-source;p3;fallback
 簡略	u			no-source;fallback
 簡直	u			no-source;fallback
 簡稱	u			no-source;fallback
-簡簡單單	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+簡簡單單	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 簡繁轉換	u			no-source;fallback
 簡而言之	u			no-source;fallback
 簡要	u			no-source;p3;fallback
@@ -21922,7 +21922,7 @@ T恤	u			no-source;p3;fallback
 粉紅色	u			no-source;p3;fallback
 粉身碎骨	u			no-source;fallback
 粉飾太平	u			no-source;fallback
-粒	u			no-source;fallback
+粒	x			no-source;fallback;u-repair:canto-u-map;review
 粒子	n			cow-single;p3
 粒子物理	u			no-source;fallback
 粒聲	u			no-source;p3;fallback
@@ -22000,7 +22000,7 @@ T恤	u			no-source;p3;fallback
 糉子	u			no-source;p3;fallback
 糊	u			no-source;fallback
 糊塗	u			no-source;fallback
-糊糊塗塗	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+糊糊塗塗	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 糊裏糊塗	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
 糕	u			no-source;fallback
 糖	n			cow-single
@@ -22029,7 +22029,7 @@ T恤	u			no-source;p3;fallback
 紀念郵票	u			no-source;fallback
 紀念館	u			no-source;p3;fallback
 紀錄	u			no-source;fallback
-約	u			no-source;fallback
+約	n,v			no-source;fallback;u-repair:canto-u-map;review
 約佔	u			no-source;p3;fallback
 約好	u			no-source;p3;fallback
 約定	n			cow-single
@@ -22104,7 +22104,7 @@ T恤	u			no-source;p3;fallback
 級數	u			no-source;fallback
 級的	u			no-source;p3;fallback
 紛紛	u			no-source;fallback
-紛紛揚揚	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+紛紛揚揚	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 素	u			no-source;p3;fallback
 素昧平生	u			no-source;fallback
 素淨	u			no-source;fallback
@@ -22140,7 +22140,7 @@ T恤	u			no-source;p3;fallback
 累計	u			no-source;fallback
 累贅	n			cow-single
 細	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
-細佬	u			no-source;fallback
+細佬	n			no-source;fallback;u-repair:canto-u-map;review
 細個	u			no-source;fallback
 細到	u			no-source;p3;fallback
 細則	u			no-source;p3;fallback
@@ -22159,7 +22159,7 @@ T恤	u			no-source;p3;fallback
 細粒	n			cow-single
 細細	u			no-source;p3;fallback
 細細個	u			no-source;fallback
-細細品味	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+細細品味	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 細細聲	u			no-source;fallback
 細聲	u			no-source;fallback
 細聲細氣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic
@@ -22179,7 +22179,7 @@ T恤	u			no-source;p3;fallback
 細説	u			no-source;fallback
 細讀	v			cow-single
 細貓	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
-細路	u			no-source;fallback
+細路	n			no-source;fallback;u-repair:canto-u-map;review
 細路仔	u			no-source;fallback
 細路哥	u			no-source;p3;fallback
 細過	u			no-source;p3;fallback
@@ -22317,7 +22317,7 @@ T恤	u			no-source;p3;fallback
 給與	u			no-source;p3;fallback
 給錢	v			cow-single;p3
 給點	u			no-source;p3;fallback
-絮絮叨叨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+絮絮叨叨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 統一	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 統一戰線	u			no-source;fallback
 統一招生	u			no-source;fallback
@@ -22461,7 +22461,7 @@ T恤	u			no-source;p3;fallback
 綺琪	u			no-source;p3;fallback
 綺雯	u			no-source;p3;fallback
 綽約多姿	u			no-source;fallback
-綽綽有餘	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+綽綽有餘	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 綽號	u			no-source;fallback
 綾羅綢緞	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 綿	u			no-source;p3;fallback
@@ -22544,7 +22544,7 @@ T恤	u			no-source;p3;fallback
 縣級以上	u			no-source;p3;fallback
 縣長	u			no-source;fallback
 縫	u			no-source;p3;fallback
-縫縫連連	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+縫縫連連	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 縮	u			no-source;p1;fallback
 縮小	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 縮成一團	u			no-source;fallback
@@ -22732,7 +22732,7 @@ T恤	u			no-source;p3;fallback
 美侖美奐	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a
 美元	n			cow-single
 美味	u			no-source;fallback
-美國	u			no-source;fallback
+美國	n			no-source;fallback;u-repair:canto-u-map;review
 美國人	u			no-source;p3;fallback
 美國政府	n			len4-noun-heuristic;p3
 美國經濟	n			len4-noun-heuristic;p3
@@ -22814,7 +22814,7 @@ T恤	u			no-source;p3;fallback
 翠兒	u			no-source;p3;fallback
 翠詩	u			no-source;p1;fallback
 翩然而至	u			no-source;fallback
-翩翩起舞	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+翩翩起舞	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 翫忽職守	u			no-source;fallback
 翰林學士	u			no-source;fallback
 翹	u			no-source;fallback
@@ -23011,7 +23011,7 @@ T恤	u			no-source;p3;fallback
 耷低頭	u			no-source;p3;fallback
 耽誤	v			cow-single
 耿	u			no-source;p3;fallback
-耿耿於懷	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+耿耿於懷	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 聆	u			no-source;p3;fallback
 聆聽	v			cow-single
 聊	u			no-source;fallback
@@ -23128,7 +23128,7 @@ T恤	u			no-source;p3;fallback
 聽得	u			no-source;p3;fallback
 聽懂	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 聽我	u			no-source;p3;fallback
-聽日	u			no-source;fallback
+聽日	n,r			no-source;fallback;u-repair:canto-u-map;review
 聽晚	u			no-source;fallback
 聽書	u			no-source;p3;fallback
 聽朝	u			no-source;fallback
@@ -23182,7 +23182,7 @@ T恤	u			no-source;p3;fallback
 肚痛	u			no-source;p3;fallback
 肚腩	u			no-source;p3;fallback
 肚臍	n			no-source;fallback;p1-audit;review;navel
-肚餓	u			no-source;fallback
+肚餓	a			no-source;fallback;u-repair:canto-u-map;review
 肛門直腸	u			no-source;fallback
 肝腎	u			no-source;p3;fallback
 肝腦塗地	u			no-source;fallback
@@ -23746,7 +23746,7 @@ T恤	u			no-source;p3;fallback
 舒服	a			no-source;fallback;full-r1-audit;review;形
 舒淇	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 舒緩	u			no-source;fallback
-舒舒服服	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+舒舒服服	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 舒適	n			cow-single
 舔	v			cow-single
 舖	u			no-source;fallback
@@ -23850,10 +23850,10 @@ T恤	u			no-source;p3;fallback
 花紅柳綠	u			no-source;fallback
 花絮	u			no-source;p3;fallback
 花花	u			no-source;p1;fallback
-花花世界	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+花花世界	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 花花搭搭	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
 花花綠綠	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a
-花花腸子	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+花花腸子	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 花草樹木	u			no-source;fallback
 花落	u			no-source;p3;fallback
 花邊新聞	u			no-source;fallback
@@ -23887,7 +23887,7 @@ T恤	u			no-source;p3;fallback
 苦惱	n,v			cow-nv-unreviewed;trust-low
 苦澀	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
 苦笑	u			no-source;fallback
-苦苦哀求	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+苦苦哀求	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 苦行	n			cow-single
 苦難深重	u			no-source;fallback
 苯	n			cow-single;p3
@@ -23943,8 +23943,8 @@ T恤	u			no-source;p3;fallback
 草木皆兵	u			no-source;fallback
 草本植物	u			no-source;fallback
 草草	u			no-source;fallback
-草草了事	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-草草收場	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+草草了事	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+草草收場	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 草莽	u			no-source;fallback
 草菅人命	u			no-source;fallback
 草食動物	u			no-source;fallback
@@ -23974,7 +23974,7 @@ T恤	u			no-source;p3;fallback
 莊重	u			no-source;fallback
 莎士比亞	u			no-source;fallback
 莎莎	u			no-source;p1;fallback
-莘莘學子	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+莘莘學子	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 莞爾一笑	u			no-source;fallback
 莪	u			no-source;p3;fallback
 莫	u			no-source;p3;fallback
@@ -24062,7 +24062,7 @@ T恤	u			no-source;p3;fallback
 萬能	u			no-source;fallback
 萬能鑰匙	u			no-source;fallback
 萬般無奈	u			no-source;fallback
-萬萬不可	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+萬萬不可	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 萬裏長城	u			no-source;fallback
 萬裏長徵	u			no-source;fallback
 萬貫家財	u			no-source;fallback
@@ -24101,7 +24101,7 @@ T恤	u			no-source;p3;fallback
 落花流水	u			no-source;fallback
 落荒而逃	u			no-source;fallback
 落落	u			no-source;p3;fallback
-落落寡歡	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+落落寡歡	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 落葉喬木	u			no-source;fallback
 落葉歸根	u			no-source;fallback
 落街	u			no-source;fallback
@@ -24296,7 +24296,7 @@ T恤	u			no-source;p3;fallback
 處理器	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 處理方法	n			len4-noun-heuristic
 處男	u			no-source;p3;fallback
-處處碰壁	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+處處碰壁	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 處變不驚	u			no-source;fallback
 虛位以待	u			no-source;fallback
 虛假	a			cow-single
@@ -24374,7 +24374,7 @@ T恤	u			no-source;p3;fallback
 蝦	n			cow-single
 蝦子	u			no-source;fallback
 蝦米	u			no-source;fallback
-蝦蝦霸霸	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+蝦蝦霸霸	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 蝦餃	u			no-source;p3;fallback
 蝴蝶	n			cow-single
 蝴蝶效應	u			no-source;fallback
@@ -25176,7 +25176,7 @@ T恤	u			no-source;p3;fallback
 許多	n			cow-single
 許多人	u			no-source;p3;fallback
 許崇德	u			no-source;p3;fallback
-許許多多	u			no-source;p3;fallback
+許許多多	a			no-source;p3;fallback;u-repair:aabb-u;review
 許願	u			no-source;p3;fallback
 診所	n			cow-single
 診治	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
@@ -25294,7 +25294,7 @@ T恤	u			no-source;p3;fallback
 誇大其詞	u			no-source;fallback
 誇大其辭	u			no-source;fallback
 誇張	n,v			cow-nv-unreviewed;trust-low
-誇誇其談	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+誇誇其談	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 誌	u			no-source;p3;fallback
 認	u			no-source;fallback
 認同	v			cow-single
@@ -25445,7 +25445,7 @@ T恤	u			no-source;p3;fallback
 調頭	n,v			no-source;fallback;full-r1-audit;review;名動
 調高	u			no-source;p3;fallback
 諂上欺下	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
-諄諄告誡	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+諄諄告誡	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 談	v			cow-single
 談判	n			cow-single;p3
 談古論今	u			no-source;fallback
@@ -25597,7 +25597,7 @@ T恤	u			no-source;p3;fallback
 謝絲	u			no-source;p3;fallback
 謝謝	n,v			cow-nv-unreviewed;trust-low
 謝謝了	u			no-source;p3;fallback
-謝謝大家	u			no-source;p3;fallback
+謝謝大家	a,r			no-source;p3;fallback;u-repair:aabc-u;review
 謝通門縣	u			no-source;fallback
 謠言惑眾	u			no-source;fallback
 謹	u			no-source;p3;fallback
@@ -26160,7 +26160,7 @@ T恤	u			no-source;p3;fallback
 超過	v			cow-multi;full-r1-audit;review;超過＝動；r 假陽
 超頻	u			no-source;p3;fallback
 超額利潤	u			no-source;fallback
-越	u			no-source;fallback
+越	r,v			no-source;fallback;u-repair:canto-u-map;review
 越來	r			verb-suffix;p1;heuristic;p1-audit;review;verb-suffix假陽；「越來越」副詞幹，非動
 越來越	u			no-source;fallback
 越來越多	r			no-source;p1;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;固定熟語模式；副；family 留;full-r1-clear-idiom
@@ -26232,7 +26232,7 @@ T恤	u			no-source;p3;fallback
 跌破眼鏡	u			no-source;fallback
 跌落	v			cow-single
 跌跌	u			no-source;p3;fallback
-跌跌撞撞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+跌跌撞撞	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 跑	v			cow-single
 跑了	u			no-source;p3;fallback
 跑來	u			no-source;p3;fallback
@@ -26241,8 +26241,8 @@ T恤	u			no-source;p3;fallback
 跑得	u			no-source;p3;fallback
 跑步	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 跑跑	u			no-source;p3;fallback
-跑跑跳跳	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
-跑跑顛顛	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+跑跑跳跳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+跑跑顛顛	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 跑車	u			no-source;fallback
 跑過	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 跛	n			cow-single
@@ -26322,7 +26322,7 @@ T恤	u			no-source;p3;fallback
 踩	v			cow-single
 踩踩	u			no-source;p3;fallback
 踹	v			cow-single
-踽踽獨行	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+踽踽獨行	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 蹉跎歲月	u			no-source;fallback
 蹤	u			no-source;fallback
 蹤影	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
@@ -26332,7 +26332,7 @@ T恤	u			no-source;p3;fallback
 蹲在	u			no-source;p3;fallback
 躉	u			no-source;fallback
 躋身	u			no-source;p3;fallback
-躍躍欲試	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+躍躍欲試	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 躝	u			no-source;p3;fallback
 躡手躡腳	v	idiom		audit-high;review
 身	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review
@@ -26614,14 +26614,14 @@ T恤	u			no-source;p3;fallback
 轟動一時	u			no-source;fallback
 轟動效應	u			no-source;fallback
 轟炸	v			cow-single
-轟轟烈烈	u			no-source;p3;fallback
+轟轟烈烈	a			no-source;p3;fallback;u-repair:aabb-u;review
 轟隆	u			no-source;fallback
 辛	u			no-source;p3;fallback
 辛丑條約	u			no-source;fallback
 辛亥革命	u			no-source;fallback
 辛勤	u			no-source;p3;fallback
 辛苦	n			cow-single
-辛辛苦苦	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+辛辛苦苦	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 辜負	u			no-source;fallback
 辣	u			no-source;fallback
 辣手摧花	u			no-source;fallback
@@ -26725,8 +26725,8 @@ T恤	u			no-source;p3;fallback
 返回	n,v			cow-nv-unreviewed;trust-low
 返好	u			no-source;p3;fallback
 返學	u			no-source;fallback
-返屋企	u			no-source;fallback
-返工	u			no-source;fallback
+返屋企	v			no-source;fallback;u-repair:canto-u-map;review
+返工	v			no-source;fallback;u-repair:canto-u-map;review
 返張	u			no-source;p3;fallback
 返房	u			no-source;p1;fallback
 返條	u			no-source;p3;fallback
@@ -26770,7 +26770,7 @@ T恤	u			no-source;p3;fallback
 迷糊	v			cow-single
 迷茫	u			no-source;fallback
 迷走神經	u			no-source;fallback
-迷迷糊糊	u			no-source;p3;fallback
+迷迷糊糊	a			no-source;p3;fallback;u-repair:aabb-u;review
 迷途知返	u			no-source;fallback
 追	v			cow-single
 追上	v			cow-single
@@ -27327,8 +27327,8 @@ T恤	u			no-source;p3;fallback
 違背	v			cow-single
 遙控	u			no-source;fallback
 遙控器	u			no-source;fallback
-遙遙無期	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-遙遙領先	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+遙遙無期	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+遙遙領先	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 遙遠	u			no-source;p3;fallback
 遜色	u			no-source;fallback
 遞	v			cow-single
@@ -27356,7 +27356,7 @@ T恤	u			no-source;p3;fallback
 遠近馳名	u			no-source;fallback
 遠道而來	u			no-source;fallback
 遠遠	u			no-source;fallback
-遠遠超過	u			no-source;p3;fallback
+遠遠超過	a,r			no-source;p3;fallback;u-repair:aabc-u;review
 遠隔千里	u			no-source;fallback
 遠隔重洋	u			no-source;fallback
 遠離	v			cow-multi;full-r1-audit;review;遠離＝動；a,n 假陽
@@ -27373,7 +27373,7 @@ T恤	u			no-source;p3;fallback
 遮	u			no-source;fallback
 遮住	v			verb-suffix;heuristic
 遮掩	v			cow-single
-遮遮掩掩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+遮遮掩掩	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 遮風擋雨	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 遮風避雨	u			no-source;fallback
 遲	u			no-source;p1;fallback
@@ -27427,7 +27427,7 @@ T恤	u			no-source;p3;fallback
 避實就虛	u			no-source;fallback
 避而不談	u			no-source;fallback
 避過	u			no-source;p3;fallback
-避避風頭	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+避避風頭	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 避重就輕	u			no-source;fallback
 避開	n,v			cow-nv-unreviewed;trust-low
 避險	u			no-source;fallback
@@ -27797,7 +27797,7 @@ T恤	u			no-source;p3;fallback
 重蹈覆轍	u			no-source;fallback
 重逢	u			no-source;fallback
 重重	u			no-source;fallback
-重重包圍	u			no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;p2-audit-clear
+重重包圍	a,r			no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;p2-audit-clear;u-repair:aabc-u;review
 重量	n			cow-single
 重量單位	n			len4-noun-heuristic
 重量級	u			no-source;p3;fallback
@@ -28177,7 +28177,7 @@ T恤	u			no-source;p3;fallback
 閃過	v			cow-single;p3
 閃避	v			cow-single
 閃閃發光	v	idiom		cow-single;p2-idiom:AABC;p2-idiom-heuristic
-閃閃縮縮	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+閃閃縮縮	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 閃電	u			no-source;fallback
 閆	u			no-source;p3;fallback
 閉上	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
@@ -28221,7 +28221,7 @@ T恤	u			no-source;p3;fallback
 開局	u			no-source;p3;fallback
 開山祖師	u			no-source;fallback
 開山鼻祖	u			no-source;fallback
-開工	u			no-source;fallback
+開工	v			no-source;fallback;u-repair:canto-u-map;review
 開幕典禮	n			len4-noun-heuristic
 開幕式	u			no-source;fallback
 開店	u			no-source;p3;fallback
@@ -28421,7 +28421,7 @@ T恤	u			no-source;p3;fallback
 阿姐	u			no-source;fallback
 阿姨	n			cow-single
 阿婆	u			no-source;fallback
-阿媽	u			no-source;fallback
+阿媽	n			no-source;fallback;u-repair:canto-u-map;review
 阿嬌	u			no-source;p3;fallback
 阿嬸	u			no-source;fallback
 阿富汗	n			cow-single
@@ -28457,7 +28457,7 @@ T恤	u			no-source;p3;fallback
 阿浩	u			no-source;p3;fallback
 阿源	u			no-source;p3;fallback
 阿澤	u			no-source;p3;fallback
-阿爸	u			no-source;fallback
+阿爸	n			no-source;fallback;u-repair:canto-u-map;review
 阿爺	u			no-source;p3;fallback
 阿爾	u			no-source;p3;fallback
 阿爾伯塔	u			no-source;fallback
@@ -28561,7 +28561,7 @@ T恤	u			no-source;p3;fallback
 陰謀	n			cow-single;p3
 陰道	u			no-source;fallback
 陰間	n			cow-single
-陰陰沉沉	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+陰陰沉沉	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 陰陽怪氣	u			no-source;fallback
 陰險毒辣	u			no-source;fallback
 陰霾	u			no-source;fallback
@@ -28593,7 +28593,7 @@ T恤	u			no-source;p3;fallback
 陸羽	u			no-source;p3;fallback
 陸羽石	u			no-source;p3;fallback
 陸軍	n			cow-single
-陸陸續續	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+陸陸續續	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 陽	u			no-source;p3;fallback
 陽光	n			cow-single
 陽具	u			no-source;fallback
@@ -28679,7 +28679,7 @@ T恤	u			no-source;p3;fallback
 隱蔽	n,v			cow-nv-unreviewed;trust-low
 隱藏	v			cow-single
 隱退	n,v			cow-nv-unreviewed;trust-low
-隱隱作痛	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+隱隱作痛	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 隴南地區	n			len4-noun-heuristic
 隻	x			no-source;fallback;p1-cleanup;canto-heuristic;review
 隻字不提	u			no-source;fallback
@@ -29066,8 +29066,8 @@ T恤	u			no-source;p3;fallback
 青龍	u			no-source;p3;fallback
 靖	u			no-source;p3;fallback
 靚	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review
-靚仔	u			no-source;fallback
-靚女	u			no-source;fallback
+靚仔	a,n			no-source;fallback;u-repair:canto-u-map;review
+靚女	a,n			no-source;fallback;u-repair:canto-u-map;review
 靚妹	u			no-source;p1;fallback
 靚靚	u			no-source;fallback
 靚麗	u			no-source;p3;fallback
@@ -29161,7 +29161,7 @@ T恤	u			no-source;p3;fallback
 面都紅	u			no-source;p3;fallback
 面青	u			no-source;fallback
 面面	u			no-source;p3;fallback
-面面相覷	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+面面相覷	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 革命	n,v			cow-multi;p3
 革命先烈	u			no-source;fallback
 革命委員	u			no-source;fallback
@@ -29229,7 +29229,7 @@ T恤	u			no-source;p3;fallback
 頂撞	u			no-source;fallback
 頂着	u			no-source;p3;fallback
 頂硬上	u			no-source;p3;fallback
-頂頂頂頂	u			no-source;p3;fallback
+頂頂頂頂	x			no-source;p3;fallback;u-repair:aabb-u;review
 頂頭上司	u			no-source;fallback
 項	u			no-source;fallback
 項上人頭	u			no-source;fallback
@@ -29346,7 +29346,7 @@ T恤	u			no-source;p3;fallback
 頭銜	n			cow-single
 頭頂	n			cow-single
 頭頭	u			no-source;fallback
-頭頭是道	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+頭頭是道	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 頭髮	n			cow-single
 頰	n			cow-single
 頸	n			cow-single
@@ -29463,7 +29463,7 @@ T恤	u			no-source;p3;fallback
 風靡一時	u			no-source;fallback
 風韻猶存	u			no-source;fallback
 風頭	u			no-source;p3;fallback
-風風火火	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+風風火火	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 風風雨雨	n	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → n
 風餐露宿	u			no-source;fallback
 颶風	n			cow-single;p3
@@ -29471,7 +29471,7 @@ T恤	u			no-source;p3;fallback
 飄洋過海	u			no-source;fallback
 飄浮	u			no-source;p3;fallback
 飄飄	u			no-source;p3;fallback
-飄飄欲仙	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+飄飄欲仙	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 飛	v			cow-single
 飛仔	u			no-source;p3;fallback
 飛來橫禍	n	idiom		audit-med;review
@@ -29537,7 +29537,7 @@ T恤	u			no-source;p3;fallback
 食返	u			no-source;p3;fallback
 食過	v			verb-suffix;p1;heuristic;verb-suffix-suspect;trust-low
 食食	u			no-source;p1;fallback
-食飯	u			no-source;fallback
+食飯	v			no-source;fallback;u-repair:canto-u-map;review
 食飽	u			no-source;p3;fallback
 食餐	u			no-source;p3;fallback
 食髓知味	u			no-source;fallback
@@ -29657,7 +29657,7 @@ T恤	u			no-source;p3;fallback
 首開紀錄	u			no-source;fallback
 首頁	u			no-source;fallback
 首領	n			cow-single
-香	u			no-source;fallback
+香	a,n			no-source;fallback;u-repair:canto-u-map;review
 香口膠	u			no-source;p3;fallback
 香味	n			cow-single
 香味撲鼻	u			no-source;fallback
@@ -29704,7 +29704,7 @@ T恤	u			no-source;p3;fallback
 馬達	n			cow-single;p3
 馬鈴薯	n			cow-single
 馬雲	u			no-source;p3;fallback
-馬馬虎虎	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+馬馬虎虎	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 馬騮	u			no-source;fallback
 馮小剛	u			no-source;p3;fallback
 馴養繁殖	u			no-source;fallback
@@ -29949,8 +29949,8 @@ T恤	u			no-source;p3;fallback
 高額	u			no-source;fallback
 高風險區	u			no-source;fallback
 高高	u			no-source;p1;fallback
-高高在上	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
-高高興興	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+高高在上	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
+高高興興	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 高麗王朝	u			no-source;fallback
 髮	u			no-source;fallback
 髮型	n			cow-single
@@ -29982,7 +29982,7 @@ T恤	u			no-source;p3;fallback
 鬧鈴時鐘	u			no-source;fallback
 鬧鐘	n			cow-single
 鬱悶的	u			no-source;p3;fallback
-鬱鬱而終	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic
+鬱鬱而終	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 鬼	n			cow-single
 鬼仔	u			no-source;p3;fallback
 鬼佬	u			no-source;p3;fallback
@@ -29997,7 +29997,7 @@ T恤	u			no-source;p3;fallback
 鬼知	r,v			no-source;p3;fallback;full-r1-audit;review;粵反詰
 鬼話連篇	u			no-source;fallback
 鬼頭	u			no-source;p3;fallback
-鬼鬼祟祟	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+鬼鬼祟祟	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 鬼魂	n			cow-single
 魂	u			no-source;fallback
 魂不附體	u			no-source;fallback
@@ -30293,7 +30293,7 @@ T恤	u			no-source;p3;fallback
 點頭之交	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review
 點頭哈腰	v			cow-single
 點點	u			no-source;p3;fallback
-點點滴滴	u			no-source;p3;fallback
+點點滴滴	a			no-source;p3;fallback;u-repair:aabb-u;review
 點點頭	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語
 黨	n			cow-single;p3
 黨中央	u			no-source;p3;fallback
@@ -30325,7 +30325,7 @@ T恤	u			no-source;p3;fallback
 鼓樓	u			no-source;p3;fallback
 鼓舞人心	u			no-source;fallback
 鼓起	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
-鼓鼓囊囊	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review
+鼓鼓囊囊	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 鼠	n			cow-single
 鼠標	n			cow-single
 鼠目寸光	u			no-source;fallback

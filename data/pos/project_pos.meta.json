@@ -1,5 +1,5 @@
 {
-  "version": "0.3.2",
+  "version": "0.3.3",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -242,5 +242,18 @@
       "full_r1_pos": 1426,
       "full_r1_family_clear": 39
     }
+  },
+  "u_repair": {
+    "u_before": 21774,
+    "repaired": 325,
+    "left_u": 21449,
+    "by_tag": {
+      "aabc-u": 99,
+      "aabb-u": 106,
+      "youwu-u": 52,
+      "canto-u-map": 68
+    },
+    "dry_run": false,
+    "repair_rate": 0.0149
   }
 }
