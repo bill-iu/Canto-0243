@@ -1,5 +1,5 @@
 {
-  "version": "0.1.7",
+  "version": "0.2.1",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -120,5 +120,45 @@
     ],
     "fixes_applied_total": 8,
     "report": "data/pos/audit/p1_gate_quality_report.md"
+  },
+  "p2": {
+    "phase": "p2",
+    "mother_body": 883,
+    "idiom_tagged": 879,
+    "idiom_display_high": 414,
+    "coverage": 0.9955,
+    "by_pattern": {
+      "之字格": 214,
+      "一X?Y": 14,
+      "ABAC": 343,
+      "AABC": 113,
+      "AABB": 153,
+      "AxxA": 20,
+      "ABAB": 3,
+      "有無對": 23
+    },
+    "p2_complete": true,
+    "quality_pass": true
+  },
+  "p2_idiom_quality": {
+    "pass": true,
+    "threshold": 0.9,
+    "rounds": [
+      {
+        "round": 1,
+        "seed": 20260719,
+        "sample_n": 50,
+        "ok_rate": 0.98,
+        "pass": true
+      },
+      {
+        "round": 2,
+        "seed": 202607192,
+        "sample_n": 50,
+        "ok_rate": 0.94,
+        "pass": true
+      }
+    ],
+    "report": "data/pos/audit/p2_idiom_quality_report.md"
   }
 }

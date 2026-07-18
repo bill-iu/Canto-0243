@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	pattern	verdict	fix_family	audit_note
+一唱一和	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+一望無垠	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	一X?Y	OK		
+一步之遙	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+不冷不熱	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+不治之症	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+予取予求	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+人中之龍	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+仁者見仁	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	AxxA	OK		
+動刀動槍	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+各色各樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+同工同酬	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	SOFT		勞工原則口號式對舉；固定搭配可留
+哭哭啼啼	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+在此之後	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	BAD		普通指示時間短語「在此+之後」，非固定說法
+大鳴大放	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	SOFT		政治運動口號起源；今亦作固定說法可留
+女流之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+實話實説	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+怪裏怪氣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+悶悶不樂	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+惶惶不安	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+意料之中	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+拒之門外	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+擠來擠去	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+救國救民	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+新人新事	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	SOFT		時代口號式對舉；固定度中等可留
+星星之火	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic	high	AABC	OK		
+有意無意	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	有無對	OK		
+朗朗上口	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+求之不得	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+沒心沒肺	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+活龍活現	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+浩浩蕩蕩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+浩然之氣	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+獨來獨往	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+白白淨淨	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+相生相剋	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+礙手礙腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+空空蕩蕩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+笨手笨腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+置之不理	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+而立之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+自言自語	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+行行企企	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+言之過早	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+踽踽獨行	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+身外之物	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+轉眼之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+逛來逛去	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+重重包圍	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	BAD		普通描寫搭配「重重+包圍」，非固定說法／成語
+電解電容	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	BAD		電子技術術語 NP（electrolytic capacitor），非固定說法
+鬼鬼祟祟	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		

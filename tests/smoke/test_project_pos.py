@@ -124,6 +124,24 @@ def test_p1_closeout_metrics() -> None:
     assert meta.get("p1", {}).get("closeout") is True
 
 
+def test_p2_idiom_quality_pass() -> None:
+    from pathlib import Path
+
+    from ingest.project_pos import load_meta
+    from ingest.project_pos_p2 import p2_status
+
+    st = p2_status()
+    assert st["mother_body"] >= 500
+    assert st["coverage"] >= 0.95
+    assert st["p2_complete"] is True
+    meta = load_meta()
+    assert meta.get("p2_idiom_quality", {}).get("pass") is True
+    rounds = meta.get("p2_idiom_quality", {}).get("rounds") or []
+    assert len(rounds) >= 2
+    assert all(r.get("ok_rate", 0) > 0.90 for r in rounds)
+    assert Path("data/pos/audit/p2_idiom_quality_report.md").is_file()
+
+
 def test_p1_gate_quality_pass() -> None:
     from pathlib import Path
 
@@ -200,6 +218,7 @@ def main() -> None:
     test_p1_audit_artifacts()
     test_p1_closeout_metrics()
     test_p1_gate_quality_pass()
+    test_p2_idiom_quality_pass()
     test_trust_tiers()
     print("test_project_pos: ok")
 
