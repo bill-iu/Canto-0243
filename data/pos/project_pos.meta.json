@@ -409,18 +409,18 @@
     "report": "data/pos/audit/u_inlex/alias_proposals_review_r1.md"
   },
   "u_inlex_nf2k": {
-    "usable": 1715,
+    "usable": 508,
     "keep_u": 0,
     "upsert": {
       "rows": 22716,
-      "touched": 1715,
-      "updated": 1715,
+      "touched": 508,
+      "updated": 508,
       "added": 0,
       "bad": 0
     },
     "skipped": {},
-    "before_u": 2248,
-    "after_u": 533
+    "before_u": 533,
+    "after_u": 25
   },
   "alias_queue_closed": {
     "r4": "6 reject alias + formal free morphemes; propose n=0",
@@ -522,5 +522,26 @@
       "alias_n": 15
     },
     "still_nf_essay": 0
+  },
+  "u_tail533": {
+    "applied_formal": 508,
+    "keep_u_fragments": 25,
+    "gate_r1": {
+      "sample_n": "no-source;p3;fallback;fragment;residual;魍魎殘字 — 待完整",
+      "ok_rate": 1.0,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 22691,
+      "u": 25,
+      "fragment": 25,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22691,
+      "formal_non_fragment": 22691,
+      "d4_pass_95": true,
+      "alias_n": 15
+    }
   }
 }

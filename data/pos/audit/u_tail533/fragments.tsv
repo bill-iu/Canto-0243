@@ -1,0 +1,26 @@
+literal	note
+不知幾	no-source;fallback;fragment;clause-slice
+人嚟	no-source;fallback;fragment;clause-slice
+仲話	no-source;fallback;fragment;clause-slice
+企響度	no-source;p3;fallback;fragment;opaque
+你仲記	no-source;p3;fallback;fragment;clause-slice
+你估	no-source;fallback;fragment;clause-slice
+個月	no-source;fallback;fragment;clause-slice
+咇	no-source;p3;fallback;fragment;opaque
+國內生產	no-source;fallback;fragment;clause-slice;國內生產總值殘片
+實會	no-source;p3;fallback;fragment;clause-slice;實+會截斷
+將你	no-source;p3;fallback;fragment;clause-slice;介+代截斷
+將我	no-source;fallback;fragment;clause-slice
+我架	no-source;fallback;fragment;clause-slice
+我溝	no-source;p3;fallback;fragment;clause-slice;主+動截斷
+我見	no-source;fallback;fragment;clause-slice
+我識	no-source;fallback;fragment;clause-slice
+拉西	no-source;p3;fallback;fragment;opaque;罕／不明
+然	no-source;fallback;fragment;opaque
+直角三角	no-source;fallback;fragment;clause-slice;直角三角形殘片
+總有	no-source;fallback;fragment;clause-slice
+自已	no-source;p3;fallback;fragment;clause-slice;自己誤寫／殘片
+講乜	no-source;fallback;fragment;clause-slice
+踊	no-source;p3;fallback;fragment;residual;踊躍殘字；完整詞未入 SSOT
+關斗	no-source;p3;fallback;fragment;opaque;罕／不明
+魍	no-source;p3;fallback;fragment;residual;魍魎殘字 — 待完整詞 alias
