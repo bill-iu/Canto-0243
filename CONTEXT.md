@@ -133,6 +133,10 @@ _Avoid_：POS 腳本旁路寫詞庫、寬鬆自動 alias 自由語素、主表�
 庫內難標修復之完成度報兩個率：`formal/all`（全清單）與 `formal/(all−fragment)`（扣已標 **詞性碎片**）。v1 戰役收工：後者 **≥95%** 且碎片皆有類型 token；**唔**要求全庫 `u=0`。大批 agent 晉升 formal 須**每批**抽樣品質閘 **>90%** 先合入。
 _Avoid_：只報 formal/all 自稱完工、無碎片標籤就扣分母、跳過批級品質閘
 
+**庫內難標 v1 收口**（2026-07）：
+**專案自建詞性清單** 內，非 **詞性碎片** 字面已全有正式五主類（`formal/(all−fragment)=1`）；`formal/all≈0.999`。剩餘 **未定** 僅 **詞性碎片**（clause-slice／opaque，及待完整詞之 residual）。Essay 非碎片 still-u 佇列已空；五批 top-N 複核 ok_rate≈0.97。**詞性字面別名** 權威表 `data/pos/alias.tsv`（含 curated 完整詞如 曱甴／踊躍／魍魎）。新詞入庫後以維護模式小批標註，唔重開 v1 戰役。詳見 ADR-0060、`data/pos/audit/nf_batches_full_gate/`。
+_Avoid_：把仍有碎片未定當 v1 未收口、為湊 u=0 而 formal 截斷句、重開全庫 top-N 而無新 membership
+
 **詞性載體**：
 由 **專案自建詞性清單** 發佈出、供 Portable／PWA／campaign 工具 runtime 載入嘅獨立資料（與 **詞條庫** 主檔分離）。可喺**唔**做 **詞庫版本 bump** 嘅情況下更新詞性內容；有自己嘅完整性／版本標識，令快取客戶端可淘汰舊載體。與詞庫版本**允許短期漂移**；查詢引擎須容忍載體未就緒或舊載體（回退 **詞性缺標** 行為，唔阻 **就緒閘解鎖**）。可選附帶 **詞性字面別名** 映射；缺則 source 當缺標。
 _Avoid_：pos map（作領域正名）、強制詞性更新綁死 lyrics.db 同版、詞性載體缺失就卡住就緒閘、PWA／Portable 各維護漂移副本無版本

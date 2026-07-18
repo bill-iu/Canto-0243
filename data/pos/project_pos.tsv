@@ -19575,7 +19575,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 跳蚤	n			cow-single;p3
 跳蚤市場	n			len4-noun-heuristic
 踉踉蹌蹌	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv
-踊	u			no-source;p3;fallback;fragment;residual;踊躍殘字；完整詞未入 SSOT
+踊躍	a,v			alias-target;review;u-inlex-residual
 踏	v			cow-single
 踏上	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 踏入	v			u-inlex;review;u-inlex-agent
@@ -22424,7 +22424,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 魂飛魄散	a,v	idiom		成語;u-inlex-nf2b;review;agent-label
 魂魄	n			cow-single;p3
 魅力	n			cow-single
-魍	u			no-source;p3;fallback;fragment;residual;魍魎殘字 — 待完整詞 alias
+魍魎	n			alias-target;review;u-inlex-residual
 魏	n			姓;u-inlex;review;u-inlex-agent
 魑魅魍魎	n	idiom		u-inlex-nf3;review;agent-label
 魔	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u

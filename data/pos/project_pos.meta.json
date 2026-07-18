@@ -340,38 +340,41 @@
   },
   "u_inlex_fragment_alias": {
     "dry_run": false,
-    "targets_ensured": [],
+    "targets_ensured": [
+      "踊躍",
+      "魍魎"
+    ],
     "residuals_removed_from_ssot": [
-      "顫",
-      "緻"
+      "踊",
+      "魍"
     ],
     "fragment_tags": {
       "clause_tagged": 12,
       "opaque_tagged": 3
     },
     "before": {
-      "rows": 22718,
-      "formal": 14465,
-      "u": 8253,
-      "fragment": 24,
-      "formal_over_all": 0.6367,
-      "formal_over_non_fragment": 0.6374,
-      "non_fragment": 22694,
-      "formal_non_fragment": 14465,
-      "d4_pass_95": false,
-      "alias_n": 15
+      "rows": 22716,
+      "formal": 22690,
+      "u": 26,
+      "fragment": 26,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22690,
+      "formal_non_fragment": 22690,
+      "d4_pass_95": true,
+      "alias_n": 17
     },
     "after": {
       "rows": 22716,
-      "formal": 14465,
-      "u": 8251,
-      "fragment": 22,
-      "formal_over_all": 0.6368,
-      "formal_over_non_fragment": 0.6374,
-      "non_fragment": 22694,
-      "formal_non_fragment": 14465,
-      "d4_pass_95": false,
-      "alias_n": 15
+      "formal": 22692,
+      "u": 24,
+      "fragment": 24,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22692,
+      "formal_non_fragment": 22692,
+      "d4_pass_95": true,
+      "alias_n": 17
     }
   },
   "u_pattern_s2": {

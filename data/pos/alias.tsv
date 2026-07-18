@@ -8,6 +8,8 @@ source	target	kind	note
 蠱	整蠱	residual	粵; IWP+affinity
 顫	顫抖	residual	r3; n_bigrams=1; rare free
 緻	精緻	residual	r3; n_bigrams=1; bound morpheme
+踊	踊躍	residual	curated full; variant of 踴躍
+魍	魍魎	residual	curated full
 曱	曱甴	residual	cockroach half; curated full
 甴	曱甴	residual	cockroach half; curated full
 蘿	蘿蔔	residual	radish half
