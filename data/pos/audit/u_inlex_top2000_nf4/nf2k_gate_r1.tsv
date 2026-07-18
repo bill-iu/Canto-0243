@@ -1,0 +1,101 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+一決勝負	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+三陪小姐	n			u-inlex-nf4;review;agent-label	high	OK		
+不勝唏噓	a,v	idiom		成語；不勝唏噓;u-inlex-nf4;review;agent-label	high	OK		
+不吭一聲	v			u-inlex-nf4;review;agent-label	high	OK		
+不知所終	a,v			u-inlex-nf4;review;agent-label	high	OK		
+世界大同	n			u-inlex-nf4;review;agent-label	high	SOFT		n 可
+五福臨門	x	idiom		u-inlex-nf4;review;agent-label	high	BAD	a	祝福／門聯語；非助詞 x
+人如其名	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+作者不詳	a			u-inlex-nf4;review;agent-label	high	SOFT		a 短語可
+佳偶天成	a,n	idiom		成語；佳偶天成;u-inlex-nf4;review;agent-label	high	OK		
+俯首稱臣	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+偷雞摸狗	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+儀態萬千	a	idiom		成語；儀態萬千;u-inlex-nf4;review;agent-label	high	OK		
+光導纖維	n			u-inlex-nf4;review;agent-label	high	OK		
+公民投票	n,v			u-inlex-nf4;review;agent-label	high	OK		
+制動踏板	n			u-inlex-nf4;review;agent-label	high	OK		
+副駕駛員	n			u-inlex-nf4;review;agent-label	high	OK		
+力大無窮	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+千挑萬選	v			u-inlex-nf4;review;agent-label	high	OK		
+口耳相傳	v			u-inlex-nf4;review;agent-label	high	OK		
+古文字學	n			u-inlex-nf4;review;agent-label	high	OK		
+嚴刑峻法	n	idiom		成語；嚴刑峻法;u-inlex-nf4;review;agent-label	high	OK		
+嚴刑拷打	n,v			u-inlex-nf4;review;agent-label	high	OK		
+固定價格	n			u-inlex-nf4;review;agent-label	high	OK		
+坐立難安	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+外剛內柔	a	idiom		成語；外剛內柔;u-inlex-nf4;review;agent-label	high	OK		
+大同世界	n			u-inlex-nf4;review;agent-label	high	OK		
+天人永隔	a,v			u-inlex-nf4;review;agent-label	high	OK		
+天色已晚	a			u-inlex-nf4;review;agent-label	high	OK		
+妙筆生花	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+學生手冊	n			u-inlex-nf4;review;agent-label	high	OK		
+富貴逼人	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+寧缺勿濫	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+少年老成	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+山巒起伏	a,v			u-inlex-nf4;review;agent-label	high	OK		
+山洪暴發	n,v			u-inlex-nf4;review;agent-label	high	OK		
+常規武器	n			u-inlex-nf4;review;agent-label	high	OK		
+弗蘭西斯	n			u-inlex-nf4;review;agent-label	high	OK		
+徘徊不前	a,v			u-inlex-nf4;review;agent-label	high	OK		
+從嚴處理	v			u-inlex-nf4;review;agent-label	high	OK		
+心理學系	n			u-inlex-nf4;review;agent-label	high	OK		
+惹禍上身	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+感應電流	n			u-inlex-nf4;review;agent-label	high	OK		
+拿鐵咖啡	n			u-inlex-nf4;review;agent-label	high	OK		
+擁軍優屬	n,v			u-inlex-nf4;review;agent-label	high	OK		
+擾人清夢	v			u-inlex-nf4;review;agent-label	high	OK		
+敦煌石窟	n			u-inlex-nf4;review;agent-label	high	OK		
+文學巨匠	n			u-inlex-nf4;review;agent-label	high	OK		
+文學運動	n			u-inlex-nf4;review;agent-label	high	OK		
+旁系血親	n			u-inlex-nf4;review;agent-label	high	OK		
+有進取心	a			u-inlex-nf4;review;agent-label	high	OK		
+望洋興嘆	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+板塊構造	n			u-inlex-nf4;review;agent-label	high	OK		
+正中下懷	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+正月初二	n			u-inlex-nf4;review;agent-label	high	OK		
+江河湖海	n			u-inlex-nf4;review;agent-label	high	OK		
+滴水成冰	a,v			u-inlex-nf4;review;agent-label	high	OK		
+滿天繁星	n			u-inlex-nf4;review;agent-label	high	OK		
+滿腔熱忱	a,n			u-inlex-nf4;review;agent-label	high	OK		
+狗血噴頭	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+狡兔三窟	n,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+班師回朝	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+生態足跡	n			u-inlex-nf4;review;agent-label	high	OK		
+生理學家	n			u-inlex-nf4;review;agent-label	high	OK		
+百密一疏	a,n	idiom		u-inlex-nf4;review;agent-label	high	OK		
+眼神不好	a			u-inlex-nf4;review;agent-label	high	OK		
+知無不言	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+碩大無比	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+禁止通行	v			u-inlex-nf4;review;agent-label	high	OK		
+科學種田	n,v			u-inlex-nf4;review;agent-label	high	OK		
+種子植物	n			u-inlex-nf4;review;agent-label	high	OK		
+穩操勝券	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+空氣阻力	n			u-inlex-nf4;review;agent-label	high	OK		
+立等可取	a,v	idiom		成語；立等可取;u-inlex-nf4;review;agent-label	high	OK		
+精兵簡政	n,v			u-inlex-nf4;review;agent-label	high	OK		
+細胞骨架	n			u-inlex-nf4;review;agent-label	high	OK		
+老神在在	a			u-inlex-nf4;review;agent-label	high	OK		
+老而彌堅	a	idiom		成語；老而彌堅;u-inlex-nf4;review;agent-label	high	OK		
+耳鬢廝磨	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+胃酸過多	a,n			u-inlex-nf4;review;agent-label	high	OK		
+舉目無親	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+茫然若失	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+草食動物	n			u-inlex-nf4;review;agent-label	high	OK		
+虎口拔牙	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+血清蛋白	n			u-inlex-nf4;review;agent-label	high	OK		
+視覺神經	n			u-inlex-nf4;review;agent-label	high	OK		
+討人嫌	a,v			u-inlex-nf4;review;agent-label	high	OK		
+話雖如此	r,x			話雖如此;u-inlex-nf4;review;agent-label	high	SOFT		連接／話語標記 r,x 可
+語義分析	n,v			u-inlex-nf4;review;agent-label	high	OK		
+貌不驚人	a	idiom		u-inlex-nf4;review;agent-label	high	OK		
+資本外逃	n,v			u-inlex-nf4;review;agent-label	high	OK		
+質疑問難	v			u-inlex-nf4;review;agent-label	high	OK		
+超前意識	n			u-inlex-nf4;review;agent-label	high	OK		
+迎來送往	v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+隔行掃描	n,v			u-inlex-nf4;review;agent-label	high	OK		
+風雨雷電	n			u-inlex-nf4;review;agent-label	high	OK		
+高級小學	n			u-inlex-nf4;review;agent-label	high	OK		
+鬼話連篇	a,v	idiom		u-inlex-nf4;review;agent-label	high	OK		
+黎明時分	n,r			u-inlex-nf4;review;agent-label	high	SOFT		n,r 可
+齊心合力	a,v			u-inlex-nf4;review;agent-label	high	OK		
