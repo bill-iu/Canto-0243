@@ -340,39 +340,37 @@
   },
   "u_inlex_fragment_alias": {
     "dry_run": false,
-    "targets_ensured": [
-      "侏儒"
-    ],
+    "targets_ensured": [],
     "residuals_removed_from_ssot": [
-      "侏"
+      "牴"
     ],
     "fragment_tags": {
       "clause_tagged": 12,
       "opaque_tagged": 4
     },
     "before": {
-      "rows": 22725,
-      "formal": 12468,
-      "u": 10257,
-      "fragment": 17,
-      "formal_over_all": 0.5486,
-      "formal_over_non_fragment": 0.5491,
-      "non_fragment": 22708,
-      "formal_non_fragment": 12468,
+      "rows": 22724,
+      "formal": 14465,
+      "u": 8259,
+      "fragment": 24,
+      "formal_over_all": 0.6366,
+      "formal_over_non_fragment": 0.6372,
+      "non_fragment": 22700,
+      "formal_non_fragment": 14465,
       "d4_pass_95": false,
-      "alias_n": 7
+      "alias_n": 8
     },
     "after": {
-      "rows": 22724,
-      "formal": 12469,
-      "u": 10255,
-      "fragment": 16,
-      "formal_over_all": 0.5487,
-      "formal_over_non_fragment": 0.5491,
-      "non_fragment": 22708,
-      "formal_non_fragment": 12469,
+      "rows": 22723,
+      "formal": 14465,
+      "u": 8258,
+      "fragment": 23,
+      "formal_over_all": 0.6366,
+      "formal_over_non_fragment": 0.6372,
+      "non_fragment": 22700,
+      "formal_non_fragment": 14465,
       "d4_pass_95": false,
-      "alias_n": 7
+      "alias_n": 8
     }
   },
   "u_pattern_s2": {
@@ -408,5 +406,32 @@
     "reject": 63,
     "new_alias": "侏->侏儒",
     "report": "data/pos/audit/u_inlex/alias_proposals_review_r1.md"
+  },
+  "u_inlex_nf2k": {
+    "usable": 1992,
+    "keep_u": 8,
+    "upsert": {
+      "rows": 22724,
+      "touched": 1992,
+      "updated": 1992,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "before_u": 10251,
+    "after_u": 8259,
+    "gate_r1": {
+      "sample_n": 100,
+      "ok_rate": 0.98,
+      "pass_90": true,
+      "bad": 2,
+      "soft": 2
+    },
+    "coverage_after": {
+      "formal": 14465,
+      "u": 8259,
+      "formal_over_all": 0.6366,
+      "formal_over_non_fragment": 0.6372
+    }
   }
 }
