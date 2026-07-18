@@ -8141,7 +8141,7 @@
     },
     "post-syn-ant-ring5k10k-b02-20260718": {
       "k": 25,
-      "git_commit": "0000000000000000000000000000000000000000",
+      "git_commit": "cd62efeea067e3e7ad6b5651c167b5d386d3383e",
       "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
       "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
       "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
@@ -8166,8 +8166,8 @@
       "ok_rate": 1.0,
       "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b02-20260718 parent N=34",
       "sample_parent_n": 34,
-      "sample_parent_commit": "0000000000000000000000000000000000000000",
-      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "sample_parent_commit": "cd62efeea067e3e7ad6b5651c167b5d386d3383e",
+      "sample_parent_tsv_sha256": "094b1e494c662738451bddd52f19d0181970dd03d84bbac81fa502aa717566a3",
       "removed_sample_fails": [],
       "sample_verdicts": [
         {
