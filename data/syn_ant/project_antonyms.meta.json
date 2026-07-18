@@ -8375,6 +8375,213 @@
           "reasons": []
         }
       ]
+    },
+    "post-syn-ant-ring5k10k-b03-20260718": {
+      "k": 20,
+      "git_commit": "0000000000000000000000000000000000000000",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b03; residual after b02 open~1300; maintainer-curated top150; seed fixtures/post_syn_ant_ring5k10k_b03_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 3
+      },
+      "sample_seed": 20260718,
+      "sample_n": 29,
+      "sample_ok": 29,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b03-20260718 parent N=29",
+      "sample_parent_n": 29,
+      "sample_parent_commit": "0000000000000000000000000000000000000000",
+      "sample_parent_tsv_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "佔據",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "侷限",
+          "tail": "無限",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "修補",
+          "tail": "破壞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做工",
+          "tail": "休息",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做工",
+          "tail": "偷懶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "塞車",
+          "tail": "暢通",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "塞車",
+          "tail": "暢順",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "弱智",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思念",
+          "tail": "忘記",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思念",
+          "tail": "淡忘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "男孩子",
+          "tail": "女孩子",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "看重",
+          "tail": "輕視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繼承",
+          "tail": "拋棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繼承",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自身",
+          "tail": "他人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自身",
+          "tail": "別人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落水",
+          "tail": "上岸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起行",
+          "tail": "停留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "迷茫",
+          "tail": "清晰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "迷茫",
+          "tail": "清醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過往",
+          "tail": "將來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過往",
+          "tail": "未來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過癮",
+          "tail": "掃興",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "關愛",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隱患",
+          "tail": "保障",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隱患",
+          "tail": "安全",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "震撼",
+          "tail": "平淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "黯然",
+          "tail": "開心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "黯然",
+          "tail": "開朗",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
