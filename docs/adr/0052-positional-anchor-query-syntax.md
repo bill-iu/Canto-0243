@@ -3,7 +3,7 @@
 領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § 通配碼錨查詢、slot 連接符、串列韻／聲錨查詢、前綴通配等號查詢、位置錨定。
 
 整合並取代：[0012](./0012-wildcard-code-anchor-query-syntax-v2.md)、[0013](./0013-plus-slot-connector-alias-normalize.md)、[0014](./0014-serial-phoneme-anchor-and-prefix-wildcard-equals.md)。  
-粵拼錨／歧義 m·ng 見 [0051](./0051-jyutping-and-anchor-phoneme.md)；碼夾等號見 [0028](./0028-code-sandwich-equals-unification-and-per-digit-loose-variants.md)；分派 seam 見 [0046](./0046-query-dispatch-seams-and-ssot.md)。
+粵拼錨／歧義 m·ng 見 [0051](./0051-jyutping-and-anchor-phoneme.md)；碼夾等號見 [0028](./0028-code-sandwich-equals-unification-and-per-digit-loose-variants.md)；同韻 `=`／同聲 `^` 表面標記見 [0062](./0062-rhyme-equals-initial-caret.md)；分派 seam 見 [0046](./0046-query-dispatch-seams-and-ssot.md)。
 
 ## 1. 通配碼錨與音節槽（原 0012）
 
