@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 
 from ingest.project_pos import (  # noqa: E402
     DEFAULT_TSV,
+    PosRow,
     ProjectPosError,
     build_carrier_payload,
     campaign_pos_hard_reject,
@@ -75,6 +76,28 @@ def test_duplicate_literal_fails() -> None:
             raise AssertionError("expected ProjectPosError")
         except ProjectPosError as e:
             assert "duplicate" in str(e)
+
+
+def test_family_leaf_values_and_carrier() -> None:
+    with tempfile.TemporaryDirectory() as td:
+        p = Path(td) / "leaves.tsv"
+        p.write_text(
+            "literal\tpos\tfamily\tvoice\tnote\n"
+            "甲\tn\tchengyu\t\tseed\n"
+            "乙\tv\tsuyu\tpassive\tseed\n"
+            "丙\ta\tyanyu\t\tseed\n",
+            encoding="utf-8",
+        )
+        table = parse_project_pos_tsv(p)
+        assert [table[x].family for x in ("甲", "乙", "丙")] == ["chengyu", "suyu", "yanyu"]
+        payload = build_carrier_payload(table, {"version": "1", "p0_hard_gate": True})
+        assert payload["literals"]["甲"]["family"] == "chengyu"
+        assert payload["literals"]["乙"]["family"] == "suyu"
+        assert payload["literals"]["丙"]["family"] == "yanyu"
+
+        low = PosRow("丁", frozenset({"n"}), "chengyu", "", "cow-single")
+        low_payload = build_carrier_payload({"丁": low}, {"version": "1"})
+        assert "family" not in low_payload["literals"]["丁"]
 
 
 def test_carrier_payload_shape() -> None:
@@ -311,6 +334,7 @@ def main() -> None:
     test_hard_gate_off_by_default()
     test_build_carrier_roundtrip()
     test_duplicate_literal_fails()
+    test_family_leaf_values_and_carrier()
     test_carrier_payload_shape()
     test_p0_mother_complete()
     test_p1_essay_top_k_complete()

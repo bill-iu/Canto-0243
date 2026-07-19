@@ -4,7 +4,7 @@
  * 閘用詞類 = entry.gate (high|medium); 展示 = entry.show (high only).
  */
 import type { PosCode, PosEntry, ProjectPosCarrier } from './types.ts';
-import { FORMAL_POS } from './types.ts';
+import { FAMILY_LABEL_ZH, FORMAL_POS, POS_LABEL_ZH, VOICE_LABEL_ZH } from './types.ts';
 
 let carrier: ProjectPosCarrier | null = null;
 let loadAttempted = false;
@@ -67,12 +67,11 @@ export function posDisplayChips(literal: string): string[] {
   else if (e.trust == null && e.gate == null) codes = e.pos; // legacy
   for (const p of codes) {
     if (p === 'u') continue;
-    const label = ({ n: '名', v: '動', a: '形', r: '副', x: '虛' } as Record<PosCode, string>)[p as PosCode];
+    const label = POS_LABEL_ZH[p as PosCode];
     if (label) chips.push(label);
   }
-  if (e.family === 'idiom') chips.push('熟語');
-  if (e.voice === 'active') chips.push('主動');
-  if (e.voice === 'passive') chips.push('被動');
+  if (e.family) chips.push(FAMILY_LABEL_ZH[e.family]);
+  if (e.voice) chips.push(VOICE_LABEL_ZH[e.voice]);
   return chips;
 }
 
