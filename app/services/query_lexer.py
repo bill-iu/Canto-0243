@@ -64,18 +64,12 @@ def slot_connector_syntax_error(q: str) -> Optional[str]:
 
 
 def normalize_redundant_single_char_rhyme(q: str) -> str:
-    """?{單字}= → {單字}=（冗餘前導 ?）。"""
-    m = re.match(r"^(\?)([一-龥])=$", q)
-    if m:
-        return f"{m.group(2)}="
+    """Deprecated no-op — 曾把 ?{單字}= → {單字}=；A1 後保留函數名畀舊 import，唔再改寫。"""
     return q
 
 
 def normalize_redundant_single_char_initial(q: str) -> str:
-    """?={單字} → ={單字}（冗餘前導 ?）。"""
-    m = re.match(r"^(\?)=([一-龥])$", q)
-    if m:
-        return f"={m.group(2)}"
+    """Deprecated no-op — 曾把 ?={單字} → ={單字}；A1 後保留函數名畀舊 import，唔再改寫。"""
     return q
 
 
@@ -113,8 +107,7 @@ def normalize_search_query_core(q: str) -> str:
     q = normalize_partial_rhyme_mask_query(q)
     q = normalize_partial_initial_mask_query(q)
     q = normalize_jyutping_slot_connectors(q)
-    q = normalize_redundant_single_char_rhyme(q)
-    q = normalize_redundant_single_char_initial(q)
+    # ponytail: 唔再把 ?就=／?=就 收成單格（A1／P→W）；單格用 就=／=就
     q = normalize_middle_rhyme_triple(q)
     q = normalize_code_sandwich_tail_equals(q)
     return q
