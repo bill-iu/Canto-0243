@@ -25,6 +25,7 @@ $Artifacts = @(
 )
 $BuildCommands = @(
     "python scripts/fetch/fetch_rime_data.py",
+    "python scripts/fetch/fetch_rime_lexicon_data.py",
     "python -m ingest build-db",
     "python tests/smoke/test_v1_1_0_rc.py",
     "npm ci (client)",
@@ -238,6 +239,7 @@ if ($Mode -eq "Build") {
     $commit = Assert-ReleaseSource
 
     Invoke-Checked "python" @("scripts/fetch/fetch_rime_data.py") $Root
+    Invoke-Checked "python" @("scripts/fetch/fetch_rime_lexicon_data.py") $Root
     Invoke-Checked "python" @("-m", "ingest", "build-db") $Root
     Invoke-Checked "python" @("-m", "ingest.project_pos", "check") $Root
     Invoke-Checked "python" @("tests/smoke/test_v1_1_0_rc.py") $Root
