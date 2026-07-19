@@ -32,19 +32,24 @@ SECTIONS_SPEC = [
     (
         "equals",
         "common",
-        "同韻／同聲（=）",
-        "字後面加 <code translate=\"no\">=</code> → 同韻；字前面加 <code translate=\"no\">=</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。",
-        "Same rhyme / initial (=)",
-        "Put <code translate=\"no\">=</code> after a character for rhyme; before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.",
+        "同韻／同聲（=／^）",
+        "字後面加 <code translate=\"no\">=</code> → 同韻；字前面加 <code translate=\"no\">^</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。",
+        "Same rhyme / initial (= / ^)",
+        "Put <code translate=\"no\">=</code> after a character for rhyme; put <code translate=\"no\">^</code> before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.",
         [
             ("香=", "m1"),
             ("香=?", "m1"),
-            ("=香", "m1"),
+            ("^香", "m1"),
             ("香港=", "m1"),
-            ("=香港", "m1"),
+            ("^香港", "m1"),
             ("2我=3", "m1"),
-            ("2=我3", "m1"),
+            ("2^我3", "m1"),
             ("?香=", "m1"),
+            (
+                "=香",
+                "m1",
+                "兼容原本舊語法：字前加 = 同聲（等同 ^香）",
+            ),
         ],
     ),
     (
@@ -67,13 +72,14 @@ SECTIONS_SPEC = [
         "plus",
         "common",
         "用 + 加長或標明位置",
-        "用 <code translate=\"no\">+</code> 喺<strong>冇通配</strong>時加多一個字，或者標明邊個位置（例如 <code translate=\"no\">23+好=</code>、<code translate=\"no\">23+o</code>）。若前面已經有 <code translate=\"no\">?</code>，通常<strong>唔使</strong>再打 <code translate=\"no\">+</code>（<code translate=\"no\">?香=</code> 等同舊寫法 <code translate=\"no\">?+香=</code>）。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+=字</code>＝同聲；冇 <code translate=\"no\">=</code> 就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
-        "Use <code translate=\"no\">+</code> when there is <strong>no</strong> wildcard, to add a character or mark a position (e.g. <code translate=\"no\">23+好=</code>, <code translate=\"no\">23+o</code>). After a leading <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (<code translate=\"no\">?香=</code> equals older <code translate=\"no\">?+香=</code>). <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+=char</code> = same initial; without <code translate=\"no\">=</code> that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
+        "用 <code translate=\"no\">+</code> 喺<strong>冇通配</strong>時加多一個字，或者標明邊個位置（例如 <code translate=\"no\">23+好=</code>、<code translate=\"no\">23+o</code>）。若前面已經有 <code translate=\"no\">?</code>，通常<strong>唔使</strong>再打 <code translate=\"no\">+</code>（<code translate=\"no\">?香=</code> 等同舊寫法 <code translate=\"no\">?+香=</code>）。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+^字</code>＝同聲（舊 <code translate=\"no\">+=字</code> 仍相容）；冇標記就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
+        "Use + to lengthen or mark a position",
+        "Use <code translate=\"no\">+</code> when there is <strong>no</strong> wildcard, to add a character or mark a position (e.g. <code translate=\"no\">23+好=</code>, <code translate=\"no\">23+o</code>). After a leading <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (<code translate=\"no\">?香=</code> equals older <code translate=\"no\">?+香=</code>). <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+^char</code> = same initial (legacy <code translate=\"no\">+=char</code> still works); without a mark that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
         [
             ("23@手", "m1"),
             ("23+好", "m1"),
             ("23+好=", "m1"),
-            ("23+=好", "m1"),
+            ("23+^好", "m1"),
             ("2+好3", "m1"),
             ("2+好=3", "m1"),
             ("+門0", "m1"),
@@ -84,22 +90,22 @@ SECTIONS_SPEC = [
         "multi",
         "advanced",
         "多重同韻／同聲",
-        "用數字規定聲調，用參考字規定同韻或同聲；可用 <code translate=\"no\">?</code> 留空某個字，或令第一個字任意、其餘跟某詞逐字同韻／同聲。",
+        "用數字規定聲調，用參考字規定同韻或同聲（韻用尾 <code translate=\"no\">=</code>，聲用前 <code translate=\"no\">^</code>）；可用 <code translate=\"no\">?</code> 留空某個字，或令第一個字任意、其餘跟某詞逐字同韻／同聲。",
         "Multi-slot rhyme / initial",
-        "Use digits for tone codes and reference characters for rhyme or initial; leave a slot open with <code translate=\"no\">?</code>, or free the first character while the rest follow a sample word.",
+        "Use digits for tone codes and reference characters for rhyme (trailing <code translate=\"no\">=</code>) or initial (leading <code translate=\"no\">^</code>); leave a slot open with <code translate=\"no\">?</code>, or free the first character while the rest follow a sample word.",
         [
             ("23香=", "m1"),
             ("04困=49倒=", "m1"),
-            ("04=困49=倒", "m1"),
+            ("04^困49^倒", "m1"),
             ("?4困=4潦=9倒=", "m1"),
             ("?3人=?", "m1"),
             ("窮?潦倒=", "m1"),
             ("窮困?倒=", "m1"),
-            ("=窮?潦倒", "m1"),
-            ("=窮困?倒", "m1"),
+            ("^窮?潦倒", "m1"),
+            ("^窮困?倒", "m1"),
             ("?香港=", "m1"),
             ("?困潦倒=", "m1"),
-            ("?=困潦倒", "m1"),
+            ("?^困潦倒", "m1"),
         ],
     ),
     (
@@ -233,8 +239,12 @@ def main() -> None:
         zh_ex = []
         en_ex = []
         ex_lines = []
-        for q, mode in exs:
-            lab = label_for(q, mode)
+        for item in exs:
+            if len(item) == 3:
+                q, mode, lab = item
+            else:
+                q, mode = item
+                lab = label_for(q, mode)
             zh_ex.append(f"        {{ label: {js_str(lab)} }},")
             en_ex.append(f"        {{ label: {js_str(lab)} }},")
             ex_lines.append(f"      {{ query: {js_str(q)}, mode: {js_str(mode)} }},")
