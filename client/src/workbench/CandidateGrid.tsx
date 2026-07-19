@@ -15,16 +15,10 @@ interface Props {
 }
 
 export function CandidateGrid({ groups, relaxed, semanticGap, onPreview }: Props) {
-  const sacrifice = relaxed
-    ? [relaxed.kind, relaxed.from && relaxed.to ? `${relaxed.from} → ${relaxed.to}` : relaxed.from || relaxed.to]
-      .filter(Boolean)
-      .join(' · ')
-    : '';
   return (
     <section className={`candidate-area${relaxed ? ' is-relaxed' : ''}`} aria-labelledby="candidateHeading">
       <p className="eyebrow">{relaxed ? '已確認放寬，非完全符合' : '由你揀，不代你寫'}</p>
       <h2 id="candidateHeading">{relaxed ? '放寬後結果' : '替換候選'}</h2>
-      {relaxed ? <p className="relaxed-banner">實際犧牲：{sacrifice || relaxed.kind}</p> : null}
       {semanticGap ? (
         <p className="semantic-gap" role="status">
           未有足夠近義資料；以下只按聲韻與詞頻排列，不是「沒有近義詞」的意思。

@@ -340,19 +340,15 @@ body.query-tabs-app.workbench-route {
 .candidate-card__code { font: 700 .78rem ui-monospace, monospace; }
 .candidate-card__reason { margin-top: .3rem; color: var(--accent-strong); font-size: .7rem; }
 .empty-group { color: var(--muted); font-size: .85rem; }
-.relaxed-banner, .semantic-gap {
+.semantic-gap {
   margin: .85rem 0 0;
   padding: .75rem 1rem;
   border-radius: .85rem;
   writing-mode: horizontal-tb;
+  border: 1px solid var(--line);
+  background: var(--surface-soft);
+  color: var(--muted);
 }
-.relaxed-banner {
-  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
-  color: var(--accent-strong);
-  font-weight: 700;
-}
-.semantic-gap { border: 1px solid var(--line); background: var(--surface-soft); color: var(--muted); }
 .candidate-area.is-relaxed h2 { color: var(--accent-strong); }
 
 .relaxation-card {
