@@ -1,5 +1,5 @@
 {
-  "version": "0.5.0",
+  "version": "0.6.0",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -596,11 +596,47 @@
     },
     "terminal": 8594,
     "pending": 0,
-    "deferred_missing_project_pos": 4147,
+    "deferred_missing_project_pos": 0,
     "mother_coverage": 1.0,
     "last_apply": {
       "reviewed": 8594,
       "terminal": 8594,
+      "changed": 0,
+      "dry_run": false
+    }
+  },
+  "chengyu_pos_backfill": {
+    "scope": 4147,
+    "reviewed": 4147,
+    "pending": 0,
+    "by_pos": {
+      "u": 3939,
+      "a": 58,
+      "n,v": 1,
+      "n": 76,
+      "v": 34,
+      "r": 36,
+      "x": 1,
+      "a,v": 2
+    },
+    "by_voice": {
+      "none": 4143,
+      "passive": 4
+    },
+    "applied": 4147,
+    "missing_project_pos": 0,
+    "initial_added": 4147,
+    "quality": {
+      "seed": 20260719,
+      "sample_n": 3967,
+      "pass_rate": 1.0,
+      "pass": true,
+      "report": "data/pos/audit/chengyu_pos_backfill_quality_report.md"
+    },
+    "last_apply": {
+      "reviewed": 4147,
+      "added": 0,
+      "unchanged": 4147,
       "changed": 0,
       "dry_run": false
     }

@@ -139,6 +139,8 @@ _Avoid_：只報 formal/all 自稱完工、無碎片標籤就扣分母、跳過�
 
 **庫內難標 v1 收口**（2026-07）：
 **專案自建詞性清單** 內，非 **詞性碎片** 字面已全有正式五主類（`formal/(all−fragment)=1`）；`formal/all≈0.999`。剩餘 **未定** 僅 **詞性碎片**（clause-slice／opaque，及待完整詞之 residual）。Essay 非碎片 still-u 佇列已空；五批 top-N 複核 ok_rate≈0.97。**詞性字面別名** 權威表 `data/pos/alias.tsv`（含 curated 完整詞如 曱甴／踊躍／魍魎）。新詞入庫後以維護模式小批標註，唔重開 v1 戰役。詳見 ADR-0060、`data/pos/audit/nf_batches_full_gate/`。
+
+China-idiom 與完整詞庫相交但原先缺 POS 嘅 4,147 筆已另批過審並加入清單：208 筆有高信任正式詞類，3,939 筆因缺可靠句法證據明確留 **未定**，4 筆有固定 **被動**；語彙族皆為 **成語**，`deferred_missing_project_pos=0`。本批唔改上述 Essay／fragment 戰役分母與完成定義。
 _Avoid_：把仍有碎片未定當 v1 未收口、為湊 u=0 而 formal 截斷句、重開全庫 top-N 而無新 membership
 
 **詞性載體**：

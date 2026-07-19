@@ -1,0 +1,19 @@
+{
+  "seed": 20260719,
+  "universe": 4147,
+  "sample_n": 3967,
+  "full_review": {
+    "u": 3939,
+    "passive": 4,
+    "x": 1,
+    "rare_multi": 3
+  },
+  "verdicts": {
+    "OK": 3964,
+    "SOFT": 3
+  },
+  "pass_rate": 1.0,
+  "threshold": 0.9,
+  "pass": true,
+  "review_sha256": "90f42d1bde1c23a4957fa4d4a1c4dc5711078fe325ff7eeef9965c65117127df"
+}
