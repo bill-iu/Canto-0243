@@ -9,6 +9,7 @@ import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
+import { revealPwaShell } from '../pwa-shell-boot.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
@@ -109,6 +110,7 @@ export function WorkbenchPage() {
   previewRef.current = preview;
 
   useEffect(() => {
+    revealPwaShell();
     document.body.classList.add('workbench-route');
     return () => document.body.classList.remove('workbench-route');
   }, []);

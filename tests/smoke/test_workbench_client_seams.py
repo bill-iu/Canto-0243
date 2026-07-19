@@ -15,6 +15,11 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertNotIn("query-tabs", router + page)
         self.assertIn("workbenchPage", (ROOT / "client" / "src" / "app-page.ts").read_text(encoding="utf-8"))
 
+    def test_fresh_workbench_route_reveals_editable_shell_before_lexicon_ready(self) -> None:
+        page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
+        self.assertIn("revealPwaShell", page)
+        self.assertRegex(page, r"useEffect\(\(\) => \{[\s\S]{0,160}revealPwaShell\(\)")
+
     def test_apply_is_explicit_and_candidate_text_is_horizontal(self) -> None:
         page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
         compare = (WORKBENCH / "ComparePanel.tsx").read_text(encoding="utf-8")
