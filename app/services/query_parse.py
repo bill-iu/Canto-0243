@@ -21,6 +21,7 @@ from app.services.query_grammar.rhyme import (
     parse_triple_rhyme_anchor_query,
 )
 from app.services.query_grammar.serial import (
+    initial_rhyme_dual_mark_hint,
     parse_prefix_wildcard_initial_query,
     parse_prefix_wildcard_equals_query,
     parse_pure_chars_serial_hint,
@@ -167,6 +168,10 @@ def try_parse_before_mask(q: str) -> Optional[ParsedQuery]:
     slot_hint = slot_connector_syntax_error(q)
     if slot_hint:
         return UnmatchedQuery(raw_q=q, hint=slot_hint)
+
+    dual_mark_hint = initial_rhyme_dual_mark_hint(q)
+    if dual_mark_hint:
+        return UnmatchedQuery(raw_q=q, hint=dual_mark_hint)
 
     prefix_eq_hint = prefix_wildcard_equals_missing_eq_hint(q)
     if prefix_eq_hint:

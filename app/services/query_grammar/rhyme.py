@@ -14,8 +14,8 @@ _RHYME_ANCHOR_SHAPE_RE = re.compile(
     rf"^(?:"
     rf"({SLOT_CHARS_RE}+)([一-龥])=$|"
     rf"([一-龥])=({SLOT_CHARS_RE}+)$|"
-    rf"=([一-龥])({SLOT_CHARS_RE}+)$|"
-    rf"({SLOT_CHARS_RE}+)=([一-龥])$"
+    rf"[\^=]([一-龥])({SLOT_CHARS_RE}+)$|"
+    rf"({SLOT_CHARS_RE}+)[\^=]([一-龥])$"
     rf")"
 )
 
@@ -30,9 +30,9 @@ def normalize_partial_initial_mask_query(q: str) -> str:
 
 
 def parse_partial_initial_mask_query(q: str) -> Optional[dict]:
-    """四字部分聲錨：`=窮?潦倒` 等；`?` 通配，其餘格同參考字聲母。"""
+    """四字部分聲錨：`^窮?潦倒`／舊 `=窮?潦倒`；`?` 通配，其餘格同參考字聲母。"""
     nq = normalize_partial_initial_mask_query(q)
-    m = re.fullmatch(r"^=([一-龥?]{4})$", nq)
+    m = re.fullmatch(r"^[\^=]([一-龥?]{4})$", nq)
     if not m:
         return None
     pattern = m.group(1)
@@ -126,8 +126,8 @@ def parse_double_wildcard_rhyme_query(q: str) -> Optional[dict]:
 
 
 def parse_double_wildcard_initial_query(q: str) -> Optional[dict]:
-    """二字聲錨 ?+=就（P2 對稱）。"""
-    m = re.match(rf"^([?_%]){re.escape(CODE_TAIL_MIDDLE)}=([一-龥])$", q)
+    """二字聲錨 ?+^就／舊 ?+=就（P2 對稱）。"""
+    m = re.match(rf"^([?_%]){re.escape(CODE_TAIL_MIDDLE)}[\^=]([一-龥])$", q)
     if not m:
         return None
     return {
@@ -140,7 +140,7 @@ def parse_double_wildcard_initial_query(q: str) -> Optional[dict]:
 
 
 def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
-    """Query-level rhyme/initial anchor: 就= / =就 / 香=? / ?*就= / =香? / ?*=就."""
+    """Query-level rhyme/initial: 就= / ^就 / 香=? / ?*就= / ^香? / ?*^就（舊左 = 仍認）。"""
     if not q or CODE_TAIL_MIDDLE in q or "@" in q or is_framed_equals_query(q):
         return None
     if parse_double_wildcard_rhyme_query(q) or parse_double_wildcard_initial_query(q):
@@ -156,7 +156,7 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
             "width": 1,
         }
 
-    m = re.match(r"^=([一-龥])$", q)
+    m = re.match(r"^[\^=]([一-龥])$", q)
     if m:
         return {
             "constraint": "initial",
@@ -190,7 +190,7 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
             "width": width,
         }
 
-    m = re.match(rf"^=([一-龥])({SLOT_CHARS_RE}+)$", q)
+    m = re.match(rf"^[\^=]([一-龥])({SLOT_CHARS_RE}+)$", q)
     if m:
         anchor, slots = m.group(1), m.group(2)
         width = len(slots) + 1
@@ -202,7 +202,7 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
             "width": width,
         }
 
-    m = re.match(rf"^({SLOT_CHARS_RE}+)=([一-龥])$", q)
+    m = re.match(rf"^({SLOT_CHARS_RE}+)[\^=]([一-龥])$", q)
     if m:
         slots, anchor = m.group(1), m.group(2)
         width = len(slots) + 1

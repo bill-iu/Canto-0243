@@ -32,6 +32,7 @@ import {
   parsePrefixWildcardEqualsQuery,
   parsePrefixWildcardInitialQuery,
   parsePureCharsSerialHint,
+  initialRhymeDualMarkHint,
   parseRelationSyntax,
   parseRhymeAnchorQuery,
   parseSerialPhonemeAnchorQuery,
@@ -114,6 +115,11 @@ export function tryParseBeforeMask(q: string): ParsedQuery | null {
   const relationParsed = parseRelationSyntax(q);
   if (relationParsed) {
     return relationParsed;
+  }
+
+  const dualMarkHint = initialRhymeDualMarkHint(q);
+  if (dualMarkHint) {
+    return { kind: QueryKind.UNMATCHED, raw_q: q, hint: dualMarkHint };
   }
 
   const prefixEqHint = prefixWildcardEqualsMissingEqHint(q);
@@ -306,12 +312,16 @@ export function parserLogicSelfCheck(): void {
     ['3+ngo4', QueryKind.JYUTPING_ANCHOR],
     ['23+o', QueryKind.JYUTPING_ANCHOR],
     ['就=', QueryKind.RHYME_ANCHOR],
+    ['^就', QueryKind.RHYME_ANCHOR],
     ['?+就=', QueryKind.RHYME_ANCHOR],
+    ['?+^就', QueryKind.RHYME_ANCHOR],
     ['?+人=?', QueryKind.TRIPLE_RHYME_ANCHOR],
     ['?30人', QueryKind.WILDCARD_CODE_ANCHOR],
     ['12/12', QueryKind.HETERONYM_CODE],
     ['33~與~你', QueryKind.COMPOUND_CONNECT_SYN],
     ['?=困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
+    ['?^困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
+    ['2^我3', QueryKind.EQUALS],
     ['$$$', QueryKind.COMPOUND_DOUBLED_SYLLABLE],
   ];
   for (const [q, kind] of cases) {

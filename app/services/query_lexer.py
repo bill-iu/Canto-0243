@@ -85,11 +85,23 @@ CODE_SANDWICH_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥]+)$")
 
 
 def normalize_code_sandwich_tail_equals(q: str) -> str:
-    """碼夾等號：{碼}{字} → {碼}{字}=（ADR-0028；全串唔含 =）。"""
-    if "=" in q:
+    """碼夾等號：{碼}{字} → {碼}{字}=（ADR-0028；全串唔含 =／^）。"""
+    if "=" in q or "^" in q:
         return q
     if CODE_SANDWICH_TAIL_EQUALS_RE.fullmatch(q):
         return f"{q}="
+    return q
+
+
+def normalize_initial_marker_to_caret(q: str) -> str:
+    """ADR-0062：左 `=` 同聲 → 規範 `^`（尾韻 `字=` 唔動）。"""
+    if not q:
+        return q
+    q = re.sub(r"(\d)=([一-龥])", r"\1^\2", q)
+    q = re.sub(r"\?=([一-龥])", r"?^\1", q)
+    q = re.sub(r"\+=([一-龥])", lambda m: f"+^{m.group(1)}", q)
+    if q.startswith("="):
+        q = "^" + q[1:]
     return q
 
 
@@ -107,8 +119,9 @@ def normalize_search_query_core(q: str) -> str:
     q = normalize_partial_rhyme_mask_query(q)
     q = normalize_partial_initial_mask_query(q)
     q = normalize_jyutping_slot_connectors(q)
-    # ponytail: 唔再把 ?就=／?=就 收成單格（A1／P→W）；單格用 就=／=就
+    # ponytail: 唔再把 ?就=／?=就 收成單格（A1／P→W）；單格用 就=／^就
     q = normalize_middle_rhyme_triple(q)
+    q = normalize_initial_marker_to_caret(q)
     q = normalize_code_sandwich_tail_equals(q)
     return q
 

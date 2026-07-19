@@ -32,7 +32,7 @@ export function parsePrefixWildcardEqualsQuery(q: string): PrefixWildcardEqualsQ
 
 /** Port of query_grammar/serial.parse_prefix_wildcard_initial_query */
 export function parsePrefixWildcardInitialQuery(q: string): PrefixWildcardEqualsQuery | null {
-  const m = q.match(/^\?=([\u4e00-\u9fff]{2,})$/);
+  const m = q.match(/^\?[\^=]([\u4e00-\u9fff]{2,})$/);
   if (!m) {
     return null;
   }
@@ -40,7 +40,7 @@ export function parsePrefixWildcardInitialQuery(q: string): PrefixWildcardEquals
   return {
     kind: QueryKind.PREFIX_WILDCARD_EQUALS,
     raw_q: q,
-    inner_q: `=${ref}`,
+    inner_q: `^${ref}`,
     ref_literal: ref,
     width: ref.length + 1,
   };
@@ -49,7 +49,9 @@ export function parsePrefixWildcardInitialQuery(q: string): PrefixWildcardEquals
 const PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT =
   '前綴通配等號查詢須以 `=` 結尾。例：`?困潦倒=`（唔好漏尾格 `=`）。';
 const PURE_CHARS_SERIAL_HINT =
-  '每個 `{字}=`／`={字}` 前須有 0243 碼。例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。';
+  '每個 `{字}=`／`^{字}` 前須有 0243 碼。例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。';
+const INITIAL_RHYME_DUAL_MARK_HINT =
+  '唔好同時用 `^`（同聲）同尾 `=`（同韻）。例：`^香` 或 `香=`（唔好寫 `^香=`）。';
 
 /** Port of serial.prefix_wildcard_equals_missing_eq_hint */
 export function prefixWildcardEqualsMissingEqHint(q: string): string | null {
@@ -61,10 +63,10 @@ export function prefixWildcardEqualsMissingEqHint(q: string): string | null {
 
 /** Port of serial.parse_pure_chars_serial_hint */
 export function parsePureCharsSerialHint(q: string): string | null {
-  if (!q || !/^[\u4e00-\u9fff=]+$/.test(q)) {
+  if (!q || !/^[\u4e00-\u9fff=^]+$/.test(q)) {
     return null;
   }
-  if (/^[\u4e00-\u9fff]=$/.test(q)) {
+  if (/^[\u4e00-\u9fff]=$/.test(q) || /^\^[\u4e00-\u9fff]+$/.test(q)) {
     return null;
   }
   if (isFramedEqualsQuery(q)) {
@@ -76,13 +78,24 @@ export function parsePureCharsSerialHint(q: string): string | null {
   return null;
 }
 
-const SERIAL_CHARSET_RE = /^[0-9?=\u4e00-\u9fff]+$/;
+/** Port of serial.initial_rhyme_dual_mark_hint (ADR-0062) */
+export function initialRhymeDualMarkHint(q: string): string | null {
+  if (/\^[\u4e00-\u9fff]+=/.test(q) || /\^[\u4e00-\u9fff]=/.test(q)) {
+    return INITIAL_RHYME_DUAL_MARK_HINT;
+  }
+  if (/\d[\u4e00-\u9fff]=/.test(q) && /\d\^[\u4e00-\u9fff]/.test(q)) {
+    return INITIAL_RHYME_DUAL_MARK_HINT;
+  }
+  return null;
+}
+
+const SERIAL_CHARSET_RE = /^[0-9?=^\u4e00-\u9fff]+$/;
 
 function framedEqualsBlocksSerial(q: string): boolean {
   if (!isFramedEqualsQuery(q)) {
     return false;
   }
-  const m = q.match(/^(\d*)(=)?([\u4e00-\u9fff]+)(=)?(\d*)$/);
+  const m = q.match(/^(\d*)(\^|=)?([\u4e00-\u9fff]+)(=)?(\d*)$/);
   if (!m) {
     return false;
   }
@@ -122,8 +135,8 @@ function scanSerialPhoneme(
     if (/\d/.test(ch)) {
       const anchorRe =
         constraint === 'final'
-          ? /^(\d)([\u4e00-\u9fff])=(?=[0-9?=]|$)/
-          : /^(\d)=([\u4e00-\u9fff])(?=[0-9?=]|$)/;
+          ? /^(\d)([\u4e00-\u9fff])=(?=[0-9?^=]|$)/
+          : /^(\d)[\^=]([\u4e00-\u9fff])(?=[0-9?^=]|$)/;
       const m = q.slice(i).match(anchorRe);
       if (m) {
         code_slots.push([pos, m[1]!]);
@@ -168,7 +181,7 @@ export function parseSerialPhonemeAnchorQuery(q: string): SerialPhonemeAnchorQue
     return null;
   }
   const hasRhyme = /\d[\u4e00-\u9fff]=/.test(q);
-  const hasInitial = /\d=[\u4e00-\u9fff]/.test(q);
+  const hasInitial = /\d[\^=][\u4e00-\u9fff]/.test(q);
   if (hasRhyme && hasInitial) {
     return null;
   }

@@ -24,9 +24,11 @@ class OptionalPlusAfterWildcardTests(unittest.TestCase):
         self.assertEqual(_width("就="), 1)
 
     def test_initial_wildcard_keeps_two_slots(self) -> None:
-        self.assertEqual(normalize_search_query("?=就"), "?=就")
+        self.assertEqual(normalize_search_query("?=就"), "?^就")
         self.assertEqual(_width("?=就"), 2)
         self.assertEqual(_width("?+=就"), 2)
+        self.assertEqual(_width("?^就"), 2)
+        self.assertEqual(_width("^就"), 1)
         self.assertEqual(_width("=就"), 1)
 
     def test_jyutping_optional_plus(self) -> None:

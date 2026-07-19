@@ -5,10 +5,14 @@ import re
 from typing import Optional
 
 from app.services.query_grammar.equals import is_framed_equals_query
-from app.services.query_tokens import CODE_TAIL_MIDDLE, SERIAL_CHARSET_RE
+from app.services.query_tokens import (
+    CODE_TAIL_MIDDLE,
+    INITIAL_RHYME_DUAL_MARK_HINT,
+    SERIAL_CHARSET_RE,
+)
 
 PURE_CHARS_SERIAL_HINT = (
-    "每個 `{字}=`／`={字}` 前須有 0243 碼。"
+    "每個 `{字}=`／`^{字}` 前須有 0243 碼。"
     "例：`04困=49倒=`（唔好寫 `窮困=潦倒=`）。"
 )
 PREFIX_WILDCARD_EQUALS_MISSING_EQ_HINT = (
@@ -29,7 +33,9 @@ def blocks_star_normalize(q: str) -> bool:
         and not re.fullmatch(r"[一-龥]=", q)
     ):
         return True
-    if SERIAL_CHARSET_RE.match(q) and re.search(r"\d[一-龥]=", q):
+    if SERIAL_CHARSET_RE.match(q) and (
+        re.search(r"\d[一-龥]=", q) or re.search(r"\d[\^=][一-龥]", q)
+    ):
         return True
     return False
 
@@ -42,9 +48,9 @@ def prefix_wildcard_equals_missing_eq_hint(q: str) -> Optional[str]:
 
 
 def parse_pure_chars_serial_hint(q: str) -> Optional[str]:
-    if not q or not re.fullmatch(r"[一-龥=]+", q):
+    if not q or not re.fullmatch(r"[一-龥=^]+", q):
         return None
-    if re.fullmatch(r"[一-龥]=", q):
+    if re.fullmatch(r"[一-龥]=", q) or re.fullmatch(r"\^[一-龥]+", q):
         return None
     if is_framed_equals_query(q):
         return None
@@ -53,12 +59,21 @@ def parse_pure_chars_serial_hint(q: str) -> Optional[str]:
     return None
 
 
+def initial_rhyme_dual_mark_hint(q: str) -> Optional[str]:
+    """ADR-0062：同一串混用同聲 `^` 同尾韻 `=` → hint。"""
+    if re.search(r"\^[一-龥]+=", q) or re.search(r"\^[一-龥]=", q):
+        return INITIAL_RHYME_DUAL_MARK_HINT
+    if re.search(r"\d[一-龥]=", q) and re.search(r"\d\^[一-龥]", q):
+        return INITIAL_RHYME_DUAL_MARK_HINT
+    return None
+
+
 def parse_prefix_wildcard_initial_query(q: str) -> Optional[dict]:
-    m = re.fullmatch(r"\?=([一-龥]{2,})$", q)
+    m = re.fullmatch(r"\?[\^=]([一-龥]{2,})$", q)
     if not m:
         return None
-    inner = f"={m.group(1)}"
-    return {"raw_q": q, "inner_q": inner, "ref_literal": m.group(1), "width": len(m.group(1)) + 1}
+    ref = m.group(1)
+    return {"raw_q": q, "inner_q": f"^{ref}", "ref_literal": ref, "width": len(ref) + 1}
 
 
 def parse_prefix_wildcard_equals_query(q: str) -> Optional[dict]:
@@ -84,9 +99,9 @@ def _scan_serial_phoneme(q: str, constraint: str) -> Optional[dict]:
             continue
         if ch.isdigit():
             if constraint == "final":
-                m = re.match(r"^(\d)([一-龥])=(?=[0-9?=]|$)", q[i:])
+                m = re.match(r"^(\d)([一-龥])=(?=[0-9?^=]|$)", q[i:])
             else:
-                m = re.match(r"^(\d)=([一-龥])(?=[0-9?=]|$)", q[i:])
+                m = re.match(r"^(\d)[\^=]([一-龥])(?=[0-9?^=]|$)", q[i:])
             if m:
                 digit, anchor = m.group(1), m.group(2)
                 code_slots.append((pos, digit))
@@ -116,7 +131,7 @@ def framed_equals_blocks_serial(q: str) -> bool:
     """碼夾／整詞等號唔走串列（G2）。"""
     if not is_framed_equals_query(q):
         return False
-    m = re.match(r"^(\d*)(=)?([一-龥]+)(=)?(\d*)$", q)
+    m = re.match(r"^(\d*)(\^|=)?([一-龥]+)(=)?(\d*)$", q)
     if not m:
         return False
     if m.group(2):
@@ -140,7 +155,7 @@ def parse_serial_phoneme_anchor_query(q: str) -> Optional[dict]:
     if re.fullmatch(r"[一-龥]=", q):
         return None
     has_rhyme = bool(re.search(r"\d[一-龥]=", q))
-    has_initial = bool(re.search(r"\d=[一-龥]", q))
+    has_initial = bool(re.search(r"\d[\^=][一-龥]", q))
     if has_rhyme and has_initial:
         return None
     constraint = "final" if has_rhyme else "initial"

@@ -74,7 +74,7 @@ def parse_code_tail_query(q: str) -> Optional[dict]:
             "anchor_pos": width - 1,
         }
 
-    m2 = re.match(r"^=([一-龥])$", tail)
+    m2 = re.match(r"^[\^=]([一-龥])$", tail)
     if m2:
         return {
             "code_digits": code_digits,
@@ -145,7 +145,7 @@ def parse_plus_anchor_query(q: str) -> Optional[dict]:
             "code_prefix": code,
         }
 
-    m = re.match(rf"^(\d+){_CODE_TAIL_ESC}=([一-龥])$", q)
+    m = re.match(rf"^(\d+){_CODE_TAIL_ESC}[\^=]([一-龥])$", q)
     if m:
         code, anchor = m.group(1), m.group(2)
         width = len(code) + 1

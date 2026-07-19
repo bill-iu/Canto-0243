@@ -35,6 +35,7 @@ export {
   parseSerialPhonemeAnchorQuery,
   prefixWildcardEqualsMissingEqHint,
   parsePureCharsSerialHint,
+  initialRhymeDualMarkHint,
   toMatchSpec as serialToMatchSpec,
 } from './serial.ts';
 export { parseAtTailQuery, parsePlusAnchorQuery, toMatchSpec as plusToMatchSpec } from './plus.ts';

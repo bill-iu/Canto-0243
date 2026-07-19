@@ -35,4 +35,4 @@
 
 ## Status
 
-`accepted`（語法決策已鎖；**parser／指南未落地**）
+`implemented`（parser／normalize 雙端已認 `^`；舊左 `=` 相容；指南文案可另開）

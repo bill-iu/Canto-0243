@@ -86,7 +86,7 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
     });
   }
 
-  m = q.match(/^(\d+)\+=([\u4e00-\u9fff])$/);
+  m = q.match(/^(\d+)\+[\^=]([\u4e00-\u9fff])$/);
   if (m) {
     const code = m[1]!;
     const anchor = m[2]!;

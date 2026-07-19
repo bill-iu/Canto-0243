@@ -17,8 +17,9 @@ function width(q: string): number {
 assert(normalizeQuery('?就=') === '?就=', 'PWA must not strip leading ? on rhyme');
 assert(width('?就=') === 2 && width('?+就=') === 2, '?就= ≡ ?+就=');
 assert(width('就=') === 1, '就= stays one slot');
-assert(width('?=就') === 2 && width('?+=就') === 2, '?=就 ≡ ?+=就');
-assert(width('=就') === 1, '=就 stays one slot');
+assert(normalizeQuery('?=就') === '?^就', 'legacy left = → ^');
+assert(width('?=就') === 2 && width('?+=就') === 2 && width('?^就') === 2, '?=就 ≡ ?^就');
+assert(width('=就') === 1 && width('^就') === 1, '^就 stays one slot');
 assert(width('?hon') === 2 && width('?+hon') === 2, '?hon ≡ ?+hon');
 
 console.log('optional-plus-after-wildcard self-check ok');
