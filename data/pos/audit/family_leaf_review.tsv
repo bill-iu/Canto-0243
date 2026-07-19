@@ -1,23 +1,23 @@
-literal	current_family	proposed_family	source	evidence	confidence	verdict	review_note
-一心一意	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-一石二鳥	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-一見鍾情	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-一鳴驚人	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-三心二意	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-不約而同	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-亡羊補牢	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-全力以赴	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-半途而廢	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-名副其實	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-對症下藥	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-小題大做	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-杯弓蛇影	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-畫蛇添足	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-畫龍點睛	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-盲人摸象	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-紙上談兵	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-自相矛盾	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-見義勇為	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-調虎離山	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-釜底抽薪	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
-雪中送炭	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	review_note
+一心一意	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+一石二鳥	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+一見鍾情	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+一鳴驚人	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+三心二意	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+不約而同	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+亡羊補牢	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+全力以赴	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+半途而廢	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+名副其實	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+對症下藥	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+小題大做	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+杯弓蛇影	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+畫蛇添足	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+畫龍點睛	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+盲人摸象	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+紙上談兵	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+自相矛盾	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+見義勇為	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+調虎離山	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+釜底抽薪	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu
+雪中送炭	mother-external-match	idiom	chengyu	china-idiom+manual	external-membership;canonical-four-character-form	high	accept	unambiguous canonical chengyu

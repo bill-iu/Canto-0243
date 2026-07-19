@@ -24,7 +24,7 @@
 
 ### C. 外部 CSV 只作離線提案輸入（採用）
 
-提案指令接受維護者提供的 `China-idiom/china_idiom/idiom.csv` 路徑。腳本讀取字面、繁化、與本專案詞庫及細分母體取交集，只輸出 `chengyu` proposal。repo 記錄來源 URL、commit、輸入 SHA-256 和衍生提案；不保存完整外源 CSV，也不在正常 build 或 test 期間取網。
+提案指令接受維護者提供的 `China-idiom/china_idiom/idiom.csv` 路徑。腳本讀取字面、繁化，並以凍結母體和完整專案詞庫的聯集建立 scope：母體命中、母體未命中、已有 project POS 但 family 漏標，以及 lexicon 有詞但缺 project POS。repo 記錄來源 URL、commit、輸入 SHA-256 和衍生提案；不保存完整外源 CSV，也不在正常 build 或 test 期間取網。
 
 這個方案符合 ADR-0061：外部 membership 提高召回，但不取得權威地位。
 
@@ -51,6 +51,7 @@ matcher 只組合三個各自獨立的軸 matcher；不改任何一軸的存儲�
 首次執行凍結當時 SSOT 中 `family=idiom` 的字面，形成排序穩定、git tracked 的母體。細分帳至少記錄：
 
 - `literal`
+- `scope`
 - `current_family`
 - `proposed_family`
 - `source`
@@ -61,7 +62,7 @@ matcher 只組合三個各自獨立的軸 matcher；不改任何一軸的存儲�
 
 `keep_idiom` 是必要終局，避免 SSOT 值未變時無法分辨「未審」和「已明確留傘」。apply 只接受合法且已過審的 `accept`／`keep_idiom`；重跑不得重複或改亂其他 POS 軸。
 
-status 報告母體數、pending、三葉數、已審留傘數及終局覆蓋。品質抽樣以已審終局為宇宙，固定 seed，`OK + SOFT > 90%` 才通過。meta 記錄母體、覆蓋、各類數量、抽樣輪次與報告路徑。
+status 分開報告凍結母體、完整 scope、各 scope pending、三葉數、已審留傘數及母體終局覆蓋。品質抽樣以已審終局為宇宙，固定 seed，`OK + SOFT > 90%` 才通過。meta 記錄母體、scope、覆蓋、各類數量、抽樣輪次與報告路徑。
 
 ### 3. China-idiom 協作流程
 
@@ -71,8 +72,9 @@ status 報告母體數、pending、三葉數、已審留傘數及終局覆蓋。
 2. 用專案現有繁化能力轉換字面；
 3. 去除空值及重複；
 4. 與詞庫字面相交；
-5. 再與凍結的 `idiom` 母體相交；
-6. 產生 `chengyu` pending 提案及來源 sidecar（URL、commit、SHA-256、計數）。
+5. 與凍結的 `idiom` 母體取聯集並分四類 scope；
+6. 母體未命中仍列 pending；已有 POS 的 family 漏標與缺 project POS 項只進 audit scope；
+7. 產生 pending 提案及來源 sidecar（URL、commit、SHA-256、各 scope 計數）。
 
 外源命中只是 evidence，不會直接 apply。俗語與諺語沒有假裝對等的自動來源，主要由 agent／維護者按 CONTEXT 優先序審核。完整外源 CSV 存於 repo 外暫存目錄；完成提案後可刪除。
 
@@ -104,7 +106,7 @@ status 報告母體數、pending、三葉數、已審留傘數及終局覆蓋。
 
 - carrier 缺失或載入失敗：維持現有「詞性缺標」降級；三軸 control disabled，搜尋與工作台本身仍可用。
 - 外源 CSV 缺失、header 不符或 hash 無法計算：提案指令 fail closed，不寫 proposal／SSOT。
-- 提案含非法 family、非母體字面或未審 verdict：apply fail closed，SSOT 不變。
+- 提案含非法 family／scope 或未審 family 變更：apply fail closed；非母體 scope 不得直接寫 SSOT。
 - 三軸篩選得到零結果：清楚顯示是目前詞性條件下無結果，不改寫一般搜尋失敗語意。
 
 ## 測試與驗收
@@ -118,7 +120,7 @@ status 報告母體數、pending、三葉數、已審留傘數及終局覆蓋。
 
 ### 資料管線
 
-- 用小型 fixture 驗證簡轉繁、去重、詞庫交集、母體交集及來源 sidecar。
+- 用小型 fixture 驗證簡轉繁、去重、詞庫交集、四類 scope 及來源 sidecar。
 - apply fixture 驗證 pending 不寫入、accept 改葉、keep_idiom 留傘、重跑冪等、其他三軸不變。
 - 實際 China-idiom 輸入產生可審核 proposal；來源 commit/hash 可追溯。
 - 固定 seed 品質抽樣 `>90%`，報告及 meta 一致。

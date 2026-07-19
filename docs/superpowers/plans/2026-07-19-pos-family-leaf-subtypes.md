@@ -32,7 +32,8 @@
 
 **Files:** create `ingest/project_pos_family_leaf.py`、create `tests/smoke/test_project_pos_family_leaf.py`、create `data/pos/family_leaf_mother_body.txt`、create `data/pos/proposals/family_leaf_proposals.tsv`、create `data/pos/proposals/family_leaf_source.meta.json`
 
-- [ ] fixture 先覆蓋 header 驗證、繁化、去重、詞庫交集、母體交集、hash sidecar。
+- [x] fixture 覆蓋 header 驗證、繁化、去重、詞庫交集、母體命中／未命中、family 漏標、project POS gap 與 hash sidecar。
+- [x] 統一 scope 納入完整 lexicon 的 China-idiom 命中；非母體項只進 audit，不直接寫 SSOT。
 - [ ] `freeze` 只收當刻 `family=idiom`，排序穩定且不覆蓋既有 freeze。
 - [ ] `propose` 接受 `--china-idiom-csv` 與 `--source-commit`；只產 `chengyu` pending。
 - [ ] `status` 分開 pending、accept、keep_idiom、reject 與三葉數。

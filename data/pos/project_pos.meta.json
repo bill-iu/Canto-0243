@@ -578,6 +578,13 @@
   },
   "family_leaf": {
     "mother_body": 3754,
+    "scope_total": 8594,
+    "scope_counts": {
+      "lexicon-pos-gap": 4147,
+      "mother-external-match": 2714,
+      "project-pos-expansion": 693,
+      "mother-unmatched": 1040
+    },
     "review_rows": 22,
     "verdicts": {
       "accept": 22
@@ -587,7 +594,8 @@
       "chengyu": 22
     },
     "terminal": 22,
-    "coverage": 0.0059,
+    "pending": 8572,
+    "mother_coverage": 0.0059,
     "last_apply": {
       "reviewed": 22,
       "terminal": 22,

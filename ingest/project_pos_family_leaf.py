@@ -24,8 +24,10 @@ REVIEW = POS_DIR / "audit" / "family_leaf_review.tsv"
 SOURCE_URL = "https://github.com/sfyc23/China-idiom"
 LEAF_VALUES = frozenset({"chengyu", "suyu", "yanyu"})
 VERDICTS = frozenset({"accept", "keep_idiom", "reject", "pending"})
+SCOPES = frozenset({"mother-external-match", "mother-unmatched", "project-pos-expansion", "lexicon-pos-gap"})
 HEADER = (
     "literal",
+    "scope",
     "current_family",
     "proposed_family",
     "source",
@@ -91,27 +93,44 @@ def propose_chengyu(
     out_path: Path = PROPOSALS,
     meta_path: Path = SOURCE_META,
     lexicon_literals: Optional[set[str]] = None,
+    tsv: Path = DEFAULT_TSV,
 ) -> dict:
     source_commit = source_commit.strip()
     if not source_commit:
         raise FamilyLeafError("source commit required")
     mother = set(load_mother_body(mother_path))
     lexicon = lexicon_literals if lexicon_literals is not None else load_lexicon_literals(include_curated=True)
+    table = parse_project_pos_tsv(tsv)
     words = _china_idiom_words(csv_path)
-    matched = sorted(words & lexicon & mother)
-    rows = [
-        {
+    external_lexicon = words & lexicon
+    scope = mother | external_lexicon
+    rows = []
+    scope_counts: Counter = Counter()
+    for literal in sorted(scope):
+        if literal in mother and literal in external_lexicon:
+            row_scope, current, proposed = "mother-external-match", "idiom", "chengyu"
+            evidence, confidence = "external-membership", "medium"
+        elif literal in mother:
+            row_scope, current, proposed = "mother-unmatched", "idiom", ""
+            evidence, confidence = "no-external-match", "low"
+        elif literal in table:
+            row_scope, current, proposed = "project-pos-expansion", table[literal].family, "chengyu"
+            evidence, confidence = "external-membership;family-unset", "medium"
+        else:
+            row_scope, current, proposed = "lexicon-pos-gap", "", "chengyu"
+            evidence, confidence = "external-membership;missing-project-pos", "low"
+        scope_counts[row_scope] += 1
+        rows.append({
             "literal": literal,
-            "current_family": "idiom",
-            "proposed_family": "chengyu",
-            "source": "china-idiom",
-            "evidence": "external-membership",
-            "confidence": "medium",
+            "scope": row_scope,
+            "current_family": current,
+            "proposed_family": proposed,
+            "source": "china-idiom" if literal in external_lexicon else "project-pos-mother",
+            "evidence": evidence,
+            "confidence": confidence,
             "verdict": "pending",
-            "review_note": "",
-        }
-        for literal in matched
-    ]
+            "review_note": "awaiting-review",
+        })
     digest = hashlib.sha256(csv_path.read_bytes()).hexdigest()
     meta = {
         "source_url": SOURCE_URL,
@@ -120,7 +139,9 @@ def propose_chengyu(
         "external_unique_traditional": len(words),
         "mother_body": len(mother),
         "lexicon_literals": len(lexicon),
-        "matched": len(matched),
+        "external_lexicon": len(external_lexicon),
+        "scope_total": len(scope),
+        "scope_counts": dict(scope_counts),
         "proposal": out_path.relative_to(ROOT).as_posix() if out_path.is_relative_to(ROOT) else str(out_path),
     }
     _write_rows(out_path, rows)
@@ -143,6 +164,9 @@ def load_review(path: Path = REVIEW) -> list[dict[str, str]]:
     bad = sorted({row["verdict"] for row in rows} - VERDICTS)
     if bad:
         raise FamilyLeafError(f"bad verdicts: {bad}")
+    bad_scopes = sorted({row["scope"] for row in rows} - SCOPES)
+    if bad_scopes:
+        raise FamilyLeafError(f"bad scopes: {bad_scopes}")
     return rows
 
 
@@ -159,8 +183,10 @@ def apply_review(
     changes: dict[str, str] = {}
     for row in rows:
         literal, verdict, proposed = row["literal"], row["verdict"], row["proposed_family"]
+        if verdict in {"pending", "reject"}:
+            continue
         if literal not in mother or literal not in table:
-            raise FamilyLeafError(f"review literal outside mother/SSOT: {literal}")
+            raise FamilyLeafError(f"terminal family change outside frozen mother/SSOT: {literal}")
         current = table[literal]
         if verdict == "accept":
             if proposed not in LEAF_VALUES:
@@ -189,25 +215,32 @@ def apply_review(
         else:
             _rewrite_table(table)
             write_carrier()
-    return {"reviewed": len(rows), "terminal": len(changes), "changed": changed, "dry_run": dry_run}
+    terminal = sum(row["verdict"] != "pending" for row in rows)
+    return {"reviewed": len(rows), "terminal": terminal, "changed": changed, "dry_run": dry_run}
 
 
 def family_leaf_status(
-    *, mother_path: Path = MOTHER_BODY, review_path: Path = REVIEW, tsv: Path = DEFAULT_TSV
+    *, mother_path: Path = MOTHER_BODY, proposal_path: Path = PROPOSALS,
+    review_path: Path = REVIEW, tsv: Path = DEFAULT_TSV
 ) -> dict:
     mother = load_mother_body(mother_path)
+    proposals = load_review(proposal_path)
     reviews = load_review(review_path)
     verdicts = Counter(row["verdict"] for row in reviews)
+    scopes = Counter(row["scope"] for row in proposals)
     table = parse_project_pos_tsv(tsv)
     families = Counter(table[lit].family for lit in mother if lit in table)
-    terminal = verdicts["accept"] + verdicts["keep_idiom"]
+    terminal = verdicts["accept"] + verdicts["keep_idiom"] + verdicts["reject"]
     return {
         "mother_body": len(mother),
+        "scope_total": len(proposals),
+        "scope_counts": dict(scopes),
         "review_rows": len(reviews),
         "verdicts": dict(verdicts),
         "families": dict(families),
         "terminal": terminal,
-        "coverage": round(terminal / len(mother), 4) if mother else 0.0,
+        "pending": max(0, len(proposals) - terminal),
+        "mother_coverage": round((verdicts["accept"] + verdicts["keep_idiom"]) / len(mother), 4) if mother else 0.0,
     }
 
 

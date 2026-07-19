@@ -5,6 +5,13 @@
   "external_unique_traditional": 30824,
   "mother_body": 3754,
   "lexicon_literals": 156719,
-  "matched": 2714,
+  "external_lexicon": 7554,
+  "scope_total": 8594,
+  "scope_counts": {
+    "lexicon-pos-gap": 4147,
+    "mother-external-match": 2714,
+    "project-pos-expansion": 693,
+    "mother-unmatched": 1040
+  },
   "proposal": "data/pos/proposals/family_leaf_proposals.tsv"
 }
