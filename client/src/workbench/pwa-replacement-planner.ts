@@ -1,6 +1,6 @@
 import type { DatabaseBackend } from '../db/database-backend.ts';
 import { executeMatchSpec } from '../db/position-match/engine.ts';
-import type { MatchSpec, SlotConstraint } from '../db/position-match/spec.ts';
+import { attachEqualsSpan, type MatchSpec, type SlotConstraint } from '../db/position-match/spec.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
 import { projectRelationPool } from '../db/relation-pool-projection.ts';
 import type { RelationPoolSnapshot } from '../db/relation-pool-snapshot.ts';
@@ -30,7 +30,31 @@ export function buildPwaMatchSpec(plan: ReplacementPlanV1): MatchSpec {
     if (item.kind === 'literal_char' && item.literal) mask[item.pos] = item.literal;
     return { pos: item.pos, kind: item.kind, value };
   });
-  return { width: plan.width, slots, mask: mask.join(''), extra: {} };
+  const spec: MatchSpec = { width: plan.width, slots, mask: mask.join(''), extra: {} };
+  for (const [kind, dimension] of [['final_anchor', 'final'], ['initial_anchor', 'initial']] as const) {
+    const anchorItems = plan.slots.filter((slot) => slot.kind === kind).sort((a, b) => a.pos - b.pos);
+    const anchors = slots.filter((slot) => slot.kind === kind).sort((a, b) => a.pos - b.pos);
+    const positions = anchors.map((slot) => slot.pos);
+    const contiguous = positions.length >= 2
+      && positions.every((pos, index) => index === 0 || pos === positions[index - 1]! + 1);
+    if (!contiguous || anchorItems.some((slot) => !slot.refJyutping)) continue;
+    spec.slots = slots.filter((slot) => slot.kind !== kind);
+    attachEqualsSpan(spec, {
+      ref_literal: anchors.map((slot) => String(slot.value ?? '')).join(''),
+      ref_jyutping: anchorItems
+        .map((slot) => slot.refJyutping ?? '')
+        .join(' ') || undefined,
+      start_pos: positions[0]!,
+      dimension,
+      phoneme_anchor_only: true,
+      whole_word: positions[0] === 0 && positions.length === plan.width,
+    });
+    if (positions[0]! > 0 && positions[positions.length - 1] === plan.width - 1) {
+      spec.extra!.prefix_wildcard_equals = true;
+    }
+    break;
+  }
+  return spec;
 }
 
 function groupRows(

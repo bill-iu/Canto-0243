@@ -62,14 +62,14 @@ export function emptyPhonemeDimPicks(): PhonemeDimPicks {
 
 export function spanPositionOptions(width: number): Array<{ key: 'head' | 'tail' | number; label: string }> {
   if (width < 1) return [];
-  if (width === 1) return [{ key: 'head', label: '只要求呢個字' }];
+  if (width === 1) return [{ key: 'head', label: '呢個字' }];
   const options: Array<{ key: 'head' | 'tail' | number; label: string }> = [
-    { key: 'head', label: '只要求頭字' },
+    { key: 'head', label: '頭字' },
   ];
   for (let offset = 1; offset <= width - 2; offset += 1) {
-    options.push({ key: offset, label: `只要求第 ${offset + 1} 字` });
+    options.push({ key: offset, label: `第 ${offset + 1} 字` });
   }
-  options.push({ key: 'tail', label: '只要求尾字' });
+  options.push({ key: 'tail', label: '尾字' });
   return options;
 }
 
@@ -111,14 +111,16 @@ export function buildPhonemeAnchors(
   for (const offset of rhymeOff) {
     const slot = slots[span.start + offset];
     const ref = slot?.surface;
-    if (!ref) continue;
-    anchors.push({ pos: span.start + offset, kind: 'final_anchor', ref });
+    const refJyutping = slot?.reading;
+    if (!ref || !refJyutping) continue;
+    anchors.push({ pos: span.start + offset, kind: 'final_anchor', ref, refJyutping });
   }
   for (const offset of initialOff) {
     const slot = slots[span.start + offset];
     const ref = slot?.surface;
-    if (!ref) continue;
-    anchors.push({ pos: span.start + offset, kind: 'initial_anchor', ref });
+    const refJyutping = slot?.reading;
+    if (!ref || !refJyutping) continue;
+    anchors.push({ pos: span.start + offset, kind: 'initial_anchor', ref, refJyutping });
   }
   return anchors;
 }

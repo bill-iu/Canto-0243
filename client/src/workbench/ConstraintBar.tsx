@@ -74,8 +74,7 @@ function DimChecklist({
           <label key={String(option.key)} className="phoneme-dim__option">
             <input
               type="checkbox"
-              checked={picks.whole ? false : isOn}
-              disabled={picks.whole}
+              checked={isOn}
               onChange={(event) => {
                 const on = event.target.checked;
                 if (width === 1) {

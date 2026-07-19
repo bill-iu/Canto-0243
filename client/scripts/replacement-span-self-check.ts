@@ -52,6 +52,8 @@ draft = result.draft;
 result = toggleLockKeepingSpan(draft, 3);
 assert(result.ok);
 draft = result.draft;
+draft = lineDraftReducer(draft, { type: 'choose_reading', pos: 2, jyutping: 'hoeng1', code: '3' });
+draft = lineDraftReducer(draft, { type: 'choose_reading', pos: 3, jyutping: 'gong2', code: '9' });
 const anchors = buildPhonemeAnchors(
   draft.selection!,
   draft.slots,
@@ -59,5 +61,6 @@ const anchors = buildPhonemeAnchors(
   emptyPhonemeDimPicks(),
 );
 assert(anchors.length === 2 && anchors.every((a) => a.kind === 'final_anchor'), 'whole rhyme anchors');
+assert(anchors.map((a) => a.refJyutping).join(' ') === 'hoeng1 gong2', 'anchors keep selected readings');
 
 console.log('replacement-span self-check ok');

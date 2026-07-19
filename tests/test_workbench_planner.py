@@ -6,6 +6,7 @@ import unittest
 
 from app.schemas.workbench_schema import ReplacementPlanV1
 from app.services.position_match.spec import MaskFamilySearchResult
+from app.services.position_match.spec import get_equals_span
 from app.services.workbench.replacement_planner import (
     build_match_spec,
     plan_replacements,
@@ -31,6 +32,27 @@ def make_plan(**changes) -> ReplacementPlanV1:
 
 
 class WorkbenchPlannerTests(unittest.TestCase):
+    def test_contiguous_rhyme_slots_share_prefix_wildcard_equals_semantics(self) -> None:
+        spec = build_match_spec(make_plan(
+            width=4,
+            slots=[
+                {"pos": 1, "kind": "final_anchor", "ref": "困", "refJyutping": "kwan3"},
+                {"pos": 2, "kind": "final_anchor", "ref": "潦", "refJyutping": "liu5"},
+                {"pos": 3, "kind": "final_anchor", "ref": "倒", "refJyutping": "dou2"},
+            ],
+            semanticIntent="off",
+            semanticSeed="窮困潦倒",
+        ))
+        span = get_equals_span(spec)
+        self.assertIsNotNone(span)
+        self.assertEqual((span.ref_literal, span.start_pos), ("困潦倒", 1))
+        self.assertEqual(span.ref_jyutping, "kwan3 liu5 dou2")
+        self.assertEqual(span.dimension, "final")
+        self.assertTrue(span.phoneme_anchor_only)
+        self.assertFalse(span.whole_word)
+        self.assertTrue(spec.extra.get("prefix_wildcard_equals"))
+        self.assertFalse(any(slot.kind == "final_anchor" for slot in spec.slots))
+
     def test_plan_maps_directly_to_match_spec(self) -> None:
         spec = build_match_spec(make_plan())
         self.assertEqual(spec.width, 2)

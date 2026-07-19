@@ -28,6 +28,7 @@ export type EqualsDimension = EqualsSpanDimension | 'rhyme' | 'phone';
 
 export interface EqualsSpan {
   ref_literal: string;
+  ref_jyutping?: string;
   start_pos: number;
   dimension: EqualsDimension;
   phoneme_anchor_only: boolean;

@@ -21,6 +21,7 @@
         "digit": { "type": "string", "pattern": "^[0-9]$" },
         "literal": { "type": "string", "minLength": 1, "maxLength": 1 },
         "ref": { "type": "string", "minLength": 1 },
+        "refJyutping": { "type": "string", "minLength": 1 },
         "toneClass": { "type": "string", "enum": ["ping", "ze"] }
       },
       "allOf": [

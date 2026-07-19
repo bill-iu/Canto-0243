@@ -11,7 +11,7 @@ from app.schemas.workbench_schema import (
     WorkbenchCandidateResponse,
 )
 from app.services.position_match.engine import execute_match_spec
-from app.services.position_match.spec import MatchSpec, SlotConstraint
+from app.services.position_match.spec import EqualsSpan, MatchSpec, SlotConstraint, attach_equals_span
 from app.services.workbench.candidate_rank import candidate_sort_key, relation_index
 from app.services.workbench.candidate_reason import candidate_reasons
 from app.services.workbench.relaxation import relaxation_variants
@@ -31,7 +31,33 @@ def build_match_spec(plan: ReplacementPlanV1) -> MatchSpec:
         slots.append(SlotConstraint(pos=item.pos, kind=item.kind, value=value))
         if item.kind == "literal_char" and item.literal:
             mask[item.pos] = item.literal
-    return MatchSpec(width=plan.width, slots=slots, mask="".join(mask))
+    spec = MatchSpec(width=plan.width, slots=slots, mask="".join(mask))
+    for kind, dimension in (("final_anchor", "final"), ("initial_anchor", "initial")):
+        anchor_items = sorted(
+            (item for item in plan.slots if item.kind == kind),
+            key=lambda item: item.pos,
+        )
+        anchors = sorted((slot for slot in slots if slot.kind == kind), key=lambda slot: slot.pos)
+        positions = [slot.pos for slot in anchors]
+        if (
+            len(anchors) < 2
+            or not all(item.ref_jyutping for item in anchor_items)
+            or positions != list(range(positions[0], positions[-1] + 1))
+        ):
+            continue
+        spec.slots = [slot for slot in slots if slot.kind != kind]
+        attach_equals_span(spec, EqualsSpan(
+            ref_literal="".join(str(slot.value or "") for slot in anchors),
+            ref_jyutping=" ".join(item.ref_jyutping or "" for item in anchor_items),
+            start_pos=positions[0],
+            dimension=dimension,
+            phoneme_anchor_only=True,
+            whole_word=positions[0] == 0 and len(positions) == plan.width,
+        ))
+        if positions[0] > 0 and positions[-1] == plan.width - 1:
+            spec.extra["prefix_wildcard_equals"] = True
+        break
+    return spec
 
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> list[dict]:

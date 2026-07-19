@@ -11,6 +11,7 @@ export interface WorkbenchSlotConstraintV1 {
   digit?: string;
   literal?: string;
   ref?: string;
+  refJyutping?: string;
   toneClass?: 'ping' | 'ze';
 }
 
@@ -108,6 +109,7 @@ function parseSlot(value: unknown, width: number): WorkbenchSlotConstraintV1 {
   if (slot.kind === 'literal_char') assert((slot.literal ?? '').length === 1, 'slot literal');
   if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
     assert(Boolean(slot.ref), 'slot ref');
+    if (slot.refJyutping != null) assert(Boolean(slot.refJyutping.trim()), 'slot refJyutping');
   }
   if (slot.kind === 'tone_class') assert(slot.toneClass === 'ping' || slot.toneClass === 'ze', 'tone class');
   return { ...slot };
