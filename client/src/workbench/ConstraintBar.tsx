@@ -122,49 +122,54 @@ export function ConstraintBar({
   onRhymeChange,
   onInitialChange,
 }: Props) {
+  const explicitHint = spanWidth > 0
+    ? `長度須為 ${spanWidth}；未填位會補 ?。`
+    : '標定替換段後可輸入指定碼。';
+
   return (
     <section className="constraint-bar" aria-labelledby="constraintHeading">
       <h2 id="constraintHeading">本次替換條件</h2>
-      <label>聲調精度
-        <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
-          <option value="m1">0243</option>
-          <option value="m2">02493</option>
-          <option value="m3">394052</option>
-        </select>
-      </label>
-      <label>0243 碼
-        <select
-          value={codeConstraint}
-          onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
-        >
-          <option value="same_tone">同音（預設）</option>
-          <option value="off">不限定</option>
-          <option value="explicit">指定碼</option>
-        </select>
-      </label>
-      {codeConstraint === 'explicit' ? (
-        <label>指定碼（?＝通配）
-          <input
-            value={explicitCode}
-            onChange={(event) => onExplicitCodeChange(event.target.value)}
-            maxLength={Math.max(spanWidth, 1)}
-            spellCheck={false}
-            inputMode="numeric"
-            disabled={spanWidth < 1}
-            aria-describedby="explicitCodeHint"
-          />
+      <div className="constraint-bar__menus">
+        <label>聲調精度
+          <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
+            <option value="m1">0243</option>
+            <option value="m2">02493</option>
+            <option value="m3">394052</option>
+          </select>
         </label>
-      ) : null}
-      {codeConstraint === 'explicit' && spanWidth > 0 ? (
-        <p id="explicitCodeHint" className="quiet-status">長度須為 {spanWidth}；未填位會補 ?。</p>
-      ) : null}
-      <label>原意關係
-        <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
-          <option value="ranked">近義優先，保留其他選擇</option>
-          <option value="direct_only">只看直接近義</option>
-          <option value="off">不設語意條件</option>
-        </select>
-      </label>
+        <label>原意關係
+          <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
+            <option value="ranked">近義優先，保留其他選擇</option>
+            <option value="direct_only">只看直接近義</option>
+            <option value="off">不設語意條件</option>
+          </select>
+        </label>
+        <label>0243 碼
+          <select
+            value={codeConstraint}
+            onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
+          >
+            <option value="same_tone">同音（預設）</option>
+            <option value="off">不限定</option>
+            <option value="explicit">指定碼</option>
+          </select>
+        </label>
+        {codeConstraint === 'explicit' ? (
+          <label className="constraint-bar__explicit">指定碼（?＝通配）
+            <input
+              value={explicitCode}
+              onChange={(event) => onExplicitCodeChange(event.target.value)}
+              maxLength={Math.max(spanWidth, 1)}
+              spellCheck={false}
+              inputMode="numeric"
+              disabled={spanWidth < 1}
+              title={explicitHint}
+              aria-describedby="explicitCodeHint"
+            />
+            <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
+          </label>
+        ) : null}
+      </div>
       <div className="phoneme-dims" aria-label="讀音約束">
         <DimChecklist
           legend="同韻"

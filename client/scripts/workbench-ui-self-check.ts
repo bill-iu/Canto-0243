@@ -43,6 +43,9 @@ if (!constraints.includes('整段押韻') || !constraints.includes('整段同聲
 if (!constraints.includes('同音（預設）') || !constraints.includes('不限定') || !constraints.includes('指定碼')) {
   throw new Error('code constraint mode options missing');
 }
+if (!constraints.includes('constraint-bar__menus') || !constraints.includes('constraint-bar__explicit')) {
+  throw new Error('wide menu row / explicit slot structure missing');
+}
 if (!page.includes('codeConstraint') || !page.includes('buildCodeDigitSlots')) {
   throw new Error('code constraint wiring missing');
 }

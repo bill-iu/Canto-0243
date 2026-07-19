@@ -229,7 +229,20 @@ body.query-tabs-app.workbench-route {
   border-radius: 1rem;
   background: var(--surface-soft);
 }
-.constraint-bar h2 { margin: 0 auto 0 0; font-size: 1rem; }
+.constraint-bar h2 {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 1rem;
+}
+.constraint-bar__menus {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: end;
+  justify-content: flex-start;
+  gap: 1rem 1.5rem;
+  min-width: 0;
+}
 .constraint-bar label { display: grid; gap: .3rem; font-size: .78rem; font-weight: 750; }
 .constraint-bar select {
   padding: .5rem .7rem;
@@ -238,6 +251,26 @@ body.query-tabs-app.workbench-route {
   background: var(--surface-input);
   color: inherit;
   font: inherit;
+}
+.constraint-bar__explicit {
+  flex: 1 1 auto;
+  min-width: 7rem;
+}
+.constraint-bar__explicit input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: .5rem .7rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: var(--surface-input);
+  color: inherit;
+  font: inherit;
+  letter-spacing: .06em;
+}
+.constraint-bar__explicit-hint {
+  color: var(--muted);
+  font-size: .7rem;
+  font-weight: 600;
 }
 .workbench-filter-row { display: flex; align-items: center; justify-content: flex-end; gap: .7rem; margin-top: .75rem; color: var(--muted); font-size: .78rem; }
 .phoneme-dims {
@@ -408,6 +441,12 @@ body.query-tabs-app.workbench-route {
   .line-input-form > div { align-items: stretch; flex-direction: column; }
   .constraint-bar { align-items: stretch; flex-direction: column; }
   .constraint-bar h2 { margin: 0; }
+  .constraint-bar__menus {
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+  }
+  .constraint-bar__explicit { flex: none; min-width: 0; }
   .relaxation-card { align-items: stretch; flex-direction: column; }
   .compare-panel {
     top: auto;
