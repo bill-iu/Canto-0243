@@ -203,6 +203,9 @@ function Test-RelocatedPortable {
         if ($null -eq $ready -or -not $ready.gate_ready -or -not $ready.portable) {
             throw "relocated portable readiness smoke failed"
         }
+        if ($ready.lexiconVersion -ne $Tag) {
+            throw "relocated portable lexicon version mismatch: $($ready.lexiconVersion)"
+        }
         $search = @(Invoke-RestMethod -Uri "http://127.0.0.1:$port/words/search/?q=23" -TimeoutSec 15)
         if ($search.Count -eq 0) { throw "relocated portable search smoke returned no results" }
         $shutdown = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:$port/shutdown" -TimeoutSec 5

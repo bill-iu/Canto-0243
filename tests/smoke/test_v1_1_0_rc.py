@@ -500,6 +500,7 @@ class V110RcPowerShellSeamTest(unittest.TestCase):
         source = POWERSHELL.read_text(encoding="utf-8")
         self.assertNotIn('"--tags"', source)
         self.assertIn("fetch_rime_lexicon_data.py", source)
+        self.assertIn('$ready.lexiconVersion -ne $Tag', source)
         for required in (
             "tests/smoke/test_v1_1_0_rc.py",
             "pos-meta-self-check.ts",
