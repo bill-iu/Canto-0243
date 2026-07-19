@@ -234,7 +234,7 @@ if ($Mode -eq "Build") {
     if ($Repository -ne $Root -or $CandidateRoot -ne $Root) {
         throw "Build only supports the Canto-0243 repository root"
     }
-    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--tags", "--quiet") $Root
+    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--quiet") $Root
     $commit = Assert-ReleaseSource
 
     Invoke-Checked "python" @("scripts/fetch/fetch_rime_data.py") $Root
@@ -302,7 +302,7 @@ if ($Mode -eq "UploadDraft") {
     if ($Repository -ne $Root -or $CandidateRoot -ne $Root) {
         throw "UploadDraft only supports the Canto-0243 repository root"
     }
-    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--tags", "--quiet") $Root
+    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--quiet") $Root
     $commit = Assert-ReleaseSource
     Assert-Candidate $commit
 
@@ -370,7 +370,7 @@ if ($Mode -eq "Finalize") {
     if ($Repository -ne $Root -or $CandidateRoot -ne $Root) {
         throw "Finalize only supports the Canto-0243 repository root"
     }
-    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--tags", "--quiet") $Root
+    Invoke-Checked "git" @("fetch", "origin", "main", "dev", "--quiet") $Root
     $commit = Assert-ReleaseSource
     Assert-Candidate $commit
     $release = Get-ReleaseOrNull
