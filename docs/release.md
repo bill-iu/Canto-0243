@@ -21,6 +21,43 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 
 **arm64** tar 過渡期**不提供**；Release notes 寫清楚。
 
+## v1.1.0 一次性本地 RC
+
+`v1.1.0` 唔經 `/beta/` 或 prerelease。先將 `dev` 經 PR 合入 `main`，再喺
+Windows 由乾淨、等同 `origin/main` 嘅 `main` 建候選：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Build
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Verify
+```
+
+`Build` 固定只認 `v1.1.0`，同輪產生詞庫、Windows zip、正式路徑 PWA
+archive 同 `dist/v1.1.0-rc-manifest.json`。manifest 綁 source commit、固定 gate、
+檔案大小與 SHA-256。任何程式、DB 或產物改動後都要整批重建、重新驗收。
+
+維護者完成本機 PWA build preview、離線測試及 portable 異路徑解壓 smoke 後，
+先明確批准上傳。上傳只消費已驗收檔案，唔 build：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode UploadDraft
+```
+
+此一次性 RC 命令只跑直接證明產物可用嘅短 gates：v1.1.0 合約、POS 自檢、
+PWA／portable build、Pages 封裝，以及 portable 異路徑 readiness／search／shutdown
+smoke。依維護者決定，唔跑全量 smoke、seam、guide、typecheck、lint 同 golden
+parity；最終互動驗收由維護者上傳前喺本機完成。
+
+此步建立／刷新 draft、核對遠端 asset size，並 dispatch
+`pages-v1.1.0.yml`。確認正式 Pages 已載入同一 `v1.1.0`／DB fingerprint 後：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Finalize -PagesVerified
+```
+
+`Finalize` 只將已部署嘅 draft 轉正式 Release；唔重建。Intel macOS tar 之後依
+步驟 2 補入同一 tag。呢套入口、manifest 同 Pages workflow **只限 v1.1.0**；
+後續版本沿用一般 release 工具，唔改參數重用本入口。
+
 ### semver：新 tag vs 刷新（分級）
 
 見 CONTEXT **全量發佈**。摘要：

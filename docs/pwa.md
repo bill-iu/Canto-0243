@@ -10,6 +10,16 @@
 
 ## 發佈順序（必做）
 
+### v1.1.0 特例：部署已驗收 artifact
+
+`v1.1.0` 用一次性 `pages-v1.1.0.yml`，唔喺 Actions 重跑 Vite。維護者先依
+[release.md](release.md) 建好並驗收本地 RC，再以 `v1_1_0_rc.ps1 -Mode
+UploadDraft` 上傳 `canto-0243-pages-v1.1.0.tar.gz`、RC manifest 同 `lyrics.db`。
+
+workflow 固定 checkout `v1.1.0`，驗 source 可達 `main`、manifest hash、archive
+同 DB 一致後，先交畀 GitHub Pages 原子部署。部署成功及線上 smoke 通過後，
+先用 `-Mode Finalize -PagesVerified` 發布正式 Release。此流程只限 `v1.1.0`。
+
 ### 0) 確認 release source
 
 `redeploy Pages` 前，必須先確認 `origin/dev` 已經 merge 到 `origin/main`，並從最新 `main` commit 觸發 **Pages (PWA)** workflow。若 `dev` 尚未合入，先 merge `dev -> main`，再 redeploy。
@@ -21,7 +31,7 @@
 
 獨立「只換庫」workflow 已退役；見 [release.md](release.md)。
 
-### 2) 部署 PWA 到 GitHub Pages（手動觸發）
+### 2) 一般版本部署 PWA 到 GitHub Pages（手動觸發）
 
 1. 到 GitHub Actions
 2. 選 **Pages (PWA)** workflow
@@ -32,6 +42,9 @@ workflow 會：
 - 從該 tag release 下載 `lyrics.db`
 - build `client/`（產出 `lyrics.<tag>.db` 靜態資產）
 - deploy 到 GitHub Pages
+
+一般 workflow 已取消 tag-push trigger，只可由 `main` 手動 dispatch，避免 tag
+先於 Release assets 上傳完成時誤跑。`v1.1.0` 唔使用本一般 build workflow。
 
 ## 驗證（建議）
 
