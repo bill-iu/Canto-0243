@@ -498,6 +498,7 @@ class V110RcPowerShellSeamTest(unittest.TestCase):
             ("pages-v1.1.0 workflow completed successfully", "live Pages DB/search/POS smoke"),
         )
         source = POWERSHELL.read_text(encoding="utf-8")
+        self.assertNotIn('"--tags"', source)
         for required in (
             "tests/smoke/test_v1_1_0_rc.py",
             "pos-meta-self-check.ts",
