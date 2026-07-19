@@ -28,6 +28,7 @@ import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
+import { relaxationKindLabel } from './relaxation-i18n.ts';
 import {
   buildPhonemeAnchors,
   emptyPhonemeDimPicks,
@@ -609,7 +610,7 @@ export function WorkbenchPage() {
             ) : null}
             {candidates.response?.relaxation ? (
               <section className="relaxation-card" aria-labelledby="relaxHeading">
-                <div><p className="eyebrow">零結果時只改一項</p><h2 id="relaxHeading">可選放寬：{candidates.response.relaxation.kind}</h2><p>{isPosFilterActive(posFilter) ? (uiLang === 'en' ? 'Candidate count is hidden while filters are active.' : '啟用篩選時不顯示未篩選候選數。') : `預計可找到 ${candidates.response.relaxation.candidateCount} 項；不會自動採用。`}</p></div>
+                <div><p className="eyebrow">零結果時只改一項</p><h2 id="relaxHeading">可選放寬：{relaxationKindLabel(candidates.response.relaxation.kind, uiLang)}</h2><p>{isPosFilterActive(posFilter) ? (uiLang === 'en' ? 'Candidate count is hidden while filters are active.' : '啟用篩選時不顯示未篩選候選數。') : `預計可找到 ${candidates.response.relaxation.candidateCount} 項；不會自動採用。`}</p></div>
                 <button type="button" onClick={() => {
                   if (!draft.selection || !candidates.response?.relaxation) return;
                   const suggestion = candidates.response.relaxation;
