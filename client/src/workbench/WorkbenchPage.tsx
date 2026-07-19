@@ -17,6 +17,7 @@ import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
 import {
   buildCodeDigitSlots,
+  codeConstraintAfterRemoveCode,
   planHasQueryableSlots,
   sameToneCodePattern,
   sanitizeExplicitCode,
@@ -103,7 +104,12 @@ export function WorkbenchPage() {
   const [explicitCode, setExplicitCode] = useState('');
   const [message, setMessage] = useState('');
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
-  const [relaxedPrevious, setRelaxedPrevious] = useState<{ mode: ReplacementPlanV1['mode']; semanticIntent: ReplacementPlanV1['semanticIntent'] } | null>(null);
+  const [relaxedPrevious, setRelaxedPrevious] = useState<{
+    mode: ReplacementPlanV1['mode'];
+    semanticIntent: ReplacementPlanV1['semanticIntent'];
+    codeConstraint: CodeConstraintMode;
+    explicitCode: string;
+  } | null>(null);
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const [rhymePicks, setRhymePicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
@@ -607,7 +613,7 @@ export function WorkbenchPage() {
                 <button type="button" onClick={() => {
                   if (!draft.selection || !candidates.response?.relaxation) return;
                   const suggestion = candidates.response.relaxation;
-                  setRelaxedPrevious({ mode, semanticIntent });
+                  setRelaxedPrevious({ mode, semanticIntent, codeConstraint, explicitCode });
                   setActiveRelaxation({
                     id: suggestion.id,
                     kind: suggestion.kind,
@@ -616,6 +622,14 @@ export function WorkbenchPage() {
                   });
                   setMode(suggestion.plan.mode);
                   setSemanticIntent(suggestion.plan.semanticIntent);
+                  if (suggestion.kind === 'remove_code') {
+                    const next = codeConstraintAfterRemoveCode(
+                      suggestion.plan.slots,
+                      suggestion.plan.width,
+                    );
+                    setCodeConstraint(next.mode);
+                    setExplicitCode(next.explicit);
+                  }
                   setDraft(lineDraftReducer(draft, {
                     type: 'apply_relaxation',
                     selectionVersion: draft.version,
@@ -630,6 +644,8 @@ export function WorkbenchPage() {
               if (relaxedPrevious) {
                 setMode(relaxedPrevious.mode);
                 setSemanticIntent(relaxedPrevious.semanticIntent);
+                setCodeConstraint(relaxedPrevious.codeConstraint);
+                setExplicitCode(relaxedPrevious.explicitCode);
                 setRelaxedPrevious(null);
               }
               setActiveRelaxation(null);

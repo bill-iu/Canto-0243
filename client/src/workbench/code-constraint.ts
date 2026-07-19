@@ -63,3 +63,26 @@ export function planHasQueryableSlots(
   if (slots.length > 0) return true;
   return Boolean(semanticSeed && semanticIntent !== 'off');
 }
+
+/**
+ * remove_code 放寬後：碼約束檔須跟建議 plan（否則 useMemo 會用「同音」重注碼，放寬無效）。
+ * 無剩餘碼 → 不限定；有剩餘 → 指定碼（缺位填 ?）。
+ */
+export function codeConstraintAfterRemoveCode(
+  planSlots: readonly WorkbenchSlotConstraintV1[],
+  width: number,
+): { mode: CodeConstraintMode; explicit: string } {
+  if (width < 1) return { mode: 'off', explicit: '' };
+  const byPos = new Map<number, string>();
+  for (const slot of planSlots) {
+    if (slot.kind !== 'code_digit' || !slot.digit || !/^\d$/.test(slot.digit)) continue;
+    if (slot.pos < 0 || slot.pos >= width) continue;
+    byPos.set(slot.pos, slot.digit);
+  }
+  if (byPos.size === 0) return { mode: 'off', explicit: '' };
+  let explicit = '';
+  for (let pos = 0; pos < width; pos += 1) {
+    explicit += byPos.get(pos) ?? '?';
+  }
+  return { mode: 'explicit', explicit };
+}
