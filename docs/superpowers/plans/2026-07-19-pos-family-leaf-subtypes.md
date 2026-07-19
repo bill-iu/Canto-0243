@@ -33,22 +33,22 @@
 **Files:** create `ingest/project_pos_family_leaf.py`、create `tests/smoke/test_project_pos_family_leaf.py`、create `data/pos/family_leaf_mother_body.txt`、create `data/pos/proposals/family_leaf_proposals.tsv`、create `data/pos/proposals/family_leaf_source.meta.json`
 
 - [x] fixture 覆蓋 header 驗證、繁化、去重、詞庫交集、母體命中／未命中、family 漏標、project POS gap 與 hash sidecar。
-- [x] 統一 scope 納入完整 lexicon 的 China-idiom 命中；非母體項只進 audit，不直接寫 SSOT。
-- [ ] `freeze` 只收當刻 `family=idiom`，排序穩定且不覆蓋既有 freeze。
-- [ ] `propose` 接受 `--china-idiom-csv` 與 `--source-commit`；只產 `chengyu` pending。
-- [ ] `status` 分開 pending、accept、keep_idiom、reject 與三葉數。
-- [ ] `apply` fail closed、只改 family、保持其他軸、重跑冪等。
-- [ ] clone 外源到 repo 外暫存目錄，記錄 commit/hash；不修改 dependencies／lockfile，不 vendor CSV。
+- [x] 統一 scope 納入完整 lexicon 的 China-idiom 命中；非母體項先進 audit，缺 project POS 不直接寫 SSOT。
+- [x] `freeze` 只收當刻 `family=idiom`，排序穩定且不覆蓋既有 freeze。
+- [x] `propose` 接受 `--china-idiom-csv` 與 `--source-commit`，產生四類 scope pending。
+- [x] `status` 分開 scope、pending、accept、keep_idiom、reject 與三葉數。
+- [x] `apply` fail closed、只改 family、保持其他軸、重跑冪等；缺 project POS 保持 deferred。
+- [x] clone 外源到忽略暫存目錄，記錄 commit/hash；不修改 dependencies／lockfile，不 vendor CSV。
 
 ## Task 4：實際細分批次與品質帳
 
 **Files:** `data/pos/proposals/family_leaf_proposals.tsv`、create `data/pos/audit/family_leaf_review.tsv`、create `data/pos/audit/family_leaf_quality_r1.tsv`、create `data/pos/audit/family_leaf_quality_report.md`、`data/pos/project_pos.tsv`、`data/pos/project_pos.meta.json`
 
-- [ ] 先審 China-idiom 命中的高信心成語，錯誤／跨界不直接寫 SSOT。
-- [ ] 依 CONTEXT 優先序補明顯粵語俗語、書面諺語；分不清明確 `keep_idiom`。
-- [ ] apply 過審帳並 bump carrier version。
-- [ ] 固定 seed 抽樣終局列，`OK+SOFT >90%`；未過則修正再抽。
-- [ ] 重建 `client/public/project-pos-index.json`，核對來源 CSV 未進 git。
+- [x] 審 China-idiom 命中的完整釋義／出處記錄；缺 project POS 終局但 deferred。
+- [x] 依 CONTEXT 優先序採本地明示葉證據；其餘 923 筆明確 `keep_idiom`，不強迫三選一。
+- [x] apply 過審帳並 bump carrier version至 `0.5.0`。
+- [x] 固定 seed 分層抽樣 432 筆，411 OK + 21 SOFT + 0 BAD，通過 >90% gate。
+- [x] 重建 `client/public/project-pos-index.json`，核對來源 CSV 未進 git。
 
 ## Task 5：搜尋三軸 filter UX 與分頁
 

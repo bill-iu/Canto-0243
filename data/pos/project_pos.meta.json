@@ -1,5 +1,5 @@
 {
-  "version": "0.4.0",
+  "version": "0.5.0",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -585,20 +585,22 @@
       "project-pos-expansion": 693,
       "mother-unmatched": 1040
     },
-    "review_rows": 22,
+    "review_rows": 8594,
     "verdicts": {
-      "accept": 22
+      "accept": 7671,
+      "keep_idiom": 923
     },
     "families": {
-      "idiom": 3732,
-      "chengyu": 22
+      "chengyu": 2831,
+      "idiom": 923
     },
-    "terminal": 22,
-    "pending": 8572,
-    "mother_coverage": 0.0059,
+    "terminal": 8594,
+    "pending": 0,
+    "deferred_missing_project_pos": 4147,
+    "mother_coverage": 1.0,
     "last_apply": {
-      "reviewed": 22,
-      "terminal": 22,
+      "reviewed": 8594,
+      "terminal": 8594,
       "changed": 0,
       "dry_run": false
     }

@@ -73,7 +73,7 @@ status 分開報告凍結母體、完整 scope、各 scope pending、三葉數�
 3. 去除空值及重複；
 4. 與詞庫字面相交；
 5. 與凍結的 `idiom` 母體取聯集並分四類 scope；
-6. 母體未命中仍列 pending；已有 POS 的 family 漏標與缺 project POS 項只進 audit scope；
+6. 母體未命中仍列 pending；已有 POS 的 family 漏標與缺 project POS 項先進 audit scope，前者過審後可寫 family，後者在補齊 project POS 前維持 deferred；
 7. 產生 pending 提案及來源 sidecar（URL、commit、SHA-256、各 scope 計數）。
 
 外源命中只是 evidence，不會直接 apply。俗語與諺語沒有假裝對等的自動來源，主要由 agent／維護者按 CONTEXT 優先序審核。完整外源 CSV 存於 repo 外暫存目錄；完成提案後可刪除。

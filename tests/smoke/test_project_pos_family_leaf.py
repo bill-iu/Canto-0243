@@ -19,6 +19,8 @@ from ingest.project_pos_family_leaf import (  # noqa: E402
     family_leaf_status,
     freeze_mother_body,
     propose_chengyu,
+    review_all_pending,
+    write_quality_sample,
 )
 
 
@@ -33,7 +35,7 @@ def test_propose_intersection_and_source_meta() -> None:
         write_tsv(tsv, "畫蛇添足\tv\tidiom\t\tseed\n留傘\tn\tidiom\t\tseed\n普通詞\tn\t\t\tseed\n")
         freeze_mother_body(mother, tsv=tsv)
         source = root / "idiom.csv"
-        source.write_text("word,pinyin\n画蛇添足,x\n画蛇添足,x\n普通词,x\n詞庫外,x\n", encoding="utf-8")
+        source.write_text("word,pinyin,explanation,derivation\n画蛇添足,x,meaning,source\n画蛇添足,x,meaning,source\n普通词,x,meaning,source\n詞庫外,x,meaning,source\n", encoding="utf-8")
         proposals, meta = root / "proposals.tsv", root / "meta.json"
         result = propose_chengyu(
             source,
@@ -59,12 +61,31 @@ def test_propose_intersection_and_source_meta() -> None:
         assert saved["scope_total"] == 4
         assert saved["scope_counts"]["lexicon-pos-gap"] == 1
         review = root / "review.tsv"
-        with review.open("w", encoding="utf-8", newline="") as fh:
-            writer = csv.DictWriter(fh, fieldnames=HEADER, delimiter="\t", lineterminator="\n")
-            writer.writeheader()
-            writer.writerow({**by_literal["畫蛇添足"], "verdict": "accept"})
+        review_result = review_all_pending(
+            source,
+            source_commit="abc123",
+            proposal_path=proposals,
+            review_path=review,
+            source_meta_path=meta,
+            tsv=tsv,
+        )
+        reviewed = {row["literal"]: row for row in csv.DictReader(review.open(encoding="utf-8"), delimiter="\t")}
+        assert review_result["reviewed"] == 4
+        assert reviewed["畫蛇添足"]["verdict"] == "accept"
+        assert reviewed["普通詞"]["verdict"] == "accept"
+        assert reviewed["詞庫外"]["verdict"] == "accept"
+        assert reviewed["留傘"]["verdict"] == "keep_idiom"
         status = family_leaf_status(mother_path=mother, proposal_path=proposals, review_path=review, tsv=tsv)
-        assert status["scope_total"] == 4 and status["terminal"] == 1 and status["pending"] == 3
+        assert status["scope_total"] == 4 and status["terminal"] == 4 and status["pending"] == 0
+        assert status["mother_coverage"] == 1.0
+        assert status["deferred_missing_project_pos"] == 1
+        quality = write_quality_sample(
+            review_path=review,
+            out_path=root / "quality.tsv",
+            meta_path=root / "quality.meta.json",
+            report_path=root / "quality.md",
+        )
+        assert quality["universe"] == 4 and quality["sample_n"] == 4 and quality["pass_rate"] == 1.0
 
 
 def test_apply_review_only_changes_family_and_is_idempotent() -> None:
