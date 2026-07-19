@@ -38,6 +38,9 @@ if (!constraints.includes('整段押韻') || !constraints.includes('phoneme-dim'
 if (!css.includes('constraint-bar__menus') || !css.includes('justify-content: flex-start')) {
   throw new Error('wide constraint menus must left-align in one row');
 }
+if (!css.includes('.constraint-bar__explicit.is-reserved') || !css.includes('visibility: hidden')) {
+  throw new Error('explicit code slot must keep reserved space on wide screens');
+}
 if (constraints.includes('finalAnchorDisabled') || constraints.includes('末格同韻')) {
   throw new Error('legacy final/initial anchor buttons must be gone');
 }

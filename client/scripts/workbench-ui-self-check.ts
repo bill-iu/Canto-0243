@@ -46,6 +46,9 @@ if (!constraints.includes('同音（預設）') || !constraints.includes('不限
 if (!constraints.includes('constraint-bar__menus') || !constraints.includes('constraint-bar__explicit')) {
   throw new Error('wide menu row / explicit slot structure missing');
 }
+if (!constraints.includes('is-reserved') || !constraints.includes('is-active')) {
+  throw new Error('explicit code slot must reserve height when inactive');
+}
 if (!page.includes('codeConstraint') || !page.includes('buildCodeDigitSlots')) {
   throw new Error('code constraint wiring missing');
 }

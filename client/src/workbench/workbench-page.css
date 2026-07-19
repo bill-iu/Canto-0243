@@ -238,7 +238,7 @@ body.query-tabs-app.workbench-route {
   flex-basis: 100%;
   display: flex;
   flex-wrap: nowrap;
-  align-items: end;
+  align-items: start;
   justify-content: flex-start;
   gap: 1rem 1.5rem;
   min-width: 0;
@@ -255,6 +255,10 @@ body.query-tabs-app.workbench-route {
 .constraint-bar__explicit {
   flex: 1 1 auto;
   min-width: 7rem;
+}
+.constraint-bar__explicit.is-reserved {
+  visibility: hidden;
+  pointer-events: none;
 }
 .constraint-bar__explicit input {
   width: 100%;
@@ -447,6 +451,8 @@ body.query-tabs-app.workbench-route {
     align-items: stretch;
   }
   .constraint-bar__explicit { flex: none; min-width: 0; }
+  .constraint-bar__explicit.is-reserved { display: none; }
+  .constraint-bar__explicit.is-active { display: grid; }
   .relaxation-card { align-items: stretch; flex-direction: column; }
   .compare-panel {
     top: auto;

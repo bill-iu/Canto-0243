@@ -154,21 +154,24 @@ export function ConstraintBar({
             <option value="explicit">指定碼</option>
           </select>
         </label>
-        {codeConstraint === 'explicit' ? (
-          <label className="constraint-bar__explicit">指定碼（?＝通配）
-            <input
-              value={explicitCode}
-              onChange={(event) => onExplicitCodeChange(event.target.value)}
-              maxLength={Math.max(spanWidth, 1)}
-              spellCheck={false}
-              inputMode="numeric"
-              disabled={spanWidth < 1}
-              title={explicitHint}
-              aria-describedby="explicitCodeHint"
-            />
-            <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
-          </label>
-        ) : null}
+        <label
+          className={`constraint-bar__explicit${codeConstraint === 'explicit' ? ' is-active' : ' is-reserved'}`}
+          aria-hidden={codeConstraint !== 'explicit'}
+        >
+          指定碼（?＝通配）
+          <input
+            value={explicitCode}
+            onChange={(event) => onExplicitCodeChange(event.target.value)}
+            maxLength={Math.max(spanWidth, 1)}
+            spellCheck={false}
+            inputMode="numeric"
+            disabled={codeConstraint !== 'explicit' || spanWidth < 1}
+            tabIndex={codeConstraint === 'explicit' ? undefined : -1}
+            title={explicitHint}
+            aria-describedby="explicitCodeHint"
+          />
+          <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
+        </label>
       </div>
       <div className="phoneme-dims" aria-label="讀音約束">
         <DimChecklist
