@@ -77,6 +77,8 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("consumeNavigate", app)
         self.assertIn("writeNavigate", page)
         self.assertIn('value="m1">0243</option>', bar)
+        self.assertIn("同音（預設）", bar)
+        self.assertIn("指定碼", bar)
         self.assertIn("useState<ReplacementPlanV1['mode']>('m1')", page)
         self.assertIn("var(--ink)", css)
         self.assertNotIn("--wb-ink", css)

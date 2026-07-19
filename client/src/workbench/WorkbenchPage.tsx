@@ -15,6 +15,13 @@ import { revealPwaShell } from '../pwa-shell-boot.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
+import {
+  buildCodeDigitSlots,
+  planHasQueryableSlots,
+  sameToneCodePattern,
+  sanitizeExplicitCode,
+  type CodeConstraintMode,
+} from './code-constraint.ts';
 import type { CandidateGroups, RelaxationKind, ReplacementPlanV1, WorkbenchCandidate, WorkbenchSlotConstraintV1 } from './contracts.ts';
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
@@ -92,6 +99,8 @@ export function WorkbenchPage() {
   const [readings, setReadings] = useState<PwaLineReadingSlot[]>([]);
   const [mode, setMode] = useState<ReplacementPlanV1['mode']>('m1');
   const [semanticIntent, setSemanticIntent] = useState<ReplacementPlanV1['semanticIntent']>('ranked');
+  const [codeConstraint, setCodeConstraint] = useState<CodeConstraintMode>('same_tone');
+  const [explicitCode, setExplicitCode] = useState('');
   const [message, setMessage] = useState('');
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
   const [relaxedPrevious, setRelaxedPrevious] = useState<{ mode: ReplacementPlanV1['mode']; semanticIntent: ReplacementPlanV1['semanticIntent'] } | null>(null);
@@ -161,6 +170,22 @@ export function WorkbenchPage() {
     setSemanticIntent(next);
     setActiveRelaxation(null);
   };
+  const changeCodeConstraint = (next: CodeConstraintMode) => {
+    if (next === 'explicit') {
+      const span = draftRef.current?.selection;
+      const slots = draftRef.current?.slots;
+      if (span && slots) {
+        setExplicitCode(sameToneCodePattern(slots, span));
+      }
+    }
+    setCodeConstraint(next);
+    setActiveRelaxation(null);
+  };
+  const changeExplicitCode = (raw: string) => {
+    const width = draftRef.current?.selection?.width ?? 0;
+    setExplicitCode(width > 0 ? sanitizeExplicitCode(raw, width) : raw.replace(/[^\d?]/g, ''));
+    setActiveRelaxation(null);
+  };
 
   const syncPhonemeAnchors = (
     base: LineDraft,
@@ -187,7 +212,7 @@ export function WorkbenchPage() {
       setMessage(
         result.reason === 'span_too_wide'
           ? '一次最多改連續四格；請先取消較遠的標定。'
-          : '空白格不能標定；請先有字面。',
+          : '空白格不能標定；請先有字面或碼。',
       );
       return;
     }
@@ -197,6 +222,12 @@ export function WorkbenchPage() {
     const nextInitial = sanitizePhonemeDimPicks(initialPicks, width);
     setRhymePicks(nextRhyme);
     setInitialPicks(nextInitial);
+    if (codeConstraint === 'explicit' && result.draft.selection) {
+      setExplicitCode((prev) => {
+        const pref = sameToneCodePattern(result.draft.slots, result.draft.selection!);
+        return prev.length === width ? sanitizeExplicitCode(prev, width) : pref;
+      });
+    }
     setDraft(syncPhonemeAnchors(result.draft, nextRhyme, nextInitial));
   };
 
@@ -222,15 +253,38 @@ export function WorkbenchPage() {
       const resolved = await adapter.resolveLine(surface);
       if (pendingResolve.current?.version !== baseDraft.version) return;
       pendingResolve.current = null;
-      setReadings(resolved);
+      // 混合起句：resolve 只覆蓋有字面格；碼格留空位對齊 draft.slots
+      let cursor = 0;
+      const aligned: PwaLineReadingSlot[] = baseDraft.slots.map((slot) => {
+        if (!slot.surface) {
+          return { surface: '', kind: 'punctuation', choices: [], needsChoice: false };
+        }
+        const reading = resolved[cursor] ?? {
+          surface: slot.surface,
+          kind: 'unresolved' as const,
+          choices: [],
+          needsChoice: false,
+        };
+        cursor += 1;
+        return reading;
+      });
+      setReadings(aligned);
       setDraft((current) => {
         if (!current || current.version !== baseDraft.version) return current;
-        const next = resolved.reduce((nextDraft, slot, pos) => {
-          const choice = slot.choices[0];
-          return choice
-            ? lineDraftReducer(nextDraft, { type: 'choose_reading', pos, jyutping: choice.jyutping, code: choice.code })
-            : nextDraft;
-        }, current);
+        let next = current;
+        let readingIdx = 0;
+        for (let pos = 0; pos < current.slots.length; pos += 1) {
+          if (!current.slots[pos]?.surface) continue;
+          const choice = resolved[readingIdx]?.choices[0];
+          readingIdx += 1;
+          if (!choice) continue;
+          next = lineDraftReducer(next, {
+            type: 'choose_reading',
+            pos,
+            jyutping: choice.jyutping,
+            code: choice.code,
+          });
+        }
         return syncPhonemeAnchors(next, rhymePicks, initialPicks);
       });
       setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可標定字位或改用碼起句。' : '已解析逐字讀音；請點擊標定替換段。');
@@ -307,7 +361,11 @@ export function WorkbenchPage() {
     event.preventDefault();
     const parsed = parseLineInput(input);
     if (!parsed.ok) {
-      setMessage(parsed.error === 'too_long' ? '一句最多 64 格。' : '請輸入原句、純數字碼，或純平仄串列。');
+      setMessage(
+        parsed.error === 'too_long'
+          ? '一句最多 64 格。'
+          : '請輸入原句、數字碼、平仄，或漢字與數字混合（如能夠44）；平仄勿同漢字／碼混寫。',
+      );
       return;
     }
     const next = createLineDraft(parsed);
@@ -318,12 +376,19 @@ export function WorkbenchPage() {
     setRelaxedPrevious(null);
     setRhymePicks(emptyPhonemeDimPicks());
     setInitialPicks(emptyPhonemeDimPicks());
+    setCodeConstraint('same_tone');
+    setExplicitCode('');
     setMessage(
       parsed.kind === 'code'
-        ? '已按碼建立空白句格，不會自動填入字面；請點擊有字位以標定並查看候選。'
-        : '句格已建立；請點擊標定一至四格以查看候選。',
+        ? '已按碼建立空白句格，不會自動填入字面；請點擊碼格標定並查看候選。'
+        : parsed.kind === 'mixed'
+          ? '已建立混合句格；請點擊標定一至四格以查看候選。'
+          : '句格已建立；請點擊標定一至四格以查看候選。',
     );
-    if (parsed.kind === 'surface') void resolveReadings(parsed.slots.map((slot) => slot.surface).join(''), next);
+    if (parsed.kind === 'surface' || parsed.kind === 'mixed') {
+      const surfaceOnly = parsed.slots.map((slot) => slot.surface).filter(Boolean).join('');
+      if (surfaceOnly) void resolveReadings(surfaceOnly, next);
+    }
   };
 
   const handleChooseReading = (pos: number, jyutping: string, code: string) => {
@@ -337,24 +402,27 @@ export function WorkbenchPage() {
   const plan = useMemo<ReplacementPlanV1 | null>(() => {
     if (!draft?.selection) return null;
     const { start, width } = draft.selection;
-    const slots: WorkbenchSlotConstraintV1[] = draft.constraints
-      .filter((item) => item.pos >= start && item.pos < start + width)
+    const span = draft.selection;
+    // 音位／平仄約束保留；碼位按碼約束檔重算（同音＝只鎖格）
+    const base: WorkbenchSlotConstraintV1[] = draft.constraints
+      .filter((item) => item.kind !== 'code_digit' && item.pos >= start && item.pos < start + width)
       .map((item) => ({ ...item, pos: item.pos - start }));
-    // Resolved readings describe the source line; only user-entered code constraints
-    // belong in the plan. Otherwise 第 2–4 字同韻 becomes stricter than ?困潦倒=.
-    if (slots.length === 0) return null;
+    const codes = buildCodeDigitSlots(codeConstraint, draft.slots, span, explicitCode);
+    const slots = [...base, ...codes];
     const semanticSeed = draft.slots.slice(start, start + width).map((slot) => slot.surface).join('');
+    const intent = semanticSeed ? semanticIntent : 'off';
+    if (!planHasQueryableSlots(slots, semanticSeed, intent)) return null;
     return {
       version: 1,
       selectionVersion: draft.version,
       width,
       mode,
       slots,
-      semanticIntent: semanticSeed ? semanticIntent : 'off',
+      semanticIntent: intent,
       semanticSeed: semanticSeed || undefined,
       limit: 120,
     };
-  }, [draft, mode, semanticIntent]);
+  }, [draft, mode, semanticIntent, codeConstraint, explicitCode]);
   const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter, posFilter);
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
@@ -483,8 +551,8 @@ export function WorkbenchPage() {
             <p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p>
           </div>
           <form className="line-input-form" onSubmit={submit}>
-            <label htmlFor="lineInput">原句、394052／0243 碼或平仄</label>
-            <div><input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄" /><button type="submit">建立句格</button></div>
+            <label htmlFor="lineInput">原句、394052／0243 碼、平仄，或漢字與碼混合</label>
+            <div><input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄／能夠44" /><button type="submit">建立句格</button></div>
           </form>
           <p className="workbench-status" aria-live="polite">{message}</p>
         </section>
@@ -500,8 +568,12 @@ export function WorkbenchPage() {
             <ConstraintBar
               mode={mode}
               semanticIntent={semanticIntent}
+              codeConstraint={codeConstraint}
+              explicitCode={explicitCode}
               onModeChange={changeMode}
               onSemanticChange={changeSemantic}
+              onCodeConstraintChange={changeCodeConstraint}
+              onExplicitCodeChange={changeExplicitCode}
               spanWidth={draft.selection?.width ?? 0}
               rhyme={rhymePicks}
               initial={initialPicks}

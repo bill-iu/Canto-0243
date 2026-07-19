@@ -26,7 +26,8 @@ export type ToggleLockResult =
 export function toggleLockKeepingSpan(draft: LineDraft, pos: number): ToggleLockResult {
   const current = draft.slots[pos];
   if (!current) return { ok: false, reason: 'no_surface', draft };
-  if (!current.locked && !current.surface) {
+  // 有字面或有碼先可鎖（純碼格）；真正空白拒鎖
+  if (!current.locked && !current.surface && !current.code) {
     return { ok: false, reason: 'no_surface', draft };
   }
 

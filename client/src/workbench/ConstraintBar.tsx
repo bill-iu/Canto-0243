@@ -1,4 +1,5 @@
 import type { ReplacementPlanV1 } from './contracts.ts';
+import type { CodeConstraintMode } from './code-constraint.ts';
 import {
   emptyPhonemeDimPicks,
   spanPositionOptions,
@@ -8,8 +9,12 @@ import {
 interface Props {
   mode: ReplacementPlanV1['mode'];
   semanticIntent: ReplacementPlanV1['semanticIntent'];
+  codeConstraint: CodeConstraintMode;
+  explicitCode: string;
   onModeChange: (mode: ReplacementPlanV1['mode']) => void;
   onSemanticChange: (intent: ReplacementPlanV1['semanticIntent']) => void;
+  onCodeConstraintChange: (mode: CodeConstraintMode) => void;
+  onExplicitCodeChange: (value: string) => void;
   spanWidth: number;
   rhyme: PhonemeDimPicks;
   initial: PhonemeDimPicks;
@@ -105,8 +110,12 @@ function DimChecklist({
 export function ConstraintBar({
   mode,
   semanticIntent,
+  codeConstraint,
+  explicitCode,
   onModeChange,
   onSemanticChange,
+  onCodeConstraintChange,
+  onExplicitCodeChange,
   spanWidth,
   rhyme,
   initial,
@@ -123,6 +132,32 @@ export function ConstraintBar({
           <option value="m3">394052</option>
         </select>
       </label>
+      <label>0243 碼
+        <select
+          value={codeConstraint}
+          onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
+        >
+          <option value="same_tone">同音（預設）</option>
+          <option value="off">不限定</option>
+          <option value="explicit">指定碼</option>
+        </select>
+      </label>
+      {codeConstraint === 'explicit' ? (
+        <label>指定碼（?＝通配）
+          <input
+            value={explicitCode}
+            onChange={(event) => onExplicitCodeChange(event.target.value)}
+            maxLength={Math.max(spanWidth, 1)}
+            spellCheck={false}
+            inputMode="numeric"
+            disabled={spanWidth < 1}
+            aria-describedby="explicitCodeHint"
+          />
+        </label>
+      ) : null}
+      {codeConstraint === 'explicit' && spanWidth > 0 ? (
+        <p id="explicitCodeHint" className="quiet-status">長度須為 {spanWidth}；未填位會補 ?。</p>
+      ) : null}
       <label>原意關係
         <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
           <option value="ranked">近義優先，保留其他選擇</option>

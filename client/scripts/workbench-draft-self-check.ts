@@ -28,8 +28,17 @@ const tones = parseLineInput('平仄');
 assert(tones.ok && tones.kind === 'tone', 'ping/ze input was not classified');
 assert(tones.constraints.map((item) => item.toneClass).join(',') === 'ping,ze', 'tone classes changed');
 
-assert(!parseLineInput('香3').ok, 'mixed input was accepted');
+assert(!parseLineInput('香P').ok, 'pingze mixed with surface must fail');
 assert(!parseLineInput('香'.repeat(65)).ok, 'input beyond 64 slots was accepted');
+
+const mixed = parseLineInput('能夠44');
+assert(mixed.ok && mixed.kind === 'mixed', 'mixed 能夠44');
+assert(mixed.slots.map((s) => s.surface || s.code).join('') === '能夠44', 'mixed slots');
+assert(mixed.constraints.filter((c) => c.kind === 'code_digit').length === 2, 'mixed code constraints');
+
+const interleaved = parseLineInput('能4夠4');
+assert(interleaved.ok && interleaved.kind === 'mixed', 'interleaved mixed');
+assert(interleaved.slots[1]?.code === '4' && interleaved.slots[2]?.surface === '夠', 'interleaved layout');
 
 const parsedSentence = parseLineInput('我愛香港');
 assert(parsedSentence.ok, 'valid sentence failed before reducer check');
