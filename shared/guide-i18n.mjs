@@ -93,12 +93,12 @@ const SECTIONS = [
     examples: [
       { query: "香=", mode: "m1" },
       { query: "香=?", mode: "m1" },
-      { query: "?=香", mode: "m1" },
+      { query: "=香", mode: "m1" },
       { query: "香港=", mode: "m1" },
       { query: "=香港", mode: "m1" },
       { query: "2我=3", mode: "m1" },
       { query: "2=我3", mode: "m1" },
-      { query: "?+香=", mode: "m1" },
+      { query: "?香=", mode: "m1" },
     ],
   },
   {
@@ -107,7 +107,7 @@ const SECTIONS = [
     zh: {
       title: "有啲字限定、有啲留空",
       intro:
-        "定實你要嘅漢字或聲調數字；唔知嘅位用 <code translate=\"no\">?</code>／<code translate=\"no\">_</code>／<code translate=\"no\">%</code>（三個一樣）。開頭嘅 <code translate=\"no\">+</code> 可以唔打。",
+        "定實你要嘅漢字或聲調數字；唔知嘅位用 <code translate=\"no\">?</code>／<code translate=\"no\">_</code>／<code translate=\"no\">%</code>（三個一樣）。開頭嘅 <code translate=\"no\">+</code> 可以唔打；通配 <code translate=\"no\">?</code> 後面亦唔使再加 <code translate=\"no\">+</code>（例如 <code translate=\"no\">?你?</code>）。",
       examples: [
         { label: "三個字：第 1 個字為「香」，第 2 個字任意字，第 3 個字任意字" },
         { label: "三個字：第 1 個字任意字，第 2 個字為「你」，第 3 個字任意字" },
@@ -120,7 +120,7 @@ const SECTIONS = [
     en: {
       title: "Lock some characters, leave others open",
       intro:
-        "Set the characters or tone digits you need; fill unknowns with <code translate=\"no\">?</code> / <code translate=\"no\">_</code> / <code translate=\"no\">%</code> (all the same). A leading <code translate=\"no\">+</code> is optional.",
+        "Set the characters or tone digits you need; fill unknowns with <code translate=\"no\">?</code> / <code translate=\"no\">_</code> / <code translate=\"no\">%</code> (all the same). A leading <code translate=\"no\">+</code> is optional; after a <code translate=\"no\">?</code> you usually omit <code translate=\"no\">+</code> (e.g. <code translate=\"no\">?你?</code>).",
       examples: [
         { label: "三個字：第 1 個字為「香」，第 2 個字任意字，第 3 個字任意字" },
         { label: "三個字：第 1 個字任意字，第 2 個字為「你」，第 3 個字任意字" },
@@ -132,7 +132,7 @@ const SECTIONS = [
     },
     examples: [
       { query: "+香??", mode: "m1" },
-      { query: "?+你?", mode: "m1" },
+      { query: "?你?", mode: "m1" },
       { query: "_識_", mode: "m1" },
       { query: "3_", mode: "m1" },
       { query: "23?", mode: "m1" },
@@ -145,7 +145,7 @@ const SECTIONS = [
     zh: {
       title: "用 + 加長或標明位置",
       intro:
-        "用 <code translate=\"no\">+</code> 加多一個字，或者標明邊個位置。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+=字</code>＝同聲；冇 <code translate=\"no\">=</code> 就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
+        "用 <code translate=\"no\">+</code> 喺<strong>冇通配</strong>時加多一個字，或者標明邊個位置（例如 <code translate=\"no\">23+好=</code>、<code translate=\"no\">23+o</code>）。若前面已經有 <code translate=\"no\">?</code>，通常<strong>唔使</strong>再打 <code translate=\"no\">+</code>（<code translate=\"no\">?香=</code> 等同舊寫法 <code translate=\"no\">?+香=</code>）。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+=字</code>＝同聲；冇 <code translate=\"no\">=</code> 就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
       examples: [
         { label: "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且限定為手" },
         { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字為「好」" },
@@ -160,7 +160,7 @@ const SECTIONS = [
     en: {
       title: "Use + to lengthen or mark a position",
       intro:
-        "Use <code translate=\"no\">+</code> to add a character or mark a position. <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+=char</code> = same initial; without <code translate=\"no\">=</code> that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
+        "Use <code translate=\"no\">+</code> when there is <strong>no</strong> wildcard, to add a character or mark a position (e.g. <code translate=\"no\">23+好=</code>, <code translate=\"no\">23+o</code>). After a leading <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (<code translate=\"no\">?香=</code> equals older <code translate=\"no\">?+香=</code>). <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+=char</code> = same initial; without <code translate=\"no\">=</code> that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
       examples: [
         { label: "兩個字：第 1 個字同 2 同音，第 2 個字同 3 同音且限定為手" },
         { label: "三個字：第 1 個字同 2 同音，第 2 個字同 3 同音，第 3 個字為「好」" },
@@ -245,7 +245,7 @@ const SECTIONS = [
     zh: {
       title: "任意字＋數字碼＋尾字同韻",
       intro:
-        "開頭用 <code translate=\"no\">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。想再多一個字就加 <code translate=\"no\">+</code>。",
+        "開頭用 <code translate=\"no\">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。碼同參考字之間若要再隔一格，先用 <code translate=\"no\">+</code>（如 <code translate=\"no\">?30+人</code>）。",
       examples: [
         { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音且同「人」同韻" },
         { label: "四個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音，第 4 個字同「人」同韻" },
@@ -254,7 +254,7 @@ const SECTIONS = [
     en: {
       title: "Any char + tone digits + last rhymes",
       intro:
-        "Leading <code translate=\"no\">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Add <code translate=\"no\">+</code> for one more character.",
+        "Leading <code translate=\"no\">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Use <code translate=\"no\">+</code> between digits and the reference when you need an extra slot (e.g. <code translate=\"no\">?30+人</code>).",
       examples: [
         { label: "三個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音且同「人」同韻" },
         { label: "四個字：第 1 個字任意字，第 2 個字同 3 同音，第 3 個字同 0 同音，第 4 個字同「人」同韻" },
@@ -271,7 +271,7 @@ const SECTIONS = [
     zh: {
       title: "用粵拼指定某個字",
       intro:
-        "唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母；位置之間用 <code translate=\"no\">+</code>（如 <code translate=\"no\">?+hon</code>、<code translate=\"no\">3+ngo4</code>）。",
+        "唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母。通配後面通常唔使 <code translate=\"no\">+</code>（如 <code translate=\"no\">?hon</code>、<code translate=\"no\">?m?</code>）；數字貼粵拼、或者要加長詞長時先要用 <code translate=\"no\">+</code>（如 <code translate=\"no\">3+ngo4</code>、<code translate=\"no\">23+o</code> 唔等同 <code translate=\"no\">23o</code>）。",
       examples: [
         { label: "兩個字：第 1 個字任意字，第 2 個字粵拼音節 hon" },
         { label: "三個字：第 1 個字任意字，第 2 個字同韻母 yut，第 3 個字任意字" },
@@ -291,7 +291,7 @@ const SECTIONS = [
     en: {
       title: "Specify a syllable with Jyutping",
       intro:
-        "Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial; join positions with <code translate=\"no\">+</code> (e.g. <code translate=\"no\">?+hon</code>, <code translate=\"no\">3+ngo4</code>).",
+        "Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial. After <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (e.g. <code translate=\"no\">?hon</code>, <code translate=\"no\">?m?</code>); use <code translate=\"no\">+</code> when digits abut Jyutping or you need a longer word (<code translate=\"no\">3+ngo4</code>; <code translate=\"no\">23+o</code> ≠ <code translate=\"no\">23o</code>).",
       examples: [
         { label: "兩個字：第 1 個字任意字，第 2 個字粵拼音節 hon" },
         { label: "三個字：第 1 個字任意字，第 2 個字同韻母 yut，第 3 個字任意字" },
@@ -309,7 +309,7 @@ const SECTIONS = [
       ],
     },
     examples: [
-      { query: "?+hon", mode: "m1" },
+      { query: "?hon", mode: "m1" },
       { query: "?+yut?", mode: "m1" },
       { query: "?+syut?", mode: "m1" },
       { query: "3+ngo4", mode: "m1" },
@@ -320,7 +320,7 @@ const SECTIONS = [
       { query: "23o", mode: "m1" },
       { query: "23+o", mode: "m1" },
       { query: "23ei0", mode: "m1" },
-      { query: "?+m?", mode: "m1" },
+      { query: "?m?", mode: "m1" },
       { query: "3m4", mode: "m1" },
     ],
   },
@@ -571,13 +571,13 @@ const GUIDE_HERO = {
     eyebrow: 'Search manual',
     title: '所有搜尋語法',
     lede:
-      '每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 喺參考字<strong>後面</strong> → 同韻；喺參考字<strong>前面</strong> → 同聲（一般查詢同用 <code translate="no">+</code> 加長時一樣）。',
+      '每個例子都可以直接執行。點擊後會回到搜尋頁、套用建議模式，並送出查詢。<strong>口訣：</strong><code translate="no">=</code> 喺參考字<strong>後面</strong> → 同韻；喺參考字<strong>前面</strong> → 同聲。留空用 <code translate="no">?</code>；用 <code translate="no">+</code> 加長時，若前面已有 <code translate="no">?</code> 通常可省略。',
   },
   en: {
     eyebrow: 'Search manual',
     title: 'All search syntax',
     lede:
-      'Every example is clickable. Tap one to return to search, apply the suggested mode, and run the query. <strong>Mnemonic:</strong> <code translate="no">=</code> <strong>after</strong> the reference character → rhyme; <strong>before</strong> it → initial (same for plain queries and <code translate="no">+</code> extensions).',
+      'Every example is clickable. Tap one to return to search, apply the suggested mode, and run the query. <strong>Mnemonic:</strong> <code translate="no">=</code> <strong>after</strong> the reference character → rhyme; <strong>before</strong> it → initial. Gaps use <code translate="no">?</code>; after a <code translate="no">?</code>, a following <code translate="no">+</code> is usually optional.',
   },
 };
 
@@ -586,7 +586,7 @@ const GUIDE_INTRO = {
     title: '點樣睇呢頁',
     paragraphs: [
       '下面按<strong>常用</strong>同<strong>進階</strong>分組。每章嘅例子都可以撳一下直接搜尋；說明字同搜尋欄下嘅語法解釋一樣。',
-      '<strong>口訣：</strong><code translate="no">=</code> 喺參考字<strong>後面</strong> → 同韻；喺參考字<strong>前面</strong> → 同聲。留空用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加長用 <code translate="no">+</code>。',
+      '<strong>口訣：</strong><code translate="no">=</code> 喺參考字<strong>後面</strong> → 同韻；喺參考字<strong>前面</strong> → 同聲。留空用 <code translate="no">?</code>／<code translate="no">_</code>／<code translate="no">%</code>；加長用 <code translate="no">+</code>（前面已有 <code translate="no">?</code> 時通常可省）。',
       '數字碼搵同音；近反義用 <code translate="no">~</code>／<code translate="no">!</code>（或切換近反義模式）。更細嘅組合見各章說明。',
     ],
   },
@@ -594,7 +594,7 @@ const GUIDE_INTRO = {
     title: 'How to read this page',
     paragraphs: [
       'Cards are grouped into <strong>Common</strong> and <strong>Advanced</strong>. Every example is clickable and runs a search.',
-      '<strong>Mnemonic:</strong> <code translate="no">=</code> <strong>after</strong> a reference character → rhyme; <strong>before</strong> it → initial. Gaps use <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code>; lengthen with <code translate="no">+</code>.',
+      '<strong>Mnemonic:</strong> <code translate="no">=</code> <strong>after</strong> a reference character → rhyme; <strong>before</strong> it → initial. Gaps use <code translate="no">?</code> / <code translate="no">_</code> / <code translate="no">%</code>; lengthen with <code translate="no">+</code> (usually omit it right after <code translate="no">?</code>).',
       'Tone digits find same-tone words; synonyms/antonyms use <code translate="no">~</code> / <code translate="no">!</code> (or synonym mode). See each chapter for finer patterns.',
     ],
   },
