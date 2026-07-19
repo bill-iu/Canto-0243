@@ -1,0 +1,27 @@
+{
+  "seed": 99,
+  "threshold": 0.9,
+  "batches": {
+    "u-inlex-nf2k": {
+      "universe": 1992,
+      "sample_n": 100
+    },
+    "u-inlex-nf2b": {
+      "universe": 1998,
+      "sample_n": 100
+    },
+    "u-inlex-nf3": {
+      "universe": 1999,
+      "sample_n": 100
+    },
+    "u-inlex-nf4": {
+      "universe": 2000,
+      "sample_n": 100
+    },
+    "u-inlex-nf5": {
+      "universe": 1715,
+      "sample_n": 86
+    }
+  },
+  "total_sample": 486
+}

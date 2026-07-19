@@ -1,0 +1,87 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	audit_note
+一舉兩得	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+不加選擇	a,r			u-inlex-nf5;review;agent-label	high	OK		
+不擇手段	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+不置可否	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+世貿大樓	n			u-inlex-nf5;review;agent-label	high	OK		
+乘虛而入	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+他日	n,r			u-inlex-nf5;review;agent-label	high	SOFT		n,r 可
+休戰	n,v			u-inlex-nf5;review;agent-label	high	SOFT		n,v 可
+傾心吐膽	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+元謀猿人	n			u-inlex-nf5;review;agent-label	high	OK		
+克己復禮	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+共商大計	v			u-inlex-nf5;review;agent-label	high	OK		
+冥思苦索	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+出沒無常	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+割裂	v			u-inlex-nf5;review;agent-label	high	OK		
+原子武器	n			u-inlex-nf5;review;agent-label	high	OK		
+古文運動	n			u-inlex-nf5;review;agent-label	high	OK		
+可取	a			u-inlex-nf5;review;agent-label	high	OK		
+吹糠見米	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+嗜殺成性	a			u-inlex-nf5;review;agent-label	high	OK		
+回光反照	n,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+如下所述	r			u-inlex-nf5;review;agent-label	high	OK		
+如出一轍	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+婦道人家	n	idiom		u-inlex-nf5;review;agent-label	high	OK		
+家庭主夫	n			u-inlex-nf5;review;agent-label	high	OK		
+專心一意	a,r			u-inlex-nf5;review;agent-label	high	OK		
+巴勒斯坦	n			地名;u-inlex-nf5;review;agent-label	high	OK		
+彈撥樂器	n			u-inlex-nf5;review;agent-label	high	OK		
+微細加工	n			u-inlex-nf5;review;agent-label	high	OK		
+恍然醒悟	v			u-inlex-nf5;review;agent-label	high	OK		
+憂傷	a,n			u-inlex-nf5;review;agent-label	high	OK		
+打落水狗	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+抑鬱寡歡	a			u-inlex-nf5;review;agent-label	high	OK		
+指點迷津	v	idiom		成語；指點迷津;u-inlex-nf5;review;agent-label	high	OK		
+排列次序	n			u-inlex-nf5;review;agent-label	high	OK		
+改良品種	n,v			u-inlex-nf5;review;agent-label	high	OK		
+文質彬彬	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+旋渦星雲	n			u-inlex-nf5;review;agent-label	high	OK		
+日光浴室	n			u-inlex-nf5;review;agent-label	high	OK		
+易如反掌	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+未雨綢繆	v	idiom		成語；未雨綢繆;u-inlex-nf5;review;agent-label	high	OK		
+杳無人煙	a			u-inlex-nf5;review;agent-label	high	OK		
+毛毛雨	n			u-inlex-nf5;review;agent-label	high	OK		
+泰然	a			u-inlex-nf5;review;agent-label	high	OK		
+洩露	v			u-inlex-nf5;review;agent-label	high	OK		
+清秀佳人	n			u-inlex-nf5;review;agent-label	high	OK		
+滿口髒話	n,v			u-inlex-nf5;review;agent-label	high	OK		
+漠然	a			u-inlex-nf5;review;agent-label	high	OK		
+火災保險	n			u-inlex-nf5;review;agent-label	high	OK		
+現成	a			u-inlex-nf5;review;agent-label	high	OK		
+瑣事	n			u-inlex-nf5;review;agent-label	high	OK		
+生物電流	n			u-inlex-nf5;review;agent-label	high	OK		
+盤尼西林	n			u-inlex-nf5;review;agent-label	high	OK		
+目不窺園	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+禁藥	n			u-inlex-nf5;review;agent-label	high	OK		
+節衣縮食	v	idiom		成語；節衣縮食;u-inlex-nf5;review;agent-label	high	OK		
+簡略	a			u-inlex-nf5;review;agent-label	high	OK		
+粗心	a			u-inlex-nf5;review;agent-label	high	OK		
+缺心眼兒	a,n			u-inlex-nf5;review;agent-label	high	OK		
+耗	v			u-inlex-nf5;review;agent-label	high	SOFT		v 主；亦可 n
+肝膽俱裂	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+能掐會算	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+荒蕪	a			u-inlex-nf5;review;agent-label	high	OK		
+蜀犬吠日	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+行蹤不明	a			u-inlex-nf5;review;agent-label	high	OK		
+見財起意	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+誤上賊船	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+識趣	a			u-inlex-nf5;review;agent-label	high	OK		
+豐盛	a			u-inlex-nf5;review;agent-label	high	OK		
+象牙海岸	n			u-inlex-nf5;review;agent-label	high	OK		
+賣官鬻爵	v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+踏青賞花	v			u-inlex-nf5;review;agent-label	high	OK		
+軍令如山	a	idiom		u-inlex-nf5;review;agent-label	high	OK		
+過氣	a			u-inlex-nf5;review;agent-label	high	OK		
+過渡內閣	n			u-inlex-nf5;review;agent-label	high	OK		
+達魯花赤	n			u-inlex-nf5;review;agent-label	high	OK		
+酌情辦理	v			u-inlex-nf5;review;agent-label	high	OK		
+長篇大論	n	idiom		成語；長篇大論;u-inlex-nf5;review;agent-label	high	OK		
+陰霾	n			u-inlex-nf5;review;agent-label	high	OK		
+陶冶情操	v	idiom		成語；陶冶情操;u-inlex-nf5;review;agent-label	high	OK		
+靜坐	n,v			u-inlex-nf5;review;agent-label	high	OK		
+頭角崢嶸	a			u-inlex-nf5;review;agent-label	high	OK		
+馬仰人翻	a,v	idiom		u-inlex-nf5;review;agent-label	high	OK		
+體外	n			u-inlex-nf5;review;agent-label	high	OK		
+鬧鈴時鐘	n			u-inlex-nf5;review;agent-label	high	OK		
+黃花梨木	n			u-inlex-nf5;review;agent-label	high	OK		

@@ -1,0 +1,125 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p0	一夕之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				時間名物「一夕」之字格；n 可（副用常見但主標 n 不毒閘）
+p0	一手一腳	n,r	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → n,r	high	gate	OK				
+p0	一輩子	n,r			no-source;fallback;full-r1-audit;review;一生	high	gate	OK				
+p0	七	x			numeral;heuristic	high	gate	OK				
+p0	上車	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	不如	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	不知不覺	r			no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;固定熟語；副；family 留;full-r1-clear-idiom	high	gate	OK				pos r 正確；family 空唔影響閘用詞類
+p0	之前	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	了	x			heuristic	high	gate	OK				
+p0	以	x			heuristic	high	gate	OK				
+p0	以弗所書	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	仲有	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	低落	a			audit-high;review	high	gate	OK				
+p0	來電	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v	high	gate	OK				
+p0	依家	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	偵探	n			cow-multi;p1-audit;review;名（職業／角色）；動義用偵查，v 假陽	high	gate	OK				
+p0	傀儡政府	n			len4-noun-heuristic	high	gate	OK				
+p0	兜	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	出口	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	出發	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	刺	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	加入	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	包	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	原來	r			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；副「原先／原來如此」	high	gate	OK				
+p0	取得一致	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	受驚	v		passive	prefix-passive;heuristic	high	gate	OK				
+p0	可喜可賀	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p0	各	x			heuristic	high	gate	OK				
+p0	名單	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	吞噬細胞	n			len4-noun-heuristic	high	gate	OK				
+p0	哈	x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → x	high	gate	OK				
+p0	唾棄	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	嗰	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p0	四處	n,r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,r	high	gate	OK				
+p0	國外市場	n			len4-noun-heuristic	high	gate	OK				
+p0	大好	a			verb-suffix;heuristic;verb-suffix-suspect;trust-low;full-r1-audit;review;verb-suffix 假陽；大好＝形	high	gate	OK				
+p0	大戰	n,v			no-source;fallback;full-r1-audit;review;名動兩可	high	gate	OK				
+p0	天淵之別	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p0	失敗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	好	a,r			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p0	媽咪	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	完成	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	實實在在	a,r			no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;AABB 真實／確實;full-r1-clear-idiom	high	gate	OK				
+p0	寫	v			cow-multi;full-r1-audit;review;只係動；a 假陽會毒同形閘	high	gate	OK				
+p0	專區	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p0	專家系統	n			len4-noun-heuristic	high	gate	OK				
+p0	導航系統	n			len4-noun-heuristic	high	gate	OK				
+p0	小恩小惠	n	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → n	high	gate	OK				
+p0	幼稚	a			cow-single;full-r1-audit;review;幼稚＝形，非名	high	gate	OK				
+p0	弦外之音	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p0	從從容容	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a,r	high	gate	OK				
+p0	忽然之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;之字格假陽 n；忽然之間＝副	high	gate	OK				full-r1 已修 n→r
+p0	恐怖分子	n			len4-noun-heuristic	high	gate	OK				
+p0	意在言外	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v	high	gate	OK				
+p0	成晚	r			no-source;fallback;p1-audit;review;粵整晚	high	gate	OK				
+p0	折衷主義	n			len4-noun-heuristic	high	gate	OK				
+p0	拒之門外	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	BAD	v			之字格假陽 n；謂語成語「拒絕／擋於門外」；n 會毒同名詞閘
+p0	挑撥離間	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	掛住	v			verb-suffix;heuristic	high	gate	OK				
+p0	控股公司	n			len4-noun-heuristic	high	gate	OK				
+p0	搖搖板	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	擔心	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	支吾以對	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	教畜	n			no-source;fallback;full-r1-audit;review;名（貶稱）	high	gate	OK				
+p0	新	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	旁證	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	曦	n			no-source;fallback;p1-audit;review;晨曦／名用字	high	gate	OK				
+p0	有事	v			no-source;fallback;p1-audit;review;有事情	high	gate	OK				
+p0	有教無類	v	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v	high	gate	OK				
+p0	有生之年	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p0	朝頭早	n,r			no-source;fallback;full-r1-audit;review;名／副「早上」	high	gate	OK				
+p0	榆林地區	n			len4-noun-heuristic	high	gate	OK				
+p0	正在	r			no-source;fallback;p1-audit;review;進行體副	high	gate	OK				
+p0	武漢地區	n			len4-noun-heuristic	high	gate	OK				
+p0	比	v,x			cow-single;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p0	民權主義	n			len4-noun-heuristic	high	gate	OK				
+p0	氣喘如牛	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v	high	gate	OK				
+p0	水火不容	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v	high	gate	OK				
+p0	汕頭地區	n			len4-noun-heuristic	high	gate	OK				
+p0	泛泛之輩	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic	high	gate	OK				
+p0	流裏流氣	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p0	海洋生物	n			len4-noun-heuristic	high	gate	OK				
+p0	海軍基地	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	減肥	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	為之動容	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;謂語成語「受感動」；主標 n 假陽會毒同名詞閘	high	gate	OK				full-r1 已修 n→v
+p0	無助	a			cow-single;p1-audit;review;primary 錯：無助＝形（感到無助），非名	high	gate	OK				
+p0	無性繁殖	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v	high	gate	OK				
+p0	無限公司	n			len4-noun-heuristic	high	gate	OK				
+p0	狠狠	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r	high	gate	OK				
+p0	玩完	v			verb-suffix;heuristic	high	gate	OK				
+p0	產業集羣	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	男歡女愛	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v	high	gate	OK				
+p0	疾言厲色	a,n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,n	high	gate	OK				
+p0	真係	r			no-source;fallback;p1-audit;review;粵真的	high	gate	OK				
+p0	笨手笨腳	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				
+p0	等閒之輩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p0	管理	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	終於	r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	絲襪	n			no-source;fallback;full-r1-audit;review;名	high	gate	OK				
+p0	經貿	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p0	羊腸小道	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	而且	x			heuristic	high	gate	OK				
+p0	聯繫	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p0	聰明	a			no-source;fallback;p1-audit;review;smart	high	gate	OK				
+p0	股票市場	n			len4-noun-heuristic	high	gate	OK				
+p0	脈	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	與	x			heuristic	high	gate	OK				
+p0	艱難	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a	high	gate	OK				
+p0	薩拉曼卡	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	處之泰然	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;謂語成語；主標 n 假陽	high	gate	OK				full-r1 已修 n→v
+p0	講笑	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p0	越幫越忙	v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → v	high	gate	OK				
+p0	辦公會議	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	造紙工業	n			len4-noun-heuristic	high	gate	OK				
+p0	邊遠地區	n			len4-noun-heuristic	high	gate	OK				
+p0	金口玉言	n	idiom		audit-med;review	high	gate	OK				
+p0	關中地區	n			len4-noun-heuristic	high	gate	OK				
+p0	陪住	v			verb-suffix;heuristic	high	gate	OK				
+p0	頂住	v			verb-suffix;heuristic	high	gate	OK				
+p0	養生之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				
+p0	馬列主義	n			len4-noun-heuristic	high	gate	OK				
+p0	駛	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p0	驕傲自大	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a	high	gate	OK				
+p0	鬚	n			no-source;fallback;full-r1-audit;review;名	high	gate	OK				

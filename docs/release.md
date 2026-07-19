@@ -6,7 +6,7 @@ Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `ori
 
 This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
 
-決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**。
+決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**、**套件發佈指紋**、**套件更新提示**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。
 
@@ -21,6 +21,43 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 
 **arm64** tar 過渡期**不提供**；Release notes 寫清楚。
 
+## v1.1.0 一次性本地 RC
+
+`v1.1.0` 唔經 `/beta/` 或 prerelease。先將 `dev` 經 PR 合入 `main`，再喺
+Windows 由乾淨、等同 `origin/main` 嘅 `main` 建候選：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Build
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Verify
+```
+
+`Build` 固定只認 `v1.1.0`，同輪產生詞庫、Windows zip、正式路徑 PWA
+archive 同 `dist/v1.1.0-rc-manifest.json`。manifest 綁 source commit、固定 gate、
+檔案大小與 SHA-256。任何程式、DB 或產物改動後都要整批重建、重新驗收。
+
+維護者完成本機 PWA build preview、離線測試及 portable 異路徑解壓 smoke 後，
+先明確批准上傳。上傳只消費已驗收檔案，唔 build：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode UploadDraft
+```
+
+此一次性 RC 命令只跑直接證明產物可用嘅短 gates：v1.1.0 合約、POS 自檢、
+PWA／portable build、Pages 封裝，以及 portable 異路徑 readiness／search／shutdown
+smoke。依維護者決定，唔跑全量 smoke、seam、guide、typecheck、lint 同 golden
+parity；最終互動驗收由維護者上傳前喺本機完成。
+
+此步建立／刷新 draft、核對遠端 asset size，並 dispatch
+`pages-v1.1.0.yml`。確認正式 Pages 已載入同一 `v1.1.0`／DB fingerprint 後：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode Finalize -PagesVerified
+```
+
+`Finalize` 只將已部署嘅 draft 轉正式 Release；唔重建。Intel macOS tar 之後依
+步驟 2 補入同一 tag。呢套入口、manifest 同 Pages workflow **只限 v1.1.0**；
+後續版本沿用一般 release 工具，唔改參數重用本入口。
+
 ### semver：新 tag vs 刷新（分級）
 
 見 CONTEXT **全量發佈**。摘要：
@@ -28,7 +65,7 @@ This rule keeps the public Pages build, release tag, and portable assets on one 
 | 情況 | 做法 |
 |------|------|
 | **必須新 tag**（schema／查詢行為大改、大規模刪收錄、破壞快取假設、刻意大改；例 `v1.0.9`→`v1.1.0`） | bump **新 semver**；本機 `build-db` 後全量上傳（含 **發佈詞庫快照**） |
-| **可同一 tag 換庫快照**（標音／合併修正、少量增刪讀音或字面、短窗熱修） | **刷新同一 tag** + `build-db` + `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json` |
+| **可同一 tag 換庫快照**（標音／合併修正、少量增刪讀音或字面、短窗熱修） | **刷新同一 tag** + `build-db` + `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`；**須同時重打並上傳 Portable zip／tar**（寫入 **套件發佈指紋**；見 ADR-0059） |
 | 程式 bugfix／打包修正（庫不變） | **刷新同一 tag**（`git tag -f` + 重傳 zip／tar）；**唔** `build-db`；**唔**覆寫庫資產 |
 | 主理刷新 tag 後 | 發佈補件 **必須** checkout 該 tag、重 build、覆寫 tar |
 
@@ -59,7 +96,7 @@ cd client && npm ci && npm run build:portable
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.7.0 -Upload
 ```
 
-會：確保有 `lyrics.db` → build zip →（**新 Release**）export lexicon → 建立 Release → 上傳 **zip + lyrics.db + words-lexicon.json**。
+會：確保有 `lyrics.db` → build zip（寫 **套件發佈指紋**）→（**新 Release**）export lexicon → 建立 Release → 上傳 **zip + lyrics.db + words-lexicon.json + portable-manifest-windows.json**。
 
 可選：`-NotesFile path\to\notes.md`、`-SkipReadmeSync`、`-Draft`。
 
@@ -72,8 +109,8 @@ git push -f origin v1.0.0
 powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag v1.0.0 -Upload -SkipReadmeSync
 ```
 
-會：重打 zip；預設 **只上傳 zip**（程式-only）。  
-同 tag 換庫快照：加 `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`（須本機已 `build-db`）。
+會：重打 zip（刷新指紋）；預設 **上傳 zip + portable-manifest-windows.json**（程式-only；唔覆寫庫）。  
+同 tag 換庫快照：加 `-WithLexicon` 覆寫 `lyrics.db`／`words-lexicon.json`（須本機已 `build-db`，且須重打套件）。
 
 **唔好**喺刷新時刪除 Release 上嘅 `lyrics.db`。
 

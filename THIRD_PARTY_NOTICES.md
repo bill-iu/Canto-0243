@@ -12,8 +12,9 @@ upstream license.
 | Rime categorized lexicon | `data/lexicon/raw/rime-cantonese-upstream/*.csv`（不含 `proper_nouns.csv`） | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Essay frequency | `data/essay/essay-cantonese.txt` | [rime/rime-cantonese](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
 | Curated compound antonyms | `data/syn_ant/compound_antonyms.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
-| Project antonym pairs (AI-assisted) | `data/syn_ant/project_antonyms.tsv` (+ `project_antonyms.meta.json`) | Canto-0243 project; drafted with generative AI assistance (e.g. Grok via Cursor), maintainer-reviewed before release | Same as program (Canto-0243 License). Output attributed per xAI Brand Guidelines / applicable Cursor terms. **Not** a redistribution of guotong or other third-party antonym lexicons. |
+| Project near-antonym pairs (AI-assisted) | `data/syn_ant/project_antonyms.tsv` (+ meta); synonym list under `data/syn_ant/project/` when present | Canto-0243 project (**專案自建近反義**); drafted with generative AI assistance (e.g. Grok via Cursor), maintainer-reviewed before release | Same as program (Canto-0243 License). Output attributed per xAI Brand Guidelines / applicable Cursor terms. **Not** a redistribution of cilin／guotong or other third-party thesauri. |
 | Curated common words | `data/lexicon/curated_common.txt` | Canto-0243 project | Same as program (Canto-0243 License) |
+| Cantonese.md 歇後語缺字面補丁 | `data/lexicon/cantonese_md_lexicon.json` (+ `cantonese_md.manifest.json`) | [daimaruhk/Cantonese.md](https://github.com/daimaruhk/Cantonese.md) `src/contents/` | **[CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)** — refresh: `python scripts/fetch/fetch_cantonese_md_lexicon.py` |
 
 ## Fetched by bootstrap (tier 2)
 
@@ -45,17 +46,19 @@ Verify upstream terms before enabling additional sources.
 | HSK 3.0 word list | [elkmovie/hsk30](https://github.com/elkmovie/hsk30) | [MIT](https://github.com/elkmovie/hsk30/blob/main/LICENSE) |
 | words.hk 粵典詞表 | [wordslist](https://words.hk/faiman/analysis/wordslist/) | **Public domain** (credit [words.hk](https://words.hk/) appreciated) |
 | 開放詞典 · 粵語詞典 | [下載](https://kaifangcidian.com/xiazai/) | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/) |
+| Cantonese.md 歇後語字面 | [daimaruhk/Cantonese.md](https://github.com/daimaruhk/Cantonese.md) → `data/lexicon/cantonese_md_lexicon.json` | **[CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)**（僅 term／answer＋粵拼；無正文解說） |
 | Maintainer curated | `data/lexicon/curated_lexicon.json` | Same as program (Canto-0243 License) |
 
-## Project-owned antonym pairs (AI-assisted)
+## Project-owned near-antonym pairs (AI-assisted)
 
-Direct antonym edges may also come from the project-owned list above
-(`source=project_ant` in `word_relations`). Seeds are lexicon literals
-(priority: has-synonym / no-direct-antonym, essay Top-K); upstream antonym
-files are **not** used as few-shot expansion sources. Overlap with third-party
-antonym lists may be measured for quality monitoring only. Guotong antonyms
-and project antonyms **coexist**; when the same pair appears in both, build
-merge prefers `project_ant`.
+Direct antonym／synonym edges may also come from project-owned lists
+(`source=project_ant`／`project_syn` in `word_relations`), shown to creators as
+**專案自建近反義**. Antonym seeds: has-synonym／no-direct-antonym, essay Top-K.
+Synonym seeds: sparse direct synonyms (tail count &lt; 2), essay Top-K／len=4.
+Upstream thesaurus files are **not** used as few-shot expansion sources. Overlap
+with third-party lists may be measured（and synonym pairs may soft-overlap for
+ranking）. Project edges **coexist** with cilin／guotong; merge ranking keeps
+project sources **no lower than** those upstream sources.
 
 ## Optional syn/ant sources
 

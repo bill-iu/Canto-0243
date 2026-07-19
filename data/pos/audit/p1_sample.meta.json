@@ -1,0 +1,29 @@
+{
+  "phase": "p1",
+  "body": 5000,
+  "seed": 20260718,
+  "strata": {
+    "high|gate": {
+      "universe": 245,
+      "sample": 50,
+      "formula_n": 50
+    },
+    "low|draft": {
+      "universe": 1459,
+      "sample": 73,
+      "formula_n": 73
+    },
+    "low|u": {
+      "universe": 2962,
+      "sample": 149,
+      "formula_n": 149
+    },
+    "medium|gate": {
+      "universe": 334,
+      "sample": 50,
+      "formula_n": 50
+    }
+  },
+  "out": "D:\\Canto-0243\\data\\pos\\audit\\p1_sample.tsv",
+  "total_sample": 322
+}

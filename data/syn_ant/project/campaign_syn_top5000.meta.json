@@ -1,0 +1,27 @@
+{
+  "campaign_id": "syn_top5000",
+  "mode": "essay_top_intersect_sparse",
+  "sparse_lt": 2,
+  "k": 1148,
+  "batch_size": 200,
+  "batch_count": 6,
+  "essay_top_k": 5000,
+  "campaign_k_cap": null,
+  "length_filter": null,
+  "freeze_git_commit": "0ce4b6d4a953d43393f019362dc7c2a31d948fd2",
+  "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+  "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+  "cilin_sha256": "3e0587bde86d8beb46582ecf95888608068c94498ae3a183133223bb1cb4f554",
+  "guotong_syn_sha256": "b18da47c1666ea2ad1ffefd6d661bee29824932a60ff8cb3fe692b3d83f98312",
+  "batch_counts": {
+    "1": 200,
+    "2": 200,
+    "3": 200,
+    "4": 200,
+    "5": 200,
+    "6": 148
+  },
+  "sparse_zero": 943,
+  "sparse_one": 205,
+  "manifest_sha256": "366882433ad7aa1efa36a14342600e0d031df02e53f4aa302fdb7d1e2c37c35f"
+}

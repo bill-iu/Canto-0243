@@ -1,0 +1,7 @@
+{
+  "phase": "p3",
+  "universe": 1195,
+  "sample_n": 60,
+  "seed": 20260720,
+  "out": "data\\pos\\audit\\full_r1\\gate_reconfirm\\p3_gate_sample.tsv"
+}

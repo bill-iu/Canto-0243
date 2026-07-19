@@ -30,6 +30,8 @@ class Word(Base):
 # Composite index: covers length-only, length+code, and length+code+finals queries.
 # idx_length_code dropped — its prefix is fully covered by this index (ADR-0027 / I2).
 Index('idx_length_code_finals', Word.length, Word.code, Word.finals)
+# length+finals (no code): equals degrade path; measure-first P0 - not covered by code-middle composite.
+Index('idx_length_finals', Word.length, Word.finals)
 
 
 # ============================================================

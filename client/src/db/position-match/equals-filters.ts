@@ -15,7 +15,6 @@ import {
   requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
-import { CANDIDATE_FALLBACK_LIMIT } from './candidate-policy.ts';
 import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
 
@@ -322,7 +321,7 @@ async function equalsWholeWordMatches(
     sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
     params.push(...variants);
   }
-  sql += ` LIMIT ${CANDIDATE_FALLBACK_LIMIT}`;
+  // 語意完整候選宇宙：phoneme 已在 WHERE；LIMIT 會截斷合法整詞等號命中（len1 initials 桶可 >2000）。
 
   const rows = await queryRows(db, sql, params);
   const out: WordRow[] = [];
@@ -409,10 +408,12 @@ export async function queryWordsByEqualsSpec(
       searchMode,
     );
   } else {
+    // Dense fullCode already narrows; LIMIT before phoneme filter drops hits when
+    // m1 variants expand past CANDIDATE_FALLBACK_LIMIT (e.g. 9太=2 → 解毒).
     const [rows] = await getCandidatesForLength(db, spec.width, {
       code: fullCode || null,
       mode: searchMode,
-      unlimited: prefixWildcard || tailRhymeUnion,
+      unlimited: prefixWildcard || tailRhymeUnion || Boolean(fullCode),
     });
     candidates = rows;
   }

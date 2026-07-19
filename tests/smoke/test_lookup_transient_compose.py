@@ -45,7 +45,7 @@ class LookupTransientComposeTests(unittest.TestCase):
     def test_pure_canto_lookup_layout_without_persist(self) -> None:
         q = _CI_COMPOSE_Q
         ex = WordLookupExecutor(self.db)
-        items = ex.pure_canto(q, None, "m1", limit=50, offset=0)
+        items = ex.pure_canto(q, None, "m1", limit=50, offset=0)[0]
         self.assertTrue(items, "lookup must not be empty for composable literal")
         self.assertTrue(any(i.get("char") == q or i.get("query_text") == q for i in items))
         self.assertIsNone(

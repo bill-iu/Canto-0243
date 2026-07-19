@@ -142,8 +142,9 @@ export async function filterMatchSpecRows(
       mode: ctx.mode,
     });
   } else {
-    // Prefer phoneme index even when partial code digits exist (only dense code skips it)
-    const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null;
+    // Prefer phoneme index whenever anchors exist — even with dense code digits.
+    // Dense-code + LIMIT otherwise truncates before phoneme filtering (workbench 同韻／同聲).
+    const phonemeSlot = firstPhonemeAnchorSlot(spec);
     let indexed: WordRow[] | null = null;
     if (phonemeSlot) {
       const constraint = phonemeSlot.kind === 'final_anchor' ? 'final' : 'initial';
@@ -162,7 +163,7 @@ export async function filterMatchSpecRows(
       [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
         code,
         mode: ctx.mode,
-        unlimited: specNeedsFullLengthBucket(spec) && !code,
+        unlimited: specNeedsFullLengthBucket(spec),
         codePositions: code
           ? undefined
           : buildRequiredCodes(spec)

@@ -1,0 +1,9 @@
+head	note	batch_id
+喃喃自語	prior project_syn edge covers head	syn-len4-b02-20260718
+先決條件	prior project_syn edge covers head	syn-len4-b02-20260718
+房屋中介	prior project_syn edge covers head	syn-len4-b02-20260718
+參考書目	prior project_syn edge covers head	syn-len4-b02-20260718
+公共事業	prior project_syn edge covers head	syn-len4-b02-20260718
+全身上下	within-batch undirected syn edge covers head	syn-len4-b02-20260718
+忽然之間	within-batch undirected syn edge covers head	syn-len4-b02-20260718
+信用評級	within-batch undirected syn edge covers head	syn-len4-b02-20260718

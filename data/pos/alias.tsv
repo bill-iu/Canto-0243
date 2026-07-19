@@ -1,0 +1,18 @@
+source	target	kind	note
+侏	侏儒	residual	bound half of 侏儒; 儒 stays free
+牴	牴觸	residual	bound half; 觸 free
+蝶	蝴蝶	residual	IWP+affinity; 蝴 free/rare
+玫	玫瑰	residual	IWP+affinity; 瑰 rare
+眶	眼眶	residual	IWP+affinity; 眼 free
+咖	咖啡	residual	IWP+affinity; was opaque
+蠱	整蠱	residual	粵; IWP+affinity
+顫	顫抖	residual	r3; n_bigrams=1; rare free
+緻	精緻	residual	r3; n_bigrams=1; bound morpheme
+踊	踊躍	residual	curated full; variant of 踴躍
+魍	魍魎	residual	curated full
+曱	曱甴	residual	cockroach half; curated full
+甴	曱甴	residual	cockroach half; curated full
+蘿	蘿蔔	residual	radish half
+蔔	蘿蔔	residual	radish half
+骷	骷髏	residual	skull half
+髏	骷髏	residual	skull half

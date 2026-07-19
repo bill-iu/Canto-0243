@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一拳	n			no-source;p1;fallback;p1-audit;review;一記拳頭，名詞	high	p1|gate	2420	OK				
+下身	n			no-source;fallback;p1-audit;review;身體部位，名詞	high	p1|gate	2457	OK				
+並	r,x			heuristic	high	p1|gate	883	OK				
+丫	x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	338	OK				
+二	x			numeral;heuristic	high	p1|gate	276	OK				
+仲	r,x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	82	OK				
+傾下	v			verb-suffix;p1;heuristic;p1-cleanup;verb-suffix-fix;review	high	p1|gate	3499	OK				
+價值	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2118	BAD	n			只係名；v 假陽會毒同動詞閘
+八	x			numeral;heuristic	high	p1|gate	867	OK				
+冇	v,x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	23	OK				
+出口	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1340	OK				
+出席	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	4633	SOFT			主標動；名物化 n 薄但閘用 multi 可
+加上	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	p1|gate	670	OK				
+包括	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1726	BAD	v			只係動；n 假陽會毒同名詞閘
+即刻	r			heuristic	high	p1|gate	201	OK				
+同人	n			no-source;fallback;p1-audit;review;同好／同人誌；同伴	high	p1|gate	1166	OK				
+嚟	v			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	35	OK				
+回覆日期	n			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	194	OK				
+太	r			heuristic	high	p1|gate	297	OK				
+失敗	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2333	OK				
+夾住	v			verb-suffix;heuristic	high	p1|gate	4966	OK				
+好	a,r			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	6	OK				
+家姐	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	242	OK				
+小	a,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	178	OK				
+幼稚園	n			no-source;fallback;p1-audit;review;幼兒園	high	p1|gate	2067	OK				
+床	n			no-source;p1;fallback;p1-audit;review;床鋪	high	p1|gate	484	OK				
+很	r			heuristic	high	p1|gate	613	OK				
+必要	a,n			cow-multi;p1-audit;review;形＋名（必要條件／有必要），非動	high	p1|gate	3138	OK				
+懷疑	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1280	OK				
+接住	v			verb-suffix;heuristic	high	p1|gate	3008	OK				
+搞	v			no-source;fallback;p1-cleanup;canto-heuristic;review	high	p1|gate	154	OK				
+放棄	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	1149	OK				
+更	r			heuristic	high	p1|gate	363	OK				
+果	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	409	OK				
+檢查	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2285	OK				
+淺	a			no-source;p1;fallback;p1-audit;review;不深	high	p1|gate	3118	OK				
+準備	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	379	OK				
+滿意	a,n			cow-multi;p1	medium	p1|gate	2286	BAD	a			stative 形；n 假陽會毒同名詞閘
+的確	r			no-source;fallback;p1-audit;review;確實	high	p1|gate	1003	OK				
+破壞	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2043	OK				
+社會主義	n			len4-noun-heuristic	high	p1|gate	3625	OK				
+突破	n,v			no-source;fallback;p1-audit;review;breakthrough	high	p1|gate	4311	OK				
+符紙	n			no-source;p1;fallback;p1-audit;review;符籙	high	p1|gate	4902	OK				
+紀念	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	4659	OK				
+組織	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p1|gate	2492	OK				
+被人	v		passive	prefix-passive;p1;heuristic	high	p1|gate	3753	BAD	x			被+人施事短語／被動標記，非獨立動
+道	n,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	410	OK				
+開心	a			seed	high	p1|gate	223	OK				
+離	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	p1|gate	441	OK				
+非常	r			heuristic	high	p1|gate	519	OK				

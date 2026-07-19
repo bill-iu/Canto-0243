@@ -1,0 +1,51 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p2	一字之差	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				差／距名物 NP；r4 曾 OK n；revert 正確
+p2	一得之愚	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv	high	gate	OK				愚見名物 NP；r5 已回 n
+p2	一心一德	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				ABAC stative 形
+p2	一線之隔	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv	high	gate	OK				間隔名物 NP；r5/r7 已回 n
+p2	一面之詞	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore	high	gate	OK				言論名物 NP；restore 正確
+p2	七年之癢	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				狀態名物 NP；revert 正確
+p2	不情之請	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				請求名物 NP；revert 正確
+p2	不祧之祖	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				人物名物 NP；r7 曾 OK n；revert 正確
+p2	中規中矩	a	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;cow n 假陽；中規中矩＝形	high	gate	OK				ABAC 形；full-r1 已修 cow n→a
+p2	乾乾淨淨	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv	high	gate	OK				AABB 形；p1/r1 已修 u→a
+p2	付之東流	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;謂語成語「前功盡棄」；主標 n 假陽會毒同名詞閘	high	gate	OK				full-r1 已修 n→v；謂語
+p2	來之不易	a	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv	high	gate	OK				stative 形；p1/r1 已修 n→a
+p2	勉勉強強	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a,r	high	gate	OK				AABB 形／副皆常見
+p2	半明半暗	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				ABAC 形
+p2	口舌之爭	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				爭端名物 NP；revert 正確
+p2	召之即來	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert;p1-audit;review;zhi-n-revert 過修；謂語（召之即來揮之即去）；r6 曾 OK v；n 假陽會毒同名詞閘	high	gate	OK				謂語；r6 OK v／r7 BAD 已回 v
+p2	多事之秋	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				時局名物 NP；revert 正確
+p2	大模大樣	a,r	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a,r	high	gate	OK				ABAC 形／副皆常見
+p2	婦人之仁	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				德性名物 NP；revert 正確
+p2	安安心心	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a,r	high	gate	OK				AABB 形／副皆常見
+p2	弦外之音	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				言外之意名物 NP；r6 曾 OK n
+p2	彈丸之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				處所名物 NP
+p2	後起之秀	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				人物名物 NP；revert 正確
+p2	心腹之患	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				禍患名物 NP；revert 正確
+p2	必爭之地	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	gate	OK				處所名物 NP
+p2	忽然之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;full-r1-audit;review;之字格假陽 n；忽然之間＝副	high	gate	OK				純副時間框架；full-r1 已修 n→r
+p2	斷斷續續	a,r	idiom		cow-single;p2-idiom:AABB;p2-idiom-heuristic;review;p1-audit;review;AABB 狀態／情狀；非名（cow-single n 假陽）	high	gate	OK				AABB 形／副；p1 已修 cow n→a,r
+p2	明日之星	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				人物名物 NP；revert 正確
+p2	有增無減	v	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v	high	gate	OK				有無對 謂語；r5 曾 OK v
+p2	有心無力	a	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				有無對 stative 形
+p2	有教無類	v	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → v	high	gate	OK				有無對 謂語／方針；r7 曾 OK v
+p2	有條有理	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a	high	gate	OK				ABAC 形
+p2	未解之謎	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				謎團名物 NP；revert 正確
+p2	林林總總	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv	high	gate	OK				AABB 形；p1/r1 已修 u→a
+p2	無影無蹤	a	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;cow n 假陽；無影無蹤＝形	high	gate	OK				ABAC 形；full-r1／r2 已修 cow n→a
+p2	百獸之王	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore	high	gate	OK				人物／稱號名物 NP；restore 正確
+p2	相比之下	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r3.tsv	high	gate	OK				比較連接／附帶副；r3/r6 已修 n→r
+p2	眉宇之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review	high	gate	BAD	n			zhi-n 過修 r；空間名物 NP（眉間）；r4 曾 OK n；有別純副忽然之間（同九泉之下／意料之外 誤 r）
+p2	真真假假	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a	high	gate	OK				AABB 形；r6 曾 OK a
+p2	破竹之勢	n	idiom		audit-med;review	high	gate	OK				氣勢名物 NP
+p2	胯下之辱	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				恥辱名物 NP；revert 正確
+p2	致富之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				方法名物 NP（同養生之道）；revert 正確
+p2	血肉之軀	n	idiom		audit-med;review	high	gate	OK				身體名物 NP；r7 曾 OK n
+p2	象牙之塔	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				處所／隱喻名物 NP；revert 正確
+p2	踉踉蹌蹌	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample.tsv	high	gate	OK				AABB 形／副；p1/r1 已修 u→a,r
+p2	輕輕鬆鬆	a,r	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → a,r	high	gate	OK				AABB 形／副皆常見
+p2	風風雨雨	n	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;high|u 有明確詞類 → n	high	gate	OK				AABB 風波名物；r6 曾 OK n
+p2	養育之恩	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore	high	gate	OK				恩德名物 NP；restore 正確
+p2	驚人之舉	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv	high	gate	OK				舉動名物 NP；r5 已回 n
+p2	黔驢之技	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert	high	gate	OK				技倆名物 NP；revert 正確

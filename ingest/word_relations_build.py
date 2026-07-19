@@ -21,16 +21,18 @@ from ingest.syn_ant_build import clear_word_relations_source
 from ingest.syn_ant_manifest import load_manifest, select_sources
 from ingest.syn_ant_normalize import merge_staging_edges, normalize_edges
 from ingest.project_antonyms import collect_project_ant_tuples, syn_pairs_from_db, syn_pairs_from_tuples
+from ingest.project_synonyms import collect_project_syn_tuples
 from app.domain.relations.word_relation_queries import load_db_char_set
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "data" / "syn_ant" / "sources.yaml"
 DEFAULT_COMPOUND_PATH = ROOT / "data" / "syn_ant" / "compound_antonyms.txt"
-STATIC_SOURCES = ("cilin", "guotong", "compound_ant", "project_ant")
+STATIC_SOURCES = ("cilin", "guotong", "compound_ant", "project_ant", "project_syn")
 LEGACY_SOURCES = ("antisem",)
 
 # ponytail: lower = wins when same (word_id, related_id, relation_type) from multiple static sources
 _SOURCE_RANK = {
+    "project_syn": 9,
     "cilin": 10,
     "project_ant": 12,
     "guotong": 20,
@@ -232,12 +234,16 @@ def collect_static_relation_tuples(
     # Replace mode clears static/legacy, so those DB rows are excluded; append keeps them.
     exclude_db = (*STATIC_SOURCES, *LEGACY_SOURCES) if replace_static else ()
     kept_db_syn = syn_pairs_from_db(db, exclude_sources=exclude_db)
-    project_rows = collect_project_ant_tuples(
+    project_ant_rows = collect_project_ant_tuples(
         db,
         syn_pairs=new_static_syn | kept_db_syn,
     )
+    # Soft-overlap：project_syn 可與上游 syn 同對；merge 靠 _SOURCE_RANK 抬自建
+    project_syn_rows = collect_project_syn_tuples(db)
     merged = merge_relation_tuples(
-        itertools.chain.from_iterable([static_flat, project_rows])
+        itertools.chain.from_iterable(
+            [static_flat, project_ant_rows, project_syn_rows]
+        )
     )
     # ADR-0039 S1 CAP-U@20
     return cap_undirected_syn_tuples(merged)

@@ -1,0 +1,8 @@
+{
+  "round": 1,
+  "seed": 42,
+  "universe": 1977,
+  "sample_n": 99,
+  "out": "data/pos/audit/u_inlex/u_inlex_gate_r1.tsv",
+  "threshold": 0.9
+}

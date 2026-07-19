@@ -1,0 +1,19 @@
+head	note	batch_id
+一石二鳥	prior project_syn edge covers head	syn-len4-b05-20260718
+傳動機構	prior project_syn edge covers head	syn-len4-b05-20260718
+光陰似箭	prior project_syn edge covers head	syn-len4-b05-20260718
+精神健康	prior project_syn edge covers head	syn-len4-b05-20260718
+精神錯亂	prior project_syn edge covers head	syn-len4-b05-20260718
+示威遊行	prior project_syn edge covers head	syn-len4-b05-20260718
+親戚關係	prior project_syn edge covers head	syn-len4-b05-20260718
+燒香拜佛	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+半工半讀	prior project_syn edge covers head	syn-len4-b05-20260718
+躲躲閃閃	prior project_syn edge covers head	syn-len4-b05-20260718
+自強自立	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+電化教學	prior project_syn edge covers head	syn-len4-b05-20260718
+心懷鬼胎	prior project_syn edge covers head	syn-len4-b05-20260718
+淡而無味	within-batch undirected syn edge covers head	syn-len4-b05-20260718
+痛哭失聲	prior project_syn edge covers head	syn-len4-b05-20260718
+防毒軟件	prior project_syn edge covers head	syn-len4-b05-20260718
+生活水準	prior project_syn edge covers head	syn-len4-b05-20260718
+空中小姐	prior project_syn edge covers head	syn-len4-b05-20260718

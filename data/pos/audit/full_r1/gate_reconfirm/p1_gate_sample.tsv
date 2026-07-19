@@ -1,0 +1,51 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p1	一	x			numeral;heuristic	high	gate	OK				
+p1	一來	r			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	gate	OK				
+p1	一刻	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	不好意思	a			no-source;fallback;full-r1-audit;review;形／客套	high	gate	OK				
+p1	保證	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p1	其實	r			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p1	勾	v			no-source;fallback;full-r1-audit;review;動	high	gate	OK				
+p1	反對	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p1	叫	v			cow-single;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p1	啲	x			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p1	嘆	v			no-source;fallback;full-r1-audit;review;動	high	gate	OK				
+p1	嘢	n			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p1	回答	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p1	在	v,x			heuristic	high	gate	OK				
+p1	好話	n			no-source;fallback;full-r1-audit;review;名	high	gate	OK				
+p1	容易	a			cow-single;full-r1-audit;review;容易＝形，非名	high	gate	OK				
+p1	就	r,v,x			heuristic	high	gate	OK				
+p1	尷尬	a			cow-single;full-r1-audit;review;stative 形；n 假陽	high	gate	OK				
+p1	巨哥	n			no-source;p1;fallback;full-r1-audit;review;專名／暱稱	high	gate	OK				
+p1	幾時	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	懲罰	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p1	我度	x			no-source;p1;fallback;p1-audit;review;粵「我這兒／我處」處所虛	high	gate	OK				
+p1	撩	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p1	支持	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p1	收埋	v			no-source;fallback;p1-audit;review;粵收藏／藏起	high	gate	OK				
+p1	改	v			no-source;fallback;full-r1-audit;review;動	high	gate	OK				
+p1	更好	a			verb-suffix;p1;heuristic;p1-audit;review;verb-suffix假陽；形「更好」	high	gate	OK				
+p1	有關	a,x			cow-nv-unreviewed;trust-low;full-r1-audit;review;有關＝形／介，非 n,v	high	gate	OK				
+p1	有關部門	n			len4-noun-heuristic;p1	high	gate	OK				
+p1	本	n,x			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	某	x			no-source;fallback;p1-audit;review;不定指代，虛	high	gate	OK				
+p1	正在	r			no-source;fallback;p1-audit;review;進行體副	high	gate	OK				
+p1	此	x			heuristic;p1	high	gate	OK				
+p1	每	x			heuristic	high	gate	OK				
+p1	理解	n,v			cow-multi;full-r1-audit;review;真名動；a 假陽會毒同形閘	high	gate	OK				
+p1	當	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	痕	a,n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,a	high	gate	OK				
+p1	老豆	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	聲	n			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	認爲	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p1	費事	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v	high	gate	OK				
+p1	走	v			seed	high	gate	OK				
+p1	跌	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	途中	n,r			no-source;fallback;full-r1-audit;review;名／副	high	gate	OK				
+p1	還	r,x			heuristic;p1	high	gate	OK				
+p1	部	n,x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,x	high	gate	OK				
+p1	靚	a			no-source;fallback;p1-close;rank-u;canto-heuristic;review	high	gate	OK				
+p1	面色	n			no-source;fallback;full-r1-audit;review;名	high	gate	OK				
+p1	驚	a,v			no-source;fallback;p1-cleanup;canto-heuristic;review	high	gate	OK				
+p1	驚訝	a,n			cow-multi;p1	medium	gate	BAD	a			stative 形；n 假陽會毒同名詞閘

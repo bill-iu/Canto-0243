@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	pattern	verdict	fix_family	audit_note
+一夫一妻	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+一望無垠	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	一X?Y	OK		
+一瘸一拐	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+一石二鳥	v	idiom		seed	high	一X?Y	OK		
+上上之策	n	idiom		len4-noun-heuristic;p2-idiom:AABC;p2-idiom-heuristic	high	AABC	OK		
+不破不立	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+何德何能	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+傻頭傻腦	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+先到先得	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+全始全終	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+即興之作	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	SOFT		偏描寫 NP「即興+之作」；固定搭配可留熟語
+取之不盡	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+叮叮噹噹	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+含含糊糊	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+大喊大叫	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+大將之風	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+奄奄一息	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+好事之徒	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+好好睇睇	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	SOFT		粵語 AABB 重疊偏能產；固定度薄但可留
+如醉如痴	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+安安穩穩	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+實實在在	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+彈指之間	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+彼此彼此	u	idiom		no-source;fallback;p2-idiom:ABAB;p2-idiom-heuristic;review	high	ABAB	OK		
+徒子徒孫	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+忙忙碌碌	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+恰恰相反	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	SOFT		常見固定搭配；偏副詞組非典成語
+挨家挨户	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+擒賊擒王	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+新人新事	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	SOFT		時代口號式對舉；固定度中等可留
+是是非非	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+有名有姓	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+有婦之夫	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	OK		
+朗朗上口	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+木口木面	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+本鄉本土	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+活龍活現	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+滑頭滑腦	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+無仇無怨	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+無影無蹤	n	idiom		cow-single;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+生存之道	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review	high	之字格	SOFT		X之道 能產；文學固定式可留
+竊竊私語	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+統購統銷	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	BAD		計劃經濟政策術語 NP，非固定說法
+老夫老妻	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+耿耿於懷	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		
+自由自在	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+若即若離	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+跌跌撞撞	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	AABB	OK		
+雙宿雙飛	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	ABAC	OK		
+面面相覷	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	AABC	OK		

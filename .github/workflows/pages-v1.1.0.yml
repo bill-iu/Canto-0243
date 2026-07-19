@@ -1,0 +1,79 @@
+name: Pages v1.1.0 (accepted artifact)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: v1.1.0
+          fetch-depth: 0
+
+      - name: Verify fixed release source
+        run: |
+          git fetch origin main dev --quiet
+          test "$(git rev-parse HEAD)" = "$(git rev-parse v1.1.0^{commit})"
+          git merge-base --is-ancestor v1.1.0^{commit} origin/main
+          git merge-base --is-ancestor origin/dev origin/main
+
+      - name: Download accepted v1.1.0 artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir .release
+          gh release download v1.1.0 -D .release \
+            -p "v1.1.0-rc-manifest.json" \
+            -p "canto-0243-pages-v1.1.0.tar.gz" \
+            -p "lyrics.db"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify and unpack accepted Pages artifact
+        run: |
+          python scripts/v1_1_0_rc.py verify-file \
+            --manifest .release/v1.1.0-rc-manifest.json \
+            --artifact-path dist/canto-0243-pages-v1.1.0.tar.gz \
+            --source-commit "$(git rev-parse HEAD)" \
+            --file .release/canto-0243-pages-v1.1.0.tar.gz
+          python scripts/v1_1_0_rc.py verify-file \
+            --manifest .release/v1.1.0-rc-manifest.json \
+            --artifact-path lyrics.db \
+            --source-commit "$(git rev-parse HEAD)" \
+            --file .release/lyrics.db
+          mkdir pages-site
+          tar -xzf .release/canto-0243-pages-v1.1.0.tar.gz -C pages-site
+          python scripts/v1_1_0_rc.py verify-pages \
+            --tag v1.1.0 --root .release --source-dir pages-site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Upload accepted Pages files
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: pages-site
+
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -28,12 +28,44 @@ function readyGateCssPlugin(): Plugin {
       const base = server.config.base.replace(/\/$/, '')
       if (base) server.middlewares.use(`${base}/ready-gate.css`, serve())
     },
-    generateBundle() {
-      this.emitFile({
-        type: 'asset',
-        fileName: 'ready-gate.css',
-        source: fs.readFileSync(readyGateCssPath),
-      })
+    // Inject as <style> — avoid HTML href to /app/ready-gate.css (Vite 8 missing-at-build-time warn)
+    transformIndexHtml: {
+      order: 'pre',
+      handler() {
+        return [
+          {
+            tag: 'style',
+            attrs: { 'data-ssot': 'ready-gate.css' },
+            children: fs.readFileSync(readyGateCssPath, 'utf-8'),
+            injectTo: 'head',
+          },
+        ]
+      },
+    },
+  }
+}
+
+/** Avoid Vite 8 warn on `%BASE_URL%fonts/fonts.css` (public asset; may be absent in CI). */
+function publicFontsLinkPlugin(): Plugin {
+  let base = '/'
+  return {
+    name: 'public-fonts-link',
+    configResolved(config) {
+      base = config.base.endsWith('/') ? config.base : `${config.base}/`
+    },
+    transformIndexHtml: {
+      order: 'post',
+      handler() {
+        const fontsCss = path.resolve(clientRoot, 'public/fonts/fonts.css')
+        if (!fs.existsSync(fontsCss)) return []
+        return [
+          {
+            tag: 'link',
+            attrs: { rel: 'stylesheet', href: `${base}fonts/fonts.css` },
+            injectTo: 'head',
+          },
+        ]
+      },
     },
   }
 }
@@ -44,7 +76,7 @@ function lexiconDevMountPlugin(): Plugin {
     name: 'lexicon-dev-mount',
     configureServer(server) {
       const handler = (
-        _req: unknown,
+        req: { method?: string },
         res: {
           statusCode: number
           setHeader: (k: string, v: string) => void
@@ -66,6 +98,11 @@ function lexiconDevMountPlugin(): Plugin {
           res.setHeader('Content-Type', 'application/octet-stream')
           res.setHeader('Content-Length', String(stat.size))
           res.setHeader('Cache-Control', 'no-cache')
+          // HEAD：畀 DEV loadLexiconTarget 用 Content-Length 做 OPFS key，唔送 body
+          if (req.method === 'HEAD') {
+            res.end()
+            return
+          }
           fs.createReadStream(src).pipe(res as unknown as NodeJS.WritableStream)
         } catch {
           res.statusCode = 500
@@ -79,6 +116,20 @@ function lexiconDevMountPlugin(): Plugin {
   }
 }
 
+function workbenchEntryPlugin(outDir: string): Plugin {
+  return {
+    name: 'workbench-html-entry',
+    closeBundle() {
+      const output = path.resolve(clientRoot, outDir)
+      const source = path.join(output, 'index.html')
+      const targetDir = path.join(output, 'workbench')
+      if (!fs.existsSync(source)) return
+      fs.mkdirSync(targetDir, { recursive: true })
+      fs.copyFileSync(source, path.join(targetDir, 'index.html'))
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
   const portableHost =
@@ -87,6 +138,8 @@ export default defineConfig(({ command, mode }) => {
   const plugins: Plugin[] = [
     react(),
     readyGateCssPlugin(),
+    publicFontsLinkPlugin(),
+    workbenchEntryPlugin(portableHost ? 'dist-portable' : 'dist'),
   ]
   if (command === 'serve') {
     plugins.push(lexiconDevMountPlugin())
@@ -222,7 +275,12 @@ export default defineConfig(({ command, mode }) => {
     base: portableHost ? '/app/' : command === 'serve' ? '/' : '/Canto-0243/',
     plugins,
     build: portableHost
-      ? { outDir: 'dist-portable', emptyOutDir: true }
+      ? {
+          outDir: 'dist-portable',
+          emptyOutDir: true,
+          // ponytail: main bundle holds query+UI; split later if gate budget needs it
+          chunkSizeWarningLimit: 600,
+        }
       : undefined,
     define: portableHost
       ? { 'import.meta.env.VITE_PORTABLE_HOST': JSON.stringify('1') }

@@ -58,7 +58,7 @@ def run_position_query(
     pre_candidates: list[Any] | None = None,
     sort_key: Callable[[Any], Any] | None = None,
 ) -> list:
-    items, _ = run_position_query_tracked(
+    items, _, _ = run_position_query_tracked(
         spec,
         db,
         mode,
@@ -81,7 +81,7 @@ def run_position_query_tracked(
     source: CandidateSource | None = None,
     pre_candidates: list[Any] | None = None,
     sort_key: Callable[[Any], Any] | None = None,
-) -> tuple[list, bool]:
+) -> tuple[list, bool, int]:
     from app.services.word_serializer import deduplicate_words, serialize_word
 
     from_cache = False
@@ -102,7 +102,7 @@ def run_position_query_tracked(
     # E3: dedupe once then window only (serialize_page would re-dedupe the full list)
     unique = deduplicate_words(filtered)
     page = unique[offset : offset + limit]
-    return [serialize_word(w) for w in page], from_cache
+    return [serialize_word(w) for w in page], from_cache, len(unique)
 
 
 def execute_dual_phoneme_anchor_specs(
@@ -140,7 +140,13 @@ def execute_dual_phoneme_anchor_specs(
         tagged.append({**item, "anchor_dimension": "final"})
     page = tagged[offset : offset + limit]
     cache_path = initial_result.cache_path or final_result.cache_path
-    return MaskFamilySearchResult(items=page, cache_path=cache_path)
+    # 字面總數：雙維合併後去重（錨分欄 UI；標準列表少用）
+    seen: set[str] = set()
+    for item in tagged:
+        w = item.get("char") or item.get("word")
+        if w:
+            seen.add(str(w))
+    return MaskFamilySearchResult(items=page, cache_path=cache_path, total=len(seen))
 
 
 def execute_match_spec(
@@ -168,13 +174,21 @@ def execute_match_spec(
 
     source, sort_key = _resolve_mask_family_source(spec, db, mode, code)
     has_phoneme_anchors = any(
-        s.kind in ("final_anchor", "initial_anchor") for s in spec.slots
+        s.kind
+        in (
+            "final_anchor",
+            "initial_anchor",
+            "rhyme_letters",
+            "syllable_letters",
+            "initial_letters",
+        )
+        for s in spec.slots
     )
     if not get_equals_span(spec) and source is None and not has_phoneme_anchors:
         return MaskFamilySearchResult(items=[])
 
-    items, from_cache = run_position_query_tracked(
+    items, from_cache, total = run_position_query_tracked(
         spec, db, mode, limit, offset, source=source, sort_key=sort_key
     )
     cache_path = "fallback" if get_equals_span(spec) or not from_cache else "ready"
-    return MaskFamilySearchResult(items=items, cache_path=cache_path)
+    return MaskFamilySearchResult(items=items, cache_path=cache_path, total=total)

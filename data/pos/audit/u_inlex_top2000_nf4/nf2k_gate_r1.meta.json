@@ -1,0 +1,7 @@
+{
+  "round": 1,
+  "seed": 44,
+  "universe": 2000,
+  "sample_n": 100,
+  "out": "data/pos/audit/u_inlex_top2000_nf4/nf2k_gate_r1.tsv"
+}

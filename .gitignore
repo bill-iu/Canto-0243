@@ -70,3 +70,9 @@ terminals/
 # Mac / Windows 垃圾檔案
 .DS_Store
 Thumbs.db
+
+# Local-only research notes (keep on disk; never push)
+docs/research/
+
+# Local-only research scripts (keep on disk; never push)
+scripts/research/

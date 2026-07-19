@@ -60,6 +60,24 @@ class CodeSandwichTailRhymeRegressionTests(unittest.TestCase):
         self.assertIn("飛起", words)
         self.assertIn("飛機", words)
 
+    def test_9太2_m1_includes_解毒(self):
+        """碼夾 phoneme_anchor_only：m1 變體池 >2000 時唔因 LIMIT 漏「解毒」。"""
+        Session = lyrics_sessionmaker()
+        with Session() as db:
+            result = QueryEngine().execute(
+                SearchContext(
+                    q="9太=2",
+                    code=None,
+                    char=None,
+                    mode="m1",
+                    limit=100,
+                    offset=0,
+                    db=db,
+                )
+            )
+        words = [row["char"] for row in result.items]
+        self.assertIn("解毒", words)
+
 
 if __name__ == "__main__":
     unittest.main()

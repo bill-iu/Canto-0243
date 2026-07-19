@@ -6368,6 +6368,3394 @@
       ],
       "accepted_pairs": 516,
       "created_at": "2026-07-15T09:38:19Z"
+    },
+    "post-syn-ant-b01-20260718": {
+      "k": 48,
+      "git_commit": "eed2d3658aaaf959a565f0e807e2624062a050b5",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap: Essay top5k content has_syn_no_ant after project_syn; maintainer-curated pairs + no_natural for function words; seed fixtures/post_syn_ant_gap_top150.tsv; pre-append removed weak: 真係-唔係, 掛住-忘記, 頭先-跟住, 兩個-一個, 細妹-家姐",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 1
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b01-20260718 parent N=62",
+      "sample_parent_n": 62,
+      "sample_parent_commit": "eed2d3658aaaf959a565f0e807e2624062a050b5",
+      "sample_parent_tsv_sha256": "448a8a08a7ba9478bfaa112e51f26ebad115e11f361570bf5d842593eeef5702",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "依家",
+          "tail": "舊時",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "依度",
+          "tail": "嗰度",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "公仔",
+          "tail": "真人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇事",
+          "tail": "有事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇錯",
+          "tail": "錯",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出嚟",
+          "tail": "入去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出聲",
+          "tail": "收聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出街",
+          "tail": "返屋企",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔使",
+          "tail": "要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔係",
+          "tail": "係",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔同",
+          "tail": "一樣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔同",
+          "tail": "相同",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔好",
+          "tail": "好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔緊要",
+          "tail": "緊要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔見",
+          "tail": "見到",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大佬",
+          "tail": "細佬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "女仔",
+          "tail": "男仔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好彩",
+          "tail": "不幸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好彩",
+          "tail": "倒霉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好睇",
+          "tail": "核突",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好睇",
+          "tail": "難看",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好食",
+          "tail": "難食",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "媽咪",
+          "tail": "爹地",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "媽咪",
+          "tail": "老豆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "屋企",
+          "tail": "外面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "得閒",
+          "tail": "忙",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "放低",
+          "tail": "執起",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "條女",
+          "tail": "男仔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "污糟",
+          "tail": "乾淨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "琴晚",
+          "tail": "今朝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "真係",
+          "tail": "假",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細佬",
+          "tail": "家姐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老豆",
+          "tail": "老母",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聽日",
+          "tail": "今日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聽日",
+          "tail": "琴日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "肚餓",
+          "tail": "飽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落去",
+          "tail": "上去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落去",
+          "tail": "上嚟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "諗起",
+          "tail": "忘記",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講嘢",
+          "tail": "收聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "跟住",
+          "tail": "之前",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "返去",
+          "tail": "出嚟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "返去",
+          "tail": "過嚟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "返嚟",
+          "tail": "出去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "返學",
+          "tail": "放學",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過嚟",
+          "tail": "過去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鍾意",
+          "tail": "憎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鍾意",
+          "tail": "討厭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "靚仔",
+          "tail": "醜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "頭先",
+          "tail": "之後",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-b02-20260718": {
+      "k": 48,
+      "git_commit": "9b5acd7817b02119e7d127f90d936dbba96e7c42",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b02: next Essay top5k content has_syn_no_ant after b01; maintainer-curated; seed fixtures/post_syn_ant_gap_b02_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 2
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b02-20260718 parent N=72",
+      "sample_parent_n": 72,
+      "sample_parent_commit": "9b5acd7817b02119e7d127f90d936dbba96e7c42",
+      "sample_parent_tsv_sha256": "e7413b4f829dd6efea22a1918f56a3c5c286b4538975006cad7214aa76ff4ba2",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "仲未",
+          "tail": "早就",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傻仔",
+          "tail": "精明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傻仔",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傾計",
+          "tail": "噤聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入嚟",
+          "tail": "出去",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇問題",
+          "tail": "有問題",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔多",
+          "tail": "好多",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔舒服",
+          "tail": "舒服",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔錯",
+          "tail": "好衰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "在線",
+          "tail": "離線",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "埋嚟",
+          "tail": "走開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "埋嚟",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大嗌",
+          "tail": "噤聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大嗌",
+          "tail": "細細聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大把",
+          "tail": "稀少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "天台",
+          "tail": "地庫",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好味",
+          "tail": "難吃",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好朋友",
+          "tail": "仇人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好朋友",
+          "tail": "敵人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好返",
+          "tail": "惡化",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好靚",
+          "tail": "核突",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好靚",
+          "tail": "醜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好靚",
+          "tail": "難看",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "幾好",
+          "tail": "好衰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後便",
+          "tail": "前面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搞掂",
+          "tail": "搞唔掂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "每日",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "每日",
+          "tail": "間中",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "求其",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "特登",
+          "tail": "無意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "留低",
+          "tail": "走",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "留低",
+          "tail": "離開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "等陣",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細細聲",
+          "tail": "大聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細路仔",
+          "tail": "大人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老細",
+          "tail": "下屬",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "老細",
+          "tail": "打工仔",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "衰人",
+          "tail": "善人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "衰人",
+          "tail": "好人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "裏便",
+          "tail": "外便",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "裏便",
+          "tail": "外面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講真",
+          "tail": "呃人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講真",
+          "tail": "講大話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講笑",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "阻住",
+          "tail": "放行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "阻住",
+          "tail": "讓路",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陣間",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "面紅",
+          "tail": "面青",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "食嘢",
+          "tail": "斷食",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "食嘢",
+          "tail": "絕食",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-b03-20260718": {
+      "k": 44,
+      "git_commit": "f0e0b8229c585c7b60c14d3620487d81dca21ffc",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b03: residual Essay top5k content after b01/b02; maintainer-curated; seed fixtures/post_syn_ant_gap_b03_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 3
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b03-20260718 parent N=81",
+      "sample_parent_n": 81,
+      "sample_parent_commit": "f0e0b8229c585c7b60c14d3620487d81dca21ffc",
+      "sample_parent_tsv_sha256": "ea277805d8fed2c1913c97b92ca4b4859953cb5699ef76f5e6c0fbc211594366",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "不在",
+          "tail": "在場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "交流",
+          "tail": "斷絕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傻妹",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇所謂",
+          "tail": "在乎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冇所謂",
+          "tail": "重視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹水",
+          "tail": "正經",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹水",
+          "tail": "講真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔捨得",
+          "tail": "捨得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嚇親",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大部份",
+          "tail": "少數",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大隻",
+          "tail": "瘦削",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好嘢",
+          "tail": "壞事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "尋晚",
+          "tail": "今朝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "就嚟",
+          "tail": "好耐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後尾",
+          "tail": "起初",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "後尾",
+          "tail": "首先",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "心裡",
+          "tail": "表面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "忘了",
+          "tail": "記得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "大方",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "大膽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "怕醜",
+          "tail": "放肆",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "成世",
+          "tail": "一陣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打橫",
+          "tail": "打直",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搞錯",
+          "tail": "正確",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擰頭",
+          "tail": "點頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "是但",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "凌晨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晏晝",
+          "tail": "朝早",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有份",
+          "tail": "冇份",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有份",
+          "tail": "缺席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝頭早",
+          "tail": "晚黑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "朝頭早",
+          "tail": "深夜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "玩完",
+          "tail": "開始",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發夢",
+          "tail": "現實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡快",
+          "tail": "慢慢",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "盡快",
+          "tail": "遲啲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第日",
+          "tail": "尋日",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第時",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "第時",
+          "tail": "而家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細細個",
+          "tail": "大個",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細細個",
+          "tail": "長大",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "總有",
+          "tail": "冇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "總有",
+          "tail": "永不",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "肥仔",
+          "tail": "瘦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "行街",
+          "tail": "返屋企",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "衰仔",
+          "tail": "乖",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遲啲",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遲啲",
+          "tail": "馬上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "阿伯",
+          "tail": "阿嬸",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-b04-20260718": {
+      "k": 46,
+      "git_commit": "e3b3d6b88dc0d721c839a4a0ac6be48da34c6332",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b04: residual Essay top5k content after b01-b03; maintainer-curated; seed fixtures/post_syn_ant_gap_b04_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 4
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b04-20260718 parent N=89",
+      "sample_parent_n": 89,
+      "sample_parent_commit": "e3b3d6b88dc0d721c839a4a0ac6be48da34c6332",
+      "sample_parent_tsv_sha256": "ea6efc5101ed1311ec0ed94b27f0be4be6f5c34754b37f06bd1bfcd4feab9af5",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "冇幾耐",
+          "tail": "好耐",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初初",
+          "tail": "最後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初初",
+          "tail": "結局",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "加埋",
+          "tail": "扣除",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包住",
+          "tail": "打開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包住",
+          "tail": "拆開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "匿埋",
+          "tail": "現身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "繼續",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "進行",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "叫停",
+          "tail": "開波",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "呷醋",
+          "tail": "放心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘈交",
+          "tail": "和好",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "因住",
+          "tail": "唔小心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "因住",
+          "tail": "大意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "埋位",
+          "tail": "離席",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "壓住",
+          "tail": "鬆手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夾住",
+          "tail": "放開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "夾住",
+          "tail": "鬆開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多人",
+          "tail": "冇人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多人",
+          "tail": "無人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多時",
+          "tail": "好少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好多時",
+          "tail": "從不",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "專登",
+          "tail": "無意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打人",
+          "tail": "保護",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打人",
+          "tail": "救人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擺明",
+          "tail": "遮掩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "攬實",
+          "tail": "鬆手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有嘢",
+          "tail": "冇事",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "未夠",
+          "tail": "夠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "未夠",
+          "tail": "足夠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "構建",
+          "tail": "摧毀",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "樣衰",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "相識",
+          "tail": "陌生",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睇見",
+          "tail": "睇唔見",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "稍等",
+          "tail": "即刻",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "稍等",
+          "tail": "馬上",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "細粒",
+          "tail": "龐大",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "話事",
+          "tail": "聽話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "話唔定",
+          "tail": "肯定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "講聲",
+          "tail": "收聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起嚟",
+          "tail": "瞓低",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過份",
+          "tail": "適量",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜怪",
+          "tail": "好睇",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜怪",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "醜樣",
+          "tail": "靚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "重啓",
+          "tail": "關閉",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "離遠",
+          "tail": "埋嚟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "離遠",
+          "tail": "靠近",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鬆一口氣",
+          "tail": "擔心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鬆一口氣",
+          "tail": "緊張",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-b05-20260718": {
+      "k": 14,
+      "git_commit": "5f1fc14197862f748b180d72f7018b1d2872ca71",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "post-syn gap b05: final sweep Essay top5k content residual after b01-b04; maintainer-curated; seed fixtures/post_syn_ant_gap_b05_all.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_gap",
+        "batch_index": 5
+      },
+      "sample_seed": 20260718,
+      "sample_n": 23,
+      "sample_ok": 23,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-b05-20260718 parent N=23",
+      "sample_parent_n": 23,
+      "sample_parent_commit": "5f1fc14197862f748b180d72f7018b1d2872ca71",
+      "sample_parent_tsv_sha256": "020b998c7b96cd9c19dff802d55edd03c4b4bc61c334255c4799bae2c0b44f48",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "七七八八",
+          "tail": "明確",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "七七八八",
+          "tail": "清楚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做得",
+          "tail": "做唔到",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做得",
+          "tail": "唔得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "其他人",
+          "tail": "自己",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初頭",
+          "tail": "最後",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "初頭",
+          "tail": "結尾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勤力",
+          "tail": "懶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勤力",
+          "tail": "懶惰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勾起",
+          "tail": "忘記",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔覺意",
+          "tail": "故意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔覺意",
+          "tail": "特登",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "急不及待",
+          "tail": "不慌不忙",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "急不及待",
+          "tail": "從容",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晨早",
+          "tail": "夜晚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "晨早",
+          "tail": "晚黑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "最愛",
+          "tail": "討厭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有型",
+          "tail": "老土",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有型",
+          "tail": "醜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "清靜",
+          "tail": "嘈",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "清靜",
+          "tail": "嘈雜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "炒作",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落力",
+          "tail": "懶散",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b01-20260718": {
+      "k": 22,
+      "git_commit": "2be638cc5994a03d6ae83ea1492434ef1477045a",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k content has_syn_no_ant b01; freeze open=1600; maintainer-curated top150; seed fixtures/post_syn_ant_ring5k10k_b01_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 1
+      },
+      "sample_seed": 20260718,
+      "sample_n": 39,
+      "sample_ok": 39,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b01-20260718 parent N=39",
+      "sample_parent_n": 39,
+      "sample_parent_commit": "2be638cc5994a03d6ae83ea1492434ef1477045a",
+      "sample_parent_tsv_sha256": "34f808eef326601e16464706a30031f3fb7a2757b538d3afdb48e83072ec093e",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "一味",
+          "tail": "偶爾",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "故意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "有意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不經意",
+          "tail": "特登",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不錯",
+          "tail": "好衰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不錯",
+          "tail": "差勁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "服從",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "聽命",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做主",
+          "tail": "聽話",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傾向",
+          "tail": "反對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "出場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "退場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "入場",
+          "tail": "離場",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出貨",
+          "tail": "入貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出貨",
+          "tail": "收貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "北面",
+          "tail": "南邊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "如今",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "後來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "原先",
+          "tail": "而家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "合力",
+          "tail": "各自",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "合力",
+          "tail": "單幹",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "故意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "有意",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "唔經唔覺",
+          "tail": "特登",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "女主角",
+          "tail": "男主角",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "小夥子",
+          "tail": "老人家",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拷貝",
+          "tail": "原件",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明細",
+          "tail": "含糊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "明細",
+          "tail": "籠統",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "租賃",
+          "tail": "出售",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "租賃",
+          "tail": "購買",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聽取",
+          "tail": "忽略",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "訂購",
+          "tail": "退訂",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "這次",
+          "tail": "上次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "這次",
+          "tail": "下次",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "選購",
+          "tail": "退貨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陌生人",
+          "tail": "熟人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "陌生人",
+          "tail": "自己人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "體內",
+          "tail": "體外",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b02-20260718": {
+      "k": 25,
+      "git_commit": "cd62efeea067e3e7ad6b5651c167b5d386d3383e",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b02; residual after b01 open~1450; maintainer-curated top150; seed fixtures/post_syn_ant_ring5k10k_b02_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 2
+      },
+      "sample_seed": 20260718,
+      "sample_n": 34,
+      "sample_ok": 34,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b02-20260718 parent N=34",
+      "sample_parent_n": 34,
+      "sample_parent_commit": "cd62efeea067e3e7ad6b5651c167b5d386d3383e",
+      "sample_parent_tsv_sha256": "094b1e494c662738451bddd52f19d0181970dd03d84bbac81fa502aa717566a3",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "不在乎",
+          "tail": "在乎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不在乎",
+          "tail": "重視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "停下",
+          "tail": "繼續",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "停下",
+          "tail": "開始",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "凝望",
+          "tail": "無視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出具",
+          "tail": "收回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "出走",
+          "tail": "回來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "剎那間",
+          "tail": "永遠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "剎那間",
+          "tail": "長久",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "力氣",
+          "tail": "無力",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "力氣",
+          "tail": "虛弱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "包紮",
+          "tail": "解開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "報案",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "寫真",
+          "tail": "虛構",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "戒心",
+          "tail": "信任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "戒心",
+          "tail": "放心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "搶劫",
+          "tail": "救助",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "斜路",
+          "tail": "正路",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "旁人",
+          "tail": "自己",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "登出",
+          "tail": "登入",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "監察",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "監獄",
+          "tail": "自由",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "空位",
+          "tail": "滿座",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繳費",
+          "tail": "免費",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "背部",
+          "tail": "前面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "背部",
+          "tail": "正面",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "致使",
+          "tail": "避免",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "致使",
+          "tail": "防止",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "草草",
+          "tail": "仔細",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "草草",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "萬能",
+          "tail": "無能",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "親愛",
+          "tail": "憎恨",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "親愛",
+          "tail": "討厭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "麻醉",
+          "tail": "清醒",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b03-20260718": {
+      "k": 20,
+      "git_commit": "1be7d2f249941efe34bbe8951651686a54825ad5",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b03; residual after b02 open~1300; maintainer-curated top150; seed fixtures/post_syn_ant_ring5k10k_b03_top150.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 3
+      },
+      "sample_seed": 20260718,
+      "sample_n": 29,
+      "sample_ok": 29,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b03-20260718 parent N=29",
+      "sample_parent_n": 29,
+      "sample_parent_commit": "1be7d2f249941efe34bbe8951651686a54825ad5",
+      "sample_parent_tsv_sha256": "1c6df62e5098293341ce4d5896e9cc2ed5fe590eeb3e2a894c06c2d7ac745d8e",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "佔據",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "侷限",
+          "tail": "無限",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "修補",
+          "tail": "破壞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做工",
+          "tail": "休息",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "做工",
+          "tail": "偷懶",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "塞車",
+          "tail": "暢通",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "塞車",
+          "tail": "暢順",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "弱智",
+          "tail": "聰明",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思念",
+          "tail": "忘記",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思念",
+          "tail": "淡忘",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "男孩子",
+          "tail": "女孩子",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "看重",
+          "tail": "輕視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繼承",
+          "tail": "拋棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "繼承",
+          "tail": "放棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自身",
+          "tail": "他人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自身",
+          "tail": "別人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落水",
+          "tail": "上岸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "起行",
+          "tail": "停留",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "迷茫",
+          "tail": "清晰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "迷茫",
+          "tail": "清醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過往",
+          "tail": "將來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過往",
+          "tail": "未來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過癮",
+          "tail": "掃興",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "關愛",
+          "tail": "冷漠",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隱患",
+          "tail": "保障",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隱患",
+          "tail": "安全",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "震撼",
+          "tail": "平淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "黯然",
+          "tail": "開心",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "黯然",
+          "tail": "開朗",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b04-20260718": {
+      "k": 94,
+      "git_commit": "570a168ef84f92ceb4eb3ab95eddea785670e345",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b04; batch_size=500 open heads; maintainer ant + bulk no_natural for remainder; seed fixtures/post_syn_ant_ring5k10k_b04_top500.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 4,
+        "batch_target_heads": 500
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b04-20260718 parent N=163",
+      "sample_parent_n": 163,
+      "sample_parent_commit": "570a168ef84f92ceb4eb3ab95eddea785670e345",
+      "sample_parent_tsv_sha256": "77a75096c2ce2cc88dc050acfb827dc4912b2ea6c0be32d40f7c85bc8213f43b",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "中等",
+          "tail": "極端",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "交互",
+          "tail": "單向",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "便捷",
+          "tail": "繁瑣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "便捷",
+          "tail": "麻煩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "信仰",
+          "tail": "懷疑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "倒影",
+          "tail": "實物",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "倒影",
+          "tail": "實體",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "值錢",
+          "tail": "廉價",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "傷風",
+          "tail": "康復",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "反過來",
+          "tail": "照舊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "回升",
+          "tail": "回落",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "回程",
+          "tail": "往程",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "在校",
+          "tail": "離校",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "增長",
+          "tail": "下降",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "增長",
+          "tail": "減少",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "封殺",
+          "tail": "解禁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "就讀",
+          "tail": "輟學",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "幹掉",
+          "tail": "拯救",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "推動",
+          "tail": "阻擋",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "摺疊",
+          "tail": "展開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "摺疊",
+          "tail": "攤開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "撒嬌",
+          "tail": "正經",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "整整",
+          "tail": "零碎",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "有幸",
+          "tail": "不幸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "杜絕",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "杜絕",
+          "tail": "縱容",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "渴求",
+          "tail": "厭棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "滯後",
+          "tail": "超前",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "玩笑",
+          "tail": "嚴肅",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "玩笑",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發揚",
+          "tail": "壓抑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "白費",
+          "tail": "值得",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "直觀",
+          "tail": "隱晦",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "着數",
+          "tail": "吃虧",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "等候",
+          "tail": "遲到",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "絕不",
+          "tail": "可能",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "絕跡",
+          "tail": "再現",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "翻轉",
+          "tail": "固定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "聆聽",
+          "tail": "充耳不聞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "致富",
+          "tail": "破產",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "落下",
+          "tail": "上升",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "融入",
+          "tail": "孤立",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "調頭",
+          "tail": "前進",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "變臉",
+          "tail": "言歡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "躲避",
+          "tail": "面對",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "過問",
+          "tail": "漠視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "還好",
+          "tail": "糟糕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "還款",
+          "tail": "借貸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "隨後",
+          "tail": "事前",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "骨折",
+          "tail": "痊癒",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b05-20260718": {
+      "k": 90,
+      "git_commit": "a5efa8b4c36fbc2f1c3a5476de5e9fc9b76d5ba5",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b05; batch_size=500; maintainer ant + bulk no_natural; seed fixtures/post_syn_ant_ring5k10k_b05_top500.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 5,
+        "batch_target_heads": 500
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b05-20260718 parent N=163",
+      "sample_parent_n": 154,
+      "sample_parent_commit": "a5efa8b4c36fbc2f1c3a5476de5e9fc9b76d5ba5",
+      "sample_parent_tsv_sha256": "3a7322d5b0e6bc3c0cdd4396e2e72c386a61c04aa78393fa4079b2cd3a86359d",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "冰凍",
+          "tail": "解凍",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "勾引",
+          "tail": "拒絕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "午後",
+          "tail": "上午",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "受驚",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "受驚",
+          "tail": "鎮定",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吶喊",
+          "tail": "靜默",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "填補",
+          "tail": "掏空",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "填補",
+          "tail": "留空",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大選",
+          "tail": "落選",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "奉獻",
+          "tail": "索取",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "差點",
+          "tail": "穩陣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年少",
+          "tail": "年邁",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "年少",
+          "tail": "年長",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "強有力",
+          "tail": "無力",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "從沒",
+          "tail": "常常",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "復出",
+          "tail": "退役",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "恐嚇",
+          "tail": "撫慰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "悄悄",
+          "tail": "公開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "悄悄",
+          "tail": "高聲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "應酬",
+          "tail": "獨處",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "抓獲",
+          "tail": "逃脱",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "抓獲",
+          "tail": "釋放",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "拋開",
+          "tail": "抓緊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "指出",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "提速",
+          "tail": "減速",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擅自",
+          "tail": "請示",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "泄漏",
+          "tail": "密封",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "湧出",
+          "tail": "吸入",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "漂流",
+          "tail": "停泊",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "漂流",
+          "tail": "靠岸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "熱身",
+          "tail": "收工",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "當即",
+          "tail": "遲緩",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "痛心",
+          "tail": "欣慰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "着實",
+          "tail": "假裝",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "耀眼",
+          "tail": "暗淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "耀眼",
+          "tail": "黯淡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "胡亂",
+          "tail": "認真",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "要緊",
+          "tail": "次要",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "要緊",
+          "tail": "無關",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "規避",
+          "tail": "迎戰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鍾情",
+          "tail": "厭棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "鍾情",
+          "tail": "討厭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "開花",
+          "tail": "落花",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "開關",
+          "tail": "關機",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "關懷",
+          "tail": "漠視",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "防備",
+          "tail": "疏忽",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "餘下",
+          "tail": "耗盡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "點火",
+          "tail": "滅火",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "點火",
+          "tail": "熄滅",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "點火",
+          "tail": "熄火",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-ring5k10k-b06-20260718": {
+      "k": 54,
+      "git_commit": "e255c4abf149f368c2e3f578aca2f21d326e65e3",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 ring Essay 5k-10k b06 CLOSEOUT; all remaining open heads; maintainer ant + bulk no_natural; seed fixtures/post_syn_ant_ring5k10k_b06_all.tsv",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_post_syn_gap",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "post_syn_ant_ring5k10k",
+        "batch_index": 6,
+        "batch_target_heads": 147
+      },
+      "sample_seed": 20260718,
+      "sample_n": 50,
+      "sample_ok": 50,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-ring5k10k-b06-20260718 parent N=121",
+      "sample_parent_n": 121,
+      "sample_parent_commit": "e255c4abf149f368c2e3f578aca2f21d326e65e3",
+      "sample_parent_tsv_sha256": "d817beb7fdabd1b6287c3143be8945e8b609912888d0b6311b574cde77431e40",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "下載",
+          "tail": "上傳",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "下載",
+          "tail": "上載",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "不至於",
+          "tail": "以至於",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "乃是",
+          "tail": "並非",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "作案",
+          "tail": "破案",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "保釋",
+          "tail": "扣押",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冤枉",
+          "tail": "昭雪",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "冤枉",
+          "tail": "清白",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "可悲",
+          "tail": "可喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "吹牛",
+          "tail": "務實",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "哽咽",
+          "tail": "暢談",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "哽咽",
+          "tail": "歡笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "問世",
+          "tail": "絕版",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "問世",
+          "tail": "絕跡",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘆息",
+          "tail": "歡喜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "嘆息",
+          "tail": "歡笑",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "大好",
+          "tail": "糟糕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "彎腰",
+          "tail": "抬頭",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思索",
+          "tail": "莽撞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "思索",
+          "tail": "衝動",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "懂事",
+          "tail": "任性",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "手緊",
+          "tail": "寬裕",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打劫",
+          "tail": "援助",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "打劫",
+          "tail": "救濟",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "招惹",
+          "tail": "迴避",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "招惹",
+          "tail": "避開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "掉轉",
+          "tail": "前進",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "接手",
+          "tail": "放手",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "放膽",
+          "tail": "膽小",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "收攏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "聚集",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "散落",
+          "tail": "集合",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "斷氣",
+          "tail": "甦醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "標明",
+          "tail": "隱瞞",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "永別",
+          "tail": "重聚",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "求情",
+          "tail": "嚴懲",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "減弱",
+          "tail": "增強",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "演練",
+          "tail": "實戰",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "知己",
+          "tail": "陌路",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "破綻",
+          "tail": "完整",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碰到",
+          "tail": "避開",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "碰到",
+          "tail": "錯過",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "累積",
+          "tail": "消耗",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "累積",
+          "tail": "耗散",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "終究",
+          "tail": "暫且",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "終究",
+          "tail": "暫時",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "缺口",
+          "tail": "補足",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "缺口",
+          "tail": "齊全",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "評判",
+          "tail": "偏袒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "責任心",
+          "tail": "不負責任",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
+    },
+    "post-syn-ant-p1-nn-flip-b01-20260718": {
+      "k": 11,
+      "git_commit": "de1b204d008ebc46838731a5024e0b895f7a6026",
+      "db_sha256": "8233235786f1454d4eee70498724f369e77699a5d07281a53c1bff59af2d9855",
+      "essay_sha256": "90f361ac924c255b4dedd002ef5260ca7d8df745506c78a36863744d45e4633e",
+      "prompt_path": "data/syn_ant/project-antonyms-prompt.txt",
+      "prompt_sha256": "b579cc0a6ed6a25840b341933bbe33286a4183f2bb0c2523c1537ab3e0c82fac",
+      "model_note": "P1 final audit nn-flip: 11 over-broad no_natural heads get maintainer ant pairs (睡覺/擅長/查收/發狂/非禮/好友/遏制/收養/作嘔/自治/擴容)",
+      "model": "xai/grok-4.5",
+      "model_provider": "xAI",
+      "model_version": "grok-4.5",
+      "model_params": {
+        "generation_mode": "maintainer_curated_nn_flip",
+        "max_proposals_per_head": 3,
+        "temperature": null,
+        "top_p": null,
+        "max_output_tokens": null,
+        "campaign": "p1_nn_flip",
+        "batch_index": 1,
+        "source_audit": "p1-ring5k10k-final-20260718"
+      },
+      "sample_seed": 20260718,
+      "sample_n": 23,
+      "sample_ok": 23,
+      "ok_rate_threshold": 0.9,
+      "ok_rate": 1.0,
+      "sample_parent": "project_antonyms.tsv post-syn-ant-p1-nn-flip-b01-20260718 parent N=23",
+      "sample_parent_n": 23,
+      "sample_parent_commit": "de1b204d008ebc46838731a5024e0b895f7a6026",
+      "sample_parent_tsv_sha256": "38697d66135b1dafcc770c37fda3e154db4a3c814bc0f3f4ba4cc0c83b273295",
+      "removed_sample_fails": [],
+      "sample_verdicts": [
+        {
+          "head": "作嘔",
+          "tail": "可口",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "作嘔",
+          "tail": "美味",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好友",
+          "tail": "仇人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "好友",
+          "tail": "敵人",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擅長",
+          "tail": "拙劣",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擅長",
+          "tail": "生疏",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擴容",
+          "tail": "壓縮",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "擴容",
+          "tail": "縮減",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "收養",
+          "tail": "拋棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "收養",
+          "tail": "遺棄",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "查收",
+          "tail": "拒收",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "查收",
+          "tail": "退回",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發狂",
+          "tail": "冷靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "發狂",
+          "tail": "平靜",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "起身",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "醒",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "睡覺",
+          "tail": "醒來",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自治",
+          "tail": "受控",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "自治",
+          "tail": "附庸",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遏制",
+          "tail": "放任",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "遏制",
+          "tail": "縱容",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "非禮",
+          "tail": "有禮",
+          "verdict": "ok",
+          "reasons": []
+        },
+        {
+          "head": "非禮",
+          "tail": "禮貌",
+          "verdict": "ok",
+          "reasons": []
+        }
+      ]
     }
   },
   "post_land_removed_pairs": [
@@ -6485,6 +9873,108 @@
       "head": "遮風擋雨",
       "tail": "暴露無遺",
       "reason": "campaign_len4 final audit fail"
+    },
+    {
+      "head": "租賃",
+      "tail": "出售",
+      "reason": "rent_vs_sell_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "選購",
+      "tail": "退貨",
+      "reason": "process_related_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "入場",
+      "tail": "出場",
+      "reason": "出場_ambiguous_enter_stage",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "再不",
+      "tail": "總是",
+      "reason": "再不_conditional_not_polarity",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "還款",
+      "tail": "借貸",
+      "reason": "repay_vs_borrow_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "看成",
+      "tail": "看輕",
+      "reason": "regard_as_vs_look_down_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "變臉",
+      "tail": "言歡",
+      "reason": "tail_rare_weak_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "湧出",
+      "tail": "倒灌",
+      "reason": "not_stable_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "散步",
+      "tail": "奔跑",
+      "reason": "both_locomotion_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "索賠",
+      "tail": "賠償",
+      "reason": "claim_vs_compensate_related_not_ant",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "叮囑",
+      "tail": "沉默",
+      "reason": "advise_vs_silent_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "問世",
+      "tail": "絕跡",
+      "reason": "come_out_vs_extinct_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "問世",
+      "tail": "絕版",
+      "reason": "come_out_vs_oop_weak",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "演練",
+      "tail": "上陣",
+      "reason": "practice_vs_battle_related",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "下一步",
+      "tail": "回頭",
+      "reason": "weak_sequence_not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "終究",
+      "tail": "目前",
+      "reason": "not_antonym",
+      "source_audit": "p1-ring5k10k-final-20260718"
+    },
+    {
+      "head": "剖析",
+      "tail": "含糊",
+      "reason": "analyze_vs_vague_wrong_axis",
+      "source_audit": "p1-ring5k10k-final-20260718"
     }
   ]
 }

@@ -1,0 +1,104 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p3	鋁合金	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	錄入	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			名動
+p3	鎚	u			no-source;p3;fallback	low	low|u|plain	SOFT				名／動邊
+p3	鐵礦	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	鐵礦石	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	鑫	u			no-source;fallback	low	low|u|plain	SOFT				名用字
+p3	長輩	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	開個	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	關愛	u			no-source;fallback	low	low|u|plain	BAD	n,v			名動
+p3	關機	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	關稅	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	關系	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	防控	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			名動
+p3	阿南道	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	阿平	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	阿黃	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	限於	u			no-source;p3;fallback	low	low|u|plain	BAD	v,x			動／介
+p3	陣時	u			no-source;p3;fallback	low	low|u|plain	BAD	r			清晰副詞
+p3	難爲	u			no-source;fallback	low	low|u|plain	BAD	a,v			形／動
+p3	難講	u			no-source;p3;fallback	low	low|u|plain	BAD	a,v			粵
+p3	零售商	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	電臺	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	靠着	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	音箱	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	響到	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	頭望	u			no-source;p3;fallback	low	low|u|plain	OK				截斷不明
+p3	頭箍	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	飛利浦	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	飛機票	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	食下	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	飯堂	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	飲飲	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	餘人	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	馬丁	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	駕照	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	體型	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	高低	u			no-source;fallback	low	low|u|plain	BAD	a,n			形／名
+p3	高的	u			no-source;p3;fallback	low	low|u|plain	SOFT				形+的；可 a
+p3	鬧交	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	鬼知	u			no-source;p3;fallback	low	low|u|plain	BAD	r,v			粵反詰
+p3	魯尼	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	鹹溼	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	麥皓臻	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	麥迪	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	麻麻	u			no-source;p3;fallback	low	low|u|plain	SOFT				粵形／疊
+p3	麼麼	u			no-source;p3;fallback	low	low|u|plain	SOFT				嘆／擬
+p3	黃金周	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	點球	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	點評	u			no-source;fallback	low	low|u|plain	BAD	n,v			名動
+p3	點點頭	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	黨內	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	鼻頭	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	鼻鼻	u			no-source;p3;fallback	low	low|u|plain	SOFT				疊稱
+p3	互助	r,v			cow-multi;p3	medium	medium|gate|plain	BAD	n,v			互助主名／動；r 假陽會毒副詞閘
+p3	侮辱	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	侵犯	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	保管	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	偏愛	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	傷痛	n,v			cow-multi;p3	medium	medium|gate|plain	SOFT				主 n；v 弱可留 multi
+p3	免除	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	分攤	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	刺痛	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	削	n,v			cow-multi;p3	medium	medium|gate|plain	SOFT				主 v；n 弱
+p3	勘探	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	吹氣	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	告別	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	固有	n,v			cow-multi;p3	medium	medium|gate|plain	BAD	a			形「固有」；n,v 假陽會毒閘
+p3	埋伏	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	培養	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	奮鬥	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	定額	n,v			cow-multi;p3	medium	medium|gate|plain	SOFT				主 n；v 弱
+p3	實踐	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	展覽	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	干擾	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	愛好	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	批准	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	抨擊	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	搖擺	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	操作	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	改良	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	放火	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	流通	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	混合	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	激烈	n,v			cow-multi;p3	medium	medium|gate|plain	BAD	a			形；n,v 假陽
+p3	熟練	n,v			cow-multi;p3	medium	medium|gate|plain	BAD	a			形；n,v 假陽
+p3	爭吵	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	犯罪	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	略微	n,r			cow-multi;p3	medium	medium|gate|plain	BAD	r			副「略微」；n 假陽
+p3	發熱	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	瞄準	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	粉碎	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	結合	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	編織	a,n,v			cow-multi;p3	medium	medium|gate|plain	SOFT				主 n,v；a 弱
+p3	總結	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	繼承	a,v			cow-multi	medium	medium|gate|plain	BAD	n,v			名動；a 假陽
+p3	趕緊	n,v			cow-multi;p3	medium	medium|gate|plain	BAD	r			副「趕緊」；n,v 假陽
+p3	辯論	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	追蹤	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	通風	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	違反	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	遠離	a,n,v			cow-multi	medium	medium|gate|plain	SOFT				主 v；a,n 弱可
+p3	遺傳	n,v			cow-multi;p3	medium	medium|gate|plain	OK				true multi n,v 閘用可
+p3	顫抖	a,n,v			cow-multi	medium	medium|gate|plain	SOFT				主 v,n；a 弱

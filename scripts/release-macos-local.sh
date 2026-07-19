@@ -193,6 +193,7 @@ echo "==> Build portable..."
 (
   export PORTABLE_MACOS_ARCH="$ARCH"
   export SKIP_README_SYNC="$SKIP_README"
+  export PORTABLE_RELEASE_TAG="$TAG"
   BUILD_PY="$ROOT/.build-python/python/bin/python3.12"
   if [[ ! -x "$BUILD_PY" ]]; then
     echo "==> Fetch build Python (standalone CPython 3.12)..."
@@ -228,8 +229,14 @@ if [[ "$TEST" -eq 1 ]]; then
 fi
 
 if [[ "$UPLOAD" -eq 1 ]]; then
-  echo "==> Upload to GitHub Release $TAG (tar only)..."
+  echo "==> Upload to GitHub Release $TAG (tar + portable-manifest)..."
   _gh release upload "$TAG" "$TAR_PATH" --clobber
+  MANIFEST_SIDECAR="$ROOT/dist/portable-manifest-macos-${ARCH}.json"
+  if [[ -f "$MANIFEST_SIDECAR" ]]; then
+    _gh release upload "$TAG" "$MANIFEST_SIDECAR" --clobber
+  else
+    echo "WARN: missing $MANIFEST_SIDECAR (套件更新提示 will not detect this build)" >&2
+  fi
   if [[ -n "$GH_REPO" ]]; then
     repo="$GH_REPO"
   else

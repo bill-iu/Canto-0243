@@ -1,6 +1,7 @@
 /** Code-prefixed whole-word equals empty hint. */
 import type { Database } from '../sqljs.ts';
 import { queryFirst } from '../database-backend.ts';
+import { codeDigitStringFromSpec } from '../position-match/filters/f1-slot-code.ts';
 import { getEqualsSpan, type MatchSpec } from '../position-match/spec.ts';
 
 export const CODE_PREFIXED_WHOLE_WORD_EQUALS_EMPTY_HINT = 
@@ -18,7 +19,6 @@ export async function codePrefixedWholeWordEqualsEmptyHint(
     return null;
   }
   
-  const { codeDigitStringFromSpec } = await import('../position-match/filters/f1-slot-code.ts');
   const code = codeDigitStringFromSpec(spec) || '';
   const literal = span.ref_literal;
   

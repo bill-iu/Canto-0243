@@ -4,6 +4,10 @@
  */
 import type { DatabaseBackend } from './database-backend.ts';
 import { splitJyutping } from './jyutping-codec.ts';
+import {
+  eligibleForAnchorPhonemeUnion,
+  pronRankSortValueForWord,
+} from './ranking.ts';
 
 const WRONG_LIU_TAIL = /liu[25] dou2$/;
 
@@ -146,30 +150,54 @@ export async function ensureConnectiveCompoundRows(db: DatabaseBackend): Promise
   }
 }
 
-/** First single-char reading in words table (for 音節拼接). */
-async function firstSingleCharReading(
+type SingleCharReading = { jyutping: string; code: string };
+
+/**
+ * 音節拼接用單字讀音：跟 rime pron_rank（預設優先），唔取 DB 插入順序。
+ * 有「預設／常用／未知」候選時剔罕見／棄用；全未知時仍揀 rank 最低＋粵拼序。
+ */
+export function pickComposeSingleCharReading(
+  char: string,
+  candidates: SingleCharReading[],
+): SingleCharReading | null {
+  const valid = candidates.filter((c) => c.jyutping);
+  if (!valid.length) return null;
+  const eligible = valid.filter((c) => eligibleForAnchorPhonemeUnion(char, c.jyutping));
+  const pool = eligible.length ? eligible : valid;
+  let best = pool[0]!;
+  for (let i = 1; i < pool.length; i++) {
+    const cur = pool[i]!;
+    const rb = pronRankSortValueForWord(char, best.jyutping);
+    const rc = pronRankSortValueForWord(char, cur.jyutping);
+    if (rc < rb || (rc === rb && cur.jyutping.localeCompare(best.jyutping) < 0)) {
+      best = cur;
+    }
+  }
+  return best;
+}
+
+/** Default single-char reading in words table (for 音節拼接). */
+async function defaultSingleCharReading(
   db: DatabaseBackend,
   char: string,
-): Promise<{ jyutping: string; code: string } | null> {
+): Promise<SingleCharReading | null> {
   const stmt = await db.prepare(
     `SELECT jyutping, code FROM words
      WHERE char = ?
-       AND (length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1))
-     LIMIT 5`,
+       AND (length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1))`,
   );
   await stmt.bind([char]);
-  let best: { jyutping: string; code: string } | null = null;
+  const candidates: SingleCharReading[] = [];
   while (await stmt.step()) {
     const row = await stmt.getAsObject();
     const jyutping = String(row.jyutping ?? '').trim();
     const code = String(row.code ?? '').trim();
     if (jyutping) {
-      best = { jyutping, code: code || '0' };
-      break;
+      candidates.push({ jyutping, code: code || '0' });
     }
   }
   await stmt.free();
-  return best;
+  return pickComposeSingleCharReading(char, candidates);
 }
 
 /**
@@ -183,7 +211,7 @@ export async function composeTransientWordRows(
   const chars = [...text];
   if (chars.length < 1) return [];
   if (chars.length === 1) {
-    const r = await firstSingleCharReading(db, chars[0]!);
+    const r = await defaultSingleCharReading(db, chars[0]!);
     if (!r) return [];
     const [initials, finals] = splitJyutping(r.jyutping);
     return [
@@ -200,7 +228,7 @@ export async function composeTransientWordRows(
   const parts: string[] = [];
   const codes: string[] = [];
   for (const ch of chars) {
-    const r = await firstSingleCharReading(db, ch);
+    const r = await defaultSingleCharReading(db, ch);
     if (!r) return [];
     parts.push(r.jyutping);
     codes.push(r.code || '0');

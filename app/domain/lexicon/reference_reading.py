@@ -23,13 +23,16 @@ PhonemeDimension = Literal["initial", "final"]
 
 
 def _eligible_anchor_reading(char: str, jyutping_syllable: str) -> bool:
-    """錨點 union：預設／常用／未知入選；罕見剔除（ADR-0029）。"""
-    from app.lexicon.rime_char_index import PRON_RANK_SORT, pron_rank_sort_value
+    """錨點 union：預設／常用／未知入選；罕見／棄用剔除（ADR-0051 §3）。"""
+    from app.lexicon.rime_char_index import (
+        ANCHOR_EXCLUDED_PRON_RANK_SORT,
+        pron_rank_sort_value,
+    )
 
     syllable = (jyutping_syllable or "").strip()
     if not syllable:
         return True
-    return pron_rank_sort_value(char, syllable) != PRON_RANK_SORT["罕見"]
+    return pron_rank_sort_value(char, syllable) not in ANCHOR_EXCLUDED_PRON_RANK_SORT
 
 
 def _initials_from_entries(entries: list[LexiconEntry]) -> set[str]:

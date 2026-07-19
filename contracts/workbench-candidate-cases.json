@@ -1,0 +1,127 @@
+{
+  "description": "Worked contract cases for the first-stage line-grid workbench. Expected fields are independent golden assertions consumed by parity runners.",
+  "cases": [
+    {
+      "id": "exact-tone-sound-only",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 1,
+        "width": 2,
+        "mode": "m3",
+        "slots": [
+          { "pos": 0, "kind": "code_digit", "digit": "3" },
+          { "pos": 1, "kind": "code_digit", "digit": "9" }
+        ],
+        "semanticIntent": "off",
+        "limit": 20
+      },
+      "expected": { "group": "sound_only", "contains": ["香港"] }
+    },
+    {
+      "id": "direct-synonym-ranked",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 2,
+        "width": 2,
+        "mode": "m3",
+        "slots": [
+          { "pos": 0, "kind": "code_digit", "digit": "3" },
+          { "pos": 1, "kind": "code_digit", "digit": "4" }
+        ],
+        "semanticIntent": "ranked",
+        "semanticSeed": "開心",
+        "limit": 20
+      },
+      "expected": { "group": "direct_syn", "contains": ["高興"] }
+    },
+    {
+      "id": "semantic-related-ranked",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 3,
+        "width": 2,
+        "mode": "m1",
+        "slots": [
+          { "pos": 0, "kind": "code_digit", "digit": "3" },
+          { "pos": 1, "kind": "code_digit", "digit": "2" }
+        ],
+        "semanticIntent": "ranked",
+        "semanticSeed": "開心",
+        "limit": 20
+      },
+      "expected": { "group": "semantic_related" }
+    },
+    {
+      "id": "direct-synonym-only",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 4,
+        "width": 2,
+        "mode": "m3",
+        "slots": [
+          { "pos": 0, "kind": "code_digit", "digit": "3" },
+          { "pos": 1, "kind": "code_digit", "digit": "4" }
+        ],
+        "semanticIntent": "direct_only",
+        "semanticSeed": "開心",
+        "limit": 20
+      },
+      "expected": { "groups": ["direct_syn"] }
+    },
+    {
+      "id": "fixed-literal-slot",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 5,
+        "width": 2,
+        "mode": "m3",
+        "slots": [
+          { "pos": 0, "kind": "literal_char", "literal": "香" },
+          { "pos": 1, "kind": "code_digit", "digit": "9" }
+        ],
+        "semanticIntent": "off",
+        "limit": 20
+      },
+      "expected": { "group": "sound_only", "contains": ["香港"] }
+    },
+    {
+      "id": "same-final-slot",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 6,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "final_anchor", "ref": "就" }],
+        "semanticIntent": "off",
+        "limit": 20
+      },
+      "expected": { "reason": "same_final" }
+    },
+    {
+      "id": "same-initial-slot",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 7,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "initial_anchor", "ref": "就" }],
+        "semanticIntent": "off",
+        "limit": 20
+      },
+      "expected": { "reason": "same_initial" }
+    },
+    {
+      "id": "zero-result-single-relaxation",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 8,
+        "width": 1,
+        "mode": "m3",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "1" }],
+        "semanticIntent": "off",
+        "limit": 20
+      },
+      "expected": { "exactCount": 0, "relaxationKind": "loosen_mode" }
+    }
+  ]
+}

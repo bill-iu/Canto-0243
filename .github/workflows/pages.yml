@@ -1,9 +1,6 @@
 name: Pages (PWA)
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
   workflow_dispatch:
     inputs:
       target_tag:
@@ -31,12 +28,8 @@ jobs:
       - name: Verify release source is current
         run: |
           git fetch origin main dev --quiet
-          if [ "${GITHUB_REF_TYPE}" = "branch" ] && [ "${GITHUB_REF_NAME}" != "main" ]; then
+          if [ "${GITHUB_REF_NAME}" != "main" ]; then
             echo "::error::Pages deploy must be dispatched from main after dev has been merged."
-            exit 1
-          fi
-          if [ "${GITHUB_REF_TYPE}" = "tag" ] && ! git merge-base --is-ancestor "${GITHUB_SHA}" origin/main; then
-            echo "::error::Release tag commit must be reachable from origin/main."
             exit 1
           fi
           if ! git merge-base --is-ancestor origin/dev origin/main; then
@@ -44,10 +37,10 @@ jobs:
             exit 1
           fi
 
-      - name: Download lexicon (lyrics.db) from this release tag
+      - name: Download lexicon from release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ inputs.target_tag || github.ref_name }}
+          TAG: ${{ inputs.target_tag }}
         run: |
           gh release download "$TAG" -p "lyrics.db" --clobber
           test -s lyrics.db
@@ -56,7 +49,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Fetch rime char.csv for PWA prebuild
+      - name: Fetch rime data
         run: python scripts/fetch/fetch_rime_data.py
 
       - uses: actions/setup-node@v6
@@ -72,8 +65,8 @@ jobs:
       - name: Build PWA bundle
         working-directory: client
         env:
-          RELEASE_TAG: ${{ inputs.target_tag || github.ref_name }}
-          VITE_LEXICON_VERSION: ${{ inputs.target_tag || github.ref_name }}
+          RELEASE_TAG: ${{ inputs.target_tag }}
+          VITE_LEXICON_VERSION: ${{ inputs.target_tag }}
         run: npm run build
 
       - name: Setup Pages
@@ -94,4 +87,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
-

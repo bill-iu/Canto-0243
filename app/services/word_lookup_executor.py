@@ -70,7 +70,7 @@ class WordLookupExecutor:
         mode: str,
         limit: int,
         offset: int,
-    ) -> List[dict]:
+    ) -> tuple[List[dict], int]:
         # 庫命中優先；缺庫用 admission 記憶體合成（唔寫庫 — ADR-0054 精神／詞條 lookup）
         raw_targets: List = self._db.query(Word).filter(Word.char == q).all()
         if not raw_targets and re.search(r"[\u4e00-\u9fff]", q):
@@ -82,20 +82,20 @@ class WordLookupExecutor:
             if len(q) >= 1:
                 warm_ref_char_for_lookup(q[-1], self._db)
             built = build_lookup_layout(q, raw_targets, self._db)
-            return paginate(built, offset, limit)
-        return []
+            return paginate(built, offset, limit), len(built)
+        return [], 0
 
-    def jyut_fragment(self, q: str, limit: int, offset: int) -> List[dict]:
+    def jyut_fragment(self, q: str, limit: int, offset: int) -> tuple[List[dict], int]:
         word_len = expected_word_length(q)
         if word_len is None:
-            return []
+            return [], 0
 
         query = self._db.query(Word).filter(length_filter(word_len))
         candidates = query.all()
         matched = [w for w in candidates if matches_jyutping_query(w.jyutping or "", q)]
-        ordered = sort_search_results(matched)
+        ordered = sort_search_results(deduplicate_words(matched))
         page = paginate(ordered, offset, limit)
-        return [serialize_word(w) for w in page]
+        return [serialize_word(w) for w in page], len(ordered)
 
     def lookup(
         self,
@@ -104,14 +104,14 @@ class WordLookupExecutor:
         mode: str,
         limit: int,
         offset: int,
-    ) -> List[dict]:
+    ) -> tuple[List[dict], int]:
         """WordLookupQuery path：canto 優先，含字母則 fallback jyut。"""
-        res = self.pure_canto(q, code, mode, limit, offset)
-        if res:
-            return res
+        res, total = self.pure_canto(q, code, mode, limit, offset)
+        if res or total:
+            return res, total
         if re.search(r"[a-zA-Z]", q):
             return self.jyut_fragment(q, limit, offset)
-        return []
+        return [], 0
 
 
 __all__ = ["WordLookupExecutor"]

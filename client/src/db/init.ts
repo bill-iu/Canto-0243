@@ -8,6 +8,7 @@ import { ensureLexiconInOpfs } from './opfs-lexicon.ts';
 import { opfsAvailable } from './opfs-storage.ts';
 import {
   getLexiconCacheStatus,
+  purgeStaleLexiconCaches,
   resolveLexiconBytes,
   type LexiconRestoreSource,
 } from './lexicon-restore.ts';
@@ -71,6 +72,11 @@ export function getActiveDbBackendMode(): DbBackendMode {
   return activeDbBackendMode ?? getDbBackendMode();
 }
 
+/** Actual opened backend; null while the lexicon is not initialized. */
+export function getInitializedDbBackendMode(): DbBackendMode | null {
+  return activeDbBackendMode;
+}
+
 export function injectDatabaseForTests(candidate: DatabaseBackend | null): void {
   injectedDb = candidate;
   invalidatePhonemeIndex();
@@ -132,7 +138,6 @@ async function verifyLexiconIntegrity(
   target: LexiconTarget,
 ): Promise<void> {
   if (target.byteSize != null && bytes.byteLength !== target.byteSize) {
-    const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
     await purgeStaleLexiconCaches(
       target,
       `size ${bytes.byteLength} != ${target.byteSize}`,
@@ -147,7 +152,6 @@ async function verifyLexiconIntegrity(
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
     if (hex !== target.sha256) {
-      const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
       await purgeStaleLexiconCaches(target, 'sha256 mismatch');
       throw new Error('Lexicon integrity check failed (sha256 mismatch)');
     }
@@ -277,7 +281,6 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
           assertPhonemeStorageContract,
           phonemeStorageContractOk,
         } = await import('./phoneme-contract.ts');
-        const { purgeStaleLexiconCaches } = await import('./lexicon-restore.ts');
         if (!(await phonemeStorageContractOk(db))) {
           try {
             await db.close();

@@ -1,0 +1,4058 @@
+{
+  "manifest_sha256": "366882433ad7aa1efa36a14342600e0d031df02e53f4aa302fdb7d1e2c37c35f",
+  "ok_rate_threshold": 0.9,
+  "git_commit": "0ce4b6d4a953d43393f019362dc7c2a31d948fd2",
+  "created_at": "2026-07-17T22:05:51.302155+00:00",
+  "campaign_id": "syn_top5000",
+  "note": "syn_top5000 formal final audit seed=20260718; Acc 270/300 (ok_rate=0.9000); Nn 240/265 (ok_rate=0.9057); Adequate 16/17 (ok_rate=0.9412); PASSED gate≥0.9; TSV/ledgers NOT mutated — 30 accepted + 25 nn + 1 adequate fails pending maintainer apply",
+  "accepted": {
+    "status": "ok",
+    "sample_seed": 20260718,
+    "sample_n": 300,
+    "sample_ok": 270,
+    "sample_parent_n": 781,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 124,
+        "sample_n": 50,
+        "sample_seed": 20260719
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 141,
+        "sample_n": 50,
+        "sample_seed": 20260720
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 132,
+        "sample_n": 50,
+        "sample_seed": 20260721
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 125,
+        "sample_n": 50,
+        "sample_seed": 20260722
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 132,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 127,
+        "sample_n": 50,
+        "sample_seed": 20260724
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "上堂",
+        "tail": "上課",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "仲有",
+        "tail": "還有",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "仲要",
+        "tail": "更加",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "依家",
+        "tail": "現在",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "做咩",
+        "tail": "幹什麼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冇",
+        "tail": "沒有",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冇事",
+        "tail": "無妨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "冇錯",
+        "tail": "沒錯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "出街",
+        "tail": "上街",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "即係",
+        "tail": "就是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "叻",
+        "tail": "聰明",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔使",
+        "tail": "不用",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔記得",
+        "tail": "忘記",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔該",
+        "tail": "謝謝",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "啱",
+        "tail": "對",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "啱啱",
+        "tail": "剛剛",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "喪屍",
+        "tail": "殭屍",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嘈",
+        "tail": "吵",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嘢",
+        "tail": "東西",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大佬",
+        "tail": "大哥",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大聲",
+        "tail": "高聲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "女仔",
+        "tail": "女孩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好睇",
+        "tail": "好看",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "定係",
+        "tail": "還是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "家姐",
+        "tail": "姐姐",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "屋企",
+        "tail": "家",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "幾時",
+        "tail": "何時",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心諗",
+        "tail": "心想",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "戴",
+        "tail": "佩戴",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "抌",
+        "tail": "扔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "掛住",
+        "tail": "想念",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "放學",
+        "tail": "下課",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "早餐",
+        "tail": "早飯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "望住",
+        "tail": "看住",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "梗係",
+        "tail": "當然",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "男仔",
+        "tail": "男孩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "瞓",
+        "tail": "睡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "等等",
+        "tail": "之類",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "細妹",
+        "tail": "妹妹",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "細路",
+        "tail": "小孩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "老豆",
+        "tail": "爸爸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "落去",
+        "tail": "下去",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "跟住",
+        "tail": "然後",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "返學",
+        "tail": "上學",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "邊度",
+        "tail": "哪裏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "錫",
+        "tail": "吻",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "電視",
+        "tail": "電視機",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "點樣",
+        "tail": "怎樣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "點知",
+        "tail": "豈料",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "點算",
+        "tail": "怎麼辦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "上嚟",
+        "tail": "上來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乜嘢",
+        "tail": "什麼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "你好",
+        "tail": "問好",
+        "verdict": "fail",
+        "reasons": [
+          "招呼語 vs 動詞「問好」，唔可獨立替換"
+        ]
+      },
+      {
+        "head": "冇問題",
+        "tail": "無妨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "博客",
+        "tail": "網誌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "只不過",
+        "tail": "只是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "呻吟",
+        "tail": "哼",
+        "verdict": "fail",
+        "reasons": [
+          "程度／窄化，唔係同義層近義"
+        ]
+      },
+      {
+        "head": "唔多",
+        "tail": "少",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔舒服",
+        "tail": "難受",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔錯",
+        "tail": "不錯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嚟到",
+        "tail": "來到",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "夠膽",
+        "tail": "大膽",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "天晴",
+        "tail": "晴天",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好味",
+        "tail": "美味",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "姊妹",
+        "tail": "姐妹",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "將會",
+        "tail": "即將",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "對話",
+        "tail": "會話",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "師兄",
+        "tail": "師弟",
+        "verdict": "fail",
+        "reasons": [
+          "輩分對立，非近義"
+        ]
+      },
+      {
+        "head": "幾耐",
+        "tail": "多久",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "影相",
+        "tail": "拍照",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "打機",
+        "tail": "遊戲",
+        "verdict": "fail",
+        "reasons": [
+          "動詞 vs 名詞，詞性／論元唔同"
+        ]
+      },
+      {
+        "head": "拳頭",
+        "tail": "拳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "提子",
+        "tail": "葡萄",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "朝早",
+        "tail": "早上",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "枕頭",
+        "tail": "枕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "條友",
+        "tail": "傢伙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "每日",
+        "tail": "天天",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "港人",
+        "tail": "香港人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "熊仔",
+        "tail": "熊",
+        "verdict": "fail",
+        "reasons": [
+          "上下位（細稱→類名）"
+        ]
+      },
+      {
+        "head": "狗仔",
+        "tail": "犬",
+        "verdict": "fail",
+        "reasons": [
+          "上下位；且「狗仔」可指狗仔隊"
+        ]
+      },
+      {
+        "head": "琴晚",
+        "tail": "昨晚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "生果",
+        "tail": "水果",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "盡量",
+        "tail": "儘量",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "相機",
+        "tail": "攝影機",
+        "verdict": "fail",
+        "reasons": [
+          "相關器材，非可替換近義"
+        ]
+      },
+      {
+        "head": "石頭",
+        "tail": "石",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "社會",
+        "tail": "世上",
+        "verdict": "fail",
+        "reasons": [
+          "相關域，非同義層"
+        ]
+      },
+      {
+        "head": "第一次",
+        "tail": "首次",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "第二日",
+        "tail": "翌日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "算了",
+        "tail": "罷了",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "耳仔",
+        "tail": "耳朵",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "舖",
+        "tail": "店舖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "行埋",
+        "tail": "走近",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "表白",
+        "tail": "剖白",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "視線",
+        "tail": "目光",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "課室",
+        "tail": "教室",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "諗法",
+        "tail": "想法",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "講真",
+        "tail": "説實話",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "車站",
+        "tail": "火車站",
+        "verdict": "fail",
+        "reasons": [
+          "上下位（泛稱→火車專稱）"
+        ]
+      },
+      {
+        "head": "醉",
+        "tail": "醺",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "音樂",
+        "tail": "歌曲",
+        "verdict": "fail",
+        "reasons": [
+          "上下位／相關（音樂≠一首歌）"
+        ]
+      },
+      {
+        "head": "下個",
+        "tail": "下一個",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "不在",
+        "tail": "不在場",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "事發",
+        "tail": "發生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "以嚟",
+        "tail": "以來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "估到",
+        "tail": "料到",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "入嚟",
+        "tail": "進來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "別的",
+        "tail": "其他",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "千祈",
+        "tail": "千萬",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "叫醒",
+        "tail": "喚醒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吹水",
+        "tail": "閒聊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "唔捨得",
+        "tail": "捨不得",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嘴角",
+        "tail": "口角",
+        "verdict": "fail",
+        "reasons": [
+          "「口角」常指爭執，替換唔穩定"
+        ]
+      },
+      {
+        "head": "大小姐",
+        "tail": "小姐",
+        "verdict": "fail",
+        "reasons": [
+          "程度／上下位"
+        ]
+      },
+      {
+        "head": "大隻",
+        "tail": "高大",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "尋晚",
+        "tail": "昨晚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "廣告",
+        "tail": "宣傳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心痛",
+        "tail": "傷心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "心裡",
+        "tail": "心裏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "扁",
+        "tail": "平",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "接住",
+        "tail": "接著",
+        "verdict": "fail",
+        "reasons": [
+          "異義（接住≠接著）"
+        ]
+      },
+      {
+        "head": "搞笑",
+        "tail": "好笑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "數字",
+        "tail": "數目",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "文檔",
+        "tail": "文件",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "是但",
+        "tail": "隨便",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "時尚",
+        "tail": "潮流",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "本能",
+        "tail": "天性",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "校車",
+        "tail": "公車",
+        "verdict": "fail",
+        "reasons": [
+          "相關／上下位（校車≠公車）"
+        ]
+      },
+      {
+        "head": "沿住",
+        "tail": "順着",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無謂",
+        "tail": "何必",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "狐狸",
+        "tail": "狐",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "盡快",
+        "tail": "趕快",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "第日",
+        "tail": "他日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "筆記本",
+        "tail": "記事簿",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "紫色",
+        "tail": "紫",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "總有",
+        "tail": "總會",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "舐",
+        "tail": "舔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "落車",
+        "tail": "下車",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "蝴蝶",
+        "tail": "蝶",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "行山",
+        "tail": "登山",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "衰仔",
+        "tail": "壞蛋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "西瓜",
+        "tail": "瓜",
+        "verdict": "fail",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "貓仔",
+        "tail": "貓",
+        "verdict": "fail",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "越嚟越",
+        "tail": "越來越",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "轉載",
+        "tail": "轉發",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "還有",
+        "tail": "另外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "長大",
+        "tail": "成長",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "阻住",
+        "tail": "阻礙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "陰道",
+        "tail": "產道",
+        "verdict": "fail",
+        "reasons": [
+          "相關解剖，填詞唔可穩定替換"
+        ]
+      },
+      {
+        "head": "鴨仔",
+        "tail": "鴨",
+        "verdict": "fail",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "點做",
+        "tail": "怎麼辦",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "世伯",
+        "tail": "伯父",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "中年",
+        "tail": "中年人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "主板",
+        "tail": "主機板",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乜鬼",
+        "tail": "什麼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "個鐘",
+        "tail": "小時",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "利是",
+        "tail": "紅包",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "卻是",
+        "tail": "倒是",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "呢邊",
+        "tail": "這邊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嘔心",
+        "tail": "噁心",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "地板",
+        "tail": "地面",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大件事",
+        "tail": "大事",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "大鑊",
+        "tail": "麻煩",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "失落",
+        "tail": "沮喪",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好易",
+        "tail": "容易",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "子彈",
+        "tail": "槍彈",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "工作人員",
+        "tail": "職員",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "快遞",
+        "tail": "速遞",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "怎麼辦",
+        "tail": "如何是好",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "急急腳",
+        "tail": "急忙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "成員",
+        "tail": "份子",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "成晚",
+        "tail": "通宵",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "手裏",
+        "tail": "手上",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "授權",
+        "tail": "準許",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "搞錯",
+        "tail": "弄錯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "收皮",
+        "tail": "收場",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "波鞋",
+        "tail": "球鞋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "版主",
+        "tail": "樓主",
+        "verdict": "fail",
+        "reasons": [
+          "論壇角色不同，非近義"
+        ]
+      },
+      {
+        "head": "當堂",
+        "tail": "當場",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "發票",
+        "tail": "收據",
+        "verdict": "fail",
+        "reasons": [
+          "相關單據，非近義"
+        ]
+      },
+      {
+        "head": "眼色",
+        "tail": "神色",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "睇法",
+        "tail": "看法",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "突破",
+        "tail": "衝破",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "第二朝",
+        "tail": "翌日",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "老土",
+        "tail": "過時",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "職工",
+        "tail": "員工",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "聽朝",
+        "tail": "明早",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "芝士",
+        "tail": "乳酪",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "行開",
+        "tail": "走開",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "語言",
+        "tail": "言語",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "身高",
+        "tail": "高度",
+        "verdict": "fail",
+        "reasons": [
+          "相關量度，人高≠泛高度"
+        ]
+      },
+      {
+        "head": "返來",
+        "tail": "回來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "醜怪",
+        "tail": "醜陋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "銅",
+        "tail": "黃銅",
+        "verdict": "fail",
+        "reasons": [
+          "金屬種類不同／上下位"
+        ]
+      },
+      {
+        "head": "錯愕",
+        "tail": "驚愕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "鐵閘",
+        "tail": "鐵門",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "開聲",
+        "tail": "出聲",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "顯卡",
+        "tail": "顯示卡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "食煙",
+        "tail": "吸煙",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "首頁",
+        "tail": "主頁",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "黐線",
+        "tail": "發瘋",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "一般人",
+        "tail": "普通人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "世紀",
+        "tail": "時代",
+        "verdict": "fail",
+        "reasons": [
+          "相關時間單位，非近義"
+        ]
+      },
+      {
+        "head": "今時今日",
+        "tail": "現在",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "傻佬",
+        "tail": "傻瓜",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "八爪魚",
+        "tail": "章魚",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "凳仔",
+        "tail": "矮凳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "制度",
+        "tail": "體制",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "剩返",
+        "tail": "剩下",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "包住",
+        "tail": "包起",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "叫停",
+        "tail": "制止",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "可能性",
+        "tail": "可能",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "吸塵機",
+        "tail": "吸塵器",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "埋位",
+        "tail": "就座",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "執起",
+        "tail": "拾起",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "夾住",
+        "tail": "夾緊",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好多時",
+        "tail": "經常",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好耐",
+        "tail": "好久",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "小矮人",
+        "tail": "侏儒",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "差佬",
+        "tail": "警察",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "得人驚",
+        "tail": "可怕",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "手套",
+        "tail": "手襪",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "接下來",
+        "tail": "然後",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "攬實",
+        "tail": "攬住",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "有講有笑",
+        "tail": "談笑",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "望下",
+        "tail": "看看",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "權利",
+        "tail": "權益",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "殺人",
+        "tail": "殺害",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "每人",
+        "tail": "各人",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "沿途",
+        "tail": "一路",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "無端端",
+        "tail": "平白無故",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "生仔",
+        "tail": "生育",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "男神",
+        "tail": "偶像",
+        "verdict": "fail",
+        "reasons": [
+          "相關／窄化（男神≠泛偶像）"
+        ]
+      },
+      {
+        "head": "發貨",
+        "tail": "出貨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "直行",
+        "tail": "向前",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "神父",
+        "tail": "牧師",
+        "verdict": "fail",
+        "reasons": [
+          "宗教職銜不同"
+        ]
+      },
+      {
+        "head": "秩序",
+        "tail": "次序",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "立法",
+        "tail": "制定",
+        "verdict": "fail",
+        "reasons": [
+          "相關／上下位（立法≠泛制定）"
+        ]
+      },
+      {
+        "head": "筷子",
+        "tail": "箸",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "紅蘿蔔",
+        "tail": "胡蘿蔔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "細粒",
+        "tail": "細小",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "總部",
+        "tail": "總行",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "舖頭",
+        "tail": "店舖",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "草叢",
+        "tail": "草莽",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "落堂",
+        "tail": "下課",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "補丁",
+        "tail": "補釘",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "話唔定",
+        "tail": "説不定",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "負面",
+        "tail": "消極",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "質素",
+        "tail": "品質",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "除衫",
+        "tail": "脱衣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "隨心",
+        "tail": "隨意",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "七七八八",
+        "tail": "差不多",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "乸",
+        "tail": "雌",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "侍應",
+        "tail": "侍應生",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "做得",
+        "tail": "可以",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "共有",
+        "tail": "共同",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "初頭",
+        "tail": "起初",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "咁滯",
+        "tail": "幾乎",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "喃喃",
+        "tail": "喃喃自語",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "單手",
+        "tail": "一手",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嗌交",
+        "tail": "吵架",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "國內外",
+        "tail": "海內外",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "坐監",
+        "tail": "坐牢",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好地地",
+        "tail": "好好地",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "好眼",
+        "tail": "眼利",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "娘親",
+        "tail": "母親",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "嫌棄",
+        "tail": "厭惡",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "客服",
+        "tail": "服務員",
+        "verdict": "fail",
+        "reasons": [
+          "職銜近似，非近義"
+        ]
+      },
+      {
+        "head": "小息",
+        "tail": "休息",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "小食",
+        "tail": "零食",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "市民",
+        "tail": "居民",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "庫存",
+        "tail": "存貨",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "急不及待",
+        "tail": "迫不及待",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "愈嚟愈",
+        "tail": "越來越",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "手指公",
+        "tail": "拇指",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "探員",
+        "tail": "偵探",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "斑竹",
+        "tail": "版主",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日出",
+        "tail": "黎明",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "日落",
+        "tail": "黃昏",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "極之",
+        "tail": "極其",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "正所謂",
+        "tail": "所謂",
+        "verdict": "fail",
+        "reasons": [
+          "「所謂」常貶義，唔等同「正所謂」"
+        ]
+      },
+      {
+        "head": "沙律",
+        "tail": "沙拉",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "泥膠",
+        "tail": "黏土",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "泳",
+        "tail": "游泳",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "測量",
+        "tail": "量度",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "生還",
+        "tail": "倖存",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "用嚟",
+        "tail": "用來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "瘀",
+        "tail": "瘀傷",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "看上去",
+        "tail": "看來",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "眼白白",
+        "tail": "乾瞪眼",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "等如",
+        "tail": "等於",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "緣份",
+        "tail": "緣分",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "背住",
+        "tail": "揹着",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "蔔",
+        "tail": "蘿蔔",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "薯仔",
+        "tail": "馬鈴薯",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "豬扒",
+        "tail": "豬排",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "輸入法",
+        "tail": "打字法",
+        "verdict": "fail",
+        "reasons": [
+          "相關技術，非近義"
+        ]
+      },
+      {
+        "head": "邊位",
+        "tail": "邊個",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "金色",
+        "tail": "金黃色",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "銀仔",
+        "tail": "硬幣",
+        "verdict": "ok",
+        "reasons": []
+      },
+      {
+        "head": "高中",
+        "tail": "中學",
+        "verdict": "fail",
+        "reasons": [
+          "上下位（高中⊂中學）"
+        ]
+      }
+    ],
+    "removed_sample_fails": [],
+    "pending_removal": [
+      {
+        "head": "你好",
+        "tail": "問好",
+        "reasons": [
+          "招呼語 vs 動詞「問好」，唔可獨立替換"
+        ]
+      },
+      {
+        "head": "呻吟",
+        "tail": "哼",
+        "reasons": [
+          "程度／窄化，唔係同義層近義"
+        ]
+      },
+      {
+        "head": "師兄",
+        "tail": "師弟",
+        "reasons": [
+          "輩分對立，非近義"
+        ]
+      },
+      {
+        "head": "打機",
+        "tail": "遊戲",
+        "reasons": [
+          "動詞 vs 名詞，詞性／論元唔同"
+        ]
+      },
+      {
+        "head": "熊仔",
+        "tail": "熊",
+        "reasons": [
+          "上下位（細稱→類名）"
+        ]
+      },
+      {
+        "head": "狗仔",
+        "tail": "犬",
+        "reasons": [
+          "上下位；且「狗仔」可指狗仔隊"
+        ]
+      },
+      {
+        "head": "相機",
+        "tail": "攝影機",
+        "reasons": [
+          "相關器材，非可替換近義"
+        ]
+      },
+      {
+        "head": "社會",
+        "tail": "世上",
+        "reasons": [
+          "相關域，非同義層"
+        ]
+      },
+      {
+        "head": "車站",
+        "tail": "火車站",
+        "reasons": [
+          "上下位（泛稱→火車專稱）"
+        ]
+      },
+      {
+        "head": "音樂",
+        "tail": "歌曲",
+        "reasons": [
+          "上下位／相關（音樂≠一首歌）"
+        ]
+      },
+      {
+        "head": "嘴角",
+        "tail": "口角",
+        "reasons": [
+          "「口角」常指爭執，替換唔穩定"
+        ]
+      },
+      {
+        "head": "大小姐",
+        "tail": "小姐",
+        "reasons": [
+          "程度／上下位"
+        ]
+      },
+      {
+        "head": "接住",
+        "tail": "接著",
+        "reasons": [
+          "異義（接住≠接著）"
+        ]
+      },
+      {
+        "head": "校車",
+        "tail": "公車",
+        "reasons": [
+          "相關／上下位（校車≠公車）"
+        ]
+      },
+      {
+        "head": "西瓜",
+        "tail": "瓜",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "貓仔",
+        "tail": "貓",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "陰道",
+        "tail": "產道",
+        "reasons": [
+          "相關解剖，填詞唔可穩定替換"
+        ]
+      },
+      {
+        "head": "鴨仔",
+        "tail": "鴨",
+        "reasons": [
+          "上下位"
+        ]
+      },
+      {
+        "head": "版主",
+        "tail": "樓主",
+        "reasons": [
+          "論壇角色不同，非近義"
+        ]
+      },
+      {
+        "head": "發票",
+        "tail": "收據",
+        "reasons": [
+          "相關單據，非近義"
+        ]
+      },
+      {
+        "head": "身高",
+        "tail": "高度",
+        "reasons": [
+          "相關量度，人高≠泛高度"
+        ]
+      },
+      {
+        "head": "銅",
+        "tail": "黃銅",
+        "reasons": [
+          "金屬種類不同／上下位"
+        ]
+      },
+      {
+        "head": "世紀",
+        "tail": "時代",
+        "reasons": [
+          "相關時間單位，非近義"
+        ]
+      },
+      {
+        "head": "男神",
+        "tail": "偶像",
+        "reasons": [
+          "相關／窄化（男神≠泛偶像）"
+        ]
+      },
+      {
+        "head": "神父",
+        "tail": "牧師",
+        "reasons": [
+          "宗教職銜不同"
+        ]
+      },
+      {
+        "head": "立法",
+        "tail": "制定",
+        "reasons": [
+          "相關／上下位（立法≠泛制定）"
+        ]
+      },
+      {
+        "head": "客服",
+        "tail": "服務員",
+        "reasons": [
+          "職銜近似，非近義"
+        ]
+      },
+      {
+        "head": "正所謂",
+        "tail": "所謂",
+        "reasons": [
+          "「所謂」常貶義，唔等同「正所謂」"
+        ]
+      },
+      {
+        "head": "輸入法",
+        "tail": "打字法",
+        "reasons": [
+          "相關技術，非近義"
+        ]
+      },
+      {
+        "head": "高中",
+        "tail": "中學",
+        "reasons": [
+          "上下位（高中⊂中學）"
+        ]
+      }
+    ]
+  },
+  "no_natural": {
+    "status": "ok",
+    "sample_seed": 20260718,
+    "sample_n": 265,
+    "sample_ok": 240,
+    "sample_parent_n": 350,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 75,
+        "sample_n": 50,
+        "sample_seed": 20260719
+      },
+      {
+        "batch_index": 2,
+        "parent_n": 59,
+        "sample_n": 50,
+        "sample_seed": 20260720
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 67,
+        "sample_n": 50,
+        "sample_seed": 20260721
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 73,
+        "sample_n": 50,
+        "sample_seed": 20260722
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 61,
+        "sample_n": 50,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 15,
+        "sample_n": 15,
+        "sample_seed": 20260724
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "一日",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一次",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一段",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "五",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人生",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人類",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "佢",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "係",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩個",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "八",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咁",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咗",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咩",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "哩個",
+        "reason": "proper_name_or_deixis",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "啤啤",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喎",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喱",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喵",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喺",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗰",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘅嘢",
+        "reason": "other_documented",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘛",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘩",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噉",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噹",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噼",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嚮",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "囉",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "大學",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "屌",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "幾個",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "底褲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "我見",
+        "reason": "other_documented",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "搣",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "撚",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "曳",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "楂",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "沖",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "波波",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "環境",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "膊頭",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "身上",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "轆",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鐘",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "闆",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "隻",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "餵",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "髮",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "點會",
+        "reason": "other_documented",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一場",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一步",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一片",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一眼",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "上便",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "上網",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下次",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「下回」，應改判 accepted"
+      },
+      {
+        "head": "他們",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兜過",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "入到",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吔",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "呢種",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咖啡",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咭",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "啵",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗄",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘅話",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嚟㗎",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嚟講",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "地圖",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "域名",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "多個",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "多嘢",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "天使",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "孖",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "將我",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "帖子",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "幾日",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "得多",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "曱",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "會話",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「對話」，應改判 accepted"
+      },
+      {
+        "head": "正正",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "無人",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「沒人」，應改判 accepted"
+      },
+      {
+        "head": "牙膏",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "狼",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "甲蟲",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "甴",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "畀人",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "結界",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "裡",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "見過",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "講下",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "講緊",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "邊有",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "錶",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鏈接",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "頁面",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "點呀",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "點啊",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "點都",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一嘢",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一堆",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "你們",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "依種",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "個月",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "偈",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "做愛",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "公主",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "冇得",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "厠",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "吋",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "呢排",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "呯",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咁上下",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "啤",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗰種",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘅樣",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噏",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "好少",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「很少」，應改判 accepted"
+      },
+      {
+        "head": "寵物",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "就好",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "左上",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "得過",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "慾",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "戇",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "成身",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "我識",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "捽",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "摷",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "晞",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "曚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "曳曳",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "最大",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "柯南",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "植入",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "淫賤",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "瀑布",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "焗",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "糖水",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "羹",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "聖誕老人",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "舔",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蕹",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "表哥",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "講乜",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電芯",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "風車",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鬚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "麪",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "黐",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一句話",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一於",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下下",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下集",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "中出",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "中指",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "九點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "五點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "人話",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "侏",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "先得",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "八點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "六點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "出便",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "半身",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "單嘢",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嘥",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噠",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "噶",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "外賣",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "多位",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "夜貓",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「夜貓子」，應改判 accepted"
+      },
+      {
+        "head": "太好",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "她們",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "如是",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "宿舍",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "平安夜",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "廿",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "性奴",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "想要",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "打嚟",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "拜託",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "捲",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "日記",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "殺氣",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "淘寶",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "溝女",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "玩家",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "脾",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "茄",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蕃",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "行行",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "讀者",
+        "reason": "no_stable_near_synonym",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "踢波",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「踢球」，應改判 accepted"
+      },
+      {
+        "head": "鈕",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鍊",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鍚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "食得",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "鬍",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "點講",
+        "reason": "no_stable_near_synonym",
+        "verdict": "fail",
+        "notes": "有明顯自然近義「怎麼說」，應改判 accepted"
+      },
+      {
+        "head": "一如",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下低",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下便",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不出",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "不知幾",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "九龍",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "人嚟",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "佈",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩下",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兩點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "前便",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "十二點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "叮叮",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "右上",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咕",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "唔多唔少",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "啡",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "啤住",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "喥",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嗰次",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "多得",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "嬴",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "射出",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "得切",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "得滯",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "情人節",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼（節日專名）"
+      },
+      {
+        "head": "扐",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "打畀",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "搖搖板",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "摑",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "收線",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "柒頭",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "沙沙",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "深處",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "琳",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "直落",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "眼定定",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "眼甘甘",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "絲襪",
+        "reason": "polysemous_no_stable_sense",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "老味",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "臭狐",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "虧佬",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "話費",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "車型",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "迴",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "關我事",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason 宜 other_documented，非 function_word"
+      },
+      {
+        "head": "雞雞",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "靚靚",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "麻甩佬",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "點呢",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "一本",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "九月",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "八月",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "冷汗",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "十點",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "呱",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "咖",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "握手",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼（實義動詞）"
+      },
+      {
+        "head": "撻",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "考研",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "荃灣",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "螯",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "設計師",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "貢",
+        "reason": "function_word",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "陰毛",
+        "reason": "function_word",
+        "verdict": "fail",
+        "notes": "reason=function_word 唔貼"
+      }
+    ],
+    "removed_sample_fails": [],
+    "pending_rejudge": [
+      {
+        "head": "下次",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「下回」，應改判 accepted"
+      },
+      {
+        "head": "會話",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「對話」，應改判 accepted"
+      },
+      {
+        "head": "無人",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「沒人」，應改判 accepted"
+      },
+      {
+        "head": "做愛",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "好少",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「很少」，應改判 accepted"
+      },
+      {
+        "head": "柯南",
+        "reason": "function_word",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "夜貓",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「夜貓子」，應改判 accepted"
+      },
+      {
+        "head": "淘寶",
+        "reason": "function_word",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "踢波",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「踢球」，應改判 accepted"
+      },
+      {
+        "head": "點講",
+        "reason": "no_stable_near_synonym",
+        "notes": "有明顯自然近義「怎麼說」，應改判 accepted"
+      },
+      {
+        "head": "九龍",
+        "reason": "function_word",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "嬴",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "射出",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "情人節",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼（節日專名）"
+      },
+      {
+        "head": "搖搖板",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "話費",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "車型",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "關我事",
+        "reason": "function_word",
+        "notes": "reason 宜 other_documented，非 function_word"
+      },
+      {
+        "head": "麻甩佬",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "冷汗",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "握手",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼（實義動詞）"
+      },
+      {
+        "head": "考研",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "荃灣",
+        "reason": "function_word",
+        "notes": "reason 應為 proper_name_or_deixis"
+      },
+      {
+        "head": "設計師",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      },
+      {
+        "head": "陰毛",
+        "reason": "function_word",
+        "notes": "reason=function_word 唔貼"
+      }
+    ]
+  },
+  "adequate_existing": {
+    "status": "ok",
+    "sample_seed": 20260718,
+    "sample_n": 17,
+    "sample_ok": 16,
+    "sample_parent_n": 17,
+    "strata": [
+      {
+        "batch_index": 1,
+        "parent_n": 1,
+        "sample_n": 1,
+        "sample_seed": 20260719
+      },
+      {
+        "batch_index": 3,
+        "parent_n": 1,
+        "sample_n": 1,
+        "sample_seed": 20260721
+      },
+      {
+        "batch_index": 4,
+        "parent_n": 2,
+        "sample_n": 2,
+        "sample_seed": 20260722
+      },
+      {
+        "batch_index": 5,
+        "parent_n": 7,
+        "sample_n": 7,
+        "sample_seed": 20260723
+      },
+      {
+        "batch_index": 6,
+        "parent_n": 6,
+        "sample_n": 6,
+        "sample_seed": 20260724
+      }
+    ],
+    "sample_verdicts": [
+      {
+        "head": "亦",
+        "note": "existing直連「也」填詞可用",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "電視機",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "升降機",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "女友",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "下一個",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "對門",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "枕",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "欄目",
+        "note": "prior project_syn edge covers head",
+        "verdict": "fail",
+        "notes": "現有直連「節目」屬欄目／節目相關，非填詞可用近義，不應裁 adequate"
+      },
+      {
+        "head": "稍等",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "蕉",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "身旁",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "主頁",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "兔子",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "眼裏",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "紫",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "聽聞",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      },
+      {
+        "head": "試問",
+        "note": "prior project_syn edge covers head",
+        "verdict": "ok",
+        "notes": ""
+      }
+    ],
+    "removed_sample_fails": [],
+    "pending_rejudge": [
+      {
+        "head": "欄目",
+        "note": "prior project_syn edge covers head",
+        "notes": "現有直連「節目」屬欄目／節目相關，非填詞可用近義，不應裁 adequate"
+      }
+    ]
+  },
+  "apply_status": "applied",
+  "apply_batch_id": "syn-top5000-final-audit-20260718",
+  "apply_removed_accepted": 31,
+  "apply_new_accepted": [
+    {
+      "head": "好少",
+      "tail": "稀少"
+    },
+    {
+      "head": "無人",
+      "tail": "冇人"
+    }
+  ],
+  "apply_note": "removed 31 accepted pairs (30 sample fails + 節目/欄目); nn flips 好少→稀少, 無人→冇人; dropped nn 會話 (covered); reason fixes 22; adeq drop 欄目; freed heads → no_natural; post-apply 1148/1148 complete (752 pairs)"
+}

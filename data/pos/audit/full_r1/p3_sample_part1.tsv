@@ -1,0 +1,251 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p3	一個二個	x	idiom		audit-med;review;p2-idiom:一X?Y;p2-idiom-heuristic	high	high|gate|idiom	OK				數／逐一虛用；固定說法可留 idiom
+p3	全力以赴	v	idiom		audit-high;review	high	high|gate|idiom	OK				成語動用
+p3	斷斷續續	a,r	idiom		cow-single;p2-idiom:AABB;p2-idiom-heuristic;review;p1-audit;review;AABB 狀態／情狀；非名（cow-single n 假陽）	high	high|gate|idiom	OK				AABB 狀態／情狀 a,r
+p3	無處不在	n	idiom		cow-single;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|gate|idiom	BAD	a,v			謂語「無處不在」形／動；非名（cow-single n 假陽）
+p3	除此之外	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p1-audit;review;連接／附帶說明短語；非名（len4-noun 假陽會毒同名詞閘）	high	high|gate|idiom	OK				連接短語 r；之字格固定可留
+p3	一些問題	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	下跌	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	不掉	v			verb-suffix;p3;heuristic	high	high|gate|plain	BAD	u			否定+掉；多見於 V 不掉，非獨立動詞（verb-suffix 假陽）
+p3	二十	x			numeral;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	人之常情	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	保存	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	信息技術	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	優質服務	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	六一	x			numeral;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	具體情況	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	加強	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	受益	v		passive	prefix-passive;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	受衆	v		passive	prefix-passive;p3;heuristic	high	high|gate|plain	BAD	n			受衆＝觀眾／聽衆名詞；prefix-passive 假陽會毒同動詞閘
+p3	各級政府	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	咬住	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	國內市場	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	地方政府	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	增長	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	專業人員	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	戴住	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	托住	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	批評	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	搜索	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	無線網絡	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	照住	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	理工大學	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	發達國家	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	監管部門	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	知識分子	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	研發中心	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	研究中心	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	研究人員	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	科學技術	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	立法	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	競爭	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	管理系統	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	統一	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	考完	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	股票市場	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	舉報電話	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	衝突	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	high|gate|plain	OK				gate primary 正確
+p3	被窩	v		passive	prefix-passive;p3;heuristic	high	high|gate|plain	BAD	n			被窩＝被褥名詞；prefix-passive 假陽會毒同動詞閘
+p3	被迫	v		passive	prefix-passive;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	諮詢服務	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	諮詢電話	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	資本市場	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	超級市場	n			len4-noun-heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	這些問題	n			len4-noun-heuristic;p3	high	high|gate|plain	OK				gate primary 正確
+p3	頂住	v			verb-suffix;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	順住	v			verb-suffix;p3;heuristic	high	high|gate|plain	OK				gate primary 正確
+p3	一清二楚	u	idiom		no-source;fallback;p2-idiom:一X?Y;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r			清楚明白；形／情狀副
+p3	嘻嘻哈哈	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r			AABB 嬉笑狀態／情狀
+p3	大大小小	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a			AABB 大小不一
+p3	實實在在	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r			AABB 真實／確實
+p3	方方面面	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	n			AABB 各方面，名
+p3	有意無意	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	r			有無對情狀副
+p3	有所不同	u	idiom		no-source;fallback;p2-idiom:有無對;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,v			有所+不同；述謂
+p3	老老實實	u	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review	high	high|u|idiom	BAD	a,r			AABB 老實狀態／情狀
+p3	不完	u			verb-suffix;p3;heuristic;p1-audit;review;否定+完；非獨立動詞（verb-suffix 假陽，多見於 V 不完）	high	high|u|plain	OK				否定+完截斷；u 正確
+p3	受山	u		passive	prefix-passive;p3;heuristic;p1-audit;review;切詞假陽（受山火等）；非獨立被動動詞	high	high|u|plain	OK				切詞假陽；u 正確
+p3	一月	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	上帝	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	上映	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	上演	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	不便	n			cow-single	low	low|low|plain	BAD	a			形「不方便」；n 假陽
+p3	人們	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	侷限	n			cow-single	low	low|low|plain	SOFT				主 n 可；動「侷限於」常見
+p3	倡議	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	僅僅	r			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	兔子	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	公務員	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	公路	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	共性	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	典範	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	制度	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	十月	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	半場	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	博物館	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	叢	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	句子	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	名稱	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	和諧	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	在外	n			cow-single	low	low|low|plain	BAD	r			處所／狀態副；非名
+p3	均	v			cow-single	low	low|low|plain	BAD	r			副「都／均勻」；非動
+p3	城堡	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	墨盒	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	外形	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	夥伴	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	大意	n			cow-single	low	low|low|plain	SOFT				主 n（要旨）可；形「粗心」常見
+p3	大炮	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	失效	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	奔騰	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	女兒	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	女皇	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	好手	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	定向	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	實習	v			cow-single	low	low|low|plain	SOFT				主 v 可；名常見
+p3	對講機	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	帷幕	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	年級	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	後期	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	意圖	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	打印機	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	投保	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	抱怨	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	招手	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	指向	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	捐款	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	探索	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	接收	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	掩飾	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	擊	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	收看	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	放寬	n			cow-single	low	low|low|plain	BAD	v			動「放寬」；非名
+p3	效率	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	救護車	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	方形	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	旅程	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	昨日	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	有效	v			cow-single	low	low|low|plain	BAD	a			形「有效」；非動
+p3	松鼠	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	格式化	n			cow-single;p3	low	low|low|plain	SOFT				主 n 可；動常見
+p3	棚	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	槽	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	歡呼	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	正直	n			cow-single	low	low|low|plain	BAD	a			形；非名
+p3	死刑	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	母豬	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	毫不	r			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	民	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	注視	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	液	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	深藍色	n			cow-single;p3	low	low|low|plain	SOFT				色名 n 可；亦形
+p3	源泉	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	澳洲	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	瀉	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	灰燼	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	無情	n			cow-single	low	low|low|plain	BAD	a			形；非名
+p3	熱氣	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	父	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	猜測	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	現代人	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	現代化	v			cow-single	low	low|low|plain	SOFT				主 v；名亦常見
+p3	生產力	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	當下	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low	low	low|low|plain	BAD	n,r			名／副「此刻」；verb-suffix 下 假陽
+p3	痕跡	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	發育	n			cow-single	low	low|low|plain	SOFT				主 n 可；動常見
+p3	發誓	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	矩陣	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	磋商	n			cow-single;p3	low	low|low|plain	SOFT				主 n 可；動常見
+p3	箍	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	節	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	紅包	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	紅蘿蔔	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	綜述	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	繁忙	n			cow-single;p3	low	low|low|plain	BAD	a			形；非名
+p3	置換	n			cow-single;p3	low	low|low|plain	SOFT				主 n 可；動常見
+p3	自主	n			cow-single	low	low|low|plain	BAD	a,v			形／動；非純名
+p3	芷	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	苯	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	草叢	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	萬聖節	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	薪水	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	血糖	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	被殺	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	裂開	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	SOFT				主 v；n 弱
+p3	親切	n			cow-single	low	low|low|plain	BAD	a			形；非名
+p3	註釋	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	謝謝	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	SOFT				主 v／套語；n 弱
+p3	責令	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	賠	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	起飛	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	超越	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	趕走	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	跌倒	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	踐踏	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	逃生	v			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	邪惡	n			cow-single	low	low|low|plain	SOFT				主 a；draft n 偏
+p3	酒精	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	醒覺	a			cow-single	low	low|low|plain	SOFT				粵主 v；draft a 邊
+p3	錦標賽	n			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	鐘樓	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	集	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	集合	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				draft primary 可接受
+p3	電話號碼	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	電路	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	預感	v			cow-single	low	low|low|plain	SOFT				主 v；名常見
+p3	騙	v			cow-single;p3	low	low|low|plain	OK				draft primary 可接受
+p3	鼠	n			cow-single	low	low|low|plain	OK				draft primary 可接受
+p3	一生一世	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n,r			一輩子
+p3	一舉一動	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n			每個動作
+p3	人來人往	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v,a			ABAC 人來往
+p3	依依不捨	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,v			AABC 不捨
+p3	可口可樂	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n			品牌專名；ABAC 假陽熟語 → clear family
+p3	各式各樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a			各式樣
+p3	各種各樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a			各種樣
+p3	哈哈大笑	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	v			AABC 大笑
+p3	唔多唔少	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	r			粵差不多
+p3	唔經唔覺	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	r			粵不知不覺
+p3	奄奄一息	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	a			AABC 垂死
+p3	忍無可忍	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	BAD	v			無法再忍
+p3	有講有笑	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v			有說有笑
+p3	無時無刻	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	r			時時刻刻
+p3	若隱若現	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,v			半隱半現
+p3	講開又講	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	BAD	v			粵話頭
+p3	一口一口	u			no-source;p3;fallback	low	low|u|plain	BAD	r,x			方式疊
+p3	一男一女	u			no-source;p3;fallback	low	low|u|plain	BAD	n,x			對舉
+p3	一輩子	u			no-source;fallback	low	low|u|plain	BAD	n,r			一生
+p3	一顆	u			no-source;p3;fallback	low	low|u|plain	BAD	x			數+量
+p3	一齣	u			no-source;p3;fallback	low	low|u|plain	BAD	x			數+量
+p3	丁俊暉	u			no-source;p3;fallback	low	low|u|plain	BAD	n			專名
+p3	三分鐘	u			no-source;p3;fallback	low	low|u|plain	BAD	n,x			時量
+p3	三維	u			no-source;fallback	low	low|u|plain	BAD	a,n			形／名
+p3	上一次	u			no-source;p3;fallback	low	low|u|plain	BAD	n,r			上次
+p3	上也	u			no-source;p3;fallback	low	low|u|plain	OK				上+也 截斷
+p3	上海大衆	u			no-source;p3;fallback	low	low|u|plain	BAD	n			車企專名
+p3	上班族	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	上部	u			no-source;p3;fallback	low	low|u|plain	BAD	n			名
+p3	下山	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	下晝	u			no-source;p3;fallback	low	low|u|plain	BAD	n,r			粵下午
+p3	下班	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	下話	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不久	u			no-source;fallback	low	low|u|plain	BAD	r			清晰副詞
+p3	不全	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	不切實際	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	不同程度	u			no-source;p3;fallback	low	low|u|plain	BAD	n			名
+p3	不寫	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不愛	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不理我	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不用擔心	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不要去	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	不變的	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	不買	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	世界級	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	中國人民	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	中國傳統	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	中國國際	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	中秋	u			no-source;fallback	low	low|u|plain	BAD	n			節日
+p3	中轉	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			名動
+p3	主要用於	u			no-source;p3;fallback	low	low|u|plain	SOFT				動語；可 v
+p3	之日	u			no-source;p3;fallback	low	low|u|plain	OK				之字截斷
+p3	也不知道	u			no-source;p3;fallback	low	low|u|plain	SOFT				小句；可 v
+p3	也使	u			no-source;p3;fallback	low	low|u|plain	OK				也+使截斷
+p3	也從	u			no-source;p3;fallback	low	low|u|plain	OK				也+從截斷
+p3	乾隆	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名

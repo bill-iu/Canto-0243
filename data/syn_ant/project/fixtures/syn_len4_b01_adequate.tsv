@@ -1,0 +1,8 @@
+head	note	batch_id
+源源不斷	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+城市居民	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+政府機構	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+國際經濟	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+社會工作	prior project_syn edge covers head	syn-len4-b01-20260718
+居住環境	within-batch undirected syn edge covers head	syn-len4-b01-20260718
+如何是好	prior project_syn edge covers head	syn-len4-b01-20260718

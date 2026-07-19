@@ -9,13 +9,20 @@ import '../../shared/entry-detail.css';
 import './root.css';
 import './pwa-app.css';
 
-import App from './App.tsx';
+import { ProductRouter } from './ProductRouter.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/db-provider.tsx';
 import { isPortableHost } from './host-mode.ts';
 import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './pwa-shell-boot';
+import { getInitializedDbBackendMode } from './db/init.ts';
+import { getOpfsVfsWorkerDebugState } from './db/opfs-vfs-backend.ts';
+import { installResumeDebug } from './resume-debug.ts';
 
 applyBootThemeFromStorage();
+installResumeDebug({
+  getBackendMode: getInitializedDbBackendMode,
+  getWorkerState: getOpfsVfsWorkerDebugState,
+});
 if (hasPwaGateLanded()) {
   revealPwaShell();
 }
@@ -29,7 +36,7 @@ const benchmark = new URLSearchParams(location.search).has('benchmark');
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DBProvider>
-      {benchmark ? <BenchmarkApp /> : <App />}
+      {benchmark ? <BenchmarkApp /> : <ProductRouter />}
     </DBProvider>
   </StrictMode>,
 );

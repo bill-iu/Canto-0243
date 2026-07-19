@@ -1,0 +1,20 @@
+{
+  "source": "https://github.com/daimaruhk/Cantonese.md",
+  "license": "CC0-1.0",
+  "attribution": "daimaruhk/Cantonese.md (src/contents/; CC0)",
+  "fetched_at": "2026-07-18T08:51:21.904071+00:00",
+  "archive_url": "https://codeload.github.com/daimaruhk/Cantonese.md/zip/refs/heads/main",
+  "filter": "missing_literal_vs_db",
+  "db": "D:/Canto-0243/lyrics.db",
+  "n_entries_parsed": 241,
+  "n_lexicon_rows": 195,
+  "skipped": {
+    "empty": 0,
+    "invalid_term": 1,
+    "in_db": 285,
+    "bad_reading": 1,
+    "dup": 0
+  },
+  "raw_file": "lexicon.json",
+  "notes": "Only term/answer + Jyutping; no explanations. Wire via data/lexicon/sources.yaml id=cantonese_md. Does not rebuild lyrics.db — run `python -m ingest build-db` when ready."
+}

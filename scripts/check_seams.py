@@ -24,6 +24,7 @@ PWA_BOOT_GATE_CSS_PATH = REPO_ROOT / "client" / "public" / "pwa-boot-gate.css"
 CLIENT_FONT_BUILD_PATH = REPO_ROOT / "client" / "scripts" / "build-fonts.ts"
 BRAND_SVG_DEFS_PATH = REPO_ROOT / "client" / "src" / "brand-svg-defs.tsx"
 PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages.yml"
+V110_PAGES_WORKFLOW_PATH = REPO_ROOT / ".github" / "workflows" / "pages-v1.1.0.yml"
 RELEASE_WINDOWS_PATH = REPO_ROOT / "scripts" / "release-windows-local.ps1"
 RELEASE_MACOS_PATH = REPO_ROOT / "scripts" / "release-macos-local.sh"
 APP_CONTEXT_PATH = REPO_ROOT / "shared" / "app-context.mjs"
@@ -913,11 +914,18 @@ class TestQueryTabsSeam(unittest.TestCase):
         self.assertIn("LOGO_SERIF", sources["brand-svg-defs.tsx"])
         self.assertIn('fontWeight="700"', sources["brand-svg-defs.tsx"])
 
-    def test_pages_workflow_requires_merged_release_source(self):
-        source = PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")
-        self.assertIn("Verify release source is current", source)
-        self.assertIn("GITHUB_REF_NAME", source)
+    def test_pages_workflow_deploys_verified_v1_1_0_release_artifact(self):
+        source = V110_PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")
+        self.assertIn("Verify fixed release source", source)
+        self.assertIn("merge-base --is-ancestor v1.1.0^{commit} origin/main", source)
         self.assertIn("merge-base --is-ancestor origin/dev origin/main", source)
+        self.assertIn("gh release download v1.1.0", source)
+        self.assertIn("v1_1_0_rc.py verify-file", source)
+        self.assertNotIn("actions/setup-node", source)
+        self.assertNotIn("npm run build", source)
+        general = PAGES_WORKFLOW_PATH.read_text(encoding="utf-8")
+        self.assertIn("target_tag", general)
+        self.assertNotIn('tags:\n      - "v*.*.*"', general)
 
     def test_release_script_requires_merged_main_source(self):
         source = RELEASE_WINDOWS_PATH.read_text(encoding="utf-8")

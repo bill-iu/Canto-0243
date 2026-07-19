@@ -105,3 +105,4 @@ class MaskFamilySearchResult:
 
     items: list
     cache_path: Optional[str] = None
+    total: Optional[int] = None

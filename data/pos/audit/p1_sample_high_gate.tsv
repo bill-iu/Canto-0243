@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一齊	r			heuristic	high	high|gate	144	OK			
+下去	v			verb-suffix;heuristic	high	high|gate	2512	OK			
+也好	v			verb-suffix;heuristic	high	high|gate	4173	BAD	x			verb-suffix假陽；讓步／語氣，非動
+五	x			numeral;heuristic	high	high|gate	347	OK			
+以上	v			verb-suffix;heuristic	high	high|gate	2331	BAD	x			verb-suffix假陽；界限／方位虛詞，非動
+做好	v			verb-suffix;p1;heuristic	high	high|gate	2278	OK			
+兜過	v			verb-suffix;heuristic	high	high|gate	1863	OK			
+再	r			heuristic	high	high|gate	73	OK			
+千	x			numeral;heuristic	high	high|gate	3185	OK			
+即刻	r			heuristic	high	high|gate	201	OK			
+原來	v			verb-suffix;heuristic	high	high|gate	171	BAD	r			verb-suffix假陽；副「原先／原來如此」
+及	x			heuristic	high	high|gate	1314	OK			
+句	n,x			audit-high;review	high	high|gate	403	OK			
+只好	v			verb-suffix;heuristic	high	high|gate	1893	BAD	r			verb-suffix假陽；副「唯有／只好」
+可能	a,r			audit-high;review	high	high|gate	143	OK			
+各	x			heuristic	high	high|gate	3159	OK			
+咗下	v			verb-suffix;p1;heuristic	high	high|gate	4006	BAD	x			體貌助／「V咗下」虛，非獨立動
+唔係	v,x			heuristic	high	high|gate	57	OK			
+唔好	v			verb-suffix;heuristic	high	high|gate	71	SOFT	a,v			主標動可；禁令動+形「唔好」兩用常見，可補a
+報仇	v			audit-high;review	high	high|gate	2809	OK			
+多	a,r			heuristic;p1	high	high|gate	65	OK			
+天下	v			verb-suffix;heuristic	high	high|gate	4576	BAD	n			verb-suffix假陽；名「天下」
+對住	v			verb-suffix;p1;heuristic	high	high|gate	1441	OK			
+幾好	v			verb-suffix;heuristic	high	high|gate	1096	BAD	a			verb-suffix假陽；形「幾好」，stative留a
+從來	v			verb-suffix;heuristic	high	high|gate	742	BAD	r			verb-suffix假陽；副「從來」
+我過	v			verb-suffix;p1;heuristic	high	high|gate	4234	BAD	u			verb-suffix假陽；切分殘片，詞類未定
+手上	v			verb-suffix;heuristic	high	high|gate	813	BAD	n			verb-suffix假陽；處所名「手上」
+才	r,x			heuristic	high	high|gate	1453	OK			
+拖住	v			verb-suffix;p1;heuristic	high	high|gate	2186	OK			
+掛住	v			verb-suffix;heuristic	high	high|gate	805	OK			
+是	v,x			heuristic;p1	high	high|gate	139	OK			
+更	r			heuristic	high	high|gate	363	OK			
+更好	v			verb-suffix;p1;heuristic	high	high|gate	3616	BAD	a			verb-suffix假陽；形「更好」
+此	x			heuristic;p1	high	high|gate	2037	OK			
+牀上	v			verb-suffix;p1;heuristic	high	high|gate	4927	BAD	n			verb-suffix假陽；處所名「牀上」
+的	x			heuristic	high	high|gate	42	OK			
+看好	v			verb-suffix;heuristic	high	high|gate	4542	OK			
+真實	a			audit-high;review	high	high|gate	2519	OK			
+社會主義	n			len4-noun-heuristic	high	high|gate	3625	OK			
+而且	x			heuristic	high	high|gate	342	OK			
+能夠	v,x			heuristic	high	high|gate	864	OK			
+與	x			heuristic	high	high|gate	892	OK			
+行開	v			verb-suffix;heuristic	high	high|gate	4392	OK			
+話過	v			verb-suffix;p1;heuristic	high	high|gate	4395	OK			
+諗住	v			verb-suffix;heuristic	high	high|gate	373	OK			
+講完	v			verb-suffix;p1;heuristic	high	high|gate	714	OK			
+越來	v			verb-suffix;p1;heuristic	high	high|gate	3457	BAD	r			verb-suffix假陽；「越來越」副詞幹，非動
+跟住	v			verb-suffix;heuristic	high	high|gate	140	SOFT	v,r			主標動可；粵語接續副「跟住」亦極常見
+返起	v			verb-suffix;p1;heuristic	high	high|gate	1595	OK			
+需要	n,v			heuristic	high	high|gate	420	OK			

@@ -349,15 +349,20 @@ button.icon-button.header-search__shuffle:disabled {
     text-overflow: ellipsis;
   }
 
+  /* nowrap 單行；唔用 ellipsis — JS 縮字／極窄隱藏（header-hero-tagline-fit） */
   .app-bar > .header-hero .header-hero__tagline {
     display: block;
     margin: 2px 0 0;
+    max-width: 100%;
     font-size: clamp(10px, 2.8vw, 12px);
     line-height: 1.25;
     color: var(--muted);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: hidden; /* 量度用 scrollWidth；縮妥前唔橫向濺出 */
+  }
+
+  .app-bar > .header-hero .header-hero__tagline[hidden] {
+    display: none !important;
   }
 
   .header-chrome__actions {
@@ -798,6 +803,86 @@ button.icon-button.header-search__shuffle:disabled {
   padding-bottom: 56px;
 }
 
+.portable-update-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 210;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 10px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.08);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.portable-update-banner__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.portable-update-banner__text strong {
+  font-weight: 650;
+}
+
+.portable-update-banner__text span {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.portable-update-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.portable-update-banner__btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.portable-update-banner__btn:hover {
+  border-color: var(--accent);
+}
+
+.portable-update-banner__close {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.portable-update-banner__close:hover {
+  color: var(--ink);
+}
+
+.app-shell.has-portable-update-banner .main-wrap {
+  padding-bottom: 72px;
+}
+
 @media (min-width: 768px) {
   /* ≥768px：header／主內容全寬左對齊（沿用 app-header page padding） */
   .app-header .app-bar {
@@ -823,4 +908,78 @@ button.icon-button.header-search__shuffle:disabled {
   .menu-trigger {
     min-width: 0;
   }
+}
+
+.workbench-entry {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--surface);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.workbench-entry:hover {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+}
+.workbench-entry:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.workbench-menu-group { display: none; }
+
+@media (max-width: 720px) {
+  .workbench-entry { display: none; }
+  .workbench-menu-group { display: block; }
+}
+
+.put-workbench-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu, 60);
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+.put-workbench-modal__card {
+  width: min(28rem, 100%);
+  padding: 1.25rem 1.35rem;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+.put-workbench-modal__card h2 { margin: 0 0 .75rem; font-size: 1.2rem; }
+.put-workbench-modal__preview,
+.put-workbench-modal__hint { color: var(--muted); font-size: .9rem; }
+.put-workbench-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.put-workbench-modal__actions button {
+  border: 1px solid var(--line);
+  border-radius: .7rem;
+  padding: .65rem .9rem;
+  background: var(--surface-soft);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.put-workbench-modal__actions button:disabled { opacity: .45; cursor: not-allowed; }
+.put-workbench-modal__primary {
+  border: 0 !important;
+  background: var(--ink) !important;
+  color: var(--bg) !important;
 }

@@ -1,0 +1,251 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p0	愛好者	n			cow-single	low	low|low|plain	OK				
+p0	憎恨	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	所有權	n			cow-single	low	low|low|plain	OK				
+p0	手套	n			cow-single	low	low|low|plain	OK				
+p0	手工藝品	n			cow-single	low	low|low|plain	OK				
+p0	打電話	v			cow-single	low	low|low|plain	OK				
+p0	扣除	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	把持	v			cow-single	low	low|low|plain	OK				
+p0	抗議	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	折扣	n			cow-single	low	low|low|plain	OK				
+p0	拋	v			cow-single	low	low|low|plain	OK				
+p0	推動	v			cow-single	low	low|low|plain	OK				
+p0	揮霍無度	v			cow-single	low	low|low|plain	OK				
+p0	撤退	v			cow-single	low	low|low|plain	OK				
+p0	攝影師	n			cow-single	low	low|low|plain	OK				
+p0	收盤	v			cow-single	low	low|low|plain	OK				
+p0	放寬	n			cow-single	low	low|low|plain	BAD	v			放寬＝動，非名
+p0	放肆	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	BAD	a,v			放肆主形；動用可
+p0	教授	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	整理	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	敵人	n			cow-single	low	low|low|plain	OK				
+p0	斧頭	n			cow-single	low	low|low|plain	OK				
+p0	新娘	n			cow-single	low	low|low|plain	OK				
+p0	方法	n			cow-single	low	low|low|plain	OK				
+p0	日出	n			cow-single	low	low|low|plain	OK				
+p0	星期六	n			cow-single	low	low|low|plain	OK				
+p0	會話	n			cow-single	low	low|low|plain	OK				
+p0	有用	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	BAD	a			有用＝形，非 n,v
+p0	有關	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	BAD	a,x			有關＝形／介，非 n,v
+p0	本能	n			cow-single	low	low|low|plain	OK				
+p0	材料	n			cow-single	low	low|low|plain	OK				
+p0	核心	n			cow-single	low	low|low|plain	OK				
+p0	核聚變	n			cow-single	low	low|low|plain	OK				
+p0	條件反射	n			cow-single	low	low|low|plain	OK				
+p0	槍彈	n			cow-single	low	low|low|plain	OK				
+p0	機會	n			cow-single	low	low|low|plain	OK				
+p0	櫻花	n			cow-single	low	low|low|plain	OK				
+p0	款式	n			cow-single	low	low|low|plain	OK				
+p0	殺	v			cow-single	low	low|low|plain	OK				
+p0	每年	a			cow-single	low	low|low|plain	BAD	r			每年＝副，非形
+p0	毒癮	n			cow-single	low	low|low|plain	OK				
+p0	毗鄰	v			cow-single	low	low|low|plain	OK				
+p0	水桶	n			cow-single	low	low|low|plain	OK				
+p0	水池	n			cow-single	low	low|low|plain	OK				
+p0	氾濫	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	波	n			cow-single	low	low|low|plain	OK				
+p0	流出	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	SOFT				n,v 真 dual 可
+p0	海灘	n			cow-single	low	low|low|plain	OK				
+p0	消瘦	n			cow-single	low	low|low|plain	BAD	a,v			消瘦＝形／動，非名
+p0	涼鞋	n			cow-single	low	low|low|plain	OK				
+p0	淚水	n			cow-single	low	low|low|plain	OK				
+p0	渡過	v			cow-single	low	low|low|plain	OK				
+p0	游水	v			cow-single	low	low|low|plain	OK				
+p0	溜	v			cow-single	low	low|low|plain	OK				
+p0	滋味	n			cow-single	low	low|low|plain	OK				
+p0	滑	v			cow-single	low	low|low|plain	SOFT	a,v			主標動可；形「滑溜」常見
+p0	濕	n			cow-single	low	low|low|plain	BAD	a			濕＝形，非名
+p0	煙霧	n			cow-single	low	low|low|plain	OK				
+p0	熊	n			cow-single	low	low|low|plain	OK				
+p0	牀上用品	n			cow-single	low	low|low|plain	OK				
+p0	牛仔褲	n			cow-single	low	low|low|plain	OK				
+p0	特寫鏡頭	n			cow-single	low	low|low|plain	OK				
+p0	環	n			cow-single	low	low|low|plain	OK				
+p0	當時	n			cow-single	low	low|low|plain	BAD	n,r			當時＝名／副時間
+p0	疤痕	n			cow-single	low	low|low|plain	OK				
+p0	病人	n			cow-single	low	low|low|plain	OK				
+p0	皮膚	n			cow-single	low	low|low|plain	OK				
+p0	真的	a			cow-single	low	low|low|plain	SOFT				a,r 副用常見
+p0	眼皮	n			cow-single	low	low|low|plain	OK				
+p0	硝化甘油	n			cow-single	low	low|low|plain	OK				
+p0	碗	n			cow-single	low	low|low|plain	OK				
+p0	礦物燃料	n			cow-single	low	low|low|plain	OK				
+p0	程度	n			cow-single	low	low|low|plain	OK				
+p0	空	n			cow-single	low	low|low|plain	SOFT				a,n,v 多類
+p0	空間	n			cow-single	low	low|low|plain	OK				
+p0	穿梭	v			cow-single	low	low|low|plain	OK				
+p0	突擊	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	窮	a			cow-single	low	low|low|plain	OK				
+p0	等於	v			cow-single	low	low|low|plain	OK				
+p0	筷子	n			cow-single	low	low|low|plain	OK				
+p0	節	n			cow-single	low	low|low|plain	OK				
+p0	精神	n			cow-single	low	low|low|plain	OK				
+p0	純淨	n			cow-single	low	low|low|plain	BAD	a			純淨＝形，非名
+p0	結局	n			cow-single	low	low|low|plain	OK				
+p0	經紀人	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	BAD	n			經紀人只名；v 假陽
+p0	練習	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	缸	n			cow-single	low	low|low|plain	OK				
+p0	翅膀	n			cow-single	low	low|low|plain	OK				
+p0	考試	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	聯	v			cow-single	low	low|low|plain	OK				
+p0	聽話	v			cow-single	low	low|low|plain	OK				
+p0	胡言亂語	n			cow-single	low	low|low|plain	BAD	v			胡言亂語＝動，非名
+p0	腦袋	n			cow-single	low	low|low|plain	OK				
+p0	舅父	n			cow-single	low	low|low|plain	OK				
+p0	英寸	n			cow-single	low	low|low|plain	OK				
+p0	處女	n			cow-single	low	low|low|plain	OK				
+p0	血紅蛋白	n			cow-single	low	low|low|plain	OK				
+p0	衣櫥	n			cow-single	low	low|low|plain	OK				
+p0	襪子	n			cow-single	low	low|low|plain	OK				
+p0	西紅柿	n			cow-single	low	low|low|plain	OK				
+p0	親密關係	n			cow-single	low	low|low|plain	OK				
+p0	親自	r			cow-single	low	low|low|plain	OK				
+p0	許可證	n			cow-single	low	low|low|plain	OK				
+p0	調整	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	謊言	n			cow-single	low	low|low|plain	OK				
+p0	貴族	n			cow-single	low	low|low|plain	OK				
+p0	費用	n			cow-single	low	low|low|plain	OK				
+p0	走路	v			cow-single	low	low|low|plain	OK				
+p0	越過	v			cow-single	low	low|low|plain	OK				
+p0	身體	n			cow-single	low	low|low|plain	OK				
+p0	車輪	n			cow-single	low	low|low|plain	OK				
+p0	軍事行動	n			cow-single	low	low|low|plain	OK				
+p0	轉身	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	追溯	v			cow-single	low	low|low|plain	OK				
+p0	逃走	v			cow-single	low	low|low|plain	OK				
+p0	逃避現實	n			cow-single	low	low|low|plain	BAD	v			VO 動，非名
+p0	逆行	v			cow-single	low	low|low|plain	OK				
+p0	進去	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low	low	low|low|plain	OK				
+p0	遊客	n			cow-single	low	low|low|plain	OK				
+p0	遲疑	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	SOFT				n,v 可；a 亦常見
+p0	遺憾	n			cow-single	low	low|low|plain	SOFT				n,a 形用常見
+p0	邀請	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	還原	n			cow-single	low	low|low|plain	SOFT				n,v 動用常見
+p0	邊緣	n			cow-single	low	low|low|plain	OK				
+p0	野生植物	n			cow-single	low	low|low|plain	OK				
+p0	錄音機	n			cow-single	low	low|low|plain	OK				
+p0	鍾	n			cow-single	low	low|low|plain	OK				
+p0	鏈接	v			cow-single	low	low|low|plain	OK				
+p0	鐵路	n			cow-single	low	low|low|plain	OK				
+p0	長大	v			cow-single	low	low|low|plain	OK				
+p0	長期	n			cow-single	low	low|low|plain	SOFT				a,n,r 多類
+p0	長頸鹿	n			cow-single	low	low|low|plain	OK				
+p0	閃光燈	n			cow-single	low	low|low|plain	OK				
+p0	開槍	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	防止	v			cow-single	low	low|low|plain	OK				
+p0	防護	v			cow-single	low	low|low|plain	OK				
+p0	難以	a			cow-single	low	low|low|plain	BAD	r			難以＝副，非形
+p0	靜脈曲張	n			cow-single	low	low|low|plain	OK				
+p0	響亮	v			cow-single	low	low|low|plain	BAD	a			響亮＝形，非動
+p0	頰	n			cow-single	low	low|low|plain	OK				
+p0	顯示	n,v			cow-nv-unreviewed;trust-low	low	low|low|plain	OK				
+p0	風氣	n			cow-single	low	low|low|plain	OK				
+p0	飛機	n			cow-single	low	low|low|plain	OK				
+p0	體育館	n			cow-single	low	low|low|plain	OK				
+p0	高峯	n			cow-single	low	low|low|plain	OK				
+p0	鬆手	v			cow-single	low	low|low|plain	OK				
+p0	魔力	n			cow-single	low	low|low|plain	OK				
+p0	麪粉	n			cow-single	low	low|low|plain	OK				
+p0	點鐘	n			cow-single	low	low|low|plain	OK				
+p0	一心一德	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	一手一腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n,r	idiom		low|u 有明確詞類 → n,r
+p0	一死一傷	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n	idiom		low|u 有明確詞類 → n
+p0	一瘸一拐	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	一言一行	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n	idiom		low|u 有明確詞類 → n
+p0	一長一短	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	一顰一笑	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n	idiom		low|u 有明確詞類 → n
+p0	不大不小	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	予取予攜	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	予取予求	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	人五人六	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	倔頭倔腦	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	化學變化	u	idiom		no-source;fallback;p2-idiom:AxxA;p2-idiom-heuristic	low	low|u|idiom	BAD	n			非熟語／專名；清 family；pos→n
+p0	半明半暗	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	可喜可賀	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	同名同姓	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	呵呵大笑	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	大喊大叫	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	大模大樣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,r	idiom		low|u 有明確詞類 → a,r
+p0	大鳴大放	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	如火如荼	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	實報實銷	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	小恩小惠	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n	idiom		low|u 有明確詞類 → n
+p0	快人快語	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	惶惶不安	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	惺惺相惜	u	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	政黨政治	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n			非熟語／專名；清 family；pos→n
+p0	救國救民	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	救苦救難	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	有條有理	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	有權有勢	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	束手束腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,v	idiom		low|u 有明確詞類 → a,v
+p0	沒大沒小	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	沒完沒了	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	流裏流氣	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	無私無畏	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	無聲無息	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,r	idiom		low|u 有明確詞類 → a,r
+p0	直來直去	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,r	idiom		low|u 有明確詞類 → a,r
+p0	直來直往	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,r	idiom		low|u 有明確詞類 → a,r
+p0	相輔相成	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	知己知彼	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	笨手笨腳	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	美侖美奐	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	耗時耗力	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a,v	idiom		low|u 有明確詞類 → a,v
+p0	胡裏胡塗	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	自私自利	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	自賣自誇	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	若即若離	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	a	idiom		low|u 有明確詞類 → a
+p0	越幫越忙	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	v	idiom		low|u 有明確詞類 → v
+p0	默罕默德	u	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic	low	low|u|idiom	BAD	n			非熟語／專名；清 family；pos→n
+p0	一元復始	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	一共	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	一向	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	一廂情願	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	一心	u			no-source;fallback	low	low|u|plain	BAD	a,r			u 有明確詞類 → a,r
+p0	一忍再忍	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	一敗塗地	u			no-source;fallback	low	low|u|plain	BAD	a,v			u 有明確詞類 → a,v
+p0	一文不名	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	一眼	u			no-source;fallback	low	low|u|plain	BAD	n,r			u 有明確詞類 → n,r
+p0	一瞬	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	一統天下	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	一舉成功	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	一般見識	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	一語成讖	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	一貧如洗	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	三代同堂	u			no-source;fallback	low	low|u|plain	BAD	n,v			u 有明確詞類 → n,v
+p0	三天兩頭	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	三明治	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	上車	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	下週	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	下體	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	不久	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	不孝有三	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	不守信用	u			no-source;fallback	low	low|u|plain	BAD	v,a			u 有明確詞類 → v,a
+p0	不屈	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	不懂裝懂	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	不明	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	不錯	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	世界盃	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	中小企業	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	中篇小説	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	事務	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	二人世界	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	互相	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
+p0	互相推諉	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	五馬分屍	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	亞	u			no-source;fallback	low	low|u|plain	BAD	a,x			u 有明確詞類 → a,x
+p0	交換價值	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人中龍鳳	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人口構成	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人手	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人才外流	u			no-source;fallback	low	low|u|plain	BAD	n,v			u 有明確詞類 → n,v
+p0	人數	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人盡皆知	u			no-source;fallback	low	low|u|plain	BAD	a,v			u 有明確詞類 → a,v
+p0	人窮志短	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	人間仙境	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	人魚小姐	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	以少勝多	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	以弗所書	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	以暴制暴	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	以防不測	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v

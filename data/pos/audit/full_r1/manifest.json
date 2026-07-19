@@ -1,0 +1,144 @@
+{
+  "seed": 20260720,
+  "threshold": 0.9,
+  "phases": {
+    "p0": {
+      "universe": 18781,
+      "sample_n": 1098,
+      "strata": {
+        "high|gate|idiom": {
+          "universe": 240,
+          "sample": 50
+        },
+        "high|gate|plain": {
+          "universe": 1232,
+          "sample": 62
+        },
+        "high|u|idiom": {
+          "universe": 185,
+          "sample": 50
+        },
+        "low|low|idiom": {
+          "universe": 18,
+          "sample": 18
+        },
+        "low|low|plain": {
+          "universe": 4369,
+          "sample": 219
+        },
+        "low|u|idiom": {
+          "universe": 446,
+          "sample": 50
+        },
+        "low|u|plain": {
+          "universe": 12255,
+          "sample": 613
+        },
+        "medium|gate|plain": {
+          "universe": 36,
+          "sample": 36
+        }
+      },
+      "out": "D:\\Canto-0243\\data\\pos\\audit\\full_r1\\p0_sample.tsv"
+    },
+    "p1": {
+      "universe": 5000,
+      "sample_n": 292,
+      "strata": {
+        "high|gate|plain": {
+          "universe": 716,
+          "sample": 50
+        },
+        "high|u|idiom": {
+          "universe": 1,
+          "sample": 1
+        },
+        "high|u|plain": {
+          "universe": 3,
+          "sample": 3
+        },
+        "low|low|plain": {
+          "universe": 1662,
+          "sample": 84
+        },
+        "low|u|idiom": {
+          "universe": 5,
+          "sample": 5
+        },
+        "low|u|plain": {
+          "universe": 2594,
+          "sample": 130
+        },
+        "medium|gate|plain": {
+          "universe": 19,
+          "sample": 19
+        }
+      },
+      "out": "D:\\Canto-0243\\data\\pos\\audit\\full_r1\\p1_sample.tsv"
+    },
+    "p2_idiom": {
+      "universe": 879,
+      "sample_n": 168,
+      "strata": {
+        "high|gate|idiom": {
+          "universe": 228,
+          "sample": 50
+        },
+        "high|u|idiom": {
+          "universe": 186,
+          "sample": 50
+        },
+        "low|low|idiom": {
+          "universe": 18,
+          "sample": 18
+        },
+        "low|u|idiom": {
+          "universe": 447,
+          "sample": 50
+        }
+      },
+      "out": "D:\\Canto-0243\\data\\pos\\audit\\full_r1\\p2_idiom_sample.tsv"
+    },
+    "p3": {
+      "universe": 15000,
+      "sample_n": 853,
+      "strata": {
+        "high|gate|idiom": {
+          "universe": 5,
+          "sample": 5
+        },
+        "high|gate|plain": {
+          "universe": 408,
+          "sample": 50
+        },
+        "high|u|idiom": {
+          "universe": 8,
+          "sample": 8
+        },
+        "high|u|plain": {
+          "universe": 2,
+          "sample": 2
+        },
+        "low|low|plain": {
+          "universe": 2570,
+          "sample": 129
+        },
+        "low|u|idiom": {
+          "universe": 16,
+          "sample": 16
+        },
+        "low|u|plain": {
+          "universe": 11860,
+          "sample": 593
+        },
+        "medium|gate|plain": {
+          "universe": 131,
+          "sample": 50
+        }
+      },
+      "out": "D:\\Canto-0243\\data\\pos\\audit\\full_r1\\p3_sample.tsv"
+    }
+  },
+  "total_sample": 2411,
+  "combined_out": "D:\\Canto-0243\\data\\pos\\audit\\full_r1\\all_phases_sample.tsv"
+}

@@ -1,6 +1,6 @@
 /** ADR-0032 D: 詞庫預取（非 metered / 非 saveData） */
 
-import { getCurrentLexiconTarget } from './db/init';
+import { getCurrentLexiconTarget, getLexiconCacheStatus } from './db/init';
 
 function isMeteredConnection(): boolean {
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } })
@@ -18,17 +18,10 @@ export async function scheduleLexiconPrecache(): Promise<void> {
   precacheStarted = true;
   try {
     const target = await getCurrentLexiconTarget();
-    const cache = await getLexiconCacheStatusSafe(target);
+    const cache = await getLexiconCacheStatus(target);
     if (cache.any) return;
     await fetch(target.fetchUrl, { priority: 'low' } as RequestInit);
   } catch {
     precacheStarted = false;
   }
-}
-
-async function getLexiconCacheStatusSafe(
-  target: Awaited<ReturnType<typeof getCurrentLexiconTarget>>,
-): Promise<{ any: boolean }> {
-  const { getLexiconCacheStatus } = await import('./db/lexicon-restore.ts');
-  return getLexiconCacheStatus(target);
 }

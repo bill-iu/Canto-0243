@@ -10,6 +10,7 @@ export interface ModeMenuProps {
   onModeChange: (family: 'basic' | 'pingze' | 'synonym') => void;
   onOpenGuide: () => void;
   onOpenAbout: () => void;
+  onOpenWorkbench?: () => void;
   /** Portable host only — 關係補錄 */
   onOpenRelation?: () => void;
   /** Portable host only — 退出本機服務 */
@@ -28,6 +29,7 @@ export function ModeMenu({
   onModeChange,
   onOpenGuide,
   onOpenAbout,
+  onOpenWorkbench,
   onOpenRelation,
   onExitPortable,
   theme = 'light',
@@ -148,6 +150,26 @@ export function ModeMenu({
                 );
               })}
             </div>
+            {onOpenWorkbench ? (
+              <div className="menu-group workbench-menu-group" role="group" aria-label={lang === 'zh' ? '功能頁' : 'Feature pages'}>
+                <p className="menu-label">{lang === 'zh' ? '功能頁' : 'Feature pages'}</p>
+                <button
+                  type="button"
+                  className="mode-option"
+                  role="menuitem"
+                  onClick={() => {
+                    close();
+                    onOpenWorkbench();
+                  }}
+                >
+                  <span>
+                    <span className="mode-name">{lang === 'zh' ? '句格工作台' : 'Line Workbench'}</span>
+                    <span className="mode-help">{lang === 'zh' ? '逐格掌握聲調、押韻與原意' : 'Shape tone, rhyme and meaning slot by slot'}</span>
+                  </span>
+                  <span className="mode-key">↗</span>
+                </button>
+              </div>
+            ) : null}
             <div className="menu-group" role="group" aria-label={lang === 'zh' ? '工具' : 'Tools'}>
               <p className="menu-label">{lang === 'zh' ? '工具' : 'Tools'}</p>
               <button

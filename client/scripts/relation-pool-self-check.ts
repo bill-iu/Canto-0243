@@ -14,12 +14,16 @@ import {
   invalidateLexiconMembership,
   isLexiconMembershipReady,
 } from '../src/db/lexicon-membership.ts';
-import { projectAntRankingSelfCheck } from '../src/db/relation-pool-ranking.ts';
+import {
+  projectAntRankingSelfCheck,
+  projectSynRankingSelfCheck,
+} from '../src/db/relation-pool-ranking.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
 
 projectAntRankingSelfCheck();
+projectSynRankingSelfCheck();
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 loadStaticRelationData(repoRoot);

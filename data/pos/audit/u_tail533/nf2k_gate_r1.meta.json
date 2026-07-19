@@ -1,0 +1,7 @@
+{
+  "round": 1,
+  "seed": 44,
+  "universe": 508,
+  "sample_n": 50,
+  "out": "data/pos/audit/u_tail533/nf2k_gate_r1.tsv"
+}

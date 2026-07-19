@@ -1,0 +1,150 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一句話	u			no-source;fallback	low	low|u	3938	BAD	n,r			NP「一句話」；亦作「總之」副用
+一塊	u			no-source;fallback	low	low|u	2925	BAD	n,x			數量短語／「一塊」指物
+一招	u			no-source;p1;fallback	low	low|u	3358	BAD	n			一着／招式，名詞
+一拳	u			no-source;p1;fallback	low	low|u	2420	BAD	n			一記拳頭，名詞
+一摸	u			no-source;p1;fallback	low	low|u	4420	SOFT				動量短語 vs 動截斷，邊介；u 可接受
+一羣	u			no-source;p1;fallback	low	low|u	4834	BAD	x			數+量結構，虛
+一輪	u			no-source;p1;fallback	low	low|u	3003	BAD	n,x			一回合／量詞短語
+下身	u			no-source;fallback	low	low|u	2457	BAD	n			身體部位，名詞
+不敢	u			no-source;fallback	low	low|u	3843	BAD	v			情態動詞短語
+不禁	u			no-source;fallback	low	low|u	1906	BAD	r			副詞「忍不住」
+中意	u			no-source;fallback	low	low|u	2193	BAD	v			粵「喜歡」
+主要	u			no-source;fallback	low	low|u	1841	BAD	a,r			形＋副兩用
+之內	u			no-source;fallback	low	low|u	2851	BAD	x			方位／後置虛
+乎	u			no-source;fallback	low	low|u	3253	BAD	x			文言語氣／介，虛
+也是	u			no-source;p1;fallback	low	low|u	525	SOFT				也+是連用塊，單一詞類邊介
+也能	u			no-source;p1;fallback	low	low|u	3800	OK				副+能願截斷，非完整詞位
+什麼時候	u			no-source;fallback	low	low|u	3103	BAD	r,x			疑問時間
+住部	u			no-source;p1;fallback	low	low|u	4847	OK				疑似截斷／罕用，詞類難定
+你在	u			no-source;p1;fallback	low	low|u	3426	OK				人稱+在截斷
+依句	u			no-source;p1;fallback	low	low|u	3577	OK				罕／截斷不明
+依間	u			no-source;p1;fallback	low	low|u	3846	BAD	x			粵指示「這一／這陣」類
+傻妹	u			no-source;fallback	low	low|u	2762	BAD	n			指人名詞
+億元	u			no-source;p1;fallback	low	low|u	4836	BAD	n			金額單位詞
+共	u			no-source;fallback	low	low|u	2472	SOFT				形／副／介／動多類，難定主標
+出名	u			no-source;fallback	low	low|u	2082	BAD	a,v			有名；成名
+出嚟	u			no-source;fallback	low	low|u	307	BAD	v			粵「出來」
+到手	u			no-source;fallback	low	low|u	3393	BAD	v			得到
+功夫	u			no-source;fallback	low	low|u	4064	BAD	n			武功／本事／時間
+功課	u			no-source;fallback	low	low|u	1511	BAD	n			作業
+卡通片	u			no-source;fallback	low	low|u	4125	BAD	n			卡通影片
+去邊	u			no-source;p1;fallback	low	low|u	1301	BAD	v			粵「去哪」
+可	u			no-source;fallback	low	low|u	334	SOFT				能願／轉折／許可多類
+同人	u			no-source;fallback	low	low|u	1166	BAD	n			同好／同人誌；同伴
+哼	u			no-source;fallback	low	low|u	1188	BAD	x			嘆詞
+單	u			no-source;p1;fallback	low	low|u	1512	SOFT				形／名／副多類
+單純	u			no-source;fallback	low	low|u	3367	BAD	a			形容詞
+噼	u			no-source;fallback	low	low|u	1103	BAD	x			擬聲／嘆
+埋個	u			no-source;p1;fallback	low	low|u	2950	SOFT				粵「再一個」連用，邊介
+夠啦	u			no-source;p1;fallback	low	low|u	4965	BAD	a,x			「夠了」形／嘆
+大嗌	u			no-source;fallback	low	low|u	1564	BAD	v			大叫
+大師	u			no-source;fallback	low	low|u	4292	BAD	n			師傅／大師
+大把	u			no-source;fallback	low	low|u	2084	BAD	a,r			粵「好多」
+大盤	u			no-source;p1;fallback	low	low|u	2689	BAD	n			股市大盤／大盤子
+大膽	u			no-source;fallback	low	low|u	3857	BAD	a			勇敢
+失戀	u			no-source;fallback	low	low|u	4011	BAD	v			失去戀愛
+奇	u			no-source;fallback	low	low|u	3368	BAD	a			奇怪（主）
+女子	u			no-source;fallback	low	low|u	4860	BAD	n			女性
+女生	u			no-source;fallback	low	low|u	1866	BAD	n			女學生／女性
+好奇	u			no-source;fallback	low	low|u	700	BAD	a			好奇
+好象	u			no-source;p1;fallback	low	low|u	3675	BAD	r,v			同「好像」
+如常	u			no-source;fallback	low	low|u	4968	BAD	a,r			如常／照常
+安	u			no-source;p1;fallback	low	low|u	4294	SOFT				形／動／名多類
+小雪	u			no-source;fallback	low	low|u	2219	BAD	n			節氣／專名
+就在	u			no-source;p1;fallback	low	low|u	2603	SOFT				副+介連用，邊介
+屋企人	u			no-source;fallback	low	low|u	1199	BAD	n			家人
+屍	u			no-source;fallback	low	low|u	3728	BAD	n			屍體
+嵐嵐	u			no-source;p1;fallback	low	low|u	1878	BAD	n			專名
+幼稚園	u			no-source;fallback	low	low|u	2067	BAD	n			幼兒園
+床	u			no-source;p1;fallback	low	low|u	484	BAD	n			床鋪
+得閒	u			no-source;fallback	low	low|u	895	BAD	a,v			粵有空
+心急	u			no-source;fallback	low	low|u	3262	BAD	a			着急
+情願	u			no-source;fallback	low	low|u	4709	BAD	a,v			寧願／甘願
+愈來愈	u			no-source;fallback	low	low|u	3299	BAD	r			越來越
+慢	u			no-source;fallback	low	low|u	1552	BAD	a			緩慢
+應	u			no-source;p1;fallback	low	low|u	1255	SOFT				應須／答應／應聲多類
+成晚	u			no-source;fallback	low	low|u	4078	BAD	r			粵整晚
+成爲	u			no-source;fallback	low	low|u	427	BAD	v			成為
+我度	u			no-source;p1;fallback	low	low|u	3641	BAD	x			粵「我這兒／我處」處所虛
+我怕	u			no-source;p1;fallback	low	low|u	2284	OK				主語+動截斷
+我攬	u			no-source;p1;fallback	low	low|u	4711	OK				主語+動截斷
+房門	u			no-source;fallback	low	low|u	3165	BAD	n			房門
+扁	u			no-source;fallback	low	low|u	2681	BAD	a,v			扁平；弄扁
+打人	u			no-source;fallback	low	low|u	4875	BAD	v			打人
+抽出	u			no-source;p1;fallback	low	low|u	4712	BAD	v			抽出
+插件	u			no-source;p1;fallback	low	low|u	4170	BAD	n			plugin
+換衫	u			no-source;fallback	low	low|u	2570	BAD	v			換衣服
+收埋	u			no-source;fallback	low	low|u	2123	BAD	v			粵收藏／藏起
+攻	u			no-source;fallback	low	low|u	4198	BAD	v			攻擊
+新抱	u			no-source;fallback	low	low|u	4983	BAD	n			粵兒媳
+斷	u			no-source;fallback	low	low|u	1724	BAD	v			斷開（主）
+施工	u			no-source;fallback	low	low|u	4264	BAD	n,v			施工
+是但	u			no-source;fallback	low	low|u	2883	BAD	a,r			粵隨便
+是個	u			no-source;p1;fallback	low	low|u	1544	OK				係+量截斷
+晒	u			no-source;p1;fallback	low	low|u	206	SOFT				粵助詞／曬多類
+曦	u			no-source;fallback	low	low|u	1456	BAD	n			晨曦／名用字
+有了	u			no-source;p1;fallback	low	low|u	2499	OK				動+助截斷
+有事	u			no-source;fallback	low	low|u	1296	BAD	v			有事情
+林布	u			no-source;p1;fallback	low	low|u	2169	OK				罕用／疑專名，難定
+某	u			no-source;fallback	low	low|u	1391	BAD	x			不定指代，虛
+梗係	u			no-source;fallback	low	low|u	537	BAD	r			粵當然
+正在	u			no-source;fallback	low	low|u	2355	BAD	r			進行體副
+歲的	u			no-source;p1;fallback	low	low|u	3989	OK				截斷碎片
+殭屍	u			no-source;fallback	low	low|u	2632	BAD	n			zombie
+沿途	u			no-source;fallback	low	low|u	4653	BAD	n,r			一路上
+淡	u			no-source;fallback	low	low|u	2819	BAD	a			清淡
+淺	u			no-source;p1;fallback	low	low|u	3118	BAD	a			不深
+渣	u			no-source;fallback	low	low|u	1541	BAD	a,n			渣滓；差劣
+熊仔	u			no-source;fallback	low	low|u	1319	BAD	n			小熊
+熱	u			no-source;fallback	low	low|u	701	BAD	a			熱（主）
+熱鬧	u			no-source;fallback	low	low|u	4597	BAD	a			熱鬧
+爽身粉	u			no-source;fallback	low	low|u	3408	BAD	n			talcum powder
+班長	u			no-source;fallback	low	low|u	907	BAD	n			class monitor
+理性	u			no-source;fallback	low	low|u	3380	BAD	a,n			理性的／理性
+的事	u			no-source;p1;fallback	low	low|u	2146	OK				結構助+名截斷
+的確	u			no-source;fallback	low	low|u	1003	BAD	r			確實
+真係	u			no-source;fallback	low	low|u	59	BAD	r			粵真的
+眼光	u			no-source;fallback	low	low|u	3828	BAD	n			眼界／目光
+睇見	u			no-source;fallback	low	low|u	4601	BAD	v			粵看見
+知有	u			no-source;p1;fallback	low	low|u	3204	OK				截斷
+礦場	u			no-source;fallback	low	low|u	3205	BAD	n			mine site
+移	u			no-source;fallback	low	low|u	3064	BAD	v			移動
+突破	u			no-source;fallback	low	low|u	4311	BAD	n,v			breakthrough
+符紙	u			no-source;p1;fallback	low	low|u	4902	BAD	n			符籙
+等陣	u			no-source;fallback	low	low|u	1702	BAD	r,v			粵等一下／待會兒
+算是	u			no-source;fallback	low	low|u	3495	BAD	v			算作
+約	u			no-source;fallback	low	low|u	515	SOFT				約定／大約／約數多類
+紅	u			no-source;p1;fallback	low	low|u	905	BAD	a,n			紅色／紅
+組	u			no-source;fallback	low	low|u	3740	BAD	n,v			小組／組織
+練	u			no-source;fallback	low	low|u	2340	BAD	v			練習
+老土	u			no-source;fallback	low	low|u	3878	BAD	a			粵過時
+者	u			no-source;fallback	low	low|u	683	BAD	x			助／指人後綴，虛
+而家	u			no-source;fallback	low	low|u	114	BAD	r			粵現在
+聰明	u			no-source;fallback	low	low|u	3095	BAD	a			smart
+肚臍	u			no-source;fallback	low	low|u	3413	BAD	n			navel
+自私	u			no-source;fallback	low	low|u	3655	BAD	a			selfish
+舖頭	u			no-source;fallback	low	low|u	4815	BAD	n			粵店鋪
+著	u			no-source;fallback	low	low|u	100	SOFT				着／著多音多類
+衆	u			no-source;fallback	low	low|u	4619	BAD	n			眾人
+行路	u			no-source;fallback	low	low|u	4729	BAD	v			走路
+褲袋	u			no-source;fallback	low	low|u	3979	BAD	n			褲袋
+要不要	u			no-source;p1;fallback	low	low|u	3997	BAD	v			V-not-V
+計	u			no-source;fallback	low	low|u	1470	BAD	n,v			計策／計算
+詩音	u			no-source;p1;fallback	low	low|u	829	BAD	n			專名／詩之音
+識	u			no-source;fallback	low	low|u	112	BAD	v			粵知道／識得
+識得	u			no-source;fallback	low	low|u	4253	BAD	v			會／認識
+迅速	u			no-source;fallback	low	low|u	3458	BAD	a,r			迅速
+這裡	u			no-source;fallback	low	low|u	2522	BAD	r,x			指示處所
+遲早	u			no-source;fallback	low	low|u	4166	BAD	r			早晚
+邊個	u			no-source;fallback	low	low|u	97	BAD	x			粵誰
+部	u			no-source;fallback	low	low|u	636	SOFT				量詞／部門／部隊多類
+都很	u			no-source;p1;fallback	low	low|u	4626	OK				副連用截斷
+都能	u			no-source;p1;fallback	low	low|u	3178	OK				副+能截斷
+阿南	u			no-source;p1;fallback	low	low|u	1232	BAD	n			專名
+阿嘉	u			no-source;p1;fallback	low	low|u	1277	BAD	n			專名
+陳	u			no-source;fallback	low	low|u	554	SOFT				姓氏名 vs 陳列動
+順利	u			no-source;fallback	low	low|u	2434	BAD	a,r			順利
+顯然	u			no-source;fallback	low	low|u	4169	BAD	a,r			顯然
+魔風	u			no-source;p1;fallback	low	low|u	4826	SOFT				域內罕用合成，邊介
+麪	u			no-source;fallback	low	low|u	3181	BAD	n			麵

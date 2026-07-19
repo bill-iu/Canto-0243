@@ -1,11 +1,11 @@
 /**
  * Heteronym code/code query execution — port of heteronym_code_executor.py
  */
-import type { Database } from './sqljs.ts';
+import { initSqlJs, type Database } from './sqljs.ts';
 import { queryRows } from './database-backend.ts';
 import { createSqlJsBackend } from './sqljs-backend.ts';
 import { getCodeVariants } from './code-variants.ts';
-import { sortHeteronymResults } from './ranking.ts';
+import { initRankingData, sortHeteronymResults } from './ranking.ts';
 
 type ReadingRow = [string, string];
 
@@ -118,7 +118,7 @@ export async function executeHeteronymCodeSearch(
   mode: string,
   limit: number,
   offset: number,
-): Promise<HeteronymResult[]> {
+): Promise<{ items: HeteronymResult[]; total: number }> {
   const searchMode = mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
   const leftReq = codeTemplateToRequired(parsed.left_template);
   const rightReq = codeTemplateToRequired(parsed.right_template);
@@ -166,7 +166,7 @@ export async function executeHeteronymCodeSearch(
   }
 
   if (!matchedChars.length) {
-    return [];
+    return { items: [], total: 0 };
   }
 
   // Batch load readings — avoid per-char prepare (was freezing 33/34 on full lexicon)
@@ -202,7 +202,10 @@ export async function executeHeteronymCodeSearch(
     await yieldToMain();
   }
 
-  return sortHeteronymResults(items).slice(offset, offset + limit);
+  return {
+    items: sortHeteronymResults(items).slice(offset, offset + limit),
+    total: matchedChars.length,
+  };
 }
 
 /** ponytail: runnable self-check — `npx tsx client/scripts/heteronym-self-check.ts` */
@@ -213,7 +216,6 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
     throw new Error('heteronymLogicSelfCheck: template parse');
   }
 
-  const { initSqlJs } = await import('./sqljs.ts');
   const SQL = await initSqlJs();
   const db = new SQL.Database();
   db.run(
@@ -222,7 +224,7 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   db.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('AB', '35', 'a1 b1', 2)`);
   db.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('AB', '56', 'a2 b2', 2)`);
   resetHeteronymIndex();
-  const items = await executeHeteronymCodeSearch(
+  const { items } = await executeHeteronymCodeSearch(
     { left_template: '1?', right_template: '?2', width: 2 },
     createSqlJsBackend(db),
     'm1',
@@ -234,7 +236,6 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   }
 
   // heteronym sort self-check: freq primary across chars, pure jyut lexical within char
-  const { initRankingData } = await import('./ranking.ts');
   initRankingData({
     essay: { '高頻': 100, '低頻': 10 },
   });
@@ -247,7 +248,7 @@ export async function heteronymLogicSelfCheck(): Promise<void> {
   db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '35', 'a1 b1', 2)`);
   db2.run(`INSERT INTO words (char, code, jyutping, length) VALUES ('低頻', '56', 'a2 b2', 2)`);
   resetHeteronymIndex();
-  const hetItems = await executeHeteronymCodeSearch(
+  const { items: hetItems } = await executeHeteronymCodeSearch(
     { left_template: '1?', right_template: '?2', width: 2 },
     createSqlJsBackend(db2),
     'm1',

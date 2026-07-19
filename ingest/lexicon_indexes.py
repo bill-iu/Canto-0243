@@ -1,4 +1,4 @@
-"""Lexicon SQLite index allowlist — ADR v1.0.7 I2."""
+"""Lexicon SQLite index allowlist — ADR v1.0.7 I2 + measure-first adds."""
 from __future__ import annotations
 
 import sqlite3
@@ -22,14 +22,25 @@ FORBIDDEN_LEXICON_INDEXES = frozenset(
     }
 )
 
-REQUIRED_LEXICON_INDEXES = frozenset(
-    {
-        "ix_words_char",
-        "idx_length_code_finals",
-        "idx_word_rel_word_type",
-        "idx_word_rel_related_type",
-    }
-)
+# ponytail: add only after EXPLAIN + size gate (see docs/superpowers/specs/2026-07-17-lexicon-index-audit-p0-design.md)
+REQUIRED_LEXICON_INDEX_SQL: dict[str, str] = {
+    "ix_words_char": "CREATE INDEX IF NOT EXISTS ix_words_char ON words(char)",
+    "idx_length_code_finals": (
+        "CREATE INDEX IF NOT EXISTS idx_length_code_finals ON words(length, code, finals)"
+    ),
+    # Degrade path: length + finals= (equals cache miss) — measured SEEK vs length-only filter
+    "idx_length_finals": "CREATE INDEX IF NOT EXISTS idx_length_finals ON words(length, finals)",
+    "idx_word_rel_word_type": (
+        "CREATE INDEX IF NOT EXISTS idx_word_rel_word_type "
+        "ON word_relations(word_id, relation_type)"
+    ),
+    "idx_word_rel_related_type": (
+        "CREATE INDEX IF NOT EXISTS idx_word_rel_related_type "
+        "ON word_relations(related_id, relation_type)"
+    ),
+}
+
+REQUIRED_LEXICON_INDEXES = frozenset(REQUIRED_LEXICON_INDEX_SQL)
 
 
 def list_user_indexes(db_path: Path | str) -> set[str]:
@@ -51,8 +62,15 @@ def _has_word_relations_table_unique_constraint(conn: sqlite3.Connection) -> boo
     return "UNIQUE" in sql and "WORD_ID" in sql and "RELATED_ID" in sql
 
 
+def _table_names(conn: sqlite3.Connection) -> set[str]:
+    rows = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+    ).fetchall()
+    return {str(r[0]) for r in rows}
+
+
 def finalize_lexicon_indexes(db_path: Path | str) -> list[str]:
-    """Drop forbidden indexes; return names dropped."""
+    """Drop forbidden indexes; ensure required indexes exist. Return names dropped."""
     dropped: list[str] = []
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
@@ -66,12 +84,21 @@ def finalize_lexicon_indexes(db_path: Path | str) -> list[str]:
         for name in sorted(forbid & existing):
             conn.execute(f'DROP INDEX IF EXISTS "{name}"')
             dropped.append(name)
+
+        tables = _table_names(conn)
+        for name, ddl in sorted(REQUIRED_LEXICON_INDEX_SQL.items()):
+            if "words" in ddl and "words" not in tables:
+                continue
+            if "word_relations" in ddl and "word_relations" not in tables:
+                continue
+            conn.execute(ddl)
         conn.commit()
     return dropped
 
 
 __all__ = [
     "FORBIDDEN_LEXICON_INDEXES",
+    "REQUIRED_LEXICON_INDEX_SQL",
     "REQUIRED_LEXICON_INDEXES",
     "finalize_lexicon_indexes",
     "list_user_indexes",

@@ -14,8 +14,10 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 DEFAULT_CHAR_CSV = ROOT / "data" / "rime" / "char.csv"
 DEFAULT_PRON_RANK = "預設"
 
-PRON_RANK_SORT = {"預設": 0, "常用": 1, "罕見": 2}
+PRON_RANK_SORT = {"預設": 0, "常用": 1, "罕見": 2, "棄用": 3}
 UNKNOWN_PRON_RANK_SORT = 99
+# 錨點選項 union 剔除（ADR-0051 §3）；未知仍入選
+ANCHOR_EXCLUDED_PRON_RANK_SORT = frozenset({PRON_RANK_SORT["罕見"], PRON_RANK_SORT["棄用"]})
 
 _entries_by_char: Dict[str, List[LexiconEntry]] = {}
 _rank_by_char_jyut: Dict[tuple[str, str], int] = {}
@@ -89,7 +91,7 @@ def get_rime_char_entries(char: str) -> List[LexiconEntry]:
 
 
 def pron_rank_sort_value(char: str, jyutping: str) -> int:
-    """Lower = higher priority (預設=0, 常用=1, 罕見=2, unknown=99)."""
+    """Lower = higher priority (預設=0, 常用=1, 罕見=2, 棄用=3, unknown=99)."""
     if not char or not jyutping:
         return UNKNOWN_PRON_RANK_SORT
     ensure_rime_char_loaded()

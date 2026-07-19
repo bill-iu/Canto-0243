@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+中	a,n			cow-multi	medium	medium|gate	184	BAD	n,v			自由形「中」弱；名／方位名＋動「中獎／中計」
+交換	n,v			cow-multi	medium	medium|gate	1975	OK			
+交流	n,v			cow-multi	medium	medium|gate	2852	OK			
+保證	n,v			cow-multi	medium	medium|gate	4005	OK			
+值得	n,v			cow-multi	medium	medium|gate	1782	BAD	v			只係動（值得+VP），非名；n 會毒同名詞閘
+停留	n,v			cow-multi	medium	medium|gate	3902	OK			
+偵探	n,v			cow-multi	medium	medium|gate	4281	BAD	n			名（職業／角色）；動義用偵查，v 假陽
+傷害	n,v			cow-multi	medium	medium|gate	1246	OK			
+切	n,v			cow-multi	medium	medium|gate	1042	BAD	v			自由詞只係動「切」；n 假陽
+利用	n,v			cow-multi	medium	medium|gate	2133	OK			
+制服	n,v			cow-multi	medium	medium|gate	3546	OK			
+命令	n,v			cow-multi	medium	medium|gate	2660	OK			
+圈	n,v			cow-multi	medium	medium|gate	1599	OK			
+實現	n,v			cow-multi	medium	medium|gate	3818	OK			
+專心	n,v			cow-multi	medium	medium|gate	1995	BAD	a,v			形＋動（好專心／專心做），非名
+希望	n,v			cow-multi	medium	medium|gate	349	OK			
+後悔	n,v			cow-multi	medium	medium|gate	1446	OK			
+微笑	n,v			cow-multi	medium	medium|gate	1073	OK			
+必要	n,v			cow-multi	medium	medium|gate	3138	BAD	a,n			形＋名（必要條件／有必要），非動
+感覺	n,v			cow-multi	medium	medium|gate	192	OK			
+打算	n,v			cow-multi	medium	medium|gate	1052	OK			
+拉	n,v			cow-multi;p1	medium	medium|gate	570	BAD	v			只係動「拉」；n 假陽會毒同名詞閘
+提供	n,v			cow-multi	medium	medium|gate	3643	SOFT			主標動；名物化 n 薄但閘用 multi 可
+撞擊	n,v			cow-multi	medium	medium|gate	4590	OK			
+整理	n,v			cow-multi	medium	medium|gate	3868	OK			
+數	n,v			cow-multi	medium	medium|gate	1385	OK			
+期待	n,v			cow-multi	medium	medium|gate	1348	OK			
+死	n,v			cow-multi	medium	medium|gate	120	OK			
+派	n,v			cow-multi	medium	medium|gate	1267	OK			
+浪費	n,v			cow-multi	medium	medium|gate	3116	OK			
+深入	n,v			cow-multi	medium	medium|gate	4890	BAD	a,v			形＋動（深入研究／深入敵後），非名
+滑雪	n,v			cow-multi	medium	medium|gate	2475	OK			
+猶豫	n,v			cow-multi	medium	medium|gate	4089	OK			
+申請	n,v			cow-multi	medium	medium|gate	4658	OK			
+破壞	n,v			cow-multi	medium	medium|gate	2043	OK			
+確認	n,v			cow-multi	medium	medium|gate	3170	OK			
+移動	n,v			cow-multi	medium	medium|gate	2432	OK			
+聯繫	n,v			cow-multi	medium	medium|gate	961	OK			
+製造	n,v			cow-multi	medium	medium|gate	3456	OK			
+襲擊	n,v			cow-multi	medium	medium|gate	4603	OK			
+解釋	n,v			cow-multi	medium	medium|gate	784	OK			
+講話	n,v			cow-multi	medium	medium|gate	2620	OK			
+變化	n,v			cow-multi	medium	medium|gate	3884	OK			
+轉變	n,v			cow-multi	medium	medium|gate	4164	OK			
+迎接	n,v			cow-multi;p1	medium	medium|gate	3928	SOFT			主標動；名用薄（熱烈的迎接）閘用 multi 可
+遊戲	n,v			cow-multi	medium	medium|gate	766	OK			
+道歉	n,v			cow-multi	medium	medium|gate	2025	OK			
+選擇	n,v			cow-multi	medium	medium|gate	806	OK			
+電話	n,v			cow-multi	medium	medium|gate	196	BAD	n			名；口語動邊緣，v 會毒同動詞閘
+類似	n,v			cow-multi	medium	medium|gate	2640	BAD	a,v			形（類似的）／類似於，非名

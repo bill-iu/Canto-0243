@@ -1,0 +1,61 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p3	下晝	n,r			no-source;p3;fallback;full-r1-audit;review;粵下午	high	gate	OK				
+p3	下班	v			no-source;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	下雪	n,v			cow-multi;p3	medium	gate	BAD	v			天氣動；n 假陽會毒同名詞閘
+p3	主營業務	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	保管	n,v			cow-multi;p3	medium	gate	OK				true multi n,v
+p3	信息服務	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	做完	v			verb-suffix;p3;heuristic	high	gate	OK				
+p3	傾偈	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	六一	x			numeral;p3;heuristic	high	gate	OK				
+p3	前便	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p3	加快發展	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	加重	v			cow-single;full-r1-audit;review;加重＝動，非名	high	gate	OK				
+p3	問個	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	地方政府	n			len4-noun-heuristic	high	gate	OK				
+p3	埋伏	n,v			cow-multi;p3	medium	gate	OK				
+p3	執行	n,v			cow-multi;p3	medium	gate	OK				
+p3	場館	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	大城市	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	定額	n,v			cow-multi;p3	medium	gate	SOFT				主 n；v 弱可接受
+p3	床度	n,r			no-source;p3;fallback;full-r1-audit;review;粵牀上	high	gate	OK				
+p3	彈起	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	想說	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	批發市場	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	搜狐博客	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	擦拭	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	數碼產品	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	明日	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p3	普查	n,v			no-source;fallback;full-r1-audit;review;名動	high	gate	OK				
+p3	會嚟	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	有車	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	油耗	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p3	沿	v,x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → x,v	high	gate	OK				
+p3	潛伏	n,v			cow-multi;p3	medium	gate	OK				
+p3	現代社會	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	畢業證	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	癒合	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v	high	gate	OK				
+p3	研發	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v,n	high	gate	OK				
+p3	社會經濟	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	第一眼	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	管理系統	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	管理部門	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	細貓	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	結交	n,v			cow-multi;p3	medium	gate	BAD	v			只係動；n 假陽會毒同名詞閘
+p3	統治	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p3	經濟學家	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	網名	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	美國經濟	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	聽下	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	被封	v		passive	prefix-passive;p3;heuristic	high	gate	OK				
+p3	解套	n,v			no-source;p3;fallback;full-r1-audit;review;名動	high	gate	OK				
+p3	解放	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	gate	OK				
+p3	解決問題	n			len4-noun-heuristic;p3	high	gate	BAD	v			len4-noun 假陽；「解決+問題」VP＝動
+p3	調頭	n,v			no-source;fallback;full-r1-audit;review;名動	high	gate	OK				
+p3	豬朋狗友	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	走低	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				
+p3	蹤影	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	迄今	r			no-source;p3;fallback;full-r1-audit;review;清晰副詞	high	gate	OK				
+p3	這傢伙	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名	high	gate	OK				
+p3	這部電影	n			len4-noun-heuristic;p3	high	gate	OK				
+p3	飲飲	v			no-source;p3;fallback;full-r1-audit;review;清晰動詞／動語	high	gate	OK				

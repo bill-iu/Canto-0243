@@ -14,4 +14,6 @@ export interface EntryDetailModel {
   sources: string[];
   syns: string[];
   ants: string[];
+  /** Creator-facing 專案自建詞性 chips; omit when empty (詞性缺標). */
+  posChips?: string[];
 }

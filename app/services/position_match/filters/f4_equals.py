@@ -260,7 +260,9 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
             is_final=is_final,
         )
 
-    if prefix_wildcard:
+    # Dense full_code already narrows; LIMIT before phoneme filter drops hits when
+    # m1 variants expand past CANDIDATE_FALLBACK_LIMIT (e.g. 9太=2 → 解毒).
+    if prefix_wildcard or full_code:
         cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
         candidates = cached if cached is not None else query.all()
     else:

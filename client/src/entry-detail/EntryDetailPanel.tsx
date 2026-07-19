@@ -12,6 +12,7 @@ export function EntryDetailPanel({
   preferredJyutping,
   onClose,
   onRelationPick,
+  onPutInWorkbench,
 }: {
   literal: string;
   model: EntryDetailModel | null;
@@ -21,6 +22,7 @@ export function EntryDetailPanel({
   preferredJyutping?: string | null;
   onClose: () => void;
   onRelationPick: (literal: string) => void;
+  onPutInWorkbench?: (literal: string) => void;
 }) {
   const [readingIdx, setReadingIdx] = useState(0);
   const reading = model?.readings[readingIdx] ?? model?.readings[0];
@@ -65,6 +67,11 @@ export function EntryDetailPanel({
             <button type="button" className="entry-detail-panel__icon-btn" onClick={() => void handleCopy()}>
               {copied ? tDetail('detail.copy.done', lang) : tDetail('detail.copy', lang)}
             </button>
+            {onPutInWorkbench ? (
+              <button type="button" className="entry-detail-panel__icon-btn" onClick={() => onPutInWorkbench(literal)}>
+                {lang === 'zh' ? '放入句格' : 'Put in workbench'}
+              </button>
+            ) : null}
           </div>
         </div>
 
@@ -130,6 +137,19 @@ export function EntryDetailPanel({
               <span>{tDetail('detail.corpusWeight', lang)}</span>
               <strong>{model.corpusWeight.toLocaleString()}</strong>
             </div>
+
+            {model.posChips && model.posChips.length ? (
+              <section className="entry-detail-section">
+                <h3 className="entry-detail-section__title">{tDetail('detail.pos', lang)}</h3>
+                <div className="entry-detail-chip-row">
+                  {model.posChips.map((chip) => (
+                    <span key={chip} className="entry-detail-source-tag">
+                      {chip}
+                    </span>
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
             <section className="entry-detail-section">
               <h3 className="entry-detail-section__title">{tDetail('detail.sources', lang)}</h3>

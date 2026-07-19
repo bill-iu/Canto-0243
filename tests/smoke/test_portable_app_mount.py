@@ -10,6 +10,13 @@ from main import inject_app_index_meta, require_app_ui_dir, resolve_favicon
 
 
 class PortableAppMountTests(unittest.TestCase):
+    def test_workbench_index_routes_are_registered_before_static_mount(self):
+        from main import app
+
+        paths = [getattr(route, "path", None) for route in app.routes]
+        self.assertIn("/app/workbench/", paths)
+        self.assertLess(paths.index("/app/workbench/"), paths.index("/app"))
+
     def test_require_app_ui_dir_missing_raises_clear_error(self):
         missing = Path("definitely-missing-canto-app-ui-dir")
         with self.assertRaises(RuntimeError) as ctx:

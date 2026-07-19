@@ -24,6 +24,10 @@
 | [0054](./0054-portable-read-path-no-write-connective.md) | **Portable**：連接詞合成唔寫庫 + word_cache disk 暖啟 |
 | [0055](./0055-portable-gate-db-probe-word-cache-tail.md) | **Portable 閘**：DB 探針解鎖；word_cache→tail |
 | [0057](./0057-categorized-rime-lexicon-source.md) | **Rime 分類詞語來源**取代 legacy phrase |
+| [0058](./0058-project-pos-sidecar-carrier.md) | **專案自建詞性**：獨立 **詞性載體**（唔入 lyrics.db 主表） |
+| [0059](./0059-portable-release-fingerprint-update-notice.md) | **Portable**：**套件發佈指紋**＋**套件更新提示**（唔自動覆蓋） |
+| [0060](./0060-project-pos-inlex-fragment-alias.md) | **庫內難標 u**：fragment 分流 + **詞性字面別名** + 雙軌覆蓋 |
+| [0061](./0061-pos-family-leaf-subtypes.md) | **語彙族細分**：成語／俗語／諺語 + 篩選 + 外源只提案非 dependency |
 
 ## Stubs
 

@@ -1,5 +1,6 @@
 /** ADR-0032 G: manifest gzip target resolution */
 import {
+  buildDevLexiconTarget,
   resolveTargetFromManifest,
   type LexiconManifest,
 } from '../src/db/lexicon-manifest.ts';
@@ -31,6 +32,14 @@ if (!gzTarget.useGzip || gzTarget.fetchByteSize !== 300) {
 }
 if (!gzTarget.fetchUrl.endsWith('.db.gz')) {
   throw new Error('lexicon-manifest-self-check: gzip fetchUrl');
+}
+
+const devT = buildDevLexiconTarget('v1.0.7', 39092224);
+if (devT.version !== 'v1.0.7-dev-39092224' || devT.byteSize != null || devT.useGzip) {
+  throw new Error('lexicon-manifest-self-check: buildDevLexiconTarget');
+}
+if (buildDevLexiconTarget('v1').version !== 'v1-dev') {
+  throw new Error('lexicon-manifest-self-check: buildDevLexiconTarget no size');
 }
 
 console.log('lexicon-manifest self-check ok');

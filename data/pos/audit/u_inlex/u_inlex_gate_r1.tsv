@@ -1,0 +1,100 @@
+literal	pos	family	voice	note	trust	verdict	fix_pos	fix_family	audit_note
+上位	n,v			u-inlex;review;u-inlex-agent	high	OK			
+不已	r			u-inlex;review;u-inlex-agent	high	OK			
+不曾	r			u-inlex;review;u-inlex-agent	high	OK			
+不詳	a			u-inlex;review;u-inlex-agent	high	OK			
+世間	n			u-inlex;review;u-inlex-agent	high	OK			
+乒乓波	n			u-inlex;review;u-inlex-agent	high	OK			
+九成	n,r,x			u-inlex;review;u-inlex-agent	high	BAD	n,r		x 假陽：九成=比例/程度，非助詞
+佛	n			u-inlex;review;u-inlex-agent	high	OK			
+便攜	a			u-inlex;review;u-inlex-agent	high	OK			
+係路	n,r			u-inlex;review;u-inlex-agent	high	SOFT			粵「在路上」；n,r 閘可
+倫	n			u-inlex;review;u-inlex-agent	high	OK			
+傅	n,v			u-inlex;review;u-inlex-agent	high	BAD	n		主用名詞/姓；v 古罕用假陽
+催淚彈	n			u-inlex;review;u-inlex-agent	high	OK			
+僅有	r,v			u-inlex;review;u-inlex-agent	high	OK			
+優秀	a			u-inlex;review;u-inlex-agent	high	OK			
+兄	n			u-inlex;review;u-inlex-agent	high	OK			
+全家	n			u-inlex;review;u-inlex-agent	high	OK			
+凈	a,r			淨／淨係;u-inlex;review;u-inlex-agent	high	OK			粵=淨／淨係
+到頭來	r			u-inlex;review;u-inlex-agent	high	OK			
+北面	n			u-inlex;review;u-inlex-agent	high	OK			
+十點	n			u-inlex;review;u-inlex-agent	high	OK			
+卦	n			u-inlex;review;u-inlex-agent	high	OK			
+呢場	n,x			u-inlex;review;u-inlex-agent	high	OK			粵指示+量/場次
+哈哈哈哈哈	x			u-inlex;review;u-inlex-agent	high	OK			
+喉	n			u-inlex;review;u-inlex-agent	high	OK			
+嗡	x			擬聲;u-inlex;review;u-inlex-agent	high	OK			
+嘈醒	v			u-inlex;review;u-inlex-agent	high	OK			
+嘯	v			u-inlex;review;u-inlex-agent	high	OK			
+嚟緊	r,v			u-inlex;review;u-inlex-agent	high	OK			
+國際化	a,n,v			u-inlex;review;u-inlex-agent	high	OK			
+地藏	n			u-inlex;review;u-inlex-agent	high	OK			
+墮	v			u-inlex;review;u-inlex-agent	high	OK			
+大面積	a,n			u-inlex;review;u-inlex-agent	high	OK			
+天黑	a,n,v			u-inlex;review;u-inlex-agent	high	SOFT			a,v 主；n 弱；multi 閘可
+女廁	n			u-inlex;review;u-inlex-agent	high	OK			
+好友	n			u-inlex;review;u-inlex-agent	high	OK			
+嫂子	n			u-inlex;review;u-inlex-agent	high	OK			
+孟	n			u-inlex;review;u-inlex-agent	high	OK			
+帖	n,v			u-inlex;review;u-inlex-agent	high	OK			
+平和	a			u-inlex;review;u-inlex-agent	high	OK			
+年青	a			u-inlex;review;u-inlex-agent	high	OK			
+強勁	a			u-inlex;review;u-inlex-agent	high	OK			
+往事	n			u-inlex;review;u-inlex-agent	high	OK			
+後腦	n			u-inlex;review;u-inlex-agent	high	OK			
+徹底	a,r			u-inlex;review;u-inlex-agent	high	OK			
+必將	r			u-inlex;review;u-inlex-agent	high	OK			
+性命	n			u-inlex;review;u-inlex-agent	high	OK			
+恐怕	r,v			u-inlex;review;u-inlex-agent	high	OK			
+探頭	n,v			u-inlex;review;u-inlex-agent	high	OK			
+推倒	v			u-inlex;review;u-inlex-agent	high	OK			
+推斷	n,v			u-inlex;review;u-inlex-agent	high	OK			
+施展	v			u-inlex;review;u-inlex-agent	high	OK			
+早前	n,r			u-inlex;review;u-inlex-agent	high	SOFT			r 主；n 弱
+晌	n			u-inlex;review;u-inlex-agent	high	OK			
+武力	n			u-inlex;review;u-inlex-agent	high	OK			
+消毒	n,v			u-inlex;review;u-inlex-agent	high	OK			
+湯圓	n			u-inlex;review;u-inlex-agent	high	OK			
+漱口	v			u-inlex;review;u-inlex-agent	high	OK			
+炮	n,v			u-inlex;review;u-inlex-agent	high	OK			
+牛仔	n			u-inlex;review;u-inlex-agent	high	OK			
+珠海	n			u-inlex;review;u-inlex-agent	high	OK			
+現行	a,n			u-inlex;review;u-inlex-agent	high	OK			
+用品	n			u-inlex;review;u-inlex-agent	high	OK			
+由頭	n			u-inlex;review;u-inlex-agent	high	OK			
+白虎	n			u-inlex;review;u-inlex-agent	high	OK			
+相愛	v			u-inlex;review;u-inlex-agent	high	OK			
+眼眶	n			u-inlex;review;u-inlex-agent	high	OK			
+睇小	v			u-inlex;review;u-inlex-agent	high	OK			
+碧	a,n			u-inlex;review;u-inlex-agent	high	OK			
+竈	n			u-inlex;review;u-inlex-agent	high	OK			
+精美	a			u-inlex;review;u-inlex-agent	high	OK			
+紮實	a			u-inlex;review;u-inlex-agent	high	OK			
+美工	n			u-inlex;review;u-inlex-agent	high	OK			
+翻工	v			u-inlex;review;u-inlex-agent	high	OK			
+耀	n,v			u-inlex;review;u-inlex-agent	high	SOFT			v 主（照耀）；作名位薄
+老死	a,n,v			u-inlex;review;u-inlex-agent	high	SOFT			粵「老友」義 n；老死 a/v 亦見
+肌	n			u-inlex;review;u-inlex-agent	high	OK			
+臺	n,x			u-inlex;review;u-inlex-agent	high	BAD	n		主用名詞/地名；x 假陽
+花心	a,n			u-inlex;review;u-inlex-agent	high	OK			
+草草	a,r			u-inlex;review;u-inlex-agent	high	OK			
+荷	n,v			u-inlex;review;u-inlex-agent	high	OK			
+虧	a,n,v			u-inlex;review;u-inlex-agent	high	OK			
+蝦餃	n			u-inlex;review;u-inlex-agent	high	OK			
+衰妹	n			u-inlex;review;u-inlex-agent	high	OK			
+證監會	n			u-inlex;review;u-inlex-agent	high	OK			
+警員	n			u-inlex;review;u-inlex-agent	high	OK			
+豐滿	a			u-inlex;review;u-inlex-agent	high	OK			
+蹤	n			u-inlex;review;u-inlex-agent	high	OK			
+車尾	n			u-inlex;review;u-inlex-agent	high	OK			
+迪士尼	n			u-inlex;review;u-inlex-agent	high	OK			
+速	a,n			u-inlex;review;u-inlex-agent	high	OK			
+遊戲機	n			u-inlex;review;u-inlex-agent	high	OK			
+選修	n,v			u-inlex;review;u-inlex-agent	high	OK			
+那樣	r,x			u-inlex;review;u-inlex-agent	high	OK			
+長安	n			u-inlex;review;u-inlex-agent	high	OK			
+開燈	v			u-inlex;review;u-inlex-agent	high	OK			
+頂硬上	v			u-inlex;review;u-inlex-agent	high	OK			
+養父	n			u-inlex;review;u-inlex-agent	high	OK			
+麻麻	a			一般般;u-inlex;review;u-inlex-agent	high	OK			

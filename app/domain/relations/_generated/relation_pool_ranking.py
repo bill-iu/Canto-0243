@@ -9,6 +9,7 @@ SOURCE_BASE_RANK: Dict[str, int] = {
     "manual": 0,
     "manual_syn_cluster": 18,
     "manual_ant_mirror": 20,
+    "project_syn": 9,
     "cilin": 10,
     "antisem": 10,
     "project_ant": 12,

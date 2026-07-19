@@ -1,0 +1,251 @@
+phase	literal	pos	family	voice	note	trust	stratum	verdict	fix_pos	fix_family	fix_voice	audit_note
+p3	了不起	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	事蹟	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	二來	u			no-source;p3;fallback	low	low|u|plain	BAD	r,x			序列連接
+p3	二十年	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	二線	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	亞瑟	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	交帶	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	交費	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	人之	u			no-source;p3;fallback	low	low|u|plain	OK				之字截斷
+p3	人入	u			no-source;p3;fallback	low	low|u|plain	OK				截斷
+p3	人大代表	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	人對	u			no-source;p3;fallback	low	low|u|plain	OK				截斷
+p3	人用	u			no-source;p3;fallback	low	low|u|plain	BAD	a			形「人用」
+p3	仔見	u			no-source;p3;fallback	low	low|u|plain	OK				截斷不明
+p3	他不	u			no-source;p3;fallback	low	low|u|plain	OK				代+不截斷
+p3	他對	u			no-source;p3;fallback	low	low|u|plain	OK				代+介截斷
+p3	他所	u			no-source;p3;fallback	low	low|u|plain	OK				代+所截斷
+p3	令我	u			no-source;p3;fallback	low	low|u|plain	SOFT				令+代截；可 v
+p3	估下	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	伴有	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	但仍	u			no-source;p3;fallback	low	low|u|plain	OK				連副截斷
+p3	低成本	u			no-source;p3;fallback	low	low|u|plain	BAD	a,n			形／名
+p3	佐治	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	作品內容	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	你和	u			no-source;p3;fallback	low	low|u|plain	OK				代+連截斷
+p3	你得	u			no-source;p3;fallback	low	low|u|plain	SOFT				代+得截；邊
+p3	來訪	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	供需	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	係路	u			no-source;p3;fallback	low	low|u|plain	OK				粵截斷
+p3	俄國	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	保單	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	信用證	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	偏低	u			no-source;p3;fallback	low	low|u|plain	BAD	a,v			形／動
+p3	做不了	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	做返	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	催促	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	傾偈	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	僅是	u			no-source;p3;fallback	low	low|u|plain	BAD	v,r			只是
+p3	儘可能	u			no-source;fallback	low	low|u|plain	BAD	r			清晰副詞
+p3	先見	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			先見
+p3	先說	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	光電	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	入得	u			no-source;p3;fallback	low	low|u|plain	SOFT				V+得；可 v
+p3	入手	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	內側	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	全國性	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	兩隊	u			no-source;p3;fallback	low	low|u|plain	BAD	x,n			數+量
+p3	冰耀	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	凝望	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	出力	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	出演	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	刀刀	u			no-source;p3;fallback	low	low|u|plain	SOFT				疊／量邊
+p3	分管	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	切實加強	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	刻錄	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	前列	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	剛買	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	創新	u			no-source;fallback	low	low|u|plain	BAD	n,v			名動
+p3	力度	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	加快發展	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	加菲	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	動脈	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	動靜	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	勞動合同	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	勞務	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	十幾歲	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	原意	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	又開始	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	反動	u			no-source;p3;fallback	low	low|u|plain	BAD	a,n			形／名
+p3	句話	u			no-source;p3;fallback	low	low|u|plain	BAD	n			名截「一句話」可 n
+p3	另一種	u			no-source;p3;fallback	low	low|u|plain	BAD	x,n			指示
+p3	只知道	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	可兒	u			no-source;p3;fallback	low	low|u|plain	BAD	n			愛稱
+p3	可好	u			no-source;p3;fallback	low	low|u|plain	BAD	a,r			形／副
+p3	可想而知	u			no-source;fallback	low	low|u|plain	BAD	v,r			述謂／插入
+p3	史料	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	叻仔	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	同好	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	同濟	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	吐了	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	呱	u			no-source;fallback	low	low|u|plain	SOFT				擬聲
+p3	呵欠	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			名動
+p3	咗事	u			no-source;p3;fallback	low	low|u|plain	OK				助+名截斷
+p3	咗六合彩	u			no-source;p3;fallback	low	low|u|plain	OK				助+名截斷
+p3	哂力	u			no-source;p3;fallback	low	low|u|plain	BAD	a,v			粵費力
+p3	哩句	u			no-source;p3;fallback	low	low|u|plain	OK				指示截斷
+p3	哪家	u			no-source;p3;fallback	low	low|u|plain	BAD	x			疑問
+p3	唐山	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	唪	u			no-source;p3;fallback	low	low|u|plain	SOFT				罕
+p3	商機	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	問個	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	問咗	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	啦啦啦	u			no-source;p3;fallback	low	low|u|plain	SOFT				襯字
+p3	喇得	u			no-source;p3;fallback	low	low|u|plain	SOFT				粵語氣邊
+p3	喊着	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	喜歡喫	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	喫喝	u			no-source;p3;fallback	low	low|u|plain	BAD	v,n			動／名
+p3	喫肉	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	嗰兩個	u			no-source;p3;fallback	low	low|u|plain	BAD	x			指示
+p3	嘢做	u			no-source;p3;fallback	low	low|u|plain	OK				粵截斷
+p3	嘢好	u			no-source;p3;fallback	low	low|u|plain	OK				粵截斷
+p3	嚟做	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	嚟喇	u			no-source;p3;fallback	low	low|u|plain	SOFT				來了；v,x
+p3	嚴格	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	嚴格執行	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	四是	u			no-source;p3;fallback	low	low|u|plain	OK				列舉序截斷
+p3	回族	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	回購	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			名動
+p3	國際米蘭	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	圓圓	u			no-source;p3;fallback	low	low|u|plain	SOFT				形疊／人名邊
+p3	圓碌碌	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	地同	u			no-source;p3;fallback	low	low|u|plain	OK				地+連截斷
+p3	地架	u			no-source;p3;fallback	low	low|u|plain	OK				截斷
+p3	地鐵站	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	均屬	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	均有	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	均由	u			no-source;p3;fallback	low	low|u|plain	BAD	v,x			動／介
+p3	坐底	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	垂直	u			no-source;fallback	low	low|u|plain	BAD	a,v			形／動
+p3	城市裏	u			no-source;p3;fallback	low	low|u|plain	BAD	n			處所名
+p3	執導	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	執生	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	執返	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	埸	u			no-source;p3;fallback	low	low|u|plain	OK				罕異體，詞類難定
+p3	培養學生	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	堅硬	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	堡	u			no-source;fallback	low	low|u|plain	SOFT				語素／名
+p3	場館	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	境內	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	增設	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	外貿	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	多功能	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	多家	u			no-source;p3;fallback	low	low|u|plain	BAD	x,n			數+量
+p3	多方	u			no-source;fallback	low	low|u|plain	BAD	n,r			名／副
+p3	多樣性	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	多萬	u			no-source;p3;fallback	low	low|u|plain	BAD	x			約數
+p3	多遠	u			no-source;p3;fallback	low	low|u|plain	BAD	a,r			疑問距離
+p3	大一	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	大型企業	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	大城市	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	太遠	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	女校	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	好地地	u			no-source;fallback	low	low|u|plain	BAD	r,a			粵好端端
+p3	好夠	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	好強	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	威嚴	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	婷	u			no-source;fallback	low	low|u|plain	SOFT				名用字
+p3	媾女	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	嫌棄	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	孫	u			no-source;p3;fallback	low	low|u|plain	SOFT				親屬／姓
+p3	學歷	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	學英語	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	安娜	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	定點	u			no-source;p3;fallback	low	low|u|plain	BAD	a,n,v			名形動
+p3	宜個	u			no-source;p3;fallback	low	low|u|plain	OK				截斷不明
+p3	客車	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	害我	u			no-source;p3;fallback	low	low|u|plain	SOFT				害+代；可 v
+p3	容講	u			no-source;p3;fallback	low	low|u|plain	SOFT				粵可 v；邊介
+p3	富士康	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	寫了	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	寶貝兒	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	將你	u			no-source;p3;fallback	low	low|u|plain	OK				介+賓截斷
+p3	將她	u			no-source;p3;fallback	low	low|u|plain	OK				介+賓截斷
+p3	將球	u			no-source;p3;fallback	low	low|u|plain	OK				介+賓截斷
+p3	將身	u			no-source;p3;fallback	low	low|u|plain	OK				介+賓截斷
+p3	專一	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	專區	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	小圖	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	小學生	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	小溪	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	小貞到	u			no-source;p3;fallback	low	low|u|plain	OK				專名+到截斷
+p3	小貞用	u			no-source;p3;fallback	low	low|u|plain	OK				專名+用截斷
+p3	工業化	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	工業園	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	左下角	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	差異化	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	帶到	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	幫襯	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	年年	u			no-source;fallback	low	low|u|plain	BAD	r			清晰副詞
+p3	年產	u			no-source;p3;fallback	low	low|u|plain	BAD	v,n			動／名
+p3	幾個鐘	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	幾勁	u			no-source;p3;fallback	low	low|u|plain	BAD	a,r			粵程度
+p3	幾鐘	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	床度	u			no-source;p3;fallback	low	low|u|plain	BAD	n,r			粵牀上
+p3	廈門市	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	廢時	u			no-source;p3;fallback	low	low|u|plain	BAD	a,v			粵費時
+p3	廣泛應用	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	建立健全	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	弱勢羣體	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	張學友	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	強行	u			no-source;fallback	low	low|u|plain	BAD	r,v			副／動
+p3	彈起	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	很清楚	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	很辛苦	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	很開心	u			no-source;p3;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	後才能	u			no-source;p3;fallback	low	low|u|plain	OK				連用截斷
+p3	後續	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	微不足道	u			no-source;fallback	low	low|u|plain	BAD	a			清晰形容詞
+p3	徵集	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	必要性	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	想給	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	想說	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	想買	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	意想不到	u			no-source;fallback	low	low|u|plain	BAD	a,v			出乎意料
+p3	意料	u			no-source;fallback	low	low|u|plain	BAD	n,v			名動
+p3	應聲	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	應該可以	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	懷裏	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	成色	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	我只想	u			no-source;p3;fallback	low	low|u|plain	SOFT				小句；可 v
+p3	我就不	u			no-source;p3;fallback	low	low|u|plain	OK				小句截斷
+p3	我想說	u			no-source;p3;fallback	low	low|u|plain	SOFT				小句；可 v
+p3	我看看	u			no-source;p3;fallback	low	low|u|plain	SOFT				小句；可 v
+p3	我記	u			no-source;p3;fallback	low	low|u|plain	SOFT				小句截；可 v
+p3	我那	u			no-source;p3;fallback	low	low|u|plain	OK				代+指示截斷
+p3	所需要	u			no-source;p3;fallback	low	low|u|plain	SOFT				所+V；可 v
+p3	手信	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	才叫	u			no-source;p3;fallback	low	low|u|plain	SOFT				纔叫；r,v 邊
+p3	扐	u			no-source;fallback	low	low|u|plain	SOFT				粵罕用動
+p3	打打	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	打拼	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	打轉	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	技嘉	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	掌聲	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	插槽	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	換來	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	搏	u			no-source;fallback	low	low|u|plain	SOFT				單字多義
+p3	搗	u			no-source;p3;fallback	low	low|u|plain	SOFT				單字動
+p3	搜狐博客	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	搞事	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	撇	u			no-source;p3;fallback	low	low|u|plain	SOFT				單字多義
+p3	撒旦	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	擦拭	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	擦過	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	擺到	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	擺脫	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	支槍	u			no-source;p3;fallback	low	low|u|plain	BAD	n,x			量+名
+p3	救了	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	整傷	u			no-source;p3;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	整到	u			no-source;fallback	low	low|u|plain	BAD	v			清晰動詞／動語
+p3	整條	u			no-source;p3;fallback	low	low|u|plain	BAD	x,a			整+量
+p3	新品	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	新生兒	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	新界	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	新聞聯播	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	新華網	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	既蘭卡特	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	日本人	u			no-source;p3;fallback	low	low|u|plain	BAD	n			清晰名詞／專名
+p3	明確規定	u			no-source;p3;fallback	low	low|u|plain	BAD	n,v			動／名物化
+p3	明細	u			no-source;fallback	low	low|u|plain	BAD	n			清晰名詞／專名

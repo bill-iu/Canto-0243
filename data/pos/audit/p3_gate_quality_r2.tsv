@@ -1,0 +1,51 @@
+literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_voice	audit_note
+一百萬	x			numeral;p3;heuristic	high	p3|gate	9820	OK				
+中山大學	n			len4-noun-heuristic;p3	high	p3|gate	19682	OK				
+中斷	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	14630	OK				
+主營業務	n			len4-noun-heuristic;p3	high	p3|gate	18489	OK				
+二十	x			numeral;p3;heuristic	high	p3|gate	12678	OK				
+五萬	x			numeral;p3;heuristic	high	p3|gate	8458	OK				
+人類社會	n			len4-noun-heuristic;p3	high	p3|gate	17284	OK				
+估價	n,v			cow-multi;p3	medium	p3|gate	18283	OK				
+信息技術	n			len4-noun-heuristic;p3	high	p3|gate	10644	OK				
+億萬	x			numeral;p3;heuristic	high	p3|gate	16495	OK				
+剝離	n,v			cow-multi;p3	medium	p3|gate	17323	OK				
+勾起	v			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	p3|gate	6277	OK				
+十九	x			numeral;p3;heuristic	high	p3|gate	9105	OK				
+南開	v			verb-suffix;p3;heuristic	high	p3|gate	19028	BAD	n			專名／校名（南開大學等）；verb-suffix 開 假陽會毒同動詞閘
+原因之一	n			len4-noun-heuristic;p3	high	p3|gate	16599	OK				
+受益	v		passive	prefix-passive;heuristic	high	p3|gate	9002	OK				
+向上	v,x			verb-suffix;heuristic;p1-cleanup;verb-suffix-fix;review	high	p3|gate	7031	OK				
+因住	v			verb-suffix;heuristic	high	p3|gate	5142	OK				
+實踐	n,v			cow-multi;p3	medium	p3|gate	19986	OK				
+專家學者	n			len4-noun-heuristic;p3	high	p3|gate	18337	OK				
+幹	n,v			cow-multi;p3	medium	p3|gate	5343	OK				
+廢除	n,v			cow-multi;p3	medium	p3|gate	17201	BAD	v			只係動；n 假陽會毒同名詞閘
+批准	n,v			cow-multi;p3	medium	p3|gate	10354	OK				
+擴散	n,v			cow-multi;p3	medium	p3|gate	10873	OK				
+改掉	v			verb-suffix;p3;heuristic	high	p3|gate	19693	OK				
+斷斷續續	a,r	idiom		cow-single;p2-idiom:AABB;p2-idiom-heuristic;review;p1-audit;review;AABB 狀態／情狀；非名（cow-single n 假陽）	high	p3|gate	8521	OK				
+爆開	v			verb-suffix;p3;heuristic	high	p3|gate	14918	OK				
+當地政府	n			len4-noun-heuristic;p3	high	p3|gate	16590	OK				
+癡住	v			verb-suffix;p3;heuristic	high	p3|gate	10410	OK				
+相關部門	n			len4-noun-heuristic;p3	high	p3|gate	9369	OK				
+科學技術	n			len4-noun-heuristic;p3	high	p3|gate	11205	OK				
+稍後	r			heuristic	high	p3|gate	13171	OK				
+管理模式	n			len4-noun-heuristic;p3	high	p3|gate	16421	OK				
+統一	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review	high	p3|gate	13873	OK				
+經商	n,v			cow-multi;p3	medium	p3|gate	15305	BAD	v			只係動；n 假陽會毒同名詞閘
+縮開	v			verb-suffix;p3;heuristic	high	p3|gate	12169	OK				
+聽完	v			verb-suffix;p3;heuristic	high	p3|gate	15087	OK				
+航海	n,v			cow-multi;p3	medium	p3|gate	19188	OK				
+被害人	v		passive	prefix-passive;p3;heuristic	high	p3|gate	18371	BAD	n			受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘
+被盜	v		passive	prefix-passive;p3;heuristic	high	p3|gate	12458	OK				
+被迫	v		passive	prefix-passive;heuristic	high	p3|gate	6818	OK				
+被逼	v		passive	prefix-passive;p3;heuristic	high	p3|gate	18931	OK				
+複查	n,v			cow-multi;p3	medium	p3|gate	15579	OK				
+詳細資料	n			len4-noun-heuristic;p3	high	p3|gate	19747	OK				
+諮詢服務	n			len4-noun-heuristic;p3	high	p3|gate	18745	OK				
+辯論	n,v			cow-multi;p3	medium	p3|gate	15020	OK				
+遷移	n,v			cow-multi;p3	medium	p3|gate	10095	OK				
+頂住	v			verb-suffix;heuristic	high	p3|gate	5824	OK				
+顧住	v			verb-suffix;p3;heuristic	high	p3|gate	8934	OK				
+食住	v			verb-suffix;p3;heuristic	high	p3|gate	7426	SOFT			主標動可；名『食宿』義（包食住）常見，升 trust 宜補 n

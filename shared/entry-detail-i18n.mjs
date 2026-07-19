@@ -17,10 +17,13 @@ const MESSAGES = {
     'detail.sources': '詞典出處',
     'detail.syns': '近義詞',
     'detail.ants': '反義詞',
+    'detail.pos': '詞性',
     'detail.noSources': '—',
     'detail.noRelations': '—',
   },
-  en: {},
+  en: {
+    'detail.pos': 'Part of speech',
+  },
 };
 
 export function tDetail(key, lang = 'zh', vars = {}) {

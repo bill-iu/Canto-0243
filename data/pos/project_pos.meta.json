@@ -1,0 +1,644 @@
+{
+  "version": "0.6.0",
+  "p0_hard_gate": true,
+  "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
+  "trust": {
+    "high": "review|heuristic|seed",
+    "medium": "cow-multi (gate yes, display no)",
+    "low": "cow-single|fallback (缺標 for gate/display)"
+  },
+  "p0": {
+    "mother_body": 18781,
+    "tagged": 18781,
+    "formal": 1791,
+    "missing": 0,
+    "coverage": 1.0,
+    "formal_coverage": 0.0954,
+    "complete": true
+  },
+  "p1": {
+    "k": 5000,
+    "mother_body": 5000,
+    "tagged": 5000,
+    "gate_formal": 735,
+    "missing": 0,
+    "coverage": 1.0,
+    "gate_coverage": 0.147,
+    "complete": true,
+    "gate_quality_pass": true,
+    "closeout": true
+  },
+  "p1_audit": {
+    "seed": 20260718,
+    "sample_n": 322,
+    "formula": "min(n, max(50, ceil(n*0.05)))",
+    "threshold": 0.9,
+    "strata": {
+      "high|gate": {
+        "n": 50,
+        "ok_rate": 0.74,
+        "pass": false
+      },
+      "medium|gate": {
+        "n": 50,
+        "ok_rate": 0.8,
+        "pass": false
+      },
+      "low|draft": {
+        "n": 73,
+        "ok_rate": 0.9041,
+        "pass": true
+      },
+      "low|u": {
+        "n": 149,
+        "ok_rate": 0.1946,
+        "pass": false
+      }
+    },
+    "gate_combined_ok_rate": 0.77,
+    "fixes_applied": 150,
+    "report": "data/pos/audit/p1_audit_report.md"
+  },
+  "p1_cleanup": {
+    "verb_suffix_fixed_or_demoted": 135,
+    "cow_nv_demoted": 732,
+    "canto_heuristic_promoted": 106,
+    "notes": [
+      "demote exact n,v cow-multi to cow-nv-unreviewed (low trust)",
+      "fix residual verb-suffix weak endings; demote rest to trust-low",
+      "promote high-freq Canto particles/verbs from u or low draft",
+      "pos_trust uses semicolon tokens so unreviewed does not match review"
+    ]
+  },
+  "p1_close": {
+    "metrics": {
+      "top100_gate": 100,
+      "top100_gate_pct": 1.0,
+      "rank101_500": 400,
+      "rank101_500_u": 8,
+      "rank101_500_gate": 257,
+      "rank101_500_gate_pct": 0.6425,
+      "cow_nv_unreviewed_left": 552,
+      "true_nv_promoted_rows": 180,
+      "p1": {
+        "phase": "p1",
+        "k": 5000,
+        "mother_body": 5000,
+        "tagged": 5000,
+        "gate_formal": 735,
+        "low_draft_formal": 1662,
+        "undetermined_only": 2603,
+        "missing": 0,
+        "coverage": 1.0,
+        "gate_coverage": 0.147,
+        "p1_complete": true
+      }
+    },
+    "true_nv_promoted": 180,
+    "cow_nv_left": 552
+  },
+  "p1_gate_quality": {
+    "pass": true,
+    "threshold": 0.9,
+    "universe": "p1_mother_body ∩ gate_pos",
+    "formula": "min(n, max(50, ceil(n*0.05)))",
+    "rounds": [
+      {
+        "round": 1,
+        "seed": 20260719,
+        "sample_n": 50,
+        "ok_rate": 0.92,
+        "pass": true
+      },
+      {
+        "round": 2,
+        "seed": 202607192,
+        "sample_n": 50,
+        "ok_rate": 0.92,
+        "pass": true
+      }
+    ],
+    "fixes_applied_total": 8,
+    "report": "data/pos/audit/p1_gate_quality_report.md"
+  },
+  "p2": {
+    "phase": "p2",
+    "mother_body": 883,
+    "idiom_tagged": 879,
+    "idiom_display_high": 414,
+    "coverage": 0.9955,
+    "by_pattern": {
+      "之字格": 214,
+      "一X?Y": 14,
+      "ABAC": 343,
+      "AABC": 113,
+      "AABB": 153,
+      "AxxA": 20,
+      "ABAB": 3,
+      "有無對": 23
+    },
+    "p2_complete": true,
+    "quality_pass": true
+  },
+  "p2_idiom_quality": {
+    "pass": true,
+    "threshold": 0.9,
+    "rounds": [
+      {
+        "round": 1,
+        "seed": 20260719,
+        "sample_n": 50,
+        "ok_rate": 0.98,
+        "pass": true
+      },
+      {
+        "round": 2,
+        "seed": 202607192,
+        "sample_n": 50,
+        "ok_rate": 0.94,
+        "pass": true
+      }
+    ],
+    "report": "data/pos/audit/p2_idiom_quality_report.md"
+  },
+  "p3": {
+    "phase": "p3",
+    "from_rank": 5001,
+    "to_rank": 20000,
+    "mother_body": 15000,
+    "tagged": 15000,
+    "missing": 0,
+    "gate_formal": 544,
+    "undetermined_only": 11886,
+    "low_draft_formal": 2570,
+    "coverage": 1.0,
+    "gate_coverage": 0.0363,
+    "p3_complete": true,
+    "closeout": true,
+    "gate_quality_pass": true
+  },
+  "p3_gate_quality": {
+    "pass": true,
+    "threshold": 0.9,
+    "universe": "p3_mother_body ∩ gate_pos (essay ranks 5001-20000)",
+    "rounds": [
+      {
+        "round": 1,
+        "seed": 20260719,
+        "ok_rate": 0.88,
+        "pass": false
+      },
+      {
+        "round": 2,
+        "seed": 202607192,
+        "ok_rate": 0.92,
+        "pass": true
+      },
+      {
+        "round": 3,
+        "seed": 202607193,
+        "ok_rate": 0.92,
+        "pass": true
+      }
+    ],
+    "report": "data/pos/audit/p3_gate_quality_report.md"
+  },
+  "full_system_audit": {
+    "seed": 20260720,
+    "mixed_sample_n": 2411,
+    "mixed_ok_rate": 0.4036,
+    "mixed_note": "includes mass u under-tag; not a pass criterion",
+    "gate_reconfirm": {
+      "p0": {
+        "ok_rate": 0.9919,
+        "pass": true,
+        "sample_n": 124
+      },
+      "p1": {
+        "ok_rate": 0.98,
+        "pass": true,
+        "sample_n": 50
+      },
+      "p2": {
+        "ok_rate": 0.98,
+        "pass": true,
+        "rounds": [
+          "r7",
+          "r8"
+        ],
+        "sample_n": 50
+      },
+      "p3": {
+        "ok_rate": 0.95,
+        "pass": true,
+        "sample_n": 60
+      }
+    },
+    "pass": true,
+    "threshold": 0.9,
+    "criterion": "gate-only (or high-trust idiom) ok_rate > 0.90 per phase",
+    "report": "data/pos/audit/full_r1/FULL_SYSTEM_AUDIT_REPORT.md",
+    "fixes": {
+      "full_r1_pos": 1426,
+      "full_r1_family_clear": 39
+    }
+  },
+  "u_repair": {
+    "u_before": 21774,
+    "repaired": 325,
+    "left_u": 21449,
+    "by_tag": {
+      "aabc-u": 99,
+      "aabb-u": 106,
+      "youwu-u": 52,
+      "canto-u-map": 68
+    },
+    "dry_run": false,
+    "repair_rate": 0.0149,
+    "left_u_after": 21449,
+    "gate_after": 3706,
+    "quality_ok_rate": 0.92
+  },
+  "u_top3000": {
+    "n": 3000,
+    "promoted_formal": 2623,
+    "still_u": 381,
+    "gate_formal": 2619,
+    "u_rate": 0.127,
+    "gate_rate": 0.873,
+    "quality": {
+      "r1_ok_rate": 0.947,
+      "pass": true,
+      "sample_n": 132,
+      "threshold": 0.9
+    },
+    "global_u": 18830,
+    "global_gate": 6325
+  },
+  "lexicon_only": {
+    "enabled": true,
+    "lexicon_literals": 156716,
+    "ssot_before": 30388,
+    "ssot_after": 22730,
+    "dropped": 7658,
+    "dropped_types": {
+      "gate": 1301,
+      "u": 6336,
+      "other": 21
+    }
+  },
+  "u_inlex": {
+    "applied_formal": 1977,
+    "keep_u": 23,
+    "upsert": {
+      "rows": 22730,
+      "touched": 1977,
+      "updated": 1977,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "before": {
+      "rows": 22730,
+      "u": 12494,
+      "formal": 10236
+    },
+    "after": {
+      "rows": 22730,
+      "u": 10517,
+      "formal": 12213
+    },
+    "gate_r1": {
+      "sample_n": 99,
+      "ok_rate": 0.9697,
+      "pass_90": true,
+      "bad": 3
+    },
+    "final_u": 10263,
+    "final_formal": 12467
+  },
+  "u_inlex_idiom": {
+    "applied": 254,
+    "upsert": {
+      "rows": 22730,
+      "touched": 254,
+      "updated": 254,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "source": "idiom_u_relabel.tsv",
+    "u_before": 10517,
+    "u_after": 10263,
+    "gate_r1": {
+      "sample_n": 50,
+      "ok_rate": 0.92,
+      "pass_90": true,
+      "bad": 4
+    },
+    "final_u": 10263
+  },
+  "u_inlex_fragment_alias": {
+    "dry_run": false,
+    "targets_ensured": [
+      "踊躍",
+      "魍魎"
+    ],
+    "residuals_removed_from_ssot": [
+      "踊",
+      "魍"
+    ],
+    "fragment_tags": {
+      "clause_tagged": 12,
+      "opaque_tagged": 3
+    },
+    "before": {
+      "rows": 22716,
+      "formal": 22690,
+      "u": 26,
+      "fragment": 26,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22690,
+      "formal_non_fragment": 22690,
+      "d4_pass_95": true,
+      "alias_n": 17
+    },
+    "after": {
+      "rows": 22716,
+      "formal": 22692,
+      "u": 24,
+      "fragment": 24,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22692,
+      "formal_non_fragment": 22692,
+      "d4_pass_95": true,
+      "alias_n": 17
+    }
+  },
+  "u_pattern_s2": {
+    "applied": 3,
+    "by_pattern": {
+      "ABAC": 3
+    },
+    "coverage": {
+      "rows": 22724,
+      "formal": 12473,
+      "u": 10251,
+      "fragment": 16,
+      "formal_over_all": 0.5489,
+      "formal_over_non_fragment": 0.5493,
+      "non_fragment": 22708,
+      "formal_non_fragment": 12473,
+      "d4_pass_95": false,
+      "alias_n": 7
+    },
+    "gate_r1": {
+      "n": 3,
+      "ok": 2,
+      "bad": 1,
+      "full_audit": true,
+      "note": "universe=3; fixed 電解電容"
+    },
+    "manual": [
+      "統購統銷"
+    ]
+  },
+  "alias_proposals_review_r1": {
+    "accept": 1,
+    "reject": 63,
+    "new_alias": "侏->侏儒",
+    "report": "data/pos/audit/u_inlex/alias_proposals_review_r1.md"
+  },
+  "u_inlex_nf2k": {
+    "usable": 508,
+    "keep_u": 0,
+    "upsert": {
+      "rows": 22716,
+      "touched": 508,
+      "updated": 508,
+      "added": 0,
+      "bad": 0
+    },
+    "skipped": {},
+    "before_u": 533,
+    "after_u": 25
+  },
+  "alias_queue_closed": {
+    "r4": "6 reject alias + formal free morphemes; propose n=0",
+    "alias_n": 15,
+    "coverage": {
+      "rows": 22716,
+      "formal": 14471,
+      "u": 8245,
+      "fragment": 22,
+      "formal_over_all": 0.637,
+      "formal_over_non_fragment": 0.6377,
+      "non_fragment": 22694,
+      "formal_non_fragment": 14471,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
+  },
+  "u_inlex_nf2b": {
+    "applied_formal": 1998,
+    "keep_u": 2,
+    "gate_r1": {
+      "sample_n": 100,
+      "ok_rate": 0.99,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 16469,
+      "u": 6247,
+      "fragment": 24,
+      "formal_over_all": 0.725,
+      "formal_over_non_fragment": 0.7258,
+      "non_fragment": 22692,
+      "formal_non_fragment": 16469,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
+  },
+  "u_inlex_nf3": {
+    "applied_formal": 1999,
+    "keep_u": 1,
+    "gate_r1": {
+      "sample_n": 100,
+      "ok_rate": 1.0,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 18468,
+      "u": 4248,
+      "fragment": 25,
+      "formal_over_all": 0.813,
+      "formal_over_non_fragment": 0.8139,
+      "non_fragment": 22691,
+      "formal_non_fragment": 18468,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
+  },
+  "u_inlex_nf4": {
+    "applied_formal": 2000,
+    "keep_u": 0,
+    "gate_r1": {
+      "sample_n": 100,
+      "ok_rate": 0.99,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 20468,
+      "u": 2248,
+      "fragment": 25,
+      "formal_over_all": 0.901,
+      "formal_over_non_fragment": 0.902,
+      "non_fragment": 22691,
+      "formal_non_fragment": 20468,
+      "d4_pass_95": false,
+      "alias_n": 15
+    }
+  },
+  "u_inlex_nf5": {
+    "applied_formal": 1715,
+    "keep_u": 0,
+    "gate_r1": {
+      "sample_n": 86,
+      "ok_rate": 1.0,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 22183,
+      "u": 533,
+      "fragment": 25,
+      "formal_over_all": 0.9765,
+      "formal_over_non_fragment": 0.9776,
+      "non_fragment": 22691,
+      "formal_non_fragment": 22183,
+      "d4_pass_95": true,
+      "alias_n": 15
+    },
+    "still_nf_essay": 0
+  },
+  "u_tail533": {
+    "applied_formal": 508,
+    "keep_u_fragments": 25,
+    "gate_r1": {
+      "sample_n": "no-source;p3;fallback;fragment;residual;魍魎殘字 — 待完整",
+      "ok_rate": 1.0,
+      "pass_90": true
+    },
+    "coverage": {
+      "rows": 22716,
+      "formal": 22691,
+      "u": 25,
+      "fragment": 25,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22691,
+      "formal_non_fragment": 22691,
+      "d4_pass_95": true,
+      "alias_n": 15
+    }
+  },
+  "nf_batches_full_gate": {
+    "seed": 99,
+    "total_sample": 486,
+    "ok": 461,
+    "soft": 9,
+    "bad": 16,
+    "ok_rate": 0.9671,
+    "pass_90": true,
+    "bads_fixed": 16,
+    "per_batch": {
+      "u-inlex-nf2k": 0.95,
+      "u-inlex-nf2b": 0.97,
+      "u-inlex-nf3": 0.99,
+      "u-inlex-nf4": 0.98,
+      "u-inlex-nf5": 0.9419
+    },
+    "coverage_after": {
+      "rows": 22716,
+      "formal": 22690,
+      "u": 26,
+      "fragment": 26,
+      "formal_over_all": 0.9989,
+      "formal_over_non_fragment": 1.0,
+      "non_fragment": 22690,
+      "formal_non_fragment": 22690,
+      "d4_pass_95": true,
+      "alias_n": 15
+    }
+  },
+  "family_leaf": {
+    "mother_body": 3754,
+    "scope_total": 8594,
+    "scope_counts": {
+      "lexicon-pos-gap": 4147,
+      "mother-external-match": 2714,
+      "project-pos-expansion": 693,
+      "mother-unmatched": 1040
+    },
+    "review_rows": 8594,
+    "verdicts": {
+      "accept": 7671,
+      "keep_idiom": 923
+    },
+    "families": {
+      "chengyu": 2831,
+      "idiom": 923
+    },
+    "terminal": 8594,
+    "pending": 0,
+    "deferred_missing_project_pos": 0,
+    "mother_coverage": 1.0,
+    "last_apply": {
+      "reviewed": 8594,
+      "terminal": 8594,
+      "changed": 0,
+      "dry_run": false
+    }
+  },
+  "chengyu_pos_backfill": {
+    "scope": 4147,
+    "reviewed": 4147,
+    "pending": 0,
+    "by_pos": {
+      "u": 3939,
+      "a": 58,
+      "n,v": 1,
+      "n": 76,
+      "v": 34,
+      "r": 36,
+      "x": 1,
+      "a,v": 2
+    },
+    "by_voice": {
+      "none": 4143,
+      "passive": 4
+    },
+    "applied": 4147,
+    "missing_project_pos": 0,
+    "initial_added": 4147,
+    "quality": {
+      "seed": 20260719,
+      "sample_n": 3967,
+      "pass_rate": 1.0,
+      "pass": true,
+      "report": "data/pos/audit/chengyu_pos_backfill_quality_report.md"
+    },
+    "last_apply": {
+      "reviewed": 4147,
+      "added": 0,
+      "unchanged": 4147,
+      "changed": 0,
+      "dry_run": false
+    }
+  }
+}
