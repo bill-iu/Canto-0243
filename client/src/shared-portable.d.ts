@@ -22,6 +22,7 @@ declare module '@shared/query-tabs' {
     historyIndex?: number;
     relation?: Record<string, string>;
     prefetchChar?: string;
+    posFilter?: { pos: string[]; family: string[]; voice: string[] };
   }
 
   export interface TabState {

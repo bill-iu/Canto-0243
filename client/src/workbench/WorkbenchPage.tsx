@@ -9,6 +9,8 @@ import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
+import { PosFilterControl } from '../pos/PosFilterControl.tsx';
+import { isPosFilterActive, resetPosFilter, type PosFilterState } from '../pos/filter.ts';
 import { revealPwaShell } from '../pwa-shell-boot.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
@@ -96,6 +98,7 @@ export function WorkbenchPage() {
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const [rhymePicks, setRhymePicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
+  const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -348,7 +351,7 @@ export function WorkbenchPage() {
       limit: 120,
     };
   }, [draft, mode, semanticIntent]);
-  const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter);
+  const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter, posFilter);
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(
@@ -501,6 +504,10 @@ export function WorkbenchPage() {
               onRhymeChange={changeRhymePicks}
               onInitialChange={changeInitialPicks}
             />
+            <div className="workbench-filter-row">
+              <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
+              {isPosFilterActive(posFilter) ? <span>{uiLang === 'en' ? 'Filtering candidate cards' : '正篩選候選卡片'}</span> : null}
+            </div>
             <div className="candidate-status" aria-live="polite">
               {!draft.selection
                 ? '尚未標定替換段；候選會在你標定後出現。'
@@ -520,7 +527,7 @@ export function WorkbenchPage() {
             ) : null}
             {candidates.response?.relaxation ? (
               <section className="relaxation-card" aria-labelledby="relaxHeading">
-                <div><p className="eyebrow">零結果時只改一項</p><h2 id="relaxHeading">可選放寬：{candidates.response.relaxation.kind}</h2><p>預計可找到 {candidates.response.relaxation.candidateCount} 項；不會自動採用。</p></div>
+                <div><p className="eyebrow">零結果時只改一項</p><h2 id="relaxHeading">可選放寬：{candidates.response.relaxation.kind}</h2><p>{isPosFilterActive(posFilter) ? (uiLang === 'en' ? 'Candidate count is hidden while filters are active.' : '啟用篩選時不顯示未篩選候選數。') : `預計可找到 ${candidates.response.relaxation.candidateCount} 項；不會自動採用。`}</p></div>
                 <button type="button" onClick={() => {
                   if (!draft.selection || !candidates.response?.relaxation) return;
                   const suggestion = candidates.response.relaxation;

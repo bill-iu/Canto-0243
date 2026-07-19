@@ -155,6 +155,13 @@ describe("query-tabs-state", () => {
     assert.equal(next.tabs.length, 1);
   });
 
+  it("serializeSession preserves per-search-tab POS filters", () => {
+    const posFilter = { pos: ["v"], family: ["chengyu"], voice: ["passive"] };
+    const state = { activeId: 1, nextTabId: 2, tabs: [createSearchTab({ id: 1, posFilter })] };
+    const restored = deserializeSession(serializeSession(state));
+    assert.deepEqual(restored.tabs[0].posFilter, posFilter);
+  });
+
   it("applyUrlToTabs opens singleton guide tab from view=guide when session empty", () => {
     const parsed = parseUrlSearchParams(new URLSearchParams("view=guide&mode=m1"));
     const state = applyUrlToTabs(null, parsed);

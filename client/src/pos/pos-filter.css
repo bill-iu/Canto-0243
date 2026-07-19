@@ -1,0 +1,33 @@
+.pos-filter { position: relative; z-index: 8; }
+.pos-filter__trigger {
+  display: inline-flex; min-height: 2.35rem; align-items: center; gap: .45rem;
+  padding: .4rem .7rem; border: 1px solid var(--line); border-radius: .7rem;
+  color: var(--ink); background: var(--surface-input); font: 700 .8rem/1 inherit; cursor: pointer;
+}
+.pos-filter__trigger svg { width: 1rem; height: 1rem; fill: currentColor; }
+.pos-filter__trigger.is-active { border-color: var(--accent-strong); color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+.pos-filter__trigger b { display: grid; min-width: 1.25rem; height: 1.25rem; place-items: center; border-radius: 99px; color: var(--surface); background: var(--accent-strong); font-size: .7rem; }
+.pos-filter__panel {
+  position: absolute; top: calc(100% + .55rem); right: 0; width: min(28rem, calc(100vw - 2rem));
+  padding: 1.1rem; border: 1px solid var(--line); border-radius: 1rem; color: var(--ink);
+  background: var(--surface); box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 18%, transparent);
+}
+.pos-filter__panel > header, .pos-filter__panel > footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.pos-filter__panel > header p { margin: 0; color: var(--accent-strong); font: 800 .66rem/1.2 ui-monospace, monospace; letter-spacing: .13em; }
+.pos-filter__panel > header h2 { margin: .15rem 0 0; font: 650 1.15rem/1.2 "Noto Serif TC", serif; }
+.pos-filter__panel > header button { border: 0; color: var(--muted); background: transparent; font-size: 1.6rem; cursor: pointer; }
+.pos-filter__axis { margin: 1rem 0 0; padding: 0; border: 0; }
+.pos-filter__axis legend { margin-bottom: .5rem; font-size: .78rem; font-weight: 800; }
+.pos-filter__chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+.pos-filter__chip { padding: .45rem .7rem; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); background: var(--surface-soft); font: 650 .78rem/1.2 inherit; cursor: pointer; }
+.pos-filter__chip.is-selected { border-color: var(--accent-strong); color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 13%, var(--surface)); box-shadow: inset 0 0 0 1px var(--accent-strong); }
+.pos-filter__panel > footer { margin-top: 1.15rem; padding-top: .8rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .7rem; }
+.pos-filter__panel > footer button { border: 0; color: var(--accent-strong); background: transparent; font: 750 .78rem/1 inherit; cursor: pointer; }
+.pos-filter__panel > footer button:disabled { opacity: .35; cursor: default; }
+.pos-filter__scrim { display: none; }
+
+@media (max-width: 640px) {
+  .pos-filter__trigger span { display: none; }
+  .pos-filter__scrim { display: block; position: fixed; z-index: 80; inset: 0; border: 0; background: color-mix(in srgb, #17120f 45%, transparent); }
+  .pos-filter__panel { position: fixed; z-index: 81; top: auto; right: 0; bottom: 0; left: 0; width: auto; max-height: min(86dvh, 42rem); overflow: auto; padding: 1.2rem 1rem calc(1.2rem + env(safe-area-inset-bottom)); border-width: 1px 0 0; border-radius: 1.25rem 1.25rem 0 0; }
+}

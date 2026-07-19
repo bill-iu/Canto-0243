@@ -239,6 +239,7 @@ body.query-tabs-app.workbench-route {
   color: inherit;
   font: inherit;
 }
+.workbench-filter-row { display: flex; align-items: center; justify-content: flex-end; gap: .7rem; margin-top: .75rem; color: var(--muted); font-size: .78rem; }
 .phoneme-dims {
   flex-basis: 100%;
   display: grid;

@@ -29,6 +29,7 @@ export function createSearchTab({
   results = [],
   offset = 0,
   total = null,
+  posFilter = null,
   historyStack = null,
   historyIndex = 0,
 } = {}) {
@@ -41,6 +42,11 @@ export function createSearchTab({
     results,
     offset,
     total,
+    posFilter: posFilter && typeof posFilter === "object" ? {
+      pos: Array.isArray(posFilter.pos) ? [...posFilter.pos] : [],
+      family: Array.isArray(posFilter.family) ? [...posFilter.family] : [],
+      voice: Array.isArray(posFilter.voice) ? [...posFilter.voice] : [],
+    } : { pos: [], family: [], voice: [] },
     historyStack: stack,
     historyIndex: index,
   };
@@ -171,6 +177,7 @@ export function serializeSession(state) {
       total: t.total,
       historyStack: t.view === VIEW.SEARCH ? t.historyStack : undefined,
       historyIndex: t.view === VIEW.SEARCH ? t.historyIndex : undefined,
+      posFilter: t.view === VIEW.SEARCH ? t.posFilter : undefined,
       relation: t.relation ? { ...t.relation } : undefined,
       prefetchChar: t.prefetchChar || "",
     })),
@@ -202,6 +209,7 @@ export function deserializeSession(raw) {
         total: t.total ?? null,
         historyStack: Array.isArray(t.historyStack) ? t.historyStack : null,
         historyIndex: t.historyIndex,
+        posFilter: t.posFilter,
       });
     }),
   };

@@ -33,6 +33,7 @@ import {
 import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from '../mode-meta';
 import { stripLauncherBootFromUrl } from '../search-url';
 import type { QueryResult } from '../db/query';
+import type { PosFilterState } from '../pos/filter.ts';
 import {
   commitActiveSearchTransaction,
   openCommittedSearchTabTransaction,
@@ -181,6 +182,7 @@ export interface SearchTabSnapshot {
   results: QueryResult[];
   offset: number;
   total: number | null;
+  posFilter: PosFilterState;
 }
 
 export interface UseQueryTabsOptions {
@@ -273,12 +275,13 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
           const results = snapshot.results ?? (t.results as QueryResult[]);
           const offset = snapshot.offset ?? t.offset;
           const total = snapshot.total !== undefined ? snapshot.total : t.total;
+          const posFilter = snapshot.posFilter ?? t.posFilter;
           // 同值唔開新 tab object，否則 App sync effect → setState → activeTab 變 → 無限更新
-          if (q === t.q && results === t.results && offset === t.offset && total === t.total) {
+          if (q === t.q && results === t.results && offset === t.offset && total === t.total && posFilter === t.posFilter) {
             return t;
           }
           changed = true;
-          return { ...t, q, results, offset, total };
+          return { ...t, q, results, offset, total, posFilter };
         });
         return changed ? { ...prev, tabs } : prev;
       });

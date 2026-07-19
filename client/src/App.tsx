@@ -91,6 +91,13 @@ import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconV
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { exitPortable } from './portable-exit';
+import { PosFilterControl } from './pos/PosFilterControl.tsx';
+import {
+  filterByProjectPos,
+  isPosFilterActive,
+  normalizePosFilter,
+  type PosFilterState,
+} from './pos/filter.ts';
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -171,6 +178,9 @@ function App() {
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
+  const [posFilter, setPosFilter] = useState<PosFilterState>(() =>
+    normalizePosFilter(activeSearchTab?.posFilter as Partial<PosFilterState> | undefined),
+  );
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
@@ -214,6 +224,7 @@ function App() {
       const useLive = live || initialBootstrap.forceLive;
       setUseLiveFetch(useLive);
       setResultsShuffled(false);
+      setPosFilter(normalizePosFilter(tab.posFilter as Partial<PosFilterState> | undefined));
       if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
@@ -366,6 +377,7 @@ function App() {
       results: displayResults,
       total: useLiveFetch ? total : cachedTotal,
       offset: displayResults.length,
+      posFilter,
     });
   }, [
     tabState.activeId,
@@ -376,6 +388,7 @@ function App() {
     total,
     cachedTotal,
     patchSearchTab,
+    posFilter,
   ]);
 
   useEffect(() => {
@@ -458,6 +471,21 @@ function App() {
 
   const displayHint = redirectHint || searchHint;
   const effectiveTotal = useLiveFetch ? total : cachedTotal;
+  const filterActive = isPosFilterActive(posFilter);
+  const filteredDisplayResults = useMemo(
+    () => filterByProjectPos(displayResults, (row) => row.word, posFilter),
+    [displayResults, posFilter],
+  );
+  const changePosFilter = useCallback((next: PosFilterState) => {
+    const normalized = normalizePosFilter(next);
+    setPosFilter(normalized);
+    if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: normalized });
+  }, [activeSearchTab, patchSearchTab]);
+
+  useEffect(() => {
+    if (!filterActive || !useLiveFetch || searchLoading || loadingMore || !hasMore) return;
+    if (displayResults.length > 0 && filteredDisplayResults.length < 40) void loadMore();
+  }, [filterActive, useLiveFetch, searchLoading, loadingMore, hasMore, displayResults.length, filteredDisplayResults.length, loadMore]);
   const mountWarmupBadge = !shellGated && !warmupBadgeClear;
   const handleWarmupBadgeDismiss = useCallback(() => setWarmupBadgeClear(true), []);
 
@@ -868,16 +896,16 @@ function App() {
   );
 
   const synLayout = mode === 'synonym';
-  const anchorLayout = !synLayout && hasAnchorResultLayout(displayResults);
+  const anchorLayout = !synLayout && hasAnchorResultLayout(filteredDisplayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
   const infiniteScrollRoot = scrollRootEl;
 
   const resultItemCount = useMemo(() => {
-    if (!displayResults.length) return 0;
-    if (synLayout) return synResultItemCount(displayResults);
-    if (anchorLayout) return anchorResultItemCount(displayResults);
-    return mergedResultCount(displayResults);
-  }, [displayResults, synLayout, anchorLayout]);
+    if (!filteredDisplayResults.length) return 0;
+    if (synLayout) return synResultItemCount(filteredDisplayResults);
+    if (anchorLayout) return anchorResultItemCount(filteredDisplayResults);
+    return mergedResultCount(filteredDisplayResults);
+  }, [filteredDisplayResults, synLayout, anchorLayout]);
 
   const { visibleCount, sentinelRef, showSentinel } = useInfiniteResultWindow({
     itemCount: resultItemCount,
@@ -885,7 +913,7 @@ function App() {
     loading: searchLoading,
     loadingMore,
     onLoadMore: () => void loadMore(),
-    resetKey: `${searchKey}\0${shuffleGeneration}`,
+    resetKey: `${searchKey}\0${shuffleGeneration}\0${JSON.stringify(posFilter)}`,
     scrollRoot: infiniteScrollRoot,
   });
 
@@ -934,20 +962,28 @@ function App() {
   const statsSuffix = `（${modeMeta.statsLabel}）`;
 
   const resultsLabel = useMemo(() => {
-    if (synLayout && displayResults.length > 0) {
-      return `${synResultsStats(displayResults)}${statsSuffix}`;
+    if (filterActive) {
+      return uiLang === 'en'
+        ? `${resultItemCount} filtered (from ${displayResults.length} loaded)${statsSuffix}`
+        : `篩選後 ${resultItemCount} 項（已載入 ${displayResults.length} 項）${statsSuffix}`;
     }
-    if (anchorLayout && displayResults.length > 0) {
-      return `${anchorResultsStats(displayResults, effectiveTotal)}${statsSuffix}`;
+    if (synLayout && filteredDisplayResults.length > 0) {
+      return `${synResultsStats(filteredDisplayResults)}${statsSuffix}`;
     }
-    if (!displayResults.length || resultItemCount <= 0) return '';
+    if (anchorLayout && filteredDisplayResults.length > 0) {
+      return `${anchorResultsStats(filteredDisplayResults, effectiveTotal)}${statsSuffix}`;
+    }
+    if (!filteredDisplayResults.length || resultItemCount <= 0) return '';
     // 標準列表：有字面總數先顯示「搜到 Y」；未返 total 唔寫
     const body = formatStandardResultCountLabel(effectiveTotal);
     return body ? `${body}${statsSuffix}` : '';
   }, [
     synLayout,
     anchorLayout,
-    displayResults,
+    filteredDisplayResults,
+    filterActive,
+    uiLang,
+    displayResults.length,
     effectiveTotal,
     resultItemCount,
     statsSuffix,
@@ -961,7 +997,9 @@ function App() {
     return formatEmptySearchMessage(searchQuery, displayHint, mode);
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
-  const canShuffle = view === 'search' && displayResults.length > 0 && !searchLoading;
+  const filterEmpty = filterActive && displayResults.length > 0 && filteredDisplayResults.length === 0;
+
+  const canShuffle = view === 'search' && filteredDisplayResults.length > 0 && !searchLoading;
   const showGuideQuick =
     view === 'search' &&
     !trimmedInput &&
@@ -1084,6 +1122,7 @@ function App() {
                 </div>
               </div>
               <div className="header-search__meta">
+                <PosFilterControl value={posFilter} onChange={changePosFilter} lang={uiLang} disabled={shellGated} />
                 {searchFamily !== 'synonym' ? (
                   <div
                     className="pingze-submodes"
@@ -1163,7 +1202,7 @@ function App() {
               <div className="search-view__main" onClick={handleSearchMainClick}>
               <div className="search-results">
                 <div className="search-results-scroll" ref={setScrollRootEl}>
-                  {displayHint && displayResults.length > 0 && (
+                  {displayHint && filteredDisplayResults.length > 0 && (
                     <p className="search-hint">{displayHint}</p>
                   )}
                   {useLiveFetch && searchLoadingVisible && (
@@ -1173,18 +1212,18 @@ function App() {
                     <p className="error">錯誤: {searchError.message}</p>
                   )}
 
-                  {displayResults.length > 0 && (
+                  {filteredDisplayResults.length > 0 && (
                     <div className="results-list">
                       {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
                       {synLayout ? (
                         <SynResultList
-                          results={displayResults}
+                          results={filteredDisplayResults}
                           visibleLimit={visibleCount}
                           onPick={(word) => runCommittedSearch(word)}
                         />
                       ) : anchorLayout ? (
                         <AnchorResultList
-                          results={displayResults}
+                          results={filteredDisplayResults}
                           visibleLimit={visibleCount}
                           activeLiteral={activeDetailLiteral}
                           lang={uiLang}
@@ -1192,7 +1231,7 @@ function App() {
                         />
                       ) : (
                         <ResultList
-                          results={displayResults}
+                          results={filteredDisplayResults}
                           committedQuery={inputQuery}
                           visibleLimit={visibleCount}
                           activeLiteral={activeDetailLiteral}
@@ -1211,6 +1250,8 @@ function App() {
                       {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
                     </div>
                   )}
+
+                  {filterEmpty ? <div className="no-results info"><p><strong>{uiLang === 'en' ? 'No loaded results match these filters.' : '已載入結果中沒有符合這組篩選的項目。'}</strong></p><p>{hasMore ? (uiLang === 'en' ? 'Loading more results to continue checking…' : '正繼續載入更多結果檢查⋯') : (uiLang === 'en' ? 'Reset or loosen a filter.' : '請重設或放寬篩選。')}</p></div> : null}
 
                   {showGuideQuick ? (
                     <GuideQuick
