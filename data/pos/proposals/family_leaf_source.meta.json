@@ -1,0 +1,10 @@
+{
+  "source_url": "https://github.com/sfyc23/China-idiom",
+  "source_commit": "78606b0294a22e798633c4469a4009b78ad60f26",
+  "source_sha256": "3648de96aff298a793e93bd12a354a5c256fdfc3446d8b6a4c3c7982aade9c01",
+  "external_unique_traditional": 30824,
+  "mother_body": 3754,
+  "lexicon_literals": 156719,
+  "matched": 2714,
+  "proposal": "data/pos/proposals/family_leaf_proposals.tsv"
+}

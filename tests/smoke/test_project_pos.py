@@ -31,7 +31,7 @@ def test_parse_seed_tsv() -> None:
     table = parse_project_pos_tsv(DEFAULT_TSV)
     assert "開心" in table
     assert "a" in table["開心"].formal_pos()
-    assert table["一石二鳥"].family == "idiom"
+    assert table["一石二鳥"].family == "chengyu"
     # lexicon-only SSOT: seed passive pair may drop if not in 詞庫
 
 

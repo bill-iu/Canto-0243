@@ -28,6 +28,7 @@ P2_BODY = POS_DIR / "p2_mother_body.txt"
 P2_PROPOSE = POS_DIR / "proposals" / "p2_idiom_proposals.tsv"
 AUDIT_DIR = POS_DIR / "audit"
 DEFAULT_SEED = 20260719
+IDIOM_FAMILIES = frozenset({"idiom", "chengyu", "suyu", "yanyu"})
 
 
 def _is_ordinary_np(lit: str) -> bool:
@@ -94,7 +95,7 @@ def freeze_p2(path: Path = P2_BODY) -> Path:
     lines = ["literal\tpattern\talready_idiom"]
     table = parse_project_pos_tsv()
     for lit, pat in rows:
-        already = "1" if table[lit].family == "idiom" else "0"
+        already = "1" if table[lit].family in IDIOM_FAMILIES else "0"
         lines.append(f"{lit}\t{pat}\t{already}")
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return path
@@ -127,7 +128,7 @@ def apply_idiom_family(
         if not row:
             skipped += 1
             continue
-        if only_missing and row.family == "idiom":
+        if only_missing and row.family in IDIOM_FAMILIES:
             skipped += 1
             continue
         note = row.note
@@ -159,12 +160,12 @@ def p2_status() -> dict:
     body = load_p2_body()
     table = parse_project_pos_tsv()
     lits = [lit for lit, _ in body]
-    tagged = sum(1 for lit in lits if table.get(lit) and table[lit].family == "idiom")
+    tagged = sum(1 for lit in lits if table.get(lit) and table[lit].family in IDIOM_FAMILIES)
     displayable = sum(
         1
         for lit in lits
         if table.get(lit)
-        and table[lit].family == "idiom"
+        and table[lit].family in IDIOM_FAMILIES
         and table[lit].trust() == "high"
     )
     by_pat: Counter = Counter(pat for _, pat in body)
@@ -190,7 +191,7 @@ def write_quality_sample(*, seed: int = DEFAULT_SEED, round_id: int = 1) -> dict
     table = parse_project_pos_tsv()
     body = load_p2_body()
     # universe: just tagged as idiom in p2 body
-    universe = [lit for lit, _ in body if table.get(lit) and table[lit].family == "idiom"]
+    universe = [lit for lit, _ in body if table.get(lit) and table[lit].family in IDIOM_FAMILIES]
     n = sample_size_for(len(universe))
     rng = random.Random(seed)
     sample = sorted(rng.sample(universe, n)) if n < len(universe) else sorted(universe)

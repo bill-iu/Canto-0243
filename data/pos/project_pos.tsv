@@ -102,7 +102,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一得之愚	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv
 一心	a,r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,r
 一心一德	a	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a
-一心一意	a,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
+一心一意	a,r	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 一心二用	a,v	idiom		p2-idiom:一X?Y;u-inlex-idiom;review;u-inlex-idiom-relabel
 一忍再忍	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 一念之間	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review
@@ -216,7 +216,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一瞬	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 一瞬間	n			cow-single
 一知半解	a,n	idiom		成語；一知半解;u-inlex-nf5;review;agent-label
-一石二鳥	v	idiom		seed
+一石二鳥	v	chengyu		seed;family-leaf-review
 一窺究竟	v			u-inlex-nf5;review;agent-label
 一笑了之	v	idiom		u-inlex-nf3;review;agent-label
 一笑置之	v			cow-single
@@ -276,7 +276,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一衣帶水	a,n	idiom		u-inlex-nf4;review;agent-label
 一表人材	a,n	idiom		u-inlex-nf5;review;agent-label
 一見傾心	v	idiom		u-inlex-nf3;review;agent-label
-一見鍾情	v	idiom		u-inlex-nf2b;review;agent-label
+一見鍾情	v	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 一視同仁	a,v	idiom		u-inlex-nf3;review;agent-label
 一親芳澤	v	idiom		u-inlex-nf4;review;agent-label
 一覽	n,v			u-inlex-nf2k;review;agent-label
@@ -343,7 +343,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一體	a,n			u-inlex-nf2b;review;agent-label
 一體兩面	a,n			u-inlex-nf4;review;agent-label
 一鬨而散	v			u-inlex-nf4;review;agent-label
-一鳴驚人	v	idiom		成語；一鳴驚人;u-inlex-nf5;review;agent-label
+一鳴驚人	v	chengyu		成語；一鳴驚人;u-inlex-nf5;review;agent-label;family-leaf-review
 一點	n			cow-single
 一點一滴	n,r	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
 一點點	n			cow-single;p3
@@ -403,7 +403,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 三年五載	n,r	idiom		成語；三年五載;u-inlex-nf4;review;agent-label
 三度空間	n			u-inlex-nf4;review;agent-label
 三從四德	n	idiom		u-inlex-nf4;review;agent-label
-三心二意	a	idiom		u-inlex-nf3;review;agent-label
+三心二意	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 三心兩意	a	idiom		u-inlex-nf4;review;agent-label
 三房一廳	n			u-inlex-nf3;review;agent-label
 三房二廳	n			u-inlex-nf3;review;agent-label
@@ -838,7 +838,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 不算	v			u-inlex-nf2b;review;agent-label
 不管	v,x			u-inlex;review;u-inlex-agent
 不管不顧	a,v	idiom		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review
-不約而同	a,r	idiom		u-inlex;review;u-inlex-agent
+不約而同	a,r	chengyu		u-inlex;review;u-inlex-agent;family-leaf-review
 不絕於耳	a,v	idiom		u-inlex-nf2b;review;agent-label
 不經意	a,r			u-inlex;review;u-inlex-agent
 不置可否	v	idiom		u-inlex-nf5;review;agent-label
@@ -1343,7 +1343,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 亟待解決	a,v			u-inlex-nf2b;review;agent-label
 亡命之徒	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 亡國滅種	v	idiom		u-inlex-nf5;review;agent-label
-亡羊補牢	v	idiom		u-inlex-nf3;review;agent-label
+亡羊補牢	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 亢奮	a			u-inlex-nf2k;review;agent-label
 交	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 交互	v			cow-single
@@ -2657,7 +2657,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 全世界	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 全副武裝	a,v			u-inlex-nf2b;review;agent-label
 全力	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-全力以赴	v	idiom		audit-high;review
+全力以赴	v	chengyu		audit-high;review;family-leaf-review
 全力支持	n,v			u-inlex-nf2b;review;agent-label
 全勞動力	n			u-tail533;review;agent-label
 全名	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -3844,7 +3844,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 半自耕農	n			u-inlex-nf5;review;agent-label
 半身	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 半身不遂	n			cow-single
-半途而廢	v	idiom		audit-high;review
+半途而廢	v	chengyu		audit-high;review;family-leaf-review
 半邊	n			u-inlex-nf2k;review;agent-label
 半點	n,r			u-inlex;review;u-inlex-agent
 卑	a			u-inlex-nf2k;review;agent-label
@@ -4479,7 +4479,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 名不符實	a	idiom		u-inlex-nf4;review;agent-label
 名人	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 名利雙收	v	idiom		u-inlex-nf3;review;agent-label
-名副其實	a	idiom		u-inlex-nf3;review;agent-label
+名副其實	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 名單	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 名器	n			u-inlex;review;u-inlex-agent
 名噪一時	a,v	idiom		u-inlex-nf4;review;agent-label
@@ -7430,7 +7430,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 對沖基金	n			u-tail533;review;agent-label
 對準	n,v			cow-nv-unreviewed;trust-low
 對照	n			cow-single
-對症下藥	v	idiom		u-inlex-nf2b;review;agent-label
+對症下藥	v	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 對白	n			cow-single
 對眼	a,v			u-inlex;review;u-inlex-agent
 對立	n			cow-single
@@ -7532,7 +7532,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 小雨	n,v			cow-nv-unreviewed;trust-low
 小雪	n			no-source;fallback;p1-audit;review;節氣／專名
 小題大作	v	idiom		u-inlex-nf4;review;agent-label
-小題大做	v	idiom		u-inlex-nf3;review;agent-label
+小題大做	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 小食	n			u-inlex;review;u-inlex-agent
 小魚	n			cow-single;p3
 小鳥	n			cow-single
@@ -11658,7 +11658,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 杭	n			u-inlex-nf2k;review;agent-label
 杯	n			cow-single
 杯子	n			cow-single
-杯弓蛇影	n,v	idiom		成語；杯弓蛇影;u-inlex-nf4;review;agent-label
+杯弓蛇影	n,v	chengyu		成語；杯弓蛇影;u-inlex-nf4;review;agent-label;family-leaf-review
 杯水車薪	a,n	idiom		u-inlex-nf3;review;agent-label
 杰	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 東	n			cow-single;p1
@@ -14670,10 +14670,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 畫冊	n			cow-single;p3
 畫家	n			cow-single
 畫畫	v			cow-single
-畫蛇添足	v	idiom		u-inlex-nf3;review;agent-label
+畫蛇添足	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 畫質	n			u-inlex-nf2k;review;agent-label
 畫面	n			cow-single
-畫龍點睛	v	idiom		成語；畫龍點睛;u-inlex-nf5;review;agent-label
+畫龍點睛	v	chengyu		成語；畫龍點睛;u-inlex-nf5;review;agent-label;family-leaf-review
 異	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 異亮氨酸	n			氨基酸;u-inlex-nf4;review;agent-label
 異化作用	n			len4-noun-heuristic
@@ -15066,7 +15066,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 盯住	v			verb-suffix;heuristic
 盯着	v			u-inlex;review;u-inlex-agent
 盲	n			cow-single;p3
-盲人摸象	n,v	idiom		u-inlex-nf4;review;agent-label
+盲人摸象	n,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 盲人瞎馬	a,n	idiom		u-tail533;review;agent-label
 盲婚啞嫁	n,v	idiom		u-tail533;review;agent-label
 盲目	a			u-inlex;review;u-inlex-agent
@@ -16362,7 +16362,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 純粹	n			cow-single
 純粹數學	n			u-inlex-nf5;review;agent-label
 紙	n			cow-single
-紙上談兵	v	idiom		成語；紙上談兵;u-inlex-nf5;review;agent-label
+紙上談兵	v	chengyu		成語；紙上談兵;u-inlex-nf5;review;agent-label;family-leaf-review
 紙巾	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 紙皮	n			u-inlex;review;u-inlex-agent
 級	n			cow-single
@@ -17566,7 +17566,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 自由落體	n			u-inlex-nf3;review;agent-label
 自由貿易	n			u-inlex-nf2b;review;agent-label
 自相殘殺	n			cow-single
-自相矛盾	a,v	idiom		audit-high;review
+自相矛盾	a,v	chengyu		audit-high;review;family-leaf-review
 自相驚擾	v	idiom		u-tail533;review;agent-label
 自知	a,v			u-inlex-nf2k;review;agent-label
 自知之明	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
@@ -18591,7 +18591,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 見異思遷	a,v	idiom		u-inlex-nf3;review;agent-label
 見稜見角	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
 見縫就鑽	v	idiom		u-inlex-nf5;review;agent-label
-見義勇為	v	idiom		u-tail533;review;agent-label
+見義勇為	v	chengyu		u-tail533;review;agent-label;family-leaf-review
 見證	n,v			cow-nv-unreviewed;trust-low
 見識	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 見財起意	v	idiom		u-inlex-nf5;review;agent-label
@@ -18959,7 +18959,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 調料	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 調查	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 調研	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-調虎離山	v	idiom		u-inlex-nf3;review;agent-label
+調虎離山	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 調製	v			u-inlex-nf2b;review;agent-label
 調解	n,v			u-inlex;review;u-inlex-agent
 調試	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -20707,7 +20707,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 金黃	a			u-inlex-nf2k;review;agent-label
 金黃色	a,n			u-inlex-nf2b;review;agent-label
 釘	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v
-釜底抽薪	v	idiom		u-inlex-nf3;review;agent-label
+釜底抽薪	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 針砭時弊	v	idiom		u-tail533;review;agent-label
 針頭線腦	n	idiom		u-tail533;review;agent-label
 釣	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -21492,7 +21492,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 雨過天青	a	idiom		成語；雨過天青;u-inlex-nf4;review;agent-label
 雪	n			cow-single
 雪上加霜	v	idiom		成語；雪上加霜;u-inlex-nf5;review;agent-label
-雪中送炭	v	idiom		成語;u-inlex-nf2b;review;agent-label
+雪中送炭	v	chengyu		成語;u-inlex-nf2b;review;agent-label;family-leaf-review
 雪山	n			u-inlex-nf2k;review;agent-label
 雪條	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 雪梨	n			u-inlex-nf2b;review;agent-label

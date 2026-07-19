@@ -575,5 +575,24 @@
       "d4_pass_95": true,
       "alias_n": 15
     }
+  },
+  "family_leaf": {
+    "mother_body": 3754,
+    "review_rows": 22,
+    "verdicts": {
+      "accept": 22
+    },
+    "families": {
+      "idiom": 3732,
+      "chengyu": 22
+    },
+    "terminal": 22,
+    "coverage": 0.0059,
+    "last_apply": {
+      "reviewed": 22,
+      "terminal": 22,
+      "changed": 0,
+      "dry_run": false
+    }
   }
 }
