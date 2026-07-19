@@ -21,7 +21,7 @@
 <!-- /version:zh-Hant -->
 
 <!-- words-count:zh-Hant -->
-目前總詞條列數：**170,883**（`lyrics.db` · `words` 表）
+目前總詞條列數：**171,079**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
 **立即開始使用（兩種方式，同等重要）**

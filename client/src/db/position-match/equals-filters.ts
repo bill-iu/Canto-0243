@@ -3,7 +3,7 @@
  */
 import { getCodeVariants } from '../code-variants.ts';
 import { queryFirst, queryRows } from '../database-backend.ts';
-import { rhymeFinalsFromJyutping } from '../jyutping-codec.ts';
+import { rhymeFinalsFromJyutping, splitJyutping } from '../jyutping-codec.ts';
 import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
@@ -293,12 +293,14 @@ async function equalsWholeWordMatches(
   spec: MatchSpec,
   db: Database,
   mode: 'm1' | 'm2',
-  target: WordRow,
+  target: WordRow | null,
   targetParts: string[],
   isFinal: boolean,
 ): Promise<WordRow[]> {
   const field = isFinal ? 'finals' : 'initials';
-  const phonemeKey = phonemeStorageKey(target, field);
+  const phonemeKey = target
+    ? phonemeStorageKey(target, field)
+    : encodePhonemeList(targetParts, isFinal ? 'final' : 'initial');
   if (!phonemeKey) {
     return [];
   }
@@ -356,7 +358,11 @@ export async function queryWordsByEqualsSpec(
   let targetParts: string[] | null;
   let target: WordRow | null = null;
 
-  if (prefixWildcard) {
+  if (span.ref_jyutping) {
+    const [initials] = splitJyutping(span.ref_jyutping);
+    targetParts = isFinal ? rhymeFinalsFromJyutping(span.ref_jyutping) : initials;
+    if (targetParts.length !== span.ref_literal.length) return [];
+  } else if (prefixWildcard) {
     targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'prefix');
     if (!targetParts) {
       return [];
@@ -385,9 +391,6 @@ export async function queryWordsByEqualsSpec(
   }
 
   if (span.whole_word) {
-    if (!target) {
-      return [];
-    }
     return equalsWholeWordMatches(spec, db, searchMode, target, targetParts, isFinal);
   }
 

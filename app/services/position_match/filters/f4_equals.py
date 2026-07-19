@@ -152,7 +152,7 @@ def _equals_whole_word_matches(
     db: Any,
     mode: str,
     *,
-    target: Any,
+    target: Any | None,
     target_parts: list,
     is_final: bool,
 ) -> list[Any]:
@@ -165,7 +165,7 @@ def _equals_whole_word_matches(
     target_key = tuple(target_parts)
     cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
     storage_field = "finals" if is_final else "initials"
-    target_storage_key = _phoneme_storage_key(target, storage_field)
+    target_storage_key = _phoneme_storage_key(target, storage_field) if target else target_key
 
     if cached is not None:
         pool = cached
@@ -183,7 +183,11 @@ def _equals_whole_word_matches(
     if full_code:
         query = apply_code_filter(query, full_code, mode)
     if is_final:
-        db_literal = _phoneme_db_literal(target, "finals")
+        if target:
+            db_literal = _phoneme_db_literal(target, "finals")
+        else:
+            from app.domain.lexicon.phoneme_codec import encode_phoneme_list
+            db_literal = encode_phoneme_list(target_parts, "final")
         if db_literal:
             query = query.filter(Word.finals == db_literal)
         return [
@@ -191,7 +195,11 @@ def _equals_whole_word_matches(
             for w in query.all()
             if tuple(get_rhyme_finals(w)) == target_key
         ]
-    db_literal = _phoneme_db_literal(target, "initials")
+    if target:
+        db_literal = _phoneme_db_literal(target, "initials")
+    else:
+        from app.domain.lexicon.phoneme_codec import encode_phoneme_list
+        db_literal = encode_phoneme_list(target_parts, "initial")
     if db_literal:
         query = query.filter(Word.initials == db_literal)
     return query.all()
@@ -219,7 +227,15 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
     full_code = dense_code_from_spec(spec) or ""
 
-    if prefix_wildcard:
+    if span.ref_jyutping:
+        from app.utils.jyutping_codec import rhyme_finals_from_jyutping, split_jyutping_parts
+
+        initials, _finals, _tones = split_jyutping_parts(span.ref_jyutping)
+        target_parts = rhyme_finals_from_jyutping(span.ref_jyutping) if is_final else initials
+        if len(target_parts) != len(span.ref_literal):
+            return []
+        target = None
+    elif prefix_wildcard:
         target_parts = suffix_aligned_ref_phoneme_parts(
             span.ref_literal, dimension, db, allow_inject=True,
         )

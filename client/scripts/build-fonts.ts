@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const outDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public/fonts');
 const ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-const criticalDisplayText = '·搵韻即使離線亦完全可用呢一次拎返你嘅創作主導權關於，。';
+const criticalDisplayText = '·搵韻即使離線亦完全可用呢一次拎返你嘅創作主導權關於句格工作台把拆開看清每個選擇，。';
 const criticalCssUrl = `https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700&display=block&text=${encodeURIComponent(criticalDisplayText)}`;
 const logoText = '粵CANTO';
 const logoCssUrl = `https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700&display=block&text=${encodeURIComponent(logoText)}`;

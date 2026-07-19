@@ -37,6 +37,7 @@ class EqualsSpan:
     """等號查詢 span 語意（CONTEXT § 等號查詢、碼夾等號查詢）。"""
 
     ref_literal: str
+    ref_jyutping: Optional[str] = None
     start_pos: int = 0
     dimension: Literal["initial", "final"] = "final"
     phoneme_anchor_only: bool = False

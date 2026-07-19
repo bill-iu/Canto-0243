@@ -1,4 +1,4 @@
-.pos-filter { position: relative; z-index: 8; }
+.pos-filter { position: relative; }
 .pos-filter__trigger {
   display: inline-flex; min-height: 2.35rem; align-items: center; gap: .45rem;
   padding: .4rem .7rem; border: 1px solid var(--line); border-radius: .7rem;
@@ -8,8 +8,9 @@
 .pos-filter__trigger.is-active { border-color: var(--accent-strong); color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
 .pos-filter__trigger b { display: grid; min-width: 1.25rem; height: 1.25rem; place-items: center; border-radius: 99px; color: var(--surface); background: var(--accent-strong); font-size: .7rem; }
 .pos-filter__panel {
-  position: absolute; top: calc(100% + .55rem); right: 0; width: min(28rem, calc(100vw - 2rem));
-  padding: 1.1rem; border: 1px solid var(--line); border-radius: 1rem; color: var(--ink);
+  position: fixed; z-index: 81; top: 0; bottom: 0; left: 0; width: min(24rem, calc(100vw - 3rem));
+  overflow: auto; padding: 1.25rem 1.1rem calc(1.25rem + env(safe-area-inset-bottom));
+  border: 0; border-right: 1px solid var(--line); color: var(--ink);
   background: var(--surface); box-shadow: 0 18px 50px color-mix(in srgb, var(--ink) 18%, transparent);
 }
 .pos-filter__panel > header, .pos-filter__panel > footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
@@ -24,10 +25,11 @@
 .pos-filter__panel > footer { margin-top: 1.15rem; padding-top: .8rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .7rem; }
 .pos-filter__panel > footer button { border: 0; color: var(--accent-strong); background: transparent; font: 750 .78rem/1 inherit; cursor: pointer; }
 .pos-filter__panel > footer button:disabled { opacity: .35; cursor: default; }
-.pos-filter__scrim { display: none; }
+.pos-filter__scrim {
+  display: block; position: fixed; z-index: 80; inset: 0; border: 0;
+  background: color-mix(in srgb, #17120f 45%, transparent); cursor: default;
+}
 
 @media (max-width: 640px) {
   .pos-filter__trigger span { display: none; }
-  .pos-filter__scrim { display: block; position: fixed; z-index: 80; inset: 0; border: 0; background: color-mix(in srgb, #17120f 45%, transparent); }
-  .pos-filter__panel { position: fixed; z-index: 81; top: auto; right: 0; bottom: 0; left: 0; width: auto; max-height: min(86dvh, 42rem); overflow: auto; padding: 1.2rem 1rem calc(1.2rem + env(safe-area-inset-bottom)); border-width: 1px 0 0; border-radius: 1.25rem 1.25rem 0 0; }
 }

@@ -225,12 +225,13 @@ export function WorkbenchPage() {
       setReadings(resolved);
       setDraft((current) => {
         if (!current || current.version !== baseDraft.version) return current;
-        return resolved.reduce((next, slot, pos) => {
+        const next = resolved.reduce((nextDraft, slot, pos) => {
           const choice = slot.choices[0];
           return choice
-            ? lineDraftReducer(next, { type: 'choose_reading', pos, jyutping: choice.jyutping, code: choice.code })
-            : next;
+            ? lineDraftReducer(nextDraft, { type: 'choose_reading', pos, jyutping: choice.jyutping, code: choice.code })
+            : nextDraft;
         }, current);
+        return syncPhonemeAnchors(next, rhymePicks, initialPicks);
       });
       setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可標定字位或改用碼起句。' : '已解析逐字讀音；請點擊標定替換段。');
     } catch {
@@ -325,19 +326,22 @@ export function WorkbenchPage() {
     if (parsed.kind === 'surface') void resolveReadings(parsed.slots.map((slot) => slot.surface).join(''), next);
   };
 
+  const handleChooseReading = (pos: number, jyutping: string, code: string) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const next = lineDraftReducer(current, { type: 'choose_reading', pos, jyutping, code });
+      return syncPhonemeAnchors(next, rhymePicks, initialPicks);
+    });
+  };
+
   const plan = useMemo<ReplacementPlanV1 | null>(() => {
     if (!draft?.selection) return null;
     const { start, width } = draft.selection;
     const slots: WorkbenchSlotConstraintV1[] = draft.constraints
       .filter((item) => item.pos >= start && item.pos < start + width)
       .map((item) => ({ ...item, pos: item.pos - start }));
-    for (let offset = 0; offset < width; offset += 1) {
-      const slot = draft.slots[start + offset]!;
-      // ponytail: lock only defines 替換段; never emit literal_char (parity with 29稻草=).
-      if (slot.code && !slots.some((item) => item.pos === offset && item.kind === 'code_digit')) {
-        slots.push({ pos: offset, kind: 'code_digit', digit: slot.code });
-      }
-    }
+    // Resolved readings describe the source line; only user-entered code constraints
+    // belong in the plan. Otherwise 第 2–4 字同韻 becomes stricter than ?困潦倒=.
     if (slots.length === 0) return null;
     const semanticSeed = draft.slots.slice(start, start + width).map((slot) => slot.surface).join('');
     return {
@@ -491,7 +495,7 @@ export function WorkbenchPage() {
               draft={draft}
               readings={readings}
               onToggleLock={handleToggleLock}
-              onChooseReading={(pos, jyutping, code) => setDraft((current) => current ? lineDraftReducer(current, { type: 'choose_reading', pos, jyutping, code }) : current)}
+              onChooseReading={handleChooseReading}
             />
             <ConstraintBar
               mode={mode}

@@ -41,6 +41,15 @@ PLANS = [
         ],
         "semanticIntent": "off", "limit": 8,
     },
+    {
+        "version": 1, "selectionVersion": 4, "width": 4, "mode": "m1",
+        "slots": [
+            {"pos": 1, "kind": "final_anchor", "ref": "困", "refJyutping": "kwan3"},
+            {"pos": 2, "kind": "final_anchor", "ref": "潦", "refJyutping": "liu5"},
+            {"pos": 3, "kind": "final_anchor", "ref": "倒", "refJyutping": "dou2"},
+        ],
+        "semanticIntent": "off", "limit": 8,
+    },
 ]
 
 

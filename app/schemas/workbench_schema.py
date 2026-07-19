@@ -21,6 +21,7 @@ class WorkbenchSlotConstraintV1(BaseModel):
     digit: str | None = None
     literal: str | None = None
     ref: str | None = None
+    ref_jyutping: str | None = Field(default=None, alias="refJyutping")
     tone_class: Literal["ping", "ze"] | None = Field(default=None, alias="toneClass")
 
     @model_validator(mode="after")
