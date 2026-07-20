@@ -3,6 +3,7 @@ import { createLineDraft, lineDraftReducer } from '../src/workbench/line-draft.t
 import {
   WORKBENCH_DRAFT_KEY,
   WORKBENCH_RECOVERY_KEY,
+  clearLineDraft,
   loadLineDraft,
   saveLineDraft,
 } from '../src/workbench/line-draft-storage.ts';
@@ -132,9 +133,6 @@ assert(draft.surface === '我愛香港', 'insert undo failed');
   assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '??' }) === draft, 'multi-char cell accepted');
   const wild = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' });
   assert(wild.slots[0]?.surface === '?' && wild.undo != null, 'wildcard cell failed');
-  const cleared = lineDraftReducer(wild, { type: 'clear_canvas' });
-  assert(cleared.surface === '' && cleared.slots.every((s) => !s.surface && !s.code && !s.locked) && cleared.selection == null && cleared.constraints.length === 0 && cleared.undo != null, 'clear_canvas failed');
-  assert(lineDraftReducer(cleared, { type: 'clear_canvas' }) === cleared, 'empty clear should no-op');
 }
 
 {
@@ -166,6 +164,8 @@ const storage = {
 };
 saveLineDraft(storage, draft);
 assert(loadLineDraft(storage)?.surface === '我愛香港', 'saved draft did not round-trip');
+clearLineDraft(storage);
+assert(loadLineDraft(storage) === null, 'clearLineDraft did not empty storage');
 
 values.set(WORKBENCH_DRAFT_KEY, '{broken');
 assert(loadLineDraft(storage) === null, 'corrupt draft did not fall back');

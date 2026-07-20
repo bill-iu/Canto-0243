@@ -33,7 +33,7 @@ import {
   type WorkbenchSlotConstraintV1,
 } from './contracts.ts';
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
-import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
+import { clearLineDraft, loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
 import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
@@ -91,6 +91,19 @@ interface ActiveRelaxation {
   to?: string;
 }
 
+interface ClearedWorkbenchUndo {
+  draft: LineDraft;
+  readings: PwaLineReadingSlot[];
+  mode: ReplacementPlanV1['mode'];
+  semanticIntent: ReplacementPlanV1['semanticIntent'];
+  codeConstraint: CodeConstraintMode;
+  explicitCode: string;
+  rhymePicks: PhonemeDimPicks;
+  initialPicks: PhonemeDimPicks;
+  rhymeRef: string;
+  initialRef: string;
+}
+
 const GROUP_FOCUS_IDS = ['candidate-direct_syn', 'candidate-semantic_related', 'candidate-sound_only'] as const;
 
 function firstCandidate(groups: CandidateGroups | undefined): WorkbenchCandidate | null {
@@ -131,6 +144,7 @@ export function WorkbenchPage() {
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
   const [candidateOffset, setCandidateOffset] = useState(0);
   const [spanInputError, setSpanInputError] = useState('');
+  const [clearedUndo, setClearedUndo] = useState<ClearedWorkbenchUndo | null>(null);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -140,11 +154,13 @@ export function WorkbenchPage() {
   const draftRef = useRef(draft);
   const previewRef = useRef(preview);
   const relaxedPreviousRef = useRef(relaxedPrevious);
+  const clearedUndoRef = useRef(clearedUndo);
   const ingestDone = useRef(false);
   const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
   draftRef.current = draft;
   previewRef.current = preview;
   relaxedPreviousRef.current = relaxedPrevious;
+  clearedUndoRef.current = clearedUndo;
 
   useEffect(() => {
     revealPwaShell();
@@ -168,7 +184,10 @@ export function WorkbenchPage() {
   }, [uiLang]);
 
   useEffect(() => {
-    if (!draft) return;
+    if (!draft) {
+      try { clearLineDraft(localStorage); } catch { /* ignore */ }
+      return;
+    }
     try { saveLineDraft(localStorage, draft); } catch { setMessage('這次未能自動保存；句稿仍可繼續編輯。'); }
   }, [draft]);
 
@@ -472,6 +491,7 @@ export function WorkbenchPage() {
     }
     const next = createLineDraft(parsed);
     setDraft(next);
+    setClearedUndo(null);
     setReadings([]);
     setPreview(null);
     setActiveRelaxation(null);
@@ -522,26 +542,36 @@ export function WorkbenchPage() {
   };
 
   const handleClearSurfaces = () => {
-    setDraft((current) => {
-      if (!current) return current;
-      const next = lineDraftReducer(current, { type: 'clear_canvas' });
-      if (next === current) {
-        setMessage('句格已是空白。');
-        return current;
-      }
-      setReadings([]);
-      setPreview(null);
-      setActiveRelaxation(null);
-      setSpanInputError('');
-      setRhymePicks(emptyPhonemeDimPicks());
-      setInitialPicks(emptyPhonemeDimPicks());
-      setRhymeRef('');
-      setInitialRef('');
-      setExplicitCode('');
-      setCodeConstraint('same_tone');
-      setMessage('已清空句格。');
-      return syncPhonemeAnchors(next, emptyPhonemeDimPicks(), emptyPhonemeDimPicks(), '', '');
+    const current = draftRef.current;
+    if (!current) return;
+    setClearedUndo({
+      draft: current,
+      readings,
+      mode,
+      semanticIntent,
+      codeConstraint,
+      explicitCode,
+      rhymePicks,
+      initialPicks,
+      rhymeRef,
+      initialRef,
     });
+    setDraft(null);
+    setReadings([]);
+    setPreview(null);
+    setActiveRelaxation(null);
+    setRelaxedPrevious(null);
+    setSpanInputError('');
+    setRhymePicks(emptyPhonemeDimPicks());
+    setInitialPicks(emptyPhonemeDimPicks());
+    setRhymeRef('');
+    setInitialRef('');
+    setRefReadings(new Map());
+    setExplicitCode('');
+    setCodeConstraint('same_tone');
+    setMode('m1');
+    setSemanticIntent('ranked');
+    setMessage('已清空句格。');
   };
 
   const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
@@ -580,6 +610,24 @@ export function WorkbenchPage() {
   };
 
   const performUndo = () => {
+    const stashed = clearedUndoRef.current;
+    if (stashed) {
+      setDraft(stashed.draft);
+      setReadings(stashed.readings);
+      setMode(stashed.mode);
+      setSemanticIntent(stashed.semanticIntent);
+      setCodeConstraint(stashed.codeConstraint);
+      setExplicitCode(stashed.explicitCode);
+      setRhymePicks(stashed.rhymePicks);
+      setInitialPicks(stashed.initialPicks);
+      setRhymeRef(stashed.rhymeRef);
+      setInitialRef(stashed.initialRef);
+      setClearedUndo(null);
+      setActiveRelaxation(null);
+      setSpanInputError('');
+      setMessage('已復原清空前的句稿。');
+      return;
+    }
     const current = draftRef.current;
     if (!current?.undo) return;
     setDraft(lineDraftReducer(current, { type: 'undo' }));
@@ -700,14 +748,14 @@ export function WorkbenchPage() {
         closePreview();
         return;
       }
-      if (!current) return;
-
       if (event.key === 'u' || event.key === 'U' || (event.key === 'z' && (event.ctrlKey || event.metaKey))) {
-        if (!current.undo) return;
+        if (!clearedUndoRef.current && !current?.undo) return;
         event.preventDefault();
         performUndo();
         return;
       }
+      if (!current) return;
+
       if (event.key === '1' || event.key === '2' || event.key === '3') {
         const heading = document.getElementById(GROUP_FOCUS_IDS[Number(event.key) - 1]!);
         if (!heading) return;
@@ -774,6 +822,11 @@ export function WorkbenchPage() {
             <label htmlFor="lineInput">原句、394052／0243 碼、平仄，或漢字與碼混合</label>
             <div><input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄／能夠44" /><button type="submit">建立句格</button></div>
           </form>
+          {!draft && clearedUndo ? (
+            <button type="button" className="undo-action undo-action--inline" onClick={performUndo}>
+              復原清空前的句稿
+            </button>
+          ) : null}
           <p className="workbench-status" aria-live="polite">{message}</p>
         </section>
 

@@ -43,11 +43,6 @@ export function SentenceCanvas({
 }: Props) {
   const summary = codeSummary(draft);
   const span = draft.selection;
-  const canClear = Boolean(
-    draft.selection
-    || draft.constraints.length
-    || draft.slots.some((s) => s.surface || s.code || s.locked || s.reading),
-  );
   const [editingPos, setEditingPos] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
   const [spanRaw, setSpanRaw] = useState('');
@@ -153,8 +148,7 @@ export function SentenceCanvas({
           <button
             type="button"
             className="canvas-clear-surfaces"
-            disabled={!canClear}
-            title={canClear ? '清空句格（恢復空白）' : '句格已是空白'}
+            title="清空句格（恢復空白）"
             aria-label="清空句格"
             onClick={() => { cancelEdit(); setSpanPanelOpen(false); onClearSurfaces(); }}
           >清空</button>

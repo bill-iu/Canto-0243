@@ -85,9 +85,18 @@ export function saveLineDraft(storage: WorkbenchStorage, draft: LineDraft): void
   storage.setItem(WORKBENCH_DRAFT_KEY, JSON.stringify({ version: 1, draft }));
 }
 
+export function clearLineDraft(storage: WorkbenchStorage): void {
+  const removable = storage as WorkbenchStorage & { removeItem?: (key: string) => void };
+  if (typeof removable.removeItem === 'function') {
+    removable.removeItem(WORKBENCH_DRAFT_KEY);
+    return;
+  }
+  storage.setItem(WORKBENCH_DRAFT_KEY, '');
+}
+
 export function loadLineDraft(storage: WorkbenchStorage): LineDraft | null {
   const raw = storage.getItem(WORKBENCH_DRAFT_KEY);
-  if (raw == null) return null;
+  if (raw == null || raw === '') return null;
 
   try {
     const payload: unknown = JSON.parse(raw);

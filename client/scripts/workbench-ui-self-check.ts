@@ -79,6 +79,9 @@ if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !
 if (!canvas.includes('onClearSurfaces') || !canvas.includes('canvas-clear-surfaces') || !canvas.includes('清空')) {
   throw new Error('clear-surfaces control missing on sentence canvas');
 }
+if (!page.includes('clearLineDraft') || !page.includes('clearedUndo') || !page.includes('復原清空前的句稿')) {
+  throw new Error('clear-to-empty-workbench undo wiring missing');
+}
 if (!constraints.includes('跟原韻') || !constraints.includes('跟原聲') || !constraints.includes('phoneme-dim__ref')) {
   throw new Error('phoneme ref inputs missing');
 }
