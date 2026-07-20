@@ -1,15 +1,17 @@
 import { type FormEvent, useMemo, useRef, useState, useEffect } from 'react';
 
-import { getLang, setLang, getTheme, setTheme } from '../../../shared/app-context.mjs';
+import { getLang, setLang, getTheme, setTheme, readLexiconVersionMeta } from '../../../shared/app-context.mjs';
 import { searchPageHref } from '../app-page.ts';
 import { navigateAppRoute } from '../app-navigation.ts';
 import { BrandLogo } from '../brand-logo.tsx';
 import { BrandSvgDefs } from '../brand-svg-defs.tsx';
+import { getActiveDbBackendMode } from '../db/init.ts';
 import { HeaderHero } from '../header-hero.tsx';
 import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
+import { WORKBENCH_LINE_INPUT_COPY } from './line-input-copy.ts';
 import { PosFilterControl } from '../pos/PosFilterControl.tsx';
 import { isPosFilterActive, resetPosFilter, type PosFilterState } from '../pos/filter.ts';
 import { revealPwaShell } from '../pwa-shell-boot.ts';
@@ -120,6 +122,10 @@ function isTypingTarget(target: EventTarget | null): boolean {
 export function WorkbenchPage() {
   const adapter = useMemo(() => selectWorkbenchAdapter(), []);
   const { isReady, initialize } = useDB();
+  const lexiconVersion =
+    (isPortableHost() ? readLexiconVersionMeta() : null) ||
+    (import.meta as any).env?.VITE_LEXICON_VERSION ||
+    'dev';
   const [input, setInput] = useState('');
   const [draft, setDraft] = useState<LineDraft | null>(initialDraft);
   const [readings, setReadings] = useState<PwaLineReadingSlot[]>([]);
@@ -804,6 +810,10 @@ export function WorkbenchPage() {
                 lang={uiLang}
                 onThemeChange={setUiTheme}
                 onLangChange={setUiLang}
+                lexiconVersion={lexiconVersion}
+                showOpfsBackend={
+                  !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
+                }
               />
             </div>
           </div>
@@ -819,9 +829,15 @@ export function WorkbenchPage() {
             <p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p>
           </div>
           <form className="line-input-form" onSubmit={submit}>
-            <label htmlFor="lineInput">原句、394052／0243 碼、平仄，或漢字與碼混合</label>
+            <label htmlFor="lineInput">{WORKBENCH_LINE_INPUT_COPY}</label>
             <div>
-              <input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄／能夠44" />
+              <input
+                id="lineInput"
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                maxLength={65}
+                placeholder={WORKBENCH_LINE_INPUT_COPY}
+              />
               <button type="submit">建立句格</button>
               {!draft && clearedUndo ? (
                 <button

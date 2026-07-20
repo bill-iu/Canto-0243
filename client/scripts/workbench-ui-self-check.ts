@@ -8,6 +8,22 @@ const constraints = fs.readFileSync('src/workbench/ConstraintBar.tsx', 'utf8');
 const css = fs.readFileSync('src/workbench/workbench-page.css', 'utf8');
 const app = fs.readFileSync('src/App.tsx', 'utf8');
 const detail = fs.readFileSync('src/entry-detail/EntryDetailPanel.tsx', 'utf8');
+const lineInputCopy = fs.readFileSync('src/workbench/line-input-copy.ts', 'utf8');
+
+/** Locked: label + placeholder must stay this exact string (product decision). */
+const LOCKED_LINE_INPUT_COPY = '歌詞/0243 碼/漢字加數字混合';
+if (!lineInputCopy.includes(`'${LOCKED_LINE_INPUT_COPY}'`)) {
+  throw new Error(`line-input-copy must lock WORKBENCH_LINE_INPUT_COPY to ${LOCKED_LINE_INPUT_COPY}`);
+}
+if (!page.includes('WORKBENCH_LINE_INPUT_COPY')) {
+  throw new Error('WorkbenchPage must use WORKBENCH_LINE_INPUT_COPY for label and placeholder');
+}
+if (page.includes('原句、394052') || page.includes('例如：香港／39／平仄')) {
+  throw new Error('legacy workbench line-input label/placeholder must be removed');
+}
+if (!page.includes('lexiconVersion={lexiconVersion}')) {
+  throw new Error('workbench ModeMenu must show lexicon meta under the menu');
+}
 
 for (const group of ['direct_syn', 'semantic_related', 'sound_only']) {
   if (!cards.includes(group)) throw new Error(`missing candidate group ${group}`);
