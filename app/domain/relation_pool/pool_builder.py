@@ -7,10 +7,8 @@ from typing import List, Optional, Set
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.derived_ant import append_runtime_derived_ant_pool
-from app.domain.relations.graph import get_process_cached_graph
-from app.domain.relations.pool import DEFAULT_PAGE_SIZE, PoolSnapshot
-from app.domain.relations.ranking import (
+from app.domain.relation_pool.pool import DEFAULT_PAGE_SIZE, PoolSnapshot
+from app.domain.relation_pool.ranking import (
     RUNTIME_DERIVED_ANT_SOURCES,
     dedupe_rel_items,
     final_score,
@@ -21,14 +19,16 @@ from app.domain.relations.ranking import (
     sort_ant_pool,
     sort_syn_pool,
 )
+from app.domain.relations.derived_ant import append_runtime_derived_ant_pool
+from app.domain.relations.graph import get_process_cached_graph
 from app.domain.relations.valid_term import normalize_literal
-from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
-from app.models.word import Word
 from app.domain.relations.word_relation_queries import (
     chars_present_in_db,
     fetch_bidirectional_relations,
     load_db_char_set,
 )
+from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
+from app.models.word import Word
 
 
 def _pool_literal(text: str) -> Optional[str]:

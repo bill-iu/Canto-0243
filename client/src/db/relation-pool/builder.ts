@@ -1,16 +1,16 @@
-/** 近反義池建構 — port of domain/relations/pool_builder.py (Phase C PR4). */
-import type { Database } from './sqljs.ts';
-import { queryRows } from './database-backend.ts';
-import { getStaticAntonyms, getStaticSynonyms } from './thesaurus.ts';
-import { getCuratedAntCompounds } from './compound.ts';
-import { appendRuntimeDerivedAntPool } from './derived-ant.ts';
-import { getLexiconMembership } from './lexicon-membership.ts';
+/** 近反義池建構 — port of domain/relation_pool/pool_builder.py (Phase C PR4 / C7). */
+import type { Database } from '../sqljs.ts';
+import { queryRows } from '../database-backend.ts';
+import { getStaticAntonyms, getStaticSynonyms } from '../thesaurus.ts';
+import { getCuratedAntCompounds } from '../compound.ts';
+import { appendRuntimeDerivedAntPool } from '../derived-ant.ts';
+import { getLexiconMembership } from '../lexicon-membership.ts';
 import {
   createRelationPoolSnapshot,
   type RelationKind,
   type RelationPoolItem,
   type RelationPoolSnapshot,
-} from './relation-pool-snapshot.ts';
+} from './snapshot.ts';
 import {
   RUNTIME_DERIVED_ANT_SOURCES,
   finalScore,
@@ -18,7 +18,7 @@ import {
   morphemeCharsFromWordLists,
   sortAntPool,
   sortSynPool,
-} from './relation-pool-ranking.ts';
+} from './ranking.ts';
 
 const CJK_RE = /[\u4e00-\u9fff]/
 

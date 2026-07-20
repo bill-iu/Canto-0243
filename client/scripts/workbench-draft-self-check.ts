@@ -132,9 +132,9 @@ assert(draft.surface === '我愛香港', 'insert undo failed');
   assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '??' }) === draft, 'multi-char cell accepted');
   const wild = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' });
   assert(wild.slots[0]?.surface === '?' && wild.undo != null, 'wildcard cell failed');
-  const cleared = lineDraftReducer(wild, { type: 'clear_surfaces' });
-  assert(cleared.surface === '' && cleared.slots.every((s) => !s.surface) && cleared.selection == null && cleared.undo != null, 'clear_surfaces failed');
-  assert(lineDraftReducer(cleared, { type: 'clear_surfaces' }) === cleared, 'empty clear should no-op');
+  const cleared = lineDraftReducer(wild, { type: 'clear_canvas' });
+  assert(cleared.surface === '' && cleared.slots.every((s) => !s.surface && !s.code && !s.locked) && cleared.selection == null && cleared.constraints.length === 0 && cleared.undo != null, 'clear_canvas failed');
+  assert(lineDraftReducer(cleared, { type: 'clear_canvas' }) === cleared, 'empty clear should no-op');
 }
 
 {

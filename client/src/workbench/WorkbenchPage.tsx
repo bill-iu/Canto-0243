@@ -524,9 +524,9 @@ export function WorkbenchPage() {
   const handleClearSurfaces = () => {
     setDraft((current) => {
       if (!current) return current;
-      const next = lineDraftReducer(current, { type: 'clear_surfaces' });
+      const next = lineDraftReducer(current, { type: 'clear_canvas' });
       if (next === current) {
-        setMessage('沒有可清空的字面。');
+        setMessage('句格已是空白。');
         return current;
       }
       setReadings([]);
@@ -537,7 +537,9 @@ export function WorkbenchPage() {
       setInitialPicks(emptyPhonemeDimPicks());
       setRhymeRef('');
       setInitialRef('');
-      setMessage('已清空字面；碼格仍保留，可重新標定。');
+      setExplicitCode('');
+      setCodeConstraint('same_tone');
+      setMessage('已清空句格。');
       return syncPhonemeAnchors(next, emptyPhonemeDimPicks(), emptyPhonemeDimPicks(), '', '');
     });
   };

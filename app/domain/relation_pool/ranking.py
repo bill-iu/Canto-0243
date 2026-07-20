@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Set
 
-from app.domain.relations._generated.relation_pool_ranking import (
+from app.domain.relation_pool._generated.relation_pool_ranking import (
     RUNTIME_DERIVED_ANT_SOURCES,
     SOURCE_BASE_RANK,
 )

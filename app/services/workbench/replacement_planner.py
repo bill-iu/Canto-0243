@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.domain.relations.pool_projection import project_relation_pool
+from app.domain.relation_pool import project_relation_pool
 from app.schemas.workbench_schema import (
     CandidateGroups,
     RelaxationSuggestion,
