@@ -180,45 +180,37 @@ export async function filterMatchSpecRows(
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);
 }
 
-async function executeDualPhonemeAnchorSpecs(spec: MatchSpec, ctx: ExecuteMatchSpecContext): Promise<WordRow[]> {
-  const initialSpec = spec.extra?.dual_initial_spec;
-  const finalSpec = spec.extra?.dual_final_spec;
-  if (!initialSpec || !finalSpec) {
-    return [];
-  }
-  const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
-  const base = {
-    db: ctx.db,
-    mode: ctx.mode,
-    code: ctx.code ?? null,
-    shouldCancel: ctx.shouldCancel,
-  };
-  const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec as MatchSpec, base)).slice(
-    0,
-    unpagedLimit,
-  );
-  throwIfSearchCancelled(ctx.shouldCancel);
-  const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec as MatchSpec, base)).slice(
-    0,
-    unpagedLimit,
-  );
-  const tagged: WordRow[] = [
-    ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
-    ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
-  ];
-  return tagged.slice(ctx.offset, ctx.offset + ctx.limit);
-}
-
-/** Port of run_position_query_tracked — filter, sort, then page. */
-export async function executeMatchSpec(
+/** Filter + sort + page; `total` is the full sorted pool size (ADR-0064). */
+export async function executeMatchSpecPage(
   spec: MatchSpec,
   ctx: ExecuteMatchSpecContext,
-): Promise<WordRow[]> {
+): Promise<{ rows: WordRow[]; total: number }> {
   if (!spec || spec.width === 0) {
-    return [];
+    return { rows: [], total: 0 };
   }
   if (spec.extra?.dual_phoneme) {
-    return executeDualPhonemeAnchorSpecs(spec, ctx);
+    // Dual path materializes a truncated union; count that union after paging window math.
+    const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
+    const base = {
+      db: ctx.db,
+      mode: ctx.mode,
+      code: ctx.code ?? null,
+      shouldCancel: ctx.shouldCancel,
+    };
+    const initialSpec = spec.extra?.dual_initial_spec as MatchSpec;
+    const finalSpec = spec.extra?.dual_final_spec as MatchSpec;
+    if (!initialSpec || !finalSpec) return { rows: [], total: 0 };
+    const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec, base)).slice(0, unpagedLimit);
+    throwIfSearchCancelled(ctx.shouldCancel);
+    const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec, base)).slice(0, unpagedLimit);
+    const tagged: WordRow[] = [
+      ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
+      ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
+    ];
+    return {
+      rows: tagged.slice(ctx.offset, ctx.offset + ctx.limit),
+      total: tagged.length,
+    };
   }
   const filtered = await filterMatchSpecRows(spec, ctx);
   throwIfSearchCancelled(ctx.shouldCancel);
@@ -230,6 +222,16 @@ export async function executeMatchSpec(
   } else {
     sorted = sortWordRows(filtered);
   }
-  // E3: only return the requested window
-  return sorted.slice(ctx.offset, ctx.offset + ctx.limit);
+  return {
+    rows: sorted.slice(ctx.offset, ctx.offset + ctx.limit),
+    total: sorted.length,
+  };
+}
+
+/** Port of run_position_query_tracked — filter, sort, then page. */
+export async function executeMatchSpec(
+  spec: MatchSpec,
+  ctx: ExecuteMatchSpecContext,
+): Promise<WordRow[]> {
+  return (await executeMatchSpecPage(spec, ctx)).rows;
 }

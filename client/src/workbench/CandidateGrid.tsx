@@ -9,16 +9,38 @@ const GROUPS: Array<[keyof CandidateGroups, string]> = [
 
 interface Props {
   groups: CandidateGroups;
+  total: number;
+  loadedCount: number;
+  hasMore: boolean;
+  loadingMore?: boolean;
+  posFilterActive?: boolean;
   relaxed?: { kind: string; from?: string; to?: string } | null;
   semanticGap?: boolean;
   onPreview: (candidate: WorkbenchCandidate, origin: HTMLButtonElement) => void;
+  onLoadMore?: () => void;
 }
 
-export function CandidateGrid({ groups, relaxed, semanticGap, onPreview }: Props) {
+export function CandidateGrid({
+  groups,
+  total,
+  loadedCount,
+  hasMore,
+  loadingMore,
+  posFilterActive,
+  relaxed,
+  semanticGap,
+  onPreview,
+  onLoadMore,
+}: Props) {
+  const status = posFilterActive
+    ? `篩後 ${loadedCount}／池內 ${total}`
+    : `已載 ${loadedCount}／池內 ${total}`;
+
   return (
     <section className={`candidate-area${relaxed ? ' is-relaxed' : ''}`} aria-labelledby="candidateHeading">
       <p className="eyebrow">{relaxed ? '已確認放寬，非完全符合' : '由你揀，不代你寫'}</p>
       <h2 id="candidateHeading">{relaxed ? '放寬後結果' : '替換候選'}</h2>
+      <p className="candidate-count" role="status">{status}</p>
       {semanticGap ? (
         <p className="semantic-gap" role="status">
           未有足夠近義資料；以下只按聲韻與詞頻排列，不是「沒有近義詞」的意思。
@@ -50,6 +72,13 @@ export function CandidateGrid({ groups, relaxed, semanticGap, onPreview }: Props
           ) : <p className="empty-group">這一組暫時沒有候選。</p>}
         </section>
       ))}
+      {hasMore && onLoadMore ? (
+        <div className="candidate-load-more">
+          <button type="button" onClick={onLoadMore} disabled={loadingMore}>
+            {loadingMore ? '載入中…' : '載入更多'}
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }

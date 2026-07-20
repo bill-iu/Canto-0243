@@ -24,7 +24,14 @@ import {
   sanitizeExplicitCode,
   type CodeConstraintMode,
 } from './code-constraint.ts';
-import type { CandidateGroups, RelaxationKind, ReplacementPlanV1, WorkbenchCandidate, WorkbenchSlotConstraintV1 } from './contracts.ts';
+import {
+  WORKBENCH_CANDIDATE_PAGE_SIZE,
+  type CandidateGroups,
+  type RelaxationKind,
+  type ReplacementPlanV1,
+  type WorkbenchCandidate,
+  type WorkbenchSlotConstraintV1,
+} from './contracts.ts';
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
@@ -116,6 +123,7 @@ export function WorkbenchPage() {
   const [rhymePicks, setRhymePicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
+  const [candidateOffset, setCandidateOffset] = useState(0);
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -407,7 +415,7 @@ export function WorkbenchPage() {
     });
   };
 
-  const plan = useMemo<ReplacementPlanV1 | null>(() => {
+  const planBase = useMemo(() => {
     if (!draft?.selection) return null;
     const { start, width } = draft.selection;
     const span = draft.selection;
@@ -421,16 +429,35 @@ export function WorkbenchPage() {
     const intent = semanticSeed ? semanticIntent : 'off';
     if (!planHasQueryableSlots(slots, semanticSeed, intent)) return null;
     return {
-      version: 1,
+      version: 1 as const,
       selectionVersion: draft.version,
       width,
       mode,
       slots,
       semanticIntent: intent,
       semanticSeed: semanticSeed || undefined,
-      limit: 120,
     };
   }, [draft, mode, semanticIntent, codeConstraint, explicitCode]);
+
+  const planKey = planBase
+    ? `${planBase.selectionVersion}|${planBase.mode}|${planBase.semanticIntent}|${codeConstraint}|${explicitCode}|${JSON.stringify(planBase.slots)}`
+    : '';
+  const [planKeyHeld, setPlanKeyHeld] = useState(planKey);
+  useEffect(() => {
+    setPlanKeyHeld(planKey);
+    setCandidateOffset(0);
+  }, [planKey]);
+  const effectiveOffset = planKey === planKeyHeld ? candidateOffset : 0;
+
+  const plan = useMemo<ReplacementPlanV1 | null>(() => {
+    if (!planBase) return null;
+    return {
+      ...planBase,
+      limit: WORKBENCH_CANDIDATE_PAGE_SIZE,
+      offset: effectiveOffset,
+    };
+  }, [planBase, effectiveOffset]);
+
   const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter, posFilter);
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
@@ -604,9 +631,15 @@ export function WorkbenchPage() {
             {candidates.response ? (
               <CandidateGrid
                 groups={candidates.response.exact}
+                total={candidates.response.total}
+                loadedCount={candidates.loadedCount}
+                hasMore={candidates.fetchedCount < candidates.response.total}
+                loadingMore={candidates.loading && effectiveOffset > 0}
+                posFilterActive={isPosFilterActive(posFilter)}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
                 onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
+                onLoadMore={() => setCandidateOffset((n) => n + WORKBENCH_CANDIDATE_PAGE_SIZE)}
               />
             ) : null}
             {candidates.response?.relaxation ? (

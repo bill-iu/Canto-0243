@@ -59,7 +59,8 @@
         },
         "semanticIntent": { "type": "string", "enum": ["ranked", "direct_only", "off"] },
         "semanticSeed": { "type": "string", "minLength": 1, "maxLength": 4 },
-        "limit": { "type": "integer", "minimum": 1, "maximum": 120 }
+        "limit": { "type": "integer", "minimum": 1, "maximum": 400 },
+        "offset": { "type": "integer", "minimum": 0 }
       }
     },
     "CandidateReason": {
@@ -143,11 +144,12 @@
     "WorkbenchCandidateResponse": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["version", "selectionVersion", "exact"],
+      "required": ["version", "selectionVersion", "exact", "total"],
       "properties": {
         "version": { "const": 1 },
         "selectionVersion": { "type": "integer", "minimum": 0 },
         "exact": { "$ref": "#/$defs/CandidateGroups" },
+        "total": { "type": "integer", "minimum": 0 },
         "relaxation": {
           "oneOf": [
             { "$ref": "#/$defs/RelaxationSuggestion" },

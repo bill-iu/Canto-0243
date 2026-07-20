@@ -115,6 +115,10 @@ class PublishedSchemaTests(unittest.TestCase):
         plan = schema["$defs"]["ReplacementPlanV1"]
         self.assertEqual(plan["properties"]["version"]["const"], 1)
         self.assertEqual(plan["properties"]["width"]["maximum"], 4)
+        self.assertEqual(plan["properties"]["limit"]["maximum"], 400)
+        self.assertIn("offset", plan["properties"])
+        response = schema["$defs"]["WorkbenchCandidateResponse"]
+        self.assertIn("total", response["required"])
         candidate = schema["$defs"]["WorkbenchCandidate"]
         self.assertEqual(
             candidate["properties"]["group"]["enum"],

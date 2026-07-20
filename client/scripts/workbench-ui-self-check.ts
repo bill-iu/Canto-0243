@@ -21,7 +21,13 @@ if (!compare.includes('在搜尋頁查看') || !compare.includes('onOpenInSearch
 if (!page.includes('不會替你自動填詞') || !page.includes('不會自動填入字面')) {
   throw new Error('product boundary copy missing');
 }
-if (!page.includes('limit: 120')) throw new Error('candidate limit must be 120');
+if (!page.includes('WORKBENCH_CANDIDATE_PAGE_SIZE')) {
+  throw new Error('candidate page size constant missing from WorkbenchPage');
+}
+if (!cards.includes('載入更多')) {
+  throw new Error('candidate load-more copy missing');
+}
+if (page.includes('limit: 120')) throw new Error('legacy candidate limit 120 must be removed');
 if (page.includes("type: 'select', start: 0, width: 1")) {
   throw new Error('creating a line must not auto-select slots');
 }
@@ -54,6 +60,9 @@ if (!page.includes('codeConstraint') || !page.includes('buildCodeDigitSlots')) {
 }
 if (constraints.includes('末格同韻') || constraints.includes('首格同聲')) {
   throw new Error('legacy end-anchor buttons must be removed');
+}
+if (!cards.includes('池內') || !cards.includes('onLoadMore')) {
+  throw new Error('candidate count / load-more wiring missing');
 }
 if (!cards.includes('放寬後結果') || !cards.includes('未有足夠近義資料')) {
   throw new Error('relaxed / semantic-gap copy missing');

@@ -51,6 +51,7 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
         empty = WorkbenchCandidateResponse(
             selection_version=4,
             exact=CandidateGroups(direct_syn=[], semantic_related=[], sound_only=[]),
+            total=0,
         )
         plan = {
             "version": 1,

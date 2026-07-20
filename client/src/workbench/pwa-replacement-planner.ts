@@ -1,5 +1,5 @@
 import type { DatabaseBackend } from '../db/database-backend.ts';
-import { executeMatchSpec } from '../db/position-match/engine.ts';
+import { executeMatchSpecPage } from '../db/position-match/engine.ts';
 import { attachEqualsSpan, type MatchSpec, type SlotConstraint } from '../db/position-match/spec.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
 import { projectRelationPool } from '../db/relation-pool-projection.ts';
@@ -16,7 +16,7 @@ import type {
 import { relaxationVariants } from './relaxation-advisor.ts';
 
 type PlannerDeps = {
-  execute?: typeof executeMatchSpec;
+  executePage?: typeof executeMatchSpecPage;
   projectRelations?: typeof projectRelationPool;
 };
 
@@ -95,29 +95,37 @@ export async function planPwaReplacements(
   db: DatabaseBackend,
   deps: PlannerDeps = {},
 ): Promise<WorkbenchCandidateResponse> {
-  const execute = deps.execute ?? executeMatchSpec;
+  const executePage = deps.executePage ?? executeMatchSpecPage;
   const project = deps.projectRelations ?? projectRelationPool;
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
     ? await project(db, plan.semanticSeed) : null;
-  const run = (variant: ReplacementPlanV1) => execute(buildPwaMatchSpec(variant), {
+  const offset = plan.offset ?? 0;
+  const run = (variant: ReplacementPlanV1) => executePage(buildPwaMatchSpec(variant), {
     db,
     mode: variant.mode,
     limit: variant.limit,
-    offset: 0,
+    offset: variant.offset ?? 0,
     code: null,
   });
-  const exact = groupRows(plan, await run(plan), pool);
+  const page = await run(plan);
+  const exact = groupRows(plan, page.rows, pool);
   let relaxation = null;
-  if (![...exact.direct_syn, ...exact.semantic_related, ...exact.sound_only].length) {
+  if (offset === 0 && ![...exact.direct_syn, ...exact.semantic_related, ...exact.sound_only].length) {
     for (const variant of relaxationVariants(plan)) {
-      const rows = await run(variant.plan);
+      const probed = await run({ ...variant.plan, offset: 0, limit: variant.plan.limit });
       const count = variant.plan.semanticIntent === 'direct_only'
-        ? rows.filter((row) => (pool?.syns ?? []).some((item) => item.char === String(row.char ?? ''))).length
-        : rows.length;
+        ? probed.rows.filter((row) => (pool?.syns ?? []).some((item) => item.char === String(row.char ?? ''))).length
+        : probed.total;
       if (count < 1) continue;
       relaxation = { ...variant, candidateCount: count };
       break;
     }
   }
-  return { version: 1, selectionVersion: plan.selectionVersion, exact, relaxation };
+  return {
+    version: 1,
+    selectionVersion: plan.selectionVersion,
+    exact,
+    total: page.total,
+    relaxation,
+  };
 }

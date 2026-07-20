@@ -52,7 +52,8 @@ class ReplacementPlanV1(BaseModel):
         alias="semanticIntent"
     )
     semantic_seed: str | None = Field(default=None, alias="semanticSeed", min_length=1, max_length=4)
-    limit: int = Field(ge=1, le=120)
+    limit: int = Field(ge=1, le=400)
+    offset: int = Field(default=0, ge=0)
 
     @model_validator(mode="after")
     def validate_slot_positions(self) -> "ReplacementPlanV1":
@@ -123,6 +124,7 @@ class WorkbenchCandidateResponse(BaseModel):
     version: Literal[1] = 1
     selection_version: int = Field(alias="selectionVersion", ge=0)
     exact: CandidateGroups
+    total: int = Field(ge=0)
     relaxation: RelaxationSuggestion | None = None
 
 

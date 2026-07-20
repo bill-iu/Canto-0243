@@ -60,15 +60,16 @@ def build_match_spec(plan: ReplacementPlanV1) -> MatchSpec:
     return spec
 
 
-def _execute(plan: ReplacementPlanV1, db, execute) -> list[dict]:
-    return execute(
+def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
+    result = execute(
         build_match_spec(plan),
         code=None,
         mode=plan.mode,
         limit=plan.limit,
-        offset=0,
+        offset=plan.offset,
         db=db,
-    ).items
+    )
+    return result.items, int(result.total or len(result.items))
 
 
 def _group_candidates(plan: ReplacementPlanV1, rows: list[dict], pool) -> CandidateGroups:
@@ -131,14 +132,18 @@ def plan_replacements(
     if plan.semantic_intent != "off" and plan.semantic_seed:
         pool = relation_projector(db, plan.semantic_seed)
 
-    rows = _execute(plan, db, execute)
+    rows, total = _execute(plan, db, execute)
     exact = _group_candidates(plan, rows, pool)
     has_exact = any((exact.direct_syn, exact.semantic_related, exact.sound_only))
     suggestion = None
-    if not has_exact:
+    if plan.offset == 0 and not has_exact:
         for item_id, kind, positions, from_value, to_value, variant in relaxation_variants(plan):
-            variant_rows = _execute(variant, db, execute)
-            count = _candidate_count(variant, variant_rows, pool)
+            variant_rows, variant_total = _execute(variant, db, execute)
+            count = (
+                _candidate_count(variant, variant_rows, pool)
+                if variant.semantic_intent == "direct_only"
+                else variant_total
+            )
             if count < 1:
                 continue
             suggestion = RelaxationSuggestion(
@@ -155,6 +160,7 @@ def plan_replacements(
     return WorkbenchCandidateResponse(
         selection_version=plan.selection_version,
         exact=exact,
+        total=total,
         relaxation=suggestion,
     )
 

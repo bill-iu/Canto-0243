@@ -30,6 +30,7 @@
 | [0061](./0061-pos-family-leaf-subtypes.md) | **語彙族細分**：成語／俗語／諺語 + 篩選 + 外源只提案非 dependency |
 | [0062](./0062-rhyme-equals-initial-caret.md) | **同韻 `=`／同聲 `^`**（舊左 `=` 相容） |
 | [0063](./0063-lf-line-endings.md) | **文字檔一律 LF**（`.gitattributes`／editorconfig／pre-commit 自動修） |
+| [0064](./0064-workbench-candidate-page-size.md) | **工作台候選**首屏 400 + load-more（廢 120 硬頂） |
 
 ## Stubs
 
