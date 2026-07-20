@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { formalPosMap, isProjectPosReady } from '../pos/carrier.ts';
 import { filterByProjectPos, type PosFilterState } from '../pos/filter.ts';
 import type {
   CandidateGroups,
@@ -8,35 +7,21 @@ import type {
   WorkbenchCandidate,
   WorkbenchCandidateResponse,
 } from './contracts.ts';
-import { filterCandidatesBySeedPos } from './pos-meta.ts';
 import { selectWorkbenchAdapter, type WorkbenchAdapter } from './workbench-adapter.ts';
 
 const EMPTY_CREATOR_FILTER: PosFilterState = { pos: [], family: [], voice: [] };
 
-function filterGroups(seed: string, groups: CandidateGroups, map: ReadonlyMap<string, ReadonlySet<string>>): CandidateGroups {
-  const f = (xs: WorkbenchCandidate[]) => filterCandidatesBySeedPos(seed, xs, map);
-  return {
-    direct_syn: f(groups.direct_syn),
-    semantic_related: f(groups.semantic_related),
-    sound_only: f(groups.sound_only),
-  };
-}
-
-function applyPosFilter(plan: ReplacementPlanV1, next: WorkbenchCandidateResponse, filter: PosFilterState): WorkbenchCandidateResponse {
-  let exact = next.exact;
-  if (isProjectPosReady() && plan.semanticSeed) {
-    const map = formalPosMap();
-    if (map.size) exact = filterGroups(plan.semanticSeed, exact, map);
-  }
-  const applyCreatorFilter = (groups: CandidateGroups): CandidateGroups => ({
+/** Only creator 三軸詞性篩選 — never auto-filter by seed gate POS (ADR follow-up). */
+function applyCreatorPosFilter(
+  next: WorkbenchCandidateResponse,
+  filter: PosFilterState,
+): WorkbenchCandidateResponse {
+  const apply = (groups: CandidateGroups): CandidateGroups => ({
     direct_syn: filterByProjectPos(groups.direct_syn, (row) => row.literal, filter),
     semantic_related: filterByProjectPos(groups.semantic_related, (row) => row.literal, filter),
     sound_only: filterByProjectPos(groups.sound_only, (row) => row.literal, filter),
   });
-  return {
-    ...next,
-    exact: applyCreatorFilter(exact),
-  };
+  return { ...next, exact: apply(next.exact) };
 }
 
 function candidateKey(c: WorkbenchCandidate): string {
@@ -101,8 +86,8 @@ export function useWorkbenchCandidates(
   }, [activeAdapter, plan]);
 
   const response = useMemo(
-    () => (raw && plan ? applyPosFilter(plan, raw, posFilter) : null),
-    [raw, plan, posFilter],
+    () => (raw ? applyCreatorPosFilter(raw, posFilter) : null),
+    [raw, posFilter],
   );
 
   return {
