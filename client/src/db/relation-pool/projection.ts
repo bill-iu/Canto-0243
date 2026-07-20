@@ -1,16 +1,16 @@
-/** 近反義池投影 — thin entry (port of pool_projection; Phase C PR4 / C7). */
-import type { Database } from '../sqljs.ts';
-import { queryRows } from '../database-backend.ts';
+/** 近反義池投影 — thin entry (port of pool_projection; Phase C PR4). */
+import type { Database } from './sqljs.ts';
+import { queryRows } from './database-backend.ts';
 import {
   matchesCodePositions,
   requiredCodesFromDigitString,
-} from '../position-match/filters/f1-slot-code.ts';
+} from './position-match/filters/f1-slot-code.ts';
 import {
   relationPoolSnapshotItems,
   type RelationPoolItem,
   type RelationPoolSnapshot,
-} from './snapshot.ts';
-import { buildRelationPool } from './builder.ts';
+} from './relation-pool-snapshot.ts';
+import { buildRelationPool } from './relation-pool-builder.ts';
 
 /** Seed-scoped LRU — repeat ~開心 / 近反義 mode hits without rebuild. */
 const POOL_CACHE_MAX = 48;

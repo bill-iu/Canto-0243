@@ -9,7 +9,7 @@ from app.domain.lexicon.phoneme_codec import decode_phoneme_field
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.lexicon.essay_index import get_essay_frequency
 from app.models.word import Word
-from app.domain.relation_pool import project_relation_pool
+from app.domain.relations.pool_projection import project_relation_pool
 
 
 SOURCE_FLAG_LABELS = (

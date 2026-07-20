@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relation_pool import relation_chars_for_seed
+from app.domain.relations.pool_projection import relation_chars_for_seed
 from app.domain.relations.store import insert_relation_candidates
 from app.domain.relations.syn_neighbors import one_hop_syn_neighbors
 from app.models.word import Word, WordRelation

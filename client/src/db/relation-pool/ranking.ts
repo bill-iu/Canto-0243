@@ -1,5 +1,5 @@
-/** 近反義池 ranking / merge — port of domain/relation_pool/ranking.py (Phase C PR4 / C7). */
-import type { RelationPoolItem } from './snapshot.ts';
+/** 近反義池 ranking / merge — port of domain/relations/ranking.py (Phase C PR4). */
+import type { RelationPoolItem } from './relation-pool-snapshot.ts';
 import {
   RUNTIME_DERIVED_ANT_SOURCES,
   SOURCE_BASE_RANK,

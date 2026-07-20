@@ -2,8 +2,8 @@
 """Codegen relation-pool ranking SSOT from contracts/relation-pool-ranking.json.
 
 Writes:
-  app/domain/relation_pool/_generated/relation_pool_ranking.py
-  client/src/db/relation-pool/_generated/relation-pool-ranking.ts
+  app/domain/relations/_generated/relation_pool_ranking.py
+  client/src/db/_generated/relation-pool-ranking.ts
 
 Usage:
   python scripts/codegen_relation_pool_ranking.py
@@ -18,18 +18,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
 CONTRACT = REPO / "contracts" / "relation-pool-ranking.json"
-PY_OUT = (
-    REPO / "app" / "domain" / "relation_pool" / "_generated" / "relation_pool_ranking.py"
-)
-TS_OUT = (
-    REPO
-    / "client"
-    / "src"
-    / "db"
-    / "relation-pool"
-    / "_generated"
-    / "relation-pool-ranking.ts"
-)
+PY_OUT = REPO / "app" / "domain" / "relations" / "_generated" / "relation_pool_ranking.py"
+TS_OUT = REPO / "client" / "src" / "db" / "_generated" / "relation-pool-ranking.ts"
+
 
 def load_contract() -> dict:
     data = json.loads(CONTRACT.read_text(encoding="utf-8"))

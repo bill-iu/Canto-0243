@@ -2,13 +2,13 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { buildRelationPool } from '../src/db/relation-pool/builder.ts';
+import { buildRelationPool } from '../src/db/relation-pool-builder.ts';
 import {
   invalidateRelationPoolCache,
   projectRelationPool,
   relationLookupItems,
   relationPoolLogicSelfCheck,
-} from '../src/db/relation-pool/projection.ts';
+} from '../src/db/relation-pool-projection.ts';
 import {
   getLexiconMembership,
   invalidateLexiconMembership,
@@ -17,7 +17,7 @@ import {
 import {
   projectAntRankingSelfCheck,
   projectSynRankingSelfCheck,
-} from '../src/db/relation-pool/ranking.ts';
+} from '../src/db/relation-pool-ranking.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';

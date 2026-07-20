@@ -6,8 +6,8 @@ import { queryRows } from '../database-backend.ts';
 import { getCodeVariants } from '../code-variants.ts';
 import { sortQueryResults, sortWordRows } from '../ranking.ts';
 import { executeHeteronymCodeSearch } from '../heteronym.ts';
-import { relationLookupItems } from '../relation-pool/index.ts';
-import type { RelationPoolItem } from '../relation-pool/index.ts';
+import { relationLookupItems } from '../relation-pool-projection.ts';
+import type { RelationPoolItem } from '../relation-pool-snapshot.ts';
 import {
   expectedWordLength,
   matchesJyutpingQuery,

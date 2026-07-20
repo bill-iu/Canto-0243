@@ -2,8 +2,8 @@ import type { DatabaseBackend } from '../db/database-backend.ts';
 import { executeMatchSpecPage } from '../db/position-match/engine.ts';
 import { attachEqualsSpan, type MatchSpec, type SlotConstraint } from '../db/position-match/spec.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
-import { projectRelationPool } from '../db/relation-pool/index.ts';
-import type { RelationPoolSnapshot } from '../db/relation-pool/index.ts';
+import { projectRelationPool } from '../db/relation-pool-projection.ts';
+import type { RelationPoolSnapshot } from '../db/relation-pool-snapshot.ts';
 import { candidateReasons } from './candidate-reason.ts';
 import { relationIndex } from './candidate-rank.ts';
 import type {

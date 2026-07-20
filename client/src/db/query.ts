@@ -28,7 +28,7 @@ import {
 import { queryRows } from './database-backend.ts';
 import { getLexiconCacheStatus } from './lexicon-restore.ts';
 import { opfsAvailable } from './opfs-storage.ts';
-import { DEFAULT_RELATION_POOL_PAGE_SIZE } from './relation-pool/index.ts';
+import { DEFAULT_RELATION_POOL_PAGE_SIZE } from './relation-pool-snapshot.ts';
 
 // Re-export the query engine types
 export type { 

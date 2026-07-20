@@ -7,7 +7,7 @@ from typing import List, Set
 from sqlalchemy.orm import Session
 
 from app.domain.relations.graph import CharRelationGraph
-from app.domain.relation_pool.ranking import final_score, sort_ant_pool
+from app.domain.relations.ranking import final_score, sort_ant_pool
 from app.domain.thesaurus.port import ThesaurusPort
 
 from app.domain.relations.cilin_derived import (

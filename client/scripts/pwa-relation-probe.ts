@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { projectRelationPool } from '../src/db/relation-pool/index.ts';
+import { projectRelationPool } from '../src/db/relation-pool-projection.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';

@@ -19,7 +19,7 @@ from sqlalchemy.orm import Session, aliased
 
 from app.domain.relations.bulk_insert import RelationTuple, normalize_relation_tuple
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relation_pool.ranking import DERIVED_ANT_SOURCES
+from app.domain.relations.ranking import DERIVED_ANT_SOURCES
 from app.domain.relations.valid_term import is_valid_term, normalize_literal
 from app.lexicon.essay_index import get_essay_frequency
 from app.models.word import Word, WordRelation
