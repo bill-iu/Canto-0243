@@ -87,8 +87,14 @@ if (canvas.includes('點擊標定替換段')) {
 if (!css.includes('white-space: nowrap') || !css.includes('.canvas-clear-surfaces')) {
   throw new Error('清空 button must stay horizontal (nowrap)');
 }
-if (!css.includes('flex-direction: row') || css.includes('.line-input-form > div { align-items: stretch; flex-direction: column')) {
-  throw new Error('narrow line-input must keep submit on same row');
+if (!css.includes('line-input-form__row') || !css.includes('grid-template-columns: minmax(0, 1fr) max-content')) {
+  throw new Error('line-input must use single-row grid (input | submit)');
+}
+if (!page.includes('line-input-form__row') || !page.includes('line-input-form__submit')) {
+  throw new Error('WorkbenchPage must mark line-input row/submit classes');
+}
+if (css.includes('.line-input-form > div { align-items: stretch; flex-direction: column')) {
+  throw new Error('narrow line-input must not stack submit under input');
 }
 if (!css.includes('.workbench-intro__titles .eyebrow') || !css.includes('clamp(1.85rem')) {
   throw new Error('intro type scale h1 > h2 > eyebrow serif missing');

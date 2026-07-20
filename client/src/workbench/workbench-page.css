@@ -98,16 +98,22 @@ body.query-tabs-app.workbench-route {
   max-width: 40rem;
 }
 .line-input-form label { display: block; margin-bottom: .45rem; font-weight: 750; }
-.line-input-form > div {
-  display: flex;
-  flex-direction: row;
+/* Grid: input grows, submit (and optional undo) stay on the same row even on narrow. */
+.line-input-form__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
   align-items: center;
-  gap: .6rem;
+  gap: .55rem;
   width: 100%;
 }
-.line-input-form input {
+.line-input-form__row:has(> :nth-child(3)) {
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+}
+.line-input-form__row input {
+  box-sizing: border-box;
+  width: 100%;
   min-width: 0;
-  flex: 1 1 auto;
+  max-width: 100%;
   padding: .9rem 1rem;
   border: 1px solid var(--line);
   border-radius: .8rem;
@@ -126,9 +132,14 @@ body.query-tabs-app.workbench-route {
   font-weight: 750;
   cursor: pointer;
 }
-.line-input-form button[type="submit"] {
-  flex: 0 0 auto;
+.line-input-form__submit,
+.line-input-form__undo {
+  box-sizing: border-box;
+  width: auto;
+  max-width: none;
+  flex: none;
   white-space: nowrap;
+  writing-mode: horizontal-tb;
 }
 .workbench-status { width: 100%; min-height: 1.3rem; margin: 0; color: var(--ink-soft); }
 
@@ -659,8 +670,19 @@ body.query-tabs-app.workbench-route {
   .workbench-header { grid-template-columns: 1fr auto; gap: 1rem; }
   .workbench-header > div { order: 3; grid-column: 1 / -1; }
   .line-input-form { max-width: 100%; }
-  /* Keep 建立句格 on the same row as the input (grill). */
-  .line-input-form > div { flex-direction: row; align-items: center; }
+  /* Same row as wide: input | 建立句格 (grid, not stacked column). */
+  .line-input-form__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: .45rem;
+  }
+  .line-input-form__row:has(> :nth-child(3)) {
+    grid-template-columns: minmax(0, 1fr) max-content max-content;
+  }
+  .line-input-form__submit {
+    padding: .75rem .7rem;
+    font-size: .9rem;
+  }
   .constraint-bar { align-items: stretch; flex-direction: column; }
   .constraint-bar h2 { margin: 0; }
   .constraint-bar__menus {

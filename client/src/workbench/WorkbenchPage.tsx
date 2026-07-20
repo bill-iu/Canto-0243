@@ -834,7 +834,7 @@ export function WorkbenchPage() {
             <label className="sr-only" htmlFor="lineInput">
               {WORKBENCH_LINE_INPUT_COPY}
             </label>
-            <div>
+            <div className="line-input-form__row">
               <input
                 id="lineInput"
                 value={input}
@@ -842,11 +842,13 @@ export function WorkbenchPage() {
                 maxLength={65}
                 placeholder={WORKBENCH_LINE_INPUT_COPY}
               />
-              <button type="submit">建立句格</button>
+              <button type="submit" className="line-input-form__submit">
+                建立句格
+              </button>
               {!draft && clearedUndo ? (
                 <button
                   type="button"
-                  className="canvas-clear-surfaces"
+                  className="canvas-clear-surfaces line-input-form__undo"
                   title="復原清空前的句稿"
                   aria-label="復原清空前的句稿"
                   onClick={performUndo}
