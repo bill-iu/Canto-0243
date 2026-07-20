@@ -76,6 +76,9 @@ if (!canvas.includes('onToggleLock') || !canvas.includes('code-summary') || !can
 if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !canvas.includes('span-hand-input')) {
   throw new Error('manual cell/span edit UI missing');
 }
+if (!canvas.includes('span-hand-toggle') || !canvas.includes('disabled={!span}')) {
+  throw new Error('span hand-input must collapse behind ✎ until a span is locked');
+}
 if (!constraints.includes('onUndo') || !constraints.includes('復原最近一次套用／放寬／手改')) {
   throw new Error('undo control must live in ConstraintBar');
 }

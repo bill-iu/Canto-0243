@@ -21,6 +21,7 @@ assert(page.includes('Ctrl') || page.includes('ctrlKey'), 'undo shortcut missing
 assert(constraints.includes('空白鍵標定'), 'shortcut hint must mention space mark');
 assert(constraints.includes('onUndo') && constraints.includes('復原最近一次套用／放寬／手改'), 'undo must sit in constraint bar');
 assert(canvas.includes('onDoubleClick') && canvas.includes('span-hand-input'), 'manual edit surfaces missing');
+assert(canvas.includes('span-hand-toggle') && canvas.includes('disabled={!span}'), '✎ toggle must disable without span');
 assert(compare.includes('headingRef.current?.focus()'), 'compare panel must move focus on open');
 assert(compare.includes("event.key === 'Escape'"), 'compare panel must close on Escape');
 assert(page.includes('previewOrigin.current?.focus()'), 'closing compare must restore focus');

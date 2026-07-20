@@ -44,8 +44,10 @@ export function SentenceCanvas({
   const [editingPos, setEditingPos] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
   const [spanRaw, setSpanRaw] = useState('');
+  const [spanPanelOpen, setSpanPanelOpen] = useState(false);
   const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const editInputRef = useRef<HTMLInputElement | null>(null);
+  const spanInputRef = useRef<HTMLInputElement | null>(null);
   const editingPosRef = useRef<number | null>(null);
   const editValueRef = useRef('');
   editingPosRef.current = editingPos;
@@ -53,13 +55,19 @@ export function SentenceCanvas({
 
   useEffect(() => {
     setSpanRaw('');
-  }, [span?.start, span?.width]);
+    if (!span) setSpanPanelOpen(false);
+  }, [span?.start, span?.width, span]);
 
   useEffect(() => {
     if (editingPos == null) return;
     editInputRef.current?.focus();
     editInputRef.current?.select();
   }, [editingPos]);
+
+  useEffect(() => {
+    if (!spanPanelOpen || !span) return;
+    spanInputRef.current?.focus();
+  }, [spanPanelOpen, span]);
 
   const inSpan = (pos: number) => Boolean(
     span && pos >= span.start && pos < span.start + span.width,
@@ -125,6 +133,7 @@ export function SentenceCanvas({
     onSpanInputError('');
     onApplySpanInput(parsed);
     setSpanRaw('');
+    setSpanPanelOpen(false);
   };
 
   return (
@@ -134,15 +143,34 @@ export function SentenceCanvas({
           <p className="eyebrow">逐字句格</p>
           <h2 id="sentenceHeading">點擊標定替換段；雙擊改一字</h2>
         </div>
-        {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
+        <div className="sentence-canvas__heading-actions">
+          {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
+          <button
+            type="button"
+            className={`span-hand-toggle${spanPanelOpen ? ' is-open' : ''}`}
+            disabled={!span}
+            aria-expanded={spanPanelOpen}
+            aria-controls="spanHandPanel"
+            title={span ? '手打替換段' : '請先標定替換段'}
+            aria-label={span ? '手打替換段' : '手打替換段（請先標定）'}
+            onClick={() => {
+              if (!span) return;
+              setSpanPanelOpen((open) => !open);
+              onSpanInputError('');
+            }}
+          >
+            ✎
+          </button>
+        </div>
       </div>
       {summary ? <p className="code-summary" aria-label="完整碼摘要">{summary}</p> : null}
-      {span ? (
-        <form className="span-hand-input" onSubmit={submitSpan}>
+      {span && spanPanelOpen ? (
+        <form id="spanHandPanel" className="span-hand-input" onSubmit={submitSpan}>
           <label htmlFor="spanHandInput">
             手打替換段（{span.width} 格；規則同起句）
             <input
               id="spanHandInput"
+              ref={spanInputRef}
               value={spanRaw}
               onChange={(event) => setSpanRaw(event.target.value)}
               maxLength={span.width}
@@ -153,6 +181,11 @@ export function SentenceCanvas({
             />
           </label>
           <button type="submit">套用</button>
+          <button type="button" className="span-hand-input__cancel" onClick={() => {
+            setSpanPanelOpen(false);
+            setSpanRaw('');
+            onSpanInputError('');
+          }}>收起</button>
           {spanInputError ? <p id="spanHandHint" className="span-hand-input__error">{spanInputError}</p> : null}
         </form>
       ) : null}

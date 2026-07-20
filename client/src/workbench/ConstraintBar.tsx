@@ -202,7 +202,7 @@ export function ConstraintBar({
           onChange={onInitialChange}
         />
       </div>
-      <p>更改條件只會重新找候選，不會改動句面。雙擊字位可改一字；標定後可於段上方手打整段。</p>
+      <p>更改條件只會重新找候選，不會改動句面。雙擊字位可改一字；標定後點 ✎ 手打整段。</p>
       <p className="shortcut-hint">捷徑：空白鍵標定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
