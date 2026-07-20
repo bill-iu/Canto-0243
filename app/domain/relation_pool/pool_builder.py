@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.derived_ant import append_runtime_derived_ant_pool
 from app.domain.relations.graph import get_process_cached_graph
-from app.domain.relations.pool import DEFAULT_PAGE_SIZE, PoolSnapshot
-from app.domain.relations.ranking import (
+from app.domain.relation_pool.pool import DEFAULT_PAGE_SIZE, PoolSnapshot
+from app.domain.relation_pool.ranking import (
     RUNTIME_DERIVED_ANT_SOURCES,
     dedupe_rel_items,
     final_score,

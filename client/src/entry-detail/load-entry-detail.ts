@@ -6,8 +6,10 @@ import type { EntryDetailModel } from './types.ts';
 import { getDatabase, isDatabaseInitialized } from '../db/init.ts';
 import { queryRows } from '../db/database-backend.ts';
 import { getEssayFrequency, initRankingData } from '../db/ranking.ts';
-import { projectRelationPool } from '../db/relation-pool-projection.ts';
-import { relationPoolSnapshotItems } from '../db/relation-pool-snapshot.ts';
+import {
+  projectRelationPool,
+  relationPoolSnapshotItems,
+} from '../db/relation-pool/index.ts';
 import { getCilinSynonyms, getStaticAntonyms, getStaticSynonyms } from '../db/thesaurus.ts';
 import { posDisplayChips } from '../pos/carrier.ts';
 

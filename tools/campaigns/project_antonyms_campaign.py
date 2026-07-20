@@ -18,7 +18,7 @@ from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Set,
 
 from sqlalchemy.orm import Session
 
-from app.domain.relations.ranking import DERIVED_ANT_SOURCES
+from app.domain.relation_pool.ranking import DERIVED_ANT_SOURCES
 from app.domain.relations.valid_term import is_valid_term, normalize_literal
 from app.lexicon.essay_index import get_essay_frequency
 from ingest.project_antonyms import (
