@@ -29,13 +29,21 @@ fi
 
 copy_tree() {
   local src="$1" dst="$2"
+  shift 2
+  local extra_excludes=("$@")
   [[ -d "$src" ]] || return 0
   mkdir -p "$dst"
-  rsync -a --delete \
-    --exclude '__pycache__' --exclude '.git' --exclude 'venv' --exclude '.venv' \
-    --exclude 'dist' --exclude '.agents' --exclude 'macos' \
-    --exclude '*.pyc' --exclude '*.pyo' \
-    "$src/" "$dst/"
+  local args=(
+    -a --delete
+    --exclude '__pycache__' --exclude '.git' --exclude 'venv' --exclude '.venv'
+    --exclude 'dist' --exclude '.agents' --exclude 'macos'
+    --exclude '*.pyc' --exclude '*.pyo'
+  )
+  local ex
+  for ex in "${extra_excludes[@]}"; do
+    args+=(--exclude "$ex")
+  done
+  rsync "${args[@]}" "$src/" "$dst/"
 }
 
 copy_portable_bundle() {
@@ -51,9 +59,13 @@ copy_portable_bundle() {
   copy_tree "$ROOT/portable" "$dst"
   copy_tree "$ROOT/app" "$dst/app"
   copy_tree "$dist_portable" "$dst/client/dist-portable"
-  copy_tree "$ROOT/data" "$dst/data"
+  # C11-B: skip audit/fixtures/raw/pos/project at copy; slim removes campaign leftovers.
+  copy_tree "$ROOT/data" "$dst/data" \
+    audit fixtures raw proposals locks pos project
   cp -f "$ROOT/main.py" "$ROOT/requirements.txt" "$dst/"
   cp -f "$DB_PATH" "$dst/lyrics.db"
+  echo "==> Slim portable data (C11-B)..."
+  python3 "$ROOT/scripts/portable_data_slim.py" "$dst/data"
   chmod +x "$dst/START.sh" "$dst/START.command" 2>/dev/null || true
 }
 

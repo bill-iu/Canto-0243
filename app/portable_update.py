@@ -107,6 +107,7 @@ def write_manifest(
     if man.is_file():
         man.unlink()
     venv = root / "venv"
+    data = root / "data"
     fp: dict[str, Any] = {
         "tag": tag if tag.startswith("v") else f"v{tag.lstrip('v')}",
         "platform": platform,
@@ -114,6 +115,7 @@ def write_manifest(
         "package_digest": package_digest(root),
         "file_count": str(count_tree_files(root)),
         "venv_file_count": str(count_tree_files(venv)),
+        "data_file_count": str(count_tree_files(data)),
     }
     slim_report = venv / "portable-venv-slim.json"
     if slim_report.is_file():
@@ -123,6 +125,16 @@ def write_manifest(
                 fp["venv_files_after"] = str(slim["venv_files_after"])
             if isinstance(slim.get("venv_files_before"), int):
                 fp["venv_files_before"] = str(slim["venv_files_before"])
+        except (OSError, json.JSONDecodeError):
+            pass
+    data_slim_report = data / "portable-data-slim.json"
+    if data_slim_report.is_file():
+        try:
+            dslim = json.loads(data_slim_report.read_text(encoding="utf-8"))
+            if isinstance(dslim.get("data_files_after"), int):
+                fp["data_files_after"] = str(dslim["data_files_after"])
+            if isinstance(dslim.get("data_files_before"), int):
+                fp["data_files_before"] = str(dslim["data_files_before"])
         except (OSError, json.JSONDecodeError):
             pass
     text = json.dumps(fp, ensure_ascii=False, indent=2) + "\n"
