@@ -687,6 +687,9 @@ export function WorkbenchPage() {
     setPlanKeyHeld(planKey);
     setCandidateOffset(0);
   }, [planKey]);
+  useEffect(() => {
+    setCandidateOffset(0);
+  }, [posFilter]);
   const effectiveOffset = planKey === planKeyHeld ? candidateOffset : 0;
 
   const plan = useMemo<ReplacementPlanV1 | null>(() => {

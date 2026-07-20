@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { filterByProjectPos, type PosFilterState } from '../pos/filter.ts';
+import { filterByProjectPos, isPosFilterActive, type PosFilterState } from '../pos/filter.ts';
 import type {
   CandidateGroups,
   ReplacementPlanV1,
   WorkbenchCandidate,
   WorkbenchCandidateResponse,
 } from './contracts.ts';
+import { WORKBENCH_CANDIDATE_PAGE_SIZE } from './contracts.ts';
 import { selectWorkbenchAdapter, type WorkbenchAdapter } from './workbench-adapter.ts';
 
 const EMPTY_CREATOR_FILTER: PosFilterState = { pos: [], family: [], voice: [] };
 
 /** Only creator 三軸詞性篩選 — never auto-filter by seed gate POS (ADR follow-up). */
-function applyCreatorPosFilter(
+export function applyCreatorPosFilter(
   next: WorkbenchCandidateResponse,
   filter: PosFilterState,
 ): WorkbenchCandidateResponse {
@@ -44,6 +45,10 @@ function groupCount(groups: CandidateGroups): number {
   return groups.direct_syn.length + groups.semantic_related.length + groups.sound_only.length;
 }
 
+function emptyGroups(): CandidateGroups {
+  return { direct_syn: [], semantic_related: [], sound_only: [] };
+}
+
 export function useWorkbenchCandidates(
   plan: ReplacementPlanV1 | null,
   adapter?: WorkbenchAdapter,
@@ -62,28 +67,81 @@ export function useWorkbenchCandidates(
       return;
     }
     const controller = new AbortController();
-    const offset = plan.offset ?? 0;
+    const pageSize = plan.limit ?? WORKBENCH_CANDIDATE_PAGE_SIZE;
+    const userOffset = plan.offset ?? 0;
+    const filterOn = isPosFilterActive(posFilter);
     setLoading(true);
     setError(null);
-    void activeAdapter.findCandidates(plan, controller.signal).then((next) => {
-      if (next.selectionVersion !== plan.selectionVersion) return;
-      setRaw((prev) => {
-        if (offset > 0 && prev && prev.selectionVersion === next.selectionVersion) {
-          return {
-            ...next,
-            exact: mergeGroups(prev.exact, next.exact),
-            relaxation: prev.relaxation ?? next.relaxation,
-          };
+
+    void (async () => {
+      try {
+        if (!filterOn) {
+          const next = await activeAdapter.findCandidates(plan, controller.signal);
+          if (controller.signal.aborted) return;
+          if (next.selectionVersion !== plan.selectionVersion) return;
+          setRaw((prev) => {
+            if (userOffset > 0 && prev && prev.selectionVersion === next.selectionVersion) {
+              return {
+                ...next,
+                exact: mergeGroups(prev.exact, next.exact),
+                relaxation: prev.relaxation ?? next.relaxation,
+              };
+            }
+            return next;
+          });
+          return;
         }
-        return next;
-      });
-    }).catch((nextError: unknown) => {
-      if (!controller.signal.aborted) setError(nextError instanceof Error ? nextError : new Error('candidate request failed'));
-    }).finally(() => {
-      if (!controller.signal.aborted) setLoading(false);
-    });
+
+        // POS active (ADR-0064 amend): over-fetch engine pages until filtered >= target
+        // or pool exhausted. userOffset 0 → first 400 filtered; 400 → 800 filtered; …
+        const targetFiltered = userOffset + pageSize;
+        let engineOffset = 0;
+        let acc: WorkbenchCandidateResponse | null = null;
+        let total = Number.POSITIVE_INFINITY;
+
+        while (!controller.signal.aborted) {
+          const page = await activeAdapter.findCandidates(
+            { ...plan, offset: engineOffset, limit: pageSize },
+            controller.signal,
+          );
+          if (page.selectionVersion !== plan.selectionVersion) return;
+          total = page.total;
+          if (!acc) {
+            acc = {
+              ...page,
+              exact: {
+                direct_syn: [...page.exact.direct_syn],
+                semantic_related: [...page.exact.semantic_related],
+                sound_only: [...page.exact.sound_only],
+              },
+            };
+          } else {
+            acc = {
+              ...page,
+              exact: mergeGroups(acc.exact, page.exact),
+              relaxation: acc.relaxation ?? page.relaxation,
+              total: page.total,
+            };
+          }
+          const filteredCount = groupCount(applyCreatorPosFilter(acc, posFilter).exact);
+          const pageRows = groupCount(page.exact);
+          engineOffset += pageSize;
+          if (filteredCount >= targetFiltered) break;
+          if (pageRows === 0) break;
+          if (engineOffset >= total) break;
+        }
+        if (!controller.signal.aborted && acc) setRaw(acc);
+      } catch (nextError: unknown) {
+        if (!controller.signal.aborted) {
+          setError(nextError instanceof Error ? nextError : new Error('candidate request failed'));
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    })();
+
     return () => controller.abort();
-  }, [activeAdapter, plan]);
+  }, [activeAdapter, plan, posFilter]);
 
   const response = useMemo(
     () => (raw ? applyCreatorPosFilter(raw, posFilter) : null),
@@ -99,3 +157,4 @@ export function useWorkbenchCandidates(
     fetchedCount: raw ? groupCount(raw.exact) : 0,
   };
 }
+

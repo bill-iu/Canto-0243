@@ -160,15 +160,21 @@ export async function filterMatchSpecRows(
       candidates = filterByRequiredCodes(indexed, spec, ctx.mode);
       fromPhonemeIndex = countPhonemeAnchorSlots(spec) === 1;
     } else {
+      // Dense full-width code must not use LIMIT+ORDER BY char — alpha truncation
+      // drops high-freq hits (repro: 貪婪→30 pool ~3k, 金錢 essay-high but late char order).
+      const codePositions = code
+        ? undefined
+        : buildRequiredCodes(spec)
+            .map((digit, pos) => (digit != null ? { pos, digit } : null))
+            .filter((x): x is { pos: number; digit: string } => x != null);
       [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
         code,
         mode: ctx.mode,
-        unlimited: specNeedsFullLengthBucket(spec),
-        codePositions: code
-          ? undefined
-          : buildRequiredCodes(spec)
-              .map((digit, pos) => (digit != null ? { pos, digit } : null))
-              .filter((x): x is { pos: number; digit: string } => x != null),
+        unlimited:
+          specNeedsFullLengthBucket(spec)
+          || Boolean(code)
+          || Boolean(codePositions?.length),
+        codePositions,
       });
     }
   }
