@@ -651,6 +651,20 @@ body.query-tabs-app.workbench-route {
 .compare-panel dl div { display: grid; grid-template-columns: 5.5rem 1fr; padding: .5rem 0; border-bottom: 1px solid var(--line); }
 .compare-panel dt { color: var(--muted); }
 .compare-panel dd { margin: 0; writing-mode: horizontal-tb; overflow-wrap: anywhere; }
+.compare-pos-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+.compare-pos-chip {
+  display: inline-block;
+  padding: .15rem .45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: .82rem;
+  font-weight: 650;
+  background: var(--surface-soft);
+}
 .primary-action { width: 100%; margin-top: 1rem; background: var(--accent-strong); color: var(--bg); }
 .secondary-action {
   width: 100%;

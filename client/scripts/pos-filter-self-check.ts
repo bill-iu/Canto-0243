@@ -20,6 +20,8 @@ initProjectPosCarrier({
     俗句: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'], family: 'suyu', voice: 'passive' },
     傘句: { pos: ['a'], trust: 'high', gate: ['a'], show: ['a'], family: 'idiom' },
     中信: { pos: ['v'], trust: 'medium', gate: ['v'] },
+    // cow-single low (repro 金錢): pos only
+    金錢: { pos: ['n'], trust: 'low' },
   },
 });
 
@@ -27,8 +29,12 @@ assert(literalMatchesPosFilter('不存在', EMPTY_POS_FILTER), 'empty filter kee
 let filter = togglePosFilterValue(EMPTY_POS_FILTER, 'pos', 'v');
 assert(literalMatchesPosFilter('成句', filter), 'pos v');
 assert(!literalMatchesPosFilter('俗句', filter), 'pos rejects n');
-assert(!literalMatchesPosFilter('中信', filter), 'creator filter must not use medium gate');
-filter = togglePosFilterValue(filter, 'pos', 'n');
+// Grill C: show ∪ pos — medium/low with formal pos pass creator filter
+assert(literalMatchesPosFilter('中信', filter), 'medium pos v passes creator filter');
+assert(!literalMatchesPosFilter('金錢', filter), '金錢 is n not v');
+filter = togglePosFilterValue(EMPTY_POS_FILTER, 'pos', 'n');
+assert(literalMatchesPosFilter('金錢', filter), 'low cow-single n passes noun filter');
+filter = togglePosFilterValue(filter, 'pos', 'v');
 assert(literalMatchesPosFilter('成句', filter) && literalMatchesPosFilter('俗句', filter), 'pos OR');
 filter = togglePosFilterValue(filter, 'family', 'chengyu');
 assert(literalMatchesPosFilter('成句', filter) && !literalMatchesPosFilter('俗句', filter), 'axes AND');

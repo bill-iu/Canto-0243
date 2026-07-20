@@ -53,6 +53,9 @@ for (const group of ['direct_syn', 'semantic_related', 'sound_only']) {
 if (!compare.includes('套用這個選擇') || !page.includes("type: 'apply_candidate'")) {
   throw new Error('candidate apply is not explicit');
 }
+if (!compare.includes('posDisplayChips') || !compare.includes('詞性')) {
+  throw new Error('compare panel must show project POS chips when present');
+}
 if (!compare.includes('在搜尋頁查看') || !compare.includes('onOpenInSearch')) {
   throw new Error('open-in-search missing from compare panel');
 }

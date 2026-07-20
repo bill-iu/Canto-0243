@@ -11,9 +11,9 @@ export type PosEntry = {
   /** Raw codes on SSOT row (may include low-trust COW drafts). */
   pos: readonly PosCode[];
   trust?: PosTrust;
-  /** 閘用詞類 (high|medium); omit/empty → 缺標 for gate/filter */
+  /** 閘用詞類 (high|medium); seed/campaign gate path — not creator filter alone */
   gate?: readonly FormalPos[];
-  /** Creator display 詞類 (high only) */
+  /** High-trust display 詞類; creator filter/display also union raw `pos` (any trust) */
   show?: readonly FormalPos[];
   family?: PosFamily;
   voice?: PosVoice;
