@@ -29,6 +29,7 @@
 | [0060](./0060-project-pos-inlex-fragment-alias.md) | **庫內難標 u**：fragment 分流 + **詞性字面別名** + 雙軌覆蓋 |
 | [0061](./0061-pos-family-leaf-subtypes.md) | **語彙族細分**：成語／俗語／諺語 + 篩選 + 外源只提案非 dependency |
 | [0062](./0062-rhyme-equals-initial-caret.md) | **同韻 `=`／同聲 `^`**（舊左 `=` 相容） |
+| [0063](./0063-lf-line-endings.md) | **文字檔一律 LF**（`.gitattributes`／editorconfig／pre-commit 自動修） |
 
 ## Stubs
 

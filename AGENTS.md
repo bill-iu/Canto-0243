@@ -13,6 +13,7 @@ Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTIN
 3. 改動後：在 `dev` 提交並 `git push origin dev`
 4. **禁止**直接推送到 `main` 或在 `main` 提交
 5. 合併到 `main` 前需用戶確認：`gh pr create --base main --head dev`
+6. **行尾**：文字檔一律 LF（[ADR-0063](docs/adr/0063-lf-line-endings.md)）。新 clone 跑 `python scripts/install_githooks.py`；commit 前 hook 會自動把 staged CRLF 修成 LF。
 
 ### Coding style (Ponytail)
 
