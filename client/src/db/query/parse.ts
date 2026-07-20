@@ -2,7 +2,7 @@
  * 查詢分派 classifier entry — thin chain over grammar/* (P1 #2).
  * Port of app/services/query_parse.py + query_grammar/* families.
  */
-import { maskFromCanonicalPlusQuery } from '../plus-grammar.ts';
+import { maskFromCanonicalPlusQuery } from './grammar/index.ts';
 import { parseJyutpingAnchorQuery as parseJyutpingAnchorFields } from '../jyutping-anchor.ts';
 import { normalizePzmode, tryParsePingZeSerial } from '../ping-zak.ts';
 import { QueryKind } from '../query-kind.ts';

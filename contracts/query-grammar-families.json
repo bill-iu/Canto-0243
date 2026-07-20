@@ -1,0 +1,14 @@
+{
+  "mirrored_families": [
+    "equals",
+    "heteronym",
+    "mask",
+    "plus",
+    "relation",
+    "rhyme",
+    "serial",
+    "wca"
+  ],
+  "ts_only": ["normalize", "shared"],
+  "notes": "ADR-0046 §3: PWA client/src/db/query/grammar/* mirrors app/services/query_grammar/*; do not merge engines (ADR-0045)."
+}

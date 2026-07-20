@@ -1,4 +1,4 @@
-import { maskFromCanonicalPlusQuery } from '../src/db/plus-grammar.ts';
+import { maskFromCanonicalPlusQuery } from '../src/db/query/grammar/plus.ts';
 import { normalizeAndParse } from '../src/db/query-engine.ts';
 import { QueryKind } from '../src/db/query-kind.ts';
 

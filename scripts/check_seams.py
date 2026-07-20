@@ -674,28 +674,38 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         self.assertNotIn('CASES_RELATION = [', src)
 
     def test_pwa_query_grammar_mirrors_python_families(self):
-        """P1 #2: PWA parse split into grammar/* families (mirror query_grammar)."""
-        grammar = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
-        for name in (
-            "shared.ts",
-            "normalize.ts",
-            "equals.ts",
-            "heteronym.ts",
-            "relation.ts",
-            "rhyme.ts",
-            "wca.ts",
-            "serial.ts",
-            "plus.ts",
-            "mask.ts",
-            "index.ts",
-        ):
-            with self.subTest(file=name):
-                self.assertTrue((grammar / name).is_file(), msg=f"missing {name}")
+        """P1 #2 / C10: PWA grammar/* mirrors query_grammar (contract SSOT)."""
+        import json
+
+        contract = json.loads(
+            (REPO_ROOT / "contracts" / "query-grammar-families.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        families = contract["mirrored_families"]
+        py_dir = REPO_ROOT / "app" / "services" / "query_grammar"
+        ts_dir = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
+        for name in families:
+            with self.subTest(family=name):
+                self.assertTrue((py_dir / f"{name}.py").is_file(), msg=f"missing py {name}")
+                self.assertTrue((ts_dir / f"{name}.ts").is_file(), msg=f"missing ts {name}")
+        for name in contract.get("ts_only", []):
+            self.assertTrue((ts_dir / f"{name}.ts").is_file(), msg=f"missing ts_only {name}")
+        self.assertTrue((ts_dir / "index.ts").is_file())
+        from app.services.query_grammar import mirrored_families
+
+        self.assertEqual(tuple(families), mirrored_families())
+        # plus mask fast-path lives in grammar package (not a dangling db-root module)
+        plus_ts = (ts_dir / "plus.ts").read_text(encoding="utf-8")
+        self.assertIn("maskFromCanonicalPlusQuery", plus_ts)
+        shim = (
+            REPO_ROOT / "client" / "src" / "db" / "plus-grammar.ts"
+        ).read_text(encoding="utf-8")
+        self.assertIn("query/grammar/plus", shim)
         parse_ts = REPO_ROOT / "client" / "src" / "db" / "query" / "parse.ts"
         parse_src = parse_ts.read_text(encoding="utf-8")
         self.assertIn("tryParseBeforeMask", parse_src)
         self.assertIn("./grammar/index.ts", parse_src)
-        # thin entry — not the old mega bag
         self.assertLess(len(parse_src.splitlines()), 400)
         self.assertTrue(
             (REPO_ROOT / "client" / "src" / "db" / "query" / "result-map.ts").is_file()
@@ -703,6 +713,27 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         self.assertTrue(
             (REPO_ROOT / "client" / "src" / "db" / "query" / "equals-empty-hint.ts").is_file()
         )
+
+    def test_self_check_harness_manifest(self):
+        """C9: harness + manifest cover CI tag."""
+        import json
+
+        client = REPO_ROOT / "client"
+        manifest = json.loads(
+            (client / "scripts" / "self-check-manifest.json").read_text(encoding="utf-8")
+        )
+        harness = client / "scripts" / "self-check-harness.mjs"
+        self.assertTrue(harness.is_file())
+        ci_ids = {c["id"] for c in manifest["checks"] if "ci" in c.get("tags", [])}
+        self.assertIn("guide-probe-readiness", ci_ids)
+        self.assertIn("jyutping-lookup", ci_ids)
+        self.assertIn("guide-examples", ci_ids)
+        self.assertIn("portable-host-build", ci_ids)
+        pkg = (client / "package.json").read_text(encoding="utf-8")
+        self.assertIn("self-check:ci", pkg)
+        ci_yml = (REPO_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertIn("self-check:ci", ci_yml)
+        self.assertNotIn("guide-probe-readiness-self-check.ts", ci_yml)
 
 
 class TestQueryTabsSeam(unittest.TestCase):

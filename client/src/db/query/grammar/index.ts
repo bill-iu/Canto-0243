@@ -38,7 +38,7 @@ export {
   initialRhymeDualMarkHint,
   toMatchSpec as serialToMatchSpec,
 } from './serial.ts';
-export { parseAtTailQuery, parsePlusAnchorQuery, toMatchSpec as plusToMatchSpec } from './plus.ts';
+export { parseAtTailQuery, parsePlusAnchorQuery, maskFromCanonicalPlusQuery, toMatchSpec as plusToMatchSpec } from './plus.ts';
 export {
   looksLikeMaskQuery,
   parseMaskQuery,

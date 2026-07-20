@@ -60,18 +60,7 @@ jobs:
         run: npm run build:portable
         working-directory: client
 
-      - name: Portable host build self-check
-        run: node scripts/portable-host-build-self-check.mjs
-        working-directory: client
 
-      - name: Guide probe readiness (PWA)
-        run: npx tsx scripts/guide-probe-readiness-self-check.ts
-        working-directory: client
-
-      - name: Jyutping lookup parity (PWA PR#1)
-        run: npx tsx scripts/jyutping-lookup-self-check.ts
-        working-directory: client
-
-      - name: Guide example regression (PWA)
-        run: npx tsx scripts/guide-examples-self-check.ts ../tests/fixtures/lyrics.db
+      - name: Client self-checks (C9 harness, tag=ci)
+        run: npm run self-check:ci
         working-directory: client

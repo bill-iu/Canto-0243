@@ -15,7 +15,10 @@
     "build-ranking": "npx tsx scripts/build-ranking-index.ts",
     "build-fonts": "npx tsx scripts/build-fonts.ts",
     "prebuild:force": "node scripts/prebuild-assets.mjs --force",
-    "prebuild-stamp-check": "node scripts/prebuild-stamp-self-check.mjs"
+    "prebuild-stamp-check": "node scripts/prebuild-stamp-self-check.mjs",
+    "self-check": "node scripts/self-check-harness.mjs",
+    "self-check:ci": "node scripts/self-check-harness.mjs --tag ci",
+    "self-check:grammar": "node scripts/self-check-harness.mjs --tag grammar"
   },
   "dependencies": {
     "@journeyapps/wa-sqlite": "^1.7.0",
