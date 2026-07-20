@@ -79,8 +79,11 @@ if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !
 if (!canvas.includes('onClearSurfaces') || !canvas.includes('canvas-clear-surfaces') || !canvas.includes('清空')) {
   throw new Error('clear-surfaces control missing on sentence canvas');
 }
-if (!page.includes('clearLineDraft') || !page.includes('clearedUndo') || !page.includes('復原清空前的句稿')) {
+if (!page.includes('clearLineDraft') || !page.includes('clearedUndo') || !page.includes('aria-label="復原清空前的句稿"')) {
   throw new Error('clear-to-empty-workbench undo wiring missing');
+}
+if (!/建立句格[\s\S]{0,400}aria-label="復原清空前的句稿"[\s\S]{0,120}復原/.test(page)) {
+  throw new Error('cleared-draft undo must be a small 復原 button beside line start');
 }
 if (!constraints.includes('跟原韻') || !constraints.includes('跟原聲') || !constraints.includes('phoneme-dim__ref')) {
   throw new Error('phoneme ref inputs missing');

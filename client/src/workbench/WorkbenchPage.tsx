@@ -820,13 +820,22 @@ export function WorkbenchPage() {
           </div>
           <form className="line-input-form" onSubmit={submit}>
             <label htmlFor="lineInput">原句、394052／0243 碼、平仄，或漢字與碼混合</label>
-            <div><input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄／能夠44" /><button type="submit">建立句格</button></div>
+            <div>
+              <input id="lineInput" value={input} onChange={(event) => setInput(event.target.value)} maxLength={65} placeholder="例如：香港／39／平仄／能夠44" />
+              <button type="submit">建立句格</button>
+              {!draft && clearedUndo ? (
+                <button
+                  type="button"
+                  className="canvas-clear-surfaces"
+                  title="復原清空前的句稿"
+                  aria-label="復原清空前的句稿"
+                  onClick={performUndo}
+                >
+                  復原
+                </button>
+              ) : null}
+            </div>
           </form>
-          {!draft && clearedUndo ? (
-            <button type="button" className="undo-action undo-action--inline" onClick={performUndo}>
-              復原清空前的句稿
-            </button>
-          ) : null}
           <p className="workbench-status" aria-live="polite">{message}</p>
         </section>
 

@@ -549,10 +549,6 @@ body.query-tabs-app.workbench-route {
   background: var(--surface);
   cursor: pointer;
 }
-.undo-action--inline {
-  display: inline-flex;
-  margin: .75rem 0 0;
-}
 .workbench-empty {
   display: grid;
   min-height: 18rem;
