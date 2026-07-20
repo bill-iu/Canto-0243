@@ -442,6 +442,25 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
     return _build_db_exports(args)
 
 
+def _seal_lexicon_vacuum(db_path: Path) -> None:
+    """ADR-0027: one page_size + VACUUM after meta/index work (C1 — no second VACUUM)."""
+    import os
+    import sqlite3
+
+    from app.database import engine as _engine
+
+    _engine.dispose()
+    size_before = os.path.getsize(db_path)
+    with sqlite3.connect(str(db_path)) as conn:
+        conn.execute("PRAGMA page_size = 16384")
+        conn.execute("VACUUM")
+    size_after = os.path.getsize(db_path)
+    print(
+        f"    {size_before / 1024 / 1024:.1f} MB -> {size_after / 1024 / 1024:.1f} MB"
+        f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)"
+    )
+
+
 def _build_db_exports(args: argparse.Namespace) -> int:
     if args.no_exports:
         return 0
@@ -451,22 +470,6 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"export failed: {exc}", file=sys.stderr)
         return 1
-    # ADR-0027: page_size=16384 + VACUUM — defragment and optimise page layout
-    print("==> VACUUM (page_size=16384, defragment)")
-    try:
-        from app.database import engine as _engine
-        _engine.dispose()
-        import sqlite3, os
-        db_path = str(REPO_ROOT / "lyrics.db")
-        size_before = os.path.getsize(db_path)
-        with sqlite3.connect(db_path) as _conn:
-            _conn.execute("PRAGMA page_size = 16384")
-            _conn.execute("VACUUM")
-        size_after = os.path.getsize(db_path)
-        print(f"    {size_before / 1024 / 1024:.1f} MB -> {size_after / 1024 / 1024:.1f} MB"
-              f" (saved {(size_before - size_after) / 1024 / 1024:.1f} MB)")
-    except Exception as exc:
-        print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
     print("==> phoneme vocab meta (J2 / ADR-0037)")
     try:
         from ingest.lexicon_meta import write_phoneme_vocab_meta
@@ -477,6 +480,9 @@ def _build_db_exports(args: argparse.Namespace) -> int:
         print(f"phoneme meta failed (non-fatal): {exc}", file=sys.stderr)
     print("==> finalize lexicon indexes (I2 allowlist)")
     try:
+        import os
+        import sqlite3
+
         from ingest.lexicon_indexes import finalize_lexicon_indexes
 
         db_path = REPO_ROOT / "lyrics.db"
@@ -485,8 +491,6 @@ def _build_db_exports(args: argparse.Namespace) -> int:
             print(f"    dropped: {', '.join(dropped)}")
         else:
             print("    no forbidden indexes")
-        import os
-        import sqlite3
 
         size_mb = os.path.getsize(db_path) / 1024 / 1024
         idx_mb: float | None
@@ -506,10 +510,14 @@ def _build_db_exports(args: argparse.Namespace) -> int:
             print(f"    post-finalize: db={size_mb:.1f} MB indexes=n/a (no dbstat)")
         else:
             print(f"    post-finalize: db={size_mb:.1f} MB indexes={idx_mb:.1f} MB")
-        with sqlite3.connect(db_path) as conn:
-            conn.execute("VACUUM")
     except Exception as exc:
         print(f"index finalize failed (non-fatal): {exc}", file=sys.stderr)
+    # Single seal VACUUM after exports/meta/index drops (was two VACUUMs).
+    print("==> VACUUM (page_size=16384, defragment)")
+    try:
+        _seal_lexicon_vacuum(REPO_ROOT / "lyrics.db")
+    except Exception as exc:
+        print(f"VACUUM failed (non-fatal): {exc}", file=sys.stderr)
     print("==> lexicon release gate (I2)")
     try:
         from ingest.lexicon_release_gate import check_lexicon_release_gate

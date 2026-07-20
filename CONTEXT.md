@@ -15,7 +15,7 @@
 | 比對關係 | 同韻、同聲、同音、工作台碼約束檔、工作台選定讀音、字位鎖定、替換段、工作台起句 |
 | 搜尋模式 | 搜尋模式家族、0243搜尋、近反義、近反義池、靜態詞林埠 |
 | 查詢語法 | 基礎規則、分派優先序、各語法家族 |
-| 詞庫與排序 | 詞庫埠、收錄決策、參考字讀音解析、詞條從源重建、音節拼接讀音、essay 詞頻、排序用 curated、結果誰靠前、擷取頁／結果數／呈現批次 |
+| 詞庫與排序 | 詞庫埠、收錄決策、參考字讀音解析、詞條從源重建、詞條庫建置流程、戰役工具、音節拼接讀音、essay 詞頻、排序用 curated、結果誰靠前、擷取頁／結果數／呈現批次 |
 | 產品邊界 | 離線交付、創作者、分渠道發佈、PWA、就緒閘、搜尋教學速覽、套件發佈指紋／套件更新提示 |
 
 ---
@@ -677,7 +677,11 @@ _Avoid_：relations shard（作領域正名）、把關係包當可選刪除
 
 **詞條庫建置流程**：
 建置命令（單一入口，≤10min，bulk relations <10s）、從源重建（全量 wipe+ingest+overlay）、SSOT來源（rime+words.hk+開放+curated）、源清單（yaml enabled）、fixture（CI 用）、CC-Canto 脫離。
-_Avoid_：legacy 當 SSOT、增量 patch、完整 db 版控
+_Avoid_：legacy 當 SSOT、增量 patch、完整 db 版控、把**戰役工具**當本流程一步
+
+**戰役工具**：
+維護者 one-shot（campaign freeze／audit／batch apply 等）；**唔**屬 **詞條庫建置命令** 執行路徑。產出可入 git 清單或 **專案自建詞性清單**，再由建置／發佈面讀取。清單 collect 同 **獨立詞性載體** 之 `project_pos build` 仍屬發佈／建置面，唔算本詞。
+_Avoid_：把戰役腳本當 rebuild 一部分、同 **詞條庫建置流程** 混樹、稱作 ingest 子命令（作領域正名）
 
 **Essay 語料**：
 粵語書面／口語詞頻語料（[rime-cantonese](https://github.com/rime/rime-cantonese) · [essay-cantonese.txt](https://github.com/rime/rime-cantonese/blob/main/essay-cantonese.txt)，CC BY 4.0），格式為「詞＋詞頻」。**不**開注入門、**不**用於猜讀音；僅供排序。語料隨 repo 提供。
