@@ -676,8 +676,8 @@ _Avoid_：core db（作領域正名）、把核心包當完整詞條庫
 _Avoid_：relations shard（作領域正名）、把關係包當可選刪除
 
 **詞條庫建置流程**：
-建置命令（單一入口，≤10min，bulk relations <10s）、從源重建（全量 wipe+ingest+overlay）、SSOT來源（rime+words.hk+開放+curated）、源清單（yaml enabled）、fixture（CI 用）、CC-Canto 脫離。
-_Avoid_：legacy 當 SSOT、增量 patch、完整 db 版控、把**戰役工具**當本流程一步
+建置命令（單一入口，≤10min，bulk relations <10s）、從源重建（全量 wipe+ingest+overlay）、SSOT來源（rime+words.hk+開放+curated）、源清單（yaml enabled）、fixture（CI 用）、CC-Canto 脫離。允許 **源層內容定址 cache**（只加速 parse；merge／overlay 每次重跑；寫入仍 wipe＋全量 persist）。
+_Avoid_：legacy 當 SSOT、增量 patch（指跳過 wipe／直接改現行 **詞條庫**）、完整 db 版控、把**戰役工具**當本流程一步、把源層 cache 叫成增量 patch
 
 **戰役工具**：
 維護者 one-shot（campaign freeze／audit／batch apply 等）；**唔**屬 **詞條庫建置命令** 執行路徑。產出可入 git 清單或 **專案自建詞性清單**，再由建置／發佈面讀取。清單 collect 同 **獨立詞性載體** 之 `project_pos build` 仍屬發佈／建置面，唔算本詞。

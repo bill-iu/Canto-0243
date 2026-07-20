@@ -420,7 +420,11 @@ def _build_db_words(args: argparse.Namespace, *, manifest: str) -> int:
         print("==> truncate words / relations")
         truncate_lexicon_core(db)
         print("==> lexicon SSOT ingest + overlay")
-        n_words = build_lexicon_words(db, manifest_path=manifest)
+        n_words = build_lexicon_words(
+            db,
+            manifest_path=manifest,
+            use_layer_cache=not getattr(args, "no_layer_cache", False),
+        )
         db.commit()
         stats = lexicon_word_stats(db)
         print(f"    persisted {n_words} word(s)")
@@ -903,6 +907,11 @@ def main(argv: list[str] | None = None) -> int:
         "--skip-relations",
         action="store_true",
         help="Alias for --stage words (rebuild words + seal only)",
+    )
+    p_build_db.add_argument(
+        "--no-layer-cache",
+        action="store_true",
+        help="Force re-parse all lexicon sources (skip .cache/lexicon-layers)",
     )
     p_build_db.add_argument("--no-exports", action="store_true", help="Skip export + README sync")
     p_build_db.add_argument(

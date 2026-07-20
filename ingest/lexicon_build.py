@@ -12,7 +12,6 @@ from app.lexicon.corrections import DEFAULT_TSV, load_corrections
 from app.utils.jyutping_codec import split_jyutping
 from ingest.lexicon_merge import merge_lexicon_candidates
 from ingest.lexicon_overlay import apply_lexicon_overlay
-from ingest.lexicon_sources import ingest_source
 from ingest.lexicon_stats import lexicon_source_availability
 from ingest.syn_ant_manifest import load_manifest, select_sources
 
@@ -41,27 +40,44 @@ def collect_lexicon_candidates(
     *,
     source_ids: Optional[List[str]] = None,
     repo_root: Path | None = None,
+    use_layer_cache: bool | None = None,
 ) -> list[LexiconCandidate]:
+    from ingest.lexicon_layer_cache import layer_cache_enabled, load_or_ingest_source
+
     manifest = load_manifest(manifest_path or DEFAULT_LEXICON_MANIFEST)
     sources = select_sources(
         manifest,
         source_ids=source_ids,
         defaults_only=not bool(source_ids),
     )
+    use_cache = layer_cache_enabled(explicit=use_layer_cache)
     missing_required: list[str] = []
     layers: list[tuple[int, list[LexiconCandidate]]] = []
+    hits = misses = offs = 0
     for src in sources:
         if not lexicon_source_availability(src, repo_root=repo_root).get("available"):
             if src.get("local_only"):
                 continue  # ponytail: maintainer-local; skip when raw absent
             missing_required.append(str(src["id"]))
             continue
-        batch = ingest_source(src)
+        batch, status = load_or_ingest_source(
+            src, use_cache=use_cache, repo_root=repo_root
+        )
+        if status == "hit":
+            hits += 1
+        elif status == "miss":
+            misses += 1
+        else:
+            offs += 1
         layers.append((int(src.get("source_rank") or 50), batch))
     if missing_required:
         raise FileNotFoundError(
             f"enabled lexicon sources missing raw files: {', '.join(missing_required)}"
         )
+    if use_cache:
+        print(f"    layer-cache: hit={hits} miss={misses}")
+    else:
+        print(f"    layer-cache: off ({offs} source(s) parsed)")
     merged = merge_lexicon_candidates(layers)
     corrections = load_corrections(DEFAULT_TSV)
     return apply_lexicon_overlay(merged, corrections)
@@ -133,6 +149,11 @@ def build_lexicon_words(
     *,
     manifest_path: Path | str | None = None,
     source_ids: Optional[List[str]] = None,
+    use_layer_cache: bool | None = None,
 ) -> int:
-    candidates = collect_lexicon_candidates(manifest_path, source_ids=source_ids)
+    candidates = collect_lexicon_candidates(
+        manifest_path,
+        source_ids=source_ids,
+        use_layer_cache=use_layer_cache,
+    )
     return persist_lexicon_candidates(db, candidates)
