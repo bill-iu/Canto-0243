@@ -4,6 +4,19 @@ cd /d "%~dp0"
 
 title Canto-0243
 
+rem ADR-0067: extract venv.pack before any venv python runs
+if exist "%~dp0venv.pack" (
+  if not exist "%~dp0venv\.portable-venv-extracted" (
+    echo.
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\portable_ensure_venv.ps1" -Root "%~dp0."
+    if errorlevel 1 (
+      echo [ERROR] Runtime extract failed. Re-download the full portable package if it keeps failing.
+      pause
+      exit /b 1
+    )
+  )
+)
+
 set "PY=%~dp0venv\Scripts\python.exe"
 if not exist "%PY%" (
   echo [ERROR] Bundled runtime missing. Re-download the full portable package.

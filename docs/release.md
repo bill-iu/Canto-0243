@@ -6,7 +6,7 @@ Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `ori
 
 This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
 
-決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**、**套件發佈指紋**、**套件更新提示**。
+決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)、[ADR-0067](adr/0067-portable-venv-pack-transport.md)（Windows 預設 `venv.pack` 運送；除錯用 `build-portable.ps1 -NoVenvPack`）。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**、**套件發佈指紋**、**套件更新提示**、**venv 運送包**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。
 

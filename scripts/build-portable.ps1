@@ -1,6 +1,8 @@
 # Build portable release for Windows (免安裝：內建 venv)
 param(
-    [switch]$SkipReadmeSync
+    [switch]$SkipReadmeSync,
+    # ADR-0067: default packs venv/ into venv.pack (fewer zip entries). Opt out for debug.
+    [switch]$NoVenvPack
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,6 +41,20 @@ Write-Host "==> Warm word cache snapshot (.cache/word_meta.bin)..."
 $BundlePy = Join-Path $OutDir "venv\Scripts\python.exe"
 & $BundlePy (Join-Path $Root "scripts\warm_word_cache.py") $OutDir
 if ($LASTEXITCODE -ne 0) { throw "warm_word_cache.py failed" }
+
+if (-not $NoVenvPack) {
+    Write-Host "==> Pack venv into venv.pack (ADR-0067 / C11 phase 2)..."
+    python (Join-Path $Root "scripts\portable_venv_pack.py") pack $OutDir
+    if ($LASTEXITCODE -ne 0) { throw "portable_venv_pack.py pack failed" }
+    if (-not (Test-Path (Join-Path $OutDir "venv.pack"))) {
+        throw "venv.pack not produced"
+    }
+    if (Test-Path (Join-Path $OutDir "venv")) {
+        throw "venv/ still present after pack (expected removed)"
+    }
+} else {
+    Write-Host "==> Skip venv.pack (-NoVenvPack: expanded tree for debug)"
+}
 
 Write-Host "==> Build Canto-0243.exe (PyInstaller GUI launcher)..."
 python -m pip install -q pyinstaller

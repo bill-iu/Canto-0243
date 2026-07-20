@@ -12,7 +12,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py", "local_launch.py", "portable_macos.py")
+RUNTIME_SCRIPTS = (
+    "wait_for_url.py",
+    "free_port.py",
+    "local_launch.py",
+    "portable_macos.py",
+    "portable_venv_pack.py",
+    "portable_ensure_venv.ps1",
+)
 _LIBPYTHON_RE = re.compile(r"libpython\d+\.\d+\.dylib")
 _BUNDLED_LIB = "libpython{major}.{minor}.dylib"
 

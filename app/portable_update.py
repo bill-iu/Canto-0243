@@ -108,16 +108,32 @@ def write_manifest(
         man.unlink()
     venv = root / "venv"
     data = root / "data"
+    pack = root / "venv.pack"
     fp: dict[str, Any] = {
         "tag": tag if tag.startswith("v") else f"v{tag.lstrip('v')}",
         "platform": platform,
         "lyrics_sha256": file_sha256(db),
         "package_digest": package_digest(root),
         "file_count": str(count_tree_files(root)),
-        "venv_file_count": str(count_tree_files(venv)),
+        "venv_file_count": str(count_tree_files(venv) if venv.is_dir() else 0),
         "data_file_count": str(count_tree_files(data)),
     }
+    if pack.is_file():
+        fp["venv_pack_sha256"] = file_sha256(pack)
+    pack_meta = root / "portable-venv-pack.json"
+    if pack_meta.is_file():
+        try:
+            pmeta = json.loads(pack_meta.read_text(encoding="utf-8"))
+            if isinstance(pmeta.get("venv_unpacked_file_count"), int):
+                fp["venv_unpacked_file_count"] = str(pmeta["venv_unpacked_file_count"])
+            if isinstance(pmeta.get("venv_pack_sha256"), str) and "venv_pack_sha256" not in fp:
+                fp["venv_pack_sha256"] = pmeta["venv_pack_sha256"]
+        except (OSError, json.JSONDecodeError):
+            pass
+    # Slim report: under venv/ (unpacked) or bundle root after pack (ADR-0067)
     slim_report = venv / "portable-venv-slim.json"
+    if not slim_report.is_file():
+        slim_report = root / "portable-venv-slim.json"
     if slim_report.is_file():
         try:
             slim = json.loads(slim_report.read_text(encoding="utf-8"))

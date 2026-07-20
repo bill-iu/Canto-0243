@@ -7,11 +7,12 @@
 ## 1. Portable 套件形態
 
 1. **建置時打包 venv** — `scripts/portable_venv.py`（`venv --copies` + `pip install -r requirements.txt`）；runtime 腳本一併複製。
-2. **Windows** — `build-portable.ps1` → `canto-0243-portable.zip`；`START.bat` 只用 bundle venv，不探測系統 Python、不 pip。
-3. **macOS** — `build-portable.sh` → `Canto-0243.app`；架構專用 tar `canto-0243-portable-macos-{arm64,x86_64}.tar.gz`（各架構原生 venv，不靠 Rosetta 冒充）。
-4. **Linux** — 免安裝不承諾；本機 Python + `START.sh`。
-5. **Docker** — 僅維護者開發，非創作者交付。
-6. **跨 OS 建置** — Windows zip 在 Windows 建；macOS `.app` 在對應架構 macOS 建。
+2. **運送形態（Win 預設）** — 建置可將整棵 `venv/` 收成套件根目錄單一 **`venv.pack`**（zip），首次啟動 extract-once 再當正常 venv 跑；**runtime 模型不變**（仍係可搬移 venv + §1b，**唔**改成創作者自建 PyInstaller 單檔）。契約見 [ADR-0067](./0067-portable-venv-pack-transport.md)。macOS 暫仍運送展開樹，對稱接線 follow-up。Rollback：`build-portable.ps1 -NoVenvPack`。
+3. **Windows** — `build-portable.ps1` → `canto-0243-portable.zip`；`START.bat` 只用 bundle venv，不探測系統 Python、不 pip。
+4. **macOS** — `build-portable.sh` → `Canto-0243.app`；架構專用 tar `canto-0243-portable-macos-{arm64,x86_64}.tar.gz`（各架構原生 venv，不靠 Rosetta 冒充）。
+5. **Linux** — 免安裝不承諾；本機 Python + `START.sh`。
+6. **Docker** — 僅維護者開發，非創作者交付。
+7. **跨 OS 建置** — Windows zip 在 Windows 建；macOS `.app` 在對應架構 macOS 建。
 
 ## 1b. 可搬移 runtime（Win／Mac 對稱）
 
@@ -56,7 +57,7 @@
 
 **Considered Options（摘要）**
 
-- 創作者自行 pip／PyInstaller 單檔 — 拒（免安裝／體積除錯）。
+- 創作者自行 pip／PyInstaller 單檔 — 拒（免安裝／體積除錯）。**維護者**建置時用 PyInstaller 只打 **GUI launcher**，或把 venv **運送**成 `venv.pack`（ADR-0067），唔等於把打包負擔轉嫁創作者。
 - 維持 tag CI 全量 matrix — 拒（macOS 失敗、與本機驗收脫節）。
 - 五件套齊才 Publish — 拒（阻塞 Windows）；改 Windows 先發。
 - 單一 arm64 + Rosetta — 拒（Intel 風險）。
@@ -65,6 +66,7 @@
 - 保留獨立詞庫發佈層 — 拒（維護者換庫幾乎都開新 semver；程式修正多用 refresh tag）。
 - Windows 改用官方 embeddable Python 取代 venv — 拒（與 macOS venv 管線斷裂；#66 用物化 python-home 即可）。
 - 只改 `home`／`PYTHONHOME`、唔物化 runtime — 拒（另一台 PC 無建置機 uv 路徑則 redirector 找不到 `python.exe`）。
+- 用 full-app onefile 取代 on-disk venv runtime — 拒（見 ADR-0067；運送 pack ≠ 換引擎）。
 
 **Consequences**
 

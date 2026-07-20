@@ -115,6 +115,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("warm_word_cache.py", ps1)
         self.assertIn("PyInstaller", ps1)
         self.assertIn("Canto-0243.exe", ps1)
+        self.assertIn("portable_venv_pack.py", ps1)
+        self.assertIn("NoVenvPack", ps1)
 
     def test_portable_win_launcher_exists(self):
         path = REPO_ROOT / "scripts" / "portable_win_launcher.py"
@@ -125,12 +127,23 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("_patch_pyvenv_home", source)
         self.assertIn("python-home", source)
         self.assertIn("查韻介面未能啟動", source)
+        self.assertIn("_ensure_venv", source)
+        self.assertIn("--ensure-venv", source)
 
     def test_portable_win_start_bat_patches_pyvenv_home(self):
         source = START_BAT.read_text(encoding="utf-8")
         self.assertIn("python-home", source)
         self.assertIn("pyvenv.cfg", source)
         self.assertIn("home = ", source)
+        self.assertIn("venv.pack", source)
+        self.assertIn("portable_ensure_venv.ps1", source)
+
+    def test_portable_venv_pack_contract_names(self):
+        py = (REPO_ROOT / "scripts" / "portable_venv_pack.py").read_text(encoding="utf-8")
+        ps1 = (REPO_ROOT / "scripts" / "portable_ensure_venv.ps1").read_text(encoding="utf-8")
+        for name in ("venv.pack", ".portable-venv-extracted", ".portable-venv-extract.lock"):
+            self.assertIn(name, py)
+            self.assertIn(name, ps1)
 
     def test_portable_venv_materializes_windows_runtime(self):
         source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")

@@ -33,6 +33,7 @@
 | [0064](./0064-workbench-candidate-page-size.md) | **工作台候選**首屏 400 + load-more（廢 120 硬頂） |
 | [0065](./0065-workbench-manual-input-and-undo.md) | **工作台手改**（雙擊單格／段手打）+ **句稿復原**入條件面板 |
 | [0066](./0066-workbench-wildcard-and-phoneme-ref.md) | **通配符格** + **韻／聲參考字串**（覆蓋／長度跟勾選） |
+| [0067](./0067-portable-venv-pack-transport.md) | **Portable**：**venv.pack** 運送 + 首次 extract-once（Win 先；file_count／digest 以運送態為準） |
 
 ## Stubs
 

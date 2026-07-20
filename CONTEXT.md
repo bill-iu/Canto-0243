@@ -778,7 +778,11 @@ _Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 **免安裝交付**：無 pip；Portable 內建詞條庫；Win/Mac 雙擊即用。Linux 需 Python。內建執行環境須**可搬移**——任意解壓路徑、另一台電腦均可啟動，**唔**依賴建置機或系統已安裝嘅 Python。
 _Avoid_：要求創作者安裝 Python／uv、只在建置機驗證啟動即當交付完成
 
-**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`shared/`** 為共享 mjs／CSS SSOT（#86 第 (3) 段）；產品入口為 `/app/`。新打之正式套件應帶 **套件發佈指紋**；無指紋之舊套件唔做更新探測。
+**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`shared/`** 為共享 mjs／CSS SSOT（#86 第 (3) 段）；產品入口為 `/app/`。新打之正式套件應帶 **套件發佈指紋**；無指紋之舊套件唔做更新探測。Windows 預設可以 **venv 運送包**（`venv.pack`）減少解壓小檔；首次啟動再展開（見 ADR-0067）。
+
+**venv 運送包**：
+Portable 建置將整棵可搬移 `venv/`（含 Windows `python-home`）收成套件內少數大檔（現行 `venv.pack` zip），創作者解壓套件時唔必寫入數千 runtime 小檔；首次本機啟動 extract-once 後當正常 venv 使用。成功後可刪運送包以省磁碟（壞 runtime 須重下整包）。**唔**等於 full-app 單檔、**唔**要求創作者自行打包。
+_Avoid_：把運送包當第二套查詢引擎、要求創作者 PyInstaller、同「已展開 venv 樹」混稱為同一運送態
 
 **套件發佈指紋**：
 某次**正式** **Portable 套件** 發佈嘅身份：`release tag` ＋ **本平台套件 digest** ＋ **詞條庫**（`lyrics.db`）sha256；三者須同一次發佈寫入套件。用以判別本機套件是否仍對應最新正式遠端發佈（含同 tag 換庫或程式刷新）。
