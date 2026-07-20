@@ -32,6 +32,7 @@
 | [0063](./0063-lf-line-endings.md) | **文字檔一律 LF**（`.gitattributes`／editorconfig／pre-commit 自動修） |
 | [0064](./0064-workbench-candidate-page-size.md) | **工作台候選**首屏 400 + load-more（廢 120 硬頂） |
 | [0065](./0065-workbench-manual-input-and-undo.md) | **工作台手改**（雙擊單格／段手打）+ **句稿復原**入條件面板 |
+| [0066](./0066-workbench-wildcard-and-phoneme-ref.md) | **通配符格** + **韻／聲參考字串**（覆蓋／長度跟勾選） |
 
 ## Stubs
 

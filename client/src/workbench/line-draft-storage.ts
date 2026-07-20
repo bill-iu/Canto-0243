@@ -48,7 +48,7 @@ function validConstraint(value: unknown, length: number): boolean {
 function validLastApplied(value: unknown): boolean {
   return value === null || (
     isRecord(value)
-    && (value.kind === 'candidate' || value.kind === 'relaxation')
+    && (value.kind === 'candidate' || value.kind === 'relaxation' || value.kind === 'manual')
     && (value.literal == null || typeof value.literal === 'string')
     && (value.relaxationId == null || typeof value.relaxationId === 'string')
   );

@@ -87,6 +87,10 @@ function offsetsFromPicks(picks: PhonemeDimPicks, width: number): number[] {
   return [...out].sort((a, b) => a - b);
 }
 
+export function phonemeCheckedOffsets(picks: PhonemeDimPicks, width: number): number[] {
+  return offsetsFromPicks(picks, width);
+}
+
 /** Drop invalid middle picks after span width changes; keep head/tail/whole. */
 export function sanitizePhonemeDimPicks(picks: PhonemeDimPicks, width: number): PhonemeDimPicks {
   if (width <= 0) return emptyPhonemeDimPicks();
@@ -99,30 +103,53 @@ export function sanitizePhonemeDimPicks(picks: PhonemeDimPicks, width: number): 
   };
 }
 
+function slotAnchor(
+  slot: LineSlot | undefined,
+  refChar: string | undefined,
+  refReadings: ReadonlyMap<string, string>,
+): { ref: string; refJyutping: string } | null {
+  if (refChar && refChar !== '?' ) {
+    const jp = refReadings.get(refChar);
+    if (jp) return { ref: refChar, refJyutping: jp };
+    return null;
+  }
+  const surface = slot?.surface;
+  const reading = slot?.reading;
+  if (!surface || surface === '?' || !reading) return null;
+  return { ref: surface, refJyutping: reading };
+}
+
 export function buildPhonemeAnchors(
   span: LineSelection,
   slots: readonly LineSlot[],
   rhyme: PhonemeDimPicks,
   initial: PhonemeDimPicks,
+  rhymeRefChars: string[] | null = null,
+  initialRefChars: string[] | null = null,
+  refReadings: ReadonlyMap<string, string> = new Map(),
 ): WorkbenchSlotConstraintV1[] {
   const anchors: WorkbenchSlotConstraintV1[] = [];
   const rhymeOff = offsetsFromPicks(rhyme, span.width);
   const initialOff = offsetsFromPicks(initial, span.width);
 
-  for (const offset of rhymeOff) {
-    const slot = slots[span.start + offset];
-    const ref = slot?.surface;
-    const refJyutping = slot?.reading;
-    if (!ref || !refJyutping) continue;
-    anchors.push({ pos: span.start + offset, kind: 'final_anchor', ref, refJyutping });
-  }
-  for (const offset of initialOff) {
-    const slot = slots[span.start + offset];
-    const ref = slot?.surface;
-    const refJyutping = slot?.reading;
-    if (!ref || !refJyutping) continue;
-    anchors.push({ pos: span.start + offset, kind: 'initial_anchor', ref, refJyutping });
-  }
+  rhymeOff.forEach((offset, index) => {
+    const resolved = slotAnchor(
+      slots[span.start + offset],
+      rhymeRefChars?.[index],
+      refReadings,
+    );
+    if (!resolved) return;
+    anchors.push({ pos: span.start + offset, kind: 'final_anchor', ...resolved });
+  });
+  initialOff.forEach((offset, index) => {
+    const resolved = slotAnchor(
+      slots[span.start + offset],
+      initialRefChars?.[index],
+      refReadings,
+    );
+    if (!resolved) return;
+    anchors.push({ pos: span.start + offset, kind: 'initial_anchor', ...resolved });
+  });
   return anchors;
 }
 

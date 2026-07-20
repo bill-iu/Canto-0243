@@ -71,6 +71,8 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertNotIn("slot.locked && slot.surface", page)
         self.assertIn("整段押韻", bar)
         self.assertIn("整段同聲母", bar)
+        self.assertIn("跟原韻", bar)
+        self.assertIn("跟原聲", bar)
         self.assertIn("復原最近一次套用／放寬／手改", bar)
         self.assertIn("onUndo", bar)
         self.assertNotIn("末格同韻", bar)

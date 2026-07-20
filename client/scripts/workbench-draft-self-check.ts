@@ -7,6 +7,7 @@ import {
   saveLineDraft,
 } from '../src/workbench/line-draft-storage.ts';
 import { toggleLockKeepingSpan } from '../src/workbench/replacement-span.ts';
+import { isHanSurface, WILDCARD_SURFACE } from '../src/workbench/wildcard-slot.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`workbench draft: ${message}`);
@@ -30,6 +31,11 @@ assert(tones.constraints.map((item) => item.toneClass).join(',') === 'ping,ze', 
 
 assert(!parseLineInput('香P').ok, 'pingze mixed with surface must fail');
 assert(!parseLineInput('香'.repeat(65)).ok, 'input beyond 64 slots was accepted');
+
+const wild = parseLineInput('?香??');
+assert(wild.ok && wild.kind === 'surface', 'wildcard surface line');
+assert(wild.slots.every((slot, i) => (i === 1 ? slot.surface === '香' : slot.surface === WILDCARD_SURFACE)), 'wildcard layout');
+assert(isHanSurface('香') && !isHanSurface('?') && !isHanSurface(''), 'han surface helper');
 
 const mixed = parseLineInput('能夠44');
 assert(mixed.ok && mixed.kind === 'mixed', 'mixed 能夠44');
@@ -124,7 +130,8 @@ assert(draft.surface === '我愛香港', 'insert undo failed');
   const digit = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 1, code: '4' });
   assert(digit.slots[1]?.code === '4' && !digit.slots[1]?.surface, 'digit cell failed');
   assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '??' }) === draft, 'multi-char cell accepted');
-  assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' }) === draft, 'wildcard cell accepted');
+  const wild = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' });
+  assert(wild.slots[0]?.surface === '?' && wild.undo != null, 'wildcard cell failed');
 }
 
 {

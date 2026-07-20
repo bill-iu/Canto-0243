@@ -24,8 +24,8 @@ if (!page.includes('不會替你自動填詞') || !page.includes('不會自動�
 if (!page.includes('WORKBENCH_CANDIDATE_PAGE_SIZE')) {
   throw new Error('candidate page size constant missing from WorkbenchPage');
 }
-if (!cards.includes('載入更多')) {
-  throw new Error('candidate load-more copy missing');
+if (!css.includes('.candidate-load-more button') || !css.includes('min-width: min(100%, 16rem)')) {
+  throw new Error('load-more must look like a primary button');
 }
 if (page.includes('limit: 120')) throw new Error('legacy candidate limit 120 must be removed');
 if (page.includes("type: 'select', start: 0, width: 1")) {
@@ -79,8 +79,11 @@ if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !
 if (!canvas.includes('span-hand-toggle') || !canvas.includes('disabled={!span}')) {
   throw new Error('span hand-input must collapse behind ✎ until a span is locked');
 }
-if (!constraints.includes('onUndo') || !constraints.includes('復原最近一次套用／放寬／手改')) {
-  throw new Error('undo control must live in ConstraintBar');
+if (!constraints.includes('跟原韻') || !constraints.includes('跟原聲') || !constraints.includes('phoneme-dim__ref')) {
+  throw new Error('phoneme ref inputs missing');
+}
+if (!page.includes('WILDCARD_SURFACE') && !page.includes('isHanSurface')) {
+  throw new Error('wildcard helpers missing from workbench page');
 }
 if (page.includes('復原最近一次套用／放寬</button>')) {
   throw new Error('legacy candidate-area undo button must be removed');

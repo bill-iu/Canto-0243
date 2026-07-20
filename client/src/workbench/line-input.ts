@@ -21,6 +21,13 @@ const MAX_SLOTS = 64;
 const TONE_RE = /^[平仄PpZz]+$/;
 const DIGIT_RE = /^\d$/;
 const PINGZE_CHAR_RE = /^[平仄PpZz]$/;
+const WILDCARD_RE = /^[?_%]$/;
+
+function slotFromChar(value: string): UnresolvedLineSlot {
+  if (DIGIT_RE.test(value)) return { surface: '', code: value };
+  if (WILDCARD_RE.test(value)) return { surface: '?' };
+  return { surface: value };
+}
 
 export function parseLineInput(raw: string): ParsedLineInput {
   const input = raw.trim();
@@ -53,16 +60,26 @@ export function parseLineInput(raw: string): ParsedLineInput {
 
   const hasDigit = values.some((value) => DIGIT_RE.test(value));
   const hasPingze = values.some((value) => PINGZE_CHAR_RE.test(value));
-  // ponytail: 平仄第一期唔同漢字／數字混
+  const hasWildcard = values.some((value) => WILDCARD_RE.test(value));
+  // ponytail: 平仄第一期唔同漢字／數字／通配混
   if (hasPingze && values.some((value) => !PINGZE_CHAR_RE.test(value))) {
     return { ok: false, error: 'mixed' };
   }
 
-  if (!hasDigit) {
+  if (!hasDigit && !hasWildcard) {
     return {
       ok: true,
       kind: 'surface',
       slots: values.map((surface) => ({ surface })),
+      constraints: [],
+    };
+  }
+
+  if (!hasDigit && hasWildcard) {
+    return {
+      ok: true,
+      kind: 'surface',
+      slots: values.map((value) => slotFromChar(value)),
       constraints: [],
     };
   }
@@ -75,7 +92,7 @@ export function parseLineInput(raw: string): ParsedLineInput {
       constraints.push({ pos, kind: 'code_digit', digit: value });
       return;
     }
-    slots.push({ surface: value });
+    slots.push(slotFromChar(value));
   });
 
   return { ok: true, kind: 'mixed', slots, constraints };

@@ -35,12 +35,13 @@ import {
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
-import { parseSpanManual } from './manual-slot-input.ts';
+import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
 import {
   buildPhonemeAnchors,
   emptyPhonemeDimPicks,
+  phonemeCheckedOffsets,
   replacementSpanFromLocks,
   sanitizePhonemeDimPicks,
   toggleLockKeepingSpan,
@@ -48,6 +49,7 @@ import {
   type PhonemeDimPicks,
 } from './replacement-span.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
+import { isHanSurface, normalizeWildcardChar } from './wildcard-slot.ts';
 import { selectWorkbenchAdapter } from './workbench-adapter.ts';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
 import {
@@ -123,6 +125,9 @@ export function WorkbenchPage() {
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const [rhymePicks, setRhymePicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
+  const [rhymeRef, setRhymeRef] = useState('');
+  const [initialRef, setInitialRef] = useState('');
+  const [refReadings, setRefReadings] = useState<Map<string, string>>(() => new Map());
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
   const [candidateOffset, setCandidateOffset] = useState(0);
   const [spanInputError, setSpanInputError] = useState('');
@@ -211,6 +216,9 @@ export function WorkbenchPage() {
     base: LineDraft,
     rhyme: PhonemeDimPicks,
     initial: PhonemeDimPicks,
+    rhymeRaw = rhymeRef,
+    initialRaw = initialRef,
+    readings: ReadonlyMap<string, string> = refReadings,
   ): LineDraft => {
     const span = base.selection ?? replacementSpanFromLocks(base.slots);
     if (!span) {
@@ -218,9 +226,19 @@ export function WorkbenchPage() {
     }
     const safeRhyme = sanitizePhonemeDimPicks(rhyme, span.width);
     const safeInitial = sanitizePhonemeDimPicks(initial, span.width);
+    const rhymeParsed = parsePhonemeRef(rhymeRaw, phonemeCheckedOffsets(safeRhyme, span.width).length);
+    const initialParsed = parsePhonemeRef(initialRaw, phonemeCheckedOffsets(safeInitial, span.width).length);
     return withPhonemeAnchors(
       base,
-      buildPhonemeAnchors(span, base.slots, safeRhyme, safeInitial),
+      buildPhonemeAnchors(
+        span,
+        base.slots,
+        safeRhyme,
+        safeInitial,
+        rhymeParsed.ok ? rhymeParsed.chars : null,
+        initialParsed.ok ? initialParsed.chars : null,
+        readings,
+      ),
     );
   };
 
@@ -232,7 +250,7 @@ export function WorkbenchPage() {
       setMessage(
         result.reason === 'span_too_wide'
           ? '一次最多改連續四格；請先取消較遠的標定。'
-          : '空白格不能標定；請先有字面或碼。',
+          : '空白格不能標定；請先有字面、通配或碼。',
       );
       return;
     }
@@ -266,6 +284,67 @@ export function WorkbenchPage() {
     setActiveRelaxation(null);
   };
 
+  const changeRhymeRef = (value: string) => {
+    setRhymeRef(value);
+    const current = draftRef.current;
+    if (current) setDraft(syncPhonemeAnchors(current, rhymePicks, initialPicks, value, initialRef));
+    setActiveRelaxation(null);
+  };
+
+  const changeInitialRef = (value: string) => {
+    setInitialRef(value);
+    const current = draftRef.current;
+    if (current) setDraft(syncPhonemeAnchors(current, rhymePicks, initialPicks, rhymeRef, value));
+    setActiveRelaxation(null);
+  };
+
+  useEffect(() => {
+    const needed: string[] = [];
+    const seen = new Set<string>();
+    for (const raw of [rhymeRef, initialRef]) {
+      for (const ch of Array.from(raw.trim())) {
+        const normalized = normalizeWildcardChar(ch);
+        if (!isHanSurface(normalized) || seen.has(normalized) || refReadings.has(normalized)) continue;
+        seen.add(normalized);
+        needed.push(normalized);
+      }
+    }
+    if (!needed.length || !isReady) return;
+    let cancelled = false;
+    void (async () => {
+      try {
+        const resolved = await adapter.resolveLine(needed.join(''));
+        if (cancelled) return;
+        const nextReadings = new Map(refReadings);
+        needed.forEach((ch, index) => {
+          const jyutping = resolved[index]?.choices[0]?.jyutping;
+          if (jyutping) nextReadings.set(ch, jyutping);
+        });
+        setRefReadings(nextReadings);
+        const current = draftRef.current;
+        if (current) {
+          setDraft(syncPhonemeAnchors(
+            current,
+            rhymePicks,
+            initialPicks,
+            rhymeRef,
+            initialRef,
+            nextReadings,
+          ));
+        }
+      } catch {
+        // ponytail: keep surface fallbacks until lexicon answers
+      }
+    })();
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rhymeRef, initialRef, isReady]);
+
+  const surfaceOnlyOf = (next: LineDraft) => next.slots
+    .map((slot) => slot.surface)
+    .filter((surface) => isHanSurface(surface))
+    .join('');
+
   const resolveReadings = async (surface: string, baseDraft: LineDraft) => {
     if (!surface) return;
     pendingResolve.current = { surface, version: baseDraft.version };
@@ -277,8 +356,8 @@ export function WorkbenchPage() {
       // 混合起句：resolve 只覆蓋有字面格；碼格留空位對齊 draft.slots
       let cursor = 0;
       const aligned: PwaLineReadingSlot[] = baseDraft.slots.map((slot) => {
-        if (!slot.surface) {
-          return { surface: '', kind: 'punctuation', choices: [], needsChoice: false };
+        if (!isHanSurface(slot.surface)) {
+          return { surface: slot.surface || '', kind: 'punctuation', choices: [], needsChoice: false };
         }
         const reading = resolved[cursor] ?? {
           surface: slot.surface,
@@ -291,11 +370,13 @@ export function WorkbenchPage() {
       });
       setReadings(aligned);
       setDraft((current) => {
-        if (!current || current.version !== baseDraft.version) return current;
+        if (!current) return current;
+        // 手改後 syncPhonemeAnchors 會再 bump version；以漢字面是否仍吻合為準
+        if (surfaceOnlyOf(current) !== surface) return current;
         let next = current;
         let readingIdx = 0;
         for (let pos = 0; pos < current.slots.length; pos += 1) {
-          if (!current.slots[pos]?.surface) continue;
+          if (!isHanSurface(current.slots[pos]?.surface)) continue;
           const choice = resolved[readingIdx]?.choices[0];
           readingIdx += 1;
           if (!choice) continue;
@@ -397,6 +478,9 @@ export function WorkbenchPage() {
     setRelaxedPrevious(null);
     setRhymePicks(emptyPhonemeDimPicks());
     setInitialPicks(emptyPhonemeDimPicks());
+    setRhymeRef('');
+    setInitialRef('');
+    setRefReadings(new Map());
     setCodeConstraint('same_tone');
     setExplicitCode('');
     setMessage(
@@ -407,7 +491,7 @@ export function WorkbenchPage() {
           : '句格已建立；請點擊標定一至四格以查看候選。',
     );
     if (parsed.kind === 'surface' || parsed.kind === 'mixed') {
-      const surfaceOnly = parsed.slots.map((slot) => slot.surface).filter(Boolean).join('');
+      const surfaceOnly = parsed.slots.map((slot) => slot.surface).filter((s) => isHanSurface(s)).join('');
       if (surfaceOnly) void resolveReadings(surfaceOnly, next);
     }
   };
@@ -420,21 +504,20 @@ export function WorkbenchPage() {
     });
   };
 
-  const surfaceOnlyOf = (next: LineDraft) => next.slots.map((slot) => slot.surface).filter(Boolean).join('');
-
   const handleSetSlotManual = (pos: number, surface: string, code?: string) => {
     setDraft((current) => {
       if (!current) return current;
       const next = lineDraftReducer(current, { type: 'set_slot_manual', pos, surface, code });
       if (next === current) {
-        setMessage('請輸入一個漢字或一位數字碼。');
+        setMessage('請輸入一個漢字、通配或一位數字碼。');
         return current;
       }
       setSpanInputError('');
       setMessage(surface ? '已手改一字；正在對齊讀音。' : '已手改為碼格。');
-      const surfaceOnly = surfaceOnlyOf(next);
-      if (surfaceOnly) void resolveReadings(surfaceOnly, next);
-      return syncPhonemeAnchors(next, rhymePicks, initialPicks);
+      const synced = syncPhonemeAnchors(next, rhymePicks, initialPicks);
+      const surfaceOnly = surfaceOnlyOf(synced);
+      if (surfaceOnly) void resolveReadings(surfaceOnly, synced);
+      return synced;
     });
   };
 
@@ -466,9 +549,10 @@ export function WorkbenchPage() {
       }
       setSpanInputError('');
       setMessage('已手打替換段。');
-      const surfaceOnly = surfaceOnlyOf(next);
-      if (surfaceOnly) void resolveReadings(surfaceOnly, next);
-      return syncPhonemeAnchors(next, rhymePicks, initialPicks);
+      const synced = syncPhonemeAnchors(next, rhymePicks, initialPicks);
+      const surfaceOnly = surfaceOnlyOf(synced);
+      if (surfaceOnly) void resolveReadings(surfaceOnly, synced);
+      return synced;
     });
   };
 
@@ -499,7 +583,11 @@ export function WorkbenchPage() {
       .map((item) => ({ ...item, pos: item.pos - start }));
     const codes = buildCodeDigitSlots(codeConstraint, draft.slots, span, explicitCode);
     const slots = [...base, ...codes];
-    const semanticSeed = draft.slots.slice(start, start + width).map((slot) => slot.surface).join('');
+    const semanticSeed = draft.slots
+      .slice(start, start + width)
+      .map((slot) => slot.surface)
+      .filter((surface) => isHanSurface(surface))
+      .join('');
     const intent = semanticSeed ? semanticIntent : 'off';
     if (!planHasQueryableSlots(slots, semanticSeed, intent)) return null;
     return {
@@ -692,6 +780,18 @@ export function WorkbenchPage() {
               initial={initialPicks}
               onRhymeChange={changeRhymePicks}
               onInitialChange={changeInitialPicks}
+              rhymeRef={rhymeRef}
+              initialRef={initialRef}
+              onRhymeRefChange={changeRhymeRef}
+              onInitialRefChange={changeInitialRef}
+              rhymeRefError={(() => {
+                const n = phonemeCheckedOffsets(rhymePicks, draft.selection?.width ?? 0).length;
+                return parsePhonemeRef(rhymeRef, n).ok ? '' : `須為 ${n} 格（漢字或 ?）`;
+              })()}
+              initialRefError={(() => {
+                const n = phonemeCheckedOffsets(initialPicks, draft.selection?.width ?? 0).length;
+                return parsePhonemeRef(initialRef, n).ok ? '' : `須為 ${n} 格（漢字或 ?）`;
+              })()}
               canUndo={Boolean(draft.undo)}
               onUndo={performUndo}
             />

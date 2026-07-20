@@ -124,9 +124,7 @@ export function SentenceCanvas({
       onSpanInputError(
         parsed.error === 'width'
           ? `長度須為 ${span.width} 格。`
-          : parsed.error === 'no_wildcard'
-            ? '手打暫不接受 ?；請改用指定碼。'
-            : '請輸入字面、碼、混合或平仄，長度須等於標定段。',
+          : '請輸入字面、碼、通配、混合或平仄，長度須等於標定段。',
       );
       return;
     }
@@ -141,7 +139,7 @@ export function SentenceCanvas({
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">點擊標定替換段；雙擊改一字</h2>
+          <h2 id="sentenceHeading">點擊標定替換段；雙擊改一字或通配</h2>
         </div>
         <div className="sentence-canvas__heading-actions">
           {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}

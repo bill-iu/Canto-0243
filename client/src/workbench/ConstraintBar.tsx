@@ -2,6 +2,7 @@ import type { ReplacementPlanV1 } from './contracts.ts';
 import type { CodeConstraintMode } from './code-constraint.ts';
 import {
   emptyPhonemeDimPicks,
+  phonemeCheckedOffsets,
   spanPositionOptions,
   type PhonemeDimPicks,
 } from './replacement-span.ts';
@@ -20,6 +21,12 @@ interface Props {
   initial: PhonemeDimPicks;
   onRhymeChange: (next: PhonemeDimPicks) => void;
   onInitialChange: (next: PhonemeDimPicks) => void;
+  rhymeRef: string;
+  initialRef: string;
+  onRhymeRefChange: (value: string) => void;
+  onInitialRefChange: (value: string) => void;
+  rhymeRefError?: string;
+  initialRefError?: string;
   canUndo: boolean;
   onUndo: () => void;
 }
@@ -52,6 +59,10 @@ function DimChecklist({
   width,
   picks,
   onChange,
+  refValue,
+  onRefChange,
+  refError,
+  refPlaceholder,
 }: {
   legend: string;
   wholeLabel: string;
@@ -59,9 +70,15 @@ function DimChecklist({
   width: number;
   picks: PhonemeDimPicks;
   onChange: (next: PhonemeDimPicks) => void;
+  refValue: string;
+  onRefChange: (value: string) => void;
+  refError?: string;
+  refPlaceholder: string;
 }) {
   const positions = spanPositionOptions(width);
   const noneOn = !picks.whole && !picks.head && !picks.tail && picks.middles.length === 0;
+  const checkedCount = phonemeCheckedOffsets(picks, width).length;
+  const refId = `phoneme-ref-${legend}`;
   return (
     <fieldset className="phoneme-dim" disabled={width < 1}>
       <legend>{legend}</legend>
@@ -105,6 +122,21 @@ function DimChecklist({
         />
         {wholeLabel}
       </label>
+      <label className="phoneme-dim__ref" htmlFor={refId}>
+        {legend}：
+        <input
+          id={refId}
+          value={refValue}
+          onChange={(event) => onRefChange(event.target.value)}
+          maxLength={Math.max(checkedCount, 1)}
+          spellCheck={false}
+          disabled={checkedCount < 1}
+          placeholder={refPlaceholder}
+          aria-invalid={Boolean(refError)}
+          aria-describedby={refError ? `${refId}-err` : undefined}
+        />
+      </label>
+      {refError ? <p id={`${refId}-err`} className="phoneme-dim__ref-error">{refError}</p> : null}
     </fieldset>
   );
 }
@@ -123,6 +155,12 @@ export function ConstraintBar({
   initial,
   onRhymeChange,
   onInitialChange,
+  rhymeRef,
+  initialRef,
+  onRhymeRefChange,
+  onInitialRefChange,
+  rhymeRefError,
+  initialRefError,
   canUndo,
   onUndo,
 }: Props) {
@@ -192,6 +230,10 @@ export function ConstraintBar({
           width={spanWidth}
           picks={rhyme}
           onChange={onRhymeChange}
+          refValue={rhymeRef}
+          onRefChange={onRhymeRefChange}
+          refError={rhymeRefError}
+          refPlaceholder="跟原韻"
         />
         <DimChecklist
           legend="同聲"
@@ -200,9 +242,13 @@ export function ConstraintBar({
           width={spanWidth}
           picks={initial}
           onChange={onInitialChange}
+          refValue={initialRef}
+          onRefChange={onInitialRefChange}
+          refError={initialRefError}
+          refPlaceholder="跟原聲"
         />
       </div>
-      <p>更改條件只會重新找候選，不會改動句面。雙擊字位可改一字；標定後點 ✎ 手打整段。</p>
+      <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；標定後點 ✎ 手打整段。</p>
       <p className="shortcut-hint">捷徑：空白鍵標定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
