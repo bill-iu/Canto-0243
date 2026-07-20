@@ -73,6 +73,15 @@ if (!compare.includes('排序順位') || !compare.includes('sourceRank')) {
 if (!canvas.includes('onToggleLock') || !canvas.includes('code-summary') || !canvas.includes('is-in-span')) {
   throw new Error('click-lock canvas or code summary missing');
 }
+if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !canvas.includes('span-hand-input')) {
+  throw new Error('manual cell/span edit UI missing');
+}
+if (!constraints.includes('onUndo') || !constraints.includes('復原最近一次套用／放寬／手改')) {
+  throw new Error('undo control must live in ConstraintBar');
+}
+if (page.includes('復原最近一次套用／放寬</button>')) {
+  throw new Error('legacy candidate-area undo button must be removed');
+}
 if (!canvas.includes('slot-reading-footer') || !canvas.includes('reading-static') || !canvas.includes('reading-footer-spacer')) {
   throw new Error('unified reading footer missing');
 }

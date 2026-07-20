@@ -1,4 +1,7 @@
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+
 import type { LineDraft } from './line-draft.ts';
+import { parseManualCell, parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 
 interface Props {
@@ -6,6 +9,10 @@ interface Props {
   readings: PwaLineReadingSlot[];
   onToggleLock: (pos: number) => void;
   onChooseReading: (pos: number, jyutping: string, code: string) => void;
+  onSetSlotManual: (pos: number, surface: string, code?: string) => void;
+  onApplySpanInput: (parsed: ReturnType<typeof parseSpanManual> & { ok: true }) => void;
+  onSpanInputError: (message: string) => void;
+  spanInputError?: string;
 }
 
 function codeSummary(draft: LineDraft): string | null {
@@ -20,9 +27,40 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
   return '＿';
 }
 
-export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading }: Props) {
+const CLICK_DELAY_MS = 280;
+
+export function SentenceCanvas({
+  draft,
+  readings,
+  onToggleLock,
+  onChooseReading,
+  onSetSlotManual,
+  onApplySpanInput,
+  onSpanInputError,
+  spanInputError,
+}: Props) {
   const summary = codeSummary(draft);
   const span = draft.selection;
+  const [editingPos, setEditingPos] = useState<number | null>(null);
+  const [editValue, setEditValue] = useState('');
+  const [spanRaw, setSpanRaw] = useState('');
+  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const editInputRef = useRef<HTMLInputElement | null>(null);
+  const editingPosRef = useRef<number | null>(null);
+  const editValueRef = useRef('');
+  editingPosRef.current = editingPos;
+  editValueRef.current = editValue;
+
+  useEffect(() => {
+    setSpanRaw('');
+  }, [span?.start, span?.width]);
+
+  useEffect(() => {
+    if (editingPos == null) return;
+    editInputRef.current?.focus();
+    editInputRef.current?.select();
+  }, [editingPos]);
+
   const inSpan = (pos: number) => Boolean(
     span && pos >= span.start && pos < span.start + span.width,
   );
@@ -31,16 +69,93 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
     document.querySelector<HTMLButtonElement>(`[data-line-slot="${next}"]`)?.focus();
   };
 
+  const clearClickTimer = () => {
+    if (!clickTimer.current) return;
+    clearTimeout(clickTimer.current);
+    clickTimer.current = null;
+  };
+
+  const beginEdit = (pos: number) => {
+    clearClickTimer();
+    const slot = draft.slots[pos];
+    if (!slot) return;
+    setEditingPos(pos);
+    setEditValue(slot.surface || slot.code || '');
+  };
+
+  const cancelEdit = () => {
+    editingPosRef.current = null;
+    setEditingPos(null);
+    setEditValue('');
+  };
+
+  const confirmEdit = () => {
+    const pos = editingPosRef.current;
+    if (pos == null) return;
+    editingPosRef.current = null;
+    const parsed = parseManualCell(editValueRef.current);
+    setEditingPos(null);
+    setEditValue('');
+    if (!parsed.ok) return;
+    onSetSlotManual(pos, parsed.surface, parsed.code);
+  };
+
+  const scheduleToggle = (pos: number) => {
+    clearClickTimer();
+    clickTimer.current = setTimeout(() => {
+      clickTimer.current = null;
+      onToggleLock(pos);
+    }, CLICK_DELAY_MS);
+  };
+
+  const submitSpan = (event: FormEvent) => {
+    event.preventDefault();
+    if (!span) return;
+    const parsed = parseSpanManual(spanRaw, span.width);
+    if (!parsed.ok) {
+      onSpanInputError(
+        parsed.error === 'width'
+          ? `長度須為 ${span.width} 格。`
+          : parsed.error === 'no_wildcard'
+            ? '手打暫不接受 ?；請改用指定碼。'
+            : '請輸入字面、碼、混合或平仄，長度須等於標定段。',
+      );
+      return;
+    }
+    onSpanInputError('');
+    onApplySpanInput(parsed);
+    setSpanRaw('');
+  };
+
   return (
     <section className="sentence-canvas" aria-labelledby="sentenceHeading">
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">點擊標定替換段；再點取消</h2>
+          <h2 id="sentenceHeading">點擊標定替換段；雙擊改一字</h2>
         </div>
         {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
       </div>
       {summary ? <p className="code-summary" aria-label="完整碼摘要">{summary}</p> : null}
+      {span ? (
+        <form className="span-hand-input" onSubmit={submitSpan}>
+          <label htmlFor="spanHandInput">
+            手打替換段（{span.width} 格；規則同起句）
+            <input
+              id="spanHandInput"
+              value={spanRaw}
+              onChange={(event) => setSpanRaw(event.target.value)}
+              maxLength={span.width}
+              spellCheck={false}
+              placeholder={span.width === 1 ? '一字或一碼' : `輸入 ${span.width} 格`}
+              aria-invalid={Boolean(spanInputError)}
+              aria-describedby={spanInputError ? 'spanHandHint' : undefined}
+            />
+          </label>
+          <button type="submit">套用</button>
+          {spanInputError ? <p id="spanHandHint" className="span-hand-input__error">{spanInputError}</p> : null}
+        </form>
+      ) : null}
       <div className="line-slots" role="list" aria-label="歌詞字位">
         {draft.slots.map((slot, pos) => {
           const reading = readings[pos];
@@ -48,6 +163,7 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
           const spanned = inSpan(pos);
           const codeAsSurface = !slot.surface && Boolean(slot.code);
           const unresolved = reading?.kind === 'unresolved';
+          const editing = editingPos === pos;
           const staticJyutping = !reading?.needsChoice
             ? (slot.reading || reading?.choices[0]?.jyutping || '')
             : '';
@@ -57,30 +173,56 @@ export function SentenceCanvas({ draft, readings, onToggleLock, onChooseReading 
 
           return (
             <div className="line-slot-wrap" role="listitem" key={pos}>
-              <button
-                type="button"
-                className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}${unresolved ? ' has-unread' : ''}`}
-                data-line-slot={pos}
-                aria-pressed={locked}
-                aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已標定' : '未標定'}${spanned && !locked ? '，在替換段內' : ''}`}
-                onClick={() => onToggleLock(pos)}
-                onKeyDown={(event) => {
-                  if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-                    event.preventDefault();
-                    move(pos, event.key === 'ArrowLeft' ? -1 : 1);
-                  } else if (event.key === ' ') {
-                    event.preventDefault();
-                    onToggleLock(pos);
-                  }
-                }}
-              >
-                <span className={`line-slot__surface${codeAsSurface ? ' is-code-surface' : ''}`}>
-                  {surfaceLabel(slot)}
-                </span>
-                <span className="line-slot__code">{codeAsSurface ? '·' : (slot.code || '·')}</span>
-                {unresolved ? <span className="line-slot__warn" title="讀音未收錄" aria-hidden="true">!</span> : null}
-                <span className="line-slot__lock" aria-hidden="true">{locked ? '鎖' : ''}</span>
-              </button>
+              {editing ? (
+                <input
+                  ref={editInputRef}
+                  className="line-slot-edit"
+                  value={editValue}
+                  maxLength={1}
+                  spellCheck={false}
+                  aria-label={`編輯第 ${pos + 1} 個字`}
+                  onChange={(event) => setEditValue(event.target.value)}
+                  onBlur={confirmEdit}
+                  onKeyDown={(event: KeyboardEvent<HTMLInputElement>) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      confirmEdit();
+                    } else if (event.key === 'Escape') {
+                      event.preventDefault();
+                      cancelEdit();
+                    }
+                  }}
+                />
+              ) : (
+                <button
+                  type="button"
+                  className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}${unresolved ? ' has-unread' : ''}`}
+                  data-line-slot={pos}
+                  aria-pressed={locked}
+                  aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已標定' : '未標定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                  onClick={() => scheduleToggle(pos)}
+                  onDoubleClick={() => beginEdit(pos)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+                      event.preventDefault();
+                      move(pos, event.key === 'ArrowLeft' ? -1 : 1);
+                    } else if (event.key === ' ') {
+                      event.preventDefault();
+                      onToggleLock(pos);
+                    } else if (event.key === 'Enter' || event.key === 'F2') {
+                      event.preventDefault();
+                      beginEdit(pos);
+                    }
+                  }}
+                >
+                  <span className={`line-slot__surface${codeAsSurface ? ' is-code-surface' : ''}`}>
+                    {surfaceLabel(slot)}
+                  </span>
+                  <span className="line-slot__code">{codeAsSurface ? '·' : (slot.code || '·')}</span>
+                  {unresolved ? <span className="line-slot__warn" title="讀音未收錄" aria-hidden="true">!</span> : null}
+                  <span className="line-slot__lock" aria-hidden="true">{locked ? '鎖' : ''}</span>
+                </button>
+              )}
               <div className="slot-reading-footer">
                 {reading?.needsChoice ? (
                   <select

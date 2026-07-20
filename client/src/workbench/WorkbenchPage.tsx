@@ -35,6 +35,7 @@ import {
 import { createLineDraft, lineDraftReducer, type LineDraft } from './line-draft.ts';
 import { loadLineDraft, saveLineDraft } from './line-draft-storage.ts';
 import { parseLineInput } from './line-input.ts';
+import { parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
 import {
@@ -124,6 +125,7 @@ export function WorkbenchPage() {
   const [initialPicks, setInitialPicks] = useState<PhonemeDimPicks>(emptyPhonemeDimPicks);
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
   const [candidateOffset, setCandidateOffset] = useState(0);
+  const [spanInputError, setSpanInputError] = useState('');
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -132,10 +134,12 @@ export function WorkbenchPage() {
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
   const draftRef = useRef(draft);
   const previewRef = useRef(preview);
+  const relaxedPreviousRef = useRef(relaxedPrevious);
   const ingestDone = useRef(false);
   const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
   draftRef.current = draft;
   previewRef.current = preview;
+  relaxedPreviousRef.current = relaxedPrevious;
 
   useEffect(() => {
     revealPwaShell();
@@ -233,6 +237,7 @@ export function WorkbenchPage() {
       return;
     }
     setMessage('');
+    setSpanInputError('');
     const width = result.draft.selection?.width ?? 0;
     const nextRhyme = sanitizePhonemeDimPicks(rhymePicks, width);
     const nextInitial = sanitizePhonemeDimPicks(initialPicks, width);
@@ -415,6 +420,75 @@ export function WorkbenchPage() {
     });
   };
 
+  const surfaceOnlyOf = (next: LineDraft) => next.slots.map((slot) => slot.surface).filter(Boolean).join('');
+
+  const handleSetSlotManual = (pos: number, surface: string, code?: string) => {
+    setDraft((current) => {
+      if (!current) return current;
+      const next = lineDraftReducer(current, { type: 'set_slot_manual', pos, surface, code });
+      if (next === current) {
+        setMessage('請輸入一個漢字或一位數字碼。');
+        return current;
+      }
+      setSpanInputError('');
+      setMessage(surface ? '已手改一字；正在對齊讀音。' : '已手改為碼格。');
+      const surfaceOnly = surfaceOnlyOf(next);
+      if (surfaceOnly) void resolveReadings(surfaceOnly, next);
+      return syncPhonemeAnchors(next, rhymePicks, initialPicks);
+    });
+  };
+
+  const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
+    setDraft((current) => {
+      if (!current?.selection) {
+        setSpanInputError('請先標定替換段。');
+        return current;
+      }
+      const slots = parsed.slots.map((slot, pos) => {
+        const digit = parsed.constraints.find(
+          (item) => item.kind === 'code_digit' && item.pos === pos,
+        );
+        return {
+          surface: slot.surface,
+          reading: slot.reading,
+          code: slot.code || digit?.digit,
+        };
+      });
+      const next = lineDraftReducer(current, {
+        type: 'apply_span_input',
+        selectionVersion: current.version,
+        slots,
+        constraints: parsed.constraints,
+      });
+      if (next === current) {
+        setSpanInputError(`長度須為 ${current.selection.width} 格。`);
+        return current;
+      }
+      setSpanInputError('');
+      setMessage('已手打替換段。');
+      const surfaceOnly = surfaceOnlyOf(next);
+      if (surfaceOnly) void resolveReadings(surfaceOnly, next);
+      return syncPhonemeAnchors(next, rhymePicks, initialPicks);
+    });
+  };
+
+  const performUndo = () => {
+    const current = draftRef.current;
+    if (!current?.undo) return;
+    setDraft(lineDraftReducer(current, { type: 'undo' }));
+    const previous = relaxedPreviousRef.current;
+    if (previous) {
+      setMode(previous.mode);
+      setSemanticIntent(previous.semanticIntent);
+      setCodeConstraint(previous.codeConstraint);
+      setExplicitCode(previous.explicitCode);
+      setRelaxedPrevious(null);
+    }
+    setActiveRelaxation(null);
+    setSpanInputError('');
+    setMessage('已復原最近一次改動。');
+  };
+
   const planBase = useMemo(() => {
     if (!draft?.selection) return null;
     const { start, width } = draft.selection;
@@ -520,8 +594,7 @@ export function WorkbenchPage() {
       if (event.key === 'u' || event.key === 'U' || (event.key === 'z' && (event.ctrlKey || event.metaKey))) {
         if (!current.undo) return;
         event.preventDefault();
-        setDraft(lineDraftReducer(current, { type: 'undo' }));
-        setActiveRelaxation(null);
+        performUndo();
         return;
       }
       if (event.key === '1' || event.key === '2' || event.key === '3') {
@@ -532,6 +605,7 @@ export function WorkbenchPage() {
         return;
       }
       if (event.key === 'Enter') {
+        if (event.target instanceof HTMLElement && event.target.closest('[data-line-slot]')) return;
         const candidate = firstCandidate(candidatesRef.current.response?.exact);
         if (!candidate) return;
         event.preventDefault();
@@ -599,6 +673,10 @@ export function WorkbenchPage() {
               readings={readings}
               onToggleLock={handleToggleLock}
               onChooseReading={handleChooseReading}
+              onSetSlotManual={handleSetSlotManual}
+              onApplySpanInput={handleApplySpanInput}
+              onSpanInputError={setSpanInputError}
+              spanInputError={spanInputError}
             />
             <ConstraintBar
               mode={mode}
@@ -614,6 +692,8 @@ export function WorkbenchPage() {
               initial={initialPicks}
               onRhymeChange={changeRhymePicks}
               onInitialChange={changeInitialPicks}
+              canUndo={Boolean(draft.undo)}
+              onUndo={performUndo}
             />
             <div className="workbench-filter-row">
               <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
@@ -674,17 +754,6 @@ export function WorkbenchPage() {
                 }}>確認採用這項放寬</button>
               </section>
             ) : null}
-            {draft.undo ? <button type="button" className="undo-action" onClick={() => {
-              setDraft((current) => current ? lineDraftReducer(current, { type: 'undo' }) : current);
-              if (relaxedPrevious) {
-                setMode(relaxedPrevious.mode);
-                setSemanticIntent(relaxedPrevious.semanticIntent);
-                setCodeConstraint(relaxedPrevious.codeConstraint);
-                setExplicitCode(relaxedPrevious.explicitCode);
-                setRelaxedPrevious(null);
-              }
-              setActiveRelaxation(null);
-            }}>復原最近一次套用／放寬</button> : null}
           </>
         ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可標定替換段。</p></section>}
       </main>

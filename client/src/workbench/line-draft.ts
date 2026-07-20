@@ -14,7 +14,7 @@ export interface LineSelection {
 }
 
 export interface LastApplied {
-  kind: 'candidate' | 'relaxation';
+  kind: 'candidate' | 'relaxation' | 'manual';
   literal?: string;
   relaxationId?: string;
 }
@@ -40,6 +40,13 @@ export type LineDraftAction =
   | { type: 'set_constraint'; constraint: WorkbenchSlotConstraintV1 }
   | { type: 'replace_surface'; literal: string }
   | { type: 'insert_literal'; literal: string }
+  | { type: 'set_slot_manual'; pos: number; surface: string; code?: string }
+  | {
+      type: 'apply_span_input';
+      selectionVersion: number;
+      slots: Array<{ surface: string; reading?: string; code?: string }>;
+      constraints: WorkbenchSlotConstraintV1[];
+    }
   | {
       type: 'apply_candidate';
       selectionVersion: number;
@@ -205,6 +212,61 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
           slots,
           surface: slots.map((slot) => slot.surface).join(''),
           lastApplied: null,
+        },
+        snapshot(draft),
+      );
+    }
+    case 'set_slot_manual': {
+      const current = draft.slots[action.pos];
+      if (!current) return draft;
+      const surface = action.surface ?? '';
+      const code = action.code;
+      if (surface && code) return draft;
+      if (!surface && !code) return draft;
+      if (surface.includes('?') || code === '?') return draft;
+      if (surface && Array.from(surface).length !== 1) return draft;
+      if (code && !/^[0-9]$/.test(code)) return draft;
+      // ponytail: Han check lives in parseManualCell; upgrade if non-UI callers appear
+      const slots = draft.slots.slice();
+      slots[action.pos] = { ...current, surface: surface || '', reading: undefined, code: code || undefined };
+      const constraints = draft.constraints.filter((item) => !(
+        item.pos === action.pos && (item.kind === 'code_digit' || item.kind === 'tone_class')
+      ));
+      if (code) constraints.push({ pos: action.pos, kind: 'code_digit', digit: code });
+      return withEdit(
+        draft,
+        {
+          slots,
+          surface: slots.map((slot) => slot.surface).join(''),
+          constraints,
+          lastApplied: { kind: 'manual', literal: surface || code },
+        },
+        snapshot(draft),
+      );
+    }
+    case 'apply_span_input': {
+      const selection = draft.selection;
+      if (!selection || action.selectionVersion !== draft.version) return draft;
+      if (action.slots.length !== selection.width) return draft;
+      if (action.slots.some((s) => s.surface.includes('?') || (s.code ?? '').includes('?'))) return draft;
+      const slots = draft.slots.slice();
+      for (let i = 0; i < selection.width; i += 1) {
+        const pos = selection.start + i;
+        const current = slots[pos];
+        const incoming = action.slots[i];
+        if (!current || !incoming) return draft;
+        slots[pos] = { ...current, surface: incoming.surface, reading: incoming.reading, code: incoming.code };
+      }
+      const { start, width } = selection;
+      const kept = draft.constraints.filter((item) => item.pos < start || item.pos >= start + width);
+      const remapped = action.constraints.map((item) => ({ ...item, pos: item.pos + start }));
+      return withEdit(
+        draft,
+        {
+          slots,
+          surface: slots.map((slot) => slot.surface).join(''),
+          constraints: [...kept, ...remapped],
+          lastApplied: { kind: 'manual', literal: action.slots.map((s) => s.surface || s.code || '').join('') },
         },
         snapshot(draft),
       );

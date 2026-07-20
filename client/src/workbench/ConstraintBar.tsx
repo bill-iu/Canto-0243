@@ -20,6 +20,8 @@ interface Props {
   initial: PhonemeDimPicks;
   onRhymeChange: (next: PhonemeDimPicks) => void;
   onInitialChange: (next: PhonemeDimPicks) => void;
+  canUndo: boolean;
+  onUndo: () => void;
 }
 
 function toggleWhole(picks: PhonemeDimPicks, on: boolean): PhonemeDimPicks {
@@ -121,6 +123,8 @@ export function ConstraintBar({
   initial,
   onRhymeChange,
   onInitialChange,
+  canUndo,
+  onUndo,
 }: Props) {
   const explicitHint = spanWidth > 0
     ? `長度須為 ${spanWidth}；未填位會補 ?。`
@@ -128,7 +132,14 @@ export function ConstraintBar({
 
   return (
     <section className="constraint-bar" aria-labelledby="constraintHeading">
-      <h2 id="constraintHeading">本次替換條件</h2>
+      <div className="constraint-bar__heading-row">
+        <h2 id="constraintHeading">本次替換條件</h2>
+        {canUndo ? (
+          <button type="button" className="undo-action" onClick={onUndo}>
+            復原最近一次套用／放寬／手改
+          </button>
+        ) : null}
+      </div>
       <div className="constraint-bar__menus">
         <label>聲調精度
           <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
@@ -191,8 +202,8 @@ export function ConstraintBar({
           onChange={onInitialChange}
         />
       </div>
-      <p>更改條件只會重新找候選，不會改動句面。</p>
-      <p className="shortcut-hint">捷徑：空白鍵標定／取消 · U 復原 · 1–3 分組 · Enter 首候選 · A 套用</p>
+      <p>更改條件只會重新找候選，不會改動句面。雙擊字位可改一字；標定後可於段上方手打整段。</p>
+      <p className="shortcut-hint">捷徑：空白鍵標定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
 }

@@ -116,6 +116,36 @@ assert(draft.selection?.width === 2 && draft.undo != null, 'insert should keep s
 draft = lineDraftReducer(draft, { type: 'undo' });
 assert(draft.surface === '我愛香港', 'insert undo failed');
 
+{
+  const before = draft.surface;
+  const edited = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '你' });
+  assert(edited.surface === '你愛香港' && edited.undo != null && edited.lastApplied?.kind === 'manual', 'set_slot_manual failed');
+  assert(lineDraftReducer(edited, { type: 'undo' }).surface === before, 'set_slot_manual undo failed');
+  const digit = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 1, code: '4' });
+  assert(digit.slots[1]?.code === '4' && !digit.slots[1]?.surface, 'digit cell failed');
+  assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '??' }) === draft, 'multi-char cell accepted');
+  assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' }) === draft, 'wildcard cell accepted');
+}
+
+{
+  let spanDraft = lineDraftReducer(draft, { type: 'select', start: 2, width: 2 });
+  const applied = lineDraftReducer(spanDraft, {
+    type: 'apply_span_input',
+    selectionVersion: spanDraft.version,
+    slots: [{ surface: '香' }, { surface: '江' }],
+    constraints: [],
+  });
+  assert(applied.surface === '我愛香江' && applied.undo != null && applied.lastApplied?.kind === 'manual', 'apply_span_input failed');
+  assert(lineDraftReducer(applied, { type: 'undo' }).surface === '我愛香港', 'span input undo failed');
+  const stale = lineDraftReducer(spanDraft, {
+    type: 'apply_span_input',
+    selectionVersion: spanDraft.version - 1,
+    slots: [{ surface: '香' }, { surface: '江' }],
+    constraints: [],
+  });
+  assert(stale === spanDraft, 'stale span input applied');
+}
+
 const replaced = lineDraftReducer(draft, { type: 'replace_surface', literal: '香江' });
 assert(replaced.surface === '香江' && replaced.selection == null && replaced.undo != null, 'replace_surface failed');
 
