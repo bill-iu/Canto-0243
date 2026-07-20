@@ -364,6 +364,31 @@ def cmd_bake_derived_ant_snapshots(args: argparse.Namespace) -> int:
     return 0
 
 
+BUILD_DB_PATH_HINT = """
+建議路徑（CONTEXT § 詞條庫建置流程；唔係對現行庫打增量 patch）:
+  全量從源重建:              python -m ingest build-db
+  只改詞源／overlay:         python -m ingest build-db --stage words
+  詞已齊、只重關係:          python -m ingest build-db --stage relations
+  只 seal／閘／copy-db:      python -m ingest build-db --stage seal
+  只改關係補錄清單:          python -m ingest apply-manual-relations
+""".strip()
+
+
+def resolve_build_db_stage(args: argparse.Namespace) -> str:
+    """Return all|words|relations|seal. --skip-relations aliases --stage words."""
+    stage = getattr(args, "stage", None) or "all"
+    if getattr(args, "skip_relations", False):
+        if stage not in ("all", "words"):
+            raise ValueError(
+                f"--skip-relations conflicts with --stage {stage}; "
+                "use --stage words or omit --stage"
+            )
+        return "words"
+    if stage not in ("all", "words", "relations", "seal"):
+        raise ValueError(f"unknown --stage {stage!r}")
+    return stage
+
+
 def cmd_build_db(args: argparse.Namespace) -> int:
     try:
         with ingest_lock("build-db"):
@@ -371,26 +396,23 @@ def cmd_build_db(args: argparse.Namespace) -> int:
     except IngestLockError as exc:
         print(exc, file=sys.stderr)
         return 1
+    except ValueError as exc:
+        print(exc, file=sys.stderr)
+        return 2
 
 
-def _cmd_build_db_impl(args: argparse.Namespace) -> int:
+def _build_db_words(args: argparse.Namespace, *, manifest: str) -> int:
     from app.database import Base, engine
-    from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST, build_lexicon_words
-    from ingest.lexicon_truncate import truncate_lexicon_core
-    from ingest.bridge_snapshot import ingest_bridge_snapshot
-
+    from ingest.lexicon_build import build_lexicon_words
     from ingest.lexicon_stats import check_min_multi_char, lexicon_word_stats
-
-    manifest = args.lexicon_manifest or str(DEFAULT_LEXICON_MANIFEST)
-    print(f"==> build-db manifest: {manifest}")
+    from ingest.lexicon_truncate import truncate_lexicon_core
+    from ingest.manual_relations_apply import merge_orphan_manual_directs_into_tsv
 
     Base.metadata.create_all(bind=engine)
     ensure_word_relations_table()
 
     with SessionLocal() as db:
         # Wipe 前先把未入清單嘅 manual 直連合併入 TSV（cluster/mirror 唔寫入）。
-        from ingest.manual_relations_apply import merge_orphan_manual_directs_into_tsv
-
         print("==> merge orphan manual directs → 關係補錄清單")
         ostats = merge_orphan_manual_directs_into_tsv(db)
         print(f"    orphan-merge: {ostats}")
@@ -411,22 +433,20 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
             except ValueError as exc:
                 print(f"build-db failed: {exc}", file=sys.stderr)
                 return 1
+    return 0
 
-    if args.skip_relations:
-        print("skip-relations: done")
-        return _build_db_exports(args)
 
-    steps = [
-        ("build-word-relations", lambda: cmd_build_word_relations(
-            argparse.Namespace(manifest=None, compound_path=None, append=False)
-        )),
-    ]
-    for label, fn in steps:
-        print(f"==> {label}")
-        rc = fn()
-        if rc != 0:
-            print(f"{label} failed with exit {rc}", file=sys.stderr)
-            return rc
+def _build_db_relations() -> int:
+    from ingest.bridge_snapshot import ingest_bridge_snapshot
+    from ingest.manual_relations_apply import hot_apply_manual_relations
+
+    print("==> build-word-relations")
+    rc = cmd_build_word_relations(
+        argparse.Namespace(manifest=None, compound_path=None, append=False)
+    )
+    if rc != 0:
+        print(f"build-word-relations failed with exit {rc}", file=sys.stderr)
+        return rc
 
     with SessionLocal() as db:
         print("==> bridge snapshot")
@@ -434,11 +454,45 @@ def _cmd_build_db_impl(args: argparse.Namespace) -> int:
         db.commit()
         print(f"    bridge: {bstats}")
         print("==> manual relations (熱套用)")
-        from ingest.manual_relations_apply import hot_apply_manual_relations
-
         mstats = hot_apply_manual_relations(db)
         print(f"    manual: {mstats}")
+    return 0
 
+
+def _cmd_build_db_impl(args: argparse.Namespace) -> int:
+    from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST
+
+    stage = resolve_build_db_stage(args)
+    print(BUILD_DB_PATH_HINT)
+    print(f"==> build-db stage={stage}")
+
+    if stage == "seal":
+        return _build_db_exports(args)
+
+    if stage == "relations":
+        from app.database import Base, engine
+
+        Base.metadata.create_all(bind=engine)
+        ensure_word_relations_table()
+        rc = _build_db_relations()
+        if rc != 0:
+            return rc
+        return _build_db_exports(args)
+
+    # words | all — words stage still full wipe+ingest (唔係 patch)
+    manifest = args.lexicon_manifest or str(DEFAULT_LEXICON_MANIFEST)
+    print(f"==> build-db manifest: {manifest}")
+    rc = _build_db_words(args, manifest=manifest)
+    if rc != 0:
+        return rc
+
+    if stage == "words":
+        print("stage=words: skip relations")
+        return _build_db_exports(args)
+
+    rc = _build_db_relations()
+    if rc != 0:
+        return rc
     return _build_db_exports(args)
 
 
@@ -828,13 +882,28 @@ def main(argv: list[str] | None = None) -> int:
         help="Skip words-lexicon export and README word-count sync",
     )
 
-    p_build_db = sub.add_parser("build-db", help="Wipe and rebuild lyrics.db from SSOT manifest")
+    p_build_db = sub.add_parser(
+        "build-db",
+        help="Wipe and rebuild lyrics.db from SSOT manifest",
+        epilog=BUILD_DB_PATH_HINT,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     p_build_db.add_argument(
         "--lexicon-manifest",
         default=None,
         help="Path to data/lexicon/sources.yaml (default: repo manifest)",
     )
-    p_build_db.add_argument("--skip-relations", action="store_true", help="Only rebuild words tables")
+    p_build_db.add_argument(
+        "--stage",
+        choices=("all", "words", "relations", "seal"),
+        default="all",
+        help="Pipeline slice: all (default) | words | relations | seal",
+    )
+    p_build_db.add_argument(
+        "--skip-relations",
+        action="store_true",
+        help="Alias for --stage words (rebuild words + seal only)",
+    )
     p_build_db.add_argument("--no-exports", action="store_true", help="Skip export + README sync")
     p_build_db.add_argument(
         "--copy-public",
@@ -872,7 +941,10 @@ def main(argv: list[str] | None = None) -> int:
 
     p_manual = sub.add_parser(
         "apply-manual-relations",
-        help="關係補錄熱套用：clear manual* then apply data/relations/manual_relations.tsv",
+        help=(
+            "關係補錄熱套用：clear manual* then apply data/relations/manual_relations.tsv "
+            "(fast path when only the 補錄清單 changed — not a full build-db)"
+        ),
     )
     p_manual.add_argument(
         "--tsv",
