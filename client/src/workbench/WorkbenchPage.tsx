@@ -829,7 +829,9 @@ export function WorkbenchPage() {
             <p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p>
           </div>
           <form className="line-input-form" onSubmit={submit}>
-            <label htmlFor="lineInput">{WORKBENCH_LINE_INPUT_COPY}</label>
+            <label className="sr-only" htmlFor="lineInput">
+              {WORKBENCH_LINE_INPUT_COPY}
+            </label>
             <div>
               <input
                 id="lineInput"

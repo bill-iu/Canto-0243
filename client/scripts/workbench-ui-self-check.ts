@@ -16,7 +16,11 @@ if (!lineInputCopy.includes(`'${LOCKED_LINE_INPUT_COPY}'`)) {
   throw new Error(`line-input-copy must lock WORKBENCH_LINE_INPUT_COPY to ${LOCKED_LINE_INPUT_COPY}`);
 }
 if (!page.includes('WORKBENCH_LINE_INPUT_COPY')) {
-  throw new Error('WorkbenchPage must use WORKBENCH_LINE_INPUT_COPY for label and placeholder');
+  throw new Error('WorkbenchPage must use WORKBENCH_LINE_INPUT_COPY for placeholder');
+}
+// Visible label above the line input is removed; copy stays as placeholder + sr-only.
+if (!page.includes('className="sr-only"') || !page.includes('htmlFor="lineInput"')) {
+  throw new Error('workbench line input must keep sr-only label (no visible label above field)');
 }
 if (page.includes('原句、394052') || page.includes('例如：香港／39／平仄')) {
   throw new Error('legacy workbench line-input label/placeholder must be removed');
