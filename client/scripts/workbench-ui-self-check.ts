@@ -76,8 +76,8 @@ if (!canvas.includes('onToggleLock') || !canvas.includes('code-summary') || !can
 if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !canvas.includes('span-hand-input')) {
   throw new Error('manual cell/span edit UI missing');
 }
-if (!canvas.includes('span-hand-toggle') || !canvas.includes('disabled={!span}')) {
-  throw new Error('span hand-input must collapse behind ✎ until a span is locked');
+if (!canvas.includes('onClearSurfaces') || !canvas.includes('canvas-clear-surfaces') || !canvas.includes('清空')) {
+  throw new Error('clear-surfaces control missing on sentence canvas');
 }
 if (!constraints.includes('跟原韻') || !constraints.includes('跟原聲') || !constraints.includes('phoneme-dim__ref')) {
   throw new Error('phoneme ref inputs missing');

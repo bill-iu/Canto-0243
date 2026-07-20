@@ -52,6 +52,7 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("onDoubleClick", canvas)
         self.assertIn("span-hand-input", canvas)
         self.assertIn("span-hand-toggle", canvas)
+        self.assertIn("canvas-clear-surfaces", canvas)
         self.assertIn("slot-reading-footer", canvas)
         self.assertIn("is-code-surface", canvas)
         self.assertIn("code-summary", canvas)

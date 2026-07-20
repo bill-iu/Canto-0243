@@ -10,6 +10,7 @@ interface Props {
   onToggleLock: (pos: number) => void;
   onChooseReading: (pos: number, jyutping: string, code: string) => void;
   onSetSlotManual: (pos: number, surface: string, code?: string) => void;
+  onClearSurfaces: () => void;
   onApplySpanInput: (parsed: ReturnType<typeof parseSpanManual> & { ok: true }) => void;
   onSpanInputError: (message: string) => void;
   spanInputError?: string;
@@ -35,12 +36,14 @@ export function SentenceCanvas({
   onToggleLock,
   onChooseReading,
   onSetSlotManual,
+  onClearSurfaces,
   onApplySpanInput,
   onSpanInputError,
   spanInputError,
 }: Props) {
   const summary = codeSummary(draft);
   const span = draft.selection;
+  const hasSurface = draft.slots.some((slot) => Boolean(slot.surface));
   const [editingPos, setEditingPos] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
   const [spanRaw, setSpanRaw] = useState('');
@@ -143,6 +146,16 @@ export function SentenceCanvas({
         </div>
         <div className="sentence-canvas__heading-actions">
           {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
+          <button
+            type="button"
+            className="canvas-clear-surfaces"
+            disabled={!hasSurface}
+            title={hasSurface ? '清空全部字面' : '沒有可清空的字面'}
+            aria-label="清空全部字面"
+            onClick={() => { cancelEdit(); setSpanPanelOpen(false); onClearSurfaces(); }}
+          >
+            清空
+          </button>
           <button
             type="button"
             className={`span-hand-toggle${spanPanelOpen ? ' is-open' : ''}`}

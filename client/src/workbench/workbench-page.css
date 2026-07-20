@@ -115,6 +115,24 @@ body.query-tabs-app.workbench-route {
   align-items: center;
   gap: .65rem;
 }
+.canvas-clear-surfaces {
+  min-height: 2.25rem;
+  padding: .35rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: .65rem;
+  color: inherit;
+  background: var(--surface);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 750;
+  cursor: pointer;
+}
+.canvas-clear-surfaces:hover:not(:disabled) { border-color: var(--accent); }
+.canvas-clear-surfaces:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.canvas-clear-surfaces:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
 .span-hand-toggle {
   display: inline-grid;
   place-items: center;

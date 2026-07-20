@@ -41,6 +41,7 @@ export type LineDraftAction =
   | { type: 'replace_surface'; literal: string }
   | { type: 'insert_literal'; literal: string }
   | { type: 'set_slot_manual'; pos: number; surface: string; code?: string }
+  | { type: 'clear_surfaces' }
   | {
       type: 'apply_span_input';
       selectionVersion: number;
@@ -239,6 +240,17 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
       if (code) constraints.push({ pos: action.pos, kind: 'code_digit', digit: code });
       return withEdit(draft, {
         slots, surface: slots.map((s) => s.surface).join(''), constraints, lastApplied: { kind: 'manual', literal: surface || code },
+      }, snapshot(draft));
+    }
+    case 'clear_surfaces': {
+      if (!draft.slots.some((slot) => slot.surface)) return draft;
+      const slots = draft.slots.map((slot) => ({ ...slot, surface: '', reading: undefined, locked: false }));
+      return withEdit(draft, {
+        slots,
+        surface: '',
+        selection: null,
+        constraints: draft.constraints.filter((item) => item.kind === 'code_digit' || item.kind === 'tone_class'),
+        lastApplied: { kind: 'manual', literal: '' },
       }, snapshot(draft));
     }
     case 'apply_span_input': {

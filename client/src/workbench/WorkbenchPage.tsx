@@ -521,6 +521,27 @@ export function WorkbenchPage() {
     });
   };
 
+  const handleClearSurfaces = () => {
+    setDraft((current) => {
+      if (!current) return current;
+      const next = lineDraftReducer(current, { type: 'clear_surfaces' });
+      if (next === current) {
+        setMessage('沒有可清空的字面。');
+        return current;
+      }
+      setReadings([]);
+      setPreview(null);
+      setActiveRelaxation(null);
+      setSpanInputError('');
+      setRhymePicks(emptyPhonemeDimPicks());
+      setInitialPicks(emptyPhonemeDimPicks());
+      setRhymeRef('');
+      setInitialRef('');
+      setMessage('已清空字面；碼格仍保留，可重新標定。');
+      return syncPhonemeAnchors(next, emptyPhonemeDimPicks(), emptyPhonemeDimPicks(), '', '');
+    });
+  };
+
   const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
     setDraft((current) => {
       if (!current?.selection) {
@@ -762,6 +783,7 @@ export function WorkbenchPage() {
               onToggleLock={handleToggleLock}
               onChooseReading={handleChooseReading}
               onSetSlotManual={handleSetSlotManual}
+              onClearSurfaces={handleClearSurfaces}
               onApplySpanInput={handleApplySpanInput}
               onSpanInputError={setSpanInputError}
               spanInputError={spanInputError}
