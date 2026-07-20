@@ -9,6 +9,7 @@ const css = fs.readFileSync('src/workbench/workbench-page.css', 'utf8');
 const app = fs.readFileSync('src/App.tsx', 'utf8');
 const detail = fs.readFileSync('src/entry-detail/EntryDetailPanel.tsx', 'utf8');
 const lineInputCopy = fs.readFileSync('src/workbench/line-input-copy.ts', 'utf8');
+const introCopy = fs.readFileSync('src/workbench/intro-copy.ts', 'utf8');
 
 /** Locked: label + placeholder must stay this exact string (product decision). */
 const LOCKED_LINE_INPUT_COPY = '歌詞/0243 碼/漢字加數字混合';
@@ -29,6 +30,23 @@ if (!page.includes('lexiconVersion={lexiconVersion}')) {
   throw new Error('workbench ModeMenu must show lexicon meta under the menu');
 }
 
+// Intro: stacked titles + left-aligned form (grill 2026-07-21)
+for (const s of ['創作由你主導', '授漁·句格工作台', '一行拆解，萬種可能', 'VerseCraft Workbench']) {
+  if (!introCopy.includes(s)) throw new Error(`intro-copy missing locked string: ${s}`);
+}
+if (!page.includes('workbenchIntroCopy') || !page.includes('workbench-intro__titles')) {
+  throw new Error('WorkbenchPage must use intro-copy for stacked titles');
+}
+if (page.includes('創作主導權在你手上') || page.includes('不會替你自動填詞') || page.includes('把一句拆開')) {
+  throw new Error('legacy workbench intro copy must be removed');
+}
+if (!css.includes('max-width: 40rem') || !css.includes('align-items: flex-start')) {
+  throw new Error('workbench-intro must left-align with form max-width 40rem');
+}
+if (css.includes('grid-template-columns: minmax(15rem, .8fr)')) {
+  throw new Error('wide two-column workbench-intro grid must be removed');
+}
+
 for (const group of ['direct_syn', 'semantic_related', 'sound_only']) {
   if (!cards.includes(group)) throw new Error(`missing candidate group ${group}`);
 }
@@ -38,8 +56,8 @@ if (!compare.includes('套用這個選擇') || !page.includes("type: 'apply_cand
 if (!compare.includes('在搜尋頁查看') || !compare.includes('onOpenInSearch')) {
   throw new Error('open-in-search missing from compare panel');
 }
-if (!page.includes('不會替你自動填詞') || !page.includes('不會自動填入字面')) {
-  throw new Error('product boundary copy missing');
+if (!page.includes('不會自動填入字面')) {
+  throw new Error('product boundary copy missing (no auto-fill surfaces)');
 }
 if (!page.includes('WORKBENCH_CANDIDATE_PAGE_SIZE')) {
   throw new Error('candidate page size constant missing from WorkbenchPage');

@@ -11,6 +11,7 @@ import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
+import { workbenchIntroCopy } from './intro-copy.ts';
 import { WORKBENCH_LINE_INPUT_COPY } from './line-input-copy.ts';
 import { PosFilterControl } from '../pos/PosFilterControl.tsx';
 import { isPosFilterActive, resetPosFilter, type PosFilterState } from '../pos/filter.ts';
@@ -783,6 +784,8 @@ export function WorkbenchPage() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRelaxation]);
 
+  const intro = workbenchIntroCopy(uiLang);
+
   return (
     <div className={`workbench-page${preview ? ' has-compare' : ''}`}>
       <BrandSvgDefs />
@@ -822,11 +825,10 @@ export function WorkbenchPage() {
       </header>
       <main className="workbench-main">
         <section className="workbench-intro">
-          <div>
-            <p className="eyebrow">創作主導權在你手上</p>
-            <h1>句格工作台</h1>
-            <h2>把一句拆開，看清每個選擇</h2>
-            <p>工具會整理聲調、押韻與原意取捨；不會替你自動填詞。</p>
+          <div className="workbench-intro__titles">
+            <p className="eyebrow">{intro.eyebrow}</p>
+            <h1>{intro.h1}</h1>
+            <h2>{intro.h2}</h2>
           </div>
           <form className="line-input-form" onSubmit={submit}>
             <label className="sr-only" htmlFor="lineInput">
