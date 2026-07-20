@@ -75,8 +75,23 @@ if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
 if (!page.includes('hydrateDraftCodes') || !page.includes('pendingResolve')) {
   throw new Error('code hydrate / reading retry missing');
 }
-if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵標定')) {
-  throw new Error('click-span mark / shortcut hint missing');
+if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵鎖定')) {
+  throw new Error('click-span lock / shortcut hint missing');
+}
+if (!canvas.includes('點擊鎖定，雙擊改字')) {
+  throw new Error('sentence canvas heading copy locked');
+}
+if (canvas.includes('點擊標定替換段')) {
+  throw new Error('legacy canvas mark copy must be removed');
+}
+if (!css.includes('white-space: nowrap') || !css.includes('.canvas-clear-surfaces')) {
+  throw new Error('清空 button must stay horizontal (nowrap)');
+}
+if (!css.includes('flex-direction: row') || css.includes('.line-input-form > div { align-items: stretch; flex-direction: column')) {
+  throw new Error('narrow line-input must keep submit on same row');
+}
+if (!css.includes('.workbench-intro__titles .eyebrow') || !css.includes('clamp(1.85rem')) {
+  throw new Error('intro type scale h1 > h2 > eyebrow serif missing');
 }
 if (page.includes('slot.locked && slot.surface')) {
   throw new Error('lock must not emit literal_char');

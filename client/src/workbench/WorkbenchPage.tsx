@@ -275,8 +275,8 @@ export function WorkbenchPage() {
     if (!result.ok) {
       setMessage(
         result.reason === 'span_too_wide'
-          ? '一次最多改連續四格；請先取消較遠的標定。'
-          : '空白格不能標定；請先有字面、通配或碼。',
+          ? '一次最多改連續四格；請先取消較遠的鎖定。'
+          : '空白格不能鎖定；請先有字面、通配或碼。',
       );
       return;
     }
@@ -415,7 +415,7 @@ export function WorkbenchPage() {
         }
         return syncPhonemeAnchors(next, rhymePicks, initialPicks);
       });
-      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可標定字位或改用碼起句。' : '已解析逐字讀音；請點擊標定替換段。');
+      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖定字位或改用碼起句。' : '已解析逐字讀音；請點擊鎖定替換段。');
     } catch {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
@@ -478,7 +478,7 @@ export function WorkbenchPage() {
       setActiveRelaxation(null);
       setRelaxedPrevious(null);
       void resolveReadings(next.surface, next);
-      setMessage('已從搜尋放入字面；請點擊標定替換段。');
+      setMessage('已從搜尋放入字面；請點擊鎖定替換段。');
       return next;
     });
   // ponytail: mount-once ingest; resolveReadings closes over adapter
@@ -512,10 +512,10 @@ export function WorkbenchPage() {
     setExplicitCode('');
     setMessage(
       parsed.kind === 'code'
-        ? '已按碼建立空白句格，不會自動填入字面；請點擊碼格標定並查看候選。'
+        ? '已按碼建立空白句格，不會自動填入字面；請點擊碼格鎖定並查看候選。'
         : parsed.kind === 'mixed'
-          ? '已建立混合句格；請點擊標定一至四格以查看候選。'
-          : '句格已建立；請點擊標定一至四格以查看候選。',
+          ? '已建立混合句格；請點擊鎖定一至四格以查看候選。'
+          : '句格已建立；請點擊鎖定一至四格以查看候選。',
     );
     if (parsed.kind === 'surface' || parsed.kind === 'mixed') {
       const surfaceOnly = parsed.slots.map((slot) => slot.surface).filter((s) => isHanSurface(s)).join('');
@@ -584,7 +584,7 @@ export function WorkbenchPage() {
   const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
     setDraft((current) => {
       if (!current?.selection) {
-        setSpanInputError('請先標定替換段。');
+        setSpanInputError('請先鎖定替換段。');
         return current;
       }
       const slots = parsed.slots.map((slot, pos) => {
@@ -907,7 +907,7 @@ export function WorkbenchPage() {
             </div>
             <div className="candidate-status" aria-live="polite">
               {!draft.selection
-                ? '尚未標定替換段；候選會在你標定後出現。'
+                ? '尚未鎖定替換段；候選會在你鎖定後出現。'
                 : candidates.loading
                   ? '正在整理候選…'
                   : candidates.error
@@ -961,7 +961,7 @@ export function WorkbenchPage() {
               </section>
             ) : null}
           </>
-        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可標定替換段。</p></section>}
+        ) : <section className="workbench-empty"><p>貼入你正在寫的一句，或先用碼與平仄搭起空白格；有字後點擊即可鎖定替換段。</p></section>}
       </main>
       {preview && draft?.selection ? (
         <ComparePanel

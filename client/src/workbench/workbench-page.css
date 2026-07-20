@@ -59,6 +59,7 @@ body.query-tabs-app.workbench-route {
   width: 100%;
   max-width: 100%;
 }
+/* Canvas / constraints mono eyebrow (Latin-ish); intro uses serif below. */
 .eyebrow {
   margin: 0;
   color: var(--accent-strong);
@@ -68,10 +69,18 @@ body.query-tabs-app.workbench-route {
   letter-spacing: .14em;
   text-transform: uppercase;
 }
+/* h1 > h2 > eyebrow; same critical serif stack so CJK is not mono/system fallback */
+.workbench-intro__titles .eyebrow {
+  font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: none;
+}
 .workbench-intro h1 {
   margin: .25rem 0 .35rem;
   font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
-  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-size: clamp(1.85rem, 4.5vw, 3rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -79,7 +88,7 @@ body.query-tabs-app.workbench-route {
 .workbench-intro h2 {
   margin: .25rem 0 0;
   font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
-  font-size: clamp(1.5rem, 4vw, 2.8rem);
+  font-size: clamp(1.15rem, 2.6vw, 1.65rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -89,10 +98,16 @@ body.query-tabs-app.workbench-route {
   max-width: 40rem;
 }
 .line-input-form label { display: block; margin-bottom: .45rem; font-weight: 750; }
-.line-input-form > div { display: flex; gap: .6rem; width: 100%; }
+.line-input-form > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
+}
 .line-input-form input {
   min-width: 0;
-  flex: 1;
+  flex: 1 1 auto;
   padding: .9rem 1rem;
   border: 1px solid var(--line);
   border-radius: .8rem;
@@ -111,6 +126,10 @@ body.query-tabs-app.workbench-route {
   font-weight: 750;
   cursor: pointer;
 }
+.line-input-form button[type="submit"] {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
 .workbench-status { width: 100%; min-height: 1.3rem; margin: 0; color: var(--ink-soft); }
 
 .sentence-canvas, .candidate-area {
@@ -121,11 +140,22 @@ body.query-tabs-app.workbench-route {
   background: var(--surface);
   box-shadow: var(--shadow-soft);
 }
-.section-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
+.section-heading-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
+}
+.section-heading-row > div:first-child {
+  min-width: 0;
+  flex: 1 1 auto;
+}
 .section-heading-row h2, .candidate-area h2 { margin: .2rem 0 0; }
 .sentence-canvas__heading-actions {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
   gap: .65rem;
 }
 .canvas-clear-surfaces {
@@ -139,6 +169,8 @@ body.query-tabs-app.workbench-route {
   font-size: .82rem;
   font-weight: 750;
   cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .canvas-clear-surfaces:hover:not(:disabled) { border-color: var(--accent); }
 .canvas-clear-surfaces:focus-visible { outline: none; box-shadow: var(--focus-ring); }
@@ -627,7 +659,8 @@ body.query-tabs-app.workbench-route {
   .workbench-header { grid-template-columns: 1fr auto; gap: 1rem; }
   .workbench-header > div { order: 3; grid-column: 1 / -1; }
   .line-input-form { max-width: 100%; }
-  .line-input-form > div { align-items: stretch; flex-direction: column; }
+  /* Keep 建立句格 on the same row as the input (grill). */
+  .line-input-form > div { flex-direction: row; align-items: center; }
   .constraint-bar { align-items: stretch; flex-direction: column; }
   .constraint-bar h2 { margin: 0; }
   .constraint-bar__menus {

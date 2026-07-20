@@ -18,7 +18,7 @@ assert(canvas.includes("event.key === 'ArrowLeft'") && canvas.includes("event.ke
 assert(canvas.includes("event.key === ' '"), 'space span-mark missing');
 assert(!page.includes("event.key === 'l'") && !page.includes("event.key === 'L'"), 'legacy L batch-lock must be removed');
 assert(page.includes('Ctrl') || page.includes('ctrlKey'), 'undo shortcut missing');
-assert(constraints.includes('空白鍵標定'), 'shortcut hint must mention space mark');
+assert(constraints.includes('空白鍵鎖定'), 'shortcut hint must mention space lock');
 assert(constraints.includes('onUndo') && constraints.includes('復原最近一次套用／放寬／手改'), 'undo must sit in constraint bar');
 assert(canvas.includes('onDoubleClick') && canvas.includes('span-hand-input'), 'manual edit surfaces missing');
 assert(canvas.includes('span-hand-toggle') && canvas.includes('disabled={!span}'), '✎ toggle must disable without span');
@@ -36,7 +36,7 @@ assert(seams.includes('writing-mode: horizontal-tb'), 'seam test must guard hori
 assert(canvas.includes('line-slot__warn') || canvas.includes('讀音未收錄'), 'unresolved must stay announced');
 assert(canvas.includes('slot-reading-footer'), 'reading footer row required for equal height');
 assert(!canvas.includes('className="slot-warning"'), 'unresolved must not use footer warning text');
-assert(page.includes('尚未標定替換段'), 'empty span must announce waiting state');
+assert(page.includes('尚未鎖定替換段'), 'empty span must announce waiting state');
 assert(!page.includes('slot.locked && slot.surface'), 'lock must not emit literal_char');
 
 console.log('workbench accessibility self-check ok');

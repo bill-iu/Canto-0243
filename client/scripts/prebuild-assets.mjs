@@ -78,10 +78,14 @@ step(
   () => run('npx', ['tsx', 'scripts/build-ranking-index.ts']),
 );
 
-// ponytail: fonts stamp = script body (URLs/subset text live there); network fetch only on miss
+// ponytail: fonts stamp includes glyph SSOT so intro/slogan edits force rebuild
 step(
   'fonts',
-  hashFiles([path.join(clientRoot, 'scripts/build-fonts.ts')]),
+  hashFiles([
+    path.join(clientRoot, 'scripts/build-fonts.ts'),
+    path.join(clientRoot, 'src/critical-display-text.ts'),
+    path.join(clientRoot, 'src/workbench/intro-copy.ts'),
+  ]),
   [path.join(publicDir, 'fonts/fonts.css')],
   () => run('npx', ['tsx', 'scripts/build-fonts.ts']),
 );

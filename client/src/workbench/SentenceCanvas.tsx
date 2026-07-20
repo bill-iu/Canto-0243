@@ -126,7 +126,7 @@ export function SentenceCanvas({
       onSpanInputError(
         parsed.error === 'width'
           ? `長度須為 ${span.width} 格。`
-          : '請輸入字面、碼、通配、混合或平仄，長度須等於標定段。',
+          : '請輸入字面、碼、通配、混合或平仄，長度須等於鎖定段。',
       );
       return;
     }
@@ -141,7 +141,7 @@ export function SentenceCanvas({
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">點擊標定替換段；雙擊改一字或通配</h2>
+          <h2 id="sentenceHeading">點擊鎖定，雙擊改字</h2>
         </div>
         <div className="sentence-canvas__heading-actions">
           {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
@@ -158,8 +158,8 @@ export function SentenceCanvas({
             disabled={!span}
             aria-expanded={spanPanelOpen}
             aria-controls="spanHandPanel"
-            title={span ? '手打替換段' : '請先標定替換段'}
-            aria-label={span ? '手打替換段' : '手打替換段（請先標定）'}
+            title={span ? '手打替換段' : '請先鎖定替換段'}
+            aria-label={span ? '手打替換段' : '手打替換段（請先鎖定）'}
             onClick={() => {
               if (!span) return;
               setSpanPanelOpen((open) => !open);
@@ -239,7 +239,7 @@ export function SentenceCanvas({
                   className={`line-slot${locked ? ' is-locked' : ''}${spanned && !locked ? ' is-in-span' : ''}${unresolved ? ' has-unread' : ''}`}
                   data-line-slot={pos}
                   aria-pressed={locked}
-                  aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已標定' : '未標定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                  aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
                   onClick={() => scheduleToggle(pos)}
                   onDoubleClick={() => beginEdit(pos)}
                   onKeyDown={(event) => {

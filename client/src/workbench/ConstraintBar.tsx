@@ -166,7 +166,7 @@ export function ConstraintBar({
 }: Props) {
   const explicitHint = spanWidth > 0
     ? `長度須為 ${spanWidth}；未填位會補 ?。`
-    : '標定替換段後可輸入指定碼。';
+    : '鎖定替換段後可輸入指定碼。';
 
   return (
     <section className="constraint-bar" aria-labelledby="constraintHeading">
@@ -248,8 +248,8 @@ export function ConstraintBar({
           refPlaceholder="跟原聲"
         />
       </div>
-      <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；標定後點 ✎ 手打整段。</p>
-      <p className="shortcut-hint">捷徑：空白鍵標定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
+      <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；鎖定後點 ✎ 手打整段。</p>
+      <p className="shortcut-hint">捷徑：空白鍵鎖定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
 }
