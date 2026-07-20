@@ -2,6 +2,7 @@ import { type FormEvent, useMemo, useRef, useState, useEffect } from 'react';
 
 import { getLang, setLang, getTheme, setTheme } from '../../../shared/app-context.mjs';
 import { searchPageHref } from '../app-page.ts';
+import { navigateAppRoute } from '../app-navigation.ts';
 import { BrandLogo } from '../brand-logo.tsx';
 import { BrandSvgDefs } from '../brand-svg-defs.tsx';
 import { HeaderHero } from '../header-hero.tsx';
@@ -155,7 +156,7 @@ export function WorkbenchPage() {
   }, [draft]);
 
   const goSearchHome = () => {
-    window.location.href = searchPageHref();
+    navigateAppRoute('search');
   };
 
   const goSearchWithNavigate = (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => {
@@ -166,7 +167,7 @@ export function WorkbenchPage() {
       setMessage('暫時無法回到查韻；請再試一次。');
       return;
     }
-    window.location.href = searchPageHref();
+    navigateAppRoute('search');
   };
 
   const changeMode = (next: ReplacementPlanV1['mode']) => {
@@ -465,7 +466,7 @@ export function WorkbenchPage() {
   const openInSearch = (literal: string) => {
     try {
       writeOpenSearch(sessionStorage, { literal });
-      window.location.href = searchPageHref();
+      navigateAppRoute('search');
     } catch (error) {
       setMessage(error instanceof WorkbenchBridgeError ? error.message : '無法打開搜尋頁。');
     }

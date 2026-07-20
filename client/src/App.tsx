@@ -76,6 +76,7 @@ import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { HeaderHero } from './header-hero.tsx';
 import { workbenchPageHref } from './app-page.ts';
+import { navigateAppRoute } from './app-navigation.ts';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
@@ -747,7 +748,7 @@ function App() {
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
     try {
       writeIngest(sessionStorage, { literal, mode: ingestMode });
-      window.location.href = workbenchPageHref();
+      navigateAppRoute('workbench');
     } catch (error) {
       window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
     }
@@ -1054,7 +1055,14 @@ function App() {
                 </button>
               </div>
               <div className="header-chrome__actions">
-                <a className="workbench-entry" href={workbenchPageHref()}>
+                <a
+                  className="workbench-entry"
+                  href={workbenchPageHref()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateAppRoute('workbench');
+                  }}
+                >
                   {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
                 </a>
                 <ModeMenu
@@ -1063,7 +1071,7 @@ function App() {
                   onModeChange={handleModeChange}
                   onOpenGuide={handleOpenGuide}
                   onOpenAbout={handleOpenAbout}
-                  onOpenWorkbench={() => { window.location.href = workbenchPageHref(); }}
+                  onOpenWorkbench={() => navigateAppRoute('workbench')}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                   onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                   theme={uiTheme}
