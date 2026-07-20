@@ -135,6 +135,7 @@ class TestLocalLaunchSeam(unittest.TestCase):
     def test_portable_venv_materializes_windows_runtime(self):
         source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
         self.assertIn("materialize_windows_python_home", source)
+        self.assertIn("slim_portable_venv", source)
         self.assertIn("_assert_cfg_home_local", source)
         self.assertIn("base_prefix", source)
         win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
@@ -475,10 +476,10 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
     def test_release_hot_path_is_build_word_relations(self):
         """P2 #6: build-db + legacy ingest-cilin CLI use 關係直寫 only."""
         cli = (REPO_ROOT / "ingest" / "cli.py").read_text(encoding="utf-8")
-        self.assertIn('("build-word-relations"', cli)
+        self.assertIn("def _build_db_relations", cli)
+        self.assertIn("cmd_build_word_relations", cli)
         # ingest-cilin must delegate, not call leaf_direct
         self.assertIn("def cmd_ingest_cilin", cli)
-        self.assertIn("cmd_build_word_relations", cli)
         # body of cmd_ingest_cilin should not invoke direct writer
         start = cli.index("def cmd_ingest_cilin")
         end = cli.index("\ndef cmd_", start + 1)

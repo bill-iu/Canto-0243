@@ -81,6 +81,15 @@ def read_manifest(root: Path) -> Optional[dict[str, str]]:
     return {k: str(data[k]) for k in need}
 
 
+def count_tree_files(root: Path) -> int:
+    root = root.resolve()
+    n = 0
+    for path in root.rglob("*"):
+        if path.is_file():
+            n += 1
+    return n
+
+
 def write_manifest(
     root: Path,
     *,
@@ -97,18 +106,31 @@ def write_manifest(
     man = root / MANIFEST_NAME
     if man.is_file():
         man.unlink()
-    fp = {
+    venv = root / "venv"
+    fp: dict[str, Any] = {
         "tag": tag if tag.startswith("v") else f"v{tag.lstrip('v')}",
         "platform": platform,
         "lyrics_sha256": file_sha256(db),
         "package_digest": package_digest(root),
+        "file_count": str(count_tree_files(root)),
+        "venv_file_count": str(count_tree_files(venv)),
     }
+    slim_report = venv / "portable-venv-slim.json"
+    if slim_report.is_file():
+        try:
+            slim = json.loads(slim_report.read_text(encoding="utf-8"))
+            if isinstance(slim.get("venv_files_after"), int):
+                fp["venv_files_after"] = str(slim["venv_files_after"])
+            if isinstance(slim.get("venv_files_before"), int):
+                fp["venv_files_before"] = str(slim["venv_files_before"])
+        except (OSError, json.JSONDecodeError):
+            pass
     text = json.dumps(fp, ensure_ascii=False, indent=2) + "\n"
     man.write_text(text, encoding="utf-8")
     if sidecar is not None:
         sidecar.parent.mkdir(parents=True, exist_ok=True)
         sidecar.write_text(text, encoding="utf-8")
-    return fp
+    return {k: str(v) for k, v in fp.items()}
 
 
 def _cache_dir(root: Path) -> Path:
