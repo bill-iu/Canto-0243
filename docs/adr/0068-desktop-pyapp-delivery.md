@@ -12,7 +12,7 @@
 4. **Wheel 邊界** — wheel 含查詢服務、FastAPI app、`local_launch` 編排與 runtime 依賴宣告；**唔**把詞庫／UI 打入 wheel 當唯一來源；**唔**以側車迷你 repo 充當安裝後唯一 code。
 5. **Python** — 釘 **CPython 3.11**（`PYAPP_PYTHON_VERSION=3.11`）。PyApp 使用自管發行版，**唔**偵測或改用系統已裝之 3.12／其他版本。
 6. **入口** — 產品主路徑＝`local_launch` **GUI 語意**（silent、可重用已跑 backend、detach 後端）。**A1**：launcher 可結束，服務常駐直至明確退出。
-7. **本機服務退出** — 保留產品 UI「退出 Canto-0243」→ `POST /shutdown`。**唔**把瀏覽器分頁／視窗關閉當停服（E1）。
+7. **本機服務退出** — **預設**關閉最後一個本機產品瀏覽器分頁時 `POST /shutdown`（產品內查詢分頁＝多工作區；**reload 唔停服**）。進階可改「關分頁唔停」並顯示選單「停止本機服務」。**唔**把 F5 當退出。
 8. **更新** — **現行**維持 ADR-0059：指紋提示 ＋ 人手解壓覆蓋成個 Desktop 套件；**關閉** PyApp self-update 作產品預設。整包自動同步僅長遠目標。
 9. **macOS** — 創作者主路徑 **`.command`**（Gatekeeper 教學針對它）。`.app` **不放棄**，作日後修復／研究；**唔**以未 notarize 之 `.app` 雙擊作現行必達承諾。
 10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。
