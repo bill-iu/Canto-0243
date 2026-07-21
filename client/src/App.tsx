@@ -1056,14 +1056,27 @@ function App() {
               </div>
               <div className="header-chrome__actions">
                 <a
-                  className="workbench-entry"
+                  className="workbench-entry workbench-entry--chip"
                   href={workbenchPageHref()}
                   onClick={(e) => {
                     e.preventDefault();
                     navigateAppRoute('workbench');
                   }}
                 >
-                  {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                  <span className="workbench-entry__icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <rect x="1.5" y="3" width="15" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M1.5 7.5h15M7.5 7.5v7.5M12 7.5v7.5" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  </span>
+                  <span className="workbench-entry__text">
+                    <span className="workbench-entry__title">
+                      {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                    </span>
+                    <span className="workbench-entry__sub">
+                      {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
+                    </span>
+                  </span>
                 </a>
                 <ModeMenu
                   mode={mode}

@@ -3,6 +3,8 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { getModeMeta, modeHelp, modeMetaFor, type UiMode } from './mode-meta';
 import { searchFamilyForUiMode } from '../../contracts/search-mode-manifest.mjs';
 import { MODE_OPTIONS } from './mode-menu-logic.ts';
+import { isStopOnLastTabEnabled, setStopOnLastTabEnabled } from './desktop-session.ts';
+import { isPortableHost } from './host-mode.ts';
 
 export interface ModeMenuProps {
   mode: UiMode;
@@ -13,7 +15,7 @@ export interface ModeMenuProps {
   onOpenWorkbench?: () => void;
   /** Portable host only — 關係補錄 */
   onOpenRelation?: () => void;
-  /** Portable host only — 退出本機服務 */
+  /** Portable host only — 停止本機服務（keep-alive 模式先顯示） */
   onExitPortable?: () => void;
   theme?: 'light' | 'dark';
   lang?: 'zh' | 'en';
@@ -42,6 +44,20 @@ export function ModeMenu({
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [stopOnLastTab, setStopOnLastTab] = useState(() => isStopOnLastTabEnabled());
+  // keep-alive mode (last-tab stop OFF) → show explicit stop control
+  const showExit = Boolean(onExitPortable) && !stopOnLastTab;
+
+  useEffect(() => {
+    if (!isPortableHost()) return;
+    const sync = () => setStopOnLastTab(isStopOnLastTabEnabled());
+    window.addEventListener('canto-desktop-stop-mode', sync);
+    window.addEventListener('storage', sync);
+    return () => {
+      window.removeEventListener('canto-desktop-stop-mode', sync);
+      window.removeEventListener('storage', sync);
+    };
+  }, []);
   const meta = modeMetaFor(mode, lang);
   const family = searchFamilyForUiMode(mode);
 
@@ -221,21 +237,23 @@ export function ModeMenu({
                 </span>
                 <span className="mode-key">i</span>
               </button>
-              {onExitPortable ? (
+              {showExit ? (
                 <button
                   type="button"
-                  className="mode-option"
+                  className="mode-option mode-option--danger"
                   id="portableExitBtn"
                   role="menuitem"
                   onClick={() => {
                     close();
-                    onExitPortable();
+                    onExitPortable?.();
                   }}
                 >
                   <span>
-                    <span className="mode-name">{lang === 'zh' ? '退出 Canto-0243' : 'Exit Canto-0243'}</span>
+                    <span className="mode-name">
+                      {lang === 'zh' ? '停止本機服務' : 'Stop local service'}
+                    </span>
                     <span className="mode-help">
-                      {lang === 'zh' ? '關閉本機查韻服務' : 'Stop the local server'}
+                      {lang === 'zh' ? '立即關閉本機查韻服務' : 'Stop the local server now'}
                     </span>
                   </span>
                 </button>
@@ -268,6 +286,37 @@ export function ModeMenu({
                   <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
                 </button>
               </div>
+              {isPortableHost() ? (
+                <button
+                  type="button"
+                  className="mode-option"
+                  role="menuitemcheckbox"
+                  aria-checked={stopOnLastTab}
+                  onClick={() => {
+                    const next = !stopOnLastTab;
+                    setStopOnLastTabEnabled(next);
+                    setStopOnLastTab(next);
+                  }}
+                >
+                  <span>
+                    <span className="mode-name">
+                      {lang === 'zh' ? '關頁即停本機服務' : 'Stop when last tab closes'}
+                    </span>
+                    <span className="mode-help">
+                      {lang === 'zh'
+                        ? stopOnLastTab
+                          ? '開：關閉最後分頁即停（刷新唔停）'
+                          : '關：服務常駐，選單可手動停止'
+                        : stopOnLastTab
+                          ? 'On: last tab closes stops server (reload safe)'
+                          : 'Off: server stays up; use menu to stop'}
+                    </span>
+                  </span>
+                  <span className="mode-key" aria-hidden="true">
+                    {stopOnLastTab ? '✓' : '○'}
+                  </span>
+                </button>
+              ) : null}
             </div>
           </div>
         </div>

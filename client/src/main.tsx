@@ -13,6 +13,7 @@ import { ProductRouter } from './ProductRouter.tsx';
 import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/db-provider.tsx';
 import { isPortableHost } from './host-mode.ts';
+import { installDesktopSessionLifecycle } from './desktop-session.ts';
 import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './pwa-shell-boot';
 import { getInitializedDbBackendMode } from './db/init.ts';
 import { getOpfsVfsWorkerDebugState } from './db/opfs-vfs-backend.ts';
@@ -27,7 +28,9 @@ if (hasPwaGateLanded()) {
   revealPwaShell();
 }
 
-if (!isPortableHost()) {
+if (isPortableHost()) {
+  installDesktopSessionLifecycle();
+} else {
   void import('./pwa-register.ts');
 }
 
