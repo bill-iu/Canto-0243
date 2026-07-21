@@ -29,8 +29,8 @@
 **Canto-0243 手機版**（瀏覽器直接開啟，無需安裝，支援「加到主畫面」，完全離線）  
 👉 https://bill-iu.github.io/Canto-0243/
 
-**離線portable版本**（Windows / macOS 免安裝，解壓即用）  
-下載最新版：[canto-0243-portable.zip](https://github.com/bill-iu/Canto-0243/releases) / macOS tar  
+**Desktop 離線版**（Windows / macOS 免安裝；首次啟動需網路下載 CPython 3.11，其後離線）  
+下載最新版：[canto-0243-desktop.zip](https://github.com/bill-iu/Canto-0243/releases) / macOS `canto-0243-desktop-macos-*.tar.gz`  
 完整 Releases 與詞庫檔請到 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases)
 
 問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -51,7 +51,7 @@
 
 - **Canto-0243 手機版**：直接開啟 https://bill-iu.github.io/Canto-0243/ ，加到主畫面後完全離線可用。頂欄有「搜尋教學」。
 
-- **離線portable版本**：從 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下載解壓。Windows 雙擊 `Canto-0243.exe`（或 `START.bat`）；macOS 雙擊 `Canto-0243.command`。
+- **Desktop 離線版**：從 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下載解壓。Windows 雙擊 `Canto-0243.exe`；macOS 雙擊 `Canto-0243.command`（Gatekeeper 用右鍵打開）。首次需網路。
 
 開發者 clone 需準備 `lyrics.db`（詳見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)）。
 
@@ -82,7 +82,7 @@
 
 詞庫重建、發佈等詳見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) 及 [`docs/release.md`](docs/release.md)。
 
-Portable 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client && npm run build:portable`）。共享 mjs／CSS SSOT 在 **`shared/`**。
+Desktop 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client && npm run build:portable`）。共享 mjs／CSS SSOT 在 **`shared/`**。建置：`scripts/build-desktop.ps1`（需 Rust/cargo）。
 
 ---
 

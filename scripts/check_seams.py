@@ -42,7 +42,7 @@ SOURCES_PATH = REPO_ROOT / "app" / "services" / "position_match" / "sources.py"
 PRELOAD_PATH = REPO_ROOT / "app" / "startup" / "offline_preload.py"
 SERVICE_PATH = REPO_ROOT / "app" / "services" / "manual_relation_service.py"
 ROUTER_PATH = REPO_ROOT / "app" / "routers" / "relation.py"
-LAUNCH_PATH = REPO_ROOT / "scripts" / "local_launch.py"
+LAUNCH_PATH = REPO_ROOT / "app" / "launch" / "local_launch.py"
 START_SH = REPO_ROOT / "start.sh"
 START_BAT = REPO_ROOT / "portable" / "START.bat"
 START_SH_PORTABLE = REPO_ROOT / "portable" / "START.sh"
@@ -68,21 +68,21 @@ class TestLocalLaunchSeam(unittest.TestCase):
         before_open = source[:open_idx]
         self.assertIn('HTML_SUFFIX = "/app/index.html"', source)
         self.assertIn("/app/index.html", before_open)
-        self.assertIn("wait_for_url.py", before_open)
+        self.assertIn("wait_for_url", before_open)
         gate_idx = source.find("--gate")
         self.assertGreater(gate_idx, open_idx)
 
     def test_local_launch_prints_starting_first(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
         starting_idx = source.find('msgs["starting"]')
-        free_idx = source.find("free_port.py")
+        free_idx = source.find("free_port")
         self.assertGreater(starting_idx, 0)
         self.assertGreater(free_idx, starting_idx)
 
     def test_local_launch_ensures_app_ui_before_server(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
         ensure_idx = source.find("ensure_app_ui(")
-        main_py_idx = source.find('["main.py"]')
+        main_py_idx = source.find('"main.py"')
         self.assertGreater(ensure_idx, 0)
         self.assertGreater(main_py_idx, ensure_idx)
         self.assertIn("client/dist-portable", source)
@@ -108,27 +108,29 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
         self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
 
-    def test_build_portable_warms_word_cache(self):
-        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
-        self.assertIn("warm_word_cache.py", source)
-        ps1 = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
-        self.assertIn("warm_word_cache.py", ps1)
-        self.assertIn("PyInstaller", ps1)
+    def test_build_desktop_pyapp_channel(self):
+        """ADR-0068: formal Desktop build uses PyApp + wheel, not venv.pack."""
+        ps1 = (REPO_ROOT / "scripts" / "build-desktop.ps1").read_text(encoding="utf-8")
+        self.assertIn("PYAPP_", ps1)
         self.assertIn("Canto-0243.exe", ps1)
-        self.assertIn("portable_venv_pack.py", ps1)
-        self.assertIn("NoVenvPack", ps1)
+        self.assertIn("app.desktop_entry:main", ps1)
+        self.assertIn("3.11", ps1)
+        self.assertIn("canto-0243-desktop", ps1)
+        sh = (REPO_ROOT / "scripts" / "build-desktop.sh").read_text(encoding="utf-8")
+        self.assertIn("Canto-0243.command", sh)
+        self.assertIn("PYAPP_", sh)
+        # Name kept for callers; must forward to desktop build.
+        wrapper = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
+        self.assertIn("build-desktop.ps1", wrapper)
+        self.assertNotIn("portable_venv_pack.py", wrapper)
 
-    def test_portable_win_launcher_exists(self):
-        path = REPO_ROOT / "scripts" / "portable_win_launcher.py"
+    def test_desktop_entry_exists(self):
+        path = REPO_ROOT / "app" / "desktop_entry.py"
         source = path.read_text(encoding="utf-8")
-        self.assertIn("local_launch.py", source)
+        self.assertIn("resolve_payload_root", source)
+        self.assertIn("CANTO_PAYLOAD_ROOT", source)
         self.assertIn("--gui", source)
-        self.assertIn("_ensure_env_local", source)
-        self.assertIn("_patch_pyvenv_home", source)
-        self.assertIn("python-home", source)
-        self.assertIn("查韻介面未能啟動", source)
-        self.assertIn("_ensure_venv", source)
-        self.assertIn("--ensure-venv", source)
+        self.assertIn("lyrics.db", source)
 
     def test_portable_win_start_bat_patches_pyvenv_home(self):
         source = START_BAT.read_text(encoding="utf-8")
@@ -198,7 +200,8 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("--gui", source)
         self.assertIn("_html_ready", source)
         self.assertIn("_probe_home_portable", source)
-        self.assertIn('_spawn_detached(python, root, ["main.py"]', source)
+        self.assertIn("_server_argv", source)
+        self.assertIn("_spawn_detached(python, root, server_argv", source)
         self.assertIn("return 0 if html_ready else 1", source)
 
     def test_main_does_not_run_main_block_startup(self):

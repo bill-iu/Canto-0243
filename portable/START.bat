@@ -4,13 +4,24 @@ cd /d "%~dp0"
 
 title Canto-0243
 
-rem ADR-0067: extract venv.pack before any venv python runs
+rem ADR-0068 Desktop: prefer PyApp launcher
+if exist "%~dp0Canto-0243.exe" (
+  set CANTO_PAYLOAD_ROOT=%~dp0
+  set PORTABLE=1
+  set ENV=local
+  if not exist ".env.local" if exist "env.portable" copy /Y "env.portable" ".env.local" >nul
+  echo Starting Desktop launcher (first run may need network for CPython 3.11)...
+  start "" "%~dp0Canto-0243.exe"
+  exit /b 0
+)
+
+rem Legacy Portable venv path (build-portable-legacy.ps1 / old zips)
 if exist "%~dp0venv.pack" (
   if not exist "%~dp0venv\.portable-venv-extracted" (
     echo.
     powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\portable_ensure_venv.ps1" -Root "%~dp0."
     if errorlevel 1 (
-      echo [ERROR] Runtime extract failed. Re-download the full portable package if it keeps failing.
+      echo [ERROR] Runtime extract failed. Re-download the full package if it keeps failing.
       pause
       exit /b 1
     )
@@ -19,26 +30,23 @@ if exist "%~dp0venv.pack" (
 
 set "PY=%~dp0venv\Scripts\python.exe"
 if not exist "%PY%" (
-  echo [ERROR] Bundled runtime missing. Re-download the full portable package.
+  echo [ERROR] No Canto-0243.exe and no bundled venv. Re-download the Desktop package.
   pause
   exit /b 1
 )
 
 if not exist "lyrics.db" (
-  echo [ERROR] lyrics.db not found. Extract the full portable package.
+  echo [ERROR] lyrics.db not found. Extract the full package.
   pause
   exit /b 1
 )
 
 if not exist "client\dist-portable\index.html" (
   echo [ERROR] Product UI missing: client\dist-portable\index.html
-  echo Re-download the full portable zip, or from a source checkout run:
-  echo   cd client ^&^& npm run build:portable
   pause
   exit /b 1
 )
 
-rem #66: rewrite pyvenv.cfg home to this extract before any venv python runs
 set "PYHOME=%~dp0venv\python-home"
 set "PYCFG=%~dp0venv\pyvenv.cfg"
 if exist "%PYHOME%\python.exe" if exist "%PYCFG%" (
@@ -48,7 +56,7 @@ if exist "%PYHOME%\python.exe" if exist "%PYCFG%" (
 
 set PORTABLE=1
 set ENV=local
-if not exist ".env.local" copy /Y "env.portable" ".env.local" >nul
+if not exist ".env.local" if exist "env.portable" copy /Y "env.portable" ".env.local" >nul
 
 set HOST=127.0.0.1
 if defined PORT goto :have_port
@@ -56,3 +64,4 @@ set PORT=8000
 :have_port
 
 "%PY%" scripts\local_launch.py --portable --lang en --wait-server --pause-on-exit
+if errorlevel 1 pause

@@ -6,7 +6,7 @@ Before any `redeploy Pages`, release tag refresh, or release asset rebuild, `ori
 
 This rule keeps the public Pages build, release tag, and portable assets on one source commit. `pages.yml`, `scripts/release-windows-local.ps1`, and `scripts/release-macos-local.sh` enforce it.
 
-決策背景：[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)、[ADR-0067](adr/0067-portable-venv-pack-transport.md)（Windows 預設 `venv.pack` 運送；除錯用 `build-portable.ps1 -NoVenvPack`）。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **發佈主理**、**發佈補件**、**分渠道發佈**、**全量發佈**、**發佈詞庫快照**、**套件發佈指紋**、**套件更新提示**、**venv 運送包**。
+決策背景：[ADR-0068](adr/0068-desktop-pyapp-delivery.md)（**Desktop + PyApp**）、[ADR-0044](adr/0044-portable-delivery-and-release.md)、[ADR-0059](adr/0059-portable-release-fingerprint-update-notice.md)。舊 venv.pack 運送見歷史 [ADR-0067](adr/0067-portable-venv-pack-transport.md)。領域詞彙：[CONTEXT.md](../CONTEXT.md) § **Desktop 套件**、**免安裝交付**、**發佈主理**、**分渠道發佈**、**全量發佈**、**套件發佈指紋**、**套件更新提示**。
 
 **貢獻者**：合併 PR 後**唔需要**執行下列發佈；由具 upstream `gh` 權限嘅維護者依角色發佈。
 
@@ -75,16 +75,16 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/v1_1_0_rc.ps1 -Mode 
 
 主理已 Publish zip、macOS tar 未補時：Windows 創作者可下載 zip；跨平台驗收仍須 zip + x86_64 tar 齊。
 
-## 步驟 0 — Portable 產品 UI（每次打 zip／tar 前）
+## 步驟 0 — Desktop 產品 UI（每次打 zip／tar 前）
 
-下一正式 portable release **只**帶 `/app` client 殼（`client/dist-portable`）。共享 mjs／CSS SSOT 在 repo 的 **`shared/`**，唔當創作者入口。
+下一正式 **Desktop** release **只**帶 `/app` client 殼（`client/dist-portable`）作側車。共享 mjs／CSS SSOT 在 repo 的 **`shared/`**，唔當創作者入口。建置腳本：`scripts/build-desktop.ps1`／`.sh`（需 **Rust/cargo** + Python 3.11；PyApp 首次對創作者要網）。
 
 ```bash
 cd client && npm ci && npm run build:portable
 # 可選：node scripts/portable-host-build-self-check.mjs
 ```
 
-`scripts/portable_bundle.ps1`／`build-portable.sh` 會檢查 `client/dist-portable/index.html`；缺則失敗。
+`scripts/desktop_bundle.ps1`／`build-desktop.*` 會檢查 `client/dist-portable/index.html`；缺則失敗。
 
 ## 步驟 1 — 新 tag（換庫／可感知變更）
 
