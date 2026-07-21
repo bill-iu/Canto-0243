@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Canto-0243</title>
+  <style>
+    :root {
+      --bg: #1c1917;
+      --surface: #292524;
+      --ink: #fafaf9;
+      --muted: #a8a29e;
+      --accent: #d6a15c;
+      --line: #44403c;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: "Noto Sans TC", "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(120% 80% at 50% 0%, #3f3a34 0%, var(--bg) 55%);
+      color: var(--ink);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .wrap {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 24px 32px;
+      gap: 18px;
+    }
+    .brand {
+      font-family: "Playfair Display", "Noto Serif TC", Georgia, serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .brand span { color: var(--accent); }
+    .tag {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-align: center;
+      max-width: 22rem;
+      line-height: 1.45;
+    }
+    .stage {
+      margin: 8px 0 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      min-height: 1.4em;
+      text-align: center;
+    }
+    .bar {
+      width: min(280px, 78vw);
+      height: 6px;
+      border-radius: 999px;
+      background: var(--line);
+      overflow: hidden;
+      margin-top: 4px;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: 40%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: slide 1.25s ease-in-out infinite;
+    }
+    @keyframes slide {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(320%); }
+    }
+    .hint {
+      margin: 0;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+      max-width: 22rem;
+      line-height: 1.4;
+    }
+    .err {
+      display: none;
+      margin: 0;
+      padding: 10px 12px;
+      max-width: 22rem;
+      border: 1px solid #7f1d1d;
+      border-radius: 10px;
+      background: color-mix(in srgb, #7f1d1d 35%, var(--surface));
+      color: #fecaca;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    body.is-error .bar { display: none; }
+    body.is-error .err { display: block; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">ONE·<span>搵</span>·韻</div>
+    <p class="tag" id="tag">首次啟動：正在準備本機執行環境（只需一次）</p>
+    <p class="stage" id="stage">正在準備…</p>
+    <div class="bar" aria-hidden="true"><i></i></div>
+    <p class="hint" id="hint">需要網路以下載 Python 執行環境；完成後可離線使用。</p>
+    <p class="err" id="err"></p>
+  </div>
+  <script>
+    const STAGES = {
+      zh: [
+        "正在準備…",
+        "下載 Python 執行環境…",
+        "建立隔離環境…",
+        "安裝應用程式…",
+        "啟動查韻介面…"
+      ],
+      en: [
+        "Preparing…",
+        "Downloading Python…",
+        "Creating environment…",
+        "Installing application…",
+        "Starting product…"
+      ]
+    };
+    const TAG = {
+      zh: "首次啟動：正在準備本機執行環境（只需一次）",
+      en: "First launch: setting up the local runtime (once only)"
+    };
+    const HINT = {
+      zh: "需要網路以下載 Python 執行環境；完成後可離線使用。",
+      en: "Internet is needed to download Python once; then fully offline."
+    };
+    let lang = "zh";
+    window.setSplashLang = (l) => {
+      lang = l === "en" ? "en" : "zh";
+      document.getElementById("tag").textContent = TAG[lang];
+      document.getElementById("hint").textContent = HINT[lang];
+    };
+    window.setSplashStage = (i) => {
+      const list = STAGES[lang] || STAGES.zh;
+      const idx = Math.max(0, Math.min(list.length - 1, Number(i) | 0));
+      document.getElementById("stage").textContent = list[idx];
+      document.body.classList.remove("is-error");
+    };
+    window.setSplashError = (msg) => {
+      document.body.classList.add("is-error");
+      document.getElementById("err").textContent = msg || "Setup failed.";
+      document.getElementById("stage").textContent = lang === "en" ? "Setup failed" : "設定失敗";
+    };
+  </script>
+</body>
+</html>

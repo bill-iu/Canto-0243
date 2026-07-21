@@ -103,9 +103,10 @@ if ($SkipPyApp) {
         if ($LASTEXITCODE -ne 0) { throw "cargo build --release failed" }
         $Built = Join-Path $BuildRoot "target\release\pyapp.exe"
         if (-not (Test-Path $Built)) { throw "pyapp.exe not produced" }
-        $ExeOut = Join-Path $OutDir "Canto-0243.exe"
-        Copy-Item $Built $ExeOut -Force
-        Write-Host "    launcher: $ExeOut"
+        # Inner PyApp runtime (bootstrap + app). Outer shell is Canto-0243.exe.
+        $RuntimeOut = Join-Path $OutDir "Canto-0243-runtime.exe"
+        Copy-Item $Built $RuntimeOut -Force
+        Write-Host "    runtime: $RuntimeOut"
     } finally {
         Pop-Location
         Remove-Item Env:PYAPP_PROJECT_PATH -ErrorAction SilentlyContinue
@@ -116,6 +117,24 @@ if ($SkipPyApp) {
         Remove-Item Env:PYAPP_IS_GUI -ErrorAction SilentlyContinue
         Remove-Item Env:PYAPP_PIP_EXTERNAL -ErrorAction SilentlyContinue
         Remove-Item Env:PYAPP_UV_ENABLED -ErrorAction SilentlyContinue
+    }
+
+    Write-Host "==> Build Desktop install progress shell (Rust + wry)..."
+    $ShellDir = Join-Path $Root "desktop-shell"
+    if (-not (Test-Path (Join-Path $ShellDir "Cargo.toml"))) {
+        throw "desktop-shell/ missing"
+    }
+    Push-Location $ShellDir
+    try {
+        cargo build --release
+        if ($LASTEXITCODE -ne 0) { throw "desktop-shell cargo build failed" }
+        $ShellBin = Join-Path $ShellDir "target\release\canto-desktop-shell.exe"
+        if (-not (Test-Path $ShellBin)) { throw "canto-desktop-shell.exe not produced" }
+        $ShellOut = Join-Path $OutDir "Canto-0243.exe"
+        Copy-Item $ShellBin $ShellOut -Force
+        Write-Host "    shell:   $ShellOut"
+    } finally {
+        Pop-Location
     }
 }
 

@@ -4,7 +4,7 @@ cd /d "%~dp0"
 
 title Canto-0243
 
-rem ADR-0068 Desktop: prefer PyApp launcher
+rem ADR-0068 Desktop: outer shell (or runtime if shell missing)
 if exist "%~dp0Canto-0243.exe" (
   set CANTO_PAYLOAD_ROOT=%~dp0
   set PORTABLE=1
@@ -12,6 +12,13 @@ if exist "%~dp0Canto-0243.exe" (
   if not exist ".env.local" if exist "env.portable" copy /Y "env.portable" ".env.local" >nul
   echo Starting Desktop launcher (first run may need network for CPython 3.11)...
   start "" "%~dp0Canto-0243.exe"
+  exit /b 0
+)
+if exist "%~dp0Canto-0243-runtime.exe" (
+  set CANTO_PAYLOAD_ROOT=%~dp0
+  set PORTABLE=1
+  set ENV=local
+  start "" "%~dp0Canto-0243-runtime.exe"
   exit /b 0
 )
 

@@ -72,10 +72,20 @@ export PYAPP_UV_ENABLED=1
 )
 BIN="${BUILD_ROOT}/target/release/pyapp"
 [[ -f "$BIN" ]] || { echo "pyapp binary missing" >&2; exit 1; }
-cp "$BIN" "${OUT_DIR}/Canto-0243"
+cp "$BIN" "${OUT_DIR}/Canto-0243-runtime"
+chmod +x "${OUT_DIR}/Canto-0243-runtime"
+
+echo "==> Desktop install progress shell (wry)"
+(
+  cd "${ROOT}/desktop-shell"
+  cargo build --release
+)
+SHELL_BIN="${ROOT}/desktop-shell/target/release/canto-desktop-shell"
+[[ -f "$SHELL_BIN" ]] || { echo "desktop-shell binary missing" >&2; exit 1; }
+cp "$SHELL_BIN" "${OUT_DIR}/Canto-0243"
 chmod +x "${OUT_DIR}/Canto-0243"
 
-# Creator primary: .command wraps binary + sets cwd to payload root
+# Creator primary: .command wraps outer shell + sets cwd to payload root
 cat > "${OUT_DIR}/Canto-0243.command" <<'EOF'
 #!/bin/bash
 # Desktop macOS entry (ADR-0068) — Gatekeeper: right-click → Open

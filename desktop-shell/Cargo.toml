@@ -1,0 +1,19 @@
+[package]
+name = "desktop-shell"
+version = "0.1.0"
+edition = "2021"
+description = "Desktop install progress shell (ADR-0068) — outer launcher over PyApp"
+publish = false
+
+[[bin]]
+name = "canto-desktop-shell"
+path = "src/main.rs"
+
+[dependencies]
+tao = "0.35"
+wry = "0.55"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

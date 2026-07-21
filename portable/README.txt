@@ -23,8 +23,10 @@ Windows
 1. 解壓縮整個資料夾
    Extract the entire folder.
 
-2. 雙擊 Canto-0243.exe（推薦）
-   Double-click Canto-0243.exe (recommended).
+2. 雙擊 Canto-0243.exe（推薦；首次會顯示安裝進度殼）
+   Double-click Canto-0243.exe (recommended; first run shows setup splash).
+   進階：Canto-0243-runtime.exe 為內層 PyApp（無進度殼）
+   Advanced: Canto-0243-runtime.exe is the inner PyApp (no splash).
 
 3. 瀏覽器會自動開啟查韻介面
    Your browser opens the search UI.

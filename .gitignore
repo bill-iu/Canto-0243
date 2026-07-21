@@ -12,6 +12,7 @@ __pycache__/
 # 建置產物
 dist/
 build/
+desktop-shell/target/
 .build-python/
 client/.tmp/
 .tmp/
