@@ -16,6 +16,7 @@
 8. **更新** — **現行**維持 ADR-0059：指紋提示 ＋ 人手解壓覆蓋成個 Desktop 套件；**關閉** PyApp self-update 作產品預設。整包自動同步僅長遠目標。
 9. **macOS** — 創作者主路徑 **`.command`**（Gatekeeper 教學針對它）。`.app` **不放棄**，作日後修復／研究；**唔**以未 notarize 之 `.app` 雙擊作現行必達承諾。
 10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。
+11. **Runtime 依賴（瘦）** — Desktop wheel／`requirements.txt` **必裝**：FastAPI 棧、SQLAlchemy、dotenv、**OpenCC**（`to_traditional`／近反義字面正規化）。**唔**必裝 `pycantonese`／`pyjyutping`／`pyyaml`（建庫標音與維護腳本；見 `requirements-dev.txt` 或 `pip install -e ".[ingest]"`）。查詢路徑新詞注入走 rime／靜態索引／DB，唔即時 call pycantonese。
 
 ## 理由
 
@@ -36,6 +37,8 @@
 | 釘 3.12 或跟系統 Python | 拒；釘 3.11 自管發行版 |
 | Tauri／Briefcase／full-app onefile | 拒（handoff 鎖定 PyApp only） |
 | macOS 只靠修 `.app` 當 KPI | 拒作今次必達；主路徑 `.command` |
+| Desktop 必裝 pycantonese／pyjyutping | 拒（code 僅 ingest／維護腳本；誤標 runtime） |
+| Desktop 去掉 OpenCC | 拒（簡→港繁／近反義正規化產品契約） |
 
 ## Consequences
 
