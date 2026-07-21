@@ -17,6 +17,7 @@
 9. **macOS** — 創作者主路徑 **`.command`**（Gatekeeper 教學針對它）。`.app` **不放棄**，作日後修復／研究；**唔**以未 notarize 之 `.app` 雙擊作現行必達承諾。
 10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。
 11. **Runtime 依賴（瘦）** — Desktop wheel／`requirements.txt` **必裝**：FastAPI 棧、SQLAlchemy、dotenv、**OpenCC**（`to_traditional`／近反義字面正規化）。**唔**必裝 `pycantonese`／`pyjyutping`／`pyyaml`（建庫標音與維護腳本；見 `requirements-dev.txt` 或 `pip install -e ".[ingest]"`）。查詢路徑新詞注入走 rime／靜態索引／DB，唔即時 call pycantonese。
+12. **Desktop 安裝進度殼**（grill）— 首次雙擊用**薄外層殼**（Rust + **wry/tao**，共用靜態 HTML splash；Win+Mac 同 milestone 兩 target），分階標籤＋不定 bar 顯示 PyApp bootstrap（下 CPython／建 env／裝 wheel）；**唔**假 %；**唔**等同產品 **就緒閘**。Env 已就緒則跳過殼。內層仍係 PyApp；**拒**用產品 React 閘包住無 Python 階段；**拒**只靠 fork PyApp 當唯一品牌 UI。
 
 ## 理由
 
@@ -39,6 +40,9 @@
 | macOS 只靠修 `.app` 當 KPI | 拒作今次必達；主路徑 `.command` |
 | Desktop 必裝 pycantonese／pyjyutping | 拒（code 僅 ingest／維護腳本；誤標 runtime） |
 | Desktop 去掉 OpenCC | 拒（簡→港繁／近反義正規化產品契約） |
+| 產品 ReadyGate 直接包 PyApp 下載 | 拒（閘要 app 已起；bootstrap 在 Python 前） |
+| Bootstrap 假精確 % | 拒（PyApp 無穩定公開比例 API） |
+| 只 Win 殼、Mac 永久無殼 | 拒作目標；本決策 Win+Mac 同 milestone（wry） |
 
 ## Consequences
 

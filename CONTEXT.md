@@ -800,6 +800,10 @@ _Avoid_：把 F5／reload 當停服、假設多開網頁 tab 先做得到多工�
 創作者主路徑為 **`.command`（或同等腳本入口）**，經 Gatekeeper 一次放行後啟動 launcher／本機服務。**唔**以未 notarize 嘅 `.app` 雙擊作為現行必達承諾；`.app` 可保留作日後修復／研究，但文件與發佈驗收以 `.command` 為準。
 _Avoid_：教創作者只靠雙擊 `.app`、把 ad-hoc `.app` 當已解決 Gatekeeper
 
+**Desktop 安裝進度殼**（首次）：
+雙擊 Desktop 入口後、產品 UI／**就緒閘**出現前，由**薄原生外層殼**顯示嘅品牌化前置進度界面。**一份靜態 HTML splash 資產 + 跨平台宿主源碼**（Rust + wry／tao；Win WebView2、Mac WKWebView），編譯兩個平台入口；**唔**跑產品 Vite／React。殼包住／先於內層 PyApp：覆蓋下載 CPython、建 env、安裝應用包等；完成後交棒產品。已就緒安裝**跳過殼**。進度以**分階標籤**＋不定進度條為主，**唔**假精確 %。**唔**等同 **就緒閘**／**閘前進度**。
+_Avoid_：把安裝進度殼叫就緒閘、要求 React 閘在無 Python 時渲染、單一 exe 跑晒兩平台無抽象、fork 改 PyApp 當唯一進度 UI、假 %
+
 **指紋略過**：
 創作者對某一個**遠端套件發佈指紋**選擇稍後／關閉；同一指紋唔再出現 **套件更新提示**，遠端指紋一變則恢復提示。
 _Avoid_：固定 N 日 snooze、永久關閉更新檢查（作預設）、略過「成個 tag」而唔理同 tag 指紋變更
