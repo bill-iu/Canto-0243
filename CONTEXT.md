@@ -778,8 +778,8 @@ _Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 **免安裝交付**：創作者**唔使**預裝 Python／pip／uv；Win/Mac 雙擊啟動本機產品並內建詞條庫。**首次啟動可需網路**建立執行環境；**其後離線**即可完整查韻。正式 **Desktop 套件**唔以內建 wheels／離線 bootstrap 物料為預設；無網首次須失敗得清楚。Linux 不承諾雙擊免安裝。
 _Avoid_：要求創作者安裝 Python、把「首次零網路」當免安裝必要條件、只在建置機驗證啟動即當交付完成、把可選離線大包當現行主渠道
 
-**Desktop 套件**（正名；舊稱 **Portable 套件**）：zip/tar 等 **免安裝交付** 發佈物；含平台 launcher、**可安裝應用包**（查詢服務與啟動編排等程式；由 launcher 首次裝入使用者機器執行環境）、以及**側車**詞條庫與本機產品 UI（資料跟解壓目錄／launcher 旁，唔塞入執行環境樹）。正式套件帶 **套件發佈指紋**。產品 UI 入口為 **`/app/`**（建置產物目錄名／內部識別子可暫留 `dist-portable`／`portable` 直至清理 PR；**創作者可見與發佈資產名**用 Desktop）。執行環境由 launcher 在使用者機器管理，**唔**再以「整包 venv 跟資料夾任意搬移」為產品承諾。
-_Avoid_：Portable 套件（作產品正名）、把 Desktop 同 **PWA 交付頻道** 混稱、要求創作者自行打包 runtime、把詞庫只藏在執行環境安裝樹當唯一來源、以側車迷你 repo 充當安裝後唯一程式來源
+**Desktop 套件**（正名；舊稱 **Portable 套件**）：zip/tar 等 **免安裝交付** 發佈物；含平台 launcher（Windows **只** `.exe` 入口，**唔**附 `.bat`）、**可安裝應用包**、以及**側車**詞條庫與本機產品 UI。正式套件帶 **套件發佈指紋**。產品 UI 入口為 **`/app/`**。執行環境由 launcher 在使用者機器管理，**唔**再以「整包 venv 跟資料夾任意搬移」為產品承諾。
+_Avoid_：Portable 套件（作產品正名）、把 Desktop 同 **PWA 交付頻道** 混稱、要求創作者自行打包 runtime、Windows 正式套件附 START.bat、把詞庫只藏在執行環境安裝樹當唯一來源
 
 **venv 運送包**（過渡／歷史）：舊 Portable 建置將可搬移 `venv/` 收成少數大檔、首次啟動 extract-once 的運送形態。**Desktop 正式渠道淘汰**；可短暫留 legacy 建置開關做對照，**唔**再上正式 Release。
 _Avoid_：把運送包當現行 Desktop 契約、當第二套查詢引擎、正式渠道雙軌長駐 venv 包與 Desktop 包

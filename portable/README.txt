@@ -23,16 +23,16 @@ Windows
 1. 解壓縮整個資料夾
    Extract the entire folder.
 
-2. 雙擊 Canto-0243.exe（推薦；首次會顯示安裝進度殼）
-   Double-click Canto-0243.exe (recommended; first run shows setup splash).
-   進階：Canto-0243-runtime.exe 為內層 PyApp（無進度殼）
-   Advanced: Canto-0243-runtime.exe is the inner PyApp (no splash).
+2. **只**雙擊 **Canto-0243.exe**（唯一創作者入口；首次會顯示安裝進度殼）
+   Double-click **Canto-0243.exe** only (sole creator entry; first run shows setup splash).
+   套件**不**附 START.bat。
+   No START.bat is shipped.
 
 3. 瀏覽器會自動開啟查韻介面
    Your browser opens the search UI.
 
-4. 退出：查韻介面「退出 Canto-0243」（關閉分頁不會停止本機服務）
-   Exit: use “退出 Canto-0243” in the app (closing the tab does not stop the server).
+4. 退出：預設關閉最後一個查韻分頁即停本機服務（刷新唔停）；選單可改設定
+   Exit: by default closing the last product tab stops the local server (reload-safe).
 
 
 macOS
@@ -70,11 +70,13 @@ package and extract over the old folder after quitting. No silent auto-update.
 
 內容 / Contents
 ---------------
-- Canto-0243.exe / Canto-0243 — PyApp launcher
-- *.whl — 應用程式包（首次由 launcher 安裝）/ app wheel
+- Canto-0243.exe — 外層安裝進度殼（創作者入口）/ outer shell
+- Canto-0243-runtime.exe — 內層 PyApp（由殼啟動；唔使手動雙擊）
+- *.whl — 應用程式包（首次由 runtime 安裝）/ app wheel
 - lyrics.db — 主詞庫
 - data/ — 靜態詞典資料
 - client/dist-portable/ — 產品 UI
+- （無 START.bat）
 
 
 疑難排解 / Troubleshooting

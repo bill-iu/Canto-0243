@@ -51,7 +51,7 @@
 
 - **Canto-0243 手机版**：直接开启 https://bill-iu.github.io/Canto-0243/ ，添加到主屏幕后完全离线可用。顶栏有「搜索教学」。
 
-- **离线 portable 版本**：从 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下载解压。Windows 双击 `Canto-0243.exe`（或 `START.bat`）；macOS 双击 `Canto-0243.command`。
+- **Desktop 离线版**：从 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下载解压。Windows 仅双击 `Canto-0243.exe`（不附 `.bat`）；macOS 双击 `Canto-0243.command`。
 
 开发者 clone 需准备 `lyrics.db`（详见 [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)）。
 

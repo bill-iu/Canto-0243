@@ -36,8 +36,8 @@ function Copy-DesktopSidecar {
     )
     Copy-Tree (Join-Path $Root "data") (Join-Path $OutDir "data") -ExcludeDirs $DataExclude
 
-    # Keep START.* as debug/console fallback; primary is Canto-0243.exe (PyApp).
-    foreach ($name in @("START.bat", "README.txt", "env.portable")) {
+    # Desktop ships .exe only (no START.bat). README + env seed still ok.
+    foreach ($name in @("README.txt", "env.portable")) {
         $src = Join-Path $Root "portable\$name"
         if (Test-Path $src) {
             Copy-Item $src (Join-Path $OutDir $name) -Force

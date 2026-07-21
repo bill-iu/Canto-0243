@@ -51,7 +51,7 @@ Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues
 
 - **Canto-0243 mobile**: Open https://bill-iu.github.io/Canto-0243/ directly; add to home screen for fully offline use. The header has a **Search guide**.
 
-- **Offline portable**: Download and unzip from [Releases](https://github.com/bill-iu/Canto-0243/releases). Windows: double-click `Canto-0243.exe` (or `START.bat`); macOS: double-click `Canto-0243.command`.
+- **Desktop offline**: Download and unzip from [Releases](https://github.com/bill-iu/Canto-0243/releases). Windows: double-click `Canto-0243.exe` only (no `.bat`); macOS: double-click `Canto-0243.command`.
 
 Developers who clone need `lyrics.db` (see [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)).
 
