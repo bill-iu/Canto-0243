@@ -9,18 +9,29 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
+from app.payload_root import resolve_payload_root
+
 ENV = os.getenv("ENV", "local").lower()
-env_file = ".env.prod" if ENV == "prod" else ".env.local"
+# Load env from payload root first (Desktop sidecar), then cwd.
+_PAYLOAD = resolve_payload_root()
+_env_name = ".env.prod" if ENV == "prod" else ".env.local"
+for _candidate in (_PAYLOAD / _env_name, Path.cwd() / _env_name, Path(_env_name)):
+    if _candidate.is_file():
+        load_dotenv(_candidate)
+        env_file = str(_candidate)
+        break
+else:
+    load_dotenv(_env_name)
+    env_file = _env_name
 
 print(f"[ENV] 目前環境: {ENV.upper()} | 載入設定檔: {env_file}")
 
-load_dotenv(env_file)
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+# Desktop wheel install: site-packages ≠ payload; always prefer resolve_payload_root().
+PROJECT_ROOT = resolve_payload_root()
 
 
 def resolve_sqlite_database_url(url: str) -> str:
-    """將 sqlite:///./lyrics.db 解析為專案根目錄下的絕對路徑（避免 macOS Finder 啟動時 cwd 錯誤）。"""
+    """Resolve sqlite:///./lyrics.db against payload root (Desktop sidecar / repo)."""
     if not url or not url.startswith("sqlite"):
         return url
     prefix = "sqlite:///"
@@ -41,7 +52,11 @@ if not DATABASE_URL:
 
 DATABASE_URL = resolve_sqlite_database_url(DATABASE_URL)
 
-print(f"[DB] 使用資料庫: {DATABASE_URL.split('://')[0]}")
+_db_kind = DATABASE_URL.split("://")[0]
+_db_hint = ""
+if DATABASE_URL.startswith("sqlite:///"):
+    _db_hint = f" | {DATABASE_URL[len('sqlite:///'):]}"
+print(f"[DB] 使用資料庫: {_db_kind} | payload={PROJECT_ROOT}{_db_hint}")
 
 if DATABASE_URL.startswith("postgresql"):
     raise SystemExit(

@@ -8,7 +8,9 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
-ROOT = Path(__file__).resolve().parent.parent.parent
+from app.payload_root import resolve_payload_root
+
+ROOT = resolve_payload_root()
 DEFAULT_CLEAN_DIR = ROOT / "data" / "raw" / "clean"
 DEFAULT_FIXTURE_JSON = ROOT / "data" / "lexicon" / "fixtures" / "word_lexicon.json"
 

@@ -5,9 +5,9 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List, Set
 
-DEFAULT_PATH = (
-    Path(__file__).resolve().parents[2] / "data" / "syn_ant" / "compound_synonyms.txt"
-)
+from app.payload_root import resolve_payload_root
+
+DEFAULT_PATH = resolve_payload_root() / "data" / "syn_ant" / "compound_synonyms.txt"
 
 
 def load_compound_synonyms(path: Path | None = None) -> List[str]:

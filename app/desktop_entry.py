@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 def resolve_payload_root() -> Path:
-    """Desktop sidecar root: env, else directory next to launcher, else cwd."""
+    """Desktop sidecar root: env, launcher dir (PyApp), then shared helper."""
     env = os.environ.get("CANTO_PAYLOAD_ROOT", "").strip()
     if env:
         return Path(env).expanduser().resolve()
@@ -20,19 +20,9 @@ def resolve_payload_root() -> Path:
     if os.environ.get("PYAPP") == "1" or getattr(sys, "frozen", False):
         return Path(sys.executable).resolve().parent
 
-    cwd = Path.cwd().resolve()
-    if (cwd / "lyrics.db").is_file() and (
-        (cwd / "client" / "dist-portable" / "index.html").is_file()
-        or (cwd / "main.py").is_file()
-    ):
-        return cwd
+    from app.payload_root import resolve_payload_root as _shared
 
-    # Dev: package lives under repo/app/
-    here = Path(__file__).resolve()
-    for parent in here.parents:
-        if (parent / "lyrics.db").is_file() and (parent / "app").is_dir():
-            return parent
-    return cwd
+    return _shared()
 
 
 def _win_message(title: str, text: str) -> None:

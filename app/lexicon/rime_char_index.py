@@ -10,7 +10,9 @@ from typing import Dict, List, Optional
 from app.lexicon.static_index import LexiconEntry
 from app.utils.jyutping_codec import get_0243_code
 
-ROOT = Path(__file__).resolve().parent.parent.parent
+from app.payload_root import resolve_payload_root
+
+ROOT = resolve_payload_root()
 DEFAULT_CHAR_CSV = ROOT / "data" / "rime" / "char.csv"
 DEFAULT_PRON_RANK = "預設"
 

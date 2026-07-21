@@ -13,7 +13,9 @@ FIELDS = ("char", "old_jyutping", "old_code", "action", "value", "note")
 LEGACY_FIELDS = ("char", "code", "jyutping", "action", "value", "note", "status", "applied_at")
 ACTIONS = frozenset({"set_jyutping", "set_code", "delete"})
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+from app.payload_root import resolve_payload_root
+
+REPO_ROOT = resolve_payload_root()
 DEFAULT_TSV = REPO_ROOT / "data" / "lexicon" / "lexicon_corrections.tsv"
 
 

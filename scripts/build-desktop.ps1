@@ -49,6 +49,21 @@ Write-Host "==> Copy sidecar payload (db, UI, data, desktop launchers)..."
 Copy-DesktopSidecar -Root $Root -OutDir $OutDir -DbPath $DbPath
 Copy-Item $Wheel.FullName (Join-Path $OutDir $Wheel.Name) -Force
 
+# UI lexiconVersion reads portable-manifest.json / README under payload root (not site-packages).
+$StampTag = $env:DESKTOP_RELEASE_TAG
+if (-not $StampTag) { $StampTag = $env:PORTABLE_RELEASE_TAG }
+if (-not $StampTag) {
+    $StampTag = python -c "import tomllib; print('v'+tomllib.load(open(r'$Root\pyproject.toml','rb'))['project']['version'])"
+}
+if ($StampTag -and -not $StampTag.StartsWith("v")) { $StampTag = "v$StampTag" }
+Write-Host "==> Stamp payload portable-manifest.json tag=$StampTag"
+$manifestObj = @{ tag = $StampTag; platform = "windows"; channel = "desktop" } | ConvertTo-Json -Compress
+Set-Content -Path (Join-Path $OutDir "portable-manifest.json") -Value $manifestObj -Encoding utf8
+# Optional: root README version line for lexicon_version fallback
+if (Test-Path (Join-Path $Root "README.md")) {
+    Copy-Item (Join-Path $Root "README.md") (Join-Path $OutDir "README.md") -Force
+}
+
 if ($SkipPyApp) {
     Write-Host "==> Skip PyApp (-SkipPyApp): wheel + sidecar only"
 } else {
