@@ -70,13 +70,13 @@ package and extract over the old folder after quitting. No silent auto-update.
 
 內容 / Contents
 ---------------
-- Canto-0243.exe — 外層安裝進度殼（創作者入口）/ outer shell
-- Canto-0243-runtime.exe — 內層 PyApp（由殼啟動；唔使手動雙擊）
+- Canto-0243.exe — 外層安裝進度殼（創作者入口；套件根目錄唯一 .exe）
+- runtime/Canto-0243-runtime.exe — 內層 PyApp（子目錄；由殼啟動）
 - *.whl — 應用程式包（首次由 runtime 安裝）/ app wheel
 - lyrics.db — 主詞庫
 - data/ — 靜態詞典資料
 - client/dist-portable/ — 產品 UI
-- （無 START.bat）
+- （無 START.bat；根目錄唔放 runtime.exe）
 
 
 疑難排解 / Troubleshooting

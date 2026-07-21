@@ -72,8 +72,9 @@ export PYAPP_UV_ENABLED=1
 )
 BIN="${BUILD_ROOT}/target/release/pyapp"
 [[ -f "$BIN" ]] || { echo "pyapp binary missing" >&2; exit 1; }
-cp "$BIN" "${OUT_DIR}/Canto-0243-runtime"
-chmod +x "${OUT_DIR}/Canto-0243-runtime"
+mkdir -p "${OUT_DIR}/runtime"
+cp "$BIN" "${OUT_DIR}/runtime/Canto-0243-runtime"
+chmod +x "${OUT_DIR}/runtime/Canto-0243-runtime"
 
 echo "==> Desktop install progress shell (wry)"
 (

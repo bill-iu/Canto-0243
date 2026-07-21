@@ -14,11 +14,11 @@ if exist "%~dp0Canto-0243.exe" (
   start "" "%~dp0Canto-0243.exe"
   exit /b 0
 )
-if exist "%~dp0Canto-0243-runtime.exe" (
+if exist "%~dp0runtime\Canto-0243-runtime.exe" (
   set CANTO_PAYLOAD_ROOT=%~dp0
   set PORTABLE=1
   set ENV=local
-  start "" "%~dp0Canto-0243-runtime.exe"
+  start "" "%~dp0runtime\Canto-0243-runtime.exe"
   exit /b 0
 )
 

@@ -103,8 +103,10 @@ if ($SkipPyApp) {
         if ($LASTEXITCODE -ne 0) { throw "cargo build --release failed" }
         $Built = Join-Path $BuildRoot "target\release\pyapp.exe"
         if (-not (Test-Path $Built)) { throw "pyapp.exe not produced" }
-        # Inner PyApp runtime (bootstrap + app). Outer shell is Canto-0243.exe.
-        $RuntimeOut = Join-Path $OutDir "Canto-0243-runtime.exe"
+        # Inner PyApp under runtime/ (not package root next to outer shell).
+        $RuntimeDir = Join-Path $OutDir "runtime"
+        New-Item -ItemType Directory -Path $RuntimeDir -Force | Out-Null
+        $RuntimeOut = Join-Path $RuntimeDir "Canto-0243-runtime.exe"
         Copy-Item $Built $RuntimeOut -Force
         Write-Host "    runtime: $RuntimeOut"
     } finally {

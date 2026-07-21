@@ -15,7 +15,7 @@
 7. **本機服務退出** — **預設**關閉最後一個本機產品瀏覽器分頁時 `POST /shutdown`（產品內查詢分頁＝多工作區；**reload 唔停服**）。進階可改「關分頁唔停」並顯示選單「停止本機服務」。**唔**把 F5 當退出。
 8. **更新** — **現行**維持 ADR-0059：指紋提示 ＋ 人手解壓覆蓋成個 Desktop 套件；**關閉** PyApp self-update 作產品預設。整包自動同步僅長遠目標。
 9. **macOS** — 創作者主路徑 **`.command`**（Gatekeeper 教學針對它）。`.app` **不放棄**，作日後修復／研究；**唔**以未 notarize 之 `.app` 雙擊作現行必達承諾。
-10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。**Windows Desktop 套件只交付 `.exe`（外層殼 + runtime）**，**唔**附 `START.bat`；repo 內 `portable/START.bat` 僅供 legacy／開發，唔入正式 Desktop zip。
+10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。**Windows Desktop 套件**：創作者入口只係根目錄 **`Canto-0243.exe`**；內層 PyApp 放 **`runtime/Canto-0243-runtime.exe`**（唔同根目錄並排）。**唔**附 `START.bat`；repo 內 `portable/START.bat` 僅供 legacy／開發。
 11. **Runtime 依賴（瘦）** — Desktop wheel／`requirements.txt` **必裝**：FastAPI 棧、SQLAlchemy、dotenv、**OpenCC**（`to_traditional`／近反義字面正規化）。**唔**必裝 `pycantonese`／`pyjyutping`／`pyyaml`（建庫標音與維護腳本；見 `requirements-dev.txt` 或 `pip install -e ".[ingest]"`）。查詢路徑新詞注入走 rime／靜態索引／DB，唔即時 call pycantonese。
 12. **Desktop 安裝進度殼**（grill）— 首次雙擊用**薄外層殼**（Rust + **wry/tao**，共用靜態 HTML splash；Win+Mac 同 milestone 兩 target），分階標籤＋不定 bar 顯示 PyApp bootstrap（下 CPython／建 env／裝 wheel）；**唔**假 %；**唔**等同產品 **就緒閘**。Env 已就緒則跳過殼。內層仍係 PyApp；**拒**用產品 React 閘包住無 Python 階段；**拒**只靠 fork PyApp 當唯一品牌 UI。
 

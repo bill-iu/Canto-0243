@@ -16,6 +16,8 @@ use tao::window::WindowBuilder;
 use wry::WebViewBuilder;
 
 const PROJECT: &str = "canto-0243";
+/// Inner PyApp lives under payload subdir (not next to outer shell at package root).
+const INNER_SUBDIR: &str = "runtime";
 const INNER_WIN: &str = "Canto-0243-runtime.exe";
 const INNER_UNIX: &str = "Canto-0243-runtime";
 
@@ -40,10 +42,11 @@ fn payload_root() -> PathBuf {
 }
 
 fn inner_binary(root: &Path) -> PathBuf {
+    let dir = root.join(INNER_SUBDIR);
     if cfg!(windows) {
-        root.join(INNER_WIN)
+        dir.join(INNER_WIN)
     } else {
-        root.join(INNER_UNIX)
+        dir.join(INNER_UNIX)
     }
 }
 
@@ -271,7 +274,7 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             if let Some(status) = child_exited {
                 if start.elapsed() > Duration::from_secs(90) && !product_http_ready() {
                     let _ = proxy_t.send_event(UserEvent::Failed(format!(
-                        "啟動未完成（結束代碼 {status}）。\n請確認網路後重試，或執行 Canto-0243-runtime 查看詳情。"
+                        "啟動未完成（結束代碼 {status}）。\n請確認網路後重試，或執行 runtime/Canto-0243-runtime 查看詳情。"
                     )));
                     return;
                 }
