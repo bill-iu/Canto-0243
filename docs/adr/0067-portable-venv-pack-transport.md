@@ -1,10 +1,12 @@
 # ADR-0067: Portable venv pack transport (fewer zip entries)
 
-領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § **免安裝交付**、**Portable 套件**、**venv 運送包**。  
-原則層： [ADR-0044](./0044-portable-delivery-and-release.md) §1／§1b（runtime 仍係可搬移 venv；本 ADR 只鎖**運送**）。  
-指紋： [ADR-0059](./0059-portable-release-fingerprint-update-notice.md)（`package_digest`／`file_count` 以**運送狀態**為準）。
+**Status:** superseded by [ADR-0068](./0068-desktop-pyapp-delivery.md)（Desktop + PyApp；正式渠道淘汰 venv.pack 運送）。
 
-## 決策
+領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § **免安裝交付**、**Desktop 套件**、**venv 運送包**。  
+原則層（歷史）： [ADR-0044](./0044-portable-delivery-and-release.md) §1／§1b。  
+指紋： [ADR-0059](./0059-portable-release-fingerprint-update-notice.md)。
+
+## 決策（歷史）
 
 1. **運送** — Windows portable 建置預設把整棵 `venv/`（含 `python-home`）打成套件根目錄單一 **`venv.pack`**（zip）。Zip／資料夾在 **首次啟動前** 只有少數 entry，唔再運送數千小檔。
 2. **Runtime** — 首次 START／`Canto-0243.exe` **extract-once** 到 `venv/`，之後行為同 ADR-0044 展開 venv（`pyvenv.cfg` home patch、self-check 語意不變）。

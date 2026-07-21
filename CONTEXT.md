@@ -775,22 +775,30 @@ _Avoid_：單 PR 混多族、未綠就宣稱 parity 完成
 
 **離線單機交付**：創作者本機完整查韻/搜尋/近反義；詞庫+快取本地。_Avoid_：自架服務並重
 
-**免安裝交付**：無 pip；Portable 內建詞條庫；Win/Mac 雙擊即用。Linux 需 Python。內建執行環境須**可搬移**——任意解壓路徑、另一台電腦均可啟動，**唔**依賴建置機或系統已安裝嘅 Python。
-_Avoid_：要求創作者安裝 Python／uv、只在建置機驗證啟動即當交付完成
+**免安裝交付**：創作者**唔使**預裝 Python／pip／uv；Win/Mac 雙擊啟動本機產品並內建詞條庫。**首次啟動可需網路**建立執行環境；**其後離線**即可完整查韻。正式 **Desktop 套件**唔以內建 wheels／離線 bootstrap 物料為預設；無網首次須失敗得清楚。Linux 不承諾雙擊免安裝。
+_Avoid_：要求創作者安裝 Python、把「首次零網路」當免安裝必要條件、只在建置機驗證啟動即當交付完成、把可選離線大包當現行主渠道
 
-**Portable 套件**：zip/tar 發佈物；含詞條庫（可為合併單檔或與 PWA 同源之分包，見 **詞庫分包** 渠道決策）+ words-lexicon.json；Win exe / mac command。套件內建執行環境與詞庫一併可搬移（見 **免安裝交付**）。產品 UI 為 **`/app/`**（`client/dist-portable`，`PORTABLE_HOST` 建置）；`local_launch` 開 `/app/index.html`。Repo 內 **`shared/`** 為共享 mjs／CSS SSOT（#86 第 (3) 段）；產品入口為 `/app/`。新打之正式套件應帶 **套件發佈指紋**；無指紋之舊套件唔做更新探測。Windows 預設可以 **venv 運送包**（`venv.pack`）減少解壓小檔；首次啟動再展開（見 ADR-0067）。
+**Desktop 套件**（正名；舊稱 **Portable 套件**）：zip/tar 等 **免安裝交付** 發佈物；含平台 launcher、**可安裝應用包**（查詢服務與啟動編排等程式；由 launcher 首次裝入使用者機器執行環境）、以及**側車**詞條庫與本機產品 UI（資料跟解壓目錄／launcher 旁，唔塞入執行環境樹）。正式套件帶 **套件發佈指紋**。產品 UI 入口為 **`/app/`**（建置產物目錄名／內部識別子可暫留 `dist-portable`／`portable` 直至清理 PR；**創作者可見與發佈資產名**用 Desktop）。執行環境由 launcher 在使用者機器管理，**唔**再以「整包 venv 跟資料夾任意搬移」為產品承諾。
+_Avoid_：Portable 套件（作產品正名）、把 Desktop 同 **PWA 交付頻道** 混稱、要求創作者自行打包 runtime、把詞庫只藏在執行環境安裝樹當唯一來源、以側車迷你 repo 充當安裝後唯一程式來源
 
-**venv 運送包**：
-Portable 建置將整棵可搬移 `venv/`（含 Windows `python-home`）收成套件內少數大檔（現行 `venv.pack` zip），創作者解壓套件時唔必寫入數千 runtime 小檔；首次本機啟動 extract-once 後當正常 venv 使用。成功後可刪運送包以省磁碟（壞 runtime 須重下整包）。**唔**等於 full-app 單檔、**唔**要求創作者自行打包。
-_Avoid_：把運送包當第二套查詢引擎、要求創作者 PyInstaller、同「已展開 venv 樹」混稱為同一運送態
+**venv 運送包**（過渡／歷史）：舊 Portable 建置將可搬移 `venv/` 收成少數大檔、首次啟動 extract-once 的運送形態。**Desktop 正式渠道淘汰**；可短暫留 legacy 建置開關做對照，**唔**再上正式 Release。
+_Avoid_：把運送包當現行 Desktop 契約、當第二套查詢引擎、正式渠道雙軌長駐 venv 包與 Desktop 包
 
 **套件發佈指紋**：
-某次**正式** **Portable 套件** 發佈嘅身份：`release tag` ＋ **本平台套件 digest** ＋ **詞條庫**（`lyrics.db`）sha256；三者須同一次發佈寫入套件。用以判別本機套件是否仍對應最新正式遠端發佈（含同 tag 換庫或程式刷新）。
+某次**正式** **Desktop 套件** 發佈嘅身份：`release tag` ＋ **本平台套件 digest** ＋ **詞條庫**（`lyrics.db`）sha256；三者須同一次發佈寫入套件。用以判別本機套件是否仍對應最新正式遠端發佈（含同 tag 換庫或程式刷新）。
 _Avoid_：git 版本、只 semver／只 **詞庫版本**、update check id、把 prerelease／beta 當正式指紋來源
 
 **套件更新提示**：
-本機 **套件發佈指紋** 與最新**正式**遠端指紋唔一致時，向 **創作者** 顯示嘅通知（啟動終端摘要 ＋ 產品 UI 橫幅）；引導前往 GitHub Release 或複製下載指令，經關閉程式後人手解壓覆蓋；**唔**原地自動覆蓋、**唔**阻 **就緒閘解鎖**。只對非 prerelease 嘅最新正式 Release；遠端 beta／prerelease 唔觸發。無本機指紋則唔檢查、唔提示。短超時失敗當無更新（fail-open）。
-_Avoid_：自動更新、強制升級閘、系統 MessageBox（v1）、把 git pull 當 Portable 更新路徑、穩定軌道提示 beta
+本機 **套件發佈指紋** 與最新**正式**遠端指紋唔一致時，向 **創作者** 顯示嘅通知（啟動終端摘要 ＋ 產品 UI 橫幅）；引導前往 GitHub Release 或複製下載指令，經關閉程式後人手解壓覆蓋成個 **Desktop 套件**；**唔**原地自動覆蓋、**唔**阻 **就緒閘解鎖**。只對非 prerelease 嘅最新正式 Release；遠端 beta／prerelease 唔觸發。無本機指紋則唔檢查、唔提示。短超時失敗當無更新（fail-open）。**現行**唔啟用 launcher 自動更新；整包自動同步屬長遠目標，唔改變而家提示＋人手覆蓋契約。
+_Avoid_：強制升級閘、系統 MessageBox（v1）、把 git pull 當 Desktop 更新路徑、穩定軌道提示 beta、把長遠自動更新當已交付能力
+
+**本機服務退出**（Desktop）：
+創作者用產品 UI 內明確操作（如「退出 Canto-0243」）停止本機查詢服務；關瀏覽器分頁／視窗**唔**等同停止服務。Launcher 可喺啟動後結束，服務以可重用方式常駐直至明確退出或進程被系統結束。
+_Avoid_：把分頁關閉當預設停服、假設存在擁有後端生命週期嘅原生 App 窗（無另做殼時）
+
+**Desktop macOS 啟動**：
+創作者主路徑為 **`.command`（或同等腳本入口）**，經 Gatekeeper 一次放行後啟動 launcher／本機服務。**唔**以未 notarize 嘅 `.app` 雙擊作為現行必達承諾；`.app` 可保留作日後修復／研究，但文件與發佈驗收以 `.command` 為準。
+_Avoid_：教創作者只靠雙擊 `.app`、把 ad-hoc `.app` 當已解決 Gatekeeper
 
 **指紋略過**：
 創作者對某一個**遠端套件發佈指紋**選擇稍後／關閉；同一指紋唔再出現 **套件更新提示**，遠端指紋一變則恢復提示。
