@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import type { ReplacementPlanV1 } from './contracts.ts';
 import type { CodeConstraintMode } from './code-constraint.ts';
 import {
@@ -29,6 +31,8 @@ interface Props {
   initialRefError?: string;
   canUndo: boolean;
   onUndo: () => void;
+  /** 右上角工具（詞性篩選等） */
+  headingExtra?: ReactNode;
 }
 
 function toggleWhole(picks: PhonemeDimPicks, on: boolean): PhonemeDimPicks {
@@ -163,6 +167,7 @@ export function ConstraintBar({
   initialRefError,
   canUndo,
   onUndo,
+  headingExtra,
 }: Props) {
   const explicitHint = spanWidth > 0
     ? `長度須為 ${spanWidth}；未填位會補 ?。`
@@ -172,11 +177,14 @@ export function ConstraintBar({
     <section className="constraint-bar" aria-labelledby="constraintHeading">
       <div className="constraint-bar__heading-row">
         <h2 id="constraintHeading">本次替換條件</h2>
-        {canUndo ? (
-          <button type="button" className="undo-action" onClick={onUndo}>
-            復原最近一次套用／放寬／手改
-          </button>
-        ) : null}
+        <div className="constraint-bar__heading-actions">
+          {headingExtra}
+          {canUndo ? (
+            <button type="button" className="undo-action" onClick={onUndo}>
+              復原最近一次套用／放寬／手改
+            </button>
+          ) : null}
+        </div>
       </div>
       <div className="constraint-bar__menus">
         <label>聲調精度

@@ -708,11 +708,17 @@ export function WorkbenchPage() {
               })()}
               canUndo={canUndo}
               onUndo={performUndo}
+              headingExtra={(
+                <>
+                  <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
+                  {isPosFilterActive(posFilter) ? (
+                    <span className="constraint-bar__pos-status">
+                      {uiLang === 'en' ? 'Filtering candidates' : '正篩選候選'}
+                    </span>
+                  ) : null}
+                </>
+              )}
             />
-            <div className="workbench-filter-row">
-              <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
-              {isPosFilterActive(posFilter) ? <span>{uiLang === 'en' ? 'Filtering candidate cards' : '正篩選候選卡片'}</span> : null}
-            </div>
             <div className="candidate-status" aria-live="polite">
               {!draft.selection
                 ? '尚未鎖定替換段；候選會在你鎖定後出現。'

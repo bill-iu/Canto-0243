@@ -119,7 +119,10 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
         disabled={disabled}
         onClick={() => setOpen((current) => !current)}
       >
-        <FilterIcon /><span>{label}</span>{count ? <b aria-label={`${count}`}>{count}</b> : null}
+        <FilterIcon />
+        <span className="pos-filter__trigger-label-full">{label}</span>
+        <span className="pos-filter__trigger-label-short">{lang === 'en' ? 'POS' : '詞性'}</span>
+        {count ? <b aria-label={`${count}`}>{count}</b> : null}
       </button>
       {open ? createPortal(<>
         <button className="pos-filter__scrim" type="button" aria-label={lang === 'en' ? 'Close filters' : '關閉篩選'} onClick={() => setOpen(false)} />

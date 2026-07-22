@@ -116,11 +116,12 @@ form.search-panel {
   flex-shrink: 0;
 }
 
-/* 空搜尋首頁：搜尋在上、速覽在下，主區不捲動 */
+/* 空搜尋首頁：搜尋在上、速覽在下；速覽區可捲（窄屏唔再裁切「教你點用」） */
 .search-view.is-empty-landing .search-results-scroll {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .search-view.is-empty-landing .guide-quick {
@@ -129,12 +130,29 @@ form.search-panel {
   display: flex;
   flex-direction: column;
   margin-bottom: 0;
+  overflow: hidden;
+}
+
+.search-view.is-empty-landing .guide-quick__header {
+  flex: 0 0 auto;
 }
 
 .search-view.is-empty-landing .guide-quick__rows {
   flex: 1 1 auto;
   min-height: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+
+.search-view.is-empty-landing .guide-quick__rows::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .search-view.is-empty-landing .guide-quick__columns {
