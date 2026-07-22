@@ -440,9 +440,20 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   gap: .65rem 1rem;
   flex-basis: 100%;
 }
+.constraint-bar__heading-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .5rem .65rem;
+  margin-left: auto;
+}
 .constraint-bar__heading-row .undo-action {
   display: inline-flex;
   margin: 0;
+}
+.constraint-bar__heading-actions .pos-filter__trigger {
+  min-height: 2.1rem;
 }
 .constraint-bar h2 {
   margin: 0;
@@ -490,7 +501,13 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   font-size: .7rem;
   font-weight: 600;
 }
-.workbench-filter-row { display: flex; align-items: center; justify-content: flex-end; gap: .7rem; margin-top: .75rem; color: var(--muted); font-size: .78rem; }
+.constraint-bar__pos-status {
+  color: var(--muted);
+  font-size: .78rem;
+  white-space: nowrap;
+}
+/* legacy slot — POS filter moved into constraint-bar heading */
+.workbench-filter-row { display: none; }
 .phoneme-dims {
   flex-basis: 100%;
   display: grid;

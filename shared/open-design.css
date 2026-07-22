@@ -335,6 +335,32 @@ a.ghost-button:hover { text-decoration: none; }
       border-top: 1px solid var(--line);
     }
 
+.menu-group--github {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+a.mode-option--github {
+  text-decoration: none;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.mode-option__github-lead {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mode-option__github-icon {
+  flex: 0 0 auto;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 2px;
+}
+
 .menu-label {
       margin: 3px 8px 8px;
       color: var(--muted);

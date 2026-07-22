@@ -22025,6 +22025,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 被害人	n		passive	prefix-passive;p3;heuristic;p1-audit;review;受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘;clear-false-passive-voice;review;prefix-passive;heuristic;passive-prefix-expand;review
 被害妄想	v		passive	prefix-passive;passive-prefix-expand;review
 被尾	v		passive	prefix-passive;passive-prefix-expand;review
+被愛	v		passive	prefix-passive;manual-add;review
 被捕	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 被控	v		passive	prefix-passive;passive-prefix-expand;review
 被殺	v		passive	cow-single;p3;prefix-passive;heuristic;passive-prefix-expand;review
@@ -22044,6 +22045,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 被鋪蚊帳	v		passive	prefix-passive;passive-prefix-expand;review
 被頭	v		passive	prefix-passive;passive-prefix-expand;review
 被頭巾	v		passive	prefix-passive;passive-prefix-expand;review
+被騙	v		passive	prefix-passive;manual-add;review
 被鬼矺	v		passive	prefix-passive;passive-prefix-expand;review
 裂	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 裂開	n,v			cow-nv-unreviewed;trust-low

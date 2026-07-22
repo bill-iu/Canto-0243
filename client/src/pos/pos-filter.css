@@ -30,6 +30,12 @@
   background: color-mix(in srgb, #17120f 45%, transparent); cursor: default;
 }
 
+/* 窄屏：短標「詞性」／POS，唔再淨係 icon */
 @media (max-width: 640px) {
-  .pos-filter__trigger span { display: none; }
+  .pos-filter__trigger span.pos-filter__trigger-label-full { display: none; }
+  .pos-filter__trigger span.pos-filter__trigger-label-short { display: inline; }
+}
+
+@media (min-width: 641px) {
+  .pos-filter__trigger span.pos-filter__trigger-label-short { display: none; }
 }
