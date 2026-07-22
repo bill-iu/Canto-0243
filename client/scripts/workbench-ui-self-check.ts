@@ -75,10 +75,13 @@ if (page.includes("type: 'select', start: 0, width: 1")) {
 if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
   throw new Error('workbench bridge consume/write missing');
 }
-if (!page.includes('hydrateDraftCodes') || !page.includes('pendingResolve')) {
-  throw new Error('code hydrate / reading retry missing');
+if (
+  !page.includes('pendingResolve')
+  || !(page.includes('initialSession') || page.includes('loadWorkbenchSession') || page.includes('session/index'))
+) {
+  throw new Error('session hydrate / reading retry missing');
 }
-if (!page.includes('toggleLockKeepingSpan') || !constraints.includes('空白鍵鎖定')) {
+if (!page.includes('sessionToggleLock') || !constraints.includes('空白鍵鎖定')) {
   throw new Error('click-span lock / shortcut hint missing');
 }
 if (!canvas.includes('點擊鎖定，雙擊改字')) {
@@ -117,8 +120,8 @@ if (!constraints.includes('constraint-bar__menus') || !constraints.includes('con
 if (!constraints.includes('is-reserved') || !constraints.includes('is-active')) {
   throw new Error('explicit code slot must reserve height when inactive');
 }
-if (!page.includes('codeConstraint') || !page.includes('buildCodeDigitSlots')) {
-  throw new Error('code constraint wiring missing');
+if (!page.includes('codeConstraint') || !page.includes('derivePlan')) {
+  throw new Error('code constraint / derivePlan wiring missing');
 }
 if (constraints.includes('末格同韻') || constraints.includes('首格同聲')) {
   throw new Error('legacy end-anchor buttons must be removed');
@@ -141,7 +144,11 @@ if (!canvas.includes('onDoubleClick') || !canvas.includes('line-slot-edit') || !
 if (!canvas.includes('onClearSurfaces') || !canvas.includes('canvas-clear-surfaces') || !canvas.includes('清空')) {
   throw new Error('clear-surfaces control missing on sentence canvas');
 }
-if (!page.includes('clearLineDraft') || !page.includes('clearedUndo') || !page.includes('aria-label="復原清空前的句稿"')) {
+if (
+  !(page.includes('clearWorkbenchSession') || page.includes('type: \'clear\''))
+  || !page.includes('aria-label="復原清空前的句稿"')
+  || !(page.includes('canUndo') || page.includes('session.undo') || page.includes('type: \'undo\''))
+) {
   throw new Error('clear-to-empty-workbench undo wiring missing');
 }
 if (!/建立句格[\s\S]{0,400}aria-label="復原清空前的句稿"[\s\S]{0,120}復原/.test(page)) {

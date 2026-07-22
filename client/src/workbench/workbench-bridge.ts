@@ -1,5 +1,6 @@
 import type { WorkbenchStorage } from './line-draft-storage.ts';
 import { loadLineDraft } from './line-draft-storage.ts';
+import { loadWorkbenchSession } from './session/storage.ts';
 
 export const WORKBENCH_INGEST_KEY = 'canto-workbench-ingest-v1';
 export const WORKBENCH_OPEN_SEARCH_KEY = 'canto-workbench-open-search-v1';
@@ -159,19 +160,25 @@ export function consumeNavigate(storage: WorkbenchStorage): WorkbenchNavigatePay
   }
 }
 
+function draftFromStorage(storage: WorkbenchStorage) {
+  const session = loadWorkbenchSession(storage);
+  if (session?.draft) return session.draft;
+  return loadLineDraft(storage);
+}
+
 /** True when a recoverable non-empty line draft exists. */
 export function hasWorkbenchDraft(storage: WorkbenchStorage): boolean {
-  const draft = loadLineDraft(storage);
+  const draft = draftFromStorage(storage);
   return Boolean(draft && draft.slots.length > 0 && draft.slots.some((slot) => slot.surface || slot.code));
 }
 
 export function readWorkbenchSelectionWidth(storage: WorkbenchStorage): number | null {
-  const draft = loadLineDraft(storage);
+  const draft = draftFromStorage(storage);
   return draft?.selection?.width ?? null;
 }
 
 export function readWorkbenchSurfacePreview(storage: WorkbenchStorage): string {
-  const draft = loadLineDraft(storage);
+  const draft = draftFromStorage(storage);
   if (!draft) return '';
   return draft.surface || draft.slots.map((slot) => slot.surface || '＿').join('');
 }

@@ -5,6 +5,7 @@ const canvas = fs.readFileSync('src/workbench/SentenceCanvas.tsx', 'utf8');
 const compare = fs.readFileSync('src/workbench/ComparePanel.tsx', 'utf8');
 const cards = fs.readFileSync('src/workbench/CandidateGrid.tsx', 'utf8');
 const constraints = fs.readFileSync('src/workbench/ConstraintBar.tsx', 'utf8');
+const sessionDefaults = fs.readFileSync('src/workbench/session/defaults.ts', 'utf8');
 const css = fs.readFileSync('src/workbench/workbench-page.css', 'utf8');
 const seams = fs.readFileSync('../tests/smoke/test_workbench_client_seams.py', 'utf8');
 
@@ -29,7 +30,11 @@ assert(page.includes('[data-line-slot=') && page.includes('.focus()'), 'apply mu
 assert(cards.includes('aria-labelledby="candidateHeading"'), 'candidate region needs heading');
 assert(cards.includes('tabIndex={-1}'), 'candidate group headings must be focusable');
 assert(constraints.includes('捷徑：'), 'shortcut hint missing');
-assert(constraints.includes('value="m1">0243</option>') && page.includes("('m1')"), 'tone profile 0243 default missing');
+assert(
+  constraints.includes('value="m1">0243</option>')
+  && (page.includes("('m1')") || sessionDefaults.includes("mode: 'm1'")),
+  'tone profile 0243 default missing',
+);
 assert(css.includes('bottom: 0') && css.includes('compare-panel'), 'narrow compare drawer missing');
 assert(!css.includes('writing-mode: vertical'), 'vertical writing mode is forbidden');
 assert(seams.includes('writing-mode: horizontal-tb'), 'seam test must guard horizontal layout');
