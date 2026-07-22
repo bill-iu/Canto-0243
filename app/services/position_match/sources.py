@@ -32,6 +32,7 @@ class LengthMaskCandidateSource:
 
     db: Any
     mask: str
+    fallback_limit: Optional[int] = CANDIDATE_FALLBACK_LIMIT
 
     def get_candidates(
         self,
@@ -40,7 +41,12 @@ class LengthMaskCandidateSource:
         code: Optional[str] = None,
         mode: str = "m1",
     ) -> tuple[list[Any], bool]:
-        return get_length_candidates(self.db, length, self.mask)
+        return get_length_candidates(
+            self.db,
+            length,
+            self.mask,
+            fallback_limit=self.fallback_limit,
+        )
 
 
 @dataclass
@@ -447,6 +453,11 @@ def _resolve_mask_family_source(
                 ),
                 None,
             )
-        return LengthMaskCandidateSource(db, spec.mask), None
+        fallback_limit = (
+            None
+            if spec.extra.get("workbench_full_bucket_scan")
+            else CANDIDATE_FALLBACK_LIMIT
+        )
+        return LengthMaskCandidateSource(db, spec.mask, fallback_limit), None
 
     return None, None

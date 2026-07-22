@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from itertools import product
 from unittest.mock import patch
 import unittest
 
@@ -73,6 +74,37 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
         self.assertEqual(self.client.post("/workbench/candidates", json=plan).status_code, 200)
         plan["width"] = 65
         self.assertEqual(self.client.post("/workbench/candidates", json=plan).status_code, 422)
+
+    def test_candidates_unanchored_width_scan_returns_paginated_pool(self) -> None:
+        with self.Session() as db:
+            alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            literals = ["".join(pair) for pair in product(alphabet, repeat=2)][:2001]
+            db.add_all(
+                Word(char=literal, code="12", jyutping="gaa1", length=2)
+                for literal in literals
+            )
+            db.commit()
+
+        plan = {
+            "version": 1,
+            "selectionVersion": 9,
+            "width": 2,
+            "mode": "m1",
+            "slots": [],
+            "semanticIntent": "off",
+            "limit": 1,
+            "offset": 0,
+        }
+        first = self.client.post("/workbench/candidates", json=plan)
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(first.json()["engineTotal"], 2001)
+        self.assertEqual(len(first.json()["exact"]["sound_only"]), 1)
+
+        plan["offset"] = 2000
+        second = self.client.post("/workbench/candidates", json=plan)
+        self.assertEqual(second.status_code, 200)
+        self.assertEqual(second.json()["engineTotal"], 2001)
+        self.assertEqual(len(second.json()["exact"]["sound_only"]), 1)
 
 
 if __name__ == "__main__":

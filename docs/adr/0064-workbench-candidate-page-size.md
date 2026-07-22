@@ -25,6 +25,8 @@
 
 ## Consequences
 
+> POS 篩選嘅自動 over-fetch 上限改由 [ADR-0071](./0071-workbench-unanchored-scan-and-pos-overfetch.md) 定義：每個 fetch cycle 最多 5 頁；400 仍然係單次傳輸上限。
+
 - Self-checks／JSON schema／Pydantic 跟 400 + `total`。
 - CONTEXT **擷取頁**／**結果數** 補工作台語意。
 - 大池（≫400）要點「載入更多」先睇晒；首屏已覆蓋常見碼查（如 384）。

@@ -1,6 +1,7 @@
-import { resetPosFilter, type PosFilterState } from '../../pos/filter.ts';
+import { isPosFilterActive, resetPosFilter, type PosFilterState } from '../../pos/filter.ts';
 import {
   WORKBENCH_CANDIDATE_PAGE_SIZE,
+  WORKBENCH_POS_AUTO_SCAN_PAGES,
   type ReplacementPlanV1,
   type WorkbenchCandidateResponse,
 } from '../contracts.ts';
@@ -53,7 +54,7 @@ export function resetWithPlan(
   posFilter?: PosFilterState,
 ): CandidateSessionState {
   // 無 plan：清晒。有 plan：raw 清空給 fetch，staleRaw 留舊結果上屏。
-  const keepStale = Boolean(planBase) ? (state.raw ?? state.staleRaw) : null;
+  const keepStale = planBase ? (state.raw ?? state.staleRaw) : null;
   return {
     ...state,
     planBase,
@@ -63,7 +64,7 @@ export function resetWithPlan(
     filteredTarget: state.pageSize,
     raw: null,
     staleRaw: keepStale,
-    loading: Boolean(planBase),
+    loading: !!planBase,
     error: null,
     generation: state.generation + 1,
   };
@@ -207,17 +208,20 @@ export async function runCandidateFetch(
   }
   // resetWithPlan 已 raw=null；loadMore 保留 raw 以便 merge
   let current = state;
+  let fetchedPages = 0;
 
   try {
     while (!signal?.aborted) {
       if (filteredCountOf(current) >= current.filteredTarget) break;
       if (poolExhausted(current)) break;
+      if (isPosFilterActive(current.posFilter) && fetchedPages >= WORKBENCH_POS_AUTO_SCAN_PAGES) break;
 
       const offset = current.raw == null ? 0 : current.engineCursor;
       const page = await findCandidates(buildRequestPlan(current, offset), signal);
       if (signal?.aborted) return current;
       if (page.selectionVersion !== current.planBase!.selectionVersion) return current;
 
+      fetchedPages += 1;
       const before = current.engineCursor;
       current = mergePage(current, page);
       // 無進展（空頁且 cursor 未變）→ 停
@@ -260,4 +264,3 @@ export function samePlanIdentity(
     && JSON.stringify(a.slots) === JSON.stringify(b.slots)
   );
 }
-

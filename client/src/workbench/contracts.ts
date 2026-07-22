@@ -19,6 +19,8 @@ export interface WorkbenchSlotConstraintV1 {
 
 /** Single request page size / max limit (ADR-0064). */
 export const WORKBENCH_CANDIDATE_PAGE_SIZE = 400;
+/** Maximum automatic pages per POS-filtered fetch cycle. */
+export const WORKBENCH_POS_AUTO_SCAN_PAGES = 5;
 
 export { WORKBENCH_MAX_SLOTS } from './limits.ts';
 

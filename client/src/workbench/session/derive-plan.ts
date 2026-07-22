@@ -31,7 +31,7 @@ export function derivePlanBase(
     .filter((surface) => isHanSurface(surface))
     .join('');
   const intent = semanticSeed ? semanticIntent : 'off';
-  if (!planHasQueryableSlots(slots, semanticSeed, intent)) return null;
+  if (!planHasQueryableSlots(width, slots, semanticSeed, intent)) return null;
 
   return {
     version: 1 as const,

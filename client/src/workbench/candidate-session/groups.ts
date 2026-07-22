@@ -36,12 +36,17 @@ export function applyCreatorPosFilter(
   filter: PosFilterState,
 ): WorkbenchCandidateResponse {
   if (!isPosFilterActive(filter)) return next;
-  const apply = (groups: CandidateGroups): CandidateGroups => ({
-    direct_syn: filterByProjectPos(groups.direct_syn, (row) => row.literal, filter),
-    semantic_related: filterByProjectPos(groups.semantic_related, (row) => row.literal, filter),
-    sound_only: filterByProjectPos(groups.sound_only, (row) => row.literal, filter),
-  });
-  return { ...next, exact: apply(next.exact) };
+  const exact: CandidateGroups = {
+    direct_syn: filterByProjectPos(next.exact.direct_syn, (row) => row.literal, filter),
+    semantic_related: filterByProjectPos(next.exact.semantic_related, (row) => row.literal, filter),
+    sound_only: filterByProjectPos(next.exact.sound_only, (row) => row.literal, filter),
+  };
+  const filteredCount = exact.direct_syn.length + exact.semantic_related.length + exact.sound_only.length;
+  return {
+    ...next,
+    exact,
+    relaxation: filteredCount === 0 && engineTotalOf(next) > 0 ? null : next.relaxation,
+  };
 }
 
 export function engineTotalOf(response: WorkbenchCandidateResponse): number {

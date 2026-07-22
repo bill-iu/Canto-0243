@@ -40,15 +40,22 @@ class WorkbenchReportedRegressionTests(unittest.TestCase):
 
     def test_changing_selected_reading_rebuilds_phoneme_anchors(self) -> None:
         page = read("client/src/workbench/WorkbenchPage.tsx")
+        reducer = read("client/src/workbench/session/reducer.ts")
+        phoneme = read("client/src/workbench/session/phoneme.ts")
         span = read("client/src/workbench/replacement-span.ts")
         self.assertIn("handleChooseReading", page)
-        self.assertIn("syncPhonemeAnchors(next, rhymePicks, initialPicks)", page)
+        self.assertRegex(reducer, r"case 'choose_reading':[\s\S]{0,260}withDraftAction")
+        self.assertIn("draft = syncPhonemeFromConstraints(draft, next.constraints)", reducer)
+        self.assertIn("buildPhonemeAnchors(", phoneme)
         self.assertIn("refJyutping", span)
 
     def test_workbench_chinese_serif_uses_complete_local_family_first(self) -> None:
         build = read("client/scripts/build-fonts.ts")
-        for char in "句格工作台把拆開看清每個選擇":
-            self.assertIn(char, build)
+        critical = read("client/src/critical-display-text.ts")
+        intro = read("client/src/workbench/intro-copy.ts")
+        self.assertIn("criticalDisplayText", build)
+        for char in "句格工作台拆解萬種可能":
+            self.assertIn(char, critical + intro)
 
 
 if __name__ == "__main__":
