@@ -59,23 +59,26 @@ export function CandidateGrid({
           <h3 id={`candidate-${key}`} tabIndex={-1}>{label}<span>{groups[key].length}</span></h3>
           {groups[key].length ? (
             <div className="candidate-grid">
-              {groups[key].map((candidate) => (
-                <button
-                  type="button"
-                  className="candidate-card"
-                  key={`${candidate.literal}-${candidate.jyutping}`}
-                  onClick={(event) => onPreview(candidate, event.currentTarget)}
-                >
-                  <span className="candidate-card__literal">{candidate.literal}</span>
-                  <span className="candidate-card__jyutping">{candidate.jyutping}</span>
-                  <span className="candidate-card__code">{candidate.code}</span>
-                  <span className="candidate-card__reason">
-                    {relaxed
-                      ? candidateReasonLabel('relaxed_constraint')
-                      : candidateReasonLabel(candidate.reasons[0]!.kind)}
-                  </span>
-                </button>
-              ))}
+              {groups[key].map((candidate) => {
+                const wide = [...candidate.literal].length >= 7;
+                return (
+                  <button
+                    type="button"
+                    className={`candidate-card${wide ? ' candidate-card--wide' : ''}`}
+                    key={`${candidate.literal}-${candidate.jyutping}`}
+                    onClick={(event) => onPreview(candidate, event.currentTarget)}
+                  >
+                    <span className="candidate-card__literal">{candidate.literal}</span>
+                    <span className="candidate-card__jyutping">{candidate.jyutping}</span>
+                    <span className="candidate-card__code">{candidate.code}</span>
+                    <span className="candidate-card__reason">
+                      {relaxed
+                        ? candidateReasonLabel('relaxed_constraint')
+                        : candidateReasonLabel(candidate.reasons[0]!.kind)}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           ) : <p className="empty-group">這一組暫時沒有候選。</p>}
         </section>

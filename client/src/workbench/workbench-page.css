@@ -524,11 +524,16 @@ body.query-tabs-app.workbench-route {
   background: var(--soft);
   font-size: .75rem;
 }
-.candidate-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .65rem; }
+.candidate-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
+  gap: .65rem;
+}
 .candidate-card {
   display: grid;
   gap: .25rem;
   min-width: 0;
+  max-width: 100%;
   padding: .85rem;
   text-align: left;
   border: 1px solid var(--line);
@@ -537,10 +542,30 @@ body.query-tabs-app.workbench-route {
   background: var(--surface-input);
   cursor: pointer;
   writing-mode: horizontal-tb;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+/* 長字面（≥7）佔滿列，避免窄欄 pill 溢出 */
+.candidate-card--wide {
+  grid-column: 1 / -1;
 }
 .candidate-card:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: var(--control-shadow-hover); }
-.candidate-card__literal { font-size: 1.35rem; font-weight: 780; word-break: keep-all; writing-mode: horizontal-tb; }
-.candidate-card__jyutping, .candidate-card__code, .candidate-card__reason { overflow-wrap: anywhere; writing-mode: horizontal-tb; }
+.candidate-card__literal {
+  font-size: 1.35rem;
+  font-weight: 780;
+  writing-mode: horizontal-tb;
+  word-break: normal;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.candidate-card__jyutping,
+.candidate-card__code,
+.candidate-card__reason {
+  overflow-wrap: anywhere;
+  word-break: normal;
+  writing-mode: horizontal-tb;
+  max-width: 100%;
+}
 .candidate-card__jyutping { color: var(--muted); font-size: .76rem; }
 .candidate-card__code { font: 700 .78rem ui-monospace, monospace; }
 .candidate-card__reason { margin-top: .3rem; color: var(--accent-strong); font-size: .7rem; }
@@ -691,6 +716,16 @@ body.query-tabs-app.workbench-route {
   .workbench-header { grid-template-columns: 1fr auto; gap: 1rem; }
   .workbench-header > div { order: 3; grid-column: 1 / -1; }
   .line-input-form { max-width: 100%; }
+  .candidate-grid {
+    grid-template-columns: 1fr;
+  }
+  .candidate-card {
+    padding: .75rem .85rem;
+  }
+  .candidate-card__literal {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
   /* Same row as wide: input | 建立句格 (grid, not stacked column). */
   .line-input-form__row {
     display: grid;
