@@ -109,6 +109,21 @@ export function sessionReducer(session: WorkbenchSession, action: SessionAction)
       // 鎖定唔開新 undo（CONTEXT 句稿復原）
       return commit(session, { draft: result.draft, constraints });
     }
+    case 'clear_locks': {
+      if (!session.draft) return session;
+      if (!session.draft.slots.some((slot) => slot.locked)) return session;
+      const slots = session.draft.slots.map((slot) => (
+        slot.locked ? { ...slot, locked: false } : slot
+      ));
+      const draft = {
+        ...session.draft,
+        slots,
+        selection: null,
+        surface: slots.map((slot) => slot.surface).join(''),
+      };
+      // 清鎖定唔開 undo（同單擊鎖）
+      return commit(session, { draft, constraints: session.constraints });
+    }
     case 'choose_reading':
       // 只改讀音唔開新 undo
       return withDraftAction(session, {
@@ -266,10 +281,20 @@ export function sessionReducer(session: WorkbenchSession, action: SessionAction)
   }
 }
 
-/** Page 用：拎 failure reason；成功則回新 session。 */
+/**
+ * Page 用：單次 toggle（validate + apply 同一結果，唔 double-toggle）。
+ * 成功後 caller 應即時 sessionRef.current = result.session。
+ */
 export function sessionToggleLock(session: WorkbenchSession, pos: number): ToggleLockSessionResult {
   if (!session.draft) return { ok: false, reason: 'no_draft', session };
   const result = toggleLockKeepingSpan(session.draft, pos);
   if (!result.ok) return { ok: false, reason: result.reason, session };
-  return { ok: true, session: sessionReducer(session, { type: 'toggle_lock', pos }) };
+  const width = result.draft.selection?.width ?? 0;
+  const constraints = fitConstraintsToSpan(
+    session.constraints,
+    width,
+    result.draft.slots,
+    result.draft.selection,
+  );
+  return { ok: true, session: commit(session, { draft: result.draft, constraints }) };
 }

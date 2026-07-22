@@ -42,6 +42,8 @@ export type SessionAction =
   | { type: 'replace_surface'; literal: string }
   | { type: 'insert_literal'; literal: string }
   | { type: 'toggle_lock'; pos: number }
+  /** 清鎖定：解鎖全部字位 + 撤銷替換段；唔入 undo */
+  | { type: 'clear_locks' }
   | { type: 'choose_reading'; pos: number; jyutping: string; code: string }
   | { type: 'set_slot_manual'; pos: number; surface: string; code?: string }
   | {

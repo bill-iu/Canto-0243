@@ -45,10 +45,11 @@ assert(session.draft?.slots.length === 4, 'draft slots');
 assert(session.version >= 1, 'version bumped');
 assert(session.constraints.codeConstraint === 'same_tone', 'default code mode');
 
-// lock span 2..3
+// lock span 2..3 (sessionToggleLock applies once — not double-toggle)
 let lock = sessionToggleLock(session, 2);
 assert(lock.ok, 'lock pos 2');
 session = lock.session;
+assert(session.draft?.slots[2]?.locked === true, 'pos 2 locked after one toggle');
 lock = sessionToggleLock(session, 3);
 assert(lock.ok, 'lock pos 3');
 session = lock.session;
@@ -101,6 +102,20 @@ assert(session.undo, 'undo snapshot after apply');
 session = sessionReducer(session, { type: 'undo' });
 assert(session.constraints.mode === beforeApply.constraints.mode, 'undo restores constraints');
 assert(session.draft?.slots[2]?.surface === beforeApply.draft?.slots[2]?.surface, 'undo restores draft');
+
+// clear_locks: unlock all, keep surface, no undo snapshot for locks
+{
+  lock = sessionToggleLock(session, 0);
+  assert(lock.ok, 'lock for clear_locks test');
+  session = lock.session;
+  const surfaceBefore = session.draft!.surface;
+  const undoBeforeClearLocks = session.undo;
+  session = sessionReducer(session, { type: 'clear_locks' });
+  assert(session.draft?.slots.every((s) => !s.locked), 'clear_locks unlocks all');
+  assert(session.draft?.selection == null, 'clear_locks drops selection');
+  assert(session.draft?.surface === surfaceBefore, 'clear_locks keeps surface');
+  assert(session.undo === undoBeforeClearLocks, 'clear_locks does not push undo');
+}
 
 // clear + undo
 session = sessionReducer(session, { type: 'set_mode', mode: 'm3' });

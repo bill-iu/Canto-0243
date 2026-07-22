@@ -333,7 +333,8 @@ function App() {
     }
   }, []);
 
-  const shellGated = offlineStatus !== 'ready' || gateOpen;
+  // Ready → shell interactive immediately (CONTEXT 就緒閘解鎖). gateOpen only tracks overlay visibility.
+  const shellGated = offlineStatus !== 'ready';
 
   // Portable is a local desktop host — never show PWA install chrome
   const shouldShowInstallBanner =

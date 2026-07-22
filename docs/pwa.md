@@ -8,6 +8,23 @@
 - 詞庫版本：跟 release tag（semver，例如 `v1.0.3`）
 - DB 更新：大換庫跟 **新 semver 全量發佈**；細換庫可同一 tag `-WithLexicon` 覆寫；程式-only 刷新 **唔**覆寫庫
 
+## 產物體積（研究結論，v1.1.x）
+
+| 比較 | 約略 |
+|------|------|
+| `client/dist`（PWA 靜態束） | ~90+ MB 碟上（`lyrics.db` + 可選 `.gz` + static-syn／ranking 等） |
+| Desktop zip（strip 後） | ~30 MB 壓縮；UI 側車 alone ~5 MB |
+
+**唔係「PWA build ≈ Desktop build」**：PWA 必須帶 **瀏覽器查詢引擎** 物料；Desktop 已按 ADR-0068 §13 剔除呢啲死重。
+
+在**唔傷就緒閘／查詢 latency** 前提下（grill R1）：
+
+- **唔**為瘦產物刪 static-syn／ranking 或只 ship 單庫檔（相容／效能風險）
+- 首訪下載 **唔等於** dist 總 MB：runtime 優先 **gzip 詞庫**（manifest `preferCompressed`）；大 JSON 唔入 workbox precache
+- 維護期望：接受 PWA 產物偏大；體積對齊 Desktop **唔**作目標
+
+領域詞：CONTEXT § **靜態客戶端束**、**詞庫壓縮傳輸**、**Desktop 套件**。
+
 ## 發佈順序（必做）
 
 ### v1.1.0 特例：部署已驗收 artifact

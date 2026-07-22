@@ -9,8 +9,10 @@ import {
   revealPwaShell,
 } from './pwa-shell-boot';
 
+/** Cold-start brand beat (fonts) — only while still loading, not after ready. */
 const GATE_BRAND_INTRO_MS = 700;
-const LANDING_REVEAL_MS = 420;
+/** Short cold-start fade after ready (CONTEXT: 就緒閘解鎖即露殼). */
+const COLD_FADE_MS = 180;
 const GATE_INK_INDETERMINATE = 0.12;
 
 function sleep(ms: number) {
@@ -51,8 +53,14 @@ export interface ReadyGateProps {
   isLikelyMetered: boolean;
   suppressGateOverlay?: boolean;
   onRetry: () => void | Promise<void>;
+  /** true while gate blocks search (not ready). false as soon as ready — shell must not wait for fade. */
   onOpenChange: (open: boolean) => void;
   theme?: 'light' | 'dark';
+}
+
+function unlockShell() {
+  sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
+  revealPwaShell();
 }
 
 export function ReadyGate({
@@ -67,7 +75,7 @@ export function ReadyGate({
   onOpenChange,
   theme = 'light',
 }: ReadyGateProps) {
-  // 冷啓 full landing；熱啓／cached 用 minimal 但仍顯示 logo+ink
+  // 冷啓 full landing；熱啓／cached 用 minimal
   const playLanding = useMemo(
     () => !prefersReducedMotion() && !hasPwaGateLanded() && !isDbCached,
     [isDbCached],
@@ -81,10 +89,18 @@ export function ReadyGate({
       offlineStatus === 'preparing' ||
       offlineStatus === 'not_ready');
 
-  // 熱啓重開：session 已 landed 仍可喺 preparing 顯示 minimal 閘
   const [visible, setVisible] = useState(true);
-  const [phase, setPhase] = useState<'loading' | 'handoff' | 'exiting' | 'hidden'>('loading');
-  const handoffStarted = useRef(false);
+  const [phase, setPhase] = useState<'loading' | 'exiting' | 'hidden'>('loading');
+  const unlockStarted = useRef(false);
+
+  // Shell / search gating: only while not ready (not during fade).
+  useEffect(() => {
+    if (offlineStatus === 'ready' || suppressGateOverlay) {
+      onOpenChange(false);
+    } else if (shouldShowGate) {
+      onOpenChange(true);
+    }
+  }, [offlineStatus, shouldShowGate, suppressGateOverlay, onOpenChange]);
 
   useEffect(() => {
     if (!visible || phase === 'hidden') return;
@@ -100,7 +116,7 @@ export function ReadyGate({
 
   useEffect(() => {
     if (shouldShowGate && !visible) {
-      handoffStarted.current = false;
+      unlockStarted.current = false;
       setPhase('loading');
       setVisible(true);
     }
@@ -112,49 +128,47 @@ export function ReadyGate({
 
   useEffect(() => {
     if (offlineStatus === 'preparing') {
-      handoffStarted.current = false;
+      unlockStarted.current = false;
     }
   }, [offlineStatus]);
 
+  // suppress + ready: instant
   useEffect(() => {
     if (!suppressGateOverlay || offlineStatus !== 'ready') return;
-    handoffStarted.current = true;
-    sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
-    revealPwaShell();
+    unlockStarted.current = true;
+    unlockShell();
     setPhase('hidden');
     setVisible(false);
   }, [suppressGateOverlay, offlineStatus]);
 
+  // ready: unlock shell immediately; optional short cold fade only
   useEffect(() => {
-    onOpenChange(visible && phase !== 'hidden');
-  }, [visible, phase, onOpenChange]);
+    if (offlineStatus !== 'ready' || unlockStarted.current || !visible) return;
+    unlockStarted.current = true;
 
-  useEffect(() => {
-    if (offlineStatus !== 'ready' || handoffStarted.current || !visible) return;
-    handoffStarted.current = true;
+    // Always unlock shell + boot DOM now (CONTEXT: 就緒閘解鎖即露殼).
+    unlockShell();
 
     void (async () => {
-      if (skipOverlay) {
-        sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
-        revealPwaShell();
+      // 熱啓／已 landed／cached / reduced-motion：零延遲拆 overlay
+      if (skipOverlay || !playLanding || prefersReducedMotion()) {
         setPhase('hidden');
         setVisible(false);
         return;
       }
-      await awaitGateBrandBeat(playLanding);
-      await sleep(320);
-      if (playLanding) {
-        setPhase('handoff');
-        await sleep(280);
-      }
+      // 冷啓：短 fade 後拆（殼已可交互）
       setPhase('exiting');
-      await sleep(LANDING_REVEAL_MS);
-      sessionStorage.setItem(PWA_GATE_LANDED_KEY, '1');
-      revealPwaShell();
+      await sleep(COLD_FADE_MS);
       setPhase('hidden');
       setVisible(false);
     })();
   }, [offlineStatus, playLanding, visible, skipOverlay]);
+
+  // Brand beat only while still loading (not after ready blocks shell).
+  useEffect(() => {
+    if (offlineStatus === 'ready' || !playLanding || !visible) return;
+    void awaitGateBrandBeat(true);
+  }, [offlineStatus, playLanding, visible]);
 
   if (!visible || phase === 'hidden') return null;
 
@@ -177,17 +191,14 @@ export function ReadyGate({
   const overlayClass = [
     'ready-gate',
     'preload-overlay',
-    // 熱啓／已 landed session：minimal（短儀式）但 CSS 仍顯示 logo+ink
     !playLanding || isDbCached || hasPwaGateLanded() ? 'preload-overlay--minimal' : '',
     phase === 'exiting' ? 'is-exiting' : '',
-    phase === 'handoff' ? 'is-handoff' : '',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
     <div className={overlayClass} role="status" aria-live="polite" aria-busy={offlineStatus !== 'ready'}>
-      {/* Single ink: logo wordmark + fill only (no separate GateInkMeter) */}
       <div className="gate-brand">
         <BrandLogo variant="gate" inkProgress={inkProgress} theme={theme} />
         <p className="gate-status">{label}</p>
