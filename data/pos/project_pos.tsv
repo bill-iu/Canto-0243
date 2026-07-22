@@ -22748,6 +22748,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 貪多務得	u	chengyu		chengyu-pos-review;review
 貪多嚼不爛	u	chengyu		chengyu-pos-review;review
 貪天之功	v	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;zhi-n-restore;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r6.tsv;family-leaf-review
+貪婪	a			maintainer;review;grill-fix: entry-detail 缺標 → a
 貪婪無厭	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
 貪官	n			u-inlex-nf2k;review;agent-label
 貪官污吏	u	chengyu		chengyu-pos-review;review
