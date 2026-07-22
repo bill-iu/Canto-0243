@@ -342,8 +342,14 @@ def _materialize_portable_stdlib(venv_dir: Path) -> None:
         except ImportError:  # pragma: no cover
             from scripts.portable_venv_slim import win_lib_ignore
 
-        # Same denylist as Windows Lib/ (idlelib/test/ensurepip/…)
-        shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True, ignore=win_lib_ignore)
+        # Denylist idlelib/test/… but KEEP ensurepip: venv is often --without-pip
+        # (standalone CPython --copies aborts ensurepip before libpython is seeded).
+        # slim_portable_venv drops ensurepip after pip install.
+        def _materialize_lib_ignore(directory: str, names: list[str]) -> list[str]:
+            skip = win_lib_ignore(directory, names)
+            return [n for n in skip if n != "ensurepip"]
+
+        shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True, ignore=_materialize_lib_ignore)
 
     zip_name = f"python{sys.version_info.major}{sys.version_info.minor}.zip"
     src_zip = src_prefix / "lib" / zip_name
