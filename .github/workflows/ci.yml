@@ -22,7 +22,10 @@ jobs:
           cache-dependency-path: requirements.txt
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          # Smoke suite also exercises ingest seams (sources.yaml) + FastAPI TestClient
+          pip install pyyaml httpx
         env:
           PYTHONUTF8: "1"
 

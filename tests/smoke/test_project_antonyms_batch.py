@@ -624,6 +624,9 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
                 "ingest.word_relations_build.collect_compound_ant_tuples",
                 return_value=[],
             ), mock.patch(
+                "ingest.word_relations_build.collect_project_syn_tuples",
+                return_value=[],
+            ), mock.patch(
                 "ingest.word_relations_build.collect_project_ant_tuples",
                 side_effect=capture_project,
             ), mock.patch(
@@ -665,6 +668,7 @@ class ProjectAntonymsBuildRankTests(unittest.TestCase):
                 load_compound_antonyms=mock.Mock(return_value=[]),
                 collect_flat_relation_tuples=mock.Mock(return_value=[]),
                 collect_compound_ant_tuples=mock.Mock(return_value=[]),
+                collect_project_syn_tuples=mock.Mock(return_value=[]),
                 collect_project_ant_tuples=capture_project,
                 cap_undirected_syn_tuples=lambda rows: list(rows),
             )
