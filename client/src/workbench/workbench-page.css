@@ -17,11 +17,18 @@
   overflow: visible;
 }
 
+/* Seamless with the query-tabs strip above: the strip's own 12px bottom
+   padding is the only tabs→chrome gap, same as the search view. */
+.app-shell--workbench .app-header {
+  padding-bottom: 0;
+}
+
 .app-shell--workbench > .main-wrap {
   display: block;
   flex: none;
   min-height: 0;
   overflow: visible;
+  padding-top: 0;
   padding-bottom: 0;
 }
 
@@ -63,6 +70,11 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
 
 .workbench-header--embedded {
   position: static;
+  /* Seamless under the app-header: no second colour block, no hairline;
+     main-wrap already supplies the same max(20px, safe-area) gutter. */
+  padding: 0 0 14px;
+  border-bottom: none;
+  background: transparent;
 }
 
 /* Same brand | hero | menu row as search; no search form. */
