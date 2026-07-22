@@ -44,4 +44,9 @@ def relaxation_variants(plan: ReplacementPlanV1):
         )
 
 
-__all__ = ["relaxation_variants"]
+def relaxation_ids(plan: ReplacementPlanV1) -> list[str]:
+    """Ordered relaxation ids for L3 parity with TS."""
+    return [item_id for item_id, *_rest in relaxation_variants(plan)]
+
+
+__all__ = ["relaxation_ids", "relaxation_variants"]

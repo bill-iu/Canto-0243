@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "description": "L1 plan→MatchSpec + L3 relaxation ids (no DB). Dual-port parity fixtures.",
+  "cases": [
+    {
+      "id": "code-digit-only",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 1,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "3" }],
+        "semanticIntent": "off",
+        "limit": 8
+      },
+      "matchSpec": {
+        "width": 1,
+        "mask": "?",
+        "slots": [{ "pos": 0, "kind": "code_digit", "value": "3" }],
+        "extra": {}
+      },
+      "relaxationIds": ["code_digit:0:remove"]
+    },
+    {
+      "id": "literal-plus-code",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 2,
+        "width": 2,
+        "mode": "m1",
+        "slots": [
+          { "pos": 0, "kind": "literal_char", "literal": "香" },
+          { "pos": 1, "kind": "code_digit", "digit": "9" }
+        ],
+        "semanticIntent": "off",
+        "limit": 8
+      },
+      "matchSpec": {
+        "width": 2,
+        "mask": "香?",
+        "slots": [
+          { "pos": 0, "kind": "literal_char", "value": "香" },
+          { "pos": 1, "kind": "code_digit", "value": "9" }
+        ],
+        "extra": {}
+      },
+      "relaxationIds": ["code_digit:1:remove"]
+    },
+    {
+      "id": "contiguous-final-equals-prefix-wildcard",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 3,
+        "width": 4,
+        "mode": "m1",
+        "slots": [
+          { "pos": 1, "kind": "final_anchor", "ref": "困", "refJyutping": "kwan3" },
+          { "pos": 2, "kind": "final_anchor", "ref": "潦", "refJyutping": "liu5" },
+          { "pos": 3, "kind": "final_anchor", "ref": "倒", "refJyutping": "dou2" }
+        ],
+        "semanticIntent": "off",
+        "limit": 8
+      },
+      "matchSpec": {
+        "width": 4,
+        "mask": "????",
+        "slots": [],
+        "extra": {
+          "equals_span": {
+            "ref_literal": "困潦倒",
+            "ref_jyutping": "kwan3 liu5 dou2",
+            "start_pos": 1,
+            "dimension": "final",
+            "phoneme_anchor_only": true,
+            "whole_word": false
+          },
+          "prefix_wildcard_equals": true
+        }
+      },
+      "relaxationIds": [
+        "final_anchor:1:remove",
+        "final_anchor:2:remove",
+        "final_anchor:3:remove"
+      ]
+    },
+    {
+      "id": "direct-only-mode-m3",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 4,
+        "width": 1,
+        "mode": "m3",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "0" }],
+        "semanticIntent": "direct_only",
+        "semanticSeed": "好",
+        "limit": 8
+      },
+      "matchSpec": {
+        "width": 1,
+        "mask": "?",
+        "slots": [{ "pos": 0, "kind": "code_digit", "value": "0" }],
+        "extra": {}
+      },
+      "relaxationIds": [
+        "semantic:direct_only:ranked",
+        "code_digit:0:remove",
+        "mode:m3:m2"
+      ]
+    }
+  ],
+  "groupCases": [
+    {
+      "id": "semantic-split-off",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 10,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "3" }],
+        "semanticIntent": "off",
+        "limit": 8
+      },
+      "rows": [
+        { "char": "甲", "jyutping": "a1", "code": "3" },
+        { "char": "乙", "jyutping": "b1", "code": "3" }
+      ],
+      "pool": {
+        "syns": [{ "char": "甲", "source": "test" }],
+        "semantic": [{ "char": "乙", "source": "test" }]
+      },
+      "literals": {
+        "direct_syn": [],
+        "semantic_related": [],
+        "sound_only": ["甲", "乙"]
+      }
+    },
+    {
+      "id": "semantic-ranked",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 11,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "3" }],
+        "semanticIntent": "ranked",
+        "semanticSeed": "種",
+        "limit": 8
+      },
+      "rows": [
+        { "char": "甲", "jyutping": "a1", "code": "3" },
+        { "char": "乙", "jyutping": "b1", "code": "3" },
+        { "char": "丙", "jyutping": "c1", "code": "3" }
+      ],
+      "pool": {
+        "syns": [{ "char": "甲", "source": "syn" }],
+        "semantic": [{ "char": "乙", "source": "sem" }]
+      },
+      "literals": {
+        "direct_syn": ["甲"],
+        "semantic_related": ["乙"],
+        "sound_only": ["丙"]
+      }
+    },
+    {
+      "id": "direct-only-filters",
+      "plan": {
+        "version": 1,
+        "selectionVersion": 12,
+        "width": 1,
+        "mode": "m1",
+        "slots": [{ "pos": 0, "kind": "code_digit", "digit": "3" }],
+        "semanticIntent": "direct_only",
+        "semanticSeed": "種",
+        "limit": 8
+      },
+      "rows": [
+        { "char": "甲", "jyutping": "a1", "code": "3" },
+        { "char": "乙", "jyutping": "b1", "code": "3" }
+      ],
+      "pool": {
+        "syns": [{ "char": "甲", "source": "syn" }],
+        "semantic": [{ "char": "乙", "source": "sem" }]
+      },
+      "literals": {
+        "direct_syn": ["甲"],
+        "semantic_related": [],
+        "sound_only": []
+      }
+    }
+  ]
+}

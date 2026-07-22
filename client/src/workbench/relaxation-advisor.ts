@@ -50,3 +50,8 @@ export function relaxationVariants(plan: ReplacementPlanV1): RelaxationVariant[]
   }
   return variants;
 }
+
+/** Ordered relaxation ids for L3 parity. */
+export function relaxationIds(plan: ReplacementPlanV1): string[] {
+  return relaxationVariants(plan).map((variant) => variant.id);
+}
