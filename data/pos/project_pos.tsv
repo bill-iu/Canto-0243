@@ -10005,6 +10005,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 得天獨厚	u	chengyu		chengyu-pos-review;review
 得失參半	u	chengyu		chengyu-pos-review;review
 得宜	a			u-inlex-nf5;review;agent-label
+得寵	v		passive	prefix-passive;passive-de-essay-top;review
 得寸進尺	u	chengyu		chengyu-pos-review;review
 得很	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 得心應手	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
@@ -10016,6 +10017,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 得戚	a			u-inlex;review;u-inlex-agent
 得救	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 得滯	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+得濟	v		passive	prefix-passive;passive-de-essay-top;review
+得益	n		passive	prefix-passive;passive-de-essay-top;review
+得益於	v		passive	prefix-passive;passive-de-essay-top;review
 得知	v			u-inlex-nf2k;review;agent-label
 得罪	n,v			cow-nv-unreviewed;trust-low
 得而復失	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
