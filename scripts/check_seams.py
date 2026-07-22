@@ -51,6 +51,9 @@ RELATION_ENTRY_PATH = REPO_ROOT / "shared" / "relation-entry.html"
 RELATION_ENTRY_CSS_PATH = REPO_ROOT / "shared" / "relation-entry.css"
 SERVED_APP_BASE = "http://127.0.0.1:8000/app"
 
+# Formal CI runs default. Legacy venv/START.bat transport: CANTO_SEAMS_LEGACY=1
+_LEGACY_SEAMS = os.environ.get("CANTO_SEAMS_LEGACY", "").strip() in ("1", "true", "yes")
+
 
 def _fetch_served(path: str, *, base: str = SERVED_APP_BASE) -> str:
     url = f"{base.rstrip('/')}/{path.lstrip('/')}"
@@ -94,19 +97,9 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("local_launch.py", source)
         self.assertNotIn("wait_for_url.py", source)
 
-    def test_portable_entries_delegate_to_local_launch(self):
-        for path in (START_BAT, START_SH_PORTABLE, MACOS_LAUNCHER):
-            with self.subTest(path=path.name):
-                self.assertIn("local_launch.py", path.read_text(encoding="utf-8"))
-
     def test_macos_launcher_clears_download_quarantine(self):
         source = MACOS_LAUNCHER.read_text(encoding="utf-8")
         self.assertIn("portable_macos.py", source)
-
-    def test_build_portable_macos_tar_is_arch_specific(self):
-        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
-        self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
-        self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
 
     def test_build_desktop_pyapp_channel(self):
         """ADR-0068: formal Desktop build uses PyApp + wheel, not venv.pack."""
@@ -118,7 +111,9 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("desktop-shell", ps1)
         self.assertIn("app.desktop_entry:main", ps1)
         bundle = (REPO_ROOT / "scripts" / "desktop_bundle.ps1").read_text(encoding="utf-8")
-        self.assertNotIn("START.bat", bundle)
+        # Formal package must not copy START.bat (comment may still mention the name)
+        self.assertNotRegex(bundle, r'Copy-Item[^\n]*START\.bat')
+        self.assertNotIn('"START.bat"', bundle)
         self.assertIn("README.txt", bundle)
         self.assertIn("3.11", ps1)
         self.assertIn("canto-0243-desktop", ps1)
@@ -139,43 +134,21 @@ class TestLocalLaunchSeam(unittest.TestCase):
     def test_desktop_entry_exists(self):
         path = REPO_ROOT / "app" / "desktop_entry.py"
         source = path.read_text(encoding="utf-8")
-        self.assertIn("resolve_payload_root", source)
+        self.assertIn("bind_payload_root", source)
+        self.assertIn("from app.payload_root import", source)
+        self.assertNotIn("def resolve_payload_root", source)
         self.assertIn("CANTO_PAYLOAD_ROOT", source)
         self.assertIn("--gui", source)
         self.assertIn("lyrics.db", source)
 
-    def test_portable_win_start_bat_patches_pyvenv_home(self):
-        source = START_BAT.read_text(encoding="utf-8")
-        self.assertIn("python-home", source)
-        self.assertIn("pyvenv.cfg", source)
-        self.assertIn("home = ", source)
-        self.assertIn("venv.pack", source)
-        self.assertIn("portable_ensure_venv.ps1", source)
-
-    def test_portable_venv_pack_contract_names(self):
-        py = (REPO_ROOT / "scripts" / "portable_venv_pack.py").read_text(encoding="utf-8")
-        ps1 = (REPO_ROOT / "scripts" / "portable_ensure_venv.ps1").read_text(encoding="utf-8")
-        for name in ("venv.pack", ".portable-venv-extracted", ".portable-venv-extract.lock"):
-            self.assertIn(name, py)
-            self.assertIn(name, ps1)
-
-    def test_portable_venv_materializes_windows_runtime(self):
-        source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
-        self.assertIn("materialize_windows_python_home", source)
-        self.assertIn("slim_portable_venv", source)
-        self.assertIn("_assert_cfg_home_local", source)
-        # C11-B wired from bundle scripts (not venv builder)
-        data_slim = (REPO_ROOT / "scripts" / "portable_data_slim.py").read_text(encoding="utf-8")
-        self.assertIn("slim_portable_data", data_slim)
-        self.assertIn("REQUIRED_RUNTIME_RELPATHS", data_slim)
-        ps1 = (REPO_ROOT / "scripts" / "portable_bundle.ps1").read_text(encoding="utf-8")
-        self.assertIn("portable_data_slim.py", ps1)
-        sh = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
-        self.assertIn("portable_data_slim.py", sh)
-        self.assertIn("base_prefix", source)
-        win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
-        self.assertIn("python-home", win_rt)
-        self.assertIn("materialize_windows_python_home", win_rt)
+    def test_payload_root_ssot(self):
+        """P4#2: single Python resolve; no forked desktop_entry resolver."""
+        pr = (REPO_ROOT / "app" / "payload_root.py").read_text(encoding="utf-8")
+        self.assertIn("def resolve_payload_root", pr)
+        self.assertIn("def bind_payload_root", pr)
+        self.assertIn("CANTO_PAYLOAD_ROOT", pr)
+        de = (REPO_ROOT / "app" / "desktop_entry.py").read_text(encoding="utf-8")
+        self.assertEqual(de.count("def resolve_payload_root"), 0)
 
     def test_main_exposes_portable_shutdown(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
@@ -230,6 +203,56 @@ class TestLocalLaunchSeam(unittest.TestCase):
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertNotIn("run_main_block_startup", source)
+
+
+@unittest.skipUnless(
+    _LEGACY_SEAMS,
+    "legacy venv/START.bat transport — set CANTO_SEAMS_LEGACY=1 (not formal Desktop gate)",
+)
+class TestLegacyPortableVenvSeam(unittest.TestCase):
+    """Historical Portable venv.pack path (ADR-0067). Formal channel is Desktop/PyApp (0068)."""
+
+    def test_portable_entries_delegate_to_local_launch(self):
+        for path in (START_BAT, START_SH_PORTABLE, MACOS_LAUNCHER):
+            with self.subTest(path=path.name):
+                self.assertIn("local_launch.py", path.read_text(encoding="utf-8"))
+
+    def test_build_portable_macos_tar_is_arch_specific(self):
+        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
+        self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
+
+    def test_portable_win_start_bat_patches_pyvenv_home(self):
+        source = START_BAT.read_text(encoding="utf-8")
+        self.assertIn("python-home", source)
+        self.assertIn("pyvenv.cfg", source)
+        self.assertIn("home = ", source)
+        self.assertIn("venv.pack", source)
+        self.assertIn("portable_ensure_venv.ps1", source)
+
+    def test_portable_venv_pack_contract_names(self):
+        py = (REPO_ROOT / "scripts" / "portable_venv_pack.py").read_text(encoding="utf-8")
+        ps1 = (REPO_ROOT / "scripts" / "portable_ensure_venv.ps1").read_text(encoding="utf-8")
+        for name in ("venv.pack", ".portable-venv-extracted", ".portable-venv-extract.lock"):
+            self.assertIn(name, py)
+            self.assertIn(name, ps1)
+
+    def test_portable_venv_materializes_windows_runtime(self):
+        source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
+        self.assertIn("materialize_windows_python_home", source)
+        self.assertIn("slim_portable_venv", source)
+        self.assertIn("_assert_cfg_home_local", source)
+        data_slim = (REPO_ROOT / "scripts" / "portable_data_slim.py").read_text(encoding="utf-8")
+        self.assertIn("slim_portable_data", data_slim)
+        self.assertIn("REQUIRED_RUNTIME_RELPATHS", data_slim)
+        ps1 = (REPO_ROOT / "scripts" / "portable_bundle.ps1").read_text(encoding="utf-8")
+        self.assertIn("portable_data_slim.py", ps1)
+        sh = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn("portable_data_slim.py", sh)
+        self.assertIn("base_prefix", source)
+        win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
+        self.assertIn("python-home", win_rt)
+        self.assertIn("materialize_windows_python_home", win_rt)
 
 
 class TestManualRelationCommandSeam(unittest.TestCase):
@@ -655,7 +678,13 @@ class TestQueryParseTypesSeam(unittest.TestCase):
                 if path in allow:
                     continue
                 text = path.read_text(encoding="utf-8")
-                if "CANDIDATE_FALLBACK_LIMIT = 2000" in text or "LIMIT 2000" in text:
+                # Ignore comments (historical "LIMIT 2000" notes in dense-code path)
+                code = "\n".join(
+                    ln
+                    for ln in text.splitlines()
+                    if not ln.lstrip().startswith("#") and not ln.lstrip().startswith("//")
+                )
+                if "CANDIDATE_FALLBACK_LIMIT = 2000" in code or "LIMIT 2000" in code:
                     hits.append(str(path.relative_to(REPO_ROOT)))
         self.assertEqual(hits, [], msg=f"hand-copied fallback limit: {hits}")
 

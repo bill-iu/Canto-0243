@@ -5,14 +5,22 @@ from __future__ import annotations
 from pathlib import Path
 from typing import List, Set
 
-from app.payload_root import resolve_payload_root
+from app.payload_root import get_payload_root
 
-DEFAULT_PATH = resolve_payload_root() / "data" / "syn_ant" / "compound_antonyms.txt"
+
+def _default_path() -> Path:
+    return get_payload_root() / "data" / "syn_ant" / "compound_antonyms.txt"
+
+
+def __getattr__(name: str):
+    if name == "DEFAULT_PATH":
+        return _default_path()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 def load_compound_antonyms(path: Path | None = None) -> List[str]:
     """Load deduplicated 2-char compound list (order preserved)."""
-    p = path or DEFAULT_PATH
+    p = path or _default_path()
     seen: Set[str] = set()
     out: List[str] = []
     for line in p.read_text(encoding="utf-8").splitlines():

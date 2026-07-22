@@ -28,6 +28,10 @@ Windows
    套件**不**附 START.bat。
    No START.bat is shipped.
 
+   （維護者）repo 內 portable/START.bat 與 scripts/portable_venv* 為 **legacy／dev**
+   （舊 venv.pack 運送，ADR-0067）；非正式 Release 渠道。正式建置見 scripts/build-desktop.*
+   （PyApp，ADR-0068）。跑 legacy seams：CANTO_SEAMS_LEGACY=1。
+
 3. 瀏覽器會自動開啟查韻介面
    Your browser opens the search UI.
 

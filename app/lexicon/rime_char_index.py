@@ -10,11 +10,21 @@ from typing import Dict, List, Optional
 from app.lexicon.static_index import LexiconEntry
 from app.utils.jyutping_codec import get_0243_code
 
-from app.payload_root import resolve_payload_root
+from app.payload_root import get_payload_root
 
-ROOT = resolve_payload_root()
-DEFAULT_CHAR_CSV = ROOT / "data" / "rime" / "char.csv"
 DEFAULT_PRON_RANK = "預設"
+
+
+def _default_char_csv() -> Path:
+    return get_payload_root() / "data" / "rime" / "char.csv"
+
+
+def __getattr__(name: str):
+    if name == "DEFAULT_CHAR_CSV":
+        return _default_char_csv()
+    if name == "ROOT":
+        return get_payload_root()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 PRON_RANK_SORT = {"預設": 0, "常用": 1, "罕見": 2, "棄用": 3}
 UNKNOWN_PRON_RANK_SORT = 99
@@ -30,11 +40,11 @@ def _is_canto_char(text: str) -> bool:
     return bool(text and re.search(r"[\u4e00-\u9fff]", text))
 
 
-def load_rime_char_csv(path: Path | str = DEFAULT_CHAR_CSV) -> int:
+def load_rime_char_csv(path: Path | str | None = None) -> int:
     """Load char.csv: 預設 rows -> ensure entries; all ranks -> pron_rank_sort lookup."""
     global _entries_by_char, _rank_by_char_jyut, _loaded
 
-    csv_path = Path(path)
+    csv_path = Path(path) if path is not None else _default_char_csv()
     index: Dict[str, List[LexiconEntry]] = {}
     rank_map: Dict[tuple[str, str], int] = {}
     count = 0
@@ -82,7 +92,7 @@ def load_rime_char_csv(path: Path | str = DEFAULT_CHAR_CSV) -> int:
 def ensure_rime_char_loaded(path: Optional[Path | str] = None) -> None:
     if _loaded:
         return
-    load_rime_char_csv(path or DEFAULT_CHAR_CSV)
+    load_rime_char_csv(path if path is not None else _default_char_csv())
 
 
 def get_rime_char_entries(char: str) -> List[LexiconEntry]:

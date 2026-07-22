@@ -13,10 +13,20 @@ FIELDS = ("char", "old_jyutping", "old_code", "action", "value", "note")
 LEGACY_FIELDS = ("char", "code", "jyutping", "action", "value", "note", "status", "applied_at")
 ACTIONS = frozenset({"set_jyutping", "set_code", "delete"})
 
-from app.payload_root import resolve_payload_root
+from app.payload_root import get_payload_root
 
-REPO_ROOT = resolve_payload_root()
-DEFAULT_TSV = REPO_ROOT / "data" / "lexicon" / "lexicon_corrections.tsv"
+
+def _default_tsv() -> Path:
+    return get_payload_root() / "data" / "lexicon" / "lexicon_corrections.tsv"
+
+
+def __getattr__(name: str):
+    # Lazy paths for `from app.lexicon.corrections import DEFAULT_TSV`
+    if name == "DEFAULT_TSV":
+        return _default_tsv()
+    if name == "REPO_ROOT":
+        return get_payload_root()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 
 @dataclass
@@ -38,7 +48,8 @@ class LexiconCorrection:
         return self.old_jyutping
 
 
-def load_corrections(path: Path = DEFAULT_TSV) -> list[LexiconCorrection]:
+def load_corrections(path: Path | None = None) -> list[LexiconCorrection]:
+    path = path if path is not None else _default_tsv()
     if not path.is_file():
         return []
     rows: list[LexiconCorrection] = []
@@ -62,7 +73,8 @@ def load_corrections(path: Path = DEFAULT_TSV) -> list[LexiconCorrection]:
     return rows
 
 
-def save_corrections(rows: list[LexiconCorrection], path: Path = DEFAULT_TSV) -> None:
+def save_corrections(rows: list[LexiconCorrection], path: Path | None = None) -> None:
+    path = path if path is not None else _default_tsv()
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS, delimiter="\t", lineterminator="\n")

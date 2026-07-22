@@ -6,7 +6,7 @@ import os
 import re
 from pathlib import Path
 
-from app.payload_root import resolve_payload_root
+from app.payload_root import get_payload_root
 
 _FALLBACK = "v1.0.9"
 
@@ -18,7 +18,7 @@ def lexicon_version() -> str:
 
     roots: list[Path] = []
     try:
-        roots.append(resolve_payload_root())
+        roots.append(get_payload_root())
     except Exception:
         pass
     roots.append(Path.cwd())

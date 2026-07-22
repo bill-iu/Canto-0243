@@ -4,6 +4,13 @@ cd /d "%~dp0"
 
 title Canto-0243
 
+rem =============================================================================
+rem LEGACY / DEV ONLY (ADR-0067 venv.pack + ADR-0068 Desktop entry points)
+rem Creator-facing Windows packages ship Canto-0243.exe only — no START.bat.
+rem Prefer: Canto-0243.exe (outer shell) or runtime\Canto-0243-runtime.exe
+rem Formal CI does not gate on this file (CANTO_SEAMS_LEGACY=1 for legacy checks).
+rem =============================================================================
+
 rem ADR-0068 Desktop: outer shell (or runtime if shell missing)
 if exist "%~dp0Canto-0243.exe" (
   set CANTO_PAYLOAD_ROOT=%~dp0

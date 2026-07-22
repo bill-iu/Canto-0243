@@ -1,28 +1,13 @@
 """PyApp / Desktop GUI entry (ADR-0068).
 
-Resolves the payload root (sidecar lyrics.db + product UI), then runs
-local_launch in --gui mode. Backend may outlive this process (A1).
+Resolves the payload root via app.payload_root SSOT, binds CANTO_PAYLOAD_ROOT,
+then runs local_launch in --gui mode. Backend may outlive this process (A1).
 """
 from __future__ import annotations
 
 import os
 import sys
 from pathlib import Path
-
-
-def resolve_payload_root() -> Path:
-    """Desktop sidecar root: env, launcher dir (PyApp), then shared helper."""
-    env = os.environ.get("CANTO_PAYLOAD_ROOT", "").strip()
-    if env:
-        return Path(env).expanduser().resolve()
-
-    # PyApp sets PYAPP=1; frozen/other launchers may set sys.executable to the exe.
-    if os.environ.get("PYAPP") == "1" or getattr(sys, "frozen", False):
-        return Path(sys.executable).resolve().parent
-
-    from app.payload_root import resolve_payload_root as _shared
-
-    return _shared()
 
 
 def _win_message(title: str, text: str) -> None:
@@ -38,9 +23,12 @@ def _win_message(title: str, text: str) -> None:
 
 
 def main() -> int:
+    # Import only payload_root before bind — never app.db / lexicon first.
+    from app.payload_root import bind_payload_root, resolve_payload_root
+
     root = resolve_payload_root()
     os.chdir(root)
-    os.environ["CANTO_PAYLOAD_ROOT"] = str(root)
+    bind_payload_root(root)
     os.environ.setdefault("PORTABLE", "1")
     os.environ.setdefault("ENV", "local")
 

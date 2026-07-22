@@ -4,16 +4,18 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import Any
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from app.payload_root import resolve_payload_root
+from app.payload_root import get_payload_root
 
 ENV = os.getenv("ENV", "local").lower()
 # Load env from payload root first (Desktop sidecar), then cwd.
-_PAYLOAD = resolve_payload_root()
+# Entry (desktop_entry) must bind CANTO_PAYLOAD_ROOT before importing this module.
+_PAYLOAD = get_payload_root()
 _env_name = ".env.prod" if ENV == "prod" else ".env.local"
 for _candidate in (_PAYLOAD / _env_name, Path.cwd() / _env_name, Path(_env_name)):
     if _candidate.is_file():
@@ -25,9 +27,6 @@ else:
     env_file = _env_name
 
 print(f"[ENV] 目前環境: {ENV.upper()} | 載入設定檔: {env_file}")
-
-# Desktop wheel install: site-packages ≠ payload; always prefer resolve_payload_root().
-PROJECT_ROOT = resolve_payload_root()
 
 
 def resolve_sqlite_database_url(url: str) -> str:
@@ -41,7 +40,7 @@ def resolve_sqlite_database_url(url: str) -> str:
     if raw.startswith("/") or (len(raw) > 1 and raw[1] == ":"):
         return url
     rel = raw[2:] if raw.startswith("./") else raw
-    abs_path = (PROJECT_ROOT / rel).resolve()
+    abs_path = (get_payload_root() / rel).resolve()
     return f"{prefix}{abs_path.as_posix()}"
 
 
@@ -56,7 +55,7 @@ _db_kind = DATABASE_URL.split("://")[0]
 _db_hint = ""
 if DATABASE_URL.startswith("sqlite:///"):
     _db_hint = f" | {DATABASE_URL[len('sqlite:///'):]}"
-print(f"[DB] 使用資料庫: {_db_kind} | payload={PROJECT_ROOT}{_db_hint}")
+print(f"[DB] 使用資料庫: {_db_kind} | payload={get_payload_root()}{_db_hint}")
 
 if DATABASE_URL.startswith("postgresql"):
     raise SystemExit(
@@ -71,3 +70,10 @@ engine = create_engine(
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+
+def __getattr__(name: str) -> Any:
+    # Lazy alias so importers always see current payload root after bind.
+    if name == "PROJECT_ROOT":
+        return get_payload_root()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
