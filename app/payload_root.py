@@ -36,9 +36,10 @@ def _cwd_with_db() -> Path | None:
 def _pyapp_sidecar_guess() -> Path | None:
     """When shell did not set env: prefer package root that holds lyrics.db.
 
-    Inner PyApp binary may live under package/runtime/; outer shell next to
-    lyrics.db. Do not treat bare sys.executable.parent as payload unless it
-    has lyrics.db (avoids %LOCALAPPDATA%/pyapp/... false roots).
+    Windows: package/runtime/Canto-0243-runtime.exe.
+    macOS ADR-0070: Canto-0243.app/Contents/Resources/runtime/… → parent of .app.
+    Do not treat bare sys.executable.parent as payload unless it has lyrics.db
+    (avoids %LOCALAPPDATA%/pyapp/... false roots).
     """
     if os.environ.get("PYAPP") != "1" and not getattr(sys, "frozen", False):
         return None
@@ -49,11 +50,21 @@ def _pyapp_sidecar_guess() -> Path | None:
     cand = exe.parent
     if (cand / "lyrics.db").is_file():
         return cand
-    # runtime/Canto-0243-runtime.exe → package root
+    # runtime/ under package or under .app/Contents/Resources/
     if cand.name.lower() == "runtime":
-        outer = cand.parent
-        if (outer / "lyrics.db").is_file():
-            return outer
+        parent = cand.parent
+        # …/Canto-0243.app/Contents/Resources/runtime
+        if parent.name == "Resources":
+            contents = parent.parent
+            if contents.name == "Contents":
+                app = contents.parent
+                if app.name.endswith(".app"):
+                    outer = app.parent
+                    if (outer / "lyrics.db").is_file():
+                        return outer
+        # package/runtime (Windows / legacy mac)
+        if (parent / "lyrics.db").is_file():
+            return parent
     return None
 
 

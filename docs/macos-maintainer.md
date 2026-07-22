@@ -58,12 +58,14 @@ source "$HOME/.cargo/env"   # 若新開 shell
 bash scripts/macos-tar.sh --tag v1.1.0
 ```
 
-產物：`dist/canto-0243-desktop-macos-x86_64.tar.gz`
+產物：`dist/canto-0243-desktop-macos-x86_64.tar.gz`  
+解壓後入口：**`Canto-0243.app`**（側車同層；runtime 在 App 內；**無** `.command`，ADR-0070）。
 
 本機試跑（唔上傳；**首次可需網**）：
 
 ```bash
 bash scripts/macos-tar.sh --tag v1.1.0 --test
+# 或：open dist/canto-0243-desktop/Canto-0243.app
 ```
 
 ---

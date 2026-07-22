@@ -113,7 +113,7 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 
 ## 驗收（macOS）
 
-下載 `canto-0243-desktop-macos-*.tar.gz` → 解壓 → 雙擊 `Canto-0243.command`（**首次可需網**裝 CPython 3.11）。若 Gatekeeper 擋：系統設定 → 隱私與安全性 → 仍要開啟。
+下載 `canto-0243-desktop-macos-*.tar.gz` → 解壓 → 雙擊 **`Canto-0243.app`**（**首次可需網**裝 CPython 3.11）。Gatekeeper **只對 `.app` 一次**（右鍵打開／仍要開啟）；唔使對 runtime 再放行（ADR-0070）。
 
 ## 退役說明
 

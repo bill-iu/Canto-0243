@@ -32,7 +32,7 @@ Options:
   --arch ARCH        auto (default), arm64, or x86_64 — must match this Mac's CPU
   --upload           Upload tar only via gh (Release must already exist)
   --tar-only         Accepted alias for --upload
-  --test             After build, open dist/canto-0243-desktop/Canto-0243.command
+  --test             After build, open dist/canto-0243-desktop/Canto-0243.app
   --sync-readme      Accepted for parity with older callers (no-op; Desktop build skips)
   -h, --help         Show this help
 
@@ -215,7 +215,7 @@ _ensure_rime_char
 
 TAR_PATH="$ROOT/dist/canto-0243-desktop-macos-${ARCH}.tar.gz"
 BUNDLE_DIR="$ROOT/dist/canto-0243-desktop"
-ENTRY_CMD="$BUNDLE_DIR/Canto-0243.command"
+ENTRY_APP="$BUNDLE_DIR/Canto-0243.app"
 MANIFEST_SIDECAR="$ROOT/dist/portable-manifest-macos-${ARCH}.json"
 
 echo "==> Canto-0243 local macOS Desktop release (PyApp)"
@@ -238,15 +238,9 @@ echo "==> Build Desktop (build-desktop.sh)..."
   exit 1
 }
 
-if [[ -x "$ENTRY_CMD" ]] && command -v codesign >/dev/null 2>&1; then
-  echo "==> Codesign check (entry)..."
-  codesign --verify --strict "$ENTRY_CMD" 2>/dev/null || true
-  if [[ -x "$BUNDLE_DIR/Canto-0243" ]]; then
-    codesign --force --sign - "$BUNDLE_DIR/Canto-0243" 2>/dev/null || true
-  fi
-  if [[ -x "$BUNDLE_DIR/runtime/Canto-0243-runtime" ]]; then
-    codesign --force --sign - "$BUNDLE_DIR/runtime/Canto-0243-runtime" 2>/dev/null || true
-  fi
+if [[ -d "$ENTRY_APP" ]] && command -v codesign >/dev/null 2>&1; then
+  echo "==> Codesign check (Canto-0243.app)..."
+  codesign --verify --verbose=2 "$ENTRY_APP" 2>&1 | head -15 || true
 fi
 
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)
@@ -254,11 +248,12 @@ echo ""
 echo "Built:"
 echo "  $TAR_PATH (${tar_mb} MB)"
 [[ -f "$MANIFEST_SIDECAR" ]] && echo "  $MANIFEST_SIDECAR"
+[[ -d "$ENTRY_APP" ]] && echo "  $ENTRY_APP"
 
 if [[ "$TEST" -eq 1 ]]; then
-  echo "==> Local smoke: open $ENTRY_CMD"
+  echo "==> Local smoke: open $ENTRY_APP"
   echo "    First run needs network (PyApp installs CPython 3.11)."
-  open "$ENTRY_CMD"
+  open "$ENTRY_APP"
 fi
 
 if [[ "$UPLOAD" -eq 1 ]]; then
@@ -285,4 +280,4 @@ if [[ "$UPLOAD" -eq 1 ]]; then
 fi
 
 echo ""
-echo "Done. Creators: extract → Canto-0243.command (first run may need network)."
+echo "Done. Creators: extract folder → double-click Canto-0243.app (Gatekeeper once; first run may need network)."

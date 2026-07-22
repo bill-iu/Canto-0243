@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -72,6 +73,23 @@ class PayloadRootTests(unittest.TestCase):
             if "def resolve_payload_root" in text:
                 hits.append(str(path).replace("\\", "/"))
         self.assertEqual(hits, ["app/payload_root.py"])
+
+    def test_pyapp_guess_macos_app_bundle_runtime(self) -> None:
+        """ADR-0070: runtime under .app/Contents/Resources/runtime → parent of .app."""
+        import app.payload_root as pr
+
+        with tempfile.TemporaryDirectory() as tmp:
+            outer = Path(tmp).resolve()
+            (outer / "lyrics.db").write_bytes(b"")
+            runtime = outer / "Canto-0243.app" / "Contents" / "Resources" / "runtime"
+            runtime.mkdir(parents=True)
+            fake_exe = runtime / "Canto-0243-runtime"
+            fake_exe.write_bytes(b"")
+            with mock.patch.dict(os.environ, {"PYAPP": "1"}, clear=False):
+                with mock.patch.object(sys, "executable", str(fake_exe)):
+                    clear_payload_root_cache()
+                    os.environ.pop("CANTO_PAYLOAD_ROOT", None)
+                    self.assertEqual(pr._pyapp_sidecar_guess(), outer)
 
 
 if __name__ == "__main__":

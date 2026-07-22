@@ -118,14 +118,22 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("3.11", ps1)
         self.assertIn("canto-0243-desktop", ps1)
         sh = (REPO_ROOT / "scripts" / "build-desktop.sh").read_text(encoding="utf-8")
-        self.assertIn("Canto-0243.command", sh)
-        self.assertIn("runtime/Canto-0243-runtime", sh)
+        # ADR-0070: formal entry is .app; no .command; runtime under Resources
+        self.assertIn("Canto-0243.app", sh)
+        self.assertNotIn("Canto-0243.command", sh)
+        self.assertIn('RUNTIME_DIR="${RES_DIR}/runtime"', sh)
+        self.assertIn("AppIcon.icns", sh)
+        self.assertIn("com.canto0243.desktop", sh)
+        self.assertIn("--deep", sh)
         self.assertIn("desktop-shell", sh)
         self.assertIn("PYAPP_", sh)
         shell = (REPO_ROOT / "desktop-shell" / "src" / "main.rs").read_text(encoding="utf-8")
         self.assertIn("pyapp_install_ready", shell)
         self.assertIn("setSplashStage", shell)
         self.assertIn('INNER_SUBDIR: &str = "runtime"', shell)
+        self.assertIn("macos_app_bundle", shell)
+        self.assertIn("clear_download_quarantine", shell)
+        self.assertIn("xattr", shell)
         # Name kept for callers; must forward to desktop build.
         wrapper = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
         self.assertIn("build-desktop.ps1", wrapper)
@@ -134,6 +142,7 @@ class TestLocalLaunchSeam(unittest.TestCase):
         mac = (REPO_ROOT / "scripts" / "release-macos-local.sh").read_text(encoding="utf-8")
         self.assertIn("build-desktop.sh", mac)
         self.assertIn("canto-0243-desktop-macos-", mac)
+        self.assertIn("Canto-0243.app", mac)
         self.assertNotIn("build-portable.sh", mac)
         self.assertIn("delete-asset", mac)  # drop legacy portable-macos asset if present
 
