@@ -35,6 +35,7 @@
 | [0065](./0065-workbench-manual-input-and-undo.md) | **工作台手改**（雙擊單格／段手打）+ **句稿復原**入條件面板 |
 | [0066](./0066-workbench-wildcard-and-phoneme-ref.md) | **通配符格** + **韻／聲參考字串**（覆蓋／長度跟勾選） |
 | [0067](./0067-portable-venv-pack-transport.md) | ~~venv.pack 運送~~ → superseded by **0068** |
+| [0069](./0069-workbench-replacement-span-line-width.md) | **替換段**寬＝句長（取消 4 格硬頂；phoneme≤6；skip@20） |
 
 ## Stubs
 
