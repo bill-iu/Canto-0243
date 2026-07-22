@@ -1,0 +1,281 @@
+literal	pos	family	voice	note	source	confidence	prior_voice	status	ssot_voice	ssot_pos	verdict	reason
+受事	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+受僱	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+受孕	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+受害人	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice	passive	n	keep	已在 SSOT passive
+受害者	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice	passive	n	keep	已在 SSOT passive
+受理	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+受益人	n		passive	cow-single;prefix-passive	cow	medium		missing	passive	n	keep	已在 SSOT passive
+受精	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+受胎	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫人	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫住先	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫作	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫佢	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫做	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫停	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫價	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫名	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫咗人	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫咗你	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫咗佢	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫咗我	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫唆	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫唔喐	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫唔敢	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫喊	n,v		passive	cow-multi;prefix-passive	ssot-patch	medium		empty_voice		n,v	reject	主動義、技術名、或叫/給/讓
+叫喚	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫嘯	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫噪	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫嚷	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫囂	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫多個	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫天不應，叫地不聞	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫好	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫好不叫座	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫屈	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫床*	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫座	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫座力	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫數	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫春	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫板	v		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫法	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫牀	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫牀聲	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫牌	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫生曬	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫白車	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫真	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫糊	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫絕	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫罵	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫聲	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+叫聲我	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫花子	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫苦	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫苦不迭	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	reject	主動義、技術名、或叫/給/讓
+叫苦連天	v	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫菜	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫號	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫賣	v		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫起	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫起手	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫車	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫道	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫醒	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+叫門	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫開叫埋	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫陣	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫雞	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫響	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫餸	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫餸食飯	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫驢	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫魂	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫鴨	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+叫鷄*	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+得㗎啦	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得㗎啦你	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得一想二	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得一望十	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得上床掀被罯*	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得上牀掀被罯	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得不償失	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得主	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得了	v,x		passive	prefix-passive	ssot-patch	medium		empty_voice		v,x	reject	主動義、技術名、或叫/給/讓
+得些好意須回手	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得些好意須回首	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得人	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得人心	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得人怕	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得人憎	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得人驚	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得以	v,x		passive	prefix-passive	ssot-patch	medium		empty_voice		v,x	reject	主動義、技術名、或叫/給/讓
+得你啫	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得來不易	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得來全不費功夫	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得來速	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個	r,v		passive	prefix-passive	ssot-patch	medium		empty_voice		r,v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個⋯字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個估	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個吉	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個名	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個嬲字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個桔	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個樣	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個殼	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個睇字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個知字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得個講字	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得償所願	v	idiom	passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得克薩斯州	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得其所哉	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得出	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得分	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+得切	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得到	v		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+得力	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得力助手	n		passive	prefix-passive	ssot-patch	medium		empty_voice		n	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得勝	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得勢	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得勢不饒人	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得咁笑	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得咗	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得咗喇	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得唔得	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得唔得㗎	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得唔得囉	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得唔得架	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得唔得閒	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啖笑	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啖笑啫	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啦你	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啦啩	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啦得啦	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啲	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得啵	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得喇	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得嗰	r		passive	prefix-passive	ssot-patch	medium		empty_voice		r	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得嘅咩	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得嘎	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得噃	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得嚟	v,x		passive	prefix-passive	ssot-patch	medium		empty_voice		v,x	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得囉	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得多	r		passive	prefix-passive	ssot-patch	medium		empty_voice		r	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得天獨厚	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得失	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得失參半	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得奬*	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得宜	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得寵	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得寸進尺	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得很	r		passive	prefix-passive	ssot-patch	medium		empty_voice		r	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得得慼慼	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得心應手	a	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得志	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得悉	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	reject	主動義、技術名、或叫/給/讓
+得意忘形	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意揚揚	a	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意洋洋	u	chengyu	passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意趣緻	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意趣致	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得意門生	n	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		n	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得戚	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得手	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得把口	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得把嘴	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得把嘴硬	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得把牙	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得把聲	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得掂	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得敕	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得敕喇你	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得數	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得時	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得未啊	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得架嘞	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得棚牙	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得標	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得法	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得滯	a,r		passive	prefix-passive	ssot-patch	medium		empty_voice		a,r	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得濟	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得無	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得物無所用	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得獎	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得獎人	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得獎者	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得理不饒人	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得瑟	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得用	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得當	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得病	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得益	n		passive	cow-single;prefix-passive	cow	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得益於	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得益規條	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得直	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得着	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得知	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得票	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得空	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得米	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得罪	n,v		passive	cow-multi;prefix-passive	ssot-patch	medium		empty_voice		n,v	reject	主動義、技術名、或叫/給/讓
+得罪人多，稱呼人少	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得罪曬	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得罪講句	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得翻	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得而復失	v	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得臉	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得落	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得著	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得虧	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得計	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得記	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得返一個	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得返學位	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得逞	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得過	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得過且過	v	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得道	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得道多助	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得道多助，失道寡助	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得鋪牛力	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閑	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒	a,v		passive	prefix-passive	ssot-patch	medium		empty_voice		a,v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒不	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒你	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒冇屎屙	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒再傾	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒再嚟	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒呢	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒啦	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒嗎	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒嚟坐	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒死唔得閒病	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒飲茶	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得閒麼	v		passive	prefix-passive	heuristic	medium		missing			hold	得-prefix 提案；除得救等 seed 外需逐條審
+得隴望蜀	v	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		v	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得饒人處且饒人	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得體	a		passive	prefix-passive	ssot-patch	medium		empty_voice		a	hold	得-prefix 提案；除得救等 seed 外需逐條審
+得魚忘筌	u	chengyu	passive	prefix-passive	ssot-patch	medium		empty_voice		u	hold	得-prefix 提案；除得救等 seed 外需逐條審
+給不到	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給予	v		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+給付	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給以	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給你發現	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給回你	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給定	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給水	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給虐	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+給錢	v		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+給養	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+被上訴人	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+被乘數	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被加數	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被動	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+被動免疫	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+被告	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被告人	n		passive	prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+被單	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被套	v		passive	prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+被子植物	n		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+被子植物門	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被害人	n		passive	prefix-passive	ssot-patch	medium		empty_voice	passive	n	keep	已在 SSOT passive
+被窩	n		passive	prefix-passive	ssot-patch	medium		empty_voice		n	reject	主動義、技術名、或叫/給/讓
+被除數	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+被面	n		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓人羨慕	a,v		passive	prefix-passive	ssot-patch	medium		empty_voice		a,v	reject	主動義、技術名、或叫/給/讓
+讓位	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓先	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓利	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓半臂	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓售	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓座	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓步	n,v		passive	cow-multi;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓賢	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓賢與能	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓路	v		passive	cow-single;prefix-passive	ssot-patch	medium		empty_voice		v	reject	主動義、技術名、或叫/給/讓
+讓道	v		passive	prefix-passive	heuristic	medium		missing			reject	主動義、技術名、或叫/給/讓
+讓開	v		passive	cow-single;prefix-passive	cow	medium		missing			reject	主動義、技術名、或叫/給/讓

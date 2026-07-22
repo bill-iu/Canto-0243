@@ -19,6 +19,17 @@ const ABOUT_SLOGANS_ZH = [
 /** Ready-gate / shell fragments historically in critical subset */
 const SHELL_DISPLAY_ZH = ['即使離線亦完全可用', '呢一次拎返你嘅創作主導權'] as const;
 
+/**
+ * Serif hero titles (guide / relation / corrections) — guide-i18n + views.
+ * Must stay in critical subset: full Noto Serif TC self-host is multi-chunk;
+ * only this subset is guaranteed offline for CJK serif display.
+ */
+const SERIF_HERO_ZH = [
+  '所有搜尋語法', // guide-hero h1
+  '關係補錄', // relation-hero
+  '詞庫勘誤', // corrections-view hero
+] as const;
+
 function workbenchIntroZh(): string[] {
   const z = WORKBENCH_INTRO.zh;
   return [z.eyebrow, z.h1, z.h2];
@@ -31,6 +42,7 @@ export function criticalDisplayText(): string {
     ...HEADER_HERO_ZH,
     ...ABOUT_SLOGANS_ZH,
     ...SHELL_DISPLAY_ZH,
+    ...SERIF_HERO_ZH,
     // punctuation / brand marks used in slogans
     '·／，。—',
   ];
@@ -53,5 +65,6 @@ export function criticalDisplayPhrases(): string[] {
     ...workbenchIntroZh(),
     ...HEADER_HERO_ZH,
     ...ABOUT_SLOGANS_ZH,
+    ...SERIF_HERO_ZH,
   ];
 }

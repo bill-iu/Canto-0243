@@ -4905,25 +4905,125 @@ T恤	n			u-inlex-nf2k;review;agent-label
 取長補短	u	chengyu		chengyu-pos-review;review
 受	v			cow-single;p1
 受不了	v		passive	prefix-passive;heuristic
-受之有愧	v	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r2.tsv
-受傷	v			cow-single
-受到	v			cow-single
+受之有愧	v	idiom	passive	len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r2.tsv;prefix-passive;passive-prefix-expand;review
+受享	v		passive	prefix-passive;passive-prefix-expand;review
+受人二分四	v		passive	prefix-passive;passive-prefix-expand;review
+受人重託	v		passive	prefix-passive;passive-prefix-expand;review
+受人錢財，替人消災	v		passive	prefix-passive;passive-prefix-expand;review
+受你氣	v		passive	prefix-passive;passive-prefix-expand;review
+受保人	v		passive	prefix-passive;passive-prefix-expand;review
+受俸	v		passive	prefix-passive;passive-prefix-expand;review
+受傷	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+受傷害啦	v		passive	prefix-passive;passive-prefix-expand;review
+受冷	v		passive	prefix-passive;passive-prefix-expand;review
+受凍挨餓	v		passive	prefix-passive;passive-prefix-expand;review
+受刑	v		passive	prefix-passive;passive-prefix-expand;review
+受刑人	v		passive	prefix-passive;passive-prefix-expand;review
+受到	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+受到重傷	v		passive	prefix-passive;passive-prefix-expand;review
+受到重視	v		passive	prefix-passive;passive-prefix-expand;review
 受制	v		passive	prefix-passive;heuristic
+受創	v		passive	prefix-passive;passive-prefix-expand;review
+受力	v		passive	prefix-passive;passive-prefix-expand;review
+受勛	v		passive	prefix-passive;passive-prefix-expand;review
+受勳	v		passive	prefix-passive;passive-prefix-expand;review
+受取	v		passive	prefix-passive;passive-prefix-expand;review
+受命於天	v		passive	prefix-passive;passive-prefix-expand;review
+受唔住	v		passive	prefix-passive;passive-prefix-expand;review
+受唔得	v		passive	prefix-passive;passive-prefix-expand;review
+受唔起	v		passive	prefix-passive;passive-prefix-expand;review
+受困	v		passive	prefix-passive;passive-prefix-expand;review
+受埋你玩	v		passive	prefix-passive;passive-prefix-expand;review
+受媾	v		passive	prefix-passive;passive-prefix-expand;review
 受孕	n			cow-single
 受害	v		passive	prefix-passive;heuristic
-受害人	n			cow-single
-受害者	n			cow-single
+受害人	n		passive	cow-single;prefix-passive;heuristic;passive-prefix-expand;review
+受害者	n		passive	cow-single;prefix-passive;heuristic;passive-prefix-expand;review
+受寒	v		passive	prefix-passive;passive-prefix-expand;review
+受審	v		passive	prefix-passive;passive-prefix-expand;review
 受寵若驚	v	chengyu	passive	prefix-passive;heuristic;family-leaf-review
+受屈	v		passive	prefix-passive;passive-prefix-expand;review
 受影響	v		passive	prefix-passive;p3;heuristic
+受得住	v		passive	prefix-passive;passive-prefix-expand;review
+受惠	v		passive	prefix-passive;passive-prefix-expand;review
+受懲罰	v		passive	prefix-passive;passive-prefix-expand;review
+受戒	v		passive	prefix-passive;passive-prefix-expand;review
+受把	v		passive	prefix-passive;passive-prefix-expand;review
+受持	v		passive	prefix-passive;passive-prefix-expand;review
+受挫	v		passive	prefix-passive;passive-prefix-expand;review
 受控	v		passive	prefix-passive;heuristic
-受歡迎	v			cow-single;p3
+受損	v		passive	prefix-passive;passive-prefix-expand;review
+受支配	v		passive	prefix-passive;passive-prefix-expand;review
+受教	v		passive	prefix-passive;passive-prefix-expand;review
+受敵	v		passive	prefix-passive;passive-prefix-expand;review
+受暑	v		passive	prefix-passive;passive-prefix-expand;review
+受格	v		passive	prefix-passive;passive-prefix-expand;review
+受業	v		passive	prefix-passive;passive-prefix-expand;review
+受權	v		passive	prefix-passive;passive-prefix-expand;review
+受歡迎	v		passive	cow-single;p3;prefix-passive;passive-prefix-expand;review
+受氣	v		passive	prefix-passive;passive-prefix-expand;review
+受氣包	v		passive	prefix-passive;passive-prefix-expand;review
+受法律保護權	v		passive	prefix-passive;passive-prefix-expand;review
+受洗	v		passive	prefix-passive;passive-prefix-expand;review
+受洗命名	v		passive	prefix-passive;passive-prefix-expand;review
+受浸	v		passive	prefix-passive;passive-prefix-expand;review
+受涼	v		passive	prefix-passive;passive-prefix-expand;review
+受溝	v		passive	prefix-passive;passive-prefix-expand;review
+受潮	v		passive	prefix-passive;passive-prefix-expand;review
 受災	v		passive	prefix-passive;p3;heuristic
+受災面積	v		passive	prefix-passive;passive-prefix-expand;review
+受熱	v		passive	prefix-passive;passive-prefix-expand;review
+受獎	v		passive	prefix-passive;passive-prefix-expand;review
+受用	v		passive	prefix-passive;passive-prefix-expand;review
+受病	v		passive	prefix-passive;passive-prefix-expand;review
 受益	v		passive	prefix-passive;heuristic
+受益人	n		passive	prefix-passive;heuristic;passive-prefix-expand;review
 受益匪淺	v		passive	prefix-passive;heuristic
+受盤	v		passive	prefix-passive;passive-prefix-expand;review
+受眾	v		passive	prefix-passive;passive-prefix-expand;review
+受硬唔受軟	v		passive	prefix-passive;passive-prefix-expand;review
+受禪	v		passive	prefix-passive;passive-prefix-expand;review
+受禮	v		passive	prefix-passive;passive-prefix-expand;review
+受窘	v		passive	prefix-passive;passive-prefix-expand;review
+受窮	v		passive	prefix-passive;passive-prefix-expand;review
+受粉	v		passive	prefix-passive;passive-prefix-expand;review
+受精卵	v		passive	prefix-passive;passive-prefix-expand;review
+受精囊	v		passive	prefix-passive;passive-prefix-expand;review
+受納	v		passive	prefix-passive;passive-prefix-expand;review
+受累	v		passive	prefix-passive;passive-prefix-expand;review
+受罪	v		passive	prefix-passive;passive-prefix-expand;review
+受罰	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+受聘	v		passive	prefix-passive;passive-prefix-expand;review
+受聽	v		passive	prefix-passive;passive-prefix-expand;review
 受苦	v		passive	prefix-passive;heuristic
+受茶禮	v		passive	prefix-passive;passive-prefix-expand;review
+受落	v		passive	prefix-passive;passive-prefix-expand;review
+受薪	v		passive	prefix-passive;passive-prefix-expand;review
+受虐	v		passive	prefix-passive;passive-prefix-expand;review
+受虐狂	v		passive	prefix-passive;passive-prefix-expand;review
+受衆*	v		passive	prefix-passive;passive-prefix-expand;review
+受訓	v		passive	prefix-passive;passive-prefix-expand;review
+受託	v		passive	prefix-passive;passive-prefix-expand;review
+受託者	v		passive	prefix-passive;passive-prefix-expand;review
+受訪	v		passive	prefix-passive;passive-prefix-expand;review
+受賄	v		passive	prefix-passive;passive-prefix-expand;review
+受賞	v		passive	prefix-passive;passive-prefix-expand;review
+受軟唔受硬	v		passive	prefix-passive;passive-prefix-expand;review
+受辱	v		passive	prefix-passive;passive-prefix-expand;review
 受過	v		passive	prefix-passive;heuristic
+受重傷	v		passive	prefix-passive;passive-prefix-expand;review
+受阻	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+受降	v		passive	prefix-passive;passive-prefix-expand;review
+受降儀式	v		passive	prefix-passive;passive-prefix-expand;review
+受雇	v		passive	prefix-passive;passive-prefix-expand;review
+受難	v		passive	prefix-passive;passive-prefix-expand;review
+受難紀念	v		passive	prefix-passive;passive-prefix-expand;review
+受靶	v		passive	prefix-passive;passive-prefix-expand;review
+受領者	v		passive	prefix-passive;passive-prefix-expand;review
+受騙	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
 受騙上當	v		passive	prefix-passive;heuristic
 受驚	v		passive	prefix-passive;heuristic
+受黑錢	v		passive	prefix-passive;passive-prefix-expand;review
 叛徒	n			cow-single;p3
 叛軍	n			u-inlex-nf2b;review;agent-label
 叛逆	a,n,v			u-inlex-nf5;review;agent-label
@@ -9905,6 +10005,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 得天獨厚	u	chengyu		chengyu-pos-review;review
 得失參半	u	chengyu		chengyu-pos-review;review
 得宜	a			u-inlex-nf5;review;agent-label
+得寵	v		passive	prefix-passive;passive-de-essay-top;review
 得寸進尺	u	chengyu		chengyu-pos-review;review
 得很	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 得心應手	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
@@ -9914,7 +10015,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 得意洋洋	u	chengyu		chengyu-pos-review;review
 得意門生	n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 得戚	a			u-inlex;review;u-inlex-agent
+得救	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 得滯	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+得濟	v		passive	prefix-passive;passive-de-essay-top;review
+得益	n		passive	prefix-passive;passive-de-essay-top;review
+得益於	v		passive	prefix-passive;passive-de-essay-top;review
 得知	v			u-inlex-nf2k;review;agent-label
 得罪	n,v			cow-nv-unreviewed;trust-low
 得而復失	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -11646,9 +11751,47 @@ T恤	n			u-inlex-nf2k;review;agent-label
 挖掘機械	n			u-inlex-nf4;review;agent-label
 挖肉補瘡	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 挨	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-挨住	v			verb-suffix;p3;heuristic
-挨家挨户	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
-挨門挨户	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
+挨世界	v		passive	prefix-passive;passive-prefix-expand;review
+挨住	v		passive	verb-suffix;p3;heuristic;prefix-passive;passive-prefix-expand;review
+挨佬	v		passive	prefix-passive;passive-prefix-expand;review
+挨個	v		passive	prefix-passive;passive-prefix-expand;review
+挨剋	v		passive	prefix-passive;passive-prefix-expand;review
+挨呲兒	v		passive	prefix-passive;passive-prefix-expand;review
+挨壞	v		passive	prefix-passive;passive-prefix-expand;review
+挨夜	v		passive	prefix-passive;passive-prefix-expand;review
+挨夾棍	v		passive	prefix-passive;passive-prefix-expand;review
+挨家	v		passive	prefix-passive;passive-prefix-expand;review
+挨家挨户	a,v	chengyu	passive	p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review;prefix-passive;passive-prefix-expand;review
+挨屏	v		passive	prefix-passive;passive-prefix-expand;review
+挨年近晚	v		passive	prefix-passive;passive-prefix-expand;review
+挨憑	v		passive	prefix-passive;passive-prefix-expand;review
+挨憑椅	v		passive	prefix-passive;passive-prefix-expand;review
+挨户	v		passive	prefix-passive;passive-prefix-expand;review
+挨户挨家	v		passive	prefix-passive;passive-prefix-expand;review
+挨拼	v		passive	prefix-passive;passive-prefix-expand;review
+挨拼椅	v		passive	prefix-passive;passive-prefix-expand;review
+挨挨凭凭	v		passive	prefix-passive;passive-prefix-expand;review
+挨挨憑憑	v		passive	prefix-passive;passive-prefix-expand;review
+挨挨擠擠	v		passive	prefix-passive;passive-prefix-expand;review
+挨擠	v		passive	prefix-passive;passive-prefix-expand;review
+挨擦	v		passive	prefix-passive;passive-prefix-expand;review
+挨時間	v		passive	prefix-passive;passive-prefix-expand;review
+挨晚	v		passive	prefix-passive;passive-prefix-expand;review
+挨更抵夜	v		passive	prefix-passive;passive-prefix-expand;review
+挨板子	v		passive	prefix-passive;passive-prefix-expand;review
+挨次	v		passive	prefix-passive;passive-prefix-expand;review
+挨生挨死	v		passive	prefix-passive;passive-prefix-expand;review
+挨着	v		passive	prefix-passive;passive-prefix-expand;review
+挨街凭巷	v		passive	prefix-passive;passive-prefix-expand;review
+挨街憑巷	v		passive	prefix-passive;passive-prefix-expand;review
+挨話	v		passive	prefix-passive;passive-prefix-expand;review
+挨踢	v		passive	prefix-passive;passive-prefix-expand;review
+挨身挨勢	v		passive	prefix-passive;passive-prefix-expand;review
+挨近	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+挨邊	v		passive	prefix-passive;passive-prefix-expand;review
+挨門	v		passive	prefix-passive;passive-prefix-expand;review
+挨門挨户	a,v	chengyu	passive	p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review;prefix-passive;passive-prefix-expand;review
+挨飢抵餓	v		passive	prefix-passive;passive-prefix-expand;review
 挪威	n			u-inlex-nf2k;review;agent-label
 挪用	v			cow-single;p3
 挫折	n			cow-single;p3
@@ -11713,6 +11856,44 @@ T恤	n			u-inlex-nf2k;review;agent-label
 捫心自問	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 据	v,x			據；據…;u-inlex-nf2k;review;agent-label
 捱	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+捱一世	v		passive	prefix-passive;passive-prefix-expand;review
+捱世界	v		passive	prefix-passive;passive-prefix-expand;review
+捱咗成晚	v		passive	prefix-passive;passive-prefix-expand;review
+捱唔住	v		passive	prefix-passive;passive-prefix-expand;review
+捱埋幾年	v		passive	prefix-passive;passive-prefix-expand;review
+捱壞	v		passive	prefix-passive;passive-prefix-expand;review
+捱夜	v		passive	prefix-passive;passive-prefix-expand;review
+捱延	v		passive	prefix-passive;passive-prefix-expand;review
+捱得	v		passive	prefix-passive;passive-prefix-expand;review
+捱得苦	v		passive	prefix-passive;passive-prefix-expand;review
+捱打	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+捱打受氣	v		passive	prefix-passive;passive-prefix-expand;review
+捱打受罵	v		passive	prefix-passive;passive-prefix-expand;review
+捱整	v		passive	prefix-passive;passive-prefix-expand;review
+捱日子	v		passive	prefix-passive;passive-prefix-expand;review
+捱時間	v		passive	prefix-passive;passive-prefix-expand;review
+捱更抵夜	v		passive	prefix-passive;passive-prefix-expand;review
+捱生捱死	v		passive	prefix-passive;passive-prefix-expand;review
+捱番薯	v		passive	prefix-passive;passive-prefix-expand;review
+捱白飯	v		passive	prefix-passive;passive-prefix-expand;review
+捱眼瞓	v		passive	prefix-passive;passive-prefix-expand;review
+捱穀種	v		passive	prefix-passive;passive-prefix-expand;review
+捱罵	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+捱義氣	v		passive	prefix-passive;passive-prefix-expand;review
+捱肚餓	v		passive	prefix-passive;passive-prefix-expand;review
+捱苦	v		passive	prefix-passive;passive-prefix-expand;review
+捱通宵	v		passive	prefix-passive;passive-prefix-expand;review
+捱飢抵冷	v		passive	prefix-passive;passive-prefix-expand;review
+捱飢抵餓	v		passive	prefix-passive;passive-prefix-expand;review
+捱飯盒	v		passive	prefix-passive;passive-prefix-expand;review
+捱餓	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+捱饑抵餓	v		passive	prefix-passive;passive-prefix-expand;review
+捱騾仔	v		passive	prefix-passive;passive-prefix-expand;review
+捱驢仔	v		passive	prefix-passive;passive-prefix-expand;review
+捱鬧	v		passive	prefix-passive;passive-prefix-expand;review
+捱麪包	v		passive	prefix-passive;passive-prefix-expand;review
+捱麵包*	v		passive	prefix-passive;passive-prefix-expand;review
+捱齋	v		passive	prefix-passive;passive-prefix-expand;review
 捲	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 捲土重來	u	chengyu		chengyu-pos-review;review
 捲舌元音	n			u-inlex-nf5;review;agent-label
@@ -16803,11 +16984,31 @@ T恤	n			u-inlex-nf2k;review;agent-label
 獨霸	v			u-inlex-nf5;review;agent-label
 獨霸一方	v	chengyu		成語；獨霸一方;u-inlex-nf4;review;agent-label;family-leaf-review
 獲	v			cow-single
-獲利	v			cow-single
-獲得	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
-獲悉	v			u-inlex;review;u-inlex-agent
-獲獎	v			no-source;fallback;full-r1-audit;review;清晰動詞／動語
-獲益良多	a,v			u-inlex-nf4;review;agent-label
+獲准	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+獲利	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+獲利回吐	v		passive	prefix-passive;passive-prefix-expand;review
+獲利環保	v		passive	prefix-passive;passive-prefix-expand;review
+獲勝	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+獲取	v		passive	prefix-passive;passive-prefix-expand;review
+獲奬*	v		passive	prefix-passive;passive-prefix-expand;review
+獲得	n,v		passive	cow-nv-unreviewed;trust-low;p1-close;true-nv;review;prefix-passive;passive-prefix-expand;review
+獲得者	v		passive	prefix-passive;passive-prefix-expand;review
+獲悉	v		passive	u-inlex;review;u-inlex-agent;prefix-passive;passive-prefix-expand;review
+獲救	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+獲暴利者	v		passive	prefix-passive;passive-prefix-expand;review
+獲準	v		passive	prefix-passive;passive-prefix-expand;review
+獲獎	v		passive	no-source;fallback;full-r1-audit;review;清晰動詞／動語;prefix-passive;passive-prefix-expand;review
+獲獎人	v		passive	prefix-passive;passive-prefix-expand;review
+獲益	n		passive	prefix-passive;heuristic;passive-prefix-expand;review
+獲益者	v		passive	prefix-passive;passive-prefix-expand;review
+獲益良多	a,v		passive	u-inlex-nf4;review;agent-label;prefix-passive;passive-prefix-expand;review
+獲知	v		passive	prefix-passive;passive-prefix-expand;review
+獲罪	v		passive	prefix-passive;passive-prefix-expand;review
+獲贈	v		passive	prefix-passive;passive-prefix-expand;review
+獲選	v		passive	prefix-passive;passive-prefix-expand;review
+獲釋	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+獲頒	v		passive	prefix-passive;passive-prefix-expand;review
+獲鹿	v		passive	prefix-passive;passive-prefix-expand;review
 獵	v			u-inlex-nf2k;review;agent-label
 獵人	n			cow-single
 獵物	n			cow-single
@@ -21798,18 +21999,52 @@ T恤	n			u-inlex-nf2k;review;agent-label
 袖手旁觀	v	chengyu		cow-single;family-leaf-review
 袞袞諸公	u	chengyu		chengyu-pos-review;review
 被	x			heuristic
-被上訴人	v		passive	prefix-passive;heuristic
-被動	v		passive	prefix-passive;heuristic
+被上訴人	v			prefix-passive;heuristic;clear-false-passive-voice;review
+被佔領土	v		passive	prefix-passive;passive-prefix-expand;review
+被侵害	v		passive	prefix-passive;passive-prefix-expand;review
+被保人	v		passive	prefix-passive;passive-prefix-expand;review
+被優化掉	v		passive	prefix-passive;passive-prefix-expand;review
+被冚	v		passive	prefix-passive;passive-prefix-expand;review
+被剝削者	v		passive	prefix-passive;passive-prefix-expand;review
+被動	v			prefix-passive;heuristic;clear-false-passive-voice;review
 被動免疫	n			cow-single
-被告人	n		passive	prefix-passive;heuristic;p1-audit;review;法律名詞「被告一方」；prefix-passive 假陽會毒同動詞閘（對照 r2 被害人）
+被動吸煙	v		passive	prefix-passive;passive-prefix-expand;review
+被動局面	v		passive	prefix-passive;passive-prefix-expand;review
+被動收入	v		passive	prefix-passive;passive-prefix-expand;review
+被卧	v		passive	prefix-passive;passive-prefix-expand;review
+被吿*	v		passive	prefix-passive;passive-prefix-expand;review
+被吿人*	v		passive	prefix-passive;passive-prefix-expand;review
+被告人	n			prefix-passive;heuristic;p1-audit;review;法律名詞「被告一方」；prefix-passive 假陽會毒同動詞閘（對照 r2 被害人）;clear-false-passive-voice;review
+被和諧	v		passive	prefix-passive;passive-prefix-expand;review
+被問起	v		passive	prefix-passive;passive-prefix-expand;review
 被困	v		passive	prefix-passive;p3;heuristic
-被套	v		passive	prefix-passive;p3;heuristic
+被套	v			prefix-passive;p3;heuristic;clear-false-passive-voice;review
+被子	v		passive	prefix-passive;passive-prefix-expand;review
 被子植物	n			cow-single
-被害人	n		passive	prefix-passive;p3;heuristic;p1-audit;review;受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘
-被殺	v			cow-single;p3
-被窩	n		passive	prefix-passive;p3;heuristic;full-r1-audit;review;被窩＝被褥名詞；prefix-passive 假陽會毒同動詞閘
+被害	v		passive	prefix-passive;passive-prefix-expand;review
+被害人	n		passive	prefix-passive;p3;heuristic;p1-audit;review;受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘;clear-false-passive-voice;review;prefix-passive;heuristic;passive-prefix-expand;review
+被害妄想	v		passive	prefix-passive;passive-prefix-expand;review
+被尾	v		passive	prefix-passive;passive-prefix-expand;review
+被捕	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+被控	v		passive	prefix-passive;passive-prefix-expand;review
+被殺	v		passive	cow-single;p3;prefix-passive;heuristic;passive-prefix-expand;review
+被爆者	v		passive	prefix-passive;passive-prefix-expand;review
+被疑者	v		passive	prefix-passive;passive-prefix-expand;review
+被窩	n			prefix-passive;p3;heuristic;full-r1-audit;review;被窩＝被褥名詞；prefix-passive 假陽會毒同動詞閘;clear-false-passive-voice;review
+被竇	v		passive	prefix-passive;passive-prefix-expand;review
+被胎	v		passive	prefix-passive;passive-prefix-expand;review
+被虐狂	v		passive	prefix-passive;passive-prefix-expand;review
+被袋	v		passive	prefix-passive;passive-prefix-expand;review
+被褥	v		passive	prefix-passive;passive-prefix-expand;review
+被譽為	v		passive	prefix-passive;passive-prefix-expand;review
 被迫	v		passive	prefix-passive;heuristic
 被逼	v		passive	prefix-passive;p3;heuristic
+被選為	v		passive	prefix-passive;passive-prefix-expand;review
+被鋪	v		passive	prefix-passive;passive-prefix-expand;review
+被鋪蚊帳	v		passive	prefix-passive;passive-prefix-expand;review
+被頭	v		passive	prefix-passive;passive-prefix-expand;review
+被頭巾	v		passive	prefix-passive;passive-prefix-expand;review
+被鬼矺	v		passive	prefix-passive;passive-prefix-expand;review
 裂	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 裂開	n,v			cow-nv-unreviewed;trust-low
 裏	n			cow-single;p1
@@ -23870,6 +24105,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 遇人不淑	u	chengyu		chengyu-pos-review;review
 遇到	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 遇害	v			u-inlex-nf5;review;agent-label
+遇救	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 遇見	v			cow-single
 遊	n,v			u-inlex;review;u-inlex-agent
 遊人如織	a	chengyu		成語；遊人如織;u-inlex-nf3;review;agent-label;family-leaf-review
@@ -24061,6 +24297,20 @@ T恤	n			u-inlex-nf2k;review;agent-label
 適者生存	n,v	idiom		u-inlex-nf3;review;agent-label
 適逢其會	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 適量	a,n			u-inlex-nf5;review;agent-label
+遭值	v		passive	prefix-passive;passive-prefix-expand;review
+遭到	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+遭劫	v		passive	prefix-passive;passive-prefix-expand;review
+遭受	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+遭孽	v		passive	prefix-passive;passive-prefix-expand;review
+遭殃	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
+遭瘟	v		passive	prefix-passive;passive-prefix-expand;review
+遭罪	v		passive	prefix-passive;passive-prefix-expand;review
+遭襲	v		passive	prefix-passive;passive-prefix-expand;review
+遭逢	v		passive	prefix-passive;passive-prefix-expand;review
+遭遇	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
+遭遇不測	v		passive	prefix-passive;passive-prefix-expand;review
+遭際	v		passive	prefix-passive;passive-prefix-expand;review
+遭難	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 遮	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 遮住	v			verb-suffix;heuristic
 遮掩	v			cow-single
