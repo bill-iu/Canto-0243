@@ -2,8 +2,10 @@
  * candidate-session: cursor ownership, POS over-fetch, B2-light totals, hasMore.
  */
 import { resetPosFilter, type PosFilterState } from '../src/pos/filter.ts';
+import { initProjectPosCarrier, resetProjectPosCarrier } from '../src/pos/carrier.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../src/workbench/contracts.ts';
 import { parseWorkbenchCandidateResponse } from '../src/workbench/contracts.ts';
+import { markSnapshotRestarted } from '../src/workbench/candidate-page.ts';
 import {
   applyCreatorPosFilter,
   candidateSessionView,
@@ -12,6 +14,7 @@ import {
   resetWithPlan,
   runCandidateFetch,
   samePlanIdentity,
+  setPosFilter,
   type CandidatePlanBase,
 } from '../src/workbench/candidate-session/index.ts';
 
@@ -73,7 +76,7 @@ assert(onlyEngine.engineTotal === 7 && onlyEngine.total === 7, 'engineTotal-only
 
 // --- identity ---
 assert(samePlanIdentity(planBase(), planBase()), 'same identity');
-assert(!samePlanIdentity(planBase(), planBase({ selectionVersion: 2 })), 'version identity');
+assert(samePlanIdentity(planBase(), planBase({ selectionVersion: 2 })), 'draft version is not query identity');
 
 // --- fetch without POS ---
 const pages: WorkbenchCandidateResponse[] = [
@@ -99,6 +102,36 @@ assert(view.filteredCount === 2, `first page filtered=${view.filteredCount}`);
 assert(view.engineFetched === 2, 'engine fetched 2');
 assert(view.engineTotal === 5, 'engine total 5');
 assert(view.hasMore === true, 'has more');
+
+// POS is a projection of loaded snapshot rows: enough loaded matches means zero query.
+initProjectPosCarrier({
+  version: 'snapshot-test',
+  p0HardGate: true,
+  literals: {
+    一: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'] },
+    二: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'] },
+  },
+});
+state = setPosFilter(state, { pos: ['n'], family: [], voice: [] });
+assert(state.raw != null, 'POS keeps loaded snapshot rows');
+assert(!state.loading, 'POS with enough loaded rows does not query');
+assert(candidateSessionView(state).filteredCount === 2, 'POS projects loaded rows');
+resetProjectPosCarrier();
+state = setPosFilter(state, resetPosFilter());
+
+// Expired Desktop handle returns page 0; session replaces, never appends to old rows.
+let recovered = requestLoadMore(state);
+let recoveryCall = 0;
+recovered = await runCandidateFetch(recovered, async (req) => {
+  recoveryCall += 1;
+  return recoveryCall === 1
+    ? markSnapshotRestarted(page(0, ['新', '池'], 3, req.selectionVersion))
+    : page(2, ['尾'], 3, req.selectionVersion);
+});
+assert(
+  recovered.raw?.exact.sound_only.map((row) => row.literal).join('') === '新池尾',
+  'snapshot recovery atomically replaces old rows',
+);
 
 // plan 重置：raw 清、stale 上屏，避免 UI 卸載閃動
 const prevLiterals = state.raw?.exact.sound_only.map((r) => r.literal).join('');

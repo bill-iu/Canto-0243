@@ -1,11 +1,12 @@
 /** MatchSpec apply pipeline — F1–F5 orchestration. */
 import type { Database } from '../../sqljs.ts';
-import { throwIfSearchCancelled, type ShouldCancel } from '../../search-cancel.ts';
+import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
 import { queryWordsByEqualsSpec } from '../equals-filters.ts';
 import { getCompoundCandidatesForSpec } from '../sources.ts';
 import type { MatchSpec } from '../spec.ts';
 import { getEqualsSpan } from '../spec.ts';
 import type { WordRow } from '../word-row.ts';
+import { getWordCode, getWordText } from '../word-row.ts';
 import {
   filterWordsByCodeAndMask,
   narrowByPhonemeAnchors,
@@ -25,6 +26,23 @@ export async function filterCandidatesByMatchSpec(
   shouldCancel?: ShouldCancel,
 ): Promise<WordRow[]> {
   throwIfSearchCancelled(shouldCancel);
+  if (
+    spec.extra?.workbench_full_bucket_scan
+    && !(spec.slots ?? []).length
+    && Boolean(spec.mask)
+    && [...(spec.mask ?? '')].every((char) => char === '?' || char === '_' || char === '%')
+  ) {
+    const rows: WordRow[] = [];
+    for (let index = 0; index < candidates.length; index += 1) {
+      const row = candidates[index]!;
+      if (getWordText(row).length === spec.width && Boolean(getWordCode(row))) rows.push(row);
+      if (index > 0 && index % 2048 === 0) {
+        throwIfSearchCancelled(shouldCancel);
+        await yieldToMainThread();
+      }
+    }
+    return rows;
+  }
   if (spec.extra?.partial_rhyme_mask) {
     const slotOptions = await partialMaskSlotOptions(spec, db, 'final');
     return candidates.filter((w) => wordPassesPartialRhymeMaskSpec(spec, w, slotOptions));

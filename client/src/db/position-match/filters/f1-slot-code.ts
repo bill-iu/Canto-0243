@@ -2,7 +2,7 @@
 import { getCodeVariants } from '../../code-variants.ts';
 import type { Database } from '../../sqljs.ts';
 import { pronRankSortValueForWord } from '../../ranking.ts';
-import { throwIfSearchCancelled, type ShouldCancel } from '../../search-cancel.ts';
+import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
 import { matchesMaskLiteralChars } from '../mask-adapter.ts';
 import type { MatchSpec, SlotConstraint } from '../spec.ts';
 import { getRhymeFinals, getWordCode, getWordParts, getWordText, type WordRow } from '../word-row.ts';
@@ -238,7 +238,10 @@ export async function filterWordsByCodeAndMask(
     for (const group of groupCandidatesByChar(candidates).values()) {
       for (const word of preferredPronunciationRows(group)) {
         n += 1;
-        if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
+        if (n % 256 === 0) {
+          throwIfSearchCancelled(shouldCancel);
+          await yieldToMainThread();
+        }
         if (
           await wordPassesPositionFilters(
             word,
@@ -259,7 +262,10 @@ export async function filterWordsByCodeAndMask(
   }
   for (const word of candidates) {
     n += 1;
-    if (n % 64 === 0) throwIfSearchCancelled(shouldCancel);
+    if (n % 256 === 0) {
+      throwIfSearchCancelled(shouldCancel);
+      await yieldToMainThread();
+    }
     if (
       await wordPassesPositionFilters(
         word,

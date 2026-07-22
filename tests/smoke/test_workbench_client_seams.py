@@ -9,10 +9,11 @@ WORKBENCH = ROOT / "client" / "src" / "workbench"
 
 
 class WorkbenchClientSeamTests(unittest.TestCase):
-    def test_workbench_route_does_not_join_query_tabs(self) -> None:
+    def test_workbench_view_joins_query_tabs(self) -> None:
         router = (ROOT / "client" / "src" / "ProductRouter.tsx").read_text(encoding="utf-8")
         page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
-        self.assertNotIn("query-tabs", router + page)
+        self.assertIn("return <App />", router)
+        self.assertIn("onOpenSearchLiteral", page)
         self.assertIn("workbenchPage", (ROOT / "client" / "src" / "app-page.ts").read_text(encoding="utf-8"))
 
     def test_fresh_workbench_route_reveals_editable_shell_before_lexicon_ready(self) -> None:

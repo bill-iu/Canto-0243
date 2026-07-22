@@ -5,6 +5,7 @@ import {
   serializeSession,
   deserializeSession,
   createSearchTab,
+  createWorkbenchTab,
   createGuideTab,
   createAboutTab,
   createRelationTab,
@@ -39,12 +40,13 @@ import {
   openCommittedSearchTabTransaction,
 } from '../../../shared/committed-search.mjs';
 import { isPortableHost } from '../host-mode';
+import { pageFromPath, searchPageHref, workbenchPageHref } from '../app-page.ts';
 
 export type { QueryTab, TabState };
 export { tabLabel, VIEW };
 
 /** PWA keeps search/guide/about only; portable host allows maintainer views. */
-const PWA_VIEWS = new Set([VIEW.SEARCH, VIEW.GUIDE, VIEW.ABOUT]);
+const PWA_VIEWS = new Set([VIEW.SEARCH, VIEW.WORKBENCH, VIEW.GUIDE, VIEW.ABOUT]);
 
 function sanitizePwaTabState(state: TabState): TabState {
   if (isPortableHost()) return state;
@@ -90,10 +92,19 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
   }
 
   const parsed = parseUrlSearchParams(new URLSearchParams(window.location.search));
+  const isWorkbenchUrl = pageFromPath(window.location.pathname) === 'workbench' || parsed.view === VIEW.WORKBENCH;
   const urlHasQ = parsed.view === VIEW.SEARCH && Boolean(parsed.q?.trim());
   const isHome = parsed.view === VIEW.SEARCH && !parsed.q?.trim();
 
   let state = loadSessionTabState() ?? fallback();
+
+  if (isWorkbenchUrl) {
+    const next = openSingletonView(state, VIEW.WORKBENCH, createWorkbenchTab);
+    return {
+      state: { ...next, activeId: next.tabs.find((t) => t.view === VIEW.WORKBENCH)?.id ?? next.activeId },
+      bootstrap: { isHome: false, forceLive: false },
+    };
+  }
 
   if (
     parsed.view === VIEW.GUIDE ||
@@ -242,9 +253,11 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
           ? currentSearchHistoryFrame(tab).mode
           : uiModeToUrlMode(currentMode);
       const pzmode = tab.view === VIEW.SEARCH ? currentSearchHistoryFrame(tab).pzmode : currentPzMode;
-      const params = buildUrlSearchParams(tab, urlMode, pzmode);
+      const isWorkbench = tab.view === VIEW.WORKBENCH;
+      const params = isWorkbench ? new URLSearchParams() : buildUrlSearchParams(tab, urlMode, pzmode);
       const suffix = params.toString() ? `?${params.toString()}` : '';
-      const url = `${window.location.pathname}${suffix}`;
+      const basePath = isWorkbench ? workbenchPageHref() : searchPageHref();
+      const url = `${basePath}${suffix}`;
       const histState = buildHistoryStateForTab(tab, urlMode) as ReturnType<
         typeof buildHistoryStateForTab
       > & { _histSeq?: number };
@@ -374,6 +387,30 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
       return singleton ? { ...next, activeId: singleton.id } : next;
     });
   }, [setAndPersist]);
+
+  const openWorkbench = useCallback(() => {
+    setAndPersist((prev) => {
+      const next = openSingletonView(prev, VIEW.WORKBENCH, createWorkbenchTab);
+      const singleton = next.tabs.find((t) => t.view === VIEW.WORKBENCH);
+      return singleton ? { ...next, activeId: singleton.id } : next;
+    });
+  }, [setAndPersist]);
+
+  const openSearchTabForLiteral = useCallback(
+    (literal: string, mode: UiMode, pzmode: PingzeSubMode) => {
+      const target = literal.trim();
+      if (!target) return;
+      const existing = tabStateRef.current.tabs.find(
+        (tab) => tab.view === VIEW.SEARCH && (tab.q || '').trim() === target,
+      );
+      if (existing) {
+        selectTab(existing.id);
+        return;
+      }
+      openSearchTabWithQuery(target, mode, pzmode);
+    },
+    [openSearchTabWithQuery, selectTab],
+  );
 
   const openRelation = useCallback(() => {
     if (!isPortableHost()) return;
@@ -506,6 +543,33 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
       const tab = current.tabs.find((t) => t.id === current.activeId) ?? current.tabs[0];
       const seq = state._histSeq;
 
+      const parsedUrl = parseUrlSearchParams(new URLSearchParams(window.location.search));
+      if (pageFromPath(window.location.pathname) === 'workbench' || parsedUrl.view === VIEW.WORKBENCH) {
+        const next = openSingletonView(current, VIEW.WORKBENCH, createWorkbenchTab);
+        const workbench = next.tabs.find((candidate) => candidate.view === VIEW.WORKBENCH);
+        const resolved = workbench ? { ...next, activeId: workbench.id } : next;
+        tabStateRef.current = resolved;
+        setTabState(resolved);
+        persistTabs(resolved);
+        pushBrowserUrl(resolved, true);
+        return;
+      }
+
+      if (tab?.view !== VIEW.SEARCH && state.view === VIEW.SEARCH && typeof state.tabId === 'number') {
+        const searchTab = current.tabs.find((candidate) => candidate.id === state.tabId && candidate.view === VIEW.SEARCH);
+        if (searchTab) {
+          const frame = currentSearchHistoryFrame(searchTab);
+          const next = { ...current, activeId: searchTab.id };
+          const pzmode = (frame.pzmode === 'm2' || frame.pzmode === 'm3' ? frame.pzmode : 'm1') as PingzeSubMode;
+          onModeChange(urlModeToUiMode(frame.mode), pzmode);
+          tabStateRef.current = next;
+          setTabState(next);
+          persistTabs(next);
+          pushBrowserUrl(next, true);
+          return;
+        }
+      }
+
       if (tab?.view !== VIEW.SEARCH) {
         if (typeof seq === 'number') lastHistSeqRef.current = seq;
         pushBrowserUrl(current, true);
@@ -580,6 +644,8 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
     reorderTabsByIdList,
     openGuide,
     openAbout,
+    openWorkbench,
+    openSearchTabForLiteral,
     openRelation,
     openCorrections,
     patchActiveRelation,

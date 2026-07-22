@@ -39,6 +39,8 @@
 | [0069](./0069-workbench-replacement-span-line-width.md) | **替換段**寬＝句長（取消 4 格硬頂；phoneme≤6；skip@20） |
 
 | [0071](./0071-workbench-unanchored-scan-and-pos-overfetch.md) | 工作台不限定全量掃描、canonical 分頁與 POS 5 批 over-fetch |
+| [0072](./0072-workbench-candidate-snapshot.md) | **候選快照**：雙端 immutable canonical pool、compact paging、latest-wins 與效能／記憶體 budget |
+| [0073](./0073-query-tabs-own-workbench-view.md) | Query tabs 承載 singleton Workbench view；Desktop／PWA 共用全頁 workspace |
 
 ## Stubs
 

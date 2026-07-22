@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+from typing import TypeAlias
+
 from app.domain.relation_pool import project_relation_pool
 from app.models.word import Word
 from app.schemas.workbench_schema import (
-    CandidateGroups,
     RelaxationSuggestion,
     ReplacementPlanV1,
     WorkbenchCandidateResponse,
@@ -17,8 +19,14 @@ from app.services.workbench.limits import WORKBENCH_LEXICON_MAX_WORD_LEN
 from app.services.workbench.relaxation import relaxation_variants
 from app.services.word_serializer import serialize_word
 
-# Re-export for existing imports
-__all__ = ["build_match_spec", "plan_replacements"]
+CandidateHandle: TypeAlias = str
+
+
+@dataclass(frozen=True, slots=True)
+class ReplacementSnapshot:
+    candidates: tuple[CandidateHandle, ...]
+    pool: object | None
+    relaxation: RelaxationSuggestion | None
 
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
@@ -68,6 +76,26 @@ def _prepend_distinct(rows: list[dict], priority_rows: list[dict]) -> list[dict]
     return out
 
 
+def _compact_rows(rows: list[dict]) -> tuple[CandidateHandle, ...]:
+    return tuple(
+        "\0".join((
+            str(row.get("char") or row.get("literal") or ""),
+            str(row.get("jyutping") or ""),
+            str(row.get("code") or ""),
+        ))
+        for row in rows
+        if row.get("char") or row.get("literal")
+    )
+
+
+def _materialize_rows(handles: tuple[CandidateHandle, ...]) -> list[dict]:
+    rows = []
+    for item in handles:
+        literal, jyutping, code = item.split("\0", 2)
+        rows.append({"char": literal, "jyutping": jyutping, "code": code})
+    return rows
+
+
 def _canonical_page(
     plan: ReplacementPlanV1,
     db,
@@ -87,34 +115,30 @@ def _canonical_page(
     return canonical[plan.offset : plan.offset + plan.limit], total
 
 
-def plan_replacements(
+def build_replacement_snapshot(
     plan: ReplacementPlanV1,
     db,
     *,
     execute=execute_match_spec,
     relation_projector=project_relation_pool,
-) -> WorkbenchCandidateResponse:
-    """Return options and trade-offs; never mutate the draft or apply a candidate."""
+) -> ReplacementSnapshot:
+    """Build one immutable canonical pool before paging or POS projection."""
     # ADR-0069: span wider than observed lexicon max word → structural empty, skip engine.
     if plan.width > WORKBENCH_LEXICON_MAX_WORD_LEN:
-        empty = CandidateGroups(direct_syn=[], semantic_related=[], sound_only=[])
-        return WorkbenchCandidateResponse(
-            selection_version=plan.selection_version,
-            exact=empty,
-            total=0,
-            engine_total=0,
-            relaxation=None,
-        )
+        return ReplacementSnapshot(candidates=(), pool=None, relaxation=None)
 
     pool = None
     if plan.semantic_intent != "off" and plan.semantic_seed:
         pool = relation_projector(db, plan.semantic_seed)
 
-    rows, total = _canonical_page(plan, db, execute, pool)
-    exact = group_candidates(plan, rows, pool)
-    has_exact = any((exact.direct_syn, exact.semantic_related, exact.sound_only))
+    full_plan = plan.model_copy(update={"limit": 1_000_000, "offset": 0})
+    rows, _total = _canonical_page(full_plan, db, execute, pool)
+    handles = _compact_rows(rows)
+    has_exact = bool(handles)
+    if plan.semantic_intent == "direct_only":
+        has_exact = candidate_count_for_pool(plan, rows, pool) > 0
     suggestion = None
-    if plan.offset == 0 and not has_exact:
+    if not has_exact:
         for item_id, kind, positions, from_value, to_value, variant in relaxation_variants(plan):
             variant_rows, variant_total = _execute(variant, db, execute)
             count = (
@@ -135,10 +159,61 @@ def plan_replacements(
             )
             break
 
+    return ReplacementSnapshot(
+        candidates=handles,
+        pool=pool,
+        relaxation=suggestion,
+    )
+
+
+def page_replacement_snapshot(
+    plan: ReplacementPlanV1,
+    snapshot: ReplacementSnapshot,
+) -> WorkbenchCandidateResponse:
+    """Materialize one transport page from a completed snapshot."""
+    page = snapshot.candidates[plan.offset : plan.offset + plan.limit]
+    rows = _materialize_rows(page)
+    exact = group_candidates(plan, rows, snapshot.pool)
+    total = len(snapshot.candidates)
+    relaxation = snapshot.relaxation
+    if relaxation is not None:
+        relaxation = relaxation.model_copy(update={
+            "plan": relaxation.plan.model_copy(
+                update={"selection_version": plan.selection_version}
+            )
+        })
+
     return WorkbenchCandidateResponse(
         selection_version=plan.selection_version,
         exact=exact,
         total=total,
         engine_total=total,
-        relaxation=suggestion,
+        relaxation=relaxation if plan.offset == 0 else None,
     )
+
+
+def plan_replacements(
+    plan: ReplacementPlanV1,
+    db,
+    *,
+    execute=execute_match_spec,
+    relation_projector=project_relation_pool,
+) -> WorkbenchCandidateResponse:
+    """Stateless compatibility entry; adapters retain build_replacement_snapshot."""
+    snapshot = build_replacement_snapshot(
+        plan,
+        db,
+        execute=execute,
+        relation_projector=relation_projector,
+    )
+    return page_replacement_snapshot(plan, snapshot)
+
+
+__all__ = [
+    "CandidateHandle",
+    "ReplacementSnapshot",
+    "build_match_spec",
+    "build_replacement_snapshot",
+    "page_replacement_snapshot",
+    "plan_replacements",
+]

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from itertools import product
-from unittest.mock import patch
 import unittest
 
 from fastapi import FastAPI
@@ -13,7 +12,6 @@ from sqlalchemy.pool import StaticPool
 from app.database import Base
 from app.routers.word import get_db
 from app.routers.workbench import router
-from app.schemas.workbench_schema import CandidateGroups, WorkbenchCandidateResponse
 from app.models.word import Word
 
 
@@ -49,11 +47,6 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
         self.assertEqual(response.json()[1]["kind"], "punctuation")
 
     def test_candidates_validates_plan_and_never_returns_applied_lyrics(self) -> None:
-        empty = WorkbenchCandidateResponse(
-            selection_version=4,
-            exact=CandidateGroups(direct_syn=[], semantic_related=[], sound_only=[]),
-            total=0,
-        )
         plan = {
             "version": 1,
             "selectionVersion": 4,
@@ -63,8 +56,7 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
             "semanticIntent": "off",
             "limit": 20,
         }
-        with patch("app.routers.workbench.plan_replacements", return_value=empty):
-            response = self.client.post("/workbench/candidates", json=plan)
+        response = self.client.post("/workbench/candidates", json=plan)
         self.assertEqual(response.status_code, 200)
         self.assertNotIn("lyrics", response.json())
         self.assertNotIn("applied", response.json())
@@ -83,6 +75,7 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
                 Word(char=literal, code="12", jyutping="gaa1", length=2)
                 for literal in literals
             )
+            db.add(Word(char="無音", code="", jyutping="", length=2))
             db.commit()
 
         plan = {
@@ -105,6 +98,48 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
         self.assertEqual(second.status_code, 200)
         self.assertEqual(second.json()["engineTotal"], 2001)
         self.assertEqual(len(second.json()["exact"]["sound_only"]), 1)
+
+    def test_candidates_snapshot_handle_keeps_pages_in_one_pool(self) -> None:
+        with self.Session() as db:
+            db.add_all([
+                Word(char="乙乙", code="11", jyutping="jat1 jat1", length=2),
+                Word(char="丙丙", code="11", jyutping="bing2 bing2", length=2),
+                Word(char="丁丁", code="11", jyutping="ding1 ding1", length=2),
+            ])
+            db.commit()
+
+        plan = {
+            "version": 1,
+            "selectionVersion": 1,
+            "width": 2,
+            "mode": "m1",
+            "slots": [],
+            "semanticIntent": "off",
+            "limit": 2,
+            "offset": 0,
+        }
+        first = self.client.post("/workbench/candidates", json=plan)
+        snapshot_id = first.headers.get("x-workbench-snapshot")
+        self.assertTrue(snapshot_id)
+
+        with self.Session() as db:
+            db.add(Word(char="甲甲", code="11", jyutping="gaa1 gaa1", length=2))
+            db.commit()
+
+        plan["selectionVersion"] = 2
+        plan["offset"] = 2
+        second = self.client.post(
+            "/workbench/candidates",
+            json=plan,
+            headers={"X-Workbench-Snapshot": snapshot_id},
+        )
+        plan["offset"] = 0
+        fresh = self.client.post("/workbench/candidates", json=plan)
+
+        self.assertEqual(second.json()["engineTotal"], 3)
+        self.assertEqual(second.json()["selectionVersion"], 2)
+        self.assertEqual(fresh.json()["engineTotal"], 4)
+        self.assertEqual(second.headers.get("x-workbench-snapshot"), snapshot_id)
 
 
 if __name__ == "__main__":

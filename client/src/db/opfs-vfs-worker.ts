@@ -2,8 +2,11 @@ import SQLiteESMFactory from '@journeyapps/wa-sqlite/dist/wa-sqlite.mjs';
 import * as SQLite from '@journeyapps/wa-sqlite';
 import { OPFSCoopSyncVFS } from '@journeyapps/wa-sqlite/src/examples/OPFSCoopSyncVFS.js';
 
-import type { SqlBindParams } from './database-backend.ts';
+import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './database-backend.ts';
 import { bodyStreamForLexiconFetch } from './lexicon-gunzip.ts';
+import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../workbench/contracts.ts';
+import type { GroupPoolInput } from '../workbench/group-candidates.ts';
+import { PwaCandidateSnapshotStore } from '../workbench/pwa-candidate-snapshot.ts';
 
 const VFS_NAME = 'canto-opfs-coop';
 const DB_RELATED_SUFFIXES = ['', '-journal', '-wal'] as const;
@@ -23,6 +26,13 @@ export type OpfsVfsWorkerRequest =
       expectedByteSize?: number;
     }
   | { id: number; type: 'query'; sql: string; params: SqlBindParams }
+  | {
+      id: number;
+      type: 'workbench';
+      plan: ReplacementPlanV1;
+      pool: GroupPoolInput;
+      identitySalt: string;
+    }
   | { id: number; type: 'close' };
 
 export type OpfsVfsWorkerResponse =
@@ -30,12 +40,14 @@ export type OpfsVfsWorkerResponse =
   | { id: number; type: 'init-ok'; fileName: string; byteSize: number; fetched: boolean }
   | { id: number; type: 'progress'; loaded: number; total: number }
   | { id: number; type: 'query-ok'; rows: Array<Record<string, unknown>> }
+  | { id: number; type: 'workbench-ok'; response: WorkbenchCandidateResponse }
   | { id: number; type: 'close-ok' }
   | { id: number; type: 'error'; message: string };
 
 let sqlite3: Sqlite3 | null = null;
 let dbHandle: number | null = null;
 let activeFileName = '';
+let workbenchSnapshots = new PwaCandidateSnapshotStore();
 
 function postProgress(loaded: number, total: number): void {
   self.postMessage({ id: 0, type: 'progress', loaded, total } satisfies OpfsVfsWorkerResponse);
@@ -217,6 +229,49 @@ async function query(sql: string, params: SqlBindParams): Promise<Array<Record<s
   return rows;
 }
 
+class WorkerStatement implements DatabaseStatement {
+  private params: SqlBindParams = [];
+  private rows: Array<Record<string, unknown>> | null = null;
+  private index = -1;
+
+  constructor(private readonly sql: string) {}
+
+  async bind(values: SqlBindParams = []): Promise<void> {
+    this.params = values;
+    this.rows = null;
+    this.index = -1;
+  }
+
+  async step(): Promise<boolean> {
+    this.rows ??= await query(this.sql, this.params);
+    this.index += 1;
+    return this.index < this.rows.length;
+  }
+
+  async getAsObject(): Promise<Record<string, unknown>> {
+    return { ...(this.rows?.[this.index] ?? {}) };
+  }
+
+  async reset(): Promise<void> {
+    this.rows = null;
+    this.index = -1;
+  }
+
+  async free(): Promise<void> {
+    this.rows = [];
+    this.index = -1;
+  }
+}
+
+const workerDatabase: DatabaseBackend = {
+  async prepare(sql) {
+    return new WorkerStatement(sql);
+  },
+  async close() {
+    // The owning worker request controls the shared database lifetime.
+  },
+};
+
 self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
   const msg = event.data;
   try {
@@ -234,6 +289,7 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
         msg.expectedByteSize,
       );
       await ensureOpenDb(msg.fileName);
+      workbenchSnapshots = new PwaCandidateSnapshotStore();
       self.postMessage({
         id: msg.id,
         type: 'init-ok',
@@ -246,6 +302,21 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
     if (msg.type === 'query') {
       const rows = await query(msg.sql, msg.params);
       self.postMessage({ id: msg.id, type: 'query-ok', rows } satisfies OpfsVfsWorkerResponse);
+      return;
+    }
+    if (msg.type === 'workbench') {
+      const response = await workbenchSnapshots.page(
+        msg.plan,
+        workerDatabase,
+        undefined,
+        { projectRelations: async () => msg.pool },
+        msg.identitySalt,
+      );
+      self.postMessage({
+        id: msg.id,
+        type: 'workbench-ok',
+        response,
+      } satisfies OpfsVfsWorkerResponse);
       return;
     }
     if (msg.type === 'close') {

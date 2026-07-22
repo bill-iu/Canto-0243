@@ -62,6 +62,19 @@ import {
 } from './workbench-bridge.ts';
 import './workbench-page.css';
 
+export interface WorkbenchPageProps {
+  active?: boolean;
+  hidden?: boolean;
+  embedded?: boolean;
+  lang?: 'zh' | 'en';
+  theme?: 'light' | 'dark';
+  onLangChange?: (lang: 'zh' | 'en') => void;
+  onThemeChange?: (theme: 'light' | 'dark') => void;
+  onOpenSearchHome?: () => void;
+  onOpenSearchNavigation?: (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => void;
+  onOpenSearchLiteral?: (literal: string) => void;
+}
+
 interface ActiveRelaxation {
   id: string;
   kind: RelaxationKind;
@@ -82,7 +95,18 @@ function isTypingTarget(target: EventTarget | null): boolean {
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable;
 }
 
-export function WorkbenchPage() {
+export function WorkbenchPage({
+  active = true,
+  hidden = false,
+  embedded = false,
+  lang,
+  theme,
+  onLangChange,
+  onThemeChange,
+  onOpenSearchHome,
+  onOpenSearchNavigation,
+  onOpenSearchLiteral,
+}: WorkbenchPageProps = {}) {
   const adapter = useMemo(() => selectWorkbenchAdapter(), []);
   const { isReady, initialize } = useDB();
   const lexiconVersion =
@@ -105,9 +129,9 @@ export function WorkbenchPage() {
   });
 
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
+  const workbenchScrollTopRef = useRef(0);
   const sessionRef = useRef(session);
   const previewRef = useRef(preview);
-  const ingestDone = useRef(false);
   const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
   sessionRef.current = session;
   previewRef.current = preview;
@@ -129,10 +153,22 @@ export function WorkbenchPage() {
   }, []);
 
   useEffect(() => {
+    if (!active) return;
     revealPwaShell();
     document.body.classList.add('workbench-route');
     return () => document.body.classList.remove('workbench-route');
-  }, []);
+  }, [active]);
+
+  useEffect(() => {
+    if (!active) return;
+    requestAnimationFrame(() => window.scrollTo({ top: workbenchScrollTopRef.current, behavior: 'auto' }));
+    const save = () => { workbenchScrollTopRef.current = window.scrollY; };
+    window.addEventListener('scroll', save, { passive: true });
+    return () => {
+      save();
+      window.removeEventListener('scroll', save);
+    };
+  }, [active]);
 
   useEffect(() => {
     void initialize();
@@ -143,6 +179,14 @@ export function WorkbenchPage() {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute('content', uiTheme === 'dark' ? '#1C1917' : '#DFD2C2');
   }, [uiTheme]);
+
+  useEffect(() => {
+    if (lang) setUiLang(lang);
+  }, [lang]);
+
+  useEffect(() => {
+    if (theme) setUiTheme(theme);
+  }, [theme]);
 
   useEffect(() => {
     setLang(uiLang);
@@ -162,10 +206,18 @@ export function WorkbenchPage() {
   }, [session]);
 
   const goSearchHome = () => {
+    if (onOpenSearchHome) {
+      onOpenSearchHome();
+      return;
+    }
     navigateAppRoute('search');
   };
 
   const goSearchWithNavigate = (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => {
+    if (onOpenSearchNavigation) {
+      onOpenSearchNavigation(input);
+      return;
+    }
     try {
       writeNavigate(sessionStorage, input);
     } catch (error) {
@@ -325,23 +377,22 @@ export function WorkbenchPage() {
   };
 
   useEffect(() => {
-    if (!isReady || !pendingResolve.current || !sessionRef.current.draft) return;
+    if (!active || !isReady || !pendingResolve.current || !sessionRef.current.draft) return;
     const pending = pendingResolve.current;
     if (sessionRef.current.version !== pending.version) return;
     void resolveReadings(pending.surface, pending.version, sessionRef.current.draft.slots);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady]);
+  }, [active, isReady]);
 
   useEffect(() => {
     const current = sessionRef.current;
-    if (!isReady || !current.draft?.surface || readings.length > 0) return;
+    if (!active || !isReady || !current.draft?.surface || readings.length > 0) return;
     void resolveReadings(surfaceOnlyOf(current.draft.slots) || current.draft.surface, current.version, current.draft.slots);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isReady]);
+  }, [active, isReady]);
 
   useEffect(() => {
-    if (ingestDone.current) return;
-    ingestDone.current = true;
+    if (!active) return;
     const payload = consumeIngest(sessionStorage);
     if (!payload) return;
 
@@ -386,7 +437,7 @@ export function WorkbenchPage() {
       return next;
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [active]);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -503,6 +554,7 @@ export function WorkbenchPage() {
     isReady ? deferredPlanBase : null,
     adapter,
     posFilter,
+    active,
   );
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
@@ -536,6 +588,10 @@ export function WorkbenchPage() {
   };
 
   const openInSearch = (literal: string) => {
+    if (onOpenSearchLiteral) {
+      onOpenSearchLiteral(literal);
+      return;
+    }
     try {
       writeOpenSearch(sessionStorage, { literal });
       navigateAppRoute('search');
@@ -545,6 +601,7 @@ export function WorkbenchPage() {
   };
 
   useEffect(() => {
+    if (!active) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (isTypingTarget(event.target)) return;
       const current = sessionRef.current;
@@ -586,15 +643,18 @@ export function WorkbenchPage() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeRelaxation]);
+  }, [active, activeRelaxation]);
 
   const intro = workbenchIntroCopy(uiLang);
   const canUndo = Boolean(session.undo);
 
   return (
-    <div className={`workbench-page${preview ? ' has-compare' : ''}`}>
+    <div
+      className={`workbench-page${preview ? ' has-compare' : ''}${hidden ? ' is-query-tab-hidden' : ''}${embedded ? ' is-query-tab-view' : ''}`}
+      hidden={hidden}
+    >
       <BrandSvgDefs />
-      <header className="workbench-header">
+      <header className={`workbench-header${embedded ? ' workbench-header--embedded' : ''}`}>
         <div className="app-bar">
           <div className="header-chrome">
             <div className="header-chrome__center">
@@ -616,8 +676,14 @@ export function WorkbenchPage() {
                 onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                 theme={uiTheme}
                 lang={uiLang}
-                onThemeChange={setUiTheme}
-                onLangChange={setUiLang}
+                onThemeChange={(next) => {
+                  setUiTheme(next);
+                  onThemeChange?.(next);
+                }}
+                onLangChange={(next) => {
+                  setUiLang(next);
+                  onLangChange?.(next);
+                }}
                 lexiconVersion={lexiconVersion}
                 showOpfsBackend={
                   !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
