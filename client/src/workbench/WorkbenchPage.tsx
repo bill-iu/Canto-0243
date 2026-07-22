@@ -197,7 +197,19 @@ export function WorkbenchPage() {
     }
     setMessage('');
     setSpanInputError('');
+    // 即時寫 ref，避免連點多格時讀舊 session 覆蓋（CONTEXT 字位鎖定）
+    sessionRef.current = result.session;
     setSession(result.session);
+  };
+
+  const handleClearLocks = () => {
+    const prev = sessionRef.current;
+    if (!prev.draft?.slots.some((slot) => slot.locked)) return;
+    const next = sessionReducer(prev, { type: 'clear_locks' });
+    sessionRef.current = next;
+    setSession(next);
+    setSpanInputError('');
+    setMessage('已解除全部鎖定。');
   };
 
   const changeRhymePicks = (next: PhonemeDimPicks) => {
@@ -646,6 +658,7 @@ export function WorkbenchPage() {
               draft={draft}
               readings={readings}
               onToggleLock={handleToggleLock}
+              onClearLocks={handleClearLocks}
               onChooseReading={handleChooseReading}
               onSetSlotManual={handleSetSlotManual}
               onClearSurfaces={handleClearSurfaces}

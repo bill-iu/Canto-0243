@@ -8,6 +8,8 @@ interface Props {
   draft: LineDraft;
   readings: PwaLineReadingSlot[];
   onToggleLock: (pos: number) => void;
+  /** 清鎖定（UI 文案「解鎖」） */
+  onClearLocks: () => void;
   onChooseReading: (pos: number, jyutping: string, code: string) => void;
   onSetSlotManual: (pos: number, surface: string, code?: string) => void;
   onClearSurfaces: () => void;
@@ -28,12 +30,14 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
   return '＿';
 }
 
-const CLICK_DELAY_MS = 280;
+/** 單擊鎖 vs 雙擊手改分界；每格獨立 timer 避免連點互踩（CONTEXT 字位鎖定） */
+const CLICK_DELAY_MS = 250;
 
 export function SentenceCanvas({
   draft,
   readings,
   onToggleLock,
+  onClearLocks,
   onChooseReading,
   onSetSlotManual,
   onClearSurfaces,
@@ -43,11 +47,13 @@ export function SentenceCanvas({
 }: Props) {
   const summary = codeSummary(draft);
   const span = draft.selection;
+  const hasAnyLock = draft.slots.some((slot) => slot.locked);
   const [editingPos, setEditingPos] = useState<number | null>(null);
   const [editValue, setEditValue] = useState('');
   const [spanRaw, setSpanRaw] = useState('');
   const [spanPanelOpen, setSpanPanelOpen] = useState(false);
-  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** pos → pending single-click lock timer */
+  const clickTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
   const editInputRef = useRef<HTMLInputElement | null>(null);
   const spanInputRef = useRef<HTMLInputElement | null>(null);
   const editingPosRef = useRef<number | null>(null);
@@ -79,14 +85,23 @@ export function SentenceCanvas({
     document.querySelector<HTMLButtonElement>(`[data-line-slot="${next}"]`)?.focus();
   };
 
-  const clearClickTimer = () => {
-    if (!clickTimer.current) return;
-    clearTimeout(clickTimer.current);
-    clickTimer.current = null;
+  const clearClickTimer = (pos?: number) => {
+    if (pos == null) {
+      for (const t of clickTimers.current.values()) clearTimeout(t);
+      clickTimers.current.clear();
+      return;
+    }
+    const t = clickTimers.current.get(pos);
+    if (t != null) {
+      clearTimeout(t);
+      clickTimers.current.delete(pos);
+    }
   };
 
+  useEffect(() => () => clearClickTimer(), []);
+
   const beginEdit = (pos: number) => {
-    clearClickTimer();
+    clearClickTimer(pos);
     const slot = draft.slots[pos];
     if (!slot) return;
     setEditingPos(pos);
@@ -111,11 +126,12 @@ export function SentenceCanvas({
   };
 
   const scheduleToggle = (pos: number) => {
-    clearClickTimer();
-    clickTimer.current = setTimeout(() => {
-      clickTimer.current = null;
+    clearClickTimer(pos);
+    const t = setTimeout(() => {
+      clickTimers.current.delete(pos);
       onToggleLock(pos);
     }, CLICK_DELAY_MS);
+    clickTimers.current.set(pos, t);
   };
 
   const submitSpan = (event: FormEvent) => {
@@ -150,8 +166,16 @@ export function SentenceCanvas({
             className="canvas-clear-surfaces"
             title="清空句格（恢復空白）"
             aria-label="清空句格"
-            onClick={() => { cancelEdit(); setSpanPanelOpen(false); onClearSurfaces(); }}
+            onClick={() => { cancelEdit(); setSpanPanelOpen(false); clearClickTimer(); onClearSurfaces(); }}
           >清空</button>
+          <button
+            type="button"
+            className="canvas-clear-surfaces"
+            title="解除全部鎖定"
+            aria-label="解除全部鎖定"
+            disabled={!hasAnyLock}
+            onClick={() => { cancelEdit(); setSpanPanelOpen(false); clearClickTimer(); onClearLocks(); }}
+          >解鎖</button>
           <button
             type="button"
             className={`span-hand-toggle${spanPanelOpen ? ' is-open' : ''}`}
