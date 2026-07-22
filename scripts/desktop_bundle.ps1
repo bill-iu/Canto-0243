@@ -29,7 +29,12 @@ function Copy-DesktopSidecar {
     }
 
     Write-Host "    UI + data + launcher templates..."
-    Copy-Tree $DistPortable (Join-Path $OutDir "client\dist-portable")
+    $UiOut = Join-Path $OutDir "client\dist-portable"
+    Copy-Tree $DistPortable $UiOut
+    # ADR-0068 §13: drop PWA browser-engine dead weight (query = root lyrics.db + API).
+    python (Join-Path $Root "scripts\desktop_ui_strip.py") $UiOut
+    if ($LASTEXITCODE -ne 0) { throw "desktop_ui_strip.py failed" }
+
     $DataExclude = @(
         "__pycache__", ".git", "venv", ".venv", "dist", ".agents", "macos",
         "audit", "fixtures", "raw", "proposals", "locks", "pos", "project"

@@ -49,6 +49,84 @@ fn macos_app_bundle(exe: &Path) -> Option<PathBuf> {
     Some(app.to_path_buf())
 }
 
+/// Gatekeeper App Translocation copies only the `.app`; sidecars stay at the original folder.
+/// Recover that original bundle path via Security.framework when present.
+#[cfg(target_os = "macos")]
+fn macos_original_app_path(app: &Path) -> Option<PathBuf> {
+    use std::ffi::CString;
+    use std::os::raw::{c_char, c_int, c_void};
+    use std::ptr;
+
+    #[link(name = "CoreFoundation", kind = "framework")]
+    extern "C" {
+        fn CFStringCreateWithCString(
+            alloc: *const c_void,
+            c_str: *const c_char,
+            encoding: u32,
+        ) -> *const c_void;
+        fn CFURLCreateWithFileSystemPath(
+            allocator: *const c_void,
+            file_path: *const c_void,
+            path_style: c_int,
+            is_directory: u8,
+        ) -> *const c_void;
+        fn CFURLGetFileSystemRepresentation(
+            url: *const c_void,
+            resolve_against_base: u8,
+            buffer: *mut u8,
+            max_buf_len: isize,
+        ) -> u8;
+        fn CFRelease(cf: *const c_void);
+    }
+
+    #[link(name = "Security", kind = "framework")]
+    extern "C" {
+        fn SecTranslocateCreateOriginalPathForURL(
+            path: *const c_void,
+            error: *mut *const c_void,
+        ) -> *const c_void;
+    }
+
+    const K_CF_STRING_ENCODING_UTF8: u32 = 0x0800_0100;
+    let path_str = app.to_str()?;
+    let c_path = CString::new(path_str).ok()?;
+    unsafe {
+        let cf_str =
+            CFStringCreateWithCString(ptr::null(), c_path.as_ptr(), K_CF_STRING_ENCODING_UTF8);
+        if cf_str.is_null() {
+            return None;
+        }
+        // kCFURLPOSIXPathStyle = 0; .app is a directory bundle
+        let url = CFURLCreateWithFileSystemPath(ptr::null(), cf_str, 0, 1);
+        CFRelease(cf_str);
+        if url.is_null() {
+            return None;
+        }
+        let mut err: *const c_void = ptr::null();
+        let orig = SecTranslocateCreateOriginalPathForURL(url, &mut err);
+        CFRelease(url);
+        if orig.is_null() {
+            return None;
+        }
+        let mut buf = [0u8; 4096];
+        let ok = CFURLGetFileSystemRepresentation(orig, 1, buf.as_mut_ptr(), buf.len() as isize);
+        CFRelease(orig);
+        if ok == 0 {
+            return None;
+        }
+        let len = buf.iter().position(|&b| b == 0).unwrap_or(buf.len());
+        let s = std::str::from_utf8(&buf[..len]).ok()?;
+        if s.is_empty() {
+            return None;
+        }
+        Some(PathBuf::from(s))
+    }
+}
+
+fn payload_has_sidecars(dir: &Path) -> bool {
+    dir.join("lyrics.db").is_file()
+}
+
 fn payload_root() -> PathBuf {
     if let Ok(p) = std::env::var("CANTO_PAYLOAD_ROOT") {
         let t = p.trim();
@@ -58,9 +136,27 @@ fn payload_root() -> PathBuf {
     }
     let exe = std::env::current_exe().ok();
     // ADR-0070: payload = directory containing .app + lyrics.db (parent of bundle).
+    // When Gatekeeper App Translocation is active, prefer the pre-translocation parent
+    // so lyrics.db / client/ next to the real extract folder stay visible.
     if let Some(ref e) = exe {
         if let Some(app) = macos_app_bundle(e) {
-            if let Some(parent) = app.parent() {
+            let mut candidates: Vec<PathBuf> = Vec::new();
+            #[cfg(target_os = "macos")]
+            if let Some(orig) = macos_original_app_path(&app) {
+                if orig != app {
+                    candidates.push(orig);
+                }
+            }
+            candidates.push(app);
+            for bundle in &candidates {
+                if let Some(parent) = bundle.parent() {
+                    if payload_has_sidecars(parent) {
+                        return parent.to_path_buf();
+                    }
+                }
+            }
+            // Fall back to first parent (fail-fast later if no lyrics.db).
+            if let Some(parent) = candidates[0].parent() {
                 return parent.to_path_buf();
             }
         }
@@ -122,7 +218,11 @@ fn clear_download_quarantine(root: &Path) {
     let _ = root;
 }
 
-/// PyApp data layout: %LOCALAPPDATA%/pyapp/data/canto-0243/<dist>/<ver>/
+/// PyApp install layout (directories::ProjectDirs data_local_dir):
+/// - Windows: %LOCALAPPDATA%/pyapp/canto-0243/<dist>/<ver>/
+/// - macOS: ~/Library/Application Support/pyapp/canto-0243/<dist>/<ver>/
+/// - Linux: ${XDG_DATA_HOME:-~/.local/share}/pyapp/canto-0243/<dist>/<ver>/
+/// (No extra `data/` segment — that was a shell bug that blocked “env ready”.)
 fn pyapp_install_ready() -> bool {
     if let Ok(custom) = std::env::var(format!(
         "PYAPP_INSTALL_DIR_{}",
@@ -144,7 +244,7 @@ fn pyapp_install_ready() -> bool {
     let Some(base) = base else {
         return false;
     };
-    let project = base.join("pyapp").join("data").join(PROJECT);
+    let project = base.join("pyapp").join(PROJECT);
     if !project.is_dir() {
         return false;
     }
@@ -237,6 +337,22 @@ fn main() {
         );
         std::process::exit(1);
     }
+
+    // Sidecars (lyrics.db, client/) must sit next to the launcher — not only inside .app.
+    // Common failure: App Translocation or moving only the .app out of the extract folder.
+    if !payload_has_sidecars(&root) {
+        show_fatal(
+            "Canto-0243",
+            "找不到 lyrics.db（詞庫側車）。\n\n\
+請確認已完整解壓 Desktop 套件，並用 Finder 把成個資料夾移去「文件」或「桌面」後再打開 Canto-0243.app（唔好只拖 .app）。\n\
+或喺終端對套件資料夾執行：xattr -cr \"套件路徑\" 再雙擊。\n\n\
+Missing lyrics.db next to the app — keep the full extract folder together.",
+        );
+        std::process::exit(1);
+    }
+
+    // Clear quarantine on the real payload early so the next Finder launch is not translocated.
+    clear_download_quarantine(&root);
 
     // Fast path: PyApp env already present → no splash.
     if pyapp_install_ready() {
@@ -446,7 +562,24 @@ fn show_fatal(title: &str, text: &str) {
         }
         return;
     }
-    #[cfg(not(windows))]
+    #[cfg(target_os = "macos")]
+    {
+        // Finder double-click has no terminal — use a system alert.
+        let escape = |s: &str| s.replace('\\', "\\\\").replace('"', "\\\"");
+        let script = format!(
+            "display dialog \"{}\" with title \"{}\" buttons {{\"好\"}} default button 1 with icon stop",
+            escape(text),
+            escape(title)
+        );
+        let _ = Command::new("osascript")
+            .args(["-e", &script])
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+        eprintln!("{title}: {text}");
+        return;
+    }
+    #[cfg(all(not(windows), not(target_os = "macos")))]
     {
         eprintln!("{title}: {text}");
     }

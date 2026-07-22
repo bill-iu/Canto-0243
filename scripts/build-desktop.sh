@@ -93,6 +93,8 @@ WHEEL="$(ls -t "${ROOT}/dist/wheels"/canto_0243-*.whl | head -1)"
 echo "==> Sidecar (beside .app; ADR-0070 B1)"
 mkdir -p "${OUT_DIR}/client" "${OUT_DIR}/data"
 cp -R "${ROOT}/client/dist-portable" "${OUT_DIR}/client/dist-portable"
+# ADR-0068 §13: drop PWA browser-engine dead weight (query = root lyrics.db + API).
+"$PY" "${ROOT}/scripts/desktop_ui_strip.py" "${OUT_DIR}/client/dist-portable"
 if [[ -d "${ROOT}/data" ]]; then
   rsync -a --exclude '__pycache__' --exclude 'audit' --exclude 'fixtures' \
     --exclude 'raw' --exclude 'proposals' --exclude 'locks' --exclude 'pos' \
