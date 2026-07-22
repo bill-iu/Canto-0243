@@ -4937,8 +4937,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 受媾	v		passive	prefix-passive;passive-prefix-expand;review
 受孕	n			cow-single
 受害	v		passive	prefix-passive;heuristic
-受害人	n			cow-single
-受害者	n			cow-single
+受害人	n		passive	cow-single;prefix-passive;heuristic;passive-prefix-expand;review
+受害者	n		passive	cow-single;prefix-passive;heuristic;passive-prefix-expand;review
 受寒	v		passive	prefix-passive;passive-prefix-expand;review
 受審	v		passive	prefix-passive;passive-prefix-expand;review
 受寵若驚	v	chengyu	passive	prefix-passive;heuristic;family-leaf-review
@@ -4977,6 +4977,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 受用	v		passive	prefix-passive;passive-prefix-expand;review
 受病	v		passive	prefix-passive;passive-prefix-expand;review
 受益	v		passive	prefix-passive;heuristic
+受益人	n		passive	prefix-passive;heuristic;passive-prefix-expand;review
 受益匪淺	v		passive	prefix-passive;heuristic
 受盤	v		passive	prefix-passive;passive-prefix-expand;review
 受眾	v		passive	prefix-passive;passive-prefix-expand;review
@@ -5011,6 +5012,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 受辱	v		passive	prefix-passive;passive-prefix-expand;review
 受過	v		passive	prefix-passive;heuristic
 受重傷	v		passive	prefix-passive;passive-prefix-expand;review
+受阻	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 受降	v		passive	prefix-passive;passive-prefix-expand;review
 受降儀式	v		passive	prefix-passive;passive-prefix-expand;review
 受雇	v		passive	prefix-passive;passive-prefix-expand;review
@@ -16993,6 +16995,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 獲準	v		passive	prefix-passive;passive-prefix-expand;review
 獲獎	v		passive	no-source;fallback;full-r1-audit;review;清晰動詞／動語;prefix-passive;passive-prefix-expand;review
 獲獎人	v		passive	prefix-passive;passive-prefix-expand;review
+獲益	n		passive	prefix-passive;heuristic;passive-prefix-expand;review
 獲益者	v		passive	prefix-passive;passive-prefix-expand;review
 獲益良多	a,v		passive	u-inlex-nf4;review;agent-label;prefix-passive;passive-prefix-expand;review
 獲知	v		passive	prefix-passive;passive-prefix-expand;review
@@ -22015,7 +22018,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 被子	v		passive	prefix-passive;passive-prefix-expand;review
 被子植物	n			cow-single
 被害	v		passive	prefix-passive;passive-prefix-expand;review
-被害人	n			prefix-passive;p3;heuristic;p1-audit;review;受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘;clear-false-passive-voice;review
+被害人	n		passive	prefix-passive;p3;heuristic;p1-audit;review;受害人／受害者義，名詞；prefix-passive 假陽會毒同動詞閘;clear-false-passive-voice;review;prefix-passive;heuristic;passive-prefix-expand;review
 被害妄想	v		passive	prefix-passive;passive-prefix-expand;review
 被尾	v		passive	prefix-passive;passive-prefix-expand;review
 被捕	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
@@ -24303,6 +24306,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 遭遇	v		passive	cow-single;prefix-passive;passive-prefix-expand;review
 遭遇不測	v		passive	prefix-passive;passive-prefix-expand;review
 遭際	v		passive	prefix-passive;passive-prefix-expand;review
+遭難	v		passive	prefix-passive;heuristic;passive-prefix-expand;review
 遮	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 遮住	v			verb-suffix;heuristic
 遮掩	v			cow-single

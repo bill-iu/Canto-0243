@@ -22,7 +22,7 @@ TSV_HEADER = ("literal", "pos", "family", "voice", "note")
 
 # 語態面構詞字首（CONTEXT § 語態面）：固定被動／遭受義或此批字首構詞
 # 提案器用；正式清單仍經審核閘。
-PASSIVE_PREFIXES = frozenset("被捱受遭讓給叫獲挨")
+PASSIVE_PREFIXES = frozenset("被捱受遭讓給叫獲挨得")
 
 # high | medium | low — CONTEXT § 詞性信任
 TRUST_HIGH = "high"

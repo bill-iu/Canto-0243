@@ -22,35 +22,48 @@ from tools.campaigns.project_pos_p0 import load_cow_pos_map, propose_for_literal
 
 PROPOSALS = ROOT / "data" / "pos" / "proposals" / "passive_prefix_expand.tsv"
 NOTE_TAG = "passive-prefix-expand;review"
-# Agent-reviewed seed fixes (must land in SSOT even if previously absent).
-SEED_PASSIVE_V = (
-    "獲救",
-    "得救",
-    "遇救",
-    "獲釋",
-    "被捕",
-    "被殺",
-    "捱打",
-    "遭殃",
-)
-# Already audited as non-passive morphology / nouns — never force voice.
+# Agent-reviewed seeds: literal → preferred pos (被動義名詞可 n).
+SEED_PASSIVE: dict[str, str] = {
+    "獲救": "v",
+    "得救": "v",  # 得* 構詞；prefix 含「得」
+    "遇救": "v",
+    "獲釋": "v",
+    "獲益": "n",  # 被動義名詞
+    "受益": "v",
+    "受阻": "v",
+    "遭難": "v",
+    "被捕": "v",
+    "被殺": "v",
+    "捱打": "v",
+    "遭殃": "v",
+    # 被動義角色／結果名詞
+    "受害人": "n",
+    "受害者": "n",
+    "受益人": "n",
+    "被害人": "n",
+}
+# Non-suffering / technical — never force voice.
 SKIP_VOICE = frozenset(
     {
         "被窩",
-        "被套",  # 被褥類；曾誤標
-        "被害人",
+        "被套",  # 被褥類
         "被告人",
-        "被上訴人",
-        "受害人",
-        "受害者",
+        "被上訴人",  # 法律程序角色，唔當遭受義被動名
         "受衆",
         "被子植物",
+        "被子植物門",
         "被動免疫",
         "受孕",
-        "被動",  # 詞彙「passive」本身，唔係遭受構詞
+        "被動",  # 詞彙「passive」本身
+        "被乘數",
+        "被加數",
+        "被除數",
+        "被單",
+        "被面",
+        "被告",  # 法律角色名；唔當遭受構詞
     }
 )
-# Safer morphological prefixes for auto SSOT fill (讓給叫 → proposals only).
+# Auto SSOT morph fill: 叫給讓 只提案；「得」只靠 seed／審核，唔盲灌（得到／得意…）
 AUTO_SSOT_PREFIXES = frozenset("被捱受遭獲挨")
 
 
@@ -70,14 +83,17 @@ def _formal(pos: str) -> set[str]:
 def _should_auto_ssot(lit: str, pos: str) -> bool:
     if lit in SKIP_VOICE:
         return False
+    if lit in SEED_PASSIVE:
+        return True
     if len(lit) < 2 or lit[0] not in AUTO_SSOT_PREFIXES:
         return False
     tags = _formal(pos)
     if not tags:
         return True
-    if tags <= {"n", "x", "u"} and "v" not in tags and "a" not in tags:
-        return False
-    return True
+    # 動詞／形；被動義名詞靠 SEED（如獲益），唔自動全收 n
+    if "v" in tags or "a" in tags:
+        return True
+    return False
 
 
 def main() -> int:
@@ -137,29 +153,30 @@ def main() -> int:
     print(f"proposals {len(proposal_rows)} → {PROPOSALS}")
 
     # --- agent-reviewed SSOT apply ---
+    from ingest.project_pos import PosRow, split_pos
+
     changed = 0
-    # Seeds first
-    for lit in SEED_PASSIVE_V:
+    # Seeds first (explicit pos, incl. passive nouns)
+    for lit, want_pos in SEED_PASSIVE.items():
         if lit not in lex:
             print(f"skip seed not in lexicon: {lit}")
             continue
-        prop = propose_for_literal(lit, cow=cow)
-        pos = prop[0] if prop else "v"
-        if "v" not in _formal(pos) and pos != "u":
-            pos = "v"
-        if pos == "u":
-            pos = "v"
         note = f"prefix-passive;heuristic;{NOTE_TAG}"
         if lit in table:
             row = table[lit]
-            if row.voice == "passive" and "v" in row.pos:
+            # prefer seed pos when current lacks want, else keep richer set
+            tags = set(row.pos)
+            if want_pos not in tags and tags <= {"u", "n", "x"} and want_pos == "v":
+                tags = {want_pos}
+            elif want_pos not in tags and want_pos == "n" and not tags:
+                tags = {want_pos}
+            elif want_pos == "n" and tags <= {"n"}:
+                tags = {"n"}
+            elif want_pos == "v" and "v" not in tags:
+                tags = {want_pos} if not tags or tags <= {"u", "n"} else tags | {"v"}
+            keep_pos = ",".join(sorted(tags)) if tags else want_pos
+            if row.voice == "passive" and keep_pos == ",".join(sorted(row.pos)):
                 continue
-            # keep existing pos if any formal
-            keep_pos = ",".join(sorted(row.pos)) if row.pos else pos
-            if "v" not in _formal(keep_pos):
-                keep_pos = pos if "v" in _formal(pos) else f"{keep_pos},v" if keep_pos else "v"
-            from ingest.project_pos import PosRow, split_pos
-
             table[lit] = PosRow(
                 literal=lit,
                 pos=split_pos(keep_pos),
@@ -168,27 +185,24 @@ def main() -> int:
                 note=f"{row.note};{note}".strip(";"),
             )
         else:
-            from ingest.project_pos import PosRow, split_pos
-
             table[lit] = PosRow(
                 literal=lit,
-                pos=split_pos("v"),
+                pos=split_pos(want_pos),
                 family="",
                 voice="passive",
                 note=note,
             )
         changed += 1
+        print(f"seed {lit} pos={want_pos}")
 
     # Existing empty-voice + safe prefix + not skip
-    from ingest.project_pos import PosRow, split_pos
-
     for lit, row in list(table.items()):
         if row.voice == "passive":
             continue
+        if lit in SEED_PASSIVE:
+            continue
         if not _should_auto_ssot(lit, ",".join(sorted(row.pos))):
             continue
-        if lit in SEED_PASSIVE_V:
-            continue  # already handled
         note = f"{row.note};prefix-passive;{NOTE_TAG}".strip(";")
         table[lit] = PosRow(
             literal=lit,
@@ -203,6 +217,8 @@ def main() -> int:
     for lit in sorted(lex):
         if lit in table:
             continue
+        if lit in SEED_PASSIVE:
+            continue
         if not _should_auto_ssot(lit, "v"):
             continue
         prop = propose_for_literal(lit, cow=cow)
@@ -210,9 +226,7 @@ def main() -> int:
             continue
         pos, family, _v, note, _src, _conf = prop
         tags = _formal(pos)
-        if tags <= {"n", "x"}:
-            continue
-        if "v" not in tags and "a" not in tags and "u" not in tags:
+        if "v" not in tags and "a" not in tags:
             continue
         if "u" in tags and "v" not in tags:
             pos = "v"
