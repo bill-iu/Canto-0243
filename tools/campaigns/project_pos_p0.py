@@ -14,6 +14,7 @@ from ingest.project_pos import (
     DEFAULT_META,
     DEFAULT_TSV,
     FORMAL_POS,
+    PASSIVE_PREFIXES,
     ProjectPosError,
     load_meta,
     parse_project_pos_tsv,
@@ -216,25 +217,44 @@ def _looks_len4_noun(lit: str) -> bool:
     return False
 
 
+def _passive_prefix_voice(lit: str) -> str:
+    """Empty or «passive» when lit uses 語態面構詞字首（≥2 字）。"""
+    if len(lit) >= 2 and lit[0] in PASSIVE_PREFIXES:
+        return "passive"
+    return ""
+
+
 def propose_for_literal(
     lit: str,
     *,
     cow: Dict[str, List[str]],
 ) -> Optional[Tuple[str, str, str, str, str, str]]:
-    """Return (pos, family, voice, note, source, confidence) or None."""
+    """Return (pos, family, voice, note, source, confidence) or None.
+
+    COW／其他來源保留其 pos；命中 passive prefix 時**併** voice=passive
+   （唔再俾 COW 蓋過 prefix-passive）。
+    """
+    pfx_voice = _passive_prefix_voice(lit)
+
     if lit in _HEURISTIC_POS:
-        return (_HEURISTIC_POS[lit], "", "", "heuristic", "heuristic", "high")
+        note = "heuristic"
+        if pfx_voice:
+            note = f"{note};prefix-passive"
+        return (_HEURISTIC_POS[lit], "", pfx_voice, note, "heuristic", "high")
     if _looks_numeral(lit):
         return ("x", "", "", "numeral", "heuristic", "high")
     if _looks_len4_noun(lit):
+        # 四字名詞啓發式唔併被動（避免「被…」成語誤當句式被動）
         return ("n", "", "", "len4-noun-heuristic", "heuristic", "medium")
     if lit in cow:
         tags = [t for t in cow[lit] if t in FORMAL_POS]
         if tags:
             # Single-tag COW ~13% primary error → never high
             note = "cow-single" if len(tags) == 1 else "cow-multi"
-            return (",".join(tags), "", "", note, "cow", "medium")
-    if len(lit) >= 2 and lit[0] in "被捱受遭":
+            if pfx_voice:
+                note = f"{note};prefix-passive"
+            return (",".join(tags), "", pfx_voice, note, "cow", "medium")
+    if pfx_voice:
         return ("v", "", "passive", "prefix-passive", "heuristic", "medium")
     if len(lit) == 2 and any(lit.endswith(s) for s in _VERBISH_SUFFIX):
         return ("v", "", "", "verb-suffix", "heuristic", "medium")
