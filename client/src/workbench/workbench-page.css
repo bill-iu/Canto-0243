@@ -169,16 +169,17 @@ body.query-tabs-app.workbench-route {
   flex: 1 1 auto;
 }
 .section-heading-row h2, .candidate-area h2 { margin: .2rem 0 0; }
-/* 固定兩行，窄屏唔再把「點擊鎖定，雙擊改字」拆成亂行 */
+/* 寬屏一行；窄屏固定斷成「點擊鎖定，」／「雙擊改字」 */
 .sentence-canvas__title {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-flow: row nowrap;
+  align-items: baseline;
   gap: 0;
   line-height: 1.25;
 }
 .sentence-canvas__title-line {
-  display: block;
+  display: inline;
+  white-space: nowrap;
 }
 .sentence-canvas__heading-actions {
   display: flex;
@@ -726,6 +727,13 @@ body.query-tabs-app.workbench-route {
 @media (max-width: 720px) {
   .workbench-header { grid-template-columns: 1fr auto; gap: 1rem; }
   .workbench-header > div { order: 3; grid-column: 1 / -1; }
+  .sentence-canvas__title {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .sentence-canvas__title-line {
+    display: block;
+  }
   .line-input-form { max-width: 100%; }
   .candidate-grid {
     grid-template-columns: 1fr;
