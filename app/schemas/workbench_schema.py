@@ -125,7 +125,17 @@ class WorkbenchCandidateResponse(BaseModel):
     selection_version: int = Field(alias="selectionVersion", ge=0)
     exact: CandidateGroups
     total: int = Field(ge=0)
+    # B2-light: canonical name; dual-write with total (ADR-0064 pool size)
+    engine_total: int | None = Field(default=None, alias="engineTotal", ge=0)
     relaxation: RelaxationSuggestion | None = None
+
+    @model_validator(mode="after")
+    def dual_write_engine_total(self) -> "WorkbenchCandidateResponse":
+        if self.engine_total is None:
+            object.__setattr__(self, "engine_total", self.total)
+        else:
+            object.__setattr__(self, "total", self.engine_total)
+        return self
 
 
 class LineReadingsRequest(BaseModel):

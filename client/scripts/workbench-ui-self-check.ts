@@ -62,8 +62,11 @@ if (!compare.includes('在搜尋頁查看') || !compare.includes('onOpenInSearch
 if (!page.includes('不會自動填入字面')) {
   throw new Error('product boundary copy missing (no auto-fill surfaces)');
 }
-if (!page.includes('WORKBENCH_CANDIDATE_PAGE_SIZE')) {
-  throw new Error('candidate page size constant missing from WorkbenchPage');
+if (!page.includes('loadMore') && !page.includes('candidates.loadMore')) {
+  throw new Error('candidate loadMore wiring missing from WorkbenchPage');
+}
+if (!page.includes('derivePlanBase') || !page.includes('engineTotal')) {
+  throw new Error('candidate session planBase / engineTotal wiring missing');
 }
 if (!css.includes('.candidate-load-more button') || !css.includes('min-width: min(100%, 16rem)')) {
   throw new Error('load-more must look like a primary button');

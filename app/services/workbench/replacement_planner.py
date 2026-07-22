@@ -161,6 +161,7 @@ def plan_replacements(
         selection_version=plan.selection_version,
         exact=exact,
         total=total,
+        engine_total=total,
         relaxation=suggestion,
     )
 

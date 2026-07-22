@@ -18,7 +18,6 @@ import { ComparePanel } from './ComparePanel.tsx';
 import { ConstraintBar } from './ConstraintBar.tsx';
 import type { CodeConstraintMode } from './code-constraint.ts';
 import {
-  WORKBENCH_CANDIDATE_PAGE_SIZE,
   type CandidateGroups,
   type RelaxationKind,
   type ReplacementPlanV1,
@@ -34,7 +33,7 @@ import { relaxationKindLabel } from './relaxation-i18n.ts';
 import { phonemeCheckedOffsets, type PhonemeDimPicks } from './replacement-span.ts';
 import {
   clearWorkbenchSession,
-  derivePlan,
+  derivePlanBase,
   initialSession,
   saveWorkbenchSession,
   sessionReducer,
@@ -90,7 +89,6 @@ export function WorkbenchPage() {
   const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
-  const [candidateOffset, setCandidateOffset] = useState(0);
   const [spanInputError, setSpanInputError] = useState('');
   const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
@@ -103,7 +101,6 @@ export function WorkbenchPage() {
   const previewRef = useRef(preview);
   const ingestDone = useRef(false);
   const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
-  const heldVersionRef = useRef(session.version);
   sessionRef.current = session;
   previewRef.current = preview;
 
@@ -155,15 +152,6 @@ export function WorkbenchPage() {
       setMessage('這次未能自動保存；句稿仍可繼續編輯。');
     }
   }, [session]);
-
-  useEffect(() => {
-    setCandidateOffset(0);
-    heldVersionRef.current = session.version;
-  }, [session.version]);
-
-  useEffect(() => {
-    setCandidateOffset(0);
-  }, [posFilter]);
 
   const goSearchHome = () => {
     navigateAppRoute('search');
@@ -489,19 +477,14 @@ export function WorkbenchPage() {
     setMessage(current.draft ? '已復原最近一次改動。' : '已復原清空前的句稿。');
   };
 
-  // 版本變更當幀 offset 歸零（取代 ad-hoc planKey）
-  const effectiveOffset = session.version === heldVersionRef.current ? candidateOffset : 0;
-  const plan = useMemo(
-    () => derivePlan(session, { offset: effectiveOffset, limit: WORKBENCH_CANDIDATE_PAGE_SIZE }),
-    [session, effectiveOffset],
-  );
-
-  const candidates = useWorkbenchCandidates(isReady ? plan : null, adapter, posFilter);
+  // 候選 session 擁有 cursor；page 只傳 plan 身份（無 paging）
+  const planBase = useMemo(() => derivePlanBase(session), [session]);
+  const candidates = useWorkbenchCandidates(isReady ? planBase : null, adapter, posFilter);
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(
-    plan
-    && plan.semanticIntent !== 'off'
+    planBase
+    && planBase.semanticIntent !== 'off'
     && candidates.response
     && candidates.response.exact.direct_syn.length === 0
     && candidates.response.exact.semantic_related.length === 0,
@@ -717,15 +700,15 @@ export function WorkbenchPage() {
             {candidates.response ? (
               <CandidateGrid
                 groups={candidates.response.exact}
-                total={candidates.response.total}
+                total={candidates.engineTotal}
                 loadedCount={candidates.loadedCount}
-                hasMore={candidates.fetchedCount < candidates.response.total}
-                loadingMore={candidates.loading && effectiveOffset > 0}
+                hasMore={candidates.hasMore}
+                loadingMore={candidates.loading && candidates.fetchedCount > 0}
                 posFilterActive={isPosFilterActive(posFilter)}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
                 onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
-                onLoadMore={() => setCandidateOffset((n) => n + WORKBENCH_CANDIDATE_PAGE_SIZE)}
+                onLoadMore={candidates.loadMore}
               />
             ) : null}
             {candidates.response?.relaxation ? (

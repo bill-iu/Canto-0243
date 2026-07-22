@@ -150,6 +150,11 @@
         "selectionVersion": { "type": "integer", "minimum": 0 },
         "exact": { "$ref": "#/$defs/CandidateGroups" },
         "total": { "type": "integer", "minimum": 0 },
+        "engineTotal": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Canonical engine pool size (B2-light dual-write with total)"
+        },
         "relaxation": {
           "oneOf": [
             { "$ref": "#/$defs/RelaxationSuggestion" },

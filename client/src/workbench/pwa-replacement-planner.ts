@@ -126,6 +126,7 @@ export async function planPwaReplacements(
     selectionVersion: plan.selectionVersion,
     exact,
     total: page.total,
+    engineTotal: page.total,
     relaxation,
   };
 }

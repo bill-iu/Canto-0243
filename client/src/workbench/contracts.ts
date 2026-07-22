@@ -87,8 +87,13 @@ export interface WorkbenchCandidateResponse {
   version: 1;
   selectionVersion: number;
   exact: CandidateGroups;
-  /** Engine pool size before POS filter / before this page slice (ADR-0064). */
+  /**
+   * Engine pool size before POS filter / before this page slice (ADR-0064).
+   * Dual-write with `engineTotal` (B2-light); prefer `engineTotal` when present.
+   */
   total: number;
+  /** Canonical engine pool size (same semantics as `total`). */
+  engineTotal: number;
   relaxation?: RelaxationSuggestion | null;
 }
 
@@ -256,13 +261,18 @@ export function parseWorkbenchCandidateResponse(value: unknown): WorkbenchCandid
   assert(isRecord(value), 'candidate response');
   assert(value.version === 1, 'candidate response version');
   assert(Number.isInteger(value.selectionVersion) && Number(value.selectionVersion) >= 0, 'candidate response selectionVersion');
-  assert(Number.isInteger(value.total) && Number(value.total) >= 0, 'candidate response total');
+  const hasTotal = Number.isInteger(value.total) && Number(value.total) >= 0;
+  const hasEngine = Number.isInteger(value.engineTotal) && Number(value.engineTotal) >= 0;
+  assert(hasTotal || hasEngine, 'candidate response total/engineTotal');
+  const engineTotal = hasEngine ? Number(value.engineTotal) : Number(value.total);
+  const total = hasTotal ? Number(value.total) : engineTotal;
   const relaxation = value.relaxation == null ? null : parseRelaxation(value.relaxation);
   return {
     version: 1,
     selectionVersion: Number(value.selectionVersion),
     exact: parseGroups(value.exact),
-    total: Number(value.total),
+    total,
+    engineTotal,
     relaxation,
   };
 }

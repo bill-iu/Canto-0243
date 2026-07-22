@@ -42,11 +42,20 @@ if (!rejected) {
   throw new Error('workbench contract: rendered reason string was accepted');
 }
 
+const dual = parseWorkbenchCandidateResponse({
+  version: 1,
+  selectionVersion: 1,
+  exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+  total: 12,
+});
+if (dual.engineTotal !== 12) throw new Error('workbench contract: engineTotal not filled from total');
+
 const relaxed = parseWorkbenchCandidateResponse({
   version: 1,
   selectionVersion: 8,
   exact: { direct_syn: [], semantic_related: [], sound_only: [] },
   total: 0,
+  engineTotal: 0,
   relaxation: {
     id: 'mode:m3:m2',
     kind: 'loosen_mode',
