@@ -109,6 +109,7 @@
   <div class="wrap">
     <div class="brand">ONE·<span>搵</span>·韻</div>
     <p class="tag" id="tag">首次啟動：正在準備本機執行環境（只需一次）</p>
+    <p class="hint" id="pace">首次啟動會花較長時間，之後就快</p>
     <p class="stage" id="stage">正在準備…</p>
     <p class="pct" id="pct" aria-live="polite">約 5%</p>
     <div
@@ -146,6 +147,10 @@
       zh: "首次啟動：正在準備本機執行環境（只需一次）",
       en: "First launch: setting up the local runtime (once only)"
     };
+    const PACE = {
+      zh: "首次啟動會花較長時間，之後就快",
+      en: "The first launch takes longer; later starts are quick."
+    };
     const HINT = {
       zh: "需要網路以下載 Python 執行環境；完成後可離線使用。",
       en: "Internet is needed to download Python once; then fully offline."
@@ -175,6 +180,7 @@
     window.setSplashLang = (l) => {
       lang = l === "en" ? "en" : "zh";
       document.getElementById("tag").textContent = TAG[lang];
+      document.getElementById("pace").textContent = PACE[lang];
       document.getElementById("hint").textContent = HINT[lang];
       document.getElementById("pct").textContent = formatPct(shownPct || 5);
     };
