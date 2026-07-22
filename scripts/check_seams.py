@@ -134,9 +134,11 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("macos_app_bundle", shell)
         self.assertIn("clear_download_quarantine", shell)
         self.assertIn("xattr", shell)
-        # PyApp ProjectDirs path has no extra "data/" segment (would never see install ready).
+        # PyApp install roots: Windows uses pyapp/data/<project>; some builds omit data/.
+        self.assertIn("pyapp_project_candidates", shell)
+        self.assertIn('.join("pyapp").join("data").join(PROJECT)', shell)
         self.assertIn('.join("pyapp").join(PROJECT)', shell)
-        self.assertNotIn('.join("pyapp").join("data")', shell)
+        self.assertIn("respawned_after_install", shell)
         self.assertIn("SecTranslocateCreateOriginalPathForURL", shell)
         self.assertIn("payload_has_sidecars", shell)
         # Name kept for callers; must forward to desktop build.

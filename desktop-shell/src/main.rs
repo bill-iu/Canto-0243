@@ -218,11 +218,20 @@ fn clear_download_quarantine(root: &Path) {
     let _ = root;
 }
 
-/// PyApp install layout (directories::ProjectDirs data_local_dir):
-/// - Windows: %LOCALAPPDATA%/pyapp/canto-0243/<dist>/<ver>/
-/// - macOS: ~/Library/Application Support/pyapp/canto-0243/<dist>/<ver>/
-/// - Linux: ${XDG_DATA_HOME:-~/.local/share}/pyapp/canto-0243/<dist>/<ver>/
-/// (No extra `data/` segment — that was a shell bug that blocked “env ready”.)
+/// PyApp install roots under the OS data-local base.
+///
+/// Observed layouts (PyApp versions differ):
+/// - Windows (current): `%LOCALAPPDATA%/pyapp/data/canto-0243/<dist>/<ver>/`
+/// - Some builds / macOS notes: `…/pyapp/canto-0243/<dist>/<ver>/` (no `data/`)
+/// Check **both**; a mac-only strip of `data/` made Windows never see “env ready”
+/// after a successful first install (child exit 0 → splash fail after 90s).
+fn pyapp_project_candidates(base: &Path) -> [PathBuf; 2] {
+    [
+        base.join("pyapp").join("data").join(PROJECT),
+        base.join("pyapp").join(PROJECT),
+    ]
+}
+
 fn pyapp_install_ready() -> bool {
     if let Ok(custom) = std::env::var(format!(
         "PYAPP_INSTALL_DIR_{}",
@@ -244,11 +253,14 @@ fn pyapp_install_ready() -> bool {
     let Some(base) = base else {
         return false;
     };
-    let project = base.join("pyapp").join(PROJECT);
-    if !project.is_dir() {
-        return false;
+    for project in pyapp_project_candidates(&base) {
+        // Only under project installs — do not walk pyapp/cache (distribution
+        // trees can look like a ready env and skip real install).
+        if project.is_dir() && walk_ready(&project, 0) {
+            return true;
+        }
     }
-    walk_ready(&project, 0)
+    false
 }
 
 fn dirs_home() -> Option<PathBuf> {
@@ -341,13 +353,18 @@ fn main() {
     // Sidecars (lyrics.db, client/) must sit next to the launcher — not only inside .app.
     // Common failure: App Translocation or moving only the .app out of the extract folder.
     if !payload_has_sidecars(&root) {
-        show_fatal(
-            "Canto-0243",
+        let hint = if cfg!(windows) {
+            "找不到 lyrics.db（詞庫側車）。\n\n\
+請完整解壓 Desktop zip，並從解壓後資料夾內雙擊 Canto-0243.exe（唔好只複製 .exe）。\n\
+側車須同層：lyrics.db、client/、runtime/。\n\n\
+Missing lyrics.db next to the launcher — keep the full extract folder together."
+        } else {
             "找不到 lyrics.db（詞庫側車）。\n\n\
 請確認已完整解壓 Desktop 套件，並用 Finder 把成個資料夾移去「文件」或「桌面」後再打開 Canto-0243.app（唔好只拖 .app）。\n\
 或喺終端對套件資料夾執行：xattr -cr \"套件路徑\" 再雙擊。\n\n\
-Missing lyrics.db next to the app — keep the full extract folder together.",
-        );
+Missing lyrics.db next to the app — keep the full extract folder together."
+        };
+        show_fatal("Canto-0243", hint);
         std::process::exit(1);
     }
 
@@ -412,6 +429,7 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
         let start = Instant::now();
         let mut stage: u8 = 1;
         let mut child_exited: Option<std::process::ExitStatus> = None;
+        let mut respawned_after_install = false;
         let _ = proxy_t.send_event(UserEvent::Stage(1));
 
         loop {
@@ -459,7 +477,7 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 match child.try_wait() {
                     Ok(Some(status)) => {
                         child_exited = Some(status);
-                        // PyApp GUI may exit after handing off — wait for product port.
+                        // PyApp may exit 0 after install; product may need a second spawn.
                     }
                     Ok(None) => {}
                     Err(e) => {
@@ -470,6 +488,32 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             }
 
             if let Some(status) = child_exited {
+                // Install finished (exit 0) but HTTP not up — re-launch once with env ready.
+                if status.success()
+                    && pyapp_install_ready()
+                    && !product_http_ready()
+                    && !respawned_after_install
+                {
+                    match spawn_inner(&root_t, &inner_t) {
+                        Ok(c) => {
+                            child = c;
+                            child_exited = None;
+                            respawned_after_install = true;
+                            if stage < 4 {
+                                stage = 4;
+                                let _ = proxy_t.send_event(UserEvent::Stage(4));
+                            }
+                            continue;
+                        }
+                        Err(e) => {
+                            let _ = proxy_t.send_event(UserEvent::Failed(format!(
+                                "執行環境已就緒但無法重啟產品：{e}"
+                            )));
+                            return;
+                        }
+                    }
+                }
+
                 // Fail fast: signal kill / non-zero exit means bootstrap died.
                 // Still allow a short grace if PyApp exits 0 after handoff (rare).
                 let bad = !status.success();
