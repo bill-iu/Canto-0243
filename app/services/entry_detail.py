@@ -10,6 +10,7 @@ from app.domain.lexicon.ranking import search_result_sort_key
 from app.lexicon.essay_index import get_essay_frequency
 from app.models.word import Word
 from app.domain.relation_pool import project_relation_pool
+from app.utils.jyutping_codec import split_jyutping_parts
 
 
 SOURCE_FLAG_LABELS = (
@@ -83,13 +84,18 @@ def build_entry_detail(db: Session, literal: str) -> dict[str, Any] | None:
     for row in rows:
         flag_union |= int(row.source_flags or 0)
         jyut = row.jyutping or ""
+        initials = _parse_phoneme_list(row.initials, "initial")
+        finals = _parse_phoneme_list(row.finals, "final")
+        # 生成／合成詞條常只有粵拼 → 由 jyutping 拆聲母／韻母
+        if jyut and not any(initials) and not any(finals):
+            initials, finals, _tones = split_jyutping_parts(jyut)
         readings.append(
             {
                 "jyutping": jyut,
                 "code0243": row.code or "",
                 "code02493": _code0243_from_jyutping(jyut) or (row.code or ""),
-                "initials": _parse_phoneme_list(row.initials, "initial"),
-                "finals": _parse_phoneme_list(row.finals, "final"),
+                "initials": initials,
+                "finals": finals,
             }
         )
 

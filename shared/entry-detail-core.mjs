@@ -126,6 +126,49 @@ export function parsePhonemeList(raw, dim) {
   return decodePhonemeField(s, dim);
 }
 
+const VOWELS = 'aeiou';
+
+/**
+ * Jyutping → (initials, finals) token lists.
+ * Aligns with app/utils/jyutping_codec.split_jyutping_parts (y- 韻核).
+ * Used when DB / synthetic rows have jyutping but empty initials/finals.
+ */
+export function splitJyutpingParts(jyutping) {
+  if (!jyutping?.trim()) return [[], []];
+  const initials = [];
+  const finals = [];
+  for (const syllableText of jyutping.trim().split(/\s+/)) {
+    let syllable = syllableText;
+    for (let i = syllableText.length - 1; i >= 0; i--) {
+      if (syllableText[i] >= '0' && syllableText[i] <= '9') {
+        syllable = syllableText.slice(0, i);
+        break;
+      }
+    }
+    if (syllable === 'm' || syllable === 'ng') {
+      initials.push(syllable);
+      finals.push('');
+      continue;
+    }
+    let splitPos = -1;
+    for (let i = 0; i < syllable.length; i++) {
+      if (VOWELS.includes(syllable[i])) {
+        splitPos = i;
+        break;
+      }
+    }
+    let initial = splitPos !== -1 ? syllable.slice(0, splitPos) : syllable;
+    let final = splitPos !== -1 ? syllable.slice(splitPos) : '';
+    if (splitPos >= 2 && syllable[splitPos - 1] === 'y' && final) {
+      initial = syllable.slice(0, splitPos - 1);
+      final = `y${final}`;
+    }
+    initials.push(initial);
+    finals.push(final);
+  }
+  return [initials, finals];
+}
+
 export function decodeSourceFlags(flags) {
   const n = Number(flags) || 0;
   if (!n) return [];
@@ -159,12 +202,18 @@ export function sortReadingRows(rows, signals = {}) {
 export function buildEntryReading(row) {
   const jyutping = String(row.jyutping ?? '');
   const code0243 = String(row.code ?? '');
+  let initials = parsePhonemeList(row.initials, 'initial');
+  let finals = parsePhonemeList(row.finals, 'final');
+  // 生成／合成詞條常只有粵拼、無 storage phoneme → 即場由 jyutping 拆
+  if (jyutping && !initials.some(Boolean) && !finals.some(Boolean)) {
+    [initials, finals] = splitJyutpingParts(jyutping);
+  }
   return {
     jyutping,
     code0243,
     code02493: code0243FromJyutping(jyutping) || code0243,
-    initials: parsePhonemeList(row.initials, 'initial'),
-    finals: parsePhonemeList(row.finals, 'final'),
+    initials,
+    finals,
   };
 }
 
@@ -262,6 +311,14 @@ export function entryDetailCoreSelfCheck() {
   }
   if (code0243FromJyutping('hoeng1 gong2') !== '39') {
     throw new Error('code0243FromJyutping');
+  }
+  const fromJyut = buildEntryReading({ jyutping: 'hoeng1 gong2', code: '39' });
+  if (fromJyut.initials.join(' ') !== 'h g' || fromJyut.finals.join(' ') !== 'oeng ong') {
+    throw new Error('buildEntryReading jyutping fallback phonemes');
+  }
+  const zyu = buildEntryReading({ jyutping: 'zyu6', code: '2' });
+  if (zyu.initials[0] !== 'z' || zyu.finals[0] !== 'yu') {
+    throw new Error('buildEntryReading y-nucleus');
   }
   const anchor = pickReadingsToQueryRows('就', [{ jyutping: 'zau6', code: '42' }]);
   const pickMerged = mergePickLookupResults('就', anchor, [

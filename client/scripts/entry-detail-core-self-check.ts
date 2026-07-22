@@ -58,4 +58,13 @@ if (instant?.readings[0]?.code0243 !== '39') {
   throw new Error('buildEntryDetailModelFromPick');
 }
 
+// Synthetic lookup: jyutping only → derive initials/finals
+const synthetic = buildEntryDetailModelFromPick('生成', [{ jyutping: 'sang1 sing4', code: '30' }]);
+if (synthetic?.readings[0]?.initials.join(' ') !== 's s') {
+  throw new Error(`synthetic initials ${synthetic?.readings[0]?.initials}`);
+}
+if (synthetic?.readings[0]?.finals.join(' ') !== 'ang ing') {
+  throw new Error(`synthetic finals ${synthetic?.readings[0]?.finals}`);
+}
+
 console.log('entry-detail-core self-check ok');
