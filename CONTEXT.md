@@ -814,11 +814,12 @@ _Avoid_：固定 N 日 snooze、永久關閉更新檢查（作預設）、略過
 
 **Canto-0243 License**：整包 CC BY-NC-SA 4.0 + 附加；署名見 THIRD_PARTY_NOTICES。
 
-**靜態客戶端束**：PWA 核心產物；client/ Vite 打包至 dist/；含瀏覽器查詢引擎 + sql.js + db；部署 GitHub Pages。
+**靜態客戶端束**：PWA 核心產物；client/ Vite 打包至 dist/；含**瀏覽器查詢引擎**、sql.js／OPFS 開庫物料、**詞庫**（plain 與可選 gzip）、閘前／近反義用靜態 index（ranking／static-syn 等）。部署 GitHub Pages。產物體積**遠大於** **Desktop 套件**內 strip 後 UI（Desktop 查詢走本機服務＋根側車庫，唔塞 browser 庫／static-syn）。**唔**為對齊 Desktop 體積而刪 PWA 庫或靜態 index（會傷就緒閘／查詢路徑）。
+_Avoid_：以為 dist MB ≈ Desktop zip MB、為瘦產物刪 static-syn／只留單庫檔而無相容策略
 
 **瀏覽器查詢引擎**：TS 對口 py 引擎；0243 解析/比對/排序/近反義；直操 lyrics.db 給同等體驗。
 
-**PWA 交付頻道**：靜態束 + SW（Cache First 離線）+ manifest；支援「加到主畫面」；GitHub Pages 主站。
+**PWA 交付頻道**：靜態束 + SW（Cache First 離線）+ manifest；支援「加到主畫面」；GitHub Pages 主站。首訪 wire 以 **詞庫壓縮傳輸**（prefer gzip）與按需／tail index 為主，**唔**等於一次下載成個 dist 碟上總和。
 
 **詞庫預取**：
 Service Worker 於 `install`／`activate` 以低優先級預拉當前版本詞庫包入 CacheFirst；不阻塞**就緒閘**，僅令後續開頁有機會走**詞庫暖啟動**。**省流量**或疑似 metered 網路時跳過自動預取。預取 URL 與**詞庫壓縮傳輸**一致（優先壓縮檔）。
