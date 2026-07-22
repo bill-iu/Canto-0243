@@ -74,6 +74,10 @@ def _portable() -> dict[int, dict]:
 
 def _pwa() -> dict[int, dict]:
     esbuild = REPO_ROOT / "client" / "node_modules" / "esbuild" / "bin" / "esbuild"
+    if not esbuild.is_file():
+        raise RuntimeError(
+            "client/node_modules/esbuild missing (run: cd client && npm ci)"
+        )
     bundle_dir = REPO_ROOT / "client" / ".tmp"
     bundle_dir.mkdir(parents=True, exist_ok=True)
     bundle = bundle_dir / "workbench-candidate-parity.mjs"

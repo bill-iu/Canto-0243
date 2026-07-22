@@ -465,6 +465,7 @@ class V110RcManifestTest(unittest.TestCase):
             self.assertEqual(payload["pos"]["voice"], "passive")
 
 
+@unittest.skip("v1.1.0 local RC retired — use scripts/release-windows-local.ps1 + pages.yml")
 class V110RcPowerShellSeamTest(unittest.TestCase):
     def test_plan_is_fixed_and_publish_contains_no_build_steps(self) -> None:
         result = subprocess.run(
