@@ -180,6 +180,11 @@ export function ChromeTabsBar({
     };
   }, [tabs, activeId]);
 
+  useEffect(() => {
+    const active = rootRef.current?.querySelector<HTMLElement>('.chrome-tab[active]');
+    active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, [activeId, tabs.length]);
+
   return (
     <div className="app-header__tabdeck" aria-label={lang === 'en' ? 'Query tabs' : '查詢分頁'}>
       <div className="tabdeck-strip" aria-label={lang === 'en' ? 'Chrome tabs strip' : '查詢分頁列（Chrome Tabs）'}>

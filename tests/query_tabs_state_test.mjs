@@ -9,6 +9,7 @@ import {
   findTabByView,
   openSingletonView,
   createSearchTab,
+  createWorkbenchTab,
   createGuideTab,
   createRelationTab,
   buildUrlSearchParams,
@@ -36,6 +37,10 @@ describe("query-tabs-state", () => {
     assert.equal(tabLabel({ view: VIEW.SEARCH, q: long }), `${"x".repeat(TAB_LABEL_MAX)}…`);
   });
 
+  it("labels workbench with fixed English copy", () => {
+    assert.equal(tabLabel({ view: VIEW.WORKBENCH }, "en"), "VerseCraft Workbench");
+  });
+
   it("labels guide, relation, and corrections tabs with fixed copy", () => {
     assert.equal(tabLabel({ view: VIEW.GUIDE }), "搜尋教學");
     assert.equal(tabLabel({ view: VIEW.RELATION }), "補關係");
@@ -54,6 +59,18 @@ describe("query-tabs-state", () => {
     assert.equal(first.activeId, first.tabs[1].id);
 
     const second = openSingletonView(first, VIEW.GUIDE, createGuideTab);
+    assert.equal(second.tabs.length, 2);
+    assert.equal(second.activeId, first.tabs[1].id);
+  });
+
+  it("openSingletonView keeps a single workbench tab", () => {
+    const state = {
+      activeId: 1,
+      nextTabId: 2,
+      tabs: [createSearchTab({ id: 1, q: "x" })],
+    };
+    const first = openSingletonView(state, VIEW.WORKBENCH, createWorkbenchTab);
+    const second = openSingletonView(first, VIEW.WORKBENCH, createWorkbenchTab);
     assert.equal(second.tabs.length, 2);
     assert.equal(second.activeId, first.tabs[1].id);
   });
@@ -84,6 +101,9 @@ describe("query-tabs-state", () => {
     const relation = buildUrlSearchParams({ view: VIEW.RELATION }, "m1");
     assert.equal(relation.get("view"), "relation");
     assert.equal(relation.get("q"), null);
+
+    const workbench = buildUrlSearchParams(createWorkbenchTab({ id: 2 }), "m1");
+    assert.equal(workbench.get("view"), "workbench");
   });
 
   it("parseUrlSearchParams normalizes view and mode", () => {
@@ -97,6 +117,11 @@ describe("query-tabs-state", () => {
   it("parseUrlSearchParams exposes corrections view", () => {
     const parsed = parseUrlSearchParams(new URLSearchParams("view=corrections"));
     assert.equal(parsed.view, VIEW.CORRECTIONS);
+  });
+
+  it("parseUrlSearchParams exposes workbench view", () => {
+    const parsed = parseUrlSearchParams(new URLSearchParams("view=workbench"));
+    assert.equal(parsed.view, VIEW.WORKBENCH);
   });
 
   it("round-trips pingze URL state and defaults its missing sub-mode to m1", () => {

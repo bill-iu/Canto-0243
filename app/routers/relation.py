@@ -10,6 +10,7 @@ from app.services.manual_relation_service import (
     create_creator_manual_relation,
     revoke_creator_manual_relation,
 )
+from app.services.workbench.candidate_snapshot import candidate_snapshot_store
 
 router = APIRouter(prefix="/relations", tags=["relations"])
 
@@ -60,6 +61,8 @@ def create_manual_relation(
         status = _ERROR_STATUS.get(exc.code, 400)
         raise HTTPException(status_code=status, detail=exc.message) from exc
 
+    candidate_snapshot_store.invalidate_all()
+
     return ManualRelationResult(
         direct=result["direct"],
         expand=result["expand"],
@@ -83,6 +86,8 @@ def revoke_manual_relation(
     except ManualRelationError as exc:
         status = _ERROR_STATUS.get(exc.code, 400)
         raise HTTPException(status_code=status, detail=exc.message) from exc
+
+    candidate_snapshot_store.invalidate_all()
 
     return ManualRelationResult(
         direct=result["direct"],

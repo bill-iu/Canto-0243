@@ -9,6 +9,7 @@ export {
   candidateSessionView,
   emptyCandidateSession,
   requestLoadMore,
+  rebindSelectionVersion,
   resetWithPlan,
   runCandidateFetch,
   samePlanIdentity,

@@ -15,7 +15,12 @@ from app.services.position_match.filters.f3_letters import slot_constraint_match
 from app.services.position_match.filters.f4_equals import query_words_by_equals_spec
 from app.services.position_match.mask_adapter import required_codes_from_spec
 from app.services.position_match.spec import MatchSpec, get_equals_span
-from app.services.word_serializer import get_word_jyutping
+from app.services.word_serializer import (
+    get_rhyme_finals,
+    get_word_jyutping,
+    get_word_sort_code,
+    get_word_text,
+)
 from app.utils.word_cache import narrow_candidates_by_phoneme_anchor
 
 def filter_candidates_by_match_spec(
@@ -24,6 +29,19 @@ def filter_candidates_by_match_spec(
     mode: str,
     db,
 ) -> list:
+    if (
+        spec.extra.get("workbench_full_bucket_scan")
+        and not spec.slots
+        and spec.mask
+        and set(spec.mask) <= {"?", "_", "%"}
+    ):
+        return [
+            word
+            for word in candidates
+            if len(get_word_text(word)) == spec.width
+            and bool(get_word_sort_code(word))
+            and bool(get_word_jyutping(word) or get_rhyme_finals(word))
+        ]
     if spec.extra.get("partial_rhyme_mask"):
         slot_options = _partial_mask_slot_options(spec, db, dimension="final")
         candidates = [

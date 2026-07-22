@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { tabLabel, type QueryTab } from '@shared/query-tabs';
 import { usePillTabDrag } from './use-pill-tab-drag';
 
@@ -26,6 +26,11 @@ export function QueryTabsBar({
   const canClose = tabs.length > 1;
   const barRef = useRef<HTMLDivElement>(null);
   const tabIds = tabs.map((t) => t.id);
+
+  useEffect(() => {
+    const active = barRef.current?.querySelector<HTMLElement>(`[data-tab-id="${activeId}"]`);
+    active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }, [activeId, tabs.length]);
 
   const {
     draggingId,

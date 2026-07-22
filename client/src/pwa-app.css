@@ -550,8 +550,7 @@ button.icon-button.header-search__shuffle:disabled {
 
   .query-tabs-bar {
     gap: 4px;
-    padding: 8px 0 6px;
-    margin-top: 2px;
+    padding: 0 0 6px;
   }
   .query-tab-pill__label {
     font-size: 11px;
@@ -639,7 +638,7 @@ button.icon-button.header-search__shuffle:disabled {
   gap: 8px;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 10px 0 12px;
+  padding: 0 0 12px;
   overflow-x: auto;
   scrollbar-width: thin;
 }

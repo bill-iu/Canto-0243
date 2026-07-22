@@ -44,4 +44,48 @@ try {
   if (!(error instanceof WorkbenchAdapterError) || error.kind !== 'not_ready') throw error;
 }
 
+const snapshotHeaders: Array<string | null> = [];
+const portable = createPortableWorkbenchAdapter(async (_input, init) => {
+  snapshotHeaders.push(new Headers(init?.headers).get('X-Workbench-Snapshot'));
+  const body = JSON.parse(String(init?.body)) as ReplacementPlanV1;
+  return new Response(JSON.stringify({
+    version: 1,
+    selectionVersion: body.selectionVersion,
+    exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+    total: 0,
+    engineTotal: 0,
+    relaxation: null,
+  }), { headers: { 'X-Workbench-Snapshot': `snapshot-${snapshotHeaders.length}` } });
+});
+await portable.findCandidates(plan);
+await portable.findCandidates({ ...plan, selectionVersion: 2, offset: 10 });
+await portable.findCandidates({ ...plan, width: 2, slots: [] });
+if (snapshotHeaders.join('|') !== '|snapshot-1|snapshot-2') {
+  throw new Error(`opaque snapshot continuity failed: ${snapshotHeaders.join('|')}`);
+}
+
+let releaseBuild!: () => void;
+const buildGate = new Promise<void>((resolve) => { releaseBuild = resolve; });
+let buildCalls = 0;
+const coalesced = createPortableWorkbenchAdapter(async (_input, init) => {
+  buildCalls += 1;
+  await buildGate;
+  const body = JSON.parse(String(init?.body)) as ReplacementPlanV1;
+  return new Response(JSON.stringify({
+    version: 1,
+    selectionVersion: body.selectionVersion,
+    exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+    total: 0,
+    engineTotal: 0,
+    relaxation: null,
+  }), { headers: { 'X-Workbench-Snapshot': 'coalesced' } });
+});
+const buildOne = coalesced.findCandidates(plan);
+const buildTwo = coalesced.findCandidates({ ...plan, selectionVersion: 2 });
+releaseBuild();
+const [one, two] = await Promise.all([buildOne, buildTwo]);
+if (buildCalls !== 1 || one.selectionVersion !== 1 || two.selectionVersion !== 2) {
+  throw new Error(`same-identity build did not coalesce: calls=${buildCalls}`);
+}
+
 console.log('workbench adapter self-check ok');

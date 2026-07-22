@@ -2,8 +2,8 @@
  * executeMatchSpec — port of position_match/engine.py (MF-4)
  */
 import type { Database } from '../sqljs.ts';
-import { sortWordRows, literalPriorityCompare } from '../ranking.ts';
-import { throwIfSearchCancelled, type ShouldCancel } from '../search-cancel.ts';
+import { compareSearchResults, literalPriorityCompare, searchResultSortKey } from '../ranking.ts';
+import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
 import { getPhonemeAnchorCandidates } from './phoneme-index.ts';
@@ -16,6 +16,133 @@ import { getWordCode, type WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
 const PHONEME_ANCHOR_KINDS = new Set(['final_anchor', 'initial_anchor']);
+
+async function cooperativeSort(
+  rows: WordRow[],
+  compare: (a: WordRow, b: WordRow) => number,
+  shouldCancel?: ShouldCancel,
+  cooperative = false,
+): Promise<WordRow[]> {
+  if (!cooperative) return [...rows].sort(compare);
+  const chunkSize = 2048;
+  let chunks: WordRow[][] = [];
+  for (let start = 0; start < rows.length; start += chunkSize) {
+    chunks.push(rows.slice(start, start + chunkSize).sort(compare));
+    throwIfSearchCancelled(shouldCancel);
+    await yieldToMainThread();
+  }
+  while (chunks.length > 1) {
+    const merged: WordRow[][] = [];
+    for (let index = 0; index < chunks.length; index += 2) {
+      const left = chunks[index]!;
+      const right = chunks[index + 1];
+      if (!right) {
+        merged.push(left);
+        continue;
+      }
+      const next: WordRow[] = [];
+      let l = 0;
+      let r = 0;
+      let mergedRows = 0;
+      while (l < left.length && r < right.length) {
+        next.push(compare(left[l]!, right[r]!) <= 0 ? left[l++]! : right[r++]!);
+        mergedRows += 1;
+        if (mergedRows % 4096 === 0) {
+          throwIfSearchCancelled(shouldCancel);
+          await yieldToMainThread();
+        }
+      }
+      while (l < left.length) {
+        next.push(left[l++]!);
+        mergedRows += 1;
+        if (mergedRows % 4096 === 0) {
+          throwIfSearchCancelled(shouldCancel);
+          await yieldToMainThread();
+        }
+      }
+      while (r < right.length) {
+        next.push(right[r++]!);
+        mergedRows += 1;
+        if (mergedRows % 4096 === 0) {
+          throwIfSearchCancelled(shouldCancel);
+          await yieldToMainThread();
+        }
+      }
+      merged.push(next);
+      throwIfSearchCancelled(shouldCancel);
+      await yieldToMainThread();
+    }
+    chunks = merged;
+  }
+  return chunks[0] ?? [];
+}
+
+type RankKey = ReturnType<typeof searchResultSortKey>;
+
+function compareRankKeys(a: RankKey, b: RankKey): number {
+  for (let index = 0; index < a.length; index += 1) {
+    if (a[index]! < b[index]!) return -1;
+    if (a[index]! > b[index]!) return 1;
+  }
+  return 0;
+}
+
+/** Workbench hot path: calculate expensive rank signals once per row, not per comparison. */
+async function cooperativeRankSort(
+  rows: WordRow[],
+  shouldCancel?: ShouldCancel,
+): Promise<WordRow[]> {
+  type Ranked = { row: WordRow; key: RankKey };
+  if (typeof window === 'undefined') {
+    throwIfSearchCancelled(shouldCancel);
+    return rows
+      .map((row) => ({ row, key: searchResultSortKey(row) }))
+      .sort((a, b) => compareRankKeys(a.key, b.key))
+      .map((item) => item.row);
+  }
+  const chunkSize = 2048;
+  let chunks: Ranked[][] = [];
+  for (let start = 0; start < rows.length; start += chunkSize) {
+    const chunk = rows.slice(start, start + chunkSize)
+      .map((row) => ({ row, key: searchResultSortKey(row) }))
+      .sort((a, b) => compareRankKeys(a.key, b.key));
+    chunks.push(chunk);
+    throwIfSearchCancelled(shouldCancel);
+    await yieldToMainThread();
+  }
+  while (chunks.length > 1) {
+    const merged: Ranked[][] = [];
+    for (let index = 0; index < chunks.length; index += 2) {
+      const left = chunks[index]!;
+      const right = chunks[index + 1];
+      if (!right) {
+        merged.push(left);
+        continue;
+      }
+      const next: Ranked[] = [];
+      let l = 0;
+      let r = 0;
+      let mergedRows = 0;
+      while (l < left.length || r < right.length) {
+        if (r >= right.length || (
+          l < left.length && compareRankKeys(left[l]!.key, right[r]!.key) <= 0
+        )) {
+          next.push(left[l++]!);
+        } else {
+          next.push(right[r++]!);
+        }
+        mergedRows += 1;
+        if (mergedRows % 4096 === 0) {
+          throwIfSearchCancelled(shouldCancel);
+          await yieldToMainThread();
+        }
+      }
+      merged.push(next);
+    }
+    chunks = merged;
+  }
+  return (chunks[0] ?? []).map((item) => item.row);
+}
 
 function firstPhonemeAnchorSlot(spec: MatchSpec): SlotConstraint | null {
   for (const slot of spec.slots ?? []) {
@@ -167,6 +294,12 @@ export async function filterMatchSpecRows(
         : buildRequiredCodes(spec)
             .map((digit, pos) => (digit != null ? { pos, digit } : null))
             .filter((x): x is { pos: number; digit: string } => x != null);
+      const minimal = Boolean(
+        spec.extra?.workbench_full_bucket_scan
+        && !(spec.slots ?? []).length
+        && spec.mask
+        && [...spec.mask].every((char) => char === '?' || char === '_' || char === '%'),
+      );
       [candidates] = await getCandidatesForLength(ctx.db, spec.width, {
         code,
         mode: ctx.mode,
@@ -176,6 +309,7 @@ export async function filterMatchSpecRows(
           || Boolean(code)
           || Boolean(codePositions?.length),
         codePositions,
+        minimal,
       });
     }
   }
@@ -195,6 +329,7 @@ export async function executeMatchSpecPage(
   if (!spec || spec.width === 0) {
     return { rows: [], total: 0 };
   }
+  const shouldYield = Boolean(spec.extra?.workbench_full_bucket_scan);
   if (spec.extra?.dual_phoneme) {
     // Dual path materializes a truncated union; count that union after paging window math.
     const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
@@ -207,9 +342,19 @@ export async function executeMatchSpecPage(
     const initialSpec = spec.extra?.dual_initial_spec as MatchSpec;
     const finalSpec = spec.extra?.dual_final_spec as MatchSpec;
     if (!initialSpec || !finalSpec) return { rows: [], total: 0 };
-    const initialRows = sortWordRows(await filterMatchSpecRows(initialSpec, base)).slice(0, unpagedLimit);
+    const initialRows = (await cooperativeSort(
+      await filterMatchSpecRows(initialSpec, base),
+      compareSearchResults,
+      ctx.shouldCancel,
+      shouldYield,
+    )).slice(0, unpagedLimit);
     throwIfSearchCancelled(ctx.shouldCancel);
-    const finalRows = sortWordRows(await filterMatchSpecRows(finalSpec, base)).slice(0, unpagedLimit);
+    const finalRows = (await cooperativeSort(
+      await filterMatchSpecRows(finalSpec, base),
+      compareSearchResults,
+      ctx.shouldCancel,
+      shouldYield,
+    )).slice(0, unpagedLimit);
     const tagged: WordRow[] = [
       ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
       ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
@@ -225,9 +370,16 @@ export async function executeMatchSpecPage(
   const literalPositions = spec.extra?.literal_positions;
   if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
     const positions = literalPositions as Array<[number, string]>;
-    sorted = [...filtered].sort((a, b) => literalPriorityCompare(a, b, positions));
+    sorted = await cooperativeSort(
+      filtered,
+      (a, b) => literalPriorityCompare(a, b, positions),
+      ctx.shouldCancel,
+      shouldYield,
+    );
   } else {
-    sorted = sortWordRows(filtered);
+    sorted = shouldYield
+      ? await cooperativeRankSort(filtered, ctx.shouldCancel)
+      : [...filtered].sort(compareSearchResults);
   }
   return {
     rows: sorted.slice(ctx.offset, ctx.offset + ctx.limit),

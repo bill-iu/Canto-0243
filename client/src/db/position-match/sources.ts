@@ -42,6 +42,8 @@ export type GetCandidatesOptions = {
   unlimited?: boolean;
   /** Sparse per-position code digits (e.g. ?30+人) — SQL substr filter when full code absent */
   codePositions?: Array<{ pos: number; digit: string }>;
+  /** Workbench unrestricted scan only needs compact candidate handle columns. */
+  minimal?: boolean;
 };
 
 /**
@@ -62,8 +64,11 @@ export async function getCandidatesForLength(
   const unlimited = lengthBucketNeedsUnlimited(options);
   const code = options.code ?? null;
 
+  const columns = options.minimal
+    ? 'char, jyutping, code, length'
+    : 'char, jyutping, code, initials, finals, length';
   let sql = `
-    SELECT char, jyutping, code, initials, finals, length
+    SELECT ${columns}
     FROM words
     WHERE (
       length = ?
@@ -89,7 +94,7 @@ export async function getCandidatesForLength(
     }
   }
 
-  sql += ' ORDER BY char, jyutping';
+  if (!options.minimal) sql += ' ORDER BY char, jyutping';
   if (!unlimited) {
     sql += ' LIMIT ?';
     params.push(limit);

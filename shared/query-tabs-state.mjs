@@ -3,6 +3,7 @@ export const TAB_LABEL_MAX = 18;
 
 export const VIEW = Object.freeze({
   SEARCH: "search",
+  WORKBENCH: "workbench",
   GUIDE: "guide",
   RELATION: "relation",
   CORRECTIONS: "corrections",
@@ -10,6 +11,7 @@ export const VIEW = Object.freeze({
 });
 
 export function tabLabel(tab, lang = "zh") {
+  if (tab.view === VIEW.WORKBENCH) return lang === "en" ? "VerseCraft Workbench" : "句格工作台";
   if (tab.view === VIEW.GUIDE) return lang === "en" ? "Search Guide" : "搜尋教學";
   if (tab.view === VIEW.ABOUT) return lang === "en" ? "About Canto-0243" : "關於 Canto-0243";
   if (tab.view === VIEW.RELATION) return lang === "en" ? "Add relations" : "補關係";
@@ -49,6 +51,17 @@ export function createSearchTab({
     } : { pos: [], family: [], voice: [] },
     historyStack: stack,
     historyIndex: index,
+  };
+}
+
+export function createWorkbenchTab({ id } = {}) {
+  return {
+    id,
+    view: VIEW.WORKBENCH,
+    q: "",
+    results: [],
+    offset: 0,
+    total: null,
   };
 }
 
@@ -120,6 +133,10 @@ export function buildUrlSearchParams(tab, mode = "m1", pzmode = "m1") {
   const params = new URLSearchParams();
   if (mode && mode !== "m1") params.set("mode", mode);
   if (mode === "pz") params.set("pzmode", ["m1", "m2", "m3"].includes(pzmode) ? pzmode : "m1");
+  if (tab.view === VIEW.WORKBENCH) {
+    params.set("view", "workbench");
+    return params;
+  }
   if (tab.view === VIEW.GUIDE) {
     params.set("view", "guide");
     return params;
@@ -144,6 +161,7 @@ export function parseUrlSearchParams(params) {
   const rawView = params.get("view");
   let view = VIEW.SEARCH;
   if (rawView === "guide") view = VIEW.GUIDE;
+  else if (rawView === "workbench") view = VIEW.WORKBENCH;
   else if (rawView === "relation") view = VIEW.RELATION;
   else if (rawView === "corrections") view = VIEW.CORRECTIONS;
   else if (rawView === "about") view = VIEW.ABOUT;
@@ -194,6 +212,7 @@ export function deserializeSession(raw) {
     nextTabId: data.nextTabId || Math.max(...data.tabs.map((t) => t.id)) + 1,
     tabs: data.tabs.map((t) => {
       if (t.view === VIEW.GUIDE) return createGuideTab({ id: t.id });
+      if (t.view === VIEW.WORKBENCH) return createWorkbenchTab({ id: t.id });
       if (t.view === VIEW.RELATION) {
         return createRelationTab({ id: t.id, relation: t.relation });
       }
@@ -253,6 +272,10 @@ export function applyUrlToTabs(existingState, parsed) {
   }
   if (parsed.view === VIEW.GUIDE) {
     const tab = createGuideTab({ id: 1 });
+    return { activeId: 1, nextTabId: 2, tabs: [tab] };
+  }
+  if (parsed.view === VIEW.WORKBENCH) {
+    const tab = createWorkbenchTab({ id: 1 });
     return { activeId: 1, nextTabId: 2, tabs: [tab] };
   }
   if (parsed.view === VIEW.RELATION) {

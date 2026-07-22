@@ -76,7 +76,6 @@ import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { HeaderHero } from './header-hero.tsx';
 import { workbenchPageHref } from './app-page.ts';
-import { navigateAppRoute } from './app-navigation.ts';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
@@ -93,6 +92,7 @@ import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { exitPortable } from './portable-exit';
 import { PosFilterControl } from './pos/PosFilterControl.tsx';
+import { WorkbenchPage } from './workbench/WorkbenchPage.tsx';
 import {
   filterByProjectPos,
   isPosFilterActive,
@@ -135,6 +135,8 @@ function App() {
     reorderTabsByIdList,
     openGuide,
     openAbout,
+    openWorkbench,
+    openSearchTabForLiteral,
     openRelation,
     openCorrections,
     patchActiveRelation,
@@ -157,7 +159,9 @@ function App() {
 
   const activeSearchTab = activeTab?.view === VIEW.SEARCH ? activeTab : null;
   const view =
-    activeTab?.view === VIEW.GUIDE
+    activeTab?.view === VIEW.WORKBENCH
+      ? 'workbench'
+      : activeTab?.view === VIEW.GUIDE
       ? 'guide'
       : activeTab?.view === VIEW.ABOUT
         ? 'about'
@@ -200,9 +204,15 @@ function App() {
   const [searchRingClass, setSearchRingClass] = useState('');
   const searchRingBlurTimerRef = useRef<number | null>(null);
   const detailLoadGenRef = useRef(0);
+  const detailByTabRef = useRef(new Map<number, {
+    open: boolean;
+    literal: string | null;
+    jyutping: string | null;
+  }>());
   const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
   const pickAnchorRef = useRef<string | null>(null);
   const pickAnchorRowsRef = useRef<QueryResult[]>([]);
+  const scrollTopByTabRef = useRef(new Map<number, number>());
 
   useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
@@ -364,7 +374,7 @@ function App() {
     error: searchError,
     hasMore,
     loadMore,
-  } = useSearch(useLiveFetch ? searchQuery : '', mode, {
+  } = useSearch(useLiveFetch && view === 'search' ? searchQuery : '', mode, {
     fallback_0243_mode: last0243Mode,
     pzmode: pzMode,
     ui_lang: uiLang,
@@ -531,6 +541,31 @@ function App() {
     setDetailRelationsLoading(false);
     setPreferredJyutping(null);
   }, []);
+
+  const saveActiveDetail = useCallback(() => {
+    if (activeTab?.view !== VIEW.SEARCH) return;
+    detailByTabRef.current.set(activeTab.id, {
+      open: detailOpen,
+      literal: activeDetailLiteral,
+      jyutping: preferredJyutping,
+    });
+  }, [activeTab, detailOpen, activeDetailLiteral, preferredJyutping]);
+
+  useEffect(() => {
+    if (activeTab?.view !== VIEW.SEARCH) {
+      closeEntryDetail();
+      return;
+    }
+    const saved = detailByTabRef.current.get(activeTab.id);
+    if (!saved?.open || !saved.literal) {
+      closeEntryDetail();
+      return;
+    }
+    setDetailOpen(true);
+    setActiveDetailLiteral(saved.literal);
+    setPreferredJyutping(saved.jyutping);
+    setDetailModel(null);
+  }, [activeTab?.id, activeTab?.view, closeEntryDetail]);
 
   const waitForPickMerge = useCallback(async (gen: number) => {
     while (pickAnchorRef.current && gen === detailLoadGenRef.current) {
@@ -749,11 +784,11 @@ function App() {
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
     try {
       writeIngest(sessionStorage, { literal, mode: ingestMode });
-      navigateAppRoute('workbench');
+      openWorkbench();
     } catch (error) {
       window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
     }
-  }, []);
+  }, [openWorkbench]);
 
   const handlePutInWorkbench = useCallback((literal: string) => {
     const text = literal.trim();
@@ -830,11 +865,14 @@ function App() {
 
   const handleSelectTab = (id: number) => {
     saveLeavingSearchTab();
+    saveActiveDetail();
     selectTab(id);
   };
 
   const handleCloseTab = (id: number) => {
     saveLeavingSearchTab();
+    saveActiveDetail();
+    detailByTabRef.current.delete(id);
     closeTab(id);
   };
 
@@ -901,6 +939,20 @@ function App() {
   const anchorLayout = !synLayout && hasAnchorResultLayout(filteredDisplayResults);
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
   const infiniteScrollRoot = scrollRootEl;
+
+  useEffect(() => {
+    const root = scrollRootEl;
+    const tabId = activeSearchTab?.id;
+    if (!root || tabId == null) return;
+    const saved = scrollTopByTabRef.current.get(tabId) ?? 0;
+    requestAnimationFrame(() => { root.scrollTop = saved; });
+    const save = () => { scrollTopByTabRef.current.set(tabId, root.scrollTop); };
+    root.addEventListener('scroll', save, { passive: true });
+    return () => {
+      save();
+      root.removeEventListener('scroll', save);
+    };
+  }, [scrollRootEl, activeSearchTab?.id]);
 
   const resultItemCount = useMemo(() => {
     if (!filteredDisplayResults.length) return 0;
@@ -1037,13 +1089,23 @@ function App() {
         theme={uiTheme}
       />
       <div
-        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${shouldShowInstallBanner ? ' has-install-banner' : ''}${shouldShowPortableUpdate ? ' has-portable-update-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
+        className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${view === 'workbench' ? ' app-shell--workbench' : ''}${shouldShowInstallBanner ? ' has-install-banner' : ''}${shouldShowPortableUpdate ? ' has-portable-update-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
           <h1 id="searchTitle" className="sr-only">
             {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}
           </h1>
-          <div className="app-bar">
+          <HostTabsBar
+            tabs={tabs}
+            activeId={tabState.activeId}
+            lang={uiLang}
+            onSelect={handleSelectTab}
+            onClose={handleCloseTab}
+            onAdd={handleAddTab}
+            onReorder={handleReorderTabs}
+            onReorderByIds={handleReorderTabsByIds}
+          />
+          <div className="app-bar" hidden={view === 'workbench'}>
             <div className="header-chrome">
               <div className="header-chrome__center">
                 <button
@@ -1061,7 +1123,7 @@ function App() {
                   href={workbenchPageHref()}
                   onClick={(e) => {
                     e.preventDefault();
-                    navigateAppRoute('workbench');
+                    openWorkbench();
                   }}
                 >
                   <span className="workbench-entry__icon" aria-hidden="true">
@@ -1072,7 +1134,7 @@ function App() {
                   </span>
                   <span className="workbench-entry__text">
                     <span className="workbench-entry__title">
-                      {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                      {uiLang === 'zh' ? '句格工作台' : 'VerseCraft Workbench'}
                     </span>
                     <span className="workbench-entry__sub">
                       {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
@@ -1085,7 +1147,7 @@ function App() {
                   onModeChange={handleModeChange}
                   onOpenGuide={handleOpenGuide}
                   onOpenAbout={handleOpenAbout}
-                  onOpenWorkbench={() => navigateAppRoute('workbench')}
+                  onOpenWorkbench={openWorkbench}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                   onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                   theme={uiTheme}
@@ -1191,20 +1253,31 @@ function App() {
               </div>
             </form>
           </div>
-          <HostTabsBar
-            tabs={tabs}
-            activeId={tabState.activeId}
-            lang={uiLang}
-            onSelect={handleSelectTab}
-            onClose={handleCloseTab}
-            onAdd={handleAddTab}
-            onReorder={handleReorderTabs}
-            onReorderByIds={handleReorderTabsByIds}
-          />
         </header>
 
         <main className="main-wrap">
-          {view === 'guide' ? (
+          <WorkbenchPage
+            embedded
+            active={view === 'workbench'}
+            hidden={view !== 'workbench'}
+            lang={uiLang}
+            theme={uiTheme}
+            onLangChange={setUiLang}
+            onThemeChange={setUiTheme}
+            onOpenSearchHome={handleBackToSearch}
+            onOpenSearchNavigation={(next) => {
+              if (next.kind === 'mode') {
+                handleBackToSearch();
+                handleModeChange(next.family);
+              } else if (next.kind === 'guide') {
+                handleOpenGuide();
+              } else {
+                handleOpenAbout();
+              }
+            }}
+            onOpenSearchLiteral={(literal) => openSearchTabForLiteral(literal, mode, pzMode)}
+          />
+          {view !== 'workbench' && (view === 'guide' ? (
             <GuideView lang={uiLang} onPick={handleRunExample} />
           ) : view === 'about' ? (
             <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
@@ -1291,7 +1364,7 @@ function App() {
               </div>
               </div>
             </section>
-          )}
+          ))}
         </main>
       </div>
 
@@ -1309,7 +1382,7 @@ function App() {
           onDismiss={() => void dismissPortableUpdate()}
         />
       ) : null}
-      {detailOpen && activeDetailLiteral
+      {view === 'search' && detailOpen && activeDetailLiteral
         ? createPortal(
             <EntryDetailPanel
               key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}

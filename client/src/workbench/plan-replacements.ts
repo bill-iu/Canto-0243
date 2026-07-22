@@ -7,11 +7,21 @@ import type { ReplacementPlanV1, WorkbenchCandidateResponse } from './contracts.
 import { groupCandidates, type GroupPoolInput } from './group-candidates.ts';
 import { shouldSkipCandidateQuery } from './limits.ts';
 import { relaxationVariants } from './relaxation-advisor.ts';
+import { throwIfSearchCancelled, type ShouldCancel } from '../db/search-cancel.ts';
 
-type PlannerDeps = {
+export type PlannerDeps = {
   executePage?: typeof executeMatchSpecPage;
-  projectRelations?: typeof projectRelationPool;
+  projectRelations?: (db: DatabaseBackend, seed: string) => Promise<GroupPoolInput>;
+  shouldCancel?: ShouldCancel;
 };
+
+type CandidateHandle = string;
+
+export type ReplacementSnapshot = Readonly<{
+  candidates: readonly CandidateHandle[];
+  pool: GroupPoolInput;
+  relaxation: WorkbenchCandidateResponse['relaxation'];
+}>;
 
 async function loadRelationRows(
   db: DatabaseBackend,
@@ -46,73 +56,113 @@ function prependDistinct(rows: WordRow[], priorityRows: WordRow[]): WordRow[] {
   });
 }
 
-/** Thin orchestrator (L4): execute → group → optional one relaxation probe. */
-export async function planReplacements(
+function compactDistinct(rows: WordRow[]): CandidateHandle[] {
+  const seen = new Set<string>();
+  const handles: CandidateHandle[] = [];
+  for (const row of rows) {
+    const literal = String(row.char ?? '');
+    if (!literal || seen.has(literal)) continue;
+    seen.add(literal);
+    handles.push(`${literal}\0${String(row.jyutping ?? '')}\0${String(row.code ?? '')}`);
+  }
+  return handles;
+}
+
+function materialize(handles: readonly CandidateHandle[]): WordRow[] {
+  return handles.map((handle) => {
+    const [char = '', jyutping = '', code = ''] = handle.split('\0', 3);
+    return { char, jyutping, code };
+  });
+}
+
+function snapshotHasCandidates(
+  plan: ReplacementPlanV1,
+  handles: readonly CandidateHandle[],
+  pool: GroupPoolInput,
+): boolean {
+  if (plan.semanticIntent !== 'direct_only') return handles.length > 0;
+  const direct = new Set((pool?.syns ?? []).map((item) => item.char));
+  return handles.some((handle) => direct.has(handle.slice(0, handle.indexOf('\0'))));
+}
+
+/** Build one immutable canonical pool; paging and draft version are projections. */
+export async function buildReplacementSnapshot(
   plan: ReplacementPlanV1,
   db: DatabaseBackend,
   deps: PlannerDeps = {},
-): Promise<WorkbenchCandidateResponse> {
-  // ADR-0069: structural empty when wider than observed lexicon max word length.
+): Promise<ReplacementSnapshot> {
   if (shouldSkipCandidateQuery(plan.width)) {
-    return {
-      version: 1,
-      selectionVersion: plan.selectionVersion,
-      exact: { direct_syn: [], semantic_related: [], sound_only: [] },
-      total: 0,
-      engineTotal: 0,
-      relaxation: null,
-    };
+    return { candidates: [], pool: null, relaxation: null };
   }
   const executePage = deps.executePage ?? executeMatchSpecPage;
   const project = deps.projectRelations ?? projectRelationPool;
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
     ? await project(db, plan.semanticSeed) : null;
-  const offset = plan.offset ?? 0;
-  const runRaw = (variant: ReplacementPlanV1) => {
+  const runFull = (variant: ReplacementPlanV1) => {
     const spec = buildMatchSpec(variant);
     spec.extra = { ...(spec.extra ?? {}), workbench_full_bucket_scan: true };
     return executePage(spec, {
       db,
       mode: variant.mode,
-      limit: variant.limit,
-      offset: variant.offset ?? 0,
+      limit: 1_000_000,
+      offset: 0,
       code: null,
+      shouldCancel: deps.shouldCancel,
     });
   };
   const priorityRows = pool && !plan.slots.length
     ? await loadRelationRows(db, plan.width, pool)
     : [];
-  const page = priorityRows.length
-    ? await runRaw({
-      ...plan,
-      limit: offset + plan.limit + priorityRows.length,
-      offset: 0,
-    })
-    : await runRaw(plan);
-  const canonicalRows = priorityRows.length
-    ? prependDistinct(page.rows, priorityRows).slice(offset, offset + plan.limit)
-    : page.rows;
-  const exact = groupCandidates(plan, canonicalRows, pool);
+  const raw = await runFull(plan);
+  throwIfSearchCancelled(deps.shouldCancel);
+  const candidates = compactDistinct(
+    priorityRows.length ? prependDistinct(raw.rows, priorityRows) : raw.rows,
+  );
   let relaxation = null;
-  if (offset === 0 && ![...exact.direct_syn, ...exact.semantic_related, ...exact.sound_only].length) {
+  if (!snapshotHasCandidates(plan, candidates, pool)) {
     for (const variant of relaxationVariants(plan)) {
-      const probed = await runRaw({ ...variant.plan, offset: 0, limit: variant.plan.limit });
+      throwIfSearchCancelled(deps.shouldCancel);
+      const probed = compactDistinct((await runFull(variant.plan)).rows);
       const count = variant.plan.semanticIntent === 'direct_only'
-        ? probed.rows.filter((row) => (pool?.syns ?? []).some((item) => item.char === String(row.char ?? ''))).length
-        : probed.total;
+        ? groupCandidates(variant.plan, materialize(probed), pool).direct_syn.length
+        : probed.length;
       if (count < 1) continue;
       relaxation = { ...variant, candidateCount: count };
       break;
     }
   }
+  return { candidates, pool, relaxation };
+}
+
+/** Materialize one transport page from a completed snapshot. */
+export function pageReplacementSnapshot(
+  plan: ReplacementPlanV1,
+  snapshot: ReplacementSnapshot,
+): WorkbenchCandidateResponse {
+  const offset = plan.offset ?? 0;
+  const rows = materialize(snapshot.candidates.slice(offset, offset + plan.limit));
+  const total = snapshot.candidates.length;
+  const relaxation = snapshot.relaxation == null ? null : {
+    ...snapshot.relaxation,
+    plan: { ...snapshot.relaxation.plan, selectionVersion: plan.selectionVersion },
+  };
   return {
     version: 1,
     selectionVersion: plan.selectionVersion,
-    exact,
-    total: page.total,
-    engineTotal: page.total,
-    relaxation,
+    exact: groupCandidates(plan, rows, snapshot.pool),
+    total,
+    engineTotal: total,
+    relaxation: offset === 0 ? relaxation : null,
   };
+}
+
+/** Stateless compatibility entry; adapters should retain buildReplacementSnapshot(). */
+export async function planReplacements(
+  plan: ReplacementPlanV1,
+  db: DatabaseBackend,
+  deps: PlannerDeps = {},
+): Promise<WorkbenchCandidateResponse> {
+  return pageReplacementSnapshot(plan, await buildReplacementSnapshot(plan, db, deps));
 }
 
 /** @deprecated use planReplacements */

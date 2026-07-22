@@ -6,6 +6,7 @@ import {
   type WorkbenchCandidateResponse,
 } from '../contracts.ts';
 import { shouldSkipCandidateQuery } from '../limits.ts';
+import { snapshotWasRestarted, type CandidatePageResponse } from '../candidate-page.ts';
 import {
   applyCreatorPosFilter,
   engineTotalOf,
@@ -74,7 +75,42 @@ export function setPosFilter(
   state: CandidateSessionState,
   posFilter: PosFilterState,
 ): CandidateSessionState {
-  return resetWithPlan(state, state.planBase, posFilter);
+  const projected = state.raw == null
+    ? 0
+    : groupCount(applyCreatorPosFilter(state.raw, posFilter).exact);
+  const needsMore = Boolean(
+    state.planBase
+    && (state.raw == null || (projected < state.pageSize && !poolExhausted(state))),
+  );
+  return {
+    ...state,
+    posFilter,
+    filteredTarget: state.pageSize,
+    loading: needsMore,
+    error: null,
+    generation: state.generation + 1,
+  };
+}
+
+/** Rebind already loaded rows to the current draft without changing query identity. */
+export function rebindSelectionVersion(
+  state: CandidateSessionState,
+  planBase: CandidatePlanBase,
+): CandidateSessionState {
+  const rebind = (response: WorkbenchCandidateResponse | null) => response == null ? null : {
+    ...response,
+    selectionVersion: planBase.selectionVersion,
+    relaxation: response.relaxation == null ? response.relaxation : {
+      ...response.relaxation,
+      plan: { ...response.relaxation.plan, selectionVersion: planBase.selectionVersion },
+    },
+  };
+  return {
+    ...state,
+    planBase,
+    raw: rebind(state.raw),
+    staleRaw: rebind(state.staleRaw),
+  };
 }
 
 export function requestLoadMore(state: CandidateSessionState): CandidateSessionState {
@@ -124,13 +160,16 @@ export function candidateSessionView(state: CandidateSessionState): CandidateSes
 
 function mergePage(
   state: CandidateSessionState,
-  page: WorkbenchCandidateResponse,
+  page: CandidatePageResponse,
 ): CandidateSessionState {
   const total = engineTotalOf(page);
   const pageRows = groupCount(page.exact);
-  const nextCursor = state.engineCursor + state.pageSize;
+  const restarted = snapshotWasRestarted(page);
+  const currentRaw = restarted ? null : state.raw;
+  const currentCursor = restarted ? 0 : state.engineCursor;
+  const nextCursor = currentCursor + state.pageSize;
   let raw: WorkbenchCandidateResponse;
-  if (!state.raw) {
+  if (!currentRaw) {
     raw = {
       ...page,
       exact: {
@@ -144,8 +183,8 @@ function mergePage(
   } else {
     raw = {
       ...page,
-      exact: mergeGroups(state.raw.exact, page.exact),
-      relaxation: state.raw.relaxation ?? page.relaxation,
+      exact: mergeGroups(currentRaw.exact, page.exact),
+      relaxation: currentRaw.relaxation ?? page.relaxation,
       total,
       engineTotal: total,
     };
@@ -256,8 +295,7 @@ export function samePlanIdentity(
   if (a === b) return true;
   if (!a || !b) return false;
   return (
-    a.selectionVersion === b.selectionVersion
-    && a.width === b.width
+    a.width === b.width
     && a.mode === b.mode
     && a.semanticIntent === b.semanticIntent
     && a.semanticSeed === b.semanticSeed

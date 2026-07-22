@@ -5,6 +5,26 @@
   font-family: inherit;
 }
 
+.workbench-page[hidden] {
+  display: none;
+}
+
+/* The search shell locks its result viewport; the full-page workbench must own document scroll. */
+.app-shell--workbench {
+  height: auto;
+  max-height: none;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
+.app-shell--workbench > .main-wrap {
+  display: block;
+  flex: none;
+  min-height: 0;
+  overflow: visible;
+  padding-bottom: 0;
+}
+
 /* Unlock document scroll — search shell locks body for 結果捲動區. */
 body.query-tabs-app.workbench-route {
   height: auto;
@@ -39,6 +59,10 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   border-bottom: 1px solid var(--line);
   /* solid：避免窄屏快速鎖格時 backdrop-filter 整屏重繪閃動 */
   background: var(--surface);
+}
+
+.workbench-header--embedded {
+  position: static;
 }
 
 /* Same brand | hero | menu row as search; no search form. */

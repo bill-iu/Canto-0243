@@ -4,6 +4,7 @@ declare module '@shared/query-tabs' {
   export const TAB_LABEL_MAX: number;
   export const VIEW: Readonly<{
     SEARCH: string;
+    WORKBENCH: string;
     GUIDE: string;
     RELATION: string;
     CORRECTIONS: string;
@@ -34,6 +35,7 @@ declare module '@shared/query-tabs' {
   export function tabLabel(tab: QueryTab, lang?: 'zh' | 'en'): string;
   export function findTabByView(tabs: QueryTab[], view: string): QueryTab | null;
   export function createSearchTab(opts?: Partial<QueryTab>): QueryTab;
+  export function createWorkbenchTab(opts?: { id?: number }): QueryTab;
   export function createGuideTab(opts?: { id?: number }): QueryTab;
   export function createAboutTab(opts?: { id?: number }): QueryTab;
   export function createRelationTab(opts?: {

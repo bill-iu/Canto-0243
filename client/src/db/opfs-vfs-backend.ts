@@ -2,6 +2,8 @@ import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './databa
 import { lexiconOpfsFileName } from './opfs-lexicon.ts';
 import { reportDownloadBytes } from './startup-progress.ts';
 import type { OpfsVfsWorkerRequest, OpfsVfsWorkerResponse } from './opfs-vfs-worker.ts';
+import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../workbench/contracts.ts';
+import type { GroupPoolInput } from '../workbench/group-candidates.ts';
 import {
   recordResumeDebug,
   type ResumeDebugWorkerState,
@@ -16,6 +18,7 @@ type Pending = {
 
 type InitResult = Extract<OpfsVfsWorkerResponse, { type: 'init-ok' }>;
 type QueryResult = Extract<OpfsVfsWorkerResponse, { type: 'query-ok' }>;
+type WorkbenchResult = Extract<OpfsVfsWorkerResponse, { type: 'workbench-ok' }>;
 
 let sharedWorker: Worker | null = null;
 let sharedBackend: OpfsVfsBackend | null = null;
@@ -97,6 +100,14 @@ class OpfsVfsBackend implements DatabaseBackend {
     return this.ask({ type: 'query', sql, params });
   }
 
+  async workbench(
+    plan: ReplacementPlanV1,
+    pool: GroupPoolInput,
+    identitySalt: string,
+  ): Promise<WorkbenchResult> {
+    return this.ask({ type: 'workbench', plan, pool, identitySalt });
+  }
+
   debugState(): ResumeDebugWorkerState {
     const now = performance.now();
     return {
@@ -142,6 +153,7 @@ type ExtractResponse<T extends OpfsVfsWorkerRequest['type']> =
   T extends 'prewarm' ? Extract<OpfsVfsWorkerResponse, { type: 'prewarm-ok' }> :
   T extends 'init' ? InitResult :
   T extends 'query' ? QueryResult :
+  T extends 'workbench' ? WorkbenchResult :
   Extract<OpfsVfsWorkerResponse, { type: 'close-ok' }>;
 
 class OpfsVfsStatement implements DatabaseStatement {
@@ -227,6 +239,33 @@ export function resetOpfsVfsWorker(): void {
 
 export function getOpfsVfsWorkerDebugState(): ResumeDebugWorkerState {
   return sharedBackend?.debugState() ?? { exists: false, pending: [] };
+}
+
+export function isOpfsVfsBackend(db: DatabaseBackend): boolean {
+  return db === sharedBackend;
+}
+
+export async function requestOpfsWorkbenchPage(
+  db: DatabaseBackend,
+  plan: ReplacementPlanV1,
+  pool: GroupPoolInput,
+  identitySalt: string,
+  signal?: AbortSignal,
+): Promise<WorkbenchCandidateResponse> {
+  if (!sharedBackend || db !== sharedBackend) {
+    throw new Error('workbench worker requires the active OPFS VFS backend');
+  }
+  if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+  const request = sharedBackend.workbench(plan, pool, identitySalt);
+  if (!signal) return (await request).response;
+  const aborted = new Promise<never>((_resolve, reject) => {
+    signal.addEventListener(
+      'abort',
+      () => reject(new DOMException('Aborted', 'AbortError')),
+      { once: true },
+    );
+  });
+  return (await Promise.race([request, aborted])).response;
 }
 
 export async function openOpfsVfsDatabase(opts: {

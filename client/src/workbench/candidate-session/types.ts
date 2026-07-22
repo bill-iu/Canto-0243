@@ -3,6 +3,7 @@ import type {
   ReplacementPlanV1,
   WorkbenchCandidateResponse,
 } from '../contracts.ts';
+import type { CandidatePageResponse } from '../candidate-page.ts';
 
 /** Plan 身份（無 paging）— candidate session 用嚟 reset／組 adapter 請求。 */
 export type CandidatePlanBase = Omit<ReplacementPlanV1, 'offset' | 'limit'>;
@@ -43,4 +44,4 @@ export interface CandidateSessionView {
 export type FindCandidates = (
   plan: ReplacementPlanV1,
   signal?: AbortSignal,
-) => Promise<WorkbenchCandidateResponse>;
+) => Promise<CandidatePageResponse>;

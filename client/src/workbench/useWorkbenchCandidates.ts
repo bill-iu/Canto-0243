@@ -7,9 +7,11 @@ import {
   candidateSessionView,
   emptyCandidateSession,
   requestLoadMore,
+  rebindSelectionVersion,
   resetWithPlan,
   runCandidateFetch,
   samePlanIdentity,
+  setPosFilter,
   type CandidatePlanBase,
   type CandidateSessionState,
 } from './candidate-session/index.ts';
@@ -24,6 +26,7 @@ export function useWorkbenchCandidates(
   plan: ReplacementPlanV1 | CandidatePlanBase | null,
   adapter?: WorkbenchAdapter,
   posFilter: PosFilterState = resetPosFilter(),
+  enabled = true,
 ) {
   const defaultAdapter = useMemo(() => selectWorkbenchAdapter(), []);
   const activeAdapter = adapter ?? defaultAdapter;
@@ -34,7 +37,16 @@ export function useWorkbenchCandidates(
 
   const [state, setState] = useState<CandidateSessionState>(() => emptyCandidateSession());
   const stateRef = useRef(state);
+  const activeFetchRef = useRef<AbortController | null>(null);
   stateRef.current = state;
+
+  useEffect(() => () => activeFetchRef.current?.abort(), []);
+
+  useEffect(() => {
+    if (enabled) return;
+    activeFetchRef.current?.abort();
+    activeFetchRef.current = null;
+  }, [enabled]);
 
   const base: CandidatePlanBase | null = useMemo(() => {
     if (!plan) return null;
@@ -47,51 +59,63 @@ export function useWorkbenchCandidates(
       semanticIntent: plan.semanticIntent,
       semanticSeed: plan.semanticSeed,
     };
-  }, [
-    plan?.version,
-    plan?.selectionVersion,
-    plan?.width,
-    plan?.mode,
-    plan?.semanticIntent,
-    plan?.semanticSeed,
-    // slots identity
-    plan ? JSON.stringify(plan.slots) : '',
-  ]);
+  }, [plan]);
 
   useEffect(() => {
+    if (!enabled) return;
     const current = stateRef.current;
     const planChanged = !samePlanIdentity(current.planBase, base);
     const posChanged = JSON.stringify(current.posFilter) !== JSON.stringify(posFilter);
-    if (!planChanged && !posChanged) return;
+    const versionChanged = current.planBase?.selectionVersion !== base?.selectionVersion;
+    if (!planChanged && !posChanged && !versionChanged) return;
 
-    const next = resetWithPlan(current, base, posFilter);
+    activeFetchRef.current?.abort();
+    activeFetchRef.current = null;
+
+    let next = planChanged
+      ? resetWithPlan(current, base, posFilter)
+      : setPosFilter(current, posFilter);
+    if (!planChanged && base && versionChanged) {
+      next = rebindSelectionVersion(next, base);
+    }
     setState(next);
-    if (!base) return;
+    if (!base || !next.loading) return;
 
     const controller = new AbortController();
+    activeFetchRef.current = controller;
     const startedGen = next.generation;
     void (async () => {
       const result = await runCandidateFetch(next, findCandidates, controller.signal);
       if (controller.signal.aborted) return;
+      if (activeFetchRef.current === controller) activeFetchRef.current = null;
       setState((s) => (s.generation === startedGen ? result : s));
     })();
-    return () => controller.abort();
-  }, [base, posFilter, findCandidates]);
+    return () => {
+      controller.abort();
+      if (activeFetchRef.current === controller) activeFetchRef.current = null;
+    };
+  }, [base, posFilter, findCandidates, enabled]);
 
   const loadMore = useCallback(() => {
+    if (!enabled) return;
     setState((current) => {
       const view = candidateSessionView(current);
       if (!view.hasMore || current.loading) return current;
       const next = requestLoadMore(current);
       if (next.generation === current.generation) return current;
       const startedGen = next.generation;
+      activeFetchRef.current?.abort();
+      const controller = new AbortController();
+      activeFetchRef.current = controller;
       void (async () => {
-        const result = await runCandidateFetch(next, findCandidates);
+        const result = await runCandidateFetch(next, findCandidates, controller.signal);
+        if (controller.signal.aborted) return;
+        if (activeFetchRef.current === controller) activeFetchRef.current = null;
         setState((s) => (s.generation === startedGen ? result : s));
       })();
       return next;
     });
-  }, [findCandidates]);
+  }, [findCandidates, enabled]);
 
   const view = useMemo(() => candidateSessionView(state), [state]);
 
