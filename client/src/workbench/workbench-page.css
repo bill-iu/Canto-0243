@@ -762,8 +762,9 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
     display: block;
   }
   .line-input-form { max-width: 100%; }
+  /* 同寬屏 auto-fill；min track 較細，短詞可並排；≥7 仍 --wide 滿列 */
   .candidate-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr));
   }
   .candidate-card {
     padding: .75rem .85rem;
