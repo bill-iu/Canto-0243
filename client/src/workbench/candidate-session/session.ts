@@ -40,6 +40,7 @@ export function emptyCandidateSession(
     engineTotal: 0,
     filteredTarget: pageSize,
     raw: null,
+    staleRaw: null,
     loading: false,
     error: null,
     generation: 0,
@@ -51,6 +52,8 @@ export function resetWithPlan(
   planBase: CandidatePlanBase | null,
   posFilter?: PosFilterState,
 ): CandidateSessionState {
+  // 無 plan：清晒。有 plan：raw 清空給 fetch，staleRaw 留舊結果上屏。
+  const keepStale = Boolean(planBase) ? (state.raw ?? state.staleRaw) : null;
   return {
     ...state,
     planBase,
@@ -59,6 +62,7 @@ export function resetWithPlan(
     engineTotal: 0,
     filteredTarget: state.pageSize,
     raw: null,
+    staleRaw: keepStale,
     loading: Boolean(planBase),
     error: null,
     generation: state.generation + 1,
@@ -87,7 +91,8 @@ export function requestLoadMore(state: CandidateSessionState): CandidateSessionS
 }
 
 export function candidateSessionView(state: CandidateSessionState): CandidateSessionView {
-  const raw = state.raw;
+  const fresh = state.raw != null;
+  const raw = state.raw ?? state.staleRaw;
   if (!raw) {
     return {
       response: null,
@@ -103,7 +108,8 @@ export function candidateSessionView(state: CandidateSessionState): CandidateSes
   const engineFetched = groupCount(raw.exact);
   const filteredCount = groupCount(filtered.exact);
   const engineTotal = engineTotalOf(raw);
-  const hasMore = state.engineCursor < engineTotal;
+  // stale 期間唔報 hasMore／loadMore，避免用舊 cursor 加載
+  const hasMore = fresh && state.engineCursor < engineTotal;
   return {
     response: filtered,
     engineTotal,
@@ -182,7 +188,7 @@ export async function runCandidateFetch(
   signal?: AbortSignal,
 ): Promise<CandidateSessionState> {
   if (!state.planBase) {
-    return { ...state, loading: false, raw: null };
+    return { ...state, loading: false, raw: null, staleRaw: null };
   }
   const startedGen = state.generation;
   // ADR-0069: width > lexicon max word length → skip engine (structural empty).
@@ -192,12 +198,14 @@ export async function runCandidateFetch(
       ...state,
       loading: false,
       raw,
+      staleRaw: null,
       engineTotal: 0,
       engineCursor: 0,
       error: null,
       generation: startedGen,
     };
   }
+  // resetWithPlan 已 raw=null；loadMore 保留 raw 以便 merge
   let current = state;
 
   try {
@@ -218,7 +226,13 @@ export async function runCandidateFetch(
     }
 
     if (signal?.aborted) return current;
-    return { ...current, loading: false, error: null, generation: startedGen };
+    return {
+      ...current,
+      loading: false,
+      staleRaw: null,
+      error: null,
+      generation: startedGen,
+    };
   } catch (err) {
     if (signal?.aborted) return current;
     return {

@@ -93,11 +93,30 @@ state = resetWithPlan(state, planBase());
 assert(state.loading && state.generation === 1, 'reset loads');
 state = await runCandidateFetch(state, find);
 assert(!state.loading, 'fetch done');
+assert(state.staleRaw == null, 'fresh fetch clears stale');
 let view = candidateSessionView(state);
 assert(view.filteredCount === 2, `first page filtered=${view.filteredCount}`);
 assert(view.engineFetched === 2, 'engine fetched 2');
 assert(view.engineTotal === 5, 'engine total 5');
 assert(view.hasMore === true, 'has more');
+
+// plan 重置：raw 清、stale 上屏，避免 UI 卸載閃動
+const prevLiterals = state.raw?.exact.sound_only.map((r) => r.literal).join('');
+state = resetWithPlan(state, planBase({ selectionVersion: 2 }));
+assert(state.raw == null && state.staleRaw != null, 'keeps stale while loading');
+assert(state.loading, 'reset still loading');
+view = candidateSessionView(state);
+assert(view.response != null, 'stale still visible in view');
+assert(view.hasMore === false, 'stale view has no loadMore');
+assert(
+  view.response!.exact.sound_only.map((r) => r.literal).join('') === prevLiterals,
+  'stale content matches prior page',
+);
+state = await runCandidateFetch(state, find);
+assert(state.raw != null && state.staleRaw == null, 'new raw replaces stale');
+assert(!state.loading, 'refetch done');
+view = candidateSessionView(state);
+assert(view.hasMore === true, 'fresh hasMore restored');
 
 state = requestLoadMore(state);
 assert(state.filteredTarget === 4, 'target 4');

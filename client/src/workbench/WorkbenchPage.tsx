@@ -728,7 +728,7 @@ export function WorkbenchPage() {
                 total={candidates.engineTotal}
                 loadedCount={candidates.loadedCount}
                 hasMore={candidates.hasMore}
-                loadingMore={candidates.loading && candidates.fetchedCount > 0}
+                loadingMore={candidates.loading && candidates.hasMore}
                 posFilterActive={isPosFilterActive(posFilter)}
                 spanWidth={draft.selection?.width ?? 0}
                 relaxed={activeRelaxation}

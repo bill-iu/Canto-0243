@@ -18,6 +18,11 @@ export interface CandidateSessionState {
   filteredTarget: number;
   /** 未套 POS 嘅累積回應（exact 為引擎列）。 */
   raw: WorkbenchCandidateResponse | null;
+  /**
+   * plan 重置時暫留上屏結果（P3 stale-while-revalidate），
+   * 避免窄屏快速鎖格時候選卸載造成版面／背景閃動。
+   */
+  staleRaw: WorkbenchCandidateResponse | null;
   loading: boolean;
   error: Error | null;
   /** 單調 generation；async 完成時核對。 */
