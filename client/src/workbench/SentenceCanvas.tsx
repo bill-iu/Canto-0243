@@ -30,8 +30,11 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
   return '＿';
 }
 
-/** 單擊鎖 vs 雙擊手改分界；每格獨立 timer 避免連點互踩（CONTEXT 字位鎖定） */
-const CLICK_DELAY_MS = 250;
+/**
+ * 即時鎖定（CONTEXT 字位鎖定）。
+ * 同格短窗內第二下 click 視為雙擊前奏、唔 toggle，避免鎖完即解。
+ */
+const DBLCLICK_GUARD_MS = 320;
 
 export function SentenceCanvas({
   draft,
@@ -52,8 +55,7 @@ export function SentenceCanvas({
   const [editValue, setEditValue] = useState('');
   const [spanRaw, setSpanRaw] = useState('');
   const [spanPanelOpen, setSpanPanelOpen] = useState(false);
-  /** pos → pending single-click lock timer */
-  const clickTimers = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
+  const lastClickRef = useRef<{ pos: number; at: number } | null>(null);
   const editInputRef = useRef<HTMLInputElement | null>(null);
   const spanInputRef = useRef<HTMLInputElement | null>(null);
   const editingPosRef = useRef<number | null>(null);
@@ -85,25 +87,10 @@ export function SentenceCanvas({
     document.querySelector<HTMLButtonElement>(`[data-line-slot="${next}"]`)?.focus();
   };
 
-  const clearClickTimer = (pos?: number) => {
-    if (pos == null) {
-      for (const t of clickTimers.current.values()) clearTimeout(t);
-      clickTimers.current.clear();
-      return;
-    }
-    const t = clickTimers.current.get(pos);
-    if (t != null) {
-      clearTimeout(t);
-      clickTimers.current.delete(pos);
-    }
-  };
-
-  useEffect(() => () => clearClickTimer(), []);
-
   const beginEdit = (pos: number) => {
-    clearClickTimer(pos);
     const slot = draft.slots[pos];
     if (!slot) return;
+    lastClickRef.current = null;
     setEditingPos(pos);
     setEditValue(slot.surface || slot.code || '');
   };
@@ -125,13 +112,17 @@ export function SentenceCanvas({
     onSetSlotManual(pos, parsed.surface, parsed.code);
   };
 
-  const scheduleToggle = (pos: number) => {
-    clearClickTimer(pos);
-    const t = setTimeout(() => {
-      clickTimers.current.delete(pos);
-      onToggleLock(pos);
-    }, CLICK_DELAY_MS);
-    clickTimers.current.set(pos, t);
+  /** 即時鎖；同格短窗第二下 skip（雙擊手改） */
+  const handleSlotClick = (pos: number) => {
+    const now = performance.now();
+    const prev = lastClickRef.current;
+    if (prev && prev.pos === pos && now - prev.at < DBLCLICK_GUARD_MS) {
+      // Second click of double-click — do not unlock.
+      lastClickRef.current = { pos, at: now };
+      return;
+    }
+    lastClickRef.current = { pos, at: now };
+    onToggleLock(pos);
   };
 
   const submitSpan = (event: FormEvent) => {
@@ -166,7 +157,7 @@ export function SentenceCanvas({
             className="canvas-clear-surfaces"
             title="清空句格（恢復空白）"
             aria-label="清空句格"
-            onClick={() => { cancelEdit(); setSpanPanelOpen(false); clearClickTimer(); onClearSurfaces(); }}
+            onClick={() => { cancelEdit(); setSpanPanelOpen(false); lastClickRef.current = null; onClearSurfaces(); }}
           >清空</button>
           <button
             type="button"
@@ -174,7 +165,7 @@ export function SentenceCanvas({
             title="解除全部鎖定"
             aria-label="解除全部鎖定"
             disabled={!hasAnyLock}
-            onClick={() => { cancelEdit(); setSpanPanelOpen(false); clearClickTimer(); onClearLocks(); }}
+            onClick={() => { cancelEdit(); setSpanPanelOpen(false); lastClickRef.current = null; onClearLocks(); }}
           >解鎖</button>
           <button
             type="button"
@@ -264,7 +255,7 @@ export function SentenceCanvas({
                   data-line-slot={pos}
                   aria-pressed={locked}
                   aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
-                  onClick={() => scheduleToggle(pos)}
+                  onClick={() => handleSlotClick(pos)}
                   onDoubleClick={() => beginEdit(pos)}
                   onKeyDown={(event) => {
                     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {

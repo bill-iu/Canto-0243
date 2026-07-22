@@ -58,6 +58,8 @@ body.query-tabs-app.workbench-route {
 .workbench-intro__titles {
   width: 100%;
   max-width: 100%;
+  min-width: 0;
+  writing-mode: horizontal-tb;
 }
 /* Canvas / constraints mono eyebrow (Latin-ish); intro uses serif below. */
 .eyebrow {
@@ -84,6 +86,8 @@ body.query-tabs-app.workbench-route {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.1;
+  writing-mode: horizontal-tb;
+  overflow-wrap: anywhere;
 }
 .workbench-intro h2 {
   margin: .25rem 0 0;
@@ -92,6 +96,8 @@ body.query-tabs-app.workbench-route {
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.15;
+  writing-mode: horizontal-tb;
+  overflow-wrap: anywhere;
 }
 .line-input-form {
   width: 100%;

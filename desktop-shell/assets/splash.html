@@ -31,6 +31,25 @@
       justify-content: center;
       padding: 28px 24px 32px;
       gap: 14px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    /* CJK flex min-content can collapse to 1ch → one glyph per line; force horizontal block text. */
+    .tag,
+    .hint,
+    .stage,
+    .pct,
+    .err {
+      writing-mode: horizontal-tb;
+      text-orientation: mixed;
+      word-break: normal;
+      overflow-wrap: anywhere;
+      box-sizing: border-box;
+      align-self: stretch;
+      width: 100%;
+      max-width: min(22rem, 100%);
+      margin-left: auto;
+      margin-right: auto;
     }
     .brand {
       font-family: "Playfair Display", "Noto Serif TC", Georgia, serif;
@@ -44,7 +63,6 @@
       color: var(--muted);
       font-size: 0.82rem;
       text-align: center;
-      max-width: 22rem;
       line-height: 1.45;
     }
     .stage {
@@ -84,21 +102,20 @@
       font-size: 0.72rem;
       color: var(--muted);
       text-align: center;
-      max-width: 22rem;
       line-height: 1.4;
     }
     .err {
       display: none;
       margin: 0;
       padding: 10px 12px;
-      max-width: 22rem;
       border: 1px solid #7f1d1d;
       border-radius: 10px;
       background: color-mix(in srgb, #7f1d1d 35%, var(--surface));
       color: #fecaca;
       font-size: 0.8rem;
-      line-height: 1.4;
+      line-height: 1.45;
       white-space: pre-wrap;
+      text-align: start;
     }
     body.is-error .bar,
     body.is-error .pct { display: none; }
