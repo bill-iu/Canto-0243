@@ -126,6 +126,11 @@ if ($SkipPyApp) {
     if (-not (Test-Path (Join-Path $ShellDir "Cargo.toml"))) {
         throw "desktop-shell/ missing"
     }
+    # Windows shell icon: assets/app.ico (from client/public/icon-512.png / PWA brand)
+    $ShellIco = Join-Path $ShellDir "assets\app.ico"
+    if (-not (Test-Path $ShellIco)) {
+        throw "desktop-shell/assets/app.ico missing (from PWA icon-512.png)"
+    }
     Push-Location $ShellDir
     try {
         cargo build --release
@@ -134,7 +139,7 @@ if ($SkipPyApp) {
         if (-not (Test-Path $ShellBin)) { throw "canto-desktop-shell.exe not produced" }
         $ShellOut = Join-Path $OutDir "Canto-0243.exe"
         Copy-Item $ShellBin $ShellOut -Force
-        Write-Host "    shell:   $ShellOut"
+        Write-Host "    shell:   $ShellOut (icon: assets/app.ico)"
     } finally {
         Pop-Location
     }

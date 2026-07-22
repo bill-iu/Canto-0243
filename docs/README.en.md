@@ -17,11 +17,11 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 ## Latest release
 
 <!-- version:en -->
-Current version: **v1.0.9**
+Current version: **v1.1.0**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **171,079** (`lyrics.db` · `words` table)
+Current word entries: **171,082** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**

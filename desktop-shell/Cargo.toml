@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "Desktop install progress shell (ADR-0068) — outer launcher over PyApp"
 publish = false
+build = "build.rs"
 
 [[bin]]
 name = "canto-desktop-shell"
@@ -12,6 +13,9 @@ path = "src/main.rs"
 [dependencies]
 tao = "0.35"
 wry = "0.55"
+
+[build-dependencies]
+winresource = "0.1"
 
 [profile.release]
 lto = true
