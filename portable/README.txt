@@ -46,21 +46,21 @@ macOS
      canto-0243-desktop-macos-arm64.tar.gz
      canto-0243-desktop-macos-x86_64.tar.gz
 
-2. 進入解壓後的 canto-0243-desktop 資料夾
-   Open the extracted canto-0243-desktop folder.
+2. 進入解壓後的 canto-0243-desktop 資料夾（保持 .app 與側車同層；唔好只拖走 .app）
+   Open the extracted canto-0243-desktop folder (keep .app next to lyrics.db).
 
-3. 雙擊 Canto-0243.command 啟動（會開啟 Terminal）
-   Double-click Canto-0243.command (opens Terminal).
+3. 雙擊 **Canto-0243.app** 啟動（正式入口；ADR-0070）
+   Double-click **Canto-0243.app** (sole creator entry).
 
-   若 Gatekeeper 阻擋：
-   If blocked:
-     • 右鍵 Canto-0243.command →「打開」→ 確認
-       Right-click → Open → confirm (once).
+   若 Gatekeeper 阻擋（只需對 .app 一次）：
+   If blocked (once, for the .app only):
+     • 右鍵 Canto-0243.app →「打開」→ 確認
+       Right-click → Open → confirm.
      • Sequoia：系統設定 → 隱私與安全性 →「仍要開啟」
        System Settings → Privacy & Security → Open Anyway.
 
-   未 notarize 的 .app 不是現行必用入口；請用 .command。
-   Unsigned .app is not the supported path; use .command.
+   唔使對 runtime 內執行檔再放行；殼會清 quarantine 後啟動內層。
+   No second bypass for the inner runtime.
 
 
 更新 / Updates
@@ -74,13 +74,20 @@ package and extract over the old folder after quitting. No silent auto-update.
 
 內容 / Contents
 ---------------
-- Canto-0243.exe — 外層安裝進度殼（創作者入口；套件根目錄唯一 .exe）
-- runtime/Canto-0243-runtime.exe — 內層 PyApp（子目錄；由殼啟動）
+Windows:
+- Canto-0243.exe — 外層安裝進度殼（創作者入口）
+- runtime/Canto-0243-runtime.exe — 內層 PyApp（由殼啟動）
+
+macOS:
+- Canto-0243.app — 外層安裝進度殼 + 包內 runtime（創作者入口；無 .command）
+- （runtime 在 .app/Contents/Resources/runtime/；唔另放套件根目錄）
+
+共用側車:
 - *.whl — 應用程式包（首次由 runtime 安裝）/ app wheel
 - lyrics.db — 主詞庫
 - data/ — 靜態詞典資料
 - client/dist-portable/ — 產品 UI
-- （無 START.bat；根目錄唔放 runtime.exe）
+- （無 START.bat；無 Canto-0243.command）
 
 
 疑難排解 / Troubleshooting

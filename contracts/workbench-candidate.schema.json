@@ -13,7 +13,7 @@
       "additionalProperties": false,
       "required": ["pos", "kind"],
       "properties": {
-        "pos": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "pos": { "type": "integer", "minimum": 0, "maximum": 63 },
         "kind": {
           "type": "string",
           "enum": ["code_digit", "literal_char", "final_anchor", "initial_anchor", "tone_class"]
@@ -50,15 +50,15 @@
       "properties": {
         "version": { "const": 1 },
         "selectionVersion": { "type": "integer", "minimum": 0 },
-        "width": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "width": { "type": "integer", "minimum": 1, "maximum": 64 },
         "mode": { "type": "string", "enum": ["m1", "m2", "m3"] },
         "slots": {
           "type": "array",
-          "maxItems": 16,
+          "maxItems": 192,
           "items": { "$ref": "#/$defs/WorkbenchSlotConstraintV1" }
         },
         "semanticIntent": { "type": "string", "enum": ["ranked", "direct_only", "off"] },
-        "semanticSeed": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "semanticSeed": { "type": "string", "minLength": 1, "maxLength": 64 },
         "limit": { "type": "integer", "minimum": 1, "maximum": 400 },
         "offset": { "type": "integer", "minimum": 0 }
       }
@@ -84,8 +84,8 @@
         },
         "positions": {
           "type": "array",
-          "maxItems": 4,
-          "items": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "maxItems": 64,
+          "items": { "type": "integer", "minimum": 0, "maximum": 63 },
           "uniqueItems": true
         },
         "source": { "type": "string", "minLength": 1 }
@@ -96,7 +96,7 @@
       "additionalProperties": false,
       "required": ["literal", "jyutping", "code", "group", "reasons", "sourceRank"],
       "properties": {
-        "literal": { "type": "string", "minLength": 1, "maxLength": 4 },
+        "literal": { "type": "string", "minLength": 1, "maxLength": 64 },
         "jyutping": { "type": "string" },
         "code": { "type": "string" },
         "group": { "type": "string", "enum": ["direct_syn", "semantic_related", "sound_only"] },
@@ -131,8 +131,8 @@
         },
         "positions": {
           "type": "array",
-          "maxItems": 4,
-          "items": { "type": "integer", "minimum": 0, "maximum": 3 },
+          "maxItems": 64,
+          "items": { "type": "integer", "minimum": 0, "maximum": 63 },
           "uniqueItems": true
         },
         "from": { "type": "string" },

@@ -30,7 +30,7 @@ function validSelection(value: unknown, length: number): boolean {
     && Number(value.start) >= 0
     && Number.isInteger(value.width)
     && Number(value.width) >= 1
-    && Number(value.width) <= 4
+    && Number(value.width) <= length
     && Number(value.start) + Number(value.width) <= length
   );
 }

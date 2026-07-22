@@ -30,7 +30,7 @@ fi
 copy_tree() {
   local src="$1" dst="$2"
   shift 2
-  local extra_excludes=("$@")
+  # bash 3.2 + set -u: empty local arr breaks "${arr[@]}" — iterate "$@" after shift
   [[ -d "$src" ]] || return 0
   mkdir -p "$dst"
   local args=(
@@ -40,7 +40,7 @@ copy_tree() {
     --exclude '*.pyc' --exclude '*.pyo'
   )
   local ex
-  for ex in "${extra_excludes[@]}"; do
+  for ex in "$@"; do
     args+=(--exclude "$ex")
   done
   rsync "${args[@]}" "$src/" "$dst/"

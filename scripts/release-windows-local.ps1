@@ -139,19 +139,52 @@ if (-not $releaseExists) {
     $title = "Canto-0243 $Tag"
     $createArgs = @("release", "create", $Tag, "--title", $title)
     if ($Draft) { $createArgs += "--draft" }
+    # Prefer explicit -NotesFile, else docs/release-notes/<tag>.md (same language/format as prior releases).
+    $resolvedNotes = $null
     if ($NotesFile -and (Test-Path $NotesFile)) {
-        $createArgs += "--notes-file", $NotesFile
-        Invoke-Gh $createArgs
+        $resolvedNotes = $NotesFile
     } else {
+        $defaultNotes = Join-Path $Root "docs\release-notes\$Tag.md"
+        if (Test-Path $defaultNotes) { $resolvedNotes = $defaultNotes }
+    }
+    if ($resolvedNotes) {
+        Write-Host "==> Release notes: $resolvedNotes"
+        Invoke-Gh @($createArgs + @("--notes-file", $resolvedNotes))
+    } else {
+        Write-Host "==> No docs/release-notes/$Tag.md; using Chinese skeleton (fill 重點變更 before publish)."
         $notes = @(
             "## Canto-0243 $Tag",
             "",
-            "- Windows Desktop: canto-0243-desktop.zip (this upload; PyApp, first run needs network)",
-            "- macOS Desktop: canto-0243-desktop-macos-*.tar.gz (pending MacBook; use .command)",
+            "**穩定版** — 合併 ``dev``：（請改寫摘要；或提供 docs/release-notes/$Tag.md）。",
             "",
-            "First run downloads CPython 3.11 once; then offline.",
-            "Sequoia Gatekeeper: right-click Canto-0243.command, Open Anyway if needed."
-        ) -join [Environment]::NewLine
+            "### 資產",
+            "",
+            "| 環境 | 檔案 |",
+            "|------|------|",
+            "| **Windows** | ``canto-0243-desktop.zip`` |",
+            "| **macOS** | ``canto-0243-desktop-macos-*.tar.gz``（發佈補件） |",
+            "| **詞庫** | ``lyrics.db``、``words-lexicon.json`` |",
+            "",
+            "首次啟動會下載 CPython 3.11 一次，其後離線。macOS Gatekeeper 若攔截：右鍵 ``Canto-0243.command`` → 仍要開啟。",
+            "",
+            "### PWA（GitHub Pages）",
+            "",
+            "``https://bill-iu.github.io/Canto-0243/``（詞庫版本 ``$Tag``）",
+            "",
+            "### 重點變更",
+            "",
+            "- （請補上本版重點；格式見 docs/release-notes/v1.0.9.md）",
+            "",
+            "### 測試",
+            "",
+            "- ``python -m unittest discover -s tests/smoke -q``",
+            "- ``python scripts/check_seams.py -q``",
+            "- Desktop：解壓 zip → 執行 ``Canto-0243.exe`` 基本查詢",
+            "",
+            "### 回報",
+            "",
+            "[GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)"
+        ) -join "`n"
         $tmp = [System.IO.Path]::GetTempFileName()
         [System.IO.File]::WriteAllText($tmp, $notes)
         Invoke-Gh @($createArgs + @("--notes-file", $tmp))

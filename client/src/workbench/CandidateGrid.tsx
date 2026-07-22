@@ -1,5 +1,6 @@
 import type { CandidateGroups, WorkbenchCandidate } from './contracts.ts';
 import { candidateReasonLabel } from './candidate-reason-i18n.ts';
+import { emptyPoolTip } from './limits.ts';
 
 const GROUPS: Array<[keyof CandidateGroups, string]> = [
   ['direct_syn', '直接近義'],
@@ -14,6 +15,8 @@ interface Props {
   hasMore: boolean;
   loadingMore?: boolean;
   posFilterActive?: boolean;
+  /** 替換段寬；空池輕提示用（ADR-0069） */
+  spanWidth?: number;
   relaxed?: { kind: string; from?: string; to?: string } | null;
   semanticGap?: boolean;
   onPreview: (candidate: WorkbenchCandidate, origin: HTMLButtonElement) => void;
@@ -27,6 +30,7 @@ export function CandidateGrid({
   hasMore,
   loadingMore,
   posFilterActive,
+  spanWidth = 0,
   relaxed,
   semanticGap,
   onPreview,
@@ -35,12 +39,16 @@ export function CandidateGrid({
   const status = posFilterActive
     ? `篩後 ${loadedCount}／池內 ${total}`
     : `已載 ${loadedCount}／池內 ${total}`;
+  const poolTip = emptyPoolTip(spanWidth, loadedCount);
 
   return (
     <section className={`candidate-area${relaxed ? ' is-relaxed' : ''}`} aria-labelledby="candidateHeading">
       <p className="eyebrow">{relaxed ? '已確認放寬，非完全符合' : '由你揀，不代你寫'}</p>
       <h2 id="candidateHeading">{relaxed ? '放寬後結果' : '替換候選'}</h2>
       <p className="candidate-count" role="status">{status}</p>
+      {poolTip ? (
+        <p className="candidate-empty-tip" role="status">{poolTip}</p>
+      ) : null}
       {semanticGap ? (
         <p className="semantic-gap" role="status">
           未有足夠近義資料；以下只按聲韻與詞頻排列，不是「沒有近義詞」的意思。

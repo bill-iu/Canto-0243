@@ -4,6 +4,7 @@ import {
   type ReplacementPlanV1,
   type WorkbenchCandidateResponse,
 } from '../contracts.ts';
+import { shouldSkipCandidateQuery } from '../limits.ts';
 import {
   applyCreatorPosFilter,
   engineTotalOf,
@@ -16,6 +17,17 @@ import type {
   CandidateSessionView,
   FindCandidates,
 } from './types.ts';
+
+function emptyExactResponse(selectionVersion: number): WorkbenchCandidateResponse {
+  return {
+    version: 1,
+    selectionVersion,
+    exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+    total: 0,
+    engineTotal: 0,
+    relaxation: null,
+  };
+}
 
 export function emptyCandidateSession(
   pageSize = WORKBENCH_CANDIDATE_PAGE_SIZE,
@@ -173,6 +185,19 @@ export async function runCandidateFetch(
     return { ...state, loading: false, raw: null };
   }
   const startedGen = state.generation;
+  // ADR-0069: width > lexicon max word length → skip engine (structural empty).
+  if (shouldSkipCandidateQuery(state.planBase.width)) {
+    const raw = emptyExactResponse(state.planBase.selectionVersion);
+    return {
+      ...state,
+      loading: false,
+      raw,
+      engineTotal: 0,
+      engineCursor: 0,
+      error: null,
+      generation: startedGen,
+    };
+  }
   let current = state;
 
   try {

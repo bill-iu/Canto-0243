@@ -118,6 +118,19 @@ def ensure_app_ui(root: Path, *, lang: str = "zh", silent: bool = False) -> None
     raise SystemExit(msgs["ui_missing"])
 
 
+def _python_exe(path: Path | str | None = None) -> Path:
+    """Absolute path to a Python interpreter **without** following symlinks.
+
+    PyApp/uv venv ``bin/python`` is a symlink into the distribution cache.
+    ``Path.resolve()`` follows it and breaks ``python -m app…`` (no site-packages).
+    """
+    p = Path(path or sys.executable)
+    if not p.is_absolute():
+        p = Path.cwd() / p
+    # absolute() keeps venv symlink; resolve() would collapse to base_prefix python
+    return p.absolute()
+
+
 def _headless_python(python: Path) -> Path:
     """ponytail: Windows 用 pythonw.exe 跑背景子行程，避免彈 CMD。"""
     if sys.platform != "win32":
@@ -279,7 +292,7 @@ def main() -> int:
 
     root = (args.root or Path.cwd()).resolve()
     os.chdir(root)
-    python = (args.python or Path(sys.executable)).resolve()
+    python = _python_exe(args.python)
     msgs = _messages(args.lang)
 
     host = os.environ.get("HOST", "127.0.0.1")

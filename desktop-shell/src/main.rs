@@ -16,16 +16,37 @@ use tao::window::WindowBuilder;
 use wry::WebViewBuilder;
 
 const PROJECT: &str = "canto-0243";
-/// Inner PyApp lives under payload subdir (not next to outer shell at package root).
+/// Windows: PyApp under payload `runtime/`. macOS ADR-0070: inside `.app` Resources.
 const INNER_SUBDIR: &str = "runtime";
 const INNER_WIN: &str = "Canto-0243-runtime.exe";
 const INNER_UNIX: &str = "Canto-0243-runtime";
+const MAC_APP_NAME: &str = "Canto-0243.app";
 
 #[derive(Debug)]
 enum UserEvent {
     Stage(u8),
+    /// Stage-mapped bar → 100% (ADR-0068 §12); brief hold before Ready.
+    Complete,
     Failed(String),
     Ready,
+}
+
+/// `…/Canto-0243.app/Contents/MacOS/<exe>` → `Canto-0243.app` directory.
+fn macos_app_bundle(exe: &Path) -> Option<PathBuf> {
+    let macos_dir = exe.parent()?;
+    if macos_dir.file_name()?.to_str()? != "MacOS" {
+        return None;
+    }
+    let contents = macos_dir.parent()?;
+    if contents.file_name()?.to_str()? != "Contents" {
+        return None;
+    }
+    let app = contents.parent()?;
+    let name = app.file_name()?.to_str()?;
+    if !name.ends_with(".app") {
+        return None;
+    }
+    Some(app.to_path_buf())
 }
 
 fn payload_root() -> PathBuf {
@@ -35,19 +56,70 @@ fn payload_root() -> PathBuf {
             return PathBuf::from(t);
         }
     }
-    std::env::current_exe()
-        .ok()
-        .and_then(|p| p.parent().map(|d| d.to_path_buf()))
+    let exe = std::env::current_exe().ok();
+    // ADR-0070: payload = directory containing .app + lyrics.db (parent of bundle).
+    if let Some(ref e) = exe {
+        if let Some(app) = macos_app_bundle(e) {
+            if let Some(parent) = app.parent() {
+                return parent.to_path_buf();
+            }
+        }
+    }
+    exe.and_then(|p| p.parent().map(|d| d.to_path_buf()))
         .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")))
 }
 
 fn inner_binary(root: &Path) -> PathBuf {
-    let dir = root.join(INNER_SUBDIR);
     if cfg!(windows) {
-        dir.join(INNER_WIN)
-    } else {
-        dir.join(INNER_UNIX)
+        return root.join(INNER_SUBDIR).join(INNER_WIN);
     }
+    // Prefer ADR-0070 layout: Canto-0243.app/Contents/Resources/runtime/…
+    let in_app = root
+        .join(MAC_APP_NAME)
+        .join("Contents")
+        .join("Resources")
+        .join(INNER_SUBDIR)
+        .join(INNER_UNIX);
+    if in_app.is_file() {
+        return in_app;
+    }
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(app) = macos_app_bundle(&exe) {
+            let nested = app
+                .join("Contents")
+                .join("Resources")
+                .join(INNER_SUBDIR)
+                .join(INNER_UNIX);
+            if nested.is_file() {
+                return nested;
+            }
+        }
+    }
+    // Legacy folder layout (pre-0070): payload/runtime/Canto-0243-runtime
+    root.join(INNER_SUBDIR).join(INNER_UNIX)
+}
+
+/// G1: clear quarantine on payload + .app before first spawn of runtime.
+fn clear_download_quarantine(root: &Path) {
+    #[cfg(target_os = "macos")]
+    {
+        let _ = Command::new("xattr")
+            .args(["-cr"])
+            .arg(root)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .status();
+        let app = root.join(MAC_APP_NAME);
+        if app.is_dir() {
+            let _ = Command::new("xattr")
+                .args(["-cr"])
+                .arg(&app)
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .status();
+        }
+    }
+    let _ = root;
 }
 
 /// PyApp data layout: %LOCALAPPDATA%/pyapp/data/canto-0243/<dist>/<ver>/
@@ -114,6 +186,7 @@ fn install_dir_looks_ready(dir: &Path) -> bool {
 }
 
 fn spawn_inner(root: &Path, inner: &Path) -> std::io::Result<std::process::Child> {
+    clear_download_quarantine(root);
     let mut cmd = Command::new(inner);
     cmd.current_dir(root)
         .env("CANTO_PAYLOAD_ROOT", root)
@@ -153,9 +226,13 @@ fn main() {
         show_fatal(
             "Canto-0243",
             &format!(
-                "找不到執行核心（{}）。\n請重新下載完整 Desktop 套件。\n\nMissing {} next to the launcher.",
+                "找不到執行核心（{}）。\n請重新下載並完整解壓 Desktop 套件（{} 須與側車同層）。\n\nMissing runtime binary.",
                 inner.display(),
-                if cfg!(windows) { INNER_WIN } else { INNER_UNIX }
+                if cfg!(windows) {
+                    "Canto-0243.exe"
+                } else {
+                    "Canto-0243.app"
+                }
             ),
         );
         std::process::exit(1);
@@ -226,7 +303,8 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 return;
             }
 
-            // Heuristic stages while PyApp bootstraps (no public % API).
+            // Heuristic stages while PyApp bootstraps (no public byte % API).
+            // Splash maps stage → estimated % only (ADR-0068 §12); no in-band crawl.
             let elapsed = start.elapsed().as_secs();
             let next = if elapsed < 4 {
                 1
@@ -237,14 +315,18 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             } else {
                 4
             };
-            if next != stage {
+            if next > stage {
                 stage = next;
                 let _ = proxy_t.send_event(UserEvent::Stage(stage));
             }
 
             if product_http_ready() {
-                let _ = proxy_t.send_event(UserEvent::Stage(4));
-                thread::sleep(Duration::from_millis(500));
+                if stage < 4 {
+                    let _ = proxy_t.send_event(UserEvent::Stage(4));
+                    thread::sleep(Duration::from_millis(200));
+                }
+                let _ = proxy_t.send_event(UserEvent::Complete);
+                thread::sleep(Duration::from_millis(350));
                 let _ = proxy_t.send_event(UserEvent::Ready);
                 // Leave child running if still alive.
                 let _ = child.try_wait();
@@ -272,9 +354,20 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             }
 
             if let Some(status) = child_exited {
-                if start.elapsed() > Duration::from_secs(90) && !product_http_ready() {
+                // Fail fast: signal kill / non-zero exit means bootstrap died.
+                // Still allow a short grace if PyApp exits 0 after handoff (rare).
+                let bad = !status.success();
+                let grace_done = start.elapsed() > Duration::from_secs(if bad { 3 } else { 90 });
+                if grace_done && !product_http_ready() && !pyapp_install_ready() {
                     let _ = proxy_t.send_event(UserEvent::Failed(format!(
-                        "啟動未完成（結束代碼 {status}）。\n請確認網路後重試，或執行 runtime/Canto-0243-runtime 查看詳情。"
+                        "啟動未完成（結束代碼 {status}）。\n請確認網路後重試；仍失敗則再雙擊 Canto-0243.app／Canto-0243.exe。"
+                    )));
+                    return;
+                }
+                // Install finished but product not up yet — keep waiting until hard timeout.
+                if grace_done && !product_http_ready() && pyapp_install_ready() && bad {
+                    let _ = proxy_t.send_event(UserEvent::Failed(format!(
+                        "執行環境已安裝但服務未就緒（結束代碼 {status}）。\n請再雙擊啟動一次。"
                     )));
                     return;
                 }
@@ -299,6 +392,10 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 let _ = webview.evaluate_script(&format!(
                     "window.setSplashStage && window.setSplashStage({i})"
                 ));
+            }
+            Event::UserEvent(UserEvent::Complete) => {
+                let _ = webview
+                    .evaluate_script("window.setSplashComplete && window.setSplashComplete()");
             }
             Event::UserEvent(UserEvent::Failed(msg)) => {
                 done.store(true, Ordering::SeqCst);

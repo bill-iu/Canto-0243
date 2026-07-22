@@ -189,11 +189,9 @@ export function WorkbenchPage() {
     const result = sessionToggleLock(sessionRef.current, pos);
     if (!result.ok) {
       setMessage(
-        result.reason === 'span_too_wide'
-          ? '一次最多改連續四格；請先取消較遠的鎖定。'
-          : result.reason === 'no_draft'
-            ? '尚未建立句格。'
-            : '空白格不能鎖定；請先有字面、通配或碼。',
+        result.reason === 'no_draft'
+          ? '尚未建立句格。'
+          : '空白格不能鎖定；請先有字面、通配或碼。',
       );
       return;
     }
@@ -705,6 +703,7 @@ export function WorkbenchPage() {
                 hasMore={candidates.hasMore}
                 loadingMore={candidates.loading && candidates.fetchedCount > 0}
                 posFilterActive={isPosFilterActive(posFilter)}
+                spanWidth={draft.selection?.width ?? 0}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
                 onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
