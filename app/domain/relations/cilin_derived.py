@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.domain.relations.canonical import canonical_word_ids
 from app.domain.relations.char_index import get_char_to_primary_id
-from app.domain.relations.ranking import DERIVED_ANT_SOURCES
+from app.domain.relation_pool.ranking import DERIVED_ANT_SOURCES
 from app.domain.relations.valid_term import normalize_literal
 from app.domain.thesaurus.port import ThesaurusPort, default_thesaurus_port
 from app.models.word import Word

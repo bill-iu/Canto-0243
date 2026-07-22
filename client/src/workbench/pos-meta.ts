@@ -1,7 +1,6 @@
 /**
- * Workbench POS filter — 專案自建詞性 formal set.
- * Rule: keep when seed∩cand formal POS nonempty; no seed POS → keep all;
- * candidate missing POS → keep (詞性缺標唔罰).
+ * Workbench POS helpers — seed∩cand gate-POS bucket math (utility / tests).
+ * Runtime workbench list does NOT auto-apply this; only creator 三軸詞性篩選 filters.
  */
 import { FORMAL_POS } from '../pos/types.ts';
 

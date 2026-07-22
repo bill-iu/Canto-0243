@@ -1,10 +1,11 @@
 /** 搜尋模式轉接 — port of query_mode_dispatch (predicate table). */
 import type { Database } from '../sqljs.ts';
 import { isJyutpingQuery } from '../jyutping-match.ts';
-import { relationPoolPage } from '../relation-pool-projection.ts';
+import { relationPoolPage } from '../relation-pool/index.ts';
 import type { SearchContext, SearchResult } from '../query-types.ts';
 import { JYUTPING_SYN_MODE_HINT, normalizeAndParse } from './parse.ts';
-import { dispatchParsed, poolItemToResult } from './dispatch.ts';
+import { dispatchParsed } from './dispatch.ts';
+import { poolItemToResult } from './relation-syntax-executor.ts';
 import { planRedirect } from './mode-policy.ts';
 
 export type SynModeCtx = SearchContext & { q: string };

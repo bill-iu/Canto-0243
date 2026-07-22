@@ -15,6 +15,9 @@ export interface WorkbenchSlotConstraintV1 {
   toneClass?: 'ping' | 'ze';
 }
 
+/** Single request page size / max limit (ADR-0064). */
+export const WORKBENCH_CANDIDATE_PAGE_SIZE = 400;
+
 export interface ReplacementPlanV1 {
   version: 1;
   selectionVersion: number;
@@ -24,6 +27,8 @@ export interface ReplacementPlanV1 {
   semanticIntent: 'ranked' | 'direct_only' | 'off';
   semanticSeed?: string;
   limit: number;
+  /** 0-based row offset into the sorted MatchSpec pool (default 0). */
+  offset?: number;
 }
 
 export type CandidateGroup = 'direct_syn' | 'semantic_related' | 'sound_only';
@@ -82,6 +87,13 @@ export interface WorkbenchCandidateResponse {
   version: 1;
   selectionVersion: number;
   exact: CandidateGroups;
+  /**
+   * Engine pool size before POS filter / before this page slice (ADR-0064).
+   * Dual-write with `engineTotal` (B2-light); prefer `engineTotal` when present.
+   */
+  total: number;
+  /** Canonical engine pool size (same semantics as `total`). */
+  engineTotal: number;
   relaxation?: RelaxationSuggestion | null;
 }
 
@@ -126,7 +138,14 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
     value.semanticIntent === 'ranked' || value.semanticIntent === 'direct_only' || value.semanticIntent === 'off',
     'semanticIntent',
   );
-  assert(Number.isInteger(value.limit) && Number(value.limit) >= 1 && Number(value.limit) <= 120, 'limit');
+  assert(
+    Number.isInteger(value.limit)
+      && Number(value.limit) >= 1
+      && Number(value.limit) <= WORKBENCH_CANDIDATE_PAGE_SIZE,
+    'limit',
+  );
+  const offset = value.offset == null ? 0 : Number(value.offset);
+  assert(Number.isInteger(offset) && offset >= 0, 'offset');
   if (value.semanticSeed != null) {
     assert(typeof value.semanticSeed === 'string' && value.semanticSeed.length >= 1 && value.semanticSeed.length <= 4, 'semanticSeed');
   }
@@ -140,6 +159,7 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
     semanticIntent: value.semanticIntent,
     semanticSeed: value.semanticSeed as string | undefined,
     limit: Number(value.limit),
+    offset,
   };
 }
 
@@ -241,11 +261,18 @@ export function parseWorkbenchCandidateResponse(value: unknown): WorkbenchCandid
   assert(isRecord(value), 'candidate response');
   assert(value.version === 1, 'candidate response version');
   assert(Number.isInteger(value.selectionVersion) && Number(value.selectionVersion) >= 0, 'candidate response selectionVersion');
+  const hasTotal = Number.isInteger(value.total) && Number(value.total) >= 0;
+  const hasEngine = Number.isInteger(value.engineTotal) && Number(value.engineTotal) >= 0;
+  assert(hasTotal || hasEngine, 'candidate response total/engineTotal');
+  const engineTotal = hasEngine ? Number(value.engineTotal) : Number(value.total);
+  const total = hasTotal ? Number(value.total) : engineTotal;
   const relaxation = value.relaxation == null ? null : parseRelaxation(value.relaxation);
   return {
     version: 1,
     selectionVersion: Number(value.selectionVersion),
     exact: parseGroups(value.exact),
+    total,
+    engineTotal,
     relaxation,
   };
 }

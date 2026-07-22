@@ -11,7 +11,7 @@ export const ABOUT_COPY = {
     lede: 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
     introTitle: '簡介',
     introBody:
-      '填粵語歌詞時，往往要在<strong>同音、押韻、近義</strong>之間快速換字，又要對準 0243 與粵拼讀音。Canto-0243 用 <strong>0243／02493 數字碼</strong>、<strong>粵拼</strong>、<strong>韻母／聲母規則</strong>與<strong>近義／反義關係</strong>，在幾秒內列出符合條件的詞條；套件解壓即用，詞庫與近反義資料存於本地，無需連網。',
+      '填粵語歌詞時，往往要在<strong>同音、押韻、近義</strong>之間快速換字，又要對準數字碼與粵拼讀音。Canto-0243 用 <strong>394052／0243／02493 數字碼</strong>（頂欄三檔聲調精度）、<strong>粵拼</strong>、<strong>韻母／聲母規則</strong>與<strong>近義／反義關係</strong>，在幾秒內列出符合條件的詞條；套件解壓即用，詞庫與近反義資料存於本地，無需連網。',
     whyTitle: '為何選擇本工具',
     whyList:
       '<li><strong>開源</strong> — 原始碼公開，歡迎檢視、改進與回饋</li>' +
@@ -39,6 +39,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">開放詞典 · 粵語詞典（Kaifangcidian）</a>：採用 <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>。</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">詞林同義詞（Cilin）</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>。</li>' +
+      '<li><a href="https://github.com/daimaruhk/Cantonese.md" target="_blank" rel="noopener noreferrer">Cantonese.md 歇後語字面</a>：採用 <a href="https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA" target="_blank" rel="noopener noreferrer">CC0 1.0</a>（僅 term／answer＋粵拼；無正文解說）。</li>' +
       '<li><a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">專案自建近反義</a>：維護者審定近義／反義對（大模型輔助起草），採用 <a href="' +
@@ -67,7 +68,7 @@ export const ABOUT_COPY = {
     lede: 'ONE-RUN-RHYME — Offline Cantonese lyric lookup workbench.',
     introTitle: 'Introduction',
     introBody:
-      'When writing Cantonese lyrics, you often need to swap characters quickly among <strong>same-tone, rhyming, and near-synonym</strong> options while matching 0243 codes and Jyutping. Canto-0243 uses <strong>0243／02493 tone codes</strong>, <strong>Jyutping</strong>, <strong>rhyme／initial rules</strong>, and <strong>synonym／antonym relations</strong> to list matching word entries in seconds. Unzip and run—lexicon and relation data stay on your device, no internet required.',
+      'When writing Cantonese lyrics, you often need to swap characters quickly among <strong>same-tone, rhyming, and near-synonym</strong> options while matching tone codes and Jyutping. Canto-0243 uses <strong>394052／0243／02493 tone codes</strong> (three search-mode tiers), <strong>Jyutping</strong>, <strong>rhyme／initial rules</strong>, and <strong>synonym／antonym relations</strong> to list matching word entries in seconds. Unzip and run—lexicon and relation data stay on your device, no internet required.',
     whyTitle: 'Why choose this tool',
     whyList:
       '<li><strong>Open source</strong> — source code is public; review, improve, and feedback welcome</li>' +
@@ -95,6 +96,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">Kaifang Dictionary · Cantonese</a>: <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>.</li>' +
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">Cilin synonyms</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>.</li>' +
+      '<li><a href="https://github.com/daimaruhk/Cantonese.md" target="_blank" rel="noopener noreferrer">Cantonese.md xiehouyu literals</a>: <a href="https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA" target="_blank" rel="noopener noreferrer">CC0 1.0</a> (term／answer + Jyutping only; no full glosses).</li>' +
       '<li><a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">Project near-antonyms</a>: maintainer-reviewed synonym／antonym pairs (LLM-assisted drafting); <a href="' +

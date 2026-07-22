@@ -8,9 +8,25 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
-ROOT = Path(__file__).resolve().parent.parent.parent
-DEFAULT_CLEAN_DIR = ROOT / "data" / "raw" / "clean"
-DEFAULT_FIXTURE_JSON = ROOT / "data" / "lexicon" / "fixtures" / "word_lexicon.json"
+from app.payload_root import get_payload_root
+
+
+def _default_clean_dir() -> Path:
+    return get_payload_root() / "data" / "raw" / "clean"
+
+
+def _default_fixture_json() -> Path:
+    return get_payload_root() / "data" / "lexicon" / "fixtures" / "word_lexicon.json"
+
+
+def __getattr__(name: str):
+    if name == "ROOT":
+        return get_payload_root()
+    if name == "DEFAULT_CLEAN_DIR":
+        return _default_clean_dir()
+    if name == "DEFAULT_FIXTURE_JSON":
+        return _default_fixture_json()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 _entries_by_char: Dict[str, List["LexiconEntry"]] = {}
 _loaded = False
@@ -57,14 +73,14 @@ def _ingest_lexicon_json(path: Path, index: Dict[str, List[LexiconEntry]]) -> in
 
 
 def load_lexicon_from_folder(
-    folder: Path | str = DEFAULT_CLEAN_DIR,
+    folder: Path | str | None = None,
     *,
     include_fixture: bool = True,
 ) -> int:
     """Load ``{char, jyutping, code}`` rows from clean JSON files. Returns entry count."""
     global _entries_by_char, _loaded
 
-    folder_path = Path(folder)
+    folder_path = Path(folder) if folder is not None else _default_clean_dir()
     index: Dict[str, List[LexiconEntry]] = {}
     count = 0
 
@@ -72,8 +88,9 @@ def load_lexicon_from_folder(
         for json_path in sorted(folder_path.glob("*.json")):
             count += _ingest_lexicon_json(json_path, index)
 
-    if include_fixture and DEFAULT_FIXTURE_JSON.is_file():
-        count += _ingest_lexicon_json(DEFAULT_FIXTURE_JSON, index)
+    fixture = _default_fixture_json()
+    if include_fixture and fixture.is_file():
+        count += _ingest_lexicon_json(fixture, index)
 
     _entries_by_char = index
     _loaded = True
@@ -83,7 +100,7 @@ def load_lexicon_from_folder(
 def ensure_lexicon_loaded(folder: Optional[Path | str] = None) -> None:
     if _loaded:
         return
-    load_lexicon_from_folder(folder or DEFAULT_CLEAN_DIR)
+    load_lexicon_from_folder(folder)
 
 
 def get_lexicon_entries(char: str) -> List[LexiconEntry]:

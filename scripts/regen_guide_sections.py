@@ -32,31 +32,36 @@ SECTIONS_SPEC = [
     (
         "equals",
         "common",
-        "同韻／同聲（=）",
-        "字後面加 <code translate=\"no\">=</code> → 同韻；字前面加 <code translate=\"no\">=</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。",
-        "Same rhyme / initial (=)",
-        "Put <code translate=\"no\">=</code> after a character for rhyme; before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.",
+        "同韻／同聲（=／^）",
+        "字後面加 <code translate=\"no\">=</code> → 同韻；字前面加 <code translate=\"no\">^</code> → 同聲。可整詞用，亦可數字夾住一個字同時規定聲調。參考字唔一定出現喺結果。",
+        "Same rhyme / initial (= / ^)",
+        "Put <code translate=\"no\">=</code> after a character for rhyme; put <code translate=\"no\">^</code> before it for initial. Works on a whole word, or with tone digits around one character. The reference character need not appear in results.",
         [
             ("香=", "m1"),
             ("香=?", "m1"),
-            ("?=香", "m1"),
+            ("^香", "m1"),
             ("香港=", "m1"),
-            ("=香港", "m1"),
+            ("^香港", "m1"),
             ("2我=3", "m1"),
-            ("2=我3", "m1"),
-            ("?+香=", "m1"),
+            ("2^我3", "m1"),
+            ("?香=", "m1"),
+            (
+                "=香",
+                "m1",
+                "兼容原本舊語法：字前加 = 同聲（等同 ^香）",
+            ),
         ],
     ),
     (
         "mask",
         "common",
         "有啲字限定、有啲留空",
-        "定實你要嘅漢字或聲調數字；唔知嘅位用 <code translate=\"no\">?</code>／<code translate=\"no\">_</code>／<code translate=\"no\">%</code>（三個一樣）。開頭嘅 <code translate=\"no\">+</code> 可以唔打。",
+        "定實你要嘅漢字或聲調數字；唔知嘅位用 <code translate=\"no\">?</code>／<code translate=\"no\">_</code>／<code translate=\"no\">%</code>（三個一樣）。開頭嘅 <code translate=\"no\">+</code> 可以唔打；通配 <code translate=\"no\">?</code> 後面亦唔使再加 <code translate=\"no\">+</code>（例如 <code translate=\"no\">?你?</code>）。",
         "Lock some characters, leave others open",
-        "Set the characters or tone digits you need; fill unknowns with <code translate=\"no\">?</code> / <code translate=\"no\">_</code> / <code translate=\"no\">%</code> (all the same). A leading <code translate=\"no\">+</code> is optional.",
+        "Set the characters or tone digits you need; fill unknowns with <code translate=\"no\">?</code> / <code translate=\"no\">_</code> / <code translate=\"no\">%</code> (all the same). A leading <code translate=\"no\">+</code> is optional; after a <code translate=\"no\">?</code> you usually omit <code translate=\"no\">+</code> (e.g. <code translate=\"no\">?你?</code>).",
         [
             ("+香??", "m1"),
-            ("?+你?", "m1"),
+            ("?你?", "m1"),
             ("_識_", "m1"),
             ("3_", "m1"),
             ("23?", "m1"),
@@ -67,14 +72,14 @@ SECTIONS_SPEC = [
         "plus",
         "common",
         "用 + 加長或標明位置",
-        "用 <code translate=\"no\">+</code> 加多一個字，或者標明邊個位置。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+=字</code>＝同聲；冇 <code translate=\"no\">=</code> 就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
+        "用 <code translate=\"no\">+</code> 喺<strong>冇通配</strong>時加多一個字，或者標明邊個位置（例如 <code translate=\"no\">23+好=</code>、<code translate=\"no\">23+o</code>）。若前面已經有 <code translate=\"no\">?</code>，通常<strong>唔使</strong>再打 <code translate=\"no\">+</code>（<code translate=\"no\">?香=</code> 等同舊寫法 <code translate=\"no\">?+香=</code>）。<code translate=\"no\">字=</code>＝同韻；<code translate=\"no\">+^字</code>＝同聲（舊 <code translate=\"no\">+=字</code> 仍相容）；冇標記就係要呢個字本身。打 <code translate=\"no\">*</code> 等同 <code translate=\"no\">+</code>。",
         "Use + to lengthen or mark a position",
-        "Use <code translate=\"no\">+</code> to add a character or mark a position. <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+=char</code> = same initial; without <code translate=\"no\">=</code> that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
+        "Use <code translate=\"no\">+</code> when there is <strong>no</strong> wildcard, to add a character or mark a position (e.g. <code translate=\"no\">23+好=</code>, <code translate=\"no\">23+o</code>). After a leading <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (<code translate=\"no\">?香=</code> equals older <code translate=\"no\">?+香=</code>). <code translate=\"no\">char=</code> = same rhyme; <code translate=\"no\">+^char</code> = same initial (legacy <code translate=\"no\">+=char</code> still works); without a mark that exact character is required. <code translate=\"no\">*</code> works like <code translate=\"no\">+</code>.",
         [
             ("23@手", "m1"),
             ("23+好", "m1"),
             ("23+好=", "m1"),
-            ("23+=好", "m1"),
+            ("23+^好", "m1"),
             ("2+好3", "m1"),
             ("2+好=3", "m1"),
             ("+門0", "m1"),
@@ -85,42 +90,42 @@ SECTIONS_SPEC = [
         "multi",
         "advanced",
         "多重同韻／同聲",
-        "用數字規定聲調，用參考字規定同韻或同聲；可用 <code translate=\"no\">?</code> 留空某個字，或令第一個字任意、其餘跟某詞逐字同韻／同聲。",
+        "用數字規定聲調，用參考字規定同韻或同聲（韻用尾 <code translate=\"no\">=</code>，聲用前 <code translate=\"no\">^</code>）；可用 <code translate=\"no\">?</code> 留空某個字，或令第一個字任意、其餘跟某詞逐字同韻／同聲。",
         "Multi-slot rhyme / initial",
-        "Use digits for tone codes and reference characters for rhyme or initial; leave a slot open with <code translate=\"no\">?</code>, or free the first character while the rest follow a sample word.",
+        "Use digits for tone codes and reference characters for rhyme (trailing <code translate=\"no\">=</code>) or initial (leading <code translate=\"no\">^</code>); leave a slot open with <code translate=\"no\">?</code>, or free the first character while the rest follow a sample word.",
         [
             ("23香=", "m1"),
             ("04困=49倒=", "m1"),
-            ("04=困49=倒", "m1"),
+            ("04^困49^倒", "m1"),
             ("?4困=4潦=9倒=", "m1"),
             ("?3人=?", "m1"),
             ("窮?潦倒=", "m1"),
             ("窮困?倒=", "m1"),
-            ("=窮?潦倒", "m1"),
-            ("=窮困?倒", "m1"),
+            ("^窮?潦倒", "m1"),
+            ("^窮困?倒", "m1"),
             ("?香港=", "m1"),
             ("?困潦倒=", "m1"),
-            ("?=困潦倒", "m1"),
+            ("?^困潦倒", "m1"),
         ],
     ),
     (
         "wildcard-code",
         "advanced",
         "任意字＋數字碼＋尾字同韻",
-        "開頭用 <code translate=\"no\">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。想再多一個字就加 <code translate=\"no\">+</code>。",
+        "開頭用 <code translate=\"no\">?</code> 表示第一個字隨便，再打聲調數字；最後一個漢字決定尾字要同邊個同韻。碼同參考字之間若要再隔一格，先用 <code translate=\"no\">+</code>（如 <code translate=\"no\">?30+人</code>）。",
         "Any char + tone digits + last rhymes",
-        "Leading <code translate=\"no\">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Add <code translate=\"no\">+</code> for one more character.",
+        "Leading <code translate=\"no\">?</code> leaves the first character open, then tone digits; the last character sets the rhyme for the end. Use <code translate=\"no\">+</code> between digits and the reference when you need an extra slot (e.g. <code translate=\"no\">?30+人</code>).",
         [("?30人", "m1"), ("?30+人", "m1")],
     ),
     (
         "jyutping-anchor",
         "advanced",
         "用粵拼指定某個字",
-        "唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母；位置之間用 <code translate=\"no\">+</code>（如 <code translate=\"no\">?+hon</code>、<code translate=\"no\">3+ngo4</code>）。",
+        "唔想打漢字參考字時，可以用粵拼字母標明某個字嘅韻母、完整音節或聲母。通配後面通常唔使 <code translate=\"no\">+</code>（如 <code translate=\"no\">?hon</code>、<code translate=\"no\">?m?</code>）；數字貼粵拼、或者要加長詞長時先要用 <code translate=\"no\">+</code>（如 <code translate=\"no\">3+ngo4</code>、<code translate=\"no\">23+o</code> 唔等同 <code translate=\"no\">23o</code>）。",
         "Specify a syllable with Jyutping",
-        "Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial; join positions with <code translate=\"no\">+</code> (e.g. <code translate=\"no\">?+hon</code>, <code translate=\"no\">3+ngo4</code>).",
+        "Instead of a Chinese reference character, type Jyutping letters for a final, full syllable, or initial. After <code translate=\"no\">?</code>, <code translate=\"no\">+</code> is usually optional (e.g. <code translate=\"no\">?hon</code>, <code translate=\"no\">?m?</code>); use <code translate=\"no\">+</code> when digits abut Jyutping or you need a longer word (<code translate=\"no\">3+ngo4</code>; <code translate=\"no\">23+o</code> ≠ <code translate=\"no\">23o</code>).",
         [
-            ("?+hon", "m1"),
+            ("?hon", "m1"),
             ("?+yut?", "m1"),
             ("?+syut?", "m1"),
             ("3+ngo4", "m1"),
@@ -131,7 +136,7 @@ SECTIONS_SPEC = [
             ("23o", "m1"),
             ("23+o", "m1"),
             ("23ei0", "m1"),
-            ("?+m?", "m1"),
+            ("?m?", "m1"),
             ("3m4", "m1"),
         ],
     ),
@@ -234,8 +239,12 @@ def main() -> None:
         zh_ex = []
         en_ex = []
         ex_lines = []
-        for q, mode in exs:
-            lab = label_for(q, mode)
+        for item in exs:
+            if len(item) == 3:
+                q, mode, lab = item
+            else:
+                q, mode = item
+                lab = label_for(q, mode)
             zh_ex.append(f"        {{ label: {js_str(lab)} }},")
             en_ex.append(f"        {{ label: {js_str(lab)} }},")
             ex_lines.append(f"      {{ query: {js_str(q)}, mode: {js_str(mode)} }},")

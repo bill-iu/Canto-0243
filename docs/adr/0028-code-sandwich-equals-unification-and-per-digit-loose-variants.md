@@ -1,6 +1,6 @@
 # 碼夾等號查詢統一與逐位鬆檔變體
 
-領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § **碼夾等號查詢**、**0243模式**、**等號（韻／聲）**、**參考字讀音解析**。延續 [ADR-0004](0004-reference-reading-query-normalize-position-match.md)、[ADR-0014](0014-serial-phoneme-anchor-and-prefix-wildcard-equals.md)。Grill 共識（2026-07）。
+領域詞彙：見 [CONTEXT.md](../../CONTEXT.md) § **碼夾等號查詢**、**0243模式**、**等號（韻）**、**聲錨符**、**參考字讀音解析**。延續 [ADR-0004](0004-reference-reading-query-normalize-position-match.md)、[ADR-0014](0014-serial-phoneme-anchor-and-prefix-wildcard-equals.md)。表面標記「同聲改 `^`」見 [ADR-0062](0062-rhyme-equals-initial-caret.md)。Grill 共識（2026-07）。
 
 現況：`23就`（`HYBRID_CODE`）、`23就=`（實際被 **串列** `{碼}{字}=` 掃描攔截，非 `HYBRID_TAIL_EQUALS_ALIAS`）、`2=我3`（framed `EQUALS`）三條執行路徑並存；**0243模式**鬆檔 `get_code_variants` 用整段 `replaceAll` + 單格翻，漏交叉組合（例：查 `39` 無 `93`）。我們決定收斂為單一 **碼夾等號** 家族，並修正鬆檔變體為**逐位獨立後組合**。
 

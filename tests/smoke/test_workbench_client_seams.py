@@ -31,7 +31,12 @@ class WorkbenchClientSeamTests(unittest.TestCase):
 
     def test_product_boundary_rejects_auto_lyrics(self) -> None:
         page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
-        self.assertIn("不會替你自動填詞", page)
+        cards = (WORKBENCH / "CandidateGrid.tsx").read_text(encoding="utf-8")
+        boundary = page + cards
+        self.assertTrue(
+            "不會自動填入字面" in boundary or "由你揀，不代你寫" in boundary,
+            msg="product boundary copy must stay on workbench",
+        )
         self.assertNotIn("autoApply", page)
         self.assertNotIn("generateLyrics", page)
 
@@ -40,17 +45,29 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         cards = (WORKBENCH / "CandidateGrid.tsx").read_text(encoding="utf-8")
         canvas = (WORKBENCH / "SentenceCanvas.tsx").read_text(encoding="utf-8")
         compare = (WORKBENCH / "ComparePanel.tsx").read_text(encoding="utf-8")
-        self.assertIn("limit: 120", page)
+        contracts = (WORKBENCH / "contracts.ts").read_text(encoding="utf-8")
+        # Page size SSOT lives in contracts / candidate-session (not necessarily WorkbenchPage)
+        self.assertIn("WORKBENCH_CANDIDATE_PAGE_SIZE", contracts)
+        self.assertNotIn("limit: 120", page)
         self.assertNotIn("type: 'select', start: 0, width: 1", page)
+        self.assertIn("載入更多", cards)
+        self.assertIn("池內", cards)
         self.assertIn("放寬後結果", cards)
         self.assertIn("未有足夠近義資料", cards)
         self.assertIn("onToggleLock", canvas)
         self.assertIn("is-in-span", canvas)
+        self.assertIn("onDoubleClick", canvas)
+        self.assertIn("span-hand-input", canvas)
+        self.assertIn("span-hand-toggle", canvas)
+        self.assertIn("canvas-clear-surfaces", canvas)
         self.assertIn("slot-reading-footer", canvas)
         self.assertIn("is-code-surface", canvas)
         self.assertIn("code-summary", canvas)
         self.assertIn("排序順位", compare)
         self.assertIn("sourceRank", compare)
+        # P2#4 candidate session owns load-more
+        self.assertIn("candidates.loadMore", page)
+        self.assertIn("engineTotal", page)
 
     def test_phase2_bridge_and_shortcuts(self) -> None:
         page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
@@ -61,10 +78,15 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         css = (WORKBENCH / "workbench-page.css").read_text(encoding="utf-8")
         engine = (ROOT / "client" / "src" / "db" / "position-match" / "engine.ts").read_text(encoding="utf-8")
         self.assertIn("consumeIngest", page)
-        self.assertIn("toggleLockKeepingSpan", page)
+        # P1 session: lock via sessionToggleLock (replacement-span used inside session)
+        self.assertIn("sessionToggleLock", page)
         self.assertNotIn("slot.locked && slot.surface", page)
         self.assertIn("整段押韻", bar)
         self.assertIn("整段同聲母", bar)
+        self.assertIn("跟原韻", bar)
+        self.assertIn("跟原聲", bar)
+        self.assertIn("復原最近一次套用／放寬／手改", bar)
+        self.assertIn("onUndo", bar)
         self.assertNotIn("末格同韻", bar)
         self.assertIn("在搜尋頁查看", compare)
         self.assertIn("放入句格", detail)
@@ -77,7 +99,11 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("consumeNavigate", app)
         self.assertIn("writeNavigate", page)
         self.assertIn('value="m1">0243</option>', bar)
-        self.assertIn("useState<ReplacementPlanV1['mode']>('m1')", page)
+        self.assertIn("同音（預設）", bar)
+        self.assertIn("指定碼", bar)
+        # default mode m1 lives in session defaults after P1
+        defaults = (WORKBENCH / "session" / "defaults.ts").read_text(encoding="utf-8")
+        self.assertIn("mode: 'm1'", defaults)
         self.assertIn("var(--ink)", css)
         self.assertNotIn("--wb-ink", css)
         self.assertIn("workbench-route", css)

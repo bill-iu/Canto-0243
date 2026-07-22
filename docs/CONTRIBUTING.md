@@ -68,4 +68,4 @@ Public-facing product name: **Canto-0243**. Forks must retain the name per LICEN
 - Cursor／IDE 暫存（`agent-tools/`、`mcps/`、`commit-msg.txt`、`.cursorignore`、`.cursorrules` 等；已 gitignore）
 - 未列入允許清單的資料 dump
 
-日誌請寫入 `logs/`（若腳本支援）或系統暫存區，並定期清理。Portable 交付腳本見 `portable/START.*`（套件含 `client/dist-portable/`，啟動開 `/app/`）；clone 開發用 `./start.sh`（與 Portable 職責分開；同樣開 `/app/`）。
+日誌請寫入 `logs/`（若腳本支援）或系統暫存區，並定期清理。**Desktop** 正式套件：Windows 只雙擊 `Canto-0243.exe`（無 `.bat`）；macOS 用 `.command`。clone 開發用 `./start.sh`（與 Desktop 交付分開；同樣開 `/app/`）。

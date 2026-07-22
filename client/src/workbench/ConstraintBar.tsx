@@ -1,6 +1,8 @@
 import type { ReplacementPlanV1 } from './contracts.ts';
+import type { CodeConstraintMode } from './code-constraint.ts';
 import {
   emptyPhonemeDimPicks,
+  phonemeCheckedOffsets,
   spanPositionOptions,
   type PhonemeDimPicks,
 } from './replacement-span.ts';
@@ -8,13 +10,25 @@ import {
 interface Props {
   mode: ReplacementPlanV1['mode'];
   semanticIntent: ReplacementPlanV1['semanticIntent'];
+  codeConstraint: CodeConstraintMode;
+  explicitCode: string;
   onModeChange: (mode: ReplacementPlanV1['mode']) => void;
   onSemanticChange: (intent: ReplacementPlanV1['semanticIntent']) => void;
+  onCodeConstraintChange: (mode: CodeConstraintMode) => void;
+  onExplicitCodeChange: (value: string) => void;
   spanWidth: number;
   rhyme: PhonemeDimPicks;
   initial: PhonemeDimPicks;
   onRhymeChange: (next: PhonemeDimPicks) => void;
   onInitialChange: (next: PhonemeDimPicks) => void;
+  rhymeRef: string;
+  initialRef: string;
+  onRhymeRefChange: (value: string) => void;
+  onInitialRefChange: (value: string) => void;
+  rhymeRefError?: string;
+  initialRefError?: string;
+  canUndo: boolean;
+  onUndo: () => void;
 }
 
 function toggleWhole(picks: PhonemeDimPicks, on: boolean): PhonemeDimPicks {
@@ -45,6 +59,10 @@ function DimChecklist({
   width,
   picks,
   onChange,
+  refValue,
+  onRefChange,
+  refError,
+  refPlaceholder,
 }: {
   legend: string;
   wholeLabel: string;
@@ -52,9 +70,15 @@ function DimChecklist({
   width: number;
   picks: PhonemeDimPicks;
   onChange: (next: PhonemeDimPicks) => void;
+  refValue: string;
+  onRefChange: (value: string) => void;
+  refError?: string;
+  refPlaceholder: string;
 }) {
   const positions = spanPositionOptions(width);
   const noneOn = !picks.whole && !picks.head && !picks.tail && picks.middles.length === 0;
+  const checkedCount = phonemeCheckedOffsets(picks, width).length;
+  const refId = `phoneme-ref-${legend}`;
   return (
     <fieldset className="phoneme-dim" disabled={width < 1}>
       <legend>{legend}</legend>
@@ -98,6 +122,21 @@ function DimChecklist({
         />
         {wholeLabel}
       </label>
+      <label className="phoneme-dim__ref" htmlFor={refId}>
+        {legend}：
+        <input
+          id={refId}
+          value={refValue}
+          onChange={(event) => onRefChange(event.target.value)}
+          maxLength={Math.max(checkedCount, 1)}
+          spellCheck={false}
+          disabled={checkedCount < 1}
+          placeholder={refPlaceholder}
+          aria-invalid={Boolean(refError)}
+          aria-describedby={refError ? `${refId}-err` : undefined}
+        />
+      </label>
+      {refError ? <p id={`${refId}-err`} className="phoneme-dim__ref-error">{refError}</p> : null}
     </fieldset>
   );
 }
@@ -105,31 +144,84 @@ function DimChecklist({
 export function ConstraintBar({
   mode,
   semanticIntent,
+  codeConstraint,
+  explicitCode,
   onModeChange,
   onSemanticChange,
+  onCodeConstraintChange,
+  onExplicitCodeChange,
   spanWidth,
   rhyme,
   initial,
   onRhymeChange,
   onInitialChange,
+  rhymeRef,
+  initialRef,
+  onRhymeRefChange,
+  onInitialRefChange,
+  rhymeRefError,
+  initialRefError,
+  canUndo,
+  onUndo,
 }: Props) {
+  const explicitHint = spanWidth > 0
+    ? `長度須為 ${spanWidth}；未填位會補 ?。`
+    : '鎖定替換段後可輸入指定碼。';
+
   return (
     <section className="constraint-bar" aria-labelledby="constraintHeading">
-      <h2 id="constraintHeading">本次替換條件</h2>
-      <label>聲調精度
-        <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
-          <option value="m1">0243</option>
-          <option value="m2">02493</option>
-          <option value="m3">394052</option>
-        </select>
-      </label>
-      <label>原意關係
-        <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
-          <option value="ranked">近義優先，保留其他選擇</option>
-          <option value="direct_only">只看直接近義</option>
-          <option value="off">不設語意條件</option>
-        </select>
-      </label>
+      <div className="constraint-bar__heading-row">
+        <h2 id="constraintHeading">本次替換條件</h2>
+        {canUndo ? (
+          <button type="button" className="undo-action" onClick={onUndo}>
+            復原最近一次套用／放寬／手改
+          </button>
+        ) : null}
+      </div>
+      <div className="constraint-bar__menus">
+        <label>聲調精度
+          <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
+            <option value="m1">0243</option>
+            <option value="m2">02493</option>
+            <option value="m3">394052</option>
+          </select>
+        </label>
+        <label>原意關係
+          <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
+            <option value="ranked">近義優先，保留其他選擇</option>
+            <option value="direct_only">只看直接近義</option>
+            <option value="off">不設語意條件</option>
+          </select>
+        </label>
+        <label>0243 碼
+          <select
+            value={codeConstraint}
+            onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
+          >
+            <option value="same_tone">同音（預設）</option>
+            <option value="off">不限定</option>
+            <option value="explicit">指定碼</option>
+          </select>
+        </label>
+        <label
+          className={`constraint-bar__explicit${codeConstraint === 'explicit' ? ' is-active' : ' is-reserved'}`}
+          aria-hidden={codeConstraint !== 'explicit'}
+        >
+          指定碼（?＝通配）
+          <input
+            value={explicitCode}
+            onChange={(event) => onExplicitCodeChange(event.target.value)}
+            maxLength={Math.max(spanWidth, 1)}
+            spellCheck={false}
+            inputMode="numeric"
+            disabled={codeConstraint !== 'explicit' || spanWidth < 1}
+            tabIndex={codeConstraint === 'explicit' ? undefined : -1}
+            title={explicitHint}
+            aria-describedby="explicitCodeHint"
+          />
+          <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
+        </label>
+      </div>
       <div className="phoneme-dims" aria-label="讀音約束">
         <DimChecklist
           legend="同韻"
@@ -138,6 +230,10 @@ export function ConstraintBar({
           width={spanWidth}
           picks={rhyme}
           onChange={onRhymeChange}
+          refValue={rhymeRef}
+          onRefChange={onRhymeRefChange}
+          refError={rhymeRefError}
+          refPlaceholder="跟原韻"
         />
         <DimChecklist
           legend="同聲"
@@ -146,10 +242,14 @@ export function ConstraintBar({
           width={spanWidth}
           picks={initial}
           onChange={onInitialChange}
+          refValue={initialRef}
+          onRefChange={onInitialRefChange}
+          refError={initialRefError}
+          refPlaceholder="跟原聲"
         />
       </div>
-      <p>更改條件只會重新找候選，不會改動句面。</p>
-      <p className="shortcut-hint">捷徑：空白鍵標定／取消 · U 復原 · 1–3 分組 · Enter 首候選 · A 套用</p>
+      <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；鎖定後點 ✎ 手打整段。</p>
+      <p className="shortcut-hint">捷徑：空白鍵鎖定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
 }

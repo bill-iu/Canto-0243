@@ -1,0 +1,47 @@
+# Desktop / installable app package (ADR-0068). Dev still uses requirements.txt + start.sh.
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "canto-0243"
+version = "1.0.9"
+description = "ONE搵韻 — offline Cantonese lyric rhyme dictionary (Desktop channel)"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "LicenseRef-CC-BY-NC-SA-4.0"
+authors = [{ name = "Canto-0243 contributors" }]
+# Lean Desktop runtime — see requirements.txt. Jyutping inject at query time uses
+# rime/static + DB; pycantonese is ingest-only (optional extra).
+dependencies = [
+  "fastapi",
+  "uvicorn",
+  "sqlalchemy",
+  "pydantic",
+  "python-multipart",
+  "python-dotenv",
+  "opencc-python-reimplemented",
+]
+
+[project.optional-dependencies]
+ingest = [
+  "pycantonese",
+  "pyjyutping",
+  "setuptools",
+  "pyyaml",
+]
+
+[project.scripts]
+canto-0243 = "app.desktop_entry:main"
+
+[project.gui-scripts]
+canto-0243-gui = "app.desktop_entry:main"
+
+[tool.setuptools]
+py-modules = ["main"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]
+exclude = ["tests*", "client*", "ingest*", "scripts*", "tools*"]

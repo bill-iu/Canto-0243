@@ -20,8 +20,13 @@ DIGIT_AFTER_SLOT_CONNECTOR_HINT = (
     "（輸入 `*` 仍接受，等同 `+`。）"
 )
 
-SERIAL_CHARSET_RE = re.compile(r"^[0-9?=一-龥]+$")
+SERIAL_CHARSET_RE = re.compile(r"^[0-9?=^一-龥]+$")
 SLOT_CHARS_RE = r"[0-9_?%]"
+
+INITIAL_RHYME_DUAL_MARK_HINT = (
+    "唔好同時用 `^`（同聲）同尾 `=`（同韻）。"
+    "例：`^香` 或 `香=`（唔好寫 `^香=`）。"
+)
 
 
 def is_wildcard_char(ch: str) -> bool:

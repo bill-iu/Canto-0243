@@ -62,12 +62,13 @@ assert(posDisplayChips('畫蛇添足').includes('成語'), 'chip chengyu');
 assert(posDisplayChips('牙斬斬').includes('俗語'), 'chip suyu');
 assert(posDisplayChips('三歲定八十').includes('諺語'), 'chip yanyu');
 assert(posDisplayChips('被打').includes('被動'), 'chip passive');
-assert(posDisplayChips('草稿').length === 0, 'low trust no chips');
-assert(posDisplayChips('雙標').length === 0, 'medium no display chips');
+// Grill C: display chips use show ∪ pos (any trust); no 「未審」 label
+assert(posDisplayChips('草稿').join() === '名', 'low trust shows formal pos chip');
+assert(posDisplayChips('雙標').includes('名') && posDisplayChips('雙標').includes('動'), 'medium shows pos chips');
 assert(posDisplayChips('無標').length === 0, 'empty chips');
 assert(formalPosMap().get('開心')?.has('a'), 'formal map high');
 assert(formalPosMap().get('雙標')?.has('v'), 'gate includes medium');
-assert(!formalPosMap().has('草稿'), 'low trust not in gate map');
+assert(!formalPosMap().has('草稿'), 'low trust not in gate map (seed/gate path)');
 resetProjectPosCarrier();
 
 console.log('pos-meta-self-check: ok');

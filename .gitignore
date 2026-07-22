@@ -12,6 +12,7 @@ __pycache__/
 # 建置產物
 dist/
 build/
+desktop-shell/target/
 .build-python/
 client/.tmp/
 .tmp/
@@ -76,3 +77,4 @@ docs/research/
 
 # Local-only research scripts (keep on disk; never push)
 scripts/research/
+

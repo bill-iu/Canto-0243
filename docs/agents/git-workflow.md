@@ -9,6 +9,16 @@
 3. **唔好**直接 commit／push 到 `main`，亦唔好喺 `main` 上改檔。
 4. **合併**：用戶確認無問題後，開 PR：`dev` → `main`（`gh pr create --base main --head dev`）。
 
+## 行尾（LF）
+
+文字檔一律 **LF**（見 [ADR-0063](../adr/0063-lf-line-endings.md)）。Clone／新工作樹後跑一次：
+
+```bash
+python scripts/install_githooks.py
+```
+
+之後每次 commit，`.githooks/pre-commit` 會把 staged 文字檔嘅 CRLF／CR 自動改成 LF。人手亦可：`python scripts/fix_eol_lf.py --staged`。
+
 ## 維護者
 
 - 日常開發與 agent 產出：跟 `dev`。

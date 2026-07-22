@@ -9,7 +9,7 @@ export type PingZak = 'ping' | 'ze';
 export type PingZeSubMode = 'm1' | 'm2' | 'm3';
 
 export const PING_ZE_INVALID_HINT =
-  '平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；字面請改用缺字語法（如 ?+就=）。';
+  '平仄串列查詢只接受 P（平）、Z（仄）與聲調數字 0–9；字面請改用缺字語法（如 ?就=）。';
 
 const PING_ZE_SLOT_RE = /^[PZ0-9?]+$/;
 const HAS_PZ_RE = /[PZ]/;

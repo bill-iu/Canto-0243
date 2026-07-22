@@ -243,20 +243,72 @@ def _client_is_localhost(request: Request) -> bool:
     return host in ("127.0.0.1", "localhost", "::1") or host.startswith("127.")
 
 
+# Desktop last-tab exit (ADR-0068): delayed shutdown can be cancelled on reload.
+_shutdown_timer: threading.Timer | None = None
+_shutdown_lock = threading.Lock()
+
+
+def _cancel_shutdown_timer() -> bool:
+    global _shutdown_timer
+    with _shutdown_lock:
+        if _shutdown_timer is None:
+            return False
+        _shutdown_timer.cancel()
+        _shutdown_timer = None
+        return True
+
+
+def _arm_shutdown(delay_s: float) -> None:
+    global _shutdown_timer
+
+    def _exit_soon() -> None:
+        # ponytail: portable 退出用 _exit；Windows 上 SIGTERM 對 uvicorn 不可靠
+        os._exit(0)
+
+    with _shutdown_lock:
+        if _shutdown_timer is not None:
+            _shutdown_timer.cancel()
+        # floor 0.25 so explicit menu exit still feels immediate
+        wait = max(0.25, float(delay_s))
+        t = threading.Timer(wait, _exit_soon)
+        t.daemon = True
+        _shutdown_timer = t
+        t.start()
+
+
 @app.post("/shutdown")
 async def portable_shutdown(request: Request):
-    """Portable-only graceful exit (localhost callers)."""
+    """Portable-only graceful exit (localhost callers).
+
+    Optional JSON ``{"delay_ms": N}`` schedules exit after N ms (capped) so a
+    reload can POST ``/shutdown/cancel`` (last-tab safe reload).
+    """
     if not _is_portable():
         raise HTTPException(status_code=403, detail="shutdown only available in portable mode")
     if not _client_is_localhost(request):
         raise HTTPException(status_code=403, detail="shutdown only allowed from localhost")
 
-    def _exit_soon() -> None:
-        # ponytail: portable 退出用 _exit；Windows 上 SIGTERM 對 uvicorn 不可靠
-        threading.Timer(0.25, lambda: os._exit(0)).start()
+    delay_ms = 0
+    try:
+        body = await request.json()
+        if isinstance(body, dict) and body.get("delay_ms") is not None:
+            delay_ms = int(body["delay_ms"])
+    except Exception:
+        delay_ms = 0
+    delay_ms = max(0, min(delay_ms, 5000))
+    _arm_shutdown(delay_ms / 1000.0 if delay_ms else 0.25)
+    return {"ok": True, "message": "shutting down", "delay_ms": delay_ms or 250}
 
-    _exit_soon()
-    return {"ok": True, "message": "shutting down"}
+
+@app.post("/shutdown/cancel")
+async def portable_shutdown_cancel(request: Request):
+    """Cancel a pending delayed shutdown (reload / new tab reclaim)."""
+    if not _is_portable():
+        raise HTTPException(status_code=403, detail="shutdown only available in portable mode")
+    if not _client_is_localhost(request):
+        raise HTTPException(status_code=403, detail="shutdown only allowed from localhost")
+    cancelled = _cancel_shutdown_timer()
+    return {"ok": True, "cancelled": cancelled}
 
 
 if __name__ == "__main__":

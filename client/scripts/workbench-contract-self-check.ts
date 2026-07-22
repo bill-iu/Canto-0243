@@ -42,10 +42,20 @@ if (!rejected) {
   throw new Error('workbench contract: rendered reason string was accepted');
 }
 
+const dual = parseWorkbenchCandidateResponse({
+  version: 1,
+  selectionVersion: 1,
+  exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+  total: 12,
+});
+if (dual.engineTotal !== 12) throw new Error('workbench contract: engineTotal not filled from total');
+
 const relaxed = parseWorkbenchCandidateResponse({
   version: 1,
   selectionVersion: 8,
   exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+  total: 0,
+  engineTotal: 0,
   relaxation: {
     id: 'mode:m3:m2',
     kind: 'loosen_mode',
@@ -60,6 +70,7 @@ const relaxed = parseWorkbenchCandidateResponse({
       slots: [{ pos: 0, kind: 'code_digit', digit: '1' }],
       semanticIntent: 'off',
       limit: 20,
+      offset: 0,
     },
   },
 });
@@ -67,5 +78,33 @@ const relaxed = parseWorkbenchCandidateResponse({
 if (relaxed.relaxation?.kind !== 'loosen_mode') {
   throw new Error('workbench contract: relaxation was not parsed');
 }
+
+rejected = false;
+try {
+  parseReplacementPlanV1({
+    version: 1,
+    selectionVersion: 1,
+    width: 1,
+    mode: 'm1',
+    slots: [{ pos: 0, kind: 'code_digit', digit: '3' }],
+    semanticIntent: 'off',
+    limit: 401,
+  });
+} catch {
+  rejected = true;
+}
+if (!rejected) throw new Error('workbench contract: limit > 400 was accepted');
+
+const page = parseReplacementPlanV1({
+  version: 1,
+  selectionVersion: 1,
+  width: 1,
+  mode: 'm1',
+  slots: [{ pos: 0, kind: 'code_digit', digit: '3' }],
+  semanticIntent: 'off',
+  limit: 400,
+  offset: 400,
+});
+if (page.offset !== 400) throw new Error('workbench contract: offset not parsed');
 
 console.log('workbench contract self-check ok');

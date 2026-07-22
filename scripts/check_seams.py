@@ -42,7 +42,7 @@ SOURCES_PATH = REPO_ROOT / "app" / "services" / "position_match" / "sources.py"
 PRELOAD_PATH = REPO_ROOT / "app" / "startup" / "offline_preload.py"
 SERVICE_PATH = REPO_ROOT / "app" / "services" / "manual_relation_service.py"
 ROUTER_PATH = REPO_ROOT / "app" / "routers" / "relation.py"
-LAUNCH_PATH = REPO_ROOT / "scripts" / "local_launch.py"
+LAUNCH_PATH = REPO_ROOT / "app" / "launch" / "local_launch.py"
 START_SH = REPO_ROOT / "start.sh"
 START_BAT = REPO_ROOT / "portable" / "START.bat"
 START_SH_PORTABLE = REPO_ROOT / "portable" / "START.sh"
@@ -50,6 +50,9 @@ MACOS_LAUNCHER = REPO_ROOT / "portable" / "macos" / "launcher"
 RELATION_ENTRY_PATH = REPO_ROOT / "shared" / "relation-entry.html"
 RELATION_ENTRY_CSS_PATH = REPO_ROOT / "shared" / "relation-entry.css"
 SERVED_APP_BASE = "http://127.0.0.1:8000/app"
+
+# Formal CI runs default. Legacy venv/START.bat transport: CANTO_SEAMS_LEGACY=1
+_LEGACY_SEAMS = os.environ.get("CANTO_SEAMS_LEGACY", "").strip() in ("1", "true", "yes")
 
 
 def _fetch_served(path: str, *, base: str = SERVED_APP_BASE) -> str:
@@ -68,21 +71,21 @@ class TestLocalLaunchSeam(unittest.TestCase):
         before_open = source[:open_idx]
         self.assertIn('HTML_SUFFIX = "/app/index.html"', source)
         self.assertIn("/app/index.html", before_open)
-        self.assertIn("wait_for_url.py", before_open)
+        self.assertIn("wait_for_url", before_open)
         gate_idx = source.find("--gate")
         self.assertGreater(gate_idx, open_idx)
 
     def test_local_launch_prints_starting_first(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
         starting_idx = source.find('msgs["starting"]')
-        free_idx = source.find("free_port.py")
+        free_idx = source.find("free_port")
         self.assertGreater(starting_idx, 0)
         self.assertGreater(free_idx, starting_idx)
 
     def test_local_launch_ensures_app_ui_before_server(self):
         source = LAUNCH_PATH.read_text(encoding="utf-8")
         ensure_idx = source.find("ensure_app_ui(")
-        main_py_idx = source.find('["main.py"]')
+        main_py_idx = source.find('"main.py"')
         self.assertGreater(ensure_idx, 0)
         self.assertGreater(main_py_idx, ensure_idx)
         self.assertIn("client/dist-portable", source)
@@ -94,52 +97,58 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("local_launch.py", source)
         self.assertNotIn("wait_for_url.py", source)
 
-    def test_portable_entries_delegate_to_local_launch(self):
-        for path in (START_BAT, START_SH_PORTABLE, MACOS_LAUNCHER):
-            with self.subTest(path=path.name):
-                self.assertIn("local_launch.py", path.read_text(encoding="utf-8"))
-
     def test_macos_launcher_clears_download_quarantine(self):
         source = MACOS_LAUNCHER.read_text(encoding="utf-8")
         self.assertIn("portable_macos.py", source)
 
-    def test_build_portable_macos_tar_is_arch_specific(self):
-        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
-        self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
-        self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
-
-    def test_build_portable_warms_word_cache(self):
-        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
-        self.assertIn("warm_word_cache.py", source)
-        ps1 = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
-        self.assertIn("warm_word_cache.py", ps1)
-        self.assertIn("PyInstaller", ps1)
+    def test_build_desktop_pyapp_channel(self):
+        """ADR-0068: formal Desktop build uses PyApp + wheel, not venv.pack."""
+        ps1 = (REPO_ROOT / "scripts" / "build-desktop.ps1").read_text(encoding="utf-8")
+        self.assertIn("PYAPP_", ps1)
         self.assertIn("Canto-0243.exe", ps1)
+        self.assertIn("Canto-0243-runtime.exe", ps1)
+        self.assertIn('Join-Path $OutDir "runtime"', ps1)
+        self.assertIn("desktop-shell", ps1)
+        self.assertIn("app.desktop_entry:main", ps1)
+        bundle = (REPO_ROOT / "scripts" / "desktop_bundle.ps1").read_text(encoding="utf-8")
+        # Formal package must not copy START.bat (comment may still mention the name)
+        self.assertNotRegex(bundle, r'Copy-Item[^\n]*START\.bat')
+        self.assertNotIn('"START.bat"', bundle)
+        self.assertIn("README.txt", bundle)
+        self.assertIn("3.11", ps1)
+        self.assertIn("canto-0243-desktop", ps1)
+        sh = (REPO_ROOT / "scripts" / "build-desktop.sh").read_text(encoding="utf-8")
+        self.assertIn("Canto-0243.command", sh)
+        self.assertIn("runtime/Canto-0243-runtime", sh)
+        self.assertIn("desktop-shell", sh)
+        self.assertIn("PYAPP_", sh)
+        shell = (REPO_ROOT / "desktop-shell" / "src" / "main.rs").read_text(encoding="utf-8")
+        self.assertIn("pyapp_install_ready", shell)
+        self.assertIn("setSplashStage", shell)
+        self.assertIn('INNER_SUBDIR: &str = "runtime"', shell)
+        # Name kept for callers; must forward to desktop build.
+        wrapper = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
+        self.assertIn("build-desktop.ps1", wrapper)
+        self.assertNotIn("portable_venv_pack.py", wrapper)
 
-    def test_portable_win_launcher_exists(self):
-        path = REPO_ROOT / "scripts" / "portable_win_launcher.py"
+    def test_desktop_entry_exists(self):
+        path = REPO_ROOT / "app" / "desktop_entry.py"
         source = path.read_text(encoding="utf-8")
-        self.assertIn("local_launch.py", source)
+        self.assertIn("bind_payload_root", source)
+        self.assertIn("from app.payload_root import", source)
+        self.assertNotIn("def resolve_payload_root", source)
+        self.assertIn("CANTO_PAYLOAD_ROOT", source)
         self.assertIn("--gui", source)
-        self.assertIn("_ensure_env_local", source)
-        self.assertIn("_patch_pyvenv_home", source)
-        self.assertIn("python-home", source)
-        self.assertIn("查韻介面未能啟動", source)
+        self.assertIn("lyrics.db", source)
 
-    def test_portable_win_start_bat_patches_pyvenv_home(self):
-        source = START_BAT.read_text(encoding="utf-8")
-        self.assertIn("python-home", source)
-        self.assertIn("pyvenv.cfg", source)
-        self.assertIn("home = ", source)
-
-    def test_portable_venv_materializes_windows_runtime(self):
-        source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
-        self.assertIn("materialize_windows_python_home", source)
-        self.assertIn("_assert_cfg_home_local", source)
-        self.assertIn("base_prefix", source)
-        win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
-        self.assertIn("python-home", win_rt)
-        self.assertIn("materialize_windows_python_home", win_rt)
+    def test_payload_root_ssot(self):
+        """P4#2: single Python resolve; no forked desktop_entry resolver."""
+        pr = (REPO_ROOT / "app" / "payload_root.py").read_text(encoding="utf-8")
+        self.assertIn("def resolve_payload_root", pr)
+        self.assertIn("def bind_payload_root", pr)
+        self.assertIn("CANTO_PAYLOAD_ROOT", pr)
+        de = (REPO_ROOT / "app" / "desktop_entry.py").read_text(encoding="utf-8")
+        self.assertEqual(de.count("def resolve_payload_root"), 0)
 
     def test_main_exposes_portable_shutdown(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
@@ -159,12 +168,23 @@ class TestLocalLaunchSeam(unittest.TestCase):
         menu = (REPO_ROOT / "client" / "src" / "mode-menu.tsx").read_text(encoding="utf-8")
         exit_src = PORTABLE_EXIT_PATH.read_text(encoding="utf-8")
         main = MAIN_PATH.read_text(encoding="utf-8")
+        session = (REPO_ROOT / "client" / "src" / "desktop-session.ts").read_text(encoding="utf-8")
+        main_ts = (REPO_ROOT / "client" / "src" / "main.tsx").read_text(encoding="utf-8")
         self.assertIn('id="portableExitBtn"', menu)
+        self.assertIn("isStopOnLastTabEnabled", menu)
+        self.assertIn("setStopOnLastTabEnabled", menu)
+        self.assertIn("停止本機服務", menu)
         self.assertIn("onExitPortable", app)
         self.assertIn("header-chrome__actions", app)
+        self.assertIn("workbench-entry--chip", app)
         self.assertIn("exitPortable", app)
         self.assertIn("onOpenAbout", menu)
         self.assertIn('fetch("/shutdown"', exit_src)
+        self.assertIn("installDesktopSessionLifecycle", main_ts)
+        self.assertIn("sendBeacon", session)
+        self.assertIn("/shutdown/cancel", session)
+        self.assertIn('"/shutdown/cancel"', main)
+        self.assertIn("_arm_shutdown", main)
         self.assertIn('"/frontend/index.html"', main)
         self.assertIn('RedirectResponse(url="/app/"', main)
         self.assertNotIn("StaticFiles(directory=str(FRONTEND_DIR)", main)
@@ -176,12 +196,63 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("--gui", source)
         self.assertIn("_html_ready", source)
         self.assertIn("_probe_home_portable", source)
-        self.assertIn('_spawn_detached(python, root, ["main.py"]', source)
+        self.assertIn("_server_argv", source)
+        self.assertIn("_spawn_detached(python, root, server_argv", source)
         self.assertIn("return 0 if html_ready else 1", source)
 
     def test_main_does_not_run_main_block_startup(self):
         source = MAIN_PATH.read_text(encoding="utf-8")
         self.assertNotIn("run_main_block_startup", source)
+
+
+@unittest.skipUnless(
+    _LEGACY_SEAMS,
+    "legacy venv/START.bat transport — set CANTO_SEAMS_LEGACY=1 (not formal Desktop gate)",
+)
+class TestLegacyPortableVenvSeam(unittest.TestCase):
+    """Historical Portable venv.pack path (ADR-0067). Formal channel is Desktop/PyApp (0068)."""
+
+    def test_portable_entries_delegate_to_local_launch(self):
+        for path in (START_BAT, START_SH_PORTABLE, MACOS_LAUNCHER):
+            with self.subTest(path=path.name):
+                self.assertIn("local_launch.py", path.read_text(encoding="utf-8"))
+
+    def test_build_portable_macos_tar_is_arch_specific(self):
+        source = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn('canto-0243-portable-macos-${MAC_ARCH}.tar.gz', source)
+        self.assertNotIn("canto-0243-portable-macos.tar.gz", source)
+
+    def test_portable_win_start_bat_patches_pyvenv_home(self):
+        source = START_BAT.read_text(encoding="utf-8")
+        self.assertIn("python-home", source)
+        self.assertIn("pyvenv.cfg", source)
+        self.assertIn("home = ", source)
+        self.assertIn("venv.pack", source)
+        self.assertIn("portable_ensure_venv.ps1", source)
+
+    def test_portable_venv_pack_contract_names(self):
+        py = (REPO_ROOT / "scripts" / "portable_venv_pack.py").read_text(encoding="utf-8")
+        ps1 = (REPO_ROOT / "scripts" / "portable_ensure_venv.ps1").read_text(encoding="utf-8")
+        for name in ("venv.pack", ".portable-venv-extracted", ".portable-venv-extract.lock"):
+            self.assertIn(name, py)
+            self.assertIn(name, ps1)
+
+    def test_portable_venv_materializes_windows_runtime(self):
+        source = (REPO_ROOT / "scripts" / "portable_venv.py").read_text(encoding="utf-8")
+        self.assertIn("materialize_windows_python_home", source)
+        self.assertIn("slim_portable_venv", source)
+        self.assertIn("_assert_cfg_home_local", source)
+        data_slim = (REPO_ROOT / "scripts" / "portable_data_slim.py").read_text(encoding="utf-8")
+        self.assertIn("slim_portable_data", data_slim)
+        self.assertIn("REQUIRED_RUNTIME_RELPATHS", data_slim)
+        ps1 = (REPO_ROOT / "scripts" / "portable_bundle.ps1").read_text(encoding="utf-8")
+        self.assertIn("portable_data_slim.py", ps1)
+        sh = (REPO_ROOT / "scripts" / "build-portable.sh").read_text(encoding="utf-8")
+        self.assertIn("portable_data_slim.py", sh)
+        self.assertIn("base_prefix", source)
+        win_rt = (REPO_ROOT / "scripts" / "portable_win_runtime.py").read_text(encoding="utf-8")
+        self.assertIn("python-home", win_rt)
+        self.assertIn("materialize_windows_python_home", win_rt)
 
 
 class TestManualRelationCommandSeam(unittest.TestCase):
@@ -475,10 +546,10 @@ class TestSynAntIngestModulesSeam(unittest.TestCase):
     def test_release_hot_path_is_build_word_relations(self):
         """P2 #6: build-db + legacy ingest-cilin CLI use 關係直寫 only."""
         cli = (REPO_ROOT / "ingest" / "cli.py").read_text(encoding="utf-8")
-        self.assertIn('("build-word-relations"', cli)
+        self.assertIn("def _build_db_relations", cli)
+        self.assertIn("cmd_build_word_relations", cli)
         # ingest-cilin must delegate, not call leaf_direct
         self.assertIn("def cmd_ingest_cilin", cli)
-        self.assertIn("cmd_build_word_relations", cli)
         # body of cmd_ingest_cilin should not invoke direct writer
         start = cli.index("def cmd_ingest_cilin")
         end = cli.index("\ndef cmd_", start + 1)
@@ -607,7 +678,13 @@ class TestQueryParseTypesSeam(unittest.TestCase):
                 if path in allow:
                     continue
                 text = path.read_text(encoding="utf-8")
-                if "CANDIDATE_FALLBACK_LIMIT = 2000" in text or "LIMIT 2000" in text:
+                # Ignore comments (historical "LIMIT 2000" notes in dense-code path)
+                code = "\n".join(
+                    ln
+                    for ln in text.splitlines()
+                    if not ln.lstrip().startswith("#") and not ln.lstrip().startswith("//")
+                )
+                if "CANDIDATE_FALLBACK_LIMIT = 2000" in code or "LIMIT 2000" in code:
                     hits.append(str(path.relative_to(REPO_ROOT)))
         self.assertEqual(hits, [], msg=f"hand-copied fallback limit: {hits}")
 
@@ -665,28 +742,38 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         self.assertNotIn('CASES_RELATION = [', src)
 
     def test_pwa_query_grammar_mirrors_python_families(self):
-        """P1 #2: PWA parse split into grammar/* families (mirror query_grammar)."""
-        grammar = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
-        for name in (
-            "shared.ts",
-            "normalize.ts",
-            "equals.ts",
-            "heteronym.ts",
-            "relation.ts",
-            "rhyme.ts",
-            "wca.ts",
-            "serial.ts",
-            "plus.ts",
-            "mask.ts",
-            "index.ts",
-        ):
-            with self.subTest(file=name):
-                self.assertTrue((grammar / name).is_file(), msg=f"missing {name}")
+        """P1 #2 / C10: PWA grammar/* mirrors query_grammar (contract SSOT)."""
+        import json
+
+        contract = json.loads(
+            (REPO_ROOT / "contracts" / "query-grammar-families.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        families = contract["mirrored_families"]
+        py_dir = REPO_ROOT / "app" / "services" / "query_grammar"
+        ts_dir = REPO_ROOT / "client" / "src" / "db" / "query" / "grammar"
+        for name in families:
+            with self.subTest(family=name):
+                self.assertTrue((py_dir / f"{name}.py").is_file(), msg=f"missing py {name}")
+                self.assertTrue((ts_dir / f"{name}.ts").is_file(), msg=f"missing ts {name}")
+        for name in contract.get("ts_only", []):
+            self.assertTrue((ts_dir / f"{name}.ts").is_file(), msg=f"missing ts_only {name}")
+        self.assertTrue((ts_dir / "index.ts").is_file())
+        from app.services.query_grammar import mirrored_families
+
+        self.assertEqual(tuple(families), mirrored_families())
+        # plus mask fast-path lives in grammar package (not a dangling db-root module)
+        plus_ts = (ts_dir / "plus.ts").read_text(encoding="utf-8")
+        self.assertIn("maskFromCanonicalPlusQuery", plus_ts)
+        shim = (
+            REPO_ROOT / "client" / "src" / "db" / "plus-grammar.ts"
+        ).read_text(encoding="utf-8")
+        self.assertIn("query/grammar/plus", shim)
         parse_ts = REPO_ROOT / "client" / "src" / "db" / "query" / "parse.ts"
         parse_src = parse_ts.read_text(encoding="utf-8")
         self.assertIn("tryParseBeforeMask", parse_src)
         self.assertIn("./grammar/index.ts", parse_src)
-        # thin entry — not the old mega bag
         self.assertLess(len(parse_src.splitlines()), 400)
         self.assertTrue(
             (REPO_ROOT / "client" / "src" / "db" / "query" / "result-map.ts").is_file()
@@ -694,6 +781,27 @@ class TestQueryParseTypesSeam(unittest.TestCase):
         self.assertTrue(
             (REPO_ROOT / "client" / "src" / "db" / "query" / "equals-empty-hint.ts").is_file()
         )
+
+    def test_self_check_harness_manifest(self):
+        """C9: harness + manifest cover CI tag."""
+        import json
+
+        client = REPO_ROOT / "client"
+        manifest = json.loads(
+            (client / "scripts" / "self-check-manifest.json").read_text(encoding="utf-8")
+        )
+        harness = client / "scripts" / "self-check-harness.mjs"
+        self.assertTrue(harness.is_file())
+        ci_ids = {c["id"] for c in manifest["checks"] if "ci" in c.get("tags", [])}
+        self.assertIn("guide-probe-readiness", ci_ids)
+        self.assertIn("jyutping-lookup", ci_ids)
+        self.assertIn("guide-examples", ci_ids)
+        self.assertIn("portable-host-build", ci_ids)
+        pkg = (client / "package.json").read_text(encoding="utf-8")
+        self.assertIn("self-check:ci", pkg)
+        ci_yml = (REPO_ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+        self.assertIn("self-check:ci", ci_yml)
+        self.assertNotIn("guide-probe-readiness-self-check.ts", ci_yml)
 
 
 class TestQueryTabsSeam(unittest.TestCase):

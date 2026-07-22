@@ -910,28 +910,75 @@ button.icon-button.header-search__shuffle:disabled {
   }
 }
 
+/* Primary feature chip — grill A (header wide); not a third search mode */
 .workbench-entry {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  color: var(--ink);
-  background: var(--surface);
+  gap: 8px;
+  min-height: 44px;
+  padding: 6px 14px 6px 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+  border-radius: 12px;
+  color: var(--accent-strong, var(--ink));
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent) 14%, var(--surface)) 0%,
+      var(--surface) 55%
+    );
   text-decoration: none;
-  font-size: .82rem;
-  font-weight: 750;
   white-space: nowrap;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 12%, transparent);
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+.workbench-entry__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  color: var(--accent-strong, var(--accent));
+}
+.workbench-entry__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 0;
+  line-height: 1.15;
+}
+.workbench-entry__title {
+  font-size: 0.84rem;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.workbench-entry__sub {
+  font-size: 0.68rem;
+  font-weight: 550;
+  color: var(--muted);
 }
 .workbench-entry:hover {
   border-color: var(--accent);
-  color: var(--accent-strong);
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--accent) 22%, var(--surface)) 0%,
+      color-mix(in srgb, var(--accent) 8%, var(--surface)) 100%
+    );
+  transform: translateY(-1px);
+}
+.workbench-entry:hover .workbench-entry__title {
+  color: var(--accent-strong, var(--accent));
 }
 .workbench-entry:focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
+}
+.mode-option--danger .mode-name {
+  color: color-mix(in srgb, #b91c1c 70%, var(--ink));
 }
 
 .workbench-menu-group { display: none; }

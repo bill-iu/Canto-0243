@@ -3,10 +3,12 @@ import { createLineDraft, lineDraftReducer } from '../src/workbench/line-draft.t
 import {
   WORKBENCH_DRAFT_KEY,
   WORKBENCH_RECOVERY_KEY,
+  clearLineDraft,
   loadLineDraft,
   saveLineDraft,
 } from '../src/workbench/line-draft-storage.ts';
 import { toggleLockKeepingSpan } from '../src/workbench/replacement-span.ts';
+import { isHanSurface, WILDCARD_SURFACE } from '../src/workbench/wildcard-slot.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`workbench draft: ${message}`);
@@ -28,8 +30,22 @@ const tones = parseLineInput('平仄');
 assert(tones.ok && tones.kind === 'tone', 'ping/ze input was not classified');
 assert(tones.constraints.map((item) => item.toneClass).join(',') === 'ping,ze', 'tone classes changed');
 
-assert(!parseLineInput('香3').ok, 'mixed input was accepted');
+assert(!parseLineInput('香P').ok, 'pingze mixed with surface must fail');
 assert(!parseLineInput('香'.repeat(65)).ok, 'input beyond 64 slots was accepted');
+
+const wild = parseLineInput('?香??');
+assert(wild.ok && wild.kind === 'surface', 'wildcard surface line');
+assert(wild.slots.every((slot, i) => (i === 1 ? slot.surface === '香' : slot.surface === WILDCARD_SURFACE)), 'wildcard layout');
+assert(isHanSurface('香') && !isHanSurface('?') && !isHanSurface(''), 'han surface helper');
+
+const mixed = parseLineInput('能夠44');
+assert(mixed.ok && mixed.kind === 'mixed', 'mixed 能夠44');
+assert(mixed.slots.map((s) => s.surface || s.code).join('') === '能夠44', 'mixed slots');
+assert(mixed.constraints.filter((c) => c.kind === 'code_digit').length === 2, 'mixed code constraints');
+
+const interleaved = parseLineInput('能4夠4');
+assert(interleaved.ok && interleaved.kind === 'mixed', 'interleaved mixed');
+assert(interleaved.slots[1]?.code === '4' && interleaved.slots[2]?.surface === '夠', 'interleaved layout');
 
 const parsedSentence = parseLineInput('我愛香港');
 assert(parsedSentence.ok, 'valid sentence failed before reducer check');
@@ -107,6 +123,37 @@ assert(draft.selection?.width === 2 && draft.undo != null, 'insert should keep s
 draft = lineDraftReducer(draft, { type: 'undo' });
 assert(draft.surface === '我愛香港', 'insert undo failed');
 
+{
+  const before = draft.surface;
+  const edited = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '你' });
+  assert(edited.surface === '你愛香港' && edited.undo != null && edited.lastApplied?.kind === 'manual', 'set_slot_manual failed');
+  assert(lineDraftReducer(edited, { type: 'undo' }).surface === before, 'set_slot_manual undo failed');
+  const digit = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 1, code: '4' });
+  assert(digit.slots[1]?.code === '4' && !digit.slots[1]?.surface, 'digit cell failed');
+  assert(lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '??' }) === draft, 'multi-char cell accepted');
+  const wild = lineDraftReducer(draft, { type: 'set_slot_manual', pos: 0, surface: '?' });
+  assert(wild.slots[0]?.surface === '?' && wild.undo != null, 'wildcard cell failed');
+}
+
+{
+  let spanDraft = lineDraftReducer(draft, { type: 'select', start: 2, width: 2 });
+  const applied = lineDraftReducer(spanDraft, {
+    type: 'apply_span_input',
+    selectionVersion: spanDraft.version,
+    slots: [{ surface: '香' }, { surface: '江' }],
+    constraints: [],
+  });
+  assert(applied.surface === '我愛香江' && applied.undo != null && applied.lastApplied?.kind === 'manual', 'apply_span_input failed');
+  assert(lineDraftReducer(applied, { type: 'undo' }).surface === '我愛香港', 'span input undo failed');
+  const stale = lineDraftReducer(spanDraft, {
+    type: 'apply_span_input',
+    selectionVersion: spanDraft.version - 1,
+    slots: [{ surface: '香' }, { surface: '江' }],
+    constraints: [],
+  });
+  assert(stale === spanDraft, 'stale span input applied');
+}
+
 const replaced = lineDraftReducer(draft, { type: 'replace_surface', literal: '香江' });
 assert(replaced.surface === '香江' && replaced.selection == null && replaced.undo != null, 'replace_surface failed');
 
@@ -117,6 +164,8 @@ const storage = {
 };
 saveLineDraft(storage, draft);
 assert(loadLineDraft(storage)?.surface === '我愛香港', 'saved draft did not round-trip');
+clearLineDraft(storage);
+assert(loadLineDraft(storage) === null, 'clearLineDraft did not empty storage');
 
 values.set(WORKBENCH_DRAFT_KEY, '{broken');
 assert(loadLineDraft(storage) === null, 'corrupt draft did not fall back');

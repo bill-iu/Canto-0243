@@ -3,13 +3,25 @@ import { defaultSyllableLettersForAnchorChar } from '../../rime-index.ts';
 
 /** Port of query_lexer.normalize_code_sandwich_tail_equals (ADR-0028) */
 function normalizeCodeSandwichTailEquals(q: string): string {
-  if (!q || q.includes('=')) {
+  if (!q || q.includes('=') || q.includes('^')) {
     return q;
   }
   if (/^(\d+)([\u4e00-\u9fff]+)$/.test(q)) {
     return `${q}=`;
   }
   return q;
+}
+
+/** Port of query_lexer.normalize_initial_marker_to_caret (ADR-0062) */
+function normalizeInitialMarkerToCaret(q: string): string {
+  if (!q) return q;
+  let out = q.replace(/(\d)=([\u4e00-\u9fff])/g, '$1^$2');
+  out = out.replace(/\?=([\u4e00-\u9fff])/g, '?^$1');
+  out = out.replace(/\+=([\u4e00-\u9fff])/g, '+^$1');
+  if (out.startsWith('=')) {
+    out = `^${out.slice(1)}`;
+  }
+  return out;
 }
 
 /** Port of jyutping_anchor.normalize_hanzi_dollar_syllable_anchors */
@@ -69,6 +81,7 @@ export function normalizeQuery(q: string): string {
   normalized = normalized.replace(/～～/g, '~~').replace(/！！/g, '!!');
 
   normalized = normalizeHanziDollarSyllableAnchors(normalized);
+  normalized = normalizeInitialMarkerToCaret(normalized);
   return normalizeCodeSandwichTailEquals(normalized);
 }
 

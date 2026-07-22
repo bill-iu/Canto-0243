@@ -1,75 +1,110 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { formalPosMap, isProjectPosReady } from '../pos/carrier.ts';
-import { filterByProjectPos, type PosFilterState } from '../pos/filter.ts';
-import type {
-  CandidateGroups,
-  ReplacementPlanV1,
-  WorkbenchCandidate,
-  WorkbenchCandidateResponse,
-} from './contracts.ts';
-import { filterCandidatesBySeedPos } from './pos-meta.ts';
+import type { PosFilterState } from '../pos/filter.ts';
+import { resetPosFilter } from '../pos/filter.ts';
+import type { ReplacementPlanV1 } from './contracts.ts';
+import {
+  candidateSessionView,
+  emptyCandidateSession,
+  requestLoadMore,
+  resetWithPlan,
+  runCandidateFetch,
+  samePlanIdentity,
+  type CandidatePlanBase,
+  type CandidateSessionState,
+} from './candidate-session/index.ts';
 import { selectWorkbenchAdapter, type WorkbenchAdapter } from './workbench-adapter.ts';
 
-const EMPTY_CREATOR_FILTER: PosFilterState = { pos: [], family: [], voice: [] };
-
-function filterGroups(seed: string, groups: CandidateGroups, map: ReadonlyMap<string, ReadonlySet<string>>): CandidateGroups {
-  const f = (xs: WorkbenchCandidate[]) => filterCandidatesBySeedPos(seed, xs, map);
-  return {
-    direct_syn: f(groups.direct_syn),
-    semantic_related: f(groups.semantic_related),
-    sound_only: f(groups.sound_only),
-  };
-}
-
-function applyPosFilter(plan: ReplacementPlanV1, next: WorkbenchCandidateResponse, filter: PosFilterState): WorkbenchCandidateResponse {
-  let exact = next.exact;
-  if (isProjectPosReady() && plan.semanticSeed) {
-    const map = formalPosMap();
-    if (map.size) exact = filterGroups(plan.semanticSeed, exact, map);
-  }
-  const applyCreatorFilter = (groups: CandidateGroups): CandidateGroups => ({
-    direct_syn: filterByProjectPos(groups.direct_syn, (row) => row.literal, filter),
-    semantic_related: filterByProjectPos(groups.semantic_related, (row) => row.literal, filter),
-    sound_only: filterByProjectPos(groups.sound_only, (row) => row.literal, filter),
-  });
-  return {
-    ...next,
-    exact: applyCreatorFilter(exact),
-  };
-}
-
+/**
+ * Thin React shell over candidate-session (P2#4).
+ * Pass plan **without** relying on page-owned offset — session owns engine cursor.
+ * `plan` may still include offset/limit; they are ignored for identity (stripped).
+ */
 export function useWorkbenchCandidates(
-  plan: ReplacementPlanV1 | null,
+  plan: ReplacementPlanV1 | CandidatePlanBase | null,
   adapter?: WorkbenchAdapter,
-  posFilter: PosFilterState = EMPTY_CREATOR_FILTER,
+  posFilter: PosFilterState = resetPosFilter(),
 ) {
   const defaultAdapter = useMemo(() => selectWorkbenchAdapter(), []);
   const activeAdapter = adapter ?? defaultAdapter;
-  const [response, setResponse] = useState<WorkbenchCandidateResponse | null>(null);
-  const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState(false);
+  const findCandidates = useCallback(
+    (req: ReplacementPlanV1, signal?: AbortSignal) => activeAdapter.findCandidates(req, signal),
+    [activeAdapter],
+  );
+
+  const [state, setState] = useState<CandidateSessionState>(() => emptyCandidateSession());
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  const base: CandidatePlanBase | null = useMemo(() => {
+    if (!plan) return null;
+    return {
+      version: plan.version,
+      selectionVersion: plan.selectionVersion,
+      width: plan.width,
+      mode: plan.mode,
+      slots: plan.slots,
+      semanticIntent: plan.semanticIntent,
+      semanticSeed: plan.semanticSeed,
+    };
+  }, [
+    plan?.version,
+    plan?.selectionVersion,
+    plan?.width,
+    plan?.mode,
+    plan?.semanticIntent,
+    plan?.semanticSeed,
+    // slots identity
+    plan ? JSON.stringify(plan.slots) : '',
+  ]);
 
   useEffect(() => {
-    if (!plan) {
-      setResponse(null);
-      setError(null);
-      return;
-    }
-    const controller = new AbortController();
-    setLoading(true);
-    setError(null);
-    void activeAdapter.findCandidates(plan, controller.signal).then((next) => {
-      if (next.selectionVersion === plan.selectionVersion) {
-        setResponse(applyPosFilter(plan, next, posFilter));
-      }
-    }).catch((nextError: unknown) => {
-      if (!controller.signal.aborted) setError(nextError instanceof Error ? nextError : new Error('candidate request failed'));
-    }).finally(() => {
-      if (!controller.signal.aborted) setLoading(false);
-    });
-    return () => controller.abort();
-  }, [activeAdapter, plan, posFilter]);
+    const current = stateRef.current;
+    const planChanged = !samePlanIdentity(current.planBase, base);
+    const posChanged = JSON.stringify(current.posFilter) !== JSON.stringify(posFilter);
+    if (!planChanged && !posChanged) return;
 
-  return { response, error, loading };
+    const next = resetWithPlan(current, base, posFilter);
+    setState(next);
+    if (!base) return;
+
+    const controller = new AbortController();
+    const startedGen = next.generation;
+    void (async () => {
+      const result = await runCandidateFetch(next, findCandidates, controller.signal);
+      if (controller.signal.aborted) return;
+      setState((s) => (s.generation === startedGen ? result : s));
+    })();
+    return () => controller.abort();
+  }, [base, posFilter, findCandidates]);
+
+  const loadMore = useCallback(() => {
+    setState((current) => {
+      const view = candidateSessionView(current);
+      if (!view.hasMore || current.loading) return current;
+      const next = requestLoadMore(current);
+      if (next.generation === current.generation) return current;
+      const startedGen = next.generation;
+      void (async () => {
+        const result = await runCandidateFetch(next, findCandidates);
+        setState((s) => (s.generation === startedGen ? result : s));
+      })();
+      return next;
+    });
+  }, [findCandidates]);
+
+  const view = useMemo(() => candidateSessionView(state), [state]);
+
+  return {
+    response: view.response,
+    error: view.error,
+    loading: view.loading,
+    loadedCount: view.filteredCount,
+    fetchedCount: view.engineFetched,
+    engineTotal: view.engineTotal,
+    hasMore: view.hasMore,
+    loadMore,
+  };
 }
+
+export { applyCreatorPosFilter } from './candidate-session/index.ts';

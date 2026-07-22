@@ -1,3 +1,35 @@
+# Canonical line endings: LF for all text (ADR-0063).
+* text=auto eol=lf
+
+# Binary — never touch line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.wasm binary
+*.db binary
+*.sqlite binary
+*.sqlite3 binary
+*.zip binary
+*.gz binary
+*.7z binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.pdf binary
+*.mp3 binary
+*.mp4 binary
+*.pyc binary
+*.pyd binary
+
+# macOS portable launchers (must stay LF)
 portable/macos/launcher text eol=lf
 portable/macos/Open*.command text eol=lf
 portable/macos/Canto-0243.command text eol=lf

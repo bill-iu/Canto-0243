@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -11,7 +12,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-RUNTIME_SCRIPTS = ("wait_for_url.py", "free_port.py", "local_launch.py", "portable_macos.py")
+RUNTIME_SCRIPTS = (
+    "wait_for_url.py",
+    "free_port.py",
+    "local_launch.py",
+    "portable_macos.py",
+    "portable_venv_pack.py",
+    "portable_ensure_venv.ps1",
+)
 _LIBPYTHON_RE = re.compile(r"libpython\d+\.\d+\.dylib")
 _BUNDLED_LIB = "libpython{major}.{minor}.dylib"
 
@@ -329,7 +337,13 @@ def _materialize_portable_stdlib(venv_dir: Path) -> None:
     src_lib = src_prefix / "lib" / ver
     dst_lib = venv_dir / "lib" / ver
     if src_lib.is_dir():
-        shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True)
+        try:
+            from portable_venv_slim import win_lib_ignore
+        except ImportError:  # pragma: no cover
+            from scripts.portable_venv_slim import win_lib_ignore
+
+        # Same denylist as Windows Lib/ (idlelib/test/ensurepip/…)
+        shutil.copytree(src_lib, dst_lib, dirs_exist_ok=True, ignore=win_lib_ignore)
 
     zip_name = f"python{sys.version_info.major}{sys.version_info.minor}.zip"
     src_zip = src_prefix / "lib" / zip_name
@@ -615,6 +629,26 @@ def build_portable_venv(root: Path, *, repo_root: Path | None = None) -> Path:
 
     relocate_macos_venv(venv_dir)
     _assert_venv_relocatable(venv_dir)
+
+    try:
+        from portable_venv_slim import count_files, slim_portable_venv
+    except ImportError:  # pragma: no cover
+        from scripts.portable_venv_slim import count_files, slim_portable_venv
+
+    slim_stats = slim_portable_venv(venv_dir)
+    print(
+        "Portable venv slim (C11-A): "
+        f"{slim_stats['venv_files_before']} -> {slim_stats['venv_files_after']} files "
+        f"(-{slim_stats['venv_files_removed']})"
+    )
+    # bundle root file count for maintainers (written beside slim report)
+    bundle_stats = {
+        **slim_stats,
+        "bundle_files": count_files(root),
+    }
+    (venv_dir / "portable-venv-slim.json").write_text(
+        json.dumps(bundle_stats, indent=2) + "\n", encoding="utf-8"
+    )
 
     py = _venv_python(venv_dir)
     if not py.is_file():

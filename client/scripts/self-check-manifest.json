@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "autoDiscover": true,
+  "autoTags": [
+    "local"
+  ],
+  "checks": [
+    {
+      "id": "portable-host-build",
+      "script": "portable-host-build-self-check.mjs",
+      "tags": [
+        "ci",
+        "portable"
+      ]
+    },
+    {
+      "id": "guide-probe-readiness",
+      "script": "guide-probe-readiness-self-check.ts",
+      "tags": [
+        "ci",
+        "guide"
+      ]
+    },
+    {
+      "id": "jyutping-lookup",
+      "script": "jyutping-lookup-self-check.ts",
+      "tags": [
+        "ci",
+        "parity"
+      ]
+    },
+    {
+      "id": "guide-examples",
+      "script": "guide-examples-self-check.ts",
+      "args": [
+        "../tests/fixtures/lyrics.db"
+      ],
+      "tags": [
+        "ci",
+        "guide"
+      ]
+    },
+    {
+      "id": "parser",
+      "script": "parser-self-check.ts",
+      "tags": [
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "plus-grammar",
+      "script": "plus-grammar-self-check.ts",
+      "tags": [
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "match-spec-registry",
+      "script": "match-spec-registry-self-check.ts",
+      "tags": [
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "equals-family",
+      "script": "equals-family-self-check.ts",
+      "tags": [
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "relation-pool",
+      "script": "relation-pool-self-check.ts",
+      "tags": [
+        "relation",
+        "local"
+      ]
+    }
+  ]
+}

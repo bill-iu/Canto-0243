@@ -86,7 +86,7 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
     });
   }
 
-  m = q.match(/^(\d+)\+=([\u4e00-\u9fff])$/);
+  m = q.match(/^(\d+)\+[\^=]([\u4e00-\u9fff])$/);
   if (m) {
     const code = m[1]!;
     const anchor = m[2]!;
@@ -101,6 +101,25 @@ export function parsePlusAnchorQuery(q: string): PlusAnchorQuery | null {
     });
   }
 
+  return null;
+}
+
+/** Port of plus.mask_from_canonical_plus_query — `+香??` / `?+你?` → mask literal. */
+const HEAD_LITERAL_MASK_RE = /^\+([\u4e00-\u9fff][0-9_?%]+)$/;
+const MIDDLE_LITERAL_MASK_RE = /^([_?%])\+([\u4e00-\u9fff])([0-9_?%]*)$/;
+
+export function maskFromCanonicalPlusQuery(q: string): string | null {
+  if (!q || q.includes('=')) {
+    return null;
+  }
+  let m = q.match(HEAD_LITERAL_MASK_RE);
+  if (m) {
+    return m[1]!;
+  }
+  m = q.match(MIDDLE_LITERAL_MASK_RE);
+  if (m) {
+    return m[1]! + m[2]! + m[3]!;
+  }
   return null;
 }
 

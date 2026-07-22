@@ -1,0 +1,5 @@
+#!/bin/sh
+# ADR-0063: auto-normalize staged text files to LF before commit.
+# Install once: python scripts/install_githooks.py
+ROOT="$(git rev-parse --show-toplevel)" || exit 1
+exec python "$ROOT/scripts/fix_eol_lf.py" --staged

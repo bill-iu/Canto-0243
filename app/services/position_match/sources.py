@@ -428,6 +428,25 @@ def _resolve_mask_family_source(
         )
 
     if spec.mask:
+        from app.services.position_match.mask_adapter import dense_code_from_spec
+
+        # Full-width dense code: load complete code bucket (no LIMIT 2000 + ORDER BY char).
+        # Repro: workbench 貪婪 same_tone → code 30; 金錢 high essay but late alpha → dropped.
+        effective_code = query_code or dense_code_from_spec(spec)
+        if (
+            effective_code
+            and len(effective_code) == spec.width
+            and effective_code.isdigit()
+        ):
+            return (
+                LengthCodeCandidateSource(
+                    db,
+                    code=effective_code,
+                    mode=mode,
+                    fallback_limit=None,
+                ),
+                None,
+            )
         return LengthMaskCandidateSource(db, spec.mask), None
 
     return None, None

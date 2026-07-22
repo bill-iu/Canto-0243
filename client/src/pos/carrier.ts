@@ -3,7 +3,7 @@
  * Missing / failed load → 詞性缺標 (no throw, no gate block).
  * 閘用詞類 = entry.gate (high|medium); 展示 = entry.show (high only).
  */
-import type { PosCode, PosEntry, ProjectPosCarrier } from './types.ts';
+import type { FormalPos, PosCode, PosEntry, ProjectPosCarrier } from './types.ts';
 import { FAMILY_LABEL_ZH, FORMAL_POS, POS_LABEL_ZH, VOICE_LABEL_ZH } from './types.ts';
 
 let carrier: ProjectPosCarrier | null = null;
@@ -56,17 +56,28 @@ export function formalPosMap(): ReadonlyMap<string, ReadonlySet<string>> {
   return map;
 }
 
-/** Creator-facing chips; high trust only (show / family / voice). */
+/**
+ * Formal pos codes for creator filter + detail chips: show ∪ pos (any trust).
+ * Grill 2026-07-21 C — cow-single/low (e.g. 金錢) participates; no 「未審」 label.
+ */
+export function creatorFormalPosCodes(entry: PosEntry | null | undefined): FormalPos[] {
+  if (!entry) return [];
+  const out: FormalPos[] = [];
+  const seen = new Set<string>();
+  for (const p of [...(entry.show ?? []), ...entry.pos]) {
+    if (p === 'u' || !FORMAL_POS.has(p) || seen.has(p)) continue;
+    seen.add(p);
+    out.push(p as FormalPos);
+  }
+  return out;
+}
+
+/** Creator-facing chips (formal pos + family/voice); omit section when empty. */
 export function posDisplayChips(literal: string): string[] {
   const e = getPosEntry(literal);
   if (!e) return [];
   const chips: string[] = [];
-  let codes: readonly string[] = [];
-  if (e.show != null) codes = e.show;
-  else if (e.trust === 'high') codes = e.pos;
-  else if (e.trust == null && e.gate == null) codes = e.pos; // legacy
-  for (const p of codes) {
-    if (p === 'u') continue;
+  for (const p of creatorFormalPosCodes(e)) {
     const label = POS_LABEL_ZH[p as PosCode];
     if (label) chips.push(label);
   }

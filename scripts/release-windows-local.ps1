@@ -14,7 +14,9 @@ param(
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
-$ZipPath = Join-Path $Root "dist\canto-0243-portable.zip"
+$ZipPath = Join-Path $Root "dist\canto-0243-desktop.zip"
+# Back-compat alias name still uploaded when present (optional)
+$LegacyZipPath = Join-Path $Root "dist\canto-0243-portable.zip"
 $DbPath = Join-Path $Root "lyrics.db"
 $LexiconPath = Join-Path $Root "dist\words-lexicon.json"
 
@@ -93,10 +95,11 @@ Assert-ReleaseSource
 Ensure-LyricsDb
 
 $env:PORTABLE_RELEASE_TAG = $Tag
+$env:DESKTOP_RELEASE_TAG = $Tag
 $buildArgs = @()
 if ($SkipReadmeSync) { $buildArgs += "-SkipReadmeSync" }
-& (Join-Path $Root "scripts\build-portable.ps1") @buildArgs
-if ($LASTEXITCODE -ne 0) { throw "build-portable.ps1 failed" }
+& (Join-Path $Root "scripts\build-desktop.ps1") @buildArgs
+if ($LASTEXITCODE -ne 0) { throw "build-desktop.ps1 failed" }
 
 if (-not (Test-Path $ZipPath)) {
     throw "expected $ZipPath"
@@ -109,9 +112,8 @@ $uploadLexicon = $WithLexicon -or (-not $releaseExists)
 if ($uploadLexicon) {
     Write-Host "==> Export words-lexicon.json..."
     New-Item -ItemType Directory -Path (Split-Path $LexiconPath) -Force | Out-Null
-    $BundlePy = Join-Path $Root "dist\canto-0243-portable\venv\Scripts\python.exe"
-    if (-not (Test-Path $BundlePy)) { throw "bundled python missing: $BundlePy" }
-    & $BundlePy (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
+    # Prefer system/dev python; Desktop packs no longer ship a full venv tree.
+    python (Join-Path $Root "scripts\export_words_lexicon.py") -o $LexiconPath
     if ($LASTEXITCODE -ne 0) { throw "export_words_lexicon.py failed" }
 } else {
     Write-Host "==> Skip lexicon export/upload (tag refresh; use -WithLexicon to force)"
@@ -144,11 +146,11 @@ if (-not $releaseExists) {
         $notes = @(
             "## Canto-0243 $Tag",
             "",
-            "- Windows: canto-0243-portable.zip (this upload)",
-            "- macOS Intel: canto-0243-portable-macos-x86_64.tar.gz (pending MacBook)",
-            "- macOS Apple Silicon arm64: not available yet",
+            "- Windows Desktop: canto-0243-desktop.zip (this upload; PyApp, first run needs network)",
+            "- macOS Desktop: canto-0243-desktop-macos-*.tar.gz (pending MacBook; use .command)",
             "",
-            "Sequoia Gatekeeper: System Settings, Privacy and Security, Open Anyway."
+            "First run downloads CPython 3.11 once; then offline.",
+            "Sequoia Gatekeeper: right-click Canto-0243.command, Open Anyway if needed."
         ) -join [Environment]::NewLine
         $tmp = [System.IO.Path]::GetTempFileName()
         [System.IO.File]::WriteAllText($tmp, $notes)

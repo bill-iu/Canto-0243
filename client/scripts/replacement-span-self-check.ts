@@ -37,7 +37,17 @@ const blank = parseLineInput('39');
 assert(blank.ok && blank.kind === 'code', 'code fixture');
 let codeDraft = createLineDraft(blank);
 result = toggleLockKeepingSpan(codeDraft, 0);
-assert(!result.ok && result.reason === 'no_surface', 'blank surface cannot lock');
+assert(result.ok && result.draft.slots[0]?.locked && result.draft.selection?.width === 1, 'code-only slot can lock');
+codeDraft = result.draft;
+result = toggleLockKeepingSpan(codeDraft, 1);
+assert(result.ok && result.draft.selection?.width === 2, 'second code lock grows span');
+
+const emptyParsed = parseLineInput('香港');
+assert(emptyParsed.ok, 'empty lock fixture');
+const trulyBlank = createLineDraft(emptyParsed);
+trulyBlank.slots[0] = { surface: '', locked: false };
+result = toggleLockKeepingSpan(trulyBlank, 0);
+assert(!result.ok && result.reason === 'no_surface', 'empty slot still cannot lock');
 
 assert(spanPositionOptions(1).length === 1, 'width 1 options');
 assert(spanPositionOptions(4).some((o) => o.key === 1) && spanPositionOptions(4).some((o) => o.key === 2), 'width 4 middles');

@@ -1,16 +1,14 @@
+# Product / Desktop runtime (ADR-0068 lean deps grill).
+# Offline search path: SQLite + FastAPI. No on-the-fly Jyutping inject via pycantonese.
+#
+# Maintainer ingest / phoneme repair / ML:
+#   pip install -r requirements-dev.txt
+#   (or: pip install -e ".[ingest]")
+
 fastapi
 uvicorn
 sqlalchemy
 pydantic
 python-multipart
-python-dotenv          # 這行很重要（支援 .env）
-pycantonese            # runtime 新詞 / 罕見字自動粵拼注入
-pyjyutping             # pycantonese fallback
-setuptools             # pyjyutping imports pkg_resources
-opencc-python-reimplemented  # cilin export + trad_chinese
-pyyaml                       # sources manifest loader for supplement-source checks
-
-# 依賴分層：
-#   requirements.txt           — 離線查詢（SQLite，產品保證路徑）
-#   requirements-dev.txt       — ingest / ML（import_data、generate_relationships 等）
-#   （已移除 PostgreSQL scaffold；本專案 SQLite-only）
+python-dotenv
+opencc-python-reimplemented  # trad_chinese s2hk (relation normalize; simplified input)

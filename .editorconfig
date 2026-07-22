@@ -1,0 +1,21 @@
+# https://editorconfig.org — keep in sync with ADR-0063 (LF everywhere for text)
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+trim_trailing_whitespace = true
+
+[*.{py,pyi}]
+indent_size = 4
+
+[*.{ts,tsx,js,mjs,cjs,css,html,yml,yaml,json,md}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.{bat,cmd,ps1}]
+end_of_line = lf

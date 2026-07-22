@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 
+import { posDisplayChips } from '../pos/carrier.ts';
 import type { LineDraft } from './line-draft.ts';
 import type { WorkbenchCandidate } from './contracts.ts';
 import { candidateReasonLabel } from './candidate-reason-i18n.ts';
@@ -21,6 +22,7 @@ export function ComparePanel({ candidate, draft, onApply, onClose, onOpenInSearc
     ...draft.slots.slice(selection.start + selection.width).map((slot) => slot.surface),
   ].join('');
   const relationSource = candidate.reasons.find((reason) => reason.source)?.source;
+  const posChips = posDisplayChips(candidate.literal);
   useEffect(() => { headingRef.current?.focus(); }, []);
   return (
     <aside
@@ -42,6 +44,16 @@ export function ComparePanel({ candidate, draft, onApply, onClose, onOpenInSearc
         <div><dt>粵拼</dt><dd>{candidate.jyutping}</dd></div>
         <div><dt>0243 碼</dt><dd>{candidate.code}</dd></div>
         <div><dt>排序順位</dt><dd>{candidate.sourceRank}</dd></div>
+        {posChips.length ? (
+          <div>
+            <dt>詞性</dt>
+            <dd className="compare-pos-chips">
+              {posChips.map((chip) => (
+                <span key={chip} className="compare-pos-chip">{chip}</span>
+              ))}
+            </dd>
+          </div>
+        ) : null}
         {relationSource ? <div><dt>關係來源</dt><dd>{relationSource}</dd></div> : null}
       </dl>
       <h3>為何出現</h3>

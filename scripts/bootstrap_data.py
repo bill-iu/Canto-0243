@@ -81,9 +81,10 @@ def main(argv: list[str] | None = None) -> int:
 
     print("\n=== Next steps (maintainer) ===")
     print("  1. words.hk / 開放詞典: fetch or place raw JSON (see data/lexicon/sources.yaml)")
-    print("  2. Full lexicon rebuild (per-source manifest, no CC-Canto):")
+    print("  2. Full lexicon rebuild:")
     print("       python -m ingest build-db")
-    print("  3. Relations: python -m ingest normalize --source current_static && python -m ingest build-relations")
+    print("     Fast paths: --stage words | relations | seal")
+    print("       (or: python -m ingest apply-manual-relations for 關係補錄 only)")
 
     return 1 if failed else 0
 

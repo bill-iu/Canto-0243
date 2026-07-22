@@ -1,5 +1,5 @@
-/** Creator-facing three-axis POS filter; display trust only. */
-import { getPosEntry } from './carrier.ts';
+/** Creator-facing three-axis POS filter (pos = show ∪ raw formal codes; any trust). */
+import { creatorFormalPosCodes, getPosEntry } from './carrier.ts';
 import type { FormalPos, PosEntry, PosFamily, PosVoice } from './types.ts';
 
 export type PosFilterState = {
@@ -66,7 +66,8 @@ export function posEntryMatchesFilter(entry: PosEntry | null, raw: PosFilterStat
   const filter = normalizePosFilter(raw);
   if (!isPosFilterActive(filter)) return true;
   if (!entry) return false;
-  if (filter.pos.length && !intersects(entry.show ?? [], filter.pos)) return false;
+  // Grill C: creator pos axis uses show ∪ pos (incl. low/cow-single), not show-only.
+  if (filter.pos.length && !intersects(creatorFormalPosCodes(entry), filter.pos)) return false;
   if (!familyMatches(entry.family, filter.family)) return false;
   if (filter.voice.length && (!entry.voice || !filter.voice.includes(entry.voice))) return false;
   return true;

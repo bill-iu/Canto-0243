@@ -76,7 +76,7 @@ export function parseDoubleWildcardRhymeQuery(q: string): RhymeAnchorQuery | nul
 
 /** Port of rhyme.parse_double_wildcard_initial_query */
 export function parseDoubleWildcardInitialQuery(q: string): RhymeAnchorQuery | null {
-  const m = q.match(/^([?_%])\+=([\u4e00-\u9fff])$/);
+  const m = q.match(/^([?_%])\+[\^=]([\u4e00-\u9fff])$/);
   if (!m) {
     return null;
   }
@@ -182,7 +182,7 @@ export function parsePartialRhymeMaskQuery(q: string): PartialRhymeMaskQuery | n
 
 /** Port of rhyme.parse_partial_initial_mask_query */
 export function parsePartialInitialMaskQuery(q: string): PartialInitialMaskQuery | null {
-  const m = q.match(/^=([\u4e00-\u9fff?]{4})$/);
+  const m = q.match(/^[\^=]([\u4e00-\u9fff?]{4})$/);
   if (!m) {
     return null;
   }
@@ -238,7 +238,7 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
     });
   }
 
-  m = q.match(/^=([\u4e00-\u9fff])$/);
+  m = q.match(/^[\^=]([\u4e00-\u9fff])$/);
   if (m) {
     return base({
       constraint: 'initial',
@@ -273,7 +273,7 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
     });
   }
 
-  m = q.match(/^=([\u4e00-\u9fff])([0-9_?%]+)$/);
+  m = q.match(/^[\^=]([\u4e00-\u9fff])([0-9_?%]+)$/);
   if (m) {
     const slots = m[2]!;
     return base({
@@ -285,7 +285,7 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
     });
   }
 
-  m = q.match(/^([0-9_?%]+)=([\u4e00-\u9fff])$/);
+  m = q.match(/^([0-9_?%]+)[\^=]([\u4e00-\u9fff])$/);
   if (m) {
     const slots = m[1]!;
     return base({

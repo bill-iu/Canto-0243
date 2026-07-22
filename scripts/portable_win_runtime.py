@@ -116,11 +116,16 @@ def materialize_windows_python_home(venv_dir: Path) -> None:
 
     src_lib = src / "Lib"
     if src_lib.is_dir():
+        try:
+            from portable_venv_slim import win_lib_ignore
+        except ImportError:  # pragma: no cover
+            from scripts.portable_venv_slim import win_lib_ignore
+
         shutil.copytree(
             src_lib,
             py_home / "Lib",
             dirs_exist_ok=True,
-            ignore=shutil.ignore_patterns("site-packages", "__pycache__"),
+            ignore=win_lib_ignore,
         )
 
     if not (py_home / "python.exe").is_file():

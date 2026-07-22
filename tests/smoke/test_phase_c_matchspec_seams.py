@@ -8,6 +8,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[2]
 PY_DISPATCH = REPO / "app" / "services" / "query_dispatch.py"
 TS_DISPATCH = REPO / "client" / "src" / "db" / "query" / "dispatch.ts"
+TS_MASK_EXEC = REPO / "client" / "src" / "db" / "query" / "mask-family-executor.ts"
 
 
 class PhaseCMatchSpecSeams(unittest.TestCase):
@@ -57,16 +58,18 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         self.assertGreater(i_exec, i_norm)
 
     def test_ts_dispatch_mask_family_single_entry(self):
+        """P3#5: thin dispatch delegates; MatchSpec work lives in mask-family-executor."""
         src = TS_DISPATCH.read_text(encoding="utf-8")
+        exec_src = TS_MASK_EXEC.read_text(encoding="utf-8")
         self.assertIn("case RouteKind.MASK_FAMILY", src)
         self.assertIn("executeMaskFamilySearchResult", src)
-        self.assertIn("normalizeToMatchSpec", src)
-        # must use engine family (execute or filter)
+        self.assertIn("mask-family-executor", src)
+        self.assertIn("normalizeToMatchSpec", exec_src)
         self.assertTrue(
-            "executeMatchSpec" in src or "filterMatchSpecRows" in src,
-            msg="TS mask path must call executeMatchSpec or filterMatchSpecRows",
+            "executeMatchSpec" in exec_src or "filterMatchSpecRows" in exec_src,
+            msg="TS mask executor must call executeMatchSpec or filterMatchSpecRows",
         )
-        self.assertEqual(src.count("async function executeMaskFamilySearchResult"), 1)
+        self.assertEqual(exec_src.count("export async function executeMaskFamilySearchResult"), 1)
         forbidden = (
             "executeEqualsQuery",
             "runEqualsQuery",
@@ -78,6 +81,7 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         for sym in forbidden:
             with self.subTest(sym=sym):
                 self.assertNotIn(sym, src)
+                self.assertNotIn(sym, exec_src)
 
     def test_ts_mask_family_case_only_calls_helper(self):
         src = TS_DISPATCH.read_text(encoding="utf-8")
@@ -89,15 +93,16 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         self.assertEqual(m.group(1), "executeMaskFamilySearchResult")
 
     def test_ts_mask_family_helper_sets_total(self):
-        """C1.1: page contract always assigns total from ordered length."""
-        src = TS_DISPATCH.read_text(encoding="utf-8")
+        """C1.1: page contract always assigns total (executor owns body after P3#5)."""
+        src = TS_MASK_EXEC.read_text(encoding="utf-8")
         m = re.search(
-            r"async function executeMaskFamilySearchResult[\s\S]*?return \{ items, total, hint \}",
+            r"export async function executeMaskFamilySearchResult[\s\S]*?return \{ items, total, hint \}",
             src,
         )
         self.assertIsNotNone(m, msg="executeMaskFamilySearchResult must return total")
         body = m.group(0)
-        self.assertIn("const total = ordered.length", body)
+        # total from unique char set of ordered rows (not raw ordered.length)
+        self.assertIn("const total =", body)
         self.assertIn("normalizeToMatchSpec", body)
 
 

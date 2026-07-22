@@ -81,6 +81,15 @@ def read_manifest(root: Path) -> Optional[dict[str, str]]:
     return {k: str(data[k]) for k in need}
 
 
+def count_tree_files(root: Path) -> int:
+    root = root.resolve()
+    n = 0
+    for path in root.rglob("*"):
+        if path.is_file():
+            n += 1
+    return n
+
+
 def write_manifest(
     root: Path,
     *,
@@ -97,18 +106,59 @@ def write_manifest(
     man = root / MANIFEST_NAME
     if man.is_file():
         man.unlink()
-    fp = {
+    venv = root / "venv"
+    data = root / "data"
+    pack = root / "venv.pack"
+    fp: dict[str, Any] = {
         "tag": tag if tag.startswith("v") else f"v{tag.lstrip('v')}",
         "platform": platform,
         "lyrics_sha256": file_sha256(db),
         "package_digest": package_digest(root),
+        "file_count": str(count_tree_files(root)),
+        "venv_file_count": str(count_tree_files(venv) if venv.is_dir() else 0),
+        "data_file_count": str(count_tree_files(data)),
     }
+    if pack.is_file():
+        fp["venv_pack_sha256"] = file_sha256(pack)
+    pack_meta = root / "portable-venv-pack.json"
+    if pack_meta.is_file():
+        try:
+            pmeta = json.loads(pack_meta.read_text(encoding="utf-8"))
+            if isinstance(pmeta.get("venv_unpacked_file_count"), int):
+                fp["venv_unpacked_file_count"] = str(pmeta["venv_unpacked_file_count"])
+            if isinstance(pmeta.get("venv_pack_sha256"), str) and "venv_pack_sha256" not in fp:
+                fp["venv_pack_sha256"] = pmeta["venv_pack_sha256"]
+        except (OSError, json.JSONDecodeError):
+            pass
+    # Slim report: under venv/ (unpacked) or bundle root after pack (ADR-0067)
+    slim_report = venv / "portable-venv-slim.json"
+    if not slim_report.is_file():
+        slim_report = root / "portable-venv-slim.json"
+    if slim_report.is_file():
+        try:
+            slim = json.loads(slim_report.read_text(encoding="utf-8"))
+            if isinstance(slim.get("venv_files_after"), int):
+                fp["venv_files_after"] = str(slim["venv_files_after"])
+            if isinstance(slim.get("venv_files_before"), int):
+                fp["venv_files_before"] = str(slim["venv_files_before"])
+        except (OSError, json.JSONDecodeError):
+            pass
+    data_slim_report = data / "portable-data-slim.json"
+    if data_slim_report.is_file():
+        try:
+            dslim = json.loads(data_slim_report.read_text(encoding="utf-8"))
+            if isinstance(dslim.get("data_files_after"), int):
+                fp["data_files_after"] = str(dslim["data_files_after"])
+            if isinstance(dslim.get("data_files_before"), int):
+                fp["data_files_before"] = str(dslim["data_files_before"])
+        except (OSError, json.JSONDecodeError):
+            pass
     text = json.dumps(fp, ensure_ascii=False, indent=2) + "\n"
     man.write_text(text, encoding="utf-8")
     if sidecar is not None:
         sidecar.parent.mkdir(parents=True, exist_ok=True)
         sidecar.write_text(text, encoding="utf-8")
-    return fp
+    return {k: str(v) for k, v in fp.items()}
 
 
 def _cache_dir(root: Path) -> Path:

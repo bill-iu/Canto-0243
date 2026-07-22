@@ -76,6 +76,7 @@ import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { HeaderHero } from './header-hero.tsx';
 import { workbenchPageHref } from './app-page.ts';
+import { navigateAppRoute } from './app-navigation.ts';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
@@ -747,7 +748,7 @@ function App() {
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
     try {
       writeIngest(sessionStorage, { literal, mode: ingestMode });
-      window.location.href = workbenchPageHref();
+      navigateAppRoute('workbench');
     } catch (error) {
       window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
     }
@@ -1054,8 +1055,28 @@ function App() {
                 </button>
               </div>
               <div className="header-chrome__actions">
-                <a className="workbench-entry" href={workbenchPageHref()}>
-                  {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                <a
+                  className="workbench-entry workbench-entry--chip"
+                  href={workbenchPageHref()}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateAppRoute('workbench');
+                  }}
+                >
+                  <span className="workbench-entry__icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                      <rect x="1.5" y="3" width="15" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M1.5 7.5h15M7.5 7.5v7.5M12 7.5v7.5" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  </span>
+                  <span className="workbench-entry__text">
+                    <span className="workbench-entry__title">
+                      {uiLang === 'zh' ? '句格工作台' : 'Line Workbench'}
+                    </span>
+                    <span className="workbench-entry__sub">
+                      {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
+                    </span>
+                  </span>
                 </a>
                 <ModeMenu
                   mode={mode}
@@ -1063,7 +1084,7 @@ function App() {
                   onModeChange={handleModeChange}
                   onOpenGuide={handleOpenGuide}
                   onOpenAbout={handleOpenAbout}
-                  onOpenWorkbench={() => { window.location.href = workbenchPageHref(); }}
+                  onOpenWorkbench={() => navigateAppRoute('workbench')}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                   onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                   theme={uiTheme}

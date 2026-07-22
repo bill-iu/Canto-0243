@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "prebuild": "node scripts/build-project-pos.mjs && npx tsx scripts/build-ranking-index.ts && npx tsx scripts/build-fonts.ts && node copy-db.js",
+    "prebuild": "node scripts/prebuild-assets.mjs",
     "build": "vite build",
     "build:portable": "node scripts/ensure-fonts.mjs && vite build --mode portable",
     "postbuild": "node scripts/check-pages-artifact.js",
@@ -13,7 +13,12 @@
     "lint": "oxlint",
     "copy-db": "node copy-db.js",
     "build-ranking": "npx tsx scripts/build-ranking-index.ts",
-    "build-fonts": "npx tsx scripts/build-fonts.ts"
+    "build-fonts": "npx tsx scripts/build-fonts.ts",
+    "prebuild:force": "node scripts/prebuild-assets.mjs --force",
+    "prebuild-stamp-check": "node scripts/prebuild-stamp-self-check.mjs",
+    "self-check": "node scripts/self-check-harness.mjs",
+    "self-check:ci": "node scripts/self-check-harness.mjs --tag ci",
+    "self-check:grammar": "node scripts/self-check-harness.mjs --tag grammar"
   },
   "dependencies": {
     "@journeyapps/wa-sqlite": "^1.7.0",

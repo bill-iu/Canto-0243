@@ -18,7 +18,8 @@ class CodeSandwichNormalizeTests(unittest.TestCase):
         self.assertEqual(normalize_search_query("32就起"), "32就起=")
 
     def test_skips_when_equals_present(self):
-        self.assertEqual(normalize_search_query("2=我3"), "2=我3")
+        self.assertEqual(normalize_search_query("2=我3"), "2^我3")
+        self.assertEqual(normalize_search_query("2^我3"), "2^我3")
         self.assertEqual(normalize_search_query("23就="), "23就=")
 
 

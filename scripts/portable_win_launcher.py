@@ -58,16 +58,54 @@ def _resolve_python(root: Path) -> Path | None:
     return None
 
 
+def _load_pack_mod(root: Path):
+    """Load on-disk scripts/portable_venv_pack.py (frozen launcher has no scripts on sys.path)."""
+    import importlib.util
+
+    path = root / "scripts" / "portable_venv_pack.py"
+    if not path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location("portable_venv_pack", path)
+    if spec is None or spec.loader is None:
+        return None
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _ensure_venv(root: Path) -> None:
+    """ADR-0067 extract-once when venv.pack is present."""
+    pack = root / "venv.pack"
+    if not pack.is_file() and _resolve_python(root) is not None:
+        return
+    mod = _load_pack_mod(root)
+    if mod is None:
+        if pack.is_file():
+            raise FileNotFoundError("scripts/portable_venv_pack.py missing; cannot extract venv.pack")
+        return
+    # Windowed frozen exe: give first-run extract a console for progress lines.
+    if getattr(sys, "frozen", False) and sys.platform == "win32" and pack.is_file():
+        try:
+            import ctypes
+
+            ctypes.windll.kernel32.AllocConsole()
+        except Exception:
+            pass
+    mod.ensure_portable_venv(root)
+
+
 def main() -> int:
     root = _bundle_root()
     os.chdir(root)
+
+    ensure_only = "--ensure-venv" in sys.argv[1:]
 
     if not (root / "lyrics.db").is_file():
         _win_message("Canto-0243", "找不到 lyrics.db。請確認已完整解壓套件。")
         return 1
 
     ui_index = root / "client" / "dist-portable" / "index.html"
-    if not ui_index.is_file():
+    if not ui_index.is_file() and not ensure_only:
         _win_message(
             "Canto-0243",
             "找不到查韻介面（client/dist-portable）。\n\n"
@@ -75,6 +113,19 @@ def main() -> int:
             "或改用 START.bat 查看詳情。",
         )
         return 1
+
+    try:
+        _ensure_venv(root)
+    except Exception as e:
+        _win_message(
+            "Canto-0243",
+            f"內建執行環境解壓失敗。\n\n{e}\n\n"
+            "請改用 START.bat 查看詳情，或重新下載完整免安裝套件。",
+        )
+        return 1
+
+    if ensure_only:
+        return 0
 
     python = _resolve_python(root)
     if python is None:

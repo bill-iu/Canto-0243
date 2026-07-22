@@ -17,11 +17,11 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 ## Latest release
 
 <!-- version:en -->
-Current version: **v1.0.9**
+Current version: **v1.1.0**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **171,079** (`lyrics.db` · `words` table)
+Current word entries: **171,082** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **Get started now (two equally important options)**
@@ -51,7 +51,7 @@ Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues
 
 - **Canto-0243 mobile**: Open https://bill-iu.github.io/Canto-0243/ directly; add to home screen for fully offline use. The header has a **Search guide**.
 
-- **Offline portable**: Download and unzip from [Releases](https://github.com/bill-iu/Canto-0243/releases). Windows: double-click `Canto-0243.exe` (or `START.bat`); macOS: double-click `Canto-0243.command`.
+- **Desktop offline**: Download and unzip from [Releases](https://github.com/bill-iu/Canto-0243/releases). Windows: double-click `Canto-0243.exe` only (no `.bat`); macOS: double-click `Canto-0243.command`.
 
 Developers who clone need `lyrics.db` (see [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)).
 
