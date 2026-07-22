@@ -24,6 +24,8 @@ const INNER_UNIX: &str = "Canto-0243-runtime";
 #[derive(Debug)]
 enum UserEvent {
     Stage(u8),
+    /// Stage-mapped bar → 100% (ADR-0068 §12); brief hold before Ready.
+    Complete,
     Failed(String),
     Ready,
 }
@@ -226,7 +228,8 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 return;
             }
 
-            // Heuristic stages while PyApp bootstraps (no public % API).
+            // Heuristic stages while PyApp bootstraps (no public byte % API).
+            // Splash maps stage → estimated % only (ADR-0068 §12); no in-band crawl.
             let elapsed = start.elapsed().as_secs();
             let next = if elapsed < 4 {
                 1
@@ -237,14 +240,18 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             } else {
                 4
             };
-            if next != stage {
+            if next > stage {
                 stage = next;
                 let _ = proxy_t.send_event(UserEvent::Stage(stage));
             }
 
             if product_http_ready() {
-                let _ = proxy_t.send_event(UserEvent::Stage(4));
-                thread::sleep(Duration::from_millis(500));
+                if stage < 4 {
+                    let _ = proxy_t.send_event(UserEvent::Stage(4));
+                    thread::sleep(Duration::from_millis(200));
+                }
+                let _ = proxy_t.send_event(UserEvent::Complete);
+                thread::sleep(Duration::from_millis(350));
                 let _ = proxy_t.send_event(UserEvent::Ready);
                 // Leave child running if still alive.
                 let _ = child.try_wait();
@@ -310,6 +317,10 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
                 let _ = webview.evaluate_script(&format!(
                     "window.setSplashStage && window.setSplashStage({i})"
                 ));
+            }
+            Event::UserEvent(UserEvent::Complete) => {
+                let _ = webview
+                    .evaluate_script("window.setSplashComplete && window.setSplashComplete()");
             }
             Event::UserEvent(UserEvent::Failed(msg)) => {
                 done.store(true, Ordering::SeqCst);

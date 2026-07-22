@@ -30,7 +30,7 @@
       align-items: center;
       justify-content: center;
       padding: 28px 24px 32px;
-      gap: 18px;
+      gap: 14px;
     }
     .brand {
       font-family: "Playfair Display", "Noto Serif TC", Georgia, serif;
@@ -54,25 +54,30 @@
       min-height: 1.4em;
       text-align: center;
     }
+    .pct {
+      margin: 0;
+      font-size: 0.88rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      min-height: 1.2em;
+      text-align: center;
+    }
     .bar {
       width: min(280px, 78vw);
       height: 6px;
       border-radius: 999px;
       background: var(--line);
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 2px;
     }
     .bar > i {
       display: block;
       height: 100%;
-      width: 40%;
+      width: 5%;
       border-radius: inherit;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      animation: slide 1.25s ease-in-out infinite;
-    }
-    @keyframes slide {
-      0% { transform: translateX(-120%); }
-      100% { transform: translateX(320%); }
+      background: var(--accent);
+      transition: width 0.35s ease-out;
     }
     .hint {
       margin: 0;
@@ -95,7 +100,8 @@
       line-height: 1.4;
       white-space: pre-wrap;
     }
-    body.is-error .bar { display: none; }
+    body.is-error .bar,
+    body.is-error .pct { display: none; }
     body.is-error .err { display: block; }
   </style>
 </head>
@@ -104,11 +110,22 @@
     <div class="brand">ONE·<span>搵</span>·韻</div>
     <p class="tag" id="tag">首次啟動：正在準備本機執行環境（只需一次）</p>
     <p class="stage" id="stage">正在準備…</p>
-    <div class="bar" aria-hidden="true"><i></i></div>
+    <p class="pct" id="pct" aria-live="polite">約 5%</p>
+    <div
+      class="bar"
+      id="bar"
+      role="progressbar"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="5"
+      aria-labelledby="stage"
+    ><i id="barFill"></i></div>
     <p class="hint" id="hint">需要網路以下載 Python 執行環境；完成後可離線使用。</p>
     <p class="err" id="err"></p>
   </div>
   <script>
+    // ADR-0068 §12: stage-mapped estimated % (not byte-true; no in-band time crawl).
+    const STAGE_PCT = [5, 25, 50, 75, 95];
     const STAGES = {
       zh: [
         "正在準備…",
@@ -133,23 +150,57 @@
       zh: "需要網路以下載 Python 執行環境；完成後可離線使用。",
       en: "Internet is needed to download Python once; then fully offline."
     };
+    const DONE_STAGE = {
+      zh: "準備完成",
+      en: "Ready"
+    };
     let lang = "zh";
+    let shownPct = 0;
+
+    function formatPct(n) {
+      return lang === "en" ? `~${n}%` : `約 ${n}%`;
+    }
+
+    function applyPct(n) {
+      const next = Math.max(shownPct, Math.min(100, Number(n) | 0));
+      shownPct = next;
+      const fill = document.getElementById("barFill");
+      const bar = document.getElementById("bar");
+      const pctEl = document.getElementById("pct");
+      if (fill) fill.style.width = `${next}%`;
+      if (bar) bar.setAttribute("aria-valuenow", String(next));
+      if (pctEl) pctEl.textContent = formatPct(next);
+    }
+
     window.setSplashLang = (l) => {
       lang = l === "en" ? "en" : "zh";
       document.getElementById("tag").textContent = TAG[lang];
       document.getElementById("hint").textContent = HINT[lang];
+      document.getElementById("pct").textContent = formatPct(shownPct || 5);
     };
+
     window.setSplashStage = (i) => {
       const list = STAGES[lang] || STAGES.zh;
       const idx = Math.max(0, Math.min(list.length - 1, Number(i) | 0));
       document.getElementById("stage").textContent = list[idx];
       document.body.classList.remove("is-error");
+      applyPct(STAGE_PCT[idx] ?? 5);
     };
+
+    /** Product HTTP ready — jump to 100% before shell exits. */
+    window.setSplashComplete = () => {
+      document.body.classList.remove("is-error");
+      document.getElementById("stage").textContent = DONE_STAGE[lang] || DONE_STAGE.zh;
+      applyPct(100);
+    };
+
     window.setSplashError = (msg) => {
       document.body.classList.add("is-error");
       document.getElementById("err").textContent = msg || "Setup failed.";
       document.getElementById("stage").textContent = lang === "en" ? "Setup failed" : "設定失敗";
     };
+
+    applyPct(5);
   </script>
 </body>
 </html>
