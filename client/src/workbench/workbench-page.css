@@ -11,6 +11,24 @@ body.query-tabs-app.workbench-route {
   min-height: 100dvh;
   overflow-x: hidden;
   overflow-y: auto;
+  /* 可捲、唔顯示捲動條（寬／窄屏） */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+body.query-tabs-app.workbench-route::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+/* 部分引擎 scrollbar 掛喺 html */
+html:has(body.query-tabs-app.workbench-route) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .workbench-header {
@@ -672,6 +690,13 @@ body.query-tabs-app.workbench-route {
   border-left: 1px solid var(--line);
   background: var(--surface);
   box-shadow: var(--shadow);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.compare-panel::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 .compare-close {
   position: absolute;
