@@ -24,7 +24,7 @@ Agent 與維護者流程見 `docs/agents/`；貢獻與 PR 見 [`docs/CONTRIBUTIN
 
 ### Issue tracker
 
-Issues live in GitHub Issues for `ICE-U-code/Canto-0243` (use the `gh` CLI). See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for `bill-iu/Canto-0243` (use the `gh` CLI). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
