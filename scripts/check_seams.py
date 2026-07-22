@@ -130,6 +130,12 @@ class TestLocalLaunchSeam(unittest.TestCase):
         wrapper = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
         self.assertIn("build-desktop.ps1", wrapper)
         self.assertNotIn("portable_venv_pack.py", wrapper)
+        # macOS release channel must build Desktop tar, not legacy portable venv.
+        mac = (REPO_ROOT / "scripts" / "release-macos-local.sh").read_text(encoding="utf-8")
+        self.assertIn("build-desktop.sh", mac)
+        self.assertIn("canto-0243-desktop-macos-", mac)
+        self.assertNotIn("build-portable.sh", mac)
+        self.assertIn("delete-asset", mac)  # drop legacy portable-macos asset if present
 
     def test_desktop_entry_exists(self):
         path = REPO_ROOT / "app" / "desktop_entry.py"

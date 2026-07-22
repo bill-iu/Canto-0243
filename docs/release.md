@@ -88,20 +88,24 @@ powershell -ExecutionPolicy Bypass -File scripts/release-windows-local.ps1 -Tag 
 
 **唔好**喺刷新時刪除 Release 上嘅 `lyrics.db`。
 
-## 步驟 2 — 發佈補件（macOS）
+## 步驟 2 — 發佈補件（macOS Desktop / PyApp）
+
+產物：`canto-0243-desktop-macos-{arch}.tar.gz`（**唔再**上傳 legacy `portable-macos` tar）。需 **Rust/cargo**。
 
 ```bash
 export GH_REPO=bill-iu/Canto-0243   # fork clone 時必設
+source "$HOME/.cargo/env"
 
-git fetch upstream --tags
+git fetch origin --tags
 git checkout v1.7.0
 
+# 或：bash scripts/macos-tar.sh --tag v1.7.0 --test
 bash scripts/release-macos-local.sh --tag v1.7.0 --test
-# 上傳：必從 Release 下載 lyrics.db（唔用 stale 本機 copy）；只上傳 tar
+# 上傳：必從 Release 下載 lyrics.db；只上傳 Desktop tar + manifest
 bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 ```
 
-須 `gh auth` 對 upstream 有 **contents: write**。
+須 `gh auth` 對 upstream 有 **contents: write**。詳見 [macos-maintainer.md](macos-maintainer.md)。
 
 ## 步驟 3 — Pages（PWA）
 
@@ -109,7 +113,7 @@ bash scripts/release-macos-local.sh --tag v1.7.0 --arch x86_64 --upload
 
 ## 驗收（macOS）
 
-下載 tar → 解壓 → 雙擊 `Canto-0243.command`（若 Gatekeeper 擋：系統設定 → 隱私與安全性 → 仍要開啟）。
+下載 `canto-0243-desktop-macos-*.tar.gz` → 解壓 → 雙擊 `Canto-0243.command`（**首次可需網**裝 CPython 3.11）。若 Gatekeeper 擋：系統設定 → 隱私與安全性 → 仍要開啟。
 
 ## 退役說明
 

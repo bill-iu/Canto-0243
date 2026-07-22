@@ -301,13 +301,13 @@ def check_update(root: Path, *, timeout: float = DEFAULT_TIMEOUT_S) -> dict[str,
     base["available"] = True
     tag = remote["tag"]
     if platform == "windows":
-        asset = "canto-0243-portable.zip"
+        asset = "canto-0243-desktop.zip"
     else:
         arch = platform.replace("macos-", "", 1) if platform.startswith("macos-") else "x86_64"
-        asset = f"canto-0243-portable-macos-{arch}.tar.gz"
+        asset = f"canto-0243-desktop-macos-{arch}.tar.gz"
     base["download_hint"] = (
         f"gh release download {tag} -p {asset} --clobber\n"
-        f"# Close Canto first, then extract over / beside the old portable folder."
+        f"# Close Canto first, then extract over / beside the old Desktop folder."
     )
     write_result(root, base)
     return base

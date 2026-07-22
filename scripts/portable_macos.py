@@ -5,10 +5,11 @@ import subprocess
 import sys
 from pathlib import Path
 
+# ADR-0068 Desktop asset names (legacy portable-* names retired from formal channel)
 _MACOS_TAR = {
-    "arm64": "canto-0243-portable-macos-arm64.tar.gz",
-    "aarch64": "canto-0243-portable-macos-arm64.tar.gz",
-    "x86_64": "canto-0243-portable-macos-x86_64.tar.gz",
+    "arm64": "canto-0243-desktop-macos-arm64.tar.gz",
+    "aarch64": "canto-0243-desktop-macos-arm64.tar.gz",
+    "x86_64": "canto-0243-desktop-macos-x86_64.tar.gz",
 }
 
 
@@ -68,7 +69,7 @@ def prepare_portable_bundle(bundle_root: str | Path, *, platform: str | None = N
 
 
 def macos_portable_tar_name(machine_arch: str) -> str:
-    """依建置機器架構回傳 portable tar 檔名。"""
+    """依建置機器架構回傳 Desktop macOS tar 檔名（歷史函式名保留）。"""
     name = _MACOS_TAR.get(machine_arch)
     if name is None:
         raise ValueError(f"unsupported macOS build arch: {machine_arch!r}")
@@ -76,7 +77,7 @@ def macos_portable_tar_name(machine_arch: str) -> str:
 
 
 def release_full_macos_artifacts() -> tuple[str, ...]:
-    """全量發佈 macOS 資產（雙原生 tar）。"""
+    """全量發佈 macOS Desktop 資產（雙原生 tar）。"""
     return (
         macos_portable_tar_name("arm64"),
         macos_portable_tar_name("x86_64"),

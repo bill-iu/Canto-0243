@@ -1,10 +1,32 @@
 #!/usr/bin/env bash
 # Build Desktop release for macOS (ADR-0068: PyApp + wheel + sidecar).
 # Creator primary entry: Canto-0243.command (not unsigned .app).
-set -euo pipefail
+set -eu
+[[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]] && set -o pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT_DIR="${ROOT}/dist/canto-0243-desktop"
 DB_PATH="${ROOT}/lyrics.db"
+
+# Prefer standalone 3.12 for build tooling; fall back to python3.
+if [[ -x "${ROOT}/.build-python/python/bin/python3.12" ]]; then
+  PY="${ROOT}/.build-python/python/bin/python3.12"
+else
+  PY="${PYTHON:-python3}"
+fi
+
+_project_version() {
+  "$PY" -c "
+from pathlib import Path
+text = Path('${ROOT}/pyproject.toml').read_text(encoding='utf-8')
+for line in text.splitlines():
+    s = line.strip()
+    if s.startswith('version') and '=' in s:
+        print(s.split('=', 1)[1].strip().strip('\"').strip(\"'\"))
+        break
+else:
+    raise SystemExit('version not found in pyproject.toml')
+"
+}
 
 case "${DESKTOP_MACOS_ARCH:-${PORTABLE_MACOS_ARCH:-$(uname -m)}}" in
   arm64|aarch64) MAC_ARCH=arm64 ;;
@@ -25,9 +47,9 @@ echo "==> Clean $OUT_DIR"
 rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR" "${ROOT}/dist/wheels"
 
-echo "==> Build wheel"
-python3 -m pip install -q build wheel setuptools
-python3 -m build --wheel --outdir "${ROOT}/dist/wheels"
+echo "==> Build wheel (python=$PY)"
+"$PY" -m pip install -q build wheel setuptools
+"$PY" -m build --wheel --outdir "${ROOT}/dist/wheels"
 WHEEL="$(ls -t "${ROOT}/dist/wheels"/canto_0243-*.whl | head -1)"
 [[ -n "$WHEEL" && -f "$WHEEL" ]] || { echo "wheel missing" >&2; exit 1; }
 
@@ -40,7 +62,7 @@ if [[ -d "${ROOT}/data" ]]; then
     --exclude 'raw' --exclude 'proposals' --exclude 'locks' --exclude 'pos' \
     --exclude 'project' "${ROOT}/data/" "${OUT_DIR}/data/" || \
     cp -R "${ROOT}/data/." "${OUT_DIR}/data/"
-  python3 "${ROOT}/scripts/portable_data_slim.py" "${OUT_DIR}/data" || true
+  "$PY" "${ROOT}/scripts/portable_data_slim.py" "${OUT_DIR}/data" || true
 fi
 cp "$DB_PATH" "${OUT_DIR}/lyrics.db"
 cp "$WHEEL" "${OUT_DIR}/"
@@ -55,7 +77,7 @@ curl -fsSL -o "${ROOT}/dist/pyapp-source.tar.gz" \
   "https://github.com/ofek/pyapp/releases/latest/download/source.tar.gz"
 tar -xzf "${ROOT}/dist/pyapp-source.tar.gz" -C "$PYAPP_DIR"
 BUILD_ROOT="$(find "$PYAPP_DIR" -maxdepth 1 -type d -name 'pyapp*' | head -1)"
-VER="$(python3 -c "import tomllib; print(tomllib.load(open('${ROOT}/pyproject.toml','rb'))['project']['version'])")"
+VER="$(_project_version)"
 
 export PYAPP_PROJECT_PATH="$WHEEL"
 export PYAPP_PROJECT_NAME="canto-0243"
@@ -102,17 +124,25 @@ exec "$ROOT/Canto-0243"
 EOF
 chmod +x "${OUT_DIR}/Canto-0243.command"
 
-python3 "${ROOT}/scripts/warm_word_cache.py" "$OUT_DIR" || true
+"$PY" "${ROOT}/scripts/warm_word_cache.py" "$OUT_DIR" || true
+
+if command -v codesign >/dev/null 2>&1; then
+  echo "==> Ad-hoc codesign Desktop binaries..."
+  codesign --force --sign - "${OUT_DIR}/Canto-0243" 2>/dev/null || true
+  codesign --force --sign - "${OUT_DIR}/runtime/Canto-0243-runtime" 2>/dev/null || true
+  codesign --force --sign - "${OUT_DIR}/Canto-0243.command" 2>/dev/null || true
+fi
 
 TAG="${DESKTOP_RELEASE_TAG:-${PORTABLE_RELEASE_TAG:-}}"
 if [[ -n "$TAG" ]]; then
   PLATFORM="macos-${MAC_ARCH}"
   SIDECAR="${ROOT}/dist/portable-manifest-${PLATFORM}.json"
-  python3 "${ROOT}/scripts/write_portable_manifest.py" \
+  "$PY" "${ROOT}/scripts/write_portable_manifest.py" \
     --root "$OUT_DIR" --tag "$TAG" --platform "$PLATFORM" --sidecar "$SIDECAR"
 fi
 
 echo "==> tar $TAR_PATH"
+rm -f "$TAR_PATH"
 tar -czf "$TAR_PATH" -C "$(dirname "$OUT_DIR")" "$(basename "$OUT_DIR")"
 echo "Done: $TAR_PATH"
 echo "First run needs network (CPython 3.11); use Canto-0243.command (not unsigned .app)."

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# macOS portable build + tar-only upload to an existing upstream Release (ADR-0044 §5).
+# macOS Desktop (PyApp) build + tar-only upload to an existing Release (ADR-0068 / 0044 §5).
 # ponytail: one machine = one native arch; publisher channel is Windows.
 set -eu
 [[ "${BASH_VERSINFO[0]:-0}" -ge 4 ]] && set -o pipefail
@@ -9,7 +9,6 @@ TAG=""
 ARCH="auto"
 UPLOAD=0
 TEST=0
-SKIP_README=1
 GH_REPO="${GH_REPO:-}"
 
 _gh() {
@@ -24,32 +23,32 @@ usage() {
   cat <<'EOF'
 Usage: bash scripts/release-macos-local.sh --tag vX.Y.Z [options]
 
-Build canto-0243-portable-macos-{arch}.tar.gz on this Mac. With --upload, only
-replaces the macOS tar on an existing Release (publisher role must run first).
+Build canto-0243-desktop-macos-{arch}.tar.gz on this Mac (PyApp + wheel + sidecar).
+With --upload, only replaces the macOS Desktop tar on an existing Release
+(publisher role must run first).
 
 Options:
-  --tag TAG          Required. Release tag (e.g. v1.6.5)
+  --tag TAG          Required. Release tag (e.g. v1.1.0)
   --arch ARCH        auto (default), arm64, or x86_64 — must match this Mac's CPU
   --upload           Upload tar only via gh (Release must already exist)
-  --tar-only         Accepted alias for --upload (tar-only is the only upload mode)
-  --test             After build, open dist/canto-0243-portable/Canto-0243.command
-  --sync-readme      Run update_readme_words_count during build (default: skip)
+  --tar-only         Accepted alias for --upload
+  --test             After build, open dist/canto-0243-desktop/Canto-0243.command
+  --sync-readme      Accepted for parity with older callers (no-op; Desktop build skips)
   -h, --help         Show this help
 
 Prerequisites:
   --upload: gh auth, GH_REPO=bill-iu/Canto-0243 (fork clone), git checkout at TAG,
             Release must already exist (publisher role)
-  build: lyrics.db — download from Release $TAG when available (--upload requires it; no build-db)
-  python3; optional .build-python/ via scripts/fetch-macos-build-python.sh
+  build: lyrics.db from Release $TAG when available (--upload requires it; no build-db)
+  cargo (rustup); python3; client: npm run build:portable; data/rime/char.csv (fetch script)
 
 Examples:
-  bash scripts/release-macos-local.sh --tag v1.6.5 --test
+  bash scripts/release-macos-local.sh --tag v1.1.0 --test
 
-  GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag v1.6.5 --arch x86_64 --upload
+  GH_REPO=bill-iu/Canto-0243 bash scripts/release-macos-local.sh --tag v1.1.0 --arch x86_64 --upload
 
-Sequoia download quarantine:
-  Apps built here open without quarantine. After downloading from GitHub, Gatekeeper
-  may show only 完成/移至垃圾桶 — use 系統設定 → 隱私與安全性 → 仍要開啟 (see portable/README.txt).
+Sequoia: after download, Gatekeeper may need 系統設定 → 隱私與安全性 → 仍要開啟
+(see portable/README.txt). First run needs network (PyApp CPython 3.11).
 EOF
 }
 
@@ -63,7 +62,7 @@ while [[ $# -gt 0 ]]; do
       exit 1
       ;;
     --test) TEST=1; shift ;;
-    --sync-readme) SKIP_README=0; shift ;;
+    --sync-readme) shift ;; # no-op: Desktop path has no README word-count step here
     -h|--help) usage; exit 0 ;;
     *)
       echo "Unknown option: $1" >&2
@@ -101,14 +100,14 @@ if [[ "$ARCH" == "auto" ]]; then
 fi
 
 if [[ "$ARCH" != "$HOST_ARCH" ]]; then
-  echo "error: --arch $ARCH but this Mac is $HOST_ARCH (venv would be wrong CPU)" >&2
+  echo "error: --arch $ARCH but this Mac is $HOST_ARCH (native PyApp binary would be wrong CPU)" >&2
   exit 1
 fi
 
 _verify_at_tag_commit() {
   local tag_commit head_commit
   tag_commit="$(git -C "$ROOT" rev-parse "${TAG}^{commit}")" || {
-    echo "error: unknown git tag $TAG (git fetch upstream --tags?)" >&2
+    echo "error: unknown git tag $TAG (git fetch origin --tags?)" >&2
     exit 1
   }
   head_commit="$(git -C "$ROOT" rev-parse HEAD)"
@@ -123,13 +122,18 @@ _assert_release_source() {
     echo "error: failed to fetch origin/main and origin/dev" >&2
     exit 1
   }
-  if ! git -C "$ROOT" merge-base --is-ancestor origin/dev origin/main; then
-    echo "error: origin/dev is not merged into origin/main; merge dev first, then rebuild release assets" >&2
-    exit 1
-  fi
   if ! git -C "$ROOT" merge-base --is-ancestor "${TAG}^{commit}" origin/main; then
     echo "error: $TAG is not reachable from origin/main; tag from latest main after dev is merged" >&2
     exit 1
+  fi
+  # Tar-only refresh: product is the tag on main. Tooling commits may sit on dev only.
+  if ! git -C "$ROOT" merge-base --is-ancestor origin/dev origin/main; then
+    if command -v gh >/dev/null 2>&1 && _gh release view "$TAG" >/dev/null 2>&1; then
+      echo "warn: origin/dev not fully merged into origin/main; continuing tar refresh for existing Release $TAG" >&2
+    else
+      echo "error: origin/dev is not merged into origin/main; merge dev first, then rebuild release assets" >&2
+      exit 1
+    fi
   fi
 }
 
@@ -157,6 +161,28 @@ _sync_published_lexicon() {
   exit 1
 }
 
+_ensure_client_portable() {
+  if [[ -f "$ROOT/client/dist-portable/index.html" ]]; then
+    return 0
+  fi
+  echo "==> client/dist-portable missing — npm run build:portable..."
+  (
+    cd "$ROOT/client"
+    if [[ ! -d node_modules ]]; then
+      npm ci
+    fi
+    npm run build:portable
+  )
+}
+
+_ensure_rime_char() {
+  if [[ -f "$ROOT/data/rime/char.csv" ]]; then
+    return 0
+  fi
+  echo "==> data/rime/char.csv missing — fetch_rime_data.py..."
+  python3 "$ROOT/scripts/fetch/fetch_rime_data.py"
+}
+
 _verify_at_tag_commit
 _assert_release_source
 
@@ -179,28 +205,32 @@ fi
   exit 1
 }
 
-TAR_PATH="$ROOT/dist/canto-0243-portable-macos-${ARCH}.tar.gz"
-BUNDLE_DIR="$ROOT/dist/canto-0243-portable"
-ENTRY_CMD="$BUNDLE_DIR/Canto-0243.command"
+command -v cargo >/dev/null 2>&1 || {
+  echo "error: cargo required for Desktop/PyApp (install: https://rustup.rs )" >&2
+  exit 1
+}
 
-echo "==> Canto-0243 local macOS release"
+_ensure_client_portable
+_ensure_rime_char
+
+TAR_PATH="$ROOT/dist/canto-0243-desktop-macos-${ARCH}.tar.gz"
+BUNDLE_DIR="$ROOT/dist/canto-0243-desktop"
+ENTRY_CMD="$BUNDLE_DIR/Canto-0243.command"
+MANIFEST_SIDECAR="$ROOT/dist/portable-manifest-macos-${ARCH}.json"
+
+echo "==> Canto-0243 local macOS Desktop release (PyApp)"
 echo "    tag:  $TAG"
 echo "    arch: $ARCH (host $HOST_ARCH)"
 echo "    root: $ROOT"
 [[ -n "$GH_REPO" ]] && echo "    repo: $GH_REPO"
 
-echo "==> Build portable..."
+echo "==> Build Desktop (build-desktop.sh)..."
 (
+  export DESKTOP_MACOS_ARCH="$ARCH"
   export PORTABLE_MACOS_ARCH="$ARCH"
-  export SKIP_README_SYNC="$SKIP_README"
+  export DESKTOP_RELEASE_TAG="$TAG"
   export PORTABLE_RELEASE_TAG="$TAG"
-  BUILD_PY="$ROOT/.build-python/python/bin/python3.12"
-  if [[ ! -x "$BUILD_PY" ]]; then
-    echo "==> Fetch build Python (standalone CPython 3.12)..."
-    bash "$ROOT/scripts/fetch-macos-build-python.sh"
-  fi
-  export PORTABLE_BUILD_PYTHON="$BUILD_PY"
-  bash "$ROOT/scripts/build-portable.sh"
+  bash "$ROOT/scripts/build-desktop.sh"
 )
 
 [[ -f "$TAR_PATH" ]] || {
@@ -209,33 +239,40 @@ echo "==> Build portable..."
 }
 
 if [[ -x "$ENTRY_CMD" ]] && command -v codesign >/dev/null 2>&1; then
-  echo "==> Codesign check..."
-  codesign --verify --strict "$ENTRY_CMD" && echo "    Canto-0243.command: OK"
+  echo "==> Codesign check (entry)..."
+  codesign --verify --strict "$ENTRY_CMD" 2>/dev/null || true
+  if [[ -x "$BUNDLE_DIR/Canto-0243" ]]; then
+    codesign --force --sign - "$BUNDLE_DIR/Canto-0243" 2>/dev/null || true
+  fi
+  if [[ -x "$BUNDLE_DIR/runtime/Canto-0243-runtime" ]]; then
+    codesign --force --sign - "$BUNDLE_DIR/runtime/Canto-0243-runtime" 2>/dev/null || true
+  fi
 fi
-
-echo "==> Export words-lexicon.json (local dist only; not uploaded by this script)..."
-python3 "$ROOT/scripts/export_words_lexicon.py" -o "$ROOT/dist/words-lexicon.json"
 
 tar_mb=$(du -m "$TAR_PATH" | cut -f1)
 echo ""
 echo "Built:"
 echo "  $TAR_PATH (${tar_mb} MB)"
-echo "  $ROOT/dist/words-lexicon.json"
+[[ -f "$MANIFEST_SIDECAR" ]] && echo "  $MANIFEST_SIDECAR"
 
 if [[ "$TEST" -eq 1 ]]; then
   echo "==> Local smoke: open $ENTRY_CMD"
-  echo "    (same-machine build has no com.apple.quarantine — should launch)"
+  echo "    First run needs network (PyApp installs CPython 3.11)."
   open "$ENTRY_CMD"
 fi
 
 if [[ "$UPLOAD" -eq 1 ]]; then
-  echo "==> Upload to GitHub Release $TAG (tar + portable-manifest)..."
+  echo "==> Upload to GitHub Release $TAG (Desktop tar + manifest)..."
   _gh release upload "$TAG" "$TAR_PATH" --clobber
-  MANIFEST_SIDECAR="$ROOT/dist/portable-manifest-macos-${ARCH}.json"
   if [[ -f "$MANIFEST_SIDECAR" ]]; then
     _gh release upload "$TAG" "$MANIFEST_SIDECAR" --clobber
   else
     echo "WARN: missing $MANIFEST_SIDECAR (套件更新提示 will not detect this build)" >&2
+  fi
+  # Drop legacy portable asset name if still on the Release (ADR-0068)
+  if _gh release view "$TAG" --json assets -q '.assets[].name' 2>/dev/null | grep -qx "canto-0243-portable-macos-${ARCH}.tar.gz"; then
+    echo "==> Remove legacy portable tar from Release..."
+    _gh release delete-asset "$TAG" "canto-0243-portable-macos-${ARCH}.tar.gz" --yes || true
   fi
   if [[ -n "$GH_REPO" ]]; then
     repo="$GH_REPO"
@@ -244,8 +281,8 @@ if [[ "$UPLOAD" -eq 1 ]]; then
   fi
   echo ""
   echo "Uploaded: https://github.com/${repo}/releases/tag/${TAG}"
-  echo "Asset: canto-0243-portable-macos-${ARCH}.tar.gz"
+  echo "Asset: canto-0243-desktop-macos-${ARCH}.tar.gz"
 fi
 
 echo ""
-echo "Done. Downloaders on Sequoia: see portable/README.txt (隱私與安全性 → 仍要開啟)."
+echo "Done. Creators: extract → Canto-0243.command (first run may need network)."
