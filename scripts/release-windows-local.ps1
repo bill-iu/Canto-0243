@@ -96,8 +96,8 @@ Ensure-LyricsDb
 
 $env:PORTABLE_RELEASE_TAG = $Tag
 $env:DESKTOP_RELEASE_TAG = $Tag
-$buildArgs = @()
-if ($SkipReadmeSync) { $buildArgs += "-SkipReadmeSync" }
+# Hashtable splat: string array would bind "-SkipReadmeSync" as positional PyAppVersion.
+$buildArgs = @{ SkipReadmeSync = [bool]$SkipReadmeSync }
 & (Join-Path $Root "scripts\build-desktop.ps1") @buildArgs
 if ($LASTEXITCODE -ne 0) { throw "build-desktop.ps1 failed" }
 
