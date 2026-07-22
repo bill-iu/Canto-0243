@@ -85,15 +85,19 @@ def test_family_leaf_values_and_carrier() -> None:
             "literal\tpos\tfamily\tvoice\tnote\n"
             "甲\tn\tchengyu\t\tseed\n"
             "乙\tv\tsuyu\tpassive\tseed\n"
-            "丙\ta\tyanyu\t\tseed\n",
+            "丙\ta\tyanyu\t\tseed\n"
+            "丁\tr\txiehouyu\t\treview\n",
             encoding="utf-8",
         )
         table = parse_project_pos_tsv(p)
-        assert [table[x].family for x in ("甲", "乙", "丙")] == ["chengyu", "suyu", "yanyu"]
+        assert [table[x].family for x in ("甲", "乙", "丙", "丁")] == [
+            "chengyu", "suyu", "yanyu", "xiehouyu"
+        ]
         payload = build_carrier_payload(table, {"version": "1", "p0_hard_gate": True})
         assert payload["literals"]["甲"]["family"] == "chengyu"
         assert payload["literals"]["乙"]["family"] == "suyu"
         assert payload["literals"]["丙"]["family"] == "yanyu"
+        assert payload["literals"]["丁"]["family"] == "xiehouyu"
 
         low = PosRow("丁", frozenset({"n"}), "chengyu", "", "cow-single")
         low_payload = build_carrier_payload({"丁": low}, {"version": "1"})

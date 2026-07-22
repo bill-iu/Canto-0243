@@ -6,9 +6,10 @@ import re
 
 from app.lexicon.rime_char_index import get_rime_char_entries
 from app.lexicon.static_index import LexiconEntry
+from app.utils.han import HAN_RE
 from app.utils.jyutping_codec import get_0243_code
 
-_CANTO_RE = re.compile(r"[\u4e00-\u9fff]")
+_CANTO_RE = HAN_RE
 
 
 def compose_lexicon_entries_from_rime(text: str) -> list[LexiconEntry]:

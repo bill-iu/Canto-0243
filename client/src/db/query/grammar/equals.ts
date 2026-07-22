@@ -17,7 +17,7 @@ export interface EqualsQuery extends ParsedQuery {
 }
 
 /** ADR-0062: initial mark is `^` (legacy left `=` still accepted). */
-const FRAMED_EQUALS_RE = /^(\d*)(\^|=)?([\u4e00-\u9fff]+)(=)?(\d*)$/;
+const FRAMED_EQUALS_RE = /^(\d*)(\^|=)?([\p{Script=Han}]+)(=)?(\d*)$/u;
 
 export function isFramedEqualsQuery(q: string): boolean {
   if (q.includes(CODE_TAIL_MIDDLE) || q.includes('@')) {
@@ -39,10 +39,11 @@ export function isFramedEqualsQuery(q: string): boolean {
   const right_equal = Boolean(match[4]);
   const inner_mark = Boolean(match[2]);
 
-  if (right_equal && target.length >= 2) {
+  const targetLength = [...target].length;
+  if (right_equal && targetLength >= 2) {
     return true;
   }
-  if (right_equal && left_code && target.length === 1) {
+  if (right_equal && left_code && targetLength === 1) {
     return true;
   }
   if (inner_mark && left_code && right_code) {
@@ -51,7 +52,7 @@ export function isFramedEqualsQuery(q: string): boolean {
   if (inner_mark && left_code && !right_equal) {
     return true;
   }
-  if (inner_mark && !left_code && !right_equal && target.length >= 2) {
+  if (inner_mark && !left_code && !right_equal && targetLength >= 2) {
     return true;
   }
 
@@ -74,7 +75,7 @@ export function buildEqualsMatchSpec(q: string): MatchSpec | null {
   const right_code = match[5] || '';
   const right_equal = Boolean(match[4]);
   const inner_mark = Boolean(match[2]);
-  const target_length = target_str.length;
+  const target_length = [...target_str].length;
   const expected_length = left_code.length + right_code.length || target_length;
   const start_pos = Math.max(0, left_code.length - target_length);
   const full_code = left_code + right_code;

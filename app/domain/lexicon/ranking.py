@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from app.utils.han import contains_han, is_han_text
+
 from typing import Any, Iterable, List, TypeVar
 
 from app.lexicon.curated_index import curated_sort_boost
@@ -13,13 +15,13 @@ T = TypeVar("T")
 
 
 def _is_pure_han_text(text: str) -> bool:
-    return bool(text) and all("\u4e00" <= ch <= "\u9fff" for ch in text)
+    return is_han_text(text)
 
 
 def _rank_tier(text: str) -> int:
     if _is_pure_han_text(text):
         return 0
-    if bool(text) and any("\u4e00" <= ch <= "\u9fff" for ch in text) and any(ch.isalnum() for ch in text):
+    if bool(text) and contains_han(text) and any(ch.isalnum() for ch in text):
         return 1
     return 2
 

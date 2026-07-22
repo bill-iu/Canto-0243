@@ -2,7 +2,7 @@
 
 export type FormalPos = 'n' | 'v' | 'a' | 'r' | 'x';
 export type PosCode = FormalPos | 'u';
-export type PosFamily = 'idiom' | 'chengyu' | 'suyu' | 'yanyu';
+export type PosFamily = 'idiom' | 'chengyu' | 'suyu' | 'yanyu' | 'xiehouyu';
 export type PosVoice = 'active' | 'passive';
 /** high = 展示+閘; medium = 閘 only; low = 起草/缺標 */
 export type PosTrust = 'high' | 'medium' | 'low';
@@ -41,6 +41,7 @@ export const FAMILY_LABEL_ZH: Record<PosFamily, string> = {
   chengyu: '成語',
   suyu: '俗語',
   yanyu: '諺語',
+  xiehouyu: '歇後語',
 };
 
 export const VOICE_LABEL_ZH: Record<PosVoice, string> = {

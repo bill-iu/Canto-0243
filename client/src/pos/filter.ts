@@ -11,7 +11,7 @@ export type PosFilterState = {
 export const EMPTY_POS_FILTER: PosFilterState = { pos: [], family: [], voice: [] };
 
 const POS_VALUES = new Set<FormalPos>(['n', 'v', 'a', 'r', 'x']);
-const FAMILY_VALUES = new Set<PosFamily>(['idiom', 'chengyu', 'suyu', 'yanyu']);
+const FAMILY_VALUES = new Set<PosFamily>(['idiom', 'chengyu', 'suyu', 'yanyu', 'xiehouyu']);
 const VOICE_VALUES = new Set<PosVoice>(['active', 'passive']);
 
 function uniqueAllowed<T extends string>(values: readonly unknown[], allowed: ReadonlySet<T>): T[] {

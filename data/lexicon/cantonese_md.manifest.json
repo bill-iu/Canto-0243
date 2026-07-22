@@ -2,19 +2,50 @@
   "source": "https://github.com/daimaruhk/Cantonese.md",
   "license": "CC0-1.0",
   "attribution": "daimaruhk/Cantonese.md (src/contents/; CC0)",
-  "fetched_at": "2026-07-18T08:51:21.904071+00:00",
-  "archive_url": "https://codeload.github.com/daimaruhk/Cantonese.md/zip/refs/heads/main",
-  "filter": "missing_literal_vs_db",
-  "db": "D:/Canto-0243/lyrics.db",
-  "n_entries_parsed": 241,
-  "n_lexicon_rows": 195,
-  "skipped": {
-    "empty": 0,
-    "invalid_term": 1,
-    "in_db": 285,
-    "bad_reading": 1,
-    "dup": 0
+  "fetched_at": "2026-07-23T00:00:00+08:00",
+  "upstream_commit": "ef5f1a06c7113b0e04776249725f796d33333584",
+  "archive_url": "https://codeload.github.com/daimaruhk/Cantonese.md/zip/ef5f1a06c7113b0e04776249725f796d33333584",
+  "archive_sha256": "627f5d882230f43056288eb6ed8e36ee208b009f37f89ee6a0bdecdb4907d073",
+  "content_type_mapping": {
+    "idioms": "xiehouyu"
   },
-  "raw_file": "lexicon.json",
-  "notes": "Only term/answer + Jyutping; no explanations. Wire via data/lexicon/sources.yaml id=cantonese_md. Does not rebuild lyrics.db — run `python -m ingest build-db` when ready."
+  "unknown_content_type_policy": "fail_closed",
+  "family_target": "term_only",
+  "lexicon_target": "missing_term_and_answer",
+  "n_entries_parsed": 241,
+  "entries_by_content_type": {
+    "idioms": 241
+  },
+  "n_family_rows": 241,
+  "n_lexicon_rows": 198,
+  "review_artifact": "data/pos/audit/cantonese_md_xiehouyu_review.tsv",
+  "override_audit": "data/pos/audit/cantonese_md_xiehouyu_overrides.tsv",
+  "reading_overrides": [
+    {
+      "literal": "牛𡁻牡丹",
+      "rejected_upstream": "ngau4 zoek6 maau5 daan1",
+      "accepted": [
+        {
+          "jyutping": "ngau4 ziu6 maau5 daan1",
+          "character": "𡁻",
+          "reading": "ziu6",
+          "source": "Unihan 17.0.0 kCheungBauer",
+          "source_url": "https://www.unicode.org/charts/unihan.html",
+          "unicode_version": "17.0.0",
+          "codepoint": "U+2107B",
+          "property": "kCheungBauer"
+        },
+        {
+          "jyutping": "ngau4 zeu6 maau5 daan1",
+          "character": "𡁻",
+          "reading": "zeu6",
+          "source": "粵音資料集叢",
+          "source_url": "https://jyut.net/query?q=%F0%A1%81%BB",
+          "codepoint": "U+2107B"
+        }
+      ]
+    }
+  ],
+  "raw_file": "cantonese_md_lexicon.json",
+  "notes": "Pinned snapshot. Structured registry content type only; no classification inferred from explanation prose. Lexicon rows retain the prior missing-literal snapshot plus reviewed reading corrections."
 }

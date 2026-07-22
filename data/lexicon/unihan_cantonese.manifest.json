@@ -1,0 +1,19 @@
+{
+  "source": "Unicode Unihan",
+  "unicode_version": "17.0.0",
+  "archive_url": "https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip",
+  "archive_sha256": "f7a48b2b545acfaa77b2d607ae28747404ce02baefee16396c5d2d7a8ef34b5e",
+  "generated_at": "2026-07-22T18:40:07.678304+00:00",
+  "membership_policy": "intersection_with_existing_single_han_literals",
+  "membership_db_sha256": "78e991177aa21348c8f9627623b480a1956a69d76dfcf705f214f2c6d4c0d883",
+  "n_admitted_single_han": 27020,
+  "n_reading_rows": 24855,
+  "property_provenance_rows": {
+    "kCantonese": 24687,
+    "kCheungBauer": 658
+  },
+  "properties": [
+    "kCantonese",
+    "kCheungBauer"
+  ]
+}

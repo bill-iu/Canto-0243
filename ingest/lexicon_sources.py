@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.lexicon.candidates import LexiconCandidate
+from app.utils.han import HAN_CLASS, HAN_ONLY_RE, HAN_RE
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from ingest.lexicon_candidate_normalizer import LexiconCandidateNormalizer
@@ -16,10 +17,10 @@ from ingest.lexicon_raw_paths import ROOT, resolve_lexicon_raw_path
 from ingest.syn_ant_manifest import resolve_source_path
 
 _SOURCE_RIME = "rime"
-_CJK = re.compile(r"[\u4e00-\u9fff]")
+_CJK = HAN_RE
 _NORMALIZER = LexiconCandidateNormalizer()
-_CJK_WORD = re.compile(r"[\u3400-\u9fff]+")
-_CJK_ONLY = re.compile(r"^[\u3400-\u9fff]+$")
+_CJK_WORD = re.compile(f"[{HAN_CLASS}]+")
+_CJK_ONLY = HAN_ONLY_RE
 _JYUTPING_TOKEN = re.compile(r"^[a-z]+\d$", re.IGNORECASE)
 _HSK_NOISE = re.compile(r"(?:\d+|[一二三四五六七八九十]+)[级級][词詞][汇彙]表$")
 _PHRASE_ORG_PLACE_SUFFIXES = frozenset(
@@ -141,6 +142,20 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
         candidate = _NORMALIZER.normalize_candidate(char, jyutping, source_id=source_id, code=code)
         if not candidate:
             continue
+        extra_sources = item.get("sources")
+        if isinstance(extra_sources, list):
+            source_ids = [source_id]
+            source_ids.extend(
+                value.strip()
+                for value in extra_sources
+                if isinstance(value, str) and re.fullmatch(r"[a-z0-9_-]{1,32}", value.strip())
+            )
+            candidate = LexiconCandidate(
+                candidate.char,
+                candidate.jyutping,
+                candidate.code,
+                tuple(dict.fromkeys(source_ids)),
+            )
         key = (candidate.char, candidate.jyutping)
         if key in seen:
             continue

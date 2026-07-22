@@ -27,6 +27,9 @@ SOURCE_FLAG_MAP: dict[str, int] = {
     "rime_phrase": 8,
     "rime_words": 16,
     "words_hk": 32,
+    "cantonese_md": 64,
+    "unihan": 128,
+    "jyutnet": 256,
 }
 
 _INSERT_WORDS = text(

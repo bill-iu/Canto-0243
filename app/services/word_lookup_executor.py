@@ -14,6 +14,7 @@ from app.services.word_db_filters import apply_code_filter, length_filter
 from app.domain.lexicon.word_inject import warm_ref_char_for_lookup
 from app.services.jyutping_match import expected_word_length, matches_jyutping_query
 from app.services.ping_zak import code_matches_ping_ze_pattern
+from app.utils.han import contains_han
 from app.services.word_serializer import (
     deduplicate_words,
     paginate,
@@ -73,7 +74,7 @@ class WordLookupExecutor:
     ) -> tuple[List[dict], int]:
         # 庫命中優先；缺庫用 admission 記憶體合成（唔寫庫 — ADR-0054 精神／詞條 lookup）
         raw_targets: List = self._db.query(Word).filter(Word.char == q).all()
-        if not raw_targets and re.search(r"[\u4e00-\u9fff]", q):
+        if not raw_targets and contains_han(q):
             from app.domain.relations.compound_connect import compose_transient_words
 
             raw_targets = compose_transient_words(q)

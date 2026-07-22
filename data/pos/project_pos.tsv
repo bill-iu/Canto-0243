@@ -30,6 +30,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一個勁兒	r			u-inlex-nf3;review;agent-label
 一個巴掌拍不響	u	chengyu		chengyu-pos-review;review
 一個蘿蔔一個坑	u	chengyu		chengyu-pos-review;review
+一個酸梅兩個核	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 一元復始	v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v;family-leaf-review
 一共	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r
 一刀兩斷	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -424,6 +425,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 一閃而過	v			u-inlex-nf2b;review;agent-label
 一陣	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 一陣子	n,r			u-inlex-nf2k;review;agent-label
+一隻筷子食豆腐	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 一面	n,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 一面之交	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;family-leaf-review
 一面之緣	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert;family-leaf-review
@@ -465,6 +467,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 七嘴八張	u	chengyu		chengyu-pos-review;review
 七嘴八舌	u	chengyu		chengyu-pos-review;review
 七夕	n			u-inlex-nf2k;review;agent-label
+七姐反宮衣	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 七孔流血	a,v			u-inlex-nf5;review;agent-label
 七孔生煙	u	chengyu		chengyu-pos-review;review
 七年之癢	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
@@ -507,6 +510,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 三位一體	n	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 三俠五義	n			u-inlex-nf4;review;agent-label
 三個字	n,x			數量短語;u-inlex-nf2k;review;agent-label
+三元宮土地	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 三十二相	n			u-inlex-nf4;review;agent-label
 三十六計	n	idiom		u-inlex-nf5;review;agent-label
 三十而立	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -612,6 +616,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 上天	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 上天入地	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 上天無路	a,v	idiom		u-inlex-nf5;review;agent-label
+上好沉香當爛柴	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 上學	v			cow-single
 上官	n			複姓／職稱;u-inlex-nf2k;review;agent-label
 上層	n			u-inlex;review;u-inlex-agent
@@ -619,6 +624,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 上山	v			u-inlex;review;u-inlex-agent
 上山下海	v			u-inlex-nf4;review;agent-label
 上山下鄉	v			u-inlex-nf3;review;agent-label
+上山捉蟹	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 上岸	v			cow-single
 上崗	v			u-inlex-nf2k;review;agent-label
 上市	n,v			u-inlex;review;u-inlex-agent
@@ -679,6 +685,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 上陣殺敵	v			u-inlex-nf5;review;agent-label
 上面	n,r			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 上頭	n,r,v			u-inlex-nf2k;review;agent-label
+上香打乞嚏	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 下	n,v,x			no-source;p1;fallback;p1-cleanup;canto-heuristic;review
 下一個	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 下一步	n			u-inlex-nf2k;review;agent-label
@@ -1485,6 +1492,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 乾淨利落	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 乾瞪眼	v	chengyu		成語；乾瞪眼;u-inlex-nf3;review;agent-label;family-leaf-review
 乾脆	a,r			u-inlex-nf2b;review;agent-label
+乾隆皇契仔	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 亂	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 亂七八糟	n	chengyu		cow-single;family-leaf-review
 亂世	n			u-inlex-nf5;review;agent-label
@@ -1544,14 +1552,18 @@ T恤	n			u-inlex-nf2k;review;agent-label
 二	x			numeral;heuristic
 二一添作五	u	chengyu		chengyu-pos-review;review
 二人世界	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+二仔底	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 二八佳人	u	chengyu		chengyu-pos-review;review
 二十	x			numeral;p3;heuristic
 二十一條	n			歷史條約條款;u-inlex-nf2b;review;agent-label
 二十五史	n			u-inlex-nf4;review;agent-label
 二十四史	n			u-inlex-nf3;review;agent-label
+二叔公割禾	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+二叔公煎糕	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 二心	a,n			u-inlex-nf3;review;agent-label
 二手	a,n			u-inlex;review;u-inlex-agent
 二手車	n			u-inlex-nf2k;review;agent-label
+二打六	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 二把刀	u	chengyu		chengyu-pos-review;review
 二把手	n			u-inlex-nf3;review;agent-label
 二月	n			cow-single;p3
@@ -2589,6 +2601,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 倒懸之苦	u	chengyu		chengyu-pos-review;review
 倒戈卸甲	u	chengyu		chengyu-pos-review;review
 倒打一耙	v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
+倒掛臘鴨	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 倒數	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 倒是	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 倒果為因	v	chengyu		u-tail533;review;agent-label;family-leaf-review
@@ -3055,6 +3068,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 光明	a,n			cow-multi
 光明正大	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
 光明磊落	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+光棍佬教仔	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 光榮	a,n			u-inlex;review;u-inlex-agent
 光標	n			cow-single;p3
 光猛	a			u-inlex-nf2k;review;agent-label
@@ -3365,7 +3379,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 公犬	n			u-inlex-nf3;review;agent-label
 公產	n			cow-single
 公用事業	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
-公用電話	n			len4-noun-heuristic
+公用電話	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 公益	a,n			u-inlex;review;u-inlex-agent
 公益性	a,n			u-inlex-nf2b;review;agent-label
 公眾	n			u-tail533;review;agent-label
@@ -3480,13 +3494,19 @@ T恤	n			u-inlex-nf2k;review;agent-label
 冇份	a,v			u-inlex-nf5;review;agent-label
 冇問題	a,x			no-source;fallback;u-repair:canto-u-map;review
 冇嘢	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+冇尾飛陀	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冇幾耐	r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 冇得	v,x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v,x
 冇心	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 冇心機	a			u-inlex-nf2k;review;agent-label
 冇所謂	a,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+冇掩雞籠	v,r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+冇檳榔嚼唔出汁	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+冇牙婆穿針	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冇用	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 冇種	a,n			u-tail533;review;agent-label
+冇米粥	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+冇耳藤篋	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冇行	v			u-inlex-nf2k;review;agent-label
 冇計	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 冇錯	a,x			no-source;fallback;u-repair:canto-u-map;review
@@ -3537,6 +3557,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 冥思苦索	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 冥頑不靈	u	chengyu		chengyu-pos-review;review
 冬	n			cow-single;p3
+冬前臘鴨	v,r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冬天	n			cow-single
 冬暖夏涼	a			u-inlex-nf3;review;agent-label
 冬菇	n			cow-single
@@ -3556,6 +3577,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 冰糕	n			cow-single
 冰糖葫蘆	n			u-inlex-nf3;review;agent-label
 冰肌玉骨	a,n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
+冰跌落醋酲	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冰釋前嫌	v	idiom		u-tail533;review;agent-label
 冰雪聰明	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 冰魂雪魄	u	chengyu		chengyu-pos-review;review
@@ -3566,6 +3588,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 冷卻	n,v			cow-nv-unreviewed;trust-low
 冷嘲熱諷	n,v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 冷場	n,v			u-inlex-nf2b;review;agent-label
+冷巷擔竹竿	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 冷暖自知	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 冷氣	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 冷汗	n			cow-single
@@ -3676,6 +3699,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 出沒無常	a,v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 出淤泥而不染	u	chengyu		chengyu-pos-review;review
 出演	v			no-source;fallback;full-r1-audit;review;清晰動詞／動語
+出爐鐵	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 出爾反爾	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 出版	n,v			cow-nv-unreviewed;trust-low
 出版日期	n			u-inlex-nf2b;review;agent-label
@@ -3819,6 +3843,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 切片檢查	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v
 切磋琢磨	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 切膚之痛	u	chengyu		chengyu-pos-review;review
+切菜刀剃頭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 切身利益	n			u-inlex-nf2b;review;agent-label
 切骨之仇	u	chengyu		chengyu-pos-review;review
 切齒痛恨	a,v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -3969,6 +3994,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 刻鵠類鶩	u	chengyu		chengyu-pos-review;review
 剁	v			u-inlex;review;u-inlex-agent
 剃	v			cow-single
+剃刀門楣	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 則	x			u-inlex;review;u-inlex-agent
 削	n,v			cow-multi;p3
 削減	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
@@ -4105,6 +4131,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 劈頭蓋臉	u	chengyu		chengyu-pos-review;review
 劈風斬浪	v	chengyu		u-tail533;review;agent-label;family-leaf-review
 劉	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+劉備借荊州	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 劍	n			cow-single
 劍拔弩張	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 劍走偏鋒	v	idiom		u-inlex-nf3;review;agent-label
@@ -4416,6 +4443,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 北洋水師	n			u-inlex-nf3;review;agent-label
 北海道	n			u-inlex-nf2k;review;agent-label
 北行	n,v			u-inlex;review;u-inlex-agent
+北角過啲	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 北面	n			u-inlex;review;u-inlex-agent
 匙	n			cow-single;p3
 匙羹	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -4455,6 +4483,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 十二生肖	n			u-inlex-nf2b;review;agent-label
 十二經脈	n			u-inlex-nf4;review;agent-label
 十二點	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+十二點半鐘	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 十仔	n			u-inlex;review;u-inlex-agent
 十全十美	a	chengyu		chengyu-pos-review;review
 十八羅漢	n			u-inlex-nf3;review;agent-label
@@ -4474,6 +4503,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 十拿九穩	u	chengyu		chengyu-pos-review;review
 十指連心	a,v	chengyu		成語；十指連心;u-inlex-nf4;review;agent-label;family-leaf-review
 十月	n			cow-single
+十月芥菜	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+十月蔗頭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 十月革命	n			u-inlex-nf3;review;agent-label
 十有八九	r	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 十步芳草	u	chengyu		chengyu-pos-review;review
@@ -4558,6 +4589,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 半壁河山	n	chengyu		u-tail533;review;agent-label;family-leaf-review
 半夜	n			cow-single
 半夜三更	n,r	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
+半夜雞啼	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+半夜食黃瓜	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 半工半讀	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
 半年	n			cow-single
 半懂不懂	u	chengyu		chengyu-pos-review;review
@@ -4623,6 +4656,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 南沙羣島	n			u-inlex-nf2b;review;agent-label
 南海	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 南無	x			u-inlex-nf2k;review;agent-label
+南無佬跌落屎坑	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 南瓜	n			cow-single
 南箕北斗	n	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 南美	n			u-inlex-nf2b;review;agent-label
@@ -4881,6 +4915,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 反躬自問	u	chengyu		chengyu-pos-review;review
 反躬自責	u	chengyu		chengyu-pos-review;review
 反轉	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+反轉豬肚	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 反過來	r			u-inlex-nf2k;review;agent-label
 反鎖	v			u-inlex-nf2k;review;agent-label
 反面人物	n			u-inlex-nf4;review;agent-label
@@ -5691,6 +5726,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 和好	n			cow-single
 和好如初	v	idiom		u-inlex-nf3;review;agent-label
 和尚	n			cow-single
+和尚擔遮	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 和平	n			cow-single
 和平共處	v			cow-single
 和平利用	n,v			u-inlex-nf4;review;agent-label
@@ -5867,6 +5903,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 唔該	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔通	r,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 唔錯	a			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a
+唔食羊肉一身羶	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 唧	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 唧唧喳喳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 唪	v			u-inlex-nf2k;review;agent-label
@@ -5930,6 +5967,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 問世	v			u-inlex-nf2k;review;agent-label
 問候	n,v			cow-nv-unreviewed;trust-low
 問卷	n			cow-single;p3
+問和尚借梳	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 問好	v			u-inlex-nf2b;review;agent-label
 問寒問暖	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 問心無愧	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
@@ -5953,6 +5991,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 啜菽飲水	u	chengyu		chengyu-pos-review;review
 啞	n			cow-single
 啞仔	n			u-inlex;review;u-inlex-agent
+啞仔食雲吞	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+啞仔食黃蓮	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 啞口無言	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 啞然失笑	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 啟程	v			u-tail533;review;agent-label
@@ -6074,12 +6114,14 @@ T恤	n			u-inlex-nf2k;review;agent-label
 單打一	a,v			u-inlex-nf5;review;agent-label
 單打獨鬥	v			u-inlex-nf3;review;agent-label
 單擊	v			u-inlex;review;u-inlex-agent
+單料銅煲	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 單方面	a,n,r			u-inlex-nf2b;review;agent-label
 單核細胞	n			len4-noun-heuristic
 單槍匹馬	a,r	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,r;family-leaf-review
 單模光纖	n			u-inlex-nf3;review;agent-label
 單片機	n			u-inlex-nf2k;review;agent-label
 單獨	n			cow-single
+單眼佬睇老婆	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 單程	a,n			u-inlex-nf5;review;agent-label
 單純	a			no-source;fallback;p1-audit;review;形容詞
 單純皰疹	n			cow-single
@@ -6565,6 +6607,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 土	n			cow-single
 土地	n			cow-single
 土地改革	n			u-inlex-nf3;review;agent-label
+土地燈籠	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 土崩瓦解	u	chengyu		chengyu-pos-review;review
 土木工程	n			len4-noun-heuristic
 土氣	a,n			u-inlex-nf5;review;agent-label
@@ -6756,6 +6799,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 城市熱島	n			u-inlex-nf4;review;agent-label
 城市貧民	n			u-inlex-nf4;review;agent-label
 城建	n			u-inlex-nf2b;review;agent-label
+城樓跑馬	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 城牆	n			u-inlex-nf2k;review;agent-label
 城狐社鼠	u	chengyu		chengyu-pos-review;review
 城裏	n			u-inlex;review;u-inlex-agent
@@ -6890,6 +6934,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 塗抹	v			cow-single
 塗脂抹粉	u	chengyu		chengyu-pos-review;review
 塘	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+塘底凸	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 塞	n,v			cow-nv-unreviewed;trust-low
 塞內加爾	n			u-inlex-nf3;review;agent-label
 塞拉利昂	n			國名;u-inlex-nf3;review;agent-label
@@ -6942,6 +6987,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 墮雲霧中	u	chengyu		chengyu-pos-review;review
 墳	n			u-inlex;review;u-inlex-agent
 墳場	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+墳場發電機	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 墳墓	n			cow-single;p3
 壁	n			u-inlex;review;u-inlex-agent
 壁報	n			u-inlex-nf2k;review;agent-label
@@ -6978,6 +7024,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 壺	n			cow-single
 壽司	n			u-inlex;review;u-inlex-agent
 壽命	n			cow-single
+壽星公吊頸	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 壽比南山	u	chengyu		chengyu-pos-review;review
 壽終正寢	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 壽陵失步	u	chengyu		chengyu-pos-review;review
@@ -7242,6 +7289,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大好	a			verb-suffix;heuristic;verb-suffix-suspect;trust-low;full-r1-audit;review;verb-suffix 假陽；大好＝形
 大好前程	n			u-tail533;review;agent-label
 大姐	n			u-inlex;review;u-inlex-agent
+大姑娘做媒	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大嬸	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 大學	n			cow-single
 大學城	n			u-inlex-nf2k;review;agent-label
@@ -7357,10 +7405,12 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大相逕庭	u	chengyu		chengyu-pos-review;review
 大眾	n			u-tail533;review;agent-label
 大眾運輸	n			u-tail533;review;agent-label
+大石砸死蟹	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大禍臨頭	a,v			u-inlex-nf4;review;agent-label
 大禹治水	n	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 大笑	v			cow-single
 大笨象	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+大笪地賣粥	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大節	n			u-inlex-nf2k;review;agent-label
 大粒	a,n			u-inlex-nf2b;review;agent-label
 大約	r			cow-single
@@ -7376,6 +7426,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大聲喊叫	v			u-inlex-nf4;review;agent-label
 大聲疾呼	u	chengyu		chengyu-pos-review;review
 大肚	a,n			大腹／懷孕;u-inlex-nf2k;review;agent-label
+大肚婆行鋼線	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大脾	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 大腕	n			u-inlex-nf2b;review;agent-label
 大腦	n			cow-single
@@ -7389,6 +7440,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大致上	r			u-inlex;review;u-inlex-agent
 大興土木	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 大舉進攻	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
+大良阿斗官	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+大花筒	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+大花臉抹眼淚	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大號	n			cow-single;p3
 大行其道	v	idiom		u-inlex-nf2b;review;agent-label
 大街	n			cow-single
@@ -7406,6 +7460,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 大起大落	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 大路	n			cow-single
 大軍	n			u-inlex-nf2k;review;agent-label
+大轆藕抬色	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 大逆不道	u	chengyu		chengyu-pos-review;review
 大過	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 大選	n			u-inlex-nf2k;review;agent-label
@@ -7489,6 +7544,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 天地良心	n,x	idiom		u-inlex-nf4;review;agent-label
 天地萬物	n	idiom		u-inlex-nf3;review;agent-label
 天堂	n			cow-single
+天堂尿壺	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 天塌地陷	a,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 天壤之別	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;zhi-n-fix;review;p2-gate-reconfirm;review;p2-reconfirm:p2_gate_sample_r5.tsv;family-leaf-review
 天外來客	n			u-inlex-nf3;review;agent-label
@@ -7599,6 +7655,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 太上老君	n			u-inlex-nf3;review;agent-label
 太倉一粟	u	chengyu		chengyu-pos-review;review
 太僕寺旗	n			地名／旗;u-inlex-nf3;review;agent-label
+太公分豬肉	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 太原	n			u-inlex;review;u-inlex-agent
 太大	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 太太	n			cow-single
@@ -7614,6 +7671,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 太平龍頭	n			u-tail533;review;agent-label
 太快	a,r			u-inlex;review;u-inlex-agent
 太歲頭上動土	v	chengyu		chengyu-pos-review;review
+太監讀神學	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+太監騎馬	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 太空	n			cow-single
 太空舞步	n			u-inlex-nf4;review;agent-label
 太空船	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -7792,6 +7851,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 奶嘴	n			cow-single
 奶奶	n			cow-single
 奶媽	n			u-inlex-nf2k;review;agent-label
+奶媽湊仔	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 奶油	n			cow-single
 奶牛	n			cow-single
 奶粉	n			u-inlex;review;u-inlex-agent
@@ -8048,6 +8108,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 姚	n			姓;u-inlex-nf2k;review;agent-label
 姚黃魏紫	u	chengyu		chengyu-pos-review;review
 姜	n			u-inlex;review;u-inlex-agent
+姜太公釣魚	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 姣	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 姥姥	n			u-inlex-nf2k;review;agent-label
 姦	v			u-inlex-nf2k;review;agent-label
@@ -8553,6 +8614,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 密密層層	a	chengyu		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u;family-leaf-review
 密密麻麻	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 密封	v			cow-single
+密底算盤	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 密碼	n			cow-single
 密碼保護	n,v			u-inlex-nf2b;review;agent-label
 密鑼緊鼓	a,r	chengyu		u-tail533;review;agent-label;family-leaf-review
@@ -8591,6 +8653,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 察言觀色	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 寡不敵眾	u	chengyu		chengyu-pos-review;review
 寡廉鮮恥	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
+寡母婆死仔	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 寡言	a			u-inlex-nf2b;review;agent-label
 寡頭政治	n			u-inlex-nf5;review;agent-label
 寢	n,v			u-inlex-nf2b;review;agent-label
@@ -9072,6 +9135,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 屍體	n			cow-single
 屍體解剖	v			cow-single
 屎	n			cow-single
+屎坑三姑	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+屎坑公賣草紙	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+屎坑石頭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+屎坑關刀	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+屎忽窿生瘡	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 屎滾尿流	u	chengyu		chengyu-pos-review;review
 屏幕	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 屏氣凝神	v	chengyu		成語；屏氣凝神;u-inlex-nf4;review;agent-label;family-leaf-review
@@ -9086,6 +9154,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 展開	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 展露頭角	v			嶄露頭角異體;u-inlex-nf4;review;agent-label
 屙	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+屙尿入盅	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+屙尿射竹筒	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 屠毒筆墨	u	chengyu		chengyu-pos-review;review
 屢屢	r			u-inlex-nf2k;review;agent-label
 屢建奇功	v	idiom		u-inlex-nf5;review;agent-label
@@ -9133,6 +9203,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 山窿	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 山羊鬍子	n			u-inlex-nf4;review;agent-label
 山腳	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+山草藥	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 山西	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 山路	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 山長水遠	a,r	chengyu		u-inlex-nf2k;review;agent-label;family-leaf-review
@@ -9330,6 +9401,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 市場經濟	n			len4-noun-heuristic
 市委	n			u-inlex;review;u-inlex-agent
 市政府	n			u-inlex;review;u-inlex-agent
+市橋蠟燭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 市民	n			cow-single
 市民社會	n			len4-noun-heuristic
 市無二價	u	chengyu		chengyu-pos-review;review
@@ -9419,6 +9491,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 幅	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 幕	n			cow-single
 幕天席地	u	chengyu		chengyu-pos-review;review
+幡杆燈籠	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 幡然悔悟	v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 幣	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 幫	v			cow-nv-unreviewed;trust-low;p1-cleanup;canto-heuristic;review
@@ -9498,6 +9571,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 平面設計	n			u-inlex-nf2b;review;agent-label
 平頭百姓	n			u-inlex-nf4;review;agent-label
 年	n			cow-single
+年三十晚謝灶	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 年中	n,r			u-inlex-nf2b;review;agent-label
 年久失修	a			u-inlex-nf3;review;agent-label
 年久月深	a,r	idiom		u-tail533;review;agent-label
@@ -9516,6 +9590,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 年底	n			u-inlex-nf5;review;agent-label
 年度大會	n			u-inlex-nf5;review;agent-label
 年復一年	r	chengyu		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
+年晚煎堆	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 年會	n			u-inlex-nf2k;review;agent-label
 年末	n			cow-single
 年深日久	a,r	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -9594,6 +9669,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 幾難	a,r			u-inlex;review;u-inlex-agent
 幾點	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 床	n			no-source;p1;fallback;p1-audit;review;床鋪
+床下底吹喇叭	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+床下底破柴	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+床下底踢毽	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+床板跳上蓆	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 序列	n			cow-single
 序列號	n			u-inlex;review;u-inlex-agent
 序號	n			u-inlex;review;u-inlex-agent
@@ -9651,6 +9730,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 廖	n			u-inlex;review;u-inlex-agent
 廚師	n			cow-single
 廚房	n			cow-single
+廚房階磚	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 廟	n			no-source;fallback;full-r1-audit;review;名
 廠	n			cow-single
 廠家	n			cow-single
@@ -9678,6 +9758,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 廣大	a			u-inlex-nf2k;review;agent-label
 廣播	n,v			cow-nv-unreviewed;trust-low
 廣播地址	n			u-inlex-nf5;review;agent-label
+廣東涼茶	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 廣東話	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 廣泛影響	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 廣為人知	a	idiom		u-tail533;review;agent-label
@@ -11021,6 +11102,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 成功率	n			u-inlex-nf2k;review;agent-label
 成千上萬	n,r	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 成千成萬	a,r	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
+成吉思汗打仔	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 成員	n			cow-single
 成員國	n			u-inlex-nf2k;review;agent-label
 成家立業	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -11079,6 +11161,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 或者	x			heuristic
 或許	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r
 戟指怒目	u	chengyu		chengyu-pos-review;review
+戥穿石	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 截	n,v			u-inlex;review;u-inlex-agent
 截圖	n,v			u-inlex;review;u-inlex-agent
 截然不同	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -11157,6 +11240,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 扁	a,v			no-source;fallback;p1-audit;review;扁平；弄扁
 扁形動物	n			u-inlex-nf5;review;agent-label
 扁桃體炎	n			cow-single
+扁鼻佬戴眼鏡	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 扇	n,v			cow-multi;p3
 手	n			cow-single;p1
 手上	n			verb-suffix;heuristic;p1-audit;review;verb-suffix假陽；處所名「手上」
@@ -11304,6 +11388,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 打消	v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → v
 打火機	n			cow-single;p3
 打爛	v			u-inlex;review;u-inlex-agent
+打爛沙盆	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 打牌	v			u-inlex;review;u-inlex-agent
 打球	v			u-inlex;review;u-inlex-agent
 打理	v			u-inlex-nf2k;review;agent-label
@@ -11337,6 +11422,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 打電話	v			cow-single
 打風	v			u-inlex-nf2k;review;agent-label
 打高爾夫	v			u-inlex-nf3;review;agent-label
+打齋鶴	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 扔	v			cow-single
 托	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 托塔天王	n			神名;u-inlex-nf4;review;agent-label
@@ -11354,6 +11440,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 扭扭捏捏	a	chengyu		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u;family-leaf-review
 扭捏	a,v			u-inlex-nf3;review;agent-label
 扭曲	n,v			cow-nv-unreviewed;trust-low
+扭紋柴	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 扭虧為盈	v	idiom		u-tail533;review;agent-label
 扭轉	v			u-inlex-nf2k;review;agent-label
 扭轉乾坤	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -11450,6 +11537,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 投河自盡	v			u-inlex-nf4;review;agent-label
 投產	v			u-inlex;review;u-inlex-agent
 投石問路	v	chengyu		成語；投石問路;u-inlex-nf3;review;agent-label;family-leaf-review
+投石落屎坑	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 投票	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 投票表決	n,v			u-inlex-nf3;review;agent-label
 投稿	v			u-inlex-nf2k;review;agent-label
@@ -11492,6 +11580,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 披頭散髮	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 披麻帶孝	u	chengyu		chengyu-pos-review;review
 披麻戴孝	v	chengyu		成語；披麻戴孝;u-inlex-nf4;review;agent-label;family-leaf-review
+抬棺材甩褲	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 抬頭	v			u-tail533;review;agent-label
 抱	v			cow-single
 抱不平	u	chengyu		chengyu-pos-review;review
@@ -11653,6 +11742,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 拜把兄弟	n			u-inlex-nf5;review;agent-label
 拜拜	v,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 拜神	v			cow-single;p3
+拜神唔見雞	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 拜科努爾	n			u-inlex-nf5;review;agent-label
 拜託	v			cow-single
 拜金主義	n			len4-noun-heuristic
@@ -11704,6 +11794,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 指出	v			cow-single
 指名道姓	v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 指向	v			cow-single
+指天椒	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 指天誓日	u	chengyu		chengyu-pos-review;review
 指導	n,v			cow-nv-unreviewed;trust-low
 指尖	n			u-inlex-nf2k;review;agent-label
@@ -11749,6 +11840,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 挑釁	n			cow-single
 挖	v			cow-single;p3
 挖掘機械	n			u-inlex-nf4;review;agent-label
+挖肉攞瘡生	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 挖肉補瘡	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 挨	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 挨世界	v		passive	prefix-passive;passive-prefix-expand;review
@@ -11956,6 +12048,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 排隊	n			cow-single
 排骨	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 掘出	v			cow-single
+掘尾龍	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 掘金	n,v			u-inlex-nf2b;review;agent-label
 掙	v			cow-single
 掙扎	n,v			cow-nv-unreviewed;trust-low
@@ -12226,6 +12319,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 搶險	v			u-inlex-nf2k;review;agent-label
 搶險救災	v			u-inlex-nf2b;review;agent-label
 搽	v			cow-single
+搽脂粉吊頸	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 搾	v			u-inlex-nf2k;review;agent-label
 摑	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 摔	v			cow-single
@@ -12263,6 +12357,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 撒手人寰	v	chengyu		成語；撒手人寰;u-inlex-nf3;review;agent-label;family-leaf-review
 撒旦	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 撒科打諢	u	chengyu		chengyu-pos-review;review
+撒路溪錢	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 撒馬爾罕	n			u-inlex-nf5;review;agent-label
 撓	v			cow-single;p3
 撕	n			cow-single
@@ -12348,6 +12443,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 擔任	v			cow-single
 擔心	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 擔憂	n			cow-single
+擔沙填海	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 擔負	v			u-inlex-nf2k;review;agent-label
 擔雪填井	u	chengyu		chengyu-pos-review;review
 擔驚受怕	a	chengyu		chengyu-pos-review;review
@@ -12910,6 +13006,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 新婚	a,n			u-inlex-nf2k;review;agent-label
 新婚宴爾	u	chengyu		chengyu-pos-review;review
 新婚燕爾	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
+新屎坑	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 新年	n			cow-single
 新年快樂	x			u-inlex-nf2b;review;agent-label
 新式	a			u-inlex-nf2b;review;agent-label
@@ -12922,6 +13019,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 新春	n			u-inlex-nf2k;review;agent-label
 新書	n			u-inlex-nf2k;review;agent-label
 新潮	a,n			u-inlex-nf5;review;agent-label
+新澤西	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 新生	n			cow-single
 新生事物	n			u-inlex-nf2b;review;agent-label
 新界	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
@@ -13099,6 +13197,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 早期	n			cow-single
 早生貴子	v	idiom		u-inlex-nf4;review;agent-label
 早知	r,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+早知燈係火	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 早起	v			verb-suffix;heuristic;verb-suffix-suspect;trust-low
 早飯	n			cow-single
 早餐	n			cow-single
@@ -13447,6 +13546,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 曦	n			no-source;fallback;p1-audit;review;晨曦／名用字
 曬	v			cow-single
 曬太陽	v			u-inlex-nf2b;review;agent-label
+曬菲林	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 曱甴	n			alias-target;review;u-inlex-residual
 曲	v			cow-single;p1
 曲奇	n			cookie;u-inlex-nf5;review;agent-label
@@ -13824,6 +13924,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 木板	n			cow-single
 木然	a			u-inlex-nf2b;review;agent-label
 木牛流馬	n			u-inlex-nf4;review;agent-label
+木筲箕	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 木管樂器	n			u-inlex-nf5;review;agent-label
 木薯澱粉	n			cow-single
 木訥	a			u-inlex-nf5;review;agent-label
@@ -13896,6 +13997,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 札手舞腳	u	chengyu		chengyu-pos-review;review
 朱	n			u-inlex-nf2k;review;agent-label
 朱古力	n			cow-single
+朱義盛	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 朵	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 朽木不可雕	u	chengyu		chengyu-pos-review;review
 朽木糞土	n	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -14198,12 +14300,15 @@ T恤	n			u-inlex-nf2k;review;agent-label
 棘手	a			u-inlex-nf3;review;agent-label
 棘皮動物	n			cow-single
 棚	n			cow-single
+棚尾拉箱	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 棟	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 棟折榱崩	u	chengyu		chengyu-pos-review;review
 森林	n			cow-single
 森羅萬象	n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 棵	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 棺材	n			cow-single
+棺材鋪拜神	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+棺材頭燒炮仗	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 椅	n			u-inlex;review;u-inlex-agent
 椅子	n			cow-single;p3
 植保	n			植物保護簡稱;u-inlex-nf2b;review;agent-label
@@ -14383,6 +14488,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 樹葉	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 樽	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 橋	n			cow-single
+橋上倒涼茶	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 橘	n			cow-single
 橘子	n			cow-single;p3
 橙	n			cow-single
@@ -14741,6 +14847,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 死乞白賴	a,v	chengyu		成語；死乞白賴;u-inlex-nf4;review;agent-label;family-leaf-review
 死亡	n,v			cow-nv-unreviewed;trust-low
 死人	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+死人燈籠	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 死仔	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 死八婆	n			u-inlex;review;u-inlex-agent
 死刑	n			cow-single;p3
@@ -14778,6 +14885,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 死裏逃生	v	chengyu		成語;u-inlex-nf2b;review;agent-label;family-leaf-review
 死路	n			u-inlex;review;u-inlex-agent
 死路一條	n	idiom		u-inlex-nf3;review;agent-label
+死雞撐飯蓋	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 死馬當活馬醫	u	chengyu		chengyu-pos-review;review
 死黨	n			u-inlex;review;u-inlex-agent
 殃及池魚	v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
@@ -14814,6 +14922,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 殫精竭慮	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 殫見洽聞	u	chengyu		chengyu-pos-review;review
 殭屍	n			no-source;fallback;p1-audit;review;zombie
+殯儀館大減價	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 段	n			cow-single
 殷鑑不遠	u	chengyu		chengyu-pos-review;review
 殺	v			cow-single
@@ -15072,9 +15181,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 水泡	n			u-inlex-nf2k;review;agent-label
 水泵	n			u-inlex-nf2b;review;agent-label
 水流	n			cow-single;p3
+水浸塔頂	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 水深火熱	a,n	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 水清無魚	u	chengyu		chengyu-pos-review;review
 水準	n			cow-single;p3
+水溝油	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 水滴石穿	u	chengyu		chengyu-pos-review;review
 水滸全傳	n			u-inlex-nf5;review;agent-label
 水滸後傳	n			u-inlex-nf5;review;agent-label
@@ -15082,6 +15193,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 水火不容	a,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v
 水火不相容	u	chengyu		chengyu-pos-review;review
 水火無情	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
+水瓜打狗	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 水瓶	n			u-inlex-nf2k;review;agent-label
 水生動物	n			u-inlex-nf3;review;agent-label
 水生植物	n			cow-single
@@ -15327,6 +15439,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 法力	n			u-inlex;review;u-inlex-agent
 法力無邊	u	chengyu		chengyu-pos-review;review
 法國	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
+法國大餐	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 法官	n			cow-single
 法定人數	n			u-inlex-nf5;review;agent-label
 法定貨幣	n			cow-single
@@ -15372,8 +15485,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 泥	n			cow-single
 泥古不化	u	chengyu		chengyu-pos-review;review
 泥土	n			cow-single
+泥水佬造門	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 泥膠	n			u-inlex;review;u-inlex-agent
-泥菩薩過江	u	chengyu		chengyu-pos-review;review
+泥菩薩過江	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 注	v			cow-single;p3
 注定	v			no-source;p1;fallback;full-r1-audit;review;動
 注意	n,v			cow-nv-unreviewed;trust-low
@@ -15571,6 +15685,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 海誓山盟	n,v	chengyu		成語；誓約;u-inlex-nf2b;review;agent-label;family-leaf-review
 海軍	n			cow-single
 海軍基地	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+海軍鬥水兵	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 海運	n,v			u-inlex-nf2k;review;agent-label
 海運公司	n			len4-noun-heuristic
 海邊	n			u-inlex;review;u-inlex-agent
@@ -15716,6 +15831,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 深根固柢	u	chengyu		chengyu-pos-review;review
 深水	n			u-inlex;review;u-inlex-agent
 深水炸彈	n			cow-single
+深海石斑	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 深深	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 深溝高壘	n,v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 深知	v			u-inlex-nf2b;review;agent-label
@@ -16076,6 +16192,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 潦	a			u-inlex-nf2k;review;agent-label
 潮	n			cow-single;p3
 潮州	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
+潮州花燈	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+潮州音樂	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 潮流	n			u-inlex-nf2b;review;agent-label
 潰不成軍	u	chengyu		chengyu-pos-review;review
 潰瘍	n			cow-single;p3
@@ -16091,6 +16209,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 澱粉	n			cow-single;p3
 澳洲	n			cow-single
 澳門	n			u-inlex;review;u-inlex-agent
+澳門朋友	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 激	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 激光	n			cow-single
 激動	n,v			cow-nv-unreviewed;trust-low
@@ -16111,6 +16230,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 濃眉大眼	a	chengyu		成語；濃眉大眼;u-inlex-nf5;review;agent-label;family-leaf-review
 濕	a			cow-single;full-r1-audit;review;濕＝形，非名
 濕地	n			cow-single
+濕手巾	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+濕水棉花	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+濕水欖核	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 濛	a			u-inlex;review;u-inlex-agent
 濛濛細雨	a,r	idiom		no-source;fallback;p2-idiom:AABC;p2-idiom-heuristic;u-repair:aabc-u;review
 濟	a,n,v			u-inlex;review;u-inlex-agent
@@ -16164,8 +16286,13 @@ T恤	n			u-inlex-nf2k;review;agent-label
 火焰	n			cow-single
 火熱	a			u-inlex-nf2b;review;agent-label
 火燒	n,v			u-inlex;review;u-inlex-agent
+火燒城隍廟	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+火燒旗杆	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 火燒火燎	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
+火燒燈芯	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 火燒眉毛	a,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
+火燒石灰船	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+火燒豬頭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 火球	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 火眼金睛	n	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 火箭	n			cow-single;p3
@@ -16174,6 +16301,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 火車票	n			u-inlex;review;u-inlex-agent
 火車站	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
 火險	n			cow-single
+火麒麟	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 灰	n			cow-single
 灰心	a,v			u-inlex;review;u-inlex-agent
 灰心喪氣	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -16181,6 +16309,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 灰燼	n			cow-single;p3
 灰色	a,n			u-inlex;review;u-inlex-agent
 灰飛煙滅	v	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
+灶君跌落鑊	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 災區	n			u-inlex;review;u-inlex-agent
 災民	n			u-inlex-nf2k;review;agent-label
 災難	n			cow-single;p3
@@ -16194,6 +16323,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 炒買炒賣	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 炙手可熱	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 炮	n,v			u-inlex;review;u-inlex-agent
+炮仗頸	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 炯炯有神	u	chengyu		chengyu-pos-review;review
 炸	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 炸彈	n			cow-single
@@ -16239,6 +16369,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 烏蘭察布	n			u-inlex-nf2b;review;agent-label
 烏蘭巴託	n			u-tail533;review;agent-label
 烏蠅	n			u-inlex;review;u-inlex-agent
+烏蠅摟馬尾	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 烏雲	n			u-inlex-nf2k;review;agent-label
 烏飛兔走	u	chengyu		chengyu-pos-review;review
 烏魯木齊	n			地名;u-inlex-nf5;review;agent-label
@@ -16421,6 +16552,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 無緣無故	a	chengyu		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;u-repair:youwu-u;review;family-leaf-review
 無縫接軌	v	idiom		u-tail533;review;agent-label
 無縫連接	n,v			u-inlex-nf4;review;agent-label
+無耳茶壺	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 無聊	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 無聲	n			cow-single
 無聲無息	a,r	chengyu		no-source;fallback;p2-idiom:ABAC;p2-idiom-heuristic;full-r1-audit;review;low|u 有明確詞類 → a,r;family-leaf-review
@@ -16602,6 +16734,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 燈籠	n			cow-single
 燈紅酒綠	a,n	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 燒	n,v			cow-nv-unreviewed;trust-low
+燒壞瓦	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 燒烤	n,v			u-inlex-nf2k;review;agent-label
 燒賣	n			u-inlex-nf2k;review;agent-label
 燒香	v			u-inlex-nf2b;review;agent-label
@@ -16691,7 +16824,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 牆	n			cow-single
 牆壁	n			cow-single
 牆角	n			u-inlex-nf2k;review;agent-label
-牆頭草	n	idiom		u-inlex-nf3;review;agent-label
+牆頭草	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 片	n			cow-single
 片刻	n			cow-single
 片子	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -16727,6 +16860,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 牛河	n			u-inlex-nf2b;review;agent-label
 牛油	n			cow-single
 牛溲馬勃	u	chengyu		chengyu-pos-review;review
+牛皮燈籠	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 牛肉	n			cow-single
 牛肉拉麪	n			u-inlex-nf3;review;agent-label
 牛衣對泣	u	chengyu		chengyu-pos-review;review
@@ -16738,6 +16872,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 牛驥同槽	u	chengyu		chengyu-pos-review;review
 牛高馬大	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 牛鬼蛇神	n	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+牛𡁻牡丹	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 牝牡驪黃	u	chengyu		chengyu-pos-review;review
 牝雞司晨	u	chengyu		chengyu-pos-review;review
 牠	x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -16860,10 +16995,12 @@ T恤	n			u-inlex-nf2k;review;agent-label
 狐羣狗黨	n	chengyu		chengyu-pos-review;review
 狐裘羔袖	u	chengyu		chengyu-pos-review;review
 狗	n			cow-single
+狗上瓦坑	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 狗仔	n			no-source;fallback;full-r1-audit;review;名
 狗仗人勢	a,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 狗公	n			u-inlex;review;u-inlex-agent
 狗咬呂洞賓	u	chengyu		chengyu-pos-review;review
+狗咬賊仔	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 狗嘴裏吐不出象牙	u	chengyu		chengyu-pos-review;review
 狗尾續貂	v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 狗屁不通	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
@@ -17065,6 +17202,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 玲瓏剔透	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 玻利維亞	n			國名;u-inlex-nf2b;review;agent-label
 玻璃	n			cow-single
+玻璃眼鏡	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 玻璃纖維	n			cow-single
 珊	n			u-inlex;review;u-inlex-agent
 珊瑚蟲	n			cow-single;p3
@@ -17086,6 +17224,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 珠流璧轉	u	chengyu		chengyu-pos-review;review
 珠海	n			u-inlex;review;u-inlex-agent
 珠玉在側	u	chengyu		chengyu-pos-review;review
+珠璣路尾	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 珠穆朗瑪	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 珠聯璧合	a,v	chengyu		成語；珠聯璧合;u-inlex-nf3;review;agent-label;family-leaf-review
 珠胎暗結	v	idiom		u-inlex-nf5;review;agent-label
@@ -17219,8 +17358,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 瓣	n,x			u-inlex-nf2k;review;agent-label
 瓦努阿圖	n			u-inlex-nf4;review;agent-label
 瓦合之卒	u	chengyu		chengyu-pos-review;review
+瓦荷包	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 瓦解	n,v			cow-nv-unreviewed;trust-low
 瓦釜雷鳴	n,v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v,n;family-leaf-review
+瓦風嶺	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 瓶	n			cow-single;p3
 瓶頸	n			cow-single;p3
 甄	n,v			u-inlex-nf2b;review;agent-label
@@ -17254,6 +17395,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 生不逢時	u	chengyu		chengyu-pos-review;review
 生不逢辰	u	chengyu		chengyu-pos-review;review
 生仔	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+生仔姑娘醉酒佬	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 生兒育女	v	idiom		u-inlex-nf5;review;agent-label
 生前	n,r			u-inlex;review;u-inlex-agent
 生動活潑	a	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
@@ -17365,8 +17507,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 生育	n,v			u-inlex-nf5;review;agent-label
 生花之筆	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert;family-leaf-review
 生花妙筆	u	chengyu		chengyu-pos-review;review
+生草藥	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 生薑	n			u-inlex-nf2b;review;agent-label
 生蛇	n,v			u-tail533;review;agent-label
+生蟲拐杖	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 生豬	n			u-inlex-nf2k;review;agent-label
 生財之道	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert;family-leaf-review
 生財有道	u	chengyu		chengyu-pos-review;review
@@ -17375,6 +17519,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 生關死劫	u	chengyu		chengyu-pos-review;review
 生離死別	n,v	chengyu		成語;u-inlex-nf2b;review;agent-label;family-leaf-review
 生靈塗炭	u	chengyu		chengyu-pos-review;review
+生骨大頭菜	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 生龍活虎	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 產值	n			u-inlex-nf2k;review;agent-label
 產前檢查	n			u-inlex-nf3;review;agent-label
@@ -17414,13 +17559,16 @@ T恤	n			u-inlex-nf2k;review;agent-label
 用餐時間	n			u-inlex-nf4;review;agent-label
 甩	v			cow-single
 甩手掌櫃	n			u-inlex-nf4;review;agent-label
+甩柄士巴拿	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 甩皮甩骨	a,v	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
+甩頭筆	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 甯	n			姓／名用字;u-inlex-nf2k;review;agent-label
 田	n			cow-single
 田園	n			u-inlex-nf2k;review;agent-label
 田野	n			cow-single;p3
 田野工作	n			u-inlex-nf5;review;agent-label
 田間管理	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+田雞過河	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 由	x			heuristic
 由上而下	a,r			u-inlex-nf4;review;agent-label
 由下而上	r			u-tail533;review;agent-label
@@ -17539,6 +17687,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 番	r,v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 番茄紅素	n			cow-single
 番薯	n			cow-single
+番薯跌落灶	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+番鬼佬月餅	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+番鬼佬睇榜	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+番鬼婆大肚	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 畫	n,v			cow-nv-unreviewed;trust-low
 畫冊	n			cow-single;p3
 畫地為牢	u	chengyu		chengyu-pos-review;review
@@ -17853,6 +18005,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 白馬雪山	n			u-inlex-nf4;review;agent-label
 白駒過隙	n,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 白髮	n			u-inlex-nf2k;review;agent-label
+白鱔上沙灘	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 白鴿	n			u-inlex-nf2b;review;agent-label
 百	x			numeral;heuristic
 百事可樂	n			u-inlex-nf2b;review;agent-label
@@ -17885,6 +18038,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 百戰百勝	a,v	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 百折不回	a	chengyu		成語；百折不回;u-inlex-nf4;review;agent-label;family-leaf-review
 百折不撓	u	chengyu		chengyu-pos-review;review
+百斤加一	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 百步穿楊	u	chengyu		chengyu-pos-review;review
 百歲老人	n			u-inlex-nf3;review;agent-label
 百無一失	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -17933,6 +18087,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 皇室	n			cow-single;p3
 皇家	n			u-inlex-nf2k;review;agent-label
 皇帝	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+皇帝女	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 皇恩浩蕩	a	idiom		u-inlex-nf5;review;agent-label
 皇族	n			cow-single
 皇親國戚	n	chengyu		成語；皇親國戚;u-inlex-nf5;review;agent-label;family-leaf-review
@@ -17949,6 +18104,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 皮笑肉不笑	a	chengyu		chengyu-pos-review;review
 皮膚	n			cow-single
 皮開肉綻	a,v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,v;family-leaf-review
+皮鞋筋	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 皰疹病毒	n			u-inlex-nf3;review;agent-label
 皺	n			cow-single
 皺眉	n,v			cow-nv-unreviewed;trust-low
@@ -18057,6 +18213,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 盲	n			cow-single;p3
 盲人摸象	n,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 盲人瞎馬	a,n	chengyu		u-tail533;review;agent-label;family-leaf-review
+盲公開眼	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 盲婚啞嫁	n,v	idiom		u-tail533;review;agent-label
 盲目	a			u-inlex;review;u-inlex-agent
 盲目崇拜	n,v			u-inlex-nf3;review;agent-label
@@ -18514,10 +18671,14 @@ T恤	n			u-inlex-nf2k;review;agent-label
 矯枉過正	u	chengyu		chengyu-pos-review;review
 矯枉過直	u	chengyu		chengyu-pos-review;review
 石	n			cow-single
+石地堂對鐵掃把	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 石家莊	n			u-inlex;review;u-inlex-agent
 石屎	n			u-inlex;review;u-inlex-agent
 石沉大海	u	chengyu		chengyu-pos-review;review
+石灣公仔	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+石灰鋪路	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 石破天驚	u	chengyu		chengyu-pos-review;review
+石罅米	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 石蕊試紙	n			u-inlex-nf5;review;agent-label
 石頭	n			cow-single
 砌	v			no-source;fallback;p1-close;rank-u;canto-heuristic;review
@@ -18698,6 +18859,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 神乎其技	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 神乎其神	a	chengyu		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 神仙	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+神仙放屁	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+神仙過鐵橋	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 神來之筆	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert;family-leaf-review
 神偷	n			u-inlex;review;u-inlex-agent
 神出鬼沒	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -18714,6 +18877,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 神智清醒	a			u-inlex-nf5;review;agent-label
 神棍	n			u-inlex-nf2k;review;agent-label
 神機妙算	u	chengyu		chengyu-pos-review;review
+神檯桔	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+神檯貓屎	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 神清氣爽	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 神父	n			no-source;fallback;full-r1-audit;review;名
 神童	n			u-inlex-nf5;review;agent-label
@@ -18792,6 +18957,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 禮拜	n			cow-single
 禮拜六	n			cow-single
 禮拜日	n			cow-single
+禮樂射	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 禮物	n			cow-single
 禮義廉恥	n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 禮貌	n			cow-single
@@ -18803,6 +18969,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 禽獸不如	a	idiom		u-inlex-nf2b;review;agent-label
 秀外慧中	u	chengyu		chengyu-pos-review;review
 秀才	n			u-inlex-nf2b;review;agent-label
+秀才手巾	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 秀而不實	u	chengyu		chengyu-pos-review;review
 秀色可餐	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 私	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -18829,6 +18996,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 秋毫無犯	u	chengyu		chengyu-pos-review;review
 秋水	n			u-inlex-nf2b;review;agent-label
 秋水伊人	n	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+秋蟬跌落地	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 秋風	n			u-inlex-nf2k;review;agent-label
 秋風掃落葉	u	chengyu		chengyu-pos-review;review
 秋風送爽	a,v			u-inlex-nf4;review;agent-label
@@ -19145,6 +19313,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 章魚	n			cow-single
 竣工	v			u-inlex-nf2k;review;agent-label
 童叟無欺	u	chengyu		chengyu-pos-review;review
+童子軍跳彈床	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 童年	n			cow-single
 童心未泯	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 童男童女	n	idiom		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel
@@ -19165,6 +19334,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 竹報平安	n,v	chengyu		成語；竹報平安;u-inlex-nf4;review;agent-label;family-leaf-review
 竹子	n			u-inlex-nf2k;review;agent-label
 竹籃打水	v	chengyu		成語截；竹籃打水一場空;u-inlex-nf3;review;agent-label;family-leaf-review
+竹織鴨	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 笑	v			cow-single;p1
 笑不可仰	u	chengyu		chengyu-pos-review;review
 笑容	n			cow-single
@@ -19266,6 +19436,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 答非所問	u	chengyu		chengyu-pos-review;review
 策略	n			cow-single;p3
 筱	n			名用字;u-inlex-nf2k;review;agent-label
+筲箕兜水	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 筷子	n			cow-single
 箇	x			u-inlex-nf2k;review;agent-label
 箍	n			cow-single
@@ -19557,6 +19728,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 紙上談兵	v	chengyu		成語；紙上談兵;u-inlex-nf5;review;agent-label;family-leaf-review
 紙巾	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 紙皮	n			u-inlex;review;u-inlex-agent
+紙紮下巴	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 紙貴洛陽	u	chengyu		chengyu-pos-review;review
 紙醉金迷	u	chengyu		chengyu-pos-review;review
 級	n			cow-single
@@ -19598,6 +19770,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 累贅	n			cow-single
 細	a			no-source;p1;fallback;p1-close;rank-u;canto-heuristic;review
 細佬	n			no-source;fallback;u-repair:canto-u-map;review
+細佬吹喇叭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+細佬哥剃頭	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+細佬哥玩泥沙	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 細個	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 細則	n			u-inlex-nf2k;review;agent-label
 細嚼慢嚥	v	idiom		u-inlex-nf3;review;agent-label
@@ -19944,6 +20119,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 縮成一團	v			u-inlex-nf3;review;agent-label
 縮手	v			u-inlex-nf3;review;agent-label
 縮手縮腳	u	chengyu		chengyu-pos-review;review
+縮沙	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 縮減	n			cow-single
 縮短	n,v			cow-multi;p3
 縮窄	v			u-inlex-nf5;review;agent-label
@@ -20238,6 +20414,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 老人家	n			u-inlex;review;u-inlex-agent
 老伯	n			u-inlex-nf2k;review;agent-label
 老公	n			cow-single
+老公撥扇	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+老公荷包	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 老友	n			u-inlex;review;u-inlex-agent
 老味	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 老嘢	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -20251,6 +20429,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 老奸巨滑	u	chengyu		chengyu-pos-review;review
 老奸巨猾	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 老婆	n			cow-single
+老婆擔遮	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 老孃	n			u-inlex-nf2k;review;agent-label
 老子	n			u-inlex-nf2k;review;agent-label
 老實	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -20276,6 +20455,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 老氣橫秋	a	chengyu		成語；老氣橫秋;u-inlex-nf3;review;agent-label;family-leaf-review
 老江湖	n	chengyu		chengyu-pos-review;review
 老淚縱橫	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+老火炆鴨	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 老爹	n			u-inlex-nf2k;review;agent-label
 老爺	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 老牌	a,n			u-inlex-nf2b;review;agent-label
@@ -20295,8 +20475,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 老老實實	a,r			no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;full-r1-audit;review;AABB 老實狀態／情狀;full-r1-clear-idiom
 老者	n			u-inlex-nf2b;review;agent-label
 老而彌堅	a	chengyu		成語；老而彌堅;u-inlex-nf4;review;agent-label;family-leaf-review
+老舉埋年	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 老蘭	n			u-inlex-nf2k;review;agent-label
 老虎	n			cow-single
+老虎借豬	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 老蚌生珠	u	chengyu		chengyu-pos-review;review
 老調重彈	u	chengyu		chengyu-pos-review;review
 老謀深算	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -20311,6 +20493,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 老馬識途	u	chengyu		chengyu-pos-review;review
 老驥伏櫪	u	chengyu		chengyu-pos-review;review
 老鼠	n			cow-single
+老鼠尾生瘡	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 考	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 考勤	n,v			u-inlex-nf2k;review;agent-label
 考古	n,v			u-inlex-nf2k;review;agent-label
@@ -20570,8 +20753,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 肥	n			cow-single;p1
 肥仔	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 肥佬	n			u-inlex;review;u-inlex-agent
+肥佬着笠衫	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 肥妹	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 肥婆	n			u-inlex-nf2k;review;agent-label
+肥婆坐屎塔	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 肥缺	n			u-inlex-nf4;review;agent-label
 肥胖	n			cow-single
 肥頭大耳	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
@@ -21138,6 +21323,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 船	n			cow-single
 船堅炮利	a,n	chengyu		u-tail533;review;agent-label;family-leaf-review
 船舶	n			cow-single
+船頭尺	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 艘	x			u-inlex-nf2k;review;agent-label
 艦隊	n			cow-single;p3
 良	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -21297,6 +21483,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 茅	n			u-inlex-nf2k;review;agent-label
 茅塞頓開	u	chengyu		chengyu-pos-review;review
 茅屋	n			cow-single
+茅根竹	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 茉莉	n			cow-single;p3
 茨	n			u-inlex-nf2b;review;agent-label
 茫	a			u-inlex;review;u-inlex-agent
@@ -21310,6 +21497,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 茶几	n			cow-single
 茶室	n			u-inlex-nf2b;review;agent-label
 茶樓	n			u-inlex;review;u-inlex-agent
+茶樓搬家	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+茶瓜送飯	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 茶花	n			cow-single
 茶飯不思	a,v	idiom		u-inlex-nf4;review;agent-label
 茶飯無心	a,v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -21393,6 +21582,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 菜餚	n			cow-single;p3
 菜鳥	n			u-inlex;review;u-inlex-agent
 菠蘿	n			cow-single
+菠蘿雞	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 菩提	n			u-inlex-nf2k;review;agent-label
 菩薩心腸	a,n			u-inlex-nf4;review;agent-label
 華	a			cow-single
@@ -21505,6 +21695,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 落車	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 落選	v			u-inlex-nf5;review;agent-label
 落雨	v			u-inlex;review;u-inlex-agent
+落雨擔遮	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 葉	n			cow-single
 葉公好龍	u	chengyu		chengyu-pos-review;review
 葉片	n			cow-single;p3
@@ -21744,6 +21935,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 蜂擁而上	v	chengyu		成語；蜂擁而上;u-inlex-nf3;review;agent-label;family-leaf-review
 蜂擁而至	u	chengyu		chengyu-pos-review;review
 蜈蚣	n			u-inlex;review;u-inlex-agent
+蜑家雞見水	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 蜕化變質	n,v	chengyu		u-tail533;review;agent-label;family-leaf-review
 蜘蛛	n			cow-single
 蜘蛛俠	n			u-inlex-nf2k;review;agent-label
@@ -22047,6 +22239,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 被頭巾	v		passive	prefix-passive;passive-prefix-expand;review
 被騙	v		passive	prefix-passive;manual-add;review
 被鬼矺	v		passive	prefix-passive;passive-prefix-expand;review
+裁縫度身	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 裂	a,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 裂開	n,v			cow-nv-unreviewed;trust-low
 裏	n			cow-single;p1
@@ -22811,6 +23004,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 護	v			u-inlex-nf2k;review;agent-label
 護士	n			cow-single
 護士學校	n			u-inlex-nf4;review;agent-label
+護照照片	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 護目鏡	n			cow-single
 護膚	n,v			u-inlex-nf2k;review;agent-label
 護膚品	n			u-inlex-nf2k;review;agent-label
@@ -22869,6 +23063,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 豈有此理	u	chengyu		chengyu-pos-review;review
 豈止	r			u-inlex-nf2b;review;agent-label
 豉油	n			u-inlex;review;u-inlex-agent
+豉油撈飯	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 豐功偉業	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 豐功偉績	n	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 豐厚	a			u-inlex-nf2k;review;agent-label
@@ -22900,8 +23095,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 豬扒	n			u-inlex;review;u-inlex-agent
 豬排	n			u-inlex-nf5;review;agent-label
 豬朋狗友	n	chengyu		no-source;fallback;full-r1-audit;review;清晰名詞／專名;family-leaf-review
+豬籠入水	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 豬肉	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 豬頭	a,n			u-inlex;review;u-inlex-agent
+豬頭骨	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 豹	n			cow-single;p3
 豹頭環眼	u	chengyu		chengyu-pos-review;review
 豺狼當道	u	chengyu		chengyu-pos-review;review
@@ -22913,6 +23110,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 貓	n			cow-single
 貓仔	n			cow-single
 貓咪	n			cow-single;p3
+貓咪洗面	r	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 貓哭老鼠	n,v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v,n;family-leaf-review
 貓頭鷹	n			cow-single
 貓鼠遊戲	n	idiom		u-inlex-nf5;review;agent-label
@@ -23078,6 +23276,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 資金	n			cow-single;p3
 賈	n			u-inlex;review;u-inlex-agent
 賊	n			no-source;fallback;full-r1-audit;review;名
+賊佬試沙煲	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 賊喊捉賊	v	chengyu		p2-idiom:AxxA;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
 賊心不死	u	chengyu		chengyu-pos-review;review
 賊眉賊眼	u	chengyu		chengyu-pos-review;review
@@ -23103,8 +23302,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 賣友求榮	u	chengyu		chengyu-pos-review;review
 賣國求榮	v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v;family-leaf-review
 賣官鬻爵	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
+賣布唔帶尺	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 賣方	n			cow-single;p3
 賣身投靠	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
+賣魚佬沖涼	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+賣鯇魚尾	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 賤	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 賤格	a,n			u-inlex;review;u-inlex-agent
 質	n,v			u-inlex;review;u-inlex-agent
@@ -23331,6 +23533,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 跑跑跳跳	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 跑跑顛顛	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
 跑車	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+跑馬射蚊髭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 跑馬觀花	r	chengyu		chengyu-pos-review;review
 跑龍套	u	chengyu		chengyu-pos-review;review
 跛	n			cow-single
@@ -23362,6 +23565,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 跪下	v			cow-single
 跪低	v			u-inlex;review;u-inlex-agent
 跪地求饒	v			u-inlex-nf4;review;agent-label
+跪地餼豬乸	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 路	n			cow-single
 路不拾遺	u	chengyu		chengyu-pos-review;review
 路人皆知	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
@@ -24838,6 +25042,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 鐵器時代	n			cow-single
 鐵塔	n			u-inlex;review;u-inlex-agent
 鐵壁銅牆	n	chengyu		chengyu-pos-review;review
+鐵拐李踢足球	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 鐵杵成針	u	chengyu		chengyu-pos-review;review
 鐵板一塊	a,n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 鐵板牛肉	n			u-inlex-nf5;review;agent-label
@@ -24978,6 +25183,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 閉月羞花	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 閉目塞聽	u	chengyu		chengyu-pos-review;review
 閉目養神	v	idiom		u-inlex-nf3;review;agent-label
+閉眼射靶	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 閉路電視	n			cow-single
 閉門卻掃	u	chengyu		chengyu-pos-review;review
 閉門塞竇	u	chengyu		chengyu-pos-review;review
@@ -25106,6 +25312,9 @@ T恤	n			u-inlex-nf2k;review;agent-label
 閩	n			u-inlex-nf2b;review;agent-label
 閱	v			u-inlex-nf2k;review;agent-label
 閹	v			u-inlex-nf2k;review;agent-label
+閻羅王探病	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+閻羅王請人	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+閻羅王開攤	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 闆	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 闊	a			cow-single;p3
 闊步高談	u	chengyu		chengyu-pos-review;review
@@ -25118,6 +25327,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 關你屁事	v,x			u-tail533;review;agent-label
 關你鬼事	v	idiom		u-inlex-nf5;review;agent-label
 關係	n,v			cow-nv-unreviewed;trust-low
+關公細佬	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 關心	n,v			cow-nv-unreviewed;trust-low;p1-close;true-nv;review
 關愛	n,v			no-source;fallback;full-r1-audit;review;名動
 關懷	n,v			u-inlex-nf2k;review;agent-label
@@ -25184,9 +25394,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 阿姐	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 阿姨	n			cow-single
 阿婆	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+阿婆食粥	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 阿媽	n			no-source;fallback;u-repair:canto-u-map;review
 阿嬸	n			u-inlex-nf2b;review;agent-label
 阿富汗	n			cow-single
+阿崩叫狗	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 阿布	n			u-inlex-nf2k;review;agent-label
 阿布哈茲	n			cow-single
 阿彌陀佛	n,x	chengyu		u-inlex-nf2k;review;agent-label;family-leaf-review
@@ -25203,9 +25415,13 @@ T恤	n			u-inlex-nf2k;review;agent-label
 阿特拉斯	n			u-inlex-nf3;review;agent-label
 阿狗阿貓	u	chengyu		chengyu-pos-review;review
 阿米巴病	n			cow-single
+阿聾送殯	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+阿茂整餅	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+阿蘭嫁阿瑞	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 阿諛奉承	u	chengyu		chengyu-pos-review;review
 阿諛逢迎	u	chengyu		chengyu-pos-review;review
 阿貓阿狗	n	chengyu		p2-idiom:ABAC;u-inlex-idiom;review;u-inlex-idiom-relabel;family-leaf-review
+阿超著褲	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 阿頭	n			u-inlex;review;u-inlex-agent
 阿麗	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 附上	v			u-inlex-nf2b;review;agent-label
@@ -25251,6 +25467,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 除此之外	r	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;p1-audit;review;連接／附帶說明短語；非名（len4-noun 假陽會毒同名詞閘）
 除舊更新	u	chengyu		chengyu-pos-review;review
 除衫	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+除褲放屁	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 除非	x			no-source;fallback;full-r1-audit;review;u 有明確詞類 → x
 陪	v			cow-single
 陪伴	n,v			cow-nv-unreviewed;trust-low
@@ -25283,6 +25500,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 陰鬱	a			u-inlex-nf5;review;agent-label
 陰魂不散	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 陳	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+陳年中草藥	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+陳村碼頭	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 陳橋兵變	n			u-inlex-nf5;review;agent-label
 陳穀子爛芝麻	n	chengyu		chengyu-pos-review;review
 陳腔濫調	a,n	idiom		u-inlex-nf5;review;agent-label
@@ -25303,6 +25522,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 陸續	r			u-inlex-nf2b;review;agent-label
 陸軍	n			cow-single
 陸陸續續	a	idiom		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u
+陸雲庭睇相	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 陽	n			u-inlex;review;u-inlex-agent
 陽光	n			cow-single
 陽具	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -25325,8 +25545,11 @@ T恤	n			u-inlex-nf2k;review;agent-label
 階段	n			cow-single
 階級	n			cow-single;p3
 隔	v			cow-single
+隔夜油炸鬼	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+隔夜痰罐	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 隔岸觀火	u	chengyu		chengyu-pos-review;review
 隔年皇曆	u	chengyu		chengyu-pos-review;review
+隔年通勝	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 隔日	n,r			u-inlex-nf2k;review;agent-label
 隔熱材料	n			u-inlex-nf3;review;agent-label
 隔牆有耳	a,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
@@ -25516,6 +25739,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 雞飛狗走	a,v	chengyu		u-tail533;review;agent-label;family-leaf-review
 雞飛狗跳	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 雞飛蛋打	u	chengyu		chengyu-pos-review;review
+雞食放光蟲	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 雞鳴狗盜	n,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 離	v,x			no-source;fallback;p1-close;rank-u;canto-heuristic;review
 離別	n			cow-single
@@ -25621,6 +25845,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 零錢	n			cow-single
 零食	n			cow-single
 雷	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+雷公劈豆腐	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 雷厲風行	a,r	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 雷打不動	u	chengyu		chengyu-pos-review;review
 雷聲大雨點小	u	chengyu		chengyu-pos-review;review
@@ -25679,6 +25904,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 電源	n			u-inlex-nf2k;review;agent-label
 電源開關	n			u-inlex-nf2b;review;agent-label
 電熱水壺	n			u-tail533;review;agent-label
+電燈膽	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 電磁感應	n			u-inlex-nf3;review;agent-label
 電磁理論	n			u-inlex-nf5;review;agent-label
 電磁輻射	n			u-inlex-nf2b;review;agent-label
@@ -25808,6 +26034,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 非我族類	n	chengyu		成語截；非我族類其心必異;u-inlex-nf4;review;agent-label;family-leaf-review
 非昔是今	u	chengyu		chengyu-pos-review;review
 非比尋常	a	idiom		u-inlex-nf3;review;agent-label
+非洲和尚	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 非異人任	u	chengyu		chengyu-pos-review;review
 非禮	n,v			u-inlex;review;u-inlex-agent
 非親非故	u	chengyu		chengyu-pos-review;review
@@ -26122,6 +26349,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 風化作用	n			len4-noun-heuristic
 風口浪尖	n	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → n;family-leaf-review
 風吹草動	n	chengyu		成語；風吹草動;u-inlex-nf5;review;agent-label;family-leaf-review
+風吹雞蛋殼	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 風吹雨打	v	chengyu	passive	chengyu-pos-review;review
 風和日暄	u	chengyu		chengyu-pos-review;review
 風和日暖	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -26204,7 +26432,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 飛機	n			cow-single
 飛機場	n			cow-single
 飛機師	n			u-inlex-nf2k;review;agent-label
+飛機打交	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
+飛機火燭	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 飛機票	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
+飛機運茶壺	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 飛檐走壁	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 飛沙走石	u	chengyu		chengyu-pos-review;review
 飛潛動植	n			u-tail533;review;agent-label
@@ -26235,6 +26466,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 食不知味	a,v	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 食前方丈	u	chengyu		chengyu-pos-review;review
 食古不化	u	chengyu		chengyu-pos-review;review
+食咗成擔蒜頭	n	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 食品工業	n			len4-noun-heuristic
 食嘢	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 食埋	v			u-inlex-nf2k;review;agent-label
@@ -26403,6 +26635,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 香甜可口	a			u-inlex-nf4;review;agent-label
 香腸	n			cow-single
 香蕉	n			cow-single
+香蕉樹影	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 香車寶馬	u	chengyu		chengyu-pos-review;review
 馬	n			cow-single
 馬上	r			cow-single
@@ -26435,6 +26668,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 馬首是瞻	u	chengyu		chengyu-pos-review;review
 馬馬虎虎	a	chengyu		no-source;fallback;p2-idiom:AABB;p2-idiom-heuristic;review;u-repair:aabb-u;family-leaf-review
 馬騮	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+馬騮臭狐	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 馬齒徒增	u	chengyu		chengyu-pos-review;review
 馳名中外	u	chengyu		chengyu-pos-review;review
 馳名天下	u	chengyu		chengyu-pos-review;review
@@ -26781,6 +27015,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 魚水之歡	n	idiom		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;review;zhi-n-revert
 魚沉雁杳	u	chengyu		chengyu-pos-review;review
 魚生	n			u-inlex-nf2k;review;agent-label
+魚生粥	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 魚目混珠	v	chengyu		成語；魚目混珠;u-inlex-nf3;review;agent-label;family-leaf-review
 魚米之鄉	n	chengyu		chengyu-pos-review;review
 魚肉百姓	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -26917,6 +27152,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 黃毛丫頭	n	idiom		u-inlex-nf4;review;agent-label
 黃河	n			u-inlex;review;u-inlex-agent
 黃瓜	n			cow-single;p3
+黃皮樹鷯哥	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 黃粱美夢	n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 黃色	a,n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 黃色書刊	n			u-inlex-nf5;review;agent-label
@@ -26960,6 +27196,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 黑白不分	a,v			u-inlex-nf5;review;agent-label
 黑白兩道	n			u-inlex-nf3;review;agent-label
 黑白分明	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+黑白天鵝	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 黑白電視	n			u-inlex-nf3;review;agent-label
 黑社會	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 黑箱操作	n,v			u-inlex-nf5;review;agent-label
@@ -27033,6 +27270,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 黴	n			cow-single;p3
 黴菌毒素	n			cow-single
 鼎力支持	v			u-tail533;review;agent-label
+鼎湖上素	a	xiehouyu		cantonese-md-xiehouyu;answer-function;review
 鼎足之勢	n	chengyu		len4-noun-heuristic;p2-idiom:之字格;p2-idiom-heuristic;review;family-leaf-review
 鼎鼎大名	u	chengyu		chengyu-pos-review;review
 鼓	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u

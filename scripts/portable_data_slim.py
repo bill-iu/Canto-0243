@@ -90,6 +90,8 @@ def _should_remove_file(path: Path, data_root: Path) -> bool:
             "sources.yaml",
             "cantonese_md_lexicon.json",
             "cantonese_md.manifest.json",
+            "unihan_cantonese.json",
+            "unihan_cantonese.manifest.json",
             "curated_lexicon.json",
         }:
             return True

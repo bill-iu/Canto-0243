@@ -8,9 +8,10 @@ from typing import Optional
 
 from app.domain.lexicon.admission import resolve_admission
 from app.lexicon.static_index import LexiconEntry
+from app.utils.han import HAN_RE
 from app.utils.jyutping_codec import get_0243_code, split_jyutping
 
-_CJK = re.compile(r"[\u4e00-\u9fff]")
+_CJK = HAN_RE
 
 
 def cjk_literal(text: str) -> str:

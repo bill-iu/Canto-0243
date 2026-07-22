@@ -9,6 +9,7 @@ from typing import List, Optional
 
 from app.domain.lexicon.port import LexiconPort, default_lexicon_port
 from app.lexicon.static_index import LexiconEntry
+from app.utils.han import contains_han
 from app.utils.syllable_reading import compose_lexicon_entries_from_rime
 
 
@@ -70,7 +71,7 @@ def resolve_admission(
     lexicon: Optional[LexiconPort] = None,
 ) -> AdmissionResult:
     text = (literal or "").strip()
-    if not text or not re.search(r"[\u4e00-\u9fff]", text):
+    if not text or not contains_han(text):
         return AdmissionResult(text, AdmissionSource.NONE, [])
 
     port = lexicon or default_lexicon_port()

@@ -225,7 +225,7 @@ export function parseQuery(q: string, opts?: { mode?: QueryMode; pzmode?: 'm1' |
 
   if (opts?.mode === 'pz') {
     if (/[PZ]/.test(normalized)) {
-      const plainRhyme = normalized.match(/^([PZ0-9?]+)([\u4e00-\u9fff])=$/);
+      const plainRhyme = normalized.match(/^([PZ0-9?]+)([\p{Script=Han}])=$/u);
       if (plainRhyme) {
         const serial = tryParsePingZeSerial(plainRhyme[1]!, opts.pzmode);
         if (serial?.kind === QueryKind.PING_ZE_SERIAL) {

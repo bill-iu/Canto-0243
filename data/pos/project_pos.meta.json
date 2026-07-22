@@ -1,5 +1,5 @@
 {
-  "version": "0.6.0",
+  "version": "0.7.0",
   "p0_hard_gate": true,
   "description": "專案自建詞性 — 閘用詞類=高|中信任；cow-single=低信任起草（唔入硬閘）",
   "trust": {
@@ -640,5 +640,23 @@
       "changed": 0,
       "dry_run": false
     }
+  },
+  "xiehouyu": {
+    "source": "daimaruhk/Cantonese.md@ef5f1a06c7113b0e04776249725f796d33333584",
+    "content_type_mapping": {
+      "idioms": "xiehouyu"
+    },
+    "reviewed_terms": 241,
+    "family_applied": 241,
+    "pos_by_value": {
+      "a": 87,
+      "v": 83,
+      "u": 43,
+      "r": 20,
+      "n": 6,
+      "v,r": 2
+    },
+    "review": "data/pos/audit/cantonese_md_xiehouyu_review.tsv",
+    "overrides": "data/pos/audit/cantonese_md_xiehouyu_overrides.tsv"
   }
 }

@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from app.payload_root import get_payload_root
+from app.utils.han import contains_han
 
 
 def _default_clean_dir() -> Path:
@@ -40,7 +41,7 @@ class LexiconEntry:
 
 
 def _is_canto_char(text: str) -> bool:
-    return bool(text and re.search(r"[\u4e00-\u9fff]", text))
+    return contains_han(text)
 
 
 def _ingest_lexicon_rows(data: object, index: Dict[str, List[LexiconEntry]]) -> int:

@@ -21,7 +21,7 @@
 <!-- /version:zh-Hans -->
 
 <!-- words-count:zh-Hans -->
-目前总词条列数：**171,082**（`lyrics.db` · `words` 表）
+目前总词条列数：**181,220**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
 **立即开始使用（两种方式，同等重要）**

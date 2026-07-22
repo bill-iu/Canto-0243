@@ -4,9 +4,10 @@ from __future__ import annotations
 import re
 
 from app.services.jyutping_match import parse_word_jyutping
+from app.utils.han import HAN_RE, is_han_char
 from app.utils.jyutping_codec import get_0243_code
 
-_CJK_CHAR = re.compile(r"[\u3400-\u9fff]")
+_CJK_CHAR = HAN_RE
 _LATIN_ALNUM = re.compile(r"[A-Za-z0-9]")
 
 
@@ -20,7 +21,7 @@ def _looks_like_mixed_literal(literal: str) -> bool:
 
 
 def _literal_positions(literal: str) -> list[str]:
-    return [ch for ch in str(literal or "") if ch.isalnum() or _CJK_CHAR.match(ch)]
+    return [ch for ch in str(literal or "") if ch.isalnum() or is_han_char(ch)]
 
 
 def _generate_mixed_literal_jyutping(text: str) -> str | None:
@@ -47,9 +48,9 @@ def build_mixed_literal_code(literal: str, jyutping: str) -> str:
         return ""
     code_chars: list[str] = []
     for char in text:
-        if not (char.isalnum() or _CJK_CHAR.match(char)):
+        if not (char.isalnum() or is_han_char(char)):
             continue
-        if _CJK_CHAR.match(char):
+        if is_han_char(char):
             syllable = syllables[len(code_chars)]
             code_chars.append(get_0243_code(syllable) or "?")
         elif char.isdigit():
@@ -103,7 +104,7 @@ def is_valid_word_lexicon_reading(char: str, jyutping: str, *, allow_mixed_liter
             return False
         code = build_mixed_literal_code(literal, jp)
         return bool(code)
-    han_chars = [ch for ch in literal if _CJK_CHAR.match(ch)]
+    han_chars = [ch for ch in literal if is_han_char(ch)]
     if len(tokens) != len(han_chars):
         return False
     syllables = parse_word_jyutping(jp)

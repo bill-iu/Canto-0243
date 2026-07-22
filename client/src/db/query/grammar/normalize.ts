@@ -6,7 +6,7 @@ function normalizeCodeSandwichTailEquals(q: string): string {
   if (!q || q.includes('=') || q.includes('^')) {
     return q;
   }
-  if (/^(\d+)([\u4e00-\u9fff]+)$/.test(q)) {
+  if (/^(\d+)([\p{Script=Han}]+)$/u.test(q)) {
     return `${q}=`;
   }
   return q;
@@ -15,9 +15,9 @@ function normalizeCodeSandwichTailEquals(q: string): string {
 /** Port of query_lexer.normalize_initial_marker_to_caret (ADR-0062) */
 function normalizeInitialMarkerToCaret(q: string): string {
   if (!q) return q;
-  let out = q.replace(/(\d)=([\u4e00-\u9fff])/g, '$1^$2');
-  out = out.replace(/\?=([\u4e00-\u9fff])/g, '?^$1');
-  out = out.replace(/\+=([\u4e00-\u9fff])/g, '+^$1');
+  let out = q.replace(/(\d)=([\p{Script=Han}])/gu, '$1^$2');
+  out = out.replace(/\?=([\p{Script=Han}])/gu, '?^$1');
+  out = out.replace(/\+=([\p{Script=Han}])/gu, '+^$1');
   if (out.startsWith('=')) {
     out = `^${out.slice(1)}`;
   }
@@ -91,7 +91,7 @@ export function isPureDigits(q: string): boolean {
 
 /** Check if query contains Chinese characters */
 export function hasChineseChars(q: string): boolean {
-  return /[\u4e00-\u9fff]/.test(q);
+  return /\p{Script=Han}/u.test(q);
 }
 
 /** Check if query looks like jyutping (contains letters) */

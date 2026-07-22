@@ -16,7 +16,7 @@ DEFAULT_CARRIER_OUT = ROOT / "client" / "public" / "project-pos-index.json"
 
 FORMAL_POS = frozenset({"n", "v", "a", "r", "x"})
 ALL_POS = FORMAL_POS | frozenset({"u"})
-FAMILY_VALUES = frozenset({"", "idiom", "chengyu", "suyu", "yanyu"})
+FAMILY_VALUES = frozenset({"", "idiom", "chengyu", "suyu", "yanyu", "xiehouyu"})
 VOICE_VALUES = frozenset({"", "active", "passive"})
 TSV_HEADER = ("literal", "pos", "family", "voice", "note")
 
@@ -37,6 +37,7 @@ FAMILY_LABEL_ZH = {
     "chengyu": "成語",
     "suyu": "俗語",
     "yanyu": "諺語",
+    "xiehouyu": "歇後語",
 }
 VOICE_LABEL_ZH = {"active": "主動", "passive": "被動"}
 
@@ -83,7 +84,7 @@ def pos_trust(note: str) -> str:
 class PosRow:
     literal: str
     pos: frozenset[str]
-    family: str  # "" | "idiom" | "chengyu" | "suyu" | "yanyu"
+    family: str  # "" | "idiom" | "chengyu" | "suyu" | "yanyu" | "xiehouyu"
     voice: str  # "" | "active" | "passive"
     note: str = ""
 
