@@ -6,7 +6,7 @@ import { injectDatabaseForTests, resetDatabase } from '../src/db/init.ts';
 import { loadStaticRelationData } from '../src/db/thesaurus-loader.node.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { initSqlJs } from '../src/db/sqljs.ts';
-import { buildRelationPool } from '../src/db/relation-pool-builder.ts';
+import { buildRelationPool } from '../src/db/relation-pool/builder.ts';
 import {
   JYUTPING_SYN_MODE_HINT,
   queryEngine,

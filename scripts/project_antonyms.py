@@ -245,7 +245,7 @@ def cmd_report(args: argparse.Namespace) -> int:
 
     from sqlalchemy import text
 
-    from app.domain.relations.ranking import DERIVED_ANT_SOURCES, SOURCE_BASE_RANK
+    from app.domain.relation_pool.ranking import DERIVED_ANT_SOURCES, SOURCE_BASE_RANK
     from app.domain.thesaurus.port import StaticThesaurusPort
     from ingest.project_antonyms import (
         PROJECT_ANT_SOURCE,

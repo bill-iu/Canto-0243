@@ -28,7 +28,7 @@ import { invalidatePhonemeIndex } from './position-match/phoneme-index.ts';
 import { resetCompoundCaches } from './compound.ts';
 import { invalidateRelationGraph } from './relation-graph.ts';
 import { invalidateLexiconMembership } from './lexicon-membership.ts';
-import { invalidateRelationPoolCache } from './relation-pool-projection.ts';
+import { invalidateRelationPoolCache } from './relation-pool/index.ts';
 import { resetHeteronymIndex } from './heteronym.ts';
 
 

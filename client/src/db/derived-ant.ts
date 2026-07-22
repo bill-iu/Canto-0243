@@ -8,7 +8,7 @@ import {
   directSynNeighbors,
   ensureRelationGraph,
 } from './relation-graph.ts';
-import type { RelationPoolItem } from './relation-pool-snapshot.ts';
+import type { RelationPoolItem } from './relation-pool/index.ts';
 
 const CJK_RE = /[\u4e00-\u9fff]/;
 

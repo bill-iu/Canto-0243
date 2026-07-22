@@ -1,4 +1,4 @@
-"""Phase C PR4 / C7: TS 近反義池 deep package under client/src/db/relation-pool/."""
+"""Phase C PR4 / C7: TS 近反義池 deep package; shims retired (P3#3)."""
 from __future__ import annotations
 
 import re
@@ -9,6 +9,13 @@ REPO = Path(__file__).resolve().parents[2]
 DB = REPO / "client" / "src" / "db"
 POOL = DB / "relation-pool"
 MAX_LINES = 350
+SHIM_TS = (
+    "relation-pool-ranking.ts",
+    "relation-pool-builder.ts",
+    "relation-pool-projection.ts",
+    "relation-pool-snapshot.ts",
+)
+SHIM_PY = ("pool.py", "pool_builder.py", "pool_projection.py", "ranking.py")
 
 
 class PhaseCPr4RelationPoolSplit(unittest.TestCase):
@@ -35,15 +42,15 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
             (DB / "relation-pool.ts").is_file(),
             msg="shallow relation-pool.ts barrel must stay deleted",
         )
-        for shim in (
-            "relation-pool-ranking.ts",
-            "relation-pool-builder.ts",
-            "relation-pool-projection.ts",
-            "relation-pool-snapshot.ts",
-        ):
-            text = (DB / shim).read_text(encoding="utf-8")
-            self.assertIn("relation-pool/", text)
-            self.assertLessEqual(text.count("\n") + 1, 8)
+        for shim in SHIM_TS:
+            self.assertFalse(
+                (DB / shim).is_file(),
+                msg=f"shim must be deleted: {shim}",
+            )
+        self.assertFalse(
+            (DB / "_generated" / "relation-pool-ranking.ts").is_file(),
+            msg="db/_generated relation-pool-ranking shim must be deleted",
+        )
 
     def test_runtime_callers_use_projection_not_builder(self):
         entry = (
@@ -55,8 +62,6 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
         for path in (REPO / "client" / "src").rglob("*.ts"):
             if path.parent == POOL and path.name in ("builder.ts", "projection.ts"):
                 continue
-            if path.name in ("relation-pool-builder.ts", "relation-pool-projection.ts"):
-                continue
             if "node_modules" in path.parts:
                 continue
             text = path.read_text(encoding="utf-8")
@@ -66,6 +71,15 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
                 or "relation-pool-builder" in text
             ):
                 self.fail(f"runtime must not import builder: {path.relative_to(REPO)}")
+            # Ban legacy root shims only (not relation-pool/_generated/relation-pool-ranking.ts)
+            if re.search(
+                r"""from ['"]\.\.?/(?:\.\./)*relation-pool-(projection|builder|snapshot|ranking)""",
+                text,
+            ) or re.search(
+                r"""from ['"].*src/db/relation-pool-(projection|builder|snapshot|ranking)""",
+                text,
+            ):
+                self.fail(f"runtime must not import pool shim path: {path.relative_to(REPO)}")
 
     def test_builder_not_inline_ranking_tables(self):
         builder = (POOL / "builder.ts").read_text(encoding="utf-8")
@@ -88,9 +102,18 @@ class PhaseCPr4RelationPoolSplit(unittest.TestCase):
         self.assertIn("__getattr__", init)
         for name in ("pool_projection.py", "pool_builder.py", "pool.py", "ranking.py"):
             self.assertTrue((root / name).is_file(), msg=name)
-        for name in ("pool_projection.py", "pool_builder.py", "pool.py", "ranking.py"):
-            shim = (REPO / "app" / "domain" / "relations" / name).read_text(encoding="utf-8")
-            self.assertIn("relation_pool", shim)
+        rel = REPO / "app" / "domain" / "relations"
+        for name in SHIM_PY:
+            self.assertFalse(
+                (rel / name).is_file(),
+                msg=f"Python pool shim must be deleted: relations/{name}",
+            )
+        for path in (REPO / "app").rglob("*.py"):
+            if "relation_pool" in path.parts:
+                continue
+            text = path.read_text(encoding="utf-8")
+            if "domain.relations.pool" in text or "domain.relations.ranking" in text:
+                self.fail(f"must not import pool shim package: {path.relative_to(REPO)}")
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from app.domain.relations.ranking import DERIVED_ANT_SOURCES, SOURCE_BASE_RANK
+from app.domain.relation_pool.ranking import DERIVED_ANT_SOURCES, SOURCE_BASE_RANK
 from app.models.word import Word, WordRelation
 from ingest.project_antonyms import (
     PROJECT_ANT_MERGE_RANK,

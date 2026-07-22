@@ -9,7 +9,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.database import SessionLocal, ensure_word_relations_table
-from app.domain.relations.pool_projection import project_relation_pool
+from app.domain.relation_pool.pool_projection import project_relation_pool
 from app.models.word import WordRelation
 from ingest.manual_relations_apply import hot_apply_manual_relations
 

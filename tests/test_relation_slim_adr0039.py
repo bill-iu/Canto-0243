@@ -8,7 +8,7 @@ from app.domain.relations.cilin_codes import (
     leaf_code_to_hierarchy_codes,
 )
 from app.domain.relations.degree_cap import SYN_NEIGHBOR_CAP, cap_undirected_syn_tuples
-from app.domain.relations.ranking import parse_group_codes
+from app.domain.relation_pool.ranking import parse_group_codes
 
 
 class CilinCodesTests(unittest.TestCase):
