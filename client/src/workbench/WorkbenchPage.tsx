@@ -1,4 +1,12 @@
-import { type FormEvent, useMemo, useRef, useState, useEffect, useCallback } from 'react';
+import {
+  type FormEvent,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+  useDeferredValue,
+} from 'react';
 
 import { getLang, setLang, getTheme, setTheme, readLexiconVersionMeta } from '../../../shared/app-context.mjs';
 import { navigateAppRoute } from '../app-navigation.ts';
@@ -488,8 +496,14 @@ export function WorkbenchPage() {
   };
 
   // 候選 session 擁有 cursor；page 只傳 plan 身份（無 paging）
+  // 句格 session 即時；候選 plan 延後，避免鎖格被查詢／重繪拖慢（CONTEXT 字位鎖定）
   const planBase = useMemo(() => derivePlanBase(session), [session]);
-  const candidates = useWorkbenchCandidates(isReady ? planBase : null, adapter, posFilter);
+  const deferredPlanBase = useDeferredValue(planBase);
+  const candidates = useWorkbenchCandidates(
+    isReady ? deferredPlanBase : null,
+    adapter,
+    posFilter,
+  );
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(

@@ -169,6 +169,17 @@ body.query-tabs-app.workbench-route {
   flex: 1 1 auto;
 }
 .section-heading-row h2, .candidate-area h2 { margin: .2rem 0 0; }
+/* 固定兩行，窄屏唔再把「點擊鎖定，雙擊改字」拆成亂行 */
+.sentence-canvas__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  line-height: 1.25;
+}
+.sentence-canvas__title-line {
+  display: block;
+}
 .sentence-canvas__heading-actions {
   display: flex;
   align-items: center;
