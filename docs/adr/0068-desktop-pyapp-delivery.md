@@ -14,7 +14,7 @@
 6. **入口** — 產品主路徑＝`local_launch` **GUI 語意**（silent、可重用已跑 backend、detach 後端）。**A1**：launcher 可結束，服務常駐直至明確退出。
 7. **本機服務退出** — **預設**關閉最後一個本機產品瀏覽器分頁時 `POST /shutdown`（產品內查詢分頁＝多工作區；**reload 唔停服**）。進階可改「關分頁唔停」並顯示選單「停止本機服務」。**唔**把 F5 當退出。
 8. **更新** — **現行**維持 ADR-0059：指紋提示 ＋ 人手解壓覆蓋成個 Desktop 套件；**關閉** PyApp self-update 作產品預設。整包自動同步僅長遠目標。
-9. **macOS** — 創作者主路徑 **`.command`**（Gatekeeper 教學針對它）。`.app` **不放棄**，作日後修復／研究；**唔**以未 notarize 之 `.app` 雙擊作現行必達承諾。
+9. **macOS** — 創作者主路徑 **`Canto-0243.app`**（薄安裝進度殼 + 包內 runtime；**退役**正式 `.command`）。Gatekeeper 教學針對 **`.app` 一次**放行；細節與側車佈局見 **[ADR-0070](./0070-macos-app-bundle-primary-entry.md)**。**唔**以未 notarize 當雙擊零提示必達。
 10. **分渠道** — Windows zip 在 Windows 建；macOS tar 在對應架構 macOS 建；Linux 仍不承諾雙擊免安裝。Release 資產名／文件用 desktop 語意。**Windows Desktop 套件**：創作者入口只係根目錄 **`Canto-0243.exe`**；內層 PyApp 放 **`runtime/Canto-0243-runtime.exe`**（唔同根目錄並排）。**唔**附 `START.bat`；repo 內 `portable/START.bat` 僅供 legacy／開發。
 11. **Runtime 依賴（瘦）** — Desktop wheel／`requirements.txt` **必裝**：FastAPI 棧、SQLAlchemy、dotenv、**OpenCC**（`to_traditional`／近反義字面正規化）。**唔**必裝 `pycantonese`／`pyjyutping`／`pyyaml`（建庫標音與維護腳本；見 `requirements-dev.txt` 或 `pip install -e ".[ingest]"`）。查詢路徑新詞注入走 rime／靜態索引／DB，唔即時 call pycantonese。
 12. **Desktop 安裝進度殼**（grill；2026-07-22 補）— 首次雙擊用**薄外層殼**（Rust + **wry/tao**，共用靜態 HTML splash；Win+Mac 同 milestone 兩 target），分階標籤顯示 PyApp bootstrap（下 CPython／建 env／裝 wheel）。進度 % 用**階段映射估計**（唔跟位元組、唔 stage 內時間假爬）：stage 0→約 5%、1→25%、2→50%、3→75%、4→95%、產品 HTTP Ready→100%；UI 為 stage 文案 +「約 N%」／en `~N%` + **定長 bar**（寬度=N）；% 只升唔降。**唔**等同產品 **就緒閘**。Env 已就緒則跳過殼。內層仍係 PyApp；**拒**用產品 React 閘包住無 Python 階段；**拒**只靠 fork PyApp 當唯一品牌 UI。
@@ -37,7 +37,7 @@
 | 雙軌長期 venv＋Desktop | 拒；正式只 Desktop/PyApp |
 | 釘 3.12 或跟系統 Python | 拒；釘 3.11 自管發行版 |
 | Tauri／Briefcase／full-app onefile | 拒（handoff 鎖定 PyApp only） |
-| macOS 只靠修 `.app` 當 KPI | 拒作今次必達；主路徑 `.command` |
+| macOS 只靠修 `.app` 當 KPI／notarize 零提示 | 拒作必達；主路徑改 `.app` 見 **0070**（仍可要「仍要開啟」一次） |
 | Desktop 必裝 pycantonese／pyjyutping | 拒（code 僅 ingest／維護腳本；誤標 runtime） |
 | Desktop 去掉 OpenCC | 拒（簡→港繁／近反義正規化產品契約） |
 | 產品 ReadyGate 直接包 PyApp 下載 | 拒（閘要 app 已起；bootstrap 在 Python 前） |

@@ -797,8 +797,8 @@ _Avoid_：強制升級閘、系統 MessageBox（v1）、把 git pull 當 Desktop
 _Avoid_：把 F5／reload 當停服、假設多開網頁 tab 先做得到多工作區、假設存在擁有後端生命週期嘅原生 App 窗（無另做殼時）
 
 **Desktop macOS 啟動**：
-創作者主路徑為 **`.command`（或同等腳本入口）**，經 Gatekeeper 一次放行後啟動 launcher／本機服務。**唔**以未 notarize 嘅 `.app` 雙擊作為現行必達承諾；`.app` 可保留作日後修復／研究，但文件與發佈驗收以 `.command` 為準。
-_Avoid_：教創作者只靠雙擊 `.app`、把 ad-hoc `.app` 當已解決 Gatekeeper
+創作者主路徑為 **`Canto-0243.app`**（薄 **Desktop 安裝進度殼** + 包內 PyApp runtime）。**側車**（`lyrics.db`、產品 UI、wheel 等）與 `.app` **同層**，解壓資料夾整體搬移；**唔**只拖走 `.app`。正式套件**唔**再附 **`.command`**。Finder／Dock 圖標用產品 **PWA 主圖**（`icon-512` 等）生成之 App 圖標。Gatekeeper：**只應對 `.app` 做一次**「右鍵打開／仍要開啟」；殼在 spawn 內層 runtime 前清除 payload 與 bundle 內 quarantine，**唔**要求創作者對 runtime 再 bypass。**未 notarize** 仍可能有第一次提示；**唔**承諾雙擊零提示。
+_Avoid_：教 `.command` 作主入口、要求對 `runtime/` 內執行檔再「仍要開啟」、只拖 `.app` 入 Applications 而留低側車、把 ad-hoc／未 notarize 當已解決所有 Gatekeeper 提示
 
 **Desktop 安裝進度殼**（首次）：
 雙擊 Desktop 入口後、產品 UI／**就緒閘**出現前，由**薄原生外層殼**顯示嘅品牌化前置進度界面。**一份靜態 HTML splash 資產 + 跨平台宿主源碼**（Rust + wry／tao；Win WebView2、Mac WKWebView），編譯兩個平台入口；**唔**跑產品 Vite／React。殼包住／先於內層 PyApp：覆蓋下載 CPython、建 env、安裝應用包等；完成後交棒產品。已就緒安裝**跳過殼**。進度以**分階標籤**＋**階段映射估計 %**（文案「約 N%」／en `~N%`；定長 bar 跟同一 N；% 只隨階段跳升、單調不降、階段內唔時間爬）為主；**唔**宣稱位元組級精確。**唔**等同 **就緒閘**／**閘前進度**。

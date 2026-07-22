@@ -13,6 +13,7 @@
 | [0031](./0031-394052-canonical-code-and-search-modes.md) | 394052 碼與三檔 |
 | [0044](./0044-portable-delivery-and-release.md) | 免安裝 + 分渠道發佈（§1 運送歷史；見 0068） |
 | [0068](./0068-desktop-pyapp-delivery.md) | **Desktop** + **PyApp** 交付（正名；取代 venv 運送） |
+| [0070](./0070-macos-app-bundle-primary-entry.md) | macOS 主入口 **`.app`**（退役 `.command`；單次 Gatekeeper） |
 | [0045](./0045-pwa-delivery-and-lexicon-channel.md) | PWA 交付 + 詞庫渠道 |
 | [0046](./0046-query-dispatch-seams-and-ssot.md) | 查詢分派 seam + SSOT |
 | [0047](./0047-lexicon-volume-and-phoneme-contract.md) | 詞庫體積 + j2 音素 |
