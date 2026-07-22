@@ -66,6 +66,7 @@ from app.services.query_types import (
     WildcardCodeAnchorQuery,
     WordLookupQuery,
 )
+from app.utils.han import contains_han
 
 # ponytail: 過渡 re-export；新 code 請 from query_types
 __all__ = [
@@ -313,7 +314,7 @@ def parse_query(q: str, *, mode: str = "m1", pzmode: str | None = None) -> Parse
     if q.isdigit():
         return DigitCodeQuery(raw_q=q)
 
-    if re.search(r"[\u4e00-\u9fff]", q):
+    if contains_han(q):
         return WordLookupQuery(raw_q=q)
 
     if re.search(r"[a-zA-Z]", q):

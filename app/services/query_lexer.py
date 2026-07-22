@@ -11,6 +11,7 @@ from app.services.query_tokens import (
     DIGIT_AFTER_SLOT_CONNECTOR_HINT,
     LEGACY_CODE_TAIL_SEPARATORS,
 )
+from app.utils.han import HAN_CLASS
 
 
 def normalize_code_tail_separators(q: str) -> str:
@@ -75,13 +76,13 @@ def normalize_redundant_single_char_initial(q: str) -> str:
 
 def normalize_middle_rhyme_triple(q: str) -> str:
     """?{字}=? → ?+{字}=?（中格同韻三字；中間無數字）。"""
-    m = re.match(r"^\?([一-龥])=\?$", q)
+    m = re.match(rf"^\?([{HAN_CLASS}])=\?$", q)
     if m:
         return f"?{CODE_TAIL_MIDDLE}{m.group(1)}=?"
     return q
 
 
-CODE_SANDWICH_TAIL_EQUALS_RE = re.compile(r"^(\d+)([一-龥]+)$")
+CODE_SANDWICH_TAIL_EQUALS_RE = re.compile(rf"^(\d+)([{HAN_CLASS}]+)$")
 
 
 def normalize_code_sandwich_tail_equals(q: str) -> str:
@@ -97,9 +98,9 @@ def normalize_initial_marker_to_caret(q: str) -> str:
     """ADR-0062：左 `=` 同聲 → 規範 `^`（尾韻 `字=` 唔動）。"""
     if not q:
         return q
-    q = re.sub(r"(\d)=([一-龥])", r"\1^\2", q)
-    q = re.sub(r"\?=([一-龥])", r"?^\1", q)
-    q = re.sub(r"\+=([一-龥])", lambda m: f"+^{m.group(1)}", q)
+    q = re.sub(rf"(\d)=([{HAN_CLASS}])", r"\1^\2", q)
+    q = re.sub(rf"\?=([{HAN_CLASS}])", r"?^\1", q)
+    q = re.sub(rf"\+=([{HAN_CLASS}])", lambda m: f"+^{m.group(1)}", q)
     if q.startswith("="):
         q = "^" + q[1:]
     return q

@@ -973,5 +973,22 @@
     "char": "鼎湖上素",
     "jyutping": "ding2 wu4 soeng6 sou3",
     "code": "9024"
+  },
+  {
+    "char": "牛𡁻牡丹",
+    "jyutping": "ngau4 ziu6 maau5 daan1",
+    "code": "0253",
+    "sources": ["unihan"]
+  },
+  {
+    "char": "牛𡁻牡丹",
+    "jyutping": "ngau4 zeu6 maau5 daan1",
+    "code": "0253",
+    "sources": ["jyutnet"]
+  },
+  {
+    "char": "多你一個唔多，少你一個唔少",
+    "jyutping": "do1 nei5 jat1 go3 m4 do1 siu2 nei5 jat1 go3 m4 siu2",
+    "code": "353403953409"
   }
 ]

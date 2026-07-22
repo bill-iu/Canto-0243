@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import re
 
+from app.utils.han import HAN_RE, is_han_char
 from app.utils.trad_chinese import to_traditional
 
-CJK_RE = re.compile(r"[\u4e00-\u9fff]")
+CJK_RE = HAN_RE  # Back-compatible export; semantically full Unicode Han.
 MAX_WORD_LEN = 12
 
 
@@ -20,7 +21,7 @@ def clean_term(text: str) -> str:
 
 
 def is_valid_term(text: str) -> bool:
-    if not text or len(text) > MAX_WORD_LEN:
+    if not text or sum(is_han_char(char) for char in text) > MAX_WORD_LEN:
         return False
     if not CJK_RE.search(text):
         return False

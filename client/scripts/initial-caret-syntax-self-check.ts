@@ -50,5 +50,8 @@ for (const q of ['^香=', '^香港=', '04困=49^倒'] as const) {
 }
 
 assert(normalizeAndParse('香港', { mode: 'm1' }).kind === QueryKind.WORD_LOOKUP, 'literal lookup');
+assert(normalizeAndParse('牛𡁻牡丹', { mode: 'm1' }).kind === QueryKind.WORD_LOOKUP, 'extension-B literal lookup');
+assert(normalizeQuery('0253牛𡁻牡丹') === '0253牛𡁻牡丹=', 'extension-B code sandwich normalize');
+assert(normalizeAndParse('牛𡁻牡丹=', { mode: 'm1' }).kind === QueryKind.EQUALS, 'extension-B equals');
 
 console.log('initial-caret-syntax self-check ok');

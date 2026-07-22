@@ -19,6 +19,7 @@ initProjectPosCarrier({
     成句: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'chengyu', voice: 'active' },
     俗句: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'], family: 'suyu', voice: 'passive' },
     傘句: { pos: ['a'], trust: 'high', gate: ['a'], show: ['a'], family: 'idiom' },
+    歇句: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'xiehouyu' },
     中信: { pos: ['v'], trust: 'medium', gate: ['v'] },
     // cow-single low (repro 金錢): pos only
     金錢: { pos: ['n'], trust: 'low' },
@@ -44,9 +45,11 @@ filter = togglePosFilterValue(filter, 'family', 'idiom');
 assert(filter.family.join() === 'idiom', 'umbrella clears leaves');
 assert(
   literalMatchesPosFilter('成句', { ...EMPTY_POS_FILTER, family: ['idiom'] })
-    && literalMatchesPosFilter('傘句', { ...EMPTY_POS_FILTER, family: ['idiom'] }),
+    && literalMatchesPosFilter('傘句', { ...EMPTY_POS_FILTER, family: ['idiom'] })
+    && literalMatchesPosFilter('歇句', { ...EMPTY_POS_FILTER, family: ['idiom'] }),
   'umbrella all family',
 );
+assert(literalMatchesPosFilter('歇句', { ...EMPTY_POS_FILTER, family: ['xiehouyu'] }), 'xiehouyu leaf');
 filter = togglePosFilterValue(filter, 'family', 'chengyu');
 assert(filter.family.join() === 'chengyu', 'leaf clears umbrella');
 filter = togglePosFilterValue(filter, 'voice', 'passive');

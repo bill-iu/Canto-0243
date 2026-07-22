@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from app.domain.lexicon.admission import resolve_admission
 from app.domain.lexicon.port import LexiconPort, default_lexicon_port
 from app.lexicon.static_index import LexiconEntry
+from app.utils.han import contains_han
 from app.models.word import Word
 from app.utils.jyutping_codec import split_jyutping
 
@@ -96,7 +97,7 @@ def ensure_word_rows_db(
     existing = db.query(Word).filter(Word.char == text).all()
     if existing:
         return existing
-    if not re.search(r"[\u4e00-\u9fff]", text):
+    if not contains_han(text):
         return []
 
     port = lexicon or default_lexicon_port()

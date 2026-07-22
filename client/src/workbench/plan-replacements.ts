@@ -1,9 +1,10 @@
-import type { DatabaseBackend } from '../db/database-backend.ts';
+import { queryRows, type DatabaseBackend } from '../db/database-backend.ts';
 import { executeMatchSpecPage } from '../db/position-match/engine.ts';
+import type { WordRow } from '../db/position-match/word-row.ts';
 import { projectRelationPool } from '../db/relation-pool/index.ts';
 import { buildMatchSpec } from './build-match-spec.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from './contracts.ts';
-import { groupCandidates } from './group-candidates.ts';
+import { groupCandidates, type GroupPoolInput } from './group-candidates.ts';
 import { shouldSkipCandidateQuery } from './limits.ts';
 import { relaxationVariants } from './relaxation-advisor.ts';
 
@@ -11,6 +12,38 @@ type PlannerDeps = {
   executePage?: typeof executeMatchSpecPage;
   projectRelations?: typeof projectRelationPool;
 };
+
+async function loadRelationRows(
+  db: DatabaseBackend,
+  width: number,
+  pool: GroupPoolInput,
+): Promise<WordRow[]> {
+  const literals = [...new Set([
+    ...(pool?.syns ?? []).map((item) => item.char),
+    ...(pool?.semantic ?? []).map((item) => item.char),
+  ].filter(Boolean))];
+  const rows: WordRow[] = [];
+  for (let start = 0; start < literals.length; start += 499) {
+    const chunk = literals.slice(start, start + 499);
+    const placeholders = chunk.map(() => '?').join(',');
+    rows.push(...await queryRows(
+      db,
+      `SELECT char, jyutping, code FROM words WHERE length = ? AND char IN (${placeholders}) ORDER BY char, code, jyutping`,
+      [width, ...chunk],
+    ));
+  }
+  return rows;
+}
+
+function prependDistinct(rows: WordRow[], priorityRows: WordRow[]): WordRow[] {
+  const seen = new Set<string>();
+  return [...priorityRows, ...rows].filter((row) => {
+    const key = [row.char, row.jyutping, row.code].map((value) => String(value ?? '')).join('\0');
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 
 /** Thin orchestrator (L4): execute → group → optional one relaxation probe. */
 export async function planReplacements(
@@ -42,7 +75,10 @@ export async function planReplacements(
     code: null,
   });
   const page = await run(plan);
-  const exact = groupCandidates(plan, page.rows, pool);
+  const rows = pool && !plan.slots.length && offset === 0
+    ? prependDistinct(page.rows, await loadRelationRows(db, plan.width, pool))
+    : page.rows;
+  const exact = groupCandidates(plan, rows, pool);
   let relaxation = null;
   if (offset === 0 && ![...exact.direct_syn, ...exact.semantic_related, ...exact.sound_only].length) {
     for (const variant of relaxationVariants(plan)) {

@@ -21,7 +21,7 @@
 <!-- /version:zh-Hans -->
 
 <!-- words-count:zh-Hans -->
-目前总词条列数：**171,082**（`lyrics.db` · `words` 表）
+目前总词条列数：**181,220**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
 **立即开始使用（两种方式，同等重要）**
@@ -117,6 +117,8 @@
 
 * [words.hk（粤典）](https://words.hk/)：采用**非商业开放授权**（详见 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
 * [Rime 粤语词典补缺来源](https://github.com/CanCLID/rime-cantonese-upstream)：采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+* [Cantonese.md 歇后语字面](https://github.com/daimaruhk/Cantonese.md)：采用 [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)（仅 term／answer＋粤拼；无正文解释）。
+* [Unicode Unihan 17.0.0](https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip)：采用 [Unicode License v3](https://www.unicode.org/license.txt)，使用 `kCantonese`／`kCheungBauer` 为已准入字面补充粤音。
 * [HSK 3.0 词表](https://github.com/elkmovie/hsk30)：采用 [MIT](https://opensource.org/licenses/MIT) 授权。
 * [开放词典 · 粤语词典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：采用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
 * [词林同义词（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：采用 [MIT](https://opensource.org/licenses/MIT) 授权。
@@ -142,4 +144,4 @@
 
 ---
 
-**最后更新**：2026-07-17（README／关于页资料致谢对齐；贡献指引不再规定 agent 文件）
+**最后更新**：2026-07-23（新增 Cantonese.md 歇后语与 Unicode Unihan 资料致谢）

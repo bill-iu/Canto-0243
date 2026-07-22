@@ -3,11 +3,13 @@ from __future__ import annotations
 
 import re
 
+from app.utils.han import HAN_RE
+
 WILDCARD_CHARS = frozenset("_?%")
 CODE_TAIL_MIDDLE = "+"
 LEGACY_CODE_TAIL_SEPARATORS = ("&", "\u00b7", "*")
 
-CANTO_CHARS_RE = re.compile(r"[\u4e00-\u9fff]")
+CANTO_CHARS_RE = HAN_RE
 
 CONSECUTIVE_SLOT_CONNECTOR_HINT = (
     "唔支援連續 `+`：通配音節請用 `?`，slot 連接符最多一個。"

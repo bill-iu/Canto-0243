@@ -49,6 +49,7 @@ initProjectPosCarrier({
     畫蛇添足: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'chengyu' },
     牙斬斬: { pos: ['a'], trust: 'high', gate: ['a'], show: ['a'], family: 'suyu' },
     三歲定八十: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'yanyu' },
+    牛皮燈籠: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], family: 'xiehouyu' },
     被打: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'], voice: 'passive' },
     // cow-single draft: raw pos present but no gate/show
     草稿: { pos: ['n'], trust: 'low' },
@@ -61,6 +62,7 @@ assert(posDisplayChips('一石二鳥').includes('熟語'), 'chip idiom');
 assert(posDisplayChips('畫蛇添足').includes('成語'), 'chip chengyu');
 assert(posDisplayChips('牙斬斬').includes('俗語'), 'chip suyu');
 assert(posDisplayChips('三歲定八十').includes('諺語'), 'chip yanyu');
+assert(posDisplayChips('牛皮燈籠').includes('歇後語'), 'chip xiehouyu');
 assert(posDisplayChips('被打').includes('被動'), 'chip passive');
 // Grill C: display chips use show ∪ pos (any trust); no 「未審」 label
 assert(posDisplayChips('草稿').join() === '名', 'low trust shows formal pos chip');

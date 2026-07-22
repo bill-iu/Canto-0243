@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from app.domain.relation_pool import project_relation_pool
+from app.models.word import Word
 from app.schemas.workbench_schema import (
     CandidateGroups,
     RelaxationSuggestion,
@@ -14,6 +15,7 @@ from app.services.workbench.build_match_spec import build_match_spec
 from app.services.workbench.group_candidates import candidate_count_for_pool, group_candidates
 from app.services.workbench.limits import WORKBENCH_LEXICON_MAX_WORD_LEN
 from app.services.workbench.relaxation import relaxation_variants
+from app.services.word_serializer import serialize_word
 
 # Re-export for existing imports
 __all__ = ["build_match_spec", "plan_replacements"]
@@ -29,6 +31,35 @@ def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
         db=db,
     )
     return result.items, int(result.total or len(result.items))
+
+
+def _load_relation_rows(db, width: int, pool) -> list[dict]:
+    literals = {
+        str(item.get("char") or "")
+        for item in [*pool.syns, *pool.semantic]
+        if item.get("char")
+    }
+    if not literals:
+        return []
+    words = (
+        db.query(Word)
+        .filter(Word.length == width, Word.char.in_(literals))
+        .order_by(Word.char, Word.code, Word.jyutping)
+        .all()
+    )
+    return [serialize_word(word) for word in words]
+
+
+def _prepend_distinct(rows: list[dict], priority_rows: list[dict]) -> list[dict]:
+    out: list[dict] = []
+    seen: set[tuple[str, str, str]] = set()
+    for row in [*priority_rows, *rows]:
+        key = tuple(str(row.get(field) or "") for field in ("char", "jyutping", "code"))
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(row)
+    return out
 
 
 def plan_replacements(
@@ -55,6 +86,8 @@ def plan_replacements(
         pool = relation_projector(db, plan.semantic_seed)
 
     rows, total = _execute(plan, db, execute)
+    if pool and not plan.slots and plan.offset == 0:
+        rows = _prepend_distinct(rows, _load_relation_rows(db, plan.width, pool))
     exact = group_candidates(plan, rows, pool)
     has_exact = any((exact.direct_syn, exact.semantic_related, exact.sound_only))
     suggestion = None

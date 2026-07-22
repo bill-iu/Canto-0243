@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 from app.lexicon.static_index import LexiconEntry
+from app.utils.han import contains_han
 from app.utils.jyutping_codec import get_0243_code
 
 from app.payload_root import get_payload_root
@@ -37,7 +38,7 @@ _loaded = False
 
 
 def _is_canto_char(text: str) -> bool:
-    return bool(text and re.search(r"[\u4e00-\u9fff]", text))
+    return contains_han(text)
 
 
 def load_rime_char_csv(path: Path | str | None = None) -> int:

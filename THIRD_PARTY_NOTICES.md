@@ -8,6 +8,7 @@ upstream license.
 
 | Dataset | Path | Upstream | License / terms |
 |---------|------|----------|-----------------|
+| Unicode Unihan Cantonese readings | `data/lexicon/unihan_cantonese.json` (+ manifest) | [Unicode 17.0.0 Unihan](https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip), `kCantonese` and `kCheungBauer`; restricted to characters already admitted by Canto-0243 | [Unicode License v3](https://www.unicode.org/license.txt) |
 | Rime single-char | `data/rime/char.csv` | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Rime categorized lexicon | `data/lexicon/raw/rime-cantonese-upstream/*.csv`（不含 `proper_nouns.csv`） | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Essay frequency | `data/essay/essay-cantonese.txt` | [rime/rime-cantonese](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |
@@ -40,6 +41,7 @@ Verify upstream terms before enabling additional sources.
 
 | Upstream | Link | License / terms |
 |----------|------|-----------------|
+| Unicode Unihan Cantonese readings | [Unicode 17.0.0 Unihan](https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip), `kCantonese` and `kCheungBauer` | [Unicode License v3](https://www.unicode.org/license.txt); version and archive SHA-256 pinned in `data/lexicon/unihan_cantonese.manifest.json` |
 | Rime single-char | [rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Rime categorized words | [CanCLID/rime-cantonese-upstream](https://github.com/CanCLID/rime-cantonese-upstream) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
 | Rime phrase supplements（legacy、非預設） | [rime/rime-cantonese `jyut6ping3.phrase`](https://github.com/rime/rime-cantonese) | [CC BY 4.0](https://github.com/rime/rime-cantonese/blob/main/LICENSE-CC-BY) |

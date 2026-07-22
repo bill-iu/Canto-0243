@@ -72,6 +72,11 @@ class InitialCaretSyntaxTests(unittest.TestCase):
     def test_pure_literal_still_lookup(self) -> None:
         parsed = parse_query(normalize_search_query("香港"), mode="m1")
         self.assertEqual(parsed.kind, QueryKind.WORD_LOOKUP)
+        extension_b = parse_query(normalize_search_query("牛𡁻牡丹"), mode="m1")
+        self.assertEqual(extension_b.kind, QueryKind.WORD_LOOKUP)
+        self.assertEqual(normalize_search_query("0253牛𡁻牡丹"), "0253牛𡁻牡丹=")
+        extension_b_equals = parse_query(normalize_search_query("牛𡁻牡丹="), mode="m1")
+        self.assertEqual(extension_b_equals.kind, QueryKind.EQUALS)
 
 
 if __name__ == "__main__":

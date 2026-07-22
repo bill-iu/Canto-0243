@@ -69,7 +69,7 @@ export async function executeWordLookup(
   )) as WordRow[];
 
   // 缺庫：記憶體音節拼接（唔寫庫）— 對齊 Portable compose_transient_words
-  if (!matches.length && /[\u4e00-\u9fff]/.test(parsed.raw_q)) {
+  if (!matches.length && /\p{Script=Han}/u.test(parsed.raw_q)) {
     matches = (await composeTransientWordRows(db, parsed.raw_q)) as WordRow[];
   }
 

@@ -30,7 +30,7 @@ export function initRankingData(data: {
 }
 
 function isPureHan(text: string): boolean {
-  return Boolean(text) && [...text].every((ch) => /[\u4e00-\u9fff]/.test(ch));
+  return Boolean(text) && [...text].every((ch) => /\p{Script=Han}/u.test(ch));
 }
 
 function pronRankSortValue(char: string, jyutping: string): number {

@@ -68,8 +68,22 @@ sources:
     enabled_by_default: true
     local_only: false
     raw_path: data/lexicon/cantonese_md_lexicon.json
+    snapshot_manifest: data/lexicon/cantonese_md.manifest.json
+    upstream_commit: ef5f1a06c7113b0e04776249725f796d33333584
     source_rank: 4
     attribution: daimaruhk/Cantonese.md (src/contents/; CC0)
+
+  - id: unihan
+    type: lexicon_json
+    parser: lexicon_json
+    license: Unicode-3.0
+    enabled_by_default: true
+    local_only: false
+    raw_path: data/lexicon/unihan_cantonese.json
+    snapshot_manifest: data/lexicon/unihan_cantonese.manifest.json
+    unicode_version: 17.0.0
+    source_rank: 2
+    attribution: Unicode Unihan 17.0.0 kCantonese + kCheungBauer (existing-character intersection)
 
   - id: rime_phrase
     type: rime_dict

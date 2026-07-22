@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import unittest
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,6 +22,31 @@ class TestCantoneseMdLexiconSource(unittest.TestCase):
             self.assertTrue(c.jyutping)
             self.assertTrue(c.code)
             self.assertLessEqual(len(c.char), 12)
+        bull = [c for c in cands if c.char == "牛𡁻牡丹"]
+        self.assertEqual(
+            {c.jyutping for c in bull},
+            {"ngau4 ziu6 maau5 daan1", "ngau4 zeu6 maau5 daan1"},
+        )
+        self.assertEqual({c.code for c in bull}, {"0253"})
+        self.assertEqual(
+            {c.jyutping: c.sources for c in bull},
+            {
+                "ngau4 ziu6 maau5 daan1": ("cantonese_md", "unihan"),
+                "ngau4 zeu6 maau5 daan1": ("cantonese_md", "jyutnet"),
+            },
+        )
+        long_answer = [c for c in cands if c.char == "多你一個唔多，少你一個唔少"]
+        self.assertEqual(len(long_answer), 1)
+        self.assertEqual(long_answer[0].code, "353403953409")
+
+    def test_snapshot_manifest_is_pinned_and_reviewed(self) -> None:
+        manifest = json.loads(
+            (ROOT / "data" / "lexicon" / "cantonese_md.manifest.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["content_type_mapping"], {"idioms": "xiehouyu"})
+        self.assertEqual(len(manifest["upstream_commit"]), 40)
+        self.assertEqual(len(manifest["archive_sha256"]), 64)
+        self.assertEqual(manifest["n_family_rows"], 241)
 
     def test_manifest_lists_source(self) -> None:
         from ingest.lexicon_build import DEFAULT_LEXICON_MANIFEST

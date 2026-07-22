@@ -24,6 +24,7 @@ const POS: Array<[FormalPos, string, string]> = [
 const FAMILY: Array<[PosFamily, string, string]> = [
   ['idiom', '熟語（全部）', 'Idiom (all)'], ['chengyu', '成語', 'Chengyu'],
   ['suyu', '俗語', 'Colloquial saying'], ['yanyu', '諺語', 'Proverb'],
+  ['xiehouyu', '歇後語', 'Two-part allegorical saying'],
 ];
 const VOICE: Array<[PosVoice, string, string]> = [
   ['active', '主動式', 'Active'], ['passive', '被動式', 'Passive'],

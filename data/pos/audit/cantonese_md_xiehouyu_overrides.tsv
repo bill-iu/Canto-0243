@@ -1,0 +1,4 @@
+literal	old_pos	old_family	old_note	new_pos	new_family	reason
+公用電話	n		len4-noun-heuristic	u	xiehouyu	answer-clause overrides literal-form heuristic
+泥菩薩過江	u	chengyu	chengyu-pos-review;review	a	xiehouyu	structured term membership and answer-state review
+牆頭草	n	idiom	u-inlex-nf3;review;agent-label	v	xiehouyu	structured term membership and answer-predicate review

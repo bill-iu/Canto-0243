@@ -5,9 +5,10 @@ import re
 from typing import Optional
 
 from app.services.query_tokens import CODE_TAIL_MIDDLE
+from app.utils.han import HAN_CLASS
 
 # ADR-0062: 同聲標記規範 `^`；舊左 `=` 仍認（normalize 會改寫）。
-_FRAMED_EQUALS_RE = re.compile(r"^(\d*)(\^|=)?([一-龥]+)(=)?(\d*)$")
+_FRAMED_EQUALS_RE = re.compile(rf"^(\d*)(\^|=)?([{HAN_CLASS}]+)(=)?(\d*)$")
 
 
 def is_framed_equals_query(q: str) -> bool:
