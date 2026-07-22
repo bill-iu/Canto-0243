@@ -172,6 +172,7 @@ export async function filterMatchSpecRows(
         mode: ctx.mode,
         unlimited:
           specNeedsFullLengthBucket(spec)
+          || Boolean(spec.extra?.workbench_full_bucket_scan)
           || Boolean(code)
           || Boolean(codePositions?.length),
         codePositions,

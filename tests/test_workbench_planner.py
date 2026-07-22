@@ -87,6 +87,51 @@ class WorkbenchPlannerTests(unittest.TestCase):
         self.assertEqual([item.literal for item in response.exact.sound_only], ["香江"])
         self.assertTrue(all(reason["kind"] for group in response.exact.model_dump().values() for item in group for reason in item["reasons"]))
 
+    def test_semantic_priority_pool_keeps_order_across_pages(self) -> None:
+        rows = [
+            {"char": "甲甲", "jyutping": "gaa1 gaa1", "code": "11"},
+            {"char": "乙乙", "jyutping": "jat1 jat1", "code": "22"},
+            {"char": "丙丙", "jyutping": "bing2 bing2", "code": "33"},
+            {"char": "丁丁", "jyutping": "ding1 ding1", "code": "44"},
+        ]
+        pool = SimpleNamespace(
+            syns=[{"char": "乙乙", "source": "manual"}],
+            semantic=[{"char": "丙丙", "source": "embedding_cosine"}],
+        )
+
+        def execute(_spec, **kwargs):
+            offset = kwargs["offset"]
+            limit = kwargs["limit"]
+            return MaskFamilySearchResult(
+                items=rows[offset : offset + limit],
+                total=len(rows),
+            )
+
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add_all([
+                Word(char=row["char"], jyutping=row["jyutping"], code=row["code"], length=2)
+                for row in rows
+            ])
+            db.commit()
+            first = plan_replacements(
+                make_plan(slots=[], limit=2),
+                db,
+                execute=execute,
+                relation_projector=lambda *_args, **_kwargs: pool,
+            )
+            second = plan_replacements(
+                make_plan(slots=[], limit=2, offset=2),
+                db,
+                execute=execute,
+                relation_projector=lambda *_args, **_kwargs: pool,
+            )
+
+        self.assertEqual([item.literal for item in first.exact.direct_syn], ["乙乙"])
+        self.assertEqual([item.literal for item in first.exact.semantic_related], ["丙丙"])
+        self.assertEqual([item.literal for item in second.exact.sound_only], ["甲甲", "丁丁"])
+        self.assertEqual((first.engine_total, second.engine_total), (4, 4))
+
     def test_direct_only_never_falls_back_to_sound_candidates(self) -> None:
         plan = make_plan(semanticIntent="direct_only")
         response = plan_replacements(

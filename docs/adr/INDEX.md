@@ -38,6 +38,8 @@
 | [0067](./0067-portable-venv-pack-transport.md) | ~~venv.pack 運送~~ → superseded by **0068** |
 | [0069](./0069-workbench-replacement-span-line-width.md) | **替換段**寬＝句長（取消 4 格硬頂；phoneme≤6；skip@20） |
 
+| [0071](./0071-workbench-unanchored-scan-and-pos-overfetch.md) | 工作台不限定全量掃描、canonical 分頁與 POS 5 批 over-fetch |
+
 ## Stubs
 
 0001–0006、0008–0009、0011–0014、0016–0021、0023（雙檔）、0024–0027、0029–0030、0032–0043 → 見各檔 `superseded by`。

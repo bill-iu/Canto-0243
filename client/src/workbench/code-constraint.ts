@@ -56,12 +56,14 @@ export function buildCodeDigitSlots(
 }
 
 export function planHasQueryableSlots(
-  slots: readonly WorkbenchSlotConstraintV1[],
-  semanticSeed: string,
-  semanticIntent: 'ranked' | 'direct_only' | 'off',
+  width: number,
+  _slots: readonly WorkbenchSlotConstraintV1[],
+  _semanticSeed: string,
+  _semanticIntent: 'ranked' | 'direct_only' | 'off',
 ): boolean {
-  if (slots.length > 0) return true;
-  return Boolean(semanticSeed && semanticIntent !== 'off');
+  // Workbench width itself is a valid query; active slots and semantic intent
+  // only narrow the same candidate pool.
+  return width >= 1;
 }
 
 /**

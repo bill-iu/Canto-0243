@@ -38,7 +38,8 @@ async function loadRelationRows(
 function prependDistinct(rows: WordRow[], priorityRows: WordRow[]): WordRow[] {
   const seen = new Set<string>();
   return [...priorityRows, ...rows].filter((row) => {
-    const key = [row.char, row.jyutping, row.code].map((value) => String(value ?? '')).join('\0');
+    const key = String(row.char ?? '');
+    if (!key) return false;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
@@ -67,22 +68,35 @@ export async function planReplacements(
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
     ? await project(db, plan.semanticSeed) : null;
   const offset = plan.offset ?? 0;
-  const run = (variant: ReplacementPlanV1) => executePage(buildMatchSpec(variant), {
-    db,
-    mode: variant.mode,
-    limit: variant.limit,
-    offset: variant.offset ?? 0,
-    code: null,
-  });
-  const page = await run(plan);
-  const rows = pool && !plan.slots.length && offset === 0
-    ? prependDistinct(page.rows, await loadRelationRows(db, plan.width, pool))
+  const runRaw = (variant: ReplacementPlanV1) => {
+    const spec = buildMatchSpec(variant);
+    spec.extra = { ...(spec.extra ?? {}), workbench_full_bucket_scan: true };
+    return executePage(spec, {
+      db,
+      mode: variant.mode,
+      limit: variant.limit,
+      offset: variant.offset ?? 0,
+      code: null,
+    });
+  };
+  const priorityRows = pool && !plan.slots.length
+    ? await loadRelationRows(db, plan.width, pool)
+    : [];
+  const page = priorityRows.length
+    ? await runRaw({
+      ...plan,
+      limit: offset + plan.limit + priorityRows.length,
+      offset: 0,
+    })
+    : await runRaw(plan);
+  const canonicalRows = priorityRows.length
+    ? prependDistinct(page.rows, priorityRows).slice(offset, offset + plan.limit)
     : page.rows;
-  const exact = groupCandidates(plan, rows, pool);
+  const exact = groupCandidates(plan, canonicalRows, pool);
   let relaxation = null;
   if (offset === 0 && ![...exact.direct_syn, ...exact.semantic_related, ...exact.sound_only].length) {
     for (const variant of relaxationVariants(plan)) {
-      const probed = await run({ ...variant.plan, offset: 0, limit: variant.plan.limit });
+      const probed = await runRaw({ ...variant.plan, offset: 0, limit: variant.plan.limit });
       const count = variant.plan.semanticIntent === 'direct_only'
         ? probed.rows.filter((row) => (pool?.syns ?? []).some((item) => item.char === String(row.char ?? ''))).length
         : probed.total;

@@ -22,8 +22,12 @@ __all__ = ["build_match_spec", "plan_replacements"]
 
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
+    spec = build_match_spec(plan)
+    # Workbench paging owns the response window; the source must expose the
+    # complete filtered pool so offsets and engine_total stay honest.
+    spec.extra["workbench_full_bucket_scan"] = True
     result = execute(
-        build_match_spec(plan),
+        spec,
         code=None,
         mode=plan.mode,
         limit=plan.limit,
@@ -52,14 +56,35 @@ def _load_relation_rows(db, width: int, pool) -> list[dict]:
 
 def _prepend_distinct(rows: list[dict], priority_rows: list[dict]) -> list[dict]:
     out: list[dict] = []
-    seen: set[tuple[str, str, str]] = set()
+    seen: set[str] = set()
     for row in [*priority_rows, *rows]:
-        key = tuple(str(row.get(field) or "") for field in ("char", "jyutping", "code"))
+        key = str(row.get("char") or row.get("literal") or "")
+        if not key:
+            continue
         if key in seen:
             continue
         seen.add(key)
         out.append(row)
     return out
+
+
+def _canonical_page(
+    plan: ReplacementPlanV1,
+    db,
+    execute,
+    pool,
+) -> tuple[list[dict], int]:
+    """Merge relation priority with the same-width pool before paging."""
+    if not pool or plan.slots:
+        return _execute(plan, db, execute)
+    priority_rows = _load_relation_rows(db, plan.width, pool)
+    if not priority_rows:
+        return _execute(plan, db, execute)
+    expanded_limit = plan.offset + plan.limit + len(priority_rows)
+    expanded = plan.model_copy(update={"limit": expanded_limit, "offset": 0})
+    rows, total = _execute(expanded, db, execute)
+    canonical = _prepend_distinct(rows, priority_rows)
+    return canonical[plan.offset : plan.offset + plan.limit], total
 
 
 def plan_replacements(
@@ -85,9 +110,7 @@ def plan_replacements(
     if plan.semantic_intent != "off" and plan.semantic_seed:
         pool = relation_projector(db, plan.semantic_seed)
 
-    rows, total = _execute(plan, db, execute)
-    if pool and not plan.slots and plan.offset == 0:
-        rows = _prepend_distinct(rows, _load_relation_rows(db, plan.width, pool))
+    rows, total = _canonical_page(plan, db, execute, pool)
     exact = group_candidates(plan, rows, pool)
     has_exact = any((exact.direct_syn, exact.semantic_related, exact.sound_only))
     suggestion = None
