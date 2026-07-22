@@ -338,6 +338,7 @@ button.icon-button.header-search__shuffle:disabled {
     text-align: center;
     opacity: 1;
     visibility: visible;
+    writing-mode: horizontal-tb;
   }
 
   .app-bar > .header-hero .header-hero__title {
