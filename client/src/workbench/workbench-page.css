@@ -37,8 +37,8 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   top: 0;
   padding: .65rem var(--space-page-x, clamp(16px, 4vw, 24px)) .5rem;
   border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(16px);
+  /* solid：避免窄屏快速鎖格時 backdrop-filter 整屏重繪閃動 */
+  background: var(--surface);
 }
 
 /* Same brand | hero | menu row as search; no search form. */
@@ -282,6 +282,8 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   background: var(--surface-input);
   cursor: pointer;
   writing-mode: horizontal-tb;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .line-slot:hover { border-color: var(--accent); }
 .line-slot:focus-visible { outline: none; box-shadow: var(--focus-ring); }
