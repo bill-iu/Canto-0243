@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 
 import type { LineDraft } from './line-draft.ts';
 import { parseManualCell, parseSpanManual } from './manual-slot-input.ts';
@@ -32,9 +39,18 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
 
 /**
  * 即時鎖定（CONTEXT 字位鎖定）。
- * 同格短窗內第二下 click 視為雙擊前奏、唔 toggle，避免鎖完即解。
+ * 同格短窗內第二下視為雙擊前奏、唔 toggle，避免鎖完即解。
  */
 const DBLCLICK_GUARD_MS = 320;
+/** 觸控／筆：位移超過此值當捲動，唔鎖 */
+const POINTER_SLOP_PX = 10;
+
+type ArmedPointer = {
+  pointerId: number;
+  pos: number;
+  x: number;
+  y: number;
+};
 
 export function SentenceCanvas({
   draft,
@@ -56,6 +72,9 @@ export function SentenceCanvas({
   const [spanRaw, setSpanRaw] = useState('');
   const [spanPanelOpen, setSpanPanelOpen] = useState(false);
   const lastClickRef = useRef<{ pos: number; at: number } | null>(null);
+  /** pointer 已處理鎖後，吞掉合成 click，避免 toggle 兩次 */
+  const suppressClickRef = useRef(false);
+  const armedPointerRef = useRef<ArmedPointer | null>(null);
   const editInputRef = useRef<HTMLInputElement | null>(null);
   const spanInputRef = useRef<HTMLInputElement | null>(null);
   const editingPosRef = useRef<number | null>(null);
@@ -91,6 +110,7 @@ export function SentenceCanvas({
     const slot = draft.slots[pos];
     if (!slot) return;
     lastClickRef.current = null;
+    armedPointerRef.current = null;
     setEditingPos(pos);
     setEditValue(slot.surface || slot.code || '');
   };
@@ -113,16 +133,67 @@ export function SentenceCanvas({
   };
 
   /** 即時鎖；同格短窗第二下 skip（雙擊手改） */
-  const handleSlotClick = (pos: number) => {
+  const tryToggleLock = (pos: number) => {
     const now = performance.now();
     const prev = lastClickRef.current;
     if (prev && prev.pos === pos && now - prev.at < DBLCLICK_GUARD_MS) {
-      // Second click of double-click — do not unlock.
       lastClickRef.current = { pos, at: now };
       return;
     }
     lastClickRef.current = { pos, at: now };
     onToggleLock(pos);
+  };
+
+  const handleSlotPointerDown = (pos: number, event: ReactPointerEvent<HTMLButtonElement>) => {
+    if (event.button !== 0) return;
+    // 滑鼠：按下即鎖（快過等 click）；吞合成 click 防雙重 toggle
+    if (event.pointerType === 'mouse') {
+      suppressClickRef.current = true;
+      tryToggleLock(pos);
+      return;
+    }
+    // 觸控／筆：pointerup 且未滑過 slop 先鎖；先吞 click，避免捲動後 click 誤鎖
+    suppressClickRef.current = true;
+    armedPointerRef.current = {
+      pointerId: event.pointerId,
+      pos,
+      x: event.clientX,
+      y: event.clientY,
+    };
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const handleSlotPointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const armed = armedPointerRef.current;
+    if (!armed || armed.pointerId !== event.pointerId) return;
+    if (Math.hypot(event.clientX - armed.x, event.clientY - armed.y) > POINTER_SLOP_PX) {
+      armedPointerRef.current = null;
+    }
+  };
+
+  const handleSlotPointerUp = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const armed = armedPointerRef.current;
+    if (!armed || armed.pointerId !== event.pointerId) return;
+    armedPointerRef.current = null;
+    tryToggleLock(armed.pos);
+  };
+
+  const handleSlotPointerCancel = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const armed = armedPointerRef.current;
+    if (armed && armed.pointerId === event.pointerId) armedPointerRef.current = null;
+  };
+
+  /** 鍵盤合成 click；pointer 路徑已 suppress */
+  const handleSlotClick = (pos: number) => {
+    if (suppressClickRef.current) {
+      suppressClickRef.current = false;
+      return;
+    }
+    tryToggleLock(pos);
   };
 
   const submitSpan = (event: FormEvent) => {
@@ -148,7 +219,10 @@ export function SentenceCanvas({
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">逐字句格</p>
-          <h2 id="sentenceHeading">點擊鎖定，雙擊改字</h2>
+          <h2 id="sentenceHeading" className="sentence-canvas__title">
+            <span className="sentence-canvas__title-line">點擊鎖定，</span>
+            <span className="sentence-canvas__title-line">雙擊改字</span>
+          </h2>
         </div>
         <div className="sentence-canvas__heading-actions">
           {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
@@ -255,6 +329,10 @@ export function SentenceCanvas({
                   data-line-slot={pos}
                   aria-pressed={locked}
                   aria-label={`第 ${pos + 1} 個字，${slot.surface || (codeAsSurface ? `碼 ${slot.code}` : '空白')}，${ariaReading}，${slot.code || '未有碼'}，${locked ? '已鎖定' : '未鎖定'}${spanned && !locked ? '，在替換段內' : ''}`}
+                  onPointerDown={(event) => handleSlotPointerDown(pos, event)}
+                  onPointerMove={handleSlotPointerMove}
+                  onPointerUp={handleSlotPointerUp}
+                  onPointerCancel={handleSlotPointerCancel}
                   onClick={() => handleSlotClick(pos)}
                   onDoubleClick={() => beginEdit(pos)}
                   onKeyDown={(event) => {
@@ -263,7 +341,7 @@ export function SentenceCanvas({
                       move(pos, event.key === 'ArrowLeft' ? -1 : 1);
                     } else if (event.key === ' ') {
                       event.preventDefault();
-                      onToggleLock(pos);
+                      tryToggleLock(pos);
                     } else if (event.key === 'Enter' || event.key === 'F2') {
                       event.preventDefault();
                       beginEdit(pos);
