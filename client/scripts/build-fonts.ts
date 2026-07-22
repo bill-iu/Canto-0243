@@ -10,6 +10,7 @@
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 import { criticalDisplayText } from '../src/critical-display-text.ts';
@@ -66,8 +67,11 @@ async function main() {
   const logoCss = await fetchText(logoCssUrl, { 'User-Agent': ua });
 
   // Parse @font-face for woff2
+  // CJK families return many unicode-range chunks with *different* URLs but same weight.
+  // Filename must include a URL hash so chunks do not overwrite each other (otherwise
+  // only the last rare-glyph file survives and most CJK falls through to system fonts).
   const faceRegex = /@font-face\s*\{([^}]+)\}/g;
-  const faces: Array<{ family: string; weight: string; style: string; url: string }> = [];
+  const faces: Array<{ family: string; weight: string; style: string; url: string; fileName: string }> = [];
   const seenUrls = new Set<string>();
   let m;
   while ((m = faceRegex.exec(css)) !== null) {
@@ -78,7 +82,11 @@ async function main() {
     const src = (block.match(/src:\s*url\((https:[^)]+)\)\s*format\(['"]woff2['"]\)/) || [])[1];
     if (family && weight && src && !seenUrls.has(src)) {
       seenUrls.add(src);
-      faces.push({ family, weight, style, url: src });
+      const ext = style === 'italic' ? '-italic' : '';
+      const safeFamily = family.replace(/\s+/g, '');
+      const hash = crypto.createHash('sha1').update(src).digest('hex').slice(0, 10);
+      const fileName = `${safeFamily}-${weight}${ext}-${hash}.woff2`;
+      faces.push({ family, weight, style, url: src, fileName });
     }
   }
 
@@ -123,22 +131,15 @@ async function main() {
   }
 
   for (const face of faces) {
-    const ext = face.style === 'italic' ? '-italic' : '';
-    const safeFamily = face.family.replace(/\s+/g, '');
-    const fileName = `${safeFamily}-${face.weight}${ext}.woff2`;
-    const dest = path.join(outDir, fileName);
-    console.log(`Downloading ${face.family} ${face.weight} ${face.style} → ${fileName}`);
+    const dest = path.join(outDir, face.fileName);
+    console.log(`Downloading ${face.family} ${face.weight} ${face.style} → ${face.fileName}`);
     await download(face.url, dest);
   }
 
   // Rewrite the original CSS to use local font files, preserving all @font-face details (unicode-range etc for CJK)
   let localCss = css;
   for (const face of faces) {
-    const ext = face.style === 'italic' ? '-italic' : '';
-    const safeFamily = face.family.replace(/\s+/g, '');
-    const fileName = `${safeFamily}-${face.weight}${ext}.woff2`;
-    // Replace the original remote url with local relative
-    localCss = localCss.replaceAll(face.url, `./${fileName}`);
+    localCss = localCss.replaceAll(face.url, `./${face.fileName}`);
   }
   const criticalLocalCss = criticalFaces.map((face) => {
     const fileName = `CantoCriticalSerif-${face.weight}.woff2`;
