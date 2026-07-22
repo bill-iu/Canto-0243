@@ -272,9 +272,20 @@ fn run_splash_and_bootstrap(root: PathBuf, inner: PathBuf) {
             }
 
             if let Some(status) = child_exited {
-                if start.elapsed() > Duration::from_secs(90) && !product_http_ready() {
+                // Fail fast: signal kill / non-zero exit means bootstrap died.
+                // Still allow a short grace if PyApp exits 0 after handoff (rare).
+                let bad = !status.success();
+                let grace_done = start.elapsed() > Duration::from_secs(if bad { 3 } else { 90 });
+                if grace_done && !product_http_ready() && !pyapp_install_ready() {
                     let _ = proxy_t.send_event(UserEvent::Failed(format!(
                         "啟動未完成（結束代碼 {status}）。\n請確認網路後重試，或執行 runtime/Canto-0243-runtime 查看詳情。"
+                    )));
+                    return;
+                }
+                // Install finished but product not up yet — keep waiting until hard timeout.
+                if grace_done && !product_http_ready() && pyapp_install_ready() && bad {
+                    let _ = proxy_t.send_event(UserEvent::Failed(format!(
+                        "執行環境已安裝但服務未就緒（結束代碼 {status}）。\n請再雙擊啟動一次；仍失敗則執行 runtime/Canto-0243-runtime。"
                     )));
                     return;
                 }
