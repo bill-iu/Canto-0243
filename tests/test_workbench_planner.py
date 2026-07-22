@@ -4,6 +4,7 @@ from copy import deepcopy
 from types import SimpleNamespace
 import unittest
 
+from app.models.word import Word
 from app.schemas.workbench_schema import ReplacementPlanV1
 from app.services.position_match.spec import MaskFamilySearchResult
 from app.services.position_match.spec import get_equals_span
@@ -11,6 +12,7 @@ from app.services.workbench.replacement_planner import (
     build_match_spec,
     plan_replacements,
 )
+from tests.smoke.helpers import memory_sessionmaker
 
 
 def make_plan(**changes) -> ReplacementPlanV1:
@@ -97,6 +99,46 @@ class WorkbenchPlannerTests(unittest.TestCase):
         )
         self.assertEqual(response.exact.direct_syn, [])
         self.assertEqual(response.exact.sound_only, [])
+
+    def test_unrestricted_code_keeps_direct_synonym_from_constrained_results(self) -> None:
+        pool = SimpleNamespace(
+            syns=[{"char": "遇救", "source": "manual"}],
+            semantic=[],
+        )
+
+        def execute(spec, **_kwargs):
+            items = [{"char": "遇救", "jyutping": "jyu6 gau3", "code": "24"}]
+            if not spec.slots:
+                items = [{"char": "一個", "jyutping": "jat1 go3", "code": "34"}]
+            return MaskFamilySearchResult(items=items)
+
+        changes = {
+            "width": 2,
+            "semanticIntent": "ranked",
+            "semanticSeed": "獲救",
+        }
+        Session = memory_sessionmaker()
+        with Session() as db:
+            db.add(Word(char="遇救", jyutping="jyu6 gau3", code="24", length=2))
+            db.commit()
+            constrained = plan_replacements(
+                make_plan(**changes, slots=[
+                    {"pos": 0, "kind": "code_digit", "digit": "2"},
+                    {"pos": 1, "kind": "code_digit", "digit": "4"},
+                ]),
+                db,
+                execute=execute,
+                relation_projector=lambda *_args, **_kwargs: pool,
+            )
+            unrestricted = plan_replacements(
+                make_plan(**changes, slots=[]),
+                db,
+                execute=execute,
+                relation_projector=lambda *_args, **_kwargs: pool,
+            )
+
+        self.assertIn("遇救", [item.literal for item in constrained.exact.direct_syn])
+        self.assertIn("遇救", [item.literal for item in unrestricted.exact.direct_syn])
 
     def test_zero_results_returns_one_non_mutating_relaxation(self) -> None:
         plan = make_plan(
