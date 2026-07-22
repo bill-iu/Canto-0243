@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from app.domain.relation_pool import project_relation_pool
 from app.schemas.workbench_schema import (
+    CandidateGroups,
     RelaxationSuggestion,
     ReplacementPlanV1,
     WorkbenchCandidateResponse,
@@ -11,6 +12,7 @@ from app.schemas.workbench_schema import (
 from app.services.position_match.engine import execute_match_spec
 from app.services.workbench.build_match_spec import build_match_spec
 from app.services.workbench.group_candidates import candidate_count_for_pool, group_candidates
+from app.services.workbench.limits import WORKBENCH_LEXICON_MAX_WORD_LEN
 from app.services.workbench.relaxation import relaxation_variants
 
 # Re-export for existing imports
@@ -37,6 +39,17 @@ def plan_replacements(
     relation_projector=project_relation_pool,
 ) -> WorkbenchCandidateResponse:
     """Return options and trade-offs; never mutate the draft or apply a candidate."""
+    # ADR-0069: span wider than observed lexicon max word → structural empty, skip engine.
+    if plan.width > WORKBENCH_LEXICON_MAX_WORD_LEN:
+        empty = CandidateGroups(direct_syn=[], semantic_related=[], sound_only=[])
+        return WorkbenchCandidateResponse(
+            selection_version=plan.selection_version,
+            exact=empty,
+            total=0,
+            engine_total=0,
+            relaxation=None,
+        )
+
     pool = None
     if plan.semantic_intent != "off" and plan.semantic_seed:
         pool = relation_projector(db, plan.semantic_seed)

@@ -1,3 +1,5 @@
+import { WORKBENCH_MAX_SLOTS } from './limits.ts';
+
 export interface UnresolvedLineSlot {
   surface: string;
   reading?: string;
@@ -17,7 +19,7 @@ export type ParsedLineInput =
     }
   | { ok: false; error: 'empty' | 'mixed' | 'too_long' };
 
-const MAX_SLOTS = 64;
+const MAX_SLOTS = WORKBENCH_MAX_SLOTS;
 const TONE_RE = /^[平仄PpZz]+$/;
 const DIGIT_RE = /^\d$/;
 const PINGZE_CHAR_RE = /^[平仄PpZz]$/;

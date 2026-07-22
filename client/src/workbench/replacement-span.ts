@@ -1,7 +1,11 @@
 import type { WorkbenchSlotConstraintV1 } from './contracts.ts';
 import type { LineDraft, LineSelection, LineSlot } from './line-draft.ts';
+import {
+  WORKBENCH_MAX_SLOTS,
+  WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH,
+} from './limits.ts';
 
-/** Derived replacement span from 字位鎖定 (bounding box of locked slots). */
+/** Derived replacement span from 字位鎖定 (bounding box of locked slots). ADR-0069: max = line length. */
 export function replacementSpanFromLocks(slots: readonly LineSlot[]): LineSelection | null {
   let start = -1;
   let end = -1;
@@ -12,17 +16,17 @@ export function replacementSpanFromLocks(slots: readonly LineSlot[]): LineSelect
   }
   if (start < 0 || end < start) return null;
   const width = end - start + 1;
-  if (width < 1 || width > 4) return null;
+  if (width < 1 || width > WORKBENCH_MAX_SLOTS || width > slots.length) return null;
   return { start, width };
 }
 
-export type ToggleLockFailure = 'no_surface' | 'span_too_wide';
+export type ToggleLockFailure = 'no_surface';
 
 export type ToggleLockResult =
   | { ok: true; draft: LineDraft }
   | { ok: false; reason: ToggleLockFailure; draft: LineDraft };
 
-/** Click-toggle 字位鎖定; syncs draft.selection to 替換段; rejects span > 4. */
+/** Click-toggle 字位鎖定; syncs draft.selection to 替換段 (ADR-0069: no 4-cell hard cap). */
 export function toggleLockKeepingSpan(draft: LineDraft, pos: number): ToggleLockResult {
   const current = draft.slots[pos];
   if (!current) return { ok: false, reason: 'no_surface', draft };
@@ -34,9 +38,6 @@ export function toggleLockKeepingSpan(draft: LineDraft, pos: number): ToggleLock
   const slots = draft.slots.slice();
   slots[pos] = { ...current, locked: !current.locked };
   const span = replacementSpanFromLocks(slots);
-  if (slots.some((slot) => slot.locked) && !span) {
-    return { ok: false, reason: 'span_too_wide', draft };
-  }
 
   return {
     ok: true,
@@ -67,8 +68,11 @@ export function spanPositionOptions(width: number): Array<{ key: 'head' | 'tail'
   const options: Array<{ key: 'head' | 'tail' | number; label: string }> = [
     { key: 'head', label: '頭字' },
   ];
-  for (let offset = 1; offset <= width - 2; offset += 1) {
-    options.push({ key: offset, label: `第 ${offset + 1} 字` });
+  // ADR-0069: middles only when width ≤ 6
+  if (width <= WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH) {
+    for (let offset = 1; offset <= width - 2; offset += 1) {
+      options.push({ key: offset, label: `第 ${offset + 1} 字` });
+    }
   }
   options.push({ key: 'tail', label: '尾字' });
   return options;
@@ -95,11 +99,14 @@ export function phonemeCheckedOffsets(picks: PhonemeDimPicks, width: number): nu
 export function sanitizePhonemeDimPicks(picks: PhonemeDimPicks, width: number): PhonemeDimPicks {
   if (width <= 0) return emptyPhonemeDimPicks();
   if (picks.whole) return { whole: true, head: false, tail: false, middles: [] };
+  const allowMiddles = width <= WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH;
   return {
     whole: false,
     head: picks.head,
     tail: picks.tail,
-    middles: picks.middles.filter((mid) => mid > 0 && mid < width - 1),
+    middles: allowMiddles
+      ? picks.middles.filter((mid) => mid > 0 && mid < width - 1)
+      : [],
   };
 }
 

@@ -146,7 +146,7 @@ export function lineDraftReducer(draft: LineDraft, action: LineDraftAction): Lin
         || !Number.isInteger(action.width)
         || action.start < 0
         || action.width < 1
-        || action.width > 4
+        || action.width > draft.slots.length
         || action.start + action.width > draft.slots.length
       ) return draft;
       if (draft.selection?.start === action.start && draft.selection.width === action.width) return draft;

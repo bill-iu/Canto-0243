@@ -6,6 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from app.services.workbench.limits import WORKBENCH_MAX_SLOTS
+
 
 class WorkbenchSlotConstraintV1(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="forbid")
@@ -45,13 +47,15 @@ class ReplacementPlanV1(BaseModel):
 
     version: Literal[1] = 1
     selection_version: int = Field(alias="selectionVersion", ge=0)
-    width: int = Field(ge=1, le=4)
+    width: int = Field(ge=1, le=WORKBENCH_MAX_SLOTS)
     mode: Literal["m1", "m2", "m3"]
     slots: list[WorkbenchSlotConstraintV1]
     semantic_intent: Literal["ranked", "direct_only", "off"] = Field(
         alias="semanticIntent"
     )
-    semantic_seed: str | None = Field(default=None, alias="semanticSeed", min_length=1, max_length=4)
+    semantic_seed: str | None = Field(
+        default=None, alias="semanticSeed", min_length=1, max_length=WORKBENCH_MAX_SLOTS
+    )
     limit: int = Field(ge=1, le=400)
     offset: int = Field(default=0, ge=0)
 
@@ -76,14 +80,14 @@ class CandidateReason(BaseModel):
         "frequency_rank",
         "relaxed_constraint",
     ]
-    positions: list[int] = Field(default_factory=list, max_length=4)
+    positions: list[int] = Field(default_factory=list, max_length=WORKBENCH_MAX_SLOTS)
     source: str | None = None
 
 
 class WorkbenchCandidate(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="forbid")
 
-    literal: str = Field(min_length=1, max_length=4)
+    literal: str = Field(min_length=1, max_length=WORKBENCH_MAX_SLOTS)
     jyutping: str
     code: str
     group: Literal["direct_syn", "semantic_related", "sound_only"]
@@ -111,7 +115,7 @@ class RelaxationSuggestion(BaseModel):
         "remove_code",
         "loosen_mode",
     ]
-    positions: list[int] = Field(default_factory=list, max_length=4)
+    positions: list[int] = Field(default_factory=list, max_length=WORKBENCH_MAX_SLOTS)
     from_value: str | None = Field(default=None, alias="from")
     to_value: str | None = Field(default=None, alias="to")
     candidate_count: int = Field(alias="candidateCount", ge=1)

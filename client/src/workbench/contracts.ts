@@ -1,3 +1,5 @@
+import { WORKBENCH_MAX_SLOTS } from './limits.ts';
+
 export type WorkbenchSlotKind =
   | 'code_digit'
   | 'literal_char'
@@ -17,6 +19,8 @@ export interface WorkbenchSlotConstraintV1 {
 
 /** Single request page size / max limit (ADR-0064). */
 export const WORKBENCH_CANDIDATE_PAGE_SIZE = 400;
+
+export { WORKBENCH_MAX_SLOTS } from './limits.ts';
 
 export interface ReplacementPlanV1 {
   version: 1;
@@ -131,7 +135,12 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
   assert(isRecord(value), 'plan must be an object');
   assert(value.version === 1, 'version');
   assert(Number.isInteger(value.selectionVersion) && Number(value.selectionVersion) >= 0, 'selectionVersion');
-  assert(Number.isInteger(value.width) && Number(value.width) >= 1 && Number(value.width) <= 4, 'width');
+  assert(
+    Number.isInteger(value.width)
+      && Number(value.width) >= 1
+      && Number(value.width) <= WORKBENCH_MAX_SLOTS,
+    'width',
+  );
   assert(value.mode === 'm1' || value.mode === 'm2' || value.mode === 'm3', 'mode');
   assert(Array.isArray(value.slots), 'slots');
   assert(
@@ -147,7 +156,12 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
   const offset = value.offset == null ? 0 : Number(value.offset);
   assert(Number.isInteger(offset) && offset >= 0, 'offset');
   if (value.semanticSeed != null) {
-    assert(typeof value.semanticSeed === 'string' && value.semanticSeed.length >= 1 && value.semanticSeed.length <= 4, 'semanticSeed');
+    assert(
+      typeof value.semanticSeed === 'string'
+        && value.semanticSeed.length >= 1
+        && value.semanticSeed.length <= WORKBENCH_MAX_SLOTS,
+      'semanticSeed',
+    );
   }
   const width = Number(value.width);
   return {
@@ -189,7 +203,10 @@ function parseReason(value: unknown): CandidateReason {
   assert(REASON_KINDS.includes(value.kind as CandidateReasonKind), 'candidate reason kind');
   assert(Array.isArray(value.positions), 'candidate reason positions');
   const positions = value.positions.map((pos) => {
-    assert(Number.isInteger(pos) && Number(pos) >= 0 && Number(pos) <= 3, 'candidate reason pos');
+    assert(
+      Number.isInteger(pos) && Number(pos) >= 0 && Number(pos) < WORKBENCH_MAX_SLOTS,
+      'candidate reason pos',
+    );
     return Number(pos);
   });
   assert(value.source == null || (typeof value.source === 'string' && value.source.length > 0), 'candidate reason source');
@@ -198,7 +215,12 @@ function parseReason(value: unknown): CandidateReason {
 
 function parseCandidate(value: unknown, group: CandidateGroup): WorkbenchCandidate {
   assert(isRecord(value), 'candidate');
-  assert(typeof value.literal === 'string' && value.literal.length >= 1 && value.literal.length <= 4, 'candidate literal');
+  assert(
+    typeof value.literal === 'string'
+      && value.literal.length >= 1
+      && value.literal.length <= WORKBENCH_MAX_SLOTS,
+    'candidate literal',
+  );
   assert(typeof value.jyutping === 'string', 'candidate jyutping');
   assert(typeof value.code === 'string', 'candidate code');
   assert(value.group === group, 'candidate group');

@@ -80,4 +80,4 @@ export type SessionAction =
 
 export type ToggleLockSessionResult =
   | { ok: true; session: WorkbenchSession }
-  | { ok: false; reason: 'no_surface' | 'span_too_wide' | 'no_draft'; session: WorkbenchSession };
+  | { ok: false; reason: 'no_surface' | 'no_draft'; session: WorkbenchSession };

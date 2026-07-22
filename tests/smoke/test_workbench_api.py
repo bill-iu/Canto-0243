@@ -68,7 +68,10 @@ class WorkbenchApiSmokeTests(unittest.TestCase):
         self.assertNotIn("lyrics", response.json())
         self.assertNotIn("applied", response.json())
 
+        # ADR-0069: width 5–64 valid; only above line max rejected
         plan["width"] = 5
+        self.assertEqual(self.client.post("/workbench/candidates", json=plan).status_code, 200)
+        plan["width"] = 65
         self.assertEqual(self.client.post("/workbench/candidates", json=plan).status_code, 422)
 
 

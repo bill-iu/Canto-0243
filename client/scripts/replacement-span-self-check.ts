@@ -8,12 +8,18 @@ import {
 } from '../src/workbench/replacement-span.ts';
 import { createLineDraft, lineDraftReducer } from '../src/workbench/line-draft.ts';
 import { parseLineInput } from '../src/workbench/line-input.ts';
+import {
+  emptyPoolTip,
+  shouldSkipCandidateQuery,
+  WORKBENCH_LEXICON_MAX_WORD_LEN,
+  WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH,
+} from '../src/workbench/limits.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`replacement-span: ${message}`);
 }
 
-const parsed = parseLineInput('我愛香港山水');
+const parsed = parseLineInput('我愛香港山水美好歲月');
 assert(parsed.ok, 'fixture');
 let draft = createLineDraft(parsed);
 
@@ -23,15 +29,18 @@ let result = toggleLockKeepingSpan(draft, 0);
 assert(result.ok && result.draft.selection?.width === 1, 'single lock span');
 draft = result.draft;
 
+// ADR-0069: distant locks grow span (was span_too_wide at >4)
 result = toggleLockKeepingSpan(draft, 4);
-assert(!result.ok && result.reason === 'span_too_wide', 'span >4 must reject');
-
-result = toggleLockKeepingSpan(draft, 1);
-assert(result.ok && result.draft.selection?.width === 2, 'adjacent lock grows span');
+assert(result.ok && result.draft.selection?.width === 5, 'span width 5 allowed');
 draft = result.draft;
 
-result = toggleLockKeepingSpan(draft, 5);
-assert(!result.ok && result.reason === 'span_too_wide', 'distant lock must reject');
+result = toggleLockKeepingSpan(draft, 9);
+assert(result.ok && result.draft.selection?.width === 10, 'full line span allowed');
+draft = result.draft;
+
+result = toggleLockKeepingSpan(draft, 1);
+assert(result.ok && result.draft.selection?.width === 10, 'inner lock keeps outer span');
+draft = result.draft;
 
 const blank = parseLineInput('39');
 assert(blank.ok && blank.kind === 'code', 'code fixture');
@@ -51,9 +60,31 @@ assert(!result.ok && result.reason === 'no_surface', 'empty slot still cannot lo
 
 assert(spanPositionOptions(1).length === 1, 'width 1 options');
 assert(spanPositionOptions(4).some((o) => o.key === 1) && spanPositionOptions(4).some((o) => o.key === 2), 'width 4 middles');
+assert(
+  spanPositionOptions(WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH).some((o) => typeof o.key === 'number'),
+  'width 6 still has middles',
+);
+assert(
+  !spanPositionOptions(WORKBENCH_PHONEME_MIDDLE_MAX_WIDTH + 1).some((o) => typeof o.key === 'number'),
+  'width 7 has no middles',
+);
 
 const picks = sanitizePhonemeDimPicks({ whole: false, head: true, tail: true, middles: [1, 2] }, 2);
 assert(picks.middles.length === 0 && picks.head && picks.tail, 'sanitize drops invalid middles');
+
+const widePicks = sanitizePhonemeDimPicks(
+  { whole: false, head: true, tail: true, middles: [1, 2, 3] },
+  8,
+);
+assert(widePicks.middles.length === 0, 'sanitize drops middles when width > 6');
+
+assert(!shouldSkipCandidateQuery(WORKBENCH_LEXICON_MAX_WORD_LEN), 'width 20 still queries');
+assert(shouldSkipCandidateQuery(WORKBENCH_LEXICON_MAX_WORD_LEN + 1), 'width 21 skips');
+assert(emptyPoolTip(4, 0) == null, 'width 4 no tip');
+assert(emptyPoolTip(5, 1) == null, 'non-empty no tip');
+assert(Boolean(emptyPoolTip(5, 0)), 'sparse tip');
+assert(Boolean(emptyPoolTip(21, 0)), 'structural tip');
+assert(emptyPoolTip(21, 0) !== emptyPoolTip(5, 0), 'two-level tips differ');
 
 draft = lineDraftReducer(createLineDraft(parsed), { type: 'select', start: 2, width: 2 });
 result = toggleLockKeepingSpan(draft, 2);

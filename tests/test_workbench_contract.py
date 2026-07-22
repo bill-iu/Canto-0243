@@ -31,7 +31,7 @@ class ReplacementPlanContractTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             ReplacementPlanV1.model_validate(payload)
 
-    def test_selection_width_must_be_between_one_and_four(self):
+    def test_selection_width_must_be_between_one_and_line_max(self):
         base = {
             "version": 1,
             "selectionVersion": 1,
@@ -41,9 +41,12 @@ class ReplacementPlanContractTests(unittest.TestCase):
             "limit": 20,
         }
 
-        for width in (0, 5):
+        for width in (0, 65):
             with self.subTest(width=width), self.assertRaises(ValidationError):
                 ReplacementPlanV1.model_validate({**base, "width": width})
+        # ADR-0069: width 5–64 accepted (was hard-capped at 4)
+        ReplacementPlanV1.model_validate({**base, "width": 5})
+        ReplacementPlanV1.model_validate({**base, "width": 64})
 
     def test_slot_position_must_fit_selection_width(self):
         payload = {
@@ -114,7 +117,7 @@ class PublishedSchemaTests(unittest.TestCase):
 
         plan = schema["$defs"]["ReplacementPlanV1"]
         self.assertEqual(plan["properties"]["version"]["const"], 1)
-        self.assertEqual(plan["properties"]["width"]["maximum"], 4)
+        self.assertEqual(plan["properties"]["width"]["maximum"], 64)
         self.assertEqual(plan["properties"]["limit"]["maximum"], 400)
         self.assertIn("offset", plan["properties"])
         response = schema["$defs"]["WorkbenchCandidateResponse"]

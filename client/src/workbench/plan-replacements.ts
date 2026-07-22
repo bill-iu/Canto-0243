@@ -4,6 +4,7 @@ import { projectRelationPool } from '../db/relation-pool/index.ts';
 import { buildMatchSpec } from './build-match-spec.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from './contracts.ts';
 import { groupCandidates } from './group-candidates.ts';
+import { shouldSkipCandidateQuery } from './limits.ts';
 import { relaxationVariants } from './relaxation-advisor.ts';
 
 type PlannerDeps = {
@@ -17,6 +18,17 @@ export async function planReplacements(
   db: DatabaseBackend,
   deps: PlannerDeps = {},
 ): Promise<WorkbenchCandidateResponse> {
+  // ADR-0069: structural empty when wider than observed lexicon max word length.
+  if (shouldSkipCandidateQuery(plan.width)) {
+    return {
+      version: 1,
+      selectionVersion: plan.selectionVersion,
+      exact: { direct_syn: [], semantic_related: [], sound_only: [] },
+      total: 0,
+      engineTotal: 0,
+      relaxation: null,
+    };
+  }
   const executePage = deps.executePage ?? executeMatchSpecPage;
   const project = deps.projectRelations ?? projectRelationPool;
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
