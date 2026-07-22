@@ -134,6 +134,11 @@ class TestLocalLaunchSeam(unittest.TestCase):
         self.assertIn("macos_app_bundle", shell)
         self.assertIn("clear_download_quarantine", shell)
         self.assertIn("xattr", shell)
+        # PyApp ProjectDirs path has no extra "data/" segment (would never see install ready).
+        self.assertIn('.join("pyapp").join(PROJECT)', shell)
+        self.assertNotIn('.join("pyapp").join("data")', shell)
+        self.assertIn("SecTranslocateCreateOriginalPathForURL", shell)
+        self.assertIn("payload_has_sidecars", shell)
         # Name kept for callers; must forward to desktop build.
         wrapper = (REPO_ROOT / "scripts" / "build-portable.ps1").read_text(encoding="utf-8")
         self.assertIn("build-desktop.ps1", wrapper)

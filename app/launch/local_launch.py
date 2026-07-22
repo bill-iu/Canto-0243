@@ -301,8 +301,10 @@ def main() -> int:
     html_url = f"{base_url}{HTML_SUFFIX}"
     boot_url = f"{html_url}?boot={int(time.time())}"
 
+    # Reuse only when an already-running backend is ours (portable=true).
+    # `is not False` was too loose: connection/JSON miss → None → false success (exit 0).
     if args.gui and _html_ready(python, root, html_url, timeout="1"):
-        if _probe_home_portable(base_url) is not False:
+        if _probe_home_portable(base_url) is True:
             if args.portable:
                 _maybe_check_portable_update(root, lang=args.lang, silent=args.silent)
             _open_browser(boot_url)
