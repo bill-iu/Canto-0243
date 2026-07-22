@@ -117,6 +117,8 @@ This app exists thanks to outstanding work by linguists, open-source maintainers
 
 * [words.hk (粵典)](https://words.hk/): **non-commercial open license** (see [words.hk /hoifong](https://words.hk/base/hoifong/)).
 * [Rime Cantonese supplement sources](https://github.com/CanCLID/rime-cantonese-upstream): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+* [Cantonese.md xiehouyu literals](https://github.com/daimaruhk/Cantonese.md): [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA) (term／answer + Jyutping only; no full glosses).
+* [Unicode Unihan 17.0.0](https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip): [Unicode License v3](https://www.unicode.org/license.txt), using `kCantonese`／`kCheungBauer` to supplement readings for already-admitted literals.
 * [HSK 3.0 word list](https://github.com/elkmovie/hsk30): [MIT](https://opensource.org/licenses/MIT).
 * [Kaifang Dictionary · Cantonese](https://kaifangcidian.com/xiazai/): [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 * [Cilin synonyms](https://github.com/yaleimeng/Final_word_Similarity): [MIT](https://opensource.org/licenses/MIT).
@@ -142,4 +144,4 @@ Full third-party license list: [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES
 
 ---
 
-**Last updated**: 2026-07-17 (README／About data credits aligned; contributing guide no longer mandates agent files)
+**Last updated**: 2026-07-23 (Cantonese.md xiehouyu and Unicode Unihan data credits added)

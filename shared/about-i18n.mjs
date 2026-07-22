@@ -40,6 +40,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">詞林同義詞（Cilin）</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">國語辭典近義／反義（guotong）</a>：採用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>。</li>' +
       '<li><a href="https://github.com/daimaruhk/Cantonese.md" target="_blank" rel="noopener noreferrer">Cantonese.md 歇後語字面</a>：採用 <a href="https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA" target="_blank" rel="noopener noreferrer">CC0 1.0</a>（僅 term／answer＋粵拼；無正文解說）。</li>' +
+      '<li><a href="https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip" target="_blank" rel="noopener noreferrer">Unicode Unihan 17.0.0</a>：採用 <a href="https://www.unicode.org/license.txt" target="_blank" rel="noopener noreferrer">Unicode License v3</a>，使用 <code>kCantonese</code>／<code>kCheungBauer</code> 為已准入字面補充粵音。</li>' +
       '<li><a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">專案自建近反義</a>：維護者審定近義／反義對（大模型輔助起草），採用 <a href="' +
@@ -97,6 +98,7 @@ export const ABOUT_COPY = {
       '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">Cilin synonyms</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +
       '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">Guotong near／antonym dictionary</a>: <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>.</li>' +
       '<li><a href="https://github.com/daimaruhk/Cantonese.md" target="_blank" rel="noopener noreferrer">Cantonese.md xiehouyu literals</a>: <a href="https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA" target="_blank" rel="noopener noreferrer">CC0 1.0</a> (term／answer + Jyutping only; no full glosses).</li>' +
+      '<li><a href="https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip" target="_blank" rel="noopener noreferrer">Unicode Unihan 17.0.0</a>: <a href="https://www.unicode.org/license.txt" target="_blank" rel="noopener noreferrer">Unicode License v3</a>, using <code>kCantonese</code>／<code>kCheungBauer</code> to supplement readings for already-admitted literals.</li>' +
       '<li><a href="' +
       LICENSE_URL +
       '" target="_blank" rel="noopener noreferrer">Project near-antonyms</a>: maintainer-reviewed synonym／antonym pairs (LLM-assisted drafting); <a href="' +

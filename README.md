@@ -135,6 +135,8 @@ Desktop 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &&
 
 * [words.hk（粵典）](https://words.hk/)：採用**非商業開放授權**（詳見 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
 * [Rime 粵語詞典補缺來源](https://github.com/CanCLID/rime-cantonese-upstream)：採用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
+* [Cantonese.md 歇後語字面](https://github.com/daimaruhk/Cantonese.md)：採用 [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)（僅 term／answer＋粵拼；無正文解說）。
+* [Unicode Unihan 17.0.0](https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip)：採用 [Unicode License v3](https://www.unicode.org/license.txt)，使用 `kCantonese`／`kCheungBauer` 為已准入字面補充粵音。
 * [HSK 3.0 詞表](https://github.com/elkmovie/hsk30)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
 * [開放詞典 · 粵語詞典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：採用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
 * [詞林同義詞（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
@@ -160,4 +162,4 @@ Desktop 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &&
 
 ---
 
-**最後更新**：2026-07-17（README／關於頁資料致謝對齊；貢獻指引唔再規定 agent 檔）
+**最後更新**：2026-07-23（新增 Cantonese.md 歇後語與 Unicode Unihan 資料致謝）
