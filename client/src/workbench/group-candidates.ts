@@ -1,6 +1,6 @@
 import type { WordRow } from '../db/position-match/word-row.ts';
 import { candidateReasons } from './candidate-reason.ts';
-import { relationIndex } from './candidate-rank.ts';
+import { compareSoundOnlyCandidates, relationIndex } from './candidate-rank.ts';
 import type {
   CandidateGroup,
   CandidateGroups,
@@ -13,6 +13,12 @@ export type GroupPoolInput = {
   syns?: Array<{ char: string; source?: string }>;
   semantic?: Array<{ char: string; source?: string }>;
 } | null;
+
+function compareRelationCandidates(a: WorkbenchCandidate, b: WorkbenchCandidate): number {
+  return a.sourceRank - b.sourceRank
+    || a.literal.localeCompare(b.literal)
+    || a.jyutping.localeCompare(b.jyutping);
+}
 
 /** rows + optional relation pool → CandidateGroups（L2）。 */
 export function groupCandidates(
@@ -42,9 +48,9 @@ export function groupCandidates(
     };
     groups[group].push(candidate);
   });
-  for (const values of Object.values(groups) as WorkbenchCandidate[][]) {
-    values.sort((a, b) => a.sourceRank - b.sourceRank || a.literal.localeCompare(b.literal) || a.jyutping.localeCompare(b.jyutping));
-  }
+  groups.direct_syn.sort(compareRelationCandidates);
+  groups.semantic_related.sort(compareRelationCandidates);
+  groups.sound_only.sort(compareSoundOnlyCandidates);
   return groups;
 }
 

@@ -359,9 +359,15 @@ export async function executeMatchSpecPage(
       ...initialRows.map((row) => ({ ...row, anchor_dimension: 'initial' })),
       ...finalRows.map((row) => ({ ...row, anchor_dimension: 'final' })),
     ];
+    const sorted = await cooperativeSort(
+      tagged,
+      compareSearchResults,
+      ctx.shouldCancel,
+      shouldYield,
+    );
     return {
-      rows: tagged.slice(ctx.offset, ctx.offset + ctx.limit),
-      total: tagged.length,
+      rows: sorted.slice(ctx.offset, ctx.offset + ctx.limit),
+      total: sorted.length,
     };
   }
   const filtered = await filterMatchSpecRows(spec, ctx);

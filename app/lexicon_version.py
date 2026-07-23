@@ -8,7 +8,7 @@ from pathlib import Path
 
 from app.payload_root import get_payload_root
 
-_FALLBACK = "v1.0.9"
+_FALLBACK = "v1.1.0"
 
 
 def lexicon_version() -> str:

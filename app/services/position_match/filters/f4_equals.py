@@ -163,7 +163,9 @@ def _equals_whole_word_matches(
 
     full_code = dense_code_from_spec(spec) or ""
     target_key = tuple(target_parts)
-    cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+    cached = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+        spec.width, full_code or None, mode
+    )
     storage_field = "finals" if is_final else "initials"
     target_storage_key = _phoneme_storage_key(target, storage_field) if target else target_key
 
@@ -279,7 +281,9 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     # Dense full_code already narrows; LIMIT before phoneme filter drops hits when
     # m1 variants expand past CANDIDATE_FALLBACK_LIMIT (e.g. 9太=2 → 解毒).
     if prefix_wildcard or full_code:
-        cached = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+        cached = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+            spec.width, full_code or None, mode
+        )
         candidates = cached if cached is not None else query.all()
     else:
         candidates = query.limit(CANDIDATE_FALLBACK_LIMIT).all()
@@ -291,7 +295,9 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         and not span.phoneme_anchor_only
     )
     if tail_rhyme_union:
-        bucket = _equals_length_bucket_candidates(spec.width, full_code or None, mode)
+        bucket = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+            spec.width, full_code or None, mode
+        )
         if bucket is not None:
             pool = bucket
         else:

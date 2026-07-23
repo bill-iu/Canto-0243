@@ -104,8 +104,8 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         setBusy(false);
       }
     })();
-    // ponytail: mount-only prefetch for debug→corrections deep link
-  }, []);
+    // ponytail: refresh the debug→corrections deep-link prefetch when its inputs change
+  }, [lang, prefetchChar]);
 
   const clearSelection = () => {
     setSelected(null);

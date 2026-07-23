@@ -58,14 +58,23 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("onToggleLock", canvas)
         self.assertIn("is-in-span", canvas)
         self.assertIn("onDoubleClick", canvas)
+        self.assertIn("sentence-canvas__heading-actions", canvas)
         self.assertIn("span-hand-input", canvas)
         self.assertIn("span-hand-toggle", canvas)
         self.assertIn("canvas-clear-surfaces", canvas)
         self.assertIn("slot-reading-footer", canvas)
         self.assertIn("is-code-surface", canvas)
         self.assertIn("code-summary", canvas)
+        self.assertIn("candidate-groups--sound-first", cards)
+        self.assertIn("candidate-group__toggle", cards)
+        self.assertIn("line-input-form__undo", (WORKBENCH / "workbench-page.css").read_text(encoding="utf-8"))
         self.assertIn("排序順位", compare)
         self.assertIn("sourceRank", compare)
+        self.assertIn("compareSoundOnlyCandidates", (WORKBENCH / "candidate-rank.ts").read_text(encoding="utf-8"))
+        self.assertIn("sound_candidate_sort_key", (ROOT / "app" / "services" / "workbench" / "candidate_rank.py").read_text(encoding="utf-8"))
+        candidate_groups = (WORKBENCH / "candidate-session" / "groups.ts").read_text(encoding="utf-8")
+        self.assertIn("sound_only: filterByProjectPos", candidate_groups)
+        self.assertIn("return rows.filter", (ROOT / "client" / "src" / "pos" / "filter.ts").read_text(encoding="utf-8"))
         # P2#4 candidate session owns load-more
         self.assertIn("candidates.loadMore", page)
         self.assertIn("engineTotal", page)
@@ -109,8 +118,17 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("var(--ink)", css)
         self.assertNotIn("--wb-ink", css)
         self.assertIn("workbench-route", css)
+        self.assertIn("const sorted = await cooperativeSort", engine)
         self.assertNotIn("const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null", engine)
         self.assertNotRegex(page, r"consumeIngest[\s\S]{0,400}apply_candidate")
+
+    def test_opfs_worker_loads_canonical_ranking_before_workbench_snapshots(self) -> None:
+        worker = (
+            ROOT / "client" / "src" / "db" / "opfs-vfs-worker.ts"
+        ).read_text(encoding="utf-8")
+        ranking_load = worker.index("await loadBrowserRankingIndex()")
+        snapshot_reset = worker.index("workbenchSnapshots = new PwaCandidateSnapshotStore()", ranking_load)
+        self.assertLess(ranking_load, snapshot_reset)
 
 
 if __name__ == "__main__":

@@ -138,6 +138,7 @@ def execute_dual_phoneme_anchor_specs(
         tagged.append({**item, "anchor_dimension": "initial"})
     for item in final_result.items:
         tagged.append({**item, "anchor_dimension": "final"})
+    tagged.sort(key=search_result_sort_key)
     page = tagged[offset : offset + limit]
     cache_path = initial_result.cache_path or final_result.cache_path
     # 字面總數：雙維合併後去重（錨分欄 UI；標準列表少用）
