@@ -27,6 +27,12 @@
   z-index: var(--z-menu);
 }
 
+/* Workbench tab: shared product chrome only — no search form row. */
+.app-bar.app-bar--workbench {
+  grid-template-areas: "brand hero menu";
+  row-gap: 0;
+}
+
 .header-chrome {
   display: contents;
 }

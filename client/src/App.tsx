@@ -742,11 +742,11 @@ function App() {
   }, [retryOfflineReady]);
 
   const handleModeChange = (family: 'basic' | 'pingze' | 'synonym') => {
-    const next = family === 'basic' ? last0243Mode : family === 'pingze' ? 'pingze' : 'synonym';
-    setMode(next);
-    if (view === 'guide') {
+    if (view === 'workbench' || view === 'guide') {
       ensureActiveSearchTab();
     }
+    const next = family === 'basic' ? last0243Mode : family === 'pingze' ? 'pingze' : 'synonym';
+    setMode(next);
     if (trimmedInput) {
       runCommittedSearch(undefined, pzMode, next);
     }
@@ -1073,6 +1073,19 @@ function App() {
     setResultsShuffled(false);
   };
 
+  const handleBrandClick = () => {
+    if (view === 'workbench') {
+      const hasQuery = tabs.some(
+        (t) => t.view === VIEW.SEARCH && String((t as { q?: string }).q || '').trim(),
+      );
+      if (hasQuery) {
+        ensureActiveSearchTab();
+        return;
+      }
+    }
+    handleHome();
+  };
+
   return (
     <>
       <BrandSvgDefs />
@@ -1105,49 +1118,51 @@ function App() {
             onReorder={handleReorderTabs}
             onReorderByIds={handleReorderTabsByIds}
           />
-          <div className="app-bar" hidden={view === 'workbench'}>
+          <div className={`app-bar${view === 'workbench' ? ' app-bar--workbench' : ''}`}>
             <div className="header-chrome">
               <div className="header-chrome__center">
                 <button
                   className="brand"
                   type="button"
                   aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
-                  onClick={handleHome}
+                  onClick={handleBrandClick}
                 >
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
               </div>
               <div className="header-chrome__actions">
-                <a
-                  className="workbench-entry workbench-entry--chip"
-                  href={workbenchPageHref()}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    openWorkbench();
-                  }}
-                >
-                  <span className="workbench-entry__icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                      <rect x="1.5" y="3" width="15" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
-                      <path d="M1.5 7.5h15M7.5 7.5v7.5M12 7.5v7.5" stroke="currentColor" strokeWidth="1.5" />
-                    </svg>
-                  </span>
-                  <span className="workbench-entry__text">
-                    <span className="workbench-entry__title">
-                      {uiLang === 'zh' ? '句格工作台' : 'VerseCraft Workbench'}
+                {view !== 'workbench' ? (
+                  <a
+                    className="workbench-entry workbench-entry--chip"
+                    href={workbenchPageHref()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      openWorkbench();
+                    }}
+                  >
+                    <span className="workbench-entry__icon" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <rect x="1.5" y="3" width="15" height="12" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                        <path d="M1.5 7.5h15M7.5 7.5v7.5M12 7.5v7.5" stroke="currentColor" strokeWidth="1.5" />
+                      </svg>
                     </span>
-                    <span className="workbench-entry__sub">
-                      {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
+                    <span className="workbench-entry__text">
+                      <span className="workbench-entry__title">
+                        {uiLang === 'zh' ? '句格工作台' : 'VerseCraft Workbench'}
+                      </span>
+                      <span className="workbench-entry__sub">
+                        {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
+                      </span>
                     </span>
-                  </span>
-                </a>
+                  </a>
+                ) : null}
                 <ModeMenu
                   mode={mode}
                   disabled={shellGated}
                   onModeChange={handleModeChange}
                   onOpenGuide={handleOpenGuide}
                   onOpenAbout={handleOpenAbout}
-                  onOpenWorkbench={openWorkbench}
+                  onOpenWorkbench={view !== 'workbench' ? openWorkbench : undefined}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
                   onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
                   theme={uiTheme}
@@ -1163,7 +1178,12 @@ function App() {
             </div>
             {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏 tagline 縮字／極窄隱藏 */}
             <HeaderHero lang={uiLang} />
-            <form className="header-search" onSubmit={handleSubmit} role="search">
+            <form
+              className="header-search"
+              onSubmit={handleSubmit}
+              role="search"
+              hidden={view === 'workbench'}
+            >
               <div className="header-search__row">
                 <div className="header-search__main">
                   <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
@@ -1262,19 +1282,6 @@ function App() {
             hidden={view !== 'workbench'}
             lang={uiLang}
             theme={uiTheme}
-            onLangChange={setUiLang}
-            onThemeChange={setUiTheme}
-            onOpenSearchHome={handleBackToSearch}
-            onOpenSearchNavigation={(next) => {
-              if (next.kind === 'mode') {
-                handleBackToSearch();
-                handleModeChange(next.family);
-              } else if (next.kind === 'guide') {
-                handleOpenGuide();
-              } else {
-                handleOpenAbout();
-              }
-            }}
             onOpenSearchLiteral={(literal) => openSearchTabForLiteral(literal, mode, pzMode)}
           />
           {view !== 'workbench' && (view === 'guide' ? (

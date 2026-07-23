@@ -61,10 +61,6 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   background: var(--surface);
 }
 
-.workbench-header--embedded {
-  position: static;
-}
-
 /* Same brand | hero | menu row as search; no search form. */
 .workbench-header .app-bar {
   grid-template-areas: "brand hero menu";
