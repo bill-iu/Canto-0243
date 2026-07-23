@@ -186,14 +186,19 @@ export function ConstraintBar({
             onClick={() => setIsOpen((open) => !open)}
           >
             <span>本次替換條件</span>
-            <span className="constraint-bar__toggle-icon" aria-hidden="true">{isOpen ? '⌃' : '⌄'}</span>
+            <span className="constraint-bar__toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path d="M3 8h10" />
+                {!isOpen ? <path d="M8 3v10" /> : null}
+              </svg>
+            </span>
           </button>
         </h2>
         <div className="constraint-bar__heading-actions">
           {headingExtra}
           {canUndo ? (
             <button type="button" className="undo-action" onClick={onUndo}>
-              復原最近一次套用／放寬／手改
+              復原
             </button>
           ) : null}
         </div>

@@ -225,7 +225,6 @@ export function SentenceCanvas({
           </h2>
         </div>
         <div className="sentence-canvas__heading-actions">
-          {draft.undo ? <span className="quiet-status">最近一次操作可復原</span> : null}
           <button
             type="button"
             className="canvas-clear-surfaces"
@@ -259,6 +258,9 @@ export function SentenceCanvas({
           </button>
         </div>
       </div>
+      {draft.undo ? (
+        <p className="sentence-canvas__undo-status" aria-live="polite">最近一次操作可復原</p>
+      ) : null}
       {summary ? <p className="code-summary" aria-label="完整碼摘要">{summary}</p> : null}
       {span && spanPanelOpen ? (
         <form id="spanHandPanel" className="span-hand-input" onSubmit={submitSpan}>
