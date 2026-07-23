@@ -653,47 +653,51 @@ export function WorkbenchPage({
       className={`workbench-page${preview ? ' has-compare' : ''}${hidden ? ' is-query-tab-hidden' : ''}${embedded ? ' is-query-tab-view' : ''}`}
       hidden={hidden}
     >
-      <BrandSvgDefs />
-      <header className={`workbench-header${embedded ? ' workbench-header--embedded' : ''}`}>
-        <div className="app-bar">
-          <div className="header-chrome">
-            <div className="header-chrome__center">
-              <button
-                className="brand"
-                type="button"
-                aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
-                onClick={goSearchHome}
-              >
-                <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
-              </button>
+      {!embedded ? (
+        <>
+          <BrandSvgDefs />
+          <header className="workbench-header">
+            <div className="app-bar">
+              <div className="header-chrome">
+                <div className="header-chrome__center">
+                  <button
+                    className="brand"
+                    type="button"
+                    aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
+                    onClick={goSearchHome}
+                  >
+                    <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
+                  </button>
+                </div>
+                <div className="header-chrome__actions">
+                  <ModeMenu
+                    mode="0243"
+                    onModeChange={(family) => goSearchWithNavigate({ kind: 'mode', family })}
+                    onOpenGuide={() => goSearchWithNavigate({ kind: 'guide' })}
+                    onOpenAbout={() => goSearchWithNavigate({ kind: 'about' })}
+                    onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                    theme={uiTheme}
+                    lang={uiLang}
+                    onThemeChange={(next) => {
+                      setUiTheme(next);
+                      onThemeChange?.(next);
+                    }}
+                    onLangChange={(next) => {
+                      setUiLang(next);
+                      onLangChange?.(next);
+                    }}
+                    lexiconVersion={lexiconVersion}
+                    showOpfsBackend={
+                      !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
+                    }
+                  />
+                </div>
+              </div>
+              <HeaderHero lang={uiLang} />
             </div>
-            <div className="header-chrome__actions">
-              <ModeMenu
-                mode="0243"
-                onModeChange={(family) => goSearchWithNavigate({ kind: 'mode', family })}
-                onOpenGuide={() => goSearchWithNavigate({ kind: 'guide' })}
-                onOpenAbout={() => goSearchWithNavigate({ kind: 'about' })}
-                onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
-                theme={uiTheme}
-                lang={uiLang}
-                onThemeChange={(next) => {
-                  setUiTheme(next);
-                  onThemeChange?.(next);
-                }}
-                onLangChange={(next) => {
-                  setUiLang(next);
-                  onLangChange?.(next);
-                }}
-                lexiconVersion={lexiconVersion}
-                showOpfsBackend={
-                  !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
-                }
-              />
-            </div>
-          </div>
-          <HeaderHero lang={uiLang} />
-        </div>
-      </header>
+          </header>
+        </>
+      ) : null}
       <main className="workbench-main">
         <section className="workbench-intro">
           <div className="workbench-intro__titles">
