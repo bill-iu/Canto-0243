@@ -673,8 +673,7 @@ button.icon-button.header-search__shuffle:disabled {
   flex: 1 1 0;
   font-size: 13px;
 }
-  padding: 4px;
-}
+
 .menu-switches .theme-icon {
   font-size: 16px;
   line-height: 1;
