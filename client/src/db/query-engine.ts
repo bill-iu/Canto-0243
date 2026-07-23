@@ -45,6 +45,8 @@ export type {
   SearchContext,
   SearchResult,
   DigitCodeQuery,
+  HeteronymCodeQuery,
+  JyutpingAnchorQuery,
   WordLookupQuery,
   JyutpingFragmentQuery,
   MaskQuery,

@@ -522,7 +522,7 @@ export function WorkbenchPage({
         return {
           surface: slot.surface,
           reading: slot.reading,
-          code: slot.code || digit?.digit,
+          code: slot.code || (digit as { digit?: string })?.digit,
         };
       });
       const next = sessionReducer(current, {

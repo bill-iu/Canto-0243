@@ -58,7 +58,7 @@ export async function searchWords(
   offset: number = 0,
 ): Promise<QueryResult[]> {
   const result = await queryEngine.execute({
-    q: q || undefined,
+    q: q || null,
     code,
     char,
     mode,

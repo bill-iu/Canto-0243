@@ -65,6 +65,7 @@ export const AnchorResultList = memo(function AnchorResultList({
     char: group.literal,
     jyutping: group.readings[0]?.jyutping,
     code: group.readings[0]?.code,
+    score: 0,
     anchor_dimension: 'initial' as const,
   }));
   const finalRows = finalShown.map((group) => ({
@@ -72,6 +73,7 @@ export const AnchorResultList = memo(function AnchorResultList({
     char: group.literal,
     jyutping: group.readings[0]?.jyutping,
     code: group.readings[0]?.code,
+    score: 0,
     anchor_dimension: 'final' as const,
   }));
 

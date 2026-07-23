@@ -4,7 +4,6 @@
 import { isStandaloneNasalSyllableToken, syllableLetters } from './jyutping-codec.ts';
 import {
   createMatchSpec,
-  type AnchorKind as SpecAnchorKind,
   type MatchSpec,
   type SlotConstraint,
 } from './position-match/spec.ts';
@@ -132,7 +131,7 @@ export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
   spec.mask = '?'.repeat(q.width);
   slots(spec).push({
     pos: q.anchor_pos,
-    kind: q.anchor_kind as SpecAnchorKind,
+    kind: q.anchor_kind as AnchorKind,
     value: q.anchor_value,
   });
   applyJyutpingAnchorCodeSlots(spec, q);

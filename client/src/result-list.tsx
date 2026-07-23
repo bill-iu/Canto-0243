@@ -51,7 +51,7 @@ export const ResultList = memo(function ResultList({
                 onPick({
                   literal: group.literal,
                   jyutping: pickJyutping,
-                  readings: group.readings.map((r) => ({
+                  readings: group.readings.map((r: { jyutping?: string; code?: string }) => ({
                     jyutping: r.jyutping,
                     code: r.code,
                   })),

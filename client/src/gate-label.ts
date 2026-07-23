@@ -1,4 +1,4 @@
-import type { OfflineReadinessStatus } from './hooks/useDB.tsx';
+import type { OfflineReadinessStatus } from './hooks/db-context.ts';
 
 const GATE_NEAR_DONE_PCT = 92;
 

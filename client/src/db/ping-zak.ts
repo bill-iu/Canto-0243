@@ -120,7 +120,7 @@ function applyPingZeSlots(spec: MatchSpec, rawQ: string): void {
     spec.slots = (spec.slots ?? []).filter(
       (slot) => !(slot.pos === pos && slot.kind === 'code_digit'),
     );
-    spec.mask = `${spec.mask.slice(0, pos)}?${spec.mask.slice(pos + 1)}`;
+    spec.mask = `${spec.mask!.slice(0, pos)}?${spec.mask!.slice(pos + 1)}`;
     (spec.slots ??= []).push({
       pos,
       kind: 'tone_class',

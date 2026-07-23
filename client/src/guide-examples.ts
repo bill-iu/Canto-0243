@@ -98,12 +98,12 @@ function uiModeToGuideMode(mode: string): GuideMode {
 }
 
 export function getGuideSections(lang: GuideLang = 'zh'): GuideSection[] {
-  return getI18nSections(lang).map((section) => ({
+  return getI18nSections(lang).map((section): GuideSection => ({
     id: section.id,
-    group: section.group,
+    group: section.group as 'common' | 'advanced' | undefined,
     title: section.title,
     intro: section.intro,
-    examples: section.examples.map((ex) => {
+    examples: section.examples.map((ex: { query: string; mode: string; label: string; title?: string }) => {
       const explained = explainQuery(ex.query, ex.mode).summary;
       const item: GuideExample = {
         query: ex.query,

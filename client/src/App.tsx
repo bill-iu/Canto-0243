@@ -1063,7 +1063,7 @@ function App() {
       return null;
     }
     if (!useLiveFetch) return null;
-    return formatEmptySearchMessage(searchQuery, displayHint, mode);
+    return formatEmptySearchMessage(searchQuery, displayHint, mode as '0243' | '02493' | 'synonym');
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
   const filterEmpty = filterActive && displayResults.length > 0 && filteredDisplayResults.length === 0;
@@ -1314,7 +1314,7 @@ function App() {
                 <RelationView
                   lang={uiLang}
                   initial={activeTab?.relation}
-                  onFormChange={(next) => patchActiveRelation(next)}
+                  onFormChange={(next) => patchActiveRelation(next as unknown as Record<string, string>)}
                 />
               ) : view === 'corrections' && isPortableHost() ? (
                 <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />

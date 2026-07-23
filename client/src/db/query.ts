@@ -8,6 +8,7 @@ import type {
   SearchResult,
   SearchContext,
   QueryKind,
+  QueryResult,
 } from './query-engine';
 import { 
   queryEngine,
@@ -49,18 +50,7 @@ export {
 /**
  * Legacy QueryResult interface for backward compatibility
  */
-export interface QueryResult {
-  word: string;
-  jyutping: string;
-  code: string;
-  definition?: string;
-  score?: number;
-  resultType?: 'code' | 'jyutping' | 'word';
-  anchor_dimension?: 'initial' | 'final';
-  relation?: 'syn' | 'ant' | 'semantic_related';
-  in_db?: boolean;
-  source?: string;
-}
+export type { QueryResult, HeteronymCodeQuery, JyutpingAnchorQuery } from './query-types.ts';
 
 export interface SearchPageResult {
   items: QueryResult[];

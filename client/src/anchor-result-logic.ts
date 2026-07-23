@@ -29,8 +29,8 @@ export function anchorResultItemCount(results: QueryResult[]): number {
 
 export function anchorResultListSelfCheck(): void {
   const rows: QueryResult[] = [
-    { word: '唔', jyutping: 'm4', code: '44', anchor_dimension: 'initial' },
-    { word: '五', jyutping: 'ng5', code: '45', anchor_dimension: 'final' },
+    { word: '唔', jyutping: 'm4', code: '44', score: 0, anchor_dimension: 'initial' },
+    { word: '五', jyutping: 'ng5', code: '45', score: 0, anchor_dimension: 'final' },
   ];
   if (!hasAnchorResultLayout(rows)) {
     throw new Error('anchorResultListSelfCheck: layout detection');

@@ -60,8 +60,8 @@ export async function executeMaskFamilySearchResult(
     return seen.size;
   })();
   const items = ordered.slice(offset, offset + limit).map((row) => {
-    if ((row as QueryResult).word != null && (row as WordRow).char == null) {
-      return row as QueryResult;
+    if ((row as unknown as QueryResult).word != null && (row as unknown as WordRow).char == null) {
+      return row as unknown as QueryResult;
     }
     return rowToResult(row as WordRow);
   });
