@@ -547,6 +547,10 @@ export function WorkbenchPage({
     posFilter,
     active,
   );
+  const candidateScrollResetKey = useMemo(
+    () => JSON.stringify({ plan: deferredPlanBase, posFilter }),
+    [deferredPlanBase, posFilter],
+  );
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(
@@ -800,6 +804,7 @@ export function WorkbenchPage({
                 spanWidth={draft.selection?.width ?? 0}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
+                scrollResetKey={candidateScrollResetKey}
                 onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
                 onLoadMore={candidates.loadMore}
               />
