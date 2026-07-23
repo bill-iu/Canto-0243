@@ -21,6 +21,10 @@ import {
 import { openSqlJsDatabase } from './sqljs-backend.ts';
 import { openOpfsVfsDatabase, prewarmOpfsVfsWorker, resetOpfsVfsWorker } from './opfs-vfs-backend.ts';
 import { applyRuntimeDbPatches } from './db-patch.ts';
+import {
+  assertLexiconLengthInvariant,
+  LexiconLengthInvariantError,
+} from './lexicon-length-invariant.ts';
 import { ensureGateAuxiliaryIndexes, resetGateAuxiliaryIndexes } from './auxiliary-indexes.ts';
 import { initStaticSynIndex, initStaticAntIndex, initStaticCilinSynIndex } from './thesaurus.ts';
 import { reportGatePhase, resetGateProgress } from './startup-progress.ts';
@@ -294,7 +298,23 @@ export async function initializeDatabase(dbPath?: string): Promise<DatabaseBacke
           await assertPhonemeStorageContract(db);
         }
       }
+      try {
+        await assertLexiconLengthInvariant(db);
+      } catch (error) {
+        if (!(error instanceof LexiconLengthInvariantError)) throw error;
+        try {
+          await db.close();
+        } catch {
+          /* ignore */
+        }
+        db = null;
+        resetOpfsVfsWorker();
+        await purgeStaleLexiconCaches(target, 'word length invariant');
+        db = await openLexiconDatabase(target);
+        await assertLexiconLengthInvariant(db);
+      }
       await applyRuntimeDbPatches(db);
+      await assertLexiconLengthInvariant(db);
       // Lexicon identity may have changed (re-open after contract purge)
       invalidatePhonemeIndex();
       invalidateRelationGraph();

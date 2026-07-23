@@ -26,14 +26,6 @@ export {
   isPhonemeIndexReady,
 } from './phoneme-index.ts';
 
-export function wordMatchesWidth(row: WordRow, width: number): boolean {
-  const stored = Number(row.length ?? 0);
-  if (stored > 0) {
-    return stored === width;
-  }
-  return String(row.char ?? '').length === width;
-}
-
 export type GetCandidatesOptions = {
   code?: string | null;
   mode?: string;
@@ -70,12 +62,9 @@ export async function getCandidatesForLength(
   let sql = `
     SELECT ${columns}
     FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
+    WHERE length = ?
   `;
-  const params: Array<string | number> = [length, length];
+  const params: Array<string | number> = [length];
 
   if (code) {
     const variants = getCodeVariants(code, mode);
@@ -100,14 +89,7 @@ export async function getCandidatesForLength(
     params.push(limit);
   }
 
-  const resultRows = await queryRows(db, sql, params);
-  const rows: WordRow[] = [];
-  for (const row of resultRows) {
-    if (wordMatchesWidth(row, length)) {
-      rows.push(row);
-    }
-  }
-  return [rows, false];
+  return [await queryRows(db, sql, params) as WordRow[], false];
 }
 
 /** Port of sources.get_length_candidates — mask GLOB，唔受 2000 上限 */
@@ -127,13 +109,10 @@ export async function getLengthMaskCandidates(
   let sql = `
     SELECT char, jyutping, code, initials, finals, length
     FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
+    WHERE length = ?
     AND char GLOB ?
   `;
-  const params: Array<string | number> = [length, length, globPat];
+  const params: Array<string | number> = [length, globPat];
   if (prefix) {
     sql += ' AND char LIKE ?';
     params.push(`${prefix}%`);
@@ -152,7 +131,7 @@ export async function getLengthMaskCandidates(
   const rows: WordRow[] = [];
   for (const row of resultRows) {
     const text = String(row.char ?? '');
-    if (wordMatchesWidth(row, length) && matchesMaskLiteralChars(text, mask)) {
+    if (matchesMaskLiteralChars(text, mask)) {
       rows.push(row);
     }
   }
@@ -241,19 +220,10 @@ export class CompoundCandidateSource implements CandidateSource {
       SELECT char, jyutping, code, initials, finals, length
       FROM words
       WHERE char IN (${placeholders})
-        AND (
-          length = ?
-          OR ((length IS NULL OR length = 0) AND length(char) = ?)
-      )
+        AND length = ?
       ORDER BY char, jyutping
-    `, [...list, this.expectedLength, this.expectedLength]);
-    const rows: WordRow[] = [];
-    for (const row of resultRows) {
-      if (wordMatchesWidth(row, this.expectedLength)) {
-        rows.push(row);
-      }
-    }
-    return [rows, false];
+    `, [...list, this.expectedLength]);
+    return [resultRows as WordRow[], false];
   }
 }
 

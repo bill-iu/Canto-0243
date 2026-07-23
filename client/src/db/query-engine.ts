@@ -86,5 +86,4 @@ export {
   getCandidatesForLength,
   LengthCodeCandidateSource,
   positionMatchSourcesSelfCheck,
-  wordMatchesWidth,
 } from './position-match/sources.ts';

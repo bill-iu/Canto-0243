@@ -184,7 +184,7 @@ async function defaultSingleCharReading(
   const stmt = await db.prepare(
     `SELECT jyutping, code FROM words
      WHERE char = ?
-       AND (length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1))`,
+       AND length = 1`,
   );
   await stmt.bind([char]);
   const candidates: SingleCharReading[] = [];

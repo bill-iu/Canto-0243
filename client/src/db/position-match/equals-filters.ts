@@ -15,7 +15,7 @@ import {
   requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
 import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
-import { getCandidatesForLength, wordMatchesWidth } from './sources.ts';
+import { getCandidatesForLength } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
 
 function denseCodeFromSpec(spec: MatchSpec): string {
@@ -313,12 +313,9 @@ async function equalsWholeWordMatches(
     SELECT char, jyutping, code, initials, finals, length
     FROM words
     WHERE ${field} = ?
-      AND (
-        length = ?
-        OR ((length IS NULL OR length = 0) AND length(char) = ?)
-      )
+      AND length = ?
   `;
-  const params: Array<string | number> = [phonemeKey, width, width];
+  const params: Array<string | number> = [phonemeKey, width];
   if (variants.length) {
     sql += ` AND code IN (${variants.map(() => '?').join(', ')})`;
     params.push(...variants);
@@ -328,9 +325,6 @@ async function equalsWholeWordMatches(
   const rows = await queryRows(db, sql, params);
   const out: WordRow[] = [];
   for (const word of rows) {
-    if (!wordMatchesWidth(word, width)) {
-      continue;
-    }
     const parts = isFinal ? getRhymeFinals(word) : getWordParts(word, 'initials');
     if (parts.join('\0') === targetKey) {
       out.push(word);
@@ -430,7 +424,6 @@ export async function queryWordsByEqualsSpec(
     );
     return candidates.filter(
       (word) =>
-        wordMatchesWidth(word, spec.width) &&
         matchesHybridRefChars(
           getWordText(word),
           getRhymeFinals(word),
@@ -443,7 +436,6 @@ export async function queryWordsByEqualsSpec(
 
   return candidates.filter(
     (word) =>
-      wordMatchesWidth(word, spec.width) &&
       matchesEqualsPhonemeSpan(word, targetParts!, span.start_pos, {
         phoneme_anchor_only: span.phoneme_anchor_only,
         ref_literal: span.ref_literal,
@@ -463,12 +455,9 @@ async function prefixWildcardCandidatesByFinals(
   let sql = `
     SELECT char, jyutping, code, initials, finals, length
     FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
+    WHERE length = ?
   `;
-  const params: Array<string | number> = [width, width];
+  const params: Array<string | number> = [width];
   try {
     const encoded = encodePhonemeList(targetParts, 'final');
     const likes = compactSpanLikePatterns(encoded);
@@ -487,13 +476,7 @@ async function prefixWildcardCandidatesByFinals(
     }
   }
   sql += ' ORDER BY char, jyutping';
-  const resultRows = await queryRows(db, sql, params);
-  const rows: WordRow[] = [];
-  for (const row of resultRows) {
-    if (wordMatchesWidth(row, width)) {
-      rows.push(row);
-    }
-  }
+  const rows = await queryRows(db, sql, params) as WordRow[];
   if (!rows.length) {
     const [fallback] = await getCandidatesForLength(db, width, {
       code,

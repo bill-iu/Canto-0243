@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-import threading
-import time
-
 from sqlalchemy import inspect, text
 
 from app.db.connection import engine
+from app.domain.lexicon.length_invariant import repair_legacy_lexicon_lengths
 
 
 def ensure_embedding_column() -> None:
@@ -58,66 +56,6 @@ def ensure_length_column() -> None:
             print("     請關閉其他 python/uvicorn/backfill 程序後重新啟動本應用，即可自動補 length 欄位與索引。")
         else:
             print(f"[DB] 嘗試處理 length 欄位時發生錯誤（可忽略，若之後執行 init_db 或重置即可）：{e}")
-
-
-def start_length_backfill() -> None:
-    """若有需要回填的 length，啟動 daemon 背景執行緒批次更新（不阻塞啟動）。"""
-    try:
-        inspector = inspect(engine)
-        if "words" not in inspector.get_table_names():
-            return
-        with engine.connect() as conn:
-            null_count = conn.execute(
-                text("SELECT COUNT(*) FROM words WHERE length IS NULL OR length = 0")
-            ).scalar() or 0
-
-            if null_count == 0:
-                return
-
-            print(f"[DB] 偵測到 {null_count} 筆資料需要 length 回填。")
-            print("[DB] 將在背景執行緒中批次回填（不阻塞啟動 / reload）。")
-            print("[DB] 搜尋功能會使用防禦性 fallback（_length_filter），結果正確但暫時較慢。")
-
-            def _backfill_length_in_background():
-                batch = 100
-                total_updated = 0
-                try:
-                    with engine.connect() as bg_conn:
-                        while True:
-                            id_rows = bg_conn.execute(
-                                text(
-                                    "SELECT id FROM words "
-                                    "WHERE (length IS NULL OR length = 0) "
-                                    "ORDER BY id LIMIT :batch"
-                                ),
-                                {"batch": batch},
-                            ).fetchall()
-                            ids = [r[0] for r in id_rows]
-                            if not ids:
-                                break
-
-                            id_list = ",".join(str(i) for i in ids)
-                            res = bg_conn.execute(
-                                text(f"UPDATE words SET length = length(char) WHERE id IN ({id_list})")
-                            )
-                            updated = res.rowcount or 0
-                            bg_conn.commit()
-                            total_updated += updated
-                            if total_updated % 10000 == 0:
-                                print(f"[DB]   length 背景回填進度：{total_updated} / ~{null_count} 筆...")
-                            time.sleep(0.005)
-                    print(f"[DB] length 背景回填完成，共更新 {total_updated} 筆。")
-                except Exception as bg_err:
-                    print(f"[DB] length 背景回填發生錯誤（可忽略，下次起動會繼續）：{bg_err}")
-
-            t = threading.Thread(target=_backfill_length_in_background, daemon=True)
-            t.start()
-    except Exception as e:
-        err = str(e)
-        if "database is locked" in err.lower() or "operationalerror" in err.lower():
-            print("[DB] ⚠️  偵測到 database is locked，無法啟動 length 背景回填。")
-        else:
-            print(f"[DB] 啟動 length 背景回填時發生錯誤（可忽略）：{e}")
 
 
 def ensure_word_relations_canonical_unique() -> None:
@@ -301,11 +239,32 @@ def ensure_phoneme_compact_contract() -> None:
         raise
 
 
+def repair_local_length_invariant() -> int:
+    """Repair legacy local databases synchronously before readiness."""
+    db_path = engine.url.database
+    if not db_path or db_path == ":memory:":
+        raise RuntimeError("local lexicon length repair requires a file-backed SQLite database")
+    repaired = repair_legacy_lexicon_lengths(db_path)
+    if repaired:
+        print(f"[DB] repaired words.length for {repaired} legacy rows")
+    return repaired
+
+
+def assert_runtime_length_invariant() -> None:
+    """Strict open gate for immutable production lexicons."""
+    db_path = engine.url.database
+    if not db_path or db_path == ":memory:":
+        raise RuntimeError("lexicon length validation requires a file-backed SQLite database")
+    from app.domain.lexicon.length_invariant import assert_lexicon_length_invariant
+
+    assert_lexicon_length_invariant(db_path)
+
+
 def bootstrap_local_db() -> None:
-    """一次執行本地 SQLite dev bootstrap（schema 補丁 + length 背景回填）。"""
+    """一次執行本地 SQLite dev bootstrap；修復完成後才通過就緒閘。"""
     ensure_embedding_column()
     ensure_length_column()
     ensure_word_relations_table()
     ensure_word_relations_canonical_unique()
     ensure_phoneme_compact_contract()
-    start_length_backfill()
+    repair_local_length_invariant()

@@ -4,6 +4,8 @@ from __future__ import annotations
 import sqlite3
 from pathlib import Path
 
+from app.domain.lexicon.length_invariant import assert_lexicon_length_invariant
+
 # Tier 1 duplicates + Tier 2/3 unused single-column indexes (EXPLAIN-audited).
 FORBIDDEN_LEXICON_INDEXES = frozenset(
     {
@@ -71,6 +73,7 @@ def _table_names(conn: sqlite3.Connection) -> set[str]:
 
 def finalize_lexicon_indexes(db_path: Path | str) -> list[str]:
     """Drop forbidden indexes; ensure required indexes exist. Return names dropped."""
+    assert_lexicon_length_invariant(db_path)
     dropped: list[str] = []
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
