@@ -134,7 +134,9 @@ export function WorkbenchPage({
   });
 
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
+  const lineInputFormRef = useRef<HTMLFormElement | null>(null);
   const workbenchScrollTopRef = useRef(0);
+  const [showReturnToInput, setShowReturnToInput] = useState(false);
   const sessionRef = useRef(session);
   const readingsRef = useRef(readings);
   const previewRef = useRef(preview);
@@ -178,6 +180,20 @@ export function WorkbenchPage({
       window.removeEventListener('scroll', save);
     };
   }, [active]);
+
+  useEffect(() => {
+    if (!active) {
+      setShowReturnToInput(false);
+      return;
+    }
+    const form = lineInputFormRef.current;
+    if (!form || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowReturnToInput(!entry.isIntersecting);
+    }, { threshold: 0 });
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, [active, draft]);
 
   useEffect(() => {
     void initialize();
@@ -547,10 +563,6 @@ export function WorkbenchPage({
     posFilter,
     active,
   );
-  const candidateScrollResetKey = useMemo(
-    () => JSON.stringify({ plan: deferredPlanBase, posFilter }),
-    [deferredPlanBase, posFilter],
-  );
   const candidatesRef = useRef(candidates);
   candidatesRef.current = candidates;
   const semanticGap = Boolean(
@@ -642,6 +654,9 @@ export function WorkbenchPage({
 
   const intro = workbenchIntroCopy(uiLang);
   const canUndo = Boolean(session.undo);
+  const returnToInput = () => {
+    lineInputFormRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
+  };
 
   return (
     <div
@@ -700,7 +715,7 @@ export function WorkbenchPage({
             <h1>{intro.h1}</h1>
             <h2>{intro.h2}</h2>
           </div>
-          <form className="line-input-form" onSubmit={submit}>
+          <form ref={lineInputFormRef} className="line-input-form" onSubmit={submit}>
             <label className="sr-only" htmlFor="lineInput">
               {WORKBENCH_LINE_INPUT_COPY}
             </label>
@@ -804,7 +819,6 @@ export function WorkbenchPage({
                 spanWidth={draft.selection?.width ?? 0}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
-                scrollResetKey={candidateScrollResetKey}
                 onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
                 onLoadMore={candidates.loadMore}
               />
@@ -851,6 +865,16 @@ export function WorkbenchPage({
           </section>
         )}
       </main>
+      {showReturnToInput ? (
+        <button
+          type="button"
+          className="workbench-return-to-input"
+          aria-label="回到建立句格輸入欄"
+          onClick={returnToInput}
+        >
+          ↑ 回到輸入
+        </button>
+      ) : null}
       {preview && draft?.selection ? (
         <ComparePanel
           candidate={preview}

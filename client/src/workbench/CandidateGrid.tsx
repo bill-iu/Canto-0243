@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import type { CandidateGroup, CandidateGroups, WorkbenchCandidate } from './contracts.ts';
 import { emptyPoolTip } from './limits.ts';
@@ -22,7 +22,6 @@ interface Props {
   spanWidth?: number;
   relaxed?: { kind: string; from?: string; to?: string } | null;
   semanticGap?: boolean;
-  scrollResetKey: string;
   onPreview: (candidate: WorkbenchCandidate, origin: HTMLButtonElement) => void;
   onLoadMore?: () => void;
 }
@@ -37,7 +36,6 @@ export function CandidateGrid({
   spanWidth = 0,
   relaxed,
   semanticGap,
-  scrollResetKey,
   onPreview,
   onLoadMore,
 }: Props) {
@@ -49,11 +47,6 @@ export function CandidateGrid({
     && groups.semantic_related.length === 0
     && groups.sound_only.length > 0;
   const [expandedEmptyGroups, setExpandedEmptyGroups] = useState<Set<CandidateGroup>>(() => new Set());
-  const candidateScrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (candidateScrollRef.current) candidateScrollRef.current.scrollTop = 0;
-  }, [scrollResetKey]);
 
   return (
     <section className={`candidate-area${relaxed ? ' is-relaxed' : ''}`} aria-labelledby="candidateHeading">
@@ -68,13 +61,7 @@ export function CandidateGrid({
           未有足夠近義資料；以下只按聲韻與詞頻排列，不是「沒有近義詞」的意思。
         </p>
       ) : null}
-      <div
-        ref={candidateScrollRef}
-        className="candidate-scroll"
-        tabIndex={0}
-        role="region"
-        aria-label="候選詞條"
-      >
+      <div>
         <div className={`candidate-groups${soundOnlyFirst ? ' candidate-groups--sound-first' : ''}`}>
           {GROUPS.map(([key, label]) => {
             const collapsible = COLLAPSIBLE_EMPTY_GROUPS.has(key) && groups[key].length === 0;
