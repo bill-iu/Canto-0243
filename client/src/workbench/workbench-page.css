@@ -473,7 +473,21 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   margin: 0;
 }
 .constraint-bar__heading-actions .pos-filter__trigger {
-  min-height: 2.1rem;
+  box-sizing: border-box;
+  min-height: 30px;
+  padding: 4px 9px;
+  gap: 6px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+}
+.constraint-bar__heading-actions .pos-filter__trigger svg { width: 15px; height: 15px; }
+.constraint-bar__heading-actions .pos-filter__trigger b {
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
 }
 .constraint-bar__heading {
   margin: 0;
@@ -495,7 +509,8 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
 }
 .constraint-bar__toggle:hover { background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .constraint-bar__toggle:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-.constraint-bar__toggle-icon { color: var(--accent-strong); font-size: .9rem; line-height: 1; }
+.constraint-bar__toggle-icon { display: grid; width: .9rem; height: .9rem; color: var(--accent-strong); place-items: center; }
+.constraint-bar__toggle-icon svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.75; }
 .constraint-bar__content {
   display: flex;
   flex-basis: 100%;
@@ -875,6 +890,19 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   .constraint-bar { align-items: stretch; flex-direction: column; }
   .constraint-bar__heading { margin: 0; }
   .constraint-bar__content { flex-direction: column; align-items: stretch; gap: 1rem; }
+  .constraint-bar__heading-actions .pos-filter__trigger {
+    min-height: 24px;
+    padding: 3px 7px;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 650;
+  }
+  .constraint-bar__heading-actions .pos-filter__trigger svg { width: 14px; height: 14px; }
+  .constraint-bar__heading-actions .pos-filter__trigger b {
+    min-width: 18px;
+    height: 18px;
+    font-size: 10px;
+  }
   .constraint-bar__menus {
     flex-direction: column;
     flex-wrap: wrap;
