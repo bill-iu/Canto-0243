@@ -64,6 +64,10 @@ jobs:
         working-directory: client
 
 
+      - name: Typecheck (tsc --noEmit)
+        run: npx tsc --noEmit -p tsconfig.app.json
+        working-directory: client
+
       - name: Client self-checks (C9 harness, tag=ci)
         run: npm run self-check:ci
         working-directory: client
