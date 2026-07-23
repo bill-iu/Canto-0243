@@ -52,6 +52,44 @@ const [obsoleteResult, latestResult] = await Promise.allSettled([obsolete, lates
 if (obsoleteResult.status !== 'rejected' || latestResult.status !== 'fulfilled') {
   throw new Error('PWA snapshot latest-wins cancellation failed');
 }
+
+const constrainedPlan: ReplacementPlanV1 = {
+  version: 1,
+  selectionVersion: 3,
+  width: 2,
+  mode: 'm1',
+  slots: [
+    { pos: 0, kind: 'code_digit', digit: '0' },
+    { pos: 1, kind: 'code_digit', digit: '0' },
+  ],
+  semanticIntent: 'ranked',
+  semanticSeed: '疑難',
+  limit: 2,
+  offset: 0,
+};
+const constrained = await new PwaCandidateSnapshotStore().page(
+  constrainedPlan,
+  freshDb,
+  undefined,
+  {
+    executePage: async () => ({
+      rows: [
+        { char: '甲甲', jyutping: 'gaa1 gaa1', code: '00' },
+        { char: '乙乙', jyutping: 'jat1 jat1', code: '00' },
+        { char: '疑團', jyutping: 'ji4 tyun4', code: '00' },
+      ],
+      total: 3,
+    }),
+    projectRelations: async () => ({
+      syns: [{ char: '疑團', source: 'manual' }],
+      semantic: [],
+    }),
+  },
+);
+if (constrained.exact.direct_syn[0]?.literal !== '疑團') {
+  throw new Error('constrained relation candidate was paged out before grouping');
+}
+
 await db.close();
 await freshDb.close();
 console.log('workbench candidate snapshot self-check ok');

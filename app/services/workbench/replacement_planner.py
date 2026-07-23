@@ -76,6 +76,21 @@ def _prepend_distinct(rows: list[dict], priority_rows: list[dict]) -> list[dict]
     return out
 
 
+def _matching_relation_rows(rows: list[dict], pool) -> list[dict]:
+    """Project relation priority from rows that already passed MatchSpec."""
+    by_literal: dict[str, dict] = {}
+    for row in rows:
+        literal = str(row.get("char") or row.get("literal") or "")
+        if literal and literal not in by_literal:
+            by_literal[literal] = row
+    ordered = [*pool.syns, *pool.semantic]
+    return [
+        by_literal[literal]
+        for item in ordered
+        if (literal := str(item.get("char") or "")) in by_literal
+    ]
+
+
 def _compact_rows(rows: list[dict]) -> tuple[CandidateHandle, ...]:
     return tuple(
         "\0".join((
@@ -103,8 +118,12 @@ def _canonical_page(
     pool,
 ) -> tuple[list[dict], int]:
     """Merge relation priority with the same-width pool before paging."""
-    if not pool or plan.slots:
+    if not pool:
         return _execute(plan, db, execute)
+    if plan.slots:
+        rows, total = _execute(plan, db, execute)
+        priority_rows = _matching_relation_rows(rows, pool)
+        return _prepend_distinct(rows, priority_rows), total
     priority_rows = _load_relation_rows(db, plan.width, pool)
     if not priority_rows:
         return _execute(plan, db, execute)

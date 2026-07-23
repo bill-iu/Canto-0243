@@ -5,7 +5,7 @@
 ## Decision
 
 1. 無有效碼約束、無同韻／同聲錨時，planner 掃描完整替換寬度候選池；其他已啓用條件仍然生效。
-2. 有語意種子時，固定合併池順序為直接近義、語意相關、其餘符合條件候選；按字面去重後才套 `offset`／`limit`。`semanticIntent=off` 時全部歸 `只合音格`。
+2. 有語意種子時，先以當前碼／同韻／同聲 MatchSpec 篩選，再把仍符合條件嘅候選固定合併為直接近義、語意相關、其餘；按字面去重後才套 `offset`／`limit`。關係候選不得繞過 MatchSpec，亦不得因原 canonical 位置落在首批之外而消失。`semanticIntent=off` 時全部歸 `只合音格`。
 3. API 與 PWA 每次最多回傳 400 筆；`engineTotal` 代表 canonical 合併池總數。
 4. POS 篩選留喺 client candidate session。啓用 POS 時，每個 fetch cycle 最多自動探測 5 頁（2,000 筆原始候選）；不足篩後目標即停，保留 `hasMore` 讓使用者繼續載入。缺 POS 載體嘅字面不入選。
 5. 未啓用 POS 時不預先灌完整詞庫；按 400 筆頁面按需載入。
