@@ -79,6 +79,37 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("candidates.loadMore", page)
         self.assertIn("engineTotal", page)
 
+    def test_compact_entry_flow_is_shared_by_query_and_workbench(self) -> None:
+        result_list = (ROOT / "client" / "src" / "result-list.tsx").read_text(encoding="utf-8")
+        compact_entry = (ROOT / "client" / "src" / "compact-entry.ts").read_text(encoding="utf-8")
+        cards = (WORKBENCH / "CandidateGrid.tsx").read_text(encoding="utf-8")
+        shared_css = (ROOT / "shared" / "workbench.css").read_text(encoding="utf-8")
+        workbench_css = (WORKBENCH / "workbench-page.css").read_text(encoding="utf-8")
+
+        self.assertIn("compactEntryLength", compact_entry)
+        self.assertIn("data-literal-length={compactEntryLength(group.literal)}", result_list)
+        self.assertIn("data-literal-length={compactEntryLength(candidate.literal)}", cards)
+        self.assertIn("candidate-card__literal", cards)
+        self.assertIn("candidate-card__code", cards)
+        self.assertNotIn("candidate-card--wide", cards)
+        self.assertNotIn("candidate-card__jyutping", cards)
+        self.assertNotIn("candidate-card__reason", cards)
+
+        self.assertIn("display: flex", shared_css)
+        self.assertIn("flex-wrap: wrap", shared_css)
+        self.assertIn("inline-size: fit-content", shared_css)
+        self.assertIn("min-inline-size: 44px", shared_css)
+        self.assertIn("data-literal-length='medium'", shared_css)
+        self.assertNotIn("data-literal-span", shared_css)
+        self.assertNotIn("grid-template-columns: repeat(auto-fill, minmax(min(100%, 5.5em), 1fr))", shared_css)
+
+        self.assertIn("display: flex", workbench_css)
+        self.assertIn("flex-wrap: wrap", workbench_css)
+        self.assertIn("inline-size: fit-content", workbench_css)
+        self.assertIn("min-inline-size: 44px", workbench_css)
+        self.assertNotIn("grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr))", workbench_css)
+        self.assertNotIn("grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr))", workbench_css)
+
     def test_phase2_bridge_and_shortcuts(self) -> None:
         page = (WORKBENCH / "WorkbenchPage.tsx").read_text(encoding="utf-8")
         compare = (WORKBENCH / "ComparePanel.tsx").read_text(encoding="utf-8")

@@ -43,8 +43,10 @@
 .results-list-items {
       display: flex;
       flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: flex-start;
       align-content: flex-start;
-      gap: 8px;
+      gap: 6px;
       list-style: none;
       padding: 0;
       margin: 0;
@@ -57,8 +59,12 @@ a.result-item {
 a.result-item,
 .results-list-items .result-link {
       min-width: 0;
-      min-height: 0;
-      padding: 8px 12px;
+      min-inline-size: 44px;
+      min-height: 44px;
+      inline-size: fit-content;
+      max-inline-size: 100%;
+      box-sizing: border-box;
+      padding: 4px;
       border: 1px solid var(--line);
       border-radius: 10px;
       background: var(--surface);
@@ -68,6 +74,7 @@ a.result-item,
       line-height: 1.25;
       text-align: center;
       overflow-wrap: anywhere;
+      white-space: normal;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -95,76 +102,39 @@ a.result-item,
       min-height: 0;
       font-weight: inherit;
       overflow-wrap: normal;
-    }
+}
 
 .results-list-items .result-link.result-link--inline {
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       gap: 0;
-    }
+}
 
 .results-list-items .result-link .word {
-      font-size: 20px;
+      max-inline-size: 100%;
+      font-size: 16px;
       font-weight: 400;
       line-height: 1.5;
-    }
+      white-space: normal;
+      overflow-wrap: anywhere;
+}
 
 @media (max-width: 760px) {
   .results,
   .results-list-items {
-    display: grid;
-    /* minmax 下限略闊，減少長詞在單欄內溢出 pill */
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 5.5em), 1fr));
     gap: 6px;
-    align-content: start;
-  }
-
-  .results-list-items > .result-item {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  /* 長字面跨欄：≤4→1、5–6→2、7–8→3、≥9→4（見 resultItemGridSpan） */
-  .results-list-items > .result-item[data-literal-span='2'] {
-    grid-column: span 2;
-  }
-  .results-list-items > .result-item[data-literal-span='3'] {
-    grid-column: span 3;
-  }
-  .results-list-items > .result-item[data-literal-span='4'] {
-    grid-column: 1 / -1; /* 最長詞吃滿成行，唔溢出格線 */
   }
 
   a.result-item,
   .results-list-items .result-link {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 5px 6px;
     border-radius: 8px;
-    font-size: 12px;
     gap: 2px;
-    overflow: hidden;
     writing-mode: horizontal-tb;
-  }
-
-  /* 字面優先橫排；過長可換行包喺 pill 內，唔 nowrap 溢出 */
-  .results-list-items .result-link.result-link--inline {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
   }
 
   .results-list-items .result-link .word {
-    font-size: 14px;
     line-height: 1.3;
-    max-width: 100%;
     writing-mode: horizontal-tb;
-    overflow-wrap: anywhere;
-    word-break: normal;
-    white-space: normal;
   }
 
   .results-list-items .result-reading-badge {
@@ -176,6 +146,18 @@ a.result-item,
     overflow: hidden;
     text-overflow: ellipsis;
   }
+}
+
+.results-list-items > .result-item[data-literal-length='medium'] .word,
+.results-list-items > .result-item[data-literal-length='medium'] .result-literal-only {
+      font-size: 14px;
+}
+
+.results-list-items > .result-item[data-literal-length='long'] .word,
+.results-list-items > .result-item[data-literal-length='long'] .result-literal-only,
+.results-list-items > .result-item[data-literal-length='overflow'] .word,
+.results-list-items > .result-item[data-literal-length='overflow'] .result-literal-only {
+      font-size: 12px;
 }
 
 .result-meta {
@@ -381,5 +363,3 @@ a.result-item:active,
     padding-right: max(20px, env(safe-area-inset-right));
   }
 }
-
-

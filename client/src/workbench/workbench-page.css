@@ -675,17 +675,24 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
 .candidate-group.is-collapsed { margin-top: .55rem; }
 .candidate-group.is-collapsed h3 { margin-bottom: 0; }
 .candidate-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
-  gap: .65rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
+  gap: 6px;
 }
 .candidate-card {
   display: grid;
-  gap: .25rem;
+  gap: .1rem;
+  flex: 0 0 auto;
   min-width: 0;
-  max-width: 100%;
-  padding: .85rem;
-  text-align: left;
+  min-inline-size: 44px;
+  min-height: 44px;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  padding: 4px;
+  text-align: center;
   border: 1px solid var(--line);
   border-radius: .85rem;
   color: inherit;
@@ -695,30 +702,28 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   overflow: hidden;
   box-sizing: border-box;
 }
-/* 長字面（≥7）佔滿列，避免窄欄 pill 溢出 */
-.candidate-card--wide {
-  grid-column: 1 / -1;
-}
 .candidate-card:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: var(--control-shadow-hover); }
 .candidate-card__literal {
-  font-size: 1.35rem;
+  max-inline-size: 100%;
+  font-size: 1rem;
   font-weight: 780;
   writing-mode: horizontal-tb;
   word-break: normal;
   overflow-wrap: anywhere;
+  white-space: normal;
   max-width: 100%;
 }
-.candidate-card__jyutping,
-.candidate-card__code,
-.candidate-card__reason {
+.candidate-card__code {
   overflow-wrap: anywhere;
   word-break: normal;
   writing-mode: horizontal-tb;
   max-width: 100%;
+  font: 700 .6rem ui-monospace, monospace;
+  color: var(--muted);
 }
-.candidate-card__jyutping { color: var(--muted); font-size: .76rem; }
-.candidate-card__code { font: 700 .78rem ui-monospace, monospace; }
-.candidate-card__reason { margin-top: .3rem; color: var(--accent-strong); font-size: .7rem; }
+.candidate-card[data-literal-length='medium'] .candidate-card__literal { font-size: .875rem; }
+.candidate-card[data-literal-length='long'] .candidate-card__literal,
+.candidate-card[data-literal-length='overflow'] .candidate-card__literal { font-size: .75rem; }
 .empty-group { color: var(--muted); font-size: .85rem; }
 .candidate-count {
   margin: .35rem 0 .75rem;
@@ -923,10 +928,6 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   .reading-choice,
   .reading-static,
   .reading-footer-spacer { min-height: 1.4rem; font-size: .66rem; }
-  /* 同寬屏 auto-fill；min track 較細，短詞可並排；≥7 仍 --wide 滿列 */
-  .candidate-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr));
-  }
   .candidate-groups {
     display: flex;
     flex-direction: column;
@@ -935,13 +936,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   .candidate-group { margin-top: .85rem; }
   .candidate-group h3 { margin-bottom: .45rem; }
   .candidate-group.is-collapsed { margin-top: .35rem; }
-  .candidate-card {
-    padding: .75rem .85rem;
-  }
-  .candidate-card__literal {
-    font-size: 1.2rem;
-    line-height: 1.3;
-  }
+  .candidate-card { padding: 4px; }
   /* Same row as wide: input | 建立句格 (grid, not stacked column). */
   .line-input-form__row {
     display: grid;

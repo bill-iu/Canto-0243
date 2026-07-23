@@ -32,18 +32,6 @@ export function resultsShowReadingBadge(query: string | null | undefined): boole
   return Boolean(query && query.includes('/'));
 }
 
-/**
- * 窄屏結果格跨欄：≤4→1、5–6→2、7–8→3、≥9→4。
- * 字長用 grapheme（`[...literal].length`）。
- */
-export function resultItemGridSpan(literal: string): number {
-  const n = [...literal].length;
-  if (n <= 4) return 1;
-  if (n <= 6) return 2;
-  if (n <= 8) return 3;
-  return 4;
-}
-
 /** ponytail: `npx tsx client/scripts/result-list-badge-self-check.ts` */
 export function resultListBadgeSelfCheck(): void {
   if (resultsShowReadingBadge('23') || resultsShowReadingBadge('好') || resultsShowReadingBadge('')) {
@@ -59,27 +47,5 @@ export function resultListBadgeSelfCheck(): void {
   }
   if (resultsShowReadingBadge('232') !== false) {
     throw new Error('resultListBadgeSelfCheck: no-slash stays false for memo stability');
-  }
-}
-
-/** ponytail: same script as badge self-check */
-export function resultItemGridSpanSelfCheck(): void {
-  const cases: Array<[string, number]> = [
-    ['', 1],
-    ['好', 1],
-    ['香港', 1],
-    ['一二三四', 1],
-    ['一二三四五', 2],
-    ['一二三四五六', 2],
-    ['一二三四五六七', 3],
-    ['一二三四五六七八', 3],
-    ['一二三四五六七八九', 4],
-    ['一二三四五六七八九十十一', 4],
-  ];
-  for (const [literal, want] of cases) {
-    const got = resultItemGridSpan(literal);
-    if (got !== want) {
-      throw new Error(`resultItemGridSpanSelfCheck: ${literal || '(empty)'} → ${got}, want ${want}`);
-    }
   }
 }
