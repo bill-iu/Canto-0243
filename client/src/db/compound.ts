@@ -94,7 +94,7 @@ export async function loadCompoundListsFromUrl(baseUrl: string): Promise<void> {
 async function loadTwoCharLiterals(db: Database): Promise<Set<string>> {
   const rows = await queryRows(db, `
     SELECT DISTINCT char FROM words
-    WHERE length = 2 OR ((length IS NULL OR length = 0) AND length(char) = 2)
+    WHERE length = 2
   `);
   const out = new Set<string>();
   for (const row of rows) {
@@ -109,7 +109,7 @@ async function loadTwoCharLiterals(db: Database): Promise<Set<string>> {
 async function loadSingleCharLiterals(db: Database): Promise<Set<string>> {
   const rows = await queryRows(db, `
     SELECT DISTINCT char FROM words
-    WHERE length = 1 OR ((length IS NULL OR length = 0) AND length(char) = 1)
+    WHERE length = 1
   `);
   const out = new Set<string>();
   for (const row of rows) {
@@ -277,10 +277,7 @@ async function narrowByRhymeChar(
   const tailPos = width - 1;
   const stmt = await db.prepare(`
     SELECT char, jyutping, finals FROM words
-    WHERE char = ? AND (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
+    WHERE char = ? AND length = ?
     LIMIT 20
   `);
   const anchorRows = await queryRows(db, `
@@ -299,7 +296,7 @@ async function narrowByRhymeChar(
 
   const out = new Set<string>();
   for (const literal of literals) {
-    await stmt.bind([literal, width, width]);
+    await stmt.bind([literal, width]);
     let ok = false;
     while (await stmt.step()) {
       const finals = getRhymeFinals(await stmt.getAsObject() as WordRow);
@@ -414,8 +411,8 @@ async function buildDoubledTiers(db: Database, width: number): Promise<TierMap> 
   const tiers = new Map<string, number>();
   const rows = await queryRows(db, `
     SELECT char, jyutping FROM words
-    WHERE length = ? OR ((length IS NULL OR length = 0) AND length(char) = ?)
-  `, [width, width]);
+    WHERE length = ?
+  `, [width]);
   for (const row of rows) {
     const ch = String(row.char ?? '');
     if (ch.length === width && rowHasUniformSyllableLetters(String(row.jyutping ?? ''), width)) {
@@ -479,8 +476,8 @@ async function fetchCompoundRows(db: Database, literals: Set<string>, width: num
     SELECT char, jyutping, code, initials, finals, length
     FROM words
     WHERE char IN (${placeholders})
-      AND (length = ? OR ((length IS NULL OR length = 0) AND length(char) = ?))
-  `, [...list, width, width]);
+      AND length = ?
+  `, [...list, width]);
 }
 
 export async function searchCompoundTiers(db: Database, spec: CompoundSearchSpec): Promise<TierMap> {

@@ -61,7 +61,7 @@ async function loadThreeCharLiterals(db: Database): Promise<Set<string>> {
     db,
     `
     SELECT DISTINCT char FROM words
-    WHERE length = 3 OR ((length IS NULL OR length = 0) AND length(char) = 3)
+    WHERE length = 3
   `,
   );
   const out = new Set<string>();

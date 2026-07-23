@@ -69,12 +69,9 @@ def run_create_all_if_needed(env: str) -> None:
 def run_local_db_bootstrap(env: str) -> None:
     if not _local_sqlite_startup_enabled(env):
         return
-    try:
-        from app.db.bootstrap import bootstrap_local_db
+    from app.db.bootstrap import bootstrap_local_db
 
-        bootstrap_local_db()
-    except Exception as e:
-        print(f"[offline_preload] schema ensure / length backfill 啟動失敗（可忽略）：{e}")
+    bootstrap_local_db()
     run_lou_dou_reading_patch(env)
 
 
@@ -210,6 +207,10 @@ def run_lifespan_startup(*, env: str | None = None) -> None:
     if _local_sqlite_startup_enabled(effective_env):
         run_create_all_if_needed(effective_env)
         run_local_db_bootstrap(effective_env)
+    else:
+        from app.db.bootstrap import assert_runtime_length_invariant
+
+        assert_runtime_length_invariant()
     start_background_runtime_preload()
 
 

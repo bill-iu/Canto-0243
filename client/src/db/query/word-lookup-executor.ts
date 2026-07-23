@@ -43,13 +43,10 @@ export async function executeDigitCodeQuery(
     SELECT char, jyutping, code
     FROM words
     WHERE code IN (${placeholders})
-      AND (
-        length = ?
-        OR ((length IS NULL OR length = 0) AND length(char) = ?)
-      )
+      AND length = ?
   `;
 
-  const rows = await queryRows(db, sql, [...variants, len, len]) as WordRow[];
+  const rows = await queryRows(db, sql, [...variants, len]) as WordRow[];
 
   const sorted = sortQueryResults(deduplicateWordRows(rows).map((row) => rowToResult(row)));
   return { items: sorted.slice(offset, offset + limit), total: sorted.length };
@@ -95,12 +92,9 @@ export async function executeJyutpingFragment(
   const sql = `
     SELECT char, jyutping, code, initials, finals, length
     FROM words
-    WHERE (
-      length = ?
-      OR ((length IS NULL OR length = 0) AND length(char) = ?)
-    )
+    WHERE length = ?
   `;
-  const rows = (await queryRows(db, sql, [wordLen, wordLen])) as WordRow[];
+  const rows = (await queryRows(db, sql, [wordLen])) as WordRow[];
   const matched = deduplicateWordRows(rows).filter((row) =>
     matchesJyutpingQuery(String(row.jyutping ?? ''), parsed.raw_q),
   );

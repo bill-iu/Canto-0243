@@ -12,7 +12,7 @@ from app.db.bootstrap import (
     ensure_word_relations_group_codes_column,
     ensure_word_relations_pair_unique,
     ensure_word_relations_table,
-    start_length_backfill,
+    repair_local_length_invariant,
 )
 from app.db.connection import (
     DATABASE_URL,
@@ -41,5 +41,5 @@ __all__ = [
     "ensure_word_relations_pair_unique",
     "ensure_word_relations_table",
     "resolve_sqlite_database_url",
-    "start_length_backfill",
+    "repair_local_length_invariant",
 ]

@@ -26,6 +26,25 @@ try {
   if (!(error instanceof DOMException) || error.name !== 'AbortError') throw error;
 }
 
+let readingCalls = 0;
+const cachedReadings = createPortableWorkbenchAdapter(async (_input, init) => {
+  readingCalls += 1;
+  const surface = String((JSON.parse(String(init?.body)) as { surface: string }).surface);
+  return new Response(JSON.stringify(Array.from(surface, (literal) => ({
+    surface: literal,
+    kind: literal === '𠮶' ? 'unresolved' : 'resolved',
+    choices: literal === '𠮶'
+      ? []
+      : [{ jyutping: `${literal}1`, code: '3', initial: literal, final: '1' }],
+    needsChoice: false,
+  }))));
+}, { lexiconIdentity: 'v1' });
+await cachedReadings.resolveLine('香香𠮶');
+await cachedReadings.resolveLine('香𠮶');
+if (readingCalls !== 1) {
+  throw new Error(`line reading adapter cache/dedupe failed: ${readingCalls}`);
+}
+
 // PWA：詞庫未就緒必須係 reject，唔好同步 throw 炸 React effect
 const pwa = createPwaWorkbenchAdapter();
 const plan: ReplacementPlanV1 = {

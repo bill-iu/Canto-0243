@@ -2,9 +2,10 @@ import { getDatabase } from '../db/init.ts';
 import type { DatabaseBackend } from '../db/database-backend.ts';
 import { isOpfsVfsBackend, requestOpfsWorkbenchPage } from '../db/opfs-vfs-backend.ts';
 import { projectRelationPool } from '../db/relation-pool/index.ts';
-import type { WorkbenchAdapter } from './workbench-adapter.ts';
+import type { WorkbenchAdapter, WorkbenchAdapterOptions } from './workbench-adapter.ts';
 import { WorkbenchAdapterError } from './workbench-adapter.ts';
 import { resolvePwaLineReadings } from './pwa-line-readings.ts';
+import { createLineReadingResolver } from './line-reading-cache.ts';
 import { PwaCandidateSnapshotStore } from './pwa-candidate-snapshot.ts';
 import type { GroupPoolInput } from './group-candidates.ts';
 import type { ReplacementPlanV1 } from './contracts.ts';
@@ -22,7 +23,7 @@ async function projectCompactPool(
   return { syns: compact(pool.syns), semantic: compact(pool.semantic) };
 }
 
-export function createPwaWorkbenchAdapter(): WorkbenchAdapter {
+export function createPwaWorkbenchAdapter(options: WorkbenchAdapterOptions = {}): WorkbenchAdapter {
   const snapshots = new PwaCandidateSnapshotStore();
   const database = () => {
     try {
@@ -31,11 +32,20 @@ export function createPwaWorkbenchAdapter(): WorkbenchAdapter {
       throw new WorkbenchAdapterError('not_ready', 'lexicon not ready');
     }
   };
+  const lineReadings = createLineReadingResolver(
+    options.lexiconIdentity ?? 'dev',
+    async (input, signal) => {
+      if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
+      const resolved = await resolvePwaLineReadings(input, database());
+      if (signal.aborted) throw new DOMException('Aborted', 'AbortError');
+      return resolved;
+    },
+    options.lineReadingCacheSize,
+  );
   return {
     resolveLine(input, signal) {
-      if (signal?.aborted) return Promise.reject(new DOMException('Aborted', 'AbortError'));
       try {
-        return resolvePwaLineReadings(input, database());
+        return lineReadings.resolve(input, signal);
       } catch (error) {
         // getDatabase() 係同步 throw；要變 reject 先畀 hook 嘅 .catch 接住，唔好炸 React
         return Promise.reject(error);

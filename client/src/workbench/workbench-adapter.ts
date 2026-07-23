@@ -20,6 +20,16 @@ export interface WorkbenchAdapter {
   findCandidates(plan: ReplacementPlanV1, signal?: AbortSignal): Promise<WorkbenchCandidateResponse>;
 }
 
-export function selectWorkbenchAdapter(portable = isPortableHost()): WorkbenchAdapter {
-  return portable ? createPortableWorkbenchAdapter() : createPwaWorkbenchAdapter();
+export interface WorkbenchAdapterOptions {
+  lexiconIdentity?: string;
+  lineReadingCacheSize?: number;
+}
+
+export function selectWorkbenchAdapter(
+  portable = isPortableHost(),
+  options: WorkbenchAdapterOptions = {},
+): WorkbenchAdapter {
+  return portable
+    ? createPortableWorkbenchAdapter(fetch, options)
+    : createPwaWorkbenchAdapter(options);
 }

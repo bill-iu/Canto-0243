@@ -12,6 +12,7 @@ from ingest.lexicon_indexes import (
     finalize_lexicon_indexes,
     list_user_indexes,
 )
+from app.domain.lexicon.length_invariant import LexiconLengthInvariantError
 
 _REPO_DB = Path(__file__).resolve().parents[2] / "lyrics.db"
 
@@ -90,6 +91,26 @@ def _plan_text(conn: sqlite3.Connection, sql: str, params: tuple = ()) -> str:
 
 
 class LexiconIndexPolicyTests(unittest.TestCase):
+    def test_finalize_rejects_invalid_word_lengths(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as fh:
+            db_path = Path(fh.name)
+        try:
+            with sqlite3.connect(db_path) as conn:
+                conn.execute(
+                    "CREATE TABLE words ("
+                    "id INTEGER PRIMARY KEY, char TEXT, code TEXT, length INTEGER, "
+                    "initials TEXT, finals TEXT)"
+                )
+                conn.execute("INSERT INTO words(char, length) VALUES ('香港', 1)")
+
+            with self.assertRaises(LexiconLengthInvariantError):
+                finalize_lexicon_indexes(db_path)
+        finally:
+            try:
+                db_path.unlink(missing_ok=True)
+            except PermissionError:
+                pass
+
     def test_finalize_drops_forbidden_and_keeps_required(self):
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as fh:
             db_path = Path(fh.name)
@@ -187,6 +208,11 @@ class LexiconIndexPolicyTests(unittest.TestCase):
                 _seed_minimal_words(conn)
                 cases = (
                     (
+                        "SELECT char FROM words WHERE length=?",
+                        (2,),
+                        "idx_length_finals",
+                    ),
+                    (
                         "SELECT char FROM words WHERE length=2 AND code=?",
                         ("346",),
                         "idx_length_code_finals",
@@ -251,6 +277,11 @@ class LexiconIndexPolicyTests(unittest.TestCase):
                 wid = conn.execute("SELECT word_id FROM word_relations LIMIT 1").fetchone()
                 self.assertIsNotNone(wid)
                 checks = (
+                    (
+                        "SELECT id FROM words WHERE length=? LIMIT 10",
+                        (length,),
+                        "idx_length_finals",
+                    ),
                     (
                         "SELECT id FROM words WHERE length=? AND code=? LIMIT 10",
                         (length, code),
