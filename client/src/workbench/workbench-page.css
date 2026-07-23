@@ -799,6 +799,29 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
     display: block;
   }
   .line-input-form { max-width: 100%; }
+  .line-slots {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: .5rem;
+    margin-top: 1.5rem;
+  }
+  .line-slot-wrap { width: auto; min-width: 0; gap: .25rem; }
+  .line-slot,
+  .line-slot-edit {
+    min-height: 0;
+    aspect-ratio: 4.5 / 5.5;
+    padding: .3rem;
+    border-radius: .7rem;
+  }
+  .line-slot__surface { font-size: clamp(1.25rem, 6vw, 1.7rem); }
+  .line-slot__surface.is-code-surface { font-size: clamp(1.05rem, 5vw, 1.35rem); }
+  .line-slot__code { font-size: clamp(.58rem, 2.8vw, .82rem); }
+  .line-slot__lock { top: .2rem; right: .25rem; font-size: .55rem; }
+  .line-slot__warn { top: .2rem; left: .25rem; font-size: .6rem; }
+  .line-slot.is-locked::after { inset: .18rem; border-radius: .55rem; }
+  .reading-choice,
+  .reading-static,
+  .reading-footer-spacer { min-height: 1.4rem; font-size: .66rem; }
   /* 同寬屏 auto-fill；min track 較細，短詞可並排；≥7 仍 --wide 滿列 */
   .candidate-grid {
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 6.5rem), 1fr));
