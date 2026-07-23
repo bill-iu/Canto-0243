@@ -43,12 +43,14 @@
 
 .header-chrome .brand {
   grid-area: brand;
-  align-self: center;
+}
+
+.app-bar .brand-logo {
+  height: 74px;
 }
 
 .app-bar > .header-hero {
   grid-area: hero;
-  align-self: center;
   min-width: 0;
   max-width: none;
   flex: 1 1 auto;
@@ -63,7 +65,7 @@
 .app-bar > .header-hero .header-hero__title {
   margin: 0;
   font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
-  font-size: clamp(22px, 2.4vw, 28px);
+  font-size: clamp(26px, 2.9vw, 34px);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -71,9 +73,9 @@
 }
 
 .app-bar > .header-hero .header-hero__tagline {
-  margin: 4px 0 0;
+  margin: 5px 0 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.4;
 }
 
@@ -299,7 +301,7 @@ button.icon-button.header-search__shuffle:disabled {
       "brand hero menu"
       "search search search";
     column-gap: 6px;
-    row-gap: 8px;
+    row-gap: 4px;
     align-items: center;
     position: relative;
     min-height: 0;
@@ -326,7 +328,7 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-chrome .brand .brand-logo {
-    height: 36px;
+    height: 44px;
     width: auto;
     display: block;
   }
@@ -348,7 +350,7 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .app-bar > .header-hero .header-hero__title {
-    font-size: clamp(15px, 4.2vw, 19px);
+    font-size: clamp(18px, 5vw, 24px);
     line-height: 1.15;
     letter-spacing: -0.02em;
     white-space: nowrap;
@@ -359,9 +361,9 @@ button.icon-button.header-search__shuffle:disabled {
   /* nowrap 單行；唔用 ellipsis — JS 縮字／極窄隱藏（header-hero-tagline-fit） */
   .app-bar > .header-hero .header-hero__tagline {
     display: block;
-    margin: 2px 0 0;
+    margin: 3px 0 0;
     max-width: 100%;
-    font-size: clamp(10px, 2.8vw, 12px);
+    font-size: clamp(12px, 3.2vw, 14px);
     line-height: 1.25;
     color: var(--muted);
     white-space: nowrap;
@@ -556,7 +558,7 @@ button.icon-button.header-search__shuffle:disabled {
 
   .query-tabs-bar {
     gap: 4px;
-    padding: 0 0 6px;
+    padding: 0 0 2px;
   }
   .query-tab-pill__label {
     font-size: 11px;
@@ -644,7 +646,7 @@ button.icon-button.header-search__shuffle:disabled {
   gap: 8px;
   max-width: 1120px;
   margin: 0 auto;
-  padding: 0 0 12px;
+  padding: 0 0 8px;
   overflow-x: auto;
   scrollbar-width: thin;
 }
