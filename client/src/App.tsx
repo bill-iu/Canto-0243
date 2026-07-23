@@ -478,7 +478,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (isReady || offlineStatus === 'error') return;
+    if (isReady || offlineStatus === 'failed') return;
     if (lexiconLoadStartedRef.current) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
@@ -715,7 +715,7 @@ function App() {
       setUseLiveFetch(true);
       setResultsShuffled(false);
       commitActiveSearch(q, nextMode, nextPzMode);
-      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
@@ -788,7 +788,7 @@ function App() {
       openSearchTabWithQuery(q, nextMode, pzMode);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
