@@ -198,7 +198,7 @@ export function ConstraintBar({
           {headingExtra}
           {canUndo ? (
             <button type="button" className="undo-action" onClick={onUndo}>
-              復原最近一次套用／放寬／手改
+              復原
             </button>
           ) : null}
         </div>
