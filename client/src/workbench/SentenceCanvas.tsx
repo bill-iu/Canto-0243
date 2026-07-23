@@ -278,12 +278,14 @@ export function SentenceCanvas({
               aria-describedby={spanInputError ? 'spanHandHint' : undefined}
             />
           </label>
-          <button type="submit">套用</button>
-          <button type="button" className="span-hand-input__cancel" onClick={() => {
-            setSpanPanelOpen(false);
-            setSpanRaw('');
-            onSpanInputError('');
-          }}>收起</button>
+          <div className="span-hand-input__actions">
+            <button type="submit">套用</button>
+            <button type="button" className="span-hand-input__cancel" onClick={() => {
+              setSpanPanelOpen(false);
+              setSpanRaw('');
+              onSpanInputError('');
+            }}>收起</button>
+          </div>
           {spanInputError ? <p id="spanHandHint" className="span-hand-input__error">{spanInputError}</p> : null}
         </form>
       ) : null}

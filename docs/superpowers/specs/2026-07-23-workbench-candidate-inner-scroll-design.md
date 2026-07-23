@@ -1,5 +1,7 @@
 # 句格工作台候選詞條內捲設計
 
+> 已由 `2026-07-24-workbench-single-scroll-and-span-input-design.md` 取代；本文件只保留作決策歷史。
+
 日期：2026-07-23
 
 ## 目標
