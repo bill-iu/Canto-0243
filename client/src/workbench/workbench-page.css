@@ -959,13 +959,16 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
     font-size: .85rem;
   }
   .line-slots {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
     column-gap: .7rem;
     row-gap: .5rem;
     margin-top: 1rem;
   }
-  .line-slot-wrap { width: auto; min-width: 0; gap: .25rem; }
+  .line-slot-wrap {
+    flex: 0 0 calc((100% - 3.5rem) / 6);
+    width: calc((100% - 3.5rem) / 6);
+    min-width: 0;
+    gap: .25rem;
+  }
   .line-slot,
   .line-slot-edit {
     min-height: 0;
