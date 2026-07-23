@@ -124,6 +124,8 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertNotIn("max-block-size: 52dvh", workbench_css)
         self.assertIn("scroll-margin-top", workbench_css)
         self.assertIn("env(safe-area-inset-bottom)", workbench_css)
+        self.assertIn("--workbench-install-banner-clearance: 56px", workbench_css)
+        self.assertIn(".app-shell.has-install-banner .workbench-return-to-input", workbench_css)
         self.assertIn("box-sizing: border-box", workbench_css)
         self.assertIn(".span-hand-input__actions", workbench_css)
 

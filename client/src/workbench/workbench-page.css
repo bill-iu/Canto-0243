@@ -817,6 +817,12 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   outline: none;
   box-shadow: var(--focus-ring), var(--shadow-soft);
 }
+.app-shell.has-install-banner {
+  --workbench-install-banner-clearance: 56px;
+}
+.app-shell.has-install-banner .workbench-return-to-input {
+  bottom: calc(max(1rem, env(safe-area-inset-bottom)) + var(--workbench-install-banner-clearance));
+}
 
 .relaxation-card {
   display: flex;

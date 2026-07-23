@@ -71,6 +71,10 @@
 - 使用現有 surface、line、ink 與 focus ring token。
 - 頁面底部預留足夠空間，避免最後一列候選或「載入更多」永久被按鈕遮住。
 
+### PWA 安裝欄共存
+
+當 PWA 顯示固定的「加到主畫面」欄時，`app-shell.has-install-banner` 提供既有的 `56px` 安裝欄 clearance；「回到輸入」按鈕在此 clearance 之上定位，並繼續保留 `safe-area-inset-bottom`。安裝欄消失後恢復原本的 viewport 底部位置。
+
 ### 點擊行為
 
 - 點擊後立即把建立句格輸入區移到 sticky header 下方。
