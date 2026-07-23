@@ -5,12 +5,9 @@ import { tDetail } from '../../shared/entry-detail-i18n.mjs';
 import {
   displayResults,
   resultItemGridSpan,
-  resultsShowReadingBadge,
   type EntryPickPayload,
 } from './result-list-logic.ts';
 import { countListRender } from './search-perf.ts';
-
-export { resultsShowReadingBadge } from './result-list-logic.ts';
 
 export const ResultList = memo(function ResultList({
   results,

@@ -3,7 +3,7 @@
  * Progressive Web App for Cantonese lyric query
  */
 
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useDB, useSearch } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
@@ -13,7 +13,6 @@ import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
-import { EntryDetailPanel } from './entry-detail/EntryDetailPanel';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
   WorkbenchBridgeError,
@@ -51,10 +50,6 @@ import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { planCommitSearch } from './db/query/search-session.ts';
 import { GuideQuick } from './guide-quick';
-import { GuideView } from './guide-view';
-import { AboutView } from './about-view';
-import { RelationView } from './views/relation-view';
-import { CorrectionsView } from './views/corrections-view';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
@@ -92,13 +87,31 @@ import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { exitPortable } from './portable-exit';
 import { PosFilterControl } from './pos/PosFilterControl.tsx';
-import { WorkbenchPage } from './workbench/WorkbenchPage.tsx';
 import {
   filterByProjectPos,
   isPosFilterActive,
   normalizePosFilter,
   type PosFilterState,
 } from './pos/filter.ts';
+
+const WorkbenchPage = lazy(() =>
+  import('./workbench/WorkbenchPage.tsx').then(({ WorkbenchPage: Page }) => ({ default: Page })),
+);
+const GuideView = lazy(() =>
+  import('./guide-view').then(({ GuideView: View }) => ({ default: View })),
+);
+const AboutView = lazy(() =>
+  import('./about-view').then(({ AboutView: View }) => ({ default: View })),
+);
+const RelationView = lazy(() =>
+  import('./views/relation-view').then(({ RelationView: View }) => ({ default: View })),
+);
+const CorrectionsView = lazy(() =>
+  import('./views/corrections-view').then(({ CorrectionsView: View }) => ({ default: View })),
+);
+const EntryDetailPanel = lazy(() =>
+  import('./entry-detail/EntryDetailPanel').then(({ EntryDetailPanel: Panel }) => ({ default: Panel })),
+);
 
 const initialUrl =
   typeof window !== 'undefined'
@@ -1276,31 +1289,36 @@ function App() {
         </header>
 
         <main className="main-wrap">
-          <WorkbenchPage
-            embedded
-            active={view === 'workbench'}
-            hidden={view !== 'workbench'}
-            lang={uiLang}
-            theme={uiTheme}
-            onOpenSearchLiteral={(literal) => openSearchTabForLiteral(literal, mode, pzMode)}
-          />
-          {view !== 'workbench' && (view === 'guide' ? (
-            <GuideView lang={uiLang} onPick={handleRunExample} />
-          ) : view === 'about' ? (
-            <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
-          ) : view === 'relation' && isPortableHost() ? (
-            <RelationView
-              lang={uiLang}
-              initial={activeTab?.relation}
-              onFormChange={(next) => patchActiveRelation(next)}
-            />
-          ) : view === 'corrections' && isPortableHost() ? (
-            <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
-          ) : (
-            <section
-              className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
-              aria-labelledby="searchTitle"
-            >
+          {view === 'workbench' ? (
+            <Suspense fallback={null}>
+              <WorkbenchPage
+                embedded
+                active
+                lang={uiLang}
+                theme={uiTheme}
+                onOpenSearchLiteral={(literal) => openSearchTabForLiteral(literal, mode, pzMode)}
+              />
+            </Suspense>
+          ) : null}
+          {view !== 'workbench' ? (
+            <Suspense fallback={null}>
+              {view === 'guide' ? (
+                <GuideView lang={uiLang} onPick={handleRunExample} />
+              ) : view === 'about' ? (
+                <AboutView lang={uiLang} lexiconVersion={lexiconVersion} onBack={handleBackToSearch} />
+              ) : view === 'relation' && isPortableHost() ? (
+                <RelationView
+                  lang={uiLang}
+                  initial={activeTab?.relation}
+                  onFormChange={(next) => patchActiveRelation(next)}
+                />
+              ) : view === 'corrections' && isPortableHost() ? (
+                <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
+              ) : (
+                <section
+                  className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
+                  aria-labelledby="searchTitle"
+                >
               <div className="search-view__main" onClick={handleSearchMainClick}>
               <div className="search-results">
                 <div className="search-results-scroll" ref={setScrollRootEl}>
@@ -1370,8 +1388,10 @@ function App() {
                 </div>
               </div>
               </div>
-            </section>
-          ))}
+                </section>
+              )}
+            </Suspense>
+          ) : null}
         </main>
       </div>
 
@@ -1391,18 +1411,20 @@ function App() {
       ) : null}
       {view === 'search' && detailOpen && activeDetailLiteral
         ? createPortal(
-            <EntryDetailPanel
-              key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
-              literal={activeDetailLiteral}
-              model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
-              loading={!detailModel}
-              relationsLoading={detailRelationsLoading}
-              lang={uiLang}
-              preferredJyutping={preferredJyutping}
-              onClose={closeEntryDetail}
-              onRelationPick={handleRelationPick}
-              onPutInWorkbench={handlePutInWorkbench}
-            />,
+            <Suspense fallback={null}>
+              <EntryDetailPanel
+                key={`${activeDetailLiteral}-${preferredJyutping ?? ''}`}
+                literal={activeDetailLiteral}
+                model={detailModel?.literal === activeDetailLiteral ? detailModel : null}
+                loading={!detailModel}
+                relationsLoading={detailRelationsLoading}
+                lang={uiLang}
+                preferredJyutping={preferredJyutping}
+                onClose={closeEntryDetail}
+                onRelationPick={handleRelationPick}
+                onPutInWorkbench={handlePutInWorkbench}
+              />
+            </Suspense>,
             document.body,
           )
         : null}

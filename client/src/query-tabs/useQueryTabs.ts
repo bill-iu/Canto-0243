@@ -624,7 +624,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
 
     window.addEventListener('popstate', onPopstate);
     return () => window.removeEventListener('popstate', onPopstate);
-  }, [setAndPersist, pushBrowserUrl, onModeChange]);
+  }, [setAndPersist, pushBrowserUrl, persistTabs, onModeChange]);
 
   const needsInitialSearch =
     activeTab?.view === VIEW.SEARCH &&

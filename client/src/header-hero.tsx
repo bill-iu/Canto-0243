@@ -3,7 +3,6 @@ import { useLayoutEffect, useRef } from 'react';
 import {
   HEADER_NARROW_MQ,
   fitHeaderTaglineEl,
-  headerTaglineFitSelfCheck,
 } from './header-hero-tagline-fit.ts';
 
 export interface HeaderHeroProps {
@@ -55,6 +54,3 @@ export function HeaderHero({ lang }: HeaderHeroProps) {
     </div>
   );
 }
-
-/** ponytail: `npx tsx -e "import { headerTaglineFitSelfCheck } from './client/src/header-hero-tagline-fit.ts'; …"` */
-export { headerTaglineFitSelfCheck };
