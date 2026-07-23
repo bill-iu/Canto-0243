@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 import type { ReplacementPlanV1 } from './contracts.ts';
 import type { CodeConstraintMode } from './code-constraint.ts';
@@ -169,6 +169,7 @@ export function ConstraintBar({
   onUndo,
   headingExtra,
 }: Props) {
+  const [isOpen, setIsOpen] = useState(false);
   const explicitHint = spanWidth > 0
     ? `長度須為 ${spanWidth}；未填位會補 ?。`
     : '鎖定替換段後可輸入指定碼。';
@@ -176,7 +177,18 @@ export function ConstraintBar({
   return (
     <section className="constraint-bar" aria-labelledby="constraintHeading">
       <div className="constraint-bar__heading-row">
-        <h2 id="constraintHeading">本次替換條件</h2>
+        <h2 id="constraintHeading" className="constraint-bar__heading">
+          <button
+            type="button"
+            className="constraint-bar__toggle"
+            aria-expanded={isOpen}
+            aria-controls="constraintContent"
+            onClick={() => setIsOpen((open) => !open)}
+          >
+            <span>本次替換條件</span>
+            <span className="constraint-bar__toggle-icon" aria-hidden="true">{isOpen ? '⌃' : '⌄'}</span>
+          </button>
+        </h2>
         <div className="constraint-bar__heading-actions">
           {headingExtra}
           {canUndo ? (
@@ -186,78 +198,80 @@ export function ConstraintBar({
           ) : null}
         </div>
       </div>
-      <div className="constraint-bar__menus">
-        <label>聲調精度
-          <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
-            <option value="m1">0243</option>
-            <option value="m2">02493</option>
-            <option value="m3">394052</option>
-          </select>
-        </label>
-        <label>原意關係
-          <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
-            <option value="ranked">近義優先，保留其他選擇</option>
-            <option value="direct_only">只看直接近義</option>
-            <option value="off">不設語意條件</option>
-          </select>
-        </label>
-        <label>0243 碼
-          <select
-            value={codeConstraint}
-            onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
+      <div id="constraintContent" className="constraint-bar__content" hidden={!isOpen}>
+        <div className="constraint-bar__menus">
+          <label>聲調精度
+            <select value={mode} onChange={(event) => onModeChange(event.target.value as Props['mode'])}>
+              <option value="m1">0243</option>
+              <option value="m2">02493</option>
+              <option value="m3">394052</option>
+            </select>
+          </label>
+          <label>原意關係
+            <select value={semanticIntent} onChange={(event) => onSemanticChange(event.target.value as Props['semanticIntent'])}>
+              <option value="ranked">近義優先，保留其他選擇</option>
+              <option value="direct_only">只看直接近義</option>
+              <option value="off">不設語意條件</option>
+            </select>
+          </label>
+          <label>0243 碼
+            <select
+              value={codeConstraint}
+              onChange={(event) => onCodeConstraintChange(event.target.value as CodeConstraintMode)}
+            >
+              <option value="same_tone">同音（預設）</option>
+              <option value="off">不限定</option>
+              <option value="explicit">指定碼</option>
+            </select>
+          </label>
+          <label
+            className={`constraint-bar__explicit${codeConstraint === 'explicit' ? ' is-active' : ' is-reserved'}`}
+            aria-hidden={codeConstraint !== 'explicit'}
           >
-            <option value="same_tone">同音（預設）</option>
-            <option value="off">不限定</option>
-            <option value="explicit">指定碼</option>
-          </select>
-        </label>
-        <label
-          className={`constraint-bar__explicit${codeConstraint === 'explicit' ? ' is-active' : ' is-reserved'}`}
-          aria-hidden={codeConstraint !== 'explicit'}
-        >
-          指定碼（?＝通配）
-          <input
-            value={explicitCode}
-            onChange={(event) => onExplicitCodeChange(event.target.value)}
-            maxLength={Math.max(spanWidth, 1)}
-            spellCheck={false}
-            inputMode="numeric"
-            disabled={codeConstraint !== 'explicit' || spanWidth < 1}
-            tabIndex={codeConstraint === 'explicit' ? undefined : -1}
-            title={explicitHint}
-            aria-describedby="explicitCodeHint"
+            指定碼（?＝通配）
+            <input
+              value={explicitCode}
+              onChange={(event) => onExplicitCodeChange(event.target.value)}
+              maxLength={Math.max(spanWidth, 1)}
+              spellCheck={false}
+              inputMode="numeric"
+              disabled={codeConstraint !== 'explicit' || spanWidth < 1}
+              tabIndex={codeConstraint === 'explicit' ? undefined : -1}
+              title={explicitHint}
+              aria-describedby="explicitCodeHint"
+            />
+            <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
+          </label>
+        </div>
+        <div className="phoneme-dims" aria-label="讀音約束">
+          <DimChecklist
+            legend="同韻"
+            wholeLabel="整段押韻"
+            positionSuffix="同韻"
+            width={spanWidth}
+            picks={rhyme}
+            onChange={onRhymeChange}
+            refValue={rhymeRef}
+            onRefChange={onRhymeRefChange}
+            refError={rhymeRefError}
+            refPlaceholder="跟原韻"
           />
-          <span id="explicitCodeHint" className="constraint-bar__explicit-hint">{explicitHint}</span>
-        </label>
+          <DimChecklist
+            legend="同聲"
+            wholeLabel="整段同聲母"
+            positionSuffix="同聲"
+            width={spanWidth}
+            picks={initial}
+            onChange={onInitialChange}
+            refValue={initialRef}
+            onRefChange={onInitialRefChange}
+            refError={initialRefError}
+            refPlaceholder="跟原聲"
+          />
+        </div>
+        <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；鎖定後點 ✎ 手打整段。</p>
+        <p className="shortcut-hint">捷徑：空白鍵鎖定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
       </div>
-      <div className="phoneme-dims" aria-label="讀音約束">
-        <DimChecklist
-          legend="同韻"
-          wholeLabel="整段押韻"
-          positionSuffix="同韻"
-          width={spanWidth}
-          picks={rhyme}
-          onChange={onRhymeChange}
-          refValue={rhymeRef}
-          onRefChange={onRhymeRefChange}
-          refError={rhymeRefError}
-          refPlaceholder="跟原韻"
-        />
-        <DimChecklist
-          legend="同聲"
-          wholeLabel="整段同聲母"
-          positionSuffix="同聲"
-          width={spanWidth}
-          picks={initial}
-          onChange={onInitialChange}
-          refValue={initialRef}
-          onRefChange={onInitialRefChange}
-          refError={initialRefError}
-          refPlaceholder="跟原聲"
-        />
-      </div>
-      <p>更改條件只會重新找候選，不會改動句面。雙擊可改一字／通配；鎖定後點 ✎ 手打整段。</p>
-      <p className="shortcut-hint">捷徑：空白鍵鎖定／取消 · 雙擊／Enter 改格 · U 復原 · 1–3 分組 · Enter（候選區）首候選 · A 套用</p>
     </section>
   );
 }
