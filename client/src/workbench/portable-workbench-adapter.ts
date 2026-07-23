@@ -1,8 +1,9 @@
 import { parseWorkbenchCandidateResponse, type ReplacementPlanV1 } from './contracts.ts';
-import type { WorkbenchAdapter } from './workbench-adapter.ts';
+import type { WorkbenchAdapter, WorkbenchAdapterOptions } from './workbench-adapter.ts';
 import { WorkbenchAdapterError } from './workbench-adapter.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { candidateSnapshotIdentity } from './candidate-snapshot-identity.ts';
+import { createLineReadingResolver } from './line-reading-cache.ts';
 import {
   markSnapshotRestarted,
   snapshotWasRestarted,
@@ -78,11 +79,21 @@ function rebindPage(
   return snapshotWasRestarted(source) ? markSnapshotRestarted(page) : page;
 }
 
-export function createPortableWorkbenchAdapter(fetcher: FetchLike = fetch): WorkbenchAdapter {
+export function createPortableWorkbenchAdapter(
+  fetcher: FetchLike = fetch,
+  options: WorkbenchAdapterOptions = {},
+): WorkbenchAdapter {
   let activeIdentity: string | null = null;
   let snapshotId: string | null = null;
   let activeController: AbortController | null = null;
   let building: { identity: string; promise: Promise<CandidateRequestResult> } | null = null;
+  const lineReadings = createLineReadingResolver(
+    options.lexiconIdentity ?? 'dev',
+    async (input, signal) => (
+      await post(fetcher, '/workbench/readings', { surface: input }, signal)
+    ).body as PwaLineReadingSlot[],
+    options.lineReadingCacheSize,
+  );
 
   const requestCandidates = (
     plan: ReplacementPlanV1,
@@ -116,8 +127,8 @@ export function createPortableWorkbenchAdapter(fetcher: FetchLike = fetch): Work
   };
 
   return {
-    async resolveLine(input, signal) {
-      return (await post(fetcher, '/workbench/readings', { surface: input }, signal)).body as PwaLineReadingSlot[];
+    resolveLine(input, signal) {
+      return lineReadings.resolve(input, signal);
     },
     async findCandidates(plan: ReplacementPlanV1, signal) {
       const identity = candidateSnapshotIdentity(plan);

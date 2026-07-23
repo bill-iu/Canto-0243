@@ -6,10 +6,7 @@ from dataclasses import dataclass
 import unicodedata
 from typing import Literal
 
-from app.domain.lexicon.reference_reading import (
-    equals_authoritative_row,
-    select_authoritative_pronunciation_row,
-)
+from app.domain.lexicon.reference_reading import select_authoritative_pronunciation_row
 from app.domain.lexicon.word_row import get_word_jyutping, get_word_parts
 from app.models.word import Word
 from app.utils.jyutping_codec import split_jyutping_parts
@@ -63,11 +60,7 @@ def _authoritative_order(rows: list) -> list:
     return ordered
 
 
-def _resolve_slot(surface: str, db, *, allow_inject: bool) -> LineReadingSlot:
-    # The authoritative resolver owns admission/injection and pronunciation ranking.
-    equals_authoritative_row(surface, db, allow_inject=allow_inject)
-    rows = db.query(Word).filter(Word.char == surface).all()
-
+def _resolve_slot(surface: str, rows: list) -> LineReadingSlot:
     choices: list[LineReadingChoice] = []
     seen: set[tuple[str, str, str, str]] = set()
     for row in _authoritative_order(rows):
@@ -89,9 +82,17 @@ def _resolve_slot(surface: str, db, *, allow_inject: bool) -> LineReadingSlot:
     return LineReadingSlot(surface, "resolved", tuple(choices), needs_choice)
 
 
-def resolve_line_readings(surface: str, db, *, allow_inject: bool = True) -> tuple[LineReadingSlot, ...]:
-    """Resolve each Unicode code point independently; unresolved slots remain editable."""
-    return tuple(_resolve_slot(value, db, allow_inject=allow_inject) for value in surface)
+def resolve_line_readings(surface: str, db) -> tuple[LineReadingSlot, ...]:
+    """Resolve a line with one read-only batch query; unresolved slots remain editable."""
+    literals = {
+        value for value in surface
+        if not _is_punctuation(value)
+    }
+    rows = db.query(Word).filter(Word.char.in_(literals)).all() if literals else []
+    by_surface: dict[str, list] = {}
+    for row in rows:
+        by_surface.setdefault(row.char, []).append(row)
+    return tuple(_resolve_slot(value, by_surface.get(value, [])) for value in surface)
 
 
 __all__ = [

@@ -32,9 +32,10 @@ import {
   type WorkbenchCandidate,
 } from './contracts.ts';
 import { workbenchIntroCopy } from './intro-copy.ts';
-import { createLineDraft } from './line-draft.ts';
+import { createLineDraft, type LineSlot } from './line-draft.ts';
 import { WORKBENCH_LINE_INPUT_COPY } from './line-input-copy.ts';
 import { parseLineInput } from './line-input.ts';
+import { LineReadingCoordinator } from './line-reading-coordinator.ts';
 import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
@@ -107,12 +108,16 @@ export function WorkbenchPage({
   onOpenSearchNavigation,
   onOpenSearchLiteral,
 }: WorkbenchPageProps = {}) {
-  const adapter = useMemo(() => selectWorkbenchAdapter(), []);
-  const { isReady, initialize } = useDB();
   const lexiconVersion =
     (isPortableHost() ? readLexiconVersionMeta() : null) ||
     (import.meta as any).env?.VITE_LEXICON_VERSION ||
     'dev';
+  const adapter = useMemo(
+    () => selectWorkbenchAdapter(isPortableHost(), { lexiconIdentity: lexiconVersion }),
+    [lexiconVersion],
+  );
+  const readingCoordinator = useMemo(() => new LineReadingCoordinator(adapter), [adapter]);
+  const { isReady, initialize } = useDB();
 
   const [input, setInput] = useState('');
   const [session, setSession] = useState<WorkbenchSession>(() => initialSession());
@@ -131,10 +136,14 @@ export function WorkbenchPage({
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
   const workbenchScrollTopRef = useRef(0);
   const sessionRef = useRef(session);
+  const readingsRef = useRef(readings);
   const previewRef = useRef(preview);
   const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
   sessionRef.current = session;
+  readingsRef.current = readings;
   previewRef.current = preview;
+
+  useEffect(() => () => readingCoordinator.cancel(), [readingCoordinator]);
 
   const draft = session.draft;
   const {
@@ -302,11 +311,10 @@ export function WorkbenchPage({
       }
     }
     if (!needed.length || !isReady) return;
-    let cancelled = false;
+    const controller = new AbortController();
     void (async () => {
       try {
-        const resolved = await adapter.resolveLine(needed.join(''));
-        if (cancelled) return;
+        const resolved = await adapter.resolveLine(needed.join(''), controller.signal);
         const readingsMap: Record<string, string> = {};
         needed.forEach((ch, index) => {
           const jyutping = resolved[index]?.choices[0]?.jyutping;
@@ -319,7 +327,7 @@ export function WorkbenchPage({
         // ponytail: keep surface fallbacks until lexicon answers
       }
     })();
-    return () => { cancelled = true; };
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rhymeRef, initialRef, isReady]);
 
@@ -328,39 +336,21 @@ export function WorkbenchPage({
     .filter((surface) => isHanSurface(surface))
     .join('');
 
-  const resolveReadings = async (surface: string, version: number, baseSlots: { surface: string }[]) => {
+  const resolveReadings = async (surface: string, version: number, baseSlots: LineSlot[]) => {
     if (!surface) return;
     pendingResolve.current = { surface, version };
     try {
       if (!isReady) await initialize();
-      const resolved = await adapter.resolveLine(surface);
+      const result = await readingCoordinator.resolve(version, baseSlots, readingsRef.current);
       if (pendingResolve.current?.version !== version) return;
       pendingResolve.current = null;
-      let cursor = 0;
-      const aligned: PwaLineReadingSlot[] = baseSlots.map((slot) => {
-        if (!isHanSurface(slot.surface)) {
-          return { surface: slot.surface || '', kind: 'punctuation', choices: [], needsChoice: false };
-        }
-        const reading = resolved[cursor] ?? {
-          surface: slot.surface,
-          kind: 'unresolved' as const,
-          choices: [],
-          needsChoice: false,
-        };
-        cursor += 1;
-        return reading;
-      });
-      setReadings(aligned);
+      setReadings(result.readings);
       setSession((current) => {
         if (!current.draft) return current;
         if (surfaceOnlyOf(current.draft.slots) !== surface) return current;
         let next = current;
-        let readingIdx = 0;
-        for (let pos = 0; pos < current.draft.slots.length; pos += 1) {
-          if (!isHanSurface(current.draft.slots[pos]?.surface)) continue;
-          const choice = resolved[readingIdx]?.choices[0];
-          readingIdx += 1;
-          if (!choice) continue;
+        for (const { pos, choice } of result.autoChoices) {
+          if (current.draft.slots[pos]?.reading) continue;
           next = sessionReducer(next, {
             type: 'choose_reading',
             pos,
@@ -370,8 +360,9 @@ export function WorkbenchPage({
         }
         return next;
       });
-      setMessage(resolved.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖定字位或改用碼起句。' : '已解析逐字讀音；請點擊鎖定替換段。');
-    } catch {
+      setMessage(result.readings.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖定字位或改用碼起句。' : '已解析逐字讀音；請點擊鎖定替換段。');
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return;
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
   };
