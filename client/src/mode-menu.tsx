@@ -325,7 +325,7 @@ export function ModeMenu({
 
             <div className="menu-group" role="group" aria-label={lang === 'zh' ? '字體大小' : 'Text size'}>
               <p className="menu-label">{lang === 'zh' ? '字體大小' : 'Text size'}</p>
-              <div className="menu-switches">
+              <div className="menu-switches menu-switches--entry-size">
                 <button
                   type="button"
                   className="mode-option mode-switch"

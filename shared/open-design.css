@@ -665,6 +665,14 @@ button.icon-button.header-search__shuffle:disabled {
 .menu-switches .mode-switch:first-child {
   flex: 0 0 42px; /* icon only narrower */
   font-size: 16px;
+}
+
+/* 字體大小群組三粒均分，唔跟首項變窄（first-child override 還原）。 */
+.menu-switches--entry-size .mode-switch,
+.menu-switches--entry-size .mode-switch:first-child {
+  flex: 1 1 0;
+  font-size: 13px;
+}
   padding: 4px;
 }
 .menu-switches .theme-icon {
