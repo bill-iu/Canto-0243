@@ -4,10 +4,10 @@ import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { tDetail } from '../../shared/entry-detail-i18n.mjs';
 import {
   displayResults,
-  resultItemGridSpan,
   type EntryPickPayload,
 } from './result-list-logic.ts';
 import { countListRender } from './search-perf.ts';
+import { compactEntryLength } from './compact-entry.ts';
 
 export const ResultList = memo(function ResultList({
   results,
@@ -38,12 +38,11 @@ export const ResultList = memo(function ResultList({
         const pickJyutping = primary?.jyutping;
         const isActive = activeLiteral === group.literal;
         const badgeN = showReadingBadge && group.readingCount > 1 ? group.readingCount : 0;
-        const span = resultItemGridSpan(group.literal);
         return (
           <li
             key={group.literal}
             className={`result-item${isActive ? ' is-detail-active' : ''}`}
-            data-literal-span={span}
+            data-literal-length={compactEntryLength(group.literal)}
           >
             <button
               type="button"

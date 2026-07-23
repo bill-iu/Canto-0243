@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import type { CandidateGroup, CandidateGroups, WorkbenchCandidate } from './contracts.ts';
-import { candidateReasonLabel } from './candidate-reason-i18n.ts';
 import { emptyPoolTip } from './limits.ts';
+import { compactEntryLength } from '../compact-entry.ts';
 
 const GROUPS: Array<[CandidateGroup, string]> = [
   ['direct_syn', '直接近義'],
@@ -91,22 +91,16 @@ export function CandidateGrid({
           {groups[key].length ? (
             <div className="candidate-grid">
               {groups[key].map((candidate) => {
-                const wide = [...candidate.literal].length >= 7;
                 return (
                   <button
                     type="button"
-                    className={`candidate-card${wide ? ' candidate-card--wide' : ''}`}
+                    className="candidate-card"
+                    data-literal-length={compactEntryLength(candidate.literal)}
                     key={`${candidate.literal}-${candidate.jyutping}`}
                     onClick={(event) => onPreview(candidate, event.currentTarget)}
                   >
                     <span className="candidate-card__literal">{candidate.literal}</span>
-                    <span className="candidate-card__jyutping">{candidate.jyutping}</span>
                     <span className="candidate-card__code">{candidate.code}</span>
-                    <span className="candidate-card__reason">
-                      {relaxed
-                        ? candidateReasonLabel('relaxed_constraint')
-                        : candidateReasonLabel(candidate.reasons[0]!.kind)}
-                    </span>
                   </button>
                 );
               })}

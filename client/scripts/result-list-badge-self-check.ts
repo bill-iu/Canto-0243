@@ -1,8 +1,8 @@
 import {
-  resultItemGridSpanSelfCheck,
   resultListBadgeSelfCheck,
 } from '../src/result-list-logic.ts';
+import { compactEntrySelfCheck } from '../src/compact-entry.ts';
 
 resultListBadgeSelfCheck();
-resultItemGridSpanSelfCheck();
+compactEntrySelfCheck();
 console.log('result-list-badge-self-check ok');
