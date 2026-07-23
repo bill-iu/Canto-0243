@@ -122,6 +122,14 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertNotIn("const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null", engine)
         self.assertNotRegex(page, r"consumeIngest[\s\S]{0,400}apply_candidate")
 
+    def test_opfs_worker_loads_canonical_ranking_before_workbench_snapshots(self) -> None:
+        worker = (
+            ROOT / "client" / "src" / "db" / "opfs-vfs-worker.ts"
+        ).read_text(encoding="utf-8")
+        ranking_load = worker.index("await loadBrowserRankingIndex()")
+        snapshot_reset = worker.index("workbenchSnapshots = new PwaCandidateSnapshotStore()", ranking_load)
+        self.assertLess(ranking_load, snapshot_reset)
+
 
 if __name__ == "__main__":
     unittest.main()

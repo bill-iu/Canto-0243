@@ -189,6 +189,26 @@ const sample = page(0, ['測'], 1);
 const filtered = applyCreatorPosFilter(sample, resetPosFilter());
 assert(filtered.exact.sound_only.length === 1, 'empty POS is identity');
 
+initProjectPosCarrier({
+  version: 'order-test',
+  p0HardGate: true,
+  literals: {
+    一: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'] },
+    二: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'] },
+    三: { pos: ['v'], trust: 'high', gate: ['v'], show: ['v'] },
+    四: { pos: ['n'], trust: 'high', gate: ['n'], show: ['n'] },
+  },
+});
+const posOrdered = applyCreatorPosFilter(
+  page(0, ['一', '二', '三', '四'], 4),
+  { pos: ['n'], family: [], voice: [] },
+);
+assert(
+  posOrdered.exact.sound_only.map((row) => row.literal).join('') === '二四',
+  'POS must filter the canonical sequence without reordering it',
+);
+resetProjectPosCarrier();
+
 // active POS shape (filter may drop all without carrier — still runs)
 const posOn: PosFilterState = { pos: ['n'], family: [], voice: [] };
 state = emptyCandidateSession(2);

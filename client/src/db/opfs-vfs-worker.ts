@@ -4,6 +4,7 @@ import { OPFSCoopSyncVFS } from '@journeyapps/wa-sqlite/src/examples/OPFSCoopSyn
 
 import type { DatabaseBackend, DatabaseStatement, SqlBindParams } from './database-backend.ts';
 import { bodyStreamForLexiconFetch } from './lexicon-gunzip.ts';
+import { loadBrowserRankingIndex } from './ranking-index-browser.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from '../workbench/contracts.ts';
 import type { GroupPoolInput } from '../workbench/group-candidates.ts';
 import { PwaCandidateSnapshotStore } from '../workbench/pwa-candidate-snapshot.ts';
@@ -289,6 +290,7 @@ self.onmessage = async (event: MessageEvent<OpfsVfsWorkerRequest>) => {
         msg.expectedByteSize,
       );
       await ensureOpenDb(msg.fileName);
+      await loadBrowserRankingIndex();
       workbenchSnapshots = new PwaCandidateSnapshotStore();
       self.postMessage({
         id: msg.id,
