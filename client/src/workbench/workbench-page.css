@@ -769,6 +769,24 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   color: var(--muted);
 }
 .candidate-area.is-relaxed h2 { color: var(--accent-strong); }
+.candidate-scroll {
+  min-width: 0;
+  max-block-size: min(60dvh, 36rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.candidate-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+.candidate-scroll:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: .75rem;
+}
 
 .relaxation-card {
   display: flex;
@@ -933,6 +951,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
     flex-direction: column;
   }
   .candidate-groups--sound-first .candidate-group:nth-child(3) { order: -1; }
+  .candidate-scroll { max-block-size: 52dvh; }
   .candidate-group { margin-top: .85rem; }
   .candidate-group h3 { margin-bottom: .45rem; }
   .candidate-group.is-collapsed { margin-top: .35rem; }
