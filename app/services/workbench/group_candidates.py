@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 from app.schemas.workbench_schema import CandidateGroups, ReplacementPlanV1, WorkbenchCandidate
-from app.services.workbench.candidate_rank import candidate_sort_key, relation_index
+from app.services.workbench.candidate_rank import (
+    candidate_sort_key,
+    relation_index,
+    sound_candidate_sort_key,
+)
 from app.services.workbench.candidate_reason import candidate_reasons
 
 
@@ -43,8 +47,9 @@ def group_candidates(plan: ReplacementPlanV1, rows: list[dict], pool) -> Candida
             reasons=candidate_reasons(plan, code, group, relation_source=source),
             source_rank=source_rank,
         ))
-    for values in groups.values():
-        values.sort(key=candidate_sort_key)
+    groups["direct_syn"].sort(key=candidate_sort_key)
+    groups["semantic_related"].sort(key=candidate_sort_key)
+    groups["sound_only"].sort(key=sound_candidate_sort_key)
     return CandidateGroups(**groups)
 
 

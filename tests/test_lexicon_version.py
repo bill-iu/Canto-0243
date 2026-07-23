@@ -28,7 +28,7 @@ class LexiconVersionTest(unittest.TestCase):
         with mock.patch.dict(os.environ, {}, clear=True):
             os.environ.pop("LEXICON_VERSION", None)
             os.environ.pop("VITE_LEXICON_VERSION", None)
-            self.assertEqual(lexicon_version(), "v1.0.9")
+            self.assertEqual(lexicon_version(), "v1.1.0")
 
     def test_env_overrides(self):
         with mock.patch.dict(os.environ, {"LEXICON_VERSION": "v1.2.3"}, clear=False):

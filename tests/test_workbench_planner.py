@@ -129,7 +129,7 @@ class WorkbenchPlannerTests(unittest.TestCase):
 
         self.assertEqual([item.literal for item in first.exact.direct_syn], ["乙乙"])
         self.assertEqual([item.literal for item in first.exact.semantic_related], ["丙丙"])
-        self.assertEqual([item.literal for item in second.exact.sound_only], ["甲甲", "丁丁"])
+        self.assertEqual([item.literal for item in second.exact.sound_only], ["丁丁", "甲甲"])
         self.assertEqual((first.engine_total, second.engine_total), (4, 4))
 
     def test_direct_only_never_falls_back_to_sound_candidates(self) -> None:

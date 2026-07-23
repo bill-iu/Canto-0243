@@ -70,6 +70,11 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("line-input-form__undo", (WORKBENCH / "workbench-page.css").read_text(encoding="utf-8"))
         self.assertIn("排序順位", compare)
         self.assertIn("sourceRank", compare)
+        self.assertIn("compareSoundOnlyCandidates", (WORKBENCH / "candidate-rank.ts").read_text(encoding="utf-8"))
+        self.assertIn("sound_candidate_sort_key", (ROOT / "app" / "services" / "workbench" / "candidate_rank.py").read_text(encoding="utf-8"))
+        candidate_groups = (WORKBENCH / "candidate-session" / "groups.ts").read_text(encoding="utf-8")
+        self.assertIn("sound_only: filterByProjectPos", candidate_groups)
+        self.assertIn("return rows.filter", (ROOT / "client" / "src" / "pos" / "filter.ts").read_text(encoding="utf-8"))
         # P2#4 candidate session owns load-more
         self.assertIn("candidates.loadMore", page)
         self.assertIn("engineTotal", page)
@@ -113,6 +118,7 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("var(--ink)", css)
         self.assertNotIn("--wb-ink", css)
         self.assertIn("workbench-route", css)
+        self.assertIn("const sorted = await cooperativeSort", engine)
         self.assertNotIn("const phonemeSlot = !code ? firstPhonemeAnchorSlot(spec) : null", engine)
         self.assertNotRegex(page, r"consumeIngest[\s\S]{0,400}apply_candidate")
 

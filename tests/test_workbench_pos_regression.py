@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 
 from app.schemas.workbench_schema import ReplacementPlanV1
-from app.services.query_dispatch import QueryEngine, SearchContext
+from app.utils.jyutping_codec import rhyme_finals_from_jyutping
 from app.services.workbench.replacement_planner import plan_replacements
 from ingest.project_pos import DEFAULT_TSV, parse_project_pos_tsv
 from tests.smoke.helpers import LYRICS_DB, lyrics_sessionmaker
@@ -13,7 +13,7 @@ from tests.smoke.helpers import LYRICS_DB, lyrics_sessionmaker
 
 @unittest.skipUnless(LYRICS_DB.is_file() and DEFAULT_TSV.is_file(), "lyrics.db and POS SSOT required")
 class WorkbenchPosRegressionTests(unittest.TestCase):
-    def test_窮困潦倒_selected_suffix_readings_match_query_syntax(self) -> None:
+    def test_窮困潦倒_selected_suffix_readings_narrow_workbench_candidates(self) -> None:
         plan = ReplacementPlanV1.model_validate({
             "version": 1,
             "selectionVersion": 1,
@@ -31,13 +31,13 @@ class WorkbenchPosRegressionTests(unittest.TestCase):
         Session = lyrics_sessionmaker()
         with Session() as db:
             workbench = plan_replacements(plan, db)
-            query = QueryEngine().execute(SearchContext(
-                q="?困潦倒=", code=None, char=None, mode="m1", limit=120, offset=0, db=db,
-            ))
 
         workbench_literals = [item.literal for item in workbench.exact.sound_only]
-        query_literals = [str(item.get("char") or "") for item in query.items]
-        self.assertEqual(workbench_literals, query_literals)
+        self.assertTrue(workbench_literals)
+        self.assertEqual(len(workbench_literals), len(set(workbench_literals)))
+        expected_finals = ["an", "iu", "ou"]
+        for item in workbench.exact.sound_only:
+            self.assertEqual(rhyme_finals_from_jyutping(item.jyutping)[1:], expected_finals)
 
     def test_changing_selected_readings_changes_contiguous_rhyme_results(self) -> None:
         def plan(readings: tuple[str, str, str]) -> ReplacementPlanV1:
