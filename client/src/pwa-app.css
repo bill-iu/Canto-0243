@@ -220,6 +220,26 @@ button.icon-button.header-search__shuffle:disabled {
   border-radius: 999px;
 }
 
+/* Main query only: match POS control to the adjacent three-tier profile pill. */
+.header-search__meta > .pos-filter { align-self: center; }
+.header-search__meta > .pos-filter .pos-filter__trigger {
+  box-sizing: border-box;
+  min-height: 30px;
+  padding: 4px 9px;
+  gap: 6px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+}
+.header-search__meta > .pos-filter .pos-filter__trigger svg { width: 15px; height: 15px; }
+.header-search__meta > .pos-filter .pos-filter__trigger b {
+  min-width: 20px;
+  height: 20px;
+  font-size: 11px;
+}
+
 .header-search__actions {
   display: flex;
   flex-shrink: 0;
@@ -516,6 +536,19 @@ button.icon-button.header-search__shuffle:disabled {
     box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
+  }
+  .header-search__meta > .pos-filter .pos-filter__trigger {
+    min-height: 24px;
+    padding: 3px 7px;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 650;
+  }
+  .header-search__meta > .pos-filter .pos-filter__trigger svg { width: 14px; height: 14px; }
+  .header-search__meta > .pos-filter .pos-filter__trigger b {
+    min-width: 18px;
+    height: 18px;
+    font-size: 10px;
   }
   .pingze-submode .profile-pill__narrow {
     display: inline;
