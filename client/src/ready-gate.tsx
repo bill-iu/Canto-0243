@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { BrandLogo } from './brand-logo';
 import { formatPwaGateLabel } from './gate-label';
-import type { OfflineReadinessStatus } from './hooks/useDB.tsx';
+import type { OfflineReadinessStatus } from './hooks/db-context.ts';
 import {
   hasPwaGateLanded,
   PWA_GATE_LANDED_KEY,

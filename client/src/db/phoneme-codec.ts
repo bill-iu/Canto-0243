@@ -99,10 +99,10 @@ export const INITIALS_VOCAB = [
 
 export type PhonemeDim = 'final' | 'initial';
 
-const FINAL_TO_ID = new Map(FINALS_VOCAB.map((t, i) => [t, i]));
-const INITIAL_TO_ID = new Map(INITIALS_VOCAB.map((t, i) => [t, i]));
-const ID_TO_FINAL = new Map(FINALS_VOCAB.map((t, i) => [i, t]));
-const ID_TO_INITIAL = new Map(INITIALS_VOCAB.map((t, i) => [i, t]));
+const FINAL_TO_ID: Map<string, number> = new Map(FINALS_VOCAB.map((t, i) => [t, i]));
+const INITIAL_TO_ID: Map<string, number> = new Map(INITIALS_VOCAB.map((t, i) => [t, i]));
+const ID_TO_FINAL: Map<number, string> = new Map(FINALS_VOCAB.map((t, i) => [i, t]));
+const ID_TO_INITIAL: Map<number, string> = new Map(INITIALS_VOCAB.map((t, i) => [i, t]));
 
 function maps(dim: PhonemeDim) {
   return dim === 'final'

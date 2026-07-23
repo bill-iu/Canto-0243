@@ -60,7 +60,7 @@ export function mapWordReadToQueryResult(item: WordReadLike): QueryResult {
     word: item.char,
     jyutping: item.jyutping,
     code: item.code,
-    score: item.score ?? undefined,
+    score: item.score ?? 0,
     resultType: (item.result_type as QueryResult['resultType']) ?? undefined,
     anchor_dimension: (item.anchor_dimension as QueryResult['anchor_dimension']) ?? undefined,
     relation: (item.relation as QueryResult['relation']) ?? undefined,

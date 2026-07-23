@@ -46,7 +46,7 @@
       align-items: flex-start;
       justify-content: flex-start;
       align-content: flex-start;
-      gap: 6px;
+      gap: calc(6px * var(--entry-scale));
       list-style: none;
       padding: 0;
       margin: 0;
@@ -64,7 +64,7 @@ a.result-item,
       inline-size: fit-content;
       max-inline-size: 100%;
       box-sizing: border-box;
-      padding: 4px;
+      padding: calc(4px * var(--entry-scale));
       border: 1px solid var(--line);
       border-radius: 10px;
       background: var(--surface);
@@ -79,7 +79,7 @@ a.result-item,
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: calc(4px * var(--entry-scale));
       cursor: pointer;
       transition:
         border-color 140ms ease-out,
@@ -112,7 +112,7 @@ a.result-item,
 
 .results-list-items .result-link .word {
       max-inline-size: 100%;
-      font-size: 16px;
+      font-size: calc(16px * var(--entry-scale));
       font-weight: 400;
       line-height: 1.5;
       white-space: normal;
@@ -122,13 +122,13 @@ a.result-item,
 @media (max-width: 760px) {
   .results,
   .results-list-items {
-    gap: 6px;
+    gap: calc(6px * var(--entry-scale));
   }
 
   a.result-item,
   .results-list-items .result-link {
     border-radius: 8px;
-    gap: 2px;
+    gap: calc(2px * var(--entry-scale));
     writing-mode: horizontal-tb;
   }
 
@@ -139,7 +139,7 @@ a.result-item,
 
   .results-list-items .result-reading-badge {
     margin-left: 0;
-    font-size: 10px;
+    font-size: calc(10px * var(--entry-scale));
     line-height: 1.2;
     white-space: nowrap;
     max-width: 100%;
@@ -150,14 +150,14 @@ a.result-item,
 
 .results-list-items > .result-item[data-literal-length='medium'] .word,
 .results-list-items > .result-item[data-literal-length='medium'] .result-literal-only {
-      font-size: 14px;
+      font-size: calc(14px * var(--entry-scale));
 }
 
 .results-list-items > .result-item[data-literal-length='long'] .word,
 .results-list-items > .result-item[data-literal-length='long'] .result-literal-only,
 .results-list-items > .result-item[data-literal-length='overflow'] .word,
 .results-list-items > .result-item[data-literal-length='overflow'] .result-literal-only {
-      font-size: 12px;
+      font-size: calc(12px * var(--entry-scale));
 }
 
 .result-meta {
@@ -279,12 +279,6 @@ a.result-item:active,
       outline: none;
       border-color: var(--accent);
       box-shadow: var(--focus-ring);
-    }
-
-.syn-chip__badge {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--muted);
     }
 
 .syn-empty {

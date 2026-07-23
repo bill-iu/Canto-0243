@@ -3,8 +3,8 @@ import {
   buildUrlSearchParams,
   parseUrlSearchParams,
   searchParamsWithoutBoot,
-  type QueryTab,
 } from '../../shared/query-tabs-state.mjs';
+import type { QueryTab } from '@shared/query-tabs';
 import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from './mode-meta';
 
 export type AppView = 'search' | 'guide' | 'about';

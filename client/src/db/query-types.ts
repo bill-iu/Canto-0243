@@ -5,6 +5,15 @@ export type QueryMode = 'm1' | 'm2' | 'm3' | '0243' | '02493' | '394052' | 'syn'
 export interface ParsedQuery {
   kind: QueryKind;
   raw_q: string;
+  hint?: string;
+  pzmode?: 'm1' | 'm2' | 'm3';
+  anchor?: string;
+  base?: ParsedQuery;
+  code_prefix?: string;
+  relation_kind?: 'syn' | 'ant';
+  connective?: string;
+  rhyme_char?: string;
+  word?: string;
 }
 
 export interface PingZeSerialQuery extends ParsedQuery {
@@ -208,6 +217,8 @@ export interface QueryResult {
   code: string;
   definition?: string;
   score: number;
+  char?: string;
+  display_text?: string;
   /** ponytail: lookup layout row kind — upgrade path: full lookup_layout.ts module */
   resultType?: 'code' | 'jyutping' | 'word';
   heteronym_tags?: string[];

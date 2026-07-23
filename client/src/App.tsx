@@ -11,7 +11,7 @@ import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
-import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
+import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
@@ -85,6 +85,7 @@ import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
+import { useEntrySize } from './entry-size';
 import { exitPortable } from './portable-exit';
 import { PosFilterControl } from './pos/PosFilterControl.tsx';
 import {
@@ -208,6 +209,7 @@ function App() {
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
   );
+  const [entrySize, setEntrySize] = useEntrySize();
   const [detailOpen, setDetailOpen] = useState(false);
   const [putWorkbenchLiteral, setPutWorkbenchLiteral] = useState<string | null>(null);
   const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
@@ -476,7 +478,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (isReady || offlineStatus === 'error') return;
+    if (isReady || offlineStatus === 'failed') return;
     if (lexiconLoadStartedRef.current) return;
     lexiconLoadStartedRef.current = true;
     void initialize();
@@ -713,7 +715,7 @@ function App() {
       setUseLiveFetch(true);
       setResultsShuffled(false);
       commitActiveSearch(q, nextMode, nextPzMode);
-      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
@@ -786,7 +788,7 @@ function App() {
       openSearchTabWithQuery(q, nextMode, pzMode);
       setUseLiveFetch(true);
       setResultsShuffled(false);
-      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'error') {
+      if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
@@ -1061,7 +1063,7 @@ function App() {
       return null;
     }
     if (!useLiveFetch) return null;
-    return formatEmptySearchMessage(searchQuery, displayHint, mode);
+    return formatEmptySearchMessage(searchQuery, displayHint, mode as '0243' | '02493' | 'synonym');
   }, [searchQuery, searchLoading, displayResults.length, offlineStatus, displayHint, mode, useLiveFetch]);
 
   const filterEmpty = filterActive && displayResults.length > 0 && filteredDisplayResults.length === 0;
@@ -1182,6 +1184,8 @@ function App() {
                   lang={uiLang}
                   onThemeChange={(next) => setUiTheme(next)}
                   onLangChange={(next) => setUiLang(next)}
+                  entrySize={entrySize}
+                  onEntrySizeChange={setEntrySize}
                   lexiconVersion={lexiconVersion}
                   showOpfsBackend={
                     !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
@@ -1310,7 +1314,7 @@ function App() {
                 <RelationView
                   lang={uiLang}
                   initial={activeTab?.relation}
-                  onFormChange={(next) => patchActiveRelation(next)}
+                  onFormChange={(next) => patchActiveRelation(next as unknown as Record<string, string>)}
                 />
               ) : view === 'corrections' && isPortableHost() ? (
                 <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
@@ -1352,7 +1356,7 @@ function App() {
                       ) : (
                         <ResultList
                           results={filteredDisplayResults}
-                          committedQuery={inputQuery}
+                          showReadingBadge={resultsShowReadingBadge(inputQuery)}
                           visibleLimit={visibleCount}
                           activeLiteral={activeDetailLiteral}
                           lang={uiLang}

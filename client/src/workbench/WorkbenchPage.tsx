@@ -16,6 +16,7 @@ import { getActiveDbBackendMode } from '../db/init.ts';
 import { HeaderHero } from '../header-hero.tsx';
 import { useDB } from '../hooks/useDB.ts';
 import { isPortableHost } from '../host-mode.ts';
+import { useEntrySize } from '../entry-size';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
 import { PosFilterControl } from '../pos/PosFilterControl.tsx';
@@ -132,6 +133,7 @@ export function WorkbenchPage({
     const theme = getTheme();
     return theme === 'light' || theme === 'dark' ? theme : 'dark';
   });
+  const [entrySize, setEntrySize] = useEntrySize();
 
   const previewOrigin = useRef<HTMLButtonElement | null>(null);
   const lineInputFormRef = useRef<HTMLFormElement | null>(null);
@@ -520,7 +522,7 @@ export function WorkbenchPage({
         return {
           surface: slot.surface,
           reading: slot.reading,
-          code: slot.code || digit?.digit,
+          code: slot.code || (digit as { digit?: string })?.digit,
         };
       });
       const next = sessionReducer(current, {
@@ -696,6 +698,8 @@ export function WorkbenchPage({
                       setUiLang(next);
                       onLangChange?.(next);
                     }}
+                    entrySize={entrySize}
+                    onEntrySizeChange={setEntrySize}
                     lexiconVersion={lexiconVersion}
                     showOpfsBackend={
                       !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'

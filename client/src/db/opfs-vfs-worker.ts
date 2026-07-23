@@ -117,7 +117,7 @@ async function writeStreamToOpfs(
       const { value, done } = await reader.read();
       if (done) break;
       if (value?.byteLength) {
-        access.write(value, { at: offset });
+        access.write(value as BufferSource, { at: offset });
         offset += value.byteLength;
         loaded += value.byteLength;
         if (total > 0 || loaded % (512 * 1024) < value.byteLength) {

@@ -35,7 +35,7 @@ interface Props {
   headingExtra?: ReactNode;
 }
 
-function toggleWhole(picks: PhonemeDimPicks, on: boolean): PhonemeDimPicks {
+function toggleWhole(_picks: PhonemeDimPicks, on: boolean): PhonemeDimPicks {
   return on ? { whole: true, head: false, tail: false, middles: [] } : emptyPhonemeDimPicks();
 }
 

@@ -90,6 +90,15 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   margin: 0 auto;
   padding: 2rem 0 max(6rem, calc(4rem + env(safe-area-inset-bottom)));
 }
+/* 寬屏：解除 1180px 上限，面板佔滿視窗（與主查詢 .main-wrap ≥768 解鎖一致）。 */
+@media (min-width: 768px) {
+  .workbench-main {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 2rem max(20px, env(safe-area-inset-right)) max(6rem, calc(4rem + env(safe-area-inset-bottom))) max(20px, env(safe-area-inset-left));
+  }
+}
 /* Wide: title stack above line input, left-aligned (grill: not side-by-side). */
 .workbench-intro {
   display: flex;
@@ -704,7 +713,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   align-items: flex-start;
   justify-content: flex-start;
   align-content: flex-start;
-  gap: 6px;
+  gap: calc(6px * var(--entry-scale));
 }
 .candidate-card {
   display: grid;
@@ -715,7 +724,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   min-height: 44px;
   inline-size: fit-content;
   max-inline-size: 100%;
-  padding: 4px;
+  padding: calc(4px * var(--entry-scale));
   text-align: center;
   border: 1px solid var(--line);
   border-radius: .85rem;
@@ -729,7 +738,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
 .candidate-card:hover { transform: translateY(-1px); border-color: var(--accent); box-shadow: var(--control-shadow-hover); }
 .candidate-card__literal {
   max-inline-size: 100%;
-  font-size: 1rem;
+  font-size: calc(1rem * var(--entry-scale));
   font-weight: 780;
   writing-mode: horizontal-tb;
   word-break: normal;
@@ -742,12 +751,12 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   word-break: normal;
   writing-mode: horizontal-tb;
   max-width: 100%;
-  font: 700 .6rem ui-monospace, monospace;
+  font: 700 calc(.6rem * var(--entry-scale)) ui-monospace, monospace;
   color: var(--muted);
 }
-.candidate-card[data-literal-length='medium'] .candidate-card__literal { font-size: .875rem; }
+.candidate-card[data-literal-length='medium'] .candidate-card__literal { font-size: calc(.875rem * var(--entry-scale)); }
 .candidate-card[data-literal-length='long'] .candidate-card__literal,
-.candidate-card[data-literal-length='overflow'] .candidate-card__literal { font-size: .75rem; }
+.candidate-card[data-literal-length='overflow'] .candidate-card__literal { font-size: calc(.75rem * var(--entry-scale)); }
 .empty-group { color: var(--muted); font-size: .85rem; }
 .candidate-count {
   margin: .35rem 0 .75rem;
@@ -993,7 +1002,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   .candidate-group { margin-top: .85rem; }
   .candidate-group h3 { margin-bottom: .45rem; }
   .candidate-group.is-collapsed { margin-top: .35rem; }
-  .candidate-card { padding: 4px; }
+  .candidate-card { padding: calc(4px * var(--entry-scale)); }
   /* Same row as wide: input | 建立句格 (grid, not stacked column). */
   .line-input-form__row {
     display: grid;

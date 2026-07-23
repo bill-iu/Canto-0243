@@ -63,7 +63,7 @@ class OpfsVfsBackend implements DatabaseBackend {
   }
 
   async prewarm(): Promise<void> {
-    return this.ask({ type: 'prewarm' });
+    void this.ask({ type: 'prewarm' });
   }
 
   async init(

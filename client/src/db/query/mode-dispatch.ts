@@ -15,7 +15,8 @@ export async function dispatchSynMode(
   ctx: SynModeCtx,
   dbCtx: SynModeDbCtx,
 ): Promise<SearchResult> {
-  const { q, limit, offset, db } = dbCtx;
+  const { limit, offset, db } = dbCtx;
+  const q = dbCtx.q!;
 
   if (isJyutpingQuery(q)) {
     return { items: [], hint: JYUTPING_SYN_MODE_HINT };

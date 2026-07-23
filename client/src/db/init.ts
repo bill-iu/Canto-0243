@@ -151,7 +151,7 @@ async function verifyLexiconIntegrity(
     );
   }
   if (target.sha256 && typeof crypto !== 'undefined' && crypto.subtle) {
-    const hashBuf = await crypto.subtle.digest('SHA-256', bytes);
+    const hashBuf = await crypto.subtle.digest('SHA-256', bytes as BufferSource);
     const hex = Array.from(new Uint8Array(hashBuf))
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
