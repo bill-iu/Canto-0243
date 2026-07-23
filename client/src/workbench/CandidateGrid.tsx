@@ -1,12 +1,15 @@
-import type { CandidateGroups, WorkbenchCandidate } from './contracts.ts';
+import { useState } from 'react';
+
+import type { CandidateGroup, CandidateGroups, WorkbenchCandidate } from './contracts.ts';
 import { candidateReasonLabel } from './candidate-reason-i18n.ts';
 import { emptyPoolTip } from './limits.ts';
 
-const GROUPS: Array<[keyof CandidateGroups, string]> = [
+const GROUPS: Array<[CandidateGroup, string]> = [
   ['direct_syn', '直接近義'],
   ['semantic_related', '語意相關'],
   ['sound_only', '只合音格'],
 ];
+const COLLAPSIBLE_EMPTY_GROUPS: ReadonlySet<CandidateGroup> = new Set(['direct_syn', 'semantic_related']);
 
 interface Props {
   groups: CandidateGroups;
@@ -40,6 +43,10 @@ export function CandidateGrid({
     ? `篩後 ${loadedCount}／池內 ${total}`
     : `已載 ${loadedCount}／池內 ${total}`;
   const poolTip = emptyPoolTip(spanWidth, loadedCount);
+  const soundOnlyFirst = groups.direct_syn.length === 0
+    && groups.semantic_related.length === 0
+    && groups.sound_only.length > 0;
+  const [expandedEmptyGroups, setExpandedEmptyGroups] = useState<Set<CandidateGroup>>(() => new Set());
 
   return (
     <section className={`candidate-area${relaxed ? ' is-relaxed' : ''}`} aria-labelledby="candidateHeading">
@@ -54,9 +61,33 @@ export function CandidateGrid({
           未有足夠近義資料；以下只按聲韻與詞頻排列，不是「沒有近義詞」的意思。
         </p>
       ) : null}
-      {GROUPS.map(([key, label]) => (
-        <section className="candidate-group" key={key} aria-labelledby={`candidate-${key}`}>
-          <h3 id={`candidate-${key}`} tabIndex={-1}>{label}<span>{groups[key].length}</span></h3>
+      <div className={`candidate-groups${soundOnlyFirst ? ' candidate-groups--sound-first' : ''}`}>
+        {GROUPS.map(([key, label]) => {
+          const collapsible = COLLAPSIBLE_EMPTY_GROUPS.has(key) && groups[key].length === 0;
+          const expanded = !collapsible || expandedEmptyGroups.has(key);
+          return (
+        <section className={`candidate-group${collapsible && !expanded ? ' is-collapsed' : ''}`} key={key} aria-labelledby={`candidate-${key}`}>
+          <h3 id={`candidate-${key}`} tabIndex={-1}>
+            {collapsible ? (
+              <button
+                type="button"
+                className="candidate-group__toggle"
+                aria-expanded={expanded}
+                aria-controls={`candidate-${key}-content`}
+                onClick={() => setExpandedEmptyGroups((current) => {
+                  const next = new Set(current);
+                  if (next.has(key)) next.delete(key);
+                  else next.add(key);
+                  return next;
+                })}
+              >
+                <span className="candidate-group__label">{label}</span>
+                <span className="candidate-group__count">{groups[key].length}</span>
+                <span className="candidate-group__toggle-icon" aria-hidden="true">{expanded ? '−' : '+'}</span>
+              </button>
+            ) : <><span className="candidate-group__label">{label}</span><span className="candidate-group__count">{groups[key].length}</span></>}
+          </h3>
+          <div id={`candidate-${key}-content`} className="candidate-group__content" hidden={collapsible && !expanded}>
           {groups[key].length ? (
             <div className="candidate-grid">
               {groups[key].map((candidate) => {
@@ -81,8 +112,11 @@ export function CandidateGrid({
               })}
             </div>
           ) : <p className="empty-group">這一組暫時沒有候選。</p>}
+          </div>
         </section>
-      ))}
+          );
+        })}
+      </div>
       {hasMore && onLoadMore ? (
         <div className="candidate-load-more">
           <button type="button" onClick={onLoadMore} disabled={loadingMore}>
