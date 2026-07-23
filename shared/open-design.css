@@ -27,6 +27,18 @@
       --z-preload: 200;
     }
 
+/* entry-size scaling (字體大小檔：小／中／大；窄屏 0.8／1.0／1.25，寬屏 1.0／1.25／1.5；
+   預設 medium，零 FOUC——base CSS 已係 1.0×，data-attr 只覆蓋檔位）。 */
+:root { --entry-scale: 1; }
+:root[data-entry-size="small"] { --entry-scale: .8; }
+:root[data-entry-size="large"] { --entry-scale: 1.25; }
+@media (min-width: 768px) {
+  :root { --entry-scale: 1.25; }
+  :root[data-entry-size="small"] { --entry-scale: 1; }
+  :root[data-entry-size="medium"] { --entry-scale: 1.25; }
+  :root[data-entry-size="large"] { --entry-scale: 1.5; }
+}
+
 html[data-theme="dark"] {
       color-scheme: dark;
       --bg: #1C1917;

@@ -478,7 +478,7 @@ form.search-panel {
 .result-reading-badge {
   display: inline-block;
   margin-left: 4px;
-  font-size: 12px;
+  font-size: calc(12px * var(--entry-scale));
   color: var(--muted);
   font-weight: 500;
   white-space: nowrap;

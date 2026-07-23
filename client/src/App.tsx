@@ -11,7 +11,7 @@ import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
-import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
+import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
@@ -85,6 +85,7 @@ import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
+import { useEntrySize } from './entry-size';
 import { exitPortable } from './portable-exit';
 import { PosFilterControl } from './pos/PosFilterControl.tsx';
 import {
@@ -208,6 +209,7 @@ function App() {
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
   );
+  const [entrySize, setEntrySize] = useEntrySize();
   const [detailOpen, setDetailOpen] = useState(false);
   const [putWorkbenchLiteral, setPutWorkbenchLiteral] = useState<string | null>(null);
   const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
@@ -1182,6 +1184,8 @@ function App() {
                   lang={uiLang}
                   onThemeChange={(next) => setUiTheme(next)}
                   onLangChange={(next) => setUiLang(next)}
+                  entrySize={entrySize}
+                  onEntrySizeChange={setEntrySize}
                   lexiconVersion={lexiconVersion}
                   showOpfsBackend={
                     !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
@@ -1352,7 +1356,7 @@ function App() {
                       ) : (
                         <ResultList
                           results={filteredDisplayResults}
-                          committedQuery={inputQuery}
+                          showReadingBadge={resultsShowReadingBadge(inputQuery)}
                           visibleLimit={visibleCount}
                           activeLiteral={activeDetailLiteral}
                           lang={uiLang}

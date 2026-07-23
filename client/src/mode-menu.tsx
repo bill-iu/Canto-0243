@@ -21,6 +21,8 @@ export interface ModeMenuProps {
   lang?: 'zh' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
   onLangChange?: (lang: 'zh' | 'en') => void;
+  entrySize?: 'small' | 'medium' | 'large';
+  onEntrySizeChange?: (size: 'small' | 'medium' | 'large') => void;
   lexiconVersion?: string;
   showOpfsBackend?: boolean;
 }
@@ -38,6 +40,8 @@ export function ModeMenu({
   lang = 'zh',
   onThemeChange,
   onLangChange,
+  entrySize = 'medium',
+  onEntrySizeChange,
   lexiconVersion,
   showOpfsBackend = false,
 }: ModeMenuProps) {
@@ -317,6 +321,45 @@ export function ModeMenu({
                   </span>
                 </button>
               ) : null}
+            </div>
+
+            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '字體大小' : 'Text size'}>
+              <p className="menu-label">{lang === 'zh' ? '字體大小' : 'Text size'}</p>
+              <div className="menu-switches">
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={entrySize === 'small'}
+                  onClick={() => {
+                    onEntrySizeChange?.('small');
+                    close();
+                  }}
+                >
+                  {lang === 'zh' ? '小' : 'S'}
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={entrySize === 'medium'}
+                  onClick={() => {
+                    onEntrySizeChange?.('medium');
+                    close();
+                  }}
+                >
+                  {lang === 'zh' ? '中' : 'M'}
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={entrySize === 'large'}
+                  onClick={() => {
+                    onEntrySizeChange?.('large');
+                    close();
+                  }}
+                >
+                  {lang === 'zh' ? '大' : 'L'}
+                </button>
+              </div>
             </div>
 
             <div className="menu-group menu-group--github" role="group" aria-label="GitHub">

@@ -12,9 +12,6 @@ function itemTitle(row: QueryResult): string {
   if (row.source) {
     parts.push(`來源：${row.source}`);
   }
-  if (row.in_db === false) {
-    parts.push('外部詞庫');
-  }
   return parts.join(' · ');
 }
 
@@ -42,7 +39,6 @@ function SynSection({
               aria-label={`搜尋 ${row.word}`}
             >
               {row.word}
-              {row.in_db === false ? <span className="syn-chip__badge">外部</span> : null}
             </button>
           ))
         ) : (

@@ -18,8 +18,10 @@ import { applyBootThemeFromStorage, hasPwaGateLanded, revealPwaShell } from './p
 import { getInitializedDbBackendMode } from './db/init.ts';
 import { getOpfsVfsWorkerDebugState } from './db/opfs-vfs-backend.ts';
 import { installResumeDebug } from './resume-debug.ts';
+import { applyBootEntrySizeFromStorage } from './entry-size';
 
 applyBootThemeFromStorage();
+applyBootEntrySizeFromStorage();
 installResumeDebug({
   getBackendMode: getInitializedDbBackendMode,
   getWorkerState: getOpfsVfsWorkerDebugState,
