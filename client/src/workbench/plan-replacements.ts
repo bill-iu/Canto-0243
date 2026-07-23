@@ -56,6 +56,17 @@ function prependDistinct(rows: WordRow[], priorityRows: WordRow[]): WordRow[] {
   });
 }
 
+function matchingRelationRows(rows: WordRow[], pool: NonNullable<GroupPoolInput>): WordRow[] {
+  const byLiteral = new Map<string, WordRow>();
+  rows.forEach((row) => {
+    const literal = String(row.char ?? '');
+    if (literal && !byLiteral.has(literal)) byLiteral.set(literal, row);
+  });
+  return [...(pool.syns ?? []), ...(pool.semantic ?? [])]
+    .map((item) => byLiteral.get(item.char))
+    .filter((row): row is WordRow => row != null);
+}
+
 function compactDistinct(rows: WordRow[]): CandidateHandle[] {
   const seen = new Set<string>();
   const handles: CandidateHandle[] = [];
@@ -110,11 +121,13 @@ export async function buildReplacementSnapshot(
       shouldCancel: deps.shouldCancel,
     });
   };
-  const priorityRows = pool && !plan.slots.length
-    ? await loadRelationRows(db, plan.width, pool)
-    : [];
   const raw = await runFull(plan);
   throwIfSearchCancelled(deps.shouldCancel);
+  const priorityRows = pool
+    ? plan.slots.length
+      ? matchingRelationRows(raw.rows, pool)
+      : await loadRelationRows(db, plan.width, pool)
+    : [];
   const candidates = compactDistinct(
     priorityRows.length ? prependDistinct(raw.rows, priorityRows) : raw.rows,
   );

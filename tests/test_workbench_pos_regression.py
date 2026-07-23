@@ -13,6 +13,31 @@ from tests.smoke.helpers import LYRICS_DB, lyrics_sessionmaker
 
 @unittest.skipUnless(LYRICS_DB.is_file() and DEFAULT_TSV.is_file(), "lyrics.db and POS SSOT required")
 class WorkbenchPosRegressionTests(unittest.TestCase):
+    def test_疑難_00_direct_synonyms_are_visible_on_first_page(self) -> None:
+        plan = ReplacementPlanV1.model_validate({
+            "version": 1,
+            "selectionVersion": 1,
+            "width": 2,
+            "mode": "m1",
+            "slots": [
+                {"pos": 0, "kind": "code_digit", "digit": "0"},
+                {"pos": 1, "kind": "code_digit", "digit": "0"},
+            ],
+            "semanticIntent": "ranked",
+            "semanticSeed": "疑難",
+            "limit": 120,
+        })
+
+        Session = lyrics_sessionmaker()
+        with Session() as db:
+            response = plan_replacements(plan, db)
+
+        direct = response.exact.direct_syn
+        self.assertTrue(direct)
+        self.assertTrue(all(item.code == "00" for item in direct))
+        self.assertIn("疑團", [item.literal for item in direct])
+        self.assertIn("疑雲", [item.literal for item in direct])
+
     def test_窮困潦倒_selected_suffix_readings_narrow_workbench_candidates(self) -> None:
         plan = ReplacementPlanV1.model_validate({
             "version": 1,
