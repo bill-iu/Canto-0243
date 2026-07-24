@@ -84,6 +84,6 @@ export const IconSun: FC = () => (
 
 export const IconMoon: FC = () => (
   <svg viewBox={V} fill="none" {...S}>
-    <path d="M12 8a6 6 0 0 1-6 6 6 6 0 0 1 0-12 6 6 0 0 0 6 6z" />
+    <path d="M10 4 a5 5 0 1 0 0 8 a4 4 0 0 1 0-8z" />
   </svg>
 );
