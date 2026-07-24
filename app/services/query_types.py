@@ -202,6 +202,7 @@ class CodeRefMiddleRhymeQuery:
 class LiteralRefQuery:
     code_digits: str
     literal_char: str
+    literal_pos: int
     width: int
 
     @property

@@ -73,6 +73,7 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("04困=49倒=", {"width": 4, "anchor_count": 2}),
     ("23+就", {"width": 3, "code_prefix": "23"}),
     ("23@手", {"width": 2, "mask": "?手"}),
+    ("3@天934", {"width": 4, "mask": "天???"}),
     ("就=", {"width": 1, "anchor": "就"}),
     ("?yut?", {"width": 3, "jyutping_slot": True}),
     ("3m4", {"width": 2, "dual_phoneme": True}),

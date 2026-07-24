@@ -108,6 +108,7 @@ export interface LiteralRefQuery extends ParsedQuery {
   raw_q: string;
   code_digits: string;
   literal_char: string;
+  literal_pos: number;
   width: number;
 }
 

@@ -11,7 +11,7 @@ from app.services.query_tokens import CODE_TAIL_MIDDLE
 
 _CODE_TAIL_ESC = re.escape(CODE_TAIL_MIDDLE)
 CODE_TAIL_RE = re.compile(rf"^(\d+){_CODE_TAIL_ESC}(.+)$")
-AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])$")
+AT_TAIL_RE = re.compile(r"^(\d+)@([一-龥])(\d*)$")
 
 _HEAD_LITERAL_TAIL_RE = re.compile(r"[_?%0-9=]")
 _MIDDLE_WILDCARD_BEFORE_CANTO_RE = re.compile(
@@ -164,10 +164,13 @@ def parse_at_tail_query(q: str) -> Optional[dict]:
     m = AT_TAIL_RE.match(q)
     if not m:
         return None
+    left_digits = m.group(1)
+    right_digits = m.group(3) or ""
     return {
-        "code_digits": m.group(1),
+        "code_digits": left_digits + right_digits,
         "literal_char": m.group(2),
-        "width": len(m.group(1)),
+        "literal_pos": len(left_digits) - 1,
+        "width": len(left_digits) + len(right_digits),
     }
 
 
@@ -216,10 +219,10 @@ def to_match_spec(parsed):
         append_code_digit_slots(spec, parsed.code_digits)
         spec.slots.append(
             SlotConstraint(
-                pos=parsed.width - 1, kind="literal_char", value=parsed.literal_char
+                pos=parsed.literal_pos, kind="literal_char", value=parsed.literal_char
             )
         )
-        spec.mask = "?" * (parsed.width - 1) + parsed.literal_char
+        spec.mask = "?" * parsed.literal_pos + parsed.literal_char + "?" * (parsed.width - parsed.literal_pos - 1)
         return spec
 
     return None
