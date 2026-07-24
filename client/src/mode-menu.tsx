@@ -6,6 +6,11 @@ import { MODE_OPTIONS } from './mode-menu-logic.ts';
 import { isStopOnLastTabEnabled, setStopOnLastTabEnabled } from './desktop-session.ts';
 import { isPortableHost } from './host-mode.ts';
 import { fitModeMenuScale, MODE_MENU_GAP_PX } from './mode-menu-fit.ts';
+import {
+  IconSearch, IconPingze, IconSynonym,
+  IconWorkbench, IconGuide, IconRelation, IconAbout, IconPower,
+  IconLanguage, IconSun, IconMoon,
+} from './mode-menu-icons.tsx';
 
 export interface ModeMenuProps {
   mode: UiMode;
@@ -201,7 +206,7 @@ export function ModeMenu({
                     onClick={() => pickMode(option.family)}
                   >
                     <span className="mode-icon" aria-hidden="true">
-                      {option.family === 'basic' ? '🔍' : option.family === 'pingze' ? '📏' : '🔄'}
+                      {option.family === 'basic' ? <IconSearch /> : option.family === 'pingze' ? <IconPingze /> : <IconSynonym />}
                     </span>
                     <span>
                       <span className="mode-name">
@@ -227,7 +232,7 @@ export function ModeMenu({
                     onOpenWorkbench();
                   }}
                 >
-                  <span className="mode-icon" aria-hidden="true">✏️</span>
+                  <span className="mode-icon" aria-hidden="true"><IconWorkbench /></span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '句格工作台' : 'Line Workbench'}</span>
                     <span className="mode-help">{lang === 'zh' ? '逐格掌握聲調、押韻與原意' : 'Shape tone, rhyme and meaning slot by slot'}</span>
@@ -247,7 +252,7 @@ export function ModeMenu({
                   close();
                 }}
               >
-                  <span className="mode-icon" aria-hidden="true">❓</span>
+                  <span className="mode-icon" aria-hidden="true"><IconGuide /></span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
                     <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
@@ -264,7 +269,7 @@ export function ModeMenu({
                     close();
                   }}
                 >
-                  <span className="mode-icon" aria-hidden="true">➕</span>
+                  <span className="mode-icon" aria-hidden="true"><IconRelation /></span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '補關係' : 'Add relations'}</span>
                     <span className="mode-help">
@@ -283,7 +288,7 @@ export function ModeMenu({
                   close();
                 }}
               >
-                <span className="mode-icon" aria-hidden="true">ℹ️</span>
+                <span className="mode-icon" aria-hidden="true"><IconAbout /></span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
                     <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
@@ -301,7 +306,7 @@ export function ModeMenu({
                     onExitPortable?.();
                   }}
                 >
-                  <span className="mode-icon" aria-hidden="true">⏻</span>
+                  <span className="mode-icon" aria-hidden="true"><IconPower /></span>
                   <span>
                     <span className="mode-name">
                       {lang === 'zh' ? '停止本機服務' : 'Stop local service'}
@@ -326,7 +331,7 @@ export function ModeMenu({
                   }}
                   aria-label={lang === 'zh' ? '切換主題' : 'Toggle theme'}
                 >
-                  <span aria-hidden="true">{theme === 'dark' ? '🌙' : '☀️'}</span>
+                  <span aria-hidden="true">{theme === 'dark' ? <IconMoon /> : <IconSun />}</span>
                 </button>
                 <button
                   type="button"
@@ -337,7 +342,7 @@ export function ModeMenu({
                   }}
                   aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
                 >
-                  <span className="mode-icon" aria-hidden="true">🌐</span>
+                  <span className="mode-icon" aria-hidden="true"><IconLanguage /></span>
                   <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
                 </button>
               </div>
@@ -353,7 +358,7 @@ export function ModeMenu({
                     setStopOnLastTab(next);
                   }}
                 >
-                  <span className="mode-icon" aria-hidden="true">⏻</span>
+                  <span className="mode-icon" aria-hidden="true"><IconPower /></span>
                   <span>
                     <span className="mode-name">
                       {lang === 'zh' ? '關頁即停本機服務' : 'Stop when last tab closes'}
