@@ -81,10 +81,10 @@ export function ModeMenu({
     const menu = menuRef.current;
     if (!menu) return;
     const apply = () => {
-      const vv = window.visualViewport ?? window;
       const trigger = rootRef.current?.querySelector('.menu-trigger')?.getBoundingClientRect();
       if (!trigger) return;
-      const availableHeight = vv.height - trigger.bottom - MODE_MENU_GAP_PX;
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+      const availableHeight = vh - trigger.bottom - MODE_MENU_GAP_PX;
       const { scale, scroll } = fitModeMenuScale({
         naturalHeight: menu.scrollHeight,
         availableHeight,
