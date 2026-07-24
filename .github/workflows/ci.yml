@@ -20,7 +20,10 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: client/package-lock.json
+      - run: cp data/rime/fixtures/char_sample.csv data/rime/char.csv
       - run: npm ci
+        working-directory: client
+      - run: npm run build:portable
         working-directory: client
       - run: npx tsc --noEmit -p tsconfig.app.json
         working-directory: client
