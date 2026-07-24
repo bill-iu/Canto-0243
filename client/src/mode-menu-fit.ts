@@ -5,16 +5,19 @@ export function fitModeMenuScale(opts: {
   naturalHeight: number;
   availableHeight: number;
   minScale?: number;
+  maxScale?: number;
 }): { scale: number; scroll: boolean } {
   const minScale = opts.minScale ?? MODE_MENU_MIN_SCALE;
+  const maxScale = opts.maxScale ?? 1;
   if (opts.naturalHeight <= opts.availableHeight + 0.5) {
-    return { scale: 1, scroll: false };
+    return { scale: maxScale, scroll: false };
   }
   const ratio = opts.availableHeight / opts.naturalHeight;
   const scale = Math.max(ratio, minScale);
-  const scaledHeight = opts.naturalHeight * scale;
+  const capped = Math.min(scale, maxScale);
+  const scaledHeight = opts.naturalHeight * capped;
   const scroll = scaledHeight > opts.availableHeight + 0.5;
-  return { scale: Math.min(scale, 1), scroll };
+  return { scale: capped, scroll };
 }
 
 export function fitModeMenuScaleSelfCheck(): void {
@@ -33,5 +36,13 @@ export function fitModeMenuScaleSelfCheck(): void {
   const exact = fitModeMenuScale({ naturalHeight: 400, availableHeight: 300 });
   if (Math.abs(exact.scale - 0.75) > 0.01 || exact.scroll !== false) {
     throw new Error('fitModeMenuScale: floor without scroll at exact fit');
+  }
+  const narrowCapped = fitModeMenuScale({ naturalHeight: 300, availableHeight: 500, maxScale: 0.75 });
+  if (Math.abs(narrowCapped.scale - 0.75) > 0.01 || narrowCapped.scroll !== false) {
+    throw new Error('fitModeMenuScale: narrow maxScale cap');
+  }
+  const narrowOverflow = fitModeMenuScale({ naturalHeight: 600, availableHeight: 400, maxScale: 0.75 });
+  if (Math.abs(narrowOverflow.scale - 0.75) > 0.01 || narrowOverflow.scroll !== true) {
+    throw new Error('fitModeMenuScale: narrow overflow with scroll');
   }
 }
