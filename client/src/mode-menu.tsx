@@ -102,11 +102,10 @@ export function ModeMenu({
         menu.classList.add('is-scroll');
       }
     };
-    const raf = requestAnimationFrame(() => apply());
+    apply();
     window.addEventListener('resize', apply);
     window.visualViewport?.addEventListener('resize', apply);
     return () => {
-      cancelAnimationFrame(raf);
       window.removeEventListener('resize', apply);
       window.visualViewport?.removeEventListener('resize', apply);
     };
@@ -186,7 +185,7 @@ export function ModeMenu({
             id={menuId}
             className={`mode-menu${open ? ' is-open' : ''}`}
             role="menu"
-            hidden={!open}
+            aria-hidden={!open}
           >
             <div className="menu-group" role="group" aria-label={lang === 'zh' ? '搜尋模式' : 'Search modes'}>
               <p className="menu-label">{lang === 'zh' ? '搜尋模式' : 'Search modes'}</p>
