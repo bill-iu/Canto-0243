@@ -458,6 +458,7 @@ a.mode-option {
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 0;
+  text-transform: none;
 }
 
 .main-wrap {
