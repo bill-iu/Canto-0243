@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   # Fast: run on every push and PR — tsc + self-check
-  client:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
