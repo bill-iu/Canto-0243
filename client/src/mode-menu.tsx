@@ -76,11 +76,7 @@ export function ModeMenu({
   useEffect(() => {
     if (!open) {
       const menu = menuRef.current;
-      if (menu) {
-        menu.style.removeProperty('--mode-menu-scale');
-        menu.style.removeProperty('--mode-menu-max-h');
-        menu.classList.remove('is-scroll');
-      }
+      if (menu) menu.style.removeProperty('--mode-menu-scale');
       return;
     }
     const menu = menuRef.current;
@@ -91,16 +87,12 @@ export function ModeMenu({
       const vh = window.visualViewport?.height ?? window.innerHeight;
       const availableHeight = vh - trigger.bottom - MODE_MENU_GAP_PX;
       const isNarrow = window.innerWidth <= 760;
-      const { scale, scroll } = fitModeMenuScale({
+      const { scale } = fitModeMenuScale({
         naturalHeight: menu.scrollHeight,
         availableHeight,
         maxScale: isNarrow ? 0.75 : 1,
       });
       menu.style.setProperty('--mode-menu-scale', String(scale));
-      if (scroll) {
-        menu.style.setProperty('--mode-menu-max-h', `${availableHeight}px`);
-        menu.classList.add('is-scroll');
-      }
     };
     apply();
     window.addEventListener('resize', apply);
