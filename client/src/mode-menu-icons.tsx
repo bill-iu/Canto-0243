@@ -36,8 +36,8 @@ export const IconWorkbench: FC = () => (
 
 export const IconGuide: FC = () => (
   <svg viewBox={V} fill="none" {...S}>
-    <path d="M6.5 4.5 a2.5 2.5 0 0 0 3 0 c0 1.5-1.5 2-2.5 2.5 v1" />
-    <circle cx="7.5" cy="11.5" r="0.8" fill="currentColor" stroke="none" />
+    <path d="M3 4 Q3 2 8 3 V13 Q3 14 3 15 Z" />
+    <path d="M13 4 Q13 2 8 3 V13 Q13 14 13 15 Z" />
   </svg>
 );
 
