@@ -345,11 +345,6 @@ a.ghost-button:hover { text-decoration: none; }
       pointer-events: auto;
     }
 
-.mode-menu.is-scroll {
-      max-height: var(--mode-menu-max-h);
-      overflow-y: auto;
-    }
-
 .menu-group + .menu-group {
       margin-top: 10px;
       padding-top: 10px;

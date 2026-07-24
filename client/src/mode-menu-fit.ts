@@ -6,43 +6,29 @@ export function fitModeMenuScale(opts: {
   availableHeight: number;
   minScale?: number;
   maxScale?: number;
-}): { scale: number; scroll: boolean } {
+}): { scale: number } {
   const minScale = opts.minScale ?? MODE_MENU_MIN_SCALE;
   const maxScale = opts.maxScale ?? 1;
   if (opts.naturalHeight <= opts.availableHeight + 0.5) {
-    return { scale: maxScale, scroll: false };
+    return { scale: maxScale };
   }
   const ratio = opts.availableHeight / opts.naturalHeight;
   const scale = Math.max(ratio, minScale);
   const capped = Math.min(scale, maxScale);
-  const scaledHeight = opts.naturalHeight * capped;
-  const scroll = scaledHeight > opts.availableHeight + 0.5;
-  return { scale: capped, scroll };
+  return { scale: capped };
 }
 
 export function fitModeMenuScaleSelfCheck(): void {
   const fits = fitModeMenuScale({ naturalHeight: 400, availableHeight: 600 });
-  if (fits.scale !== 1 || fits.scroll !== false) {
-    throw new Error('fitModeMenuScale: should fit without scale');
-  }
+  if (fits.scale !== 1) throw new Error('fitModeMenuScale: should fit without scale');
   const shrinks = fitModeMenuScale({ naturalHeight: 500, availableHeight: 400 });
-  if (Math.abs(shrinks.scale - 0.8) > 0.01 || shrinks.scroll !== false) {
-    throw new Error('fitModeMenuScale: should scale down');
-  }
+  if (Math.abs(shrinks.scale - 0.8) > 0.01) throw new Error('fitModeMenuScale: should scale down');
   const floors = fitModeMenuScale({ naturalHeight: 400, availableHeight: 200 });
-  if (Math.abs(floors.scale - 0.75) > 0.01 || floors.scroll !== true) {
-    throw new Error('fitModeMenuScale: should floor at 0.75 and scroll');
-  }
+  if (Math.abs(floors.scale - 0.75) > 0.01) throw new Error('fitModeMenuScale: should floor at 0.75');
   const exact = fitModeMenuScale({ naturalHeight: 400, availableHeight: 300 });
-  if (Math.abs(exact.scale - 0.75) > 0.01 || exact.scroll !== false) {
-    throw new Error('fitModeMenuScale: floor without scroll at exact fit');
-  }
+  if (Math.abs(exact.scale - 0.75) > 0.01) throw new Error('fitModeMenuScale: floor without scroll at exact fit');
   const narrowCapped = fitModeMenuScale({ naturalHeight: 300, availableHeight: 500, maxScale: 0.75 });
-  if (Math.abs(narrowCapped.scale - 0.75) > 0.01 || narrowCapped.scroll !== false) {
-    throw new Error('fitModeMenuScale: narrow maxScale cap');
-  }
+  if (Math.abs(narrowCapped.scale - 0.75) > 0.01) throw new Error('fitModeMenuScale: narrow maxScale cap');
   const narrowOverflow = fitModeMenuScale({ naturalHeight: 600, availableHeight: 400, maxScale: 0.75 });
-  if (Math.abs(narrowOverflow.scale - 0.75) > 0.01 || narrowOverflow.scroll !== true) {
-    throw new Error('fitModeMenuScale: narrow overflow with scroll');
-  }
+  if (Math.abs(narrowOverflow.scale - 0.75) > 0.01) throw new Error('fitModeMenuScale: narrow overflow');
 }
