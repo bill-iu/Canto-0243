@@ -57,9 +57,8 @@ export const IconPower: FC = () => (
 );
 
 export const IconLanguage: FC = () => (
-  <svg viewBox={V} fill="none" {...S}>
-    <text x="8" y="7.5" fontSize="7" fontWeight="700" fill="currentColor" stroke="none" textAnchor="middle" fontFamily="sans-serif">A</text>
-    <text x="8" y="14.5" fontSize="7" fontWeight="700" fill="currentColor" stroke="none" textAnchor="middle" fontFamily="sans-serif">中</text>
+  <svg viewBox="0 0 25 25" fill="none" {...S}>
+    <path d="M5.5 16.5H19.5M5.5 8.5H19.5M4.5 12.5H20.5M12.5 20.5C12.5 20.5 8 18.5 8 12.5C8 6.5 12.5 4.5 12.5 4.5M12.5 4.5C12.5 4.5 17 6.5 17 12.5C17 18.5 12.5 20.5 12.5 20.5M12.5 4.5V20.5M20.5 12.5C20.5 16.9183 16.9183 20.5 12.5 20.5C8.08172 20.5 4.5 16.9183 4.5 12.5C4.5 8.08172 8.08172 4.5 12.5 4.5C16.9183 4.5 20.5 8.08172 20.5 12.5Z" />
   </svg>
 );
 
