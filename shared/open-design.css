@@ -330,6 +330,7 @@ a.ghost-button:hover { text-decoration: none; }
       background: var(--surface-soft);
       box-shadow: var(--shadow);
       opacity: 0;
+      visibility: hidden;
       translate: 0 -6px;
       scale: var(--mode-menu-scale, 1);
       transform-origin: top right;
@@ -339,6 +340,7 @@ a.ghost-button:hover { text-decoration: none; }
 
 .mode-menu.is-open {
       opacity: 1;
+      visibility: visible;
       translate: 0 0;
       pointer-events: auto;
     }
