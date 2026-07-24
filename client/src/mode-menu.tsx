@@ -102,10 +102,11 @@ export function ModeMenu({
         menu.classList.add('is-scroll');
       }
     };
-    apply();
+    const raf = requestAnimationFrame(() => apply());
     window.addEventListener('resize', apply);
     window.visualViewport?.addEventListener('resize', apply);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener('resize', apply);
       window.visualViewport?.removeEventListener('resize', apply);
     };
