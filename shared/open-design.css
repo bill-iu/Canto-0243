@@ -330,16 +330,57 @@ a.ghost-button:hover { text-decoration: none; }
       background: var(--surface-soft);
       box-shadow: var(--shadow);
       opacity: 0;
-      transform: translateY(-6px);
+      translate: 0 -6px;
+      scale: var(--mode-menu-scale, 1);
+      transform-origin: top right;
       pointer-events: none;
-      transition: opacity 140ms ease-out, transform 140ms ease-out;
+      transition: opacity 140ms ease-out, translate 140ms ease-out;
     }
 
 .mode-menu.is-open {
       opacity: 1;
-      transform: translateY(0);
+      translate: 0 0;
       pointer-events: auto;
     }
+
+.mode-menu.is-scroll {
+      max-height: var(--mode-menu-max-h);
+      overflow-y: auto;
+    }
+
+@media (max-width: 760px) {
+  .mode-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mode-option {
+    padding: 8px 10px;
+    min-height: 32px;
+    margin-top: 4px;
+    gap: 8px;
+  }
+  .mode-option .mode-help {
+    display: none;
+  }
+  .mode-menu {
+    padding: 8px;
+  }
+  .menu-group + .menu-group {
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .menu-label {
+    font-size: 10px;
+    margin: 2px 8px 4px;
+  }
+  .mode-key {
+    font-size: 11px;
+  }
+  .menu-label-icon {
+    font-size: 11px;
+  }
+}
 
 .menu-group + .menu-group {
       margin-top: 10px;
@@ -423,6 +464,22 @@ a.mode-option {
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
     }
+
+.mode-icon {
+      display: none;
+      flex: 0 0 auto;
+      width: 1.15rem;
+      height: 1.15rem;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+.menu-label-icon {
+  display: inline;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0;
+}
 
 .main-wrap {
       width: min(1120px, 100%);
