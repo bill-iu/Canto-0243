@@ -434,10 +434,23 @@ a.mode-option {
 .mode-icon {
       display: none;
       flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
       width: 1.15rem;
       height: 1.15rem;
-      font-size: 16px;
-      line-height: 1;
+    }
+
+.mode-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+.mode-option svg {
+      flex: 0 0 auto;
+      width: 1.15rem;
+      height: 1.15rem;
+      display: block;
     }
 
 .menu-label-icon {
@@ -445,6 +458,7 @@ a.mode-option {
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 0;
+  text-transform: none;
 }
 
 .main-wrap {
@@ -728,8 +742,6 @@ button.icon-button.header-search__shuffle:disabled {
 @media (max-width: 760px) {
   .mode-icon {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
   }
   .mode-option {
     padding: 8px 10px;
