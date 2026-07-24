@@ -85,9 +85,11 @@ export function ModeMenu({
       if (!trigger) return;
       const vh = window.visualViewport?.height ?? window.innerHeight;
       const availableHeight = vh - trigger.bottom - MODE_MENU_GAP_PX;
+      const isNarrow = window.innerWidth <= 760;
       const { scale, scroll } = fitModeMenuScale({
         naturalHeight: menu.scrollHeight,
         availableHeight,
+        maxScale: isNarrow ? 0.75 : 1,
       });
       menu.style.setProperty('--mode-menu-scale', String(scale));
       if (scroll) {

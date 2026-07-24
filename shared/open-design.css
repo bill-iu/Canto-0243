@@ -348,40 +348,6 @@ a.ghost-button:hover { text-decoration: none; }
       overflow-y: auto;
     }
 
-@media (max-width: 760px) {
-  .mode-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .mode-option {
-    padding: 8px 10px;
-    min-height: 32px;
-    margin-top: 4px;
-    gap: 8px;
-  }
-  .mode-option .mode-help {
-    display: none;
-  }
-  .mode-menu {
-    padding: 8px;
-  }
-  .menu-group + .menu-group {
-    margin-top: 6px;
-    padding-top: 6px;
-  }
-  .menu-label {
-    font-size: 10px;
-    margin: 2px 8px 4px;
-  }
-  .mode-key {
-    font-size: 11px;
-  }
-  .menu-label-icon {
-    font-size: 11px;
-  }
-}
-
 .menu-group + .menu-group {
       margin-top: 10px;
       padding-top: 10px;
@@ -756,5 +722,39 @@ button.icon-button.header-search__shuffle:disabled {
     margin: 0;
     padding-left: max(20px, env(safe-area-inset-left));
     padding-right: max(20px, env(safe-area-inset-right));
+  }
+}
+
+@media (max-width: 760px) {
+  .mode-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mode-option {
+    padding: 8px 10px;
+    min-height: 32px;
+    margin-top: 4px;
+    gap: 8px;
+  }
+  .mode-option .mode-help {
+    display: none;
+  }
+  .mode-menu {
+    padding: 8px;
+  }
+  .menu-group + .menu-group {
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+  .menu-label {
+    font-size: 10px;
+    margin: 2px 8px 4px;
+  }
+  .mode-key {
+    font-size: 11px;
+  }
+  .menu-label-icon {
+    font-size: 11px;
   }
 }
