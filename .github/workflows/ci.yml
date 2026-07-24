@@ -10,7 +10,26 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  # Fast: run on every push and PR — tsc + self-check
+  client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+        working-directory: client
+      - run: npx tsc --noEmit -p tsconfig.app.json
+        working-directory: client
+      - run: npm run self-check:ci
+        working-directory: client
+
+  # Full: Python smoke + build + tsc + self-check — only on PR and push to main
+  full:
+    if: github.event_name == 'pull_request' || github.ref_name == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -20,30 +39,19 @@ jobs:
           python-version: "3.10"
           cache: pip
           cache-dependency-path: requirements.txt
-
-      - name: Install dependencies
-        run: |
+      - run: |
           pip install -r requirements.txt
-          # Smoke suite also exercises ingest seams (sources.yaml) + FastAPI TestClient
           pip install pyyaml httpx
         env:
           PYTHONUTF8: "1"
-
-      - name: Bootstrap CI lexicon data
-        run: cp data/rime/fixtures/char_sample.csv data/rime/char.csv
-
-      - name: Smoke tests
-        run: python -m unittest discover -s tests/smoke -q
+      - run: cp data/rime/fixtures/char_sample.csv data/rime/char.csv
+      - run: python -m unittest discover -s tests/smoke -q
         env:
           PYTHONUTF8: "1"
-
-      - name: Architecture seam checks
-        run: python scripts/check_seams.py -q
+      - run: python scripts/check_seams.py -q
         env:
           PYTHONUTF8: "1"
-
-      - name: Guide example regression (Python)
-        run: python -m unittest tests.test_guide_example_queries -q
+      - run: python -m unittest tests.test_guide_example_queries -q
         env:
           PYTHONUTF8: "1"
           DATABASE_URL: sqlite:///./tests/fixtures/lyrics.db
@@ -54,20 +62,11 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: client/package-lock.json
-
-      - name: Install PWA dependencies
-        run: npm ci
+      - run: npm ci
         working-directory: client
-
-      - name: Build portable host (/app)
-        run: npm run build:portable
+      - run: npm run build:portable
         working-directory: client
-
-
-      - name: Typecheck (tsc --noEmit)
-        run: npx tsc --noEmit -p tsconfig.app.json
+      - run: npx tsc --noEmit -p tsconfig.app.json
         working-directory: client
-
-      - name: Client self-checks (C9 harness, tag=ci)
-        run: npm run self-check:ci
+      - run: npm run self-check:ci
         working-directory: client
