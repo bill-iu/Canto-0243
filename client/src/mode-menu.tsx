@@ -5,6 +5,7 @@ import { searchFamilyForUiMode } from '../../contracts/search-mode-manifest.mjs'
 import { MODE_OPTIONS } from './mode-menu-logic.ts';
 import { isStopOnLastTabEnabled, setStopOnLastTabEnabled } from './desktop-session.ts';
 import { isPortableHost } from './host-mode.ts';
+import { fitModeMenuScale, MODE_MENU_GAP_PX } from './mode-menu-fit.ts';
 
 export interface ModeMenuProps {
   mode: UiMode;
@@ -47,6 +48,7 @@ export function ModeMenu({
 }: ModeMenuProps) {
   const menuId = useId();
   const rootRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [stopOnLastTab, setStopOnLastTab] = useState(() => isStopOnLastTabEnabled());
   // keep-alive mode (last-tab stop OFF) → show explicit stop control
@@ -64,6 +66,43 @@ export function ModeMenu({
   }, []);
   const meta = modeMetaFor(mode, lang);
   const family = searchFamilyForUiMode(mode);
+
+  // ponytail: fit mode-menu to viewport — scale down + scroll fallback when overflow
+  useEffect(() => {
+    if (!open) {
+      const menu = menuRef.current;
+      if (menu) {
+        menu.style.removeProperty('--mode-menu-scale');
+        menu.style.removeProperty('--mode-menu-max-h');
+        menu.classList.remove('is-scroll');
+      }
+      return;
+    }
+    const menu = menuRef.current;
+    if (!menu) return;
+    const apply = () => {
+      const vv = window.visualViewport ?? window;
+      const trigger = rootRef.current?.querySelector('.menu-trigger')?.getBoundingClientRect();
+      if (!trigger) return;
+      const availableHeight = vv.height - trigger.bottom - MODE_MENU_GAP_PX;
+      const { scale, scroll } = fitModeMenuScale({
+        naturalHeight: menu.scrollHeight,
+        availableHeight,
+      });
+      menu.style.setProperty('--mode-menu-scale', String(scale));
+      if (scroll) {
+        menu.style.setProperty('--mode-menu-max-h', `${availableHeight}px`);
+        menu.classList.add('is-scroll');
+      }
+    };
+    apply();
+    window.addEventListener('resize', apply);
+    window.visualViewport?.addEventListener('resize', apply);
+    return () => {
+      window.removeEventListener('resize', apply);
+      window.visualViewport?.removeEventListener('resize', apply);
+    };
+  }, [open]);
 
   // ponytail: mirror entry-detail first-tap-closes — swallow outside click so list picks don't fire
   useEffect(() => {
@@ -135,6 +174,7 @@ export function ModeMenu({
           </button>
 
           <div
+            ref={menuRef}
             id={menuId}
             className={`mode-menu${open ? ' is-open' : ''}`}
             role="menu"
@@ -158,6 +198,9 @@ export function ModeMenu({
                     disabled={disabled}
                     onClick={() => pickMode(option.family)}
                   >
+                    <span className="mode-icon" aria-hidden="true">
+                      {option.family === 'basic' ? '🔍' : option.family === 'pingze' ? '📏' : '🔄'}
+                    </span>
                     <span>
                       <span className="mode-name">
                         {optionMeta.title}
@@ -182,6 +225,7 @@ export function ModeMenu({
                     onOpenWorkbench();
                   }}
                 >
+                  <span className="mode-icon" aria-hidden="true">✏️</span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '句格工作台' : 'Line Workbench'}</span>
                     <span className="mode-help">{lang === 'zh' ? '逐格掌握聲調、押韻與原意' : 'Shape tone, rhyme and meaning slot by slot'}</span>
@@ -201,12 +245,13 @@ export function ModeMenu({
                   close();
                 }}
               >
-                <span>
-                  <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
-                  <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
-                </span>
-                <span className="mode-key">?</span>
-              </button>
+                  <span className="mode-icon" aria-hidden="true">❓</span>
+                  <span>
+                    <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
+                    <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
+                  </span>
+                  <span className="mode-key">?</span>
+                </button>
               {onOpenRelation ? (
                 <button
                   type="button"
@@ -217,6 +262,7 @@ export function ModeMenu({
                     close();
                   }}
                 >
+                  <span className="mode-icon" aria-hidden="true">➕</span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '補關係' : 'Add relations'}</span>
                     <span className="mode-help">
@@ -235,11 +281,12 @@ export function ModeMenu({
                   close();
                 }}
               >
-                <span>
-                  <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
-                  <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
-                </span>
-                <span className="mode-key">i</span>
+                <span className="mode-icon" aria-hidden="true">ℹ️</span>
+                  <span>
+                    <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
+                    <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
+                  </span>
+                  <span className="mode-key">i</span>
               </button>
               {showExit ? (
                 <button
@@ -252,6 +299,7 @@ export function ModeMenu({
                     onExitPortable?.();
                   }}
                 >
+                  <span className="mode-icon" aria-hidden="true">⏻</span>
                   <span>
                     <span className="mode-name">
                       {lang === 'zh' ? '停止本機服務' : 'Stop local service'}
@@ -287,6 +335,7 @@ export function ModeMenu({
                   }}
                   aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
                 >
+                  <span className="mode-icon" aria-hidden="true">🌐</span>
                   <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
                 </button>
               </div>
@@ -302,6 +351,7 @@ export function ModeMenu({
                     setStopOnLastTab(next);
                   }}
                 >
+                  <span className="mode-icon" aria-hidden="true">⏻</span>
                   <span>
                     <span className="mode-name">
                       {lang === 'zh' ? '關頁即停本機服務' : 'Stop when last tab closes'}
@@ -324,7 +374,7 @@ export function ModeMenu({
             </div>
 
             <div className="menu-group" role="group" aria-label={lang === 'zh' ? '字體大小' : 'Text size'}>
-              <p className="menu-label">{lang === 'zh' ? '字體大小' : 'Text size'}</p>
+              <p className="menu-label"><span className="menu-label-icon" aria-hidden="true">Aa</span> {lang === 'zh' ? '字體大小' : 'Text size'}</p>
               <div className="menu-switches menu-switches--entry-size">
                 <button
                   type="button"
