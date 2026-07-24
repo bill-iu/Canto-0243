@@ -8,7 +8,7 @@ import { isPortableHost } from './host-mode.ts';
 import { fitModeMenuScale, MODE_MENU_GAP_PX } from './mode-menu-fit.ts';
 import {
   IconSearch, IconPingze, IconSynonym,
-  IconWorkbench, IconGuide, IconRelation, IconAbout, IconPower,
+  IconWorkbench, IconRelation, IconPower,
   IconLanguage, IconSun, IconMoon,
 } from './mode-menu-icons.tsx';
 
@@ -252,7 +252,7 @@ export function ModeMenu({
                   close();
                 }}
               >
-                  <span className="mode-icon" aria-hidden="true"><IconGuide /></span>
+                  <span className="mode-icon" aria-hidden="true">?</span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
                     <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
@@ -288,7 +288,7 @@ export function ModeMenu({
                   close();
                 }}
               >
-                <span className="mode-icon" aria-hidden="true"><IconAbout /></span>
+                <span className="mode-icon" aria-hidden="true">i</span>
                   <span>
                     <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
                     <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
