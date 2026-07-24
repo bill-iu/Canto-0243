@@ -8,18 +8,21 @@ import type {
   PlusAnchorQuery,
 } from '../../query-types.ts';
 
-/** Port of plus.parse_at_tail_query — 碼＋@＋尾字（23@手） */
+/** Port of plus.parse_at_tail_query — 碼@字（23@手, 3@天934）*/
 export function parseAtTailQuery(q: string): LiteralRefQuery | null {
-  const m = q.match(/^(\d+)@([\u4e00-\u9fff])$/);
+  const m = q.match(/^(\d+)@([\u4e00-\u9fff])(\d*)$/);
   if (!m) {
     return null;
   }
-  const code_digits = m[1]!;
+  const left_digits = m[1]!;
+  const right_digits = m[3]!;
+  const code_digits = left_digits + right_digits;
   return {
     kind: QueryKind.LITERAL_REF,
     raw_q: q,
     code_digits,
     literal_char: m[2]!,
+    literal_pos: left_digits.length - 1,
     width: code_digits.length,
   };
 }
@@ -159,8 +162,8 @@ export function toMatchSpec(parsed: ParsedQuery): MatchSpec | null {
     if (!spec.slots) {
       spec.slots = [];
     }
-    spec.slots.push({ pos: q.width - 1, kind: 'literal_char', value: q.literal_char });
-    spec.mask = '?'.repeat(q.width - 1) + q.literal_char;
+    spec.slots.push({ pos: q.literal_pos, kind: 'literal_char', value: q.literal_char });
+    spec.mask = '?'.repeat(q.literal_pos) + q.literal_char + '?'.repeat(q.width - q.literal_pos - 1);
     return spec;
   }
   return null;
