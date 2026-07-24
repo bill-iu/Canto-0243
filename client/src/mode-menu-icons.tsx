@@ -12,9 +12,9 @@ export const IconSearch: FC = () => (
 
 export const IconPingze: FC = () => (
   <svg viewBox={V} fill="none" {...S}>
-    <text x="2" y="7" fontSize="8" fontWeight="700" fill="currentColor" stroke="none" fontFamily="sans-serif">P</text>
-    <line x1="6" y1="1" x2="11" y2="15" />
-    <text x="9" y="15" fontSize="8" fontWeight="700" fill="currentColor" stroke="none" fontFamily="sans-serif">Z</text>
+    <text x="2" y="6" fontSize="8" fontWeight="700" fill="currentColor" stroke="none" fontFamily="sans-serif">P</text>
+    <line x1="4" y1="11" x2="11" y2="4" />
+    <text x="9" y="14" fontSize="8" fontWeight="700" fill="currentColor" stroke="none" fontFamily="sans-serif">Z</text>
   </svg>
 );
 
