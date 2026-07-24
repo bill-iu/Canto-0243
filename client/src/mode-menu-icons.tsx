@@ -20,9 +20,10 @@ export const IconPingze: FC = () => (
 
 export const IconSynonym: FC = () => (
   <svg viewBox={V} fill="none" {...S}>
-    <circle cx="8" cy="8" r="5" />
-    <polyline points="5,5 3,8 5,11" />
-    <polyline points="11,11 13,8 11,5" />
+    <path d="M3 6 C3 2 13 2 13 6" />
+    <polyline points="13,6 10,4 13,6 10,8" />
+    <path d="M13 10 C13 14 3 14 3 10" />
+    <polyline points="3,10 6,12 3,10 6,8" />
   </svg>
 );
 
