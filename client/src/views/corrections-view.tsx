@@ -57,7 +57,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         setStatsHtml(copy.statsFailed);
       }
     })();
-  }, [lang]);
+  }, [copy, lang]);
 
   useEffect(() => {
     const prefetch = prefetchChar.trim();
@@ -101,7 +101,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       }
     })();
     // ponytail: refresh the debug→corrections deep-link prefetch when its inputs change
-  }, [lang, prefetchChar]);
+  }, [copy, lang, prefetchChar]);
 
   const clearSelection = () => {
     setSelected(null);
