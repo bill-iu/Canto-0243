@@ -121,17 +121,17 @@
         "limit": 8
       },
       "rows": [
-        { "char": "甲", "jyutping": "a1", "code": "3" },
-        { "char": "乙", "jyutping": "b1", "code": "3" }
+        { "char": "甲", "jyutping": "a2", "code": "3" },
+        { "char": "甲", "jyutping": "a1", "code": "3" }
       ],
       "pool": {
         "syns": [{ "char": "甲", "source": "test" }],
-        "semantic": [{ "char": "乙", "source": "test" }]
+        "semantic": []
       },
       "literals": {
         "direct_syn": [],
         "semantic_related": [],
-        "sound_only": ["甲", "乙"]
+        "sound_only": ["甲", "甲"]
       }
     },
     {

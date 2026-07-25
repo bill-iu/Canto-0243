@@ -13,7 +13,10 @@ from app.services.position_match.filters.f2_phoneme_anchor import (
 )
 from app.services.position_match.filters.f3_letters import slot_constraint_matches
 from app.services.position_match.filters.f4_equals import query_words_by_equals_spec
-from app.services.position_match.mask_adapter import required_codes_from_spec
+from app.services.position_match.mask_adapter import (
+    has_code_digit_constraints,
+    required_codes_from_spec,
+)
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.word_serializer import (
     get_rhyme_finals,
@@ -90,7 +93,20 @@ def apply_match_spec(
 ) -> list[Any]:
     """MatchSpec 單一過濾管線（equals／slot；ADR-0004 #6）。"""
     if get_equals_span(spec):
-        return query_words_by_equals_spec(spec, db, mode)
+        candidates = query_words_by_equals_spec(spec, db, mode)
+        if has_code_digit_constraints(spec):
+            candidates = filter_words_by_code_and_mask(
+                candidates,
+                width=spec.width,
+                code_digits="",
+                mode=mode,
+                mask=spec.mask or "",
+                db=db,
+                literal_char=None,
+                slots=spec.slots,
+                required_codes=required_codes_from_spec(spec),
+            )
+        return candidates
     filtered = filter_candidates_by_match_spec(candidates, spec, mode, db)
     if spec.compound_kind == "doubled_syllable":
         from app.domain.relations.compound_doubled_syllable import (
