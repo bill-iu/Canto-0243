@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { getWarmupCopy } from '../../../shared/warmup-i18n.mjs';
 
 const WARMUP_DONE_HOLD_MS = 700;
 const WARMUP_DONE_FADE_MS = 420;
@@ -61,13 +62,10 @@ export function TailPreloadBadge({ tailProgress, startupComplete, lang = 'zh', o
 
   if (!visible) return null;
 
+  const copy = getWarmupCopy(lang);
   const label = done
-    ? lang === 'en'
-      ? 'Done!'
-      : '完成！'
-    : lang === 'en'
-      ? 'Loading…'
-      : '載入中…';
+    ? copy.done
+    : copy.loading;
 
   return (
     <div

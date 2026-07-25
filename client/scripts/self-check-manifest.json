@@ -106,6 +106,22 @@
       ]
     },
     {
+      "id": "warmup-i18n",
+      "script": "warmup-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "portable-exit-i18n",
+      "script": "portable-exit-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [
