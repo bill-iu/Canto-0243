@@ -65,6 +65,14 @@
       ]
     },
     {
+      "id": "query-tabs-i18n",
+      "script": "query-tabs-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [

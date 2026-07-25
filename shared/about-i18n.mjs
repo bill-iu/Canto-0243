@@ -6,6 +6,7 @@ const NOTICES_URL = 'https://github.com/bill-iu/Canto-0243/blob/dev/THIRD_PARTY_
 export const ABOUT_COPY = {
   zh: {
     sloganTop: '即使離線，\n亦完全可用。',
+    lexiconPrefix: '詞庫版本：',
     eyebrow: 'About',
     title: '關於 Canto-0243',
     lede: 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
@@ -64,6 +65,7 @@ export const ABOUT_COPY = {
   },
   zhHans: {
     sloganTop: '即使离线，\n亦完全可用。',
+    lexiconPrefix: '词库版本：',
     eyebrow: 'About',
     title: '关于 Canto-0243',
     lede: 'ONE·揾·韵 — 离线粤语填词查找工作台。',
@@ -122,6 +124,7 @@ export const ABOUT_COPY = {
   },
   en: {
     sloganTop: 'Fully usable—\neven offline.',
+    lexiconPrefix: 'Lexicon version: ',
     eyebrow: 'About',
     title: 'About Canto-0243',
     lede: 'ONE-RUN-RHYME — Offline Cantonese lyric lookup workbench.',

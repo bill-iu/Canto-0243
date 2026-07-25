@@ -39,12 +39,11 @@ export function AboutView({ lang, lexiconVersion, onBack }: AboutViewProps) {
         </h1>
         <p className="about-lede">{c.lede}</p>
         <p className="about-meta">
-          {lang === 'en' ? 'Lexicon version: ' : '詞庫版本：'}
-          {lexiconVersion}
+          {c.lexiconPrefix}{lexiconVersion}
         </p>
         <div className="guide-actions">
           <button type="button" className="primary-button" onClick={onBack}>
-            {lang === 'en' ? 'Back to search' : '返回搜尋'}
+            {c.backBtn}
           </button>
         </div>
       </header>
