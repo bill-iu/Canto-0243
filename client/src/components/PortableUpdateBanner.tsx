@@ -1,4 +1,5 @@
 import React from 'react';
+import { getPortableUpdateCopy } from '../../../shared/portable-update-i18n.mjs';
 
 export type PortableUpdateInfo = {
   available: boolean;
@@ -29,23 +30,17 @@ export function PortableUpdateBanner({ info, lang, onDismiss }: Props) {
     }
   };
 
-  const title =
-    lang === 'en'
-      ? `Update available${tag ? `: ${tag}` : ''}`
-      : `有新正式版${tag ? `：${tag}` : ''}`;
-  const sub =
-    lang === 'en'
-      ? 'Download the full package, close this app, then extract over the old folder.'
-      : '請下載完整套件，關閉本程式後解壓覆蓋舊資料夾。';
-  const openLabel = lang === 'en' ? 'Open Release' : '前往 Release';
-  const copyLabel = lang === 'en' ? 'Copy download cmd' : '複製下載指令';
-  const laterLabel = lang === 'en' ? 'Later' : '稍後';
+  const copy = getPortableUpdateCopy(lang);
+  const title = copy.title(tag);
+  const openLabel = copy.open;
+  const copyLabel = copy.copy;
+  const laterLabel = copy.later;
 
   return (
     <div className="portable-update-banner" role="status">
       <div className="portable-update-banner__text">
         <strong>{title}</strong>
-        <span>{sub}</span>
+        <span>{copy.sub}</span>
       </div>
       <div className="portable-update-banner__actions">
         <a className="portable-update-banner__btn" href={url} target="_blank" rel="noreferrer">

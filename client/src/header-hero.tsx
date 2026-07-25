@@ -4,12 +4,14 @@ import {
   HEADER_NARROW_MQ,
   fitHeaderTaglineEl,
 } from './header-hero-tagline-fit.ts';
+import { getHeaderCopy } from '../../shared/header-i18n.mjs';
 
 export interface HeaderHeroProps {
   lang: 'zh' | 'zh-Hans' | 'en';
 }
 
 export function HeaderHero({ lang }: HeaderHeroProps) {
+  const copy = getHeaderCopy(lang);
   const rootRef = useRef<HTMLDivElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
 
@@ -45,11 +47,9 @@ export function HeaderHero({ lang }: HeaderHeroProps) {
 
   return (
     <div className="header-hero" aria-hidden="true" ref={rootRef}>
-      <p className="header-hero__title">{lang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}</p>
+      <p className="header-hero__title">{copy.title}</p>
       <p className="header-hero__tagline" ref={taglineRef}>
-        {lang === 'en'
-          ? 'Meter / sound match / rhyme / near-antonyms — find in one step.'
-          : '格律／協音／押韻／近反義，一步搵到。'}
+        {copy.tagline}
       </p>
     </div>
   );

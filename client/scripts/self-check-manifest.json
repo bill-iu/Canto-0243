@@ -73,6 +73,14 @@
       ]
     },
     {
+      "id": "surface-i18n",
+      "script": "surface-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [
