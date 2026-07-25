@@ -1,7 +1,7 @@
 """Generate zh-Hans i18n content for shared/*-i18n.mjs and app-context.mjs."""
 from __future__ import annotations
 
-import json
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -47,6 +47,8 @@ def t2s_all_strings_in_block(text: str) -> str:
 # --- file-specific generators ---
 
 def gen_app_context(source: str) -> str:
+    if "'zh-Hans'" in source or '"zh-Hans"' in source:
+        return source
     # Find the MESSAGES zh block, t2s it, insert as zhHans
     def replace_msg(m: re.Match) -> str:
         zh_block = m.group(1)
@@ -113,6 +115,8 @@ def gen_mode_i18n(source: str) -> str:
 
 
 def gen_about_i18n(source: str) -> str:
+    if "zhHans:" in source:
+        return source
     # Find the ABOUT_COPY zh block, t2s it, insert zhHans
     def replace_about(m: re.Match) -> str:
         zh_block = m.group(1)
@@ -138,6 +142,8 @@ def gen_about_i18n(source: str) -> str:
 
 
 def gen_guide_i18n(source: str) -> str:
+    if "zhHans:" in source:
+        return source
     # Patch resolveLang
     source = source.replace(
         "return lang === 'en' ? 'en' : 'zh';",
@@ -215,6 +221,8 @@ def gen_guide_i18n(source: str) -> str:
 
 
 def gen_entry_detail(source: str) -> str:
+    if "zhHans:" in source:
+        return source
     # MESSAGES = { zh: { ... }, en: { ... } }; — insert zhHans
     def replace_msg(m: re.Match) -> str:
         zh_block = m.group(1)
@@ -240,6 +248,22 @@ def gen_entry_detail(source: str) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="Verify generated Simplified Chinese catalogs without mutating source files."
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="verify generated output (the default)",
+    )
+    parser.add_argument(
+        "--write-legacy",
+        action="store_true",
+        help="legacy source-rewrite mode; only for the one-time migration",
+    )
+    args = parser.parse_args()
+    check_only = not args.write_legacy
+
     generators = {
         "app-context.mjs": gen_app_context,
         "mode-i18n.mjs": gen_mode_i18n,
@@ -258,34 +282,25 @@ def main() -> int:
         original = path.read_text(encoding="utf-8")
         updated = gen(original)
         if original == updated:
-            print(f"No change: {name}")
+            print(f"OK: {name}")
             continue
 
-        path.write_text(updated, encoding="utf-8")
-        print(f"Updated: {name}")
+        if check_only:
+            print(f"STALE: {name}")
+        else:
+            path.write_text(updated, encoding="utf-8")
+            print(f"Updated (legacy): {name}")
 
+    stale = any(
+        gen(path.read_text(encoding="utf-8")) != path.read_text(encoding="utf-8")
+        for path in SRC_FILES
+        if (gen := generators.get(path.name))
+    )
+
+    if check_only and stale:
+        print("Generated i18n output is stale; run the explicit legacy migration command.")
+        return 1
     print("Done.")
-
-    # Generate t2s-char-map.mjs for runtime headword conversion
-    print("\nGenerating shared/t2s-char-map.mjs...")
-    t2s_map = {}
-    for cp in range(0x4E00, 0x9FFF + 1):
-        char = chr(cp)
-        converted = CONVERTER.convert(char)
-        if converted != char:
-            t2s_map[char] = converted
-    for cp in range(0x3400, 0x4DBF + 1):
-        char = chr(cp)
-        converted = CONVERTER.convert(char)
-        if converted != char:
-            t2s_map[char] = converted
-
-    map_path = REPO_ROOT / "shared" / "t2s-char-map.mjs"
-    with open(map_path, "w", encoding="utf-8") as f:
-        f.write("export default ")
-        json.dump(t2s_map, f, ensure_ascii=False, separators=(",", ":"))
-        f.write(";\n")
-    print(f"Wrote {map_path} ({len(t2s_map)} mappings)")
     return 0
 
 
