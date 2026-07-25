@@ -21,6 +21,7 @@ import {
   reorderTabsByIds,
   applyUrlToTabs,
 } from "./query-tabs-state.mjs";
+import { detectUiLang, isUiLang, normalizeUiLang } from './ui-locale.mjs';
 
 export {
   SESSION_KEY,
@@ -78,7 +79,7 @@ const MESSAGES = {
     'lang.toggle': '中 / EN',
     'theme.toggle': '切換主題',
   },
-  zh-Hans: {
+  'zh-Hans': {
     'hero.title': 'ONE·揾·韵',
     'hero.tagline': '格律／协音／押韵／近反义，一步揾到。',
     'search.label': '搜寻内容',
@@ -130,17 +131,20 @@ const MESSAGES = {
 
 export function getLang() {
   const saved = localStorage.getItem(LANG_KEY);
-  if (saved === 'zh' || saved === 'zh-Hans' || saved === 'en') return saved;
-  return (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
+  if (isUiLang(saved)) return saved;
+  return detectUiLang(globalThis.navigator?.language);
 }
 
 export function setLang(lang) {
-  localStorage.setItem(LANG_KEY, lang);
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang === 'zh-Hans' ? 'zh-Hans' : 'en';
+  const normalized = normalizeUiLang(lang);
+  localStorage.setItem(LANG_KEY, normalized);
+  document.documentElement.lang = normalized === 'zh' ? 'zh-Hant' : normalized === 'zh-Hans' ? 'zh-Hans' : 'en';
 }
 
 export function t(key, lang = getLang()) {
-  return MESSAGES[lang]?.[key] ?? MESSAGES.zh[key] ?? key;
+  const normalized = normalizeUiLang(lang);
+  const tableKey = normalized === 'zh-Hans' ? 'zh-Hans' : normalized;
+  return MESSAGES[tableKey]?.[key] ?? MESSAGES.zh[key] ?? key;
 }
 
 export function getTheme(options = {}) {

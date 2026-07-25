@@ -2,9 +2,16 @@
 import assert from 'node:assert/strict';
 import {
   detectUiLang,
+  isUiLang,
   normalizeUiLang,
   selectUiCatalog,
 } from '../../shared/ui-locale.mjs';
+
+assert.equal(isUiLang('zh'), true);
+assert.equal(isUiLang('zh-Hans'), true);
+assert.equal(isUiLang('en'), true);
+assert.equal(isUiLang('zh-CN'), false);
+assert.equal(isUiLang('fr'), false);
 
 assert.equal(normalizeUiLang('zh-Hans'), 'zh-Hans');
 assert.equal(normalizeUiLang('zh-CN'), 'zh-Hans');

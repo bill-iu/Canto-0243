@@ -10,6 +10,11 @@
 const SIMPLIFIED_LOCALES = new Set(['zh-hans', 'zh-cn', 'zh-sg']);
 const TRADITIONAL_LOCALES = new Set(['zh-hant', 'zh-hk', 'zh-mo', 'zh-tw']);
 
+/** @param {unknown} value */
+export function isUiLang(value) {
+  return value === 'zh' || value === 'zh-Hans' || value === 'en';
+}
+
 /**
  * @param {unknown} value
  * @param {UiLang} [fallback]
