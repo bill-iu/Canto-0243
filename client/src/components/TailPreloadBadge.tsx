@@ -7,7 +7,7 @@ type Props = {
   tailProgress: number;
   startupComplete: boolean;
   theme?: 'light' | 'dark';
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   /** Fires after badge fully hidden (or when tail skipped / already complete). */
   onDismiss?: () => void;
 };

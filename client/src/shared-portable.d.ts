@@ -32,7 +32,7 @@ declare module '@shared/query-tabs' {
     tabs: QueryTab[];
   }
 
-  export function tabLabel(tab: QueryTab, lang?: 'zh' | 'en'): string;
+  export function tabLabel(tab: QueryTab, lang?: 'zh' | 'zh-Hans' | 'en'): string;
   export function findTabByView(tabs: QueryTab[], view: string): QueryTab | null;
   export function createSearchTab(opts?: Partial<QueryTab>): QueryTab;
   export function createWorkbenchTab(opts?: { id?: number }): QueryTab;
@@ -69,28 +69,28 @@ declare module '@shared/query-tabs' {
 }
 
 declare module '../../shared/guide-i18n.mjs' {
-  export function getGuideHero(lang: 'zh' | 'en'): { eyebrow: string; title: string; lede: string };
-  export function getGuideIntro(lang: 'zh' | 'en'): { title: string; paragraphs: string[] };
-  export function getGuideGroupLabel(group: string, lang: 'zh' | 'en'): string;
-  export function getGuideTocCopy(lang: 'zh' | 'en'): { label: string; open: string; close: string };
+  export function getGuideHero(lang: 'zh' | 'zh-Hans' | 'en'): { eyebrow: string; title: string; lede: string };
+  export function getGuideIntro(lang: 'zh' | 'zh-Hans' | 'en'): { title: string; paragraphs: string[] };
+  export function getGuideGroupLabel(group: string, lang: 'zh' | 'zh-Hans' | 'en'): string;
+  export function getGuideTocCopy(lang: 'zh' | 'zh-Hans' | 'en'): { label: string; open: string; close: string };
   export function guideSectionDomId(id: string): string;
-  export function getGuideSections(lang: 'zh' | 'en'): Array<{
+  export function getGuideSections(lang: 'zh' | 'zh-Hans' | 'en'): Array<{
     id: string;
     group?: 'common' | 'advanced';
     title: string;
     intro: string;
     examples: Array<{ query: string; mode: string; label: string; title?: string }>;
   }>;
-  export function renderGuideGridHtml(lang: 'zh' | 'en'): string;
-  export function renderGuideLayoutHtml(lang: 'zh' | 'en'): string;
+  export function renderGuideGridHtml(lang: 'zh' | 'zh-Hans' | 'en'): string;
+  export function renderGuideLayoutHtml(lang: 'zh' | 'zh-Hans' | 'en'): string;
   export function bindGuideNav(root: HTMLElement | null): () => void;
-  export function applyGuideLang(lang: 'zh' | 'en'): void;
+  export function applyGuideLang(lang: 'zh' | 'zh-Hans' | 'en'): void;
 }
 
 declare module '../../shared/about-i18n.mjs' {
-  export const ABOUT_COPY: Record<'zh' | 'en', Record<string, string>>;
-  export function getAboutCopy(lang: 'zh' | 'en'): Record<string, string>;
-  export function applyAboutLang(lang: 'zh' | 'en'): void;
+  export const ABOUT_COPY: Record<'zh' | 'zh-Hans' | 'en', Record<string, string>>;
+  export function getAboutCopy(lang: 'zh' | 'zh-Hans' | 'en'): Record<string, string>;
+  export function applyAboutLang(lang: 'zh' | 'zh-Hans' | 'en'): void;
 }
 
 declare module '../../shared/mode-i18n.mjs' {
@@ -103,10 +103,10 @@ declare module '../../shared/mode-i18n.mjs' {
     placeholder: string;
   }
   export const MODE_META: Record<UrlMode, ModeMeta>;
-  export function getModeMeta(mode: string, lang?: 'zh' | 'en'): ModeMeta;
-  export function modeHelp(mode: UrlMode, lang?: 'zh' | 'en'): string;
-  export function modeRedirectHint(mode: 'm1' | 'm2' | 'm3', lang?: 'zh' | 'en'): string;
-  export function syncPortableModeMenu(lang?: 'zh' | 'en'): void;
+  export function getModeMeta(mode: string, lang?: 'zh' | 'zh-Hans' | 'en'): ModeMeta;
+  export function modeHelp(mode: UrlMode, lang?: 'zh' | 'zh-Hans' | 'en'): string;
+  export function modeRedirectHint(mode: 'm1' | 'm2' | 'm3', lang?: 'zh' | 'zh-Hans' | 'en'): string;
+  export function syncPortableModeMenu(lang?: 'zh' | 'zh-Hans' | 'en'): void;
 }
 
 declare module '@shared/search-navigation' {

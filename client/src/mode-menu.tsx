@@ -24,9 +24,9 @@ export interface ModeMenuProps {
   /** Portable host only — 停止本機服務（keep-alive 模式先顯示） */
   onExitPortable?: () => void;
   theme?: 'light' | 'dark';
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
-  onLangChange?: (lang: 'zh' | 'en') => void;
+  onLangChange?: (lang: 'zh' | 'zh-Hans' | 'en') => void;
   entrySize?: 'small' | 'medium' | 'large';
   onEntrySizeChange?: (size: 'small' | 'medium' | 'large') => void;
   lexiconVersion?: string;
@@ -328,14 +328,36 @@ export function ModeMenu({
                 <button
                   type="button"
                   className="mode-option mode-switch"
+                  aria-pressed={lang === 'zh'}
                   onClick={() => {
-                    onLangChange?.(lang === 'zh' ? 'en' : 'zh');
-                    close();
+                    if (lang !== 'zh') { onLangChange?.('zh'); close(); }
                   }}
-                  aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
+                  aria-label={lang === 'en' ? 'Traditional Chinese' : '繁體中文'}
                 >
                   <span className="mode-icon" aria-hidden="true"><IconLanguage /></span>
-                  <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
+                  <span>繁</span>
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={lang === 'zh-Hans'}
+                  onClick={() => {
+                    if (lang !== 'zh-Hans') { onLangChange?.('zh-Hans'); close(); }
+                  }}
+                  aria-label={lang === 'en' ? 'Simplified Chinese' : '简体中文'}
+                >
+                  <span>简</span>
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={lang === 'en'}
+                  onClick={() => {
+                    if (lang !== 'en') { onLangChange?.('en'); close(); }
+                  }}
+                  aria-label={lang === 'en' ? 'English' : '英文'}
+                >
+                  <span>EN</span>
                 </button>
               </div>
               {isPortableHost() ? (

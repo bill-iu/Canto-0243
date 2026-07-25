@@ -42,7 +42,7 @@ function ChromeTabRow({
   index: number;
   total: number;
   activeId: number;
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
   canClose: boolean;
   onSelect: (id: number) => void;
   onClose: (id: number) => void;

@@ -1,7 +1,7 @@
 import { getAboutCopy } from '../../shared/about-i18n.mjs';
 
 export interface AboutViewProps {
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
   lexiconVersion: string;
   onBack: () => void;
 }

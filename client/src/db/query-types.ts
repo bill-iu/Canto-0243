@@ -238,7 +238,7 @@ export interface SearchContext {
   limit: number;
   offset: number;
   fallback_0243_mode?: QueryMode;
-  ui_lang?: 'zh' | 'en';
+  ui_lang?: 'zh' | 'zh-Hans' | 'en';
   /** Cooperative cancel — engine hot paths throw SearchCancelledError when true */
   shouldCancel?: () => boolean;
 }

@@ -9,7 +9,7 @@ export type PortableUpdateInfo = {
 
 type Props = {
   info: PortableUpdateInfo;
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
   onDismiss: () => void;
 };
 

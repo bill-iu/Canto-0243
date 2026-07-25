@@ -80,7 +80,7 @@ export function isPingZeSerialQuery(q: string, pzmode?: string): boolean {
   return parsed?.kind === QueryKind.PING_ZE_SERIAL;
 }
 
-export function slotLabel(slot: string, lang: 'zh' | 'en' = 'zh'): string {
+export function slotLabel(slot: string, lang: 'zh' | 'zh-Hans' | 'en' = 'zh'): string {
   if (slot === 'P') {
     return lang === 'zh' ? '平' : 'ping (P)';
   }

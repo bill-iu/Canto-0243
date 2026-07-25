@@ -977,7 +977,7 @@ literal	pos	family	voice	note	source	confidence
 可以說是	u			no-source	fallback	low
 更重要	u			no-source	fallback	low
 的愛	u			no-source	fallback	low
-人民羣衆	u			no-source	fallback	low
+人民群衆	u			no-source	fallback	low
 妳好	u			no-source	fallback	low
 說起	u			no-source	fallback	low
 誰都	u			no-source	fallback	low
@@ -1280,7 +1280,7 @@ literal	pos	family	voice	note	source	confidence
 陪我	u			no-source	fallback	low
 本市	u			no-source	fallback	low
 看電視	u			no-source	fallback	low
-羣裏	u			no-source	fallback	low
+群裏	u			no-source	fallback	low
 不是說	u			no-source	fallback	low
 萬美元	u			no-source	fallback	low
 看電影	u			no-source	fallback	low
@@ -4147,7 +4147,7 @@ literal	pos	family	voice	note	source	confidence
 投資人	u			no-source	fallback	low
 置於	u			no-source	fallback	low
 很爽	u			no-source	fallback	low
-羣發	u			no-source	fallback	low
+群發	u			no-source	fallback	low
 肯德基	u			no-source	fallback	low
 這臺	u			no-source	fallback	low
 之爭	u			no-source	fallback	low
@@ -5209,7 +5209,7 @@ literal	pos	family	voice	note	source	confidence
 愛一個人	u			no-source	fallback	low
 米的	u			no-source	fallback	low
 網絡營銷	u			no-source	fallback	low
-羣組	u			no-source	fallback	low
+群組	u			no-source	fallback	low
 裕	u			no-source	fallback	low
 關稅	u			no-source	fallback	low
 高水平	u			no-source	fallback	low
@@ -5222,7 +5222,7 @@ literal	pos	family	voice	note	source	confidence
 控制系統	n			len4-noun-heuristic	heuristic	medium
 搞不懂	u			no-source	fallback	low
 準確性	u			no-source	fallback	low
-這羣	u			no-source	fallback	low
+這群	u			no-source	fallback	low
 剛到	u			no-source	fallback	low
 大鼠	u			no-source	fallback	low
 對外開放	u			no-source	fallback	low
@@ -5395,7 +5395,7 @@ literal	pos	family	voice	note	source	confidence
 仍未	u			no-source	fallback	low
 新浪網	u			no-source	fallback	low
 第一百	u			no-source	fallback	low
-集羣	u			no-source	fallback	low
+集群	u			no-source	fallback	low
 響了	u			no-source	fallback	low
 下旬	u			no-source	fallback	low
 兩類	u			no-source	fallback	low
@@ -5464,7 +5464,7 @@ literal	pos	family	voice	note	source	confidence
 基金經理	u			no-source	fallback	low
 試駕	u			no-source	fallback	low
 那我就	u			no-source	fallback	low
-一羣人	u			no-source	fallback	low
+一群人	u			no-source	fallback	low
 什麼啊	u			no-source	fallback	low
 倒也	u			no-source	fallback	low
 唐僧	u			no-source	fallback	low

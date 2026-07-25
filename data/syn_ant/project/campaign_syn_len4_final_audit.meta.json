@@ -247,8 +247,8 @@
         "reasons": []
       },
       {
-        "head": "弱勢羣體",
-        "tail": "弱勢社羣",
+        "head": "弱勢群體",
+        "tail": "弱勢社群",
         "verdict": "ok",
         "reasons": []
       },
@@ -5887,7 +5887,7 @@
         "notes": ""
       },
       {
-        "head": "千島羣島",
+        "head": "千島群島",
         "reason": "proper_name_or_deixis",
         "verdict": "ok",
         "notes": ""
@@ -7538,8 +7538,8 @@
           "reasons": []
         },
         {
-          "head": "弱勢羣體",
-          "tail": "弱勢社羣",
+          "head": "弱勢群體",
+          "tail": "弱勢社群",
           "verdict": "ok",
           "reasons": []
         },
@@ -11098,7 +11098,7 @@
           "notes": ""
         },
         {
-          "head": "產業集羣",
+          "head": "產業集群",
           "reason": "no_stable_near_synonym",
           "verdict": "ok",
           "notes": ""

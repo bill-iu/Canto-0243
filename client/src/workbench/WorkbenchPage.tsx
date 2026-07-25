@@ -68,9 +68,9 @@ export interface WorkbenchPageProps {
   active?: boolean;
   hidden?: boolean;
   embedded?: boolean;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   theme?: 'light' | 'dark';
-  onLangChange?: (lang: 'zh' | 'en') => void;
+  onLangChange?: (lang: 'zh' | 'zh-Hans' | 'en') => void;
   onThemeChange?: (theme: 'light' | 'dark') => void;
   onOpenSearchHome?: () => void;
   onOpenSearchNavigation?: (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => void;
@@ -128,7 +128,7 @@ export function WorkbenchPage({
   const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
   const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
   const [spanInputError, setSpanInputError] = useState('');
-  const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
+  const [uiLang, setUiLang] = useState<'zh' | 'zh-Hans' | 'en'>(() => getLang() as 'zh' | 'zh-Hans' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
     return theme === 'light' || theme === 'dark' ? theme : 'dark';
@@ -217,7 +217,7 @@ export function WorkbenchPage({
 
   useEffect(() => {
     setLang(uiLang);
-    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : 'en';
+    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : uiLang === 'zh-Hans' ? 'zh-Hans' : 'en';
   }, [uiLang]);
 
   useEffect(() => {
@@ -883,6 +883,7 @@ export function WorkbenchPage({
         <ComparePanel
           candidate={preview}
           draft={draft}
+          lang={uiLang}
           onClose={closePreview}
           onApply={() => applyPreview(preview)}
           onOpenInSearch={() => openInSearch(preview.literal)}

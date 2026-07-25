@@ -72,7 +72,7 @@ p0	匿埋	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
 p0	十六進位	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	南海	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	博士學位	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
-p0	博覽羣書	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
+p0	博覽群書	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
 p0	卸妝	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
 p0	參照	u			no-source;fallback	low	low|u|plain	BAD	v,n			u 有明確詞類 → v,n
 p0	參謀總長	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n

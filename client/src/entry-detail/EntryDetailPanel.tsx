@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { tDetail } from '../../../shared/entry-detail-i18n.mjs';
 import { pickPreferredReadingIndex } from '../../../shared/entry-detail-core.mjs';
+import { toSimplified } from '../../../shared/t2s-runtime.mjs';
 import type { EntryDetailModel } from './types.ts';
 
 export function EntryDetailPanel({
@@ -18,7 +19,7 @@ export function EntryDetailPanel({
   model: EntryDetailModel | null;
   loading?: boolean;
   relationsLoading?: boolean;
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
   preferredJyutping?: string | null;
   onClose: () => void;
   onRelationPick: (literal: string) => void;
@@ -62,7 +63,7 @@ export function EntryDetailPanel({
       </header>
       <div className="entry-detail-panel__body">
         <div className="entry-detail-panel__hero">
-          <div className="entry-detail-panel__literal">{literal}</div>
+          <div className="entry-detail-panel__literal">{lang === 'zh-Hans' ? toSimplified(literal) : literal}</div>
           <div className="entry-detail-panel__actions">
             <button type="button" className="entry-detail-panel__icon-btn" onClick={() => void handleCopy()}>
               {copied ? tDetail('detail.copy.done', lang) : tDetail('detail.copy', lang)}

@@ -10,7 +10,7 @@ export interface RelationFormState {
 }
 
 export interface RelationViewProps {
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   initial?: Partial<RelationFormState>;
   onFormChange?: (next: RelationFormState) => void;
 }

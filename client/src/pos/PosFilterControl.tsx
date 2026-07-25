@@ -13,7 +13,7 @@ import type { FormalPos, PosFamily, PosVoice } from './types.ts';
 type Props = {
   value: PosFilterState;
   onChange: (next: PosFilterState) => void;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   disabled?: boolean;
 };
 

@@ -8,12 +8,13 @@ import { candidateReasonLabel } from './candidate-reason-i18n.ts';
 interface Props {
   candidate: WorkbenchCandidate;
   draft: LineDraft;
+  lang?: 'zh' | 'zh-Hans';
   onApply: () => void;
   onClose: () => void;
   onOpenInSearch: () => void;
 }
 
-export function ComparePanel({ candidate, draft, onApply, onClose, onOpenInSearch }: Props) {
+export function ComparePanel({ candidate, draft, lang, onApply, onClose, onOpenInSearch }: Props) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const selection = draft.selection!;
   const preview = [
@@ -57,7 +58,7 @@ export function ComparePanel({ candidate, draft, onApply, onClose, onOpenInSearc
         {relationSource ? <div><dt>關係來源</dt><dd>{relationSource}</dd></div> : null}
       </dl>
       <h3>為何出現</h3>
-      <ul>{candidate.reasons.map((reason, index) => <li key={`${reason.kind}-${index}`}>{candidateReasonLabel(reason.kind)}</li>)}</ul>
+      <ul>{candidate.reasons.map((reason, index) => <li key={`${reason.kind}-${index}`}>{candidateReasonLabel(reason.kind, lang)}</li>)}</ul>
       <button type="button" className="primary-action" onClick={onApply}>套用這個選擇</button>
       <button type="button" className="secondary-action" onClick={onOpenInSearch}>在搜尋頁查看</button>
       <p className="compare-note">只有按下「套用」才會改動句面。</p>

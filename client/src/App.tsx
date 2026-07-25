@@ -205,7 +205,7 @@ function App() {
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [warmupBadgeClear, setWarmupBadgeClear] = useState(false);
-  const [uiLang, setUiLang] = useState<'zh' | 'en'>(() => getLang() as 'zh' | 'en');
+  const [uiLang, setUiLang] = useState<'zh' | 'zh-Hans' | 'en'>(() => getLang() as 'zh' | 'zh-Hans' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
   );
@@ -376,7 +376,7 @@ function App() {
 
   useEffect(() => {
     setLang(uiLang);
-    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : 'en';
+    document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : uiLang === 'zh-Hans' ? 'zh-Hans' : 'en';
   }, [uiLang]);
 
   const {

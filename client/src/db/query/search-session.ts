@@ -26,7 +26,7 @@ export function planCommitSearch(input: {
   mode: string;
   last0243Mode?: QueryMode | string | null;
   pzmode?: 'm1' | 'm2' | 'm3';
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
 }): CommitSearchPlan {
   const fallback = asM123(input.last0243Mode);
   const plan = planRedirect(input.q, {

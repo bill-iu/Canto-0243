@@ -20,7 +20,7 @@ function AnchorSection({
   title: string;
   items: QueryResult[];
   activeLiteral?: string | null;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
   return (
@@ -45,7 +45,7 @@ export const AnchorResultList = memo(function AnchorResultList({
   results: QueryResult[];
   visibleLimit?: number;
   activeLiteral?: string | null;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
   countListRender();

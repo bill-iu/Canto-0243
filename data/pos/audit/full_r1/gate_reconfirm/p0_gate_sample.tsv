@@ -89,7 +89,7 @@ p0	無性繁殖	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 
 p0	無限公司	n			len4-noun-heuristic	high	gate	OK				
 p0	狠狠	r			no-source;fallback;full-r1-audit;review;u 有明確詞類 → r	high	gate	OK				
 p0	玩完	v			verb-suffix;heuristic	high	gate	OK				
-p0	產業集羣	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
+p0	產業集群	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n	high	gate	OK				
 p0	男歡女愛	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v	high	gate	OK				
 p0	疾言厲色	a,n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → a,n	high	gate	OK				
 p0	真係	r			no-source;fallback;p1-audit;review;粵真的	high	gate	OK				

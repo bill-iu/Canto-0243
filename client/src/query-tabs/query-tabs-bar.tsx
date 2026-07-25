@@ -5,7 +5,7 @@ import { usePillTabDrag } from './use-pill-tab-drag';
 export interface QueryTabsBarProps {
   tabs: QueryTab[];
   activeId: number;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onSelect: (id: number) => void;
   onClose: (id: number) => void;
   onAdd: () => void;

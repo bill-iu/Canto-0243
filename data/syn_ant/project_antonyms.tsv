@@ -1388,7 +1388,7 @@ head	tail	relation_type	batch_id
 集成	分散	ant	campaign-b07-20260714
 開啓	關閉	ant	campaign-b07-20260714
 開啓	關上	ant	campaign-b07-20260714
-羣體	個體	ant	campaign-b07-20260714
+群體	個體	ant	campaign-b07-20260714
 峯	谷	ant	campaign-b07-20260714
 任由	約束	ant	campaign-b07-20260714
 任由	管束	ant	campaign-b07-20260714
@@ -3252,7 +3252,7 @@ head	tail	relation_type	batch_id
 始料未及	意料之中	ant	len4-b02-20260715
 嫣然一笑	哭喪着臉	ant	len4-b02-20260715
 嫣然一笑	怒目而視	ant	len4-b02-20260715
-孤孤單單	成羣結隊	ant	len4-b02-20260715
+孤孤單單	成群結隊	ant	len4-b02-20260715
 孤孤單單	成雙成對	ant	len4-b02-20260715
 孤孤單單	熱鬧	ant	len4-b02-20260715
 孤軍奮戰	並肩作戰	ant	len4-b02-20260715
@@ -3508,8 +3508,8 @@ head	tail	relation_type	batch_id
 美輪美奐	殘破	ant	len4-b02-20260715
 美輪美奐	破敗不堪	ant	len4-b02-20260715
 美輪美奐	簡陋	ant	len4-b02-20260715
-羣雄逐鹿	一枝獨秀	ant	len4-b02-20260715
-羣雄逐鹿	和平共處	ant	len4-b02-20260715
+群雄逐鹿	一枝獨秀	ant	len4-b02-20260715
+群雄逐鹿	和平共處	ant	len4-b02-20260715
 翻山越嶺	一馬平川	ant	len4-b02-20260715
 翻山越嶺	平坦	ant	len4-b02-20260715
 翻山越嶺	平步青雲	ant	len4-b02-20260715
@@ -3756,10 +3756,10 @@ head	tail	relation_type	batch_id
 半生不熟	嫻熟	ant	len4-b03-20260715
 半生不熟	滾瓜爛熟	ant	len4-b03-20260715
 半生不熟	精通	ant	len4-b03-20260715
-卓爾不羣	普通	ant	len4-b03-20260715
-博覽羣書	不學無術	ant	len4-b03-20260715
-博覽羣書	孤陋寡聞	ant	len4-b03-20260715
-博覽羣書	目不識丁	ant	len4-b03-20260715
+卓爾不群	普通	ant	len4-b03-20260715
+博覽群書	不學無術	ant	len4-b03-20260715
+博覽群書	孤陋寡聞	ant	len4-b03-20260715
+博覽群書	目不識丁	ant	len4-b03-20260715
 口出狂言	沉默寡言	ant	len4-b03-20260715
 口出狂言	謙虛	ant	len4-b03-20260715
 口出狂言	謹言慎行	ant	len4-b03-20260715
@@ -4098,7 +4098,7 @@ head	tail	relation_type	batch_id
 繁文縟節	不拘小節	ant	len4-b03-20260715
 繁文縟節	乾脆	ant	len4-b03-20260715
 繁文縟節	簡便	ant	len4-b03-20260715
-羣龍無首	眾望所歸	ant	len4-b03-20260715
+群龍無首	眾望所歸	ant	len4-b03-20260715
 義正詞嚴	理屈詞窮	ant	len4-b03-20260715
 翹首以待	不屑一顧	ant	len4-b03-20260715
 翹首以待	漠不關心	ant	len4-b03-20260715
@@ -5595,7 +5595,7 @@ head	tail	relation_type	batch_id
 問柳尋花	正派	ant	len4-b06-20260715
 喜結連理	勞燕分飛	ant	len4-b06-20260715
 單人獨馬	人多勢眾	ant	len4-b06-20260715
-單人獨馬	成羣結隊	ant	len4-b06-20260715
+單人獨馬	成群結隊	ant	len4-b06-20260715
 單人獨馬	結伴	ant	len4-b06-20260715
 單門獨户	大雜院	ant	len4-b06-20260715
 嗚乎哀哉	喜氣洋洋	ant	len4-b06-20260715

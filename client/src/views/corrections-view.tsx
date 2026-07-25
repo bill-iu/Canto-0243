@@ -16,7 +16,7 @@ interface SessionRow extends WordRow {
 }
 
 export interface CorrectionsViewProps {
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   prefetchChar?: string;
 }
 

@@ -15,6 +15,6 @@ export const WORKBENCH_INTRO = {
   },
 } as const;
 
-export function workbenchIntroCopy(lang: 'zh' | 'en') {
-  return WORKBENCH_INTRO[lang];
+export function workbenchIntroCopy(lang: 'zh' | 'zh-Hans' | 'en') {
+  return WORKBENCH_INTRO[lang === 'zh-Hans' ? 'zh' : lang];
 }

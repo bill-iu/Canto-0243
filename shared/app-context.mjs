@@ -78,6 +78,30 @@ const MESSAGES = {
     'lang.toggle': '中 / EN',
     'theme.toggle': '切換主題',
   },
+  zh-Hans: {
+    'hero.title': 'ONE·揾·韵',
+    'hero.tagline': '格律／协音／押韵／近反义，一步揾到。',
+    'search.label': '搜寻内容',
+    'search.button': '搜寻',
+    'search.placeholder.default': '输入 香??、23+就=、~=开心、!!、~~…',
+    'mode.readout.prefix': '目前模式：',
+    'shuffle.aria': '随机打乱结果',
+    'brand.aria': '返回搜寻首页',
+    'menu.0243.group': '0243搜寻模式',
+    'menu.tools': '工具',
+    'menu.guide': '搜寻教学',
+    'menu.guide.help': '完整语法与例子',
+    'menu.about': '关于',
+    'menu.about.help': '授权、致谢与回报',
+    'menu.lexicon': '词库版本：',
+    'about.title': '关于 Canto-0243',
+    'about.lede': 'ONE·揾·韵 — 离线粤语填词查找工作台。',
+    'about.back': '返回搜寻',
+    'gate.preparing': '执紧啲字…',
+    'empty.notfound': '揾唔到',
+    'lang.toggle': '中 / EN',
+    'theme.toggle': '切换主题',
+  },
   en: {
     'hero.title': 'WRITE·RIGHT·RHYME',
     'hero.tagline': 'Meter / sound match / rhyme / near-antonyms — find in one step.',
@@ -106,13 +130,13 @@ const MESSAGES = {
 
 export function getLang() {
   const saved = localStorage.getItem(LANG_KEY);
-  if (saved === 'zh' || saved === 'en') return saved;
+  if (saved === 'zh' || saved === 'zh-Hans' || saved === 'en') return saved;
   return (navigator.language || '').startsWith('zh') ? 'zh' : 'en';
 }
 
 export function setLang(lang) {
   localStorage.setItem(LANG_KEY, lang);
-  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+  document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : lang === 'zh-Hans' ? 'zh-Hans' : 'en';
 }
 
 export function t(key, lang = getLang()) {

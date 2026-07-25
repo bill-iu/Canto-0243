@@ -1,7 +1,7 @@
 /** Shared search-mode labels — portable + PWA (zh default + en i18n). */
 
 /** @typedef {'m1' | 'm2' | 'm3' | 'syn' | 'pz'} UrlMode */
-/** @typedef {'zh' | 'en'} UiLang */
+/** @typedef {'zh' | 'zh-Hans' | 'en'} UiLang */
 
 /** @type {Record<UrlMode, { title: string; note: string; readout: string; statsLabel: string; placeholder: string }>} */
 export const MODE_META = {
@@ -35,6 +35,39 @@ export const MODE_META = {
   },
   pz: {
     title: '平仄', note: '格律', readout: '平仄模式', statsLabel: '平仄', placeholder: '搵嘢：P／Z／數字／?／漢字錨',
+  },
+};
+export const MODE_META_ZH_HANS = {
+  m1: {
+    title: '0243模式',
+    note: '松',
+    readout: '0243模式（松）',
+    statsLabel: '0243模式 · 松',
+    placeholder: '揾嘢：0243／汉字／粤拼',
+  },
+  m2: {
+    title: '02493模式',
+    note: '紧',
+    readout: '02493模式（紧）',
+    statsLabel: '02493模式 · 紧',
+    placeholder: '揾嘢：02493／汉字／粤拼',
+  },
+  m3: {
+    title: '394052模式',
+    note: '六声',
+    readout: '394052模式（六声）',
+    statsLabel: '394052模式 · 六声',
+    placeholder: '揾嘢：394052／汉字／粤拼',
+  },
+  syn: {
+    title: '近反义',
+    note: '查',
+    readout: '近反义模式（查）',
+    statsLabel: '近反义 · 查',
+    placeholder: '打字揾同义／反义',
+  },
+  pz: {
+    title: '平仄', note: '格律', readout: '平仄模式', statsLabel: '平仄', placeholder: '揾嘢：P／Z／数字／?／汉字锚',
   },
 };
 
@@ -79,7 +112,7 @@ const MODE_META_EN = {
  */
 export function getModeMeta(mode, lang = 'zh') {
   const key = mode in MODE_META ? /** @type {UrlMode} */ (mode) : 'm1';
-  const table = lang === 'en' ? MODE_META_EN : MODE_META;
+  const table = lang === 'en' ? MODE_META_EN : lang === 'zh-Hans' ? MODE_META_ZH_HANS : MODE_META;
   return table[key] ?? table.m1;
 }
 

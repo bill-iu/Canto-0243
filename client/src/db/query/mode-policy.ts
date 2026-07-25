@@ -41,7 +41,7 @@ export function planRedirect(
     fallback0243Mode?: QueryMode | string | null;
     detect?: DetectKind;
     isRelation?: boolean;
-    lang?: 'zh' | 'en';
+    lang?: 'zh' | 'zh-Hans' | 'en';
   },
 ): ModeRedirectPlan {
   const detect = opts.detect ?? 'regex';

@@ -10,7 +10,7 @@ import { uiModeToUrlMode as contractUiModeToUrlMode, urlModeToUiMode as contract
 export type UiMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';
 export type UrlMode = 'm1' | 'm2' | 'm3' | 'syn' | 'pz';
 export type PingzeSubMode = 'm1' | 'm2' | 'm3';
-export type UiLang = 'zh' | 'en';
+export type UiLang = 'zh' | 'zh-Hans' | 'en';
 export type Last0243SearchMode = '0243' | '02493' | '394052';
 
 export interface ModeMeta {

@@ -6,7 +6,7 @@ import {
 } from './header-hero-tagline-fit.ts';
 
 export interface HeaderHeroProps {
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
 }
 
 export function HeaderHero({ lang }: HeaderHeroProps) {

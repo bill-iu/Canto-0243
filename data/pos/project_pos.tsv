@@ -501,7 +501,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 三	x			numeral;heuristic
 三下五除二	u	chengyu		chengyu-pos-review;review
 三不五時	r			u-inlex-nf4;review;agent-label
-三五成羣	u	chengyu		chengyu-pos-review;review
+三五成群	u	chengyu		chengyu-pos-review;review
 三人成虎	n,v	chengyu		成語；三人成虎;u-inlex-nf4;review;agent-label;family-leaf-review
 三人行必有我師	u	chengyu		chengyu-pos-review;review
 三代同堂	n,v			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n,v
@@ -1876,7 +1876,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 人神共憤	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 人稱代詞	n			u-inlex-nf4;review;agent-label
 人窮志短	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
-人羣	n			cow-single
+人群	n			cow-single
 人群	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 人老珠黃	u	chengyu		chengyu-pos-review;review
 人聲鼎沸	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -2622,7 +2622,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 候選人	n			cow-single;p3
 倚	v			u-inlex-nf2b;review;agent-label
 倚老賣老	u	chengyu		chengyu-pos-review;review
-倜儻不羣	u	chengyu		chengyu-pos-review;review
+倜儻不群	u	chengyu		chengyu-pos-review;review
 借	v			cow-single
 借刀殺人	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 借力	v			u-inlex;review;u-inlex-agent
@@ -4532,7 +4532,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 千嬌百媚	u	chengyu		chengyu-pos-review;review
 千家萬户	n,r	chengyu		u-tail533;review;agent-label;family-leaf-review
 千山萬水	n	chengyu		成語；遙遠路途;u-inlex-nf2b;review;agent-label;family-leaf-review
-千島羣島	n			u-inlex-nf5;review;agent-label
+千島群島	n			u-inlex-nf5;review;agent-label
 千差萬別	u	chengyu		chengyu-pos-review;review
 千慮一失	u	chengyu		chengyu-pos-review;review
 千慮一得	u	chengyu		chengyu-pos-review;review
@@ -4630,7 +4630,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 卑陋齷齪	u	chengyu		chengyu-pos-review;review
 卒	a,n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 卓有成效	u	chengyu		chengyu-pos-review;review
-卓爾不羣	a	chengyu		成語；卓爾不羣;u-inlex-nf3;review;agent-label;family-leaf-review
+卓爾不群	a	chengyu		成語；卓爾不群;u-inlex-nf3;review;agent-label;family-leaf-review
 卓見	n			u-inlex-nf4;review;agent-label
 卓越	n			cow-single
 協	v			u-inlex-nf2k;review;agent-label
@@ -4653,7 +4653,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 南昌	n			u-inlex;review;u-inlex-agent
 南昌起義	n			u-inlex-nf3;review;agent-label
 南柯一夢	u	chengyu		chengyu-pos-review;review
-南沙羣島	n			u-inlex-nf2b;review;agent-label
+南沙群島	n			u-inlex-nf2b;review;agent-label
 南海	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 南無	x			u-inlex-nf2k;review;agent-label
 南無佬跌落屎坑	v	xiehouyu		cantonese-md-xiehouyu;answer-function;review
@@ -4686,7 +4686,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 博聞強識	u	chengyu		chengyu-pos-review;review
 博茨瓦納	n			u-inlex-nf3;review;agent-label
 博覽會	n			cow-single
-博覽羣書	v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v;family-leaf-review
+博覽群書	v	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → v;family-leaf-review
 博識多通	u	chengyu		chengyu-pos-review;review
 卜	n,v			u-inlex;review;u-inlex-agent
 占	v			u-inlex-nf2k;review;agent-label
@@ -8544,7 +8544,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 害人不淺	a,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 害怕	n,v			cow-multi;p3
 害羞	a			u-inlex;review;u-inlex-agent
-害羣之馬	u	chengyu		chengyu-pos-review;review
+害群之馬	u	chengyu		chengyu-pos-review;review
 害處	n			u-inlex-nf2b;review;agent-label
 宴安鴆毒	u	chengyu		chengyu-pos-review;review
 宵	n			u-inlex-nf2k;review;agent-label
@@ -9704,7 +9704,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 座談	n,v			u-inlex-nf2k;review;agent-label
 座談會	n			cow-single
 庫	n			u-inlex-nf2k;review;agent-label
-庫克羣島	n			地名;u-inlex-nf4;review;agent-label
+庫克群島	n			地名;u-inlex-nf4;review;agent-label
 庫存	n,v			cow-nv-unreviewed;trust-low
 庫存現金	n			u-inlex-nf4;review;agent-label
 庫房	n			cow-single;p3
@@ -9861,7 +9861,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 弱	a			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 弱不勝衣	u	chengyu		chengyu-pos-review;review
 弱不禁風	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
-弱勢羣體	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
+弱勢群體	n			no-source;fallback;full-r1-audit;review;清晰名詞／專名
 弱小	a			u-inlex;review;u-inlex-agent
 弱智	a,n			u-inlex;review;u-inlex-agent
 弱肉強食	n,v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
@@ -11128,7 +11128,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 成竹在胸	u	chengyu		chengyu-pos-review;review
 成績	n			cow-single
 成績單	n			u-inlex-nf2b;review;agent-label
-成羣結隊	v	chengyu		成語;u-inlex-nf2b;review;agent-label;family-leaf-review
+成群結隊	v	chengyu		成語;u-inlex-nf2b;review;agent-label;family-leaf-review
 成色	n			no-source;p3;fallback;full-r1-audit;review;清晰名詞／專名
 成語典故	n			u-inlex-nf4;review;agent-label
 成語接龍	n			u-inlex-nf3;review;agent-label
@@ -11482,7 +11482,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 承諾	n,v			cow-nv-unreviewed;trust-low
 承辦	v			u-inlex;review;u-inlex-agent
 技	n			u-inlex;review;u-inlex-agent
-技壓羣雄	a,v			u-inlex-nf4;review;agent-label
+技壓群雄	a,v			u-inlex-nf4;review;agent-label
 技巧	n			cow-single
 技能	n			cow-single
 技術	n			cow-single
@@ -12817,7 +12817,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 敦煌	n			u-inlex-nf2k;review;agent-label
 敦煌石窟	n			u-inlex-nf4;review;agent-label
 敬	a,v			u-inlex-nf2k;review;agent-label
-敬業樂羣	u	chengyu		chengyu-pos-review;review
+敬業樂群	u	chengyu		chengyu-pos-review;review
 敬業精神	n			u-inlex-nf2b;review;agent-label
 敬而遠之	v	chengyu		u-inlex-nf2b;review;agent-label;family-leaf-review
 敬若神明	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
@@ -16992,7 +16992,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 狐朋狗友	n	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → n;family-leaf-review
 狐死首丘	u	chengyu		chengyu-pos-review;review
 狐狸	n			cow-single
-狐羣狗黨	n	chengyu		chengyu-pos-review;review
+狐群狗黨	n	chengyu		chengyu-pos-review;review
 狐裘羔袖	u	chengyu		chengyu-pos-review;review
 狗	n			cow-single
 狗上瓦坑	u	xiehouyu		cantonese-md-xiehouyu;answer-function;review
@@ -17294,7 +17294,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 理解	n,v			cow-multi;full-r1-audit;review;真名動；a 假陽會毒同形閘
 理論	n			cow-single
 理論貢獻	n			u-inlex-nf5;review;agent-label
-琉球羣島	n			u-inlex-nf4;review;agent-label
+琉球群島	n			u-inlex-nf4;review;agent-label
 琢磨	v			u-inlex;review;u-inlex-agent
 琦	n			u-inlex-nf2k;review;agent-label
 琪	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -17526,7 +17526,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 產品	n			cow-single
 產地	n			u-inlex-nf2k;review;agent-label
 產業工人	n			u-inlex-nf3;review;agent-label
-產業集羣	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
+產業集群	n			no-source;fallback;full-r1-audit;review;u 有明確詞類 → n
 產檢	n,v			u-inlex-nf3;review;agent-label
 產權	n			cow-single
 產生	v			cow-single
@@ -20326,16 +20326,16 @@ T恤	n			u-inlex-nf2k;review;agent-label
 羞於啓齒	a,v	idiom		u-inlex-nf4;review;agent-label
 羞與為伍	u	chengyu		chengyu-pos-review;review
 羞辱	n,v			cow-multi;p3
-羣威羣膽	u	chengyu		chengyu-pos-review;review
-羣眾	n			u-tail533;review;agent-label
-羣眾組織	n			len4-noun-heuristic
-羣策羣力	u	chengyu		chengyu-pos-review;review
-羣組	n			u-inlex-nf2k;review;agent-label
-羣起而攻之	u	chengyu		chengyu-pos-review;review
-羣雄逐鹿	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
-羣體	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-羣魔亂舞	u	chengyu		chengyu-pos-review;review
-羣龍無首	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
+群威群膽	u	chengyu		chengyu-pos-review;review
+群眾	n			u-tail533;review;agent-label
+群眾組織	n			len4-noun-heuristic
+群策群力	u	chengyu		chengyu-pos-review;review
+群組	n			u-inlex-nf2k;review;agent-label
+群起而攻之	u	chengyu		chengyu-pos-review;review
+群雄逐鹿	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
+群體	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+群魔亂舞	u	chengyu		chengyu-pos-review;review
+群龍無首	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
 群	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 群體	n			u-inlex-nf2k;review;agent-label
 羥基丁酸	n			u-inlex-nf5;review;agent-label
@@ -22344,7 +22344,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 西方人	n			u-inlex-nf2b;review;agent-label
 西施	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 西服	n			u-inlex-nf2k;review;agent-label
-西沙羣島	n			u-inlex-nf3;review;agent-label
+西沙群島	n			u-inlex-nf3;review;agent-label
 西湖	n			u-inlex;review;u-inlex-agent
 西班牙文	n			u-inlex-nf3;review;agent-label
 西班牙港	n			u-inlex-nf5;review;agent-label
@@ -23447,7 +23447,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 超導電性	n			u-inlex-nf5;review;agent-label
 超市	n			cow-single
 超敏反應	n			u-inlex-nf4;review;agent-label
-超然不羣	u	chengyu		chengyu-pos-review;review
+超然不群	u	chengyu		chengyu-pos-review;review
 超然物外	u	chengyu		chengyu-pos-review;review
 超然自逸	u	chengyu		chengyu-pos-review;review
 超級	a,r			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
@@ -23455,8 +23455,8 @@ T恤	n			u-inlex-nf2k;review;agent-label
 超級女生	n			u-inlex-nf2b;review;agent-label
 超級市場	n			len4-noun-heuristic
 超級鏈接	n			u-inlex-nf3;review;agent-label
-超羣拔類	u	chengyu		chengyu-pos-review;review
-超羣絕倫	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
+超群拔類	u	chengyu		chengyu-pos-review;review
+超群絕倫	a	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 超聲波	n			u-inlex-nf2b;review;agent-label
 超脱	a,v			u-tail533;review;agent-label
 超超玄箸	u	chengyu		chengyu-pos-review;review
@@ -25237,7 +25237,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 開放系統	n			len4-noun-heuristic
 開放電路	n			u-inlex-nf5;review;agent-label
 開明	a			u-inlex-nf5;review;agent-label
-開曼羣島	n			u-inlex-nf4;review;agent-label
+開曼群島	n			u-inlex-nf4;review;agent-label
 開會	v			cow-single
 開會時間	n			u-inlex-nf5;review;agent-label
 開朗	a			u-inlex;review;u-inlex-agent
@@ -25659,7 +25659,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 集思廣益	v	chengyu		成語；集思廣益;u-inlex-nf5;review;agent-label;family-leaf-review
 集成	n,v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 集成電路	n			cow-single
-集羣	n			u-inlex-nf2k;review;agent-label
+集群	n			u-inlex-nf2k;review;agent-label
 集聚	v			u-inlex-nf2k;review;agent-label
 集腋成裘	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 集裝箱	n			cow-single
@@ -26759,7 +26759,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 驚歎不已	a,v	idiom		u-inlex-nf3;review;agent-label
 驚死	a,r,v			u-inlex;review;u-inlex-agent
 驚濤駭浪	u	chengyu		chengyu-pos-review;review
-驚羣動眾	u	chengyu		chengyu-pos-review;review
+驚群動眾	u	chengyu		chengyu-pos-review;review
 驚覺	v			u-inlex-nf2k;review;agent-label
 驚訝	a			cow-multi;p1;p1-audit;review;stative 形；n 假陽會毒同名詞閘
 驚豔	a,v			u-inlex-nf2k;review;agent-label
@@ -27091,7 +27091,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 鵲巢鳩佔	v	chengyu		u-inlex-nf5;review;agent-label;family-leaf-review
 鵲橋相會	n,v	idiom		u-tail533;review;agent-label
 鶯歌燕舞	a,n	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
-鶴立雞羣	u	chengyu		chengyu-pos-review;review
+鶴立雞群	u	chengyu		chengyu-pos-review;review
 鶴髮童顏	u	chengyu		chengyu-pos-review;review
 鶼鰈情深	a	idiom		u-inlex-nf5;review;agent-label
 鷸蚌相爭	v	chengyu		成語截；鷸蚌相爭漁翁得利;u-inlex-nf3;review;agent-label;family-leaf-review
