@@ -83,6 +83,7 @@ import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
+import { getAppShellCopy } from '../../shared/app-shell-i18n.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
 import { isPortableHost } from './host-mode';
 import { useEntrySize } from './entry-size';
@@ -239,6 +240,7 @@ function App() {
   const trimmedInput = inputQuery.trim();
   const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
+  const appCopy = getAppShellCopy(uiLang);
 
   const loadSearchTabUi = useCallback(
     (tab: typeof activeTab, live: boolean) => {
@@ -1032,9 +1034,7 @@ function App() {
 
   const resultsLabel = useMemo(() => {
     if (filterActive) {
-      return uiLang === 'en'
-        ? `${resultItemCount} filtered (from ${displayResults.length} loaded)${statsSuffix}`
-        : `篩選後 ${resultItemCount} 項（已載入 ${displayResults.length} 項）${statsSuffix}`;
+      return appCopy.filteredResults(resultItemCount, displayResults.length, statsSuffix);
     }
     if (synLayout && filteredDisplayResults.length > 0) {
       return `${synResultsStats(filteredDisplayResults)}${statsSuffix}`;
@@ -1051,7 +1051,7 @@ function App() {
     anchorLayout,
     filteredDisplayResults,
     filterActive,
-    uiLang,
+    appCopy,
     displayResults.length,
     effectiveTotal,
     resultItemCount,
@@ -1121,7 +1121,7 @@ function App() {
       >
         <header className="app-header">
           <h1 id="searchTitle" className="sr-only">
-            {uiLang === 'en' ? 'WRITE·RIGHT·RHYME' : 'ONE·搵·韻'}
+            {appCopy.title}
           </h1>
           <HostTabsBar
             tabs={tabs}
@@ -1139,7 +1139,7 @@ function App() {
                 <button
                   className="brand"
                   type="button"
-                  aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
+                  aria-label={appCopy.returnToSearch}
                   onClick={handleBrandClick}
                 >
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
@@ -1163,10 +1163,10 @@ function App() {
                     </span>
                     <span className="workbench-entry__text">
                       <span className="workbench-entry__title">
-                        {uiLang === 'zh' ? '句格工作台' : 'VerseCraft Workbench'}
+                        {appCopy.workbenchTitle}
                       </span>
                       <span className="workbench-entry__sub">
-                        {uiLang === 'zh' ? '聲調 · 押韻 · 原意' : 'Tone · rhyme · sense'}
+                        {appCopy.workbenchSub}
                       </span>
                     </span>
                   </a>
@@ -1179,7 +1179,7 @@ function App() {
                   onOpenAbout={handleOpenAbout}
                   onOpenWorkbench={view !== 'workbench' ? openWorkbench : undefined}
                   onOpenRelation={isPortableHost() ? handleOpenRelation : undefined}
-                  onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                  onExitPortable={isPortableHost() ? () => void exitPortable(uiLang === 'en' ? 'en' : 'zh') : undefined}
                   theme={uiTheme}
                   lang={uiLang}
                   onThemeChange={(next) => setUiTheme(next)}
@@ -1205,7 +1205,7 @@ function App() {
                 <div className="header-search__main">
                   <div className={`search-input-wrap${searchRingClass ? ` ${searchRingClass}` : ''}`}>
                     <label className="sr-only" htmlFor="searchInput">
-                      {uiLang === 'en' ? 'Search' : '搜尋內容'}
+                      {appCopy.searchLabel}
                     </label>
                     <input
                       id="searchInput"
@@ -1228,15 +1228,15 @@ function App() {
                     className="primary-button header-search__submit"
                     disabled={shellGated}
                   >
-                    {uiLang === 'en' ? 'Search' : '搜尋'}
+                    {appCopy.searchButton}
                   </button>
                   <button
                     type="button"
                     className="icon-button header-search__shuffle"
                     onClick={handleShuffle}
                     disabled={!canShuffle}
-                    aria-label={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
-                    title={uiLang === 'en' ? 'Shuffle results' : '隨機打亂結果'}
+                    aria-label={appCopy.shuffleResults}
+                    title={appCopy.shuffleResults}
                   >
                     <ShuffleIcon />
                   </button>
@@ -1248,7 +1248,7 @@ function App() {
                   <div
                     className="pingze-submodes"
                     role="group"
-                    aria-label={uiLang === 'en' ? 'Tone-digit profile' : '聲調數字檔'}
+                    aria-label={appCopy.toneProfile}
                   >
                     {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
                       <button
@@ -1330,7 +1330,7 @@ function App() {
                     <p className="search-hint">{displayHint}</p>
                   )}
                   {useLiveFetch && searchLoadingVisible && (
-                    <p className="loading">{uiLang === 'en' ? 'Searching…' : '搜尋中…'}</p>
+                    <p className="loading">{appCopy.searching}</p>
                   )}
                   {useLiveFetch && searchError && (
                     <p className="error">錯誤: {searchError.message}</p>
@@ -1375,7 +1375,7 @@ function App() {
                     </div>
                   )}
 
-                  {filterEmpty ? <div className="no-results info"><p><strong>{uiLang === 'en' ? 'No loaded results match these filters.' : '已載入結果中沒有符合這組篩選的項目。'}</strong></p><p>{hasMore ? (uiLang === 'en' ? 'Loading more results to continue checking…' : '正繼續載入更多結果檢查⋯') : (uiLang === 'en' ? 'Reset or loosen a filter.' : '請重設或放寬篩選。')}</p></div> : null}
+                  {filterEmpty ? <div className="no-results info"><p><strong>{appCopy.noLoadedResults}</strong></p><p>{hasMore ? appCopy.loadingMore : appCopy.resetFilter}</p></div> : null}
 
                   {showGuideQuick ? (
                     <GuideQuick

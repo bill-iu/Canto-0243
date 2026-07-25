@@ -689,7 +689,7 @@ export function WorkbenchPage({
                     onModeChange={(family) => goSearchWithNavigate({ kind: 'mode', family })}
                     onOpenGuide={() => goSearchWithNavigate({ kind: 'guide' })}
                     onOpenAbout={() => goSearchWithNavigate({ kind: 'about' })}
-                    onExitPortable={isPortableHost() ? () => void exitPortable(uiLang) : undefined}
+                    onExitPortable={isPortableHost() ? () => void exitPortable(uiLang === 'en' ? 'en' : 'zh') : undefined}
                     theme={uiTheme}
                     lang={uiLang}
                     onThemeChange={(next) => {
@@ -885,7 +885,7 @@ export function WorkbenchPage({
         <ComparePanel
           candidate={preview}
           draft={draft}
-          lang={uiLang}
+          lang={uiLang === 'en' ? 'zh' : uiLang}
           onClose={closePreview}
           onApply={() => applyPreview(preview)}
           onOpenInSearch={() => openInSearch(preview.literal)}
