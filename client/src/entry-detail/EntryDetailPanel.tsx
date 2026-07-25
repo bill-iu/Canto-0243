@@ -46,7 +46,7 @@ export function EntryDetailPanel({
 
   const initialsText = reading?.initials.filter(Boolean).join(' ') || '—';
   const finalsText = reading?.finals.filter(Boolean).join(' ') || '—';
-  const loadingLabel = lang === 'en' ? 'Loading…' : '載入中…';
+  const loadingLabel = tDetail('detail.loading', lang);
 
   return (
     <aside className="entry-detail-panel" aria-label={tDetail('detail.title', lang)}>
@@ -70,7 +70,7 @@ export function EntryDetailPanel({
             </button>
             {onPutInWorkbench ? (
               <button type="button" className="entry-detail-panel__icon-btn" onClick={() => onPutInWorkbench(literal)}>
-                {lang === 'zh' ? '放入句格' : 'Put in workbench'}
+                {tDetail('detail.putWorkbench', lang)}
               </button>
             ) : null}
           </div>

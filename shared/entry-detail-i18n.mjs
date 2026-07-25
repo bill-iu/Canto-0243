@@ -2,6 +2,8 @@ const MESSAGES = {
   zh: {
     'detail.title': '詞條詳情',
     'detail.close': '關閉詞條詳情',
+    'detail.loading': '載入中…',
+    'detail.putWorkbench': '放入句格',
     'detail.readings.n': '{n}個讀音',
     'detail.reading': '讀音{n}',
     'detail.copy': '複製字面',
@@ -24,6 +26,8 @@ const MESSAGES = {
   zhHans: {
     'detail.title': '词条详情',
     'detail.close': '关闭词条详情',
+    'detail.loading': '载入中…',
+    'detail.putWorkbench': '放入句格',
     'detail.readings.n': '{n}个读音',
     'detail.reading': '读音{n}',
     'detail.copy': '复制字面',
@@ -44,6 +48,8 @@ const MESSAGES = {
     'detail.noRelations': '—',
   },
   en: {
+    'detail.loading': 'Loading…',
+    'detail.putWorkbench': 'Put in workbench',
     'detail.pos': 'Part of speech',
   },
 };
