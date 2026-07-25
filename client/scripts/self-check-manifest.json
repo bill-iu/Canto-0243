@@ -138,6 +138,14 @@
       ]
     },
     {
+      "id": "result-stats-i18n",
+      "script": "result-stats-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [

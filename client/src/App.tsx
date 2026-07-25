@@ -1037,14 +1037,14 @@ function App() {
       return appCopy.filteredResults(resultItemCount, displayResults.length, statsSuffix);
     }
     if (synLayout && filteredDisplayResults.length > 0) {
-      return `${synResultsStats(filteredDisplayResults)}${statsSuffix}`;
+      return `${synResultsStats(filteredDisplayResults, uiLang)}${statsSuffix}`;
     }
     if (anchorLayout && filteredDisplayResults.length > 0) {
-      return `${anchorResultsStats(filteredDisplayResults, effectiveTotal)}${statsSuffix}`;
+      return `${anchorResultsStats(filteredDisplayResults, effectiveTotal, uiLang)}${statsSuffix}`;
     }
     if (!filteredDisplayResults.length || resultItemCount <= 0) return '';
     // 標準列表：有字面總數先顯示「搜到 Y」；未返 total 唔寫
-    const body = formatStandardResultCountLabel(effectiveTotal);
+    const body = formatStandardResultCountLabel(effectiveTotal, uiLang);
     return body ? `${body}${statsSuffix}` : '';
   }, [
     synLayout,
@@ -1052,6 +1052,7 @@ function App() {
     filteredDisplayResults,
     filterActive,
     appCopy,
+    uiLang,
     displayResults.length,
     effectiveTotal,
     resultItemCount,

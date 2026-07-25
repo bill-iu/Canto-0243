@@ -4,11 +4,11 @@
  */
 
 /** @param {number | null | undefined} literalTotal */
-export function formatStandardResultCountLabel(literalTotal) {
+export function formatStandardResultCountLabel(literalTotal, lang = 'zh') {
   if (literalTotal == null) return '';
   const n = Math.max(0, Number(literalTotal) || 0);
   if (n <= 0) return '';
-  return `搜到 ${n} 個結果`;
+  return getResultStatsCopy(lang).standard(n);
 }
 
 /** ponytail: `node shared/scripts/result-stats-self-check.mjs` */
@@ -26,3 +26,4 @@ export function resultStatsSelfCheck() {
     throw new Error('result-stats: undefined');
   }
 }
+import { getResultStatsCopy } from './result-stats-i18n.mjs';
