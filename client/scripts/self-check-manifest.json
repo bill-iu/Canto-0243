@@ -81,6 +81,15 @@
       ]
     },
     {
+      "id": "workbench-i18n",
+      "script": "workbench-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization",
+        "workbench"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [

@@ -8,6 +8,11 @@ export const WORKBENCH_INTRO = {
     h1: '授漁·句格工作台',
     h2: '一行拆解，萬種可能',
   },
+  'zh-Hans': {
+    eyebrow: '创作由你主导',
+    h1: '授渔·句格工作台',
+    h2: '一行拆解，万种可能',
+  },
   en: {
     eyebrow: 'Creation stays in your hands',
     h1: 'VerseCraft Workbench',
@@ -16,5 +21,5 @@ export const WORKBENCH_INTRO = {
 } as const;
 
 export function workbenchIntroCopy(lang: 'zh' | 'zh-Hans' | 'en') {
-  return WORKBENCH_INTRO[lang === 'zh-Hans' ? 'zh' : lang];
+  return WORKBENCH_INTRO[lang];
 }

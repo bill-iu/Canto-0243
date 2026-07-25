@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import { getLang, setLang, getTheme, setTheme, readLexiconVersionMeta } from '../../../shared/app-context.mjs';
+import { getWorkbenchCopy } from '../../../shared/workbench-i18n.mjs';
 import { navigateAppRoute } from '../app-navigation.ts';
 import { BrandLogo } from '../brand-logo.tsx';
 import { BrandSvgDefs } from '../brand-svg-defs.tsx';
@@ -655,6 +656,7 @@ export function WorkbenchPage({
   }, [active, activeRelaxation]);
 
   const intro = workbenchIntroCopy(uiLang);
+  const copy = getWorkbenchCopy(uiLang);
   const canUndo = Boolean(session.undo);
   const returnToInput = () => {
     lineInputFormRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
@@ -675,7 +677,7 @@ export function WorkbenchPage({
                   <button
                     className="brand"
                     type="button"
-                    aria-label={uiLang === 'zh' ? '返回搜尋首頁' : 'Back to search home'}
+                    aria-label={copy.returnToSearch}
                     onClick={goSearchHome}
                   >
                     <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
@@ -797,7 +799,7 @@ export function WorkbenchPage({
                   <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
                   {isPosFilterActive(posFilter) ? (
                     <span className="constraint-bar__pos-status">
-                      {uiLang === 'en' ? 'Filtering candidates' : '正篩選候選'}
+                      {copy.filtering}
                     </span>
                   ) : null}
                 </>
@@ -834,7 +836,7 @@ export function WorkbenchPage({
                   <h2 id="relaxHeading">可選放寬：{relaxationKindLabel(candidates.response.relaxation.kind, uiLang)}</h2>
                   <p>
                     {isPosFilterActive(posFilter)
-                      ? (uiLang === 'en' ? 'Candidate count is hidden while filters are active.' : '啟用篩選時不顯示未篩選候選數。')
+                      ? copy.filterCountHidden
                       : `預計可找到 ${candidates.response.relaxation.candidateCount} 項；不會自動採用。`}
                   </p>
                 </div>
