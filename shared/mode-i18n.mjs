@@ -106,6 +106,14 @@ const MODE_META_EN = {
   },
 };
 
+const MODE_HELP_ZH_HANS = {
+  m1: '常用 0243 编码与混合查询',
+  m2: '02493 码（分清二声）',
+  m3: '394052 六声码（三／五声分明）',
+  pz: '平（P）、仄（Z）、数字与通配码',
+  syn: '近义、反义与语意相关',
+};
+
 /**
  * @param {string} mode
  * @param {UiLang} [lang]
@@ -122,16 +130,28 @@ export function getModeMeta(mode, lang = 'zh') {
  */
 export function modeHelp(mode, lang = 'zh') {
   if (mode === 'm1') {
-    return lang === 'en' ? 'Common 0243 codes & mixed queries' : '常用 0243 編碼與混合查詢';
+    if (lang === 'en') return 'Common 0243 codes & mixed queries';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m1;
+    return '常用 0243 編碼與混合查詢';
   }
   if (mode === 'm2') {
-    return lang === 'en' ? '02493 codes (distinguish 2nd tone)' : '02493 碼（分清二聲）';
+    if (lang === 'en') return '02493 codes (distinguish 2nd tone)';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m2;
+    return '02493 碼（分清二聲）';
   }
   if (mode === 'm3') {
-    return lang === 'en' ? '394052 — strict 6-tone digits' : '394052 六聲碼（三／五聲分明）';
+    if (lang === 'en') return '394052 — strict 6-tone digits';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m3;
+    return '394052 六聲碼（三／五聲分明）';
   }
-  if (mode === 'pz') return lang === 'en' ? 'Ping (P), ze (Z), digits and wildcards' : '平（P）、仄（Z）、數字與通配碼';
-  return lang === 'en' ? 'Synonyms, antonyms & semantically related' : '近義、反義與語意相關';
+  if (mode === 'pz') {
+    if (lang === 'en') return 'Ping (P), ze (Z), digits and wildcards';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.pz;
+    return '平（P）、仄（Z）、數字與通配碼';
+  }
+  if (lang === 'en') return 'Synonyms, antonyms & semantically related';
+  if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.syn;
+  return '近義、反義與語意相關';
 }
 
 /**
@@ -143,6 +163,9 @@ export function modeRedirectHint(mode, lang = 'zh') {
   const meta = getModeMeta(key, lang);
   if (lang === 'en') {
     return `This syntax switched to ${meta.readout} for search`;
+  }
+  if (lang === 'zh-Hans') {
+    return `此语法已切换至 ${meta.readout} 查询`;
   }
   return `此語法已切換至 ${meta.readout} 查詢`;
 }
@@ -169,6 +192,9 @@ export function modeI18nSelfCheck() {
   }
   if (getModeMeta('m2', 'en').readout !== '02493 Mode (Strict)') {
     throw new Error('modeI18nSelfCheck: en m2 readout');
+  }
+  if (modeHelp('m1', 'zh-Hans') !== '常用 0243 编码与混合查询') {
+    throw new Error('modeI18nSelfCheck: zh-Hans m1 help');
   }
   if (getModeMeta('syn', 'en').title !== 'Near-Antonyms') {
     throw new Error('modeI18nSelfCheck: en syn title');
