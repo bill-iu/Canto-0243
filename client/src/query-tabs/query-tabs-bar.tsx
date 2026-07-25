@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { tabLabel, type QueryTab } from '@shared/query-tabs';
+import { getQueryTabCopy } from '../../../shared/query-tabs-i18n.mjs';
 import { usePillTabDrag } from './use-pill-tab-drag';
 
 export interface QueryTabsBarProps {
@@ -24,6 +25,7 @@ export function QueryTabsBar({
   onReorder,
 }: QueryTabsBarProps) {
   const canClose = tabs.length > 1;
+  const copy = getQueryTabCopy(lang);
   const barRef = useRef<HTMLDivElement>(null);
   const tabIds = tabs.map((t) => t.id);
 
@@ -44,7 +46,7 @@ export function QueryTabsBar({
   } = usePillTabDrag({ tabIds, barRef, onSelect, onReorder });
 
   return (
-    <div ref={barRef} className="query-tabs-bar" role="tablist" aria-label={lang === 'en' ? 'Query tabs' : '查詢分頁'}>
+    <div ref={barRef} className="query-tabs-bar" role="tablist" aria-label={copy.queryTabs}>
       {tabs.map((tab, index) => {
         const isActive = tab.id === activeId;
         const label = tabLabel(tab, lang);
@@ -72,7 +74,7 @@ export function QueryTabsBar({
               className="query-tab-pill__label"
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
-              title={lang === 'en' ? 'Drag to reorder (desktop mouse; long-press on mobile)' : '拖曳以重排（桌面滑鼠；手機長按）'}
+              title={copy.dragToReorder}
               onClick={(event) => {
                 handleClick(event);
                 if (!event.defaultPrevented) onSelect(tab.id);
@@ -88,7 +90,7 @@ export function QueryTabsBar({
               <button
                 type="button"
                 className="query-tab-pill__close"
-                aria-label={lang === 'en' ? `Close “${label}”` : `關閉「${label}」`}
+                aria-label={copy.close(label)}
                 onClick={(event) => {
                   event.stopPropagation();
                   onClose(tab.id);
@@ -103,7 +105,7 @@ export function QueryTabsBar({
       <button
         type="button"
         className="query-tab-add"
-        aria-label={lang === 'en' ? 'New query tab' : '新增查詢分頁'}
+        aria-label={copy.newQuery}
         title="Alt+N"
         onClick={onAdd}
       >

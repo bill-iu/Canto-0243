@@ -4,6 +4,7 @@
  */
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { tabLabel, type QueryTab } from '@shared/query-tabs';
+import { getQueryTabCopy } from '../../../shared/query-tabs-i18n.mjs';
 import { TAB_GEOMETRY_SVG } from '../../../shared/tab-geometry.mjs';
 import { QueryChromeTabsLayout } from '../../../shared/chrome-tabs-layout.mjs';
 import { ensureDraggabilly } from './ensure-draggabilly';
@@ -49,6 +50,7 @@ function ChromeTabRow({
 }) {
   const isActive = tab.id === activeId;
   const isLast = index === total - 1;
+  const copy = getQueryTabCopy(lang);
   const label = tabLabel(tab, lang);
   return (
     <div
@@ -84,7 +86,7 @@ function ChromeTabRow({
           <button
             type="button"
             className="chrome-tab-close"
-            aria-label={lang === 'en' ? `Close “${label}”` : `關閉「${label}」`}
+            aria-label={copy.close(label)}
             data-close={tab.id}
             onClick={(event) => {
               event.stopPropagation();
@@ -109,6 +111,7 @@ export function ChromeTabsBar({
   const rootRef = useRef<HTMLDivElement>(null);
   const layoutRef = useRef<InstanceType<typeof QueryChromeTabsLayout> | null>(null);
   const canClose = tabs.length > 1;
+  const copy = getQueryTabCopy(lang);
 
   useEffect(() => {
     void ensureDraggabilly();
@@ -186,8 +189,8 @@ export function ChromeTabsBar({
   }, [activeId, tabs.length]);
 
   return (
-    <div className="app-header__tabdeck" aria-label={lang === 'en' ? 'Query tabs' : '查詢分頁'}>
-      <div className="tabdeck-strip" aria-label={lang === 'en' ? 'Chrome tabs strip' : '查詢分頁列（Chrome Tabs）'}>
+    <div className="app-header__tabdeck" aria-label={copy.queryTabs}>
+      <div className="tabdeck-strip" aria-label={copy.chromeTabs}>
         <div className="chrome-tabs" ref={rootRef}>
           <svg
             className="chrome-tabs-defs"
@@ -205,7 +208,7 @@ export function ChromeTabsBar({
           <div
             className="chrome-tabs-content"
             role="tablist"
-            aria-label={lang === 'en' ? 'Query tabs' : '查詢分頁列'}
+            aria-label={copy.queryTabs}
           >
             {tabs.map((tab, index) => (
               <ChromeTabRow
@@ -225,7 +228,7 @@ export function ChromeTabsBar({
                 className="chrome-tab-add-hit"
                 role="button"
                 tabIndex={0}
-                aria-label={lang === 'en' ? 'New query tab' : '新查詢分頁'}
+                aria-label={copy.newQuery}
                 title="Alt+N"
                 onClick={(event) => {
                   event.preventDefault();
