@@ -32,9 +32,9 @@ assert(
 );
 assert(sanitizeExplicitCode('0a?3x', 4) === '0?3', 'sanitize clips');
 assert(padExplicitCode('0?', 4) === '0???', 'pad fills');
-assert(planHasQueryableSlots([], '稻草', 'ranked'), 'semantic-only queryable');
-assert(!planHasQueryableSlots([], '', 'off'), 'bare width not queryable');
-assert(planHasQueryableSlots([{ pos: 0, kind: 'code_digit', digit: '2' }], '', 'off'), 'code queryable');
+assert(planHasQueryableSlots(3, [], '稻草', 'ranked'), 'semantic-only queryable');
+assert(!planHasQueryableSlots(0, [], '', 'off'), 'zero width not queryable');
+assert(planHasQueryableSlots(3, [{ pos: 0, kind: 'code_digit', digit: '2' }], '', 'off'), 'code queryable');
 
 assert(codeConstraintAfterRemoveCode([], 4).mode === 'off', 'no codes → off');
 assert(

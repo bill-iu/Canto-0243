@@ -9,6 +9,7 @@ import type { WordRow } from '../word-row.ts';
 import { getWordCode, getWordText } from '../word-row.ts';
 import {
   filterWordsByCodeAndMask,
+  hasCodeDigitConstraints,
   narrowByPhonemeAnchors,
 } from './f1-slot-code.ts';
 import {
@@ -71,7 +72,11 @@ export async function applyMatchSpec(
 ): Promise<WordRow[]> {
   throwIfSearchCancelled(shouldCancel);
   if (getEqualsSpan(spec)) {
-    return queryWordsByEqualsSpec(spec, db, mode);
+    let rows = await queryWordsByEqualsSpec(spec, db, mode);
+    if (hasCodeDigitConstraints(spec)) {
+      rows = await filterWordsByCodeAndMask(rows, spec, mode, db, shouldCancel);
+    }
+    return rows;
   }
   if (spec.compound_kind) {
     const pool = await getCompoundCandidatesForSpec(spec, db, mode);
