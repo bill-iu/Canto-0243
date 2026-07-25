@@ -54,6 +54,9 @@ jobs:
       - run: python scripts/check_seams.py -q
         env:
           PYTHONUTF8: "1"
+      - run: python scripts/gen_i18n_zh_hans.py --check
+        env:
+          PYTHONUTF8: "1"
       - run: python -m unittest tests.test_guide_example_queries -q
         env:
           PYTHONUTF8: "1"

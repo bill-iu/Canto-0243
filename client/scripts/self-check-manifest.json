@@ -41,6 +41,30 @@
       ]
     },
     {
+      "id": "ui-locale",
+      "script": "ui-locale-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "app-context-locale",
+      "script": "app-context-locale-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "mode-menu-i18n",
+      "script": "mode-menu-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [
