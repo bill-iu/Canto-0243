@@ -122,6 +122,14 @@
       ]
     },
     {
+      "id": "relation-i18n",
+      "script": "relation-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [

@@ -1409,7 +1409,7 @@ function App() {
       {shouldShowPortableUpdate && portableUpdate ? (
         <PortableUpdateBanner
           info={portableUpdate}
-          lang={uiLang === 'en' ? 'en' : 'zh'}
+          lang={uiLang}
           onDismiss={() => void dismissPortableUpdate()}
         />
       ) : null}
