@@ -9,6 +9,7 @@ import {
   type PosFilterState,
 } from './filter.ts';
 import type { FormalPos, PosFamily, PosVoice } from './types.ts';
+import { getPosFilterCopy } from '../../../shared/pos-filter-i18n.mjs';
 
 type Props = {
   value: PosFilterState;
@@ -17,18 +18,9 @@ type Props = {
   disabled?: boolean;
 };
 
-const POS: Array<[FormalPos, string, string]> = [
-  ['n', '名詞', 'Noun'], ['v', '動詞', 'Verb'], ['a', '形容詞', 'Adjective'],
-  ['r', '副詞', 'Adverb'], ['x', '虛詞', 'Function word'],
-];
-const FAMILY: Array<[PosFamily, string, string]> = [
-  ['idiom', '熟語（全部）', 'Idiom (all)'], ['chengyu', '成語', 'Chengyu'],
-  ['suyu', '俗語', 'Colloquial saying'], ['yanyu', '諺語', 'Proverb'],
-  ['xiehouyu', '歇後語', 'Two-part allegorical saying'],
-];
-const VOICE: Array<[PosVoice, string, string]> = [
-  ['active', '主動式', 'Active'], ['passive', '被動式', 'Passive'],
-];
+const POS: FormalPos[] = ['n', 'v', 'a', 'r', 'x'];
+const FAMILY: PosFamily[] = ['idiom', 'chengyu', 'suyu', 'yanyu', 'xiehouyu'];
+const VOICE: PosVoice[] = ['active', 'passive'];
 
 function FilterIcon() {
   return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16l-6.3 7.1V18l-3.4 1.7v-6.6z" /></svg>;
@@ -40,7 +32,8 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const count = posFilterActiveCount(value);
-  const label = lang === 'en' ? 'Part-of-speech filters' : '詞性篩選';
+  const copy = getPosFilterCopy(lang);
+  const label = copy.label;
 
   useEffect(() => {
     if (!open) return;
@@ -86,15 +79,13 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
   }, [open]);
 
   const axis = <T extends FormalPos | PosFamily | PosVoice>(
-    titleZh: string,
-    titleEn: string,
     key: 'pos' | 'family' | 'voice',
-    choices: Array<[T, string, string]>,
+    choices: T[],
   ) => (
     <fieldset className="pos-filter__axis">
-      <legend>{lang === 'en' ? titleEn : titleZh}</legend>
+      <legend>{copy.axes[key].title}</legend>
       <div className="pos-filter__chips">
-        {choices.map(([item, zh, en]) => {
+        {choices.map((item) => {
           const selected = (value[key] as string[]).includes(item);
           return <button
             key={item}
@@ -102,7 +93,7 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
             className={`pos-filter__chip${selected ? ' is-selected' : ''}`}
             aria-pressed={selected}
             onClick={() => onChange(togglePosFilterValue(value, key as never, item as never))}
-          >{lang === 'en' ? en : zh}</button>;
+          >{(copy.axes[key].choices as Record<string, string>)[String(item)]}</button>;
         })}
       </div>
     </fieldset>
@@ -122,11 +113,11 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
       >
         <FilterIcon />
         <span className="pos-filter__trigger-label-full">{label}</span>
-        <span className="pos-filter__trigger-label-short">{lang === 'en' ? 'POS' : '詞性'}</span>
+        <span className="pos-filter__trigger-label-short">{copy.shortLabel}</span>
         {count ? <b aria-label={`${count}`}>{count}</b> : null}
       </button>
       {open ? createPortal(<>
-        <button className="pos-filter__scrim" type="button" aria-label={lang === 'en' ? 'Close filters' : '關閉篩選'} onClick={() => setOpen(false)} />
+        <button className="pos-filter__scrim" type="button" aria-label={copy.closeFilters} onClick={() => setOpen(false)} />
         <section
           ref={panelRef}
           id="posFilterPanel"
@@ -136,13 +127,13 @@ export function PosFilterControl({ value, onChange, lang = 'zh', disabled = fals
           aria-label={label}
           tabIndex={-1}
         >
-          <header><div><p>{lang === 'en' ? 'FILTER RESULTS' : '篩選結果'}</p><h2>{label}</h2></div><button type="button" onClick={() => setOpen(false)} aria-label={lang === 'en' ? 'Close' : '關閉'}>×</button></header>
-          {axis('詞類', 'Word class', 'pos', POS)}
-          {axis('語彙族', 'Lexical family', 'family', FAMILY)}
-          {axis('語態', 'Voice', 'voice', VOICE)}
+          <header><div><p>{copy.heading}</p><h2>{label}</h2></div><button type="button" onClick={() => setOpen(false)} aria-label={copy.close}>×</button></header>
+          {axis('pos', POS)}
+          {axis('family', FAMILY)}
+          {axis('voice', VOICE)}
           <footer>
-            <span>{lang === 'en' ? 'Within axis: OR · Across axes: AND' : '同軸任一符合 · 跨軸全部符合'}</span>
-            <button type="button" disabled={!count} onClick={() => onChange(resetPosFilter())}>{lang === 'en' ? 'Reset' : '重設'}</button>
+            <span>{copy.withinAcross}</span>
+            <button type="button" disabled={!count} onClick={() => onChange(resetPosFilter())}>{copy.reset}</button>
           </footer>
         </section>
       </>, document.body) : null}
