@@ -261,7 +261,11 @@ function App() {
   });
   const {
     controls,
-    results,
+    resultsModel,
+    resultsActions,
+  } = workspace;
+  const {
+    rows: results,
     total,
     hint: searchHint,
     loading: searchLoading,
@@ -269,16 +273,19 @@ function App() {
     loadingMore,
     error: searchError,
     hasMore,
-    loadMore,
     posFilter,
-    displayResults,
-    resultsShuffled,
+    displayRows: displayResults,
+    shuffled: resultsShuffled,
     shuffleGeneration,
+  } = resultsModel;
+  const {
+    loadMore,
     presentResults,
     presentShuffledResults,
     resetPresentation,
     clearPresentationShuffle,
-  } = workspace;
+    setFilter: setWorkspaceFilter,
+  } = resultsActions;
   const {
     inputQuery,
     searchQuery,
@@ -287,7 +294,6 @@ function App() {
     flushSearchQuery,
     hydrateSearch,
     commitSearch,
-    setFilter: setWorkspaceFilter,
   } = controls;
 
   const trimmedInput = inputQuery.trim();

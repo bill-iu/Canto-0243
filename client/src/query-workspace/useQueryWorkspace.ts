@@ -355,25 +355,35 @@ export function useQueryWorkspace({
     flushSearchQuery,
     hydrateSearch,
     commitSearch,
-    setFilter,
   };
 
-  return {
-    ...state,
-    controls,
+  const resultsModel = {
+    rows: state.results,
+    total: state.total,
+    hint: state.hint,
     loading: isLoading,
     loadingVisible,
     loadingMore: state.status === 'loading-more',
     error: state.error ? new Error(state.error) : null,
-    isReady,
     hasMore,
-    loadMore,
-    displayResults: presentationResults,
-    resultsShuffled: presentationShuffled,
+    posFilter: state.posFilter,
+    displayRows: presentationResults,
+    shuffled: presentationShuffled,
     shuffleGeneration: presentationGeneration,
+  };
+
+  const resultsActions = {
+    loadMore,
+    setFilter,
     presentResults,
     presentShuffledResults,
     resetPresentation,
     clearPresentationShuffle,
+  };
+
+  return {
+    controls,
+    resultsModel,
+    resultsActions,
   };
 }
