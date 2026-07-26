@@ -173,9 +173,12 @@ def canonical_match_spec_to_legacy(spec: CanonicalMatchSpec) -> MatchSpec:
         extra["prefix_wildcard_equals"] = True
     has_final = any(slot.kind == "final_anchor" for slot in spec.slots)
     has_initial = any(slot.kind == "initial_anchor" for slot in spec.slots)
-    if spec.width == 4 and has_final and "?" in spec.mask:
+    anchor_count = sum(
+        slot.kind in {"final_anchor", "initial_anchor"} for slot in spec.slots
+    )
+    if spec.width == 4 and anchor_count >= 2 and has_final and "?" in spec.mask:
         extra["partial_rhyme_mask"] = True
-    if spec.width == 4 and has_initial and "?" in spec.mask:
+    if spec.width == 4 and anchor_count >= 2 and has_initial and "?" in spec.mask:
         extra["partial_initial_mask"] = True
     if spec.phoneme_alternatives:
         extra["dual_phoneme"] = True

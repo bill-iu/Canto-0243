@@ -192,8 +192,9 @@ export function canonicalMatchSpecToLegacy(spec: CanonicalMatchSpec): MatchSpec 
   }
   const hasFinalAnchors = spec.slots.some((slot) => slot.kind === 'final_anchor');
   const hasInitialAnchors = spec.slots.some((slot) => slot.kind === 'initial_anchor');
-  if (spec.width === 4 && hasFinalAnchors && spec.mask.includes('?')) extra.partial_rhyme_mask = true;
-  if (spec.width === 4 && hasInitialAnchors && spec.mask.includes('?')) extra.partial_initial_mask = true;
+  const anchorCount = spec.slots.filter((slot) => slot.kind === 'final_anchor' || slot.kind === 'initial_anchor').length;
+  if (spec.width === 4 && anchorCount >= 2 && hasFinalAnchors && spec.mask.includes('?')) extra.partial_rhyme_mask = true;
+  if (spec.width === 4 && anchorCount >= 2 && hasInitialAnchors && spec.mask.includes('?')) extra.partial_initial_mask = true;
   if (spec.phoneme_alternatives) {
     extra.dual_phoneme = true;
     extra.dual_initial_spec = canonicalMatchSpecToLegacy(spec.phoneme_alternatives.initial);
