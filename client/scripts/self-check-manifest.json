@@ -6,6 +6,14 @@
   ],
   "checks": [
     {
+      "id": "query-workspace-characterization",
+      "script": "query-workspace-characterization-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
       "id": "portable-host-build",
       "script": "portable-host-build-self-check.mjs",
       "tags": [
