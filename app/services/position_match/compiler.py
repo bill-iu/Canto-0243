@@ -376,6 +376,67 @@ def _compile_jyutping_anchor(query: JyutpingAnchorQuery) -> CanonicalMatchSpec:
     )
 
 
+def _draft_from_canonical(spec: CanonicalMatchSpec) -> dict:
+    return {
+        "width": spec.width,
+        "mask": spec.mask,
+        "slots": [
+            SlotConstraint(pos=slot.pos, kind=slot.kind, value=slot.value)
+            for slot in spec.slots
+        ],
+        "equals_span": spec.equals_span,
+        "compound_kind": spec.compound.kind if spec.compound else None,
+        "connective": spec.compound.connective if spec.compound else None,
+        "ranking": spec.ranking,
+        "candidate_scope": spec.candidate_scope,
+        "code_mode": spec.code_mode,
+        "phoneme_alternatives": spec.phoneme_alternatives,
+    }
+
+
+def _compile_ping_ze_serial(query: PingZeSerialQuery) -> CanonicalMatchSpec:
+    if query.base is not None:
+        base = compile_parsed_query(query.base)
+        code_positions = {slot.pos for slot in base.slots if slot.kind == "code_digit"}
+        fixed_positions = {
+            slot.pos
+            for slot in base.slots
+            if slot.kind not in {"code_digit", "tone_class"} and slot.pos not in code_positions
+        }
+        available_positions = [pos for pos in range(base.width) if pos not in fixed_positions]
+        slots = [slot for slot in base.slots if slot.kind != "tone_class"]
+        mask = list(base.mask)
+        tokens = [token for token in query.raw_q if token in "PZ?" or token.isdigit()]
+        for index, token in enumerate(tokens):
+            if token not in "PZ" or index >= len(available_positions):
+                continue
+            pos = available_positions[index]
+            slots = [slot for slot in slots if not (slot.pos == pos and slot.kind == "code_digit")]
+            mask[pos] = "?"
+            slots.append(
+                SlotConstraint(pos=pos, kind="tone_class", value="ping" if token == "P" else "ze")
+            )
+        draft = _draft_from_canonical(base)
+        draft.update({"slots": slots, "mask": "".join(mask), "code_mode": query.pzmode})
+        return finalize_canonical_match_spec(**draft)
+
+    width = len(query.raw_q) + (1 if query.anchor else 0)
+    slots = []
+    for pos, token in enumerate(query.raw_q):
+        if token in "PZ":
+            slots.append(SlotConstraint(pos=pos, kind="tone_class", value="ping" if token == "P" else "ze"))
+        elif token.isdigit():
+            slots.append(SlotConstraint(pos=pos, kind="code_digit", value=token))
+    if query.anchor:
+        slots.append(SlotConstraint(pos=len(query.raw_q), kind="final_anchor", value=query.anchor))
+    return finalize_canonical_match_spec(
+        width=width,
+        mask="?" * width,
+        slots=slots,
+        code_mode=query.pzmode,
+    )
+
+
 def compile_parsed_query(parsed: ParsedQuery) -> CanonicalMatchSpec:
     return compile_query(require_match_spec_query(parsed))
 
