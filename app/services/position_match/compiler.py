@@ -9,11 +9,9 @@ from app.services._generated.query_kind_registry import MATCH_SPEC_KINDS, QueryK
 from app.services.position_match.canonical import (
     CanonicalPhonemeAlternatives,
     CanonicalMatchSpec,
-    canonicalize_legacy_match_spec,
     finalize_canonical_match_spec,
 )
 from app.services.position_match.spec import EqualsSpan, SlotConstraint
-from app.services.query_match_spec_registry import build_match_spec_for_parsed
 from app.services.query_types import (
     CodeRefMiddleRhymeQuery,
     CompoundAntQuery,
@@ -108,10 +106,7 @@ def compile_query(query: MatchSpecQuery) -> CanonicalMatchSpec:
         return _compile_doubled_syllable(query)
     if query.kind == QueryKind.JYUTPING_ANCHOR:
         return _compile_jyutping_anchor(query)
-    legacy = build_match_spec_for_parsed(query)
-    if legacy is None:
-        raise ValueError(f"MatchSpec compiler has no implementation for {query.kind}")
-    return canonicalize_legacy_match_spec(legacy)
+    raise ValueError(f"MatchSpec compiler has no implementation for {query.kind}")
 
 
 _FRAMED_EQUALS_RE = re.compile(rf"^(\d*)(\^|=)?([{HAN_CLASS}]+)(=)?(\d*)$")
