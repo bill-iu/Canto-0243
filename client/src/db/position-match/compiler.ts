@@ -24,9 +24,7 @@ import type {
 } from '../query-types.ts';
 import type { EqualsQuery } from '../query/grammar/equals.ts';
 import type { ConstraintKind, SlotConstraint } from './spec.ts';
-import { buildMatchSpecForParsed } from './match-spec-registry.ts';
 import {
-  canonicalizeLegacyMatchSpec,
   finalizeCanonicalMatchSpec,
   type CanonicalEqualsSpan,
   type CanonicalMatchSpecDraft,
@@ -65,8 +63,8 @@ export function requireMatchSpecQuery(parsed: ParsedQuery): MatchSpecQuery {
 /**
  * Compile one eligible query to a complete semantic value.
  *
- * The registry call is intentionally temporary: it lets callers migrate to
- * this strict interface before the grammar builders move into this module.
+ * Every MatchSpec query kind is compiled here; no mutable registry fallback
+ * is allowed across this seam.
  */
 export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (!usesMatchSpec(query.kind)) {
@@ -91,11 +89,7 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (query.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) return compileDoubledSyllable(query);
   if (query.kind === QueryKind.JYUTPING_ANCHOR) return compileJyutpingAnchor(query);
   if (query.kind === QueryKind.PING_ZE_SERIAL) return compilePingZeSerial(query);
-  const legacy = buildMatchSpecForParsed(query);
-  if (!legacy) {
-    throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
-  }
-  return canonicalizeLegacyMatchSpec(legacy);
+  throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
 }
 
 const FRAMED_EQUALS_RE = /^(\d*)(\^|=)?([\p{Script=Han}]+)(=)?(\d*)$/u;
