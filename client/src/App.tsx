@@ -12,6 +12,7 @@ import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
 import { useQueryWorkspaceDetail } from './query-workspace/useQueryWorkspaceDetail.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
+import { countShellRender } from './search-perf.ts';
 import { QueryWorkspaceResultsBoundary } from './query-workspace/QueryWorkspaceResultsBoundary.tsx';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
@@ -110,6 +111,7 @@ const initialUrl =
     : { q: '', mode: '0243' as UiMode, pzmode: 'm1' as PingzeSubMode, view: 'search' as const };
 
 function App() {
+  countShellRender();
   const lexiconVersion =
     (isPortableHost() ? readLexiconVersionMeta() : null) ||
     (import.meta as any).env?.VITE_LEXICON_VERSION ||

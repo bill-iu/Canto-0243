@@ -3,7 +3,7 @@ import type { QueryTab } from '@shared/query-tabs';
 import { isPortableHost } from '../host-mode.ts';
 import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.ts';
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
-import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
+import { countWorkspaceRender, markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
 import type { QueryWorkspaceNavigationAdapter } from './navigation-adapter.ts';
 import {
@@ -70,6 +70,7 @@ export function useQueryWorkspace({
   uiLang,
   navigationAdapter,
 }: UseQueryWorkspaceOptions) {
+  countWorkspaceRender();
   const activeTabId = activeTab?.view === 'search' ? activeTab.id : null;
   const initialQuery = activeTab?.view === 'search' ? activeTab.q || '' : '';
   const {

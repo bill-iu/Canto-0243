@@ -3,6 +3,7 @@ import { tDetail } from '../../../shared/entry-detail-i18n.mjs';
 import { pickPreferredReadingIndex } from '../../../shared/entry-detail-core.mjs';
 import { toSimplified } from '../../../shared/t2s-runtime.mjs';
 import type { EntryDetailModel } from './types.ts';
+import { countDetailRender } from '../search-perf.ts';
 
 export function EntryDetailPanel({
   literal,
@@ -25,6 +26,7 @@ export function EntryDetailPanel({
   onRelationPick: (literal: string) => void;
   onPutInWorkbench?: (literal: string) => void;
 }) {
+  countDetailRender();
   const [readingIdx, setReadingIdx] = useState(0);
   const reading = model?.readings[readingIdx] ?? model?.readings[0];
 
@@ -167,13 +169,13 @@ export function EntryDetailPanel({
 
             {relationsLoading ? (
               <>
-                <section className="entry-detail-section">
+                <section className="entry-detail-section" aria-busy="true">
                   <h3 className="entry-detail-section__title">{tDetail('detail.syns', lang)}</h3>
-                  <p className="entry-detail-panel__loading">{loadingLabel}</p>
+                  <p className="entry-detail-panel__loading" role="status" aria-live="polite">{loadingLabel}</p>
                 </section>
-                <section className="entry-detail-section">
+                <section className="entry-detail-section" aria-busy="true">
                   <h3 className="entry-detail-section__title">{tDetail('detail.ants', lang)}</h3>
-                  <p className="entry-detail-panel__loading">{loadingLabel}</p>
+                  <p className="entry-detail-panel__loading" role="status" aria-live="polite">{loadingLabel}</p>
                 </section>
               </>
             ) : (

@@ -6,6 +6,7 @@ import { ResultList } from '../result-list';
 import { SynResultList } from '../syn-result-list';
 import { AnchorResultList } from '../anchor-result-list';
 import { GuideQuick } from '../guide-quick';
+import { countResultsRender } from '../search-perf.ts';
 
 export interface QueryWorkspaceResultsBoundaryProps {
   detailOpen: boolean;
@@ -70,6 +71,7 @@ export function QueryWorkspaceResultsBoundary({
   onRunExample,
   onOpenFullGuide,
 }: QueryWorkspaceResultsBoundaryProps) {
+  countResultsRender();
   return (
     <section
       className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
@@ -79,12 +81,24 @@ export function QueryWorkspaceResultsBoundary({
         <div className="search-results">
           <div className="search-results-scroll" ref={scrollRootRef}>
             {displayHint && filteredResults.length > 0 ? <p className="search-hint">{displayHint}</p> : null}
-            {loadingVisible ? <p className="loading">{searchingLabel}</p> : null}
-            {error ? <p className="error">閷: {error.message}</p> : null}
+            {loadingVisible ? (
+              <p className="loading" role="status" aria-live="polite" aria-atomic="true">
+                {searchingLabel}
+              </p>
+            ) : null}
+            {error ? (
+              <p className="error" role="alert" aria-live="assertive">
+                錯誤: {error.message}
+              </p>
+            ) : null}
 
             {filteredResults.length > 0 ? (
               <div className="results-list">
-                {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
+                {resultsLabel ? (
+                  <p className="results-count" aria-live="polite" aria-atomic="true">
+                    {resultsLabel}
+                  </p>
+                ) : null}
                 {synLayout ? (
                   <SynResultList
                     results={filteredResults}
