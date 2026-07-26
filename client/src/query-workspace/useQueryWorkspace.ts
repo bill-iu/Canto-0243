@@ -5,7 +5,12 @@ import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
 import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
-import { normalizePosFilter, type PosFilterState } from '../pos/filter.ts';
+import {
+  filterByProjectPos,
+  isPosFilterActive,
+  normalizePosFilter,
+  type PosFilterState,
+} from '../pos/filter.ts';
 import {
   createDatabaseQueryWorkspaceAdapter,
   createPortableQueryWorkspaceAdapter,
@@ -264,6 +269,26 @@ export function useQueryWorkspace({
       });
     }
   }, [adapter, enabled, fallback0243Mode, hasMore, isReady, morePageLimit, state, uiLang]);
+
+  const filteredResultCount = useMemo(
+    () => filterByProjectPos(state.results, (row) => row.word, state.posFilter).length,
+    [state.posFilter, state.results],
+  );
+
+  useEffect(() => {
+    if (
+      !enabled ||
+      !isReady ||
+      !isPosFilterActive(state.posFilter) ||
+      isLoading ||
+      !hasMore ||
+      state.results.length === 0 ||
+      filteredResultCount >= 40
+    ) {
+      return;
+    }
+    void loadMore();
+  }, [enabled, filteredResultCount, hasMore, isLoading, isReady, loadMore, state.posFilter, state.results.length]);
 
   useEffect(() => {
     if (!onPatchTab || state.tabId == null || state.status !== 'ready') return;

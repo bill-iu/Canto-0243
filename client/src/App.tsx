@@ -485,10 +485,6 @@ function App() {
     if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: next });
   }, [activeSearchTab, patchSearchTab, setWorkspaceFilter]);
 
-  useEffect(() => {
-    if (!filterActive || !useLiveFetch || searchLoading || loadingMore || !hasMore) return;
-    if (displayResults.length > 0 && filteredDisplayResults.length < 40) void loadMore();
-  }, [filterActive, useLiveFetch, searchLoading, loadingMore, hasMore, displayResults.length, filteredDisplayResults.length, loadMore]);
   const mountWarmupBadge = !shellGated && !warmupBadgeClear;
   const handleWarmupBadgeDismiss = useCallback(() => setWarmupBadgeClear(true), []);
 
