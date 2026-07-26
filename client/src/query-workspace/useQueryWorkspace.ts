@@ -3,6 +3,7 @@ import type { QueryTab } from '@shared/query-tabs';
 import { isPortableHost } from '../host-mode.ts';
 import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.ts';
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
+import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
 import type { PosFilterState } from '../pos/filter.ts';
 import {
@@ -153,6 +154,7 @@ export function useQueryWorkspace({
     const frameId = frame.id;
     const requestId = ++requestSequenceRef.current;
     dispatch({ type: 'requestStarted', frameId, requestId, append: false });
+    markSearchDispatch();
 
     void adapter
       .searchPage({
@@ -166,6 +168,7 @@ export function useQueryWorkspace({
         signal: controller.signal,
       })
       .then((page) => {
+        if (!controller.signal.aborted) markSearchResolve();
         dispatch({
           type: 'requestResolved',
           frameId,
@@ -178,6 +181,7 @@ export function useQueryWorkspace({
       })
       .catch((error: unknown) => {
         if (controller.signal.aborted || isAbortError(error)) return;
+        markSearchResolve();
         dispatch({
           type: 'requestRejected',
           frameId,
