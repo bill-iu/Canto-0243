@@ -81,6 +81,30 @@ def compile_query(query: MatchSpecQuery) -> CanonicalMatchSpec:
         return _compile_plus_anchor(query)
     if query.kind == QueryKind.LITERAL_REF:
         return _compile_literal_ref(query)
+    if query.kind == QueryKind.PARTIAL_RHYME_MASK:
+        return _compile_partial_mask(query, "final_anchor")
+    if query.kind == QueryKind.PARTIAL_INITIAL_MASK:
+        return _compile_partial_mask(query, "initial_anchor")
+    if query.kind == QueryKind.CODE_REF_MIDDLE_RHYME:
+        return _compile_code_ref_middle_rhyme(query)
+    if query.kind == QueryKind.RHYME_ANCHOR:
+        return _compile_rhyme_anchor(query)
+    if query.kind == QueryKind.TRIPLE_RHYME_ANCHOR:
+        return _compile_triple_rhyme_anchor(query)
+    if query.kind == QueryKind.MASK:
+        return _compile_mask(query)
+    if query.kind == QueryKind.WILDCARD_CODE_ANCHOR:
+        return _compile_wildcard_code_anchor(query)
+    if query.kind == QueryKind.COMPOUND_SYN:
+        return _compile_compound(query, "syn")
+    if query.kind == QueryKind.COMPOUND_ANT:
+        return _compile_compound(query, "ant")
+    if query.kind == QueryKind.COMPOUND_CONNECT_SYN:
+        return _compile_compound(query, "syn")
+    if query.kind == QueryKind.COMPOUND_CONNECT_ANT:
+        return _compile_compound(query, "ant")
+    if query.kind == QueryKind.COMPOUND_DOUBLED_SYLLABLE:
+        return _compile_doubled_syllable(query)
     legacy = build_match_spec_for_parsed(query)
     if legacy is None:
         raise ValueError(f"MatchSpec compiler has no implementation for {query.kind}")
@@ -184,6 +208,119 @@ def _compile_literal_ref(query: LiteralRefQuery) -> CanonicalMatchSpec:
     )
     mask = "?" * query.literal_pos + query.literal_char + "?" * (query.width - query.literal_pos - 1)
     return finalize_canonical_match_spec(width=query.width, slots=slots, mask=mask)
+
+
+def _compile_partial_mask(
+    query: PartialRhymeMaskQuery | PartialInitialMaskQuery,
+    kind: str,
+) -> CanonicalMatchSpec:
+    return finalize_canonical_match_spec(
+        width=query.width,
+        mask=query.pattern,
+        slots=[SlotConstraint(pos=pos, kind=kind, value=value) for pos, value in query.anchors],
+    )
+
+
+def _compile_code_ref_middle_rhyme(query: CodeRefMiddleRhymeQuery) -> CanonicalMatchSpec:
+    return finalize_canonical_match_spec(
+        width=query.width,
+        mask="?" * query.width,
+        slots=[
+            SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot.get("value"))
+            for slot in query.slots
+        ],
+    )
+
+
+def _compile_rhyme_anchor(query: RhymeAnchorQuery) -> CanonicalMatchSpec:
+    mask = ["?"] * query.width
+    if query.anchor_pos == 0:
+        for pos, value in enumerate(query.slots, start=1):
+            mask[pos] = value
+    else:
+        for pos, value in enumerate(query.slots):
+            mask[pos] = value
+    return finalize_canonical_match_spec(
+        width=query.width,
+        mask="".join(mask),
+        slots=[
+            SlotConstraint(
+                pos=query.anchor_pos,
+                kind="final_anchor" if query.constraint == "final" else "initial_anchor",
+                value=query.anchor,
+            )
+        ],
+    )
+
+
+def _compile_triple_rhyme_anchor(query: TripleRhymeAnchorQuery) -> CanonicalMatchSpec:
+    return finalize_canonical_match_spec(
+        width=query.width,
+        mask="?" * query.width,
+        slots=[SlotConstraint(pos=query.anchor_pos, kind="final_anchor", value=query.anchor)],
+    )
+
+
+def _compile_mask(query: MaskQuery) -> CanonicalMatchSpec:
+    return finalize_canonical_match_spec(
+        width=len(query.raw_q),
+        mask=query.raw_q,
+        ranking="literal_priority",
+        slots=[
+            SlotConstraint(pos=pos, kind="code_digit", value=ch)
+            for pos, ch in enumerate(query.raw_q)
+            if ch.isdigit()
+        ],
+    )
+
+
+def _code_prefix_slots(prefix: str | None) -> list[SlotConstraint]:
+    if not prefix:
+        return []
+    return [SlotConstraint(pos=pos, kind="code_digit", value=value) for pos, value in enumerate(prefix)]
+
+
+def _compile_wildcard_code_anchor(query: WildcardCodeAnchorQuery) -> CanonicalMatchSpec:
+    mask = ["?"] * query.width
+    slots = [
+        SlotConstraint(pos=slot["pos"], kind=slot["kind"], value=slot.get("value"))
+        for slot in query.slots
+    ]
+    for slot in slots:
+        if slot.kind == "literal_char" and isinstance(slot.value, str):
+            mask[slot.pos] = slot.value
+    return finalize_canonical_match_spec(width=query.width, mask="".join(mask), slots=slots)
+
+
+def _compile_compound(
+    query: CompoundSynQuery
+    | CompoundAntQuery
+    | CompoundConnectSynQuery
+    | CompoundConnectAntQuery,
+    kind: str,
+) -> CanonicalMatchSpec:
+    width = 3 if query.kind in {QueryKind.COMPOUND_CONNECT_SYN, QueryKind.COMPOUND_CONNECT_ANT} else 2
+    slots = _code_prefix_slots(query.code_prefix)
+    if query.rhyme_char:
+        slots.append(SlotConstraint(pos=width - 1, kind="final_anchor", value=query.rhyme_char))
+    connective = getattr(query, "connective", None)
+    return finalize_canonical_match_spec(
+        width=width,
+        slots=slots,
+        compound_kind=kind,
+        connective=connective,
+    )
+
+
+def _compile_doubled_syllable(query: CompoundDoubledSyllableQuery) -> CanonicalMatchSpec:
+    slots = _code_prefix_slots(query.code_prefix)
+    if query.rhyme_char:
+        slots.append(SlotConstraint(pos=query.width - 1, kind="final_anchor", value=query.rhyme_char))
+    return finalize_canonical_match_spec(
+        width=query.width,
+        slots=slots,
+        compound_kind="doubled_syllable",
+    )
 
 
 def compile_parsed_query(parsed: ParsedQuery) -> CanonicalMatchSpec:
