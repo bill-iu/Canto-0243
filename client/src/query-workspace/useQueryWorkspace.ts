@@ -78,6 +78,9 @@ export function useQueryWorkspace({
     undefined,
     createInitialQueryWorkspaceState<QueryResult>,
   );
+  const [presentationResults, setPresentationResultsState] = useState<QueryResult[]>([]);
+  const [presentationShuffled, setPresentationShuffledState] = useState(false);
+  const [presentationGeneration, setPresentationGeneration] = useState(0);
   const [loadingVisible, setLoadingVisible] = useState(false);
   const activatedTabRef = useRef<number | null>(null);
   const activeRequestIdRef = useRef<number | null>(null);
@@ -301,6 +304,26 @@ export function useQueryWorkspace({
     dispatch({ type: 'setFilter', posFilter: normalizePosFilter(posFilter) });
   }, []);
 
+  const presentResults = useCallback((items: readonly QueryResult[]) => {
+    setPresentationResultsState([...items]);
+  }, []);
+
+  const presentShuffledResults = useCallback((items: readonly QueryResult[]) => {
+    setPresentationResultsState([...items]);
+    setPresentationShuffledState(true);
+    setPresentationGeneration((generation) => generation + 1);
+  }, []);
+
+  const resetPresentation = useCallback(() => {
+    setPresentationResultsState([]);
+    setPresentationShuffledState(false);
+    setPresentationGeneration((generation) => generation + 1);
+  }, []);
+
+  const clearPresentationShuffle = useCallback(() => {
+    setPresentationShuffledState(false);
+  }, []);
+
   return {
     ...state,
     inputQuery,
@@ -318,5 +341,12 @@ export function useQueryWorkspace({
     loadMore,
     commitSearch,
     setFilter,
+    displayResults: presentationResults,
+    resultsShuffled: presentationShuffled,
+    shuffleGeneration: presentationGeneration,
+    presentResults,
+    presentShuffledResults,
+    resetPresentation,
+    clearPresentationShuffle,
   };
 }

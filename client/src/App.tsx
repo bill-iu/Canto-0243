@@ -188,9 +188,6 @@ function App() {
 
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
-  const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
-  const [resultsShuffled, setResultsShuffled] = useState(false);
-  const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
   const [warmupBadgeClear, setWarmupBadgeClear] = useState(false);
   const [uiLang, setUiLang] = useState<'zh' | 'zh-Hans' | 'en'>(() => getLang() as 'zh' | 'zh-Hans' | 'en');
@@ -276,6 +273,13 @@ function App() {
     commitSearch,
     posFilter,
     setFilter: setWorkspaceFilter,
+    displayResults,
+    resultsShuffled,
+    shuffleGeneration,
+    presentResults,
+    presentShuffledResults,
+    resetPresentation,
+    clearPresentationShuffle,
   } = workspace;
 
   const trimmedInput = inputQuery.trim();
@@ -291,16 +295,15 @@ function App() {
       hydrateSearch(tab.q || '');
       const useLive = live || initialBootstrap.forceLive;
       setUseLiveFetch(useLive);
-      setResultsShuffled(false);
       if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
-        setDisplayResults(cached);
+        presentResults(cached);
       } else {
         // New / live tab: clear prior tab's chips until results arrive
-        setDisplayResults([]);
+        resetPresentation();
       }
     },
-    [hydrateSearch, initialBootstrap.forceLive],
+    [hydrateSearch, initialBootstrap.forceLive, presentResults, resetPresentation],
   );
 
   useEffect(() => {
@@ -427,16 +430,16 @@ function App() {
   useEffect(() => {
     if (searchKeyRef.current !== searchKey) {
       searchKeyRef.current = searchKey;
-      setResultsShuffled(false);
+      clearPresentationShuffle();
     }
-  }, [searchKey]);
+  }, [clearPresentationShuffle, searchKey]);
 
   useEffect(() => {
     if (!useLiveFetch) return;
     const anchor = pickAnchorRef.current;
     if (anchor && searchQuery.trim() === anchor && !resultsShuffled) {
       if (!searchLoading) {
-        setDisplayResults(
+        presentResults(
           mergePickLookupResults(anchor, pickAnchorRowsRef.current, results) as QueryResult[],
         );
         pickAnchorRef.current = null;
@@ -445,11 +448,11 @@ function App() {
       return;
     }
     if (!resultsShuffled) {
-      setDisplayResults(results);
+      presentResults(results);
       return;
     }
-    setDisplayResults((prev) => mergeShuffledResults(prev, results));
-  }, [results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
+    presentResults(mergeShuffledResults(displayResults, results));
+  }, [displayResults, presentResults, results, resultsShuffled, resetPresentation, useLiveFetch, searchLoading, searchQuery]);
 
   useEffect(() => {
     if (isReady || offlineStatus === 'failed') return;
@@ -649,8 +652,8 @@ function App() {
     closeEntryDetail();
     hydrateSearch('');
     setUseLiveFetch(false);
-    setDisplayResults([]);
-  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail]);
+    resetPresentation();
+  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail, resetPresentation]);
 
   useEffect(() => {
     if (!popstateFrame) return;
@@ -664,10 +667,10 @@ function App() {
       closeEntryDetail();
       setUseLiveFetch(false);
       hydrateSearch('');
-      setDisplayResults([]);
+      resetPresentation();
     }
     consumePopstateFrame();
-  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
+  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail, resetPresentation]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
@@ -684,7 +687,7 @@ function App() {
       }
       commitSearch(q, nextMode, nextPzMode);
       setUseLiveFetch(true);
-      setResultsShuffled(false);
+      resetPresentation();
       commitActiveSearch(q, nextMode, nextPzMode);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
@@ -702,6 +705,7 @@ function App() {
       initialize,
       saveLeavingSearchTab,
       openCorrections,
+      resetPresentation,
     ],
   );
 
@@ -713,12 +717,12 @@ function App() {
         : (anchorOnlyQueryRow(literal) as QueryResult[]);
       pickAnchorRef.current = literal;
       pickAnchorRowsRef.current = anchorRows;
-      setDisplayResults(anchorRows);
       runCommittedSearch(literal);
+      presentResults(anchorRows);
       hydrateSearch(literal);
       openEntryDetailFromPick(payload);
     },
-    [hydrateSearch, openEntryDetailFromPick, runCommittedSearch],
+    [hydrateSearch, openEntryDetailFromPick, presentResults, runCommittedSearch],
   );
 
   const handleRetryOfflineReady = useCallback(async () => {
@@ -757,13 +761,13 @@ function App() {
       saveLeavingSearchTab();
       openSearchTabWithQuery(q, nextMode, pzMode);
       setUseLiveFetch(true);
-      setResultsShuffled(false);
+      resetPresentation();
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [saveLeavingSearchTab, openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
+    [saveLeavingSearchTab, openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize, resetPresentation],
   );
 
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
@@ -818,9 +822,7 @@ function App() {
   };
 
   const handleShuffle = () => {
-    setDisplayResults(shuffleResults(results));
-    setResultsShuffled(true);
-    setShuffleGeneration((n) => n + 1);
+    presentShuffledResults(shuffleResults(results));
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -1051,8 +1053,7 @@ function App() {
     goHome();
     setUseLiveFetch(false);
     hydrateSearch('');
-    setDisplayResults([]);
-    setResultsShuffled(false);
+    resetPresentation();
   };
 
   const handleBrandClick = () => {
