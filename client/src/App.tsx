@@ -12,8 +12,8 @@ import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
 import { useQueryWorkspaceDetail } from './query-workspace/useQueryWorkspaceDetail.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
-import { ResultList } from './result-list';
-import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
+import { QueryWorkspaceResultsBoundary } from './query-workspace/QueryWorkspaceResultsBoundary.tsx';
+import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
@@ -31,9 +31,7 @@ import {
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../shared/entry-detail-core.mjs';
-import { SynResultList } from './syn-result-list';
 import { synResultItemCount, synResultsStats } from './syn-result-logic.ts';
-import { AnchorResultList } from './anchor-result-list';
 import {
   anchorResultItemCount,
   anchorResultsStats,
@@ -42,7 +40,6 @@ import {
 import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { planCommitSearch } from './db/query/search-session.ts';
-import { GuideQuick } from './guide-quick';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
 import { mergeShuffledResults, shuffleResults } from './shuffle-results';
@@ -1175,80 +1172,37 @@ function App() {
               ) : view === 'corrections' && isPortableHost() ? (
                 <CorrectionsView lang={uiLang} prefetchChar={activeTab?.prefetchChar} />
               ) : (
-                <section
-                  className={`search-view${detailOpen ? ' has-entry-detail' : ''}${showGuideQuick ? ' is-empty-landing' : ''}`}
-                  aria-labelledby="searchTitle"
-                >
-              <div className="search-view__main" onClick={handleSearchMainClick}>
-              <div className="search-results">
-                <div className="search-results-scroll" ref={setScrollRootEl}>
-                  {displayHint && filteredDisplayResults.length > 0 && (
-                    <p className="search-hint">{displayHint}</p>
-                  )}
-                  {useLiveFetch && searchLoadingVisible && (
-                    <p className="loading">{appCopy.searching}</p>
-                  )}
-                  {useLiveFetch && searchError && (
-                    <p className="error">錯誤: {searchError.message}</p>
-                  )}
-
-                  {filteredDisplayResults.length > 0 && (
-                    <div className="results-list">
-                      {resultsLabel ? <p className="results-count">{resultsLabel}</p> : null}
-                      {synLayout ? (
-                        <SynResultList
-                          results={filteredDisplayResults}
-                          visibleLimit={visibleCount}
-                          onPick={(word) => runCommittedSearch(word)}
-                        />
-                      ) : anchorLayout ? (
-                        <AnchorResultList
-                          results={filteredDisplayResults}
-                          visibleLimit={visibleCount}
-                          activeLiteral={activeDetailLiteral}
-                          lang={uiLang}
-                          onPick={handleEntryPick}
-                        />
-                      ) : (
-                        <ResultList
-                          results={filteredDisplayResults}
-                          showReadingBadge={resultsShowReadingBadge(inputQuery)}
-                          visibleLimit={visibleCount}
-                          activeLiteral={activeDetailLiteral}
-                          lang={uiLang}
-                          onPick={handleEntryPick}
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {emptyMessage && (
-                    <div className="no-results info">
-                      <p>
-                        <strong>{emptyMessage.primary}</strong>
-                      </p>
-                      {emptyMessage.secondary ? <p>{emptyMessage.secondary}</p> : null}
-                    </div>
-                  )}
-
-                  {filterEmpty ? <div className="no-results info"><p><strong>{appCopy.noLoadedResults}</strong></p><p>{hasMore ? appCopy.loadingMore : appCopy.resetFilter}</p></div> : null}
-
-                  {showGuideQuick ? (
-                    <GuideQuick
-                      lang={uiLang}
-                      disabled={shellGated || offlineStatus !== 'ready'}
-                      onPick={handleRunExample}
-                      onOpenFullGuide={handleOpenGuide}
-                    />
-                  ) : null}
-
-                  {showSentinel ? (
-                    <div ref={sentinelRef} className="results-scroll-sentinel" aria-hidden />
-                  ) : null}
-                </div>
-              </div>
-              </div>
-                </section>
+                <QueryWorkspaceResultsBoundary
+                  detailOpen={detailOpen}
+                  showGuideQuick={showGuideQuick}
+                  filteredResults={filteredDisplayResults}
+                  displayHint={displayHint}
+                  loadingVisible={useLiveFetch && searchLoadingVisible}
+                  searchingLabel={appCopy.searching}
+                  error={useLiveFetch ? searchError : null}
+                  resultsLabel={resultsLabel}
+                  synLayout={synLayout}
+                  anchorLayout={anchorLayout}
+                  visibleCount={visibleCount}
+                  activeLiteral={activeDetailLiteral}
+                  lang={uiLang}
+                  inputQuery={inputQuery}
+                  emptyMessage={emptyMessage}
+                  filterEmpty={filterEmpty}
+                  hasMore={hasMore}
+                  noLoadedResults={appCopy.noLoadedResults}
+                  loadingMoreLabel={appCopy.loadingMore}
+                  resetFilterLabel={appCopy.resetFilter}
+                  guideQuickDisabled={shellGated || offlineStatus !== 'ready'}
+                  showSentinel={showSentinel}
+                  scrollRootRef={setScrollRootEl}
+                  sentinelRef={sentinelRef}
+                  onMainClick={handleSearchMainClick}
+                  onSynPick={runCommittedSearch}
+                  onEntryPick={handleEntryPick}
+                  onRunExample={handleRunExample}
+                  onOpenFullGuide={handleOpenGuide}
+                />
               )}
             </Suspense>
           ) : null}
