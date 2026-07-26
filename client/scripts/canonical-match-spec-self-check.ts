@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { normalizeAndParse } from '../src/db/query-engine.ts';
-import { canonicalMatchSpecToJson, canonicalizeLegacyMatchSpec } from '../src/db/position-match/canonical.ts';
-import { buildMatchSpecForParsed } from '../src/db/position-match/match-spec-registry.ts';
+import { canonicalMatchSpecToJson } from '../src/db/position-match/canonical.ts';
+import { compileParsedQuery } from '../src/db/position-match/compiler.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
 
 function findCasesPath(): string {
@@ -36,13 +36,19 @@ loadRhymeLetterData(repoRoot);
 
 for (const item of doc.cases) {
   const parsed = normalizeAndParse(item.query, { mode: item.mode });
-  const legacy = buildMatchSpecForParsed(parsed);
-  assert(legacy, `${item.id}: legacy builder returned no MatchSpec`);
-  const got = canonicalMatchSpecToJson(canonicalizeLegacyMatchSpec(legacy));
+  const got = canonicalMatchSpecToJson(compileParsedQuery(parsed));
   assert(
     deepEqual(got, item.expected),
     `${item.id}: got ${JSON.stringify(got)} expected ${JSON.stringify(item.expected)}`,
   );
 }
+
+let lookupRejected = false;
+try {
+  compileParsedQuery(normalizeAndParse('香港'));
+} catch {
+  lookupRejected = true;
+}
+assert(lookupRejected, 'pure Han lookup must not enter MatchSpec compiler');
 
 console.log(`canonical MatchSpec self-check: ok (${doc.cases.length} cases)`);
