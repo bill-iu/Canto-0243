@@ -88,6 +88,7 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (query.kind === QueryKind.COMPOUND_CONNECT_SYN) return compileCompound(query, 'syn');
   if (query.kind === QueryKind.COMPOUND_CONNECT_ANT) return compileCompound(query, 'ant');
   if (query.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) return compileDoubledSyllable(query);
+  if (query.kind === QueryKind.JYUTPING_ANCHOR) return compileJyutpingAnchor(query);
   const legacy = buildMatchSpecForParsed(query);
   if (!legacy) {
     throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
@@ -293,6 +294,50 @@ function compileDoubledSyllable(query: CompoundDoubledSyllableQuery): CanonicalM
     width: query.width,
     slots,
     compound_kind: 'doubled_syllable',
+  });
+}
+
+function jyutpingCodeSlots(query: JyutpingAnchorQuery): SlotConstraint[] {
+  if (query.code_slots?.length) {
+    return query.code_slots.map(([pos, value]) => ({ pos, kind: 'code_digit', value }));
+  }
+  return query.code_prefix && query.width === query.code_prefix.length
+    ? codePrefixSlots(query.code_prefix)
+    : [];
+}
+
+function compileJyutpingAnchor(query: JyutpingAnchorQuery): CanonicalMatchSpec {
+  const codeSlots = jyutpingCodeSlots(query);
+  if (query.dual_phoneme) {
+    const initial = finalizeCanonicalMatchSpec({
+      width: query.width,
+      slots: [...codeSlots, {
+        pos: query.anchor_pos,
+        kind: 'initial_letters',
+        value: query.dual_initial_value || query.anchor_value,
+      }],
+    });
+    const final = finalizeCanonicalMatchSpec({
+      width: query.width,
+      slots: [...codeSlots, {
+        pos: query.anchor_pos,
+        kind: 'rhyme_letters',
+        value: query.anchor_value,
+      }],
+    });
+    return finalizeCanonicalMatchSpec({
+      width: query.width,
+      slots: codeSlots,
+      phoneme_alternatives: { initial, final },
+    });
+  }
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    slots: [...codeSlots, {
+      pos: query.anchor_pos,
+      kind: query.anchor_kind,
+      value: query.anchor_value,
+    }],
   });
 }
 
