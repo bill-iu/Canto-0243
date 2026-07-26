@@ -426,12 +426,12 @@ export function WorkbenchPage({
     setMessage('已手打替換段。');
   }, [dispatch, session, setSpanInputError]);
 
-  const performUndo = () => {
+  const performUndo = useCallback(() => {
     if (!session.undo) return;
     dispatch({ type: 'undo' });
     setSpanInputError('');
     setMessage(session.draft ? '已復原最近一次改動。' : '已復原清空前的句稿。');
-  };
+  }, [dispatch, session, setSpanInputError]);
 
   // 候選 session 擁有 cursor；page 只傳 plan 身份（無 paging）
   // 句格 session 即時；候選 plan 延後，避免鎖格被查詢／重繪拖慢（CONTEXT 字位鎖定）
@@ -537,6 +537,16 @@ export function WorkbenchPage({
   const intro = workbenchIntroCopy(uiLang);
   const copy = getWorkbenchCopy(uiLang);
   const canUndo = Boolean(session.undo);
+  const headingExtra = useMemo(() => (
+    <>
+      <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
+      {isPosFilterActive(posFilter) ? (
+        <span className="constraint-bar__pos-status">
+          {copy.filtering}
+        </span>
+      ) : null}
+    </>
+  ), [copy.filtering, posFilter, setPosFilter, uiLang]);
   const returnToInput = () => {
     lineInputFormRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
   };
@@ -673,16 +683,7 @@ export function WorkbenchPage({
               })()}
               canUndo={canUndo}
               onUndo={performUndo}
-              headingExtra={(
-                <>
-                  <PosFilterControl value={posFilter} onChange={setPosFilter} lang={uiLang} />
-                  {isPosFilterActive(posFilter) ? (
-                    <span className="constraint-bar__pos-status">
-                      {copy.filtering}
-                    </span>
-                  ) : null}
-                </>
-              )}
+              headingExtra={headingExtra}
             />
             <div className="candidate-status" aria-live="polite">
               {!draft.selection

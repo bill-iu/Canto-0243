@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { memo, useState, type ReactNode } from 'react';
 
 import type { ReplacementPlanV1 } from './contracts.ts';
 import type { CodeConstraintMode } from './code-constraint.ts';
@@ -145,7 +145,7 @@ function DimChecklist({
   );
 }
 
-export function ConstraintBar({
+export const ConstraintBar = memo(function ConstraintBar({
   mode,
   semanticIntent,
   codeConstraint,
@@ -284,4 +284,4 @@ export function ConstraintBar({
       </div>
     </section>
   );
-}
+});
