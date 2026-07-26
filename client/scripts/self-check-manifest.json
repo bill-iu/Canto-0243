@@ -179,6 +179,15 @@
       ]
     },
     {
+      "id": "canonical-architecture",
+      "script": "canonical-architecture-self-check.ts",
+      "tags": [
+        "ci",
+        "grammar",
+        "local"
+      ]
+    },
+    {
       "id": "equals-family",
       "script": "equals-family-self-check.ts",
       "tags": [
