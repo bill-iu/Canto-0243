@@ -114,6 +114,7 @@ export function useQueryWorkspace({
   useEffect(() => {
     if (!enabled || !isReady || activeTabId == null || !searchQuery.trim()) {
       frameAbortRef.current?.abort();
+      loadMoreAbortRef.current?.abort();
       if (activeTabId != null && !searchQuery.trim()) {
         dispatch({ type: 'clearQuery', query: searchQuery });
       }
@@ -132,7 +133,7 @@ export function useQueryWorkspace({
       pzmode,
       kind: 'preview',
     });
-  }, [activeTabId, enabled, isReady, mode, pzmode, searchQuery]);
+  }, [activeTabId, enabled, fallback0243Mode, isReady, mode, pzmode, searchQuery, uiLang]);
 
   useEffect(() => {
     const frame = state.activeFrame;
@@ -272,10 +273,14 @@ export function useQueryWorkspace({
     (nextQuery = inputQuery, nextMode = mode, nextPzMode = pzmode) => {
       const query = nextQuery.trim();
       if (!query) {
+        frameAbortRef.current?.abort();
+        loadMoreAbortRef.current?.abort();
         flushSearchQuery(nextQuery);
         dispatch({ type: 'clearQuery', query: nextQuery });
         return;
       }
+      frameAbortRef.current?.abort();
+      loadMoreAbortRef.current?.abort();
       commitKeyRef.current = `${query}\0${nextMode}\0${nextPzMode}`;
       flushSearchQuery(nextQuery);
       dispatch({
