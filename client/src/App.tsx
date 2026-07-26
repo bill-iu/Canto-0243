@@ -260,12 +260,7 @@ function App() {
     navigationAdapter,
   });
   const {
-    inputQuery,
-    searchQuery,
-    setInputQueryDebounced,
-    setInputQueryLive,
-    flushSearchQuery,
-    hydrateSearch,
+    controls,
     results,
     total,
     hint: searchHint,
@@ -275,9 +270,7 @@ function App() {
     error: searchError,
     hasMore,
     loadMore,
-    commitSearch,
     posFilter,
-    setFilter: setWorkspaceFilter,
     displayResults,
     resultsShuffled,
     shuffleGeneration,
@@ -286,6 +279,16 @@ function App() {
     resetPresentation,
     clearPresentationShuffle,
   } = workspace;
+  const {
+    inputQuery,
+    searchQuery,
+    setInputQueryDebounced,
+    setInputQueryLive,
+    flushSearchQuery,
+    hydrateSearch,
+    commitSearch,
+    setFilter: setWorkspaceFilter,
+  } = controls;
 
   const trimmedInput = inputQuery.trim();
   const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;

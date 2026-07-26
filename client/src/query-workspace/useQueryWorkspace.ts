@@ -347,14 +347,20 @@ export function useQueryWorkspace({
     setPresentationShuffledState(false);
   }, []);
 
-  return {
-    ...state,
+  const controls = {
     inputQuery,
     searchQuery,
     setInputQueryDebounced,
     setInputQueryLive,
     flushSearchQuery,
     hydrateSearch,
+    commitSearch,
+    setFilter,
+  };
+
+  return {
+    ...state,
+    controls,
     loading: isLoading,
     loadingVisible,
     loadingMore: state.status === 'loading-more',
@@ -362,8 +368,6 @@ export function useQueryWorkspace({
     isReady,
     hasMore,
     loadMore,
-    commitSearch,
-    setFilter,
     displayResults: presentationResults,
     resultsShuffled: presentationShuffled,
     shuffleGeneration: presentationGeneration,
