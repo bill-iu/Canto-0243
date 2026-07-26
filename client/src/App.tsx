@@ -451,7 +451,7 @@ function App() {
       return;
     }
     presentResults(mergeShuffledResults(displayResults, results));
-  }, [displayResults, presentResults, results, resultsShuffled, resetPresentation, useLiveFetch, searchLoading, searchQuery]);
+  }, [presentResults, results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
 
   useEffect(() => {
     if (isReady || offlineStatus === 'failed') return;

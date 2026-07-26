@@ -23,6 +23,7 @@ import {
   snapshotFromQueryWorkspace,
   type QueryWorkspaceSnapshot,
 } from './state.ts';
+import { buildPresentationCheckpoint } from './presentation.ts';
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
@@ -89,6 +90,9 @@ export function useQueryWorkspace({
   const [presentationResults, setPresentationResultsState] = useState<QueryResult[]>([]);
   const [presentationShuffled, setPresentationShuffledState] = useState(false);
   const [presentationGeneration, setPresentationGeneration] = useState(0);
+  const presentationTabIdRef = useRef<number | null>(null);
+  const presentationResultsRef = useRef<QueryResult[]>([]);
+  const presentationShuffledRef = useRef(false);
   const [loadingVisible, setLoadingVisible] = useState(false);
   const activatedTabRef = useRef<number | null>(null);
   const activeRequestIdRef = useRef<number | null>(null);
@@ -111,6 +115,12 @@ export function useQueryWorkspace({
       activatedTabRef.current = null;
       frameAbortRef.current?.abort();
       loadMoreAbortRef.current?.abort();
+      presentationTabIdRef.current = null;
+      presentationResultsRef.current = [];
+      presentationShuffledRef.current = false;
+      setPresentationResultsState([]);
+      setPresentationShuffledState(false);
+      setPresentationGeneration((generation) => generation + 1);
       dispatch({ type: 'leave' });
       hydrateSearch('');
       return;
@@ -119,7 +129,14 @@ export function useQueryWorkspace({
     activatedTabRef.current = activeTabId;
     frameAbortRef.current?.abort();
     loadMoreAbortRef.current?.abort();
-    dispatch({ type: 'activateTab', snapshot: snapshotFromTab(activeTab) });
+    const snapshot = snapshotFromTab(activeTab);
+    presentationTabIdRef.current = activeTabId;
+    presentationResultsRef.current = [...snapshot.results];
+    presentationShuffledRef.current = false;
+    setPresentationResultsState([...snapshot.results]);
+    setPresentationShuffledState(false);
+    setPresentationGeneration((generation) => generation + 1);
+    dispatch({ type: 'activateTab', snapshot });
     hydrateSearch(activeTab.q || '');
   }, [activeTab, activeTabId, hydrateSearch]);
 
@@ -295,13 +312,14 @@ export function useQueryWorkspace({
 
   useEffect(() => {
     if (!navigationAdapter || state.tabId == null || state.status !== 'ready') return;
-    const snapshot = snapshotFromQueryWorkspace(state);
-    if (snapshot) {
-      navigationAdapter.checkpoint(state.tabId, {
-        ...snapshot,
-        results: [...presentationResults],
-        offset: presentationResults.length,
-      });
+    const checkpoint = buildPresentationCheckpoint(
+      snapshotFromQueryWorkspace(state),
+      presentationTabIdRef.current,
+      presentationResultsRef.current,
+      presentationShuffledRef.current,
+    );
+    if (checkpoint) {
+      navigationAdapter.checkpoint(state.tabId, checkpoint);
     }
   }, [navigationAdapter, presentationGeneration, presentationResults, state]);
 
@@ -335,22 +353,30 @@ export function useQueryWorkspace({
   }, []);
 
   const presentResults = useCallback((items: readonly QueryResult[]) => {
-    setPresentationResultsState([...items]);
+    const next = [...items];
+    presentationResultsRef.current = next;
+    setPresentationResultsState(next);
   }, []);
 
   const presentShuffledResults = useCallback((items: readonly QueryResult[]) => {
-    setPresentationResultsState([...items]);
+    const next = [...items];
+    presentationResultsRef.current = next;
+    presentationShuffledRef.current = true;
+    setPresentationResultsState(next);
     setPresentationShuffledState(true);
     setPresentationGeneration((generation) => generation + 1);
   }, []);
 
   const resetPresentation = useCallback(() => {
+    presentationResultsRef.current = [];
+    presentationShuffledRef.current = false;
     setPresentationResultsState([]);
     setPresentationShuffledState(false);
     setPresentationGeneration((generation) => generation + 1);
   }, []);
 
   const clearPresentationShuffle = useCallback(() => {
+    presentationShuffledRef.current = false;
     setPresentationShuffledState(false);
   }, []);
 

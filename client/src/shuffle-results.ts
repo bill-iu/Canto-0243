@@ -15,7 +15,7 @@ export function mergeShuffledResults(
   next: QueryResult[],
 ): QueryResult[] {
   if (next.length <= previous.length) {
-    return next;
+    return previous;
   }
   return [...previous, ...next.slice(previous.length)];
 }
