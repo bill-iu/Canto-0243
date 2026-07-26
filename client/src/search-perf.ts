@@ -5,6 +5,10 @@
 
 export type SearchPerfState = {
   listRenders: number;
+  shellRenders: number;
+  workspaceRenders: number;
+  resultsRenders: number;
+  detailRenders: number;
 };
 
 declare global {
@@ -27,7 +31,18 @@ export function isSearchPerfEnabled(): boolean {
 
 function ensureState(): SearchPerfState {
   if (!window.__searchPerf) {
-    window.__searchPerf = { listRenders: 0 };
+    window.__searchPerf = {
+      listRenders: 0,
+      shellRenders: 0,
+      workspaceRenders: 0,
+      resultsRenders: 0,
+      detailRenders: 0,
+    };
+  } else {
+    window.__searchPerf.shellRenders ??= 0;
+    window.__searchPerf.workspaceRenders ??= 0;
+    window.__searchPerf.resultsRenders ??= 0;
+    window.__searchPerf.detailRenders ??= 0;
   }
   return window.__searchPerf;
 }
@@ -72,6 +87,26 @@ export function countListRender(): void {
   ensureState().listRenders += 1;
 }
 
+export function countShellRender(): void {
+  if (!isSearchPerfEnabled()) return;
+  ensureState().shellRenders += 1;
+}
+
+export function countWorkspaceRender(): void {
+  if (!isSearchPerfEnabled()) return;
+  ensureState().workspaceRenders += 1;
+}
+
+export function countResultsRender(): void {
+  if (!isSearchPerfEnabled()) return;
+  ensureState().resultsRenders += 1;
+}
+
+export function countDetailRender(): void {
+  if (!isSearchPerfEnabled()) return;
+  ensureState().detailRenders += 1;
+}
+
 /** ponytail: `npx tsx client/scripts/search-perf-self-check.ts` */
 export function searchPerfSelfCheck(): void {
   // Default (Node / no ?perf): helpers must no-op without touching window state
@@ -79,6 +114,10 @@ export function searchPerfSelfCheck(): void {
   markSearchDispatch();
   markSearchResolve();
   countListRender();
+  countShellRender();
+  countWorkspaceRender();
+  countResultsRender();
+  countDetailRender();
   if (typeof window !== 'undefined' && !isSearchPerfEnabled() && window.__searchPerf) {
     throw new Error('searchPerfSelfCheck: counted while disabled');
   }

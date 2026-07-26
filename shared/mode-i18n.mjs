@@ -1,7 +1,7 @@
 /** Shared search-mode labels — portable + PWA (zh default + en i18n). */
 
 /** @typedef {'m1' | 'm2' | 'm3' | 'syn' | 'pz'} UrlMode */
-/** @typedef {'zh' | 'en'} UiLang */
+/** @typedef {'zh' | 'zh-Hans' | 'en'} UiLang */
 
 /** @type {Record<UrlMode, { title: string; note: string; readout: string; statsLabel: string; placeholder: string }>} */
 export const MODE_META = {
@@ -35,6 +35,39 @@ export const MODE_META = {
   },
   pz: {
     title: '平仄', note: '格律', readout: '平仄模式', statsLabel: '平仄', placeholder: '搵嘢：P／Z／數字／?／漢字錨',
+  },
+};
+export const MODE_META_ZH_HANS = {
+  m1: {
+    title: '0243模式',
+    note: '松',
+    readout: '0243模式（松）',
+    statsLabel: '0243模式 · 松',
+    placeholder: '揾嘢：0243／汉字／粤拼',
+  },
+  m2: {
+    title: '02493模式',
+    note: '紧',
+    readout: '02493模式（紧）',
+    statsLabel: '02493模式 · 紧',
+    placeholder: '揾嘢：02493／汉字／粤拼',
+  },
+  m3: {
+    title: '394052模式',
+    note: '六声',
+    readout: '394052模式（六声）',
+    statsLabel: '394052模式 · 六声',
+    placeholder: '揾嘢：394052／汉字／粤拼',
+  },
+  syn: {
+    title: '近反义',
+    note: '查',
+    readout: '近反义模式（查）',
+    statsLabel: '近反义 · 查',
+    placeholder: '打字揾同义／反义',
+  },
+  pz: {
+    title: '平仄', note: '格律', readout: '平仄模式', statsLabel: '平仄', placeholder: '揾嘢：P／Z／数字／?／汉字锚',
   },
 };
 
@@ -73,13 +106,21 @@ const MODE_META_EN = {
   },
 };
 
+const MODE_HELP_ZH_HANS = {
+  m1: '常用 0243 编码与混合查询',
+  m2: '02493 码（分清二声）',
+  m3: '394052 六声码（三／五声分明）',
+  pz: '平（P）、仄（Z）、数字与通配码',
+  syn: '近义、反义与语意相关',
+};
+
 /**
  * @param {string} mode
  * @param {UiLang} [lang]
  */
 export function getModeMeta(mode, lang = 'zh') {
   const key = mode in MODE_META ? /** @type {UrlMode} */ (mode) : 'm1';
-  const table = lang === 'en' ? MODE_META_EN : MODE_META;
+  const table = lang === 'en' ? MODE_META_EN : lang === 'zh-Hans' ? MODE_META_ZH_HANS : MODE_META;
   return table[key] ?? table.m1;
 }
 
@@ -89,16 +130,28 @@ export function getModeMeta(mode, lang = 'zh') {
  */
 export function modeHelp(mode, lang = 'zh') {
   if (mode === 'm1') {
-    return lang === 'en' ? 'Common 0243 codes & mixed queries' : '常用 0243 編碼與混合查詢';
+    if (lang === 'en') return 'Common 0243 codes & mixed queries';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m1;
+    return '常用 0243 編碼與混合查詢';
   }
   if (mode === 'm2') {
-    return lang === 'en' ? '02493 codes (distinguish 2nd tone)' : '02493 碼（分清二聲）';
+    if (lang === 'en') return '02493 codes (distinguish 2nd tone)';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m2;
+    return '02493 碼（分清二聲）';
   }
   if (mode === 'm3') {
-    return lang === 'en' ? '394052 — strict 6-tone digits' : '394052 六聲碼（三／五聲分明）';
+    if (lang === 'en') return '394052 — strict 6-tone digits';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.m3;
+    return '394052 六聲碼（三／五聲分明）';
   }
-  if (mode === 'pz') return lang === 'en' ? 'Ping (P), ze (Z), digits and wildcards' : '平（P）、仄（Z）、數字與通配碼';
-  return lang === 'en' ? 'Synonyms, antonyms & semantically related' : '近義、反義與語意相關';
+  if (mode === 'pz') {
+    if (lang === 'en') return 'Ping (P), ze (Z), digits and wildcards';
+    if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.pz;
+    return '平（P）、仄（Z）、數字與通配碼';
+  }
+  if (lang === 'en') return 'Synonyms, antonyms & semantically related';
+  if (lang === 'zh-Hans') return MODE_HELP_ZH_HANS.syn;
+  return '近義、反義與語意相關';
 }
 
 /**
@@ -110,6 +163,9 @@ export function modeRedirectHint(mode, lang = 'zh') {
   const meta = getModeMeta(key, lang);
   if (lang === 'en') {
     return `This syntax switched to ${meta.readout} for search`;
+  }
+  if (lang === 'zh-Hans') {
+    return `此语法已切换至 ${meta.readout} 查询`;
   }
   return `此語法已切換至 ${meta.readout} 查詢`;
 }
@@ -136,6 +192,9 @@ export function modeI18nSelfCheck() {
   }
   if (getModeMeta('m2', 'en').readout !== '02493 Mode (Strict)') {
     throw new Error('modeI18nSelfCheck: en m2 readout');
+  }
+  if (modeHelp('m1', 'zh-Hans') !== '常用 0243 编码与混合查询') {
+    throw new Error('modeI18nSelfCheck: zh-Hans m1 help');
   }
   if (getModeMeta('syn', 'en').title !== 'Near-Antonyms') {
     throw new Error('modeI18nSelfCheck: en syn title');

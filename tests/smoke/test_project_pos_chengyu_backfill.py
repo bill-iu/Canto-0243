@@ -100,7 +100,7 @@ def test_clear_worked_examples_classify_conservatively() -> None:
 
     assert classify_record("三朋四友", "泛指各種朋友。", "交得～。" ).pos == ("n",)
     assert classify_record("作繭自縛", "比喻自己使自己受困。", "弄得～。" ).pos == ("v",)
-    assert classify_record("狐羣狗黨", "比喻勾結在一起的壞人。", "無").pos == ("n",)
+    assert classify_record("狐群狗黨", "比喻勾結在一起的壞人。", "無").pos == ("n",)
     assert classify_record("知命之年", "知道自己命運的年齡。指五十歲。", "無").pos == ("n",)
     assert classify_record("走南闖北", "指走過很多地方，也泛指闖蕩。", "無").pos == ("v",)
 

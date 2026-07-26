@@ -118,7 +118,7 @@ p0	瓊漿玉液	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類
 p0	瓦釜雷鳴	u			no-source;fallback	low	low|u|plain	BAD	v,n			u 有明確詞類 → v,n
 p0	生物製品	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	生物降解	u			no-source;fallback	low	low|u|plain	BAD	n,v			u 有明確詞類 → n,v
-p0	產業集羣	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
+p0	產業集群	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	田間管理	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	由始至終	u			no-source;fallback	low	low|u|plain	BAD	r			u 有明確詞類 → r
 p0	甲硫氨酸	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
@@ -172,7 +172,7 @@ p0	罪惡滔天	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類
 p0	罷	u			no-source;fallback	low	low|u|plain	SOFT	x,v			罷多類；u 可
 p0	羅	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	羊腸小道	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
-p0	羣龍無首	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
+p0	群龍無首	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a
 p0	翁牛特旗	u			no-source;fallback	low	low|u|plain	BAD	n			u 有明確詞類 → n
 p0	老羞成怒	u			no-source;fallback	low	low|u|plain	BAD	v			u 有明確詞類 → v
 p0	聰明絕頂	u			no-source;fallback	low	low|u|plain	BAD	a			u 有明確詞類 → a

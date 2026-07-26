@@ -35,9 +35,9 @@ head	tail	relation_type	batch_id
 齜牙咧嘴	和顏悦色	ant	len4-b03-20260715
 齜牙咧嘴	温柔	ant	len4-b03-20260715
 事過境遷	依然如故	ant	len4-b03-20260715
-博覽羣書	不學無術	ant	len4-b03-20260715
-博覽羣書	孤陋寡聞	ant	len4-b03-20260715
-博覽羣書	目不識丁	ant	len4-b03-20260715
+博覽群書	不學無術	ant	len4-b03-20260715
+博覽群書	孤陋寡聞	ant	len4-b03-20260715
+博覽群書	目不識丁	ant	len4-b03-20260715
 大快朵頤	難吃	ant	len4-b03-20260715
 物盡其用	暴殄天物	ant	len4-b03-20260715
 物盡其用	浪費	ant	len4-b03-20260715
@@ -311,7 +311,7 @@ head	tail	relation_type	batch_id
 擁擠不堪	空空蕩蕩	ant	len4-b03-20260715
 欺軟怕硬	鋤強扶弱	ant	len4-b03-20260715
 欺軟怕硬	見義勇為	ant	len4-b03-20260715
-羣龍無首	眾望所歸	ant	len4-b03-20260715
+群龍無首	眾望所歸	ant	len4-b03-20260715
 能屈能伸	剛愎自用	ant	len4-b03-20260715
 能屈能伸	死板	ant	len4-b03-20260715
 自取滅亡	絕處逢生	ant	len4-b03-20260715
@@ -326,7 +326,7 @@ head	tail	relation_type	batch_id
 半生不熟	滾瓜爛熟	ant	len4-b03-20260715
 半生不熟	精通	ant	len4-b03-20260715
 半生不熟	嫻熟	ant	len4-b03-20260715
-卓爾不羣	普通	ant	len4-b03-20260715
+卓爾不群	普通	ant	len4-b03-20260715
 日曬雨淋	養尊處優	ant	len4-b03-20260715
 日曬雨淋	足不出户	ant	len4-b03-20260715
 日曬雨淋	安逸	ant	len4-b03-20260715

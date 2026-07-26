@@ -8,8 +8,9 @@ from sqlalchemy.orm import Session
 
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
-from app.services.position_match import execute_match_spec
-from app.services.query_match_spec_registry import build_match_spec_for_parsed
+from app.services.position_match.engine import execute_canonical_match_spec
+from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.position_match.compiler import compile_parsed_query
 from app.services.query_parse import (
     DigitCodeQuery,
     JyutpingFragmentQuery,
@@ -54,14 +55,11 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
-    spec = build_match_spec_for_parsed(parsed)
-    if spec is None:
-        return SearchResult(items=[])
-
-    result = execute_match_spec(
-        spec,
+    canonical = compile_parsed_query(parsed)
+    result = execute_canonical_match_spec(
+        canonical,
         code=ctx.code,
-        mode=spec.extra.get("code_mode", ctx.mode),
+        mode=canonical.code_mode or ctx.mode,
         limit=ctx.limit,
         offset=ctx.offset,
         db=ctx.db,
@@ -70,7 +68,9 @@ def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> Searc
     if not result.items:
         from app.services.query_grammar.equals import code_prefixed_whole_word_equals_empty_hint
 
-        hint = code_prefixed_whole_word_equals_empty_hint(spec, ctx.db)
+        hint = code_prefixed_whole_word_equals_empty_hint(
+            canonical_match_spec_to_legacy(canonical), ctx.db
+        )
     return SearchResult(items=result.items, total=result.total, hint=hint, cache_path=result.cache_path)
 
 

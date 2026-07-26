@@ -10,7 +10,7 @@ type ListProps = {
   showReadingBadge: boolean;
   visibleLimit: number;
   activeLiteral: string | null;
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
 };
 
 function listPropsStable(a: ListProps, b: ListProps): boolean {

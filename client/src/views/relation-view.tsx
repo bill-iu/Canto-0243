@@ -2,6 +2,7 @@
  * Portable maintainer: 關係補錄 — mirrors shared/relation-form.mjs main path.
  */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { getRelationCopy } from '../../../shared/relation-i18n.mjs';
 
 export interface RelationFormState {
   seed_char: string;
@@ -10,7 +11,7 @@ export interface RelationFormState {
 }
 
 export interface RelationViewProps {
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   initial?: Partial<RelationFormState>;
   onFormChange?: (next: RelationFormState) => void;
 }
@@ -44,6 +45,7 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const seedRef = useRef<HTMLInputElement>(null);
+  const copy = getRelationCopy(lang);
 
   useEffect(() => {
     seedRef.current?.focus({ preventScroll: true });
@@ -71,7 +73,7 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
       }
       setOk(body.message || okFallback);
     } catch {
-      setErr(lang === 'en' ? 'Cannot reach the server. Is it running?' : '無法連線後端。請確認伺服器已啟動。');
+      setErr(copy.cannotReach);
     } finally {
       setBusy(false);
     }
@@ -79,35 +81,31 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
 
   const onSubmit = (event: FormEvent) => {
     event.preventDefault();
-    void run('/relations/manual', lang === 'en' ? 'Relation added.' : '已補上關係。', lang === 'en' ? 'Submit failed.' : '提交失敗，請稍後再試。');
+    void run('/relations/manual', copy.relationAdded, copy.submitFailed);
   };
 
   const onRevoke = () => {
     void run(
       '/relations/manual/revoke',
-      lang === 'en' ? 'Relation revoked.' : '已撤回關係。',
-      lang === 'en' ? 'Revoke failed.' : '撤回失敗，請稍後再試。',
+      copy.relationRevoked,
+      copy.revokeFailed,
     );
   };
 
   return (
     <section className="relation-view relation-main" aria-labelledby="relationTitle">
       <header className="relation-hero">
-        <h1 id="relationTitle">{lang === 'en' ? 'Add relations' : '關係補錄'}</h1>
+        <h1 id="relationTitle">{copy.title}</h1>
         <p className="relation-lede">
-          {lang === 'en'
-            ? 'Add synonym or antonym links for lexicon entries. Seed is the expansion start; opposite is the one-hop neighbour.'
-            : '為已收錄字面補近義或反義關係。種子字面為擴展起點；對端字面提供一跳鄰居來源。'}
+          {copy.lede}
         </p>
       </header>
 
       <form className="relation-form" onSubmit={onSubmit}>
         <div className="field">
-          <label htmlFor="seedChar">{lang === 'en' ? 'Seed' : '種子字面'}</label>
+          <label htmlFor="seedChar">{copy.seed}</label>
           <span className="hint">
-            {lang === 'en'
-              ? 'Expansion starts here (e.g. 快樂 when adding links for 快樂)'
-              : '擴展從此字面出發（例如要補「快樂」的關係時填快樂）'}
+            {copy.seedHint}
           </span>
           <div className="search-input-wrap" data-input-wrap="">
             <input
@@ -129,9 +127,9 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
         </div>
 
         <div className="field">
-          <label htmlFor="oppositeChar">{lang === 'en' ? 'Opposite' : '對端字面'}</label>
+          <label htmlFor="oppositeChar">{copy.opposite}</label>
           <span className="hint">
-            {lang === 'en' ? 'The other literal linked directly to the seed' : '與種子建立 direct 關係的另一字面'}
+            {copy.oppositeHint}
           </span>
           <div className="search-input-wrap" data-input-wrap="">
             <input
@@ -152,7 +150,7 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
         </div>
 
         <div className="field">
-          <span id="relationTypeLabel">{lang === 'en' ? 'Relation type' : '關係類型'}</span>
+          <span id="relationTypeLabel">{copy.relationType}</span>
           <div className="relation-type" role="radiogroup" aria-labelledby="relationTypeLabel">
             <label>
               <input
@@ -165,7 +163,7 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
                   emit({ seed_char: seed.trim(), opposite_char: opposite.trim(), relation_type: 'syn' });
                 }}
               />{' '}
-              {lang === 'en' ? 'Synonym' : '近義'}
+              {copy.synonym}
             </label>
             <label>
               <input
@@ -178,17 +176,17 @@ export function RelationView({ lang = 'zh', initial, onFormChange }: RelationVie
                   emit({ seed_char: seed.trim(), opposite_char: opposite.trim(), relation_type: 'ant' });
                 }}
               />{' '}
-              {lang === 'en' ? 'Antonym' : '反義'}
+              {copy.antonym}
             </label>
           </div>
         </div>
 
         <div className="actions">
           <button className="primary-button" type="submit" disabled={busy}>
-            {lang === 'en' ? 'Add relation' : '補上關係'}
+            {copy.add}
           </button>
           <button className="danger-button" type="button" disabled={busy} onClick={onRevoke}>
-            {lang === 'en' ? 'Revoke relation' : '撤回關係'}
+            {copy.revoke}
           </button>
         </div>
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
 import type { CandidateGroup, CandidateGroups, WorkbenchCandidate } from './contracts.ts';
 import { emptyPoolTip } from './limits.ts';
@@ -26,7 +26,7 @@ interface Props {
   onLoadMore?: () => void;
 }
 
-export function CandidateGrid({
+export const CandidateGrid = memo(function CandidateGrid({
   groups,
   total,
   loadedCount,
@@ -122,4 +122,4 @@ export function CandidateGrid({
       </div>
     </section>
   );
-}
+});

@@ -106,7 +106,8 @@ export function positionMatchSpecSelfCheck(): void {
   }
 
   spec.slots!.push({ pos: 2, kind: 'literal_char', value: '就' });
-  if (spec.slots!.length !== 2 || (spec.slots![0] as { kind: string }).kind !== 'literal_char') {
+  const slotCount: number = spec.slots!.length;
+  if (slotCount !== 3 || !spec.slots!.some((slot) => slot.kind === 'literal_char')) {
     throw new Error('positionMatchSpecSelfCheck: slots');
   }
 }

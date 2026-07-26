@@ -314,7 +314,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 七顛八倒	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 七高八低	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 三下五除二	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-三五成羣	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+三五成群	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 三人成虎	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 三人行必有我師	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 三令五申	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
@@ -1032,7 +1032,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 倖免於難	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 倘來之物	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 倚老賣老	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-倜儻不羣	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+倜儻不群	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 借刀殺人	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 借古喻今	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 借古諷今	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
@@ -1599,7 +1599,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 卑鄙齷齪	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 卑陋齷齪	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 卓有成效	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-卓爾不羣	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
+卓爾不群	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 南征北伐	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 南征北戰	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 南征北討	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
@@ -1619,7 +1619,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 博聞多識	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 博聞強記	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 博聞強識	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-博覽羣書	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
+博覽群書	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
 博識多通	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 卧薪嚐膽	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 卧虎藏龍	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
@@ -2707,7 +2707,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 室邇人遐	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 宦海風波	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 害人不淺	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
-害羣之馬	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+害群之馬	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 宴安鴆毒	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 宵衣旰食	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 家喻户曉	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
@@ -3568,7 +3568,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 成敗論人	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 成王敗寇	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 成竹在胸	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-成羣結隊	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
+成群結隊	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 成雙作對	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 成雙成對	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 成龍配套	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
@@ -4019,7 +4019,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 敢怒而不敢言	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 敢為人先	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 散兵遊勇	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-敬業樂羣	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+敬業樂群	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 敬而遠之	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 敬若神明	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
 敬謝不敏	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
@@ -5416,7 +5416,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 狐假虎威	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 狐朋狗友	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
 狐死首丘	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-狐羣狗黨	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+狐群狗黨	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 狐裘羔袖	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 狗仗人勢	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 狗咬呂洞賓	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
@@ -6419,12 +6419,12 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 羞人答答	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 羞於啓齒	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 羞與為伍	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-羣威羣膽	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-羣策羣力	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-羣起而攻之	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-羣雄逐鹿	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
-羣魔亂舞	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-羣龍無首	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
+群威群膽	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+群策群力	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+群起而攻之	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+群雄逐鹿	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
+群魔亂舞	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+群龍無首	project-pos-expansion		chengyu	china-idiom	external-membership;family-unset	medium	pending	awaiting-review
 義不容辭	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 義憤填胸	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 義憤填膺	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
@@ -7439,11 +7439,11 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 超世絕倫	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 超凡入聖	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 超塵拔俗	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-超然不羣	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+超然不群	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 超然物外	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 超然自逸	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-超羣拔類	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-超羣絕倫	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
+超群拔類	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+超群絕倫	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 超超玄箸	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 越俎代庖	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 越幫越忙	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
@@ -8380,7 +8380,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 驚慌失色	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 驚歎不已	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 驚濤駭浪	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
-驚羣動眾	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+驚群動眾	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 驚風駭浪	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 驚魂未定	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 驚鴻一瞥	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
@@ -8504,7 +8504,7 @@ literal	scope	current_family	proposed_family	source	evidence	confidence	verdict	
 鵲巢鳩佔	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
 鵲橋相會	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 鶯歌燕舞	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review
-鶴立雞羣	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
+鶴立雞群	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 鶴髮童顏	lexicon-pos-gap		chengyu	china-idiom	external-membership;missing-project-pos	low	pending	awaiting-review
 鶼鰈情深	mother-unmatched	idiom		project-pos-mother	no-external-match	low	pending	awaiting-review
 鷸蚌相爭	mother-external-match	idiom	chengyu	china-idiom	external-membership	medium	pending	awaiting-review

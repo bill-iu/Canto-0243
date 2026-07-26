@@ -2,6 +2,7 @@
  * Portable maintainer: 詞庫勘誤 — mirrors shared/lexicon-corrections.mjs main path.
  */
 import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { getCorrectionsCopy } from '../../../shared/corrections-i18n.mjs';
 
 interface WordRow {
   char: string;
@@ -16,7 +17,7 @@ interface SessionRow extends WordRow {
 }
 
 export interface CorrectionsViewProps {
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   prefetchChar?: string;
 }
 
@@ -27,6 +28,7 @@ function apiDetail(body: { detail?: unknown }, fallback: string): string {
 }
 
 export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsViewProps) {
+  const copy = getCorrectionsCopy(lang);
   const [char, setChar] = useState(prefetchChar);
   const [rows, setRows] = useState<WordRow[]>([]);
   const [selected, setSelected] = useState<WordRow | null>(null);
@@ -50,16 +52,12 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
           wordCount: number;
           tableCount: number;
         };
-        setStatsHtml(
-          lang === 'en'
-            ? `Entries: ${Number(wordCount).toLocaleString()} · Tables: ${Number(tableCount).toLocaleString()}`
-            : `詞條數量: ${Number(wordCount).toLocaleString()} · 資料表數量: ${Number(tableCount).toLocaleString()}`,
-        );
+        setStatsHtml(copy.stats(Number(wordCount), Number(tableCount)));
       } catch {
-        setStatsHtml(lang === 'en' ? 'Could not load DB stats' : '無法載入資料庫統計');
+        setStatsHtml(copy.statsFailed);
       }
     })();
-  }, [lang]);
+  }, [copy, lang]);
 
   useEffect(() => {
     const prefetch = prefetchChar.trim();
@@ -75,7 +73,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         const next = (await res.json()) as WordRow[];
         setRows(next);
         if (!next.length) {
-          setErr(lang === 'en' ? 'Literal not found in lexicon.' : '詞庫中找不到此字面。');
+          setErr(copy.notFound);
           return;
         }
         if (next.length === 1) {
@@ -97,15 +95,13 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         }
       } catch {
         setRows([]);
-        setErr(
-          lang === 'en' ? 'Cannot reach the server. Is it running?' : '無法連線後端。請確認伺服器已啟動。',
-        );
+        setErr(copy.cannotReach);
       } finally {
         setBusy(false);
       }
     })();
     // ponytail: refresh the debug→corrections deep-link prefetch when its inputs change
-  }, [lang, prefetchChar]);
+  }, [copy, lang, prefetchChar]);
 
   const clearSelection = () => {
     setSelected(null);
@@ -141,7 +137,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
   const lookupRows = async (literalIn?: string) => {
     const literal = (literalIn ?? char).trim();
     if (!literal) {
-      setErr(lang === 'en' ? 'Enter a literal.' : '請輸入字面。');
+      setErr(copy.enterLiteral);
       return;
     }
     setBusy(true);
@@ -154,13 +150,13 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       const next = (await res.json()) as WordRow[];
       setRows(next);
       if (!next.length) {
-        setErr(lang === 'en' ? 'Literal not found in lexicon.' : '詞庫中找不到此字面。');
+        setErr(copy.notFound);
         return;
       }
       if (next.length === 1) selectRow(next[0]);
     } catch {
       setRows([]);
-      setErr(lang === 'en' ? 'Cannot reach the server. Is it running?' : '無法連線後端。請確認伺服器已啟動。');
+      setErr(copy.cannotReach);
     } finally {
       setBusy(false);
     }
@@ -168,7 +164,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
 
   const submitCorrection = async (action: string, value: string) => {
     if (!selected) {
-      setErr(lang === 'en' ? 'Select a lexicon row first.' : '請先選取收錄列。');
+      setErr(copy.selectRow);
       return;
     }
     setBusy(true);
@@ -198,7 +194,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         note?: string;
       };
       if (!res.ok) {
-        setErr(apiDetail(body, lang === 'en' ? 'Submit failed.' : '提交失敗。'));
+        setErr(apiDetail(body, copy.submitFailed));
         return;
       }
       setSessionRows((prev) => [
@@ -213,12 +209,10 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         ...prev,
       ]);
       setOk(
-        `${body.message || (lang === 'en' ? 'Queued.' : '已入隊。')} ${
-          lang === 'en' ? 'Search results update after apply.' : '搜尋結果待套用後更新。'
-        }`,
+        `${body.message || copy.queued} ${copy.updateAfterApply}`,
       );
     } catch {
-      setErr(lang === 'en' ? 'Cannot reach the server. Is it running?' : '無法連線後端。請確認伺服器已啟動。');
+      setErr(copy.cannotReach);
     } finally {
       setBusy(false);
     }
@@ -232,11 +226,11 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
   const onSetJyutping = async () => {
     const next = newJyutping.trim();
     if (!next) {
-      setErr(lang === 'en' ? 'Enter new Jyutping.' : '請填寫新粵拼。');
+      setErr(copy.enterNewJyutping);
       return;
     }
     if (selected && next === selected.jyutping) {
-      setErr(lang === 'en' ? 'New Jyutping matches current.' : '新粵拼與現有相同。');
+      setErr(copy.sameJyutping);
       return;
     }
     await submitCorrection('set_jyutping', next);
@@ -255,16 +249,16 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       const code = body.code || '';
       setPreviewCode(code);
       if (!code) {
-        setErr(lang === 'en' ? 'Could not compute code.' : '無法計算 code。');
+        setErr(copy.computeFailed);
         return;
       }
       if (code === selected.code) {
-        setErr(lang === 'en' ? 'Code already matches Jyutping.' : 'code 與粵拼已一致，無需重算。');
+        setErr(copy.codeMatches);
         return;
       }
       await submitCorrection('set_code', code);
     } catch {
-      setErr(lang === 'en' ? 'Could not compute code.' : '無法計算 code。');
+      setErr(copy.computeFailed);
     }
   };
 
@@ -277,19 +271,9 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       aria-labelledby="correctionsTitle"
     >
       <header className="relation-hero">
-        <h1 id="correctionsTitle">{lang === 'en' ? 'Lexicon corrections' : '詞庫勘誤'}</h1>
+        <h1 id="correctionsTitle">{copy.title}</h1>
         <p className="relation-lede">
-          {lang === 'en' ? (
-            <>
-              Maintainer only: type <code translate="no">debug</code> in search to open this tab.
-              Queue Jyutping / 0243 fixes to pending; search updates after batch apply.
-            </>
-          ) : (
-            <>
-              維護者專用：在搜尋框輸入 <code translate="no">debug</code> 開此分頁。記錄標音或 0243
-              碼問題至 pending 隊列；搜尋結果待批次套用後才更新。
-            </>
-          )}
+          {copy.ledeBeforeCode}<code translate="no">debug</code>{copy.ledeAfterCode}
         </p>
         {statsHtml ? (
           <div className="db-stats" aria-live="polite">
@@ -300,11 +284,9 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
 
       <form className="relation-form" onSubmit={onLookup}>
         <div className="field">
-          <label htmlFor="correctionChar">{lang === 'en' ? 'Literal' : '字面'}</label>
+          <label htmlFor="correctionChar">{copy.literal}</label>
           <span className="hint">
-            {lang === 'en'
-              ? 'Look up lexicon rows for this literal, then pick one to fix'
-              : '輸入已收錄詞條字面，列出所有收錄列後選取要修正的一列'}
+            {copy.literalHint}
           </span>
           <div className="search-input-wrap" data-input-wrap="">
             <input
@@ -322,7 +304,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
         </div>
         <div className="actions">
           <button className="primary-button" type="submit" disabled={busy}>
-            {lang === 'en' ? 'Look up rows' : '查收錄列'}
+            {copy.lookupRows}
           </button>
         </div>
       </form>
@@ -330,7 +312,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       {rows.length > 0 ? (
         <div className="corrections-rows">
           <p className="hint" id="correctionRowsHint">
-            {lang === 'en' ? 'Select the row to correct:' : '選取要修正的收錄列：'}
+            {copy.selectRowHint}
           </p>
           <div
             className="corrections-row-list"
@@ -363,11 +345,9 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       {selected ? (
         <form className="relation-form" onSubmit={(e) => e.preventDefault()}>
           <div className="field">
-            <label htmlFor="correctionNewJyutping">{lang === 'en' ? 'New Jyutping' : '新粵拼'}</label>
+            <label htmlFor="correctionNewJyutping">{copy.newJyutping}</label>
             <span className="hint">
-              {lang === 'en'
-                ? 'Fill when changing Jyutping; leave as-is for code recalc'
-                : '改粵拼時填寫；重算 code 可留空'}
+              {copy.newJyutpingHint}
             </span>
             <div className="search-input-wrap" data-input-wrap="">
               <input
@@ -385,9 +365,9 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
             </div>
           </div>
           <div className="field">
-            <label htmlFor="correctionNote">{lang === 'en' ? 'Note' : '備註'}</label>
+            <label htmlFor="correctionNote">{copy.note}</label>
             <span className="hint">
-              {lang === 'en' ? 'Optional: reason or reference' : '可選：發現原因或參考'}
+              {copy.noteHint}
             </span>
             <div className="search-input-wrap" data-input-wrap="">
               <input
@@ -403,9 +383,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
           {showPreview ? (
             <div className="field">
               <p className="corrections-preview">
-                {lang === 'en'
-                  ? `Jyutping maps to code ${previewCode} (current ${selected.code})`
-                  : `依粵拼應為 code ${previewCode}（現有 ${selected.code}）`}
+                {copy.preview(previewCode, selected.code)}
               </p>
             </div>
           ) : null}
@@ -416,7 +394,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
               disabled={busy}
               onClick={() => void onSetJyutping()}
             >
-              {lang === 'en' ? 'Set Jyutping' : '改粵拼'}
+              {copy.setJyutping}
             </button>
             <button
               className="secondary-button"
@@ -424,7 +402,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
               disabled={busy}
               onClick={() => void onRecalcCode()}
             >
-              {lang === 'en' ? 'Recalc code' : '重算 code'}
+              {copy.recalcCode}
             </button>
           </div>
           {ok ? (
@@ -447,7 +425,7 @@ export function CorrectionsView({ lang = 'zh', prefetchChar = '' }: CorrectionsV
       {sessionRows.length > 0 ? (
         <section className="corrections-session" aria-labelledby="correctionSessionTitle">
           <h2 className="corrections-session__title" id="correctionSessionTitle">
-            {lang === 'en' ? 'This session' : '本次 session'}
+            {copy.session}
           </h2>
           <ul className="corrections-session__list">
             {sessionRows.map((row, i) => (

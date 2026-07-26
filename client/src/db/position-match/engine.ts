@@ -11,6 +11,7 @@ import {
   buildRequiredCodes,
   matchesCodePositions,
 } from './filters/f1-slot-code.ts';
+import { canonicalMatchSpecToLegacy, type CanonicalMatchSpec } from './canonical.ts';
 import { getEqualsSpan, type MatchSpec, type SlotConstraint } from './spec.ts';
 import { getWordCode, type WordRow } from './word-row.ts';
 
@@ -399,4 +400,12 @@ export async function executeMatchSpec(
   ctx: ExecuteMatchSpecContext,
 ): Promise<WordRow[]> {
   return (await executeMatchSpecPage(spec, ctx)).rows;
+}
+
+/** Canonical execution entry; legacy filters stay behind one adapter seam. */
+export async function executeCanonicalMatchSpecPage(
+  spec: CanonicalMatchSpec,
+  ctx: ExecuteMatchSpecContext,
+): Promise<{ rows: WordRow[]; total: number }> {
+  return executeMatchSpecPage(canonicalMatchSpecToLegacy(spec), ctx);
 }

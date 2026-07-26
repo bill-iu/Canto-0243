@@ -127,7 +127,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 七長八短	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 七零八落	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 三下五除二	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-三五成羣	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+三五成群	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 三人行必有我師	u	chengyu		china-idiom+agent	clause-without-syntax-slot	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 三句不離本行	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 三句話不離本行	u	chengyu		china-idiom+agent	clause-without-syntax-slot	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -456,7 +456,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 倒懸之苦	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 倒戈卸甲	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 倚老賣老	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-倜儻不羣	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+倜儻不群	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 借古喻今	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 借題發揮	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 偃武修文	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -1223,7 +1223,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 室如懸磬	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 室邇人遐	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 宦海風波	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-害羣之馬	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+害群之馬	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 宴安鴆毒	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 宵衣旰食	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 家家户户	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -1822,7 +1822,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 敗柳殘花	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 敝帚自珍	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 散兵遊勇	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-敬業樂羣	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+敬業樂群	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 敬賢禮士	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 敲竹槓	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 敲邊鼓	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -2916,10 +2916,10 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 美景良辰	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 美芹之獻	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 羞與為伍	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-羣威羣膽	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-羣策羣力	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-羣起而攻之	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-羣魔亂舞	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+群威群膽	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+群策群力	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+群起而攻之	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+群魔亂舞	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 義憤填胸	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 義正辭嚴	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 義無反顧	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -3389,10 +3389,10 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 超世絕倫	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 超凡入聖	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 超塵拔俗	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-超然不羣	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+超然不群	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 超然物外	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 超然自逸	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-超羣拔類	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+超群拔類	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 超超玄箸	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 趑趄囁嚅	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 趕浪頭	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -3855,7 +3855,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 驚惶失色	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 驚慌失色	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 驚濤駭浪	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-驚羣動眾	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+驚群動眾	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 驚風駭浪	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 驚魂未定	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 驢唇不對馬嘴	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
@@ -3918,7 +3918,7 @@ literal	pos	family	voice	source	evidence	confidence	verdict	review_note	stratum	
 鴻飛冥冥	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 鵝行鴨步	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 鵬程萬里	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
-鶴立雞羣	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
+鶴立雞群	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 鶴髮童顏	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 鷹擊長空	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence
 鷹鼻鷂眼	u	chengyu		china-idiom+agent	insufficient-syntax-evidence	low	accept	conservative syntax review	u|none|low	OK	conservative terminal: no approved syntax evidence

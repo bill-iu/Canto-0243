@@ -6,6 +6,38 @@
   ],
   "checks": [
     {
+      "id": "query-workspace-detail",
+      "script": "query-workspace-detail-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
+      "id": "query-workspace-characterization",
+      "script": "query-workspace-characterization-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
+      "id": "query-workspace-navigation",
+      "script": "query-workspace-navigation-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
+      "id": "query-workspace-presentation",
+      "script": "query-workspace-presentation-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
       "id": "portable-host-build",
       "script": "portable-host-build-self-check.mjs",
       "tags": [
@@ -41,6 +73,111 @@
       ]
     },
     {
+      "id": "ui-locale",
+      "script": "ui-locale-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "app-context-locale",
+      "script": "app-context-locale-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "mode-menu-i18n",
+      "script": "mode-menu-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "query-tabs-i18n",
+      "script": "query-tabs-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "surface-i18n",
+      "script": "surface-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "workbench-i18n",
+      "script": "workbench-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization",
+        "workbench"
+      ]
+    },
+    {
+      "id": "app-shell-i18n",
+      "script": "app-shell-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "pos-filter-i18n",
+      "script": "pos-filter-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "warmup-i18n",
+      "script": "warmup-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "portable-exit-i18n",
+      "script": "portable-exit-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "relation-i18n",
+      "script": "relation-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "corrections-i18n",
+      "script": "corrections-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
+      "id": "result-stats-i18n",
+      "script": "result-stats-i18n-self-check.mjs",
+      "tags": [
+        "ci",
+        "localization"
+      ]
+    },
+    {
       "id": "parser",
       "script": "parser-self-check.ts",
       "tags": [
@@ -60,6 +197,33 @@
       "id": "match-spec-registry",
       "script": "match-spec-registry-self-check.ts",
       "tags": [
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "canonical-match-spec",
+      "script": "canonical-match-spec-self-check.ts",
+      "tags": [
+        "grammar",
+        "local",
+        "parity"
+      ]
+    },
+    {
+      "id": "canonical-legacy-adapter",
+      "script": "canonical-legacy-adapter-self-check.ts",
+      "tags": [
+        "ci",
+        "grammar",
+        "local"
+      ]
+    },
+    {
+      "id": "canonical-architecture",
+      "script": "canonical-architecture-self-check.ts",
+      "tags": [
+        "ci",
         "grammar",
         "local"
       ]

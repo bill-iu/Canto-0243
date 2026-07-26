@@ -6,6 +6,7 @@ const NOTICES_URL = 'https://github.com/bill-iu/Canto-0243/blob/dev/THIRD_PARTY_
 export const ABOUT_COPY = {
   zh: {
     sloganTop: '即使離線，\n亦完全可用。',
+    lexiconPrefix: '詞庫版本：',
     eyebrow: 'About',
     title: '關於 Canto-0243',
     lede: 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
@@ -62,8 +63,68 @@ export const ABOUT_COPY = {
     backBtn: '回到搜尋',
     sloganBottom: '呢一次，\n拎返你嘅創作主導權。',
   },
+  zhHans: {
+    sloganTop: '即使离线，\n亦完全可用。',
+    lexiconPrefix: '词库版本：',
+    eyebrow: 'About',
+    title: '关于 Canto-0243',
+    lede: 'ONE·揾·韵 — 离线粤语填词查找工作台。',
+    introTitle: '简介',
+    introBody:
+      '填粤语歌词时，往往要在<strong>同音、押韵、近义</strong>之间快速换字，又要对准数字码与粤拼读音。Canto-0243 用 <strong>394052／0243／02493 数字码</strong>（顶栏三档声调精度）、<strong>粤拼</strong>、<strong>韵母／声母规则</strong>与<strong>近义／反义关系</strong>，在几秒内列出符合条件的词条；套件解压即用，词库与近反义资料存于本地，无需连网。',
+    whyTitle: '为何选择本工具',
+    whyList:
+      '<li><strong>开源</strong> — 原始码公开，欢迎检视、改进与回馈</li>' +
+      '<li><strong>免费</strong> — 下载即用，无订阅或按量收费</li>' +
+      '<li><strong>持续更新</strong> — 维护者持续改进词库与功能，并透过 Release 发布</li>',
+    pledgeTitle: '承诺与授权',
+    pledgeBody1:
+      '<strong>本工具 100% 免费、开源。我们绝不会利用本工具或其底层数据牟利。</strong>任何创作者皆可将本工具用于<strong>商业创作</strong>（例如歌曲、剧本、已发表歌词），前提为遵守下方限制与 <a href="' +
+      LICENSE_URL +
+      '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>（CC BY-NC-SA 4.0 + 附加条款）。',
+    pledgeBody2:
+      '<strong>禁止事项（摘要）：</strong>不得将本工具重新打包转售或作为竞争性产品单独发布；不得提供付费 API、订阅或按量计费的查询服务；公开 fork 或衍生版本须沿用同一授权并保留 Canto-0243 名称与适当署名。完整条文见 License 连结。',
+    thanksTitle: '专案致谢',
+    thanksBody1:
+      '本专案在作者几乎零程式背景的起步阶段，得益于 <a href="https://github.com/ivorhoulker" target="_blank" rel="noopener noreferrer">ivorhoulker（艾浩家）</a> 担任 Advisor，在设计与实行上给予许多指导与宝贵建议。',
+    thanksBody2:
+      '亦要多谢 <strong>「0243 理论」发明人黄志华老师</strong>（很荣幸得到他的支持），奠定粤语填词数码化的理论基础。多谢 <a href="https://0243.hk" target="_blank" rel="noopener noreferrer">0243.hk</a> 开发者 <strong>Daniel Tam</strong> 先生开发该网站，解决许多填词难题，并启发本工具的开发。',
+    sourcesTitle: '资料来源',
+    sourcesIntro:
+      '本应用程式得以实现，全赖语言学家、开源维护者及社群贡献者的出色工作。我们十分荣幸能整合以下项目的数据：',
+    sourcesList:
+      '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粤典）</a>：采用<strong>非商业开放授权</strong>（详见 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
+      '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粤语词典补缺来源</a>：采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
+      '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 词表</a>：采用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授权。</li>' +
+      '<li><a href="https://kaifangcidian.com/xiazai/" target="_blank" rel="noopener noreferrer">开放词典 · 粤语词典（Kaifangcidian）</a>：采用 <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener noreferrer">CC BY 3.0</a>。</li>' +
+      '<li><a href="https://github.com/yaleimeng/Final_word_Similarity" target="_blank" rel="noopener noreferrer">词林同义词（Cilin）</a>：采用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授权。</li>' +
+      '<li><a href="https://github.com/guotong1988/chinese_dictionary" target="_blank" rel="noopener noreferrer">国语辞典近义／反义（guotong）</a>：采用 <a href="https://github.com/996icu/996.ICU/blob/master/LICENSE" target="_blank" rel="noopener noreferrer">Anti-996 License</a>。</li>' +
+      '<li><a href="https://github.com/daimaruhk/Cantonese.md" target="_blank" rel="noopener noreferrer">Cantonese.md 歇后语字面</a>：采用 <a href="https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA" target="_blank" rel="noopener noreferrer">CC0 1.0</a>（仅 term／answer＋粤拼；无正文解说）。</li>' +
+      '<li><a href="https://www.unicode.org/Public/17.0.0/ucd/Unihan.zip" target="_blank" rel="noopener noreferrer">Unicode Unihan 17.0.0</a>：采用 <a href="https://www.unicode.org/license.txt" target="_blank" rel="noopener noreferrer">Unicode License v3</a>，使用 <code>kCantonese</code>／<code>kCheungBauer</code> 为已准入字面补充粤音。</li>' +
+      '<li><a href="' +
+      LICENSE_URL +
+      '" target="_blank" rel="noopener noreferrer">专案自建近反义</a>：维护者审定近义／反义对（大模型辅助起草），采用 <a href="' +
+      LICENSE_URL +
+      '" target="_blank" rel="noopener noreferrer">Canto-0243 License</a>。</li>',
+    sourcesFooter:
+      '完整第三方授权清单见 <a href="' +
+      NOTICES_URL +
+      '" target="_blank" rel="noopener noreferrer">THIRD_PARTY_NOTICES.md</a>。',
+    devTitle: '关于开发者',
+    devBody:
+      '<strong><a href="https://github.com/bill-iu/Canto-0243" target="_blank" rel="noopener noreferrer">Bill IU（姚程驭）</a></strong> — 演员，粤语音乐剧填词人，超级业余的程式设计师。',
+    reportTitle: '错误回报',
+    reportBody:
+      '如果您发现任何问题，请前往 GitHub <a href="' +
+      ISSUES_URL +
+      '" target="_blank" rel="noopener noreferrer">提交 Issue</a>（建议使用错误回报范本）。非常感谢您的协助！',
+    reportBtn: '前往 GitHub 回报',
+    backBtn: '回到搜寻',
+    sloganBottom: '呢一次，\n拎返你嘅创作主导权。',
+  },
   en: {
     sloganTop: 'Fully usable—\neven offline.',
+    lexiconPrefix: 'Lexicon version: ',
     eyebrow: 'About',
     title: 'About Canto-0243',
     lede: 'ONE-RUN-RHYME — Offline Cantonese lyric lookup workbench.',
@@ -123,7 +184,7 @@ export const ABOUT_COPY = {
 };
 
 export function getAboutCopy(lang) {
-  return ABOUT_COPY[lang === 'en' ? 'en' : 'zh'];
+  return ABOUT_COPY[lang === 'en' ? 'en' : lang === 'zh-Hans' ? 'zhHans' : 'zh'];
 }
 
 function setText(id, text) {

@@ -1,4 +1,8 @@
 import { attachEqualsSpan, type MatchSpec, type SlotConstraint } from '../db/position-match/spec.ts';
+import {
+  finalizeCanonicalMatchSpec,
+  type CanonicalMatchSpec,
+} from '../db/position-match/canonical.ts';
 import type { ReplacementPlanV1 } from './contracts.ts';
 
 /** plan → MatchSpec（L1）；權威名 buildMatchSpec；舊 buildPwaMatchSpec re-export。 */
@@ -41,6 +45,47 @@ export function buildMatchSpec(plan: ReplacementPlanV1): MatchSpec {
 
 /** @deprecated use buildMatchSpec */
 export const buildPwaMatchSpec = buildMatchSpec;
+
+/** ReplacementPlan domain input → canonical immutable MatchSpec. */
+export function compileReplacementPlan(plan: ReplacementPlanV1): CanonicalMatchSpec {
+  const mask = Array.from({ length: plan.width }, () => '?');
+  const slots: SlotConstraint[] = plan.slots.map((item) => {
+    const value = item.kind === 'code_digit' ? item.digit
+      : item.kind === 'literal_char' ? item.literal
+        : item.kind === 'tone_class' ? item.toneClass
+          : item.ref;
+    if (item.kind === 'literal_char' && item.literal) mask[item.pos] = item.literal;
+    return { pos: item.pos, kind: item.kind, value };
+  });
+  let equalsSpan: CanonicalMatchSpec['equals_span'] = null;
+  for (const [kind, dimension] of [['final_anchor', 'final'], ['initial_anchor', 'initial']] as const) {
+    const anchorItems = plan.slots.filter((slot) => slot.kind === kind).sort((a, b) => a.pos - b.pos);
+    const anchors = slots.filter((slot) => slot.kind === kind).sort((a, b) => a.pos - b.pos);
+    const positions = anchors.map((slot) => slot.pos);
+    const contiguous = positions.length >= 2
+      && positions.every((pos, index) => index === 0 || pos === positions[index - 1]! + 1);
+    if (!contiguous || anchorItems.some((slot) => !slot.refJyutping)) continue;
+    equalsSpan = {
+      ref_literal: anchors.map((slot) => String(slot.value ?? '')).join(''),
+      ref_jyutping: anchorItems.map((slot) => slot.refJyutping ?? '').join(' ') || null,
+      start_pos: positions[0]!,
+      dimension,
+      phoneme_anchor_only: true,
+      whole_word: positions[0] === 0 && positions.length === plan.width,
+    };
+    for (let i = slots.length - 1; i >= 0; i -= 1) {
+      if (slots[i]!.kind === kind) slots.splice(i, 1);
+    }
+    break;
+  }
+  return finalizeCanonicalMatchSpec({
+    width: plan.width,
+    slots,
+    mask: mask.join(''),
+    equals_span: equalsSpan,
+    candidate_scope: 'complete',
+  });
+}
 
 /** Canonical JSON for L1 parity (stable key order for equals_span). */
 export function matchSpecToCanonical(spec: MatchSpec): Record<string, unknown> {

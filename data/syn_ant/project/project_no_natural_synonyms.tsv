@@ -738,7 +738,7 @@ head	reason	batch_id
 千刀萬剮	cultural_no_binary	syn-len4-b05-20260718
 千古罪人	cultural_no_binary	syn-len4-b06-20260718
 千呼萬喚	cultural_no_binary	syn-len4-b03-20260718
-千島羣島	proper_name_or_deixis	syn-len4-b09-20260718
+千島群島	proper_name_or_deixis	syn-len4-b09-20260718
 千萬富翁	other_documented	syn-len4-b02-20260718
 千金小姐	cultural_no_binary	syn-len4-b03-20260718
 千金要方	proper_name_or_deixis	syn-len4-b08-20260718
@@ -753,7 +753,7 @@ head	reason	batch_id
 半胱氨酸	other_documented	syn-len4-b03-20260718
 半身	function_word	syn-top5000-b04-20260718
 卑鄙無恥	cultural_no_binary	syn-len4-b04-20260718
-南沙羣島	proper_name_or_deixis	syn-len4-b02-20260718
+南沙群島	proper_name_or_deixis	syn-len4-b02-20260718
 博士學位	no_stable_near_synonym	syn-len4-b01-20260718
 博客寫手	other_documented	syn-len4-b09-20260718
 卡布其諾	other_documented	syn-len4-b06-20260718
@@ -1540,7 +1540,7 @@ head	reason	batch_id
 底格里斯	proper_name_or_deixis	syn-len4-b08-20260718
 底褲	polysemous_no_stable_sense	syn-top5000-b01-20260718
 庖丁解牛	cultural_no_binary	syn-len4-b07-20260718
-庫克羣島	proper_name_or_deixis	syn-len4-b09-20260718
+庫克群島	proper_name_or_deixis	syn-len4-b09-20260718
 庫存現金	other_documented	syn-len4-b06-20260718
 庭外和解	no_stable_near_synonym	syn-len4-final-audit-20260718
 康熙字典	proper_name_or_deixis	syn-len4-b05-20260718
@@ -2526,7 +2526,7 @@ head	reason	batch_id
 理學博士	other_documented	syn-len4-b09-20260718
 理性認識	other_documented	syn-len4-b04-20260718
 理論貢獻	other_documented	syn-len4-b09-20260718
-琉球羣島	proper_name_or_deixis	syn-len4-b07-20260718
+琉球群島	proper_name_or_deixis	syn-len4-b07-20260718
 琳	function_word	syn-top5000-b05-20260718
 琴	polysemous_no_stable_sense	syn-top5000-b01-20260718
 琴棋書畫	cultural_no_binary	syn-len4-b02-20260718
@@ -2585,7 +2585,7 @@ head	reason	batch_id
 生產方式	no_stable_near_synonym	syn-len4-b01-20260718
 生產過程	no_stable_near_synonym	syn-len4-b01-20260718
 生辰八字	cultural_no_binary	syn-len4-b03-20260718
-產業集羣	no_stable_near_synonym	syn-len4-b01-20260718
+產業集群	no_stable_near_synonym	syn-len4-b01-20260718
 產科醫生	other_documented	syn-len4-b04-20260718
 用武之地	cultural_no_binary	syn-len4-b02-20260718
 用餐時間	other_documented	syn-len4-b06-20260718
@@ -2967,7 +2967,7 @@ head	reason	batch_id
 美國軍人	other_documented	syn-len4-b08-20260718
 美容手術	other_documented	syn-len4-b03-20260718
 美式足球	polysemous_no_stable_sense	syn-len4-b06-20260718
-羣雄逐鹿	cultural_no_binary	syn-len4-b04-20260718
+群雄逐鹿	cultural_no_binary	syn-len4-b04-20260718
 羥基丁酸	other_documented	syn-len4-b10-20260718
 羥自由基	other_documented	syn-len4-b10-20260718
 義務勞動	other_documented	syn-len4-b04-20260718
@@ -3216,7 +3216,7 @@ head	reason	batch_id
 複變函數	other_documented	syn-len4-b05-20260718
 西哈努克	proper_name_or_deixis	syn-len4-b06-20260718
 西撒哈拉	proper_name_or_deixis	syn-len4-b10-20260718
-西沙羣島	proper_name_or_deixis	syn-len4-b03-20260718
+西沙群島	proper_name_or_deixis	syn-len4-b03-20260718
 西班牙港	proper_name_or_deixis	syn-len4-b10-20260718
 西瓜	no_stable_near_synonym	syn-top5000-final-audit-20260718
 要死要活	cultural_no_binary	syn-len4-b04-20260718
@@ -3605,7 +3605,7 @@ head	reason	batch_id
 開拓創新	other_documented	syn-len4-b01-20260718
 開放政策	other_documented	syn-len4-b04-20260718
 開放系統	other_documented	syn-len4-b07-20260718
-開曼羣島	proper_name_or_deixis	syn-len4-b06-20260718
+開曼群島	proper_name_or_deixis	syn-len4-b06-20260718
 開會時間	other_documented	syn-len4-b10-20260718
 開業大吉	cultural_no_binary	syn-len4-b07-20260718
 開發環境	no_stable_near_synonym	syn-len4-b01-20260718

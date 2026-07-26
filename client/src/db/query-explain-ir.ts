@@ -10,7 +10,8 @@ import {
   codeDigitStringFromSpec,
   hasCodeDigitConstraints,
 } from './position-match/filters/f1-slot-code.ts';
-import { buildMatchSpecForParsed } from './position-match/match-spec-registry.ts';
+import { canonicalMatchSpecToLegacy } from './position-match/canonical.ts';
+import { compileParsedQuery } from './position-match/compiler.ts';
 import { getEqualsSpan, type EqualsSpan, type MatchSpec } from './position-match/spec.ts';
 
 const WILDCARD_RE = /^[?_%]$/;
@@ -117,10 +118,7 @@ export function explainIrForQuery(q: string, mode: string = 'm1'): ExplainIr | n
   if (parsed.kind === QueryKind.UNMATCHED || isShortCircuit(parsed)) {
     return null;
   }
-  const spec = buildMatchSpecForParsed(parsed);
-  if (!spec) {
-    return null;
-  }
+  const spec = canonicalMatchSpecToLegacy(compileParsedQuery(parsed as Parameters<typeof compileParsedQuery>[0]));
   return buildExplainIr(spec, parsed);
 }
 

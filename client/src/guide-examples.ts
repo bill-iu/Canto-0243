@@ -38,7 +38,7 @@ export const GUIDE_FAMILY_IDS = [
 
 export type GuideFamilyId = (typeof GUIDE_FAMILY_IDS)[number];
 export type GuideMode = '0243' | '02493' | '394052' | 'synonym' | 'pingze';
-export type GuideLang = 'zh' | 'en';
+export type GuideLang = 'zh' | 'zh-Hans' | 'en';
 
 export interface GuideExample {
   query: string;

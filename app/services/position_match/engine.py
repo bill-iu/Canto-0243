@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional
 
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.services.position_match.filters import apply_match_spec
+from app.services.position_match.canonical import CanonicalMatchSpec, canonical_match_spec_to_legacy
 from app.services.position_match.mask_adapter import dense_code_from_spec
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
@@ -193,3 +194,23 @@ def execute_match_spec(
     )
     cache_path = "fallback" if get_equals_span(spec) or not from_cache else "ready"
     return MaskFamilySearchResult(items=items, cache_path=cache_path, total=total)
+
+
+def execute_canonical_match_spec(
+    spec: CanonicalMatchSpec,
+    *,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Any,
+) -> MaskFamilySearchResult:
+    """Canonical execution entry; legacy filters stay behind one adapter seam."""
+    return execute_match_spec(
+        canonical_match_spec_to_legacy(spec),
+        code=code,
+        mode=mode,
+        limit=limit,
+        offset=offset,
+        db=db,
+    )

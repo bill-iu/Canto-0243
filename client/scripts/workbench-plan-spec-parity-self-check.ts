@@ -4,7 +4,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { buildMatchSpec, matchSpecToCanonical } from '../src/workbench/build-match-spec.ts';
+import { buildMatchSpec, compileReplacementPlan, matchSpecToCanonical } from '../src/workbench/build-match-spec.ts';
 import { parseReplacementPlanV1 } from '../src/workbench/contracts.ts';
 import { groupCandidates, groupLiterals } from '../src/workbench/group-candidates.ts';
 import { relaxationIds } from '../src/workbench/relaxation-advisor.ts';
@@ -51,6 +51,11 @@ for (const item of doc.cases) {
   const plan = parseReplacementPlanV1(item.plan);
   const got = matchSpecToCanonical(buildMatchSpec(plan));
   assert(deepEqual(got, item.matchSpec), `${item.id} MatchSpec\n got ${JSON.stringify(got)}\n exp ${JSON.stringify(item.matchSpec)}`);
+  const canonical = compileReplacementPlan(plan);
+  assert(canonical.candidate_scope === 'complete', `${item.id} canonical candidate scope`);
+  assert(canonical.width === item.matchSpec.width, `${item.id} canonical width`);
+  assert(canonical.mask === item.matchSpec.mask, `${item.id} canonical mask`);
+  assert(canonical.equals_span != null === Boolean((item.matchSpec as any).extra?.equals_span), `${item.id} canonical equals span`);
   const ids = relaxationIds(plan);
   assert(deepEqual(ids, item.relaxationIds), `${item.id} relaxationIds got ${JSON.stringify(ids)}`);
 }

@@ -1,0 +1,391 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "equals-whole-word",
+      "query": "香港=",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [],
+        "equals_span": {"ref_literal": "香港", "ref_jyutping": null, "start_pos": 0, "dimension": "final", "phoneme_anchor_only": false, "whole_word": true},
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "prefix-wildcard-equals",
+      "query": "?困潦倒=",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "????",
+        "slots": [],
+        "equals_span": {"ref_literal": "困潦倒", "ref_jyutping": null, "start_pos": 1, "dimension": "final", "phoneme_anchor_only": true, "whole_word": false},
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "serial-sparse-anchors",
+      "query": "04困=49倒=",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "0449",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "0"},
+          {"pos": 1, "kind": "code_digit", "value": "4"},
+          {"pos": 1, "kind": "final_anchor", "value": "困"},
+          {"pos": 2, "kind": "code_digit", "value": "4"},
+          {"pos": 3, "kind": "code_digit", "value": "9"},
+          {"pos": 3, "kind": "final_anchor", "value": "倒"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "plus-tail-literal",
+      "query": "23+就",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "??就",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "2"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 2, "kind": "literal_char", "value": "就"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "literal-ref-middle",
+      "query": "23@手",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "?手",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "2"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "literal_char", "value": "手"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "literal-ref-head",
+      "query": "3@天934",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "天???",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 0, "kind": "literal_char", "value": "天"},
+          {"pos": 1, "kind": "code_digit", "value": "9"},
+          {"pos": 2, "kind": "code_digit", "value": "3"},
+          {"pos": 3, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "single-final-anchor",
+      "query": "就=",
+      "mode": "m1",
+      "expected": {
+        "width": 1,
+        "mask": "?",
+        "slots": [{"pos": 0, "kind": "final_anchor", "value": "就"}],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "jyutping-rhyme-letters",
+      "query": "?yut?",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "???",
+        "slots": [{"pos": 1, "kind": "rhyme_letters", "value": "yut"}],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "dual-phoneme",
+      "query": "3m4",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": {
+          "initial": {
+            "width": 2,
+            "mask": "??",
+            "slots": [
+              {"pos": 0, "kind": "code_digit", "value": "3"},
+              {"pos": 0, "kind": "initial_letters", "value": "m"},
+              {"pos": 1, "kind": "code_digit", "value": "4"}
+            ],
+            "equals_span": null,
+            "compound": null,
+            "ranking": "default",
+            "candidate_scope": "bounded",
+            "code_mode": null,
+            "phoneme_alternatives": null
+          },
+          "final": {
+            "width": 2,
+            "mask": "??",
+            "slots": [
+              {"pos": 0, "kind": "code_digit", "value": "3"},
+              {"pos": 0, "kind": "rhyme_letters", "value": "ng"},
+              {"pos": 1, "kind": "code_digit", "value": "4"}
+            ],
+            "equals_span": null,
+            "compound": null,
+            "ranking": "default",
+            "candidate_scope": "bounded",
+            "code_mode": null,
+            "phoneme_alternatives": null
+          }
+        }
+      }
+    },
+    {
+      "id": "equals-code-sandwich",
+      "query": "23就",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "2"},
+          {"pos": 1, "kind": "code_digit", "value": "3"}
+        ],
+        "equals_span": {"ref_literal": "就", "ref_jyutping": null, "start_pos": 1, "dimension": "final", "phoneme_anchor_only": false, "whole_word": false},
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "literal-priority-mask",
+      "query": "門0",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "門0",
+        "slots": [{"pos": 1, "kind": "code_digit", "value": "0"}],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "literal_priority",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-syn",
+      "query": "33~~你",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "final_anchor", "value": "你"}
+        ],
+        "equals_span": null,
+        "compound": {"kind": "syn", "connective": null},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-connect-syn",
+      "query": "33~與~你",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "???",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 2, "kind": "final_anchor", "value": "你"}
+        ],
+        "equals_span": null,
+        "compound": {"kind": "syn", "connective": "與"},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-doubled-two",
+      "query": "$$",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [],
+        "equals_span": null,
+        "compound": {"kind": "doubled_syllable", "connective": null},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-doubled-three",
+      "query": "$$$",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "???",
+        "slots": [],
+        "equals_span": null,
+        "compound": {"kind": "doubled_syllable", "connective": null},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-ant",
+      "query": "33!!你",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "??",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "final_anchor", "value": "你"}
+        ],
+        "equals_span": null,
+        "compound": {"kind": "ant", "connective": null},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "compound-connect-ant",
+      "query": "33!與!你",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "???",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "3"},
+          {"pos": 1, "kind": "code_digit", "value": "3"},
+          {"pos": 2, "kind": "final_anchor", "value": "你"}
+        ],
+        "equals_span": null,
+        "compound": {"kind": "ant", "connective": "與"},
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "partial-rhyme-mask",
+      "query": "窮?潦倒=",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "窮?潦倒",
+        "slots": [
+          {"pos": 0, "kind": "final_anchor", "value": "窮"},
+          {"pos": 2, "kind": "final_anchor", "value": "潦"},
+          {"pos": 3, "kind": "final_anchor", "value": "倒"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "partial-initial-mask",
+      "query": "=窮?潦倒",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "窮?潦倒",
+        "slots": [
+          {"pos": 0, "kind": "initial_anchor", "value": "窮"},
+          {"pos": 2, "kind": "initial_anchor", "value": "潦"},
+          {"pos": 3, "kind": "initial_anchor", "value": "倒"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    }
+  ]
+}

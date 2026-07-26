@@ -79,15 +79,15 @@ if (!page.includes('consumeIngest') || !page.includes('writeOpenSearch')) {
   throw new Error('workbench bridge consume/write missing');
 }
 if (
-  !page.includes('pendingResolve')
-  || !(page.includes('initialSession') || page.includes('loadWorkbenchSession') || page.includes('session/index'))
+  !page.includes('useWorkbenchSessionCoordinator')
+  || !page.includes('resolveReadings')
 ) {
-  throw new Error('session hydrate / reading retry missing');
+  throw new Error('session coordinator hydrate / reading retry missing');
 }
-if (!page.includes('sessionToggleLock') || !constraints.includes('空白鍵鎖定')) {
+if (!page.includes("type: 'toggle_lock'") || !constraints.includes('空白鍵鎖定')) {
   throw new Error('click-span lock / shortcut hint missing');
 }
-if (!canvas.includes('點擊鎖定，雙擊改字')) {
+if (!canvas.includes('點擊鎖定') || !canvas.includes('雙擊改字')) {
   throw new Error('sentence canvas heading copy locked');
 }
 if (canvas.includes('點擊標定替換段')) {
@@ -178,7 +178,7 @@ if (canvas.includes('slot-warning')) {
 if (!css.includes('.line-slot-wrap') || !css.includes('width: 4.5rem') || css.includes('max-width: 6.2rem')) {
   throw new Error('slot column width must stay fixed; reading-choice must not widen past pill');
 }
-if (!detail.includes('放入句格') || !app.includes('PutInWorkbenchModal') || !app.includes('openSearchTabWithQuery')) {
+if (!detail.includes("tDetail('detail.putWorkbench'") || !app.includes('PutInWorkbenchModal') || !app.includes('openSearchTabWithQuery')) {
   throw new Error('put-in-workbench / open-search wiring missing');
 }
 if (!css.includes('writing-mode: horizontal-tb') || !css.includes('word-break: keep-all')) {

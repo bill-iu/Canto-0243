@@ -1,4 +1,5 @@
 import {
+  memo,
   useEffect,
   useRef,
   useState,
@@ -10,6 +11,11 @@ import {
 import type { LineDraft } from './line-draft.ts';
 import { parseManualCell, parseSpanManual } from './manual-slot-input.ts';
 import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
+import {
+  createTouchGestureState,
+  reduceTouchGesture,
+  type TouchGestureState,
+} from './touch-gesture.ts';
 
 interface Props {
   draft: LineDraft;
@@ -42,17 +48,7 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
  * 同格短窗內第二下視為雙擊前奏、唔 toggle，避免鎖完即解。
  */
 const DBLCLICK_GUARD_MS = 320;
-/** 觸控／筆：位移超過此值當捲動，唔鎖 */
-const POINTER_SLOP_PX = 10;
-
-type ArmedPointer = {
-  pointerId: number;
-  pos: number;
-  x: number;
-  y: number;
-};
-
-export function SentenceCanvas({
+export const SentenceCanvas = memo(function SentenceCanvas({
   draft,
   readings,
   onToggleLock,
@@ -73,8 +69,9 @@ export function SentenceCanvas({
   const [spanPanelOpen, setSpanPanelOpen] = useState(false);
   const lastClickRef = useRef<{ pos: number; at: number } | null>(null);
   /** pointer 已處理鎖後，吞掉合成 click，避免 toggle 兩次 */
-  const suppressClickRef = useRef(false);
-  const armedPointerRef = useRef<ArmedPointer | null>(null);
+  const suppressClickRef = useRef(0);
+  const touchGestureRef = useRef<TouchGestureState>(createTouchGestureState());
+  const lastPointerTypeRef = useRef<string | null>(null);
   const editInputRef = useRef<HTMLInputElement | null>(null);
   const spanInputRef = useRef<HTMLInputElement | null>(null);
   const editingPosRef = useRef<number | null>(null);
@@ -110,7 +107,7 @@ export function SentenceCanvas({
     const slot = draft.slots[pos];
     if (!slot) return;
     lastClickRef.current = null;
-    armedPointerRef.current = null;
+    touchGestureRef.current = createTouchGestureState();
     setEditingPos(pos);
     setEditValue(slot.surface || slot.code || '');
   };
@@ -146,20 +143,23 @@ export function SentenceCanvas({
 
   const handleSlotPointerDown = (pos: number, event: ReactPointerEvent<HTMLButtonElement>) => {
     if (event.button !== 0) return;
+    lastPointerTypeRef.current = event.pointerType;
     // 滑鼠：按下即鎖（快過等 click）；吞合成 click 防雙重 toggle
     if (event.pointerType === 'mouse') {
-      suppressClickRef.current = true;
+      suppressClickRef.current += 1;
       tryToggleLock(pos);
       return;
     }
-    // 觸控／筆：pointerup 且未滑過 slop 先鎖；先吞 click，避免捲動後 click 誤鎖
-    suppressClickRef.current = true;
-    armedPointerRef.current = {
+    // 觸控／筆：由 recognizer 處理全域連續 tap；先吞 click，避免瀏覽器重送 toggle。
+    suppressClickRef.current += 1;
+    touchGestureRef.current = reduceTouchGesture(touchGestureRef.current, {
+      type: 'down',
       pointerId: event.pointerId,
       pos,
       x: event.clientX,
       y: event.clientY,
-    };
+      at: performance.now(),
+    }).state;
     try {
       event.currentTarget.setPointerCapture(event.pointerId);
     } catch {
@@ -168,29 +168,45 @@ export function SentenceCanvas({
   };
 
   const handleSlotPointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const armed = armedPointerRef.current;
-    if (!armed || armed.pointerId !== event.pointerId) return;
-    if (Math.hypot(event.clientX - armed.x, event.clientY - armed.y) > POINTER_SLOP_PX) {
-      armedPointerRef.current = null;
-    }
+    if (event.pointerType === 'mouse') return;
+    touchGestureRef.current = reduceTouchGesture(touchGestureRef.current, {
+      type: 'move',
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    }).state;
   };
 
   const handleSlotPointerUp = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const armed = armedPointerRef.current;
-    if (!armed || armed.pointerId !== event.pointerId) return;
-    armedPointerRef.current = null;
-    tryToggleLock(armed.pos);
+    if (event.pointerType === 'mouse') return;
+    const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLElement>('[data-line-slot]');
+    const releasePos = target?.dataset.lineSlot == null ? -1 : Number(target.dataset.lineSlot);
+    const result = reduceTouchGesture(touchGestureRef.current, {
+      type: 'up',
+      pointerId: event.pointerId,
+      pos: releasePos,
+      x: event.clientX,
+      y: event.clientY,
+      at: performance.now(),
+    });
+    touchGestureRef.current = result.state;
+    if (result.intent?.type === 'lock') onToggleLock(result.intent.pos);
+    if (result.intent?.type === 'edit') beginEdit(result.intent.pos);
   };
 
   const handleSlotPointerCancel = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const armed = armedPointerRef.current;
-    if (armed && armed.pointerId === event.pointerId) armedPointerRef.current = null;
+    if (event.pointerType === 'mouse') return;
+    suppressClickRef.current = Math.max(0, suppressClickRef.current - 1);
+    touchGestureRef.current = reduceTouchGesture(touchGestureRef.current, {
+      type: 'cancel',
+      pointerId: event.pointerId,
+    }).state;
   };
 
   /** 鍵盤合成 click；pointer 路徑已 suppress */
   const handleSlotClick = (pos: number) => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
+    if (suppressClickRef.current > 0) {
+      suppressClickRef.current -= 1;
       return;
     }
     tryToggleLock(pos);
@@ -338,7 +354,9 @@ export function SentenceCanvas({
                   onPointerUp={handleSlotPointerUp}
                   onPointerCancel={handleSlotPointerCancel}
                   onClick={() => handleSlotClick(pos)}
-                  onDoubleClick={() => beginEdit(pos)}
+                  onDoubleClick={() => {
+                    if (lastPointerTypeRef.current === 'mouse') beginEdit(pos);
+                  }}
                   onKeyDown={(event) => {
                     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
                       event.preventDefault();
@@ -388,4 +406,4 @@ export function SentenceCanvas({
       </div>
     </section>
   );
-}
+});

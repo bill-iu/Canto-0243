@@ -177,7 +177,7 @@ literal	pos	family	voice	note	trust	stratum	rank	verdict	fix_pos	fix_family	fix_
 一招	u			no-source;p1;fallback	low	low|u	3358	BAD	n			一着／招式，名詞
 一拳	u			no-source;p1;fallback	low	low|u	2420	BAD	n			一記拳頭，名詞
 一摸	u			no-source;p1;fallback	low	low|u	4420	SOFT				動量短語 vs 動截斷，邊介；u 可接受
-一羣	u			no-source;p1;fallback	low	low|u	4834	BAD	x			數+量結構，虛
+一群	u			no-source;p1;fallback	low	low|u	4834	BAD	x			數+量結構，虛
 一輪	u			no-source;p1;fallback	low	low|u	3003	BAD	n,x			一回合／量詞短語
 下身	u			no-source;fallback	low	low|u	2457	BAD	n			身體部位，名詞
 不敢	u			no-source;fallback	low	low|u	3843	BAD	v			情態動詞短語

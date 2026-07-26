@@ -1,3 +1,5 @@
+import { getQueryTabCopy } from './query-tabs-i18n.mjs';
+
 export const SESSION_KEY = "canto0243:query-tabs";
 export const TAB_LABEL_MAX = 18;
 
@@ -11,13 +13,14 @@ export const VIEW = Object.freeze({
 });
 
 export function tabLabel(tab, lang = "zh") {
-  if (tab.view === VIEW.WORKBENCH) return lang === "en" ? "VerseCraft Workbench" : "句格工作台";
-  if (tab.view === VIEW.GUIDE) return lang === "en" ? "Search Guide" : "搜尋教學";
-  if (tab.view === VIEW.ABOUT) return lang === "en" ? "About Canto-0243" : "關於 Canto-0243";
-  if (tab.view === VIEW.RELATION) return lang === "en" ? "Add relations" : "補關係";
-  if (tab.view === VIEW.CORRECTIONS) return lang === "en" ? "Lexicon corrections" : "詞庫勘誤";
+  const copy = getQueryTabCopy(lang);
+  if (tab.view === VIEW.WORKBENCH) return copy.workbench;
+  if (tab.view === VIEW.GUIDE) return copy.guide;
+  if (tab.view === VIEW.ABOUT) return copy.about;
+  if (tab.view === VIEW.RELATION) return copy.relation;
+  if (tab.view === VIEW.CORRECTIONS) return copy.corrections;
   const q = (tab.q || "").trim();
-  if (!q) return lang === "en" ? "New query" : "新查詢";
+  if (!q) return copy.newQuery;
   return q.length > TAB_LABEL_MAX ? `${q.slice(0, TAB_LABEL_MAX)}…` : q;
 }
 

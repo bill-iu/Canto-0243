@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { tDetail } from '../../../shared/entry-detail-i18n.mjs';
 import { pickPreferredReadingIndex } from '../../../shared/entry-detail-core.mjs';
+import { toSimplified } from '../../../shared/t2s-runtime.mjs';
 import type { EntryDetailModel } from './types.ts';
+import { countDetailRender } from '../search-perf.ts';
 
 export function EntryDetailPanel({
   literal,
@@ -18,12 +20,13 @@ export function EntryDetailPanel({
   model: EntryDetailModel | null;
   loading?: boolean;
   relationsLoading?: boolean;
-  lang: 'zh' | 'en';
+  lang: 'zh' | 'zh-Hans' | 'en';
   preferredJyutping?: string | null;
   onClose: () => void;
   onRelationPick: (literal: string) => void;
   onPutInWorkbench?: (literal: string) => void;
 }) {
+  countDetailRender();
   const [readingIdx, setReadingIdx] = useState(0);
   const reading = model?.readings[readingIdx] ?? model?.readings[0];
 
@@ -45,7 +48,7 @@ export function EntryDetailPanel({
 
   const initialsText = reading?.initials.filter(Boolean).join(' ') || '—';
   const finalsText = reading?.finals.filter(Boolean).join(' ') || '—';
-  const loadingLabel = lang === 'en' ? 'Loading…' : '載入中…';
+  const loadingLabel = tDetail('detail.loading', lang);
 
   return (
     <aside className="entry-detail-panel" aria-label={tDetail('detail.title', lang)}>
@@ -62,14 +65,14 @@ export function EntryDetailPanel({
       </header>
       <div className="entry-detail-panel__body">
         <div className="entry-detail-panel__hero">
-          <div className="entry-detail-panel__literal">{literal}</div>
+          <div className="entry-detail-panel__literal">{lang === 'zh-Hans' ? toSimplified(literal) : literal}</div>
           <div className="entry-detail-panel__actions">
             <button type="button" className="entry-detail-panel__icon-btn" onClick={() => void handleCopy()}>
               {copied ? tDetail('detail.copy.done', lang) : tDetail('detail.copy', lang)}
             </button>
             {onPutInWorkbench ? (
               <button type="button" className="entry-detail-panel__icon-btn" onClick={() => onPutInWorkbench(literal)}>
-                {lang === 'zh' ? '放入句格' : 'Put in workbench'}
+                {tDetail('detail.putWorkbench', lang)}
               </button>
             ) : null}
           </div>
@@ -166,13 +169,13 @@ export function EntryDetailPanel({
 
             {relationsLoading ? (
               <>
-                <section className="entry-detail-section">
+                <section className="entry-detail-section" aria-busy="true">
                   <h3 className="entry-detail-section__title">{tDetail('detail.syns', lang)}</h3>
-                  <p className="entry-detail-panel__loading">{loadingLabel}</p>
+                  <p className="entry-detail-panel__loading" role="status" aria-live="polite">{loadingLabel}</p>
                 </section>
-                <section className="entry-detail-section">
+                <section className="entry-detail-section" aria-busy="true">
                   <h3 className="entry-detail-section__title">{tDetail('detail.ants', lang)}</h3>
-                  <p className="entry-detail-panel__loading">{loadingLabel}</p>
+                  <p className="entry-detail-panel__loading" role="status" aria-live="polite">{loadingLabel}</p>
                 </section>
               </>
             ) : (

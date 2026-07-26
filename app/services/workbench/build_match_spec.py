@@ -5,6 +5,11 @@ from __future__ import annotations
 from typing import Any
 
 from app.schemas.workbench_schema import ReplacementPlanV1
+from app.services.position_match.canonical import (
+    CanonicalMatchSpec,
+    canonical_match_spec_to_legacy,
+    finalize_canonical_match_spec,
+)
 from app.services.position_match.spec import EqualsSpan, MatchSpec, SlotConstraint, attach_equals_span
 
 
@@ -90,4 +95,50 @@ def match_spec_to_canonical(spec: MatchSpec) -> dict[str, Any]:
     }
 
 
-__all__ = ["build_match_spec", "match_spec_to_canonical"]
+def compile_replacement_plan(plan: ReplacementPlanV1) -> CanonicalMatchSpec:
+    """ReplacementPlan domain input → canonical immutable MatchSpec."""
+    mask = ["?"] * plan.width
+    slots: list[SlotConstraint] = []
+    for item in plan.slots:
+        value = {
+            "code_digit": item.digit,
+            "literal_char": item.literal,
+            "final_anchor": item.ref,
+            "initial_anchor": item.ref,
+            "tone_class": item.tone_class,
+        }[item.kind]
+        slots.append(SlotConstraint(pos=item.pos, kind=item.kind, value=value))
+        if item.kind == "literal_char" and item.literal:
+            mask[item.pos] = item.literal
+
+    equals_span = None
+    for kind, dimension in (("final_anchor", "final"), ("initial_anchor", "initial")):
+        anchor_items = sorted(
+            (item for item in plan.slots if item.kind == kind),
+            key=lambda item: item.pos,
+        )
+        anchors = sorted((slot for slot in slots if slot.kind == kind), key=lambda slot: slot.pos)
+        positions = [slot.pos for slot in anchors]
+        contiguous = len(positions) >= 2 and positions == list(range(positions[0], positions[-1] + 1))
+        if not contiguous or any(not item.ref_jyutping for item in anchor_items):
+            continue
+        equals_span = {
+            "ref_literal": "".join(str(slot.value or "") for slot in anchors),
+            "ref_jyutping": " ".join(item.ref_jyutping or "" for item in anchor_items),
+            "start_pos": positions[0],
+            "dimension": dimension,
+            "phoneme_anchor_only": True,
+            "whole_word": positions[0] == 0 and len(positions) == plan.width,
+        }
+        slots = [slot for slot in slots if slot.kind != kind]
+        break
+    return finalize_canonical_match_spec(
+        width=plan.width,
+        slots=slots,
+        mask="".join(mask),
+        equals_span=EqualsSpan(**equals_span) if equals_span else None,
+        candidate_scope="complete",
+    )
+
+
+__all__ = ["build_match_spec", "compile_replacement_plan", "match_spec_to_canonical"]

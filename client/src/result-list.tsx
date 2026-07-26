@@ -2,6 +2,7 @@ import { memo } from 'react';
 import type { QueryResult } from './db/query';
 import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
 import { tDetail } from '../../shared/entry-detail-i18n.mjs';
+import { toSimplified } from '../../shared/t2s-runtime.mjs';
 import {
   displayResults,
   type EntryPickPayload,
@@ -22,7 +23,7 @@ export const ResultList = memo(function ResultList({
   showReadingBadge?: boolean;
   visibleLimit?: number;
   activeLiteral?: string | null;
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onPick: (payload: EntryPickPayload) => void;
 }) {
   countListRender();
@@ -57,9 +58,9 @@ export const ResultList = memo(function ResultList({
                   })),
                 })
               }
-              aria-label={`${group.literal}${badgeN ? ` ${tDetail('detail.readings.n', lang, { n: badgeN })}` : ''}`}
+              aria-label={`${lang === 'zh-Hans' ? toSimplified(group.literal) : group.literal}${badgeN ? ` ${tDetail('detail.readings.n', lang, { n: badgeN })}` : ''}`}
             >
-              <span className="word result-literal-only">{group.literal}</span>
+              <span className="word result-literal-only">{lang === 'zh-Hans' ? toSimplified(group.literal) : group.literal}</span>
               {badgeN ? (
                 <span className="result-reading-badge">
                   {tDetail('detail.readings.n', lang, { n: badgeN })}

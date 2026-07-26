@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 from typing import Any, Optional
 
+from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.position_match.compiler import compile_parsed_query
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
@@ -64,9 +66,7 @@ def explain_ir_for_query(q: str, mode: str = "m1", pzmode: str | None = None) ->
         return None
     if _is_short_circuit(parsed):
         return None
-    spec = _build_match_spec(parsed)
-    if spec is None:
-        return None
+    spec = canonical_match_spec_to_legacy(compile_parsed_query(parsed))
     return build_explain_ir(spec, parsed)
 
 
@@ -85,9 +85,7 @@ def _is_short_circuit(parsed: ParsedQuery) -> bool:
 
 
 def _build_match_spec(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    from app.services.query_match_spec_registry import build_match_spec_for_parsed
-
-    return build_match_spec_for_parsed(parsed)
+    return canonical_match_spec_to_legacy(compile_parsed_query(parsed))
 
 
 def _equals_ir(equals) -> dict[str, Any]:

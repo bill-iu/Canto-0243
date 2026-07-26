@@ -2,15 +2,28 @@ import { useEffect, useId, useRef, useState } from 'react';
 
 import { getModeMeta, modeHelp, modeMetaFor, type UiMode } from './mode-meta';
 import { searchFamilyForUiMode } from '../../contracts/search-mode-manifest.mjs';
+import { getModeMenuCopy } from '../../shared/mode-menu-i18n.mjs';
 import { MODE_OPTIONS } from './mode-menu-logic.ts';
 import { isStopOnLastTabEnabled, setStopOnLastTabEnabled } from './desktop-session.ts';
 import { isPortableHost } from './host-mode.ts';
-import { fitModeMenuScale, MODE_MENU_GAP_PX } from './mode-menu-fit.ts';
 import {
   IconSearch, IconPingze, IconSynonym,
   IconWorkbench, IconGuide, IconRelation, IconAbout, IconPower,
   IconLanguage, IconSun, IconMoon,
 } from './mode-menu-icons.tsx';
+
+const MODE_MENU_GAP_PX = 12;
+const MODE_MENU_MIN_SCALE = 0.75;
+
+function fitModeMenuScale(opts: {
+  naturalHeight: number;
+  availableHeight: number;
+  maxScale: number;
+}): number {
+  if (opts.naturalHeight <= opts.availableHeight + 0.5) return opts.maxScale;
+  const ratio = opts.availableHeight / opts.naturalHeight;
+  return Math.min(Math.max(ratio, MODE_MENU_MIN_SCALE), opts.maxScale);
+}
 
 export interface ModeMenuProps {
   mode: UiMode;
@@ -24,9 +37,9 @@ export interface ModeMenuProps {
   /** Portable host only — 停止本機服務（keep-alive 模式先顯示） */
   onExitPortable?: () => void;
   theme?: 'light' | 'dark';
-  lang?: 'zh' | 'en';
+  lang?: 'zh' | 'zh-Hans' | 'en';
   onThemeChange?: (theme: 'light' | 'dark') => void;
-  onLangChange?: (lang: 'zh' | 'en') => void;
+  onLangChange?: (lang: 'zh' | 'zh-Hans' | 'en') => void;
   entrySize?: 'small' | 'medium' | 'large';
   onEntrySizeChange?: (size: 'small' | 'medium' | 'large') => void;
   lexiconVersion?: string;
@@ -71,6 +84,7 @@ export function ModeMenu({
   }, []);
   const meta = modeMetaFor(mode, lang);
   const family = searchFamilyForUiMode(mode);
+  const copy = getModeMenuCopy(lang);
 
   // ponytail: fit mode-menu to viewport — scale down + scroll fallback when overflow
   useEffect(() => {
@@ -87,7 +101,7 @@ export function ModeMenu({
       const vh = window.visualViewport?.height ?? window.innerHeight;
       const availableHeight = vh - trigger.bottom - MODE_MENU_GAP_PX;
       const isNarrow = window.innerWidth <= 760;
-      const { scale } = fitModeMenuScale({
+      const scale = fitModeMenuScale({
         naturalHeight: menu.scrollHeight,
         availableHeight,
         maxScale: isNarrow ? 0.75 : 1,
@@ -148,7 +162,7 @@ export function ModeMenu({
 
   const metaLabel =
     lexiconVersion != null
-      ? `${lang === 'en' ? 'Lexicon version: ' : '詞庫版本：'}${lexiconVersion}${showOpfsBackend ? ' · OPFS' : ''}`
+      ? `${copy.lexiconPrefix}${lexiconVersion}${showOpfsBackend ? ' · OPFS' : ''}`
       : null;
 
   return (
@@ -179,8 +193,8 @@ export function ModeMenu({
             role="menu"
             aria-hidden={!open}
           >
-            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '搜尋模式' : 'Search modes'}>
-              <p className="menu-label">{lang === 'zh' ? '搜尋模式' : 'Search modes'}</p>
+            <div className="menu-group" role="group" aria-label={copy.groups.searchModes}>
+              <p className="menu-label">{copy.groups.searchModes}</p>
               {MODE_OPTIONS.map((option) => {
                 const optionMeta = getModeMeta(
                   option.uiMode === '0243' ? 'm1' : option.uiMode === 'pingze' ? 'pz' : 'syn',
@@ -213,8 +227,8 @@ export function ModeMenu({
               })}
             </div>
             {onOpenWorkbench ? (
-              <div className="menu-group workbench-menu-group" role="group" aria-label={lang === 'zh' ? '功能頁' : 'Feature pages'}>
-                <p className="menu-label">{lang === 'zh' ? '功能頁' : 'Feature pages'}</p>
+              <div className="menu-group workbench-menu-group" role="group" aria-label={copy.groups.featurePages}>
+                <p className="menu-label">{copy.groups.featurePages}</p>
                 <button
                   type="button"
                   className="mode-option"
@@ -226,15 +240,15 @@ export function ModeMenu({
                 >
                   <span className="mode-icon" aria-hidden="true"><IconWorkbench /></span>
                   <span>
-                    <span className="mode-name">{lang === 'zh' ? '句格工作台' : 'Line Workbench'}</span>
-                    <span className="mode-help">{lang === 'zh' ? '逐格掌握聲調、押韻與原意' : 'Shape tone, rhyme and meaning slot by slot'}</span>
+                    <span className="mode-name">{copy.workbench.title}</span>
+                    <span className="mode-help">{copy.workbench.help}</span>
                   </span>
                   <span className="mode-key">↗</span>
                 </button>
               </div>
             ) : null}
-            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '工具' : 'Tools'}>
-              <p className="menu-label">{lang === 'zh' ? '工具' : 'Tools'}</p>
+            <div className="menu-group" role="group" aria-label={copy.groups.tools}>
+              <p className="menu-label">{copy.groups.tools}</p>
               <button
                 type="button"
                 className="mode-option"
@@ -246,8 +260,8 @@ export function ModeMenu({
               >
                   <span className="mode-icon" aria-hidden="true"><IconGuide /></span>
                   <span>
-                    <span className="mode-name">{lang === 'zh' ? '搜尋教學' : 'Search Guide'}</span>
-                    <span className="mode-help">{lang === 'zh' ? '完整語法與例子' : 'Full syntax & examples'}</span>
+                    <span className="mode-name">{copy.guide.title}</span>
+                    <span className="mode-help">{copy.guide.help}</span>
                   </span>
                   <span className="mode-key">?</span>
                 </button>
@@ -263,9 +277,9 @@ export function ModeMenu({
                 >
                   <span className="mode-icon" aria-hidden="true"><IconRelation /></span>
                   <span>
-                    <span className="mode-name">{lang === 'zh' ? '補關係' : 'Add relations'}</span>
+                    <span className="mode-name">{copy.relation.title}</span>
                     <span className="mode-help">
-                      {lang === 'zh' ? '為已收錄字面補近義或反義' : 'Add synonym or antonym links'}
+                      {copy.relation.help}
                     </span>
                   </span>
                   <span className="mode-key">+</span>
@@ -282,8 +296,8 @@ export function ModeMenu({
               >
                 <span className="mode-icon" aria-hidden="true"><IconAbout /></span>
                   <span>
-                    <span className="mode-name">{lang === 'zh' ? '關於' : 'About'}</span>
-                    <span className="mode-help">{lang === 'zh' ? '授權、致謝與回報' : 'License, credits & feedback'}</span>
+                    <span className="mode-name">{copy.about.title}</span>
+                    <span className="mode-help">{copy.about.help}</span>
                   </span>
                   <span className="mode-key">i</span>
               </button>
@@ -301,18 +315,18 @@ export function ModeMenu({
                   <span className="mode-icon" aria-hidden="true"><IconPower /></span>
                   <span>
                     <span className="mode-name">
-                      {lang === 'zh' ? '停止本機服務' : 'Stop local service'}
+                      {copy.stopLocal.title}
                     </span>
                     <span className="mode-help">
-                      {lang === 'zh' ? '立即關閉本機查韻服務' : 'Stop the local server now'}
+                      {copy.stopLocal.help}
                     </span>
                   </span>
                 </button>
               ) : null}
             </div>
 
-            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '顯示' : 'Display'}>
-              <p className="menu-label">{lang === 'zh' ? '顯示' : 'Display'}</p>
+            <div className="menu-group" role="group" aria-label={copy.groups.display}>
+              <p className="menu-label">{copy.groups.display}</p>
               <div className="menu-switches">
                 <button
                   type="button"
@@ -321,21 +335,43 @@ export function ModeMenu({
                     onThemeChange?.(theme === 'dark' ? 'light' : 'dark');
                     close();
                   }}
-                  aria-label={lang === 'zh' ? '切換主題' : 'Toggle theme'}
+                  aria-label={copy.displayControls.theme}
                 >
                   <span aria-hidden="true">{theme === 'dark' ? <IconMoon /> : <IconSun />}</span>
                 </button>
                 <button
                   type="button"
                   className="mode-option mode-switch"
+                  aria-pressed={lang === 'zh'}
                   onClick={() => {
-                    onLangChange?.(lang === 'zh' ? 'en' : 'zh');
-                    close();
+                    if (lang !== 'zh') { onLangChange?.('zh'); close(); }
                   }}
-                  aria-label={lang === 'zh' ? '切換語言' : 'Toggle language'}
+                  aria-label={copy.displayControls.traditional}
                 >
                   <span className="mode-icon" aria-hidden="true"><IconLanguage /></span>
-                  <span>{lang === 'zh' ? '中 / EN' : 'EN / 中'}</span>
+                  <span>繁</span>
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={lang === 'zh-Hans'}
+                  onClick={() => {
+                    if (lang !== 'zh-Hans') { onLangChange?.('zh-Hans'); close(); }
+                  }}
+                  aria-label={copy.displayControls.simplified}
+                >
+                  <span>简</span>
+                </button>
+                <button
+                  type="button"
+                  className="mode-option mode-switch"
+                  aria-pressed={lang === 'en'}
+                  onClick={() => {
+                    if (lang !== 'en') { onLangChange?.('en'); close(); }
+                  }}
+                  aria-label={copy.displayControls.english}
+                >
+                  <span>EN</span>
                 </button>
               </div>
               {isPortableHost() ? (
@@ -353,16 +389,10 @@ export function ModeMenu({
                   <span className="mode-icon" aria-hidden="true"><IconPower /></span>
                   <span>
                     <span className="mode-name">
-                      {lang === 'zh' ? '關頁即停本機服務' : 'Stop when last tab closes'}
+                      {copy.stopMode.title}
                     </span>
                     <span className="mode-help">
-                      {lang === 'zh'
-                        ? stopOnLastTab
-                          ? '開：關閉最後分頁即停（刷新唔停）'
-                          : '關：服務常駐，選單可手動停止'
-                        : stopOnLastTab
-                          ? 'On: last tab closes stops server (reload safe)'
-                          : 'Off: server stays up; use menu to stop'}
+                      {stopOnLastTab ? copy.stopMode.on : copy.stopMode.off}
                     </span>
                   </span>
                   <span className="mode-key" aria-hidden="true">
@@ -372,8 +402,8 @@ export function ModeMenu({
               ) : null}
             </div>
 
-            <div className="menu-group" role="group" aria-label={lang === 'zh' ? '字體大小' : 'Text size'}>
-              <p className="menu-label"><span className="menu-label-icon" aria-hidden="true">Aa</span> {lang === 'zh' ? '字體大小' : 'Text size'}</p>
+            <div className="menu-group" role="group" aria-label={copy.groups.textSize}>
+              <p className="menu-label"><span className="menu-label-icon" aria-hidden="true">Aa</span> {copy.groups.textSize}</p>
               <div className="menu-switches menu-switches--entry-size">
                 <button
                   type="button"
@@ -384,7 +414,7 @@ export function ModeMenu({
                     close();
                   }}
                 >
-                  {lang === 'zh' ? '小' : 'S'}
+                  {copy.entrySize.small}
                 </button>
                 <button
                   type="button"
@@ -395,7 +425,7 @@ export function ModeMenu({
                     close();
                   }}
                 >
-                  {lang === 'zh' ? '中' : 'M'}
+                  {copy.entrySize.medium}
                 </button>
                 <button
                   type="button"
@@ -406,7 +436,7 @@ export function ModeMenu({
                     close();
                   }}
                 >
-                  {lang === 'zh' ? '大' : 'L'}
+                  {copy.entrySize.large}
                 </button>
               </div>
             </div>
@@ -430,7 +460,7 @@ export function ModeMenu({
                   <span>
                     <span className="mode-name">GitHub</span>
                     <span className="mode-help">
-                      {lang === 'zh' ? '專案主頁 · 源碼與發佈' : 'Project home · source & releases'}
+                      {copy.githubHelp}
                     </span>
                   </span>
                 </span>

@@ -402,7 +402,7 @@ export function useEngineSearch(
     pageSize?: number;
     fallback_0243_mode?: '0243' | '02493' | '394052';
     pzmode?: 'm1' | 'm2' | 'm3';
-    ui_lang?: 'zh' | 'en';
+    ui_lang?: 'zh' | 'zh-Hans' | 'en';
   },
 ) {
   const fallback0243Mode = options?.fallback_0243_mode;
@@ -568,7 +568,7 @@ export function useSearch(
     pageSize?: number;
     fallback_0243_mode?: '0243' | '02493' | '394052';
     pzmode?: 'm1' | 'm2' | 'm3';
-    ui_lang?: 'zh' | 'en';
+    ui_lang?: 'zh' | 'zh-Hans' | 'en';
   },
 ) {
   const portable = isPortableHost();

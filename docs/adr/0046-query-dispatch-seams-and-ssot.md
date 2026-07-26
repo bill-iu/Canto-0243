@@ -33,3 +33,4 @@ Grill 2026-07（跟進 `$獅`／`9太=2` 漏命中）：**唔**取消所有候�
 5. **唔做**：一律 `unlimited`；只調高上限當根治；把結果分頁 `limit` 叫候選來源截斷。
 
 **Consequences** — 新語法：改 parse／builder／manifest；執行層只動 filters／sources，並核對是否觸發語意完整候選宇宙。雙引擎可表化規則優先進 `contracts/`。漏網路徑（例如整詞等號仍截斷、雙端判斷出口未統一）另開稽核，唔綁死本決策。
+> Superseded by [ADR-0076](./0076-canonical-matchspec-compiler.md). The historical dispatch and execution decisions remain here for context.

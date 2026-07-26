@@ -13,7 +13,8 @@ import type {
 } from './query-engine.ts';
 import { QueryKind, normalizeAndParse } from './query-engine.ts';
 import { slotLabel } from './ping-zak.ts';
-import { buildMatchSpecForParsed } from './position-match/match-spec-registry.ts';
+import { canonicalMatchSpecToLegacy } from './position-match/canonical.ts';
+import { compileParsedQuery } from './position-match/compiler.ts';
 import {
   buildExplainIr,
   explainIrForQuery,
@@ -104,7 +105,7 @@ function summaryFor(parsed: ParsedQuery): string | null {
     return null;
   }
 
-  const spec = buildMatchSpecForParsed(parsed);
+  const spec = canonicalMatchSpecToLegacy(compileParsedQuery(parsed));
   if (!spec) {
     const raw = parsed.raw_q;
     return raw ? `查詢「${raw}」` : '查詢';

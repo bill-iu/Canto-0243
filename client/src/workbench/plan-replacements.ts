@@ -1,8 +1,9 @@
 import { queryRows, type DatabaseBackend } from '../db/database-backend.ts';
 import { executeMatchSpecPage } from '../db/position-match/engine.ts';
+import { canonicalMatchSpecToLegacy } from '../db/position-match/canonical.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
 import { projectRelationPool } from '../db/relation-pool/index.ts';
-import { buildMatchSpec } from './build-match-spec.ts';
+import { compileReplacementPlan } from './build-match-spec.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from './contracts.ts';
 import { groupCandidates, type GroupPoolInput } from './group-candidates.ts';
 import { shouldSkipCandidateQuery } from './limits.ts';
@@ -110,8 +111,7 @@ export async function buildReplacementSnapshot(
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
     ? await project(db, plan.semanticSeed) : null;
   const runFull = (variant: ReplacementPlanV1) => {
-    const spec = buildMatchSpec(variant);
-    spec.extra = { ...(spec.extra ?? {}), workbench_full_bucket_scan: true };
+    const spec = canonicalMatchSpecToLegacy(compileReplacementPlan(variant));
     return executePage(spec, {
       db,
       mode: variant.mode,

@@ -1,14 +1,12 @@
 import type { QueryResult } from './db/query';
 import { mergeResultsByLiteral } from '../../shared/entry-detail-core.mjs';
+import { getResultStatsCopy } from '../../shared/result-stats-i18n.mjs';
 
-export function anchorResultsStats(results: QueryResult[], total?: number | null): string {
+export function anchorResultsStats(results: QueryResult[], total?: number | null, lang = 'zh'): string {
   const initial = results.filter((r) => r.anchor_dimension === 'initial').length;
   const final = results.filter((r) => r.anchor_dimension === 'final').length;
   const loaded = results.length;
-  if (total != null && total > loaded) {
-    return `聲母 ${initial}　韻母 ${final}（已載入 ${loaded} / ${total}）`;
-  }
-  return `聲母 ${initial}　韻母 ${final}（已載入 ${loaded}）`;
+  return getResultStatsCopy(lang).anchor(initial, final, loaded, total);
 }
 
 export function hasAnchorResultLayout(results: QueryResult[]): boolean {
