@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 from app.models.word import Word
 from app.domain.lexicon.ranking import sort_search_results
 from app.services.position_match import execute_match_spec
-from app.services.query_match_spec_registry import build_match_spec_for_parsed
+from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.position_match.compiler import compile_parsed_query
 from app.services.query_parse import (
     DigitCodeQuery,
     JyutpingFragmentQuery,
@@ -54,14 +55,13 @@ JYUTPING_SYN_MODE_HINT = (
 
 def _mask_family_search_result(parsed: ParsedQuery, ctx: SearchContext) -> SearchResult:
     """缺字型查詢執行 — 正規化在分派層，執行僅收 MatchSpec。"""
-    spec = build_match_spec_for_parsed(parsed)
-    if spec is None:
-        return SearchResult(items=[])
+    canonical = compile_parsed_query(parsed)
+    spec = canonical_match_spec_to_legacy(canonical)
 
     result = execute_match_spec(
         spec,
         code=ctx.code,
-        mode=spec.extra.get("code_mode", ctx.mode),
+        mode=canonical.code_mode or ctx.mode,
         limit=ctx.limit,
         offset=ctx.offset,
         db=ctx.db,

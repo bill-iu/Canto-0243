@@ -7,6 +7,7 @@ candidate plan after receiving the semantic value.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from typing import Any, Literal, Optional, Union
 
@@ -144,6 +145,53 @@ def canonicalize_legacy_match_spec(spec: MatchSpec) -> CanonicalMatchSpec:
         if isinstance(initial, MatchSpec) and isinstance(final, MatchSpec)
         else None
     )
+
+
+def canonical_match_spec_to_legacy(spec: CanonicalMatchSpec) -> MatchSpec:
+    """Transitional execution adapter; keep mutable shape knowledge here."""
+    extra: dict[str, Any] = {}
+    if spec.equals_span is not None:
+        extra["equals_span"] = spec.equals_span
+    if spec.compound and spec.compound.connective:
+        extra["connective"] = spec.compound.connective
+    if spec.code_mode:
+        extra["code_mode"] = spec.code_mode
+    if spec.candidate_scope == "complete":
+        extra["workbench_full_bucket_scan"] = True
+    literal_positions = [
+        (pos, char)
+        for pos, char in enumerate(spec.mask)
+        if re.fullmatch(r"[\u4e00-\u9fff]", char)
+    ]
+    if literal_positions:
+        extra["literal_positions"] = literal_positions
+    if (
+        spec.equals_span is not None
+        and spec.equals_span.start_pos == 1
+        and spec.equals_span.phoneme_anchor_only
+    ):
+        extra["prefix_wildcard_equals"] = True
+    has_final = any(slot.kind == "final_anchor" for slot in spec.slots)
+    has_initial = any(slot.kind == "initial_anchor" for slot in spec.slots)
+    if spec.width == 4 and has_final and "?" in spec.mask:
+        extra["partial_rhyme_mask"] = True
+    if spec.width == 4 and has_initial and "?" in spec.mask:
+        extra["partial_initial_mask"] = True
+    if spec.phoneme_alternatives:
+        extra["dual_phoneme"] = True
+        extra["dual_initial_spec"] = canonical_match_spec_to_legacy(spec.phoneme_alternatives.initial)
+        extra["dual_final_spec"] = canonical_match_spec_to_legacy(spec.phoneme_alternatives.final)
+    return MatchSpec(
+        width=spec.width,
+        slots=[
+            SlotConstraint(pos=slot.pos, kind=slot.kind, value=slot.value)
+            for slot in spec.slots
+        ],
+        literal_priority=spec.ranking == "literal_priority",
+        mask=spec.mask,
+        compound_kind=spec.compound.kind if spec.compound else None,
+        extra=extra,
+    )
     return finalize_canonical_match_spec(
         width=spec.width,
         slots=spec.slots,
@@ -210,6 +258,7 @@ __all__ = [
     "CanonicalPhonemeAlternatives",
     "CanonicalSlotConstraint",
     "canonical_match_spec_to_json",
+    "canonical_match_spec_to_legacy",
     "canonicalize_legacy_match_spec",
     "finalize_canonical_match_spec",
 ]
