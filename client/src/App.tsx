@@ -93,7 +93,6 @@ import { PosFilterControl } from './pos/PosFilterControl.tsx';
 import {
   filterByProjectPos,
   isPosFilterActive,
-  normalizePosFilter,
   type PosFilterState,
 } from './pos/filter.ts';
 
@@ -190,9 +189,6 @@ function App() {
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
-  const [posFilter, setPosFilter] = useState<PosFilterState>(() =>
-    normalizePosFilter(activeSearchTab?.posFilter as Partial<PosFilterState> | undefined),
-  );
   const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
@@ -279,6 +275,7 @@ function App() {
     hasMore,
     loadMore,
     commitSearch,
+    posFilter,
     setFilter: setWorkspaceFilter,
   } = workspace;
 
@@ -296,7 +293,6 @@ function App() {
       const useLive = live || initialBootstrap.forceLive;
       setUseLiveFetch(useLive);
       setResultsShuffled(false);
-      setPosFilter(normalizePosFilter(tab.posFilter as Partial<PosFilterState> | undefined));
       if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
@@ -486,10 +482,8 @@ function App() {
     [displayResults, posFilter],
   );
   const changePosFilter = useCallback((next: PosFilterState) => {
-    const normalized = normalizePosFilter(next);
-    setPosFilter(normalized);
-    setWorkspaceFilter(normalized);
-    if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: normalized });
+    setWorkspaceFilter(next);
+    if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: next });
   }, [activeSearchTab, patchSearchTab, setWorkspaceFilter]);
 
   useEffect(() => {

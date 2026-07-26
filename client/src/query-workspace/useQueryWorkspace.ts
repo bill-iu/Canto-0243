@@ -5,7 +5,7 @@ import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
 import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
-import type { PosFilterState } from '../pos/filter.ts';
+import { normalizePosFilter, type PosFilterState } from '../pos/filter.ts';
 import {
   createDatabaseQueryWorkspaceAdapter,
   createPortableQueryWorkspaceAdapter,
@@ -298,7 +298,7 @@ export function useQueryWorkspace({
   );
 
   const setFilter = useCallback((posFilter: PosFilterState) => {
-    dispatch({ type: 'setFilter', posFilter });
+    dispatch({ type: 'setFilter', posFilter: normalizePosFilter(posFilter) });
   }, []);
 
   return {
