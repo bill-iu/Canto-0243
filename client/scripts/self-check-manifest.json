@@ -179,6 +179,15 @@
       ]
     },
     {
+      "id": "canonical-legacy-adapter",
+      "script": "canonical-legacy-adapter-self-check.ts",
+      "tags": [
+        "ci",
+        "grammar",
+        "local"
+      ]
+    },
+    {
       "id": "canonical-architecture",
       "script": "canonical-architecture-self-check.ts",
       "tags": [

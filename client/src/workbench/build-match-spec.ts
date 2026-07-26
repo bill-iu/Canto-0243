@@ -1,6 +1,5 @@
 import { attachEqualsSpan, type MatchSpec, type SlotConstraint } from '../db/position-match/spec.ts';
 import {
-  canonicalMatchSpecToLegacy,
   finalizeCanonicalMatchSpec,
   type CanonicalMatchSpec,
 } from '../db/position-match/canonical.ts';

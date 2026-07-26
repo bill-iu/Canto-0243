@@ -6,7 +6,13 @@
  * knowledge: callers get one immutable semantic value and execution adapters
  * choose their own physical plan.
  */
-import { getEqualsSpan, type EqualsSpan, type MatchSpec, type SlotConstraint } from './spec.ts';
+import {
+  getEqualsSpan,
+  type EqualsDimension,
+  type EqualsSpan,
+  type MatchSpec,
+  type SlotConstraint,
+} from './spec.ts';
 
 export type CanonicalSlotValue = string | readonly string[];
 
@@ -20,7 +26,7 @@ export interface CanonicalEqualsSpan {
   readonly ref_literal: string;
   readonly ref_jyutping: string | null;
   readonly start_pos: number;
-  readonly dimension: 'initial' | 'final';
+  readonly dimension: EqualsDimension;
   readonly phoneme_anchor_only: boolean;
   readonly whole_word: boolean;
 }
@@ -75,7 +81,14 @@ function slotKey(slot: CanonicalSlotConstraint): string {
   return `${slot.pos}\u0000${slot.kind}\u0000${JSON.stringify(slot.value)}`;
 }
 
-function freezeEqualsSpan(span: EqualsSpan | null | undefined): CanonicalEqualsSpan | null {
+function legacySlotValue(value: CanonicalSlotValue | null): SlotConstraint['value'] {
+  if (value == null || typeof value === 'string') return value;
+  return new Set(value);
+}
+
+function freezeEqualsSpan(
+  span: EqualsSpan | CanonicalEqualsSpan | null | undefined,
+): CanonicalEqualsSpan | null {
   if (!span) return null;
   return Object.freeze({
     ref_literal: String(span.ref_literal),
@@ -157,7 +170,7 @@ export function canonicalizeLegacyMatchSpec(spec: MatchSpec): CanonicalMatchSpec
     width: spec.width,
     slots: spec.slots,
     mask: spec.mask,
-    equals_span: getEqualsSpan(spec),
+    equals_span: freezeEqualsSpan(getEqualsSpan(spec)),
     compound_kind: spec.compound_kind,
     connective: typeof raw.connective === 'string' ? raw.connective : null,
     ranking: spec.literal_priority ? 'literal_priority' : 'default',
@@ -205,7 +218,7 @@ export function canonicalMatchSpecToLegacy(spec: CanonicalMatchSpec): MatchSpec 
     slots: spec.slots.map((slot) => ({
       pos: slot.pos,
       kind: slot.kind,
-      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
+      value: legacySlotValue(slot.value),
     })),
     mask: spec.mask,
     compound_kind: spec.compound?.kind ?? null,

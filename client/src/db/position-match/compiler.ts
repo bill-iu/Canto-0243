@@ -89,7 +89,7 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (query.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) return compileDoubledSyllable(query);
   if (query.kind === QueryKind.JYUTPING_ANCHOR) return compileJyutpingAnchor(query);
   if (query.kind === QueryKind.PING_ZE_SERIAL) return compilePingZeSerial(query);
-  throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
+  throw new Error('MatchSpec compiler has no implementation for this query kind');
 }
 
 const FRAMED_EQUALS_RE = /^(\d*)(\^|=)?([\p{Script=Han}]+)(=)?(\d*)$/u;
@@ -153,7 +153,7 @@ function compileSerialPhoneme(query: SerialPhonemeAnchorQuery): CanonicalMatchSp
 }
 
 function compilePlusAnchor(query: PlusAnchorQuery): CanonicalMatchSpec {
-  const slots = query.code_slots.map(([pos, value]) => ({ pos, kind: 'code_digit' as const, value }));
+  const slots: SlotConstraint[] = query.code_slots.map(([pos, value]) => ({ pos, kind: 'code_digit', value }));
   if (query.constraint === 'literal') {
     slots.push({ pos: query.anchor_pos, kind: 'literal_char' as const, value: query.anchor });
   } else {
@@ -169,7 +169,7 @@ function compilePlusAnchor(query: PlusAnchorQuery): CanonicalMatchSpec {
 }
 
 function compileLiteralRef(query: LiteralRefQuery): CanonicalMatchSpec {
-  const slots = [...query.code_digits].map((value, pos) => ({ pos, kind: 'code_digit' as const, value }));
+  const slots: SlotConstraint[] = [...query.code_digits].map((value, pos) => ({ pos, kind: 'code_digit', value }));
   slots.push({ pos: query.literal_pos, kind: 'literal_char' as const, value: query.literal_char });
   const mask = '?'.repeat(query.literal_pos) + query.literal_char
     + '?'.repeat(query.width - query.literal_pos - 1);
@@ -338,14 +338,17 @@ function compileJyutpingAnchor(query: JyutpingAnchorQuery): CanonicalMatchSpec {
 }
 
 function draftFromCanonical(spec: CanonicalMatchSpec): CanonicalMatchSpecDraft {
+  const slots: SlotConstraint[] = spec.slots.map((slot) => ({
+    pos: slot.pos,
+    kind: slot.kind,
+    value: slot.value == null || typeof slot.value === 'string'
+      ? slot.value
+      : new Set(slot.value),
+  }));
   return {
     width: spec.width,
     mask: spec.mask,
-    slots: spec.slots.map((slot) => ({
-      pos: slot.pos,
-      kind: slot.kind,
-      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
-    })),
+    slots,
     equals_span: spec.equals_span,
     compound_kind: spec.compound?.kind,
     connective: spec.compound?.connective,
@@ -368,10 +371,12 @@ function compilePingZeSerial(query: PingZeSerialQuery): CanonicalMatchSpec {
         .map((slot) => slot.pos),
     );
     const codePositions = [...Array(base.width).keys()].filter((pos) => !fixedPositions.has(pos));
-    const slots = base.slots.filter((slot) => slot.kind !== 'tone_class').map((slot) => ({
+    const slots: SlotConstraint[] = base.slots.filter((slot) => slot.kind !== 'tone_class').map((slot) => ({
       pos: slot.pos,
       kind: slot.kind,
-      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
+      value: slot.value == null || typeof slot.value === 'string'
+        ? slot.value
+        : new Set(slot.value),
     }));
     const mask = [...base.mask];
     [...query.raw_q].filter((token) => /[PZ?0-9]/.test(token)).forEach((token, index) => {
