@@ -2,7 +2,7 @@
 
 日期：2026-07-26
 
-狀態：grilling 完成，待實作
+狀態：實作中（已完成 state seam、query adapter 及首個 React 接線切片）
 
 目標分支：`dev`
 
