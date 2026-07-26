@@ -4,7 +4,6 @@ import {
   useRef,
   useState,
   useEffect,
-  useCallback,
   useDeferredValue,
 } from 'react';
 
@@ -21,7 +20,7 @@ import { useEntrySize } from '../entry-size';
 import { ModeMenu } from '../mode-menu.tsx';
 import { exitPortable } from '../portable-exit.ts';
 import { PosFilterControl } from '../pos/PosFilterControl.tsx';
-import { isPosFilterActive, resetPosFilter, type PosFilterState } from '../pos/filter.ts';
+import { isPosFilterActive, resetPosFilter } from '../pos/filter.ts';
 import { revealPwaShell } from '../pwa-shell-boot.ts';
 import { CandidateGrid } from './CandidateGrid.tsx';
 import { ComparePanel } from './ComparePanel.tsx';
@@ -29,33 +28,26 @@ import { ConstraintBar } from './ConstraintBar.tsx';
 import type { CodeConstraintMode } from './code-constraint.ts';
 import {
   type CandidateGroups,
-  type RelaxationKind,
   type ReplacementPlanV1,
   type WorkbenchCandidate,
 } from './contracts.ts';
 import { workbenchIntroCopy } from './intro-copy.ts';
-import { createLineDraft, type LineSlot } from './line-draft.ts';
+import { createLineDraft } from './line-draft.ts';
 import { WORKBENCH_LINE_INPUT_COPY } from './line-input-copy.ts';
 import { parseLineInput } from './line-input.ts';
-import { LineReadingCoordinator } from './line-reading-coordinator.ts';
 import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
-import type { PwaLineReadingSlot } from './pwa-line-readings.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
 import { phonemeCheckedOffsets, type PhonemeDimPicks } from './replacement-span.ts';
 import {
   clearWorkbenchSession,
   derivePlanBase,
-  initialSession,
   saveWorkbenchSession,
-  sessionReducer,
-  sessionToggleLock,
-  type SessionAction,
-  type WorkbenchSession,
 } from './session/index.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
 import { isHanSurface, normalizeWildcardChar } from './wildcard-slot.ts';
 import { selectWorkbenchAdapter } from './workbench-adapter.ts';
+import { useWorkbenchSessionCoordinator } from './useWorkbenchSessionCoordinator.ts';
 import {
   WorkbenchBridgeError,
   consumeIngest,
@@ -76,13 +68,6 @@ export interface WorkbenchPageProps {
   onOpenSearchHome?: () => void;
   onOpenSearchNavigation?: (input: { kind: 'mode'; family: SearchModeFamily } | { kind: 'guide' } | { kind: 'about' }) => void;
   onOpenSearchLiteral?: (literal: string) => void;
-}
-
-interface ActiveRelaxation {
-  id: string;
-  kind: RelaxationKind;
-  from?: string;
-  to?: string;
 }
 
 const GROUP_FOCUS_IDS = ['candidate-direct_syn', 'candidate-semantic_related', 'candidate-sound_only'] as const;
@@ -118,17 +103,10 @@ export function WorkbenchPage({
     () => selectWorkbenchAdapter(isPortableHost(), { lexiconIdentity: lexiconVersion }),
     [lexiconVersion],
   );
-  const readingCoordinator = useMemo(() => new LineReadingCoordinator(adapter), [adapter]);
   const { isReady, initialize } = useDB();
 
   const [input, setInput] = useState('');
-  const [session, setSession] = useState<WorkbenchSession>(() => initialSession());
-  const [readings, setReadings] = useState<PwaLineReadingSlot[]>([]);
   const [message, setMessage] = useState('');
-  const [preview, setPreview] = useState<WorkbenchCandidate | null>(null);
-  const [activeRelaxation, setActiveRelaxation] = useState<ActiveRelaxation | null>(null);
-  const [posFilter, setPosFilter] = useState<PosFilterState>(resetPosFilter);
-  const [spanInputError, setSpanInputError] = useState('');
   const [uiLang, setUiLang] = useState<'zh' | 'zh-Hans' | 'en'>(() => getLang() as 'zh' | 'zh-Hans' | 'en');
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
     const theme = getTheme();
@@ -140,15 +118,28 @@ export function WorkbenchPage({
   const lineInputFormRef = useRef<HTMLFormElement | null>(null);
   const workbenchScrollTopRef = useRef(0);
   const [showReturnToInput, setShowReturnToInput] = useState(false);
-  const sessionRef = useRef(session);
-  const readingsRef = useRef(readings);
-  const previewRef = useRef(preview);
-  const pendingResolve = useRef<{ surface: string; version: number } | null>(null);
-  sessionRef.current = session;
-  readingsRef.current = readings;
-  previewRef.current = preview;
 
-  useEffect(() => () => readingCoordinator.cancel(), [readingCoordinator]);
+  const {
+    session,
+    readings,
+    preview,
+    activeRelaxation,
+    posFilter,
+    spanInputError,
+    dispatchSession: dispatch,
+    resolveReadings,
+    setPreview,
+    setActiveRelaxation,
+    setPosFilter,
+    setSpanInputError,
+    notice,
+  } = useWorkbenchSessionCoordinator({
+    adapter,
+    active,
+    isReady,
+    initialize,
+    initialPosFilter: resetPosFilter(),
+  });
 
   const draft = session.draft;
   const {
@@ -161,10 +152,6 @@ export function WorkbenchPage({
     rhymeRef,
     initialRef,
   } = session.constraints;
-
-  const dispatch = useCallback((action: SessionAction) => {
-    setSession((current) => sessionReducer(current, action));
-  }, []);
 
   useEffect(() => {
     if (!active) return;
@@ -258,63 +245,50 @@ export function WorkbenchPage({
 
   const changeMode = (next: ReplacementPlanV1['mode']) => {
     dispatch({ type: 'set_mode', mode: next });
-    setActiveRelaxation(null);
   };
   const changeSemantic = (next: ReplacementPlanV1['semanticIntent']) => {
     dispatch({ type: 'set_semantic', semanticIntent: next });
-    setActiveRelaxation(null);
   };
   const changeCodeConstraint = (next: CodeConstraintMode) => {
     dispatch({ type: 'set_code_constraint', mode: next });
-    setActiveRelaxation(null);
   };
   const changeExplicitCode = (raw: string) => {
     dispatch({ type: 'set_explicit_code', raw });
-    setActiveRelaxation(null);
   };
 
   const handleToggleLock = (pos: number) => {
-    const result = sessionToggleLock(sessionRef.current, pos);
-    if (!result.ok) {
-      setMessage(
-        result.reason === 'no_draft'
-          ? '尚未建立句格。'
-          : '空白格不能鎖定；請先有字面、通配或碼。',
-      );
+    if (!session.draft) {
+      setMessage('尚未建立句格。');
       return;
     }
+    const slot = session.draft.slots[pos];
+    if (!slot || (!slot.surface && !slot.code)) {
+      setMessage('空白格不能鎖定；請先有字面、通配或碼。');
+      return;
+    }
+    dispatch({ type: 'toggle_lock', pos });
     setMessage('');
     setSpanInputError('');
-    // 即時寫 ref，避免連點多格時讀舊 session 覆蓋（CONTEXT 字位鎖定）
-    sessionRef.current = result.session;
-    setSession(result.session);
   };
 
   const handleClearLocks = () => {
-    const prev = sessionRef.current;
-    if (!prev.draft?.slots.some((slot) => slot.locked)) return;
-    const next = sessionReducer(prev, { type: 'clear_locks' });
-    sessionRef.current = next;
-    setSession(next);
+    if (!session.draft?.slots.some((slot) => slot.locked)) return;
+    dispatch({ type: 'clear_locks' });
     setSpanInputError('');
     setMessage('已解除全部鎖定。');
   };
 
   const changeRhymePicks = (next: PhonemeDimPicks) => {
     dispatch({ type: 'set_rhyme_picks', picks: next });
-    setActiveRelaxation(null);
   };
   const changeInitialPicks = (next: PhonemeDimPicks) => {
     dispatch({ type: 'set_initial_picks', picks: next });
-    setActiveRelaxation(null);
   };
   const changeRhymeRef = (value: string) => {
     dispatch({ type: 'set_rhyme_ref', value });
-    setActiveRelaxation(null);
   };
   const changeInitialRef = (value: string) => {
     dispatch({ type: 'set_initial_ref', value });
-    setActiveRelaxation(null);
   };
 
   useEffect(() => {
@@ -355,51 +329,24 @@ export function WorkbenchPage({
     .filter((surface) => isHanSurface(surface))
     .join('');
 
-  const resolveReadings = async (surface: string, version: number, baseSlots: LineSlot[]) => {
-    if (!surface) return;
-    pendingResolve.current = { surface, version };
-    try {
-      if (!isReady) await initialize();
-      const result = await readingCoordinator.resolve(version, baseSlots, readingsRef.current);
-      if (pendingResolve.current?.version !== version) return;
-      pendingResolve.current = null;
-      setReadings(result.readings);
-      setSession((current) => {
-        if (!current.draft) return current;
-        if (surfaceOnlyOf(current.draft.slots) !== surface) return current;
-        let next = current;
-        for (const { pos, choice } of result.autoChoices) {
-          if (current.draft.slots[pos]?.reading) continue;
-          next = sessionReducer(next, {
-            type: 'choose_reading',
-            pos,
-            jyutping: choice.jyutping,
-            code: choice.code,
-          });
-        }
-        return next;
-      });
-      setMessage(result.readings.some((slot) => slot.kind === 'unresolved') ? '部分字未有收錄讀音；你仍可鎖定字位或改用碼起句。' : '已解析逐字讀音；請點擊鎖定替換段。');
-    } catch (error) {
-      if (error instanceof DOMException && error.name === 'AbortError') return;
+  useEffect(() => {
+    if (!active || !isReady || !session.draft?.surface || readings.length > 0) return;
+    const surface = surfaceOnlyOf(session.draft.slots) || session.draft.surface;
+    void resolveReadings(surface, session.version, session.draft.slots);
+  }, [active, isReady, readings.length, resolveReadings, session]);
+
+  useEffect(() => {
+    if (notice?.code === 'reading_failed') {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
     }
-  };
+  }, [notice]);
 
   useEffect(() => {
-    if (!active || !isReady || !pendingResolve.current || !sessionRef.current.draft) return;
-    const pending = pendingResolve.current;
-    if (sessionRef.current.version !== pending.version) return;
-    void resolveReadings(pending.surface, pending.version, sessionRef.current.draft.slots);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, isReady]);
-
-  useEffect(() => {
-    const current = sessionRef.current;
-    if (!active || !isReady || !current.draft?.surface || readings.length > 0) return;
-    void resolveReadings(surfaceOnlyOf(current.draft.slots) || current.draft.surface, current.version, current.draft.slots);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, isReady]);
+    if (!readings.length) return;
+    setMessage(readings.some((slot) => slot.kind === 'unresolved')
+      ? '部分字未有收錄讀音；你仍可鎖定字位或改用碼起句。'
+      : '已解析逐字讀音；請點擊鎖定替換段。');
+  }, [readings]);
 
   useEffect(() => {
     if (!active) return;
@@ -407,24 +354,12 @@ export function WorkbenchPage({
     if (!payload) return;
 
     if (payload.mode === 'insert') {
-      setSession((current) => {
-        if (!current.draft?.selection) {
-          setMessage('無法插入：工作台沒有已鎖範圍；請改用取代整句。');
-          return current;
-        }
-        const next = sessionReducer(current, { type: 'insert_literal', literal: payload.literal });
-        if (next === current) {
-          setMessage('無法插入：字數與選段不符。');
-          return current;
-        }
-        setPreview(null);
-        setActiveRelaxation(null);
-        if (next.draft) {
-          void resolveReadings(surfaceOnlyOf(next.draft.slots), next.version, next.draft.slots);
-        }
-        setMessage('已插入字面到選段；請確認讀音。');
-        return next;
-      });
+      if (!session.draft?.selection) {
+        setMessage('無法插入：工作台沒有已鎖範圍；請改用取代整句。');
+        return;
+      }
+      dispatch({ type: 'insert_literal', literal: payload.literal });
+      setMessage('已插入字面到選段；請確認讀音。');
       return;
     }
 
@@ -433,21 +368,11 @@ export function WorkbenchPage({
       setMessage('放入的字面無法建立句格。');
       return;
     }
-    setSession((current) => {
-      const next = current.draft
-        ? sessionReducer(current, { type: 'replace_surface', literal: payload.literal })
-        : sessionReducer(current, { type: 'create_from_parsed', draft: createLineDraft(parsed) });
-      setReadings([]);
-      setPreview(null);
-      setActiveRelaxation(null);
-      if (next.draft) {
-        void resolveReadings(surfaceOnlyOf(next.draft.slots), next.version, next.draft.slots);
-      }
-      setMessage('已從搜尋放入字面；請點擊鎖定替換段。');
-      return next;
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+    dispatch(session.draft
+      ? { type: 'replace_surface', literal: payload.literal }
+      : { type: 'create_from_parsed', draft: createLineDraft(parsed) });
+    setMessage('已從搜尋放入字面；請點擊鎖定替換段。');
+  }, [active, dispatch, session.draft]);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -460,12 +385,7 @@ export function WorkbenchPage({
       );
       return;
     }
-    const nextDraft = createLineDraft(parsed);
-    const next = sessionReducer(sessionRef.current, { type: 'create_from_parsed', draft: nextDraft });
-    setSession(next);
-    setReadings([]);
-    setPreview(null);
-    setActiveRelaxation(null);
+    dispatch({ type: 'create_from_parsed', draft: createLineDraft(parsed) });
     setMessage(
       parsed.kind === 'code'
         ? '已按碼建立空白句格，不會自動填入字面；請點擊碼格鎖定並查看候選。'
@@ -473,10 +393,6 @@ export function WorkbenchPage({
           ? '已建立混合句格；請點擊鎖定一至四格以查看候選。'
           : '句格已建立；請點擊鎖定一至四格以查看候選。',
     );
-    if (parsed.kind === 'surface' || parsed.kind === 'mixed') {
-      const surfaceOnly = parsed.slots.map((slot) => slot.surface).filter((s) => isHanSurface(s)).join('');
-      if (surfaceOnly) void resolveReadings(surfaceOnly, next.version, next.draft!.slots);
-    }
   };
 
   const handleChooseReading = (pos: number, jyutping: string, code: string) => {
@@ -484,76 +400,48 @@ export function WorkbenchPage({
   };
 
   const handleSetSlotManual = (pos: number, surface: string, code?: string) => {
-    setSession((current) => {
-      const next = sessionReducer(current, { type: 'set_slot_manual', pos, surface, code });
-      if (next === current) {
-        setMessage('請輸入一個漢字、通配或一位數字碼。');
-        return current;
-      }
-      setSpanInputError('');
-      setMessage(surface ? '已手改一字；正在對齊讀音。' : '已手改為碼格。');
-      if (next.draft) {
-        const surfaceOnly = surfaceOnlyOf(next.draft.slots);
-        if (surfaceOnly) void resolveReadings(surfaceOnly, next.version, next.draft.slots);
-      }
-      return next;
-    });
+    dispatch({ type: 'set_slot_manual', pos, surface, code });
+    setSpanInputError('');
+    setMessage(surface ? '已手改一字；正在對齊讀音。' : '已手改為碼格。');
   };
 
   const handleClearSurfaces = () => {
-    if (!sessionRef.current.draft) return;
+    if (!session.draft) return;
     dispatch({ type: 'clear' });
-    setReadings([]);
-    setPreview(null);
-    setActiveRelaxation(null);
     setSpanInputError('');
     setMessage('已清空句格。');
   };
 
   const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
-    setSession((current) => {
-      if (!current.draft?.selection) {
-        setSpanInputError('請先鎖定替換段。');
-        return current;
-      }
-      const slots = parsed.slots.map((slot, pos) => {
-        const digit = parsed.constraints.find(
-          (item) => item.kind === 'code_digit' && item.pos === pos,
-        );
-        return {
-          surface: slot.surface,
-          reading: slot.reading,
-          code: slot.code || (digit as { digit?: string })?.digit,
-        };
-      });
-      const next = sessionReducer(current, {
-        type: 'apply_span_input',
-        selectionVersion: current.version,
-        slots,
-        constraints: parsed.constraints,
-      });
-      if (next === current) {
-        setSpanInputError(`長度須為 ${current.draft.selection.width} 格。`);
-        return current;
-      }
-      setSpanInputError('');
-      setMessage('已手打替換段。');
-      if (next.draft) {
-        const surfaceOnly = surfaceOnlyOf(next.draft.slots);
-        if (surfaceOnly) void resolveReadings(surfaceOnly, next.version, next.draft.slots);
-      }
-      return next;
+    if (!session.draft?.selection) {
+      setSpanInputError('請先鎖定替換段。');
+      return;
+    }
+    const slots = parsed.slots.map((slot, pos) => {
+      const digit = parsed.constraints.find(
+        (item) => item.kind === 'code_digit' && item.pos === pos,
+      );
+      return {
+        surface: slot.surface,
+        reading: slot.reading,
+        code: slot.code || (digit as { digit?: string })?.digit,
+      };
     });
+    dispatch({
+      type: 'apply_span_input',
+      selectionVersion: session.version,
+      slots,
+      constraints: parsed.constraints,
+    });
+    setSpanInputError('');
+    setMessage('已手打替換段。');
   };
 
   const performUndo = () => {
-    const current = sessionRef.current;
-    if (!current.undo) return;
+    if (!session.undo) return;
     dispatch({ type: 'undo' });
-    setActiveRelaxation(null);
     setSpanInputError('');
-    setReadings([]);
-    setMessage(current.draft ? '已復原最近一次改動。' : '已復原清空前的句稿。');
+    setMessage(session.draft ? '已復原最近一次改動。' : '已復原清空前的句稿。');
   };
 
   // 候選 session 擁有 cursor；page 只傳 plan 身份（無 paging）
@@ -566,8 +454,6 @@ export function WorkbenchPage({
     posFilter,
     active,
   );
-  const candidatesRef = useRef(candidates);
-  candidatesRef.current = candidates;
   const semanticGap = Boolean(
     planBase
     && planBase.semanticIntent !== 'off'
@@ -582,18 +468,17 @@ export function WorkbenchPage({
   };
 
   const applyPreview = (candidate: WorkbenchCandidate) => {
-    const current = sessionRef.current;
+    const current = session;
     if (!current.draft?.selection) return;
     dispatch({
       type: 'apply_candidate',
-      selectionVersion: candidatesRef.current.response?.selectionVersion ?? current.version,
+      selectionVersion: candidates.response?.selectionVersion ?? current.version,
       literal: candidate.literal,
       jyutping: candidate.jyutping,
       code: candidate.code,
       relaxationId: candidate.relaxationId ?? activeRelaxation?.id,
     });
     setPreview(null);
-    setActiveRelaxation(null);
     setTimeout(() => document.querySelector<HTMLButtonElement>(`[data-line-slot="${current.draft!.selection!.start}"]`)?.focus(), 0);
   };
 
@@ -614,8 +499,8 @@ export function WorkbenchPage({
     if (!active) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (isTypingTarget(event.target)) return;
-      const current = sessionRef.current;
-      const open = previewRef.current;
+      const current = session;
+      const open = preview;
 
       if ((event.key === 'a' || event.key === 'A') && open) {
         event.preventDefault();
@@ -644,7 +529,7 @@ export function WorkbenchPage({
       }
       if (event.key === 'Enter') {
         if (event.target instanceof HTMLElement && event.target.closest('[data-line-slot]')) return;
-        const candidate = firstCandidate(candidatesRef.current.response?.exact);
+        const candidate = firstCandidate(candidates.response?.exact);
         if (!candidate) return;
         event.preventDefault();
         setPreview(candidate);
@@ -653,7 +538,7 @@ export function WorkbenchPage({
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, activeRelaxation]);
+  }, [active, activeRelaxation, candidates, preview, session]);
 
   const intro = workbenchIntroCopy(uiLang);
   const copy = getWorkbenchCopy(uiLang);
@@ -845,12 +730,6 @@ export function WorkbenchPage({
                   onClick={() => {
                     if (!draft.selection || !candidates.response?.relaxation) return;
                     const suggestion = candidates.response.relaxation;
-                    setActiveRelaxation({
-                      id: suggestion.id,
-                      kind: suggestion.kind,
-                      from: suggestion.from,
-                      to: suggestion.to,
-                    });
                     dispatch({
                       type: 'apply_relaxation',
                       selectionVersion: session.version,
@@ -858,6 +737,12 @@ export function WorkbenchPage({
                       kind: suggestion.kind,
                       plan: suggestion.plan,
                     });
+                    setActiveRelaxation({
+                      id: suggestion.id,
+                      kind: suggestion.kind,
+                      from: suggestion.from,
+                      to: suggestion.to,
+                    }, session.version + 1);
                   }}
                 >
                   確認採用這項放寬
