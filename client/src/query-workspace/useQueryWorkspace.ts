@@ -33,6 +33,7 @@ export interface UseQueryWorkspaceOptions {
   fallback0243Mode: Last0243SearchMode;
   uiLang: 'zh' | 'zh-Hans' | 'en';
   onPatchTab?: (tabId: number, snapshot: Partial<QueryWorkspaceSnapshot<QueryResult>>) => void;
+  onCommitFrame?: (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => void;
 }
 
 function snapshotFromTab(tab: QueryTab): QueryWorkspaceSnapshot<QueryResult> {
@@ -67,6 +68,7 @@ export function useQueryWorkspace({
   fallback0243Mode,
   uiLang,
   onPatchTab,
+  onCommitFrame,
 }: UseQueryWorkspaceOptions) {
   const activeTabId = activeTab?.view === 'search' ? activeTab.id : null;
   const initialQuery = activeTab?.view === 'search' ? activeTab.q || '' : '';
@@ -322,7 +324,8 @@ export function useQueryWorkspace({
         pzmode: nextPzMode,
         kind: 'commit',
       });
-    }, [flushSearchQuery, inputQuery, mode, pzmode],
+      onCommitFrame?.({ query, mode: nextMode, pzmode: nextPzMode });
+    }, [flushSearchQuery, inputQuery, mode, onCommitFrame, pzmode],
   );
 
   const setFilter = useCallback((posFilter: PosFilterState) => {

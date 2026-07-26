@@ -244,6 +244,13 @@ function App() {
     [patchSearchTab],
   );
 
+  const commitWorkspaceFrame = useCallback(
+    (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => {
+      commitActiveSearch(frame.query, frame.mode, frame.pzmode);
+    },
+    [commitActiveSearch],
+  );
+
   const workspace = useQueryWorkspace({
     activeTab: activeSearchTab,
     enabled: useLiveFetch && view === 'search',
@@ -253,6 +260,7 @@ function App() {
     fallback0243Mode: last0243Mode,
     uiLang,
     onPatchTab: patchWorkspaceTab,
+    onCommitFrame: commitWorkspaceFrame,
   });
   const {
     inputQuery,
@@ -684,7 +692,6 @@ function App() {
       commitSearch(q, nextMode, nextPzMode);
       setUseLiveFetch(true);
       resetPresentation();
-      commitActiveSearch(q, nextMode, nextPzMode);
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
@@ -693,7 +700,6 @@ function App() {
     [
       inputQuery,
       commitSearch,
-      commitActiveSearch,
       mode,
       pzMode,
       isReady,
