@@ -189,7 +189,6 @@ function App() {
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
-  const [cachedTotal, setCachedTotal] = useState<number | null>(null);
   const [resultsShuffled, setResultsShuffled] = useState(false);
   const [shuffleGeneration, setShuffleGeneration] = useState(0);
   const [gateOpen, setGateOpen] = useState(() => !hasPwaGateLanded());
@@ -296,11 +295,9 @@ function App() {
       if (!useLive) {
         const cached = (tab.results as QueryResult[]) || [];
         setDisplayResults(cached);
-        setCachedTotal(tab.total ?? null);
       } else {
         // New / live tab: clear prior tab's chips until results arrive
         setDisplayResults([]);
-        setCachedTotal(null);
       }
     },
     [hydrateSearch, initialBootstrap.forceLive],
@@ -412,7 +409,7 @@ function App() {
     patchSearchTab(leavingId, {
       q: inputQuery,
       results: displayResults,
-      total: useLiveFetch ? total : cachedTotal,
+      total,
       offset: displayResults.length,
       posFilter,
     });
@@ -423,7 +420,6 @@ function App() {
     displayResults,
     useLiveFetch,
     total,
-    cachedTotal,
     patchSearchTab,
     posFilter,
   ]);
@@ -475,7 +471,7 @@ function App() {
   const searchFamily = searchFamilyForUiMode(mode);
 
   const displayHint = redirectHint || searchHint;
-  const effectiveTotal = useLiveFetch ? total : cachedTotal;
+  const effectiveTotal = total;
   const filterActive = isPosFilterActive(posFilter);
   const filteredDisplayResults = useMemo(
     () => filterByProjectPos(displayResults, (row) => row.word, posFilter),
@@ -654,7 +650,6 @@ function App() {
     hydrateSearch('');
     setUseLiveFetch(false);
     setDisplayResults([]);
-    setCachedTotal(null);
   }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail]);
 
   useEffect(() => {
@@ -670,7 +665,6 @@ function App() {
       setUseLiveFetch(false);
       hydrateSearch('');
       setDisplayResults([]);
-      setCachedTotal(null);
     }
     consumePopstateFrame();
   }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
@@ -720,7 +714,6 @@ function App() {
       pickAnchorRef.current = literal;
       pickAnchorRowsRef.current = anchorRows;
       setDisplayResults(anchorRows);
-      setCachedTotal(null);
       runCommittedSearch(literal);
       hydrateSearch(literal);
       openEntryDetailFromPick(payload);
@@ -1059,7 +1052,6 @@ function App() {
     setUseLiveFetch(false);
     hydrateSearch('');
     setDisplayResults([]);
-    setCachedTotal(null);
     setResultsShuffled(false);
   };
 
