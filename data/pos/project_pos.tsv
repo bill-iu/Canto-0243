@@ -1876,8 +1876,7 @@ T恤	n			u-inlex-nf2k;review;agent-label
 人神共憤	a	chengyu		u-inlex-nf4;review;agent-label;family-leaf-review
 人稱代詞	n			u-inlex-nf4;review;agent-label
 人窮志短	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
-人群	n			cow-single
-人群	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+人群	n			cow-single;u-top3000;agent-label;u-top3000-agent;review;essay-top-u
 人老珠黃	u	chengyu		chengyu-pos-review;review
 人聲鼎沸	a	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
 人肉	n,v			u-inlex-nf2k;review;agent-label
@@ -20333,11 +20332,10 @@ T恤	n			u-inlex-nf2k;review;agent-label
 群組	n			u-inlex-nf2k;review;agent-label
 群起而攻之	u	chengyu		chengyu-pos-review;review
 群雄逐鹿	v	chengyu		u-inlex-nf3;review;agent-label;family-leaf-review
-群體	n			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
+群體	n			u-top3000;agent-label;u-top3000-agent;u-inlex-nf2k;review
 群魔亂舞	u	chengyu		chengyu-pos-review;review
 群龍無首	a	chengyu		no-source;fallback;full-r1-audit;review;u 有明確詞類 → a;family-leaf-review
 群	n,x			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
-群體	n			u-inlex-nf2k;review;agent-label
 羥基丁酸	n			u-inlex-nf5;review;agent-label
 羥自由基	n			u-inlex-nf5;review;agent-label
 羨慕	v			u-top3000;agent-label;u-top3000-agent;review;essay-top-u
