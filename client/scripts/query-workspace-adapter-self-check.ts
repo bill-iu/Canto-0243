@@ -46,6 +46,17 @@ const databasePage = await database.searchPage({
 assert.equal((seenRequest as { shouldCancel?: unknown }).shouldCancel instanceof Function, true);
 assert.deepEqual(databasePage.items, [{ word: '開心' }]);
 
+const abortDuringLoad = new AbortController();
+const abortingDatabase = createDatabaseQueryWorkspaceAdapter(async (input) => {
+  abortDuringLoad.abort();
+  assert.equal(input.shouldCancel?.(), true);
+  return { items: [{ word: '不可提交' }], total: 1, hint: undefined };
+});
+await assert.rejects(
+  abortingDatabase.searchPage({ ...request, mode: '0243', signal: abortDuringLoad.signal }),
+  (error: unknown) => error instanceof DOMException && error.name === 'AbortError',
+);
+
 let seenSignal: AbortSignal | undefined;
 const portable = createPortableQueryWorkspaceAdapter(async (_input, init) => {
   seenSignal = init?.signal as AbortSignal;
