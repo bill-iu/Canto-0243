@@ -20,6 +20,7 @@ import {
 import {
   createInitialQueryWorkspaceState,
   reduceQueryWorkspace,
+  snapshotFromQueryWorkspace,
   type QueryWorkspaceSnapshot,
 } from './state.ts';
 
@@ -33,7 +34,6 @@ export interface UseQueryWorkspaceOptions {
   pzmode: PingzeSubMode;
   fallback0243Mode: Last0243SearchMode;
   uiLang: 'zh' | 'zh-Hans' | 'en';
-  onPatchTab?: (tabId: number, snapshot: Partial<QueryWorkspaceSnapshot<QueryResult>>) => void;
   navigationAdapter?: QueryWorkspaceNavigationAdapter;
 }
 
@@ -68,7 +68,6 @@ export function useQueryWorkspace({
   pzmode,
   fallback0243Mode,
   uiLang,
-  onPatchTab,
   navigationAdapter,
 }: UseQueryWorkspaceOptions) {
   const activeTabId = activeTab?.view === 'search' ? activeTab.id : null;
@@ -294,15 +293,10 @@ export function useQueryWorkspace({
   }, [enabled, filteredResultCount, hasMore, isLoading, isReady, loadMore, state.posFilter, state.results.length]);
 
   useEffect(() => {
-    if (!onPatchTab || state.tabId == null || state.status !== 'ready') return;
-    onPatchTab(state.tabId, {
-      q: state.draftQuery,
-      results: state.results,
-      total: state.total,
-      offset: state.offset,
-      posFilter: state.posFilter,
-    });
-  }, [onPatchTab, state]);
+    if (!navigationAdapter || state.tabId == null || state.status !== 'ready') return;
+    const snapshot = snapshotFromQueryWorkspace(state);
+    if (snapshot) navigationAdapter.checkpoint(state.tabId, snapshot);
+  }, [navigationAdapter, state]);
 
   const commitSearch = useCallback(
     (nextQuery = inputQuery, nextMode = mode, nextPzMode = pzmode) => {

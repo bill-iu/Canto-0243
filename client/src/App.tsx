@@ -10,7 +10,6 @@ import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
-import type { QueryWorkspaceSnapshot } from './query-workspace/state.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
@@ -235,16 +234,6 @@ function App() {
     retryOfflineReady,
   } = useDB();
 
-  const patchWorkspaceTab = useCallback(
-    (tabId: number, snapshot: Partial<QueryWorkspaceSnapshot<QueryResult>>) => {
-      patchSearchTab(tabId, {
-        ...snapshot,
-        results: snapshot.results ? [...snapshot.results] : undefined,
-      });
-    },
-    [patchSearchTab],
-  );
-
   const commitWorkspaceFrame = useCallback(
     (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => {
       commitActiveSearch(frame.query, frame.mode, frame.pzmode);
@@ -252,8 +241,17 @@ function App() {
     [commitActiveSearch],
   );
   const navigationAdapter = useMemo(
-    () => createCallbackNavigationAdapter(commitWorkspaceFrame),
-    [commitWorkspaceFrame],
+    () => createCallbackNavigationAdapter({
+      commitFrame: commitWorkspaceFrame,
+      checkpoint: (tabId, snapshot) => patchSearchTab(tabId, {
+        q: snapshot.q,
+        results: [...snapshot.results],
+        total: snapshot.total,
+        offset: snapshot.offset,
+        posFilter: snapshot.posFilter,
+      }),
+    }),
+    [commitWorkspaceFrame, patchSearchTab],
   );
 
   const workspace = useQueryWorkspace({
@@ -264,7 +262,6 @@ function App() {
     pzmode: pzMode,
     fallback0243Mode: last0243Mode,
     uiLang,
-    onPatchTab: patchWorkspaceTab,
     navigationAdapter,
   });
   const {
