@@ -7,6 +7,7 @@ from typing import TypeAlias
 
 from app.services._generated.query_kind_registry import MATCH_SPEC_KINDS, QueryKind, uses_match_spec_kind
 from app.services.position_match.canonical import (
+    CanonicalPhonemeAlternatives,
     CanonicalMatchSpec,
     canonicalize_legacy_match_spec,
     finalize_canonical_match_spec,
@@ -105,6 +106,8 @@ def compile_query(query: MatchSpecQuery) -> CanonicalMatchSpec:
         return _compile_compound(query, "ant")
     if query.kind == QueryKind.COMPOUND_DOUBLED_SYLLABLE:
         return _compile_doubled_syllable(query)
+    if query.kind == QueryKind.JYUTPING_ANCHOR:
+        return _compile_jyutping_anchor(query)
     legacy = build_match_spec_for_parsed(query)
     if legacy is None:
         raise ValueError(f"MatchSpec compiler has no implementation for {query.kind}")
@@ -320,6 +323,56 @@ def _compile_doubled_syllable(query: CompoundDoubledSyllableQuery) -> CanonicalM
         width=query.width,
         slots=slots,
         compound_kind="doubled_syllable",
+    )
+
+
+def _jyutping_code_slots(query: JyutpingAnchorQuery) -> list[SlotConstraint]:
+    if query.code_slots:
+        return [
+            SlotConstraint(pos=pos, kind="code_digit", value=value)
+            for pos, value in query.code_slots
+        ]
+    if query.code_prefix and query.width == len(query.code_prefix):
+        return _code_prefix_slots(query.code_prefix)
+    return []
+
+
+def _compile_jyutping_anchor(query: JyutpingAnchorQuery) -> CanonicalMatchSpec:
+    code_slots = _jyutping_code_slots(query)
+    if query.dual_phoneme:
+        initial = finalize_canonical_match_spec(
+            width=query.width,
+            slots=[
+                *code_slots,
+                SlotConstraint(
+                    pos=query.anchor_pos,
+                    kind="initial_letters",
+                    value=query.dual_initial_value or query.anchor_value,
+                ),
+            ],
+        )
+        final = finalize_canonical_match_spec(
+            width=query.width,
+            slots=[
+                *code_slots,
+                SlotConstraint(
+                    pos=query.anchor_pos,
+                    kind="rhyme_letters",
+                    value=query.anchor_value,
+                ),
+            ],
+        )
+        return finalize_canonical_match_spec(
+            width=query.width,
+            slots=code_slots,
+            phoneme_alternatives=CanonicalPhonemeAlternatives(initial, final),
+        )
+    return finalize_canonical_match_spec(
+        width=query.width,
+        slots=[
+            *code_slots,
+            SlotConstraint(pos=query.anchor_pos, kind=query.anchor_kind, value=query.anchor_value),
+        ],
     )
 
 
