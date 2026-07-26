@@ -295,8 +295,14 @@ export function useQueryWorkspace({
   useEffect(() => {
     if (!navigationAdapter || state.tabId == null || state.status !== 'ready') return;
     const snapshot = snapshotFromQueryWorkspace(state);
-    if (snapshot) navigationAdapter.checkpoint(state.tabId, snapshot);
-  }, [navigationAdapter, state]);
+    if (snapshot) {
+      navigationAdapter.checkpoint(state.tabId, {
+        ...snapshot,
+        results: [...presentationResults],
+        offset: presentationResults.length,
+      });
+    }
+  }, [navigationAdapter, presentationGeneration, presentationResults, state]);
 
   const commitSearch = useCallback(
     (nextQuery = inputQuery, nextMode = mode, nextPzMode = pzmode) => {

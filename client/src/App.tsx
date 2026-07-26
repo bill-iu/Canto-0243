@@ -424,28 +424,6 @@ function App() {
     document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : uiLang === 'zh-Hans' ? 'zh-Hans' : 'en';
   }, [uiLang]);
 
-  const saveLeavingSearchTab = useCallback(() => {
-    const leavingId = tabState.activeId;
-    const leaving = tabState.tabs.find((t) => t.id === leavingId);
-    if (leaving?.view !== VIEW.SEARCH) return;
-    patchSearchTab(leavingId, {
-      q: inputQuery,
-      results: displayResults,
-      total,
-      offset: displayResults.length,
-      posFilter,
-    });
-  }, [
-    tabState.activeId,
-    tabState.tabs,
-    inputQuery,
-    displayResults,
-    useLiveFetch,
-    total,
-    patchSearchTab,
-    posFilter,
-  ]);
-
   useEffect(() => {
     if (searchKeyRef.current !== searchKey) {
       searchKeyRef.current = searchKey;
@@ -501,8 +479,7 @@ function App() {
   );
   const changePosFilter = useCallback((next: PosFilterState) => {
     setWorkspaceFilter(next);
-    if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: next });
-  }, [activeSearchTab, patchSearchTab, setWorkspaceFilter]);
+  }, [setWorkspaceFilter]);
 
   const mountWarmupBadge = !shellGated && !warmupBadgeClear;
   const handleWarmupBadgeDismiss = useCallback(() => setWarmupBadgeClear(true), []);
@@ -521,20 +498,18 @@ function App() {
       const key = event.key.toLowerCase();
       if (key === 'n') {
         event.preventDefault();
-        saveLeavingSearchTab();
         addSearchTab();
         requestAnimationFrame(() => document.getElementById('searchInput')?.focus());
         return;
       }
       if (key === 'w') {
         event.preventDefault();
-        saveLeavingSearchTab();
         closeTab(tabState.activeId);
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen, closeEntryDetail]);
+  }, [addSearchTab, closeTab, tabState.activeId, detailOpen, closeEntryDetail]);
 
   useEffect(() => {
     if (!initialBootstrap.isHome) return;
@@ -566,7 +541,6 @@ function App() {
       const q = (nextQuery ?? inputQuery).trim();
       // ponytail: portable maintainer — `debug` opens corrections, not a search
       if (isPortableHost() && isCorrectionsSearchCommand(q)) {
-        saveLeavingSearchTab();
         openCorrections();
         return;
       }
@@ -590,7 +564,6 @@ function App() {
       isReady,
       offlineStatus,
       initialize,
-      saveLeavingSearchTab,
       openCorrections,
       resetPresentation,
     ],
@@ -645,7 +618,6 @@ function App() {
 
   const openLiveSearchTab = useCallback(
     (q: string, nextMode: UiMode = mode) => {
-      saveLeavingSearchTab();
       openSearchTabWithQuery(q, nextMode, pzMode);
       setUseLiveFetch(true);
       resetPresentation();
@@ -654,7 +626,7 @@ function App() {
         void initialize();
       }
     },
-    [saveLeavingSearchTab, openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize, resetPresentation],
+    [openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize, resetPresentation],
   );
 
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
@@ -728,45 +700,37 @@ function App() {
   };
 
   const handleReorderTabs = (fromIndex: number, toIndex: number) => {
-    saveLeavingSearchTab();
     reorderTabs(fromIndex, toIndex);
   };
 
   const handleReorderTabsByIds = (orderedIds: number[]) => {
-    saveLeavingSearchTab();
     reorderTabsByIdList(orderedIds);
   };
 
   const handleSelectTab = (id: number) => {
-    saveLeavingSearchTab();
     saveActiveDetail();
     selectTab(id);
   };
 
   const handleCloseTab = (id: number) => {
-    saveLeavingSearchTab();
     saveActiveDetail();
     forgetDetailTab(id);
     closeTab(id);
   };
 
   const handleAddTab = () => {
-    saveLeavingSearchTab();
     addSearchTab();
   };
 
   const handleOpenGuide = () => {
-    saveLeavingSearchTab();
     openGuide();
   };
 
   const handleOpenAbout = () => {
-    saveLeavingSearchTab();
     openAbout();
   };
 
   const handleOpenRelation = () => {
-    saveLeavingSearchTab();
     openRelation();
   };
 
@@ -934,7 +898,6 @@ function App() {
     !emptyMessage;
 
   const handleHome = () => {
-    saveLeavingSearchTab();
     goHome();
     setUseLiveFetch(false);
     hydrateSearch('');
