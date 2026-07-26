@@ -9,8 +9,8 @@ import { useDB } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
+import { useQueryWorkspaceDetail } from './query-workspace/useQueryWorkspaceDetail.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
-import { createProductionQueryWorkspaceDetailAdapter } from './query-workspace/detail-adapter.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
@@ -25,7 +25,6 @@ import {
   readWorkbenchSurfacePreview,
   writeIngest,
 } from './workbench/workbench-bridge.ts';
-import type { EntryDetailModel } from './entry-detail/types';
 import {
   anchorOnlyQueryRow,
   mergePickLookupResults,
@@ -188,32 +187,22 @@ function App() {
     () => getTheme({ defaultTheme: 'dark' }) as 'light' | 'dark',
   );
   const [entrySize, setEntrySize] = useEntrySize();
-  const [detailOpen, setDetailOpen] = useState(false);
   const [putWorkbenchLiteral, setPutWorkbenchLiteral] = useState<string | null>(null);
-  const [detailModel, setDetailModel] = useState<EntryDetailModel | null>(null);
-  const [detailRelationsLoading, setDetailRelationsLoading] = useState(false);
-  const [activeDetailLiteral, setActiveDetailLiteral] = useState<string | null>(null);
-  const [preferredJyutping, setPreferredJyutping] = useState<string | null>(null);
   const [searchRingClass, setSearchRingClass] = useState('');
   const searchRingBlurTimerRef = useRef<number | null>(null);
-  const detailLoadGenRef = useRef(0);
-  const detailAbortRef = useRef<AbortController | null>(null);
-  const detailByTabRef = useRef(new Map<number, {
-    open: boolean;
-    literal: string | null;
-    jyutping: string | null;
-  }>());
-  const lastPickReadingsRef = useRef<EntryPickPayload['readings']>(undefined);
   const pickAnchorRef = useRef<string | null>(null);
   const pickAnchorRowsRef = useRef<QueryResult[]>([]);
   const scrollTopByTabRef = useRef(new Map<number, number>());
 
-  useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const lexiconLoadStartedRef = useRef(false);
-  const detailAdapter = useMemo(() => createProductionQueryWorkspaceDetailAdapter(), []);
+  const waitForPickMerge = useCallback(async (signal: AbortSignal) => {
+    while (pickAnchorRef.current && !signal.aborted) {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }, []);
 
   const {
     isReady,
@@ -228,6 +217,25 @@ function App() {
     initialize,
     retryOfflineReady,
   } = useDB();
+
+  const detail = useQueryWorkspaceDetail({
+    activeTab: activeSearchTab,
+    isReady,
+    waitForPickMerge,
+  });
+  const {
+    open: detailOpen,
+    model: detailModel,
+    relationsLoading: detailRelationsLoading,
+    literal: activeDetailLiteral,
+    preferredJyutping,
+    close: closeEntryDetail,
+    saveActive: saveActiveDetail,
+    forgetTab: forgetDetailTab,
+    openLiteral: openEntryDetailLiteral,
+    openFromPick: openEntryDetailFromPick,
+  } = detail;
+  useEntryDetailInset(detailOpen);
 
   const commitWorkspaceFrame = useCallback(
     (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => {
@@ -509,10 +517,7 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && detailOpen) {
-        setDetailOpen(false);
-        setActiveDetailLiteral(null);
-        setDetailModel(null);
-        setPreferredJyutping(null);
+        closeEntryDetail();
         return;
       }
       if (!event.altKey || event.ctrlKey || event.metaKey) return;
@@ -532,125 +537,7 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen]);
-
-  const closeEntryDetail = useCallback(() => {
-    detailLoadGenRef.current += 1;
-    detailAbortRef.current?.abort();
-    detailAbortRef.current = null;
-    setDetailOpen(false);
-    setActiveDetailLiteral(null);
-    setDetailModel(null);
-    setDetailRelationsLoading(false);
-    setPreferredJyutping(null);
-  }, []);
-
-  const saveActiveDetail = useCallback(() => {
-    if (activeTab?.view !== VIEW.SEARCH) return;
-    detailByTabRef.current.set(activeTab.id, {
-      open: detailOpen,
-      literal: activeDetailLiteral,
-      jyutping: preferredJyutping,
-    });
-  }, [activeTab, detailOpen, activeDetailLiteral, preferredJyutping]);
-
-  useEffect(() => {
-    if (activeTab?.view !== VIEW.SEARCH) {
-      closeEntryDetail();
-      return;
-    }
-    const saved = detailByTabRef.current.get(activeTab.id);
-    if (!saved?.open || !saved.literal) {
-      closeEntryDetail();
-      return;
-    }
-    setDetailOpen(true);
-    setActiveDetailLiteral(saved.literal);
-    setPreferredJyutping(saved.jyutping);
-    setDetailModel(null);
-  }, [activeTab?.id, activeTab?.view, closeEntryDetail]);
-
-  const waitForPickMerge = useCallback(async (gen: number) => {
-    while (pickAnchorRef.current && gen === detailLoadGenRef.current) {
-      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    }
-  }, []);
-
-  const scheduleEntryDetailEnrich = useCallback((literal: string, base: EntryDetailModel | null, gen: number) => {
-    const run = () => {
-      void (async () => {
-        const controller = detailAbortRef.current;
-        if (!controller || gen !== detailLoadGenRef.current || !isReady) return;
-        try {
-          const full = await detailAdapter.load(literal, base, {
-            signal: controller.signal,
-            waitForPickMerge: () => waitForPickMerge(gen),
-            onStage: (stage) => {
-              if (gen !== detailLoadGenRef.current) return;
-              if (stage.kind === 'core') {
-                setDetailModel(stage.model);
-              } else {
-                setDetailRelationsLoading(true);
-              }
-            },
-          });
-          if (gen !== detailLoadGenRef.current || controller.signal.aborted) return;
-          setDetailModel(full);
-          setDetailRelationsLoading(false);
-        } catch (error) {
-          if (controller.signal.aborted || (error instanceof DOMException && error.name === 'AbortError')) return;
-          if (gen === detailLoadGenRef.current) setDetailRelationsLoading(false);
-        }
-      })();
-    };
-    if (!base) {
-      queueMicrotask(run);
-    } else if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(run, { timeout: 800 });
-    } else {
-      setTimeout(run, 32);
-    }
-  }, [detailAdapter, isReady, waitForPickMerge]);
-
-  const openEntryDetailFromPick = useCallback(
-    (payload: EntryPickPayload) => {
-      const gen = ++detailLoadGenRef.current;
-      detailAbortRef.current?.abort();
-      detailAbortRef.current = new AbortController();
-      const literal = payload.literal.trim();
-      lastPickReadingsRef.current = payload.readings;
-
-      const cached = detailAdapter.instantFromPick(literal, []);
-      const instant = cached ?? detailAdapter.instantFromPick(literal, payload.readings);
-
-      setDetailOpen(true);
-      setActiveDetailLiteral(literal);
-      setPreferredJyutping(payload.jyutping ?? null);
-      setDetailModel(instant);
-      setDetailRelationsLoading(false);
-
-      if (cached) {
-        setDetailRelationsLoading(false);
-        return;
-      }
-      if (!isReady) {
-        return;
-      }
-
-      scheduleEntryDetailEnrich(literal, instant, gen);
-    },
-    [detailAdapter, isReady, scheduleEntryDetailEnrich],
-  );
-
-  useEffect(() => {
-    if (!detailOpen || !activeDetailLiteral || !isReady) return;
-    if (detailModel?.literal === activeDetailLiteral) return;
-    openEntryDetailFromPick({
-      literal: activeDetailLiteral,
-      jyutping: preferredJyutping ?? undefined,
-      readings: lastPickReadingsRef.current,
-    });
-  }, [detailOpen, activeDetailLiteral, isReady, detailModel?.literal, preferredJyutping, openEntryDetailFromPick]);
+  }, [saveLeavingSearchTab, addSearchTab, closeTab, tabState.activeId, detailOpen, closeEntryDetail]);
 
   useEffect(() => {
     if (!initialBootstrap.isHome) return;
@@ -862,7 +749,7 @@ function App() {
   const handleCloseTab = (id: number) => {
     saveLeavingSearchTab();
     saveActiveDetail();
-    detailByTabRef.current.delete(id);
+    forgetDetailTab(id);
     closeTab(id);
   };
 
@@ -977,14 +864,12 @@ function App() {
         return;
       }
       if (action === 'open_only') {
-        setDetailOpen(true);
-        setActiveDetailLiteral(payload.literal);
-        setPreferredJyutping(payload.jyutping ?? null);
+        openEntryDetailLiteral(payload.literal, payload.jyutping);
         return;
       }
       beginPickSearch(payload);
     },
-    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch, runCommittedSearch],
+    [mode, detailOpen, activeDetailLiteral, closeEntryDetail, beginPickSearch, runCommittedSearch, openEntryDetailLiteral],
   );
 
   const handleRelationPick = useCallback(
