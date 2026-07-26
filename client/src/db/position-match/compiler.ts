@@ -26,6 +26,8 @@ import type { EqualsQuery } from '../query/grammar/equals.ts';
 import { buildMatchSpecForParsed } from './match-spec-registry.ts';
 import {
   canonicalizeLegacyMatchSpec,
+  finalizeCanonicalMatchSpec,
+  type CanonicalEqualsSpan,
   type CanonicalMatchSpec,
 } from './canonical.ts';
 
@@ -68,11 +70,100 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (!usesMatchSpec(query.kind)) {
     throw new Error(`query kind does not use MatchSpec: ${query.kind}`);
   }
+  if (query.kind === QueryKind.EQUALS) return compileEquals(query);
+  if (query.kind === QueryKind.PREFIX_WILDCARD_EQUALS) return compilePrefixWildcardEquals(query);
+  if (query.kind === QueryKind.SERIAL_PHONEME) return compileSerialPhoneme(query);
+  if (query.kind === QueryKind.PLUS_ANCHOR) return compilePlusAnchor(query);
+  if (query.kind === QueryKind.LITERAL_REF) return compileLiteralRef(query);
   const legacy = buildMatchSpecForParsed(query);
   if (!legacy) {
     throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
   }
   return canonicalizeLegacyMatchSpec(legacy);
+}
+
+const FRAMED_EQUALS_RE = /^(\d*)(\^|=)?([\p{Script=Han}]+)(=)?(\d*)$/u;
+
+function equalsDraft(raw: string): {
+  width: number;
+  slots: Array<{ pos: number; kind: 'code_digit'; value: string }>;
+  equals_span: CanonicalEqualsSpan;
+} | null {
+  const match = raw.match(FRAMED_EQUALS_RE);
+  if (!match || !match[3]) return null;
+  const target = match[3];
+  const left = match[1] ?? '';
+  const right = match[5] ?? '';
+  const rightEqual = Boolean(match[4]);
+  const innerMark = Boolean(match[2]);
+  const targetLength = [...target].length;
+  const width = left.length + right.length || targetLength;
+  const fullCode = left + right;
+  return {
+    width,
+    slots: [...fullCode].map((digit, pos) => ({ pos, kind: 'code_digit', value: digit })),
+    equals_span: {
+      ref_literal: target,
+      ref_jyutping: null,
+      start_pos: Math.max(0, left.length - targetLength),
+      dimension: rightEqual ? 'final' : 'initial',
+      phoneme_anchor_only: Boolean(left && (right || innerMark)),
+      whole_word: Math.max(0, left.length - targetLength) === 0 && targetLength === width,
+    },
+  };
+}
+
+function compileEquals(query: EqualsQuery): CanonicalMatchSpec {
+  const draft = equalsDraft(query.raw_q);
+  if (!draft) throw new Error(`invalid equals MatchSpec query: ${query.raw_q}`);
+  return finalizeCanonicalMatchSpec(draft);
+}
+
+function compilePrefixWildcardEquals(query: PrefixWildcardEqualsQuery): CanonicalMatchSpec {
+  const draft = equalsDraft(query.inner_q);
+  if (!draft) throw new Error(`invalid prefix wildcard equals query: ${query.raw_q}`);
+  return finalizeCanonicalMatchSpec({
+    ...draft,
+    width: query.width,
+    mask: '?'.repeat(query.width),
+    equals_span: { ...draft.equals_span, start_pos: 1, phoneme_anchor_only: true, whole_word: false },
+  });
+}
+
+function compileSerialPhoneme(query: SerialPhonemeAnchorQuery): CanonicalMatchSpec {
+  const kind = query.constraint === 'final' ? 'final_anchor' : 'initial_anchor';
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    mask: query.mask.length === query.width ? query.mask : '?'.repeat(query.width),
+    slots: [
+      ...query.code_slots.map(([pos, value]) => ({ pos, kind: 'code_digit' as const, value })),
+      ...query.anchors.map(([pos, value]) => ({ pos, kind: kind as 'final_anchor' | 'initial_anchor', value })),
+    ],
+  });
+}
+
+function compilePlusAnchor(query: PlusAnchorQuery): CanonicalMatchSpec {
+  const slots = query.code_slots.map(([pos, value]) => ({ pos, kind: 'code_digit' as const, value }));
+  if (query.constraint === 'literal') {
+    slots.push({ pos: query.anchor_pos, kind: 'literal_char' as const, value: query.anchor });
+  } else {
+    slots.push({
+      pos: query.anchor_pos,
+      kind: query.constraint === 'final' ? 'final_anchor' as const : 'initial_anchor' as const,
+      value: query.anchor,
+    });
+  }
+  const mask = Array.from({ length: query.width }, () => '?');
+  if (query.constraint === 'literal') mask[query.anchor_pos] = query.anchor;
+  return finalizeCanonicalMatchSpec({ width: query.width, slots, mask: mask.join('') });
+}
+
+function compileLiteralRef(query: LiteralRefQuery): CanonicalMatchSpec {
+  const slots = [...query.code_digits].map((value, pos) => ({ pos, kind: 'code_digit' as const, value }));
+  slots.push({ pos: query.literal_pos, kind: 'literal_char' as const, value: query.literal_char });
+  const mask = '?'.repeat(query.literal_pos) + query.literal_char
+    + '?'.repeat(query.width - query.literal_pos - 1);
+  return finalizeCanonicalMatchSpec({ width: query.width, slots, mask });
 }
 
 /** Strict convenience seam for callers that still hold general ParsedQuery. */
