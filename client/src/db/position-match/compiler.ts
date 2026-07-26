@@ -23,6 +23,7 @@ import type {
   ParsedQuery,
 } from '../query-types.ts';
 import type { EqualsQuery } from '../query/grammar/equals.ts';
+import type { ConstraintKind, SlotConstraint } from './spec.ts';
 import { buildMatchSpecForParsed } from './match-spec-registry.ts';
 import {
   canonicalizeLegacyMatchSpec,
@@ -75,6 +76,18 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (query.kind === QueryKind.SERIAL_PHONEME) return compileSerialPhoneme(query);
   if (query.kind === QueryKind.PLUS_ANCHOR) return compilePlusAnchor(query);
   if (query.kind === QueryKind.LITERAL_REF) return compileLiteralRef(query);
+  if (query.kind === QueryKind.PARTIAL_RHYME_MASK) return compilePartialMask(query, 'final_anchor');
+  if (query.kind === QueryKind.PARTIAL_INITIAL_MASK) return compilePartialMask(query, 'initial_anchor');
+  if (query.kind === QueryKind.CODE_REF_MIDDLE_RHYME) return compileCodeRefMiddleRhyme(query);
+  if (query.kind === QueryKind.RHYME_ANCHOR) return compileRhymeAnchor(query);
+  if (query.kind === QueryKind.TRIPLE_RHYME_ANCHOR) return compileTripleRhymeAnchor(query);
+  if (query.kind === QueryKind.MASK) return compileMask(query);
+  if (query.kind === QueryKind.WILDCARD_CODE_ANCHOR) return compileWildcardCodeAnchor(query);
+  if (query.kind === QueryKind.COMPOUND_SYN) return compileCompound(query, 'syn');
+  if (query.kind === QueryKind.COMPOUND_ANT) return compileCompound(query, 'ant');
+  if (query.kind === QueryKind.COMPOUND_CONNECT_SYN) return compileCompound(query, 'syn');
+  if (query.kind === QueryKind.COMPOUND_CONNECT_ANT) return compileCompound(query, 'ant');
+  if (query.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) return compileDoubledSyllable(query);
   const legacy = buildMatchSpecForParsed(query);
   if (!legacy) {
     throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
@@ -164,6 +177,123 @@ function compileLiteralRef(query: LiteralRefQuery): CanonicalMatchSpec {
   const mask = '?'.repeat(query.literal_pos) + query.literal_char
     + '?'.repeat(query.width - query.literal_pos - 1);
   return finalizeCanonicalMatchSpec({ width: query.width, slots, mask });
+}
+
+function compilePartialMask(
+  query: PartialRhymeMaskQuery | PartialInitialMaskQuery,
+  kind: 'final_anchor' | 'initial_anchor',
+): CanonicalMatchSpec {
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    mask: query.pattern,
+    slots: query.anchors.map(([pos, value]) => ({ pos, kind, value })),
+  });
+}
+
+function compileCodeRefMiddleRhyme(query: CodeRefMiddleRhymeQuery): CanonicalMatchSpec {
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    mask: '?'.repeat(query.width),
+    slots: query.slots.map((slot) => ({
+      pos: slot.pos,
+      kind: slot.kind as ConstraintKind,
+      value: slot.value,
+    })),
+  });
+}
+
+function compileRhymeAnchor(query: RhymeAnchorQuery): CanonicalMatchSpec {
+  const mask = Array(query.width).fill('?') as string[];
+  if (query.anchor_pos === 0) {
+    for (let i = 0; i < query.slots.length; i += 1) mask[i + 1] = query.slots[i]!;
+  } else {
+    for (let i = 0; i < query.slots.length; i += 1) mask[i] = query.slots[i]!;
+  }
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    mask: mask.join(''),
+    slots: [{
+      pos: query.anchor_pos,
+      kind: query.constraint === 'final' ? 'final_anchor' : 'initial_anchor',
+      value: query.anchor,
+    }],
+  });
+}
+
+function compileTripleRhymeAnchor(query: TripleRhymeAnchorQuery): CanonicalMatchSpec {
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    mask: '?'.repeat(query.width),
+    slots: [{ pos: query.anchor_pos, kind: 'final_anchor', value: query.anchor }],
+  });
+}
+
+function compileMask(query: MaskQuery): CanonicalMatchSpec {
+  const slots: SlotConstraint[] = [];
+  for (let pos = 0; pos < query.raw_q.length; pos += 1) {
+    const value = query.raw_q[pos]!;
+    if (/\d/.test(value)) slots.push({ pos, kind: 'code_digit', value });
+  }
+  return finalizeCanonicalMatchSpec({
+    width: query.raw_q.length,
+    mask: query.raw_q,
+    slots,
+    ranking: 'literal_priority',
+  });
+}
+
+function codePrefixSlots(prefix: string | undefined): SlotConstraint[] {
+  return prefix
+    ? [...prefix].map((value, pos) => ({ pos, kind: 'code_digit', value }))
+    : [];
+}
+
+function compileWildcardCodeAnchor(query: WildcardCodeAnchorQuery): CanonicalMatchSpec {
+  const mask = Array(query.width).fill('?') as string[];
+  const slots = query.slots.map((slot) => ({
+    pos: slot.pos,
+    kind: slot.kind as ConstraintKind,
+    value: slot.value,
+  }));
+  for (const slot of slots) {
+    if (slot.kind === 'literal_char' && typeof slot.value === 'string') mask[slot.pos] = slot.value;
+  }
+  return finalizeCanonicalMatchSpec({ width: query.width, mask: mask.join(''), slots });
+}
+
+function compileCompound(
+  query: CompoundSynQuery | CompoundAntQuery | CompoundConnectSynQuery | CompoundConnectAntQuery,
+  kind: 'syn' | 'ant',
+): CanonicalMatchSpec {
+  const width = query.kind === QueryKind.COMPOUND_CONNECT_SYN || query.kind === QueryKind.COMPOUND_CONNECT_ANT ? 3 : 2;
+  const slots = codePrefixSlots(query.code_prefix);
+  if (query.rhyme_char) {
+    slots.push({
+      pos: width - 1,
+      kind: 'final_anchor',
+      value: query.rhyme_char,
+    });
+  }
+  return finalizeCanonicalMatchSpec({
+    width,
+    slots,
+    compound_kind: query.kind === QueryKind.COMPOUND_CONNECT_SYN || query.kind === QueryKind.COMPOUND_CONNECT_ANT
+      ? kind
+      : kind,
+    connective: 'connective' in query ? query.connective : null,
+  });
+}
+
+function compileDoubledSyllable(query: CompoundDoubledSyllableQuery): CanonicalMatchSpec {
+  const slots = codePrefixSlots(query.code_prefix);
+  if (query.rhyme_char) {
+    slots.push({ pos: query.width - 1, kind: 'final_anchor', value: query.rhyme_char });
+  }
+  return finalizeCanonicalMatchSpec({
+    width: query.width,
+    slots,
+    compound_kind: 'doubled_syllable',
+  });
 }
 
 /** Strict convenience seam for callers that still hold general ParsedQuery. */
