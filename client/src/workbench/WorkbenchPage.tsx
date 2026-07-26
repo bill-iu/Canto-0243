@@ -4,6 +4,7 @@ import {
   useRef,
   useState,
   useEffect,
+  useCallback,
   useDeferredValue,
 } from 'react';
 
@@ -229,20 +230,20 @@ export function WorkbenchPage({
     navigateAppRoute('search');
   };
 
-  const changeMode = (next: ReplacementPlanV1['mode']) => {
+  const changeMode = useCallback((next: ReplacementPlanV1['mode']) => {
     dispatch({ type: 'set_mode', mode: next });
-  };
-  const changeSemantic = (next: ReplacementPlanV1['semanticIntent']) => {
+  }, [dispatch]);
+  const changeSemantic = useCallback((next: ReplacementPlanV1['semanticIntent']) => {
     dispatch({ type: 'set_semantic', semanticIntent: next });
-  };
-  const changeCodeConstraint = (next: CodeConstraintMode) => {
+  }, [dispatch]);
+  const changeCodeConstraint = useCallback((next: CodeConstraintMode) => {
     dispatch({ type: 'set_code_constraint', mode: next });
-  };
-  const changeExplicitCode = (raw: string) => {
+  }, [dispatch]);
+  const changeExplicitCode = useCallback((raw: string) => {
     dispatch({ type: 'set_explicit_code', raw });
-  };
+  }, [dispatch]);
 
-  const handleToggleLock = (pos: number) => {
+  const handleToggleLock = useCallback((pos: number) => {
     if (!session.draft) {
       setMessage('尚未建立句格。');
       return;
@@ -255,27 +256,27 @@ export function WorkbenchPage({
     dispatch({ type: 'toggle_lock', pos });
     setMessage('');
     setSpanInputError('');
-  };
+  }, [dispatch, session, setSpanInputError]);
 
-  const handleClearLocks = () => {
+  const handleClearLocks = useCallback(() => {
     if (!session.draft?.slots.some((slot) => slot.locked)) return;
     dispatch({ type: 'clear_locks' });
     setSpanInputError('');
     setMessage('已解除全部鎖定。');
-  };
+  }, [dispatch, session, setSpanInputError]);
 
-  const changeRhymePicks = (next: PhonemeDimPicks) => {
+  const changeRhymePicks = useCallback((next: PhonemeDimPicks) => {
     dispatch({ type: 'set_rhyme_picks', picks: next });
-  };
-  const changeInitialPicks = (next: PhonemeDimPicks) => {
+  }, [dispatch]);
+  const changeInitialPicks = useCallback((next: PhonemeDimPicks) => {
     dispatch({ type: 'set_initial_picks', picks: next });
-  };
-  const changeRhymeRef = (value: string) => {
+  }, [dispatch]);
+  const changeRhymeRef = useCallback((value: string) => {
     dispatch({ type: 'set_rhyme_ref', value });
-  };
-  const changeInitialRef = (value: string) => {
+  }, [dispatch]);
+  const changeInitialRef = useCallback((value: string) => {
     dispatch({ type: 'set_initial_ref', value });
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     const needed: string[] = [];
@@ -383,24 +384,24 @@ export function WorkbenchPage({
     );
   };
 
-  const handleChooseReading = (pos: number, jyutping: string, code: string) => {
+  const handleChooseReading = useCallback((pos: number, jyutping: string, code: string) => {
     dispatch({ type: 'choose_reading', pos, jyutping, code });
-  };
+  }, [dispatch]);
 
-  const handleSetSlotManual = (pos: number, surface: string, code?: string) => {
+  const handleSetSlotManual = useCallback((pos: number, surface: string, code?: string) => {
     dispatch({ type: 'set_slot_manual', pos, surface, code });
     setSpanInputError('');
     setMessage(surface ? '已手改一字；正在對齊讀音。' : '已手改為碼格。');
-  };
+  }, [dispatch, setSpanInputError]);
 
-  const handleClearSurfaces = () => {
+  const handleClearSurfaces = useCallback(() => {
     if (!session.draft) return;
     dispatch({ type: 'clear' });
     setSpanInputError('');
     setMessage('已清空句格。');
-  };
+  }, [dispatch, session, setSpanInputError]);
 
-  const handleApplySpanInput = (parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
+  const handleApplySpanInput = useCallback((parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
     if (!session.draft?.selection) {
       setSpanInputError('請先鎖定替換段。');
       return;
@@ -423,7 +424,7 @@ export function WorkbenchPage({
     });
     setSpanInputError('');
     setMessage('已手打替換段。');
-  };
+  }, [dispatch, session, setSpanInputError]);
 
   const performUndo = () => {
     if (!session.undo) return;
@@ -469,6 +470,11 @@ export function WorkbenchPage({
     setPreview(null);
     setTimeout(() => document.querySelector<HTMLButtonElement>(`[data-line-slot="${current.draft!.selection!.start}"]`)?.focus(), 0);
   };
+
+  const handlePreview = useCallback((candidate: WorkbenchCandidate, origin: HTMLButtonElement) => {
+    previewOrigin.current = origin;
+    setPreview(candidate);
+  }, [setPreview]);
 
   const openInSearch = (literal: string) => {
     if (onOpenSearchLiteral) {
@@ -698,7 +704,7 @@ export function WorkbenchPage({
                 spanWidth={draft.selection?.width ?? 0}
                 relaxed={activeRelaxation}
                 semanticGap={semanticGap}
-                onPreview={(candidate, origin) => { previewOrigin.current = origin; setPreview(candidate); }}
+                onPreview={handlePreview}
                 onLoadMore={candidates.loadMore}
               />
             ) : null}

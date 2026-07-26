@@ -1,4 +1,5 @@
 import {
+  memo,
   useEffect,
   useRef,
   useState,
@@ -47,7 +48,7 @@ function surfaceLabel(slot: LineDraft['slots'][number]): string {
  * 同格短窗內第二下視為雙擊前奏、唔 toggle，避免鎖完即解。
  */
 const DBLCLICK_GUARD_MS = 320;
-export function SentenceCanvas({
+export const SentenceCanvas = memo(function SentenceCanvas({
   draft,
   readings,
   onToggleLock,
@@ -405,4 +406,4 @@ export function SentenceCanvas({
       </div>
     </section>
   );
-}
+});
