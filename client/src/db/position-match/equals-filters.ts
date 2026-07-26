@@ -369,12 +369,16 @@ export async function queryWordsByEqualsSpec(
     } else {
       target = await equalsAuthoritativeRow(db, span.ref_literal);
     }
-    if (!target) {
-      return [];
-    }
-    targetParts = isFinal ? getRhymeFinals(target) : getWordParts(target, 'initials');
-    if (!targetParts.length) {
-      return [];
+    if (target) {
+      targetParts = isFinal ? getRhymeFinals(target) : getWordParts(target, 'initials');
+      if (!targetParts.length) {
+        return [];
+      }
+    } else {
+      targetParts = await resolveEqualsTargetParts(db, span.ref_literal, span.dimension, 'plain');
+      if (!targetParts) {
+        return [];
+      }
     }
   } else {
     // ponytail: infer via substring / per-char when no standalone multi-char row
