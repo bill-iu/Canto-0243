@@ -11,7 +11,11 @@ import {
   type WorkbenchCoordinatorAction,
   type WorkbenchCoordinatorState,
 } from './workbench-coordinator.ts';
-import { initialSession } from './session/storage.ts';
+import {
+  clearWorkbenchSession,
+  initialSession,
+  saveWorkbenchSession,
+} from './session/storage.ts';
 import type { SessionAction } from './session/types.ts';
 import type { WorkbenchAdapter } from './workbench-adapter.ts';
 
@@ -59,6 +63,15 @@ export function useWorkbenchSessionCoordinator({
   stateRef.current = state;
 
   useEffect(() => () => readingCoordinator.cancel(), [readingCoordinator]);
+
+  useEffect(() => {
+    try {
+      if (state.session.draft) saveWorkbenchSession(localStorage, state.session);
+      else clearWorkbenchSession(localStorage);
+    } catch {
+      dispatch({ type: 'set_notice', notice: { code: 'storage_failed' } });
+    }
+  }, [state.session]);
 
   const dispatchSession = useCallback((action: SessionAction) => {
     dispatch({ type: 'session', action });

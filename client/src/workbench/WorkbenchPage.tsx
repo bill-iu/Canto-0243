@@ -39,9 +39,7 @@ import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
 import { phonemeCheckedOffsets, type PhonemeDimPicks } from './replacement-span.ts';
 import {
-  clearWorkbenchSession,
   derivePlanBase,
-  saveWorkbenchSession,
 } from './session/index.ts';
 import { SentenceCanvas } from './SentenceCanvas.tsx';
 import { useWorkbenchCandidates } from './useWorkbenchCandidates.ts';
@@ -208,18 +206,6 @@ export function WorkbenchPage({
     document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : uiLang === 'zh-Hans' ? 'zh-Hans' : 'en';
   }, [uiLang]);
 
-  useEffect(() => {
-    if (!session.draft) {
-      try { clearWorkbenchSession(localStorage); } catch { /* ignore */ }
-      return;
-    }
-    try {
-      saveWorkbenchSession(localStorage, session);
-    } catch {
-      setMessage('這次未能自動保存；句稿仍可繼續編輯。');
-    }
-  }, [session]);
-
   const goSearchHome = () => {
     if (onOpenSearchHome) {
       onOpenSearchHome();
@@ -338,6 +324,8 @@ export function WorkbenchPage({
   useEffect(() => {
     if (notice?.code === 'reading_failed') {
       setMessage('詞庫暫未就緒；句稿已建立，可繼續編輯並稍後重試。');
+    } else if (notice?.code === 'storage_failed') {
+      setMessage('這次未能自動保存；句稿仍可繼續編輯。');
     }
   }, [notice]);
 

@@ -68,7 +68,7 @@ export function SentenceCanvas({
   const [spanPanelOpen, setSpanPanelOpen] = useState(false);
   const lastClickRef = useRef<{ pos: number; at: number } | null>(null);
   /** pointer 已處理鎖後，吞掉合成 click，避免 toggle 兩次 */
-  const suppressClickRef = useRef(false);
+  const suppressClickRef = useRef(0);
   const touchGestureRef = useRef<TouchGestureState>(createTouchGestureState());
   const lastPointerTypeRef = useRef<string | null>(null);
   const editInputRef = useRef<HTMLInputElement | null>(null);
@@ -145,12 +145,12 @@ export function SentenceCanvas({
     lastPointerTypeRef.current = event.pointerType;
     // 滑鼠：按下即鎖（快過等 click）；吞合成 click 防雙重 toggle
     if (event.pointerType === 'mouse') {
-      suppressClickRef.current = true;
+      suppressClickRef.current += 1;
       tryToggleLock(pos);
       return;
     }
     // 觸控／筆：由 recognizer 處理全域連續 tap；先吞 click，避免瀏覽器重送 toggle。
-    suppressClickRef.current = true;
+    suppressClickRef.current += 1;
     touchGestureRef.current = reduceTouchGesture(touchGestureRef.current, {
       type: 'down',
       pointerId: event.pointerId,
@@ -195,6 +195,7 @@ export function SentenceCanvas({
 
   const handleSlotPointerCancel = (event: ReactPointerEvent<HTMLButtonElement>) => {
     if (event.pointerType === 'mouse') return;
+    suppressClickRef.current = Math.max(0, suppressClickRef.current - 1);
     touchGestureRef.current = reduceTouchGesture(touchGestureRef.current, {
       type: 'cancel',
       pointerId: event.pointerId,
@@ -203,8 +204,8 @@ export function SentenceCanvas({
 
   /** 鍵盤合成 click；pointer 路徑已 suppress */
   const handleSlotClick = (pos: number) => {
-    if (suppressClickRef.current) {
-      suppressClickRef.current = false;
+    if (suppressClickRef.current > 0) {
+      suppressClickRef.current -= 1;
       return;
     }
     tryToggleLock(pos);
