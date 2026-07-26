@@ -2,7 +2,7 @@
 import type { Database } from '../sqljs.ts';
 import { sortWordRows } from '../ranking.ts';
 import { getEqualsSpan } from '../position-match/spec.ts';
-import { executeMatchSpec, filterMatchSpecRows } from '../position-match/engine.ts';
+import { executeCanonicalMatchSpecPage, executeMatchSpec, filterMatchSpecRows } from '../position-match/engine.ts';
 import { canonicalMatchSpecToLegacy } from '../position-match/canonical.ts';
 import { compileParsedQuery } from '../position-match/compiler.ts';
 import type { ParsedQuery, QueryMode, QueryResult, SearchResult } from '../query-types.ts';
@@ -30,7 +30,22 @@ export async function executeMaskFamilySearchResult(
   code?: string,
   shouldCancel?: () => boolean,
 ): Promise<SearchResult> {
-  const spec = canonicalMatchSpecToLegacy(compileParsedQuery(parsed));
+  const canonical = compileParsedQuery(parsed);
+  if (canonical.phoneme_alternatives) {
+    const page = await executeCanonicalMatchSpecPage(canonical, {
+      db,
+      mode: normalizeSearchMode(mode),
+      limit,
+      offset,
+      code: code ?? null,
+      shouldCancel,
+    });
+    return {
+      items: page.rows.map((row) => rowToResult(row)),
+      total: page.total,
+    };
+  }
+  const spec = canonicalMatchSpecToLegacy(canonical);
   const searchMode = normalizeSearchMode(mode);
   const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
 
