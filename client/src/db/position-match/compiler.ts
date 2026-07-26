@@ -29,6 +29,7 @@ import {
   canonicalizeLegacyMatchSpec,
   finalizeCanonicalMatchSpec,
   type CanonicalEqualsSpan,
+  type CanonicalMatchSpecDraft,
   type CanonicalMatchSpec,
 } from './canonical.ts';
 
@@ -89,6 +90,7 @@ export function compileQuery(query: MatchSpecQuery): CanonicalMatchSpec {
   if (query.kind === QueryKind.COMPOUND_CONNECT_ANT) return compileCompound(query, 'ant');
   if (query.kind === QueryKind.COMPOUND_DOUBLED_SYLLABLE) return compileDoubledSyllable(query);
   if (query.kind === QueryKind.JYUTPING_ANCHOR) return compileJyutpingAnchor(query);
+  if (query.kind === QueryKind.PING_ZE_SERIAL) return compilePingZeSerial(query);
   const legacy = buildMatchSpecForParsed(query);
   if (!legacy) {
     throw new Error(`MatchSpec compiler has no implementation for ${query.kind}`);
@@ -339,6 +341,65 @@ function compileJyutpingAnchor(query: JyutpingAnchorQuery): CanonicalMatchSpec {
       value: query.anchor_value,
     }],
   });
+}
+
+function draftFromCanonical(spec: CanonicalMatchSpec): CanonicalMatchSpecDraft {
+  return {
+    width: spec.width,
+    mask: spec.mask,
+    slots: spec.slots.map((slot) => ({
+      pos: slot.pos,
+      kind: slot.kind,
+      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
+    })),
+    equals_span: spec.equals_span,
+    compound_kind: spec.compound?.kind,
+    connective: spec.compound?.connective,
+    ranking: spec.ranking,
+    candidate_scope: spec.candidate_scope,
+    code_mode: spec.code_mode,
+    phoneme_alternatives: spec.phoneme_alternatives,
+  };
+}
+
+function compilePingZeSerial(query: PingZeSerialQuery): CanonicalMatchSpec {
+  if (query.base) {
+    const base = compileParsedQuery(query.base);
+    const codeDigitPositions = new Set(
+      base.slots.filter((slot) => slot.kind === 'code_digit').map((slot) => slot.pos),
+    );
+    const fixedPositions = new Set(
+      base.slots
+        .filter((slot) => slot.kind !== 'code_digit' && slot.kind !== 'tone_class' && !codeDigitPositions.has(slot.pos))
+        .map((slot) => slot.pos),
+    );
+    const codePositions = [...Array(base.width).keys()].filter((pos) => !fixedPositions.has(pos));
+    const slots = base.slots.filter((slot) => slot.kind !== 'tone_class').map((slot) => ({
+      pos: slot.pos,
+      kind: slot.kind,
+      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
+    }));
+    const mask = [...base.mask];
+    [...query.raw_q].filter((token) => /[PZ?0-9]/.test(token)).forEach((token, index) => {
+      if (token !== 'P' && token !== 'Z') return;
+      const pos = codePositions[index];
+      if (pos == null) return;
+      for (let i = slots.length - 1; i >= 0; i -= 1) {
+        if (slots[i]!.pos === pos && slots[i]!.kind === 'code_digit') slots.splice(i, 1);
+      }
+      mask[pos] = '?';
+      slots.push({ pos, kind: 'tone_class', value: token === 'P' ? 'ping' : 'ze' });
+    });
+    return finalizeCanonicalMatchSpec({ ...draftFromCanonical(base), slots, mask: mask.join(''), code_mode: query.pzmode });
+  }
+  const width = query.raw_q.length + (query.anchor ? 1 : 0);
+  const slots: SlotConstraint[] = [];
+  [...query.raw_q].forEach((token, pos) => {
+    if (token === 'P' || token === 'Z') slots.push({ pos, kind: 'tone_class', value: token === 'P' ? 'ping' : 'ze' });
+    else if (/\d/.test(token)) slots.push({ pos, kind: 'code_digit', value: token });
+  });
+  if (query.anchor) slots.push({ pos: query.raw_q.length, kind: 'final_anchor', value: query.anchor });
+  return finalizeCanonicalMatchSpec({ width, mask: '?'.repeat(width), slots, code_mode: query.pzmode });
 }
 
 /** Strict convenience seam for callers that still hold general ParsedQuery. */
