@@ -172,6 +172,47 @@ export function canonicalizeLegacyMatchSpec(spec: MatchSpec): CanonicalMatchSpec
   });
 }
 
+/**
+ * Transitional execution adapter. Keep legacy mutable MatchSpec knowledge in
+ * this one seam while filters migrate to CanonicalMatchSpec.
+ */
+export function canonicalMatchSpecToLegacy(spec: CanonicalMatchSpec): MatchSpec {
+  const extra: Record<string, unknown> = {};
+  if (spec.equals_span) extra.equals_span = spec.equals_span;
+  if (spec.compound?.connective) extra.connective = spec.compound.connective;
+  if (spec.code_mode) extra.code_mode = spec.code_mode;
+  if (spec.candidate_scope === 'complete') extra.workbench_full_bucket_scan = true;
+  const literalPositions: Array<[number, string]> = [];
+  [...spec.mask].forEach((char, pos) => {
+    if (/^[\u4e00-\u9fff]$/.test(char)) literalPositions.push([pos, char]);
+  });
+  if (literalPositions.length) extra.literal_positions = literalPositions;
+  if (spec.equals_span?.start_pos === 1 && spec.equals_span.phoneme_anchor_only) {
+    extra.prefix_wildcard_equals = true;
+  }
+  const hasFinalAnchors = spec.slots.some((slot) => slot.kind === 'final_anchor');
+  const hasInitialAnchors = spec.slots.some((slot) => slot.kind === 'initial_anchor');
+  if (spec.width === 4 && hasFinalAnchors && spec.mask.includes('?')) extra.partial_rhyme_mask = true;
+  if (spec.width === 4 && hasInitialAnchors && spec.mask.includes('?')) extra.partial_initial_mask = true;
+  if (spec.phoneme_alternatives) {
+    extra.dual_phoneme = true;
+    extra.dual_initial_spec = canonicalMatchSpecToLegacy(spec.phoneme_alternatives.initial);
+    extra.dual_final_spec = canonicalMatchSpecToLegacy(spec.phoneme_alternatives.final);
+  }
+  return {
+    width: spec.width,
+    slots: spec.slots.map((slot) => ({
+      pos: slot.pos,
+      kind: slot.kind,
+      value: Array.isArray(slot.value) ? new Set(slot.value) : slot.value,
+    })),
+    mask: spec.mask,
+    compound_kind: spec.compound?.kind ?? null,
+    literal_priority: spec.ranking === 'literal_priority',
+    extra,
+  };
+}
+
 function canonicalJsonValue(value: CanonicalSlotValue | null): unknown {
   return value == null ? null : Array.isArray(value) ? [...value] : value;
 }

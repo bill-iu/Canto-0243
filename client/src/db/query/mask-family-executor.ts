@@ -3,7 +3,8 @@ import type { Database } from '../sqljs.ts';
 import { sortWordRows } from '../ranking.ts';
 import { getEqualsSpan } from '../position-match/spec.ts';
 import { executeMatchSpec, filterMatchSpecRows } from '../position-match/engine.ts';
-import { normalizeToMatchSpec } from '../position-match/match-spec-registry.ts';
+import { canonicalMatchSpecToLegacy } from '../position-match/canonical.ts';
+import { compileParsedQuery } from '../position-match/compiler.ts';
 import type { ParsedQuery, QueryMode, QueryResult, SearchResult } from '../query-types.ts';
 import type { WordRow } from '../position-match/word-row.ts';
 import { codePrefixedWholeWordEqualsEmptyHint } from './equals-empty-hint.ts';
@@ -29,10 +30,7 @@ export async function executeMaskFamilySearchResult(
   code?: string,
   shouldCancel?: () => boolean,
 ): Promise<SearchResult> {
-  const spec = normalizeToMatchSpec(parsed);
-  if (!spec) {
-    return { items: [] };
-  }
+  const spec = canonicalMatchSpecToLegacy(compileParsedQuery(parsed));
   const searchMode = normalizeSearchMode(mode);
   const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
 
