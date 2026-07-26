@@ -87,6 +87,43 @@ state = reduceQueryWorkspace(state, {
 assert.deepEqual(state.results, [{ word: '朋友' }]);
 assert.equal(state.status, 'ready');
 
+state = reduceQueryWorkspace(state, {
+  type: 'requestStarted',
+  frameId: secondFrameId!,
+  requestId: 13,
+  append: true,
+});
+state = reduceQueryWorkspace(state, {
+  type: 'beginFrame',
+  query: '第三個查詢',
+  mode: 'm1',
+  pzmode: 'm1',
+  kind: 'preview',
+});
+assert.equal(state.status, 'previewing');
+state = reduceQueryWorkspace(state, {
+  type: 'requestResolved',
+  frameId: secondFrameId!,
+  requestId: 13,
+  items: [{ word: '過期 load-more' }],
+  total: 2,
+  append: true,
+});
+state = reduceQueryWorkspace(state, {
+  type: 'requestRejected',
+  frameId: secondFrameId!,
+  requestId: 13,
+  message: 'stale error',
+});
+assert.deepEqual(state.results, [{ word: '朋友' }]);
+assert.equal(state.status, 'previewing');
+
+state = reduceQueryWorkspace(state, {
+  type: 'setFilter',
+  posFilter: { pos: ['n'], family: [], voice: [] },
+});
+assert.deepEqual(state.posFilter, { pos: ['n'], family: [], voice: [] });
+
 state = reduceQueryWorkspace(state, { type: 'activateTab', snapshot: secondSnapshot });
 assert.equal(state.tabId, 2);
 assert.equal(state.draftQuery, '朋友');
