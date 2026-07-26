@@ -5,10 +5,11 @@
 
 import { lazy, Suspense, useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { useDB, useSearch } from './hooks/useDB.ts';
+import { useDB } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
-import { useDebouncedSearchQuery } from './hooks/useDebouncedSearchQuery.ts';
+import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
+import type { QueryWorkspaceSnapshot } from './query-workspace/state.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
@@ -186,15 +187,6 @@ function App() {
             ? 'corrections'
             : 'search';
 
-  const {
-    inputQuery,
-    searchQuery,
-    setInputQueryDebounced,
-    setInputQueryLive,
-    flushSearchQuery,
-    hydrateSearch,
-  } = useDebouncedSearchQuery(activeSearchTab?.q ?? '');
-
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
   const [displayResults, setDisplayResults] = useState<QueryResult[]>([]);
@@ -236,6 +228,60 @@ function App() {
   const syncedTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const lexiconLoadStartedRef = useRef(false);
+
+  const {
+    isReady,
+    offlineStatus,
+    isOnline,
+    isDbCached,
+    progress,
+    tailProgress,
+    startupComplete,
+    suppressGateOverlay,
+    error: dbError,
+    initialize,
+    retryOfflineReady,
+  } = useDB();
+
+  const patchWorkspaceTab = useCallback(
+    (tabId: number, snapshot: Partial<QueryWorkspaceSnapshot<QueryResult>>) => {
+      patchSearchTab(tabId, {
+        ...snapshot,
+        results: snapshot.results ? [...snapshot.results] : undefined,
+      });
+    },
+    [patchSearchTab],
+  );
+
+  const workspace = useQueryWorkspace({
+    activeTab: activeSearchTab,
+    enabled: useLiveFetch && view === 'search',
+    isReady,
+    mode,
+    pzmode: pzMode,
+    fallback0243Mode: last0243Mode,
+    uiLang,
+    onPatchTab: patchWorkspaceTab,
+  });
+  const {
+    inputQuery,
+    searchQuery,
+    setInputQueryDebounced,
+    setInputQueryLive,
+    flushSearchQuery,
+    hydrateSearch,
+    results,
+    total,
+    hint: searchHint,
+    loading: searchLoading,
+    loadingVisible: searchLoadingVisible,
+    loadingMore,
+    error: searchError,
+    hasMore,
+    loadMore,
+    commitSearch,
+    setFilter: setWorkspaceFilter,
+  } = workspace;
 
   const trimmedInput = inputQuery.trim();
   const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
@@ -300,20 +346,6 @@ function App() {
     }
     setRedirectHint(null);
   }, [trimmedInput, mode, last0243Mode, pzMode, uiLang]);
-
-  const {
-    isReady,
-    offlineStatus,
-    isOnline,
-    isDbCached,
-    progress,
-    tailProgress,
-    startupComplete,
-    suppressGateOverlay,
-    error: dbError,
-    initialize,
-    retryOfflineReady,
-  } = useDB();
 
   const { hasNativePrompt, trigger } = usePwaInstallPrompt();
 
@@ -380,22 +412,6 @@ function App() {
     setLang(uiLang);
     document.documentElement.lang = uiLang === 'zh' ? 'zh-Hant' : uiLang === 'zh-Hans' ? 'zh-Hans' : 'en';
   }, [uiLang]);
-
-  const {
-    results,
-    total,
-    hint: searchHint,
-    loading: searchLoading,
-    loadingVisible: searchLoadingVisible,
-    loadingMore,
-    error: searchError,
-    hasMore,
-    loadMore,
-  } = useSearch(useLiveFetch && view === 'search' ? searchQuery : '', mode, {
-    fallback_0243_mode: last0243Mode,
-    pzmode: pzMode,
-    ui_lang: uiLang,
-  });
 
   const saveLeavingSearchTab = useCallback(() => {
     const leavingId = tabState.activeId;
@@ -508,8 +524,9 @@ function App() {
   const changePosFilter = useCallback((next: PosFilterState) => {
     const normalized = normalizePosFilter(next);
     setPosFilter(normalized);
+    setWorkspaceFilter(normalized);
     if (activeSearchTab) patchSearchTab(activeSearchTab.id, { posFilter: normalized });
-  }, [activeSearchTab, patchSearchTab]);
+  }, [activeSearchTab, patchSearchTab, setWorkspaceFilter]);
 
   useEffect(() => {
     if (!filterActive || !useLiveFetch || searchLoading || loadingMore || !hasMore) return;
@@ -713,7 +730,7 @@ function App() {
         pickAnchorRef.current = null;
         pickAnchorRowsRef.current = [];
       }
-      flushSearchQuery(q);
+      commitSearch(q, nextMode, nextPzMode);
       setUseLiveFetch(true);
       setResultsShuffled(false);
       commitActiveSearch(q, nextMode, nextPzMode);
@@ -724,7 +741,7 @@ function App() {
     },
     [
       inputQuery,
-      flushSearchQuery,
+      commitSearch,
       commitActiveSearch,
       mode,
       pzMode,

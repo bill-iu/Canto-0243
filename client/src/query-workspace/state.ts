@@ -36,12 +36,15 @@ export interface QueryWorkspaceState<TResult> {
   tabId: number | null;
   draftQuery: string;
   committedFrame: QueryWorkspaceFrame | null;
+  activeFrame: QueryWorkspaceFrame | null;
   nextFrameId: number;
   activeFrameId: number | null;
   activeRequestId: number | null;
   status: QueryWorkspaceStatus;
   results: TResult[];
   total: number | null;
+  hint: string | null;
+  lastPageSize: number;
   offset: number;
   posFilter: PosFilterState;
   detail: QueryWorkspaceDetailIdentity | null;
@@ -50,6 +53,7 @@ export interface QueryWorkspaceState<TResult> {
 
 export type QueryWorkspaceEvent<TResult> =
   | { type: 'activateTab'; snapshot: QueryWorkspaceSnapshot<TResult> }
+  | { type: 'clearQuery'; query: string }
   | {
       type: 'beginFrame';
       query: string;
@@ -64,6 +68,7 @@ export type QueryWorkspaceEvent<TResult> =
       requestId: number;
       items: readonly TResult[];
       total: number | null;
+      hint?: string | null;
       append: boolean;
     }
   | {
@@ -98,12 +103,15 @@ export function createInitialQueryWorkspaceState<TResult>(): QueryWorkspaceState
     tabId: null,
     draftQuery: '',
     committedFrame: null,
+    activeFrame: null,
     nextFrameId: 0,
     activeFrameId: null,
     activeRequestId: null,
     status: 'idle',
     results: [],
     total: null,
+    hint: null,
+    lastPageSize: 0,
     offset: 0,
     posFilter: emptyPosFilter(),
     detail: null,
@@ -130,13 +138,33 @@ export function reduceQueryWorkspace<TResult>(
         tabId: event.snapshot.tabId,
         draftQuery: event.snapshot.q,
         committedFrame: null,
+        activeFrame: null,
         activeFrameId: null,
         activeRequestId: null,
         status: event.snapshot.results.length > 0 ? 'ready' : 'idle',
         results: copyResults(event.snapshot.results),
         total: event.snapshot.total,
+        hint: null,
+        lastPageSize: event.snapshot.results.length,
         offset: event.snapshot.offset,
         posFilter: copyPosFilter(event.snapshot.posFilter),
+        detail: null,
+        error: null,
+      };
+
+    case 'clearQuery':
+      return {
+        ...state,
+        draftQuery: event.query,
+        activeFrame: null,
+        activeFrameId: null,
+        activeRequestId: null,
+        status: 'idle',
+        results: [],
+        total: null,
+        hint: null,
+        lastPageSize: 0,
+        offset: 0,
         detail: null,
         error: null,
       };
@@ -154,6 +182,7 @@ export function reduceQueryWorkspace<TResult>(
         ...state,
         draftQuery: event.query,
         committedFrame: event.kind === 'commit' ? frame : state.committedFrame,
+        activeFrame: frame,
         nextFrameId: frameId,
         activeFrameId: frameId,
         activeRequestId: null,
@@ -179,6 +208,8 @@ export function reduceQueryWorkspace<TResult>(
         status: 'ready',
         results: event.append ? [...state.results, ...event.items] : copyResults(event.items),
         total: event.total,
+        hint: event.hint ?? null,
+        lastPageSize: event.items.length,
         offset: event.append ? state.offset + event.items.length : event.items.length,
         error: null,
       };
