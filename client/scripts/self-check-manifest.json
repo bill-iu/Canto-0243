@@ -170,6 +170,15 @@
       ]
     },
     {
+      "id": "canonical-match-spec",
+      "script": "canonical-match-spec-self-check.ts",
+      "tags": [
+        "grammar",
+        "local",
+        "parity"
+      ]
+    },
+    {
       "id": "equals-family",
       "script": "equals-family-self-check.ts",
       "tags": [
