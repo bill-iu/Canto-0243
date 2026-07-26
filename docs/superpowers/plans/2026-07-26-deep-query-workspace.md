@@ -2,7 +2,7 @@
 
 日期：2026-07-26
 
-狀態：實作中（已完成 state seam、query adapter 及首個 React 接線切片）
+狀態：實作中（已完成 state seam、query adapter 及首個 React 接線切片；餘下工作見 `2026-07-26-deep-query-workspace-remaining.md`）
 
 目標分支：`dev`
 
