@@ -84,6 +84,14 @@ export {
   normalizeToMatchSpec,
 } from './position-match/match-spec-registry.ts';
 export { executeMatchSpec } from './position-match/engine.ts';
+export { executeCanonicalMatchSpecPage } from './position-match/engine.ts';
+export {
+  canonicalMatchSpecToJson,
+  canonicalMatchSpecToLegacy,
+  canonicalizeLegacyMatchSpec,
+  finalizeCanonicalMatchSpec,
+} from './position-match/canonical.ts';
+export { compileParsedQuery, compileQuery, requireMatchSpecQuery } from './position-match/compiler.ts';
 export {
   getCandidatesForLength,
   LengthCodeCandidateSource,

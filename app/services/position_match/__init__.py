@@ -9,6 +9,12 @@ def execute_match_spec(*args, **kwargs):
     return _run(*args, **kwargs)
 
 
+def execute_canonical_match_spec(*args, **kwargs):
+    from app.services.position_match.engine import execute_canonical_match_spec as _run
+
+    return _run(*args, **kwargs)
+
+
 def execute_dual_phoneme_anchor_specs(*args, **kwargs):
     from app.services.position_match.engine import execute_dual_phoneme_anchor_specs as _run
 
@@ -19,6 +25,7 @@ __all__ = [
     "MatchSpec",
     "SlotConstraint",
     "execute_match_spec",
+    "execute_canonical_match_spec",
     "execute_dual_phoneme_anchor_specs",
     "MaskFamilySearchResult",
 ]
