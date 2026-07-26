@@ -403,6 +403,11 @@ dependency。
 
 ## Further Notes
 
+## Implementation status (2026-07-26)
+
+R1–R21 have been implemented on `dev`; see [implementation log](2026-07-26-deep-query-workspace-implementation-log.md).
+R22 documentation is recorded there. The issue remains open until the `dev` changes are merged to `main` and cross-host/browser acceptance is complete.
+
 - 產品外框行數下降只是責任刪除的結果，不是獨立 KPI。
 - Query Engine、query-tabs、search-navigation 及 entry-detail 的既有
   implementation 應作 adapters 的起點，不應重寫其 domain logic。
