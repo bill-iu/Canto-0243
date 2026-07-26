@@ -944,3 +944,13 @@ _Avoid_：把**句格工作台**維持成繞過查詢分頁嘅獨立頁、切換
 
 **替換條件操作列**：替換條件面板頂部的常駐操作區，包含面板展開／收起入口，以及 POS 篩選、復原等工作台操作。收起條件內容後，操作列仍然可見；**唔**把操作列誤當成條件內容的一部分。
 _Avoid_：把面板收起當成清除或重設條件、把 POS 篩選或復原操作一併藏起、把跨頁保存的 UI 偏好當成替換條件資料。
+### Canonical MatchSpec compiler (ADR-0076)
+
+The grammar parses raw input into `ParsedQuery`; the canonical compiler owns
+the semantic `ParsedQuery -> CanonicalMatchSpec` seam for every manifest
+`match_spec` kind. `CanonicalMatchSpec` is immutable and contains width, ordered
+slots, derived mask, equals span, compound/ranking/candidate-scope policy,
+code mode, and explicit Jyutping branches. Query execution must not reparse
+raw text or rebuild a spec. `compileReplacementPlan` is the separate
+workbench input adapter and uses the same finalizer. The old registry and
+grammar builders are migration adapters only; see ADR-0076.
