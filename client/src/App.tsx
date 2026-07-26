@@ -10,6 +10,7 @@ import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
+import { createProductionQueryWorkspaceDetailAdapter } from './query-workspace/detail-adapter.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
 import { mergedResultCount, resultsShowReadingBadge, type EntryPickPayload } from './result-list-logic.ts';
@@ -24,14 +25,6 @@ import {
   readWorkbenchSurfacePreview,
   writeIngest,
 } from './workbench/workbench-bridge.ts';
-import {
-  enrichEntryDetailFromDb,
-  enrichEntryDetailRelations,
-  getCachedEntryDetail,
-  hasDirectRelationSources,
-  instantEntryDetailModel,
-  loadEntryDetailCore,
-} from './entry-detail/load-entry-detail';
 import type { EntryDetailModel } from './entry-detail/types';
 import {
   anchorOnlyQueryRow,
@@ -204,6 +197,7 @@ function App() {
   const [searchRingClass, setSearchRingClass] = useState('');
   const searchRingBlurTimerRef = useRef<number | null>(null);
   const detailLoadGenRef = useRef(0);
+  const detailAbortRef = useRef<AbortController | null>(null);
   const detailByTabRef = useRef(new Map<number, {
     open: boolean;
     literal: string | null;
@@ -219,6 +213,7 @@ function App() {
   const activeTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const lexiconLoadStartedRef = useRef(false);
+  const detailAdapter = useMemo(() => createProductionQueryWorkspaceDetailAdapter(), []);
 
   const {
     isReady,
@@ -532,6 +527,8 @@ function App() {
 
   const closeEntryDetail = useCallback(() => {
     detailLoadGenRef.current += 1;
+    detailAbortRef.current?.abort();
+    detailAbortRef.current = null;
     setDetailOpen(false);
     setActiveDetailLiteral(null);
     setDetailModel(null);
@@ -570,46 +567,52 @@ function App() {
     }
   }, []);
 
-  const scheduleEntryDetailEnrich = useCallback((base: EntryDetailModel, gen: number) => {
+  const scheduleEntryDetailEnrich = useCallback((literal: string, base: EntryDetailModel | null, gen: number) => {
     const run = () => {
       void (async () => {
-        await waitForPickMerge(gen);
-        if (gen !== detailLoadGenRef.current || !isReady) return;
-        const hasRelations = await hasDirectRelationSources(base.literal);
-        if (gen !== detailLoadGenRef.current) return;
-        const fromDb = await enrichEntryDetailFromDb(base);
-        if (gen !== detailLoadGenRef.current) return;
-        setDetailModel(fromDb);
-        if (!hasRelations) {
+        const controller = detailAbortRef.current;
+        if (!controller || gen !== detailLoadGenRef.current || !isReady) return;
+        try {
+          const full = await detailAdapter.load(literal, base, {
+            signal: controller.signal,
+            waitForPickMerge: () => waitForPickMerge(gen),
+            onStage: (stage) => {
+              if (gen !== detailLoadGenRef.current) return;
+              if (stage.kind === 'core') {
+                setDetailModel(stage.model);
+              } else {
+                setDetailRelationsLoading(true);
+              }
+            },
+          });
+          if (gen !== detailLoadGenRef.current || controller.signal.aborted) return;
+          setDetailModel(full);
           setDetailRelationsLoading(false);
-          return;
+        } catch (error) {
+          if (controller.signal.aborted || (error instanceof DOMException && error.name === 'AbortError')) return;
+          if (gen === detailLoadGenRef.current) setDetailRelationsLoading(false);
         }
-        setDetailRelationsLoading(true);
-        const full = await enrichEntryDetailRelations(fromDb);
-        if (gen !== detailLoadGenRef.current) return;
-        setDetailModel(full);
-        setDetailRelationsLoading(false);
       })();
     };
-    if (typeof requestIdleCallback !== 'undefined') {
+    if (!base) {
+      queueMicrotask(run);
+    } else if (typeof requestIdleCallback !== 'undefined') {
       requestIdleCallback(run, { timeout: 800 });
     } else {
       setTimeout(run, 32);
     }
-  }, [isReady, waitForPickMerge]);
+  }, [detailAdapter, isReady, waitForPickMerge]);
 
   const openEntryDetailFromPick = useCallback(
     (payload: EntryPickPayload) => {
       const gen = ++detailLoadGenRef.current;
+      detailAbortRef.current?.abort();
+      detailAbortRef.current = new AbortController();
       const literal = payload.literal.trim();
       lastPickReadingsRef.current = payload.readings;
 
-      const cached = getCachedEntryDetail(literal);
-      const instant = cached
-        ? cached
-        : payload.readings?.length
-          ? instantEntryDetailModel(literal, payload.readings)
-          : null;
+      const cached = detailAdapter.instantFromPick(literal, []);
+      const instant = cached ?? detailAdapter.instantFromPick(literal, payload.readings);
 
       setDetailOpen(true);
       setActiveDetailLiteral(literal);
@@ -617,30 +620,17 @@ function App() {
       setDetailModel(instant);
       setDetailRelationsLoading(false);
 
-      if (cached || !isReady) {
-        if (cached) setDetailRelationsLoading(false);
+      if (cached) {
+        setDetailRelationsLoading(false);
+        return;
+      }
+      if (!isReady) {
         return;
       }
 
-      if (instant) {
-        scheduleEntryDetailEnrich(instant, gen);
-        return;
-      }
-
-      queueMicrotask(() => {
-        void (async () => {
-          const core = await loadEntryDetailCore(literal);
-          if (gen !== detailLoadGenRef.current) return;
-          setDetailModel(core);
-          if (!core) {
-            setDetailRelationsLoading(false);
-            return;
-          }
-          scheduleEntryDetailEnrich(core, gen);
-        })();
-      });
+      scheduleEntryDetailEnrich(literal, instant, gen);
     },
-    [isReady, scheduleEntryDetailEnrich],
+    [detailAdapter, isReady, scheduleEntryDetailEnrich],
   );
 
   useEffect(() => {
