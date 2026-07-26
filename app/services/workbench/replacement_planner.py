@@ -13,7 +13,8 @@ from app.schemas.workbench_schema import (
     WorkbenchCandidateResponse,
 )
 from app.services.position_match.engine import execute_match_spec
-from app.services.workbench.build_match_spec import build_match_spec
+from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.workbench.build_match_spec import build_match_spec, compile_replacement_plan
 from app.services.workbench.group_candidates import candidate_count_for_pool, group_candidates
 from app.services.workbench.limits import WORKBENCH_LEXICON_MAX_WORD_LEN
 from app.services.workbench.relaxation import relaxation_variants
@@ -30,10 +31,10 @@ class ReplacementSnapshot:
 
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
-    spec = build_match_spec(plan)
-    # Workbench paging owns the response window; the source must expose the
-    # complete filtered pool so offsets and engine_total stay honest.
-    spec.extra["workbench_full_bucket_scan"] = True
+    canonical = compile_replacement_plan(plan)
+    # Workbench paging owns the response window; canonical candidate_scope
+    # carries the complete-pool requirement into the transitional adapter.
+    spec = canonical_match_spec_to_legacy(canonical)
     result = execute(
         spec,
         code=None,
