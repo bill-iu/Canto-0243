@@ -9,6 +9,7 @@ import { useDB } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
+import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
 import type { QueryWorkspaceSnapshot } from './query-workspace/state.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { ResultList } from './result-list';
@@ -250,6 +251,10 @@ function App() {
     },
     [commitActiveSearch],
   );
+  const navigationAdapter = useMemo(
+    () => createCallbackNavigationAdapter(commitWorkspaceFrame),
+    [commitWorkspaceFrame],
+  );
 
   const workspace = useQueryWorkspace({
     activeTab: activeSearchTab,
@@ -260,7 +265,7 @@ function App() {
     fallback0243Mode: last0243Mode,
     uiLang,
     onPatchTab: patchWorkspaceTab,
-    onCommitFrame: commitWorkspaceFrame,
+    navigationAdapter,
   });
   const {
     inputQuery,

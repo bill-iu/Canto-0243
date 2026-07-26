@@ -5,6 +5,7 @@ import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
 import { markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
+import type { QueryWorkspaceNavigationAdapter } from './navigation-adapter.ts';
 import {
   filterByProjectPos,
   isPosFilterActive,
@@ -33,7 +34,7 @@ export interface UseQueryWorkspaceOptions {
   fallback0243Mode: Last0243SearchMode;
   uiLang: 'zh' | 'zh-Hans' | 'en';
   onPatchTab?: (tabId: number, snapshot: Partial<QueryWorkspaceSnapshot<QueryResult>>) => void;
-  onCommitFrame?: (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => void;
+  navigationAdapter?: QueryWorkspaceNavigationAdapter;
 }
 
 function snapshotFromTab(tab: QueryTab): QueryWorkspaceSnapshot<QueryResult> {
@@ -68,7 +69,7 @@ export function useQueryWorkspace({
   fallback0243Mode,
   uiLang,
   onPatchTab,
-  onCommitFrame,
+  navigationAdapter,
 }: UseQueryWorkspaceOptions) {
   const activeTabId = activeTab?.view === 'search' ? activeTab.id : null;
   const initialQuery = activeTab?.view === 'search' ? activeTab.q || '' : '';
@@ -324,8 +325,8 @@ export function useQueryWorkspace({
         pzmode: nextPzMode,
         kind: 'commit',
       });
-      onCommitFrame?.({ query, mode: nextMode, pzmode: nextPzMode });
-    }, [flushSearchQuery, inputQuery, mode, onCommitFrame, pzmode],
+      navigationAdapter?.commit({ query, mode: nextMode, pzmode: nextPzMode });
+    }, [flushSearchQuery, inputQuery, mode, navigationAdapter, pzmode],
   );
 
   const setFilter = useCallback((posFilter: PosFilterState) => {

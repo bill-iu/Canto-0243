@@ -14,6 +14,14 @@
       ]
     },
     {
+      "id": "query-workspace-navigation",
+      "script": "query-workspace-navigation-self-check.ts",
+      "tags": [
+        "ci",
+        "query-workspace"
+      ]
+    },
+    {
       "id": "portable-host-build",
       "script": "portable-host-build-self-check.mjs",
       "tags": [
