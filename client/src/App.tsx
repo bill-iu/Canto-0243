@@ -225,7 +225,6 @@ function App() {
   useEntryDetailInset(detailOpen);
   const searchKeyRef = useRef('');
   const activeTabIdRef = useRef<number | null>(null);
-  const syncedTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const lexiconLoadStartedRef = useRef(false);
 
@@ -293,7 +292,6 @@ function App() {
       if (!tab || tab.view !== VIEW.SEARCH) return;
       // Keep unsynced until searchQuery catches up — marking synced here lets a
       // stale empty query from the previous tab overwrite this tab's title/q.
-      syncedTabIdRef.current = null;
       hydrateSearch(tab.q || '');
       const useLive = live || initialBootstrap.forceLive;
       setUseLiveFetch(useLive);
@@ -320,8 +318,6 @@ function App() {
       const hasCache =
         !initialBootstrap.forceLive && ((activeTab.results as QueryResult[]) || []).length > 0;
       loadSearchTabUi(activeTab, !hasCache);
-    } else {
-      syncedTabIdRef.current = activeTab.id;
     }
   }, [activeTab, loadSearchTabUi, initialBootstrap.forceLive]);
 
@@ -437,13 +433,6 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (!activeTab || activeTab.view !== VIEW.SEARCH || !useLiveFetch) return;
-    if (searchQuery === (activeTab.q || '').trim()) {
-      syncedTabIdRef.current = activeTab.id;
-    }
-  }, [activeTab, searchQuery, useLiveFetch]);
-
-  useEffect(() => {
     if (searchKeyRef.current !== searchKey) {
       searchKeyRef.current = searchKey;
       setResultsShuffled(false);
@@ -469,31 +458,6 @@ function App() {
     }
     setDisplayResults((prev) => mergeShuffledResults(prev, results));
   }, [results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
-
-  useEffect(() => {
-    if (!useLiveFetch || view !== 'search' || searchLoading) return;
-    if (!activeTab || activeTab.view !== VIEW.SEARCH) return;
-    if (syncedTabIdRef.current !== activeTab.id) return;
-    // Guard tab-switch race: searchQuery may still be the previous tab's value
-    // for one render while activeTab already points at the restored tab.
-    if (searchQuery !== (activeTab.q || '').trim()) return;
-    patchSearchTab(activeTab.id, {
-      q: searchQuery,
-      results,
-      total,
-      offset: results.length,
-    });
-    setCachedTotal(total);
-  }, [
-    useLiveFetch,
-    view,
-    searchLoading,
-    searchQuery,
-    results,
-    total,
-    activeTab,
-    patchSearchTab,
-  ]);
 
   useEffect(() => {
     if (isReady || offlineStatus === 'failed') return;
@@ -1098,7 +1062,6 @@ function App() {
   const handleHome = () => {
     saveLeavingSearchTab();
     goHome();
-    syncedTabIdRef.current = tabState.activeId;
     setUseLiveFetch(false);
     hydrateSearch('');
     setDisplayResults([]);
