@@ -12,6 +12,7 @@ from app.services.query_tokens import CODE_TAIL_MIDDLE, SLOT_CHARS_RE, WILDCARD_
 
 _RHYME_ANCHOR_SHAPE_RE = re.compile(
     rf"^(?:"
+    rf"({SLOT_CHARS_RE}+)([一-龥])=({SLOT_CHARS_RE}+)$|"
     rf"({SLOT_CHARS_RE}+)([一-龥])=$|"
     rf"([一-龥])=({SLOT_CHARS_RE}+)$|"
     rf"[\^=]([一-龥])({SLOT_CHARS_RE}+)$|"
@@ -175,6 +176,18 @@ def parse_rhyme_anchor_query(q: str) -> Optional[dict]:
             "anchor_pos": width - 1,
             "anchor": anchor,
             "slots": slots,
+            "width": width,
+        }
+
+    m = re.match(rf"^({SLOT_CHARS_RE}+)([一-龥])=({SLOT_CHARS_RE}+)$", q)
+    if m:
+        leading, anchor, trailing = m.group(1), m.group(2), m.group(3)
+        width = len(leading) + 1 + len(trailing)
+        return {
+            "constraint": "final",
+            "anchor": anchor,
+            "anchor_pos": len(leading),
+            "slots": leading + trailing,
             "width": width,
         }
 

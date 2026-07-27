@@ -40,14 +40,11 @@ export function parseMaskQuery(mask: string): {
 
 export function buildMaskFromSlots(slots: string, width: number, anchorPos: number): string {
   const chars = Array(width).fill('?');
-  if (anchorPos === 0) {
-    for (let i = 0; i < slots.length; i++) {
-      chars[i + 1] = slots[i]!;
-    }
-  } else {
-    for (let i = 0; i < slots.length; i++) {
-      chars[i] = slots[i]!;
-    }
+  for (let i = 0; i < anchorPos && i < slots.length; i++) {
+    chars[i] = slots[i]!;
+  }
+  for (let i = anchorPos; i < slots.length; i++) {
+    chars[i + 1] = slots[i]!;
   }
   return chars.join('');
 }

@@ -322,6 +322,7 @@ export function parserLogicSelfCheck(): void {
     ['?=困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
     ['?^困潦倒', QueryKind.PREFIX_WILDCARD_EQUALS],
     ['2^我3', QueryKind.EQUALS],
+    ['?長=??', QueryKind.RHYME_ANCHOR],
     ['$$$', QueryKind.COMPOUND_DOUBLED_SYLLABLE],
   ];
   for (const [q, kind] of cases) {

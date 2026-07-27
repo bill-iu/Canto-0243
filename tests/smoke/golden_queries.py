@@ -88,6 +88,7 @@ MATCH_SPEC_REPRESENTATIVE_CASES: tuple[tuple[str, dict], ...] = (
     ("33!與!你", {"width": 3, "compound_kind": "ant", "code_prefix": "33"}),
     ("窮?潦倒=", {"width": 4, "partial_rhyme_mask": True, "anchor_count": 3}),
     ("=窮?潦倒", {"width": 4, "partial_initial_mask": True, "anchor_count": 3}),
+    ("?長=??", {"width": 4, "anchor": "長"}),
 )
 
 # Journey gate: lookup layout + mask family ordering (now includes mask ranking + heteronym).
@@ -123,6 +124,7 @@ MATCH_SPEC_ORDERED_QUERIES = frozenset({
   "33!!你",
   "窮?潦倒=",
   "=窮?潦倒",
+  "?長=??",
 })
 
 

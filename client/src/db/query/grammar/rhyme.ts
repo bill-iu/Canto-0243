@@ -261,6 +261,20 @@ export function parseRhymeAnchorQuery(q: string): RhymeAnchorQuery | null {
     });
   }
 
+  m = q.match(/^([0-9_?%]+)([\u4e00-\u9fff])=([0-9_?%]+)$/);
+  if (m) {
+    const leading = m[1]!;
+    const anchor = m[2]!;
+    const trailing = m[3]!;
+    return base({
+      constraint: 'final',
+      anchor,
+      anchor_pos: leading.length,
+      slots: leading + trailing,
+      width: leading.length + 1 + trailing.length,
+    });
+  }
+
   m = q.match(/^([\u4e00-\u9fff])=([0-9_?%]+)$/);
   if (m) {
     const slots = m[2]!;

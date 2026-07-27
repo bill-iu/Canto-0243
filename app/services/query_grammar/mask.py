@@ -41,12 +41,11 @@ def looks_like_mask_query(q: str) -> bool:
 def build_mask_from_slots(slots: str, width: int, anchor_pos: int) -> str:
     """Build a literal-mask string with anchor position as wildcard."""
     chars = ["?"] * width
-    if anchor_pos == 0:
-        for i, ch in enumerate(slots, start=1):
-            chars[i] = ch
-    else:
-        for i, ch in enumerate(slots):
-            chars[i] = ch
+    for i in range(anchor_pos):
+        if i < len(slots):
+            chars[i] = slots[i]
+    for i in range(anchor_pos, len(slots)):
+        chars[i + 1] = slots[i]
     return "".join(chars)
 
 
