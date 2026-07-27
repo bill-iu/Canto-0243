@@ -25,8 +25,8 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
 
     def test_python_dispatch_mask_family_only_match_spec_pipeline(self):
         src = PY_DISPATCH.read_text(encoding="utf-8")
-        self.assertIn("build_match_spec_for_parsed", src)
-        self.assertIn("execute_match_spec", src)
+        self.assertIn("compile_parsed_query", src)
+        self.assertIn("execute_canonical_match_spec", src)
         self.assertIn("_mask_family_search_result", src)
         # single entry — no parallel per-kind executors
         self.assertEqual(src.count("def _mask_family_search_result"), 1)
@@ -52,8 +52,8 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         )
         self.assertIsNotNone(m)
         body = m.group(1)
-        i_norm = body.find("build_match_spec_for_parsed")
-        i_exec = body.find("execute_match_spec")
+        i_norm = body.find("compile_parsed_query")
+        i_exec = body.find("execute_canonical_match_spec")
         self.assertGreaterEqual(i_norm, 0)
         self.assertGreater(i_exec, i_norm)
 
@@ -64,7 +64,7 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         self.assertIn("case RouteKind.MASK_FAMILY", src)
         self.assertIn("executeMaskFamilySearchResult", src)
         self.assertIn("mask-family-executor", src)
-        self.assertIn("normalizeToMatchSpec", exec_src)
+        self.assertIn("compileParsedQuery", exec_src)
         self.assertTrue(
             "executeMatchSpec" in exec_src or "filterMatchSpecRows" in exec_src,
             msg="TS mask executor must call executeMatchSpec or filterMatchSpecRows",
@@ -103,7 +103,7 @@ class PhaseCMatchSpecSeams(unittest.TestCase):
         body = m.group(0)
         # total from unique char set of ordered rows (not raw ordered.length)
         self.assertIn("const total =", body)
-        self.assertIn("normalizeToMatchSpec", body)
+        self.assertIn("compileParsedQuery", body)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,7 @@
 """MF-5 F4 — equals span / 碼夾等號 execution."""
 from __future__ import annotations
-
 from typing import Any, Optional
-
-from app.domain.lexicon.reference_reading import anchor_phoneme_options
+from app.domain.lexicon.reference_reading import anchor_phoneme_options, equals_authoritative_row
 from app.services._generated.candidate_source_policy import CANDIDATE_FALLBACK_LIMIT
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.word_serializer import (
@@ -38,6 +36,21 @@ def matches_equals_phoneme_span(
             return False
     return True
 
+def _ref_phoneme_parts_per_char(literal: str, dimension: str, db) -> Optional[list]:
+    if len(literal) < 2:
+        return None
+    is_final = dimension == "final"
+    parts = []
+    for ch in literal:
+        row = equals_authoritative_row(ch, db)
+        if not row:
+            return None
+        slot_parts = get_rhyme_finals(row) if is_final else get_word_parts(row, "initials")
+        if not slot_parts:
+            return None
+        parts.append(slot_parts[0])
+    return parts
+
 def build_final_options_at_positions(
     ref_chars: str,
     start_pos: int,
@@ -53,13 +66,11 @@ def build_final_options_at_positions(
                 target_final_options[pos] = options
     return target_final_options
 
-
 def word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
     if not final_options:
         return True
     word_finals = get_rhyme_finals(word)
     return len(word_finals) >= 2 and word_finals[-1] in final_options
-
 
 def matches_final_options(word_finals: list, target_final_options: list[Optional[set[str]]]) -> bool:
     if len(word_finals) != len(target_final_options):
@@ -70,7 +81,6 @@ def matches_final_options(word_finals: list, target_final_options: list[Optional
         if idx >= len(word_finals) or word_finals[idx] not in options:
             return False
     return True
-
 
 def matches_hybrid_ref_chars(
     word_char: str,
@@ -94,12 +104,10 @@ def matches_hybrid_ref_chars(
         return False
     return True
 
-
 def _word_stored_phoneme_json(word: Any, field: str):
     if isinstance(word, dict):
         return word.get(field)
     return getattr(word, field, None)
-
 
 def _phoneme_storage_key(word: Any, field: str) -> tuple:
     from app.domain.lexicon.phoneme_codec import decode_phoneme_field
@@ -112,7 +120,6 @@ def _phoneme_storage_key(word: Any, field: str) -> tuple:
         return tuple(decode_phoneme_field(raw, dim))
     return ()
 
-
 def _phoneme_db_literal(word: Any, field: str) -> str:
     from app.domain.lexicon.phoneme_codec import encode_phoneme_list
 
@@ -124,7 +131,6 @@ def _phoneme_db_literal(word: Any, field: str) -> str:
         dim = "final" if field == "finals" else "initial"
         return encode_phoneme_list([str(x) if x is not None else "" for x in raw], dim)
     return ""
-
 
 def _equals_length_bucket_candidates(
     width: int,
@@ -145,7 +151,6 @@ def _equals_length_bucket_candidates(
         for w in candidates
         if matches_code_positions(get_word_sort_code(w) or "", required, mode)
     ]
-
 
 def _equals_whole_word_matches(
     spec: MatchSpec,
@@ -206,7 +211,6 @@ def _equals_whole_word_matches(
         query = query.filter(Word.initials == db_literal)
     return query.all()
 
-
 def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> list[Any]:
     """等號／碼夾等號查詢：候選解析 + span 比對（ADR-0004 收斂至 filters）。"""
     from app.domain.lexicon.reference_reading import (
@@ -256,13 +260,18 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
                 )
         else:
             target = equals_authoritative_row(span.ref_literal, db, allow_inject=True)
-        if not target:
-            return []
-        target_parts = (
-            get_rhyme_finals(target)
-            if is_final
-            else get_word_parts(target, "initials")
-        )
+        if target:
+            target_parts = (
+                get_rhyme_finals(target)
+                if is_final
+                else get_word_parts(target, "initials")
+            )
+            if not target_parts:
+                return []
+        else:
+            target_parts = _ref_phoneme_parts_per_char(span.ref_literal, dimension, db)
+            if not target_parts:
+                return []
 
     query = db.query(Word)
     query = apply_code_filter(query, full_code, mode)
