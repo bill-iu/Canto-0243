@@ -1026,6 +1026,481 @@ function setHtml(id, html) {
   if (el) el.innerHTML = html;
 }
 
+const GUIDE_QUICK = {
+  zh: {
+    title: '教你點用',
+    cta: '完整說明',
+    rows: [
+      {
+        keys: ['0-9'],
+        title: '旋律與長度',
+        blurb: '用選定嘅 0243／02493／394052 碼搵同音詞（如 0243、93、45）。',
+        examples: [
+          { query: '0234', mode: '0243', label: '四字同聲調碼' },
+          { query: '93', mode: '02493', label: '五聲分清' },
+          { query: '23', mode: '0243', label: '找同音字' },
+          { query: '45', mode: '394052', label: '六聲碼' },
+        ],
+      },
+      {
+        keys: ['=', '^', '+', '@', '$'],
+        title: '同韻／同聲／加長',
+        blurb: '同韻用字後 =；同聲用字前 ^（舊字前 = 仍相容）；用 + 加長（? 後通常可省）。',
+        examples: [
+          { query: '香=', mode: '0243', label: '同韻' },
+          { query: '^香', mode: '0243', label: '同聲' },
+          { query: '=香', mode: '0243', label: '兼容原本舊語法（=聲）' },
+          { query: '23+好=', mode: '0243', label: '用 + 加長同韻' },
+        ],
+      },
+      {
+        keys: ['?', '_', '%'],
+        title: '留空某啲字',
+        blurb: '唔知嘅位留空；? 後面通常唔使再打 +。可以混聲調數字同定實嘅漢字。',
+        examples: [
+          { query: '+香??', mode: '0243', label: '頭字定實，其餘留空' },
+          { query: '?30人', mode: '0243', label: '頭字任意＋數字＋尾同韻' },
+          { query: '?你?', mode: '0243', label: '中間定實「你」' },
+          { query: '23?', mode: '0243', label: '頭兩字同碼' },
+        ],
+      },
+      {
+        keys: ['P', 'Z'],
+        title: '平仄',
+        blurb: 'P＝平、Z＝仄；數字＝嗰個字要同呢個聲調同音。',
+        examples: [
+          { query: 'PZ', mode: 'pingze', label: '二字平仄' },
+          { query: 'PZ3', mode: 'pingze', label: '平仄＋碼' },
+          { query: 'PZ好=', mode: 'pingze', label: '平仄＋尾字同韻' },
+          { query: '^好PZ', mode: 'pingze', label: '頭字同聲＋平仄' },
+        ],
+      },
+      {
+        keys: ['~', '!', '~~', '!!'],
+        title: '近反義',
+        blurb: '近義（~）、反義（!）、二字複合（~~／!!）。',
+        examples: [
+          { query: '!苦悶', mode: '0243', label: '反義' },
+          { query: '~~', mode: '0243', label: '近義複合' },
+          { query: '!!', mode: '0243', label: '反義複合' },
+          { query: '~開心', mode: '0243', label: '近義' },
+        ],
+      },
+    ],
+    columns: [
+      {
+        rows: [
+          {
+            keys: ['0-9'],
+            title: '旋律與長度',
+            blurb: '用 0243／02493／394052 碼搵同音詞。',
+            examples: [
+              { query: '23', mode: '0243', label: '找同音字' },
+              { query: '93', mode: '02493', label: '五聲分清' },
+              { query: '45', mode: '394052', label: '六聲碼' },
+              { query: '0234', mode: '0243', label: '四字同聲調碼' },
+            ],
+          },
+          {
+            keys: ['P', 'Z'],
+            title: '平仄',
+            blurb: 'P＝平、Z＝仄；數字＝嗰個字要同呢個聲調同音。',
+            examples: [
+              { query: 'PZ', mode: 'pingze', label: '二字平仄' },
+              { query: 'PZ3', mode: 'pingze', label: '平仄＋碼' },
+              { query: 'PZ好=', mode: 'pingze', label: '平仄＋尾字同韻' },
+            ],
+          },
+          {
+            keys: ['=', '^', '+', '@'],
+            title: '同韻／同聲／加長',
+            blurb: '同韻用字後 =；同聲用字前 ^（舊字前 = 仍相容）；用 + 加長。',
+            examples: [
+              { query: '香=', mode: '0243', label: '同韻' },
+              { query: '^香', mode: '0243', label: '同聲' },
+              { query: '=香', mode: '0243', label: '兼容原本舊語法（=聲）' },
+              { query: '23@手', mode: '0243', label: '定實尾字' },
+            ],
+          },
+          {
+            keys: ['=', '^'],
+            title: '多重同韻／同聲',
+            blurb: '連續打數字＝每個字一個聲調；字後 = 同韻，字前 ^ 同聲。',
+            examples: [
+              { query: '23香=', mode: '0243', label: '二字：尾字同韻' },
+              { query: '04困=49倒=', mode: '0243', label: '四字：指定位置同韻' },
+              { query: '04^困49^倒', mode: '0243', label: '四字：指定位置同聲' },
+            ],
+          },
+        ],
+      },
+      {
+        rows: [
+          {
+            keys: ['?', '_', '%'],
+            title: '留空某啲字',
+            blurb: '唔知嘅位留空；可以混聲調數字同定實嘅漢字。',
+            examples: [
+              { query: '+香??', mode: '0243', label: '頭字定實，其餘留空' },
+              { query: '?30人', mode: '0243', label: '頭字任意＋數字＋尾同韻' },
+              { query: '3_', mode: '0243', label: '頭字同 3 同音' },
+              { query: '23?', mode: '0243', label: '頭兩字同碼' },
+            ],
+          },
+          {
+            keys: ['?'],
+            title: '留空／頭字任意',
+            blurb: '用 ? 留空；開頭 ? 表示第一個字隨便。',
+            examples: [
+              { query: '窮?潦倒=', mode: '0243', label: '中間留空、其餘同韻' },
+              { query: '?香港=', mode: '0243', label: '頭字任意、其餘同韻' },
+              { query: '?^困潦倒', mode: '0243', label: '頭字任意、其餘同聲' },
+            ],
+          },
+          {
+            keys: ['a-z'],
+            title: '粵拼',
+            blurb: '粵拼查字；亦可用字母指定某個字嘅韻／聲／音節。',
+            examples: [
+              { query: 'nei hou', mode: '0243', label: '粵拼查詢' },
+              { query: '3hon4', mode: '0243', label: '指定音節' },
+              { query: '3$漢4', mode: '0243', label: '用漢字標音節' },
+              { query: '23o', mode: '0243', label: '指定韻母' },
+            ],
+          },
+          {
+            keys: ['~', '!', '~~', '!!'],
+            title: '近反義',
+            blurb: '近義（~）、反義（!）、二字複合（~~／!!）。',
+            examples: [
+              { query: '!苦悶', mode: '0243', label: '反義' },
+              { query: '~~', mode: '0243', label: '近義複合' },
+              { query: '!!', mode: '0243', label: '反義複合' },
+              { query: '~開心', mode: '0243', label: '近義' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  zhHans: {
+    title: '教你怎么用',
+    cta: '完整说明',
+    rows: [
+      {
+        keys: ['0-9'],
+        title: '旋律与长度',
+        blurb: '用选定嘅 0243／02493／394052 码揾同音词（如 0243、93、45）。',
+        examples: [
+          { query: '0234', mode: '0243', label: '四字同声调码' },
+          { query: '93', mode: '02493', label: '五声分清' },
+          { query: '23', mode: '0243', label: '找同音字' },
+          { query: '45', mode: '394052', label: '六声码' },
+        ],
+      },
+      {
+        keys: ['=', '^', '+', '@', '$'],
+        title: '同韵／同声／加长',
+        blurb: '同韵用字后 =；同声用字前 ^（旧字前 = 仍相容）；用 + 加长（? 后通常可省）。',
+        examples: [
+          { query: '香=', mode: '0243', label: '同韵' },
+          { query: '^香', mode: '0243', label: '同声' },
+          { query: '=香', mode: '0243', label: '兼容原本旧语法（=声）' },
+          { query: '23+好=', mode: '0243', label: '用 + 加长同韵' },
+        ],
+      },
+      {
+        keys: ['?', '_', '%'],
+        title: '留空某啲字',
+        blurb: '唔知嘅位留空；? 后面通常唔使再打 +。可以混声调数字同定实嘅汉字。',
+        examples: [
+          { query: '+香??', mode: '0243', label: '头字定实，其余留空' },
+          { query: '?30人', mode: '0243', label: '头字任意＋数字＋尾同韵' },
+          { query: '?你?', mode: '0243', label: '中间定实「你」' },
+          { query: '23?', mode: '0243', label: '头两字同码' },
+        ],
+      },
+      {
+        keys: ['P', 'Z'],
+        title: '平仄',
+        blurb: 'P＝平、Z＝仄；数字＝嗰个字要同呢个声调同音。',
+        examples: [
+          { query: 'PZ', mode: 'pingze', label: '二字平仄' },
+          { query: 'PZ3', mode: 'pingze', label: '平仄＋码' },
+          { query: 'PZ好=', mode: 'pingze', label: '平仄＋尾字同韵' },
+          { query: '^好PZ', mode: 'pingze', label: '头字同声＋平仄' },
+        ],
+      },
+      {
+        keys: ['~', '!', '~~', '!!'],
+        title: '近反义',
+        blurb: '近义（~）、反义（!）、二字复合（~~／!!）。',
+        examples: [
+          { query: '!苦悶', mode: '0243', label: '反义' },
+          { query: '~~', mode: '0243', label: '近义复合' },
+          { query: '!!', mode: '0243', label: '反义复合' },
+          { query: '~開心', mode: '0243', label: '近义' },
+        ],
+      },
+    ],
+    columns: [
+      {
+        rows: [
+          {
+            keys: ['0-9'],
+            title: '旋律与长度',
+            blurb: '用 0243／02493／394052 码揾同音词。',
+            examples: [
+              { query: '23', mode: '0243', label: '找同音字' },
+              { query: '93', mode: '02493', label: '五声分清' },
+              { query: '45', mode: '394052', label: '六声码' },
+              { query: '0234', mode: '0243', label: '四字同声调码' },
+            ],
+          },
+          {
+            keys: ['P', 'Z'],
+            title: '平仄',
+            blurb: 'P＝平、Z＝仄；数字＝嗰个字要同呢个声调同音。',
+            examples: [
+              { query: 'PZ', mode: 'pingze', label: '二字平仄' },
+              { query: 'PZ3', mode: 'pingze', label: '平仄＋码' },
+              { query: 'PZ好=', mode: 'pingze', label: '平仄＋尾字同韵' },
+            ],
+          },
+          {
+            keys: ['=', '^', '+', '@'],
+            title: '同韵／同声／加长',
+            blurb: '同韵用字后 =；同声用字前 ^（旧字前 = 仍相容）；用 + 加长。',
+            examples: [
+              { query: '香=', mode: '0243', label: '同韵' },
+              { query: '^香', mode: '0243', label: '同声' },
+              { query: '=香', mode: '0243', label: '兼容原本旧语法（=声）' },
+              { query: '23@手', mode: '0243', label: '定实尾字' },
+            ],
+          },
+          {
+            keys: ['=', '^'],
+            title: '多重同韵／同声',
+            blurb: '连续打数字＝每个字一个声调；字后 = 同韵，字前 ^ 同声。',
+            examples: [
+              { query: '23香=', mode: '0243', label: '二字：尾字同韵' },
+              { query: '04困=49倒=', mode: '0243', label: '四字：指定位置同韵' },
+              { query: '04^困49^倒', mode: '0243', label: '四字：指定位置同声' },
+            ],
+          },
+        ],
+      },
+      {
+        rows: [
+          {
+            keys: ['?', '_', '%'],
+            title: '留空某啲字',
+            blurb: '唔知嘅位留空；可以混声调数字同定实嘅汉字。',
+            examples: [
+              { query: '+香??', mode: '0243', label: '头字定实，其余留空' },
+              { query: '?30人', mode: '0243', label: '头字任意＋数字＋尾同韵' },
+              { query: '3_', mode: '0243', label: '头字同 3 同音' },
+              { query: '23?', mode: '0243', label: '头两字同码' },
+            ],
+          },
+          {
+            keys: ['?'],
+            title: '留空／头字任意',
+            blurb: '用 ? 留空；开头 ? 表示第一个字随便。',
+            examples: [
+              { query: '窮?潦倒=', mode: '0243', label: '中间留空、其余同韵' },
+              { query: '?香港=', mode: '0243', label: '头字任意、其余同韵' },
+              { query: '?^困潦倒', mode: '0243', label: '头字任意、其余同声' },
+            ],
+          },
+          {
+            keys: ['a-z'],
+            title: '粵拼',
+            blurb: '粵拼查字；亦可用字母指定某个字嘅韵／声／音节。',
+            examples: [
+              { query: 'nei hou', mode: '0243', label: '粵拼查询' },
+              { query: '3hon4', mode: '0243', label: '指定音节' },
+              { query: '3$漢4', mode: '0243', label: '用汉字标音节' },
+              { query: '23o', mode: '0243', label: '指定韵母' },
+            ],
+          },
+          {
+            keys: ['~', '!', '~~', '!!'],
+            title: '近反义',
+            blurb: '近义（~）、反义（!）、二字复合（~~／!!）。',
+            examples: [
+              { query: '!苦悶', mode: '0243', label: '反义' },
+              { query: '~~', mode: '0243', label: '近义复合' },
+              { query: '!!', mode: '0243', label: '反义复合' },
+              { query: '~開心', mode: '0243', label: '近义' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    title: 'How to use',
+    cta: 'Full guide',
+    rows: [
+      {
+        keys: ['0-9'],
+        title: 'Melody & length',
+        blurb: 'Match tones with the selected 0243 / 02493 / 394052 code (e.g. 0243, 93, 45).',
+        examples: [
+          { query: '0234', mode: '0243', label: 'Four-character tones' },
+          { query: '93', mode: '02493', label: '02493 mode' },
+          { query: '23', mode: '0243', label: 'Same-tone matches' },
+          { query: '45', mode: '394052', label: '394052 mode' },
+        ],
+      },
+      {
+        keys: ['=', '^', '+', '@', '$'],
+        title: 'Rhyme / initial / lengthen',
+        blurb: 'Rhyme: trailing =; initial: leading ^ (legacy leading = still works); + to lengthen (often skip after ?).',
+        examples: [
+          { query: '香=', mode: '0243', label: 'Same rhyme' },
+          { query: '^香', mode: '0243', label: 'Same initial' },
+          { query: '=香', mode: '0243', label: 'Legacy leading = initial' },
+          { query: '23+好=', mode: '0243', label: 'Lengthen with +' },
+        ],
+      },
+      {
+        keys: ['?', '_', '%'],
+        title: 'Leave some characters open',
+        blurb: 'Leave unknowns open; after ? you usually omit +. Mix tone digits with fixed characters.',
+        examples: [
+          { query: '+香??', mode: '0243', label: 'Lock first; leave rest open' },
+          { query: '?30人', mode: '0243', label: 'Any first + digits + last rhymes' },
+          { query: '?你?', mode: '0243', label: 'Lock middle 你' },
+          { query: '23?', mode: '0243', label: 'First two tones' },
+        ],
+      },
+      {
+        keys: ['P', 'Z'],
+        title: 'Ping–ze',
+        blurb: 'P = ping, Z = ze; a digit locks that character\'s tone.',
+        examples: [
+          { query: 'PZ', mode: 'pingze', label: 'Two-character PZ' },
+          { query: 'PZ3', mode: 'pingze', label: 'PZ + digit' },
+          { query: 'PZ好=', mode: 'pingze', label: 'PZ + last rhymes' },
+          { query: '^好PZ', mode: 'pingze', label: 'First initial + PZ' },
+        ],
+      },
+      {
+        keys: ['~', '!', '~~', '!!'],
+        title: 'Synonym / antonym',
+        blurb: 'Near (~), antonym (!), two-char compounds (~~ / !!).',
+        examples: [
+          { query: '!苦悶', mode: '0243', label: 'Antonym' },
+          { query: '~~', mode: '0243', label: 'Syn compound' },
+          { query: '!!', mode: '0243', label: 'Ant compound' },
+          { query: '~開心', mode: '0243', label: 'Near-synonym' },
+        ],
+      },
+    ],
+    columns: [
+      {
+        rows: [
+          {
+            keys: ['0-9'],
+            title: 'Melody & length',
+            blurb: 'Match tones with 0243 / 02493 / 394052 codes.',
+            examples: [
+              { query: '23', mode: '0243', label: 'Same-tone matches' },
+              { query: '93', mode: '02493', label: '02493 mode' },
+              { query: '45', mode: '394052', label: '394052 mode' },
+              { query: '0234', mode: '0243', label: 'Four-character tones' },
+            ],
+          },
+          {
+            keys: ['P', 'Z'],
+            title: 'Ping–ze',
+            blurb: 'P = ping, Z = ze; a digit locks that character\'s tone.',
+            examples: [
+              { query: 'PZ', mode: 'pingze', label: 'Two-character PZ' },
+              { query: 'PZ3', mode: 'pingze', label: 'PZ + digit' },
+              { query: 'PZ好=', mode: 'pingze', label: 'PZ + last rhymes' },
+            ],
+          },
+          {
+            keys: ['=', '^', '+', '@'],
+            title: 'Rhyme / initial / lengthen',
+            blurb: 'Rhyme: trailing =; initial: leading ^ (legacy = still works); + to lengthen.',
+            examples: [
+              { query: '香=', mode: '0243', label: 'Same rhyme' },
+              { query: '^香', mode: '0243', label: 'Same initial' },
+              { query: '=香', mode: '0243', label: 'Legacy leading = initial' },
+              { query: '23@手', mode: '0243', label: 'Lock last character' },
+            ],
+          },
+          {
+            keys: ['=', '^'],
+            title: 'Multi-slot rhyme / initial',
+            blurb: 'Digits in a row = one tone each; char= rhyme; ^char initial.',
+            examples: [
+              { query: '23香=', mode: '0243', label: 'Two chars: last rhymes' },
+              { query: '04困=49倒=', mode: '0243', label: 'Four chars: locked rhymes' },
+              { query: '04^困49^倒', mode: '0243', label: 'Four chars: locked initials' },
+            ],
+          },
+        ],
+      },
+      {
+        rows: [
+          {
+            keys: ['?', '_', '%'],
+            title: 'Leave some characters open',
+            blurb: 'Leave unknowns open; mix tone digits with fixed characters.',
+            examples: [
+              { query: '+香??', mode: '0243', label: 'Lock first; leave rest open' },
+              { query: '?30人', mode: '0243', label: 'Any first + digits + last rhymes' },
+              { query: '3_', mode: '0243', label: 'First tone 3' },
+              { query: '23?', mode: '0243', label: 'First two tones' },
+            ],
+          },
+          {
+            keys: ['?'],
+            title: 'Gaps / any first character',
+            blurb: 'Use ? for gaps; leading ? means any first character.',
+            examples: [
+              { query: '窮?潦倒=', mode: '0243', label: 'Gap in middle; others rhyme' },
+              { query: '?香港=', mode: '0243', label: 'Any first; rest rhyme' },
+              { query: '?^困潦倒', mode: '0243', label: 'Any first; rest same initial' },
+            ],
+          },
+          {
+            keys: ['a-z'],
+            title: 'Jyutping',
+            blurb: 'Jyutping lookup; letters can set a character\'s rhyme, syllable, or initial.',
+            examples: [
+              { query: 'nei hou', mode: '0243', label: 'Jyutping lookup' },
+              { query: '3hon4', mode: '0243', label: 'Set syllable' },
+              { query: '3$漢4', mode: '0243', label: 'Hanzi marks syllable' },
+              { query: '23o', mode: '0243', label: 'Set rhyme' },
+            ],
+          },
+          {
+            keys: ['~', '!', '~~', '!!'],
+            title: 'Synonym / antonym',
+            blurb: 'Near (~), antonym (!), two-char compounds (~~ / !!).',
+            examples: [
+              { query: '!苦悶', mode: '0243', label: 'Antonym' },
+              { query: '~~', mode: '0243', label: 'Syn compound' },
+              { query: '!!', mode: '0243', label: 'Ant compound' },
+              { query: '~開心', mode: '0243', label: 'Near-synonym' },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+};
+
+export function getGuideQuick(lang) {
+  return GUIDE_QUICK[resolveLang(lang)];
+}
+
 export function applyGuideLang(lang) {
   const l = resolveLang(lang);
   const hero = getGuideHero(l);
