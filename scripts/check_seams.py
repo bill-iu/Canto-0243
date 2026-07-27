@@ -457,8 +457,8 @@ class TestMaskFamilyDispatchSeam(unittest.TestCase):
         "normalize_to_match_spec",
     )
     ALLOWED = (
-        "execute_match_spec",
-        "build_match_spec_for_parsed",
+        "execute_canonical_match_spec",
+        "compile_parsed_query",
         "dispatch_parsed",
         "_mask_family_search_result",
         "route_kind_for",
