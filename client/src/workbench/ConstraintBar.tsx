@@ -244,7 +244,7 @@ export const ConstraintBar = memo(function ConstraintBar({
               onChange={(event) => onExplicitCodeChange(event.target.value)}
               maxLength={Math.max(spanWidth, 1)}
               spellCheck={false}
-              inputMode="numeric"
+              inputMode="text"
               disabled={codeConstraint !== 'explicit' || spanWidth < 1}
               tabIndex={codeConstraint === 'explicit' ? undefined : -1}
               title={explicitHint}

@@ -35,13 +35,13 @@ class PhaseBDispatchParsedSeam(unittest.TestCase):
         self.assertNotIn("normalize_to_match_spec", names)
         self.assertNotIn("build_match_spec", names)
 
-    def test_query_dispatch_normalizes_via_registry_not_parse(self):
+    def test_query_dispatch_normalizes_via_compiler_not_parse(self):
         src = DISPATCH.read_text(encoding="utf-8")
         self.assertNotRegex(
             src,
             r"from app\.services\.query_parse import \([^)]*normalize_to_match_spec",
         )
-        self.assertIn("build_match_spec_for_parsed", src)
+        self.assertIn("compile_parsed_query", src)
         self.assertIn("dispatch_parsed", src)
 
 

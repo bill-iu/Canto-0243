@@ -25,9 +25,14 @@ const SHELL_DISPLAY_ZH = ['即使離線亦完全可用', '呢一次拎返你嘅�
  * only this subset is guaranteed offline for CJK serif display.
  */
 const SERIF_HERO_ZH = [
-  '所有搜尋語法', // guide-hero h1
-  '關係補錄', // relation-hero
-  '詞庫勘誤', // corrections-view hero
+  '所有搜尋語法', // guide-hero h1 (zh)
+  '所有搜寻语法', // guide-hero h1 (zh-Hans)
+  '關係補錄', // relation-hero (zh)
+  '关系补录', // relation-hero (zh-Hans)
+  '詞庫勘誤', // corrections-view hero (zh)
+  '词库勘误', // corrections-view hero (zh-Hans)
+  '關於 Canto-0243', // about-hero (zh)
+  '关于 Canto-0243', // about-hero (zh-Hans)
 ] as const;
 
 function workbenchIntroZh(): string[] {

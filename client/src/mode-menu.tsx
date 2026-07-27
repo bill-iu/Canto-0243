@@ -9,7 +9,7 @@ import { isPortableHost } from './host-mode.ts';
 import {
   IconSearch, IconPingze, IconSynonym,
   IconWorkbench, IconGuide, IconRelation, IconAbout, IconPower,
-  IconLanguage, IconSun, IconMoon,
+  IconSun, IconMoon,
 } from './mode-menu-icons.tsx';
 
 const MODE_MENU_GAP_PX = 12;
@@ -348,7 +348,6 @@ export function ModeMenu({
                   }}
                   aria-label={copy.displayControls.traditional}
                 >
-                  <span className="mode-icon" aria-hidden="true"><IconLanguage /></span>
                   <span>繁</span>
                 </button>
                 <button
