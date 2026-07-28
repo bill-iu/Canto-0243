@@ -7,6 +7,8 @@ export {
   filterWordsByCodeAndMask,
   narrowByPhonemeAnchors,
   preferredPronunciationRows,
+  pickAuthoritativeAmong,
+  filterSingleDigitToPreferredReadings,
   buildRequiredCodes,
   denseCodeFromRequired,
   requiredCodesFromDigitString,

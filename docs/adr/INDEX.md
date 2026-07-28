@@ -43,6 +43,7 @@
 | [0073](./0073-query-tabs-own-workbench-view.md) | Query tabs 承載 singleton Workbench view；Desktop／PWA 共用全頁 workspace |
 | [0074](./0074-lexicon-length-invariant.md) | **詞條庫字數不變式**：建置／開庫嚴格驗證、本機 transaction repair、runtime 純 indexed length 查詢 |
 | [0075](./0075-workbench-line-reading-projection.md) | **工作台讀音投影**：雙端唯讀批次、版本化 LRU、合作式取消與選讀音保留 |
+| [0077](./0077-single-digit-preferred-pronunciation.md) | **單 digit 純碼**：只認每字最佳 pron_rank 讀音（剔罕見噪音） |
 
 ## Stubs
 
