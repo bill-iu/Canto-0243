@@ -14,11 +14,16 @@ import {
   matchesCodePositions,
   requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
-import { getEqualsSpan, type EqualsDimension, type MatchSpec } from './spec.ts';
+import {
+  canonicalizeLegacyMatchSpec,
+  type CanonicalMatchSpec,
+} from './canonical.ts';
+import type { EqualsDimension } from './spec.ts';
+import type { MatchSpec } from './spec.ts';
 import { getCandidatesForLength } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
 
-function denseCodeFromSpec(spec: MatchSpec): string {
+function denseCodeFromSpec(spec: CanonicalMatchSpec): string {
   return denseCodeFromRequired(buildRequiredCodes(spec)) || '';
 }
 
@@ -290,7 +295,7 @@ function phonemeStorageKey(row: WordRow, field: 'finals' | 'initials'): string {
 }
 
 async function equalsWholeWordMatches(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   db: Database,
   mode: 'm1' | 'm2',
   target: WordRow | null,
@@ -335,18 +340,19 @@ async function equalsWholeWordMatches(
 
 /** Port of query_words_by_equals_spec */
 export async function queryWordsByEqualsSpec(
-  spec: MatchSpec,
+  input: CanonicalMatchSpec | MatchSpec,
   db: Database,
   mode = 'm1',
 ): Promise<WordRow[]> {
-  const span = getEqualsSpan(spec);
+  const spec = 'candidate_scope' in input ? input : canonicalizeLegacyMatchSpec(input);
+  const span = spec.equals_span;
   if (!span) {
     return [];
   }
 
   const searchMode = normalizeMode(mode);
   const isFinal = span.dimension === 'final' || span.dimension === 'rhyme';
-  const prefixWildcard = Boolean(spec.extra?.prefix_wildcard_equals);
+  const prefixWildcard = span.start_pos === 1 && span.phoneme_anchor_only;
   const fullCode = denseCodeFromSpec(spec);
 
   let targetParts: string[] | null;

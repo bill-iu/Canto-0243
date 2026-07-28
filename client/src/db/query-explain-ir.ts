@@ -10,9 +10,8 @@ import {
   codeDigitStringFromSpec,
   hasCodeDigitConstraints,
 } from './position-match/filters/f1-slot-code.ts';
-import { canonicalMatchSpecToLegacy } from './position-match/canonical.ts';
+import type { CanonicalEqualsSpan, CanonicalMatchSpec } from './position-match/canonical.ts';
 import { compileParsedQuery } from './position-match/compiler.ts';
-import { getEqualsSpan, type EqualsSpan, type MatchSpec } from './position-match/spec.ts';
 
 const WILDCARD_RE = /^[?_%]$/;
 const DIGIT_RE = /^\d$/;
@@ -79,26 +78,20 @@ export interface ExplainIr {
   constraints?: PositionConstraintIr[];
 }
 
-export function buildExplainIr(spec: MatchSpec, parsed: ParsedQuery): ExplainIr {
-  let working = spec;
-  if (working.extra?.dual_phoneme) {
-    const dual = working.extra.dual_final_spec;
-    if (dual && typeof dual === 'object') {
-      working = dual as MatchSpec;
-    }
-  }
+export function buildExplainIr(spec: CanonicalMatchSpec, parsed: ParsedQuery): ExplainIr {
+  const working = spec.phoneme_alternatives?.final ?? spec;
 
-  const equals = getEqualsSpan(working);
+  const equals = working.equals_span;
   if (equals && hasCodeDigitConstraints(working)) {
     return irCodeSandwich(working, equals, parsed);
   }
-  if (equals && working.extra?.prefix_wildcard_equals) {
+  if (equals && equals.start_pos === 1 && equals.phoneme_anchor_only) {
     return irPrefixWildcardEquals(working, equals);
   }
   if (equals?.whole_word) {
     return irWholeWordEquals(working, equals);
   }
-  if (working.compound_kind) {
+  if (working.compound) {
     return irCompound(working);
   }
   return irSlotScan(working, equals);
@@ -118,7 +111,7 @@ export function explainIrForQuery(q: string, mode: string = 'm1'): ExplainIr | n
   if (parsed.kind === QueryKind.UNMATCHED || isShortCircuit(parsed)) {
     return null;
   }
-  const spec = canonicalMatchSpecToLegacy(compileParsedQuery(parsed as Parameters<typeof compileParsedQuery>[0]));
+  const spec = compileParsedQuery(parsed as Parameters<typeof compileParsedQuery>[0]);
   return buildExplainIr(spec, parsed);
 }
 
@@ -133,7 +126,7 @@ function isShortCircuit(parsed: ParsedQuery): boolean {
   );
 }
 
-function equalsIr(equals: EqualsSpan): EqualsIr {
+function equalsIr(equals: CanonicalEqualsSpan): EqualsIr {
   const dimension = equals.dimension === 'final' || equals.dimension === 'rhyme'
     ? 'final'
     : 'initial';
@@ -145,7 +138,7 @@ function equalsIr(equals: EqualsSpan): EqualsIr {
   };
 }
 
-function codePrefixIr(spec: MatchSpec): CodePrefixIr | null {
+function codePrefixIr(spec: CanonicalMatchSpec): CodePrefixIr | null {
   const code = codeDigitStringFromSpec(spec);
   if (!code) {
     return null;
@@ -185,7 +178,7 @@ function constraintsToIr(constraints: Map<number, [string, string]>): PositionCo
     });
 }
 
-function irWholeWordEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr {
+function irWholeWordEquals(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan): ExplainIr {
   const ir: ExplainIr = {
     variant: 'whole_word_equals',
     width: spec.width,
@@ -198,7 +191,7 @@ function irWholeWordEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr {
   return ir;
 }
 
-function irPrefixWildcardEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr {
+function irPrefixWildcardEquals(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan): ExplainIr {
   return {
     variant: 'prefix_wildcard_equals',
     width: spec.width,
@@ -206,7 +199,7 @@ function irPrefixWildcardEquals(spec: MatchSpec, equals: EqualsSpan): ExplainIr 
   };
 }
 
-function irCodeSandwich(spec: MatchSpec, equals: EqualsSpan, parsed: ParsedQuery): ExplainIr {
+function irCodeSandwich(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan, parsed: ParsedQuery): ExplainIr {
   const raw = parsed.raw_q || '';
   if (equals.whole_word) {
     const ir: ExplainIr = {
@@ -230,12 +223,12 @@ function irCodeSandwich(spec: MatchSpec, equals: EqualsSpan, parsed: ParsedQuery
   };
 }
 
-function irCompound(spec: MatchSpec): ExplainIr {
+function irCompound(spec: CanonicalMatchSpec): ExplainIr {
   const compound: CompoundIr = {
-    kind: spec.compound_kind!,
+    kind: spec.compound!.kind,
     width: spec.width,
   };
-  if (spec.compound_kind === 'doubled_syllable') {
+  if (spec.compound!.kind === 'doubled_syllable') {
     const rhyme = (spec.slots ?? []).find(
       (s) => s.kind === 'final_anchor' && typeof s.value === 'string',
     )?.value as string | undefined;
@@ -247,7 +240,7 @@ function irCompound(spec: MatchSpec): ExplainIr {
       compound.tail_rhyme = rhyme;
     }
   } else {
-    const connective = spec.extra?.connective;
+    const connective = spec.compound?.connective;
     if (typeof connective === 'string' && connective) {
       compound.connective = connective;
     }
@@ -255,7 +248,7 @@ function irCompound(spec: MatchSpec): ExplainIr {
   return { variant: 'compound', width: spec.width, compound };
 }
 
-function irSlotScan(spec: MatchSpec, equals: EqualsSpan | null): ExplainIr {
+function irSlotScan(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan | null): ExplainIr {
   const constraints = effectiveConstraints(spec, equals);
   return {
     variant: 'slot_scan',
@@ -265,8 +258,8 @@ function irSlotScan(spec: MatchSpec, equals: EqualsSpan | null): ExplainIr {
 }
 
 function effectiveConstraints(
-  spec: MatchSpec,
-  equals: EqualsSpan | null,
+  spec: CanonicalMatchSpec,
+  equals: CanonicalEqualsSpan | null,
 ): Map<number, [string, string]> {
   const result = new Map<number, [string, string]>();
 

@@ -7,7 +7,7 @@ import {
   sortWordRows,
 } from '../ranking.ts';
 import { compoundSearchSpecFromMatchSpec } from '../position-match/sources.ts';
-import type { MatchSpec } from '../position-match/spec.ts';
+import type { CanonicalMatchSpec } from '../position-match/canonical.ts';
 import { getWordText } from '../position-match/word-row.ts';
 import type { WordRow } from '../position-match/word-row.ts';
 import type { QueryMode, QueryResult } from '../query-types.ts';
@@ -28,20 +28,21 @@ export function rowToResult(row: Record<string, unknown>): QueryResult {
 }
 
 export async function sortMaskFamilyRows(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   rows: WordRow[],
   db: Database,
   _mode: QueryMode,
 ): Promise<WordRow[]> {
-  if (spec.extra?.dual_phoneme) {
+  if (spec.phoneme_alternatives) {
     return rows;
   }
-  const literalPositions = spec.extra?.literal_positions;
-  if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
-    const positions = literalPositions as Array<[number, string]>;
-    return [...rows].sort((a, b) => literalPriorityCompare(a, b, positions));
+  const literalPositions = [...spec.mask]
+    .map((char, pos) => (/[\p{Script=Han}]/u.test(char) ? [pos, char] as [number, string] : null))
+    .filter((item): item is [number, string] => item != null);
+  if (spec.ranking === 'literal_priority' && literalPositions.length) {
+    return [...rows].sort((a, b) => literalPriorityCompare(a, b, literalPositions));
   }
-  if (spec.compound_kind) {
+  if (spec.compound) {
     const compoundSpec = compoundSearchSpecFromMatchSpec(spec);
     if (!compoundSpec) {
       return sortWordRows(rows);

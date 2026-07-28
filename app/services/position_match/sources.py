@@ -308,9 +308,19 @@ def _resolve_mask_family_source(
 ) -> tuple[Optional[CandidateSource], Optional[Callable]]:
     """由 MatchSpec 形狀選擇候選來源（registry，不依 ParsedQuery）。"""
     from app.domain.lexicon.ranking import search_result_sort_key
+    from app.services.position_match.canonical import (
+        CanonicalMatchSpec,
+        canonicalize_legacy_match_spec,
+    )
 
-    connective = spec.extra.get("connective")
-    if spec.compound_kind == "doubled_syllable":
+    spec = (
+        spec
+        if isinstance(spec, CanonicalMatchSpec)
+        else canonicalize_legacy_match_spec(spec)
+    )
+    connective = spec.compound.connective if spec.compound else None
+    compound_kind = spec.compound.kind if spec.compound else None
+    if compound_kind == "doubled_syllable":
         rhyme_char = _compound_rhyme_char(spec)
         from app.domain.relations.compound_doubled_syllable import search_doubled_syllable
 
@@ -323,7 +333,7 @@ def _resolve_mask_family_source(
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 
-    if spec.compound_kind == "syn":
+    if compound_kind == "syn":
         rhyme_char = _compound_rhyme_char(spec)
         if connective and spec.width == 3:
             from app.domain.relations.compound_connect import search_connective_compound
@@ -354,7 +364,7 @@ def _resolve_mask_family_source(
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 
-    if spec.compound_kind == "ant":
+    if compound_kind == "ant":
         rhyme_char = _compound_rhyme_char(spec)
         if connective and spec.width == 3:
             from app.domain.relations.compound_connect import search_connective_compound
@@ -385,7 +395,7 @@ def _resolve_mask_family_source(
         sort_key = lambda w: (tiers.get(get_word_text(w), 99), search_result_sort_key(w))
         return source, sort_key
 
-    if spec.literal_priority and spec.mask:
+    if spec.ranking == "literal_priority" and spec.mask:
         from app.services.position_match.mask_adapter import dense_code_from_spec
 
         effective_code = query_code or dense_code_from_spec(spec)
@@ -396,12 +406,16 @@ def _resolve_mask_family_source(
             query_code=effective_code,
             required_codes=required_codes_from_spec(spec),
         )
-        literal_positions = spec.extra.get("literal_positions", [])
+        literal_positions = [
+            (pos, char)
+            for pos, char in enumerate(spec.mask)
+            if "\u4e00" <= char <= "\u9fff"
+        ]
         sort_key = lambda w: literal_priority_sort_key(w, literal_positions)
         return source, sort_key
 
     anchor = _phoneme_anchor_slot(spec)
-    if anchor and spec.mask and not spec.literal_priority:
+    if anchor and spec.mask and spec.ranking != "literal_priority":
         constraint = "final" if anchor.kind == "final_anchor" else "initial"
         source = RhymeAnchorCandidateSource(
             db,
@@ -455,7 +469,7 @@ def _resolve_mask_family_source(
             )
         fallback_limit = (
             None
-            if spec.extra.get("workbench_full_bucket_scan")
+            if spec.candidate_scope == "complete"
             else CANDIDATE_FALLBACK_LIMIT
         )
         return LengthMaskCandidateSource(db, spec.mask, fallback_limit), None

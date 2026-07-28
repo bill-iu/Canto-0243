@@ -24,6 +24,11 @@ export interface QueryWorkspaceSnapshot<TResult> {
   results: readonly TResult[];
   offset: number;
   total: number | null;
+  mode: string;
+  pzmode: string;
+  shuffled: boolean;
+  scrollTop: number;
+  dataVersion: string | null;
   posFilter: PosFilterState;
 }
 
@@ -46,6 +51,11 @@ export interface QueryWorkspaceState<TResult> {
   hint: string | null;
   lastPageSize: number;
   offset: number;
+  mode: string;
+  pzmode: string;
+  shuffled: boolean;
+  scrollTop: number;
+  dataVersion: string | null;
   posFilter: PosFilterState;
   detail: QueryWorkspaceDetailIdentity | null;
   error: string | null;
@@ -113,6 +123,11 @@ export function createInitialQueryWorkspaceState<TResult>(): QueryWorkspaceState
     hint: null,
     lastPageSize: 0,
     offset: 0,
+    mode: 'm1',
+    pzmode: 'm1',
+    shuffled: false,
+    scrollTop: 0,
+    dataVersion: null,
     posFilter: emptyPosFilter(),
     detail: null,
     error: null,
@@ -147,6 +162,11 @@ export function reduceQueryWorkspace<TResult>(
         hint: null,
         lastPageSize: event.snapshot.results.length,
         offset: event.snapshot.offset,
+        mode: event.snapshot.mode,
+        pzmode: event.snapshot.pzmode,
+        shuffled: event.snapshot.shuffled,
+        scrollTop: event.snapshot.scrollTop,
+        dataVersion: event.snapshot.dataVersion,
         posFilter: copyPosFilter(event.snapshot.posFilter),
         detail: null,
         error: null,
@@ -171,6 +191,12 @@ export function reduceQueryWorkspace<TResult>(
 
     case 'beginFrame': {
       const frameId = state.nextFrameId + 1;
+      const replacesVisibleQuery =
+        event.kind === 'commit' &&
+        (event.query !== state.draftQuery ||
+          (state.committedFrame != null &&
+            (event.mode !== state.committedFrame.mode ||
+              event.pzmode !== state.committedFrame.pzmode)));
       const frame: QueryWorkspaceFrame = {
         id: frameId,
         query: event.query,
@@ -186,8 +212,20 @@ export function reduceQueryWorkspace<TResult>(
         nextFrameId: frameId,
         activeFrameId: frameId,
         activeRequestId: null,
+        mode: event.mode,
+        pzmode: event.pzmode,
         status: event.kind === 'commit' ? 'loading' : 'previewing',
         error: null,
+        ...(replacesVisibleQuery
+          ? {
+              results: [],
+              total: null,
+              hint: null,
+              lastPageSize: 0,
+              offset: 0,
+              detail: null,
+            }
+          : {}),
       };
     }
 
@@ -253,6 +291,11 @@ export function snapshotFromQueryWorkspace<TResult>(
     results: copyResults(state.results),
     offset: state.offset,
     total: state.total,
+    mode: state.mode,
+    pzmode: state.pzmode,
+    shuffled: state.shuffled,
+    scrollTop: state.scrollTop,
+    dataVersion: state.dataVersion,
     posFilter: copyPosFilter(state.posFilter),
   };
 }

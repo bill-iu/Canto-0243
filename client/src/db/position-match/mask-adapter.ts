@@ -1,6 +1,6 @@
 /** Port of position_match/mask_adapter.py */
 import { isWildcardChar } from './mask-grammar.ts';
-import type { MatchSpec } from './spec.ts';
+import type { CanonicalMatchSpec } from './canonical.ts';
 
 export function matchesMaskLiteralChars(wordChar: string, mask: string): boolean {
   if (wordChar.length !== mask.length) {
@@ -37,7 +37,7 @@ export function maskFixedLiteralPrefix(mask: string): string {
   return prefix.join('');
 }
 
-export function requiredCodesFromSpec(spec: MatchSpec): Array<string | null> {
+export function requiredCodesFromSpec(spec: CanonicalMatchSpec): Array<string | null> {
   const codes: Array<string | null> = Array(spec.width).fill(null);
   const mask = spec.mask ?? '';
   if (mask.length === spec.width) {

@@ -20,6 +20,8 @@ export interface CanonicalSlotConstraint {
   readonly pos: number;
   readonly kind: SlotConstraint['kind'];
   readonly value: CanonicalSlotValue | null;
+  /** Hot-path mask token owned by this slot; null means wildcard projection. */
+  readonly mask_token: string | null;
 }
 
 export interface CanonicalEqualsSpan {
@@ -81,6 +83,10 @@ function slotKey(slot: CanonicalSlotConstraint): string {
   return `${slot.pos}\u0000${slot.kind}\u0000${JSON.stringify(slot.value)}`;
 }
 
+function slotClassKey(slot: CanonicalSlotConstraint): string {
+  return `${slot.pos}\u0000${slot.kind}`;
+}
+
 function legacySlotValue(value: CanonicalSlotValue | null): SlotConstraint['value'] {
   if (value == null || typeof value === 'string') return value;
   return new Set(value);
@@ -113,27 +119,52 @@ export function finalizeCanonicalMatchSpec(draft: CanonicalMatchSpecDraft): Cano
     throw new Error(`MatchSpec width must be a positive integer: ${draft.width}`);
   }
 
-  const slots = (draft.slots ?? []).map((slot) => Object.freeze({
+  const rawMask = draft.mask == null || draft.mask === '' ? '?'.repeat(draft.width) : draft.mask;
+  if ([...rawMask].length !== draft.width) {
+    throw new Error(`MatchSpec mask width mismatch: ${[...rawMask].length} != ${draft.width}`);
+  }
+
+  const mutableSlots = (draft.slots ?? []).map((slot) => ({
     pos: slot.pos,
     kind: slot.kind,
     value: canonicalValue(slot.value),
+    mask_token: null as string | null,
   }));
-  for (const slot of slots) {
+  for (const slot of mutableSlots) {
     if (!Number.isInteger(slot.pos) || slot.pos < 0 || slot.pos >= draft.width) {
       throw new Error(`MatchSpec slot position out of range: ${slot.pos}`);
     }
   }
+  [...rawMask].forEach((token, pos) => {
+    if (token === '?' || token === '_' || token === '%') return;
+    let owner = mutableSlots.find(
+      (slot) => slot.pos === pos && typeof slot.value === 'string' && slot.value === token,
+    );
+    if (!owner && !/\d/u.test(token)) {
+      owner = { pos, kind: 'literal_char', value: token, mask_token: null };
+      mutableSlots.push(owner);
+    }
+    if (!owner) {
+      throw new Error(`MatchSpec mask token has no owning slot: ${pos}:${token}`);
+    }
+    owner.mask_token = token;
+  });
+  const slots = mutableSlots.map((slot) => Object.freeze(slot));
   slots.sort((a, b) => slotKey(a).localeCompare(slotKey(b)));
   for (let i = 1; i < slots.length; i += 1) {
-    if (slotKey(slots[i - 1]!) === slotKey(slots[i]!)) {
-      throw new Error(`MatchSpec duplicate slot: ${slotKey(slots[i]!)}`);
+    const previous = slots[i - 1]!;
+    const current = slots[i]!;
+    if (slotClassKey(previous) === slotClassKey(current)) {
+      const label = slotKey(previous) === slotKey(current) ? 'duplicate' : 'conflicting';
+      throw new Error(`MatchSpec ${label} slot: ${slotClassKey(current)}`);
     }
   }
 
-  const mask = draft.mask == null || draft.mask === '' ? '?'.repeat(draft.width) : draft.mask;
-  if ([...mask].length !== draft.width) {
-    throw new Error(`MatchSpec mask width mismatch: ${mask.length} != ${draft.width}`);
+  const maskTokens = Array.from({ length: draft.width }, () => '?');
+  for (const slot of slots) {
+    if (slot.mask_token) maskTokens[slot.pos] = slot.mask_token;
   }
+  const mask = maskTokens.join('');
 
   const equalsSpan = freezeEqualsSpan(draft.equals_span);
   if (equalsSpan && (equalsSpan.start_pos < 0 || equalsSpan.start_pos >= draft.width)) {

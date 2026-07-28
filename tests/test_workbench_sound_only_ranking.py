@@ -34,7 +34,10 @@ class WorkbenchSoundOnlyRankingTests(TestCase):
         ])
 
         with (
-            patch("app.services.position_match.engine.execute_match_spec", side_effect=[initial, final]),
+            patch(
+                "app.services.position_match.engine.execute_canonical_match_spec",
+                side_effect=[initial, final],
+            ),
             patch(
                 "app.domain.lexicon.ranking.get_essay_frequency",
                 side_effect={"低頻": 1, "高頻": 100}.get,

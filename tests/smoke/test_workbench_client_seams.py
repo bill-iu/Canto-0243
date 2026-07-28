@@ -26,7 +26,7 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         compare = (WORKBENCH / "ComparePanel.tsx").read_text(encoding="utf-8")
         css = (WORKBENCH / "workbench-page.css").read_text(encoding="utf-8")
         self.assertIn("套用這個選擇", compare)
-        self.assertIn("type: 'apply_candidate'", page)
+        self.assertIn("coordinator.actions.applyCandidate", page)
         self.assertIn("writing-mode: horizontal-tb", css)
         self.assertIn("word-break: keep-all", css)
 
@@ -143,7 +143,7 @@ class WorkbenchClientSeamTests(unittest.TestCase):
         self.assertIn("consumeIngest", page)
         # Candidate 04: lock intents route through the single coordinator owner.
         self.assertIn("useWorkbenchSessionCoordinator", page)
-        self.assertIn("type: 'toggle_lock'", page)
+        self.assertIn("coordinator.actions.toggleLock", page)
         self.assertNotIn("slot.locked && slot.surface", page)
         self.assertIn("整段押韻", bar)
         self.assertIn("整段同聲母", bar)

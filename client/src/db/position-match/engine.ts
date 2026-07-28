@@ -11,8 +11,8 @@ import {
   buildRequiredCodes,
   matchesCodePositions,
 } from './filters/f1-slot-code.ts';
-import { canonicalMatchSpecToLegacy, type CanonicalMatchSpec } from './canonical.ts';
-import { getEqualsSpan, type MatchSpec, type SlotConstraint } from './spec.ts';
+import { canonicalizeLegacyMatchSpec, type CanonicalMatchSpec } from './canonical.ts';
+import type { MatchSpec } from './spec.ts';
 import { getWordCode, type WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
@@ -145,7 +145,7 @@ async function cooperativeRankSort(
   return (chunks[0] ?? []).map((item) => item.row);
 }
 
-function firstPhonemeAnchorSlot(spec: MatchSpec): SlotConstraint | null {
+function firstPhonemeAnchorSlot(spec: CanonicalMatchSpec): CanonicalMatchSpec['slots'][number] | null {
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
       return slot;
@@ -154,7 +154,7 @@ function firstPhonemeAnchorSlot(spec: MatchSpec): SlotConstraint | null {
   return null;
 }
 
-function countPhonemeAnchorSlots(spec: MatchSpec): number {
+function countPhonemeAnchorSlots(spec: CanonicalMatchSpec): number {
   let n = 0;
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') n += 1;
@@ -165,7 +165,7 @@ function countPhonemeAnchorSlots(spec: MatchSpec): number {
 /** Early sync shrink after inverted-index load (code digits on ?30+人 etc.). */
 function filterByRequiredCodes(
   rows: WordRow[],
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   mode: string,
 ): WordRow[] {
   const required = buildRequiredCodes(spec);
@@ -175,9 +175,9 @@ function filterByRequiredCodes(
   return rows.filter((w) => matchesCodePositions(getWordCode(w), required, mode));
 }
 
-function shouldUseMaskCandidates(spec: MatchSpec): boolean {
+function shouldUseMaskCandidates(spec: CanonicalMatchSpec): boolean {
   // ponytail: only when mask has fixed CJK literals (not pure ?? / digit masks)
-  if (!spec.mask || spec.compound_kind || getEqualsSpan(spec)) {
+  if (!spec.mask || spec.compound || spec.equals_span) {
     return false;
   }
   // Pure ? or code-digit masks have no char GLOB value — use length+code path instead
@@ -189,7 +189,7 @@ function shouldUseMaskCandidates(spec: MatchSpec): boolean {
 }
 
 /** True when filter needs the full length bucket (desktop word_cache parity; no 2000 cap). */
-function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
+function specNeedsFullLengthBucket(spec: CanonicalMatchSpec): boolean {
   return (spec.slots ?? []).some(
     (s) => JYUTPING_LETTER_KINDS.has(s.kind) || PHONEME_ANCHOR_KINDS.has(s.kind),
   );
@@ -199,7 +199,7 @@ function specNeedsFullLengthBucket(spec: MatchSpec): boolean {
  * Complete width-digit code for SQL IN variants — from ctx/prefix, pure digit mask, or dense code_digit slots.
  * Partial codes (not every position) return null so phoneme path can take unlimited bucket.
  */
-export function narrowingCodeFromSpec(spec: MatchSpec, ctxCode?: string | null): string | null {
+export function narrowingCodeFromSpec(spec: CanonicalMatchSpec, ctxCode?: string | null): string | null {
   /** PR-A: dense code only from ctx / mask digits / code_digit slots — never code_prefix. */
   if (ctxCode && /^\d+$/.test(ctxCode) && ctxCode.length === spec.width) {
     return ctxCode;
@@ -238,14 +238,15 @@ export type ExecuteMatchSpecContext = {
 
 /** Filter all matching rows — port of PositionMatchEngine.match (no sort/page). */
 export async function filterMatchSpecRows(
-  spec: MatchSpec,
+  input: CanonicalMatchSpec | MatchSpec,
   ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code' | 'shouldCancel'>,
 ): Promise<WordRow[]> {
+  const spec = 'candidate_scope' in input ? input : canonicalizeLegacyMatchSpec(input);
   if (!spec || spec.width === 0) {
     return [];
   }
   throwIfSearchCancelled(ctx.shouldCancel);
-  if (getEqualsSpan(spec) || spec.compound_kind) {
+  if (spec.equals_span || spec.compound) {
     return applyMatchSpec(spec, [], ctx.db, ctx.mode, ctx.shouldCancel);
   }
   const hasPositionFilters =
@@ -296,7 +297,7 @@ export async function filterMatchSpecRows(
             .map((digit, pos) => (digit != null ? { pos, digit } : null))
             .filter((x): x is { pos: number; digit: string } => x != null);
       const minimal = Boolean(
-        spec.extra?.workbench_full_bucket_scan
+        spec.candidate_scope === 'complete'
         && !(spec.slots ?? []).length
         && spec.mask
         && [...spec.mask].every((char) => char === '?' || char === '_' || char === '%'),
@@ -306,7 +307,7 @@ export async function filterMatchSpecRows(
         mode: ctx.mode,
         unlimited:
           specNeedsFullLengthBucket(spec)
-          || Boolean(spec.extra?.workbench_full_bucket_scan)
+          || spec.candidate_scope === 'complete'
           || Boolean(code)
           || Boolean(codePositions?.length),
         codePositions,
@@ -314,24 +315,22 @@ export async function filterMatchSpecRows(
       });
     }
   }
-  if (fromPhonemeIndex) {
-    if (!spec.extra) spec.extra = {};
-    spec.extra.phoneme_index_prefiltered = true;
-  }
   throwIfSearchCancelled(ctx.shouldCancel);
-  return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel);
+  return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel, {
+    phonemeIndexPrefiltered: fromPhonemeIndex,
+  });
 }
 
 /** Filter + sort + page; `total` is the full sorted pool size (ADR-0064). */
-export async function executeMatchSpecPage(
-  spec: MatchSpec,
+async function executeCanonicalPage(
+  spec: CanonicalMatchSpec,
   ctx: ExecuteMatchSpecContext,
 ): Promise<{ rows: WordRow[]; total: number }> {
   if (!spec || spec.width === 0) {
     return { rows: [], total: 0 };
   }
-  const shouldYield = Boolean(spec.extra?.workbench_full_bucket_scan);
-  if (spec.extra?.dual_phoneme) {
+  const shouldYield = spec.candidate_scope === 'complete';
+  if (spec.phoneme_alternatives) {
     // Dual path materializes a truncated union; count that union after paging window math.
     const unpagedLimit = Math.max(ctx.limit + ctx.offset, ctx.limit) + 500;
     const base = {
@@ -340,9 +339,8 @@ export async function executeMatchSpecPage(
       code: ctx.code ?? null,
       shouldCancel: ctx.shouldCancel,
     };
-    const initialSpec = spec.extra?.dual_initial_spec as MatchSpec;
-    const finalSpec = spec.extra?.dual_final_spec as MatchSpec;
-    if (!initialSpec || !finalSpec) return { rows: [], total: 0 };
+    const initialSpec = spec.phoneme_alternatives.initial;
+    const finalSpec = spec.phoneme_alternatives.final;
     const initialRows = (await cooperativeSort(
       await filterMatchSpecRows(initialSpec, base),
       compareSearchResults,
@@ -374,12 +372,13 @@ export async function executeMatchSpecPage(
   const filtered = await filterMatchSpecRows(spec, ctx);
   throwIfSearchCancelled(ctx.shouldCancel);
   let sorted: WordRow[];
-  const literalPositions = spec.extra?.literal_positions;
-  if (spec.literal_priority && Array.isArray(literalPositions) && literalPositions.length) {
-    const positions = literalPositions as Array<[number, string]>;
+  const literalPositions = [...spec.mask]
+    .map((char, pos) => (/[\p{Script=Han}]/u.test(char) ? [pos, char] as [number, string] : null))
+    .filter((item): item is [number, string] => item != null);
+  if (spec.ranking === 'literal_priority' && literalPositions.length) {
     sorted = await cooperativeSort(
       filtered,
-      (a, b) => literalPriorityCompare(a, b, positions),
+      (a, b) => literalPriorityCompare(a, b, literalPositions),
       ctx.shouldCancel,
       shouldYield,
     );
@@ -394,6 +393,14 @@ export async function executeMatchSpecPage(
   };
 }
 
+/** Legacy compatibility seam: normalize once, then execute the canonical value. */
+export async function executeMatchSpecPage(
+  spec: MatchSpec,
+  ctx: ExecuteMatchSpecContext,
+): Promise<{ rows: WordRow[]; total: number }> {
+  return executeCanonicalPage(canonicalizeLegacyMatchSpec(spec), ctx);
+}
+
 /** Port of run_position_query_tracked — filter, sort, then page. */
 export async function executeMatchSpec(
   spec: MatchSpec,
@@ -402,10 +409,10 @@ export async function executeMatchSpec(
   return (await executeMatchSpecPage(spec, ctx)).rows;
 }
 
-/** Canonical execution entry; legacy filters stay behind one adapter seam. */
+/** Canonical execution entry. */
 export async function executeCanonicalMatchSpecPage(
   spec: CanonicalMatchSpec,
   ctx: ExecuteMatchSpecContext,
 ): Promise<{ rows: WordRow[]; total: number }> {
-  return executeMatchSpecPage(canonicalMatchSpecToLegacy(spec), ctx);
+  return executeCanonicalPage(spec, ctx);
 }

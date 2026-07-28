@@ -4,9 +4,8 @@ from __future__ import annotations
 import re
 from typing import Any, Optional
 
-from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.position_match.canonical import CanonicalMatchSpec
 from app.services.position_match.compiler import compile_parsed_query
-from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
     DigitCodeQuery,
@@ -34,24 +33,20 @@ _SLOT_PRIORITY = {
 }
 
 
-def build_explain_ir(spec: MatchSpec, parsed: ParsedQuery) -> dict[str, Any]:
+def build_explain_ir(spec: CanonicalMatchSpec, parsed: ParsedQuery) -> dict[str, Any]:
     """MatchSpec path: structural IR (creator copy only in render)."""
-    working = spec
-    if spec.extra.get("dual_phoneme"):
-        dual = spec.extra.get("dual_final_spec")
-        if isinstance(dual, MatchSpec):
-            working = dual
+    working = spec.phoneme_alternatives.final if spec.phoneme_alternatives else spec
 
     from app.services.position_match.mask_adapter import has_code_digit_constraints
 
-    equals = get_equals_span(working)
+    equals = working.equals_span
     if equals and has_code_digit_constraints(working):
         return _ir_code_sandwich(working, equals, parsed)
-    if equals and working.extra.get("prefix_wildcard_equals"):
+    if equals and equals.start_pos == 1 and equals.phoneme_anchor_only:
         return _ir_prefix_wildcard_equals(working, equals)
     if equals and equals.whole_word:
         return _ir_whole_word_equals(working, equals)
-    if working.compound_kind:
+    if working.compound:
         return _ir_compound(working)
     return _ir_slot_scan(working, equals)
 
@@ -66,7 +61,7 @@ def explain_ir_for_query(q: str, mode: str = "m1", pzmode: str | None = None) ->
         return None
     if _is_short_circuit(parsed):
         return None
-    spec = canonical_match_spec_to_legacy(compile_parsed_query(parsed))
+    spec = compile_parsed_query(parsed)
     return build_explain_ir(spec, parsed)
 
 
@@ -84,8 +79,8 @@ def _is_short_circuit(parsed: ParsedQuery) -> bool:
     )
 
 
-def _build_match_spec(parsed: ParsedQuery) -> Optional[MatchSpec]:
-    return canonical_match_spec_to_legacy(compile_parsed_query(parsed))
+def _build_match_spec(parsed: ParsedQuery) -> Optional[CanonicalMatchSpec]:
+    return compile_parsed_query(parsed)
 
 
 def _equals_ir(equals) -> dict[str, Any]:
@@ -98,7 +93,7 @@ def _equals_ir(equals) -> dict[str, Any]:
     }
 
 
-def _code_prefix_ir(spec: MatchSpec) -> Optional[dict[str, Any]]:
+def _code_prefix_ir(spec: CanonicalMatchSpec) -> Optional[dict[str, Any]]:
     from app.services.position_match.mask_adapter import (
         code_digit_string_from_spec,
         required_codes_from_spec,
@@ -138,7 +133,7 @@ def _constraints_to_ir(constraints: dict[int, tuple[str, str]]) -> list[dict[str
     return items
 
 
-def _ir_whole_word_equals(spec: MatchSpec, equals) -> dict[str, Any]:
+def _ir_whole_word_equals(spec: CanonicalMatchSpec, equals) -> dict[str, Any]:
     ir: dict[str, Any] = {
         "variant": "whole_word_equals",
         "width": spec.width,
@@ -150,7 +145,7 @@ def _ir_whole_word_equals(spec: MatchSpec, equals) -> dict[str, Any]:
     return ir
 
 
-def _ir_prefix_wildcard_equals(spec: MatchSpec, equals) -> dict[str, Any]:
+def _ir_prefix_wildcard_equals(spec: CanonicalMatchSpec, equals) -> dict[str, Any]:
     return {
         "variant": "prefix_wildcard_equals",
         "width": spec.width,
@@ -158,7 +153,7 @@ def _ir_prefix_wildcard_equals(spec: MatchSpec, equals) -> dict[str, Any]:
     }
 
 
-def _ir_code_sandwich(spec: MatchSpec, equals, parsed: ParsedQuery) -> dict[str, Any]:
+def _ir_code_sandwich(spec: CanonicalMatchSpec, equals, parsed: ParsedQuery) -> dict[str, Any]:
     raw = getattr(parsed, "raw_q", "") or ""
     if equals.whole_word:
         ir: dict[str, Any] = {
@@ -180,12 +175,12 @@ def _ir_code_sandwich(spec: MatchSpec, equals, parsed: ParsedQuery) -> dict[str,
     }
 
 
-def _ir_compound(spec: MatchSpec) -> dict[str, Any]:
+def _ir_compound(spec: CanonicalMatchSpec) -> dict[str, Any]:
     compound: dict[str, Any] = {
-        "kind": spec.compound_kind,
+        "kind": spec.compound.kind,
         "width": spec.width,
     }
-    if spec.compound_kind == "doubled_syllable":
+    if spec.compound.kind == "doubled_syllable":
         rhyme = next(
             (s.value for s in spec.slots if s.kind == "final_anchor" and isinstance(s.value, str)),
             None,
@@ -198,13 +193,13 @@ def _ir_compound(spec: MatchSpec) -> dict[str, Any]:
         if rhyme:
             compound["tail_rhyme"] = rhyme
     else:
-        connective = spec.extra.get("connective")
+        connective = spec.compound.connective
         if connective:
             compound["connective"] = str(connective)
     return {"variant": "compound", "width": spec.width, "compound": compound}
 
 
-def _ir_slot_scan(spec: MatchSpec, equals) -> dict[str, Any]:
+def _ir_slot_scan(spec: CanonicalMatchSpec, equals) -> dict[str, Any]:
     constraints = _effective_constraints(spec, equals)
     return {
         "variant": "slot_scan",
@@ -214,7 +209,7 @@ def _ir_slot_scan(spec: MatchSpec, equals) -> dict[str, Any]:
 
 
 def _effective_constraints(
-    spec: MatchSpec,
+    spec: CanonicalMatchSpec,
     equals,
 ) -> dict[int, tuple[str, str]]:
     from app.services.position_match.mask_adapter import required_codes_from_spec

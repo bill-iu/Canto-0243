@@ -11,7 +11,8 @@ import {
   maskFixedLiteralPrefix,
   matchesMaskLiteralChars,
 } from './mask-adapter.ts';
-import type { CandidateSource, MatchSpec } from './spec.ts';
+import type { CanonicalMatchSpec } from './canonical.ts';
+import type { CandidateSource } from './spec.ts';
 import {
   CANDIDATE_FALLBACK_LIMIT,
   lengthBucketNeedsUnlimited,
@@ -176,7 +177,7 @@ export class LengthCodeCandidateSource implements CandidateSource {
 }
 
 /** Port of sources._compound_rhyme_char */
-export function compoundRhymeChar(spec: MatchSpec): string | undefined {
+export function compoundRhymeChar(spec: CanonicalMatchSpec): string | undefined {
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' && slot.value) {
       return String(slot.value);
@@ -185,17 +186,16 @@ export function compoundRhymeChar(spec: MatchSpec): string | undefined {
   return undefined;
 }
 
-export function compoundSearchSpecFromMatchSpec(spec: MatchSpec): CompoundSearchSpec | null {
-  if (!spec.compound_kind) {
+export function compoundSearchSpecFromMatchSpec(spec: CanonicalMatchSpec): CompoundSearchSpec | null {
+  if (!spec.compound) {
     return null;
   }
-  const connective = spec.extra?.connective;
   return {
-    compound_kind: spec.compound_kind,
+    compound_kind: spec.compound.kind,
     width: spec.width,
     code_prefix: codeDigitStringFromSpec(spec) ?? undefined,
     rhyme_char: compoundRhymeChar(spec),
-    connective: typeof connective === 'string' ? connective : undefined,
+    connective: spec.compound.connective ?? undefined,
   };
 }
 
@@ -229,7 +229,7 @@ export class CompoundCandidateSource implements CandidateSource {
 
 /** ponytail: MF-5 F5 compound_kind source — reuses compound.ts tier search */
 export async function getCompoundCandidatesForSpec(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   db: Database,
   mode: string,
 ): Promise<WordRow[]> {

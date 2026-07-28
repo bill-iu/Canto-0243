@@ -1,9 +1,7 @@
 /** Mask-family MatchSpec execution — mirror of _mask_family_search_result. */
 import type { Database } from '../sqljs.ts';
 import { sortWordRows } from '../ranking.ts';
-import { getEqualsSpan } from '../position-match/spec.ts';
-import { executeCanonicalMatchSpecPage, executeMatchSpec, filterMatchSpecRows } from '../position-match/engine.ts';
-import { canonicalMatchSpecToLegacy } from '../position-match/canonical.ts';
+import { executeCanonicalMatchSpecPage, filterMatchSpecRows } from '../position-match/engine.ts';
 import { compileParsedQuery } from '../position-match/compiler.ts';
 import type { ParsedQuery, QueryMode, QueryResult, SearchResult } from '../query-types.ts';
 import type { WordRow } from '../position-match/word-row.ts';
@@ -45,23 +43,22 @@ export async function executeMaskFamilySearchResult(
       total: page.total,
     };
   }
-  const spec = canonicalMatchSpecToLegacy(canonical);
   const searchMode = normalizeSearchMode(mode);
   const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
 
   let ordered: Awaited<ReturnType<typeof filterMatchSpecRows>>;
-  if (spec.extra?.dual_phoneme) {
+  if (canonical.phoneme_alternatives) {
     // Engine merges dual dimensions; pull a large window then page once for total.
-    ordered = await executeMatchSpec(spec, {
+    ordered = (await executeCanonicalMatchSpecPage(canonical, {
       ...dbCtx,
       limit: Math.max(offset + limit, limit) + 10_000,
       offset: 0,
-    });
+    })).rows;
   } else {
-    const allRows = await filterMatchSpecRows(spec, dbCtx);
-    const ranked = await sortMaskFamilyRows(spec, allRows, db, mode);
+    const allRows = await filterMatchSpecRows(canonical, dbCtx);
+    const ranked = await sortMaskFamilyRows(canonical, allRows, db, mode);
     ordered =
-      spec.literal_priority || spec.compound_kind ? ranked : sortWordRows(ranked);
+      canonical.ranking === 'literal_priority' || canonical.compound ? ranked : sortWordRows(ranked);
   }
 
   const total = (() => {
@@ -80,8 +77,8 @@ export async function executeMaskFamilySearchResult(
   });
 
   let hint: string | undefined;
-  if (!items.length && getEqualsSpan(spec)) {
-    const emptyHint = await codePrefixedWholeWordEqualsEmptyHint(spec, db);
+  if (!items.length && canonical.equals_span) {
+    const emptyHint = await codePrefixedWholeWordEqualsEmptyHint(canonical, db);
     if (emptyHint) {
       hint = emptyHint;
     }

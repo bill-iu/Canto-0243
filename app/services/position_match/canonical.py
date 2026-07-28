@@ -23,6 +23,7 @@ class CanonicalSlotConstraint:
     pos: int
     kind: str
     value: Optional[CanonicalSlotValue]
+    mask_token: Optional[str] = None
 
 
 @dataclass(frozen=True)
@@ -62,6 +63,10 @@ def _slot_key(slot: CanonicalSlotConstraint) -> tuple[int, str, str]:
     return slot.pos, slot.kind, repr(slot.value)
 
 
+def _slot_class_key(slot: CanonicalSlotConstraint) -> tuple[int, str]:
+    return slot.pos, slot.kind
+
+
 def _freeze_span(span: Optional[EqualsSpan]) -> Optional[EqualsSpan]:
     if span is None:
         return None
@@ -91,24 +96,53 @@ def finalize_canonical_match_spec(
     if not isinstance(width, int) or width <= 0:
         raise ValueError(f"MatchSpec width must be a positive integer: {width}")
 
-    canonical_slots = tuple(
-        sorted(
-            (
-                CanonicalSlotConstraint(slot.pos, slot.kind, _value(slot.value))
-                for slot in slots
-            ),
-            key=_slot_key,
-        )
-    )
-    for slot in canonical_slots:
+    raw_mask = "?" * width if not mask else str(mask)
+    if len(raw_mask) != width:
+        raise ValueError(f"MatchSpec mask width mismatch: {len(raw_mask)} != {width}")
+
+    mutable_slots = [
+        CanonicalSlotConstraint(slot.pos, slot.kind, _value(slot.value))
+        for slot in slots
+    ]
+    for slot in mutable_slots:
         if not isinstance(slot.pos, int) or slot.pos < 0 or slot.pos >= width:
             raise ValueError(f"MatchSpec slot position out of range: {slot.pos}")
-    if len(set(_slot_key(slot) for slot in canonical_slots)) != len(canonical_slots):
-        raise ValueError("MatchSpec duplicate slot")
+    for pos, token in enumerate(raw_mask):
+        if token in {"?", "_", "%"}:
+            continue
+        owner_index = next(
+            (
+                index
+                for index, slot in enumerate(mutable_slots)
+                if slot.pos == pos and isinstance(slot.value, str) and slot.value == token
+            ),
+            None,
+        )
+        if owner_index is None and not token.isdigit():
+            mutable_slots.append(
+                CanonicalSlotConstraint(pos, "literal_char", token, token)
+            )
+            continue
+        if owner_index is None:
+            raise ValueError(f"MatchSpec mask token has no owning slot: {pos}:{token}")
+        owner = mutable_slots[owner_index]
+        mutable_slots[owner_index] = CanonicalSlotConstraint(
+            owner.pos, owner.kind, owner.value, token
+        )
+    canonical_slots = tuple(sorted(mutable_slots, key=_slot_key))
+    seen_slots: dict[tuple[int, str], CanonicalSlotValue | None] = {}
+    for slot in canonical_slots:
+        key = _slot_class_key(slot)
+        if key in seen_slots:
+            label = "duplicate" if seen_slots[key] == slot.value else "conflicting"
+            raise ValueError(f"MatchSpec {label} slot: {key}")
+        seen_slots[key] = slot.value
 
-    canonical_mask = "?" * width if not mask else str(mask)
-    if len(canonical_mask) != width:
-        raise ValueError(f"MatchSpec mask width mismatch: {len(canonical_mask)} != {width}")
+    mask_tokens = ["?"] * width
+    for slot in canonical_slots:
+        if slot.mask_token:
+            mask_tokens[slot.pos] = slot.mask_token
+    canonical_mask = "".join(mask_tokens)
 
     span = _freeze_span(equals_span)
     if span is not None and not 0 <= span.start_pos < width:
@@ -144,6 +178,18 @@ def canonicalize_legacy_match_spec(spec: MatchSpec) -> CanonicalMatchSpec:
         )
         if isinstance(initial, MatchSpec) and isinstance(final, MatchSpec)
         else None
+    )
+    return finalize_canonical_match_spec(
+        width=spec.width,
+        slots=spec.slots,
+        mask=spec.mask,
+        equals_span=get_equals_span(spec),
+        compound_kind=spec.compound_kind,
+        connective=raw.get("connective") if isinstance(raw.get("connective"), str) else None,
+        ranking="literal_priority" if spec.literal_priority else "default",
+        candidate_scope="complete" if raw.get("workbench_full_bucket_scan") else "bounded",
+        code_mode=raw.get("code_mode") if isinstance(raw.get("code_mode"), str) else None,
+        phoneme_alternatives=alternatives,
     )
 
 
@@ -194,18 +240,6 @@ def canonical_match_spec_to_legacy(spec: CanonicalMatchSpec) -> MatchSpec:
         mask=spec.mask,
         compound_kind=spec.compound.kind if spec.compound else None,
         extra=extra,
-    )
-    return finalize_canonical_match_spec(
-        width=spec.width,
-        slots=spec.slots,
-        mask=spec.mask,
-        equals_span=get_equals_span(spec),
-        compound_kind=spec.compound_kind,
-        connective=raw.get("connective") if isinstance(raw.get("connective"), str) else None,
-        ranking="literal_priority" if spec.literal_priority else "default",
-        candidate_scope="complete" if raw.get("workbench_full_bucket_scan") else "bounded",
-        code_mode=raw.get("code_mode") if isinstance(raw.get("code_mode"), str) else None,
-        phoneme_alternatives=alternatives,
     )
 
 
