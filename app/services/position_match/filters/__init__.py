@@ -9,6 +9,8 @@ from app.services.position_match.filters.f1_slot_code import (
     filter_words_by_code_and_mask,
     matches_code_positions,
     preferred_pronunciation_rows,
+    filter_single_digit_to_preferred_readings,
+    pick_authoritative_among,
 )
 from app.services.position_match.mask_adapter import (
     append_code_digit_slots,
@@ -46,8 +48,10 @@ __all__ = [
     "dense_code_from_required",
     "dense_code_from_spec",
     "filter_candidates_by_match_spec",
+    "filter_single_digit_to_preferred_readings",
     "filter_words_by_code_and_mask",
     "has_code_digit_constraints",
+    "pick_authoritative_among",
     "matches_code_positions",
     "matches_equals_phoneme_span",
     "matches_final_options",

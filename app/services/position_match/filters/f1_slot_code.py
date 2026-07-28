@@ -35,6 +35,39 @@ def preferred_pronunciation_rows(rows: list) -> list:
     return [word for rank, word in ranked if rank == best]
 
 
+def pick_authoritative_among(rows: list):
+    """Best-rank ∩ 碼命中 後揀展示列（pron → essay → !aa → jyut）。"""
+    from app.domain.lexicon.reference_reading import select_authoritative_pronunciation_row
+
+    return select_authoritative_pronunciation_row(rows)
+
+
+def filter_single_digit_to_preferred_readings(
+    all_rows_for_hit_chars: list,
+    *,
+    code_variants: set[str],
+) -> list:
+    """單 digit 純碼：每字面只以全庫該字最佳 pron_rank 讀音比碼；命中後權威序揀一列。
+
+    all_rows_for_hit_chars 必須含該字**全部** length=1 讀音（唔可以只係碼命中列），
+    否則罕見讀會被誤判為「最佳」。
+    """
+    if not all_rows_for_hit_chars:
+        return []
+    out: list = []
+    for _char, group in _group_candidates_by_char(all_rows_for_hit_chars).items():
+        preferred = preferred_pronunciation_rows(group)
+        matching = [
+            word
+            for word in preferred
+            if (get_word_sort_code(word) or "") in code_variants
+        ]
+        picked = pick_authoritative_among(matching)
+        if picked is not None:
+            out.append(picked)
+    return out
+
+
 def _word_passes_position_filters(
     word,
     *,

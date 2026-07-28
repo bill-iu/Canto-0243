@@ -32,7 +32,28 @@ class WordLookupExecutor:
         query = self._db.query(Word)
         query = apply_code_filter(query, q, mode)
         query = query.filter(length_filter(len(q)))
-        words = deduplicate_words(query.all())
+        hits = query.all()
+        # 單 digit：只保留「該字全庫最佳 pron_rank」讀音命中碼者（剔罕見／錯讀噪音）
+        if len(q) == 1:
+            from app.services.position_match.filters.f1_slot_code import (
+                filter_single_digit_to_preferred_readings,
+            )
+            from app.utils.jyutping_codec import get_code_variants
+
+            chars = {w.char for w in hits if w.char}
+            if not chars:
+                return []
+            all_rows = (
+                self._db.query(Word)
+                .filter(Word.char.in_(chars), length_filter(1))
+                .all()
+            )
+            words = filter_single_digit_to_preferred_readings(
+                all_rows,
+                code_variants=set(get_code_variants(q, mode)),
+            )
+        else:
+            words = deduplicate_words(hits)
         words.sort(key=search_result_sort_key)
         return words
 
