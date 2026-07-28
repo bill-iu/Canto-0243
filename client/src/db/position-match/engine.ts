@@ -12,7 +12,7 @@ import {
   matchesCodePositions,
 } from './filters/f1-slot-code.ts';
 import { canonicalizeLegacyMatchSpec, type CanonicalMatchSpec } from './canonical.ts';
-import type { MatchSpec, SlotConstraint } from './spec.ts';
+import type { MatchSpec } from './spec.ts';
 import { getWordCode, type WordRow } from './word-row.ts';
 
 const JYUTPING_LETTER_KINDS = new Set(['rhyme_letters', 'syllable_letters', 'initial_letters']);
@@ -145,7 +145,7 @@ async function cooperativeRankSort(
   return (chunks[0] ?? []).map((item) => item.row);
 }
 
-function firstPhonemeAnchorSlot(spec: CanonicalMatchSpec): SlotConstraint | null {
+function firstPhonemeAnchorSlot(spec: CanonicalMatchSpec): CanonicalMatchSpec['slots'][number] | null {
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'final_anchor' || slot.kind === 'initial_anchor') {
       return slot;

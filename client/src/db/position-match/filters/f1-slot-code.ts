@@ -5,7 +5,7 @@ import { pronRankSortValueForWord } from '../../ranking.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
 import { matchesMaskLiteralChars } from '../mask-adapter.ts';
 import type { CanonicalMatchSpec } from '../canonical.ts';
-import type { MatchSpec, SlotConstraint } from '../spec.ts';
+import type { MatchSpec } from '../spec.ts';
 import { getRhymeFinals, getWordCode, getWordParts, getWordText, type WordRow } from '../word-row.ts';
 import {
   anchorPhonemeOptions,
@@ -55,6 +55,7 @@ export async function wordPassesPositionFilters(
   db: Database,
   literalChar: string | null,
   phonemeOptCache?: Map<string, Set<string>>,
+  phonemeIndexPrefiltered = false,
 ): Promise<boolean> {
   const wordChar = getWordText(word);
   if (wordChar.length !== spec.width) {
@@ -83,7 +84,7 @@ export async function wordPassesPositionFilters(
       return false;
     }
   }
-  const skipPhoneme = Boolean(spec.extra?.phoneme_index_prefiltered);
+  const skipPhoneme = phonemeIndexPrefiltered;
   for (const slot of spec.slots ?? []) {
     if (slot.kind === 'tone_class') {
       const digit = code[slot.pos];
@@ -253,6 +254,7 @@ export async function filterWordsByCodeAndMask(
             db,
             literalChar,
             phonemeOptCache,
+            skipPhoneme,
           )
         ) {
           out.push(word);
@@ -277,6 +279,7 @@ export async function filterWordsByCodeAndMask(
         db,
         literalChar,
         phonemeOptCache,
+        skipPhoneme,
       )
     ) {
       out.push(word);
@@ -287,7 +290,7 @@ export async function filterWordsByCodeAndMask(
 
 export async function narrowByPhonemeAnchors(
   candidates: WordRow[],
-  slots: SlotConstraint[],
+  slots: ReadonlyArray<Pick<CanonicalMatchSpec['slots'][number], 'pos' | 'kind' | 'value'>>,
   db: Database,
 ): Promise<WordRow[]> {
   let narrowed = candidates;

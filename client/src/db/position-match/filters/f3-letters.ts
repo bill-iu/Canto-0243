@@ -1,7 +1,7 @@
 /** MF-5 F3 — jyutping letter slots (rhyme/syllable/initial_letters). */
 import type { Database } from '../../sqljs.ts';
 import { matchesJyutpingAnchorAtPosition } from '../../jyutping-anchor.ts';
-import type { SlotConstraint } from '../spec.ts';
+import type { CanonicalMatchSpec } from '../canonical.ts';
 import type { WordRow } from '../word-row.ts';
 
 export const JYUTPING_LETTER_KINDS = new Set([
@@ -10,7 +10,9 @@ export const JYUTPING_LETTER_KINDS = new Set([
   'initial_letters',
 ]);
 
-export function slotConstraintMatches(word: WordRow, slot: SlotConstraint, _db: Database): boolean {
+type PositionSlot = Pick<CanonicalMatchSpec['slots'][number], 'pos' | 'kind' | 'value'>;
+
+export function slotConstraintMatches(word: WordRow, slot: PositionSlot, _db: Database): boolean {
   if (!JYUTPING_LETTER_KINDS.has(slot.kind)) {
     return false;
   }
@@ -24,7 +26,7 @@ export function slotConstraintMatches(word: WordRow, slot: SlotConstraint, _db: 
 
 export function narrowByJyutpingLetterSlots(
   candidates: WordRow[],
-  slots: SlotConstraint[],
+  slots: ReadonlyArray<PositionSlot>,
   db: Database,
 ): WordRow[] {
   let narrowed = candidates;

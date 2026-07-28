@@ -2,6 +2,7 @@
  * QueryKind → MatchSpec builders — port of app/services/query_match_spec_registry.py (MF-2)
  */
 import { codeDigitStringFromSpec } from './filters/f1-slot-code.ts';
+import { canonicalizeLegacyMatchSpec } from './canonical.ts';
 import {
   getEqualsSpan,
   type MatchSpec,
@@ -137,7 +138,7 @@ export function validateRepresentativeMatchSpec(
     }
   }
   if ('code_prefix' in expected) {
-    const got = codeDigitStringFromSpec(spec);
+    const got = codeDigitStringFromSpec(canonicalizeLegacyMatchSpec(spec));
     if (got !== expected.code_prefix) {
       throw new Error(`match-spec registry: ${q} code_prefix ${got} != ${expected.code_prefix}`);
     }

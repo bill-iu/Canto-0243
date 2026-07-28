@@ -10,9 +10,8 @@ import {
   codeDigitStringFromSpec,
   hasCodeDigitConstraints,
 } from './position-match/filters/f1-slot-code.ts';
-import type { CanonicalMatchSpec } from './position-match/canonical.ts';
+import type { CanonicalEqualsSpan, CanonicalMatchSpec } from './position-match/canonical.ts';
 import { compileParsedQuery } from './position-match/compiler.ts';
-import type { EqualsSpan } from './position-match/spec.ts';
 
 const WILDCARD_RE = /^[?_%]$/;
 const DIGIT_RE = /^\d$/;
@@ -127,7 +126,7 @@ function isShortCircuit(parsed: ParsedQuery): boolean {
   );
 }
 
-function equalsIr(equals: EqualsSpan): EqualsIr {
+function equalsIr(equals: CanonicalEqualsSpan): EqualsIr {
   const dimension = equals.dimension === 'final' || equals.dimension === 'rhyme'
     ? 'final'
     : 'initial';
@@ -179,7 +178,7 @@ function constraintsToIr(constraints: Map<number, [string, string]>): PositionCo
     });
 }
 
-function irWholeWordEquals(spec: CanonicalMatchSpec, equals: EqualsSpan): ExplainIr {
+function irWholeWordEquals(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan): ExplainIr {
   const ir: ExplainIr = {
     variant: 'whole_word_equals',
     width: spec.width,
@@ -192,7 +191,7 @@ function irWholeWordEquals(spec: CanonicalMatchSpec, equals: EqualsSpan): Explai
   return ir;
 }
 
-function irPrefixWildcardEquals(spec: CanonicalMatchSpec, equals: EqualsSpan): ExplainIr {
+function irPrefixWildcardEquals(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan): ExplainIr {
   return {
     variant: 'prefix_wildcard_equals',
     width: spec.width,
@@ -200,7 +199,7 @@ function irPrefixWildcardEquals(spec: CanonicalMatchSpec, equals: EqualsSpan): E
   };
 }
 
-function irCodeSandwich(spec: CanonicalMatchSpec, equals: EqualsSpan, parsed: ParsedQuery): ExplainIr {
+function irCodeSandwich(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan, parsed: ParsedQuery): ExplainIr {
   const raw = parsed.raw_q || '';
   if (equals.whole_word) {
     const ir: ExplainIr = {
@@ -249,7 +248,7 @@ function irCompound(spec: CanonicalMatchSpec): ExplainIr {
   return { variant: 'compound', width: spec.width, compound };
 }
 
-function irSlotScan(spec: CanonicalMatchSpec, equals: EqualsSpan | null): ExplainIr {
+function irSlotScan(spec: CanonicalMatchSpec, equals: CanonicalEqualsSpan | null): ExplainIr {
   const constraints = effectiveConstraints(spec, equals);
   return {
     variant: 'slot_scan',
@@ -260,7 +259,7 @@ function irSlotScan(spec: CanonicalMatchSpec, equals: EqualsSpan | null): Explai
 
 function effectiveConstraints(
   spec: CanonicalMatchSpec,
-  equals: EqualsSpan | null,
+  equals: CanonicalEqualsSpan | null,
 ): Map<number, [string, string]> {
   const result = new Map<number, [string, string]>();
 
