@@ -7,6 +7,8 @@ import {
 } from '../src/workbench/workbench-coordinator.ts';
 import { defaultConstraintsUI } from '../src/workbench/session/defaults.ts';
 import { createTouchGestureState, reduceTouchGesture } from '../src/workbench/touch-gesture.ts';
+import { WorkbenchReadingLifecycle } from '../src/workbench/workbench-reading-lifecycle.ts';
+import type { WorkbenchAdapter } from '../src/workbench/workbench-adapter.ts';
 
 function assert(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(`workbench coordinator: ${message}`);
@@ -79,5 +81,30 @@ result = reduceTouchGesture(gesture, { type: 'up', pointerId: 5, pos: 0, x: 10, 
 assert(result.intent === null, 'multi-touch first completion is ignored');
 result = reduceTouchGesture(result.state, { type: 'up', pointerId: 6, pos: 1, x: 30, y: 10, at: 11 });
 assert(result.intent === null, 'multi-touch second completion is ignored');
+
+let readingSignal: AbortSignal | undefined;
+const readingAdapter: WorkbenchAdapter = {
+  resolveLine(_surface, signal) {
+    readingSignal = signal;
+    return new Promise((_resolve, reject) => {
+      signal?.addEventListener(
+        'abort',
+        () => reject(new DOMException('Aborted', 'AbortError')),
+        { once: true },
+      );
+    });
+  },
+  async findCandidates() {
+    throw new Error('unused');
+  },
+};
+const lifecycle = new WorkbenchReadingLifecycle(readingAdapter);
+const pendingReading = lifecycle.resolveLine(1, [{ surface: '香' }], []);
+lifecycle.setActive(false);
+await pendingReading.then(
+  () => { throw new Error('inactive reading resolved'); },
+  (error) => assert(error instanceof DOMException && error.name === 'AbortError', 'inactive reading abort'),
+);
+assert(readingSignal?.aborted, 'inactive coordinator must abort its reading request');
 
 console.log('workbench coordinator self-check ok');

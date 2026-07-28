@@ -226,7 +226,10 @@
       "expected": {
         "width": 2,
         "mask": "門0",
-        "slots": [{"pos": 1, "kind": "code_digit", "value": "0"}],
+        "slots": [
+          {"pos": 0, "kind": "literal_char", "value": "門"},
+          {"pos": 1, "kind": "code_digit", "value": "0"}
+        ],
         "equals_span": null,
         "compound": null,
         "ranking": "literal_priority",

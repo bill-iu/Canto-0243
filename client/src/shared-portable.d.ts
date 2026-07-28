@@ -19,6 +19,11 @@ declare module '@shared/query-tabs' {
     results: unknown[];
     offset: number;
     total: number | null;
+    mode?: string;
+    pzmode?: string;
+    shuffled?: boolean;
+    scrollTop?: number;
+    dataVersion?: string | null;
     historyStack?: { q: string; mode: string; pzmode?: string }[];
     historyIndex?: number;
     relation?: Record<string, string>;

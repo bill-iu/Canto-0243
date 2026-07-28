@@ -18,6 +18,10 @@ class CanonicalArchitectureTests(unittest.TestCase):
         self.assertIn("execute_canonical_match_spec", source)
         self.assertNotIn("build_match_spec_for_parsed", source)
 
+    def test_python_canonical_execution_does_not_convert_back_to_legacy(self) -> None:
+        source = (ROOT / "app/services/position_match/engine.py").read_text(encoding="utf-8")
+        self.assertNotIn("canonical_match_spec_to_legacy", source)
+
 
 if __name__ == "__main__":
     unittest.main()

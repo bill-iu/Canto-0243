@@ -33,7 +33,7 @@ def filter_candidates_by_match_spec(
     db,
 ) -> list:
     if (
-        spec.extra.get("workbench_full_bucket_scan")
+        spec.candidate_scope == "complete"
         and not spec.slots
         and spec.mask
         and set(spec.mask) <= {"?", "_", "%"}
@@ -45,14 +45,27 @@ def filter_candidates_by_match_spec(
             and bool(get_word_sort_code(word))
             and bool(get_word_jyutping(word) or get_rhyme_finals(word))
         ]
-    if spec.extra.get("partial_rhyme_mask"):
+    anchor_count = sum(
+        slot.kind in ("final_anchor", "initial_anchor") for slot in spec.slots
+    )
+    if (
+        spec.width == 4
+        and anchor_count >= 2
+        and "?" in spec.mask
+        and any(slot.kind == "final_anchor" for slot in spec.slots)
+    ):
         slot_options = _partial_mask_slot_options(spec, db, dimension="final")
         candidates = [
             w for w in candidates
             if word_passes_partial_rhyme_mask(spec, w, db, slot_options=slot_options)
         ]
         return candidates
-    if spec.extra.get("partial_initial_mask"):
+    if (
+        spec.width == 4
+        and anchor_count >= 2
+        and "?" in spec.mask
+        and any(slot.kind == "initial_anchor" for slot in spec.slots)
+    ):
         slot_options = _partial_mask_slot_options(spec, db, dimension="initial")
         candidates = [
             w for w in candidates
@@ -92,7 +105,17 @@ def apply_match_spec(
     mode: str = "m1",
 ) -> list[Any]:
     """MatchSpec 單一過濾管線（equals／slot；ADR-0004 #6）。"""
-    if get_equals_span(spec):
+    from app.services.position_match.canonical import (
+        CanonicalMatchSpec,
+        canonicalize_legacy_match_spec,
+    )
+
+    spec = (
+        spec
+        if isinstance(spec, CanonicalMatchSpec)
+        else canonicalize_legacy_match_spec(spec)
+    )
+    if spec.equals_span:
         candidates = query_words_by_equals_spec(spec, db, mode)
         if has_code_digit_constraints(spec):
             candidates = filter_words_by_code_and_mask(
@@ -108,7 +131,7 @@ def apply_match_spec(
             )
         return candidates
     filtered = filter_candidates_by_match_spec(candidates, spec, mode, db)
-    if spec.compound_kind == "doubled_syllable":
+    if spec.compound and spec.compound.kind == "doubled_syllable":
         from app.domain.relations.compound_doubled_syllable import (
             row_has_uniform_syllable_letters,
         )

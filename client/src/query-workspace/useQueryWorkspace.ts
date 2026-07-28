@@ -24,6 +24,9 @@ import {
   type QueryWorkspaceSnapshot,
 } from './state.ts';
 import { buildPresentationCheckpoint } from './presentation.ts';
+import { useQueryWorkspaceDetail } from './useQueryWorkspaceDetail.ts';
+import { mergePickLookupResults } from '../../../shared/entry-detail-core.mjs';
+import { mergeShuffledResults, shuffleResults } from '../shuffle-results.ts';
 
 const SEARCH_LOADING_LABEL_DELAY_MS = 150;
 
@@ -35,16 +38,28 @@ export interface UseQueryWorkspaceOptions {
   pzmode: PingzeSubMode;
   fallback0243Mode: Last0243SearchMode;
   uiLang: 'zh' | 'zh-Hans' | 'en';
+  dataVersion: string;
   navigationAdapter?: QueryWorkspaceNavigationAdapter;
 }
 
-function snapshotFromTab(tab: QueryTab): QueryWorkspaceSnapshot<QueryResult> {
+function snapshotFromTab(
+  tab: QueryTab,
+  fallbackMode: UiMode,
+  fallbackPzMode: PingzeSubMode,
+  dataVersion: string,
+): QueryWorkspaceSnapshot<QueryResult> {
+  const cacheIsCurrent = tab.dataVersion === dataVersion;
   return {
     tabId: tab.id,
     q: tab.q || '',
-    results: (tab.results as QueryResult[]) || [],
-    offset: tab.offset || 0,
-    total: tab.total ?? null,
+    results: cacheIsCurrent ? (tab.results as QueryResult[]) || [] : [],
+    offset: cacheIsCurrent ? tab.offset || 0 : 0,
+    total: cacheIsCurrent ? tab.total ?? null : null,
+    mode: (tab.mode as UiMode | undefined) ?? fallbackMode,
+    pzmode: (tab.pzmode as PingzeSubMode | undefined) ?? fallbackPzMode,
+    shuffled: cacheIsCurrent && Boolean(tab.shuffled),
+    scrollTop: Number.isFinite(tab.scrollTop) ? Math.max(0, tab.scrollTop ?? 0) : 0,
+    dataVersion,
     posFilter: {
       pos: [...(tab.posFilter?.pos ?? [])] as QueryWorkspaceSnapshot<QueryResult>['posFilter']['pos'],
       family: [...(tab.posFilter?.family ?? [])] as QueryWorkspaceSnapshot<QueryResult>['posFilter']['family'],
@@ -69,6 +84,7 @@ export function useQueryWorkspace({
   pzmode,
   fallback0243Mode,
   uiLang,
+  dataVersion,
   navigationAdapter,
 }: UseQueryWorkspaceOptions) {
   countWorkspaceRender();
@@ -94,12 +110,15 @@ export function useQueryWorkspace({
   const presentationResultsRef = useRef<QueryResult[]>([]);
   const presentationShuffledRef = useRef(false);
   const [loadingVisible, setLoadingVisible] = useState(false);
-  const activatedTabRef = useRef<number | null>(null);
+  const activatedTabRef = useRef<string | null>(null);
   const activeRequestIdRef = useRef<number | null>(null);
   const requestSequenceRef = useRef(0);
   const frameAbortRef = useRef<AbortController | null>(null);
   const loadMoreAbortRef = useRef<AbortController | null>(null);
   const commitKeyRef = useRef<string | null>(null);
+  const presentationKeyRef = useRef('');
+  const pickAnchorRef = useRef<string | null>(null);
+  const pickAnchorRowsRef = useRef<QueryResult[]>([]);
   activeRequestIdRef.current = state.activeRequestId;
 
   const adapter = useMemo<QueryWorkspaceQueryAdapter>(
@@ -125,20 +144,21 @@ export function useQueryWorkspace({
       hydrateSearch('');
       return;
     }
-    if (activatedTabRef.current === activeTabId) return;
-    activatedTabRef.current = activeTabId;
+    const activationKey = `${activeTabId}\0${dataVersion}`;
+    if (activatedTabRef.current === activationKey) return;
+    activatedTabRef.current = activationKey;
     frameAbortRef.current?.abort();
     loadMoreAbortRef.current?.abort();
-    const snapshot = snapshotFromTab(activeTab);
+    const snapshot = snapshotFromTab(activeTab, mode, pzmode, dataVersion);
     presentationTabIdRef.current = activeTabId;
     presentationResultsRef.current = [...snapshot.results];
-    presentationShuffledRef.current = false;
+    presentationShuffledRef.current = snapshot.shuffled;
     setPresentationResultsState([...snapshot.results]);
-    setPresentationShuffledState(false);
+    setPresentationShuffledState(snapshot.shuffled);
     setPresentationGeneration((generation) => generation + 1);
     dispatch({ type: 'activateTab', snapshot });
     hydrateSearch(activeTab.q || '');
-  }, [activeTab, activeTabId, hydrateSearch]);
+  }, [activeTab, activeTabId, dataVersion, hydrateSearch, mode, pzmode]);
 
   useEffect(() => {
     if (!enabled || !isReady || activeTabId == null || !searchQuery.trim()) {
@@ -367,18 +387,60 @@ export function useQueryWorkspace({
     setPresentationGeneration((generation) => generation + 1);
   }, []);
 
-  const resetPresentation = useCallback(() => {
-    presentationResultsRef.current = [];
-    presentationShuffledRef.current = false;
-    setPresentationResultsState([]);
-    setPresentationShuffledState(false);
-    setPresentationGeneration((generation) => generation + 1);
-  }, []);
-
   const clearPresentationShuffle = useCallback(() => {
     presentationShuffledRef.current = false;
     setPresentationShuffledState(false);
   }, []);
+
+  useEffect(() => {
+    const key = `${state.activeFrame?.query ?? state.draftQuery}\0${state.mode}\0${state.pzmode}`;
+    if (presentationKeyRef.current !== key) {
+      presentationKeyRef.current = key;
+      clearPresentationShuffle();
+    }
+  }, [clearPresentationShuffle, state.activeFrame?.query, state.draftQuery, state.mode, state.pzmode]);
+
+  useEffect(() => {
+    const anchor = pickAnchorRef.current;
+    if (anchor && state.draftQuery.trim() === anchor && !presentationShuffled) {
+      if (!isLoading) {
+        presentResults(
+          mergePickLookupResults(anchor, pickAnchorRowsRef.current, state.results) as QueryResult[],
+        );
+        pickAnchorRef.current = null;
+        pickAnchorRowsRef.current = [];
+      }
+      return;
+    }
+    if (!presentationShuffled) {
+      presentResults(state.results);
+      return;
+    }
+    presentResults(mergeShuffledResults(presentationResultsRef.current, state.results));
+  }, [isLoading, presentResults, presentationShuffled, state.draftQuery, state.results]);
+
+  const showPickAnchor = useCallback((literal: string, rows: readonly QueryResult[]) => {
+    pickAnchorRef.current = literal;
+    pickAnchorRowsRef.current = [...rows];
+    presentResults(rows);
+    hydrateSearch(literal);
+  }, [hydrateSearch, presentResults]);
+
+  const waitForPickMerge = useCallback(async (signal: AbortSignal) => {
+    while (pickAnchorRef.current && !signal.aborted) {
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+  }, []);
+
+  const shuffle = useCallback(() => {
+    presentShuffledResults(shuffleResults([...state.results]));
+  }, [presentShuffledResults, state.results]);
+
+  const detail = useQueryWorkspaceDetail({
+    activeTab: activeTab?.view === 'search' ? activeTab : null,
+    isReady,
+    waitForPickMerge,
+  });
 
   const controls = {
     inputQuery,
@@ -408,15 +470,30 @@ export function useQueryWorkspace({
   const resultsActions = {
     loadMore,
     setFilter,
-    presentResults,
-    presentShuffledResults,
-    resetPresentation,
-    clearPresentationShuffle,
+    showPickAnchor,
+    waitForPickMerge,
+    shuffle,
+  };
+  const detailModel = {
+    open: detail.open,
+    model: detail.model,
+    relationsLoading: detail.relationsLoading,
+    literal: detail.literal,
+    preferredJyutping: detail.preferredJyutping,
+  };
+  const detailActions = {
+    close: detail.close,
+    saveActive: detail.saveActive,
+    forgetTab: detail.forgetTab,
+    openLiteral: detail.openLiteral,
+    openFromPick: detail.openFromPick,
   };
 
   return {
     controls,
     resultsModel,
     resultsActions,
+    detailModel,
+    detailActions,
   };
 }

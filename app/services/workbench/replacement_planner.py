@@ -12,8 +12,7 @@ from app.schemas.workbench_schema import (
     ReplacementPlanV1,
     WorkbenchCandidateResponse,
 )
-from app.services.position_match.engine import execute_match_spec
-from app.services.position_match.canonical import canonical_match_spec_to_legacy
+from app.services.position_match.engine import execute_canonical_match_spec
 from app.services.workbench.build_match_spec import build_match_spec, compile_replacement_plan
 from app.services.workbench.group_candidates import candidate_count_for_pool, group_candidates
 from app.services.workbench.limits import WORKBENCH_LEXICON_MAX_WORD_LEN
@@ -32,11 +31,8 @@ class ReplacementSnapshot:
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
     canonical = compile_replacement_plan(plan)
-    # Workbench paging owns the response window; canonical candidate_scope
-    # carries the complete-pool requirement into the transitional adapter.
-    spec = canonical_match_spec_to_legacy(canonical)
     result = execute(
-        spec,
+        canonical,
         code=None,
         mode=plan.mode,
         limit=plan.limit,
@@ -139,7 +135,7 @@ def build_replacement_snapshot(
     plan: ReplacementPlanV1,
     db,
     *,
-    execute=execute_match_spec,
+    execute=execute_canonical_match_spec,
     relation_projector=project_relation_pool,
 ) -> ReplacementSnapshot:
     """Build one immutable canonical pool before paging or POS projection."""
@@ -216,7 +212,7 @@ def plan_replacements(
     plan: ReplacementPlanV1,
     db,
     *,
-    execute=execute_match_spec,
+    execute=execute_canonical_match_spec,
     relation_projector=project_relation_pool,
 ) -> WorkbenchCandidateResponse:
     """Stateless compatibility entry; adapters retain build_replacement_snapshot."""

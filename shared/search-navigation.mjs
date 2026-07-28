@@ -75,6 +75,8 @@ function resetSearchTabHistory(tab, mode = "m1", pzmode = "m1") {
   tab.results = [];
   tab.offset = 0;
   tab.total = null;
+  tab.shuffled = false;
+  tab.scrollTop = 0;
   return tab;
 }
 

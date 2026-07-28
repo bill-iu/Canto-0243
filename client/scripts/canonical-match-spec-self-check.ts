@@ -3,7 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { normalizeAndParse } from '../src/db/query-engine.ts';
-import { canonicalMatchSpecToJson } from '../src/db/position-match/canonical.ts';
+import {
+  canonicalMatchSpecToJson,
+  finalizeCanonicalMatchSpec,
+} from '../src/db/position-match/canonical.ts';
 import { compileParsedQuery } from '../src/db/position-match/compiler.ts';
 import { loadRhymeLetterData } from '../src/db/rime-index-loader.node.ts';
 
@@ -50,5 +53,44 @@ try {
   lookupRejected = true;
 }
 assert(lookupRejected, 'pure Han lookup must not enter MatchSpec compiler');
+
+let conflictingSlotRejected = false;
+try {
+  finalizeCanonicalMatchSpec({
+    width: 1,
+    slots: [
+      { pos: 0, kind: 'code_digit', value: '2' },
+      { pos: 0, kind: 'code_digit', value: '3' },
+    ],
+  });
+} catch {
+  conflictingSlotRejected = true;
+}
+assert(conflictingSlotRejected, 'same-position same-kind conflicting slots must be rejected');
+
+const projected = finalizeCanonicalMatchSpec({
+  width: 2,
+  slots: [{ pos: 1, kind: 'code_digit', value: '0' }],
+  mask: '門0',
+});
+assert(projected.mask === '門0', 'mask projection must preserve owned tokens');
+assert(
+  projected.slots.some(
+    (slot) => slot.kind === 'literal_char' && slot.value === '門' && slot.mask_token === '門',
+  ),
+  'literal mask token must be owned by a canonical slot',
+);
+
+let unownedMaskDigitRejected = false;
+try {
+  finalizeCanonicalMatchSpec({
+    width: 1,
+    slots: [{ pos: 0, kind: 'code_digit', value: '2' }],
+    mask: '3',
+  });
+} catch {
+  unownedMaskDigitRejected = true;
+}
+assert(unownedMaskDigitRejected, 'mask digit without a matching slot must be rejected');
 
 console.log(`canonical MatchSpec self-check: ok (${doc.cases.length} cases)`);

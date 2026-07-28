@@ -96,9 +96,7 @@ def code_prefixed_whole_word_equals_empty_hint(spec, db) -> str | None:
     from app.lexicon.static_index import get_lexicon_entries
     from app.models.word import Word
     from app.services.position_match.mask_adapter import code_digit_string_from_spec
-    from app.services.position_match.spec import get_equals_span
-
-    span = get_equals_span(spec)
+    span = spec.equals_span
     if not span or not span.whole_word:
         return None
     code = code_digit_string_from_spec(spec) or ""

@@ -16,5 +16,6 @@ export function buildPresentationCheckpoint<TResult>(
     ...snapshot,
     results,
     offset: results.length,
+    shuffled: presentationShuffled,
   };
 }

@@ -6,7 +6,7 @@ from typing import Any, Callable, Optional
 
 from app.domain.lexicon.ranking import search_result_sort_key
 from app.services.position_match.filters import apply_match_spec
-from app.services.position_match.canonical import CanonicalMatchSpec, canonical_match_spec_to_legacy
+from app.services.position_match.canonical import CanonicalMatchSpec, canonicalize_legacy_match_spec
 from app.services.position_match.mask_adapter import dense_code_from_spec
 from app.services.position_match.sources import (
     _resolve_mask_family_source,
@@ -86,7 +86,7 @@ def run_position_query_tracked(
     from app.services.word_serializer import deduplicate_words, serialize_word
 
     from_cache = False
-    if get_equals_span(spec):
+    if getattr(spec, "equals_span", None):
         filtered = apply_match_spec(spec, [], db, mode)
     elif pre_candidates is not None:
         filtered = _DEFAULT_ENGINE.match(spec, None, db, mode, pre_candidates=pre_candidates)
@@ -107,8 +107,8 @@ def run_position_query_tracked(
 
 
 def execute_dual_phoneme_anchor_specs(
-    initial_spec: MatchSpec,
-    final_spec: MatchSpec,
+    initial_spec: CanonicalMatchSpec,
+    final_spec: CanonicalMatchSpec,
     *,
     code: Optional[str],
     mode: str,
@@ -118,7 +118,7 @@ def execute_dual_phoneme_anchor_specs(
 ) -> MaskFamilySearchResult:
     """歧義 m／ng 粵拼錨：合併雙維結果並標 anchor_dimension。"""
     unpaged_limit = max(limit + offset, limit) + 500
-    initial_result = execute_match_spec(
+    initial_result = execute_canonical_match_spec(
         initial_spec,
         code=code,
         mode=mode,
@@ -126,7 +126,7 @@ def execute_dual_phoneme_anchor_specs(
         offset=0,
         db=db,
     )
-    final_result = execute_match_spec(
+    final_result = execute_canonical_match_spec(
         final_spec,
         code=code,
         mode=mode,
@@ -151,8 +151,8 @@ def execute_dual_phoneme_anchor_specs(
     return MaskFamilySearchResult(items=page, cache_path=cache_path, total=len(seen))
 
 
-def execute_match_spec(
-    spec: MatchSpec,
+def _execute_canonical_match_spec(
+    spec: CanonicalMatchSpec,
     *,
     code: Optional[str],
     mode: str,
@@ -163,10 +163,10 @@ def execute_match_spec(
     if spec is None or spec.width == 0:
         return MaskFamilySearchResult(items=[])
 
-    if spec.extra.get("dual_phoneme"):
+    if spec.phoneme_alternatives:
         return execute_dual_phoneme_anchor_specs(
-            spec.extra["dual_initial_spec"],
-            spec.extra["dual_final_spec"],
+            spec.phoneme_alternatives.initial,
+            spec.phoneme_alternatives.final,
             code=code,
             mode=mode,
             limit=limit,
@@ -186,13 +186,13 @@ def execute_match_spec(
         )
         for s in spec.slots
     )
-    if not get_equals_span(spec) and source is None and not has_phoneme_anchors:
+    if not spec.equals_span and source is None and not has_phoneme_anchors:
         return MaskFamilySearchResult(items=[])
 
     items, from_cache, total = run_position_query_tracked(
         spec, db, mode, limit, offset, source=source, sort_key=sort_key
     )
-    cache_path = "fallback" if get_equals_span(spec) or not from_cache else "ready"
+    cache_path = "fallback" if spec.equals_span or not from_cache else "ready"
     return MaskFamilySearchResult(items=items, cache_path=cache_path, total=total)
 
 
@@ -205,9 +205,29 @@ def execute_canonical_match_spec(
     offset: int,
     db: Any,
 ) -> MaskFamilySearchResult:
-    """Canonical execution entry; legacy filters stay behind one adapter seam."""
-    return execute_match_spec(
-        canonical_match_spec_to_legacy(spec),
+    """Execute the immutable canonical value without rebuilding a legacy spec."""
+    return _execute_canonical_match_spec(
+        spec,
+        code=code,
+        mode=mode,
+        limit=limit,
+        offset=offset,
+        db=db,
+    )
+
+
+def execute_match_spec(
+    spec: MatchSpec,
+    *,
+    code: Optional[str],
+    mode: str,
+    limit: int,
+    offset: int,
+    db: Any,
+) -> MaskFamilySearchResult:
+    """Legacy compatibility seam; normalize once, then execute canonically."""
+    return _execute_canonical_match_spec(
+        canonicalize_legacy_match_spec(spec),
         code=code,
         mode=mode,
         limit=limit,

@@ -1,6 +1,5 @@
 import { queryRows, type DatabaseBackend } from '../db/database-backend.ts';
-import { executeMatchSpecPage } from '../db/position-match/engine.ts';
-import { canonicalMatchSpecToLegacy } from '../db/position-match/canonical.ts';
+import { executeCanonicalMatchSpecPage } from '../db/position-match/engine.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
 import { projectRelationPool } from '../db/relation-pool/index.ts';
 import { compileReplacementPlan } from './build-match-spec.ts';
@@ -11,7 +10,7 @@ import { relaxationVariants } from './relaxation-advisor.ts';
 import { throwIfSearchCancelled, type ShouldCancel } from '../db/search-cancel.ts';
 
 export type PlannerDeps = {
-  executePage?: typeof executeMatchSpecPage;
+  executePage?: typeof executeCanonicalMatchSpecPage;
   projectRelations?: (db: DatabaseBackend, seed: string) => Promise<GroupPoolInput>;
   shouldCancel?: ShouldCancel;
 };
@@ -106,12 +105,12 @@ export async function buildReplacementSnapshot(
   if (shouldSkipCandidateQuery(plan.width)) {
     return { candidates: [], pool: null, relaxation: null };
   }
-  const executePage = deps.executePage ?? executeMatchSpecPage;
+  const executePage = deps.executePage ?? executeCanonicalMatchSpecPage;
   const project = deps.projectRelations ?? projectRelationPool;
   const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
     ? await project(db, plan.semanticSeed) : null;
   const runFull = (variant: ReplacementPlanV1) => {
-    const spec = canonicalMatchSpecToLegacy(compileReplacementPlan(variant));
+    const spec = compileReplacementPlan(variant);
     return executePage(spec, {
       db,
       mode: variant.mode,

@@ -193,6 +193,11 @@ export interface SearchTabSnapshot {
   results: QueryResult[];
   offset: number;
   total: number | null;
+  mode: UiMode;
+  pzmode: PingzeSubMode;
+  shuffled: boolean;
+  scrollTop: number;
+  dataVersion: string | null;
   posFilter: PosFilterState;
 }
 

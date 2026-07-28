@@ -4,6 +4,7 @@ import type { Database } from '../../sqljs.ts';
 import { pronRankSortValueForWord } from '../../ranking.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
 import { matchesMaskLiteralChars } from '../mask-adapter.ts';
+import type { CanonicalMatchSpec } from '../canonical.ts';
 import type { MatchSpec, SlotConstraint } from '../spec.ts';
 import { getRhymeFinals, getWordCode, getWordParts, getWordText, type WordRow } from '../word-row.ts';
 import {
@@ -48,7 +49,7 @@ export function matchesCodePositions(
 }
 export async function wordPassesPositionFilters(
   word: WordRow,
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   requiredCodes: Array<string | null>,
   mode: string,
   db: Database,
@@ -78,7 +79,7 @@ export async function wordPassesPositionFilters(
     return false;
   }
   if (requiredCodes.some((req) => req != null)) {
-    if (!matchesCodePositions(code, requiredCodes, String(spec.extra?.code_mode ?? mode))) {
+    if (!matchesCodePositions(code, requiredCodes, spec.code_mode ?? mode)) {
       return false;
     }
   }
@@ -113,7 +114,7 @@ export async function wordPassesPositionFilters(
   return true;
 }
 
-export function buildRequiredCodes(spec: MatchSpec): Array<string | null> {
+export function buildRequiredCodes(spec: CanonicalMatchSpec): Array<string | null> {
   /** PR-A: mask digit + code_digit slots only — never code_prefix blob. */
   const required: Array<string | null> = Array(spec.width).fill(null);
   const mask = spec.mask ?? '';
@@ -151,7 +152,7 @@ export function requiredCodesFromDigitString(digits: string): Array<string | nul
   return [...digits];
 }
 
-export function codeDigitStringFromSpec(spec: MatchSpec): string | null {
+export function codeDigitStringFromSpec(spec: CanonicalMatchSpec): string | null {
   const dense = denseCodeFromRequired(buildRequiredCodes(spec));
   if (dense) {
     return dense;
@@ -160,7 +161,7 @@ export function codeDigitStringFromSpec(spec: MatchSpec): string | null {
   return parts.length ? parts.join('') : null;
 }
 
-export function hasCodeDigitConstraints(spec: MatchSpec): boolean {
+export function hasCodeDigitConstraints(spec: CanonicalMatchSpec): boolean {
   return buildRequiredCodes(spec).some((d) => d != null);
 }
 
@@ -204,10 +205,11 @@ export function preferredPronunciationRows(rows: WordRow[]): WordRow[] {
 
 export async function filterWordsByCodeAndMask(
   candidates: WordRow[],
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   mode: string,
   db: Database,
   shouldCancel?: ShouldCancel,
+  phonemeIndexPrefiltered = false,
 ): Promise<WordRow[]> {
   let literalChar: string | null = null;
   for (const slot of spec.slots ?? []) {
@@ -217,7 +219,7 @@ export async function filterWordsByCodeAndMask(
   }
   const requiredCodes = buildRequiredCodes(spec);
   const hasCodeDigitConstraints = requiredCodes.some((req) => req != null);
-  const skipPhoneme = Boolean(spec.extra?.phoneme_index_prefiltered);
+  const skipPhoneme = phonemeIndexPrefiltered;
   // One phoneme-options SQL per anchor char, shared across all candidates
   const phonemeOptCache = new Map<string, Set<string>>();
   if (!skipPhoneme) {

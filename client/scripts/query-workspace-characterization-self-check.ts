@@ -16,6 +16,11 @@ const tabA: QueryWorkspaceSnapshot<Row> = {
   results: [{ word: '香港' }],
   offset: 1,
   total: 2,
+  mode: 'm1',
+  pzmode: 'm1',
+  shuffled: false,
+  scrollTop: 0,
+  dataVersion: 'test',
   posFilter: emptyFilter,
 };
 const tabB: QueryWorkspaceSnapshot<Row> = {
@@ -24,6 +29,11 @@ const tabB: QueryWorkspaceSnapshot<Row> = {
   results: [{ word: '朋友' }],
   offset: 1,
   total: 1,
+  mode: 'm1',
+  pzmode: 'm1',
+  shuffled: false,
+  scrollTop: 0,
+  dataVersion: 'test',
   posFilter: { pos: ['n'], family: [], voice: [] },
 };
 

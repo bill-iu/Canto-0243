@@ -3,7 +3,7 @@ import { queryRows } from '../../database-backend.ts';
 import type { Database } from '../../sqljs.ts';
 import { eligibleForAnchorPhonemeUnion } from '../../ranking.ts';
 import { getCandidatesWithLiteralAt } from '../sources.ts';
-import type { MatchSpec } from '../spec.ts';
+import type { CanonicalMatchSpec } from '../canonical.ts';
 import { getRhymeFinals, getWordParts, getWordText, type WordRow } from '../word-row.ts';
 
 /** Cache anchor → phoneme options (one SQL per anchor/char, not per candidate). */
@@ -84,7 +84,7 @@ export async function contextualPhonemeOptionsAtPosition(
 }
 
 export async function partialMaskSlotOptions(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   db: Database,
   dimension: 'final' | 'initial',
 ): Promise<Map<string, Set<string>>> {
@@ -109,7 +109,7 @@ export async function partialMaskSlotOptions(
 }
 
 export function wordPassesPartialRhymeMaskSpec(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   word: WordRow,
   slotOptions: Map<string, Set<string>>,
 ): boolean {
@@ -134,7 +134,7 @@ export function wordPassesPartialRhymeMaskSpec(
 }
 
 export function wordPassesPartialInitialMaskSpec(
-  spec: MatchSpec,
+  spec: CanonicalMatchSpec,
   word: WordRow,
   slotOptions: Map<string, Set<string>>,
 ): boolean {

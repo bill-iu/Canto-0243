@@ -168,7 +168,7 @@ def _equals_whole_word_matches(
 
     full_code = dense_code_from_spec(spec) or ""
     target_key = tuple(target_parts)
-    cached = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+    cached = None if spec.candidate_scope == "complete" else _equals_length_bucket_candidates(
         spec.width, full_code or None, mode
     )
     storage_field = "finals" if is_final else "initials"
@@ -221,16 +221,16 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     from app.models.word import Word
     from app.services.word_db_filters import apply_code_filter, length_filter
 
-    if not get_equals_span(spec):
+    if not spec.equals_span:
         return []
 
-    span = get_equals_span(spec)
+    span = spec.equals_span
     assert span is not None
     is_final = span.dimension == "final"
     dimension = "final" if is_final else "initial"
     from app.services.position_match.mask_adapter import dense_code_from_spec
 
-    prefix_wildcard = bool(spec.extra.get("prefix_wildcard_equals"))
+    prefix_wildcard = span.start_pos == 1 and span.phoneme_anchor_only
     full_code = dense_code_from_spec(spec) or ""
 
     if span.ref_jyutping:
@@ -290,7 +290,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     # Dense full_code already narrows; LIMIT before phoneme filter drops hits when
     # m1 variants expand past CANDIDATE_FALLBACK_LIMIT (e.g. 9太=2 → 解毒).
     if prefix_wildcard or full_code:
-        cached = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+        cached = None if spec.candidate_scope == "complete" else _equals_length_bucket_candidates(
             spec.width, full_code or None, mode
         )
         candidates = cached if cached is not None else query.all()
@@ -304,7 +304,7 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
         and not span.phoneme_anchor_only
     )
     if tail_rhyme_union:
-        bucket = None if spec.extra.get("workbench_full_bucket_scan") else _equals_length_bucket_candidates(
+        bucket = None if spec.candidate_scope == "complete" else _equals_length_bucket_candidates(
             spec.width, full_code or None, mode
         )
         if bucket is not None:

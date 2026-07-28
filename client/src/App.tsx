@@ -9,7 +9,6 @@ import { useDB } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
 import { useQueryExplain } from './hooks/useQueryExplain.tsx';
 import { useQueryWorkspace } from './query-workspace/useQueryWorkspace.ts';
-import { useQueryWorkspaceDetail } from './query-workspace/useQueryWorkspaceDetail.ts';
 import { createCallbackNavigationAdapter } from './query-workspace/navigation-adapter.ts';
 import { useEntryDetailInset } from './hooks/useEntryDetailInset.ts';
 import { countShellRender } from './search-perf.ts';
@@ -28,7 +27,6 @@ import {
 } from './workbench/workbench-bridge.ts';
 import {
   anchorOnlyQueryRow,
-  mergePickLookupResults,
   pickReadingsToQueryRows,
   resolveListClickAction,
 } from '../../shared/entry-detail-core.mjs';
@@ -43,7 +41,6 @@ import { formatEmptySearchMessage } from './empty-search-message';
 import { planCommitSearch } from './db/query/search-session.ts';
 import { ModeMenu } from './mode-menu';
 import type { GuideMode } from './guide-examples';
-import { mergeShuffledResults, shuffleResults } from './shuffle-results';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
 import {
@@ -176,6 +173,7 @@ function App() {
           : activeTab?.view === VIEW.CORRECTIONS
             ? 'corrections'
             : 'search';
+  const hasWorkbenchTab = tabs.some((tab) => tab.view === VIEW.WORKBENCH);
 
   const [useLiveFetch, setUseLiveFetch] = useState(true);
   const [redirectHint, setRedirectHint] = useState<string | null>(null);
@@ -189,19 +187,8 @@ function App() {
   const [putWorkbenchLiteral, setPutWorkbenchLiteral] = useState<string | null>(null);
   const [searchRingClass, setSearchRingClass] = useState('');
   const searchRingBlurTimerRef = useRef<number | null>(null);
-  const pickAnchorRef = useRef<string | null>(null);
-  const pickAnchorRowsRef = useRef<QueryResult[]>([]);
-  const scrollTopByTabRef = useRef(new Map<number, number>());
-
-  const searchKeyRef = useRef('');
-  const activeTabIdRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const lexiconLoadStartedRef = useRef(false);
-  const waitForPickMerge = useCallback(async (signal: AbortSignal) => {
-    while (pickAnchorRef.current && !signal.aborted) {
-      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    }
-  }, []);
 
   const {
     isReady,
@@ -217,25 +204,6 @@ function App() {
     retryOfflineReady,
   } = useDB();
 
-  const detail = useQueryWorkspaceDetail({
-    activeTab: activeSearchTab,
-    isReady,
-    waitForPickMerge,
-  });
-  const {
-    open: detailOpen,
-    model: detailModel,
-    relationsLoading: detailRelationsLoading,
-    literal: activeDetailLiteral,
-    preferredJyutping,
-    close: closeEntryDetail,
-    saveActive: saveActiveDetail,
-    forgetTab: forgetDetailTab,
-    openLiteral: openEntryDetailLiteral,
-    openFromPick: openEntryDetailFromPick,
-  } = detail;
-  useEntryDetailInset(detailOpen);
-
   const commitWorkspaceFrame = useCallback(
     (frame: { query: string; mode: UiMode; pzmode: PingzeSubMode }) => {
       commitActiveSearch(frame.query, frame.mode, frame.pzmode);
@@ -250,6 +218,11 @@ function App() {
         results: [...snapshot.results],
         total: snapshot.total,
         offset: snapshot.offset,
+        mode: snapshot.mode as UiMode,
+        pzmode: snapshot.pzmode as PingzeSubMode,
+        shuffled: snapshot.shuffled,
+        scrollTop: snapshot.scrollTop,
+        dataVersion: snapshot.dataVersion,
         posFilter: snapshot.posFilter,
       }),
     }),
@@ -264,15 +237,17 @@ function App() {
     pzmode: pzMode,
     fallback0243Mode: last0243Mode,
     uiLang,
+    dataVersion: lexiconVersion,
     navigationAdapter,
   });
   const {
     controls,
     resultsModel,
     resultsActions,
+    detailModel: workspaceDetailModel,
+    detailActions,
   } = workspace;
   const {
-    rows: results,
     total,
     hint: searchHint,
     loading: searchLoading,
@@ -282,15 +257,12 @@ function App() {
     hasMore,
     posFilter,
     displayRows: displayResults,
-    shuffled: resultsShuffled,
     shuffleGeneration,
   } = resultsModel;
   const {
     loadMore,
-    presentResults,
-    presentShuffledResults,
-    resetPresentation,
-    clearPresentationShuffle,
+    showPickAnchor,
+    shuffle: shuffleResults,
     setFilter: setWorkspaceFilter,
   } = resultsActions;
   const {
@@ -303,40 +275,37 @@ function App() {
     commitSearch,
   } = controls;
 
+  const {
+    open: detailOpen,
+    model: detailModel,
+    relationsLoading: detailRelationsLoading,
+    literal: activeDetailLiteral,
+    preferredJyutping,
+  } = workspaceDetailModel;
+  const {
+    close: closeEntryDetail,
+    saveActive: saveActiveDetail,
+    forgetTab: forgetDetailTab,
+    openLiteral: openEntryDetailLiteral,
+    openFromPick: openEntryDetailFromPick,
+  } = detailActions;
+  useEntryDetailInset(detailOpen);
+
   const trimmedInput = inputQuery.trim();
   const searchKey = `${searchQuery}\0${mode}\0${pzMode}`;
   const modeMeta = modeMetaFor(mode, uiLang);
   const appCopy = getAppShellCopy(uiLang);
 
-  const loadSearchTabUi = useCallback(
-    (tab: typeof activeTab, live: boolean) => {
-      if (!tab || tab.view !== VIEW.SEARCH) return;
-      // Keep unsynced until searchQuery catches up — marking synced here lets a
-      // stale empty query from the previous tab overwrite this tab's title/q.
-      hydrateSearch(tab.q || '');
-      const useLive = live || initialBootstrap.forceLive;
-      setUseLiveFetch(useLive);
-      if (!useLive) {
-        const cached = (tab.results as QueryResult[]) || [];
-        presentResults(cached);
-      } else {
-        // New / live tab: clear prior tab's chips until results arrive
-        resetPresentation();
-      }
-    },
-    [hydrateSearch, initialBootstrap.forceLive, presentResults, resetPresentation],
-  );
-
   useEffect(() => {
-    if (!activeTab) return;
-    if (activeTabIdRef.current === activeTab.id) return;
-    activeTabIdRef.current = activeTab.id;
-    if (activeTab.view === VIEW.SEARCH) {
-      const hasCache =
-        !initialBootstrap.forceLive && ((activeTab.results as QueryResult[]) || []).length > 0;
-      loadSearchTabUi(activeTab, !hasCache);
-    }
-  }, [activeTab, loadSearchTabUi, initialBootstrap.forceLive]);
+    if (!activeSearchTab) return;
+    const hasCurrentCache =
+      activeSearchTab.dataVersion === lexiconVersion &&
+      ((activeSearchTab.results as QueryResult[]) || []).length > 0;
+    setUseLiveFetch(initialBootstrap.forceLive || !hasCurrentCache);
+    // Re-evaluate on tab activation, not on its own checkpoint updates; otherwise
+    // the first completed page disables load-more for the still-active tab.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSearchTab?.id, initialBootstrap.forceLive, lexiconVersion]);
 
   useEffect(() => {
     if (!trimmedInput) {
@@ -427,33 +396,6 @@ function App() {
   }, [uiLang]);
 
   useEffect(() => {
-    if (searchKeyRef.current !== searchKey) {
-      searchKeyRef.current = searchKey;
-      clearPresentationShuffle();
-    }
-  }, [clearPresentationShuffle, searchKey]);
-
-  useEffect(() => {
-    if (!useLiveFetch) return;
-    const anchor = pickAnchorRef.current;
-    if (anchor && searchQuery.trim() === anchor && !resultsShuffled) {
-      if (!searchLoading) {
-        presentResults(
-          mergePickLookupResults(anchor, pickAnchorRowsRef.current, results) as QueryResult[],
-        );
-        pickAnchorRef.current = null;
-        pickAnchorRowsRef.current = [];
-      }
-      return;
-    }
-    if (!resultsShuffled) {
-      presentResults(results);
-      return;
-    }
-    presentResults(mergeShuffledResults(displayResults, results));
-  }, [presentResults, results, resultsShuffled, useLiveFetch, searchLoading, searchQuery]);
-
-  useEffect(() => {
     if (isReady || offlineStatus === 'failed') return;
     if (lexiconLoadStartedRef.current) return;
     lexiconLoadStartedRef.current = true;
@@ -500,6 +442,7 @@ function App() {
       const key = event.key.toLowerCase();
       if (key === 'n') {
         event.preventDefault();
+        saveActiveDetail();
         addSearchTab();
         requestAnimationFrame(() => document.getElementById('searchInput')?.focus());
         return;
@@ -511,15 +454,14 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [addSearchTab, closeTab, tabState.activeId, detailOpen, closeEntryDetail]);
+  }, [addSearchTab, closeTab, tabState.activeId, detailOpen, closeEntryDetail, saveActiveDetail]);
 
   useEffect(() => {
     if (!initialBootstrap.isHome) return;
     closeEntryDetail();
     hydrateSearch('');
     setUseLiveFetch(false);
-    resetPresentation();
-  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail, resetPresentation]);
+  }, [initialBootstrap.isHome, hydrateSearch, closeEntryDetail]);
 
   useEffect(() => {
     if (!popstateFrame) return;
@@ -533,10 +475,9 @@ function App() {
       closeEntryDetail();
       setUseLiveFetch(false);
       hydrateSearch('');
-      resetPresentation();
     }
     consumePopstateFrame();
-  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail, resetPresentation]);
+  }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
     (nextQuery?: string, nextPzMode = pzMode, nextMode = mode) => {
@@ -546,13 +487,8 @@ function App() {
         openCorrections();
         return;
       }
-      if (pickAnchorRef.current && pickAnchorRef.current !== q) {
-        pickAnchorRef.current = null;
-        pickAnchorRowsRef.current = [];
-      }
       commitSearch(q, nextMode, nextPzMode);
       setUseLiveFetch(true);
-      resetPresentation();
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
@@ -567,7 +503,6 @@ function App() {
       offlineStatus,
       initialize,
       openCorrections,
-      resetPresentation,
     ],
   );
 
@@ -577,14 +512,11 @@ function App() {
       const anchorRows = payload.readings?.length
         ? (pickReadingsToQueryRows(literal, payload.readings) as QueryResult[])
         : (anchorOnlyQueryRow(literal) as QueryResult[]);
-      pickAnchorRef.current = literal;
-      pickAnchorRowsRef.current = anchorRows;
       runCommittedSearch(literal);
-      presentResults(anchorRows);
-      hydrateSearch(literal);
+      showPickAnchor(literal, anchorRows);
       openEntryDetailFromPick(payload);
     },
-    [hydrateSearch, openEntryDetailFromPick, presentResults, runCommittedSearch],
+    [openEntryDetailFromPick, runCommittedSearch, showPickAnchor],
   );
 
   const handleRetryOfflineReady = useCallback(async () => {
@@ -622,13 +554,12 @@ function App() {
     (q: string, nextMode: UiMode = mode) => {
       openSearchTabWithQuery(q, nextMode, pzMode);
       setUseLiveFetch(true);
-      resetPresentation();
       if (q && !isReady && !lexiconLoadStartedRef.current && offlineStatus !== 'failed') {
         lexiconLoadStartedRef.current = true;
         void initialize();
       }
     },
-    [openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize, resetPresentation],
+    [openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
   );
 
   const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
@@ -683,7 +614,7 @@ function App() {
   };
 
   const handleShuffle = () => {
-    presentShuffledResults(shuffleResults(results));
+    shuffleResults();
   };
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
@@ -721,6 +652,7 @@ function App() {
   };
 
   const handleAddTab = () => {
+    saveActiveDetail();
     addSearchTab();
   };
 
@@ -784,15 +716,12 @@ function App() {
     const root = scrollRootEl;
     const tabId = activeSearchTab?.id;
     if (!root || tabId == null) return;
-    const saved = scrollTopByTabRef.current.get(tabId) ?? 0;
+    const saved = activeSearchTab?.scrollTop ?? 0;
     requestAnimationFrame(() => { root.scrollTop = saved; });
-    const save = () => { scrollTopByTabRef.current.set(tabId, root.scrollTop); };
-    root.addEventListener('scroll', save, { passive: true });
     return () => {
-      save();
-      root.removeEventListener('scroll', save);
+      patchSearchTab(tabId, { scrollTop: root.scrollTop });
     };
-  }, [scrollRootEl, activeSearchTab?.id]);
+  }, [scrollRootEl, activeSearchTab?.id, activeSearchTab?.scrollTop, patchSearchTab]);
 
   const resultItemCount = useMemo(() => {
     if (!filteredDisplayResults.length) return 0;
@@ -903,7 +832,6 @@ function App() {
     goHome();
     setUseLiveFetch(false);
     hydrateSearch('');
-    resetPresentation();
   };
 
   const handleBrandClick = () => {
@@ -1111,15 +1039,17 @@ function App() {
         </header>
 
         <main className="main-wrap">
-          {view === 'workbench' ? (
+          {hasWorkbenchTab ? (
             <Suspense fallback={null}>
+              <div hidden={view !== 'workbench'}>
               <WorkbenchPage
                 embedded
-                active
+                active={view === 'workbench'}
                 lang={uiLang}
                 theme={uiTheme}
                 onOpenSearchLiteral={(literal) => openSearchTabForLiteral(literal, mode, pzMode)}
               />
+              </div>
             </Suspense>
           ) : null}
           {view !== 'workbench' ? (

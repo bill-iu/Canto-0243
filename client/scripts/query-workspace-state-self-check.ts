@@ -16,6 +16,11 @@ const firstSnapshot: QueryWorkspaceSnapshot<Row> = {
   results: [{ word: '香港' }],
   offset: 1,
   total: 1,
+  mode: 'm1',
+  pzmode: 'm1',
+  shuffled: false,
+  scrollTop: 120,
+  dataVersion: 'test-v1',
   posFilter: emptyFilter,
 };
 const secondSnapshot: QueryWorkspaceSnapshot<Row> = {
@@ -24,6 +29,11 @@ const secondSnapshot: QueryWorkspaceSnapshot<Row> = {
   results: [{ word: '朋友' }],
   offset: 1,
   total: 1,
+  mode: 'pz',
+  pzmode: 'm2',
+  shuffled: true,
+  scrollTop: 240,
+  dataVersion: 'test-v1',
   posFilter: { pos: ['n'], family: [], voice: [] },
 };
 
@@ -87,6 +97,31 @@ state = reduceQueryWorkspace(state, {
 assert.deepEqual(state.results, [{ word: '朋友' }]);
 assert.equal(state.status, 'ready');
 
+state = reduceQueryWorkspace(state, {
+  type: 'beginFrame',
+  query: '新查詢',
+  mode: 'm1',
+  pzmode: 'm1',
+  kind: 'commit',
+});
+const rejectedFrameId = state.activeFrameId;
+assert.ok(rejectedFrameId != null);
+state = reduceQueryWorkspace(state, {
+  type: 'requestStarted',
+  frameId: rejectedFrameId,
+  requestId: 14,
+  append: false,
+});
+state = reduceQueryWorkspace(state, {
+  type: 'requestRejected',
+  frameId: rejectedFrameId,
+  requestId: 14,
+  message: 'offline',
+});
+assert.deepEqual(state.results, [], 'failed committed query must not retain previous-query rows');
+assert.equal(state.status, 'error');
+
+state = reduceQueryWorkspace(state, { type: 'activateTab', snapshot: secondSnapshot });
 state = reduceQueryWorkspace(state, {
   type: 'requestStarted',
   frameId: secondFrameId!,
