@@ -65,12 +65,14 @@ def rhyme_letters_resolve_ok(letters: str) -> bool:
 
 
 def matches_rhyme_letters_at_position(word, pos: int, letters: str, db) -> bool:
+    from app.domain.lexicon.rhyme_match_profile import expand_final_options
+    from app.domain.lexicon.rhyme_profile_context import get_rhyme_profile
     fragment = normalize_rhyme_letters(letters)
     if fragment == STANDALONE_NG:
         keys = rhyme_final_index_keys_per_position(get_word_jyutping(word) or "")
         if pos < len(keys) and keys[pos] & STANDALONE_NASAL_FINALS:
             return True
-    options = rhyme_letter_final_options(letters)
+    options = expand_final_options(rhyme_letter_final_options(letters), get_rhyme_profile())
     if not options:
         return False
     parts = get_rhyme_finals(word)

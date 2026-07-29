@@ -78,6 +78,24 @@ declare module '../../shared/guide-i18n.mjs' {
   export function getGuideIntro(lang: 'zh' | 'zh-Hans' | 'en'): { title: string; paragraphs: string[] };
   export function getGuideGroupLabel(group: string, lang: 'zh' | 'zh-Hans' | 'en'): string;
   export function getGuideTocCopy(lang: 'zh' | 'zh-Hans' | 'en'): { label: string; open: string; close: string };
+  export function normalizeGuidePane(value: unknown): 'syntax' | 'rhyme';
+  export function getGuidePaneTabs(lang: 'zh' | 'zh-Hans' | 'en'): { syntax: string; rhyme: string };
+  export function getRhymeGuideCopy(lang: 'zh' | 'zh-Hans' | 'en'): {
+    heroTitle: string;
+    heroLede: string;
+    introTitle: string;
+    introParagraphs: string[];
+    profiles: Record<
+      string,
+      {
+        title: string;
+        blurb: string;
+        when: string;
+        how: string;
+        examples: Array<{ query: string; mode: string; label: string }>;
+      }
+    >;
+  };
   export function guideSectionDomId(id: string): string;
   export function getGuideSections(lang: 'zh' | 'zh-Hans' | 'en'): Array<{
     id: string;

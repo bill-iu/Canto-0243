@@ -341,7 +341,7 @@ export function ModeMenu({
                 </button>
                 <button
                   type="button"
-                  className="mode-option mode-switch"
+                  className={`mode-option mode-switch${lang === 'zh' ? ' is-active' : ''}`}
                   aria-pressed={lang === 'zh'}
                   onClick={() => {
                     if (lang !== 'zh') { onLangChange?.('zh'); close(); }
@@ -352,7 +352,7 @@ export function ModeMenu({
                 </button>
                 <button
                   type="button"
-                  className="mode-option mode-switch"
+                  className={`mode-option mode-switch${lang === 'zh-Hans' ? ' is-active' : ''}`}
                   aria-pressed={lang === 'zh-Hans'}
                   onClick={() => {
                     if (lang !== 'zh-Hans') { onLangChange?.('zh-Hans'); close(); }
@@ -363,7 +363,7 @@ export function ModeMenu({
                 </button>
                 <button
                   type="button"
-                  className="mode-option mode-switch"
+                  className={`mode-option mode-switch${lang === 'en' ? ' is-active' : ''}`}
                   aria-pressed={lang === 'en'}
                   onClick={() => {
                     if (lang !== 'en') { onLangChange?.('en'); close(); }

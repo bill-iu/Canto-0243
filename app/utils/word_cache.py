@@ -39,6 +39,13 @@ def get_phoneme_index_candidates(length: int, pos: int, anchor: str, constraint:
     return index.get_phoneme_index_candidates(length, pos, anchor, constraint, db)
 
 
+def get_whole_word_loose_final_intersect(length: int, target_finals, profile: str):
+    """None if cache/index not ready (caller falls back to full scan)."""
+    if not is_word_cache_ready():
+        return None
+    return index.get_whole_word_loose_final_intersect(length, target_finals, profile)
+
+
 def narrow_candidates_by_phoneme_anchor(
     candidates: list,
     length: int,

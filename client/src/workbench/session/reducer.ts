@@ -222,6 +222,12 @@ export function sessionReducer(session: WorkbenchSession, action: SessionAction)
         constraints: { ...session.constraints, explicitCode },
       });
     }
+    case 'set_rhyme_profile':
+      if (action.profile === session.constraints.rhymeProfile) return session;
+      return commit(session, {
+        draft: session.draft,
+        constraints: { ...session.constraints, rhymeProfile: action.profile },
+      });
     case 'set_rhyme_picks':
       return commit(session, {
         draft: session.draft,

@@ -2,6 +2,8 @@
 from __future__ import annotations
 from typing import Any, Optional
 from app.domain.lexicon.reference_reading import anchor_phoneme_options, equals_authoritative_row
+from app.domain.lexicon.rhyme_match_profile import expand_final_options, finals_compatible
+from app.domain.lexicon.rhyme_profile_context import get_rhyme_profile
 from app.services._generated.candidate_source_policy import CANDIDATE_FALLBACK_LIMIT
 from app.services.position_match.spec import MatchSpec, get_equals_span
 from app.services.word_serializer import (
@@ -20,19 +22,27 @@ def matches_equals_phoneme_span(
     ref_literal: str,
     dimension: str,
 ) -> bool:
-    """碼夾等號 span：參考詞 JSON 逐格精確比對（非 options OR）。"""
+    """碼夾等號 span：參考詞韻母比對（受 韻母比對檔 影響）。"""
     char_text = get_word_text(word)
     if not phoneme_anchor_only and ref_literal and ref_literal not in char_text:
         return False
     field = "finals" if dimension == "final" else "initials"
-    word_parts = get_rhyme_finals(word) if dimension == "final" else get_word_parts(word, field)
+    is_final = dimension == "final"
+    word_parts = get_rhyme_finals(word) if is_final else get_word_parts(word, field)
     if not word_parts:
         return False
+    profile = get_rhyme_profile()
     for i in range(len(ref_parts)):
         pos = start_pos + i
         if pos >= len(word_parts):
             return False
-        if ref_parts[i] and ref_parts[i] != word_parts[pos]:
+        ref = ref_parts[i]
+        if not ref:
+            continue
+        if is_final:
+            if not finals_compatible(ref, word_parts[pos], profile):
+                return False
+        elif ref != word_parts[pos]:
             return False
     return True
 
@@ -75,10 +85,12 @@ def word_matches_last_final(word, final_options: Optional[set[str]]) -> bool:
 def matches_final_options(word_finals: list, target_final_options: list[Optional[set[str]]]) -> bool:
     if len(word_finals) != len(target_final_options):
         return False
+    profile = get_rhyme_profile()
     for idx, options in enumerate(target_final_options):
         if not options:
             continue
-        if idx >= len(word_finals) or word_finals[idx] not in options:
+        expanded = expand_final_options(options, profile)
+        if idx >= len(word_finals) or word_finals[idx] not in expanded:
             return False
     return True
 
@@ -99,7 +111,7 @@ def matches_hybrid_ref_chars(
         if word_char[pos] == ch:
             continue
         options = target_final_options[pos]
-        if options and word_finals[pos] in options:
+        if options and word_finals[pos] in expand_final_options(options, get_rhyme_profile()):
             continue
         return False
     return True
@@ -278,6 +290,63 @@ def query_words_by_equals_spec(spec: MatchSpec, db: Any, mode: str = "m1") -> li
     query = query.filter(length_filter(spec.width))
 
     if span.whole_word:
+        if is_final:
+            from app.domain.lexicon.rhyme_profile_context import get_rhyme_profile
+            from app.utils.word_cache import get_whole_word_loose_final_intersect
+
+            profile = get_rhyme_profile()
+            if profile != "exact":
+                # ADR-0079: index ∪/∩; F1 fallback = length bucket scan + span filter
+                indexed = get_whole_word_loose_final_intersect(
+                    spec.width, target_parts, profile,
+                )
+                if indexed is not None:
+                    pool = indexed
+                    if full_code:
+                        from app.services.position_match.filters.f1_slot_code import (
+                            matches_code_positions,
+                        )
+
+                        required = list(full_code)
+                        pool = [
+                            w
+                            for w in pool
+                            if matches_code_positions(
+                                get_word_sort_code(w) or "", required, mode,
+                            )
+                        ]
+                    return [
+                        w
+                        for w in pool
+                        if matches_equals_phoneme_span(
+                            w,
+                            target_parts,
+                            span.start_pos,
+                            phoneme_anchor_only=span.phoneme_anchor_only,
+                            ref_literal=span.ref_literal,
+                            dimension=span.dimension,
+                        )
+                    ]
+                cached = (
+                    None
+                    if spec.candidate_scope == "complete"
+                    else _equals_length_bucket_candidates(
+                        spec.width, full_code or None, mode,
+                    )
+                )
+                pool = cached if cached is not None else query.all()
+                return [
+                    w
+                    for w in pool
+                    if matches_equals_phoneme_span(
+                        w,
+                        target_parts,
+                        span.start_pos,
+                        phoneme_anchor_only=span.phoneme_anchor_only,
+                        ref_literal=span.ref_literal,
+                        dimension=span.dimension,
+                    )
+                ]
         return _equals_whole_word_matches(
             spec,
             db,

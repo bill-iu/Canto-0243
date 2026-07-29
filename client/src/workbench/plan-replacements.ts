@@ -1,6 +1,7 @@
 import { queryRows, type DatabaseBackend } from '../db/database-backend.ts';
 import { executeCanonicalMatchSpecPage } from '../db/position-match/engine.ts';
 import type { WordRow } from '../db/position-match/word-row.ts';
+import { withRhymeProfileAsync } from '../db/rhyme-profile-context.ts';
 import { projectRelationPool } from '../db/relation-pool/index.ts';
 import { compileReplacementPlan } from './build-match-spec.ts';
 import type { ReplacementPlanV1, WorkbenchCandidateResponse } from './contracts.ts';
@@ -102,48 +103,50 @@ export async function buildReplacementSnapshot(
   db: DatabaseBackend,
   deps: PlannerDeps = {},
 ): Promise<ReplacementSnapshot> {
-  if (shouldSkipCandidateQuery(plan.width)) {
-    return { candidates: [], pool: null, relaxation: null };
-  }
-  const executePage = deps.executePage ?? executeCanonicalMatchSpecPage;
-  const project = deps.projectRelations ?? projectRelationPool;
-  const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
-    ? await project(db, plan.semanticSeed) : null;
-  const runFull = (variant: ReplacementPlanV1) => {
-    const spec = compileReplacementPlan(variant);
-    return executePage(spec, {
-      db,
-      mode: variant.mode,
-      limit: 1_000_000,
-      offset: 0,
-      code: null,
-      shouldCancel: deps.shouldCancel,
-    });
-  };
-  const raw = await runFull(plan);
-  throwIfSearchCancelled(deps.shouldCancel);
-  const priorityRows = pool
-    ? plan.slots.length
-      ? matchingRelationRows(raw.rows, pool)
-      : await loadRelationRows(db, plan.width, pool)
-    : [];
-  const candidates = compactDistinct(
-    priorityRows.length ? prependDistinct(raw.rows, priorityRows) : raw.rows,
-  );
-  let relaxation = null;
-  if (!snapshotHasCandidates(plan, candidates, pool)) {
-    for (const variant of relaxationVariants(plan)) {
-      throwIfSearchCancelled(deps.shouldCancel);
-      const probed = compactDistinct((await runFull(variant.plan)).rows);
-      const count = variant.plan.semanticIntent === 'direct_only'
-        ? groupCandidates(variant.plan, materialize(probed), pool).direct_syn.length
-        : probed.length;
-      if (count < 1) continue;
-      relaxation = { ...variant, candidateCount: count };
-      break;
+  return withRhymeProfileAsync(plan.rhymeProfile ?? 'exact', async () => {
+    if (shouldSkipCandidateQuery(plan.width)) {
+      return { candidates: [], pool: null, relaxation: null };
     }
-  }
-  return { candidates, pool, relaxation };
+    const executePage = deps.executePage ?? executeCanonicalMatchSpecPage;
+    const project = deps.projectRelations ?? projectRelationPool;
+    const pool = plan.semanticIntent !== 'off' && plan.semanticSeed
+      ? await project(db, plan.semanticSeed) : null;
+    const runFull = (variant: ReplacementPlanV1) => {
+      const spec = compileReplacementPlan(variant);
+      return executePage(spec, {
+        db,
+        mode: variant.mode,
+        limit: 1_000_000,
+        offset: 0,
+        code: null,
+        shouldCancel: deps.shouldCancel,
+      });
+    };
+    const raw = await runFull(plan);
+    throwIfSearchCancelled(deps.shouldCancel);
+    const priorityRows = pool
+      ? plan.slots.length
+        ? matchingRelationRows(raw.rows, pool)
+        : await loadRelationRows(db, plan.width, pool)
+      : [];
+    const candidates = compactDistinct(
+      priorityRows.length ? prependDistinct(raw.rows, priorityRows) : raw.rows,
+    );
+    let relaxation = null;
+    if (!snapshotHasCandidates(plan, candidates, pool)) {
+      for (const variant of relaxationVariants(plan)) {
+        throwIfSearchCancelled(deps.shouldCancel);
+        const probed = compactDistinct((await runFull(variant.plan)).rows);
+        const count = variant.plan.semanticIntent === 'direct_only'
+          ? groupCandidates(variant.plan, materialize(probed), pool).direct_syn.length
+          : probed.length;
+        if (count < 1) continue;
+        relaxation = { ...variant, candidateCount: count };
+        break;
+      }
+    }
+    return { candidates, pool, relaxation };
+  });
 }
 
 /** Materialize one transport page from a completed snapshot. */

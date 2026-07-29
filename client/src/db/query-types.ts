@@ -239,6 +239,8 @@ export interface SearchContext {
   offset: number;
   fallback_0243_mode?: QueryMode;
   ui_lang?: 'zh' | 'zh-Hans' | 'en';
+  /** 韻母比對檔 (ADR-0078): exact|tong|nucleus|coda */
+  rhyme_profile?: string;
   /** Cooperative cancel — engine hot paths throw SearchCancelledError when true */
   shouldCancel?: () => boolean;
 }

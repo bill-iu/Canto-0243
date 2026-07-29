@@ -39,6 +39,7 @@ export interface UseQueryWorkspaceOptions {
   fallback0243Mode: Last0243SearchMode;
   uiLang: 'zh' | 'zh-Hans' | 'en';
   dataVersion: string;
+  rhymeProfile?: string;
   navigationAdapter?: QueryWorkspaceNavigationAdapter;
 }
 
@@ -85,6 +86,7 @@ export function useQueryWorkspace({
   fallback0243Mode,
   uiLang,
   dataVersion,
+  rhymeProfile = 'exact',
   navigationAdapter,
 }: UseQueryWorkspaceOptions) {
   countWorkspaceRender();
@@ -213,6 +215,7 @@ export function useQueryWorkspace({
         fallback_0243_mode: fallback0243Mode,
         pzmode: frame.pzmode as PingzeSubMode,
         ui_lang: uiLang,
+        rhyme_profile: rhymeProfile,
         signal: controller.signal,
       })
       .then((page) => {
@@ -239,7 +242,7 @@ export function useQueryWorkspace({
       });
 
     return () => controller.abort();
-  }, [adapter, enabled, fallback0243Mode, isReady, state.activeFrame, uiLang]);
+  }, [adapter, enabled, fallback0243Mode, isReady, state.activeFrame, uiLang, rhymeProfile]);
 
   const isLoading = state.status === 'loading' || state.status === 'loading-more';
   useEffect(() => {
@@ -288,6 +291,7 @@ export function useQueryWorkspace({
         fallback_0243_mode: fallback0243Mode,
         pzmode: frame.pzmode as PingzeSubMode,
         ui_lang: uiLang,
+        rhyme_profile: rhymeProfile,
         signal: controller.signal,
       });
       dispatch({
@@ -308,7 +312,7 @@ export function useQueryWorkspace({
         message: errorMessage(error),
       });
     }
-  }, [adapter, enabled, fallback0243Mode, hasMore, isReady, morePageLimit, state, uiLang]);
+  }, [adapter, enabled, fallback0243Mode, hasMore, isReady, morePageLimit, state, uiLang, rhymeProfile]);
 
   const filteredResultCount = useMemo(
     () => filterByProjectPos(state.results, (row) => row.word, state.posFilter).length,

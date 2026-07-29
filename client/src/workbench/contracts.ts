@@ -32,6 +32,8 @@ export interface ReplacementPlanV1 {
   slots: WorkbenchSlotConstraintV1[];
   semanticIntent: 'ranked' | 'direct_only' | 'off';
   semanticSeed?: string;
+  /** 韻母比對檔 ADR-0078 */
+  rhymeProfile?: 'exact' | 'tong' | 'nucleus' | 'coda';
   limit: number;
   /** 0-based row offset into the sorted MatchSpec pool (default 0). */
   offset?: number;
@@ -166,6 +168,13 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
     );
   }
   const width = Number(value.width);
+  const rhymeProfile =
+    value.rhymeProfile === 'tong'
+    || value.rhymeProfile === 'nucleus'
+    || value.rhymeProfile === 'coda'
+    || value.rhymeProfile === 'exact'
+      ? value.rhymeProfile
+      : 'exact';
   return {
     version: 1,
     selectionVersion: Number(value.selectionVersion),
@@ -174,6 +183,7 @@ export function parseReplacementPlanV1(value: unknown): ReplacementPlanV1 {
     slots: value.slots.map((slot) => parseSlot(slot, width)),
     semanticIntent: value.semanticIntent,
     semanticSeed: value.semanticSeed as string | undefined,
+    rhymeProfile,
     limit: Number(value.limit),
     offset,
   };

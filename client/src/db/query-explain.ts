@@ -43,7 +43,26 @@ export interface QueryExplainResult {
 
 export { buildExplainIr, explainIrForQuery, renderExplainIr };
 
-export function explainQuery(q: string, mode: string = 'm1'): QueryExplainResult {
+function hasFinalRhymeConstraint(parsed: ParsedQuery): boolean {
+  const kind = parsed.kind;
+  return (
+    kind === QueryKind.EQUALS
+    || kind === QueryKind.PREFIX_WILDCARD_EQUALS
+    || kind === QueryKind.PARTIAL_RHYME_MASK
+    || kind === QueryKind.SERIAL_PHONEME
+    || kind === QueryKind.RHYME_ANCHOR
+    || kind === QueryKind.TRIPLE_RHYME_ANCHOR
+    || kind === QueryKind.JYUTPING_ANCHOR
+    || kind === QueryKind.CODE_REF_MIDDLE_RHYME
+    || Boolean((parsed as { rhyme_char?: string }).rhyme_char)
+  );
+}
+
+export function explainQuery(
+  q: string,
+  mode: string = 'm1',
+  rhymeProfile: string = 'exact',
+): QueryExplainResult {
   const text = (q || '').trim();
   if (!text) {
     return { summary: null, warning: null, kind: null };
@@ -63,8 +82,18 @@ export function explainQuery(q: string, mode: string = 'm1'): QueryExplainResult
       kind: parsed.kind,
     };
   }
+  let summary = summaryFor(parsed);
+  // E1: 有同韻約束且非正韻時標明檔
+  if (summary && hasFinalRhymeConstraint(parsed) && rhymeProfile && rhymeProfile !== 'exact') {
+    const label =
+      rhymeProfile === 'tong' ? '通韻'
+        : rhymeProfile === 'nucleus' ? '腹韻'
+          : rhymeProfile === 'coda' ? '尾韻'
+            : '';
+    if (label) summary = `${summary}（${label}）`;
+  }
   return {
-    summary: summaryFor(parsed),
+    summary,
     warning,
     kind: parsed.kind,
   };

@@ -7,6 +7,7 @@ export function defaultConstraintsUI(): ConstraintsUI {
     semanticIntent: 'ranked',
     codeConstraint: 'same_tone',
     explicitCode: '',
+    rhymeProfile: 'exact',
     rhymePicks: emptyPhonemeDimPicks(),
     initialPicks: emptyPhonemeDimPicks(),
     rhymeRef: '',

@@ -40,6 +40,12 @@ import { useInfiniteResultWindow } from './infinite-results';
 import { formatEmptySearchMessage } from './empty-search-message';
 import { planCommitSearch } from './db/query/search-session.ts';
 import { ModeMenu } from './mode-menu';
+import {
+  RHYME_PROFILES,
+  RHYME_PROFILE_LABELS,
+  useUiRhymeProfile,
+  type RhymeProfile,
+} from './rhyme-profile-ui.ts';
 import type { GuideMode } from './guide-examples';
 import { ShuffleIcon } from './shuffle-icon';
 import type { QueryResult } from './db/query';
@@ -229,6 +235,7 @@ function App() {
     [commitWorkspaceFrame, patchSearchTab],
   );
 
+  const [rhymeProfile, setRhymeProfile] = useUiRhymeProfile();
   const workspace = useQueryWorkspace({
     activeTab: activeSearchTab,
     enabled: useLiveFetch && view === 'search',
@@ -238,6 +245,7 @@ function App() {
     fallback0243Mode: last0243Mode,
     uiLang,
     dataVersion: lexiconVersion,
+    rhymeProfile,
     navigationAdapter,
   });
   const {
@@ -990,30 +998,51 @@ function App() {
               </div>
               <div className="header-search__meta">
                 <PosFilterControl value={posFilter} onChange={changePosFilter} lang={uiLang} disabled={shellGated} />
-                {searchFamily !== 'synonym' ? (
+                <div className="header-search__profile-groups">
+                  {searchFamily !== 'synonym' ? (
+                    <div
+                      className="pingze-submodes"
+                      role="group"
+                      aria-label={appCopy.toneProfile}
+                    >
+                      {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                        <button
+                          key={subMode}
+                          type="button"
+                          className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
+                          aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
+                          title={getModeMeta(subMode, uiLang).title}
+                          disabled={shellGated}
+                          onClick={() => handleProfileChange(subMode)}
+                        >
+                          <span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span>
+                          <span className="profile-pill__narrow">
+                            {subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
                   <div
-                    className="pingze-submodes"
+                    className="pingze-submodes rhyme-profile-submodes"
                     role="group"
-                    aria-label={appCopy.toneProfile}
+                    aria-label="押韻模式"
                   >
-                    {(['m1', 'm2', 'm3'] as PingzeSubMode[]).map((subMode) => (
+                    {RHYME_PROFILES.map((profile) => (
                       <button
-                        key={subMode}
+                        key={profile}
                         type="button"
-                        className={`pingze-submode${(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode ? ' is-active' : ''}`}
-                        aria-pressed={(mode === 'pingze' ? pzMode : uiModeToProfile(mode)) === subMode}
-                        title={getModeMeta(subMode, uiLang).title}
+                        className={`pingze-submode${rhymeProfile === profile ? ' is-active' : ''}`}
+                        aria-pressed={rhymeProfile === profile}
+                        title={RHYME_PROFILE_LABELS[profile as RhymeProfile]}
                         disabled={shellGated}
-                        onClick={() => handleProfileChange(subMode)}
+                        onClick={() => setRhymeProfile(profile as RhymeProfile)}
                       >
-                        <span className="profile-pill__wide">{getModeMeta(subMode, uiLang).title}</span>
-                        <span className="profile-pill__narrow">
-                          {subMode === 'm1' ? '四聲' : subMode === 'm2' ? '五聲' : '六聲'}
-                        </span>
+                        {RHYME_PROFILE_LABELS[profile as RhymeProfile]}
                       </button>
                     ))}
                   </div>
-                ) : null}
+                </div>
                 {showExplain ? (
                   <p className="query-explain" aria-live="polite">
                     {explainSummary ? (

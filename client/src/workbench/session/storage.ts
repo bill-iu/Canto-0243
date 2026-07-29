@@ -37,6 +37,16 @@ function validConstraints(value: unknown): value is ConstraintsUI {
     return false;
   }
   if (typeof value.explicitCode !== 'string') return false;
+  // rhymeProfile optional for older snapshots (default exact)
+  if (
+    value.rhymeProfile != null
+    && value.rhymeProfile !== 'exact'
+    && value.rhymeProfile !== 'tong'
+    && value.rhymeProfile !== 'nucleus'
+    && value.rhymeProfile !== 'coda'
+  ) {
+    return false;
+  }
   if (!validPicks(value.rhymePicks) || !validPicks(value.initialPicks)) return false;
   if (typeof value.rhymeRef !== 'string' || typeof value.initialRef !== 'string') return false;
   if (!isRecord(value.refReadings)) return false;
@@ -93,15 +103,20 @@ function retainRecovery(storage: WorkbenchStorage, raw: string): void {
 }
 
 function normalizeSession(session: WorkbenchSession): WorkbenchSession {
+  const constraints = {
+    ...defaultConstraintsUI(),
+    ...session.constraints,
+    rhymeProfile: session.constraints.rhymeProfile ?? 'exact',
+  };
   let draft = session.draft;
   if (draft) {
     draft = hydrateDraftCodes(draft);
-    draft = syncPhonemeFromConstraints(draft, session.constraints);
+    draft = syncPhonemeFromConstraints(draft, constraints);
     const version = session.version || draft.version;
     draft = { ...draft, version };
-    return { ...session, draft, version };
+    return { ...session, draft, constraints, version };
   }
-  return { ...session, version: session.version || 0 };
+  return { ...session, constraints, version: session.version || 0 };
 }
 
 export function saveWorkbenchSession(storage: WorkbenchStorage, session: WorkbenchSession): void {

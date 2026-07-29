@@ -4,6 +4,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
+from app.domain.lexicon.rhyme_match_profile import (
+    RHYME_PROFILE_LABELS,
+    normalize_rhyme_profile,
+)
+from app.services._generated.query_kind_registry import QueryKind
 from app.services.ping_zak import slot_label
 from app.services.query_parse import normalize_and_parse
 from app.services.query_types import (
@@ -25,6 +30,24 @@ from app.services.query_explain_ir import (
 )
 from app.services.query_explain_render import _width_label, render_explain_ir
 
+_FINAL_RHYME_KINDS = frozenset(
+    {
+        QueryKind.EQUALS,
+        QueryKind.PREFIX_WILDCARD_EQUALS,
+        QueryKind.PARTIAL_RHYME_MASK,
+        QueryKind.SERIAL_PHONEME,
+        QueryKind.RHYME_ANCHOR,
+        QueryKind.TRIPLE_RHYME_ANCHOR,
+        QueryKind.JYUTPING_ANCHOR,
+        QueryKind.CODE_REF_MIDDLE_RHYME,
+        QueryKind.COMPOUND_SYN,
+        QueryKind.COMPOUND_ANT,
+        QueryKind.COMPOUND_CONNECT_SYN,
+        QueryKind.COMPOUND_CONNECT_ANT,
+        QueryKind.COMPOUND_DOUBLED_SYLLABLE,
+    }
+)
+
 
 @dataclass(frozen=True)
 class QueryExplainResult:
@@ -33,7 +56,46 @@ class QueryExplainResult:
     kind: Optional[str]
 
 
-def explain_query(q: str, mode: str = "m1", pzmode: str | None = None) -> QueryExplainResult:
+def _has_final_rhyme_constraint(parsed: ParsedQuery) -> bool:
+    if parsed.kind in _FINAL_RHYME_KINDS:
+        if parsed.kind == QueryKind.SERIAL_PHONEME:
+            return getattr(parsed, "constraint", None) == "final"
+        if parsed.kind == QueryKind.JYUTPING_ANCHOR:
+            kind = getattr(parsed, "anchor_kind", None)
+            return kind in ("rhyme_letters", "syllable_letters") or bool(
+                getattr(parsed, "hybrid_rhyme", False)
+            )
+        if parsed.kind in (
+            QueryKind.COMPOUND_SYN,
+            QueryKind.COMPOUND_ANT,
+            QueryKind.COMPOUND_CONNECT_SYN,
+            QueryKind.COMPOUND_CONNECT_ANT,
+            QueryKind.COMPOUND_DOUBLED_SYLLABLE,
+        ):
+            return bool(getattr(parsed, "rhyme_char", None))
+        return True
+    return bool(getattr(parsed, "rhyme_char", None))
+
+
+def _append_rhyme_profile_label(summary: Optional[str], parsed: ParsedQuery, rhyme_profile: object) -> Optional[str]:
+    """E1: 有同韻約束且非正韻時標明檔。"""
+    if not summary or not _has_final_rhyme_constraint(parsed):
+        return summary
+    profile = normalize_rhyme_profile(rhyme_profile)
+    if profile == "exact":
+        return summary
+    label = RHYME_PROFILE_LABELS.get(profile)
+    if not label:
+        return summary
+    return f"{summary}（{label}）"
+
+
+def explain_query(
+    q: str,
+    mode: str = "m1",
+    pzmode: str | None = None,
+    rhyme_profile: str | None = None,
+) -> QueryExplainResult:
     text = (q or "").strip()
     if not text:
         return QueryExplainResult(None, None, None)
@@ -41,7 +103,7 @@ def explain_query(q: str, mode: str = "m1", pzmode: str | None = None) -> QueryE
     warning = _warning_for(parsed)
     if isinstance(parsed, UnmatchedQuery):
         return QueryExplainResult(None, parsed.hint or warning, parsed.kind.value)
-    summary = _summary_for(parsed)
+    summary = _append_rhyme_profile_label(_summary_for(parsed), parsed, rhyme_profile)
     return QueryExplainResult(summary, warning, parsed.kind.value)
 
 
