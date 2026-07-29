@@ -430,16 +430,7 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .header-search__meta .warmup-badge {
-    position: static;
-    transform: none;
-    order: 2;
-    margin: 0 0 0 auto;
-    flex: 0 0 auto;
-    max-width: min(200px, 50vw);
-    z-index: auto;
-    /* 與三檔 pill 同高，防移除後 row 縮矮 */
-    padding-top: 3px;
-    padding-bottom: 3px;
+    display: none;
   }
 
   .header-search {
@@ -573,7 +564,7 @@ button.icon-button.header-search__shuffle:disabled {
 
   .mode-menu-meta {
     position: static;
-    margin: 3px 0 0;
+    margin: 0;
     padding: 0 2px;
     text-align: right;
     font-size: 10px;
