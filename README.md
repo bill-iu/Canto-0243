@@ -17,7 +17,7 @@
 ## 最新版本
 
 <!-- version:zh-Hant -->
-目前版本：**v1.1.0**
+目前版本：**v1.1.1**
 <!-- /version:zh-Hant -->
 
 <!-- words-count:zh-Hant -->

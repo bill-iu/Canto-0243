@@ -17,7 +17,7 @@ Writing Cantonese lyrics often means not knowing which characters are available,
 ## Latest release
 
 <!-- version:en -->
-Current version: **v1.1.0**
+Current version: **v1.1.1**
 <!-- /version:en -->
 
 <!-- words-count:en -->
