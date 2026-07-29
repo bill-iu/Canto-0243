@@ -2,7 +2,7 @@
  * executeMatchSpec — port of position_match/engine.py (MF-4)
  */
 import type { Database } from '../sqljs.ts';
-import { compareSearchResults, literalPriorityCompare, searchResultSortKey } from '../ranking.ts';
+import { compareSearchResults, literalPriorityCompare } from '../ranking.ts';
 import { getRhymeProfile } from '../rhyme-profile-context.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
@@ -78,73 +78,6 @@ async function cooperativeSort(
     chunks = merged;
   }
   return chunks[0] ?? [];
-}
-
-type RankKey = ReturnType<typeof searchResultSortKey>;
-
-function compareRankKeys(a: RankKey, b: RankKey): number {
-  for (let index = 0; index < a.length; index += 1) {
-    if (a[index]! < b[index]!) return -1;
-    if (a[index]! > b[index]!) return 1;
-  }
-  return 0;
-}
-
-/** Workbench hot path: calculate expensive rank signals once per row, not per comparison. */
-async function cooperativeRankSort(
-  rows: WordRow[],
-  shouldCancel?: ShouldCancel,
-): Promise<WordRow[]> {
-  type Ranked = { row: WordRow; key: RankKey };
-  if (typeof window === 'undefined') {
-    throwIfSearchCancelled(shouldCancel);
-    return rows
-      .map((row) => ({ row, key: searchResultSortKey(row) }))
-      .sort((a, b) => compareRankKeys(a.key, b.key))
-      .map((item) => item.row);
-  }
-  const chunkSize = 2048;
-  let chunks: Ranked[][] = [];
-  for (let start = 0; start < rows.length; start += chunkSize) {
-    const chunk = rows.slice(start, start + chunkSize)
-      .map((row) => ({ row, key: searchResultSortKey(row) }))
-      .sort((a, b) => compareRankKeys(a.key, b.key));
-    chunks.push(chunk);
-    throwIfSearchCancelled(shouldCancel);
-    await yieldToMainThread();
-  }
-  while (chunks.length > 1) {
-    const merged: Ranked[][] = [];
-    for (let index = 0; index < chunks.length; index += 2) {
-      const left = chunks[index]!;
-      const right = chunks[index + 1];
-      if (!right) {
-        merged.push(left);
-        continue;
-      }
-      const next: Ranked[] = [];
-      let l = 0;
-      let r = 0;
-      let mergedRows = 0;
-      while (l < left.length || r < right.length) {
-        if (r >= right.length || (
-          l < left.length && compareRankKeys(left[l]!.key, right[r]!.key) <= 0
-        )) {
-          next.push(left[l++]!);
-        } else {
-          next.push(right[r++]!);
-        }
-        mergedRows += 1;
-        if (mergedRows % 4096 === 0) {
-          throwIfSearchCancelled(shouldCancel);
-          await yieldToMainThread();
-        }
-      }
-      merged.push(next);
-    }
-    chunks = merged;
-  }
-  return (chunks[0] ?? []).map((item) => item.row);
 }
 
 function firstPhonemeAnchorSlot(spec: CanonicalMatchSpec): CanonicalMatchSpec['slots'][number] | null {

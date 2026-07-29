@@ -43,6 +43,7 @@ export interface WorkbenchSessionCoordinator {
     insertLiteral: (literal: string) => void;
     chooseMode: (mode: Extract<SessionAction, { type: 'set_mode' }>['mode']) => void;
     chooseSemanticIntent: (semanticIntent: Extract<SessionAction, { type: 'set_semantic' }>['semanticIntent']) => void;
+    chooseRhymeProfile: (profile: Extract<SessionAction, { type: 'set_rhyme_profile' }>['profile']) => void;
     chooseCodeConstraint: (mode: Extract<SessionAction, { type: 'set_code_constraint' }>['mode']) => void;
     changeExplicitCode: (raw: string) => void;
     toggleLock: (pos: number) => void;
@@ -182,8 +183,7 @@ export function useWorkbenchSessionCoordinator({
       insertLiteral: (literal) => dispatchSession({ type: 'insert_literal', literal }),
       chooseMode: (mode) => dispatchSession({ type: 'set_mode', mode }),
       chooseSemanticIntent: (semanticIntent) => dispatchSession({ type: 'set_semantic', semanticIntent }),
-      chooseRhymeProfile: (profile: import('./session/types.ts').ConstraintsUI['rhymeProfile']) =>
-        dispatchSession({ type: 'set_rhyme_profile', profile }),
+      chooseRhymeProfile: (profile) => dispatchSession({ type: 'set_rhyme_profile', profile }),
       chooseCodeConstraint: (mode) => dispatchSession({ type: 'set_code_constraint', mode }),
       changeExplicitCode: (raw) => dispatchSession({ type: 'set_explicit_code', raw }),
       toggleLock: (pos) => dispatchSession({ type: 'toggle_lock', pos }),
