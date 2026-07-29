@@ -237,6 +237,88 @@
       margin-bottom: 36px;
     }
 
+.guide-pane-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.guide-pane-tab {
+  min-height: 36px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-input);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.guide-pane-tab.is-active {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--ink);
+}
+
+.guide-rhyme {
+  max-width: 960px;
+}
+
+.guide-rhyme-profile {
+  margin-bottom: 40px;
+}
+
+.guide-rhyme-profile__badge {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  font-size: 12px;
+  font-weight: 650;
+  vertical-align: middle;
+}
+
+.guide-rhyme-groups-title {
+  margin: 20px 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.guide-rhyme-groups-note {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.guide-rhyme-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.guide-rhyme-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.guide-rhyme-chip {
+  padding: 2px 8px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface-input));
+  color: var(--accent-strong, var(--accent));
+  font-size: 12px;
+  font-weight: 650;
+}
+
 .guide-intro {
       max-width: 780px;
       margin-bottom: 40px;

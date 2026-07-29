@@ -9,11 +9,14 @@ import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } fro
 
 export type AppView = 'search' | 'guide' | 'about';
 
+export type GuidePane = 'syntax' | 'rhyme';
+
 export interface ParsedSearchUrl {
   q: string;
   mode: UiMode;
   pzmode: PingzeSubMode;
   view: AppView;
+  guide: GuidePane;
 }
 
 function appViewFromShared(view: string): AppView {
@@ -30,6 +33,7 @@ export function parseSearchUrl(search: string): ParsedSearchUrl {
     mode: urlModeToUiMode(parsed.mode),
     pzmode: parsed.pzmode as PingzeSubMode,
     view: appViewFromShared(parsed.view),
+    guide: parsed.guide === 'rhyme' ? 'rhyme' : 'syntax',
   };
 }
 
@@ -61,8 +65,12 @@ export function buildAppQueryString(options: {
   mode?: UiMode;
   pzmode?: PingzeSubMode;
   view?: AppView;
+  guide?: GuidePane;
 }): string {
   const tab = tabForAppUrl(options);
+  if (options.view === 'guide' || tab.view === VIEW.GUIDE) {
+    (tab as QueryTab & { guide?: string }).guide = options.guide === 'rhyme' ? 'rhyme' : undefined;
+  }
   const params = buildUrlSearchParams(tab, uiModeToUrlMode(options.mode ?? '0243'), options.pzmode);
   return params.toString();
 }

@@ -152,6 +152,7 @@ export function buildUrlSearchParams(tab, mode = "m1", pzmode = "m1") {
   }
   if (tab.view === VIEW.GUIDE) {
     params.set("view", "guide");
+    if (tab.guide === "rhyme") params.set("guide", "rhyme");
     return params;
   }
   if (tab.view === VIEW.RELATION) {
@@ -178,11 +179,13 @@ export function parseUrlSearchParams(params) {
   else if (rawView === "relation") view = VIEW.RELATION;
   else if (rawView === "corrections") view = VIEW.CORRECTIONS;
   else if (rawView === "about") view = VIEW.ABOUT;
+  const guideRaw = params.get("guide");
   return {
     q: params.get("q") || "",
     mode: params.get("mode") || "m1",
     pzmode: ["m1", "m2", "m3"].includes(params.get("pzmode")) ? params.get("pzmode") : "m1",
     view,
+    guide: guideRaw === "rhyme" ? "rhyme" : "syntax",
   };
 }
 

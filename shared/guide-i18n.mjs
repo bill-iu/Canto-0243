@@ -851,6 +851,195 @@ export function getGuideTocCopy(lang) {
   return GUIDE_TOC_COPY[resolveLang(lang)];
 }
 
+/** 搜尋教學子頁：syntax = 搜尋指南；rhyme = 押韻指南 */
+export const GUIDE_PANES = Object.freeze(['syntax', 'rhyme']);
+
+export function normalizeGuidePane(value) {
+  return value === 'rhyme' ? 'rhyme' : 'syntax';
+}
+
+const GUIDE_PANE_TABS = {
+  zh: { syntax: '搜尋指南', rhyme: '押韻指南' },
+  zhHans: { syntax: '搜寻指南', rhyme: '押韵指南' },
+  en: { syntax: 'Search guide', rhyme: 'Rhyme guide' },
+};
+
+export function getGuidePaneTabs(lang) {
+  return GUIDE_PANE_TABS[resolveLang(lang)];
+}
+
+const RHYME_GUIDE = {
+  zh: {
+    heroTitle: '押韻指南',
+    heroLede:
+      '「同韻」係開韻條件；下面四檔係<strong>押韻模式</strong>（領域：韻母比對檔）——有 <code translate="no">=</code> 或句格勾同韻先影響結果。分組由本工具<strong>韻母分組表</strong>即時列出，同搜尋引擎用同一份。',
+    introTitle: '點樣揀',
+    introParagraphs: [
+      '搜尋殼聲調旁、或句格「押韻模式」可揀：<strong>正韻</strong>（預設，最嚴）、<strong>通韻</strong>、<strong>腹韻</strong>、<strong>尾韻</strong>。',
+      '放寬檔下，結果會優先列出仍符合<strong>正韻</strong>嘅詞，再排只靠放寬先入圍者。',
+      '傳統戲曲通韻多只論平；本工具為方便搜尋，入聲會按共母音歸入通韻部（見通韻分組）。',
+    ],
+    profiles: {
+      exact: {
+        title: '正韻',
+        blurb: '整段韻母要完全一致（介音、長短、韻尾都同）。等價本工具歷來「同韻」。',
+        when: '要聽感最貼、對仗最穩時用。',
+        how: '押韻模式選「正韻」（預設）。搜尋例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '末字同「就」韻母' },
+          { query: '香港=', mode: 'm1', label: '整詞同韻' },
+        ],
+      },
+      tong: {
+        title: '通韻',
+        blurb: '多個粵拼韻母按傳統韻部併組後再比，聽感上同部可互通。',
+        when: '填詞、歌謠想闊啲候選、仍跟粵語通韻習慣時。',
+        how: '押韻模式選「通韻」，再加同韻條件。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '通韻下「就」部可放寬' },
+          { query: '香=', mode: 'm1', label: '單字通韻錨' },
+        ],
+      },
+      nucleus: {
+        title: '腹韻',
+        blurb: '只顧核心母音類，忽略韻尾（斜韻／協音取向）。',
+        when: '想要口形接近、唔強求尾輔音一樣時。',
+        how: '押韻模式選「腹韻」。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '按韻腹放寬' },
+          { query: 'aa=', mode: 'm1', label: '粵拼韻母錨（跟檔）' },
+        ],
+      },
+      coda: {
+        title: '尾韻',
+        blurb: '只顧韻尾／開尾類，忽略主要母音。',
+        when: '想鎖死 -ng／-n／-p 等收尾、母音可鬆時。',
+        how: '押韻模式選「尾韻」。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '按韻尾放寬' },
+          { query: 'ong=', mode: 'm1', label: '韻母字母錨（跟檔）' },
+        ],
+      },
+    },
+    groupsHeading: '分組一覽（完整）',
+    groupsNote: '以下由引擎同源表渲染；改表即改教學，唔另抄一份。',
+  },
+  zhHans: {
+    heroTitle: '押韵指南',
+    heroLede:
+      '「同韵」是开启韵条件；下面四档是<strong>押韵模式</strong>——有 <code translate="no">=</code> 或句格勾同韵才影响结果。分组由本工具韵母分组表即时列出，与搜寻引擎同一份。',
+    introTitle: '点样拣',
+    introParagraphs: [
+      '搜寻壳声调旁、或句格「押韵模式」可选：<strong>正韵</strong>（默认）、<strong>通韵</strong>、<strong>腹韵</strong>、<strong>尾韵</strong>。',
+      '放宽档下，结果会优先列出仍符合<strong>正韵</strong>的词，再排只靠放宽才入围者。',
+      '传统戏曲通韵多只论平；本工具为方便搜寻，入声会按共母音归入通韵部。',
+    ],
+    profiles: {
+      exact: {
+        title: '正韵',
+        blurb: '整段韵母须完全一致。等价本工具历来「同韵」。',
+        when: '要听感最贴、对仗最稳时用。',
+        how: '押韵模式选「正韵」（默认）。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '末字同「就」韵母' },
+          { query: '香港=', mode: 'm1', label: '整词同韵' },
+        ],
+      },
+      tong: {
+        title: '通韵',
+        blurb: '多个粤拼韵母按传统韵部并组后再比。',
+        when: '填词、歌谣想宽些候选时。',
+        how: '押韵模式选「通韵」。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '通韵下「就」部可放宽' },
+          { query: '香=', mode: 'm1', label: '单字通韵锚' },
+        ],
+      },
+      nucleus: {
+        title: '腹韵',
+        blurb: '只顾核心母音类，忽略韵尾。',
+        when: '口形接近即可时。',
+        how: '押韵模式选「腹韵」。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '按韵腹放宽' },
+          { query: 'aa=', mode: 'm1', label: '粤拼韵母锚' },
+        ],
+      },
+      coda: {
+        title: '尾韵',
+        blurb: '只顾韵尾／开尾类，忽略主要母音。',
+        when: '要锁死收尾辅音时。',
+        how: '押韵模式选「尾韵」。例：',
+        examples: [
+          { query: '就=', mode: 'm1', label: '按韵尾放宽' },
+          { query: 'ong=', mode: 'm1', label: '韵母字母锚' },
+        ],
+      },
+    },
+    groupsHeading: '分组一览（完整）',
+    groupsNote: '以下由引擎同源表渲染。',
+  },
+  en: {
+    heroTitle: 'Rhyme guide',
+    heroLede:
+      '<strong>Same-rhyme</strong> turns the rhyme constraint on; the four <strong>rhyme modes</strong> set how loose it is. Modes only matter when you use <code translate="no">=</code> or workbench rhyme checks. Groups below are rendered from the same table the engine uses.',
+    introTitle: 'How to choose',
+    introParagraphs: [
+      'Use the rhyme-mode control next to tone precision (search) or in the workbench constraint bar: <strong>exact</strong> (default), <strong>tong</strong>, <strong>nucleus</strong>, <strong>coda</strong>.',
+      'Under looser modes, exact full-final hits still rank first.',
+      'Operatic tong traditionally ignores checked tones; for search we also group entering tones by shared vowel.',
+    ],
+    profiles: {
+      exact: {
+        title: 'Exact (正韻)',
+        blurb: 'Full finals must match (medial, length, coda).',
+        when: 'Tightest rhyme for parallel lines.',
+        how: 'Leave mode on Exact. Examples:',
+        examples: [
+          { query: '就=', mode: 'm1', label: 'Rhyme with 就' },
+          { query: '香港=', mode: 'm1', label: 'Whole-word rhyme' },
+        ],
+      },
+      tong: {
+        title: 'Tong (通韻)',
+        blurb: 'Traditional rhyme classes merge several finals.',
+        when: 'Broader lyric rhymes still in Cantonese tradition.',
+        how: 'Set mode to Tong. Examples:',
+        examples: [
+          { query: '就=', mode: 'm1', label: 'Tong class of 就' },
+          { query: '香=', mode: 'm1', label: 'Single-char tong' },
+        ],
+      },
+      nucleus: {
+        title: 'Nucleus (腹韻)',
+        blurb: 'Match core vowel; ignore coda.',
+        when: 'Assonance / slant rhyme.',
+        how: 'Set mode to Nucleus. Examples:',
+        examples: [
+          { query: '就=', mode: 'm1', label: 'Nucleus loosen' },
+          { query: 'aa=', mode: 'm1', label: 'Jyutping final anchor' },
+        ],
+      },
+      coda: {
+        title: 'Coda (尾韻)',
+        blurb: 'Match ending (or open ending); ignore main vowel.',
+        when: 'Lock -p/-t/-k/-m/-n/-ng style endings.',
+        how: 'Set mode to Coda. Examples:',
+        examples: [
+          { query: '就=', mode: 'm1', label: 'Coda loosen' },
+          { query: 'ong=', mode: 'm1', label: 'Letter final anchor' },
+        ],
+      },
+    },
+    groupsHeading: 'Full groups',
+    groupsNote: 'Rendered from the engine table — not a second hand-maintained list.',
+  },
+};
+
+export function getRhymeGuideCopy(lang) {
+  return RHYME_GUIDE[resolveLang(lang)];
+}
+
 export function guideSectionDomId(id) {
   return `guide-sec-${id}`;
 }

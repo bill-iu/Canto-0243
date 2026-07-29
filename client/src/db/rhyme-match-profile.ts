@@ -7,6 +7,8 @@ import {
   finalsCompatible as finalsCompatibleJs,
   isRhymeProfile as isRhymeProfileJs,
   normalizeRhymeProfile as normalizeRhymeProfileJs,
+  rhymeGroupsForProfile as rhymeGroupsForProfileJs,
+  rhymeProfileGuideOrder as rhymeProfileGuideOrderJs,
   RHYME_PROFILE_LABELS as LABELS,
   RHYME_PROFILES as PROFILES,
 } from '../../../shared/rhyme-match-profile.mjs';
@@ -41,4 +43,12 @@ export function finalsCompatible(
   profile?: RhymeProfile | string,
 ): boolean {
   return finalsCompatibleJs(a, b, profile);
+}
+
+export function rhymeGroupsForProfile(profile: RhymeProfile | string): readonly (readonly string[])[] {
+  return rhymeGroupsForProfileJs(profile) as readonly (readonly string[])[];
+}
+
+export function rhymeProfileGuideOrder(): readonly RhymeProfile[] {
+  return rhymeProfileGuideOrderJs() as readonly RhymeProfile[];
 }

@@ -46,6 +46,7 @@
 | [0077](./0077-single-digit-preferred-pronunciation.md) | **單 digit 純碼**：只認每字最佳 pron_rank 讀音（剔罕見噪音） |
 | [0078](./0078-rhyme-match-profile.md) | **韻母比對檔**（UI：押韻模式）：正／通／腹／尾正交於搜尋 mode；分組表；排序兩層 |
 | [0079](./0079-whole-word-loose-rhyme-index-intersect.md) | **整詞放寬韻索引併查**：runtime ∪／∩，唔加 DB 欄；index 未好回退掃桶 |
+| [0080](./0080-guide-syntax-and-rhyme-panes.md) | **搜尋教學** 子頁：搜尋指南／押韻指南；分組表單源渲染 |
 
 ## Stubs
 

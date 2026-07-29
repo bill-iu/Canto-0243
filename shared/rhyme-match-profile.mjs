@@ -128,6 +128,24 @@ function lookupFor(profile) {
   return null;
 }
 
+/** Guide / docs: group lists for a profile (C3′ single-source render). */
+export function rhymeGroupsForProfile(profile) {
+  const p = normalizeRhymeProfile(profile);
+  if (p === 'tong') return TONG_GROUPS;
+  if (p === 'nucleus') return NUCLEUS_GROUPS;
+  if (p === 'coda') return CODA_GROUPS;
+  // exact: each known final is its own group (union of table members, sorted)
+  const all = new Set();
+  for (const g of TONG_GROUPS) for (const f of g) all.add(f);
+  for (const g of NUCLEUS_GROUPS) for (const f of g) all.add(f);
+  for (const g of CODA_GROUPS) for (const f of g) all.add(f);
+  return Object.freeze([...all].sort().map((f) => Object.freeze([f])));
+}
+
+export function rhymeProfileGuideOrder() {
+  return RHYME_PROFILES;
+}
+
 /**
  * Expand one final (tone-stripped jyutping final) to the match set for profile.
  * Unknown finals fall back to singleton (正韻 behaviour).
