@@ -8,6 +8,7 @@ import {
 import type { Database } from '../sqljs.ts';
 import { QueryKind } from '../query-kind.ts';
 import type { QueryMode, QueryResult, SearchContext, SearchResult } from '../query-types.ts';
+import { withRhymeProfileAsync } from '../rhyme-profile-context.ts';
 import { normalizeAndParse, normalizeQuery } from './parse.ts';
 import { dispatchParsed, executeListFilter } from './dispatch.ts';
 import { dispatchSynMode } from './mode-dispatch.ts';
@@ -16,33 +17,35 @@ export class QueryEngine {
   private db: Database | null = null;
 
   async execute(ctx: SearchContext): Promise<SearchResult> {
-    if (!isDatabaseInitialized()) {
-      await initializeDatabase();
-    }
-    this.db = getDatabase();
+    return withRhymeProfileAsync(ctx.rhyme_profile, async () => {
+      if (!isDatabaseInitialized()) {
+        await initializeDatabase();
+      }
+      this.db = getDatabase();
 
-    if (!this.db) {
-      return { items: [], hint: '資料庫初始化失敗' };
-    }
+      if (!this.db) {
+        return { items: [], hint: '資料庫初始化失敗' };
+      }
 
-    const dbCtx = { ...ctx, db: this.db };
+      const dbCtx = { ...ctx, db: this.db };
 
-    if (!ctx.q) {
-      return executeListFilter(this.db, ctx);
-    }
+      if (!ctx.q) {
+        return executeListFilter(this.db, ctx);
+      }
 
-    const q = normalizeQuery(ctx.q);
+      const q = normalizeQuery(ctx.q);
 
-    if (ctx.mode === 'syn') {
-      await ensureStaticRelationIndexes();
-      return dispatchSynMode({ ...ctx, q }, dbCtx);
-    }
+      if (ctx.mode === 'syn') {
+        await ensureStaticRelationIndexes();
+        return dispatchSynMode({ ...ctx, q }, dbCtx);
+      }
 
-    const parsed = normalizeAndParse(ctx.q, { mode: ctx.mode, pzmode: ctx.pzmode });
-    if (parsed.kind === QueryKind.RELATION_LOOKUP) {
-      await ensureStaticRelationIndexes();
-    }
-    return await dispatchParsed(parsed, dbCtx);
+      const parsed = normalizeAndParse(ctx.q, { mode: ctx.mode, pzmode: ctx.pzmode });
+      if (parsed.kind === QueryKind.RELATION_LOOKUP) {
+        await ensureStaticRelationIndexes();
+      }
+      return await dispatchParsed(parsed, dbCtx);
+    });
   }
 
 }

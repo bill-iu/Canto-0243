@@ -9,6 +9,8 @@ export interface ConstraintsUI {
   semanticIntent: ReplacementPlanV1['semanticIntent'];
   codeConstraint: CodeConstraintMode;
   explicitCode: string;
+  /** 韻母比對檔；與搜尋殼 session 同步（ADR-0078） */
+  rhymeProfile: 'exact' | 'tong' | 'nucleus' | 'coda';
   rhymePicks: PhonemeDimPicks;
   initialPicks: PhonemeDimPicks;
   rhymeRef: string;
@@ -69,6 +71,7 @@ export type SessionAction =
     }
   | { type: 'set_mode'; mode: ReplacementPlanV1['mode'] }
   | { type: 'set_semantic'; semanticIntent: ReplacementPlanV1['semanticIntent'] }
+  | { type: 'set_rhyme_profile'; profile: ConstraintsUI['rhymeProfile'] }
   | { type: 'set_code_constraint'; mode: CodeConstraintMode }
   | { type: 'set_explicit_code'; raw: string }
   | { type: 'set_rhyme_picks'; picks: PhonemeDimPicks }

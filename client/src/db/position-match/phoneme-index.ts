@@ -4,6 +4,8 @@
  */
 import { queryRows } from '../database-backend.ts';
 import type { Database } from '../sqljs.ts';
+import { expandFinalOptions, expandOneFinal } from '../rhyme-match-profile.ts';
+import { getRhymeProfile } from '../rhyme-profile-context.ts';
 import { anchorPhonemeOptions } from './filters/f2-phoneme-anchor.ts';
 import { getRhymeFinals, getWordParts, type WordRow } from './word-row.ts';
 
@@ -216,6 +218,55 @@ export async function getPhonemeIndexCandidates(
 }
 
 /**
+ * ADR-0079: whole-word loose rhyme — per-pos ∪ of expanded finals, then ∩ across pos.
+ * Returns null if index not ready (caller falls back to full length scan).
+ */
+export async function getWholeWordLooseFinalIntersect(
+  db: Database,
+  length: number,
+  targetFinals: readonly string[],
+  profile: string,
+): Promise<WordRow[] | null> {
+  if (!length || !targetFinals.length || targetFinals.length !== length) {
+    return [];
+  }
+  await ensurePhonemeIndex(db);
+  if (builtForDb !== db) {
+    return null;
+  }
+  const bucket = lengthBuckets.get(length);
+  if (!bucket?.length) {
+    return [];
+  }
+  let allowed: Set<number> | null = null;
+  for (let pos = 0; pos < targetFinals.length; pos++) {
+    const expanded = expandOneFinal(targetFinals[pos]!, profile);
+    if (!expanded.size) return [];
+    const atPos = new Set<number>();
+    for (const opt of expanded) {
+      const hits = finalIndex.get(phonemeKey(length, pos, opt));
+      if (!hits) continue;
+      for (const i of hits) atPos.add(i);
+    }
+    if (allowed == null) {
+      allowed = atPos;
+    } else {
+      const next = new Set<number>();
+      for (const i of allowed) {
+        if (atPos.has(i)) next.add(i);
+      }
+      allowed = next;
+    }
+    if (!allowed.size) return [];
+  }
+  if (!allowed) return [];
+  return [...allowed]
+    .sort((a, b) => a - b)
+    .map((i) => bucket[i]!)
+    .filter(Boolean);
+}
+
+/**
  * Resolve anchor char → phoneme options → inverted-index candidates.
  * Port of RhymeAnchorCandidateSource short-circuit.
  */
@@ -233,5 +284,7 @@ export async function getPhonemeAnchorCandidates(
   if (!options.size) {
     return [];
   }
-  return getPhonemeIndexCandidates(db, length, pos, options, constraint);
+  const expanded =
+    constraint === 'final' ? expandFinalOptions(options, getRhymeProfile()) : options;
+  return getPhonemeIndexCandidates(db, length, pos, expanded, constraint);
 }

@@ -11,6 +11,7 @@ export interface QueryWorkspaceQueryRequest {
   fallback_0243_mode?: Last0243SearchMode;
   pzmode?: 'm1' | 'm2' | 'm3';
   ui_lang?: 'zh' | 'zh-Hans' | 'en';
+  rhyme_profile?: string;
   signal?: AbortSignal;
 }
 
@@ -42,6 +43,7 @@ export function createDatabaseQueryWorkspaceAdapter(
         fallback_0243_mode: request.fallback_0243_mode,
         pzmode: request.pzmode,
         ui_lang: request.ui_lang,
+        rhyme_profile: request.rhyme_profile,
         shouldCancel: () => request.signal?.aborted === true,
       });
       if (request.signal?.aborted) {
@@ -115,6 +117,9 @@ export function buildQueryWorkspacePortableUrl(request: QueryWorkspaceQueryReque
     url += `&fallback_0243_mode=${encodeURIComponent(
       last0243UiToUrlMode(request.fallback_0243_mode),
     )}`;
+  }
+  if (request.rhyme_profile && request.rhyme_profile !== 'exact') {
+    url += `&rhyme_profile=${encodeURIComponent(request.rhyme_profile)}`;
   }
   return url;
 }

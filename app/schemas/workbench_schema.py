@@ -56,6 +56,10 @@ class ReplacementPlanV1(BaseModel):
     semantic_seed: str | None = Field(
         default=None, alias="semanticSeed", min_length=1, max_length=WORKBENCH_MAX_SLOTS
     )
+    # 韻母比對檔 ADR-0078
+    rhyme_profile: Literal["exact", "tong", "nucleus", "coda"] = Field(
+        default="exact", alias="rhymeProfile"
+    )
     limit: int = Field(ge=1, le=400)
     offset: int = Field(default=0, ge=0)
 

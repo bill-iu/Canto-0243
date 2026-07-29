@@ -4,6 +4,8 @@ from __future__ import annotations
 from typing import Optional
 
 from app.domain.lexicon.reference_reading import anchor_phoneme_options
+from app.domain.lexicon.rhyme_match_profile import expand_final_options
+from app.domain.lexicon.rhyme_profile_context import get_rhyme_profile
 from app.services.position_match.spec import MatchSpec
 from app.services.word_serializer import (
     get_rhyme_finals,
@@ -21,7 +23,10 @@ def matches_phoneme_at_position(
     db,
 ) -> bool:
     if constraint == "final":
-        options = anchor_phoneme_options(anchor, "final", db, allow_inject=True)
+        options = expand_final_options(
+            anchor_phoneme_options(anchor, "final", db, allow_inject=True),
+            get_rhyme_profile(),
+        )
         parts = get_rhyme_finals(word)
     else:
         options = anchor_phoneme_options(anchor, "initial", db, allow_inject=True)
@@ -123,10 +128,11 @@ def word_passes_partial_rhyme_mask(
     if not finals:
         return False
     opts = slot_options or _partial_mask_slot_options(spec, db, dimension="final")
+    profile = get_rhyme_profile()
     for slot in spec.slots:
         if slot.kind != "final_anchor":
             continue
-        options = opts.get((slot.pos, slot.value))
+        options = expand_final_options(opts.get((slot.pos, slot.value)), profile)
         if not options or slot.pos >= len(finals) or finals[slot.pos] not in options:
             return False
     return True

@@ -3,6 +3,7 @@
  */
 import type { Database } from '../sqljs.ts';
 import { compareSearchResults, literalPriorityCompare, searchResultSortKey } from '../ranking.ts';
+import { getRhymeProfile } from '../rhyme-profile-context.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
@@ -12,6 +13,7 @@ import {
   matchesCodePositions,
 } from './filters/f1-slot-code.ts';
 import { canonicalizeLegacyMatchSpec, type CanonicalMatchSpec } from './canonical.ts';
+import { exactFinalRankKey, exactFinalSlotOptions } from './rhyme-exact-rank.ts';
 import type { MatchSpec } from './spec.ts';
 import { getWordCode, type WordRow } from './word-row.ts';
 
@@ -371,6 +373,16 @@ async function executeCanonicalPage(
   }
   const filtered = await filterMatchSpecRows(spec, ctx);
   throwIfSearchCancelled(ctx.shouldCancel);
+  const exactSlots =
+    getRhymeProfile() !== 'exact' ? await exactFinalSlotOptions(spec, ctx.db) : [];
+  const withExact = (cmp: (a: WordRow, b: WordRow) => number) =>
+    exactSlots.length
+      ? (a: WordRow, b: WordRow) => {
+          const ra = exactFinalRankKey(a, exactSlots);
+          const rb = exactFinalRankKey(b, exactSlots);
+          return ra - rb || cmp(a, b);
+        }
+      : cmp;
   let sorted: WordRow[];
   const literalPositions = [...spec.mask]
     .map((char, pos) => (/[\p{Script=Han}]/u.test(char) ? [pos, char] as [number, string] : null))
@@ -378,14 +390,17 @@ async function executeCanonicalPage(
   if (spec.ranking === 'literal_priority' && literalPositions.length) {
     sorted = await cooperativeSort(
       filtered,
-      (a, b) => literalPriorityCompare(a, b, literalPositions),
+      withExact((a, b) => literalPriorityCompare(a, b, literalPositions)),
       ctx.shouldCancel,
       shouldYield,
     );
   } else {
-    sorted = shouldYield
-      ? await cooperativeRankSort(filtered, ctx.shouldCancel)
-      : [...filtered].sort(compareSearchResults);
+    sorted = await cooperativeSort(
+      filtered,
+      withExact(compareSearchResults),
+      ctx.shouldCancel,
+      shouldYield,
+    );
   }
   return {
     rows: sorted.slice(ctx.offset, ctx.offset + ctx.limit),

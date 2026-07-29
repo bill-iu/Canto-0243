@@ -282,19 +282,31 @@ button.icon-button.header-search__shuffle:disabled {
   max-width: 100%;
 }
 
+.header-search__profile-groups {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 7px;
+}
+
 .pingze-submodes {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   justify-content: start;
   align-self: flex-start;
   gap: 2px;
-  margin-top: 7px;
+  margin-top: 0;
   width: max-content;
   max-width: none;
   padding: 2px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface-input);
+}
+
+.rhyme-profile-submodes {
+  grid-template-columns: repeat(4, max-content);
 }
 
 .pingze-submode {

@@ -36,6 +36,7 @@ class SearchContext:
     db: Session
     fallback_0243_mode: Optional[str] = None
     pzmode: Optional[str] = None
+    rhyme_profile: Optional[str] = None
 
 
 @dataclass
@@ -158,10 +159,12 @@ _default_engine = QueryEngine()
 
 
 def execute_search(ctx: SearchContext) -> SearchResult:
+    from app.domain.lexicon.rhyme_profile_context import rhyme_profile_scope
     from app.startup.readiness_gate import require_search_ready
 
     require_search_ready()
-    return _default_engine.execute(ctx)
+    with rhyme_profile_scope(ctx.rhyme_profile):
+        return _default_engine.execute(ctx)
 
 
 def search_words(

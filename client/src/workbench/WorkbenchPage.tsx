@@ -148,6 +148,7 @@ export function WorkbenchPage({
   const {
     mode,
     semanticIntent,
+    rhymeProfile,
     codeConstraint,
     explicitCode,
     rhymePicks,
@@ -162,6 +163,23 @@ export function WorkbenchPage({
     document.body.classList.add('workbench-route');
     return () => document.body.classList.remove('workbench-route');
   }, [active]);
+
+  // 搜尋殼押韻模式 → 句格 constraints（ADR-0078 session 共用）
+  useEffect(() => {
+    if (!active) return;
+    let unsub = () => {};
+    void import('../rhyme-profile-ui.ts').then(({ getUiRhymeProfile, subscribeUiRhymeProfile }) => {
+      const sync = () => {
+        const p = getUiRhymeProfile();
+        if (p !== (session.constraints.rhymeProfile ?? 'exact')) {
+          coordinator.actions.chooseRhymeProfile(p);
+        }
+      };
+      sync();
+      unsub = subscribeUiRhymeProfile(sync);
+    });
+    return () => unsub();
+  }, [active, coordinator.actions, session.constraints.rhymeProfile]);
 
   useEffect(() => {
     if (!active) return;
@@ -239,6 +257,11 @@ export function WorkbenchPage({
   }, [coordinator.actions]);
   const changeSemantic = useCallback((next: ReplacementPlanV1['semanticIntent']) => {
     coordinator.actions.chooseSemanticIntent(next);
+  }, [coordinator.actions]);
+  const changeRhymeProfile = useCallback((next: import('./session/types.ts').ConstraintsUI['rhymeProfile']) => {
+    coordinator.actions.chooseRhymeProfile(next);
+    // keep search shell session in sync (ADR-0078 P1)
+    import('../rhyme-profile-ui.ts').then(({ setUiRhymeProfile }) => setUiRhymeProfile(next));
   }, [coordinator.actions]);
   const changeCodeConstraint = useCallback((next: CodeConstraintMode) => {
     coordinator.actions.chooseCodeConstraint(next);
@@ -625,10 +648,12 @@ export function WorkbenchPage({
             <ConstraintBar
               mode={mode}
               semanticIntent={semanticIntent}
+              rhymeProfile={rhymeProfile ?? 'exact'}
               codeConstraint={codeConstraint}
               explicitCode={explicitCode}
               onModeChange={changeMode}
               onSemanticChange={changeSemantic}
+              onRhymeProfileChange={changeRhymeProfile}
               onCodeConstraintChange={changeCodeConstraint}
               onExplicitCodeChange={changeExplicitCode}
               spanWidth={draft.selection?.width ?? 0}

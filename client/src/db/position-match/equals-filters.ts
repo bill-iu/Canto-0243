@@ -6,6 +6,8 @@ import { queryFirst, queryRows } from '../database-backend.ts';
 import { rhymeFinalsFromJyutping, splitJyutping } from '../jyutping-codec.ts';
 import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts';
 import type { Database } from '../sqljs.ts';
+import { expandFinalOptions, finalsCompatible } from '../rhyme-match-profile.ts';
+import { getRhymeProfile } from '../rhyme-profile-context.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { anchorPhonemeOptions } from './filters.ts';
 import {
@@ -20,6 +22,7 @@ import {
 } from './canonical.ts';
 import type { EqualsDimension } from './spec.ts';
 import type { MatchSpec } from './spec.ts';
+import { getWholeWordLooseFinalIntersect } from './phoneme-index.ts';
 import { getCandidatesForLength } from './sources.ts';
 import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row.ts';
 
@@ -241,7 +244,11 @@ function matchesHybridRefChars(
       continue;
     }
     const options = targetFinalOptions[pos];
-    if (options?.size && wordFinals[pos] && options.has(wordFinals[pos]!)) {
+    if (
+      options?.size
+      && wordFinals[pos]
+      && expandFinalOptions(options, getRhymeProfile()).has(wordFinals[pos]!)
+    ) {
       continue;
     }
     return false;
@@ -268,12 +275,17 @@ export function matchesEqualsPhonemeSpan(
   if (!wordParts.length) {
     return false;
   }
+  const profile = getRhymeProfile();
   for (let i = 0; i < refParts.length; i++) {
     const pos = startPos + i;
     if (pos >= wordParts.length) {
       return false;
     }
-    if (refParts[i] && refParts[i] !== wordParts[pos]) {
+    const ref = refParts[i];
+    if (!ref) continue;
+    if (isFinal) {
+      if (!finalsCompatible(ref, wordParts[pos]!, profile)) return false;
+    } else if (ref !== wordParts[pos]) {
       return false;
     }
   }
@@ -395,6 +407,34 @@ export async function queryWordsByEqualsSpec(
   }
 
   if (span.whole_word) {
+    if (isFinal && getRhymeProfile() !== 'exact') {
+      // ADR-0079: runtime ∪/∩ via phoneme index; F1 fallback = full length scan
+      const profile = getRhymeProfile();
+      let rows = await getWholeWordLooseFinalIntersect(
+        db,
+        spec.width,
+        targetParts!,
+        profile,
+      );
+      if (rows == null) {
+        const [scanned] = await getCandidatesForLength(db, spec.width, {
+          code: fullCode || null,
+          mode: searchMode,
+          unlimited: true,
+        });
+        rows = scanned;
+      } else if (fullCode) {
+        const required = requiredCodesFromDigitString(fullCode);
+        rows = rows.filter((word) => matchesCodePositions(getWordCode(word), required, searchMode));
+      }
+      return rows.filter((word) =>
+        matchesEqualsPhonemeSpan(word, targetParts!, span.start_pos, {
+          phoneme_anchor_only: span.phoneme_anchor_only,
+          ref_literal: span.ref_literal,
+          dimension: span.dimension,
+        }),
+      );
+    }
     return equalsWholeWordMatches(spec, db, searchMode, target, targetParts, isFinal);
   }
 
@@ -405,8 +445,14 @@ export async function queryWordsByEqualsSpec(
     !span.phoneme_anchor_only;
 
   // 前綴通配等號：用 finals JSON 預過濾，避免掃晒 ~10 萬個四字詞
+  // 放寬韻檔時 LIKE 精準會漏，改 unlimited 再 filter
   let candidates: WordRow[];
-  if (prefixWildcard && targetParts?.length && isFinal) {
+  if (
+    prefixWildcard
+    && targetParts?.length
+    && isFinal
+    && getRhymeProfile() === 'exact'
+  ) {
     candidates = await prefixWildcardCandidatesByFinals(
       db,
       spec.width,

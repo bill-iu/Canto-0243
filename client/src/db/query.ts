@@ -76,6 +76,8 @@ export interface QueryOptions {
   offset?: number;
   fallback_0243_mode?: '0243' | '02493' | '394052';
   ui_lang?: 'zh' | 'zh-Hans' | 'en';
+  /** 韻母比對檔 exact|tong|nucleus|coda */
+  rhyme_profile?: string;
   /** Cooperative cancel (PWA); checked in engine hot paths */
   shouldCancel?: () => boolean;
 }
@@ -140,6 +142,7 @@ export async function searchPage(options: QueryOptions): Promise<SearchPageResul
     fallback_0243_mode: fallback,
     pzmode: options.pzmode,
     ui_lang: options.ui_lang,
+    rhyme_profile: options.rhyme_profile,
     shouldCancel: options.shouldCancel,
   });
   return {

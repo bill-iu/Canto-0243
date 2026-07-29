@@ -12,10 +12,12 @@ import {
 interface Props {
   mode: ReplacementPlanV1['mode'];
   semanticIntent: ReplacementPlanV1['semanticIntent'];
+  rhymeProfile: 'exact' | 'tong' | 'nucleus' | 'coda';
   codeConstraint: CodeConstraintMode;
   explicitCode: string;
   onModeChange: (mode: ReplacementPlanV1['mode']) => void;
   onSemanticChange: (intent: ReplacementPlanV1['semanticIntent']) => void;
+  onRhymeProfileChange: (profile: 'exact' | 'tong' | 'nucleus' | 'coda') => void;
   onCodeConstraintChange: (mode: CodeConstraintMode) => void;
   onExplicitCodeChange: (value: string) => void;
   spanWidth: number;
@@ -148,10 +150,12 @@ function DimChecklist({
 export const ConstraintBar = memo(function ConstraintBar({
   mode,
   semanticIntent,
+  rhymeProfile,
   codeConstraint,
   explicitCode,
   onModeChange,
   onSemanticChange,
+  onRhymeProfileChange,
   onCodeConstraintChange,
   onExplicitCodeChange,
   spanWidth,
@@ -215,6 +219,17 @@ export const ConstraintBar = memo(function ConstraintBar({
               <option value="m1">0243</option>
               <option value="m2">02493</option>
               <option value="m3">394052</option>
+            </select>
+          </label>
+          <label title="韻母比對檔">押韻模式
+            <select
+              value={rhymeProfile}
+              onChange={(event) => onRhymeProfileChange(event.target.value as Props['rhymeProfile'])}
+            >
+              <option value="exact">正韻</option>
+              <option value="tong">通韻</option>
+              <option value="nucleus">腹韻</option>
+              <option value="coda">尾韻</option>
             </select>
           </label>
           <label>原意關係

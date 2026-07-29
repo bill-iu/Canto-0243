@@ -341,6 +341,11 @@ def get_phoneme_index_candidates(
     )
     if not options:
         return []
+    if constraint == "final":
+        from app.domain.lexicon.rhyme_match_profile import expand_final_options
+        from app.domain.lexicon.rhyme_profile_context import get_rhyme_profile
+
+        options = expand_final_options(options, get_rhyme_profile())
     bucket = _length_buckets.get(int(length)) or []
     if not bucket:
         return []
@@ -349,6 +354,41 @@ def get_phoneme_index_candidates(
     for opt in options:
         allowed_idx |= set(index_map.get((length, pos, opt), ()))
     return [bucket[i] for i in sorted(allowed_idx)]
+
+
+def get_whole_word_loose_final_intersect(
+    length: int,
+    target_finals: list[str] | tuple[str, ...],
+    profile: str,
+) -> list | None:
+    """ADR-0079: per-pos ∪ expanded finals, then ∩. None = index not ready."""
+    if not is_populated():
+        return None
+    length = int(length)
+    if not target_finals or length != len(target_finals):
+        return []
+    from app.domain.lexicon.rhyme_match_profile import expand_one_final
+
+    bucket = _length_buckets.get(length) or []
+    if not bucket:
+        return []
+    allowed: set[int] | None = None
+    for pos, final in enumerate(target_finals):
+        expanded = expand_one_final(final, profile)
+        if not expanded:
+            return []
+        at_pos: set[int] = set()
+        for opt in expanded:
+            at_pos |= set(_final_index.get((length, pos, opt), ()))
+        if allowed is None:
+            allowed = at_pos
+        else:
+            allowed &= at_pos
+        if not allowed:
+            return []
+    if not allowed:
+        return []
+    return [bucket[i] for i in sorted(allowed)]
 
 
 def get_mask_index_candidates(length: int, mask: str) -> list | None:

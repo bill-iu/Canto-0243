@@ -182,6 +182,8 @@ export function useWorkbenchSessionCoordinator({
       insertLiteral: (literal) => dispatchSession({ type: 'insert_literal', literal }),
       chooseMode: (mode) => dispatchSession({ type: 'set_mode', mode }),
       chooseSemanticIntent: (semanticIntent) => dispatchSession({ type: 'set_semantic', semanticIntent }),
+      chooseRhymeProfile: (profile: import('./session/types.ts').ConstraintsUI['rhymeProfile']) =>
+        dispatchSession({ type: 'set_rhyme_profile', profile }),
       chooseCodeConstraint: (mode) => dispatchSession({ type: 'set_code_constraint', mode }),
       changeExplicitCode: (raw) => dispatchSession({ type: 'set_explicit_code', raw }),
       toggleLock: (pos) => dispatchSession({ type: 'toggle_lock', pos }),

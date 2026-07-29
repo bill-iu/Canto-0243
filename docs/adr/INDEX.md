@@ -44,6 +44,8 @@
 | [0074](./0074-lexicon-length-invariant.md) | **詞條庫字數不變式**：建置／開庫嚴格驗證、本機 transaction repair、runtime 純 indexed length 查詢 |
 | [0075](./0075-workbench-line-reading-projection.md) | **工作台讀音投影**：雙端唯讀批次、版本化 LRU、合作式取消與選讀音保留 |
 | [0077](./0077-single-digit-preferred-pronunciation.md) | **單 digit 純碼**：只認每字最佳 pron_rank 讀音（剔罕見噪音） |
+| [0078](./0078-rhyme-match-profile.md) | **韻母比對檔**（UI：押韻模式）：正／通／腹／尾正交於搜尋 mode；分組表；排序兩層 |
+| [0079](./0079-whole-word-loose-rhyme-index-intersect.md) | **整詞放寬韻索引併查**：runtime ∪／∩，唔加 DB 欄；index 未好回退掃桶 |
 
 ## Stubs
 

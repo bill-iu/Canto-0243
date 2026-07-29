@@ -76,6 +76,7 @@ export function buildPortableSearchUrl(opts: {
   offset: number;
   fallback_0243_mode?: Last0243SearchMode;
   pzmode?: 'm1' | 'm2' | 'm3';
+  rhyme_profile?: string;
 }): string {
   const urlMode = queryModeToUrlMode(opts.mode);
   let url =
@@ -89,6 +90,9 @@ export function buildPortableSearchUrl(opts: {
   if (urlMode === 'syn' && opts.fallback_0243_mode) {
     url += `&fallback_0243_mode=${encodeURIComponent(last0243UiToUrlMode(opts.fallback_0243_mode))}`;
   }
+  if (opts.rhyme_profile && opts.rhyme_profile !== 'exact') {
+    url += `&rhyme_profile=${encodeURIComponent(opts.rhyme_profile)}`;
+  }
   return url;
 }
 
@@ -99,6 +103,7 @@ async function fetchSearchPage(opts: {
   offset: number;
   fallback_0243_mode?: Last0243SearchMode;
   pzmode?: 'm1' | 'm2' | 'm3';
+  rhyme_profile?: string;
   signal?: AbortSignal;
 }): Promise<{ items: QueryResult[]; total: number | null; hint: string | null }> {
   const url = buildPortableSearchUrl(opts);
@@ -158,10 +163,12 @@ export function usePortableSearch(
     fallback_0243_mode?: '0243' | '02493' | '394052';
     pzmode?: 'm1' | 'm2' | 'm3';
     ui_lang?: 'zh' | 'zh-Hans' | 'en';
+    rhyme_profile?: string;
   },
 ) {
   const fallback0243Mode = options?.fallback_0243_mode;
   const pzmode = options?.pzmode;
+  const rhymeProfile = options?.rhyme_profile ?? 'exact';
   const db = useContext(DBContext);
   const isReady = db?.isReady ?? false;
   const status = db?.status ?? 'idle';
@@ -218,6 +225,7 @@ export function usePortableSearch(
           offset: 0,
           fallback_0243_mode: fallback0243Mode,
           pzmode,
+          rhyme_profile: rhymeProfile,
           signal: ac.signal,
         });
         if (shouldCancel()) return;
@@ -243,7 +251,7 @@ export function usePortableSearch(
       genRef.current += 1;
       ac.abort();
     };
-  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode]);
+  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode, rhymeProfile]);
 
   const isLoading = loading || status === 'loading';
 
@@ -270,6 +278,7 @@ export function usePortableSearch(
         offset: results.length,
         fallback_0243_mode: fallback0243Mode,
         pzmode,
+        rhyme_profile: rhymeProfile,
       });
       if (shouldCancel()) return;
       setResults((prev) => [...prev, ...page.items]);
@@ -292,6 +301,7 @@ export function usePortableSearch(
     results.length,
     fallback0243Mode,
     pzmode,
+    rhymeProfile,
   ]);
 
   return {

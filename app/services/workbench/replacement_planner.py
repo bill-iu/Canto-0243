@@ -30,16 +30,20 @@ class ReplacementSnapshot:
 
 
 def _execute(plan: ReplacementPlanV1, db, execute) -> tuple[list[dict], int]:
-    canonical = compile_replacement_plan(plan)
-    result = execute(
-        canonical,
-        code=None,
-        mode=plan.mode,
-        limit=plan.limit,
-        offset=plan.offset,
-        db=db,
-    )
-    return result.items, int(result.total or len(result.items))
+    from app.domain.lexicon.rhyme_profile_context import rhyme_profile_scope
+
+    profile = getattr(plan, "rhyme_profile", None) or "exact"
+    with rhyme_profile_scope(profile):
+        canonical = compile_replacement_plan(plan)
+        result = execute(
+            canonical,
+            code=None,
+            mode=plan.mode,
+            limit=plan.limit,
+            offset=plan.offset,
+            db=db,
+        )
+        return result.items, int(result.total or len(result.items))
 
 
 def _load_relation_rows(db, width: int, pool) -> list[dict]:

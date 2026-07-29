@@ -403,11 +403,13 @@ export function useEngineSearch(
     fallback_0243_mode?: '0243' | '02493' | '394052';
     pzmode?: 'm1' | 'm2' | 'm3';
     ui_lang?: 'zh' | 'zh-Hans' | 'en';
+    rhyme_profile?: string;
   },
 ) {
   const fallback0243Mode = options?.fallback_0243_mode;
   const pzmode = options?.pzmode;
   const uiLang = options?.ui_lang ?? 'zh';
+  const rhymeProfile = options?.rhyme_profile ?? 'exact';
   const { isReady, status } = useDB();
   const [results, setResults] = useState<QueryResult[]>([]);
   const [total, setTotal] = useState<number | null>(null);
@@ -459,6 +461,7 @@ export function useEngineSearch(
           fallback_0243_mode: fallback0243Mode,
           pzmode,
           ui_lang: uiLang,
+          rhyme_profile: rhymeProfile,
           shouldCancel,
         });
         if (shouldCancel()) return;
@@ -486,7 +489,7 @@ export function useEngineSearch(
     return () => {
       genRef.current += 1;
     };
-  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode, uiLang]);
+  }, [trimmed, mode, firstPageLimit, canSearch, fallback0243Mode, pzmode, uiLang, rhymeProfile]);
 
   const isLoading = loading || status === 'loading';
 
@@ -517,6 +520,7 @@ export function useEngineSearch(
         fallback_0243_mode: fallback0243Mode,
         pzmode,
         ui_lang: uiLang,
+        rhyme_profile: rhymeProfile,
         shouldCancel,
       });
       if (shouldCancel()) return;

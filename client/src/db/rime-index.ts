@@ -9,6 +9,8 @@ import {
   STANDALONE_NASAL_FINALS,
   syllableLetters,
 } from './jyutping-codec.ts';
+import { expandFinalOptions } from './rhyme-match-profile.ts';
+import { getRhymeProfile } from './rhyme-profile-context.ts';
 
 const STANDALONE_NG = 'ng';
 
@@ -113,6 +115,7 @@ export function matchesRhymeLettersAtPosition(
   if (!options.size) {
     return false;
   }
+  const matchOpts = expandFinalOptions(options, getRhymeProfile());
 
   let parts: string[] = [];
   try {
@@ -128,7 +131,7 @@ export function matchesRhymeLettersAtPosition(
   if (!parts.length && jyut) {
     parts = rhymeFinalsFromJyutping(jyut);
   }
-  if (pos < parts.length && options.has(parts[pos]!)) {
+  if (pos < parts.length && matchOpts.has(parts[pos]!)) {
     return true;
   }
 

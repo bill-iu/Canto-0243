@@ -47,6 +47,7 @@ def candidate_snapshot_identity(plan: ReplacementPlanV1) -> str:
             "slots": slots,
             "semanticIntent": plan.semantic_intent,
             "semanticSeed": plan.semantic_seed,
+            "rhymeProfile": getattr(plan, "rhyme_profile", None) or "exact",
         },
         ensure_ascii=False,
         sort_keys=True,

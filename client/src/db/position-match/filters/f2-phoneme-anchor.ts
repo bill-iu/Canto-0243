@@ -1,6 +1,8 @@
 /** MF-5 F2 — final_anchor / initial_anchor + partial mask. */
 import { queryRows } from '../../database-backend.ts';
 import type { Database } from '../../sqljs.ts';
+import { expandFinalOptions } from '../../rhyme-match-profile.ts';
+import { getRhymeProfile } from '../../rhyme-profile-context.ts';
 import { eligibleForAnchorPhonemeUnion } from '../../ranking.ts';
 import { getCandidatesWithLiteralAt } from '../sources.ts';
 import type { CanonicalMatchSpec } from '../canonical.ts';
@@ -56,11 +58,13 @@ export async function matchesPhonemeAtPosition(
     options = await anchorPhonemeOptions(db, anchor, constraint);
     optionsCache?.set(cacheKey, options);
   }
+  const matchOpts =
+    constraint === 'final' ? expandFinalOptions(options, getRhymeProfile()) : options;
   const parts = constraint === 'final' ? getRhymeFinals(word) : getWordParts(word, 'initials');
-  if (!options.size || pos >= parts.length) {
+  if (!matchOpts.size || pos >= parts.length) {
     return false;
   }
-  return options.has(parts[pos]!);
+  return matchOpts.has(parts[pos]!);
 }
 export async function contextualPhonemeOptionsAtPosition(
   db: Database,
@@ -121,12 +125,14 @@ export function wordPassesPartialRhymeMaskSpec(
   if (!finals.length) {
     return false;
   }
+  const profile = getRhymeProfile();
   for (const slot of spec.slots ?? []) {
     if (slot.kind !== 'final_anchor') {
       continue;
     }
     const options = slotOptions.get(`${slot.pos}:${slot.value}`);
-    if (!options?.size || slot.pos >= finals.length || !options.has(finals[slot.pos]!)) {
+    const matchOpts = expandFinalOptions(options, profile);
+    if (!matchOpts.size || slot.pos >= finals.length || !matchOpts.has(finals[slot.pos]!)) {
       return false;
     }
   }

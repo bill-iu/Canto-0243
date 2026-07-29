@@ -18,7 +18,7 @@ export function derivePlanBase(
   if (!draft?.selection) return null;
   const { start, width } = draft.selection;
   const span = draft.selection;
-  const { mode, semanticIntent, codeConstraint, explicitCode } = session.constraints;
+  const { mode, semanticIntent, codeConstraint, explicitCode, rhymeProfile } = session.constraints;
 
   const base: WorkbenchSlotConstraintV1[] = draft.constraints
     .filter((item) => item.kind !== 'code_digit' && item.pos >= start && item.pos < start + width)
@@ -41,6 +41,7 @@ export function derivePlanBase(
     slots,
     semanticIntent: intent,
     semanticSeed: semanticSeed || undefined,
+    rhymeProfile: rhymeProfile ?? 'exact',
   };
 }
 

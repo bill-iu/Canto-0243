@@ -14,5 +14,6 @@ export function candidateSnapshotIdentity(plan: ReplacementPlanV1): string {
     slots,
     semanticIntent: plan.semanticIntent,
     semanticSeed: plan.semanticSeed ?? null,
+    rhymeProfile: plan.rhymeProfile ?? 'exact',
   });
 }
