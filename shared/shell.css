@@ -1266,64 +1266,57 @@
   gap: 4px;
 }
 
-/* 速覽例：字面掣 + 說明；只有字面可點 */
 .guide-quick__example {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 3px;
+  flex-wrap: nowrap;
+  gap: 2px;
   min-width: 0;
+  width: auto;
   max-width: 100%;
-}
-
-.guide-quick__example-query {
-  display: inline-flex;
-  align-items: center;
-  margin: 0;
-  padding: 4px 8px;
-  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-  color: var(--accent-strong);
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
   cursor: pointer;
   text-align: left;
-  transition: border-color 140ms, background 140ms, box-shadow 140ms;
+  transition: border-color 140ms, box-shadow 140ms, color 140ms;
 }
 
-.guide-quick__example-query:hover:not(:disabled) {
+.guide-quick__example:hover:not(:disabled) {
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 16%, var(--surface));
+  color: var(--accent-strong);
   box-shadow: var(--control-shadow-hover);
 }
 
-.guide-quick__example-query:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.guide-quick__example-query:disabled {
+.guide-quick__example:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 
-.guide-quick__example-query code {
-  color: inherit;
+.guide-quick__example code {
+  display: block;
+  width: 100%;
+  color: var(--accent-strong);
   font-size: 11px;
   font-weight: 650;
   white-space: nowrap;
 }
 
-.guide-quick__example-label {
+.guide-quick__example span {
   display: block;
-  max-width: 12rem;
-  padding: 0 2px;
+  width: 100%;
   font-size: 10px;
   color: var(--muted);
   line-height: 1.35;
   white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
   word-break: break-word;
-  cursor: default;
-  user-select: text;
+  min-width: 0;
+  flex: none;
 }
 
 .guide-quick__columns {
@@ -1425,17 +1418,14 @@
 
   .guide-quick__columns .guide-quick__example {
     min-width: min(100%, 7.5rem);
-  }
-
-  .guide-quick__columns .guide-quick__example-query {
     padding: 5px 8px;
   }
 
-  .guide-quick__columns .guide-quick__example-query code {
+  .guide-quick__columns .guide-quick__example code {
     font-size: 12px;
   }
 
-  .guide-quick__columns .guide-quick__example-label {
+  .guide-quick__columns .guide-quick__example span {
     font-size: 11px;
   }
 }
@@ -1485,7 +1475,7 @@
     gap: 3px;
   }
 
-  .guide-quick__example-query {
+  .guide-quick__example {
     padding: 3px 5px;
   }
 }
