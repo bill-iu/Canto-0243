@@ -1,4 +1,5 @@
 import { getGuideQuick } from '../../shared/guide-i18n.mjs';
+import { getHeaderCopy } from '../../shared/header-i18n.mjs';
 import type { GuideLang, GuideMode } from './guide-examples';
 
 export interface GuideQuickProps {
@@ -84,11 +85,16 @@ function GuideQuickRowBlock({
 
 export function GuideQuick({ lang, disabled = false, onPick, onOpenFullGuide }: GuideQuickProps) {
   const copy = getGuideQuick(lang);
+  const heroTitle = getHeaderCopy(lang).title;
   return (
     <section className="guide-quick" aria-labelledby="guideQuickTitle">
       <header className="guide-quick__header">
         <div className="guide-quick__title-row">
           <h2 id="guideQuickTitle">{copy.title}</h2>
+          {/* Narrow only (CSS): brand title between 教你點用 / 完整說明; wide keeps app-bar hero */}
+          <p className="guide-quick__hero" aria-hidden="true">
+            {heroTitle}
+          </p>
           <button type="button" className="ghost-button guide-quick__cta" onClick={onOpenFullGuide}>
             {copy.cta}
           </button>

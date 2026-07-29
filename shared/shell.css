@@ -36,10 +36,10 @@
         opacity 420ms ease-out;
     }
 
-.header-search__profile-groups { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px; margin-top: 7px; }
-.pingze-submodes { display: grid; grid-template-columns: repeat(3, max-content); justify-content: start; gap: 2px; width: max-content; max-width: 100%; margin-top: 0; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-input); }
+.header-search__profile-groups { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 0; }
+.pingze-submodes { display: grid; grid-template-columns: repeat(3, max-content); justify-content: start; align-items: center; gap: 2px; width: max-content; max-width: 100%; margin-top: 0; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface-input); box-sizing: border-box; min-height: 30px; }
 .rhyme-profile-submodes { grid-template-columns: repeat(4, max-content); }
-.pingze-submode { min-height: 24px; border: 0; border-radius: 999px; padding: 3px 6px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 650; cursor: pointer; white-space: nowrap; }
+.pingze-submode { min-height: 26px; border: 0; border-radius: 999px; padding: 0 6px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 650; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; }
 .pingze-submode.is-active { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); color: var(--accent-strong); }
 .profile-pill__narrow { display: none; }
 
@@ -1178,6 +1178,11 @@
   width: 100%;
 }
 
+/* Wide: hero stays in app-bar; hide duplicate in guide-quick */
+.guide-quick__hero {
+  display: none;
+}
+
 .guide-quick__header h2 {
   margin: 0;
   font-size: 15px;
@@ -1194,6 +1199,45 @@
   line-height: 1.25;
   white-space: normal;
   text-align: center;
+}
+
+/* Narrow: ONE·搵·韻 sits between 教你點用 and 完整說明 */
+@media (max-width: 760px) {
+  .guide-quick__title-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 4px;
+  }
+
+  .guide-quick__header h2 {
+    justify-self: start;
+    min-width: 0;
+  }
+
+  .guide-quick__hero {
+    display: block;
+    margin: 0;
+    justify-self: center;
+    max-width: 100%;
+    font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
+    font-size: clamp(15px, 4.2vw, 20px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .guide-quick__cta {
+    justify-self: end;
+    min-width: 0;
+  }
 }
 
 .guide-quick__rows {

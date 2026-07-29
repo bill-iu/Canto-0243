@@ -61,7 +61,7 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   background: var(--surface);
 }
 
-/* Same brand | hero | menu row as search; no search form. */
+/* Same brand | hero | menu row as search (wide); no search form. */
 .workbench-header .app-bar {
   grid-template-areas: "brand hero menu";
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -83,6 +83,16 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.4;
+}
+
+/* Narrow: match search — drop app-bar hero (no guide-quick here) */
+@media (max-width: 760px) {
+  .workbench-header .app-bar {
+    grid-template-areas: "brand . menu";
+  }
+  .workbench-header .app-bar > .header-hero {
+    display: none !important;
+  }
 }
 
 .workbench-main {
@@ -522,8 +532,10 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
 }
 .constraint-bar__heading-actions .pos-filter__trigger {
   box-sizing: border-box;
+  height: 30px;
   min-height: 30px;
-  padding: 4px 9px;
+  max-height: 30px;
+  padding: 0 9px;
   gap: 6px;
   border-radius: 999px;
   font-family: inherit;
@@ -1037,8 +1049,10 @@ html:has(body.query-tabs-app.workbench-route)::-webkit-scrollbar {
   .constraint-bar__heading { margin: 0; }
   .constraint-bar__content { flex-direction: column; align-items: stretch; gap: 1rem; }
   .constraint-bar__heading-actions .pos-filter__trigger {
+    height: 24px;
     min-height: 24px;
-    padding: 3px 7px;
+    max-height: 24px;
+    padding: 0 7px;
     gap: 4px;
     font-size: 11px;
     font-weight: 650;
