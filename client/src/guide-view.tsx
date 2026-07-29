@@ -263,7 +263,6 @@ function RhymeGuidePane({
                 />
               ))}
             </div>
-            <h4 className="guide-rhyme-groups-title">{copy.groupsHeading}</h4>
             {profile === 'exact' ? (
               <div className="guide-rhyme-exact-grid" aria-label={section.title}>
                 {classes.map((cls) => {

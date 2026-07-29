@@ -921,7 +921,6 @@ const RHYME_GUIDE = {
         ],
       },
     },
-    groupsHeading: '分組一覽（完整）',
   },
   zhHans: {
     heroTitle: '押韵指南',
@@ -975,7 +974,6 @@ const RHYME_GUIDE = {
         ],
       },
     },
-    groupsHeading: '分组一览（完整）',
   },
   en: {
     heroTitle: 'Rhyme guide',
@@ -1029,7 +1027,6 @@ const RHYME_GUIDE = {
         ],
       },
     },
-    groupsHeading: 'Full groups',
   },
 };
 

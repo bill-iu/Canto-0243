@@ -95,7 +95,6 @@ declare module '../../shared/guide-i18n.mjs' {
         examples: Array<{ query: string; mode: string; label: string }>;
       }
     >;
-    groupsHeading: string;
   };
   export function guideSectionDomId(id: string): string;
   export function getGuideSections(lang: 'zh' | 'zh-Hans' | 'en'): Array<{
