@@ -1,6 +1,7 @@
 /**
  * 韻母比對檔 — shared expand tables (ADR-0078).
  * Profiles: exact=正韻, tong=通韻, nucleus=腹韻, coda=尾韻.
+ * 通韻：粵曲二十部系命名（部／韻）+ 舒入相配（rhyme2 舒聲 + rhyme.txt 入聲歸部）。
  */
 
 export const RHYME_PROFILES = Object.freeze(['exact', 'tong', 'nucleus', 'coda']);
@@ -20,41 +21,72 @@ export function normalizeRhymeProfile(value) {
   return isRhymeProfile(value) ? value : 'exact';
 }
 
-/** @type {readonly (readonly string[])[]} */
-const TONG_GROUPS = Object.freeze([
-  // 舒聲傳統韻部（參考 m2）
-  Object.freeze(['i', 'ei', 'yu', 'eoi', 'ai']), // 雞啼
-  Object.freeze(['oeng', 'on', 'ong']), // 陽光
-  Object.freeze(['an', 'am', 'ang']), // 親琴
-  Object.freeze(['aa']), // 麻花
-  Object.freeze(['in', 'im', 'yun']), // 添邊
-  Object.freeze(['ing']), // 英明
-  Object.freeze(['eng']), // 醒靈
-  Object.freeze(['aam', 'aan', 'aang']), // 懶珊
-  Object.freeze(['ung']), // 農工
-  Object.freeze(['oi', 'ui']), // 杯開
-  Object.freeze(['aai']), // 埋街
-  Object.freeze(['iu']), // 逍遙
-  Object.freeze(['ou', 'u']), // 扶高
-  Object.freeze(['o']), // 多和
-  Object.freeze(['au']), // 優遊
-  Object.freeze(['aau']), // 拋錨
-  Object.freeze(['e']), // 車斜
-  Object.freeze(['eon']), // 倫敦
-  Object.freeze(['un']), // 歡門
-  Object.freeze(['oe']), // 靴瘸
-  // 入聲搜尋歸組（參考 m2a；併入共母音部）
-  Object.freeze(['aa', 'aap', 'aat', 'aak']),
-  Object.freeze(['a', 'ap', 'at', 'ak']),
-  Object.freeze(['e', 'ek', 'ep', 'et', 'em', 'en', 'eng']),
-  Object.freeze(['i', 'ip', 'it', 'ik', 'im', 'in', 'ing']),
-  Object.freeze(['o', 'ok', 'ot', 'op', 'on', 'ong', 'oi']),
-  Object.freeze(['oe', 'oek', 'oet', 'oeng', 'eot', 'eon', 'eoi']),
-  Object.freeze(['u', 'ut', 'uk', 'un', 'ung', 'ou']),
-  Object.freeze(['yu', 'yut', 'yun']),
-  Object.freeze(['m', 'ng']),
-  Object.freeze(['eu']),
+/**
+ * 通韻部／韻：name 教學標籤；finals 含舒聲＋舒入相配入聲。
+ * @type {readonly { readonly name: string, readonly finals: readonly string[] }[]}
+ */
+export const TONG_CLASSES = Object.freeze([
+  // 多韻互通 →「部」；單細韻 →「韻」。入聲併入對應舒聲部（舒入相配）。
+  Object.freeze({
+    name: '依時部',
+    finals: Object.freeze(['i', 'yu', 'eoi', 'ei', 'ip', 'it', 'ik', 'yut', 'eot']),
+  }),
+  Object.freeze({
+    name: '郎當部',
+    finals: Object.freeze(['ong', 'on', 'oeng', 'ok', 'ot', 'oek']),
+  }),
+  Object.freeze({
+    name: '民親部',
+    finals: Object.freeze(['an', 'ang', 'am', 'at', 'ak', 'ap']),
+  }),
+  Object.freeze({
+    name: '田邊部',
+    finals: Object.freeze(['in', 'im', 'yun', 'it', 'ip', 'yut']),
+  }),
+  Object.freeze({
+    name: '欄柵部',
+    finals: Object.freeze(['aan', 'aam', 'aang', 'aat', 'aap', 'aak']),
+  }),
+  Object.freeze({
+    name: '勞高部',
+    finals: Object.freeze(['ou', 'u', 'uk', 'ut']),
+  }),
+  Object.freeze({
+    name: '裁開部',
+    finals: Object.freeze(['oi', 'ui']),
+  }),
+  Object.freeze({ name: '雞啼韻', finals: Object.freeze(['ai']) }),
+  Object.freeze({ name: '倫敦韻', finals: Object.freeze(['eon', 'eot']) }),
+  Object.freeze({ name: '盤歡韻', finals: Object.freeze(['un', 'ut']) }),
+  Object.freeze({ name: '埋街韻', finals: Object.freeze(['aai']) }),
+  Object.freeze({ name: '英明韻', finals: Object.freeze(['ing', 'ik']) }),
+  Object.freeze({ name: '靈釘韻', finals: Object.freeze(['eng', 'ek']) }),
+  Object.freeze({ name: '優遊韻', finals: Object.freeze(['au']) }),
+  Object.freeze({ name: '農工韻', finals: Object.freeze(['ung', 'uk']) }),
+  Object.freeze({ name: '逍遙韻', finals: Object.freeze(['iu']) }),
+  Object.freeze({
+    name: '羅疏韻',
+    finals: Object.freeze(['o', 'ok', 'ot', 'op']),
+  }),
+  Object.freeze({
+    name: '麻花韻',
+    finals: Object.freeze(['aa', 'aap', 'aat', 'aak']),
+  }),
+  Object.freeze({ name: '咆哮韻', finals: Object.freeze(['aau']) }),
+  Object.freeze({
+    name: '斜遮韻',
+    finals: Object.freeze(['e', 'ep', 'et', 'ek', 'em', 'en']),
+  }),
+  Object.freeze({
+    name: '靴瘸韻',
+    finals: Object.freeze(['oe', 'oek', 'oet']),
+  }),
+  Object.freeze({ name: '五唔韻', finals: Object.freeze(['m', 'ng']) }),
+  Object.freeze({ name: '掉韻', finals: Object.freeze(['eu']) }),
 ]);
+
+/** @type {readonly (readonly string[])[]} */
+const TONG_GROUPS = Object.freeze(TONG_CLASSES.map((c) => c.finals));
 
 /** @type {readonly (readonly string[])[]} */
 const NUCLEUS_GROUPS = Object.freeze([
@@ -113,7 +145,6 @@ function buildLookup(groups) {
       }
     }
   }
-  // freeze-ish: return Map of Sets
   return map;
 }
 
@@ -128,18 +159,39 @@ function lookupFor(profile) {
   return null;
 }
 
-/** Guide / docs: group lists for a profile (C3′ single-source render). */
-export function rhymeGroupsForProfile(profile) {
+/**
+ * Guide render: { name, finals }[]
+ * tong uses TONG_CLASSES; nucleus/coda unnamed numbered; exact each final alone.
+ */
+export function rhymeClassesForProfile(profile) {
   const p = normalizeRhymeProfile(profile);
-  if (p === 'tong') return TONG_GROUPS;
-  if (p === 'nucleus') return NUCLEUS_GROUPS;
-  if (p === 'coda') return CODA_GROUPS;
-  // exact: each known final is its own group (union of table members, sorted)
+  if (p === 'tong') return TONG_CLASSES;
+  if (p === 'nucleus') {
+    return Object.freeze(
+      NUCLEUS_GROUPS.map((finals, i) =>
+        Object.freeze({ name: `腹${i + 1}`, finals }),
+      ),
+    );
+  }
+  if (p === 'coda') {
+    return Object.freeze(
+      CODA_GROUPS.map((finals, i) =>
+        Object.freeze({ name: `尾${i + 1}`, finals }),
+      ),
+    );
+  }
   const all = new Set();
   for (const g of TONG_GROUPS) for (const f of g) all.add(f);
   for (const g of NUCLEUS_GROUPS) for (const f of g) all.add(f);
   for (const g of CODA_GROUPS) for (const f of g) all.add(f);
-  return Object.freeze([...all].sort().map((f) => Object.freeze([f])));
+  return Object.freeze(
+    [...all].sort().map((f) => Object.freeze({ name: f, finals: Object.freeze([f]) })),
+  );
+}
+
+/** @deprecated use rhymeClassesForProfile */
+export function rhymeGroupsForProfile(profile) {
+  return Object.freeze(rhymeClassesForProfile(profile).map((c) => c.finals));
 }
 
 export function rhymeProfileGuideOrder() {
@@ -147,9 +199,85 @@ export function rhymeProfileGuideOrder() {
 }
 
 /**
- * Expand one final (tone-stripped jyutping final) to the match set for profile.
- * Unknown finals fall back to singleton (正韻 behaviour).
+ * 教學用參考字（一韻一字；唔照抄外站字表）。
+ * 缺 key 時 UI 只顯示韻母。
  */
+export const FINAL_EXAMPLE_CHARS = Object.freeze({
+  a: '打',
+  aa: '家',
+  aai: '買',
+  aak: '白',
+  aam: '藍',
+  aan: '山',
+  aang: '橫',
+  aap: '鴨',
+  aat: '八',
+  aau: '包',
+  ai: '西',
+  ak: '北',
+  am: '心',
+  an: '新',
+  ang: '生',
+  ap: '十',
+  at: '七',
+  au: '手',
+  e: '車',
+  ei: '飛',
+  ek: '尺',
+  em: '舐',
+  en: '釘',
+  eng: '正',
+  eoi: '水',
+  eon: '春',
+  eot: '出',
+  ep: '夾',
+  et: '捏',
+  eu: '掉',
+  i: '詩',
+  ik: '色',
+  im: '點',
+  in: '天',
+  ing: '星',
+  ip: '葉',
+  it: '熱',
+  iu: '小',
+  m: '唔',
+  ng: '五',
+  o: '多',
+  oe: '靴',
+  oek: '腳',
+  oeng: '香',
+  oet: '略',
+  oi: '開',
+  ok: '學',
+  on: '安',
+  ong: '方',
+  op: '合',
+  ot: '渴',
+  ou: '好',
+  u: '夫',
+  ui: '梅',
+  uk: '屋',
+  un: '門',
+  ung: '工',
+  ut: '活',
+  yu: '魚',
+  yun: '遠',
+  yut: '月',
+});
+
+export function exampleCharForFinal(final) {
+  const f = String(final || '').toLowerCase().trim();
+  return FINAL_EXAMPLE_CHARS[f] || '';
+}
+
+/** Chip label: `i [詩]` */
+export function formatFinalWithExample(final) {
+  const f = String(final || '').toLowerCase().trim();
+  const ch = exampleCharForFinal(f);
+  return ch ? `${f} [${ch}]` : f;
+}
+
 export function expandOneFinal(final, profile = 'exact') {
   const f = String(final || '').toLowerCase().trim();
   if (!f) return new Set();
@@ -161,7 +289,6 @@ export function expandOneFinal(final, profile = 'exact') {
   return new Set([f]);
 }
 
-/** Expand a set of exact finals under the current profile. */
 export function expandFinalOptions(options, profile = 'exact') {
   const p = normalizeRhymeProfile(profile);
   if (p === 'exact') {

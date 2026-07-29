@@ -96,7 +96,6 @@ declare module '../../shared/guide-i18n.mjs' {
       }
     >;
     groupsHeading: string;
-    groupsNote: string;
   };
   export function guideSectionDomId(id: string): string;
   export function getGuideSections(lang: 'zh' | 'zh-Hans' | 'en'): Array<{

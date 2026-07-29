@@ -696,6 +696,13 @@ button.icon-button.header-search__shuffle:disabled {
   justify-content: center;
   text-align: center;
 }
+.menu-switches .mode-switch.is-active,
+.menu-switches .mode-switch[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  color: var(--accent-strong, var(--ink));
+  font-weight: 750;
+}
 .menu-switches .mode-switch:first-child {
   flex: 0 0 42px; /* icon only narrower */
   font-size: 16px;

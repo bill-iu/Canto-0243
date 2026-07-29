@@ -877,7 +877,7 @@ const RHYME_GUIDE = {
     introParagraphs: [
       '搜尋殼聲調旁、或句格「押韻模式」可揀：<strong>正韻</strong>（預設，最嚴）、<strong>通韻</strong>、<strong>腹韻</strong>、<strong>尾韻</strong>。',
       '放寬檔下，結果會優先列出仍符合<strong>正韻</strong>嘅詞，再排只靠放寬先入圍者。',
-      '傳統戲曲通韻多只論平；本工具為方便搜尋，入聲會按共母音歸入通韻部（見通韻分組）。',
+      '通韻跟粵曲「部／韻」：多韻互通稱「部」（如依時部），單細稱「韻」（如雞啼韻）。入聲採<strong>舒入相配</strong>，併入對應舒聲部，唔另開入聲卡。',
     ],
     profiles: {
       exact: {
@@ -892,7 +892,7 @@ const RHYME_GUIDE = {
       },
       tong: {
         title: '通韻',
-        blurb: '多個粵拼韻母按傳統韻部併組後再比，聽感上同部可互通。',
+        blurb: '同「部」內粵拼韻母互通（含已歸部入聲）；部名參考粵曲二十轍系。',
         when: '填詞、歌謠想闊啲候選、仍跟粵語通韻習慣時。',
         how: '押韻模式選「通韻」，再加同韻條件。例：',
         examples: [
@@ -922,7 +922,6 @@ const RHYME_GUIDE = {
       },
     },
     groupsHeading: '分組一覽（完整）',
-    groupsNote: '以下由引擎同源表渲染；改表即改教學，唔另抄一份。',
   },
   zhHans: {
     heroTitle: '押韵指南',
@@ -977,7 +976,6 @@ const RHYME_GUIDE = {
       },
     },
     groupsHeading: '分组一览（完整）',
-    groupsNote: '以下由引擎同源表渲染。',
   },
   en: {
     heroTitle: 'Rhyme guide',
@@ -1032,7 +1030,6 @@ const RHYME_GUIDE = {
       },
     },
     groupsHeading: 'Full groups',
-    groupsNote: 'Rendered from the engine table — not a second hand-maintained list.',
   },
 };
 
@@ -1077,15 +1074,25 @@ function renderGuideChaptersHtml(lang) {
       lastGroup = group;
     }
     const copy = section[l];
-    const buttons = section.examples
+    const examples = section.examples
       .map((ex, i) => {
         const exCopy = copy.examples[i];
-        const titleAttr = exCopy.title ? ` title="${exCopy.title.replace(/"/g, '&quot;')}"` : '';
+        const label = exCopy.label || '';
+        const titleText = (exCopy.title || label).replace(/"/g, '&quot;');
+        const aria = label
+          ? ` aria-label="${`${ex.query}：${label}`.replace(/"/g, '&quot;')}"`
+          : '';
+        const titleAttr = titleText ? ` title="${titleText}"` : '';
+        const labelHtml = label
+          ? `<span class="guide-example__label">${label}</span>`
+          : '';
         return (
-          `<button class="guide-example" type="button" data-query="${ex.query}" data-mode="${ex.mode}"${titleAttr}>` +
+          `<div class="guide-example">` +
+          `<button class="guide-example__query" type="button" data-query="${ex.query}" data-mode="${ex.mode}"${titleAttr}${aria}>` +
           `<code translate="no">${ex.query}</code>` +
-          `<span>${exCopy.label}</span>` +
-          `</button>`
+          `</button>` +
+          labelHtml +
+          `</div>`
         );
       })
       .join('\n            ');
@@ -1094,7 +1101,7 @@ function renderGuideChaptersHtml(lang) {
       `<section class="guide-chapter" id="${secId}">` +
         `<h3>${renderCardTitle(copy.title)}</h3>` +
         `<p>${copy.intro}</p>` +
-        `<div class="guide-examples">\n            ${buttons}\n          </div>` +
+        `<div class="guide-examples">\n            ${examples}\n          </div>` +
         `</section>`,
     );
   }

@@ -16,11 +16,18 @@ class RhymeMatchProfileTests(unittest.TestCase):
         self.assertTrue(finals_compatible("ong", "ong", "exact"))
         self.assertFalse(finals_compatible("ong", "on", "exact"))
 
-    def test_tong_chicken_group(self) -> None:
-        # 雞啼：i / ei / yu / eoi / ai
+    def test_tong_yishi_bu(self) -> None:
+        # 依時部：i / ei / yu / eoi（雞啼 ai 獨立）
         self.assertTrue(finals_compatible("i", "ei", "tong"))
-        self.assertTrue(finals_compatible("i", "ai", "tong"))
+        self.assertTrue(finals_compatible("i", "eoi", "tong"))
+        self.assertFalse(finals_compatible("i", "ai", "tong"))
         self.assertFalse(finals_compatible("i", "ong", "tong"))
+
+    def test_tong_shuru_match(self) -> None:
+        # 舒入相配：民親部 an 與 at；麻花 aa 與 aat
+        self.assertTrue(finals_compatible("an", "at", "tong"))
+        self.assertTrue(finals_compatible("aa", "aat", "tong"))
+        self.assertTrue(finals_compatible("ing", "ik", "tong"))
 
     def test_nucleus_aa_bucket(self) -> None:
         self.assertTrue(finals_compatible("aa", "aap", "nucleus"))

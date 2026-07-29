@@ -12,7 +12,8 @@ import {
 } from '../../shared/guide-i18n.mjs';
 import {
   RHYME_PROFILE_LABELS,
-  rhymeGroupsForProfile,
+  formatFinalWithExample,
+  rhymeClassesForProfile,
   rhymeProfileGuideOrder,
   type RhymeProfile,
 } from './db/rhyme-match-profile.ts';
@@ -230,7 +231,7 @@ function RhymeGuidePane({
       {order.map((profile) => {
         const section = copy.profiles[profile as keyof typeof copy.profiles];
         if (!section) return null;
-        const groups = rhymeGroupsForProfile(profile);
+        const classes = rhymeClassesForProfile(profile);
         return (
           <section
             key={profile}
@@ -263,18 +264,35 @@ function RhymeGuidePane({
               ))}
             </div>
             <h4 className="guide-rhyme-groups-title">{copy.groupsHeading}</h4>
-            <p className="guide-rhyme-groups-note">{copy.groupsNote}</p>
-            <div className="guide-rhyme-groups" aria-label={section.title}>
-              {groups.map((group, gi) => (
-                <div key={`${profile}-g${gi}`} className="guide-rhyme-group">
-                  {group.map((final) => (
-                    <code key={final} className="guide-rhyme-chip" translate="no">
-                      {final}
+            {profile === 'exact' ? (
+              <div className="guide-rhyme-exact-grid" aria-label={section.title}>
+                {classes.map((cls) => {
+                  const final = cls.finals[0]!;
+                  return (
+                    <code key={final} className="guide-rhyme-chip guide-rhyme-chip--wide" translate="no">
+                      {formatFinalWithExample(final)}
                     </code>
-                  ))}
-                </div>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="guide-rhyme-groups" aria-label={section.title}>
+                {classes.map((cls) => (
+                  <div key={`${profile}-${cls.name}`} className="guide-rhyme-group">
+                    {profile === 'tong' ? (
+                      <p className="guide-rhyme-group__name">{cls.name}</p>
+                    ) : null}
+                    <div className="guide-rhyme-group__grid">
+                      {cls.finals.map((final) => (
+                        <code key={final} className="guide-rhyme-chip guide-rhyme-chip--wide" translate="no">
+                          {formatFinalWithExample(final)}
+                        </code>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         );
       })}
@@ -297,15 +315,20 @@ function GuideExampleButton({
   example: GuideExample | { query: string; mode: string; label: string; title?: string };
   onPick: (query: string, mode: GuideMode) => void;
 }) {
+  const label = example.label;
+  const title = 'title' in example && example.title ? example.title : label;
   return (
-    <button
-      type="button"
-      className="guide-example"
-      title={'title' in example ? example.title : example.label}
-      onClick={() => onPick(example.query, toGuideMode(example.mode))}
-    >
-      <code translate="no">{example.query}</code>
-      <span>{example.label}</span>
-    </button>
+    <div className="guide-example">
+      <button
+        type="button"
+        className="guide-example__query"
+        title={title}
+        aria-label={label ? `${example.query}：${label}` : example.query}
+        onClick={() => onPick(example.query, toGuideMode(example.mode))}
+      >
+        <code translate="no">{example.query}</code>
+      </button>
+      {label ? <span className="guide-example__label">{label}</span> : null}
+    </div>
   );
 }

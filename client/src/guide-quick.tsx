@@ -22,16 +22,19 @@ function GuideQuickExampleButton({
   onPick: (query: string, mode: GuideMode) => void;
 }) {
   return (
-    <button
-      type="button"
-      className="guide-quick__example"
-      disabled={disabled}
-      title={label}
-      onClick={() => onPick(query, mode)}
-    >
-      <code translate="no">{query}</code>
-      <span>{label}</span>
-    </button>
+    <div className="guide-quick__example">
+      <button
+        type="button"
+        className="guide-quick__example-query"
+        disabled={disabled}
+        title={label}
+        aria-label={label ? `${query}：${label}` : query}
+        onClick={() => onPick(query, mode)}
+      >
+        <code translate="no">{query}</code>
+      </button>
+      {label ? <span className="guide-quick__example-label">{label}</span> : null}
+    </div>
   );
 }
 

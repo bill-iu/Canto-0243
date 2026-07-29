@@ -4,9 +4,12 @@
 import {
   expandFinalOptions as expandFinalOptionsJs,
   expandOneFinal as expandOneFinalJs,
+  exampleCharForFinal as exampleCharForFinalJs,
   finalsCompatible as finalsCompatibleJs,
+  formatFinalWithExample as formatFinalWithExampleJs,
   isRhymeProfile as isRhymeProfileJs,
   normalizeRhymeProfile as normalizeRhymeProfileJs,
+  rhymeClassesForProfile as rhymeClassesForProfileJs,
   rhymeGroupsForProfile as rhymeGroupsForProfileJs,
   rhymeProfileGuideOrder as rhymeProfileGuideOrderJs,
   RHYME_PROFILE_LABELS as LABELS,
@@ -14,6 +17,11 @@ import {
 } from '../../../shared/rhyme-match-profile.mjs';
 
 export type RhymeProfile = 'exact' | 'tong' | 'nucleus' | 'coda';
+
+export type RhymeClass = {
+  readonly name: string;
+  readonly finals: readonly string[];
+};
 
 export const RHYME_PROFILES = PROFILES as readonly RhymeProfile[];
 export const RHYME_PROFILE_LABELS = LABELS as Record<RhymeProfile, string>;
@@ -45,10 +53,22 @@ export function finalsCompatible(
   return finalsCompatibleJs(a, b, profile);
 }
 
+export function rhymeClassesForProfile(profile: RhymeProfile | string): readonly RhymeClass[] {
+  return rhymeClassesForProfileJs(profile) as readonly RhymeClass[];
+}
+
 export function rhymeGroupsForProfile(profile: RhymeProfile | string): readonly (readonly string[])[] {
   return rhymeGroupsForProfileJs(profile) as readonly (readonly string[])[];
 }
 
 export function rhymeProfileGuideOrder(): readonly RhymeProfile[] {
   return rhymeProfileGuideOrderJs() as readonly RhymeProfile[];
+}
+
+export function exampleCharForFinal(final: string): string {
+  return exampleCharForFinalJs(final);
+}
+
+export function formatFinalWithExample(final: string): string {
+  return formatFinalWithExampleJs(final);
 }
