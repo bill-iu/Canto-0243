@@ -95,9 +95,11 @@
   grid-area: menu;
   margin-left: 0;
   align-self: center;
+  justify-self: end;
+  align-items: flex-end;
 }
 
-/* Exit + mode menu share the menu grid cell (Portable: exit left of trigger) */
+/* Exit + mode menu share the menu grid cell (Portable: exit left of trigger; menu rightmost) */
 .header-chrome__actions {
   grid-area: menu;
   display: flex;
@@ -108,13 +110,15 @@
   /* Above chrome-tabs strip (sibling below app-bar) so open menu isn’t clipped */
   position: relative;
   z-index: var(--z-menu);
+  justify-self: end;
 }
 
 .header-chrome__actions .mode-menu-root {
   grid-area: unset;
   margin-left: 0;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-width: 0;
+  align-items: flex-end;
 }
 
 .header-chrome__actions .portable-exit-btn {
@@ -206,26 +210,19 @@ button.icon-button.header-search__shuffle:disabled {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface-input);
+  height: 30px;
   min-height: 30px;
   box-sizing: border-box;
 }
 
-.header-search__meta .pingze-submode {
-  min-height: 26px;
-  padding: 4px 9px;
-  font-size: 12px;
-  font-weight: 650;
-  line-height: 1;
-  text-align: center;
-  border-radius: 999px;
-}
-
-/* Main query only: match POS control to the adjacent three-tier profile pill. */
+/* Main query: 詞性 = 0243／韻檔 pill 同高（外框 30px） */
 .header-search__meta > .pos-filter { align-self: center; }
 .header-search__meta > .pos-filter .pos-filter__trigger {
   box-sizing: border-box;
+  height: 30px;
   min-height: 30px;
-  padding: 4px 9px;
+  max-height: 30px;
+  padding: 0 9px;
   gap: 6px;
   border-radius: 999px;
   font-family: inherit;
@@ -233,11 +230,26 @@ button.icon-button.header-search__shuffle:disabled {
   font-weight: 650;
   line-height: 1;
 }
-.header-search__meta > .pos-filter .pos-filter__trigger svg { width: 15px; height: 15px; }
+.header-search__meta > .pos-filter .pos-filter__trigger svg { width: 14px; height: 14px; flex-shrink: 0; }
 .header-search__meta > .pos-filter .pos-filter__trigger b {
-  min-width: 20px;
-  height: 20px;
-  font-size: 11px;
+  min-width: 18px;
+  height: 18px;
+  font-size: 10px;
+}
+.header-search__meta .pingze-submode {
+  box-sizing: border-box;
+  height: 26px;
+  min-height: 26px;
+  max-height: 26px;
+  padding: 0 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1;
+  text-align: center;
+  border-radius: 999px;
 }
 
 .header-search__actions {
@@ -257,12 +269,15 @@ button.icon-button.header-search__shuffle:disabled {
   align-self: flex-start;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-end;
   min-width: 0;
 }
 
 .mode-menu-stack {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .mode-menu-anchor {
@@ -285,16 +300,17 @@ button.icon-button.header-search__shuffle:disabled {
 .header-search__profile-groups {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   gap: 6px;
-  margin-top: 7px;
+  margin-top: 0;
 }
 
 .pingze-submodes {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   justify-content: start;
-  align-self: flex-start;
+  align-self: center;
+  align-items: center;
   gap: 2px;
   margin-top: 0;
   width: max-content;
@@ -303,6 +319,8 @@ button.icon-button.header-search__shuffle:disabled {
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface-input);
+  box-sizing: border-box;
+  min-height: 30px;
 }
 
 .rhyme-profile-submodes {
@@ -325,18 +343,22 @@ button.icon-button.header-search__shuffle:disabled {
 .profile-pill__narrow { display: none; }
 
 @media (max-width: 760px) {
-  /* 窄屏：brand|hero|menu 同行；搜尋全寬下一行（唔另開 hero 列） */
+  /* 窄屏：頂欄減負 — logo | spacer | menu；hero 只喺 guide-quick 卡頭 */
   .app-bar {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas:
-      "brand hero menu"
+      "brand . menu"
       "search search search";
     column-gap: 6px;
     row-gap: 4px;
     align-items: center;
     position: relative;
     min-height: 0;
+  }
+
+  .app-bar.app-bar--workbench {
+    grid-template-areas: "brand . menu";
   }
 
   .header-chrome {
@@ -365,44 +387,8 @@ button.icon-button.header-search__shuffle:disabled {
     display: block;
   }
 
-  /* 同行、水平置中；放大 title＋顯示 tagline；唔改 search 尺寸 */
+  /* Hero moves into guide-quick on narrow; hide app-bar copy (wide keeps it) */
   .app-bar > .header-hero {
-    display: block;
-    grid-area: hero;
-    align-self: center;
-    justify-self: stretch;
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    padding: 0 6px;
-    text-align: center;
-    opacity: 1;
-    visibility: visible;
-    writing-mode: horizontal-tb;
-  }
-
-  .app-bar > .header-hero .header-hero__title {
-    font-size: clamp(18px, 5vw, 24px);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* nowrap 單行；唔用 ellipsis — JS 縮字／極窄隱藏（header-hero-tagline-fit） */
-  .app-bar > .header-hero .header-hero__tagline {
-    display: block;
-    margin: 3px 0 0;
-    max-width: 100%;
-    font-size: clamp(12px, 3.2vw, 14px);
-    line-height: 1.25;
-    color: var(--muted);
-    white-space: nowrap;
-    overflow: hidden; /* 量度用 scrollWidth；縮妥前唔橫向濺出 */
-  }
-
-  .app-bar > .header-hero .header-hero__tagline[hidden] {
     display: none !important;
   }
 
@@ -412,13 +398,17 @@ button.icon-button.header-search__shuffle:disabled {
     grid-row: unset;
     z-index: var(--z-menu);
     margin-left: 0;
-    max-width: min(58vw, 260px);
+    max-width: min(72vw, 280px);
     align-self: center;
+    justify-self: end;
+    justify-content: flex-end;
     gap: 6px;
   }
 
   .header-chrome__actions .mode-menu-root {
     max-width: 100%;
+    flex: 0 1 auto;
+    align-items: flex-end;
   }
 
   .header-chrome__actions .portable-exit-btn {
@@ -433,8 +423,10 @@ button.icon-button.header-search__shuffle:disabled {
     grid-row: unset;
     z-index: var(--z-menu);
     margin-left: 0;
-    max-width: min(46vw, 200px);
+    max-width: min(72vw, 280px);
     align-self: center;
+    justify-self: end;
+    align-items: flex-end;
   }
 
   .header-search__meta .warmup-badge {
@@ -532,11 +524,13 @@ button.icon-button.header-search__shuffle:disabled {
 
   .profile-pill__wide { display: none; }
   .profile-pill__narrow { display: inline; }
+  /* 窄屏：詞性／0243／韻檔 同一 24px 外框 */
   .header-search__meta .pingze-submodes {
     display: flex;
     width: max-content;
     max-width: none;
     min-width: 0;
+    height: 24px;
     min-height: 24px;
     margin-top: 0;
     gap: 1px;
@@ -544,8 +538,10 @@ button.icon-button.header-search__shuffle:disabled {
   }
   .header-search__meta .pingze-submode {
     min-width: 0;
+    height: 22px;
     min-height: 22px;
-    padding: 3px 7px;
+    max-height: 22px;
+    padding: 0 7px;
     font-size: 11px;
     text-align: center;
     box-sizing: border-box;
@@ -553,16 +549,18 @@ button.icon-button.header-search__shuffle:disabled {
     white-space: nowrap;
   }
   .header-search__meta > .pos-filter .pos-filter__trigger {
+    height: 24px;
     min-height: 24px;
-    padding: 3px 7px;
+    max-height: 24px;
+    padding: 0 7px;
     gap: 4px;
     font-size: 11px;
     font-weight: 650;
   }
-  .header-search__meta > .pos-filter .pos-filter__trigger svg { width: 14px; height: 14px; }
+  .header-search__meta > .pos-filter .pos-filter__trigger svg { width: 13px; height: 13px; }
   .header-search__meta > .pos-filter .pos-filter__trigger b {
-    min-width: 18px;
-    height: 18px;
+    min-width: 16px;
+    height: 16px;
     font-size: 10px;
   }
   .pingze-submode .profile-pill__narrow {

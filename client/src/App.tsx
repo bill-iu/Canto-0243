@@ -947,7 +947,7 @@ function App() {
                 />
               </div>
             </div>
-            {/* 寬／窄屏：grid 與 logo｜menu 同行；窄屏 tagline 縮字／極窄隱藏 */}
+            {/* 寬屏：logo｜hero｜menu；窄屏隱藏，title 改喺 guide-quick 卡頭 */}
             <HeaderHero lang={uiLang} />
             <form
               className="header-search"

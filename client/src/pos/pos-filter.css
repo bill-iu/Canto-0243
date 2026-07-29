@@ -1,8 +1,8 @@
 .pos-filter { position: relative; }
 .pos-filter__trigger {
-  display: inline-flex; min-height: 2.35rem; align-items: center; gap: .45rem;
-  padding: .4rem .7rem; border: 1px solid var(--line); border-radius: .7rem;
-  color: var(--ink); background: var(--surface-input); font: 700 .8rem/1 inherit; cursor: pointer;
+  display: inline-flex; box-sizing: border-box; min-height: 30px; align-items: center; gap: .45rem;
+  padding: 0 .7rem; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); background: var(--surface-input); font: 650 .75rem/1 inherit; cursor: pointer;
 }
 .pos-filter__trigger svg { width: 1rem; height: 1rem; fill: currentColor; }
 .pos-filter__trigger.is-active { border-color: var(--accent-strong); color: var(--accent-strong); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
