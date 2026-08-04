@@ -1,6 +1,7 @@
 # 虛擬環境
 venv/
 .venv/
+.venv-embed-bake/
 .venv-reqs.stamp
 __pycache__/
 *.pyc

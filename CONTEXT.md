@@ -306,11 +306,19 @@ _Avoid_：模式偷換（UI 仍顯示近反義）、把缺字／碼字查詢一�
 _Avoid_：toast、彈窗確認
 
 **語意相關**：
-與查詢詞在語意上有關聯、但非近義亦非反義的詞條（近反義模式第三類結果）。
-_Avoid_：相關詞（不區分類型時）、semantic_related
+與查詢詞在語意上有關聯、但非近義亦非反義的詞條（近反義模式第三類結果）。存儲／API 枚舉可用 `semantic_related`；創作者文案用本正名。
+_Avoid_：相關詞（不區分類型時）、把語意相關當近義或反義展示
+
+**語意向量鄰居烘焙**：
+**發佈主理**離線用固定 embedding 模型（現行目標：**bge-m3 ONNX**）為 **詞庫** 字面算 dense 向量，再預算每頭 top-K 語意鄰居，寫入兩類產物：（A）可進 release 嘅 **語意相關** 邊（`word_relations`，`source=embedding_cosine`，排序低於 manual／project／cilin／guotong）——**只補缺／少直連 syn 嘅頭**；（C）**全 DISTINCT** 提案 TSV（可升 **專案自建近義**，**唔**自動升反義）。Encode／top-K 宇宙可全庫；**唔**等於全庫都寫入交貨關係圖。**Runtime（Desktop／PWA）只讀表，唔載模型、唔現場算向量。** 向量 sidecar 可留主理機；**唔**把全庫向量塞入交貨 `lyrics.db`（交貨庫 embedding 欄維持清空）。Cosine 鄰居 **唔**自動標 `ant`（反義仍靠直連／**近義橋反義**／**專案自建反義**）。
+_Avoid_：runtime 載 bge／ONNX、交貨庫存全庫向量、cosine top-K 直接當反義權威、用 embedding 取代 essay 詞頻排序、CPU silently 頂替已宣告嘅 GPU 烘焙、把全庫 C 提案無審直接灌 A
+
+**語意鄰居 GPU 烘焙**：
+**語意向量鄰居烘焙** 嘅 encode／全庫 top-K 相似度步驟 **必須** 用 GPU（CUDA EP 或等價）；啟動時偵測唔到可用 GPU → **失敗退出**，禁止默默改 CPU 跑完當成功。CPU 只可用於單位測試／極小 fixture，唔作全庫發佈路徑。
+_Avoid_：全庫 CPU fallback 當正式 bake、無 GPU 仍寫 release 邊
 
 **近反義池**：
-合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。**投影統一讀取入口**（`project_relation_pool`／`projectRelationPool`）；建池為內部。source 順位／runtime 衍生反義來源 id 以 `contracts/relation-pool-ranking.json` 為 SSOT（codegen 雙端）。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。
+合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。**投影統一讀取入口**（`project_relation_pool`／`projectRelationPool`）；建池為內部。source 順位／runtime 衍生反義來源 id 以 `contracts/relation-pool-ranking.json` 為 SSOT（codegen 雙端）。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。`embedding_cosine` 語意相關邊屬池內低順位來源。
 _Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT、假設 DB 有無限 syn 鄰居、PWA shallow barrel re-export、runtime 繞過投影直呼 builder、兩邊手抄 SOURCE_BASE_RANK
 
 **近反義池快照**：
