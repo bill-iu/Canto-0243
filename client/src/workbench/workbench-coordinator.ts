@@ -102,7 +102,19 @@ export function workbenchCoordinatorReducer(
   switch (action.type) {
     case 'session': {
       const session = sessionReducer(state.session, action.action);
-      if (session === state.session) return state;
+      if (session === state.session) {
+        // Stale selection apply: no session change, structured notice only.
+        const intent = action.action;
+        if (
+          (intent.type === 'apply_candidate'
+            || intent.type === 'apply_relaxation'
+            || intent.type === 'apply_span_input')
+          && intent.selectionVersion !== state.session.version
+        ) {
+          return { ...state, notice: { code: 'stale_candidate' } };
+        }
+        return state;
+      }
       const reset = WORKFLOW_RESETTING_ACTIONS.has(action.action.type)
         ? clearWorkflow(state)
         : state;

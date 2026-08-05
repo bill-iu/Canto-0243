@@ -6,6 +6,15 @@
   ],
   "checks": [
     {
+      "id": "workbench-coordinator",
+      "script": "workbench-coordinator-self-check.ts",
+      "tags": [
+        "ci",
+        "workbench",
+        "local"
+      ]
+    },
+    {
       "id": "query-workspace-detail",
       "script": "query-workspace-detail-self-check.ts",
       "tags": [

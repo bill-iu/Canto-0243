@@ -321,8 +321,10 @@ export function WorkbenchPage({
       setMessage(copy.readingFailed);
     } else if (notice?.code === 'storage_failed') {
       setMessage(copy.storageFailed);
+    } else if (notice?.code === 'stale_candidate') {
+      setMessage(copy.staleCandidate);
     }
-  }, [copy.readingFailed, copy.storageFailed, notice]);
+  }, [copy.readingFailed, copy.storageFailed, copy.staleCandidate, notice]);
 
   useEffect(() => {
     if (!readings.length) return;

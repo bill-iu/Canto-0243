@@ -10,6 +10,7 @@ export const GENERATED_ZH_HANS = Object.freeze({
     locksCleared: '已解除全部锁定。',
     readingFailed: '词库暂未就绪；句稿已建立，可继续编辑并稍后重试。',
     storageFailed: '这次未能自动保存；句稿仍可继续编辑。',
+    staleCandidate: '候选已过期；请重新锁定或整理候选后再套用。',
     readingsPartial: '部分字未有收录读音；你仍可锁定字位或改用码起句。',
     readingsReady: '已解析逐字读音；请点击锁定替换段。',
     insertNoSpan: '无法插入：工作台没有已锁范围；请改用取代整句。',

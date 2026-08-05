@@ -288,8 +288,8 @@ export function sessionReducer(session: WorkbenchSession, action: SessionAction)
 }
 
 /**
- * Page 用：單次 toggle（validate + apply 同一結果，唔 double-toggle）。
- * 成功後 caller 應即時 sessionRef.current = result.session。
+ * Self-check／純 helper：單次 toggle（validate + apply 同一結果，唔 double-toggle）。
+ * Production 鎖格走 coordinator session intent，唔再依賴 page-level session ref。
  */
 export function sessionToggleLock(session: WorkbenchSession, pos: number): ToggleLockSessionResult {
   if (!session.draft) return { ok: false, reason: 'no_draft', session };
