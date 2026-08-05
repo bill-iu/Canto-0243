@@ -589,6 +589,30 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"release gate failed: {exc}", file=sys.stderr)
         return 1
+    # E1c: embedding-nbr.bin char→id fingerprint (reuse safety)
+    print("==> embedding-nbr fingerprint (E1c reuse gate)")
+    try:
+        from app.domain.lexicon.embedding_nbr_codec import verify_embedding_nbr_fingerprint
+
+        public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+        nbr_check = verify_embedding_nbr_fingerprint(
+            db_path=REPO_ROOT / "lyrics.db",
+            meta_path=public_meta,
+            require_present=False,
+        )
+        print(f"    status={nbr_check.get('status')} ok={nbr_check.get('ok')}")
+        if nbr_check.get("hint"):
+            print(f"    {nbr_check['hint']}")
+        # Fail seal only when bin is shipped but fingerprint missing/mismatch
+        if nbr_check.get("status") in ("mismatch", "missing_fp", "missing_bin") and (
+            public_meta.is_file()
+            or (REPO_ROOT / "client" / "public" / "embedding-nbr.bin").is_file()
+        ):
+            print("embedding-nbr fingerprint gate FAILED", file=sys.stderr)
+            return 1
+    except Exception as exc:
+        print(f"embedding-nbr fingerprint check failed: {exc}", file=sys.stderr)
+        return 1
     # 詞庫渠道同步（ADR-0036）：閘綠後預設 copy → public + manifest
     if not getattr(args, "no_copy_public", False):
         import os
@@ -1025,6 +1049,20 @@ def main(argv: list[str] | None = None) -> int:
         help="Keep word_relations embedding_cosine rows after export",
     )
 
+    p_stamp = sub.add_parser(
+        "stamp-embedding-nbr-fp",
+        help="Write char_id_fingerprint onto existing embedding-nbr.meta.json (bin unchanged)",
+    )
+    p_check = sub.add_parser(
+        "check-embedding-nbr-fp",
+        help="Verify embedding-nbr.bin is reusable vs current lyrics.db char→id map",
+    )
+    p_check.add_argument(
+        "--require",
+        action="store_true",
+        help="Fail if meta/bin missing (default: missing is ok)",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
@@ -1060,6 +1098,10 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_bake_embedding_topk(args)
     if args.command == "export-embedding-nbr":
         return cmd_export_embedding_nbr(args)
+    if args.command == "stamp-embedding-nbr-fp":
+        return cmd_stamp_embedding_nbr_fp(args)
+    if args.command == "check-embedding-nbr-fp":
+        return cmd_check_embedding_nbr_fp(args)
     return 1
 
 
@@ -1110,6 +1152,33 @@ def cmd_export_embedding_nbr(args: argparse.Namespace) -> int:
             return 1
     print("export-embedding-nbr stats:", stats)
     return 0
+
+
+def cmd_stamp_embedding_nbr_fp(args: argparse.Namespace) -> int:
+    from app.domain.lexicon.embedding_nbr_codec import stamp_fingerprint_on_meta
+
+    public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+    cache_meta = REPO_ROOT / ".cache" / "embedding_topk" / "embedding-nbr.meta.json"
+    stats = stamp_fingerprint_on_meta(
+        db_path=REPO_ROOT / "lyrics.db",
+        meta_path=public_meta,
+        also=[cache_meta],
+    )
+    print("stamp-embedding-nbr-fp:", stats)
+    return 0 if stats.get("written") else 1
+
+
+def cmd_check_embedding_nbr_fp(args: argparse.Namespace) -> int:
+    from app.domain.lexicon.embedding_nbr_codec import verify_embedding_nbr_fingerprint
+
+    public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+    r = verify_embedding_nbr_fingerprint(
+        db_path=REPO_ROOT / "lyrics.db",
+        meta_path=public_meta,
+        require_present=bool(args.require),
+    )
+    print("check-embedding-nbr-fp:", r)
+    return 0 if r.get("ok") else 1
 
 
 def cmd_apply_manual_relations(args: argparse.Namespace) -> int:

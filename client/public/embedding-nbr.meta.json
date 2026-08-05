@@ -8,5 +8,6 @@
   "score_floor_milli": 500,
   "score_span_milli": 500,
   "source": "embedding_cosine",
-  "relation_type": "semantic_related"
+  "relation_type": "semantic_related",
+  "char_id_fingerprint": "da8a8d42bf759cf261c0741e3981e40daaf0e31da4a6c24b86f49f206a9745fd"
 }

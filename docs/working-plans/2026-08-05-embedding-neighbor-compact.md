@@ -28,17 +28,30 @@
 | `embedding-nbr.bin` | — | **14.87 MB**（雙向 CSR） |
 | heads / dir-edges | — | 165,034 / 2,258,966 |
 
+## 重用閘（char_id_fingerprint）
+
+meta 欄位 `char_id_fingerprint` = sha256(sorted `char\\tprimary_id` lines)。
+
+| 狀態 | 含義 |
+|---|---|
+| **match** | 可直接套同一 bin（唔使重算） |
+| **mismatch** | words id 變咗 — **禁止**盲 copy；重 bake |
+| **missing_fp** | 舊 meta — `stamp-embedding-nbr-fp` 或重 bake |
+
+```bash
+python -m ingest stamp-embedding-nbr-fp   # 替現有 meta 補指紋（bin 唔變）
+python -m ingest check-embedding-nbr-fp   # 查可唔可以重用
+# build-db seal 會自動 check；有 bin 但 mismatch/missing_fp → fail
+```
+
 ## 命令
 
 ```bash
-# 從已有 embedding_cosine 邊導出 bin 並 strip（唔重跑 GPU）
+# 從已有 embedding_cosine 邊導出 bin 並 strip（已跑過）
 env -u PYTHONPATH python -m ingest export-embedding-nbr
 
-# 全量 bake：預設寫 bin、唔寫 edge、strip
+# 全量 bake：預設寫 bin、唔寫 edge、strip（含 fingerprint）
 env -u PYTHONPATH PYTHONUNBUFFERED=1 .venv-embed-bake/Scripts/python.exe -m ingest bake-embedding-topk --skip-encode
-
-# 開發：保留 edge 表
-... bake-embedding-topk --write-edges --keep-edges
 ```
 
 ## 程式

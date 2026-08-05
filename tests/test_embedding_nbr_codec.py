@@ -27,3 +27,13 @@ def test_csr_bidirectional_roundtrip():
     n20 = dict(idx.neighbors_of(20))
     assert 10 in n20
     assert NBR_VERSION == "e1.v1"
+
+
+def test_char_id_fingerprint_stable():
+    from app.domain.lexicon.embedding_nbr_codec import char_id_fingerprint
+
+    a = char_id_fingerprint({"乙": 2, "甲": 1})
+    b = char_id_fingerprint({"甲": 1, "乙": 2})
+    c = char_id_fingerprint({"甲": 1, "乙": 3})
+    assert a == b
+    assert a != c

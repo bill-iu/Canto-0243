@@ -367,12 +367,21 @@ def bake_embedding_topk(
     undirected = [(t[0], t[1], float(t[3] or 0.5)) for t in tuples]
     adj = build_bidirectional_adj(undirected)
     blob = encode_csr_blob(adj)
+    from app.domain.lexicon.embedding_nbr_codec import char_id_fingerprint
+
+    fp = char_id_fingerprint(char_to_id)
     meta = write_nbr_bundle(
         blob,
         bin_path=nbr_bin,
         meta_path=nbr_meta,
         model_version=MODEL_VERSION,
-        extra={"syn_degree_lt": syn_degree_lt, "a_topk": a_topk, "a_min_cosine": a_min_cosine},
+        extra={
+            "syn_degree_lt": syn_degree_lt,
+            "a_topk": a_topk,
+            "a_min_cosine": a_min_cosine,
+            "char_id_fingerprint": fp,
+            "char_count": len(char_to_id),
+        },
     )
     # ship beside static-*-index.json
     try:
@@ -425,6 +434,7 @@ def export_nbr_from_existing_edges(
     from app.domain.lexicon.embedding_nbr_codec import (
         NBR_VERSION,
         build_bidirectional_adj,
+        char_id_fingerprint_from_db,
         edges_from_word_relations_db,
         encode_csr_blob,
         write_nbr_bundle,
@@ -437,7 +447,14 @@ def export_nbr_from_existing_edges(
     blob = encode_csr_blob(adj)
     nbr_bin = cache_dir / "embedding-nbr.bin"
     nbr_meta = cache_dir / "embedding-nbr.meta.json"
-    meta = write_nbr_bundle(blob, bin_path=nbr_bin, meta_path=nbr_meta, model_version=model_version)
+    fp = char_id_fingerprint_from_db(db)
+    meta = write_nbr_bundle(
+        blob,
+        bin_path=nbr_bin,
+        meta_path=nbr_meta,
+        model_version=model_version,
+        extra={"char_id_fingerprint": fp},
+    )
     public_bin = ROOT / "client" / "public" / "embedding-nbr.bin"
     public_meta = ROOT / "client" / "public" / "embedding-nbr.meta.json"
     public_bin.write_bytes(blob)
@@ -448,6 +465,7 @@ def export_nbr_from_existing_edges(
         "meta": meta,
         "nbr_bin": str(nbr_bin),
         "public_bin": str(public_bin),
+        "char_id_fingerprint": fp,
     }
     if strip_edges:
         stats["stripped"] = clear_word_relations_source(db, SOURCE)

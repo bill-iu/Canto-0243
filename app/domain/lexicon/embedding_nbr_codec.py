@@ -192,6 +192,131 @@ def write_nbr_bundle(
     return meta
 
 
+def char_id_fingerprint(char_to_primary_id: Mapping[str, int]) -> str:
+    """Stable sha256 over sorted 'char\\tprimary_id' lines (UTF-8).
+
+    Bin CSR stores word ids; reuse is safe only when this fingerprint matches
+    the lexicon at bake time.
+    """
+    lines = [f"{ch}\t{int(pid)}" for ch, pid in sorted(char_to_primary_id.items(), key=lambda x: x[0])]
+    payload = "\n".join(lines).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
+def char_id_fingerprint_from_db(db) -> str:
+    from app.domain.relations.char_index import get_char_to_primary_id
+
+    return char_id_fingerprint(get_char_to_primary_id(db))
+
+
+def char_id_fingerprint_from_sqlite(db_path: Path | str) -> str:
+    import sqlite3
+
+    con = sqlite3.connect(str(db_path))
+    try:
+        rows = con.execute(
+            "SELECT char, MIN(id) AS pid FROM words "
+            "WHERE char IS NOT NULL AND char != '' GROUP BY char"
+        ).fetchall()
+    finally:
+        con.close()
+    return char_id_fingerprint({str(ch): int(pid) for ch, pid in rows if ch is not None})
+
+
+def load_nbr_meta(meta_path: Path | str) -> dict:
+    p = Path(meta_path)
+    if not p.is_file():
+        return {}
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
+def verify_embedding_nbr_fingerprint(
+    *,
+    db_path: Path | str,
+    meta_path: Path | str,
+    bin_path: Path | str | None = None,
+    require_present: bool = False,
+) -> dict:
+    """Compare live lyrics.db char→id fingerprint to meta.
+
+    Returns dict: ok, status (match|mismatch|missing_meta|missing_fp|missing_bin), ...
+    """
+    meta_p = Path(meta_path)
+    bin_p = Path(bin_path) if bin_path else meta_p.with_suffix(".bin")
+    # default: embedding-nbr.meta.json → embedding-nbr.bin
+    if bin_path is None and meta_p.name.endswith(".meta.json"):
+        bin_p = meta_p.with_name(meta_p.name.replace(".meta.json", ".bin"))
+
+    out: dict = {
+        "ok": True,
+        "status": "match",
+        "meta_path": str(meta_p),
+        "bin_path": str(bin_p),
+        "db_path": str(db_path),
+    }
+    if not meta_p.is_file():
+        out["status"] = "missing_meta"
+        out["ok"] = not require_present
+        out["hint"] = "no embedding-nbr.meta.json — skip or bake first"
+        return out
+    if not bin_p.is_file():
+        out["status"] = "missing_bin"
+        out["ok"] = not require_present
+        out["hint"] = "meta without bin"
+        return out
+
+    meta = load_nbr_meta(meta_p)
+    baked_fp = meta.get("char_id_fingerprint")
+    live_fp = char_id_fingerprint_from_sqlite(db_path)
+    out["live_fingerprint"] = live_fp
+    out["baked_fingerprint"] = baked_fp
+    out["n_heads_meta"] = meta.get("n_heads")
+    out["sha256_meta"] = meta.get("sha256")
+
+    if not baked_fp:
+        out["status"] = "missing_fp"
+        out["ok"] = False
+        out["hint"] = (
+            "meta lacks char_id_fingerprint — re-export/bake or "
+            "python -m ingest stamp-embedding-nbr-fp"
+        )
+        return out
+    if baked_fp != live_fp:
+        out["status"] = "mismatch"
+        out["ok"] = False
+        out["hint"] = (
+            "words id map changed — do NOT reuse bin; "
+            "re-run bake-embedding-topk (vectors sidecar ok if chars set unchanged)"
+        )
+        return out
+    out["status"] = "match"
+    out["ok"] = True
+    out["hint"] = "bin safe to reuse (char→primary_id unchanged)"
+    return out
+
+
+def stamp_fingerprint_on_meta(
+    *,
+    db_path: Path | str,
+    meta_path: Path | str,
+    also: Sequence[Path | str] | None = None,
+) -> dict:
+    """Write/overwrite char_id_fingerprint on existing meta (bin unchanged)."""
+    fp = char_id_fingerprint_from_sqlite(db_path)
+    paths = [Path(meta_path)]
+    if also:
+        paths.extend(Path(p) for p in also)
+    written = []
+    for p in paths:
+        if not p.is_file():
+            continue
+        meta = load_nbr_meta(p)
+        meta["char_id_fingerprint"] = fp
+        p.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        written.append(str(p))
+    return {"char_id_fingerprint": fp, "written": written}
+
+
 def edges_from_word_relations_db(db, source: str = SOURCE) -> List[Tuple[int, int, float]]:
     from sqlalchemy import text
 
@@ -214,10 +339,16 @@ __all__ = [
     "RELATION_TYPE",
     "EmbeddingNbrIndex",
     "build_bidirectional_adj",
+    "char_id_fingerprint",
+    "char_id_fingerprint_from_db",
+    "char_id_fingerprint_from_sqlite",
     "decode_csr_blob",
     "edges_from_word_relations_db",
     "encode_csr_blob",
+    "load_nbr_meta",
     "score_to_u16",
+    "stamp_fingerprint_on_meta",
     "u16_to_score",
+    "verify_embedding_nbr_fingerprint",
     "write_nbr_bundle",
 ]
