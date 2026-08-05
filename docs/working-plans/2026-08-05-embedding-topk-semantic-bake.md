@@ -70,7 +70,8 @@ env -u PYTHONPATH .venv-embed-bake/Scripts/python.exe -m pip install \
 - cosine → ant；runtime 載 bge；交貨庫存全庫向量；CPU 正式 bake；C 無審灌 A
 
 ## 後續可選
+- **P2 真緊湊**（進行中）：CSR／blob 載體，見 `2026-08-05-embedding-neighbor-compact.md`
+- N1 交付：關係包 + gzip（可與 P2 並行）
 - 近義橋模型 MiniLM → bge-m3
 - 從 C TSV 抽樣 campaign 升 project_syn
-- PWA 關係分包體積／gzip 策略（db ~200MB 級）
-- bulk insert 進度 log
+- bulk insert 進度 log（edge 表過渡期）
