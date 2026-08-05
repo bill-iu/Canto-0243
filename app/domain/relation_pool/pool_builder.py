@@ -325,12 +325,19 @@ def build_pool(
             seen_main.add(ch)
             semantic_pool.append(item)
 
+    # Product: 語意相關併入近義欄／~ 語法（低 rank source 仍保序）；semantic 欄留空
+    if semantic_pool:
+        syn_pool = list(syn_pool) + list(semantic_pool)
+        syn_pool.sort(key=lambda x: (x.get("_sort", 99), x.get("char") or ""))
+        semantic_pool = []
+
     if not quiet:
         print(
             f"[syn] q={q!r} rel_syn={sum(1 for i in rel_items if i['relation'] == 'syn')} "
             f"rel_ant={sum(1 for i in rel_items if i['relation'] == 'ant')} "
             f"rel_sem={sum(1 for i in rel_items if i['relation'] == 'semantic_related')} "
-            f"static_syn={len(static_syns)} static_ant={len(static_ants)}"
+            f"static_syn={len(static_syns)} static_ant={len(static_ants)} "
+            f"syn_out={len(syn_pool)}"
         )
 
     return PoolSnapshot(

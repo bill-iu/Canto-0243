@@ -375,7 +375,7 @@ export async function buildRelationPool(
   }
 
   const seenMain = new Set([q, ...synPool.map((r) => r.char), ...antPool.map((r) => r.char)]);
-  const semanticPool = relItems.filter((item) => {
+  const semanticOnly = relItems.filter((item) => {
     if (item.relation !== 'semantic_related') {
       return false;
     }
@@ -387,5 +387,17 @@ export async function buildRelationPool(
     return true;
   });
 
-  return createRelationPoolSnapshot(q, synPool, antPool, semanticPool);
+  // Product: 語意相關併入近義欄／~（embedding_cosine 低 rank 仍殿後）；semantic 欄留空
+  let mergedSyn = synPool;
+  if (semanticOnly.length) {
+    mergedSyn = [...synPool, ...semanticOnly];
+    mergedSyn.sort((a, b) => {
+      const sa = a._sort ?? 99;
+      const sb = b._sort ?? 99;
+      if (sa !== sb) return sa - sb;
+      return (a.char || '').localeCompare(b.char || '', 'zh-Hant');
+    });
+  }
+
+  return createRelationPoolSnapshot(q, mergedSyn, antPool, []);
 }
