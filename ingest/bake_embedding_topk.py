@@ -274,6 +274,10 @@ def bake_embedding_topk(
     replace: bool = True,
     skip_encode: bool = False,
     write_db: bool = True,
+    write_edges: bool = False,
+    strip_edges: bool = True,
+    nbr_bin_path: Path | str | None = None,
+    nbr_meta_path: Path | str | None = None,
     limit_chars: int | None = None,
 ) -> dict:
     from app.domain.relations.char_index import get_char_to_primary_id
@@ -347,17 +351,106 @@ def bake_embedding_topk(
     tuples = collect_unique_relation_tuples(tuples)
     stats["a_candidate_edges"] = len(tuples)
 
+    # E1c: CSR bin (關係包資產) — always when we have A edges
+    from app.domain.lexicon.embedding_nbr_codec import (
+        NBR_VERSION,
+        build_bidirectional_adj,
+        encode_csr_blob,
+        write_nbr_bundle,
+    )
+
+    nbr_bin = Path(nbr_bin_path) if nbr_bin_path else (cache_dir / "embedding-nbr.bin")
+    nbr_meta = Path(nbr_meta_path) if nbr_meta_path else (cache_dir / "embedding-nbr.meta.json")
+    public_bin = ROOT / "client" / "public" / "embedding-nbr.bin"
+    public_meta = ROOT / "client" / "public" / "embedding-nbr.meta.json"
+
+    undirected = [(t[0], t[1], float(t[3] or 0.5)) for t in tuples]
+    adj = build_bidirectional_adj(undirected)
+    blob = encode_csr_blob(adj)
+    meta = write_nbr_bundle(
+        blob,
+        bin_path=nbr_bin,
+        meta_path=nbr_meta,
+        model_version=MODEL_VERSION,
+        extra={"syn_degree_lt": syn_degree_lt, "a_topk": a_topk, "a_min_cosine": a_min_cosine},
+    )
+    # ship beside static-*-index.json
+    try:
+        public_bin.parent.mkdir(parents=True, exist_ok=True)
+        public_bin.write_bytes(blob)
+        public_meta.write_text(nbr_meta.read_text(encoding="utf-8"), encoding="utf-8")
+        stats["public_nbr_bin"] = str(public_bin)
+    except OSError as e:
+        stats["public_nbr_bin_error"] = str(e)
+    stats["nbr_version"] = NBR_VERSION
+    stats["nbr_bin"] = str(nbr_bin)
+    stats["nbr_meta"] = meta
+    print(
+        f"E1c nbr bin: {meta.get('n_heads')} heads / {meta.get('n_edges')} dir-edges "
+        f"-> {nbr_bin} ({len(blob)} bytes)",
+        flush=True,
+    )
+
     if write_db:
         if replace:
             cleared = clear_word_relations_source(db, SOURCE)
             stats["cleared"] = cleared
             print(f"cleared source={SOURCE!r}: {cleared}", flush=True)
-        ins = insert_relation_records(db, tuples)
-        stats["a_insert"] = ins
-        print(f"A insert: {ins}", flush=True)
+        if write_edges:
+            ins = insert_relation_records(db, tuples)
+            stats["a_insert"] = ins
+            print(f"A insert edges: {ins}", flush=True)
+        else:
+            stats["a_insert"] = {"skipped_edges": True, "attempted": len(tuples)}
+            print("A edges skipped (E1c bin is authority for delivery)", flush=True)
     else:
         stats["a_insert"] = {"skipped": True, "attempted": len(tuples)}
 
+    if strip_edges and not write_edges:
+        cleared2 = clear_word_relations_source(db, SOURCE)
+        stats["strip_edges"] = cleared2
+        print(f"strip embedding_cosine edges: {cleared2}", flush=True)
+
+    return stats
+
+
+def export_nbr_from_existing_edges(
+    db,
+    *,
+    cache_dir: Path = DEFAULT_CACHE,
+    model_version: str = MODEL_VERSION,
+    strip_edges: bool = True,
+) -> dict:
+    """Build e1 bin from current word_relations embedding_cosine rows (no re-encode)."""
+    from app.domain.lexicon.embedding_nbr_codec import (
+        NBR_VERSION,
+        build_bidirectional_adj,
+        edges_from_word_relations_db,
+        encode_csr_blob,
+        write_nbr_bundle,
+    )
+    from ingest.syn_ant_build import clear_word_relations_source
+
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    edges = edges_from_word_relations_db(db, SOURCE)
+    adj = build_bidirectional_adj(edges)
+    blob = encode_csr_blob(adj)
+    nbr_bin = cache_dir / "embedding-nbr.bin"
+    nbr_meta = cache_dir / "embedding-nbr.meta.json"
+    meta = write_nbr_bundle(blob, bin_path=nbr_bin, meta_path=nbr_meta, model_version=model_version)
+    public_bin = ROOT / "client" / "public" / "embedding-nbr.bin"
+    public_meta = ROOT / "client" / "public" / "embedding-nbr.meta.json"
+    public_bin.write_bytes(blob)
+    public_meta.write_text(nbr_meta.read_text(encoding="utf-8"), encoding="utf-8")
+    stats = {
+        "nbr_version": NBR_VERSION,
+        "from_edges": len(edges),
+        "meta": meta,
+        "nbr_bin": str(nbr_bin),
+        "public_bin": str(public_bin),
+    }
+    if strip_edges:
+        stats["stripped"] = clear_word_relations_source(db, SOURCE)
     return stats
 
 
@@ -370,5 +463,6 @@ __all__ = [
     "MODEL_VERSION",
     "SOURCE",
     "bake_embedding_topk",
+    "export_nbr_from_existing_edges",
     "require_cuda_session",
 ]

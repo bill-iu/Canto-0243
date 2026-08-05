@@ -761,9 +761,9 @@ _Avoid_：phoneme id（作領域正名）、把編碼形當第二套讀音語意
 令**權威載體上可觀測位元組**（表頁＋必備索引，或等價 blob／分包檔）相對冗餘正規形下降**一個數量級級**，且語意／查詢契約不變；只靠 gzip、或只縮短字串欄而百萬行＋雙向 B-tree 仍在，**唔**算真緊湊。量度以 VACUUM 後 `dbstat`／檔案大小＋gzip 對照舊渠道包為準。
 _Avoid_：只 gzip 當完成、把「少寫幾個 source 字元」當治本、犧牲正確性截斷池當緊湊
 
-**語意鄰居緊湊載體（草案）**：
-**語意向量鄰居烘焙** 之 A 產物唔長期以每邊一列 `word_relations` 承載；改以每 head（或 CSR）**緊湊編碼**鄰居 id＋量化 score（版本指紋，如 `embedding_nbr_version`），**近反義池投影** decode 後併入 `semantic_related`（source 仍可標 `embedding_cosine` 排序）。與 **音素欄位緊湊化** 同紀律：存儲形≠語意形、雙端／開庫契約、舊形 migrate 或 rebuild。細節見 `docs/working-plans/2026-08-05-embedding-neighbor-compact.md`。
-_Avoid_：把 110 萬語意邊當永久 edge 表方案、runtime 載向量模型、cosine 當 ant
+**語意鄰居緊湊載體**：
+**語意向量鄰居烘焙** 之 A 產物以 **e1 CSR 關係包資產**（`embedding-nbr.bin` + meta 指紋）承載，**唔**長期以每邊一列 `word_relations` 入交貨庫。Runtime（Desktop／PWA）decode 後併入 **近反義池投影** 之 `semantic_related`（source=`embedding_cosine`，低 rank）。與 **音素欄位緊湊化** 同紀律：存儲形≠語意形、版本指紋、舊膨脹 edge 表可 strip。細節見 `docs/working-plans/2026-08-05-embedding-neighbor-compact.md`。
+_Avoid_：把 110 萬語意邊當永久 edge 表方案、runtime 載向量模型、cosine 當 ant、只 gzip 當緊湊完成
 
 **I2 雙端穩定**：
 **詞庫發佈閘**（I2）全過，且 **PWA 交付頻道** 與 **免安裝交付** 在相同重建詞條庫上通過 **S-B 煙霧**（自動閘 + PWA／Portable 核心查詢）與黃金查詢 parity、無已知阻斷缺陷；**維護者手動測試**反饋確認後，方可啟動 **音素欄位緊湊化** PR。

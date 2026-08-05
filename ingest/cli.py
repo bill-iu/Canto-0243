@@ -994,11 +994,35 @@ def main(argv: list[str] | None = None) -> int:
     p_emb.add_argument("--encode-batch", type=int, default=64, help="GPU encode batch size")
     p_emb.add_argument("--limit", type=int, default=None, help="Debug: first N distinct chars")
     p_emb.add_argument("--skip-encode", action="store_true", help="Reuse vectors npz")
-    p_emb.add_argument("--no-write-db", action="store_true", help="Skip word_relations write")
+    p_emb.add_argument("--no-write-db", action="store_true", help="Skip clearing/writing relations")
+    p_emb.add_argument(
+        "--write-edges",
+        action="store_true",
+        help="Also insert embedding_cosine rows (default: E1c bin only)",
+    )
+    p_emb.add_argument(
+        "--keep-edges",
+        action="store_true",
+        help="Do not strip embedding_cosine after bin write",
+    )
     p_emb.add_argument(
         "--no-replace",
         action="store_true",
         help="Do not clear existing embedding_cosine rows first",
+    )
+
+    p_nbr = sub.add_parser(
+        "export-embedding-nbr",
+        help="E1c: build embedding-nbr.bin from existing embedding_cosine edges",
+    )
+    p_nbr.add_argument(
+        "--cache-dir",
+        default=str(REPO_ROOT / ".cache" / "embedding_topk"),
+    )
+    p_nbr.add_argument(
+        "--keep-edges",
+        action="store_true",
+        help="Keep word_relations embedding_cosine rows after export",
     )
 
     args = parser.parse_args(argv)
@@ -1034,6 +1058,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_apply_manual_relations(args)
     if args.command == "bake-embedding-topk":
         return cmd_bake_embedding_topk(args)
+    if args.command == "export-embedding-nbr":
+        return cmd_export_embedding_nbr(args)
     return 1
 
 
@@ -1057,12 +1083,32 @@ def cmd_bake_embedding_topk(args: argparse.Namespace) -> int:
                 replace=not args.no_replace,
                 skip_encode=args.skip_encode,
                 write_db=not args.no_write_db,
+                write_edges=bool(args.write_edges),
+                strip_edges=not args.keep_edges,
                 limit_chars=args.limit,
             )
         except Exception as e:
             print(f"bake-embedding-topk FAILED: {type(e).__name__}: {e}", file=sys.stderr)
             return 1
     print("bake-embedding-topk stats:", stats)
+    return 0
+
+
+def cmd_export_embedding_nbr(args: argparse.Namespace) -> int:
+    from ingest.bake_embedding_topk import export_nbr_from_existing_edges
+
+    ensure_word_relations_table()
+    with SessionLocal() as db:
+        try:
+            stats = export_nbr_from_existing_edges(
+                db,
+                cache_dir=Path(args.cache_dir),
+                strip_edges=not args.keep_edges,
+            )
+        except Exception as e:
+            print(f"export-embedding-nbr FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+            return 1
+    print("export-embedding-nbr stats:", stats)
     return 0
 
 

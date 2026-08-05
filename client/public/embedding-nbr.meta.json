@@ -1,0 +1,12 @@
+{
+  "embedding_nbr_version": "e1.v1",
+  "format": 1,
+  "model_version": "bge-m3-fp32-onnx-v1",
+  "n_heads": 165034,
+  "n_edges": 2258966,
+  "sha256": "cbafab03d5adbe2adfc376a8def20cdbf835444f05ef69946c39d5d899fb9ed6",
+  "score_floor_milli": 500,
+  "score_span_milli": 500,
+  "source": "embedding_cosine",
+  "relation_type": "semantic_related"
+}
