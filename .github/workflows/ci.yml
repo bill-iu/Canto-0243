@@ -19,7 +19,7 @@ jobs:
           python-version: "3.10"
           cache: pip
           cache-dependency-path: requirements.txt
-      - run: pip install -r requirements.txt
+      - run: pip install -r requirements.txt jsonschema
       - run: cp data/rime/fixtures/char_sample.csv data/rime/char.csv
       - run: python -m unittest tests.smoke.test_canonical_match_spec tests.test_rhyme_match_profile tests.test_phoneme_codec tests.test_workbench_contract -q
         env:
