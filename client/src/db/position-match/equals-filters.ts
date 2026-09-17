@@ -7,7 +7,7 @@ import { rhymeFinalsFromJyutping, splitJyutping } from '../jyutping-codec.ts';
 import { compactSpanLikePatterns, encodePhonemeList } from '../phoneme-codec.ts';
 import type { Database } from '../sqljs.ts';
 import { expandFinalOptions, finalsCompatible } from '../rhyme-match-profile.ts';
-import { getRhymeProfile } from '../rhyme-profile-context.ts';
+import type { RhymeProfile } from '../rhyme-match-profile.ts';
 import { pronRankSortValueForWord } from '../ranking.ts';
 import { anchorPhonemeOptions } from './filters.ts';
 import {
@@ -230,6 +230,7 @@ function matchesHybridRefChars(
   refChars: string,
   startPos: number,
   targetFinalOptions: Array<Set<string> | null>,
+  profile: RhymeProfile,
 ): boolean {
   const width = targetFinalOptions.length;
   if (wordChar.length !== width || wordFinals.length !== width) {
@@ -247,7 +248,7 @@ function matchesHybridRefChars(
     if (
       options?.size
       && wordFinals[pos]
-      && expandFinalOptions(options, getRhymeProfile()).has(wordFinals[pos]!)
+      && expandFinalOptions(options, profile).has(wordFinals[pos]!)
     ) {
       continue;
     }
@@ -264,6 +265,7 @@ export function matchesEqualsPhonemeSpan(
     phoneme_anchor_only: boolean;
     ref_literal: string;
     dimension: EqualsDimension;
+    rhymeProfile?: RhymeProfile;
   },
 ): boolean {
   const charText = getWordText(word);
@@ -275,7 +277,7 @@ export function matchesEqualsPhonemeSpan(
   if (!wordParts.length) {
     return false;
   }
-  const profile = getRhymeProfile();
+  const profile = opts.rhymeProfile ?? 'exact';
   for (let i = 0; i < refParts.length; i++) {
     const pos = startPos + i;
     if (pos >= wordParts.length) {
@@ -355,6 +357,7 @@ export async function queryWordsByEqualsSpec(
   input: CanonicalMatchSpec | MatchSpec,
   db: Database,
   mode = 'm1',
+  profile: RhymeProfile = 'exact',
 ): Promise<WordRow[]> {
   const spec = 'candidate_scope' in input ? input : canonicalizeLegacyMatchSpec(input);
   const span = spec.equals_span;
@@ -407,9 +410,8 @@ export async function queryWordsByEqualsSpec(
   }
 
   if (span.whole_word) {
-    if (isFinal && getRhymeProfile() !== 'exact') {
+    if (isFinal && profile !== 'exact') {
       // ADR-0079: runtime ∪/∩ via phoneme index; F1 fallback = full length scan
-      const profile = getRhymeProfile();
       let rows = await getWholeWordLooseFinalIntersect(
         db,
         spec.width,
@@ -432,6 +434,7 @@ export async function queryWordsByEqualsSpec(
           phoneme_anchor_only: span.phoneme_anchor_only,
           ref_literal: span.ref_literal,
           dimension: span.dimension,
+          rhymeProfile: profile,
         }),
       );
     }
@@ -451,7 +454,7 @@ export async function queryWordsByEqualsSpec(
     prefixWildcard
     && targetParts?.length
     && isFinal
-    && getRhymeProfile() === 'exact'
+    && profile === 'exact'
   ) {
     candidates = await prefixWildcardCandidatesByFinals(
       db,
@@ -486,6 +489,7 @@ export async function queryWordsByEqualsSpec(
           span.ref_literal,
           span.start_pos,
           targetFinalOptions,
+          profile,
         ),
     );
   }
@@ -496,6 +500,7 @@ export async function queryWordsByEqualsSpec(
         phoneme_anchor_only: span.phoneme_anchor_only,
         ref_literal: span.ref_literal,
         dimension: span.dimension,
+        rhymeProfile: profile,
       }),
   );
 }

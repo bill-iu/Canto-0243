@@ -5,7 +5,7 @@
 import { queryRows } from '../database-backend.ts';
 import type { Database } from '../sqljs.ts';
 import { expandFinalOptions, expandOneFinal } from '../rhyme-match-profile.ts';
-import { getRhymeProfile } from '../rhyme-profile-context.ts';
+import type { RhymeProfile } from '../rhyme-match-profile.ts';
 import { anchorPhonemeOptions } from './filters/f2-phoneme-anchor.ts';
 import { getRhymeFinals, getWordParts, type WordRow } from './word-row.ts';
 
@@ -276,6 +276,7 @@ export async function getPhonemeAnchorCandidates(
   pos: number,
   anchorChar: string,
   constraint: Constraint,
+  profile: RhymeProfile = 'exact',
 ): Promise<WordRow[] | null> {
   if (!anchorChar || length <= 0 || pos < 0) {
     return [];
@@ -285,6 +286,6 @@ export async function getPhonemeAnchorCandidates(
     return [];
   }
   const expanded =
-    constraint === 'final' ? expandFinalOptions(options, getRhymeProfile()) : options;
+    constraint === 'final' ? expandFinalOptions(options, profile) : options;
   return getPhonemeIndexCandidates(db, length, pos, expanded, constraint);
 }

@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {
   canonicalMatchSpecToLegacy,
   canonicalizeLegacyMatchSpec,
-  finalizeCanonicalMatchSpec,
-} from '../src/db/position-match/canonical.ts';
+} from '../src/db/query-engine-legacy.ts';
+import { finalizeCanonicalMatchSpec } from '../src/db/query-engine.ts';
 import { getEqualsSpan } from '../src/db/position-match/spec.ts';
 
 const canonical = finalizeCanonicalMatchSpec({

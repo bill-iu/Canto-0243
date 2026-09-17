@@ -1,5 +1,4 @@
 import {
-  type FormEvent,
   useMemo,
   useRef,
   useState,
@@ -33,10 +32,8 @@ import {
   type WorkbenchCandidate,
 } from './contracts.ts';
 import { workbenchIntroCopy } from './intro-copy.ts';
-import { createLineDraft } from './line-draft.ts';
 import { WORKBENCH_LINE_INPUT_COPY } from './line-input-copy.ts';
-import { parseLineInput } from './line-input.ts';
-import { parsePhonemeRef, parseSpanManual } from './manual-slot-input.ts';
+import { parsePhonemeRef } from './manual-slot-input.ts';
 import { relaxationKindLabel } from './relaxation-i18n.ts';
 import { phonemeCheckedOffsets, type PhonemeDimPicks } from './replacement-span.ts';
 import {
@@ -49,11 +46,12 @@ import { selectWorkbenchAdapter } from './workbench-adapter.ts';
 import { useWorkbenchSessionCoordinator } from './useWorkbenchSessionCoordinator.ts';
 import {
   WorkbenchBridgeError,
-  consumeIngest,
   writeNavigate,
   writeOpenSearch,
   type SearchModeFamily,
 } from './workbench-bridge.ts';
+import { getUiRhymeProfile, subscribeUiRhymeProfile, setUiRhymeProfile } from '../rhyme-profile-ui.ts';
+import { useWorkbenchInput } from './useWorkbenchInput.ts';
 import './workbench-page.css';
 
 export interface WorkbenchPageProps {
@@ -104,8 +102,6 @@ export function WorkbenchPage({
   );
   const { isReady, initialize } = useDB();
 
-  const [input, setInput] = useState('');
-  const [message, setMessage] = useState('');
   const [uiLang, setUiLang] = useState<'zh' | 'zh-Hans' | 'en'>(() => getLang() as 'zh' | 'zh-Hans' | 'en');
   const copy = getWorkbenchCopy(uiLang);
   const [uiTheme, setUiTheme] = useState<'light' | 'dark'>(() => {
@@ -144,6 +140,10 @@ export function WorkbenchPage({
     reportSpanError,
   } = coordinator.actions;
 
+  const { input, setInput, message, setMessage, submit,
+    handleSetSlotManual, handleClearSurfaces, handleApplySpanInput,
+  } = useWorkbenchInput(active, coordinator, copy);
+
   const draft = session.draft;
   const {
     mode,
@@ -167,18 +167,12 @@ export function WorkbenchPage({
   // 搜尋殼押韻模式 → 句格 constraints（ADR-0078 session 共用）
   useEffect(() => {
     if (!active) return;
-    let unsub = () => {};
-    void import('../rhyme-profile-ui.ts').then(({ getUiRhymeProfile, subscribeUiRhymeProfile }) => {
-      const sync = () => {
-        const p = getUiRhymeProfile();
-        if (p !== (session.constraints.rhymeProfile ?? 'exact')) {
-          coordinator.actions.chooseRhymeProfile(p);
-        }
-      };
-      sync();
-      unsub = subscribeUiRhymeProfile(sync);
-    });
-    return () => unsub();
+    const sync = () => {
+      const profile = getUiRhymeProfile();
+      if (profile !== session.constraints.rhymeProfile) coordinator.actions.chooseRhymeProfile(profile);
+    };
+    sync();
+    return subscribeUiRhymeProfile(sync);
   }, [active, coordinator.actions, session.constraints.rhymeProfile]);
 
   useEffect(() => {
@@ -261,7 +255,7 @@ export function WorkbenchPage({
   const changeRhymeProfile = useCallback((next: import('./session/types.ts').ConstraintsUI['rhymeProfile']) => {
     coordinator.actions.chooseRhymeProfile(next);
     // keep search shell session in sync (ADR-0078 P1)
-    import('../rhyme-profile-ui.ts').then(({ setUiRhymeProfile }) => setUiRhymeProfile(next));
+    setUiRhymeProfile(next);
   }, [coordinator.actions]);
   const changeCodeConstraint = useCallback((next: CodeConstraintMode) => {
     coordinator.actions.chooseCodeConstraint(next);
@@ -333,92 +327,9 @@ export function WorkbenchPage({
       : copy.readingsReady);
   }, [copy.readingsPartial, copy.readingsReady, readings]);
 
-  useEffect(() => {
-    if (!active) return;
-    const payload = consumeIngest(sessionStorage);
-    if (!payload) return;
-
-    if (payload.mode === 'insert') {
-      if (!session.draft?.selection) {
-        setMessage(copy.insertNoSpan);
-        return;
-      }
-      coordinator.actions.insertLiteral(payload.literal);
-      setMessage(copy.inserted);
-      return;
-    }
-
-    const parsed = parseLineInput(payload.literal);
-    if (!parsed.ok || parsed.kind !== 'surface') {
-      setMessage(copy.ingestInvalid);
-      return;
-    }
-    if (session.draft) coordinator.actions.replaceSurface(payload.literal);
-    else coordinator.actions.createDraft(createLineDraft(parsed));
-    setMessage(copy.ingested);
-  }, [active, coordinator.actions, copy, session.draft]);
-
-  const submit = (event: FormEvent) => {
-    event.preventDefault();
-    const parsed = parseLineInput(input);
-    if (!parsed.ok) {
-      setMessage(
-        parsed.error === 'too_long'
-          ? copy.tooLong
-          : copy.invalidInput,
-      );
-      return;
-    }
-    coordinator.actions.createDraft(createLineDraft(parsed));
-    setMessage(
-      parsed.kind === 'code'
-        ? copy.createdCode
-        : parsed.kind === 'mixed'
-          ? copy.createdMixed
-          : copy.createdSurface,
-    );
-  };
-
   const handleChooseReading = useCallback((pos: number, jyutping: string, code: string) => {
     coordinator.actions.chooseReading(pos, jyutping, code);
   }, [coordinator.actions]);
-
-  const handleSetSlotManual = useCallback((pos: number, surface: string, code?: string) => {
-    coordinator.actions.changeManualSlot(pos, surface, code ?? '');
-    reportSpanError('');
-    setMessage(surface ? copy.manualSurface : copy.manualCode);
-  }, [coordinator.actions, copy, reportSpanError]);
-
-  const handleClearSurfaces = useCallback(() => {
-    if (!session.draft) return;
-    coordinator.actions.clearDraft();
-    reportSpanError('');
-    setMessage(copy.cleared);
-  }, [coordinator.actions, copy, reportSpanError, session]);
-
-  const handleApplySpanInput = useCallback((parsed: Extract<ReturnType<typeof parseSpanManual>, { ok: true }>) => {
-    if (!session.draft?.selection) {
-      reportSpanError(copy.spanRequired);
-      return;
-    }
-    const slots = parsed.slots.map((slot, pos) => {
-      const digit = parsed.constraints.find(
-        (item) => item.kind === 'code_digit' && item.pos === pos,
-      );
-      return {
-        surface: slot.surface,
-        reading: slot.reading,
-        code: slot.code || (digit as { digit?: string })?.digit,
-      };
-    });
-    coordinator.actions.applySpanInput({
-      selectionVersion: session.version,
-      slots,
-      constraints: parsed.constraints,
-    });
-    reportSpanError('');
-    setMessage(copy.spanApplied);
-  }, [coordinator.actions, copy, reportSpanError, session]);
 
   const performUndo = useCallback(() => {
     if (!session.undo) return;

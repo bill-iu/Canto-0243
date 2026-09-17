@@ -6,8 +6,6 @@ export const EMBEDDING_NBR_VERSION = 'e1.v1';
 export const EMBEDDING_NBR_SOURCE = 'embedding_cosine';
 export const EMBEDDING_NBR_RELATION = 'semantic_related' as const;
 
-const MAGIC = 0x52424e45; // 'ENBR' little-endian as u32... actually check bytes
-
 export type NbrHit = { id: number; score: number };
 
 export class EmbeddingNbrIndex {

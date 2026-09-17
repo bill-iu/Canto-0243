@@ -216,7 +216,8 @@
       "tags": [
         "grammar",
         "local",
-        "parity"
+        "parity",
+        "ci"
       ]
     },
     {
@@ -250,6 +251,51 @@
       "script": "relation-pool-self-check.ts",
       "tags": [
         "relation",
+        "local"
+      ]
+    },
+    {
+      "id": "rhyme-isolation",
+      "script": "rhyme-isolation-self-check.ts",
+      "tags": [
+        "ci",
+        "architecture",
+        "local"
+      ]
+    },
+    {
+      "id": "workbench-document",
+      "script": "workbench-document-self-check.ts",
+      "tags": [
+        "ci",
+        "architecture",
+        "local"
+      ]
+    },
+    {
+      "id": "workbench-session",
+      "script": "workbench-session-self-check.ts",
+      "tags": [
+        "ci",
+        "architecture",
+        "local"
+      ]
+    },
+    {
+      "id": "workbench-candidate-snapshot",
+      "script": "workbench-candidate-snapshot-self-check.ts",
+      "tags": [
+        "ci",
+        "architecture",
+        "local"
+      ]
+    },
+    {
+      "id": "workbench-bridge",
+      "script": "workbench-bridge-self-check.ts",
+      "tags": [
+        "ci",
+        "architecture",
         "local"
       ]
     }

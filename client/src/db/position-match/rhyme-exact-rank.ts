@@ -2,7 +2,7 @@
  * ADR-0078 R2: when 韻母比對檔 ≠ 正韻, exact-final hits rank before loose hits.
  */
 import { expandFinalOptions } from '../rhyme-match-profile.ts';
-import { getRhymeProfile } from '../rhyme-profile-context.ts';
+import type { RhymeProfile } from '../rhyme-match-profile.ts';
 import type { Database } from '../sqljs.ts';
 import type { CanonicalMatchSpec } from './canonical.ts';
 import { anchorPhonemeOptions } from './filters/f2-phoneme-anchor.ts';
@@ -43,8 +43,9 @@ export function isExactFinalHit(
 export function exactFinalRankKey(
   word: WordRow,
   exactSlots: Array<{ pos: number; options: Set<string> }>,
+  profile: RhymeProfile = 'exact',
 ): number {
-  if (getRhymeProfile() === 'exact' || !exactSlots.length) return 0;
+  if (profile === 'exact' || !exactSlots.length) return 0;
   return isExactFinalHit(word, exactSlots) ? 0 : 1;
 }
 

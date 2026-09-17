@@ -47,6 +47,7 @@
 | [0078](./0078-rhyme-match-profile.md) | **韻母比對檔**（UI：押韻模式）：正／通／腹／尾正交於搜尋 mode；分組表；排序兩層 |
 | [0079](./0079-whole-word-loose-rhyme-index-intersect.md) | **整詞放寬韻索引併查**：runtime ∪／∩，唔加 DB 欄；index 未好回退掃桶 |
 | [0080](./0080-guide-syntax-and-rhyme-panes.md) | **搜尋教學** 子頁：搜尋指南／押韻指南；分組表單源渲染 |
+| [0081](./0081-request-context-and-workbench-document.md) | 明確韻母查詢 context、canonical facade 與版本化句稿儲存 |
 
 ## Stubs
 

@@ -10,7 +10,7 @@ import {
   syllableLetters,
 } from './jyutping-codec.ts';
 import { expandFinalOptions } from './rhyme-match-profile.ts';
-import { getRhymeProfile } from './rhyme-profile-context.ts';
+import type { RhymeProfile } from './rhyme-match-profile.ts';
 
 const STANDALONE_NG = 'ng';
 
@@ -96,6 +96,7 @@ export function matchesRhymeLettersAtPosition(
   word: { jyutping?: unknown; finals?: unknown },
   pos: number,
   letters: string,
+  profile: RhymeProfile = 'exact',
 ): boolean {
   const fragment = normalizeRhymeLetters(letters);
   const jyut = String(word.jyutping ?? '');
@@ -115,7 +116,7 @@ export function matchesRhymeLettersAtPosition(
   if (!options.size) {
     return false;
   }
-  const matchOpts = expandFinalOptions(options, getRhymeProfile());
+  const matchOpts = expandFinalOptions(options, profile);
 
   let parts: string[] = [];
   try {

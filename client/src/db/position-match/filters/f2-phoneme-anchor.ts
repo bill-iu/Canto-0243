@@ -2,7 +2,7 @@
 import { queryRows } from '../../database-backend.ts';
 import type { Database } from '../../sqljs.ts';
 import { expandFinalOptions } from '../../rhyme-match-profile.ts';
-import { getRhymeProfile } from '../../rhyme-profile-context.ts';
+import type { RhymeProfile } from '../../rhyme-match-profile.ts';
 import { eligibleForAnchorPhonemeUnion } from '../../ranking.ts';
 import { getCandidatesWithLiteralAt } from '../sources.ts';
 import type { CanonicalMatchSpec } from '../canonical.ts';
@@ -51,6 +51,7 @@ export async function matchesPhonemeAtPosition(
   constraint: 'final' | 'initial',
   db: Database,
   optionsCache?: Map<string, Set<string>>,
+  profile: RhymeProfile = 'exact',
 ): Promise<boolean> {
   const cacheKey = `${constraint}\0${anchor}`;
   let options = optionsCache?.get(cacheKey);
@@ -59,7 +60,7 @@ export async function matchesPhonemeAtPosition(
     optionsCache?.set(cacheKey, options);
   }
   const matchOpts =
-    constraint === 'final' ? expandFinalOptions(options, getRhymeProfile()) : options;
+    constraint === 'final' ? expandFinalOptions(options, profile) : options;
   const parts = constraint === 'final' ? getRhymeFinals(word) : getWordParts(word, 'initials');
   if (!matchOpts.size || pos >= parts.length) {
     return false;
@@ -116,6 +117,7 @@ export function wordPassesPartialRhymeMaskSpec(
   spec: CanonicalMatchSpec,
   word: WordRow,
   slotOptions: Map<string, Set<string>>,
+  profile: RhymeProfile = 'exact',
 ): boolean {
   const text = getWordText(word);
   if (text.length !== spec.width) {
@@ -125,7 +127,6 @@ export function wordPassesPartialRhymeMaskSpec(
   if (!finals.length) {
     return false;
   }
-  const profile = getRhymeProfile();
   for (const slot of spec.slots ?? []) {
     if (slot.kind !== 'final_anchor') {
       continue;

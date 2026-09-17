@@ -15,15 +15,11 @@ import { countShellRender } from './search-perf.ts';
 import { QueryWorkspaceResultsBoundary } from './query-workspace/QueryWorkspaceResultsBoundary.tsx';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
+import { useWorkbenchTransfer } from './workbench/useWorkbenchTransfer.ts';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
-  WorkbenchBridgeError,
-  consumeNavigate,
-  consumeOpenSearch,
-  hasWorkbenchDraft,
   readWorkbenchSelectionWidth,
   readWorkbenchSurfacePreview,
-  writeIngest,
 } from './workbench/workbench-bridge.ts';
 import {
   anchorOnlyQueryRow,
@@ -570,43 +566,10 @@ function App() {
     [openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
   );
 
-  const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
-    try {
-      writeIngest(sessionStorage, { literal, mode: ingestMode });
-      openWorkbench();
-    } catch (error) {
-      window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
-    }
-  }, [openWorkbench]);
-
-  const handlePutInWorkbench = useCallback((literal: string) => {
-    const text = literal.trim();
-    if (!text) return;
-    if (!hasWorkbenchDraft(localStorage)) {
-      navigateWithIngest(text, 'replace');
-      return;
-    }
-    setPutWorkbenchLiteral(text);
-  }, [navigateWithIngest]);
-
-  useEffect(() => {
-    const nav = consumeNavigate(sessionStorage);
-    if (nav?.kind === 'mode') {
-      const next = nav.family === 'basic' ? last0243Mode : nav.family === 'pingze' ? 'pingze' : 'synonym';
-      setMode(next);
-    } else if (nav?.kind === 'guide') {
-      openGuide();
-    } else if (nav?.kind === 'about') {
-      openAbout();
-    }
-
-    const payload = consumeOpenSearch(sessionStorage);
-    if (!payload) return;
-    openLiveSearchTab(payload.literal);
-    hydrateSearch(payload.literal);
-  // ponytail: one-shot bridge consume on search mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { navigateWithIngest, handlePutInWorkbench } = useWorkbenchTransfer({
+    openWorkbench, offerReplace: setPutWorkbenchLiteral, last0243Mode, setMode,
+    openGuide, openAbout, openSearch: openLiveSearchTab, hydrateSearch,
+  });
 
   const handleBackToSearch = () => {
     ensureActiveSearchTab();

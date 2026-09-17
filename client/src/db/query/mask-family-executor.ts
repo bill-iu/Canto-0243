@@ -1,4 +1,5 @@
 /** Mask-family MatchSpec execution — mirror of _mask_family_search_result. */
+import { normalizeRhymeProfile } from '../rhyme-match-profile.ts';
 import type { Database } from '../sqljs.ts';
 import { sortWordRows } from '../ranking.ts';
 import { executeCanonicalMatchSpecPage, filterMatchSpecRows } from '../position-match/engine.ts';
@@ -27,8 +28,10 @@ export async function executeMaskFamilySearchResult(
   offset: number,
   code?: string,
   shouldCancel?: () => boolean,
+  rhymeProfileInput?: string,
 ): Promise<SearchResult> {
   const canonical = compileParsedQuery(parsed);
+  const rhymeProfile = normalizeRhymeProfile(rhymeProfileInput);
   if (canonical.phoneme_alternatives) {
     const page = await executeCanonicalMatchSpecPage(canonical, {
       db,
@@ -37,6 +40,7 @@ export async function executeMaskFamilySearchResult(
       offset,
       code: code ?? null,
       shouldCancel,
+      rhymeProfile,
     });
     return {
       items: page.rows.map((row) => rowToResult(row)),
@@ -44,22 +48,12 @@ export async function executeMaskFamilySearchResult(
     };
   }
   const searchMode = normalizeSearchMode(mode);
-  const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel };
+  const dbCtx = { db, mode: searchMode, code: code ?? null, shouldCancel, rhymeProfile };
 
-  let ordered: Awaited<ReturnType<typeof filterMatchSpecRows>>;
-  if (canonical.phoneme_alternatives) {
-    // Engine merges dual dimensions; pull a large window then page once for total.
-    ordered = (await executeCanonicalMatchSpecPage(canonical, {
-      ...dbCtx,
-      limit: Math.max(offset + limit, limit) + 10_000,
-      offset: 0,
-    })).rows;
-  } else {
-    const allRows = await filterMatchSpecRows(canonical, dbCtx);
-    const ranked = await sortMaskFamilyRows(canonical, allRows, db, mode);
-    ordered =
-      canonical.ranking === 'literal_priority' || canonical.compound ? ranked : sortWordRows(ranked);
-  }
+  const allRows = await filterMatchSpecRows(canonical, dbCtx);
+  const ranked = await sortMaskFamilyRows(canonical, allRows, db, mode);
+  const ordered =
+    canonical.ranking === 'literal_priority' || canonical.compound ? ranked : sortWordRows(ranked);
 
   const total = (() => {
     const seen = new Set<string>();

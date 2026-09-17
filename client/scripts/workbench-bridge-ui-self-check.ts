@@ -1,8 +1,10 @@
 import fs from 'node:fs';
 
 const bridge = fs.readFileSync('src/workbench/workbench-bridge.ts', 'utf8');
-const page = fs.readFileSync('src/workbench/WorkbenchPage.tsx', 'utf8');
-const app = fs.readFileSync('src/App.tsx', 'utf8');
+const page = fs.readFileSync('src/workbench/WorkbenchPage.tsx', 'utf8')
+  + fs.readFileSync('src/workbench/useWorkbenchInput.ts', 'utf8');
+const app = fs.readFileSync('src/App.tsx', 'utf8')
+  + fs.readFileSync('src/workbench/useWorkbenchTransfer.ts', 'utf8');
 const modal = fs.readFileSync('src/workbench/PutInWorkbenchModal.tsx', 'utf8');
 const compare = fs.readFileSync('src/workbench/ComparePanel.tsx', 'utf8');
 

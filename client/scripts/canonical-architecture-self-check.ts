@@ -28,6 +28,10 @@ for (const relative of ['src/workbench/plan-replacements.ts']) {
   assert(!read(relative).includes('workbench_full_bucket_scan'), `${relative} mutates legacy scope flag`);
 }
 const engine = read('src/db/position-match/engine.ts');
+const facade = read('src/db/query-engine.ts');
+assert(!facade.includes('match-spec-registry'), 'public facade must not expose legacy builders');
+assert(!facade.includes('canonicalMatchSpecToLegacy'), 'public facade must not expose legacy conversion');
+assert(!fs.existsSync(path.join(root, 'src/db/rhyme-profile-context.ts')), 'mutable rhyme context must not return');
 assert(!engine.includes('canonicalMatchSpecToLegacy'), 'canonical execution converts back to legacy');
 const canonicalEntry = engine.slice(engine.indexOf('export async function executeCanonicalMatchSpecPage'));
 assert(!canonicalEntry.includes('executeMatchSpecPage('), 'canonical entry delegates to legacy execution');

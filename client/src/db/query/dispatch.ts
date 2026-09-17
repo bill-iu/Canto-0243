@@ -76,6 +76,7 @@ export async function dispatchParsed(parsed: ParsedQuery, ctx: SearchContext & {
         offset,
         ctx.code,
         ctx.shouldCancel,
+        ctx.rhyme_profile,
       );
 
     case RouteKind.RELATION:
