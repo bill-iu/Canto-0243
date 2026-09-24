@@ -306,11 +306,20 @@ _Avoid_：模式偷換（UI 仍顯示近反義）、把缺字／碼字查詢一�
 _Avoid_：toast、彈窗確認
 
 **語意相關**：
-與查詢詞在語意上有關聯、但非近義亦非反義的詞條（近反義模式第三類結果）。
-_Avoid_：相關詞（不區分類型時）、semantic_related
+與查詢詞在語意上有關聯、原先獨立第三類結果；**產品展示與 `~` 近義語法一律併入近義**（來源仍可為 `embedding_cosine`／`semantic_related` 存儲形，排序低於 manual／project／cilin／guotong 直連近義）。近反義模式近義欄、句格「直接近義」池、`~`／`~~` 投影皆消費合併後近義列表；**唔**再另開「語意相關」結果欄（semantic 槽可空）。
+_Avoid_：相關詞（不區分類型時）、把語意相關當反義、另欄展示令創作者以為唔屬近義
+
+**語意向量鄰居烘焙**：
+**發佈主理**離線用固定 embedding 模型（現行目標：**bge-m3 ONNX**）為 **詞庫** 字面算 dense 向量，再預算每頭 top-K 語意鄰居，寫入兩類產物：（A）可進 release 嘅 **語意相關** 邊（`word_relations`，`source=embedding_cosine`，排序低於 manual／project／cilin／guotong）——**只補缺／少直連 syn 嘅頭**；（C）**全 DISTINCT** 提案 TSV（可升 **專案自建近義**，**唔**自動升反義）。Encode／top-K 宇宙可全庫；**唔**等於全庫都寫入交貨關係圖。**Runtime（Desktop／PWA）只讀表，唔載模型、唔現場算向量。** 向量 sidecar 可留主理機；**唔**把全庫向量塞入交貨 `lyrics.db`（交貨庫 embedding 欄維持清空）。Cosine 鄰居 **唔**自動標 `ant`（反義仍靠直連／**近義橋反義**／**專案自建反義**）。
+_Avoid_：runtime 載 bge／ONNX、交貨庫存全庫向量、cosine top-K 直接當反義權威、用 embedding 取代 essay 詞頻排序、CPU silently 頂替已宣告嘅 GPU 烘焙、把全庫 C 提案無審直接灌 A
+
+**語意鄰居 GPU 烘焙**：
+**語意向量鄰居烘焙** 嘅 encode／全庫 top-K 相似度步驟 **必須** 用 GPU（CUDA EP 或等價）；啟動時偵測唔到可用 GPU → **失敗退出**，禁止默默改 CPU 跑完當成功。CPU 只可用於單位測試／極小 fixture，唔作全庫發佈路徑。
+_Avoid_：全庫 CPU fallback 當正式 bake、無 GPU 仍寫 release 邊
 
 **近反義池**：
-合併 word_relations + 靜態詞林 + 衍生反義的近/反/語意候選（有效字面），排序去重。**近反義模式**與!共用同一 ants。**投影統一讀取入口**（`project_relation_pool`／`projectRelationPool`）；建池為內部。source 順位／runtime 衍生反義來源 id 以 `contracts/relation-pool-ranking.json` 為 SSOT（codegen 雙端）。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。
+合併 word_relations + 靜態詞林 + 衍生反義 + **語意鄰居（作近義併入）** 的近/反候選（有效字面），排序去重。**近反義模式**與!共用同一 ants；近義列表含原 syn 與 embedding 語意鄰（低 rank）。**投影統一讀取入口**（`project_relation_pool`／`projectRelationPool`）；建池為內部。source 順位／runtime 衍生反義來源 id 以 `contracts/relation-pool-ranking.json` 為 SSOT（codegen 雙端）。DB 唔保證存晒 Cilin 葉組完全圖（可有鄰居度上限；其餘靠 **靜態詞林埠**）。`embedding_cosine` 屬池內近義低順位來源。
+_Avoid_：把池當寫入路徑、跳過統一投影另開第二讀取、把語意鄰排除出 ~ 近義
 _Avoid_：relation pool、合併衍生與 runtime、舊快照當 SSOT、假設 DB 有無限 syn 鄰居、PWA shallow barrel re-export、runtime 繞過投影直呼 builder、兩邊手抄 SOURCE_BASE_RANK
 
 **近反義池快照**：
@@ -749,6 +758,14 @@ _Avoid_：在每個查詢 caller 保留 `NULL/0` fallback、背景回填期間�
 將 **詞條** 上聲母／韻母欄由冗長字串改為**字典序短編碼**（固定音素表、定界串），複合索引鍵跟緊湊格式（**詞條索引瘦身 I3／J2**）。查詢比對仍用聲母／韻母 token 語意；舊庫形須遷移或從源重建。閘硬 cap 以 **詞庫發佈閘** I3 為準（目標可按量度修訂）。
 _Avoid_：phoneme id（作領域正名）、把編碼形當第二套讀音語意、未遷移舊庫硬開
 
+**真緊湊（存儲）**：
+令**權威載體上可觀測位元組**（表頁＋必備索引，或等價 blob／分包檔）相對冗餘正規形下降**一個數量級級**，且語意／查詢契約不變；只靠 gzip、或只縮短字串欄而百萬行＋雙向 B-tree 仍在，**唔**算真緊湊。量度以 VACUUM 後 `dbstat`／檔案大小＋gzip 對照舊渠道包為準。
+_Avoid_：只 gzip 當完成、把「少寫幾個 source 字元」當治本、犧牲正確性截斷池當緊湊
+
+**語意鄰居緊湊載體**：
+**語意向量鄰居烘焙** 之 A 產物以 **e1 CSR 關係包資產**（`embedding-nbr.bin` + meta 指紋）承載，**唔**長期以每邊一列 `word_relations` 入交貨庫。Runtime（Desktop／PWA）decode 後併入 **近反義池投影** 之 `semantic_related`（source=`embedding_cosine`，低 rank）。meta 含 **`char_id_fingerprint`**（字面→primary id 映射指紋）：與現行 **詞條庫** 一致先可重用 bin；mismatch 時 seal 閘失敗，須重 bake（vectors sidecar 可留）。與 **音素欄位緊湊化** 同紀律：存儲形≠語意形、版本指紋、舊膨脹 edge 表可 strip。
+_Avoid_：把 110 萬語意邊當永久 edge 表方案、runtime 載向量模型、cosine 當 ant、只 gzip 當緊湊完成、wipe words 後盲 copy 舊 bin
+
 **I2 雙端穩定**：
 **詞庫發佈閘**（I2）全過，且 **PWA 交付頻道** 與 **免安裝交付** 在相同重建詞條庫上通過 **S-B 煙霧**（自動閘 + PWA／Portable 核心查詢）與黃金查詢 parity、無已知阻斷缺陷；**維護者手動測試**反饋確認後，方可啟動 **音素欄位緊湊化** PR。
 _Avoid_：只驗一端、只跑單元測試唔做離線就緒、把「合併咗 PR」當穩定、跳過維護者手動驗收
@@ -988,6 +1005,10 @@ _Avoid_：把**句格工作台**維持成繞過查詢分頁嘅獨立頁、切換
 
 **替換條件操作列**：替換條件面板頂部的常駐操作區，包含面板展開／收起入口，以及 POS 篩選、復原等工作台操作。收起條件內容後，操作列仍然可見；**唔**把操作列誤當成條件內容的一部分。
 _Avoid_：把面板收起當成清除或重設條件、把 POS 篩選或復原操作一併藏起、把跨頁保存的 UI 偏好當成替換條件資料。
+**句稿儲存文件**（ADR-0081）：版本化本機載體；v2 分開句稿內容（字面、選定讀音與碼）及編輯狀態（鎖定、替換段、條件與復原快照）。舊 session v1／draft v1 先在記憶體遷移，成功儲存才寫入新格式；自動儲存唔覆寫損壞或未支援版本。匯入先驗證並保留原內容；唔等同新增多作品 UI 或多步復原。
+
+**韻母查詢 context**（ADR-0081）：TypeScript 每次搜尋／工作台執行明確攜帶韻母比對檔至索引、篩選與排序，唔以可變全域變數跨非同步工作共用。Python 沿用 ContextVar 隔離。
+
 ### Canonical MatchSpec compiler (ADR-0076)
 
 The grammar parses raw input into `ParsedQuery`; the canonical compiler owns

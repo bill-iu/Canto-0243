@@ -65,7 +65,7 @@ function validSnapshot(value: unknown): boolean {
     && validLastApplied(value.lastApplied);
 }
 
-function validDraft(value: unknown): value is LineDraft {
+export function validLineDraft(value: unknown): value is LineDraft {
   return validSnapshot(value)
     && isRecord(value)
     && Number.isInteger(value.version)
@@ -100,7 +100,7 @@ export function loadLineDraft(storage: WorkbenchStorage): LineDraft | null {
 
   try {
     const payload: unknown = JSON.parse(raw);
-    if (isRecord(payload) && payload.version === 1 && validDraft(payload.draft)) return payload.draft;
+    if (isRecord(payload) && payload.version === 1 && validLineDraft(payload.draft)) return payload.draft;
   } catch {
     // Retain the original payload below before returning a clean state.
   }

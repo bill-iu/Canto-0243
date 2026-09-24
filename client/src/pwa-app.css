@@ -12,13 +12,13 @@
   border: 0;
 }
 
-/* —— Wide: brand | hero | menu ；搜尋全寬第二行 —— */
+/* —— Wide: mast (logo｜ONE搵韻) | 句格+menu ；搜尋全寬第二行 —— */
 .app-bar {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
-    "brand hero menu"
-    "search search search";
+    "mast menu"
+    "search search";
   column-gap: 12px;
   row-gap: 8px;
   align-items: start;
@@ -29,28 +29,21 @@
 
 /* Workbench tab: shared product chrome only — no search form row. */
 .app-bar.app-bar--workbench {
-  grid-template-areas: "brand hero menu";
+  grid-template-areas: "mast menu";
   row-gap: 0;
 }
 
-.header-chrome {
+/* Narrow keeps brand/hero/chip as grid items; wide mast clips them on scroll. */
+.header-mast,
+.header-mast__track {
   display: contents;
-}
-
-.header-chrome__center {
-  display: contents;
-}
-
-.header-chrome .brand {
-  grid-area: brand;
 }
 
 .app-bar .brand-logo {
   height: 74px;
 }
 
-.app-bar > .header-hero {
-  grid-area: hero;
+.app-bar .header-hero {
   min-width: 0;
   max-width: none;
   flex: 1 1 auto;
@@ -62,7 +55,7 @@
   text-align: left;
 }
 
-.app-bar > .header-hero .header-hero__title {
+.app-bar .header-hero .header-hero__title {
   margin: 0;
   font-family: "Playfair Display", "Canto Critical Serif", "Noto Serif TC", serif;
   font-size: clamp(26px, 2.9vw, 34px);
@@ -72,7 +65,7 @@
   color: var(--ink);
 }
 
-.app-bar > .header-hero .header-hero__tagline {
+.app-bar .header-hero .header-hero__tagline {
   margin: 5px 0 0;
   color: var(--muted);
   font-size: 15px;
@@ -89,14 +82,6 @@
   flex: 0 0 auto;
   max-width: min(220px, 36vw);
   align-self: center;
-}
-
-.header-chrome .mode-menu-root {
-  grid-area: menu;
-  margin-left: 0;
-  align-self: center;
-  justify-self: end;
-  align-items: flex-end;
 }
 
 /* Exit + mode menu share the menu grid cell (Portable: exit left of trigger; menu rightmost) */
@@ -358,18 +343,11 @@ button.icon-button.header-search__shuffle:disabled {
   }
 
   .app-bar.app-bar--workbench {
+    grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas: "brand . menu";
   }
 
-  .header-chrome {
-    display: contents;
-  }
-
-  .header-chrome__center {
-    display: contents;
-  }
-
-  .header-chrome .brand {
+  .app-bar .brand {
     grid-area: brand;
     align-self: center;
     position: static;
@@ -381,14 +359,14 @@ button.icon-button.header-search__shuffle:disabled {
     transform: none;
   }
 
-  .header-chrome .brand .brand-logo {
+  .app-bar .brand .brand-logo {
     height: 44px;
     width: auto;
     display: block;
   }
 
   /* Hero moves into guide-quick on narrow; hide app-bar copy (wide keeps it) */
-  .app-bar > .header-hero {
+  .app-bar .header-hero {
     display: none !important;
   }
 
@@ -415,18 +393,6 @@ button.icon-button.header-search__shuffle:disabled {
     min-height: 34px;
     padding: 6px 10px;
     font-size: 12px;
-  }
-
-  .header-chrome .mode-menu-root {
-    grid-area: menu;
-    grid-column: unset;
-    grid-row: unset;
-    z-index: var(--z-menu);
-    margin-left: 0;
-    max-width: min(72vw, 280px);
-    align-self: center;
-    justify-self: end;
-    align-items: flex-end;
   }
 
   .header-search__meta .warmup-badge {
@@ -663,17 +629,158 @@ button.icon-button.header-search__shuffle:disabled {
     padding: 0 2px;
   }
 
-  .header-chrome .brand {
+  .app-bar .brand {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transition: none;
   }
+
+  .header-chrome__actions {
+    align-items: flex-start;
+  }
+
+  .header-chrome__actions .menu-trigger {
+    box-sizing: border-box;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 14px;
+  }
+
+  /* Scroll-linked mast: logo + ONE搵韻 rise away; 句格 + menu lift onto the tab row. */
+  .app-bar .header-mast {
+    display: block;
+    grid-area: mast;
+    min-width: 0;
+  }
+
+  .app-bar .header-mast__track {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .app-bar .header-hero {
+    flex: 1 1 auto;
+  }
+
+  .app-bar .brand,
+  .app-bar .workbench-entry {
+    flex: 0 0 auto;
+  }
+
+  .app-bar.is-mast-measured:not(.app-bar--workbench) {
+    grid-template-rows: calc(var(--mast-max) - var(--mast-y, 0px)) auto;
+  }
+
+  .app-bar.is-mast-measured:not(.app-bar--workbench) .header-mast {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .app-bar.is-mast-measured:not(.app-bar--workbench) .header-mast__track {
+    transform: translateY(calc(-1 * var(--mast-y, 0px)));
+  }
+
+  .app-header.is-mast-wide .app-bar.is-mast-measured:not(.app-bar--workbench) .header-chrome__actions {
+    align-self: start;
+    transform: translateY(calc(-1 * var(--mast-lift, 0px)));
+    transition: none;
+  }
+
+  .app-header.is-mast-wide.is-mast-collapsed .app-bar {
+    row-gap: 0;
+  }
+
+  .app-header.is-mast-wide.is-mast-collapsed .mode-menu-meta {
+    display: none;
+  }
+
+  .app-header.is-mast-wide .query-tabs-bar {
+    width: calc(100% - var(--mast-reserve, 0px));
+    margin-left: 0;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .app-header.is-mast-wide.is-mast-tab-reserve .query-tab-pill {
+    max-width: min(180px, calc(100% - 40px));
+    min-width: 0;
+  }
+
+  .app-header.is-mast-wide.is-mast-tab-reserve .query-tab-pill__label {
+    max-width: none;
+    min-width: 0;
+  }
+}
+
+/* Portable wide has no pill row: keep the chip + menu beside the search. */
+@media (min-width: 761px) {
+  .app-header:not(.is-mast-wide) .app-bar.is-mast-overlap .header-search__row,
+  .app-header:not(.is-mast-wide) .app-bar.is-mast-collapsed .header-search__row {
+    padding-right: calc(var(--mast-corner, 0px) + 8px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header-chrome .brand {
+  .app-bar .brand,
+  .header-mast__track {
     transition: none;
+  }
+}
+
+/* Narrow PWA: logo rises with the scroller; menu lifts onto the tab row. */
+@media (max-width: 760px) {
+  .app-header.is-mast-narrow .app-bar.is-mast-measured:not(.app-bar--workbench) {
+    grid-template-rows: max(0px, calc(var(--mast-max) - var(--mast-y, 0px))) auto;
+  }
+
+  .app-header.is-mast-narrow .app-bar.is-mast-measured:not(.app-bar--workbench) .brand {
+    align-self: start;
+    align-items: flex-start;
+    overflow: hidden;
+    max-height: max(0px, calc(var(--mast-logo, var(--mast-max)) - var(--mast-y, 0px)));
+  }
+
+  .app-header.is-mast-narrow .app-bar.is-mast-measured:not(.app-bar--workbench) .brand .brand-logo {
+    transform: translateY(calc(-1 * min(var(--mast-y, 0px), var(--mast-logo, var(--mast-max)))));
+  }
+
+  .app-header.is-mast-narrow .app-bar.is-mast-collapsed .brand {
+    pointer-events: none;
+  }
+
+  .app-header.is-mast-narrow .app-bar.is-mast-measured:not(.app-bar--workbench) .header-chrome__actions {
+    align-self: start;
+    transform: translateY(calc(-1 * var(--mast-lift, 0px)));
+    transition: none;
+  }
+
+  .app-header.is-mast-narrow.is-mast-collapsed .mode-menu-meta {
+    display: none;
+  }
+
+  .app-header.is-mast-narrow.is-mast-collapsed .app-bar {
+    row-gap: 0;
+  }
+
+  .app-header.is-mast-narrow .query-tabs-bar {
+    width: calc(100% - var(--mast-reserve, 0px));
+    margin-left: 0;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .app-header.is-mast-tab-reserve .query-tab-pill {
+    /* Leave the add button (32px) and the bar gap (8px) inside the shortened strip. */
+    max-width: min(180px, calc(100% - 40px));
+    min-width: 0;
+  }
+
+  .app-header.is-mast-tab-reserve .query-tab-pill__label {
+    max-width: none;
+    min-width: 0;
   }
 }
 
@@ -1028,7 +1135,7 @@ button.icon-button.header-search__shuffle:disabled {
 
 .workbench-menu-group { display: none; }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .workbench-entry { display: none; }
   .workbench-menu-group { display: block; }
 }

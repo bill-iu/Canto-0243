@@ -3,7 +3,7 @@
  * Progressive Web App for Cantonese lyric query
  */
 
-import { lazy, Suspense, useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { useDB } from './hooks/useDB.ts';
 import { getActiveDbBackendMode } from './db/init';
@@ -15,15 +15,11 @@ import { countShellRender } from './search-perf.ts';
 import { QueryWorkspaceResultsBoundary } from './query-workspace/QueryWorkspaceResultsBoundary.tsx';
 import { mergedResultCount, type EntryPickPayload } from './result-list-logic.ts';
 import { formatStandardResultCountLabel } from '../../shared/result-stats.mjs';
+import { useWorkbenchTransfer } from './workbench/useWorkbenchTransfer.ts';
 import { PutInWorkbenchModal } from './workbench/PutInWorkbenchModal.tsx';
 import {
-  WorkbenchBridgeError,
-  consumeNavigate,
-  consumeOpenSearch,
-  hasWorkbenchDraft,
   readWorkbenchSelectionWidth,
   readWorkbenchSurfacePreview,
-  writeIngest,
 } from './workbench/workbench-bridge.ts';
 import {
   anchorOnlyQueryRow,
@@ -64,6 +60,7 @@ import { profileToUiMode, searchFamilyForUiMode, uiModeToProfile } from '../../c
 import { BrandSvgDefs } from './brand-svg-defs';
 import { BrandLogo } from './brand-logo';
 import { HeaderHero } from './header-hero.tsx';
+import { bindSearchMastScroll } from './search-mast-scroll.ts';
 import { workbenchPageHref } from './app-page.ts';
 import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
@@ -570,43 +567,10 @@ function App() {
     [openSearchTabWithQuery, mode, pzMode, isReady, offlineStatus, initialize],
   );
 
-  const navigateWithIngest = useCallback((literal: string, ingestMode: 'replace' | 'insert') => {
-    try {
-      writeIngest(sessionStorage, { literal, mode: ingestMode });
-      openWorkbench();
-    } catch (error) {
-      window.alert(error instanceof WorkbenchBridgeError ? error.message : '無法放入句格。');
-    }
-  }, [openWorkbench]);
-
-  const handlePutInWorkbench = useCallback((literal: string) => {
-    const text = literal.trim();
-    if (!text) return;
-    if (!hasWorkbenchDraft(localStorage)) {
-      navigateWithIngest(text, 'replace');
-      return;
-    }
-    setPutWorkbenchLiteral(text);
-  }, [navigateWithIngest]);
-
-  useEffect(() => {
-    const nav = consumeNavigate(sessionStorage);
-    if (nav?.kind === 'mode') {
-      const next = nav.family === 'basic' ? last0243Mode : nav.family === 'pingze' ? 'pingze' : 'synonym';
-      setMode(next);
-    } else if (nav?.kind === 'guide') {
-      openGuide();
-    } else if (nav?.kind === 'about') {
-      openAbout();
-    }
-
-    const payload = consumeOpenSearch(sessionStorage);
-    if (!payload) return;
-    openLiveSearchTab(payload.literal);
-    hydrateSearch(payload.literal);
-  // ponytail: one-shot bridge consume on search mount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { navigateWithIngest, handlePutInWorkbench } = useWorkbenchTransfer({
+    openWorkbench, offerReplace: setPutWorkbenchLiteral, last0243Mode, setMode,
+    openGuide, openAbout, openSearch: openLiveSearchTab, hydrateSearch,
+  });
 
   const handleBackToSearch = () => {
     ensureActiveSearchTab();
@@ -717,6 +681,14 @@ function App() {
 
   const synLayout = mode === 'synonym';
   const anchorLayout = !synLayout && hasAnchorResultLayout(filteredDisplayResults);
+  const shellRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const shell = shellRef.current;
+    const appBar = shell?.querySelector<HTMLElement>(':scope > .app-header .app-bar');
+    if (!shell || !appBar) return;
+    return bindSearchMastScroll(appBar, shell);
+  }, [view]);
+
   const [scrollRootEl, setScrollRootEl] = useState<HTMLDivElement | null>(null);
   const infiniteScrollRoot = scrollRootEl;
 
@@ -871,6 +843,7 @@ function App() {
         theme={uiTheme}
       />
       <div
+        ref={shellRef}
         className={`app-shell${shellGated ? ' is-gated' : ' is-revealing'}${view === 'workbench' ? ' app-shell--workbench' : ''}${shouldShowInstallBanner ? ' has-install-banner' : ''}${shouldShowPortableUpdate ? ' has-portable-update-banner' : ''}${detailOpen ? ' has-entry-detail' : ''}`}
       >
         <header className="app-header">
@@ -888,8 +861,8 @@ function App() {
             onReorderByIds={handleReorderTabsByIds}
           />
           <div className={`app-bar${view === 'workbench' ? ' app-bar--workbench' : ''}`}>
-            <div className="header-chrome">
-              <div className="header-chrome__center">
+            <div className="header-mast">
+              <div className="header-mast__track">
                 <button
                   className="brand"
                   type="button"
@@ -898,8 +871,11 @@ function App() {
                 >
                   <BrandLogo variant="header" inkProgress={1} theme={uiTheme} />
                 </button>
+                {/* 寬屏：logo｜ONE搵韻；句格跟菜單一組。窄屏 title 改喺 guide-quick 卡頭 */}
+                <HeaderHero lang={uiLang} />
               </div>
-              <div className="header-chrome__actions">
+            </div>
+            <div className="header-chrome__actions">
                 {view !== 'workbench' ? (
                   <a
                     className="workbench-entry workbench-entry--chip"
@@ -945,10 +921,7 @@ function App() {
                     !isPortableHost() && isReady && getActiveDbBackendMode() === 'opfs-vfs'
                   }
                 />
-              </div>
             </div>
-            {/* 寬屏：logo｜hero｜menu；窄屏隱藏，title 改喺 guide-quick 卡頭 */}
-            <HeaderHero lang={uiLang} />
             <form
               className="header-search"
               onSubmit={handleSubmit}

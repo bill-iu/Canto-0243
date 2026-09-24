@@ -2,11 +2,34 @@
 
 日期：2026-07-26
 
-狀態：grilling 完成，待實作
+狀態：**已完成**（2026-08-05 closeout）
 
 目標分支：`dev`
 
 GitHub issue：[#147](https://github.com/bill-iu/Canto-0243/issues/147)
+
+## Closeout（2026-08-05）
+
+- 實作本體已在 `dev`／`main`（coordinator core、React facade、touch recognizer、render isolation、reading lifecycle）。
+- 本地窄屏 manual acceptance：OK（owner）。
+- 最小 closeout：`stale_candidate` structured notice＋三語文案；coordinator self-check 納入 CI tag；本節 ownership 記錄。
+- 豁免：Playwright 窄屏 browser harness 與改前／改後 latency 對照（以 pure gesture self-check＋本地窄屏驗收代替）。
+
+### Ownership（維護契約）
+
+| 層 | 擁有 | 不擁有 |
+|---|---|---|
+| `workbench-coordinator.ts` | session／version／readings／preview／relaxation／POS filter／structured notice；cleanup matrix | pointer 座標、DOM、焦點、未提交 input |
+| `useWorkbenchSessionCoordinator.ts` | 執行 reading／persistence effects；identity-gated completion | candidate paging／cache |
+| `touch-gesture.ts` + `SentenceCanvas` | lock／edit intents from touch／pen | session state |
+| `WorkbenchPage` | intents in、view model out；文案翻譯 aria-live | durable session refs |
+
+- 正式 session 唯一權威 = coordinator state；hook 的 `stateRef` 只讀。
+- 讀音／preview／apply 以 `session.version`／selectionVersion 作 correctness boundary。
+- 只持久化正式 session payload（既有 storage schema）。
+- Production 無 feature flag、無雙軌 coordinator。
+
+---
 
 ## Problem Statement
 

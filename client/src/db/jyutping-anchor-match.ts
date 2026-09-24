@@ -11,6 +11,7 @@ import type { JyutpingAnchorQuery, ParsedQuery } from './query-types.ts';
 import { QueryKind } from './query-kind.ts';
 import { decodePhonemeField } from './phoneme-codec.ts';
 import { matchesRhymeLettersAtPosition } from './rime-index.ts';
+import type { RhymeProfile } from './rhyme-match-profile.ts';
 import type { AnchorKind } from './jyutping-anchor-parse.ts';
 
 export function parseSyllableLetterTokens(jyutping: string): string[] {
@@ -48,6 +49,7 @@ export function matchesJyutpingAnchorAtPosition(
   pos: number,
   kind: AnchorKind,
   value: string,
+  profile: RhymeProfile = 'exact',
 ): boolean {
   const letters = value.toLowerCase();
   if (kind === 'syllable_letters') {
@@ -57,7 +59,7 @@ export function matchesJyutpingAnchorAtPosition(
     return matchesInitialLettersAtPosition(word, pos, letters);
   }
   if (kind === 'rhyme_letters') {
-    return matchesRhymeLettersAtPosition(word, pos, letters);
+    return matchesRhymeLettersAtPosition(word, pos, letters, profile);
   }
   return false;
 }

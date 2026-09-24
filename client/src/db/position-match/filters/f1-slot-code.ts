@@ -1,4 +1,5 @@
 /** MF-5 F1 — code_digit / mask literal / position filter orchestration. */
+import { expandFinalOptions, type RhymeProfile } from '../../rhyme-match-profile.ts';
 import { getCodeVariants } from '../../code-variants.ts';
 import type { Database } from '../../sqljs.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
@@ -66,6 +67,7 @@ export async function wordPassesPositionFilters(
   literalChar: string | null,
   phonemeOptCache?: Map<string, Set<string>>,
   phonemeIndexPrefiltered = false,
+  profile: RhymeProfile = 'exact',
 ): Promise<boolean> {
   const wordChar = getWordText(word);
   if (wordChar.length !== spec.width) {
@@ -113,12 +115,13 @@ export async function wordPassesPositionFilters(
           constraint,
           db,
           phonemeOptCache,
+          profile,
         ))
       ) {
         return false;
       }
     }
-    if (JYUTPING_LETTER_KINDS.has(slot.kind) && !slotConstraintMatches(word, slot, db)) {
+    if (JYUTPING_LETTER_KINDS.has(slot.kind) && !slotConstraintMatches(word, slot, db, profile)) {
       return false;
     }
   }
@@ -198,6 +201,7 @@ export async function filterWordsByCodeAndMask(
   db: Database,
   shouldCancel?: ShouldCancel,
   phonemeIndexPrefiltered = false,
+  profile: RhymeProfile = 'exact',
 ): Promise<WordRow[]> {
   let literalChar: string | null = null;
   for (const slot of spec.slots ?? []) {
@@ -242,6 +246,7 @@ export async function filterWordsByCodeAndMask(
             literalChar,
             phonemeOptCache,
             skipPhoneme,
+            profile,
           )
         ) {
           out.push(word);
@@ -267,6 +272,7 @@ export async function filterWordsByCodeAndMask(
         literalChar,
         phonemeOptCache,
         skipPhoneme,
+        profile,
       )
     ) {
       out.push(word);
@@ -279,6 +285,7 @@ export async function narrowByPhonemeAnchors(
   candidates: WordRow[],
   slots: ReadonlyArray<Pick<CanonicalMatchSpec['slots'][number], 'pos' | 'kind' | 'value'>>,
   db: Database,
+  profile: RhymeProfile = 'exact',
 ): Promise<WordRow[]> {
   let narrowed = candidates;
   const phonemeOptCache = new Map<string, Set<string>>();
@@ -292,7 +299,8 @@ export async function narrowByPhonemeAnchors(
     if (!phonemeOptCache.has(key)) {
       phonemeOptCache.set(key, await anchorPhonemeOptions(db, anchor, constraint));
     }
-    const options = phonemeOptCache.get(key)!;
+    const rawOptions = phonemeOptCache.get(key)!;
+    const options = constraint === 'final' ? expandFinalOptions(rawOptions, profile) : rawOptions;
     const next: WordRow[] = [];
     for (const w of narrowed) {
       const parts = constraint === 'final' ? getRhymeFinals(w) : getWordParts(w, 'initials');

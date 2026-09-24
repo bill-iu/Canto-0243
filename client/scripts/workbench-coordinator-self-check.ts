@@ -51,6 +51,19 @@ const oldReading = workbenchCoordinatorReducer(lock1, {
 });
 assert(oldReading === lock1, 'stale reading ignored');
 
+const staleApply = workbenchCoordinatorReducer(lock1, {
+  type: 'session',
+  action: {
+    type: 'apply_candidate',
+    selectionVersion: 1,
+    literal: '香',
+    jyutping: 'hoeng1',
+    code: '1',
+  },
+});
+assert(staleApply.session === lock1.session, 'stale apply keeps session');
+assert(staleApply.notice?.code === 'stale_candidate', 'stale apply notice');
+
 let gesture = createTouchGestureState();
 let result = reduceTouchGesture(gesture, { type: 'down', pointerId: 1, pos: 0, x: 10, y: 10, at: 0 });
 gesture = result.state;

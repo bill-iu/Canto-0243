@@ -225,14 +225,20 @@ async function openLexiconDatabase(target: LexiconTarget): Promise<DatabaseBacke
 export async function ensureStaticRelationIndexes(): Promise<void> {
   if (staticRelationLoaded) return;
   try {
-    const [synRes, antRes, cilinRes] = await Promise.all([
+    const [synRes, antRes, cilinRes, nbrRes] = await Promise.all([
       fetch(publicAssetUrl('static-syn-index.json')),
       fetch(publicAssetUrl('static-ant-index.json')),
       fetch(publicAssetUrl('static-cilin-syn-index.json')),
+      fetch(publicAssetUrl('embedding-nbr.bin')),
     ]);
     if (synRes.ok) initStaticSynIndex(await synRes.json());
     if (antRes.ok) initStaticAntIndex(await antRes.json());
     if (cilinRes.ok) initStaticCilinSynIndex(await cilinRes.json());
+    if (nbrRes.ok) {
+      const { decodeEmbeddingNbrBlob, setEmbeddingNbrIndex } = await import('./embedding-nbr.ts');
+      const buf = await nbrRes.arrayBuffer();
+      setEmbeddingNbrIndex(decodeEmbeddingNbrBlob(buf));
+    }
     staticRelationLoaded = true;
   } catch {
     /* ponytail: DB graph fallback */

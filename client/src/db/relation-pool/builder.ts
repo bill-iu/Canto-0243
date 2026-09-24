@@ -19,8 +19,9 @@ import {
   sortAntPool,
   sortSynPool,
 } from './ranking.ts';
+import { fetchEmbeddingNbrItems } from './embedding-neighbors.ts';
 
-const CJK_RE = /[\u4e00-\u9fff]/
+const CJK_RE = /[\u4e00-\u9fff]/;
 
 export function poolLiteral(text: string): string | null {
   const t = (text ?? '')
@@ -240,6 +241,19 @@ export async function buildRelationPool(
   }
 
   let relItems = await fetchDbRelations(db, q);
+  const nbrItems = await fetchEmbeddingNbrItems(db, q);
+  if (nbrItems.length) {
+    // merge: DB wins on same char+relation if better _sort
+    const best = new Map<string, RelationPoolItem>();
+    for (const item of [...relItems, ...nbrItems]) {
+      const key = `${item.char}\t${item.relation}`;
+      const prev = best.get(key);
+      if (!prev || (item._sort ?? 99) < (prev._sort ?? 99)) {
+        best.set(key, item);
+      }
+    }
+    relItems = [...best.values()];
+  }
   let staticSyns: string[] = [];
   let staticAnts: string[] = [];
   if (includeStatic) {
@@ -305,7 +319,7 @@ export async function buildRelationPool(
   }
 
   const seenMain = new Set([q, ...synPool.map((r) => r.char), ...antPool.map((r) => r.char)]);
-  const semanticPool = relItems.filter((item) => {
+  const semanticOnly = relItems.filter((item) => {
     if (item.relation !== 'semantic_related') {
       return false;
     }
@@ -317,5 +331,17 @@ export async function buildRelationPool(
     return true;
   });
 
-  return createRelationPoolSnapshot(q, synPool, antPool, semanticPool);
+  // Product: 語意相關併入近義欄／~（embedding_cosine 低 rank 仍殿後）；semantic 欄留空
+  let mergedSyn = synPool;
+  if (semanticOnly.length) {
+    mergedSyn = [...synPool, ...semanticOnly];
+    mergedSyn.sort((a, b) => {
+      const sa = a._sort ?? 99;
+      const sb = b._sort ?? 99;
+      if (sa !== sb) return sa - sb;
+      return (a.char || '').localeCompare(b.char || '', 'zh-Hant');
+    });
+  }
+
+  return createRelationPoolSnapshot(q, mergedSyn, antPool, []);
 }

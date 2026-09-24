@@ -54,41 +54,9 @@ export type {
   UnmatchedQuery,
 } from './query-types.ts';
 
-export type {
-  MatchSpec,
-  EqualsSpan,
-  EqualsDimension,
-  SlotConstraint,
-  ConstraintKind,
-  CompoundKind,
-  CandidateSource,
-  MaskFamilySearchResult,
-} from './position-match/spec.ts';
-
-export {
-  attachEqualsSpan,
-  createMatchSpec,
-  getEqualsSpan,
-  positionMatchSpecSelfCheck,
-} from './position-match/spec.ts';
-export { buildEqualsMatchSpec } from './position-match/equals-spec.ts';
-export {
-  buildMaskFromSlots,
-  isWildcardChar,
-  parseMaskQuery,
-} from './position-match/mask-grammar.ts';
-export {
-  buildJyutpingDualMatchSpecs,
-  buildMatchSpecForParsed,
-  MATCH_SPEC_BUILDERS,
-  normalizeToMatchSpec,
-} from './position-match/match-spec-registry.ts';
-export { executeMatchSpec } from './position-match/engine.ts';
 export { executeCanonicalMatchSpecPage } from './position-match/engine.ts';
 export {
   canonicalMatchSpecToJson,
-  canonicalMatchSpecToLegacy,
-  canonicalizeLegacyMatchSpec,
   finalizeCanonicalMatchSpec,
 } from './position-match/canonical.ts';
 export { compileParsedQuery, compileQuery, requireMatchSpecQuery } from './position-match/compiler.ts';
@@ -97,3 +65,4 @@ export {
   LengthCodeCandidateSource,
   positionMatchSourcesSelfCheck,
 } from './position-match/sources.ts';
+export type { CanonicalMatchSpec } from './position-match/canonical.ts';

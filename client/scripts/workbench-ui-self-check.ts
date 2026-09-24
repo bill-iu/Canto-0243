@@ -1,12 +1,14 @@
 import fs from 'node:fs';
 
-const page = fs.readFileSync('src/workbench/WorkbenchPage.tsx', 'utf8');
+const page = fs.readFileSync('src/workbench/WorkbenchPage.tsx', 'utf8')
+  + fs.readFileSync('src/workbench/useWorkbenchInput.ts', 'utf8');
 const cards = fs.readFileSync('src/workbench/CandidateGrid.tsx', 'utf8');
 const compare = fs.readFileSync('src/workbench/ComparePanel.tsx', 'utf8');
 const canvas = fs.readFileSync('src/workbench/SentenceCanvas.tsx', 'utf8');
 const constraints = fs.readFileSync('src/workbench/ConstraintBar.tsx', 'utf8');
 const css = fs.readFileSync('src/workbench/workbench-page.css', 'utf8');
-const app = fs.readFileSync('src/App.tsx', 'utf8');
+const app = fs.readFileSync('src/App.tsx', 'utf8')
+  + fs.readFileSync('src/workbench/useWorkbenchTransfer.ts', 'utf8');
 const detail = fs.readFileSync('src/entry-detail/EntryDetailPanel.tsx', 'utf8');
 const lineInputCopy = fs.readFileSync('src/workbench/line-input-copy.ts', 'utf8');
 const introCopy = fs.readFileSync('src/workbench/intro-copy.ts', 'utf8');
@@ -50,7 +52,7 @@ if (css.includes('grid-template-columns: minmax(15rem, .8fr)')) {
 for (const group of ['direct_syn', 'semantic_related', 'sound_only']) {
   if (!cards.includes(group)) throw new Error(`missing candidate group ${group}`);
 }
-if (!compare.includes('套用這個選擇') || !page.includes("type: 'apply_candidate'")) {
+if (!compare.includes('套用這個選擇') || !page.includes('coordinator.actions.applyCandidate')) {
   throw new Error('candidate apply is not explicit');
 }
 if (!compare.includes('posDisplayChips') || !compare.includes('詞性')) {
@@ -59,7 +61,7 @@ if (!compare.includes('posDisplayChips') || !compare.includes('詞性')) {
 if (!compare.includes('在搜尋頁查看') || !compare.includes('onOpenInSearch')) {
   throw new Error('open-in-search missing from compare panel');
 }
-if (!page.includes('不會自動填入字面')) {
+if (!(page + cards).includes('不會自動填入字面') && !(page + cards).includes('由你揀，不代你寫')) {
   throw new Error('product boundary copy missing (no auto-fill surfaces)');
 }
 if (!page.includes('loadMore') && !page.includes('candidates.loadMore')) {
@@ -84,7 +86,7 @@ if (
 ) {
   throw new Error('session coordinator hydrate / reading retry missing');
 }
-if (!page.includes("type: 'toggle_lock'") || !constraints.includes('空白鍵鎖定')) {
+if (!page.includes('coordinator.actions.toggleLock') || !constraints.includes('空白鍵鎖定')) {
   throw new Error('click-span lock / shortcut hint missing');
 }
 if (!canvas.includes('點擊鎖定') || !canvas.includes('雙擊改字')) {
@@ -148,13 +150,13 @@ if (!canvas.includes('onClearSurfaces') || !canvas.includes('canvas-clear-surfac
   throw new Error('clear-surfaces control missing on sentence canvas');
 }
 if (
-  !(page.includes('clearWorkbenchSession') || page.includes('type: \'clear\''))
-  || !page.includes('aria-label="復原清空前的句稿"')
+  !page.includes('actions.clearDraft()')
+  || !page.includes('aria-label={copy.undoClearTitle}')
   || !(page.includes('canUndo') || page.includes('session.undo') || page.includes('type: \'undo\''))
 ) {
   throw new Error('clear-to-empty-workbench undo wiring missing');
 }
-if (!/建立句格[\s\S]{0,400}aria-label="復原清空前的句稿"[\s\S]{0,120}復原/.test(page)) {
+if (!/line-input-form__submit[\s\S]{0,500}line-input-form__undo/.test(page)) {
   throw new Error('cleared-draft undo must be a small 復原 button beside line start');
 }
 if (!constraints.includes('跟原韻') || !constraints.includes('跟原聲') || !constraints.includes('phoneme-dim__ref')) {

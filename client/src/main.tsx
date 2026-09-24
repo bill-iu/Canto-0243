@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { lazy, StrictMode, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import '../../shared/open-design.css';
@@ -10,7 +10,6 @@ import './root.css';
 import './pwa-app.css';
 
 import { ProductRouter } from './ProductRouter.tsx';
-import { BenchmarkApp } from './BenchmarkApp.tsx';
 import { DBProvider } from './hooks/db-provider.tsx';
 import { isPortableHost } from './host-mode.ts';
 import { installDesktopSessionLifecycle } from './desktop-session.ts';
@@ -37,11 +36,12 @@ if (isPortableHost()) {
 }
 
 const benchmark = new URLSearchParams(location.search).has('benchmark');
+const BenchmarkApp = lazy(() => import('./BenchmarkApp.tsx').then(({ BenchmarkApp }) => ({ default: BenchmarkApp })));
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <DBProvider>
-      {benchmark ? <BenchmarkApp /> : <ProductRouter />}
+      {benchmark ? <Suspense fallback={<p role="status">載入量測工具…</p>}><BenchmarkApp /></Suspense> : <ProductRouter />}
     </DBProvider>
   </StrictMode>,
 );

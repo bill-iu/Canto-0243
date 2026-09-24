@@ -589,6 +589,30 @@ def _build_db_exports(args: argparse.Namespace) -> int:
     except Exception as exc:
         print(f"release gate failed: {exc}", file=sys.stderr)
         return 1
+    # E1c: embedding-nbr.bin char→id fingerprint (reuse safety)
+    print("==> embedding-nbr fingerprint (E1c reuse gate)")
+    try:
+        from app.domain.lexicon.embedding_nbr_codec import verify_embedding_nbr_fingerprint
+
+        public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+        nbr_check = verify_embedding_nbr_fingerprint(
+            db_path=REPO_ROOT / "lyrics.db",
+            meta_path=public_meta,
+            require_present=False,
+        )
+        print(f"    status={nbr_check.get('status')} ok={nbr_check.get('ok')}")
+        if nbr_check.get("hint"):
+            print(f"    {nbr_check['hint']}")
+        # Fail seal only when bin is shipped but fingerprint missing/mismatch
+        if nbr_check.get("status") in ("mismatch", "missing_fp", "missing_bin") and (
+            public_meta.is_file()
+            or (REPO_ROOT / "client" / "public" / "embedding-nbr.bin").is_file()
+        ):
+            print("embedding-nbr fingerprint gate FAILED", file=sys.stderr)
+            return 1
+    except Exception as exc:
+        print(f"embedding-nbr fingerprint check failed: {exc}", file=sys.stderr)
+        return 1
     # 詞庫渠道同步（ADR-0036）：閘綠後預設 copy → public + manifest
     if not getattr(args, "no_copy_public", False):
         import os
@@ -966,6 +990,79 @@ def main(argv: list[str] | None = None) -> int:
         help="Only append from TSV (skip clear manual*)",
     )
 
+    p_emb = sub.add_parser(
+        "bake-embedding-topk",
+        help="GPU bge-m3 top-K → semantic_related (A) + proposal TSV (C)",
+        description=(
+            "語意向量鄰居烘焙（強制 CUDA）。A: degree<T 寫 embedding_cosine/"
+            "semantic_related；C: 全庫提案 TSV。見 docs/working-plans/"
+            "2026-08-05-embedding-topk-semantic-bake.md"
+        ),
+    )
+    p_emb.add_argument(
+        "--model-dir",
+        default=r"F:\localAI\data\models\bge-m3-onnx",
+        help="bge-m3 ONNX directory",
+    )
+    p_emb.add_argument(
+        "--cache-dir",
+        default=str(REPO_ROOT / ".cache" / "embedding_topk"),
+        help="vectors + default proposal TSV dir",
+    )
+    p_emb.add_argument("--proposal-tsv", default=None, help="C proposal TSV path")
+    p_emb.add_argument("--vectors", default=None, help="npz npz path")
+    p_emb.add_argument("--syn-degree-lt", type=int, default=5, help="A: write if direct syn degree < T")
+    p_emb.add_argument("--a-topk", type=int, default=10, help="A: neighbors per eligible head")
+    p_emb.add_argument("--a-min-cosine", type=float, default=0.50, help="A: min cosine")
+    p_emb.add_argument("--c-topk", type=int, default=20, help="C: proposal neighbors per head")
+    p_emb.add_argument("--encode-batch", type=int, default=64, help="GPU encode batch size")
+    p_emb.add_argument("--limit", type=int, default=None, help="Debug: first N distinct chars")
+    p_emb.add_argument("--skip-encode", action="store_true", help="Reuse vectors npz")
+    p_emb.add_argument("--no-write-db", action="store_true", help="Skip clearing/writing relations")
+    p_emb.add_argument(
+        "--write-edges",
+        action="store_true",
+        help="Also insert embedding_cosine rows (default: E1c bin only)",
+    )
+    p_emb.add_argument(
+        "--keep-edges",
+        action="store_true",
+        help="Do not strip embedding_cosine after bin write",
+    )
+    p_emb.add_argument(
+        "--no-replace",
+        action="store_true",
+        help="Do not clear existing embedding_cosine rows first",
+    )
+
+    p_nbr = sub.add_parser(
+        "export-embedding-nbr",
+        help="E1c: build embedding-nbr.bin from existing embedding_cosine edges",
+    )
+    p_nbr.add_argument(
+        "--cache-dir",
+        default=str(REPO_ROOT / ".cache" / "embedding_topk"),
+    )
+    p_nbr.add_argument(
+        "--keep-edges",
+        action="store_true",
+        help="Keep word_relations embedding_cosine rows after export",
+    )
+
+    p_stamp = sub.add_parser(
+        "stamp-embedding-nbr-fp",
+        help="Write char_id_fingerprint onto existing embedding-nbr.meta.json (bin unchanged)",
+    )
+    p_check = sub.add_parser(
+        "check-embedding-nbr-fp",
+        help="Verify embedding-nbr.bin is reusable vs current lyrics.db char→id map",
+    )
+    p_check.add_argument(
+        "--require",
+        action="store_true",
+        help="Fail if meta/bin missing (default: missing is ok)",
+    )
+
     args = parser.parse_args(argv)
     if args.command == "report":
         return cmd_report(args)
@@ -997,7 +1094,91 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_migrate_legacy_snapshots(args)
     if args.command == "apply-manual-relations":
         return cmd_apply_manual_relations(args)
+    if args.command == "bake-embedding-topk":
+        return cmd_bake_embedding_topk(args)
+    if args.command == "export-embedding-nbr":
+        return cmd_export_embedding_nbr(args)
+    if args.command == "stamp-embedding-nbr-fp":
+        return cmd_stamp_embedding_nbr_fp(args)
+    if args.command == "check-embedding-nbr-fp":
+        return cmd_check_embedding_nbr_fp(args)
     return 1
+
+
+def cmd_bake_embedding_topk(args: argparse.Namespace) -> int:
+    from ingest.bake_embedding_topk import bake_embedding_topk
+
+    ensure_word_relations_table()
+    with SessionLocal() as db:
+        try:
+            stats = bake_embedding_topk(
+                db,
+                model_dir=Path(args.model_dir),
+                cache_dir=Path(args.cache_dir),
+                proposal_tsv=Path(args.proposal_tsv) if args.proposal_tsv else None,
+                vectors_path=Path(args.vectors) if args.vectors else None,
+                syn_degree_lt=args.syn_degree_lt,
+                a_topk=args.a_topk,
+                a_min_cosine=args.a_min_cosine,
+                c_topk=args.c_topk,
+                encode_batch=args.encode_batch,
+                replace=not args.no_replace,
+                skip_encode=args.skip_encode,
+                write_db=not args.no_write_db,
+                write_edges=bool(args.write_edges),
+                strip_edges=not args.keep_edges,
+                limit_chars=args.limit,
+            )
+        except Exception as e:
+            print(f"bake-embedding-topk FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+            return 1
+    print("bake-embedding-topk stats:", stats)
+    return 0
+
+
+def cmd_export_embedding_nbr(args: argparse.Namespace) -> int:
+    from ingest.bake_embedding_topk import export_nbr_from_existing_edges
+
+    ensure_word_relations_table()
+    with SessionLocal() as db:
+        try:
+            stats = export_nbr_from_existing_edges(
+                db,
+                cache_dir=Path(args.cache_dir),
+                strip_edges=not args.keep_edges,
+            )
+        except Exception as e:
+            print(f"export-embedding-nbr FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+            return 1
+    print("export-embedding-nbr stats:", stats)
+    return 0
+
+
+def cmd_stamp_embedding_nbr_fp(args: argparse.Namespace) -> int:
+    from app.domain.lexicon.embedding_nbr_codec import stamp_fingerprint_on_meta
+
+    public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+    cache_meta = REPO_ROOT / ".cache" / "embedding_topk" / "embedding-nbr.meta.json"
+    stats = stamp_fingerprint_on_meta(
+        db_path=REPO_ROOT / "lyrics.db",
+        meta_path=public_meta,
+        also=[cache_meta],
+    )
+    print("stamp-embedding-nbr-fp:", stats)
+    return 0 if stats.get("written") else 1
+
+
+def cmd_check_embedding_nbr_fp(args: argparse.Namespace) -> int:
+    from app.domain.lexicon.embedding_nbr_codec import verify_embedding_nbr_fingerprint
+
+    public_meta = REPO_ROOT / "client" / "public" / "embedding-nbr.meta.json"
+    r = verify_embedding_nbr_fingerprint(
+        db_path=REPO_ROOT / "lyrics.db",
+        meta_path=public_meta,
+        require_present=bool(args.require),
+    )
+    print("check-embedding-nbr-fp:", r)
+    return 0 if r.get("ok") else 1
 
 
 def cmd_apply_manual_relations(args: argparse.Namespace) -> int:

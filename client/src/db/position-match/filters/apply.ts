@@ -1,4 +1,5 @@
 /** MatchSpec apply pipeline — F1–F5 orchestration. */
+import type { RhymeProfile } from '../../rhyme-match-profile.ts';
 import type { Database } from '../../sqljs.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../../search-cancel.ts';
 import { queryWordsByEqualsSpec } from '../equals-filters.ts';
@@ -26,7 +27,7 @@ export async function filterCandidatesByMatchSpec(
   mode: string,
   db: Database,
   shouldCancel?: ShouldCancel,
-  options: { phonemeIndexPrefiltered?: boolean } = {},
+  options: { phonemeIndexPrefiltered?: boolean; rhymeProfile?: RhymeProfile } = {},
 ): Promise<WordRow[]> {
   throwIfSearchCancelled(shouldCancel);
   if (
@@ -56,7 +57,7 @@ export async function filterCandidatesByMatchSpec(
     && spec.slots.some((slot) => slot.kind === 'final_anchor')
   ) {
     const slotOptions = await partialMaskSlotOptions(spec, db, 'final');
-    return candidates.filter((w) => wordPassesPartialRhymeMaskSpec(spec, w, slotOptions));
+    return candidates.filter((w) => wordPassesPartialRhymeMaskSpec(spec, w, slotOptions, options.rhymeProfile));
   }
   if (
     spec.width === 4
@@ -68,11 +69,11 @@ export async function filterCandidatesByMatchSpec(
     return candidates.filter((w) => wordPassesPartialInitialMaskSpec(spec, w, slotOptions));
   }
 
-  let pool = narrowByJyutpingLetterSlots(candidates, spec.slots ?? [], db);
+  let pool = narrowByJyutpingLetterSlots(candidates, spec.slots ?? [], db, options.rhymeProfile);
   throwIfSearchCancelled(shouldCancel);
   // Engine phoneme inverted-index already narrowed single-slot anchors
   if (!options.phonemeIndexPrefiltered) {
-    pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db);
+    pool = await narrowByPhonemeAnchors(pool, spec.slots ?? [], db, options.rhymeProfile);
   }
   return filterWordsByCodeAndMask(
     pool,
@@ -81,6 +82,7 @@ export async function filterCandidatesByMatchSpec(
     db,
     shouldCancel,
     options.phonemeIndexPrefiltered,
+    options.rhymeProfile,
   );
 }
 
@@ -91,14 +93,14 @@ export async function applyMatchSpec(
   db: Database,
   mode = 'm1',
   shouldCancel?: ShouldCancel,
-  options: { phonemeIndexPrefiltered?: boolean } = {},
+  options: { phonemeIndexPrefiltered?: boolean; rhymeProfile?: RhymeProfile } = {},
 ): Promise<WordRow[]> {
   const spec = 'candidate_scope' in input ? input : canonicalizeLegacyMatchSpec(input);
   throwIfSearchCancelled(shouldCancel);
   if (spec.equals_span) {
-    let rows = await queryWordsByEqualsSpec(spec, db, mode);
+    let rows = await queryWordsByEqualsSpec(spec, db, mode, options.rhymeProfile);
     if (hasCodeDigitConstraints(spec)) {
-      rows = await filterWordsByCodeAndMask(rows, spec, mode, db, shouldCancel);
+      rows = await filterWordsByCodeAndMask(rows, spec, mode, db, shouldCancel, false, options.rhymeProfile);
     }
     return rows;
   }

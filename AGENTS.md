@@ -44,3 +44,7 @@ In repositories indexed by CodeGraph (a `.codegraph/` directory exists at the re
 
 If there is no `.codegraph/` directory, skip CodeGraph entirely — indexing is the user's decision.
 <!-- CODEGRAPH_END -->
+
+### Shell search
+
+搜尋用 `rg`（ripgrep，已全域安裝）代替 `grep`；`rg` 預設尊重 `.gitignore`。

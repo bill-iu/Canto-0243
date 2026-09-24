@@ -8,6 +8,7 @@ import {
   getCurrentLexiconTarget,
   getDefaultDbUrl,
   getLexiconCacheStatus,
+  getDatabase,
   initializeDatabase,
   resetDatabase,
   type LexiconCacheStatus,
@@ -17,6 +18,9 @@ import {
   search,
   validateOfflineReadiness,
 } from './query.ts';
+import { queryEngine } from './query/engine.ts';
+import { runQueryBenchmark } from './query-benchmark.ts';
+import { createPwaWorkbenchAdapter } from '../workbench/pwa-workbench-adapter.ts';
 
 export type DbBenchmarkMemory = {
   heapUsedMb: number | null;
@@ -124,4 +128,16 @@ export async function runDbBenchmark(opts?: { resetFirst?: boolean }): Promise<D
     probeWord: results[0]?.word ?? null,
     ok: Boolean(results[0]?.word),
   };
+}
+
+/** On-device diagnostics; first/repeat queries do not imply cold/warm disk caches. */
+export async function runArchitectureBenchmark() {
+  const startup = await runDbBenchmark({ resetFirst: true });
+  const workbench = createPwaWorkbenchAdapter();
+  const samples = await runQueryBenchmark(getDatabase(), (ctx) => queryEngine.execute(ctx), () => {
+    const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory;
+    return memory?.usedJSHeapSize ?? null;
+  }, (plan) => workbench.findCandidates(plan));
+  return { schemaVersion: 1, measuredAt: new Date().toISOString(),
+    userAgent: navigator.userAgent, startup, samples };
 }

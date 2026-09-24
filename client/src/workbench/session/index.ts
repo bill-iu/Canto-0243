@@ -9,7 +9,10 @@ export {
   initialSession,
   loadWorkbenchSession,
   saveWorkbenchSession,
+  exportWorkbenchSession,
+  importWorkbenchSession,
 } from './storage.ts';
+export type { WorkbenchDocument, WorkbenchContent } from './document.ts';
 export type {
   ConstraintsUI,
   SessionAction,

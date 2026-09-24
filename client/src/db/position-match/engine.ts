@@ -3,7 +3,7 @@
  */
 import type { Database } from '../sqljs.ts';
 import { compareSearchResults, literalPriorityCompare } from '../ranking.ts';
-import { getRhymeProfile } from '../rhyme-profile-context.ts';
+import type { RhymeProfile } from '../rhyme-match-profile.ts';
 import { throwIfSearchCancelled, yieldToMainThread, type ShouldCancel } from '../search-cancel.ts';
 import { applyMatchSpec } from './filters.ts';
 import { getCandidatesForLength, getLengthMaskCandidates } from './sources.ts';
@@ -169,12 +169,13 @@ export type ExecuteMatchSpecContext = {
   offset: number;
   code?: string | null;
   shouldCancel?: ShouldCancel;
+  rhymeProfile?: RhymeProfile;
 };
 
 /** Filter all matching rows — port of PositionMatchEngine.match (no sort/page). */
 export async function filterMatchSpecRows(
   input: CanonicalMatchSpec | MatchSpec,
-  ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code' | 'shouldCancel'>,
+  ctx: Pick<ExecuteMatchSpecContext, 'db' | 'mode' | 'code' | 'shouldCancel' | 'rhymeProfile'>,
 ): Promise<WordRow[]> {
   const spec = 'candidate_scope' in input ? input : canonicalizeLegacyMatchSpec(input);
   if (!spec || spec.width === 0) {
@@ -182,7 +183,7 @@ export async function filterMatchSpecRows(
   }
   throwIfSearchCancelled(ctx.shouldCancel);
   if (spec.equals_span || spec.compound) {
-    return applyMatchSpec(spec, [], ctx.db, ctx.mode, ctx.shouldCancel);
+    return applyMatchSpec(spec, [], ctx.db, ctx.mode, ctx.shouldCancel, { rhymeProfile: ctx.rhymeProfile });
   }
   const hasPositionFilters =
     Boolean(spec.mask) ||
@@ -218,6 +219,7 @@ export async function filterMatchSpecRows(
         phonemeSlot.pos,
         String(phonemeSlot.value ?? ''),
         constraint,
+        ctx.rhymeProfile,
       );
     }
     if (indexed) {
@@ -253,6 +255,7 @@ export async function filterMatchSpecRows(
   throwIfSearchCancelled(ctx.shouldCancel);
   return applyMatchSpec(spec, candidates, ctx.db, ctx.mode, ctx.shouldCancel, {
     phonemeIndexPrefiltered: fromPhonemeIndex,
+    rhymeProfile: ctx.rhymeProfile,
   });
 }
 
@@ -273,6 +276,7 @@ async function executeCanonicalPage(
       mode: ctx.mode,
       code: ctx.code ?? null,
       shouldCancel: ctx.shouldCancel,
+      rhymeProfile: ctx.rhymeProfile,
     };
     const initialSpec = spec.phoneme_alternatives.initial;
     const finalSpec = spec.phoneme_alternatives.final;
@@ -307,12 +311,12 @@ async function executeCanonicalPage(
   const filtered = await filterMatchSpecRows(spec, ctx);
   throwIfSearchCancelled(ctx.shouldCancel);
   const exactSlots =
-    getRhymeProfile() !== 'exact' ? await exactFinalSlotOptions(spec, ctx.db) : [];
+    (ctx.rhymeProfile ?? 'exact') !== 'exact' ? await exactFinalSlotOptions(spec, ctx.db) : [];
   const withExact = (cmp: (a: WordRow, b: WordRow) => number) =>
     exactSlots.length
       ? (a: WordRow, b: WordRow) => {
-          const ra = exactFinalRankKey(a, exactSlots);
-          const rb = exactFinalRankKey(b, exactSlots);
+          const ra = exactFinalRankKey(a, exactSlots, ctx.rhymeProfile);
+          const rb = exactFinalRankKey(b, exactSlots, ctx.rhymeProfile);
           return ra - rb || cmp(a, b);
         }
       : cmp;
