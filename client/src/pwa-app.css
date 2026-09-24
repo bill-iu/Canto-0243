@@ -693,6 +693,11 @@ button.icon-button.header-search__shuffle:disabled {
     row-gap: 0;
   }
 
+  /* Focus ring sits 6px above the field; keep it clear of the chip and menu. */
+  .app-header.is-mast-wide.is-mast-collapsed .header-search__row {
+    margin-top: 8px;
+  }
+
   .app-header.is-mast-wide.is-mast-collapsed .mode-menu-meta {
     display: none;
   }
