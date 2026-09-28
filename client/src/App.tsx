@@ -73,6 +73,7 @@ import {
 import { TailPreloadBadge } from './components/TailPreloadBadge';
 import { HostTabsBar } from '@host-tabs-bar';
 import { useQueryTabs, VIEW } from './query-tabs/useQueryTabs';
+import { isSearchInputBlockedByHistoryRestore } from './query-tabs/history-input-guard';
 import { getLang, setLang, getTheme, setTheme, SEARCH_RING_BLUR_MS, readLexiconVersionMeta } from '../../shared/app-context.mjs';
 import { getAppShellCopy } from '../../shared/app-shell-i18n.mjs';
 import { isCorrectionsSearchCommand } from '@shared/query-tabs';
@@ -191,6 +192,7 @@ function App() {
   const [searchRingClass, setSearchRingClass] = useState('');
   const searchRingBlurTimerRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
+  const [historyRestoreNonce, setHistoryRestoreNonce] = useState(0);
   const lexiconLoadStartedRef = useRef(false);
 
   const {
@@ -470,18 +472,30 @@ function App() {
 
   useEffect(() => {
     if (!popstateFrame) return;
-    setMode(popstateFrame.mode);
-    setPzMode(popstateFrame.pzmode);
-    if (popstateFrame.q) {
-      setUseLiveFetch(true);
-      hydrateSearch(popstateFrame.q);
-      flushSearchQuery(popstateFrame.q);
-    } else {
-      closeEntryDetail();
-      setUseLiveFetch(false);
-      hydrateSearch('');
-    }
+    const frame = popstateFrame;
+    const apply = () => {
+      setMode(frame.mode);
+      setPzMode(frame.pzmode);
+      if (frame.q) {
+        setUseLiveFetch(true);
+        hydrateSearch(frame.q);
+        flushSearchQuery(frame.q);
+      } else {
+        closeEntryDetail();
+        setUseLiveFetch(false);
+        hydrateSearch('');
+      }
+      const input = document.getElementById('searchInput');
+      if (input instanceof HTMLInputElement && input.value !== frame.q) input.value = frame.q;
+    };
+    setHistoryRestoreNonce((n) => n + 1);
+    apply();
     consumePopstateFrame();
+    // Browser form restore can write the previous global search into the box after popstate.
+    // Timers must outlive this effect: consumePopstateFrame clears popstateFrame and re-runs it.
+    window.setTimeout(apply, 0);
+    window.setTimeout(apply, 120);
+    window.setTimeout(apply, 250);
   }, [popstateFrame, hydrateSearch, flushSearchQuery, consumePopstateFrame, closeEntryDetail]);
 
   const runCommittedSearch = useCallback(
@@ -641,6 +655,7 @@ function App() {
   };
 
   const handleSearchInput = (value: string) => {
+    if (isSearchInputBlockedByHistoryRestore()) return;
     if (view !== 'search') {
       setInputQueryLive(value);
       return;
@@ -936,6 +951,7 @@ function App() {
                     </label>
                     <input
                       id="searchInput"
+                      key={historyRestoreNonce}
                       type="search"
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}

@@ -21,6 +21,7 @@ import {
   isHistoryForward,
   shouldApplySearchPopstate,
   resetSearchTabHistory,
+  restoreActiveTabForBackForward,
 } from "../shared/search-navigation.mjs";
 
 describe("search-navigation", () => {
@@ -174,6 +175,29 @@ describe("search-navigation", () => {
     resetSearchTabHistory(tab, "m2");
     assert.deepEqual(currentSearchHistoryFrame(tab), { q: "", mode: "m2" });
     assert.equal(tab.q, "");
+  });
+
+  it("back-forward stays on the active tab when the URL is its current search", () => {
+    const tab = createSearchTab({ id: 2, q: "" });
+    ensureSearchTabHistory(tab, "m1");
+    commitSearchHistoryFrame(tab, { q: "廣州", mode: "m1" });
+    const state = { activeId: 2, nextTabId: 3, tabs: [tab] };
+    const next = restoreActiveTabForBackForward(state, { q: "廣州", mode: "m1" });
+    assert.equal(next.tabs.find((t) => t.id === 2).q, "廣州");
+    assert.equal(next.activeId, 2);
+  });
+
+  it("back-forward steps the active tab instead of another tab's URL query", () => {
+    const tab = createSearchTab({ id: 2, q: "" });
+    ensureSearchTabHistory(tab, "m1");
+    commitSearchHistoryFrame(tab, { q: "澳門", mode: "m1" });
+    commitSearchHistoryFrame(tab, { q: "廣州", mode: "m1" });
+    const state = { activeId: 2, nextTabId: 3, tabs: [tab] };
+    const next = restoreActiveTabForBackForward(state, { q: "香港", mode: "m1" });
+    const active = next.tabs.find((t) => t.id === 2);
+    assert.equal(active.q, "澳門");
+    assert.equal(active.historyIndex, 1);
+    assert.equal(next.activeId, 2);
   });
 
   it("preserves pingze sub-mode in history and URL state", () => {

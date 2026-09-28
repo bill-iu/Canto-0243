@@ -50,6 +50,35 @@ function stepSearchTabBack(tab) {
   return frame;
 }
 
+function framesEqual(frame, q, mode, pzmode) {
+  if ((frame?.q || "") !== (q || "")) return false;
+  const frameMode = frame?.mode || "m1";
+  const nextMode = mode || "m1";
+  if (frameMode !== nextMode) return false;
+  if (frameMode === "pz" || nextMode === "pz") {
+    return (frame?.pzmode || "m1") === (pzmode || "m1");
+  }
+  return true;
+}
+
+/** Document back/forward load: stay if the URL is this tab's current search; otherwise step this tab once. */
+function restoreActiveTabForBackForward(state, url) {
+  const q = url?.q || "";
+  const mode = url?.mode || "m1";
+  const pzmode = url?.pzmode || "m1";
+  const tab =
+    state.tabs.find((candidate) => candidate.id === state.activeId && candidate.view === VIEW.SEARCH) ||
+    state.tabs.find((candidate) => candidate.view === VIEW.SEARCH);
+  if (!tab) return state;
+  ensureSearchTabHistory(tab, mode, pzmode);
+  if (framesEqual(tab.historyStack[tab.historyIndex], q, mode, pzmode)) return state;
+  if (!stepSearchTabBack(tab)) return state;
+  return {
+    ...state,
+    tabs: state.tabs.map((candidate) => (candidate.id === tab.id ? tab : candidate)),
+  };
+}
+
 function isHistoryForward(lastSeq, state) {
   const seq = state?._histSeq;
   if (typeof seq !== "number") return false;
@@ -138,6 +167,7 @@ export {
   isHistoryForward,
   resetSearchTabHistory,
   resolveSearchRestore,
+  restoreActiveTabForBackForward,
   shouldApplySearchPopstate,
   shouldPushSearchHistory,
   stepSearchTabBack,
