@@ -142,6 +142,10 @@ declare module '@shared/search-navigation' {
     frame: { q: string; mode: string; pzmode?: string },
   ): { pushed: boolean; frame: { q: string; mode: string; pzmode?: string } };
   export function stepSearchTabBack(tab: QueryTab): { q: string; mode: string; pzmode?: string } | null;
+  export function restoreActiveTabForBackForward(
+    state: { activeId: number; nextTabId: number; tabs: QueryTab[] },
+    url: { q?: string; mode?: string; pzmode?: string },
+  ): { activeId: number; nextTabId: number; tabs: QueryTab[] };
   export function isHistoryForward(lastSeq: number | undefined, state: unknown): boolean;
   export function shouldApplySearchPopstate(activeTab: QueryTab | null, state: unknown): boolean;
   export function resetSearchTabHistory(tab: QueryTab, mode?: string, pzmode?: string): QueryTab;

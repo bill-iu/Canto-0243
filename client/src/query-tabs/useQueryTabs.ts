@@ -28,9 +28,11 @@ import {
   ensureSearchTabHistory,
   isHistoryForward,
   resetSearchTabHistory,
+  restoreActiveTabForBackForward,
   shouldPushSearchHistory,
   stepSearchTabBack,
 } from '@shared/search-navigation';
+import { blockSearchInputForHistoryRestore } from './history-input-guard';
 import { uiModeToUrlMode, urlModeToUiMode, type PingzeSubMode, type UiMode } from '../mode-meta';
 import { stripLauncherBootFromUrl } from '../search-url';
 import type { QueryResult } from '../db/query';
@@ -96,7 +98,8 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
   const urlHasQ = parsed.view === VIEW.SEARCH && Boolean(parsed.q?.trim());
   const isHome = parsed.view === VIEW.SEARCH && !parsed.q?.trim();
 
-  let state = loadSessionTabState() ?? fallback();
+  const session = loadSessionTabState();
+  let state = session ?? fallback();
 
   if (isWorkbenchUrl) {
     const next = openSingletonView(state, VIEW.WORKBENCH, createWorkbenchTab);
@@ -139,6 +142,22 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
     return { state: sanitizePwaTabState(state), bootstrap: { isHome: false, forceLive: false } };
   }
 
+  // Browser back/forward that reloads the document must not paint another tab's URL query
+  // onto the active search tab. One step of that tab's own stack, unless the URL is already it.
+  if (session && isBackForwardDocumentLoad() && parsed.view === VIEW.SEARCH) {
+    const restored = restoreActiveTabForBackForward(state, {
+      q: parsed.q || '',
+      mode: parsed.mode,
+      pzmode: parsed.pzmode,
+    });
+    const active = restored.tabs.find((t) => t.id === restored.activeId);
+    const q = active?.view === VIEW.SEARCH ? (active.q || '').trim() : '';
+    return {
+      state: sanitizePwaTabState(restored),
+      bootstrap: { isHome: !q, forceLive: Boolean(q) },
+    };
+  }
+
   if (urlHasQ) {
     const searchTab =
       state.tabs.find((t) => t.id === state.activeId && t.view === VIEW.SEARCH) ||
@@ -171,6 +190,12 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
   }
 
   return { state: sanitizePwaTabState(state), bootstrap: { isHome: false, forceLive: false } };
+}
+
+function isBackForwardDocumentLoad(): boolean {
+  if (typeof performance === 'undefined' || typeof performance.getEntriesByType !== 'function') return false;
+  const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+  return nav?.type === 'back_forward';
 }
 
 function historySeqFromState(state: unknown): number {
@@ -543,6 +568,9 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
 
   useEffect(() => {
     const onPopstate = (event: PopStateEvent) => {
+      // Browser back restores the previous document's search box. Ignore that
+      // value so it cannot replace the active tab's own previous search.
+      blockSearchInputForHistoryRestore(400);
       const state = event.state || {};
       const current = tabStateRef.current;
       const tab = current.tabs.find((t) => t.id === current.activeId) ?? current.tabs[0];
@@ -601,6 +629,11 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
         suppressPopstateRef.current = true;
         window.history.forward();
         pushBrowserUrl(current, true);
+        const currentFrame = currentSearchHistoryFrame(tab);
+        const stayMode = urlModeToUiMode(currentFrame.mode);
+        const stayPz = (currentFrame.pzmode === 'm2' || currentFrame.pzmode === 'm3' ? currentFrame.pzmode : 'm1') as PingzeSubMode;
+        onModeChange(stayMode, stayPz);
+        setPopstateFrame({ q: currentFrame.q || '', mode: stayMode, pzmode: stayPz });
         return;
       }
 
