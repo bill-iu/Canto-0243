@@ -37,7 +37,7 @@ export function codeTemplateToRequired(template: string): Array<string | null> {
 function matchesCodeTemplate(
   code: string | number,
   template: Array<string | null>,
-  mode: 'm1' | 'm2',
+  mode: 'm1' | 'm2' | 'm3',
 ): boolean {
   const codeStr = String(code);
   if (codeStr.length !== template.length) {
@@ -100,7 +100,7 @@ function tagsForReading(
   code: string,
   leftReq: Array<string | null>,
   rightReq: Array<string | null>,
-  mode: 'm1' | 'm2',
+  mode: 'm1' | 'm2' | 'm3',
 ): string[] {
   const tags: string[] = [];
   if (matchesCodeTemplate(code, leftReq, mode)) {
@@ -119,7 +119,7 @@ export async function executeHeteronymCodeSearch(
   limit: number,
   offset: number,
 ): Promise<{ items: HeteronymResult[]; total: number }> {
-  const searchMode = mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
+  const searchMode = mode === 'm2' || mode === '02493' ? 'm2' : mode === 'm3' || mode === '394052' ? 'm3' : 'm1';
   const leftReq = codeTemplateToRequired(parsed.left_template);
   const rightReq = codeTemplateToRequired(parsed.right_template);
   const index = await ensureHeteronymIndex(db);

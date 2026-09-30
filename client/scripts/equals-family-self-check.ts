@@ -18,6 +18,7 @@ import {
 } from '../src/db/position-match/engine.ts';
 import { getEqualsSpan } from '../src/db/position-match/spec.ts';
 import { queryFirst } from '../src/db/database-backend.ts';
+import { searchPage } from '../src/db/query.ts';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dbPath = path.join(repoRoot, 'lyrics.db');
@@ -73,6 +74,14 @@ for (const ch of ['困', '潦', '倒']) {
 console.log('ok L1 single-char anchors present');
 
 // 香港= control
+{
+  const page = await searchPage({ query: '43到=', mode: '394052', limit: 800, offset: 0 });
+  if (page.items.some((row) => row.word === '老土')) {
+    throw new Error('equals-family-self-check: 43到= in 394052 must not include 老土 (code 59)');
+  }
+  console.log(`ok 43到= 394052 excludes 老土 n=${page.total}`);
+}
+
 const nHk = await countForQuery('香港=');
 if (nHk < 1) {
   throw new Error(`equals-family-self-check: 香港= empty`);
