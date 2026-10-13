@@ -6,6 +6,11 @@
   ],
   "checks": [
     {
+      "id": "ipad-keyboard",
+      "script": "ipad-keyboard-self-check.ts",
+      "tags": ["ci", "pwa", "local"]
+    },
+    {
       "id": "workbench-coordinator",
       "script": "workbench-coordinator-self-check.ts",
       "tags": [

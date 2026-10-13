@@ -66,6 +66,8 @@ import { ReadyGate } from './ready-gate';
 import { hasPwaGateLanded } from './pwa-shell-boot';
 import { usePwaInstallPrompt } from './hooks/usePwaInstallPrompt';
 import { PwaInstallBanner } from './components/PwaInstallBanner';
+import { IpadKeyboardHelp } from './components/IpadKeyboardHelp';
+import { bindIpadSearchKeyboardGuard, isIpadStandalone, type KeyboardRecoveryResult } from './ipad-keyboard';
 import {
   PortableUpdateBanner,
   type PortableUpdateInfo,
@@ -193,6 +195,8 @@ function App() {
   const searchRingBlurTimerRef = useRef<number | null>(null);
   const initialSearchDoneRef = useRef(false);
   const [historyRestoreNonce, setHistoryRestoreNonce] = useState(0);
+  const [keyboardResetNonce, setKeyboardResetNonce] = useState(0);
+  const keyboardGuardRef = useRef<ReturnType<typeof bindIpadSearchKeyboardGuard> | null>(null);
   const lexiconLoadStartedRef = useRef(false);
 
   const {
@@ -341,6 +345,17 @@ function App() {
   const isStandalone =
     window.matchMedia('(display-mode: standalone)').matches ||
     (navigator as any).standalone === true;
+  const hasIpadKeyboardHelp = !isPortableHost() && isIpadStandalone(navigator, isStandalone);
+
+  useEffect(() => {
+    if (!hasIpadKeyboardHelp) return;
+    const guard = bindIpadSearchKeyboardGuard(document, window);
+    keyboardGuardRef.current = guard;
+    return () => {
+      guard.dispose();
+      keyboardGuardRef.current = null;
+    };
+  }, [hasIpadKeyboardHelp]);
 
   const [installDismissed, setInstallDismissed] = useState(
     () => !!sessionStorage.getItem('canto-pwa-install-dismissed')
@@ -666,6 +681,17 @@ function App() {
     }
   };
 
+  const handleKeyboardRecovery = (): KeyboardRecoveryResult => {
+    if (!hasIpadKeyboardHelp || shellGated || isSearchInputBlockedByHistoryRestore()) {
+      return 'unavailable';
+    }
+    const result = keyboardGuardRef.current?.release() ?? 'unavailable';
+    // Only replace this DOM input, keeping the controlled draft and query tabs.
+    // No automatic refocus: the next deliberate finger tap starts input normally.
+    if (result === 'ready') setKeyboardResetNonce((n) => n + 1);
+    return result;
+  };
+
   const handleSearchFocus = () => {
     if (searchRingBlurTimerRef.current != null) {
       window.clearTimeout(searchRingBlurTimerRef.current);
@@ -951,7 +977,7 @@ function App() {
                     </label>
                     <input
                       id="searchInput"
-                      key={historyRestoreNonce}
+                      key={`${historyRestoreNonce}:${keyboardResetNonce}`}
                       type="search"
                       value={inputQuery}
                       onChange={(e) => handleSearchInput(e.target.value)}
@@ -1032,6 +1058,9 @@ function App() {
                     ))}
                   </div>
                 </div>
+                {hasIpadKeyboardHelp && !shellGated ? (
+                  <IpadKeyboardHelp lang={uiLang} onRecover={handleKeyboardRecovery} />
+                ) : null}
                 {showExplain ? (
                   <p className="query-explain" aria-live="polite">
                     {explainSummary ? (
