@@ -90,6 +90,7 @@ export function bindSearchMastScroll(appBar: HTMLElement, shell: HTMLElement): (
 
   const clearMotion = () => {
     appBar.style.setProperty('--mast-y', '0px');
+    shell.style.setProperty('--mast-scroll-space', '0px');
     header.style.setProperty('--mast-lift', '0px');
     header.style.setProperty('--mast-reserve', '0px');
     appBar.classList.remove('is-mast-collapsed', 'is-mast-overlap');
@@ -104,6 +105,7 @@ export function bindSearchMastScroll(appBar: HTMLElement, shell: HTMLElement): (
       return;
     }
     const y = searchMastY(scrollTop, mastMax, reduceMq.matches);
+    shell.style.setProperty('--mast-scroll-space', `${y}px`);
     appBar.style.setProperty('--mast-y', `${y}px`);
     const collapsed = searchMastCollapsed(y, mastMax);
     appBar.classList.toggle('is-mast-collapsed', collapsed);
@@ -172,6 +174,7 @@ export function bindSearchMastScroll(appBar: HTMLElement, shell: HTMLElement): (
     shell.removeEventListener('scroll', onScroll, true);
     wideMq.removeEventListener('change', onMq);
     reduceMq.removeEventListener('change', onMq);
+    shell.style.removeProperty('--mast-scroll-space');
     appBar.style.removeProperty('--mast-y');
     appBar.style.removeProperty('--mast-max');
     appBar.style.removeProperty('--mast-logo');
