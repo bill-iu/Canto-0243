@@ -647,6 +647,16 @@ button.icon-button.header-search__shuffle:disabled {
     padding: 0 14px;
   }
 
+  /* Keep the scroll range stable as the shrinking header grows the viewport. */
+  .search-view:not(.is-empty-landing) .search-results-scroll,
+  .search-view.is-empty-landing .guide-quick__columns {
+    padding-bottom: var(--mast-scroll-space, 0px);
+  }
+
+  .search-view.is-empty-landing .guide-quick__rows {
+    padding-bottom: calc(4px + var(--mast-scroll-space, 0px));
+  }
+
   /* Scroll-linked mast: logo + ONE搵韻 rise away; 句格 + menu lift onto the tab row. */
   .app-bar .header-mast {
     display: block;

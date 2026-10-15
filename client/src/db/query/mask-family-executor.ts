@@ -9,10 +9,9 @@ import type { WordRow } from '../position-match/word-row.ts';
 import { codePrefixedWholeWordEqualsEmptyHint } from './equals-empty-hint.ts';
 import { rowToResult, sortMaskFamilyRows } from './result-map.ts';
 
-function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' {
-  if (mode === 'm2' || mode === '02493') {
-    return 'm2';
-  }
+function normalizeSearchMode(mode: QueryMode): 'm1' | 'm2' | 'm3' {
+  if (mode === 'm2' || mode === '02493') return 'm2';
+  if (mode === 'm3' || mode === '394052') return 'm3';
   return 'm1';
 }
 

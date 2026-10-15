@@ -14,6 +14,7 @@ import {
   buildRequiredCodes,
   denseCodeFromRequired,
   matchesCodePositions,
+  normalizeMode,
   requiredCodesFromDigitString,
 } from './filters/f1-slot-code.ts';
 import {
@@ -28,10 +29,6 @@ import { getWordCode, getWordParts, getWordText, type WordRow } from './word-row
 
 function denseCodeFromSpec(spec: CanonicalMatchSpec): string {
   return denseCodeFromRequired(buildRequiredCodes(spec)) || '';
-}
-
-function normalizeMode(mode: string): 'm1' | 'm2' {
-  return mode === 'm2' || mode === '02493' ? 'm2' : 'm1';
 }
 
 function getRhymeFinals(row: WordRow): string[] {
@@ -67,7 +64,7 @@ async function equalsAuthoritativeRowForCode(
   db: Database,
   literal: string,
   codePrefix: string,
-  mode: 'm1' | 'm2',
+  mode: 'm1' | 'm2' | 'm3',
 ): Promise<WordRow | null> {
   const required = requiredCodesFromDigitString(codePrefix);
   const rows = await queryRows(
@@ -311,7 +308,7 @@ function phonemeStorageKey(row: WordRow, field: 'finals' | 'initials'): string {
 async function equalsWholeWordMatches(
   spec: CanonicalMatchSpec,
   db: Database,
-  mode: 'm1' | 'm2',
+  mode: 'm1' | 'm2' | 'm3',
   target: WordRow | null,
   targetParts: string[],
   isFinal: boolean,
@@ -511,7 +508,7 @@ async function prefixWildcardCandidatesByFinals(
   width: number,
   targetParts: string[],
   code: string | null,
-  mode: 'm1' | 'm2',
+  mode: 'm1' | 'm2' | 'm3',
 ): Promise<WordRow[]> {
   let sql = `
     SELECT char, jyutping, code, initials, finals, length
