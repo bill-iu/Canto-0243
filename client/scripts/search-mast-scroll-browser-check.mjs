@@ -38,7 +38,10 @@ try {
             <button class="brand"><svg class="brand-logo" width="200" height="72" viewBox="0 0 200 72"></svg></button>
             <div class="header-hero"><p class="header-hero__title">ONE·搵·韻</p><p class="header-hero__tagline">格律／協音／押韻／近反義，一步搵到。</p></div>
           </div></div>
-          <div class="header-chrome__actions"><button class="menu-trigger">0243模式</button></div>
+          <div class="header-chrome__actions"><div class="app-actions mode-menu-root">
+            <div class="mode-menu-stack"><div class="mode-menu-anchor"><button class="menu-trigger">0243模式</button></div></div>
+            <p class="mode-menu-meta">詞庫版本：v1.1.1 · OPFS</p>
+          </div></div>
           <div class="header-search"><div class="header-search__row"><input value="43有"></div><div class="header-search__meta">正韻</div></div>
         </div>
       </header><main class="main-wrap"><section class="search-view"><div class="search-view__main"><div class="search-results"><div class="search-results-scroll"><div id="content"></div></div></div></div></section></main></div>
@@ -49,6 +52,7 @@ try {
   }));
   const url = `http://127.0.0.1:${server.httpServer.address().port}/mast-scroll-check`;
   for (const { width, overflow, reducedMotion, scroller = 'results' } of [
+    { width: 1920, overflow: 20 },
     { width: 1920, overflow: 60 },
     { width: 1024, overflow: 60 },
     { width: 761, overflow: 60 },
@@ -76,6 +80,8 @@ try {
       const frame = () => new Promise(requestAnimationFrame);
       await frame();
       const expanded = header.getBoundingClientRect().height;
+      const meta = shell.querySelector('.mode-menu-meta');
+      const metaTop = meta.getBoundingClientRect().top;
       shell.querySelector('#content').style.height = `${root.clientHeight + overflow - parseFloat(getComputedStyle(root).paddingBottom)}px`;
       const target = Math.min(overflow, overflow > 100 ? 160 : 40);
       root.scrollTop = target;
@@ -86,12 +92,19 @@ try {
       }
       const y = parseFloat(appBar.style.getPropertyValue('--mast-y'));
       const collapsed = appBar.classList.contains('is-mast-collapsed');
+      const metaShift = metaTop - meta.getBoundingClientRect().top;
+      const metaHidden = getComputedStyle(meta).display === 'none';
+      const metaClip = parseFloat(getComputedStyle(meta).clipPath.slice('inset('.length)) || 0;
+      const metaBox = meta.getBoundingClientRect();
+      const metaOverlapsMenu = metaClip < metaBox.height
+        && metaBox.top + metaClip < shell.querySelector('.menu-trigger').getBoundingClientRect().bottom - 0.5;
       root.scrollTop = 0;
       await frame();
       await frame();
       const restored = header.getBoundingClientRect().height;
+      const restoredMetaTop = meta.getBoundingClientRect().top;
       window.unbind();
-      return { samples, target, y, collapsed, expanded, restored, cleanup: shell.style.getPropertyValue('--mast-scroll-space') };
+      return { samples, target, y, collapsed, expanded, restored, metaTop, metaShift, metaHidden, metaOverlapsMenu, restoredMetaTop, cleanup: shell.style.getPropertyValue('--mast-scroll-space') };
     }, { overflow, scroller });
     const label = `${width}px ${scroller} overflow=${overflow} ${reducedMotion ?? ''}`;
     for (const sample of result.samples.slice(-10)) {
@@ -100,6 +113,12 @@ try {
     }
     assert.ok(Math.abs(result.restored - result.expanded) < 1, `${label}: header must expand at top`);
     assert.equal(result.cleanup, '', `${label}: cleanup`);
+    if (width >= 761) {
+      assert.ok(Math.abs(result.metaTop - result.restoredMetaTop) < 1, `${label}: lexicon meta returns at top`);
+      assert.ok(!result.metaOverlapsMenu, `${label}: lexicon meta cannot overlap menu`);
+      if (result.collapsed) assert.ok(result.metaHidden, `${label}: lexicon meta hides with mast`);
+      else assert.ok(Math.abs(result.metaShift - result.y) < 1, `${label}: lexicon meta must track mast 1:1 (moved ${result.metaShift}px for ${result.y}px)`);
+    }
     if (overflow === 60 && !reducedMotion) assert.equal(result.y, 40, `${label}: partial collapse`);
     if (overflow > 100 || reducedMotion) assert.ok(result.collapsed, `${label}: full collapse`);
     if (!overflow) assert.equal(result.y, 0, `${label}: fitting content stays expanded`);
