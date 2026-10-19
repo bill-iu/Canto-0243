@@ -6,10 +6,11 @@
 
 填粵語歌詞，通常一係就「唔知有咩字」，一係就要喺**同音、押韻、近義**之間快速換字，又要對準 0243 與粵拼讀音。傳統做法係喺詞典、韻書、近義表之間搵嚟搵去，手動試「呢個位可唔可以換另一個字」——慢，而且容易漏咗好多可以用嘅字。[0243.hk](https://0243.hk) 已經算係近年最好用嘅粵語填詞查找網站，但係偶爾都會 502 Bad Gateway 上唔到；或者喺搵字嘅時候無限輪迴 load 唔到；又或者你想搵某個字但係佢冇嗰個功能——呢啲時候就會拖慢你嘅進度。
 
-**Canto-0243**（**ONE·搵·韻**）係我用幾個唔同AI AGENT(Cursor, Codex, Grok Build, Github Copilot）開發嘅一個離線粵語填詞查找工作台：用 **394052／02493 數字碼**、**粵拼**、**韻母／聲母規則**與 **近義／反義關係**，喺幾秒內列出符合條件嘅**詞條**。頂欄 **0243搜尋模式** 有三檔：**0243模式**（鬆）、**02493模式**（緊）、**394052模式**（六聲，三聲 `4`／五聲 `5` 分明）。例如打 `23就` 搵同調又同「就」同韻嘅尾字；打 `香港=` 搵同「香港」同韻嘅候選詞；打 `ZP` 會自動切換 394052模式做平仄串列；打 `~開心` 或切換**近反義模式**搵近義/反義詞；打 `~~`／`!!` 搵填詞常用嘅二字近義／反義複合詞。套件解壓即用，所有詞庫與近反義資料都儲存喺本地環境，唔使連上網。
+**Canto-0243**（**ONE·搵·韻**）係我用幾個唔同AI AGENT(Cursor, Codex, Grok Build, Github Copilot）開發嘅一個離線粵語填詞查找工作台：用 **394052／02493 數字碼**、**粵拼**、**韻母／聲母規則**與 **近義／反義關係**，喺幾秒內列出符合條件嘅**詞條**。頂欄 **0243搜尋模式** 有三檔：**0243模式**（鬆）、**02493模式**（緊）、**394052模式**（六聲，三聲 `4`／五聲 `5` 分明）。例如打 `23就` 搵同調又同「就」同韻嘅尾字；打 `香港=` 搵同「香港」同韻嘅候選詞；打 `ZP` 會自動切換 394052模式做平仄串列；打 `~開心` 或切換**近反義模式**搵近義/反義詞；打 `~~`／`!!` 搵填詞常用嘅二字近義／反義複合詞。完成首次下載及啟動設定後，詞庫與近反義資料都儲存喺本地，可以離線使用。
 
 **授權**：整包（程式、`lyrics.db`、`words-lexicon.json`）依 [Canto-0243 License](LICENSE)（CC BY-NC-SA 4.0 + 附加條款；**開源**）。第三方上游資料見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。  
-**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· PWA 前端（Service Worker / Web App Manifest；Vite + 純 HTML/JS，離線資料庫以 OPFS / wa-sqlite 提供）  
+**技術棧**：FastAPI · SQLAlchemy · SQLite（離線單機）· React + Vite（PWA 與 Desktop 共用介面；Service Worker / Web App Manifest；PWA 離線資料庫以 OPFS / wa-sqlite 提供）
+
 **領域詞彙**：見 [`CONTEXT.md`](CONTEXT.md) · 貢獻指南 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
 
 ---
@@ -24,13 +25,23 @@
 目前總詞條列數：**181,546**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hant -->
 
+**v1.1.2 詞庫更新**
+
+* 兩批合共新增 **337 個表達**（76 + 261），涵蓋通用中文、填詞短語及粵語口語，例如「迎風起」「我冇事」「手牽手」。
+* 移除 **16 筆已確認的錯誤讀音**，補回 6 筆既有字詞的正確讀音或編碼，並修正 9 筆原有補充詞條的編碼；保留有依據的變讀。
+* 「善良」讀 `sin6 loeng4`（`20`），不再出現在 `40`；「圖書館」讀 `tou4 syu1 gun2`（`039`），不再出現在 `439`。「迎風起」編碼為 `039`，在 **0243 鬆模式**可用 `033起` 找到。
+
+PWA、Windows 及 macOS Desktop 共用本版詞庫。詳見 [完整更新說明](docs/release-notes/v1.1.2.md) 及 [補充詞庫與讀音審核](docs/lexicon-supplement.md)。
+
 **立即開始使用（兩種方式，同等重要）**
 
-**Canto-0243 手機版**（瀏覽器直接開啟，無需安裝，支援「加到主畫面」，完全離線）  
+**Canto-0243 手機版**（瀏覽器直接開啟，無需安裝，支援「加到主畫面」；完成首次下載後可離線使用）
+
 👉 https://bill-iu.github.io/Canto-0243/
 
 **Desktop 離線版**（Windows / macOS 免安裝；首次啟動需網路下載 CPython 3.11，其後離線）  
-下載最新版：[canto-0243-desktop.zip](https://github.com/bill-iu/Canto-0243/releases) / macOS `canto-0243-desktop-macos-*.tar.gz`  
+下載最新版：[Windows Desktop zip](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop.zip) / [macOS Intel tar](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop-macos-x86_64.tar.gz)（本版未提供 arm64 套件）
+
 完整 Releases 與詞庫檔請到 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases)
 
 問題與建議歡迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -52,6 +63,8 @@
 - **Canto-0243 手機版**：直接開啟 https://bill-iu.github.io/Canto-0243/ ，加到主畫面後完全離線可用。頂欄有「搜尋教學」。
 
 - **Desktop 離線版**：從 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下載解壓。Windows 雙擊 `Canto-0243.exe`；macOS 雙擊 **`Canto-0243.app`**（Gatekeeper 只對 `.app` 右鍵打開／仍要開啟一次）。首次需網路。
+
+**更新至本版**：PWA 重新開啟並完成詞庫更新；桌面版下載最新完整套件，再開啟新版程式。
 
 開發者 clone 需準備 `lyrics.db`（詳見 [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)）。
 
@@ -141,6 +154,7 @@ Desktop 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &&
 * [開放詞典 · 粵語詞典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：採用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
 * [詞林同義詞（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：採用 [MIT](https://opensource.org/licenses/MIT) 授權。
 * [國語辭典近義／反義（guotong）](https://github.com/guotong1988/chinese_dictionary)：採用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
+* [專案補充詞庫](docs/lexicon-supplement.md)：維護者審核通用中文、填詞短語、粵語口語及讀音修正，採用 [Canto-0243 License](LICENSE)。
 * [專案自建近反義](LICENSE)：維護者審定近義／反義對（大模型輔助起草），採用 [Canto-0243 License](LICENSE)。
 
 完整第三方授權清單見 [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。
@@ -162,4 +176,4 @@ Desktop 產品 UI 為本機 **`/app/`**（`client/dist-portable`；`cd client &&
 
 ---
 
-**最後更新**：2026-07-23（新增 Cantonese.md 歇後語與 Unicode Unihan 資料致謝）
+**最後更新**：2026-10-19（v1.1.2 補充詞庫、讀音修正及 PWA／Desktop 更新說明）

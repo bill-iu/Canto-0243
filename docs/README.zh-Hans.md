@@ -6,10 +6,11 @@
 
 填写粤语歌词时，常见困难一是不知道有哪些字可用，二是需要在**同音、押韵、近义**之间快速换字，同时又要符合 0243 与粤拼读音。传统做法是在词典、韵书、近义表之间反复查阅，手动尝试「这一位置能否换成另一个字」——效率低，且容易遗漏许多可用字。[0243.hk](https://0243.hk) 已是近年来较好用的粤语填词检索网站，但偶尔会出现 502 Bad Gateway 无法访问；检索时也可能长时间加载；或缺少所需功能——这些情况都会拖慢创作进度。
 
-**Canto-0243**（**ONE·揾·韵**）是我在多种 AI Agent（Cursor、Codex、Grok Build、GitHub Copilot）协助下开发的离线粤语填词检索工作台：依据 **394052／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出符合条件的**词条**。顶栏 **0243搜索模式** 有三档：**0243模式**（松）、**02493模式**（紧）、**394052模式**（六声，三声 `4`／五声 `5` 分明）。例如输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。套件解压即可使用，词库与近反义资料均存于本地，无需联网。
+**Canto-0243**（**ONE·揾·韵**）是我在多种 AI Agent（Cursor、Codex、Grok Build、GitHub Copilot）协助下开发的离线粤语填词检索工作台：依据 **394052／02493 数字码**、**粤拼**、**韵母／声母规则**与 **近义／反义关系**，在数秒内列出符合条件的**词条**。顶栏 **0243搜索模式** 有三档：**0243模式**（松）、**02493模式**（紧）、**394052模式**（六声，三声 `4`／五声 `5` 分明）。例如输入 `23就` 可查找同调且与「就」押韵的尾字；输入 `香港=` 可查找与「香港」押韵的候选词；输入 `ZP` 会自动切换至 394052模式进行平仄串列查询；输入 `~开心` 或切换**近反义模式**可查找近义／反义词；输入 `~~`／`!!` 可查找填词常用的二字近义／反义复合词。完成首次下载及启动设置后，词库与近反义资料均存于本地，可离线使用。
 
 **授权**：整包（程序、`lyrics.db`、`words-lexicon.json`）依 [Canto-0243 License](../LICENSE)（CC BY-NC-SA 4.0 + 附加条款；**开源**）。第三方上游资料见 [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md)。  
-**技术栈**：FastAPI · SQLAlchemy · SQLite（离线单机）· PWA 前端（Service Worker / Web App Manifest；Vite + 纯 HTML/JS，离线数据库以 OPFS / wa-sqlite 提供）  
+**技术栈**：FastAPI · SQLAlchemy · SQLite（离线单机）· React + Vite（PWA 与 Desktop 共用界面；Service Worker / Web App Manifest；PWA 离线数据库以 OPFS / wa-sqlite 提供）
+
 **领域词汇**：见 [`CONTEXT.md`](../CONTEXT.md) · 贡献指南 [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)
 
 ---
@@ -24,13 +25,24 @@
 目前总词条列数：**181,546**（`lyrics.db` · `words` 表）
 <!-- /words-count:zh-Hans -->
 
+**v1.1.2 词库更新**
+
+* 两批合共新增 **337 个表达**（76 + 261），涵盖通用中文、填词短语及粤语口语，例如「迎风起」「我冇事」「手牵手」。
+* 移除 **16 笔已确认的错误读音**，补回 6 笔既有字词的正确读音或编码，并修正 9 笔原有补充词条的编码；保留有依据的变读。
+* 「善良」读 `sin6 loeng4`（`20`），不再出现在 `40`；「图书馆」读 `tou4 syu1 gun2`（`039`），不再出现在 `439`。「迎风起」编码为 `039`，在 **0243 宽松模式**可用 `033起` 找到。
+
+PWA、Windows 及 macOS Desktop 共用本版词库。详见 [完整更新说明](release-notes/v1.1.2.md) 及 [补充词库与读音审核](lexicon-supplement.md)（繁体中文）。
+
 **立即开始使用（两种方式，同等重要）**
 
-**Canto-0243 手机版**（浏览器直接开启，无需安装，支持「添加到主屏幕」，完全离线）  
+**Canto-0243 手机版**（浏览器直接开启，无需安装，支持「添加到主屏幕」；完成首次下载后可离线使用）
+
 👉 https://bill-iu.github.io/Canto-0243/
 
-**离线 portable 版本**（Windows / macOS 免安装，解压即用）  
-下载最新版：[canto-0243-portable.zip](https://github.com/bill-iu/Canto-0243/releases) / macOS tar  
+**Desktop 离线版**（Windows / macOS 免安装；首次启动需联网下载 CPython 3.11，其后可离线使用）
+
+下载最新版：[Windows Desktop zip](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop.zip) / [macOS Intel tar](https://github.com/bill-iu/Canto-0243/releases/latest/download/canto-0243-desktop-macos-x86_64.tar.gz)（本版未提供 arm64 套件）
+
 完整 Releases 与词库文件请到 [GitHub Releases](https://github.com/bill-iu/Canto-0243/releases)
 
 问题与建议欢迎 [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues)。
@@ -40,8 +52,8 @@
 ## 功能
 
 * **0243搜索三档**：**0243模式** `mode=m1`（松档等价）· **02493模式** `mode=m2`（仅 `4↔5` 松档）· **394052模式** `mode=m3`（六声码逐位精确；词库存储用 394052，三声 `4`、五声 `5` 分明）。
-* **多种查询语法**：纯汉字 · 纯数字 · **粤拼查询** · **加号锚**（`23+好=`）· **韵／声锚**（`就=`）· **串列韵／声锚** · **四字部分韵／声锚**（`穷?潦倒=`）· **前缀通配等号** · 整词等号／码夹。
-* **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索模式下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`。
+* **多种查询语法**：纯汉字 · 纯数字 · **粤拼查询** · **平仄串列**（`PZ`／`ZP`，自动切换至 m3）· **加号锚**（`23+好=`）· **韵／声锚**（`就=`）· **串列韵／声锚** · **四字部分韵／声锚**（`穷?潦倒=`）· **前缀通配等号** · 整词等号／码夹。
+* **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索三档下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`（会记住离开近反义前的搜索档位）。
 
 ---
 
@@ -51,7 +63,9 @@
 
 - **Canto-0243 手机版**：直接开启 https://bill-iu.github.io/Canto-0243/ ，添加到主屏幕后完全离线可用。顶栏有「搜索教学」。
 
-- **Desktop 离线版**：从 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下载解压。Windows 仅双击 `Canto-0243.exe`（不附 `.bat`）；macOS 双击 `Canto-0243.command`。
+- **Desktop 离线版**：从 [Releases](https://github.com/bill-iu/Canto-0243/releases) 下载解压。Windows 双击 `Canto-0243.exe`；macOS Intel 双击 **`Canto-0243.app`**（若被 Gatekeeper 拦截，请右键打开 `.app`，或到「隐私与安全性」选择「仍要打开」）。首次需联网。
+
+**更新至本版**：PWA 重新打开并完成词库更新；桌面版下载最新完整套件，再打开新版程序。
 
 开发者 clone 需准备 `lyrics.db`（详见 [`docs/CONTRIBUTING.md`](CONTRIBUTING.md)）。
 
@@ -64,6 +78,8 @@
 | `就` | 查这个字的所有读音 |
 | `你好` | 查这个词语 |
 | `23` | 找同音字 |
+| `45` | 区分三声与五声（394052模式） |
+| `ZP` | 平仄串列（自动切换至 394052模式） |
 | `就=` | 同「就」韵 |
 | `23就` | 码 + 尾字同韵 |
 | `香??` | 缺字查询 |
@@ -79,6 +95,8 @@
 ## 维护者提示
 
 词库重建、发布等详见 [`docs/CONTRIBUTING.md`](CONTRIBUTING.md) 及 [`docs/release.md`](release.md)。
+
+Desktop 产品界面为本机 **`/app/`**（`client/dist-portable`；`cd client && npm run build:portable`）。共享界面源码位于 **`shared/`**。Windows 套件构建使用 `scripts/build-desktop.ps1`（需 Rust/cargo）。
 
 ---
 
@@ -123,7 +141,8 @@
 * [开放词典 · 粤语词典（Kaifangcidian）](https://kaifangcidian.com/xiazai/)：采用 [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。
 * [词林同义词（Cilin）](https://github.com/yaleimeng/Final_word_Similarity)：采用 [MIT](https://opensource.org/licenses/MIT) 授权。
 * [国语辞典近义／反义（guotong）](https://github.com/guotong1988/chinese_dictionary)：采用 [Anti-996 License](https://github.com/996icu/996.ICU/blob/master/LICENSE)。
-* [自建反义词库](../LICENSE)：大模型辅助生成，采用 [Canto-0243 License](../LICENSE)。
+* [项目补充词库](lexicon-supplement.md)：维护者审核通用中文、填词短语、粤语口语及读音修正，采用 [Canto-0243 License](../LICENSE)。
+* [项目自建近反义](../LICENSE)：维护者审定近义／反义对（大模型辅助起草），采用 [Canto-0243 License](../LICENSE)。
 
 完整第三方授权清单见 [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)。
 
@@ -144,4 +163,4 @@
 
 ---
 
-**最后更新**：2026-07-23（新增 Cantonese.md 歇后语与 Unicode Unihan 资料致谢）
+**最后更新**：2026-10-19（v1.1.2 补充词库、读音修正及 PWA／Desktop 更新说明）
