@@ -34,6 +34,11 @@ char	old_jyutping	old_code	action	value	note
 
 刪錯列：`action=delete`，`value` 留空。
 
+批量找可疑讀音可先跑 `python scripts/audit_lexicon_readings.py --output-dir .tmp/reading-audit`；
+報表只係待審線索。詞級變調未必列喺單字表，唔可以全量按「未列」刪除。
+已確認錯讀用精確字面及舊粵拼加 `delete` 列，保留正確異讀；缺少正確讀音時先補入 curated，
+令來源合併後嘅 overlay 可以刪錯讀而唔令整個詞消失。見 [自建補充詞條](lexicon-supplement.md)。
+
 只改碼（粵拼已啱）：
 
 ```tsv

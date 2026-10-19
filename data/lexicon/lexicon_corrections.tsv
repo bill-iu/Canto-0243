@@ -8,3 +8,19 @@ char	old_jyutping	old_code	action	value	note
 半年	bun4 nin4	00	set_jyutping	bun3 nin4	
 冇牙婆穿針	mou5 ngaa4 po4 cyun1 zam1	50033	set_jyutping	mou5 ngaa4 po2 cyun1 zam1	口語：冇牙婆 po2（唔用書面 po4）
 任務	jam4 mou6	02	delete		任務只讀 jam6 mou6（22）
+善良	sin5 loeng4		delete		2026-10-19 全庫讀音審核：日常讀 sin6 loeng4；移除錯誤 sin5。參考 CantoDict words/4464。
+圖書館	tou5 syu1 gun2		delete		2026-10-19 全庫讀音審核：日常讀 tou4 syu1 gun2；移除錯誤 tou5。參考 cantowords.com/dictionary/圖書館。
+企圖	kei5 tou5		delete		2026-10-19 全庫讀音審核：圖讀 tou4；cantowords.com/dictionary/企圖。
+擅長	sin5 coeng4		delete		2026-10-19 全庫讀音審核：擅讀 sin6；rime 單字及既有 sin6 coeng4 整詞讀音。
+同時	tung4 si6		delete		2026-10-19 全庫讀音審核：時讀 si4；移除錯誤 si6，保留 tung4 si4。
+意思	ji3 sei3		delete		2026-10-19 全庫讀音審核：思唔讀 sei3；保留已收錄 ji3 si1／ji3 si3，唔一併刪正常變體。
+意見	ji5 gin3		delete		2026-10-19 全庫讀音審核：意讀 ji3；移除錯誤 ji5，保留 ji3 gin3。
+更衣室	gang1 ji1 sat6		delete		2026-10-19 全庫讀音審核：室讀 sat1；保留 gang1 ji1 sat1。
+降價	gong2 gaa3		delete		2026-10-19 全庫讀音審核：降價讀 gong3 gaa3；移除錯誤 gong2。
+變更	bin6 gang1		delete		2026-10-19 全庫讀音審核：變讀 bin3；保留 bin3 gang1。
+高中	zung1 hok6		delete		2026-10-19 全庫讀音審核：zung1 hok6 係中學，唔係高中；保留 gou1 zung1。參考 cantowords.com/dictionary/高中。
+救人	gai3 jan4		delete		2026-10-19 全庫讀音審核：救讀 gau3，唔讀 gai3；正確 gau3 jan4 已補入 curated。
+稍等	saau1 dang1		delete		2026-10-19 全庫讀音審核：稍等讀 saau2 dang2；正確讀音已補入 curated。參考 CantoDict 等字頁。
+講乜	gong3 mat1		delete		2026-10-19 全庫讀音審核：講讀 gong2；正確 gong2 mat1 已補入 curated。
+兩粒	loeng4 nap1		delete		2026-10-19 全庫讀音審核：兩粒嘅兩讀 loeng5；正確 loeng5 nap1 已補入 curated。
+翻嚟	faai1 lei4		delete		2026-10-19 全庫讀音審核：翻 faai1 係拼音錯字；保留 faan1 lai4／faan1 lei4。

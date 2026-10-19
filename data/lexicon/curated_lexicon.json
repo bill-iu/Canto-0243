@@ -37,7 +37,7 @@
   {
     "char": "最差",
     "jyutping": "zeoi3 caa1",
-    "code": "40"
+    "code": "43"
   },
   {
     "char": "脫下",
@@ -52,42 +52,42 @@
   {
     "char": "消極性",
     "jyutping": "siu1 gik6 sing3",
-    "code": "322"
+    "code": "324"
   },
   {
     "char": "暖意",
     "jyutping": "nyun5 ji3",
-    "code": "53"
+    "code": "54"
   },
   {
     "char": "洩氣",
     "jyutping": "sit3 hei3",
-    "code": "33"
+    "code": "44"
   },
   {
     "char": "延後",
     "jyutping": "jin4 hau6",
-    "code": "42"
+    "code": "02"
   },
   {
     "char": "二流",
     "jyutping": "ji6 lau4",
-    "code": "24"
+    "code": "20"
   },
   {
     "char": "有愧",
     "jyutping": "jau5 kwai5",
-    "code": "25"
+    "code": "55"
   },
   {
     "char": "小幅度",
     "jyutping": "siu2 fuk1 dou6",
-    "code": "312"
+    "code": "932"
   },
   {
     "char": "霉運",
     "jyutping": "mui4 wan6",
-    "code": "22"
+    "code": "02"
   },
   {
     "char": "少小",
@@ -655,5 +655,2143 @@
     "code": "244",
     "category": "spoken",
     "evidence": "essay:未見過"
+  },
+  {
+    "char": "黑衣人",
+    "jyutping": "hak1 ji1 jan4",
+    "category": "general",
+    "evidence": "essay:黑衣人",
+    "code": "330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "兩個人",
+    "jyutping": "loeng5 go3 jan4",
+    "category": "general",
+    "evidence": "essay:兩個人",
+    "code": "540",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "這麼多",
+    "jyutping": "ze5 mo1 do1",
+    "category": "general",
+    "evidence": "essay:這麼多",
+    "code": "533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "要不要",
+    "jyutping": "jiu3 bat1 jiu3",
+    "category": "general",
+    "evidence": "essay:要不要",
+    "code": "434",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "搖搖頭",
+    "jyutping": "jiu4 jiu4 tau4",
+    "category": "general",
+    "evidence": "essay:搖搖頭",
+    "code": "000",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "做什麼",
+    "jyutping": "zou6 sam6 mo1",
+    "category": "general",
+    "evidence": "essay:做什麼",
+    "code": "223",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "好不好",
+    "jyutping": "hou2 bat1 hou2",
+    "category": "general",
+    "evidence": "essay:好不好",
+    "code": "939",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "攝像頭",
+    "jyutping": "sip3 zoeng6 tau4",
+    "category": "general",
+    "evidence": "essay:攝像頭",
+    "code": "420",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "經銷商",
+    "jyutping": "ging1 siu1 soeng1",
+    "category": "general",
+    "evidence": "essay:經銷商",
+    "code": "333",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "聯繫人",
+    "jyutping": "lyun4 hai6 jan4",
+    "category": "general",
+    "evidence": "essay:聯繫人",
+    "code": "020",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "小姑娘",
+    "jyutping": "siu2 gu1 noeng4",
+    "category": "general",
+    "evidence": "essay:小姑娘",
+    "code": "930",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "代理商",
+    "jyutping": "doi6 lei5 soeng1",
+    "category": "general",
+    "evidence": "essay:代理商",
+    "code": "253",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "小女孩",
+    "jyutping": "siu2 neoi5 haai4",
+    "category": "general",
+    "evidence": "essay:小女孩",
+    "code": "950",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "競爭對手",
+    "jyutping": "ging6 zang1 deoi3 sau2",
+    "category": "general",
+    "evidence": "essay:競爭對手",
+    "code": "2349",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "大股東",
+    "jyutping": "daai6 gu2 dung1",
+    "category": "general",
+    "evidence": "essay:大股東",
+    "code": "293",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "主要原因",
+    "jyutping": "zyu2 jiu3 jyun4 jan1",
+    "category": "general",
+    "evidence": "essay:主要原因",
+    "code": "9403",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "想辦法",
+    "jyutping": "soeng2 baan6 faat3",
+    "category": "general",
+    "evidence": "essay:想辦法",
+    "code": "924",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "站起來",
+    "jyutping": "zaam6 hei2 loi4",
+    "category": "general",
+    "evidence": "essay:站起來",
+    "code": "290",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "試試看",
+    "jyutping": "si3 si3 hon3",
+    "category": "general",
+    "evidence": "essay:試試看",
+    "code": "444",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "準備好",
+    "jyutping": "zeon2 bei6 hou2",
+    "category": "general",
+    "evidence": "essay:準備好",
+    "code": "929",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "基礎設施",
+    "jyutping": "gei1 co2 cit3 si1",
+    "category": "general",
+    "evidence": "essay:基礎設施",
+    "code": "3943",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "局域網",
+    "jyutping": "guk6 wik6 mong5",
+    "category": "general",
+    "evidence": "essay:局域網",
+    "code": "225",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "管理者",
+    "jyutping": "gun2 lei5 ze2",
+    "category": "general",
+    "evidence": "essay:管理者",
+    "code": "959",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "可不可以",
+    "jyutping": "ho2 bat1 ho2 ji5",
+    "category": "general",
+    "evidence": "essay:可不可以",
+    "code": "9395",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "請不要",
+    "jyutping": "cing2 bat1 jiu3",
+    "category": "general",
+    "evidence": "essay:請不要",
+    "code": "934",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "有錢人",
+    "jyutping": "jau5 cin2 jan4",
+    "category": "general",
+    "evidence": "essay:有錢人",
+    "code": "590",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "中文版",
+    "jyutping": "zung1 man4 baan2",
+    "category": "general",
+    "evidence": "essay:中文版",
+    "code": "309",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "產業鏈",
+    "jyutping": "caan2 jip6 lin2",
+    "category": "general",
+    "evidence": "essay:產業鏈",
+    "code": "929",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "淨利潤",
+    "jyutping": "zing6 lei6 jeon6",
+    "category": "general",
+    "evidence": "essay:淨利潤",
+    "code": "222",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "子公司",
+    "jyutping": "zi2 gung1 si1",
+    "category": "general",
+    "evidence": "essay:子公司",
+    "code": "933",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "控制器",
+    "jyutping": "hung3 zai3 hei3",
+    "category": "general",
+    "evidence": "essay:控制器",
+    "code": "444",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "二手房",
+    "jyutping": "ji6 sau2 fong4",
+    "category": "general",
+    "evidence": "essay:二手房",
+    "code": "290",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "做不到",
+    "jyutping": "zou6 bat1 dou3",
+    "category": "general",
+    "evidence": "essay:做不到",
+    "code": "234",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "可靠性",
+    "jyutping": "ho2 kaau3 sing3",
+    "category": "general",
+    "evidence": "essay:可靠性",
+    "code": "944",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "大家好",
+    "jyutping": "daai6 gaa1 hou2",
+    "category": "general",
+    "evidence": "essay:大家好",
+    "code": "239",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "聯繫電話",
+    "jyutping": "lyun4 hai6 din6 waa6",
+    "category": "general",
+    "evidence": "essay:聯繫電話",
+    "code": "0222",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "技術人員",
+    "jyutping": "gei6 seot6 jan4 jyun4",
+    "category": "general",
+    "evidence": "essay:技術人員",
+    "code": "2200",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一直以來",
+    "jyutping": "jat1 zik6 ji5 loi4",
+    "category": "general",
+    "evidence": "essay:一直以來",
+    "code": "3250",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "文件名",
+    "jyutping": "man4 gin6 ming4",
+    "category": "general",
+    "evidence": "essay:文件名",
+    "code": "020",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "更何況",
+    "jyutping": "gang3 ho4 fong3",
+    "category": "general",
+    "evidence": "essay:更何況",
+    "code": "404",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "買東西",
+    "jyutping": "maai5 dung1 sai1",
+    "category": "general",
+    "evidence": "essay:買東西",
+    "code": "533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "工作經驗",
+    "jyutping": "gung1 zok3 ging1 jim6",
+    "category": "general",
+    "evidence": "essay:工作經驗",
+    "code": "3432",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "世界各地",
+    "jyutping": "sai3 gaai3 gok3 dei6",
+    "category": "general",
+    "evidence": "essay:世界各地",
+    "code": "4442",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "液晶電視",
+    "jyutping": "jik6 zing1 din6 si6",
+    "category": "general",
+    "evidence": "essay:液晶電視",
+    "code": "2322",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "股東大會",
+    "jyutping": "gu2 dung1 daai6 wui2",
+    "category": "general",
+    "evidence": "essay:股東大會",
+    "code": "9329",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "現實生活",
+    "jyutping": "jin6 sat6 sang1 wut6",
+    "category": "general",
+    "evidence": "essay:現實生活",
+    "code": "2232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "半個小時",
+    "jyutping": "bun3 go3 siu2 si4",
+    "category": "general",
+    "evidence": "essay:半個小時",
+    "code": "4490",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "企業文化",
+    "jyutping": "kei5 jip6 man4 faa3",
+    "category": "general",
+    "evidence": "essay:企業文化",
+    "code": "5204",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "權利人",
+    "jyutping": "kyun4 lei6 jan4",
+    "category": "general",
+    "evidence": "essay:權利人",
+    "code": "020",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "存儲空間",
+    "jyutping": "cyun4 cyu5 hung1 gaan1",
+    "category": "general",
+    "evidence": "essay:存儲空間",
+    "code": "0533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "三分之一",
+    "jyutping": "saam1 fan1 zi1 jat1",
+    "category": "general",
+    "evidence": "essay:三分之一",
+    "code": "3333",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "請注意",
+    "jyutping": "cing2 zyu3 ji3",
+    "category": "general",
+    "evidence": "essay:請注意",
+    "code": "944",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "水資源",
+    "jyutping": "seoi2 zi1 jyun4",
+    "category": "general",
+    "evidence": "essay:水資源",
+    "code": "930",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "創造性",
+    "jyutping": "cong3 zou6 sing3",
+    "category": "general",
+    "evidence": "essay:創造性",
+    "code": "424",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "營業部",
+    "jyutping": "jing4 jip6 bou6",
+    "category": "general",
+    "evidence": "essay:營業部",
+    "code": "022",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "注意事項",
+    "jyutping": "zyu3 ji3 si6 hong6",
+    "category": "general",
+    "evidence": "essay:注意事項",
+    "code": "4422",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "高品質",
+    "jyutping": "gou1 ban2 zat1",
+    "category": "general",
+    "evidence": "essay:高品質",
+    "code": "393",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "多一點",
+    "jyutping": "do1 jat1 dim2",
+    "category": "general",
+    "evidence": "essay:多一點",
+    "code": "339",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "大學畢業",
+    "jyutping": "daai6 hok6 bat1 jip6",
+    "category": "general",
+    "evidence": "essay:大學畢業",
+    "code": "2232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "註冊碼",
+    "jyutping": "zyu3 caak3 maa5",
+    "category": "general",
+    "evidence": "essay:註冊碼",
+    "code": "445",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "零部件",
+    "jyutping": "ling4 bou6 gin6",
+    "category": "general",
+    "evidence": "essay:零部件",
+    "code": "022",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "物業管理",
+    "jyutping": "mat6 jip6 gun2 lei5",
+    "category": "general",
+    "evidence": "essay:物業管理",
+    "code": "2295",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "高性能",
+    "jyutping": "gou1 sing3 nang4",
+    "category": "general",
+    "evidence": "essay:高性能",
+    "code": "340",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "停下來",
+    "jyutping": "ting4 haa6 loi4",
+    "category": "general",
+    "evidence": "essay:停下來",
+    "code": "020",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "加起來",
+    "jyutping": "gaa1 hei2 loi4",
+    "category": "general",
+    "evidence": "essay:加起來",
+    "code": "390",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一封信",
+    "jyutping": "jat1 fung1 seon3",
+    "category": "general",
+    "evidence": "essay:一封信",
+    "code": "334",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "第一步",
+    "jyutping": "dai6 jat1 bou6",
+    "category": "general",
+    "evidence": "essay:第一步",
+    "code": "232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "好幾次",
+    "jyutping": "hou2 gei2 ci3",
+    "category": "general",
+    "evidence": "essay:好幾次",
+    "code": "994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看不懂",
+    "jyutping": "hon3 bat1 dung2",
+    "category": "general",
+    "evidence": "essay:看不懂",
+    "code": "439",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "拿出來",
+    "jyutping": "naa4 ceot1 loi4",
+    "category": "general",
+    "evidence": "essay:拿出來",
+    "code": "030",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "解決問題",
+    "jyutping": "gaai2 kyut3 man6 tai4",
+    "category": "general",
+    "evidence": "essay:解決問題",
+    "code": "9420",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看電視",
+    "jyutping": "hon3 din6 si6",
+    "category": "general",
+    "evidence": "essay:看電視",
+    "code": "422",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看電影",
+    "jyutping": "hon3 din6 jing2",
+    "category": "general",
+    "evidence": "essay:看電影",
+    "code": "429",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "沒見過",
+    "jyutping": "mut6 gin3 gwo3",
+    "category": "general",
+    "evidence": "essay:沒見過",
+    "code": "244",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "沒有辦法",
+    "jyutping": "mut6 jau5 baan6 faat3",
+    "category": "general",
+    "evidence": "essay:沒有辦法",
+    "code": "2524",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不記得",
+    "jyutping": "bat1 gei3 dak1",
+    "category": "general",
+    "evidence": "essay:不記得",
+    "code": "343",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "睡不着",
+    "jyutping": "seoi6 bat1 zoek6",
+    "category": "general",
+    "evidence": "essay:睡不着",
+    "code": "232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看出來",
+    "jyutping": "hon3 ceot1 loi4",
+    "category": "general",
+    "evidence": "essay:看出來",
+    "code": "430",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "留下來",
+    "jyutping": "lau4 haa6 loi4",
+    "category": "general",
+    "evidence": "essay:留下來",
+    "code": "020",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "聽不懂",
+    "jyutping": "teng1 bat1 dung2",
+    "category": "general",
+    "evidence": "essay:聽不懂",
+    "code": "339",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看不出來",
+    "jyutping": "hon3 bat1 ceot1 loi4",
+    "category": "general",
+    "evidence": "essay:看不出來",
+    "code": "4330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "達不到",
+    "jyutping": "daat6 bat1 dou3",
+    "category": "general",
+    "evidence": "essay:達不到",
+    "code": "234",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "買不到",
+    "jyutping": "maai5 bat1 dou3",
+    "category": "general",
+    "evidence": "essay:買不到",
+    "code": "534",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "進不去",
+    "jyutping": "zeon3 bat1 heoi3",
+    "category": "general",
+    "evidence": "essay:進不去",
+    "code": "434",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "可以理解",
+    "jyutping": "ho2 ji5 lei5 gaai2",
+    "category": "general",
+    "evidence": "essay:可以理解",
+    "code": "9559",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "幾個月",
+    "jyutping": "gei2 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:幾個月",
+    "code": "942",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "兩個月",
+    "jyutping": "loeng5 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:兩個月",
+    "code": "542",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "三個月",
+    "jyutping": "saam1 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:三個月",
+    "code": "342",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "每個月",
+    "jyutping": "mui5 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:每個月",
+    "code": "542",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "第一天",
+    "jyutping": "dai6 jat1 tin1",
+    "category": "general",
+    "evidence": "essay:第一天",
+    "code": "233",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "半個月",
+    "jyutping": "bun3 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:半個月",
+    "code": "442",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一個月",
+    "jyutping": "jat1 go3 jyut6",
+    "category": "general",
+    "evidence": "essay:一個月",
+    "code": "342",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "下星期",
+    "jyutping": "haa6 sing1 kei4",
+    "category": "general",
+    "evidence": "essay:下星期",
+    "code": "230",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "上星期",
+    "jyutping": "soeng6 sing1 kei4",
+    "category": "general",
+    "evidence": "essay:上星期",
+    "code": "230",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "那個時候",
+    "jyutping": "naa5 go3 si4 hau6",
+    "category": "general",
+    "evidence": "essay:那個時候",
+    "code": "5402",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "前幾天",
+    "jyutping": "cin4 gei2 tin1",
+    "category": "general",
+    "evidence": "essay:前幾天",
+    "code": "093",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "有一次",
+    "jyutping": "jau5 jat1 ci3",
+    "category": "general",
+    "evidence": "essay:有一次",
+    "code": "534",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一年多",
+    "jyutping": "jat1 nin4 do1",
+    "category": "general",
+    "evidence": "essay:一年多",
+    "code": "303",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "十分鐘",
+    "jyutping": "sap6 fan1 zung1",
+    "category": "general",
+    "evidence": "essay:十分鐘",
+    "code": "233",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "最後一次",
+    "jyutping": "zeoi3 hau6 jat1 ci3",
+    "category": "general",
+    "evidence": "essay:最後一次",
+    "code": "4234",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "每一個人",
+    "jyutping": "mui5 jat1 go3 jan4",
+    "category": "general",
+    "evidence": "essay:每一個人",
+    "code": "5340",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一次次",
+    "jyutping": "jat1 ci3 ci3",
+    "category": "general",
+    "evidence": "essay:一次次",
+    "code": "344",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "多少人",
+    "jyutping": "do1 siu2 jan4",
+    "category": "general",
+    "evidence": "essay:多少人",
+    "code": "390",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "每一日",
+    "jyutping": "mui5 jat1 jat6",
+    "category": "general",
+    "evidence": "essay:每一日",
+    "code": "532",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一條線",
+    "jyutping": "jat1 tiu4 sin3",
+    "category": "general",
+    "evidence": "essay:一條線",
+    "code": "304",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一棵樹",
+    "jyutping": "jat1 po1 syu6",
+    "category": "general",
+    "evidence": "essay:一棵樹",
+    "code": "332",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "十二星座",
+    "jyutping": "sap6 ji6 sing1 zo6",
+    "category": "general",
+    "evidence": "essay:十二星座",
+    "code": "2232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "高質量",
+    "jyutping": "gou1 zat1 loeng6",
+    "category": "general",
+    "evidence": "essay:高質量",
+    "code": "332",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "好幾天",
+    "jyutping": "hou2 gei2 tin1",
+    "category": "general",
+    "evidence": "essay:好幾天",
+    "code": "993",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "前段時間",
+    "jyutping": "cin4 dyun6 si4 gaan1",
+    "category": "general",
+    "evidence": "essay:前段時間",
+    "code": "0203",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "遵紀守法",
+    "jyutping": "zeon1 gei2 sau2 faat3",
+    "category": "general",
+    "evidence": "essay:遵紀守法",
+    "code": "3994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "交流平台",
+    "jyutping": "gaau1 lau4 ping4 toi4",
+    "category": "general",
+    "evidence": "essay:交流平臺",
+    "code": "3000",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "就是這樣",
+    "jyutping": "zau6 si6 ze5 joeng6",
+    "category": "general",
+    "evidence": "essay:就是這樣",
+    "code": "2252",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很不錯",
+    "jyutping": "han2 bat1 co3",
+    "category": "general",
+    "evidence": "essay:很不錯",
+    "code": "934",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "運營商",
+    "jyutping": "wan6 jing4 soeng1",
+    "category": "general",
+    "evidence": "essay:運營商",
+    "code": "203",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "信息化",
+    "jyutping": "seon3 sik1 faa3",
+    "category": "general",
+    "evidence": "essay:信息化",
+    "code": "434",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "用户名",
+    "jyutping": "jung6 wu6 ming4",
+    "category": "general",
+    "evidence": "essay:用戶名",
+    "code": "220",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一體化",
+    "jyutping": "jat1 tai2 faa3",
+    "category": "general",
+    "evidence": "essay:一體化",
+    "code": "394",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "個性化",
+    "jyutping": "go3 sing3 faa3",
+    "category": "general",
+    "evidence": "essay:個性化",
+    "code": "444",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "流動性",
+    "jyutping": "lau4 dung6 sing3",
+    "category": "general",
+    "evidence": "essay:流動性",
+    "code": "024",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "國有企業",
+    "jyutping": "gwok3 jau5 kei5 jip6",
+    "category": "general",
+    "evidence": "essay:國有企業",
+    "code": "4552",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "管理人員",
+    "jyutping": "gun2 lei5 jan4 jyun4",
+    "category": "general",
+    "evidence": "essay:管理人員",
+    "code": "9500",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "安全生產",
+    "jyutping": "on1 cyun4 sang1 caan2",
+    "category": "general",
+    "evidence": "essay:安全生產",
+    "code": "3039",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "發表評論",
+    "jyutping": "faat3 biu2 ping4 leon6",
+    "category": "general",
+    "evidence": "essay:發表評論",
+    "code": "4902",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "食品安全",
+    "jyutping": "sik6 ban2 on1 cyun4",
+    "category": "general",
+    "evidence": "essay:食品安全",
+    "code": "2930",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不少人",
+    "jyutping": "bat1 siu2 jan4",
+    "category": "general",
+    "evidence": "essay:不少人",
+    "code": "390",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "經營者",
+    "jyutping": "ging1 jing4 ze2",
+    "category": "general",
+    "evidence": "essay:經營者",
+    "code": "309",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "事業單位",
+    "jyutping": "si6 jip6 daan1 wai6",
+    "category": "general",
+    "evidence": "essay:事業單位",
+    "code": "2232",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "管理部門",
+    "jyutping": "gun2 lei5 bou6 mun4",
+    "category": "general",
+    "evidence": "essay:管理部門",
+    "code": "9520",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "大多數人",
+    "jyutping": "daai6 do1 sou3 jan4",
+    "category": "general",
+    "evidence": "essay:大多數人",
+    "code": "2340",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "沒有必要",
+    "jyutping": "mut6 jau5 bit1 jiu3",
+    "category": "general",
+    "evidence": "essay:沒有必要",
+    "code": "2534",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "產品質量",
+    "jyutping": "caan2 ban2 zat1 loeng6",
+    "category": "general",
+    "evidence": "essay:產品質量",
+    "code": "9932",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "合法權益",
+    "jyutping": "hap6 faat3 kyun4 jik1",
+    "category": "general",
+    "evidence": "essay:合法權益",
+    "code": "2403",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "市場份額",
+    "jyutping": "si5 coeng4 fan6 ngaak6",
+    "category": "general",
+    "evidence": "essay:市場份額",
+    "code": "5022",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "法律法規",
+    "jyutping": "faat3 leot6 faat3 kwai1",
+    "category": "general",
+    "evidence": "essay:法律法規",
+    "code": "4243",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "社會保障",
+    "jyutping": "se5 wui2 bou2 zoeng3",
+    "category": "general",
+    "evidence": "essay:社會保障",
+    "code": "5994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "新一輪",
+    "jyutping": "san1 jat1 leon4",
+    "category": "general",
+    "evidence": "essay:新一輪",
+    "code": "330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "管理系統",
+    "jyutping": "gun2 lei5 hai6 tung2",
+    "category": "general",
+    "evidence": "essay:管理系統",
+    "code": "9529",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "管理辦法",
+    "jyutping": "gun2 lei5 baan6 faat3",
+    "category": "general",
+    "evidence": "essay:管理辦法",
+    "code": "9524",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "科學技術",
+    "jyutping": "fo1 hok6 gei6 seot6",
+    "category": "general",
+    "evidence": "essay:科學技術",
+    "code": "3222",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "金融危機",
+    "jyutping": "gam1 jung4 ngai4 gei1",
+    "category": "general",
+    "evidence": "essay:金融危機",
+    "code": "3003",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "市場競爭",
+    "jyutping": "si5 coeng4 ging6 zang1",
+    "category": "general",
+    "evidence": "essay:市場競爭",
+    "code": "5023",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "嵌入式",
+    "jyutping": "ham3 jap6 sik1",
+    "category": "general",
+    "evidence": "essay:嵌入式",
+    "code": "423",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "技術支持",
+    "jyutping": "gei6 seot6 zi1 ci4",
+    "category": "general",
+    "evidence": "essay:技術支持",
+    "code": "2230",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "數字電視",
+    "jyutping": "sou3 zi6 din6 si6",
+    "category": "general",
+    "evidence": "essay:數字電視",
+    "code": "4222",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "市場需求",
+    "jyutping": "si5 coeng4 seoi1 kau4",
+    "category": "general",
+    "evidence": "essay:市場需求",
+    "code": "5030",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "代表性",
+    "jyutping": "doi6 biu2 sing3",
+    "category": "general",
+    "evidence": "essay:代表性",
+    "code": "294",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "數字化",
+    "jyutping": "sou3 zi6 faa3",
+    "category": "general",
+    "evidence": "essay:數字化",
+    "code": "424",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "服務對象",
+    "jyutping": "fuk6 mou6 deoi3 zoeng6",
+    "category": "general",
+    "evidence": "essay:服務對象",
+    "code": "2242",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "媒體報道",
+    "jyutping": "mui4 tai2 bou3 dou6",
+    "category": "general",
+    "evidence": "essay:媒體報道",
+    "code": "0942",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "非常感謝",
+    "jyutping": "fei1 soeng4 gam2 ze6",
+    "category": "general",
+    "evidence": "essay:非常感謝",
+    "code": "3092",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "違法行為",
+    "jyutping": "wai4 faat3 hang4 wai4",
+    "category": "general",
+    "evidence": "essay:違法行爲",
+    "code": "0400",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "市場價格",
+    "jyutping": "si5 coeng4 gaa3 gaak3",
+    "category": "general",
+    "evidence": "essay:市場價格",
+    "code": "5044",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "發展戰略",
+    "jyutping": "faat3 zin2 zin3 loek6",
+    "category": "general",
+    "evidence": "essay:發展戰略",
+    "code": "4942",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很好看",
+    "jyutping": "han2 hou2 hon3",
+    "category": "general",
+    "evidence": "essay:很好看",
+    "code": "994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "太多人",
+    "jyutping": "taai3 do1 jan4",
+    "category": "general",
+    "evidence": "essay:太多人",
+    "code": "430",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "心裡面",
+    "jyutping": "sam1 leoi5 min6",
+    "category": "lyric",
+    "evidence": "essay:心裡面",
+    "code": "352",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我的心",
+    "jyutping": "ngo5 dik1 sam1",
+    "category": "lyric",
+    "evidence": "essay:我的心",
+    "code": "533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我的愛",
+    "jyutping": "ngo5 dik1 oi3",
+    "category": "lyric",
+    "evidence": "essay:我的愛",
+    "code": "534",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "你的心",
+    "jyutping": "nei5 dik1 sam1",
+    "category": "lyric",
+    "evidence": "essay:你的心",
+    "code": "533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "你的愛",
+    "jyutping": "nei5 dik1 oi3",
+    "category": "lyric",
+    "evidence": "essay:你的愛",
+    "code": "534",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不愛你",
+    "jyutping": "bat1 oi3 nei5",
+    "category": "lyric",
+    "evidence": "essay:不愛你",
+    "code": "345",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛自己",
+    "jyutping": "oi3 zi6 gei2",
+    "category": "lyric",
+    "evidence": "essay:愛自己",
+    "code": "429",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛一個人",
+    "jyutping": "oi3 jat1 go3 jan4",
+    "category": "lyric",
+    "evidence": "essay:愛一個人",
+    "code": "4340",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛情故事",
+    "jyutping": "oi3 cing4 gu3 si6",
+    "category": "lyric",
+    "evidence": "essay:愛情故事",
+    "code": "4042",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不會忘記",
+    "jyutping": "bat1 wui5 mong4 gei3",
+    "category": "lyric",
+    "evidence": "essay:不會忘記",
+    "code": "3504",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "開開心心",
+    "jyutping": "hoi1 hoi1 sam1 sam1",
+    "category": "lyric",
+    "evidence": "essay:開開心心",
+    "code": "3333",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "發自內心",
+    "jyutping": "faat3 zi6 noi6 sam1",
+    "category": "lyric",
+    "evidence": "essay:發自內心",
+    "code": "4223",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "下雨了",
+    "jyutping": "haa6 jyu5 liu5",
+    "category": "lyric",
+    "evidence": "essay:下雨了",
+    "code": "255",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不要忘記",
+    "jyutping": "bat1 jiu3 mong4 gei3",
+    "category": "lyric",
+    "evidence": "essay:不要忘記",
+    "code": "3404",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "充滿信心",
+    "jyutping": "cung1 mun5 seon3 sam1",
+    "category": "lyric",
+    "evidence": "essay:充滿信心",
+    "code": "3543",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "在陽光下",
+    "jyutping": "zoi6 joeng4 gwong1 haa6",
+    "category": "lyric",
+    "evidence": "essay:在陽光下",
+    "code": "2032",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "在風中",
+    "jyutping": "zoi6 fung1 zung1",
+    "category": "lyric",
+    "evidence": "essay:在風中",
+    "code": "233",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "在夢中",
+    "jyutping": "zoi6 mung6 zung1",
+    "category": "lyric",
+    "evidence": "essay:在夢中",
+    "code": "223",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "內心世界",
+    "jyutping": "noi6 sam1 sai3 gaai3",
+    "category": "lyric",
+    "evidence": "essay:內心世界",
+    "code": "2344",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "在夢裏",
+    "jyutping": "zoi6 mung6 leoi5",
+    "category": "lyric",
+    "evidence": "essay:在夢裏",
+    "code": "225",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "微微一笑",
+    "jyutping": "mei4 mei4 jat1 siu3",
+    "category": "lyric",
+    "evidence": "essay:微微一笑",
+    "code": "0034",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "放在心上",
+    "jyutping": "fong3 zoi6 sam1 soeng5",
+    "category": "lyric",
+    "evidence": "essay:放在心上",
+    "code": "4235",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "因為愛",
+    "jyutping": "jan1 wai6 oi3",
+    "category": "lyric",
+    "evidence": "essay:因爲愛",
+    "code": "324",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一顆心",
+    "jyutping": "jat1 fo2 sam1",
+    "category": "lyric",
+    "evidence": "essay:一顆心",
+    "code": "393",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛着你",
+    "jyutping": "oi3 zoek6 nei5",
+    "category": "lyric",
+    "evidence": "essay:愛着你",
+    "code": "425",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "在雨中",
+    "jyutping": "zoi6 jyu5 zung1",
+    "category": "lyric",
+    "evidence": "essay:在雨中",
+    "code": "253",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我的夢",
+    "jyutping": "ngo5 dik1 mung6",
+    "category": "lyric",
+    "evidence": "essay:我的夢",
+    "code": "532",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "陽光明媚",
+    "jyutping": "joeng4 gwong1 ming4 mei6",
+    "category": "lyric",
+    "evidence": "essay:陽光明媚",
+    "code": "0302",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "掉眼淚",
+    "jyutping": "diu6 ngaan5 leoi6",
+    "category": "lyric",
+    "evidence": "essay:掉眼淚",
+    "code": "252",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "你愛我",
+    "jyutping": "nei5 oi3 ngo5",
+    "category": "lyric",
+    "evidence": "essay:你愛我",
+    "code": "545",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "手牽手",
+    "jyutping": "sau2 hin1 sau2",
+    "category": "lyric",
+    "evidence": "essay:手牽手",
+    "code": "939",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不能忘記",
+    "jyutping": "bat1 nang4 mong4 gei3",
+    "category": "lyric",
+    "evidence": "essay:不能忘記",
+    "code": "3004",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "充滿希望",
+    "jyutping": "cung1 mun5 hei1 mong6",
+    "category": "lyric",
+    "evidence": "essay:充滿希望",
+    "code": "3532",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "幸運星",
+    "jyutping": "hang6 wan6 sing1",
+    "category": "lyric",
+    "evidence": "essay:幸運星",
+    "code": "223",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "黑夜裏",
+    "jyutping": "hak1 je6 leoi5",
+    "category": "lyric",
+    "evidence": "essay:黑夜裏",
+    "code": "325",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛上我",
+    "jyutping": "oi3 soeng5 ngo5",
+    "category": "lyric",
+    "evidence": "essay:愛上我",
+    "code": "455",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛不愛",
+    "jyutping": "oi3 bat1 oi3",
+    "category": "lyric",
+    "evidence": "essay:愛不愛",
+    "code": "434",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "笑一笑",
+    "jyutping": "siu3 jat1 siu3",
+    "category": "lyric",
+    "evidence": "essay:笑一笑",
+    "code": "434",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很愛你",
+    "jyutping": "han2 oi3 nei5",
+    "category": "lyric",
+    "evidence": "essay:很愛你",
+    "code": "945",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一場夢",
+    "jyutping": "jat1 coeng4 mung6",
+    "category": "lyric",
+    "evidence": "essay:一場夢",
+    "code": "302",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看風景",
+    "jyutping": "hon3 fung1 ging2",
+    "category": "lyric",
+    "evidence": "essay:看風景",
+    "code": "439",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "相信愛情",
+    "jyutping": "soeng1 seon3 oi3 cing4",
+    "category": "lyric",
+    "evidence": "essay:相信愛情",
+    "code": "3440",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛上他",
+    "jyutping": "oi3 soeng5 taa1",
+    "category": "lyric",
+    "evidence": "essay:愛上他",
+    "code": "453",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一滴淚",
+    "jyutping": "jat1 dik1 leoi6",
+    "category": "lyric",
+    "evidence": "essay:一滴淚",
+    "code": "332",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "無法忘記",
+    "jyutping": "mou4 faat3 mong4 gei3",
+    "category": "lyric",
+    "evidence": "essay:無法忘記",
+    "code": "0404",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "沒良心",
+    "jyutping": "mut6 loeng4 sam1",
+    "category": "lyric",
+    "evidence": "essay:沒良心",
+    "code": "203",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我的手",
+    "jyutping": "ngo5 dik1 sau2",
+    "category": "lyric",
+    "evidence": "essay:我的手",
+    "code": "539",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "笑起來",
+    "jyutping": "siu3 hei2 loi4",
+    "category": "lyric",
+    "evidence": "essay:笑起來",
+    "code": "490",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "心情不好",
+    "jyutping": "sam1 cing4 bat1 hou2",
+    "category": "lyric",
+    "evidence": "essay:心情不好",
+    "code": "3039",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "好可愛",
+    "jyutping": "hou2 ho2 oi3",
+    "category": "lyric",
+    "evidence": "essay:好可愛",
+    "code": "994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很可愛",
+    "jyutping": "han2 ho2 oi3",
+    "category": "lyric",
+    "evidence": "essay:很可愛",
+    "code": "994",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "夜貓子",
+    "jyutping": "je6 maau1 zi2",
+    "category": "lyric",
+    "evidence": "essay:夜貓子",
+    "code": "239",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "好浪漫",
+    "jyutping": "hou2 long6 maan6",
+    "category": "lyric",
+    "evidence": "essay:好浪漫",
+    "code": "922",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看着我",
+    "jyutping": "hon3 zoek6 ngo5",
+    "category": "lyric",
+    "evidence": "essay:看着我",
+    "code": "425",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "看着他",
+    "jyutping": "hon3 zoek6 taa1",
+    "category": "lyric",
+    "evidence": "essay:看着他",
+    "code": "423",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛的人",
+    "jyutping": "oi3 dik1 jan4",
+    "category": "lyric",
+    "evidence": "essay:愛的人",
+    "code": "430",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "喜歡你",
+    "jyutping": "hei2 fun1 nei5",
+    "category": "lyric",
+    "evidence": "essay:喜歡你",
+    "code": "935",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很開心",
+    "jyutping": "han2 hoi1 sam1",
+    "category": "lyric",
+    "evidence": "essay:很開心",
+    "code": "933",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "那一刻",
+    "jyutping": "naa5 jat1 hak1",
+    "category": "lyric",
+    "evidence": "essay:那一刻",
+    "code": "533",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "發現自己",
+    "jyutping": "faat3 jin6 zi6 gei2",
+    "category": "lyric",
+    "evidence": "essay:發現自己",
+    "code": "4229",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "屬於自己",
+    "jyutping": "suk6 jyu1 zi6 gei2",
+    "category": "lyric",
+    "evidence": "essay:屬於自己",
+    "code": "2329",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "很多時候",
+    "jyutping": "han2 do1 si4 hau6",
+    "category": "lyric",
+    "evidence": "essay:很多時候",
+    "code": "9302",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "多一次",
+    "jyutping": "do1 jat1 ci3",
+    "category": "lyric",
+    "evidence": "essay:多一次",
+    "code": "334",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "不用擔心",
+    "jyutping": "bat1 jung6 daam1 sam1",
+    "category": "lyric",
+    "evidence": "essay:不用擔心",
+    "code": "3233",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "回憶起",
+    "jyutping": "wui4 jik1 hei2",
+    "category": "lyric",
+    "evidence": "essay:回憶起",
+    "code": "039",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "牽着手",
+    "jyutping": "hin1 zoek6 sau2",
+    "category": "lyric",
+    "evidence": "essay:牽着手",
+    "code": "329",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "忘記你",
+    "jyutping": "mong4 gei3 nei5",
+    "category": "lyric",
+    "evidence": "essay:忘記你",
+    "code": "045",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "等待你",
+    "jyutping": "dang2 doi6 nei5",
+    "category": "lyric",
+    "evidence": "essay:等待你",
+    "code": "925",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "愛上你",
+    "jyutping": "oi3 soeng5 nei5",
+    "category": "lyric",
+    "evidence": "essay:愛上你",
+    "code": "455",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "靜靜地",
+    "jyutping": "zing6 zing6 dei6",
+    "category": "lyric",
+    "evidence": "essay:靜靜地",
+    "code": "222",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一生中",
+    "jyutping": "jat1 sang1 zung1",
+    "category": "lyric",
+    "evidence": "essay:一生中",
+    "code": "333",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "人海中",
+    "jyutping": "jan4 hoi2 zung1",
+    "category": "lyric",
+    "evidence": "essay:人海中",
+    "code": "093",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "人羣中",
+    "jyutping": "jan4 kwan4 zung1",
+    "category": "lyric",
+    "evidence": "essay:人群中",
+    "code": "003",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "最愛你",
+    "jyutping": "zeoi3 oi3 nei5",
+    "category": "lyric",
+    "evidence": "essay:最愛你",
+    "code": "445",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "先得㗎",
+    "jyutping": "sin1 dak1 gaa3",
+    "category": "spoken",
+    "evidence": "essay:先得㗎",
+    "code": "334",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我冇事",
+    "jyutping": "ngo5 mou5 si6",
+    "category": "spoken",
+    "evidence": "essay:我冇事",
+    "code": "552",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "有冇事",
+    "jyutping": "jau5 mou5 si6",
+    "category": "spoken",
+    "evidence": "essay:有冇事",
+    "code": "552",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "冇事㗎",
+    "jyutping": "mou5 si6 gaa3",
+    "category": "spoken",
+    "evidence": "essay:冇事㗎",
+    "code": "524",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "收咗線",
+    "jyutping": "sau1 zo2 sin3",
+    "category": "spoken",
+    "evidence": "essay:收咗線",
+    "code": "394",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "冷靜返",
+    "jyutping": "laang5 zing6 faan1",
+    "category": "spoken",
+    "evidence": "essay:冷靜返",
+    "code": "523",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "無乜嘢",
+    "jyutping": "mou5 mat1 je5",
+    "category": "spoken",
+    "evidence": "essay:無乜嘢",
+    "code": "535",
+    "batch": "2026-10-19-b02",
+    "note": "粵語口語「無」借寫「冇」，整詞讀 mou5；唔用單字預設 mou4。"
+  },
+  {
+    "char": "入嚟先",
+    "jyutping": "jap6 lai4 sin1",
+    "category": "spoken",
+    "evidence": "essay:入嚟先",
+    "code": "203",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "買嘢食",
+    "jyutping": "maai5 je5 sik6",
+    "category": "spoken",
+    "evidence": "essay:買嘢食",
+    "code": "552",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "衝過嚟",
+    "jyutping": "cung1 gwo3 lai4",
+    "category": "spoken",
+    "evidence": "essay:衝過嚟",
+    "code": "340",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "衝出嚟",
+    "jyutping": "cung1 ceot1 lai4",
+    "category": "spoken",
+    "evidence": "essay:衝出嚟",
+    "code": "330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "講乜嘢",
+    "jyutping": "gong2 mat1 je5",
+    "category": "spoken",
+    "evidence": "essay:講乜嘢",
+    "code": "935",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "噴出嚟",
+    "jyutping": "pan3 ceot1 lai4",
+    "category": "spoken",
+    "evidence": "essay:噴出嚟",
+    "code": "430",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一百蚊",
+    "jyutping": "jat1 baak3 man1",
+    "category": "spoken",
+    "evidence": "essay:一百蚊",
+    "code": "343",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "幾千蚊",
+    "jyutping": "gei2 cin1 man1",
+    "category": "spoken",
+    "evidence": "essay:幾千蚊",
+    "code": "933",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "有無人",
+    "jyutping": "jau5 mou5 jan4",
+    "category": "spoken",
+    "evidence": "essay:有無人",
+    "code": "550",
+    "batch": "2026-10-19-b02",
+    "note": "粵語口語「無」借寫「冇」，整詞讀 mou5；唔用單字預設 mou4。"
+  },
+  {
+    "char": "邊一個",
+    "jyutping": "bin1 jat1 go3",
+    "category": "spoken",
+    "evidence": "essay:邊一個",
+    "code": "334",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "過咗去",
+    "jyutping": "gwo3 zo2 heoi3",
+    "category": "spoken",
+    "evidence": "essay:過咗去",
+    "code": "494",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我想講",
+    "jyutping": "ngo5 soeng2 gong2",
+    "category": "spoken",
+    "evidence": "essay:我想講",
+    "code": "599",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "我想問",
+    "jyutping": "ngo5 soeng2 man6",
+    "category": "spoken",
+    "evidence": "essay:我想問",
+    "code": "592",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "講一次",
+    "jyutping": "gong2 jat1 ci3",
+    "category": "spoken",
+    "evidence": "essay:講一次",
+    "code": "934",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "講一句",
+    "jyutping": "gong2 jat1 geoi3",
+    "category": "spoken",
+    "evidence": "essay:講一句",
+    "code": "934",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一邊行",
+    "jyutping": "jat1 bin1 haang4",
+    "category": "spoken",
+    "evidence": "essay:一邊行",
+    "code": "330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一邊講",
+    "jyutping": "jat1 bin1 gong2",
+    "category": "spoken",
+    "evidence": "essay:一邊講",
+    "code": "339",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "一班人",
+    "jyutping": "jat1 baan1 jan4",
+    "category": "spoken",
+    "evidence": "essay:一班人",
+    "code": "330",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "成班人",
+    "jyutping": "seng4 baan1 jan4",
+    "category": "spoken",
+    "evidence": "essay:成班人",
+    "code": "030",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "講嘅嘢",
+    "jyutping": "gong2 ge3 je5",
+    "category": "spoken",
+    "evidence": "essay:講嘅嘢",
+    "code": "945",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "分咗手",
+    "jyutping": "fan1 zo2 sau2",
+    "category": "spoken",
+    "evidence": "essay:分咗手",
+    "code": "399",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "行咗去",
+    "jyutping": "haang4 zo2 heoi3",
+    "category": "spoken",
+    "evidence": "essay:行咗去",
+    "code": "094",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "嚇咗一嚇",
+    "jyutping": "haak3 zo2 jat1 haak3",
+    "category": "spoken",
+    "evidence": "essay:嚇咗一嚇",
+    "code": "4934",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "多謝你",
+    "jyutping": "do1 ze6 nei5",
+    "category": "spoken",
+    "evidence": "essay:多謝你",
+    "code": "325",
+    "batch": "2026-10-19-b02"
+  },
+  {
+    "char": "救人",
+    "jyutping": "gau3 jan4",
+    "code": "40",
+    "category": "general",
+    "evidence": "essay:救人",
+    "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "稍等",
+    "jyutping": "saau2 dang2",
+    "code": "99",
+    "category": "general",
+    "evidence": "essay:稍等",
+    "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "講乜",
+    "jyutping": "gong2 mat1",
+    "code": "93",
+    "category": "spoken",
+    "evidence": "essay:講乜",
+    "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "兩粒",
+    "jyutping": "loeng5 nap1",
+    "code": "53",
+    "category": "spoken",
+    "evidence": "essay:兩粒",
+    "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "窮困潦倒",
+    "jyutping": "kung4 kwan3 lou5 dou2",
+    "code": "0459",
+    "category": "general",
+    "evidence": "essay:窮困潦倒",
+    "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "窮途潦倒",
+    "jyutping": "kung4 tou4 lou5 dou2",
+    "code": "0059",
+    "category": "general",
+    "evidence": "essay:窮途潦倒",
+    "batch": "2026-10-19-reading-repair"
   }
 ]
