@@ -23,6 +23,16 @@ export type LexiconTarget = {
   useGzip: boolean;
 };
 
+/** Same-tag, same-size replacements must use a different OPFS file. */
+export function lexiconStorageVersion(target: Pick<LexiconTarget, 'version' | 'sha256'>): string {
+  return target.sha256 ? `${target.version}-${target.sha256}` : target.version;
+}
+
+function snapshotUrl(file: string, sha256?: string): string {
+  const url = publicAssetUrl(file);
+  return sha256 ? `${url}${url.includes('?') ? '&' : '?'}sha256=${encodeURIComponent(sha256)}` : url;
+}
+
 export function lexiconVersionFromEnv(): string {
   return (import.meta as ImportMeta).env?.VITE_LEXICON_VERSION || 'v1.0.7';
 }
@@ -64,7 +74,7 @@ export function resolveTargetFromManifest(manifest: LexiconManifest, version: st
   if (!manifest.lexiconVersion || !manifest.dbFile) {
     return fallbackTarget(version);
   }
-  const dbUrl = publicAssetUrl(manifest.dbFile);
+  const dbUrl = snapshotUrl(manifest.dbFile, manifest.sha256);
   // DEV 正式入口係 loadLexiconTarget；呢度唔綁 stale manifest 完整性欄
   if (isViteDev()) {
     return buildDevLexiconTarget(manifest.lexiconVersion || version);
@@ -83,7 +93,7 @@ export function resolveTargetFromManifest(manifest: LexiconManifest, version: st
       useGzip: false,
     };
   }
-  const fetchUrl = publicAssetUrl(manifest.dbFileGz!);
+  const fetchUrl = snapshotUrl(manifest.dbFileGz!, manifest.sha256);
   return {
     version: manifest.lexiconVersion,
     dbUrl,
