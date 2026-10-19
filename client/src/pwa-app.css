@@ -699,6 +699,12 @@ button.icon-button.header-search__shuffle:disabled {
     transition: none;
   }
 
+  /* Meta follows the mast; clip above its 4px gap so it cannot cross the retained menu. */
+  .app-header.is-mast-wide .app-bar.is-mast-measured:not(.app-bar--workbench) .mode-menu-meta {
+    transform: translateY(calc(var(--mast-lift, 0px) - var(--mast-y, 0px)));
+    clip-path: inset(max(0px, calc(var(--mast-y, 0px) - var(--mast-lift, 0px) - 4px)) 0 0);
+  }
+
   .app-header.is-mast-wide.is-mast-collapsed .app-bar {
     row-gap: 0;
   }
