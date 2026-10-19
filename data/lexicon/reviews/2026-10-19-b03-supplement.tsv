@@ -1,0 +1,255 @@
+char	verdict	category	jyutping	song_count	occurrences	evidence	other_song_evidence	corpus_readings	note
+不會	accept	general	bat1 wui5	22	38	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0102.krn#L148-L149	C0102.krn#L148-L149;C0104.krn#L165-L166;C0202.krn#L394-L395	"{""bat1 wui5"": 38}"	完整常用表達；按詞義校對整詞讀音。
+太多	accept	general	taai3 do1	11	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L65-L66	C0003.krn#L65-L66;C0004.krn#L135-L137;C0301.krn#L574-L575	"{""taai3 do1"": 12}"	完整常用表達；按詞義校對整詞讀音。
+有過	accept	general	jau5 gwo3	10	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L31-L32	C0603.krn#L31-L32;C0604.krn#L116-L117;C0802.krn#L276-L278	"{""jau5 gwo3"": 11}"	完整常用表達；按詞義校對整詞讀音。
+不愛	accept	general	bat1 oi3	8	15	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L351-L353	C0002.krn#L351-L353;C0003.krn#L162-L163;C0205.krn#L42-L44	"{""bat1 oi3"": 15}"	完整常用表達；按詞義校對整詞讀音。
+這刻	accept	general	ze5 hak1	8	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L353-L355	C0505.krn#L353-L355;C0603.krn#L259-L261;C1003.krn#L737-L738	"{""ze2 hak1"": 2, ""ze5 hak1"": 11}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+還未	accept	general	waan4 mei6	8	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L575-L576	C0204.krn#L575-L576;C0501.krn#L75-L77;C0804.krn#L116-L117	"{""waan4 mei6"": 13}"	完整常用表達；按詞義校對整詞讀音。
+不懂	accept	general	bat1 dung2	8	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L248-L249	C0002.krn#L248-L249;C0601.krn#L579-L580;C0703.krn#L77-L79	"{""bat1 dung2"": 11}"	完整常用表達；按詞義校對整詞讀音。
+別要	accept	general	bit6 jiu3	8	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L551-L552	C0101.krn#L551-L552;C0102.krn#L241-L242;C0204.krn#L215-L216	"{""bit6 jiu3"": 9, ""bit6 jiu6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+只想	accept	general	zi2 soeng2	8	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L42-L44	C0001.krn#L42-L44;C0505.krn#L361-L363;C0901.krn#L223-L224	"{""zi2 soeng2"": 11}"	完整常用表達；按詞義校對整詞讀音。
+別再	accept	general	bit6 zoi3	7	14	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L131-L132	C0201.krn#L131-L132;C0404.krn#L157-L158;C0802.krn#L43-L44	"{""bit6 zoi3"": 14}"	完整常用表達；按詞義校對整詞讀音。
+多好	accept	general	do1 hou2	7	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L82-L83	C0501.krn#L82-L83;C0701.krn#L172-L174;C1003.krn#L314-L315	"{""do1 hou2"": 12}"	完整常用表達；按詞義校對整詞讀音。
+十年	accept	general	sap6 nin4	7	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L564-L566	C0004.krn#L564-L566;C0205.krn#L235-L236;C0305.krn#L232-L233	"{""sap6 nin4"": 11}"	完整常用表達；按詞義校對整詞讀音。
+霎眼	accept	lyric	saap3 ngaan5	7	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L381-L382	C0204.krn#L381-L382;C0501.krn#L26-L28;C0601.krn#L87-L88	"{""saap3 ngaan5"": 8}"	完整常用表達；按詞義校對整詞讀音。
+留在	accept	general	lau4 zoi6	7	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L54-L56	C0101.krn#L54-L56;C0603.krn#L499-L500;C0605.krn#L344-L345	"{""lau4 zoi6"": 7}"	完整常用表達；按詞義校對整詞讀音。
+很多	accept	general	han2 do1	6	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L45-L46	C0505.krn#L45-L46;C0604.krn#L157-L158;C0904.krn#L47-L48	"{""han2 do1"": 13}"	完整常用表達；按詞義校對整詞讀音。
+歸家	accept	lyric	gwai1 gaa1	6	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L208-L209	C0003.krn#L208-L209;C0602.krn#L460-L462;C0605.krn#L397-L399	"{""gwai1 gaa1"": 11}"	完整常用表達；按詞義校對整詞讀音。
+一吻	accept	lyric	jat1 man5	6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L530-L531	C0405.krn#L530-L531;C0704.krn#L339-L341;C0903.krn#L654-L657	"{""jat1 man5"": 8}"	完整常用表達；按詞義校對整詞讀音。
+一秒	accept	general	jat1 miu5	6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L301-L302	C0501.krn#L301-L302;C0601.krn#L202-L204;C0603.krn#L330-L331	"{""jat1 miu5"": 8}"	完整常用表達；按詞義校對整詞讀音。
+就如	accept	general	zau6 jyu4	6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0005.krn#L98-L99	C0005.krn#L98-L99;C0101.krn#L72-L73;C1005.krn#L74-L75	"{""zau6 jyu4"": 8}"	完整常用表達；按詞義校對整詞讀音。
+看着	accept	general	hon3 zoek6	6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L22-L23	C0105.krn#L22-L23;C0905.krn#L202-L203;C1105.krn#L434-L435	"{""hon3 zoek6"": 8}"	完整常用表達；按詞義校對整詞讀音。
+遇過	accept	general	jyu6 gwo3	6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L319-L321	C0204.krn#L319-L321;C0505.krn#L42-L43;C0604.krn#L698-L699	"{""jyu6 gwo3"": 8}"	完整常用表達；按詞義校對整詞讀音。
+活着	accept	general	wut6 zoek6	5	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0005.krn#L172-L173	C0005.krn#L172-L173;C0701.krn#L167-L168;C1003.krn#L311-L313	"{""wut6 zoek6"": 10}"	完整常用表達；按詞義校對整詞讀音。
+秒速	accept	general	miu5 cuk1	5	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L395-L396	C0804.krn#L395-L396;C0805.krn#L155-L156;C1003.krn#L243-L245	"{""miu5 cuk1"": 10}"	完整常用表達；按詞義校對整詞讀音。
+只因	accept	general	zi2 jan1	5	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L120-L121	C0105.krn#L120-L121;C0302.krn#L115-L117;C0401.krn#L70-L71	"{""zi2 jan1"": 9}"	完整常用表達；按詞義校對整詞讀音。
+萬人	accept	general	maan6 jan4	5	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L169-L171	C0001.krn#L169-L171;C0805.krn#L296-L297;C1403.krn#L111-L112	"{""maan6 jan4"": 8}"	完整常用表達；按詞義校對整詞讀音。
+一臉	accept	general	jat1 lim5	5	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L61-L62	C0804.krn#L61-L62;C1002.krn#L247-L248;C1502.krn#L685-L688	"{""jat1 lim5"": 7}"	完整常用表達；按詞義校對整詞讀音。
+抱緊	accept	lyric	pou5 gan2	5	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1005.krn#L301-L302	C1005.krn#L301-L302;C1104.krn#L323-L324;C1405.krn#L242-L243	"{""pou5 gan2"": 7}"	完整常用表達；按詞義校對整詞讀音。
+熱吻	accept	lyric	jit6 man5	5	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L464-L465	C0902.krn#L464-L465;C1105.krn#L182-L184;C1202.krn#L88-L90	"{""jit6 man5"": 6}"	完整常用表達；按詞義校對整詞讀音。
+好嗎	accept	general	hou2 maa3	5	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L29-L30	C0405.krn#L29-L30;C0802.krn#L575-L578;C1101.krn#L96-L97	"{""hou2 maa3"": 5}"	完整常用表達；按詞義校對整詞讀音。
+某天	accept	lyric	mau5 tin1	5	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L581-L582	C0004.krn#L581-L582;C0402.krn#L524-L525;C1104.krn#L599-L600	"{""mau5 tin1"": 5}"	完整常用表達；按詞義校對整詞讀音。
+老去	accept	lyric	lou5 heoi3	4	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1204.krn#L581-L582	C1204.krn#L581-L582;C1402.krn#L172-L173;C1505.krn#L319-L321	"{""lou5 heoi3"": 12}"	完整常用表達；按詞義校對整詞讀音。
+每天	accept	general	mui5 tin1	4	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L323-L324	C0305.krn#L323-L324;C0501.krn#L504-L505;C1101.krn#L131-L132	"{""mui5 tin1"": 10}"	完整常用表達；按詞義校對整詞讀音。
+方知	accept	general	fong1 zi1	4	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L207-L208	C0904.krn#L207-L208;C1403.krn#L583-L584;C1501.krn#L182-L183	"{""fong1 zi1"": 8}"	完整常用表達；按詞義校對整詞讀音。
+不多	accept	general	bat1 do1	4	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L124-L126	C0201.krn#L124-L126;C0301.krn#L562-L563;C1101.krn#L105-L106	"{""bat1 do1"": 7}"	完整常用表達；按詞義校對整詞讀音。
+滿地	accept	general	mun5 dei6	4	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L497-L498	C0804.krn#L497-L498;C1105.krn#L221-L223;C1702.krn#L91-L92	"{""mun5 dei6"": 6}"	完整常用表達；按詞義校對整詞讀音。
+花開	accept	lyric	faa1 hoi1	4	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L425-L426	C0605.krn#L425-L426;C0703.krn#L560-L561;C1405.krn#L162-L163	"{""faa1 hoi1"": 6}"	完整常用表達；按詞義校對整詞讀音。
+一雙	accept	general	jat1 soeng1	4	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L128-L129	C0002.krn#L128-L129;C0804.krn#L51-L52;C1802.krn#L43-L44	"{""jat1 soeng1"": 5}"	完整常用表達；按詞義校對整詞讀音。
+抱住	accept	general	pou5 zyu6	4	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L278-L279	C0001.krn#L278-L279;C1303.krn#L457-L458;C1705.krn#L368-L369	"{""pou5 zyu6"": 4}"	完整常用表達；按詞義校對整詞讀音。
+豁出	accept	lyric	kut3 ceot1	3	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L184-L185	C0401.krn#L184-L185;C0803.krn#L206-L207;C1005.krn#L222-L223	"{""kut3 ceot1"": 8}"	完整常用表達；按詞義校對整詞讀音。
+重遇	accept	lyric	cung4 jyu6	3	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L318-L319	C0204.krn#L318-L319;C0503.krn#L175-L176;C1702.krn#L29-L30	"{""cung4 jyu6"": 8}"	完整常用表達；按詞義校對整詞讀音。
+天高	accept	lyric	tin1 gou1	3	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L209-L210	C0703.krn#L209-L210;C0901.krn#L96-L97;C1501.krn#L186-L190	"{""tin1 gou1"": 7}"	完整常用表達；按詞義校對整詞讀音。
+淚流	accept	lyric	leoi6 lau4	3	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L84-L85	C0304.krn#L84-L85;C0605.krn#L209-L210;C1704.krn#L80-L81	"{""leoi6 lau4"": 7}"	完整常用表達；按詞義校對整詞讀音。
+年後	accept	general	nin4 hau6	3	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L233-L235	C0305.krn#L233-L235;C1101.krn#L422-L423;C1805.krn#L326-L327	"{""nin4 hau6"": 6}"	完整常用表達；按詞義校對整詞讀音。
+一角	accept	general	jat1 gok3	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L59-L61	C0101.krn#L59-L61;C1401.krn#L411-L412;C2003.krn#L156-L157	"{""jat1 gok3"": 5}"	完整常用表達；按詞義校對整詞讀音。
+懷內	accept	lyric	waai4 noi6	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0901.krn#L155-L156	C0901.krn#L155-L156;C1304.krn#L43-L44;C2003.krn#L183-L185	"{""waai4 noi6"": 5}"	完整常用表達；按詞義校對整詞讀音。
+最美	accept	lyric	zeoi3 mei5	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L199-L201	C1302.krn#L199-L201;C1305.krn#L67-L69;C1503.krn#L318-L319	"{""zeoi3 mei5"": 5}"	完整常用表達；按詞義校對整詞讀音。
+歸於	accept	general	gwai1 jyu1	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0502.krn#L122-L123	C0502.krn#L122-L123;C1705.krn#L107-L108;C1902.krn#L384-L385	"{""gwai1 jyu1"": 5}"	完整常用表達；按詞義校對整詞讀音。
+為愛	accept	lyric	wai6 oi3	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L449-L451	C0303.krn#L449-L451;C1005.krn#L292-L293;C1704.krn#L487-L488	"{""wai6 oi3"": 5}"	完整常用表達；按詞義校對整詞讀音。
+一剎	accept	lyric	jat1 saat3	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L228-L231	C0603.krn#L228-L231;C0803.krn#L305-L306;C2002.krn#L60-L61	"{""jat1 saat3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+別怕	accept	general	bit6 paa3	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L246-L247	C0101.krn#L246-L247;C0802.krn#L557-L558;C1505.krn#L331-L332	"{""bit6 paa3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+半秒	accept	general	bun3 miu5	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L438-L439	C0402.krn#L438-L439;C1405.krn#L59-L60;C1501.krn#L275-L276	"{""bun3 miu5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+更好	accept	general	gang3 hou2	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1005.krn#L419-L421	C1005.krn#L419-L421;C1105.krn#L106-L108;C1403.krn#L297-L298	"{""gang3 hou2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+有權	accept	general	jau5 kyun4	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L152-L153	C0301.krn#L152-L153;C0603.krn#L112-L113;C1604.krn#L482-L486	"{""jau4 kyun4"": 1, ""jau5 kyun4"": 3}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+前行	accept	general	cin4 hang4	3	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L349-L351	C1203.krn#L349-L351;C1302.krn#L314-L315;C1905.krn#L295-L296	"{""cin4 hang4"": 3}"	完整常用表達；按詞義校對整詞讀音。
+遺下	accept	lyric	wai4 haa6	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0801.krn#L167-L168	C0801.krn#L167-L168;C1002.krn#L125-L126;C1201.krn#L327-L328	"{""wai4 haa6"": 4}"	完整常用表達；按詞義校對整詞讀音。
+鋪滿	accept	lyric	pou1 mun5	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L108-L109	C0605.krn#L108-L109;C0801.krn#L103-L104;C1505.krn#L225-L226	"{""pou1 mun5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+錯愛	accept	lyric	co3 oi3	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L32-L33	C0505.krn#L32-L33;C1202.krn#L144-L145;C1805.krn#L227-L228	"{""co3 oi3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+一笑	accept	lyric	jat1 siu3	3	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L67-L68	C0603.krn#L67-L68;C1002.krn#L377-L379;C1802.krn#L277-L278	"{""jat1 siu3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+兩臂	accept	lyric	loeng5 bei3	3	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L77-L78	C0004.krn#L77-L78;C0701.krn#L525-L526;C0902.krn#L151-L153	"{""loeng5 bei3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+原諒我	accept	lyric	jyun4 loeng6 ngo5	5	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L195-L198	C0202.krn#L195-L198;C0605.krn#L87-L89;C0701.krn#L34-L36	"{""jyun4 loeng6 ngo5"": 6}"	完整常用表達；按詞義校對整詞讀音。
+陪着你	accept	lyric	pui4 zoek6 nei5	4	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L83-L85	C0402.krn#L83-L85;C1102.krn#L18-L20;C1701.krn#L313-L315	"{""pui4 zoek6 nei5"": 7}"	完整常用表達；按詞義校對整詞讀音。
+下半生	accept	lyric	haa6 bun3 sang1	4	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L112-L114	C0201.krn#L112-L114;C0202.krn#L310-L313;C0302.krn#L28-L31	"{""haa6 bun3 sang1"": 6}"	完整常用表達；按詞義校對整詞讀音。
+不可以	accept	general	bat1 ho2 ji5	4	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0602.krn#L322-L324	C0602.krn#L322-L324;C1101.krn#L215-L217;C1603.krn#L411-L413	"{""bat1 ho2 ji5"": 5}"	完整常用表達；按詞義校對整詞讀音。
+得到你	accept	lyric	dak1 dou2 nei5	4	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L352-L355	C0104.krn#L352-L355;C0205.krn#L257-L259;C0504.krn#L293-L296	"{""dak1 dou2 nei5"": 5}"	完整常用表達；按詞義校對整詞讀音。
+有幾多	accept	spoken	jau5 gei2 do1	4	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L293-L296	C0902.krn#L293-L296;C0905.krn#L128-L131;C1203.krn#L236-L239	"{""jau5 gei2 do1"": 5}"	完整常用表達；按詞義校對整詞讀音。
+快樂過	accept	lyric	faai3 lok6 gwo3	3	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0602.krn#L91-L93	C0602.krn#L91-L93;C0704.krn#L193-L196;C1404.krn#L112-L114	"{""faai3 lok6 gwo3"": 6}"	完整常用表達；按詞義校對整詞讀音。
+你知嗎	accept	lyric	nei5 zi1 maa3	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L74-L77	C0201.krn#L74-L77;C1605.krn#L101-L103;C2002.krn#L476-L480	"{""nei5 zi1 maa3"": 5}"	完整常用表達；按詞義校對整詞讀音。
+看着你	accept	lyric	hon3 zoek6 nei5	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L22-L24	C0105.krn#L22-L24;C0905.krn#L202-L204;C1105.krn#L434-L436	"{""hon3 zoek6 nei5"": 5}"	完整常用表達；按詞義校對整詞讀音。
+這種愛	accept	lyric	ze5 zung2 oi3	3	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0403.krn#L242-L245	C0403.krn#L242-L245;C1202.krn#L288-L291;C1802.krn#L445-L447	"{""ze2 zung2 oi3"": 4, ""ze5 zung2 oi3"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+到今天	accept	lyric	dou3 gam1 tin1	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0102.krn#L247-L250	C0102.krn#L247-L250;C0804.krn#L100-L102;C1502.krn#L333-L336	"{""dou3 gam1 tin1"": 4}"	完整常用表達；按詞義校對整詞讀音。
+到最後	accept	lyric	dou3 zeoi3 hau6	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L418-L420	C0202.krn#L418-L420;C1601.krn#L487-L490;C1704.krn#L431-L435	"{""dou3 zeoi3 hau6"": 4}"	完整常用表達；按詞義校對整詞讀音。
+只得你	accept	lyric	zi2 dak1 nei5	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L141-L144	C0104.krn#L141-L144;C0202.krn#L296-L298;C0901.krn#L260-L263	"{""zi2 dak1 nei5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+唯獨你	accept	lyric	wai4 duk6 nei5	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0302.krn#L197-L200	C0302.krn#L197-L200;C0505.krn#L131-L133;C0701.krn#L271-L273	"{""wai4 duk6 nei5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+我願意	accept	lyric	ngo5 jyun6 ji3	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L31-L33	C0001.krn#L31-L33;C0103.krn#L47-L49;C0704.krn#L589-L591	"{""ngo5 jyun6 ji3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+等不到	accept	lyric	dang2 bat1 dou3	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L309-L311	C0204.krn#L309-L311;C0802.krn#L317-L320;C1302.krn#L121-L124	"{""dang2 bat1 dou3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+過路人	accept	lyric	gwo3 lou6 jan4	3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L249-L251	C0404.krn#L249-L251;C0601.krn#L567-L571;C1601.krn#L287-L290	"{""gwo3 lou6 jan4"": 4}"	完整常用表達；按詞義校對整詞讀音。
+我沒有	accept	general	ngo5 mut6 jau5	3	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0504.krn#L21-L24	C0504.krn#L21-L24;C1003.krn#L175-L179;C1203.krn#L457-L459	"{""ngo5 mut6 jau5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+不怕死	accept	general	bat1 paa3 sei2	2	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L91-L93	C0402.krn#L91-L93;C0504.krn#L123-L125	"{""bat1 paa3 sei2"": 8}"	完整常用表達；按詞義校對整詞讀音。
+差一點	accept	general	caa1 jat1 dim2	2	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L115-L118	C0303.krn#L115-L118;C1501.krn#L549-L552	"{""caa1 jat1 dim2"": 6}"	完整常用表達；按詞義校對整詞讀音。
+重遇你	accept	lyric	cung4 jyu6 nei5	2	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L175-L178	C0503.krn#L175-L178;C1702.krn#L29-L32	"{""cung4 jyu6 nei5"": 6}"	完整常用表達；按詞義校對整詞讀音。
+千斤重	accept	lyric	cin1 gan1 cung5	2	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L183-L185	C0003.krn#L183-L185;C0104.krn#L38-L41	"{""cin1 gan1 cong5"": 4, ""cin1 gan1 cung5"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+大時代	accept	general	daai6 si4 doi6	2	5	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L149-L151	C0804.krn#L149-L151;C1104.krn#L156-L159	"{""daai3 si4 doi6"": 2, ""daai6 si4 doi6"": 3}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+一首歌	accept	lyric	jat1 sau2 go1	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L267-L270	C0304.krn#L267-L270;C0905.krn#L188-L191	"{""jat1 sau2 go1"": 4}"	完整常用表達；按詞義校對整詞讀音。
+不清楚	accept	general	bat1 cing1 co2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0905.krn#L195-L198	C0905.krn#L195-L198;C1605.krn#L262-L264	"{""bat1 cing1 co2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+不登對	accept	lyric	bat1 dang1 deoi3	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L229-L232	C0401.krn#L229-L232;C1005.krn#L240-L243	"{""bat1 dang1 deoi3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+不要等	accept	general	bat1 jiu3 dang2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L678-L681	C0601.krn#L678-L681;C1905.krn#L122-L125	"{""bat1 jiu3 dang2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+不要講	accept	general	bat1 jiu3 gong2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1601.krn#L192-L194	C1601.krn#L192-L194;C1703.krn#L184-L187	"{""bat1 jiu3 gong2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+你跟我	accept	lyric	nei5 gan1 ngo5	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1603.krn#L208-L210	C1603.krn#L208-L210;C2004.krn#L671-L674	"{""nei5 gan1 ngo5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+十八歲	accept	general	sap6 baat3 seoi3	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L18-L22	C1003.krn#L18-L22;C1204.krn#L244-L246	"{""sap6 baat3 seoi3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+受不起	accept	lyric	sau6 bat1 hei2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L133-L135	C0202.krn#L133-L135;C1202.krn#L171-L173	"{""sau6 bat1 hei2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+喜歡我	accept	lyric	hei2 fun1 ngo5	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L180-L184	C0505.krn#L180-L184;C1104.krn#L78-L80	"{""hei2 fun1 ngo5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+找不到	accept	general	zaau2 bat1 dou2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L250-L253	C0605.krn#L250-L253;C0803.krn#L460-L463	"{""zaau2 bat1 dou2"": 3, ""zaau2 bat1 dou3"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+捉得緊	accept	lyric	zuk1 dak1 gan2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L100-L102	C0402.krn#L100-L102;C1003.krn#L247-L249	"{""zuk1 dak1 gan2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+春風吹	accept	lyric	ceon1 fung1 ceoi1	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1403.krn#L628-L631	C1403.krn#L628-L631;C1802.krn#L165-L167	"{""ceon1 fung1 ceoi1"": 4}"	完整常用表達；按詞義校對整詞讀音。
+有心機	accept	spoken	jau5 sam1 gei1	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L164-L167	C0202.krn#L164-L167;C1704.krn#L425-L428	"{""jau5 sam1 gei1"": 4}"	完整常用表達；按詞義校對整詞讀音。
+舊朋友	accept	general	gau6 pang4 jau5	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L565-L568	C0204.krn#L565-L568;C0404.krn#L210-L214	"{""gau6 pang4 jau5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+記不起	accept	general	gei3 bat1 hei2	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L146-L148	C0301.krn#L146-L148;C1701.krn#L173-L175	"{""gei3 bat1 hei2"": 4}"	完整常用表達；按詞義校對整詞讀音。
+記得嗎	accept	lyric	gei3 dak1 maa3	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L326-L328	C0603.krn#L326-L328;C1605.krn#L171-L173	"{""gei3 dak1 maa3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+謝謝你	accept	general	ze6 ze6 nei5	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0403.krn#L103-L105	C0403.krn#L103-L105;C1104.krn#L526-L528	"{""ze6 ze6 nei5"": 4}"	完整常用表達；按詞義校對整詞讀音。
+一個一個	accept	general	jat1 go3 jat1 go3	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L277-L282	C0904.krn#L277-L282;C1403.krn#L446-L452	"{""jat1 go3 jat1 go3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+愛得不夠	accept	lyric	oi3 dak1 bat1 gau3	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L282-L287	C0703.krn#L282-L287;C0803.krn#L196-L200	"{""oi3 dak1 bat1 gau3"": 4}"	完整常用表達；按詞義校對整詞讀音。
+沒有心機	accept	lyric	mut6 jau5 sam1 gei1	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L163-L167	C0202.krn#L163-L167;C1704.krn#L423-L428	"{""mut6 jau5 sam1 gei1"": 4}"	完整常用表達；按詞義校對整詞讀音。
+花開花落	accept	lyric	faa1 hoi1 faa1 lok6	2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L560-L565	C0703.krn#L560-L565;C1405.krn#L162-L166	"{""faa1 hoi1 faa1 lok6"": 4}"	完整常用表達；按詞義校對整詞讀音。
+不會變	accept	lyric	bat1 wui5 bin3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L226-L228	C0904.krn#L226-L228;C1502.krn#L249-L253	"{""bat1 wui5 bin3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+不開心	accept	general	bat1 hoi1 sam1	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L661-L663	C1001.krn#L661-L663;C1605.krn#L28-L30	"{""bat1 hoi1 sam1"": 3}"	完整常用表達；按詞義校對整詞讀音。
+伴你走	accept	lyric	bun6 nei5 zau2	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L85-L88	C0201.krn#L85-L88;C1701.krn#L532-L535	"{""bun6 nei5 zau2"": 3}"	完整常用表達；按詞義校對整詞讀音。
+伴着你	accept	lyric	bun6 zoek6 nei5	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1503.krn#L206-L209	C1503.krn#L206-L209;C1601.krn#L306-L309	"{""bun6 zoek6 nei5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+只得我	accept	lyric	zi2 dak1 ngo5	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L77-L79	C0402.krn#L77-L79;C1701.krn#L364-L366	"{""zi2 dak1 ngo5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+在眼前	accept	lyric	zoi6 ngaan5 cin4	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L193-L195	C0405.krn#L193-L195;C1105.krn#L109-L113	"{""zoi6 ngaan5 cin4"": 3}"	完整常用表達；按詞義校對整詞讀音。
+太清楚	accept	general	taai3 cing1 co2	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L105-L108	C0305.krn#L105-L108;C1404.krn#L363-L365	"{""taai3 cing1 co2"": 3}"	完整常用表達；按詞義校對整詞讀音。
+太輕易	accept	general	taai3 hing1 ji6	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L70-L74	C0503.krn#L70-L74;C0702.krn#L104-L108	"{""taai3 hing1 ji6"": 3}"	完整常用表達；按詞義校對整詞讀音。
+好好過	accept	lyric	hou2 hou2 gwo3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1101.krn#L542-L546	C1101.krn#L542-L546;C1902.krn#L255-L258	"{""hou2 hou2 gwo3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+從未怕	accept	lyric	cung4 mei6 paa3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L352-L355	C1203.krn#L352-L355;C1704.krn#L465-L467	"{""cung4 mei6 paa3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+必須要	accept	general	bit1 seoi1 jiu3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1801.krn#L496-L499	C1801.krn#L496-L499;C2004.krn#L243-L245	"{""bit1 seoi1 jiu3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+我只想	accept	lyric	ngo5 zi2 soeng2	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L41-L44	C0001.krn#L41-L44;C1602.krn#L74-L76	"{""ngo5 zi2 soeng2"": 3}"	完整常用表達；按詞義校對整詞讀音。
+有勇氣	accept	general	jau5 jung5 hei3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1405.krn#L76-L78	C1405.krn#L76-L78;C1604.krn#L502-L505	"{""jau5 jung5 hei3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+有自信	accept	general	jau5 zi6 seon3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L498-L501	C0104.krn#L498-L501;C0503.krn#L238-L240	"{""jau5 zi6 seon3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+沒有你	accept	lyric	mut6 jau5 nei5	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1901.krn#L225-L228	C1901.krn#L225-L228;C2002.krn#L239-L241	"{""mut6 jau5 nei5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+沒能力	accept	general	mut6 nang4 lik6	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1002.krn#L269-L271	C1002.krn#L269-L271;C2004.krn#L293-L296	"{""mut6 nang4 lik6"": 3}"	完整常用表達；按詞義校對整詞讀音。
+無休止	accept	general	mou4 jau1 zi2	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1104.krn#L239-L242	C1104.krn#L239-L242;C1801.krn#L408-L411	"{""mou4 jau1 zi2"": 3}"	完整常用表達；按詞義校對整詞讀音。
+看不開	accept	lyric	hon3 bat1 hoi1	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1104.krn#L348-L350	C1104.krn#L348-L350;C1805.krn#L256-L258	"{""hon3 bat1 hoi1"": 3}"	完整常用表達；按詞義校對整詞讀音。
+親近你	accept	lyric	can1 gan6 nei5	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0103.krn#L432-L435	C0103.krn#L432-L435;C1001.krn#L304-L306	"{""can1 gan6 nei5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+跌下來	accept	general	dit3 haa6 loi4	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L180-L183	C0804.krn#L180-L183;C1605.krn#L136-L138	"{""dit3 haa6 loi4"": 3}"	完整常用表達；按詞義校對整詞讀音。
+還記得	accept	lyric	waan4 gei3 dak1	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L440-L442	C0401.krn#L440-L442;C0804.krn#L107-L109	"{""waan4 gei3 dak1"": 3}"	完整常用表達；按詞義校對整詞讀音。
+一個擁抱	accept	lyric	jat1 go3 jung2 pou5	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1401.krn#L246-L250	C1401.krn#L246-L250;C1403.krn#L468-L474	"{""jat1 go3 jung2 pou5"": 3}"	完整常用表達；按詞義校對整詞讀音。
+只差一點	accept	lyric	zi2 caa1 jat1 dim2	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L114-L118	C0303.krn#L114-L118;C1501.krn#L548-L552	"{""ci2 caa1 jat1 dim2"": 2, ""zi2 caa1 jat1 dim2"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+多麼可笑	accept	lyric	do1 mo1 ho2 siu3	2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L623-L627	C1003.krn#L623-L627;C1203.krn#L155-L159	"{""do1 mo1 ho2 siu3"": 3}"	完整常用表達；按詞義校對整詞讀音。
+一張臉	accept	general	jat1 zoeng1 lim5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L173-L177	C0703.krn#L173-L177;C1805.krn#L49-L52	"{""jat1 zoeng1 lim5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+下一次	accept	general	haa6 jat1 ci3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L248-L251	C0601.krn#L248-L251;C1801.krn#L440-L444	"{""haa6 jat1 ci3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+不緊要	accept	general	bat1 gan2 jiu3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L658-L662	C1003.krn#L658-L662;C1203.krn#L742-L746	"{""bat1 gan2 jiu3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+不追究	accept	general	bat1 zeoi1 gau3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0604.krn#L363-L365	C0604.krn#L363-L365;C1704.krn#L681-L683	"{""bat1 zeoi1 gau3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+人未老	accept	lyric	jan4 mei6 lou5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L498-L500	C1302.krn#L498-L500;C1304.krn#L494-L496	"{""jan4 mei6 lou5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+你別怕	accept	lyric	nei5 bit6 paa3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L245-L247	C0101.krn#L245-L247;C1505.krn#L606-L608	"{""nei5 bit6 paa3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+你與我	accept	lyric	nei5 jyu5 ngo5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L178-L180	C0004.krn#L178-L180;C0504.krn#L279-L281	"{""nei5 jyu5 ngo5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+到天上	accept	lyric	dou3 tin1 soeng6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L444-L446	C0401.krn#L444-L446;C0601.krn#L682-L684	"{""dou3 tin1 soeng6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+到最初	accept	lyric	dou3 zeoi3 co1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1702.krn#L692-L695	C1702.krn#L692-L695;C1802.krn#L465-L468	"{""dou3 zeoi3 co1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+到盡頭	accept	lyric	dou3 zeon6 tau4	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0803.krn#L463-L466	C0803.krn#L463-L466;C1302.krn#L507-L509	"{""dou3 zeon6 tau4"": 2}"	完整常用表達；按詞義校對整詞讀音。
+前行吧	accept	lyric	cin4 hang4 baa6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L314-L317	C1302.krn#L314-L317;C1905.krn#L295-L298	"{""cin4 hang4 baa6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+只盼望	accept	lyric	zi2 paan3 mong6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L86-L88	C0101.krn#L86-L88;C1204.krn#L517-L519	"{""zi2 paan3 mong6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+可改變	accept	general	ho2 goi2 bin3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L78-L82	C1001.krn#L78-L82;C1503.krn#L110-L112	"{""ho2 goi2 bin3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+合着眼	accept	lyric	hap6 zoek6 ngaan5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L136-L138	C0104.krn#L136-L138;C1202.krn#L119-L121	"{""hap6 zoek6 ngaan5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+哪一個	accept	general	naa5 jat1 go3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1604.krn#L397-L399	C1604.krn#L397-L399;C1801.krn#L402-L405	"{""naa5 jat1 go3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+唱情歌	accept	lyric	coeng3 cing4 go1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L488-L491	C0304.krn#L488-L491;C1901.krn#L487-L491	"{""coeng3 cing4 go1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+在耳邊	accept	lyric	zoi6 ji5 bin1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L383-L386	C1203.krn#L383-L386;C1904.krn#L317-L320	"{""zoi6 ji5 bin1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+在背後	accept	lyric	zoi6 bui3 hau6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0803.krn#L260-L264	C0803.krn#L260-L264;C0805.krn#L19-L21	"{""zoi6 bui3 hau6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+忘掉了	accept	lyric	mong4 diu6 liu5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L392-L394	C1003.krn#L392-L394;C1804.krn#L304-L306	"{""mong4 diu6 liu5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+我相信	accept	lyric	ngo5 soeng1 seon3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1204.krn#L718-L722	C1204.krn#L718-L722;C1401.krn#L16-L18	"{""ngo5 soeng1 seon3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+找到我	accept	lyric	zaau2 dou2 ngo5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0302.krn#L37-L40	C0302.krn#L37-L40;C0303.krn#L527-L529	"{""zaau2 dou2 ngo5"": 1, ""zaau2 dou3 ngo5"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+新開始	accept	lyric	san1 hoi1 ci2	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0704.krn#L517-L519	C0704.krn#L517-L519;C1905.krn#L549-L552	"{""san1 hoi1 ci2"": 2}"	完整常用表達；按詞義校對整詞讀音。
+最動人	accept	lyric	zeoi3 dung6 jan4	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1701.krn#L237-L240	C1701.krn#L237-L240;C2001.krn#L128-L131	"{""zeoi3 dung6 jan4"": 2}"	完整常用表達；按詞義校對整詞讀音。
+有下次	accept	general	jau5 haa6 ci3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L501-L503	C0601.krn#L501-L503;C1702.krn#L782-L784	"{""jau5 haa6 ci3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+有多少	accept	general	jau5 do1 siu2	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L537-L539	C0601.krn#L537-L539;C1303.krn#L154-L156	"{""jau5 do1 siu2"": 2}"	完整常用表達；按詞義校對整詞讀音。
+無聊事	accept	general	mou4 liu4 si6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L66-L68	C0404.krn#L66-L68;C1701.krn#L222-L225	"{""mou4 liu4 si6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+皺着眉	accept	lyric	zau3 zoek6 mei4	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L135-L138	C0902.krn#L135-L138;C1002.krn#L46-L49	"{""zau3 zoek6 mei4"": 2}"	完整常用表達；按詞義校對整詞讀音。
+總會有	accept	lyric	zung2 wui5 jau5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L577-L580	C0004.krn#L577-L580;C0905.krn#L490-L492	"{""zung2 wui5 jau5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+聽不到	accept	lyric	ting1 bat1 dou3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1004.krn#L48-L52	C1004.krn#L48-L52;C1303.krn#L737-L740	"{""ting1 bat1 dou3"": 1, ""ting3 bat1 dou3"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+要搬家	accept	general	jiu3 bun1 gaa1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0802.krn#L58-L61	C0802.krn#L58-L61;C2002.krn#L432-L434	"{""jiu3 bun1 gaa1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+要被愛	accept	lyric	jiu3 bei6 oi3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0205.krn#L78-L80	C0205.krn#L78-L80;C0903.krn#L334-L336	"{""jiu3 bei6 oi3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+講你知	accept	spoken	gong2 nei5 zi1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L40-L43	C0503.krn#L40-L43;C1102.krn#L204-L207	"{""gong2 nei5 zi1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+追不到	accept	lyric	zeoi1 bat1 dou2	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L359-L362	C0501.krn#L359-L362;C0805.krn#L494-L496	"{""zeoi1 bat1 dou2"": 2}"	完整常用表達；按詞義校對整詞讀音。
+這世界	accept	lyric	ze5 sai3 gaai3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L144-L146	C0204.krn#L144-L146;C1205.krn#L435-L437	"{""ze2 sai3 gaai3"": 1, ""ze5 sai3 gaai3"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+這些年	accept	general	ze5 se1 nin4	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L123-L126	C0404.krn#L123-L126;C0705.krn#L97-L100	"{""ze2 se1 nin4"": 2}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+這地球	accept	lyric	ze5 dei6 kau4	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0901.krn#L38-L41	C0901.krn#L38-L41;C1501.krn#L128-L132	"{""ze2 dei6 kau4"": 1, ""ze5 dei6 kau4"": 1}"	完整常用表達；按詞義校對整詞讀音。選用規範／語境讀音；不直接採用最高頻標音。
+錯過了	accept	lyric	co3 gwo3 liu5	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L105-L107	C0303.krn#L105-L107;C0603.krn#L276-L278	"{""co3 gwo3 liu5"": 2}"	完整常用表達；按詞義校對整詞讀音。
+開心過	accept	lyric	hoi1 sam1 gwo3	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1605.krn#L21-L24	C1605.krn#L21-L24;C1701.krn#L284-L286	"{""hoi1 sam1 gwo3"": 2}"	完整常用表達；按詞義校對整詞讀音。
+各走各路	accept	lyric	gok3 zau2 gok3 lou6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L408-L413	C1001.krn#L408-L413;C1401.krn#L767-L771	"{""gok3 zau2 gok3 lou6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+合着眼睛	accept	lyric	hap6 zoek6 ngaan5 zing1	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L136-L140	C0104.krn#L136-L140;C1202.krn#L119-L122	"{""hap6 zoek6 ngaan5 zing1"": 2}"	完整常用表達；按詞義校對整詞讀音。
+衝破界限	accept	lyric	cung1 po3 gaai3 haan6	2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1504.krn#L469-L472	C1504.krn#L469-L472;C1702.krn#L658-L661	"{""cung1 po3 gaai3 haan6"": 2}"	完整常用表達；按詞義校對整詞讀音。
+試下	accept	spoken	si3 haa5		20200	essay:試下			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+唔肯	accept	spoken	m4 hang2		15038	essay:唔肯			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+好快	accept	spoken	hou2 faai3		14237	essay:好快			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+好難	accept	spoken	hou2 naan4		13348	essay:好難			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+幫到	accept	spoken	bong1 dou2		10856	essay:幫到			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+講完	accept	spoken	gong2 jyun4		46718	essay:講完			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+行到	accept	spoken	haang4 dou3		25450	essay:行到			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+無事	accept	spoken	mou4 si6		25984	essay:無事			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+去邊	accept	spoken	heoi3 bin1		22869	essay:去邊			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+講返	accept	spoken	gong2 faan1		12992	essay:講返			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+嚇到	accept	spoken	haak3 dou3		19933	essay:嚇到			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+對住	accept	spoken	deoi3 zyu6		20289	essay:對住			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+想點	accept	spoken	soeng2 dim2		15928	essay:想點			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+行過	accept	spoken	haang4 gwo3		15928	essay:行過			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+行去	accept	spoken	haang4 heoi3		14949	essay:行去			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+問下	accept	spoken	man6 haa5		12280	essay:問下			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+拖住	accept	spoken	to1 zyu6		12102	essay:拖住			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+做過	accept	spoken	zou6 gwo3		13615	essay:做過			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+過咗	accept	spoken	gwo3 zo2		10500	essay:過咗			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+好痛	accept	spoken	hou2 tung3		14771	essay:好痛			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+好大	accept	spoken	hou2 daai6		12547	essay:好大			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+落到	accept	spoken	lok6 dou3		10322	essay:落到			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+成班	accept	spoken	seng4 baan1		9788	essay:成班			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+手仔	accept	spoken	sau2 zai2		9699	essay:手仔			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+雙腳	accept	spoken	soeng1 goek3		9699	essay:雙腳			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+返到	accept	spoken	faan1 dou3		51167	essay:返到			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+講清楚	accept	spoken	gong2 cing1 co2		1	essay:講清楚			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+做得好	accept	spoken	zou6 dak1 hou2		930	essay:做得好			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+返香港	accept	spoken	faan1 hoeng1 gong2		3559	essay:返香港			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+嚟香港	accept	spoken	lai4 hoeng1 gong2		1334	essay:嚟香港			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+嗰一日	accept	spoken	go2 jat1 jat6		978	essay:嗰一日			常用口語搭配；按整詞語義選讀（AI 輔助）；非逐字預設拼接。
+從頭開始	repair	general	cung4 tau4 hoi1 ci2	1	1	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L301-L307	C0401.krn#L301-L307	"{""cung4 tau4 hoi1 ci2"": 1}"	修復原有錯讀 ci5；不計新增字面。
+我一	reject			11	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0102.krn#L38-L39	C0102.krn#L38-L39;C0804.krn#L49-L51;C1004.krn#L76-L77	"{""ngo5 jat1"": 13}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+過的	reject			10	20	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L174-L175	C0001.krn#L174-L175;C0102.krn#L236-L237;C0802.krn#L20-L21	"{""gwo3 dik1"": 20}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的你	reject			10	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L489-L491	C0404.krn#L489-L491;C0502.krn#L105-L106;C0503.krn#L107-L109	"{""dik1 nei5"": 12}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+我這	reject			9	23	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L697-L699	C0003.krn#L697-L699;C0104.krn#L130-L131;C0301.krn#L267-L268	"{""ngo5 ze2"": 13, ""ngo5 ze5"": 10}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+到最	reject			8	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L418-L419	C0202.krn#L418-L419;C0305.krn#L245-L246;C0502.krn#L225-L226	"{""dou3 zeoi3"": 12}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的一	reject			8	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L168-L169	C0004.krn#L168-L169;C0104.krn#L234-L235;C0705.krn#L455-L456	"{""dik1 jat1"": 10}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+你一	reject			7	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L68-L69	C0201.krn#L68-L69;C0205.krn#L216-L217;C0504.krn#L213-L214	"{""nei5 jat1"": 13}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的愛	reject			7	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L494-L496	C0304.krn#L494-L496;C0403.krn#L116-L117;C0603.krn#L34-L35	"{""dik1 oi3"": 13}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的手	reject			7	13	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L322-L323	C0104.krn#L322-L323;C0301.krn#L231-L233;C0603.krn#L165-L166	"{""dik1 sau2"": 13}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+來未	reject			7	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L147-L149	C0002.krn#L147-L149;C0201.krn#L90-L91;C0303.krn#L274-L277	"{""loi4 mei6"": 11}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+到的	reject			7	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L130-L131	C0003.krn#L130-L131;C0301.krn#L188-L189;C0701.krn#L119-L120	"{""dou2 dik1"": 6, ""dou3 dik1"": 5}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+到一	reject			7	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L346-L348	C0104.krn#L346-L348;C0204.krn#L311-L312;C0501.krn#L120-L121	"{""dou2 jat1"": 3, ""dou3 jat1"": 7}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+得不	reject			7	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L19-L20	C0001.krn#L19-L20;C0703.krn#L283-L285;C0803.krn#L197-L198	"{""dak1 bat1"": 10}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的感	reject			6	15	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L220-L222	C0004.krn#L220-L222;C0301.krn#L168-L169;C0804.krn#L261-L262	"{""dik1 gam2"": 15}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+差一	reject			6	14	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L115-L117	C0303.krn#L115-L117;C0601.krn#L201-L202;C1103.krn#L495-L496	"{""caa1 jat1"": 14}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+你記	reject			6	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L72-L73	C0003.krn#L72-L73;C0603.krn#L325-L326;C0703.krn#L182-L183	"{""nei5 gei3"": 12}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+實我	reject			6	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0701.krn#L91-L92	C0701.krn#L91-L92;C0803.krn#L189-L190;C0903.krn#L227-L229	"{""sat6 ngo5"": 12}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+出我	reject			6	11	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L558-L559	C0004.krn#L558-L559;C0101.krn#L178-L179;C0103.krn#L131-L132	"{""ceot1 ngo5"": 11}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+你心	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L293-L294	C0001.krn#L293-L294;C0902.krn#L210-L211;C1104.krn#L102-L103	"{""nei5 sam1"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+我還	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0205.krn#L122-L123	C0205.krn#L122-L123;C0401.krn#L439-L440;C0502.krn#L407-L408	"{""ngo5 waan4"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+會為	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0103.krn#L83-L85	C0103.krn#L83-L85;C0105.krn#L110-L111;C0304.krn#L263-L264	"{""wui5 wai4"": 3, ""wui5 wai6"": 6}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+有幾	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0701.krn#L546-L547	C0701.krn#L546-L547;C0902.krn#L293-L294;C0905.krn#L128-L130	"{""jau5 gei2"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+看不	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0901.krn#L342-L343	C0901.krn#L342-L343;C1104.krn#L348-L349;C1601.krn#L614-L616	"{""hon3 bat1"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+誰又	reject			6	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L115-L116	C0204.krn#L115-L116;C0303.krn#L259-L260;C0701.krn#L30-L31	"{""seoi4 jau6"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+了你	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L236-L237	C0201.krn#L236-L237;C0203.krn#L239-L240;C0305.krn#L185-L186	"{""liu5 nei5"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+天的	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L167-L168	C0004.krn#L167-L168;C0402.krn#L49-L50;C0503.krn#L106-L107	"{""tin1 dik1"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+我怎	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L102-L103	C0004.krn#L102-L103;C0105.krn#L108-L109;C0601.krn#L390-L391	"{""ngo5 zam2"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+是為	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0005.krn#L174-L175	C0005.krn#L174-L175;C0301.krn#L85-L86;C0305.krn#L64-L65	"{""si6 wai6"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+每一	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1004.krn#L357-L358	C1004.krn#L357-L358;C1203.krn#L602-L603;C1503.krn#L410-L411	"{""mui5 jat1"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+那一	reject			6	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L78-L79	C0104.krn#L78-L79;C0603.krn#L319-L320;C1001.krn#L433-L436	"{""naa5 jat1"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+你那	reject			6	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L470-L471	C0001.krn#L470-L471;C0104.krn#L53-L54;C0701.krn#L145-L146	"{""nei5 naa5"": 7}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+已不	reject			6	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0205.krn#L33-L34	C0205.krn#L33-L34;C0703.krn#L602-L603;C0901.krn#L118-L119	"{""ji5 bat1"": 7}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+來是	reject			6	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L505-L506	C0402.krn#L505-L506;C0602.krn#L88-L89;C1002.krn#L110-L111	"{""loi4 si6"": 6}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+到這	reject			6	6	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L500-L502	C0002.krn#L500-L502;C0003.krn#L552-L553;C0204.krn#L142-L144	"{""dou2 ze2"": 1, ""dou3 ze2"": 4, ""dou3 ze5"": 1}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+的天	reject			5	12	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L153-L154	C0003.krn#L153-L154;C0805.krn#L190-L191;C0905.krn#L21-L23	"{""dik1 tin1"": 12}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+得太	reject			5	10	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L133-L134	C0601.krn#L133-L134;C0704.krn#L57-L58;C1202.krn#L19-L20	"{""dak1 taai3"": 10}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+些感	reject			5	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L293-L295	C0004.krn#L293-L295;C1405.krn#L232-L233;C1504.krn#L111-L113	"{""se1 gam2"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+在最	reject			5	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0103.krn#L408-L410	C0103.krn#L408-L410;C0604.krn#L268-L269;C1602.krn#L415-L416	"{""zoi6 zeoi3"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+記不	reject			5	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L146-L147	C0301.krn#L146-L147;C0905.krn#L194-L195;C1302.krn#L50-L51	"{""gei3 bat1"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+麼可	reject			5	9	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L172-L173	C0003.krn#L172-L173;C0605.krn#L364-L365;C1003.krn#L624-L626	"{""mo1 ho2"": 9}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+心的	reject			5	8	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L103-L104	C0003.krn#L103-L104;C0704.krn#L326-L327;C0905.krn#L161-L163	"{""sam1 dik1"": 8}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+只差一	reject			4	7	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L114-L117	C0303.krn#L114-L117;C0601.krn#L200-L202;C1501.krn#L548-L550	"{""ci2 caa1 jat1"": 2, ""zi2 caa1 jat1"": 5}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+甜言蜜	reject			2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L256-L259	C0301.krn#L256-L259;C0401.krn#L343-L345	"{""tim4 jin4 mat6"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+言蜜語	reject			2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L257-L260	C0301.krn#L257-L260;C0401.krn#L344-L346	"{""jin4 mat6 jyu5"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+花開花	reject			2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L560-L562	C0703.krn#L560-L562;C1405.krn#L162-L165	"{""faa1 hoi1 faa1"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+開花落	reject			2	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L561-L565	C0703.krn#L561-L565;C1405.krn#L163-L166	"{""hoi1 faa1 lok6"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+地老天	reject			2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L300-L302	C0001.krn#L300-L302;C0901.krn#L191-L194	"{""dei6 lo5 tin1"": 1, ""dei6 lou5 tin1"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+老天荒	reject			2	3	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L301-L303	C0001.krn#L301-L303;C0901.krn#L192-L196	"{""lo5 tin1 fong1"": 1, ""lou5 tin1 fong1"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+心真意	reject			2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L416-L418	C0001.krn#L416-L418;C0404.krn#L146-L148	"{""sam1 zan1 ji3"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+生一世	reject			3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L452-L455	C0402.krn#L452-L455;C0605.krn#L142-L144;C0802.krn#L198-L202	"{""sang1 jat1 sai3"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+一生一	reject			3	4	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L451-L453	C0402.krn#L451-L453;C0605.krn#L140-L143;C0802.krn#L196-L200	"{""jat1 sang1 jat1"": 4}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+各走各	reject			2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L408-L410	C1001.krn#L408-L410;C1401.krn#L767-L769	"{""gok3 zau2 gok3"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+衝破界	reject			2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1504.krn#L469-L471	C1504.krn#L469-L471;C1702.krn#L658-L660	"{""cung1 po3 gaai3"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。
+重新開	reject			2	2	cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0704.krn#L515-L518	C0704.krn#L515-L518;C1905.krn#L548-L551	"{""cung4 san1 hoi1"": 2}"	切詞殘片或缺少必要成分；高跨歌曲次數不構成收詞理由。

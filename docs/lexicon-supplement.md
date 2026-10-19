@@ -31,6 +31,41 @@ Desktop／PWA 繼續消費同一份建置後詞條庫。
 
 ## 持續找缺詞
 
+### 廣東歌歌詞優先（第三批）
+
+`batch=2026-10-19-b03` 再收 **199 個字面**：168 個有至少兩首歌的出現證據，
+31 個補充 Essay 有記錄的日常口語。分類為通用中文 72、填詞短語 93、粵語口語 34；
+三批累計 **536 個新增表達**。本批亦納入二字常用搭配，唔限於最初三至六字範圍。
+例：「霎眼」「下半生」「花開花落」「只差一點」「衝破界限」「試下」「講清楚」。
+
+歌詞來源為 Jason Y H Lee 的 [Cantopop corpus](https://github.com/jasonleeubc/Cantopop-corpus)，
+固定於 `018e88540b917c40dc3f7248ed98908208544b54`（105 首，2000–2020，倉庫標示 CC BY 4.0）。
+`evidence=cantopop:commit:Humdrum-files/檔名#起訖行` 可定位原始標註；
+原始歌詞唔入 git、唔成為 runtime 依賴。短語及標註的上游授權及改動說明見
+[`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES.md)。
+
+新工具沿用同一套缺詞比對及字形正規化，只產生待審資料：
+
+```bash
+git clone https://github.com/jasonleeubc/Cantopop-corpus .tmp/cantopop-corpus
+git -C .tmp/cantopop-corpus checkout 018e88540b917c40dc3f7248ed98908208544b54
+python scripts/propose_lyric_supplement.py --corpus-dir .tmp/cantopop-corpus/Humdrum-files --output-dir .tmp/lyric-gaps
+```
+
+以**跨歌曲數**優先，再按出現次數排序；同一首歌重複副歌唔增加歌曲數。
+唔跨樂句、休止或非漢字片段拼接；延音唔當成新字。`corpus_readings` 係觀察記錄，
+正式 `jyutping` 仍留空待審，唔將最高頻歌唱標音直接當日常正音。
+輸出包含原始檔 SHA-256、輸入詞庫／curated SHA-256 及參數；輸出目錄必須未存在。
+
+第三批另剔除 **11 筆確認錯讀**，並補入原有「從頭開始」的 `cung4 tau4 hoi1 ci2`
+（`0039`；修復列唔計新增字面）。歌詞與全庫可疑讀音交集 120 列中，34 列確認保留、
+75 列繼續待審；「自己」「今日」「把握」等有粵典支持的異讀保留。
+完整收錄、54 個切句殘片排除項、讀音判決及語料指紋見
+[`data/lexicon/reviews/`](../data/lexicon/reviews/)；來源比較及驗證見
+[第三批研究紀錄](research/2026-10-19-lyric-lexicon-b03.md)。
+
+以下 Essay 工具仍可作其他常用中文／口語來源，唔代替歌詞優先審核：
+
 ```bash
 python scripts/propose_lexicon_supplement.py --output .tmp/lexicon-supplement.tsv
 ```

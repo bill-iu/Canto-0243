@@ -1,0 +1,121 @@
+char	jyutping	verdict	replacement	corpus_readings	song_count	source_flags	reference	note
+一個人	jat1 go3 jan1	pending		"{""jat1 go3 jan4"": 10}"	7	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+一味	jat1 mei2	retain		"{""jat1 mei2"": 1}"	1	48		mei2 詞級讀法。
+一覽	jat1 laam4	delete	jat1 laam5	"{""jat1 laam5"": 1}"	1	2	https://github.com/CanCLID/rime-cantonese-upstream/blob/126ce8c8365b9264ed46f813c3e6720a898be227/word.csv	覽讀 laam5；Rime word.csv:737 同詞校對。
+一霎	jat1 sap3	delete	jat1 saap3	"{""jat1 saap3"": 1}"	1	2	https://github.com/CanCLID/rime-cantonese-upstream/blob/126ce8c8365b9264ed46f813c3e6720a898be227/word.csv	霎用長元音 saap3；Rime word.csv:842 同詞校對。
+下年	haa6 nin2	pending		"{""haa6 nin4"": 3}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+不留	bat1 lau1	pending		"{""bat1 lau4"": 3}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+不瞅不睬	bat1 cau1 bat1 coi2	pending		"{""bat1 cau1 bat1 coi2"": 2}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+二胡	ji6 wu2	retain		"{""ji6 wu2"": 1}"	1	48		wu2 詞級變調。
+交叉	kaau1 caa1	pending		"{""gaau1 caa1"": 2}"	2	34		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+人物	jan4 mat2	retain		"{""jan4 mat2"": 1}"	1	48		mat2 詞級變調。
+今日	gam1 mat6	retain		"{""gam1 jat6"": 4}"	1	32	https://cantowords.com/dictionary/%E4%BB%8A%E6%97%A5	粵典同收 gam1 jat6／gam1 mat6，保留已記錄異讀。
+今晚	gam1 maan1	pending		"{""gam1 man5"": 1, ""gam1 maan5"": 1}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+令面	ling3 min2	pending		"{""ling6 min6"": 1}"	1	16		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+以為	jyu5 wai4	retain		"{""ji5 wai4"": 2}"	2	32	https://cantowords.com/dictionary/%E4%BB%A5%E7%82%BA	粵典同收 ji5／jyu5 wai4，保留已記錄異讀。
+來年	lei4 nin4	retain		"{""loi4 nin4"": 15}"	8	32	https://cantowords.com/dictionary/%E4%BE%86%E5%B9%B4	粵典同收 loi4／lai4／lei4，保留地域／口語異讀。
+便宜	pin4 ji2	pending		"{""pin4 ji4"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+信件	seon3 gin2	retain		"{""seon3 gin2"": 1}"	1	48		gin2 詞級變調。
+倒轉	dou6 zyun3	pending		"{""dou2 zyun3"": 2}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+兑現	deoi3 jin2	pending		"{""deoi3 jin6"": 4}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+兒戲	ji4 hei1	retain		"{""ji4 hei1"": 1}"	1	48		hei1 詞級變調。
+公公	gung4 gung1	pending		"{""gung1 gung1"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+公園	gung1 jyun2	retain		"{""gung1 jyun2"": 2}"	2	50		jyun2 詞級變調。
+冷門	laang5 mun2	retain		"{""laang5 mun2"": 1}"	1	49		mun2 詞級變調。
+半夜	bun3 je2	pending		"{""bun3 je6"": 3}"	2	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+半路	bun3 lou2	pending		"{""bun3 lou6"": 1}"	1	49		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+叮噹	ding1 dong3	pending		"{""ding1 dong1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+叮噹	ding1 dung3	pending		"{""ding1 dong1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+哥哥	go4 go1	retain		"{""go1 go1"": 6}"	1	51		歌詞與口語變調可不同，保留已有 go4 go1。
+問號	man6 hou2	pending		"{""man6 hou6"": 2}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+嘍囉	lau4 lo4	pending		"{""lau4 lo4"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+囍帖	hei2 tip2	retain		"{""hei2 tip2"": 3}"	1	48		tip2 詞級變調。
+地下	dei6 haa2	pending		"{""dei6 haa6"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+塗鴉	tou4 ngaa1	pending		"{""tou4 aa1"": 3}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+夜晚	je6 maan1	pending		"{""je6 maan5"": 6}"	4	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+大概	daai6 koi2	pending		"{""daai6 koi3"": 14}"	9	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+天使	tin1 si5	pending		"{""tin1 si5"": 3}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+好在	hou2 zoi2	pending		"{""hou2 zoi6"": 3}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+學堂	hok6 tong2	pending		"{""hok6 tong3"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+實在	sat6 zoi2	pending		"{""sat6 zoi6"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+實情	sat6 cing2	pending		"{""sat6 cing4"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+寧願	ning4 jyun2	pending		"{""ning4 jyun6"": 11, ""ning4 jyun2"": 11}"	13	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+屏障	ping2 zoeng3	pending		"{""ping4 zoeng3"": 1}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+左右	zo2 jau2	pending		"{""zo2 jau6"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+平日	ping4 jat2	pending		"{""ping4 jat6"": 3}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+底牌	dai2 paai2	retain		"{""dai2 paai2"": 1}"	1	48		paai2 詞級變調。
+從頭開始	cung4 tau4 hoi1 ci5	delete	cung4 tau4 hoi1 ci2	"{""cung4 tau4 hoi1 ci2"": 1}"	1	2	https://github.com/CanCLID/rime-cantonese-upstream/blob/126ce8c8365b9264ed46f813c3e6720a898be227/word.csv	開始用 hoi1 ci2；先補入正確整詞讀音，避免刪去唯一舊列。
+心地	sam1 dei2	retain		"{""sam1 dei2"": 1}"	1	48		dei2 詞級變調。
+心瓣	sam1 faan2	retain		"{""sam1 faan2"": 1}"	1	32		faan2 詞級讀法。
+志願	zi2 jyun6	delete	zi3 jyun6	"{""zi3 jyun6"": 2, ""ci3 jyun6"": 1}"	1	2	https://cantonese.sheik.co.uk/dictionary/characters/638/	志讀 zi3。
+情願	cing4 jyun2	pending		"{""cing4 jyun2"": 1}"	1	34		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+愛錫	ngoi3 sek3	delete	oi3 sek3	"{""oi3 sek3"": 1}"	1	2	https://github.com/CanCLID/rime-cantonese-upstream/blob/126ce8c8365b9264ed46f813c3e6720a898be227/word.csv	愛用 oi3；Rime word.csv:32346 同詞校對。
+懶得	laan2 dak1	pending		"{""laan5 dak1"": 2}"	1	49		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+打交叉	daa2 kaau1 caa1	pending		"{""daa2 gaau1 caa1"": 2}"	2	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+把握	baa2 ngak1	retain		"{""baa2 aak1"": 1}"	1	32	https://cantowords.com/dictionary/%E6%8A%8A%E6%8F%A1	粵典同收 baa2 ak1／baa2 ngak1／baang2 ak1。
+把握	baang2 ak1	retain		"{""baa2 aak1"": 1}"	1	32	https://cantowords.com/dictionary/%E6%8A%8A%E6%8F%A1	粵典同收 baa2 ak1／baa2 ngak1／baang2 ak1。
+折衷	caak3 cung1	delete	zit3 cung1	"{""zit3 cung1"": 1}"	1	2	https://cantonese.sheik.co.uk/dictionary/characters/2011/	折衷讀 zit3 cung1，非把折誤當拆的 caak3。
+挽手	waan2 sau2	delete	waan5 sau2	"{""waan5 sau2"": 5}"	2	2	https://www.cantonese.sheik.co.uk/dictionary/characters/2045/	挽手用 waan5；保留其他詞有依據的變調。
+探測	tam3 cak1	pending		"{""taam3 caak1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+搖籃	jiu4 laam2	pending		"{""jiu4 laam4"": 1}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+教堂	gaau3 tong2	retain		"{""gaau3 tong2"": 4}"	3	48		tong2 詞級變調。
+斧頭	fu2 tau2	retain		"{""fu2 tau2"": 3}"	1	48		tau2 詞級變調。
+新娘	san1 noeng2	retain		"{""san1 noeng2"": 2}"	1	48		noeng2 詞級變調。
+明年	ming4 nin2	pending		"{""ming4 nin4"": 7}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+暖壺	nyun5 wu2	retain		"{""nyun5 wu2"": 1}"	1	50		wu2 詞級變調。
+最尾	zeoi3 mei1	pending		"{""zeoi3 mei5"": 5}"	2	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+月相	jyut6 soeng6	pending		"{""jyut6 soeng1"": 1}"	1	16		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+木結他	muk6 git6 taa1	pending		"{""muk6 git3 taa1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+未曾	mei4 cang4	delete	mei6 cang4	"{""mei6 cang4"": 10}"	6	2	https://cantonese.sheik.co.uk/dictionary/characters/567/	未讀 mei6；曾在此讀 cang4。
+未曾	mei6 jang4	delete	mei6 cang4	"{""mei6 cang4"": 10}"	6	32	https://www.cantonese.sheik.co.uk/dictionary/characters/798/	曾讀 cang4，非 jang4。
+枴杖	gwaai2 zoeng2	retain		"{""gwaai2 zoeng2"": 1}"	1	50		zoeng2 詞級變調。
+條件	tiu4 gin2	retain		"{""tiu4 gin2"": 2}"	1	51		gin2 詞級變調。
+歷歷在目	lik1 lik1 zoi6 muk6	retain		"{""lik6 lik6 zoi6 muk6"": 3}"	1	48	https://cantowords.com/dictionary/%E6%AD%B7%E6%AD%B7%E5%9C%A8%E7%9B%AE	粵典同收 lik1／lik6，不依歌詞單一讀法刪除。
+氹氹轉	tam4 tam2 zyun3	pending		"{""tam4 tam4 zyun3"": 1}"	1	34		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+氹氹轉	tam4 tam4 zyun3	pending		"{""tam4 tam4 zyun3"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+泥濘	nai4 ning4	pending		"{""nai4 ning4"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+派對	paat1 ti4	pending		"{""paai3 deoi3"": 2}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+海嘯	hoi2 siu6	pending		"{""hoi2 siu3"": 1}"	1	49		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+漂泊	piu1 pok3	pending		"{""piu1 pok3"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+漸漸	zim6 zim2	pending		"{""zim6 zim6"": 3}"	2	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+潷湯	fat1 tong1	pending		"{""bat1 tong1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+烏蠅	wu1 jing1	retain		"{""wu1 jing1"": 1}"	1	50		jing1 詞級變調。
+烏蠅鏡	wu1 jing1 geng3	retain		"{""wu1 jing1 geng3"": 1}"	1	48		jing1 詞級變調。
+烏鴉	wu1 ngaa1	retain		"{""wu1 ngaa1"": 5}"	3	2		ngaa1 詞級讀法。
+無賴	mou4 laai2	retain		"{""mou4 laai2"": 6}"	1	48		laai2 詞級讀法。
+爸爸	baa4 baa1	retain		"{""baa1 baa1"": 1}"	1	51		歌詞與口語變調可不同，保留已有 baa4 變調。
+爸爸	baa4 baa4	retain		"{""baa1 baa1"": 1}"	1	32		歌詞與口語變調可不同，保留已有 baa4 變調。
+狐狸	wu4 lei2	pending		"{""wu4 lei4"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+當然	dong1 jin2	retain		"{""dong1 jin2"": 3}"	2	32		jin2 詞級變調。
+百家姓	baak3 gaa1 sing1	delete	baak3 gaa1 sing3	"{""baak3 gaa1 sing3"": 3}"	1	16	https://cantowords.com/dictionary/%E7%99%BE%E5%AE%B6%E5%A7%93	姓讀 sing3。
+眼眸	ngaan5 mau6	pending		"{""ngaan5 mau6"": 4}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+眼袋	ngaan5 doi2	retain		"{""ngaan5 doi2"": 2}"	1	48		doi2 詞級變調。
+第尾	dai6 mei1	pending		"{""dai6 mei1"": 2}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+純粹	seon4 seoi5	pending		"{""seon4 seoi5"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+綿羊	min4 joeng2	pending		"{""min4 joeng4"": 1}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+老朋友	lou5 peng4 jau5	pending		"{""lou5 pang4 jau5"": 2}"	1	1		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+腦袋	nou5 doi2	pending		"{""nou5 doi2"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+自己	zi6 gei1	retain		"{""zi6 gei2"": 33, ""zik6 gei2"": 1}"	14	32	https://cantowords.com/dictionary/%E8%87%AA%E5%B7%B1	粵典詞級異讀 zi6 gei1 有據，不能按單字參考表刪除。
+舊年	gau6 nin2	pending		"{""gau6 nin4"": 2}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+花園	faa1 jyun2	pending		"{""faa1 jyun2"": 2}"	1	50		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+花瓣	faa1 faan2	retain		"{""faa1 faan2"": 3}"	3	49		faan2 詞級讀法。
+莽撞	mong4 zong6	pending		"{""mong5 zong6"": 1}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+落地	lok6 dei2	pending		"{""lok6 dei6"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+見怪	gin3 gwai3	delete	gin3 gwaai3	"{""gin3 gwaai3"": 4}"	2	16	https://cantonese.sheik.co.uk/dictionary/characters/431/?full=true	怪用長元音 gwaai3。
+詛咒	zeoi2 zau3	pending		"{""zeoi2 zau3"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+諷刺	fung2 ci3	pending		"{""fung2 ci3"": 2}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+輕輕	heng4 heng1	pending		"{""hing1 hing1"": 4}"	3	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+輕輕	heng6 heng1	pending		"{""hing1 hing1"": 4}"	3	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+逐漸	zuk6 zim2	pending		"{""zuk6 zim2"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+遊湖	jau4 fu2	pending		"{""jau4 wu4"": 2}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+遊湖	jau4 wu2	pending		"{""jau4 wu4"": 2}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+重擊	cung3 gik1	pending		"{""cung5 gik1"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+重陽	cung4 joeng2	pending		"{""cung4 joeng4"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+陽台	joeng4 toi2	pending		"{""joeng4 toi4"": 1}"	1	16		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+隨便	ceoi4 pin2	pending		"{""ceoi4 bin6"": 7}"	4	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+靜靜	zing6 zing2	pending		"{""zing6 zing6"": 1}"	1	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+靦腆	min5 din2	pending		"{""min5 din2"": 1, ""min5 tin2"": 1}"	2	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+額角	ngaak3 gok3	pending		"{""ngaak6 gok3"": 1}"	1	32		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+飄泊	piu1 pok3	pending		"{""piu1 pok3"": 4}"	3	48		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+驚訝	ging1 ngaa5	pending		"{""ging1 ngaa5"": 1}"	1	49		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
+鹵莽	lou5 mong4	pending		"{""lou5 mong5"": 1}"	1	2		來源或語境仍有分歧；保留待審，不因歌詞缺少此異讀而刪除。
