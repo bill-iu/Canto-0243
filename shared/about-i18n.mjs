@@ -12,12 +12,19 @@ export const ABOUT_COPY = {
     lede: 'ONE·搵·韻 — 離線粵語填詞查找工作台。',
     introTitle: '簡介',
     introBody:
-      '填粵語歌詞時，往往要在<strong>同音、押韻、近義</strong>之間快速換字，又要對準數字碼與粵拼讀音。Canto-0243 用 <strong>394052／0243／02493 數字碼</strong>（頂欄三檔聲調精度）、<strong>粵拼</strong>、<strong>韻母／聲母規則</strong>與<strong>近義／反義關係</strong>，在幾秒內列出符合條件的詞條；套件解壓即用，詞庫與近反義資料存於本地，無需連網。',
+      '填粵語歌詞時，往往要在<strong>同音、押韻、近義</strong>之間快速換字，又要對準數字碼與粵拼讀音。Canto-0243 用 <strong>394052／0243／02493 數字碼</strong>（頂欄三檔聲調精度）、<strong>粵拼</strong>、<strong>韻母／聲母規則</strong>與<strong>近義／反義關係</strong>，在幾秒內列出符合條件的詞條；PWA 完成首次下載、桌面版完成首次啟動設定後，詞庫與近反義資料存於本地，可離線使用。',
     whyTitle: '為何選擇本工具',
     whyList:
       '<li><strong>開源</strong> — 原始碼公開，歡迎檢視、改進與回饋</li>' +
       '<li><strong>免費</strong> — 下載即用，無訂閱或按量收費</li>' +
       '<li><strong>持續更新</strong> — 維護者持續改進詞庫與功能，並透過 Release 發佈</li>',
+    lexiconTitle: '補充詞庫與讀音審核',
+    lexiconBody:
+      '除上游詞庫外，亦收錄維護者審核的<strong>通用中文、填詞短語及粵語口語</strong>，例如「迎風起」「我冇事」「手牽手」。新增詞條會核對字面、粵拼及聲調編碼；已確認錯誤的讀音會移除，有依據的變讀則保留。',
+    lexiconReadings:
+      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。',
+    lexiconUpdate:
+      'PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
     pledgeTitle: '承諾與授權',
     pledgeBody1:
       '<strong>本工具 100% 免費、開源。我們絕不會利用本工具或其底層數據牟利。</strong>任何創作者皆可將本工具用於<strong>商業創作</strong>（例如歌曲、劇本、已發表歌詞），前提為遵守下方限制與 <a href="' +
@@ -34,6 +41,7 @@ export const ABOUT_COPY = {
     sourcesIntro:
       '本應用程式得以實現，全賴語言學家、開源維護者及社群貢獻者的出色工作。我們十分榮幸能整合以下項目的數據：',
     sourcesList:
+      '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">專案補充詞庫</a>：維護者審核缺詞及讀音修正，採用 Canto-0243 License。</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粵典）</a>：採用<strong>非商業開放授權</strong>（詳見 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粵語詞典補缺來源</a>：採用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
       '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 詞表</a>：採用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授權。</li>' +
@@ -71,12 +79,19 @@ export const ABOUT_COPY = {
     lede: 'ONE·揾·韵 — 离线粤语填词查找工作台。',
     introTitle: '简介',
     introBody:
-      '填粤语歌词时，往往要在<strong>同音、押韵、近义</strong>之间快速换字，又要对准数字码与粤拼读音。Canto-0243 用 <strong>394052／0243／02493 数字码</strong>（顶栏三档声调精度）、<strong>粤拼</strong>、<strong>韵母／声母规则</strong>与<strong>近义／反义关系</strong>，在几秒内列出符合条件的词条；套件解压即用，词库与近反义资料存于本地，无需连网。',
+      '填粤语歌词时，往往要在<strong>同音、押韵、近义</strong>之间快速换字，又要对准数字码与粤拼读音。Canto-0243 用 <strong>394052／0243／02493 数字码</strong>（顶栏三档声调精度）、<strong>粤拼</strong>、<strong>韵母／声母规则</strong>与<strong>近义／反义关系</strong>，在几秒内列出符合条件的词条；PWA 完成首次下载、桌面版完成首次启动设置后，词库与近反义资料存于本地，可离线使用。',
     whyTitle: '为何选择本工具',
     whyList:
       '<li><strong>开源</strong> — 原始码公开，欢迎检视、改进与回馈</li>' +
       '<li><strong>免费</strong> — 下载即用，无订阅或按量收费</li>' +
       '<li><strong>持续更新</strong> — 维护者持续改进词库与功能，并透过 Release 发布</li>',
+    lexiconTitle: '补充词库与读音审核',
+    lexiconBody:
+      '除上游词库外，亦收录维护者审核的<strong>通用中文、填词短语及粤语口语</strong>，例如「迎风起」「我冇事」「手牵手」。新增词条会核对字面、粤拼及声调编码；已确认错误的读音会移除，有依据的变读则保留。',
+    lexiconReadings:
+      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。',
+    lexiconUpdate:
+      'PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
     pledgeTitle: '承诺与授权',
     pledgeBody1:
       '<strong>本工具 100% 免费、开源。我们绝不会利用本工具或其底层数据牟利。</strong>任何创作者皆可将本工具用于<strong>商业创作</strong>（例如歌曲、剧本、已发表歌词），前提为遵守下方限制与 <a href="' +
@@ -93,6 +108,7 @@ export const ABOUT_COPY = {
     sourcesIntro:
       '本应用程式得以实现，全赖语言学家、开源维护者及社群贡献者的出色工作。我们十分荣幸能整合以下项目的数据：',
     sourcesList:
+      '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">项目补充词库</a>：维护者审核缺词及读音修正，采用 Canto-0243 License。</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk（粤典）</a>：采用<strong>非商业开放授权</strong>（详见 <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>）。</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime 粤语词典补缺来源</a>：采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>。</li>' +
       '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 词表</a>：采用 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a> 授权。</li>' +
@@ -130,12 +146,19 @@ export const ABOUT_COPY = {
     lede: 'ONE-RUN-RHYME — Offline Cantonese lyric lookup workbench.',
     introTitle: 'Introduction',
     introBody:
-      'When writing Cantonese lyrics, you often need to swap characters quickly among <strong>same-tone, rhyming, and near-synonym</strong> options while matching tone codes and Jyutping. Canto-0243 uses <strong>394052／0243／02493 tone codes</strong> (three search-mode tiers), <strong>Jyutping</strong>, <strong>rhyme／initial rules</strong>, and <strong>synonym／antonym relations</strong> to list matching word entries in seconds. Unzip and run—lexicon and relation data stay on your device, no internet required.',
+      'When writing Cantonese lyrics, you often need to swap characters quickly among <strong>same-tone, rhyming, and near-synonym</strong> options while matching tone codes and Jyutping. Canto-0243 uses <strong>394052／0243／02493 tone codes</strong> (three search-mode tiers), <strong>Jyutping</strong>, <strong>rhyme／initial rules</strong>, and <strong>synonym／antonym relations</strong> to list matching word entries in seconds. After the initial PWA download or Desktop setup, lexicon and relation data stay on your device for offline use.',
     whyTitle: 'Why choose this tool',
     whyList:
       '<li><strong>Open source</strong> — source code is public; review, improve, and feedback welcome</li>' +
       '<li><strong>Free</strong> — download and use; no subscription or pay-per-use fees</li>' +
       '<li><strong>Actively maintained</strong> — lexicon and features keep improving via Releases</li>',
+    lexiconTitle: 'Supplementary lexicon & reading review',
+    lexiconBody:
+      'Alongside upstream dictionaries, a maintainer-reviewed supplement covers <strong>general Chinese, lyric phrases, and colloquial Cantonese</strong>, including 「迎風起」「我冇事」「手牽手」. Entries are checked for wording, Jyutping, and tone codes. Confirmed incorrect readings are removed while supported variants are retained.',
+    lexiconReadings:
+      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it.',
+    lexiconUpdate:
+      'Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
     pledgeTitle: 'Commitment & license',
     pledgeBody1:
       '<strong>This tool is 100% free and open source. We will never profit from this tool or its underlying data.</strong> Any creator may use it for <strong>commercial creative work</strong> (songs, scripts, published lyrics) provided you follow the restrictions below and the <a href="' +
@@ -152,6 +175,7 @@ export const ABOUT_COPY = {
     sourcesIntro:
       'This app exists thanks to outstanding work by linguists, open-source maintainers, and community contributors. We are proud to integrate data from:',
     sourcesList:
+      '<li><a href="https://github.com/bill-iu/Canto-0243/blob/main/docs/lexicon-supplement.md" target="_blank" rel="noopener noreferrer">Project supplementary lexicon</a>: maintainer-reviewed missing expressions and reading corrections; Canto-0243 License.</li>' +
       '<li><a href="https://words.hk/" target="_blank" rel="noopener noreferrer">words.hk (粵典)</a>: <strong>non-commercial open license</strong> (see <a href="https://words.hk/base/hoifong/" target="_blank" rel="noopener noreferrer">words.hk /hoifong</a>).</li>' +
       '<li><a href="https://github.com/CanCLID/rime-cantonese-upstream" target="_blank" rel="noopener noreferrer">Rime Cantonese supplement sources</a>: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</li>' +
       '<li><a href="https://github.com/elkmovie/hsk30" target="_blank" rel="noopener noreferrer">HSK 3.0 word list</a>: <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT</a>.</li>' +

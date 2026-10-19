@@ -58,6 +58,17 @@ export function AboutView({ lang, lexiconVersion, onBack }: AboutViewProps) {
       </article>
 
       <article className="guide-card about-block">
+        <h2>{c.lexiconTitle}</h2>
+        <p>
+          <HtmlBlock html={c.lexiconBody} />
+        </p>
+        <p>
+          <HtmlBlock html={c.lexiconReadings} />
+        </p>
+        <p>{c.lexiconUpdate}</p>
+      </article>
+
+      <article className="guide-card about-block">
         <h2>{c.pledgeTitle}</h2>
         <p>
           <HtmlBlock html={c.pledgeBody1} />
