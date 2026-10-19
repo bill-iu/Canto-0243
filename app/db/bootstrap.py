@@ -225,7 +225,7 @@ def ensure_word_relations_table() -> None:
 def ensure_phoneme_compact_contract() -> None:
     """C1: local SQLite must use compact phoneme fields (auto-migrate when possible)."""
     from app.db.connection import PROJECT_ROOT
-    from ingest.lexicon_meta import ensure_phoneme_storage_contract
+    from app.domain.lexicon.phoneme_meta import ensure_phoneme_storage_contract
 
     db_path = PROJECT_ROOT / "lyrics.db"
     if not db_path.is_file():
