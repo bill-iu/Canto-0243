@@ -2793,5 +2793,1605 @@
     "category": "general",
     "evidence": "essay:窮途潦倒",
     "batch": "2026-10-19-reading-repair"
+  },
+  {
+    "char": "不會",
+    "jyutping": "bat1 wui5",
+    "code": "35",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0102.krn#L148-L149",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "太多",
+    "jyutping": "taai3 do1",
+    "code": "43",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L65-L66",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有過",
+    "jyutping": "jau5 gwo3",
+    "code": "54",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L31-L32",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不愛",
+    "jyutping": "bat1 oi3",
+    "code": "34",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L351-L353",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "這刻",
+    "jyutping": "ze5 hak1",
+    "code": "53",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L353-L355",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "還未",
+    "jyutping": "waan4 mei6",
+    "code": "02",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L575-L576",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不懂",
+    "jyutping": "bat1 dung2",
+    "code": "39",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L248-L249",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "別要",
+    "jyutping": "bit6 jiu3",
+    "code": "24",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L551-L552",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只想",
+    "jyutping": "zi2 soeng2",
+    "code": "99",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L42-L44",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "別再",
+    "jyutping": "bit6 zoi3",
+    "code": "24",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L131-L132",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "多好",
+    "jyutping": "do1 hou2",
+    "code": "39",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L82-L83",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "十年",
+    "jyutping": "sap6 nin4",
+    "code": "20",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L564-L566",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "霎眼",
+    "jyutping": "saap3 ngaan5",
+    "code": "45",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L381-L382",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "留在",
+    "jyutping": "lau4 zoi6",
+    "code": "02",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L54-L56",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "很多",
+    "jyutping": "han2 do1",
+    "code": "93",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L45-L46",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "歸家",
+    "jyutping": "gwai1 gaa1",
+    "code": "33",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L208-L209",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一吻",
+    "jyutping": "jat1 man5",
+    "code": "35",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L530-L531",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一秒",
+    "jyutping": "jat1 miu5",
+    "code": "35",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L301-L302",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "就如",
+    "jyutping": "zau6 jyu4",
+    "code": "20",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0005.krn#L98-L99",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "看着",
+    "jyutping": "hon3 zoek6",
+    "code": "42",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L22-L23",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "遇過",
+    "jyutping": "jyu6 gwo3",
+    "code": "24",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L319-L321",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "活着",
+    "jyutping": "wut6 zoek6",
+    "code": "22",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0005.krn#L172-L173",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "秒速",
+    "jyutping": "miu5 cuk1",
+    "code": "53",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L395-L396",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只因",
+    "jyutping": "zi2 jan1",
+    "code": "93",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L120-L121",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "萬人",
+    "jyutping": "maan6 jan4",
+    "code": "20",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L169-L171",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一臉",
+    "jyutping": "jat1 lim5",
+    "code": "35",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L61-L62",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "抱緊",
+    "jyutping": "pou5 gan2",
+    "code": "59",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1005.krn#L301-L302",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "熱吻",
+    "jyutping": "jit6 man5",
+    "code": "25",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L464-L465",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好嗎",
+    "jyutping": "hou2 maa3",
+    "code": "94",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L29-L30",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "某天",
+    "jyutping": "mau5 tin1",
+    "code": "53",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L581-L582",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "老去",
+    "jyutping": "lou5 heoi3",
+    "code": "54",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1204.krn#L581-L582",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "每天",
+    "jyutping": "mui5 tin1",
+    "code": "53",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L323-L324",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "方知",
+    "jyutping": "fong1 zi1",
+    "code": "33",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L207-L208",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不多",
+    "jyutping": "bat1 do1",
+    "code": "33",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L124-L126",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "滿地",
+    "jyutping": "mun5 dei6",
+    "code": "52",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L497-L498",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "花開",
+    "jyutping": "faa1 hoi1",
+    "code": "33",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L425-L426",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一雙",
+    "jyutping": "jat1 soeng1",
+    "code": "33",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0002.krn#L128-L129",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "抱住",
+    "jyutping": "pou5 zyu6",
+    "code": "52",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L278-L279",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "豁出",
+    "jyutping": "kut3 ceot1",
+    "code": "43",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L184-L185",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "重遇",
+    "jyutping": "cung4 jyu6",
+    "code": "02",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L318-L319",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "天高",
+    "jyutping": "tin1 gou1",
+    "code": "33",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L209-L210",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "淚流",
+    "jyutping": "leoi6 lau4",
+    "code": "20",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L84-L85",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "年後",
+    "jyutping": "nin4 hau6",
+    "code": "02",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L233-L235",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一角",
+    "jyutping": "jat1 gok3",
+    "code": "34",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L59-L61",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "懷內",
+    "jyutping": "waai4 noi6",
+    "code": "02",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0901.krn#L155-L156",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "最美",
+    "jyutping": "zeoi3 mei5",
+    "code": "45",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L199-L201",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "歸於",
+    "jyutping": "gwai1 jyu1",
+    "code": "33",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0502.krn#L122-L123",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "為愛",
+    "jyutping": "wai6 oi3",
+    "code": "24",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L449-L451",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一剎",
+    "jyutping": "jat1 saat3",
+    "code": "34",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L228-L231",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "別怕",
+    "jyutping": "bit6 paa3",
+    "code": "24",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L246-L247",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "半秒",
+    "jyutping": "bun3 miu5",
+    "code": "45",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L438-L439",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "更好",
+    "jyutping": "gang3 hou2",
+    "code": "49",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1005.krn#L419-L421",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有權",
+    "jyutping": "jau5 kyun4",
+    "code": "50",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L152-L153",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "前行",
+    "jyutping": "cin4 hang4",
+    "code": "00",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L349-L351",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "遺下",
+    "jyutping": "wai4 haa6",
+    "code": "02",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0801.krn#L167-L168",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "鋪滿",
+    "jyutping": "pou1 mun5",
+    "code": "35",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L108-L109",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "錯愛",
+    "jyutping": "co3 oi3",
+    "code": "44",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L32-L33",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一笑",
+    "jyutping": "jat1 siu3",
+    "code": "34",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L67-L68",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "兩臂",
+    "jyutping": "loeng5 bei3",
+    "code": "54",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L77-L78",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "原諒我",
+    "jyutping": "jyun4 loeng6 ngo5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L195-L198",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "陪着你",
+    "jyutping": "pui4 zoek6 nei5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L83-L85",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "下半生",
+    "jyutping": "haa6 bun3 sang1",
+    "code": "243",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L112-L114",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不可以",
+    "jyutping": "bat1 ho2 ji5",
+    "code": "395",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0602.krn#L322-L324",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "得到你",
+    "jyutping": "dak1 dou2 nei5",
+    "code": "395",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L352-L355",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有幾多",
+    "jyutping": "jau5 gei2 do1",
+    "code": "593",
+    "category": "spoken",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L293-L296",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "快樂過",
+    "jyutping": "faai3 lok6 gwo3",
+    "code": "424",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0602.krn#L91-L93",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "你知嗎",
+    "jyutping": "nei5 zi1 maa3",
+    "code": "534",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L74-L77",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "看着你",
+    "jyutping": "hon3 zoek6 nei5",
+    "code": "425",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0105.krn#L22-L24",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "這種愛",
+    "jyutping": "ze5 zung2 oi3",
+    "code": "594",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0403.krn#L242-L245",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "到今天",
+    "jyutping": "dou3 gam1 tin1",
+    "code": "433",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0102.krn#L247-L250",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "到最後",
+    "jyutping": "dou3 zeoi3 hau6",
+    "code": "442",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L418-L420",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只得你",
+    "jyutping": "zi2 dak1 nei5",
+    "code": "935",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L141-L144",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "唯獨你",
+    "jyutping": "wai4 duk6 nei5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0302.krn#L197-L200",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "我願意",
+    "jyutping": "ngo5 jyun6 ji3",
+    "code": "524",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L31-L33",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "等不到",
+    "jyutping": "dang2 bat1 dou3",
+    "code": "934",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L309-L311",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "過路人",
+    "jyutping": "gwo3 lou6 jan4",
+    "code": "420",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L249-L251",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "我沒有",
+    "jyutping": "ngo5 mut6 jau5",
+    "code": "525",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0504.krn#L21-L24",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不怕死",
+    "jyutping": "bat1 paa3 sei2",
+    "code": "349",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L91-L93",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "差一點",
+    "jyutping": "caa1 jat1 dim2",
+    "code": "339",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L115-L118",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "重遇你",
+    "jyutping": "cung4 jyu6 nei5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L175-L178",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "千斤重",
+    "jyutping": "cin1 gan1 cung5",
+    "code": "335",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0003.krn#L183-L185",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "大時代",
+    "jyutping": "daai6 si4 doi6",
+    "code": "202",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L149-L151",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一首歌",
+    "jyutping": "jat1 sau2 go1",
+    "code": "393",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L267-L270",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不清楚",
+    "jyutping": "bat1 cing1 co2",
+    "code": "339",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0905.krn#L195-L198",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不登對",
+    "jyutping": "bat1 dang1 deoi3",
+    "code": "334",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L229-L232",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不要等",
+    "jyutping": "bat1 jiu3 dang2",
+    "code": "349",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L678-L681",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不要講",
+    "jyutping": "bat1 jiu3 gong2",
+    "code": "349",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1601.krn#L192-L194",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "你跟我",
+    "jyutping": "nei5 gan1 ngo5",
+    "code": "535",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1603.krn#L208-L210",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "十八歲",
+    "jyutping": "sap6 baat3 seoi3",
+    "code": "244",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L18-L22",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "受不起",
+    "jyutping": "sau6 bat1 hei2",
+    "code": "239",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L133-L135",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "喜歡我",
+    "jyutping": "hei2 fun1 ngo5",
+    "code": "935",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0505.krn#L180-L184",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "找不到",
+    "jyutping": "zaau2 bat1 dou2",
+    "code": "939",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0605.krn#L250-L253",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "捉得緊",
+    "jyutping": "zuk1 dak1 gan2",
+    "code": "339",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L100-L102",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "春風吹",
+    "jyutping": "ceon1 fung1 ceoi1",
+    "code": "333",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1403.krn#L628-L631",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有心機",
+    "jyutping": "jau5 sam1 gei1",
+    "code": "533",
+    "category": "spoken",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L164-L167",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "舊朋友",
+    "jyutping": "gau6 pang4 jau5",
+    "code": "205",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L565-L568",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "記不起",
+    "jyutping": "gei3 bat1 hei2",
+    "code": "439",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0301.krn#L146-L148",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "記得嗎",
+    "jyutping": "gei3 dak1 maa3",
+    "code": "434",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0603.krn#L326-L328",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "謝謝你",
+    "jyutping": "ze6 ze6 nei5",
+    "code": "225",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0403.krn#L103-L105",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一個一個",
+    "jyutping": "jat1 go3 jat1 go3",
+    "code": "3434",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L277-L282",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "愛得不夠",
+    "jyutping": "oi3 dak1 bat1 gau3",
+    "code": "4334",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L282-L287",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "沒有心機",
+    "jyutping": "mut6 jau5 sam1 gei1",
+    "code": "2533",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0202.krn#L163-L167",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "花開花落",
+    "jyutping": "faa1 hoi1 faa1 lok6",
+    "code": "3332",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L560-L565",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不會變",
+    "jyutping": "bat1 wui5 bin3",
+    "code": "354",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0904.krn#L226-L228",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不開心",
+    "jyutping": "bat1 hoi1 sam1",
+    "code": "333",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L661-L663",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "伴你走",
+    "jyutping": "bun6 nei5 zau2",
+    "code": "259",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0201.krn#L85-L88",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "伴着你",
+    "jyutping": "bun6 zoek6 nei5",
+    "code": "225",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1503.krn#L206-L209",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只得我",
+    "jyutping": "zi2 dak1 ngo5",
+    "code": "935",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0402.krn#L77-L79",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "在眼前",
+    "jyutping": "zoi6 ngaan5 cin4",
+    "code": "250",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0405.krn#L193-L195",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "太清楚",
+    "jyutping": "taai3 cing1 co2",
+    "code": "439",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0305.krn#L105-L108",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "太輕易",
+    "jyutping": "taai3 hing1 ji6",
+    "code": "432",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L70-L74",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好好過",
+    "jyutping": "hou2 hou2 gwo3",
+    "code": "994",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1101.krn#L542-L546",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "從未怕",
+    "jyutping": "cung4 mei6 paa3",
+    "code": "024",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L352-L355",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "必須要",
+    "jyutping": "bit1 seoi1 jiu3",
+    "code": "334",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1801.krn#L496-L499",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "我只想",
+    "jyutping": "ngo5 zi2 soeng2",
+    "code": "599",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0001.krn#L41-L44",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有勇氣",
+    "jyutping": "jau5 jung5 hei3",
+    "code": "554",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1405.krn#L76-L78",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有自信",
+    "jyutping": "jau5 zi6 seon3",
+    "code": "524",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L498-L501",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "沒有你",
+    "jyutping": "mut6 jau5 nei5",
+    "code": "255",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1901.krn#L225-L228",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "沒能力",
+    "jyutping": "mut6 nang4 lik6",
+    "code": "202",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1002.krn#L269-L271",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "無休止",
+    "jyutping": "mou4 jau1 zi2",
+    "code": "039",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1104.krn#L239-L242",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "看不開",
+    "jyutping": "hon3 bat1 hoi1",
+    "code": "433",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1104.krn#L348-L350",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "親近你",
+    "jyutping": "can1 gan6 nei5",
+    "code": "325",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0103.krn#L432-L435",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "跌下來",
+    "jyutping": "dit3 haa6 loi4",
+    "code": "420",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0804.krn#L180-L183",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "還記得",
+    "jyutping": "waan4 gei3 dak1",
+    "code": "043",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L440-L442",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一個擁抱",
+    "jyutping": "jat1 go3 jung2 pou5",
+    "code": "3495",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1401.krn#L246-L250",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只差一點",
+    "jyutping": "zi2 caa1 jat1 dim2",
+    "code": "9339",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L114-L118",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "多麼可笑",
+    "jyutping": "do1 mo1 ho2 siu3",
+    "code": "3394",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L623-L627",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "一張臉",
+    "jyutping": "jat1 zoeng1 lim5",
+    "code": "335",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0703.krn#L173-L177",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "下一次",
+    "jyutping": "haa6 jat1 ci3",
+    "code": "234",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L248-L251",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不緊要",
+    "jyutping": "bat1 gan2 jiu3",
+    "code": "394",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L658-L662",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "不追究",
+    "jyutping": "bat1 zeoi1 gau3",
+    "code": "334",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0604.krn#L363-L365",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "人未老",
+    "jyutping": "jan4 mei6 lou5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L498-L500",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "你別怕",
+    "jyutping": "nei5 bit6 paa3",
+    "code": "524",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L245-L247",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "你與我",
+    "jyutping": "nei5 jyu5 ngo5",
+    "code": "555",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L178-L180",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "到天上",
+    "jyutping": "dou3 tin1 soeng6",
+    "code": "432",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L444-L446",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "到最初",
+    "jyutping": "dou3 zeoi3 co1",
+    "code": "443",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1702.krn#L692-L695",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "到盡頭",
+    "jyutping": "dou3 zeon6 tau4",
+    "code": "420",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0803.krn#L463-L466",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "前行吧",
+    "jyutping": "cin4 hang4 baa6",
+    "code": "002",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1302.krn#L314-L317",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "只盼望",
+    "jyutping": "zi2 paan3 mong6",
+    "code": "942",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0101.krn#L86-L88",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "可改變",
+    "jyutping": "ho2 goi2 bin3",
+    "code": "994",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L78-L82",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "合着眼",
+    "jyutping": "hap6 zoek6 ngaan5",
+    "code": "225",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L136-L138",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "哪一個",
+    "jyutping": "naa5 jat1 go3",
+    "code": "534",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1604.krn#L397-L399",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "唱情歌",
+    "jyutping": "coeng3 cing4 go1",
+    "code": "403",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0304.krn#L488-L491",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "在耳邊",
+    "jyutping": "zoi6 ji5 bin1",
+    "code": "253",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1203.krn#L383-L386",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "在背後",
+    "jyutping": "zoi6 bui3 hau6",
+    "code": "242",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0803.krn#L260-L264",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "忘掉了",
+    "jyutping": "mong4 diu6 liu5",
+    "code": "025",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1003.krn#L392-L394",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "我相信",
+    "jyutping": "ngo5 soeng1 seon3",
+    "code": "534",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1204.krn#L718-L722",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "找到我",
+    "jyutping": "zaau2 dou2 ngo5",
+    "code": "995",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0302.krn#L37-L40",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "新開始",
+    "jyutping": "san1 hoi1 ci2",
+    "code": "339",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0704.krn#L517-L519",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "最動人",
+    "jyutping": "zeoi3 dung6 jan4",
+    "code": "420",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1701.krn#L237-L240",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有下次",
+    "jyutping": "jau5 haa6 ci3",
+    "code": "524",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L501-L503",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "有多少",
+    "jyutping": "jau5 do1 siu2",
+    "code": "539",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0601.krn#L537-L539",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "無聊事",
+    "jyutping": "mou4 liu4 si6",
+    "code": "002",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L66-L68",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "皺着眉",
+    "jyutping": "zau3 zoek6 mei4",
+    "code": "420",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0902.krn#L135-L138",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "總會有",
+    "jyutping": "zung2 wui5 jau5",
+    "code": "955",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0004.krn#L577-L580",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "聽不到",
+    "jyutping": "ting1 bat1 dou3",
+    "code": "334",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1004.krn#L48-L52",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "要搬家",
+    "jyutping": "jiu3 bun1 gaa1",
+    "code": "433",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0802.krn#L58-L61",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "要被愛",
+    "jyutping": "jiu3 bei6 oi3",
+    "code": "424",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0205.krn#L78-L80",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "講你知",
+    "jyutping": "gong2 nei5 zi1",
+    "code": "953",
+    "category": "spoken",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0503.krn#L40-L43",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "追不到",
+    "jyutping": "zeoi1 bat1 dou2",
+    "code": "339",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0501.krn#L359-L362",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "這世界",
+    "jyutping": "ze5 sai3 gaai3",
+    "code": "544",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0204.krn#L144-L146",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "這些年",
+    "jyutping": "ze5 se1 nin4",
+    "code": "530",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0404.krn#L123-L126",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "這地球",
+    "jyutping": "ze5 dei6 kau4",
+    "code": "520",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0901.krn#L38-L41",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "錯過了",
+    "jyutping": "co3 gwo3 liu5",
+    "code": "445",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0303.krn#L105-L107",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "開心過",
+    "jyutping": "hoi1 sam1 gwo3",
+    "code": "334",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1605.krn#L21-L24",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "各走各路",
+    "jyutping": "gok3 zau2 gok3 lou6",
+    "code": "4942",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1001.krn#L408-L413",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "合着眼睛",
+    "jyutping": "hap6 zoek6 ngaan5 zing1",
+    "code": "2253",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0104.krn#L136-L140",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "衝破界限",
+    "jyutping": "cung1 po3 gaai3 haan6",
+    "code": "3442",
+    "category": "lyric",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C1504.krn#L469-L472",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "試下",
+    "jyutping": "si3 haa5",
+    "code": "45",
+    "category": "spoken",
+    "evidence": "essay:試下",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "唔肯",
+    "jyutping": "m4 hang2",
+    "code": "09",
+    "category": "spoken",
+    "evidence": "essay:唔肯",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好快",
+    "jyutping": "hou2 faai3",
+    "code": "94",
+    "category": "spoken",
+    "evidence": "essay:好快",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好難",
+    "jyutping": "hou2 naan4",
+    "code": "90",
+    "category": "spoken",
+    "evidence": "essay:好難",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "幫到",
+    "jyutping": "bong1 dou2",
+    "code": "39",
+    "category": "spoken",
+    "evidence": "essay:幫到",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "講完",
+    "jyutping": "gong2 jyun4",
+    "code": "90",
+    "category": "spoken",
+    "evidence": "essay:講完",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "行到",
+    "jyutping": "haang4 dou3",
+    "code": "04",
+    "category": "spoken",
+    "evidence": "essay:行到",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "無事",
+    "jyutping": "mou4 si6",
+    "code": "02",
+    "category": "spoken",
+    "evidence": "essay:無事",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "去邊",
+    "jyutping": "heoi3 bin1",
+    "code": "43",
+    "category": "spoken",
+    "evidence": "essay:去邊",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "講返",
+    "jyutping": "gong2 faan1",
+    "code": "93",
+    "category": "spoken",
+    "evidence": "essay:講返",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "嚇到",
+    "jyutping": "haak3 dou3",
+    "code": "44",
+    "category": "spoken",
+    "evidence": "essay:嚇到",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "對住",
+    "jyutping": "deoi3 zyu6",
+    "code": "42",
+    "category": "spoken",
+    "evidence": "essay:對住",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "想點",
+    "jyutping": "soeng2 dim2",
+    "code": "99",
+    "category": "spoken",
+    "evidence": "essay:想點",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "行過",
+    "jyutping": "haang4 gwo3",
+    "code": "04",
+    "category": "spoken",
+    "evidence": "essay:行過",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "行去",
+    "jyutping": "haang4 heoi3",
+    "code": "04",
+    "category": "spoken",
+    "evidence": "essay:行去",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "問下",
+    "jyutping": "man6 haa5",
+    "code": "25",
+    "category": "spoken",
+    "evidence": "essay:問下",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "拖住",
+    "jyutping": "to1 zyu6",
+    "code": "32",
+    "category": "spoken",
+    "evidence": "essay:拖住",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "做過",
+    "jyutping": "zou6 gwo3",
+    "code": "24",
+    "category": "spoken",
+    "evidence": "essay:做過",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "過咗",
+    "jyutping": "gwo3 zo2",
+    "code": "49",
+    "category": "spoken",
+    "evidence": "essay:過咗",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好痛",
+    "jyutping": "hou2 tung3",
+    "code": "94",
+    "category": "spoken",
+    "evidence": "essay:好痛",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "好大",
+    "jyutping": "hou2 daai6",
+    "code": "92",
+    "category": "spoken",
+    "evidence": "essay:好大",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "落到",
+    "jyutping": "lok6 dou3",
+    "code": "24",
+    "category": "spoken",
+    "evidence": "essay:落到",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "成班",
+    "jyutping": "seng4 baan1",
+    "code": "03",
+    "category": "spoken",
+    "evidence": "essay:成班",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "手仔",
+    "jyutping": "sau2 zai2",
+    "code": "99",
+    "category": "spoken",
+    "evidence": "essay:手仔",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "雙腳",
+    "jyutping": "soeng1 goek3",
+    "code": "34",
+    "category": "spoken",
+    "evidence": "essay:雙腳",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "返到",
+    "jyutping": "faan1 dou3",
+    "code": "34",
+    "category": "spoken",
+    "evidence": "essay:返到",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "講清楚",
+    "jyutping": "gong2 cing1 co2",
+    "code": "939",
+    "category": "spoken",
+    "evidence": "essay:講清楚",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "做得好",
+    "jyutping": "zou6 dak1 hou2",
+    "code": "239",
+    "category": "spoken",
+    "evidence": "essay:做得好",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "返香港",
+    "jyutping": "faan1 hoeng1 gong2",
+    "code": "339",
+    "category": "spoken",
+    "evidence": "essay:返香港",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "嚟香港",
+    "jyutping": "lai4 hoeng1 gong2",
+    "code": "039",
+    "category": "spoken",
+    "evidence": "essay:嚟香港",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "嗰一日",
+    "jyutping": "go2 jat1 jat6",
+    "code": "932",
+    "category": "spoken",
+    "evidence": "essay:嗰一日",
+    "batch": "2026-10-19-b03"
+  },
+  {
+    "char": "從頭開始",
+    "jyutping": "cung4 tau4 hoi1 ci2",
+    "code": "0039",
+    "category": "general",
+    "evidence": "cantopop:018e88540b917c40dc3f7248ed98908208544b54:Humdrum-files/C0401.krn#L301-L307",
+    "batch": "2026-10-19-b03-reading-repair"
   }
 ]

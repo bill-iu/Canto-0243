@@ -90,6 +90,12 @@ class LexiconSupplementProposalTests(unittest.TestCase):
         rows = json.loads(DEFAULT_CURATED.read_text(encoding="utf-8"))
         batch = [row for row in rows if row.get("evidence")]
         essay_literals = {line.split()[0] for line in DEFAULT_ESSAY.read_text(encoding="utf-8-sig").splitlines() if line.split()}
+        corpus_reviews = {
+            (row["char"], row["jyutping"], row["evidence"])
+            for path in (ROOT / "data/lexicon/reviews").glob("*-supplement.tsv")
+            for row in csv.DictReader(io.StringIO(path.read_text(encoding="utf-8")), delimiter="\t")
+            if row["verdict"] in {"accept", "repair"}
+        }
         self.assertEqual(len({(row["char"], row["jyutping"]) for row in rows}), len(rows))
         self.assertEqual({row["category"] for row in batch}, {"general", "lyric", "spoken"})
         for row in batch:
@@ -102,6 +108,8 @@ class LexiconSupplementProposalTests(unittest.TestCase):
                     source_literal = row["evidence"].removeprefix("essay:")
                     self.assertIn(source_literal, essay_literals)
                     self.assertEqual(to_traditional(source_literal), row["char"])
+                elif row["evidence"].startswith("cantopop:"):
+                    self.assertIn((row["char"], row["jyutping"], row["evidence"]), corpus_reviews)
                 else:
                     self.assertEqual((row["char"], row["evidence"]), ("迎風起", "user:2026-10-19"))
 

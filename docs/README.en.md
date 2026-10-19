@@ -22,13 +22,13 @@ Current version: **v1.1.2**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **181,546** (`lyrics.db` · `words` table)
+Current word entries: **181,735** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
 **v1.1.2 lexicon update**
 
-* Two batches add **337 expressions** (76 + 261), covering general Chinese, lyric phrases, and colloquial Cantonese, including 「迎風起」「我冇事」「手牽手」.
-* Remove **16 confirmed incorrect readings**, restore 6 readings or codes for existing expressions, and correct 9 codes in the earlier supplement. Supported reading variants are retained.
+* Three batches add **536 expressions** (76 + 261 + 199), covering general Chinese, lyric phrases, and colloquial Cantonese, including 「迎風起」「花開花落」「只差一點」「講清楚」. Of the latest 199 additions, 168 have evidence in multiple songs and 31 have Essay colloquial evidence; see the [third-batch review](lexicon-supplement-b03.md).
+* Remove **27 confirmed incorrect readings** (11 in this batch), restore 7 readings or codes for existing expressions, and correct 9 codes in the earlier supplement. Supported reading variants are retained.
 * 「善良」 is `sin6 loeng4` (`20`) and no longer appears under `40`; 「圖書館」 is `tou4 syu1 gun2` (`039`) and no longer appears under `439`. 「迎風起」 has code `039`; search `033起` in **0243 loose mode** to find it.
 
 The PWA, Windows, and macOS Desktop use the same lexicon for this release. See the [full release notes](release-notes/v1.1.2.md) and [supplementary lexicon and reading review](lexicon-supplement.md) (Traditional Chinese).
