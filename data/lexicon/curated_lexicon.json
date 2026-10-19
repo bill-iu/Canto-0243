@@ -123,5 +123,537 @@
     "char": "被愛",
     "jyutping": "bei6 oi3",
     "code": "24"
+  },
+  {
+    "char": "迎風起",
+    "jyutping": "jing4 fung1 hei2",
+    "code": "039",
+    "category": "lyric",
+    "evidence": "user:2026-10-19"
+  },
+  {
+    "char": "隨風飄",
+    "jyutping": "ceoi4 fung1 piu1",
+    "code": "033",
+    "category": "lyric",
+    "evidence": "essay:隨風飄"
+  },
+  {
+    "char": "隨風而去",
+    "jyutping": "ceoi4 fung1 ji4 heoi3",
+    "code": "0304",
+    "category": "lyric",
+    "evidence": "essay:隨風而去"
+  },
+  {
+    "char": "向前走",
+    "jyutping": "hoeng3 cin4 zau2",
+    "code": "409",
+    "category": "lyric",
+    "evidence": "essay:向前走"
+  },
+  {
+    "char": "回頭看",
+    "jyutping": "wui4 tau4 hon3",
+    "code": "004",
+    "category": "lyric",
+    "evidence": "essay:回頭看"
+  },
+  {
+    "char": "抬起頭",
+    "jyutping": "toi4 hei2 tau4",
+    "code": "090",
+    "category": "lyric",
+    "evidence": "essay:擡起頭"
+  },
+  {
+    "char": "低下頭",
+    "jyutping": "dai1 haa6 tau4",
+    "code": "320",
+    "category": "lyric",
+    "evidence": "essay:低下頭"
+  },
+  {
+    "char": "轉過身",
+    "jyutping": "zyun2 gwo3 san1",
+    "code": "943",
+    "category": "lyric",
+    "evidence": "essay:轉過身"
+  },
+  {
+    "char": "夜未央",
+    "jyutping": "je6 mei6 joeng1",
+    "code": "223",
+    "category": "lyric",
+    "evidence": "essay:夜未央"
+  },
+  {
+    "char": "一個人走",
+    "jyutping": "jat1 go3 jan4 zau2",
+    "code": "3409",
+    "category": "lyric",
+    "evidence": "essay:一個人走"
+  },
+  {
+    "char": "重新開始",
+    "jyutping": "cung4 san1 hoi1 ci2",
+    "code": "0339",
+    "category": "lyric",
+    "evidence": "essay:重新開始"
+  },
+  {
+    "char": "永不放棄",
+    "jyutping": "wing5 bat1 fong3 hei3",
+    "code": "5344",
+    "category": "lyric",
+    "evidence": "essay:永不放棄"
+  },
+  {
+    "char": "放不下",
+    "jyutping": "fong3 bat1 haa6",
+    "code": "432",
+    "category": "lyric",
+    "evidence": "essay:放不下"
+  },
+  {
+    "char": "好想你",
+    "jyutping": "hou2 soeng2 nei5",
+    "code": "995",
+    "category": "lyric",
+    "evidence": "essay:好想你"
+  },
+  {
+    "char": "我愛你",
+    "jyutping": "ngo5 oi3 nei5",
+    "code": "545",
+    "category": "lyric",
+    "evidence": "essay:我愛你"
+  },
+  {
+    "char": "想見你",
+    "jyutping": "soeng2 gin3 nei5",
+    "code": "945",
+    "category": "lyric",
+    "evidence": "essay:想見你"
+  },
+  {
+    "char": "天黑了",
+    "jyutping": "tin1 hak1 liu5",
+    "code": "335",
+    "category": "lyric",
+    "evidence": "essay:天黑了"
+  },
+  {
+    "char": "天與地",
+    "jyutping": "tin1 jyu5 dei6",
+    "code": "352",
+    "category": "lyric",
+    "evidence": "essay:天與地"
+  },
+  {
+    "char": "人世間",
+    "jyutping": "jan4 sai3 gaan1",
+    "code": "043",
+    "category": "lyric",
+    "evidence": "essay:人世間"
+  },
+  {
+    "char": "這一刻",
+    "jyutping": "ze5 jat1 hak1",
+    "code": "533",
+    "category": "lyric",
+    "evidence": "essay:這一刻"
+  },
+  {
+    "char": "那一天",
+    "jyutping": "naa5 jat1 tin1",
+    "code": "533",
+    "category": "lyric",
+    "evidence": "essay:那一天"
+  },
+  {
+    "char": "風雨中",
+    "jyutping": "fung1 jyu5 zung1",
+    "code": "353",
+    "category": "lyric",
+    "evidence": "essay:風雨中"
+  },
+  {
+    "char": "星空下",
+    "jyutping": "sing1 hung1 haa6",
+    "code": "332",
+    "category": "lyric",
+    "evidence": "essay:星空下"
+  },
+  {
+    "char": "月光下",
+    "jyutping": "jyut6 gwong1 haa6",
+    "code": "232",
+    "category": "lyric",
+    "evidence": "essay:月光下"
+  },
+  {
+    "char": "下雨天",
+    "jyutping": "haa6 jyu5 tin1",
+    "code": "253",
+    "category": "lyric",
+    "evidence": "essay:下雨天"
+  },
+  {
+    "char": "多少次",
+    "jyutping": "do1 siu2 ci3",
+    "code": "394",
+    "category": "lyric",
+    "evidence": "essay:多少次"
+  },
+  {
+    "char": "總有一天",
+    "jyutping": "zung2 jau5 jat1 tin1",
+    "code": "9533",
+    "category": "lyric",
+    "evidence": "essay:總有一天"
+  },
+  {
+    "char": "説不出",
+    "jyutping": "syut3 bat1 ceot1",
+    "code": "433",
+    "category": "lyric",
+    "evidence": "essay:說不出"
+  },
+  {
+    "char": "聽不見",
+    "jyutping": "ting1 bat1 gin3",
+    "code": "334",
+    "category": "lyric",
+    "evidence": "essay:聽不見"
+  },
+  {
+    "char": "看不見",
+    "jyutping": "hon3 bat1 gin3",
+    "code": "434",
+    "category": "lyric",
+    "evidence": "essay:看不見"
+  },
+  {
+    "char": "走不開",
+    "jyutping": "zau2 bat1 hoi1",
+    "code": "933",
+    "category": "lyric",
+    "evidence": "essay:走不開"
+  },
+  {
+    "char": "有一天",
+    "jyutping": "jau5 jat1 tin1",
+    "code": "533",
+    "category": "general",
+    "evidence": "essay:有一天"
+  },
+  {
+    "char": "每一天",
+    "jyutping": "mui5 jat1 tin1",
+    "code": "533",
+    "category": "general",
+    "evidence": "essay:每一天"
+  },
+  {
+    "char": "每一次",
+    "jyutping": "mui5 jat1 ci3",
+    "code": "534",
+    "category": "general",
+    "evidence": "essay:每一次"
+  },
+  {
+    "char": "每個人",
+    "jyutping": "mui5 go3 jan4",
+    "code": "540",
+    "category": "general",
+    "evidence": "essay:每個人"
+  },
+  {
+    "char": "一段時間",
+    "jyutping": "jat1 dyun6 si4 gaan1",
+    "code": "3203",
+    "category": "general",
+    "evidence": "essay:一段時間"
+  },
+  {
+    "char": "一大堆",
+    "jyutping": "jat1 daai6 deoi1",
+    "code": "323",
+    "category": "general",
+    "evidence": "essay:一大堆"
+  },
+  {
+    "char": "越來越多",
+    "jyutping": "jyut6 loi4 jyut6 do1",
+    "code": "2023",
+    "category": "general",
+    "evidence": "essay:越來越多"
+  },
+  {
+    "char": "長時間",
+    "jyutping": "coeng4 si4 gaan1",
+    "code": "003",
+    "category": "general",
+    "evidence": "essay:長時間"
+  },
+  {
+    "char": "任何人",
+    "jyutping": "jam6 ho4 jan4",
+    "code": "200",
+    "category": "general",
+    "evidence": "essay:任何人"
+  },
+  {
+    "char": "有些人",
+    "jyutping": "jau5 se1 jan4",
+    "code": "530",
+    "category": "general",
+    "evidence": "essay:有些人"
+  },
+  {
+    "char": "剛開始",
+    "jyutping": "gong1 hoi1 ci2",
+    "code": "339",
+    "category": "general",
+    "evidence": "essay:剛開始"
+  },
+  {
+    "char": "才發現",
+    "jyutping": "coi4 faat3 jin6",
+    "code": "042",
+    "category": "general",
+    "evidence": "essay:才發現"
+  },
+  {
+    "char": "才知道",
+    "jyutping": "coi4 zi1 dou6",
+    "code": "032",
+    "category": "general",
+    "evidence": "essay:才知道"
+  },
+  {
+    "char": "不知道",
+    "jyutping": "bat1 zi1 dou6",
+    "code": "332",
+    "category": "general",
+    "evidence": "essay:不知道"
+  },
+  {
+    "char": "不需要",
+    "jyutping": "bat1 seoi1 jiu3",
+    "code": "334",
+    "category": "general",
+    "evidence": "essay:不需要"
+  },
+  {
+    "char": "不容易",
+    "jyutping": "bat1 jung4 ji6",
+    "code": "302",
+    "category": "general",
+    "evidence": "essay:不容易"
+  },
+  {
+    "char": "很容易",
+    "jyutping": "han2 jung4 ji6",
+    "code": "902",
+    "category": "general",
+    "evidence": "essay:很容易"
+  },
+  {
+    "char": "很簡單",
+    "jyutping": "han2 gaan2 daan1",
+    "code": "993",
+    "category": "general",
+    "evidence": "essay:很簡單"
+  },
+  {
+    "char": "很重要",
+    "jyutping": "han2 zung6 jiu3",
+    "code": "924",
+    "category": "general",
+    "evidence": "essay:很重要"
+  },
+  {
+    "char": "很可能",
+    "jyutping": "han2 ho2 nang4",
+    "code": "990",
+    "category": "general",
+    "evidence": "essay:很可能"
+  },
+  {
+    "char": "沒有什麼",
+    "jyutping": "mut6 jau5 sam6 mo1",
+    "code": "2523",
+    "category": "general",
+    "evidence": "essay:沒有什麼"
+  },
+  {
+    "char": "什麼意思",
+    "jyutping": "sam6 mo1 ji3 si1",
+    "code": "2343",
+    "category": "general",
+    "evidence": "essay:什麼意思"
+  },
+  {
+    "char": "有關部門",
+    "jyutping": "jau5 gwaan1 bou6 mun4",
+    "code": "5320",
+    "category": "general",
+    "evidence": "essay:有關部門"
+  },
+  {
+    "char": "操作系統",
+    "jyutping": "cou1 zok3 hai6 tung2",
+    "code": "3429",
+    "category": "general",
+    "evidence": "essay:操作系統"
+  },
+  {
+    "char": "資料夾",
+    "jyutping": "zi1 liu2 gaap3",
+    "code": "394",
+    "category": "general",
+    "evidence": "essay:資料夾"
+  },
+  {
+    "char": "搜索引擎",
+    "jyutping": "sau2 sok3 jan5 king4",
+    "code": "9450",
+    "category": "general",
+    "evidence": "essay:搜索引擎"
+  },
+  {
+    "char": "解決方案",
+    "jyutping": "gaai2 kyut3 fong1 on3",
+    "code": "9434",
+    "category": "general",
+    "evidence": "essay:解決方案"
+  },
+  {
+    "char": "應用程序",
+    "jyutping": "jing3 jung6 cing4 zeoi6",
+    "code": "4202",
+    "category": "general",
+    "evidence": "essay:應用程序"
+  },
+  {
+    "char": "驗證碼",
+    "jyutping": "jim6 zing3 maa5",
+    "code": "245",
+    "category": "general",
+    "evidence": "essay:驗證碼"
+  },
+  {
+    "char": "播放器",
+    "jyutping": "bo3 fong3 hei3",
+    "code": "444",
+    "category": "general",
+    "evidence": "essay:播放器"
+  },
+  {
+    "char": "發動機",
+    "jyutping": "faat3 dung6 gei1",
+    "code": "423",
+    "category": "general",
+    "evidence": "essay:發動機"
+  },
+  {
+    "char": "分辨率",
+    "jyutping": "fan1 bin6 leot6",
+    "code": "322",
+    "category": "general",
+    "evidence": "essay:分辨率"
+  },
+  {
+    "char": "關鍵詞",
+    "jyutping": "gwaan1 gin6 ci4",
+    "code": "320",
+    "category": "general",
+    "evidence": "essay:關鍵詞"
+  },
+  {
+    "char": "一步一步",
+    "jyutping": "jat1 bou6 jat1 bou6",
+    "code": "3232",
+    "category": "general",
+    "evidence": "essay:一步一步"
+  },
+  {
+    "char": "關你事",
+    "jyutping": "gwaan1 nei5 si6",
+    "code": "352",
+    "category": "spoken",
+    "evidence": "essay:關你事"
+  },
+  {
+    "char": "好多嘢",
+    "jyutping": "hou2 do1 je5",
+    "code": "935",
+    "category": "spoken",
+    "evidence": "essay:好多嘢"
+  },
+  {
+    "char": "半個鐘",
+    "jyutping": "bun3 go3 zung1",
+    "code": "443",
+    "category": "spoken",
+    "evidence": "essay:半個鐘"
+  },
+  {
+    "char": "一個鐘",
+    "jyutping": "jat1 go3 zung1",
+    "code": "343",
+    "category": "spoken",
+    "evidence": "essay:一個鐘"
+  },
+  {
+    "char": "兩個鐘",
+    "jyutping": "loeng5 go3 zung1",
+    "code": "543",
+    "category": "spoken",
+    "evidence": "essay:兩個鐘"
+  },
+  {
+    "char": "幾個鐘",
+    "jyutping": "gei2 go3 zung1",
+    "code": "943",
+    "category": "spoken",
+    "evidence": "essay:幾個鐘"
+  },
+  {
+    "char": "傾下計",
+    "jyutping": "king1 haa5 gai2",
+    "code": "359",
+    "category": "spoken",
+    "evidence": "essay:傾下計"
+  },
+  {
+    "char": "合埋眼",
+    "jyutping": "hap6 maai4 ngaan5",
+    "code": "205",
+    "category": "spoken",
+    "evidence": "essay:合埋眼"
+  },
+  {
+    "char": "講多次",
+    "jyutping": "gong2 do1 ci3",
+    "code": "934",
+    "category": "spoken",
+    "evidence": "essay:講多次"
+  },
+  {
+    "char": "未試過",
+    "jyutping": "mei6 si3 gwo3",
+    "code": "244",
+    "category": "spoken",
+    "evidence": "essay:未試過"
+  },
+  {
+    "char": "未見過",
+    "jyutping": "mei6 gin3 gwo3",
+    "code": "244",
+    "category": "spoken",
+    "evidence": "essay:未見過"
   }
 ]

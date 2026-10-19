@@ -726,6 +726,10 @@ _Avoid_：經下游合併 YAML 重新混入 proper nouns、用 Essay 詞頻做�
 舊 `jyut6ping3.phrase.dict.yaml` 嘅非預設、維護者顯式分析來源（`rime_phrase`）；只用於找出其他可信來源未覆蓋而值得移入 curated 嘅少量固定短語。歷史檔混有輸入法用戶詞庫及城市資訊，唔再參與預設 **詞條庫建置流程**。
 _Avoid_：把 phrase raw 全量或過濾後餘量當預設詞庫、直接靠自動讀音收錄、用拒收表長期清洗黃頁型來源
 
+**自建補充詞條**：
+經字面、用法與整詞粵音檢視後，加入既有 `curated_lexicon.json` 嘅通用中文、填詞短語及粵語口語；沿用 `curated` 來源與詞條從源重建。候選報表只用 Essay 詞頻發現缺漏，唔具收錄權；`category`／`evidence` 係來源審核資料，唔等同專案詞性或排序信號。見 `docs/lexicon-supplement.md`。
+_Avoid_：把候選報表或逐字拼音直接當正式詞庫、以高詞頻自動收錄、另開 runtime 補充庫而令雙端漂移、把 AI 輔助覆核稱為人類逐條審核
+
 **短語收錄門檻**：
 維護者顯式分析 **短語補缺來源** 時判定字面可否成為 rescue 候選嘅相容規則集；拒收者只計統計。規則唔再承擔預設詞庫除噪責任，真正收錄須移入可信分類或 curated。
 _Avoid_：filter（作領域正名）、重新啟用 legacy phrase 作預設、把拒收字面表當第二套詞庫
