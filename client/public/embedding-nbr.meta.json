@@ -4,10 +4,14 @@
   "model_version": "bge-m3-fp32-onnx-v1",
   "n_heads": 165034,
   "n_edges": 2258966,
-  "sha256": "cbafab03d5adbe2adfc376a8def20cdbf835444f05ef69946c39d5d899fb9ed6",
+  "sha256": "e8ec54a9159b368130fdeeb2afd4e9cc359b729f2f93c84b6e005763a64f53a7",
   "score_floor_milli": 500,
   "score_span_milli": 500,
   "source": "embedding_cosine",
   "relation_type": "semantic_related",
-  "char_id_fingerprint": "da8a8d42bf759cf261c0741e3981e40daaf0e31da4a6c24b86f49f206a9745fd"
+  "char_id_fingerprint": "eaafb67e09ba3bf5b928aeada54e660d01b428fce296352c3034ad5584070691",
+  "char_count": 166395,
+  "migration": "word-identity-remap",
+  "remapped_from_sha256": "cbafab03d5adbe2adfc376a8def20cdbf835444f05ef69946c39d5d899fb9ed6",
+  "remapped_from_char_id_fingerprint": "da8a8d42bf759cf261c0741e3981e40daaf0e31da4a6c24b86f49f206a9745fd"
 }
