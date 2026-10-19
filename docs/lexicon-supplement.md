@@ -164,3 +164,13 @@ python -m unittest tests.smoke.test_lexicon_supplement_proposals -q
 - 遷移後 bin SHA-256：`e8ec54a9159b368130fdeeb2afd4e9cc359b729f2f93c84b6e005763a64f53a7`。
 - 新字面／主 ID 指紋：`eaafb67e09ba3bf5b928aeada54e660d01b428fce296352c3034ad5584070691`。
 - README 詞條數及三語版本號同步為 v1.1.2；macOS 發佈改用現行 `.app` 建置腳本。
+
+### v1.1.2 第三批刷新（2026-10-19）
+
+- 完整重建 **181,735 列、166,594 個字面**；三批累計新增 **536 個表達**。
+- 今批新增 199 個字面，補回「從頭開始」正確讀音，精確剔除 11 筆錯讀；三批累計剔除 27 筆、修復 7 筆既有讀音或編碼。
+- 近反義資料 225,479 筆；既有每端 20 鄰居上限令 8 條 Cilin 稀疏邊重新選取，其餘舊關係保留。
+- 按字面再遷移全部 2,258,966 條有向語意邊及分數，並非重新訓練模型。
+- 遷移後 bin SHA-256：`d4f8d9acfbcfa18b1b09fb0f86d0edaf06d84e3918e9fab543b9ae5ace23a49e`。
+- 新字面／主 ID 指紋：`c3be72707199fd85fee286fb12a526116f73023fcbe46f44894db108472e16f4`。
+- PWA、Windows 及 macOS Intel 完整套件與三語說明使用同一刷新版本；詳見[第三批報告](lexicon-supplement-b03.md)。
