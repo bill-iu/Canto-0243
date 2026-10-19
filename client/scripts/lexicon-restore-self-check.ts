@@ -1,8 +1,10 @@
 /** ponytail: DB-4 + ADR-0032 G — SW urlPattern must match dev + release lexicon URLs (plain + gzip) */
-const pattern = /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?$/;
+const pattern = /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?(?:\?.*)?$/;
 
 for (const url of [
   '/lyrics.dev.db',
+  '/Canto-0243/lyrics.db?sha256=abc',
+  '/Canto-0243/lyrics.db.gz?sha256=def',
   '/lyrics.v1.2.3.db',
   '/Canto-0243/lyrics.dev.db',
   '/lyrics.394052.db.gz',

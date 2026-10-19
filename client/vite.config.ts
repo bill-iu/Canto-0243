@@ -196,7 +196,7 @@ export default defineConfig(({ command, mode }) => {
               }
             },
             {
-              urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?$/,
+              urlPattern: /\/lyrics(?:\.[^/]+)?\.db(?:\.gz)?(?:\?.*)?$/,
               handler: 'CacheFirst',
               options: {
                 cacheName: 'database-cache',

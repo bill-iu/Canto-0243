@@ -1,6 +1,7 @@
 /** ADR-0032 G: manifest gzip target resolution */
 import {
   buildDevLexiconTarget,
+  lexiconStorageVersion,
   resolveTargetFromManifest,
   type LexiconManifest,
 } from '../src/db/lexicon-manifest.ts';
@@ -30,7 +31,7 @@ const gzTarget = resolveTargetFromManifest(gz, '394052');
 if (!gzTarget.useGzip || gzTarget.fetchByteSize !== 300) {
   throw new Error('lexicon-manifest-self-check: gzip target');
 }
-if (!gzTarget.fetchUrl.endsWith('.db.gz')) {
+if (!new URL(gzTarget.fetchUrl, 'https://example.test').pathname.endsWith('.db.gz')) {
   throw new Error('lexicon-manifest-self-check: gzip fetchUrl');
 }
 
@@ -43,3 +44,17 @@ if (buildDevLexiconTarget('v1').version !== 'v1-dev') {
 }
 
 console.log('lexicon-manifest self-check ok');
+
+// Regression: refreshed v1.1.2 has different content but exactly the same byte size.
+const oldSnapshot = resolveTargetFromManifest({ ...gz, lexiconVersion: 'v1.1.2', sha256: 'a'.repeat(64) }, 'v1.1.2');
+const newSnapshot = resolveTargetFromManifest({ ...gz, lexiconVersion: 'v1.1.2', sha256: 'b'.repeat(64) }, 'v1.1.2');
+if (oldSnapshot.version !== newSnapshot.version || oldSnapshot.byteSize !== newSnapshot.byteSize) {
+  throw new Error('same-tag replacement fixture must keep its version and size');
+}
+if (lexiconStorageVersion(oldSnapshot) === lexiconStorageVersion(newSnapshot)
+  || oldSnapshot.fetchUrl === newSnapshot.fetchUrl || oldSnapshot.dbUrl === newSnapshot.dbUrl) {
+  throw new Error('same-tag replacement must miss both OPFS and SW caches');
+}
+if (lexiconStorageVersion({ version: 'legacy' }) !== 'legacy') {
+  throw new Error('manifest without a fingerprint must preserve its legacy cache key');
+}

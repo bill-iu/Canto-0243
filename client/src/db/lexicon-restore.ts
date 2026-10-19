@@ -1,7 +1,7 @@
 /**
  * DB-4 lexicon dual-path restore — OPFS first, then SW CacheFirst / network
  */
-import type { LexiconTarget } from './lexicon-manifest.ts';
+import { lexiconStorageVersion, type LexiconTarget } from './lexicon-manifest.ts';
 import { fetchLexiconBytesFromUrl } from './lexicon-fetch.ts';
 import { lexiconOpfsFileName, readLexiconFromOpfs, removeLexiconFromOpfs } from './opfs-lexicon.ts';
 import { opfsFileSize } from './opfs-storage.ts';
@@ -50,7 +50,7 @@ export async function purgeSwLexiconCache(urls: string[]): Promise<void> {
 
 export async function getLexiconCacheStatus(target: LexiconTarget): Promise<LexiconCacheStatus> {
   const [opfs, swFetch, swPlain] = await Promise.all([
-    isOpfsLexiconCached(target.version),
+    isOpfsLexiconCached(lexiconStorageVersion(target)),
     isSwLexiconCached(target.fetchUrl),
     target.fetchUrl !== target.dbUrl ? isSwLexiconCached(target.dbUrl) : Promise.resolve(false),
   ]);
@@ -83,7 +83,7 @@ export async function purgeStaleLexiconCaches(
 ): Promise<void> {
   console.warn(`Lexicon integrity: ${reason}; purging OPFS + SW database-cache`);
   try {
-    await removeLexiconFromOpfs(target.version);
+    await removeLexiconFromOpfs(lexiconStorageVersion(target));
   } catch {
     /* best-effort */
   }
@@ -111,10 +111,10 @@ async function fetchWithLock(fetchUrl: string, target: LexiconTarget): Promise<U
 export async function resolveLexiconBytes(
   target: LexiconTarget,
 ): Promise<{ bytes: Uint8Array; source: LexiconRestoreSource }> {
-  const fromOpfs = await readLexiconFromOpfs(target.version);
+  const fromOpfs = await readLexiconFromOpfs(lexiconStorageVersion(target));
   if (fromOpfs?.byteLength) {
     if (target.byteSize != null && fromOpfs.byteLength !== target.byteSize) {
-      await purgeBadOpfsLexicon(target.version, fromOpfs, target);
+      await purgeBadOpfsLexicon(lexiconStorageVersion(target), fromOpfs, target);
       await purgeSwLexiconCache([target.fetchUrl, target.dbUrl].filter(Boolean));
     } else {
       return { bytes: fromOpfs, source: 'opfs' };

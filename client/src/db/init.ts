@@ -14,6 +14,7 @@ import {
 } from './lexicon-restore.ts';
 import {
   loadLexiconTarget,
+  lexiconStorageVersion,
   publicAssetUrl,
   lexiconVersionFromEnv,
   type LexiconTarget,
@@ -171,7 +172,7 @@ async function initializeSqlJsPath(target: LexiconTarget): Promise<DatabaseBacke
   reportGatePhase('open', 0.15);
   await verifyLexiconIntegrity(bytes, target);
   reportGatePhase('open', 0.4);
-  await persistLexiconForOffline(target.version, bytes);
+  await persistLexiconForOffline(lexiconStorageVersion(target), bytes);
   reportGatePhase('open', 0.65);
   const opened = await loadSqlJsFromBytes(bytes);
   reportGatePhase('open', 0.95);
@@ -184,7 +185,7 @@ async function initializeOpfsLexicon(target: LexiconTarget): Promise<DatabaseBac
   }
   reportGatePhase('open', 0.2);
   const opened = await openOpfsVfsDatabase({
-    version: target.version,
+    version: lexiconStorageVersion(target),
     fetchUrl: target.fetchUrl,
     gzip: target.useGzip,
     progressTotal: target.fetchByteSize,
