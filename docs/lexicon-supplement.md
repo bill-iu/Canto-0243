@@ -62,7 +62,7 @@ python scripts/propose_lyric_supplement.py --corpus-dir .tmp/cantopop-corpus/Hum
 75 列繼續待審；「自己」「今日」「把握」等有粵典支持的異讀保留。
 完整收錄、54 個切句殘片排除項、讀音判決及語料指紋見
 [`data/lexicon/reviews/`](../data/lexicon/reviews/)；來源比較及驗證見
-[第三批研究紀錄](research/2026-10-19-lyric-lexicon-b03.md)。
+[第三批研究紀錄](lexicon-supplement-b03.md)。
 
 以下 Essay 工具仍可作其他常用中文／口語來源，唔代替歌詞優先審核：
 
