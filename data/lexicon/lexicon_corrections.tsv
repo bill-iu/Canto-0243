@@ -35,3 +35,37 @@ char	old_jyutping	old_code	action	value	note
 愛錫	ngoi3 sek3		delete		2026-10-19-b03 歌詞交叉審核：愛用 oi3；Rime word.csv:32346 同詞校對。 保留 oi3 sek3。參考 https://github.com/CanCLID/rime-cantonese-upstream/blob/126ce8c8365b9264ed46f813c3e6720a898be227/word.csv
 折衷	caak3 cung1		delete		2026-10-19-b03 歌詞交叉審核：折衷讀 zit3 cung1，非把折誤當拆的 caak3。 保留 zit3 cung1。參考 https://cantonese.sheik.co.uk/dictionary/characters/2011/
 百家姓	baak3 gaa1 sing1		delete		2026-10-19-b03 歌詞交叉審核：姓讀 sing3。 保留 baak3 gaa1 sing3。參考 https://cantowords.com/dictionary/%E7%99%BE%E5%AE%B6%E5%A7%93
+佝僂病	kau3 lau4 bing6		set_jyutping	kau3 lau4 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+傷病員	soeng1 bing6 jyun4		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+出毛病	ceot1 mou4 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+同病相憐	tung4 bing6 soeng1 lin4		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+壞血病	waai6 hyut3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+富貴病	fu3 gwai3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+得病	dak1 bing6		set_jyutping	dak1 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+性病	sing3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+恐水病	hung2 seoi2 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+慢性病	maan6 sing3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+懷鄉病	waai4 hoeng1 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+探病	taam3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+推病	teoi1 bing6		set_jyutping	teoi1 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+敗血病	baai6 hyut3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+文明病	man4 ming4 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+氣喘病	hei3 cyun2 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+無病呻吟	mou4 bing6 san1 jam4		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+生老病死	sang1 lou5 bing6 sei2		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病	bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病歿	bing6 mut6		set_jyutping	beng6 mut6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+病理學	bing6 lei5 hok6		set_jyutping	beng6 lei5 hok6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+病症	bing6 zing3		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病變	bing6 bin3		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病逝	bing6 sai6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病體	bing6 tai2		set_jyutping	beng6 tai2	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+病魔	bing6 mo1		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+病魔纏身	bing6 mo1 cin4 san1		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+百病	baak3 bing6		set_jyutping	baak3 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+百病叢生	baak3 bing6 cung4 sang1		set_jyutping	baak3 beng6 cung4 sang1	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+相思病	soeng1 si1 bing6		set_jyutping	soeng1 si1 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+看病	hon3 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+稱病	cing1 bing6		set_jyutping	cing1 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+遺傳病	wai4 cyun4 bing6		set_jyutping	wai4 cyun4 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
+重病	cung5 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。

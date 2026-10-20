@@ -174,3 +174,13 @@ python -m unittest tests.smoke.test_lexicon_supplement_proposals -q
 - 遷移後 bin SHA-256：`d4f8d9acfbcfa18b1b09fb0f86d0edaf06d84e3918e9fab543b9ae5ace23a49e`。
 - 新字面／主 ID 指紋：`c3be72707199fd85fee286fb12a526116f73023fcbe46f44894db108472e16f4`。
 - PWA、Windows 及 macOS Intel 完整套件與三語說明使用同一刷新版本；詳見[第三批報告](lexicon-supplement-b03.md)。
+
+### 「病」的日常讀音選擇（2026-10-21，待發佈）
+
+- 按維護者要求，含「病」的字詞採用日常口語 `beng6`，排除 `bing6` 文讀變體。
+  這是本專案的收錄選擇，唔將上游標示的文讀一概宣稱為錯字。
+- [逐項清單](../data/lexicon/reviews/2026-10-21-disease-readings.tsv)共 34 筆：23 筆已有對應 `beng6`，刪去重複變體；
+  另 11 筆以精確 `set_jyutping` 轉成 `beng6`，避免刪去「病理學」「相思病」等字面。
+- 由正常預設詞源合併並套用勘誤後共 181,712 列：精確移除 34 個舊讀音對、加入 11 個 `beng6` 對，
+  原有字面及其餘讀音對全部保留。「冰」等其他字的 `bing` 不受影響。
+- 改動只寫入勘誤及審核清單，未改上游 raw 或現行 `lyrics.db`；正式生效仍須完整重建及發佈。

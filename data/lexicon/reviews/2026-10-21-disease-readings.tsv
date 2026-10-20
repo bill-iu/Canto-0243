@@ -1,0 +1,35 @@
+char	old_jyutping	replacement	action
+佝僂病	kau3 lau4 bing6	kau3 lau4 beng6	set_jyutping
+傷病員	soeng1 bing6 jyun4	soeng1 beng6 jyun4	delete
+出毛病	ceot1 mou4 bing6	ceot1 mou4 beng6	delete
+同病相憐	tung4 bing6 soeng1 lin4	tung4 beng6 soeng1 lin4	delete
+壞血病	waai6 hyut3 bing6	waai6 hyut3 beng6	delete
+富貴病	fu3 gwai3 bing6	fu3 gwai3 beng6	delete
+得病	dak1 bing6	dak1 beng6	set_jyutping
+性病	sing3 bing6	sing3 beng6	delete
+恐水病	hung2 seoi2 bing6	hung2 seoi2 beng6	delete
+慢性病	maan6 sing3 bing6	maan6 sing3 beng6	delete
+懷鄉病	waai4 hoeng1 bing6	waai4 hoeng1 beng6	delete
+探病	taam3 bing6	taam3 beng6	delete
+推病	teoi1 bing6	teoi1 beng6	set_jyutping
+敗血病	baai6 hyut3 bing6	baai6 hyut3 beng6	delete
+文明病	man4 ming4 bing6	man4 ming4 beng6	delete
+氣喘病	hei3 cyun2 bing6	hei3 cyun2 beng6	delete
+無病呻吟	mou4 bing6 san1 jam4	mou4 beng6 san1 jam4	delete
+生老病死	sang1 lou5 bing6 sei2	sang1 lou5 beng6 sei2	delete
+病	bing6	beng6	delete
+病歿	bing6 mut6	beng6 mut6	set_jyutping
+病理學	bing6 lei5 hok6	beng6 lei5 hok6	set_jyutping
+病症	bing6 zing3	beng6 zing3	delete
+病變	bing6 bin3	beng6 bin3	delete
+病逝	bing6 sai6	beng6 sai6	delete
+病體	bing6 tai2	beng6 tai2	set_jyutping
+病魔	bing6 mo1	beng6 mo1	delete
+病魔纏身	bing6 mo1 cin4 san1	beng6 mo1 cin4 san1	delete
+百病	baak3 bing6	baak3 beng6	set_jyutping
+百病叢生	baak3 bing6 cung4 sang1	baak3 beng6 cung4 sang1	set_jyutping
+相思病	soeng1 si1 bing6	soeng1 si1 beng6	set_jyutping
+看病	hon3 bing6	hon3 beng6	delete
+稱病	cing1 bing6	cing1 beng6	set_jyutping
+遺傳病	wai4 cyun4 bing6	wai4 cyun4 beng6	set_jyutping
+重病	cung5 bing6	cung5 beng6	delete
