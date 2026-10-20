@@ -22,9 +22,11 @@ export const ABOUT_COPY = {
     lexiconBody:
       '除上游詞庫外，亦收錄維護者審核的<strong>通用中文、填詞短語及粵語口語</strong>，三批合共新增 <strong>536 個表達</strong>，例如「迎風起」「花開花落」「只差一點」「講清楚」。今批 199 個表達中，168 個有跨曲歌詞證據，31 個有 Essay 口語證據。新增詞條會核對字面、粵拼及聲調編碼；已確認錯誤的讀音會移除，有依據的變讀則保留。',
     lexiconReadings:
-      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。',
+      '例如「善良」讀 <strong>sin6 loeng4</strong>（20），「圖書館」讀 <strong>tou4 syu1 gun2</strong>（039）；「迎風起」讀 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 鬆模式</strong>可用「033起」找到。含「病」的字詞只收日常 <strong>beng6</strong>：移除 34 組 bing6 異讀，保留所有原有字面。',
     lexiconUpdate:
       'PWA 重新開啟並完成詞庫更新後即可使用最新資料；桌面版請下載最新完整套件。Windows 開啟 Canto-0243.exe，macOS Intel 開啟 Canto-0243.app；桌面版首次啟動需連網下載執行環境，其後可離線使用。',
+    navigationTitle: '查詢分頁與上一頁',
+    navigationBody: '瀏覽器上一頁會返回目前 app 分頁的上一個查詢結果。例如在同一分頁輸入「43」，再輸入「243」，按瀏覽器上一頁即返回「43」的結果。自動搜尋亦會記錄歷史；其他 app 分頁不受影響，重新載入後仍可返回。',
     pledgeTitle: '承諾與授權',
     pledgeBody1:
       '<strong>本工具 100% 免費、開源。我們絕不會利用本工具或其底層數據牟利。</strong>任何創作者皆可將本工具用於<strong>商業創作</strong>（例如歌曲、劇本、已發表歌詞），前提為遵守下方限制與 <a href="' +
@@ -90,9 +92,11 @@ export const ABOUT_COPY = {
     lexiconBody:
       '除上游词库外，亦收录维护者审核的<strong>通用中文、填词短语及粤语口语</strong>，三批合共新增 <strong>536 个表达</strong>，例如「迎风起」「花开花落」「只差一点」「讲清楚」。今批 199 个表达中，168 个有跨曲歌词证据，31 个有 Essay 口语证据。新增词条会核对字面、粤拼及声调编码；已确认错误的读音会移除，有依据的变读则保留。',
     lexiconReadings:
-      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。',
+      '例如「善良」读 <strong>sin6 loeng4</strong>（20），「图书馆」读 <strong>tou4 syu1 gun2</strong>（039）；「迎风起」读 <strong>jing4 fung1 hei2</strong>（039），在 <strong>0243 宽松模式</strong>可用「033起」找到。含「病」的字词只收日常 <strong>beng6</strong>：移除 34 组 bing6 异读，保留所有原有字面。',
     lexiconUpdate:
       'PWA 重新打开并完成词库更新后即可使用最新资料；桌面版请下载最新完整套件。Windows 打开 Canto-0243.exe，macOS Intel 打开 Canto-0243.app；桌面版首次启动需联网下载运行环境，其后可离线使用。',
+    navigationTitle: '查询分页与上一页',
+    navigationBody: '浏览器上一页会返回当前 app 分页的上一个查询结果。例如在同一分页输入「43」，再输入「243」，按浏览器上一页即返回「43」的结果。自动搜索也会记录历史；其他 app 分页不受影响，重新加载后仍可返回。',
     pledgeTitle: '承诺与授权',
     pledgeBody1:
       '<strong>本工具 100% 免费、开源。我们绝不会利用本工具或其底层数据牟利。</strong>任何创作者皆可将本工具用于<strong>商业创作</strong>（例如歌曲、剧本、已发表歌词），前提为遵守下方限制与 <a href="' +
@@ -158,9 +162,11 @@ export const ABOUT_COPY = {
     lexiconBody:
       'Alongside upstream dictionaries, a maintainer-reviewed supplement covers <strong>general Chinese, lyric phrases, and colloquial Cantonese</strong>, with <strong>536 expressions added across three batches</strong>, including 「迎風起」「花開花落」「只差一點」「講清楚」. Of the latest 199 additions, 168 have evidence in multiple songs and 31 have Essay colloquial evidence. Entries are checked for wording, Jyutping, and tone codes. Confirmed incorrect readings are removed while supported variants are retained.',
     lexiconReadings:
-      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it.',
+      'For example, 「善良」 is <strong>sin6 loeng4</strong> (20), and 「圖書館」 is <strong>tou4 syu1 gun2</strong> (039). 「迎風起」 is <strong>jing4 fung1 hei2</strong> (039); search for 「033起」 in <strong>0243 loose mode</strong> to find it. Expressions containing 「病」 use everyday <strong>beng6</strong>; 34 bing6 variants are removed while all existing word forms are preserved.',
     lexiconUpdate:
       'Reopen the PWA and complete its lexicon update to use the latest data. For Desktop, download the latest complete bundle and open Canto-0243.exe on Windows or Canto-0243.app on macOS Intel. The first Desktop launch needs internet to download its runtime; later use is offline.',
+    navigationTitle: 'Query tabs & browser Back',
+    navigationBody: 'Browser Back restores the previous query and results in the current app tab. For example, type 43 and then 243 in the same tab; browser Back returns to the results for 43. Automatic searches also enter the history. Other app tabs stay unchanged, and history survives reloading.',
     pledgeTitle: 'Commitment & license',
     pledgeBody1:
       '<strong>This tool is 100% free and open source. We will never profit from this tool or its underlying data.</strong> Any creator may use it for <strong>commercial creative work</strong> (songs, scripts, published lyrics) provided you follow the restrictions below and the <a href="' +

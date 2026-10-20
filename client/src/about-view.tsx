@@ -69,6 +69,11 @@ export function AboutView({ lang, lexiconVersion, onBack }: AboutViewProps) {
       </article>
 
       <article className="guide-card about-block">
+        <h2>{c.navigationTitle}</h2>
+        <p>{c.navigationBody}</p>
+      </article>
+
+      <article className="guide-card about-block">
         <h2>{c.pledgeTitle}</h2>
         <p>
           <HtmlBlock html={c.pledgeBody1} />
