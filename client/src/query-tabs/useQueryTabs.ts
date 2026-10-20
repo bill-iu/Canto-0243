@@ -167,7 +167,11 @@ function loadInitialTabState(): { state: TabState; bootstrap: InitialTabBootstra
     const nextTabId = state.tabs.some((t) => t.id === searchTab.id) ? state.nextTabId : state.nextTabId + 1;
     const cleared = emptySearchSnapshot({ ...searchTab, q: parsed.q! });
     const pzmode = (parsed.pzmode === 'm2' || parsed.pzmode === 'm3' ? parsed.pzmode : 'm1') as PingzeSubMode;
-    resetSearchTabHistory(cleared, parsed.mode, pzmode);
+    const current = currentSearchHistoryFrame(searchTab);
+    const sameQuery = current.q === parsed.q && current.mode === parsed.mode &&
+      (parsed.mode !== 'pz' || (current.pzmode || 'm1') === pzmode);
+    // Reloading this query keeps its tab's earlier searches; a new deep link starts fresh.
+    if (!sameQuery) resetSearchTabHistory(cleared, parsed.mode, pzmode);
     commitSearchHistoryFrame(cleared, { q: parsed.q!, mode: parsed.mode, pzmode });
     state = {
       activeId: cleared.id,
@@ -241,7 +245,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
   const lastHistSeqRef = useRef(
     typeof window !== 'undefined' ? historySeqFromState(window.history.state) : 0,
   );
-  const nextHistSeqRef = useRef(1);
+  const nextHistSeqRef = useRef(lastHistSeqRef.current + 1);
   const suppressPopstateRef = useRef(false);
   const initDoneRef = useRef(false);
 
@@ -577,7 +581,7 @@ export function useQueryTabs({ currentMode, currentPzMode, onModeChange }: UseQu
       const seq = state._histSeq;
 
       const parsedUrl = parseUrlSearchParams(new URLSearchParams(window.location.search));
-      if (pageFromPath(window.location.pathname) === 'workbench' || parsedUrl.view === VIEW.WORKBENCH) {
+      if (tab?.view !== VIEW.SEARCH && (pageFromPath(window.location.pathname) === 'workbench' || parsedUrl.view === VIEW.WORKBENCH)) {
         const next = openSingletonView(current, VIEW.WORKBENCH, createWorkbenchTab);
         const workbench = next.tabs.find((candidate) => candidate.view === VIEW.WORKBENCH);
         const resolved = workbench ? { ...next, activeId: workbench.id } : next;
