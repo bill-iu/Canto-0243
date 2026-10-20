@@ -675,6 +675,7 @@ function App() {
       setInputQueryLive(value);
       return;
     }
+    setUseLiveFetch(true);
     setInputQueryDebounced(value);
     if (activeTab?.view === VIEW.SEARCH) {
       patchSearchTab(tabState.activeId, { q: value });

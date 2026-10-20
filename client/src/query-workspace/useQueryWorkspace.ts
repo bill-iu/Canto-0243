@@ -5,7 +5,7 @@ import { searchLimitForOffset, searchPage, type QueryResult } from '../db/query.
 import { useDebouncedSearchQuery } from '../hooks/useDebouncedSearchQuery.ts';
 import { countWorkspaceRender, markSearchDispatch, markSearchResolve } from '../search-perf.ts';
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
-import type { QueryWorkspaceNavigationAdapter } from './navigation-adapter.ts';
+import { commitReadyPreview, type QueryWorkspaceNavigationAdapter } from './navigation-adapter.ts';
 import {
   filterByProjectPos,
   isPosFilterActive,
@@ -163,6 +163,9 @@ export function useQueryWorkspace({
   }, [activeTab, activeTabId, dataVersion, hydrateSearch, mode, pzmode]);
 
   useEffect(() => {
+    // Activation hydrates the new tab's input in the same effect pass. Wait for
+    // that render before using searchQuery, which still belongs to the old tab.
+    if (state.tabId !== activeTabId) return;
     if (!enabled || !isReady || activeTabId == null || !searchQuery.trim()) {
       frameAbortRef.current?.abort();
       loadMoreAbortRef.current?.abort();
@@ -184,7 +187,7 @@ export function useQueryWorkspace({
       pzmode,
       kind: 'preview',
     });
-  }, [activeTabId, enabled, fallback0243Mode, isReady, mode, pzmode, searchQuery, uiLang]);
+  }, [activeTabId, enabled, fallback0243Mode, isReady, mode, pzmode, searchQuery, state.tabId, uiLang]);
 
   useEffect(() => {
     const frame = state.activeFrame;
@@ -343,9 +346,10 @@ export function useQueryWorkspace({
       presentationShuffledRef.current,
     );
     if (checkpoint) {
+      if (enabled) commitReadyPreview(navigationAdapter, state, activeTabId);
       navigationAdapter.checkpoint(state.tabId, checkpoint);
     }
-  }, [navigationAdapter, presentationGeneration, presentationResults, state]);
+  }, [activeTabId, enabled, navigationAdapter, presentationGeneration, presentationResults, state]);
 
   const commitSearch = useCallback(
     (nextQuery = inputQuery, nextMode = mode, nextPzMode = pzmode) => {

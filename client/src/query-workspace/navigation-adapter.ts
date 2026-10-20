@@ -1,6 +1,6 @@
 import type { Last0243SearchMode, PingzeSubMode, UiMode } from '../mode-meta.ts';
 import type { QueryResult } from '../db/query.ts';
-import type { QueryWorkspaceSnapshot } from './state.ts';
+import type { QueryWorkspaceSnapshot, QueryWorkspaceState } from './state.ts';
 
 export type QueryWorkspaceCommittedFrame = {
   query: string;
@@ -12,6 +12,17 @@ export type QueryWorkspaceCommittedFrame = {
 export interface QueryWorkspaceNavigationAdapter {
   commit(frame: QueryWorkspaceCommittedFrame): void;
   checkpoint(tabId: number, snapshot: QueryWorkspaceSnapshot<QueryResult>): void;
+}
+
+/** A displayed automatic result belongs in the active tab's Back history too. */
+export function commitReadyPreview(
+  adapter: QueryWorkspaceNavigationAdapter,
+  state: Pick<QueryWorkspaceState<unknown>, 'status' | 'tabId' | 'activeFrame'>,
+  activeTabId: number | null,
+): void {
+  const frame = state.activeFrame;
+  if (state.status !== 'ready' || state.tabId !== activeTabId || !frame || frame.kind !== 'preview') return;
+  adapter.commit({ query: frame.query, mode: frame.mode as UiMode, pzmode: frame.pzmode as PingzeSubMode });
 }
 
 export function createCallbackNavigationAdapter(
