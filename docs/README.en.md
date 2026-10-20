@@ -22,10 +22,13 @@ Current version: **v1.1.2**
 <!-- /version:en -->
 
 <!-- words-count:en -->
-Current word entries: **181,735** (`lyrics.db` · `words` table)
+Current word entries: **181,712** (`lyrics.db` · `words` table)
 <!-- /words-count:en -->
 
-**v1.1.2 lexicon update**
+**v1.1.2 lexicon and search fixes (2026-10-21)**
+
+* Expressions containing 「病」 use everyday `beng6`: remove 34 `bing6` variants, retaining the 23 existing `beng6` alternatives and converting the remaining 11. Every existing word form is preserved.
+* Browser Back restores the current app tab's previous query and results: after automatic searches `43` → `243` in one tab, Back returns to `43`. Other app tabs are unchanged, and query history survives reloading.
 
 * Three batches add **536 expressions** (76 + 261 + 199), covering general Chinese, lyric phrases, and colloquial Cantonese, including 「迎風起」「花開花落」「只差一點」「講清楚」. Of the latest 199 additions, 168 have evidence in multiple songs and 31 have Essay colloquial evidence; see the [third-batch review](lexicon-supplement-b03.md).
 * Remove **27 confirmed incorrect readings** (11 in this batch), restore 7 readings or codes for existing expressions, and correct 9 codes in the earlier supplement. Supported reading variants are retained.
@@ -163,4 +166,4 @@ Full third-party license list: [`THIRD_PARTY_NOTICES.md`](../THIRD_PARTY_NOTICES
 
 ---
 
-**Last updated**: 2026-10-19 (v1.1.2 supplementary lexicon, reading corrections, and PWA/Desktop update instructions)
+**Last updated**: 2026-10-21 (v1.1.2 everyday 病 readings, per-tab browser Back, and synchronized PWA/Desktop update)
