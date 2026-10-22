@@ -232,22 +232,22 @@ def _compile_code_ref_middle_rhyme(query: CodeRefMiddleRhymeQuery) -> CanonicalM
 
 def _compile_rhyme_anchor(query: RhymeAnchorQuery) -> CanonicalMatchSpec:
     mask = ["?"] * query.width
-    if query.anchor_pos == 0:
-        for pos, value in enumerate(query.slots, start=1):
-            mask[pos] = value
-    else:
-        for pos, value in enumerate(query.slots):
-            mask[pos] = value
+    slots = [
+        SlotConstraint(
+            pos=query.anchor_pos,
+            kind="final_anchor" if query.constraint == "final" else "initial_anchor",
+            value=query.anchor,
+        )
+    ]
+    for index, value in enumerate(query.slots):
+        pos = index if index < query.anchor_pos else index + 1
+        mask[pos] = value
+        if value.isdigit():
+            slots.append(SlotConstraint(pos=pos, kind="code_digit", value=value))
     return finalize_canonical_match_spec(
         width=query.width,
         mask="".join(mask),
-        slots=[
-            SlotConstraint(
-                pos=query.anchor_pos,
-                kind="final_anchor" if query.constraint == "final" else "initial_anchor",
-                value=query.anchor,
-            )
-        ],
+        slots=slots,
     )
 
 

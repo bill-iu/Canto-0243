@@ -41,6 +41,34 @@ class CanonicalMatchSpecTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             compile_parsed_query(normalize_and_parse("香港"))
 
+    def test_rhyme_with_code_search_ignores_anchor_tone(self) -> None:
+        from app.domain.lexicon.phoneme_codec import encode_phoneme_list
+        from app.models.word import Word
+        from app.services.query_dispatch import search_words
+        from tests.smoke.helpers import memory_sessionmaker
+
+        Session = memory_sessionmaker()
+        with Session() as db:
+            for char, jyutping, code, initials, finals in [
+                ("墨", "mak6", "2", ["m"], ["ak"]),
+                ("黑客", "hak1 haak3", "34", ["h", "h"], ["ak", "aak"]),
+                ("麥片", "mak6 pin3", "24", ["m", "p"], ["ak", "in"]),
+                ("黑雨", "hak1 jyu5", "35", ["h", "j"], ["ak", "yu"]),
+                ("麥粉", "mak6 fan2", "29", ["m", "f"], ["ak", "an"]),
+                ("拍攝", "paak3 sip3", "44", ["p", "s"], ["aak", "ip"]),
+            ]:
+                db.add(Word(
+                    char=char, jyutping=jyutping, code=code, length=len(char),
+                    initials=encode_phoneme_list(initials, "initial"),
+                    finals=encode_phoneme_list(finals, "final"),
+                ))
+            db.commit()
+            for mode in ("m1", "m2", "m3"):
+                with self.subTest(mode=mode):
+                    rows = search_words(q="墨=4", mode=mode, db=db, limit=100, offset=0)
+                    expected = {"黑客", "麥片"} | ({"黑雨"} if mode != "m3" else set())
+                    self.assertEqual({row["char"] for row in rows}, expected)
+
     def test_legacy_adapter_returns_a_canonical_value(self) -> None:
         canonical = canonicalize_legacy_match_spec(
             MatchSpec(

@@ -201,19 +201,21 @@ function compileCodeRefMiddleRhyme(query: CodeRefMiddleRhymeQuery): CanonicalMat
 
 function compileRhymeAnchor(query: RhymeAnchorQuery): CanonicalMatchSpec {
   const mask = Array(query.width).fill('?') as string[];
-  if (query.anchor_pos === 0) {
-    for (let i = 0; i < query.slots.length; i += 1) mask[i + 1] = query.slots[i]!;
-  } else {
-    for (let i = 0; i < query.slots.length; i += 1) mask[i] = query.slots[i]!;
+  const slots: SlotConstraint[] = [{
+    pos: query.anchor_pos,
+    kind: query.constraint === 'final' ? 'final_anchor' : 'initial_anchor',
+    value: query.anchor,
+  }];
+  for (let i = 0; i < query.slots.length; i += 1) {
+    const pos = i < query.anchor_pos ? i : i + 1;
+    const value = query.slots[i]!;
+    mask[pos] = value;
+    if (/\d/.test(value)) slots.push({ pos, kind: 'code_digit', value });
   }
   return finalizeCanonicalMatchSpec({
     width: query.width,
     mask: mask.join(''),
-    slots: [{
-      pos: query.anchor_pos,
-      kind: query.constraint === 'final' ? 'final_anchor' : 'initial_anchor',
-      value: query.anchor,
-    }],
+    slots,
   });
 }
 
