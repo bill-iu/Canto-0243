@@ -2,7 +2,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { normalizeAndParse } from '../src/db/query-engine.ts';
+import { normalizeAndParse, queryEngine } from '../src/db/query-engine.ts';
+import { injectDatabaseForTests } from '../src/db/init.ts';
+import { encodePhonemeList } from '../src/db/phoneme-codec.ts';
+import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
+import { initSqlJs } from '../src/db/sqljs.ts';
 import {
   canonicalMatchSpecToJson,
   finalizeCanonicalMatchSpec,
@@ -92,5 +96,37 @@ try {
   unownedMaskDigitRejected = true;
 }
 assert(unownedMaskDigitRejected, 'mask digit without a matching slot must be rejected');
+
+const SQL = await initSqlJs();
+const native = new SQL.Database();
+native.run('CREATE TABLE words (char TEXT, jyutping TEXT, code TEXT, initials TEXT, finals TEXT, length INTEGER)');
+for (const [char, jyutping, code, initials, finals] of [
+  ['墨', 'mak6', '2', ['m'], ['ak']],
+  ['黑客', 'hak1 haak3', '34', ['h', 'h'], ['ak', 'aak']],
+  ['麥片', 'mak6 pin3', '24', ['m', 'p'], ['ak', 'in']],
+  ['黑雨', 'hak1 jyu5', '35', ['h', 'j'], ['ak', 'yu']],
+  ['麥粉', 'mak6 fan2', '29', ['m', 'f'], ['ak', 'an']],
+  ['拍攝', 'paak3 sip3', '44', ['p', 's'], ['aak', 'ip']],
+] as const) {
+  native.run('INSERT INTO words VALUES (?, ?, ?, ?, ?, ?)', [
+    char, jyutping, code, encodePhonemeList([...initials], 'initial'),
+    encodePhonemeList([...finals], 'final'), [...char].length,
+  ]);
+}
+const db = createSqlJsBackend(native);
+injectDatabaseForTests(db);
+try {
+  for (const mode of ['m1', 'm2', 'm3']) {
+    const result = await queryEngine.execute({ q: '墨=4', mode, limit: 100, offset: 0 });
+    const expected = ['黑客', '麥片', ...(mode === 'm3' ? [] : ['黑雨'])].sort();
+    assert(
+      deepEqual(result.items.map((row) => row.word).sort(), expected),
+      `墨=4 (${mode}): must ignore anchor tone and enforce the second-position code`,
+    );
+  }
+} finally {
+  injectDatabaseForTests(null);
+  await db.close();
+}
 
 console.log(`canonical MatchSpec self-check: ok (${doc.cases.length} cases)`);

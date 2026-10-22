@@ -135,6 +135,140 @@
       }
     },
     {
+      "id": "head-rhyme-with-code",
+      "query": "墨=4",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "?4",
+        "slots": [
+          {"pos": 0, "kind": "final_anchor", "value": "墨"},
+          {"pos": 1, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "head-initial-with-code",
+      "query": "^墨4",
+      "mode": "m1",
+      "expected": {
+        "width": 2,
+        "mask": "?4",
+        "slots": [
+          {"pos": 0, "kind": "initial_anchor", "value": "墨"},
+          {"pos": 1, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "head-rhyme-with-wildcard-code",
+      "query": "墨=?4",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "??4",
+        "slots": [
+          {"pos": 0, "kind": "final_anchor", "value": "墨"},
+          {"pos": 2, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "tail-rhyme-with-code-wildcard",
+      "query": "4?墨=",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "4??",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "4"},
+          {"pos": 2, "kind": "final_anchor", "value": "墨"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "middle-rhyme-with-trailing-code",
+      "query": "?墨=4",
+      "mode": "m1",
+      "expected": {
+        "width": 3,
+        "mask": "??4",
+        "slots": [
+          {"pos": 1, "kind": "final_anchor", "value": "墨"},
+          {"pos": 2, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "middle-rhyme-with-codes-on-both-sides",
+      "query": "4?墨=4",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "4??4",
+        "slots": [
+          {"pos": 0, "kind": "code_digit", "value": "4"},
+          {"pos": 2, "kind": "final_anchor", "value": "墨"},
+          {"pos": 3, "kind": "code_digit", "value": "4"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
+      "id": "tail-initial-with-wildcard-code",
+      "query": "?4?^墨",
+      "mode": "m1",
+      "expected": {
+        "width": 4,
+        "mask": "?4??",
+        "slots": [
+          {"pos": 1, "kind": "code_digit", "value": "4"},
+          {"pos": 3, "kind": "initial_anchor", "value": "墨"}
+        ],
+        "equals_span": null,
+        "compound": null,
+        "ranking": "default",
+        "candidate_scope": "bounded",
+        "code_mode": null,
+        "phoneme_alternatives": null
+      }
+    },
+    {
       "id": "jyutping-rhyme-letters",
       "query": "?yut?",
       "mode": "m1",
