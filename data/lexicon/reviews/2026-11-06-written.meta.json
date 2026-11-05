@@ -1,0 +1,234 @@
+{
+  "batch": "2026-11-06-written",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "72b5e844b579d8fb079ef96e1ac9ed13b14dc222",
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "input_db_counts": {
+    "rows": 181712,
+    "literals": 166594
+  },
+  "input_curated_sha256": "6cb25f73e122f9343c3420c6c7ac3ef81f2cd0d4916a958fd60fd5c5bb8002b0",
+  "input_curated_rows": 568,
+  "scan": {
+    "jieba_input_records": 933475,
+    "after_pos_length_filters": 361181,
+    "known_normalized_literals": 165567,
+    "jieba_missing": 147527,
+    "jieba_missing_freq50": 7976,
+    "jieba_missing_freq500": 796,
+    "essay_missing": 160024,
+    "legacy_rows": 330790,
+    "legacy_annotated": 0,
+    "legacy_intersection": 0,
+    "tag_counts": {
+      "nz": 27991,
+      "n": 319288,
+      "nr": 195804,
+      "m": 33649,
+      "i": 70756,
+      "l": 49236,
+      "d": 6179,
+      "s": 1526,
+      "t": 4273,
+      "mq": 195,
+      "j": 3703,
+      "a": 11061,
+      "r": 1934,
+      "b": 3595,
+      "f": 865,
+      "nrt": 15414,
+      "v": 90852,
+      "z": 6768,
+      "ns": 47449,
+      "q": 534,
+      "vn": 8737,
+      "c": 1266,
+      "nt": 13575,
+      "u": 49,
+      "o": 572,
+      "zg": 11663,
+      "nrfg": 1271,
+      "df": 2,
+      "p": 302,
+      "g": 2293,
+      "y": 116,
+      "ad": 280,
+      "vg": 381,
+      "ng": 660,
+      "x": 855,
+      "ul": 2,
+      "k": 9,
+      "ag": 103,
+      "dg": 5,
+      "rr": 8,
+      "rg": 3,
+      "an": 103,
+      "vq": 11,
+      "e": 79,
+      "uv": 2,
+      "tg": 15,
+      "mg": 4,
+      "ud": 2,
+      "vi": 12,
+      "vd": 9,
+      "uj": 2,
+      "uz": 2,
+      "h": 4,
+      "ug": 3,
+      "rz": 3
+    }
+  },
+  "candidate_pool": 146602,
+  "regional_candidates_held_before_review": 924,
+  "covered_glyph_variant_before_review": 1,
+  "selection": {
+    "pool_length_range": [
+      2,
+      12
+    ],
+    "reviewed_high_frequency_candidates": 2351,
+    "high_frequency_min": 200,
+    "reviewed_additional_idiom_phrase_candidates": 2393,
+    "idiom_phrase_tags": [
+      "i",
+      "l"
+    ],
+    "idiom_phrase_min": 10,
+    "frequency_meaning": "Upstream dictionary weight, not a measured corpus occurrence count or product ranking weight",
+    "candidate_tags_present": [
+      "a",
+      "ad",
+      "an",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "h",
+      "i",
+      "j",
+      "l",
+      "mq",
+      "n",
+      "o",
+      "p",
+      "r",
+      "rr",
+      "rz",
+      "s",
+      "t",
+      "u",
+      "v",
+      "vi",
+      "vn",
+      "vq",
+      "y",
+      "z"
+    ],
+    "prefilter_note": "Non-Han, outside length range, explicit proper-name tags and obvious regional/erhua candidates are excluded from the review pool; remaining tags still require lexical review."
+  },
+  "reviewed_candidates": 4744,
+  "decisions": {
+    "accept": 4015,
+    "reject": 492,
+    "defer": 206,
+    "already_present": 31
+  },
+  "added_rows": 4015,
+  "added_literals": 4015,
+  "unreviewed_pool_candidates": 141858,
+  "original_curated_rows_preserved": true,
+  "normalization_policy": "Existing s2hk runtime normalization retained; contextual mis-conversions held, not admitted; source orthography and actual ingest literals recorded separately",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "reading_references": [
+    {
+      "topic": "這 ze5",
+      "url": "https://wordshk.github.io/yue_references/misc/jyutping_zibiu.html"
+    },
+    {
+      "topic": "生產 sang1 caan2",
+      "url": "https://www.cantonese.sheik.co.uk/dictionary/words/4618/"
+    },
+    {
+      "topic": "悄悄 ciu2 ciu2",
+      "url": "https://cantonese.sheik.co.uk/dictionary/words/8050/"
+    },
+    {
+      "topic": "從容 sung1 jung4",
+      "url": "https://cantonese.sheik.co.uk/dictionary/words/7702/"
+    },
+    {
+      "topic": "裨益 bei1 jik1",
+      "url": "https://words.hk/zidin/裨益"
+    },
+    {
+      "topic": "處 noun/verb distinction",
+      "url": "https://cantonese.sheik.co.uk/dictionary/characters/779/?cf=1&full=true"
+    },
+    {
+      "topic": "百分之 fan6",
+      "url": "https://cantonese.sheik.co.uk/dictionary/characters/之/?cf=1&full=true"
+    },
+    {
+      "topic": "桿菌 reference variants",
+      "url": "https://cantonese.sheik.co.uk/dictionary/characters/3048/?full=true"
+    },
+    {
+      "topic": "窈窕 jiu2 tiu5",
+      "url": "https://www.cantonese.sheik.co.uk/dictionary/adjectives/30/?level=3&wordtype=4"
+    }
+  ],
+  "review_tsv_sha256": "3128fbdebb7ecbe50d39056b14c3cb9aadc2906d906e5042323c54116cd76c6f",
+  "validation": {
+    "merged_rows": 185725,
+    "merged_literals": 170609,
+    "baseline_pairs_preserved": true,
+    "added_source_rows": 4015,
+    "new_merged_pairs": 4015,
+    "new_merged_literals": 4015,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 168,
+    "live_db_unchanged": true,
+    "baseline_unique_pairs": 181710,
+    "baseline_duplicate_rows": 2,
+    "baseline_duplicate_examples": [
+      "半年 / bun3 nin4 / 40",
+      "行 / hang6 / 2"
+    ],
+    "smoke_tests": {
+      "run": 259,
+      "skipped": 4,
+      "result": "OK"
+    },
+    "seam_tests": {
+      "run": 89,
+      "skipped": 6,
+      "result": "OK"
+    }
+  }
+}
