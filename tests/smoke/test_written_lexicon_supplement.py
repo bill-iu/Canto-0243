@@ -33,6 +33,7 @@ BATCH_03 = "2026-11-06-written-b03"
 BATCH_04 = "2026-11-06-written-b04"
 BATCH_05 = "2026-11-06-written-b05"
 BATCH_06 = "2026-11-06-written-b06"
+BATCH_07 = "2026-11-06-written-b07"
 
 
 def review_rows(path):
@@ -141,12 +142,15 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "干扰素": "干擾素", "干擾素": "干擾素",
             "里长": "里長", "里長": "里長", "裏長": "里長",
             "栗钙土": "栗鈣土", "栗鈣土": "栗鈣土", "慄鈣土": "栗鈣土",
+            "同里": "同里", "同裏": "同里",
+            "征辟": "徵辟", "徵辟": "徵辟", "徵闢": "徵辟",
+            "报名表": "報名表", "報名表": "報名表", "報名錶": "報名表",
         }
         for original, expected in cases.items():
             with self.subTest(original=original):
                 self.assertEqual(to_traditional(original), expected)
                 self.assertEqual(to_traditional(expected), expected)
-        for unchanged in ("幹部", "干支", "徵求", "象徵", "鬥爭", "幾何", "醜態", "洋麵", "鬱鬱", "憂鬱"):
+        for unchanged in ("幹部", "干支", "徵求", "象徵", "鬥爭", "幾何", "醜態", "洋麵", "鬱鬱", "憂鬱", "這裏", "闢謠", "手錶"):
             with self.subTest(unchanged=unchanged):
                 self.assertEqual(to_traditional(unchanged), unchanged)
 
@@ -266,10 +270,27 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "消耗量": ("siu1 hou3 loeng6", "342"),
             "朝綱": ("ciu4 gong1", "03"),
             "觀其行": ("gun1 kei4 hang6", "302"),
+            "鮮見": ("sin2 gin3", "94"),
+            "描畫": ("miu4 waak6", "02"),
+            "重子": ("cung5 zi2", "59"),
+            "閤家": ("hap6 gaa1", "23"),
+            "同里": ("tung4 lei5", "05"),
+            "徵辟": ("zing1 bik1", "33"),
+            "報名表": ("bou3 ming4 biu2", "409"),
+            "藏學": ("zong6 hok6", "22"),
+            "創面": ("cong1 min6", "32"),
+            "被覆": ("pei5 fuk1", "53"),
+            "咯血": ("lok3 hyut3", "44"),
+            "空行": ("hung1 hong4", "30"),
+            "紅麴紅": ("hung4 guk1 hung4", "030"),
+            "分櫱": ("fan1 jit6", "32"),
+            "行政處分": ("hang4 zing3 cyu2 fan6", "0492"),
+            "精神病院": ("zing1 san4 beng6 jyun2", "3029"),
+            "瘋牛病": ("fung1 ngau4 beng6", "302"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -323,6 +344,24 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         self.assertNotIn("defer", {row["verdict"] for row in review})
         self.assertTrue({"里長", "栗鈣土", "椰乾", "石製", "臨場發揮", "解數", "吧嗒"}.issubset({row["char"] for row in batch}))
         self.assertTrue({row["char"] for row in batch}.isdisjoint({"自貢", "北師大", "本草綱目", "哥倆", "扒拉", "蒸饃"}))
+
+    def test_seventh_batch_preserves_previous_rows_and_holds_uncertain_readings(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_07}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_07}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(len({row["id"].split(":")[0] for row in review}), meta["review_candidate_ids"])
+        self.assertEqual(input_fingerprint(curated, meta, 7), meta["input_curated_sha256"])
+        batch = [row for row in curated if row.get("batch") == BATCH_07]
+        self.assertEqual(len(batch), meta["added_rows"])
+        accepted = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        self.assertEqual(accepted, {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        self.assertEqual({row["char"] for row in review if row["verdict"] == "defer"}, {"滴噠"})
+        self.assertTrue({row["char"] for row in batch}.isdisjoint({"滴噠", "臊子", "夠戧", "報名錶", "徵闢", "同裏"}))
+        for row in batch:
+            self.assertEqual(to_traditional(row["char"]), to_traditional(to_traditional(row["char"])))
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):
         meta = json.loads((REVIEW.parent / f"{BATCH_06}.meta.json").read_text(encoding="utf-8"))
