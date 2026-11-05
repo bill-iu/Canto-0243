@@ -1,0 +1,98 @@
+{
+  "batch": "2026-11-06-written-b03",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "f1b367d0d284e786520550870c412a600e57f4a7",
+  "input_curated_sha256": "be06de0fe71ee89c23cbc7abecb0931fd298e4bf7939caf0c3532781ebb0dfe9",
+  "input_curated_rows": 7164,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 900,
+  "revisited_candidates": 0,
+  "review_rows": 900,
+  "review_candidate_ids": 900,
+  "review_verdict_rows": {
+    "accept": 829,
+    "reject": 66,
+    "already_present": 5
+  },
+  "reading_repairs": 0,
+  "added_rows": 829,
+  "added_literals": 829,
+  "total_curated_rows": 7993,
+  "cumulative_reviewed_candidates": 8344,
+  "cumulative_candidate_decisions": {
+    "accept": 7424,
+    "reject": 865,
+    "already_present": 55
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 138258,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 900 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 2700:3600. All eight provisional deferrals in this segment resolved before export.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with eleven exact-literal restorations plus two bare-literal sense exceptions; adds 干擾素 only in this batch. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 7164,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "5b7dbf6a198e441ce6b42be5293bbe3bd17a2749d3b6e4211df104862442c480",
+  "validation": {
+    "merged_rows": 189134,
+    "baseline": "full B02 isolated source build (188305 rows)",
+    "merged_literals": 174015,
+    "baseline_unique_pairs": 188303,
+    "baseline_exact_pairs_preserved": true,
+    "baseline_pairs_changed": [],
+    "added_source_rows": 829,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 75,
+    "live_db_unchanged": true,
+    "smoke_tests": {
+      "run": 262,
+      "skipped": 4,
+      "result": "OK"
+    },
+    "targeted_tests": {
+      "run": 10,
+      "result": "OK"
+    },
+    "merged_unique_pairs": 189132,
+    "legacy_duplicate_rows": [
+      [
+        "半年",
+        "bun3 nin4",
+        "40",
+        2
+      ],
+      [
+        "行",
+        "hang6",
+        "2",
+        2
+      ]
+    ]
+  }
+}

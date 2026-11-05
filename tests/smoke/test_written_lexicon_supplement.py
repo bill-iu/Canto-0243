@@ -25,6 +25,7 @@ REVIEW = ROOT / "data/lexicon/reviews/2026-11-06-written-supplement.tsv"
 META = ROOT / "data/lexicon/reviews/2026-11-06-written.meta.json"
 BATCH = "2026-11-06-written"
 BATCH_02 = "2026-11-06-written-b02"
+BATCH_03 = "2026-11-06-written-b03"
 
 
 def review_rows(path):
@@ -111,6 +112,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "干預": "干預", "斗转星移": "斗轉星移", "斗轉星移": "斗轉星移",
             "窗明几净": "窗明几淨", "窗明几淨": "窗明几淨", "子丑寅卯": "子丑寅卯",
             "洋面": "洋面", "郁郁": "郁郁",
+            "干扰素": "干擾素", "干擾素": "干擾素",
         }
         for original, expected in cases.items():
             with self.subTest(original=original):
@@ -119,6 +121,22 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         for unchanged in ("幹部", "干支", "徵求", "象徵", "鬥爭", "幾何", "醜態", "洋麵", "鬱鬱", "憂鬱"):
             with self.subTest(unchanged=unchanged):
                 self.assertEqual(to_traditional(unchanged), unchanged)
+
+    def test_third_batch_is_reviewed_and_preserves_the_previous_source(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_03}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_03}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        batch = [row for row in curated if row.get("batch") == BATCH_03]
+        self.assertEqual(len(batch), meta["added_rows"])
+        expected = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        self.assertEqual(apply_recorded_repairs(expected), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        prefix = json.dumps(curated[:meta["input_curated_rows"]], ensure_ascii=False, indent=2) + "\n"
+        self.assertEqual(hashlib.sha256(prefix.encode()).hexdigest(), meta["input_curated_sha256"])
+        self.assertNotIn("defer", {row["verdict"] for row in review})
+        self.assertTrue({"拍賣行", "靈長類", "干擾素", "冰月", "中保", "樂藝"}.issubset({row["char"] for row in batch}))
 
     def test_contextual_readings_and_codes_survive_ingest_and_search(self):
         cases = {
@@ -147,10 +165,22 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "消費量": ("siu1 fai3 loeng6", "342"),
             "上表": ("soeng5 biu2", "59"),
             "重劍": ("cung5 gim3", "54"),
+            "汞柱": ("hung3 cyu5", "45"),
+            "拍賣行": ("paak3 maai6 hong4", "420"),
+            "靈長類": ("ling4 zoeng2 leoi6", "092"),
+            "干擾素": ("gon1 jiu2 sou3", "394"),
+            "生長期": ("sang1 zoeng2 kei4", "390"),
+            "重力場": ("cung5 lik6 coeng4", "520"),
+            "相中": ("soeng1 zung3", "34"),
+            "糖分": ("tong4 fan6", "02"),
+            "中保": ("zung1 bou2", "39"),
+            "處方藥": ("cyu2 fong1 joek6", "932"),
+            "藏醫": ("zong6 ji1", "23"),
+            "陀螺儀": ("to4 lo4 ji4", "000"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -165,7 +195,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                         with self.subTest(literal=literal, mode=mode):
                             result = QueryEngine().execute(SearchContext(code, None, None, mode, 1000, 0, db))
                             self.assertIn(to_traditional(literal), {row["char"] for row in result.items})
-                for literal, wrong_code in (("這種", "99"), ("行長", "00"), ("利潤率", "229"), ("年老多病", "0533"), ("太重", "42"), ("轉入", "42"), ("消費量", "340"), ("上表", "29"), ("重劍", "24")):
+                for literal, wrong_code in (("這種", "99"), ("行長", "00"), ("利潤率", "229"), ("年老多病", "0533"), ("太重", "42"), ("轉入", "42"), ("消費量", "340"), ("上表", "29"), ("重劍", "24"), ("相中", "33"), ("相中", "44"), ("糖分", "03"), ("生長期", "300"), ("藏醫", "03"), ("陀螺儀", "090")):
                     with self.subTest(literal=literal, wrong_code=wrong_code):
                         result = QueryEngine().execute(SearchContext(wrong_code, None, None, "m3", 1000, 0, db))
                         self.assertNotIn(to_traditional(literal), {row["char"] for row in result.items})
