@@ -20,6 +20,25 @@ _MOU_FORTUNE_RESTORE: tuple[tuple[str, str], ...] = (
     ("黴爛", "霉爛"),
 )
 
+# s2hk can re-convert already-traditional phrases on a second ingest pass.
+# Restore whole lexical contexts only; 幹部、徵求、鬥爭 and 幾何 keep their senses.
+_CONTEXTUAL_RESTORE: dict[str, str] = {
+    "長徵": "長征",
+    "親徵": "親征",
+    "東徵": "東征",
+    "幹係": "干係",
+    "幹擾": "干擾",
+    "抗幹擾": "抗干擾",
+    "幹預": "干預",
+    "鬥轉星移": "斗轉星移",
+    "窗明幾淨": "窗明几淨",
+    "子醜寅卯": "子丑寅卯",
+}
+
+# Bare word senses: ocean surface and literary richness/fragrance. Preserve the
+# input literal, not its converted output (洋麵 and 鬱鬱 have different senses).
+_PRESERVE_LITERALS = frozenset({"洋面", "郁郁"})
+
 
 @lru_cache(maxsize=1)
 def _s2hk_converter():
@@ -34,13 +53,16 @@ def _s2hk_converter():
 def to_traditional(text: str) -> str:
     if not text:
         return text
+    if text in _PRESERVE_LITERALS:
+        return text
     converter = _s2hk_converter()
     out = converter.convert(text) if converter is not None else text
     # ponytail: without OpenCC, still collapse 覈→核 (HKVariants); ceiling = rare literary 覈
     out = out.replace("覈", "核")
     for bad, good in _MOU_FORTUNE_RESTORE:
         out = out.replace(bad, good)
-    return out
+    # Exact literals: compound relation keys need their own reviewed migration.
+    return _CONTEXTUAL_RESTORE.get(out, out)
 
 
 __all__ = ["to_traditional"]
