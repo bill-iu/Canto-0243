@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import csv
+import json
 import re
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -35,6 +37,39 @@ ANCHOR_EXCLUDED_PRON_RANK_SORT = frozenset({PRON_RANK_SORT["罕見"], PRON_RANK_
 _entries_by_char: Dict[str, List[LexiconEntry]] = {}
 _rank_by_char_jyut: Dict[tuple[str, str], int] = {}
 _loaded = False
+_word_ranks_path: Path | None = None
+
+
+@lru_cache(maxsize=4)
+def load_word_pron_ranks(path: Path) -> dict[tuple[str, str], int]:
+    """Explicit curated word grades; absent legacy payloads keep char fallback."""
+    if not path.is_file():
+        return {}
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(rows, list):
+        raise ValueError(f"{path}: reading ranks must be a list")
+    out: dict[tuple[str, str], int] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError(f"{path}: invalid reading rank row")
+        char = row.get("char")
+        actual = row.get("ingested_char", char)
+        jyutping = row.get("jyutping")
+        if not all(isinstance(value, str) for value in (char, actual, jyutping)):
+            raise ValueError(f"{path}: invalid reading rank strings")
+        char, actual, jyutping = char.strip(), actual.strip(), " ".join(jyutping.split())
+        label = row.get("pron_rank")
+        if (not isinstance(label, str) or label not in PRON_RANK_SORT or len(char) < 2 or len(actual) != len(char)
+                or len(char) != len(jyutping.split())
+                or not re.fullmatch(r"[a-z]+[1-6](?: [a-z]+[1-6])*", jyutping)):
+            raise ValueError(f"{path}: invalid reading rank for {char!r}")
+        for literal in (char, actual):
+            key = (literal, jyutping)
+            value = PRON_RANK_SORT[label]
+            if key in out and out[key] != value:
+                raise ValueError(f"{path}: conflicting reading rank for {key!r}")
+            out[key] = value
+    return out
 
 
 def _is_canto_char(text: str) -> bool:
@@ -43,9 +78,10 @@ def _is_canto_char(text: str) -> bool:
 
 def load_rime_char_csv(path: Path | str | None = None) -> int:
     """Load char.csv: 預設 rows -> ensure entries; all ranks -> pron_rank_sort lookup."""
-    global _entries_by_char, _rank_by_char_jyut, _loaded
+    global _entries_by_char, _rank_by_char_jyut, _loaded, _word_ranks_path
 
     csv_path = Path(path) if path is not None else _default_char_csv()
+    _word_ranks_path = csv_path.parent.parent / "lexicon" / "curated_reading_ranks.json"
     index: Dict[str, List[LexiconEntry]] = {}
     rank_map: Dict[tuple[str, str], int] = {}
     count = 0
@@ -112,7 +148,7 @@ def pron_rank_sort_value(char: str, jyutping: str) -> int:
 
 
 def pron_rank_sort_value_for_word(char: str, jyutping: str) -> int:
-    """Word-level: max per-syllable rank (all 預設 beats mixed)."""
+    """Explicit whole-word grade, otherwise max per-syllable Rime grade."""
     text = (char or "").strip()
     jyut = (jyutping or "").strip()
     if not text or not jyut:
@@ -122,11 +158,18 @@ def pron_rank_sort_value_for_word(char: str, jyutping: str) -> int:
         return pron_rank_sort_value(text, jyut)
     if len(text) != len(syllables):
         return UNKNOWN_PRON_RANK_SORT
+    ensure_rime_char_loaded()
+    if _word_ranks_path is not None:
+        value = load_word_pron_ranks(_word_ranks_path).get((text, " ".join(syllables)))
+        if value is not None:
+            return value
     return max(pron_rank_sort_value(text[i], syllables[i]) for i in range(len(text)))
 
 
 def reset_rime_char_for_tests() -> None:
-    global _entries_by_char, _rank_by_char_jyut, _loaded
+    global _entries_by_char, _rank_by_char_jyut, _loaded, _word_ranks_path
     _entries_by_char = {}
     _rank_by_char_jyut = {}
     _loaded = False
+    _word_ranks_path = None
+    load_word_pron_ranks.cache_clear()

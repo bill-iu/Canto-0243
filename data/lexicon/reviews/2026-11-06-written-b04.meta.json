@@ -1,0 +1,27 @@
+{
+  "batch": "2026-11-06-written-b04",
+  "date": "2026-11-06",
+  "reason": "Review of curated pronunciation commonness; explicit reading repairs and preferred alternatives. No new word-form candidates reviewed in this sub-batch.",
+  "reviewer": "AI-assisted whole-word review; not human item-by-item approval",
+  "input_git_commit": "2a3dd534e6764497352ca1d3102b78b037e43f5e",
+  "input_curated_rows": 7993,
+  "input_curated_sha256": "b1091984e54b936cc2954b8dccc7f317538d9c9ca099baa592d457318c675206",
+  "reading_repairs": 7,
+  "added_readings": 3,
+  "added_literals": 0,
+  "total_curated_rows": 7996,
+  "review_tsv_sha256": "d38b1f833c326186213082b0370c7aac8e9a741f73ebc30549ab9f4702b82873",
+  "cumulative_reviewed_candidates": 8344,
+  "unreviewed_pool_candidates": 138258,
+  "validation": {
+    "merged_rows": 189137,
+    "merged_literals": 174015,
+    "baseline_unique_pairs": 189132,
+    "explicit_old_pairs_replaced": 7,
+    "all_other_baseline_pairs_retained": true,
+    "all_reviewed_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 68,
+    "live_db_unchanged": true
+  }
+}

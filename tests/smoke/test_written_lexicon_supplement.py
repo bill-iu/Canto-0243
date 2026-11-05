@@ -5,6 +5,7 @@ import csv
 import hashlib
 import io
 import json
+import re
 import unittest
 from pathlib import Path
 
@@ -26,15 +27,42 @@ META = ROOT / "data/lexicon/reviews/2026-11-06-written.meta.json"
 BATCH = "2026-11-06-written"
 BATCH_02 = "2026-11-06-written-b02"
 BATCH_03 = "2026-11-06-written-b03"
+BATCH_04 = "2026-11-06-written-b04"
 
 
 def review_rows(path):
     return list(csv.DictReader(io.StringIO(path.read_text(encoding="utf-8")), delimiter="\t"))
 
 
+def batch_number(path):
+    match = re.search(r"-b(\d+)-", path.name)
+    return int(match.group(1)) if match else 0
+
+
+def repair_ledgers():
+    return sorted(REVIEW.parent.glob("2026-11-06-written*-supplement.tsv"), key=batch_number)
+
+
+def input_fingerprint(curated, meta, batch):
+    """Undo only later, explicitly documented reading/code changes in this prefix."""
+    prefix = json.loads(json.dumps(curated[:meta["input_curated_rows"]]))
+    for path in reversed(repair_ledgers()):
+        if batch_number(path) < batch:
+            continue
+        for row in reversed(review_rows(path)):
+            if row["verdict"] != "repair":
+                continue
+            for old in prefix:
+                if (old["char"], old.get("evidence"), old["jyutping"]) == (row["char"], row["evidence"], row["jyutping"]):
+                    old["jyutping"] = row["previous_jyutping"]
+                    old["code"] = get_0243_code(row["previous_jyutping"])
+    serialized = json.dumps(prefix, ensure_ascii=False, indent=2) + "\n"
+    return hashlib.sha256(serialized.encode()).hexdigest()
+
+
 def apply_recorded_repairs(accepted):
     """A later correction must name the exact prior reading and evidence."""
-    for path in sorted(REVIEW.parent.glob("*-supplement.tsv")):
+    for path in repair_ledgers():
         for row in review_rows(path):
             if row["verdict"] != "repair" or not row["evidence"].startswith("jieba:"):
                 continue
@@ -93,16 +121,9 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         self.assertEqual(apply_recorded_repairs(accepted), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
         # Reverse only documented reading/code edits: all other previous fields
         # and row order must still match the input fingerprint.
-        prefix = json.loads(json.dumps(curated[:meta["input_curated_rows"]]))
         repairs = [row for row in review if row["verdict"] == "repair"]
         self.assertEqual(len(repairs), meta["reading_repairs"])
-        for row in repairs:
-            matches = [old for old in prefix if old["char"] == row["char"] and old.get("evidence") == row["evidence"] and old["jyutping"] == row["jyutping"]]
-            self.assertEqual(len(matches), 1, row["char"])
-            matches[0]["jyutping"] = row["previous_jyutping"]
-            matches[0]["code"] = get_0243_code(row["previous_jyutping"])
-        serialized = json.dumps(prefix, ensure_ascii=False, indent=2) + "\n"
-        self.assertEqual(hashlib.sha256(serialized.encode()).hexdigest(), meta["input_curated_sha256"])
+        self.assertEqual(input_fingerprint(curated, meta, 2), meta["input_curated_sha256"])
         self.assertEqual({row["jyutping"] for row in batch if row["char"] == "長於"}, {"zoeng2 jyu1", "coeng4 jyu1"})
 
     def test_contextual_normalization_preserves_word_senses_on_reingest(self):
@@ -133,10 +154,27 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         self.assertEqual(len(batch), meta["added_rows"])
         expected = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
         self.assertEqual(apply_recorded_repairs(expected), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
-        prefix = json.dumps(curated[:meta["input_curated_rows"]], ensure_ascii=False, indent=2) + "\n"
-        self.assertEqual(hashlib.sha256(prefix.encode()).hexdigest(), meta["input_curated_sha256"])
+        self.assertEqual(input_fingerprint(curated, meta, 3), meta["input_curated_sha256"])
         self.assertNotIn("defer", {row["verdict"] for row in review})
         self.assertTrue({"拍賣行", "靈長類", "干擾素", "冰月", "中保", "樂藝"}.issubset({row["char"] for row in batch}))
+
+    def test_fourth_batch_records_only_explicit_reading_repairs_and_alternatives(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_04}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_04}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(sum(row["verdict"] == "repair" for row in review), meta["reading_repairs"])
+        self.assertEqual(input_fingerprint(curated, meta, 4), meta["input_curated_sha256"])
+        accepted = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        batch = [row for row in curated if row.get("batch") == BATCH_04]
+        self.assertEqual(len(batch), meta["added_readings"])
+        self.assertEqual(apply_recorded_repairs(accepted), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        pairs = {(row["char"], row["jyutping"], row["code"]) for row in curated}
+        for row in review:
+            self.assertIn((row["char"], row["jyutping"], row["code"]), pairs)
+            if row["verdict"] == "repair":
+                self.assertNotIn((row["char"], row["previous_jyutping"], get_0243_code(row["previous_jyutping"])), pairs)
 
     def test_contextual_readings_and_codes_survive_ingest_and_search(self):
         cases = {
@@ -177,10 +215,20 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "處方藥": ("cyu2 fong1 joek6", "932"),
             "藏醫": ("zong6 ji1", "23"),
             "陀螺儀": ("to4 lo4 ji4", "000"),
+            "聲色俱厲": ("sing1 sik1 keoi1 lai6", "3332"),
+            "一榮俱榮": ("jat1 wing4 keoi1 wing4", "3030"),
+            "一損俱損": ("jat1 syun2 keoi1 syun2", "3939"),
+            "泥沙俱下": ("nai4 saa1 keoi1 haa6", "0332"),
+            "不自禁": ("bat1 zi6 gam3", "324"),
+            "與會者": ("jyu5 wui6 ze2", "529"),
+            "沒空": ("mut6 hung1", "23"),
+            "首尾相連": ("sau2 mei5 soeng1 lin4", "9530"),
+            "鈾礦": ("jau2 kwong3", "94"),
+            "烷基": ("jyun2 gei1", "93"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()

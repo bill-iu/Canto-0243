@@ -278,6 +278,7 @@ export async function buildLookupLayout(
   if (!exactMatches.length) {
     return [];
   }
+  exactMatches = sortWordRows(exactMatches);
   const results: QueryResult[] = [];
   const seenWords = new Set<string>();
   const lenQ = [...q].length;

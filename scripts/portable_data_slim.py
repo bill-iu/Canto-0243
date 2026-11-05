@@ -30,6 +30,7 @@ REQUIRED_RUNTIME_RELPATHS = (
     "rime/char.csv",
     "essay/essay-cantonese.txt",
     "lexicon/curated_common.txt",
+    "lexicon/curated_reading_ranks.json",
     "lexicon/lexicon_corrections.tsv",
 )
 

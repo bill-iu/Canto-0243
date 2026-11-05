@@ -72,6 +72,34 @@ function parseCuratedList(text: string): string[] {
   return out;
 }
 
+export function parseWordPronRanks(text: string): Record<string, number> {
+  const rows: unknown = JSON.parse(text);
+  if (!Array.isArray(rows)) throw new Error('Word reading ranks must be a list');
+  const out: Record<string, number> = {};
+  for (const row of rows) {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) throw new Error('Invalid word reading rank row');
+    const actualValue = row.ingested_char === undefined ? row.char : row.ingested_char;
+    if (typeof row.char !== 'string' || typeof actualValue !== 'string' || typeof row.jyutping !== 'string' ||
+        typeof row.pron_rank !== 'string' || !Object.hasOwn(PRON_RANK_SORT, row.pron_rank)) {
+      throw new Error('Invalid word reading rank fields');
+    }
+    const char = row.char.trim();
+    const actual = actualValue.trim();
+    const jyut = row.jyutping.trim().replace(/\s+/g, ' ');
+    const value = PRON_RANK_SORT[row.pron_rank]!;
+    if ([...char].length < 2 || [...actual].length !== [...char].length ||
+        [...char].length !== jyut.split(' ').length || !/^[a-z]+[1-6](?: [a-z]+[1-6])*$/.test(jyut)) {
+      throw new Error(`Invalid word reading rank for ${char}`);
+    }
+    for (const literal of [char, actual]) {
+      const key = `${literal}\t${jyut}`;
+      if (out[key] !== undefined && out[key] !== value) throw new Error(`Conflicting word reading rank for ${literal}`);
+      out[key] = value;
+    }
+  }
+  return out;
+}
+
 /** Load ranking signals from repo data/ (call before query-engine in Node runners). */
 export function buildRankingData(repoRoot: string): {
   essay: Record<string, number>;
@@ -82,6 +110,7 @@ export function buildRankingData(repoRoot: string): {
   const charCsv = fs.readFileSync(path.join(root, 'data/rime/char.csv'), 'utf8');
   const essayPath = path.join(root, 'data/essay/essay-cantonese.txt');
   const curatedPath = path.join(root, 'data/lexicon/curated_common.txt');
+  const wordRanksPath = path.join(root, 'data/lexicon/curated_reading_ranks.json');
 
   const essay = fs.existsSync(essayPath)
     ? parseEssayCorpus(fs.readFileSync(essayPath, 'utf8'))
@@ -93,7 +122,7 @@ export function buildRankingData(repoRoot: string): {
   return {
     essay,
     curated,
-    pronRank: parseCharCsv(charCsv),
+    pronRank: { ...parseCharCsv(charCsv), ...parseWordPronRanks(fs.readFileSync(wordRanksPath, 'utf8')) },
   };
 }
 

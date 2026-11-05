@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
+  "curated_rows": 7996,
+  "curated_sha256": "6829fa5355c2b13e754ae67caa7529410a967e549ffb0a0f210aabbb6a323787",
+  "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
+  "ranks_sha256": "fe21b46d4d7b861cedc29ae26f4ac9f22376331e6800ee0322285f16f1355a9b",
+  "grades": {
+    "預設": 6810,
+    "常用": 1114,
+    "罕見": 69,
+    "棄用": 3
+  },
+  "basis": {
+    "rime-components": 7747,
+    "rime-orthographic": 19,
+    "ai-context": 230
+  },
+  "grade_order": [
+    "預設",
+    "常用",
+    "罕見",
+    "棄用"
+  ],
+  "orthographic_aliases": {
+    "羣": "群",
+    "藴": "蘊",
+    "説": "說",
+    "薴": "苧",
+    "温": "溫",
+    "户": "戶",
+    "兑": "兌",
+    "鋭": "銳",
+    "卧": "臥",
+    "脱": "脫",
+    "税": "稅",
+    "牀": "床",
+    "爲": "為"
+  },
+  "validation": {
+    "curated_coverage": 7996,
+    "backend_pwa_word_keys_in_parity": 8116,
+    "smoke_tests": 269,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "portable_build": true,
+    "app_typecheck": true,
+    "ranking_node_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "whole_project_node_typecheck": "Existing errors in the Node project configuration (browser types, enums and extensionless imports); unrelated files left intact. App and affected ranking modules pass.",
+    "isolated_build": {
+      "merged_rows": 189137,
+      "merged_literals": 174015,
+      "baseline_unique_pairs": 189132,
+      "explicit_old_pairs_replaced": 7,
+      "all_other_baseline_pairs_retained": true,
+      "all_reviewed_pairs_retained": true,
+      "persisted_rows_match": true,
+      "representative_search_checks": 68,
+      "live_db_unchanged": true
+    }
+  },
+  "source_attribution": {
+    "name": "CanCLID/rime-cantonese-upstream",
+    "url": "https://github.com/CanCLID/rime-cantonese-upstream",
+    "license": "CC BY 4.0",
+    "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
+  }
+}

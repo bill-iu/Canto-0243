@@ -811,6 +811,7 @@ essay／**排序用 curated** + pron + lexical。多契約 tier：
 搜尋結果：han → -essay → -curated → pron → 字面
 等號參考：pron → -essay → !aa → jyut
 同音異讀：han → -essay → -curated → ch/jyut（內 lexical）
+`pron` 先取 `data/lexicon/curated_reading_ranks.json` 的完整字面／粵拼等級，再回退至 Rime 單字等級最大值。分級沿用 `預設=0／常用=1／罕見=2／棄用=3`；缺資料或須按詞義判斷的條目另記 AI 判斷依據。這是讀音等級，唔係實測詞頻，亦唔自動加入 **排序用 curated**。見[自建詞庫讀音分級](docs/lexicon-curated-reading-ranks.md)。
 **0243／碼類扁平搜尋**下，Essay＝0 且唔在 **排序用 curated** 嘅新收字沉底係**預期**（常用優先）；發現冷字靠純漢字 lookup、近反義／`!`、或之後人手加 **排序用 curated**——唔另開「新收」結果分區，亦唔為此改近反義池排序契約。
 _Avoid_：把契約收成一條 tier、essay_sort（實作名）、把標音 curated 當 -curated 來源、把碼搜沉底當缺陷而自動抬頻
 

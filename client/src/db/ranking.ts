@@ -55,15 +55,18 @@ export function pronRankSortValueForWord(char: string, jyutping: string): number
     return UNKNOWN_PRON_RANK;
   }
   const syllables = jyut.split(/\s+/);
-  if (text.length === 1) {
+  const chars = [...text];
+  if (chars.length === 1) {
     return pronRankSortValue(text, jyut);
   }
-  if (text.length !== syllables.length) {
+  if (chars.length !== syllables.length) {
     return UNKNOWN_PRON_RANK;
   }
+  const wordRank = pronRankByCharJyut.get(`${text}\t${syllables.join(' ')}`);
+  if (wordRank !== undefined) return wordRank;
   let max = 0;
-  for (let i = 0; i < text.length; i++) {
-    max = Math.max(max, pronRankSortValue(text[i]!, syllables[i]!));
+  for (let i = 0; i < chars.length; i++) {
+    max = Math.max(max, pronRankSortValue(chars[i]!, syllables[i]!));
   }
   return max;
 }

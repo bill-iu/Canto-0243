@@ -14924,8 +14924,8 @@
   },
   {
     "char": "與會者",
-    "jyutping": "jyu6 wui6 ze2",
-    "code": "229",
+    "jyutping": "jyu5 wui6 ze2",
+    "code": "529",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L10246",
     "batch": "2026-11-06-written"
@@ -15156,8 +15156,8 @@
   },
   {
     "char": "不自禁",
-    "jyutping": "bat1 zi6 gam1",
-    "code": "323",
+    "jyutping": "bat1 zi6 gam3",
+    "code": "324",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L9833",
     "batch": "2026-11-06-written"
@@ -21716,8 +21716,8 @@
   },
   {
     "char": "聲色俱厲",
-    "jyutping": "sing1 sik1 geoi6 lai6",
-    "code": "3322",
+    "jyutping": "sing1 sik1 keoi1 lai6",
+    "code": "3332",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L94920",
     "batch": "2026-11-06-written"
@@ -29380,8 +29380,8 @@
   },
   {
     "char": "一榮俱榮",
-    "jyutping": "jat1 wing4 geoi6 wing4",
-    "code": "3020",
+    "jyutping": "jat1 wing4 keoi1 wing4",
+    "code": "3030",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L3103",
     "batch": "2026-11-06-written"
@@ -29828,8 +29828,8 @@
   },
   {
     "char": "一損俱損",
-    "jyutping": "jat1 syun2 geoi6 syun2",
-    "code": "3929",
+    "jyutping": "jat1 syun2 keoi1 syun2",
+    "code": "3939",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L1878",
     "batch": "2026-11-06-written"
@@ -32316,8 +32316,8 @@
   },
   {
     "char": "泥沙俱下",
-    "jyutping": "nai4 saa1 geoi6 haa6",
-    "code": "0322",
+    "jyutping": "nai4 saa1 keoi1 haa6",
+    "code": "0332",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L203155",
     "batch": "2026-11-06-written"
@@ -57884,8 +57884,8 @@
   },
   {
     "char": "沒空",
-    "jyutping": "mut6 hung4",
-    "code": "20",
+    "jyutping": "mut6 hung1",
+    "code": "23",
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L314967",
     "batch": "2026-11-06-written-b03"
@@ -63793,5 +63793,29 @@
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L188828",
     "batch": "2026-11-06-written-b03"
+  },
+  {
+    "char": "首尾相連",
+    "jyutping": "sau2 mei5 soeng1 lin4",
+    "code": "9530",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L337754",
+    "batch": "2026-11-06-written-b04"
+  },
+  {
+    "char": "鈾礦",
+    "jyutping": "jau2 kwong3",
+    "code": "94",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:extra_dict/dict.txt.big#L521229",
+    "batch": "2026-11-06-written-b04"
+  },
+  {
+    "char": "烷基",
+    "jyutping": "jyun2 gei1",
+    "code": "93",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L216217",
+    "batch": "2026-11-06-written-b04"
   }
 ]
