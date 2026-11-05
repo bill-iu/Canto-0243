@@ -84,6 +84,8 @@ class CuratedReadingRankTests(unittest.TestCase):
         self.assertEqual(pron_rank_sort_value_for_word("無縫", "mou4 fung6"), 1)
         self.assertEqual(pron_rank_sort_value_for_word("報名點", "bou3 meng2 dim2"), 0)
         self.assertEqual(pron_rank_sort_value_for_word("槓子", "gong3 zi2"), 0)
+        self.assertEqual(pron_rank_sort_value_for_word("天呀", "tin1 aa3"), 0)
+        self.assertEqual(pron_rank_sort_value_for_word("吧嗒", "baa1 taap3"), 0)
         self.assertEqual(pron_rank_sort_value_for_word("聽不見", "ting1 bat1 gin3"), 2)
         self.assertEqual(pron_rank_sort_value_for_word("衝着", "cung3 zoek6"), 3)
         for text in ("弱勢社群", "弱勢社羣"):
@@ -97,6 +99,8 @@ class CuratedReadingRankTests(unittest.TestCase):
             "首尾相連": ("sau2 mei5 soeng1 lin4", "sau2 mei2 soeng1 lin4"),
             "鈾礦": ("jau2 kwong3", "jau4 kwong3"),
             "烷基": ("jyun2 gei1", "jyun4 gei1"),
+            "懷揣": ("waai4 caai1", "waai4 cyun2"),
+            "水磨": ("seoi2 mo6", "seoi2 mo4"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]

@@ -69,3 +69,4 @@ char	old_jyutping	old_code	action	value	note
 稱病	cing1 bing6		set_jyutping	cing1 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
 遺傳病	wai4 cyun4 bing6		set_jyutping	wai4 cyun4 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
 重病	cung5 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
+金石	gam1 daam3	34	set_jyutping	gam1 sek6	2026-11-06 written-b06：金屬／石刻義，非容量單位石 daam3；原 Rime word.csv#L83287

@@ -16,6 +16,8 @@ assert.equal(pronRankSortValueForWord('利潤率', 'lei6 jeon6 leot6'), 1);
 assert.equal(pronRankSortValueForWord('無縫', 'mou4 fung6'), 1);
 assert.equal(pronRankSortValueForWord('報名點', 'bou3 meng2 dim2'), 0);
 assert.equal(pronRankSortValueForWord('槓子', 'gong3 zi2'), 0);
+assert.equal(pronRankSortValueForWord('天呀', 'tin1 aa3'), 0);
+assert.equal(pronRankSortValueForWord('吧嗒', 'baa1 taap3'), 0);
 assert.equal(pronRankSortValueForWord('聽不見', 'ting1 bat1 gin3'), 2);
 assert.equal(pronRankSortValueForWord('衝着', 'cung3 zoek6'), 3);
 assert.equal(pronRankSortValueForWord('社會', 'se5 wui2'), Math.max(
@@ -30,6 +32,8 @@ for (const [char, preferred, variant] of [
   ['首尾相連', 'sau2 mei5 soeng1 lin4', 'sau2 mei2 soeng1 lin4'],
   ['鈾礦', 'jau2 kwong3', 'jau4 kwong3'],
   ['烷基', 'jyun2 gei1', 'jyun4 gei1'],
+  ['懷揣', 'waai4 caai1', 'waai4 cyun2'],
+  ['水磨', 'seoi2 mo6', 'seoi2 mo4'],
 ]) {
   const rows = [{ char: char!, jyutping: variant! }, { char: char!, jyutping: preferred! }];
   for (const compare of [compareSearchResults, compareAuthoritativeReadings]) {

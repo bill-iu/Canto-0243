@@ -1,0 +1,105 @@
+{
+  "batch": "2026-11-06-written-b06",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "55767a2dd27d29ab54f511687ebc0bbfea17eca8",
+  "input_curated_sha256": "87cef125c3f971b61e663910bf78f9c8e8908400567792d550b318b1731cb78c",
+  "input_curated_rows": 8133,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 1000,
+  "revisited_candidates": 0,
+  "review_rows": 1003,
+  "review_candidate_ids": 1000,
+  "review_verdict_rows": {
+    "accept": 926,
+    "reject": 71,
+    "already_present": 6
+  },
+  "reading_repairs": 0,
+  "added_rows": 926,
+  "added_literals": 923,
+  "total_curated_rows": 9059,
+  "cumulative_reviewed_candidates": 9494,
+  "cumulative_candidate_decisions": {
+    "accept": 8484,
+    "reject": 949,
+    "already_present": 61
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 137108,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 1000 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 3750:4750. The two provisional reading deferrals were re-reviewed before promotion; AI-inferred readings are labeled explicitly.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with thirteen exact-literal restorations plus two bare-literal sense exceptions; adds exact 里長 and 栗鈣土 restorations; corrects proposed 毀棄、椰乾、木桿、石製 without blanket character substitution. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 8133,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "d73c47e88dd32e592d3c5e6afbb528116b07542f062a621c88bf4ac541a4b584",
+  "validation": {
+    "merged_rows": 190200,
+    "merged_literals": 175075,
+    "baseline_unique_pairs": 189272,
+    "only_explicit_old_reading_replaced": true,
+    "baseline_pairs_changed": [
+      {
+        "char": "金石",
+        "old_jyutping": "gam1 daam3",
+        "old_code": "34",
+        "new_jyutping": "gam1 sek6",
+        "new_code": "32"
+      }
+    ],
+    "added_source_rows": 926,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 112,
+    "live_db_unchanged": true,
+    "previous_reading_grades_preserved": 8133,
+    "new_word_normalization_idempotent": true,
+    "backend_pwa_word_grade_keys": 9190,
+    "smoke_tests": 272,
+    "smoke_passed": 268,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true
+  },
+  "existing_source_reading_repairs": 1,
+  "existing_reading_review_path": "2026-11-06-written-b06-existing-readings.tsv",
+  "existing_reading_review_sha256": "3fea79e544f162b53225f79bac398450ee683a26c823fa1b7cd6e7e27980010d",
+  "existing_reading_source": {
+    "path": "data/lexicon/raw/rime-cantonese-upstream/word.csv",
+    "sha256": "b7f2561ccd222358cd7d04f2a349b986831aa8d61adf60d8584d6ffc5dd6f27a",
+    "line": 83287,
+    "upstream": "https://github.com/CanCLID/rime-cantonese-upstream",
+    "license": "CC BY 4.0"
+  },
+  "input_corrections_sha256": "fea7a8c9b5c16f259514d09c57cdc288b7504884c4e29dec90dfc0d0908deac7",
+  "corrections_sha256": "cc51be57f85492dbef71ff10e9a8c5cf31531bf6194bb912a4ba88c9094a5353",
+  "scope": "General written/Mandarin expressions and individually reviewed lexicalized technical, cultural or astronomical names; no bulk proper-noun source, personal-name list or dialect import."
+}

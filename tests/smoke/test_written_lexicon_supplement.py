@@ -13,12 +13,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from app.database import Base
+from app.lexicon.candidates import LexiconCandidate
+from app.lexicon.corrections import load_corrections
 from app.services.query_dispatch import QueryEngine, SearchContext
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from app.utils.word_cache import reset_word_cache_for_tests
 from ingest.lexicon_build import persist_lexicon_candidates
 from ingest.lexicon_sources import ingest_lexicon_json
+from ingest.lexicon_overlay import apply_lexicon_overlay
 
 ROOT = Path(__file__).resolve().parents[2]
 CURATED = ROOT / "data/lexicon/curated_lexicon.json"
@@ -29,6 +32,7 @@ BATCH_02 = "2026-11-06-written-b02"
 BATCH_03 = "2026-11-06-written-b03"
 BATCH_04 = "2026-11-06-written-b04"
 BATCH_05 = "2026-11-06-written-b05"
+BATCH_06 = "2026-11-06-written-b06"
 
 
 def review_rows(path):
@@ -135,6 +139,8 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "窗明几净": "窗明几淨", "窗明几淨": "窗明几淨", "子丑寅卯": "子丑寅卯",
             "洋面": "洋面", "郁郁": "郁郁",
             "干扰素": "干擾素", "干擾素": "干擾素",
+            "里长": "里長", "里長": "里長", "裏長": "里長",
+            "栗钙土": "栗鈣土", "栗鈣土": "栗鈣土", "慄鈣土": "栗鈣土",
         }
         for original, expected in cases.items():
             with self.subTest(original=original):
@@ -236,10 +242,34 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "老宅": ("lou5 zaak6", "52"),
             "群峯": ("kwan4 fung1", "03"),
             "槓子": ("gong3 zi2", "49"),
+            "金石學": ("gam1 sek6 hok6", "322"),
+            "調處": ("tiu4 cyu2", "09"),
+            "間作": ("gaan3 zok3", "44"),
+            "單行本": ("daan1 hang4 bun2", "309"),
+            "間冰期": ("gaan3 bing1 kei4", "430"),
+            "塞上": ("coi3 soeng6", "42"),
+            "進藏": ("zeon3 zong6", "42"),
+            "看相": ("hon3 soeng3", "44"),
+            "自省": ("zi6 sing2", "29"),
+            "解數": ("gaai2 sou3", "94"),
+            "懷揣": ("waai4 caai1", "03"),
+            "水磨": ("seoi2 mo6", "92"),
+            "里長": ("lei5 zoeng2", "59"),
+            "栗鈣土": ("leot6 koi3 tou2", "249"),
+            "天呀": ("tin1 aa3", "34"),
+            "吧嗒": ("baa1 taap3", "34"),
+            "衣被": ("ji1 pei5", "35"),
+            "被裝": ("pei5 zong1", "53"),
+            "粘彈性": ("nim1 daan6 sing3", "324"),
+            "著者": ("zyu3 ze2", "49"),
+            "財長": ("coi4 zoeng2", "09"),
+            "消耗量": ("siu1 hou3 loeng6", "342"),
+            "朝綱": ("ciu4 gong1", "03"),
+            "觀其行": ("gun1 kei4 hang6", "302"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -276,6 +306,35 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         self.assertEqual(apply_recorded_repairs(accepted), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
         self.assertNotIn("defer", {row["verdict"] for row in review})
         self.assertTrue({"法意", "氆氌", "艇長", "形相", "槓子", "步行者"}.issubset({row["char"] for row in batch}))
+
+    def test_sixth_batch_keeps_previous_rows_and_only_promotes_reviewed_readings(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_06}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_06}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(len({row["id"].split(":")[0] for row in review}), meta["review_candidate_ids"])
+        self.assertEqual(input_fingerprint(curated, meta, 6), meta["input_curated_sha256"])
+        batch = [row for row in curated if row.get("batch") == BATCH_06]
+        self.assertEqual(len(batch), meta["added_rows"])
+        accepted = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        self.assertEqual(apply_recorded_repairs(accepted), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        self.assertNotIn("defer", {row["verdict"] for row in review})
+        self.assertTrue({"里長", "栗鈣土", "椰乾", "石製", "臨場發揮", "解數", "吧嗒"}.issubset({row["char"] for row in batch}))
+        self.assertTrue({row["char"] for row in batch}.isdisjoint({"自貢", "北師大", "本草綱目", "哥倆", "扒拉", "蒸饃"}))
+
+    def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):
+        meta = json.loads((REVIEW.parent / f"{BATCH_06}.meta.json").read_text(encoding="utf-8"))
+        path = REVIEW.parent / meta["existing_reading_review_path"]
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["existing_reading_review_sha256"])
+        review = review_rows(path)
+        self.assertEqual(len(review), meta["existing_source_reading_repairs"])
+        original = LexiconCandidate("金石", "gam1 daam3", "34", ("rime",))
+        capacity = LexiconCandidate("一石", "jat1 daam3", "34", ("fixture",))
+        fixed = apply_lexicon_overlay([original, capacity], load_corrections())
+        self.assertEqual([(r.char, r.jyutping, r.code) for r in fixed], [("金石", "gam1 sek6", "32"), ("一石", "jat1 daam3", "34")])
+        self.assertEqual(fixed[0].sources, original.sources)
 
 
 if __name__ == "__main__":

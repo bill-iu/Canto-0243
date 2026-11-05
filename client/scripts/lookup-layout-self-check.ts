@@ -31,6 +31,8 @@ try {
     ['首尾相連', 'sau2 mei5 soeng1 lin4', '9530', 'sau2 mei2 soeng1 lin4', '9930'],
     ['鈾礦', 'jau2 kwong3', '94', 'jau4 kwong3', '04'],
     ['烷基', 'jyun2 gei1', '93', 'jyun4 gei1', '03'],
+    ['懷揣', 'waai4 caai1', '03', 'waai4 cyun2', '09'],
+    ['水磨', 'seoi2 mo6', '92', 'seoi2 mo4', '90'],
   ] as const;
   for (const [char, preferred, code, variant, variantCode] of cases) {
     for (const [jp, toneCode] of [[variant, variantCode], [preferred, code]]) {
