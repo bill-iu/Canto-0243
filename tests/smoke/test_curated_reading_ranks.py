@@ -82,6 +82,8 @@ class CuratedReadingRankTests(unittest.TestCase):
         self.assertEqual(pron_rank_sort_value_for_word("從容應對", "sung1 jung4 jing3 deoi3"), 1)
         self.assertEqual(pron_rank_sort_value_for_word("利潤率", "lei6 jeon6 leot6"), 1)
         self.assertEqual(pron_rank_sort_value_for_word("無縫", "mou4 fung6"), 1)
+        self.assertEqual(pron_rank_sort_value_for_word("報名點", "bou3 meng2 dim2"), 0)
+        self.assertEqual(pron_rank_sort_value_for_word("槓子", "gong3 zi2"), 0)
         self.assertEqual(pron_rank_sort_value_for_word("聽不見", "ting1 bat1 gin3"), 2)
         self.assertEqual(pron_rank_sort_value_for_word("衝着", "cung3 zoek6"), 3)
         for text in ("弱勢社群", "弱勢社羣"):

@@ -28,6 +28,7 @@ BATCH = "2026-11-06-written"
 BATCH_02 = "2026-11-06-written-b02"
 BATCH_03 = "2026-11-06-written-b03"
 BATCH_04 = "2026-11-06-written-b04"
+BATCH_05 = "2026-11-06-written-b05"
 
 
 def review_rows(path):
@@ -225,10 +226,20 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "首尾相連": ("sau2 mei5 soeng1 lin4", "9530"),
             "鈾礦": ("jau2 kwong3", "94"),
             "烷基": ("jyun2 gei1", "93"),
+            "艇長": ("teng5 zoeng2", "59"),
+            "點將": ("dim2 zoeng3", "94"),
+            "上半時": ("soeng6 bun3 si4", "240"),
+            "上週五": ("soeng6 zau1 ng5", "235"),
+            "形相": ("jing4 soeng3", "04"),
+            "應激": ("jing3 gik1", "43"),
+            "步行者": ("bou6 hang4 ze2", "209"),
+            "老宅": ("lou5 zaak6", "52"),
+            "群峯": ("kwan4 fung1", "03"),
+            "槓子": ("gong3 zi2", "49"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -250,6 +261,21 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         finally:
             reset_word_cache_for_tests()
             engine.dispose()
+
+    def test_fifth_batch_is_reviewed_and_keeps_all_previous_rows(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_05}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_05}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(input_fingerprint(curated, meta, 5), meta["input_curated_sha256"])
+        batch = [row for row in curated if row.get("batch") == BATCH_05]
+        self.assertEqual(len(batch), meta["added_rows"])
+        accepted = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        self.assertEqual(apply_recorded_repairs(accepted), {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        self.assertNotIn("defer", {row["verdict"] for row in review})
+        self.assertTrue({"法意", "氆氌", "艇長", "形相", "槓子", "步行者"}.issubset({row["char"] for row in batch}))
 
 
 if __name__ == "__main__":

@@ -14,6 +14,8 @@ assert.equal(pronRankSortValueForWord('社會保障', 'se5 wui2 bou2 zoeng3'), 0
 assert.equal(pronRankSortValueForWord('從容應對', 'sung1 jung4 jing3 deoi3'), 1);
 assert.equal(pronRankSortValueForWord('利潤率', 'lei6 jeon6 leot6'), 1);
 assert.equal(pronRankSortValueForWord('無縫', 'mou4 fung6'), 1);
+assert.equal(pronRankSortValueForWord('報名點', 'bou3 meng2 dim2'), 0);
+assert.equal(pronRankSortValueForWord('槓子', 'gong3 zi2'), 0);
 assert.equal(pronRankSortValueForWord('聽不見', 'ting1 bat1 gin3'), 2);
 assert.equal(pronRankSortValueForWord('衝着', 'cung3 zoek6'), 3);
 assert.equal(pronRankSortValueForWord('社會', 'se5 wui2'), Math.max(
