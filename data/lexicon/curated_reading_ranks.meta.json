@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 40220,
-  "curated_sha256": "b01ac4bfebf8af7602ccfde326c5123822fe567ec13efc9daa124f175ea81b38",
+  "curated_rows": 40879,
+  "curated_sha256": "3298cfa8bda9e0c04e7928abafcc05bea9a9ddd30fa93352823136b9f301f31e",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "b3abab71beb78e502bb14f83decc4b8f60abbc5f6fa5e3d8b6a184ce89ddcf0e",
+  "ranks_sha256": "f21d3aea553ac276511663901052e77bca4a17e094971f4f3969b3fa23f1c6c8",
   "grades": {
-    "預設": 35458,
-    "常用": 4678,
+    "預設": 36032,
+    "常用": 4763,
     "罕見": 81,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 36793,
-    "rime-orthographic": 75,
-    "ai-context": 3352
+    "rime-components": 37393,
+    "rime-orthographic": 77,
+    "ai-context": 3409
   },
   "grade_order": [
     "預設",
@@ -38,35 +38,37 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 219223,
-    "merged_literals": 203365,
-    "unique_triples": 219221,
-    "baseline_rows": 218406,
+    "merged_rows": 219882,
+    "merged_literals": 204005,
+    "unique_triples": 219880,
+    "baseline_rows": 219223,
     "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 102910,
-    "new_source_readings": 817,
+    "old_word_grades_preserved": 103692,
+    "new_source_readings": 659,
     "new_pairs_retained": true,
-    "search_checks": 144,
-    "preferred_reading_checks": 30,
-    "word_usage_keys": 103692,
+    "search_checks": 139,
+    "preferred_reading_checks": 19,
+    "word_usage_keys": 104332,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
-    "backend_pwa_word_grade_keys": 103692,
-    "backend_pwa_curated_reading_grade_keys": 40728,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 104332,
+    "backend_pwa_curated_reading_grade_keys": 41395,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "previous_word_usage_records_preserved": 102910,
-    "previous_word_usage_judgments_preserved": 10882,
-    "new_word_usage_judgments": 229,
-    "full_pool_parity_queries": 34,
-    "full_pool_parity_rows": 42026,
+    "previous_word_usage_records_preserved": 103692,
+    "previous_word_usage_judgments_preserved": 11111,
+    "new_word_usage_judgments": 168,
+    "full_pool_parity_queries": 37,
+    "full_pool_parity_rows": 39989,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 39403,
-    "previous_source_rows_preserved": 39403,
+    "previous_reading_grades_preserved": 40220,
+    "previous_source_rows_preserved": 40220,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 304,
-    "smoke_passed": 300,
+    "smoke_tests": 305,
+    "smoke_passed": 301,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -87,7 +89,10 @@
       "second_page": 6,
       "everyday_literal_inserted_last_ranks_first": true,
       "modes": 3
-    }
+    },
+    "essay_duplicate_policy": "last valid occurrence, matching existing Python loader",
+    "pwa_essay_frequency_values_corrected": 17,
+    "essay_duplicate_regression_self_check": true
   },
   "source_attribution": {
     "name": "CanCLID/rime-cantonese-upstream",
@@ -95,5 +100,5 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b28"
+  "updated_through_batch": "2026-11-06-written-b29"
 }

@@ -38,7 +38,7 @@ function parseCharCsv(csvText: string): Record<string, number> {
   return out;
 }
 
-function parseEssayCorpus(text: string): Record<string, number> {
+export function parseEssayCorpus(text: string): Record<string, number> {
   const out: Record<string, number> = {};
   for (const line of text.split(/\r?\n/)) {
     const trimmed = line.trim();
@@ -55,7 +55,8 @@ function parseEssayCorpus(text: string): Record<string, number> {
     if (!word || Number.isNaN(freq) || freq < 0) {
       continue;
     }
-    out[word] = Math.max(out[word] ?? 0, freq);
+    // Keep the final duplicate, matching Python load_essay_corpus.
+    out[word] = freq;
   }
   return out;
 }

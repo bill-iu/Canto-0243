@@ -3,11 +3,14 @@ import { rankingLogicSelfCheck } from '../src/db/ranking.ts';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildRankingData, loadRankingData, parseWordPronRanks } from '../src/db/ranking-loader.node.ts';
+import { buildRankingData, loadRankingData, parseEssayCorpus, parseWordPronRanks } from '../src/db/ranking-loader.node.ts';
 import { compareAuthoritativeReadings, compareSearchResults, pronRankSortValueForWord } from '../src/db/ranking.ts';
 import { checkWordUsageRanking } from './ranking-word-usage-fixture.ts';
 
 rankingLogicSelfCheck();
+assert.deepEqual(parseEssayCorpus('群體\t4426\n文件\t4360\n群體\t1601\n群組\t1394\n群組\t800\n'), {
+  群體: 1601, 文件: 4360, 群組: 800,
+}); // Duplicate frequencies follow source order, rather than taking the maximum.
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 loadRankingData(root);
 const originalCharGrade = pronRankSortValueForWord('會', 'wui2');
