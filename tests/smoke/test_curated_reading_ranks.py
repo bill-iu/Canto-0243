@@ -121,6 +121,13 @@ class CuratedReadingRankTests(unittest.TestCase):
             "水松": ("seoi2 sung1", "seoi2 cung4"),
             "會員卡": ("wui6 jyun4 kaa1", "wui2 jyun4 kaa1"),
             "曖昧關係": ("oi3 mui6 gwaan1 hai6", "oi2 mui6 gwaan1 hai6"),
+            "竹蓆": ("zuk1 zek6", "zuk1 zik6"),
+            "右衽": ("jau6 jam6", "jau6 jam5"),
+            "彈球": ("taan4 kau4", "daan2 kau4"),
+            "毛巾被": ("mou4 gan1 bei2", "mou4 gan1 bei6"),
+            "休息廳": ("jau1 sik1 teng1", "jau1 sik1 ting1"),
+            "跳跳蹦蹦": ("tiu3 tiu3 bang1 bang1", "tiu3 tiu3 baang6 baang6"),
+            "儀表板": ("ji4 biu2 baan2", "ji4 biu1 baan2"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
