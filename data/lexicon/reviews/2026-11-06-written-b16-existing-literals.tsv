@@ -1,0 +1,3 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+無精打採	無精打采	mou4 zing1 daa2 coi2	0399	normalize_literal	rime_words,kaifang	rime-cantonese-upstream:word.csv#L52882;kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token166999	原始來源為精神采色的采，非採集的採；恢復正字。既有正字同讀音已存在，合併來源時去重一列。
+前程萬裏	前程萬里	cin4 cing4 maan6 lei5	0025	normalize_literal	rime_words,kaifang	rime-cantonese-upstream:word.csv#L11297;kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token26714	里為距離單位，原始來源均用里，舊正規化誤轉成裏；只還原整詞，粵拼及碼不改。

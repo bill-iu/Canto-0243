@@ -60,6 +60,10 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "風鬥": "風斗",
     "劃得來": "划得來",
     "醫託": "醫托",
+    "無精打採": "無精打采",
+    "離題萬裏": "離題萬里",
+    "前程萬裏": "前程萬里",
+    "基託": "基托",
 }
 
 # Bare word senses: ocean surface and literary richness/fragrance. Preserve the
