@@ -74,6 +74,9 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "抓鬥": "抓斗",
     "翻鬥": "翻斗",
     "開夥": "開伙",
+    "幹擾能力": "干擾能力",
+    "有徵無戰": "有征無戰",
+    "並條機": "併條機",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
