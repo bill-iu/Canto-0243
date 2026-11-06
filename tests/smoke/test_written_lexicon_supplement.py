@@ -46,6 +46,7 @@ BATCH_16 = "2026-11-06-written-b16"
 BATCH_17 = "2026-11-06-written-b17"
 BATCH_18 = "2026-11-06-written-b18"
 BATCH_19 = "2026-11-06-written-b19"
+BATCH_20 = "2026-11-06-written-b20"
 
 
 def review_rows(path):
@@ -500,10 +501,17 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "曳光": ("jai6 gwong1", "23"),
             "聾啞學校": ("lung4 aa2 hok6 haau6", "0922"),
             "山參": ("saan1 sam1", "33"),
+            "一瀉萬里": ("jat1 se3 maan6 lei5", "3425"),
+            "一夔一契": ("jat1 kwai4 jat1 sit3", "3034"),
+            "一字不易": ("jat1 zi6 bat1 jik6", "3232"),
+            "一筆一畫": ("jat1 bat1 jat1 waak6", "3332"),
+            "轎廂": ("giu6 soeng1", "23"),
+            "計量局": ("gai3 loeng4 guk6", "402"),
+            "新加坡人": ("san1 gaa3 bo1 jan4", "3430"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -910,6 +918,35 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         self.assertEqual({(r["previous_char"], r["char"]) for r in review_rows(path)}, {("有徵無戰", "有征無戰")})
         for original in ("徵求", "象徵", "幹部", "並且", "有徵無戰者", "並條機械"):
             self.assertEqual(to_traditional(original), original)
+
+    def test_twentieth_batch_preserves_prior_rows_and_records_scope_revisits(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_20}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_20}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        self.assertEqual(meta["revisited_candidates"], 100)
+        self.assertEqual(input_fingerprint(curated, meta, 20), meta["input_curated_sha256"])
+        self.assertEqual(meta["reading_repairs"], 0)
+        batch = [r for r in curated if r.get("batch") == BATCH_20]
+        self.assertEqual(len(batch), meta["added_rows"])
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        restored = {r["char"] for r in review if r["previous_verdict"] == "reject" and r["verdict"] == "accept"}
+        self.assertTrue({"同文館", "宮者", "護園人", "駕車人", "新加坡人", "計量局", "乾乾的", "一個腳印"}.issubset(restored))
+        pairs = {(r["char"], r["jyutping"]) for r in batch}
+        self.assertTrue({("一簞食", "jat1 daan1 sik6"), ("一簞食", "jat1 daan1 zi6"),
+                         ("轎廂", "giu6 soeng1"), ("轎廂", "kiu2 soeng1")}.issubset(pairs))
+        self.assertNotIn(("轎廂", "kiu6 soeng1"), pairs)
+        self.assertTrue({"一日三複", "一日三覆", "陽莖"}.issubset({r["char"] for r in review if r["verdict"] == "defer"}))
+        for original, expected in [("遊離鈣", "游離鈣"), ("釜底遊魚", "釜底游魚"),
+                                   ("一手託天", "一手托天"), ("一瀉萬裏", "一瀉萬里"), ("一舉萬裏", "一舉萬里")]:
+            self.assertEqual(to_traditional(original), expected)
+            self.assertEqual(to_traditional(expected), expected)
+        for literal in ("遊玩", "寄託", "裏面", "一舉萬裏者"):
+            self.assertEqual(to_traditional(literal), literal)
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):
         meta = json.loads((REVIEW.parent / f"{BATCH_06}.meta.json").read_text(encoding="utf-8"))

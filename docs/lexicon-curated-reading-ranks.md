@@ -1,14 +1,14 @@
 # 自建詞庫讀音常用度
 
 `data/lexicon/curated_reading_ranks.json` 為每個自建「字面／粵拼」記錄讀音等級，
-配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第十九批續審後共 **29,580 個讀音**。
+配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十批續審後共 **31,390 個讀音**。
 這是讀音選擇的常用程度，並非某個詞語在語料出現多少次。
 
 | 等級 | 排序值 | 本輪數量 |
 |------|-------:|---------:|
-| 預設 | 0 | 26,173 |
-| 常用 | 1 | 3,332 |
-| 罕見 | 2 | 72 |
+| 預設 | 0 | 27,799 |
+| 常用 | 1 | 3,507 |
+| 罕見 | 2 | 81 |
 | 棄用 | 3 | 3 |
 
 值越小越優先。沒有加入任意詞頻分數，也沒有把新增詞自動加入 `curated_common.txt`。
@@ -18,9 +18,9 @@
 
 ## 依據
 
-- `rime-components`：27,306 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
-- `rime-orthographic`：55 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
-- `ai-context`：2,219 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
+- `rime-components`：28,893 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
+- `rime-orthographic`：62 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
+- `ai-context`：2,435 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
   或單字分級不能準確代表特定詞語的讀法。每項保留原 `component_rank`、判斷標記及說明。
   這些是維護判斷，沒有標成實測頻率或人類逐項批准。
 
@@ -290,3 +290,34 @@ PWA 在建置時合併入 `ranking-index.json`，分級檔變動會令建置快�
 「相冊」照片義的日常變調 `soeng2 caak3` 列預設，書面 `soeng3 caak3` 列常用，
 錯誤相互義 `soeng1 caak3` 移除。`soeng2` 優先為 AI 整詞判斷，`soeng3` 有完整詞條注音支持。
 詳細分音來源、範圍重審及驗證見[第十九批紀錄](lexicon-supplement-written.md#第十九批續審2026-11-06)。
+
+## 第二十批：完整語境與異讀優先次序
+
+新增 1,810 筆分級：1,587 筆直接沿用 Rime、7 筆經同字異體繼承、216 筆另作整詞判斷。
+之前 29,580 筆分級逐欄保留。單字有罕見等級而本詞沒有另行覆核的讀法仍保留該等級，
+沒有把所有新收表達一律標為預設。這是讀音常用程度，並非詞形的上游權重。
+
+| 字面 | 優先讀法 | 保留讀法 |
+|------|----------|----------|
+| 新加坡人 | `san1 gaa3 bo1 jan4` | `san1 gaa1 bo1 jan4` |
+| 一併處理／一並處理 | `jat1 bing3 cyu2 lei5` | `jat1 bing6 cyu2 lei5` |
+| 一氣渾成 | `jat1 hei3 wan4 sing4` | `jat1 hei3 wan6 sing4` |
+| 衣夾 | `ji1 gaap2` | `ji1 gaap3` |
+| 轎廂 | `giu6 soeng1`（科技名物） | `giu2 soeng1`、`kiu2 soeng1` |
+| 藥捻 | `joek6 nin2` | `joek6 nim2` |
+| 一簞食 | `jat1 daan1 sik6`（現代教材） | `jat1 daan1 zi6`（古典名詞異讀） |
+| 一瓣心香 | `jat1 baan6 sam1 hoeng1` | `jat1 faan6 sam1 hoeng1` |
+
+「新加坡」的 gaa3 見[教育局中文教材](https://cd.edb.gov.hk/chi/resource/ncs/download/NCS_Chi_Sec_U01.pdf)
+與[粵典完整詞條](https://words.hk/zidin/新加坡)，不把變調誤當錯讀。
+「轎」的[現代字典對照](https://jyut.net/query?q=轎)有 giu6、giu2、kiu2；
+本批排除沒有相應粵音依據的 kiu6，不從變調反推一個本調。
+「渾」的[字典對照](https://jyut.net/query?q=渾)也有 wan6 的全滿義，故保留，wan4 優先。
+「一簞食」現代 sik6 見[香港中學教材](https://dse.mpep.com.hk/chi200/pdf/ClassicalChinese-2019_trial2.pdf)，
+古典名詞 zi6 的考辨見[學者原文](https://www.master-insight.com/article/20930)。
+整詞優先順序皆明示為 AI 判斷，並非以上來源直接提供的整詞頻率。
+
+所有新讀音以正式編碼器產生 394052 六聲碼；「一瀉萬里」用距離單位 lei5，
+「一夔一契」用古人名 sit3，「一字不易」用更改義 jik6，
+「一筆一畫」用筆畫義 waak6。原稿和修訂理由保留在
+[第二十批審核表](../data/lexicon/reviews/2026-11-06-written-b20-supplement.tsv)。

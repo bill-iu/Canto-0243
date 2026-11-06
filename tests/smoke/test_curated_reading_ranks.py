@@ -191,6 +191,15 @@ class CuratedReadingRankTests(unittest.TestCase):
             "重病纏身": ("zung6 beng6 cin4 san1", "cung5 beng6 cin4 san1"),
             "陶塤": ("tou4 hyun1", "tou4 fan1"),
             "飛簷翹角": ("fei1 sim4 kiu4 gok3", "fei1 jim4 kiu4 gok3"),
+            "新加坡人": ("san1 gaa3 bo1 jan4", "san1 gaa1 bo1 jan4"),
+            "一併處理": ("jat1 bing3 cyu2 lei5", "jat1 bing6 cyu2 lei5"),
+            "一並處理": ("jat1 bing3 cyu2 lei5", "jat1 bing6 cyu2 lei5"),
+            "一氣渾成": ("jat1 hei3 wan4 sing4", "jat1 hei3 wan6 sing4"),
+            "轎廂": ("giu6 soeng1", "kiu2 soeng1"),
+            "衣夾": ("ji1 gaap2", "ji1 gaap3"),
+            "藥捻": ("joek6 nin2", "joek6 nim2"),
+            "一簞食": ("jat1 daan1 sik6", "jat1 daan1 zi6"),
+            "一瓣心香": ("jat1 baan6 sam1 hoeng1", "jat1 faan6 sam1 hoeng1"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]

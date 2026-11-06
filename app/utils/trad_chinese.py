@@ -77,6 +77,11 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "幹擾能力": "干擾能力",
     "有徵無戰": "有征無戰",
     "並條機": "併條機",
+    "遊離鈣": "游離鈣",
+    "釜底遊魚": "釜底游魚",
+    "一手託天": "一手托天",
+    "一瀉萬裏": "一瀉萬里",
+    "一舉萬裏": "一舉萬里",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
