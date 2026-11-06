@@ -310329,5 +310329,125 @@
     "category": "general",
     "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L48873",
     "batch": "2026-11-06-written-b26"
+  },
+  {
+    "char": "划不來",
+    "jyutping": "waa4 bat1 loi4",
+    "code": "030",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52585",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划不來",
+    "jyutping": "faa3 bat1 loi4",
+    "code": "430",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52585",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划不來",
+    "jyutping": "waa1 bat1 loi4",
+    "code": "330",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52585",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划動",
+    "jyutping": "waa4 dung6",
+    "code": "02",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52600",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划動",
+    "jyutping": "waa1 dung6",
+    "code": "32",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52600",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進",
+    "jyutping": "waa4 zeon3",
+    "code": "04",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52659",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進",
+    "jyutping": "waa1 zeon3",
+    "code": "34",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52659",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進來",
+    "jyutping": "waa4 zeon3 loi4",
+    "code": "040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52661",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進來",
+    "jyutping": "waa1 zeon3 loi4",
+    "code": "340",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52661",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進去",
+    "jyutping": "waa4 zeon3 heoi3",
+    "code": "044",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52660",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划進去",
+    "jyutping": "waa1 zeon3 heoi3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52660",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划過來",
+    "jyutping": "waa4 gwo3 loi4",
+    "code": "040",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52658",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划過來",
+    "jyutping": "waa1 gwo3 loi4",
+    "code": "340",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52658",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划過去",
+    "jyutping": "waa4 gwo3 heoi3",
+    "code": "044",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52657",
+    "batch": "2026-11-06-written-context01"
+  },
+  {
+    "char": "划過去",
+    "jyutping": "waa1 gwo3 heoi3",
+    "code": "344",
+    "category": "general",
+    "evidence": "jieba:67fa2e36e72f69d9134b8a1037b83fbb070b9775:jieba/dict.txt#L52657",
+    "batch": "2026-11-06-written-context01"
   }
 ]

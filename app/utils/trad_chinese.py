@@ -87,11 +87,21 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "二週目": "二周目",
     "交流乾擾": "交流干擾",
     "人工幹預": "人工干預",
+    "劃不來": "划不來",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
 # own valid sense (e.g. 斗車 is a hopper cart; 鬥車 means racing cars).
-_PRESERVE_LITERALS = {"洋面": "洋面", "郁郁": "郁郁", "斗車": "斗車", "斗车": "斗車"}
+_PRESERVE_LITERALS = {
+    "洋面": "洋面", "郁郁": "郁郁", "斗車": "斗車", "斗车": "斗車",
+    # Rowing contexts keep 划; already-traditional 劃動/劃進 retain their own sense.
+    "划動": "划動", "划动": "划動",
+    "划進": "划進", "划进": "划進",
+    "划進來": "划進來", "划进来": "划進來",
+    "划進去": "划進去", "划进去": "划進去",
+    "划過來": "划過來", "划过来": "划過來",
+    "划過去": "划過去", "划过去": "划過去",
+}
 
 
 @lru_cache(maxsize=1)

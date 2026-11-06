@@ -18609,6 +18609,8 @@ m	0	tubelex	0	839	161		keep
 刑警隊	1	tubelex	546	31	1		keep
 刑責	1	tubelex	543	5	3		keep
 刑部	1	tubelex	584	149	3		keep
+划不來	1	tubelex	694	14	4		keep
+划動	1	tubelex	518	4	1		keep
 划得來	2	tubelex	497	4	2		keep
 划手	1	ai-context	0		0	AI 判斷：常見書面、填詞或通用表達，理解自然且可反覆使用；不是實測詞頻。	keep
 划拳	1	tubelex	525	2	1		keep
@@ -18620,6 +18622,11 @@ m	0	tubelex	0	839	161		keep
 划艇	1	tubelex	620	7	4		keep
 划行	2	tubelex	451	2	2		keep
 划走	1	tubelex	467	7	6		keep
+划進	2	tubelex	452	1	1		keep
+划進來	2	essay	267		0		keep
+划進去	2	essay	293		0		keep
+划過來	2	tubelex	398	1	1		keep
+划過去	2	tubelex	435	2	2		keep
 列	0	tubelex	1067	320	97		keep
 列位	1	tubelex	513	99	5		keep
 列作	2	tubelex	0	1	1		keep
@@ -19736,7 +19743,6 @@ m	0	tubelex	0	839	161		keep
 剿滅	1	tubelex	601	87	10		keep
 劃	0	tubelex	1334	172	36		keep
 劃一	1	tubelex	618	2	1		keep
-劃不來	2	tubelex	0	1	1		keep
 劃代原則	3	ai-context	0		0	AI 判斷：日常及一般填詞極少使用的冷僻古語、罕用變語或過窄術語，退回自建收錄。	withdraw_curated
 劃位	2	tubelex	317	1	1		keep
 劃傷	1	tubelex	823	17	8		keep
