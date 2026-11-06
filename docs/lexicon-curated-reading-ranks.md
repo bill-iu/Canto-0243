@@ -552,3 +552,12 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [斷的現代詞例](https://jyut.net/query?q=斷)區分斷無此事、斷然拒絕的 dyun3 與截開、折斷的 dyun6／tyun5；[斷然的 dyun6 完整詞例](https://cantonese.sheik.co.uk/dictionary/characters/2176/?full=true)亦保留列後。[診斷](https://jyutdictionary.com/dictionary/entry/診斷)的 dyun6／dyun3 均按整詞保留；沒有把該詞的異讀機械套入所有斷字詞。
 
 文人墨客的客 haak3、文如其人的如 jyu4、新陳代謝的陳 can4 及新古典主義末字義 ji6 均與正式字面同步；數數看兩個數皆 sou2，數百人的數為數量 sou3，數算為動詞 sou2。詞語本身常用度與讀音先後獨立處理，來源和 AI 判斷可在[B42 審核表](../data/lexicon/reviews/2026-11-06-written-b42-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b42-validation.json)追溯。
+
+
+## 第四十三批：詞級讀音優先與同義異讀
+
+新增 710 組來源讀音並逐項分級；53,006 個既有分級物件逐欄保留。旁聽席保留有完整詞例支持的 ting3／ting1／teng1，書刊雜誌先列 hon2、保留 hon1；旋繞着先列 jiu2、保留 jiu5。會計公司等詞先列日常 wui6，保留字書 kui2，未將字級棄用標籤直接當成完整會計詞的結論。
+
+[着想](https://words.hk/zidin/着想)是 zoek6 soeng2，不按穿著義猜作 zoek3；[晃動](https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf)為 fong2 dung6，初步推測的 fong6 已撤回。書面報告等文字形式採 min6，書本上、書架上、書桌上的方位上採 soeng6；會員的會 wui6 與會員大會末字的聚會 wui2／wui6 分開。
+
+手不釋卷的 gyun2 完整詞例已有覆蓋，保留現代字書書卷義 gyun3 作較後異讀，未將 gyun3 宣稱為全局錯音。早占勿藥、星占學、星占術的占 zim1 與佔有 zim3 分義；83 項精確還原與快取 23 保持重建一致。正式字面、草稿、讀音、碼及先後理由見[B43 審核表](../data/lexicon/reviews/2026-11-06-written-b43-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b43-validation.json)。

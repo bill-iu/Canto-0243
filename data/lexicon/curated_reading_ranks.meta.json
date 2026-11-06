@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 53006,
-  "curated_sha256": "84adb7504fa7ec3bfae48b4abcf5cdab0618fcb135ee22eba59c4eac3fd93e24",
+  "curated_rows": 53716,
+  "curated_sha256": "86df3baf8e3d4211ddc26ff0900f6980d6bbbcd05c2756f28e660d62b76925b5",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "5e3ff8ac2f749d82f4cc197a5051932f0dee47146b08bd52e939a1dfabca61b6",
+  "ranks_sha256": "961e7cc7b7cfa2fc8d6eb52e68bee71f311c0bb4c624dd8b335192104e3d34aa",
   "grades": {
-    "預設": 46425,
-    "常用": 6497,
+    "預設": 47006,
+    "常用": 6626,
     "罕見": 81,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 47561,
+    "rime-components": 48139,
     "rime-orthographic": 87,
-    "ai-context": 5358
+    "ai-context": 5490
   },
   "grade_order": [
     "預設",
@@ -38,59 +38,67 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 232006,
-    "merged_literals": 215348,
-    "unique_triples": 232004,
-    "baseline_rows": 231254,
+    "merged_rows": 232716,
+    "merged_literals": 216011,
+    "unique_triples": 232714,
+    "baseline_rows": 232006,
     "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 114990,
-    "new_source_readings": 752,
+    "old_word_grades_preserved": 115678,
+    "new_source_readings": 710,
     "new_pairs_retained": true,
-    "search_checks": 207,
-    "preferred_reading_checks": 60,
-    "word_usage_keys": 115678,
+    "search_checks": 201,
+    "preferred_reading_checks": 42,
+    "word_usage_keys": 116342,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 115678,
-    "backend_pwa_curated_reading_grade_keys": 53669,
+    "backend_pwa_word_grade_keys": 116342,
+    "backend_pwa_curated_reading_grade_keys": 54385,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "old_source_rows_preserved": 52254,
-    "old_reading_grades_preserved": 52254,
-    "old_usage_rows_preserved": 114990,
-    "old_judgments_preserved": 14001,
-    "new_source_forms": 690,
-    "new_merged_forms": 688,
+    "old_source_rows_preserved": 53006,
+    "old_reading_grades_preserved": 53006,
+    "old_usage_rows_preserved": 115678,
+    "old_judgments_preserved": 14161,
+    "new_source_forms": 669,
+    "new_merged_forms": 663,
     "existing_merged_forms_with_new_readings": [
-      "井然有序",
-      "正襟危坐"
+      "學富五車",
+      "手不釋卷",
+      "日積月累",
+      "明瞭",
+      "昏迷不醒",
+      "時來運轉"
     ],
     "unrelated_user_files_unchanged": true,
-    "raw_source_forms": 51416,
-    "normalized_source_forms": 51414,
-    "new_word_usage_judgments": 160,
+    "raw_source_forms": 52085,
+    "normalized_source_forms": 52083,
+    "new_word_usage_judgments": 159,
     "existing_runtime_readings_mirrored": 0,
-    "new_merged_readings": 752,
+    "new_merged_readings": 710,
     "heteronym_full_pool_ranking_equal": true,
     "non_han_tiers_match_backend": true,
-    "new_exact_literal_restorations": [],
+    "new_exact_literal_restorations": [
+      "早占勿藥",
+      "星占學",
+      "星占術"
+    ],
     "normalization_observed_frequency_reused": {},
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_keys_affected_by_new_normalization": 0,
     "prior_stored_relation_keys_affected_by_new_normalization": 0,
-    "previous_word_usage_records_preserved": 114990,
-    "previous_word_usage_judgments_preserved": 14001,
-    "full_pool_parity_queries": 41,
-    "full_pool_parity_rows": 54459,
+    "previous_word_usage_records_preserved": 115678,
+    "previous_word_usage_judgments_preserved": 14161,
+    "full_pool_parity_queries": 42,
+    "full_pool_parity_rows": 49851,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 52254,
-    "previous_source_rows_preserved": 52254,
+    "previous_reading_grades_preserved": 53006,
+    "previous_source_rows_preserved": 53006,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 320,
-    "smoke_passed": 316,
+    "smoke_tests": 321,
+    "smoke_passed": 317,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -103,7 +111,7 @@
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_artifact_guard": true,
-    "layer_cache_format": "22",
+    "layer_cache_format": "23",
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
@@ -115,20 +123,32 @@
       "modes": 3
     },
     "final_reading_audit": {
-      "new_source_readings_reviewed": 752,
-      "confirmed_form_reading_code_alignment": true,
-      "whole_word_context_and_modern_variants_reviewed": true,
-      "drafts_not_admitted_automatically": true,
-      "contradictory_preliminary_notes_replaced": 4,
-      "old_source_readings_repaired": 0,
-      "all_previous_source_and_grade_objects_preserved": 52254,
-      "病_beng6_only": true,
-      "lyric_observations_context_checked": 7,
-      "cross_word_lyric_fragments_rejected": [
-        "放煙",
-        "教上",
-        "斂色"
-      ]
+      "new_source_readings": 710,
+      "new_source_forms": 669,
+      "whole_word_review_complete": true,
+      "modern_variants_preserved": true,
+      "removed_unapproved_inferred_readings": [
+        "晃 fong6",
+        "替人着想 zoek3"
+      ],
+      "new_reading_priorities": [
+        "旋繞着 jiu2 before jiu5",
+        "手不釋卷 gyun2 before gyun3"
+      ],
+      "old_source_and_grade_objects_unchanged": 53006,
+      "lyric_contexts_reviewed": 15,
+      "normalization_impact": {
+        "new_exact_restorations": {
+          "早佔勿藥": "早占勿藥",
+          "星佔學": "星占學",
+          "星佔術": "星占術"
+        },
+        "prior_runtime_matches": 0,
+        "prior_curated_source_and_reading_matches": 0,
+        "prior_word_usage_and_judgment_matches": 0,
+        "stored_relation_source_files_checked": 217,
+        "stored_relation_source_hits": []
+      }
     }
   },
   "source_attribution": {
@@ -137,6 +157,6 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b42",
+  "updated_through_batch": "2026-11-06-written-b43",
   "updated_on": "2026-11-07"
 }
