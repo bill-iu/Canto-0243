@@ -1,0 +1,482 @@
+{
+  "batch": "2026-11-06-written-b44",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "62913b9f52777ea2ca3804efc210ca7b289bb639",
+  "input_curated_sha256": "86df3baf8e3d4211ddc26ff0900f6980d6bbbcd05c2756f28e660d62b76925b5",
+  "input_curated_rows": 53716,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2057,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 715,
+    "reject": 1271,
+    "already_present": 71
+  },
+  "reading_repairs": 0,
+  "added_rows": 715,
+  "added_literals": 671,
+  "total_curated_rows": 54431,
+  "cumulative_reviewed_candidates": 83994,
+  "cumulative_candidate_decisions": {
+    "accept": 52198,
+    "reject": 30687,
+    "already_present": 860,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 62608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates, offsets 77250:79250. Two final whole-word passes withdrew 307 low-utility, obscure or conflicting initial selections. Complete expressions replace malformed words with synchronized readings and codes. All 14 pinned Cantopop observations were checked in extended original context, including every supplied repeat. 服到 crosses 馴服／到, 果心 crosses 如果／心聲, 朵花 is internal to 一朵花; all rejected. 望到, 未出, 未接, 未改 and 未變 have independent natural uses, but their internal lyric observations do not become whole-word frequency. Modern variants and word familiarity are judged separately.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "s2hk plus 86 exact-literal restorations and nine preserved literal senses across 16 input keys. B44 keeps 木家具, 木製家具 and 木托盤. Full old source, ranks, runtime, usage and judgment keys are unaffected. 222 tracked relation source files checked with zero matches. All 53716 prior source and grade objects preserved. Cache format 24 invalidates all parser layers. Formal, raw source and ingested forms remain traceable.",
+  "second_pass_familiarity_withdrawals": 307,
+  "third_pass_familiarity_restorations": 0,
+  "third_pass_additional_rejections": 0,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 53716,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "e267254787ef1415e2fa80680bdf5da2b706ad8151f3680ea81ff614b047e541",
+  "validation": {
+    "merged_rows": 233431,
+    "merged_literals": 216672,
+    "unique_triples": 233429,
+    "baseline_rows": 232716,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "old_word_grades_preserved": 116342,
+    "new_source_readings": 715,
+    "new_pairs_retained": true,
+    "search_checks": 351,
+    "preferred_reading_checks": 48,
+    "word_usage_keys": 117004,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 117004,
+    "backend_pwa_curated_reading_grade_keys": 55110,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 53716,
+    "old_reading_grades_preserved": 53716,
+    "old_usage_rows_preserved": 116342,
+    "old_judgments_preserved": 14320,
+    "new_source_forms": 671,
+    "new_merged_forms": 661,
+    "existing_merged_forms_with_new_readings": [
+      "大海撈針",
+      "扳機",
+      "朋比為奸",
+      "杳無音訊",
+      "枕戈待旦",
+      "柳眉倒豎",
+      "版畫",
+      "節外生枝",
+      "聲東擊西",
+      "觥籌交錯"
+    ],
+    "unrelated_user_files_unchanged": true,
+    "raw_source_forms": 52753,
+    "normalized_source_forms": 52751,
+    "new_word_usage_judgments": 209,
+    "existing_runtime_readings_mirrored": 0,
+    "new_merged_readings": 715,
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "new_exact_literal_restorations": [
+      "木家具",
+      "木製家具",
+      "木托盤"
+    ],
+    "normalization_observed_frequency_reused": {},
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_keys_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_affected_by_new_normalization": 0,
+    "previous_word_usage_records_preserved": 116342,
+    "previous_word_usage_judgments_preserved": 14320,
+    "full_pool_parity_queries": 71,
+    "full_pool_parity_rows": 77863,
+    "full_pool_ranking_equal": true,
+    "previous_reading_grades_preserved": 53716,
+    "previous_source_rows_preserved": 53716,
+    "explicit_previous_reading_grade_repairs": 0,
+    "new_word_normalization_idempotent": true,
+    "smoke_tests": 322,
+    "smoke_passed": 318,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "24",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "whole_word_review_complete": true,
+      "modern_variants_preserved": true,
+      "reviewed_candidates": 2000,
+      "lyric_observations_reviewed": 14,
+      "second_pass_withdrawals": 306,
+      "final_additional_withdrawals": 1,
+      "reading_changes": [
+        {
+          "id": 82024,
+          "char": "月經不調",
+          "previous_jyutping": "jyut6 ging1 bat1 tiu4",
+          "jyutping": "jyut6 ging1 bat1 diu6",
+          "alternatives": [],
+          "note": "月經不調按完整現代詞條保留 diu6；撤回只憑調和義推定的唯一 tiu4，未把字義推測當全詞覆核結果。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/月經不調"
+        },
+        {
+          "id": 82318,
+          "char": "朋比為奸",
+          "previous_jyutping": "pang4 bei6 wai4 gaan1",
+          "jyutping": "pang4 bei6 wai4 gaan1",
+          "alternatives": [
+            "pang4 bei2 wai4 gaan1",
+            "pang4 bei3 wai4 gaan1"
+          ],
+          "note": "朋比為奸先列 bei6；現代字書有完整詞例支持 bei2，CantoDict 全詞另收 bei3，全部保留並分級，不能把 bei2 一概稱為比較義錯讀。",
+          "reference": "https://jyut.net/query?q=比 ; https://cantonese.sheik.co.uk/dictionary/characters/674/?full=true"
+        },
+        {
+          "id": 82460,
+          "char": "朝會",
+          "previous_jyutping": "ciu4 wui6",
+          "jyutping": "ziu1 wui2",
+          "alternatives": [
+            "ziu1 wui6",
+            "ciu4 wui6"
+          ],
+          "note": "朝會先列晨間集會 ziu1 wui2，保留同義 wui6 以及朝廷集會 ciu4 wui6；朝字按早晨、朝廷兩個完整詞義分讀，非歌詞他朝／會的跨詞連串。AI 語境配音及先後判斷。",
+          "reference": "https://jyut.net/query?q=朝 ; https://jyut.net/query?q=會"
+        },
+        {
+          "id": 82491,
+          "char": "期刊室",
+          "previous_jyutping": "kei4 hon1 sat1",
+          "jyutping": "kei4 hon2 sat1",
+          "alternatives": [
+            "kei4 hon1 sat1"
+          ],
+          "note": "期刊按完整現代刊物詞例 hon2 優先，保留 hon1 文讀；不將孤字順位當整詞順位。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/期刊 ; https://jyutdictionary.com/dictionary/entry/書刊"
+        },
+        {
+          "id": 82493,
+          "char": "期刊目錄",
+          "previous_jyutping": "kei4 hon1 muk6 luk6",
+          "jyutping": "kei4 hon2 muk6 luk6",
+          "alternatives": [
+            "kei4 hon1 muk6 luk6"
+          ],
+          "note": "期刊按完整現代刊物詞例 hon2 優先，保留 hon1 文讀；不將孤字順位當整詞順位。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/期刊 ; https://jyutdictionary.com/dictionary/entry/書刊"
+        },
+        {
+          "id": 82494,
+          "char": "期刊管理",
+          "previous_jyutping": "kei4 hon1 gun2 lei5",
+          "jyutping": "kei4 hon2 gun2 lei5",
+          "alternatives": [
+            "kei4 hon1 gun2 lei5"
+          ],
+          "note": "期刊按完整現代刊物詞例 hon2 優先，保留 hon1 文讀；不將孤字順位當整詞順位。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/期刊 ; https://jyutdictionary.com/dictionary/entry/書刊"
+        },
+        {
+          "id": 82496,
+          "char": "期刊論文",
+          "previous_jyutping": "kei4 hon1 leon6 man4",
+          "jyutping": "kei4 hon2 leon6 man4",
+          "alternatives": [
+            "kei4 hon1 leon6 man4"
+          ],
+          "note": "期刊按完整現代刊物詞例 hon2 優先，保留 hon1 文讀；不將孤字順位當整詞順位。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/期刊 ; https://jyutdictionary.com/dictionary/entry/書刊"
+        },
+        {
+          "id": 82497,
+          "char": "期刊雜誌",
+          "previous_jyutping": "kei4 hon2 zaap6 zi3",
+          "jyutping": "kei4 hon2 zaap6 zi3",
+          "alternatives": [
+            "kei4 hon1 zaap6 zi3"
+          ],
+          "note": "期刊按完整現代刊物詞例 hon2 優先，保留 hon1 文讀；不將孤字順位當整詞順位。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/期刊 ; https://jyutdictionary.com/dictionary/entry/書刊"
+        },
+        {
+          "id": 82534,
+          "char": "朦騙",
+          "previous_jyutping": "mung4 pin3",
+          "jyutping": "mung4 pin3",
+          "alternatives": [],
+          "note": "矇騙取欺騙的矇字，非朦朧的朦字；正式字面與讀音按同一詞義覆核。",
+          "reference": ""
+        },
+        {
+          "id": 82573,
+          "char": "木棺",
+          "previous_jyutping": "muk6 gun1",
+          "jyutping": "muk6 gun2",
+          "alternatives": [
+            "muk6 gun1"
+          ],
+          "note": "木棺為棺材，先列日常變調 gun2，保留 gun1 文讀。",
+          "reference": "https://jyut.net/query?q=棺"
+        },
+        {
+          "id": 82584,
+          "char": "木盤",
+          "previous_jyutping": "muk6 pun4",
+          "jyutping": "muk6 pun2",
+          "alternatives": [
+            "muk6 pun4"
+          ],
+          "note": "木盤為器皿，先列日常變調 pun2，保留 pun4 文讀。",
+          "reference": "https://jyut.net/query?q=盤"
+        },
+        {
+          "id": 83226,
+          "char": "東塗西抹",
+          "previous_jyutping": "dung1 tou4 sai1 maat3",
+          "jyutping": "dung1 tou4 sai1 mut3",
+          "alternatives": [],
+          "note": "東塗西抹取塗抹、塗寫義 mut3；不把其他擦拭搭配的 maat3 草稿自動批准，也不對所有抹字詞作一刀切。AI 整詞配音。",
+          "reference": "https://jyut.net/query?q=抹"
+        },
+        {
+          "id": 83254,
+          "char": "東塗西抹",
+          "previous_jyutping": "dung1 tou4 sai1 maat3",
+          "jyutping": "dung1 tou4 sai1 mut3",
+          "alternatives": [],
+          "note": "東塗西抹取塗抹、塗寫義 mut3；不把其他擦拭搭配的 maat3 草稿自動批准，也不對所有抹字詞作一刀切。AI 整詞配音。",
+          "reference": "https://jyut.net/query?q=抹"
+        },
+        {
+          "id": 83284,
+          "char": "大海撈針",
+          "previous_jyutping": "daai6 hoi2 laau1 zam1",
+          "jyutping": "daai6 hoi2 laau4 zam1",
+          "alternatives": [
+            "daai6 hoi2 lou4 zam1",
+            "daai6 hoi2 laau1 zam1"
+          ],
+          "note": "大海撈針按粵典完整詞例先列 laau4；保留現代字書從水中取物義 lou4、laau1。沒有把孤字撈的謀生 lou1 自動套入。",
+          "reference": "https://words.hk/zidin/大海撈針 ; https://jyut.net/query?q=撈"
+        },
+        {
+          "id": 83361,
+          "char": "杳無影蹤",
+          "previous_jyutping": "jiu2 mou4 jing2 zung1",
+          "jyutping": "miu5 mou4 jing2 zung1",
+          "alternatives": [
+            "jiu2 mou4 jing2 zung1"
+          ],
+          "note": "杳先列現代字書及香港讀音表建議的 miu5，保留 jiu2 又讀；撤回把 miu5 視為形近字誤讀的初稿說法。整詞組合與先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=杳"
+        },
+        {
+          "id": 83362,
+          "char": "杳無蹤影",
+          "previous_jyutping": "jiu2 mou4 zung1 jing2",
+          "jyutping": "miu5 mou4 zung1 jing2",
+          "alternatives": [
+            "jiu2 mou4 zung1 jing2"
+          ],
+          "note": "杳先列現代字書及香港讀音表建議的 miu5，保留 jiu2 又讀；撤回把 miu5 視為形近字誤讀的初稿說法。整詞組合與先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=杳"
+        },
+        {
+          "id": 83363,
+          "char": "杳無蹤跡",
+          "previous_jyutping": "jiu2 mou4 zung1 zik1",
+          "jyutping": "miu5 mou4 zung1 zik1",
+          "alternatives": [
+            "jiu2 mou4 zung1 zik1"
+          ],
+          "note": "杳先列現代字書及香港讀音表建議的 miu5，保留 jiu2 又讀；撤回把 miu5 視為形近字誤讀的初稿說法。整詞組合與先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=杳"
+        },
+        {
+          "id": 83364,
+          "char": "杳無音訊",
+          "previous_jyutping": "jiu2 mou4 jam1 seon3",
+          "jyutping": "miu5 mou4 jam1 seon3",
+          "alternatives": [
+            "jiu2 mou4 jam1 seon3"
+          ],
+          "note": "杳先列現代字書及香港讀音表建議的 miu5，保留 jiu2 又讀；撤回把 miu5 視為形近字誤讀的初稿說法。整詞組合與先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=杳"
+        },
+        {
+          "id": 83393,
+          "char": "扳手",
+          "previous_jyutping": "baan2 sau2",
+          "jyutping": "baan2 sau2",
+          "alternatives": [
+            "paan1 sau2"
+          ],
+          "note": "扳手採工具義 baan2 優先（廣州話正音字典完整詞例），保留 CantoDict 完整扳手 paan1；不以孤字默認音刪除現代工具讀法。",
+          "reference": "https://jyut.net/query?q=扳 ; https://cantonese.sheik.co.uk/dictionary/characters/82/?full=true"
+        },
+        {
+          "id": 83401,
+          "char": "扳機",
+          "previous_jyutping": "baan1 gei1",
+          "jyutping": "paan1 gei1",
+          "alternatives": [
+            "baan2 gei1",
+            "baan1 gei1"
+          ],
+          "note": "扳機取拉、撥動義先列 paan1；速查字典扣扳機有 baan2，現代中華字書扳機鎗有 baan1，保留現代同義讀法，非板字替換後自動沿用。",
+          "reference": "https://jyut.net/query?q=扳"
+        },
+        {
+          "id": 83432,
+          "char": "枉法徇私",
+          "previous_jyutping": "wong2 faat3 seon1 si1",
+          "jyutping": "wong2 faat3 seon1 si1",
+          "alternatives": [
+            "wong2 faat3 seon6 si1",
+            "wong2 faat3 ceon4 si1"
+          ],
+          "note": "徇私先列 seon1，保留現代字書曲從私情義 seon6、ceon4；不能僅按單一字書義項刪去其他全詞可用讀法。AI 整詞組合與先後判斷。",
+          "reference": "https://jyut.net/query?q=徇"
+        },
+        {
+          "id": 83477,
+          "char": "枕戈待旦",
+          "previous_jyutping": "zam3 gwo1 doi6 daan3",
+          "jyutping": "zam3 gwo1 doi6 daan3",
+          "alternatives": [
+            "zam2 gwo1 doi6 daan3"
+          ],
+          "note": "枕戈待旦按動詞詞例先列 zam3；同音字彙亦明列整句 zam2，兩者並存，不把枕的名動詞區分誤作刪除已有全詞異讀的理由。",
+          "reference": "https://jyut.net/query?q=枕"
+        },
+        {
+          "id": 83482,
+          "char": "枕戈待旦",
+          "previous_jyutping": "zam3 gwo1 doi6 daan3",
+          "jyutping": "zam3 gwo1 doi6 daan3",
+          "alternatives": [
+            "zam2 gwo1 doi6 daan3"
+          ],
+          "note": "枕戈待旦按動詞詞例先列 zam3；同音字彙亦明列整句 zam2，兩者並存，不把枕的名動詞區分誤作刪除已有全詞異讀的理由。",
+          "reference": "https://jyut.net/query?q=枕"
+        },
+        {
+          "id": 83483,
+          "char": "枕戈待旦",
+          "previous_jyutping": "zam3 gwo1 doi6 daan3",
+          "jyutping": "zam3 gwo1 doi6 daan3",
+          "alternatives": [
+            "zam2 gwo1 doi6 daan3"
+          ],
+          "note": "枕戈待旦按動詞詞例先列 zam3；同音字彙亦明列整句 zam2，兩者並存，不把枕的名動詞區分誤作刪除已有全詞異讀的理由。",
+          "reference": "https://jyut.net/query?q=枕"
+        },
+        {
+          "id": 83496,
+          "char": "枕着",
+          "previous_jyutping": "zam3 zoek6",
+          "jyutping": "zam3 zoek6",
+          "alternatives": [],
+          "note": "枕着為把頭靠在物上的動詞，採現代讀音表枕著枕頭 zam3；不自動沿名詞枕邊 zam2。",
+          "reference": "https://jyut.net/query?q=枕"
+        },
+        {
+          "id": 83697,
+          "char": "架空電纜",
+          "previous_jyutping": "gaa3 hung1 din6 laam5",
+          "jyutping": "gaa3 hung1 din6 laam6",
+          "alternatives": [],
+          "note": "架空電纜的纜為 laam6；現代字書一致支持，撤回終審初步推測的 laam5。",
+          "reference": "https://jyut.net/query?q=纜"
+        }
+      ],
+      "verdicts": {
+        "accept": 729,
+        "reject": 1271
+      },
+      "post_export_reading_followup": {
+        "char": "有接縫",
+        "preferred": "jau5 zip3 fung4",
+        "alternate": "jau5 zip3 fung6",
+        "note": "有接縫按 CantoDict 完整接縫詞例先列日常 fung4，保留字書名詞縫隙 fung6 作較後異讀；名詞亦可讀 fung4，不因名動詞概括硬刪日常全詞讀法。",
+        "reference": "https://cantonese.sheik.co.uk/dictionary/characters/2871/?full=true"
+      },
+      "normalization_impact": {
+        "new_exact_restorations": {
+          "木傢俱": "木家具",
+          "木製傢俱": "木製家具",
+          "木託盤": "木托盤"
+        },
+        "prior_runtime_matches": 0,
+        "curated_lexicon.json": 0,
+        "curated_reading_ranks.json": 0,
+        "word_usage.tsv": 0,
+        "word_usage_judgments.tsv": 0,
+        "stored_relation_source_files_checked": 222,
+        "stored_relation_source_hits": []
+      },
+      "new_source_readings": 715,
+      "new_source_forms": 671,
+      "supported_word_level_tone_change": "盤 pun2 is supported by modern words.hk tray/plate sense despite missing Rime component: https://words.hk/zidin/盤",
+      "final_priority_corrections": {
+        "枕戈待旦": "Existing complete-word zam2 default remains first; modern zam3 added after it, all 53716 old grade objects preserved.",
+        "大海撈針": "Existing laau4 rank1 remains preferred. Newly added lou4/laau1 are valid but less common alternatives rank2; not a claim that they are invalid or obsolete."
+      }
+    }
+  }
+}

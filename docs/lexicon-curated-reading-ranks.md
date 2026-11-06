@@ -561,3 +561,9 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [着想](https://words.hk/zidin/着想)是 zoek6 soeng2，不按穿著義猜作 zoek3；[晃動](https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf)為 fong2 dung6，初步推測的 fong6 已撤回。書面報告等文字形式採 min6，書本上、書架上、書桌上的方位上採 soeng6；會員的會 wui6 與會員大會末字的聚會 wui2／wui6 分開。
 
 手不釋卷的 gyun2 完整詞例已有覆蓋，保留現代字書書卷義 gyun3 作較後異讀，未將 gyun3 宣稱為全局錯音。早占勿藥、星占學、星占術的占 zim1 與佔有 zim3 分義；83 項精確還原與快取 23 保持重建一致。正式字面、草稿、讀音、碼及先後理由見[B43 審核表](../data/lexicon/reviews/2026-11-06-written-b43-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b43-validation.json)。
+
+## 第四十四批終審（2026-11-07）
+
+本批新增 715 組讀音，原有 53,716 個分級物件逐欄不變。杳 miu5 優先、jiu2 保留；有接縫 fung4 優先、fung6 保留；期刊以現代全詞 hon2 優先、hon1 保留。扳手已由其他來源覆蓋 baan2／paan1，不重複收錄；扳機新增 baan1 作較後讀法。不能用孤字的名動詞概括或 Rime 缺項否定有據全詞：盤 pun2 有粵典器皿義，枕戈待旦的 zam2 原有預設等級保留，另收現代動詞 zam3 作較後讀法。
+
+完整結果排序驗證發現大海撈針的新異讀與原 laau4 同級時會因字母序搶前，已按實際常用程度將新增 lou4／laau1 列較少用，laau4 保持優先；較少用不等於錯音或棄用。架空電纜的纜只收 laam6，撤回無現代字書支持的 laam5 推測。正式字面、來源草稿、0243 碼、佐證與分級見[B44 審核表](../data/lexicon/reviews/2026-11-06-written-b44-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b44-validation.json)。精確字形還原累計 86 項，快取為 24。
