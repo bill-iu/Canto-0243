@@ -1,13 +1,13 @@
 # 自建詞庫讀音常用度
 
 `data/lexicon/curated_reading_ranks.json` 為每個自建「字面／粵拼」記錄讀音等級，
-配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十一批續審後共 **33,193 個讀音**。
+配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十二批續審後共 **34,974 個讀音**。
 這是讀音選擇的常用程度，並非某個詞語在語料出現多少次。
 
 | 等級 | 排序值 | 本輪數量 |
 |------|-------:|---------:|
-| 預設 | 0 | 29,335 |
-| 常用 | 1 | 3,774 |
+| 預設 | 0 | 30,901 |
+| 常用 | 1 | 3,989 |
 | 罕見 | 2 | 81 |
 | 棄用 | 3 | 3 |
 
@@ -18,9 +18,9 @@
 
 ## 依據
 
-- `rime-components`：30,506 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
-- `rime-orthographic`：63 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
-- `ai-context`：2,624 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
+- `rime-components`：32,067 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
+- `rime-orthographic`：65 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
+- `ai-context`：2,842 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
   或單字分級不能準確代表特定詞語的讀法。每項保留原 `component_rank`、判斷標記及說明。
   這些是維護判斷，沒有標成實測頻率或人類逐項批准。
 
@@ -351,3 +351,31 @@ PWA 在建置時合併入 `ranking-index.json`，分級檔變動會令建置快�
 「不能緩和」的 wun6 均按正常詞義及教育署建議覆核，沒有機械沿用字級罕見標籤。
 「不害臊」用 sou3、「不置褒貶」用 bou1、「不龜手藥」用 gwan1、
 「不豐不殺」取減少義 saai3；草稿及修正理由見[本批審核表](../data/lexicon/reviews/2026-11-06-written-b21-supplement.tsv)。
+
+## 第二十二批整詞順序
+
+新增 **1,781 筆分級**：1,561 筆直接沿用 Rime、2 筆經同字異體繼承、218 筆作整詞語境判斷。
+前 33,193 筆分級物件逐欄保留，新增為預設 1,566 筆及常用 215 筆。
+
+| 字面 | 優先讀法 | 保留讀法 |
+|------|----------|----------|
+| 二妹 | `ji6 mui2` | `ji6 mui6` |
+| 二級域名 | `ji6 kap1 wik6 ming4` | `ji6 kap1 wik6 meng2` |
+| 乙未年 | `jyut6 mei6 nin4` | `jyut3 mei6 nin4` |
+| 久旱不雨 | `gau2 hon5 bat1 jyu6` | `gau2 hon5 bat1 jyu5` |
+| 五棓子 | `ng5 bui6 zi2` | `ng5 pui5 zi2` |
+| 人溺己溺 | `jan4 nik6 gei2 nik6` | `jan4 nik1 gei2 nik1` |
+| 交角券 | `gaau1 gok3 hyun3` | `gaau1 gok3 gyun3` |
+| 事出肘腋 | `si6 ceot1 zaau2 jik6` | `si6 ceot1 zau2 jik6` |
+
+[乙的 jyut6／jyut3](https://jyut.net/query?q=乙)、[棓的藥名 bui6／pui5](https://jyut.net/query?q=棓)、
+[溺的淹沒義 nik6／nik1](https://jyut.net/query?q=溺)、[券的 hyun3／gyun3](https://jyut.net/query?q=券)
+均有現代字書根據，沒有因單字罕見標籤便誤刪。
+「二妹 mui2」另有[香港粵語語料親屬詞研究](https://edizionicafoscari.unive.it/media/pdf/books/978-88-6969-407-3/978-88-6969-407-3-ch-09_yUfo2wK.pdf)完整詞音支持；
+mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
+「久旱不雨」先列降雨動詞 jyu6，保留無雨述語 jyu5；整詞讀法及先後為 AI 語境判斷。
+中華新字典明列拱券義 hyun3，交角券以此排前，gyun3 異讀保留。
+丹參酮、主觀輪廓、亂吼、井底蛤蟆、交流腐蝕按正常詞義覆核，沒有機械沿用單字罕見等級。
+
+詳見[第二十二批審核表](../data/lexicon/reviews/2026-11-06-written-b22-supplement.tsv)及
+[補詞紀錄](lexicon-supplement-written.md)。

@@ -1,0 +1,2 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+人工幹預	人工干預	jan4 gung1 gon1 jyu6	0332	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L4475	原始詞源為人工干預；干預採干涉義干字，精確整詞還原只修入庫字形，不改粵拼、碼或其他幹字詞。原詞源行及來源指紋見本批 metadata。

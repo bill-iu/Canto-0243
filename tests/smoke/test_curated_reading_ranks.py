@@ -208,6 +208,14 @@ class CuratedReadingRankTests(unittest.TestCase):
             "丁腈橡膠": ("ding1 cing1 zoeng6 gaau1", "ding1 zing1 zoeng6 gaau1"),
             "丙腈": ("bing2 cing1", "bing2 zing1"),
             "喜不自勝": ("hei2 bat1 zi6 sing3", "hei2 bat1 zi6 sing1"),
+            "二妹": ("ji6 mui2", "ji6 mui6"),
+            "二級域名": ("ji6 kap1 wik6 ming4", "ji6 kap1 wik6 meng2"),
+            "久旱不雨": ("gau2 hon5 bat1 jyu6", "gau2 hon5 bat1 jyu5"),
+            "乙未年": ("jyut6 mei6 nin4", "jyut3 mei6 nin4"),
+            "主鉤": ("zyu2 ngau1", "zyu2 gau1"),
+            "人溺己溺": ("jan4 nik6 gei2 nik6", "jan4 nik1 gei2 nik1"),
+            "交角券": ("gaau1 gok3 hyun3", "gaau1 gok3 gyun3"),
+            "事出肘腋": ("si6 ceot1 zaau2 jik6", "si6 ceot1 zau2 jik6"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
