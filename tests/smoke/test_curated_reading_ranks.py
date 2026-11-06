@@ -94,6 +94,8 @@ class CuratedReadingRankTests(unittest.TestCase):
         self.assertEqual(pron_rank_sort_value_for_word("不存在", "bat1"), 99)
 
     def test_search_and_reference_reading_order_uses_word_grades(self):
+        # A historical word reading must retain its inherited rare grade.
+        self.assertEqual(pron_rank_sort_value_for_word("桀驁不馴", "git6 ngou6 bat1 seon4"), 2)
         cases = {
             "長於": ("zoeng2 jyu1", "coeng4 jyu1"),
             "首尾相連": ("sau2 mei5 soeng1 lin4", "sau2 mei2 soeng1 lin4"),
@@ -128,6 +130,17 @@ class CuratedReadingRankTests(unittest.TestCase):
             "休息廳": ("jau1 sik1 teng1", "jau1 sik1 ting1"),
             "跳跳蹦蹦": ("tiu3 tiu3 bang1 bang1", "tiu3 tiu3 baang6 baang6"),
             "儀表板": ("ji4 biu2 baan2", "ji4 biu1 baan2"),
+            "去核": ("heoi3 wat6", "heoi3 hat6"),
+            "報名處": ("bou3 meng2 cyu3", "bou3 ming4 cyu3"),
+            "嵌合體": ("ham3 hap6 tai2", "ham6 hap6 tai2"),
+            "梳篦": ("so1 bei6", "so1 bei1"),
+            "廳局級": ("ting1 guk6 kap1", "teng1 guk6 kap1"),
+            "腺嘌呤": ("sin3 piu1 ling4", "sin3 piu3 ling6"),
+            "拙著": ("zyut3 zyu3", "zyut6 zyu3"),
+            "肉鴿": ("juk6 gap3", "juk6 gaap3"),
+            "聾啞學校": ("lung4 aa2 hok6 haau6", "lung4 ngaa2 hok6 haau6"),
+            "塑料瓶": ("sou3 liu2 ping4", "sok3 liu2 ping4"),
+            "桀驁不馴": ("git6 ngou4 bat1 seon4", "git6 ngou6 bat1 seon4"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
