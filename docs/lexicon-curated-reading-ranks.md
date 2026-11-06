@@ -485,3 +485,13 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 新增 1,110 組讀音，各有獨立等級，原有 43,991 個物件逐欄不變。現共 45,101 組：預設 39,664、常用 5,353、罕見 81、棄用 3。將軍名詞與象棋動詞均有 zoeng1 整詞支持；將佐等單字語義沒有被機械套入將軍令。射籃 laam2、小便宜 pin4 ji2、小販 faan2、文件 gin2、瓶 ping2 等現代整詞變調保留優先次序。
 
 到的結果補語 dou2 與終點／程度 dou3 依語法分列；不因同字同形便刪掉其中一義。家無長物 zoeng6、將進酒 coeng1、少不經事 siu3、少校 haau6、小學校長 zoeng2、小廚房 cyu4 亦按整詞覆核。寒蟬 sim4／sin4 與射籃 laam2／laam4 分別記錄常用次序；寺 zi6 採詞義建議音，沒有宣稱有字書語音根據的 zi2 一概無效。詞語常用度與這些讀音選擇獨立；細節見[B34 審核表](../data/lexicon/reviews/2026-11-06-written-b34-supplement.tsv)及[B34 驗證](../data/lexicon/reviews/2026-11-06-written-b34-validation.json)。
+
+## 第三十七批：按完整詞義核音並保留有據異讀
+
+本批新增 762 組來源讀音、740 個表達；全部 47,027 個舊讀音分級物件不變。心手相應為 sam1 sau2 soeng1 jing3，心情愉快用 jyu4，性交易的易為 jik6。正字修正時同步對齊粵拼：畢竟的畢 bat1、惡習不改的習 zaap6，兩組正音已有覆蓋，未另加重複詞條。
+
+[咽字書例](https://jyut.net/query?q=咽)分清悲咽／悽咽的聲塞 jit3、咽喉 jin1、吞咽 jin3；[見字義](https://jyut.net/query?q=見)支持情見於色的顯現義 jin6。[粵典着／著](https://words.hk/zidin/着)的書面持續態為 zoek6，忍受着沿此規則，不能以口語住的 zyu6 直接代換。
+
+[昭](https://jyut.net/query?q=昭)以現代建議／習讀 ciu1 先列，保留有字書依據的原讀 ziu1；[狂](https://jyut.net/query?q=狂)以 kwong4 先列，有據 kong4 又讀列後。[湃](https://jyut.net/query?q=湃)的 baai3／paai3 均保留，怒濤澎湃、思潮澎湃採 baai3 優先。[忸](https://jyut.net/query?q=忸)在忸怩有 nau2／nuk6，兩讀保留；[怏](https://jyut.net/query?q=怏)失意不快義保留 joeng2／joeng3，不套自大義 joeng1。[老婆](https://cantowords.com/dictionary/老婆)的妻子義是 lou5 po4，不把名詞變調機械套成 po2。膜的 mok2 有名詞變調依據，未一概判錯；本批解剖名稱以 mok6 列前，沒有憑單字列出所有組合。
+
+固定版本歌詞僅是觀測：快玩、快適、心要等須先辨清跨詞邊界；怕吃苦的 hek6 沒有因語料曾標便升為正式讀音，[字書的吃苦配詞](https://jyut.net/query?q=吃)支持 hek3。上述先後是整詞語境判斷，並非實測整詞讀音頻率；詞語常用度另外記錄。完整草稿、正字、正式音、碼、理由及語料行號見[B37 審核表](../data/lexicon/reviews/2026-11-06-written-b37-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b37-validation.json)。
