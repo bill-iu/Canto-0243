@@ -44,6 +44,10 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "機械繫": "機械系",
     "幹擾機": "干擾機",
     "鬥式": "斗式",
+    "白麪書生": "白面書生",
+    "鬥門": "斗門",
+    "車鬥": "車斗",
+    "傢俱城": "家具城",
 }
 
 # Bare word senses: ocean surface and literary richness/fragrance. Preserve the

@@ -1,0 +1,2 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+白麪書生	白面書生	baak6 min6 syu1 sang1	2233	normalize_literal	rime_words,kaifang	rime-cantonese-upstream:word.csv#L58280;kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token2724	兩個原始來源均為白面書生；舊 s2hk 入庫把面貌義轉成麪粉字。精確還原整詞，不改讀音、碼或其他麪字詞。

@@ -109,6 +109,12 @@ class CuratedReadingRankTests(unittest.TestCase):
             "螺鈿": ("lo4 din6", "lo4 tin4"),
             "外差": ("ngoi6 caai1", "ngoi6 caa1"),
             "凹版": ("nap1 baan2", "aau1 baan2"),
+            "令妹": ("ling6 mui2", "ling6 mui6"),
+            "繾綣": ("hin2 hyun2", "hin2 hyun3"),
+            "校勘學": ("gaau3 ham3 hok6", "gaau3 ham1 hok6"),
+            "指畫": ("zi2 waa2", "zi2 waak6"),
+            "露餡": ("lou6 haam2", "lou6 haam6"),
+            "吼叫聲": ("haau1 giu3 sing1", "hau3 giu3 sing1"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
@@ -144,6 +150,9 @@ class CuratedReadingRankTests(unittest.TestCase):
                     ("締合", "dai3 hap6", "tai3 hap6"),
                     ("螺鈿", "lo4 din6", "lo4 tin4"),
                     ("血泡", "hyut3 pok1", "hyut3 paau3"),
+                    ("令妹", "ling6 mui2", "ling6 mui6"),
+                    ("繾綣", "hin2 hyun2", "hin2 hyun3"),
+                    ("指畫", "zi2 waa2", "zi2 waak6"),
                 ]:
                     # Older variant is deliberately inserted first.
                     for jp in (variant, preferred):

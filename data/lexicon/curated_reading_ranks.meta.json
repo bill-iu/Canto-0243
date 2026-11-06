@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 14976,
-  "curated_sha256": "a4294bbf6b35c26701d9d6ca3d976df9c5cec287463d249c642eb1630d7981b7",
+  "curated_rows": 16741,
+  "curated_sha256": "383c728d63de78093e302b0743758c6f8a74b5a763e07d5203637d7e776cac76",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "c241083052f58bd2a30396cae04179ae894293dfd464c867c138d51cfaf7a34a",
+  "ranks_sha256": "01e6162d591db928a957a25bd7435f122b475c5a6479980965eec08dd33d05ae",
   "grades": {
-    "預設": 12938,
-    "常用": 1965,
+    "預設": 14507,
+    "常用": 2161,
     "罕見": 70,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 14392,
-    "rime-orthographic": 31,
-    "ai-context": 553
+    "rime-components": 16051,
+    "rime-orthographic": 34,
+    "ai-context": 656
   },
   "grade_order": [
     "預設",
@@ -38,18 +38,43 @@
     "爲": "為"
   },
   "validation": {
-    "previous_reading_grades_preserved": 13189,
-    "backend_pwa_word_grade_keys": 15173,
-    "ranking_and_lookup_self_checks": true,
-    "targeted_node_typecheck": true,
-    "pwa_build": true,
-    "pwa_artifact_guard": true,
-    "smoke_tests": 276,
-    "smoke_passed": 272,
+    "merged_rows": 197878,
+    "merged_literals": 182664,
+    "unique_pairs": 197876,
+    "baseline_unique_pairs": 196111,
+    "baseline_pairs_retained": 196110,
+    "only_recorded_literal_migration": true,
+    "existing_literal_migrations": [
+      {
+        "previous_char": "白麪書生",
+        "char": "白面書生",
+        "jyutping": "baak6 min6 syu1 sang1",
+        "code": "2233"
+      }
+    ],
+    "added_source_rows": 1765,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "existing_exact_duplicate_groups": 2,
+    "representative_search_checks": 57,
+    "live_db_unchanged": true,
+    "backend_pwa_word_grade_keys": 16959,
+    "previous_reading_grades_preserved": 14976,
+    "new_word_normalization_idempotent": true,
+    "smoke_tests": 278,
+    "smoke_passed": 274,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
-    "seam_skipped": 6
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "2",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true
   },
   "source_attribution": {
     "name": "CanCLID/rime-cantonese-upstream",
@@ -57,5 +82,5 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b10"
+  "updated_through_batch": "2026-11-06-written-b11"
 }
