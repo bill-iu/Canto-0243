@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 51071,
-  "curated_sha256": "e0d32574fb86409130c3be8ce44c24cdd65760f8dee5ba44b3b145b5d9e3e498",
+  "curated_rows": 52254,
+  "curated_sha256": "a93feafbde7bded491b4ae0167537d358b0c021668fd1a607f6343d8c5faf9fd",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "fbc07f9672ecb1a39b73748e58e869aba96e507f8336d621a063eab5b35ad19f",
+  "ranks_sha256": "1a7d5ac94dfffcd1bb8212049695b63dd3dd24165c707f07c2e927270fdaa16e",
   "grades": {
-    "預設": 44867,
-    "常用": 6120,
+    "預設": 45830,
+    "常用": 6340,
     "罕見": 81,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 46082,
+    "rime-components": 46965,
     "rime-orthographic": 87,
-    "ai-context": 4902
+    "ai-context": 5202
   },
   "grade_order": [
     "預設",
@@ -38,51 +38,62 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 230071,
-    "merged_literals": 213622,
-    "unique_triples": 230069,
-    "baseline_rows": 228897,
+    "merged_rows": 231254,
+    "merged_literals": 214660,
+    "unique_triples": 231252,
+    "baseline_rows": 230071,
     "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 112871,
-    "new_source_readings": 1174,
+    "old_word_grades_preserved": 113951,
+    "new_source_readings": 1183,
     "new_pairs_retained": true,
-    "search_checks": 225,
-    "preferred_reading_checks": 78,
-    "word_usage_keys": 113951,
+    "search_checks": 232,
+    "preferred_reading_checks": 118,
+    "word_usage_keys": 114990,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 113951,
-    "backend_pwa_curated_reading_grade_keys": 51716,
+    "backend_pwa_word_grade_keys": 114990,
+    "backend_pwa_curated_reading_grade_keys": 52907,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 51071,
+    "old_reading_grades_preserved": 51071,
+    "old_usage_rows_preserved": 113951,
+    "old_judgments_preserved": 13817,
+    "new_source_forms": 1041,
+    "new_merged_forms": 1038,
+    "existing_merged_forms_with_new_readings": [
+      "孿生",
+      "支票簿",
+      "熙來攘往"
+    ],
+    "unrelated_user_files_unchanged": true,
     "existing_runtime_readings_mirrored": 0,
-    "new_merged_readings": 1174,
+    "new_merged_readings": 1183,
     "heteronym_full_pool_ranking_equal": true,
     "non_han_tiers_match_backend": true,
     "new_exact_literal_restorations": [
-      "排除干擾",
-      "掛斗"
+      "據云"
     ],
     "normalization_observed_frequency_reused": {
-      "掛斗": 342
+      "據云": 383
     },
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_keys_affected_by_new_normalization": 0,
     "prior_stored_relation_keys_affected_by_new_normalization": 0,
-    "previous_word_usage_records_preserved": 112871,
-    "previous_word_usage_judgments_preserved": 13588,
-    "new_word_usage_judgments": 229,
-    "full_pool_parity_queries": 41,
-    "full_pool_parity_rows": 57096,
+    "previous_word_usage_records_preserved": 113951,
+    "previous_word_usage_judgments_preserved": 13817,
+    "new_word_usage_judgments": 184,
+    "full_pool_parity_queries": 37,
+    "full_pool_parity_rows": 63874,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 49897,
-    "previous_source_rows_preserved": 49897,
+    "previous_reading_grades_preserved": 51071,
+    "previous_source_rows_preserved": 51071,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 318,
-    "smoke_passed": 314,
+    "smoke_tests": 319,
+    "smoke_passed": 315,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -95,7 +106,7 @@
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_artifact_guard": true,
-    "layer_cache_format": "21",
+    "layer_cache_format": "22",
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
@@ -105,6 +116,24 @@
       "second_page": 6,
       "everyday_literal_inserted_last_ranks_first": true,
       "modes": 3
+    },
+    "final_reading_audit": {
+      "removed_uncommitted_readings": [
+        {
+          "char": "塗脂抹粉",
+          "uncommitted_jyutping": "tou4 zi1 maat3 fan2",
+          "reviewed_jyutping": "tou4 zi1 mut3 fan2",
+          "outcome": "already_present",
+          "reference": "https://jyut.net/query?q=抹"
+        }
+      ],
+      "modern_whole_word_variants_retained": {
+        "熙來攘往": [
+          "hei1 loi4 joeng4 wong5",
+          "hei1 loi4 joeng5 wong5"
+        ]
+      },
+      "committed_source_rows_changed": 0
     }
   },
   "source_attribution": {
@@ -113,6 +142,6 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b40",
+  "updated_through_batch": "2026-11-06-written-b41",
   "updated_on": "2026-11-07"
 }

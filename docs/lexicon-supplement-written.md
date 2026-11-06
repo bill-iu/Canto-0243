@@ -1613,3 +1613,18 @@ PWA 建置及產物檢查、portable 前端建置均通過。使用中資料庫�
 [捍](https://jyut.net/query?q=捍)衛義先 hon6、保留現代 hon2 又讀，與[悍](https://jyut.net/query?q=悍)然的 hon5／hon6 分開；[揹負完整配詞](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=揹)取 bui3，不沿草擬 bui1。揣着按[衣內藏物義](https://jyut.net/query?q=揣)列 caai1／cyun2，揣測的 ceoi2 不套進去。排成行用行列 hong4、提在手上用方位 soeng6、插槽數用數目 sou3；修正字形時同時修正粵拼，例如按排→安排 on1、挽惜→惋惜 jyun2、搏手無策→束手無策 cuk1。
 
 新增兩項完整詞形修正：排除幹擾→排除干擾、掛鬥→掛斗，精確規則增至 79 項，解析快取升至 21。掛斗按車斗義同步修為 gwaa3 dau2；原 Essay 掛斗 342 權重沿用，撤去初稿多餘的 AI 判斷。舊執行詞庫、讀音分級、常用度及已存關係均無這些正字或錯轉字面，無舊鍵遷移；幹部、鬥爭等原義保持。完整資料見[B40 審核表](../data/lexicon/reviews/2026-11-06-written-b40-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b40.meta.json)及[重建、排序與前 200 項驗證](../data/lexicon/reviews/2026-11-06-written-b40-validation.json)。尚有 **70,608 個池內候選、249 個讀音／語境待核項及 924 個地域初篩候選**；以上為 dev 審核進度。
+
+
+## 第四十一批：日常動作、完整歌詞與詞級讀音
+
+逐項審核下一批 2,000 個候選，第二輪退回 236 個少用古語、窄域設備、罕用變體和低復用片段。查重後補入 **1,041 個來源字面、1,183 組讀音**，包括搞不清楚、搶救人質、撐下去、撕去、撬開、撰寫論文、擅自處理、摺疊椅、收納盒等；來源新字面與合併詞庫新字面分開統計。
+
+已有整詞觀測沿用；沒有 Essay／TUBELEX 整詞觀測者新增 **184 項明示的 AI 常用度判斷**，累計 **14,001 項**。舊 113,951 個常用度記錄、13,817 項判斷及 51,071 個詞源／讀音分級物件逐欄保留。輸出共 **114,990 個常用度鍵**；全部 **50,725 個正規化自建字面**有分級，重建後有效 **48,674 個字面、50,137 組讀音**。歷史退回 2,051 個字面、2,117 組讀音不變。
+
+固定版本[廣東歌語料](https://github.com/jasonleeubc/Cantopop-corpus/tree/018e88540b917c40dc3f7248ed98908208544b54)的 17 個連續字串均回看完整原文。擁到出自相擁／到白頭的跨詞片段而退回；搞不清的內部觀測出自搞不清楚，三字說法另按自然用法判斷，不冒稱獨立整詞詞頻。撐到的其中一例在撐到底內，歌唱 caang3、caang1 及 dou2／dou3 均僅記觀測，正式詞音與常用度另核。
+
+[撈](https://jyut.net/query?q=撈)按水中取物 laau4、laau1、lou4 與謀得收入 lou1／laau4 分義；[摟](https://jyut.net/query?q=摟)的抱住 lau2／lau5 都有現代根據。[撩](https://jyut.net/query?q=撩)提掀義有 liu1／liu4，不把 liu4 誤限於挑逗。[撬](https://jyut.net/query?q=撬)開取 giu6、保留 hiu3；處分依完整詞例 fan1，不憑國語聲調改 fan6。[理大摺疊詞例](https://www.polyu.edu.hk/clc/cantonese/phoneticKnowledge/vowel/recognizingVowel/)支持 zip3 dip6，未沿孤字草稿 daap6；[播種完整詞例](https://jyutdictionary.com/dictionary/entry/播種)支持 bo3 zung2，未按種植動詞印象改 zung3。
+
+新增據雲→據云的精確還原，保留說話義云；原 Essay 據云 **383** 權重沿用。舊執行詞庫、詞源、分級及已存關係鍵無受影響，精確規則增至 **80**、解析快取升至 **22**。字形、草稿、正式音、碼、來源行及分級理由見[B41 審核表](../data/lexicon/reviews/2026-11-06-written-b41-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b41.meta.json)和[重建與排序驗證](../data/lexicon/reviews/2026-11-06-written-b41-validation.json)。尚有 **68,608 個池內候選、249 個讀音／語境待核項及 924 個地域初篩候選**；以上為 dev 進度。
+
+最終詞級覆核：塗脂抹粉依[現代完整配詞](https://jyut.net/query?q=抹)採 mut3，已有讀音查重覆蓋，未加入初稿擦拭義 maat3；該音在其他詞義仍按語境審定。熙來攘往的 [joeng4 完整詞例](https://en.wiktionary.org/wiki/Module:zh/data/yue-word/029)保留，既有[香港字書 joeng5 詞例](https://jyut.net/query?q=攘)亦未刪除。

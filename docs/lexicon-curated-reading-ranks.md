@@ -530,3 +530,16 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [捍](https://jyut.net/query?q=捍)疆衞國的 hon6／hon2 與[悍](https://jyut.net/query?q=悍)然的 hon5／hon6 分開；[掰](https://jyut.net/query?q=掰)保留 baai1／maak3，[率](https://jyut.net/query?q=率)的比率義保留 leot6／leot2。揣着按衣內藏物義保留 caai1／cyun2，揣測才列 cyun2／ceoi2；劍鞘義 ciu3 不套鞭鞘的 saau1。判斷與詞例見[B40 審核表](../data/lexicon/reviews/2026-11-06-written-b40-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b40-validation.json)。
 
 掛斗的斗為載貨車斗 dau2，非格鬥 dau3；字形、讀音及 0243 碼同時修正。排除干擾的干為干擾 gon1，不轉幹部的幹。兩項精確字面還原使解析快取升至 21，舊字面鍵無受影響；原 Essay 掛斗 342 詞頻沿用。
+
+
+## 第四十一批：按完整詞義保留現代異讀
+
+新增 1,183 組來源讀音並逐項分級；51,071 個既有讀音分級物件逐欄保留。詞語常用度獨立處理，沒有因單字在 Rime 的音未知或罕見，就直接判整詞冷僻。
+
+[摟](https://jyut.net/query?q=摟)抱住義 lau2／lau5、[撬](https://jyut.net/query?q=撬)開義 giu6／hiu3、[攙](https://jyut.net/query?q=攙)扶及混合義 caam1／caam4 均保留並排序。水中取物的撈列 laau4、laau1、lou4，撈外快列 lou1、laau4，不把所有孤字異讀套入每一詞義。撩起先列 liu1，現代字書亦有 liu4 提掀義，未把有效文讀判錯。
+
+[處分完整配詞](https://cantonese.sheik.co.uk/dictionary/characters/78/?full=true)及[粵拼詞表](https://cala.hk/assets/CRAT_Appendix2_bystroke_1.3.pdf)支持 cyu2 fan1／cyu5 fan1；新增撤銷處分、撤職處分不按普通話 fèn 改 fan6。撰寫論文採 zaan6，[擬](https://jyut.net/query?q=擬)具採 ji5；操場上用方位 soeng6，不沿向上 soeng5。[播種](https://jyutdictionary.com/dictionary/entry/播種) bo3 zung2 與[理大摺疊](https://www.polyu.edu.hk/clc/cantonese/phoneticKnowledge/vowel/recognizingVowel/) zip3 dip6 各按完整詞例覆核。
+
+歌詞連串另記完整原文行號，擁到跨相擁／到邊界而退回；歌曲次數及異音不冒充日常頻率。據云的說話義還原云，精確規則增至 80、快取格式 22，無舊鍵遷移。草稿、正式音、正字及先後理由見[B41 審核表](../data/lexicon/reviews/2026-11-06-written-b41-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b41-validation.json)。
+
+最終詞級覆核：塗脂抹粉依[現代完整配詞](https://jyut.net/query?q=抹)採 mut3，已有讀音查重覆蓋，未加入初稿擦拭義 maat3；該音在其他詞義仍按語境審定。熙來攘往的 [joeng4 完整詞例](https://en.wiktionary.org/wiki/Module:zh/data/yue-word/029)保留，既有[香港字書 joeng5 詞例](https://jyut.net/query?q=攘)亦未刪除。

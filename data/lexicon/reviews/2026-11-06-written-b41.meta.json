@@ -1,0 +1,188 @@
+{
+  "batch": "2026-11-06-written-b41",
+  "date": "2026-11-07",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "f388292aea5c088e4603eced0f42d2a76a6da65a",
+  "input_curated_sha256": "e0d32574fb86409130c3be8ce44c24cdd65760f8dee5ba44b3b145b5d9e3e498",
+  "input_curated_rows": 51071,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2145,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "reject": 918,
+    "accept": 1183,
+    "already_present": 44
+  },
+  "reading_repairs": 0,
+  "added_rows": 1183,
+  "added_literals": 1041,
+  "total_curated_rows": 52254,
+  "cumulative_reviewed_candidates": 77994,
+  "cumulative_candidate_decisions": {
+    "accept": 50168,
+    "reject": 26872,
+    "already_present": 705,
+    "defer": 249
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 68608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 individually reviewed candidates, continuation offsets 71250:73250. Second whole-word familiarity pass withdrew 236 individually assessed obscure, low-utility or narrow proposals. Complete expressions replace incomplete source fragments. All 17 pinned lyric observations inspected actual context; 擁到 crosses the boundary 相擁／到 in 相擁到白頭 and rejected. Everyday actions, broadly familiar written and lyric phrases remain independently graded. Supported modern readings are ranked by whole-word sense, never automatically copied from character defaults or song counts.",
+  "lyric_corpus": {
+    "repository": "https://github.com/jasonleeubc/Cantopop-corpus",
+    "commit": "018e88540b917c40dc3f7248ed98908208544b54",
+    "license": "CC-BY-4.0",
+    "observations_policy": "Pinned local lyric-word observations only; not approved readings or everyday frequency. Full-word context reviewed separately."
+  },
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight. Proposed usage rank is AI contextual judgment and is not substituted for available measured whole-word frequency.",
+  "normalization_policy": "Existing s2hk with 80 exact-literal restorations and nine preserved literal senses across 16 input keys. B41 restores 據雲 to 據云 for saying; no prior runtime, source, reading/usage or stored relation keys are affected. All 51071 prior source and reading grade objects remain unchanged. Cache format 22 prevents stale layer reuse. Raw source, formal and ingested literals remain traceable.",
+  "second_pass_familiarity_withdrawals": 236,
+  "third_pass_familiarity_restorations": 0,
+  "third_pass_additional_rejections": 0,
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 51071,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "2a47a7d1346e930c34e032dce2bf718247fc67111a2ca4e0ffe7485a2a49866f",
+  "validation": {
+    "merged_rows": 231254,
+    "merged_literals": 214660,
+    "unique_triples": 231252,
+    "baseline_rows": 230071,
+    "all_previous_rows_and_multiplicities_retained": true,
+    "old_word_grades_preserved": 113951,
+    "new_source_readings": 1183,
+    "new_pairs_retained": true,
+    "search_checks": 232,
+    "preferred_reading_checks": 118,
+    "word_usage_keys": 114990,
+    "withdrawn_curated_literals": 2051,
+    "live_db_unchanged": true,
+    "backend_pwa_essay_frequency_keys": 266884,
+    "essay_frequency_tables_equal": true,
+    "backend_pwa_word_grade_keys": 114990,
+    "backend_pwa_curated_reading_grade_keys": 52907,
+    "word_grade_tables_equal": true,
+    "curated_reading_grade_tables_equal": true,
+    "old_source_rows_preserved": 51071,
+    "old_reading_grades_preserved": 51071,
+    "old_usage_rows_preserved": 113951,
+    "old_judgments_preserved": 13817,
+    "new_source_forms": 1041,
+    "new_merged_forms": 1038,
+    "existing_merged_forms_with_new_readings": [
+      "孿生",
+      "支票簿",
+      "熙來攘往"
+    ],
+    "unrelated_user_files_unchanged": true,
+    "existing_runtime_readings_mirrored": 0,
+    "new_merged_readings": 1183,
+    "heteronym_full_pool_ranking_equal": true,
+    "non_han_tiers_match_backend": true,
+    "new_exact_literal_restorations": [
+      "據云"
+    ],
+    "normalization_observed_frequency_reused": {
+      "據云": 383
+    },
+    "prior_runtime_rows_affected_by_new_normalization": 0,
+    "prior_word_usage_keys_affected_by_new_normalization": 0,
+    "prior_stored_relation_keys_affected_by_new_normalization": 0,
+    "previous_word_usage_records_preserved": 113951,
+    "previous_word_usage_judgments_preserved": 13817,
+    "new_word_usage_judgments": 184,
+    "full_pool_parity_queries": 37,
+    "full_pool_parity_rows": 63874,
+    "full_pool_ranking_equal": true,
+    "previous_reading_grades_preserved": 51071,
+    "previous_source_rows_preserved": 51071,
+    "explicit_previous_reading_grade_repairs": 0,
+    "new_word_normalization_idempotent": true,
+    "smoke_tests": 319,
+    "smoke_passed": 315,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "guide_query_tests": 1,
+    "guide_query_tests_passed": true,
+    "pwa_build": true,
+    "portable_build": true,
+    "full_app_typecheck": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true,
+    "layer_cache_format": "22",
+    "layer_cache_cold_misses": 8,
+    "layer_cache_warm_hits": 8,
+    "layer_cache_counter_matches_uncached_db": true,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "everyday_literal_inserted_last_ranks_first": true,
+      "modes": 3
+    },
+    "final_reading_audit": {
+      "removed_uncommitted_readings": [
+        {
+          "char": "塗脂抹粉",
+          "uncommitted_jyutping": "tou4 zi1 maat3 fan2",
+          "reviewed_jyutping": "tou4 zi1 mut3 fan2",
+          "outcome": "already_present",
+          "reference": "https://jyut.net/query?q=抹"
+        }
+      ],
+      "modern_whole_word_variants_retained": {
+        "熙來攘往": [
+          "hei1 loi4 joeng4 wong5",
+          "hei1 loi4 joeng5 wong5"
+        ]
+      },
+      "committed_source_rows_changed": 0
+    }
+  },
+  "final_reading_audit": {
+    "removed_uncommitted_readings": [
+      {
+        "char": "塗脂抹粉",
+        "uncommitted_jyutping": "tou4 zi1 maat3 fan2",
+        "reviewed_jyutping": "tou4 zi1 mut3 fan2",
+        "outcome": "already_present",
+        "reference": "https://jyut.net/query?q=抹"
+      }
+    ],
+    "modern_whole_word_variants_retained": {
+      "熙來攘往": [
+        "hei1 loi4 joeng4 wong5",
+        "hei1 loi4 joeng5 wong5"
+      ]
+    },
+    "committed_source_rows_changed": 0
+  }
+}
