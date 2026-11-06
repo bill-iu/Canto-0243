@@ -506,3 +506,14 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [扔](https://jyut.net/query?q=扔)在拋擲義有 wing1 語音與 jing4 文讀；[扛](https://jyut.net/query?q=扛)分肩扛 kong1、兩手抬舉 gong1，普通搬運短語保留並按語境排序。房車賽按完整房車名詞優先 fong2，保留 fong4。懵懂保留 mung2／mung5，懵然無知依字書專義取 mung4。手鋸的 goe3／geoi3 有完整工具配詞；手指畫取藝術名稱 waa2。手倒立按完整手倒立式詞例保留 dou2，不只憑倒字的上下易位義改音。
 
 感到痛苦等感受狀態用 dou3，意料不到先列結果義 dou2、保留文讀 dou3。所累用牽累義 leoi6，不套積累 leoi5；家給人足用現代 kap1，正音已有覆蓋；打腫臉充補全為打腫臉充胖子並同步配 bun6，沒有憑草稿造充肥子。上述先後為明示整詞語境判斷，非實測讀音次數。字書、完整歌詞行號及判斷見[B38 審核表](../data/lexicon/reviews/2026-11-06-written-b38-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b38-validation.json)。
+
+
+## 第三十九批：語義專音與完整表達
+
+本批新增 1,254 組來源讀音，各有獨立等級；舊 48,643 個分級物件逐欄保留。詞語常用度另記錄，未以單字的罕見、棄用標記代替整詞語義。
+
+現代字書[扳](https://jyut.net/query?q=扳)的 baan2／paan1 都有拉動、扳轉義，paan1 並非只屬攀登；[拴](https://jyut.net/query?q=拴)有 saan1 與 cyun4 俗讀，俗讀不等於錯音。[LSHK 完整散文詞例](https://cala.hk/assets/CRAT_Appendix2_bystroke_1.5.pdf)明列 man2／man4，抒情散文保留兩讀；[腫瘤](https://words.hk/zidin/腫瘤)的 lau2／lau4 亦按完整詞例保留。[拾級](https://jyut.net/query?q=拾)有 sip3 專讀及 sap6 俗讀，不能誤稱 sap6 只屬拾取；拾級而下先 sip3、sap6 列後。
+
+[拘泥](https://jyut.net/query?q=泥)的固執義 nei6 與泥土 nai4 分開；[拂](https://jyut.net/query?q=拂)輕擦、拂衣為 fat1，不套通弼的 bat6。[拗](https://jyut.net/query?q=拗)的彎折義 aau2 不用爭拗義 aau3；持正不阿的[阿](https://jyut.net/query?q=阿)採徇私、阿附義 o1，非稱呼前綴 aa3。折疊動作正式採摺 zip3，折斷、折價保留折 zit3；批假用休假 gaa3，折衷用 zung1，拱手而降的投降為 hong4，行禮為 hang4。拙著按著作 zyu3 查重，未把書面着的持續態 zoek6 套到著作。
+
+扼 ak1／aak1、拙 zyut3／zyut6 的現代又讀保留並排序；抹按擦拭 maat3、塗抹 mut3 的完整動作分義。原歌詞拋下 haa3、拋字 pau1 未照抄入庫，正式取 paau1 haa6；拾到的 dou2／dou3 則都保留。這些先後是明示整詞語境判斷，非實測讀音頻率。字書、原歌詞行號、草稿、正字及理由見[B39 審核表](../data/lexicon/reviews/2026-11-06-written-b39-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b39-validation.json)。
