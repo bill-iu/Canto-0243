@@ -12,11 +12,13 @@ const ANCHOR_EXCLUDED_PRON_RANKS = new Set([PRON_RANK_SORT['罕見'], PRON_RANK_
 let essayFreq = new Map<string, number>();
 let curated = new Set<string>();
 let pronRankByCharJyut = new Map<string, number>();
+let wordUsageByChar = new Map<string, readonly [number, number]>();
 
 export function initRankingData(data: {
   essay?: Record<string, number>;
   curated?: string[];
   pronRank?: Record<string, number>;
+  wordUsage?: Record<string, readonly [number, number]>;
 }): void {
   if (data.essay) {
     essayFreq = new Map(Object.entries(data.essay));
@@ -27,6 +29,7 @@ export function initRankingData(data: {
   if (data.pronRank) {
     pronRankByCharJyut = new Map(Object.entries(data.pronRank));
   }
+  if (data.wordUsage) wordUsageByChar = new Map(Object.entries(data.wordUsage));
 }
 
 function isPureHan(text: string): boolean {
@@ -79,6 +82,14 @@ export function getEssayFrequency(char: string): number {
   return essayFrequency(char);
 }
 
+function wordUsageSortKey(char: string): readonly [number, number] {
+  const text = char.trim();
+  const usage = wordUsageByChar.get(text);
+  if (usage) return [usage[0], -usage[1]];
+  const frequency = essayFrequency(text);
+  return [frequency >= 1000 ? 0 : frequency >= 500 ? 1 : 2, 0];
+}
+
 /** Same pronunciation authority policy as app/domain/lexicon/ranking.py. */
 export function compareAuthoritativeReadings(
   a: { char?: unknown; jyutping?: unknown },
@@ -126,13 +137,16 @@ export function literalPriorityCompare(
   return compareSearchResults(a, b);
 }
 
-export function searchResultSortKey(row: WordRow): [number, number, number, number, string, string] {
+export function searchResultSortKey(row: WordRow): [number, number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
   const hanTier = isPureHan(ch) ? 0 : 1;
+  const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
+    usageRank,
     -essayFrequency(ch),
+    subtitleDistribution,
     -curatedBoost(ch),
     pronRankSortValueForWord(ch, jyut),
     ch,
@@ -169,13 +183,16 @@ export function sortQueryResults<T extends { word: string; jyutping: string }>(r
   );
 }
 
-export function heteronymSortKey(row: WordRow): [number, number, number, string, string] {
+export function heteronymSortKey(row: WordRow): [number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
   const hanTier = isPureHan(ch) ? 0 : 1;
+  const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
+    usageRank,
     -essayFrequency(ch),
+    subtitleDistribution,
     -curatedBoost(ch),
     ch,
     jyut,
@@ -210,6 +227,7 @@ export function sortHeteronymResults<T extends { word: string; jyutping: string 
 /** ponytail: runnable self-check — `npx tsx client/scripts/ranking-self-check.ts` */
 export function rankingLogicSelfCheck(): void {
   initRankingData({
+    wordUsage: {},
     essay: { 窮困潦倒: 100, 窮苦潦倒: 50, 窮酸潦倒: 10, '高頻': 100, '低頻': 10 },
     curated: ['窮困潦倒'],
     pronRank: {

@@ -1,0 +1,314 @@
+{
+  "date": "2026-11-06",
+  "baseline_commit": "a46ca8af6a2205e95cf7f4ddc2c6cdf06dad85c5",
+  "word_usage_sha256": "107834936183f0bed105b7b0d86e6b605d6162474f1be2485464f457a9da3425",
+  "judgments_sha256": "913d101322e4505dee72d5215f00cf0128fbaa735d3ebe91f894d2809ae14c0c",
+  "counts": {
+    "curated_literals": 34333,
+    "observed_literals": 84046,
+    "graded_literals": 98624,
+    "contextual_judgments": 9619,
+    "pending_curated_literals": 0,
+    "curated_grades": {
+      "0": 2647,
+      "1": 15564,
+      "3": 2051,
+      "2": 14071
+    },
+    "withdrawn_curated_literals": 2051,
+    "withdrawn_curated_readings": 2117
+  },
+  "validation": {
+    "merged_rows": 213992,
+    "merged_literals": 198298,
+    "withdrawn_literals": 2051,
+    "withdrawn_curated_readings": 2117,
+    "removed_merged_rows": 2117,
+    "all_other_literals_and_readings_unchanged": true,
+    "search_checks": 42,
+    "archival_source_and_reading_grades_unchanged": true,
+    "backend_pwa_word_grade_keys": 98624,
+    "backend_pwa_curated_reading_grade_keys": 35400,
+    "full_pool_parity_queries": 10,
+    "full_pool_parity_rows": 27343,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "modes": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "common_word_inserted_last_appears_first": true
+    },
+    "python_smoke": {
+      "tests": 295,
+      "skipped": 4,
+      "passed": 291
+    },
+    "seam_checks": {
+      "tests": 89,
+      "skipped": 6,
+      "passed": 83
+    },
+    "ranking_and_lookup_self_checks": true,
+    "typescript_app_check": true,
+    "pwa_build_and_artifact_guard": true,
+    "portable_ui_build": true,
+    "cache_format": "14",
+    "cache_cold_misses": 8,
+    "cache_warm_hits": 8,
+    "live_db_preserved": true
+  },
+  "query_samples": {
+    "43": {
+      "first_15": [
+        "覺得",
+        "發生",
+        "記得",
+        "更加",
+        "阿媽",
+        "阿妹",
+        "喪屍",
+        "對方",
+        "意思",
+        "轉身",
+        "放心",
+        "雪糕",
+        "發出",
+        "變得",
+        "至於"
+      ],
+      "first_200_grade_counts": {
+        "0": 200
+      },
+      "total_literals": 3250
+    },
+    "243": {
+      "first_15": [
+        "下意識",
+        "洛杉磯",
+        "會計師",
+        "自信心",
+        "度假村",
+        "下半身",
+        "甚至於",
+        "上半身",
+        "下半生",
+        "下載區",
+        "下雪天",
+        "下戰書",
+        "內置式",
+        "售票機",
+        "大富翁"
+      ],
+      "first_200_grade_counts": {
+        "0": 14,
+        "1": 63,
+        "2": 123
+      },
+      "total_literals": 244
+    },
+    "2434": {
+      "first_15": [
+        "事發經過",
+        "絕對優勢",
+        "獨到之處",
+        "十惡不赦",
+        "直角三角",
+        "定向天線",
+        "洞察一切",
+        "彈冠相慶",
+        "狀態參數",
+        "二次曲線",
+        "動輒得咎",
+        "代數曲線",
+        "萬國公法",
+        "劃線支票",
+        "助記方法"
+      ],
+      "first_200_grade_counts": {
+        "0": 1,
+        "1": 4,
+        "2": 26
+      },
+      "total_literals": 31
+    },
+    "0343": {
+      "first_15": [
+        "淋巴細胞",
+        "神經細胞",
+        "逢凶化吉",
+        "離開故鄉",
+        "平均氣温",
+        "遊擊戰爭",
+        "寒風刺骨",
+        "傻瓜相機",
+        "長歌當哭",
+        "防風固沙",
+        "常規戰爭",
+        "鳴冤叫屈",
+        "銅筋鐵骨",
+        "何西阿書",
+        "牛衣對泣"
+      ],
+      "first_200_grade_counts": {
+        "1": 6,
+        "2": 38
+      },
+      "total_literals": 44
+    },
+    "0000": {
+      "first_15": [
+        "迷迷糊糊",
+        "求求其其",
+        "完完全全",
+        "遲遲疑疑",
+        "微乎其微",
+        "遙遙無期",
+        "無期徒刑",
+        "來來回回",
+        "朦朦朧朧",
+        "模模糊糊",
+        "葡萄牙人",
+        "平平常常",
+        "人無完人",
+        "神乎其神",
+        "如期完成"
+      ],
+      "first_200_grade_counts": {
+        "0": 4,
+        "1": 16,
+        "2": 56
+      },
+      "total_literals": 76
+    },
+    "333": {
+      "first_15": [
+        "朱古力",
+        "哈哈哈",
+        "不得不",
+        "分分鐘",
+        "經銷商",
+        "更衣室",
+        "分公司",
+        "私家車",
+        "差不多",
+        "收音機",
+        "乒乓波",
+        "公交車",
+        "出租車",
+        "分析師",
+        "叉燒包"
+      ],
+      "first_200_grade_counts": {
+        "0": 39,
+        "1": 161
+      },
+      "total_literals": 949
+    },
+    "323": {
+      "first_15": [
+        "一大堆",
+        "科學家",
+        "交換機",
+        "開幕式",
+        "機動車",
+        "中學生",
+        "收視率",
+        "工業區",
+        "刻錄機",
+        "綜合徵",
+        "一輛車",
+        "充值卡",
+        "商業街",
+        "銷售商",
+        "音樂家"
+      ],
+      "first_200_grade_counts": {
+        "0": 24,
+        "1": 126,
+        "2": 50
+      },
+      "total_literals": 473
+    },
+    "223": {
+      "first_15": [
+        "電視機",
+        "第二朝",
+        "實驗室",
+        "做什麼",
+        "大學生",
+        "藝術家",
+        "自治區",
+        "大面積",
+        "實習生",
+        "電動車",
+        "靜靜的",
+        "服務商",
+        "右下方",
+        "大丈夫",
+        "自動波"
+      ],
+      "first_200_grade_counts": {
+        "0": 29,
+        "1": 129,
+        "2": 42
+      },
+      "total_literals": 394
+    },
+    "??3": {
+      "first_15": [
+        "唔記得",
+        "無啦啦",
+        "細細聲",
+        "朱古力",
+        "哈哈哈",
+        "唔怪得",
+        "一時間",
+        "電視機",
+        "洗手間",
+        "唔捨得",
+        "洗衣機",
+        "打招呼",
+        "消防車",
+        "星期一",
+        "漢堡包"
+      ],
+      "first_200_grade_counts": {
+        "0": 200
+      },
+      "total_literals": 9950
+    },
+    "3???": {
+      "first_15": [
+        "不知不覺",
+        "不好意思",
+        "一模一樣",
+        "工作人員",
+        "一段時間",
+        "今時今日",
+        "鬆一口氣",
+        "操作系統",
+        "一生一世",
+        "不知所措",
+        "七七八八",
+        "急不及待",
+        "的而且確",
+        "中小企業",
+        "遵紀守法"
+      ],
+      "first_200_grade_counts": {
+        "0": 200
+      },
+      "total_literals": 11132
+    }
+  },
+  "limitations": [
+    "Chinese subtitle frequency is not a measured Hong Kong conversation frequency. Essay retains priority within each grade.",
+    "AI grades express contextual judgments, not fabricated whole-phrase counts.",
+    "Withdrawals affect the curated source only; historical reading evidence remains archived.",
+    "Changes are on dev; no main merge or production release is claimed."
+  ]
+}

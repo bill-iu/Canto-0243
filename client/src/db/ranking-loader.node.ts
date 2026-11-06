@@ -29,7 +29,7 @@ function parseCharCsv(csvText: string): Record<string, number> {
     const ch = (cols[charIdx] ?? '').trim();
     const jyut = (cols[jyutIdx] ?? '').trim();
     const rankLabel = (cols[rankIdx] ?? '').trim();
-    if (!ch || !jyut || ch.length !== 1) {
+    if (!ch || !jyut || [...ch].length !== 1) {
       continue;
     }
     const rankVal = PRON_RANK_SORT[rankLabel] ?? 99;
@@ -100,17 +100,52 @@ export function parseWordPronRanks(text: string): Record<string, number> {
   return out;
 }
 
+export function parseWordUsage(text: string): Record<string, readonly [number, number]> {
+  const lines = text.trim().split(/\r?\n/);
+  const fields = lines.shift()?.split('\t') ?? [];
+  const charIndex = fields.indexOf('char');
+  const rankIndex = fields.indexOf('usage_rank');
+  const channelsIndex = fields.indexOf('subtitle_channels');
+  const actionIndex = fields.indexOf('action');
+  if ([charIndex, rankIndex, channelsIndex, actionIndex].some(index => index < 0) || new Set(fields).size !== fields.length) {
+    throw new Error('Invalid word usage header');
+  }
+  const out: Record<string, readonly [number, number]> = Object.create(null);
+  for (const line of lines) {
+    const values = line.split('\t');
+    const char = values[charIndex]?.trim();
+    const rankText = values[rankIndex] ?? '';
+    const channelsText = values[channelsIndex] ?? '';
+    const rank = Number(rankText);
+    const channels = Number(channelsText);
+    const action = values[actionIndex];
+    if (!char || !/^[0-3]$/.test(rankText) || !/^\d+$/.test(channelsText) ||
+        !Number.isSafeInteger(channels) || !['keep', 'withdraw_curated'].includes(action ?? '') ||
+        (rank === 3) !== (action === 'withdraw_curated')) {
+      throw new Error(`Invalid word usage row: ${char}`);
+    }
+    const previous = out[char];
+    if (previous && (previous[0] !== rank || previous[1] !== channels)) {
+      throw new Error(`Conflicting word usage grade: ${char}`);
+    }
+    out[char] = [rank, channels];
+  }
+  return out;
+}
+
 /** Load ranking signals from repo data/ (call before query-engine in Node runners). */
 export function buildRankingData(repoRoot: string): {
   essay: Record<string, number>;
   curated: string[];
   pronRank: Record<string, number>;
+  wordUsage: Record<string, readonly [number, number]>;
 } {
   const root = path.resolve(repoRoot);
   const charCsv = fs.readFileSync(path.join(root, 'data/rime/char.csv'), 'utf8');
   const essayPath = path.join(root, 'data/essay/essay-cantonese.txt');
   const curatedPath = path.join(root, 'data/lexicon/curated_common.txt');
   const wordRanksPath = path.join(root, 'data/lexicon/curated_reading_ranks.json');
+  const wordUsagePath = path.join(root, 'data/lexicon/word_usage.tsv');
 
   const essay = fs.existsSync(essayPath)
     ? parseEssayCorpus(fs.readFileSync(essayPath, 'utf8'))
@@ -123,6 +158,7 @@ export function buildRankingData(repoRoot: string): {
     essay,
     curated,
     pronRank: { ...parseCharCsv(charCsv), ...parseWordPronRanks(fs.readFileSync(wordRanksPath, 'utf8')) },
+    wordUsage: fs.existsSync(wordUsagePath) ? parseWordUsage(fs.readFileSync(wordUsagePath, 'utf8')) : {},
   };
 }
 

@@ -19,6 +19,7 @@ from app.services.query_dispatch import QueryEngine, SearchContext
 from app.utils.jyutping_codec import get_0243_code
 from app.utils.trad_chinese import to_traditional
 from app.utils.word_cache import reset_word_cache_for_tests
+from app.lexicon.word_usage import load_word_usage
 from ingest.lexicon_build import persist_lexicon_candidates
 from ingest.lexicon_sources import ingest_lexicon_json
 from ingest.lexicon_overlay import apply_lexicon_overlay
@@ -520,7 +521,10 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
         batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22}]
-        self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
+        usage = load_word_usage(CURATED.with_name("word_usage.tsv"))
+        withdrawn = {literal for literal, grade in usage.items() if grade.withdraw_curated}
+        self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch if to_traditional(row["char"]) not in withdrawn}.issubset(pairs))
+        self.assertTrue(withdrawn.isdisjoint({row.char for row in candidates}))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
         try:
@@ -529,6 +533,9 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                 persist_lexicon_candidates(db, candidates)
                 db.commit()
                 for literal, (jyutping, code) in cases.items():
+                    if to_traditional(literal) in withdrawn:
+                        self.assertNotIn((to_traditional(literal), jyutping, code), pairs)
+                        continue
                     self.assertTrue((to_traditional(literal), jyutping, code) in pairs, literal)
                     for mode in ("m1", "m2", "m3"):
                         with self.subTest(literal=literal, mode=mode):

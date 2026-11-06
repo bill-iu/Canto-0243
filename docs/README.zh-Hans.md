@@ -54,6 +54,8 @@ PWA、Windows 及 macOS Desktop 共用本版词库。详见 [完整更新说明]
 
 ## 功能
 
+**dev 开发中：词语常用度排序** — 词语与读音分开排序，常见生活表达排前，较少用词排后。已为全部 34,333 个自建字面建立分级；完成 9,619 项情境判断，退回 2,051 个冷僻表达，重建后有效自建词为 32,282 个表达、32,857 条读音。原词频与 AI 判断分栏留档，详见[常用度与退回记录](lexicon-word-usage-design.md)。本段属于 dev 进度，正式版本资料见上方发布记录。
+
 * **0243搜索三档**：**0243模式** `mode=m1`（松档等价）· **02493模式** `mode=m2`（仅 `4↔5` 松档）· **394052模式** `mode=m3`（六声码逐位精确；词库存储用 394052，三声 `4`、五声 `5` 分明）。
 * **多种查询语法**：纯汉字 · 纯数字 · **粤拼查询** · **平仄串列**（`PZ`／`ZP`，自动切换至 m3）· **加号锚**（`23+好=`）· **韵／声锚**（`就=`）· **串列韵／声锚** · **四字部分韵／声锚**（`穷?潦倒=`）· **前缀通配等号** · 整词等号／码夹。
 * **近反义**：**近反义模式** `mode=syn` 全栏 UI（不接受粤拼）；或在 0243搜索三档下 `~词`／`!词`、反义复合 `!!`、近义复合 `~~`（会记住离开近反义前的搜索档位）。
@@ -136,6 +138,7 @@ Desktop 产品界面为本机 **`/app/`**（`client/dist-portable`；`cd client 
 
 本应用程序得以实现，全赖语言学家、开源维护者及社群贡献者的出色工作。我们十分荣幸能整合以下项目的数据（与产品「关于」页一致；再分发前请阅读各上游完整条款）：
 
+* [TUBELEX 中文字幕词频](https://github.com/naist-nlp/tubelex)：整词频率与频道分布作为排序依据，采用 [BSD 3-Clause](../data/lexicon/licenses/tubelex-BSD-3-Clause.txt)。
 * [words.hk（粤典）](https://words.hk/)：采用**非商业开放授权**（详见 [words.hk /hoifong](https://words.hk/base/hoifong/)）。
 * [Rime 粤语词典补缺来源](https://github.com/CanCLID/rime-cantonese-upstream)：采用 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)。
 * [Cantonese.md 歇后语字面](https://github.com/daimaruhk/Cantonese.md)：采用 [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA)（仅 term／answer＋粤拼；无正文解释）。

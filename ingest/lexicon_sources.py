@@ -129,6 +129,9 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
         return []
     out: list[LexiconCandidate] = []
     seen: set[tuple[str, str]] = set()
+    # Explicit source withdrawals retain the original review JSON for audit.
+    from app.lexicon.word_usage import load_word_usage
+    usage = load_word_usage(json_path.with_name("word_usage.tsv")) if source_id == "curated" else {}
     for item in data:
         if not isinstance(item, dict):
             continue
@@ -139,6 +142,8 @@ def ingest_lexicon_json(path: Path | str, *, source_id: str) -> list[LexiconCand
             continue
         # same HK fold as _append_candidate (curated JSON previously skipped s2hk)
         char = to_traditional(char)
+        if char in usage and usage[char].withdraw_curated:
+            continue
         candidate = _NORMALIZER.normalize_candidate(char, jyutping, source_id=source_id, code=code)
         if not candidate:
             continue

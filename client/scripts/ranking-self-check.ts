@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildRankingData, loadRankingData, parseWordPronRanks } from '../src/db/ranking-loader.node.ts';
 import { compareAuthoritativeReadings, compareSearchResults, pronRankSortValueForWord } from '../src/db/ranking.ts';
+import { checkWordUsageRanking } from './ranking-word-usage-fixture.ts';
 
 rankingLogicSelfCheck();
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -47,4 +48,5 @@ for (const invalid of [null, {}, [null], [{ ...valid, pron_rank: 'constructor' }
   assert.throws(() => parseWordPronRanks(JSON.stringify(invalid)));
 }
 assert.equal(buildRankingData(root).pronRank['長於\tzoeng2 jyu1'], 0);
+await checkWordUsageRanking(root);
 console.log('ranking self-check ok');

@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-06",
+  "corpus_repository": "https://github.com/naist-nlp/tubelex",
+  "corpus_commit": "7cb5fb36add76b83a266d1967536e1a1d3faa513",
+  "corpus_path": "frequencies/tubelex-zh.tsv.xz",
+  "corpus_sha256": "7744ecfeede7e7b53ae95107ba828ab66f32f545cdc474813eb3c38bc035e2a2",
+  "corpus_license": "BSD-3-Clause",
+  "corpus_total_word_tokens": 18021001,
+  "source_normalization": "Existing project s2hk and exact lexical restorations; spelling counts summed, channel range uses maximum as a lower bound",
+  "reviewer": "AI-assisted word familiarity judgments; not human item-by-item approval or measured phrase frequencies",
+  "grade_labels": [
+    "日常高頻",
+    "通用書面與填詞",
+    "較少用或專門",
+    "冷僻退回"
+  ],
+  "automatic_bands": "0: subtitle channels>=20 or Essay>=1000; 1: channels>=5 or Essay>=500; otherwise 2. Absence alone never withdraws a word.",
+  "curated_sha256": "f50a29a55b22b320f264ac669988494d1605f5977f439e023a8c37e9d8c560bd",
+  "output_sha256": "107834936183f0bed105b7b0d86e6b605d6162474f1be2485464f457a9da3425",
+  "judgments_sha256": "913d101322e4505dee72d5215f00cf0128fbaa735d3ebe91f894d2809ae14c0c",
+  "curated_literals": 34333,
+  "observed_literals": 84046,
+  "graded_literals": 98624,
+  "contextual_judgments": 9619,
+  "pending_curated_literals": 0,
+  "curated_grades": {
+    "0": 2647,
+    "1": 15564,
+    "3": 2051,
+    "2": 14071
+  },
+  "withdrawn_curated_literals": 2051,
+  "withdrawn_curated_readings": 2117,
+  "validation": {
+    "merged_rows": 213992,
+    "merged_literals": 198298,
+    "withdrawn_literals": 2051,
+    "withdrawn_curated_readings": 2117,
+    "removed_merged_rows": 2117,
+    "all_other_literals_and_readings_unchanged": true,
+    "search_checks": 42,
+    "archival_source_and_reading_grades_unchanged": true,
+    "backend_pwa_word_grade_keys": 98624,
+    "backend_pwa_curated_reading_grade_keys": 35400,
+    "full_pool_parity_queries": 10,
+    "full_pool_parity_rows": 27343,
+    "paging_fixture": {
+      "total": 206,
+      "first_page": 200,
+      "second_page": 6,
+      "modes": [
+        "m1",
+        "m2",
+        "m3"
+      ],
+      "common_word_inserted_last_appears_first": true
+    },
+    "python_smoke": {
+      "tests": 295,
+      "skipped": 4,
+      "passed": 291
+    },
+    "seam_checks": {
+      "tests": 89,
+      "skipped": 6,
+      "passed": 83
+    },
+    "ranking_and_lookup_self_checks": true,
+    "typescript_app_check": true,
+    "pwa_build_and_artifact_guard": true,
+    "portable_ui_build": true,
+    "cache_format": "14",
+    "cache_cold_misses": 8,
+    "cache_warm_hits": 8,
+    "live_db_preserved": true
+  }
+}

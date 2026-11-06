@@ -54,6 +54,8 @@ Feedback welcome on [GitHub Issues](https://github.com/bill-iu/Canto-0243/issues
 
 ## Features
 
+**In development on dev: word familiarity ranking** — Word familiarity is separate from pronunciation preference. Everyday expressions rank first, with less common terms later. All 34,333 curated word forms have grades, including 9,619 contextual judgments. Withdrawing 2,051 overly obscure expressions leaves 32,282 active forms and 32,857 readings after rebuilding. Original frequency values and AI judgments remain separate; see the [ranking and withdrawal record](lexicon-word-usage-design.md). These are dev changes; the published release is described above.
+
 * **0243 search (three tiers)**: **0243 mode** `mode=m1` (full loose variants) · **02493 mode** `mode=m2` (`4↔5` loose only) · **394052 mode** `mode=m3` (strict 6-tone codes; lexicon stores 394052 with tone 3=`4`, tone 5=`5`).
 * **Rich query syntax**: plain Chinese · plain digits · **Jyutping queries** · **level/oblique tone sequences** (`PZ` / `ZP`, automatically switches to m3) · **plus anchors** (`23+好=`) · **rhyme／initial anchors** (`就=`) · **serial rhyme／initial anchors** · **four-character partial rhyme／initial anchors** (`窮?潦倒=`) · **prefix wildcard equals** · whole-word equals／code sandwich.
 * **Near／antonym**: **near／antonym mode** `mode=syn` full-column UI (no Jyutping); or in any **0243 search tier** use `~word`／`!word`, antonym compounds `!!`, near-synonym compounds `~~`. Returning from near／antonym mode restores your previous search tier.
@@ -136,6 +138,7 @@ Thanks also to **Professor Wong Chi-wah**, inventor of **0243 theory** (whose su
 
 This app exists thanks to outstanding work by linguists, open-source maintainers, and community contributors. We are proud to integrate data from the following (aligned with the in-app About page; read each upstream license before redistribution):
 
+* [TUBELEX Chinese subtitle frequencies](https://github.com/naist-nlp/tubelex): word counts and channel distribution inform ranking, under [BSD 3-Clause](../data/lexicon/licenses/tubelex-BSD-3-Clause.txt).
 * [words.hk (粵典)](https://words.hk/): **non-commercial open license** (see [words.hk /hoifong](https://words.hk/base/hoifong/)).
 * [Rime Cantonese supplement sources](https://github.com/CanCLID/rime-cantonese-upstream): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 * [Cantonese.md xiehouyu literals](https://github.com/daimaruhk/Cantonese.md): [CC0 1.0](https://github.com/daimaruhk/Cantonese.md/blob/main/LICENSE-DATA) (term／answer + Jyutping only; no full glosses).
