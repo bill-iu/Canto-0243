@@ -41,6 +41,7 @@ BATCH_11 = "2026-11-06-written-b11"
 BATCH_12 = "2026-11-06-written-b12"
 BATCH_13 = "2026-11-06-written-b13"
 BATCH_14 = "2026-11-06-written-b14"
+BATCH_15 = "2026-11-06-written-b15"
 
 
 def review_rows(path):
@@ -170,6 +171,9 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "仪表板": "儀表板", "儀表板": "儀表板", "儀錶板": "儀表板",
             "记里鼓车": "記里鼓車", "記里鼓車": "記里鼓車", "記裏鼓車": "記里鼓車",
             "数斗": "數斗", "數斗": "數斗", "數鬥": "數斗",
+            "风斗": "風斗", "風斗": "風斗", "風鬥": "風斗",
+            "划得来": "划得來", "划得來": "划得來", "劃得來": "划得來",
+            "医托": "醫托", "醫托": "醫托", "醫託": "醫托",
         }
         for original, expected in cases.items():
             with self.subTest(original=original):
@@ -458,7 +462,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -703,6 +707,35 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                       ("嵌合體", "tham3 hap6 tai2")]:
             self.assertNotIn(wrong, pairs)
         for original in ("幹部", "鬥爭", "記裏鼓車圖", "數鬥之後"):
+            self.assertEqual(to_traditional(original), original)
+
+    def test_fifteenth_batch_retains_context_readings_and_exact_normalization(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_15}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_15}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(len({r["id"].split(":")[0] for r in review}), meta["review_candidate_ids"])
+        self.assertEqual(input_fingerprint(curated, meta, 15), meta["input_curated_sha256"])
+        self.assertEqual(meta["reading_repairs"], 0)
+        self.assertEqual(meta["existing_literal_migrations"], 0)
+        batch = [r for r in curated if r.get("batch") == BATCH_15]
+        self.assertEqual(len(batch), meta["added_rows"])
+        accepted = {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"}
+        self.assertEqual(accepted, {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        deferred = {"呀呀", "懵裏懵懂"}
+        self.assertEqual({r["char"] for r in review if r["verdict"] == "defer"}, deferred)
+        literals = {r["char"] for r in batch}
+        self.assertTrue({"風斗", "划得來", "醫托", "不疼不癢", "皮夾子", "朝乾夕惕", "隨風而逝", "風華絕代"}.issubset(literals))
+        self.assertTrue(literals.isdisjoint(deferred | {"豆腐腦", "奶皮子", "爺倆", "抹不開", "冰碴"}))
+        pairs = {(r["char"], r["jyutping"]) for r in batch}
+        for wrong in [("朝乾夕惕", "ziu1 gon1 zik6 tik1"), ("綸巾羽扇", "leon4 gan1 jyu5 sin3"),
+                      ("柞絲綢", "zaa3 si1 cau4"), ("擬題", "ji4 tai4"),
+                      ("並行工程", "bing6 hong6 gung1 cing4"), ("臧否", "zong1 fau2"),
+                      ("分子病", "fan6 zi2 beng6"), ("苯醚", "bun2 mei4")]:
+            self.assertNotIn(wrong, pairs)
+        for original in ("鬥爭", "劃分", "委託", "風鬥之戰", "劃得來者", "醫託之言"):
             self.assertEqual(to_traditional(original), original)
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):

@@ -141,6 +141,14 @@ class CuratedReadingRankTests(unittest.TestCase):
             "聾啞學校": ("lung4 aa2 hok6 haau6", "lung4 ngaa2 hok6 haau6"),
             "塑料瓶": ("sou3 liu2 ping4", "sok3 liu2 ping4"),
             "桀驁不馴": ("git6 ngou4 bat1 seon4", "git6 ngou6 bat1 seon4"),
+            "酵解": ("haau1 gaai2", "gaau3 gaai2"),
+            "倩女": ("sin6 neoi5", "sin3 neoi5"),
+            "外廓": ("ngoi6 kwok3", "ngoi6 gwok3"),
+            "金錠": ("gam1 ding6", "gam1 ding3"),
+            "冥界": ("ming5 gaai3", "ming4 gaai3"),
+            "條件性": ("tiu4 gin2 sing3", "tiu4 gin6 sing3"),
+            "露相": ("lau6 soeng3", "lou6 soeng3"),
+            "鐵板釘釘": ("tit3 baan2 deng1 deng1", "tit3 baan2 ding3 ding1"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]

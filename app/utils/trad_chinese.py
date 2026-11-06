@@ -57,6 +57,9 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "儀錶板": "儀表板",
     "記裏鼓車": "記里鼓車",
     "數鬥": "數斗",
+    "風鬥": "風斗",
+    "劃得來": "划得來",
+    "醫託": "醫托",
 }
 
 # Bare word senses: ocean surface and literary richness/fragrance. Preserve the
