@@ -3,7 +3,7 @@ import { initSqlJs } from '../src/db/sqljs.ts';
 import { createSqlJsBackend } from '../src/db/sqljs-backend.ts';
 import { finalizeCanonicalMatchSpec } from '../src/db/position-match/canonical.ts';
 import { executeCanonicalMatchSpecPage } from '../src/db/position-match/engine.ts';
-import { compareAuthoritativeReadings, compareSearchResults, initRankingData } from '../src/db/ranking.ts';
+import { compareAuthoritativeReadings, compareHeteronym, compareSearchResults, initRankingData } from '../src/db/ranking.ts';
 import { loadRankingData, parseWordUsage } from '../src/db/ranking-loader.node.ts';
 
 export async function checkWordUsageRanking(root: string): Promise<void> {
@@ -31,6 +31,12 @@ export async function checkWordUsageRanking(root: string): Promise<void> {
   }
   const db = createSqlJsBackend(native);
   try {
+    for (const compare of [compareSearchResults, compareHeteronym]) {
+      const tiers = ['H', '今匀*', '古語甲一'].map(char => ({ char, jyutping: '' }));
+      assert.deepEqual(tiers.sort(compare).map(row => row.char), ['古語甲一', '今匀*', 'H']);
+      const extension = ['X', '𠮷A'].map(char => ({ char, jyutping: '' }));
+      assert.equal(extension.sort(compare)[0]!.char, '𠮷A');
+    }
     const rows = [{ char: cold[0]!, jyutping: 'si6 faat3 ging1 gwo3' }, { char: common, jyutping: 'si6 faat3 ging1 gwo3' }];
     assert.equal([...rows].sort(compareSearchResults)[0]!.char, common);
     const readings = [{ char: common, jyutping: 'si6 faat3 ging1 gwo2' }, { char: common, jyutping: 'si6 faat3 ging1 gwo3' }];

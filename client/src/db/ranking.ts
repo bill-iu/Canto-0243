@@ -36,6 +36,12 @@ function isPureHan(text: string): boolean {
   return Boolean(text) && [...text].every((ch) => /\p{Script=Han}/u.test(ch));
 }
 
+/** Match Python's pure Han, mixed Han, then other-text tiers. */
+function hanRankTier(text: string): number {
+  if (isPureHan(text)) return 0;
+  return /\p{Script=Han}/u.test(text) && /[\p{L}\p{N}]/u.test(text) ? 1 : 2;
+}
+
 function pronRankSortValue(char: string, jyutping: string): number {
   const c = char.trim();
   const j = jyutping.trim();
@@ -140,7 +146,7 @@ export function literalPriorityCompare(
 export function searchResultSortKey(row: WordRow): [number, number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
-  const hanTier = isPureHan(ch) ? 0 : 1;
+  const hanTier = hanRankTier(ch);
   const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
@@ -186,7 +192,7 @@ export function sortQueryResults<T extends { word: string; jyutping: string }>(r
 export function heteronymSortKey(row: WordRow): [number, number, number, number, number, string, string] {
   const ch = String(row.char ?? '');
   const jyut = String(row.jyutping ?? '');
-  const hanTier = isPureHan(ch) ? 0 : 1;
+  const hanTier = hanRankTier(ch);
   const [usageRank, subtitleDistribution] = wordUsageSortKey(ch);
   return [
     hanTier,
