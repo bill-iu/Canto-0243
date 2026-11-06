@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 38825,
-  "curated_sha256": "53dae71e3d8e6663de5bc71b3dfa838f681bc95e9e0700cdaff1b2f7c9c36c9c",
+  "curated_rows": 39403,
+  "curated_sha256": "2f6f9697016c4becf33e18cee7aa10efc496e13c6a01d21d33330f67551a6ef8",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "9f38b443003c851ba5f0e5d5f446542234e5232c2f9a4542dea8682bf048b5fd",
+  "ranks_sha256": "cf984d648395d60b658a249d2070fe319afb9ef764568695ba9cf9ff2bca9900",
   "grades": {
-    "預設": 34279,
-    "常用": 4462,
+    "預設": 34755,
+    "常用": 4564,
     "罕見": 81,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 35527,
-    "rime-orthographic": 72,
-    "ai-context": 3226
+    "rime-components": 36062,
+    "rime-orthographic": 74,
+    "ai-context": 3267
   },
   "grade_order": [
     "預設",
@@ -38,87 +38,42 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 217830,
-    "merged_literals": 202021,
-    "unique_triples": 217828,
-    "baseline_rows": 217823,
+    "merged_rows": 218406,
+    "merged_literals": 202583,
+    "unique_triples": 218404,
+    "baseline_rows": 217830,
     "all_rows_except_explicit_ledger_retained": true,
-    "explicit_existing_row_migrations": 10,
-    "nine_bad_start_readings_absent": true,
-    "one_existing_literal_renamed": true,
-    "old_word_grades_preserved": 102340,
-    "one_word_grade_key_migrated_with_observations_retained": true,
-    "new_source_readings": 15,
+    "explicit_existing_literal_coalescences": 1,
+    "duplicate_multiplicities_unchanged": true,
+    "canonical_falling_idiom_retains_both_readings": true,
+    "old_word_grades_preserved": 102347,
+    "new_source_readings": 578,
     "new_pairs_retained": true,
-    "search_checks": 130,
-    "preferred_reading_checks": 7,
-    "word_usage_keys": 102347,
+    "search_checks": 109,
+    "preferred_reading_checks": 13,
+    "word_usage_keys": 102910,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
-    "additional_real_code_search_checks": 57,
-    "backend_pwa_word_grade_keys": 102347,
-    "backend_pwa_curated_reading_grade_keys": 39312,
+    "backend_pwa_word_grade_keys": 102910,
+    "backend_pwa_curated_reading_grade_keys": 39895,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "corpus_contributors": [
-      {
-        "raw_word": "划不来",
-        "char": "划不來",
-        "count": 13,
-        "channels": 4
-      },
-      {
-        "raw_word": "划动",
-        "char": "划動",
-        "count": 4,
-        "channels": 1
-      },
-      {
-        "raw_word": "划过去",
-        "char": "划過去",
-        "count": 2,
-        "channels": 2
-      },
-      {
-        "raw_word": "划进",
-        "char": "划進",
-        "count": 1,
-        "channels": 1
-      },
-      {
-        "raw_word": "划不來",
-        "char": "划不來",
-        "count": 1,
-        "channels": 1
-      },
-      {
-        "raw_word": "划过来",
-        "char": "划過來",
-        "count": 1,
-        "channels": 1
-      }
-    ],
-    "word_grade_key_migration": {
-      "old_literal": "劃不來",
-      "new_literal": "划不來",
-      "old_usage_rank": 2,
-      "new_usage_rank": 1,
-      "old_essay_frequency": 0,
-      "new_essay_frequency": 694,
-      "old_subtitle_count": 1,
-      "new_subtitle_count": 14,
-      "new_channels_lower_bound": 4,
-      "explanation": "Canonical spelling recovers existing Essay 694 and raw subtitle forms 划不来13 + 划不來1. Count summed, channel range uses max4, not union."
-    },
-    "full_pool_parity_queries": 32,
-    "full_pool_parity_rows": 47503,
+    "previous_ai_judgment_rows_preserved": 10745,
+    "new_explicit_ai_judgments": 137,
+    "ai_judgments_do_not_replace_measured_frequencies": true,
+    "exact_context_restorations": 67,
+    "context_senses_preserved": 9,
+    "preserved_input_keys": 16,
+    "original_curated_rows_preserved": 568,
+    "full_pool_parity_queries": 29,
+    "full_pool_parity_rows": 38053,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 38810,
-    "previous_source_rows_preserved": 38810,
+    "previous_reading_grades_preserved": 38825,
+    "previous_source_rows_preserved": 38825,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 302,
-    "smoke_passed": 298,
+    "smoke_tests": 303,
+    "smoke_passed": 299,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -129,7 +84,7 @@
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_artifact_guard": true,
-    "layer_cache_format": "15",
+    "layer_cache_format": "17",
     "layer_cache_cold_misses": 8,
     "layer_cache_warm_hits": 8,
     "layer_cache_counter_matches_uncached_db": true,
@@ -147,5 +102,5 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-context01"
+  "updated_through_batch": "2026-11-06-written-b27"
 }

@@ -88,6 +88,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "交流乾擾": "交流干擾",
     "人工幹預": "人工干預",
     "劃不來": "划不來",
+    "前僕後繼": "前仆後繼",
+    "剋制不住": "克制不住",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its
