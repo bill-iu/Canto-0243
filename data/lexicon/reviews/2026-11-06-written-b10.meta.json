@@ -1,0 +1,89 @@
+{
+  "batch": "2026-11-06-written-b10",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "c33ffb9c5fdbc5bd3871ba05a79b76b07f1e335b",
+  "input_curated_sha256": "1b6f2847259c9a514475af5083808b51a8bb2118be8581886ad0565fcae5d92e",
+  "input_curated_rows": 13189,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 2000,
+  "revisited_candidates": 0,
+  "review_rows": 2032,
+  "review_candidate_ids": 2000,
+  "review_verdict_rows": {
+    "accept": 1787,
+    "reject": 231,
+    "already_present": 13,
+    "defer": 1
+  },
+  "reading_repairs": 0,
+  "added_rows": 1787,
+  "added_literals": 1755,
+  "total_curated_rows": 14976,
+  "cumulative_reviewed_candidates": 15994,
+  "cumulative_candidate_decisions": {
+    "accept": 14334,
+    "reject": 1554,
+    "already_present": 97,
+    "defer": 9
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 130608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 2000 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 9250:11250. 咯吱咯吱 is newly deferred pending complete sound-word reading evidence; all eight earlier deferrals remain. Existing deferred candidates are preserved. AI-inferred readings and legitimate alternatives are labeled explicitly.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with twenty-one exact-literal restorations plus two bare-literal sense exceptions; no normalizer change in B10. Reviewed 吊臂 and university 系 compounds normalize correctly. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 13189,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "b2168d9b1eaa2a3e5c6e16facee3b492be705e29ab2e358c9831257d193e7d71",
+  "validation": {
+    "merged_rows": 196113,
+    "merged_literals": 180925,
+    "unique_pairs": 196111,
+    "baseline_unique_pairs": 194324,
+    "all_baseline_pairs_retained": true,
+    "added_source_rows": 1787,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "existing_exact_duplicate_groups": 2,
+    "representative_search_checks": 53,
+    "live_db_unchanged": true,
+    "previous_reading_grades_preserved": 13189,
+    "new_word_normalization_idempotent": true,
+    "backend_pwa_word_grade_keys": 15173,
+    "smoke_tests": 276,
+    "smoke_passed": 272,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "targeted_node_typecheck": true,
+    "pwa_artifact_guard": true
+  }
+}

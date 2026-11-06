@@ -36,6 +36,7 @@ BATCH_06 = "2026-11-06-written-b06"
 BATCH_07 = "2026-11-06-written-b07"
 BATCH_08 = "2026-11-06-written-b08"
 BATCH_09 = "2026-11-06-written-b09"
+BATCH_10 = "2026-11-06-written-b10"
 
 
 def review_rows(path):
@@ -350,10 +351,38 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "復發率": ("fuk6 faat3 leot6", "242"),
             "雜著": ("zaap6 zyu3", "24"),
             "斗式": ("dau2 sik1", "93"),
+            "相率": ("soeng1 seot1", "33"),
+            "經幢": ("ging1 cong4", "30"),
+            "傳主": ("zyun6 zyu2", "29"),
+            "處理速度": ("cyu2 lei5 cuk1 dou6", "9532"),
+            "件數": ("gin2 sou3", "94"),
+            "分散相": ("fan1 saan3 soeng3", "344"),
+            "抹香鯨": ("mut3 hoeng1 king4", "430"),
+            "校樣": ("gaau3 joeng6", "42"),
+            "住宅樓": ("zyu6 zaak6 lau4", "220"),
+            "簡併": ("gaan2 bing6", "92"),
+            "筆墨紙硯": ("bat1 mak6 zi2 jin6", "3292"),
+            "締合": ("dai3 hap6", "42"),
+            "閼氏": ("jin1 zi1", "33"),
+            "霧滴": ("mou6 dik1", "23"),
+            "電話局": ("din6 waa6 guk6", "222"),
+            "校準": ("gaau3 zeon2", "49"),
+            "樂句": ("ngok6 geoi3", "24"),
+            "標識符": ("biu1 zi3 fu4", "340"),
+            "甩頭": ("seot1 tau4", "30"),
+            "石磙": ("sek6 gwan2", "29"),
+            "紅燈籠": ("hung4 dang1 lung4", "030"),
+            "著譯": ("zyu3 jik6", "42"),
+            "間雜": ("gaan3 zaap6", "42"),
+            "闇弱": ("am3 joek6", "42"),
+            "漂漂亮亮": ("piu3 piu3 loeng6 loeng6", "4422"),
+            "行款": ("hong4 fun2", "09"),
+            "調相": ("tiu4 soeng3", "04"),
+            "紀行": ("gei3 hang4", "40"),
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -366,7 +395,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                     self.assertTrue((to_traditional(literal), jyutping, code) in pairs, literal)
                     for mode in ("m1", "m2", "m3"):
                         with self.subTest(literal=literal, mode=mode):
-                            result = QueryEngine().execute(SearchContext(code, None, None, mode, 1000, 0, db))
+                            result = QueryEngine().execute(SearchContext(code, None, None, mode, 5000, 0, db))
                             self.assertIn(to_traditional(literal), {row["char"] for row in result.items})
                 for literal, wrong_code in (("這種", "99"), ("行長", "00"), ("利潤率", "229"), ("年老多病", "0533"), ("太重", "42"), ("轉入", "42"), ("消費量", "340"), ("上表", "29"), ("重劍", "24"), ("相中", "33"), ("相中", "44"), ("糖分", "03"), ("生長期", "300"), ("藏醫", "03"), ("陀螺儀", "090"), ("醜行", "90"), ("自傳體", "299"), ("電話網", "295"), ("划手", "29"), ("花呢", "33"), ("上解", "59"), ("份數", "29")):
                     with self.subTest(literal=literal, wrong_code=wrong_code):
@@ -478,6 +507,24 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         expected = {(row["char"], row["jyutping"], row["code"]) for row in repairs} | {("莽", "mong6", "2")}
         self.assertEqual({(row.char, row.jyutping, row.code) for row in fixed}, expected)
         self.assertEqual(len(fixed), len(expected))
+
+    def test_tenth_batch_preserves_prior_rows_and_defers_unresolved_sound_words(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_10}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_10}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(len({row["id"].split(":")[0] for row in review}), meta["review_candidate_ids"])
+        self.assertEqual(input_fingerprint(curated, meta, 10), meta["input_curated_sha256"])
+        batch = [row for row in curated if row.get("batch") == BATCH_10]
+        self.assertEqual(len(batch), meta["added_rows"])
+        accepted = {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in review if row["verdict"] == "accept"}
+        self.assertEqual(accepted, {(row["char"], row["jyutping"], row["code"], row["evidence"]) for row in batch})
+        self.assertEqual({row["char"] for row in review if row["verdict"] == "defer"}, {"咯吱咯吱"})
+        self.assertTrue({row["char"] for row in batch}.isdisjoint({"咯吱咯吱", "腦袋瓜子", "裝孫子", "明兒個", "金鋼", "煩燥", "複員軍人"}))
+        for row in batch:
+            self.assertEqual(to_traditional(row["char"]), to_traditional(to_traditional(row["char"])))
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):
         meta = json.loads((REVIEW.parent / f"{BATCH_06}.meta.json").read_text(encoding="utf-8"))

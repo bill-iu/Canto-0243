@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 13189,
-  "curated_sha256": "1b6f2847259c9a514475af5083808b51a8bb2118be8581886ad0565fcae5d92e",
+  "curated_rows": 14976,
+  "curated_sha256": "a4294bbf6b35c26701d9d6ca3d976df9c5cec287463d249c642eb1630d7981b7",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "39eaa62f375e8e8b4b8235ce7510a5d2ef7ae3468e876195943d1ab2028a3d19",
+  "ranks_sha256": "c241083052f58bd2a30396cae04179ae894293dfd464c867c138d51cfaf7a34a",
   "grades": {
-    "預設": 11370,
-    "常用": 1746,
+    "預設": 12938,
+    "常用": 1965,
     "罕見": 70,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 12730,
-    "rime-orthographic": 25,
-    "ai-context": 434
+    "rime-components": 14392,
+    "rime-orthographic": 31,
+    "ai-context": 553
   },
   "grade_order": [
     "預設",
@@ -38,14 +38,14 @@
     "爲": "為"
   },
   "validation": {
-    "previous_reading_grades_preserved": 11356,
-    "backend_pwa_word_grade_keys": 13363,
+    "previous_reading_grades_preserved": 13189,
+    "backend_pwa_word_grade_keys": 15173,
     "ranking_and_lookup_self_checks": true,
     "targeted_node_typecheck": true,
     "pwa_build": true,
     "pwa_artifact_guard": true,
-    "smoke_tests": 275,
-    "smoke_passed": 271,
+    "smoke_tests": 276,
+    "smoke_passed": 272,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -57,5 +57,5 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b09"
+  "updated_through_batch": "2026-11-06-written-b10"
 }
