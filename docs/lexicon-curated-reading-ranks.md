@@ -573,3 +573,9 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 新增 700 組讀音，原有 54,431 個分級物件不變。桌面／樓面的 min2 有完整現代詞例，不能因書面形式讀 min6 便一概剔除，兩者分先後；文件詞的 gin2 優先、gin6 保留，與量詞一件分清。橋墩 dan2、檔案夾 gaap2、檢查一下 haa5 優先，保留有據的文讀或異讀。桀驁採有完整現代詞例的 ngou4；桃脯 pou2／fu2、梳攏 lung5／lung4、糟粕 pok3／paak3 皆保留現代同義異讀。極差採 caa1，不從普通話意義分工推測 caa3。
 
 橫的現代字書 waang4 亦明收不順情理及粗暴義，完整橫徵暴斂詞例亦採 waang4；保留 waang6 作較後異讀，不以 Rime 棄用標籤斷言所有全詞無效。簷的 sim4 優先、jim4 保留，撤回 jam4 草稿。鱗次櫛比保留既有 bei2 優先，新增 bei6 作較後讀法。正式字面、草稿、0243 碼、佐證及先後理由見[B45 審核表](../data/lexicon/reviews/2026-11-06-written-b45-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b45-validation.json)。機械系統精確字面還原累計 87 項，快取為 25。
+
+## 第四十六批整詞讀音（2026-11-07）
+
+新增 1,070 組讀音，原有 55,131 個分級物件不變。上一批橡膠墊排除 zin3 的判斷過窄，現按中大及完整墊子詞例補回，與 din3 同列通行；字書收錄多寡不能當日常頻率。氣墊床保留 zin2／din2、zin3／din3；毛氈墊先列日常 zin3。每間房的 fong2／fong4、母女的 neoi5／neoi2、歌友會的 wui2／wui6 分先後，沒有把變調當錯音，也沒有保留能力義 wui5。每頁行數的行讀 hong4、數讀 sou3；民族樂派讀 ngok6，氈呢讀 nei4。
+
+現代全詞先於孤字標籤：正當理由先列 dong3，保留有同義完整詞例的 dong1；每盎司維持 words.hk 公版詞表及 Rime 完整盎司 on1 si2 優先，另列有據讀法；死鏈接先列 lin2，保留 lin6／lin4。比肩接踵的 zung2／dung2、毒蠍的 kit3／hit3、枕藉的 zam2／zam3、贅述的 zeoi6／zeoi3 均有現代字書根據，依整詞分先後，不用少用或棄用的孤字標籤一律刪除。正式字面、草稿、六聲碼、佐證及順位見[B46 審核表](../data/lexicon/reviews/2026-11-06-written-b46-supplement.tsv)及[驗證](../data/lexicon/reviews/2026-11-06-written-b46-validation.json)。正規化規則未變，快取維持 25。

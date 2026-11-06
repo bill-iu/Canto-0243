@@ -1,20 +1,20 @@
 {
   "date": "2026-11-06",
   "reviewer": "AI-assisted whole-word commonness review; not measured corpus frequency or human item-by-item approval",
-  "curated_rows": 55131,
-  "curated_sha256": "6401ff4823ab680f34249361e1040819f52bc49a1581cdc903d6211466dc3f7c",
+  "curated_rows": 56201,
+  "curated_sha256": "9ec69d5e7aa20caf7d2d685d0d26a6f1ed07c27c7f5e00bda4c4b55305a09b7d",
   "rime_char_sha256": "868937c3ebbcaf47170a80a43bd063b20f6699a884e39110154fd91bba9d195d",
-  "ranks_sha256": "2ef4c17b2ecc0818e83a7fcac6a7e8618986a9f0f2b7ce35b8327df4f65c2697",
+  "ranks_sha256": "26edf44bd73b0c543d3428f0b091b1f020f81773113a6ce60fcdbe10d7b5a7ce",
   "grades": {
-    "預設": 48230,
-    "常用": 6815,
+    "預設": 49169,
+    "常用": 6946,
     "罕見": 83,
     "棄用": 3
   },
   "basis": {
-    "rime-components": 49266,
-    "rime-orthographic": 87,
-    "ai-context": 5778
+    "rime-components": 50170,
+    "rime-orthographic": 88,
+    "ai-context": 5943
   },
   "grade_order": [
     "預設",
@@ -38,65 +38,58 @@
     "爲": "為"
   },
   "validation": {
-    "merged_rows": 234131,
-    "merged_literals": 217311,
-    "unique_triples": 234129,
-    "baseline_rows": 233431,
+    "merged_rows": 235201,
+    "merged_literals": 218311,
+    "unique_triples": 235199,
+    "baseline_rows": 234131,
     "all_previous_rows_and_multiplicities_retained": true,
-    "old_word_grades_preserved": 117004,
-    "new_source_readings": 700,
+    "old_word_grades_preserved": 117643,
+    "new_source_readings": 1070,
     "new_pairs_retained": true,
-    "search_checks": 316,
-    "preferred_reading_checks": 58,
-    "word_usage_keys": 117643,
+    "search_checks": 485,
+    "preferred_reading_checks": 65,
+    "word_usage_keys": 118643,
     "withdrawn_curated_literals": 2051,
     "live_db_unchanged": true,
     "backend_pwa_essay_frequency_keys": 266884,
     "essay_frequency_tables_equal": true,
-    "backend_pwa_word_grade_keys": 117643,
-    "backend_pwa_curated_reading_grade_keys": 55814,
+    "backend_pwa_word_grade_keys": 118643,
+    "backend_pwa_curated_reading_grade_keys": 56896,
     "word_grade_tables_equal": true,
     "curated_reading_grade_tables_equal": true,
-    "old_source_rows_preserved": 54431,
-    "old_reading_grades_preserved": 54431,
-    "old_usage_rows_preserved": 117004,
-    "old_judgments_preserved": 14529,
-    "new_source_forms": 645,
-    "new_merged_forms": 639,
+    "old_source_rows_preserved": 55131,
+    "old_reading_grades_preserved": 55131,
+    "old_usage_rows_preserved": 117643,
+    "old_judgments_preserved": 14736,
+    "new_source_forms": 1001,
+    "new_merged_forms": 1000,
     "existing_merged_forms_with_new_readings": [
-      "土生土長",
-      "愣住",
-      "橫徵暴斂",
-      "橫生枝節",
-      "糟粕",
-      "鱗次櫛比"
+      "橡膠墊"
     ],
     "unrelated_user_files_unchanged": true,
-    "raw_source_forms": 53398,
-    "normalized_source_forms": 53396,
-    "new_word_usage_judgments": 207,
+    "raw_source_forms": 54398,
+    "normalized_source_forms": 54396,
+    "new_word_usage_judgments": 274,
     "existing_runtime_readings_mirrored": 0,
-    "new_merged_readings": 700,
+    "new_merged_readings": 1070,
     "heteronym_full_pool_ranking_equal": true,
     "non_han_tiers_match_backend": true,
-    "new_exact_literal_restorations": [
-      "機械系統"
-    ],
+    "new_exact_literal_restorations": [],
     "normalization_observed_frequency_reused": {},
     "prior_runtime_rows_affected_by_new_normalization": 0,
     "prior_word_usage_keys_affected_by_new_normalization": 0,
     "prior_stored_relation_keys_affected_by_new_normalization": 0,
-    "previous_word_usage_records_preserved": 117004,
-    "previous_word_usage_judgments_preserved": 14529,
-    "full_pool_parity_queries": 63,
-    "full_pool_parity_rows": 71794,
+    "previous_word_usage_records_preserved": 117643,
+    "previous_word_usage_judgments_preserved": 14736,
+    "full_pool_parity_queries": 90,
+    "full_pool_parity_rows": 80648,
     "full_pool_ranking_equal": true,
-    "previous_reading_grades_preserved": 54431,
-    "previous_source_rows_preserved": 54431,
+    "previous_reading_grades_preserved": 55131,
+    "previous_source_rows_preserved": 55131,
     "explicit_previous_reading_grade_repairs": 0,
     "new_word_normalization_idempotent": true,
-    "smoke_tests": 323,
-    "smoke_passed": 319,
+    "smoke_tests": 324,
+    "smoke_passed": 320,
     "smoke_skipped": 4,
     "seam_tests": 89,
     "seam_passed": 83,
@@ -125,540 +118,1016 @@
       "modern_variants_preserved": true,
       "reviewed_candidates": 2000,
       "lyric_observations_reviewed": 7,
-      "lyric_example_spans_reviewed": 13,
-      "initial_familiarity_withdrawals": 603,
-      "early_additional_withdrawals": 4,
-      "third_pass_restorations": 306,
-      "net_final_withdrawals": 301,
+      "lyric_example_spans_reviewed": 12,
       "reading_changes": [
         {
-          "id": 84187,
-          "char": "桀驁不遜",
-          "previous_jyutping": "git6 ngou6 bat1 seon3",
-          "jyutping": "git6 ngou4 bat1 seon3",
+          "id": 85698,
+          "char": "橡膠墊",
+          "previous_jyutping": "zoeng6 gaau1 din3",
+          "jyutping": "zoeng6 gaau1 din3",
+          "alternatives": [
+            "zoeng6 gaau1 zin3"
+          ],
+          "note": "更正 B45 的過窄排除；原 din3 保留，補回同樣通行的 zin3。兩者讀音分級均為預設，非聲稱 din3 錯誤。",
+          "reference": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/pho-rel.php?s1=z&s2=in ; https://www.cantonese.sheik.co.uk/dictionary/characters/1671/?full=true"
+        },
+        {
+          "id": 86129,
+          "char": "欺上罔下",
+          "previous_jyutping": "hei1 soeng5 mong5 haa6",
+          "jyutping": "hei1 soeng6 mong5 haa6",
           "alternatives": [],
-          "note": "桀驁完整現代詞例及多部現代字書採 ngou4；撤回初步新增 ngou6 的推測，未將只有較早字書的音自動當作本批日常讀音，也未宣稱所有舊詞全局錯音。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/桀驁不遜 ; https://jyut.net/query?q=驁"
+          "note": "欺上罔下的上為上級 soeng6，非向上 soeng5。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 84190,
-          "char": "桀驁不遜",
-          "previous_jyutping": "git6 ngou6 bat1 seon3",
-          "jyutping": "git6 ngou4 bat1 seon3",
+          "id": 86166,
+          "char": "款數",
+          "previous_jyutping": "fun2 sou2",
+          "jyutping": "fun2 sou3",
           "alternatives": [],
-          "note": "桀驁完整現代詞例及多部現代字書採 ngou4；撤回初步新增 ngou6 的推測，未將只有較早字書的音自動當作本批日常讀音，也未宣稱所有舊詞全局錯音。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/桀驁不遜 ; https://jyut.net/query?q=驁"
+          "note": "款數為數量名詞 sou3，非點數動詞 sou2。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 84191,
-          "char": "桀驁不遜",
-          "previous_jyutping": "git6 ngou6 bat1 seon3",
-          "jyutping": "git6 ngou4 bat1 seon3",
+          "id": 86179,
+          "char": "歃血結盟",
+          "previous_jyutping": "saap3 hyut3 git3 mang4",
+          "jyutping": "saap3 hyut3 git3 mang4",
+          "alternatives": [
+            "caap3 hyut3 git3 mang4"
+          ],
+          "note": "歃血 saap3 為現代多部字書通行音；caap3 亦明列歃血立盟同義異讀，保留較後，不擴入只有早期書目的 haap6。",
+          "reference": "https://jyut.net/query?q=歃"
+        },
+        {
+          "id": 86181,
+          "char": "歇一會",
+          "previous_jyutping": "hit3 jat1 wui6",
+          "jyutping": "hit3 jat1 wui2",
+          "alternatives": [
+            "hit3 jat1 wui6"
+          ],
+          "note": "一會為短時間的名詞，先列 wui2，保留 wui6，非能力 wui5。",
+          "reference": "https://jyut.net/query?q=會"
+        },
+        {
+          "id": 86184,
+          "char": "歇到",
+          "previous_jyutping": "hit3 dou2",
+          "jyutping": "hit3 dou3",
           "alternatives": [],
-          "note": "桀驁完整現代詞例及多部現代字書採 ngou4；撤回初步新增 ngou6 的推測，未將只有較早字書的音自動當作本批日常讀音，也未宣稱所有舊詞全局錯音。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/桀驁不遜 ; https://jyut.net/query?q=驁"
+          "note": "歇到某時的到為到達時點 dou3，非能力補語 dou2。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 84193,
-          "char": "桀驁難馴",
-          "previous_jyutping": "git6 ngou6 naan4 seon4",
-          "jyutping": "git6 ngou4 naan4 seon4",
+          "id": 86192,
+          "char": "歌友會",
+          "previous_jyutping": "go1 jau5 wui5",
+          "jyutping": "go1 jau5 wui2",
+          "alternatives": [
+            "go1 jau5 wui6"
+          ],
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
+        },
+        {
+          "id": 86200,
+          "char": "歌壇上",
+          "previous_jyutping": "go1 taan4 soeng5",
+          "jyutping": "go1 taan4 soeng6",
           "alternatives": [],
-          "note": "桀驁完整現代詞例及多部現代字書採 ngou4；撤回初步新增 ngou6 的推測，未將只有較早字書的音自動當作本批日常讀音，也未宣稱所有舊詞全局錯音。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/桀驁不遜 ; https://jyut.net/query?q=驁"
+          "note": "歌壇上為所在範圍 soeng6，非向上 soeng5。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 84220,
-          "char": "桃脯",
-          "previous_jyutping": "tou4 pou2",
-          "jyutping": "tou4 pou2",
+          "id": 86214,
+          "char": "歌聲嘹亮",
+          "previous_jyutping": "go1 sing1 liu4 loeng6",
+          "jyutping": "go1 sing1 liu4 loeng6",
           "alternatives": [
-            "tou4 fu2"
+            "go1 seng1 liu4 loeng6"
           ],
-          "note": "桃脯為乾果；pou2 為通行習讀先列，fu2 亦有多部現代字書乾果義支持，保留文讀，撤回 fu2 只屬胸脯義的初步概括。",
-          "reference": "https://jyut.net/query?q=脯"
+          "note": "歌聲指實際聲音，保留現代 sing1 書面及 seng1 語音，整詞先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=聲"
         },
         {
-          "id": 84296,
-          "char": "桌面上",
-          "previous_jyutping": "coek3 min6 soeng6",
-          "jyutping": "coek3 min2 soeng6",
+          "id": 86215,
+          "char": "歌聲繚繞",
+          "previous_jyutping": "go1 sing1 liu4 jiu2",
+          "jyutping": "go1 sing1 liu4 jiu2",
           "alternatives": [
-            "coek3 min6 soeng6"
+            "go1 seng1 liu4 jiu2"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "歌聲指實際聲音，保留現代 sing1 書面及 seng1 語音，整詞先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=聲"
         },
         {
-          "id": 84297,
-          "char": "桌面主題",
-          "previous_jyutping": "coek3 min6 zyu2 tai4",
-          "jyutping": "coek3 min2 zyu2 tai4",
+          "id": 86216,
+          "char": "歌聲繞梁",
+          "previous_jyutping": "go1 sing1 jiu2 loeng4",
+          "jyutping": "go1 sing1 jiu2 loeng4",
           "alternatives": [
-            "coek3 min6 zyu2 tai4"
+            "go1 seng1 jiu2 loeng4"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "歌聲指實際聲音，保留現代 sing1 書面及 seng1 語音，整詞先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=聲"
         },
         {
-          "id": 84299,
-          "char": "桌面圖",
-          "previous_jyutping": "coek3 min6 tou4",
-          "jyutping": "coek3 min2 tou4",
+          "id": 86217,
+          "char": "歌舞晚會",
+          "previous_jyutping": "go1 mou5 maan5 wui6",
+          "jyutping": "go1 mou5 maan5 wui2",
           "alternatives": [
-            "coek3 min6 tou4"
+            "go1 mou5 maan5 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84300,
-          "char": "桌面圖標",
-          "previous_jyutping": "coek3 min6 tou4 biu1",
-          "jyutping": "coek3 min2 tou4 biu1",
+          "id": 86218,
+          "char": "歌舞會",
+          "previous_jyutping": "go1 mou5 wui5",
+          "jyutping": "go1 mou5 wui2",
           "alternatives": [
-            "coek3 min6 tou4 biu1"
+            "go1 mou5 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84301,
-          "char": "桌面圖片",
-          "previous_jyutping": "coek3 min6 tou4 pin2",
-          "jyutping": "coek3 min2 tou4 pin2",
+          "id": 86224,
+          "char": "歌詠會",
+          "previous_jyutping": "go1 wing6 wui5",
+          "jyutping": "go1 wing6 wui2",
           "alternatives": [
-            "coek3 min6 tou4 pin2"
+            "go1 wing6 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84302,
-          "char": "桌面壁紙",
-          "previous_jyutping": "coek3 min6 bik1 zi2",
-          "jyutping": "coek3 min2 bik1 zi2",
+          "id": 86229,
+          "char": "歌迷會",
+          "previous_jyutping": "go1 mai4 wui5",
+          "jyutping": "go1 mai4 wui2",
           "alternatives": [
-            "coek3 min6 bik1 zi2"
+            "go1 mai4 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84303,
-          "char": "桌面式",
-          "previous_jyutping": "coek3 min6 sik1",
-          "jyutping": "coek3 min2 sik1",
+          "id": 86272,
+          "char": "歡迎宴會",
+          "previous_jyutping": "fun1 jing4 jin3 wui6",
+          "jyutping": "fun1 jing4 jin3 wui2",
           "alternatives": [
-            "coek3 min6 sik1"
+            "fun1 jing4 jin3 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84304,
-          "char": "桌面操作系統",
-          "previous_jyutping": "coek3 min6 cou1 zok3 hai6 tung2",
-          "jyutping": "coek3 min2 cou1 zok3 hai6 tung2",
+          "id": 86275,
+          "char": "歡迎晚會",
+          "previous_jyutping": "fun1 jing4 maan5 wui6",
+          "jyutping": "fun1 jing4 maan5 wui2",
           "alternatives": [
-            "coek3 min6 cou1 zok3 hai6 tung2"
+            "fun1 jing4 maan5 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84305,
-          "char": "桌面牆紙",
-          "previous_jyutping": "coek3 min6 coeng4 zi2",
-          "jyutping": "coek3 min2 coeng4 zi2",
+          "id": 86277,
+          "char": "歡送晚會",
+          "previous_jyutping": "fun1 sung3 maan5 wui6",
+          "jyutping": "fun1 sung3 maan5 wui2",
           "alternatives": [
-            "coek3 min6 coeng4 zi2"
+            "fun1 sung3 maan5 wui6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
         },
         {
-          "id": 84306,
-          "char": "桌面版",
-          "previous_jyutping": "coek3 min6 baan2",
-          "jyutping": "coek3 min2 baan2",
+          "id": 86414,
+          "char": "正版軟件",
+          "previous_jyutping": "zing3 baan2 jyun5 gin6",
+          "jyutping": "zing3 baan2 jyun5 gin2",
           "alternatives": [
-            "coek3 min6 baan2"
+            "zing3 baan2 jyun5 gin6"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "軟件依完整粵典 jyun5 gin2 日常名詞變調優先，保留 gin6 文讀。",
+          "reference": "https://words.hk/zidin/軟件"
         },
         {
-          "id": 84307,
-          "char": "桌面背景",
-          "previous_jyutping": "coek3 min6 bui3 ging2",
-          "jyutping": "coek3 min2 bui3 ging2",
+          "id": 86420,
+          "char": "正當合理",
+          "previous_jyutping": "zing3 dong1 hap6 lei5",
+          "jyutping": "zing3 dong3 hap6 lei5",
           "alternatives": [
-            "coek3 min6 bui3 ging2"
+            "zing3 dong1 hap6 lei5"
           ],
-          "note": "完整桌面現代詞例涵蓋桌面、電腦桌面 min2；先列通行變調 min2，保留未變調 min6。撤回僅因書面形式一詞讀 min6 便把桌面 min2 排除的初步概括。整詞組合與先後為 AI 判斷。",
-          "reference": "https://www.chattycantonese.com/2022/03/16-guest-episode-chaakming-lau-par-2.html ; https://cantonese.sheik.co.uk/dictionary/characters/2261/"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84455,
-          "char": "梳攏",
-          "previous_jyutping": "so1 lung4",
-          "jyutping": "so1 lung5",
+          "id": 86421,
+          "char": "正當權益",
+          "previous_jyutping": "zing3 dong1 kyun4 jik1",
+          "jyutping": "zing3 dong3 kyun4 jik1",
           "alternatives": [
-            "so1 lung4"
+            "zing3 dong1 kyun4 jik1"
           ],
-          "note": "梳攏取整理聚合義 lung5 先列；現代同音字典同義另收 lung4，保留為較後異讀，非把 lung5 草稿視為錯音。",
-          "reference": "https://jyut.net/query?q=攏"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84752,
-          "char": "愣了",
-          "previous_jyutping": "ling6 liu5",
-          "jyutping": "ling6 liu5",
+          "id": 86422,
+          "char": "正當理由",
+          "previous_jyutping": "zing3 dong1 lei5 jau4",
+          "jyutping": "zing3 dong3 lei5 jau4",
           "alternatives": [
-            "ling4 liu5"
+            "zing3 dong1 lei5 jau4"
           ],
-          "note": "愣取發呆義 ling6 優先；廣州話正音字典及標準音字彙同收 ling4 又讀，保留現代同義異讀，不能把 ling4 一概視為木材楞的誤音。",
-          "reference": "https://jyut.net/query?q=愣"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84753,
-          "char": "愣了愣",
-          "previous_jyutping": "ling6 liu5 ling6",
-          "jyutping": "ling6 liu5 ling6",
+          "id": 86423,
+          "char": "正當程序",
+          "previous_jyutping": "zing3 dong1 cing4 zeoi6",
+          "jyutping": "zing3 dong3 cing4 zeoi6",
           "alternatives": [
-            "ling4 liu5 ling4"
+            "zing3 dong1 cing4 zeoi6"
           ],
-          "note": "愣取發呆義 ling6 優先；廣州話正音字典及標準音字彙同收 ling4 又讀，保留現代同義異讀，不能把 ling4 一概視為木材楞的誤音。",
-          "reference": "https://jyut.net/query?q=愣"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84755,
-          "char": "愣住",
-          "previous_jyutping": "ling6 zyu6",
-          "jyutping": "ling6 zyu6",
+          "id": 86424,
+          "char": "正當競爭",
+          "previous_jyutping": "zing3 dong1 ging3 zang1",
+          "jyutping": "zing3 dong3 ging3 zang1",
           "alternatives": [
-            "ling4 zyu6"
+            "zing3 dong1 ging3 zang1"
           ],
-          "note": "愣取發呆義 ling6 優先；廣州話正音字典及標準音字彙同收 ling4 又讀，保留現代同義異讀，不能把 ling4 一概視為木材楞的誤音。",
-          "reference": "https://jyut.net/query?q=愣"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84761,
-          "char": "愣愣",
-          "previous_jyutping": "ling6 ling6",
-          "jyutping": "ling6 ling6",
+          "id": 86425,
+          "char": "正當行為",
+          "previous_jyutping": "zing3 dong1 hang4 wai4",
+          "jyutping": "zing3 dong3 hang4 wai4",
           "alternatives": [
-            "ling4 ling4"
+            "zing3 dong1 hang4 wai4"
           ],
-          "note": "愣取發呆義 ling6 優先；廣州話正音字典及標準音字彙同收 ling4 又讀，保留現代同義異讀，不能把 ling4 一概視為木材楞的誤音。",
-          "reference": "https://jyut.net/query?q=愣"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84762,
-          "char": "愣愣地",
-          "previous_jyutping": "ling6 ling6 dei6",
-          "jyutping": "ling6 ling6 dei6",
+          "id": 86426,
+          "char": "正當要求",
+          "previous_jyutping": "zing3 dong1 jiu1 kau4",
+          "jyutping": "zing3 dong3 jiu1 kau4",
           "alternatives": [
-            "ling4 ling4 dei6"
+            "zing3 dong1 jiu1 kau4"
           ],
-          "note": "愣取發呆義 ling6 優先；廣州話正音字典及標準音字彙同收 ling4 又讀，保留現代同義異讀，不能把 ling4 一概視為木材楞的誤音。",
-          "reference": "https://jyut.net/query?q=愣"
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
         },
         {
-          "id": 84853,
-          "char": "極差",
-          "previous_jyutping": "gik6 caa3",
-          "jyutping": "gik6 caa1",
+          "id": 86427,
+          "char": "正當關係",
+          "previous_jyutping": "zing3 dong1 gwaan1 hai6",
+          "jyutping": "zing3 dong3 gwaan1 hai6",
+          "alternatives": [
+            "zing3 dong1 gwaan1 hai6"
+          ],
+          "note": "正當為合法合理的形容詞，粵典詞頭 dong3 優先；同頁正當生意亦記 dong1，因此保留有據較後讀法，不以普通話聲調或孤字分義硬刪。順位為 AI 判斷。",
+          "reference": "https://words.hk/zidin/正當 ; https://jyut.net/query?q=當"
+        },
+        {
+          "id": 86442,
+          "char": "正確看待",
+          "previous_jyutping": "zing3 kok3 hon1 doi6",
+          "jyutping": "zing3 kok3 hon3 doi6",
           "alternatives": [],
-          "note": "極差的低劣義亦讀 caa1；現代字書差同收成績差、差異，撤回依普通話意義區分推測的 caa3，不把無現代支持的音入庫。",
-          "reference": "https://jyut.net/query?q=差"
+          "note": "看待為對待 hon3，不是看守的 hon1。",
+          "reference": "https://jyut.net/query?q=看"
         },
         {
-          "id": 85080,
-          "char": "槓桿作用",
-          "previous_jyutping": "gung3 gon1 zok3 jung6",
-          "jyutping": "gung3 gon1 zok3 jung6",
-          "alternatives": [
-            "gong3 gon1 zok3 jung6",
-            "gong3 gon2 zok3 jung6"
-          ],
-          "note": "槓桿作用先列完整粵典槓桿 gung3 gon1，保留其他現代整詞 gong3 gon1／gong3 gon2；機械及引申調節義不以孤字默認音一概排除。組合與先後為 AI 判斷。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/槓桿"
-        },
-        {
-          "id": 85093,
-          "char": "糟粕",
-          "previous_jyutping": "zou1 paak3",
-          "jyutping": "zou1 pok3",
-          "alternatives": [
-            "zou1 paak3"
-          ],
-          "note": "糟粕先列多部現代字書及整詞詞例 pok3，保留現代又讀 paak3；原槽字改糟，非把原粕 pok3 判為錯音。",
-          "reference": "https://jyut.net/query?q=粕"
-        },
-        {
-          "id": 85184,
-          "char": "樓面地價",
-          "previous_jyutping": "lau4 min6 dei6 gaa3",
-          "jyutping": "lau4 min2 dei6 gaa3",
-          "alternatives": [
-            "lau4 min6 dei6 gaa3"
-          ],
-          "note": "樓面地價取樓層平面、面積義，先列完整現代樓面詞例 min2，保留 min6；撤回把 min2 一概視為不相干孤字面子義的初步概括。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/樓面"
-        },
-        {
-          "id": 85279,
-          "char": "標識牌",
-          "previous_jyutping": "biu1 zi3 paai4",
-          "jyutping": "biu1 zi3 paai4",
-          "alternatives": [
-            "biu1 sik1 paai4"
-          ],
-          "note": "標識取標記識記義，CantoDict 完整標識採 zi3，先列；其他現代整詞資料亦有 sik1，保留並分先後。不是只憑識別的孤字音自動套用。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/194/?cf=1&full=true ; https://jyutdictionary.com/dictionary/entry/標識"
-        },
-        {
-          "id": 85280,
-          "char": "標識碼",
-          "previous_jyutping": "biu1 zi3 maa5",
-          "jyutping": "biu1 zi3 maa5",
-          "alternatives": [
-            "biu1 sik1 maa5"
-          ],
-          "note": "標識取標記識記義，CantoDict 完整標識採 zi3，先列；其他現代整詞資料亦有 sik1，保留並分先後。不是只憑識別的孤字音自動套用。",
-          "reference": "https://cantonese.sheik.co.uk/dictionary/characters/194/?cf=1&full=true ; https://jyutdictionary.com/dictionary/entry/標識"
-        },
-        {
-          "id": 85464,
-          "char": "橄欖形",
-          "previous_jyutping": "gaam3 laam2 jing4",
-          "jyutping": "gaam3 laam2 jing4",
-          "alternatives": [
-            "gam2 laam5 jing4"
-          ],
-          "note": "橄欖先列完整現代語音 gaam3 laam2，保留字書讀音 gam2 laam5；組合與先後為 AI 整詞判斷，不任意交叉生成各字的所有組合。",
-          "reference": "https://jyut.net/query?q=橄 ; https://jyut.net/query?q=欖"
-        },
-        {
-          "id": 85465,
-          "char": "橄欖球場",
-          "previous_jyutping": "gaam3 laam2 kau4 coeng4",
-          "jyutping": "gaam3 laam2 kau4 coeng4",
-          "alternatives": [
-            "gam2 laam5 kau4 coeng4"
-          ],
-          "note": "橄欖先列完整現代語音 gaam3 laam2，保留字書讀音 gam2 laam5；組合與先後為 AI 整詞判斷，不任意交叉生成各字的所有組合。",
-          "reference": "https://jyut.net/query?q=橄 ; https://jyut.net/query?q=欖"
-        },
-        {
-          "id": 85470,
-          "char": "橋墩下",
-          "previous_jyutping": "kiu4 dan1 haa6",
-          "jyutping": "kiu4 dan2 haa6",
-          "alternatives": [
-            "kiu4 dan1 haa6"
-          ],
-          "note": "橋墩下按完整現代橋墩詞例 dan2 優先，保留墩的現代 dan1 文讀，不以孤字順位硬刪詞級變調。",
-          "reference": "https://jyutdictionary.com/dictionary/entry/橋墩 ; https://jyut.net/query?q=墩"
-        },
-        {
-          "id": 85741,
-          "char": "橫加阻攔",
-          "previous_jyutping": "waang6 gaa1 zo2 laan4",
-          "jyutping": "waang4 gaa1 zo2 laan4",
-          "alternatives": [
-            "waang6 gaa1 zo2 laan4"
-          ],
-          "note": "橫的現代字書 waang4 亦明收不順情理、粗暴義；完整橫徵暴斂詞例亦採 waang4。本批先列 waang4，保留現代同義 waang6；不能只按強橫詞義概括刪去日常 waang4，亦不把 Rime 棄用標記當所有全詞的結論。組合與先後為 AI 判斷。",
-          "reference": "https://jyut.net/query?q=橫 ; https://jyutdictionary.com/dictionary/entry/橫徵暴斂"
-        },
-        {
-          "id": 85759,
-          "char": "橫徵暴斂",
-          "previous_jyutping": "waang6 zing1 bou6 lim5",
-          "jyutping": "waang4 zing1 bou6 lim5",
-          "alternatives": [
-            "waang6 zing1 bou6 lim5"
-          ],
-          "note": "橫的現代字書 waang4 亦明收不順情理、粗暴義；完整橫徵暴斂詞例亦採 waang4。本批先列 waang4，保留現代同義 waang6；不能只按強橫詞義概括刪去日常 waang4，亦不把 Rime 棄用標記當所有全詞的結論。組合與先後為 AI 判斷。",
-          "reference": "https://jyut.net/query?q=橫 ; https://jyutdictionary.com/dictionary/entry/橫徵暴斂"
-        },
-        {
-          "id": 85772,
-          "char": "橫搶硬奪",
-          "previous_jyutping": "waang6 coeng2 ngaang6 dyut6",
-          "jyutping": "waang4 coeng2 ngaang6 dyut6",
-          "alternatives": [
-            "waang6 coeng2 ngaang6 dyut6"
-          ],
-          "note": "橫的現代字書 waang4 亦明收不順情理、粗暴義；完整橫徵暴斂詞例亦採 waang4。本批先列 waang4，保留現代同義 waang6；不能只按強橫詞義概括刪去日常 waang4，亦不把 Rime 棄用標記當所有全詞的結論。組合與先後為 AI 判斷。",
-          "reference": "https://jyut.net/query?q=橫 ; https://jyutdictionary.com/dictionary/entry/橫徵暴斂"
-        },
-        {
-          "id": 85773,
-          "char": "橫搶硬奪",
-          "previous_jyutping": "waang6 coeng2 ngaang6 dyut6",
-          "jyutping": "waang4 coeng2 ngaang6 dyut6",
-          "alternatives": [
-            "waang6 coeng2 ngaang6 dyut6"
-          ],
-          "note": "橫的現代字書 waang4 亦明收不順情理、粗暴義；完整橫徵暴斂詞例亦採 waang4。本批先列 waang4，保留現代同義 waang6；不能只按強橫詞義概括刪去日常 waang4，亦不把 Rime 棄用標記當所有全詞的結論。組合與先後為 AI 判斷。",
-          "reference": "https://jyut.net/query?q=橫 ; https://jyutdictionary.com/dictionary/entry/橫徵暴斂"
-        },
-        {
-          "id": 85830,
-          "char": "橫遭",
-          "previous_jyutping": "waang6 zou1",
-          "jyutping": "waang6 zou1",
-          "alternatives": [
-            "waang4 zou1"
-          ],
-          "note": "橫遭取意外、不合理遭受義，先列 waang6，現代字書同義亦收 waang4，保留異讀；整詞組合與先後為 AI 判斷。",
-          "reference": "https://jyut.net/query?q=橫"
-        },
-        {
-          "id": 85846,
-          "char": "簷前",
-          "previous_jyutping": "jim4 cin4",
-          "jyutping": "sim4 cin4",
-          "alternatives": [
-            "jim4 cin4"
-          ],
-          "note": "簷的現代字書及香港讀音表先列 sim4，另有 jim4 文讀，兩者保留；撤回原草稿 jam4，未把 jim4 一概當唯一現代讀法。",
-          "reference": "https://jyut.net/query?q=檐"
-        },
-        {
-          "id": 85855,
-          "char": "簷角",
-          "previous_jyutping": "jim4 gok3",
-          "jyutping": "sim4 gok3",
-          "alternatives": [
-            "jim4 gok3"
-          ],
-          "note": "簷的現代字書及香港讀音表先列 sim4，另有 jim4 文讀，兩者保留；撤回原草稿 jam4，未把 jim4 一概當唯一現代讀法。",
-          "reference": "https://jyut.net/query?q=檐"
-        },
-        {
-          "id": 85857,
-          "char": "簷頭",
-          "previous_jyutping": "jim4 tau4",
-          "jyutping": "sim4 tau4",
-          "alternatives": [
-            "jim4 tau4"
-          ],
-          "note": "簷的現代字書及香港讀音表先列 sim4，另有 jim4 文讀，兩者保留；撤回原草稿 jam4，未把 jim4 一概當唯一現代讀法。",
-          "reference": "https://jyut.net/query?q=檐"
-        },
-        {
-          "id": 85863,
-          "char": "檔案夾",
-          "previous_jyutping": "dong3 on3 gaap3",
-          "jyutping": "dong3 on3 gaap2",
-          "alternatives": [
-            "dong3 on3 gaap3"
-          ],
-          "note": "檔案夾按文件夾完整現代詞例的器具夾 gaap2 優先，保留 gaap3 未變調書面讀法；不是夾住動詞直接拼接而定。",
-          "reference": "https://words.hk/zidin/文件"
-        },
-        {
-          "id": 85894,
-          "char": "檢拾",
-          "previous_jyutping": "gim2 sap6",
-          "jyutping": "gim2 sap6",
+          "id": 86494,
+          "char": "正負數",
+          "previous_jyutping": "zing3 fu6 sou2",
+          "jyutping": "zing3 fu6 sou3",
           "alternatives": [],
-          "note": "檢拾按撿拾的撿字正字查重，gim2 sap6，原來源字面可追溯。",
-          "reference": ""
+          "note": "正負數的數為數目名詞 sou3，不是點數動詞 sou2。",
+          "reference": "AI:whole-word-context"
         },
         {
-          "id": 85896,
-          "char": "檢查一下",
-          "previous_jyutping": "gim2 caa4 jat1 haa6",
-          "jyutping": "gim2 caa4 jat1 haa5",
+          "id": 86576,
+          "char": "步韻",
+          "previous_jyutping": "bou6 wan5",
+          "jyutping": "bou6 wan6",
           "alternatives": [
-            "gim2 caa4 jat1 haa6"
+            "bou6 wan5"
           ],
-          "note": "檢查一下的動作次數先列 haa5；現代整詞資料另收 haa6，保留較後讀法。名詞量詞下與方位下 haa6 分清，但不把已有全詞異讀硬刪。",
+          "note": "步韻為依原韻作詩，書面 wan6 優先；現代字書亦收 wan5 同義異讀，保留較後，不將其斷為錯音。",
+          "reference": "https://jyut.net/query?q=韻"
+        },
+        {
+          "id": 86626,
+          "char": "歪倒",
+          "previous_jyutping": "me2 dou2",
+          "jyutping": "me2 dou2",
+          "alternatives": [
+            "waai1 dou2"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86629,
+          "char": "歪到",
+          "previous_jyutping": "me2 dou2",
+          "jyutping": "me2 dou3",
+          "alternatives": [
+            "waai1 dou3"
+          ],
+          "note": "歪到某處取方向／到達 dou3；physical 傾側義 me2 優先，waai1 書面同義亦保留。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86630,
+          "char": "歪向",
+          "previous_jyutping": "me2 hoeng3",
+          "jyutping": "me2 hoeng3",
+          "alternatives": [
+            "waai1 hoeng3"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86631,
+          "char": "歪嘴",
+          "previous_jyutping": "me2 zeoi2",
+          "jyutping": "me2 zeoi2",
+          "alternatives": [
+            "waai1 zeoi2"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86636,
+          "char": "歪念頭",
+          "previous_jyutping": "me2 nim6 tau4",
+          "jyutping": "waai1 nim6 tau4",
+          "alternatives": [],
+          "note": "歪念頭／歪腦筋為不正當想法，按現代字書歪理同義取 waai1；不沿實物傾側 me2 的機械拼接。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86637,
+          "char": "歪成",
+          "previous_jyutping": "me2 sing4",
+          "jyutping": "me2 sing4",
+          "alternatives": [
+            "waai1 sing4"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86638,
+          "char": "歪戴",
+          "previous_jyutping": "me2 daai3",
+          "jyutping": "me2 daai3",
+          "alternatives": [
+            "waai1 daai3"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86640,
+          "char": "歪掉",
+          "previous_jyutping": "me2 diu6",
+          "jyutping": "me2 diu6",
+          "alternatives": [
+            "waai1 diu6"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86641,
+          "char": "歪歪",
+          "previous_jyutping": "me2 me2",
+          "jyutping": "me2 me2",
+          "alternatives": [
+            "waai1 waai1"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86642,
+          "char": "歪歪地",
+          "previous_jyutping": "me2 me2 dei6",
+          "jyutping": "me2 me2 dei6",
+          "alternatives": [
+            "waai1 waai1 dei6"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86644,
+          "char": "歪眼",
+          "previous_jyutping": "me2 ngaan5",
+          "jyutping": "me2 ngaan5",
+          "alternatives": [
+            "waai1 ngaan5"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86645,
+          "char": "歪着頭",
+          "previous_jyutping": "me2 zoek6 tau4",
+          "jyutping": "me2 zoek6 tau4",
+          "alternatives": [
+            "waai1 zoek6 tau4"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86646,
+          "char": "歪腦筋",
+          "previous_jyutping": "me2 nou5 gan1",
+          "jyutping": "waai1 nou5 gan1",
+          "alternatives": [],
+          "note": "歪念頭／歪腦筋為不正當想法，按現代字書歪理同義取 waai1；不沿實物傾側 me2 的機械拼接。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86648,
+          "char": "歪過",
+          "previous_jyutping": "me2 gwo3",
+          "jyutping": "me2 gwo3",
+          "alternatives": [
+            "waai1 gwo3"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86649,
+          "char": "歪過來",
+          "previous_jyutping": "me2 gwo3 loi4",
+          "jyutping": "me2 gwo3 loi4",
+          "alternatives": [
+            "waai1 gwo3 loi4"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86650,
+          "char": "歪過去",
+          "previous_jyutping": "me2 gwo3 heoi3",
+          "jyutping": "me2 gwo3 heoi3",
+          "alternatives": [
+            "waai1 gwo3 heoi3"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86652,
+          "char": "歪鼻",
+          "previous_jyutping": "me2 bei6",
+          "jyutping": "me2 bei6",
+          "alternatives": [
+            "waai1 bei6"
+          ],
+          "note": "實物歪斜、不正取日常 me2，現代字書 waai1 亦明收同義，保留書面讀法；不把所有歪都一律換成一音。",
+          "reference": "https://jyut.net/query?q=歪"
+        },
+        {
+          "id": 86722,
+          "char": "歷盡磨難",
+          "previous_jyutping": "lik6 zeon6 mo4 naan4",
+          "jyutping": "lik6 zeon6 mo4 naan6",
+          "alternatives": [],
+          "note": "磨難為災難、不幸 naan6，不是困難的 naan4。",
+          "reference": "https://jyut.net/query?q=難"
+        },
+        {
+          "id": 86736,
+          "char": "歸到",
+          "previous_jyutping": "gwai1 dou2",
+          "jyutping": "gwai1 dou3",
+          "alternatives": [],
+          "note": "歸到／歸納到／歸結到某處或類別為歸屬到達 dou3，非能夠 dou2。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 86752,
+          "char": "歸為此類",
+          "previous_jyutping": "gwai1 wai6 ci2 leoi6",
+          "jyutping": "gwai1 wai4 ci2 leoi6",
+          "alternatives": [],
+          "note": "歸為此類為判作、分類 wai4，非為了 wai6。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 86756,
+          "char": "歸納到",
+          "previous_jyutping": "gwai1 naap6 dou2",
+          "jyutping": "gwai1 naap6 dou3",
+          "alternatives": [],
+          "note": "歸到／歸納到／歸結到某處或類別為歸屬到達 dou3，非能夠 dou2。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 86759,
+          "char": "歸結到",
+          "previous_jyutping": "gwai1 git3 dou2",
+          "jyutping": "gwai1 git3 dou3",
+          "alternatives": [],
+          "note": "歸到／歸納到／歸結到某處或類別為歸屬到達 dou3，非能夠 dou2。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 86799,
+          "char": "死傷枕藉",
+          "previous_jyutping": "sei2 soeng1 zam2 zik6",
+          "jyutping": "sei2 soeng1 zam2 zik6",
+          "alternatives": [
+            "sei2 soeng1 zam3 zik6"
+          ],
+          "note": "完整枕藉詞例 zam2 與現代字書明列枕藉 zam3 均有根據，保留原有全詞 zam2 優先、zam3 較後，不以名動詞概括硬刪全詞變體。",
+          "reference": "https://jyutdictionary.com/dictionary/entry/枕藉 ; https://jyut.net/query?q=枕"
+        },
+        {
+          "id": 86848,
+          "char": "死生存亡",
+          "previous_jyutping": "sei2 sang1 cyun4 mong4",
+          "jyutping": "sei2 saang1 cyun4 mong4",
+          "alternatives": [
+            "sei2 sang1 cyun4 mong4"
+          ],
+          "note": "死生為生死，保留現代 saang1／sang1 文白異讀；整詞先後為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=生"
+        },
+        {
+          "id": 86873,
+          "char": "死鏈接",
+          "previous_jyutping": "sei2 lin4 zip3",
+          "jyutping": "sei2 lin2 zip3",
+          "alternatives": [
+            "sei2 lin6 zip3",
+            "sei2 lin4 zip3"
+          ],
+          "note": "鏈接在既有開放詞典有完整 lin4 zip3，CantoDict 有完整 lin2 zip3；現代字書亦收 lin6。先列日常變調 lin2，保留 lin6／lin4；撤回將 lin4 一律視為連接字形拼接的過窄推斷。",
+          "reference": "kaifang:鏈接=lin4 zip3 ; https://cantonese.sheik.co.uk/dictionary/characters/3532/?cf=1&full=true ; https://jyut.net/query?q=鏈"
+        },
+        {
+          "id": 86941,
+          "char": "殘奧會",
+          "previous_jyutping": "caan4 ou3 wui5",
+          "jyutping": "caan4 ou3 wui2",
+          "alternatives": [
+            "caan4 ou3 wui6"
+          ],
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
+        },
+        {
+          "id": 86957,
+          "char": "殘更",
+          "previous_jyutping": "caan4 gang3",
+          "jyutping": "caan4 gaang1",
+          "alternatives": [],
+          "note": "殘更為夜更、更次 gaang1，非更加 gang3。",
+          "reference": "https://jyut.net/query?q=更"
+        },
+        {
+          "id": 86988,
+          "char": "殘羹冷炙",
+          "previous_jyutping": "caan4 gang1 laang5 zek3",
+          "jyutping": "caan4 gang1 laang5 zek3",
+          "alternatives": [
+            "caan4 gang1 laang5 zik3"
+          ],
+          "note": "冷炙為烤肉，zek3 為通行音，現代字書 zik3 亦收燒烤同義，保留較後，不把 zik3 全判錯。",
+          "reference": "https://jyut.net/query?q=炙"
+        },
+        {
+          "id": 86994,
+          "char": "殘運會",
+          "previous_jyutping": "caan4 wan6 wui5",
+          "jyutping": "caan4 wan6 wui2",
+          "alternatives": [
+            "caan4 wan6 wui6"
+          ],
+          "note": "會為聚會／組織名詞，日常變調 wui2 優先、wui6 文讀保留，不用表示能夠的 wui5。並非否定字書 wui6 聚會義。",
+          "reference": "https://jyut.net/query?q=會 ; https://www.cantonese.sheik.co.uk/dictionary/characters/358/?all=true&cf=1&full=true"
+        },
+        {
+          "id": 87117,
+          "char": "毀謗罪",
+          "previous_jyutping": "wai2 pong3 zeoi6",
+          "jyutping": "wai2 pong3 zeoi6",
+          "alternatives": [],
+          "note": "毀謗的謗 pong3 有多部現代字書根據，覆核後維持，未因普通話 bàng 猜改為 bong3。",
+          "reference": "https://jyut.net/query?q=謗"
+        },
+        {
+          "id": 87128,
+          "char": "毋庸贅述",
+          "previous_jyutping": "mou4 jung4 zeoi3 seot6",
+          "jyutping": "mou4 jung4 zeoi6 seot6",
+          "alternatives": [
+            "mou4 jung4 zeoi3 seot6"
+          ],
+          "note": "贅述的 zeoi6 及 zeoi3 均有現代字書同義根據；書面主列 zeoi6，保留 zeoi3，不把未列預設的異讀當錯音。",
+          "reference": "https://jyut.net/query?q=贅"
+        },
+        {
+          "id": 87135,
+          "char": "母女之情",
+          "previous_jyutping": "mou5 neoi2 zi1 cing4",
+          "jyutping": "mou5 neoi5 zi1 cing4",
+          "alternatives": [
+            "mou5 neoi2 zi1 cing4"
+          ],
+          "note": "母女完整教材有 neoi5 及 neoi2，書面母女搭配先列 neoi5、保留女兒變調 neoi2，倆仍讀 loeng5，不跟兩 loeng2。",
+          "reference": "https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf ; https://www.cantoneseclass101.com/cantonese-vocabulary-lists/must-know-terms-for-family-members"
+        },
+        {
+          "id": 87136,
+          "char": "母女倆",
+          "previous_jyutping": "mou5 neoi2 loeng5",
+          "jyutping": "mou5 neoi5 loeng5",
+          "alternatives": [
+            "mou5 neoi2 loeng5"
+          ],
+          "note": "母女完整教材有 neoi5 及 neoi2，書面母女搭配先列 neoi5、保留女兒變調 neoi2，倆仍讀 loeng5，不跟兩 loeng2。",
+          "reference": "https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf ; https://www.cantoneseclass101.com/cantonese-vocabulary-lists/must-know-terms-for-family-members"
+        },
+        {
+          "id": 87137,
+          "char": "母女均安",
+          "previous_jyutping": "mou5 neoi2 gwan1 on1",
+          "jyutping": "mou5 neoi5 gwan1 on1",
+          "alternatives": [
+            "mou5 neoi2 gwan1 on1"
+          ],
+          "note": "母女完整教材有 neoi5 及 neoi2，書面母女搭配先列 neoi5、保留女兒變調 neoi2，倆仍讀 loeng5，不跟兩 loeng2。",
+          "reference": "https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf ; https://www.cantoneseclass101.com/cantonese-vocabulary-lists/must-know-terms-for-family-members"
+        },
+        {
+          "id": 87138,
+          "char": "母女情",
+          "previous_jyutping": "mou5 neoi2 cing4",
+          "jyutping": "mou5 neoi5 cing4",
+          "alternatives": [
+            "mou5 neoi2 cing4"
+          ],
+          "note": "母女完整教材有 neoi5 及 neoi2，書面母女搭配先列 neoi5、保留女兒變調 neoi2，倆仍讀 loeng5，不跟兩 loeng2。",
+          "reference": "https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf ; https://www.cantoneseclass101.com/cantonese-vocabulary-lists/must-know-terms-for-family-members"
+        },
+        {
+          "id": 87139,
+          "char": "母女間",
+          "previous_jyutping": "mou5 neoi2 gaan1",
+          "jyutping": "mou5 neoi5 gaan1",
+          "alternatives": [
+            "mou5 neoi2 gaan1"
+          ],
+          "note": "母女完整教材有 neoi5 及 neoi2，書面母女搭配先列 neoi5、保留女兒變調 neoi2，倆仍讀 loeng5，不跟兩 loeng2。",
+          "reference": "https://products.innovativelanguage.com/books/CORE2000/Cantonese_CORE2000.pdf ; https://www.cantoneseclass101.com/cantonese-vocabulary-lists/must-know-terms-for-family-members"
+        },
+        {
+          "id": 87166,
+          "char": "母難之日",
+          "previous_jyutping": "mou5 naan4 zi1 jat6",
+          "jyutping": "mou5 naan6 zi1 jat6",
+          "alternatives": [],
+          "note": "母難之日指母親分娩受難，難取苦難 naan6，非困難 naan4。",
+          "reference": "https://jyut.net/query?q=難"
+        },
+        {
+          "id": 87228,
+          "char": "每擔",
+          "previous_jyutping": "mui5 daam1",
+          "jyutping": "mui5 daam3",
+          "alternatives": [],
+          "note": "每擔為重量／貨物量詞 daam3，非肩負動詞 daam1。",
+          "reference": "https://jyut.net/query?q=擔"
+        },
+        {
+          "id": 87246,
+          "char": "每盎司",
+          "previous_jyutping": "mui5 on1 si2",
+          "jyutping": "mui5 on1 si2",
+          "alternatives": [
+            "mui5 on1 si1",
+            "mui5 ong3 si1"
+          ],
+          "note": "盎司完整 words.hk 公版詞表及 Rime 詞條均有 on1 si2，原草稿並非只有安士字形的機械拼接。恢復日常變調 si2 優先，保留 CantoDict on1 si1 及 ong3 si1 書面讀法；撤回前輪對 si2 的過窄排除。",
+          "reference": "words_hk/rime_words:盎司=on1 si2 ; https://www.cantonese.sheik.co.uk/dictionary/words/43967/"
+        },
+        {
+          "id": 87270,
+          "char": "每間房",
+          "previous_jyutping": "mui5 gaan1 fong4",
+          "jyutping": "mui5 gaan1 fong2",
+          "alternatives": [
+            "mui5 gaan1 fong4"
+          ],
+          "note": "每間房按粵典間房的日常名詞 fong2 優先，保留同義 fong4，非計算妻妾或親戚的房量詞。",
+          "reference": "https://words.hk/zidin/房"
+        },
+        {
+          "id": 87275,
+          "char": "每頁行數",
+          "previous_jyutping": "mui5 jip6 haang4 sou2",
+          "jyutping": "mui5 jip6 hong4 sou3",
+          "alternatives": [],
+          "note": "每頁行數為文字行列 hong4 和數量名詞 sou3，不沿步行 haang4、數數 sou2。",
+          "reference": "https://jyut.net/query?q=行 ; https://jyut.net/query?q=數"
+        },
+        {
+          "id": 87296,
+          "char": "毒如蛇蠍",
+          "previous_jyutping": "duk6 jyu4 se4 kit3",
+          "jyutping": "duk6 jyu4 se4 kit3",
+          "alternatives": [
+            "duk6 jyu4 se4 hit3"
+          ],
+          "note": "毒蠍／蛇蠍的 kit3 為教育署建議音，hit3 亦有多部現代字書同義支持，保留較後，不將其中一音一律刪除。",
+          "reference": "https://jyut.net/query?q=蠍"
+        },
+        {
+          "id": 87322,
+          "char": "毒蠍",
+          "previous_jyutping": "duk6 kit3",
+          "jyutping": "duk6 kit3",
+          "alternatives": [
+            "duk6 hit3"
+          ],
+          "note": "毒蠍／蛇蠍的 kit3 為教育署建議音，hit3 亦有多部現代字書同義支持，保留較後，不將其中一音一律刪除。",
+          "reference": "https://jyut.net/query?q=蠍"
+        },
+        {
+          "id": 87323,
+          "char": "毒蠍子",
+          "previous_jyutping": "duk6 kit3 zi2",
+          "jyutping": "duk6 kit3 zi2",
+          "alternatives": [
+            "duk6 hit3 zi2"
+          ],
+          "note": "毒蠍／蛇蠍的 kit3 為教育署建議音，hit3 亦有多部現代字書同義支持，保留較後，不將其中一音一律刪除。",
+          "reference": "https://jyut.net/query?q=蠍"
+        },
+        {
+          "id": 87348,
+          "char": "比分數",
+          "previous_jyutping": "bei2 fan1 sou2",
+          "jyutping": "bei2 fan1 sou3",
+          "alternatives": [],
+          "note": "比分數中的分數為成績或比賽數值 fan1 sou3，不是數數 sou2。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 87350,
+          "char": "比到",
+          "previous_jyutping": "bei2 dou2",
+          "jyutping": "bei2 dou2",
+          "alternatives": [
+            "bei2 dou3"
+          ],
+          "note": "保留能夠比較的 dou2，另列比到最後等到達界限的 dou3；兩者語境分開，並非無條件代換。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 87394,
+          "char": "比肩接踵",
+          "previous_jyutping": "bei2 gin1 zip3 dung2",
+          "jyutping": "bei2 gin1 zip3 zung2",
+          "alternatives": [
+            "bei2 gin1 zip3 dung2"
+          ],
+          "note": "比肩接踵先列現代建議 zung2；dung2 亦有多部現代字書腳後／追隨及接踵詞例，保留較後，不斷言 dung2 為舊錯音。",
+          "reference": "https://jyut.net/query?q=踵"
+        },
+        {
+          "id": 87407,
+          "char": "比試一下",
+          "previous_jyutping": "bei2 si3 jat1 haa6",
+          "jyutping": "bei2 si3 jat1 haa5",
+          "alternatives": [
+            "bei2 si3 jat1 haa6"
+          ],
+          "note": "比試一下的下為嘗試一次，日常 haa5 優先，保留現代一下 haa6 全詞讀法。",
           "reference": "https://jyut.net/query?q=下 ; https://jyutdictionary.com/dictionary/entry/一下"
         },
         {
-          "id": 85944,
-          "char": "檸檬糖",
-          "previous_jyutping": "ning4 mung1 tong4",
-          "jyutping": "ning4 mung1 tong2",
+          "id": 87451,
+          "char": "毛毛茸茸",
+          "previous_jyutping": "mou4 mou4 jung4 jung4",
+          "jyutping": "mou4 mou4 jung4 jung4",
           "alternatives": [],
-          "note": "檸檬糖取糖果零食義 tong2，非砂糖調味料 tong4；整詞配音按現代粵典糖果義作 AI 判斷，不將另一食品義自動添加。",
-          "reference": "https://words.hk/zidin/糖"
+          "note": "完整毛茸茸現代粵語教材採 jung4 jung4；本批重疊式毛毛茸茸依該自然形容詞讀法，未無據新增尾字 jung2。組合為 AI 判斷。",
+          "reference": "https://mamabearcantonese.family.blog/wp-content/uploads/2022/03/thats-not-my-puppy-cheat-sheet.pdf"
         },
         {
-          "id": 85954,
-          "char": "鱗次櫛比",
-          "previous_jyutping": "leon4 ci3 zit3 bei6",
-          "jyutping": "leon4 ci3 zit3 bei2",
+          "id": 87453,
+          "char": "毛氈墊",
+          "previous_jyutping": "mou4 zin1 din3",
+          "jyutping": "mou4 zin1 zin3",
           "alternatives": [
-            "leon4 ci3 zit3 bei6"
+            "mou4 zin1 din3"
           ],
-          "note": "鱗次櫛比已有完整 bei2 讀法；現代字書亦明收並列義 bei6。保留原有 bei2 優先，bei6 作較後異讀，不把 bei2 一概視為比較義錯讀。",
-          "reference": "https://jyut.net/query?q=比"
+          "note": "撤回僅按少數字書便剔除 zin3 的過窄判斷。中大字庫收墊 zin3，CantoDict 明列椅墊、床墊等墊子義。日常 zin3 優先，保留 din3；字書覆蓋多寡不是日常使用次數。",
+          "reference": "https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/pho-rel.php?s1=z&s2=in ; https://www.cantonese.sheik.co.uk/dictionary/characters/1671/?full=true ; https://jyut.net/query?q=墊"
         },
         {
-          "id": 85955,
-          "char": "鱗次櫛比",
-          "previous_jyutping": "leon4 ci3 zit3 bei6",
-          "jyutping": "leon4 ci3 zit3 bei2",
+          "id": 87460,
+          "char": "毛筆畫",
+          "previous_jyutping": "mou4 bat1 waa2",
+          "jyutping": "mou4 bat1 waa2",
           "alternatives": [
-            "leon4 ci3 zit3 bei6"
+            "mou4 bat1 waa6"
           ],
-          "note": "鱗次櫛比已有完整 bei2 讀法；現代字書亦明收並列義 bei6。保留原有 bei2 優先，bei6 作較後異讀，不把 bei2 一概視為比較義錯讀。",
-          "reference": "https://jyut.net/query?q=比"
+          "note": "毛筆畫為畫作名詞，日常 waa2 優先，保留 waa6 文讀，非動詞畫 waak6。",
+          "reference": "https://jyut.net/query?q=畫"
+        },
+        {
+          "id": 87490,
+          "char": "毛髮倒豎",
+          "previous_jyutping": "mou4 faat3 dou2 syu6",
+          "jyutping": "mou4 faat3 dou2 syu6",
+          "alternatives": [
+            "mou4 faat3 dou3 syu6"
+          ],
+          "note": "完整毛髮倒豎讀法有 dou2 詞例，保留優先；倒豎為反向豎立，現代倒掛／倒置 dou3 義亦支持書面異讀，組合為 AI 判斷。不將普通話 dào 機械映為唯一粵音。",
+          "reference": "https://www.cq2.cn/hant/jfzh ; https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=倒"
+        },
+        {
+          "id": 87560,
+          "char": "氈呢",
+          "previous_jyutping": "zin1 ne1",
+          "jyutping": "zin1 nei4",
+          "alternatives": [],
+          "note": "氈呢為毛織料，呢 nei4，非疑問／語氣助詞 ne1 或指示詞 ni1。",
+          "reference": "https://jyut.net/query?q=呢"
+        },
+        {
+          "id": 87588,
+          "char": "民主測評",
+          "previous_jyutping": "man4 zyu2 cak1 ping4",
+          "jyutping": "man4 zyu2 caak1 ping4",
+          "alternatives": [
+            "man4 zyu2 cak1 ping4"
+          ],
+          "note": "測評先列日常習讀 caak1，保留現代字書同義原讀 cak1。詞語本身較少用與讀音通行程度分開。",
+          "reference": "https://jyut.net/query?q=測"
+        },
+        {
+          "id": 87596,
+          "char": "民事案件",
+          "previous_jyutping": "man4 si6 on3 gin6",
+          "jyutping": "man4 si6 on3 gin2",
+          "alternatives": [
+            "man4 si6 on3 gin6"
+          ],
+          "note": "案件名詞 gin2 優先、gin6 保留，非量詞一件固定讀法。",
+          "reference": "https://words.hk/zidin/案件"
+        },
+        {
+          "id": 87651,
+          "char": "民族樂派",
+          "previous_jyutping": "man4 zuk6 lok6 paai3",
+          "jyutping": "man4 zuk6 ngok6 paai3",
+          "alternatives": [],
+          "note": "民族樂派為音樂流派 ngok6，非快樂 lok6。",
+          "reference": "https://jyut.net/query?q=樂"
+        },
+        {
+          "id": 87718,
+          "char": "民謠吉他",
+          "previous_jyutping": "man4 jiu4 gat1 taa1",
+          "jyutping": "man4 jiu4 gat1 taa1",
+          "alternatives": [],
+          "note": "吉他 gat1 taa1 為書面字形的完整詞例，結他 git3 taa1 屬另一粵語音譯字形；不把兩個字形混成一音。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/characters/2/"
+        },
+        {
+          "id": 87797,
+          "char": "氣喘咻咻",
+          "previous_jyutping": "hei3 cyun2 jau1 jau1",
+          "jyutping": "hei3 cyun2 jau1 jau1",
+          "alternatives": [],
+          "note": "氣喘咻咻為形容喘氣的書面擬聲短語，咻咻按通行字音 jau1 jau1；未把另一詞噢咻的 heoi2 或舊完成態詞綴 hiu1 混入。組合為 AI 判斷。",
+          "reference": "https://jyut.net/query?q=咻 ; https://dict.revised.moe.edu.tw/search.jsp?word=氣喘咻咻"
+        },
+        {
+          "id": 87803,
+          "char": "氣墊床",
+          "previous_jyutping": "hei3 din2 cong4",
+          "jyutping": "hei3 zin2 cong4",
+          "alternatives": [
+            "hei3 din2 cong4",
+            "hei3 zin3 cong4",
+            "hei3 din3 cong4"
+          ],
+          "note": "完整氣墊／氣墊船詞例的變調 zin2、din2 均為現代通行；氣墊床先列日常 zin2，保留 din2，以及墊子同義 zin3／din3。全詞組合及順位為 AI 判斷，不從字書少收否定日常 zin 音。",
+          "reference": "https://www.cantonese.sheik.co.uk/dictionary/characters/1671/?full=true ; https://humanum.arts.cuhk.edu.hk/Lexis/lexi-can/pho-rel.php?s1=z&s2=in ; https://jyut.net/query?q=墊"
+        },
+        {
+          "id": 87869,
+          "char": "氣缸數",
+          "previous_jyutping": "hei3 gong1 sou2",
+          "jyutping": "hei3 gong1 sou3",
+          "alternatives": [],
+          "note": "氣缸數為數量名詞 sou3，非點數動詞 sou2。",
+          "reference": "AI:whole-word-context"
+        },
+        {
+          "id": 87895,
+          "char": "氣象廳",
+          "previous_jyutping": "hei3 zoeng6 teng1",
+          "jyutping": "hei3 zoeng6 teng1",
+          "alternatives": [
+            "hei3 zoeng6 ting1"
+          ],
+          "note": "氣象廳完整 CC-Canto 詞例 teng1 保留優先，現代字書 ting1 作書面異讀；不因政府部門義便硬刪完整詞的 teng1。",
+          "reference": "https://cantonese.org/search.php?q=氣 ; https://jyut.net/query?q=廳"
+        },
+        {
+          "id": 87915,
+          "char": "氣門數",
+          "previous_jyutping": "hei3 mun4 sou2",
+          "jyutping": "hei3 mun4 sou3",
+          "alternatives": [],
+          "note": "氣門數為數量名詞 sou3，非點數動詞 sou2。",
+          "reference": "AI:whole-word-context"
         }
       ],
-      "verdicts": {
-        "accept": 702,
-        "reject": 1298
-      },
-      "normalization_impact": {
-        "new_exact_restorations": {
-          "機械繫統": "機械系統"
-        },
-        "prior_runtime_matches": 0,
-        "curated_lexicon.json": 0,
-        "curated_reading_ranks.json": 0,
-        "word_usage.tsv": 0,
-        "word_usage_judgments.tsv": 0,
-        "stored_relation_source_files_checked": 222,
-        "stored_relation_source_hits": []
-      },
-      "new_source_readings": 700,
-      "new_source_forms": 645,
-      "post_export_file_reading_followup": [
-        {
-          "char": "校驗文件",
-          "preferred": "gaau3 jim6 man4 gin2",
-          "alternate": "gaau3 jim6 man4 gin6",
-          "reference": "https://words.hk/zidin/文件"
-        },
-        {
-          "char": "標準文件",
-          "preferred": "biu1 zeon2 man4 gin2",
-          "alternate": "biu1 zeon2 man4 gin6",
-          "reference": "https://words.hk/zidin/文件"
-        },
-        {
-          "char": "機密文件",
-          "preferred": "gei1 mat6 man4 gin2",
-          "alternate": "gei1 mat6 man4 gin6",
-          "reference": "https://words.hk/zidin/文件"
-        },
-        {
-          "char": "機要文件",
-          "preferred": "gei1 jiu3 man4 gin2",
-          "alternate": "gei1 jiu3 man4 gin6",
-          "reference": "https://words.hk/zidin/文件"
-        }
+      "post_export_full_word_followup": [
+        [
+          87246,
+          "mui5 on1 si2",
+          [
+            "mui5 on1 si1",
+            "mui5 ong3 si1"
+          ],
+          "盎司完整 words.hk 公版詞表及 Rime 詞條均有 on1 si2，原草稿並非只有安士字形的機械拼接。恢復日常變調 si2 優先，保留 CantoDict on1 si1 及 ong3 si1 書面讀法；撤回前輪對 si2 的過窄排除。",
+          "words_hk/rime_words:盎司=on1 si2 ; https://www.cantonese.sheik.co.uk/dictionary/words/43967/"
+        ],
+        [
+          86873,
+          "sei2 lin2 zip3",
+          [
+            "sei2 lin6 zip3",
+            "sei2 lin4 zip3"
+          ],
+          "鏈接在既有開放詞典有完整 lin4 zip3，CantoDict 有完整 lin2 zip3；現代字書亦收 lin6。先列日常變調 lin2，保留 lin6／lin4；撤回將 lin4 一律視為連接字形拼接的過窄推斷。",
+          "kaifang:鏈接=lin4 zip3 ; https://cantonese.sheik.co.uk/dictionary/characters/3532/?cf=1&full=true ; https://jyut.net/query?q=鏈"
+        ]
       ],
-      "all_previous_source_and_grade_objects_preserved": 54431
+      "prior_contextual_exclusion_revisited": {
+        "id": 85698,
+        "word": "橡膠墊",
+        "restored_reading": "zoeng6 gaau1 zin3",
+        "existing_din3_source_and_rank_preserved": true
+      },
+      "new_source_readings": 1070,
+      "new_source_forms": 1001,
+      "new_merged_forms": 1000,
+      "initial_accepts": 1000,
+      "initial_familiarity_withdrawals": 1,
+      "lyric_predicate_restorations": 1,
+      "net_final_withdrawals": 0,
+      "all_previous_source_and_grade_objects_preserved": 55131,
+      "no_new_normalization_changes": true,
+      "audit_semantics": "Final decisions only. Later whole-word evidence supersedes provisional exclusions; the published review ledger carries original drafts and final choices.",
+      "superseded_interpretations": [
+        "墊 zin3 只有舊字書、只准 din3 的推斷已撤回。",
+        "盎司 si2 只屬安士字形的推斷已撤回。",
+        "鏈接 lin4 一律是把連接拼錯音的推斷已撤回。"
+      ]
     }
   },
   "source_attribution": {
@@ -667,6 +1136,6 @@
     "license": "CC BY 4.0",
     "modifications": "Aggregated single-character grades for word readings; explicit glyph inheritance and AI contextual overrides are marked per row."
   },
-  "updated_through_batch": "2026-11-06-written-b45",
+  "updated_through_batch": "2026-11-06-written-b46",
   "updated_on": "2026-11-07"
 }
