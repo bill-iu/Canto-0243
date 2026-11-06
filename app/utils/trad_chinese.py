@@ -48,6 +48,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "鬥門": "斗門",
     "車鬥": "車斗",
     "傢俱城": "家具城",
+    "徵南將軍": "征南將軍",
+    "幹擾源": "干擾源",
 }
 
 # Bare word senses: ocean surface and literary richness/fragrance. Preserve the
