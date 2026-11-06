@@ -1,0 +1,5 @@
+previous_char	char	jyutping	code	action	source_ids	evidence	note
+星移鬥轉	星移斗轉	sing1 ji4 dau2 zyun2	3099	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L41720	原始來源使用星斗的斗；精確整詞還原，不變粵拼及碼。
+沒精打採	沒精打采	mut6 zing1 daa2 coi2	2399	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L48213	原始來源使用精神采色的采；正字同讀音已存在，來源合併時去重一列。
+烘雲託月	烘雲托月	hung1 wan4 tok3 jyut6	3042	normalize_literal	rime_words	rime-cantonese-upstream:word.csv#L52537	原始來源用襯托的托，非委託的託；保留原讀音及碼。
+鄉願	鄉愿	hoeng1 jyun6	32	normalize_literal	kaifang	kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token101811;https://dict.revised.moe.edu.tw/dictView.jsp?ID=109961&la=0&powerMode=0	原始開放詞典用鄉願；依教育部鄉愿正字統一忠厚貌義，非意願的願，不改粵拼及碼。

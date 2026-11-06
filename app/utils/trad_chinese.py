@@ -64,11 +64,18 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "離題萬裏": "離題萬里",
     "前程萬裏": "前程萬里",
     "基託": "基托",
+    "日進鬥金": "日進斗金",
+    "星移鬥轉": "星移斗轉",
+    "沒精打採": "沒精打采",
+    "烘雲託月": "烘雲托月",
+    "鄉願": "鄉愿",
+    "錐慄": "錐栗",
+    "剷鬥": "剷斗",
 }
 
-# Bare word senses: ocean surface and literary richness/fragrance. Preserve the
-# input literal, not its converted output (洋麵 and 鬱鬱 have different senses).
-_PRESERVE_LITERALS = frozenset({"洋面", "郁郁"})
+# Bare word senses: preserve the input, since the converted form can have its
+# own valid sense (e.g. 斗車 is a hopper cart; 鬥車 means racing cars).
+_PRESERVE_LITERALS = {"洋面": "洋面", "郁郁": "郁郁", "斗車": "斗車", "斗车": "斗車"}
 
 
 @lru_cache(maxsize=1)
@@ -85,7 +92,7 @@ def to_traditional(text: str) -> str:
     if not text:
         return text
     if text in _PRESERVE_LITERALS:
-        return text
+        return _PRESERVE_LITERALS[text]
     converter = _s2hk_converter()
     out = converter.convert(text) if converter is not None else text
     # ponytail: without OpenCC, still collapse 覈→核 (HKVariants); ceiling = rare literary 覈

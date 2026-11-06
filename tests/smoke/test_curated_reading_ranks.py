@@ -157,6 +157,15 @@ class CuratedReadingRankTests(unittest.TestCase):
             "滴鼻": ("dik1 bei6", "dik6 bei6"),
             "夜靜更深": ("je6 zing6 gaang1 sam1", "je6 zing6 gang1 sam1"),
             "塑料膜": ("sou3 liu2 mok6", "sok3 liu2 mok2"),
+            "大簷帽": ("daai6 sim4 mou2", "daai6 jim4 mou2"),
+            "捻碎": ("nin2 seoi3", "nip6 seoi3"),
+            "新蕾": ("san1 leoi4", "san1 leoi5"),
+            "彌天大禍": ("nei4 tin1 daai6 wo6", "mei4 tin1 daai6 wo6"),
+            "流通券": ("lau4 tung1 hyun3", "lau4 tung1 gyun3"),
+            "聽眾席": ("ting1 zung3 zik6", "ting3 zung3 zik6"),
+            "一日之長": ("jat1 jat6 zi1 coeng4", "jat1 jat6 zi1 zoeng2"),
+            "輕騎隊": ("hing1 kei4 deoi6", "hing1 gei6 deoi6"),
+            "齧齒類動物": ("ngit6 ci2 leoi6 dung6 mat6", "jit6 ci2 leoi6 dung6 mat6"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]

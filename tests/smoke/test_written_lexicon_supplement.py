@@ -43,6 +43,7 @@ BATCH_13 = "2026-11-06-written-b13"
 BATCH_14 = "2026-11-06-written-b14"
 BATCH_15 = "2026-11-06-written-b15"
 BATCH_16 = "2026-11-06-written-b16"
+BATCH_17 = "2026-11-06-written-b17"
 
 
 def review_rows(path):
@@ -179,6 +180,14 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             "离题万里": "離題萬里", "離題萬裏": "離題萬里",
             "前程万里": "前程萬里", "前程萬裏": "前程萬里",
             "基托": "基托", "基託": "基托",
+            "斗車": "斗車", "斗车": "斗車", "鬥車": "鬥車",
+            "日进斗金": "日進斗金", "日進鬥金": "日進斗金",
+            "星移斗转": "星移斗轉", "星移鬥轉": "星移斗轉",
+            "没精打采": "沒精打采", "沒精打採": "沒精打采",
+            "烘云托月": "烘雲托月", "烘雲託月": "烘雲托月",
+            "鄉愿": "鄉愿", "鄉願": "鄉愿",
+            "锥栗": "錐栗", "錐慄": "錐栗",
+            "铲斗": "剷斗", "剷鬥": "剷斗",
         }
         for original, expected in cases.items():
             with self.subTest(original=original):
@@ -467,7 +476,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17}]
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch}.issubset(pairs))
         engine = create_engine("sqlite:///:memory:")
         reset_word_cache_for_tests()
@@ -772,6 +781,36 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                       ("重點班", "cung5 dim2 baan1"), ("靜電荷", "zing6 din6 ho4")]:
             self.assertNotIn(wrong, pairs)
         for original in ("委託", "採集", "這裏", "前程萬裏圖", "基託之言"):
+            self.assertEqual(to_traditional(original), original)
+
+    def test_seventeenth_batch_retains_complete_phrases_and_separates_cart_senses(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_17}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_17}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(len({r["id"].split(":")[0] for r in review}), meta["review_candidate_ids"])
+        self.assertEqual(input_fingerprint(curated, meta, 17), meta["input_curated_sha256"])
+        batch = [r for r in curated if r.get("batch") == BATCH_17]
+        self.assertEqual(len(batch), meta["added_rows"])
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        self.assertEqual({r["char"] for r in review if r["verdict"] == "defer"}, {"譁嘩啦啦"})
+        revisited = {"一人得道", "只怕有心人", "凡事預則立", "不謀其政", "上有政策", "下有對策", "落花有意", "耳聽為虛", "精誠所至"}
+        self.assertEqual({r["char"] for r in review if r["previous_verdict"] == "reject" and r["verdict"] == "accept"}, revisited)
+        pairs = {(r["char"], r["jyutping"]) for r in batch}
+        for wrong in [("毛呢", "mou4 ne1"), ("焊縫", "hon2 fung4"), ("自作主張", "zi6 zou6 zyu2 zoeng1"),
+                      ("遇難成祥", "jyu6 naan6 cing4 coeng4"), ("松柴", "sung4 caai4"),
+                      ("期冀", "kei4 gei3"), ("便宜從事", "pin4 ji4 cung4 si6"), ("斗車", "dau3 ce1")]:
+            self.assertNotIn(wrong, pairs)
+        self.assertIn(("斗車", "dau2 ce1"), pairs)
+        path = REVIEW.parent / meta["existing_literal_review_path"]
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["existing_literal_review_sha256"])
+        migrations = review_rows(path)
+        self.assertEqual(len(migrations), meta["existing_literal_migrations"])
+        self.assertEqual({r["previous_char"] for r in migrations}, {"星移鬥轉", "沒精打採", "烘雲託月", "鄉願"})
+        for original in ("鬥車", "鬥爭", "委託", "意願", "錐慄之言", "剷鬥之戰"):
             self.assertEqual(to_traditional(original), original)
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):
