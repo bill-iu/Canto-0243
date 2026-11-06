@@ -96,6 +96,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "幹擾器": "干擾器",
     "幹礙": "干礙",
     "幹連": "干連",
+    "御駕親徵": "御駕親征",
+    "復闢事件": "復辟事件",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its

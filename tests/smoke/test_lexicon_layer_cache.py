@@ -57,15 +57,15 @@ class LexiconLayerCacheTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             cache_dir = Path(tmp)
             raw = cache_dir / "raw.txt"
-            raw.write_text("干擾器", encoding="utf-8")
+            raw.write_text("御駕親征", encoding="utf-8")
             src = {"id": "fixture", "parser": "lexicon_json", "raw_path": str(raw)}
-            legacy = [LexiconCandidate("幹擾器", "gon1 jiu2 hei3", "394", ("fixture",))]
-            corrected = [LexiconCandidate("干擾器", "gon1 jiu2 hei3", "394", ("fixture",))]
+            legacy = [LexiconCandidate("御駕親徵", "jyu6 gaa3 can1 zing1", "2433", ("fixture",))]
+            corrected = [LexiconCandidate("御駕親征", "jyu6 gaa3 can1 zing1", "2433", ("fixture",))]
             with mock.patch(
                 "ingest.lexicon_layer_cache.ingest_source", side_effect=[legacy, corrected]
             ) as ingest:
                 with mock.patch("ingest.lexicon_layer_cache.source_input_paths", return_value=[raw]):
-                    with mock.patch("ingest.lexicon_layer_cache.LAYER_CACHE_FORMAT", "17"):
+                    with mock.patch("ingest.lexicon_layer_cache.LAYER_CACHE_FORMAT", "18"):
                         old, old_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
                     fresh, fresh_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
                     cached, cached_status = load_or_ingest_source(src, use_cache=True, cache_dir=cache_dir)
