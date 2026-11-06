@@ -70,3 +70,18 @@ char	old_jyutping	old_code	action	value	note
 遺傳病	wai4 cyun4 bing6		set_jyutping	wai4 cyun4 beng6	2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；轉為 beng6，保留字詞。
 重病	cung5 bing6		delete		2026-10-21 維護者指定日常粵語讀法：病採用 beng6，移除 bing6 文讀變體；保留既有 beng6 列。
 金石	gam1 daam3	34	set_jyutping	gam1 sek6	2026-11-06 written-b06：金屬／石刻義，非容量單位石 daam3；原 Rime word.csv#L83287
+蒼莽	cong1 mong4	30	set_jyutping	cong1 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30407
+粗莽	cou1 mong4	30	delete		2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30787；正讀已有，僅移除錯讀以免重複。
+草莽	cou2 mong4	90	set_jyutping	cou2 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token30979
+叢莽	cung4 mong4	00	set_jyutping	cung4 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token32223
+榛莽	zeon1 mong4	30	set_jyutping	zeon1 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token117886
+林莽	lam4 mong4	00	set_jyutping	lam4 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token143696
+魯莽	lou5 mong4	50	delete		2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152512；正讀已有，僅移除錯讀以免重複。
+鹵莽	lou5 mong4	50	set_jyutping	lou5 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152515
+魯莽行事	lou5 mong4 hang4 si6	5002	delete		2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152518；正讀已有，僅移除錯讀以免重複。
+魯莽滅裂	lou5 mong4 mit6 lit6	5022	set_jyutping	lou5 mong5 mit6 lit6	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token152523
+莽蒼	mong4 cong1	03	set_jyutping	mong5 cong1	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165783
+莽漢	mong4 hon3	04	set_jyutping	mong5 hon3	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165869
+莽撞	mong4 zong6	02	delete		2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165872；正讀已有，僅移除錯讀以免重複。
+莽莽	mong4 mong4	00	set_jyutping	mong5 mong5	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token165920
+莽原	mong4 jyun4	00	set_jyutping	mong5 jyun4	2026-11-06 written-b09：莽採 mong5，精確修正開放詞典 mong4；kaifang:cidian_zhyue-ft-kfcd-yp-2021714.txt#L10:token166004
