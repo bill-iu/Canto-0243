@@ -39,6 +39,8 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "同裏": "同里",
     "徵闢": "徵辟",
     "報名錶": "報名表",
+    "頭麪人物": "頭面人物",
+    "劃手": "划手",
 }
 
 # Bare word senses: ocean surface and literary richness/fragrance. Preserve the

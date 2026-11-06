@@ -1,0 +1,89 @@
+{
+  "batch": "2026-11-06-written-b08",
+  "date": "2026-11-06",
+  "reviewer": "AI-assisted word-form, sense and whole-word Cantonese review; not human item-by-item approval",
+  "source_repository": "https://github.com/fxsjy/jieba",
+  "source_commit": "67fa2e36e72f69d9134b8a1037b83fbb070b9775",
+  "source_license": "MIT",
+  "source_files": [
+    {
+      "path": "jieba/dict.txt",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/jieba/dict.txt",
+      "sha256": "7197c3211ddd98962b036cdf40324d1ea2bfaa12bd028e68faa70111a88e12a8",
+      "bytes": 5071852
+    },
+    {
+      "path": "extra_dict/dict.txt.big",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/extra_dict/dict.txt.big",
+      "sha256": "b16011275c42955ccd81fc1adecc93a59dbb7926af69d93fc95d4943d40f6aad",
+      "bytes": 8583143
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/fxsjy/jieba/67fa2e36e72f69d9134b8a1037b83fbb070b9775/LICENSE",
+      "sha256": "18ba0984839f85853b29fadaf992f7dba8fd0ca0fbeae34de2b8735222dc7a37",
+      "bytes": 1075
+    }
+  ],
+  "input_git_commit": "5e11f939b78a26dcb35f5382886eab4bba4b00bd",
+  "input_curated_sha256": "d6dc25d219b36437449d717a410ee9202f80cd45a888641a3a7323d153be381b",
+  "input_curated_rows": 9975,
+  "input_db_sha256": "6175f4d4d43d4b44e7e4c3a7762d8a815dd2f554aaf95867d6ec1ae2666e5cf9",
+  "newly_reviewed_candidates": 1500,
+  "revisited_candidates": 0,
+  "review_rows": 1510,
+  "review_candidate_ids": 1500,
+  "review_verdict_rows": {
+    "reject": 114,
+    "accept": 1381,
+    "defer": 5,
+    "already_present": 10
+  },
+  "reading_repairs": 0,
+  "added_rows": 1381,
+  "added_literals": 1371,
+  "total_curated_rows": 11356,
+  "cumulative_reviewed_candidates": 11994,
+  "cumulative_candidate_decisions": {
+    "accept": 10764,
+    "reject": 1146,
+    "already_present": 78,
+    "defer": 6
+  },
+  "candidate_pool": 146602,
+  "unreviewed_pool_candidates": 134608,
+  "regional_candidates_still_held": 924,
+  "selection": "Next 1500 previously unreviewed pool IDs in descending pinned upstream dictionary weight; continuation offsets 5750:7250. Five new reading uncertainties remain deferred; the provisional 捻子 deferral was resolved from dictionaries before promotion. AI-inferred readings are labeled explicitly.",
+  "frequency_meaning": "Upstream dictionary weight, not measured corpus occurrences or a product ranking weight",
+  "normalization_policy": "Existing s2hk with eighteen exact-literal restorations plus two bare-literal sense exceptions; adds exact 頭面人物 and 划手 restorations without blanket character substitution. Proposed, formal and actual ingest literals remain separate.",
+  "reading_policy": "No automatic promotion of character-default drafts; whole-word review plus contextual high-risk and compound-reference audit; 病=beng6 only",
+  "original_curated_rows_preserved": 9975,
+  "previous_source_repairs_explicit": true,
+  "review_tsv_sha256": "5117cb7d843431cd08f3b5262d016acb09e35d289000c43a9b5536ae37edde7c",
+  "validation": {
+    "merged_rows": 192497,
+    "merged_literals": 177355,
+    "baseline_unique_pairs": 191114,
+    "all_baseline_pairs_retained": true,
+    "baseline_pairs_changed": [],
+    "added_source_rows": 1381,
+    "all_new_pairs_retained": true,
+    "persisted_rows_match": true,
+    "representative_search_checks": 129,
+    "live_db_unchanged": true,
+    "previous_reading_grades_preserved": 9975,
+    "new_word_normalization_idempotent": true,
+    "backend_pwa_word_grade_keys": 11512,
+    "smoke_tests": 274,
+    "smoke_passed": 270,
+    "smoke_skipped": 4,
+    "seam_tests": 89,
+    "seam_passed": 83,
+    "seam_skipped": 6,
+    "pwa_build": true,
+    "ranking_and_lookup_self_checks": true,
+    "ranking_node_typecheck": true
+  },
+  "existing_source_reading_repairs": 0,
+  "scope": "dev source-data update; live lyrics.db, main, release assets and published PWA remain unchanged."
+}
