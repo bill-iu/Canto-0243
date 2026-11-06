@@ -47,6 +47,7 @@ BATCH_17 = "2026-11-06-written-b17"
 BATCH_18 = "2026-11-06-written-b18"
 BATCH_19 = "2026-11-06-written-b19"
 BATCH_20 = "2026-11-06-written-b20"
+BATCH_21 = "2026-11-06-written-b21"
 
 
 def review_rows(path):
@@ -946,6 +947,44 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
             self.assertEqual(to_traditional(original), expected)
             self.assertEqual(to_traditional(expected), expected)
         for literal in ("遊玩", "寄託", "裏面", "一舉萬裏者"):
+            self.assertEqual(to_traditional(literal), literal)
+
+    def test_twenty_first_batch_records_context_repairs_and_preserves_valid_variants(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_21}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_21}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        self.assertEqual(meta["revisited_candidates"], 3)
+        self.assertEqual(input_fingerprint(curated, meta, 21), meta["input_curated_sha256"])
+        batch = [r for r in curated if r.get("batch") == BATCH_21]
+        self.assertEqual(len(batch), meta["added_rows"])
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        repairs = [r for r in review if r["verdict"] == "repair"]
+        self.assertEqual([(r["char"], r["previous_jyutping"], r["jyutping"]) for r in repairs],
+                         [("不可勝計", "bat1 ho2 sing3 gai3", "bat1 ho2 sing1 gai3")])
+        pairs = {(r["char"], r["jyutping"]) for r in curated}
+        self.assertIn(("不可勝計", "bat1 ho2 sing1 gai3"), pairs)
+        self.assertNotIn(("不可勝計", "bat1 ho2 sing3 gai3"), pairs)
+        for word, readings in [
+            ("喜不自勝", ("hei2 bat1 zi6 sing3", "hei2 bat1 zi6 sing1")),
+            ("丁腈橡膠", ("ding1 cing1 zoeng6 gaau1", "ding1 zing1 zoeng6 gaau1")),
+            ("世風澆薄", ("sai3 fung1 hiu1 bok6", "sai3 fung1 giu1 bok6")),
+            ("不分首從", ("bat1 fan1 sau2 cung4", "bat1 fan1 sau2 zung6")),
+            ("上籃得分", ("soeng5 laam2 dak1 fan1", "soeng5 laam4 dak1 fan1")),
+        ]:
+            self.assertTrue({(word, jp) for jp in readings}.issubset(pairs))
+        self.assertTrue({"不自滿假", "世處", "並列蛋白"}.issubset({r["char"] for r in review if r["verdict"] == "defer"}))
+        self.assertIn("瞧瞧", {r["char"] for r in review if r["previous_verdict"] == "reject" and r["verdict"] == "accept"})
+        literal_path = REVIEW.parent / meta["existing_literal_review_path"]
+        self.assertEqual(hashlib.sha256(literal_path.read_bytes()).hexdigest(), meta["existing_literal_review_sha256"])
+        self.assertEqual({(r["previous_char"], r["char"]) for r in review_rows(literal_path)}, {("醜時", "丑時")})
+        self.assertEqual(to_traditional("醜時"), "丑時")
+        self.assertEqual(to_traditional("丑時"), "丑時")
+        for literal in ("醜惡", "醜陋", "醜時者"):
             self.assertEqual(to_traditional(literal), literal)
 
     def test_gold_and_stone_repair_does_not_change_capacity_unit_readings(self):

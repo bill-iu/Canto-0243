@@ -200,6 +200,14 @@ class CuratedReadingRankTests(unittest.TestCase):
             "藥捻": ("joek6 nin2", "joek6 nim2"),
             "一簞食": ("jat1 daan1 sik6", "jat1 daan1 zi6"),
             "一瓣心香": ("jat1 baan6 sam1 hoeng1", "jat1 faan6 sam1 hoeng1"),
+            "一騎當千": ("jat1 kei3 dong1 cin1", "jat1 gei6 dong1 cin1"),
+            "上籃得分": ("soeng5 laam2 dak1 fan1", "soeng5 laam4 dak1 fan1"),
+            "不分首從": ("bat1 fan1 sau2 cung4", "bat1 fan1 sau2 zung6"),
+            "不忮不求": ("bat1 zi3 bat1 kau4", "bat1 gei6 bat1 kau4"),
+            "世風澆薄": ("sai3 fung1 hiu1 bok6", "sai3 fung1 giu1 bok6"),
+            "丁腈橡膠": ("ding1 cing1 zoeng6 gaau1", "ding1 zing1 zoeng6 gaau1"),
+            "丙腈": ("bing2 cing1", "bing2 zing1"),
+            "喜不自勝": ("hei2 bat1 zi6 sing3", "hei2 bat1 zi6 sing1"),
         }
         for char, (preferred, variant) in cases.items():
             rows = [SimpleNamespace(char=char, jyutping=jp) for jp in (variant, preferred)]
@@ -241,6 +249,8 @@ class CuratedReadingRankTests(unittest.TestCase):
                     ("跛行", "bai1 haang4", "bo2 hang4"),
                     ("水松", "seoi2 sung1", "seoi2 cung4"),
                     ("會員卡", "wui6 jyun4 kaa1", "wui2 jyun4 kaa1"),
+                    ("上籃得分", "soeng5 laam2 dak1 fan1", "soeng5 laam4 dak1 fan1"),
+                    ("世風澆薄", "sai3 fung1 hiu1 bok6", "sai3 fung1 giu1 bok6"),
                 ]:
                     # Older variant is deliberately inserted first.
                     for jp in (variant, preferred):

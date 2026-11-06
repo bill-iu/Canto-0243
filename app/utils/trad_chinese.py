@@ -82,6 +82,7 @@ _CONTEXTUAL_RESTORE: dict[str, str] = {
     "一手託天": "一手托天",
     "一瀉萬裏": "一瀉萬里",
     "一舉萬裏": "一舉萬里",
+    "醜時": "丑時",
 }
 
 # Bare word senses: preserve the input, since the converted form can have its

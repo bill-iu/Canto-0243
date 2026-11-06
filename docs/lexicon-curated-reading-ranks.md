@@ -1,13 +1,13 @@
 # 自建詞庫讀音常用度
 
 `data/lexicon/curated_reading_ranks.json` 為每個自建「字面／粵拼」記錄讀音等級，
-配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十批續審後共 **31,390 個讀音**。
+配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十一批續審後共 **33,193 個讀音**。
 這是讀音選擇的常用程度，並非某個詞語在語料出現多少次。
 
 | 等級 | 排序值 | 本輪數量 |
 |------|-------:|---------:|
-| 預設 | 0 | 27,799 |
-| 常用 | 1 | 3,507 |
+| 預設 | 0 | 29,335 |
+| 常用 | 1 | 3,774 |
 | 罕見 | 2 | 81 |
 | 棄用 | 3 | 3 |
 
@@ -18,9 +18,9 @@
 
 ## 依據
 
-- `rime-components`：28,893 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
-- `rime-orthographic`：62 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
-- `ai-context`：2,435 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
+- `rime-components`：30,506 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
+- `rime-orthographic`：63 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
+- `ai-context`：2,624 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
   或單字分級不能準確代表特定詞語的讀法。每項保留原 `component_rank`、判斷標記及說明。
   這些是維護判斷，沒有標成實測頻率或人類逐項批准。
 
@@ -321,3 +321,33 @@ PWA 在建置時合併入 `ranking-index.json`，分級檔變動會令建置快�
 「一夔一契」用古人名 sit3，「一字不易」用更改義 jik6，
 「一筆一畫」用筆畫義 waak6。原稿和修訂理由保留在
 [第二十批審核表](../data/lexicon/reviews/2026-11-06-written-b20-supplement.tsv)。
+
+## 第二十一批：保留詞級變調與有效現代異讀
+
+新增 1,803 筆分級：1,614 筆直接沿用 Rime、1 筆經明確異體繼承、188 筆另作整詞判斷。
+另外修正「不可勝計」原有一筆的讀音及分級，其餘 31,389 筆原分級物件逐欄保留。
+新增記錄分為預設 1,536 筆、常用 267 筆；沒有把詞形權重當成讀音常用度。
+
+| 字面 | 優先讀法 | 保留讀法 |
+|------|----------|----------|
+| 上籃得分 | `soeng5 laam2 dak1 fan1` | `soeng5 laam4 dak1 fan1` |
+| 不分首從 | `bat1 fan1 sau2 cung4` | `bat1 fan1 sau2 zung6` |
+| 一騎當千 | `jat1 kei3 dong1 cin1` | `jat1 gei6 dong1 cin1`、`jat1 kei4 dong1 cin1` |
+| 不忮不求 | `bat1 zi3 bat1 kau4` | `bat1 gei6 bat1 kau4` |
+| 世風澆薄 | `sai3 fung1 hiu1 bok6` | `sai3 fung1 giu1 bok6` |
+| 丁腈橡膠 | `ding1 cing1 zoeng6 gaau1` | `ding1 zing1 zoeng6 gaau1` |
+| 丙腈 | `bing2 cing1` | `bing2 zing1` |
+| 喜不自勝 | `hei2 bat1 zi6 sing3`（保留整詞來源） | `hei2 bat1 zi6 sing1`（承受義） |
+
+[上籃的 laam2](https://www.cantonese.sheik.co.uk/dictionary/characters/617/?full=true)
+是有完整詞例的變調，沒有因單字分級缺音就刪去。
+[腈的 cing1、zing1](https://jyut.net/query?q=腈)都有現代粵音字典根據，
+不能因 cing1 也讀作氰便誤判錯音；[澆的 giu1](https://jyut.net/query?q=澆)亦明列薄義，
+與 hiu1 一同保留。[忮的 gei6](https://jyut.net/query?q=忮)有嫉忌義根據，不當成無據異音。
+「不分首從」[cung4／zung6](https://jyut.net/query?q=從)分別有現代詞典及教育署主從讀法支持。
+以上整詞先後次序為 AI 維護判斷，來源並未提供實測的整詞讀音頻率。
+
+「下切侵蝕」的 sik6、「不甚瞭解」的 liu5、「不暇顧及」的 haa6、
+「不能緩和」的 wun6 均按正常詞義及教育署建議覆核，沒有機械沿用字級罕見標籤。
+「不害臊」用 sou3、「不置褒貶」用 bou1、「不龜手藥」用 gwan1、
+「不豐不殺」取減少義 saai3；草稿及修正理由見[本批審核表](../data/lexicon/reviews/2026-11-06-written-b21-supplement.tsv)。
