@@ -1,13 +1,13 @@
 # 自建詞庫讀音常用度
 
 `data/lexicon/curated_reading_ranks.json` 為每個自建「字面／粵拼」記錄讀音等級，
-配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十五批續審後共 **38,132 個讀音**。
+配合既有 Rime 排序使用。2026-11-06 首次覆核涵蓋 7,996 個讀音，第二十六批續審後共 **38,810 個讀音**。
 這是讀音選擇的常用程度，並非某個詞語在語料出現多少次。
 
 | 等級 | 排序值 | 本輪數量 |
 |------|-------:|---------:|
-| 預設 | 0 | 33,681 |
-| 常用 | 1 | 4,367 |
+| 預設 | 0 | 34,272 |
+| 常用 | 1 | 4,454 |
 | 罕見 | 2 | 81 |
 | 棄用 | 3 | 3 |
 
@@ -18,9 +18,9 @@
 
 ## 依據
 
-- `rime-components`：34,909 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
-- `rime-orthographic`：70 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
-- `ai-context`：3,153 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
+- `rime-components`：35,527 項沿用 `data/rime/char.csv` 的單字讀音等級，取最大值，與原系統一致。
+- `rime-orthographic`：72 項只用明確同字異體對照繼承等級，例如羣／群、藴／蘊。
+- `ai-context`：3,211 項由 AI 按完整詞義判斷；包括沒有單字分級的詞級變調、
   或單字分級不能準確代表特定詞語的讀法。每項保留原 `component_rank`、判斷標記及說明。
   這些是維護判斷，沒有標成實測頻率或人類逐項批准。
 
@@ -382,7 +382,7 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 
 ## 詞語本身常用度（2026-11-06）
 
-本表只表示同一字面的讀音順序。另見[詞語常用度與冷僻退回](lexicon-word-usage-design.md)：全部 37,397 個自建字面另有分級，詞語常用度先決定跨字面結果次序，讀音分級再決定同一詞的異讀先後。2,051 個冷僻表達退回後，歷史讀音證據繼續留檔，不視作錯音。
+本表只表示同一字面的讀音順序。另見[詞語常用度與冷僻退回](lexicon-word-usage-design.md)：全部 38,058 個自建字面另有分級，詞語常用度先決定跨字面結果次序，讀音分級再決定同一詞的異讀先後。2,051 個冷僻表達退回後，歷史讀音證據繼續留檔，不視作錯音。
 
 ## 第二十三批讀音分級
 
@@ -408,3 +408,17 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 - 「公使團」使為外交官義 `si3`；「兵多將廣」將領 `zoeng3`；「典當行」商店 `hong4`；「八斤重、六斤重」重量 `cung5`，均按整詞語境核對。[使](https://jyut.net/query?q=使)、[將](https://jyut.net/query?q=將)、[行](https://jyut.net/query?q=行)、[重](https://jyut.net/query?q=重)
 
 以上讀音次序獨立於詞語本身常用度，沒有靠提高詞語等級來代替讀音選擇。詳見[本批審核](../data/lexicon/reviews/2026-11-06-written-b25-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b25-validation.json)。
+
+## 第二十六批：以完整詞例覆核草稿
+
+新增 678 組讀音，全部 38,132 個舊分級物件逐欄保留。單字未列、或標為罕見，均不能直接證明整詞讀音錯誤；同樣地，字形校正必須同步校正字音與 0243 碼。
+
+- 「再試一下」的下按動作次數用 `haa5`；「冠帽」帽子義冠 `gun1`，與「冠絕一時」的 `gun3` 分開。[下](https://jyut.net/query?q=下)、[冠](https://jyut.net/query?q=冠)
+- 「准入條件」保留詞級變調 `gin2` 優先及 `gin6` 本調；「出示證件」用完整證件詞音 `gin2`。不能因單字表缺少變調便改成另一音。[條件](https://words.hk/zidin/條件)、[證件](https://words.hk/zidin/證件)、[條件本調及變調](https://cantonese.sheik.co.uk/dictionary/characters/407/?full=true)
+- 「判處刑罰、判處死刑」保留 `cyu5/cyu2/cyu3`：日常 `cyu5` 優先為 AI 判斷，`cyu3` 有完整詞條支持，不能只憑處所義刪除。[判處詞條](https://words.hk/zidin/判處)、[書面 cyu2 詞例](https://cantonese.sheik.co.uk/dictionary/characters/1451/?full=true)
+- 「冷眼相覷」保留 `ceoi3/zeoi3`；撤回初審猜作 `keoi3` 的判斷。「冥王」保留 `ming5/ming4` 文白兩讀。[覷](https://jyut.net/query?q=覷)、[冥](https://jyut.net/query?q=冥)
+- 「初始密碼」始 `ci2`、「叛亂、叛徒、叛變、叛軍」叛 `bun6`、「別出心裁」心 `sam1`，均同步修正字形、讀音及碼；「制禮作樂」樂取音樂義 `ngok6`。[始](https://jyut.net/query?q=始)、[叛](https://jyut.net/query?q=叛)、[樂](https://jyut.net/query?q=樂)
+
+「划行、划走、划着走」的行船義保留 `waa4/waa1`，與劃線 `waak6` 分開。另七個「划／劃」詞形因既有正規化與舊來源遷移尚待聯同審核，明示暫緩，沒有標為冷僻或宣稱已收錄。[划的不同詞義](https://jyut.net/query?q=划)
+
+詳見[本批審核表](../data/lexicon/reviews/2026-11-06-written-b26-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b26-validation.json)。
