@@ -52,6 +52,7 @@ BATCH_21 = "2026-11-06-written-b21"
 BATCH_22 = "2026-11-06-written-b22"
 BATCH_23 = "2026-11-06-written-b23"
 BATCH_24 = "2026-11-06-written-b24"
+BATCH_25 = "2026-11-06-written-b25"
 
 
 def review_rows(path):
@@ -522,7 +523,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25}]
         usage = load_word_usage(CURATED.with_name("word_usage.tsv"))
         withdrawn = {literal for literal, grade in usage.items() if grade.withdraw_curated}
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch if to_traditional(row["char"]) not in withdrawn}.issubset(pairs))
@@ -1107,6 +1108,36 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         ranks = {(r["char"], r["jyutping"]): r["pron_rank"] for r in json.loads(CURATED.with_name("curated_reading_ranks.json").read_text(encoding="utf-8"))}
         self.assertEqual(ranks["優惠券", "jau1 wai6 hyun3"], "預設")
         self.assertEqual(ranks["優惠券", "jau1 wai6 gyun3"], "常用")
+        self.assertTrue(all(r["proposed_usage_rank"] in {"0", "1", "2"} and r["proposed_usage_note"]
+                            for r in review if r["verdict"] == "accept"))
+
+    def test_twenty_fifth_batch_has_contextual_codes_without_obscure_draft_promotions(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_25}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_25}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(len(review), meta["review_rows"])
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        self.assertEqual(meta["revisited_candidates"], 0)
+        self.assertEqual(input_fingerprint(curated, meta, 25), meta["input_curated_sha256"])
+        batch = [r for r in curated if r.get("batch") == BATCH_25]
+        self.assertEqual(len(batch), meta["added_rows"])
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        pairs = {(r["char"], r["jyutping"]) for r in batch}
+        for word, readings in [
+            ("公筷母匙", ("gung1 faai3 mou5 si4", "gung1 faai3 mou5 ci4")),
+            ("六粒裝", ("luk6 nap1 zong1", "luk6 lap1 zong1")),
+            ("共犯論處", ("gung6 faan6 leon6 cyu2", "gung6 faan2 leon6 cyu2")),
+        ]:
+            self.assertTrue({(word, jp) for jp in readings}.issubset(pairs), word)
+        for word, jp in [("兒童玩具", "ji4 tung4 wun6 geoi6"), ("兒女親家", "ji4 neoi5 can3 gaa1"),
+                         ("內容摘要", "noi6 jung4 zaak6 jiu3"), ("八斤重", "baat3 gan1 cung5"),
+                         ("公使團", "gung1 si3 tyun4"), ("兵多將廣", "bing1 do1 zoeng3 gwong2"),
+                         ("典當行", "din2 dong3 hong4")]:
+            self.assertIn((word, jp), pairs)
+        self.assertTrue({r["char"] for r in batch}.isdisjoint({"光彩陸離", "先聲後實", "八具", "公差費", "兼併額", "兵籍號碼"}))
         self.assertTrue(all(r["proposed_usage_rank"] in {"0", "1", "2"} and r["proposed_usage_note"]
                             for r in review if r["verdict"] == "accept"))
 
