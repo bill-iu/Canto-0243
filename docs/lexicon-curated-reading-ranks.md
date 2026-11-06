@@ -517,3 +517,16 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [拘泥](https://jyut.net/query?q=泥)的固執義 nei6 與泥土 nai4 分開；[拂](https://jyut.net/query?q=拂)輕擦、拂衣為 fat1，不套通弼的 bat6。[拗](https://jyut.net/query?q=拗)的彎折義 aau2 不用爭拗義 aau3；持正不阿的[阿](https://jyut.net/query?q=阿)採徇私、阿附義 o1，非稱呼前綴 aa3。折疊動作正式採摺 zip3，折斷、折價保留折 zit3；批假用休假 gaa3，折衷用 zung1，拱手而降的投降為 hong4，行禮為 hang4。拙著按著作 zyu3 查重，未把書面着的持續態 zoek6 套到著作。
 
 扼 ak1／aak1、拙 zyut3／zyut6 的現代又讀保留並排序；抹按擦拭 maat3、塗抹 mut3 的完整動作分義。原歌詞拋下 haa3、拋字 pau1 未照抄入庫，正式取 paau1 haa6；拾到的 dou2／dou3 則都保留。這些先後是明示整詞語境判斷，非實測讀音頻率。字書、原歌詞行號、草稿、正字及理由見[B39 審核表](../data/lexicon/reviews/2026-11-06-written-b39-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b39-validation.json)。
+
+
+## 第四十批：完整詞義、語音與文讀分列
+
+新增 1,174 組來源讀音並逐項設定等級，原有 49,897 個分級物件逐欄保留。完整詞語常用度另記，不把其中一個字的罕見或未知標記直接套到整詞。
+
+[挑](https://jyut.net/query?q=挑)的挑撥義 tiu1／tiu5 均有現代根據；[挾](https://jyut.net/query?q=挾)按夾住 gaap3、hip3／hip6／haap6 及要挾 hip3／hip6 的完整動作分開，不套通浹 zip3。捻線等兩指搓捻動作先列 nin2，保留現代 nim2 與 nip6；[捏](https://jyut.net/query?q=捏)造則先 nip6、保留 nip3，不混同兩個字的語境。[掙](https://jyut.net/query?q=掙)取得報酬先 zaang6、保留完整掙錢的 zaang1 語音；擺脫亦有 zaang6 現代配詞，不誤稱它只屬賺錢。
+
+[探聽](https://jyutdictionary.com/dictionary/entry/探聽)的 ting3／ting1、[推斷](https://jyutdictionary.com/dictionary/entry/推斷)的 dyun6／dyun3 都有現代整詞例。新短語按香港用法先列 ting3、dyun6，並非實測讀音次數。[接聽](https://jyutdictionary.com/dictionary/entry/接聽)電話先列 teng1，ting1 文讀列後，未套聽命 ting3。掀被的被子用 pei5，非被動 bei6；[揹](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=揹)負用 bui3，不沿草擬 bui1。
+
+[捍](https://jyut.net/query?q=捍)疆衞國的 hon6／hon2 與[悍](https://jyut.net/query?q=悍)然的 hon5／hon6 分開；[掰](https://jyut.net/query?q=掰)保留 baai1／maak3，[率](https://jyut.net/query?q=率)的比率義保留 leot6／leot2。揣着按衣內藏物義保留 caai1／cyun2，揣測才列 cyun2／ceoi2；劍鞘義 ciu3 不套鞭鞘的 saau1。判斷與詞例見[B40 審核表](../data/lexicon/reviews/2026-11-06-written-b40-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b40-validation.json)。
+
+掛斗的斗為載貨車斗 dau2，非格鬥 dau3；字形、讀音及 0243 碼同時修正。排除干擾的干為干擾 gon1，不轉幹部的幹。兩項精確字面還原使解析快取升至 21，舊字面鍵無受影響；原 Essay 掛斗 342 詞頻沿用。

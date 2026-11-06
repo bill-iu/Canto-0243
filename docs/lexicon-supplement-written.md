@@ -1598,3 +1598,18 @@ PWA 建置及產物檢查、portable 前端建置均通過。使用中資料庫�
 詞義覆核分清休假 gaa3、折衷 zung1、拘泥 nei6、拂去 fat1、拗折 aau2、持正不阿 o1、上升 soeng5 及方位手上 soeng6。折疊物件採摺字 zip3，與折斷、折價 zit3 分開；拙著取自謙著作 zyu3，未套持續態 zoek6。拉圾、拉據戰、持之一恆等先修成通行垃圾、拉鋸戰、持之以恆，再同步對齊每字粵拼及查重，沒有把原誤字的音節帶到正字。
 
 正規化精確規則 77 項及解析快取格式 20 沿用，本批無新舊鍵遷移。字面、草稿、正式音、碼、來源行及兩種分級理由見[B39 審核表](../data/lexicon/reviews/2026-11-06-written-b39-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b39.meta.json)和[重建、完整池與前 200 項驗證](../data/lexicon/reviews/2026-11-06-written-b39-validation.json)。尚有 **72,608 個池內候選、249 個讀音／語境待核項及 924 個地域初篩候選**；以上為 dev 審核進度。
+
+
+## 第四十批：生活動作、工作用語與完整歌詞語境
+
+逐項審核下一批 2,000 個候選，第二輪再退回 205 個少用古語、窄域術語、罕用稱謂及欠獨立用法項，沒有按長度或可拆詞一刀切。正式補入 **1,081 個來源字面、1,174 組讀音**，包括按件計費、挖空、捻線、掀被、排長隊、控制情緒、提供支援、接聽電話、換零錢、握手道別等；其中既有合併詞庫字面的新讀音亦另列並查重，未冒稱全部都是公開詞庫首次出現的字面。
+
+已有整詞觀測沿用，缺乏觀測的另補 **229 項有理由的 AI 常用度判斷**，累計 **13,817 項**。舊 112,871 個常用度記錄、13,588 項判斷及 49,897 個詞源／讀音分級物件逐欄保留。輸出共 **113,951 個常用度鍵**；全部 **49,684 個正規化自建字面**均有分級，有效 **47,633 個字面、48,954 條讀音**。既有 2,051 個冷僻字面、2,117 組退回讀音不變；本批先剔除冷僻候選，再按詞語常用度排序，與同詞異讀的先後分開。
+
+固定版本[廣東歌語料](https://github.com/jasonleeubc/Cantopop-corpus/tree/018e88540b917c40dc3f7248ed98908208544b54)的 11 個連續字串逐例回看原文。挖空、挽着、捱着、捱過、掃光、掉下來、排在、排着、推着、換到可保留用法及行號；換節來自換節目內部截段，未新增為獨立詞。歌詞換到同見 dou2／dou3，兩讀按結果與達到義保留；少量歌曲標音及重複副歌次數均不當日常詞頻。
+
+讀音按完整詞義及現代詞例覆核。[被](https://jyut.net/query?q=被)的棉被義 pei5 與被動 bei6 分開，掀被不用草稿 bei6。[挨](https://jyut.net/query?q=挨)靠近 aai1、忍受 ngaai4 分列；[捻](https://jyut.net/query?q=捻)兩指搓捻保留 nin2、nim2 及 nip6 手撚按物義，不用孤字標籤一律判錯。[探聽完整詞例](https://jyutdictionary.com/dictionary/entry/探聽)有 ting3／ting1；[推斷完整詞例](https://jyutdictionary.com/dictionary/entry/推斷)有 dyun6／dyun3，新增短語按香港整詞用法先列 ting3、dyun6，不將 dyun6 誤限於截斷義。
+
+[捍](https://jyut.net/query?q=捍)衛義先 hon6、保留現代 hon2 又讀，與[悍](https://jyut.net/query?q=悍)然的 hon5／hon6 分開；[揹負完整配詞](https://humanum.arts.cuhk.edu.hk/Lexis/lexi-mf/search.php?word=揹)取 bui3，不沿草擬 bui1。揣着按[衣內藏物義](https://jyut.net/query?q=揣)列 caai1／cyun2，揣測的 ceoi2 不套進去。排成行用行列 hong4、提在手上用方位 soeng6、插槽數用數目 sou3；修正字形時同時修正粵拼，例如按排→安排 on1、挽惜→惋惜 jyun2、搏手無策→束手無策 cuk1。
+
+新增兩項完整詞形修正：排除幹擾→排除干擾、掛鬥→掛斗，精確規則增至 79 項，解析快取升至 21。掛斗按車斗義同步修為 gwaa3 dau2；原 Essay 掛斗 342 權重沿用，撤去初稿多餘的 AI 判斷。舊執行詞庫、讀音分級、常用度及已存關係均無這些正字或錯轉字面，無舊鍵遷移；幹部、鬥爭等原義保持。完整資料見[B40 審核表](../data/lexicon/reviews/2026-11-06-written-b40-supplement.tsv)、[metadata](../data/lexicon/reviews/2026-11-06-written-b40.meta.json)及[重建、排序與前 200 項驗證](../data/lexicon/reviews/2026-11-06-written-b40-validation.json)。尚有 **70,608 個池內候選、249 個讀音／語境待核項及 924 個地域初篩候選**；以上為 dev 審核進度。
