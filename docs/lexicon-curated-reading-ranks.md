@@ -495,3 +495,14 @@ mui1 女孩子泛稱未有二妹整詞根據，本批不擴入。
 [昭](https://jyut.net/query?q=昭)以現代建議／習讀 ciu1 先列，保留有字書依據的原讀 ziu1；[狂](https://jyut.net/query?q=狂)以 kwong4 先列，有據 kong4 又讀列後。[湃](https://jyut.net/query?q=湃)的 baai3／paai3 均保留，怒濤澎湃、思潮澎湃採 baai3 優先。[忸](https://jyut.net/query?q=忸)在忸怩有 nau2／nuk6，兩讀保留；[怏](https://jyut.net/query?q=怏)失意不快義保留 joeng2／joeng3，不套自大義 joeng1。[老婆](https://cantowords.com/dictionary/老婆)的妻子義是 lou5 po4，不把名詞變調機械套成 po2。膜的 mok2 有名詞變調依據，未一概判錯；本批解剖名稱以 mok6 列前，沒有憑單字列出所有組合。
 
 固定版本歌詞僅是觀測：快玩、快適、心要等須先辨清跨詞邊界；怕吃苦的 hek6 沒有因語料曾標便升為正式讀音，[字書的吃苦配詞](https://jyut.net/query?q=吃)支持 hek3。上述先後是整詞語境判斷，並非實測整詞讀音頻率；詞語常用度另外記錄。完整草稿、正字、正式音、碼、理由及語料行號見[B37 審核表](../data/lexicon/reviews/2026-11-06-written-b37-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b37-validation.json)。
+
+
+## 第三十八批：完整詞例與現代語音分列
+
+新增 854 組來源讀音、779 個字面；舊 47,789 個讀音分級物件逐欄保留。成群結隊 deoi6 已在合併詞庫，本批明示鏡映至自建來源並排在 deoi2 前，避免未設等級的正音被新增異讀搶先。詞語熟悉程度另記錄，不與讀音分級混用。
+
+[慢慢完整詞例](https://words.hk/zidin/慢慢)支持 maan6 maan2／maan6 maan1；[嗎](https://jyut.net/query?q=嗎)的 maa1／maa3 均有現代疑問助詞義，本批句末先列 maa3、保留 maa1，未將 maa1 判錯。[打聽完整詞例](https://cantonese.sheik.co.uk/dictionary/characters/546/?all=true&full=true)有 ting1*3，打聽一下先列 ting1、保留 ting3，不把此處的 ting3 誤當聽眾專音。
+
+[扔](https://jyut.net/query?q=扔)在拋擲義有 wing1 語音與 jing4 文讀；[扛](https://jyut.net/query?q=扛)分肩扛 kong1、兩手抬舉 gong1，普通搬運短語保留並按語境排序。房車賽按完整房車名詞優先 fong2，保留 fong4。懵懂保留 mung2／mung5，懵然無知依字書專義取 mung4。手鋸的 goe3／geoi3 有完整工具配詞；手指畫取藝術名稱 waa2。手倒立按完整手倒立式詞例保留 dou2，不只憑倒字的上下易位義改音。
+
+感到痛苦等感受狀態用 dou3，意料不到先列結果義 dou2、保留文讀 dou3。所累用牽累義 leoi6，不套積累 leoi5；家給人足用現代 kap1，正音已有覆蓋；打腫臉充補全為打腫臉充胖子並同步配 bun6，沒有憑草稿造充肥子。上述先後為明示整詞語境判斷，非實測讀音次數。字書、完整歌詞行號及判斷見[B38 審核表](../data/lexicon/reviews/2026-11-06-written-b38-supplement.tsv)及[驗證記錄](../data/lexicon/reviews/2026-11-06-written-b38-validation.json)。

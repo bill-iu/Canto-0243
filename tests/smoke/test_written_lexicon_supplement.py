@@ -65,6 +65,7 @@ BATCH_34 = "2026-11-06-written-b34"
 BATCH_35 = "2026-11-06-written-b35"
 BATCH_36 = "2026-11-06-written-b36"
 BATCH_37 = "2026-11-06-written-b37"
+BATCH_38 = "2026-11-06-written-b38"
 
 
 def review_rows(path):
@@ -540,7 +541,7 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
         }
         candidates = ingest_lexicon_json(CURATED, source_id="curated")
         pairs = {(row.char, row.jyutping, row.code) for row in candidates}
-        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37}]
+        batch = [row for row in json.loads(CURATED.read_text(encoding="utf-8")) if row.get("batch") in {BATCH, BATCH_02, BATCH_03, BATCH_04, BATCH_05, BATCH_06, BATCH_07, BATCH_08, BATCH_09, BATCH_10, BATCH_11, BATCH_12, BATCH_13, BATCH_14, BATCH_15, BATCH_16, BATCH_17, BATCH_18, BATCH_19, BATCH_20, BATCH_21, BATCH_22, BATCH_23, BATCH_24, BATCH_25, BATCH_26, BATCH_27, BATCH_28, BATCH_29, BATCH_30, BATCH_31, BATCH_32, BATCH_33, BATCH_34, BATCH_35, BATCH_36, BATCH_37, BATCH_38}]
         usage = load_word_usage(CURATED.with_name("word_usage.tsv"))
         withdrawn = {literal for literal, grade in usage.items() if grade.withdraw_curated}
         self.assertTrue({(to_traditional(row["char"]), row["jyutping"], row["code"]) for row in batch if to_traditional(row["char"]) not in withdrawn}.issubset(pairs))
@@ -1676,6 +1677,56 @@ class WrittenLexiconSupplementTests(unittest.TestCase):
                                          ("性虐待狂", "sing3 joek6 doi6 kwong4", "sing3 joek6 doi6 kong4")]:
             self.assertEqual(ranks[word, preferred], "預設")
             self.assertEqual(ranks[word, variant], "常用")
+
+    def test_thirty_eighth_batch_keeps_common_phrases_and_contextual_reading_order(self):
+        curated = json.loads(CURATED.read_text(encoding="utf-8"))
+        path = REVIEW.parent / f"{BATCH_38}-supplement.tsv"
+        meta = json.loads((REVIEW.parent / f"{BATCH_38}.meta.json").read_text(encoding="utf-8"))
+        review = review_rows(path)
+        self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), meta["review_tsv_sha256"])
+        self.assertEqual(input_fingerprint(curated, meta, 38), meta["input_curated_sha256"])
+        self.assertEqual(meta["newly_reviewed_candidates"], 2000)
+        batch = [r for r in curated if r.get("batch") == BATCH_38]
+        self.assertEqual(len(batch), 854)
+        self.assertEqual({(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in review if r["verdict"] == "accept"},
+                         {(r["char"], r["jyutping"], r["code"], r["evidence"]) for r in batch})
+        self.assertTrue(all(r["ingested_char"] == to_traditional(r["char"]) for r in review if r["verdict"] == "accept"))
+        pairs = {(r["char"], r["jyutping"]) for r in batch}
+        for pair in [("感到痛苦", "gam2 dou3 tung3 fu2"), ("手指畫", "sau2 zi2 waa2"),
+                     ("手指縫", "sau2 zi2 fung6"), ("手倒立", "sau2 dou2 laap6"),
+                     ("打水仗", "daa2 seoi2 zoeng3"), ("所累", "so2 leoi6")]:
+            self.assertIn(pair, pairs)
+        for pair in [("感到痛苦", "gam2 dou2 tung3 fu2"), ("手指畫", "sau2 zi2 waak6"),
+                     ("手倒立", "sau2 dou3 laap6"), ("所累", "so2 leoi5")]:
+            self.assertNotIn(pair, pairs)
+        ranks = {(r["char"], r["jyutping"]): r["pron_rank"] for r in json.loads(CURATED.with_name("curated_reading_ranks.json").read_text(encoding="utf-8"))}
+        for word, preferred, variant in [("意料不到", "ji3 liu6 bat1 dou2", "ji3 liu6 bat1 dou3"),
+                                         ("慢慢而行", "maan6 maan2 ji4 haang4", "maan6 maan1 ji4 haang4"),
+                                         ("房車賽", "fong2 ce1 coi3", "fong4 ce1 coi3"),
+                                         ("愛我嗎", "oi3 ngo5 maa3", "oi3 ngo5 maa1"),
+                                         ("打聽一下", "daa2 ting1 jat1 haa5", "daa2 ting3 jat1 haa5"),
+                                         ("扔出來", "wing1 ceot1 loi4", "jing4 ceot1 loi4"),
+                                         ("扛着", "kong1 zoek6", "gong1 zoek6")]:
+            self.assertTrue({(word, preferred), (word, variant)}.issubset(pairs))
+            self.assertEqual(ranks[word, preferred], "預設")
+            self.assertEqual(ranks[word, variant], "常用")
+        rejected = {r["char"]: r for r in review if r["verdict"] == "reject"}
+        self.assertTrue({"成大", "戰雷頭", "截錐", "意廣才疏", "慣量橢球"}.issubset(rejected))
+        self.assertIn("跨詞", rejected["成大"]["note"])
+        self.assertIn("Cantopop-corpus/blob/018e885", rejected["成大"]["reading_reference"])
+        handsaw = next(r for r in review if r["char"] == "手鋸" and r["verdict"] == "accept")
+        self.assertIn("跨詞", handsaw["note"])
+        self.assertIn("jyut.net/query?q=鋸", handsaw["reading_reference"])
+        self.assertTrue(all(r["proposed_usage_rank"] in {"0", "1", "2"} and r["proposed_usage_note"]
+                            for r in review if r["verdict"] == "accept"))
+        for expected, inputs in [("手制動", ("手制动", "手制動", "手製動")),
+                                 ("手制動器", ("手制动器", "手制動器", "手製動器"))]:
+            self.assertIn((expected, "sau2 zai3 dung6" + (" hei3" if expected.endswith("器") else "")), pairs)
+            for literal in inputs:
+                self.assertEqual(to_traditional(literal), expected)
+                self.assertEqual(to_traditional(to_traditional(literal)), expected)
+        for literal in ("手製", "製造", "製動者", "手製動畫"):
+            self.assertEqual(to_traditional(literal), literal)
 
     def test_campaign_and_restoration_literals_keep_their_senses(self):
         for expected, inputs in [("御駕親征", ("御驾亲征", "御駕親征", "御駕親徵")),
